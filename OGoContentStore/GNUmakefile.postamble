@@ -1,0 +1,15 @@
+# postprocessing
+
+$(TYPEMODELS_DIR) :
+	$(MKDIRS) $(TYPEMODELS_DIR)
+
+ocs-typemodels : $(TYPEMODELS_DIR) $(libOGoContentStore_TYPEMODELS)
+	@(if [ "$(libOGoContentStore_TYPEMODELS)" != "" ]; then \
+	  echo "Copying type models into install path ..."; \
+          for ff in $(libOGoContentStore_TYPEMODELS); do \
+	    cp $$ff $(TYPEMODELS_DIR)/$$ff; \
+          done; \
+	fi)
+
+after-install :: ocs-typemodels
+

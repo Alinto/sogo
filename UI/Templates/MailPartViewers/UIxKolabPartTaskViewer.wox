@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:var="http://www.skyrix.com/od/binding"
+     xmlns:label="OGo:label"
+     xmlns:const="http://www.skyrix.com/od/constant"
+     xmlns:rsrc="OGo:url"
+     class="linked_attachment_frame"
+>
+  <fieldset>
+    <legend>
+      Kolab Task
+    </legend>
+
+    <pre><var:string value="flatContentAsString" /></pre>
+  </fieldset>
+</div>

@@ -1,0 +1,181 @@
+<?xml version="1.0" standalone="yes"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:var="http://www.skyrix.com/od/binding"
+     xmlns:label="OGo:label"
+     xmlns:const="http://www.skyrix.com/od/constant"
+     xmlns:rsrc="OGo:url"
+     class="linked_attachment_frame"
+>
+  <fieldset>
+    <legend>
+      <var:string label:value="Kolab Contact" />:
+      <var:string value="domDocument./name/full-name.textValue" />
+      (ID: <var:string value="domDocument./uid.textValue" />)
+    </legend>
+
+    <div class="linked_attachment_meta" style="background-color: white;">
+      <!-- TODO: add some reasonable sorting .. -->
+      <table border="0" class="linked_attachment_meta">
+        <tr>
+          <td><var:string label:value="Name"/>:</td>
+          <td><var:string value="domDocument./name/full-name.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Categories"/>:</td>
+          <td><var:string value="domDocument./categories.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Sensitivity"/>:</td>
+          <td><var:string value="domDocument./sensitivity.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Organization"/>:</td>
+          <td><var:string value="domDocument./organization.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Web"/>:</td>
+          <td><var:string value="domDocument./web-page.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="IM"/>:</td>
+          <td><var:string value="domDocument./im-address.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Department"/>:</td>
+          <td><var:string value="domDocument./department.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Office"/>:</td>
+          <td><var:string value="domDocument./office-location.textValue"/></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Profession"/>:</td>
+          <td><var:string value="domDocument./profession.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Job Title"/>:</td>
+          <td><var:string value="domDocument./job-title.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Manager"/>:</td>
+          <td><var:string value="domDocument./manager-name.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Assistant"/>:</td>
+          <td><var:string value="domDocument./assistant.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Job Title"/>:</td>
+          <td><var:string value="domDocument./job-title.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Nickname"/>:</td>
+          <td><var:string value="domDocument./nick-name.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Spouse"/>:</td>
+          <td><var:string value="domDocument./spouse-name.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Birthday"/>:</td>
+          <td><var:string value="domDocument./birthday.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Anniversary"/>:</td>
+          <td><var:string value="domDocument./anniversary.textValue" /></td>
+        </tr>
+        <tr>
+          <td><var:string label:value="Geo"/>:</td>
+          <td>
+            <!-- use gmaps: http://maps.google.com/maps?q=52.5+13.366 -->
+            <var:string label:value="Latitude"/>
+            <var:string value="domDocument./latitude.textValue" />
+            /
+            <var:string label:value="Longitude"/>
+            <var:string value="domDocument./longitude.textValue" />
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top"><var:string label:value="Phones"/>:</td>
+          <td>
+            <var:foreach list="phoneElements" item="item">
+              <var:string value="item./number.textValue"/>
+              (<var:string value="item./type.textValue"/>)
+              <br />
+            </var:foreach>
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top"><var:string label:value="Emails"/>:</td>
+          <td>
+            <var:foreach list="emailElements" item="item">
+              <var:string value="item./display-name.textValue"/>
+              &lt;<var:string value="item./smtp-address.textValue"/>&gt;
+              <br />
+            </var:foreach>
+          </td>
+        </tr>
+      </table>
+<!--
+creation-date
+last-modification-date
+
+picture
+x-logo
+
+preferred-address (type: home)
+
+x-custom [ @value, @app, @name ]
+  -->
+    </div>
+
+    <br />
+
+    <var:foreach list="addressElements" item="item">
+      <fieldset>
+        <legend>
+          <var:string label:value="Address"/>:
+          <var:string value="item./type.textValue"/><br />
+        </legend>
+      
+        <div class="linked_attachment_meta"
+             style="background-color: white; padding: 8px;">
+          <var:string value="item./street.textValue"/><br />
+          <var:string value="item./locality.textValue"/><br />
+          <var:string value="item./region.textValue"/><br />
+          <var:string value="item./postal-code.textValue"/><br />
+          <var:string value="item./country.textValue"/>
+        </div>
+     </fieldset>
+    </var:foreach>
+
+    <fieldset>
+      <legend>
+        <var:string label:value="Custom Attributes"/>
+      </legend>
+
+      <div class="linked_attachment_meta" style="background-color: white;">
+        <table border="0" class="linked_attachment_meta">
+          <var:foreach list="customElements" item="item">
+            <tr>
+              <td valign="top"><var:string value="item.@name.textValue"/>:</td>
+              <td><var:string value="item.@value.textValue"/></td>
+            </tr>
+          </var:foreach>
+        </table>
+      </div>
+    </fieldset>
+
+<!--
+DOC:     <var:string value="domDocument" /><br />
+DOCEL:   <var:string value="domDocument.documentElement" /><br />
+UID:     <var:string value="domDocument./uid.textValue" /><br />
+phone:   <var:string value="domDocument./phone" /><br />
+address: <var:string value="domDocument./address" /><br />
+-->
+
+  </fieldset>
+  <pre style="display: none;"><var:string value="flatContentAsString" /></pre>
+</div>

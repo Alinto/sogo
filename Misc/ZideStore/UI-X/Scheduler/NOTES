@@ -1,0 +1,52 @@
+// $Id: NOTES,v 1.1 2003/11/24 01:24:40 helge Exp $
+
+Scheduler
+=========
+
+SOPE based interface for scheduler.
+
+Class Hierarchy
+===============
+
+  [WOComponent]
+    [SoComponent]
+      UIxAppointmentView
+      UIxCalView
+        UIxCalMonthView
+          UIxCalMonthOverview
+        UIxCalWeekView
+          UIxCalWeekOverview
+    UIxAptTableView
+  SchedulerUIProduct
+
+TBD:
+  UIxCalDayView
+    UIxCalDayOverview
+    UIxCalDayChart
+    UIxCalDayHChart
+  [UIxCalWeekView]
+    UIxCalWeekColumnView
+    UIxCalWeekChart
+    UIxCalWeekHChart
+  OGoYearOverview - should use aggressive caching in the long run
+
+  - editor page (which comes up in a new window)
+  - delete page
+  - print views
+
+Notes
+=====
+
+editor pages need to use JavaScript to trigger reloads in the parent window
+=> find out how to do that
+
+URLs
+====
+
+/zidestore/ControlPanel/			=> SoControlPanel
+/zidestore/ControlPanel/Products		=> SoProductRegistry
+/zidestore/ControlPanel/Products/ZideStoreUI	=> SoProduct
+/zidestore/ControlPanel/Products/ZideStoreUI/Resources/
+=> SoProductResourceManager
+/zidestore/ControlPanel/Products/ZideStoreUI/Resources/calendar.css
+=> resource

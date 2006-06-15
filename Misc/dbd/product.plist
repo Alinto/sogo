@@ -1,0 +1,95 @@
+{
+  publicResources = (
+    "dbd.css"
+  );
+
+  classes = {
+    DBDaemon = {
+      superclass    = "SoApplication";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles = {
+        "View"          = "Anonymous";
+        "WebDAV Access" = "Authenticated";
+      };
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "MainPage"; 
+        };
+        GET = { // more or less a hack, see README
+          protectedBy = "View";
+          pageName    = "MainPage"; 
+        };
+        connect = { 
+          protectedBy = "View";
+          pageName    = "MainPage"; 
+          actionName  = "connect";
+        };
+      };
+    };
+
+    DSoObject = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles = {
+        "View"          = "Authenticated";
+        "WebDAV Access" = "Authenticated";
+      };
+      methods = {
+      };
+    };
+    
+    DSoHost = {
+      superclass    = "DSoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "DHostView";
+        };
+      };
+    };
+    DSoTable = {
+      superclass    = "DSoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "DTable";
+        };
+      };
+    };
+    DSoDatabase = {
+      superclass    = "DSoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "DDatabase"; 
+        };
+      };
+    };
+    DSoDatabaseManager = {
+      superclass    = "DSoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "DDatabaseManager"; 
+        };
+      };
+    };
+    DSoUser = {
+      superclass    = "DSoObject";
+      methods = {
+      };
+    };
+    DSoUserManager = {
+      superclass    = "DSoObject";
+      methods = {
+      };
+    };
+    DSoField = {
+      superclass    = "DSoObject";
+      methods = {
+      };
+    };
+  };
+}

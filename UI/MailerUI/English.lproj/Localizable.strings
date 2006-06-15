@@ -1,0 +1,95 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Create";
+"Empty Trash" = "Empty Trash";
+"Delete"      = "Delete";
+"Expunge"     = "Expunge";
+"Forward"     = "Forward";
+"Get Mail"    = "Get Mail";
+"Junk"        = "Junk";
+"Reply"       = "Reply";
+"Reply All"   = "Reply All";
+"Print"       = "Print";
+"Stop"        = "Stop";
+"Write"       = "Write";
+
+/* Main Frame  */
+
+"Home"                 = "Home"; 
+"Calendar"             = "Calendar";
+"Addressbook"          = "Addressbook";
+"Mail"                 = "Mail";
+"Right Administration" = "Right Administration";
+
+"Help" = "Help";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!";
+
+"Read messages"       = "Read messages";
+"Write a new message" = "Write a new message";
+
+"Share: " = "Share: ";
+"Account: " = "Account: ";
+"Shared Account: " = "Shared Account: ";
+
+/* Mail edition */
+
+"From"          = "From";
+"Subject"       = "Subject";
+"Add address"   = "Add address";
+
+"to"            = "To";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+
+"Addressbook"   = "Addressbook";
+"Anais"         = "Anais";
+
+"This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
+
+/* Popup "show" */
+
+"all"     = "all";
+"read"    = "read";
+"unread"  = "unread";
+"deleted" = "deleted";
+"flagged" = "flagged";
+
+/* MailListView */
+
+"Subject or Sender contains" = "Subject or Sender contains";
+"Date"          = "Date";
+"View"          = "View";
+"All"           = "All";
+"Unread"        = "Unread";
+"messages"      = "messages";
+
+"first"         = "first";
+"previous"      = "prev";
+"next"          = "next";
+
+"msgnumber_to"  = "to";
+"msgnumber_of"  = "of";
+
+"Mark Unread" = "Mark Unread";
+"Mark Read"   = "Mark Read";
+
+/* Tree */
+
+"SentFolderName"   = "Sent";
+"TrashFolderName"  = "Trash";
+"InboxFolderName"  = "Inbox";
+"DraftsFolderName" = "Drafts";
+"SieveFolderName"  = "Filters";
+"Folders"          = "Folders"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Move &hellip;";
+
+"error_missingsubject"      = "Missing Subject";
+"error_missingrecipients"   = "Missing Recipients";
+"error_validationfailed"    = "Validation failed";

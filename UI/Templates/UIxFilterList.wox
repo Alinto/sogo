@@ -1,0 +1,50 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxMailMainFrame"
+  title="panelTitle"
+>
+
+  <div class="titlediv" style="white-space: nowrap;">
+    Server Side Filter Scripts
+  </div>
+
+  <div class="embedwhite_out">
+    <div class="embedwhite_in">
+
+      <table border="0" width="100%" cellspacing="0" cellpadding="1">
+        <tr class="tableview">
+          <td class="tbtv_headercell" width="17">
+            <var:entity const:name="nbsp" />
+          </td>
+          <td class="tbtv_headercell">
+            Filters
+          </td>
+        </tr>
+        <tr class="tableview">
+          <td colspan="2" class="tbtv_navcell" align="right">
+            <var:string value="filters.count" />
+            <var:string label:value="filters" />
+          </td>
+        </tr>
+	
+        <var:foreach list="filters" item="filter">
+          <tr class="tableview" var:id="msgRowID">
+            <td colspan="2">
+              <a href="#" var:onclick="clickedFilterJS">
+                <var:string value="filter" />
+              </a>
+            </td>
+          </tr>
+        </var:foreach>
+      </table>
+
+    </div>
+  </div>
+
+</var:component>

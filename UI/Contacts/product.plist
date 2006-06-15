@@ -1,0 +1,57 @@
+{
+  requires = ( MAIN, CommonUI, Contacts );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SOGoContactFolder = {
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView"; 
+        };
+        new = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "new";
+        };
+        select = {
+          protectedBy = "View";
+          pageName    = "UIxContactsSelectionView"; 
+        };
+      };
+    };
+
+    SOGoContactObject = {
+      methods = {
+        view = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+        };
+        delete = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+          actionName  = "delete";
+        };
+        edit = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+        };
+        save = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "save";
+        };
+        test = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "test";
+        };
+      };
+    };
+  };
+}

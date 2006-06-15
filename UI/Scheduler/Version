@@ -1,0 +1,26 @@
+# Version file
+
+SUBMINOR_VERSION:=147
+
+# v0.9.147 requires Appointments v0.9.50
+# v0.9.136 requires SOGoUI       v0.9.30
+# v0.9.123 requires Appointments v0.9.35
+# v0.9.123 requires SOGoUI       v0.9.24
+# v0.9.115 requires NGiCal       v4.5.44
+# v0.9.113 requires libSOGo      v0.9.30
+# v0.9.112 requires SOGoLogic    v0.9.12
+# v0.9.107 requires WOExtensions v4.5.21
+# v0.9.105 requires NGObjWeb     v4.5.102
+# v0.9.101 requires NGiCal       v4.5.36
+# v0.9.100 requires SOGoUI       v0.9.21
+# v0.9.99  requires SOGoUI       v0.9.20
+# v0.9.98  requires SOGoUI       v0.9.19
+# v0.9.96  requires SOGoLogic    v0.9.27
+# v0.9.94  requires NGExtensions v4.5.136
+# v0.9.84  requires SOGoLogic    v0.9.12
+# v0.9.70  requires NGExtensions v4.3.107
+# v0.9.67  requires SOPE         v4.3
+# v0.9.61  requires NGExtensions v4.2.102
+# v0.9.41  requires NGObjWeb     v4.2.431
+# v0.9.31  requires WEExtensions v4.2.52
+# v0.9.29  requires WEExtensions v4.2.51

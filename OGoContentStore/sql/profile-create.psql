@@ -1,0 +1,9 @@
+--
+-- (C) 2005 SKYRIX Software AG
+--
+
+CREATE TABLE SOGo_user_profile (
+  uid           VARCHAR(255) NOT NULL PRIMARY KEY,
+  allowinternet SMALLINT     DEFAULT 0,
+  timezonename  VARCHAR(255) DEFAULT 'MET'
+);

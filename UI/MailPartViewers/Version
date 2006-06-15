@@ -1,0 +1,6 @@
+# version file
+
+SUBMINOR_VERSION:=22
+
+# v0.9.0 requires libNGiCal v4.5.53
+# v0.9.1 requires libNGMime v4.5.213

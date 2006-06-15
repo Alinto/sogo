@@ -1,0 +1,141 @@
+<?xml version="1.0" standalone="yes"?>
+<container xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+>
+  <var:if condition="hideFrame" const:negate="YES">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+>
+  <head>
+    <title>
+      <var:string value="title"/>
+    </title>
+    
+    <meta name="description" content="SOGo Web Interface"/>
+    <meta name="author" content="SKYRIX Software AG"/>
+    <meta name="robots" content="stop"/>
+    
+    <var:js-stringtable const:framework="MailerUI.SOGo"
+                        const:identifier="labels"
+                        const:inplace="NO"
+    />
+    <script rsrc:src="generic.js"> <!-- space required --></script>
+    <script rsrc:src="mailer.js" > <!-- space required --></script>
+    
+    <link type="text/css" rel="stylesheet" rsrc:href="uix.css"    />
+    <link type="text/css" rel="stylesheet" rsrc:href="mailer.css" />
+    <link type="text/css" rel="stylesheet" rsrc:href="mailer-toolbar.css" />
+    <link type="text/css" rel="stylesheet" rsrc:href="mailer-compose.css" />
+
+    <link href="mailto:info@skyrix.com" rev="made"/>
+  </head>
+
+  <body style="background-color: #D4D0C8;">
+   <!-- 
+     Note: the 'href' is required, otherwise an element-id will get created
+     -->
+   <form name="pageform" var:href="pageFormURL" _wosid="0">
+
+     <var:if condition="showLinkBanner">
+       <table cellpadding="5" cellspacing="0" border="0" class="linkbanner">
+         <tr>
+          <td colspan="2">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td class="linkbannerlinks">
+                  <a var:href="relativeHomePath"
+                  ><var:string label:value="Home" /></a> |
+                  <a var:href="relativeCalendarPath"
+                  ><var:string label:value="Calendar" /></a> |
+                  <a var:href="relativeContactsPath"
+                  ><var:string label:value="Addressbook" /></a> |
+                  <a var:href="relativeMailPath"
+                  ><var:string label:value="Mail" /></a> |
+                  <a href="http://to.be.done/"
+                  ><var:string label:value="Right Administration" /></a>
+                </td>
+                <td class="linkbannerimage">
+                  <a href="http://www.opengroupware.org:80/" target="OGo">
+                    <img rsrc:src="CommonUI.SOGo/menu_logo_top.gif"
+                         align="center" border="0" alt="OGo Logo" 
+                         valign="middle"
+                    />
+                  </a>
+                </td>
+              </tr>
+            </table>
+	    
+            <!-- TODO: replace the line with a CSS straight line -->
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td class="linecolor"><img 
+                    rsrc:src="CommonUI.SOGo/line_left.gif"/></td>
+                <td class="linecolor" width="98%">
+                  <img rsrc:src="CommonUI.SOGo/line_stretch.gif"/>
+                </td>
+                <td class="linecolor"><img 
+                    rsrc:src="CommonUI.SOGo/line_right.gif"/></td>
+              </tr>
+              <tr>
+                <td valign="top" colspan="2">
+                  <var:component className="UIxAppNavView" />
+                </td>
+                <td valign="top" align="right" class="button_submit_env">
+                  <a var:href="helpURL"
+                     class="button_submit"
+                     label:string="Help"
+                     var:target="helpWindowTarget"
+                  />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </var:if>
+
+    <table border="0" class="tb_maintable" cellspacing="0" cellpadding="2"
+           var:style="bannerToolbarStyle">
+      <!-- this table is required for right alignment -->
+      <tr>
+        <td valign="top" class="vertframerow">
+          <var:component className="UIxMailToolbar" />
+        </td>
+        <td align="right" width="80" class="vertframerow">
+          <table border="0"> <!-- TODO: what is this table for? -->
+            <tr>
+              <td class="tb_logocell tb_icon"
+                  ><div class="tbicon_logo"> </div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    
+    <!-- consume toolbar -->
+    <div class="tb_consumer" var:style="bannerConsumeStyle"> </div>
+    
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr class="vertframerow">
+        <td width="100%" valign="top" class="vertframerow" colspan="2">
+          <var:component-content/>
+        </td>
+      </tr>
+    </table>
+   </form>
+
+   <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+  </body>
+</html>
+   </var:if>
+
+  <var:if condition="hideFrame">
+    <var:component-content/>
+  </var:if>
+</container>

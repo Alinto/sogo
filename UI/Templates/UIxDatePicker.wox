@@ -1,0 +1,21 @@
+<?xml version='1.0' standalone='yes'?>
+
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <input type="text"
+         var:name="dateID"
+         var:id="dateID"
+         var:value="formattedDateString"
+         size="12"
+  /><a var:href="jsPopup"
+    ><img rsrc:src="icon_popupcalendar.gif"
+          var:title="label"
+          var:alt="label"
+          border="0"
+     /></a>
+  <script language="JavaScript">
+    <var:string value="jsCode" />  </script>
+</span>

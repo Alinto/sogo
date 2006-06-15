@@ -1,0 +1,266 @@
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentObject.[hm]: added method to change participation
+	  status of logged-in user (v0.9.50)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: place a hint ('isRecurrent') into flattened
+	  rows created from recurrent events so these can be signaled in the
+	  UI (v0.9.49)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.48
+
+	* SOGoAptMailInvitation.m, SOGoAptMailUpdate.m, SOGoAptMailDeletion.m,
+	  SOGoAptMailRemoval.m: updated to contain new classes for additional
+	  languages
+
+	* SOGoAptMailInvitation.wo, SOGoAptMailUpdate.wo,
+	  SOGoAptMailDeletion.wo, SOGoAptMailRemoval.wo: replaced with language
+	  dependend counterparts
+
+	* SOGoAptMail{English,French}Invitation.wo,
+	  SOGoAptMail{English,French}Update.wo,
+	  SOGoAptMail{English,French}Deletion.wo,
+	  SOGoAptMail{English,French}Removal.wo: new language dependend
+	  templates. Please note that due to an unresolved bug we cannot use
+	  the standard WO lookup mechanism here.
+
+2005-07-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.47
+
+	* SOGoAptMailDeletion.[wo,m]: new template being used when appointment
+	  is deleted
+
+	* SOGoAptMailRemoval.[wo,m]: new template being used when attendee is
+	  removed from appointment
+
+	* SOGoAppointmentObject.m: now sends emails for removal of attendees
+	  and deletion of appointment
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: fixed Cocoa warnings (v0.9.46)
+
+	* SOGoAppointmentFolder.m: fixed gcc 4.0 warnings (v0.9.45)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.44
+
+	* SOGoAppointmentFolder.m: explicitly set encoding for text and
+	  calendar attachment parts
+
+	* SOGoAptMailNotification.m: added -appointmentURL accessor
+
+	* SOGoAptMailInvitation.wo, SOGoAptMailUpdate.wo: display
+	  -appointmentURL instead of -homePageURL
+
+	* v0.9.43
+
+	* SOGoAppointmentFolder.m: changed redirect from 'schedule' to
+	  'weekoverview'
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: moved +globallyUniqueObjectId method to
+	  SOGoFolder.m baseclass (v0.9.42)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: added a method to determine the resource
+	  name from a vevent UID (v0.9.41)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentObject.m: tries ambitiously to detect the baseURL in
+	  -homePageURLForPerson: now. This code doesn't really belong here
+	  but currently there's no appropriate controller for dealing with it
+	  around. Also removed mail notification testing code. (v0.9.40)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation (v0.9.39)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.38
+	
+	* GNUmakefile: changed inclusion of bundle.make to wobundle.make
+	  because of new components
+
+	* v0.9.37
+
+	* SOGoAptMailNotification.[hm]: new component forming the basis for
+	  the mail notification templates
+
+	* SOGoAptMailInvitation.[wo, m]: invitation mail template, sent to all
+	  new attendees of an appointment
+
+	* SOGoAptMailUpdate.[wo, m]: update mail template, sent to all
+	  attendees when appointment time is changed
+
+	* SOGoAppointmentObject.m: rewritten to use the iCalEventChanges object
+	  from NGiCal to discover changes to saved appointments. Additionaly
+	  email notifications are emitted on certain occasions (this is not
+	  full iMip, yet). In case the appointment time changes, state for
+	  all attendees is reset to NEEDS-ACTION.
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: added 'partmails' and 'partstates' to
+	  infos returned by -fetchOverviewInfosFrom:to: (v0.9.36)
+
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.35
+
+	* GNUMakefile: added SOGoFreeBusyObject.m
+
+	* product.plist: added SOGoFreeBusyObject
+
+	* SOGoFreeBusyObject.[hm]: new class resembling free/busy information
+	  for a particular user. Because free/busy information isn't solely
+	  based upon appointments, this is now a part of the user folder.
+	  However the information contained therein is still based on
+	  information provided by appointments, only. This should be fixed in
+	  a later release.
+
+	* SOGoAppointmentFolder.m: new API to lookup freeBusyObjects for an
+	  array of uids.
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: fetch new priority field in core infos
+	  (v0.9.34)
+
+2005-07-04  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: fetch new priority field in overview infos
+	  (v0.9.33)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: changed to use GDLContentStore (v0.9.32)
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoGroupAppointmentFolder.m: fixed incorrect creation of a mutable
+	  dictionary (was still immutable) (v0.9.31)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: make sure fetchedInfos are sorted
+	  ascending - this simplifies client code (v0.9.30)
+
+	* SOGoAppointmentFolder.m: changed debugLog to use NGLogging (v0.9.29)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: significantly changed handling of cyclic
+	  events. Information for cyclic event calculation is now contained
+	  in the quick info, making full fetches obsolete - performance
+	  should improve significantly this way (v0.9.28)
+
+2005-02-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentFolder.m: minor code cleanups (v0.9.27)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed for removal of SOGoLogic (v0.9.26)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentObject.m, SOGoAppointmentFolder.m: added proper
+	  message/folder class (v0.9.25)
+
+2004-11-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentObject.m: improved error handling in save method
+	  (v0.9.16)
+
+2004-10-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: fixed a warning on MacOSX (v0.9.15)
+
+	* SOGoAppointmentObject.m(saveContentString:): fixed a warning with new
+	  objects (v0.9.14)
+	
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.h: added -fetchAllSOGoAppointments method
+	  which performs a bulk fetch on all files contained in the folder
+	  and parses all contents into an array of SOGoAppointment objects
+	  (used in the iCal file support, try to avoid this method, expensive!)
+	  (v0.9.13)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.12)
+
+2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoGroupAppointmentFolder.m: do not call -sleep in fetch method
+	  (disconnects the folder from the parent folder), instead added a
+	  -resetFolderCaches methods which performs some cleanups before a
+	  fetch (v0.9.11)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentFolder.m: added method to create a group folder and
+	  a group calendar for a set of IDs (for internal queries) (v0.9.10)
+
+	* SOGoAppointmentObject.m, SOGoAppointmentFolder.m: moved calendar
+	  folder lookup methods to folder class (the object uses its container
+	  to lookup the folder) (v0.9.9)
+
+	* SOGoAppointmentObject.m: finished multi folder storage methods
+	  (v0.9.8)
+
+	* SOGoAppointmentObject.m: added multi folder storage methods (v0.9.7)
+
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupAppointmentFolder.m: implemented proper URL generation for
+	  group calendars (will lookup the appointment in the proper "exact"
+	  folder (v0.9.6)
+
+	* SOGoAppointmentFolder.m: fetch location, isallday, iscycle and
+	  partmails fields in -fetchCoreInfo (v0.9.5)
+
+2004-08-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.4
+
+	* SOGoAppointmentFolder.m: added -baseURLForAptWithUID:inContext: for
+	  determining the resource URL of an appointment, used by calendar
+	  views to locate the viewer page
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupAppointmentFolder: can merge input folders, tracks conflicts
+	  in 'conflicts' key of the record (should be displayed somehow in the
+	  UI) (v0.9.3)
+
+	* v0.9.2
+
+	* SOGoAppointmentFolder.m, SOGoGroupAppointmentFolder: added 
+	  -calendarUIDs method which returns the UIDs of the currently 
+	  displayed persons (eg the members of a group)
+
+	* started SOGoGroupAppointmentFolder
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: added method to fetch core info from other
+	  OCS folders, correct timezone to MET after fetch core info
+
+2004-07-01  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* redirect to weekoverview if GET is run on the folder itself
+	
+	* created ChangeLog

@@ -1,0 +1,9 @@
+# $Id$
+
+INSERT INTO sogo_folder_info 
+  (c_path,c_path1,c_path2,c_path3,c_path4,c_foldername,c_location,c_folder_type) 
+  VALUES ('/', '', NULL, NULL, NULL, '', '', 'Container');
+
+INSERT INTO sogo_folder_info 
+  (c_path,c_path1,c_path2,c_path3,c_path4,c_foldername,c_location,c_folder_type) 
+  VALUES ('/Users', 'Users', NULL, NULL, NULL, 'Users', '', 'Container');

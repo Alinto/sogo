@@ -1,0 +1,5 @@
+iCalHTTP
+========
+
+This is a protocol module intended to provide assembly/disassembly of
+iCal-over-HTTP requests.

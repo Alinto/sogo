@@ -1,0 +1,205 @@
+<?xml version='1.0' standalone='yes'?>
+
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+>
+  <table border="0"
+         width="100%"
+         cellpadding="2"
+         cellspacing="0"
+         class="schedoverview"
+  >
+    <tr>
+      <th colspan="5" class="schedoverview titlefont titleheader">
+        <var:string label:value="Schedule"/>
+        <var:string value="startDate" label:dateformat="dayLabelFormat" /> -
+        <var:string value="endDate" label:dateformat="dayLabelFormat" />
+      </th>
+      <!-- TODO: maybe enable this at a later stage
+      <th colspan="2"
+          class="titleheader button_auto_env defaultfont buttonheader">
+        <a var:href="ownMethodName"
+             var:queryDictionary="context.request.formValues"
+             var:_dr="toggleShowHideAptsQueryParameter"
+             class="button_auto"
+          ><var:string label:value="$toggleShowHideAptsText"
+           /></a>
+      </th>
+      -->
+    </tr>
+    <var:if condition="hasAnyAppointments" const:negate="YES">
+      <tr>
+        <td colspan="5">
+          <var:string label:value="No appointments found"
+                      const:style="schedoverview"
+          />
+        </td>
+      </tr>
+    </var:if>
+    <var:if condition="hasAnyAppointments">
+      <var:if condition="hasUserAppointments">
+        <tr>
+          <!-- meetings proposed by user -->
+          <th colspan="5" class="schedoverview_title">
+            <var:string label:value="Meetings proposed by you" />
+          </th>
+        </tr>
+        <tr>
+          <th class="schedoverview"
+          ><var:string label:value="Start date" /></th>
+          <th class="schedoverview"
+          ><var:string label:value="Title" /></th>
+          <th class="schedoverview"
+              colspan="2"
+          ><var:string label:value="participants"/></th>
+        </tr>
+        <var:foreach list="userAppointments"
+                     item="item"
+        >
+          <var:foreach count="renderedParticipantsCount"
+                       index="participantIndex"
+          >
+            <tr>
+              <var:if condition="isFirstParticipant">  
+                <td class="schedoverview"
+                    var:rowspan="rowspan"
+                >
+                  <var:string value="item.startDate"
+                              label:dateformat="sched_startDateFormat"
+                  />
+                </td>
+                <td class="schedoverview"
+                    var:rowspan="rowspan"
+                >
+                  <a var:href="appointmentViewURL"
+                     class="schedoverview"
+                  ><var:string value="item.title"
+                               const:escapeHTML="YES"
+                   /></a>
+                </td>
+              </var:if>
+              <td class="schedoverview">
+                <var:string value="participant" />
+              </td>
+              <td class="schedoverview">
+                <var:component className="UIxCalParticipationStatusView"
+                               partStat="participationStatus"
+                />
+              </td>
+            </tr>
+          </var:foreach>
+          <var:if condition="didTruncateParticipants">
+            <tr>
+              <td colspan="2" class="schedoverview">
+                <a var:href="appointmentViewURL"
+                   class="schedoverview"
+                ><var:string value="truncatedParticipantsCount" />
+                <var:string label:value="more participants" />...
+                </a>
+              </td>
+            </tr>
+          </var:if>
+        </var:foreach>
+      </var:if>
+      <var:if condition="hasForeignAppointments">
+        <var:if condition="hasUserAppointments">
+          <tr>
+            <td><var:entity const:name="nbsp" /></td>
+          </tr>
+        </var:if>
+        <!-- ZNeK: removed for Agenor 0.8 on client's request
+        <tr>
+          <th colspan="5" class="schedoverview_title">
+            <var:string label:value="Meetings proposed to you" />
+          </th>
+        </tr>
+        -->
+        <tr>
+          <th class="schedoverview"
+          ><var:string label:value="Start date" /></th>
+          <th class="schedoverview"
+          ><var:string label:value="Title" /></th>
+          <th class="schedoverview"
+              colspan="2"
+          ><var:string label:value="participants" /></th>
+          <th class="schedoverview"
+          ><var:string label:value="action" /></th>
+        </tr>
+        <var:foreach list="foreignAppointments"
+                     item="item"
+        >
+          <var:foreach count="renderedParticipantsCount"
+                       index="participantIndex"
+          >
+            <tr>
+              <var:if condition="isFirstParticipant">  
+                <td class="schedoverview"
+                    var:rowspan="rowspan"
+                >
+                  <var:string value="item.startDate"
+                              label:dateformat="sched_startDateFormat"
+                  />
+                </td>
+                <td class="schedoverview"
+                    var:rowspan="rowspan"
+                >
+                  <a var:href="appointmentViewURL"
+                     class="schedoverview"
+                  ><var:string value="item.title"
+                               const:escapeHTML="YES"
+                   /></a>
+                </td>
+              </var:if>
+              <td class="schedoverview">
+                <var:string value="participant" />
+              </td>
+              <td class="schedoverview">
+                <var:component className="UIxCalParticipationStatusView"
+                               partStat="participationStatus"
+                />
+              </td>
+              <td class="schedoverview">
+                <var:if-key const:key="participantIndex"
+                            value="userIndex"
+                >
+                  <!-- TODO: exchange with inline updates -->
+                  <var:if-key const:key="userParticipationStatus"
+                              const:value="1"
+                              const:negate="YES"
+                  >  
+                    <a var:href="acceptAppointmentURL"
+                       class="button_auto"
+                    ><var:string label:value="accept" /></a>
+                  </var:if-key>
+                  <!-- TODO: exchange with inline updates -->
+                  <var:if-key const:key="userParticipationStatus"
+                              const:value="2"
+                              const:negate="YES"
+                  >  
+                    <a var:href="declineAppointmentURL"
+                       class="button_auto"
+                    ><var:string label:value="decline" /></a>
+                  </var:if-key>
+                </var:if-key>
+              </td>
+            </tr>
+          </var:foreach>
+          <var:if condition="didTruncateParticipants">
+            <tr>
+              <td colspan="3" class="schedoverview">
+                <a var:href="appointmentViewURL"
+                   class="schedoverview"
+                ><var:string value="truncatedParticipantsCount" />
+                <var:string label:value="more participants" />...
+                </a>
+              </td>
+            </tr>
+          </var:if>
+        </var:foreach>
+      </var:if>
+    </var:if>
+  </table>
+</span>

@@ -1,0 +1,5 @@
+# version file
+
+SUBMINOR_VERSION:=36
+
+# v0.9.18 requires NGExtensions v4.5.136

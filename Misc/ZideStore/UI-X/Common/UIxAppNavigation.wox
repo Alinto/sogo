@@ -1,0 +1,85 @@
+<?xml version='1.0' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <head>
+    <link type="text/css" rel="stylesheet" rsrc:href="zidestoreui.css" />
+
+    <style>
+      a:link, a:visited, a:active, a:hover { 
+        text-decoration: none; 
+        font-family:     Arial, Helvetica, Helv, Sans-Serif;
+        font-size:       9pt;
+        color:           #0000FF;
+      }
+      a.reloadlink {
+        color:      black;
+      }
+
+      ul {
+        margin:          0; /*removes indent IE and Opera*/
+        padding:         0; /*removes indent Mozilla and NN7*/
+        /* list-style-type: none; */ /*turns off display of bullet*/
+        font-family:     Arial, Helvetica, sans-serif;
+        font-size:       14pt;
+      }
+
+      ul li {
+        /* padding-left: 4px; */
+        /* list-style: url(http://vesper.in.skyrix.com/SKYRiXgreen/WebServerResources/EN.lproj/nav_folder_open.gif); */
+        list-style: url(http://move:9000/OpenGroupware.woa/WebServerResources/English.lproj/icon_folder.gif);
+      }
+
+      ul li a {
+        display: block;
+        border:           1px solid #FFFFFF;
+        padding:          2px 2px 2px 24px;
+        width:            80%;
+        background-color: #EEEEEE;
+      }
+
+      ul li a:link, ul li a:visited {
+        text-decoration:  none;
+      }
+      ul li a:hover {
+        border:           1px solid #333333;
+        background-color: #CCCCCC;
+      }
+    </style>
+
+    <script language="javascript"><![CDATA[
+      function viewInContent(url) {
+        parent.content.location=url;
+        return true;
+      }
+    ]]></script>
+  </head>
+
+  <body leftmargin="0"  topmargin="0" marginwidth="0" marginheight="0">
+    <br />
+    <ul>
+      <li><a href="#">OGo</a></li>
+      <li><a href="#" onclick="viewInContent('view')"         >View</a></li>
+      <li><a href="#" onclick="viewInContent('weekoverview')" >Week</a></li>
+      <li><a href="#" onclick="viewInContent('monthoverview')">Month</a></li>
+      <li><a href="#">OGo</a></li>
+    </ul>
+    <br />
+    
+    <div style="border-top: 1px solid #000000;">
+      <a href="appnavigation" class="reloadlink" 
+         var:_o="context.contextID"><i>(reload)</i></a>
+    </div>
+
+    <br />
+
+    <div style="border-top: 1px solid #000000; font-size: 8pt">
+      <var:string value="context.contextID" />
+    </div>
+    <a href="http://www.projectseven.com/tutorials/css_menus/list_01/"
+       target="extlink">CSS Menues</a>
+  </body>
+</html>

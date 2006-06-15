@@ -1,0 +1,11 @@
+<?xml version='1.0' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:var="http://www.skyrix.com/od/binding"
+   xmlns:const="http://www.skyrix.com/od/constant"
+   xmlns:rsrc="OGo:url"
+>
+  <!--
+    The resource cannot be found, for unknown reasons ...
+  -->
+  <img filename="non_sorted.gif" border="0" />
+</span>

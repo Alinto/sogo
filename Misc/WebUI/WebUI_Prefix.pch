@@ -1,0 +1,9 @@
+//
+// Prefix header for all source files of the 'WebUI' target in the 'WebUI' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #include <NGObjWeb/NGObjWeb.h>
+    #include <NGExtensions/NGExtensions.h>
+#endif

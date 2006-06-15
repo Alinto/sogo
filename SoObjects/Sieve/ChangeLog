@@ -1,0 +1,45 @@
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: fixed a gcc 4.0 warning (v0.9.11)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveBaseObject.[hm]: removed unused -imap4Client method
+	  (v0.9.10)
+
+	* SOGoSieveBaseObject.m: updated to use new NGImap4 API (v0.9.9)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: fixed a compile warning on MacOSX (v0.9.8)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m, SOGoSieveScriptsFolder.m: assigned
+	  folder/message class (v0.9.7)
+
+2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: implemented Sieve script upload (v0.9.6)
+
+	* some work on script upload (v0.9.5)
+
+2004-12-03  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SOGoSieveScriptObject.m, SOGoSieveScriptsFolder.m: added script
+	  activation action (v0.9.4)
+	
+	* v0.9.3
+	
+	* SOGoSieveScriptObject.m: added ability to fetch content
+	
+	* SOGoSieveScriptsFolder.m: added ability to lookup/construct
+	  SOGoSieveScriptObject's
+	
+2004-11-28  Helge Hess  <helge.hess@skyrix.com>
+	
+	* added list capability, does not work with 'dotted' logins? (v0.9.2)
+	
+2004-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* started Sieve product

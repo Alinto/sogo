@@ -1,0 +1,15 @@
+# Version file
+
+SUBMINOR_VERSION:=126
+
+# v0.9.114 requires libNGMime       v4.5.229
+# v0.9.114 requires libNGExtensions v4.5.165
+# v0.9.111 requires libNGExtensions v4.5.163
+# v0.9.96  requires libNGMime       v4.5.223
+# v0.9.91  requires libNGMime       v4.5.222
+# v0.9.69  requires libNGMime       v4.5.210
+# v0.9.55  requires libNGExtensions v4.5.136
+# v0.9.44  requires libNGMime       v4.3.194
+# v0.9.41  requires libNGMime       v4.3.190
+# v0.9.35  requires libSOGoLogic    v0.9.24
+# v0.9.34  requires libSOGoLogic    v0.9.22

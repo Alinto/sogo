@@ -1,0 +1,21 @@
+( /* the toolbar groups */
+  ( /* first group */
+              { link  = "#"; isSafe = NO;
+                onclick  = "clickedEditorSend(this);return false;";
+                cssClass = "tbicon_send"; label = "Send"; },
+              { link  = "#"; target = "addressbook";
+                onclick  = "openAddressbook(this);return false;";
+                cssClass = "tbicon_addressbook"; label = "Addressbook"; },
+              { link  = "#"; target = "anais";
+                onclick  = "openAnais(this);return false;";
+                cssClass = "tbicon_anais"; label = "Anais"; },
+              { link  = "#"; isSafe = NO;
+                onclick  = "clickedEditorAttach(this)";
+                cssClass = "tbicon_attach"; label = "Attach"; },
+              { link  = "#";  isSafe = NO;
+                onclick  = "clickedEditorSave(this);return false;";
+                cssClass = "tbicon_save"; label = "Save"; },
+              { link = "delete"; isSafe = NO;
+                cssClass = "tbicon_delete"; label = "Delete"; },
+  )
+)

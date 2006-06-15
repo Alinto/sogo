@@ -1,0 +1,28 @@
+# version file
+
+SUBMINOR_VERSION:=173
+
+# v0.9.140 requires SoObjects/Mailer v0.9.100
+# v0.9.134 requires libSOGo          v0.9.41
+# v0.9.100 requires libNGMime        v4.5.213
+# v0.9.99  requires libNGMime        v4.5.212
+# v0.9.97  requires SoObjects/Mailer v0.9.71
+# v0.9.97  requires libNGExtensions  v4.5.142
+# v0.9.94  requires SoObjects/Mailer v0.9.69
+# v0.9.94  requires libNGMime        v4.5.210
+# v0.9.91  requires SoObjects/Mailer v0.9.68
+# v0.9.89  requires SoObjects/Mailer v0.9.67
+# v0.9.87  requires SoObjects/Mailer v0.9.65
+# v0.9.86  requires SoObjects/Mailer v0.9.64
+# v0.9.85  requires SoObjects/Mailer v0.9.63
+# v0.9.84  requires libNGMime        v4.5.209
+# v0.9.81  requires SoObjects/Sieve  v0.9.5
+# v0.9.80  requires SoObjects/Mailer v0.9.59
+# v0.9.78  requires SoObjects/Mailer v0.9.58
+# v0.9.77  requires SoObjects/Mailer v0.9.57
+# v0.9.74  requires SoObjects/Mailer v0.9.56
+# v0.9.70  requires libNGExtensions  v4.5.136
+# v0.9.69  requires libNGMime        v4.5.203
+# v0.9.50  requires libNGMime        v4.3.190
+# v0.9.43  requires libNGObjWeb      v4.3.73
+# v0.9.42  requires libNGObjWeb      v4.3.72

@@ -1,0 +1,25 @@
+<?xml version='1.0' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:uix="OGo:uix"
+      xmlns:label="OGo:label"
+>
+  <span class="defaultfont"
+  ><b><var:string label:value="User" />:</b> <var:string value="context.activeUser.cn" /></span>
+  <var:if condition="context.isUIxDebugEnabled">
+    <span class="defaultfont">
+      (<b><var:string label:value="Path"
+          />:</b><var:entity const:name="nbsp" />
+      <var:foreach list="navPathElements" item="element">
+        <var:if condition="element" value="lastElement" const:negate="YES">
+          <a var:href="element.url"><var:string value="element.name" /></a>
+          /
+        </var:if>
+        <var:if condition="element" value="lastElement">
+          <var:string value="element.name" />
+        </var:if>
+      </var:foreach>)
+    </span>
+  </var:if>
+</span>

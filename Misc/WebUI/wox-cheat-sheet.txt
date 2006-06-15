@@ -1,0 +1,50 @@
+WOxControlElemBuilder
+---------------------
+
+:if         -> WOConditional
+:foreach    -> WORepetition
+:for-each   -> WORepetition
+:with       -> WOSetCursor
+
+WOxMiscElemBuilder
+------------------
+
+:component-content      -> WOComponentContent
+:checkbox-list          -> WOCheckBoxList
+:entity                 -> WOEntity
+:multiselection         -> WOBrowser
+:nbsp /*DEPRECATED*/    -> WOEntity 
+:popup                  -> WOPopUpButton
+:radio-button-matrix    -> WORadioButtonMatrix
+:string                 -> WOString
+:singleselection        -> WOBrowser
+
+
+WOxHTMLElemBuilder
+------------------
+
+:text       -> WOTextField
+:file       -> WOFileUpload
+:a          -> WOHyperlink
+:img        -> WOImage
+:form       -> WOForm
+:textarea   -> WOText
+:embed      -> WOEmbeddedObject
+:frame      -> WOFrame
+:iframe     -> WOIFrame
+:body       -> WOBody
+
+:input [type="submit"]          -> WOSubmitButton
+:input [type="reset"]           -> WOResetButton
+:input [type="image"]           -> WOImageButton
+:input [type="radio"]           -> WORadioButton
+:input [type="checkbox"]        -> WOCheckBox
+:input [type="file"]            -> WOFileUpload
+:input [type="hidden"]          -> WOHiddenField
+:input [type="password"]        -> WOPasswordField
+:input [type="*"]               -> WOTextField
+
+:meta [http-equiv="refresh*"]   -> WOMetaRefresh
+
+:* [hasChildNodes="YES"]        -> WOGenericContainer
+:* [hasChildNodes="NO"]         -> WOGenericElement

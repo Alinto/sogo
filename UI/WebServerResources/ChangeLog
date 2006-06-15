@@ -1,0 +1,78 @@
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use standard 'view' instead of 'tb.view' method
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer-toolbar.css: fixed send and attach buttons to use 24x24 images
+
+2005-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* mailer.js: added labels for error messages
+
+	* mailer.js: added validation of recipients
+
+	* layout2or3_xlib.js: added (currently used by UIxMailToEditor for
+	  height calculation)
+	  
+	* layout2or3_xlib.txt: added, contains documentation/license for
+	  layout2or3_xlib.js
+
+	* mailer-compose.css: fixed padding for table entries
+
+	* mailer.js: moved layout2or3_xlib JavaScript to own file
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.css: moved compose styles to own file, mailer-compose.css
+
+	* mailer-toolbar.css: fixed positioning for 24x24 icons
+
+	* mailer.css: moved toolbar to own file, mailer-toolbar.css
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* tbtb_anais.png: new icon for Anais
+
+	* mailer.css: added tbicon_anais for Anais icon
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: fixed a Linux Firefox issue with using POST in
+	  XMLHttpRequest (must pass an empty string for a send, not 'null')
+
+	* mailer.js: fixed a bug with calling the opener on errors
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use POST instead of GET for toggling the mail read flag,
+	  aded uixDeleteSelectedMessages() function to bulk delete mails from
+	  the selection
+
+	* UIxAppointmentEditor.js: properly use getDate() instead of getDay()
+	  for date comparison (#1478)
+
+	* UIxAppointmentEditor.js: properly validate startdate/enddate so that
+	  startdate is always before the enddate (#1478)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: added regex for email field checks
+
+	* uix.css: added .homepagefont class (as it was used in the deprecated
+	  uix.css inside Common
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: increased size of compose panel by 40px to avoid scrolling
+	  when recipients are added
+
+2005-03-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: fixed a JS bug
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: added query dict parsing and generation functions
+
+	* created ChangeLog

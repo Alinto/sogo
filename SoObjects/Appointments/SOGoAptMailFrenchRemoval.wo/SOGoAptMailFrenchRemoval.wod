@@ -1,0 +1,34 @@
+AptStartDate: WOString {
+  value      = newStartDate;
+  dateformat = "%d/%m/%y";
+  escapeHTML = NO;
+}
+
+AptStartTime: WOString {
+  value      = newStartDate;
+  dateformat = "%H:%M";
+  escapeHTML = NO;
+}
+
+Organizer: WOString {
+  value      = newApt.organizer.cnWithoutQuotes;
+  escapeHTML = NO;
+}
+
+HasHomePageURL: WOConditional {
+  condition = homePageURL.length;
+}
+
+HomePageURL: WOString {
+  value      = appointmentURL;
+  escapeHTML = NO;
+}
+
+IsSubject: WOConditional {
+  condition = isSubject;
+}
+
+IsBody: WOConditional {
+  condition = isSubject;
+  negate    = YES;
+}

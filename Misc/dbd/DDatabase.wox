@@ -1,0 +1,17 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="Frame" 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+
+Host: <a href=".."><var:string value="clientObject.hostName"/></a><br />
+Port: <var:string value="clientObject.port"/><br />
+DB:   <var:string value="clientObject.databaseName"/><br />
+
+<h4>Tables</h4>
+<var:foreach list="tableNames" item="item">
+  <li><a var:href="tabLink"><var:string value="item" /></a></li>
+</var:foreach>
+
+</var:component>

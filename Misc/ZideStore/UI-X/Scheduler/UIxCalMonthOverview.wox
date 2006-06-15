@@ -1,0 +1,165 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="UIxPageFrame" title="name"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+
+  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" width="100%">
+  <tr>
+  <td class="wintitle">
+  <table cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+  <td width="5"/>
+  <td class="wintitle"><var:component className="UIxCalDateLabel" startDate="startDate" endDate="endDate" const:selection="month" /></td>
+  <td width="36" align="right" valign="center">
+  <var:component className="UIxWinClose" />
+  </td>
+  </tr>
+  </table>
+  </td>
+  </tr>
+
+  <tr>
+  <td id="skywinbodycell" class="wincontent">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr bgcolor="#e8e8e0">
+            <td align="left" valign="middle" width="80%">TODO: controls</td><!-- 99% -->
+            <td align="right">
+                <var:component className="UIxCalBackForthNavView"
+                               methodName="ownMethodName"
+                               prevQueryParameters="prevMonthQueryParameters"
+                               currentQueryParameters="todayQueryParameters"
+                               nextQueryParameters="nextMonthQueryParameters"
+                               const:label="this month"
+                />
+            </td>
+        </tr>
+    </table>
+  </td>
+  </tr>
+
+  <tr>
+  <td id="skywinbodycell" class="wincontent">
+  <table border="0" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+  <td colspan="2">
+  <var:component className="UIxCalSelectTab"
+                 const:selection="month"
+                 currentDate="selectedDate"
+  >
+        <table border="0" cellpadding="4" width="100%" cellspacing="2">
+          <tr>
+            <td align="right" bgcolor="#e8e8e0">
+                <table border='0' cellpadding='0' cellspacing='1'>
+                    <tr>
+                        <td class="button_auto_env" nowrap="true" valign='middle' align='center'>
+                            <a class="button_auto" href="monthprintview" var:queryDictionary="queryParameters" target="SOGoPrintView">printview</a>
+                        </td>
+                        <td class="button_auto_env" nowrap="true" valign='middle' align='center'>
+                            <a class="button_auto" href="proposal" var:queryDictionary="queryParameters">proposal</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+          </tr>
+        </table>
+
+    <var:month-overview
+      list="appointments"
+      item="appointment"
+      currentDay="currentDay"
+      index="dayIndex"
+      year="year"
+      month="month"
+      const:startDateKey = "startDate"
+      const:endDateKey   = "endDate"
+
+      const:class="monthoverview"
+      contentStyle="contentStyle"
+      const:width="100%"
+    >
+      <var:month-info>
+        <var:if condition="hasHolidayInfo">
+            <var:string value="holidayInfo" const:class="monthoverview_holidayinfo" />
+        </var:if>
+        <var:foreach list="allDayApts" item="appointment">
+            <a var:href="appointmentViewURL"><var:string value="shortTextForApt" /></a>
+        </var:foreach>
+      </var:month-info>
+    <var:month-label const:orientation="top"
+                     dayOfWeek="dayOfWeek"
+                     const:class="monthoverview_title"
+    >
+        <var:string value="localizedNameOfDayOfWeek" />
+    </var:month-label>
+    <var:month-label const:orientation="left"
+                     weekOfYear="weekOfYear"
+                     class="weekStyle"
+    >
+        <a href="weekoverview"
+           var:queryDictionary="currentWeekQueryParameters"
+        ><var:string value="weekOfYear" /></a>
+    </var:month-label>
+    
+        <var:month-title class="contentStyle">
+            <span class="monthoverview_day">
+                <a href="dayoverview"
+                   var:queryDictionary="currentDayQueryParameters"
+                ><var:string value="currentDay.dayOfMonth" /></a>
+            </span>
+            <br />
+            <span class="monthoverview_day_new">
+                <a href="new"
+                   var:queryDictionary="currentDayQueryParameters"
+                >[new]</a>
+            </span>
+        </var:month-title>
+
+        <var:month>
+            <a var:href="appointmentViewURL"
+               class="monthoverview_content_link"
+               var:title="shortTextForApt"
+               var:queryDictionary="currentDayQueryParameters"
+            ><var:string value="shortTitleForApt" /></a>
+        </var:month>
+    </var:month-overview>
+  </var:component>
+  </td>
+  </tr>
+  <tr bgcolor="#F5F5E9">
+  <td align="left" width="10"><var:entity const:name="nbsp"/></td>
+  <td align="right"><img border="0" alt="" src="/ZideStore/so/ControlPanel/Products/CommonUI/Resources/corner_right.gif"/></td>
+  </tr>
+  <tr>
+  <td colspan="2" bgcolor="#F5F5E9">
+  <table border="0" width="100%" cellpadding="10" cellspacing="0">
+  <tr/>
+  </table>
+  </td>
+  </tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+
+<!--
+    <hr />
+    OGo ZideStore Server - <var:string value="name"/>
+    <br />
+    Client: <var:string value="clientObject"/>
+    <br />
+    Appointments: #<var:string value="appointments.count"/>
+    from <var:string value="startDate" />
+    to   <var:string value="endDate" />
+    <br />
+
+
+    <hr />
+
+    Appointments: 
+    <var:component className="UIxAptTableView" appointments="appointments"/>
+    -->
+    <!-- pre><var:string value="appointments" const:insertBR="YES"/></pre -->
+</var:component>

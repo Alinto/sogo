@@ -1,0 +1,242 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildStyle section */
+		AD0CF945071FE16800E72147 /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Development;
+		};
+		AD0CF946071FE16800E72147 /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		AD0CF94B071FE18800E72147 /* appointment.ocs */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = appointment.ocs; sourceTree = "<group>"; };
+		AD0CF94C071FE18800E72147 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF94D071FE18800E72147 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		AD0CF94E071FE18800E72147 /* contact.ocs */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = contact.ocs; sourceTree = "<group>"; };
+		AD0CF94F071FE18800E72147 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		AD0CF950071FE18800E72147 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		AD0CF955071FE18800E72147 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD0CF956071FE18800E72147 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD0CF957071FE18800E72147 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD0CF959071FE18800E72147 /* icaltest.ical */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = icaltest.ical; sourceTree = "<group>"; };
+		AD0CF95A071FE18800E72147 /* iNetOrgPerson.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = iNetOrgPerson.txt; sourceTree = "<group>"; };
+		AD0CF95C071FE18800E72147 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		AD0CF95D071FE18800E72147 /* GNUmakefile */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = GNUmakefile; sourceTree = "<group>"; };
+		AD0CF95E071FE18800E72147 /* test1.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = test1.m; sourceTree = "<group>"; };
+		AD0CF967071FE18800E72147 /* OCSContactFieldExtractor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = OCSContactFieldExtractor.m; sourceTree = "<group>"; };
+		AD0CF974071FE18800E72147 /* OCSiCalFieldExtractor.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = OCSiCalFieldExtractor.h; sourceTree = "<group>"; };
+		AD0CF975071FE18800E72147 /* OCSiCalFieldExtractor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = OCSiCalFieldExtractor.m; sourceTree = "<group>"; };
+		AD0CF976071FE18800E72147 /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD0CF978071FE18800E72147 /* appointment-create.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "appointment-create.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF979071FE18800E72147 /* folderinfo-create.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "folderinfo-create.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF97A071FE18800E72147 /* foldertablecreate-helge-privcal.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "foldertablecreate-helge-privcal.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF97B071FE18800E72147 /* foldertablecreate-root.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "foldertablecreate-root.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF97C071FE18800E72147 /* foldertablecreate-test-contacts.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "foldertablecreate-test-contacts.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF97D071FE18800E72147 /* generate-folderinfo-sql-for-users.sh */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text.script.sh; path = "generate-folderinfo-sql-for-users.sh"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF97E071FE18800E72147 /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD0CF97F071FE18800E72147 /* register-agenor-helge-privcal.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "register-agenor-helge-privcal.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF980071FE18800E72147 /* register-agenor-test-contacts.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "register-agenor-test-contacts.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF981071FE18800E72147 /* testapt-agenor-helge-privcal.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "testapt-agenor-helge-privcal.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF982071FE18800E72147 /* testapt-hh.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "testapt-hh.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF983071FE18800E72147 /* testcontact-agenor-test-contact.psql */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = "testcontact-agenor-test-contact.psql"; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0CF984071FE18800E72147 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		AD3D69BE0879884F005FA0C4 /* iCalEntityObject+OCS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iCalEntityObject+OCS.h"; sourceTree = "<group>"; };
+		AD3D69BF0879884F005FA0C4 /* iCalEntityObject+OCS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iCalEntityObject+OCS.m"; sourceTree = "<group>"; };
+		ADB79C3207D4B7A200CA782A /* folderinfo-create.sqlite */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "folderinfo-create.sqlite"; sourceTree = "<group>"; };
+		ADB79C3307D4B7A200CA782A /* foldertablecreate-helge-privcal.sqlite */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "foldertablecreate-helge-privcal.sqlite"; sourceTree = "<group>"; };
+		ADB79C3407D4B7A200CA782A /* generate-folderinfo-sql-for-users-sqlite.sh */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.script.sh; path = "generate-folderinfo-sql-for-users-sqlite.sh"; sourceTree = "<group>"; };
+		ADB79C6907D4B92B00CA782A /* iCalRepeatableEntityObject+OCS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iCalRepeatableEntityObject+OCS.h"; sourceTree = "<group>"; };
+		ADB79C6A07D4B92B00CA782A /* iCalRepeatableEntityObject+OCS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iCalRepeatableEntityObject+OCS.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		AD0CF943071FE16800E72147 = {
+			isa = PBXGroup;
+			children = (
+				AD0CF976071FE18800E72147 /* README */,
+				AD0CF94F071FE18800E72147 /* COPYING */,
+				AD0CF950071FE18800E72147 /* COPYRIGHT */,
+				AD0CF94C071FE18800E72147 /* ChangeLog */,
+				AD0CF984071FE18800E72147 /* Version */,
+				AD0CF987071FE1B200E72147 /* Makefiles */,
+				AD0CF98D071FE1D400E72147 /* Mappings */,
+				AD0CF977071FE18800E72147 /* SQL */,
+				AD0CF9B9071FE1FA00E72147 /* Headers */,
+				AD0CF990071FE1F000E72147 /* Classes */,
+				AD0CF958071FE18800E72147 /* misc */,
+			);
+			sourceTree = "<group>";
+		};
+		AD0CF958071FE18800E72147 /* misc */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF959071FE18800E72147 /* icaltest.ical */,
+				AD0CF95A071FE18800E72147 /* iNetOrgPerson.txt */,
+				AD0CF95B071FE18800E72147 /* test1 */,
+			);
+			path = misc;
+			sourceTree = "<group>";
+		};
+		AD0CF95B071FE18800E72147 /* test1 */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF95C071FE18800E72147 /* common.h */,
+				AD0CF95D071FE18800E72147 /* GNUmakefile */,
+				AD0CF95E071FE18800E72147 /* test1.m */,
+			);
+			path = test1;
+			sourceTree = "<group>";
+		};
+		AD0CF977071FE18800E72147 /* SQL */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF97E071FE18800E72147 /* README */,
+				ADB79C3707D4B7AA00CA782A /* SQLite */,
+				ADB79C3A07D4B7B800CA782A /* PostgreSQL */,
+			);
+			name = SQL;
+			path = sql;
+			sourceTree = "<group>";
+		};
+		AD0CF987071FE1B200E72147 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF955071FE18800E72147 /* GNUmakefile */,
+				AD0CF957071FE18800E72147 /* GNUmakefile.preamble */,
+				AD0CF956071FE18800E72147 /* GNUmakefile.postamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		AD0CF98D071FE1D400E72147 /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF94E071FE18800E72147 /* contact.ocs */,
+				AD0CF94B071FE18800E72147 /* appointment.ocs */,
+			);
+			name = Mappings;
+			sourceTree = "<group>";
+		};
+		AD0CF990071FE1F000E72147 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF94D071FE18800E72147 /* common.h */,
+				AD0CF967071FE18800E72147 /* OCSContactFieldExtractor.m */,
+				AD0CF975071FE18800E72147 /* OCSiCalFieldExtractor.m */,
+				AD3D69BF0879884F005FA0C4 /* iCalEntityObject+OCS.m */,
+				ADB79C6A07D4B92B00CA782A /* iCalRepeatableEntityObject+OCS.m */,
+			);
+			indentWidth = 2;
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		AD0CF9B9071FE1FA00E72147 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF974071FE18800E72147 /* OCSiCalFieldExtractor.h */,
+				AD3D69BE0879884F005FA0C4 /* iCalEntityObject+OCS.h */,
+				ADB79C6907D4B92B00CA782A /* iCalRepeatableEntityObject+OCS.h */,
+			);
+			indentWidth = 2;
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		ADB79C3707D4B7AA00CA782A /* SQLite */ = {
+			isa = PBXGroup;
+			children = (
+				ADB79C3207D4B7A200CA782A /* folderinfo-create.sqlite */,
+				ADB79C3307D4B7A200CA782A /* foldertablecreate-helge-privcal.sqlite */,
+				ADB79C3407D4B7A200CA782A /* generate-folderinfo-sql-for-users-sqlite.sh */,
+			);
+			name = SQLite;
+			sourceTree = "<group>";
+		};
+		ADB79C3A07D4B7B800CA782A /* PostgreSQL */ = {
+			isa = PBXGroup;
+			children = (
+				AD0CF97D071FE18800E72147 /* generate-folderinfo-sql-for-users.sh */,
+				AD0CF978071FE18800E72147 /* appointment-create.psql */,
+				AD0CF979071FE18800E72147 /* folderinfo-create.psql */,
+				AD0CF97A071FE18800E72147 /* foldertablecreate-helge-privcal.psql */,
+				AD0CF97B071FE18800E72147 /* foldertablecreate-root.psql */,
+				AD0CF97C071FE18800E72147 /* foldertablecreate-test-contacts.psql */,
+				AD0CF97F071FE18800E72147 /* register-agenor-helge-privcal.psql */,
+				AD0CF980071FE18800E72147 /* register-agenor-test-contacts.psql */,
+				AD0CF981071FE18800E72147 /* testapt-agenor-helge-privcal.psql */,
+				AD0CF982071FE18800E72147 /* testapt-hh.psql */,
+				AD0CF983071FE18800E72147 /* testcontact-agenor-test-contact.psql */,
+			);
+			name = PostgreSQL;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		AD0CF947071FE16800E72147 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = AD3D68B4087954A2005FA0C4 /* Build configuration list for PBXProject "OGoContentStore" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				AD0CF945071FE16800E72147 /* Development */,
+				AD0CF946071FE16800E72147 /* Deployment */,
+			);
+			hasScannedForEncodings = 0;
+			mainGroup = AD0CF943071FE16800E72147;
+			projectDirPath = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		AD3D68B5087954A2005FA0C4 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		AD3D68B6087954A2005FA0C4 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		AD3D68B7087954A2005FA0C4 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AD3D68B4087954A2005FA0C4 /* Build configuration list for PBXProject "OGoContentStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD3D68B5087954A2005FA0C4 /* Development */,
+				AD3D68B6087954A2005FA0C4 /* Deployment */,
+				AD3D68B7087954A2005FA0C4 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AD0CF947071FE16800E72147 /* Project object */;
+}

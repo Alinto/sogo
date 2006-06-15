@@ -1,0 +1,179 @@
+SOGO Mailer UI
+==============
+
+- own (Thunderbird styled) frame
+- component for tree
+
+TODO
+====
+- a lot ;->
+- SOPE: does not recognize <input type="button"> !
+
+Components
+==========
+UIxMailAccountView.wox
+UIxMailAccountsView.wox
+UIxMailEditor.wox
+UIxMailToSelection.wox
+UIxMailListView.wox
+UIxMailMainFrame.wox
+UIxMailTree.wox
+UIxMailView.wox
+
+Class Hierarchy
+===============
+
+[NSObject]
+  MailerUIProduct
+  [WOComponent]
+    [SoComponent]
+      <UIxComponent>
+        UIxFilterList
+        UIxMailAccountView
+        UIxMailAccountsView
+        UIxMailAddressbook
+        UIxMailEditor
+        (Scheduler_Privates)
+        UIxMailListView
+        UIxMailMainFrame
+        UIxMailToSelection
+        UIxMailToolbar
+        UIxMailTree
+        UIxMailView
+        UIxSieveEditor
+      UIxMailSortableTableHeader
+    UIxMailEditorAttach.m
+    UIxMailFilterPanel
+    UIxMailMoveToPopUp
+    UIxMailWindowCloser
+  [WODirectAction]
+    UIxMailEditorAction
+      UIxMailForwardAction
+      UIxMailReplyAction
+  [NSFormatter]
+    UIxMailFormatter
+      UIxMailDateFormatter
+      UIxSubjectFormatter
+      UIxEnvelopeAddressFormatter
+  UIxMailTreeBlock
+  [WOContext]
+    (UIxMailer)
+
+Defaults
+========
+
+SOGoShowInternetMarker - bool
+- show a marker in the editor that the request is from the outside
+
+SOGoInternetDetectQualifier - string
+- an EOQualifier to detect whether a set of HTTP headers is from the outside,
+  eg: "NOT (minequprovenance = 'intranet')"
+      -SOGoInternetDetectQualifier '"NOT (minequprovenance = \"intranet\")"'
+  Note: all header field names are lowercase
+
+SOGoInternetMailHeaders - dictionary
+- if a request was detected as coming from the Internet, add the mail headers
+  specified in this default
+  eg: { received = "sogo depuis internet"; }
+  -SOGoInternetMailHeaders "{received=\"sogo depuis internet\"; }"
+
+SOGoMailEditorKeepTmpFile
+- for debugging, if a mail was send, keep the file containing the MIME in the
+  temporary directory for review instead of deleting it
+
+SOGoMailTreeRootClass
+- configure the root class of the mail tree, eg:
+  - SOGoMailAccounts - standard view, show all IMAP4 accounts
+  - SOGoMailAccount  - just show the standard mail account (tree at Inbox!)
+  - SoApplication    - stop at the application object (show all folders)
+
+SOGoDontUseETagsForMailViewer - YES|NO
+- when enable SOGo won't tag mail viewers with an entity-tag (HTTP etag)
+  - the etag ensures that the viewer will only get resend to the browser when
+    it changed. In the case of IMAP4 this is never because URLs are one-time
+    IDs in the IMAP4 server and messages cannot be edited in IMAP4
+  - use the default for debugging (otherwise you won't see changes ...)
+
+SOGoUseLocationBasedSentFolder - YES | NO
+- when enable SOGo looks up the Sent folder by traversing the lookup-path
+  until it finds a SOGoMailAccount object and then asks the account for the
+  Sent folder.
+
+Notes
+=====
+
+- we might want to bind the content viewers as SOPE methods to the mail class?
+  eg "viewTextPlain"
+  - this would not return a WOComponent, but a SoPageInvocation
+  - caching might be more difficult 
+    - some 'reuse component' support in SoPageInvocation for stateless
+      components?
+      - watch nested calls
+  - for this we would need to add support for embedded calling of SOPE methods
+    <var:component method="viewTextPlain" /> ?
+
+Bodystructures
+==============
+
+Multiparts: multipart/MIXED, multipart/SIGNED
+
+Feature: we fetch all plain/text bodies in a single run by traversing the
+         body structure.
+
+Sample Bodystructure (GPG):
+---snip---
+  {
+    parts = (
+        {
+            bodyId = ""; 
+            description = ""; 
+            encoding = "QUOTED-PRINTABLE"; 
+            lines = 22; 
+            parameterList = {}; 
+            size = 731; 
+            subtype = PLAIN; 
+            type = text; 
+        }, 
+        {
+            bodyId = ""; 
+            description = "Esta parte del mensaje"; 
+            encoding = 7BIT; 
+            parameterList = {name = "signature.asc"; }; 
+            size = 196; 
+            subtype = "PGP-SIGNATURE"; 
+            type = application; 
+        }
+    ); 
+    subtype = SIGNED; 
+    type = multipart; 
+  }
+---snap---
+
+Sample Body Structure (Image):
+---snip---
+  {
+    parts = (
+        {
+            bodyId = ""; 
+            description = ""; 
+            encoding = BASE64; 
+            parameterList = {name = "PoseChau.jpg"; "x-unix-mode" = 0644; }; 
+            size = 58370; 
+            subtype = JPEG; 
+            type = image; 
+        }, 
+        {
+            bodyId = ""; 
+            description = ""; 
+            encoding = 7BIT; 
+            lines = 2; 
+            parameterList = {charset = "US-ASCII"; format = flowed; }; 
+            size = 57; 
+            subtype = PLAIN; 
+            type = text; 
+        }
+    ); 
+    subtype = MIXED; 
+    type = multipart; 
+  }
+---snap---

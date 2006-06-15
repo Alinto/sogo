@@ -1,0 +1,27 @@
+-- $Id$
+--
+-- (C) 2004 SKYRIX Software AG
+--
+
+DROP TABLE SOGo_test_contacts_quick;
+DROP TABLE SOGo_test_contacts_blob;
+
+CREATE TABLE SOGo_test_contacts_quick (
+  c_name          VARCHAR(256)    NOT NULL PRIMARY KEY, -- the filename
+  givenname       VARCHAR(256),
+  cn              VARCHAR(256),
+  sn              VARCHAR(256),
+  l               VARCHAR(256),
+  mail            VARCHAR(256),
+  o               VARCHAR(256),
+  ou              VARCHAR(256),
+  telephonenumber VARCHAR(256)
+);
+
+CREATE TABLE SOGo_test_contacts_blob (
+  c_name         VARCHAR(256)    NOT NULL PRIMARY KEY, -- the filename
+  c_content      VARCHAR(100000) NOT NULL, -- the BLOB
+  c_creationdate INT             NOT NULL, -- creation date
+  c_lastmodified INT             NOT NULL, -- last modification (UPDATE)
+  c_version      INT             NOT NULL  -- version counter
+);

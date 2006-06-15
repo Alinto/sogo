@@ -1,0 +1,6 @@
+# GNUstep makefile
+
+SUBMINOR_VERSION:=28
+
+# v0.9.18 requires NGExtensions v4.5.136
+# v0.9.16 requires libSOGoUI    v0.9.16

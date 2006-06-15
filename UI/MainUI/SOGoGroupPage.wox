@@ -1,0 +1,27 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  className="UIxPageFrame"
+  const:title="SOGo User Homepage"
+>
+  <h3 class="window_label">
+    OpenGroupware.org: 
+    <var:string value="clientObject.davDisplayName" />
+  </h3>
+
+  <h4>Actions</h4>  
+  <ul>
+    <li><a href="Calendar/weekoverview">Calendar</a></li>
+  </ul>
+
+  <h4>Group Members</h4>
+  <ul>
+    <var:foreach list="clientObject.uids" item="item">
+      <li><var:string value="item" /></li>
+    </var:foreach>
+  </ul>
+  
+</var:component>

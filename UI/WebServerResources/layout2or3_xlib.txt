@@ -1,0 +1,511 @@
+
+------------------------------------------------------------------------------
+X Library, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com). 
+Distributed under the terms of the GNU LGPL. This file contains contributor copyrights,
+license information and documentation for a customized X library.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+layout2or3_xlib.txt compiled with XC v0.22b for layout2or3_xlib.js
+
+------------------------------------------------------------------------------
+globals, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, ?, mf, added more sniffer vars
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+  The following global variables are available.
+
+  xVersion - X version string (in _header.js)
+
+  xUA - lowercase user-agent string
+  xIE4Up - true if browser is IE 4 or greater
+  xIE4 - true if browser is IE 4.x
+  xIE5 - true if browser is IE 5.x
+  xNN4 - true if browser is Netscape Navigator 4.x
+  xOp5or6 - true if browser is Opera 5.x or 6.x
+  xOp7 - true if browser is Opera 7.x
+  xMoz - true if browser is Mozilla, etc.
+  xMac - true if OS is Mac 
+
+  For some browsers, the window resize and scroll events are simulated.
+  Some of the following variables may be used.
+
+  xPCW - previous clientWidth
+  xPCH - previous clientHeight
+  xREL - resize event listener
+  xPSL - previous scrollLeft
+  xPST - previous scrollTop
+  xSEL - scroll event listener
+
+[Invocation]
+
+
+[Parameters]
+
+
+[Return]
+
+
+[Dependencies]
+
+
+[Demos]
+
+
+[Notes]
+
+  As much as possible, object-detection is used instead of browser-detection.
+
+
+------------------------------------------------------------------------------
+xGetElementById, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xGetElementById(ele)
+
+[Parameters]
+
+  ele - id string or object reference
+
+[Return]
+
+
+[Dependencies]
+
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xStr, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xStr(ref[, etc])
+
+[Parameters]
+
+
+[Return]
+
+  Returns true if all its arguments are 'string' type.
+
+[Dependencies]
+
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xScrollLeft, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, ?, mf, added external window support
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xScrollLeft(e, bWin)
+
+[Parameters]
+
+  ele - id string or object reference. If undefined return document scrollLeft.
+
+[Return]
+
+  Return the number of pixels the element (or window) has scrolled horizontally.
+
+[Dependencies]
+
+  xGetElementById, xDef, xNum
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xScrollTop, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, ?, mf, added external window support
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xScrollTop(ele)
+
+[Parameters]
+
+  ele - id string or object reference. If undefined return document scrollTop.
+
+[Return]
+
+  Return the number of pixels the element (or window) has scrolled vertically.
+
+[Dependencies]
+
+  xGetElementById, xDef, xNum
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xHeight, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r3, 12Mar05, mf, Changed xSetCH to use xGetComputedStyle and removed xGetCS.
+                   Made xSetCH inline. Reduces width/height funtions about 200 bytes.
+  r2, 14May04, mf, xHeight now accepts zero as valid
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+  Return and optionally set the element's height.
+
+[Invocation]
+
+  xHeight(ele[, uH])
+
+[Parameters]
+
+  ele - id string or object reference
+  uH - unsigned integer height; it is rounded to an integer
+
+[Return]
+
+
+[Dependencies]
+
+  xgetelementbyid, xnum, xdef, xstr, xgetcomputedstyle
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xClientWidth, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, 27Jan05, mf, Moz update for xClientWidth/xClientHeight, check for 'CSS1Compat' (experimental?).
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xClientWidth()
+
+[Parameters]
+
+  None
+
+[Return]
+
+
+[Dependencies]
+
+  xOp5or6, xDef
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xClientHeight, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, 27Jan05, mf, Moz update for xClientWidth/xClientHeight, check for 'CSS1Compat' (experimental?).
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xClientHeight()
+
+[Parameters]
+
+  None
+
+[Return]
+
+
+[Dependencies]
+
+  xOp5or6, xDef
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xAddEventListener, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, 14Mar05, mf, reduced 136 bytes with shorter parameter names.
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+  Register an event listener on the element. For some browsers
+  the window.onscroll and window.onresize events are simulated.
+
+[Invocation]
+
+  xAddEventListener(ele, sEventType, fnEventListener[, bCapture])
+
+[Parameters]
+
+  ele - id string or object reference
+  sEventType - string event type ('mousemove', 'click', 'resize', etc.)
+  fnEventListener - reference to the listener function
+  bCapture - boolean capture event flag
+
+[Return]
+
+  void
+
+[Dependencies]
+
+  xGetElementById, xIE4Up, xOp7,
+  xClientWidth, xClientHeight, xScrollLeft, xScrollTop
+
+[Demos]
+
+
+[Notes]
+
+  13Mar05, mf, The 2 sim events add a lot of weight - find a solution!!!
+
+------------------------------------------------------------------------------
+xGetComputedStyle, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+r5, 14Mar05, mf, reduced by about 20 bytes
+r4, 12Mar05, mf, return null on error
+r3, ?, mf, added some error checking
+r2, 23Aug04, mf, option to parseInt or return string
+r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+  For sProp use the css property name, not the object property name.
+  For finding width this works in Moz and Op, but in IE this only works
+  if padding and border use pixel units in the CSS.
+
+[Invocation]
+
+  xGetComputedStyle(oEle, sProp[, bInt])
+
+[Parameters]
+
+  oEle - element object
+  sProp - css property name
+  bInt - if true, return value is an integer
+
+[Return]
+
+
+[Dependencies]
+
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xShow, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r3, 27Jan05, mf, Bug-fixes for xShow/xHide (Dave/dlowther).
+  r2, ?, mf, changed to use xVisibility
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+  Set the element's visibility to 'visible' ('show' for NN4).
+
+[Invocation]
+
+  xShow(ele)
+
+[Parameters]
+
+  ele - id string or object reference
+
+[Return]
+
+
+[Dependencies]
+
+  xVisibility
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xDef, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xDef(ref[, ...])
+
+[Parameters]
+
+  Can take any number and any type of arguments.
+
+[Return]
+
+  Return true if all arguments are defined.
+
+[Dependencies]
+
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xNum, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r2, 2Apr05, mf, also return false if isNaN, suggested by pgira at SPF
+  r1, 31Mar04, mf, put in it's own file for use with XC
+
+[Description]
+
+
+[Invocation]
+
+  xNum(ref, etc)
+
+[Parameters]
+
+
+[Return]
+
+  Return true if all arguments are of type 'number', else false.
+  Also returns false if isNaN.
+
+[Dependencies]
+
+  None
+
+[Demos]
+
+
+[Notes]
+
+
+------------------------------------------------------------------------------
+xVisibility, Copyright (C) 2001,2002,2003,2004,2005 Michael Foster (Cross-Browser.com)
+
+[Revisions]
+
+  r1
+
+[Description]
+
+  Return and optionally set the element's visibility.
+
+[Invocation]
+
+  xVisibility(ele, bShow)
+
+[Parameters]
+
+  ele - id string or object reference
+  bShow - true = show, false = hide
+
+[Return]
+
+
+[Dependencies]
+
+  xGetElementById, xDef
+
+[Demos]
+
+
+[Notes]
+

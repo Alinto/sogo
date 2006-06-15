@@ -1,0 +1,10 @@
+/* this file is in UTF-8 format! */
+
+"Home"        = "Accueil";
+"Calendar"	  = "Agenda";
+"Addressbook"	= "Carnet d'adresses";
+"Mail"		    = "Mail";
+
+"User" = "Utilisateur";
+
+"Help" = "Aide";

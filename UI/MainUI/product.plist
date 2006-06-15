@@ -1,0 +1,86 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  categories = {
+    SOGo = { // TODO: move decls to class
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "SOGoRootPage"; 
+        };
+        GET = { // more or less a hack, see README of dbd
+          protectedBy = "View";
+          pageName    = "SOGoRootPage"; 
+        };
+        connect = { 
+          protectedBy = "View";
+          pageName    = "SOGoRootPage"; 
+          actionName  = "connect";
+        };
+      };
+    };
+  };
+
+  classes = {
+    SOGoRootPage = {
+      superclass    = "SoComponent";
+      protectedBy   = "View";
+      defaultRoles = {
+        "View" = "Authenticated";
+      };
+    };
+
+    SOGoUserFolder = {
+      superclass    = "SOGoFolder";
+
+      defaultRoles = {
+        "HomePage Access" = "Owner";
+      };
+
+      methods = {
+        view = { 
+          protectedBy = "HomePage Access";
+          pageName    = "SOGoUserHomePage"; 
+        };
+        edit = { 
+          protectedBy = "HomePage Access";
+          pageName    = "SOGoUserHomePage"; 
+          actionName  = "saveInternetAccessState";
+        };
+        /*
+          GET = { // more or less a hack, see README of dbd
+            protectedBy = "HomePage Access";
+            pageName    = "SOGoUserHomePage"; 
+          };
+        */
+      };
+    };
+    
+    SOGoGroupsFolder = {
+      superclass    = "SOGoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "SOGoGroupsPage"; 
+        };
+      };
+    };
+    SOGoGroupFolder = {
+      superclass    = "SOGoObject";
+      methods = {
+        index = { 
+          protectedBy = "View";
+          pageName    = "SOGoGroupPage"; 
+        };
+      };
+    };
+    SOGoCustomGroupFolder = {
+      superclass = "SOGoGroupFolder";
+      methods = {
+      };
+    };
+  };
+}

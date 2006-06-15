@@ -1,0 +1,35 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+  
+  classes = {
+    SOGoContactFolder = {
+      superclass    = "SOGoFolder";
+
+      protectedBy   = "View";
+      defaultAccess = "allow"; /* I think this affects key lookup */
+      defaultRoles = {
+        "View"          = "Owner";
+        "WebDAV Access" = "Owner";
+      };
+    };
+    SOGoContactObject = {
+      superclass    = "SOGoContentObject";
+
+      protectedBy   = "View";
+      defaultAccess = "allow"; /* I think this affects key lookup */
+      defaultRoles = {
+        "View"          = "Owner";
+        "WebDAV Access" = "Owner";
+      };
+
+      methods = {
+      };
+    };
+  };
+}

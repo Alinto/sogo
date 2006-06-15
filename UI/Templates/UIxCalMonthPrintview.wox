@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="yes"?>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPrintPageFrame"
+               title="title"
+>
+  <var:month-overview list="appointments"
+                      item="appointment"
+                      currentDay="currentDay"
+                      index="dayIndex"
+                      year="year"
+                      month="month"
+                      const:startDateKey="startDate"
+                      const:endDateKey="endDate"
+                      const:class="monthprintview"
+                      contentStyle="contentStyle"
+                      const:cellpadding="5"
+                      const:cellspacing="0"
+                      const:border="1"
+                      const:width="100%"
+  >
+    <var:month-label const:orientation="header"
+                     const:class="monthprintview_header"
+    >
+      <h1 class="monthprintview_header"><var:string value="title" /></h1>
+      <h2 class="monthprintview_header"
+      ><var:string value="formattedCalendarUIDs" /></h2>
+    </var:month-label>
+    <var:month-info>
+      <var:if condition="hasHolidayInfo">
+        <var:string value="holidayInfo"
+                    const:class="monthprintview_holidayinfo"
+        />
+      </var:if>
+      <var:foreach list="allDayApts" item="appointment">
+        <var:string value="shortTextForApt"
+                    const:escapeHTML="NO"
+        />
+        <br />
+      </var:foreach>
+    </var:month-info>
+    <var:month-label const:orientation="top"
+                     dayOfWeek="dayOfWeek"
+                     const:class="monthprintview_title"
+    >
+      <var:string value="localizedDayOfWeekName"/>
+    </var:month-label>
+    <var:month-label const:orientation="left"
+                     weekOfYear="weekOfYear"
+                     const:class="monthprintview_week"
+    >
+      <var:string value="weekOfYear"/>
+    </var:month-label>
+    <var:month-title class="contentStyle">
+      <var:string value="currentDay.dayOfMonth"/>
+    </var:month-title>
+    <var:month>
+      <span const:class="monthprintview_apt">
+        <var:string value="shortTextForApt"
+                    const:escapeHTML="NO"
+        />
+        <br />
+      </span>
+    </var:month>
+  </var:month-overview>
+</var:component>

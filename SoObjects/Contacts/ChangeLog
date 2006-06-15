@@ -1,0 +1,73 @@
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: make addressbook only available to owner (v0.9.15)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: print an error log if a vCard could not be
+	  parsed, cached failed parsing attempts (v0.9.14)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: fixed a gcc 4.0 warning (v0.9.13)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: use +globallyUniqueObjectId method from
+	  SOGoFolder.m baseclass (v0.9.12)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: hardened against vCard content (v0.9.11)
+
+	* SOGoContactObject.m: removed special GET action, the redirect to
+	  'view' seems to be handled by SOPE now. This also makes WebDAV GET
+	  work (v0.9.10)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: changed to use GDLContentStore (v0.9.9)
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: fixed a MacOSX warning (v0.9.8)
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: added a REST method to patch a single field of
+	  the contact (v0.9.7)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m, SOGoContactFolder.m: added proper
+	  message/folder class (v0.9.6)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoContactFolder.m: changed to NGLogging (v0.9.5)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.4)
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.3
+
+	* SOGoContactObject.m: use 'cn' as davDisplayName
+
+	* SOGoContactObject.[hm]: can now decode the property list stored in
+	  the store (v0.9.2)
+	
+	* started implementation of contact folders (v0.9.1)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Product.m: typo in comment fixed
+
+	* SOGoContactFolder.h, SOGoContactObject.h: changed _Appointments_ to
+	  _Contacts_
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created

@@ -1,0 +1,219 @@
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS installation of sogod-0.9 (v0.9.41)
+
+	* SOGo.m: added class security declarations (previously in
+	  product.plist of MainUI), ensure that core SOGo SoClasses are loaded
+	  (v0.9.40)
+
+	* v0.9.39
+
+	* moved MainUI product bundle to UI/MainUI
+
+	* SOGo.m: fixed some gcc 4.0 warnings
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: protect homepage using SOPE access control (v0.9.38)
+
+	* SOGoRootPage.m: redirect authenticated users to their login page
+	  (v0.9.37)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* homepage.js: fixed post to send an empty string instead of null -
+	  this works in Firefox on MacOSX but fails on Windows (v0.9.36)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.35
+
+	* README: updated with new default description
+
+	* SOGoUserHomePage.wox: in case user is not authorized to change the
+	  internet access flag, the rendered text is different now
+
+	* English.lproj/Localizable.strings: provide new label for case that
+	  user is not allowed to change internet access
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed Cocoa compilation (v0.9.34)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved SOGoUser and SOGoAuthenticator to libSOGo (v0.9.33)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.m: vacation message state is now properly being
+	  retrieved from AgenorUserManager (v0.9.32)
+
+	* v0.9.31
+
+	* SOGoUserHomePage.[m, wox]: added internet access lock
+	  display/modification and vacation state (currently only faked)
+
+	* homepage.js: JavaScript in use on the homepage
+
+	* English.lproj/Localizable.strings: removed old labels and added a
+	  bunch of new labels
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v0.9.30
+	
+	* SOGoAuthenticator.m: create SOGoUser objects
+	
+	* added 'SOGoUser' object/class as a subclass of SoUser, using this
+	  object various Agenor properties like cn or email can be determined
+	  (will use the AgenorUserManager to retrieve such)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* README: updated for new default 'SOGoAllowsUnrestrictedAccess'
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.29
+
+	* README: updated defaults documentation
+
+	* SOGo.m: added new default 'SOGoEnableDoubleReleaseCheck' for
+	  debugging of NSAutoreleasePool issues
+
+2005-03-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoProductLoader.m: do not try to load directories without
+	  extensions (v0.9.28)
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.27)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly install bundle in FHS (v0.9.26)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoProductLoader.m: fixed product loader for FHS and Cocoa (0.9.25)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGo.m: added a proper application 'name' for the WEResourceManager,
+	  use WEResourceManager per default (v0.9.24)
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGo.m: corrected incorrect use of logging (v0.9.23)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed linking on MacOSX (v0.9.22)
+
+	* v0.9.21
+	
+	* SOGoProductLoader.m: perform properly versioned plugin lookups (load
+	  bundles from Library/SOGo-0.9 instead of Library/SOGo)
+	
+	* sogod is now a tool, not a .woa anymore
+
+	* SOGo.m: minor cleanup in locale code, removed some dead code
+	  (v0.9.20)
+
+	* GNUmakefile: some support for tool compilation (does not work yet)
+
+	* sogod.m: moved application class to own file, started to work on
+	  daemon/product separation (v0.9.19)
+
+2004-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.18)
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.m: added defaultAction to redirect to
+	  "Calendar/" (v0.9.17)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoProductLoader.m, sogod.m: changed to use NGLogging (v0.9.16)
+
+2004-10-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.[wox|m]: changed hrefs to be computed dynamically
+	  instead of being static (v0.9.15)
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* SOGoUserHomePage.wox: Changed label for "eMail" to "Mail" for 
+	  consistency
+	
+	* *.lproj/default.strings: added label "Mail"
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sogod.m: return 404 for favicon.ico queries (v0.9.13)
+
+	* fixed title bindings to const: in .wox (should be label:?) (v0.9.12)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sogod.m: fixed a compile warning on OSX (v0.9.11)
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserHomePage.wox: added link to Mail (v0.9.10)
+
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.9
+
+	* English.lproj/default.strings, French.lproj/default.strings:
+	  dictionaries for labels
+
+	* SOGoUserHomePage.wox: replaced constant strings with labels
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: fixed superflous libjs (v0.9.8)
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* added SOGoGroupPage and SOGoGroupsPage (default views for the group
+	  folders) (v0.9.7)
+
+	* sogod.m: do not set SoRootURL manually (v0.9.6)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* French.lproj/Locale: minor changes to capitalization (v0.9.5)
+
+2004-07-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sogod.m: added static SoRootURL to context (v0.9.4)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sogod.m, */Locale: converted to UTF-8 for better editability (v0.9.3)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.2
+
+	* sogod.m: added localization methods. Current locale is put into 
+	  WOContext upon first request. All locales are cached in the 
+	  application object.
+
+	* [English,French].lproj: created. Put appropriate Locale 
+	  representations here.
+
+	* GNUmakefile: added LANGUAGES and LOCALIZED_RESOURCES.
+
+	* SOGoRootPage.wox: some debug code (for locales).
+
+	* created ChangeLog.

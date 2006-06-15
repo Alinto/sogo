@@ -1,0 +1,9 @@
+# $Id$
+
+SoObjects
+=========
+
+The SoObjects directory contains SOPE "path controller" objects, those objects
+which are bound to the URL traversal path.
+
+Also contained is a common library for such objects (libSOGo).

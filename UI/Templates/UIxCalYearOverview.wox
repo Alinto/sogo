@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="yes"?>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPageFrame"
+               title="name"
+>
+  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" 
+         width="100%">
+    <tr>
+      <td class="wintitle">
+        <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td width="5"/>
+            <td class="wintitle">
+              <var:component className="UIxCalDateLabel"
+                             startDate="startDate"
+                             endDate="endDate"
+                             const:selection="year"
+              />
+            </td>
+            <td width="36" align="right" valign="center">
+              <var:component className="UIxWinClose"/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td id="skywinbodycell" class="wincontent">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr bgcolor="#e8e8e0">
+            <td align="left"  >
+              <var:component className="UIxCalBackForthNavView"
+                             methodName="ownMethodName"
+                             prevQueryParameters="prevYearQueryParameters"
+                             currentQueryParameters="todayQueryParameters"
+                             nextQueryParameters="nextYearQueryParameters"
+                             label:label="this year"
+              />
+            </td>
+            <td align="right" valign="middle" width="80%">
+              <var:component className="AnaisUidSelector"
+                             calendarUIDs="clientObject.calendarUIDs"
+              />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td id="skywinbodycell" class="wincontent">
+        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td colspan="2">
+              <var:component className="UIxCalSelectTab"
+                             const:selection="year"
+                             currentDate="selectedDate"
+              >
+                <table>
+                  <var:foreach list="arrayOfDateArrays" item="row">
+                    <tr valign="top">
+                      <var:foreach list="row" item="month">
+                        <td>
+                          <var:component className="UIxCalInlineMonthOverview"
+                                         selectedDate="month"
+                                         const:monthSelectionHref="monthoverview"
+                                         const:showYear="NO"
+                                         const:daySelectionHref="dayoverview"
+                                         const:showWeekColumn="1"
+                                         const:weekSelectionHref="weekoverview"
+                                         const:style="yearoverview"
+                                         const:headerStyle="yearoverview_title"
+                                         const:weekStyle="yearoverview_week"
+                                         const:todayWeekStyle="yearoverview_week_hilite"
+                                         const:dayHeaderStyle="yearoverview_day_header"
+                                         const:dayBodyStyle="yearoverview_content"
+                                         const:todayBodyStyle="yearoverview_content_hilite"
+                                         const:inactiveDayBodyStyle="yearoverview_content_dimmed"
+                          />
+                        </td>
+                      </var:foreach>
+                    </tr>
+                  </var:foreach>
+                </table>
+              </var:component>
+            </td>
+          </tr>
+          <tr bgcolor="#F5F5E9">
+            <td align="left" width="10">
+              <var:entity const:name="nbsp"/>
+            </td>
+            <td align="right">
+              <img border="0"
+                   alt=""
+                   rsrc:src="corner_right.gif"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" bgcolor="#F5F5E9">
+              <table border="0" width="100%" cellpadding="10" cellspacing="0">
+                <tr/>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</var:component>

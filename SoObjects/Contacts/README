@@ -1,0 +1,58 @@
+
+We can basically store anything we want in the property list. But we should
+watch inetOrgPerson and vCard person compatibility in case we want to move
+to vCard storage later on.
+
+inetOrgPerson fields
+====================
+	businessCategory 
+	carLicense 
+	departmentNumber
+	destinationIndicator 
+	employeeNumber 
+	employeeType 
+	facsimileTelephoneNumber
+	givenName
+	homePostalAddress 
+	initials 
+	jpegPhoto
+	l 
+	mail 
+	manager 
+	mobile 
+	o 
+	objectClass 
+	ou 
+	pager
+	physicalDeliveryOfficeName
+	postOfficeBox
+	postalCode 
+	preferredLanguage
+	registeredAddress 
+	roomNumber 
+	secretary 
+	seeAlso
+	sn
+	street 
+	telephoneNumber 
+	teletexTerminalIdentifier
+	title 
+	uid 
+	userCertificate
+	userPKCS12
+	userPassword 
+	x121Address
+        audio 
+        cn 
+        description 
+        displayName 
+        homePhone 
+        internationaliSDNNumber 
+        labeledURI 
+        photo 
+        postalAddress 
+        preferredDeliveryMethod 
+        st 
+        telexNumber 
+        userSMIMECertificate 
+        x500uniqueIdentifier 

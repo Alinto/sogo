@@ -1,0 +1,50 @@
+( /* the toolbar groups */
+
+  ( /* first group */
+    { link  = "getMail";
+      cssClass = "tbicon_getmail"; label = "Get Mail"; },
+
+    { link     = "#"; // "compose"; // target = "_blank";
+      isSafe   = NO;
+      onclick  = "clickedCompose(this);return false;";
+      cssClass = "tbicon_compose"; label = "Write";    },
+  ),
+
+  ( // second group
+    { link = "reply"; 
+      isSafe   = NO;
+      cssClass = "tbicon_reply";    label = "Reply";     },
+
+    { link = "replyall"; 
+      isSafe   = NO;
+      cssClass = "tbicon_replyall"; label = "Reply All"; },
+
+    { link = "forward"; 
+      isSafe   = NO;
+      cssClass = "tbicon_forward";  label = "Forward";   },
+  ),
+
+  ( // third group
+    { link     = "delete"; isSafe = NO;
+      enabled  = showMarkDeletedButton;
+      cssClass = "tbicon_delete"; label = "Delete"; },
+
+    { link     = "trash"; isSafe = NO;
+      enabled  = showTrashButton;
+      cssClass = "tbicon_delete"; label = "Delete"; },
+
+    /* TODO: enable when we know how to mark junk (#971)
+       => we could move the mail to the Junk folder?!
+              { link = "#"; 
+                isSafe   = NO;
+                cssClass = "tbicon_junk";   label = "Junk";   },
+     */
+  ),
+/*
+  ( // fourth group
+    // TODO: enable when we can print (#1207)
+    //  { link = "#"; cssClass = "tbicon_print"; label = "Print"; },
+    { link = "#"; cssClass = "tbicon_stop";  label = "Stop";  },
+  ),
+*/
+)

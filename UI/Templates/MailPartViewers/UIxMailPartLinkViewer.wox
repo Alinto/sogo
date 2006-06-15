@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="yes"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:var="http://www.skyrix.com/od/binding"
+     xmlns:label="OGo:label"
+     class="linked_attachment_frame"
+>
+  <div class="linked_attachment_body">
+    <a var:href="pathToAttachment"
+       var:title="filenameForDisplay"
+       ><var:string value="filenameForDisplay" /></a>
+    <div class="linked_attachment_meta">
+      <var:string label:value="Type" />:
+      <var:string value="bodyInfo.type" /> / 
+      <var:string value="bodyInfo.subtype" />,
+
+      <var:string label:value="Size" />:
+      <var:string value="bodyInfo.size" formatter="sizeFormatter" />
+    </div>
+
+<!-- debug
+    <pre><var:string value="bodyInfo"/></pre>
+  
+    <a var:href="pathToAttachment"
+       var:title="bodyInfo"
+       class="mailer_imagecontent"
+       >[<var:string value="pathToAttachment" />]</a>
+    <br />
+    Id:      <var:string value="bodyInfo.bodyId" /><br />
+    Desc:    <var:string value="bodyInfo.description" /><br />
+    Enc:     <var:string value="bodyInfo.encoding" /><br />
+    Par:     <var:string value="bodyInfo.parameterList" /><br />
+    Size:    <var:string value="bodyInfo.size" /><br />
+    Type:    <var:string value="bodyInfo.type" /><br />
+    Subtype: <var:string value="bodyInfo.subtype" /><br />
+    Path:    <var:string value="pathToAttachment" /><br />
+    PartPath: <var:string value="partPath" /><br />
+-->
+  </div>
+</div>

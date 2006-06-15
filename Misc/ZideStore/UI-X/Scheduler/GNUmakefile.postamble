@@ -1,0 +1,17 @@
+# $Id: GNUmakefile.postamble,v 1.1 2004/05/12 14:45:56 helge Exp $
+
+validate-wox:
+	xmllint --noout *.wox
+
+before-all :: validate-wox
+
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+after-all ::
+	@(cp bundle-info.plist \
+	  $(GNUSTEP_BUILD_DIR)/$(BUNDLE_NAME)$(BUNDLE_EXTENSION))
+else
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)
+endif

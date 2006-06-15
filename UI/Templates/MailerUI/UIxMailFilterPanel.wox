@@ -1,0 +1,45 @@
+<?xml version='1.0' standalone='yes'?>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <var:if condition="hideFrame" const:negate="YES">
+<table
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  class="titletable"
+  cellspacing="0" cellpadding="0"
+>
+  <tr>
+    <td class="titlecell">
+      <var:string label:value="View" />:
+    </td>
+    <td class="titlecell">
+      <var:popup list="filters" 
+              item="filter" string="filterLabel" value="filter"
+              selection="selectedFilter"
+              const:name="filterpopup" 
+              const:onchange="document.pageform.submit()" />
+    </td>
+    <td class="titlecell" style="padding-left: 4px;">
+      <var:string label:value="Subject or Sender contains" />:
+    </td>
+    <td class="titlecell" style="width: 80%; padding-right: 1px;">
+      <input name="search" type="text" var:value="searchText" 
+             style="width: 100%;" />
+      <!--
+             autocomplete="off"
+             onkeypress="ml_searchFieldKeyPressed(this)"
+             onfocus="ml_activateSearchField(this, 500)" 
+             onblur="ml_deactivateSearchField(this)" />
+        -->
+    </td>
+  </tr>
+</table>
+</var:if>
+</container>

@@ -1,0 +1,17 @@
+# $Id$
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+	RELBUILD_DIR_libZideStoreCommonUI = \
+		$(GNUSTEP_BUILD_DIR)/../Common/$(GNUSTEP_OBJ_DIR_NAME)
+else
+	RELBUILD_DIR_libZideStoreCommonUI = ../Common
+endif
+
+SchedulerUI_LIB_DIRS += -L$(RELBUILD_DIR_libZideStoreCommonUI)
+
+SchedulerUI_BUNDLE_LIBS += \
+	-lNGObjWeb -lNGScripting -lNGJavaScript -ljs \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC \
+	-lSOGoLogic -lZideStoreCommonUI \
+	-lNGiCal

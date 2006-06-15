@@ -1,0 +1,31 @@
+/* this file is in UTF-8 format! */
+
+"Addressbook"       = "Addressbook";
+"Addresses"         = "Addresses";
+"Cancel"            = "Cancel";
+"Common"            = "Common";
+"Contact editor"    = "Contact Editor";
+"Contact viewer"    = "Contact Viewer";
+"Copy from Anais"   = "Copy from Anaïs";
+"EMail"             = "Email";
+"Extended"          = "Extended";
+"Fax"               = "Fax";
+"Firstname"         = "Firstname";
+"Home"              = "Home";
+"HomePhone"         = "Home";
+"Lastname"          = "Lastname";
+"Location"          = "Location";
+"MobilePhone"       = "Mobile";
+"Name"              = "Name";
+"OfficePhone"       = "Office";
+"Organisation"      = "Organisation";
+"Phone"             = "Phone";
+"Phones"            = "Phone numbers";
+"Postal"            = "Postal";
+"Save"              = "Save";
+"URL"               = "URL";
+"Unit"              = "Unit";
+"delete"            = "delete";
+"edit"              = "edit";
+"invalidemailwarn"  = "Invalid email field, continue?";
+"new"               = "new";

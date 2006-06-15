@@ -1,0 +1,61 @@
+<?xml version='1.0' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+      border="0"
+      width="100%"
+>
+  <script language="JavaScript">
+    var currentIndex = <var:string value="currentIndex" />;
+  </script>
+  <script language="JavaScript" rsrc:src="UIxMailToSelection.js"> <!-- Space! --></script>
+
+  <table id="addr_table" style="width: 100%;">
+    <var:foreach list="addressLists" item="addressList">
+      <var:foreach list="addressList" item="address">
+        <tr var:id="currentRowId">
+          <td width="20%">
+            <var:popup name="currentPopUpId"
+                       list="headers"
+                       item="item"
+                       label:string="$item"
+                       selection="currentHeader"
+                       const:style="width: 100%;"
+            />
+          </td>
+          <td width="80%">
+            <input var:id="currentAddressId"
+                   var:name="currentAddressId"
+                   type="text"
+                   var:value="address"
+                   onfocus="addressFieldGotFocus(this);"
+                   onblur="addressFieldLostFocus(this);"
+                   style="width: 100%;"
+            />
+          </td>
+        </tr>
+        <var:string value="nextId" />
+      </var:foreach>
+    </var:foreach>
+    <tr id="row_last">
+      <td width="20%">
+        <!-- todo: use stylesheet? -->
+        <select style="width: 100%;" disabled="1">
+          <option value="to" ><var:string label:value="to" />:</option>
+        </select>
+      </td>
+      <td width="80%">
+        <!-- todo: use stylesheet? -->
+        <input onfocus="fancyAddRow(true,'');" type="text" 
+               style="width: 100%;" />
+      </td>
+    </tr>
+  </table>
+  <!--<var:if condition="isUIxDebugEnabled">
+    <a href="#" onclick="checkAddresses();">check addresses</a>
+  </var:if>-->
+  <span id="addr_addresses" style="visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
+  </span>
+</span>

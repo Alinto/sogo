@@ -1,0 +1,1284 @@
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.147
+
+	* UIxComponent+Agenor.m: use SOGoUser methods to get email/cn
+
+	* UIxAppointmentEditor.m: moved status change operation to SoObject
+
+2005-07-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentPrintview.m, UIxCalDayListview.m: fixed include pathes
+	  for new src hierarchy (v0.9.146)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.m: fixed -isMyApt and -canAccessApt to do the
+	  proper things (v0.9.145)
+
+	* v0.9.144
+
+	* UIxCalInlineAptView.m: reworked the way styles are produced now.
+	  UIxCalInlineAptView gets a lot more information from the appointment
+	  now in order to produce a suitable style for it
+
+	* UIxCalMonthOverview.m: setup formatter properly for private
+	  appointments
+
+	* UIxCalView.m: don't generate style information at all -
+	  UIxCalInlineAptView does this now
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.m: added fragile base class check (v0.9.143)
+
+	* added a basic German translation (v0.9.142)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxDatePicker.m: code cleanups (v0.9.141)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.140
+
+	* UIxCalView.m: reversed shouldAdd logic in filterAppointments to do
+	  the right thing ...
+
+	* v0.9.139
+
+	* UIxAppointmentEditor.m: fixed automatic participants addition
+
+	* v0.9.138
+
+	* UIxCalView.m: renamed 'anaisUIDString' to 'userUIDString' in order
+	  to be independent from the Anais bundle but still provide the same
+	  functionality
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.m: moved iCalRecurrenceRule to separate file
+	  (v0.9.137)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: provide label "empty title" as -titlePlaceholder for
+	  appointment formatters to enable display of appointments whose
+	  title has not been set (v0.9.136)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalScheduleOverview.m, UIxAppointmentView.m,
+	  UIxAppointmentProposal.m, UIxAppointmentEditor.m: fixed gcc 4.0
+	  warnings (v0.9.135)
+
+	* UIxAppointmentView.h: fixed a Cocoa warning (v0.9.134)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.133
+
+	* UIxAppointmentView.m: supports accept/decline from participants
+	  tab now
+
+	* UIxAppointmentEditor.m: fixed redirect url after accept/decline
+
+	* UIxCalParticipationStatusView.m: added accessor for partStat, so
+	  partStat isn't accidentaly lost
+
+	* UIxCalScheduleOverview.m: is able to suppress rendering of
+	  rejected and accepted foreign appointments now based on formValue
+
+	* English.lproj/Localizable.strings: new labels for
+	  UIxCalScheduleOverview
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentView.m: fixed a small memory leak when creating the
+	  categories string (v0.9.132)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.131
+
+	* product.plist: removed 'schedule' method from SOGoAppointmentFolder
+
+	* v0.9.130
+
+	* UIxCalView.m: removed resourcePath stuff as this isn't used
+	  anywhere anymore (and it shouldn't)
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/Localizable.strings: "Schedule" maps to
+	  "Appointment propositions" now (v0.9.129)
+
+2005-07-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.h: added -setAppointments: to the public API
+	  (for subclassers) (v0.9.128)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.127
+
+	* UIxCalView.[hm]: added -shouldDisplayRejectedAppointments API. Added
+	  toggling of hide/show rejected appointments via form values. Added
+	  new -filterAppointments: method to support filtering of appointments
+	  (currently used for rejected appointments). Fixed -fetchCoreInfos
+	  to use proper accessor method. Fixed aptFlags logic to allow access
+	  to appointments that don't belong to user but which user is invited
+	  to. Cleaned up +initialize a bit.
+	
+	* UIxCalWeekListview.m: added comment and slightly changed
+	  -fetchCoreInfos to do the proper thing
+
+	* English.lproj/Localizable.strings: added labels 'show_rejected_apts'
+	  and 'hide_rejected_apts'
+
+	* v0.9.126
+
+	* UIxComponent+Agenor.[hm]: new method -isAccessRestricted, uses the
+	  implementation from WOContext+Agenor in libSOGo.
+	  
+	* UIxAppointmentView.m: allow editing of appointments that have no
+	  organizer set.
+
+	* UIxAppointmentEditor.m: allow editing of appointments that have no
+	  organizer set. Redirect to 'view' URI in case editor is not the
+	  organizer. Fixed a bug where the organizer got accidentaly deleted.
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.125
+
+	* UIxAppointmentEditor.m: Properly preserve organizer of appointments.
+	  This is now also used to validate if user is allowed to edit an
+	  appointment.
+	
+	* UIxAppointmentView.m: changed -isMyApt to test on organizer's email
+	  address and user's email address to decide whether he is allowed
+	  to edit the appointment in question.
+
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentProposal.m: changed implementation of
+	  -proposalSearchAction to use the new SOGoFreeBusyObject API
+	  (v0.9.124)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.123
+
+	* UIxCalWeekOverview.m, UIxCalWeekColumnsview.m,
+	  UIxCalDayChartview.m, UIxCalDayListview.m,
+	  UIxCalMonthOverview.m, UIxCalDayOverview.m: properly adjust formatter
+
+	* UIxCalDayOverview.m: fixed bugs in -aptsForCurrentDate and properly
+	  override -allDayApts to also display appointments spanning ranges
+
+	* UIxCalWeekChartview.m: fixed bugs in -isRowActive logic
+
+	* UIxCalDayView.m: fixed bugs in filtering and range logic
+
+	* UIxCalView.m: added a deprecation warning, some code cleanup
+
+	* UIxCalInlineAptView.m: added new 'referenceDate' binding which will
+	  be used with the revised appointment formatter to properly display
+	  time ranges. Also adds 'priority' style information when this can
+	  be found in the appointment.
+
+	* GNUmakefile: added new image resource
+
+	* images/apt_icon_private.gif: new resource for private appointments
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.122)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.121
+
+	* UIxCalView.m: removed -calCSSPath (ZideStore specific)
+
+	* UIxCalDayListview.m: minor code cleanups
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekListview.m: fixed compile warnings (v0.9.120)
+
+	* UIxCalWeekListview.m: view needs to fetch coreInfos instead of just
+	  overviews because it needs information stored in "partmails". Fixes
+	  SOGo Bug #1248. (v0.9.119)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDateLabel.m: fixed compile warning (v0.9.118)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDateLabel.m: fixed heuristics for month label (v0.9.117)
+
+2005-02-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.116
+
+	* UIxTimeDateControl.wox: added code to disable time control on
+	  demand. If given date is nil, substitute today for it - nil dates
+	  are not legal/possible for this control.
+
+	* UIxAppointmentEditor.m: correctly (de)serialize until date for
+	  recurrences
+
+	* English.lproj/default.strings: new strings for recurrence selection,
+	  altered previous strings slightly to match the new UI's purpose
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.115
+
+	* cycles.plist: added 'weekday' cycle
+
+	* UIxAppointmentEditor.m: added representation for 'BYDAY'
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed for removal of SOGoLogic (v0.9.114)
+
+2005-02-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+	
+	* UIxCalView.m: removed dead code (v0.9.113)
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.112
+
+	* UIxAppointmentEditor.[wox,m]: added recurrence selection/display.
+	  The current UI is similar to that found in OGo, but inappropriate in
+	  the context of SOGo (SOGo in theory supports all recurrence rules
+	  described in RFC2445, thus needs a more complex UI in order to render
+	  all rules appropriately)
+
+	* cycles.plist: property list with predefined recurrence rules for
+	  the UIxAppointmentEditor
+
+	* English.lproj/default.strings: new labels for cycles and accompanied
+	  UI
+
+	* UIxDatePicker.m: Bugfix for format edge case (when date is nil)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxDatePicker.m: corrected dateFormats for French locale. The
+	  selection mechanism is pretty hackish and should be more generic.
+	  This fixes SOGo Bug #1136. (v0.9.111)
+
+2005-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.110)
+
+2004-12-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.109
+
+	* UIxCalScheduleOverview.[wox,m]: changed the UI to the final proposal
+	  agreed upon by Laurent.
+	
+	* English.lproj/default.strings: renamed value for "action", suited to
+	  new UI Layout
+
+2004-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.108
+
+	* UIxAppointmentEditor.m: added "check for conflict" checkbox and
+	  appropriate logic. This closes SOGo bug #1069. Localized error
+	  messages.
+
+	* UIxAppointmentProposal.m: changed fetchCoreInfos... to new
+	  fetchFreebusy... method.
+
+	* English.lproj/default.strings: provided localized error messages
+
+	* UIxCalView.m: rewrite of _fetchCoreInfosForUIDs: to adapt to the
+	  newer API of SoObjects (this was still some old OCS based code).
+
+2004-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.107
+
+	* UIxCalScheduleOverview.wox: only display appropriate buttons for
+	  actions to take
+	
+	* UIxCalScheduleOverview.m: cache userParticipationStatus result
+
+	* English.lproj/default.strings: changed "action" label
+
+	* v0.9.106
+
+	* UIxCalScheduleOverview.wox: different visual representation for
+	  actions (requested by Laurent)
+
+	* UIxCalScheduleOverview.m: bugfix for wrong sort orderings
+
+2004-12-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalScheduleOverview.[wox,m]: removed workaround for NGObjWeb bug,
+	  code cleanup (v0.9.105)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.104
+
+	* GNUmakefile: removed UIxAppointmentFormatter
+
+	* UIxAppointmentFormatter.[hm]: removed, never in use
+
+	* UIxCalParticipationStatusView.[wox,m]: new view to display localized
+	  participation status
+
+	* UIxCalView.m: fetch OverviewInfos instead of CoreInfos (should be
+	  faster)
+
+	* UIxCalScheduleOverview.[wox,m]: completed the schedule overview,
+	  display participation state for all participants.
+
+	* product.plist: renamed "reject" to "decline" and moved from
+	  UIxAppointmentView to UIxAppointmentEditor.
+
+	* UIxAppointmentView.m: removed "accept" and "reject" action stubs
+
+	* UIxAppointmentEditor.[wox,m]: implemented "accept" and "decline".
+	  Changed iCal template a bit, particularly removed getOrganizer -
+	  with every save the organizer was changed also which was horribly
+	  wrong.
+
+2004-12-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.103
+
+	* UIxCalScheduleOverview.[wox,m]: the entry point for agenor,
+	  presenting the upcoming schedule to users. This is still incomplete,
+	  but nevertheless functional.
+
+	* English.lproj/default.strings: new localizations for the schedule
+	  view.
+
+	* product.plist: added new actions and schedule view
+
+	* UIxCalSelectTab.[wox,m]: added new "Schedule" tab
+
+	* UIxAppointmentEditor.m: default participants are selected from
+	  current calendarUIDs - that is, if you've selected multiple calendars
+	  and then create a new appointment, all currently viewed calendar
+	  owners are added to the new appointment as default participants.
+
+	* UIxAppointmentView.m: added "accept" and "reject" actions - no
+	  function yet.
+
+	* UIxAppointmentProposal.m: compile fix (v0.9.102)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.101
+
+	* UIxAppointmentProposal.m: removed inclusion of iCalPerson+UIx.h
+
+	* iCalPerson+UIx.[hm]: removed -rfc822EMail (moved to NGiCal), changed
+	  implementation of -cnForDisplay (just a cover for -cnWithoutQuotes)
+
+	* v0.9.100
+	
+	* UIxAppointmentEditor.m: fixed incorrect redirect location
+
+	* UIxCalWeekListview.m, UIxCalWeekChartview.m: use new formatter option
+	  to correctly format private appointments
+
+	* v0.9.99
+
+	* {English,French}.lproj/default.strings: new label
+	  "private appointment", requested by Laurent for agenor.
+
+	* UIxCalWeekPrintview.m, UIxCalMonthPrintview.m: add label
+	  "private appointment" if apt is not accessible.
+
+	* UIxCalView.m: set label "private appointment" as privateTitle of
+	  private formatters.
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.98
+
+	* English.lproj/default.strings: provided additional localizable
+	  strings for event "classification" (private/public).
+
+	* UIxAppointmentView.[wox,m], UIxAppointmentEditor.[wox,m]: added
+	  workaround for SOGo bug #1052, private details are hidden now
+	  from others. Also, apts are not editable by non-owners any longer.
+
+	* UIxCalView.[hm]: added formatters for private appointments. Also,
+	  added flags for caching special information about apts (public,
+	  owned) etc. This outphases the use of tooltip.../shortText...
+	  for all calviews (with the exception of printviews). Subclasses
+	  may need to override -configureFormatters to adjust them according
+	  to their needs.
+
+	* UIxCalInlineAptView.[hm]: new view used by all calviews to render
+	  appointments using formatters.
+
+	* UIxCalDayOverview.wox, UIxCalDayListview.[wox,m],
+	  UIxCalDayChartview.[wox,m], UIxCalDayPrintview.wox,
+	  UIxCalWeekOverview.wox, UIxCalWeekListview.[wox,m],
+	  UIxCalWeekChartview.[wox,m], UIxCalWeekColumnsview.wox,
+	  UIxCalWeekPrintview.[wox.m], UIxCalMonthOverview.wox:
+	  changed to use UIxCalInlineAptView and provided -configureFormatters
+	  which fixes SOGo bug #1052
+
+2004-12-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.97
+
+	* UIxAppointmentEditor.[wox,m]: provided API and UI for marking an
+	  event as being private or public, public being the default.
+
+	* English.lproj/default.strings: provided additional localizable
+	  strings for event "classification" (private/public).
+
+	* UIxAppointmentEditor.m: set 'transparency' of new items to
+	 'TRANSPARENT' instead of 'OPAQUE'. In agenor FreeBusy information is
+	  constrained by a folder flag instead of individual events, however
+	  the intent is to permit retrieval of FreeBusy information in general.
+	  Please note that the according information isn't properly parsed/set
+	  in loadValues/saveValues as of now - the underlying iCalEvent doesn't
+	  handle this as of now.
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.96
+
+	* UIxCalView.h: made -isMyApt and -aptStyle public.
+
+	* UIxAppointmentPrintview.m: implemented -isMyApt and -aptStyle, used
+	  by UIxAppointmentPrintview.wox
+
+	* UIxAppointmentPrintview.wox: print summary, location, start/endtime
+	  in italics - fixes SOGo bug #1070
+
+	* UIxCalWeekPrintview.m, UIxCalMonthPrintview.m: extended
+	  -shortTextForApt to use different css styles, when -isMyApt returns
+	  NO - fixes SOGo bug #1070
+
+	* UIxCalDayPrintview.[m, wox]: use -aptStyle to print appointments not
+	  belonging to user in italics - fixes SOGo bug #1070
+
+	* UIxCalDayOverview.wox, UIxCalDayChartview.wox, UIxCalDayListview.wox
+	  UIxCalWeekOverview.wox, UIxCalWeekListview.wox,
+	  UIxCalWeekChartview.wox, UIxCalWeekColumnsview.wox,
+	  UIxCalMonthOverview.wox, UIxCalYearOverview.wox:
+	  changed layout according to SOGo bug #1071 (v0.9.95)
+
+	* UIxAppointmentView.m, UIxDatePicker.m, UIxCalView.m: changed to use
+	  NGLogging (v0.9.94)
+
+2004-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentPrintview.m: fixed a compile warning (v0.9.93)
+
+2004-10-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentProposal.wox: uses dayLabelFormat instead of hardcoded
+	  format - fixes SOGo bug #984 (v0.9.92)
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentPrintview.wox: insertBR for comment adedd (v0.9.91)
+
+	* UIxAppointmentEditor.wox: added possibility to add resources from
+	  Addressbook (v0.9.90)
+
+2004-10-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.wox: added "withCN=YES" to resources because
+	  doing otherwise would lead to stripping the CN from resources in
+	  subsequent saves - why would anyone want this to be standard
+	  behavior? (v0.9.89)
+
+2004-10-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.wox: insertBR for comments (v0.9.88)
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentProposal.wox: use '1' instead of 'YES' in const
+	  bindings, otherwise running into a MacOSX bug (v0.9.87)
+
+2004-10-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.86
+
+	* UIxAppointmentView.[m|wox]: new method to return categories as a
+	  string.
+
+	* UIxAppointmentPrintview.wox: added missing priority and categories.
+
+	* UIxAppointmentProposal.wox: also allow selection from private address
+	  book for resources/participants. This might lead to the fact that
+	  contacts can be selected which do not have a calendar at all - there
+	  should be some way of safeguarding this in the Contacts bundle.
+
+2004-10-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: changed iCal template to use RFC2445
+	  conforming line delimiters. Changed the testAction to aid in
+	  debugging our iCal rendering. (v0.9.85)
+
+2004-10-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.84
+
+	* SOGoAppointment+UIx.[hm]: new class providing UIx convenience methods
+
+	* UIxAppointmentView.[m|wox]: added priority and categories
+
+	* UIxAppointmentEditor.[m|wox]: added priority and categories
+
+	* English.lproj/default.strings: new labels
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalDateLabel.m: minor code cleanups, fixed compilation on MacOSX
+	  (v0.9.83)
+
+2004-09-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/default.strings: fixed a missing ';' (v0.9.82)
+
+2004-09-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.81
+
+	* GNUmakefile, product.plist: added new image
+
+	* images/invisible_space_2.gif: new transparent image used by
+	  UIxWeekListview.wox
+
+	* UIxCalDayView.m: rewrote -isCurrentDateInApt: to use
+	  NGCalendarDateRange
+	
+	* UIxCalWeekListview.[m|wox]: implemented
+
+	* UIxCalWeekColumnsview.[m|wox]: implemented
+
+	* UIxCalWeekOverview.m: removed impl. of -appointments, moved to
+	  superclass
+
+	* UIxCalWeekView.m: added impl. of -appointments
+
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentPrintview.wox, UIxAppointmentView.wox: added missing
+	  label prefix (v0.9.80)
+
+2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.79
+
+	* UIxAppointmentEditor.wox: removed debug output of clientObject,
+	  UIxPageFrame.wox is doing this now.
+
+	* UIxCalDayListView.[wox|m]: fixed some wrong assumptions of uid
+	  handling, corrected to use the (now bugfixed) calendarUIDs of
+	  clientObject.
+
+2004-09-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.78
+
+	* UIxCalDayOverview.m, UIxCalDayChartview.m: minor cleanups
+
+	* UIxCalDayOverview.wox, UIxCalDayChartview.wox: added style
+	  information for appointments, used for colorization (doesn't work
+	  due to style problems - needs to get investigated later on)
+
+	* UIxCalDayListview.[m|wox]: started implementation of list view,
+	  not quite finished.
+
+2004-09-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.wox: fixed incorrect label (v0.9.77)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: fixed for gsmake 1.9.2 build (v0.9.76)
+
+2004-08-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: fixed stupid bug (v0.9.75)
+
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.74
+
+	* English.lproj/default.plist: more labels
+	
+	* UIxAppointmentView.wox: replaced static strings with labels
+
+	* UIxAppointmentView.h, UIxCalView.h: exposed some methods
+
+	* product.plist: added "printview" method to SOGoAppointmentObject
+
+	* UIxAppointmentPrintview.[m|wox]: new printview for appointments
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.m: prepared to share code with contact editor
+	  (v0.9.73)
+
+	* UIxCalView.m: minor code cleanups (v0.9.72)
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: removed NGScripting from dependencies - it's no
+	  longer required (v0.9.71)
+
+	* UIxAppointmentProposal.m: changed -isSecondHalfGreen and
+	  -isSlotRangeGreen due to a bugfix in NGExtensions (v0.9.70)
+
+	* v0.9.69
+
+	* UIxAppointmentProposal.m: completed edit functionality. Resources and
+	  participants are now passed as query parameters.
+	
+	* UIxAppointmentEditor.m: Resources and Participants are now properly
+	  constructed from existing query parameters.
+
+2004-08-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.68
+
+	* UIxAppointmentEditor.m: added knowledge about "dur" parameter
+
+	* UIxAppointmentProposal.[m|wox]: added edit functionality, still
+	  incomplete
+
+	* UIxCalView.[hm]: remove date related query parameter methods, moved
+	  to UIxComponent
+
+	* GNUmakefile.preamble: changes for linking against SOPE 4.3 (v0.9.67)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AnaisUidSelector.[wox,m]: Added colorizing of login's uid. (v0.9.66)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal.m: small bugfix to range processing (v0.9.65)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxTimeDateControl.m: removed a debug log. (v0.9.64)
+
+	* v0.9.63
+
+	* UIxCalView.m: -isMyApt done properly.
+
+	* UIxCalWeekOverview.wox: use extra stylesheet info to colorize other's
+	  appointments differently.
+
+	* UIxDatePicker.m: removed a debug log.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal.m: first working version of proposal (v0.9.62)
+
+	* UIxAppointmentProposal: proper vertical/horizontal row generation
+	  (v0.9.61)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.m: fixed redirect in deleteAction. (v0.9.60)
+
+	* v0.9.59
+
+	* UIxTimeDateControl.m: subclasses from UIxComponent now, hence
+	  -viewTimeZone should work correctly now.
+
+	* UIxAppointmentProposal.wox, UIxAppointmentEditor.wox: fixed
+	  cancel button urls.
+
+	* UIxAppointmentProposal.[wox,m]: fixed date/time fields. (v0.9.58)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal: added duration popup (v0.9.57)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.56
+
+	* UIxTimeDateControl.m: HACK: added correct timeZone.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.55
+
+	* UIxAppointmentProposal.m: load default start/enddates
+	
+	* UIxAppointmentEditor.m: add default start/enddates
+	
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.54
+
+	* UIxTimeDateControl.*, UIxTimeSelector.*, UIxDatePicker.*:
+	  fixed. DatePicker expects day, month, year bindings now, 
+	  TimeSelector expects hour, minute, second.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.53
+
+	* UIxAppointmentProposal: added attendee selectors, added ivars, added
+	  searchProposal action
+
+	* added green_corner.gif
+
+	* iCalPerson+UIx.m: fixed -cnForDisplay to properly check for quotes
+	  prior removing them (v0.9.52)
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.m: fixed for new time fields (v0.9.51)
+
+	* fixed time field controls (v0.9.50)
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.49
+
+	* UIxTimeDateControl.[wox,m]: new component.
+
+	* UIxAppointmentProposal.wox: added labels and stuff, work in progress.
+
+	* English.lproj/default.strings: new labels
+
+	* UIxTimeSelector.m, UIxDatePicker.m: correct date bindings.
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.48
+
+	* UIxAppointmentEditor.m: minor cleanups
+
+	* UIxAppointmentView.m: added -delete action
+
+	* UIxAppointmentEditor.m: more decoupling from iCal. Added some error
+	  handling UI code (errorText), date selector is broken (v0.9.47)
+
+	* v0.9.46
+	
+	* iCalPerson+UIx.m: changed -cnForDisplay method, znek needs to check
+	  it for correctness
+
+	* UIxAppointmentEditor.m: rewrote not to work directly on the parsed
+	  iCalendar appointment but rather track changes in the appointment
+	  itself
+	
+	* UIxAppointmentEditor.m: removed now unused methods (due to attendee
+	  selector) (v0.9.45)
+
+	* v0.9.44
+
+	* UIxAppointmentEditor.m: use new AnaisAttendeeSelector
+
+	* UIxAppointmentEditor.m: replaced formattedAptStartDate with a
+	  titleDateFormatter (directly bound to the string element)
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.43
+	
+	* UIxTimeSelector.[wox,m]: new component for selecting the time part
+	  of a given date.
+
+	* UIxAppointmentEditor.[wox,m]: uses new UIxTimeSelector
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.42
+
+	* UIxAppointmentEditor.m: minor cleanups
+
+	* UIxAppointmentProposal.wox: made mockup code dynamic
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.41
+
+	* images/*: new images for UIxDatePicker and skycalendar.html.
+
+	* French.lproj/skycalendar.*, English.lproj/skycalendar.*: new js
+	  based date picker taken from OGo.
+	  NOTE: these files are currently NOT used/installed due to a bug
+	  in SOPE. Instead, the non-localized versions are used. This will
+	  go away as soon as the bug in SOPE is fixed.
+
+	* skycalendar.js, skycalendar.html: the non-localized versions as a
+	  workaround to the problem described above.
+
+	* product.plist: added new images and the non-localized js date picker
+	  as public resources.
+
+	* UIxDatePicker.[m,wox], UIxDatePickerScript.[m,wox]: new reusable
+	  component for picking a date fancy style. ;-) Use UIxDatePickerScript
+	  to load the necessary js code once in your component.
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.40
+
+	* UIxAppointmentProposal.wox: fixes in mockup code
+
+	* UIxAppointmentEditor.m: some cleanups
+
+	* v0.9.39
+	
+	* UIxAppointmentProposal.wox: work on page layout
+
+	* UIxAppointmentView.wox, UIxCalWeekOverview.wox: minor cleanups
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.38
+
+	* UIxComponent+Agenor.[hm]: -cnForUser and -emailForUser require the
+	  AgenorUserManager from Logic.
+
+	* UIxAppointmentEditor.m: refactored -cnForUser and -emailForUser,
+	  moved to extra category.
+
+	* UIxCalWeekView.wox: added custom style if apt belongs to user.
+
+	* UIxCalView.m: added some extra logic in redirect, provided extra
+	  style sheet selector for appointments.
+
+	* GNUmakefile: added new files
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.37
+
+	* English.lproj/default.strings: new labels
+
+	* UIxAppointmentEditor.m: after save, return to ".." instead of "view"
+
+	* UIxAppointmentEditor.wox: added "Cancel" button.
+
+	* UIxCalView.m: refined behaviour of redirects according to Helge's
+	  request.
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: Changed "X-OGo-RESOURCE" into
+	  "NON-PARTICIPANT" (v0.9.36)
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.[h,m,wox], UIxAppointmentEditor.[h,m,wox]:
+	  general enhancements, use new API. (v0.9.35)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.34
+
+	* UIxCalView.[hm]: use new formatters.
+
+	* UIxCalDayOverview.m: fixed build warnings.
+
+	* UIxAppointmentEditor.m: added warnings.
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.33
+
+	* UIxCalView.m: adjusted shortTextForApt to meet the requirements
+	  specifictions.
+
+	* UIxCalDayView.m: removed shortTextForApt (moved to superclass).
+
+	* UIxCal*view.wox: escapeHTML="NO" for shortTextForApt.
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.32
+
+	* UIxCalView.m: shouldHideWeekend according to new default,
+	  SOGoShouldDisplayWeekend.
+
+	* UIxCalWeekOverview.wox, UIxCalWeekColumnsview.wox: use new dynamic
+	  value for "hideWeekend" association.
+
+	* NOTES: new "Defaults" section.
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxCalWeekColumnsview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.52) (v0.9.31)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.[wox|m]: important fix for testing (v0.9.30)
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxCalWeekColumnsview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.52) (v0.9.30)
+
+	* UIxCalWeekOverview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.51) (v0.9.29)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.28
+
+	* iCalPerson+UIx.[hm]: more convenience
+
+	* UIxAppointmentView.[hm]: display CN's as Names
+
+	* UIxAppointmentEditor.[wox|m]: more functionality, but still
+	  unfinished. You can use it to test appointments, though.
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.wox: fixed base URL of form not to include
+	  "save" (v0.9.27)
+
+	* UIxAppointmentEditor.m: catch a common programming mistake (invoking
+	  a method on a method) (v0.9.26)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.[m|wox]: participants are added correctly
+	  now, resources are still lacking from save. (v0.9.25)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.24
+
+	* Added AnaisUidSelector to all views. Removed worse named -owner
+	  method from all affected views and instead added
+	  -formattedCalendarUIDs to UIxCalView. This is now used by all
+	  print views in their header.
+
+	* UIxCalWeekOverview.m: adjusted endDate properly, if -displayWeekends
+	  returns NO (the default).
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: fixed problems with redirect (v0.9.23)
+
+2004-08-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.22
+
+	* UIxAppointmentView.m: properly catch invalid appointment references
+	  and return a 404 (because SOGoAppointmentObject's are created even
+	  for invalid IDs for performance reasons)
+
+	* UIxCalView.m: generate appointment URLs using clientObject (the
+	  appointment folder)
+
+	* more cleanups
+
+	* added (still empty) proposal component (v0.9.21)
+
+	* some code reorganizations, fixed some compile warnings (v0.9.20)
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.19
+
+	* UIxCalView.m: implements -redirectForUIDsAction to construct a
+	  redirect to a special appointment folder.
+
+	* product.plist: "show" method is mapped to UIxCalView's
+	  -redirectForUIDsAction.
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.18
+
+	* UIxCalWeekOverview.wox: added AnaisUidSelector
+
+	* English.lproj/default.strings: more labels
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.17
+
+	* product.plist: removed "yearprintview" method - this doesn't exist.
+
+	* English.lproj/default.strings: more labels (these need to be added
+	  to the French version!)
+
+	* UIxAppointmentEditor.[m|wox]: nice Anais integration showing up. ;-)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.16
+
+	* UIxAppointmentEditor.wox: pretty printing, use labels where appropriate.
+
+	* UIxAppointmentEditor.m: uses SOGoDateFormatter now.
+
+	* English.lproj/default.strings: added new labels.
+
+2004-08-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.15
+
+	* UIxCalWeek*view.wox: added missing queryParameters to mode hrefs.
+
+2004-08-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* UIxCalDayOverview.[hm]: refactored currentDate -> moved to
+	  UIxCalDayView.[hm].
+
+	* UIxCalDayView.[hm]: added currentDate and accompanied functionality.
+
+	* UIxCalView.[hm]: added -tooltipForApt.
+
+	* UIxCalDayChartview.[wox|m]: implemented.
+
+	* UIxCalInlineMonthOverview.wox: cosmetic changes.
+
+	* UIxCalDayOverview.wox, UIxCalWeekOverview.wox, UIxCalMonthOverview.wox:
+	  uses "tooltipForApt" for view hyperlinks.
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.13
+	
+	* UIxCalDayPrintview.[m|wox], UIxCalWeekPrintview.[m|wox],
+	  UIxCalMonthPrintview.[m|wox]: finished print views.
+	
+	* UIxCalWeekOverview.wox: added numberformat for days.
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.12
+	
+	* UIxCalMonthView.[hm]: fixed a nasty bug. Needed to add -startOfMonth to
+	  overcome the problem associated with -startDate in the context of
+	  month overview. -startDate is necessary for fetching the core infos and
+	  almost always is member of the previous month. Also, -endDate isn't
+	  necessarily in the same month we're talking about. I reworked this and
+	  added some private category to NSCalendarDate which should be moved into
+	  SxCore later on.
+	
+	* UIxCalMonthOverview.m: Use -startOfMonth instead of -startDate for all
+	  calculations.
+
+	* UIxCalMonthOverview.wox: applied some pretty printing and added some
+	  debugging info (commented out).
+
+2004-07-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.11
+
+	* UIxCalDayOverview.h, UIxCalWeekOverview.h: new headers for subclassers.
+
+	* UIxCalDayPrintview.[wox|m], UIxCalWeekPrintview.[wox|m],
+	  UIxCalMonthPrintview.[wox|m]: new views for printing.
+
+	* product.plist: mapped "*printview"'s to appropriate new classes
+
+2004-07-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.10
+
+	* UIxCalDayView.m, UIxCalWeekView.m, UIxCalMonthView.m: reversed
+	  previous changes to -startDate/-endDate as these were wrong.
+	  Views have to deal on their own if appointments break the
+	  "usual" time range. Nevertheless we should never drop any
+	  appointments!
+
+	* UIxCalDayOverview.[wox|m]: refactored dateRanges (moved to
+	  UIxCalDayView) and completed display of all appropriate attributes
+	  (all day appointments, holiday info).
+
+	* UIxCalDayView.[hm]: fixed dateRanges.
+
+	* UIxCalView.[hm]: implemented -allDayApts and refactored some code.
+
+2004-07-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.9
+
+	* UIxCalWeekColumnsview.[m|wox]: implemented.
+
+	* UIxCalWeekCharview.*, UIxCalWeekListview.*, UIxCalDayChartView.*,
+	  UIxCalDayListview.*: enhanced templates.
+
+	* UIxCalDayView.[hm]: removed -thisMonth and -nextMonth.
+
+	* UIxCalView.[hm]: added -thisMonth and -nextMonth
+
+2004-07-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.8
+	
+	* Renamed all images/icon_apt_* images into images/icon_view_*. for the
+	  sake of simplicity and consistency.
+
+	* UIxCalInlineMonthOverview.m: fixed problems with a special set of edge
+	  cases where inappropriate style sheets would have been selected.
+
+	* UIxCalDayChartview.*, UIxCalDayListview.*: new templates for respective
+	  view modes.  Used UIxCalDayOverview as the template for these.
+	
+	* UIxCalWeekChartview.*, UIxCalWeekListview.*, UIxCalWeekColumnsview.*:
+	  new templates for respective view modes. Used UIxCalWeekOverview as
+	  the template for these.
+
+	* GNUmakefile: added new templates and classes, changed image names.
+
+	* product.plist: mapped methods to the correct classes.
+
+2004-07-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.7
+
+	* UIxCalView.[hm]: new methods for defaults access, -dayStartHour,
+	  -dayEndHour and -shouldDisplayWeekend.
+
+	* UIxCalDayOverview.[m|wox]: added content. CSS isn't 100% proper, yet.
+
+	* UIxCalWeekView.m, UIxCalMonthView.m: set startDate/endDate properly.
+
+	* UIxAppointmentEditor.m: fixed a subtle bug in -uriAsFormat that
+	  prevented date information from being set properly in newAction:.
+
+2004-07-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.6
+
+	* GNUmakefile: added UIxCalDayView.[hm] and UIxCalDayOverview.[m|wox]
+
+	* UIxCalDayView.[hm]: abstract superclass for all day related views.
+
+	* UIxCalDayOverview.[m|wox]: new component rendering the day overview.
+
+	* UIxCalInlineMonthOverview.[m|wox]: uses new "selectedDayExtraStyle"
+	  binding and implements accompanied logic for its usage.
+
+	* product.plist: added 3 dayview methods, all currently pointing to
+	  UIxCalDayOverview.
+
+2004-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.5
+
+	* UIxCalInlineMonthOverview.m: new "style" binding for setting the global
+	  style all elements will inherit from. Makes styling much easier.
+
+	* UIxCalYearOverview.wox: uses all appropriate styles now. Slight fixes
+	  to alignment.
+
+	* UIxCalInlineMonthOverview.wox: uses new "style" binding and fixes a bug
+
+	* UIxCalYearOverview.m: fixed warnings.
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.4
+
+	* UIxCalMonthOverview.h: new header, required by new
+	  UIxCalInlineMonthOverview component.
+
+	* UIxCalInlineMonthOverview.[m|wox]: new component rendering a month
+	  overview suitable for inlining in other views. Several calendar
+	  "modes" require this.
+
+	* UIxCalYearOverview.[m|wox]: new component rendering the year
+	  overview.
+
+	* product.plist: yearoverview -> new method
+
+	* GNUmakefile: added UIxCalInlineMonthOverview.[m|wox] and
+	  UIxCalYearOverview.[m|wox].
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.3
+
+	* *.wox: Use label associations where appropriate
+
+	* UIxCalView.m: Use labels for localization
+
+	* UIxCalMonthOverview.m: removed date specific labels, moved
+	  to SOGoUI/UIxComponent.m.
+
+	* UIxCalDateLabel.m: subclasses from UIxComponent now. Corrected
+	  localization using labels now.
+
+	* *.lproj/default.strings: new entries
+
+2004-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.2
+
+	* GNUmakefile: added new .lproj resources.
+
+	* {English,French}.lproj/default.plist: localizable strings for the
+	  Scheduler bundle.
+
+	* UIxCalSelectTab.m, UIxCalWeekOverview.wox,
+	  UIxCalMonthOverview.[m|wox]:  changes for using new localization
+	  features.
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: Use -backendTimeZone from UIxComponent.
+
+2004-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekOverview.wox: minor correction
+
+	* UIxAppointmentEditor.m: fixed handling in -saveAction:. Also,
+	  added code to correctly convert dates into GMT upon storing.
+
+2004-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added proper include pathes to allow "inline"
+	  compilation
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentView.m: fixup timezone of start/enddate
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalWeekOverview.wox, UIxCalMonthOverview.wox: some minor tweaks
+
+	* UIxAppointmentView.wox: made the attendee emails clickable
+
+	* UIxCalView.m: removed -fetchGIDs, moved -fetchCoreInfos to client
+	  object
+
+	* all files: removed ZideStore references
+
+	* UIxCalView.h, UIxAppointmentView.h, UIxAppointmentEditor.m,
+	  UIxCalSelectTab.m: include UIxComponent from SOGoUI
+
+	* removed backend stuff from some sources
+
+	* product.plist: bind things on SOGoAppointmentXXX instead of SX...
+
+	* GNUmakefile: changed from ZideStore to SOGo
+
+	* created ChangeLog

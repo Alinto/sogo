@@ -1,0 +1,33 @@
+( /* the toolbar groups */
+            ( /* first group */
+              {
+                link  = "getMail";
+                cssClass = "tbicon_getmail"; label = "Get Mail";
+              },
+              {
+                link     = "#"; // "compose"; // target = "_blank";
+                isSafe   = NO;
+                onclick  = "clickedCompose(this);return false;";
+                cssClass = "tbicon_compose"; label = "Write";
+              },
+            ),
+            ( // third group
+              { link = "emptyTrash"; isSafe = NO;
+                enabled  = clientObject.isDeleteAndExpungeAllowed;
+                cssClass = "tbicon_trash"; label = "Empty Trash"; },
+/* TODO: enable when implemented
+// TODO: enable when delete works (#1212)
+              { link = "#"; isSafe = NO;
+                cssClass = "tbicon_delete"; label = "Delete"; },
+// TODO: enable when we know how to mark junk (#971)
+              { link = "#"; isSafe = NO;
+                cssClass = "tbicon_junk";   label = "Junk";   },
+*/
+            ),
+
+/*
+  ( // fourth group
+    { link = "#"; cssClass = "tbicon_stop";  label = "Stop";  },
+  )
+*/
+)

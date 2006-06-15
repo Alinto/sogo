@@ -1,0 +1,71 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxMailMainFrame"
+  title="panelTitle"
+>
+  <div class="titlediv">
+    <var:if condition="clientObject.isSharedAccount">
+      <var:string label:value="Share: " />
+    </var:if>
+    <var:if condition="clientObject.isSharedAccount" const:negate="1">
+      <var:string label:value="Account: " />
+    </var:if>
+    <var:string value="objectTitle"/>
+  </div>
+
+  <div class="embedwhite_out">
+    <div class="embedwhite_in">
+     <div style="padding: 8px;">
+      <div style="font-weight: bold; font-size: 16px;">
+        SOGo Mail - 
+
+        <var:if condition="clientObject.isSharedAccount">
+          <var:string label:value="Shared Account: " />
+        </var:if>
+
+        <var:string value="objectTitle"/>
+      </div>
+      <br />
+      <var:if condition="clientObject.isSharedAccount">
+        <div>
+          <var:string label:value="Share: " />
+          <var:string value="clientObject.sharedAccountName" />
+        </div>
+      </var:if>
+      <br />
+
+      <div class="whitesec_title">Email</div><br />
+      <li><a href="INBOX/"><var:string label:value="Read messages" /></a></li>
+      <li><a href="#" onclick="clickedCompose(this);"
+             ><var:string label:value="Write a new message" /></a></li>
+      <br />
+      <br />
+
+<!--
+      <div class="whitesec_title">Accounts</div><br />
+      <li><a href="">View settings for this account</a></li>
+      <li><a href="">Create a new account</a> [TBD: not in Agenor]</li>
+      <br />
+      <br />
+
+      <div class="whitesec_title">Advanced Features</div><br />
+      <li><a href="">Search messages</a></li>
+      <li><a href="">Manage message filters</a></li>
+      <li><a href="">Manage folder subscriptions</a></li>
+      <li><a href="">Offline settings</a> [TBD: not in Agenor]</li>
+      <br />
+      <br />
+
+      <div class="whitesec_title">Screenshot</div><br />
+      <a rsrc:href="tbird_073_accountview.png">screenshot</a>
+-->
+     </div>
+    </div>
+  </div>
+</var:component>

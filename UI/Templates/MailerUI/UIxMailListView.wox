@@ -1,0 +1,202 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxMailMainFrame"
+  title="panelTitle"
+  hideFrame="hideFrame"
+>
+  <script language="JavaScript" rsrc:src="UIxMailListView.js">
+    <!-- space required -->
+  </script>
+
+  <var:component className="UIxMailFilterPanel" qualifier="qualifier" 
+                 hideFrame="hideFrame" />
+
+ <div id="cl_tableview_reloadroot">
+  <div class="embedwhite_out">
+    <div class="embedwhite_in">
+      <table border="0" width="100%" cellspacing="0" cellpadding="1">
+        <tr class="tableview">
+          <td class="tbtv_headercell" width="17">
+            <var:entity const:name="nbsp" />
+          </td>
+          <td class="tbtv_headercell" width="50%">
+            <var:component className="UIxMailSortableTableHeader"
+                           label:label="Subject"
+                           const:sortKey="subject"
+                           const:href="view"
+                           var:queryDictionary="context.request.formValues"
+            />
+          </td>
+          <td class="tbtv_headercell">
+            <var:if condition="showToAddress" const:negate="YES">
+              <var:component className="UIxMailSortableTableHeader"
+                             label:label="From"
+                             const:sortKey="from"
+                             const:href="view"
+                             var:queryDictionary="context.request.formValues"
+              />
+            </var:if>
+            <var:if condition="showToAddress">
+              <var:component className="UIxMailSortableTableHeader"
+                             label:label="To"
+                             const:sortKey="to"
+                             const:href="view"
+                             var:queryDictionary="context.request.formValues"
+              />
+            </var:if>
+          </td>
+          <td class="tbtv_headercell" width="17">
+            <img rsrc:src="title_read_14x14.png" width="14" height="14" />
+          </td>
+          <td class="tbtv_headercell" width="17">
+            <img rsrc:src="title_attachment_14x14.png" width="14" height="14" />
+          </td>
+          <td class="tbtv_headercell">
+            <var:component className="UIxMailSortableTableHeader"
+                           label:label="Date"
+                           const:sortKey="date"
+                           const:href="view"
+                           var:queryDictionary="context.request.formValues"
+                           const:isDefault="YES"
+            />
+          </td>
+        </tr>
+        <tr class="tableview">
+          <td colspan="6" class="tbtv_navcell" align="right">
+            <var:if condition="showsAllMessages">
+              <var:string value="sortedUIDs.count" />
+              <var:string label:value="messages" />
+            </var:if>
+            
+            <var:if condition="showsAllMessages" const:negate="YES">
+              <var:if condition="hasPrevious">
+                <a href="view"
+                   _idx="1"
+                   var:queryDictionary="queryParameters"
+                ><var:string label:value="first"/></a> |
+                <a href="view"
+                   var:_idx="prevFirstMessageNumber"
+                   var:queryDictionary="queryParameters"
+                ><var:string label:value="previous"/></a> |
+              </var:if>
+  
+              <var:string value="firstMessageNumber"/>
+              <var:string label:value="msgnumber_to" />
+              <var:string value="lastMessageNumber"/>
+              <var:string label:value="msgnumber_of" />
+              <var:string value="sortedUIDs.count" />
+  
+              <var:if condition="hasNext">
+                | <a href="view"
+                     var:_idx="nextFirstMessageNumber"
+                     var:queryDictionary="queryParameters"
+                  ><var:string label:value="next" /></a>
+              </var:if>
+            </var:if>
+          </td>
+        </tr>
+        
+        <var:foreach list="messages" item="message">
+          <tr class="tableview" var:id="msgRowID"
+              onmouseover="ml_highlight(this)"
+              onmouseout="ml_lowlight(this)"
+              style="cursor: pointer;"
+          >
+            <td>
+              <!-- this seems to break on Safari, it treats name==id? -->
+              <input type="checkbox" var:name="msgRowID" value="0" 
+                     onchange="toggleMailSelect(this)" />
+            </td>
+            <!-- the td:onlick doesn't work on Safari -->
+            <td var:class="messageCellStyleClass" var:onclick="clickedMsgJS">
+              <div var:class="messageSubjectStyleClass" var:id="msgDivID">
+                <!-- removed anker (resulted in two clicks on Moz -->
+                <!-- a href="#" var:onclick="clickedMsgJS" -->
+                  <!-- Note: var:href="messageViewURL" (done by JS),
+                             var:target="messageViewTarget" -->
+                  <var:string value="message.envelope.subject"
+                              formatter="context.mailSubjectFormatter"/>
+                <!-- /a -->
+              </div>
+            </td>
+            <td var:class="messageCellStyleClass" var:onclick="clickedMsgJS">
+              <!-- TODO: show compose links -->
+              <!-- TODO: different color for internal vs external addrs -->
+              <var:if condition="showToAddress" const:negate="YES">
+                <var:string value="message.envelope.from"
+                            formatter="context.mailEnvelopeAddressFormatter" />
+              </var:if>
+              <var:if condition="showToAddress">
+                <var:string value="message.envelope.to"
+                            formatter="context.mailEnvelopeAddressFormatter" />
+              </var:if>
+            </td>
+            
+            <td>
+              <div class="mailer_readicon"
+                   var:style="msgIconReadVisibility"
+                   var:id="msgIconReadDivID">
+                <a href="#" var:onclick="markUnreadJS"
+                   label:title="Mark Unread"> </a>
+              </div>
+              <div class="mailer_unreadicon"  
+                   var:style="msgIconUnreadVisibility"
+                   var:id="msgIconUnreadDivID">
+                <a href="#" var:onclick="markReadJS"
+                   label:title="Mark Read"> </a>
+              </div>
+            </td>
+            <td>
+              <var:if condition="hasMessageAttachment">
+                <img rsrc:src="title_attachment_14x14.png" 
+                     width="14" height="14" />
+              </var:if>
+              <entity name="nbsp" />
+            </td>
+	    
+            <td var:class="messageCellStyleClass" var:onclick="clickedMsgJS">
+              <span class="mailer_datefield">
+                <var:string value="message.envelope.date" 
+                            formatter="context.mailDateFormatter"/>
+              </span>
+              <entity name="nbsp" />
+            </td>
+          </tr>
+        </var:foreach>
+
+        <tr class="tableview">
+          <td colspan="6" class="tbtv_actcell">
+<!-- TODO: fix used tree, treeNavigationNodes is the _wrong_ choice
+            <var:component className="UIxMailMoveToPopUp"
+                           const:identifier="moveto"
+                           const:callback="moveTo"
+                           rootNodes="clientObject.treeNavigationNodes"
+            />
+-->
+<!-- enable once we have buttons and functionality to actually move sth #1211
+            <var:popup const:name="moveto" const:id="moveto"
+                       list="clientObject.mailAccountFolder.allFolderPathes"
+	               item="item" value="item" displayString="item" />
+-->
+          </td>
+        </tr>
+      </table>
+      
+      <span id="selected_uids" style="visibility: hidden;">
+      </span>
+    </div>
+  </div>
+ </div>
+
+  <var:if condition="hideFrame" const:negate="YES">
+    <script language="JavaScript">
+      document.pageform.search.focus();
+    </script>
+  </var:if>
+</var:component>

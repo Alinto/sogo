@@ -1,0 +1,10 @@
+# Version file
+
+SUBMINOR_VERSION:=50
+
+# v0.9.42 requires libSOGo            v0.9.54
+# v0.9.32 requires libGDLContentStore v4.5.26
+# v0.9.28 requires libNGiCal          v4.5.47
+# v0.9.26 requires libSOGo            v0.9.30
+# v0.9.19 requires libNGiCal          v4.5.36
+# v0.9.13 requires libSOGo            v0.9.26

@@ -1,0 +1,374 @@
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v0.9.70)
+
+	* SOGoObject.m: added class security declarations (previously in
+	  product.plist of MainUI) (v0.9.69)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUser.m: added a method to fetch share/emitter address pairs from
+	  the AgenorUserManager (v0.9.68)
+
+	* AgenorUserManager.m: rewrote to use NSMutableDictionary instead of
+	  SOGoLRUCache. Flush caches every hour (configurable using
+	  'AgenorCacheCheckInterval' default). Added method to retrieve the
+	  shares and the emitter emails in one step. (v0.9.67)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.66
+
+	* SOGoContentObject.m: properly quote etag
+
+	* SOGoObject.m: changed to check etag when the content is accessed in
+	  WebDAV mode and return a 304 if the tag stayed the same.
+	  Do not strip quotes from etags in if-*match headers.
+	  Properly implement if-none-match for GET requests.
+
+	* SOGoContentObject.m: moved generic etag checking to SOGoObject (to
+	  share implementation with Mailer) (v0.9.65)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.m: properly implemented internet/intranet vacation
+	  message status detection (v0.9.64)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.63
+
+	* SOGoAppointment.[hm]: new API to cancel appointments, NSCopying
+	  support
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.62
+
+	* SOGoGroupFolder.m, SOGoUser.m: fixed a gcc 4.0 warning
+
+	* GNUmakefile.preamble: properly use SYSTEM_LIB_DIR
+
+	* v0.9.61
+
+	* SOGoContentObject.m: fixed a Cocoa warning
+
+	* GNUmakefile.preamble: added proper linking flags for OSX
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.60
+
+	* SOGoAppointment.[hm]: added 'method' and 'userComment' accessors
+
+	* SOGoAppointmentICalRenderer.m: properly render 'method' of
+	  appointment if it's set - otherwise assume 'REQUEST'
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUser.m: added -homeFolderInContext: and
+	  -schedulingCalendarInContext: methods (v0.9.59)
+
+	* moved in SOGoUser and SOGoAuthenticator from Main (v0.9.58)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.[hm]: added accessors and cache for the
+	  'mineqMelReponse' flag. Please note that the implementation isn't
+	  fully fleshed out because the technical specification isn't correct.
+	  (v0.9.57)
+
+	* AgenorUserManager.[hm]: added accessors and cache for the
+	  'mineqOgoAccesInternet' flag (v0.9.56)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContentObject.m: added empty davCopy/davMove methods (v0.9.55)
+
+	* v0.9.54
+	
+	* SOGoContentObject.m: added support for special 'new' key (server will
+	  assign a name and add the new location in a special response header)
+	
+	* SOGoFolder.m: added +globallyUniqueObjectId (previously the method
+	  was duplicated in each subclass)
+	  
+	* SOGoContentObject.m: added transactionally save etag-checks in PUT
+	  (use the etag value as the baseVersion in the content store)
+	  (v0.9.53)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.52
+
+	* SOGoObject.m: properly add etag during a GET (if available)
+	
+	* SOGoContentObject.m: generate etag from content object version, added
+	  methods to check request preconditions, check preconditions prior
+	  running a PUT, added new etag after running a PUT
+	  
+	* SOGoObject.m, SOGoFolder.m: added +version methods to detect fragile
+	  base class issues (v0.9.51)
+
+	* SOGoFolder.m: changed to use plain column names (v0.9.50)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserFolder.m: forbid access (403) to SOGoGroupFolders if access
+	  is not from the Intranet (v0.9.49)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserDefaults.m: added automagic profile row creation (v0.9.48)
+
+	* AgenorUserDefaults.m: implemented saving of changed profiles
+	  (v0.9.47)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.[hm]: new API for extracting UIDs from iCalPersons
+	  (v0.9.46)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.45
+	
+	* AgenorUserDefaults.m: properly fetch profile contents
+	
+	* agenor_defaults.m: read operation can now return all defined keys
+	
+	* v0.9.44
+
+	* AgenorUserDefaults.m: added typed value accessors and proper
+	  initializers
+	
+	* AgenorUserManager.m: added 'AgenorProfileURL' default to configure
+	  the database location of the user profile table
+	
+	* finished agenor_defaults tool
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.43
+
+	* added agenor_defaults tool to test defaults functionality
+
+	* AgenorUserManager.[hm]: added -getUserDefaultsForUID: method to
+	  retrieve the profile of a user (incomplete)
+
+	* added AgenorUserDefaults class (incomplete) as a wrapper for the
+	  profile data of Agenor users
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.42
+	
+	* added agenor_emails4uid tool to check whether the
+	  uid=>allowed-from-mails discovery in AgenorUserManager works
+	
+	* AgenorUserManager.m: added -getSharedMailboxEMailsForUID: method to
+	  discover the shared emails the user is allowed to post from,
+	  added caching of shared emails and Cyrus-logins
+
+	* WOContext+Agenor.m: use SOGoInternetDetectQualifier for detecting
+	  Internet access level (v0.9.41)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* WOContext+Agenor.[hm]: new category for discovering if the current
+	  context is via access from the intranet. (v0.9.40)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* added agenor_shares4uid tool to check whether the uid=>shared mailbox
+	  discovery in AgenorUserManager works
+	
+	* AgenorUserManager.m: fixed a major string scanning bug in
+	  _serverCandidatesForMineqMelRoutage: method,
+	  added -getSharedMailboxAccountStringsForUID: method to discover
+	  shared IMAP4 accounts (v0.9.39)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserManager.m: added a simple -description method (v0.9.38)
+
+	* added agenor_email2uid.m tool to check whether the email=>uid mapping
+	  in AgenorUserManager works
+	  
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.37
+
+	* SOGoUserFolder.m: added 'freebusy.ifb' as an object to the
+	  collection for proper display via DAV.
+
+	* SOGoAppointmentICalRenderer.m: fixed header inclusion
+
+	* AgenorUserManager.[hm]: added proposed future API for discovering
+	  URLs for free/busy information (implementation currently returns
+	  nil)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointment.m: fixed a wrong -release (v0.9.36)
+
+2005-03-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: fixed DELETEAction to return a boolean if the delete
+	  was successful (required by SoObjectRequestHandler) (v0.9.35)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* changed to use GDLContentStore (v0.9.34)
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoGroupFolder.m: switched logging to NGLogging (v0.9.33)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+AptComparison.[hm]: new comparison method. This is used
+	  in SOGoAppointmentFolder currently. (v0.9.32)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserManager.m: refactoring of the LDAP fetch code, added the
+	  'SOGoFallbackIMAP4Server' default to configure the IMAP4 server when
+	  LDAP is disabled (v0.9.31)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved in code from libSOGoLogic (unnecessarily a separate library)
+	  (v0.9.30)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: fixed a warning on MacOSX (v0.9.29)
+
+2005-02-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.h: added prototype for GETAction (v0.9.28)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added -outlookMessageClass / -outlookFolderClass (v0.9.27)
+
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoFolder: added method -fetchContentStringsAndNamesOfAllObjects
+	  which fetches the contents of all folders objects (avoid to use this
+	  high overhead method!). Required for iCalendar file generation.
+	  (v0.9.26)
+
+2004-10-08  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SOGoUserFolder.m: enhanced object lookup so that when a Calendar
+	  is opened with an extensions (eg "Calendar.ics") (v0.9.25)
+	
+	* SOGoFolder.m: added facility to define default extensions (v0.9.24)
+
+	* SOGoObject.m: fixed not implemented return status (501, not 502)
+	  (v0.9.23)
+	
+	* SOGoUserFolder.m: do not try to fetch file names in this folder
+	  (v0.9.22)
+
+	* v0.9.21
+
+	* SOGoContentObject.m: added PUTAction:
+
+	* SOGoObject.m: implemented special WebDAV support in GETAction:
+
+	* SOGoFolder.m: added -toOneRelationshipKeys method (enables listing of
+	  contained objects in WebDAV), added container name to logging prefix,
+	  explicitly mark as WebDAV collection
+
+	* SOGoContentObject.m: mark as WebDAV non-collection
+
+2004-10-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUserFolder.m: added toManyRelationshipKeys, marked as WebDAV
+	  collection (v0.9.20)
+
+2004-09-29  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SOGoObject.m: added -fetchSubfolders method to resolve all 
+	  toManyRelationshipKeys to SOPE objects (v0.9.19)
+	
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoObject.m: added a default GET method which redirects to
+	  url + "/view" (v0.9.18)
+
+	* SOGoObject.m(-description): added name of container (v0.9.17)
+
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupFolder.m: separate -resetFolderCaches method from -sleep
+	  (v0.9.16)
+
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserFolder.m: map "Mail" key to SOGoMailAccounts object (v0.9.15)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* GNUmakefile.preamble: fixed for gsmake 1.9.2 build
+
+	* GNUmakefile: include ../../Version also
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserFolder.m: added ability to create Contacts folder (v0.9.13)
+
+2004-08-24  Maxime Wacker  <mwacker@linagora.com>
+
+	* GNUmakefile.preamble: fixes for the build process (v0.9.12)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SOGoCustomGroupFolder.m: added -initWithUIDs:inContainer: for using
+	  the groups folder for internal group fetches (v0.9.11)
+	
+	* SOGoContentObject.m: updated multi-save things (which belong into the
+	  SOGoAppointmentObject class), implement -sleep to release the content
+	  (v0.9.10)
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoContentObject.m: implement first version of -delete (v0.9.9)
+
+	* SOGoObject.[hm], SOGoUserFolder.[hm]: implemented SOPE 
+	  -ownerInContext: (v0.9.8)
+
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.7
+
+	* SOGoGroupFolder.m: renamed -reset method to -sleep (called by SOPE)
+
+	* SOGoObject.m: added SOPE -sleep method (resets container and can be
+	  called by subclasses)
+
+	* SOGoGroupFolder.m: made the folder found note log a debug log
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.6
+
+	* SOGoUserFolder.m: added "Groups" folder name and lookup
+
+	* added: SOGoGroupsFolder, SOGoGroupFolder, SOGoCustomGroupFolder
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: added -delete method (but not yet implemented)
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContentObject.m: added -contentAsString method
+
+	* created ChangeLog
+

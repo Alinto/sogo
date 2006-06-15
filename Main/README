@@ -1,0 +1,88 @@
+SOGo
+====
+
+Master Daemon, loads the functionality from product bundles in Library/SOGo.
+
+Setup
+=====
+
+  Defaults write sogod NGBundlePath '"$HOME/Library/SOGo"'
+  => otherwise some bundles will clash with "fat" OGo
+  => the UIx .wox driver must be found
+
+
+Defaults
+========
+
+  SOGoDefaultLanguage - string - currently used for selecting the language of
+  the mail templates. Default is "French".
+
+  SOGoCrashOnSessionCreate - bool - crash the server if a session is created
+  => useful for debugging
+
+  SOGoEnableDoubleReleaseCheck - bool - call
+  +[NSAutoreleasePool enableDoubleReleaseCheck:YES] upon start
+  => useful for debugging
+
+SOGoInternetDetectQualifier
+- an EOQualifier to detect whether a set of HTTP headers is from the outside,
+  eg: "NOT (minequprovenance = 'intranet')"
+      -SOGoInternetDetectQualifier '"NOT (minequprovenance = \"intranet\")"'
+  Note: all header field names are lowercase
+  Testing: -SOGoInternetDetectQualifier '"host = \"agenor.opengroupware.org\""'
+
+AgenorProfileURL - URL
+- configure database location of the user profile
+  eg: http://postgres:@agenor-db:5432/test/sogo_user_profile
+
+SOGoDoNotRedirectRootPage - YES|NO
+- do not redirect to home-folder for authenticated users but show the
+  root page (with the login name)
+
+
+What it does
+============
+- provides locale support
+- preloads the SOGo products (SOGoProductLoader)
+- provides the root object (the application object with user lookup)
+- sets the authenticator
+- does some process limits and restart support
+
+
+Apache Setup
+============
+
+  AliasMatch /SOGoHH/so/ControlPanel/Products/(.*)/Resources/(.*) \
+             /home/helge/GNUstep/Library/SOGo-0.9/$1.SOGo/Resources/$2
+
+  <LocationMatch "^/SOGoHH*">
+    AuthName "Agenor LDAP"
+    AuthType Basic
+    AuthLDAPEnabled on
+    AuthLDAPUrl ldap://agenor-ldap:389/ou=organisation,dc=equipement,dc=gouv,dc=fr??sub?(&(objectClass=person)(uid=*))
+    require valid-user
+
+    SetHandler ngobjweb-adaptor
+    SetAppPort 9000
+  </LocationMatch>
+
+  <LocationMatch "^/SOGoHH/so/ControlPanel/Products/.*UI/Resources/.*(\.png$|\.gif$|\.css$|\.js$)">
+    SetHandler default-handler
+  </LocationMatch>
+
+
+FHS Setup
+=========
+
+NOTE: use the appname, sogo-0.9, not the tool name (sogod-0.9)!
+
+cd /usr/local/share
+mkdir sogo-0.9/
+cd sogo-0.9/
+ln -s ~/dev/SOGo-trunk/UI/Templates ./templates
+ln -s ~/dev/SOGo-trunk/UI/WebServerResources ./www
+
+Apache:
+
+Alias /SOGo.woa/WebServerResources/ \
+      /usr/local/share/sogo-0.9/www/

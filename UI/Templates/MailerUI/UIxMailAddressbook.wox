@@ -1,0 +1,16 @@
+<?xml version='1.0' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <head>
+    <title><var:string value="name"/></title>
+  </head>
+
+  <body>
+    You shouldn't see this content at all - the direct actions redirect to
+    the proper destinations, hence this component is _never_ rendered.
+  </body>
+</html>

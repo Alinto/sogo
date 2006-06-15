@@ -1,0 +1,26 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+  
+  classes = {
+    SOGoAppointmentFolder = {
+      superclass    = "SOGoFolder";
+    };
+    SOGoGroupAppointmentFolder = {
+      superclass    = "SOGoAppointmentFolder";
+    };
+
+    SOGoAppointmentObject = {
+      superclass    = "SOGoContentObject";
+    };
+
+    SOGoFreeBusyObject = {
+      superclass    = "SOGoContentObject";
+    };
+  };
+}

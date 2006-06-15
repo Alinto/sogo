@@ -1,0 +1,106 @@
+// $Id: UIxCalView.h 720 2005-07-12 13:56:19Z znek $
+
+#ifndef __SOGo_UIxCalView_H__
+#define __SOGo_UIxCalView_H__
+
+#include <SOGoUI/UIxComponent.h>
+
+/*
+  UIxCalView
+  
+  Superclass for most components which render a set of appointments coming from
+  a SOPE clientObject (which usually is an SOGoAppointmentFolder).
+*/
+
+@class NSString, NSArray, NSDictionary, NSCalendarDate, SOGoAptFormatter;
+
+@interface UIxCalView : UIxComponent
+{
+  NSArray          *appointments;
+  NSArray          *allDayApts;
+  id               appointment;
+  NSCalendarDate   *currentDay;
+  SOGoAptFormatter *aptFormatter;
+  SOGoAptFormatter *aptTooltipFormatter;
+  SOGoAptFormatter *privateAptFormatter;
+  SOGoAptFormatter *privateAptTooltipFormatter;
+
+  struct {
+    unsigned isMyApt      : 1;
+    unsigned canAccessApt : 1;
+    unsigned RESERVED     : 30;
+  } aptFlags;
+}
+
+
+/* config */
+
+- (void)configureFormatters;
+
+/* accessors */
+
+- (NSArray *)appointments;
+- (void)setAppointments:(NSArray *)_apts;
+
+- (NSArray *)allDayApts;
+- (id)appointment;
+- (BOOL)isMyApt;
+- (BOOL)canAccessApt; /* protection */
+
+- (BOOL)hasDayInfo;
+- (BOOL)hasHoldidayInfo;
+- (BOOL)hasAllDayApts;
+
+- (NSDictionary *)aptTypeDict;
+- (NSString *)aptTypeLabel;
+- (NSString *)aptTypeIcon;
+- (SOGoAptFormatter *)aptFormatter;
+
+- (NSString *)shortTextForApt;
+- (NSString *)shortTitleForApt;
+- (NSString *)tooltipForApt;
+- (NSString *)appointmentViewURL;
+
+- (id)holidayInfo;
+
+
+/* related to current day */
+- (void)setCurrentDay:(NSCalendarDate *)_day;
+- (NSCalendarDate *)currentDay;
+- (NSString *)currentDayName; /* localized */
+
+/* defaults */
+- (BOOL)showFullNames;
+- (BOOL)showAMPMDates;
+- (unsigned)dayStartHour;
+- (unsigned)dayEndHour;
+- (BOOL)shouldDisplayWeekend;
+- (BOOL)shouldDisplayRejectedAppointments;
+
+- (NSCalendarDate *)referenceDateForFormatter;
+ 
+- (NSCalendarDate *)thisMonth;
+- (NSCalendarDate *)nextMonth;
+
+/* fetching */
+
+- (NSCalendarDate *)startDate;
+- (NSCalendarDate *)endDate;
+- (NSArray *)fetchCoreInfos;
+
+/* date selection */
+
+- (NSDictionary *)todayQueryParameters;
+- (NSDictionary *)currentDayQueryParameters;
+
+/* calendarUIDs */
+
+- (NSString *)formattedCalendarUIDs;
+
+/* CSS related */
+
+- (NSString *)aptStyle;
+
+@end
+
+#endif /* __SOGo_UIxCalView_H__ */

@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="yes"?>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:rsrc="OGo:url"
+               xmlns:label="OGo:label"
+               className="UIxPrintPageFrame"
+               title="title"
+>
+  <table border="1" cellpadding="5" cellspacing="0" width="100%">
+    <tr>
+      <td colspan="2" align="center">
+        <h1 class="dayprintview"><var:string value="title" /></h1>
+        <h2 class="dayprintview"
+        ><var:string value="formattedCalendarUIDs"/></h2>
+      </td>
+    </tr>
+    <tr valign="top">
+      <var:if condition="hasHolidayInfo">
+        <tr>
+          <td colspan="2" align="left">
+            <b><var:string value="holidayInfo.title" /></b>
+          </td>
+        </tr>
+      </var:if>
+      <var:foreach list="allDayApts" item="appointment">
+        <tr>
+          <td width="10%">
+            <var:entity name="nbsp" />
+          </td>
+          <td class="dayprintview_content">
+            <var:foreach list="allDayApts" item="appointment">
+              <var:string value="appointment"
+                          formatter="aptFormatter"
+                          const:escapeHTML="NO"
+              />
+              <br />
+            </var:foreach>
+          </td>
+        </tr>
+      </var:foreach>
+      <var:foreach list="dateRange" item="currentDate">
+        <tr>
+          <td width="10%" rowspan="minRequiredRowSpan" class="dayprintview_time">
+            <var:string value="currentDate"
+                        const:dateformat="%H:%M"
+            />
+          </td>
+          <var:foreach list="aptsForCurrentDate" item="appointment">
+            <td class="dayprintview_content">
+              <var:string value="appointment"
+                          formatter="aptFormatter"
+                          const:escapeHTML="NO"
+                          style="aptStyle"
+              />
+            </td>
+            <var:if condition="minRequiredRowSpan"
+                    const:value="1"
+                    const:negate="YES"
+            >
+            </var:if>
+          </var:foreach>
+          <var:if condition="hasNoAptsForCurrentDate">
+            <td><var:entity const:name="nbsp" /></td>
+          </var:if>
+        </tr>
+      </var:foreach>
+    </tr>
+  </table>
+</var:component>

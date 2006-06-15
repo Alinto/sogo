@@ -1,0 +1,222 @@
+/* this file is in UTF-8 format! */
+
+/* Day */
+
+"Sunday"        = "Dimanche";
+"Monday"        = "Lundi";
+"Tuesday"       = "Mardi";
+"Wednesday"     = "Mercredi";
+"Thursday"      = "Jeudi";
+"Friday"        = "Vendredi";
+"Saturday"      = "Samedi";
+
+"a2_Sunday"     = "Di";
+"a2_Monday"     = "Lu";
+"a2_Tuesday"    = "Ma";
+"a2_Wednesday"  = "Me";
+"a2_Thursday"   = "Je";
+"a2_Friday"     = "Ve";
+"a2_Saturday"   = "Sa";
+
+"dayLabelFormat"    = "%d/%m/%Y";
+"today"			= "Aujourd'hui";
+
+
+/* Week */
+
+"Week"          = "Semaine";
+"this week"     = "cette semaine";
+
+
+/* Month */
+
+"this month"    = "ce mois";
+
+"January"       = "Janvier";
+"February"      = "Février";
+"March"         = "Mars";
+"April"         = "Avril";
+"May"           = "Mai";
+"June"          = "Juin";
+"July"          = "Juillet";
+"August"        = "Août";
+"September"     = "Septembre";
+"October"       = "Octobre";
+"November"      = "Novembre";
+"December"      = "Décembre";
+
+"a3_January"    = "Jan";
+"a3_February"   = "Fev";
+"a3_March"      = "Mar";
+"a3_April"      = "Avr";
+"a3_May"        = "Mai";
+"a3_June"       = "Jun";
+"a3_July"       = "Jul";
+"a3_August"     = "Aou";
+"a3_September"  = "Sep";
+"a3_October"    = "Oct";
+"a3_November"   = "Nov";
+"a3_December"   = "Dec";
+
+
+/* Year */
+
+"this year"    = "Cette année";
+
+
+/* Menu */
+
+"Calendar"		= "Agenda";
+"Contacts"		= "Contacts";
+
+
+/* Misc */
+
+"OpenGroupware.org"	= "OpenGroupware.org";
+"Forbidden"		= "Accès non autorisée";
+
+
+/* Button Titles */
+
+"new"           = "Nouveau";
+"printview"     = "Version imprimable";
+"edit"			= "Editer";
+"delete"		= "Supprimer";
+"proposal"      = "Recherche de plages horaires";
+"Save"			= "Sauvegarder";
+"Cancel"		= "Annuler";
+"show_rejected_apts"    = "Afficher les rendez-vous refusés";
+"hide_rejected_apts"    = "Cacher les rendez-vous refusés";
+
+
+/* Schedule */
+
+"Schedule"		= "Suivi de rendez-vous";
+"No appointments found" = "Aucun rendez-vous";
+"Meetings proposed by you" = "Rendez-vous que vous proposez";
+"Meetings proposed to you" = "Rendez-vous qui vous sont proposés";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action"		= "Action";
+"accept"		= "Accepter";
+"decline"		= "Refuser";
+"more participants"     = "Autres participants";
+"Hide already accepted and rejected appointments"    = "Cacher les invitations refusées";
+"Show already accepted and rejected appointments"    = "Montrer aussi les invitations refusées";
+
+
+/* Appointments */
+
+"Appointment viewer"	= "Visualisation de rendez-vous";
+"Appointment editor"	= "Edition de rendez-vous";
+"Appointment proposal"	= "Proposition de rendez-vous";
+"Appointment on"     	= "Rendez-vous le";
+"Start time" 	     	= "Heure de début";
+"End time"		="Heure de fin";
+"Start date"		= "Date de début";
+"End date"		= "Date de fin";
+"Earliest start time"	= "Au plus tôt";
+"Latest end time"	= "Au plus tard";
+"browse start date"	= "Sélection Date de début";
+"browse end date"	= "Sélection Date de fin";
+"Title"			="Titre";
+"Name"			= "Nom";
+"Email"			= "Email";
+"Status"		= "Status";
+"Location"		="Lieu";
+"Priority"		= "Priorité";
+"Cycle"			= "Récurence";
+"Cycle End"		= "s'arreter";
+"Categories"		= "Categories";
+"Classification"	= "Classification";
+"Duration"		= "Durée";
+"Participants"		= "Participants";
+"Resources"		= "Ressources";
+"Organizer"		= "Organisateur";
+"Comment"		="Notes";
+
+"attributes"		= "Attributs";
+"participants"		= "Participants";
+/* checkbox title */
+"is private"            = "Rendez-vous privé";
+/* classification */
+"Public"		= "Public";
+"Private"		= "Privé";
+/* text used in overviews and tooltips */
+"empty title"		= "Titre vide";
+"private appointment"	= "Rendez-vous privé";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION"	= "Décision attendue";
+"partStat_ACCEPTED"	= "Accepté";
+"partStat_DECLINED"	= "Refusé";
+"partStat_TENTATIVE"	= "Tentative";
+"partStat_DELEGATED"	= "Delegué";
+"partStat_OTHER"	= "???";
+
+/* Appointments (error messages) */
+
+"Conflicts found!"		= "Un ou plusieurs conflicts ont été détectés";
+"Invalid iCal data!"		= "Données iCal non valides ...";
+"Could not create iCal data!"	= "Les données iCal n'ont pu être crées ...";
+
+
+/* Searching */
+
+"Search"		= "Rechercher";
+"Search participants"	="Recherche de participants";
+"Search resources"	="Recherche de ressources";
+"Search appointments"	= "Recherche de rendez-vous";
+"Search in Anais"	= "Recherche par Anaïs";
+
+"check for conflicts" = "Vérifier les conflits";
+
+/* calendar modes */
+
+"Overview"      = "Vue synthétique";
+"Chart"         = "Vue avec repères horaires";
+"List"          = "Vue multi-agenda";
+"Columns"       = "Vue avec repères mensuels";
+
+
+/* Priorities */
+
+"prio_0"		= "Non précisée";
+"prio_1"		= "Haute";
+"prio_2"		= "Haute";
+"prio_3"		= "Haute";
+"prio_4"		= "Haute";
+"prio_5"		= "Normale";
+"prio_6"		= "Basse";
+"prio_7"		= "Basse";
+"prio_8"		= "Basse";
+"prio_9"		= "Basse";
+
+/* Cycles */
+
+"cycle_once"		= "Sans récurence";
+"cycle_daily"		= "Chaque jour";
+"cycle_weekly"		= "Chaque semaine";
+"cycle_2weeks"		= "Toutes les deux semaines";
+"cycle_4weeks"		= "Toutes les quatre semaines ";
+"cycle_monthly"		= "Tous les mois";
+"cycle_weekday"		= "A chaque même jour de la semaine";
+"cycle_yearly"		= "Chaque année";
+
+"cycle_end_never"	= "Jamais";
+"cycle_end_until"	= "A la date :";
+
+/* Appointment categories */
+
+"APPOINTMENT"		= "Rendez-vous";
+"NOT IN OFFICE"		= "A l'exterieur";
+"MEETING"		= "Réunion";
+"HOLIDAY"		= "Vacances";
+"PHONE CALL"		= "Rendez-vous téléphonique";
+
+/* validation errors */
+
+validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";
+validate_invalid_startdate = "La date de début est invalide !";
+validate_invalid_enddate   = "La date de fin est invalide !";
+validate_endbeforestart    = "La date de fin est avant la date de début !";

@@ -1,0 +1,6 @@
+#
+# This file is included by library makefiles to set the version information
+# of the executable.
+
+MAJOR_VERSION=0
+MINOR_VERSION=9

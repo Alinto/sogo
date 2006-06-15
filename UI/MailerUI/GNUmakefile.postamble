@@ -1,0 +1,17 @@
+# post processing
+
+validate-wox:
+#	xmllint --noout *.wox
+
+before-all :: validate-wox
+
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+after-all ::
+	@(cp bundle-info.plist \
+	  $(GNUSTEP_BUILD_DIR)/$(BUNDLE_NAME)$(BUNDLE_EXTENSION))
+else
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)
+endif

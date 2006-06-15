@@ -1,0 +1,7 @@
+{
+  hostName     = "agenor-db";
+  userName     = "agenor";
+  password     = "";
+  databaseName = "SOGo1";
+  port         = 5432;
+}

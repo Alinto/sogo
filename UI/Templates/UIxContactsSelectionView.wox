@@ -1,0 +1,171 @@
+<?xml version='1.0' standalone='yes'?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+>
+  <head>
+    <title>
+      <var:string label:value="Addressbook"/>
+    </title>
+    <meta name="description" content="SOGo Web Interface"/>
+    <meta name="author" content="SKYRIX Software AG"/>
+    <meta name="robots" content="stop"/>
+    <link type="text/css" rel="stylesheet" rsrc:href="uix.css"/>
+    <link type="text/css" rel="stylesheet" rsrc:href="calendar.css"/>
+    <link href="mailto:hh@skyrix.com" rev="made"/>
+    <style>
+      table.contacttableview {
+        text-decoration:  none;
+        font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+        font-size:        9pt;
+        color:            #000000;
+      }
+      table.contacttableview th {
+        text-align: left;
+      }
+      input.searchfield {
+        font-size:        8pt;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="skywintable"
+           class="wintable"
+           cellspacing="0"
+           cellpadding="5"
+           width="100%"
+    >
+      <tr>
+        <td class="wintitle">
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td width="5"/>
+              <td class="wintitle">
+                <!-- localize me -->
+                <span class="window_label"
+                ><var:string label:value="Addressbook"/></span>
+              </td>
+              <td width="36" align="right" valign="center">
+                <var:component className="UIxWinClose"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td id="skywinbodycell" class="wincontent">
+         <form name="searchform"
+               var:href="ownMethodName"
+               var:_sort="sortKey"
+               method="GET"
+               var:queryDictionary="context.request.formValues"
+         >
+          <table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td colspan="2">
+                  <table border="0" cellpadding="4" width="100%" cellspacing="0">
+                    <tr bgcolor="#e8e8e0">
+                      <td align="left">
+                        <input type="text" name="search" class="searchfield" 
+                               var:value="searchText" />
+                      </td>
+                    </tr>
+                  </table>
+  
+                  <!-- the content -->
+                  <table border="0" width="100%" class="contacttableview">
+                    <tr>
+                      <!-- localize -->
+                      <th>
+                        <var:if condition="sortKey" const:value="sn"
+                                const:negate="YES">
+                          <a var:href="ownMethodName"
+                             _sort="sn"
+                             var:_search="searchText"
+                             var:queryDictionary="context.request.formValues"
+                          ><var:string label:value="Lastname" /></a>
+                        </var:if>
+                        <var:if condition="sortKey" const:value="sn">
+                          <i><var:string label:value="Lastname" /></i>
+                        </var:if>
+                      </th>
+                      <th>
+                        <var:if condition="sortKey" const:value="givenname"
+                                const:negate="YES">
+                          <a var:href="ownMethodName"
+                             _sort="givenname"
+                             var:_search="searchText"
+                             var:queryDictionary="context.request.formValues"
+                          ><var:string label:value="Firstname" /></a>
+                        </var:if>
+                        <var:if condition="sortKey" const:value="givenname">
+                          <i><var:string label:value="Firstname" /></i>
+                        </var:if>
+                      </th>
+                      <th>
+                        <var:if condition="sortKey" const:value="mail"
+                                const:negate="YES">
+                          <a var:href="ownMethodName"
+                             _sort="mail"
+                             var:_search="searchText"
+                             var:queryDictionary="context.request.formValues"
+                          ><var:string label:value="EMail" /></a>
+                        </var:if>
+                        <var:if condition="sortKey" const:value="mail">
+                          <i><var:string label:value="EMail" /></i>
+                        </var:if>
+                      </th>
+                      <th>
+  		            <var:string label:value="Phone" />
+                      </th>
+                      <th>
+  		            <var:string label:value="Location" />
+                      </th>
+                    </tr>
+                    <var:foreach list="contactInfos" item="contact">
+                      <tr>
+                        <td>
+                          <a var:href="jsOnClickCode"
+                             ><var:string value="contact.sn" /></a>
+                        </td>
+                        <td><var:string value="contact.givenname"       /></td>
+                        <td><var:string value="contact.mail"            /></td>
+                        <td><var:string value="contact.telephonenumber" /></td>
+                        <td><var:string value="contact.l"               /></td>
+                      </tr>
+                    </var:foreach>
+                  </table>
+              </td>
+            </tr>
+  
+            <tr bgcolor="#F5F5E9">
+              <td align="left" width="10">
+                <var:entity const:name="nbsp"/>
+              </td>
+              <td align="right">
+                <img border="0"
+                     alt=""
+                     rsrc:src="corner_right.gif"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" bgcolor="#F5F5E9">
+                <table border="0" width="100%" cellpadding="10" cellspacing="0">
+                  <tr/>
+                </table>
+              </td>
+            </tr>
+          </table>
+         </form>
+        </td>
+      </tr>
+    </table>
+    <var:if condition="isUIxDebugEnabled">
+      <hr />
+      <small>clientObject: <var:string value="clientObject" /></small>
+    </var:if>
+  </body>
+</html>

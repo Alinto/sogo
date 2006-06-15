@@ -1,0 +1,145 @@
+{
+  requires = ( MAIN, CommonUI, Appointments );
+
+  publicResources = (
+    previous_week.gif,
+    next_week.gif,
+    icon_view_overview.gif,
+    icon_view_overview_inactive.gif,
+    icon_view_chart.gif,
+    icon_view_chart_inactive.gif,
+    icon_view_list.gif,
+    icon_view_list_inactive.gif,
+    icon_view_columns.gif,
+    icon_view_columns_inactive.gif,
+    icon_popupcalendar.gif,
+    first.gif,
+    previous.gif,
+    next.gif,
+    last.gif,
+    skycalendar.html,
+    skycalendar.js,
+    green_corner.gif,
+    invisible_space_2.gif,
+    cycles.plist,
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SOGoAppointmentFolder = {
+      methods = {
+        dayoverview = {
+          protectedBy = "View";
+          pageName    = "UIxCalDayOverview"; 
+        };
+        daychartview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalDayChartview"; 
+        };
+        daylistview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalDayListview"; 
+        };
+        dayprintview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalDayPrintview"; 
+        };
+        weekoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekOverview"; 
+        };
+        weekchartview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekChartview"; 
+        };
+        weeklistview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekListview"; 
+        };
+        weekcolumnsview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekColumnsview"; 
+        };
+        weekprintview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekPrintview"; 
+        };
+        monthoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalMonthOverview"; 
+        };
+        monthprintview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalMonthPrintview"; 
+        };
+        yearoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalYearOverview"; 
+        };
+        new = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "new";
+        };
+        show = { 
+          protectedBy = "View";
+          pageName    = "UIxCalView"; 
+          actionName  = "redirectForUIDs";
+        };
+        proposal = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentProposal"; 
+        };
+        proposalSearch = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentProposal"; 
+          actionName  = "proposalSearch";
+        };
+      };
+    };
+
+    SOGoAppointmentObject = {
+      methods = {
+        printview = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentPrintview"; 
+        };
+        view = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentView"; 
+        };
+        delete = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentView"; 
+          actionName  = "delete";
+        };
+        edit = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+        };
+        save = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "save";
+        };
+        accept = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "accept";
+        };
+        decline = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "decline";
+        };
+        test = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "test";
+        };
+      };
+    };
+  };
+}

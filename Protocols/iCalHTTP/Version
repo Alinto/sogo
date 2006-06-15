@@ -1,0 +1,5 @@
+# Version file
+
+SUBMINOR_VERSION:=4
+
+# v0.9.3 requires NGiCal v4.3.32

@@ -1,0 +1,20 @@
+<?xml version='1.0' standalone='yes'?>
+<!-- $Id$ -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <head>
+    <title>DB Testdaemon (<var:string value="context.page.name"/>)</title>
+    <meta name="description" content="OGo DB Testdaemon Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="robots"      content="stop" />
+    <link href="mailto:feedback@opengroupware.org" rev="made" />
+    <link type="text/css" rel="stylesheet" rsrc:href="dbd.css" />
+  </head>
+
+  <body>
+    <var:component-content/>
+  </body>
+</html>

@@ -1,0 +1,211 @@
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v0.9.36)
+
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDateFormatter.m: hardened against nil arguments (v0.9.35)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed -userFolderPath to generate the path to the
+	  activeUser, _NOT_ the owner (v0.9.34)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: added fragile base class check (v0.9.33)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed language lookup to meet the status quo
+	  (v0.9.32)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: minor code reorgs (v0.9.31)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: added -titlePlaceholder API for properly
+	  formatting appointments without titles (v0.9.30)
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* WOContext+UIx.[hm]: new category to WOContext, currently provides
+	  -isUIxDebugEnabled (v0.9.29)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: moved -isAccessRestricted method to
+	  UIxComponent+Agenor (v0.9.28)
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.27
+	
+	* UIxComponent.m: implicitly set the context's queryPathSeperator
+	  when generating URIs used in redirects
+
+	* v0.9.26
+
+	* UIxComponent.m: added method -isAccessRestricted to indicate whether
+	  certain options might have to be disabled due to restrictions
+	  set by the customer
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: added method -isInvokedBySafeMethod to check whether 
+	  the current HTTP method is a safe one (eg HEAD/GET) (v0.9.25)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: new API. -stringForObjectValue: is deprecated
+	  now and should not be used anymore. Formatting needs a referenceDate
+	  in order to properly display time ranges. Time ranges are currently
+	  rendered in SOGoAptFormatter, but this should probably be delegated
+	  to a natural language aware auxiliary (date-)formatter. Also, some
+	  new formatting options have been introduced. (v0.9.24)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoDateFormatter.[hm]: new method -setFrenchDateFormat: to override
+	  the default ISO format. This will be chosen depending on locale
+	  automatically. The full description uses this setting when generating
+	  the appropriate part of the description. (v0.9.23)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.m: remove "appointment" prefix from tooltips
+	  (v0.9.22)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: new option for formatter (v0.9.21)
+
+	* SOGoAptFormatter.[hm]: added ability to set custom title for private
+	  appointments. (v0.9.20)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: added formatting for private apts, additional
+	  cleanup (v0.9.19)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed to use NGLogging (v0.9.18)
+
+2004-10-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: rewrote handling of queryParameters, these get
+	  constructed lazily now (v0.9.17)
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoJSStringFormatter.[hm]: new formatter to properly escape certain
+	  strings passed to JavaScript (v0.9.16)
+	  
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed the implementation of -ownPath and fixed a
+	  bug in -userFolderPath (v0.9.15)
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: added some helper methods for computing relative
+	  paths within the application (v0.9.14)
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: minor code cleanups (v0.9.13)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.12
+
+	* GNUmakefile.preamble: fixed library dependencies (used wrong project
+	  name)
+
+	* SOGoAptFormatter.m: minor code cleanups, fixed issue on MacOSX
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.11
+
+	* SOGoDateFormatter.m: minor cleanups
+
+	* UIxComponent.m: fixed includes to fix warnings
+
+	* added common.h
+
+2004-08-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new date related methods moved here from UIxCalView
+	  (v0.9.10)
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new method -isUIxDebugEnabled, triggered by new
+	  default "SOGoUIxDebugEnabled" (v0.9.9)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.8
+
+	* SOGoAptFormatter.[hm]: added new formatter for appointments.
+
+	* UIxComponent.m: added warning.
+
+	* GNUmakefile: added SOGoAptFormatter.[hm]
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: added -SoUser (v0.9.7)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.6
+	
+	* SOGoDateFormatter.[hm]: added fast localizable date formatter.
+
+	* GNUmakefile: added SOGoDateFormatter.[hm]
+
+2004-07-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: added "hm" queryParameter to add hour/minute part to
+	  selectedDate which is necessary for appointment proposals. Removed
+	  all additional stuff from -dateForDateString: and moved this to
+	  -selectedDate. IMHO this is always high-level behaviour which needs to
+	  be refined in the appropriate high-level method, not at conversion
+	  level. (v0.9.5)
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: renamed some of the labels to better reflect the
+	  intention (and to avoid name clashes) (v0.9.4)
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: date specific labels (weekday names, month names)
+	  (v0.9.3)
+
+2004-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: new method -labelForKey: implemented very similar to
+	  new WOLabelAssociation in SOPE. Also implemented -locale. (v0.9.2)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new method -backendTimeZone.
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: introduced 'viewTimeZone' method and adds some
+	  timezone correction to date methods
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: make categories on SOGoObject instead of SxFolder
+
+	* GNUmakefile: patches for different build/runtime environment
+
+	* created ChangeLog

@@ -1,0 +1,31 @@
+{
+  requires = ( MAIN, MailerUI );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SOGoCalendarMailBodyPart = {
+      methods = {
+        accept = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalAction"; 
+          actionName  = "markAccepted";
+        };
+        decline = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalAction"; 
+          actionName  = "markDeclined";
+        };
+        tentative = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalAction"; 
+          actionName  = "markTentative";
+        };
+      };
+    };
+  };
+}

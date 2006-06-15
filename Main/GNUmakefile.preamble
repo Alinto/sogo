@@ -1,0 +1,28 @@
+# compile settings
+
+ADDITIONAL_CPPFLAGS += \
+        -DSOGO_MAJOR_VERSION=$(MAJOR_VERSION) \
+        -DSOGO_MINOR_VERSION=$(MINOR_VERSION) \
+        -DSOGO_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../SoObjects/	\
+	-I../..
+
+ADDITIONAL_LIB_DIRS += \
+	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ \
+	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+
+$(SOGOD)_TOOL_LIBS += \
+	-lSOGo			\
+	-lOGoContentStore	\
+	-lGDLContentStore	\
+	-lGDLAccess		\
+	-lWEExtensions		\
+	-lNGiCal		\
+	-lNGObjWeb		\
+	-lNGMime -lNGLdap	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lXmlRpc -lSaxObjC

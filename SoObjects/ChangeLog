@@ -1,0 +1,102 @@
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make: fixed for OSX compilation
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: provide default install dir and bundle extension to
+	  WO bundles
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make: link against GDLContentStore instead of OGoContentStore
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make (ADDITIONAL_LIB_DIRS): removed SOGoLogic from the linking
+	  path
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: removed dependency to removed libSOGoLogic
+
+2005-02-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.25
+
+	* GNUmakefile.preamble: added libNGiCal as a dependency
+
+	* Appointments/SOGoAppointmentObject.[hm]: added -event as a 
+	  convenience to retrieve a complete iCalEvent from the stored
+	  representation. This is used by SOGoAppointmentFolder to perform
+	  necessary range calculations on recurrent events.
+
+	* Appointments/SOGoAppointmentFolder.[hm]: extended -fixupRecord: and
+	  -fixupRecords: to accept a fetchRange: as second parameter. This
+	  is used for cyclic (recurrent) events to determine the required
+	  'amount' of fixup that needs to be done. During -fixupRecords: its
+	  correctly determined now whether the record describes a recurrent
+	  event - if that's the case, the whole event is retrieved and the
+	  record gets duplicated (memory efficiently) as necessary to resemble
+	  the appropriate fetch information in the desired range.
+
+2004-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.24
+
+	* Appointments/SOGoAppointmentFolder.[hm]: added -fetchFreebusy...
+	  Removed all -fetchXXXInfosFromFolder: methods. There's a single
+	  method to override now, making the job in SOGoGroupAppointmentFolder
+	  much easier (to understand).
+
+	* Appointments/SOGoGroupAppointmentFolder.m: added necessary fetch
+	  abstraction.
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.[hm]: added "partstates" to
+	  coreInfos for fetching. Also added new API to fetch a stripped down
+	  version of coreInfos, suitable for overviews. (v0.9.23)
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.m: default redirect is now
+	  "schedule" instead of "weekoverview" (0.9.22)
+
+	* Appointments/SOGoAppointmentFolder.m: cleanup (v0.9.21)
+
+	* Appointments/SOGoAppointmentFolder.m: compile fix (v0.9.20)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.19
+
+	* Appointments/SOGoAppointmentFolder.[hm]: new method to fetch generic
+	  fields (better suited for freebusy), fixed some "mailto:" prefix
+	  madness
+
+	* Appointments/SOGoAppointmentFolder.m: fixed bug in
+	  -uidsFromICalPersons: (v0.9.18)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.m: added new quickinfo attributes
+	  for fetching (v0.9.17)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: added Sieve product
+
+	* Appointments/SOGoGroupAppointmentFolder.m,
+	  Appointments/SOGoAppointmentFolder.m, SOGo/SOGoContentObject.m,
+	  SOGo/SOGoUserFolder.m: changed to NGLogging.
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* added "Mailer" product
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* added "Contacts" product
+
+	* ChangeLog: created

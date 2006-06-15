@@ -1,0 +1,18 @@
+( /* the toolbar groups */
+            ( /* first group */
+              { link  = "getMail";
+                cssClass = "tbicon_getmail"; label = "Get Mail"; },
+              {
+                link     = "#"; // "compose"; // target = "_blank";
+                isSafe   = NO;
+                onclick  = "clickedCompose(this);return false;";
+                cssClass = "tbicon_compose"; label = "Write";
+              },
+            ),
+            ( // fourth group (folders)
+              { link = "#"; onclick="return ctxFolderAdd(this)";
+                enabled  = "showFolderCreateButton";
+                isSafe = NO;
+                cssClass = "tbicon_folderadd"; label = "Create"; }
+            )
+)

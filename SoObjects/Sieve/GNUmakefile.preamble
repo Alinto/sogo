@@ -1,0 +1,3 @@
+# compilation settings
+
+ADDITIONAL_INCLUDE_DIRS += -I../Mailer

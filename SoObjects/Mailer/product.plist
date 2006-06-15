@@ -1,0 +1,70 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+  
+  classes = {
+    SOGoMailBaseObject = {
+      superclass    = "SOGoObject";
+    };
+
+    SOGoMailAccounts = {
+      superclass    = "SOGoMailBaseObject";
+    };
+
+    SOGoMailAccount = {
+      superclass    = "SOGoMailBaseObject";
+      defaultRoles = {
+        "Add Folders" = "Owner";
+      };
+    };
+    SOGoSharedMailAccount = {
+      superclass    = "SOGoMailAccount";
+    };
+
+    SOGoMailFolder = {
+      superclass    = "SOGoMailBaseObject";
+      defaultRoles = {
+        "Add Folders" = "Owner";
+      };
+    };
+    SOGoSharedInboxFolder = {
+      superclass    = "SOGoMailFolder";
+    };
+
+    SOGoTrashFolder = {
+      superclass    = "SOGoMailFolder";
+    };
+
+    SOGoMailObject = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    
+    SOGoMailBodyPart = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    SOGoImageMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
+    SOGoMessageMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
+    SOGoCalendarMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
+    SOGoVCardMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
+
+    SOGoDraftsFolder = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    SOGoDraftObject = {
+      superclass    = "SOGoMailBaseObject";
+    };
+  };
+}

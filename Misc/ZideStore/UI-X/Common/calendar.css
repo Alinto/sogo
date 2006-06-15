@@ -1,0 +1,189 @@
+.aptview_title {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color:            #000000;
+  font-weight:      bold;
+}
+
+.aptview_text {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color:            #000000;
+}
+
+.weekoverview_title {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  color:            #000000;
+  background-color: #d2d2cc;
+}
+
+.weekoverview_title a {
+  color:            #0033cc;
+  text-decoration: none;
+}
+
+.weekoverview_title_hilite {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  color:            #000000;
+  background-color: #d2d2cc;
+  font-weight:      bold;
+}
+
+.weekoverview_title_hilite a {
+  color:            #0033cc;
+  text-decoration: none;
+}
+
+.weekoverview_title_daylink {
+  font-size:        12pt;
+  color:            #0033cc;
+  font-weight:      bold;
+}
+
+.weekoverview_title_newlink {
+  font-size:        8pt;
+}
+
+.weekoverview_holidayinfo {
+  font-size:        8pt;
+  font-weight:      bold;
+}
+
+.weekoverview_content {
+  color:            #FFFFFF;
+  background-color: #e8e8e0;
+}
+
+.weekoverview_content a {
+  color:           #0000FF;
+  font-family:     Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:  0pt;
+  text-decoration: none;
+}
+
+.weekoverview_content_hilite {
+  background-color: #fffff0;
+}
+
+.weekoverview_content_hilite a {
+  color:           #0000FF;
+  font-family:     Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:  0pt;
+  text-decoration: none;
+}
+
+.monthoverview {
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  letter-spacing:   0pt;
+  padding:          2px;
+}
+
+.monthoverview a {
+  color:            #0033cc;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        7pt;
+  font-style:       normal;
+  font-weight:      normal;
+  letter-spacing:   0pt;
+  text-decoration:  none;
+}
+
+.monthoverview a:hover {
+  text-decoration:  underline;
+}
+
+.monthoverview_title {
+  background-color: #d2d2cc;
+  text-align:       center;
+}
+
+.monthoverview_week {
+  background-color: #d2d2cc;
+  width:            16pt;
+  text-align:       center;
+  vertical-align:   middle;
+}
+
+.monthoverview_week a {
+  color:            #000000;
+  font-size:        10pt;
+}
+
+.monthoverview_week_hilite {
+  background-color: #fffff0;
+  width:            16pt;
+  text-align:       center;
+  vertical-align:   middle;
+}
+
+.monthoverview_week_hilite a {
+  color:            #000000;
+  font-size:        10pt;
+}
+
+.monthoverview_content {
+  background-color: #e8e8e0;
+  font-size:        9pt;
+  height:           60;
+}
+
+.monthoverview_content a {
+  font-style:       italic;
+  font-weight:      bold;
+}
+
+.monthoverview_content td {
+  text-align:       let;
+  vertical-align:   top;
+}
+
+
+.monthoverview_content_hilite {
+  background-color: #fffff0;
+  font-size:        9pt;
+  height:           60;
+}
+
+.monthoverview_content_hilite a {
+  font-style:       italic;
+  font-weight:      bold;
+}
+
+.monthoverview_content_dimmed {
+  background-color: #d2d2cc;
+  font-size:        9pt;
+  height:           60;
+}
+
+.monthoverview_content_dimmed a {
+  font-style:       normal;
+  font-weight:      normal;
+}
+
+.monthoverview_day a {
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        12pt;
+}
+
+.monthoverview_day_new a {
+  font-style:       normal;
+  font-weight:      normal;
+}
+
+.monthoverview_day_new a:hover {
+  font-style:       normal;
+  font-weight:      normal;
+  color:            #ff0000;
+}
+
+.monthoverview_content_link {
+  font-style:       normal;
+  font-weight:      normal;
+}

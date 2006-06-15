@@ -1,0 +1,204 @@
+<?xml version="1.0" standalone="yes"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:var="http://www.skyrix.com/od/binding"
+     xmlns:label="OGo:label"
+     xmlns:const="http://www.skyrix.com/od/constant"
+     xmlns:rsrc="OGo:url"
+     class="linked_attachment_frame"
+>
+  <!-- TODO: add iMIP actions -->
+
+ <var:if condition="couldParseCalendar" const:negate="1">
+  <fieldset>
+    <legend>Parsing Error</legend>
+    
+    The SOGo/SOPE iCalendar parser could not parse the body of this MIME part.
+
+    <pre><var:string value="flatContentAsString" /></pre>
+  </fieldset>
+ </var:if>
+
+ <var:if condition="couldParseCalendar">
+  <fieldset>
+    <legend>
+      <var:string label:value="Appointment"/>:
+      <var:string value="inEvent.summary" /> <!-- TODO: shorted title -->
+
+      <var:if condition="isLoggedInUserTheOrganizer">
+        (<var:string label:value="organized_by_you"/>)
+      </var:if>
+      <var:if condition="isLoggedInUserAnAttendee">
+        (<var:string label:value="you_are_an_attendee"/>)
+      </var:if>
+    </legend>
+    
+    
+    <var:if condition="inCalendar.method" const:value="REQUEST">
+      <!-- sent to attendees to propose or update a meeting -->
+      <var:if condition="isLoggedInUserAnAttendee">
+        <p class="uix_ical_toolbar">
+          <a var:href="acceptLink"    label:string="do_accept"/>  |
+          <a var:href="declineLink"   label:string="do_decline"/> |
+          <a var:href="tentativeLink" label:string="do_tentative"/>
+          <var:if condition="isEventStoredInCalendar" const:negate="1">
+            | <a var:href="addToCalendarLink" label:string="do_add_to_cal" />
+          </var:if>
+        </p>
+      
+        <p>
+          <var:string label:value="Organizer" />
+          <a var:href="inEvent.organizer.email"
+            ><var:string value="organizerDisplayName" /></a>
+          <var:string label:value="request_info" />
+        </p>
+      </var:if>
+      
+      <var:if condition="isLoggedInUserAnAttendee" const:negate="1">
+        <p>
+          <var:string label:value="Organizer" />
+          <a var:href="inEvent.organizer.email"
+            ><var:string value="organizerDisplayName" /></a>
+          <var:string label:value="request_info_no_attendee" />
+        </p>
+      </var:if>
+    </var:if>
+
+    
+    <var:if condition="inCalendar.method" const:value="REPLY">
+      <!-- sent to organizer to update the status of the participant -->
+      <var:if condition="isReplySenderAnAttendee" const:negate="1">
+        <p><var:string label:value="reply_info_no_attendee" /></p>
+      </var:if>
+
+      <var:if condition="isReplySenderAnAttendee">
+        <p class="uix_ical_toolbar">
+          <a var:href="addStatusReplyLink"
+             var:_newstat="$inReplyAttendee.partStatWithDefault"
+             var:_sender="replySenderBaseEMail"
+             label:string="do_update_status"/>
+        </p>
+        
+        <!-- TODO: replies to events not in the calendar? -->
+        
+        <p>
+          Status Update:
+          <var:string label:value="$inReplyAttendee.partStatWithDefault" />,
+          was:
+          <var:string
+              label:value="$storedReplyAttendee.partStatWithDefault" />.
+        </p>
+      </var:if>
+    </var:if>
+
+    
+    <var:if condition="inCalendar.method" const:value="CANCEL">
+      <!-- sent to attendees to notify of the attendee being removed or the
+           event being deleted -->
+      <var:if condition="isEventStoredInCalendar">
+        <p class="uix_ical_toolbar">
+          <a var:href="delFromCalendarLink" label:string="do_del_from_cal"/>
+        </p>
+      </var:if>
+      
+      <p>
+        <!-- todo: if there are no attendees, the whole meeting was stopped -->
+        <var:string label:value="cancel_info_text" />
+      </p>
+    </var:if>
+
+
+    <var:if condition="inCalendar.method" const:value="ADD">
+      <!-- TODO -->
+      <p><var:string label:value="add_info_text" /></p>
+    </var:if>
+
+
+    <var:if condition="inCalendar.method" const:value="PUBLISH">
+      <!-- none-scheduling event sent to someone for adding to the calendar -->
+      <p><var:string label:value="publish_info_text" /></p>
+    </var:if>
+    
+    
+    <var:if condition="isLoggedInUserTheOrganizer">
+      <!--
+         Possible Status:
+           REPLY    => check whether it matches, if not suggest change, show
+                       comment
+           REFRESH  => add button to resent iCal
+           COUNTER  => show panel to decide on counter
+        -->
+    </var:if>
+    <var:if condition="isLoggedInUserTheOrganizer" const:negate="1">
+      <!--
+         Possible Status:
+           REQUEST => ACCEPT, TENTATIVELY, DECLINE buttons with comment field
+             - only show buttons for attendees
+           PUBLISH => just the 'add to calendar' button, rewrite organizer?
+	   ADD / CANCEL
+           DECLINE-COUNTER
+        -->
+    </var:if>
+
+
+    <!-- the user comment is used in replies -->
+    <var:if condition="inEvent.userComment.isNotEmpty">
+      <div class="linked_attachment_meta" style="background-color: white;">
+        <var:string value="inEvent.userComment" const:insertBR="1" />
+      </div>
+      <br />
+    </var:if>
+
+    
+    <div class="linked_attachment_meta" style="background-color: white;">
+      <table border="0" class="linked_attachment_meta">
+        <tr>
+          <td><var:string label:value="Time"/>:</td>
+          <td>
+            <!-- TODO: we need a better viewer for that -->
+            <var:string value="startTime" formatter="dateFormatter" />
+            <var:string label:value="to" />
+            <var:string value="endTime" formatter="dateFormatter" />
+          </td>
+        </tr>
+
+        <tr>
+          <td><var:string label:value="Organizer"/>:</td>
+          <td>
+            <a var:href="authorativeEvent.organizer.email"
+                ><var:string value="organizerDisplayName" /></a>
+          </td>
+        </tr>
+        
+        <tr>
+          <td valign="top"><var:string label:value="Attendees"/>:</td>
+          <td>
+            <var:foreach list="authorativeEvent.participants" item="attendee">
+              <a var:href="attendee.email"
+                 ><var:string value="attendee.cnForDisplay" /></a>
+              (<var:string label:value="$attendee.partStatWithDefault" />)
+              <br />
+            </var:foreach>
+          </td>
+        </tr>
+        
+        <var:if condition="inEvent.comment.isNotEmpty">
+          <tr> <!-- description in iCal -->
+            <td valign="top"><var:string label:value="Comment"/>:</td>
+            <td>
+             <var:string value="authorativeEvent.comment" const:insertBR="1" />
+            </td>
+          </tr>
+        </var:if>
+      </table>
+    </div>
+  </fieldset>
+ </var:if><!-- could parse -->
+
+<!--
+  <var:string value="appointment" />
+  <br />
+  <br />
+  <br />
+-->
+  <pre style="display: none;"><var:string value="flatContentAsString" /></pre>
+</div>

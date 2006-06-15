@@ -1,0 +1,7 @@
+# compile flags
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I.. -I../.. -I../../..
+
+ADDITIONAL_LIB_DIRS += \
+	-L./$(GNUSTEP_OBJ_DIR)

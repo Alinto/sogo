@@ -1,0 +1,24 @@
+<?xml version='1.0' standalone='yes'?>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <head>
+    <title>Scalable OGo Homepage</title>
+  </head>
+
+  <body>
+    <h3>Scalable OGo Homepage</h3>
+
+    <form href="connect">
+      Login:
+      <input name="userName" type="text" var:value="userName" />
+      <input name="submit" type="submit" value="connect" />
+    </form>
+	<!--
+	<hr />
+	Current locale: <pre><var:string value="context.locale" /></pre>
+	-->
+  </body>
+</html>

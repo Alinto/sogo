@@ -1,0 +1,67 @@
+--
+-- (C) 2004-2005 SKYRIX Software AG
+--
+-- TODO:
+--   add a unique constraints on path
+
+CREATE SEQUENCE SOGo_folder_info_seq;
+
+DROP TABLE SOGo_folder_info;
+
+CREATE TABLE SOGo_folder_info (
+  c_folder_id  INTEGER 
+    DEFAULT nextval('SOGo_folder_info_seq')
+    NOT NULL 
+    PRIMARY KEY,                     -- the primary key
+  c_path           VARCHAR(255)  NOT NULL, -- the full path to the folder
+  c_path1          VARCHAR(255)  NOT NULL, -- parts (for fast queries)
+  c_path2          VARCHAR(255)  NULL,     -- parts (for fast queries)
+  c_path3          VARCHAR(255)  NULL,     -- parts (for fast queries)
+  c_path4          VARCHAR(255)  NULL,     -- parts (for fast queries)
+  c_foldername     VARCHAR(255)  NOT NULL, -- last path component
+  c_location       VARCHAR(2048) NOT NULL, -- URL to folder
+  c_quick_location VARCHAR(2048) NULL,     -- URL to quicktable of folder
+  c_folder_type    VARCHAR(255)  NOT NULL  -- the folder type ...
+);
+
+INSERT INTO SOGo_folder_info 
+  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername,
+    c_location, c_quick_location, c_folder_type ) 
+VALUES 
+  ( '/Users', 
+    'Users',
+    NULL,
+    NULL,
+    NULL,
+    'Users', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
+    'Container' );
+
+INSERT INTO SOGo_folder_info 
+  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
+    c_location, c_quick_location, c_folder_type ) 
+VALUES 
+  ( '/Users/helge', 
+    'Users',
+    'helge',
+    NULL,
+    NULL,
+    'helge', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
+    'Container' );
+
+INSERT INTO SOGo_folder_info 
+  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
+    c_location, c_quick_location, c_folder_type ) 
+VALUES 
+  ( '/Users/helge/Calendar', 
+    'Users',
+    'helge',
+    'Calendar',
+     NULL,
+    'Calendar', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_helge_privcal', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_helge_privcal_quick', 
+    'Appointment' );

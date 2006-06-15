@@ -1,0 +1,16 @@
+# $Id$
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+	RELBUILD_DIR_libZideStoreCommonUI = $(GNUSTEP_OBJ_DIR)
+else
+	RELBUILD_DIR_libZideStoreCommonUI = $(GNUSTEP_OBJ_DIR)
+endif
+
+libZideStoreCommonUI_LIBRARIES_DEPEND_UPON += -lNGObjWeb
+
+CommonUI_LIB_DIRS += -L$(RELBUILD_DIR_libZideStoreCommonUI)
+
+CommonUI_BUNDLE_LIBS += \
+	-lNGObjWeb -lNGScripting \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC -lZideStoreCommonUI

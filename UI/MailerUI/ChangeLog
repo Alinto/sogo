@@ -1,0 +1,984 @@
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.173
+
+	* product.plist: removed tb.view methods (just use 'view' instead)
+
+2005-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailTree.m: improved block debugging (v0.9.172)
+
+2005-07-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.171
+
+	* UIxMailMainFrame.m: disabled Agenor app banner
+
+	* UIxMailToSelection.m, UIxMailFormatter.m: fixed gcc 4.0 warnings
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.170
+
+	* UIxMailEditor.m: the mail editor now presets the proper 'from' based
+	  on the 'account' query parameter
+	
+	* UIxMailEditorAction.m: the compose action now adds the current
+	  account as a query parameter when calling the compose panel
+	
+2005-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/Localizable.strings: added error labels for JavaScript
+	  (v0.9.169)
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: implemented identity based Sent folders (tied to
+	  'from' email address). The old url-attached Sent folder can be
+	  enabled using 'SOGoUseLocationBasedSentFolder') (v0.9.168)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: fixed banner positioning for 24x24 (v0.9.167)
+
+	* UIxMailMainFrame.m: fixed positioning for 24x24 icons (v0.9.166)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Toolbars/SOGoDraftObject.toolbar: new Anais css (v0.9.165)
+
+	* UIxMailEditor.m: fetch attachment names and provide initial style
+	  information to left/right side of editor component (v0.9.164)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: load JavaScript from a file (UIxMailListView.js)
+	  instead of embedding it into the page (v0.9.163)
+
+	* UIxMailView.m: do not fetch full message info for 304 existance
+	  checks but rather call -doesMailExist (v0.9.162)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed 'stop' buttons from toolbars (v0.9.161)
+
+	* v0.9.160
+
+	* Toolbars/SOGoMailFolder.toolbar: added bulk-delete button, removed
+	  expunge button
+
+	* UIxMailView.m: added fragile base class check, send a constant etag
+	  for the mail viewer, do not deliver content in the defaultAction in
+	  case the etag didn't change, added jsonly support to trashAction
+
+	* UIxMailToolbar.m: use -resourceLookupLanguages, use
+	  pageResourceManager instead of the toolbar component resourcemanager
+	  for evaluating labels
+
+	* product.plist: map getMail on the accounts folder to a noop action
+	  (#1491) (v0.9.159)
+	
+	* UIxMailMainFrame.m: added UIxMailPanelFrame class for panels opened
+	  by the main frame (v0.9.158)
+
+	* UIxMailView.m: show delete button if delete is allowed but trashing
+	  isn't (#1444) (v0.9.157)
+
+	* v0.9.156
+
+	* product.plist: moved more complex toolbar configs to own resource
+	  files
+
+	* UIxMailToolbar.m: added ability to place toolbars in separate plist
+	  files
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.155
+
+	* UIxMailToSelection.m: externalized JavaScript
+
+	* product.plist: added new JavaScript files as public resources
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: do not complain on drafts not being found when the
+	  delete action is triggered (#1489) (v0.9.154)
+
+	* UIxMailAccountView.m: directly check the ACL of the Inbox to check
+	  permissions (the Inbox will return NO on isCreateAllowed when being
+	  used by altnamespace ...) (#1472) (v0.9.153)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailAddressbook.m: don't restrict the Anais 'nature' flag anymore
+	  (v0.9.152)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.151
+
+	* UIxMailAccountView.m: fixed a warning
+
+	* UIxMailEditor.m: removed SOGoInternetDetectQualifier code (reuse
+	  shared Internet-detect functionality)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: create a proper form action URL which preserves
+	  query parameters (sort field) but removes search/filter values
+	  (v0.9.150)
+
+	* UIxMailSortableTableHeader.m: improved handling of multivalue form
+	  keys (v0.9.149)
+
+	* UIxMailAccountView.m: added method to check whether folder-create
+	  button should be visible on the account folder view (checks INBOX for
+	  the ACL, does check the alt-namespace default),
+	  added method for folder-creation in root (v0.9.148)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.147
+
+	* UIxMailToSelection.m: fixed ordering of parameters for the current
+	  Anais version
+        
+	* UIxMailAddressbook.m: fixed parameters being passed on to Anais for
+	  the current Anais version
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: improved error handling (display a JavaScript
+	  alert panel showing the issue instead of SOPE exception rendering)
+	  (v0.9.146)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailToSelection.m: changed behavior for adding/removing text
+	  fields and changing focus (v0.9.145)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: properly bind a 'getMail' method to the account
+	  folder (fixes #1470) (v0.9.144)
+
+	* UIxSubjectFormatter.m: fixed a stupid bug in subject handling leading
+	  to an infinite loop in the QP processing, hardened against QP loops
+	  (v0.9.143)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailEditor.m: removed -emailForUser usage and replaced with
+	  'official' activeUser API (v0.9.142)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: only enable folder add/remove buttons when the user
+	  has the 'c' permission on the IMAP folder (#1456) (v0.9.141)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailAccountView.m: removed methods to detect whether the
+	  clientObject is a shared account (done by the clientObject itself)
+	  (v0.9.140)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: perform some validation plus error handling prior
+	  trying to send a mail (check whether we have recipients, check
+	  whether the subject is set) (#1451) (v0.9.139)
+
+	* UIxMailEditor.m: properly determine from-email addresses (v0.9.138)
+
+	* UIxMailEditor.m: use new SoUser API instead of AgenorUserManager
+	  (v0.9.137)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: generate proper URLs for jumping to Calendar,
+	  HomePage etc (#1448) (v0.9.136)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: added from-selection popup, list discovery via
+	  AgenorUserManager (aka LDAP) (v0.9.135)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: use WOContext method from libSOGo to detect
+	  Internet access (v0.9.134)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added help button and extra space for that in the
+	  toolbar (v0.9.133)
+	
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added "link" banner to jump to the other SOGo
+	  tools, disable the banner in case the tree is disabled (since that
+	  hints that a new window without the frame is being used, eg the
+	  compose panel), added some more CSS classes instead of inline style
+	  declarations (v0.9.132)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* prepared ACL editors (v0.9.131)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.130
+	
+	* UIxMailListView.m: implemented empty-trash action
+
+	* product.plist: added a reduced toolbar when being on the trash folder
+	  (no reply/fwd etc, but added an empty trash button)
+	
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.129
+	
+	* UIxMailAccountView.m: added code to better display shared accounts
+
+	* UIxMailTree.m: moved IMAP4 connection string => label code to a
+	  NSString category
+	
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailTree.m: properly display share names in account list (show
+	  name of share instead of the cut-off account login). Added some
+	  improved heuristics to determine a viably short name (v0.9.128)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailView.m, product.plist: added -trash button and action
+	  (v0.9.127)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: hide expunge button on mail folder when deleting is
+	  disallowed (v0.9.126)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.125
+
+	* UIxMailToolbar.m: added ability to disable toolbar buttons in case an
+	  operation is not allowed (eg an object got deleted)
+
+	* product.plist: added 'isSafe=NO' markers to unsafe HTTP methods in
+	  toolbar, added 'enabled' binding for 'delete' button
+
+	* v0.9.124
+
+	* UIxMailView.m: improved error handling in case the delete flag could
+	  not be set
+
+	* UIxMailMainFrame.m: added -hasErrorText / -errorText / 
+	  -errorAlertJavaScript methods to deal with errors encoded in the
+	  'error' form parameter
+
+2005-03-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.123
+	
+	* UIxMailListView.m: added create/delete folder operations
+	
+	* product.plist: added folder-add/delete buttons in toolbar
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.122)
+
+2005-02-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: split into multiple files (v0.9.121)
+
+2005-02-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added ability not to generate the HTML frame 
+	  (v0.9.120)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved UIxMailSizeFormatter to MailPartViewers (v0.9.119)
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: added HTML escape/unescape functions (v0.9.118)
+
+	* moved mail part viewers to own product (MailPartViewers) (v0.9.117)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailSortableTableHeader.m: properly inherit from SoComponent, so
+	  that resource lookup works (v0.9.116)
+
+2005-02-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added automatic search field posting (v0.9.115)
+
+	* mailer.js: fixed a row highlighting bug (v0.9.114)
+
+	* product.plist: fixed compose button in mail viewer (v0.9.113)
+
+2005-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.wox: added a pointer cursor for rows and enabled an
+	  on-click message opener on some cells (v0.9.112)
+
+	* UIxMailListView.wox: added message row highlighting (v0.9.111)
+
+	* UIxMailAccountView.wox, UIxMailAccountsView.wox: added a title-div
+	  to fix layout (v0.9.110)
+
+2005-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use 'tb.view' instead of 'view' to show a page (v0.9.109)
+
+	* UIxMailTree.m: always stop tree on user folder (v0.9.108)
+	
+	* v0.9.107
+	
+	* product.plist: mapped 'namespaced' "tb.view" SOPE method to the same
+	  methods like "view". This allows us to use "tb.view" inside the
+	  mailer without clashing with other UIs on top of the same SoObjects
+
+	* UIxMailTree.m: use Inbox icon for SOGoMailAccount and
+	  SOGoMailAccounts folders, added ability to specify a
+	  'treeFolderAction' (relative URL to be triggered by clicks)
+
+	* v0.9.106
+	
+	* UIxMailFilterPanel.wox: improved CSS styling of the search field
+
+	* UIxMailTree.wox: fixed display of special mail icons if a folder
+	  has subfolders and is open (in short: the 'cornerIcon' binding is
+	  properly set)
+
+	* v0.9.105
+	
+	* UIxMailTree.m: fixed handling of root nodes (properly display all
+	  children of the root node)
+	
+	* UIxMailTreeBlock.m: generate a description
+	
+	* UIxMailMainFrame.m, UIxMailTree.m: made root class of tree
+	  configurable using 'SOGoMailTreeRootClass' default
+	
+2005-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.css: added left-padding to treecell to make it look better
+	  (v0.9.104)
+
+	* UIxMailListView.wox: added mark read/unread without page refresh
+	  using XMLHttpRequest (v0.9.103)
+
+	* product.plist, UIxMailListView.wox, mailer.js: added bulk
+	  reply/replyall/forward (v0.9.102)
+
+2005-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: fixed page form processing if the active URL
+	  does not specify a method name (ends with /) (v0.9.101)
+
+	* v0.9.100
+
+	* added support for filter popup (OGo bug #1210)
+	
+	* UIxMailListView: moved filter selection to an own component
+
+	* v0.9.99
+
+	* product.plist: also map index method of mail folder to
+	  UIxMailListView
+
+	* UIxMailListView.m: added subject/sender searching (OGo bug #1209)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartLinkViewer.wox, UIxMailPartMessageViewer.wox: added
+	  missing 'label' namespace declaration (v0.9.98)
+
+2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailReplyAction.m: implemented a content-reply (v0.9.97)
+
+2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.96
+
+	* UIxMailPartMessageViewer.m: fixed for multivalue from fields
+
+	* UIxMailEditorAction.m, product.plist: split editor action in multiple
+	  classes
+
+	* v0.9.95
+
+	* product.plist: do not use clickedEditorDelete() JS function for
+	  draft delete but just call the link
+	
+	* UIxMailEditor.m: a successful draft delete now returns the window
+	  closer and refreshes the opener
+	
+	* mailer.js now reloads the opener for editor-save and editor-delete
+	  functions (does not properly work since the form load is async)
+	
+	* UIxMailEditorAction.m, product.plist: implemented simple
+	  reply/reply-all processing (subject and recipient handling is in
+	  place, content quoting is pending)
+	
+	* v0.9.94
+
+	* UIxMailListView.m: properly show "to" address in tableview for
+	  Sent folder
+
+	* UIxMailView.m: fixed for new 'from' API
+
+	* v0.9.93
+
+	* mailer.js: work on the read-mail marking code, properly change the
+	  icon div
+
+	* UIxMailListView.m: changed handling of unread mail flags
+
+	* UIxMailView.wox: use the new markMailReadInWindow function to mark
+	  a mail read in the mail list
+
+2005-02-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.92
+	
+	* UIxMailView.m: properly refresh mail list after a mail got deleted
+
+	* UIxMailWindowCloser.m: added ability to refresh the opener window
+	  prior closing the panel
+
+	* UIxMailView.wox: triggers opener callback to mark a mail as read
+	
+	* mailer.js: added refreshOpener() function which refreshes the
+	  panel that opened the current window, added triggerOpenerCallback()
+	  function which triggers a URL given in the "openerurl" query
+	  parameter on the opener window
+
+	* UIxMailEditor.m: disabled Internet warning in the mail editor per
+	  default, can be enabled using the 'SOGoShowInternetMarker' default,
+	  made Internet header detection qualifier configurable, see README
+	  (SOGoInternetDetectQualifier string default), when the request is
+	  from the Internet, add headers as specified in the
+	  'SOGoInternetMailHeaders' dictionary default (v0.9.91)
+
+	* UIxMailTree.m: added support for special folder icons (v0.9.90)
+
+	* v0.9.89
+
+	* UIxMailTree.m: made special folder names localizable
+
+	* English.lproj/default.strings: added some folder translations
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.88
+
+	* UIxMailTree.m: some code cleanups, does not use -fetchSubfolders of
+	  SOGoObject anymore (to be useful for any object)
+
+	* UIxMailMainFrame.wox: made "Folders" title localizable
+
+	* UIxMailListView.wox: removed some superflous section
+
+2005-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailView.m: implemented 'expunge' action (delete button in the
+	  toolbar) (v0.9.87)
+
+	* UIxMailView.m, UIxMailRenderingContext.m: moved more bulk fetching
+	  to SoObject (v0.9.86)
+
+	* UIxMailView.m: moved plain/text bulkfetch method to SoObjects/Mailer,
+	  since its general purpose (v0.9.85)
+
+	* v0.9.84
+
+	* UIxMailView.m: properly recurse into message/rfc822 bodies for flat
+	  content fetches
+
+	* UIxMailView.m, UIxMailPartMessageViewer.m: added links for email
+	  addresses (currently mailto://)
+
+2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v0.9.83
+	
+	* UIxMailRenderingContext.m: activate UIxMailPartMessageViewer for
+	  message/rfc822 contents
+
+	* added a UIxMailPartMessageViewer for displaying embedded (eg
+	  forwarded) MIME messages
+
+	* v0.9.82
+	
+	* UIxMailPartLinkViewer.m: prefix filenames which start with a digit,
+	  properly escape attachment names
+
+	* UIxMailPartImageViewer.m (UIxMailPartViewer): append image extension
+	  to attachments
+	
+	* v0.9.81
+	
+	* UIxSieveEditor.m: call proper save method in Sieve SoObject
+	
+	* UIxMailEditor.m: added 'SOGoMailEditorKeepTmpFile' default to debug
+	  MIME generation
+
+	* v0.9.80
+
+	* UIxMailEditorAction.m: work on forwarding and reply
+	
+	* UIxFilterList.wox, UIxMailAccountView.wox, UIxMailAccountsView.wox,
+	  UIxSieveEditor.wox: fixed title (needs localization)
+
+	* UIxMailMainFrame.m: always generate title as given by the parent
+	  component (titles need to get fixed!), was fixed to OpenGroupware.org
+	  before unless in debug mode
+	
+	* UIxMailEditor.m: use new storeInfo API, generate a proper panelTitle
+	  (needs localization)
+
+	* UIxMailEditorAttach.m: use new attachment API
+
+	* UIxMailView.wox: remoted link to screenshot, use mail subject as
+	  title
+
+	* UIxMailListView.m: disabled a log
+
+2005-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.79
+
+	* UIxMailEditor.wox: localized 'Subject' label, shows 'non-intranet'
+	  marker if 'MinequProvenance' HTTP header is not set to 'intranet'
+
+	* mailer.css: added marker for internet-mails (#1153)
+
+	* v0.9.78
+
+	* UIxMailListView.m: properly mark deleted mails using line-through
+
+	* UIxMailView.m: close mail viewer if mail delete was successful
+
+	* mailer.css: added style classes for deleted cells
+
+	* UIxMailEditor.m: moved some Sent folder lookup to SOGoMailAccount
+
+	* v0.9.77
+
+	* added UIxMailSizeFormatter to render big file size numbers with some
+	  M or K suffix
+
+	* UIxMailPartViewer.m: added methods to retrieve filename, file
+	  extension and file size formatter
+
+	* UIxMailSortableTableHeader.m: minor code cleanups
+
+2005-01-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* started attachment (download) viewer (#1074) (v0.9.76)
+
+2005-01-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.75
+
+	* UIxMailEditor.m: copy sent mails to INBOX/Sent folder, fixes issue
+	  #1054
+
+	* product.plist: disabled unsupported delete button in mailviewer
+
+	* UIxMailListView.wox: removed unused mail checkboxes and folder-tree
+	  popup (#1211) (v0.9.74)
+
+	* disabled some unsupported buttons and template elements (#1209,
+	  #1210, #1207, #1208) (v0.9.73)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.72
+
+        * UIxMailWindowCloser.{m,wox}: new component which closes the window
+          in its "onLoad".
+
+        * UIxMailEditor.m: close window after successful send by opening
+          UIxMailWindowCloser. This fixes SOGo Bug #1053.
+
+2005-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.71)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailTree.m, UIxMailEditor.m, UIxMailPartViewer.m,
+          UIxEnvelopeAddressFormatter.m, UIxMailToolbar.m,
+          UIxMailRenderingContext.m, UIxMailEditorAttach.m,
+          UIxSubjectFormatter.m, UIxMailPartAlternativeViewer.m:
+          changed to use NGLogging (v0.9.70)
+
+2004-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.69
+
+	* UIxFilterList.m: added support for script creation
+
+	* v0.9.68
+	
+	* UIxFilterList.m: added ability to trigger new editor
+	
+	* started UIxSieveEditor
+	
+	* UIxFilterList.wox: minor fix to table layout (v0.9.67)
+	
+2004-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxFilterList.m: use toOneRelationshipKeys to retrieve the filters
+	  being displayed (v0.9.66)
+
+2004-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.65
+	
+	* added first (empty) version of filter list page
+	
+	* UIxMailEditorAttach.m: fixed a warning
+
+	* UIxMailAccountView.wox, product.plist: cleaned up account page (links
+	  work now), added a compose button (v0.9.64)
+
+2004-11-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailEditor.m: properly set "From" header (v0.9.63)
+
+2004-11-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailListView.wox: added sample move popup (v0.9.62)
+
+2004-11-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailListView.m: added support for toggling read/unread flags
+	  (v0.9.61)
+
+	* UIxMailTree.m: added tree navigation code from SoObjects (v0.9.60)
+
+	* UIxMailTree.m: removed unused code (v0.9.59)
+
+	* UIxMailListView.m: flush mail caches in the getMail action (v0.9.58)
+
+2004-10-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailEditor.m: reenabled deletion of temporary mail files (v0.9.57)
+
+2004-10-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: fixed getMail for drafts folder (v0.9.56)
+
+	* UIxMailListView.wox: fixed viewer activation for unread mails
+	  (v0.9.55)
+
+2004-10-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMoveToPopUp.m: fixed header (v0.9.54)
+
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* disabled popup until it uses the proper tree (v0.9.53)
+
+2004-10-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailMoveToPopUp.[m|wox]: component which renders a popup
+	  containing possible destinations for a mail move operation (v0.9.52)
+
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: default method returns a redirect to 'edit', added
+	  'delete' action and button (v0.9.51)
+
+	* v0.9.50
+
+	* UIxMailEditor.m: send mail using draft object
+
+	* UIxMailListView.wox: do not wrap title line
+
+	* UIxMailEditor.m: added send related code (v0.9.49)
+
+2004-10-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditorAttach.m: added attachment delete (v0.9.48)
+
+	* UIxMailEditorAttach.wox, mailer.css: work on layout, added delete
+	  action (v0.9.47)
+
+	* added new UIxMailEditorAttach component to manage draft attachments
+	  (v0.9.46)
+
+2004-10-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.45
+
+	* uix.css: replaced invalid "text-color" with "color"
+	
+	* UIxMailEditor.wox: bind subject/text, can load/save info object in
+	  draft
+
+2004-10-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.44
+
+        * UIxMailSortableTableHeader.[wox|m]: new component for doing sorting
+
+        * UIxMailListView.wox: uses UIxMailSortableTableHeader for sorting
+
+        * UIxMailListView.wox: bugfixes (v0.9.43)
+
+        * v0.9.42
+
+        * UIxMailListView.wox: sorting, proper handling of sort keys.
+          NOTE: there's still an unidentified bug of sort keys failing to be
+          retained on successive paging.
+
+        * UIxMailListView.m: sorting
+
+        * Images/title_*: corrected alpha values
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.41
+        
+        * UIxMailListView.wox: localized labels and added some JavaScript
+          templates for doing nifty row selection
+
+        * UIxMailListView.m: added JavaScript method (stub only)
+
+        * English.lproj/default.strings: new localized strings
+
+2004-10-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.40
+
+	* product.plist: exported some missing icons
+
+	* UIxMailToSelection.m: some code cleanup
+
+	* UIxMailEditor.m (UIxComponent): added ivars for values
+
+2004-10-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailToSelection.m: sanitize CN's a bit before using them (v0.9.39)
+
+        * v0.9.38
+
+        * UIxMailToSelection.[wox|m]: removed superfluous debug messages
+
+        * UIxMailAdressbook.[wox|m]: redirect cover for Addressbook and Anais
+
+        * mailer.js: new JavaScript to open Addressbook and Anais windows
+
+        * product.plist: added Addressbook/Anais entries
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.37
+
+        * UIxMailToSelection.[wox|m]: stable version with heavily improved
+          JavaScript code.
+
+        * English.lproj/default.strings: new localizable strings
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: enabled -takeValuesFromRequest: (v0.9.36)
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailToSelection.[m|wox]: parse given arguments and conditionally
+	  split lists. Dynamically create tables and JavaScript. (v0.9.35)
+
+        * UIxMailToSelection.wox: minor update (v0.9.34)
+
+        * v0.9.33
+
+        * UIxMailToSelection.[wox|m]: updated
+
+        * English.lproj/default.strings: new localizable strings
+
+        * v0.9.32
+
+        * UIxMailEditor.wox: changed API for UIxMailToSelection
+        
+        * UIxMailToSelection.[wox|m]: new component template
+
+        * English.lproj/default.strings: new localizable strings
+
+        * README: updated
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.31
+
+	* mailer.js: prepared JavaScript functions for editor
+
+	* UIxMailMainFrame.wox: embed all content in a form called 'pageform'
+
+2004-10-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.30
+
+	* UIxMailEditor.wox: moved recipient selection to an own component
+	  (UIxMailToSelection)
+
+	* UIxMailMainFrame.wox: fixed script link
+
+	* v0.9.29
+
+	* product.plist: trigger UIxMailEditorAction for compose instead of
+	  returning the mail editor page, mapped missing toolbar actions
+
+	* UIxMailEditorAction.m: implemented -compose as a redirect to a new
+	  object in the account draft folder
+
+	* UIxMailListView.wox: reduced subject width to 50%
+
+	* mailer.css: added send icon class, icon itself still missing
+
+	* started UIxMailEditorAction object which will contain all the
+	  redirects from the buttons to the mail editor (working on draft
+	  objects in the drafts folder) (v0.9.28)
+
+2004-10-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: added some configuration for the drafts folder
+	  (v0.9.27)
+
+2004-10-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: added support for paper clip icon when messages
+	  are bigger than a certain size (v0.9.26)
+
+2004-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.25
+
+	* UIxMailListView.m: added sort icons
+
+	* UIxMailEditor.m: more work on editor
+
+	* mailer.css: added compose div classes
+
+	* UIxMailListView: removed href for JavaScript onclick links (v0.9.24)
+
+	* v0.9.23
+	
+	* product.plist: fixed addressbook label
+	
+	* UIxMailToolbar: added support for 'onclick' event handlers
+	
+	* UIxMailEditor: started editor
+
+	* UIxMailListView.m: added sorting to table view
+
+	* v0.9.22
+
+	* UIxMailToolbar.wox: added support for 'target' links
+
+	* UIxMailEditor.wox: use standard mail frame
+
+	* v0.9.21
+
+	* UIxMailTree: made toolbar configurable using 'toolbar' slot on the
+	  clientObject
+
+	* product.plist: added toolbar configurations
+
+	* UIxMailMainFrame.wox: moved toolbar to own component
+
+	* UIxMailListView: added simple navigation (v0.9.20)
+
+	* v0.9.19
+
+	* UIxMailPartViewer.m: added content decoding for QP, base64 and 7bit,
+	  added proper charset decoding
+	
+	* UIxMailPartTextViewer.m: moved content => NSString conversion to
+	  UIxMailPartViewer.m
+	
+	* v0.9.18
+	
+	* UIxMailPartViewer.m: added support methods for caches, added -sleep
+	  method
+	
+	* added multipart/alternative viewer
+	
+	* added Thunderbird message read/unread icons
+
+2004-10-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed fetching of mails with only text content (v0.9.17)
+
+	* added flat body fetches, used in text viewer (v0.9.16)
+
+	* added MIME content viewer infrastructure (v0.9.15)
+
+	* UIxMailView.m: added 'currentAddress' accessors (v0.9.14)
+
+	* UIxMailView.m: use core infos stored in message SoObject for display
+	  (v0.9.13)
+
+2004-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.12
+
+	* UIxMailListView.m: fetch size for list
+
+	* UIxMailView.m: cache fetched message for transaction, fetch body
+	  structure
+
+	* work on viewer (v0.9.11)
+
+	* UIxMailMainFrame.wox: made toolbar floating (v0.9.10)
+
+2004-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on UI (v0.9.9)
+
+	* added formatters for mail list (v0.9.8)
+
+	* v0.9.7
+
+	* show messages in an IMAP4 folder
+
+	* mailer.css: remote calendar CSS not required in mailer
+
+2004-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added toolbar images (v0.9.6)
+
+	* UIxMailTree.m: use new tree navigation methods in SoObjects (v0.9.5)
+
+2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on mailer UI, added tree based on WETreeView (v0.9.4)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added rsrc namespace declaration to templates (v0.9.3)
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* work on mailer (v0.9.2)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * GNUmakefile.preamble: fixed for gsmake 1.9.2 build (v0.9.1)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created

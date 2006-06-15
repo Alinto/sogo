@@ -1,0 +1,153 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+               xmlns:uix="OGo:uix"
+               xmlns:label="OGo:label"
+               className="UIxPrintPageFrame"
+               title="title"
+>
+  <table border="1" cellspacing="0" cellpadding="5" width="100%">
+    <tr>
+      <td colspan="2" align="center">
+        <h1 class="dayprintview"><var:string value="title" /></h1>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" width="100%">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <!-- general appointment info -->
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Title" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="appointment.summary"
+                          var:style="aptStyle"
+              />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Location" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="appointment.location"
+                          var:style="aptStyle"
+              />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Priority" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string label:value="$appointment.priorityLabelKey" />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" width="100%">
+        <table width="100%" border="1" cellpadding="4" cellspacing="0">
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Start time" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="startTime"
+                          formatter="dateFormatter"
+                          var:style="aptStyle"
+              />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="End time" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="endTime"
+                          formatter="dateFormatter"
+                          var:style="aptStyle"
+              />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Categories" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="categoriesAsString" />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Resources" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="resourcesAsString"
+                          const:escapeHTML="NO"
+              />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Organizer" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="appointment.organizer.cnForDisplay" />
+            </td>
+          </tr>
+          <tr valign="top">
+            <td align="right" width="15%" class="aptview_text">
+              <var:string label:value="Comment" />:
+            </td>
+            <td align="left" class="aptview_text">
+              <var:string value="appointment.comment" const:insertBR="1" />
+            </td>
+          </tr>
+        </table>
+        <table width="100%" border="1" cellpadding="4" cellspacing="0">
+          <tr valign="top">
+            <td align="left" class="aptview_title">
+                <var:string label:value="Name" />
+            </td>
+            <td align="left" class="aptview_title">
+                <var:string label:value="Email" />
+            </td>
+          </tr>
+          <var:foreach list="appointment.participants"
+                       item="attendee"
+          >
+            <tr valign="top">
+              <td align="left" class="aptview_text">
+                  <var:string value="attendee.cnForDisplay" />
+              </td>
+              <td align="left" class="aptview_text">
+                  <a var:href="attendee.email"
+                  ><var:string value="attendee.rfc822Email" /></a>
+              </td>
+            </tr>
+          </var:foreach>
+        </table>
+      </td>
+    </tr>
+    <var:if condition="isUIxDebugEnabled">
+      <tr>
+        <td colspan="2">
+          appointment: <var:string value="appointment" />
+          <br />
+          isMyApt: <var:string value="isMyApt" />
+          <br />
+          aptStyle: <var:string value="aptStyle" />
+          <br />
+          activeUser: <var:string value="context.activeUser"/>
+          <br />
+          email for user: <var:string value="emailForUser" />
+          <br />
+        </td>
+      </tr>
+    </var:if>
+  </table>
+</var:component>

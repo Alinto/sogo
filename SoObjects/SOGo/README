@@ -1,0 +1,29 @@
+libSOGo
+=======
+
+Common SOGo objects.
+
+NOTE: the SOPE objects are registered by the Main bundle products.plist.
+
+Class Hierarchy
+===============
+
+  [NSObject]
+    SOGoObject
+      SOGoContentObject
+      SOGoFolder
+        SOGoUserFolder	    - the "home" directory
+    SOGoGroupsFolder	    - intermediate folder
+    SOGoGroupFolder	    - a folder representing a set of people
+      SOGoCustomGroupFolder - a custom group (eg '_custom_helge,znek')
+
+TODO
+====
+- why is SOGoUserFolder an OCS folder?
+
+
+Defaults
+========
+
+AgenorCacheCheckInterval - int (default: 1 hour == 3600s)
+- how often to flush the LDAP caches

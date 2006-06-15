@@ -1,0 +1,98 @@
+{
+  blobTablePattern   = "SOGo_$folderId$_blob";
+  quickTablePattern  = "SOGo_$folderId$_quick";
+  extractorClassName = "OCSiCalFieldExtractor";
+
+  fields = (
+    {
+      columnName = uid;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = startdate;
+      sqlType    = "INT";
+      allowsNull = NO;
+    },
+    {
+      columnName = enddate;
+      sqlType    = "INT";
+      allowsNull = NO;
+    },
+    {
+      columnName = cylceenddate;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
+    {
+      columnName = title;
+      sqlType    = "VARCHAR(1000)";
+      allowsNull = NO;
+    },
+    {
+      columnName = participants;
+      sqlType    = "VARCHAR(1000000)";
+      allowsNull = NO;
+    },
+    {
+      columnName = isallday;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
+    {
+      columnName = iscycle;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
+    {
+      columnName = cycleinfo;
+      sqlType    = "VARCHAR(1000)";
+      allowsNull = YES;
+    },
+    {
+      columnName = ispublic;
+      sqlType    = "INT";
+      allowsNull = NO;
+    },
+    {
+      columnName = isopaque;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
+    {
+      columnName = status;
+      sqlType    = "INT";
+      allowsNull = NO;
+    },
+    {
+      columnName = priority;
+      sqlType    = "INT";
+      allowsNull = NO;
+    },
+    {
+      columnName = location;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = orgmail;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = partmails;
+      sqlType    = "VARCHAR(100000)";
+      allowsNull = NO;
+    },
+    {
+      columnName = partstates;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = sequence;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
+  );
+}

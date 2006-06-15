@@ -1,0 +1,23 @@
+{
+  requires = ( MAIN, Mailer );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+  
+  classes = {
+    SOGoSieveBaseObject = {
+      superclass = "SOGoObject";
+    };
+
+    SOGoSieveScriptsFolder = {
+      superclass = "SOGoSieveBaseObject";
+    };
+    
+    SOGoSieveScriptObject = {
+      superclass = "SOGoSieveBaseObject";
+    };
+  };
+}

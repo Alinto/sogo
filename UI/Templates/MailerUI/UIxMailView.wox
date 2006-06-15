@@ -1,0 +1,173 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxMailPanelFrame"
+  title="panelTitle"
+>
+  <!-- TODO: refactor address rendering into an own component(/element) -->
+
+  <!-- TODO: can we create own clientObject's for Kolab entities? Probably
+             not (since we would always need to fetch the header during 
+             lookup). It would work for 'annotated' folders though.
+       TODO: for Kolab we need a completely different viewer with a different
+             toolbar etc. And for Kolab we would need a different list viewer
+             as well ...
+    -->
+ <var:if condition="clientObject.isKolabObject" const:negate="1">
+  <!-- 
+    Note: We cannot make this section static (like the toolbar) because the CC
+          list has a dynamic height (would require some tricky JavaScript).
+    -->
+  <table class="mailer_fieldtable">
+    <tr class="mailer_fieldrow">
+      <td class="mailer_fieldname" ><var:string label:value="Subject"/>:</td>
+      <td class="mailer_subjectfieldvalue">
+        <var:string value="clientObject.subject"
+                    formatter="context.mailSubjectFormatter"/>
+      </td>
+    </tr>
+    <tr class="mailer_fieldrow">
+      <td class="mailer_fieldname" ><var:string label:value="From"/>:</td>
+      <td class="mailer_fieldvalue">
+        <var:foreach list="clientObject.fromEnvelopeAddresses"
+                     item="currentAddress">
+          <a var:href="currentAddressLink">
+            <var:string value="currentAddress"
+                 formatter="context.mailEnvelopeFullAddressFormatter" /></a>
+        </var:foreach>
+      </td>
+    </tr>
+    <tr class="mailer_fieldrow">
+      <td class="mailer_fieldname" ><var:string label:value="Date"/>:</td>
+      <td class="mailer_fieldvalue">
+        <var:string value="clientObject.date" 
+                    formatter="context.mailDateFormatter"/>
+
+        <!-- TODO:
+        (<a rsrc:href="tbird_073_viewer.png">screenshot</a>)
+         -->
+      </td>
+    </tr>
+
+    <tr class="mailer_fieldrow">
+      <td class="mailer_fieldname" ><var:string label:value="To"/>:</td>
+      <td class="mailer_fieldvalue">
+        <var:foreach list="clientObject.toEnvelopeAddresses"
+                     item="currentAddress">
+          <a var:href="currentAddressLink">
+            <var:string value="currentAddress"
+                 formatter="context.mailEnvelopeFullAddressFormatter" /></a>
+        </var:foreach>
+      </td>
+    </tr>
+    <var:if condition="hasCC">
+      <tr class="mailer_fieldrow">
+        <td class="mailer_fieldname" ><var:string label:value="CC"/>:</td>
+        <td class="mailer_fieldvalue">
+          <var:foreach list="clientObject.ccEnvelopeAddresses" 
+                       item="currentAddress">
+            <a var:href="currentAddressLink">
+              <var:string value="currentAddress"
+                   formatter="context.mailEnvelopeFullAddressFormatter" /></a>
+            <br /> <!-- TODO: better to use li+CSS -->
+          </var:foreach>
+        </td>
+      </tr>
+    </var:if>
+
+
+    <!-- header fields if available -->
+    <var:if condition="clientObject.hasMailHeaderInCoreInfos">
+
+      <var:if condition="clientObject.mailHeaders.organization.isNotEmpty">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname" 
+              ><var:string label:value="Organization"/>:</td>
+          <td class="mailer_fieldvalue">
+            <var:if-qualifier
+               const:condition="organization hasPrefix: 'http://'" 
+               object="clientObject.mailHeaders">
+              <a var:href="clientObject.mailHeaders.organization"
+                 var:string="clientObject.mailHeaders.organization" />
+            </var:if-qualifier>
+            <var:if-qualifier
+               const:condition="organization hasPrefix: 'http://'" 
+               object="clientObject.mailHeaders"
+               const:negate="1">
+              <var:string value="clientObject.mailHeaders.organization" />
+            </var:if-qualifier>
+          </td>
+        </tr>
+      </var:if>
+      
+      <var:if condition="clientObject.mailHeaders.list-id.isNotEmpty">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname" 
+              ><var:string label:value="Mailinglist"/>:</td>
+          <td class="mailer_fieldvalue">
+            <a var:href="clientObject.mailingListArchiveURL"
+               target="_blank"
+               var:string="clientObject.mailHeaders.list-id" />
+            |
+            <a var:href="clientObject.mailingListSubscribeURL"
+               target="_blank"><var:string label:value="subscribe"/></a>
+            |
+            <a var:href="clientObject.mailingListUnsubscribeURL"
+               target="_blank"><var:string label:value="unsubscribe"/></a>
+          </td>
+        </tr>
+      </var:if>
+      
+      <var:if condition="clientObject.mailHeaders.x-virus-status.isNotEmpty">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname" 
+              ><var:string label:value="Virusstatus"/>:</td>
+          <td class="mailer_fieldvalue">
+            <var:string value="clientObject.mailHeaders.x-virus-status" />
+          </td>
+        </tr>
+      </var:if>
+
+      <var:if condition="clientObject.mailHeaders.x-spam-level.isNotEmpty">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname" 
+              ><var:string label:value="Spamlevel"/>:</td>
+          <td class="mailer_fieldvalue">
+            <var:string value="clientObject.mailHeaders.x-spam-level" />
+            <var:if condition="clientObject.mailHeaders.x-spam-flag"
+                    const:value="YES">
+              / <var:string label:value="marked as spam by mailserver" />
+            </var:if>
+          </td>
+        </tr>
+      </var:if>
+      
+      <!-- all headers
+      <tr class="mailer_fieldrow">
+        <td class="mailer_fieldname" ><var:string label:value="Header"/>:</td>
+        <td class="mailer_fieldvalue">
+           <pre><var:string value="clientObject.mailHeaders" /></pre>
+        </td>
+      </tr>
+      -->
+    </var:if>
+  </table>
+ </var:if><!-- !Kolab -->
+
+  <div class="mailer_mailcontent">
+    <var:component value="contentViewerComponent"
+                   bodyInfo="clientObject.bodyStructure" />
+  </div>
+
+  <script language="JavaScript">
+    if (window.opener) {
+      markMailReadInWindow(window.opener, 
+        '<var:string value="clientObject.nameInContainer"/>');
+    }
+  </script>
+</var:component>

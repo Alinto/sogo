@@ -1,0 +1,26 @@
+# $Id$
+
+SOGo
+====
+
+The server project is organized in three major parts:
+- SoObjects
+- Main
+- UI
+
+SoObjects contains the objects being traversed using the URL.
+
+Main contains the main server binary (.woa) and application wide objects
+like authenticators.
+
+UI contains the actual UI which is bound to the SoObjects as SOPE methods
+
+
+NOTES
+=====
+
+mapping email <-> logins
+usermanager -> part of SOGoLogic
+
+Default to enable debugging output in the page:
+  SOGoUIxDebugEnabled YES|NO

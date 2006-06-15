@@ -1,0 +1,33 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxMailMainFrame"
+  title="panelTitle"
+  const:hideFolderTree="1"
+>
+  <div id="compose_panel">
+    <div id="compose_subject">
+      <table border="0" width="100%">
+        <tr>
+          <td class="compose_label" width="15%">
+            <!-- TODO: localize -->
+            <var:string label:value="Scriptname"/>:
+          </td>
+          <td width="85%"><input name="scriptName" 
+                                 id="compose_subject_input" type="text" 
+  			       var:value="scriptName" /></td>
+        </tr>
+      </table>
+    </div>
+  
+    <!-- separator line -->
+    <div id="compose_text">
+      <textarea name="scriptContent" var:value="scriptText" />
+    </div>
+  </div>
+</var:component>

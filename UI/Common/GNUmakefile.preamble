@@ -1,0 +1,21 @@
+# $Id$
+
+CommonUI_INCLUDE_DIRS += -I..
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+	RELBUILD_DIR_libSOGoUI = \
+		$(GNUSTEP_BUILD_DIR)/../SOGoUI/$(GNUSTEP_OBJ_DIR_NAME)
+else
+	RELBUILD_DIR_libSOGoUI = ../SOGoUI/$(GNUSTEP_OBJ_DIR)
+endif
+
+CommonUI_LIB_DIRS += -L$(RELBUILD_DIR_libSOGoUI)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
+
+CommonUI_BUNDLE_LIBS += \
+	-lSOGoUI	\
+	-lNGObjWeb	\
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC

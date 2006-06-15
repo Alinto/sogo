@@ -1,0 +1,25 @@
+<?xml version='1.0' standalone='yes'?>
+
+<uix:tabview xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:var="http://www.skyrix.com/od/binding"
+             xmlns:const="http://www.skyrix.com/od/constant"
+             xmlns:rsrc="OGo:url"
+             xmlns:uix="OGo:uix"
+             var:selection="selection"
+             const:tabStyle="tab"
+             const:selectedTabStyle="tab_selected"
+             const:bodyStyle="tabview_body"
+>
+     <uix:tab const:key="day" var:label="dayLabel" var:href="daytabLink">
+     <var:component-content />
+     </uix:tab>
+     <uix:tab const:key="week" var:label="weekLabel" var:href="weektabLink">
+     <var:component-content />
+     </uix:tab>
+     <uix:tab const:key="month" var:label="monthLabel" var:href="monthtabLink">
+     <var:component-content />
+     </uix:tab>
+     <uix:tab const:key="year" var:label="yearLabel" var:href="yeartabLink">
+     <var:component-content />
+     </uix:tab>
+</uix:tabview>

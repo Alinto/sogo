@@ -1,0 +1,15 @@
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: added FHS install (v0.9.4)
+
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started SOGoICalFilePublish.m for allowing iCal PUTs
+
+	* moved fetch method to a direct action SoMethod (v0.9.3)
+
+	* SOGoICalHTTPHandler.m: some work on assembly support (v0.9.2)
+
+2004-10-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog

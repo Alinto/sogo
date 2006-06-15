@@ -1,0 +1,66 @@
+{
+/*
+  CREATE TABLE SOGo_test (
+    c_id        INT PRIMARY KEY,
+    c_dir       VARCHAR(300) NOT NULL,
+    c_cn        VARCHAR(80) NOT NULL,
+    c_mailto    VARCHAR(120) NOT NULL,
+  );
+*/
+
+    EOModelVersion   = 1;
+    adaptorClassName = PostgreSQLAdaptor;
+    adaptorName      = PostgreSQL;
+
+    entities = (
+      {
+        name         = Test;
+        externalName = SOGo_test;
+        className    = EOGenericRecord;
+        primaryKeyAttributes = ( pkey );
+        attributesUsedForLocking    = ( pkey,
+                                        DIR,
+                                        CN,
+                                        mailto
+         );
+        classProperties             = ( pkey,
+                                        DIR,
+                                        CN,
+                                        mailto
+         );
+        attributes = (
+                {
+                    columnName      = "c_id";
+                    name            = "pkey";
+                    valueClassName  = "NSNumber";
+                    valueType       = i;
+                    externalType    = INT;
+                },
+                {
+                    columnName      = "c_dir";
+                    name            = "DIR";
+                    valueClassName  = "NSString";
+                    externalType    = "VARCHAR(300)";
+                    allowsNull      = N;
+                    width           = 255;
+                },
+                {
+                    columnName      = "c_cn";
+                    name            = "CN";
+                    valueClassName  = "NSString";
+                    externalType    = "VARCHAR(80)";
+                    allowsNull      = N;
+                    width           = 60;
+                },
+                {
+                    columnName      = "c_mailto";
+                    name            = "mailto";
+                    valueClassName  = "NSString";
+                    externalType    = "VARCHAR(120)";
+                    allowsNull      = N;
+                    width           = 120;
+                }
+        );
+      }
+    );
+}

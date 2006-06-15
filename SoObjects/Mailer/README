@@ -1,0 +1,60 @@
+# README for Mailer SoObjects
+
+Class Overview
+==============
+
+SOGoMailManager
+- backend class connecting to NGImap4, will probably move to SOGoLogic
+
+Class Hierarchy
+===============
+
+[NSObject]
+  SOGoMailerProduct
+  <SOGoObject>
+    SOGoMailAccounts
+    SOGoMailBaseObject
+      SOGoDraftObject
+      SOGoDraftsFolder
+      SOGoMailAccount
+        SOGoSharedMailAccount
+      SOGoMailBodyPart
+        SOGoImageMailBodyPart
+        SOGoMessageMailBodyPart
+      SOGoMailFolder
+        SOGoSharedInboxFolder
+      SOGoMailObject
+  [EODataSource]
+    SOGoMailFolderDataSource
+
+Defaults
+========
+
+SOGoEnableIMAP4Debug       YES|NO - enable/disable debugging in SOGoMailManager
+SOGoDisableIMAP4Pooling    YES|NO - disable IMAP4 connection pooling
+SOGoMailSpoolPath	   path   - FS path where mail drafts are stored
+SOGoNoDraftDeleteAfterSend YES|NO - makes the draft's -delete method a NOOP
+
+SOGoSpecialFoldersInRoot   YES|NO - do special folders live under INBOX?
+  - corresponds to the Cyrus setting: "altnamespace: yes"
+SOGoEnableSieveFolder      YES|NO - should the Sieve folder be visible?
+
+SOGoSharedFolderName       IMAP4-Name
+  - corresponds to the Cyrus setting: sharedprefix
+SOGoOtherUsersFolderName   IMAP4-Name
+  - corresponds to the Cyrus setting: userprefix
+
+SOGoInternetMailSuffix     String-Pattern
+  - suffix to add to mails sent via Internet
+  - eg: -SOGoInternetMailSuffix \
+        '"*** This email was composed using SOGo on the public Internet ***"'
+    you can access request values inside the pattern, eg:
+         "$headers.host$"
+
+SOGoDoNotFetchMailHeader   YES|NO - whether or not to fetch the mail header
+  - the mail header is ~4KB to fetch, a slowdown of ~13ms on the dev system
+  - the header gives much more information about the mail
+    - eg: spam status
+  - parsing the mail header takes time
+
+SOGoMailDisableETag        YES|NO - whether or not to check/deliver an etag

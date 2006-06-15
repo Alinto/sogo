@@ -1,0 +1,90 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+
+"Create"      = "Créer";
+"Empty Trash" = "Vider la corbeille";
+"Delete"      = "Supprimer";
+"Expunge"     = "Purger";
+"Forward"     = "Transférer";
+"Get Mail"    = "Relever";
+"Junk"        = "Indésirable";
+"Reply"       = "Répondre";
+"Reply All"   = "Répo. à tous";
+"Print"       = "Imprimer";
+"Stop"        = "Stop";
+"Write"       = "Écrire";
+
+/* Main Frame  */
+
+"Home"                 = "Accueil"; 
+"Calendar"             = "Agenda";
+"Addressbook"          = "Carnet d'adresses";
+"Mail"                 = "Mail";
+"Right Administration" = "Administration";
+"Help" = "Aide";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bienvenue dans votre webmail. Utilisez l'arborescence sur votre gauche pour parcourir vos boites mails.";
+
+"Read messages"       = "Lire les messages";
+"Write a new message" = "Écrire un nouveau message";
+
+"Share: " = "Partage : ";
+"Account: " = "Compte : ";
+"Shared Account: " = "Compte Partagé ";
+
+/* Mail edition */
+
+"From"          = "De";
+"Subject"       = "Sujet";
+"Add address"   = "Ajouter Adresse";
+
+"to"            = "À";
+"cc"            = "Cc";
+"bcc"           = "Cci";
+
+"Anais"         = "Anaïs";
+
+"This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
+
+/* Popup "show" */
+
+"all"     = "Tous";
+"read"    = "Lus";
+"unread"  = "Non Lus";
+"deleted" = "Éffacés";
+"flagged" = "Drapeau";
+
+/* MailListView */
+
+"Subject or Sender contains" = "Sujet ou Expéditeur contient ";
+"Date"          = "Date";
+"View"          = "Voir";
+"All"           = "Tous";
+"Unread"        = "Non lus";
+"messages"      = "message(s)";
+
+"first"         = "Premier";
+"previous"      = "précédent";
+"next"          = "suivant";
+
+"Mark Unread" = "Marqué comme non lu"; 
+"Mark Read"   = "Marqué comme lu";
+
+"msgnumber_to"  = "à";
+"msgnumber_of"  = "de";
+
+/* Tree */
+
+"SentFolderName"   = "Éléments envoyés";
+"TrashFolderName"  = "Corbeille";
+"InboxFolderName"  = "Boite de Réception";
+"DraftsFolderName" = "Brouillons";
+"SieveFolderName"  = "Filtres";
+"Folders"          = "Répertoires"; 
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Déplacer vers";

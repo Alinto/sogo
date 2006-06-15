@@ -1,0 +1,7 @@
+# version file
+
+SUBMINOR_VERSION:=15
+
+# v0.9.12 requires libSOGo            v0.9.54
+# v0.9.9  requires libGDLContentStore v4.5.26
+# v0.9.5  requires libNGExtensions    v4.5.136

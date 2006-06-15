@@ -1,0 +1,15 @@
+# compile settings
+
+ifneq ($(GNUSTEP_BUILD_DIR),)
+	RELBUILD_DIR_libSOGoCommonUI = $(GNUSTEP_OBJ_DIR)
+else
+	RELBUILD_DIR_libSOGoCommonUI = $(GNUSTEP_OBJ_DIR)
+endif
+
+libSOGoUI_LIBRARIES_DEPEND_UPON += \
+	-lNGObjWeb	\
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

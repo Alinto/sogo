@@ -1,0 +1,33 @@
+(
+  {
+    "label" = "cycle_once";
+  },
+  {
+    "label" = "cycle_daily";
+    "rule"  = "FREQ=DAILY";
+  },
+  {
+    "label" = "cycle_weekly";
+    "rule"  = "FREQ=WEEKLY";
+  },
+  {
+    "label" = "cycle_2weeks";
+    "rule"  = "FREQ=WEEKLY;INTERVAL=2";
+  },
+  {
+    "label" = "cycle_4weeks";
+    "rule"  = "FREQ=WEEKLY;INTERVAL=4";
+  },
+  {
+    "label" = "cycle_monthly";
+    "rule"  = "FREQ=MONTHLY";
+  },
+  {
+    "label" = "cycle_weekday";
+    "rule"  = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR";
+  },
+  {
+    "label" = "cycle_yearly";
+    "rule"  = "FREQ=YEARLY";
+  }
+)

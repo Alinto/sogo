@@ -1,0 +1,9 @@
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: moved security declarations of core classes to the
+	  +initialize method of the classes,
+	  add SOGo application object methods in a category (was a class)
+	  (v0.9.2)
+
+	* created UI/MainUI product bundle from sources in Main (v0.9.1)
+

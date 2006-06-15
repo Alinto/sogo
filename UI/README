@@ -1,0 +1,14 @@
+# $Id: README 297 2004-09-07 19:51:33Z znek $
+
+UI
+==
+
+The UI directory contains HTML view methods for the SOPE SoObjects.
+
+
+Localization
+============
+
+Each bundle has its own set of localization files, contained in a language
+project directory (i.e. English.lproj). Because of this fact it might be
+possible that you have to localize a certain label more than once.

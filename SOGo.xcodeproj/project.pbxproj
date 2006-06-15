@@ -1,0 +1,1785 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildStyle section */
+		E87205870692E3B40099CBBD /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Development;
+		};
+		E87205880692E3B40099CBBD /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		AD00163106ECCF4C00012B62 /* English */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD00163206ECCF5C00012B62 /* French */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0134C306DF41C5000910D8 /* UIxSortButton.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxSortButton.m; sourceTree = "<group>"; };
+		AD0134DC06DF4C11000910D8 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD01376806DF6A59000910D8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD01376906DF6A69000910D8 /* French */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD01377506DF6BC7000910D8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD01377606DF6BE6000910D8 /* French */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0137AC06DF891E000910D8 /* UIxAppointmentPrintview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAppointmentPrintview.m; sourceTree = "<group>"; };
+		AD06608B06AC2F3F006525C9 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/Locale; sourceTree = "<group>"; };
+		AD06608C06AC2F4A006525C9 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = French; path = French.lproj/Locale; sourceTree = "<group>"; };
+		AD07123706C904C900A9EEF4 /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		AD07123806C904C900A9EEF4 /* AnaisUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AnaisUIProduct.m; sourceTree = "<group>"; };
+		AD07123906C904C900A9EEF4 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD07123A06C904C900A9EEF4 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD07123B06C904C900A9EEF4 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD07123C06C904C900A9EEF4 /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		AD07123D06C904C900A9EEF4 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		AD07124C06C9052700A9EEF4 /* AnaisSelector.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AnaisSelector.m; sourceTree = "<group>"; };
+		AD0712CA06C917A600A9EEF4 /* SOGoDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoDateFormatter.h; sourceTree = "<group>"; };
+		AD0712CB06C917A600A9EEF4 /* SOGoDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoDateFormatter.m; sourceTree = "<group>"; };
+		AD07137606C926BF00A9EEF4 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD0715CB06CA711600A9EEF4 /* AnaisUidSelector.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AnaisUidSelector.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD071B3C06CCFA2000A9EEF4 /* iCalPerson+UIx.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "iCalPerson+UIx.h"; sourceTree = "<group>"; };
+		AD071B3D06CCFA2000A9EEF4 /* iCalPerson+UIx.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "iCalPerson+UIx.m"; sourceTree = "<group>"; };
+		AD071C7D06CD214600A9EEF4 /* SOGoAptFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoAptFormatter.h; sourceTree = "<group>"; };
+		AD071C7E06CD214700A9EEF4 /* SOGoAptFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoAptFormatter.m; sourceTree = "<group>"; };
+		AD071F6606CE66DF00A9EEF4 /* README */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = README; sourceTree = "<group>"; tabWidth = 8; };
+		AD0A0ACC07A8093400D3B8EF /* UIxMailWindowCloser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIxMailWindowCloser.m; sourceTree = "<group>"; };
+		AD152B6F06AC159A002375D2 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD273D4D077315640064794B /* UIxCalParticipationStatusView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalParticipationStatusView.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD2C74A3071A9FF70087E027 /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD2C74A5071A9FF70087E027 /* UIxEnvelopeAddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxEnvelopeAddressFormatter.m; sourceTree = "<group>"; };
+		AD2C74A6071A9FF70087E027 /* UIxMailAccountsView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailAccountsView.m; sourceTree = "<group>"; };
+		AD2C74A8071A9FF70087E027 /* UIxMailAccountView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailAccountView.m; sourceTree = "<group>"; };
+		AD2C74AA071A9FF70087E027 /* UIxMailFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxMailFormatter.h; sourceTree = "<group>"; };
+		AD2C74AB071A9FF70087E027 /* UIxMailFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailFormatter.m; sourceTree = "<group>"; };
+		AD2C74AC071A9FF70087E027 /* UIxMailMainFrame.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailMainFrame.m; sourceTree = "<group>"; };
+		AD2C74B6071A9FF70087E027 /* UIxMailPartViewer.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxMailPartViewer.h; sourceTree = "<group>"; };
+		AD2C74B7071A9FF70087E027 /* UIxMailPartViewer.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailPartViewer.m; sourceTree = "<group>"; };
+		AD2C74B8071A9FF70087E027 /* UIxMailRenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxMailRenderingContext.h; sourceTree = "<group>"; };
+		AD2C74B9071A9FF70087E027 /* UIxMailRenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailRenderingContext.m; sourceTree = "<group>"; };
+		AD2C74BA071A9FF70087E027 /* UIxMailToolbar.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailToolbar.m; sourceTree = "<group>"; };
+		AD2C74BC071A9FF70087E027 /* UIxMailTree.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailTree.m; sourceTree = "<group>"; };
+		AD2C74BE071A9FF70087E027 /* UIxSubjectFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxSubjectFormatter.m; sourceTree = "<group>"; };
+		AD2C74BF071A9FF70087E027 /* WOContext+UIxMailer.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "WOContext+UIxMailer.h"; sourceTree = "<group>"; };
+		AD2C74C0071A9FF70087E027 /* WOContext+UIxMailer.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "WOContext+UIxMailer.m"; sourceTree = "<group>"; };
+		AD2C76D5071BF4EB0087E027 /* UIxMailEditorAction.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailEditorAction.m; sourceTree = "<group>"; };
+		AD2C76D6071BF4EB0087E027 /* UIxMailToSelection.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailToSelection.m; sourceTree = "<group>"; };
+		AD2C78F7071C23CE0087E027 /* UIxMailAddressbook.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailAddressbook.m; sourceTree = "<group>"; };
+		AD2E1FE607BD876E0012FE12 /* SOGo.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGo.m; sourceTree = "<group>"; };
+		AD2E1FE707BD879D0012FE12 /* SOGoGroupPage.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoGroupPage.m; sourceTree = "<group>"; };
+		AD2E1FE807BD879D0012FE12 /* SOGoGroupPage.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = SOGoGroupPage.wox; sourceTree = "<group>"; };
+		AD2E1FE907BD879D0012FE12 /* SOGoGroupsPage.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoGroupsPage.m; sourceTree = "<group>"; };
+		AD2E1FEA07BD879D0012FE12 /* SOGoGroupsPage.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = SOGoGroupsPage.wox; sourceTree = "<group>"; };
+		AD2E1FEB07BD87B90012FE12 /* TODO */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		AD2E1FEC07BD87CB0012FE12 /* MainUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = MainUIProduct.m; sourceTree = "<group>"; };
+		AD2FA8730883B9FE009A91E7 /* SOGoAptMailNotification.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoAptMailNotification.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD2FA8740883B9FE009A91E7 /* SOGoAptMailNotification.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoAptMailNotification.h; sourceTree = "<group>"; tabWidth = 2; };
+		AD2FA8DB0883CCF0009A91E7 /* SOGoAptMailInvitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOGoAptMailInvitation.m; sourceTree = "<group>"; };
+		AD2FA9C50883F922009A91E7 /* SOGoAptMailUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOGoAptMailUpdate.m; sourceTree = "<group>"; };
+		AD2FAA4708840BB8009A91E7 /* common.make */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; path = common.make; sourceTree = "<group>"; };
+		AD2FAA81088417AB009A91E7 /* AgenorUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AgenorUserDefaults.h; sourceTree = "<group>"; };
+		AD2FAA82088417AB009A91E7 /* AgenorUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = AgenorUserDefaults.m; sourceTree = "<group>"; };
+		AD3D6100088BF4E600CBB51B /* UIxContactEditorBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UIxContactEditorBase.h; sourceTree = "<group>"; };
+		AD3D6101088BF4E600CBB51B /* UIxContactEditorBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = UIxContactEditorBase.m; sourceTree = "<group>"; };
+		AD3D6102088BF4E600CBB51B /* UIxContactsListViewBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UIxContactsListViewBase.h; sourceTree = "<group>"; };
+		AD3D6103088BF4E600CBB51B /* UIxContactsListViewBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = UIxContactsListViewBase.m; sourceTree = "<group>"; };
+		AD3D6336088D2E7400CBB51B /* UIxMailToSelection.js */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.javascript; path = UIxMailToSelection.js; sourceTree = "<group>"; tabWidth = 4; };
+		AD3D63CE088D5EB000CBB51B /* calendar.css */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = calendar.css; sourceTree = "<group>"; };
+		AD3D63CF088D5EB000CBB51B /* UIxAppointmentEditor.js */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.javascript; path = UIxAppointmentEditor.js; sourceTree = "<group>"; };
+		AD3D63D0088D5EB000CBB51B /* UIxContactEditor.js */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.javascript; path = UIxContactEditor.js; sourceTree = "<group>"; };
+		AD3D643B088D725D00CBB51B /* SOGoContext.h */ = {isa = PBXFileReference; fileEncoding = 12; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoContext.h; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D643C088D725D00CBB51B /* SOGoContext.m */ = {isa = PBXFileReference; fileEncoding = 12; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoContext.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D66D8088E7FAD00CBB51B /* SOGoAptMailEnglishDeletion.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailEnglishDeletion.wo; sourceTree = "<group>"; };
+		AD3D66DC088E7FAD00CBB51B /* SOGoAptMailEnglishInvitation.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailEnglishInvitation.wo; sourceTree = "<group>"; };
+		AD3D66E0088E7FAD00CBB51B /* SOGoAptMailEnglishRemoval.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailEnglishRemoval.wo; sourceTree = "<group>"; };
+		AD3D66E4088E7FAD00CBB51B /* SOGoAptMailEnglishUpdate.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailEnglishUpdate.wo; sourceTree = "<group>"; };
+		AD3D66E8088E7FAD00CBB51B /* SOGoAptMailFrenchDeletion.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailFrenchDeletion.wo; sourceTree = "<group>"; };
+		AD3D66EC088E7FAD00CBB51B /* SOGoAptMailFrenchInvitation.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailFrenchInvitation.wo; sourceTree = "<group>"; };
+		AD3D66F0088E7FAD00CBB51B /* SOGoAptMailFrenchRemoval.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailFrenchRemoval.wo; sourceTree = "<group>"; };
+		AD3D66F4088E7FAD00CBB51B /* SOGoAptMailFrenchUpdate.wo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOGoAptMailFrenchUpdate.wo; sourceTree = "<group>"; };
+		AD3D67AC088EAF1500CBB51B /* SOGoDraftObject.toolbar */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; name = SOGoDraftObject.toolbar; path = Toolbars/SOGoDraftObject.toolbar; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D67AD088EAF1500CBB51B /* SOGoMailAccount.toolbar */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; name = SOGoMailAccount.toolbar; path = Toolbars/SOGoMailAccount.toolbar; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D67AE088EAF1500CBB51B /* SOGoMailFolder.toolbar */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; name = SOGoMailFolder.toolbar; path = Toolbars/SOGoMailFolder.toolbar; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D67AF088EAF1500CBB51B /* SOGoMailObject.toolbar */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; name = SOGoMailObject.toolbar; path = Toolbars/SOGoMailObject.toolbar; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D67B0088EAF1500CBB51B /* SOGoTrashFolder.toolbar */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; name = SOGoTrashFolder.toolbar; path = Toolbars/SOGoTrashFolder.toolbar; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D6807088EB71F00CBB51B /* UIxMailAccountsView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailAccountsView.wox; path = MailerUI/UIxMailAccountsView.wox; sourceTree = "<group>"; };
+		AD3D6808088EB71F00CBB51B /* UIxMailAccountView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailAccountView.wox; path = MailerUI/UIxMailAccountView.wox; sourceTree = "<group>"; };
+		AD3D6809088EB71F00CBB51B /* UIxMailAddressbook.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailAddressbook.wox; path = MailerUI/UIxMailAddressbook.wox; sourceTree = "<group>"; };
+		AD3D680A088EB71F00CBB51B /* UIxMailPanelFrame.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailPanelFrame.wox; path = MailerUI/UIxMailPanelFrame.wox; sourceTree = "<group>"; };
+		AD3D680B088EB71F00CBB51B /* UIxMailToSelection.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailToSelection.wox; path = MailerUI/UIxMailToSelection.wox; sourceTree = "<group>"; };
+		AD3D685E088F9FF600CBB51B /* UIxContactEditor.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxContactEditor.wox; path = ContactsUI/UIxContactEditor.wox; sourceTree = "<group>"; };
+		AD3D685F088F9FF600CBB51B /* UIxContactsListView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxContactsListView.wox; path = ContactsUI/UIxContactsListView.wox; sourceTree = "<group>"; };
+		AD3D6860088F9FF600CBB51B /* UIxContactView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxContactView.wox; path = ContactsUI/UIxContactView.wox; sourceTree = "<group>"; };
+		AD3D68D3088FADA200CBB51B /* UIxMailListView.js */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.javascript; path = UIxMailListView.js; sourceTree = "<group>"; };
+		AD3D68F7088FB57100CBB51B /* UIxMailEditorAttach.js */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.javascript; path = UIxMailEditorAttach.js; sourceTree = "<group>"; tabWidth = 2; };
+		AD3D696E088FC09F00CBB51B /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; name = ChangeLog; path = ../WebServerResources/ChangeLog; sourceTree = "<group>"; usesTabs = 1; };
+		AD3D6A470890F9FE00CBB51B /* mailer-compose.css */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "mailer-compose.css"; sourceTree = "<group>"; };
+		AD3D6A480890F9FE00CBB51B /* mailer-toolbar.css */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = "mailer-toolbar.css"; sourceTree = "<group>"; };
+		AD3D6A91089107DF00CBB51B /* layout2or3_xlib.js */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.javascript; path = layout2or3_xlib.js; sourceTree = "<group>"; };
+		AD494C6206F5EA6600E51EC9 /* UIxContactSelector.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxContactSelector.m; sourceTree = "<group>"; };
+		AD494C8E06F606F900E51EC9 /* UIxContactsSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxContactsSelectionView.m; sourceTree = "<group>"; };
+		AD494D1806F6EB3A00E51EC9 /* SOGoMailAccount.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailAccount.h; sourceTree = "<group>"; };
+		AD494D1906F6EB3A00E51EC9 /* SOGoMailAccount.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailAccount.m; sourceTree = "<group>"; };
+		AD494D1A06F6EB3A00E51EC9 /* SOGoMailAccounts.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailAccounts.h; sourceTree = "<group>"; };
+		AD494D1B06F6EB3A00E51EC9 /* SOGoMailAccounts.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailAccounts.m; sourceTree = "<group>"; };
+		AD5DF18E072E5AC500173622 /* UIxMailEditorAttach.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailEditorAttach.m; sourceTree = "<group>"; };
+		AD5ED0B006B1385700E3EC4B /* UIxCalDayOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDayOverview.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD5ED1AE06B1768900E3EC4B /* UIxCalDayView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalDayView.h; sourceTree = "<group>"; };
+		AD5ED1AF06B1768900E3EC4B /* UIxCalDayView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDayView.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD6BCF0D069D77E9003664CD /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD6BCF0E069D77E9003664CD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD6BCF0F069D77E9003664CD /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD6BCF10069D77E9003664CD /* UIxComponent.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxComponent.h; sourceTree = "<group>"; };
+		AD6BCF11069D77E9003664CD /* UIxComponent.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxComponent.m; sourceTree = "<group>"; };
+		AD6BCF12069D77E9003664CD /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		AD71091206F1D4C900A5926E /* first.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = first.gif; sourceTree = "<group>"; };
+		AD71091306F1D4C900A5926E /* green_corner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = green_corner.gif; sourceTree = "<group>"; };
+		AD71091406F1D4C900A5926E /* icon_popupcalendar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_popupcalendar.gif; sourceTree = "<group>"; };
+		AD71091506F1D4C900A5926E /* invisible_space_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = invisible_space_2.gif; sourceTree = "<group>"; };
+		AD71091606F1D4C900A5926E /* last.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = last.gif; sourceTree = "<group>"; };
+		AD71091706F1D4C900A5926E /* next.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = next.gif; sourceTree = "<group>"; };
+		AD71091806F1D4C900A5926E /* previous.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = previous.gif; sourceTree = "<group>"; };
+		AD7379B306AEBB2500735920 /* UIxCalInlineMonthOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalInlineMonthOverview.m; sourceTree = "<group>"; };
+		AD737A1706AEC77E00735920 /* UIxCalMonthOverview.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalMonthOverview.h; sourceTree = "<group>"; };
+		AD737A6A06AEE8BD00735920 /* UIxCalYearOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalYearOverview.m; sourceTree = "<group>"; };
+		AD73BE6106CF8CC500226A2D /* UIxComponent+Agenor.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "UIxComponent+Agenor.h"; sourceTree = "<group>"; };
+		AD73BE6206CF8CC500226A2D /* UIxComponent+Agenor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "UIxComponent+Agenor.m"; sourceTree = "<group>"; };
+		AD73BE7D06CF90EA00226A2D /* NSCalendarDate+UIx.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSCalendarDate+UIx.h"; sourceTree = "<group>"; };
+		AD73BE7E06CF90EA00226A2D /* NSCalendarDate+UIx.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSCalendarDate+UIx.m"; sourceTree = "<group>"; };
+		AD73BE8806CF92FC00226A2D /* UIxAppointmentProposal.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAppointmentProposal.m; sourceTree = "<group>"; };
+		AD73BE9406CF969100226A2D /* UIxDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxDatePicker.m; sourceTree = "<group>"; };
+		AD73BED806CFA0FD00226A2D /* UIxDatePickerScript.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxDatePickerScript.m; sourceTree = "<group>"; };
+		AD73BF6C06CFB4CE00226A2D /* UIxTimeSelector.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxTimeSelector.m; sourceTree = "<group>"; };
+		AD73C03406CFDE3600226A2D /* AnaisAttendeeSelector.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AnaisAttendeeSelector.m; sourceTree = "<group>"; };
+		AD73C03606CFDE4500226A2D /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		AD73C08306CFFEA600226A2D /* UIxTimeDateControl.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxTimeDateControl.m; sourceTree = "<group>"; };
+		AD751DFF087E7EDF004EE381 /* WOContext+Agenor.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "WOContext+Agenor.h"; sourceTree = "<group>"; tabWidth = 2; };
+		AD751E00087E7EDF004EE381 /* WOContext+Agenor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "WOContext+Agenor.m"; sourceTree = "<group>"; tabWidth = 2; };
+		AD770DA307AE4F7000F5C7A1 /* SOGoImageMailBodyPart.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoImageMailBodyPart.m; sourceTree = "<group>"; };
+		AD770DA407AE4F7000F5C7A1 /* SOGoMessageMailBodyPart.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoMessageMailBodyPart.m; sourceTree = "<group>"; };
+		AD770DAC07AE4FB200F5C7A1 /* UIxFilterList.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = UIxFilterList.m; sourceTree = "<group>"; };
+		AD770DB407AE4FB200F5C7A1 /* UIxMailTreeBlock.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = UIxMailTreeBlock.h; sourceTree = "<group>"; };
+		AD770DB507AE4FB200F5C7A1 /* UIxMailTreeBlock.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = UIxMailTreeBlock.m; sourceTree = "<group>"; };
+		AD770DB607AE4FB200F5C7A1 /* UIxSieveEditor.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = UIxSieveEditor.m; sourceTree = "<group>"; };
+		AD7BA88D0770A67D008F4F3D /* UIxCalScheduleOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalScheduleOverview.m; sourceTree = "<group>"; };
+		AD85C6E407C4E7230036AC7A /* common.make */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; path = common.make; sourceTree = "<group>"; };
+		AD85C6E507C4E7230036AC7A /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; path = GNUmakefile; sourceTree = "<group>"; };
+		AD85C6E707C4E7230036AC7A /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		AD85C6E807C4E7230036AC7A /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
+		AD85C6E907C4E7230036AC7A /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		AD85C6EA07C4E7230036AC7A /* COPYING */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		AD85C6EB07C4E7230036AC7A /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		AD85C6EC07C4E7230036AC7A /* GNUmakefile */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = GNUmakefile; sourceTree = "<group>"; };
+		AD85C6ED07C4E7230036AC7A /* iCalHTTPProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iCalHTTPProduct.m; sourceTree = "<group>"; };
+		AD85C6EE07C4E7230036AC7A /* product.plist */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		AD85C6EF07C4E7230036AC7A /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD85C6F007C4E7230036AC7A /* SOGoICalFileFetch.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoICalFileFetch.m; sourceTree = "<group>"; };
+		AD85C6F107C4E7230036AC7A /* SOGoICalFilePublish.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoICalFilePublish.m; sourceTree = "<group>"; };
+		AD85C6F207C4E7230036AC7A /* SOGoICalHTTPHandler.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoICalHTTPHandler.h; sourceTree = "<group>"; };
+		AD85C6F307C4E7230036AC7A /* SOGoICalHTTPHandler.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoICalHTTPHandler.m; sourceTree = "<group>"; };
+		AD85C6F407C4E7230036AC7A /* Version */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = Version; sourceTree = "<group>"; };
+		AD85C72607C4E8740036AC7A /* AgenorUserManager.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AgenorUserManager.h; sourceTree = "<group>"; };
+		AD85C72707C4E8740036AC7A /* AgenorUserManager.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AgenorUserManager.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD85C72807C4E8740036AC7A /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD85C72907C4E8740036AC7A /* NSString+iCal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = "NSString+iCal.h"; sourceTree = "<group>"; };
+		AD85C72A07C4E8740036AC7A /* SOGoAppointment.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoAppointment.h; sourceTree = "<group>"; };
+		AD85C72B07C4E8740036AC7A /* SOGoAppointment.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoAppointment.m; sourceTree = "<group>"; tabWidth = 2; };
+		AD85C72C07C4E8740036AC7A /* SOGoAppointmentICalRenderer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoAppointmentICalRenderer.h; sourceTree = "<group>"; };
+		AD85C72D07C4E8740036AC7A /* SOGoAppointmentICalRenderer.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoAppointmentICalRenderer.m; sourceTree = "<group>"; };
+		AD85C72E07C4E8740036AC7A /* SOGoCustomGroupFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoCustomGroupFolder.h; sourceTree = "<group>"; };
+		AD85C72F07C4E8740036AC7A /* SOGoCustomGroupFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoCustomGroupFolder.m; sourceTree = "<group>"; };
+		AD85C73007C4E8740036AC7A /* SOGoGroupFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoGroupFolder.h; sourceTree = "<group>"; };
+		AD85C73107C4E8740036AC7A /* SOGoGroupFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoGroupFolder.m; sourceTree = "<group>"; };
+		AD85C73207C4E8740036AC7A /* SOGoGroupsFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoGroupsFolder.h; sourceTree = "<group>"; };
+		AD85C73307C4E8740036AC7A /* SOGoGroupsFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoGroupsFolder.m; sourceTree = "<group>"; };
+		AD85C73407C4E8740036AC7A /* SOGoLRUCache.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoLRUCache.h; sourceTree = "<group>"; };
+		AD85C73507C4E8740036AC7A /* SOGoLRUCache.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoLRUCache.m; sourceTree = "<group>"; };
+		AD85C73607C4E8740036AC7A /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		AD86231807CA03AD004CD707 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD86231907CA03AD004CD707 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		AD86231A07CA03D9004CD707 /* AnaisAttendeeSelector.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = AnaisAttendeeSelector.wox; sourceTree = "<group>"; };
+		AD86231B07CA03D9004CD707 /* AnaisSelector.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = AnaisSelector.wox; sourceTree = "<group>"; };
+		AD86231C07CA03D9004CD707 /* AnaisUidSelector.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = AnaisUidSelector.wox; sourceTree = "<group>"; };
+		AD86231D07CA03D9004CD707 /* UIxAppNavView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAppNavView.wox; sourceTree = "<group>"; };
+		AD86231E07CA03D9004CD707 /* UIxAppointmentEditor.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAppointmentEditor.wox; sourceTree = "<group>"; };
+		AD86231F07CA03D9004CD707 /* UIxAppointmentPrintview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAppointmentPrintview.wox; sourceTree = "<group>"; };
+		AD86232007CA03D9004CD707 /* UIxAppointmentProposal.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAppointmentProposal.wox; sourceTree = "<group>"; };
+		AD86232107CA03D9004CD707 /* UIxAppointmentView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAppointmentView.wox; sourceTree = "<group>"; };
+		AD86232207CA03D9004CD707 /* UIxAptTableView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxAptTableView.wox; sourceTree = "<group>"; };
+		AD86232307CA03D9004CD707 /* UIxCalBackForthNavView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalBackForthNavView.wox; sourceTree = "<group>"; };
+		AD86232407CA03D9004CD707 /* UIxCalDateLabel.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalDateLabel.wox; sourceTree = "<group>"; };
+		AD86232507CA03D9004CD707 /* UIxCalDayChartview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalDayChartview.wox; sourceTree = "<group>"; };
+		AD86232607CA03D9004CD707 /* UIxCalDayListview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalDayListview.wox; sourceTree = "<group>"; };
+		AD86232707CA03D9004CD707 /* UIxCalDayOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalDayOverview.wox; sourceTree = "<group>"; };
+		AD86232807CA03D9004CD707 /* UIxCalDayPrintview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalDayPrintview.wox; sourceTree = "<group>"; };
+		AD86232907CA03D9004CD707 /* UIxCalInlineAptView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalInlineAptView.wox; sourceTree = "<group>"; };
+		AD86232A07CA03D9004CD707 /* UIxCalInlineMonthOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalInlineMonthOverview.wox; sourceTree = "<group>"; };
+		AD86232B07CA03D9004CD707 /* UIxCalMonthOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalMonthOverview.wox; sourceTree = "<group>"; };
+		AD86232C07CA03D9004CD707 /* UIxCalMonthPrintview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalMonthPrintview.wox; sourceTree = "<group>"; };
+		AD86232D07CA03D9004CD707 /* UIxCalParticipationStatusView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalParticipationStatusView.wox; sourceTree = "<group>"; };
+		AD86232E07CA03D9004CD707 /* UIxCalScheduleOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalScheduleOverview.wox; sourceTree = "<group>"; };
+		AD86232F07CA03D9004CD707 /* UIxCalSelectTab.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalSelectTab.wox; sourceTree = "<group>"; };
+		AD86233007CA03D9004CD707 /* UIxCalWeekChartview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalWeekChartview.wox; sourceTree = "<group>"; };
+		AD86233107CA03D9004CD707 /* UIxCalWeekColumnsview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalWeekColumnsview.wox; sourceTree = "<group>"; };
+		AD86233207CA03D9004CD707 /* UIxCalWeekListview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalWeekListview.wox; sourceTree = "<group>"; };
+		AD86233307CA03D9004CD707 /* UIxCalWeekOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalWeekOverview.wox; sourceTree = "<group>"; };
+		AD86233407CA03D9004CD707 /* UIxCalWeekPrintview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalWeekPrintview.wox; sourceTree = "<group>"; };
+		AD86233507CA03D9004CD707 /* UIxCalYearOverview.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxCalYearOverview.wox; sourceTree = "<group>"; };
+		AD86233707CA03D9004CD707 /* UIxContactSelector.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxContactSelector.wox; sourceTree = "<group>"; };
+		AD86233907CA03D9004CD707 /* UIxContactsSelectionView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxContactsSelectionView.wox; sourceTree = "<group>"; };
+		AD86233B07CA03D9004CD707 /* UIxDatePicker.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxDatePicker.wox; sourceTree = "<group>"; };
+		AD86233C07CA03D9004CD707 /* UIxDatePickerScript.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxDatePickerScript.wox; sourceTree = "<group>"; };
+		AD86233D07CA03D9004CD707 /* UIxFilterList.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxFilterList.wox; sourceTree = "<group>"; };
+		AD86235807CA03D9004CD707 /* UIxPageFrame.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxPageFrame.wox; sourceTree = "<group>"; };
+		AD86235907CA03D9004CD707 /* UIxPrintPageFrame.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxPrintPageFrame.wox; sourceTree = "<group>"; };
+		AD86235A07CA03D9004CD707 /* UIxSieveEditor.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxSieveEditor.wox; sourceTree = "<group>"; };
+		AD86235B07CA03D9004CD707 /* UIxSortButton.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxSortButton.wox; sourceTree = "<group>"; };
+		AD86235C07CA03D9004CD707 /* UIxTimeDateControl.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxTimeDateControl.wox; sourceTree = "<group>"; };
+		AD86235D07CA03D9004CD707 /* UIxTimeSelector.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxTimeSelector.wox; sourceTree = "<group>"; };
+		AD86235E07CA03D9004CD707 /* UIxWinClose.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; path = UIxWinClose.wox; sourceTree = "<group>"; };
+		AD88394906EF807D00981A3E /* SOGoGroupAppointmentFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoGroupAppointmentFolder.h; sourceTree = "<group>"; };
+		AD88394A06EF807D00981A3E /* SOGoGroupAppointmentFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoGroupAppointmentFolder.m; sourceTree = "<group>"; };
+		AD9FF1EE087C0BDA0021431B /* SOGoFreeBusyObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoFreeBusyObject.h; sourceTree = "<group>"; tabWidth = 2; };
+		AD9FF1EF087C0BDA0021431B /* SOGoFreeBusyObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoFreeBusyObject.m; sourceTree = "<group>"; tabWidth = 2; };
+		ADA63205071330AE0058C21C /* SOGoAppointment+UIx.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "SOGoAppointment+UIx.h"; sourceTree = "<group>"; };
+		ADA63206071330AE0058C21C /* SOGoAppointment+UIx.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "SOGoAppointment+UIx.m"; sourceTree = "<group>"; };
+		ADAD40CA0769FFD000AAD24E /* UIxCalInlineAptView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalInlineAptView.m; sourceTree = "<group>"; };
+		ADB742000887C90200AC849E /* SOGoAptMailRemoval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOGoAptMailRemoval.m; sourceTree = "<group>"; };
+		ADB7420B0887C94C00AC849E /* SOGoAptMailDeletion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOGoAptMailDeletion.m; sourceTree = "<group>"; };
+		ADB79CAD07D4BF1600CA782A /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADB7A0FC07D6389500CA782A /* NSObject+AptComparison.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSObject+AptComparison.h"; sourceTree = "<group>"; };
+		ADB7A0FD07D6389500CA782A /* NSObject+AptComparison.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AptComparison.m"; sourceTree = "<group>"; };
+		ADBE3C490726AF4C000FEA6A /* SOGoJSStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoJSStringFormatter.h; sourceTree = "<group>"; };
+		ADBE3C4A0726AF4C000FEA6A /* SOGoJSStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoJSStringFormatter.m; sourceTree = "<group>"; };
+		ADBE3E5B0727167A000FEA6A /* README */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		ADBE3E5C0727167A000FEA6A /* SOGoDraftObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoDraftObject.h; sourceTree = "<group>"; };
+		ADBE3E5D0727167A000FEA6A /* SOGoDraftObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoDraftObject.m; sourceTree = "<group>"; };
+		ADBE3E5E0727167A000FEA6A /* SOGoDraftsFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoDraftsFolder.h; sourceTree = "<group>"; };
+		ADBE3E5F0727167A000FEA6A /* SOGoDraftsFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoDraftsFolder.m; sourceTree = "<group>"; };
+		ADBE3E600727167A000FEA6A /* SOGoMailBaseObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailBaseObject.h; sourceTree = "<group>"; };
+		ADBE3E610727167A000FEA6A /* SOGoMailBaseObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailBaseObject.m; sourceTree = "<group>"; };
+		ADBE3E620727167A000FEA6A /* SOGoMailBodyPart.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailBodyPart.h; sourceTree = "<group>"; };
+		ADBE3E630727167A000FEA6A /* SOGoMailBodyPart.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailBodyPart.m; sourceTree = "<group>"; };
+		ADBE3E660727167A000FEA6A /* SOGoMailManager.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailManager.h; sourceTree = "<group>"; };
+		ADBE3E670727167A000FEA6A /* SOGoMailManager.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailManager.m; sourceTree = "<group>"; };
+		ADBE446707297BA9000FEA6A /* UIxMailSortableTableHeader.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailSortableTableHeader.m; sourceTree = "<group>"; };
+		ADC07231072E9BFB00C125E0 /* UIxMailMoveToPopUp.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailMoveToPopUp.m; sourceTree = "<group>"; };
+		ADCDE53106ADA8AC00BFCE2B /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = English.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADCDE53306ADA8CF00BFCE2B /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = French.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADCDF64107BA4EC300C74EDF /* cycles.plist */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.plist; path = cycles.plist; sourceTree = "<group>"; };
+		ADDF4B3106DCEAC800C4E7F8 /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		ADDF4B3206DCEAC800C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4B3306DCEAC800C4E7F8 /* ContactsUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = ContactsUIProduct.m; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4B3406DCEAC800C4E7F8 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		ADDF4B3506DCEAC800C4E7F8 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		ADDF4B3706DCEAC800C4E7F8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADDF4B3806DCEAC800C4E7F8 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADDF4B3906DCEAC800C4E7F8 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4B3A06DCEAC800C4E7F8 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4B3B06DCEAC800C4E7F8 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4B3C06DCEAC800C4E7F8 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
+		ADDF4B3D06DCEAC800C4E7F8 /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		ADDF4B3E06DCEAC800C4E7F8 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4B6A06DCEBA100C4E7F8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		ADDF4B7006DCEC4300C4E7F8 /* UIxContactsListView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxContactsListView.m; sourceTree = "<group>"; };
+		ADDF4B7306DCEC5200C4E7F8 /* UIxContactView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxContactView.m; sourceTree = "<group>"; };
+		ADDF4B7606DCEC5F00C4E7F8 /* UIxContactEditor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxContactEditor.m; sourceTree = "<group>"; };
+		ADDF4BDC06DCF5D400C4E7F8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BDD06DCF5D400C4E7F8 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4BDE06DCF5D400C4E7F8 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BDF06DCF5D400C4E7F8 /* SOGoContactFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoContactFolder.h; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BE006DCF5D400C4E7F8 /* SOGoContactFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoContactFolder.m; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BE106DCF5D400C4E7F8 /* SOGoContactObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoContactObject.h; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BE206DCF5D400C4E7F8 /* SOGoContactObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoContactObject.m; sourceTree = "<group>"; tabWidth = 2; };
+		ADDF4BE306DCF5D400C4E7F8 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4BFF06DCF64100C4E7F8 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4C0006DCF65700C4E7F8 /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		ADDF4D6706DE0BAB00C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4D6906DE0BAB00C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4D6A06DE0BAB00C4E7F8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		ADDF4D6B06DE0BAB00C4E7F8 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4D6C06DE0BAB00C4E7F8 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4D6D06DE0BAB00C4E7F8 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
+		ADDF4D6E06DE0BAB00C4E7F8 /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		ADDF4D6F06DE0BAB00C4E7F8 /* SOGoMailFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailFolder.h; sourceTree = "<group>"; };
+		ADDF4D7006DE0BAB00C4E7F8 /* SOGoMailFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailFolder.m; sourceTree = "<group>"; };
+		ADDF4D7106DE0BAB00C4E7F8 /* SOGoMailObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoMailObject.h; sourceTree = "<group>"; };
+		ADDF4D7206DE0BAB00C4E7F8 /* SOGoMailObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoMailObject.m; sourceTree = "<group>"; };
+		ADDF4D7306DE0BAB00C4E7F8 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4D7706DE0BFE00C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4DBC06DE0E9900C4E7F8 /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		ADDF4DBD06DE0E9900C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4DBE06DE0E9900C4E7F8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		ADDF4DBF06DE0E9900C4E7F8 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		ADDF4DC006DE0E9900C4E7F8 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		ADDF4DC206DE0E9A00C4E7F8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADDF4DC306DE0E9A00C4E7F8 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ADDF4DC406DE0E9A00C4E7F8 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4DC506DE0E9A00C4E7F8 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4DC606DE0E9A00C4E7F8 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADDF4DC706DE0E9A00C4E7F8 /* MailerUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = MailerUIProduct.m; sourceTree = "<group>"; };
+		ADDF4DC806DE0E9A00C4E7F8 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
+		ADDF4DC906DE0E9A00C4E7F8 /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		ADDF4DCA06DE0E9A00C4E7F8 /* UIxMailEditor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailEditor.m; sourceTree = "<group>"; };
+		ADDF4DCC06DE0E9A00C4E7F8 /* UIxMailListView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailListView.m; sourceTree = "<group>"; };
+		ADDF4DCE06DE0E9A00C4E7F8 /* UIxMailView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxMailView.m; sourceTree = "<group>"; };
+		ADDF4DD006DE0E9A00C4E7F8 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		ADE0AA7B08855ED700E62D67 /* WOContext+UIx.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "WOContext+UIx.h"; sourceTree = "<group>"; tabWidth = 2; };
+		ADE0AA7C08855ED700E62D67 /* WOContext+UIx.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "WOContext+UIx.m"; sourceTree = "<group>"; tabWidth = 2; };
+		ADE0ABEF0885C22100E62D67 /* UIxMailEditor.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailEditor.wox; path = MailerUI/UIxMailEditor.wox; sourceTree = "<group>"; };
+		ADE0ABF00885C22100E62D67 /* UIxMailEditorAttach.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailEditorAttach.wox; path = MailerUI/UIxMailEditorAttach.wox; sourceTree = "<group>"; };
+		ADE0ABF10885C22100E62D67 /* UIxMailFilterPanel.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailFilterPanel.wox; path = MailerUI/UIxMailFilterPanel.wox; sourceTree = "<group>"; };
+		ADE0ABF20885C22100E62D67 /* UIxMailFolderACLEditor.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailFolderACLEditor.wox; path = MailerUI/UIxMailFolderACLEditor.wox; sourceTree = "<group>"; };
+		ADE0ABF30885C22100E62D67 /* UIxMailListView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailListView.wox; path = MailerUI/UIxMailListView.wox; sourceTree = "<group>"; };
+		ADE0ABF40885C22100E62D67 /* UIxMailMainFrame.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailMainFrame.wox; path = MailerUI/UIxMailMainFrame.wox; sourceTree = "<group>"; };
+		ADE0ABF50885C22100E62D67 /* UIxMailMoveToPopUp.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailMoveToPopUp.wox; path = MailerUI/UIxMailMoveToPopUp.wox; sourceTree = "<group>"; };
+		ADE0ABF60885C22100E62D67 /* UIxMailSortableTableHeader.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailSortableTableHeader.wox; path = MailerUI/UIxMailSortableTableHeader.wox; sourceTree = "<group>"; };
+		ADE0ABF70885C22100E62D67 /* UIxMailToolbar.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailToolbar.wox; path = MailerUI/UIxMailToolbar.wox; sourceTree = "<group>"; };
+		ADE0ABF80885C22100E62D67 /* UIxMailTree.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailTree.wox; path = MailerUI/UIxMailTree.wox; sourceTree = "<group>"; };
+		ADE0ABF90885C22100E62D67 /* UIxMailView.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailView.wox; path = MailerUI/UIxMailView.wox; sourceTree = "<group>"; };
+		ADE0ABFA0885C22200E62D67 /* UIxMailWindowCloser.wox */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text.xml; name = UIxMailWindowCloser.wox; path = MailerUI/UIxMailWindowCloser.wox; sourceTree = "<group>"; };
+		ADE0ABFC0885C31100E62D67 /* SOGoMailFolderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoMailFolderDataSource.h; sourceTree = "<group>"; };
+		ADE0ABFD0885C31100E62D67 /* SOGoMailFolderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoMailFolderDataSource.m; sourceTree = "<group>"; };
+		ADE0ABFE0885C31100E62D67 /* SOGoTrashFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoTrashFolder.h; sourceTree = "<group>"; };
+		ADE0ABFF0885C31100E62D67 /* SOGoTrashFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoTrashFolder.m; sourceTree = "<group>"; };
+		ADE0AC120885C45100E62D67 /* generic.js */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.javascript; name = generic.js; path = ../WebServerResources/generic.js; sourceTree = "<group>"; };
+		ADE0AC130885C45100E62D67 /* mailer.css */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = text; path = mailer.css; sourceTree = "<group>"; tabWidth = 2; };
+		ADE0AC140885C45100E62D67 /* mailer.js */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.javascript; name = mailer.js; path = ../WebServerResources/mailer.js; sourceTree = "<group>"; tabWidth = 2; };
+		ADE0AC150885C45100E62D67 /* searchfield.js */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.javascript; name = searchfield.js; path = ../WebServerResources/searchfield.js; sourceTree = "<group>"; };
+		ADE0AC160885C45100E62D67 /* uix.css */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = uix.css; sourceTree = "<group>"; };
+		ADE0AC400885C6D300E62D67 /* homepage.js */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.javascript; path = homepage.js; sourceTree = "<group>"; tabWidth = 2; };
+		ADE0AEA20886CB3A00E62D67 /* SOGoAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoAuthenticator.h; sourceTree = "<group>"; };
+		ADE0AEA30886CB3A00E62D67 /* SOGoAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoAuthenticator.m; sourceTree = "<group>"; };
+		ADE0AEA40886CB3A00E62D67 /* SOGoUser.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SOGoUser.h; sourceTree = "<group>"; };
+		ADE0AEA50886CB3A00E62D67 /* SOGoUser.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = SOGoUser.m; sourceTree = "<group>"; };
+		ADE2C23D06B7BED40065D56F /* UIxCalWeekListview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekListview.m; sourceTree = "<group>"; };
+		ADE2C24006B7BEE60065D56F /* UIxCalWeekChartview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekChartview.m; sourceTree = "<group>"; };
+		ADE2C24A06B7BF020065D56F /* UIxCalWeekColumnsview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekColumnsview.m; sourceTree = "<group>"; };
+		ADE2C28906B7C7B20065D56F /* UIxCalDayChartview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDayChartview.m; sourceTree = "<group>"; };
+		ADE2C28C06B7C7C20065D56F /* UIxCalDayListview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDayListview.m; sourceTree = "<group>"; };
+		ADF15BF306BA839B0047D955 /* icon_view_chart_inactive.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_chart_inactive.gif; sourceTree = "<group>"; };
+		ADF15BF406BA839B0047D955 /* icon_view_chart.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_chart.gif; sourceTree = "<group>"; };
+		ADF15BF506BA839B0047D955 /* icon_view_columns_inactive.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_columns_inactive.gif; sourceTree = "<group>"; };
+		ADF15BF606BA839B0047D955 /* icon_view_columns.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_columns.gif; sourceTree = "<group>"; };
+		ADF15BF706BA839B0047D955 /* icon_view_list_inactive.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_list_inactive.gif; sourceTree = "<group>"; };
+		ADF15BF806BA839B0047D955 /* icon_view_list.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_list.gif; sourceTree = "<group>"; };
+		ADF15BF906BA839B0047D955 /* icon_view_overview_inactive.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_overview_inactive.gif; sourceTree = "<group>"; };
+		ADF15BFA06BA839B0047D955 /* icon_view_overview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_view_overview.gif; sourceTree = "<group>"; };
+		ADF15BFD06BA842A0047D955 /* UIxCalDayPrintview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDayPrintview.m; sourceTree = "<group>"; };
+		ADF15C0206BA84480047D955 /* UIxCalWeekPrintview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekPrintview.m; sourceTree = "<group>"; };
+		ADF15C0506BA845E0047D955 /* UIxCalMonthPrintview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalMonthPrintview.m; sourceTree = "<group>"; };
+		ADF15C2E06BA86420047D955 /* UIxCalDayOverview.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalDayOverview.h; sourceTree = "<group>"; };
+		ADF15C4A06BA89140047D955 /* UIxPrintPageFrame.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxPrintPageFrame.m; sourceTree = "<group>"; };
+		ADF15D1A06BAA6D20047D955 /* UIxCalWeekOverview.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalWeekOverview.h; sourceTree = "<group>"; };
+		E872058E0692E3D00099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E87205CE0692E3D00099CBBD /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E87205CF0692E3D00099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E87205D00692E3D00099CBBD /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		E87205D70692E3D00099CBBD /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		E87205D80692E3D00099CBBD /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E87205E10692E3D00099CBBD /* sogod.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = sogod.m; sourceTree = "<group>"; usesTabs = 0; };
+		E87205ED0692E3D00099CBBD /* SOGoProductLoader.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoProductLoader.h; sourceTree = "<group>"; };
+		E87205EE0692E3D00099CBBD /* SOGoProductLoader.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoProductLoader.m; sourceTree = "<group>"; };
+		E87205EF0692E3D00099CBBD /* SOGoRootPage.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoRootPage.m; sourceTree = "<group>"; };
+		E87205F00692E3D00099CBBD /* SOGoRootPage.wox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SOGoRootPage.wox; sourceTree = "<group>"; };
+		E87205F10692E3D00099CBBD /* SOGoUserHomePage.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoUserHomePage.m; sourceTree = "<group>"; };
+		E87205F20692E3D00099CBBD /* SOGoUserHomePage.wox */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SOGoUserHomePage.wox; sourceTree = "<group>"; };
+		E87205F30692E3D00099CBBD /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		E87205F40692E3D00099CBBD /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E872063A0692E3D00099CBBD /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E872063B0692E3D00099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E87206410692E3D00099CBBD /* Product.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
+		E87206420692E3D00099CBBD /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		E87206470692E3D00099CBBD /* SOGoAppointmentFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoAppointmentFolder.h; sourceTree = "<group>"; };
+		E87206480692E3D00099CBBD /* SOGoAppointmentFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoAppointmentFolder.m; sourceTree = "<group>"; };
+		E87206490692E3D00099CBBD /* SOGoAppointmentObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoAppointmentObject.h; sourceTree = "<group>"; };
+		E872064A0692E3D00099CBBD /* SOGoAppointmentObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoAppointmentObject.m; sourceTree = "<group>"; };
+		E872064B0692E3D00099CBBD /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		E872064C0692E3D00099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E872064D0692E3D00099CBBD /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E87206880692E3D10099CBBD /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E87206890692E3D10099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E872068A0692E3D10099CBBD /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		E87206930692E3D10099CBBD /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E872069C0692E3D10099CBBD /* SOGoContentObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoContentObject.h; sourceTree = "<group>"; };
+		E872069D0692E3D10099CBBD /* SOGoContentObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoContentObject.m; sourceTree = "<group>"; };
+		E872069E0692E3D10099CBBD /* SOGoFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoFolder.h; sourceTree = "<group>"; };
+		E872069F0692E3D10099CBBD /* SOGoFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoFolder.m; sourceTree = "<group>"; };
+		E87206A00692E3D10099CBBD /* SOGoObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoObject.h; sourceTree = "<group>"; };
+		E87206A10692E3D10099CBBD /* SOGoObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoObject.m; sourceTree = "<group>"; };
+		E87206A20692E3D10099CBBD /* SOGoUserFolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SOGoUserFolder.h; sourceTree = "<group>"; };
+		E87206A30692E3D10099CBBD /* SOGoUserFolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SOGoUserFolder.m; sourceTree = "<group>"; };
+		E87206C20692E3D10099CBBD /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		E87207470692E3D20099CBBD /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		E87207480692E3D20099CBBD /* calendar.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = calendar.css; sourceTree = "<group>"; };
+		E87207490692E3D20099CBBD /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		E872074A0692E3D20099CBBD /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E872074C0692E3D20099CBBD /* CommonUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = CommonUIProduct.m; sourceTree = "<group>"; };
+		E872074D0692E3D20099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		E872074E0692E3D20099CBBD /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		E872074F0692E3D20099CBBD /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		E87207C40692E3D20099CBBD /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		E87207DA0692E3D20099CBBD /* UIxAppNavView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAppNavView.m; sourceTree = "<group>"; };
+		E87207DE0692E3D20099CBBD /* UIxElemBuilder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxElemBuilder.m; sourceTree = "<group>"; };
+		E87207DF0692E3D20099CBBD /* UIxPageFrame.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxPageFrame.m; sourceTree = "<group>"; };
+		E87207E10692E3D20099CBBD /* UIxTabItem.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxTabItem.m; sourceTree = "<group>"; };
+		E87207E20692E3D20099CBBD /* UIxTabView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxTabView.h; sourceTree = "<group>"; };
+		E87207E30692E3D20099CBBD /* UIxTabView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxTabView.m; sourceTree = "<group>"; };
+		E87207E40692E3D20099CBBD /* UIxWinClose.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxWinClose.m; sourceTree = "<group>"; };
+		E87207E60692E3D20099CBBD /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		E87207E70692E3D20099CBBD /* uix.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uix.css; sourceTree = "<group>"; };
+		E87207E80692E3D20099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E87207E90692E3D20099CBBD /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		E872088E0692E3D30099CBBD /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		E872088F0692E3D30099CBBD /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		E87208900692E3D30099CBBD /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E87208910692E3D30099CBBD /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		E87208920692E3D30099CBBD /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		E87208930692E3D30099CBBD /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		E87208940692E3D30099CBBD /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		E87208950692E3D30099CBBD /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		E87208D10692E3D30099CBBD /* next_week.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = next_week.gif; sourceTree = "<group>"; };
+		E87208D20692E3D30099CBBD /* previous_week.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = previous_week.gif; sourceTree = "<group>"; };
+		E87208D30692E3D30099CBBD /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
+		E87208E20692E3D30099CBBD /* product.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = product.plist; sourceTree = "<group>"; };
+		E87208E40692E3D30099CBBD /* SchedulerUIProduct.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = SchedulerUIProduct.m; sourceTree = "<group>"; };
+		E87208F30692E3D30099CBBD /* UIxAppointmentEditor.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAppointmentEditor.m; sourceTree = "<group>"; };
+		E87208F70692E3D30099CBBD /* UIxAppointmentView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxAppointmentView.h; sourceTree = "<group>"; };
+		E87208F80692E3D30099CBBD /* UIxAppointmentView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAppointmentView.m; sourceTree = "<group>"; };
+		E87208FA0692E3D30099CBBD /* UIxAptTableView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxAptTableView.m; sourceTree = "<group>"; };
+		E87208FC0692E3D30099CBBD /* UIxCalBackForthNavView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalBackForthNavView.m; sourceTree = "<group>"; };
+		E87208FE0692E3D30099CBBD /* UIxCalDateLabel.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalDateLabel.m; sourceTree = "<group>"; };
+		E87209000692E3D30099CBBD /* UIxCalMonthOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalMonthOverview.m; sourceTree = "<group>"; };
+		E87209020692E3D30099CBBD /* UIxCalMonthView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalMonthView.h; sourceTree = "<group>"; };
+		E87209030692E3D30099CBBD /* UIxCalMonthView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalMonthView.m; sourceTree = "<group>"; };
+		E87209040692E3D30099CBBD /* UIxCalSelectTab.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalSelectTab.m; sourceTree = "<group>"; };
+		E87209060692E3D30099CBBD /* UIxCalView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalView.h; sourceTree = "<group>"; };
+		E87209070692E3D30099CBBD /* UIxCalView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalView.m; sourceTree = "<group>"; };
+		E87209080692E3D30099CBBD /* UIxCalWeekOverview.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekOverview.m; sourceTree = "<group>"; };
+		E872090A0692E3D30099CBBD /* UIxCalWeekView.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = UIxCalWeekView.h; sourceTree = "<group>"; };
+		E872090B0692E3D30099CBBD /* UIxCalWeekView.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = UIxCalWeekView.m; sourceTree = "<group>"; };
+		E872090C0692E3D30099CBBD /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		AD01374506DF6731000910D8 /* WebServerResources */ = {
+			isa = PBXGroup;
+			children = (
+				E87207E70692E3D20099CBBD /* uix.css */,
+				E87207480692E3D20099CBBD /* calendar.css */,
+			);
+			name = WebServerResources;
+			path = ../WebServerResources;
+			sourceTree = "<group>";
+		};
+		AD0137A406DF8875000910D8 /* Appointment */ = {
+			isa = PBXGroup;
+			children = (
+				ADAD40CA0769FFD000AAD24E /* UIxCalInlineAptView.m */,
+				AD73BE8806CF92FC00226A2D /* UIxAppointmentProposal.m */,
+				E87208F70692E3D30099CBBD /* UIxAppointmentView.h */,
+				E87208F80692E3D30099CBBD /* UIxAppointmentView.m */,
+				AD0137AC06DF891E000910D8 /* UIxAppointmentPrintview.m */,
+				E87208F30692E3D30099CBBD /* UIxAppointmentEditor.m */,
+				E87208FA0692E3D30099CBBD /* UIxAptTableView.m */,
+				AD273D4D077315640064794B /* UIxCalParticipationStatusView.m */,
+			);
+			name = Appointment;
+			sourceTree = "<group>";
+		};
+		AD07123606C904C900A9EEF4 /* Anais */ = {
+			isa = PBXGroup;
+			children = (
+				AD07137606C926BF00A9EEF4 /* ChangeLog */,
+				AD07123D06C904C900A9EEF4 /* Version */,
+				AD07123706C904C900A9EEF4 /* bundle-info.plist */,
+				AD07123C06C904C900A9EEF4 /* product.plist */,
+				AD00163006ECCF4C00012B62 /* Localizable.strings */,
+				AD07124306C904E500A9EEF4 /* Makefiles */,
+				AD07124006C904DE00A9EEF4 /* Classes */,
+				AD07124606C9050700A9EEF4 /* Components */,
+			);
+			path = Anais;
+			sourceTree = "<group>";
+		};
+		AD07124006C904DE00A9EEF4 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD73C03606CFDE4500226A2D /* common.h */,
+				AD07123806C904C900A9EEF4 /* AnaisUIProduct.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		AD07124306C904E500A9EEF4 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				AD07123906C904C900A9EEF4 /* GNUmakefile */,
+				AD07123B06C904C900A9EEF4 /* GNUmakefile.preamble */,
+				AD07123A06C904C900A9EEF4 /* GNUmakefile.postamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		AD07124606C9050700A9EEF4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AD07124C06C9052700A9EEF4 /* AnaisSelector.m */,
+				AD0715CB06CA711600A9EEF4 /* AnaisUidSelector.m */,
+				AD73C03406CFDE3600226A2D /* AnaisAttendeeSelector.m */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		AD2C74C3071AA0190087E027 /* JavaScript */ = {
+			isa = PBXGroup;
+			children = (
+				ADE0AC120885C45100E62D67 /* generic.js */,
+				ADE0AC140885C45100E62D67 /* mailer.js */,
+				ADE0AC150885C45100E62D67 /* searchfield.js */,
+				AD3D6A91089107DF00CBB51B /* layout2or3_xlib.js */,
+				AD3D63CF088D5EB000CBB51B /* UIxAppointmentEditor.js */,
+				AD3D63D0088D5EB000CBB51B /* UIxContactEditor.js */,
+				AD3D68D3088FADA200CBB51B /* UIxMailListView.js */,
+				AD3D6336088D2E7400CBB51B /* UIxMailToSelection.js */,
+				AD3D68F7088FB57100CBB51B /* UIxMailEditorAttach.js */,
+			);
+			name = JavaScript;
+			path = ../WebServerResources;
+			sourceTree = "<group>";
+		};
+		AD2C74C6071AA0ED0087E027 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				AD2C74AA071A9FF70087E027 /* UIxMailFormatter.h */,
+				AD2C74AB071A9FF70087E027 /* UIxMailFormatter.m */,
+				AD2C74BE071A9FF70087E027 /* UIxSubjectFormatter.m */,
+				AD2C74A5071A9FF70087E027 /* UIxEnvelopeAddressFormatter.m */,
+			);
+			name = Formatters;
+			sourceTree = "<group>";
+		};
+		AD2FA8550883B60F009A91E7 /* Mail Components */ = {
+			isa = PBXGroup;
+			children = (
+				AD2FA8720883B9FE009A91E7 /* SOGoAptMailNotification */,
+				AD2FA8DA0883CCF0009A91E7 /* SOGoAptMailInvitation */,
+				AD2FA9C40883F922009A91E7 /* SOGoAptMailUpdate */,
+				ADB741FF0887C90200AC849E /* SOGoAptMailRemoval */,
+				ADB7420A0887C94C00AC849E /* SOGoAptMailDeletion */,
+			);
+			name = "Mail Components";
+			sourceTree = "<group>";
+		};
+		AD2FA8720883B9FE009A91E7 /* SOGoAptMailNotification */ = {
+			isa = PBXGroup;
+			children = (
+				AD2FA8740883B9FE009A91E7 /* SOGoAptMailNotification.h */,
+				AD2FA8730883B9FE009A91E7 /* SOGoAptMailNotification.m */,
+			);
+			name = SOGoAptMailNotification;
+			sourceTree = "<group>";
+		};
+		AD2FA8DA0883CCF0009A91E7 /* SOGoAptMailInvitation */ = {
+			isa = PBXGroup;
+			children = (
+				AD2FA8DB0883CCF0009A91E7 /* SOGoAptMailInvitation.m */,
+				AD3D66DC088E7FAD00CBB51B /* SOGoAptMailEnglishInvitation.wo */,
+				AD3D66EC088E7FAD00CBB51B /* SOGoAptMailFrenchInvitation.wo */,
+			);
+			name = SOGoAptMailInvitation;
+			sourceTree = "<group>";
+		};
+		AD2FA9C40883F922009A91E7 /* SOGoAptMailUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				AD2FA9C50883F922009A91E7 /* SOGoAptMailUpdate.m */,
+				AD3D66E4088E7FAD00CBB51B /* SOGoAptMailEnglishUpdate.wo */,
+				AD3D66F4088E7FAD00CBB51B /* SOGoAptMailFrenchUpdate.wo */,
+			);
+			name = SOGoAptMailUpdate;
+			sourceTree = "<group>";
+		};
+		AD3D67AB088EAF0100CBB51B /* Toolbars */ = {
+			isa = PBXGroup;
+			children = (
+				AD3D67AC088EAF1500CBB51B /* SOGoDraftObject.toolbar */,
+				AD3D67AD088EAF1500CBB51B /* SOGoMailAccount.toolbar */,
+				AD3D67AE088EAF1500CBB51B /* SOGoMailFolder.toolbar */,
+				AD3D67AF088EAF1500CBB51B /* SOGoMailObject.toolbar */,
+				AD3D67B0088EAF1500CBB51B /* SOGoTrashFolder.toolbar */,
+			);
+			name = Toolbars;
+			sourceTree = "<group>";
+		};
+		AD3D68D6088FADAA00CBB51B /* CSS */ = {
+			isa = PBXGroup;
+			children = (
+				ADE0AC160885C45100E62D67 /* uix.css */,
+				AD3D63CE088D5EB000CBB51B /* calendar.css */,
+				ADE0AC130885C45100E62D67 /* mailer.css */,
+				AD3D6A470890F9FE00CBB51B /* mailer-compose.css */,
+				AD3D6A480890F9FE00CBB51B /* mailer-toolbar.css */,
+			);
+			name = CSS;
+			path = ../WebServerResources;
+			sourceTree = "<group>";
+		};
+		AD3D696D088FC08500CBB51B /* WebServerResources */ = {
+			isa = PBXGroup;
+			children = (
+				AD3D696E088FC09F00CBB51B /* ChangeLog */,
+				AD3D68D6088FADAA00CBB51B /* CSS */,
+				AD2C74C3071AA0190087E027 /* JavaScript */,
+			);
+			name = WebServerResources;
+			sourceTree = "<group>";
+		};
+		AD6BCEE5069D77E9003664CD /* SOGoUI */ = {
+			isa = PBXGroup;
+			children = (
+				AD6BCF0D069D77E9003664CD /* ChangeLog */,
+				AD6BCF12069D77E9003664CD /* Version */,
+				AD6BCF0E069D77E9003664CD /* GNUmakefile */,
+				AD6BCF0F069D77E9003664CD /* GNUmakefile.preamble */,
+				AD071F6606CE66DF00A9EEF4 /* README */,
+				AD6BCF10069D77E9003664CD /* UIxComponent.h */,
+				AD6BCF11069D77E9003664CD /* UIxComponent.m */,
+				ADE0AA7B08855ED700E62D67 /* WOContext+UIx.h */,
+				ADE0AA7C08855ED700E62D67 /* WOContext+UIx.m */,
+				AD0712CA06C917A600A9EEF4 /* SOGoDateFormatter.h */,
+				AD0712CB06C917A600A9EEF4 /* SOGoDateFormatter.m */,
+				AD071C7D06CD214600A9EEF4 /* SOGoAptFormatter.h */,
+				AD071C7E06CD214700A9EEF4 /* SOGoAptFormatter.m */,
+				ADBE3C490726AF4C000FEA6A /* SOGoJSStringFormatter.h */,
+				ADBE3C4A0726AF4C000FEA6A /* SOGoJSStringFormatter.m */,
+			);
+			path = SOGoUI;
+			sourceTree = "<group>";
+		};
+		AD73BEE206CFA17700226A2D /* Date / Time */ = {
+			isa = PBXGroup;
+			children = (
+				AD73BE9406CF969100226A2D /* UIxDatePicker.m */,
+				AD73BF6C06CFB4CE00226A2D /* UIxTimeSelector.m */,
+				AD73C08306CFFEA600226A2D /* UIxTimeDateControl.m */,
+				AD73BED806CFA0FD00226A2D /* UIxDatePickerScript.m */,
+			);
+			name = "Date / Time";
+			sourceTree = "<group>";
+		};
+		AD7BA88A0770A62B008F4F3D /* News */ = {
+			isa = PBXGroup;
+			children = (
+				AD7BA88D0770A67D008F4F3D /* UIxCalScheduleOverview.m */,
+			);
+			name = News;
+			sourceTree = "<group>";
+		};
+		AD85C6E307C4E7230036AC7A /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C6F807C4E7330036AC7A /* Makefiles */,
+				AD85C6E607C4E7230036AC7A /* iCalHTTP */,
+				AD85C6F507C4E7230036AC7A /* RSS */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		AD85C6E607C4E7230036AC7A /* iCalHTTP */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C6EF07C4E7230036AC7A /* README */,
+				AD85C6EA07C4E7230036AC7A /* COPYING */,
+				AD85C6EB07C4E7230036AC7A /* COPYRIGHT */,
+				AD85C6E807C4E7230036AC7A /* ChangeLog */,
+				AD85C6F407C4E7230036AC7A /* Version */,
+				AD85C6E707C4E7230036AC7A /* bundle-info.plist */,
+				AD85C6EE07C4E7230036AC7A /* product.plist */,
+				AD85C6FB07C4E7600036AC7A /* Makefiles */,
+				AD85C6FE07C4E7670036AC7A /* Classes */,
+			);
+			path = iCalHTTP;
+			sourceTree = "<group>";
+		};
+		AD85C6F507C4E7230036AC7A /* RSS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RSS;
+			sourceTree = "<group>";
+		};
+		AD85C6F807C4E7330036AC7A /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C6E407C4E7230036AC7A /* common.make */,
+				AD85C6E507C4E7230036AC7A /* GNUmakefile */,
+			);
+			indentWidth = 8;
+			name = Makefiles;
+			sourceTree = "<group>";
+			tabWidth = 8;
+			usesTabs = 1;
+		};
+		AD85C6FB07C4E7600036AC7A /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C6EC07C4E7230036AC7A /* GNUmakefile */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		AD85C6FE07C4E7670036AC7A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C6E907C4E7230036AC7A /* common.h */,
+				AD85C6ED07C4E7230036AC7A /* iCalHTTPProduct.m */,
+				AD85C6F207C4E7230036AC7A /* SOGoICalHTTPHandler.h */,
+				AD85C6F307C4E7230036AC7A /* SOGoICalHTTPHandler.m */,
+				AD85C6F007C4E7230036AC7A /* SOGoICalFileFetch.m */,
+				AD85C6F107C4E7230036AC7A /* SOGoICalFilePublish.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		AD85C73907C4E8A30036AC7A /* Temporary */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C72A07C4E8740036AC7A /* SOGoAppointment.h */,
+				AD85C72B07C4E8740036AC7A /* SOGoAppointment.m */,
+				AD85C72C07C4E8740036AC7A /* SOGoAppointmentICalRenderer.h */,
+				AD85C72D07C4E8740036AC7A /* SOGoAppointmentICalRenderer.m */,
+			);
+			name = Temporary;
+			sourceTree = "<group>";
+		};
+		AD85C76007C4E9100036AC7A /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				AD86231807CA03AD004CD707 /* ChangeLog */,
+				AD86231907CA03AD004CD707 /* GNUmakefile */,
+				AD86261D07CA04E7004CD707 /* Contacts */,
+				AD8625FB07CA0403004CD707 /* Mailer */,
+				AD86236107CA03DF004CD707 /* Anais */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
+		AD86236107CA03DF004CD707 /* Anais */ = {
+			isa = PBXGroup;
+			children = (
+				AD86231A07CA03D9004CD707 /* AnaisAttendeeSelector.wox */,
+				AD86231B07CA03D9004CD707 /* AnaisSelector.wox */,
+				AD86231C07CA03D9004CD707 /* AnaisUidSelector.wox */,
+			);
+			name = Anais;
+			sourceTree = "<group>";
+		};
+		AD86236407CA03EF004CD707 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				AD86260107CA0446004CD707 /* Page Wrappers */,
+				AD86260B07CA048B004CD707 /* Navigation Widgets */,
+				AD86260507CA0461004CD707 /* Time / Date Widgets */,
+				AD86260807CA0478004CD707 /* Misc Widgets */,
+				AD8625FE07CA043C004CD707 /* Appointments */,
+				AD86261407CA04CA004CD707 /* Scheduler */,
+				AD86260E07CA04AB004CD707 /* Day */,
+				AD86261707CA04D9004CD707 /* Week */,
+				AD86261107CA04BD004CD707 /* Month */,
+				AD86261A07CA04DD004CD707 /* Year */,
+			);
+			name = Templates;
+			path = ../Templates;
+			sourceTree = "<group>";
+		};
+		AD8625FB07CA0403004CD707 /* Mailer */ = {
+			isa = PBXGroup;
+			children = (
+				AD3D6807088EB71F00CBB51B /* UIxMailAccountsView.wox */,
+				AD3D6808088EB71F00CBB51B /* UIxMailAccountView.wox */,
+				AD3D6809088EB71F00CBB51B /* UIxMailAddressbook.wox */,
+				AD3D680A088EB71F00CBB51B /* UIxMailPanelFrame.wox */,
+				AD3D680B088EB71F00CBB51B /* UIxMailToSelection.wox */,
+				ADE0ABEF0885C22100E62D67 /* UIxMailEditor.wox */,
+				ADE0ABF00885C22100E62D67 /* UIxMailEditorAttach.wox */,
+				ADE0ABF10885C22100E62D67 /* UIxMailFilterPanel.wox */,
+				ADE0ABF20885C22100E62D67 /* UIxMailFolderACLEditor.wox */,
+				ADE0ABF30885C22100E62D67 /* UIxMailListView.wox */,
+				ADE0ABF40885C22100E62D67 /* UIxMailMainFrame.wox */,
+				ADE0ABF50885C22100E62D67 /* UIxMailMoveToPopUp.wox */,
+				ADE0ABF60885C22100E62D67 /* UIxMailSortableTableHeader.wox */,
+				ADE0ABF70885C22100E62D67 /* UIxMailToolbar.wox */,
+				ADE0ABF80885C22100E62D67 /* UIxMailTree.wox */,
+				ADE0ABF90885C22100E62D67 /* UIxMailView.wox */,
+				ADE0ABFA0885C22200E62D67 /* UIxMailWindowCloser.wox */,
+				AD86233D07CA03D9004CD707 /* UIxFilterList.wox */,
+				AD86235A07CA03D9004CD707 /* UIxSieveEditor.wox */,
+			);
+			name = Mailer;
+			sourceTree = "<group>";
+		};
+		AD8625FE07CA043C004CD707 /* Appointments */ = {
+			isa = PBXGroup;
+			children = (
+				AD86232107CA03D9004CD707 /* UIxAppointmentView.wox */,
+				AD86231F07CA03D9004CD707 /* UIxAppointmentPrintview.wox */,
+				AD86231E07CA03D9004CD707 /* UIxAppointmentEditor.wox */,
+				AD86232007CA03D9004CD707 /* UIxAppointmentProposal.wox */,
+				AD86232907CA03D9004CD707 /* UIxCalInlineAptView.wox */,
+				AD86232207CA03D9004CD707 /* UIxAptTableView.wox */,
+			);
+			name = Appointments;
+			sourceTree = "<group>";
+		};
+		AD86260107CA0446004CD707 /* Page Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				AD86235807CA03D9004CD707 /* UIxPageFrame.wox */,
+				AD86235907CA03D9004CD707 /* UIxPrintPageFrame.wox */,
+			);
+			name = "Page Wrappers";
+			sourceTree = "<group>";
+		};
+		AD86260507CA0461004CD707 /* Time / Date Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				AD86233B07CA03D9004CD707 /* UIxDatePicker.wox */,
+				AD86233C07CA03D9004CD707 /* UIxDatePickerScript.wox */,
+				AD86235C07CA03D9004CD707 /* UIxTimeDateControl.wox */,
+				AD86235D07CA03D9004CD707 /* UIxTimeSelector.wox */,
+			);
+			name = "Time / Date Widgets";
+			sourceTree = "<group>";
+		};
+		AD86260807CA0478004CD707 /* Misc Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				AD86232407CA03D9004CD707 /* UIxCalDateLabel.wox */,
+				AD86235B07CA03D9004CD707 /* UIxSortButton.wox */,
+				AD86235E07CA03D9004CD707 /* UIxWinClose.wox */,
+			);
+			name = "Misc Widgets";
+			sourceTree = "<group>";
+		};
+		AD86260B07CA048B004CD707 /* Navigation Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				AD86231D07CA03D9004CD707 /* UIxAppNavView.wox */,
+				AD86232307CA03D9004CD707 /* UIxCalBackForthNavView.wox */,
+				AD86232F07CA03D9004CD707 /* UIxCalSelectTab.wox */,
+			);
+			name = "Navigation Widgets";
+			sourceTree = "<group>";
+		};
+		AD86260E07CA04AB004CD707 /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				AD86232507CA03D9004CD707 /* UIxCalDayChartview.wox */,
+				AD86232607CA03D9004CD707 /* UIxCalDayListview.wox */,
+				AD86232707CA03D9004CD707 /* UIxCalDayOverview.wox */,
+				AD86232807CA03D9004CD707 /* UIxCalDayPrintview.wox */,
+			);
+			name = Day;
+			sourceTree = "<group>";
+		};
+		AD86261107CA04BD004CD707 /* Month */ = {
+			isa = PBXGroup;
+			children = (
+				AD86232A07CA03D9004CD707 /* UIxCalInlineMonthOverview.wox */,
+				AD86232B07CA03D9004CD707 /* UIxCalMonthOverview.wox */,
+				AD86232C07CA03D9004CD707 /* UIxCalMonthPrintview.wox */,
+			);
+			name = Month;
+			sourceTree = "<group>";
+		};
+		AD86261407CA04CA004CD707 /* Scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				AD86232E07CA03D9004CD707 /* UIxCalScheduleOverview.wox */,
+				AD86232D07CA03D9004CD707 /* UIxCalParticipationStatusView.wox */,
+			);
+			name = Scheduler;
+			sourceTree = "<group>";
+		};
+		AD86261707CA04D9004CD707 /* Week */ = {
+			isa = PBXGroup;
+			children = (
+				AD86233007CA03D9004CD707 /* UIxCalWeekChartview.wox */,
+				AD86233107CA03D9004CD707 /* UIxCalWeekColumnsview.wox */,
+				AD86233207CA03D9004CD707 /* UIxCalWeekListview.wox */,
+				AD86233307CA03D9004CD707 /* UIxCalWeekOverview.wox */,
+				AD86233407CA03D9004CD707 /* UIxCalWeekPrintview.wox */,
+			);
+			name = Week;
+			sourceTree = "<group>";
+		};
+		AD86261A07CA04DD004CD707 /* Year */ = {
+			isa = PBXGroup;
+			children = (
+				AD86233507CA03D9004CD707 /* UIxCalYearOverview.wox */,
+			);
+			name = Year;
+			sourceTree = "<group>";
+		};
+		AD86261D07CA04E7004CD707 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				AD3D685E088F9FF600CBB51B /* UIxContactEditor.wox */,
+				AD3D685F088F9FF600CBB51B /* UIxContactsListView.wox */,
+				AD3D6860088F9FF600CBB51B /* UIxContactView.wox */,
+				AD86233707CA03D9004CD707 /* UIxContactSelector.wox */,
+				AD86233907CA03D9004CD707 /* UIxContactsSelectionView.wox */,
+			);
+			name = Contacts;
+			sourceTree = "<group>";
+		};
+		ADB741FF0887C90200AC849E /* SOGoAptMailRemoval */ = {
+			isa = PBXGroup;
+			children = (
+				ADB742000887C90200AC849E /* SOGoAptMailRemoval.m */,
+				AD3D66E0088E7FAD00CBB51B /* SOGoAptMailEnglishRemoval.wo */,
+				AD3D66F0088E7FAD00CBB51B /* SOGoAptMailFrenchRemoval.wo */,
+			);
+			name = SOGoAptMailRemoval;
+			sourceTree = "<group>";
+		};
+		ADB7420A0887C94C00AC849E /* SOGoAptMailDeletion */ = {
+			isa = PBXGroup;
+			children = (
+				ADB7420B0887C94C00AC849E /* SOGoAptMailDeletion.m */,
+				AD3D66D8088E7FAD00CBB51B /* SOGoAptMailEnglishDeletion.wo */,
+				AD3D66E8088E7FAD00CBB51B /* SOGoAptMailFrenchDeletion.wo */,
+			);
+			name = SOGoAptMailDeletion;
+			sourceTree = "<group>";
+		};
+		ADDF4B3006DCEAC800C4E7F8 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4B3C06DCEAC800C4E7F8 /* NOTES */,
+				ADDF4B3406DCEAC800C4E7F8 /* COPYING */,
+				ADDF4B3506DCEAC800C4E7F8 /* COPYRIGHT */,
+				ADDF4B3206DCEAC800C4E7F8 /* ChangeLog */,
+				ADDF4B3E06DCEAC800C4E7F8 /* Version */,
+				ADDF4B3106DCEAC800C4E7F8 /* bundle-info.plist */,
+				ADDF4B3D06DCEAC800C4E7F8 /* product.plist */,
+				ADDF4B3606DCEAC800C4E7F8 /* Localizable.strings */,
+				ADDF4B4406DCEB1200C4E7F8 /* Makefiles */,
+				ADDF4B4106DCEB0C00C4E7F8 /* Classes */,
+				ADDF4B6D06DCEBB400C4E7F8 /* Components */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		ADDF4B4106DCEB0C00C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4B6A06DCEBA100C4E7F8 /* common.h */,
+				ADDF4B3306DCEAC800C4E7F8 /* ContactsUIProduct.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4B4406DCEB1200C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4B3906DCEAC800C4E7F8 /* GNUmakefile */,
+				ADDF4B3A06DCEAC800C4E7F8 /* GNUmakefile.postamble */,
+				ADDF4B3B06DCEAC800C4E7F8 /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4B6D06DCEBB400C4E7F8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AD3D6100088BF4E600CBB51B /* UIxContactEditorBase.h */,
+				AD3D6101088BF4E600CBB51B /* UIxContactEditorBase.m */,
+				AD3D6102088BF4E600CBB51B /* UIxContactsListViewBase.h */,
+				AD3D6103088BF4E600CBB51B /* UIxContactsListViewBase.m */,
+				ADDF4B7006DCEC4300C4E7F8 /* UIxContactsListView.m */,
+				AD494C8E06F606F900E51EC9 /* UIxContactsSelectionView.m */,
+				ADDF4B7306DCEC5200C4E7F8 /* UIxContactView.m */,
+				ADDF4B7606DCEC5F00C4E7F8 /* UIxContactEditor.m */,
+				AD494C6206F5EA6600E51EC9 /* UIxContactSelector.m */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		ADDF4BDB06DCF5D400C4E7F8 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				AD0134DC06DF4C11000910D8 /* README */,
+				ADDF4D7706DE0BFE00C4E7F8 /* ChangeLog */,
+				ADDF4BE306DCF5D400C4E7F8 /* Version */,
+				ADDF4C0006DCF65700C4E7F8 /* product.plist */,
+				ADDF4BEF06DCF60500C4E7F8 /* Makefiles */,
+				ADDF4BEC06DCF5FE00C4E7F8 /* Classes */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		ADDF4BE606DCF5E200C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E872063B0692E3D00099CBBD /* GNUmakefile */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4BE906DCF5EC00C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E872063A0692E3D00099CBBD /* common.h */,
+				E87206410692E3D00099CBBD /* Product.m */,
+				E87206470692E3D00099CBBD /* SOGoAppointmentFolder.h */,
+				E87206480692E3D00099CBBD /* SOGoAppointmentFolder.m */,
+				AD88394906EF807D00981A3E /* SOGoGroupAppointmentFolder.h */,
+				AD88394A06EF807D00981A3E /* SOGoGroupAppointmentFolder.m */,
+				E87206490692E3D00099CBBD /* SOGoAppointmentObject.h */,
+				E872064A0692E3D00099CBBD /* SOGoAppointmentObject.m */,
+				AD9FF1EE087C0BDA0021431B /* SOGoFreeBusyObject.h */,
+				AD9FF1EF087C0BDA0021431B /* SOGoFreeBusyObject.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4BEC06DCF5FE00C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4BDC06DCF5D400C4E7F8 /* common.h */,
+				ADDF4BDE06DCF5D400C4E7F8 /* Product.m */,
+				ADDF4BDF06DCF5D400C4E7F8 /* SOGoContactFolder.h */,
+				ADDF4BE006DCF5D400C4E7F8 /* SOGoContactFolder.m */,
+				ADDF4BE106DCF5D400C4E7F8 /* SOGoContactObject.h */,
+				ADDF4BE206DCF5D400C4E7F8 /* SOGoContactObject.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4BEF06DCF60500C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4BDD06DCF5D400C4E7F8 /* GNUmakefile */,
+				ADDF4BFF06DCF64100C4E7F8 /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4D6806DE0BAB00C4E7F8 /* Mailer */ = {
+			isa = PBXGroup;
+			children = (
+				ADBE3E5B0727167A000FEA6A /* README */,
+				ADDF4D6906DE0BAB00C4E7F8 /* ChangeLog */,
+				ADDF4D7306DE0BAB00C4E7F8 /* Version */,
+				ADDF4D6E06DE0BAB00C4E7F8 /* product.plist */,
+				ADDF4D7606DE0BDF00C4E7F8 /* Makefiles */,
+				ADDF4D7A06DE0C2400C4E7F8 /* Classes */,
+			);
+			path = Mailer;
+			sourceTree = "<group>";
+		};
+		ADDF4D7606DE0BDF00C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4D6B06DE0BAB00C4E7F8 /* GNUmakefile */,
+				ADDF4D6C06DE0BAB00C4E7F8 /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4D7A06DE0C2400C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4D6A06DE0BAB00C4E7F8 /* common.h */,
+				ADDF4D6D06DE0BAB00C4E7F8 /* Product.m */,
+				ADBE3E5C0727167A000FEA6A /* SOGoDraftObject.h */,
+				ADBE3E5D0727167A000FEA6A /* SOGoDraftObject.m */,
+				ADBE3E5E0727167A000FEA6A /* SOGoDraftsFolder.h */,
+				ADBE3E5F0727167A000FEA6A /* SOGoDraftsFolder.m */,
+				ADBE3E600727167A000FEA6A /* SOGoMailBaseObject.h */,
+				ADBE3E610727167A000FEA6A /* SOGoMailBaseObject.m */,
+				ADDF4D7106DE0BAB00C4E7F8 /* SOGoMailObject.h */,
+				ADDF4D7206DE0BAB00C4E7F8 /* SOGoMailObject.m */,
+				ADDF4D6F06DE0BAB00C4E7F8 /* SOGoMailFolder.h */,
+				ADDF4D7006DE0BAB00C4E7F8 /* SOGoMailFolder.m */,
+				ADE0ABFC0885C31100E62D67 /* SOGoMailFolderDataSource.h */,
+				ADE0ABFD0885C31100E62D67 /* SOGoMailFolderDataSource.m */,
+				ADBE3E620727167A000FEA6A /* SOGoMailBodyPart.h */,
+				ADBE3E630727167A000FEA6A /* SOGoMailBodyPart.m */,
+				AD770DA307AE4F7000F5C7A1 /* SOGoImageMailBodyPart.m */,
+				AD770DA407AE4F7000F5C7A1 /* SOGoMessageMailBodyPart.m */,
+				ADBE3E660727167A000FEA6A /* SOGoMailManager.h */,
+				ADBE3E670727167A000FEA6A /* SOGoMailManager.m */,
+				AD494D1A06F6EB3A00E51EC9 /* SOGoMailAccounts.h */,
+				AD494D1B06F6EB3A00E51EC9 /* SOGoMailAccounts.m */,
+				AD494D1806F6EB3A00E51EC9 /* SOGoMailAccount.h */,
+				AD494D1906F6EB3A00E51EC9 /* SOGoMailAccount.m */,
+				ADE0ABFE0885C31100E62D67 /* SOGoTrashFolder.h */,
+				ADE0ABFF0885C31100E62D67 /* SOGoTrashFolder.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4DB706DE0E5B00C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E87206890692E3D10099CBBD /* GNUmakefile */,
+				E872068A0692E3D10099CBBD /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4DBA06DE0E6500C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD85C73907C4E8A30036AC7A /* Temporary */,
+				E87206880692E3D10099CBBD /* common.h */,
+				AD85C72607C4E8740036AC7A /* AgenorUserManager.h */,
+				AD85C72707C4E8740036AC7A /* AgenorUserManager.m */,
+				AD2FAA81088417AB009A91E7 /* AgenorUserDefaults.h */,
+				AD2FAA82088417AB009A91E7 /* AgenorUserDefaults.m */,
+				ADE0AEA20886CB3A00E62D67 /* SOGoAuthenticator.h */,
+				ADE0AEA30886CB3A00E62D67 /* SOGoAuthenticator.m */,
+				AD85C73407C4E8740036AC7A /* SOGoLRUCache.h */,
+				AD85C73507C4E8740036AC7A /* SOGoLRUCache.m */,
+				ADE0AEA40886CB3A00E62D67 /* SOGoUser.h */,
+				ADE0AEA50886CB3A00E62D67 /* SOGoUser.m */,
+				E87206A00692E3D10099CBBD /* SOGoObject.h */,
+				E87206A10692E3D10099CBBD /* SOGoObject.m */,
+				E872069C0692E3D10099CBBD /* SOGoContentObject.h */,
+				E872069D0692E3D10099CBBD /* SOGoContentObject.m */,
+				E872069E0692E3D10099CBBD /* SOGoFolder.h */,
+				E872069F0692E3D10099CBBD /* SOGoFolder.m */,
+				E87206A20692E3D10099CBBD /* SOGoUserFolder.h */,
+				E87206A30692E3D10099CBBD /* SOGoUserFolder.m */,
+				AD85C73207C4E8740036AC7A /* SOGoGroupsFolder.h */,
+				AD85C73307C4E8740036AC7A /* SOGoGroupsFolder.m */,
+				AD85C73007C4E8740036AC7A /* SOGoGroupFolder.h */,
+				AD85C73107C4E8740036AC7A /* SOGoGroupFolder.m */,
+				AD85C72E07C4E8740036AC7A /* SOGoCustomGroupFolder.h */,
+				AD85C72F07C4E8740036AC7A /* SOGoCustomGroupFolder.m */,
+				ADB7A0FC07D6389500CA782A /* NSObject+AptComparison.h */,
+				ADB7A0FD07D6389500CA782A /* NSObject+AptComparison.m */,
+				AD85C72907C4E8740036AC7A /* NSString+iCal.h */,
+				AD751DFF087E7EDF004EE381 /* WOContext+Agenor.h */,
+				AD751E00087E7EDF004EE381 /* WOContext+Agenor.m */,
+				AD3D643B088D725D00CBB51B /* SOGoContext.h */,
+				AD3D643C088D725D00CBB51B /* SOGoContext.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4DBB06DE0E9900C4E7F8 /* MailerUI */ = {
+			isa = PBXGroup;
+			children = (
+				AD2C74A3071A9FF70087E027 /* README */,
+				ADDF4DC806DE0E9A00C4E7F8 /* NOTES */,
+				ADDF4DBF06DE0E9900C4E7F8 /* COPYING */,
+				ADDF4DC006DE0E9900C4E7F8 /* COPYRIGHT */,
+				ADDF4DBD06DE0E9900C4E7F8 /* ChangeLog */,
+				ADDF4DD006DE0E9A00C4E7F8 /* Version */,
+				ADDF4DBC06DE0E9900C4E7F8 /* bundle-info.plist */,
+				ADDF4DC906DE0E9A00C4E7F8 /* product.plist */,
+				ADDF4DC106DE0E9A00C4E7F8 /* Localizable.strings */,
+				ADDF4DD306DE0EB600C4E7F8 /* Makefiles */,
+				AD3D67AB088EAF0100CBB51B /* Toolbars */,
+				AD3D696D088FC08500CBB51B /* WebServerResources */,
+				ADDF4DD906DE0ECB00C4E7F8 /* Classes */,
+				ADDF4DD606DE0EC100C4E7F8 /* Components */,
+			);
+			path = MailerUI;
+			sourceTree = "<group>";
+		};
+		ADDF4DD306DE0EB600C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4DC406DE0E9A00C4E7F8 /* GNUmakefile */,
+				ADDF4DC506DE0E9A00C4E7F8 /* GNUmakefile.postamble */,
+				ADDF4DC606DE0E9A00C4E7F8 /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4DD606DE0EC100C4E7F8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AD770DB407AE4FB200F5C7A1 /* UIxMailTreeBlock.h */,
+				AD770DB507AE4FB200F5C7A1 /* UIxMailTreeBlock.m */,
+				AD770DB607AE4FB200F5C7A1 /* UIxSieveEditor.m */,
+				AD2C74A6071A9FF70087E027 /* UIxMailAccountsView.m */,
+				AD2C74A8071A9FF70087E027 /* UIxMailAccountView.m */,
+				AD2C74AC071A9FF70087E027 /* UIxMailMainFrame.m */,
+				AD2C74BA071A9FF70087E027 /* UIxMailToolbar.m */,
+				AD2C74BC071A9FF70087E027 /* UIxMailTree.m */,
+				ADDF4DCA06DE0E9A00C4E7F8 /* UIxMailEditor.m */,
+				AD5DF18E072E5AC500173622 /* UIxMailEditorAttach.m */,
+				AD2C78F7071C23CE0087E027 /* UIxMailAddressbook.m */,
+				AD2C76D6071BF4EB0087E027 /* UIxMailToSelection.m */,
+				ADDF4DCC06DE0E9A00C4E7F8 /* UIxMailListView.m */,
+				ADBE446707297BA9000FEA6A /* UIxMailSortableTableHeader.m */,
+				ADC07231072E9BFB00C125E0 /* UIxMailMoveToPopUp.m */,
+				ADDF4DCE06DE0E9A00C4E7F8 /* UIxMailView.m */,
+				AD0A0ACC07A8093400D3B8EF /* UIxMailWindowCloser.m */,
+				AD770DAC07AE4FB200F5C7A1 /* UIxFilterList.m */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		ADDF4DD906DE0ECB00C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4DBE06DE0E9900C4E7F8 /* common.h */,
+				ADDF4DC706DE0E9A00C4E7F8 /* MailerUIProduct.m */,
+				AD2C74C6071AA0ED0087E027 /* Formatters */,
+				AD2C76D5071BF4EB0087E027 /* UIxMailEditorAction.m */,
+				AD2C74B6071A9FF70087E027 /* UIxMailPartViewer.h */,
+				AD2C74B7071A9FF70087E027 /* UIxMailPartViewer.m */,
+				AD2C74B8071A9FF70087E027 /* UIxMailRenderingContext.h */,
+				AD2C74B9071A9FF70087E027 /* UIxMailRenderingContext.m */,
+				AD2C74BF071A9FF70087E027 /* WOContext+UIxMailer.h */,
+				AD2C74C0071A9FF70087E027 /* WOContext+UIxMailer.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF4E3906DE4E9800C4E7F8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E87205EF0692E3D00099CBBD /* SOGoRootPage.m */,
+				E87205F00692E3D00099CBBD /* SOGoRootPage.wox */,
+				E87205F10692E3D00099CBBD /* SOGoUserHomePage.m */,
+				E87205F20692E3D00099CBBD /* SOGoUserHomePage.wox */,
+				AD2E1FE907BD879D0012FE12 /* SOGoGroupsPage.m */,
+				AD2E1FEA07BD879D0012FE12 /* SOGoGroupsPage.wox */,
+				AD2E1FE707BD879D0012FE12 /* SOGoGroupPage.m */,
+				AD2E1FE807BD879D0012FE12 /* SOGoGroupPage.wox */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		ADDF4E3C06DE4EA900C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E87205CF0692E3D00099CBBD /* GNUmakefile */,
+				E87205D00692E3D00099CBBD /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4E3F06DE4EBB00C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E87205CE0692E3D00099CBBD /* common.h */,
+				E87205E10692E3D00099CBBD /* sogod.m */,
+				AD2E1FE607BD876E0012FE12 /* SOGo.m */,
+				AD2E1FEC07BD87CB0012FE12 /* MainUIProduct.m */,
+				E87205ED0692E3D00099CBBD /* SOGoProductLoader.h */,
+				E87205EE0692E3D00099CBBD /* SOGoProductLoader.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADE2C28F06B7C7EA0065D56F /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				ADF15C2E06BA86420047D955 /* UIxCalDayOverview.h */,
+				AD5ED0B006B1385700E3EC4B /* UIxCalDayOverview.m */,
+				ADE2C28906B7C7B20065D56F /* UIxCalDayChartview.m */,
+				ADE2C28C06B7C7C20065D56F /* UIxCalDayListview.m */,
+				ADF15BFD06BA842A0047D955 /* UIxCalDayPrintview.m */,
+			);
+			name = Day;
+			sourceTree = "<group>";
+		};
+		ADE2C29206B7C7F70065D56F /* Week */ = {
+			isa = PBXGroup;
+			children = (
+				ADF15D1A06BAA6D20047D955 /* UIxCalWeekOverview.h */,
+				E87209080692E3D30099CBBD /* UIxCalWeekOverview.m */,
+				ADE2C24006B7BEE60065D56F /* UIxCalWeekChartview.m */,
+				ADE2C23D06B7BED40065D56F /* UIxCalWeekListview.m */,
+				ADE2C24A06B7BF020065D56F /* UIxCalWeekColumnsview.m */,
+				ADF15C0206BA84480047D955 /* UIxCalWeekPrintview.m */,
+			);
+			fileEncoding = 5;
+			indentWidth = 2;
+			name = Week;
+			sourceTree = "<group>";
+		};
+		ADE2C2BE06B7CCB90065D56F /* Month */ = {
+			isa = PBXGroup;
+			children = (
+				AD7379B306AEBB2500735920 /* UIxCalInlineMonthOverview.m */,
+				AD737A1706AEC77E00735920 /* UIxCalMonthOverview.h */,
+				E87209000692E3D30099CBBD /* UIxCalMonthOverview.m */,
+				ADF15C0506BA845E0047D955 /* UIxCalMonthPrintview.m */,
+			);
+			name = Month;
+			sourceTree = "<group>";
+		};
+		ADE2C2C106B7CCBF0065D56F /* Year */ = {
+			isa = PBXGroup;
+			children = (
+				AD737A6A06AEE8BD00735920 /* UIxCalYearOverview.m */,
+			);
+			name = Year;
+			sourceTree = "<group>";
+		};
+		E87205850692E3B40099CBBD = {
+			isa = PBXGroup;
+			children = (
+				E87205F40692E3D00099CBBD /* README */,
+				E872058E0692E3D00099CBBD /* GNUmakefile */,
+				E872058F0692E3D00099CBBD /* Main */,
+				AD85C6E307C4E7230036AC7A /* Protocols */,
+				E87205F50692E3D00099CBBD /* SoObjects */,
+				E87206A40692E3D10099CBBD /* UI */,
+			);
+			sourceTree = "<group>";
+		};
+		E872058F0692E3D00099CBBD /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E87205D80692E3D00099CBBD /* README */,
+				AD2E1FEB07BD87B90012FE12 /* TODO */,
+				AD152B6F06AC159A002375D2 /* ChangeLog */,
+				E87205F30692E3D00099CBBD /* Version */,
+				E87205D70692E3D00099CBBD /* product.plist */,
+				AD06608A06AC2F3F006525C9 /* Locale */,
+				AD01377406DF6BC7000910D8 /* Localizable.strings */,
+				ADE0AC400885C6D300E62D67 /* homepage.js */,
+				ADDF4E3C06DE4EA900C4E7F8 /* Makefiles */,
+				ADDF4E3F06DE4EBB00C4E7F8 /* Classes */,
+				ADDF4E3906DE4E9800C4E7F8 /* Components */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E87205F50692E3D00099CBBD /* SoObjects */ = {
+			isa = PBXGroup;
+			children = (
+				E872064D0692E3D00099CBBD /* README */,
+				ADDF4D6706DE0BAB00C4E7F8 /* ChangeLog */,
+				E872064C0692E3D00099CBBD /* GNUmakefile */,
+				AD2FAA4708840BB8009A91E7 /* common.make */,
+				E872064E0692E3D00099CBBD /* SOGo */,
+				E87206090692E3D00099CBBD /* Appointments */,
+				ADDF4BDB06DCF5D400C4E7F8 /* Contacts */,
+				ADDF4D6806DE0BAB00C4E7F8 /* Mailer */,
+			);
+			path = SoObjects;
+			sourceTree = "<group>";
+		};
+		E87206090692E3D00099CBBD /* Appointments */ = {
+			isa = PBXGroup;
+			children = (
+				ADB79CAD07D4BF1600CA782A /* ChangeLog */,
+				E872064B0692E3D00099CBBD /* Version */,
+				E87206420692E3D00099CBBD /* product.plist */,
+				ADDF4BE606DCF5E200C4E7F8 /* Makefiles */,
+				ADDF4BE906DCF5EC00C4E7F8 /* Classes */,
+				AD2FA8550883B60F009A91E7 /* Mail Components */,
+			);
+			path = Appointments;
+			sourceTree = "<group>";
+		};
+		E872064E0692E3D00099CBBD /* SOGo */ = {
+			isa = PBXGroup;
+			children = (
+				E87206930692E3D10099CBBD /* README */,
+				AD85C72807C4E8740036AC7A /* ChangeLog */,
+				AD85C73607C4E8740036AC7A /* Version */,
+				ADDF4DB706DE0E5B00C4E7F8 /* Makefiles */,
+				ADDF4DBA06DE0E6500C4E7F8 /* Classes */,
+			);
+			path = SOGo;
+			sourceTree = "<group>";
+		};
+		E87206A40692E3D10099CBBD /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E87207E90692E3D20099CBBD /* README */,
+				E87206C20692E3D10099CBBD /* ChangeLog */,
+				E87207E80692E3D20099CBBD /* GNUmakefile */,
+				AD6BCEE5069D77E9003664CD /* SOGoUI */,
+				AD85C76007C4E9100036AC7A /* Templates */,
+				E87206C30692E3D10099CBBD /* Common */,
+				E87207EA0692E3D20099CBBD /* Scheduler */,
+				ADDF4B3006DCEAC800C4E7F8 /* Contacts */,
+				ADDF4DBB06DE0E9900C4E7F8 /* MailerUI */,
+				AD07123606C904C900A9EEF4 /* Anais */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		E87206C30692E3D10099CBBD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E87207490692E3D20099CBBD /* ChangeLog */,
+				E87207E60692E3D20099CBBD /* Version */,
+				E87207470692E3D20099CBBD /* bundle-info.plist */,
+				E87207C40692E3D20099CBBD /* product.plist */,
+				AD01376706DF6A59000910D8 /* Localizable.strings */,
+				E8720A490692E4CE0099CBBD /* Makefiles */,
+				AD01374506DF6731000910D8 /* WebServerResources */,
+				E8720A6B0692E4EC0099CBBD /* Classes */,
+				E8720A570692E4DF0099CBBD /* Components */,
+			);
+			name = Common;
+			path = UI/Common;
+			sourceTree = SOURCE_ROOT;
+		};
+		E87207EA0692E3D20099CBBD /* Scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				E87208D30692E3D30099CBBD /* NOTES */,
+				E87208910692E3D30099CBBD /* COPYING */,
+				E87208920692E3D30099CBBD /* COPYRIGHT */,
+				E872088F0692E3D30099CBBD /* ChangeLog */,
+				E872090C0692E3D30099CBBD /* Version */,
+				E872088E0692E3D30099CBBD /* bundle-info.plist */,
+				E87208E20692E3D30099CBBD /* product.plist */,
+				ADCDE53206ADA8C800BFCE2B /* Localizable.strings */,
+				ADCDF64107BA4EC300C74EDF /* cycles.plist */,
+				E8720A0C0692E4940099CBBD /* Makefiles */,
+				E87208960692E3D30099CBBD /* images */,
+				E8720A3B0692E4C20099CBBD /* Classes */,
+				E8720A2B0692E4B40099CBBD /* Components */,
+				AD86236407CA03EF004CD707 /* Templates */,
+			);
+			path = Scheduler;
+			sourceTree = "<group>";
+		};
+		E87208960692E3D30099CBBD /* images */ = {
+			isa = PBXGroup;
+			children = (
+				ADF15BF306BA839B0047D955 /* icon_view_chart_inactive.gif */,
+				ADF15BF406BA839B0047D955 /* icon_view_chart.gif */,
+				ADF15BF506BA839B0047D955 /* icon_view_columns_inactive.gif */,
+				ADF15BF606BA839B0047D955 /* icon_view_columns.gif */,
+				ADF15BF706BA839B0047D955 /* icon_view_list_inactive.gif */,
+				ADF15BF806BA839B0047D955 /* icon_view_list.gif */,
+				ADF15BF906BA839B0047D955 /* icon_view_overview_inactive.gif */,
+				ADF15BFA06BA839B0047D955 /* icon_view_overview.gif */,
+				AD71091406F1D4C900A5926E /* icon_popupcalendar.gif */,
+				E87208D10692E3D30099CBBD /* next_week.gif */,
+				E87208D20692E3D30099CBBD /* previous_week.gif */,
+				AD71091206F1D4C900A5926E /* first.gif */,
+				AD71091606F1D4C900A5926E /* last.gif */,
+				AD71091806F1D4C900A5926E /* previous.gif */,
+				AD71091706F1D4C900A5926E /* next.gif */,
+				AD71091306F1D4C900A5926E /* green_corner.gif */,
+				AD71091506F1D4C900A5926E /* invisible_space_2.gif */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		E8720A0C0692E4940099CBBD /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E87208930692E3D30099CBBD /* GNUmakefile */,
+				E87208950692E3D30099CBBD /* GNUmakefile.preamble */,
+				E87208940692E3D30099CBBD /* GNUmakefile.postamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		E8720A2B0692E4B40099CBBD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E87208FC0692E3D30099CBBD /* UIxCalBackForthNavView.m */,
+				E87208FE0692E3D30099CBBD /* UIxCalDateLabel.m */,
+				E87209040692E3D30099CBBD /* UIxCalSelectTab.m */,
+				AD7BA88A0770A62B008F4F3D /* News */,
+				AD0137A406DF8875000910D8 /* Appointment */,
+				AD73BEE206CFA17700226A2D /* Date / Time */,
+				ADE2C28F06B7C7EA0065D56F /* Day */,
+				ADE2C29206B7C7F70065D56F /* Week */,
+				ADE2C2BE06B7CCB90065D56F /* Month */,
+				ADE2C2C106B7CCBF0065D56F /* Year */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		E8720A3B0692E4C20099CBBD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E87208900692E3D30099CBBD /* common.h */,
+				E87208E40692E3D30099CBBD /* SchedulerUIProduct.m */,
+				E87209060692E3D30099CBBD /* UIxCalView.h */,
+				E87209070692E3D30099CBBD /* UIxCalView.m */,
+				AD5ED1AE06B1768900E3EC4B /* UIxCalDayView.h */,
+				AD5ED1AF06B1768900E3EC4B /* UIxCalDayView.m */,
+				E872090A0692E3D30099CBBD /* UIxCalWeekView.h */,
+				E872090B0692E3D30099CBBD /* UIxCalWeekView.m */,
+				E87209020692E3D30099CBBD /* UIxCalMonthView.h */,
+				E87209030692E3D30099CBBD /* UIxCalMonthView.m */,
+				AD73BE7D06CF90EA00226A2D /* NSCalendarDate+UIx.h */,
+				AD73BE7E06CF90EA00226A2D /* NSCalendarDate+UIx.m */,
+				AD071B3C06CCFA2000A9EEF4 /* iCalPerson+UIx.h */,
+				AD071B3D06CCFA2000A9EEF4 /* iCalPerson+UIx.m */,
+				ADA63205071330AE0058C21C /* SOGoAppointment+UIx.h */,
+				ADA63206071330AE0058C21C /* SOGoAppointment+UIx.m */,
+				AD73BE6106CF8CC500226A2D /* UIxComponent+Agenor.h */,
+				AD73BE6206CF8CC500226A2D /* UIxComponent+Agenor.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		E8720A490692E4CE0099CBBD /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E872074D0692E3D20099CBBD /* GNUmakefile */,
+				E872074E0692E3D20099CBBD /* GNUmakefile.postamble */,
+				E872074F0692E3D20099CBBD /* GNUmakefile.preamble */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		E8720A570692E4DF0099CBBD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E87207DA0692E3D20099CBBD /* UIxAppNavView.m */,
+				E87207DF0692E3D20099CBBD /* UIxPageFrame.m */,
+				E87207E40692E3D20099CBBD /* UIxWinClose.m */,
+				ADF15C4A06BA89140047D955 /* UIxPrintPageFrame.m */,
+				AD0134C306DF41C5000910D8 /* UIxSortButton.m */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		E8720A6B0692E4EC0099CBBD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E872074A0692E3D20099CBBD /* common.h */,
+				E872074C0692E3D20099CBBD /* CommonUIProduct.m */,
+				E87207DE0692E3D20099CBBD /* UIxElemBuilder.m */,
+				E87207E10692E3D20099CBBD /* UIxTabItem.m */,
+				E87207E20692E3D20099CBBD /* UIxTabView.h */,
+				E87207E30692E3D20099CBBD /* UIxTabView.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		E8720A7A0692E5010099CBBD /* gs-make */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION) GNUSTEP_SYSTEM_ROOT=$(HOME)/GNUstep";
+			buildConfigurationList = AD3D68A608793F58005FA0C4 /* Build configuration list for PBXLegacyTarget "gs-make" */;
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-make";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			buildToolPath = /usr/bin/make;
+			dependencies = (
+			);
+			name = "gs-make";
+			passBuildSettingsInEnvironment = 1;
+			productName = "gs-make";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		E87205890692E3B40099CBBD /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = AD3D68AA08793F58005FA0C4 /* Build configuration list for PBXProject "SOGo" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				E87205870692E3B40099CBBD /* Development */,
+				E87205880692E3B40099CBBD /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = E87205850692E3B40099CBBD;
+			projectDirPath = "";
+			targets = (
+				E8720A7A0692E5010099CBBD /* gs-make */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXVariantGroup section */
+		AD00163006ECCF4C00012B62 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AD00163106ECCF4C00012B62 /* English */,
+				AD00163206ECCF5C00012B62 /* French */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		AD01376706DF6A59000910D8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AD01376806DF6A59000910D8 /* English */,
+				AD01376906DF6A69000910D8 /* French */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		AD01377406DF6BC7000910D8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AD01377506DF6BC7000910D8 /* English */,
+				AD01377606DF6BE6000910D8 /* French */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		AD06608A06AC2F3F006525C9 /* Locale */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AD06608B06AC2F3F006525C9 /* English */,
+				AD06608C06AC2F4A006525C9 /* French */,
+			);
+			name = Locale;
+			sourceTree = "<group>";
+		};
+		ADCDE53206ADA8C800BFCE2B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ADCDE53106ADA8AC00BFCE2B /* Localizable.strings */,
+				ADCDE53306ADA8CF00BFCE2B /* Localizable.strings */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		ADDF4B3606DCEAC800C4E7F8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ADDF4B3706DCEAC800C4E7F8 /* English */,
+				ADDF4B3806DCEAC800C4E7F8 /* French */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		ADDF4DC106DE0E9A00C4E7F8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ADDF4DC206DE0E9A00C4E7F8 /* English */,
+				ADDF4DC306DE0E9A00C4E7F8 /* French */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AD3D68A708793F58005FA0C4 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-make";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Development;
+		};
+		AD3D68A808793F58005FA0C4 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-make";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Deployment;
+		};
+		AD3D68A908793F58005FA0C4 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-make";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Default;
+		};
+		AD3D68AB08793F58005FA0C4 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		AD3D68AC08793F58005FA0C4 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		AD3D68AD08793F58005FA0C4 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AD3D68A608793F58005FA0C4 /* Build configuration list for PBXLegacyTarget "gs-make" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD3D68A708793F58005FA0C4 /* Development */,
+				AD3D68A808793F58005FA0C4 /* Deployment */,
+				AD3D68A908793F58005FA0C4 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		AD3D68AA08793F58005FA0C4 /* Build configuration list for PBXProject "SOGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD3D68AB08793F58005FA0C4 /* Development */,
+				AD3D68AC08793F58005FA0C4 /* Deployment */,
+				AD3D68AD08793F58005FA0C4 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E87205890692E3B40099CBBD /* Project object */;
+}

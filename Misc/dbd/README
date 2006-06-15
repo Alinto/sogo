@@ -1,0 +1,108 @@
+# $Id$
+
+PostgreSQL Browser
+==================
+
+Intention:
+- fix open SOPE issues
+- fix PostgreSQL issues, prepare low-level storage
+- work towards SOGo from a storage point of view (with UI-X coming down from a
+  UI point of view)
+
+SOPE Hierarchy
+- /DBHOST/Databases/MYDB/MYTABLE/MYFIELD
+- /DBHOST/Users/MYUSER
+- /DBHOST/Databases/MYDB/MYTABLE/MYFIELD=MYPKEY
+
+Class Hierarchy
+  DSoObject
+    DSoHost            "DBHOST"
+    DSoTable	       "MYTABLE"
+    DSoDatabase        "MYDB"
+    DSoDatabaseManager "Database"
+    DSoUser	       "MYUSER"
+    DSoUserManager     "Users"
+    DSoField           "MYFIELD"
+
+Tricks used
+===========
+
+- *always* remember that SOPE objects which are looked up in the traversal
+  process are conceptually *UI* objects, not datamodel objects (though this
+  might be done for simplistic applications)
+  - the idea is: the URL is UI
+
+- small hack in MainPage.m to make a redirect to a "valid" WO URL if the
+  request-handler-key is missing
+  - should be made by SOPE itself?
+
+- own authenticator object
+  - two different authenticators (with dbname available and without)
+
+- a hack in the SoApplication -lookupName: to differentiate between
+  'hostnames' and resources
+
+- in DSoObject we extract login/password from the basic auth
+  - SOPE does all the authentication for SOPE level objects, but if we
+    want to reuse passwords, we need to do that manually
+  - we reuse an HTTP parsing method from SoHTTPAuthenticator
+
+- could -sleep to tear down transient state (not used)
+  - -sleep is called by the SoObjectRequestHandler
+  - Note: also supports -_sleepWithContext:
+
+- note that the EOAdaptor is created by the object, but the channel is created
+  by the method (the component)
+  - the object itself is not really active, the methods should be active
+  - the distinction here is blur, in general I would avoid methods which would
+    require an [[WOApplication application] context]
+
+- we are not really clever with DSoUserManager and DSoDatabaseManager,
+  those two classes are basically identical
+
+- the "GET" method is explicitly mapped in product.plist for the application
+  object because otherwise "GET" will be treated as a hostname (because we
+  perform no check on the hostname!)
+  - need to check whether we can make SOPE smarter on this front, but I guess
+    that issue is inherent to all containers which map to arbitary, external
+    collections
+  - we could create an EOAdaptor and connect it to 'template1', but this would
+    result in one unnecessary DB connection?
+  - Note: this is not a problem for methods which are registered in 
+          products.plist - those are found in the SoClass. But the system
+	  checks for some keys during its traversal process (and expects 
+          getting a nil if the key does not exist).
+
+- when redirecting to the DSoHost object, we need to ensure that we add a slash
+  - otherwise the relative URLs will be broken!
+  - in theory SOPE should make a redirect to the default method, not sure why
+    this isn't happening
+  - ZideStore always makes such a redirect?
+  - maybe any folderish object when being at the end of a traversal stack 
+    should check that?
+
+- acquisition
+  - if you override -lookupName:inContext:acquire:, you should probably
+    disable acquire in super calls! - otherwise all name processing code 
+    coming after the [super lookup..] is overridden by objects in the 
+    acquisition mechanism
+  - note that acquisition is also done on the traversal path! if the lookup
+    returns nil on an URL path being traversed, URL acquisition will occure
+    (except on non-acquisition protocols like WebDAV)
+  - if you have a path like '/Databases/MyDatabase/MyTable/MyField' and
+    'MyField' isn't processed by MyTable (eg not yet implemented), then this
+    will return a SoDatabase object! - because acquisition will look for
+    'MyField' in 'MyDatabase' which will create a SoDatabase.
+
+- baseURL
+  - calculation of base URL requires you to either override -baseURLInContext:
+    or implement -container and -nameInContainer
+
+- enabling WebDAV
+  - implemented -isCollection in DSoObject
+  - per default the baseURL is broken - you need to ensure that it returns
+    a proper value, see above
+    - if the baseURL doesn't match the requested WebDAV URL, we run into
+      problems, maybe need to fix something in the SOPE WebDAV layer here
+
+- a trick to stop acquisition is to return a NSException 404 code.
