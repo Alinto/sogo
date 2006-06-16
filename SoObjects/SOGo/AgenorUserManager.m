@@ -108,6 +108,11 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
     NSLog(@"ERROR: could not parse AgenorProfileURL: '%@'", tmp);
   else
     NSLog(@"Note: using profile at: %@", [AgenorProfileURL absoluteString]);
+
+  if ((tmp = [ud stringForKey: @"SOGoDefaultMailDomain"]))
+    {
+      defaultMailDomain = [tmp copy];
+    }
   
   PoolScanInterval = [[ud objectForKey:@"AgenorCacheCheckInterval"] intValue];
   if (PoolScanInterval == 0) 

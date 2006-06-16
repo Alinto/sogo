@@ -1,3 +1,9 @@
+2006-06-15      ludovic@inverse.ca
+
+        * It's now possible to set the default
+	  domain using for email using the
+	  SOGoDefaultMailDomain preference key.
+
 2006-06-15	ludovic@inverse.ca
 	
 	* Initial import of SOGo from trunk.
