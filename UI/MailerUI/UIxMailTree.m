@@ -242,7 +242,7 @@ static BOOL debugBlocks = NO;
     }
     break;
   }
-  
+
   *_t    = [_object davDisplayName];
   *_icon = nil;
   
@@ -262,6 +262,10 @@ static BOOL debugBlocks = NO;
     // TODO: use drafts icon for other SOGo folders
     *_icon = @"tbtv_drafts_17x17.gif";
   }
+
+  NSLog (@"title: '%@', ftype: '%@', class: '%@', icon: '%@'",
+	 *_t,
+	 ftype, NSStringFromClass([_object class]), *_icon);
   
   return;
 }
@@ -280,7 +284,7 @@ static BOOL debugBlocks = NO;
     : nil;
   
   [self getTitle:&n andIcon:&i forObject:_o];
-  
+
   md = [UIxMailTreeBlock blockWithName:nil
 			 title:n iconName:i
 			 link:[self treeNavigationLinkForObject:_o atDepth:_d]
@@ -323,6 +327,7 @@ static BOOL debugBlocks = NO;
   /* build block */
   
   [self getTitle:&title andIcon:&icon forObject:_object];
+
   md = [UIxMailTreeBlock blockWithName:[_object nameInContainer]
 			 title:title iconName:icon
 			 link:[@"../" stringByAppendingString:
@@ -406,6 +411,7 @@ static BOOL debugBlocks = NO;
     UIxMailTreeBlock *block;
     id folder;
     
+    NSLog(@"activeName: %@", activeName);
     folder = [folders objectAtIndex:i];
     block = [activeName isEqualToString:[folder nameInContainer]]
       ? _activeChildBlock

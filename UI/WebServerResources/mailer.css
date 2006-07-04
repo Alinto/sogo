@@ -21,14 +21,14 @@
 /* TODO: is the section below used in the mailer? */
 
 .aptview_title {
-  font-size:        10pt;
+  font-size: medium;
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   color:            #000000;
   font-weight:      bold;
 }
 
 .aptview_text {
-  font-size:        10pt;
+  font-size: medium;
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   color:            #000000;
 }
@@ -47,7 +47,7 @@
 
 .anais_uids {
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:        10pt;
+  font-size: medium;
 }
 
 
@@ -61,19 +61,19 @@
   border-bottom-width: 1;
   border-bottom-style: solid;
 
-  background-color:    #D4D0C8;
+  background-color:    #DCDAD5;
 
   font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:    10pt;
+  font-size: medium;
 }
 .foldercell {
   font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:    10pt;
+  font-size: medium;
   width:        25%;
 }
 .contentcell {
   font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:    10pt;
+  font-size: medium;
 }
 .embedwhite_out {
   border-width:        1;
@@ -113,17 +113,17 @@ td.titlecell {
   padding-bottom: 2px;
   white-space:    nowrap;
   font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:      10pt;
+  font-size: medium;
 }
 
 .whitesec_title {
-  background-color: #D4D0C8;
+  background-color: #DCDAD5;
   padding:          4px;
 }
 
 .treecell {
   font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:      10pt;
+  font-size: medium;
   color:          black;
   vertical-align: bottom;
   padding-left:   4px; /* move away from the icon */
@@ -134,10 +134,11 @@ td.titlecell {
 /* mail tableview */
 
 .tableview { 
-  font-size:      9pt;
+  font-size:      medium;
   font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   vertical-align: top;
 }
+
 .tableview td {
   border-top-width:    1px;
   border-top-color:    white;
@@ -153,11 +154,11 @@ td.titlecell {
 }
 
 .tableview_highlight { 
-  font-size:        9pt;
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   vertical-align:   top;
-  background-color: #D4D0C8;
+  background-color: #DCDAD5;
 }
+
 .tableview_highlight td {
   border-top-width:    1px;
   border-bottom-width: 1px;
@@ -179,7 +180,7 @@ td.tbtv_navcell {
   padding-left:        4px;
   padding-right:       4px;
   
-  background-color:    #D4D0C8;
+  background-color:    #DCDAD5;
 }
 
 td.tbtv_headercell { 
@@ -194,7 +195,7 @@ td.tbtv_headercell {
   padding-left:        4px;
   padding-right:       4px;
   
-  background-color:    #D4D0C8;
+  background-color:    #DCDAD5;
 }
 
 td.tbtv_actcell { 
@@ -209,7 +210,7 @@ td.tbtv_actcell {
   padding-left:        4px;
   padding-right:       4px;
   
-  background-color:    #D4D0C8;
+  background-color:    #DCDAD5;
 }
 
 td.tbtv_headercell a {
@@ -268,6 +269,11 @@ td.mailer_listcell_regular {
 td.mailer_listcell_regular a { 
   color:           black;
   text-decoration: none;
+}
+
+tr.tableview td.mailer_listcell_regular {
+  border-top:    1px solid #fff;
+  border-bottom:    1px solid #fff;
 }
 
 div.mailer_readicon { 
@@ -342,7 +348,7 @@ pre.mailer_plaincontent {
 /* attachment editor */
 
 form#attachment_form { 
-  background-color: #D4D0C8;
+  background-color: #DCDAD5;
   padding: 1px;
 }
 
@@ -372,13 +378,13 @@ td.attachment_uplabel {
 /* attachment link viewer */
 
 div.linked_attachment_frame {
-  background-color: #D4D0C8;
+  background-color: #DCDAD5;
   padding:          4px;
 }
 
 div.linked_attachment_body {
   font-family:         Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:           10pt;
+  font-size: medium;
   padding:             4px;
 
   border-width:        1;
@@ -397,7 +403,7 @@ div.linked_attachment_meta {
 }
 table.linked_attachment_meta {
   font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size:    10pt;
+  font-size: medium;
   color:        #444444;
   font-style:   italic;
 }
@@ -414,7 +420,7 @@ table.linkbanner {
 }
 
 .linkbannerlinks {
-  font-size:      10pt;
+  font-size: medium;
   vertical-align: bottom;
   text-align:     left;
 }
