@@ -6,7 +6,7 @@ body {
   color:            #000000;
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size:        10pt;
-  background-color: #FFFFFF;
+  background-color: #D4D0C8;
   margin:           0px;
   margin-top:       0px;
   margin-bottom:    0px;
@@ -242,4 +242,31 @@ font.skydockfont_newMail {
 table.skytextdocktable {
   padding:        0px;
   table-layout:   auto;
+}
+
+
+DIV.linkbanner
+{ 
+  width: 100%;
+  top: 10px;
+  left: 0px;
+  z-index: 100;
+  color: #aaa;
+}
+
+DIV.linkbanner A
+{ 
+  color: #555;
+  text-decoration: none;
+  padding: .2em .5em;
+}
+
+.linkbannerlinks {
+  font-size: medium;
+  vertical-align: bottom;
+  text-align: left;
+}
+
+.linkbannerimage { 
+  text-align: right;
 }

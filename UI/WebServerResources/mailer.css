@@ -22,31 +22,31 @@
 
 .aptview_title {
   font-size: medium;
-  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  color:            #000000;
-  font-weight:      bold;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color: #000000;
+  font-weight: bold;
 }
 
 .aptview_text {
   font-size: medium;
-  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  color:            #000000;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color: #000000;
 }
 
 .apt_other {
-  color:            #000000;
+  color: #000000;
 }
 
 .apt_other_print {
-  font-style:       italic;
+  font-style: italic;
 }
 
 .anais_me {
-  color:            #0000FF;
+  color: #0000FF;
 }
 
 .anais_uids {
-  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
 }
 
@@ -54,183 +54,183 @@
 /* new stuff for Thunderbird like mailer */
 
 .vertframerow {
-  border-top-color:    white;
-  border-top-width:    1;
-  border-top-style:    solid;
+  border-top-color: white;
+  border-top-width: 1;
+  border-top-style: solid;
   border-bottom-color: #808080;
   border-bottom-width: 1;
   border-bottom-style: solid;
 
-  background-color:    #DCDAD5;
+  background-color: #DCDAD5;
 
-  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
 }
 .foldercell {
-  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
-  width:        25%;
+  width: 25%;
 }
 .contentcell {
-  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
 }
 .embedwhite_out {
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    #808080;
-  border-left-color:   #808080;
+  border-width: 1;
+  border-style: solid;
+  border-top-color: #808080;
+  border-left-color: #808080;
   border-bottom-color: white;
-  border-right-color:  white;
+  border-right-color: white;
 }
 .embedwhite_in {
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    #808080; /* TODO */
-  border-left-color:   #808080; /* TODO */
+  border-width: 1;
+  border-style: solid;
+  border-top-color: #808080; /* TODO */
+  border-left-color: #808080; /* TODO */
   border-bottom-color: #808080;
-  border-right-color:  #808080;
+  border-right-color: #808080;
 
-  background-color:    white;
-  /* height:              300px; */
+  background-color: white;
+  /* height: 300px; */
   /* height: 100%; */
 }
 .titlediv {
-  height:         24px;
+  height: 24px;
   vertical-align: middle;
-  padding-top:    6px;
-  padding-left:   6px;
+  padding-top: 6px;
+  padding-left: 6px;
 }
 table.titletable {
-  height:         24px;
+  height: 24px;
   vertical-align: middle;
-  padding-top:    6px;
-  padding-left:   6px;
+  padding-top: 6px;
+  padding-left: 6px;
 }
 td.titlecell {
-  height:         22px;
+  height: 22px;
   vertical-align: middle;
   padding-bottom: 2px;
-  white-space:    nowrap;
-  font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
 }
 
 .whitesec_title {
   background-color: #DCDAD5;
-  padding:          4px;
+  padding: 4px;
 }
 
 .treecell {
-  font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
-  color:          black;
+  color: black;
   vertical-align: bottom;
-  padding-left:   4px; /* move away from the icon */
-  padding-right:  2px; /* move away from the right border */
-  white-space:    nowrap;
+  padding-left: 4px; /* move away from the icon */
+  padding-right: 2px; /* move away from the right border */
+  white-space: nowrap;
 }
 
 /* mail tableview */
 
 .tableview { 
-  font-size:      medium;
-  font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: medium;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   vertical-align: top;
 }
 
 .tableview td {
-  border-top-width:    1px;
-  border-top-color:    white;
+  border-top-width: 1px;
+  border-top-color: white;
   border-bottom-width: 1px;
   border-bottom-color: white;
 }
 
 .tableview_selected { 
-  font-size:        9pt;
-  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  vertical-align:   top;
+  font-size: 9pt;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  vertical-align: top;
   background-color: #ffffcc;
 }
 
 .tableview_highlight { 
-  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  vertical-align:   top;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  vertical-align: top;
   background-color: #DCDAD5;
 }
 
 .tableview_highlight td {
-  border-top-width:    1px;
+  border-top-width: 1px;
   border-bottom-width: 1px;
-  border-top-style:    solid;
+  border-top-style: solid;
   border-bottom-style: solid;
-  border-top-color:    #808080;
+  border-top-color: #808080;
   border-bottom-color: #808080;
 }
 
 td.tbtv_navcell { 
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    white;
-  border-left-color:   white;
+  border-width: 1;
+  border-style: solid;
+  border-top-color: white;
+  border-left-color: white;
   border-bottom-color: #808080;
-  border-right-color:  #808080;
-  padding-top:         4px;
-  padding-bottom:      3px;
-  padding-left:        4px;
-  padding-right:       4px;
+  border-right-color: #808080;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
   
-  background-color:    #DCDAD5;
+  background-color: #DCDAD5;
 }
 
 td.tbtv_headercell { 
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    white;
-  border-left-color:   white;
+  border-width: 1;
+  border-style: solid;
+  border-top-color: white;
+  border-left-color: white;
   border-bottom-color: #808080;
-  border-right-color:  #808080;
-  padding-top:         4px;
-  padding-bottom:      3px;
-  padding-left:        4px;
-  padding-right:       4px;
+  border-right-color: #808080;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
   
-  background-color:    #DCDAD5;
+  background-color: #DCDAD5;
 }
 
 td.tbtv_actcell { 
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    #808080;
-  border-left-color:   #808080;
+  border-width: 1;
+  border-style: solid;
+  border-top-color: #808080;
+  border-left-color: #808080;
   border-bottom-color: #808080;
-  border-right-color:  #808080;
-  padding-top:         4px;
-  padding-bottom:      3px;
-  padding-left:        4px;
-  padding-right:       4px;
+  border-right-color: #808080;
+  padding-top: 4px;
+  padding-bottom: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
   
-  background-color:    #DCDAD5;
+  background-color: #DCDAD5;
 }
 
 td.tbtv_headercell a {
-  margin:  0px auto;
+  margin: 0px auto;
   display: block;
-  color:   black;
+  color: black;
 }
 td.tbtv_headercell a:hover {
-  margin:  0px auto;
+  margin: 0px auto;
   display: block;
-  color:   black;
+  color: black;
   text-decoration: none;
   /* background-color: #C4C0B8; */
 }
 
 td.tbtv_headercell img.tbtv_sortcell { 
   text-align: right;
-  border:     0px;
-  width:      12px;
-  height:     12px;
+  border: 0px;
+  width: 12px;
+  height: 12px;
 }
 
 span.mailer_datefield { 
@@ -238,26 +238,26 @@ span.mailer_datefield {
 }
 
 div.mailer_readmailsubject { 
-  background-image:    url(message-mail-read.png);
-  background-repeat:   no-repeat;
+  background-image: url(message-mail-read.png);
+  background-repeat: no-repeat;
   background-position: 0px 0px;
-  padding-top:         1px;
-  padding-left:        20px;
+  padding-top: 1px;
+  padding-left: 20px;
 }
 div.mailer_unreadmailsubject { 
-  background-image:    url(message-mail.png);
-  background-repeat:   no-repeat;
+  background-image: url(message-mail.png);
+  background-repeat: no-repeat;
   background-position: 0px 0px;
-  padding-left:        20px;
-  padding-top:         1px;
-  font-weight:         bold;
+  padding-left: 20px;
+  padding-top: 1px;
+  font-weight: bold;
 }
 div.mailer_readmailsubject a { 
-  color:           black;
+  color: black;
   text-decoration: none;
 }
 div.mailer_unreadmailsubject a { 
-  color:           black;
+  color: black;
   text-decoration: none;
 }
 
@@ -267,37 +267,37 @@ td.mailer_listcell_deleted {
 td.mailer_listcell_regular {
 }
 td.mailer_listcell_regular a { 
-  color:           black;
+  color: black;
   text-decoration: none;
 }
 
 tr.tableview td.mailer_listcell_regular {
-  border-top:    1px solid #fff;
-  border-bottom:    1px solid #fff;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
 }
 
 div.mailer_readicon { 
   /* TODO: use Thunderbird icon */
-  background-image:    url(icon_read.gif);
-  background-repeat:   no-repeat;
+  background-image: url(icon_read.gif);
+  background-repeat: no-repeat;
   background-position: 0px 4px;
 }
 div.mailer_readicon a {
-  width:   17px;
-  height:  17px;
-  margin:  0px auto;
+  width: 17px;
+  height: 17px;
+  margin: 0px auto;
   display: block;
 }
 div.mailer_unreadicon { 
   /* TODO: use Thunderbird icon */
-  background-image:    url(icon_unread.gif);
-  background-repeat:   no-repeat;
+  background-image: url(icon_unread.gif);
+  background-repeat: no-repeat;
   background-position: 0px 4px;
 }
 div.mailer_unreadicon a {
-  width:   17px;
-  height:  17px;
-  margin:  0px auto;
+  width: 17px;
+  height: 17px;
+  margin: 0px auto;
   display: block;
 }
 
@@ -311,13 +311,13 @@ table.mailer_fieldtable {
   border-bottom-style: solid;
 }
 tr.mailer_fieldrow { 
-  font-size:   9pt;
+  font-size: 9pt;
   font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
 }
 td.mailer_fieldname {
-  padding-left:   24px;
-  text-align:     right;
-  font-weight:    bold;
+  padding-left: 24px;
+  text-align: right;
+  font-weight: bold;
   vertical-align: top;
 }
 td.mailer_fieldvalue {
@@ -328,7 +328,7 @@ td.mailer_subjectfieldvalue {
 }
 td.mailer_fieldvalue a {
   text-decoration: underline;
-  vertical-align:  top;
+  vertical-align: top;
 }
 
 div.mailer_mailcontent { 
@@ -336,7 +336,7 @@ div.mailer_mailcontent {
   border-top-width: 1;
   border-top-style: solid;
   background-color: white;
-  padding:          8px;
+  padding: 8px;
 }
 
 img.mailer_imagecontent {
@@ -353,9 +353,9 @@ form#attachment_form {
 }
 
 div#attachment_list { 
-  border-top-color:    white;
-  border-top-width:    1;
-  border-top-style:    solid;
+  border-top-color: white;
+  border-top-width: 1;
+  border-top-style: solid;
 }
 
 form#attachment_form input {
@@ -370,8 +370,8 @@ div#attachment_upload {
 }
 
 td.attachment_uplabel { 
-  width:      15%;
-  font-size:  11px;
+  width: 15%;
+  font-size: 11px;
   text-align: left;
 }
 
@@ -379,51 +379,31 @@ td.attachment_uplabel {
 
 div.linked_attachment_frame {
   background-color: #DCDAD5;
-  padding:          4px;
+  padding: 4px;
 }
 
 div.linked_attachment_body {
-  font-family:         Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
-  padding:             4px;
+  padding: 4px;
 
-  border-width:        1;
-  border-style:        solid;
-  border-top-color:    white;
-  border-left-color:   white;
+  border-width: 1;
+  border-style: solid;
+  border-top-color: white;
+  border-left-color: white;
   border-bottom-color: #808080;
-  border-right-color:  #808080;
+  border-right-color: #808080;
 }
 
 div.linked_attachment_meta {
-  color:        #444444;
-  font-style:   italic;
+  color: #444444;
+  font-style: italic;
   border-width: 0;
-  padding:      2px;
+  padding: 2px;
 }
 table.linked_attachment_meta {
-  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size: medium;
-  color:        #444444;
-  font-style:   italic;
-}
-
-
-/* OGo link banner on top of mail frame */
-
-table.linkbanner { 
-  width:            100%;
-  background-color: white;
-  position:         fixed;
-  height:           48px;
-  z-index:          100;
-}
-
-.linkbannerlinks {
-  font-size: medium;
-  vertical-align: bottom;
-  text-align:     left;
-}
-.linkbannerimage { 
-  text-align:     right;
+  color: #444444;
+  font-style: italic;
 }

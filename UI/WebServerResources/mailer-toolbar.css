@@ -1,26 +1,25 @@
 /* toolbar for mailer application */
 
 table.tb_maintable { 
-  width:    100%;
-  position: fixed;
-  top:      0px;  /* this is patched when the linkbar is on */
-  height:   40px; /* 48px;  */
-  z-index:  100;
+  width: 100%;
+  top: 0px;  /* this is patched when the linkbar is on */
+  height: 40px; /* 48px;  */
+  z-index: 100;
 }
 td.tb_logocell { 
-  width:         24px; /* 36px; */
+  width: 24px; /* 36px; */
   padding-right: 8px;
 }
 div.tb_consumer { /* consumes the spaces taken by the toolbar */
   height: 52px; /* 58px; */ /* this is patched when the linkbar is on */
-  clear:  both;
+  clear: both;
 }
 
 .tb_toolbar {
-  height:        22px; /* was 30 */
+  height: 22px; /* was 30 */
 }
 .tb_toolbar_group { /* not used currently? */
-  height:        22px; /* was 30 */
+  height: 22px; /* was 30 */
   padding-right: 16px;
 }
 
@@ -28,19 +27,19 @@ div.tb_consumer { /* consumes the spaces taken by the toolbar */
   text-align: center;
 }
 .tb_label {
-  font-size:   medium;
+  font-size: medium;
   font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  color:       #000000;
-  text-align:  center;
+  color: #000000;
+  text-align: center;
   padding-left: .5em;
   padding-right: .5em;
 }
 
 .tb_label a:link, .tb_label a:hover { 
-  font-size:   medium;
+  font-size: medium;
   font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  color:       #000000;
-  text-align:  center;
+  color: #000000;
+  text-align: center;
 }
 
 .tb_spacer { 
@@ -48,15 +47,15 @@ div.tb_consumer { /* consumes the spaces taken by the toolbar */
 }
 
 .tb_icon a {
-  width:   24px;
-  height:  24px;
-  margin:  0px auto;
+  width: 24px;
+  height: 24px;
+  margin: 0px auto;
   display: block;
 }
 
 .tbicon_logo {
   background-image: url(lori_32x32.png);
-  width:  32px;
+  width: 32px;
   height: 32px;
 }
 
