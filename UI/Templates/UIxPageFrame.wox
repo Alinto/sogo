@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:var="http://www.skyrix.com/od/binding"
-      xmlns:const="http://www.skyrix.com/od/constant"
-      xmlns:rsrc="OGo:url"
-      xmlns:label="OGo:label"
->
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  >
   <head>
     <title>
       <var:string value="title"/>
@@ -38,159 +38,109 @@
 	><var:string label:value="Right Administration" /></a>
     </div>
 
-    <table cellpadding="5" cellspacing="0" border="0" width="100%">
+    <div class="pageContent">
 
-<!--       <tr> -->
-<!--         <td colspan="2"> -->
-          <!-- TODO: replace the line with a CSS straight line -->
-<!--           <table cellpadding="0" cellspacing="0" border="0" width="100%"> -->
-<!--             <tr> -->
-<!--               <td class="linecolor"><img rsrc:src="line_left.gif"/></td> -->
-<!--               <td class="linecolor" width="98%"> -->
-<!--                 <img rsrc:src="line_stretch.gif"/> -->
-<!--               </td> -->
-<!--               <td class="linecolor"><img rsrc:src="line_right.gif"/></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--               <td valign="top" colspan="2"> -->
-<!--                 <var:component className="UIxAppNavView" /> -->
-<!--               </td> -->
-<!--               <td valign="top" align="right" class="button_submit_env"> -->
-<!--                 <a var:href="helpURL" -->
-<!--                    class="button_submit" -->
-<!--                    label:string="Help" -->
-<!--                    var:target="helpWindowTarget" -->
-<!--                 /> -->
-<!--               </td> -->
-<!--             </tr> -->
-<!--           </table> -->
-<!--         </td> -->
-<!--       </tr> -->
-      <tr>
-        <td valign="top" width="100%">
-          <var:component-content/>
-        </td>
-      </tr>
-      <var:if condition="isUIxDebugEnabled">
-        <tr>
-          <td colspan="2">
-            <hr />
-            <table border="0" style="font-size: 9pt;">
-              <tr>
-                <td valign="top">clientObject:</td>
-                <td valign="top"><var:string value="clientObject" /></td>
-              </tr>
-              <tr>
-                <td valign="top">ownerInContext:</td>
-                <td valign="top"><var:string value="ownerInContext" /></td>
-              </tr>
-              <tr>
-                <td valign="top">traversal stack:</td>
-                <td valign="top">
-                  <var:foreach list="context.objectTraversalStack" item="item">
-                    <var:string value="item" /><br />
-                  </var:foreach>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">traversal path:</td>
-                <td valign="top">
-                  <var:foreach list="context.soRequestTraversalPath"
-                               item="item" const:separator=" => ">
-                    <var:string value="item" />
-                  </var:foreach>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">request type:</td>
-                <td valign="top"><var:string value="context.soRequestType"/>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">path info:</td>
-                <td valign="top"><var:string value="context.pathInfo"/></td>
-              </tr>
-              <tr>
-                <td valign="top">rootURL:</td>
-                <td valign="top"><var:string value="context.rootURL"/></td>
-              </tr>
-              <tr>
-                <td valign="top">active user:</td>
-                <td valign="top"><var:string value="context.activeUser"/></td>
-              </tr>
-              <tr>
-                <td valign="top">CN / email:</td>
-                <td valign="top">
-                  <var:string value="cnForUser"/>
-                  <var:entity const:name="lt"
-                  /><var:string value="emailForUser"
-                    /><var:entity const:name="gt"
-                  /></td>
-              </tr>
-              <tr>
-                <td valign="top">Access Restricted:</td>
-                <td valign="top">
-                  <var:if condition="isAccessRestricted">YES</var:if>
-                  <var:if condition="isAccessRestricted"
-                          const:negate="YES"
-                  >NO</var:if>  
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">Headers:</td>
-                <td valign="top">
-                  <span style="white-space: pre;">
-                  <var:string value="context.request.headers"
-                              const:escapeHTML="YES"
-                  />
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </var:if>
-      <tr>
-        <td colspan="2">
-          <!-- TODO: replace the line with a CSS straight line -->
-          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td class="linecolor">
-                <img rsrc:src="line_left.gif"/>
-              </td>
-              <td class="linecolor" width="100%">
-                <img rsrc:src="line_stretch.gif"/>
-              </td>
-              <td class="linecolor">
-                <img rsrc:src="line_right.gif"/>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3"/>
-            </tr>
-          </table>
-          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td valign="top" align="left">
-                <font class="defaultfont"><var:entity const:name="copy"/>
-                  2004-2005 <a href="http://www.skyrix.com:80/knoppix/skyrix/"
-                               target="SKYRIX"
-                            >SKYRIX Software AG</a>.
-                  We welcome your
-                  <a href="http://www.opengroupware.org/en/feedback.html"
-                     target="feedback"
-                  >feedback</a>.
-                </font>
-              </td>
-              <td valign="top" align="right">
-                <font class="defaultfont">
-                  No sessions required! ;-)
-                </font>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+      <!--       <tr> -->
+      <!--         <td colspan="2"> -->
+      <!-- TODO: replace the line with a CSS straight line -->
+      <!--           <table cellpadding="0" cellspacing="0" border="0" width="100%"> -->
+      <!--             <tr> -->
+      <!--               <td class="linecolor"><img rsrc:src="line_left.gif"/></td> -->
+      <!--               <td class="linecolor" width="98%"> -->
+      <!--                 <img rsrc:src="line_stretch.gif"/> -->
+      <!--               </td> -->
+      <!--               <td class="linecolor"><img rsrc:src="line_right.gif"/></td> -->
+      <!--             </tr> -->
+      <!--             <tr> -->
+      <!--               <td valign="top" colspan="2"> -->
+      <!--                 <var:component className="UIxAppNavView" /> -->
+      <!--               </td> -->
+      <!--               <td valign="top" align="right" class="button_submit_env"> -->
+      <!--                 <a var:href="helpURL" -->
+      <!--                    class="button_submit" -->
+      <!--                    label:string="Help" -->
+      <!--                    var:target="helpWindowTarget" -->
+      <!--                 /> -->
+      <!--               </td> -->
+      <!--             </tr> -->
+      <!--           </table> -->
+      <!--         </td> -->
+      <!--       </tr> -->
+      <var:component-content/>
+    </div>
+    <var:if condition="isUIxDebugEnabled">
+      <table border="0" style="font-size: 9pt;">
+	<tr>
+	  <td valign="top">clientObject:</td>
+	  <td valign="top"><var:string value="clientObject" /></td>
+	</tr>
+	<tr>
+	  <td valign="top">ownerInContext:</td>
+	  <td valign="top"><var:string value="ownerInContext" /></td>
+	</tr>
+	<tr>
+	  <td valign="top">traversal stack:</td>
+	  <td valign="top">
+	    <var:foreach list="context.objectTraversalStack" item="item">
+	      <var:string value="item" /><br />
+	    </var:foreach>
+	  </td>
+	</tr>
+	<tr>
+	  <td valign="top">traversal path:</td>
+	  <td valign="top">
+	    <var:foreach list="context.soRequestTraversalPath"
+	      item="item" const:separator=" => ">
+	      <var:string value="item" />
+	    </var:foreach>
+	  </td>
+	</tr>
+	<tr>
+	  <td valign="top">request type:</td>
+	  <td valign="top"><var:string value="context.soRequestType"/>
+	  </td>
+	</tr>
+	<tr>
+	  <td valign="top">path info:</td>
+	  <td valign="top"><var:string value="context.pathInfo"/></td>
+	</tr>
+	<tr>
+	  <td valign="top">rootURL:</td>
+	  <td valign="top"><var:string value="context.rootURL"/></td>
+	</tr>
+	<tr>
+	  <td valign="top">active user:</td>
+	  <td valign="top"><var:string value="context.activeUser"/></td>
+	</tr>
+	<tr>
+	  <td valign="top">CN / email:</td>
+	  <td valign="top">
+	    <var:string value="cnForUser"/>
+	    <var:entity const:name="lt"
+	      /><var:string value="emailForUser"
+	      /><var:entity const:name="gt"
+	      /></td>
+	</tr>
+	<tr>
+	  <td valign="top">Access Restricted:</td>
+	  <td valign="top">
+	    <var:if condition="isAccessRestricted">YES</var:if>
+	    <var:if condition="isAccessRestricted"
+	      const:negate="YES"
+	      >NO</var:if>  
+	  </td>
+	</tr>
+	<tr>
+	  <td valign="top">Headers:</td>
+	  <td valign="top">
+	    <span style="white-space: pre;">
+	      <var:string value="context.request.headers"
+		const:escapeHTML="YES"
+		/>
+	    </span>
+	  </td>
+	</tr>
+      </table>
+    </var:if>
   </body>
 </html>
