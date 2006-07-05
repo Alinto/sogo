@@ -1,3 +1,15 @@
+2006-07-05  Wolfgang Sourdeau  <wolfgang@contre.com>
+
+	* UI/Templates/UIxPageFrame.wox: use the exact html code as below.
+
+	* UI/Templates/MailerUI/UIxMailMainFrame.wox: redone the
+	linkbanner as a DIV instead of a TABLE.
+
+	* UI/MailerUI/UIxMailMainFrame.m [UIxMailMainFrame
+	showLinkBanner]:
+	returns 'YES' to request the display of the navigation bar between
+	applets.
+
 2006-06-15      ludovic@inverse.ca
 
         * It's now possible to set the default

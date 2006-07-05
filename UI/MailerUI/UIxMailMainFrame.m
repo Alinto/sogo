@@ -150,11 +150,13 @@ static NSString *treeRootClassName = nil;
 }
 
 - (BOOL)showLinkBanner {
-  return NO;
+  return YES;
 }
+
 - (NSString *)bannerToolbarStyle {
   return nil;
 }
+
 - (NSString *)bannerConsumeStyle {
   return nil;
 }

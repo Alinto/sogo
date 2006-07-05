@@ -25,55 +25,47 @@
   </head>
 
   <body>
+    <div class="linkbanner">
+      <a var:href="relativeHomePath"
+	><var:string label:value="Home" /></a> |
+      <a var:href="relativeCalendarPath"
+	><var:string label:value="Calendar" /></a> |
+      <a var:href="relativeContactsPath"
+	><var:string label:value="Addressbook" /></a> |
+      <a var:href="relativeMailPath"
+	><var:string label:value="Mail" /></a> |
+      <a href="http://to.be.done/"
+	><var:string label:value="Right Administration" /></a>
+    </div>
+
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
-      <tr>
-        <td colspan="2">
-          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td valign="bottom" style="font-size: 10pt;">
-                <a var:href="relativeHomePath"
-                ><var:string label:value="Home" /></a> |
-                <a var:href="relativeCalendarPath"
-                ><var:string label:value="Calendar" /></a> |
-                <a var:href="relativeContactsPath"
-                ><var:string label:value="Addressbook" /></a> |
-                <a var:href="relativeMailPath"
-                ><var:string label:value="Mail" /></a> |
-                <a href="http://to.be.done/"
-                ><var:string label:value="Administration" /></a>
-              </td>
-              <td align="right">
-                <a href="http://www.opengroupware.org:80/" target="OGo">
-                  <img rsrc:src="menu_logo_top.gif"
-                       align="center" border="0" alt="" valign="middle" />
-                </a>
-              </td>
-            </tr>
-          </table>
+
+<!--       <tr> -->
+<!--         <td colspan="2"> -->
           <!-- TODO: replace the line with a CSS straight line -->
-          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tr>
-              <td class="linecolor"><img rsrc:src="line_left.gif"/></td>
-              <td class="linecolor" width="98%">
-                <img rsrc:src="line_stretch.gif"/>
-              </td>
-              <td class="linecolor"><img rsrc:src="line_right.gif"/></td>
-            </tr>
-            <tr>
-              <td valign="top" colspan="2">
-                <var:component className="UIxAppNavView" />
-              </td>
-              <td valign="top" align="right" class="button_submit_env">
-                <a var:href="helpURL"
-                   class="button_submit"
-                   label:string="Help"
-                   var:target="helpWindowTarget"
-                />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+<!--           <table cellpadding="0" cellspacing="0" border="0" width="100%"> -->
+<!--             <tr> -->
+<!--               <td class="linecolor"><img rsrc:src="line_left.gif"/></td> -->
+<!--               <td class="linecolor" width="98%"> -->
+<!--                 <img rsrc:src="line_stretch.gif"/> -->
+<!--               </td> -->
+<!--               <td class="linecolor"><img rsrc:src="line_right.gif"/></td> -->
+<!--             </tr> -->
+<!--             <tr> -->
+<!--               <td valign="top" colspan="2"> -->
+<!--                 <var:component className="UIxAppNavView" /> -->
+<!--               </td> -->
+<!--               <td valign="top" align="right" class="button_submit_env"> -->
+<!--                 <a var:href="helpURL" -->
+<!--                    class="button_submit" -->
+<!--                    label:string="Help" -->
+<!--                    var:target="helpWindowTarget" -->
+<!--                 /> -->
+<!--               </td> -->
+<!--             </tr> -->
+<!--           </table> -->
+<!--         </td> -->
+<!--       </tr> -->
       <tr>
         <td valign="top" width="100%">
           <var:component-content/>
