@@ -14,7 +14,6 @@ SchedulerUI_OBJC_FILES =		\
 	NSCalendarDate+UIx.m		\
 	SOGoAppointment+UIx.m		\
 	UIxComponent+Agenor.m		\
-	\
 	UIxCalView.m			\
 	UIxCalDayView.m			\
 	UIxCalWeekView.m		\
@@ -74,6 +73,15 @@ SchedulerUI_RESOURCE_FILES += \
 	images/green_corner.gif			\
 	images/invisible_space_2.gif		\
 	images/apt_icon_private.gif		\
+	images/day-view.png			\
+	images/delete.png			\
+	images/edit.png				\
+	images/goto-today.png			\
+	images/month-view.png			\
+	images/multiweek-view.png		\
+	images/new-event.png			\
+	images/new-task.png			\
+	images/week-view.png
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\

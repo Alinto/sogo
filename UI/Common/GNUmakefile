@@ -19,7 +19,9 @@ CommonUI_OBJC_FILES +=		\
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\
-
+	\
+	UIxToolbarButton.m	\
+	UIxToolbarSeparator.m
 
 CommonUI_RESOURCE_FILES += \
 	Version			\

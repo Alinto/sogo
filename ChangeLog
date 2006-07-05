@@ -1,5 +1,8 @@
 2006-07-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxToolbarSeparator.m, UI/Common/UIxToolbarButton.m:
+	new toolbar objects.
+
 	* UI/Templates/UIxPageFrame.wox: use the exact html code as below.
 
 	* UI/Templates/MailerUI/UIxMailMainFrame.wox: redone the
