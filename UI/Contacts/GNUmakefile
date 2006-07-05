@@ -23,6 +23,13 @@ ContactsUI_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
+ContactsUI_RESOURCE_FILES +=		\
+	Images/delete.png		\
+	Images/new-card.png		\
+	Images/new-list.png		\
+	Images/properties.png		\
+	Images/write.png
+
 ContactsUI_LOCALIZED_RESOURCE_FILES +=	\
 	Localizable.strings		\
 
