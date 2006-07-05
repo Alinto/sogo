@@ -24,6 +24,38 @@
     }
   </style>
 
+<div class="toolbar">
+<var:component className="UIxToolbarButton"
+	const:buttonLink="new_card"
+	const:buttonLabel="New Card"
+	rsrc:buttonImage="new-card.png" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="new_list"
+	const:buttonLabel="New List"
+	rsrc:buttonImage="new-list.png" />
+
+<var:component className="UIxToolbarSeparator" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="properties"
+	const:buttonLabel="Properties"
+	rsrc:buttonImage="properties.png" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="write"
+	const:buttonLabel="Write"
+	rsrc:buttonImage="write.png" />
+
+<var:component className="UIxToolbarSeparator" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="delete"
+	const:buttonLabel="Delete"
+	rsrc:buttonImage="delete.png" />
+
+</div>
+
   <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5"
          width="100%">
     <tr>

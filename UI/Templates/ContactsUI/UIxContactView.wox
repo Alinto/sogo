@@ -7,6 +7,39 @@
                className="UIxPageFrame"
                title="name"
 >
+
+<div class="toolbar">
+<var:component className="UIxToolbarButton"
+	const:buttonLink="new"
+	const:buttonLabel="New Cart"
+	rsrc:buttonImage="new-event.png" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="new_task"
+	const:buttonLabel="New List"
+	rsrc:buttonImage="new-task.png" />
+
+<var:component className="UIxToolbarSeparator" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="today"
+	const:buttonLabel="Properties"
+	rsrc:buttonImage="goto-today.png" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="dayoverview"
+	const:buttonLabel="Write"
+	rsrc:buttonImage="day-view.png" />
+
+<var:component className="UIxToolbarSeparator" />
+
+<var:component className="UIxToolbarButton"
+	const:buttonLink="monthoverview"
+	const:buttonLabel="Delete"
+	rsrc:buttonImage="month-view.png" />
+
+</div>
+
   <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5"
          width="100%"
   >
