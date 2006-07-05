@@ -1,5 +1,7 @@
 2006-07-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/UIxPageFrame.wox: replaced central table with a DIV.
+
 	* UI/Common/UIxToolbarSeparator.m, UI/Common/UIxToolbarButton.m:
 	new toolbar objects.
 
