@@ -6,12 +6,13 @@ body {
   color:            #000000;
   font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   font-size:        10pt;
-  background-color: #D4D0C8;
+  background-color: #dbdad5;
   margin:           0px;
   margin-top:       0px;
   margin-bottom:    0px;
   margin-left:      0px;
   margin-right:     0px;
+  padding: 0px;
 }
 
 a:link {
@@ -247,8 +248,9 @@ table.skytextdocktable {
 
 DIV.linkbanner
 { 
+  background: #222;
   width: 100%;
-  top: 10px;
+  top: 0px;
   left: 0px;
   z-index: 100;
   color: #aaa;
@@ -256,10 +258,16 @@ DIV.linkbanner
 
 DIV.linkbanner A
 { 
-  color: #555;
+  top: 0px;
+  left: 0px;
+  color: #ddd;
   text-decoration: none;
   padding: .2em .5em;
 }
+
+DIV.linkbanner A:hover
+{ color: #dd5; }
+
 
 .linkbannerlinks {
   font-size: medium;
@@ -270,3 +278,61 @@ DIV.linkbanner A
 .linkbannerimage { 
   text-align: right;
 }
+
+.toolbar
+{ left: 0px;
+  border-top: 1px solid #fffffb;
+  border-bottom: 1px solid #020100;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  height: 3.7em;
+}
+
+A.toolbarButton
+{ color: #000;
+  text-decoration: none; }
+
+SPAN.toolbarButton
+{ display: block;
+  text-align: center;
+  width: 5em;
+  height: 2.5em;
+  float: left; 
+  padding: .5em;
+  border: 1px solid transparent; }
+
+SPAN.toolbarSeparator
+{ display: block;
+  float: left;
+  height: 90%;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #fff;
+  margin-left: .5em;
+  margin-right: .5em;
+  margin-top: .2em;
+  margin-bottom: 0px;
+  width: 0px;
+  padding: 0px; }
+
+SPAN.toolbarButton:hover
+{ background: #eee;
+  border-top: 1px solid #fffffb;
+  border-left: 1px solid #fffffb;
+  border-right: 1px solid #020100;
+  border-bottom: 1px solid #020100; }
+
+SPAN.toolbarButton:active
+{ background: #aaa;
+  border-top: 1px solid #020100;
+  border-left: 1px solid #020100;
+  border-right: 1px solid #fffffb;
+  border-bottom: 1px solid #fffffb; }
+
+.toolbarButton IMG.buttonImage
+{ border: 0px;
+  margin: auto; }
+
+.toolbarButton .buttonLabel
+{ width: 100%;
+  margin: auto; }
