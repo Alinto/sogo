@@ -1,0 +1,26 @@
+( /* the toolbar groups -*-cperl-*- */
+  ( { link  = "new";
+      label="New Event";
+      image="new-event.png"; },
+    { link  = "new_task";
+      label="New Task";
+      image = "new-task.png"; },
+    { link  = "edit";
+      label="Edit";
+      image = "edit.png"; },
+    { link  = "delete";
+      label="Delete";
+      image = "delete.png"; } ),
+  ( { link  = "today";
+      label="Go to Today";
+      image = "goto-today.png" } ),
+  ( { link  = "dayoverview";
+      label="Day View";
+      image = "day-view.png"; },
+    { link  = "weekoverview";
+      label="Week View";
+      image = "week-view.png"; },
+    { link  = "monthoverview";
+      label="Month View";
+      image = "month-view.png"; } )
+)

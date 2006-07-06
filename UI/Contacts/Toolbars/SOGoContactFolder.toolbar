@@ -1,0 +1,24 @@
+( /* the toolbar groups -*-cperl-*- */
+  (
+   { link = "new";
+     jsLink="js_card";
+     label="New Card";
+     image="new-card.png"; },
+   { link = "new_list";
+     label="New List";
+     image="new-list.png"; }
+  ),
+  (
+   { link = "properties";
+     label = "Properties";
+     image = "properties.png"; },
+   { link = "write";
+     label="Write";
+     image="write.png"; }
+  ),
+  (
+   { link = "delete";
+     label="Delete";
+     image="delete.png"; }
+  )
+)
