@@ -12,6 +12,9 @@
 	* UI/Common/UIxToolbar.m: new "isLastGroup" method to determine
 	within the templates whether a separator should be displayed.
 
+	* UI/Common/UIxToolbar.m ([UIxToolbar -hasButtons]): new method
+	that returns NO if the toolbar is empty.
+
 2006-07-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Templates/UIxPageFrame.wox: replaced central table with a DIV.

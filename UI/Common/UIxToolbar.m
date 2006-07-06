@@ -222,4 +222,19 @@
 	  == ([toolbarConfig count] - 1));
 }
 
+- (BOOL) hasButtons
+{
+  id tbConfig;
+  unsigned int count, max, amount;
+
+  tbConfig = [self toolbarConfig];
+
+  amount = 0;
+  max = [tbConfig count];
+  for (count = 0; count < max; count++)
+    amount += [[tbConfig objectAtIndex: count] count];
+
+  return (amount > 0);
+}
+
 @end /* UIxToolbar */
