@@ -29,6 +29,12 @@
 
   categories = {
     SOGoAppointmentFolder = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoAppointmentFolder.toolbar";
+        };
+      };
       methods = {
         dayoverview = {
           protectedBy = "View";

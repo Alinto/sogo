@@ -1,12 +1,15 @@
-( /* the toolbar groups */
+( /* the toolbar groups -*-cperl-*- */
             ( /* first group */
               {
                 link  = "getMail";
                 cssClass = "tbicon_getmail"; label = "Get Mail";
-              },
+		image = "tb-mail-getmail-flat-24x24.png";
+		tooltip = "test coucou blabla";
+             },
               {
                 link     = "#"; // "compose"; // target = "_blank";
                 isSafe   = NO;
+	        image = "tb-mail-write-flat-24x24.png";
                 onclick  = "clickedCompose(this);return false;";
                 cssClass = "tbicon_compose"; label = "Write";
               },
@@ -14,13 +17,16 @@
             ( // third group
               { link = "emptyTrash"; isSafe = NO;
                 enabled  = clientObject.isDeleteAndExpungeAllowed;
+	        image = "tb-mail-junk-flat-24x24.png";
                 cssClass = "tbicon_trash"; label = "Empty Trash"; },
 /* TODO: enable when implemented
 // TODO: enable when delete works (#1212)
               { link = "#"; isSafe = NO;
+	        image = "tb-mail-delete-flat-24x24.png";
                 cssClass = "tbicon_delete"; label = "Delete"; },
 // TODO: enable when we know how to mark junk (#971)
               { link = "#"; isSafe = NO;
+	        image = "tb-mail-junk-flat-24x24.png";
                 cssClass = "tbicon_junk";   label = "Junk";   },
 */
             ),

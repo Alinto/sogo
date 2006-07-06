@@ -1,10 +1,12 @@
-( /* the toolbar groups */
+( /* the toolbar groups -*-cperl-*- */
   ( /* first group */
     { link  = "getMail";
+      image = "tb-mail-getmail-flat-24x24.png";
       cssClass = "tbicon_getmail"; label = "Get Mail"; },
 
     { link     = "#"; // "compose"; // target = "_blank";
       isSafe   = NO;
+      image = "tb-mail-write-flat-24x24.png";
       onclick  = "clickedCompose(this);return false;";
       cssClass = "tbicon_compose"; label = "Write"; },
   ),
@@ -13,36 +15,46 @@
   ( // second group
     { link = "#";  isSafe = NO;
       onclick="openMessageWindowsForSelection(this, 'reply'); return false;";
+      image = "tb-mail-reply-flat-24x24.png";
       cssClass = "tbicon_reply";    label = "Reply";     },
 
     { link = "#";  isSafe = NO;
       onclick="openMessageWindowsForSelection(this, 'replyall'); return false;";
+      image = "tb-mail-replyall-flat-24x24.png";
       cssClass = "tbicon_replyall"; label = "Reply All"; },
 
     { link = "#";  isSafe = NO;
       onclick="openMessageWindowsForSelection(this, 'forward'); return false;";
+      image = "tb-mail-forward-flat-24x24.png";
       cssClass = "tbicon_forward";  label = "Forward";   },
   ),
 
 
   ( // third group
     /* TODO: maybe this should be a default or get enabled with no trash writes
-      { link = "expunge"; isSafe = NO;
-        enabled  = clientObject.isDeleteAndExpungeAllowed;
-        cssClass = "tbicon_delete"; label = "Expunge"; },
+    { link = "expunge"; isSafe = NO;
+      enabled  = clientObject.isDeleteAndExpungeAllowed;
+      image = "tb-mail-delete-flat-24x24.png";
+      cssClass = "tbicon_delete"; label = "Expunge"; },
     */
-    
+
     // TODO: rename to uixTrashSelectedMessages, be more consistent with
     //       SOGoMailObject.toolbar (trash AND delete button)
     { link = "#"; isSafe = NO;
       onclick = "uixDeleteSelectedMessages(this); return false;";
       enabled  = clientObject.isDeleteAndExpungeAllowed;
-      cssClass = "tbicon_delete"; label = "Delete"; },
+      image = "tb-mail-delete-flat-24x24.png";
+      cssClass = "tbicon_delete"; label = "Delete";
+    }
+    ,
 
     /* TODO: enable when implemented
-    // TODO: enable when we know how to mark junk (#971)
-      { link = "#"; isSafe = NO;
-        cssClass = "tbicon_junk";   label = "Junk";   },
+    // TODO: enable when we know how to mark junk #971)
+    { link = "#"; isSafe = NO;
+      image = "tb-mail-junk-flat-24x24.png";
+      cssClass = "tbicon_junk";   label = "Junk";
+    }
+    ,
     */
   ),
 
@@ -51,19 +63,24 @@
     { link = "#"; onclick="return ctxFolderAdd(this)";
       enabled  = "clientObject.isCreateAllowed";
       isSafe = NO;
-      cssClass = "tbicon_folderadd"; label = "Create"; },
+      image = "tbtb_folderadd.png";
+      cssClass = "tbicon_folderadd"; label = "Create";
+    }
+    ,
     { link = "#"; onclick="return ctxFolderDelete(this)";
       enabled  = "clientObject.isCreateAllowed"; // TODO: correct?
       isSafe = NO;
+      image = "tbtb_folderdel.png";
       cssClass = "tbicon_folderdel"; label = "Delete"; },
   ),
 
-/*
+  /*
   ( // fourth group
-    //TODO: enable when we can print (#1207)
-    //   { link = "#"; cssClass = "tbicon_print"; label = "Print"; },
-    
-    { link = "#"; cssClass = "tbicon_stop";  label = "Stop";  },
-  )
-*/
+  //TODO: enable when we can print ( #1207)
+				    //   { link = "#"; cssClass = "tbicon_print"; label = "Print"; },
+				    
+				    {
+				     link = "#"; cssClass = "tbicon_stop";  label = "Stop";  },
+				   )
+  */
 )

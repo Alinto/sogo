@@ -20,6 +20,7 @@ CommonUI_OBJC_FILES +=		\
 	UIxTabView.m		\
 	UIxTabItem.m		\
 	\
+	UIxToolbar.m		\
 	UIxToolbarButton.m	\
 	UIxToolbarSeparator.m
 

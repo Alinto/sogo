@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="yes"?>
+  <div class="toolbar"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    xmlns:so="http://www.skyrix.com/od/so-lookup">
+
+    <var:foreach list="toolbarConfig" item="toolbarGroup">
+      <var:foreach list="toolbarGroup" item="buttonInfo">
+	<var:if condition="isButtonEnabled">
+	  
+	  <a class="toolbarButton"
+	    var:href="buttonInfo.link"
+	    var:target="buttonInfo.target"
+	    var:onclick="buttonInfo.onclick"
+	    var:alt="buttonInfo.tooltip"
+	    var:title="buttonInfo.tooltip">
+	    <span class="toolbarButton">
+	      <img class="buttonImage"
+		var:src="buttonImage"
+		var:alt="buttonInfo.image" /><br />
+		  <span class="buttonLabel"><var:string
+		      value="buttonLabel" /></span>
+	    </span>
+	  </a>
+
+	</var:if>
+      </var:foreach>
+
+      <var:if condition="isLastGroup" const:negate="YES">
+	<span class="toolbarSeparator">
+	  <var:entity value="nbsp" />
+	</span>
+      </var:if>
+    </var:foreach>
+  </div>

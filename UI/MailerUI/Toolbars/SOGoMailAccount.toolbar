@@ -1,18 +1,21 @@
-( /* the toolbar groups */
-            ( /* first group */
-              { link  = "getMail";
-                cssClass = "tbicon_getmail"; label = "Get Mail"; },
-              {
-                link     = "#"; // "compose"; // target = "_blank";
-                isSafe   = NO;
-                onclick  = "clickedCompose(this);return false;";
-                cssClass = "tbicon_compose"; label = "Write";
-              },
-            ),
-            ( // fourth group (folders)
-              { link = "#"; onclick="return ctxFolderAdd(this)";
-                enabled  = "showFolderCreateButton";
-                isSafe = NO;
-                cssClass = "tbicon_folderadd"; label = "Create"; }
-            )
+( /* the toolbar groups -*-cperl-*- */
+  ( /* first group */
+    { link  = "getMail";
+      image = "tb-mail-getmail-flat-24x24.png";
+      cssClass = "tbicon_getmail"; label = "Get Mail"; },
+    {
+     link     = "#"; // "compose"; // target = "_blank";
+     isSafe   = NO;
+     image = "tb-mail-write-flat-24x24.png";
+     onclick  = "clickedCompose(this);return false;";
+     cssClass = "tbicon_compose"; label = "Write";
+    },
+  ),
+  ( // fourth group (folders)
+    { link = "#"; onclick="return ctxFolderAdd(this)";
+      enabled  = "showFolderCreateButton";
+      isSafe = NO;
+      image = "tbtb_folderadd.png";
+      cssClass = "tbicon_folderadd"; label = "Create"; }
+  )
 )

@@ -19,7 +19,6 @@ MailerUI_OBJC_FILES += \
 	UIxMailMainFrame.m		\
 	UIxMailTree.m			\
 	UIxMailTreeBlock.m		\
-	UIxMailToolbar.m		\
 	\
 	UIxMailAccountsView.m		\
 	UIxMailAccountView.m		\
@@ -46,7 +45,8 @@ MailerUI_OBJC_FILES += \
 MailerUI_RESOURCE_FILES += \
 	Version		\
 	product.plist	\
-	Toolbars/*.toolbar
+	Toolbars/*.toolbar \
+	Images/*.png
 
 MailerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings

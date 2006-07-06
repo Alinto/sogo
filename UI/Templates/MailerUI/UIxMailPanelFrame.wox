@@ -100,26 +100,7 @@
       </table>
     </var:if>
 
-    <table border="0" class="tb_maintable" cellspacing="0" cellpadding="2"
-           var:style="bannerToolbarStyle">
-      <!-- this table is required for right alignment -->
-      <tr>
-        <td valign="top" class="vertframerow">
-          <var:component className="UIxMailToolbar" />
-        </td>
-        <td align="right" width="80" class="vertframerow">
-          <table border="0"> <!-- TODO: what is this table for? -->
-            <tr>
-              <td class="tb_logocell tb_icon"
-                  ><div class="tbicon_logo"> </div></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    
-    <!-- consume toolbar -->
-    <div class="tb_consumer" var:style="bannerConsumeStyle"> </div>
+    <var:component className="UIxToolbar" />
     
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr class="vertframerow">

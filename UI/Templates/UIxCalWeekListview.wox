@@ -9,53 +9,6 @@
                title="name"
 >
 
-<div class="toolbar">
-<var:component className="UIxToolbarButton"
-	const:buttonLink="new"
-	const:buttonLabel="New Event"
-	rsrc:buttonImage="new-event.png" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="new_task"
-	const:buttonLabel="New Task"
-	rsrc:buttonImage="new-task.png" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="edit"
-	const:buttonLabel="Edit"
-	rsrc:buttonImage="edit.png" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="delete"
-	const:buttonLabel="Delete"
-	rsrc:buttonImage="delete.png" />
-
-<var:component className="UIxToolbarSeparator" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="today"
-	const:buttonLabel="Go to Today"
-	rsrc:buttonImage="goto-today.png" />
-
-<var:component className="UIxToolbarSeparator" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="dayoverview"
-	const:buttonLabel="Day View"
-	rsrc:buttonImage="day-view.png" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="weekoverview"
-	const:buttonLabel="Week View"
-	rsrc:buttonImage="week-view.png" />
-
-<var:component className="UIxToolbarButton"
-	const:buttonLink="monthoverview"
-	const:buttonLabel="Month View"
-	rsrc:buttonImage="month-view.png" />
-
-</div>
-
   <table id="skywintable"
          class="wintable"
          cellspacing="0"

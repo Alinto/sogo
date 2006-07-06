@@ -1,3 +1,17 @@
+2006-07-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* The toolbar code from the MailerUI product was taken, renamed as
+	"UIxToolBar" and put into UI/Common. Toolbar plists were created
+	for the Contacts and Scheduler products and put in their respectir
+	Toolbars/ subdirectories. Finally,
+	UI/Templates/{UIxToolbarButton,UIxToolbarSeparator}.wox, and
+	UI/Common/{UIxToolbarButton,UIxToolbarSeparator}.m were removed
+	and an invocation to the UIxToolbar component was put at the top
+	of UI/Templaces/UIxPageFrame.wox.
+
+	* UI/Common/UIxToolbar.m: new "isLastGroup" method to determine
+	within the templates whether a separator should be displayed.
+
 2006-07-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Templates/UIxPageFrame.wox: replaced central table with a DIV.

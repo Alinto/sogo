@@ -83,6 +83,9 @@ SchedulerUI_RESOURCE_FILES += \
 	images/new-task.png			\
 	images/week-view.png
 
+SchedulerUI_RESOURCE_FILES += \
+	Toolbars/SOGoAppointmentFolder.toolbar
+
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\
 

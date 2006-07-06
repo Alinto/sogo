@@ -38,6 +38,8 @@
 	><var:string label:value="Right Administration" /></a>
     </div>
 
+    <var:component className="UIxToolbar" />
+
     <div class="pageContent">
 
       <!--       <tr> -->

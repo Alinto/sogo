@@ -1,4 +1,4 @@
-{
+{ /* -*-cperl-*- */
   requires = ( MAIN, CommonUI, Mailer, Sieve );
 
   publicResources = (
@@ -228,6 +228,7 @@
           value = ( /* the toolbar groups */
             ( /* first group */
               { link  = "getMail";
+		image = "tb-mail-getmail-flat-24x24.png";
                 cssClass = "tbicon_getmail"; label = "Get Mail"; },
             )
           );
@@ -290,12 +291,14 @@
           value = ( /* the toolbar groups */
             ( /* first group */
               { link  = "getMail";
+		image = "tb-mail-getmail-flat-24x24.png";
                 cssClass = "tbicon_getmail"; label = "Get Mail"; },
               {
-                link     = "#"; // "compose"; // target = "_blank";
-                isSafe = NO;
-                onclick  = "clickedCompose(this);return false;";
-                cssClass = "tbicon_compose"; label = "Write"; },
+	       link     = "#"; // "compose"; // target = "_blank";
+	       isSafe = NO;
+	       onclick  = "clickedCompose(this);return false;";
+	       image = "tb-mail-write-flat-24x24.png";
+	       cssClass = "tbicon_compose"; label = "Write"; },
             )
           );
         };
@@ -387,13 +390,15 @@
           value = ( /* the toolbar groups */
             ( /* first group */
               {
-                link  = "getMail";
-                cssClass = "tbicon_getmail"; label = "Get Mail";
+	       link  = "getMail";
+	       image = "tb-mail-getmail-flat-24x24.png";
+	       cssClass = "tbicon_getmail"; label = "Get Mail";
               },
               {
-                link     = "#"; // "compose"; // target = "_blank";
-                onclick  = "clickedNewFilter(this); return false";
-                cssClass = "tbicon_compose"; label = "New Filter";
+	       link     = "#"; // "compose"; // target = "_blank";
+	       onclick  = "clickedNewFilter(this); return false";
+	       image = "tb-mail-write-flat-24x24.png";
+	       cssClass = "tbicon_compose"; label = "New Filter";
               },
             ),
             ( /* second group
@@ -422,11 +427,13 @@
           protectedBy = "View";
           value = ( /* the toolbar groups */
             ( /* first group */
-              { link  = "#"; 
+              { link  = "#";
                 onclick  = "clickedEditorSave(this);return false;";
-                cssClass = "tbicon_save"; label = "Save"; },
-              { link = "#"; 
+		image = "tb-mail-file-flat-24x24.png";
+		cssClass = "tbicon_save"; label = "Save"; },
+              { link = "#";
                 onclick  = "clickedEditorDelete(this);return false;";
+		image = "tb-mail-delete-flat-24x24.png";
                 cssClass = "tbicon_delete"; label = "Delete"; },
             )
           );

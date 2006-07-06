@@ -1,8 +1,0 @@
-<?xml version='1.0' standalone='yes'?>
-<span class="toolbarSeparator"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url">
-<var:entity value="nbsp" />
-</span>

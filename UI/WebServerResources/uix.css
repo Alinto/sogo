@@ -291,12 +291,12 @@ DIV.linkbanner A:hover
 
 A.toolbarButton
 { color: #000;
+  cursor: default;
   text-decoration: none; }
 
 SPAN.toolbarButton
 { display: block;
   text-align: center;
-  width: 5em;
   height: 2.5em;
   float: left; 
   padding: .5em;
@@ -331,6 +331,8 @@ SPAN.toolbarButton:active
 
 .toolbarButton IMG.buttonImage
 { border: 0px;
+  width: 24px;
+  height: 24px;
   margin: auto; }
 
 .toolbarButton .buttonLabel

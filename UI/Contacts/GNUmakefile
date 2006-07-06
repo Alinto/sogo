@@ -30,6 +30,9 @@ ContactsUI_RESOURCE_FILES +=		\
 	Images/properties.png		\
 	Images/write.png
 
+ContactsUI_RESOURCE_FILES +=		\
+	Toolbars/SOGoContactFolder.toolbar
+
 ContactsUI_LOCALIZED_RESOURCE_FILES +=	\
 	Localizable.strings		\
 

@@ -1,21 +1,27 @@
-( /* the toolbar groups */
+( /* the toolbar groups -*-cperl-*- */
   ( /* first group */
-              { link  = "#"; isSafe = NO;
-                onclick  = "clickedEditorSend(this);return false;";
-                cssClass = "tbicon_send"; label = "Send"; },
-              { link  = "#"; target = "addressbook";
-                onclick  = "openAddressbook(this);return false;";
-                cssClass = "tbicon_addressbook"; label = "Addressbook"; },
-              { link  = "#"; target = "anais";
-                onclick  = "openAnais(this);return false;";
-                cssClass = "tbicon_anais"; label = "Anais"; },
-              { link  = "#"; isSafe = NO;
-                onclick  = "clickedEditorAttach(this)";
-                cssClass = "tbicon_attach"; label = "Attach"; },
-              { link  = "#";  isSafe = NO;
-                onclick  = "clickedEditorSave(this);return false;";
-                cssClass = "tbicon_save"; label = "Save"; },
-              { link = "delete"; isSafe = NO;
-                cssClass = "tbicon_delete"; label = "Delete"; },
+    { link  = "#"; isSafe = NO;
+      onclick  = "clickedEditorSend(this);return false;";
+      image = "tb-compose-send-flat-24x24.png";
+      cssClass = "tbicon_send"; label = "Send"; },
+    { link  = "#"; target = "addressbook";
+      onclick  = "openAddressbook(this);return false;";
+      image = "tb-mail-addressbook-flat-24x24.png";
+      cssClass = "tbicon_addressbook"; label = "Addressbook"; },
+    { link  = "#"; target = "anais";
+      onclick  = "openAnais(this);return false;";
+      image = "tbtb_anais.png";
+      cssClass = "tbicon_anais"; label = "Anais"; },
+    { link  = "#"; isSafe = NO;
+      onclick  = "clickedEditorAttach(this)";
+      image = "tb-compose-attach-flat-24x24.png";
+      cssClass = "tbicon_attach"; label = "Attach"; },
+    { link  = "#";  isSafe = NO;
+      onclick  = "clickedEditorSave(this);return false;";
+      image = "tb-mail-file-flat-24x24.png";
+      cssClass = "tbicon_save"; label = "Save"; },
+    { link = "delete"; isSafe = NO;
+      image = "tb-mail-delete-flat-24x24.png";
+      cssClass = "tbicon_delete"; label = "Delete"; },
   )
 )

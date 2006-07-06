@@ -19,11 +19,22 @@
   02111-1307, USA.
 */
 
+#if LIB_FOUNDATION_LIBRARY
+#  include <Foundation/exceptions/GeneralExceptions.h>
+#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
+#  include <NGExtensions/NGObjectMacros.h>
+#  include <NGExtensions/NSString+Ext.h>
+#endif
+
+#include <NGExtensions/NGExtensions.h>
+#include <NGObjWeb/NGObjWeb.h>
+#include <NGObjWeb/SoObjects.h>
+
 #include <SOGoUI/UIxComponent.h>
 
 @class NSArray, NSDictionary;
 
-@interface UIxMailToolbar : UIxComponent
+@interface UIxToolbar : UIxComponent
 {
   NSArray      *toolbarConfig;
   NSArray      *toolbarGroup;
@@ -31,11 +42,9 @@
 }
 @end
 
-#include <SoObjects/Mailer/SOGoMailBaseObject.h>
-#include "common.h"
 #include <NGObjWeb/SoComponent.h>
 
-@implementation UIxMailToolbar
+@implementation UIxToolbar
 
 - (void)dealloc {
   [self->toolbarGroup  release];
@@ -58,6 +67,7 @@
 - (void)setToolbarGroup:(id)_group {
   ASSIGN(self->toolbarGroup, _group);
 }
+
 - (id)toolbarGroup {
   return self->toolbarGroup;
 }
@@ -65,6 +75,7 @@
 - (void)setButtonInfo:(id)_info {
   ASSIGN(self->buttonInfo, _info);
 }
+
 - (id)buttonInfo {
   return self->buttonInfo;
 }
@@ -80,6 +91,30 @@
   return [[self application] resourceManager];
 }
 
+- (id) pathToResourceNamed: (NSString *) name
+{
+  WOResourceManager *rm;
+  NSRange  r;
+  NSString *fw, *rn;
+
+  r = [name rangeOfString: @"/"];
+  if (r.length > 0)
+    {
+      fw = [name substringToIndex: r.location];
+      rn = [name substringFromIndex: (r.location + r.length)];
+    }
+  else
+    {
+      rn = name;
+      fw = nil;
+    }
+  
+  rm = [self pageResourceManager];
+
+  return [rm pathForResourceNamed: rn inFramework: fw 
+	     languages: [[self context] resourceLookupLanguages]];
+}
+
 - (id)loadToolbarConfigFromResourceNamed:(NSString *)_name {
   /*
     Note: we cannot cache by name because we don't know how the resource
@@ -90,24 +125,10 @@
 	  cache the parsed content for a given path;
   */
   static NSMutableDictionary *pathToConfig = nil;
-  WOResourceManager *rm;
   NSDictionary *tb;
-  NSRange  r;
-  NSString *fw, *rn, *path;
+  NSString *path;
 
-  r = [_name rangeOfString:@"/"];
-  if (r.length > 0) {
-    fw = [_name substringToIndex:r.location];
-    rn = [_name substringFromIndex:(r.location + r.length)];
-  }
-  else {
-    rn = _name;
-    fw = nil;
-  }
-  
-  rm   = [self pageResourceManager];
-  path = [rm pathForResourceNamed:rn inFramework:fw 
-	     languages:[[self context] resourceLookupLanguages]];
+  path = [self pathToResourceNamed: _name];
   if (path == nil) {
     [self errorWithFormat:@"Did not find toolbar resource: %@", _name];
     return nil;
@@ -122,7 +143,7 @@
   if (pathToConfig == nil)
     pathToConfig = [[NSMutableDictionary alloc] initWithCapacity:32];
   [pathToConfig setObject:(tb ? tb : (id)[NSNull null]) forKey:path];
-  
+
   return tb;
 }
 
@@ -171,6 +192,18 @@
   return label;
 }
 
+- (id) buttonImage {
+  WOResourceManager *rm;
+  NSString *image;
+
+  rm = [self pageResourceManager];
+  image = [buttonInfo objectForKey: @"image"];
+  if (image && [image length] > 0)
+    image = [rm urlForResourceNamed: image];
+
+  return image;
+}
+
 /* enable/disable buttons */
 
 - (BOOL)isButtonEnabled {
@@ -184,4 +217,9 @@
   return [[[[self context] page] valueForKeyPath:onOffKey] boolValue];
 }
 
-@end /* UIxMailToolbar */
+- (BOOL) isLastGroup {
+  return ([toolbarConfig indexOfObject: toolbarGroup]
+	  == ([toolbarConfig count] - 1));
+}
+
+@end /* UIxToolbar */

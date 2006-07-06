@@ -54,7 +54,6 @@
 #include <SoObjects/Mailer/SOGoMailAccounts.h>
 #include <SoObjects/Mailer/SOGoMailIdentity.h>
 #include <SoObjects/SOGo/WOContext+Agenor.h>
-#include <SoObjects/SOGo/SOGoUser.h>
 #include <NGMail/NGMimeMessage.h>
 #include <NGMail/NGMimeMessageGenerator.h>
 #include <NGObjWeb/SoSubContext.h>

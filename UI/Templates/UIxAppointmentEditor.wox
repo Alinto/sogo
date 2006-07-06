@@ -222,8 +222,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <!-- use '1' instead of 'YES', otherwise breaks on OSX -->
-<!--
-                    <var:component className="AnaisAttendeeSelector"
+                    <var:component className="AnaisSelector"
                                    const:selectorID="participant"
                                    const:role="REQ-PARTICIPANT"
                                    attendees="participants"
@@ -232,8 +231,6 @@
                                    const:withCN="1"
                                    const:withAddressBook="1"
                     />
--->
-                    TODO: need attendee selector (AB)
                   </span>
                 </td>
               </tr>
