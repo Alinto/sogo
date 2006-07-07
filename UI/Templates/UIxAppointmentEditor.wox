@@ -8,6 +8,14 @@
   className="UIxPageFrame"
   title="name"
 >
+  <script type="text/javascript">
+    function submitMeeting(thisForm) {
+      thisForm.submit();
+      opener.window.location.reload();
+      window.close();
+    }
+  </script>
+
   <var:js-stringtable const:framework="SchedulerUI.SOGo"
                       const:identifier="labels" />
   
@@ -313,9 +321,11 @@
         </tr>
         <tr>
           <td>
-              <input type="submit" label:value="Save" name="save:method" />
+              <input type="submit" label:value="Save" name="save:method"
+	        onclick="submitMeeting(this.form); return false;" />
               <span class="button_auto_env"
               ><a href="../weekoverview"
+		  onclick="window.close(); return false;"
                   var:queryDictionary="queryParameters"
                   class="button_auto"
                ><var:string label:value="Cancel" /></a></span>

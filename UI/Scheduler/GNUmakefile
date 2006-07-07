@@ -52,7 +52,8 @@ SchedulerUI_OBJC_FILES =		\
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\
-	product.plist
+	product.plist	\
+	SchedulerUI.js
 
 SchedulerUI_RESOURCE_FILES += \
 	images/next_week.gif			\
