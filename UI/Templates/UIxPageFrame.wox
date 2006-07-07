@@ -19,12 +19,16 @@
     <link href="mailto:hh@skyrix.com" rev="made"/>
 
     <script rsrc:src="generic.js"> <!-- space required --></script>
+    <var:if condition="hasProductSpecificJavaScript">
+      <script var:src="productJavaScriptURL"> <!-- space required --></script>
+    </var:if>
     <var:if condition="hasPageSpecificJavaScript">
       <script var:src="pageJavaScriptURL"> <!-- space required --></script>
     </var:if>
   </head>
 
   <body>
+    <var:if condition="isPopup" const:negate="YES">
     <div class="linkbanner">
       <a var:href="relativeHomePath"
 	><var:string label:value="Home" /></a> |
@@ -37,6 +41,7 @@
       <a href="http://to.be.done/"
 	><var:string label:value="Right Administration" /></a>
     </div>
+    </var:if>
 
     <var:component className="UIxToolbar" />
 

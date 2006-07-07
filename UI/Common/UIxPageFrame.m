@@ -19,7 +19,14 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
+#import <SOGo/SOGoUser.h>
+
+@interface WOComponent (PopupExtension)
+
+- (BOOL) isPopup;
+
+@end
 
 @interface UIxPageFrame : UIxComponent
 {
@@ -109,7 +116,18 @@
   return rm;
 }
 
-- (NSString *)pageJavaScriptURL {
+- (BOOL) isPopup
+{
+  WOComponent *page;
+
+  page = [[self context] page];
+
+  return ([page respondsToSelector: @selector(isPopup)]
+	  && [page isPopup]);
+}
+
+- (NSString *) pageJavaScriptURL
+{
   static NSMutableDictionary *pageToURL = nil;
   WOResourceManager *rm;
   WOComponent *page;
@@ -122,26 +140,64 @@
   
   if ((url = [pageToURL objectForKey:pageName]) != nil)
     return [url isNotNull] ? url : nil;
-  
+
   if (pageToURL == nil)
     pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
   
   rm     = [self pageResourceManager];
   jsname = [pageName stringByAppendingString:@".js"];
-  
-  url = [rm urlForResourceNamed:jsname
-	    inFramework:
-	      [[NSBundle bundleForClass:[page class]] bundlePath]
+
+  url = [rm urlForResourceNamed: jsname
+	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]
 	    languages:nil
 	    request:[[self context] request]];
-  
+
   /* cache */
   [pageToURL setObject:(url ? url : (id)[NSNull null]) forKey:pageName];
+
   return url;
 }
 
-- (BOOL)hasPageSpecificJavaScript {
-  return [[self pageJavaScriptURL] length] > 0 ? YES : NO;
+- (NSString *) productJavaScriptURL
+{
+  static NSMutableDictionary *pageToURL = nil;
+  WOResourceManager *rm;
+  WOComponent *page;
+  NSString    *jsname, *pageName;
+  NSString    *url;
+  
+  page     = [[self context] page];
+  pageName = NSStringFromClass([page class]);
+  // TODO: does not seem to work! (gets reset): pageName = [page name];
+  
+  if ((url = [pageToURL objectForKey:pageName]) != nil)
+    return [url isNotNull] ? url : nil;
+
+  if (pageToURL == nil)
+    pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
+  
+  rm     = [self pageResourceManager];
+  jsname = [[page frameworkName] stringByAppendingString:@".js"];
+
+  url = [rm urlForResourceNamed: jsname
+	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]
+	    languages:nil
+	    request:[[self context] request]];
+
+  /* cache */
+  [pageToURL setObject:(url ? url : (id)[NSNull null]) forKey:pageName];
+
+  return url;
+}
+
+- (BOOL) hasPageSpecificJavaScript
+{
+  return ([[self pageJavaScriptURL] length] > 0);
+}
+
+- (BOOL) hasProductSpecificJavaScript
+{
+  return ([[self productJavaScriptURL] length] > 0);
 }
 
 @end /* UIxPageFrame */

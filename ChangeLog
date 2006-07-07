@@ -1,5 +1,13 @@
 2006-07-07  Wsourdeau Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -productJavaScriptURL]):
+	added method to determine the possible URL for a product-specific
+	javascript filename of the forme <productname>.js.
+	([UIxPageFrame -hasProductSpecificJavaScript]): new method.
+	([UIxPageFrame -isPopup]): new method to determine whether the
+	application navigator bar should be displayed (main page) or not
+	(popup page).
+
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
 	-LDAPCheckLogin:_loginpassword:_pwd]): new method to authenticate
 	the user through LDAP.
