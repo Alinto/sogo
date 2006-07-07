@@ -1,5 +1,7 @@
 2006-07-07  Wsourdeau Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m: returns yes to "isPopup";
+
 	* UI/WebServerResources/generic.js: added code to manage
 	selections within HTML containers.
 
