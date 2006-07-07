@@ -19,41 +19,95 @@
   02111-1307, USA.
 */
 
+#import <NGLdap/NGLdapConnection.h>
+
 #include "SOGoAuthenticator.h"
 #include "SOGoUser.h"
 #include "common.h"
 
 @implementation SOGoAuthenticator
 
-static SOGoAuthenticator *auth = nil; // THREAD
+static SOGoAuthenticator *auth = nil;
 
-+ (id)sharedSOGoAuthenticator {
++ (id) sharedSOGoAuthenticator
+{
   if (auth == nil)
     auth = [[self alloc] init];
   return auth;
 }
 
-/* check credentials */
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      ud = [NSUserDefaults standardUserDefaults];
 
-- (BOOL)checkLogin:(NSString *)_login password:(NSString *)_pwd {
-  if ([_login length] == 0)
-    return NO;
-  
-  /* we accept any password since it is checked by Apache in front */
-  return YES;
+      LDAPBaseDN = nil;
+      LDAPHost = nil;
+      LDAPPort = -1;
+
+      authMethod = [[ud stringForKey:@"AuthentificationMethod"] retain];
+      if ([authMethod isEqualToString: @"LDAP"])
+	{
+	  LDAPBaseDN = [[ud stringForKey:@"LDAPRootDN"] retain];
+	  LDAPHost = [[ud stringForKey:@"LDAPHost"] retain];
+	  LDAPPort = [ud integerForKey:@"LDAPPort"];
+	}
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  if (LDAPBaseDN)
+    [LDAPBaseDN release];
+  if (LDAPHost)
+    [LDAPHost release];
+  [authMethod release];
+  [super dealloc];
+}
+
+- (BOOL) checkLogin: (NSString *) _login
+	   password: (NSString *) _pwd
+{
+  BOOL result;
+
+  if ([authMethod isEqualToString: @"LDAP"])
+    result = [self LDAPCheckLogin: _login password: _pwd];
+  else
+    {
+      if ([_login length] == 0)
+	result = NO;
+      else
+	result = YES;
+    }
+
+  return result;
+}
+
+- (BOOL) LDAPCheckLogin: (NSString *) _login
+	       password: (NSString *) _pwd
+{
+  return [NGLdapConnection checkPassword: _pwd
+			   ofLogin: _login
+			   atBaseDN: LDAPBaseDN
+			   onHost: LDAPHost
+			   port: LDAPPort];
 }
 
 /* create SOGoUser */
 
-- (SoUser *)userInContext:(WOContext *)_ctx {
+- (SoUser *)userInContext:(WOContext *)_ctx
+{
   static SoUser *anonymous = nil;
   NSString  *login;
   NSArray   *uroles;
   
-  if (anonymous == nil) {
-    NSArray *ar = [NSArray arrayWithObject:SoRole_Anonymous];
-    anonymous = [[SOGoUser alloc] initWithLogin:@"anonymous" roles:ar];
-  }
+  if (!anonymous)
+    anonymous
+      = [[SOGoUser alloc] initWithLogin:@"anonymous"
+			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
   
   if ((login = [self checkCredentialsInContext:_ctx]) == nil)
     /* some error (otherwise result would have been anonymous */
@@ -61,9 +115,12 @@ static SOGoAuthenticator *auth = nil; // THREAD
   
   if ([login isEqualToString:@"anonymous"])
     return anonymous;
-  
+
   uroles = [self rolesForLogin:login];
-  return [[[SOGoUser alloc] initWithLogin:login roles:uroles] autorelease];
+
+  return [[[SOGoUser alloc] initWithLogin:login
+			    roles:uroles]
+	   autorelease];
 }
 
 @end /* SOGoAuthenticator */

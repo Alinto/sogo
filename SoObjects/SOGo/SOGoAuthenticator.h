@@ -31,11 +31,21 @@
   the password is already checked in Apache.
 */
 
+@class NSUserDefaults;
+@class NSString;
+
 @interface SOGoAuthenticator : SoHTTPAuthenticator
 {
+  NSUserDefaults *ud;
+  NSString *authMethod;
+  NSString *LDAPBaseDN;
+  NSString *LDAPHost;
+  int LDAPPort;
 }
 
 + (id)sharedSOGoAuthenticator;
+
+- (BOOL) LDAPCheckLogin: (NSString *) _login password: (NSString *) _pwd;
 
 @end
 

@@ -1,3 +1,9 @@
+2006-07-07  Wsourdeau Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-LDAPCheckLogin:_loginpassword:_pwd]): new method to authenticate
+	the user through LDAP.
+
 2006-07-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* The toolbar code from the MailerUI product was taken, renamed as
