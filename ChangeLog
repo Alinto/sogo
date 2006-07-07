@@ -1,5 +1,8 @@
 2006-07-07  Wsourdeau Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added code to manage
+	selections within HTML containers.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -productJavaScriptURL]):
 	added method to determine the possible URL for a product-specific
 	javascript filename of the forme <productname>.js.

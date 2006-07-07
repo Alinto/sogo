@@ -166,3 +166,89 @@ function triggerOpenerCallback() {
     window.opener.location.href = cburl;
   }
 }
+
+/* selection mechanism */
+
+function selectNode(node) {
+  var classStr = '' + node.getAttribute('class');
+
+  position = classStr.indexOf('_selected', 0);
+  if (position < 0) {
+    classStr = classStr + ' _selected';
+    node.setAttribute('class', classStr);
+  }
+}
+
+function deselectNode(node) {
+  var classStr = '' + node.getAttribute('class');
+
+  position = classStr.indexOf('_selected', 0);
+  while (position > -1) {
+    classStr1 = classStr.substring(0, position); 
+    classStr2 = classStr.substring(position + 10, classStr.length);
+    classStr = classStr1 + classStr2;
+    position = classStr.indexOf('_selected', 0);
+  }
+
+  node.setAttribute('class', classStr);
+}
+
+function deselectAll(parent) {
+  for (var i = 0; i < parent.childNodes.length; i++) {
+    var node = parent.childNodes.item(i);
+    if (node.nodeType == 1) {
+      deselectNode(node);
+    }
+  }
+}
+
+function isNodeSelected(node) {
+  var classStr = '' + node.getAttribute('class');
+  var position = classStr.indexOf('_selected', 0);
+
+  return (position > -1);
+}
+
+function acceptMultiSelect(node) {
+  var accept = ('' + node.getAttribute('multiselect')).toLowerCase();
+
+  return (accept == 'yes');
+}
+
+function getSelection(parentNode) {
+  var selArray = new Array();
+
+  for (var i = 0; i < parentNode.childNodes.length; i++) {
+    node = parentNode.childNodes.item(i);
+    if (node.nodeType == 1
+	&& isNodeSelected(node)) {
+      selArray.push(i);
+    }
+  }
+
+  return selArray.join('|');
+}
+
+function onRowClick(node, event) {
+  var text = document.getElementById('list');
+  text.innerHTML = '';
+
+  var startSelection = getSelection(node.parentNode);
+  if (event.shiftKey == 1
+      && acceptMultiSelect(node.parentNode)) {
+    if (isNodeSelected(node) == true) {
+      deselectNode(node);
+    } else {
+      selectNode(node);
+    }
+  } else {
+    deselectAll(node.parentNode);
+    selectNode(node);
+  }
+  if (startSelection != getSelection(node.parentNode)) {
+    var code = '' + node.parentNode.getAttribute('onselectionchange');
+    if (code.length > 0) {
+      node.eval(code);
+    }
+  }
+}
