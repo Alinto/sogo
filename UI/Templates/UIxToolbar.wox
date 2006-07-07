@@ -31,7 +31,7 @@
 
       <var:if condition="isLastGroup" const:negate="YES">
 	<span class="toolbarSeparator">
-	  <var:entity value="nbsp" />
+	  <var:entity const:name="nbsp" />
 	</span>
       </var:if>
     </var:foreach>
