@@ -102,11 +102,20 @@ static NSArray *headers = nil;
 
 /* accessors */
 
-- (void)setTo:(NSArray *)_to {
+- (void)setTo:(NSArray *)_to
+{
   _to = [self properlySplitAddresses:_to];
   ASSIGNCOPY(self->to, _to);
 }
-- (NSArray *)to {
+
+- (NSArray *) to
+{
+  NSString *mailto;
+ 
+  mailto = [self queryParameterForKey:@"mailto"];
+  if ([mailto length] > 0 && ![to count])
+    to = [NSArray arrayWithObject: mailto];
+
   return self->to;
 }
 
@@ -114,6 +123,7 @@ static NSArray *headers = nil;
   _cc = [self properlySplitAddresses:_cc];
   ASSIGNCOPY(self->cc, _cc);
 }
+
 - (NSArray *)cc {
   return self->cc;
 }

@@ -20,13 +20,13 @@
 */
 
 #include <SOGoUI/UIxComponent.h>
+#include "../Common/UIxPageFrame.h"
 
-@interface UIxMailMainFrame : UIxComponent
+@interface UIxMailMainFrame : UIxPageFrame
 {
   NSString *title;
   NSString *rootURL;
   NSString *userRootURL;
-  id       item;
   struct {
     int hideFolderTree:1;
     int hideFrame:1; /* completely disables all the frame around the comp. */
@@ -61,8 +61,6 @@ static NSString *treeRootClassName = nil;
 }
 
 - (void)dealloc {
-  [self->item        release];
-  [self->title       release];
   [self->rootURL     release];
   [self->userRootURL release];
   [super dealloc];
@@ -86,23 +84,6 @@ static NSString *treeRootClassName = nil;
 }
 - (BOOL)hideFrame {
   return self->mmfFlags.hideFrame ? YES : NO;
-}
-
-- (void)setTitle:(NSString *)_value {
-  ASSIGNCOPY(self->title, _value);
-}
-- (NSString *)title {
-  if ([self->title length] == 0)
-    return @"OpenGroupware.org";
-  
-  return self->title;
-}
-
-- (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
-}
-- (id)item {
-  return self->item;
 }
 
 - (NSString *)pageFormURL {
@@ -159,13 +140,6 @@ static NSString *treeRootClassName = nil;
 
 - (NSString *)bannerConsumeStyle {
   return nil;
-}
-
-/* notifications */
-
-- (void)sleep {
-  [self->item release]; self->item = nil;
-  [super sleep];
 }
 
 /* URL generation */
@@ -234,24 +208,6 @@ static NSString *treeRootClassName = nil;
 		     @"<script language=\"JavaScript\">"
 		     @"alert(\"%@\");"
 		     @"</script>", errorText];
-}
-
-/* URLs */
-
-- (NSString *)relativeHomePath {
-  return [self relativePathToUserFolderSubPath:@""];
-}
-
-- (NSString *)relativeCalendarPath {
-  return [self relativePathToUserFolderSubPath:@"Calendar/"];
-}
-
-- (NSString *)relativeContactsPath {
-  return [self relativePathToUserFolderSubPath:@"Contacts/"];
-}
-
-- (NSString *)relativeMailPath {
-  return [self relativePathToUserFolderSubPath:@"Mail/"];
 }
 
 @end /* UIxMailMainFrame */

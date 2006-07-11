@@ -27,9 +27,12 @@
 #include <SoObjects/Mailer/SOGoMailObject.h>
 #include "common.h"
 
+#import "../Common/NSString+URL.h"
+
 @implementation UIxMailEditorAction
 
-- (void)dealloc {
+- (void)dealloc
+{
   [self->newDraft release];
   [super dealloc];
 }
@@ -74,42 +77,63 @@
 
 /* compose */
 
-- (id)composeAction {
+- (id) composeAction
+{
   SOGoDraftsFolder *drafts;
   WOResponse *r;
-  NSString   *url;
-  id accountFolder;
-  
+  NSString *urlBase, *url;
+  NSMutableDictionary *urlParams;
+  id parameter;
+  id returnValue;
+
   drafts = [self draftsFolder];
-  if (![drafts isNotNull])
-    return [self didNotFindDraftsError];
-  if ([drafts isKindOfClass:[NSException class]])
-    return drafts;
+  if ([drafts isNotNull])
+    {
+      if ([drafts isKindOfClass: [NSException class]])
+	returnValue = drafts;
+      else
+	{
+	  urlBase = [drafts newObjectBaseURLInContext: [self context]];
+	  if ([urlBase isNotNull])
+	    {
+	      urlParams = [NSMutableDictionary new];
+	      [urlParams autorelease];
+
+	      /* attach mail-account info */
+	      parameter
+		= [[self clientObject] valueForKey: @"mailAccountFolder"];
+	      if (parameter && ![parameter isExceptionOrNull])
+		[urlParams setObject: [parameter nameInContainer]
+			   forKey: @"account"];
+
+	      parameter = [[self request] formValueForKey: @"mailto"];
+	      if (parameter)
+		[urlParams setObject: parameter
+			   forKey: @"mailto"];
+
+	      url = [urlBase composeURLWithAction: @"edit"
+			     parameters: urlParams
+			     andHash: NO];
+ 
+	      /* perform redirect */
+	      
+	      [self debugWithFormat:@"compose on %@: %@", drafts, url];
   
-  url = [drafts newObjectBaseURLInContext:[self context]];
-  if (![url isNotNull])
-    return [self couldNotCreateDraftError:drafts];
-  
-  if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
-  url = [url stringByAppendingString:@"edit"];
-  
-  /* attach mail-account info */
-  
-  accountFolder = [[self clientObject] valueForKey:@"mailAccountFolder"];
-  if (![accountFolder isExceptionOrNull]) {
-    url = [url stringByAppendingString:@"?account="];
-    url = [url stringByAppendingString:[accountFolder nameInContainer]];
-  }
-  
-  /* perform redirect */
-  
-  [self debugWithFormat:@"compose on %@: %@", drafts, url];
-  
-  r = [[self context] response];
-  [r setStatus:302 /* moved */];
-  [r setHeader:url forKey:@"location"];
-  [self reset];
-  return r;
+	      r = [[self context] response];
+	      [r setStatus: 302 /* move	d */];
+	      [r setHeader: url forKey: @"location"];
+	      [self reset];
+
+	      returnValue = r;
+	    }
+	  else
+	    returnValue = [self couldNotCreateDraftError: drafts];
+	}
+    }
+  else
+    returnValue = [self didNotFindDraftsError];
+
+  return returnValue;
 }
 
 /* creating new draft object */

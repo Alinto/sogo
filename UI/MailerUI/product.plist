@@ -306,15 +306,15 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
         };
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
         };
         compose = {
           protectedBy = "View";
-          actionClass = "UIxMailEditorAction"; 
+          actionClass = "UIxMailEditorAction";
           actionName  = "compose";
         };
       };

@@ -9,6 +9,21 @@
   className="UIxMailPanelFrame"
   title="panelTitle"
 >
+
+    <div class="menu" id="addressMenu">
+      <ul id="sourceList">
+	<li id="add_to_addressbook"
+	  onmousedown="return false;"
+	  onclick="newContactFromEmail(this);"><var:string label:value="Add to Address Book..."/></li>
+	<li id="compose_mailto"
+	  onmousedown="return false;"
+	  onclick="newEmailTo(this);"><var:string label:value="Compose Mail To"/></li>
+	<li id="create_filter"
+	  onmousedown="return false;"
+	  onclick="onMenuEntryClick(this, event);"><var:string label:value="Create Filter From Message..."/></li>
+      </ul>
+    </div>
+
   <!-- TODO: refactor address rendering into an own component(/element) -->
 
   <!-- TODO: can we create own clientObject's for Kolab entities? Probably
@@ -36,7 +51,7 @@
       <td class="mailer_fieldvalue">
         <var:foreach list="clientObject.fromEnvelopeAddresses"
                      item="currentAddress">
-          <a var:href="currentAddressLink">
+          <a var:href="currentAddressLink" onclick="onMenuClick(this, event, 'addressMenu');" oncontextmenu="onMenuClick(this, event, 'addressMenu');" onmousedown="return false;">
             <var:string value="currentAddress"
                  formatter="context.mailEnvelopeFullAddressFormatter" /></a>
         </var:foreach>
@@ -59,7 +74,7 @@
       <td class="mailer_fieldvalue">
         <var:foreach list="clientObject.toEnvelopeAddresses"
                      item="currentAddress">
-          <a var:href="currentAddressLink">
+          <a var:href="currentAddressLink" onclick="onMenuClick(this, event, 'addressMenu');" oncontextmenu="onMenuClick(this, event, 'addressMenu');" onmousedown="return false;">
             <var:string value="currentAddress"
                  formatter="context.mailEnvelopeFullAddressFormatter" /></a>
         </var:foreach>
@@ -71,7 +86,7 @@
         <td class="mailer_fieldvalue">
           <var:foreach list="clientObject.ccEnvelopeAddresses" 
                        item="currentAddress">
-            <a var:href="currentAddressLink">
+          <a var:href="currentAddressLink" onclick="onMenuClick(this, event, 'addressMenu');" oncontextmenu="onMenuClick(this, event, 'addressMenu');" onmousedown="return false;">
               <var:string value="currentAddress"
                    formatter="context.mailEnvelopeFullAddressFormatter" /></a>
             <br /> <!-- TODO: better to use li+CSS -->

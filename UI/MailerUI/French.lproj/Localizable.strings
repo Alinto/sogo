@@ -88,3 +88,8 @@
 /* MailMoveToPopUp */
 
 "MoveTo"        = "Déplacer vers";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Ajouter au carnet d'adresses";
+"Compose Mail To" = "Écrire à";
+"Create Filter From Message..." = "Créer un filtre à partir du message...";

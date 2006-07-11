@@ -45,6 +45,7 @@ MailerUI_OBJC_FILES += \
 MailerUI_RESOURCE_FILES += \
 	Version		\
 	product.plist	\
+	UIxMailView.js  \
 	Toolbars/*.toolbar \
 	Images/*.png
 

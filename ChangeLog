@@ -1,5 +1,32 @@
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/MailerUI/UIxMailView.wox: added a div of class
+	"menu" and id "addressMenu" have the header email addresses
+	display it with the new menu code in generic.js.
+
+	* UI/Templates/MailerUI/UIxMailPanelFrame.wox: same as below +
+	replaced the body tables with a div of class "pageContent"
+	(standardization across the page templates).
+
+	* UI/Templates/MailerUI/UIxMailMainFrame.wox: include
+	productJavaScriptURL and pageJavaScriptURL (conditionnally) since
+	those are now inherited from UIxPageFrame.
+
+	* UI/MailerUI/UIxMailView.js: new file specific to UIxMailView.
+
+	* UI/MailerUI/UIxMailToSelection.m ([UIxMailToSelection -to]): if
+	a "mailto" URL parameter is detected and the "to" array is empty,
+	initialize "to" with the value of "mailto" before returning it.
+
+	* UI/MailerUI/UIxMailEditorAction.m ([UIxMailEditorAction
+	-composeAction]): rewrote method in a cleaner way and with usage
+	of the URL extensions to NSString and NSDictionary (see below).
+	Also, if a "mailto" url parameter is detected, pass it to the
+	redirected url.
+
+	* UI/MailerUI/UIxMailMainFrame.m: subclassed from UIxPageFrame to
+	reduce code.
+
 	* UI/Common/NSDictionary+URL.m ([NSDictionary -asURLParameters]):
 	returns a parameter string to add to a base URL.
 
