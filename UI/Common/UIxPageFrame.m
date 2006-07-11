@@ -22,22 +22,9 @@
 #import <SOGoUI/UIxComponent.h>
 #import <SOGo/SOGoUser.h>
 
-@interface WOComponent (PopupExtension)
-
-- (BOOL) isPopup;
-
-@end
-
-@interface UIxPageFrame : UIxComponent
-{
-  NSString *title;
-  id       item;
-}
-
-@end
-
 #include "common.h"
 #include <NGObjWeb/SoComponent.h>
+#include "UIxPageFrame.h"
 
 @implementation UIxPageFrame
 
