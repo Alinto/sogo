@@ -401,14 +401,8 @@ img.mailer_imagecontent
   border: 0px;
 }
 
-div.pageContent
-{ 
-  overflow: hidden;
-}
-
 div.mailer_mailcontent
 { 
-  overflow: auto;
   border-top-color: white;
   border-top-width: 1px;
   border-top-style: solid;
@@ -419,7 +413,6 @@ div.mailer_mailcontent
 
 div.mailer_plaincontent
 { 
-  overflow: auto;
   font-family: monospace, fixed;
   width: 80em;
   margin: 0px;
@@ -501,12 +494,23 @@ table.linked_attachment_meta
   font-style: italic;
 }
 
+DIV#cl_tableview_reloadroot
+{ 
+  position: absolute;
+  overflow: scroll;
+  top: 8em;
+  right: 1em;
+  bottom: 1em;
+}
+
 TABLE#messageList
 { 
   border: 1px;
   border-collapse: collapse;
-  overflow: scroll;
   height: 5em !important;
+  right: 1.5em;
+  bottom: 1em;
+  width: 10em;
 }
 
 TABLE#messageList TR TD
