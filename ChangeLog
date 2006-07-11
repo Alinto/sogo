@@ -1,5 +1,9 @@
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/uix.css: enhanced the toolbar appearance
+	to integrate better with the firefox look&feel. Added entries for
+	the new "menu" DIV class (popup menus).
+
 	* UI/WebServerResources/generic.js: added "sanitizeMailTo" which
 	takes any chunk of text as param, detects the user email and the
 	optional first and last names and return them in a well-formatted

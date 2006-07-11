@@ -280,54 +280,83 @@ DIV.linkbanner A:hover
 }
 
 .toolbar
-{ left: 0px;
+{
+  left: 0px;
   border-top: 1px solid #fffffb;
-  border-bottom: 1px solid #020100;
+  border-left: 1px solid #fffffb;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   width: 100%;
   margin: 0px;
-  padding: 0px;
-  height: 3.7em;
+  padding: 1px 0px;
+  height: 3.6em;
+  -moz-appearance: toolbar !important;
 }
-
-A.toolbarButton
-{ color: #000;
-  cursor: default;
-  text-decoration: none; }
-
-SPAN.toolbarButton
-{ display: block;
-  text-align: center;
-  height: 2.5em;
-  float: left; 
-  padding: .5em;
-  border: 1px solid transparent; }
 
 SPAN.toolbarSeparator
 { display: block;
   float: left;
   height: 90%;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #fff;
-  margin-left: .5em;
-  margin-right: .5em;
-  margin-top: .2em;
-  margin-bottom: 0px;
+  border-right : 1px solid ThreeDHighlight;
+  border-left : 1px solid ThreeDShadow;
+  margin : 2px 0.2em;
   width: 0px;
   padding: 0px; }
 
+A.toolbarButton
+{
+  color: #000;
+  cursor: default;
+  text-decoration: none;
+}
+
+SPAN.toolbarButton
+{
+  display: block;
+  float: left; 
+  text-align: center;
+  -moz-appearance: toolbarbutton;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  margin: 0px 1px;
+  border-left: 2px solid transparent;
+  border-top: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  padding: .2em;
+  background-color: transparent;
+  color: -moz-DialogText;
+/* 
+ display: block;
+  text-align: center;
+  height: 2.5em;
+  float: left; 
+  padding: .5em;
+  border: 2px solid transparent;
+ */ 
+ }
+
 SPAN.toolbarButton:hover
-{ background: #eee;
-  border-top: 1px solid #fffffb;
-  border-left: 1px solid #fffffb;
-  border-right: 1px solid #020100;
-  border-bottom: 1px solid #020100; }
+{
+  color: -moz-buttonhovertext;
+  background-color: -moz-buttonhoverface;
+  -moz-border-left-colors: ThreeDHighlight -moz-buttonhoverface;
+  -moz-border-top-colors: ThreeDHighlight -moz-buttonhoverface;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow;
+}
 
 SPAN.toolbarButton:active
-{ background: #aaa;
-  border-top: 1px solid #020100;
-  border-left: 1px solid #020100;
-  border-right: 1px solid #fffffb;
-  border-bottom: 1px solid #fffffb; }
+{
+  color: -moz-buttonhovertext;
+  background-color: #c4c2bd;
+  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+}
 
 .toolbarButton IMG.buttonImage
 { border: 0px;
@@ -338,3 +367,47 @@ SPAN.toolbarButton:active
 .toolbarButton .buttonLabel
 { width: 100%;
   margin: auto; }
+
+/* popups */
+.menu
+{
+  visibility: hidden;
+  position: fixed;
+  z-index: 1;
+  background-color: #dcdad5;
+  color: #000;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid #000;
+}
+
+.menu UL
+{ 
+  font-family: Arial, Sans;
+  font-size: small;
+  cursor: default;
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #9e9a92;
+  border-bottom: 1px solid #9e9a92;
+}
+
+.menu LI
+{
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: .2em;
+  padding-bottom: .2em;
+  margin: 0px;
+  width: auto;
+}
+
+.menu LI:hover
+{
+  background: #4b6983;
+  color: #fff;
+}
