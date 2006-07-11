@@ -202,10 +202,10 @@ td.schedoverview {
   text-align:       center;
   vertical-align:   top;
   font-size:        11pt;
-//  width:            24px;
-//  padding:          2px 2px 2px 2px;
-//  margin:           2px 2px 2px 2px;
-}
+/*   width:            24px;
+  padding:          2px 2px 2px 2px;
+  margin:           2px 2px 2px 2px;
+ */}
 
 .dayoverview_cal_content {
   color:            #0033cc;
@@ -646,11 +646,12 @@ h1.weekprintview {
   font-style:       normal;
   font-weight:      normal;
 }
-.monthoverview_day {
-//  text-align:       left;
-//  vertical-align:   top;
-}
 
+/* .monthoverview_day {
+  text-align:       left;
+  vertical-align:   top;
+}
+ */
 .monthoverview_day a {
   color:            #000000;
   font-size:        12pt;

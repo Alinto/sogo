@@ -1,9 +1,9 @@
 ( /* the toolbar groups -*-cperl-*- */
-  ( { link  = "#";
-      isSafe   = NO;
-      label="New Event";
-      onclick  = "newEvent(this);return false;";
-      image="new-event.png"; },
+  ( { link = "#";
+      isSafe = NO;
+      label = "New Event";
+      onclick = "newEvent(this);return false;";
+      image = "new-event.png"; },
     { link  = "new_task";
       label="New Task";
       image = "new-task.png"; },

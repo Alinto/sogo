@@ -19,14 +19,6 @@
     <table border="0" width="100%" id="compose_table">
       <tr>
         <td id="compose_leftside" var:style="initialLeftsideStyle">
-          <div id="compose_toselection">
-            <var:component className="UIxMailToSelection"
-                           to="to"
-                           cc="cc"
-                           bcc="bcc"
-            />
-          </div>
-          <!-- moved below to selection to make it look better -->
           <div id="compose_fromline">
             <table border="0" width="100%">
               <tr>
@@ -43,6 +35,14 @@
             </table>
           </div>
     
+          <div id="compose_toselection">
+	      <var:component className="UIxMailToSelection"
+                           to="to"
+                           cc="cc"
+                           bcc="bcc"
+            />
+          </div>
+          <!-- moved below to selection to make it look better -->
           <div id="compose_subject">
             <table border="0" width="100%">
               <tr>

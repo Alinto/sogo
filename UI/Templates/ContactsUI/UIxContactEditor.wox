@@ -8,6 +8,7 @@
   className="UIxPageFrame"
   title="name"
 >
+
   <var:js-stringtable const:framework="ContactsUI.SOGo"
                       const:identifier="labels" />
   
@@ -17,7 +18,7 @@
       width:            100%;
     }
   </style>
-  
+
   <form var:href="clientObject.baseURL" name="editform"
         onsubmit="return validateContactEditor()">
     <table cellspacing="0" cellpadding="5" width="100%">

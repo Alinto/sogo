@@ -46,10 +46,10 @@ div#compose_attachments_list  {
 }
 
 div#compose_subject { 
-//  border-bottom-color: #808080;
-//  border-bottom-width: 1;
-//  border-bottom-style: solid;
-}
+/*   border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+ */}
 div#compose_text { 
   border-top-color:    white;
   border-top-width:    1;

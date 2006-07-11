@@ -117,7 +117,7 @@ static BOOL uixDebugEnabled = NO;
 - (void)_parseQueryString:(NSString *)_s {
   NSEnumerator *e;
   NSString *part;
-    
+
   e = [[_s componentsSeparatedByString:@"&"] objectEnumerator];
   while ((part = [e nextObject]) != nil) {
     NSRange  r;
@@ -164,7 +164,7 @@ static BOOL uixDebugEnabled = NO;
     return self->queryParameters;
 
   self->queryParameters = [[NSMutableDictionary alloc] initWithCapacity:8];
-    
+
   req = [[self context] request];
   uri = [req uri];
   r   = [uri rangeOfString:@"?" options:NSBackwardsSearch];

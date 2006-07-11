@@ -43,7 +43,7 @@
       <td width="20%">
         <!-- todo: use stylesheet? -->
         <select style="width: 100%;" disabled="1">
-          <option value="to" ><var:string label:value="to" />:</option>
+	    <option value="to" ><var:string label:value="to" />:</option>
         </select>
       </td>
       <td width="80%">
