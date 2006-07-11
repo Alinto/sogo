@@ -24,7 +24,6 @@
 
 @interface UIxMailMainFrame : UIxPageFrame
 {
-  NSString *title;
   NSString *rootURL;
   NSString *userRootURL;
   struct {
