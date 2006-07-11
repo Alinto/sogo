@@ -1,5 +1,13 @@
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/NSDictionary+URL.m ([NSDictionary -asURLParameters]):
+	returns a parameter string to add to a base URL.
+
+	* UI/Common/NSString+URL.m ([NSString
+	-composeURLWithAction:parameters:andHash:useHash]): new method to
+	compose a complete URL from an object URL with parameters and an
+	optional '#' character.
+
 	* UI/Common/UIxPageFrame.h: separated interface from
 	UIxPageFrame.m.
 
