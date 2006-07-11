@@ -1,5 +1,14 @@
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added "sanitizeMailTo" which
+	takes any chunk of text as param, detects the user email and the
+	optional first and last names and return them in a well-formatted
+	way. Renamed "getSelection" to "getSelectedNodes" to avoid a
+	namespace conflict. Added "onMenuClick(node, event, menuId)" to
+	handle popup menus through "onclick" element attributes (node =
+	this, event = event and menuId = name of the menu DIV id to
+	popup).
+
 	* UI/Contacts/UIxContactEditorBase.m ([UIxContactEditorBase
 	-snapshot]): add an entry for "email" into the snapshot
 	dictionary if a "contactEmail" URL parameter was detected and if

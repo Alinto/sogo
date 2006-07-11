@@ -44,13 +44,39 @@ var uixEmailDomain =
   "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
 var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
 
+function sanitizeMailTo(dirtyMailTo) {
+  var email = "";
+  var name = "";
+
+  var emailre
+    = /([a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+)/g;
+  if (emailre.test(dirtyMailTo)) {
+    emailre.exec(dirtyMailTo);
+    email = RegExp.$1;
+  }
+
+  var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
+  if (namere.test(dirtyMailTo)) {
+    namere.exec(dirtyMailTo);
+    name = RegExp.$1;
+  }
+
+  var mailto = "";
+  if (name.length > 0)
+    mailto = name + ' <' + email + '>';
+  else
+    mailto = email;
+
+  return mailto;
+}
+
 /* escaping */
 
 function escapeHTML(s) {
         s = s.replace(/&/g, "&amp;");
         s = s.replace(/</g, "&lt;");
         s = s.replace(/>/g, "&gt;");
-        s = s.replace(/"/g, "&quot;");
+        s = s.replace(/\"/g, "&quot;");
         return s;
 }
 function unescapeHTML(s) {
@@ -215,7 +241,7 @@ function acceptMultiSelect(node) {
   return (accept == 'yes');
 }
 
-function getSelection(parentNode) {
+function getSelectedNodes(parentNode) {
   var selArray = new Array();
 
   for (var i = 0; i < parentNode.childNodes.length; i++) {
@@ -233,7 +259,7 @@ function onRowClick(node, event) {
   var text = document.getElementById('list');
   text.innerHTML = '';
 
-  var startSelection = getSelection(node.parentNode);
+  var startSelection = getSelectedNodes(node.parentNode);
   if (event.shiftKey == 1
       && acceptMultiSelect(node.parentNode)) {
     if (isNodeSelected(node) == true) {
@@ -245,10 +271,56 @@ function onRowClick(node, event) {
     deselectAll(node.parentNode);
     selectNode(node);
   }
-  if (startSelection != getSelection(node.parentNode)) {
+  if (startSelection != getSelectedNodes(node.parentNode)) {
     var code = '' + node.parentNode.getAttribute('onselectionchange');
     if (code.length > 0) {
       node.eval(code);
     }
   }
 }
+
+/* popup menus */
+
+bodyOnClick = "";
+acceptClick = false;
+menuClickNode = null;
+
+function onMenuClick(node, event, menuId)
+{
+  event.cancelBubble = true;
+  event.returnValue = false;
+
+  if (event.button == 1)
+    acceptClick = false;
+  bodyOnClick = "" + document.body.getAttribute("onclick");
+  document.body.setAttribute("onclick", "onBodyClick('" + menuId + "'); return false;");
+  popup = document.getElementById(menuId);
+  popup.setAttribute("style", "visibility: visible; top: " + event.pageY
+		     + "px; left: " + event.pageX + "px;" );
+  menuClickNode = node;
+
+  return false;
+}
+
+function onBodyClick(menuId)
+{
+  if (!acceptClick)
+    acceptClick = true;
+  else
+    {
+      popup = document.getElementById(menuId);
+      popup.setAttribute("style", "visibility: hidden");
+      document.body.setAttribute("onclick", bodyOnClick);
+    }
+
+  return false;
+}
+
+function onMenuEntryClick(node, event, menuId)
+{
+  id = node.getAttribute("id");
+  window.alert("clicked " + menuClickNode.tagName);
+
+  return false;
+}
+
