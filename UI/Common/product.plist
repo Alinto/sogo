@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN );
+  requires = ( MAIN, Mailer );
 
   publicResources = (
     calendar.css,
