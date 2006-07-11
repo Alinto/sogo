@@ -54,7 +54,16 @@
   return @"{}"; /* empty property list */
 }
 
-- (NSMutableDictionary *)snapshot {
+- (NSMutableDictionary *) snapshot
+{
+  NSString *email;
+
+  email = [self queryParameterForKey:@"contactEmail"];
+
+  if ([email length] > 0
+      && ![[self->snapshot objectForKey: @"mail"] length])
+    [self->snapshot setObject: email forKey: @"mail"];
+
   return self->snapshot;
 }
 
@@ -268,6 +277,11 @@
 			   objectId, [self editActionName]];
   uri = [self _completeURIForMethod:nextMethod];
   return [self redirectToLocation:uri];
+}
+
+- (BOOL) isPopup
+{
+  return YES;
 }
 
 @end /* UIxContactEditorBase */

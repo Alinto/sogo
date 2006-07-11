@@ -22,6 +22,7 @@ ContactsUI_OBJC_FILES =			\
 ContactsUI_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
+	ContactsUI.js
 
 ContactsUI_RESOURCE_FILES +=		\
 	Images/delete.png		\

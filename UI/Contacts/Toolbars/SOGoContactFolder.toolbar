@@ -1,9 +1,10 @@
 ( /* the toolbar groups -*-cperl-*- */
   (
-   { link = "new";
+   { link = "#";
      jsLink="js_card";
      label="New Card";
-     image="new-card.png"; },
+     image="new-card.png";
+     onclick = "newContact(this);return false;"; },
    { link = "new_list";
      label="New List";
      image="new-list.png"; }

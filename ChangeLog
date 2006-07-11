@@ -1,5 +1,18 @@
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditorBase.m ([UIxContactEditorBase
+	-snapshot]): add an entry for "email" into the snapshot
+	dictionary if a "contactEmail" URL parameter was detected and if
+	the entry for "email" is empty.
+
+	* UI/Contacts/Toolbars/SOGoContactFolder.toolbar: the "new card"
+	button now invokes the newContact() js function in ContactsUI.js
+	instead of opening "new" directly. newContact() pops up a window
+	stripped from its navigation bar.
+
+	* UI/Contacts/ContactsUI.js: new module specific to the ContactsUI
+	bundle (AddressBook).
+
 	* UI/Templates/MailerUI/UIxMailView.wox: added a div of class
 	"menu" and id "addressMenu" have the header email addresses
 	display it with the new menu code in generic.js.
