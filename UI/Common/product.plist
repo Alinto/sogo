@@ -14,7 +14,7 @@
     box_left.gif,
     box_right.gif,
     box_botleft.gif,
-    box_bottom.gif,
+    box_bottom.gi88f,
     box_botright.gif,
     tab_selected.gif,
     tab_.gif,
@@ -30,6 +30,15 @@
   };
 
   categories = {
+    SOGoUserLogin = {
+      methods = {
+	logoff = {
+          protectedBy = "View";
+          pageName    = "UIxUserLogoff";
+          actionName  = "logoffUser";
+	}
+      };
+    };
     SOGoObject = {
       methods = {
       };

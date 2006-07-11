@@ -23,7 +23,8 @@ CommonUI_OBJC_FILES +=		\
 	UIxTabView.m		\
 	UIxTabItem.m		\
 	\
-	UIxToolbar.m
+	UIxToolbar.m		\
+	UIxUserLogoff.m
 
 CommonUI_RESOURCE_FILES += \
 	Version			\

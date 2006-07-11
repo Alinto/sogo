@@ -151,6 +151,7 @@ td.titlecell
 
 .tableview
 {
+  cursor: default;
   font-size: medium;
   font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   vertical-align: top;
@@ -273,6 +274,7 @@ div.mailer_readmailsubject
   padding-top: 1px;
   padding-left: 20px;
 }
+
 div.mailer_unreadmailsubject
 {
   background-image: url(message-mail.png);
@@ -282,6 +284,7 @@ div.mailer_unreadmailsubject
   padding-top: 1px;
   font-weight: bold;
 }
+
 div.mailer_readmailsubject a
 {
   color: black;
@@ -297,9 +300,12 @@ td.mailer_listcell_deleted
 {
   text-decoration: line-through;
 }
+
 td.mailer_listcell_regular
 {
+  white-space: nowrap;
 }
+
 td.mailer_listcell_regular a
 {
   color: black;
@@ -312,6 +318,12 @@ tr.tableview td.mailer_listcell_regular
   border-bottom: 1px solid #fff;
 }
 
+IMG.mailerReadIcon
+{ 
+/*   TODO
+ */
+}
+
 div.mailer_readicon
 {
   /* TODO: use Thunderbird icon */
@@ -319,6 +331,7 @@ div.mailer_readicon
   background-repeat: no-repeat;
   background-position: 0px 4px;
 }
+
 div.mailer_readicon a
 {
   width: 17px;
@@ -326,13 +339,15 @@ div.mailer_readicon a
   margin: 0px auto;
   display: block;
 }
-div.mailer_unreadicon
+
+div.mailerUnreadIcon
 {
   /* TODO: use Thunderbird icon */
   background-image: url(icon_unread.gif);
   background-repeat: no-repeat;
   background-position: 0px 4px;
 }
+
 div.mailer_unreadicon a
 {
   width: 17px;
@@ -386,15 +401,9 @@ img.mailer_imagecontent
   border: 0px;
 }
 
-body
-{
-  overflow: hidden;
-}
-
 div.pageContent
 { 
-  overflow: auto;
-  height: 100%;
+  overflow: hidden;
 }
 
 div.mailer_mailcontent
@@ -490,4 +499,23 @@ table.linked_attachment_meta
   font-size: medium;
   color: #444444;
   font-style: italic;
+}
+
+TABLE#messageList
+{ 
+  border: 1px;
+  border-collapse: collapse;
+  overflow: scroll;
+  height: 5em !important;
+}
+
+TABLE#messageList TR TD
+{ 
+  height: 1em; !important;
+}
+
+#messageList TR._selected TD
+{ 
+  background: #4b6983;
+  color: #fff;
 }

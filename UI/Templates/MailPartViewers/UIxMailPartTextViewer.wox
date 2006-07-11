@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="yes"?>
-<pre
+<div
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   class="mailer_plaincontent"
-><var:string value="flatContentAsString" /></pre>
+><var:string value="flatContentAsString" /></div>

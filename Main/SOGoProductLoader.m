@@ -143,7 +143,7 @@
   
   registry = [SoProductRegistry sharedProductRegistry];
   fm       = [NSFileManager defaultManager];
-  
+ 
   pathes = [[self productSearchPathes] objectEnumerator];
   while ((lpath = [pathes nextObject]) != nil) {
     NSEnumerator *productNames;

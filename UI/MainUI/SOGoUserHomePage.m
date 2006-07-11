@@ -153,7 +153,9 @@ static NSArray *internetAccessStates = nil;
 }
 
 - (NSString *)relativeMailPath {
-  return [self relativePathToUserFolderSubPath:@"Mail/"];
+  return [NSString stringWithFormat: @"%@%@/view",
+		   [self relativePathToUserFolderSubPath:@"Mail/"],
+		   [self emailForUser]];
 }
 
 /* objects */

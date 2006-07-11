@@ -72,10 +72,10 @@ static BOOL doCrashOnSessionCreate = NO;
   [[self soClassSecurityInfo] setDefaultAccess:@"allow"];
   
   /* require Authenticated role for View and WebDAV */
-  [[self soClassSecurityInfo] declareRole:SoRole_Authenticated
-                              asDefaultForPermission:SoPerm_View];
-  [[self soClassSecurityInfo] declareRole:SoRole_Authenticated
-                              asDefaultForPermission:SoPerm_WebDAVAccess];
+  [[self soClassSecurityInfo] declareRole: SoRole_Authenticated
+                              asDefaultForPermission: SoPerm_View];
+  [[self soClassSecurityInfo] declareRole: SoRole_Authenticated
+                              asDefaultForPermission: SoPerm_WebDAVAccess];
 }
 
 - (id)init {
@@ -124,6 +124,8 @@ static BOOL doCrashOnSessionCreate = NO;
 }
 
 - (id)lookupUser:(NSString *)_key inContext:(id)_ctx {
+
+  NSLog (@"lookupUser: %@", _key);
   return [[[NSClassFromString(@"SOGoUserFolder") alloc] 
 	    initWithName:_key inContainer:self] autorelease];
 }

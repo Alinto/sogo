@@ -54,6 +54,8 @@
 		><var:string label:value="Addressbook" /></a> |
 	      <a var:href="relativeMailPath"
 		><var:string label:value="Mail" /></a> |
+	      <a var:href="logoffPath"
+		><var:string label:value="Logoff" /></a> |
 	      <a href="http://to.be.done/"
 		><var:string label:value="Right Administration" /></a>
 	    </div>

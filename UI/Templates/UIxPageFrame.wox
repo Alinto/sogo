@@ -12,8 +12,8 @@
     <meta name="description" content="SOGo Web Interface"/>
     <meta name="author" content="SKYRIX Software AG"/>
     <meta name="robots" content="stop"/>
-    <meta name="test" content="testp"/>
-
+    <meta name="test" var:content="patate"/>
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1"/>
     <link type="text/css" rel="stylesheet" rsrc:href="uix.css"/>
     <link type="text/css" rel="stylesheet" rsrc:href="calendar.css"/>
     <link href="mailto:hh@skyrix.com" rev="made"/>
@@ -38,6 +38,8 @@
 	><var:string label:value="Addressbook" /></a> |
       <a var:href="relativeMailPath"
 	><var:string label:value="Mail" /></a> |
+      <a var:href="logoffPath"
+	><var:string label:value="Logoff" /></a> |
       <a href="http://to.be.done/"
 	><var:string label:value="Right Administration" /></a>
     </div>
@@ -151,3 +153,10 @@
     </var:if>
   </body>
 </html>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+End:
+-->

@@ -43,7 +43,7 @@
   if ([self isUIxDebugEnabled])
     return self->title;
 
-  return [self labelForKey:@"OpenGroupware.org"];
+  return [self labelForKey: @"OpenGroupware.org"];
 }
 
 - (void)setItem:(id)_item {
@@ -60,10 +60,10 @@
 /* Help URL/target */
 
 - (NSString *)helpURL {
-  return [NSString stringWithFormat:@"help/%@.html", self->title];
+  return [NSString stringWithFormat: @"help/%@.html", self->title];
 }
 - (NSString *)helpWindowTarget {
-  return [NSString stringWithFormat:@"Help_%@", self->title];
+  return [NSString stringWithFormat: @"Help_%@", self->title];
 }
 
 
@@ -78,19 +78,23 @@
 // TODO: I think all this should be done by the clientObject?!
 
 - (NSString *)relativeHomePath {
-  return [self relativePathToUserFolderSubPath:@""];
+  return [self relativePathToUserFolderSubPath: @""];
 }
 
 - (NSString *)relativeCalendarPath {
-  return [self relativePathToUserFolderSubPath:@"Calendar/"];
+  return [self relativePathToUserFolderSubPath: @"Calendar/"];
 }
 
 - (NSString *)relativeContactsPath {
-  return [self relativePathToUserFolderSubPath:@"Contacts/"];
+  return [self relativePathToUserFolderSubPath: @"Contacts/"];
 }
 
 - (NSString *)relativeMailPath {
-  return [self relativePathToUserFolderSubPath:@"Mail/"];
+  return [self relativePathToUserFolderSubPath: @"Mail/"];
+}
+
+- (NSString *)logoffPath {
+  return [self relativePathToUserFolderSubPath: @"logoff"];
 }
 
 /* page based JavaScript */
@@ -132,7 +136,7 @@
     pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
   
   rm     = [self pageResourceManager];
-  jsname = [pageName stringByAppendingString:@".js"];
+  jsname = [pageName stringByAppendingString: @".js"];
 
   url = [rm urlForResourceNamed: jsname
 	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]
@@ -164,7 +168,7 @@
     pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
   
   rm     = [self pageResourceManager];
-  jsname = [[page frameworkName] stringByAppendingString:@".js"];
+  jsname = [[page frameworkName] stringByAppendingString: @".js"];
 
   url = [rm urlForResourceNamed: jsname
 	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]

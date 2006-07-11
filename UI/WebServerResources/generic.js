@@ -256,12 +256,13 @@ function getSelectedNodes(parentNode) {
 }
 
 function onRowClick(node, event) {
-  var text = document.getElementById('list');
-  text.innerHTML = '';
+//   var text = document.getElementById('list');
+//   text.innerHTML = '';
 
   var startSelection = getSelectedNodes(node.parentNode);
   if (event.shiftKey == 1
-      && acceptMultiSelect(node.parentNode)) {
+      && (acceptMultiSelect(node.parentNode)
+	  || acceptMultiSelect(node.parentNode.parentNode))) {
     if (isNodeSelected(node) == true) {
       deselectNode(node);
     } else {

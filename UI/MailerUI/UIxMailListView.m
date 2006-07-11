@@ -136,11 +136,14 @@ static int attachmentFlagSize = 8096;
   return [[[self message] valueForKey:@"uid"] stringValue];
 }
 
-- (NSString *)messageSubjectStyleClass {
-  return [self isMessageRead]
-    ? @"mailer_readmailsubject"
-    : @"mailer_unreadmailsubject";
+- (NSString *)messageSubjectCellStyleClass {
+  return [NSString stringWithFormat: @"%@ %@",
+		   [self messageCellStyleClass],
+		   ([self isMessageRead]
+		    ? @"mailer_readmailsubject"
+		    : @"mailer_unreadmailsubject")];
 }
+
 - (NSString *)messageCellStyleClass {
   return [self isMessageDeleted]
     ? @"mailer_listcell_deleted"
@@ -322,24 +325,24 @@ static int attachmentFlagSize = 8096;
 
 /* JavaScript */
 
-- (NSString *)msgRowID {
+- (NSString *)msgRowID
+{
   return [@"row_" stringByAppendingString:[self messageUidString]];
 }
-- (NSString *)msgDivID {
+
+- (NSString *)msgDivID
+{
   return [@"div_" stringByAppendingString:[self messageUidString]];
 }
 
-- (NSString *)msgIconReadDivID {
+- (NSString *)msgIconReadImgID
+{
   return [@"readdiv_" stringByAppendingString:[self messageUidString]];
 }
-- (NSString *)msgIconUnreadDivID {
+
+- (NSString *)msgIconUnreadImgID
+{
   return [@"unreaddiv_" stringByAppendingString:[self messageUidString]];
-}
-- (NSString *)msgIconReadVisibility {
-  return [self isMessageRead] ? nil : @"display: none;";
-}
-- (NSString *)msgIconUnreadVisibility {
-  return [self isMessageRead] ? @"display: none;" : nil;
 }
 
 - (NSString *)clickedMsgJS {
