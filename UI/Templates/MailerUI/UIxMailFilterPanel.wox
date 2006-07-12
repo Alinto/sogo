@@ -1,45 +1,51 @@
 <?xml version='1.0' standalone='yes'?>
-<container 
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
->
-  <var:if condition="hideFrame" const:negate="YES">
-<table
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  class="titletable"
-  cellspacing="0" cellpadding="0"
->
-  <tr>
-    <td class="titlecell">
+  <container 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    >
+
+    <div class="menu" id="searchMenu">
+      <ul id="searchOptions">
+	<li id="subject"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Subject"/></li>
+	<li id="sender"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Sender"/></li>
+	<li id="subject_or_sender"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Subject or Sender"/></li>
+	<li id="to_or_cc"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="To or Cc"/></li>
+	<li id="entire_message"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Entire Message"/></li>
+	<li id="find_in_message"
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Find In Message"/></li>
+      </ul>
+    </div>
+    
+    <var:if condition="hideFrame" const:negate="YES">
+      <span class="searchBox" style="float: right">
+	<var:string label:value="Subject or Sender contains" />:
+	<input onclick="popupSearchMenu(this, event, 'searchMenu');" name="search" type="text" var:value="searchText" />
+      </span>
       <var:string label:value="View" />:
-    </td>
-    <td class="titlecell">
       <var:popup list="filters" 
-              item="filter" string="filterLabel" value="filter"
-              selection="selectedFilter"
-              const:name="filterpopup" 
-              const:onchange="document.pageform.submit()" />
-    </td>
-    <td class="titlecell" style="padding-left: 4px;">
-      <var:string label:value="Subject or Sender contains" />:
-    </td>
-    <td class="titlecell" style="width: 80%; padding-right: 1px;">
-      <input name="search" type="text" var:value="searchText" 
-             style="width: 100%;" />
+	item="filter" string="filterLabel" value="filter"
+	selection="selectedFilter"
+	const:name="filterpopup" 
+	const:onchange="document.pageform.submit()" />
       <!--
-             autocomplete="off"
-             onkeypress="ml_searchFieldKeyPressed(this)"
-             onfocus="ml_activateSearchField(this, 500)" 
-             onblur="ml_deactivateSearchField(this)" />
-        -->
-    </td>
-  </tr>
-</table>
-</var:if>
-</container>
+      autocomplete="off"
+      onkeypress="ml_searchFieldKeyPressed(this)"
+      onfocus="ml_activateSearchField(this, 500)" 
+      onblur="ml_deactivateSearchField(this)" />
+      -->
+    </span>
+    </var:if>
+  </container>
+  

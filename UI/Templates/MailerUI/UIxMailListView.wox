@@ -10,16 +10,66 @@
     title="panelTitle"
     hideFrame="hideFrame"
     >
-    <var:component className="UIxMailFilterPanel" qualifier="qualifier" 
-      hideFrame="hideFrame" />
 
-    <div id="cl_tableview_reloadroot">
-      <div class="embedwhite_out">
-	<div class="embedwhite_in">
-	  <table multiselect="yes" id="messageList">
+    <div class="menu" id="messageListMenu">
+      <ul id="sourceList">
+	<li
+	  onmousedown="return false;"
+	  var:onclick="clickedMsgJS"><var:string label:value="Open Message In New Window"/></li>
+	<li class="separator"></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Reply to Sender Only"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Reply to All"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Forward"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Edit As New..."/></li>
+	<li class="separator"></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Move To --&gt;"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Copy To --&gt;"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Label --&gt;"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Mark --&gt;"/></li>
+	<li class="separator"></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Save As..."/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Print Preview"/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Print..."/></li>
+	<li
+	  onmousedown="return false;"
+	  onclick=""><var:string label:value="Delete Message"/></li>
+      </ul>
+    </div>
+
+    <div id="mailboxContent" oncontextmenu="return false;">
+      <var:component className="UIxMailFilterPanel" qualifier="qualifier" 
+	hideFrame="hideFrame" />
+
+	<table multiselect="yes" id="messageList" oncontextmenu="return false;">
+	  <thead>
 	    <tr class="tableview">
 	      <td class="tbtv_headercell" width="17">
 		<var:entity const:name="nbsp" />
+	      </td>
+	      <td class="tbtv_headercell" width="17">
+		<img rsrc:src="title_attachment_14x14.png" width="14" height="14" />
 	      </td>
 	      <td class="tbtv_headercell" width="50%">
 		<var:component className="UIxMailSortableTableHeader"
@@ -49,9 +99,6 @@
 	      </td>
 	      <td class="tbtv_headercell" width="17">
 		<img rsrc:src="title_read_14x14.png" width="14" height="14" />
-	      </td>
-	      <td class="tbtv_headercell" width="17">
-		<img rsrc:src="title_attachment_14x14.png" width="14" height="14" />
 	      </td>
 	      <td class="tbtv_headercell">
 		<var:component className="UIxMailSortableTableHeader"
@@ -97,17 +144,24 @@
 		</var:if>
 	      </td>
 	    </tr>
-	    
+	  </thead>
+
+	  <tbody oncontextmenu="return false;">
 	    <var:foreach list="messages" item="message">
 	      <tr class="tableview" var:id="msgRowID"
 		onmousedown="return false;"
-		onclick="onRowClick(this, event);">
+		onclick="onRowClick(this, event);"
+		oncontextmenu="onMenuClick(this, event, 'messageListMenu'); onRowClick(this, event); return false;">
 		<td>
 		  <!-- this seems to break on Safari, it treats name==id? -->
-		  <input type="checkbox" var:name="msgRowID" value="0" 
-		    onchange="toggleMailSelect(this)" />
 		</td>
 		<!-- the td:onlick doesn't work on Safari -->
+		<td>
+		  <var:if condition="hasMessageAttachment">
+		    <img rsrc:src="title_attachment_14x14.png" />
+		  </var:if>
+		</td>
+		
 		<td
 		  var:class="messageSubjectCellStyleClass"
 		  var:ondblclick="clickedMsgJS"
@@ -115,9 +169,9 @@
 		  <!-- div var:class="messageSubjectStyleClass" var:id="msgDivID" -->
 		  <!-- removed anker (resulted in two clicks on Moz -->
 		  <!-- a href="#" var:ondblclick="clickedMsgJS" -->
-                  <!-- Note: var:href="messageViewURL" (done by JS),
+		  <!-- Note: var:href="messageViewURL" (done by JS),
 		  var:target="messageViewTarget" -->
-                  <var:string value="message.envelope.subject"
+		  <var:string value="message.envelope.subject"
 		    formatter="context.mailSubjectFormatter"/>
 		  <!-- /a -->
 		</td>
@@ -151,12 +205,6 @@
 		  </var:if>
 		</td>
 
-		<td>
-		  <var:if condition="hasMessageAttachment">
-		    <img rsrc:src="title_attachment_14x14.png" />
-		  </var:if>
-		</td>
-		
 		<td var:class="messageCellStyleClass" var:ondblclick="clickedMsgJS">
 		  <span class="mailer_datefield">
 		    <var:string value="message.envelope.date" 
@@ -183,12 +231,12 @@
 		-->
 	      </td>
 	    </tr>
-	  </table>
-	  
-	  <span id="selected_uids" style="visibility: hidden;">
-	  </span>
-	</div>
-      </div>
+	  </tbody>
+	</table>
+	
+	<span id="selected_uids" style="visibility: hidden;">
+	</span>
+
     </div>
 
     <var:if condition="hideFrame" const:negate="YES">

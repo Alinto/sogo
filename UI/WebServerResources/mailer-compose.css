@@ -37,7 +37,6 @@ div#compose_attachments_list  {
   width:            100%;
   height:           100px;
   background-color: #FFFFFF;
-  font-size:        10px;
   margin-left:      0px;
   padding:          2px;
   border-color:     #c3c3c3;
@@ -56,20 +55,11 @@ div#compose_text {
   border-top-style:    solid;
 }
 
-div#compose_toselection select { 
-  font-size: 10px;
-}
-div#compose_toselection input { 
-  font-size: 10px;
-}
-
 input#compose_subject_input {
-  font-size: 10px;
   width:     100%;
 }
 
 .compose_label { 
-  font-size:  11px;
   text-align: left;
 }
 

@@ -63,6 +63,7 @@ static BOOL useAltNamespace = NO;
 - (NSArray *)toManyRelationshipKeys {
   return [[self imap4Connection] subfoldersForURL:[self imap4URL]];
 }
+
 - (NSArray *)toOneRelationshipKeys {
   NSArray  *uids;
   unsigned count;

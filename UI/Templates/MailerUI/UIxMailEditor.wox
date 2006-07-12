@@ -28,7 +28,7 @@
                 <td width="80%">
                   <var:popup const:name="from" list="fromEMails" item="item"
                              selection="from"
-                             const:style="width: 100%; font-size: 8pt;"
+                             const:style="width: 100%;"
                     />
                 </td>
               </tr>

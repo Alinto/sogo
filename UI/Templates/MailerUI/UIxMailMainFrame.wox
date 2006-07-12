@@ -39,7 +39,7 @@
 	  <link href="mailto:info@skyrix.com" rev="made"/>
 	</head>
 
-	<body>
+	<body oncontextmenu="return false;">
 	  <!-- 
 	  Note: the 'href' is required, otherwise an element-id will get created
 	  -->
@@ -65,40 +65,23 @@
 
 	  <form name="pageform" var:href="pageFormURL" _wosid="0">
 
-	    <table border="0" width="100%" cellspacing="0" cellpadding="2">
-	      <tr class="vertframerow">
-		<td width="100%" valign="top" class="vertframerow" colspan="2">
-		  <var:if condition="hideFolderTree">
-		    <var:component-content/>
-		  </var:if>
-		  
-		  <var:if condition="hideFolderTree" const:negate="YES">
-		    <table width="100%">
-		      <tr>
-			<td width="25%" valign="top" class="foldercell">
-			  <div class="titlediv"
-			    ><var:string label:value="Folders" /></div>
-			  <div style="height: 95%">
-			    <div class="embedwhite_out">
-			      <div class="embedwhite_in">
-				<var:component className="UIxMailTree" 
-				  rootClassName="treeRootClassName" 
-				  const:treeFolderAction="view" 
-				  />
-			      </div>
-			    </div>
-			  </div>
-			</td>
-			<td style="width: 6px;"> </td>
-			<td valign="top" class="contentcell">
-			  <var:component-content/>
-			</td>
-		      </tr>
-		    </table>
-		  </var:if>
-		</td>
-	      </tr>
-	    </table>
+	    <div class="folderTree">
+	      <var:if condition="hideFolderTree">
+		<var:component-content/>
+	      </var:if>
+
+	      <var:if condition="hideFolderTree" const:negate="YES">
+		<div class="titlediv"><var:string label:value="Folders" /></div>
+		<var:component className="UIxMailTree" 
+		  rootClassName="treeRootClassName" 
+		  const:treeFolderAction="view" 
+		  />
+	      </var:if>
+	    </div>
+
+	    <div class="mailPageContent">
+	      <var:component-content/>
+	    </div>
 	  </form>
 
 	  <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />

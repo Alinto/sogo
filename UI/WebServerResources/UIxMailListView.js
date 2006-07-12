@@ -40,3 +40,24 @@ function validateControls() {
 function moveTo(uri) {
   alert("MoveTo: " + uri);
 }
+
+function popupSearchMenu(elem, event, menuName)
+{
+  relX = (event.pageX
+	  - (elem.parentNode.offsetLeft + elem.offsetLeft));
+  relY = (event.pageY
+	  - elem.parentNode.parentNode.parentNode.offsetTop);
+  window.alert(elem.style.height);
+//   if (event.button == 1
+// && 
+//     acceptClick = false;
+//   bodyOnClick = "" + document.body.getAttribute("onclick");
+//   document.body.setAttribute("onclick", "onBodyClick('" + menuId + "'); return false;");
+//   popup = document.getElementById(menuId);
+//   popup.setAttribute("style", "visibility: visible; top: " + event.pageY
+// 		     + "px; left: " + event.pageX + "px;" );
+//   menuClickNode = node;
+//   window.alert
+
+  return false;
+}

@@ -83,7 +83,7 @@
 "InboxFolderName"  = "Boite de Réception";
 "DraftsFolderName" = "Brouillons";
 "SieveFolderName"  = "Filtres";
-"Folders"          = "Répertoires"; 
+"Folders"          = "Dossiers"; 
 
 /* MailMoveToPopUp */
 

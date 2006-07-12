@@ -20,18 +20,48 @@
 */
 /* TODO: is the section below used in the mailer? */
 
-.aptview_title
+DIV.mailPageContent
+{ 
+  position: absolute;
+  left: 15em;
+  top: 5.5em;
+  right: 0px;
+  bottom: 0px;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  overflow: auto;
+}
+
+DIV.mailAccount
 {
   font-size: medium;
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  padding: 1em;
+  background: #fff;
+  border: 1px solid #aaa;
+  bottom: 0px;
+}
+
+DIV.mailAccount P
+{
+  line-height: 3em;
+}
+
+DIV.mailAccount P IMG
+{
+  border: 1px;
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
+.aptview_title
+{
   color: #000000;
   font-weight: bold;
 }
 
 .aptview_text
 {
-  font-size: medium;
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   color: #000000;
 }
 
@@ -52,8 +82,6 @@
 
 .anais_uids
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
 }
 
 
@@ -70,19 +98,13 @@
 
   background-color: #DCDAD5;
 
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
 }
 .foldercell
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
   width: 25%;
 }
 .contentcell
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
 }
 .embedwhite_out
 {
@@ -113,6 +135,7 @@
   padding-top: 6px;
   padding-left: 6px;
 }
+
 table.titletable
 {
   height: 24px;
@@ -120,14 +143,26 @@ table.titletable
   padding-top: 6px;
   padding-left: 6px;
 }
+
 td.titlecell
 {
   height: 22px;
   vertical-align: middle;
   padding-bottom: 2px;
   white-space: nowrap;
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
+}
+
+table.titletable td.titlecell SELECT
+{ 
+  display: -moz-popup;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  background: #DCDAD5;
+  -moz-appearance: toolbarbutton !important;
 }
 
 .whitesec_title
@@ -136,10 +171,31 @@ td.titlecell
   padding: 4px;
 }
 
+DIV.folderTree
+{
+  position: absolute;
+  top: 5.5em;
+  left: 0px;
+  width: 14.7em;
+  bottom: 0px;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+DIV.folderTreeContent
+{
+  position: absolute;
+  color: #000;
+  background: #fff;
+  width: 100%;
+  top: 2em;
+  bottom: 0px;
+  overflow: auto;
+}
+
 .treecell
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
   color: black;
   vertical-align: bottom;
   padding-left: 4px; /* move away from the icon */
@@ -152,74 +208,7 @@ td.titlecell
 .tableview
 {
   cursor: default;
-  font-size: medium;
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
   vertical-align: top;
-}
-
-.tableview td
-{
-  border-top-width: 1px;
-  border-top-color: white;
-  border-bottom-width: 1px;
-  border-bottom-color: white;
-}
-
-.tableview_selected
-{
-  font-size: 9pt;
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  vertical-align: top;
-  background-color: #ffffcc;
-}
-
-.tableview_highlight
-{
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  vertical-align: top;
-  background-color: #DCDAD5;
-}
-
-.tableview_highlight td
-{
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-  border-top-style: solid;
-  border-bottom-style: solid;
-  border-top-color: #808080;
-  border-bottom-color: #808080;
-}
-
-td.tbtv_navcell
-{
-  border-width: 1;
-  border-style: solid;
-  border-top-color: white;
-  border-left-color: white;
-  border-bottom-color: #808080;
-  border-right-color: #808080;
-  padding-top: 4px;
-  padding-bottom: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  
-  background-color: #DCDAD5;
-}
-
-td.tbtv_headercell
-{
-  border-width: 1;
-  border-style: solid;
-  border-top-color: white;
-  border-left-color: white;
-  border-bottom-color: #808080;
-  border-right-color: #808080;
-  padding-top: 4px;
-  padding-bottom: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  
-  background-color: #DCDAD5;
 }
 
 td.tbtv_actcell
@@ -238,12 +227,21 @@ td.tbtv_actcell
   background-color: #DCDAD5;
 }
 
+td.tbtv_headercell SPAN
+{
+  float: left;
+  width: 100%;
+}
+
 td.tbtv_headercell a
 {
+  cursor: default;
   margin: 0px auto;
   display: block;
   color: black;
+  width: 100%;
 }
+
 td.tbtv_headercell a:hover
 {
   margin: 0px auto;
@@ -255,6 +253,7 @@ td.tbtv_headercell a:hover
 
 td.tbtv_headercell img.tbtv_sortcell
 {
+  float: right;
   text-align: right;
   border: 0px;
   width: 12px;
@@ -266,31 +265,30 @@ span.mailer_datefield
   white-space: nowrap;
 }
 
-div.mailer_readmailsubject
+td.mailer_readmailsubject
 {
-  background-image: url(message-mail-read.png);
-  background-repeat: no-repeat;
-  background-position: 0px 0px;
-  padding-top: 1px;
-  padding-left: 20px;
+  background-image: url(message-mail-read.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
 }
 
-div.mailer_unreadmailsubject
+td.mailer_unreadmailsubject
 {
-  background-image: url(message-mail.png);
-  background-repeat: no-repeat;
-  background-position: 0px 0px;
-  padding-left: 20px;
-  padding-top: 1px;
-  font-weight: bold;
+  background-image: url(message-mail.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
+  font-weight: bold !important;
 }
 
-div.mailer_readmailsubject a
+td.mailer_readmailsubject a
 {
   color: black;
   text-decoration: none;
 }
-div.mailer_unreadmailsubject a
+
+td.mailer_unreadmailsubject a
 {
   color: black;
   text-decoration: none;
@@ -310,12 +308,6 @@ td.mailer_listcell_regular a
 {
   color: black;
   text-decoration: none;
-}
-
-tr.tableview td.mailer_listcell_regular
-{
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
 }
 
 IMG.mailerReadIcon
@@ -369,7 +361,6 @@ table.mailer_fieldtable
 
 tr.mailer_fieldrow
 {
-  font-size: medium;
 }
 
 td.mailer_fieldname
@@ -418,7 +409,6 @@ div.mailer_plaincontent
   margin: 0px;
   height: 100%;
   padding: 0px;
-  font-size: small;
 }
 
 /* attachment editor */
@@ -436,11 +426,6 @@ div#attachment_list
   border-top-style: solid;
 }
 
-form#attachment_form input
-{
-  font-size: 10px;
-}
-
 div#attachment_upload
 {
   border-bottom-color: #808080;
@@ -452,7 +437,6 @@ div#attachment_upload
 td.attachment_uplabel
 {
   width: 15%;
-  font-size: 11px;
   text-align: left;
 }
 
@@ -466,8 +450,6 @@ div.linked_attachment_frame
 
 div.linked_attachment_body
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
   padding: 4px;
 
   border-width: 1;
@@ -488,38 +470,77 @@ div.linked_attachment_meta
 
 table.linked_attachment_meta
 {
-  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
-  font-size: medium;
   color: #444444;
   font-style: italic;
 }
 
-DIV#cl_tableview_reloadroot
-{ 
-  position: absolute;
-  overflow: scroll;
-  top: 8em;
-  right: 1em;
-  bottom: 1em;
-}
-
 TABLE#messageList
 { 
-  border: 1px;
-  border-collapse: collapse;
-  height: 5em !important;
-  right: 1.5em;
-  bottom: 1em;
-  width: 10em;
+  display: block;
+  position: absolute;
+  border-spacing: 0px;
+  color: #000;  
+  background: #fff;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  width: 100%;
+  top: 2em;
+  right: 0em;
+  left: 0em;
+  bottom: 0em;
+  overflow: auto;
 }
 
-TABLE#messageList TR TD
+TABLE#messageList THEAD
+{
+  width: 100%;
+  background-color: #DCDAD5;
+}
+
+TABLE#messageList THEAD TD
+{
+  padding-left: .3em;
+  padding-right: .3em;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+}
+
+TABLE#messageList TBODY
+{  
+  height: 100%;
+  width: 100%;
+}
+
+TABLE#messageList TD
 { 
-  height: 1em; !important;
+  padding: .2em 0px;
+  height: 1.2em;
 }
 
-#messageList TR._selected TD
+TABLE#messageList TR._selected TD
 { 
   background: #4b6983;
   color: #fff;
+}
+
+SPAN.searchBox INPUT
+{
+  height: 22px;
+  margin-right: 1em;
+  width: 20em;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  padding-left: 24px;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  background-image: url('/SOGo.woa/WebServerResources/Search-bar.png');
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
 }
