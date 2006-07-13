@@ -378,6 +378,7 @@ SPAN.toolbarButton:active
   padding-bottom: .2em;
   margin: 0px;
   width: auto;
+  white-space: nowrap;
 }
 
 .menu LI:hover
@@ -393,4 +394,28 @@ SPAN.toolbarButton:active
   height: 0px;
   border-top: 1px solid #aaa;
   border-bottom: 1px solid #fff;
+}
+
+.menu LI.submenu
+{
+  padding-right: .5em;
+  background-image: url('submenu.gif');
+  background-position: 98% 50%;
+  background-repeat: no-repeat; }
+
+.menu LI.submenu:hover
+{
+  background-image: url('submenu-active.gif');
+}
+
+DIV.log#logArea
+{
+  z-index: 1000;
+  font-family: monospace;
+  position: absolute;
+  background: #000;
+  color: #fff;
+  top: 0px;
+  left: 0px;
+  width: 100%;
 }

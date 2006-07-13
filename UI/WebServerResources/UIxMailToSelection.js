@@ -127,9 +127,15 @@ function addressFieldGotFocus(sender) {
   idx = this.getIndexFromIdentifier(sender.id);
   if ((lastIndex == idx) || (idx == 0)) return;
   this.removeLastEditedRowIfEmpty();
+
+
+  return false;
 }
+
 function addressFieldLostFocus(sender) {
   lastIndex = this.getIndexFromIdentifier(sender.id);
+
+  return false;
 }
 
 function removeLastEditedRowIfEmpty() {

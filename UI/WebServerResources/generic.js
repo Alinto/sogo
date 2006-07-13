@@ -24,6 +24,18 @@
 
 /* generic stuff */
 
+logWindow = window.open('', 'logWindow',
+			'directories = no; location = no; menubar = no; resizable = no;'
+			+ 'scrollbars = yes; status = no; toolbar = no; width = 80em; height = 25em;');
+logWindow.document.write('<html><head><title>JavaScript log</title></head>'
+			 + '<body style="font-family: monospace;'
+			 + 'font-size: 10pt;">'
+			 + '<div class="log" id="logArea"></div></body>'
+			 +'</html>');
+logWindow.resizeTo(640,480);
+logArea = logWindow.document.getElementById('logArea');
+logArea.innerHTML = '';
+
 function ml_stripActionInURL(url) {
   if (url[url.length - 1] != '/') {
     var i;
@@ -282,9 +294,10 @@ function onRowClick(node, event) {
 
 /* popup menus */
 
-bodyOnClick = "";
-acceptClick = false;
-menuClickNode = null;
+var bodyOnClick = "";
+var acceptClick = false;
+var menuClickNode = null;
+var currentSubmenu = null;
 
 function onMenuClick(node, event, menuId)
 {
@@ -295,9 +308,11 @@ function onMenuClick(node, event, menuId)
     acceptClick = false;
   bodyOnClick = "" + document.body.getAttribute("onclick");
   document.body.setAttribute("onclick", "onBodyClick('" + menuId + "'); return false;");
-  popup = document.getElementById(menuId);
-  popup.setAttribute("style", "visibility: visible; top: " + event.pageY
-		     + "px; left: " + event.pageX + "px;" );
+  var popup = document.getElementById(menuId);
+  hideMenu(popup);
+  popup.style.top = event.pageY + "px";
+  popup.style.left = event.pageX + "px";
+  popup.style.visibility = "visible";
   menuClickNode = node;
 
   return false;
@@ -310,11 +325,23 @@ function onBodyClick(menuId)
   else
     {
       popup = document.getElementById(menuId);
-      popup.setAttribute("style", "visibility: hidden");
+      hideMenu(popup);
       document.body.setAttribute("onclick", bodyOnClick);
     }
 
   return false;
+}
+
+function hideMenu(menuNode)
+{
+//   log('hiding menu "' + menuNode.getAttribute('id') + '"');
+  if (menuNode.submenu)
+    {
+      hideMenu(menuNode.submenu);
+      menuNode.submenu = null;
+    }
+
+  menuNode.style.visibility = "hidden";
 }
 
 function onMenuEntryClick(node, event, menuId)
@@ -323,5 +350,118 @@ function onMenuEntryClick(node, event, menuId)
   window.alert("clicked " + menuClickNode.tagName);
 
   return false;
+}
+
+function log(message) {
+  if (logArea)
+    logArea.innerHTML = logArea.innerHTML + message + '<br />' + "\n";
+}
+
+function dropDownSubmenu(event)
+{
+  var node = event.target;
+  var submenu = node.getAttribute("submenu");
+  if (submenu && submenu != "") {
+    if (node.parentNode.parentNode.submenu)
+      hideMenu(node.parentNode.parentNode.submenu);
+ 
+    var submenuNode = document.getElementById(submenu);
+    node.parentNode.parentNode.submenu = submenuNode;
+    var menuTop = (node.parentNode.parentNode.offsetTop
+      + node.offsetTop - 1);
+    var menuLeft = (node.parentNode.parentNode.offsetLeft
+		    + node.parentNode.parentNode.offsetWidth
+		    - 2);
+    submenuNode.style.top = menuTop + "px";
+    submenuNode.style.left = menuLeft + "px";
+    submenuNode.style.visibility = "visible";
+  }
+}
+
+/* drag handle */
+
+var dragHandle;
+var dragHandleOrigX;
+var dragHandleOrigLeft;
+var dragHandleOrigRight;
+
+function startHandleDragging(event) {
+  if (event.button == 0) {
+    var leftBlock = event.target.getAttribute('leftblock');
+    var rightBlock = event.target.getAttribute('rightblock');
+
+    dragHandle = event.target;
+    dragHandleOrigX = dragHandle.offsetLeft;
+    dragHandleOrigLeft = document.getElementById(leftBlock).offsetWidth;
+    dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft;
+
+    document.body.setAttribute('onmouseup', 'stopHandleDragging(event);');
+    document.body.setAttribute('onmousemove', 'dragHandleMove(event, "'
+			       + leftBlock
+			       + '", "'
+			       + rightBlock
+			       + '");');
+    document.body.style.cursor = "e-resize";
+
+    dragHandleMove(event, leftBlock, rightBlock);
+    event.cancelBubble = true;
+  }
+
+  return false;
+}
+
+function stopHandleDragging(event) {
+  var diffX = (event.clientX - dragHandleOrigX
+	       - (dragHandle.offsetWidth / 2));
+  var lBlock
+    = document.getElementById(dragHandle.getAttribute('leftblock'));
+  var rBlock
+    = document.getElementById(dragHandle.getAttribute('rightblock'));
+
+  lBlock.style.width = (dragHandleOrigLeft + diffX) + 'px';
+  rBlock.style.left = (dragHandleOrigRight + diffX) + 'px';
+
+  document.body.setAttribute('onmousemove', '');
+  document.body.setAttribute('onmouseup', '');
+  document.body.setAttribute('style', '');
+  event.cancelBubble = true;
+
+  return false;
+}
+
+function dragHandleMove(event, leftBlock, rightBlock) {
+  if (typeof(dragHandle) == undefined
+      || !dragHandle)
+    stopHandling(event);
+  else {
+    var width = dragHandle.offsetWidth;
+
+    var hX = event.clientX;
+    if (hX > -1) {
+      var newLeft = hX - (width / 2);
+      
+      dragHandle.style.left = newLeft + 'px';
+      event.cancelBubble = true;
+      
+      return false;
+    }
+  }
+}
+
+function dragHandleDoubleClick(event) {
+  dragHandle = event.target;
+  var lBlock
+    = document.getElementById(dragHandle.getAttribute('leftblock'));
+  var lLeft = lBlock.offsetLeft;
+
+  if (dragHandle.offsetLeft > lLeft) {
+    var rBlock
+      = document.getElementById(dragHandle.getAttribute('rightblock'));
+    var leftDiff = rBlock.offsetLeft - dragHandle.offsetLeft;
+    
+    dragHandle.style.left = lLeft + 'px';
+    lBlock.style.width = '0px';
+    rBlock.style.left = (lLeft + leftDiff) + 'px';
+  }
 }
 

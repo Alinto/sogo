@@ -544,3 +544,22 @@ SPAN.searchBox INPUT
   background-repeat: no-repeat;
   background-position: 2px 2px;
 }
+
+
+/* drag handles */
+DIV#dragHandle
+{ 
+  position: absolute;
+  z-index: 1;
+  top: 5.5em;
+  left: 14.6em;
+  width: .4em;
+  bottom: 0px;
+}
+
+DIV#dragHandle:active
+{
+  cursor: e-resize;
+  background: #dbdad5;
+  -moz-opacity: 0.5;
+}

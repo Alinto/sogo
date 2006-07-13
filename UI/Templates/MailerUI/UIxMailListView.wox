@@ -31,17 +31,29 @@
 	  onclick=""><var:string label:value="Edit As New..."/></li>
 	<li class="separator"></li>
 	<li
+	  class="submenu"
+	  submenu="dummymenu"
+	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
-	  onclick=""><var:string label:value="Move To --&gt;"/></li>
+	  onclick=""><var:string label:value="Move To"/></li>
 	<li
+	  class="submenu"
+	  submenu="dummymenu"
+	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
-	  onclick=""><var:string label:value="Copy To --&gt;"/></li>
+	  onclick=""><var:string label:value="Copy To"/></li>
 	<li
+	  class="submenu"
+	  submenu="dummymenu"
+	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
-	  onclick=""><var:string label:value="Label --&gt;"/></li>
+	  onclick=""><var:string label:value="Label"/></li>
 	<li
+	  class="submenu"
+	  submenu="dummymenu"
+	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
-	  onclick=""><var:string label:value="Mark --&gt;"/></li>
+	  onclick=""><var:string label:value="Mark"/></li>
 	<li class="separator"></li>
 	<li
 	  onmousedown="return false;"
@@ -56,6 +68,49 @@
 	  onmousedown="return false;"
 	  onclick=""><var:string label:value="Delete Message"/></li>
       </ul>
+
+      <div class="menu" id="dummymenu">
+	<ul id="sourceLisdassdadst">
+	<li
+	  class="submenu"
+	  submenu="dummymenu2"
+	  onmouseover="dropDownSubmenu(event);"
+	  onmousedown="return false;"
+	  onclick="">tdasdsadsa</li>
+	  <li onmousedown="return false;">really</li>
+	  <li onmousedown="return false;">is</li>
+	  <li onmousedown="return false;">a</li>
+	  <li onmousedown="return false;">dumb dummy!</li>
+	</ul>
+	
+	<div class="menu" id="dummymenu2">
+	  <ul id="sourdsadsaceList">
+	<li
+	  class="submenu"
+	  submenu="dummymenu3"
+	  onmouseover="dropDownSubmenu(event);"
+	  onmousedown="return false;"
+	  onclick="">Dummy 2</li>
+	    <li onmousedown="return false;">really</li>
+	    <li onmousedown="return false;">is</li>
+	    <li onmousedown="return false;">another</li>
+	    <li onmousedown="return false;">dumb dummy!</li>
+	  </ul>
+
+	<div class="menu" id="dummymenu3">
+	  <ul id="sourdsadsaceList">
+	    <li onmousedown="return false;">Dummy 3</li>
+	    <li onmousedown="return false;">really</li>
+	    <li onmousedown="return false;">is</li>
+	    <li onmousedown="return false;">another</li>
+	    <li onmousedown="return false;">dumb dummy!</li>
+	  </ul>
+	</div>
+
+	</div>
+
+
+      </div>
     </div>
 
     <div id="mailboxContent" oncontextmenu="return false;">

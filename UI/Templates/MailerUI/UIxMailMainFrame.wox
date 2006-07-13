@@ -65,7 +65,7 @@
 
 	  <form name="pageform" var:href="pageFormURL" _wosid="0">
 
-	    <div class="folderTree">
+	    <div class="folderTree" id="mailerFolderTree">
 	      <var:if condition="hideFolderTree">
 		<var:component-content/>
 	      </var:if>
@@ -79,7 +79,15 @@
 	      </var:if>
 	    </div>
 
-	    <div class="mailPageContent">
+	    <div id="dragHandle"
+	      onmousedown="startHandleDragging(event);"
+	      onmousemove=""
+	      ondblclick="dragHandleDoubleClick(event);"
+	      leftblock="mailerFolderTree"
+	      rightblock="mailerPageContent">
+	    </div>
+
+	    <div class="mailPageContent" id="mailerPageContent">
 	      <var:component-content/>
 	    </div>
 	  </form>
