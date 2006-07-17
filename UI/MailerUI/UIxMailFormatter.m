@@ -71,8 +71,20 @@ static BOOL debugOn = YES;
 
 /* configuration */
 
-- (NSTimeZone *)timeZone {
+- (NSTimeZone *)timeZone
+{
   return self->timeZone;
+}
+
+- (void) setTimeZone: (NSTimeZone *) newTimeZone
+{
+  if (timeZone)
+    [timeZone release];
+
+  timeZone = newTimeZone;
+
+  if (timeZone)
+    [timeZone retain];
 }
 
 - (BOOL)showOnlyTimeForToday {
@@ -101,7 +113,7 @@ static BOOL debugOn = YES;
     [self->now setTimeZone:[self timeZone]];
   }
   [_date setTimeZone:[self timeZone]];
-  
+
   if ([self showOnlyTimeForToday] && [_date isDateOnSameDay:self->now])
     return [self stringForTime:_date prefix:NULL];
   

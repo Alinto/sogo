@@ -1,5 +1,8 @@
 2006-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFormatter.m ([UIxMailDateFormatter
+	-setTimeZone:newTimeZone]): new accessor to specify the timezone.
+
 	* UI/MailerUI/UIxMailFilterPanel.m ([UIxMailFilterPanel -setSearchCriteria:]) 
 	([UIxMailFilterPanel -searchCriteria]): new methods, similar to
 	s/Criteria/Text/ to handle the "criteria" form parameter.

@@ -56,6 +56,8 @@
 /* configuration */
 
 - (NSTimeZone *)timeZone;
+- (void) setTimeZone: (NSTimeZone *) newTimeZone;
+
 - (BOOL)showOnlyTimeForToday;
 - (BOOL)showLabelsForNearDays;
 
