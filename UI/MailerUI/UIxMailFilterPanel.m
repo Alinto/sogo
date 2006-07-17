@@ -24,6 +24,7 @@
 @interface UIxMailFilterPanel : WOComponent
 {
   NSString *searchText;
+  NSString *searchCriteria;
   struct {
     int hideFrame:1;
     int reserved:31;
@@ -72,41 +73,78 @@ static NSDictionary *filterToQualifier = nil;
   [ma release]; ma = nil;
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      searchText = nil;
+      searchCriteria = nil;
+      mfFlags.hideFrame = 0;
+      mfFlags.reserved = 0;
+    }
+
+  return self;
+}
+
 - (void)dealloc {
+  [self->searchCriteria release];
   [self->searchText release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setHideFrame:(BOOL)_flag {
+- (void)setHideFrame:(BOOL)_flag
+{
    self->mfFlags.hideFrame = _flag ? 1 : 0;
 }
-- (BOOL)hideFrame {
+
+- (BOOL)hideFrame
+{
   return self->mfFlags.hideFrame ? YES : NO;
 }
 
-- (void)setSearchText:(NSString *)_txt {
+- (void)setSearchText: (NSString *)_txt
+{
   ASSIGNCOPY(self->searchText, _txt);
 }
-- (NSString *)searchText {
-  if (self->searchText == nil) {
-    // TODO: kinda hack
-    self->searchText = 
-      [[[[self context] request] formValueForKey:@"search"] copy];
-  }
+
+- (void)setSearchCriteria: (NSString *)_txt
+{
+  ASSIGNCOPY(self->searchText, _txt);
+}
+
+- (NSString *)searchText
+{
+  if (self->searchText == nil)
+    {
+      self->searchText = 
+	[[[[self context] request] formValueForKey:@"search"] copy];
+    }
   return self->searchText;
+}
+
+- (NSString *)searchCriteria
+{
+  if (self->searchCriteria == nil)
+    {
+      self->searchCriteria = 
+	[[[[self context] request] formValueForKey:@"criteria"] copy];
+    }
+  return self->searchCriteria;
 }
 
 /* filters */
 
-- (NSArray *)filters {
+- (NSArray *)filters
+{
   return filters;
 }
 
 /* qualifiers */
 
-- (EOQualifier *)searchTextQualifier {
+- (EOQualifier *)searchTextQualifier
+{
   EOQualifier *q;
   NSString *s;
   
@@ -121,7 +159,8 @@ static NSDictionary *filterToQualifier = nil;
   return q;
 }
 
-- (NSString *)filterLabel {
+- (NSString *)filterLabel
+{
 #if 1
   return [[[self context] page] labelForKey:[self valueForKey:@"filter"]];
 #else
@@ -129,11 +168,13 @@ static NSDictionary *filterToQualifier = nil;
 #endif
 }
 
-- (NSString *)selectedFilter {
+- (NSString *)selectedFilter
+{
   return  [[[self context] request] formValueForKey:@"filterpopup"];
 }
 
-- (EOQualifier *)filterQualifier {
+- (EOQualifier *)filterQualifier
+{
   NSString *selectedFilter;
   
   selectedFilter = [self selectedFilter];
@@ -142,7 +183,8 @@ static NSDictionary *filterToQualifier = nil;
     ? [filterToQualifier objectForKey:selectedFilter] : nil;
 }
 
-- (EOQualifier *)qualifier {
+- (EOQualifier *) qualifier
+{
   EOQualifier *sq, *fq;
   NSArray *qa;
   

@@ -1,3 +1,9 @@
+2006-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailFilterPanel.m ([UIxMailFilterPanel -setSearchCriteria:]) 
+	([UIxMailFilterPanel -searchCriteria]): new methods, similar to
+	s/Criteria/Text/ to handle the "criteria" form parameter.
+
 2006-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/uix.css: enhanced the toolbar appearance
