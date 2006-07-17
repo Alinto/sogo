@@ -1,5 +1,11 @@
 2006-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/WOContext+UIxMailer.m ([WOContext
+	-mailDateFormatter]): retrieve the timezone from the user settings
+	and pass it to the returned dateFormatter. Also, the dateFormatter
+	is kept in a static variable to avoid useless
+	creations/destructions.
+
 	* UI/MailerUI/UIxMailFormatter.m ([UIxMailDateFormatter
 	-setTimeZone:newTimeZone]): new accessor to specify the timezone.
 

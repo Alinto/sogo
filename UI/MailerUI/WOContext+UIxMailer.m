@@ -23,6 +23,8 @@
 #include "UIxMailFormatter.h"
 #include "common.h"
 
+#include <SoObjects/SOGo/SOGoUser.h>
+
 @implementation WOContext(UIxMailer)
 
 // TODO: make configurable
@@ -32,8 +34,26 @@
   return [[[UIxSubjectFormatter alloc] init] autorelease];
 }
 
-- (NSFormatter *)mailDateFormatter {
-  return [[[UIxMailDateFormatter alloc] init] autorelease];
+- (NSFormatter *)mailDateFormatter
+{
+  NSTimeZone *userTZ;
+  NSString *userTZString;
+  id userPrefs;
+  static id dateFormatter = nil;
+
+  if (!dateFormatter)
+    {
+      dateFormatter = [UIxMailDateFormatter new];
+      userPrefs = [[self activeUser] userDefaults];
+      userTZString = [userPrefs stringForKey: @"timezonename"];
+      if ([userTZString length] > 0)
+	{
+	  userTZ = [NSTimeZone timeZoneWithName: userTZString];
+	  [dateFormatter setTimeZone: userTZ];
+	}
+    }
+
+  return dateFormatter;
 }
 
 - (NSFormatter *)mailEnvelopeAddressFormatter {
