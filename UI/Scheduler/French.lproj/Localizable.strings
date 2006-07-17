@@ -210,9 +210,9 @@
 
 "APPOINTMENT"		= "Rendez-vous";
 "NOT IN OFFICE"		= "A l'exterieur";
-"MEETING"		= "Réunion";
+"MEETING"		= "Rêunion";
 "HOLIDAY"		= "Vacances";
-"PHONE CALL"		= "Rendez-vous téléphonique";
+"PHONE CALL"		= "Rendez-vous t&eacute;l&eacute;phonique";
 
 /* validation errors */
 

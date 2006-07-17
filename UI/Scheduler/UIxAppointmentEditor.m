@@ -278,7 +278,7 @@
 }
 
 - (NSString *)itemCategoryText {
-  return [self labelForKey:self->item];
+  return [self labelForKey: self->item];
 }
 
 - (void)setCategories:(NSArray *)_categories {

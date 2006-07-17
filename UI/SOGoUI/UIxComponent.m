@@ -406,8 +406,13 @@ static BOOL uixDebugEnabled = NO;
   
   /* lookup string */
   
+
   label = [rm stringForKey:lKey inTableNamed:lTable withDefaultValue:lVal
 	      languages:languages];
+
+  NSLog (@"string '%s' = '%s' (default: '%s')",
+	 [lKey cString], [label cString], [lVal cString]);
+
   return label;
 }
 
