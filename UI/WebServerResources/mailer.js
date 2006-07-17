@@ -36,9 +36,11 @@
 /* mail list */
 
 function openMessageWindow(sender, msguid, url) {
-  return window.open(url, "SOGo_msg_" + msguid,
-	   "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
-	   "location=0,directories=0,status=0,menubar=0,copyhistory=0")
+  var msgWin = window.open(url, "SOGo_msg_" + msguid,
+			   "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
+			   "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+
+  msgWin.focus();
 }
 
 function clickedUid(sender, msguid) {
@@ -46,6 +48,7 @@ function clickedUid(sender, msguid) {
   openMessageWindow(sender, msguid, msguid + "/view");
   return true;
 }
+
 function doubleClickedUid(sender, msguid) {
   alert("DOUBLE Clicked " + msguid);
 

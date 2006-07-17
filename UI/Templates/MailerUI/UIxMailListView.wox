@@ -32,25 +32,25 @@
 	<li class="separator"></li>
 	<li
 	  class="submenu"
-	  submenu="dummymenu"
+	  submenu="mailboxes-menu"
 	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
 	  onclick=""><var:string label:value="Move To"/></li>
 	<li
 	  class="submenu"
-	  submenu="dummymenu"
+	  submenu="mailboxes-menu"
 	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
 	  onclick=""><var:string label:value="Copy To"/></li>
 	<li
 	  class="submenu"
-	  submenu="dummymenu"
+	  submenu="label-menu"
 	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
 	  onclick=""><var:string label:value="Label"/></li>
 	<li
 	  class="submenu"
-	  submenu="dummymenu"
+	  submenu="mark-menu"
 	  onmouseover="dropDownSubmenu(event);"
 	  onmousedown="return false;"
 	  onclick=""><var:string label:value="Mark"/></li>
@@ -69,47 +69,38 @@
 	  onclick=""><var:string label:value="Delete Message"/></li>
       </ul>
 
-      <div class="menu" id="dummymenu">
-	<ul id="sourceLisdassdadst">
-	<li
-	  class="submenu"
-	  submenu="dummymenu2"
-	  onmouseover="dropDownSubmenu(event);"
-	  onmousedown="return false;"
-	  onclick="">tdasdsadsa</li>
+      <div class="menu" id="mailboxes-menu">
+	<ul id="">
 	  <li onmousedown="return false;">really</li>
 	  <li onmousedown="return false;">is</li>
 	  <li onmousedown="return false;">a</li>
 	  <li onmousedown="return false;">dumb dummy!</li>
 	</ul>
-	
-	<div class="menu" id="dummymenu2">
-	  <ul id="sourdsadsaceList">
-	<li
-	  class="submenu"
-	  submenu="dummymenu3"
-	  onmouseover="dropDownSubmenu(event);"
-	  onmousedown="return false;"
-	  onclick="">Dummy 2</li>
-	    <li onmousedown="return false;">really</li>
-	    <li onmousedown="return false;">is</li>
-	    <li onmousedown="return false;">another</li>
-	    <li onmousedown="return false;">dumb dummy!</li>
-	  </ul>
-
-	<div class="menu" id="dummymenu3">
-	  <ul id="sourdsadsaceList">
-	    <li onmousedown="return false;">Dummy 3</li>
-	    <li onmousedown="return false;">really</li>
-	    <li onmousedown="return false;">is</li>
-	    <li onmousedown="return false;">another</li>
-	    <li onmousedown="return false;">dumb dummy!</li>
-	  </ul>
-	</div>
-
-	</div>
-
-
+      </div>
+      <div class="menu" id="label-menu">
+	<ul id="">
+	  <li onmousedown="return false;"><var:string label:value="None" /></li>
+	  <li class="separator"></li>
+	  <li onmousedown="return false;"><var:string label:value="Important" /></li>
+	  <li onmousedown="return false;"><var:string label:value="Work" /></li>
+	  <li onmousedown="return false;"><var:string label:value="Personal" /></li>
+	  <li onmousedown="return false;"><var:string label:value="To Do" /></li>
+	  <li onmousedown="return false;"><var:string label:value="Later" /></li>
+	</ul>
+      </div>
+      <div class="menu" id="mark-menu">
+	<ul id="">
+	  <li onmousedown="return false;"><var:string label:value="As Read" /></li>
+	  <li onmousedown="return false;"><var:string label:value="Thread As Read" /></li>
+	  <li onmousedown="return false;"><var:string label:value="As Read By Date..." /></li>
+	  <li onmousedown="return false;"><var:string label:value="All Read" /></li>
+	  <li class="separator"></li>
+	  <li onmousedown="return false;"><var:string label:value="Flag" /></li>
+	  <li class="separator"></li>
+	  <li onmousedown="return false;"><var:string label:value="As Junk" /></li>
+	  <li onmousedown="return false;"><var:string label:value="As Not Junk" /></li>
+	  <li onmousedown="return false;"><var:string label:value="Run Junk Mail Controls" /></li>
+	</ul>
       </div>
     </div>
 
@@ -205,8 +196,8 @@
 	    <var:foreach list="messages" item="message">
 	      <tr class="tableview" var:id="msgRowID"
 		onmousedown="return false;"
-		onclick="onRowClick(this, event);"
-		oncontextmenu="onMenuClick(this, event, 'messageListMenu'); onRowClick(this, event); return false;">
+		onclick="onRowClick(event);"
+		oncontextmenu="onMenuClick(event, 'messageListMenu'); onRowClick(event); return false;">
 		<td>
 		  <!-- this seems to break on Safari, it treats name==id? -->
 		</td>
@@ -293,10 +284,4 @@
 	</span>
 
     </div>
-
-    <var:if condition="hideFrame" const:negate="YES">
-      <script language="JavaScript">
-	document.pageform.search.focus();
-      </script>
-    </var:if>
   </var:component>

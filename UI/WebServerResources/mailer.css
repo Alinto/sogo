@@ -528,7 +528,7 @@ TABLE#messageList TR._selected TD
   color: #fff;
 }
 
-SPAN.searchBox INPUT
+INPUT#searchValue
 {
   height: 22px;
   margin-right: 1em;
@@ -543,8 +543,11 @@ SPAN.searchBox INPUT
   background-image: url('/SOGo.woa/WebServerResources/Search-bar.png');
   background-repeat: no-repeat;
   background-position: 2px 2px;
+  color: #aaa;
 }
 
+INPUT#searchValue:focus
+{ color: #000; }
 
 /* drag handles */
 DIV#dragHandle

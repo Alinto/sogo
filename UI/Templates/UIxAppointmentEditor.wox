@@ -1,26 +1,26 @@
 <?xml version='1.0' standalone='yes'?>
-<var:component
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:uix="OGo:uix"
-  xmlns:label="OGo:label"
-  className="UIxPageFrame"
-  title="name"
->
-  <script type="text/javascript">
-    function submitMeeting(thisForm) {
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="name"
+    >
+    <script type="text/javascript">
+      function submitMeeting(thisForm) {
       thisForm.submit();
       opener.window.location.reload();
       window.close();
-    }
-  </script>
+      }
+    </script>
 
-  <var:js-stringtable const:framework="SchedulerUI.SOGo"
-                      const:identifier="labels" />
-  
-  <form var:href="clientObject.baseURL" name="editform"
-        onsubmit="return validateAptEditor()">
+    <var:js-stringtable const:framework="SchedulerUI.SOGo"
+      const:identifier="labels" />
+    
+    <form var:href="clientObject.baseURL" name="editform"
+      onsubmit="return validateAptEditor()">
 
       <script language="JavaScript"> <!-- TODO: use a resource -->
         <var:string value="jsCode" const:escapeHTML="NO" />
@@ -51,14 +51,14 @@
             </var:if>
 
             <table border="0" cellpadding="2" cellspacing="0" width="100%"
-                   bgcolor="#e8e8e0"
-            >
+	      bgcolor="#e8e8e0"
+	      >
               <tr>
                 <td align="left" colspan="2">
                   <span class="aptview_title">
                     <var:string label:value="Appointment on" /> 
                     <var:string formatter="titleDateFormatter" 
-                                value="aptStartDate" /></span>
+		      value="aptStartDate" /></span>
                 </td>
               </tr>
               <tr valign="top">
@@ -71,9 +71,9 @@
                   <span class="aptview_text">
                     <var:component className="UIxDatePickerScript" />
                     <var:component className="UIxTimeDateControl"
-                                   const:controlID="startTime"
-                                   date="aptStartDate"
-                    />
+		      const:controlID="startTime"
+		      date="aptStartDate"
+		      />
                   </span>
                 </td>
               </tr>
@@ -86,9 +86,9 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <var:component className="UIxTimeDateControl"
-                                   const:controlID="endTime"
-                                   date="aptEndDate"
-                    />
+		      const:controlID="endTime"
+		      date="aptEndDate"
+		      />
                   </span>
                 </td>
               </tr>
@@ -101,7 +101,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <input type="text" name="summary" id="summary"
-                           const:size="40" var:value="title" />
+		      const:size="40" var:value="title" />
                   </span>
                 </td>
               </tr>
@@ -114,7 +114,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <input type="text" name="location" const:size="40"
-                           var:value="location" />
+		      var:value="location" />
                   </span>
                 </td>
               </tr>
@@ -127,7 +127,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <var:popup list="priorities" item="item"
-                               string="itemPriorityText" selection="priority"/>
+		      string="itemPriorityText" selection="priority"/>
                   </span>
                 </td>
               </tr>
@@ -143,35 +143,35 @@
                       <tr>
                         <td>
                           <var:popup list="cycles" item="item"
-                                     label:string="$cycleLabel"
-                                     selection="cycle"
-                                     const:onChange="selectHasCycle(this);"
-                          />
+			    label:string="$cycleLabel"
+			    selection="cycle"
+			    const:onChange="selectHasCycle(this);"
+			    />
                         </td>
                         <td id="cycle_end_label"
-                            var:style="initialCycleVisibility"
-                        ><var:string label:value="Cycle End"
-                                        const:style="aptview_text"
+			  var:style="initialCycleVisibility"
+			  ><var:string label:value="Cycle End"
+			    const:style="aptview_text"
                             />:</td>
                         <td id="cycle_end_mode"
-                            var:style="initialCycleVisibility"
-                        >
+			  var:style="initialCycleVisibility"
+			  >
                           <var:popup list="cycleEnds" item="item"
-                                     label:string="$item" value="item"
-                                     selection="cycleEnd"
-                                     const:onChange="selectCycleEnd(this);"
-                                     const:id="cycle_end_mode_selection"
-                          />
+			    label:string="$item" value="item"
+			    selection="cycleEnd"
+			    const:onChange="selectCycleEnd(this);"
+			    const:id="cycle_end_mode_selection"
+			    />
                         </td>
                         <td id="cycle_end_until"
-                            var:style="initialCycleEndUntilVisibility"
-                        >
+			  var:style="initialCycleEndUntilVisibility"
+			  >
                           <var:component className="UIxTimeDateControl"
-                                         date="cycleUntilDate"
-                                         label="foo"
-                                         const:controlID="cycleUntilDate"
-                                         const:displayTimeControl="NO"
-                          />
+			    date="cycleUntilDate"
+			    label="foo"
+			    const:controlID="cycleUntilDate"
+			    const:displayTimeControl="NO"
+			    />
                         </td>
                       </tr>
                     </table>
@@ -186,10 +186,11 @@
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-                    <var:checkbox-list list="categoryItems" item="item"
-                                       suffix="itemCategoryText"
-                                       selections="categories"
-                    />
+                    <var:checkbox-list list="categoryItems"
+		      item="item"
+		      suffix="itemCategoryText"
+		      selections="categories"
+		      />
                   </span>
                 </td>
               </tr>
@@ -202,7 +203,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <input type="checkbox" var:selection="isPrivate"
-                           var:checked="isPrivate" />
+		      var:checked="isPrivate" />
                     <var:string label:value="is private" />
                   </span>
                 </td>
@@ -213,8 +214,8 @@
         <tr>
           <td>
             <table border="0" cellpadding="2" cellspacing="0"
-                   width="100%" bgcolor="#e8e8e0"
-            >
+	      width="100%" bgcolor="#e8e8e0"
+	      >
               <tr>
                 <td align="left" colspan="2">
                   <span class="aptview_title">
@@ -231,14 +232,14 @@
                   <span class="aptview_text">
                     <!-- use '1' instead of 'YES', otherwise breaks on OSX -->
                     <var:component className="AnaisSelector"
-                                   const:selectorID="participant"
-                                   const:role="REQ-PARTICIPANT"
-                                   attendees="participants"
-                                   var:emailForUser="emailForUser"
-                                   var:cnForUser="cnForUser"
-                                   const:withCN="1"
-                                   const:withAddressBook="1"
-                    />
+		      const:selectorID="participant"
+		      const:role="REQ-PARTICIPANT"
+		      attendees="participants"
+		      var:emailForUser="emailForUser"
+		      var:cnForUser="cnForUser"
+		      const:withCN="1"
+		      const:withAddressBook="1"
+		      />
                   </span>
                 </td>
               </tr>
@@ -248,8 +249,8 @@
         <tr>
           <td>
             <table border="0" cellpadding="2" cellspacing="0" width="100%"
-                   bgcolor="#e8e8e0"
-            >
+	      bgcolor="#e8e8e0"
+	      >
               <tr>
                 <td align="left" colspan="2">
                   <span class="aptview_title">
@@ -265,15 +266,15 @@
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-<!--
+		    <!--
                     <var:component className="AnaisAttendeeSelector"
-                                   const:selectorID="resource"
-                                   const:role="NON-PARTICIPANT"
-                                   attendees="resources"
-                                   const:withCN="YES"
-                                   const:withAddressBook="YES"
+		    const:selectorID="resource"
+		    const:role="NON-PARTICIPANT"
+		    attendees="resources"
+		    const:withCN="YES"
+		    const:withAddressBook="YES"
                     />
--->
+		    -->
                     TODO: need attendee selector (AB)
                   </span>
                 </td>
@@ -284,8 +285,8 @@
         <tr>
           <td>
             <table border="0" cellpadding="2" cellspacing="0" width="100%"
-                   bgcolor="#e8e8e0"
-            >
+	      bgcolor="#e8e8e0"
+	      >
               <tr>
                 <td align="left" colspan="2">
                   <span class="aptview_title">
@@ -302,7 +303,7 @@
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
                     <textarea name="comment" rows="8" cols="80" wrap="physical"
-                              var:value="comment" />
+		      var:value="comment" />
                   </span>
                 </td>
               </tr>
@@ -313,33 +314,33 @@
           <td>
             <span class="aptview_text">
               <input type="checkbox"
-                     var:selection="checkForConflicts"
-                     var:checked="checkForConflicts"
-              /> <var:string label:value="check for conflicts" />
+		var:selection="checkForConflicts"
+		var:checked="checkForConflicts"
+		/> <var:string label:value="check for conflicts" />
             </span>
           </td>
         </tr>
         <tr>
           <td>
-              <input type="submit" label:value="Save" name="save:method"
-	        onclick="submitMeeting(this.form); return false;" />
-              <span class="button_auto_env"
+	    <input type="submit" label:value="Save" name="save:method"
+	      onclick="submitMeeting(this.form); return false;" />
+	    <span class="button_auto_env"
               ><a href="../weekoverview"
-		  onclick="window.close(); return false;"
-                  var:queryDictionary="queryParameters"
-                  class="button_auto"
-               ><var:string label:value="Cancel" /></a></span>
-              <var:if condition="isUIxDebugEnabled">
-                <input type="submit" value="Test" name="test:method" />
-              </var:if>
+		onclick="window.close(); return false;"
+		var:queryDictionary="queryParameters"
+		class="button_auto"
+		><var:string label:value="Cancel" /></a></span>
+	    <var:if condition="isUIxDebugEnabled">
+	      <input type="submit" value="Test" name="test:method" />
+	    </var:if>
           </td>
         </tr>
       </table>
-    <input type="hidden" name="ical" var:value="iCalString" />
-  </form>
-  <!--
-  <var:if condition="canEditApt" const:negate="YES">
+      <input type="hidden" name="ical" var:value="iCalString" />
+    </form>
+    <!--
+    <var:if condition="canEditApt" const:negate="YES">
     Forbidden ... <var:redirect const:setURL="view" />
   </var:if>
-  -->
-</var:component>
+    -->
+  </var:component>
