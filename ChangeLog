@@ -1,5 +1,9 @@
 2006-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderMenu.m: a descendent of UIxMailTree
+	which returns the nodes for the parent specified in "parentMenu".
+	Used to generate the javascript code for the folder dtree.
+
 	* UI/Templates/MailerUI/UIxMailPanelFrame.wox: the components
 	using that container-template are now using UIxMailMainFrame
 	since UIxMailPanelFrame had no real interest. File removed.
