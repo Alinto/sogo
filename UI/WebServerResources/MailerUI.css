@@ -20,36 +20,57 @@
 */
 /* TODO: is the section below used in the mailer? */
 
-DIV.mailPageContent
+BODY
+{ overflow: hidden; }
+
+DIV#mailerPageContent
 { 
   position: absolute;
   left: 15em;
   top: 5.5em;
   right: 0px;
   bottom: 0px;
-  border: 0px;
+  border: 0px dashed #f00;
   margin: 0px;
   padding: 0px;
-  overflow: auto;
+  overflow: hidden;
 }
 
-DIV.mailAccount
+DIV#mailboxContent
 {
-  font-size: medium;
-  padding: 1em;
-  background: #fff;
-  border: 1px solid #aaa;
-  bottom: 0px;
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  left: 0px;
+  top: 0px;
+  right: 0px;
 }
 
-DIV.mailAccount P
+DIV#messageContent
+{
+  position: absolute;
+  overflow: auto;
+  font-size: small;
+  bottom: 0px;
+  width: 100%;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  background: #fff;
+}
+
+DIV.mailerPageContent DIV#messageContent
+{ 
+  top: 51%;
+}
+
+DIV#messageContent P
 {
   line-height: 3em;
 }
 
-DIV.mailAccount P IMG
+DIV#messageContent P IMG
 {
-  border: 1px;
+  border: 0px;
   vertical-align: middle;
   margin-right: 1em;
 }
@@ -183,7 +204,7 @@ DIV.folderTree
   overflow: hidden;
 }
 
-DIV.folderTreeContent
+DIV#folderTreeContent
 {
   position: absolute;
   color: #000;
@@ -192,6 +213,7 @@ DIV.folderTreeContent
   top: 2em;
   bottom: 0px;
   overflow: auto;
+  border: 1px solid #fff;
 }
 
 .treecell
@@ -202,6 +224,12 @@ DIV.folderTreeContent
   padding-right: 2px; /* move away from the right border */
   white-space: nowrap;
 }
+
+DIV#folderTreeContent TABLE TD
+{ height: 18px;
+  border-top: 1px solid #fff;
+  margin: 0px;
+  padding: 0px; }
 
 /* mail tableview */
 
@@ -226,6 +254,14 @@ td.tbtv_actcell
   
   background-color: #DCDAD5;
 }
+
+td.tbtv_subject_headercell
+{ 
+  width: 100%;
+}
+
+td.tbtv_headercell
+{ white-space: nowrap; }
 
 td.tbtv_headercell SPAN
 {
@@ -352,11 +388,16 @@ div.mailer_unreadicon a
 
 table.mailer_fieldtable
 {
-  width: 100%;
+  top: 0px;
+  border-bottom: 1px solid #808080;
+  background: #dbdad5;
+}
 
-  border-bottom-color: #808080;
-  border-bottom-width: 1;
-  border-bottom-style: solid;
+div.mailer_mailcontent
+{
+  background-color: #fff;
+  padding: .5em;
+  height: 100%;
 }
 
 tr.mailer_fieldrow
@@ -392,22 +433,12 @@ img.mailer_imagecontent
   border: 0px;
 }
 
-div.mailer_mailcontent
-{ 
-  border-top-color: white;
-  border-top-width: 1px;
-  border-top-style: solid;
-  background-color: white;
-  width: 98%;
-  padding: .5em;
-}
-
-div.mailer_plaincontent
+DIV.mailer_plaincontent
 { 
   font-family: monospace, fixed;
-  width: 80em;
+  white-space: pre;
+  font-size: small;
   margin: 0px;
-  height: 100%;
   padding: 0px;
 }
 
@@ -474,21 +505,61 @@ table.linked_attachment_meta
   font-style: italic;
 }
 
+/* folder tree (js) )*/
+DIV.dTreeNode A SPAN.nodeName
+{
+  margin: 0px .2em;
+  padding-left: .2em;
+  padding-right: .2em;
+}
+
+DIV.dTreeNode A._selected SPAN.nodeName
+{ 
+  background: #4b6983;
+  color: #fff;
+}
+
+/* drag-n-drop */
+IMG.dragMessage
+{
+  position: absolute;
+  visibility: hidden;
+  border: 0px;
+  -moz-opacity: 0.7;
+}
+
+/* message list */
+DIV#filterPanel
+{ 
+  height: 2em;
+  vertical-align: middle;
+  width: 100%;
+}
+
+TABLE#compose_table, TABLE#compose_table DIV
+{ 
+  width: 100%;
+}
+
+TABLE#compose_label
+{
+  text-align: right;
+}
+
+TABLE#addr_table
+{ 
+  margin-left: 30%;
+  width: 100%;
+}
+
 TABLE#messageList
 { 
   display: block;
-  position: absolute;
-  border-spacing: 0px;
+  position: relative;
   color: #000;  
   background: #fff;
-  padding: 0px;
-  margin: 0px;
-  border: 0px;
   width: 100%;
-  top: 2em;
-  right: 0em;
-  left: 0em;
-  bottom: 0em;
+  height: 100%;
   overflow: auto;
 }
 
@@ -511,14 +582,17 @@ TABLE#messageList THEAD TD
 }
 
 TABLE#messageList TBODY
-{  
-  height: 100%;
+{
+  right: 0px;
+  left: 0px;
+  bottom: 3em;
   width: 100%;
+  background: #fff;
+  color: #000;
 }
 
 TABLE#messageList TD
 { 
-  padding: .2em 0px;
   height: 1.2em;
 }
 
@@ -526,6 +600,11 @@ TABLE#messageList TR._selected TD
 { 
   background: #4b6983;
   color: #fff;
+}
+
+TABLE#messageList TR._deleted TD
+{ 
+  text-decoration: line-through;
 }
 
 INPUT#searchValue
@@ -552,17 +631,38 @@ INPUT#searchValue:focus
 /* drag handles */
 DIV#dragHandle
 { 
+  cursor: e-resize;
   position: absolute;
   z-index: 1;
-  top: 5.5em;
+  top: 7.5em;
   left: 14.6em;
   width: .4em;
   bottom: 0px;
+  background: #dbdad5;
 }
 
 DIV#dragHandle:active
 {
-  cursor: e-resize;
-  background: #dbdad5;
   -moz-opacity: 0.5;
+}
+
+DIV#mailboxDragHandle
+{ 
+  cursor: n-resize;
+  position: absolute;
+  background: #dbdad5;
+  z-index: 1;
+  top: 50%;
+  left: 0px;
+  right: 0px;
+  height: .4em;
+}
+
+DIV#mailboxDragHandle:active
+{
+  -moz-opacity: 0.5;
+}
+
+PRE.textMessageViewer
+{ 
 }
