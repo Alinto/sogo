@@ -10,6 +10,10 @@
       image = "tb-mail-write-flat-24x24.png";
       onclick  = "clickedCompose(this);return false;";
       cssClass = "tbicon_compose"; label = "Write";    },
+    { link  = "#"; target = "addressbook";
+      onclick  = "openAddressbook(this);return false;";
+      image = "tb-mail-addressbook-flat-24x24.png";
+      cssClass = "tbicon_addressbook"; label = "Addressbook"; },
   ),
 
   ( // second group
@@ -30,28 +34,25 @@
   ),
 
   ( // third group
-    { link     = "delete"; isSafe = NO;
+    { link     = "delete";
+      isSafe = NO;
       enabled  = showMarkDeletedButton;
       image = "tb-mail-delete-flat-24x24.png";
       cssClass = "tbicon_delete"; label = "Delete"; },
-
-    { link     = "trash"; isSafe = NO;
-      enabled  = showTrashButton;
-      image = "tb-mail-delete-flat-24x24.png";
-      cssClass = "tbicon_delete"; label = "Delete"; },
-
-    /* TODO: enable when we know how to mark junk (#971)
-       => we could move the mail to the Junk folder?!
-              { link = "#"; 
-                isSafe   = NO;
-                cssClass = "tbicon_junk";   label = "Junk";   },
-     */
+    { link = "#";
+      isSafe = NO;
+      image = "tb-mail-junk-flat-24x24.png";
+      cssClass = "tbicon_junk";   label = "Junk";
+    },
   ),
-/*
-  ( // fourth group
-    // TODO: enable when we can print (#1207)
-    //  { link = "#"; cssClass = "tbicon_print"; label = "Print"; },
-    { link = "#"; cssClass = "tbicon_stop";  label = "Stop";  },
+  (
+   { link = "#";
+     cssClass = "tbicon_print";
+     image = "tb-mail-print-flat-24x24.png";
+     label = "Print"; },
+   { link = "#";
+     image = "tb-mail-stop-flat-24x24.png";
+     cssClass = "tbicon_stop";
+     label = "Stop";  },
   ),
-*/
 )

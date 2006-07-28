@@ -39,6 +39,7 @@
 - (void)setTitle:(NSString *)_value {
   ASSIGNCOPY(self->title, _value);
 }
+
 - (NSString *)title {
   if ([self isUIxDebugEnabled])
     return self->title;
@@ -49,6 +50,7 @@
 - (void)setItem:(id)_item {
   ASSIGN(self->item, _item);
 }
+
 - (id)item {
   return self->item;
 }
@@ -59,13 +61,15 @@
 
 /* Help URL/target */
 
-- (NSString *)helpURL {
+- (NSString *)helpURL
+{
   return [NSString stringWithFormat: @"help/%@.html", self->title];
 }
-- (NSString *)helpWindowTarget {
+
+- (NSString *)helpWindowTarget
+{
   return [NSString stringWithFormat: @"Help_%@", self->title];
 }
-
 
 /* notifications */
 
@@ -77,108 +81,66 @@
 /* URL generation */
 // TODO: I think all this should be done by the clientObject?!
 
-- (NSString *)relativeHomePath {
+- (NSString *) relativeHomePath
+{
   return [self relativePathToUserFolderSubPath: @""];
 }
 
-- (NSString *)relativeCalendarPath {
+- (NSString *)relativeCalendarPath
+{
   return [self relativePathToUserFolderSubPath: @"Calendar/"];
 }
 
-- (NSString *)relativeContactsPath {
+- (NSString *)relativeContactsPath
+{
   return [self relativePathToUserFolderSubPath: @"Contacts/"];
 }
 
-- (NSString *)relativeMailPath {
+- (NSString *)relativeMailPath
+{
   return [self relativePathToUserFolderSubPath: @"Mail/"];
 }
 
-- (NSString *)logoffPath {
+- (NSString *)logoffPath
+{
   return [self relativePathToUserFolderSubPath: @"logoff"];
 }
 
-/* page based JavaScript */
-
-- (WOResourceManager *)pageResourceManager {
-  WOResourceManager *rm;
-  
-  if ((rm = [[[self context] page] resourceManager]) == nil)
-    rm = [[WOApplication application] resourceManager];
-  return rm;
+/* popup handling */
+- (void) setPopup: (BOOL) popup
+{
+  isPopup = popup;
 }
 
 - (BOOL) isPopup
 {
-  WOComponent *page;
-
-  page = [[self context] page];
-
-  return ([page respondsToSelector: @selector(isPopup)]
-	  && [page isPopup]);
+  return isPopup;
 }
+
+/* page based JavaScript */
 
 - (NSString *) pageJavaScriptURL
 {
-  static NSMutableDictionary *pageToURL = nil;
-  WOResourceManager *rm;
   WOComponent *page;
-  NSString    *jsname, *pageName;
-  NSString    *url;
+  NSString *pageJSFilename;
   
   page     = [[self context] page];
-  pageName = NSStringFromClass([page class]);
-  // TODO: does not seem to work! (gets reset): pageName = [page name];
-  
-  if ((url = [pageToURL objectForKey:pageName]) != nil)
-    return [url isNotNull] ? url : nil;
+  pageJSFilename = [NSString stringWithFormat: @"%@.js",
+			     NSStringFromClass([page class])];
 
-  if (pageToURL == nil)
-    pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
-  
-  rm     = [self pageResourceManager];
-  jsname = [pageName stringByAppendingString: @".js"];
-
-  url = [rm urlForResourceNamed: jsname
-	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]
-	    languages:nil
-	    request:[[self context] request]];
-
-  /* cache */
-  [pageToURL setObject:(url ? url : (id)[NSNull null]) forKey:pageName];
-
-  return url;
+  return [self urlForResourceFilename: pageJSFilename];
 }
 
 - (NSString *) productJavaScriptURL
 {
-  static NSMutableDictionary *pageToURL = nil;
-  WOResourceManager *rm;
   WOComponent *page;
-  NSString    *jsname, *pageName;
-  NSString    *url;
+  NSString *fwJSFilename;
+
+  page = [[self context] page];
+  fwJSFilename = [NSString stringWithFormat: @"%@.js",
+			   [page frameworkName]];
   
-  page     = [[self context] page];
-  pageName = NSStringFromClass([page class]);
-  // TODO: does not seem to work! (gets reset): pageName = [page name];
-  
-  if ((url = [pageToURL objectForKey:pageName]) != nil)
-    return [url isNotNull] ? url : nil;
-
-  if (pageToURL == nil)
-    pageToURL = [[NSMutableDictionary alloc] initWithCapacity:32];
-  
-  rm     = [self pageResourceManager];
-  jsname = [[page frameworkName] stringByAppendingString: @".js"];
-
-  url = [rm urlForResourceNamed: jsname
-	    inFramework: [[NSBundle bundleForClass: [page class]] bundlePath]
-	    languages:nil
-	    request:[[self context] request]];
-
-  /* cache */
-  [pageToURL setObject:(url ? url : (id)[NSNull null]) forKey:pageName];
-
-  return url;
+  return [self urlForResourceFilename: fwJSFilename];
 }
 
 - (BOOL) hasPageSpecificJavaScript
@@ -189,6 +151,40 @@
 - (BOOL) hasProductSpecificJavaScript
 {
   return ([[self productJavaScriptURL] length] > 0);
+}
+
+- (NSString *) pageCSSURL
+{
+  WOComponent *page;
+  NSString *pageJSFilename;
+  
+  page     = [[self context] page];
+  pageJSFilename = [NSString stringWithFormat: @"%@.css",
+			     NSStringFromClass([page class])];
+
+  return [self urlForResourceFilename: pageJSFilename];
+}
+
+- (NSString *) productCSSURL
+{
+  WOComponent *page;
+  NSString *fwJSFilename;
+
+  page = [[self context] page];
+  fwJSFilename = [NSString stringWithFormat: @"%@.css",
+			   [page frameworkName]];
+  
+  return [self urlForResourceFilename: fwJSFilename];
+}
+
+- (BOOL) hasPageSpecificCSS
+{
+  return ([[self pageCSSURL] length] > 0);
+}
+
+- (BOOL) hasProductSpecificCSS
+{
+  return ([[self productCSSURL] length] > 0);
 }
 
 @end /* UIxPageFrame */

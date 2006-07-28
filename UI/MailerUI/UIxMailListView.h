@@ -18,36 +18,29 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
+  
+#ifndef UIXMAILLISTVIEW_H
+#define UIXMAILLISTVIEW_H
 
-#ifndef UIXPAGEFRAME_H
-#define UIXPAGEFRAME_H
+#include <SOGoUI/UIxComponent.h>
 
-@interface WOComponent (PopupExtension)
+@class EOQualifier;
 
-- (BOOL) isPopup;
-
-@end
-
-@interface UIxPageFrame : UIxComponent
+@interface UIxMailListView : UIxComponent
 {
-  NSString *title;
-  id item;
-  BOOL isPopup;
+  NSArray     *sortedUIDs; /* we always need to retrieve all anyway! */
+  NSArray     *messages;
+  unsigned    firstMessageNumber;
+  id          message;
+  EOQualifier *qualifier;
 }
 
-- (NSString *) pageJavaScriptURL;
-- (NSString *) productJavaScriptURL;
-- (BOOL) hasPageSpecificJavaScript;
-- (BOOL) hasProductSpecificJavaScript;
+- (NSString *)defaultSortKey;
+- (NSString *)imap4SortKey;
+- (NSString *)imap4SortOrdering;
 
-- (NSString *) pageCSSURL;
-- (NSString *) productCSSURL;
-- (BOOL) hasPageSpecificCSS;
-- (BOOL) hasProductSpecificCSS;
-
-- (void) setPopup: (BOOL) popup;
-- (BOOL) isPopup;
+- (BOOL)isSortedDescending;
 
 @end
 
-#endif /* UIXPAGEFRAME_H */
+#endif /* UIXMAILLISTVIEW_H */

@@ -19,10 +19,12 @@
   02111-1307, USA.
 */
 
-#include "UIxComponent.h"
-#include "SOGoJSStringFormatter.h"
-#include "common.h"
-#include <NGObjWeb/SoHTTPAuthenticator.h>
+#import "UIxComponent.h"
+#import "SOGoJSStringFormatter.h"
+#import "NSString+URL.h"
+#import "common.h"
+#import <NGObjWeb/SoHTTPAuthenticator.h>
+#import <NGObjWeb/WOResourceManager.h>
 
 @interface UIxComponent (PrivateAPI)
 - (void)_parseQueryString:(NSString *)_s;
@@ -244,7 +246,8 @@ static BOOL uixDebugEnabled = NO;
   return [uri substringFromIndex:(r.location + 1)];
 }
 
-- (NSString *)userFolderPath {
+- (NSString *) _urlForTraversalObject: (int) traversal
+{
   WOContext *ctx;
   NSArray   *traversalObjects;
   NSString  *url;
@@ -252,11 +255,32 @@ static BOOL uixDebugEnabled = NO;
 
   ctx = [self context];
   traversalObjects = [ctx objectTraversalStack];
-  url = [[traversalObjects objectAtIndex:0]
+  url = [[traversalObjects objectAtIndex: traversal]
                            baseURLInContext:ctx];
   path = [[NSURL URLWithString:url] path];
-  path = [path stringByAppendingPathComponent:[[ctx activeUser] login]];
+//   path = [path stringByAppendingPathComponent:[[ctx activeUser] login]];
+
   return path;
+}
+
+- (NSString *) userFolderPath
+{
+  return [self _urlForTraversalObject: 1];
+}
+
+- (NSString *) applicationPath
+{
+  return [self _urlForTraversalObject: 2];
+}
+
+- (NSString *) resourcesPath
+{
+  WOResourceManager *rm;
+
+  if ((rm = [self resourceManager]) == nil)
+    rm = [[WOApplication application] resourceManager];
+
+  return [rm webServerResourcesPath];
 }
 
 - (NSString *)ownPath {
@@ -325,6 +349,10 @@ static BOOL uixDebugEnabled = NO;
 			 calendarFormat:@"%Y%m%d"];
 }
 
+- (BOOL) hideFrame
+{
+  return ([[self queryParameterForKey: @"noframe"] boolValue]);
+}
 
 /* SoUser */
 
@@ -410,9 +438,6 @@ static BOOL uixDebugEnabled = NO;
   label = [rm stringForKey:lKey inTableNamed:lTable withDefaultValue:lVal
 	      languages:languages];
 
-  NSLog (@"string '%s' = '%s' (default: '%s')",
-	 [lKey cString], [label cString], [lVal cString]);
-
   return label;
 }
 
@@ -453,6 +478,50 @@ static BOOL uixDebugEnabled = NO;
 - (NSDictionary *)locale {
   /* we need no fallback here, as locale is guaranteed to be set by sogod */
   return [[self context] valueForKey:@"locale"];
+}
+
+- (WOResourceManager *) pageResourceManager
+{
+  WOResourceManager *rm;
+  
+  if ((rm = [[[self context] page] resourceManager]) == nil)
+    rm = [[WOApplication application] resourceManager];
+
+  return rm;
+}
+
+- (NSString *) urlForResourceFilename: (NSString *) filename
+{
+  static NSMutableDictionary *pageToURL = nil;
+  NSString *url;
+  WOComponent *page;
+  WOResourceManager *rm;
+  NSBundle *pageBundle;
+
+  if (!pageToURL)
+    pageToURL = [[NSMutableDictionary alloc] initWithCapacity: 32];
+
+  url = [pageToURL objectForKey: filename];
+  if (!url)
+    {
+      rm = [self pageResourceManager];
+      page = [[self context] page];
+      pageBundle = [NSBundle bundleForClass: [page class]];
+      url = [rm urlForResourceNamed: filename
+		inFramework: [pageBundle bundlePath]
+		languages: nil
+		request: [[self context] request]];
+      if (!url)
+	url = @"";
+      else
+        if ([url hasPrefix: @"http"])
+          url = [url hostlessURL];
+      [pageToURL setObject: url forKey: filename];
+    }
+
+//   NSLog (@"url for '%@': '%@'", filename, url);
+
+  return url;
 }
 
 /* debugging */

@@ -19,8 +19,6 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
-
 /*
   UIxMailListView
   
@@ -28,35 +26,20 @@
   object.
 */
 
-@class EOQualifier;
-
-@interface UIxMailListView : UIxComponent
-{
-  NSArray     *sortedUIDs; /* we always need to retrieve all anyway! */
-  NSArray     *messages;
-  unsigned    firstMessageNumber;
-  id          message;
-  EOQualifier *qualifier;
-}
-
-- (NSString *)defaultSortKey;
-- (NSString *)imap4SortKey;
-- (NSString *)imap4SortOrdering;
-
-- (BOOL)isSortedDescending;
-
-@end
-
 #include "common.h"
 #include <SoObjects/Mailer/SOGoMailFolder.h>
 #include <SoObjects/Mailer/SOGoMailObject.h>
 #include <NGObjWeb/SoObject+SoDAV.h>
 
-@implementation UIxMailListView
+#import "UIxMailListView.h"
 
 static int attachmentFlagSize = 8096;
 
-- (void)dealloc {
+@implementation UIxMailListView
+
+
+- (void) dealloc 
+{
   [self->qualifier  release];
   [self->sortedUIDs release];
   [self->messages   release];
@@ -64,15 +47,10 @@ static int attachmentFlagSize = 8096;
   [super dealloc];
 }
 
-/* frame */
-
-- (BOOL)hideFrame {
-  return [[[[self context] request] formValueForKey:@"noframe"] boolValue];
-}
-
 /* notifications */
 
-- (void)sleep {
+- (void) sleep 
+{
   [self->qualifier  release]; self->qualifier  = nil;
   [self->sortedUIDs release]; self->sortedUIDs = nil;
   [self->messages   release]; self->messages   = nil;
@@ -82,21 +60,28 @@ static int attachmentFlagSize = 8096;
 
 /* accessors */
 
-- (void)setMessage:(id)_msg {
+- (void)setMessage:(id)_msg
+{
   ASSIGN(self->message, _msg);
 }
-- (id)message {
+
+- (id) message 
+{
   return self->message;
 }
 
-- (void)setQualifier:(EOQualifier *)_msg {
+- (void) setQualifier: (EOQualifier *) _msg 
+{
   ASSIGN(self->qualifier, _msg);
 }
-- (EOQualifier *)qualifier {
+
+- (EOQualifier *) qualifier 
+{
   return self->qualifier;
 }
 
-- (BOOL)showToAddress {
+- (BOOL) showToAddress 
+{
   NSString *ftype;
   
   ftype = [[self clientObject] valueForKey:@"outlookFolderClass"];
@@ -105,10 +90,13 @@ static int attachmentFlagSize = 8096;
 
 /* title */
 
-- (NSString *)objectTitle {
+- (NSString *) objectTitle 
+{
   return [[self clientObject] nameInContainer];
 }
-- (NSString *)panelTitle {
+
+- (NSString *) panelTitle 
+{
   NSString *s;
   
   s = [self labelForKey:@"View Mail Folder"];
@@ -119,24 +107,35 @@ static int attachmentFlagSize = 8096;
 
 /* derived accessors */
 
-- (BOOL)isMessageDeleted {
+- (BOOL) isMessageDeleted 
+{
   NSArray *flags;
   
   flags = [[self message] valueForKey:@"flags"];
   return [flags containsObject:@"deleted"];
 }
 
-- (BOOL)isMessageRead {
+- (BOOL) isMessageRead 
+{
   NSArray *flags;
   
   flags = [[self message] valueForKey:@"flags"];
   return [flags containsObject:@"seen"];
 }
-- (NSString *)messageUidString {
+- (NSString *) messageUidString 
+{
   return [[[self message] valueForKey:@"uid"] stringValue];
 }
 
-- (NSString *)messageSubjectCellStyleClass {
+- (NSString *) messageCellStyleClass 
+{
+  return [self isMessageDeleted]
+    ? @"mailer_listcell_deleted"
+    : @"mailer_listcell_regular";
+}
+
+- (NSString *) messageSubjectCellStyleClass 
+{
   return [NSString stringWithFormat: @"%@ %@",
 		   [self messageCellStyleClass],
 		   ([self isMessageRead]
@@ -144,13 +143,8 @@ static int attachmentFlagSize = 8096;
 		    : @"mailer_unreadmailsubject")];
 }
 
-- (NSString *)messageCellStyleClass {
-  return [self isMessageDeleted]
-    ? @"mailer_listcell_deleted"
-    : @"mailer_listcell_regular";
-}
-
-- (BOOL)hasMessageAttachment {
+- (BOOL) hasMessageAttachment 
+{
   /* we detect attachments by size ... */
   unsigned size;
   
@@ -160,7 +154,8 @@ static int attachmentFlagSize = 8096;
 
 /* fetching messages */
 
-- (NSArray *)fetchKeys {
+- (NSArray *) fetchKeys 
+{
   /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
   static NSArray *keys = nil;
   if (keys == nil) {
@@ -170,10 +165,12 @@ static int attachmentFlagSize = 8096;
   return keys;
 }
 
-- (NSString *)defaultSortKey {
+- (NSString *) defaultSortKey 
+{
   return @"DATE";
 }
-- (NSString *)imap4SortKey {
+- (NSString *) imap4SortKey 
+{
   NSString *sort;
   
   sort = [[[self context] request] formValueForKey:@"sort"];
@@ -183,7 +180,8 @@ static int attachmentFlagSize = 8096;
   return [sort uppercaseString];
 }
 
-- (BOOL)isSortedDescending {
+- (BOOL) isSortedDescending 
+{
   NSString *desc;
   
   desc = [[[self context] request] formValueForKey:@"desc"];
@@ -192,7 +190,8 @@ static int attachmentFlagSize = 8096;
   return [desc boolValue] ? YES : NO;
 }
 
-- (NSString *)imap4SortOrdering {
+- (NSString *) imap4SortOrdering 
+{
   NSString *sort;
   
   sort = [self imap4SortKey];
@@ -201,13 +200,15 @@ static int attachmentFlagSize = 8096;
   return [@"REVERSE " stringByAppendingString:sort];
 }
 
-- (NSRange)fetchRange {
+- (NSRange) fetchRange 
+{
   if (self->firstMessageNumber == 0)
     return NSMakeRange(0, 50);
   return NSMakeRange(self->firstMessageNumber - 1, 50);
 }
 
-- (NSArray *)sortedUIDs {
+- (NSArray *) sortedUIDs 
+{
   if (self->sortedUIDs != nil)
     return self->sortedUIDs;
   
@@ -216,14 +217,19 @@ static int attachmentFlagSize = 8096;
 			    sortOrdering:[self imap4SortOrdering]] retain];
   return self->sortedUIDs;
 }
-- (unsigned int)totalMessageCount {
+
+- (unsigned int) totalMessageCount 
+{
   return [self->sortedUIDs count];
 }
-- (BOOL)showsAllMessages {
+
+- (BOOL) showsAllMessages 
+{
   return ([[self sortedUIDs] count] <= [self fetchRange].length) ? YES : NO;
 }
 
-- (NSRange)fetchBlock {
+- (NSRange) fetchBlock 
+{
   NSRange  r;
   unsigned len;
   NSArray  *uids;
@@ -249,27 +255,33 @@ static int attachmentFlagSize = 8096;
     r.length = len - r.location;
   return r;
 }
-- (unsigned int)firstMessageNumber {
+- (unsigned int) firstMessageNumber 
+{
   return [self fetchBlock].location + 1;
 }
-- (unsigned int)lastMessageNumber {
+- (unsigned int) lastMessageNumber 
+{
   NSRange r;
   
   r = [self fetchBlock];
   return r.location + r.length;
 }
-- (BOOL)hasPrevious {
+- (BOOL) hasPrevious 
+{
   return [self fetchBlock].location == 0 ? NO : YES;
 }
-- (BOOL)hasNext {
+- (BOOL) hasNext 
+{
   NSRange r = [self fetchBlock];
   return r.location + r.length >= [[self sortedUIDs] count] ? NO : YES;
 }
 
-- (unsigned int)nextFirstMessageNumber {
+- (unsigned int) nextFirstMessageNumber 
+{
   return [self firstMessageNumber] + [self fetchRange].length;
 }
-- (unsigned int)prevFirstMessageNumber {
+- (unsigned int) prevFirstMessageNumber 
+{
   NSRange  r;
   unsigned idx;
   
@@ -280,7 +292,8 @@ static int attachmentFlagSize = 8096;
   return 1;
 }
 
-- (NSArray *)messages {
+- (NSArray *) messages 
+{
   NSArray  *uids;
   NSArray  *msgs;
   NSRange  r;
@@ -302,10 +315,14 @@ static int attachmentFlagSize = 8096;
 
 /* URL processing */
 
-- (NSString *)messageViewTarget {
-  return [@"SOGo_msg_" stringByAppendingString:[self messageUidString]];
+- (NSString *) messageViewTarget
+{
+  return [NSString stringWithFormat: @"SOGo_msg_%@",
+                   [self messageUidString]];
 }
-- (NSString *)messageViewURL {
+
+- (NSString *) messageViewURL 
+{
   // TODO: noframe only when view-target is empty
   // TODO: markread only if the message is unread
   NSString *s;
@@ -314,11 +331,13 @@ static int attachmentFlagSize = 8096;
   if (![self isMessageRead]) s = [s stringByAppendingString:@"&markread=1"];
   return s;
 }
-- (NSString *)markReadURL {
+- (NSString *) markReadURL 
+{
   return [@"markMessageRead?uid=" stringByAppendingString:
 	     [self messageUidString]];
 }
-- (NSString *)markUnreadURL {
+- (NSString *) markUnreadURL 
+{
   return [@"markMessageUnread?uid=" stringByAppendingString:
 	     [self messageUidString]];
 }
@@ -345,35 +364,41 @@ static int attachmentFlagSize = 8096;
   return [@"unreaddiv_" stringByAppendingString:[self messageUidString]];
 }
 
-- (NSString *)clickedMsgJS {
+- (NSString *) clickedMsgJS 
+{
   /* return 'false' aborts processing */
   return [NSString stringWithFormat:@"clickedUid(this, '%@'); return false", 
 		     [self messageUidString]];
 }
 
 // the following are unused?
-- (NSString *)dblClickedMsgJS {
+- (NSString *) dblClickedMsgJS 
+{
   return [NSString stringWithFormat:@"doubleClickedUid(this, '%@')", 
 		     [self messageUidString]];
 }
 
 // the following are unused?
-- (NSString *)highlightRowJS {
+- (NSString *) highlightRowJS 
+{
   return [NSString stringWithFormat:@"highlightUid(this, '%@')", 
 		     [self messageUidString]];
 }
-- (NSString *)lowlightRowJS {
+- (NSString *) lowlightRowJS 
+{
   return [NSString stringWithFormat:@"lowlightUid(this, '%@')", 
 		     [self messageUidString]];
 }
 
-- (NSString *)markUnreadJS {
+- (NSString *) markUnreadJS 
+{
   return [NSString stringWithFormat:
 		     @"mailListMarkMessage(this, 'markMessageUnread', "
 		     @"'%@', false)", 
 		     [self messageUidString]];
 }
-- (NSString *)markReadJS {
+- (NSString *) markReadJS 
+{
   return [NSString stringWithFormat:
 		     @"mailListMarkMessage(this, 'markMessageRead', "
 		     @"'%@', true)", 
@@ -382,7 +407,8 @@ static int attachmentFlagSize = 8096;
 
 /* error redirects */
 
-- (id)redirectToViewWithError:(id)_error {
+- (id) redirectToViewWithError: (id) _error 
+{
   // TODO: DUP in UIxMailAccountView
   // TODO: improve, localize
   // TODO: there is a bug in the treeview which preserves the current URL for
@@ -404,7 +430,8 @@ static int attachmentFlagSize = 8096;
 
 /* active message */
 
-- (SOGoMailObject *)lookupActiveMessage {
+- (SOGoMailObject *) lookupActiveMessage 
+{
   NSString *uid;
   
   if ((uid = [[[self context] request] formValueForKey:@"uid"]) == nil)
@@ -416,16 +443,13 @@ static int attachmentFlagSize = 8096;
 
 /* actions */
 
-- (id)defaultAction {
-  self->firstMessageNumber = 
-    [[[[self context] request] formValueForKey:@"idx"] intValue];
-  return self;
-}
-
-- (BOOL)isJavaScriptRequest {
+- (BOOL) isJavaScriptRequest 
+{
   return [[[[self context] request] formValueForKey:@"jsonly"] boolValue];
 }
-- (id)javaScriptOK {
+
+- (id) javaScriptOK 
+{
   WOResponse *r;
 
   r = [[self context] response];
@@ -433,7 +457,21 @@ static int attachmentFlagSize = 8096;
   return r;
 }
 
-- (id)markMessageUnreadAction {
+- (id) defaultAction 
+{
+  self->firstMessageNumber = 
+    [[[[self context] request] formValueForKey:@"idx"] intValue];
+
+  return self;
+}
+
+- (id) viewAction 
+{
+  return [self defaultAction];
+}
+
+- (id) markMessageUnreadAction 
+{
   NSException *error;
   
   if ((error = [[self lookupActiveMessage] removeFlags:@"seen"]) != nil)
@@ -445,7 +483,9 @@ static int attachmentFlagSize = 8096;
   
   return [self redirectToLocation:@"view"];
 }
-- (id)markMessageReadAction {
+
+- (id) markMessageReadAction 
+{
   NSException *error;
   
   if ((error = [[self lookupActiveMessage] addFlags:@"seen"]) != nil)
@@ -458,7 +498,8 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
-- (id)getMailAction {
+- (id) getMailAction 
+{
   // TODO: we might want to flush the caches?
   id client;
   
@@ -466,18 +507,21 @@ static int attachmentFlagSize = 8096;
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find mail folder"];
   }
-  
-  if (![client respondsToSelector:@selector(flushMailCaches)]) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			reason:
-			  @"invalid client object (does not support flush)"];
-  }
-  
+
+  if (![client respondsToSelector:@selector(flushMailCaches) ]) 
+    {
+      return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                          reason:
+                            @"invalid client object (does not support flush)"];
+    }
+
   [client flushMailCaches];
+
   return [self redirectToLocation:@"view"];
 }
 
-- (id)expungeAction {
+- (id) expungeAction 
+{
   // TODO: we might want to flush the caches?
   NSException *error;
   id client;
@@ -495,7 +539,8 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
-- (id)emptyTrashAction {
+- (id) emptyTrashAction 
+{
   // TODO: we might want to flush the caches?
   NSException *error;
   id client;
@@ -536,7 +581,8 @@ static int attachmentFlagSize = 8096;
 
 /* folder operations */
 
-- (id)createFolderAction {
+- (id) createFolderAction 
+{
   NSException *error;
   NSString    *folderName;
   id client;
@@ -562,7 +608,8 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:[folderName stringByAppendingString:@"/"]];
 }
 
-- (id)deleteFolderAction {
+- (id) deleteFolderAction 
+{
   NSException *error;
   NSString *url;
   id client;
@@ -583,4 +630,6 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:url];
 }
 
-@end /* UIxMailListView */
+@end
+
+/* UIxMailListView */

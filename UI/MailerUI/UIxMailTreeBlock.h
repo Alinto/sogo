@@ -41,6 +41,9 @@ extern id UIxMailTreeHasChildrenMarker;
   NSString *link;
   NSArray  *blocks;
   NSString *iconName;
+  NSString *folderType;
+  int serial;
+  int parent;
   struct {
     int isPath:1;
     int isActive:1;
@@ -48,19 +51,48 @@ extern id UIxMailTreeHasChildrenMarker;
   } flags;
 }
 
-+ (id)blockWithName:(NSString *)_n title:(NSString *)_t iconName:(NSString *)_i
-  link:(NSString *)_link isPathNode:(BOOL)_isPath isActiveNode:(BOOL)_isActive
-  childBlocks:(NSArray *)_blocks;
++ (id) blockWithName: (NSString *)_n
+	       title: (NSString *)_t
+	    iconName: (NSString *)_i
+		link: (NSString *)_link
+	  isPathNode: (BOOL)_isPath
+	isActiveNode: (BOOL)_isActive
+	 childBlocks: (NSArray *)_blocks;
 
-- (id)initWithName:(NSString *)_n title:(NSString *)_t iconName:(NSString *)_i
-  link:(NSString *)_link isPathNode:(BOOL)_isPath isActiveNode:(BOOL)_isActive
-  childBlocks:(NSArray *)_blocks;
+- (id)initWithName: (NSString *)_n
+	     title: (NSString *)_t
+	  iconName: (NSString *)_i
+	      link: (NSString *)_link
+	isPathNode: (BOOL)_isPath
+      isActiveNode: (BOOL)_isActive
+       childBlocks: (NSArray *)_blocks;
 
 /* accessors */
 
-- (BOOL)hasChildren;
-- (BOOL)areChildrenLoaded;
-- (NSArray *)children;
+- (BOOL) hasChildren;
+- (BOOL) areChildrenLoaded;
+- (NSArray *) children;
+
+- (void) setName: (NSString *) newName;
+- (NSString *) name;
+
+- (void) setSerial: (int) newSerial;
+- (int) serial;
+
+- (void) setParent: (int) newParent;
+- (int) parent;
+
+- (void) setFolderType: (NSString *) newFolderType;
+- (NSString *) folderType;
+
+- (NSString *) serialAsString;
+- (NSString *) parentAsString;
+
+- (NSString *) title;
+- (NSString *) link;
+- (NSString *) iconName;
+
+- (NSString *) folderMenuId;
 
 @end
 

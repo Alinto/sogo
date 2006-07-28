@@ -1,0 +1,37 @@
+<?xml version='1.0' standalone='yes'?>
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxMailMainFrame"
+    title="panelTitle"
+    const:popup="YES"
+    >
+    <var:if condition="hideFrame" const:negate="YES">
+  <!-- TODO: refactor address rendering into an own component(/element) -->
+
+  <!-- TODO: can we create own clientObject's for Kolab entities? Probably
+             not (since we would always need to fetch the header during 
+             lookup). It would work for 'annotated' folders though.
+       TODO: for Kolab we need a completely different viewer with a different
+             toolbar etc. And for Kolab we would need a different list viewer
+             as well ...
+    -->
+      <div class="messageContent">
+        <var:component className="UIxMailView" />
+      </div>
+      <script language="JavaScript">
+        if (window.opener) {
+        markMailReadInWindow(window.opener, 
+        '<var:string value="clientObject.nameInContainer"/>');
+        }
+      </script>
+    </var:if>
+
+    <var:if condition="hideFrame">
+      <var:component className="UIxMailView" />
+    </var:if>
+  </var:component>

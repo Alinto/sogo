@@ -10,7 +10,7 @@
 "Get Mail"    = "Relever";
 "Junk"        = "Indésirable";
 "Reply"       = "Répondre";
-"Reply All"   = "Répo. à tous";
+"Reply All"   = "Rép. à tous";
 "Print"       = "Imprimer";
 "Stop"        = "Stop";
 "Write"       = "Écrire";
@@ -19,7 +19,7 @@
 
 "Home"                 = "Accueil"; 
 "Calendar"             = "Agenda";
-"Addressbook"          = "Carnet d'adresses";
+"Addressbook"          = "Adresses";
 "Mail"                 = "Mail";
 "Right Administration" = "Administration";
 "Help" = "Aide";
@@ -54,7 +54,7 @@
 "all"     = "Tous";
 "read"    = "Lus";
 "unread"  = "Non Lus";
-"deleted" = "Éffacés";
+"deleted" = "Effacés";
 "flagged" = "Drapeau";
 
 /* MailListView */
@@ -80,7 +80,7 @@
 
 "SentFolderName"   = "Éléments envoyés";
 "TrashFolderName"  = "Corbeille";
-"InboxFolderName"  = "Boite de Réception";
+"InboxFolderName"  = "Boite de réception";
 "DraftsFolderName" = "Brouillons";
 "SieveFolderName"  = "Filtres";
 "Folders"          = "Dossiers"; 
@@ -93,3 +93,50 @@
 "Add to Address Book..." = "Ajouter au carnet d'adresses";
 "Compose Mail To" = "Écrire à";
 "Create Filter From Message..." = "Créer un filtre à partir du message...";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Ouvrir dans une nouvelle fenétre";
+"Copy Folder Location" = "Copier l'adresse du dossier";
+"Subscribe..." = "S'abonner...";
+"Mark Folder Read..." = "Marquer le dossier comme lu";
+"New Folder..." = "Nouveau dossier...";
+"Compact This Folder" = "Compacter ce dossier";
+"Search Messages..." = "Rechercher dans les messages...";
+"Properties..." = "Propriétés";
+"New Subfolder..." = "Nouveau sous-dossier...";
+"Rename Folder..." = "Renommer le dossier...";
+"Delete Folder" = "Supprimer le dossier...";
+"Get Messages for Account" = "Relever les messages de ce compte";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Ouvrir dans une nouvelle fenétre";
+"Reply to Sender Only" = "Répondre à l'expéditeur";
+"Reply to All" = "Répondre à tout le monde";
+"Forward" = "Transférer";
+"Edit As New..." = "Modifier comme un nouveau message";
+"Move To" = "Déplacer vers";
+"Copy To" = "Copier vers";
+"Label" = "Étiquette";
+"Mark" = "Marquer";
+"Save As..." = "Enregistrer comme...";
+"Print Preview" = "Aperçu avant impression";
+"Print..." = "Imprimer...";
+"Delete Message" = "Supprimer le message";
+
+/* Label popup menu */
+"None" = "Aucune";
+"Important" = "Important";
+"Work" = "Travail";
+"Personal" = "Personnel";
+"To Do" = "À faire";
+"Later" = "Peut attendre";
+
+/* Mark popup menu */
+"As Read" = "Comme lu";
+"Thread As Read" = "La discussion comme lue";
+"As Read By Date..." = "Comme lus par date...";
+"All Read" = "Tous les messages comme lus";
+"Flag" = "Avec un drapeau";
+"As Junk" = "Comme indésirable";
+"As Not Junk" = "Comme acceptable";
+"Run Junk Mail Controls" = "Lancer le contrôle des indésirables";

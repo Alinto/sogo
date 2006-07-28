@@ -1,39 +1,72 @@
 <?xml version="1.0" standalone="yes"?>
-  <div class="folderTreeContent"
+  <div id="folderTreeContent"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
     <!-- TODO: extend treeview to use CSS -->
-    <var:treeview
-      list="rootNodes" item="item" sublist="item.children"
-      zoom="item.isPathNode"
-      const:iconWidth       = "17"
-      const:plusIcon        = "tbtv_plus_17x17.gif"
-      const:minusIcon       = "tbtv_minus_17x17.gif"
-      const:lineIcon        = "tbtv_line_17x17.gif"
-      const:cornerIcon      = "tbtv_corner_17x17.gif"
-      const:junctionIcon    = "tbtv_junction_17x17.gif"
-      const:leafIcon        = "tbtv_leaf_corner_17x17.gif"
-      const:leafCornerIcon  = "tbtv_leaf_corner_17x17.gif"
-      const:cornerPlusIcon  = "tbtv_corner_plus_17x17.gif"
-      const:cornerMinusIcon = "tbtv_corner_minus_17x17.gif"
-      const:spaceIcon       = "tbtv_space_17x17.gif"
-      >
-      <var:tree-data const:isTreeElement="YES" const:treeLink=""
-	var:icon="item.iconName" 
-	var:cornerIcon="item.iconName">
-	<a var:href="item.link">
-	  <span class="treecell">
-	    <var:if condition="item.isActiveNode">
-	      <b><var:string value="item.title" /></b>
-	    </var:if>
-	    <var:if condition="item.isActiveNode" const:negate="YES">
-	      <var:string value="item.title" />
-	    </var:if>
-	  </span>
-	</a>
-      </var:tree-data>
-    </var:treeview>
+
+    <script type="text/javascript" rsrc:src="dtree.js"> <!-- space --></script>
+    <script type="text/javascript">
+      d = new dTree('d');
+      d.config.folderLlinks = true;
+      d.config.hideRoot = true;
+
+      d.icon.root = '<var:string rsrc:value="tbtv_account_17x17.gif" />';
+      d.icon.folder = '<var:string rsrc:value="tbtv_leaf_corner_17x17.gif" />';
+      d.icon.folderOpen	= '<var:string rsrc:value="tbtv_leaf_corner_17x17.gif" />';
+      d.icon.node = '<var:string rsrc:value="tbtv_leaf_corner_17x17.gif" />';
+      d.icon.line = '<var:string rsrc:value="tbtv_line_17x17.gif" />';
+      d.icon.join = '<var:string rsrc:value="tbtv_junction_17x17.gif" />';
+      d.icon.joinBottom	= '<var:string rsrc:value="tbtv_corner_17x17.gif" />';
+      d.icon.plus = '<var:string rsrc:value="tbtv_plus_17x17.gif" />';
+      d.icon.plusBottom	= '<var:string rsrc:value="tbtv_corner_plus_17x17.gif" />';
+      d.icon.minus = '<var:string rsrc:value="tbtv_minus_17x17.gif" />';
+      d.icon.minusBottom = '<var:string rsrc:value="tbtv_corner_minus_17x17.gif" />';
+      d.icon.nlPlus = '<var:string rsrc:value="tbtv_corner_plus_17x17.gif" />';
+      d.icon.nlMinus = '<var:string rsrc:value="tbtv_corner_minus_17x17.gif" />';
+      d.icon.empty = '<var:string rsrc:value="empty.gif" />';
+
+      d.add(0, -1, '');
+      <var:foreach list="flattenedNodes" item="item"
+	><var:component className="UIxMailTreeBlockJS"
+	  const:treeObjectName="d"
+	  var:item="item"
+          /></var:foreach>
+      document.write(d);
+    </script>
+    <noscript>
+      <var:treeview
+	list="rootNodes" item="item" sublist="item.children"
+	zoom="item.isPathNode"
+	const:iconWidth       = "17"
+	const:plusIcon        = "tbtv_plus_17x17.gif"
+	const:minusIcon       = "tbtv_minus_17x17.gif"
+	const:lineIcon        = "tbtv_line_17x17.gif"
+	const:cornerIcon      = "tbtv_corner_17x17.gif"
+	const:junctionIcon    = "tbtv_junction_17x17.gif"
+	const:leafIcon        = "tbtv_leaf_corner_17x17.gif"
+	const:leafCornerIcon  = "tbtv_leaf_corner_17x17.gif"
+	const:cornerPlusIcon  = "tbtv_corner_plus_17x17.gif"
+	const:cornerMinusIcon = "tbtv_corner_minus_17x17.gif"
+	const:spaceIcon       = "tbtv_space_17x17.gif"
+	>
+	<var:tree-data const:isTreeElement="YES"
+	  var:icon="item.iconName"
+	  var:cornerIcon="item.iconName"
+	  var:treeLink="item.link"
+	  ><a var:href="item.link"
+	    ><span class="treecell"
+	      ><var:if condition="item.isActiveNode"
+		><b><var:string value="item.title" /></b
+                  ></var:if
+                ><var:if condition="item.isActiveNode" const:negate="YES"
+		><var:string value="item.title"
+                  /></var:if
+                ></span
+              ></a
+            ></var:tree-data>
+      </var:treeview>
+    </noscript>
   </div>

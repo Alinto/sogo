@@ -113,9 +113,11 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   
   return [[ctx activeUser] fetchAllMailIdentitiesWithOnlyEmitterAccess:_flag];
 }
+
 - (NSArray *)fetchAllIdentities {
   return [self fetchIdentitiesWithOnlyEmitterAccess:NO];
 }
+
 - (NSArray *)fetchIdentitiesWithEmitterPermissions {
   return [self fetchIdentitiesWithOnlyEmitterAccess:YES];
 }
@@ -143,6 +145,7 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   ct = [[ctClass alloc] initWithName:_key inContainer:self];
   return [ct autorelease];
 }
+
 - (id)sharedMailAccountWithName:(NSString *)_key inContext:(id)_ctx {
   static Class ctClass = Nil;
   id ct;

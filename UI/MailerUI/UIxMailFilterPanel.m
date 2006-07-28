@@ -25,10 +25,6 @@
 {
   NSString *searchText;
   NSString *searchCriteria;
-  struct {
-    int hideFrame:1;
-    int reserved:31;
-  } mfFlags;
 }
 
 @end
@@ -79,8 +75,6 @@ static NSDictionary *filterToQualifier = nil;
     {
       searchText = nil;
       searchCriteria = nil;
-      mfFlags.hideFrame = 0;
-      mfFlags.reserved = 0;
     }
 
   return self;
@@ -93,16 +87,6 @@ static NSDictionary *filterToQualifier = nil;
 }
 
 /* accessors */
-
-- (void)setHideFrame:(BOOL)_flag
-{
-   self->mfFlags.hideFrame = _flag ? 1 : 0;
-}
-
-- (BOOL)hideFrame
-{
-  return self->mfFlags.hideFrame ? YES : NO;
-}
 
 - (void)setSearchText: (NSString *)_txt
 {

@@ -19,11 +19,16 @@ MailerUI_OBJC_FILES += \
 	UIxMailMainFrame.m		\
 	UIxMailTree.m			\
 	UIxMailTreeBlock.m		\
+	UIxMailTreeBlockJS.m		\
+	UIxMailFolderMenu.m		\
 	\
 	UIxMailAccountsView.m		\
 	UIxMailAccountView.m		\
+	UIxMailAccountViewContainer.m	\
 	UIxMailListView.m		\
+	UIxMailListViewContainer.m	\
 	UIxMailView.m			\
+	UIxMailViewContainer.m		\
 	UIxMailSortableTableHeader.m	\
 	UIxMailMoveToPopUp.m		\
 	UIxMailFilterPanel.m		\
@@ -40,12 +45,11 @@ MailerUI_OBJC_FILES += \
 	UIxFilterList.m			\
 	UIxSieveEditor.m		\
 	\
-	UIxMailFolderACLEditor.m	\
+	UIxMailFolderACLEditor.m
 
 MailerUI_RESOURCE_FILES += \
 	Version		\
 	product.plist	\
-	UIxMailView.js  \
 	Toolbars/*.toolbar \
 	Images/*.png
 

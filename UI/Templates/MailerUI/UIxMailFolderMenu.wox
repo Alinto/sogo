@@ -1,0 +1,39 @@
+<?xml version='1.0' standalone='yes'?>
+  <container xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxMailFolderMenu"
+    title="panelTitle"
+    >
+
+    <div class="menu" var:id="menuId">
+      <ul id="">
+        <var:foreach list="levelledNodes" item="item"
+          ><var:if condition="item.hasChildren" const:negate="YES"
+            ><li onmouseup="processMailboxMenuAction(this);" var:mailboxname="item.name"><img var:src="iconForMenuItem" /><var:string value="item.title" /></li>
+          </var:if
+          ><var:if condition="item.hasChildren"
+            ><li
+              class="submenu"
+              var:submenu="item.folderMenuId"
+              onmouseover="dropDownSubmenu(event);"
+              onmousedown="return false;"><img var:src="iconForMenuItem" /><var:string value="item.title" /></li>
+          </var:if
+        ></var:foreach
+      ></ul>
+
+      <var:foreach list="levelledNodes" item="item"
+        ><var:if condition="item.hasChildren"
+          ><var:component
+            className="UIxMailFolderMenu"
+            var:menuId="item.folderMenuId"
+            var:parentMenu="item.serialAsString"
+            rootClassName="treeRootClassName" 
+            const:treeFolderAction="view" 
+            /></var:if
+      ></var:foreach>
+    </div>
+  </container>

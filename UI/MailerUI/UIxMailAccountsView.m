@@ -35,4 +35,23 @@
   return [self labelForKey:@"SOGo Mail Accounts"];
 }
 
+- (id) defaultAction
+{
+  NSArray *c;
+  NSString *inbox;
+  id actionResult;
+
+  c = [[self clientObject] toManyRelationshipKeys];
+  if ([c count] == 1)
+    {
+      inbox = [NSString stringWithFormat: @"%@/INBOX",
+                        [c objectAtIndex: 0]];
+      actionResult = [self redirectToLocation: inbox];
+    }
+  else
+    actionResult = self;
+
+  return actionResult;
+}
+
 @end /* UIxMailAccountsView */

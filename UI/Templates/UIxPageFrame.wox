@@ -1,162 +1,165 @@
 <?xml version="1.0" standalone="yes"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  >
-  <head>
-    <title>
-      <var:string value="title"/>
-    </title>
-    <meta name="description" content="SOGo Web Interface"/>
-    <meta name="author" content="SKYRIX Software AG"/>
-    <meta name="robots" content="stop"/>
-    <meta name="test" var:content="patate"/>
-    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1"/>
-    <link type="text/css" rel="stylesheet" rsrc:href="uix.css"/>
-    <link type="text/css" rel="stylesheet" rsrc:href="calendar.css"/>
-    <link href="mailto:hh@skyrix.com" rev="made"/>
+  <container 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
+    <var:if condition="hideFrame" const:negate="YES">
+      <html>
+        <head>
+          <title>
+            <var:string value="title"/>
+          </title>
+          <meta name="hideFrame" var:content="hideFrame" />
+          <meta name="description" content="SOGo Web Interface"/>
+          <meta name="author" content="SKYRIX Software AG"/>
+          <meta name="robots" content="stop"/>
+          <meta http-equiv="Content-type" content="text/html; charset=iso-8859-1"/>
+          <link href="mailto:hh@skyrix.com" rev="made"/>
 
-    <script rsrc:src="generic.js"> <!-- space required --></script>
-    <var:if condition="hasProductSpecificJavaScript">
-    <script var:src="productJavaScriptURL"> <!-- space required --></script>
+          <link type="text/css" rel="stylesheet" rsrc:href="generic.css" />
+          <link type="text/css" rel="stylesheet" rsrc:href="dtree.css" />
+          <var:if condition="hasProductSpecificCSS"
+            ><link type="text/css" rel="stylesheet" var:href="productCSSURL"
+              /></var:if>
+          <var:if condition="hasPageSpecificCSS"
+            ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
+              /></var:if>
+        </head>
+
+        <body oncontextmenu="return false;">
+          <script type="text/javascript">
+            var UserFolderURL = '<var:string value="userFolderPath" />';
+            var ApplicationBaseURL = '<var:string value="applicationPath" />';
+            var ResourcesURL = '/SOGo.woa/WebServerResources'
+          </script>
+
+          <script type="text/javascript" rsrc:src="prototype.js"> <!-- space required --></script>
+          <script type="text/javascript" rsrc:src="yul/yahoo/yahoo-min.js"> <!-- space required --></script>
+          <script type="text/javascript" rsrc:src="yul/dom/dom-min.js"> <!-- space required --></script>
+          <script type="text/javascript" rsrc:src="yul/event/event-min.js"> <!-- space required --></script>
+          <script type="text/javascript" rsrc:src="yul/dragdrop/dragdrop-min.js"> <!-- space required --></script>
+
+          <script type="text/javascript" rsrc:src="generic.js"> <!-- space required --></script>
+          <var:if condition="hasProductSpecificJavaScript"
+            ><script type="text/javascript" var:src="productJavaScriptURL"> <!-- space required --></script>
+          </var:if>
+          <var:if condition="hasPageSpecificJavaScript"
+            ><script type="text/javascript" var:src="pageJavaScriptURL"> <!-- space required --></script>
+          </var:if>
+
+          <div id="logConsole">
+          </div>
+          <script type="text/javascript">
+            initLogConsole();
+          </script>
+
+          <var:if condition="isPopup" const:negate="YES"
+            ><div class="linkbanner">
+              <a var:href="relativeHomePath"
+                ><var:string label:value="Home" /></a> |
+              <a var:href="relativeCalendarPath"
+                ><var:string label:value="Calendar" /></a> |
+              <a var:href="relativeContactsPath"
+                ><var:string label:value="Addressbook" /></a> |
+              <a var:href="relativeMailPath"
+                ><var:string label:value="Mail" /></a> |
+              <a var:href="logoffPath"
+                ><var:string label:value="Logoff" /></a> |
+              <a href="http://to.be.done/"
+                ><var:string label:value="Right Administration" /></a> |
+              <a href="#" onclick="toggleLogConsole();"
+                ><var:string label:value="Log Console" /></a>
+            </div>
+          </var:if
+            
+            ><var:component className="UIxToolbar"
+            />
+
+          <div class="pageContent">
+            <var:component-content
+              /></div>
+          <var:if condition="isUIxDebugEnabled">
+            <table border="0" style="font-size: 9pt; visibility: hidden;">
+              <tr>
+                <td valign="top">clientObject:</td>
+                <td valign="top"><var:string value="clientObject" /></td>
+              </tr>
+              <tr>
+                <td valign="top">ownerInContext:</td>
+                <td valign="top"><var:string value="ownerInContext" /></td>
+              </tr>
+              <tr>
+                <td valign="top">traversal stack:</td>
+                <td valign="top">
+                  <var:foreach list="context.objectTraversalStack" item="item">
+                    <var:string value="item" /><br />
+                  </var:foreach>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">traversal path:</td>
+                <td valign="top">
+                  <var:foreach list="context.soRequestTraversalPath"
+                    item="item" const:separator=" => ">
+                    <var:string value="item" />
+                  </var:foreach>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">request type:</td>
+                <td valign="top"><var:string value="context.soRequestType"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">path info:</td>
+                <td valign="top"><var:string value="context.pathInfo"/></td>
+              </tr>
+              <tr>
+                <td valign="top">rootURL:</td>
+                <td valign="top"><var:string value="context.rootURL"/></td>
+              </tr>
+              <tr>
+                <td valign="top">active user:</td>
+                <td valign="top"><var:string value="context.activeUser"/></td>
+              </tr>
+              <tr>
+                <td valign="top">CN / email:</td>
+                <td valign="top">
+                  <var:string value="cnForUser"/>
+                  <var:entity const:name="lt"
+                    /><var:string value="emailForUser"
+                    /><var:entity const:name="gt"
+                    /></td>
+              </tr>
+              <tr>
+                <td valign="top">Access Restricted:</td>
+                <td valign="top">
+                  <var:if condition="isAccessRestricted">YES</var:if>
+                  <var:if condition="isAccessRestricted"
+                    const:negate="YES"
+                    >NO</var:if>  
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">Headers:</td>
+                <td valign="top">
+                  <span style="white-space: pre;">
+                    <var:string value="context.request.headers"
+                      const:escapeHTML="YES"
+                      />
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </var:if>
+        </body>
+      </html>
     </var:if>
-    <var:if condition="hasPageSpecificJavaScript">
-    <script var:src="pageJavaScriptURL"> <!-- space required --></script>
+
+    <var:if condition="hideFrame">
+      <var:component-content />
     </var:if>
-  </head>
-
-  <body>
-    <var:if condition="isPopup" const:negate="YES">
-    <div class="linkbanner">
-      <a var:href="relativeHomePath"
-	><var:string label:value="Home" /></a> |
-      <a var:href="relativeCalendarPath"
-	><var:string label:value="Calendar" /></a> |
-      <a var:href="relativeContactsPath"
-	><var:string label:value="Addressbook" /></a> |
-      <a var:href="relativeMailPath"
-	><var:string label:value="Mail" /></a> |
-      <a var:href="logoffPath"
-	><var:string label:value="Logoff" /></a> |
-      <a href="http://to.be.done/"
-	><var:string label:value="Right Administration" /></a>
-    </div>
-    </var:if>
-
-    <var:component className="UIxToolbar" />
-
-    <div class="pageContent">
-
-      <!--       <tr> -->
-      <!--         <td colspan="2"> -->
-      <!-- TODO: replace the line with a CSS straight line -->
-      <!--           <table cellpadding="0" cellspacing="0" border="0" width="100%"> -->
-      <!--             <tr> -->
-      <!--               <td class="linecolor"><img rsrc:src="line_left.gif"/></td> -->
-      <!--               <td class="linecolor" width="98%"> -->
-      <!--                 <img rsrc:src="line_stretch.gif"/> -->
-      <!--               </td> -->
-      <!--               <td class="linecolor"><img rsrc:src="line_right.gif"/></td> -->
-      <!--             </tr> -->
-      <!--             <tr> -->
-      <!--               <td valign="top" colspan="2"> -->
-      <!--                 <var:component className="UIxAppNavView" /> -->
-      <!--               </td> -->
-      <!--               <td valign="top" align="right" class="button_submit_env"> -->
-      <!--                 <a var:href="helpURL" -->
-      <!--                    class="button_submit" -->
-      <!--                    label:string="Help" -->
-      <!--                    var:target="helpWindowTarget" -->
-      <!--                 /> -->
-      <!--               </td> -->
-      <!--             </tr> -->
-      <!--           </table> -->
-      <!--         </td> -->
-      <!--       </tr> -->
-      <var:component-content/>
-    </div>
-    <var:if condition="isUIxDebugEnabled">
-      <table border="0" style="font-size: 9pt;">
-	<tr>
-	  <td valign="top">clientObject:</td>
-	  <td valign="top"><var:string value="clientObject" /></td>
-	</tr>
-	<tr>
-	  <td valign="top">ownerInContext:</td>
-	  <td valign="top"><var:string value="ownerInContext" /></td>
-	</tr>
-	<tr>
-	  <td valign="top">traversal stack:</td>
-	  <td valign="top">
-	    <var:foreach list="context.objectTraversalStack" item="item">
-	      <var:string value="item" /><br />
-	    </var:foreach>
-	  </td>
-	</tr>
-	<tr>
-	  <td valign="top">traversal path:</td>
-	  <td valign="top">
-	    <var:foreach list="context.soRequestTraversalPath"
-	      item="item" const:separator=" => ">
-	      <var:string value="item" />
-	    </var:foreach>
-	  </td>
-	</tr>
-	<tr>
-	  <td valign="top">request type:</td>
-	  <td valign="top"><var:string value="context.soRequestType"/>
-	  </td>
-	</tr>
-	<tr>
-	  <td valign="top">path info:</td>
-	  <td valign="top"><var:string value="context.pathInfo"/></td>
-	</tr>
-	<tr>
-	  <td valign="top">rootURL:</td>
-	  <td valign="top"><var:string value="context.rootURL"/></td>
-	</tr>
-	<tr>
-	  <td valign="top">active user:</td>
-	  <td valign="top"><var:string value="context.activeUser"/></td>
-	</tr>
-	<tr>
-	  <td valign="top">CN / email:</td>
-	  <td valign="top">
-	    <var:string value="cnForUser"/>
-	    <var:entity const:name="lt"
-	      /><var:string value="emailForUser"
-	      /><var:entity const:name="gt"
-	      /></td>
-	</tr>
-	<tr>
-	  <td valign="top">Access Restricted:</td>
-	  <td valign="top">
-	    <var:if condition="isAccessRestricted">YES</var:if>
-	    <var:if condition="isAccessRestricted"
-	      const:negate="YES"
-	      >NO</var:if>  
-	  </td>
-	</tr>
-	<tr>
-	  <td valign="top">Headers:</td>
-	  <td valign="top">
-	    <span style="white-space: pre;">
-	      <var:string value="context.request.headers"
-		const:escapeHTML="YES"
-		/>
-	    </span>
-	  </td>
-	</tr>
-      </table>
-    </var:if>
-  </body>
-</html>
-<!-- Keep this comment at the end of the file
-Local variables:
-mode: xml
-sgml-omittag:nil
-sgml-shorttag:nil
-End:
--->
+  </container>
+  

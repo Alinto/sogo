@@ -24,16 +24,76 @@
 
 /* generic stuff */
 
-logWindow = window.open('', 'logWindow');
-logWindow.document.write('<html><head><title>JavaScript log</title></head>'
-			 + '<body style="font-family: monospace;'
-			 + 'font-size: 10pt; overflow: scroll;">'
-			 + '<div class="log" id="logArea"'
-			 + ' onclick="this.innerHTML=\'\';"></div></body>'
-			 + '</html>');
-logWindow.resizeTo(640,480);
-logArea = logWindow.document.getElementById('logArea');
-logArea.innerHTML = '';
+var logConsole;
+
+// logArea = null;
+var allDocumentElements = null;
+
+/* a W3C compliant document.all */
+function getAllScopeElements(scope)
+{
+  var elements = new Array();
+
+  for (var i = 0; i < scope.childNodes.length; i++)
+    if (typeof(scope.childNodes[i]) == "object"
+	&& scope.childNodes[i].tagName
+	&& scope.childNodes[i].tagName != '')
+      {
+	elements.push(scope.childNodes[i]);
+	var childElements = getAllElements(scope.childNodes[i]);
+	if (childElements.length > 0)
+	  elements.push(childElements);
+      }
+
+  return elements;
+}
+
+function getAllElements(scope)
+{
+  var elements;
+
+  if (scope == null)
+    scope = document;
+
+  if (scope == document
+      && allDocumentElements != null)
+    elements = allDocumentElements;
+  else
+    {
+      elements = getAllScopeElements(scope);
+      if (scope == document)
+	allDocumentElements = elements;
+    }
+
+  return elements;
+}
+
+/* from
+   http://www.robertnyman.com/2005/11/07/the-ultimate-getelementsbyclassname/ */
+function getElementsByClassName(_tag, _class, _scope) {
+  var regexp, classes, elements, element, returnElements;
+
+  _scope = _scope || document;
+
+  elements = (!_tag || _tag == "*"
+	      ? getAllElements(null)
+	      : _scope.getElementsByTagName(_tag));
+  returnElements = [];
+
+  classes = _class.split(/\s+/);
+  regexp = new RegExp("(^|\s+)("+ classes.join("|") +")(\s+|$)","i");
+
+  if (_class) {
+    for(var i = 0; element = elements[i]; i++) {
+      if (regexp.test(element.className)) {
+	returnElements.push(element);
+      }
+    }
+    return returnElements;
+  } else {
+    return elements;
+  }
+}
 
 function ml_stripActionInURL(url) {
   if (url[url.length - 1] != '/') {
@@ -204,37 +264,45 @@ function triggerOpenerCallback() {
   }
 }
 
-/* selection mechanism */
+function addClassName(node, className) {
+  var classStr = '' + node.getAttribute("class");
 
-function selectNode(node) {
-  var classStr = '' + node.getAttribute('class');
-
-  position = classStr.indexOf('_selected', 0);
+  position = classStr.indexOf(className, 0);
   if (position < 0) {
-    classStr = classStr + ' _selected';
+    classStr = classStr + ' ' + className;
     node.setAttribute('class', classStr);
   }
 }
 
-function deselectNode(node) {
+function removeClassName(node, className) {
   var classStr = '' + node.getAttribute('class');
 
-  position = classStr.indexOf('_selected', 0);
+  position = classStr.indexOf(className, 0);
   while (position > -1) {
     classStr1 = classStr.substring(0, position); 
     classStr2 = classStr.substring(position + 10, classStr.length);
     classStr = classStr1 + classStr2;
-    position = classStr.indexOf('_selected', 0);
+    position = classStr.indexOf(className, 0);
   }
 
   node.setAttribute('class', classStr);
+}
+
+/* selection mechanism */
+
+function selectNode(node) {
+  addClassName(node, '_selected');
+}
+
+function deselectNode(node) {
+  removeClassName(node, '_selected');
 }
 
 function deselectAll(parent) {
   for (var i = 0; i < parent.childNodes.length; i++) {
     var node = parent.childNodes.item(i);
     if (node.nodeType == 1) {
-      deselectNode(node);
+      removeClassName(node, '_selected');
     }
   }
 }
@@ -258,18 +326,17 @@ function getSelectedNodes(parentNode) {
   for (var i = 0; i < parentNode.childNodes.length; i++) {
     node = parentNode.childNodes.item(i);
     if (node.nodeType == 1
-	&& isNodeSelected(node)) {
-      selArray.push(i);
-    }
+	&& isNodeSelected(node))
+      selArray.push(node);
   }
 
-  return selArray.join('|');
+  return selArray;
 }
 
 function onRowClick(event) {
   var node = event.target;
-//   var text = document.getElementById('list');
-//   text.innerHTML = '';
+  if (node.tagName == 'TD')
+    node = node.parentNode;
 
   var startSelection = getSelectedNodes(node.parentNode);
   if (event.shiftKey == 1
@@ -285,7 +352,10 @@ function onRowClick(event) {
     selectNode(node);
   }
   if (startSelection != getSelectedNodes(node.parentNode)) {
-    var code = '' + node.parentNode.getAttribute('onselectionchange');
+    var parentNode = node.parentNode;
+    if (parentNode.tagName == 'TBODY')
+      parentNode = parentNode.parentNode;
+    var code = '' + parentNode.getAttribute('onselectionchange');
     if (code.length > 0) {
       node.eval(code);
     }
@@ -296,8 +366,6 @@ function onRowClick(event) {
 
 var bodyOnClick = "";
 // var acceptClick = false;
-var menuClickNode = null;
-var currentSubmenu = null;
 
 function onMenuClick(event, menuId)
 {
@@ -306,8 +374,10 @@ function onMenuClick(event, menuId)
   event.cancelBubble = true;
   event.returnValue = false;
 
+  if (document.currentPopupMenu)
+    hideMenu(event, document.currentPopupMenu);
+
   var popup = document.getElementById(menuId);
-  hideMenu(popup);
 
   var menuTop = event.pageY;
   var menuLeft = event.pageX;
@@ -321,86 +391,172 @@ function onMenuClick(event, menuId)
   if (leftDiff < 0)
     menuLeft -= popup.offsetWidth;
 
-  popup.style.top = menuTop + "px";
-  popup.style.left = menuLeft + "px";
-  popup.style.visibility = "visible";
-  menuClickNode = node;
+  popup.style.top = menuTop + "px;";
+  popup.style.left = menuLeft + "px;";
+  popup.style.visibility = "visible;";
+  setupMenuTarget(popup, node);
 
   bodyOnClick = "" + document.body.getAttribute("onclick");
-  document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
-}
-
-function onBodyClick(menuId)
-{
-//   if (!acceptClick)
-//     acceptClick = true;
-//   else
-//     {
-      popup = document.getElementById(menuId);
-      hideMenu(popup);
-      document.body.setAttribute("onclick", bodyOnClick);
-      menuClickNode = null;
-//     }
+  document.body.setAttribute("onclick", "onBodyClick(event);");
+  document.currentPopupMenu = popup;
 
   return false;
 }
 
-function hideMenu(menuNode)
+function setupMenuTarget(menu, target)
 {
+  menu.menuTarget = target;
+  var menus = getElementsByClassName("*", "menu", menu);
+  for (var i = 0; i < menus.length; i++) {
+    menus[i].menuTarget = target;
+  }
+}
+
+function getParentMenu(node)
+{
+  var currentNode, menuNode;
+
+  menuNode = null;
+  currentNode = node;
+  var menure = new RegExp("(^|\s+)menu(\s+|$)", "i");
+
+  while (menuNode == null
+	 && currentNode)
+    if (menure.test(currentNode.className))
+      menuNode = currentNode;
+    else
+      currentNode = currentNode.parentNode;
+
+  return menuNode;
+}
+
+function onBodyClick(event)
+{
+  document.currentPopupMenu.menuTarget = null;
+  hideMenu(event, document.currentPopupMenu);
+  document.body.setAttribute("onclick", bodyOnClick);
+
+  return false;
+}
+
+function hideMenu(event, menuNode)
+{
+  var onHide;
+
 //   log('hiding menu "' + menuNode.getAttribute('id') + '"');
   if (menuNode.submenu)
     {
-      hideMenu(menuNode.submenu);
+      hideMenu(event, menuNode.submenu);
       menuNode.submenu = null;
     }
 
   menuNode.style.visibility = "hidden";
+  if (menuNode.parentMenuItem)
+    {
+      menuNode.parentMenuItem.setAttribute('class', 'submenu');
+      menuNode.parentMenuItem = null;
+      menuNode.parentMenu.setAttribute('onmousemove', null);
+      menuNode.parentMenu.submenuItem = null;
+      menuNode.parentMenu.submenu = null;
+      menuNode.parentMenu = null;
+    }
+
+  var onhideEvent = document.createEvent("Event");
+  onhideEvent.initEvent("hideMenu", true, true);
+  menuNode.dispatchEvent(onhideEvent);
 }
 
-function onMenuEntryClick(node, event, menuId)
+function onMenuEntryClick(event, menuId)
 {
-  id = node.getAttribute("id");
-  window.alert("clicked " + menuClickNode.tagName);
+  var node = event.target;
+
+  id = getParentMenu(node).menuTarget;
+//   log("clicked " + id + "/" + id.tagName);
+
+  return false;
+}
+
+function initLogConsole() {
+  logConsole = document.getElementById('logConsole');
+  logConsole.innerHTML = '';
+}
+
+function toggleLogConsole() {
+  var visibility = '' + logConsole.style.visibility;
+  if (visibility.length == 0) {
+    logConsole.style.visibility = 'visible;';
+  } else {
+    logConsole.style.visibility = '';
+  }
 
   return false;
 }
 
 function log(message) {
-  if (logArea)
-    logArea.innerHTML = logArea.innerHTML + message + '<br />' + "\n";
+  logConsole.innerHTML += message + '<br />' + "\n";
 }
 
 function dropDownSubmenu(event)
 {
   var node = event.target;
   var submenu = node.getAttribute("submenu");
-  if (submenu && submenu != "") {
-    if (node.parentNode.parentNode.submenu)
-      hideMenu(node.parentNode.parentNode.submenu);
- 
-    var submenuNode = document.getElementById(submenu);
-    node.parentNode.parentNode.submenu = submenuNode;
-    var menuTop = (node.parentNode.parentNode.offsetTop
-		   + node.offsetTop - 1);
+  if (submenu && submenu != "")
+    {
+      var submenuNode = document.getElementById(submenu);
+      var parentNode = getParentMenu(node);
+      if (parentNode.submenu)
+	hideMenu(event, parentNode.submenu);
+      var menuTop = (node.parentNode.parentNode.offsetTop
+		     + node.offsetTop - 1);
+      
+      var heightDiff = (window.innerHeight
+			- (menuTop + submenuNode.offsetHeight));
+      if (heightDiff < 0)
+	menuTop += heightDiff;
+      var menuLeft = (node.parentNode.parentNode.offsetLeft
+		      + node.parentNode.parentNode.offsetWidth
+		      - 2);
+      var leftDiff = (window.innerWidth
+		      - (menuLeft + submenuNode.offsetWidth));
+      if (leftDiff < 0)
+	menuLeft -= (node.parentNode.parentNode.offsetWidth
+		     + submenuNode.offsetWidth
+		     - 4);
 
-    var heightDiff = (window.innerHeight
-		      - (menuTop + submenuNode.offsetHeight));
-    if (heightDiff < 0)
-      menuTop += heightDiff;
-    var menuLeft = (node.parentNode.parentNode.offsetLeft
-		    + node.parentNode.parentNode.offsetWidth
-		    - 2);
-    var leftDiff = (window.innerWidth
-		    - (menuLeft + submenuNode.offsetWidth));
-    if (leftDiff < 0)
-      menuLeft -= (node.parentNode.parentNode.offsetWidth
-		   + submenuNode.offsetWidth
-		   - 4);
+      submenuNode.parentMenuItem = node;
+      submenuNode.parentMenu = parentNode;
+      parentNode.submenuItem = node;
+      parentNode.submenu = submenuNode;
+      parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
+      node.setAttribute('class', 'submenu-selected');
+      submenuNode.style.top = menuTop + "px;";
+      submenuNode.style.left = menuLeft + "px;";
+      submenuNode.style.visibility = "visible;";
+    }
+}
 
-    submenuNode.style.top = menuTop + "px";
-    submenuNode.style.left = menuLeft + "px";
-    submenuNode.style.visibility = "visible";
-  }
+function checkDropDown(event)
+{
+  var parentNode = getParentMenu(event.target);
+  var submenuNode = parentNode.submenu;
+  if (submenuNode)
+    {
+      var submenuItem = parentNode.submenuItem;
+      var itemX = submenuItem.offsetLeft + parentNode.offsetLeft;
+      var itemY = submenuItem.offsetTop + parentNode.offsetTop;
+
+      if (event.clientX >= itemX
+	  && event.clientX < submenuNode.offsetLeft
+	  && (event.clientY < itemY
+	      || event.clientY > (itemY
+				  + submenuItem.offsetHeight)))
+	{
+	  hideMenu(event, submenuNode);
+	  parentNode.submenu = null;
+	  parentNode.submenuItem = null;
+	  parentNode.setAttribute('onmousemove', null);
+	}
+    }
 }
 
 /* drag handle */
@@ -409,26 +565,41 @@ var dragHandle;
 var dragHandleOrigX;
 var dragHandleOrigLeft;
 var dragHandleOrigRight;
+var dragHandleOrigY;
+var dragHandleOrigUpper;
+var dragHandleOrigLower;
+var dragHandleDiff;
 
 function startHandleDragging(event) {
   if (event.button == 0) {
     var leftBlock = event.target.getAttribute('leftblock');
     var rightBlock = event.target.getAttribute('rightblock');
+    var upperBlock = event.target.getAttribute('upperblock');
+    var lowerBlock = event.target.getAttribute('lowerblock');
 
     dragHandle = event.target;
-    dragHandleOrigX = dragHandle.offsetLeft;
-    dragHandleOrigLeft = document.getElementById(leftBlock).offsetWidth;
-    dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft;
+    if (leftBlock && rightBlock) {
+      dragHandle.dhType = 'horizontal';
+      dragHandleOrigX = dragHandle.offsetLeft;
+      dragHandleOrigLeft = document.getElementById(leftBlock).offsetWidth;
+      dragHandleDiff = 0;
+      dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft;
+      document.body.style.cursor = "e-resize";
+    } else if (upperBlock && lowerBlock) {
+      dragHandle.dhType = 'vertical';
+      var uBlock = document.getElementById(upperBlock);
+      var lBlock = document.getElementById(lowerBlock);
+      dragHandleOrigY = dragHandle.offsetTop;
+      dragHandleOrigUpper = uBlock.offsetHeight;
+      dragHandleDiff = event.clientY - dragHandle.offsetTop;
+      dragHandleOrigLower = lBlock.offsetTop;
+      document.body.style.cursor = "n-resize";
+    }
 
-    document.body.setAttribute('onmouseup', 'stopHandleDragging(event);');
-    document.body.setAttribute('onmousemove', 'dragHandleMove(event, "'
-			       + leftBlock
-			       + '", "'
-			       + rightBlock
-			       + '");');
-    document.body.style.cursor = "e-resize";
+    document.addEventListener('mouseup', stopHandleDragging, true);
+    document.addEventListener('mousemove', dragHandleMove, true);
 
-    dragHandleMove(event, leftBlock, rightBlock);
+    dragHandleMove(event);
     event.cancelBubble = true;
   }
 
@@ -436,38 +607,58 @@ function startHandleDragging(event) {
 }
 
 function stopHandleDragging(event) {
-  var diffX = (event.clientX - dragHandleOrigX
-	       - (dragHandle.offsetWidth / 2));
-  var lBlock
-    = document.getElementById(dragHandle.getAttribute('leftblock'));
-  var rBlock
-    = document.getElementById(dragHandle.getAttribute('rightblock'));
+  if (dragHandle.dhType == 'horizontal') {
+    var diffX = Math.floor(event.clientX - dragHandleOrigX
+                           - (dragHandle.offsetWidth / 2));
+    var lBlock
+      = document.getElementById(dragHandle.getAttribute('leftblock'));
+    var rBlock
+      = document.getElementById(dragHandle.getAttribute('rightblock'));
+    
+    rBlock.style.left = (dragHandleOrigRight + diffX) + 'px;';
+    lBlock.style.width = (dragHandleOrigLeft + diffX) + 'px;';
+  } else if (dragHandle.dhType == 'vertical') {
+    var diffY = Math.floor(event.clientY - dragHandleOrigY
+                           - (dragHandle.offsetHeight / 2));
+    var uBlock
+      = document.getElementById(dragHandle.getAttribute('upperblock'));
+    var lBlock
+      = document.getElementById(dragHandle.getAttribute('lowerblock'));
 
-  lBlock.style.width = (dragHandleOrigLeft + diffX) + 'px';
-  rBlock.style.left = (dragHandleOrigRight + diffX) + 'px';
-
-  document.body.setAttribute('onmousemove', '');
-  document.body.setAttribute('onmouseup', '');
+    lBlock.style.top = (dragHandleOrigLower + diffY
+                        - dragHandleDiff) + 'px;';
+    uBlock.style.height = (dragHandleOrigUpper + diffY - dragHandleDiff) + 'px;';
+  }
+ 
+  document.removeEventListener('mouseup', stopHandleDragging, true);
+  document.removeEventListener('mousemove', dragHandleMove, true);
   document.body.setAttribute('style', '');
   event.cancelBubble = true;
+
+  dragHandleMove(event);
 
   return false;
 }
 
-function dragHandleMove(event, leftBlock, rightBlock) {
-  if (typeof(dragHandle) == undefined
-      || !dragHandle)
-    stopHandling(event);
-  else {
+function dragHandleMove(event) {
+  if (dragHandle.dhType == 'horizontal') {
     var width = dragHandle.offsetWidth;
-
     var hX = event.clientX;
     if (hX > -1) {
-      var newLeft = hX - (width / 2);
-      
-      dragHandle.style.left = newLeft + 'px';
+      var newLeft = Math.floor(hX - (width / 2));
+      dragHandle.style.left = newLeft + 'px;';
       event.cancelBubble = true;
       
+      return false;
+    }
+  } else if (dragHandle.dhType == 'vertical') {
+    var height = dragHandle.offsetHeight;
+    var hY = event.clientY;
+    if (hY > -1) {
+      var newTop = Math.floor(hY - (height / 2))  - dragHandleDiff;
+      dragHandle.style.top = newTop + 'px;';
+      event.cancelBubble = true;
+
       return false;
     }
   }
@@ -475,18 +666,34 @@ function dragHandleMove(event, leftBlock, rightBlock) {
 
 function dragHandleDoubleClick(event) {
   dragHandle = event.target;
-  var lBlock
-    = document.getElementById(dragHandle.getAttribute('leftblock'));
-  var lLeft = lBlock.offsetLeft;
 
-  if (dragHandle.offsetLeft > lLeft) {
-    var rBlock
-      = document.getElementById(dragHandle.getAttribute('rightblock'));
-    var leftDiff = rBlock.offsetLeft - dragHandle.offsetLeft;
+  if (dragHandle.dhType == 'horizontal') {
+    var lBlock
+      = document.getElementById(dragHandle.getAttribute('leftblock'));
+    var lLeft = lBlock.offsetLeft;
     
-    dragHandle.style.left = lLeft + 'px';
-    lBlock.style.width = '0px';
-    rBlock.style.left = (lLeft + leftDiff) + 'px';
+    if (dragHandle.offsetLeft > lLeft) {
+      var rBlock
+        = document.getElementById(dragHandle.getAttribute('rightblock'));
+      var leftDiff = rBlock.offsetLeft - dragHandle.offsetLeft;
+
+      dragHandle.style.left = lLeft + 'px;';
+      lBlock.style.width = '0px';
+      rBlock.style.left = (lLeft + leftDiff) + 'px;';
+    }
+  } else if (dragHandle.dhType == 'vertical') {
+    var uBlock
+      = document.getElementById(dragHandle.getAttribute('upperblock'));
+    var uTop = uBlock.offsetTop;
+
+    if (dragHandle.offsetTop > uTop) {
+      var lBlock
+        = document.getElementById(dragHandle.getAttribute('lowerblock'));
+      var topDiff = lBlock.offsetTop - dragHandle.offsetTop;
+      
+      dragHandle.style.top = uTop + 'px;';
+      uBlock.style.width = '0px';
+      lBlock.style.top = (uTop + topDiff) + 'px;';
+    }
   }
 }
-

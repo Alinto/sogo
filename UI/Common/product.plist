@@ -30,15 +30,6 @@
   };
 
   categories = {
-    SOGoUserLogin = {
-      methods = {
-	logoff = {
-          protectedBy = "View";
-          pageName    = "UIxUserLogoff";
-          actionName  = "logoffUser";
-	}
-      };
-    };
     SOGoObject = {
       methods = {
       };

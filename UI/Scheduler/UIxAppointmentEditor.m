@@ -1080,8 +1080,4 @@
   return [self redirectToLocation:[self _completeURIForMethod:@"../view"]];
 }
 
-- (BOOL) isPopup {
-  return YES;
-}
-
 @end /* UIxAppointmentEditor */

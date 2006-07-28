@@ -1,103 +1,344 @@
 <?xml version="1.0" standalone="yes"?>
-  <container xmlns="http://www.w3.org/1999/xhtml"
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
+    xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    popup="isPopup"
     >
     <var:if condition="hideFrame" const:negate="YES">
-      <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:var="http://www.skyrix.com/od/binding"
-	xmlns:const="http://www.skyrix.com/od/constant"
-	xmlns:rsrc="OGo:url"
-	xmlns:label="OGo:label"
->
-	<head>
-	  <title>
-	    <var:string value="title"/>
-	  </title>
-    
-	  <meta name="templatename" content="UIXMailMainFrame.wox"/>
-	  <meta name="description" content="SOGo Web Interface"/>
-	  <meta name="author" content="SKYRIX Software AG"/>
-	  <meta name="robots" content="stop"/>
-    
-	  <script rsrc:src="generic.js"> <!-- space required --></script>
-	  <script rsrc:src="mailer.js" > <!-- space required --></script>
+      <div class="menu" id="accountIconMenu">
+        <ul id="sourceList">
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Get Messages for Account" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="New Folder..." /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Properties..." /></li>
+        </ul>
+      </div>
 
-	  <var:if condition="hasProductSpecificJavaScript">
-	    <script var:src="productJavaScriptURL"> <!-- space required --></script>
-	  </var:if>
-	  <var:if condition="hasPageSpecificJavaScript">
-	    <script var:src="pageJavaScriptURL"> <!-- space required --></script>
-	  </var:if>
+      <div class="menu" id="inboxIconMenu">
+        <ul id="sourceList">
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="New Folder..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Properties..." /></li>
+        </ul>
+      </div>
+      
+      <div class="menu" id="trashIconMenu">
+        <ul id="sourceList">
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="New Subfolder..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Empty Trash" /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Properties..." /></li>
+        </ul>
+      </div>
 
-	  <link type="text/css" rel="stylesheet" rsrc:href="uix.css"/>
-	  <link type="text/css" rel="stylesheet" rsrc:href="mailer.css"/>
-	  <link type="text/css" rel="stylesheet" rsrc:href="mailer-toolbar.css"/>
+      <div class="menu" id="mailboxIconMenu">
+        <ul id="sourceList">
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="New Subfolder..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Rename Folder..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Delete Folder" /></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="return false;"><var:string label:value="Properties..." /></li>
+        </ul>
+      </div>
 
-	  <link href="mailto:info@skyrix.com" rev="made"/>
-	</head>
+      <div class="menu" id="addressMenu">
+        <ul id="sourceList">
+          <li id="add_to_addressbook"
+            onmousedown="return false;"
+            onmouseup="newContactFromEmail(this);"><var:string label:value="Add to Address Book..."/></li>
+          <li id="compose_mailto"
+            onmousedown="return false;"
+            onmouseup="newEmailTo(this);"><var:string label:value="Compose Mail To"/></li>
+          <li id="create_filter"
+            onmousedown="return false;"
+            onmouseup="onMenuEntryClick(this, event);"><var:string label:value="Create Filter From Message..."/></li>
+        </ul>
+      </div>
 
-	<body oncontextmenu="return false;">
-	  <!-- 
-	  Note: the 'href' is required, otherwise an element-id will get created
-	  -->
-	  <var:if condition="showLinkBanner">
-	    <div class="linkbanner">
-	      <!-- span style="float: left" -->
-	      <a var:href="relativeHomePath"
-		><var:string label:value="Home" /></a> |
-	      <a var:href="relativeCalendarPath"
-		><var:string label:value="Calendar" /></a> |
-	      <a var:href="relativeContactsPath"
-		><var:string label:value="Addressbook" /></a> |
-	      <a var:href="relativeMailPath"
-		><var:string label:value="Mail" /></a> |
-	      <a var:href="logoffPath"
-		><var:string label:value="Logoff" /></a> |
-	      <a href="http://to.be.done/"
-		><var:string label:value="Right Administration" /></a>
-	    </div>
-	  </var:if>
+      <div class="menu" id="messageListMenu">
+        <ul id="sourceList">
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuOpenMessage(event);"><var:string label:value="Open Message In New Window"/></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
+          <li class="separator"></li>
+          <li
+            class="submenu"
+            mailboxaction="move"
+            submenu="mailboxes-menu"
+            onmouseover="dropDownSubmenu(event);"
+            onmousedown="return false;"><var:string label:value="Move To"/></li>
+          <li
+            class="submenu"
+            mailboxaction="copy"
+            submenu="mailboxes-menu"
+            onmouseover="dropDownSubmenu(event);"
+            onmousedown="return false;"><var:string label:value="Copy To"/></li>
+          <li
+            class="submenu"
+            submenu="label-menu"
+            onmouseover="dropDownSubmenu(event);"
+            onmousedown="return false;"><var:string label:value="Label"/></li>
+          <li
+            class="submenu"
+            submenu="mark-menu"
+            onmouseover="dropDownSubmenu(event);"
+            onmousedown="return false;"><var:string label:value="Mark"/></li>
+          <li class="separator"></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
+          <li
+            onmousedown="return false;"
+            onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+        </ul>
 
-	  <var:component className="UIxToolbar" />
+        <div class="menu" id="messageContentMenu">
+          <ul>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
+            <li
+              class="submenu"
+              mailboxaction="move"
+              submenu="mailboxes-menu"
+              onmouseover="dropDownSubmenu(event);"
+              onmousedown="return false;"><var:string label:value="Move To"/></li>
+            <li
+              class="submenu"
+              mailboxaction="copy"
+              submenu="mailboxes-menu"
+              onmouseover="dropDownSubmenu(event);"
+              onmousedown="return false;"><var:string label:value="Copy To"/></li>
+            <li class="separator"></li>
+            <li
+              class="submenu"
+              submenu="label-menu"
+              onmouseover="dropDownSubmenu(event);"
+              onmousedown="return false;"><var:string label:value="Label"/></li>
+            <li
+              class="submenu"
+              submenu="mark-menu"
+              onmouseover="dropDownSubmenu(event);"
+              onmousedown="return false;"><var:string label:value="Mark"/></li>
+            <li class="separator"></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
+            <li
+              onmousedown="return false;"
+              onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+          </ul>
+        </div>
 
-	  <form name="pageform" var:href="pageFormURL" _wosid="0">
+        <div class="menu" id="label-menu">
+          <ul id="">
+            <li onmousedown="return false;"
+              onmouseup="onMenuLabelMessage(event, 'none');"><var:string label:value="None" /></li>
+            <li class="separator"></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuLabelMessage(event, 'important);"><var:string label:value="Important" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuLabelMessage(event, 'work');"><var:string label:value="Work" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuLabelMessage(event, 'personal');"><var:string label:value="Personal" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuLabelMessage(event, 'todo');"><var:string label:value="To Do" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuLab-elMessage(event, 'later');"><var:string label:value="Later" /></li>
+          </ul>
+        </div>
 
-	    <div class="folderTree" id="mailerFolderTree">
-	      <var:if condition="hideFolderTree">
-		<var:component-content/>
-	      </var:if>
+        <var:component
+          className="UIxMailFolderMenu"
+          const:menuId="mailboxes-menu"
+          const:parentMenu="0"
+          rootClassName="treeRootClassName" 
+          const:treeFolderAction="view" 
+          />
 
-	      <var:if condition="hideFolderTree" const:negate="YES">
-		<div class="titlediv"><var:string label:value="Folders" /></div>
-		<var:component className="UIxMailTree" 
-		  rootClassName="treeRootClassName" 
-		  const:treeFolderAction="view" 
-		  />
-	      </var:if>
-	    </div>
+        <div class="menu" id="mark-menu">
+          <ul id="">
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'read');"><var:string label:value="As Read" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'threadread');"><var:string label:value="Thread As Read" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'readbydate);"><var:string label:value="As Read By Date..." /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'allread);"><var:string label:value="All Read" /></li>
+            <li class="separator"></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'flag);"><var:string label:value="Flag" /></li>
+            <li class="separator"></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'junk);"><var:string label:value="As Junk" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'notjunk);"><var:string label:value="As Not Junk" /></li>
+            <li onmousedown="return false;"
+              onmouseup="onMenuMarkMessage(event, 'runjunkmailcontrols);"><var:string label:value="Run Junk Mail Controls" /></li>
+          </ul>
+        </div>
+      </div>
 
-	    <div id="dragHandle"
-	      onmousedown="startHandleDragging(event);"
-	      onmousemove=""
-	      ondblclick="dragHandleDoubleClick(event);"
-	      leftblock="mailerFolderTree"
-	      rightblock="mailerPageContent">
-	    </div>
+      <form name="pageform" var:href="pageFormURL" _wosid="0" onsubmit="checkSearchValue(event);">
+	<var:if condition="isPopup" const:negate="YES">
+          <var:if condition="hideFolderTree" const:negate="YES">
+            <div class="folderTree" id="mailerFolderTree">
+              <div class="titlediv"><var:string label:value="Folders" /></div>
+              <var:component className="UIxMailTree" 
+                rootClassName="treeRootClassName" 
+                const:treeFolderAction="view" 
+                />
+            </div>
+            
+            <div id="dragHandle"
+              onmousedown="startHandleDragging(event);"
+              onmousemove=""
+              ondblclick="dragHandleDoubleClick(event);"
+              leftblock="mailerFolderTree"
+              rightblock="mailerPageContent">
+            </div>
+          </var:if>
 
-	    <div class="mailPageContent" id="mailerPageContent">
-	      <var:component-content/>
-	    </div>
-	  </form>
+          <div id="mailerPageContent">
+            <var:component-content/>
+          </div>
+        </var:if>
 
-	  <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
-	</body>
-      </html>
+	<var:if condition="isPopup">
+          <var:component-content/>
+        </var:if>
+      </form>
+
+      <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
     </var:if>
 
     <var:if condition="hideFrame">
       <var:component-content/>
     </var:if>
-  </container>
+  </var:component>

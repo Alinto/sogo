@@ -19,53 +19,65 @@
   02111-1307, USA.
 */
 
-#include "UIxMailTreeBlock.h"
-#include "common.h"
+#import "UIxMailTreeBlock.h"
+#import "common.h"
 
 @implementation UIxMailTreeBlock
 
 id UIxMailTreeHasChildrenMarker = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   // TODO: needs to be an array because the WETreeView requires a
   //       children array
   UIxMailTreeHasChildrenMarker = 
     [[NSArray alloc] initWithObjects:@"FAKE", nil];
 }
 
-+ (id)blockWithName:(NSString *)_name title:(NSString *)_title
-  iconName:(NSString *)_icon
-  link:(NSString *)_link isPathNode:(BOOL)_isPath isActiveNode:(BOOL)_isActive
-  childBlocks:(NSArray *)_blocks
++ (id) blockWithName: (NSString *) _name
+	       title: (NSString *) _title
+	    iconName: (NSString *) _icon
+		link: (NSString *) _link
+	  isPathNode: (BOOL) _isPath
+	isActiveNode: (BOOL) _isActive
+	 childBlocks: (NSArray *) _blocks
 {
   UIxMailTreeBlock *block;
 
-  block = [[self alloc] initWithName:_name title:_title iconName:_icon
+  block = [[self alloc] initWithName:_name
+			title:_title
+			iconName:_icon
 			link:_link
-			isPathNode:_isPath isActiveNode:_isActive
+			isPathNode:_isPath
+			isActiveNode:_isActive
 			childBlocks:_blocks];
   return [block autorelease];
 }
 
-- (id)initWithName:(NSString *)_name title:(NSString *)_title
-  iconName:(NSString *)_icon
-  link:(NSString *)_link isPathNode:(BOOL)_isPath isActiveNode:(BOOL)_isActive
-  childBlocks:(NSArray *)_blocks
+- (id) initWithName: (NSString *) _name
+	      title: (NSString *) _title
+	   iconName: (NSString *) _icon
+	       link: (NSString *) _link
+	 isPathNode: (BOOL) _isPath
+       isActiveNode: (BOOL) _isActive
+	childBlocks: (NSArray *) _blocks
 {
-  if ((self = [self init])) {
-    self->name     = [_name   copy];
-    self->title    = [_title  copy];
-    self->iconName = [_icon copy];
-    self->link     = [_link   copy];
-    self->blocks   = [_blocks retain];
+  if ((self = [self init]))
+    {
+      self->name     = [_name   copy];
+      self->title    = [_title  copy];
+      self->iconName = [_icon copy];
+      self->link     = [_link   copy];
+      self->blocks   = [_blocks retain];
     
-    self->flags.isPath   = _isPath   ? 1 : 0;
-    self->flags.isActive = _isActive ? 1 : 0;
-  }
+      self->flags.isPath   = _isPath   ? 1 : 0;
+      self->flags.isActive = _isActive ? 1 : 0;
+    }
   return self;
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [self->iconName release];
   [self->blocks   release];
   [self->name     release];
@@ -76,30 +88,49 @@ id UIxMailTreeHasChildrenMarker = nil;
 
 /* accessors */
 
-- (NSString *)name {
+- (NSString *) name
+{
   return self->name;
 }
-- (NSString *)title {
+
+- (void) setName: (NSString *) newName
+{
+  if (name)
+    [name release];
+  name = [newName copy];
+  if (name)
+    [name retain];
+}
+
+- (NSString *) title
+{
   return self->title;
 }
-- (NSString *)link {
+
+- (NSString *) link
+{
   return self->link;
 }
-- (NSString *)iconName {
+
+- (NSString *) iconName
+{
   return self->iconName;
 }
 
-- (BOOL)hasChildren {
+- (BOOL) hasChildren
+{
   if (self->blocks == UIxMailTreeHasChildrenMarker)
     return YES;
   return [self->blocks count] > 0 ? YES : NO;
 }
 
-- (BOOL)areChildrenLoaded {
+- (BOOL) areChildrenLoaded
+{
   return self->blocks != UIxMailTreeHasChildrenMarker ? YES : NO;
 }
 
-- (NSArray *)children {
+- (NSArray *) children
+{
   if (self->blocks == UIxMailTreeHasChildrenMarker)
     // TODO: print a warning
     return self->blocks;
@@ -107,16 +138,20 @@ id UIxMailTreeHasChildrenMarker = nil;
   return self->blocks;
 }
 
-- (BOOL)isPathNode {
+- (BOOL) isPathNode
+{
   return self->flags.isPath ? YES : NO;
 }
-- (BOOL)isActiveNode {
+
+- (BOOL) isActiveNode
+{
   return self->flags.isActive ? YES : NO;
 }
 
 /* description */
 
-- (void)appendAttributesToDescription:(NSMutableString *)_ms {
+- (void) appendAttributesToDescription: (NSMutableString *) _ms
+{
   if (self->name  != nil) [_ms appendFormat:@" name='%@'", self->name];
   if (self->title != nil) [_ms appendFormat:@" title='%@'", self->title];
   
@@ -129,7 +164,8 @@ id UIxMailTreeHasChildrenMarker = nil;
     [_ms appendFormat:@" children=%@", self->blocks];
 }
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:64];
@@ -137,6 +173,51 @@ id UIxMailTreeHasChildrenMarker = nil;
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;
+}
+
+- (void) setSerial: (int) newSerial
+{
+  serial = newSerial;
+}
+
+- (int) serial
+{
+  return serial;
+}
+
+- (NSString *) serialAsString
+{
+  return [NSString stringWithFormat: @"%d", serial];
+}
+
+- (void) setParent: (int) newParent
+{
+  parent = newParent;
+}
+
+- (int) parent
+{
+  return parent;
+}
+
+- (void) setFolderType: (NSString *) newFolderType
+{
+  folderType = newFolderType;
+}
+
+- (NSString *) folderType
+{
+  return folderType;
+}
+
+- (NSString *) parentAsString
+{
+  return [NSString stringWithFormat: @"%d", parent];
+}
+
+- (NSString *) folderMenuId
+{
+  return [NSString stringWithFormat: @"__wox_submenu_%d-%d", parent, serial];
 }
 
 @end /* UIxMailTreeBlock */

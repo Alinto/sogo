@@ -279,9 +279,4 @@
   return [self redirectToLocation:uri];
 }
 
-- (BOOL) isPopup
-{
-  return YES;
-}
-
 @end /* UIxContactEditorBase */

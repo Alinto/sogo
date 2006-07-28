@@ -113,6 +113,12 @@ static BOOL useAltNamespace = NO;
   return [self->inbox isCreateAllowedInACL];
 }
 
+- (NSString *) mailFolderName
+{
+  return [NSString stringWithFormat: @"/%@",
+                   [[self clientObject] nameInContainer]];
+}
+
 /* error redirects */
 
 - (id)redirectToViewWithError:(id)_error {

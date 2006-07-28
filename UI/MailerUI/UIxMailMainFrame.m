@@ -19,31 +19,11 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
-#include "../Common/UIxPageFrame.h"
+#import <SOGoUI/UIxComponent.h>
+#import "UIxMailMainFrame.h"
 
-@interface UIxMailMainFrame : UIxPageFrame
-{
-  NSString *rootURL;
-  NSString *userRootURL;
-  struct {
-    int hideFolderTree:1;
-    int hideFrame:1; /* completely disables all the frame around the comp. */
-    int reserved:30;
-  } mmfFlags;
-}
-
-- (NSString *)rootURL;
-- (NSString *)userRootURL;
-- (NSString *)calendarRootURL;
-
-@end
-
-@interface UIxMailPanelFrame : UIxMailMainFrame
-@end
-
-#include "common.h"
-#include <NGObjWeb/SoComponent.h>
+#import "common.h"
+#import <NGObjWeb/SoComponent.h>
 
 @implementation UIxMailMainFrame
 
@@ -78,14 +58,7 @@ static NSString *treeRootClassName = nil;
   return self->mmfFlags.hideFolderTree ? YES : NO;
 }
 
-- (void)setHideFrame:(BOOL)_flag {
-   self->mmfFlags.hideFrame = _flag ? 1 : 0;
-}
-- (BOOL)hideFrame {
-  return self->mmfFlags.hideFrame ? YES : NO;
-}
-
-- (NSString *)pageFormURL {
+- (NSString *) pageFormURL {
   NSString *u;
   NSRange  r;
   
@@ -179,6 +152,7 @@ static NSString *treeRootClassName = nil;
 - (NSString *)calendarRootURL {
   return [[self userRootURL] stringByAppendingString:@"Calendar/"];
 }
+
 - (NSString *)contactsRootURL {
   return [[self userRootURL] stringByAppendingString:@"Contacts/"];
 }
@@ -210,14 +184,3 @@ static NSString *treeRootClassName = nil;
 }
 
 @end /* UIxMailMainFrame */
-
-@implementation UIxMailPanelFrame
-
-- (BOOL)hideFolderTree {
-  return YES;
-}
-- (BOOL)showLinkBanner {
-  return NO;
-}
-
-@end /* UIxMailPanelFrame */

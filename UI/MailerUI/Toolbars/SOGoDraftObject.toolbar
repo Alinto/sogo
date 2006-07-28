@@ -6,12 +6,12 @@
       cssClass = "tbicon_send"; label = "Send"; },
     { link  = "#"; target = "addressbook";
       onclick  = "openAddressbook(this);return false;";
-      image = "tb-mail-addressbook-flat-24x24.png";
-      cssClass = "tbicon_addressbook"; label = "Addressbook"; },
-    { link  = "#"; target = "anais";
+      image = "tb-compose-contacts-flat-24x24.png";
+      cssClass = "tbicon_addressbook"; label = "Contacts"; },
+/*    { link  = "#"; target = "anais";
       onclick  = "openAnais(this);return false;";
       image = "tbtb_anais.png";
-      cssClass = "tbicon_anais"; label = "Anais"; },
+      cssClass = "tbicon_anais"; label = "Anais"; }, */
     { link  = "#"; isSafe = NO;
       onclick  = "clickedEditorAttach(this)";
       image = "tb-compose-attach-flat-24x24.png";
@@ -20,8 +20,5 @@
       onclick  = "clickedEditorSave(this);return false;";
       image = "tb-mail-file-flat-24x24.png";
       cssClass = "tbicon_save"; label = "Save"; },
-    { link = "delete"; isSafe = NO;
-      image = "tb-mail-delete-flat-24x24.png";
-      cssClass = "tbicon_delete"; label = "Delete"; },
   )
 )

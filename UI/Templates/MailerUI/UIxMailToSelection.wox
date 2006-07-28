@@ -12,11 +12,11 @@
   </script>
   <script language="JavaScript" rsrc:src="UIxMailToSelection.js"> <!-- Space! --></script>
 
-  <table id="addr_table" style="width: 100%;">
+  <table id="addr_table">
     <var:foreach list="addressLists" item="addressList">
       <var:foreach list="addressList" item="address">
         <tr var:id="currentRowId">
-          <td width="20%">
+          <td>
             <var:popup name="currentPopUpId"
                        list="headers"
                        item="item"
@@ -25,7 +25,7 @@
                        const:style="width: 100%;"
             />
           </td>
-          <td width="80%">
+          <td>
             <input var:id="currentAddressId"
                    var:name="currentAddressId"
                    type="text"
@@ -40,13 +40,13 @@
       </var:foreach>
     </var:foreach>
     <tr id="row_last">
-      <td width="20%">
+      <td>
         <!-- todo: use stylesheet? -->
         <select style="width: 100%;" disabled="1">
 	    <option value="to" ><var:string label:value="to" />:</option>
         </select>
       </td>
-      <td width="80%">
+      <td>
         <!-- todo: use stylesheet? -->
         <input onfocus="fancyAddRow(true,'');" type="text" 
                style="width: 100%;" />

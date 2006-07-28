@@ -3,7 +3,7 @@ var rowSelectionCount = 0;
 validateControls();
 
 function showElement(e, shouldShow) {
-	e.style.display = shouldShow ? "" : "none";
+  e.style.display = shouldShow ? "" : "none";
 }
 
 function enableElement(e, shouldEnable) {
@@ -51,7 +51,6 @@ function popupSearchMenu(event, menuId)
 
   if (event.button == 0
       && relX < 24) {
-    log('popup');
     event.cancelBubble = true;
     event.returnValue = false;
 
@@ -85,27 +84,33 @@ function setSearchCriteria(event)
   searchField = document.getElementById('searchValue');
   searchCriteria = document.getElementById('searchCriteria');
   
-  node = event.target;
+  var node = event.target;
   searchField.setAttribute("ghost-phrase", node.innerHTML);
   searchCriteria = node.getAttribute('id');
 }
 
+function checkSearchValue(event)
+{
+  var form = event.target;
+  var searchField = document.getElementById('searchValue');
+  var ghostPhrase = searchField.getAttribute('ghost-phrase');
+
+  if (searchField.value == ghostPhrase)
+    searchField.value = "";
+}
+
 function onSearchChange()
 {
-  log('onSearchChange');
 }
 
 function onSearchMouseDown(event)
 {
-  log('onSearchMouseDown');
-
   searchField = document.getElementById('searchValue');
   superNode = searchField.parentNode.parentNode.parentNode;
   relX = (event.pageX - superNode.offsetLeft - searchField.offsetLeft);
   relY = (event.pageY - superNode.offsetTop - searchField.offsetTop);
 
   if (relY < 24) {
-    log('menu');
     event.cancelBubble = true;
     event.returnValue = false;
   }
@@ -113,7 +118,6 @@ function onSearchMouseDown(event)
 
 function onSearchFocus(event)
 {
-  log('onSearchFocus');
   searchField = document.getElementById('searchValue');
   ghostPhrase = searchField.getAttribute("ghost-phrase");
   if (searchField.value == ghostPhrase) {
@@ -128,7 +132,6 @@ function onSearchFocus(event)
 
 function onSearchBlur()
 {
-  log('onSearchBlur');
   var searchField = document.getElementById('searchValue');
   var ghostPhrase = searchField.getAttribute("ghost-phrase");
 
@@ -159,7 +162,45 @@ function initCriteria()
     searchField.setAttribute('ghost-phrase', firstOption.innerHTML);
     searchField.setAttribute("modified", "");
     searchField.style.color = "#aaa";
-
-    log(searchField.value);
   }
+}
+
+function deleteSelectedMails()
+{
+}
+
+
+/* message menu entries */
+function onMenuOpenMessage(event)
+{
+  var node = getParentMenu(event.target).menuTarget.parentNode;
+  var msgId = node.getAttribute('id').substr(4);
+
+  openMessageWindow(null, msgId, msgId + "/view");
+
+  return false;
+}
+
+function onMenuReplyToSender(event)
+{
+  openMessageWindowsForSelection(null, 'reply');
+}
+
+function onMenuReplyToAll(event)
+{
+  openMessageWindowsForSelection(null, 'replyall');
+
+}
+
+function onMenuForwardMessage(event)
+{
+  openMessageWindowsForSelection(null, 'forward');
+
+}
+
+function onMenuDeleteMessage(event)
+{
+  uixDeleteSelectedMessages(null);
+
+  return false;
 }

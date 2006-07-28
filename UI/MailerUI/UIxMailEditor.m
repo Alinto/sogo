@@ -280,17 +280,17 @@ static NSArray      *infoKeys            = nil;
   SOGoMailAccounts *accounts;
   SOGoMailAccount  *account;
   SOGoMailIdentity *identity;
-  
+
   if (useLocationBasedSentFolder) /* from will be based on location */
     return;
-  
+
   if ([self->from isNotEmpty]) /* a from is already set */
     return;
-  
+
   accountID = [[[self context] request] formValueForKey:@"account"];
   if (![accountID isNotEmpty])
     return;
-  
+
   accounts = [[self clientObject] mailAccountsFolder];
   if ([accounts isExceptionOrNull])
     return; /* we don't treat this as an error but are tolerant */
@@ -306,7 +306,7 @@ static NSArray      *infoKeys            = nil;
     return;
   }
   
-  [self setFrom:[identity email]];
+  [self setFrom: [identity email]];
 }
 
 - (SOGoMailIdentity *)selectedMailIdentity {

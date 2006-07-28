@@ -19,18 +19,13 @@
   02111-1307, USA.
 */
 
-#if LIB_FOUNDATION_LIBRARY
-#  include <Foundation/exceptions/GeneralExceptions.h>
-#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-#  include <NGExtensions/NGObjectMacros.h>
-#  include <NGExtensions/NSString+Ext.h>
-#endif
+#import <NGExtensions/NGExtensions.h>
+#import <NGObjWeb/NGObjWeb.h>
+#import <NGObjWeb/SoObjects.h>
 
-#include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/NGObjWeb.h>
-#include <NGObjWeb/SoObjects.h>
+#import <SOGoUI/UIxComponent.h>
 
-#include <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/SoComponent.h>
 
 @class NSArray, NSDictionary;
 
@@ -41,8 +36,6 @@
   NSDictionary *buttonInfo;
 }
 @end
-
-#include <NGObjWeb/SoComponent.h>
 
 @implementation UIxToolbar
 
@@ -192,14 +185,13 @@
   return label;
 }
 
-- (id) buttonImage {
-  WOResourceManager *rm;
+- (id) buttonImage
+{
   NSString *image;
 
-  rm = [self pageResourceManager];
   image = [buttonInfo objectForKey: @"image"];
   if (image && [image length] > 0)
-    image = [rm urlForResourceNamed: image];
+    image = [self urlForResourceFilename: image];
 
   return image;
 }
@@ -213,7 +205,7 @@
   
   if ((onOffKey = [[self buttonInfo] valueForKey:@"enabled"]) == nil)
     return YES;
-  
+
   return [[[[self context] page] valueForKeyPath:onOffKey] boolValue];
 }
 

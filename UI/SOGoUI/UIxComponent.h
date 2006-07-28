@@ -66,6 +66,8 @@
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date;
 - (NSCalendarDate *)dateForDateString:(NSString *)_dateString;
 
+- (BOOL) hideFrame;
+
 /* SoUser */
 - (SoUser *)user;
 - (NSString *)shortUserNameForDisplay;
@@ -83,6 +85,10 @@
     
 /* locale */
 - (NSDictionary *)locale;
+
+/* cached resource filenames */
+- (WOResourceManager *) pageResourceManager;
+- (NSString *) urlForResourceFilename: (NSString *) filename;
 
 /* Debugging */
 - (BOOL)isUIxDebugEnabled;

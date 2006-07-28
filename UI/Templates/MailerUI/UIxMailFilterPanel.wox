@@ -4,56 +4,47 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     >
-
     <div class="menu" id="searchMenu">
       <ul id="searchOptions">
-	<li id="subject"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="Subject"/></li>
-	<li id="sender"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="Sender"/></li>
-	<li id="subject_or_sender"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="Subject or Sender"/></li>
-	<li id="to_or_cc"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="To or Cc"/></li>
-	<li id="entire_message"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="Entire Message"/></li>
-	<li id="find_in_message"
-	  onmousedown="return false;"
-	  onclick="setSearchCriteria(event);"><var:string label:value="Find In Message"/></li>
+        <li id="subject"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Subject"/></li>
+        <li id="sender"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Sender"/></li>
+        <li id="subject_or_sender"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Subject or Sender"/></li>
+        <li id="to_or_cc"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="To or Cc"/></li>
+        <li id="entire_message"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Entire Message"/></li>
+        <li id="find_in_message"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Find In Message"/></li>
       </ul>
     </div>
     
-    <var:if condition="hideFrame" const:negate="YES">
-      <span class="searchBox" style="float: right">
-	<input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
-	<input id="searchValue" onmousedown="onSearchMouseDown(event);" onclick="popupSearchMenu(event, 'searchMenu');" autocomplete="off" name="search" type="text" var:value="searchText" onchange="onSearchChange();" onblur="onSearchBlur();" onfocus="onSearchFocus(event);" />
-      </span>
+    <div id="filterPanel">
+      <var:if condition="hideFrame" const:negate="YES"
+        ><span class="searchBox" style="float: right">
+          <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
+          <input id="searchValue" onmousedown="onSearchMouseDown(event);" onclick="popupSearchMenu(event, 'searchMenu');" autocomplete="off" name="search" type="text" var:value="searchText" onchange="onSearchChange();" onblur="onSearchBlur();" onfocus="onSearchFocus(event);" />
+        </span>
 
+        <script type="text/javascript">
+          initCriteria();
+          document.pageform.search.focus();
+        </script>
 
-      <script type="text/javascript">
-	initCriteria();
-	document.pageform.search.focus();
-      </script>
-    </var:if>
-
-      <var:string label:value="View" />:
-      <var:popup list="filters" 
-	item="filter" string="filterLabel" value="filter"
-	selection="selectedFilter"
-	const:name="filterpopup" 
-	const:onchange="document.pageform.submit()" />
-      <!--
-      autocomplete="off"
-      onkeypress="ml_searchFieldKeyPressed(this)"
-      onfocus="ml_activateSearchField(this, 500)" 
-      onblur="ml_deactivateSearchField(this)" />
-      -->
-    </span>
-    </var:if>
+        <var:string label:value="View" />:
+        <var:popup list="filters" 
+          item="filter" string="filterLabel" value="filter"
+          selection="selectedFilter"
+          const:name="filterpopup" 
+          const:onchange="document.pageform.submit()" />
+      </var:if>
+    </div>
   </container>
-  

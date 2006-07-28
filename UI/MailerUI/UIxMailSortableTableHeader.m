@@ -65,6 +65,7 @@
 - (void)setSortKey:(NSString *)_sortKey {
   ASSIGNCOPY(self->sortKey, _sortKey);
 }
+
 - (NSString *)sortKey {
   return self->sortKey;
 }

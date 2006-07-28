@@ -27,7 +27,7 @@
 #include <SoObjects/Mailer/SOGoMailObject.h>
 #include "common.h"
 
-#import "../Common/NSString+URL.h"
+#import "../SOGoUI/NSString+URL.h"
 
 @implementation UIxMailEditorAction
 

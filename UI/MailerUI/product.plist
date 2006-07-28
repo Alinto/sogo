@@ -12,7 +12,7 @@
     "UIxMailToSelection.js",
 
     "lori_32x32.png",
-    
+
     "tbtv_account_17x17.gif",
     "tbtv_drafts_17x17.gif",
     "tbtv_inbox_17x17.gif",
@@ -27,7 +27,7 @@
     "tbtv_corner_plus_17x17.gif",
     "tbtv_sent_17x17.gif",
     "tbtv_trash_17x17.gif",
-    
+
     "tbtb_addressbook.png",
     "tbtb_compose.png",
     "tbtb_delete.png",
@@ -81,52 +81,55 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailFolder.toolbar";
+          value = "SOGoMailObject.toolbar";
         };
       };
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
+        };
+        ajax = {
+          protectedBy = "View";
+          pageName    = "UIxMailAjaxRequest";
         };
         index = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
         };
         GET = { /* hack to make it work as the default method */
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
         };
-        
         markMessageUnread = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "markMessageUnread";
         };
         markMessageRead = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "markMessageRead";
         };
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "getMail";
         };
         expunge = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "expunge";
         };
-        
+
         createFolder = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "createFolder";
         };
         deleteFolder = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "deleteFolder";
         };
 	
@@ -134,10 +137,10 @@
           protectedBy = "View";
           pageName    = "UIxMailFolderACLEditor";
         };
-        
+
         compose = {
           protectedBy = "View";
-          actionClass = "UIxMailEditorAction"; 
+          actionClass = "UIxMailEditorAction";
           actionName  = "compose";
         };
       };
@@ -148,13 +151,13 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoTrashFolder.toolbar";
+          value = "SOGoMailObject.toolbar";
         };
       };
       methods = {
         emptyTrash = {
           protectedBy = "View";
-          pageName    = "UIxMailListView"; 
+          pageName    = "UIxMailListView";
           actionName  = "emptyTrash";
         };
       };
@@ -168,103 +171,97 @@
         };
       };
       methods = {
-        view = { 
+        view = {
           protectedBy = "View";
-          pageName    = "UIxMailView"; 
+          pageName    = "UIxMailViewContainer";
         };
 
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailView"; 
+          pageName    = "UIxMailViewContainer";
           actionName  = "getMail";
         };
 
-        delete = { 
+        delete = {
           protectedBy = "View";
-          pageName    = "UIxMailView"; 
+          pageName    = "UIxMailViewContainer";
           actionName  = "delete";
         };
-        trash = { 
+        trash = {
           protectedBy = "View";
-          pageName    = "UIxMailView"; 
+          pageName    = "UIxMailViewContainer";
           actionName  = "trash";
         };
-        junk = { 
+        junk = {
           protectedBy = "View";
-          pageName    = "UIxMailView"; 
+          pageName    = "UIxMailViewContainer";
           actionName  = "junk";
         };
-        edit = { 
+        edit = {
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
         };
         compose = {
           protectedBy = "View";
-          actionClass = "UIxMailEditorAction"; 
+          actionClass = "UIxMailEditorAction";
           actionName  = "compose";
         };
         reply = {
           protectedBy = "View";
-          actionClass = "UIxMailReplyAction"; 
+          actionClass = "UIxMailReplyAction";
           actionName  = "reply";
         };
         replyall = {
           protectedBy = "View";
-          actionClass = "UIxMailReplyAction"; 
+          actionClass = "UIxMailReplyAction";
           actionName  = "replyall";
         };
         forward = {
           protectedBy = "View";
-          actionClass = "UIxMailForwardAction"; 
+          actionClass = "UIxMailForwardAction";
           actionName  = "forward";
         };
       };
     };
-    
+
     SOGoMailAccounts = {
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = ( /* the toolbar groups */
-            ( /* first group */
-              { link  = "getMail";
-		image = "tb-mail-getmail-flat-24x24.png";
-                cssClass = "tbicon_getmail"; label = "Get Mail"; },
-            )
-          );
+          value = "SOGoMailObject.toolbar";
         };
       };
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountsView"; 
+          pageName    = "UIxMailAccountsView";
         };
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountsView"; 
+          pageName    = "UIxMailAccountsView";
         };
       };
     };
-    
+
     SOGoMailAccount = {
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailAccount.toolbar";
+          value = "SOGoMailObject.toolbar";
         };
       };
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountView"; 
+          pageName    = "UIxMailAccountView";
         };
         getMail = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountView"; 
+          pageName    = "UIxMailAccountView";
         };
         addressbook = {
           protectedBy = "View";
-          pageName    = "UIxMailAddressbook"; 
+          pageName    = "UIxMailAddressbook";
         };
         anais = {
           protectedBy = "View";
@@ -273,12 +270,12 @@
         };
         compose = {
           protectedBy = "View";
-          actionClass = "UIxMailEditorAction"; 
+          actionClass = "UIxMailEditorAction";
           actionName  = "compose";
         };
         createFolder = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountView"; 
+          pageName    = "UIxMailAccountView";
           actionName  = "createFolder";
         };
       };
@@ -330,43 +327,43 @@
       methods = {
         view = { /* somewhat hackish */
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
         };
         edit = {
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
           actionName  = "edit";
         };
         save = {
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
           actionName  = "save";
         };
         delete = {
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
           actionName  = "delete";
         };
 
         viewAttachments = {
           protectedBy = "View";
-          pageName    = "UIxMailEditorAttach"; 
+          pageName    = "UIxMailEditorAttach";
           actionName  = "viewAttachments";
         };
         attach = {
           protectedBy = "View";
-          pageName    = "UIxMailEditorAttach"; 
+          pageName    = "UIxMailEditorAttach";
           actionName  = "attach";
         };
         deleteAttachment = {
           protectedBy = "View";
-          pageName    = "UIxMailEditorAttach"; 
+          pageName    = "UIxMailEditorAttach";
           actionName  = "deleteAttachment";
         };
 
         send = {
           protectedBy = "View";
-          pageName    = "UIxMailEditor"; 
+          pageName    = "UIxMailEditor";
           actionName  = "send";
         };
         addressbook = {
@@ -382,7 +379,7 @@
     };
 
     /* Sieve */
-    
+
     SOGoSieveScriptsFolder = {
       slots = {
         toolbar = {
@@ -402,7 +399,7 @@
               },
             ),
             ( /* second group
-              { link = "#"; 
+              { link = "#";
                 cssClass = "tbicon_delete"; label = "Delete"; },*/
             ),
           );
@@ -411,11 +408,11 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxFilterList"; 
+          pageName    = "UIxFilterList";
         };
         create = {
           protectedBy = "View";
-          pageName    = "UIxFilterList"; 
+          pageName    = "UIxFilterList";
           actionName  = "create";
         };
       };
@@ -442,17 +439,17 @@
       methods = {
         edit = {
           protectedBy = "View";
-          pageName    = "UIxSieveEditor"; 
+          pageName    = "UIxSieveEditor";
           actionName  = "edit";
         };
         save = {
           protectedBy = "View";
-          pageName    = "UIxSieveEditor"; 
+          pageName    = "UIxSieveEditor";
           actionName  = "save";
         };
         delete = {
           protectedBy = "View";
-          pageName    = "UIxSieveEditor"; 
+          pageName    = "UIxSieveEditor";
           actionName  = "delete";
         };
       };

@@ -60,19 +60,19 @@ function toggleMailSelect(sender) {
   row = document.getElementById(sender.name);
   row.className = sender.checked ? "tableview_selected" : "tableview";
 }
+
 function collectSelectedRows() {
-  var pageform = document.forms['pageform'];
   var rows = new Array();
+  var messageList = document.getElementById('messageList');
+  var tbody = (messageList.getElementsByTagName('tbody'))[0];
+  var selectedRows = getSelectedNodes(tbody);
 
-  for (key in pageform) {
-    if (key.indexOf("row_") != 0)
-      continue;
-
-    if (!pageform[key].checked)
-      continue;
-    
-    rows[rows.length] = key.substring(4, key.length);
+  for (var i = 0; i < selectedRows.length; i++) {
+    var row = selectedRows[i];
+    var rowId = row.getAttribute('id').substring(4);
+    rows[rows.length] = rowId;
   }
+
   return rows;
 }
 
@@ -308,7 +308,7 @@ function openMessageWindowsForSelection(sender, action) {
   var idset = "";
   
   for (var i = 0; i < rows.length; i++) {
-    win = openMessageWindow(sender, 
+    win = openMessageWindow(sender,
 			    rows[i]                /* msguid */,
 			    rows[i] + "/" + action /* url */);
   }
