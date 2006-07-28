@@ -12,6 +12,10 @@ libSOGoUI_HEADER_FILES_INSTALL_DIR = /SOGoUI
 FHS_HEADER_DIRS = SOGoUI
 
 libSOGoUI_HEADER_FILES +=	\
+	\
+	NSDictionary+URL.h	\
+	NSString+URL.h		\
+	\
 	UIxComponent.h		\
 	SOGoDateFormatter.h	\
 	SOGoAptFormatter.h	\
@@ -19,6 +23,10 @@ libSOGoUI_HEADER_FILES +=	\
 	WOContext+UIx.h		\
 
 libSOGoUI_OBJC_FILES +=		\
+	\
+	NSDictionary+URL.m	\
+	NSString+URL.m		\
+	\
 	UIxComponent.m		\
 	SOGoDateFormatter.m	\
 	SOGoAptFormatter.m	\

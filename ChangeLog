@@ -1,3 +1,19 @@
+2006-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoUser+Mail.m: if only one identity is to be
+	returned, put it in an NSArray before returning it (fixes
+	bug#217).
+
+2006-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/NSString+URL.m ([NSString -hostlessURL]): new method
+	that returns a url string stripped from its "http://hostname"
+	prefix.
+
+	* UI/SOGoUI/NSDictionary+URL.[hm]: moved from UI/Common.
+
+	* UI/SOGoUI/NSString+URL.[hm]: moved from UI/Common.
+
 2006-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/WOContext+UIxMailer.m ([WOContext

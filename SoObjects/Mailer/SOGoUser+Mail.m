@@ -88,7 +88,7 @@
   identity = [self primaryMailIdentity];
   shares = [self valueForKey:@"additionalIMAP4AccountsAndEMails"];
   if ([shares count] == 0)
-    return identity;
+    return [NSArray arrayWithObject: identity];
   
   identities = [NSMutableArray arrayWithCapacity:[shares count] + 1];
   if (identity != nil) [identities addObject:identity];

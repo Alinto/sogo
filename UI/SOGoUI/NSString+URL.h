@@ -32,6 +32,8 @@
 - (NSString *) composeURLWithAction: (NSString *) action
 			 parameters: (NSDictionary *) urlParameters
 			    andHash: (BOOL) useHash;
+- (NSString *) hostlessURL;
+
 @end
 
 #endif /* NSSTRING_URL_H */

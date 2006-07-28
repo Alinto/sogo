@@ -9,9 +9,6 @@ CommonUI_PRINCIPAL_CLASS = CommonUIProduct
 CommonUI_LANGUAGES = English French
 
 CommonUI_OBJC_FILES +=		\
-	NSString+URL.m		\
-	NSDictionary+URL.m	\
-	\
 	CommonUIProduct.m	\
 	UIxPageFrame.m		\
 	UIxPrintPageFrame.m	\
