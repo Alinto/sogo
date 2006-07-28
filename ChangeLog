@@ -1,3 +1,10 @@
+2006-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/dtree.{css,js}: new files to handle
+	javascript-generated mailbox tree. Modified from original version
+	by integrating the previous code with the one we are using for
+	selections and mailbox handling. Minor visual enhancements too...
+
 2006-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoUser+Mail.m: if only one identity is to be
