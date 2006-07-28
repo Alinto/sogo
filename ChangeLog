@@ -1,5 +1,9 @@
 2006-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/MailerUI/UIxMailPanelFrame.wox: the components
+	using that container-template are now using UIxMailMainFrame
+	since UIxMailPanelFrame had no real interest. File removed.
+
 	* UI/WebServerResources/dtree.{css,js}: new files to handle
 	javascript-generated mailbox tree. Modified from original version
 	by integrating the previous code with the one we are using for
