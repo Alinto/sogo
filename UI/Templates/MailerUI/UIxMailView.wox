@@ -48,7 +48,7 @@
           <td class="mailer_fieldvalue">
             <var:foreach list="clientObject.toEnvelopeAddresses"
               item="currentAddress">
-              <a var:href="currentAddressLink" onclick="onMenuClick(event, 'addressMenu');" oncontextmenu="onMenuClick(event, 'addressMenu');" onmousedown="return false;">
+              <a var:href="currentAddressLink" onmousedown="return false;" onclick="onMenuClick(event, 'addressMenu');" oncontextmenu="onMenuClick(event, 'addressMenu');">
                 <var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter" /></a>
             </var:foreach>
