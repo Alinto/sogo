@@ -26,6 +26,8 @@
   object.
 */
 
+#define messagesPerPage 50
+
 #include "common.h"
 #include <SoObjects/Mailer/SOGoMailFolder.h>
 #include <SoObjects/Mailer/SOGoMailObject.h>
@@ -169,6 +171,7 @@ static int attachmentFlagSize = 8096;
 {
   return @"DATE";
 }
+
 - (NSString *) imap4SortKey 
 {
   NSString *sort;
@@ -203,8 +206,8 @@ static int attachmentFlagSize = 8096;
 - (NSRange) fetchRange 
 {
   if (self->firstMessageNumber == 0)
-    return NSMakeRange(0, 50);
-  return NSMakeRange(self->firstMessageNumber - 1, 50);
+    return NSMakeRange(0, messagesPerPage);
+  return NSMakeRange(self->firstMessageNumber - 1, messagesPerPage);
 }
 
 - (NSArray *) sortedUIDs 
@@ -215,6 +218,7 @@ static int attachmentFlagSize = 8096;
   self->sortedUIDs 
     = [[[self clientObject] fetchUIDsMatchingQualifier:[self qualifier]
 			    sortOrdering:[self imap4SortOrdering]] retain];
+
   return self->sortedUIDs;
 }
 
@@ -255,10 +259,12 @@ static int attachmentFlagSize = 8096;
     r.length = len - r.location;
   return r;
 }
+
 - (unsigned int) firstMessageNumber 
 {
   return [self fetchBlock].location + 1;
 }
+
 - (unsigned int) lastMessageNumber 
 {
   NSRange r;
@@ -266,10 +272,12 @@ static int attachmentFlagSize = 8096;
   r = [self fetchBlock];
   return r.location + r.length;
 }
+
 - (BOOL) hasPrevious 
 {
   return [self fetchBlock].location == 0 ? NO : YES;
 }
+
 - (BOOL) hasNext 
 {
   NSRange r = [self fetchBlock];
@@ -280,6 +288,7 @@ static int attachmentFlagSize = 8096;
 {
   return [self firstMessageNumber] + [self fetchRange].length;
 }
+
 - (unsigned int) prevFirstMessageNumber 
 {
   NSRange  r;
@@ -457,10 +466,35 @@ static int attachmentFlagSize = 8096;
   return r;
 }
 
+- (int) firstMessageOfPageFor: (int) messageNbr
+{
+  NSArray *messageNbrs;
+  int nbrInArray;
+  int firstMessage;
+
+  messageNbrs = [self sortedUIDs];
+  nbrInArray
+    = [messageNbrs indexOfObject: [NSNumber numberWithInt: messageNbr]];
+  if (nbrInArray > -1)
+    firstMessage = ((int) (nbrInArray / messagesPerPage)
+                    * messagesPerPage) + 1;
+  else
+    firstMessage = 1;
+
+  return firstMessage;
+}
+
 - (id) defaultAction 
 {
-  self->firstMessageNumber = 
-    [[[[self context] request] formValueForKey:@"idx"] intValue];
+  WORequest *request;
+  NSValue *specificMessage;
+
+  request = [[self context] request];
+  specificMessage = [request formValueForKey: @"pageforuid"];
+  self->firstMessageNumber
+    = ((specificMessage)
+       ? [self firstMessageOfPageFor: [specificMessage intValue]]
+       : [[request formValueForKey:@"idx"] intValue]);
 
   return self;
 }
@@ -502,7 +536,7 @@ static int attachmentFlagSize = 8096;
 {
   // TODO: we might want to flush the caches?
   id client;
-  
+
   if ((client = [self clientObject]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find mail folder"];
@@ -510,7 +544,7 @@ static int attachmentFlagSize = 8096;
 
   if (![client respondsToSelector:@selector(flushMailCaches) ]) 
     {
-      return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+      return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
                           reason:
                             @"invalid client object (does not support flush)"];
     }

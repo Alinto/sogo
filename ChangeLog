@@ -1,5 +1,14 @@
 2006-07-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-defaultAction]): if the "pageforuid" parameter is passed in the
+	url, take its value and invoke [self firstMessageOfPageFor:]
+	consequently to deduce the first message to display. Otherwise,
+	set it to "idx", otherwise set it to 0.
+	([UIxMailListView -firstMessageOfPageFor:]): new method
+	that determines the first message of the page where the message
+	passed as parameter is contained.
+
 	* UI/WebServerResources/UIxMailListView.js: removed this module,
 	its code was put in MailerUI.js instead.
 
