@@ -371,9 +371,6 @@ function onMenuClick(event, menuId)
 {
   var node = event.target;
 
-  event.cancelBubble = true;
-  event.returnValue = false;
-
   if (document.currentPopupMenu)
     hideMenu(event, document.currentPopupMenu);
 
@@ -400,7 +397,8 @@ function onMenuClick(event, menuId)
   document.body.setAttribute("onclick", "onBodyClick(event);");
   document.currentPopupMenu = popup;
 
-  return false;
+  event.cancelBubble = true;
+  event.returnValue = false;
 }
 
 function setupMenuTarget(menu, target)
