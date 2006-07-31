@@ -1,5 +1,21 @@
 2006-07-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js:
+	- message cache: set the max num of cached messages to 20. Limit
+	the cached message size to 30000 bytes.
+	- ajax: when a message request is called while one is already
+	being performed, the latter will be cancelled. Idem when
+	retrieving the content of a mailbox.
+	- folder tree: when a mailbox is selected because of the URL
+	requested (initMailboxSelection), the dtree is expanded throughout
+	the mailbox entry's parent hierarchy to ensure it is made visible
+	when the page is being displayed. (new function: expandUpperTree).
+	- mailbox loading: when loading a mailbox where a message was
+	previously selected, we invoke its url with the "pageforuid"
+	parameter correctly specified. During callback processing, we scan
+	the table for the related row and reselect it.
+	Also, the message area is set blank before loading any mailbox.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-defaultAction]): if the "pageforuid" parameter is passed in the
 	url, take its value and invoke [self firstMessageOfPageFor:]

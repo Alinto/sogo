@@ -34,7 +34,7 @@
 */
 
 var currentMessages = new Array();
-var maxCachedMessages = 10;
+var maxCachedMessages = 20;
 var cachedMessages = new Array();
 var currentMailbox = '';
 /* mail list */
@@ -309,7 +309,8 @@ function reopenToRemoveLocationBar() {
 
 /* mail list reply */
 
-function openMessageWindowsForSelection(sender, action) {
+function openMessageWindowsForSelection(sender, action)
+{
   var rows  = collectSelectedRows();
   var idset = "";
   
@@ -320,7 +321,8 @@ function openMessageWindowsForSelection(sender, action) {
   }
 }
 
-function mailListMarkMessage(sender, action, msguid, markread) {
+function mailListMarkMessage(sender, action, msguid, markread)
+{
   var url;
   var http = createHTTPClient();
 
@@ -443,8 +445,10 @@ function triggerAjaxRequest(url, callback, userdata) {
         try {
           if (http.readyState == 4
               && activeAjaxRequests > 0) {
-                http.callbackData = userdata;
-                callback(http);
+                if (!http.aborted) {
+                  http.callbackData = userdata;
+                  callback(http);
+                }
                 activeAjaxRequests -= 1;
                 checkAjaxRequestsState();
               }
@@ -460,8 +464,7 @@ function triggerAjaxRequest(url, callback, userdata) {
     http.send("");
   }
 
-//     window.alert('should open ' + mailbox);
-  return false;
+  return http;
 }
 
 function checkAjaxRequestsState()
@@ -507,26 +510,38 @@ function openMailbox(mailbox)
     var mailboxContent = document.getElementById("mailboxContent");
     var mailboxDragHandle = document.getElementById("mailboxDragHandle");
     var messageContent = document.getElementById("messageContent");
+    messageContent.innerHTML = '';
     if (mailbox.lastIndexOf("/") == 0) {
+      var url = (ApplicationBaseURL + currentMailbox + "/"
+                 + "/view?noframe=1");
+      if (document.messageAjaxRequest) {
+        document.messageAjaxRequest.aborted = true;
+        document.messageAjaxRequest.abort();
+      }
+      document.messageAjaxRequest
+        = triggerAjaxRequest(url, messageCallback);
+      mailboxContent.innerHTML = '';
       mailboxContent.style.visibility = "hidden;";
       mailboxDragHandle.style.visibility = "hidden;";
       messageContent.style.top = "0px;";
-      var url = (ApplicationBaseURL + currentMailbox + "/"
-                 + "/view?noframe=1");
-      triggerAjaxRequest(url, messageCallback);
     } else {
+      if (document.messageListAjaxRequest) {
+        document.messageListAjaxRequest.aborted = true;
+        document.messageListAjaxRequest.abort();
+      }
+      if (currentMessages[mailbox]) {
+        loadMessage(currentMessages[mailbox]);
+        url += '&pageforuid=' + currentMessages[mailbox];
+      }
+      document.messageListAjaxRequest
+        = triggerAjaxRequest(url, messageListCallback,
+                             currentMessages[mailbox]);
       if (mailboxContent.style.visibility == "hidden") {
         mailboxContent.style.visibility = "visible;";
         mailboxDragHandle.style.visibility = "visible;";
         messageContent.style.top = (mailboxDragHandle.offsetTop
                                     + mailboxDragHandle.offsetHeight
                                     + 'px;');
-      }
-      triggerAjaxRequest(url, messageListCallback);
-      if (currentMessages[mailbox]) {
-        loadMessage(currentMessages[mailbox]);
-      } else {
-        messageContent.innerHTML = '';
       }
     }
   }
@@ -536,20 +551,28 @@ function openMailbox(mailbox)
 function openMailboxAtIndex(element) {
   var idx = element.getAttribute("idx");
   var url = ApplicationBaseURL + currentMailbox + "/view?noframe=1&idx=" + idx;
-  log ("url: " + url);
-  triggerAjaxRequest(url, messageListCallback);
+
+  if (document.messageListAjaxRequest) {
+    document.messageListAjaxRequest.aborted = true;
+    document.messageListAjaxRequest.abort();
+  }
+  document.messageListAjaxRequest
+    = triggerAjaxRequest(url, messageListCallback);
 }
 
 function messageListCallback(http)
 {
-  log ('messageListCallback');
   var div = document.getElementById('mailboxContent');
   if (http.readyState == 4
-      && http.status == 200)
-    {
-      log ('displaying result');
-      div.innerHTML = http.responseText;
+      && http.status == 200) {
+    document.messageListAjaxRequest = null;
+    div.innerHTML = http.responseText;
+    var selected = http.callbackData;
+    if (selected) {
+      var row = document.getElementById('row_' + selected);
+      selectNode(row);
     }
+  }
   else
     log ("ajax fuckage");
 }
@@ -657,35 +680,43 @@ function loadMessage(idx)
 {
   var cachedMessage = getCachedMessage(idx);
 
+  if (document.messageAjaxRequest) {
+    document.messageAjaxRequest.aborted = true;
+    document.messageAjaxRequest.abort();
+  }
+
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + currentMailbox + "/"
                + idx + "/view?noframe=1");
-    triggerAjaxRequest(url, messageCallback, idx);
+    document.messageAjaxRequest
+      = triggerAjaxRequest(url, messageCallback, idx);
     markMailInWindow(window, idx, true);
   } else {
     var div = document.getElementById('messageContent');
     div.innerHTML = cachedMessage['text'];
     cachedMessage['time'] = (new Date()).getTime();
+    document.messageAjaxRequest = null;
   }
 }
 
 function messageCallback(http)
 {
   var div = document.getElementById('messageContent');
-  if (http.readyState == 4
-      && http.status == 200)
-    {
-      div.innerHTML = http.responseText;
 
-      if (http.callbackData)
-        {
-          var cachedMessage = new Array();
-          cachedMessage['idx'] = currentMailbox + '/' + http.callbackData;
-          cachedMessage['time'] = (new Date()).getTime();
-          cachedMessage['text'] = http.responseText;
-          storeCachedMessage(cachedMessage);
-        }
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.messageAjaxRequest = null;
+    div.innerHTML = http.responseText;
+    
+    if (http.callbackData) {
+      var cachedMessage = new Array();
+      cachedMessage['idx'] = currentMailbox + '/' + http.callbackData;
+      cachedMessage['time'] = (new Date()).getTime();
+      cachedMessage['text'] = http.responseText;
+      if (cachedMessage['text'].length < 30000)
+        storeCachedMessage(cachedMessage);
     }
+  }
   else
     log ("ajax fuckage");
 }
@@ -893,7 +924,8 @@ function onMenuOpenMessage(event)
   var msgId = node.getAttribute('id').substr(4);
 
   openMessageWindow(null, msgId,
-                    ApplicationBaseURL + currentMailbox + "/" + msgId + "/view");
+                    ApplicationBaseURL + currentMailbox
+                    + "/" + msgId + "/view");
 
   return false;
 }
@@ -959,6 +991,26 @@ function newEmailTo(sender) {
   return false; /* stop following the link */
 }
 
+function expandUpperTree(node)
+{
+  var currentNode = node.parentNode;
+
+  while (currentNode.className != "dtree")
+    {
+      if (currentNode.className == 'clip')
+        {
+          var id = currentNode.getAttribute("id");
+          var number = parseInt(id.substr(2));
+          if (number > 0)
+            {
+              var cn = d.aNodes[number];
+              d.nodeStatus(1, number, cn._ls);
+            }
+        }
+      currentNode = currentNode.parentNode;
+    }
+}
+
 function initMailboxSelection(mailboxName)
 {
   currentMailbox = mailboxName;
@@ -975,6 +1027,7 @@ function initMailboxSelection(mailboxName)
       deselectNode(tree.selectedEntry);
     selectNode(links[0]);
     tree.selectedEntry = links[0];
+    expandUpperTree(links[0]);
   }
 }
 
