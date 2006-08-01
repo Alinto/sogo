@@ -563,14 +563,11 @@ TABLE#messageList
   overflow: auto;
 }
 
-TABLE#messageList THEAD
+TABLE#messageList TD.tbtv_headercell,
+TABLE#messageList TD.tbtv_navcell
 {
   width: 100%;
   background-color: #DCDAD5;
-}
-
-TABLE#messageList THEAD TD
-{
   padding-left: .3em;
   padding-right: .3em;
   border-top: 1px solid #fff;

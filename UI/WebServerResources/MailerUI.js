@@ -350,13 +350,16 @@ function mailListMarkMessage(sender, action, msguid, markread)
 
 var oldMaillistHighlight = null; // to remember deleted/selected style
 
-function ml_highlight(sender) {
+function ml_highlight(sender)
+{
   oldMaillistHighlight = sender.className;
   if (oldMaillistHighlight == "tableview_highlight")
     oldMaillistHighlight = null;
   sender.className = "tableview_highlight";
 }
-function ml_lowlight(sender) {
+
+function ml_lowlight(sender)
+{
   if (oldMaillistHighlight) {
     sender.className = oldMaillistHighlight;
     oldMaillistHighlight = null;
@@ -506,7 +509,7 @@ function openMailbox(mailbox)
 {
   if (mailbox != currentMailbox) {
     currentMailbox = mailbox;
-    var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
+    var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
     var mailboxContent = document.getElementById("mailboxContent");
     var mailboxDragHandle = document.getElementById("mailboxDragHandle");
     var messageContent = document.getElementById("messageContent");
@@ -563,8 +566,12 @@ function openMailboxAtIndex(element) {
 function messageListCallback(http)
 {
   var div = document.getElementById('mailboxContent');
+
+  log ("callback...");
+
   if (http.readyState == 4
       && http.status == 200) {
+    log ("processing callback...");
     document.messageListAjaxRequest = null;
     div.innerHTML = http.responseText;
     var selected = http.callbackData;
@@ -1042,6 +1049,27 @@ function initMailboxAppearance()
   messageContent.style.top = (mailboxDragHandle.offsetTop
                               + mailboxDragHandle.offsetHeight
                               + 'px;');
+}
+
+function onHeaderClick(node)
+{
+  var href = node.getAttribute("href");
+
+  if (document.messageListAjaxRequest) {
+    log ("aborting previous request...");
+    document.messageListAjaxRequest.aborted = true;
+    document.messageListAjaxRequest.abort();
+  }
+  log ("onHeaderClick request...");
+  url = ApplicationBaseURL + currentMailbox + "/" + href;
+  if (!href.match(/noframe=/))
+    url += "&noframe=1";
+  log ("url: " + url);
+  document.messageListAjaxRequest
+    = triggerAjaxRequest(url, messageListCallback);
+
+  log ("end request.. (awaiting result)");
+  return false;
 }
 
 function registerDraggableMessageNodes()
