@@ -37,6 +37,7 @@
 }
 
 - (NSArray *) flattenedNodes;
+- (NSString *) defaultIconName;
 
 @end
 

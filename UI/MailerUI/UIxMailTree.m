@@ -577,7 +577,6 @@ static BOOL debugBlocks = NO;
 {
   unsigned int count, max, currentSerial;
   UIxMailTreeBlock *curNode;
-  NSArray *children;
   NSString *fullName;
 
   max = [nodes count];
