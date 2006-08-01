@@ -68,15 +68,14 @@
                   onclick="openMailboxAtIndex(this);"
                   var:idx="prevFirstMessageNumber"
                   ><var:string label:value="previous"/></a> |
-              </var:if
-              ><var:string value="firstMessageNumber"
-                /><var:string label:value="msgnumber_to"
-                /><var:string value="lastMessageNumber"
-                /><var:string label:value="msgnumber_of"
-                /><var:string value="sortedUIDs.count"
-              
-                /><var:if condition="hasNext">
-                | <a href="#"
+              </var:if>
+              <var:string value="firstMessageNumber" />
+              <var:string label:value="msgnumber_to" />
+              <var:string value="lastMessageNumber" />
+              <var:string label:value="msgnumber_of" />
+              <var:string value="sortedUIDs.count" />
+              <var:if condition="hasNext"
+                >| <a href="#"
                   onclick="openMailboxAtIndex(this);"
                   var:idx="nextFirstMessageNumber"
                   ><var:string label:value="next" /></a>
@@ -87,7 +86,7 @@
         <var:foreach list="messages" item="message"
           ><tr class="tableview" var:id="msgRowID"
             onclick="return onRowClick(event);"
-            oncontextmenu="return onMenuClick(event, 'messageListMenu');"
+            oncontextmenu="return onMessageContextMenu(event, this);"
             ><td onmousedown="return false;"
               ></td
               ><td onmousedown="return false;"

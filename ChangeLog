@@ -1,5 +1,11 @@
 2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: when opening the context menu
+	of the message list, select the message below the mouse cursor and
+	deselect the other selected messages temporarily. This mimics the
+	behaviour of Thunderbird for that matter and was already
+	implemented for the entries of the folder tree.
+
 	* UI/MailerUI/UIxMailFolderMenu.m ([UIxMailFolderMenu
 	-iconForMenuItem]): new method that returns the fully qualified
 	relative URL to the icon representing the mailbox, or the default

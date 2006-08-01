@@ -601,9 +601,37 @@ function messageListCallback(http)
     log ("ajax fuckage");
 }
 
-var onHideMenuEventHandler = {
-  handleEvent: function(event) {
-    onFolderMenuHide(event);
+function onMessageContextMenu(event, element)
+{
+  var menu = document.getElementById('messageListMenu');
+  menu.addEventListener("hideMenu", onHideMessageContextMenuEventHandler, false);
+  onMenuClick(event, 'messageListMenu');
+
+  var topNode = document.getElementById('messageList');
+  var selectedNodeIds = collectSelectedRows();
+  topNode.menuSelectedRows = selectedNodeIds;
+  for (var i = 0; i < selectedNodeIds.length; i++) {
+    var selectedNode = document.getElementById("row_" + selectedNodeIds[i]);
+    deselectNode (selectedNode);
+  }
+  topNode.menuSelectedEntry = element;
+  selectNode(element);
+}
+
+function onHideMessageContextMenuEventHandler(event)
+{
+  var topNode = document.getElementById('messageList');
+
+  if (topNode.menuSelectedEntry)
+    deselectNode(topNode.menuSelectedEntry);
+  topNode.menuSelectedEntry = null;
+  if (topNode.menuSelectedRows) {
+    var nodeIds = topNode.menuSelectedRows;
+    for (var i = 0; i < nodeIds.length; i++) {
+      var node = document.getElementById("row_" + nodeIds[i]);
+      selectNode (node);
+    }
+    topNode.menuSelectedRows = null;
   }
 }
 
@@ -622,7 +650,7 @@ function onFolderMenuClick(event, element, menutype)
   }
 
   var menu = document.getElementById(menuName);
-  menu.addEventListener("hideMenu", onHideMenuEventHandler, false);
+  menu.addEventListener("hideMenu", onFolderMenuHide, false);
   onMenuClick(event, menuName);
 
   var topNode = document.getElementById('d');
@@ -787,20 +815,6 @@ function enableElement(e, shouldEnable) {
   else {
     e.setAttribute("disabled", "1");
   }
-}
-
-function toggleRowSelectionStatus(sender) {
-  rowID = sender.value;
-  tr = document.getElementById(rowID);
-  if(sender.checked) {
-    tr.className = "tableview_selected";
-    rowSelectionCount += 1;
-  }
-  else {
-    tr.className = "tableview";
-    rowSelectionCount -= 1;
-  }
-  this.validateControls();
 }
 
 function validateControls() {
