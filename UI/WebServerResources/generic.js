@@ -399,6 +399,8 @@ function onMenuClick(event, menuId)
 
   event.cancelBubble = true;
   event.returnValue = false;
+
+  return false;
 }
 
 function setupMenuTarget(menu, target)
