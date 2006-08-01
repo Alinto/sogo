@@ -10,7 +10,6 @@
     title="name"
     >
     <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
-    <var:string value="patate" />
 
     <table multiselect="yes" id="messageList"
       onselectionchange="onMessageSelectionChange();">
@@ -127,6 +126,8 @@
                   class="mailerReadIcon"
                   var:onclick="markUnreadJS"
                   label:title="Mark Unread"
+                  label:title-markread="Mark Read"
+                  label:title-markunread="Mark Unread"
                   var:id="msgIconReadImgID"
                   /></var:if
                 ><var:if condition="isMessageRead" const:negate="YES"
@@ -134,6 +135,8 @@
                   class="mailerUnreadIcon"
                   var:onclick="markReadJS"
                   label:title="Mark Read"
+                  label:title-markread="Mark Read"
+                  label:title-markunread="Mark Unread"
                   var:id="msgIconUnreadImgID"
                   /></var:if
                 ></td

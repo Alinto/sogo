@@ -262,20 +262,40 @@ function markMailInWindow(win, msguid, markread) {
   msgDiv = win.document.getElementById("div_" + msguid);
   if (msgDiv) {
     if (markread) {
-      msgDiv.className = "mailer_readmailsubject";
-    
+      removeClassName(msgDiv, 'mailer_unreadmailsubject');
+      addClassName(msgDiv, 'mailer_readmailsubject');
       msgDiv = win.document.getElementById("unreaddiv_" + msguid);
-      if (msgDiv) msgDiv.style.display = "none";
-      msgDiv = win.document.getElementById("readdiv_" + msguid);
-      if (msgDiv) msgDiv.style.display = "block";
+      if (msgDiv)
+        {
+          msgDiv.setAttribute("class", "mailerUnreadIcon");
+          msgDiv.setAttribute("id", "readdiv_" + msguid);
+          msgDiv.setAttribute("src", ResourcesURL + "/icon_read.gif");
+          msgDiv.setAttribute("onclick", "mailListMarkMessage(this,"
+                              + " 'markMessageUnread', " + msguid
+                              + ", false);"
+                              +" return false;");
+          var title = msgDiv.getAttribute("title-markunread");
+          if (title)
+            msgDiv.setAttribute("title", title);
+        }
     }
     else {
-      msgDiv.className = "mailer_unreadmailsubject";
-    
+      removeClassName(msgDiv, 'mailer_readmailsubject');
+      addClassName(msgDiv, 'mailer_unreadmailsubject');
       msgDiv = win.document.getElementById("readdiv_" + msguid);
-      if (msgDiv) msgDiv.style.display = "none";
-      msgDiv = win.document.getElementById("unreaddiv_" + msguid);
-      if (msgDiv) msgDiv.style.display = "block";
+      if (msgDiv)
+        {
+          msgDiv.setAttribute("class", "mailerReadIcon");
+          msgDiv.setAttribute("id", "unreaddiv_" + msguid);
+          msgDiv.setAttribute("src", ResourcesURL + "/icon_unread.gif");
+          msgDiv.setAttribute("onclick", "mailListMarkMessage(this,"
+                              + " 'markMessageRead', " + msguid
+                              + ", true);"
+                              +" return false;");
+          var title = msgDiv.getAttribute("title-markread");
+          if (title)
+            msgDiv.setAttribute("title", title);
+        }
     }
     return true;
   }
@@ -326,7 +346,7 @@ function mailListMarkMessage(sender, action, msguid, markread)
   var url;
   var http = createHTTPClient();
 
-  url = action + "?uid=" + msguid;
+  url = ApplicationBaseURL + currentMailbox + "/" + action + "?uid=" + msguid;
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK

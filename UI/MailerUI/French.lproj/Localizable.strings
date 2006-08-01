@@ -70,8 +70,8 @@
 "previous"      = "précédent";
 "next"          = "suivant";
 
-"Mark Unread" = "Marqué comme non lu"; 
-"Mark Read"   = "Marqué comme lu";
+"Mark Unread" = "Marquer comme non lu"; 
+"Mark Read"   = "Marquer comme lu";
 
 "msgnumber_to"  = "à";
 "msgnumber_of"  = "de";
