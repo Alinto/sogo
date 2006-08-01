@@ -1,38 +1,39 @@
 <?xml version='1.0' standalone='yes'?>
-
-<span xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:var="http://www.skyrix.com/od/binding"
-      xmlns:const="http://www.skyrix.com/od/constant"
-      xmlns:rsrc="OGo:url"
->
-  <var:if condition="isSelected">
-    <var:if condition="isSortedDescending" >
-      <a var:href="href"
-         var:_sort="sortKey"
-         _desc="0"
-         var:queryDictionary="queryDictionary"
-      ><img rsrc:src="title_sortup_12x12.png"
-                class="tbtv_sortcell"
-           /><var:entity const:name="nbsp"
-         /></a>
-    </var:if>
-    <var:if condition="isSortedDescending" const:negate="YES" >
-      <a var:href="href"
-         var:_sort="sortKey"
-         _desc="1"
-         var:queryDictionary="queryDictionary"
-      ><img rsrc:src="title_sortdown_12x12.png"
-                class="tbtv_sortcell"
-           /><var:string var:value="label"
-       /></a>
-    </var:if>
-  </var:if>
-  <var:if condition="isSelected" const:negate="YES">
-    <a var:href="href"
-       var:_sort="sortKey"
-       _desc="0"
-       var:queryDictionary="queryDictionary"
-    ><var:string var:value="label"
-     /></a>
-  </var:if>
-</span>
+  <span xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    ><var:if condition="isSelected"
+      ><var:if condition="isSortedDescending"
+        ><a var:href="href"
+          var:_sort="sortKey"
+          _desc="0"
+          onclick="return onHeaderClick(this);"
+          var:queryDictionary="queryDictionary"
+          ><img rsrc:src="title_sortup_12x12.png"
+            class="tbtv_sortcell"
+            /><var:entity const:name="nbsp"
+            /></a
+      ></var:if
+        ><var:if condition="isSortedDescending" const:negate="YES"
+        ><a var:href="href"
+          var:_sort="sortKey"
+          _desc="1"
+          onclick="return onHeaderClick(this);"
+          var:queryDictionary="queryDictionary"
+          ><img rsrc:src="title_sortdown_12x12.png"
+            class="tbtv_sortcell"
+            /><var:string var:value="label"
+            /></a
+          ></var:if
+        ></var:if
+      ><var:if condition="isSelected" const:negate="YES"
+      ><a var:href="href"
+        var:_sort="sortKey"
+        _desc="0"
+        onclick="return onHeaderClick(this);"
+        var:queryDictionary="queryDictionary"
+        ><var:string var:value="label"
+          /></a
+        ></var:if
+      ></span>

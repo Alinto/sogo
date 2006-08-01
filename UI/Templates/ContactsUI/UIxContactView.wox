@@ -1,340 +1,341 @@
 <?xml version='1.0' standalone='yes'?>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-               xmlns:var="http://www.skyrix.com/od/binding"
-               xmlns:const="http://www.skyrix.com/od/constant"
-               xmlns:uix="OGo:uix"
-               xmlns:label="OGo:label"
-               className="UIxPageFrame"
-               title="name"
->
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="name"
+    const:popup="YES"
+    >
+    
+    <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5"
+      width="100%"
+      >
+      <tr>
+        <td class="wintitle">
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td width="5"/>
+              <td class="wintitle">
+                <!-- localize me -->
+                <span class="window_label"
+                  ><var:string label:value="Contact viewer" /></span>
+              </td>
+              <td width="36" align="right" valign="center">
+                <var:component className="UIxWinClose"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
 
-  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5"
-         width="100%"
-  >
-    <tr>
-      <td class="wintitle">
-        <table cellpadding="0" cellspacing="0" width="100%">
-          <tr>
-            <td width="5"/>
-            <td class="wintitle">
-              <!-- localize me -->
-              <span class="window_label"
-              ><var:string label:value="Contact viewer" /></span>
-            </td>
-            <td width="36" align="right" valign="center">
-              <var:component className="UIxWinClose"/>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-
-  <tr>
-    <td>
-        <table border="0" cellpadding="2" width="100%" cellspacing="0">
-          <tr bgcolor="#e8e8e0">
-            <td align="left">
-              <span class="aptview_title">
-               <var:if condition="clientObject.isVCardRecord" const:negate="1">
-                 <var:string value="clientObject.cn"/>
-               </var:if>
-               <var:if condition="clientObject.isVCardRecord">
-                 <var:string label:value="vCard" />:
-                 <var:string value="clientObject.vCard.fn"/>
-               </var:if>
-              </span>
-            </td>
-            <td align="right" >
-              <table border='0' cellpadding='0' cellspacing='1'>
-                <tr>
-                  <td class="button_auto_env" nowrap="true"
+      <tr>
+        <td>
+          <table border="0" cellpadding="2" width="100%" cellspacing="0">
+            <tr bgcolor="#e8e8e0">
+              <td align="left">
+                <span class="aptview_title">
+                  <var:if condition="clientObject.isVCardRecord" const:negate="1">
+                    <var:string value="clientObject.cn"/>
+                  </var:if>
+                  <var:if condition="clientObject.isVCardRecord">
+                    <var:string label:value="vCard" />:
+                    <var:string value="clientObject.vCard.fn"/>
+                  </var:if>
+                </span>
+              </td>
+              <td align="right" >
+                <table border='0' cellpadding='0' cellspacing='1'>
+                  <tr>
+                    <td class="button_auto_env" nowrap="true"
                       valign='middle' align='center'>
-                    <a class="button_auto"
-                       href="edit"
-                       var:queryDictionary="queryParameters"
-                    ><var:string label:value="edit" /></a>
-                  </td>
-                  <td class="button_auto_env" nowrap="true"
+                      <a class="button_auto"
+                        href="edit"
+                        var:queryDictionary="queryParameters"
+                        ><var:string label:value="edit" /></a>
+                    </td>
+                    <td class="button_auto_env" nowrap="true"
                       valign='middle' align='center'>
-                    <a class="button_auto"
-                       href="delete"
-                       var:queryDictionary="queryParameters"
-                    ><var:string label:value="delete" /></a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top" width="100%">
-      <table width="100%" border="0" cellpadding="4" cellspacing="0">
-       <var:if condition="clientObject.isVCardRecord" const:negate="1">
-        <!-- general contact info -->
-        <tr valign="top">
-          <td align="right" width="15%" bgcolor="#E8E8E0">
-              <span class="aptview_text"
-              ><var:string label:value="Name" />:</span>
-          </td>
-          <td align="left" bgcolor="#FFFFF0">
-              <span class="aptview_text">
-                <var:string value="clientObject.cn" />
-              </span>
-          </td>
-        </tr>
-        <tr valign="top">
-          <td align="right" width="15%" bgcolor="#E8E8E0">
-            <span class="aptview_text"
-            ><var:string label:value="Unit" />:</span>
-          </td>
-          <td align="left" bgcolor="#FFFFF0">
-            <span class="aptview_text">
-              <var:string value="clientObject.departmentNumber"/></span>
-          </td>
-        </tr>
-        <tr valign="top">
-          <td align="right" width="15%" bgcolor="#E8E8E0">
-            <span class="aptview_text"
-            ><var:string label:value="Location" />:</span>
-          </td>
-          <td align="left" bgcolor="#FFFFF0">
-            <span class="aptview_text">
-              <var:string value="clientObject.l" />
-            </span>
-          </td>
-        </tr>
-       </var:if>
-      </table>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top" width="100%">
-        <uix:tabview var:selection="tabSelection"
-                     const:tabStyle="tab"
-                     const:selectedTabStyle="tab_selected"
-                     const:bodyStyle="tabview_body"
-        >
-          <!-- ******************** Tab for PLists ******************* -->
-	
-          <var:if condition="clientObject.isVCardRecord" const:negate="1">
-           <uix:tab const:key="attributes"
-                   const:label="attributes"
-                   var:href="attributesTabLink"
-           >
-            <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                      <a class="button_auto"
+                        href="delete"
+                        var:queryDictionary="queryParameters"
+                        ><var:string label:value="delete" /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="100%">
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <var:if condition="clientObject.isVCardRecord" const:negate="1">
+              <!-- general contact info -->
               <tr valign="top">
                 <td align="right" width="15%" bgcolor="#E8E8E0">
                   <span class="aptview_text"
-                  ><var:string label:value="EMail" />:</span>
+                    ><var:string label:value="Name" />:</span>
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-                    <var:string value="clientObject.mail"/></span>
+                    <var:string value="clientObject.cn" />
+                  </span>
                 </td>
               </tr>
               <tr valign="top">
                 <td align="right" width="15%" bgcolor="#E8E8E0">
                   <span class="aptview_text"
-                  ><var:string label:value="OfficePhone" />:</span>
+                    ><var:string label:value="Unit" />:</span>
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-                    <var:string value="clientObject.telephoneNumber"/></span>
+                    <var:string value="clientObject.departmentNumber"/></span>
                 </td>
               </tr>
               <tr valign="top">
                 <td align="right" width="15%" bgcolor="#E8E8E0">
                   <span class="aptview_text"
-                  ><var:string label:value="HomePhone" />:</span>
+                    ><var:string label:value="Location" />:</span>
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-                    <var:string value="clientObject.homeTelephoneNumber"/></span>
+                    <var:string value="clientObject.l" />
+                  </span>
                 </td>
               </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="MobilePhone" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.mobile"/></span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Fax" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.facsimileTelephoneNumber"
-                    /></span>
-                </td>
-              </tr>
-              <!--
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
+            </var:if>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="100%">
+          <uix:tabview var:selection="tabSelection"
+            const:tabStyle="tab"
+            const:selectedTabStyle="tab_selected"
+            const:bodyStyle="tabview_body"
+            >
+            <!-- ******************** Tab for PLists ******************* -->
+            
+            <var:if condition="clientObject.isVCardRecord" const:negate="1">
+              <uix:tab const:key="attributes"
+                const:label="attributes"
+                var:href="attributesTabLink"
+                >
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="EMail" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.mail"/></span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="OfficePhone" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.telephoneNumber"/></span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="HomePhone" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.homeTelephoneNumber"/></span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="MobilePhone" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.mobile"/></span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Fax" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.facsimileTelephoneNumber"
+                          /></span>
+                    </td>
+                  </tr>
+                  <!--
+                  <tr valign="top">
+                  <td align="right" width="15%" bgcolor="#E8E8E0">
                   <span class="aptview_text"
                   ><var:string label:value="Organisation" />:</span>
                 </td>
-                <td align="left" bgcolor="#FFFFF0">
+                  <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-                    <var:string value="clientObject.o"/></span>
+                  <var:string value="clientObject.o"/></span>
                 </td>
-              </tr>
-              -->
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Postal" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.postalAddress"
-                                const:insertBR="YES"
-                    />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Home" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.homePostalAddress"
-                                const:insertBR="YES"
-                    />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="URL" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.labeledURI"/>
-                  </span>
-                </td>
-              </tr>
-            </table>
-           </uix:tab>
-          </var:if>
+                </tr>
+                  -->
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Postal" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.postalAddress"
+                          const:insertBR="YES"
+                          />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Home" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.homePostalAddress"
+                          const:insertBR="YES"
+                          />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="URL" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.labeledURI"/>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </uix:tab>
+            </var:if>
 
-          <!-- ******************** Tab for vCards ******************* -->
+            <!-- ******************** Tab for vCards ******************* -->
 
-          <var:if condition="clientObject.isVCardRecord">
-           <uix:tab const:key="attributes"
-                   const:label="attributes"
-                   var:href="attributesTabLink"
-           >
-            <table width="100%" border="0" cellpadding="4" cellspacing="0">
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="EMail" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string
-                       value="clientObject.vCard.preferredEMail.stringValue"/>
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Phone" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string
-                      value="clientObject.vCard.preferredTel.stringValue"/>
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Address" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string
-                      value="clientObject.vCard.preferredAdr.street"/><br />
-                    <var:string
-                      value="clientObject.vCard.preferredAdr.locality"/><br />
-                    <var:string
-                      value="clientObject.vCard.preferredAdr.country"/><br />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Role" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.vCard.role"/></span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Title" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.vCard.title"/></span>
-                </td>
-              </tr>
+            <var:if condition="clientObject.isVCardRecord">
+              <uix:tab const:key="attributes"
+                const:label="attributes"
+                var:href="attributesTabLink"
+                >
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="EMail" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string
+                          value="clientObject.vCard.preferredEMail.stringValue"/>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Phone" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string
+                          value="clientObject.vCard.preferredTel.stringValue"/>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Address" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string
+                          value="clientObject.vCard.preferredAdr.street"/><br />
+                        <var:string
+                          value="clientObject.vCard.preferredAdr.locality"/><br />
+                        <var:string
+                          value="clientObject.vCard.preferredAdr.country"/><br />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Role" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.vCard.role"/></span>
+                    </td>
+                  </tr>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Title" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.vCard.title"/></span>
+                    </td>
+                  </tr>
 
-              <tr valign="top">
-                <td align="right" width="15%" bgcolor="#E8E8E0">
-                  <span class="aptview_text"
-                  ><var:string label:value="Note" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:string value="clientObject.vCard.note"/></span>
-                </td>
-              </tr>
-            </table>
-           </uix:tab>
-          </var:if>
+                  <tr valign="top">
+                    <td align="right" width="15%" bgcolor="#E8E8E0">
+                      <span class="aptview_text"
+                        ><var:string label:value="Note" />:</span>
+                    </td>
+                    <td align="left" bgcolor="#FFFFF0">
+                      <span class="aptview_text">
+                        <var:string value="clientObject.vCard.note"/></span>
+                    </td>
+                  </tr>
+                </table>
+              </uix:tab>
+            </var:if>
 
-          <!-- ******************** Debugging Tab ******************** -->
+            <!-- ******************** Debugging Tab ******************** -->
 
-          <var:if condition="isUIxDebugEnabled">
-            <uix:tab const:key="debug"
-                     const:label="DEBUG"
-                     var:href="debugTabLink">
-             <small>
-              SOGo Server - <var:string value="name"/>
-              <br />
-              Client: <var:string value="clientObject"/>
-              <hr />
-              Raw :<br />
-              <pre><var:string value="clientObject.contentAsString"/></pre>
-             </small>
-            </uix:tab>
-          </var:if>
-        </uix:tabview>
-      </td>
-    </tr>
-  </table>
-  <var:if condition="isUIxDebugEnabled">
-    <small>
-      <hr />
-      clientObject: <var:string value="clientObject" />
-    </small>
-  </var:if>
-</var:component>
+            <var:if condition="isUIxDebugEnabled">
+              <uix:tab const:key="debug"
+                const:label="DEBUG"
+                var:href="debugTabLink">
+                <small>
+                  SOGo Server - <var:string value="name"/>
+                  <br />
+                  Client: <var:string value="clientObject"/>
+                  <hr />
+                  Raw :<br />
+                  <pre><var:string value="clientObject.contentAsString"/></pre>
+                </small>
+              </uix:tab>
+            </var:if>
+          </uix:tabview>
+        </td>
+      </tr>
+    </table>
+    <var:if condition="isUIxDebugEnabled">
+      <small>
+        <hr />
+        clientObject: <var:string value="clientObject" />
+      </small>
+    </var:if>
+  </var:component>
