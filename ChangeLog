@@ -1,5 +1,9 @@
 2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent
+	-urlForResourceFilename:filename]): automatically return an empty
+	string whenever the filename passed as argument is nil.
+
 	* UI/WebServerResources/MailerUI.js: open the mailboxes with the
 	"desc" parameter set to 1 so that they are sorted in descending
 	order by default. Also, added "onHeaderClick()", triggered by

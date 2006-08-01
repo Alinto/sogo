@@ -498,28 +498,33 @@ static BOOL uixDebugEnabled = NO;
   WOResourceManager *rm;
   NSBundle *pageBundle;
 
-  if (!pageToURL)
-    pageToURL = [[NSMutableDictionary alloc] initWithCapacity: 32];
-
-  url = [pageToURL objectForKey: filename];
-  if (!url)
+  if (filename)
     {
-      rm = [self pageResourceManager];
-      page = [[self context] page];
-      pageBundle = [NSBundle bundleForClass: [page class]];
-      url = [rm urlForResourceNamed: filename
-		inFramework: [pageBundle bundlePath]
-		languages: nil
-		request: [[self context] request]];
+      if (!pageToURL)
+        pageToURL = [[NSMutableDictionary alloc] initWithCapacity: 32];
+
+      url = [pageToURL objectForKey: filename];
       if (!url)
-	url = @"";
-      else
-        if ([url hasPrefix: @"http"])
-          url = [url hostlessURL];
-      [pageToURL setObject: url forKey: filename];
-    }
+        {
+          rm = [self pageResourceManager];
+          page = [[self context] page];
+          pageBundle = [NSBundle bundleForClass: [page class]];
+          url = [rm urlForResourceNamed: filename
+                    inFramework: [pageBundle bundlePath]
+                    languages: nil
+                    request: [[self context] request]];
+          if (!url)
+            url = @"";
+          else
+            if ([url hasPrefix: @"http"])
+              url = [url hostlessURL];
+          [pageToURL setObject: url forKey: filename];
+        }
 
 //   NSLog (@"url for '%@': '%@'", filename, url);
+    }
+  else
+    url = @"";
 
   return url;
 }
