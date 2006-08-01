@@ -567,11 +567,8 @@ function messageListCallback(http)
 {
   var div = document.getElementById('mailboxContent');
 
-  log ("callback...");
-
   if (http.readyState == 4
       && http.status == 200) {
-    log ("processing callback...");
     document.messageListAjaxRequest = null;
     div.innerHTML = http.responseText;
     var selected = http.callbackData;

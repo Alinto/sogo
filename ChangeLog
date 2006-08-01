@@ -1,5 +1,10 @@
 2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: open the mailboxes with the
+	"desc" parameter set to 1 so that they are sorted in descending
+	order by default. Also, added "onHeaderClick()", triggered by
+	clicking on the message list header elements.
+
 	* UI/MailerUI/UIxMailSortableTableHeader.m
 	([UIxMailSortableTableHeader -isSortedDescending]): same as below.
 
