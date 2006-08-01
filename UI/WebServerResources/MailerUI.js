@@ -604,7 +604,7 @@ function messageListCallback(http)
 function onMessageContextMenu(event, element)
 {
   var menu = document.getElementById('messageListMenu');
-  menu.addEventListener("hideMenu", onHideMessageContextMenuEventHandler, false);
+  menu.addEventListener("hideMenu", onMessageContextMenuHide, false);
   onMenuClick(event, 'messageListMenu');
 
   var topNode = document.getElementById('messageList');
@@ -618,20 +618,22 @@ function onMessageContextMenu(event, element)
   selectNode(element);
 }
 
-function onHideMessageContextMenuEventHandler(event)
+function onMessageContextMenuHide(event)
 {
-  var topNode = document.getElementById('messageList');
-
-  if (topNode.menuSelectedEntry)
-    deselectNode(topNode.menuSelectedEntry);
-  topNode.menuSelectedEntry = null;
-  if (topNode.menuSelectedRows) {
-    var nodeIds = topNode.menuSelectedRows;
-    for (var i = 0; i < nodeIds.length; i++) {
-      var node = document.getElementById("row_" + nodeIds[i]);
-      selectNode (node);
+  log ("test");
+  if (event.target.getAttribute("id") == "messageListMenu") {
+    var topNode = document.getElementById('messageList');
+    if (topNode.menuSelectedEntry)
+      deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry = null;
+    if (topNode.menuSelectedRows) {
+      var nodeIds = topNode.menuSelectedRows;
+      for (var i = 0; i < nodeIds.length; i++) {
+        var node = document.getElementById("row_" + nodeIds[i]);
+        selectNode (node);
+      }
+      topNode.menuSelectedRows = null;
     }
-    topNode.menuSelectedRows = null;
   }
 }
 
@@ -664,6 +666,7 @@ function onFolderMenuClick(event, element, menutype)
 
 function onFolderMenuHide(event)
 {
+  log (event.target.getAttribute("id"));
   var topNode = document.getElementById('d');
 
   if (topNode.menuSelectedEntry)

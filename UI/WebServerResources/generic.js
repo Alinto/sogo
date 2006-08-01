@@ -462,7 +462,7 @@ function hideMenu(event, menuNode)
     }
 
   var onhideEvent = document.createEvent("Event");
-  onhideEvent.initEvent("hideMenu", true, true);
+  onhideEvent.initEvent("hideMenu", false, true);
   menuNode.dispatchEvent(onhideEvent);
 }
 
