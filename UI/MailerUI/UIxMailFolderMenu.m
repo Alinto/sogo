@@ -70,4 +70,15 @@
   return levelledNodes;
 }
 
+- (NSString *) iconForMenuItem
+{
+  NSString *iconName;
+
+  iconName = [item iconName];
+  if (!iconName)
+    iconName = [self defaultIconName];
+
+  return [self urlForResourceFilename: iconName];
+}
+
 @end

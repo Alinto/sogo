@@ -1,5 +1,10 @@
 2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderMenu.m ([UIxMailFolderMenu
+	-iconForMenuItem]): new method that returns the fully qualified
+	relative URL to the icon representing the mailbox, or the default
+	mailbox icon if needed.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent
 	-urlForResourceFilename:filename]): automatically return an empty
 	string whenever the filename passed as argument is nil.
