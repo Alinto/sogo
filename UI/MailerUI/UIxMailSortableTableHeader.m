@@ -105,22 +105,26 @@
 
 /* derived accessors */
 
-- (BOOL)isSelected {
+- (BOOL) isSelected
+{
   NSString *so;
-  
-  if ((so = [self singleQueryValueForKey:@"sort"]) == nil)
-    return self->isDefault;
-  
-  return [so isEqualToString:self->sortKey];
+ 
+  so = [self singleQueryValueForKey:@"sort"];
+
+  return ((so)
+          ? [so isEqualToString:self->sortKey]
+          : isDefault);
 }
 
-- (BOOL)isSortedDescending {
+- (BOOL)isSortedDescending
+{
   NSString *desc;
 
-  if ((desc = [self singleQueryValueForKey:@"desc"]) == nil)
-    return NO;
-  
-  return [desc boolValue];
+  desc = [[[self context] request] formValueForKey:@"desc"];
+
+  return ((desc)
+          ? [desc boolValue]
+          : YES);
 }
 
 @end /* UIxMailSortableTableHeader */

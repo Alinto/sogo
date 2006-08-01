@@ -1,3 +1,12 @@
+2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailSortableTableHeader.m
+	([UIxMailSortableTableHeader -isSortedDescending]): same as below.
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-isSortedDescending]): defaults to "YES" when the sort order is
+	not specified.
+
 2006-07-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js:

@@ -177,30 +177,34 @@ static int attachmentFlagSize = 8096;
   NSString *sort;
   
   sort = [[[self context] request] formValueForKey:@"sort"];
-  
+
   if ([sort length] == 0)
     sort = [self defaultSortKey];
+
   return [sort uppercaseString];
 }
 
-- (BOOL) isSortedDescending 
+- (BOOL) isSortedDescending
 {
   NSString *desc;
-  
+
   desc = [[[self context] request] formValueForKey:@"desc"];
-  if(!desc)
-    return NO;
-  return [desc boolValue] ? YES : NO;
+
+  return ((desc)
+          ? [desc boolValue]
+          : YES);
 }
 
 - (NSString *) imap4SortOrdering 
 {
   NSString *sort;
-  
+
   sort = [self imap4SortKey];
-  if(![self isSortedDescending])
-    return sort;
-  return [@"REVERSE " stringByAppendingString:sort];
+
+  if ([self isSortedDescending])
+    sort = [@"REVERSE " stringByAppendingString: sort];
+
+  return sort;
 }
 
 - (NSRange) fetchRange 
@@ -212,12 +216,13 @@ static int attachmentFlagSize = 8096;
 
 - (NSArray *) sortedUIDs 
 {
-  if (self->sortedUIDs != nil)
-    return self->sortedUIDs;
-  
-  self->sortedUIDs 
-    = [[[self clientObject] fetchUIDsMatchingQualifier:[self qualifier]
-			    sortOrdering:[self imap4SortOrdering]] retain];
+  if (!sortedUIDs)
+    {
+      sortedUIDs 
+        = [[self clientObject] fetchUIDsMatchingQualifier: [self qualifier]
+                               sortOrdering: [self imap4SortOrdering]];
+      [sortedUIDs retain];
+    }
 
   return self->sortedUIDs;
 }
@@ -487,7 +492,7 @@ static int attachmentFlagSize = 8096;
 - (id) defaultAction 
 {
   WORequest *request;
-  NSValue *specificMessage;
+  NSString *specificMessage;
 
   request = [[self context] request];
   specificMessage = [request formValueForKey: @"pageforuid"];
