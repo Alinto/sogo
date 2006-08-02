@@ -1,5 +1,10 @@
 2006-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditorBase.m ([UIxContactEditorBase
+	-saveAction]): reorganized methods to only have ONE return point.
+	Invoke saveRecord: directly on the clientObject instead of
+	saveContentString, which does the same thing anyway.
+
 	* SoObjects/Contacts/NSDictionary+Contact.m
 	([NSDictionary -vcardContentFromSOGoContactRecord]): extension
 	method to convert the dictionary returned with the user submission
