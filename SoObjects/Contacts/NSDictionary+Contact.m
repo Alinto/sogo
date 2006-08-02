@@ -51,7 +51,7 @@
             "PROFILE:vCard\r\n"];
 
   [self _appendSingleVCardValue: @"cn"
-        withFormat: @"FN:%@"
+        withFormat: @"FN:%@\r\n"
         toVCard: newVCard];
 
   info = [self objectForKey: @"givenName"];
@@ -64,16 +64,16 @@
             info2, info];
 
   [self _appendSingleVCardValue: @"telephoneNumber"
-        withFormat: @"TEL;TYPE=work,voice,pref:%@"
+        withFormat: @"TEL;TYPE=work,voice,pref:%@\r\n"
         toVCard: newVCard];
   [self _appendSingleVCardValue: @"facsimileTelephoneNumber"
-        withFormat: @"TEL;TYPE=work,fax:%@"
+        withFormat: @"TEL;TYPE=work,fax:%@\r\n"
         toVCard: newVCard];
   [self _appendSingleVCardValue: @"homeTelephoneNumber"
-        withFormat: @"TEL;TYPE=home,voice:%@"
+        withFormat: @"TEL;TYPE=home,voice:%@\r\n"
         toVCard: newVCard];
   [self _appendSingleVCardValue: @"mobile"
-        withFormat: @"TEL;TYPE=cell,voice:%@"
+        withFormat: @"TEL;TYPE=cell,voice:%@\r\n"
         toVCard: newVCard];
 
   info = [self objectForKey: @"l"];
@@ -85,25 +85,25 @@
   [newVCard appendFormat: @"ORG:%@;%@\r\n",
             info, info2];
 
-  [newVCard appendString: @"END:VCARD\r\n"];
-
   info = [[self objectForKey: @"postalAddress"]
            stringByReplacingString: @"\r\n"
            withString: @";"];
   if (info && [info length] > 0)
-    [newVCard appendFormat: @"ADR:TYPE=work,postal:%@", info];
+    [newVCard appendFormat: @"ADR:TYPE=work,postal:%@\r\n", info];
   info = [[self objectForKey: @"homePostalAddress"]
            stringByReplacingString: @"\r\n"
            withString: @";"];
   if (info && [info length] > 0)
-    [newVCard appendFormat: @"ADR:TYPE=home,postal:%@", info];
+    [newVCard appendFormat: @"ADR:TYPE=home,postal:%@\r\n", info];
 
   [self _appendSingleVCardValue: @"mail"
-        withFormat: @"EMAIL;TYPE=internet,pref:%@"
+        withFormat: @"EMAIL;TYPE=internet,pref:%@\r\n"
         toVCard: newVCard];
   [self _appendSingleVCardValue: @"labelledURI"
-        withFormat: @"URL:%@"
+        withFormat: @"URL:%@\r\n"
         toVCard: newVCard];
+
+  [newVCard appendString: @"END:VCARD\r\n"];
 
   return newVCard;
 }
