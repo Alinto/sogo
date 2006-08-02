@@ -40,6 +40,7 @@ var currentMailbox = '';
 /* mail list */
 
 function openMessageWindow(sender, msguid, url) {
+  log ("message window at url: " + url);
   var msgWin = window.open(url, "SOGo_msg_" + msguid,
 			   "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
 			   "location=0,directories=0,status=0,menubar=0,copyhistory=0");
@@ -337,7 +338,8 @@ function openMessageWindowsForSelection(sender, action)
   for (var i = 0; i < rows.length; i++) {
     win = openMessageWindow(sender,
 			    rows[i]                /* msguid */,
-			    rows[i] + "/" + action /* url */);
+			    ApplicationBaseURL + currentMailbox
+                            + "/" + rows[i] + "/" + action /* url */);
   }
 }
 
@@ -620,20 +622,19 @@ function onMessageContextMenu(event, element)
 
 function onMessageContextMenuHide(event)
 {
-  log ("test");
-  if (event.target.getAttribute("id") == "messageListMenu") {
-    var topNode = document.getElementById('messageList');
-    if (topNode.menuSelectedEntry)
-      deselectNode(topNode.menuSelectedEntry);
+  var topNode = document.getElementById('messageList');
+
+  if (topNode.menuSelectedEntry) {
+    deselectNode(topNode.menuSelectedEntry);
     topNode.menuSelectedEntry = null;
-    if (topNode.menuSelectedRows) {
-      var nodeIds = topNode.menuSelectedRows;
-      for (var i = 0; i < nodeIds.length; i++) {
-        var node = document.getElementById("row_" + nodeIds[i]);
-        selectNode (node);
-      }
-      topNode.menuSelectedRows = null;
+  }
+  if (topNode.menuSelectedRows) {
+    var nodeIds = topNode.menuSelectedRows;
+    for (var i = 0; i < nodeIds.length; i++) {
+      var node = document.getElementById("row_" + nodeIds[i]);
+      selectNode (node);
     }
+    topNode.menuSelectedRows = null;
   }
 }
 
@@ -666,12 +667,12 @@ function onFolderMenuClick(event, element, menutype)
 
 function onFolderMenuHide(event)
 {
-  log (event.target.getAttribute("id"));
   var topNode = document.getElementById('d');
 
-  if (topNode.menuSelectedEntry)
+  if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
-  topNode.menuSelectedEntry = null;
+    topNode.menuSelectedEntry = null;
+  }
   if (topNode.selectedEntry)
     selectNode(topNode.selectedEntry);
 }
@@ -1090,11 +1091,9 @@ function onHeaderClick(node)
   var href = node.getAttribute("href");
 
   if (document.messageListAjaxRequest) {
-    log ("aborting previous request...");
     document.messageListAjaxRequest.aborted = true;
     document.messageListAjaxRequest.abort();
   }
-  log ("onHeaderClick request...");
   url = ApplicationBaseURL + currentMailbox + "/" + href;
   if (!href.match(/noframe=/))
     url += "&noframe=1";
@@ -1102,7 +1101,6 @@ function onHeaderClick(node)
   document.messageListAjaxRequest
     = triggerAjaxRequest(url, messageListCallback);
 
-  log ("end request.. (awaiting result)");
   return false;
 }
 
