@@ -17,17 +17,20 @@
   ),
 
   ( // second group
-    { link = "reply"; 
+    { link = "reply";
+      onclick = "return onMenuReplyToSender(event);";
       isSafe   = NO;
       image = "tb-mail-reply-flat-24x24.png";
       cssClass = "tbicon_reply";    label = "Reply";     },
 
-    { link = "replyall"; 
+    { link = "replyall";
+      onclick = "return onMenuReplyToAll(event);";
       isSafe   = NO;
       image = "tb-mail-replyall-flat-24x24.png";
       cssClass = "tbicon_replyall"; label = "Reply All"; },
 
-    { link = "forward"; 
+    { link = "forward";
+      onclick = "return onMenuForwardMessage(event);";
       isSafe   = NO;
       image = "tb-mail-forward-flat-24x24.png";
       cssClass = "tbicon_forward";  label = "Forward";   },
@@ -36,7 +39,8 @@
   ( // third group
     { link     = "delete";
       isSafe = NO;
-      enabled  = showMarkDeletedButton;
+      onclick = "return onMenuDeleteMessage(event);";
+//       enabled  = showMarkDeletedButton;
       image = "tb-mail-delete-flat-24x24.png";
       cssClass = "tbicon_delete"; label = "Delete"; },
     { link = "#";

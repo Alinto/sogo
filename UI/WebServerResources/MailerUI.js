@@ -975,18 +975,22 @@ function onMenuOpenMessage(event)
 function onMenuReplyToSender(event)
 {
   openMessageWindowsForSelection(null, 'reply');
+
+  return false;
 }
 
 function onMenuReplyToAll(event)
 {
   openMessageWindowsForSelection(null, 'replyall');
 
+  return false;
 }
 
 function onMenuForwardMessage(event)
 {
   openMessageWindowsForSelection(null, 'forward');
 
+  return false;
 }
 
 function onMenuDeleteMessage(event)
