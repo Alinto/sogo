@@ -19,9 +19,11 @@
   02111-1307, USA.
 */
 
-#include "SOGoContactObject.h"
-#include <NGiCal/NGVCard.h>
-#include "common.h"
+#import <NGiCal/NGVCard.h>
+
+#import "common.h"
+#import "SOGoContactObject.h"
+#import "NSDictionary+Contact.h"
 
 @implementation SOGoContactObject
 
@@ -92,14 +94,17 @@
 
 /* specialized actions */
 
-- (NSException *)saveRecord:(id)_record {
+- (NSException *) saveRecord: (id) _record
+{
   if ([_record isKindOfClass:[NGVCard class]]) {
     // TODO: implement a vCard generator
     return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
 			reason:@"Saving vCards is not supported yet."];
   }
-  
-  return [self saveContentString:[_record description]];
+
+//   return [self saveContentString: [_record description]];
+  return
+    [self saveContentString: [_record vcardContentFromSOGoContactRecord]];
 }
 
 - (NSException *)patchField:(NSString *)_fname value:(NSString *)_value

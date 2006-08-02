@@ -11,6 +11,8 @@ Contacts_OBJC_FILES =			\
 					\
 	SOGoContactObject.m		\
 	SOGoContactFolder.m		\
+					\
+	NSDictionary+Contact.m
 
 Contacts_RESOURCE_FILES +=		\
 	Version				\

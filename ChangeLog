@@ -1,3 +1,10 @@
+2006-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/NSDictionary+Contact.m
+	([NSDictionary -vcardContentFromSOGoContactRecord]): extension
+	method to convert the dictionary returned with the user submission
+	to a record in VCARD format to be stored in the database.
+
 2006-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: when opening the context menu
