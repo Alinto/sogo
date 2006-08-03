@@ -12,7 +12,7 @@
           var:queryDictionary="queryDictionary"
           ><img rsrc:src="title_sortup_12x12.png"
             class="tbtv_sortcell"
-            /><var:entity const:name="nbsp"
+            /><var:string var:value="label"
             /></a
       ></var:if
         ><var:if condition="isSortedDescending" const:negate="YES"
