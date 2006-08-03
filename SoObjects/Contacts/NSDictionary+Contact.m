@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import "NSDictionary+Contact.h"
@@ -37,10 +38,40 @@
     [vCard appendFormat: format, info];
 }
 
+- (void) _appendMultilineVCardValue: (NSString *) value
+                         withFormat: (NSString *) format
+                            toVCard: (NSMutableString *) vCard
+{
+  NSString *info;
+
+  info = [[self objectForKey: value]
+           stringByReplacingString: @"\r\n"
+           withString: @";"];
+  if (info && [info length] > 0)
+    [vCard appendFormat: format, info];
+}
+
+- (void) _appendArrayedVCardValues: (NSArray *) keys
+                        withFormat: (NSString *) format
+                           toVCard: (NSMutableString *) vCard
+{
+  NSArray *values;
+  unsigned int count, max;
+
+  values = [self objectsForKeys: keys notFoundMarker: @""];
+
+  max = [values count];
+  while (count < max
+         && [[values objectAtIndex: count] isEqualToString: @""])
+    count++;
+
+  if (count < max)
+    [vCard appendFormat: format, [values componentsJoinedByString: @";"]];
+}
+
 - (NSString *) vcardContentFromSOGoContactRecord
 {
   NSMutableString *newVCard;
-  NSString *info, *info2;
 
   newVCard = [NSMutableString new];
   [newVCard autorelease];
@@ -53,16 +84,10 @@
   [self _appendSingleVCardValue: @"cn"
         withFormat: @"FN:%@\r\n"
         toVCard: newVCard];
-
-  info = [self objectForKey: @"givenName"];
-  if (!info || [info length] < 1)
-    info = @"";
-  info2 = [self objectForKey: @"sn"];
-  if (!info2 || [info2 length] < 1)
-    info2 = @"";
-  [newVCard appendFormat: @"N:%@;%@;;;\r\n",
-            info2, info];
-
+  [self _appendArrayedVCardValues:
+          [NSArray arrayWithObjects: @"sn", @"givenName", nil]
+        withFormat: @"N:%@;;;\r\n"
+        toVCard: newVCard];
   [self _appendSingleVCardValue: @"telephoneNumber"
         withFormat: @"TEL;TYPE=work,voice,pref:%@\r\n"
         toVCard: newVCard];
@@ -75,27 +100,16 @@
   [self _appendSingleVCardValue: @"mobile"
         withFormat: @"TEL;TYPE=cell,voice:%@\r\n"
         toVCard: newVCard];
-
-  info = [self objectForKey: @"l"];
-  if (!info || [info length] < 1)
-    info = @"";
-  info2 = [self objectForKey: @"departmentNumber"];
-  if (!info2 || [info2 length] < 1)
-    info2 = @"";
-  [newVCard appendFormat: @"ORG:%@;%@\r\n",
-            info, info2];
-
-  info = [[self objectForKey: @"postalAddress"]
-           stringByReplacingString: @"\r\n"
-           withString: @";"];
-  if (info && [info length] > 0)
-    [newVCard appendFormat: @"ADR:TYPE=work,postal:%@\r\n", info];
-  info = [[self objectForKey: @"homePostalAddress"]
-           stringByReplacingString: @"\r\n"
-           withString: @";"];
-  if (info && [info length] > 0)
-    [newVCard appendFormat: @"ADR:TYPE=home,postal:%@\r\n", info];
-
+  [self _appendArrayedVCardValues:
+          [NSArray arrayWithObjects: @"l", @"departmentNumber", nil]
+        withFormat: @"ORG:%@\r\n"
+        toVCard: newVCard];
+  [self _appendMultilineVCardValue: @"postalAddress"
+        withFormat: @"ADR:TYPE=work,postal:%@\r\n"
+        toVCard: newVCard];
+  [self _appendMultilineVCardValue: @"homePostalAddress"
+        withFormat: @"ADR:TYPE=home,postal:%@\r\n"
+        toVCard: newVCard];
   [self _appendSingleVCardValue: @"mail"
         withFormat: @"EMAIL;TYPE=internet,pref:%@\r\n"
         toVCard: newVCard];

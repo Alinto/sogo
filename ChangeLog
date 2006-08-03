@@ -1,5 +1,10 @@
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/NSDictionary+Contact.m ([NSDictionary
+	-vcardContentFromSOGoContactRecord]): use the new standard methods
+	created for each type of entry. If a line is determined to not
+	contain information, it will be skipped.
+
 	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
 	+initialize]): init defaultMailDomain with the user default
 	"SOGoDefaultMailDomain".
