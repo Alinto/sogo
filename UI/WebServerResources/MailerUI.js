@@ -428,8 +428,8 @@ function uixDeleteSelectedMessages(sender) {
     
     /* send AJAX request (synchronously) */
     
-    url = "" + rows[i] + "/trash?jsonly=1";
-    
+    url = (ApplicationBaseURL + currentMailbox + "/"
+           + rows[i] + "/trash?jsonly=1");
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
     http.send("");
