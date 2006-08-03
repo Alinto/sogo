@@ -49,6 +49,8 @@
 - (BOOL)isVCardRecord;
 - (NGVCard *)vCard;
 
+- (NSException *) saveRecord: (id) _record;
+
 @end
 
 #endif /* __Contacts_SOGoContactObject_H__ */
