@@ -1,5 +1,8 @@
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewContainer.m: container to make it
+	easier to manage both ajax and non-ajax requests.
+
 	* UI/Contacts/UIxContactsFilterPanel.m: clone of
 	UIxMailFilterPanel, but applicable to contact lists.
 
