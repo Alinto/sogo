@@ -1,5 +1,8 @@
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsFilterPanel.m: clone of
+	UIxMailFilterPanel, but applicable to contact lists.
+
 	* SoObjects/Contacts/NSDictionary+Contact.m ([NSDictionary
 	-vcardContentFromSOGoContactRecord]): use the new standard methods
 	created for each type of entry. If a line is determined to not

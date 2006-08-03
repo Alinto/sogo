@@ -1,0 +1,28 @@
+<?xml version='1.0' standalone='yes'?>
+  <container 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    >
+    <div class="menu" id="searchMenu">
+      <ul id="searchOptions">
+        <li id="name_or_address"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Name or Address"/></li>
+      </ul>
+    </div>
+
+    <div id="filterPanel">
+      <var:if condition="hideFrame" const:negate="YES"
+        ><span class="searchBox" style="float: right">
+          <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
+          <input id="searchValue" onmousedown="onSearchMouseDown(event);" onclick="popupSearchMenu(event, 'searchMenu');" autocomplete="off" name="search" type="text" var:value="searchText" onchange="onSearchChange();" onblur="onSearchBlur();" onfocus="onSearchFocus(event);" />
+        </span>
+
+        <script type="text/javascript">
+          initCriteria();
+          document.searchform.search.focus();
+        </script>
+      </var:if>
+    </div>
+  </container>
