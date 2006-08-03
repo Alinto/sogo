@@ -1,0 +1,368 @@
+/*
+  Copyright (C) 2005 SKYRIX Software AG
+
+  This file is part of OpenGroupware.org.
+
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
+
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+*/
+/* TODO: is the section below used in the mailer? */
+
+BODY
+{ overflow: hidden; }
+
+DIV#contactsListContent
+{ 
+  position: absolute;
+  left: 15em;
+  top: 5.5em;
+  right: 0px;
+  bottom: 0px;
+  border: 0px dashed #f00;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+DIV#mailboxContent
+{
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+}
+
+DIV#messageContent
+{
+  position: absolute;
+  overflow: auto;
+  font-size: small;
+  bottom: 0px;
+  width: 100%;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  background: #fff;
+}
+
+DIV.mailerPageContent DIV#messageContent
+{ 
+  top: 51%;
+}
+
+DIV#messageContent P
+{
+  line-height: 3em;
+}
+
+DIV#messageContent P IMG
+{
+  border: 0px;
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
+.aptview_title
+{
+  color: #000000;
+  font-weight: bold;
+}
+
+.aptview_text
+{
+  color: #000000;
+}
+
+.apt_other
+{
+  color: #000000;
+}
+
+.apt_other_print
+{
+  font-style: italic;
+}
+
+.anais_me
+{
+  color: #0000FF;
+}
+
+.anais_uids
+{
+}
+
+
+/* new stuff for Thunderbird like mailer */
+
+.vertframerow
+{
+  border-top-color: white;
+  border-top-width: 1;
+  border-top-style: solid;
+  border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+
+  background-color: #DCDAD5;
+
+}
+.foldercell
+{
+  width: 25%;
+}
+.contentcell
+{
+}
+.embedwhite_out
+{
+  border-width: 1;
+  border-style: solid;
+  border-top-color: #808080;
+  border-left-color: #808080;
+  border-bottom-color: white;
+  border-right-color: white;
+}
+.embedwhite_in
+{
+  border-width: 1;
+  border-style: solid;
+  border-top-color: #808080; /* TODO */
+  border-left-color: #808080; /* TODO */
+  border-bottom-color: #808080;
+  border-right-color: #808080;
+
+  background-color: white;
+  /* height: 300px; */
+  /* height: 100%; */
+}
+.titlediv
+{
+  height: 24px;
+  vertical-align: middle;
+  padding-top: 6px;
+  padding-left: 6px;
+}
+
+table.titletable
+{
+  height: 24px;
+  vertical-align: middle;
+  padding-top: 6px;
+  padding-left: 6px;
+}
+
+td.titlecell
+{
+  height: 22px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+
+table.titletable td.titlecell SELECT
+{ 
+  display: -moz-popup;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  background: #DCDAD5;
+  -moz-appearance: toolbarbutton !important;
+}
+
+.whitesec_title
+{
+  background-color: #DCDAD5;
+  padding: 4px;
+}
+
+DIV.contactFoldersList
+{
+  position: absolute;
+  top: 5.5em;
+  left: 0px;
+  width: 14.7em;
+  bottom: 0px;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+dsDIV
+{
+  position: absolute;
+  color: #000;
+  background: #fff;
+  width: 100%;
+  top: 2em;
+  bottom: 0px;
+  overflow: auto;
+  border: 1px solid #fff;
+}
+
+.treecell
+{
+  color: black;
+  vertical-align: bottom;
+  padding-left: 4px; /* move away from the icon */
+  padding-right: 2px; /* move away from the right border */
+  white-space: nowrap;
+}
+
+DIV#folderTreeContent TABLE TD
+{ height: 18px;
+  border-top: 1px solid #fff;
+  margin: 0px;
+  padding: 0px; }
+
+/* message list */
+DIV#filterPanel
+{ 
+  height: 2em;
+  vertical-align: middle;
+  width: 100%;
+}
+
+TABLE#compose_table, TABLE#compose_table DIV
+{ 
+  width: 100%;
+}
+
+TABLE#compose_label
+{
+  text-align: right;
+}
+
+TABLE#addr_table
+{ 
+  margin-left: 30%;
+  width: 100%;
+}
+
+TABLE#contactsList
+{ 
+  display: block;
+  position: relative;
+  color: #000;  
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+TABLE#contactsList TH
+{
+  width: 100%;
+  background-color: #DCDAD5;
+  padding-left: .3em;
+  padding-right: .3em;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+}
+
+TABLE#contactsList TBODY
+{
+  right: 0px;
+  left: 0px;
+  bottom: 3em;
+  width: 100%;
+  background: #fff;
+  color: #000;
+}
+
+TABLE#contactsList TD
+{ 
+  height: 1.2em;
+  white-space: nowrap;
+}
+
+TABLE#contactsList TR._selected TD
+{ 
+  background: #4b6983;
+  color: #fff;
+}
+
+TABLE#contactsList TR._deleted TD
+{ 
+  text-decoration: line-through;
+}
+
+INPUT#searchValue
+{
+  height: 22px;
+  margin-right: 1em;
+  width: 20em;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  padding-left: 24px;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  background-image: url('/SOGo.woa/WebServerResources/Search-bar.png');
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  color: #aaa;
+}
+
+INPUT#searchValue:focus
+{ color: #000; }
+
+/* drag handles */
+DIV#dragHandle
+{ 
+  cursor: e-resize;
+  position: absolute;
+  z-index: 1;
+  top: 7.5em;
+  left: 14.6em;
+  width: .4em;
+  bottom: 0px;
+  background: #dbdad5;
+}
+
+DIV#dragHandle:active
+{
+  -moz-opacity: 0.5;
+}
+
+DIV#mailboxDragHandle
+{ 
+  cursor: n-resize;
+  position: absolute;
+  background: #dbdad5;
+  z-index: 1;
+  top: 50%;
+  left: 0px;
+  right: 0px;
+  height: .4em;
+}
+
+DIV#mailboxDragHandle:active
+{
+  -moz-opacity: 0.5;
+}
+
+PRE.textMessageViewer
+{ 
+}
