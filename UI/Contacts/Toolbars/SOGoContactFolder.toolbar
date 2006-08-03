@@ -4,22 +4,26 @@
      jsLink="js_card";
      label="New Card";
      image="new-card.png";
-     onclick = "newContact(this);return false;"; },
+     onclick = "newContact(this); return false;"; },
    { link = "new_list";
+     enabled = "NO";
      label="New List";
      image="new-list.png"; }
   ),
   (
-   { link = "properties";
-     label = "Properties";
+   { link = "edit";
+     label = "Modify";
+     onclick = "return onToolbarEditSelectedContacts(this);";
      image = "properties.png"; },
    { link = "write";
      label="Write";
+     onclick = "return onToolbarWriteToSelectedContacts(this);";
      image="write.png"; }
   ),
   (
    { link = "delete";
      label="Delete";
+     onclick = "return uixDeleteSelectedContacts(this);";
      image="delete.png"; }
   )
 )
