@@ -57,7 +57,7 @@ static NSString *ldapHost   = nil;
 static NSString *ldapBaseDN = nil;
 static NSNull   *sharedNull = nil;
 static NSString *fallbackIMAP4Server          = nil;
-static NSString *defaultMailDomain            = @"equipement.gouv.fr";
+static NSString *defaultMailDomain            = nil;
 static NSString *shareLDAPClass               = @"mineqMelBoite";
 static NSString *shareLoginSeparator          = @".-.";
 static NSString *mailEmissionAttrName         = @"mineqMelmailEmission";
@@ -69,7 +69,8 @@ static NSArray *fromEMailAttrs = nil;
 
 static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 
-+ (void)initialize {
++ (void) initialize 
+{
   static BOOL didInit = NO;
   NSUserDefaults *ud;
   NSString *tmp;
@@ -93,7 +94,21 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if ([fallbackIMAP4Server length] > 0)
     NSLog(@"Note: using fallback IMAP4 server: '%@'", fallbackIMAP4Server);
   else
-    fallbackIMAP4Server = nil;
+    {
+      if (fallbackIMAP4Server)
+        [fallbackIMAP4Server release];
+      fallbackIMAP4Server = nil;
+    }
+
+  defaultMailDomain = [[ud stringForKey:@"SOGoDefaultMailDomain"] copy];
+  if ([defaultMailDomain length] == 0)
+    {
+      if (defaultMailDomain)
+        [defaultMailDomain release];
+      defaultMailDomain = nil;
+      NSLog(@"WARNING: no default mail domain (please specify"
+            " 'SOGoDefaultMailDomain' in the user default db)");
+    }
 
   fromEMailAttrs = 
     [[NSArray alloc] initWithObjects:mailEmissionAttrName, nil];

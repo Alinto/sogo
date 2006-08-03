@@ -1,3 +1,9 @@
+2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
+	+initialize]): init defaultMailDomain with the user default
+	"SOGoDefaultMailDomain".
+
 2006-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactEditorBase.m ([UIxContactEditorBase
