@@ -236,6 +236,11 @@
           protectedBy = "View";
           pageName    = "UIxMailAccountsView";
         };
+        compose = {
+          protectedBy = "View";
+          pageName    = "UIxMailAccountsView";
+          actionName  = "compose";
+        };
         getMail = {
           protectedBy = "View";
           pageName    = "UIxMailAccountsView";

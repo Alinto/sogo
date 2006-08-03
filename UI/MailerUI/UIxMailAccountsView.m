@@ -20,6 +20,7 @@
 */
 
 #include <SOGoUI/UIxComponent.h>
+#include <SOGoUI/NSString+URL.h>
 
 @interface UIxMailAccountsView : UIxComponent
 {
@@ -47,6 +48,36 @@
       inbox = [NSString stringWithFormat: @"%@/INBOX",
                         [c objectAtIndex: 0]];
       actionResult = [self redirectToLocation: inbox];
+    }
+  else
+    actionResult = self;
+
+  return actionResult;
+}
+
+- (id) composeAction
+{
+  NSArray *c;
+  NSString *inbox, *url, *parameter;
+  NSMutableDictionary *urlParams;
+  id actionResult;
+
+  c = [[self clientObject] toManyRelationshipKeys];
+  if ([c count] > 0)
+    {
+      urlParams = [NSMutableDictionary new];
+      [urlParams autorelease];
+
+      parameter = [self queryParameterForKey: @"mailto"];
+      if (parameter)
+        [urlParams setObject: parameter
+                   forKey: @"mailto"];
+      inbox = [NSString stringWithFormat: @"%@/INBOX",
+                        [c objectAtIndex: 0]];
+      url = [inbox composeURLWithAction: @"compose"
+                   parameters: urlParams
+                   andHash: NO];
+      actionResult = [self redirectToLocation: url];
     }
   else
     actionResult = self;

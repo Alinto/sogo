@@ -1,5 +1,16 @@
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountsView.m ([UIxMailAccountsView
+	-composeAction]): new action method that permits external object
+	to write a message from the default (primary) account.
+
+	* UI/Contacts/UIxContactEditorBase.m ([UIxContactEditorBase
+	-initSnapshot]): new method with code taken from "defaultAction"
+	but needed for others.
+	([UIxContactEditorBase -writeAction]): new action designed to
+	compose the correct URL needed to obtain the MailerUI's email
+	editor with the correct "mailto" parameter.
+
 	* UI/Common/UIxSortableTableHeader.m: moved from MailerUI to
 	Common so that other modules can use it.
 
