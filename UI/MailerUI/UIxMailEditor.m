@@ -276,7 +276,7 @@ static NSArray      *infoKeys            = nil;
 - (void)_presetFromBasedOnAccountsQueryParameter {
   /* preset the from field to the primary identity of the given account */
   /* Note: The compose action sets the 'accounts' query parameter */
-  NSString         *accountID;
+  NSString         *accountID, *mailto;
   SOGoMailAccounts *accounts;
   SOGoMailAccount  *account;
   SOGoMailIdentity *identity;

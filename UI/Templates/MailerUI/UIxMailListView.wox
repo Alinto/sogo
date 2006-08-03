@@ -23,7 +23,7 @@
               height="14"
               /></td
             ><td class="tbtv_headercell tbtv_subject_headercell"
-            ><var:component className="UIxMailSortableTableHeader"
+            ><var:component className="UIxSortableTableHeader"
               label:label="Subject"
               const:sortKey="subject"
               const:href="view"
@@ -31,14 +31,14 @@
               /></td
             ><td class="tbtv_headercell"
             ><var:if condition="showToAddress" const:negate="YES"
-              ><var:component className="UIxMailSortableTableHeader"
+              ><var:component className="UIxSortableTableHeader"
                 label:label="From"
                 const:sortKey="from"
                 const:href="view"
                 var:queryDictionary="context.request.formValues"
                 /></var:if
               ><var:if condition="showToAddress"
-              ><var:component className="UIxMailSortableTableHeader"
+              ><var:component className="UIxSortableTableHeader"
                 label:label="To"
                 const:sortKey="to"
                 const:href="view"
@@ -49,7 +49,7 @@
             ><img rsrc:src="title_read_14x14.png" width="14" height="14"
               /></td
             ><td class="tbtv_headercell"
-            ><var:component className="UIxMailSortableTableHeader"
+            ><var:component className="UIxSortableTableHeader"
               label:label="Date"
               const:sortKey="date"
               const:href="view"
