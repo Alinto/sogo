@@ -1,5 +1,8 @@
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxSortableTableHeader.m: moved from MailerUI to
+	Common so that other modules can use it.
+
 	* UI/Contacts/UIxContactsListViewContainer.m: container to make it
 	easier to manage both ajax and non-ajax requests.
 

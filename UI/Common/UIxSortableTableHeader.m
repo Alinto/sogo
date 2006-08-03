@@ -22,7 +22,7 @@
 #include <NGObjWeb/SoComponent.h>
 
 /*
-  UIxMailSortableTableHeader
+  UIxSortableTableHeader
 
   TODO: document.
 
@@ -30,7 +30,7 @@
         works!
 */
 
-@interface UIxMailSortableTableHeader : SoComponent
+@interface UIxSortableTableHeader : SoComponent
 {
   NSString     *label;
   NSString     *sortKey;
@@ -43,7 +43,7 @@
 
 #include "common.h"
 
-@implementation UIxMailSortableTableHeader
+@implementation UIxSortableTableHeader
 
 - (void)dealloc {
   [self->label           release];
@@ -127,4 +127,4 @@
           : YES);
 }
 
-@end /* UIxMailSortableTableHeader */
+@end /* UIxSortableTableHeader */
