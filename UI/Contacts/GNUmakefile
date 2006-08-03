@@ -13,16 +13,17 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactEditorBase.m		\
 	\
 	ContactsUIProduct.m		\
+	UIxContactsFilterPanel.m	\
 	UIxContactsSelectionView.m	\
 	UIxContactView.m		\
 	UIxContactSelector.m		\
 	UIxContactEditor.m		\
 	UIxContactsListView.m		\
+	UIxContactsListViewContainer.m	\
 
 ContactsUI_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
-	ContactsUI.js
 
 ContactsUI_RESOURCE_FILES +=		\
 	Images/delete.png		\

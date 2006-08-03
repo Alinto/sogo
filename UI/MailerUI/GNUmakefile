@@ -29,7 +29,6 @@ MailerUI_OBJC_FILES += \
 	UIxMailListViewContainer.m	\
 	UIxMailView.m			\
 	UIxMailViewContainer.m		\
-	UIxMailSortableTableHeader.m	\
 	UIxMailMoveToPopUp.m		\
 	UIxMailFilterPanel.m		\
 	\

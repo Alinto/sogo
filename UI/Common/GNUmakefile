@@ -20,6 +20,8 @@ CommonUI_OBJC_FILES +=		\
 	UIxTabView.m		\
 	UIxTabItem.m		\
 	\
+	UIxSortableTableHeader.m \
+	\
 	UIxToolbar.m
 
 CommonUI_RESOURCE_FILES += \
