@@ -183,8 +183,8 @@
   return YES;
 }
 
-- (id<WOActionResults>)defaultAction {
-  // TODO: very similiar to apt-editor (apt editor would need to use std names
+- (void) initSnapshot
+{
   NSString *c;
   
   /* load iCalendar file */
@@ -195,7 +195,12 @@
   
   [self setContentString:c];
   [self loadValuesFromContentString:c];
-  
+}
+
+- (id<WOActionResults>)defaultAction {
+  // TODO: very similiar to apt-editor (apt editor would need to use std names
+  [self initSnapshot];
+ 
   return self;
 }
 
@@ -203,6 +208,7 @@
   /* this is overridden in the mail based contacts UI to redirect to tb.edit */
   return @"";
 }
+
 - (NSString *)editActionName {
   /* this is overridden in the mail based contacts UI to redirect to tb.edit */
   return @"edit";
@@ -259,9 +265,18 @@
                         @"the specified object"];
 }
 
-- (id)testAction {
-  [self logWithFormat:@"test ..."];
-  return self;
+- (id) writeAction
+{
+  NSString *email, *url;
+
+  [self initSnapshot];
+  email = [snapshot objectForKey: @"mail"];
+  url = ((email)
+         ? [NSString stringWithFormat: @"Mail/compose?mailto=%@",
+                   email]
+         : @"Mail/compose");
+  return
+    [self redirectToLocation: [self relativePathToUserFolderSubPath: url]];
 }
 
 - (id)newAction {

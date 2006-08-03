@@ -58,10 +58,10 @@
           pageName    = "UIxContactEditor"; 
           actionName  = "save";
         };
-        test = { 
+        write = { 
           protectedBy = "View";
           pageName    = "UIxContactEditor"; 
-          actionName  = "test";
+          actionName  = "write";
         };
       };
     };
