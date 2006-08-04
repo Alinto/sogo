@@ -43,7 +43,7 @@
   int LDAPPort;
 }
 
-+ (id)sharedSOGoAuthenticator;
++ (id) sharedSOGoAuthenticator;
 
 - (BOOL) LDAPCheckLogin: (NSString *) _login password: (NSString *) _pwd;
 
