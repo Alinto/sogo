@@ -19,9 +19,11 @@
   02111-1307, USA.
 */
 
-#include "SOGoUserFolder.h"
-#include "WOContext+Agenor.h"
-#include "common.h"
+#import "SOGoUserFolder.h"
+#import "WOContext+Agenor.h"
+#import "common.h"
+
+#import "Contacts/SOGoContactFolders.h"
 
 @implementation SOGoUserFolder
 
@@ -54,6 +56,7 @@
 - (SOGoUserFolder *)lookupUserFolder {
   return self;
 }
+
 - (SOGoGroupsFolder *)lookupGroupsFolder {
   return [self lookupName:@"Groups" inContext:nil acquire:NO];
 }
@@ -96,20 +99,26 @@
   return [calendar autorelease];
 }
 
-- (id)privateContacts:(NSString *)_key inContext:(id)_ctx {
-  static Class calClass = Nil;
-  id calendar;
-  
-  if (calClass == Nil)
-    calClass = NSClassFromString(@"SOGoContactFolder");
-  if (calClass == Nil) {
-    [self errorWithFormat:@"missing SOGoContactFolder class!"];
-    return nil;
-  }
-  
-  calendar = [[calClass alloc] initWithName:_key inContainer:self];
-  [calendar setOCSPath:[self ocsPrivateContactsPath]];
-  return [calendar autorelease];
+- (SOGoContactFolders *) privateContacts: (NSString *)_key inContext:(id)_ctx
+{
+  static Class contactsClass = Nil;
+  SOGoContactFolders *contacts;
+
+  if (!contactsClass)
+    contactsClass = NSClassFromString (@"SOGoContactFolders");
+  if (!contactsClass)
+    {
+      [self errorWithFormat:@"missing SOGoContactFolders class!"];
+      contacts = nil;
+    }
+  else
+    {
+      contacts = [[contactsClass alloc] initWithName:_key inContainer: self];
+      [contacts autorelease];
+      [contacts setBaseOCSPath: [self ocsPrivateContactsPath]];
+    }
+
+  return contacts;
 }
 
 - (id)groupsFolder:(NSString *)_key inContext:(id)_ctx {
@@ -207,7 +216,7 @@
   return cos;
 }
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection {
   return YES;
 }
 

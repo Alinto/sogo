@@ -1,5 +1,9 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-privateContacts:inContext:]): now returns an instance of
+	SOGoContactFolders.
+
 	* UI/Contacts/UIxContactsListViewContainer.m
 	([UIxContactsListViewContainer -contactFolderName]): new method to
 	return the absolute path to the current contact folder, called
