@@ -1,3 +1,9 @@
+2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.[hm]: new class module
+	serving as the root of the contact folders available to the
+	current user. Correctly lists the contact sources in webdav.
+
 2006-08-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountsView.m ([UIxMailAccountsView
