@@ -1,5 +1,10 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.[hm]: new class module serving
+	as a "view" for the SOGoContactFolders object. Does nothing but
+	redirect the browser to the URL of the personal address book of
+	the user. It does not even have a template.
+
 	* SoObjects/Contacts/SOGoPersonalAB.[hm]: new class module
 	implementing the SOGoContactSource protocol. Does nothing
 	currently but will be used to implement access to the personal
