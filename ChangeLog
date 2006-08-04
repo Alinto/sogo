@@ -1,5 +1,9 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactSource.h: new "SOGoContactSource"
+	protocol defining an API common to all possible types of contact
+	sources.
+
 	* SoObjects/Contacts/SOGoContactFolders.[hm]: new class module
 	serving as the root of the contact folders available to the
 	current user. Correctly lists the contact sources in webdav.
