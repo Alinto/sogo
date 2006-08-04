@@ -316,7 +316,7 @@
                 />
             </div>
             
-            <div id="dragHandle"
+            <div class="dragHandle" id="dragHandle"
               onmousedown="startHandleDragging(event);"
               onmousemove=""
               ondblclick="dragHandleDoubleClick(event);"

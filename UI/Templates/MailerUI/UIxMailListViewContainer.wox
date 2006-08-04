@@ -15,7 +15,7 @@
         <var:component-content/>
       </div>
 
-      <div id="mailboxDragHandle"
+      <div class="dragHandle" id="mailboxDragHandle"
         onmousedown="startHandleDragging(event);"
         onmousemove=""
         ondblclick="dragHandleDoubleClick(event);"
@@ -28,7 +28,6 @@
 
       <script type="text/javascript">
         initMailboxSelection('<var:string value="mailFolderName" />');
-        initMailboxAppearance();
       </script>
     </var:if>
 

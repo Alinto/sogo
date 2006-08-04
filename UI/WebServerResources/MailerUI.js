@@ -1077,19 +1077,6 @@ function initMailboxSelection(mailboxName)
   }
 }
 
-function initMailboxAppearance()
-{
-  var mailboxContent = document.getElementById('mailboxContent');
-  var messageContent = document.getElementById('messageContent');
-  var mailboxDragHandle = document.getElementById('mailboxDragHandle');
-
-  mailboxContent.style.height = (mailboxDragHandle.offsetTop
-                                 - mailboxContent.offsetTop + 'px;');
-  messageContent.style.top = (mailboxDragHandle.offsetTop
-                              + mailboxDragHandle.offsetHeight
-                              + 'px;');
-}
-
 function onHeaderClick(node)
 {
   var href = node.getAttribute("href");

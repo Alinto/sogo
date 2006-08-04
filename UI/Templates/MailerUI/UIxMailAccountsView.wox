@@ -12,7 +12,7 @@
     <div id="mailboxContent" style="visibility: hidden;">
     </div>
 
-    <div id="mailboxDragHandle"
+    <div class="dragHandle" id="mailboxDragHandle"
       style="visibility: hidden;"
       onmousedown="startHandleDragging(event);"
       onmousemove=""

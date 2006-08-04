@@ -23,6 +23,18 @@
 BODY
 { overflow: hidden; }
 
+DIV.folderTree
+{
+  position: absolute;
+  top: 5.5em;
+  left: 0px;
+  width: 14.7em;
+  bottom: 0px;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
 DIV#mailerPageContent
 { 
   position: absolute;
@@ -40,7 +52,7 @@ DIV#mailboxContent
 {
   position: absolute;
   width: 100%;
-  height: 50%;
+  height: 18em;
   left: 0px;
   top: 0px;
   right: 0px;
@@ -51,6 +63,7 @@ DIV#messageContent
   position: absolute;
   overflow: auto;
   font-size: small;
+  top: 18.1em;
   bottom: 0px;
   width: 100%;
   border-top: 1px solid #aaa;
@@ -58,9 +71,16 @@ DIV#messageContent
   background: #fff;
 }
 
-DIV.mailerPageContent DIV#messageContent
-{ 
-  top: 51%;
+DIV#folderTreeContent
+{
+  position: absolute;
+  color: #000;
+  background: #fff;
+  width: 100%;
+  top: 2em;
+  bottom: 0px;
+  overflow: auto;
+  border: 1px solid #fff;
 }
 
 DIV#messageContent P
@@ -190,30 +210,6 @@ table.titletable td.titlecell SELECT
 {
   background-color: #DCDAD5;
   padding: 4px;
-}
-
-DIV.folderTree
-{
-  position: absolute;
-  top: 5.5em;
-  left: 0px;
-  width: 14.7em;
-  bottom: 0px;
-  margin: 0px;
-  padding: 0px;
-  overflow: hidden;
-}
-
-DIV#folderTreeContent
-{
-  position: absolute;
-  color: #000;
-  background: #fff;
-  width: 100%;
-  top: 2em;
-  bottom: 0px;
-  overflow: auto;
-  border: 1px solid #fff;
 }
 
 .treecell
@@ -503,11 +499,12 @@ TABLE#addr_table
 TABLE#messageList
 { 
   display: block;
-  position: relative;
+  position: absolute;
   color: #000;  
   background: #fff;
   width: 100%;
-  height: 100%;
+  top: 2em;
+  bottom: 5px;
   overflow: auto;
 }
 
@@ -558,39 +555,24 @@ INPUT#searchValue
 INPUT#searchValue:focus
 { color: #000; }
 
+
 /* drag handles */
 DIV#dragHandle
-{ 
+{
   cursor: e-resize;
-  position: absolute;
-  z-index: 1;
   top: 7.5em;
   left: 14.6em;
   width: .4em;
   bottom: 0px;
-  background: #dbdad5;
-}
-
-DIV#dragHandle:active
-{
-  -moz-opacity: 0.5;
 }
 
 DIV#mailboxDragHandle
 { 
   cursor: n-resize;
-  position: absolute;
-  background: #dbdad5;
-  z-index: 1;
-  top: 50%;
+  top: 17.7em;
   left: 0px;
   right: 0px;
-  height: .4em;
-}
-
-DIV#mailboxDragHandle:active
-{
-  -moz-opacity: 0.5;
+  height: 5px;
 }
 
 PRE.textMessageViewer

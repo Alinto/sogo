@@ -608,3 +608,16 @@ td.tbtv_headercell img.tbtv_sortcell
   height: 12px;
 }
 
+/* drag handles */
+DIV.dragHandle
+{ 
+  position: absolute;
+  z-index: 1;
+  background: #dbdad5;
+}
+
+DIV.dragHandle:active
+{
+  -moz-opacity: 0.5;
+  background: #222;
+}
