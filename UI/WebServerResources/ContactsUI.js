@@ -36,7 +36,7 @@
 var currentMessages = new Array();
 var maxCachedMessages = 20;
 var cachedContacts = new Array();
-var currentContactsFolder = '';
+var currentContactFolder = '';
 /* mail list */
 
 function openContactWindow(sender, contactuid, url) {
@@ -51,7 +51,7 @@ function openContactWindow(sender, contactuid, url) {
 function clickedUid(sender, contactuid) {
   resetSelection(window);
   openContactWindow(sender, contactuid,
-                    ApplicationBaseURL + currentContactsFolder + "/" + contactuid + "/view");
+                    ApplicationBaseURL + currentContactFolder + "/" + contactuid + "/view");
   return true;
 }
 
@@ -284,15 +284,15 @@ function onContactsFolderTreeItemClick(element)
 
 function openContactsFolder(contactsFolder)
 {
-  if (contactsFolder != currentContactsFolder) {
-    currentContactsFolder = contactsFolder;
+  if (contactsFolder != currentContactFolder) {
+    currentContactFolder = contactsFolder;
     var url = ApplicationBaseURL + contactsFolder + "/view?noframe=1&desc=1";
     var contactsFolderContent = document.getElementById("contactsFolderContent");
     var contactsFolderDragHandle = document.getElementById("contactsFolderDragHandle");
     var messageContent = document.getElementById("messageContent");
     messageContent.innerHTML = '';
     if (contactsFolder.lastIndexOf("/") == 0) {
-      var url = (ApplicationBaseURL + currentContactsFolder + "/"
+      var url = (ApplicationBaseURL + currentContactFolder + "/"
                  + "/view?noframe=1");
       if (document.messageAjaxRequest) {
         document.messageAjaxRequest.aborted = true;
@@ -330,7 +330,7 @@ function openContactsFolder(contactsFolder)
 
 function openContactsFolderAtIndex(element) {
   var idx = element.getAttribute("idx");
-  var url = ApplicationBaseURL + currentContactsFolder + "/view?noframe=1&idx=" + idx;
+  var url = ApplicationBaseURL + currentContactFolder + "/view?noframe=1&idx=" + idx;
 
   if (document.contactsListAjaxRequest) {
     document.contactsListAjaxRequest.aborted = true;
@@ -413,7 +413,7 @@ function getCachedMessage(idx)
   while (counter < cachedContacts.length
          && message == null)
     if (cachedContacts[counter]
-        && cachedContacts[counter]['idx'] == currentContactsFolder + '/' + idx)
+        && cachedContacts[counter]['idx'] == currentContactFolder + '/' + idx)
       message = cachedContacts[counter];
     else
       counter++;
@@ -453,8 +453,8 @@ function onMessageSelectionChange()
     {
       var idx = selection[0];
 
-      if (currentMessages[currentContactsFolder] != idx) {
-        currentMessages[currentContactsFolder] = idx;
+      if (currentMessages[currentContactFolder] != idx) {
+        currentMessages[currentContactFolder] = idx;
         loadMessage(idx);
       }
     }
@@ -470,7 +470,7 @@ function loadMessage(idx)
   }
 
   if (cachedContact == null) {
-    var url = (ApplicationBaseURL + currentContactsFolder + "/"
+    var url = (ApplicationBaseURL + currentContactFolder + "/"
                + idx + "/view?noframe=1");
     document.messageAjaxRequest
       = triggerAjaxRequest(url, messageCallback, idx);
@@ -494,7 +494,7 @@ function messageCallback(http)
     
     if (http.callbackData) {
       var cachedContact = new Array();
-      cachedContact['idx'] = currentContactsFolder + '/' + http.callbackData;
+      cachedContact['idx'] = currentContactFolder + '/' + http.callbackData;
       cachedContact['time'] = (new Date()).getTime();
       cachedContact['text'] = http.responseText;
       if (cachedContact['text'].length < 30000)
@@ -664,7 +664,7 @@ function onContactRowDblClick(event, node)
   var contactId = node.getAttribute('id');
 
   openContactWindow(null, contactId,
-                    ApplicationBaseURL + currentContactsFolder
+                    ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/edit");
 
   return false;
@@ -676,7 +676,7 @@ function onMenuEditContact(event, node)
   var contactId = node.getAttribute('id');
 
   openContactWindow(null, contactId,
-                    ApplicationBaseURL + currentContactsFolder
+                    ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/edit");
 
   return false;
@@ -688,7 +688,7 @@ function onMenuWriteToContact(event, node)
   var contactId = node.getAttribute('id');
 
   openContactWindow(null, contactId,
-                    ApplicationBaseURL + currentContactsFolder
+                    ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/write");
 
   return false;
@@ -708,7 +708,7 @@ function onToolbarEditSelectedContacts(event)
   rows = collectSelectedRows();
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(null, 'edit_' + rows[i],
-                      ApplicationBaseURL + currentContactsFolder
+                      ApplicationBaseURL + currentContactFolder
                       + "/" + rows[i] + "/edit");
   }
 
@@ -722,7 +722,7 @@ function onToolbarWriteToSelectedContacts(event)
   rows = collectSelectedRows();
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(null, 'writeto_' + rows[i],
-                      ApplicationBaseURL + currentContactsFolder
+                      ApplicationBaseURL + currentContactFolder
                       + "/" + rows[i] + "/write");
   }
 
@@ -740,7 +740,7 @@ function uixDeleteSelectedContacts(sender)
     
     /* send AJAX request (synchronously) */
     
-    url = (ApplicationBaseURL + currentContactsFolder + "/"
+    url = (ApplicationBaseURL + currentContactFolder + "/"
            + rows[i] + "/delete");
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
@@ -782,13 +782,13 @@ function newEmailTo(sender) {
 
 function initContactsFolderSelection(contactsFolderName)
 {
-  currentContactsFolder = contactsFolderName;
+  currentContactFolder = contactsFolderName;
 
   var tree = document.getElementById("d");
   var treeNodes = getElementsByClassName('DIV', 'dTreeNode', tree);
   var i = 0;
   while (i < treeNodes.length
-         && treeNodes[i].getAttribute("dataname") != currentContactsFolder)
+         && treeNodes[i].getAttribute("dataname") != currentContactFolder)
     i++;
   if (i < treeNodes.length) {
     var links = getElementsByClassName('A', 'node', treeNodes[i]);
@@ -808,7 +808,7 @@ function onHeaderClick(node)
     document.contactsListAjaxRequest.aborted = true;
     document.contactsListAjaxRequest.abort();
   }
-  url = ApplicationBaseURL + currentContactsFolder + "/" + href;
+  url = ApplicationBaseURL + currentContactFolder + "/" + href;
   if (!href.match(/noframe=/))
     url += "&noframe=1";
   log ("url: " + url);
