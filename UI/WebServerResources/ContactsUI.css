@@ -332,37 +332,17 @@ INPUT#searchValue:focus
 DIV#dragHandle
 { 
   cursor: e-resize;
-  position: absolute;
-  z-index: 1;
   top: 7.5em;
   left: 14.6em;
   width: .4em;
   bottom: 0px;
-  background: #dbdad5;
-}
-
-DIV#dragHandle:active
-{
-  -moz-opacity: 0.5;
 }
 
 DIV#mailboxDragHandle
 { 
   cursor: n-resize;
-  position: absolute;
-  background: #dbdad5;
-  z-index: 1;
   top: 50%;
   left: 0px;
   right: 0px;
   height: .4em;
-}
-
-DIV#mailboxDragHandle:active
-{
-  -moz-opacity: 0.5;
-}
-
-PRE.textMessageViewer
-{ 
 }

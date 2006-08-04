@@ -56,7 +56,7 @@
               <div class="titlediv"><var:string label:value="Addressbook" /></div>
             </div>
 
-            <div id="dragHandle"
+            <div class="dragHandle" id="dragHandle"
               onmousedown="startHandleDragging(event);"
               onmousemove=""
               ondblclick="dragHandleDoubleClick(event);"
