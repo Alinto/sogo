@@ -8,6 +8,17 @@
   };
   
   classes = {
+    SOGoContactFolders = {
+      superclass    = "SOGoObject";
+
+      protectedBy   = "View";
+      defaultAccess = "allow"; /* I think this affects key lookup */
+      defaultRoles = {
+        "View"          = "Owner";
+        "WebDAV Access" = "Owner";
+      };
+    };
+
     SOGoContactFolder = {
       superclass    = "SOGoFolder";
 
@@ -18,6 +29,7 @@
         "WebDAV Access" = "Owner";
       };
     };
+
     SOGoContactObject = {
       superclass    = "SOGoContentObject";
 
