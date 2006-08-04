@@ -34,15 +34,15 @@
 
 /* content */
 
-- (id)record {
+- (id) record {
   if (self->record == nil) {
     NSString *s;
-    
+
     s = [self contentAsString];
-    
+
     if ([s hasPrefix:@"BEGIN:VCARD"]) {
       NSArray *v;
-      
+
       v = [NGVCard parseVCardsFromSource:s];
       if ([v count] == 0) {
 	[self errorWithFormat:@"Could not parse vCards from content!"];
