@@ -11,6 +11,9 @@ Contacts_OBJC_FILES =			\
 					\
 	SOGoContactObject.m		\
 	SOGoContactFolder.m		\
+	SOGoContactFolders.m		\
+					\
+	SOGoPersonalAB.m		\
 					\
 	NSDictionary+Contact.m
 
