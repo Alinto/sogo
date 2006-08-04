@@ -8,6 +8,15 @@
   };
 
   categories = {
+    SOGoContactFolders = {
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView"; 
+        };
+      };
+    };
+
     SOGoContactFolder = {
       slots = {
         toolbar = {
