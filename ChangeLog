@@ -1,5 +1,10 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoPersonalAB.[hm]: new class module
+	implementing the SOGoContactSource protocol. Does nothing
+	currently but will be used to implement access to the personal
+	address book of the user stored in the SOGo database.
+
 	* SoObjects/Contacts/SOGoContactSource.h: new "SOGoContactSource"
 	protocol defining an API common to all possible types of contact
 	sources.
