@@ -44,18 +44,19 @@
 
 /* accessors */
 
-- (NSString *)login;
+- (NSString *) login;
 
 /* ownership */
 
-- (NSString *)ownerInContext:(id)_ctx;
+- (NSString *) ownerInContext: (id) _ctx;
 
 /* pathes */
 
-- (NSString *)ocsUserPath;
-- (NSString *)ocsPrivateCalendarPath;
+- (NSString *) ocsUserPath;
+- (NSString *) ocsPrivateCalendarPath;
 
-- (id)lookupFreeBusyObject;
+/* TODO: not implemented, bad bad */
+// - (id)lookupFreeBusyObject;
 
 @end
 

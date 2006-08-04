@@ -1,5 +1,8 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.h: commented out declaration of
+	the "lookupFreeBusyObject" method since it does not exist.
+
 	* UI/Contacts/UIxContactFoldersView.[hm]: new class module serving
 	as a "view" for the SOGoContactFolders object. Does nothing but
 	redirect the browser to the URL of the personal address book of
