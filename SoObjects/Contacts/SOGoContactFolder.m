@@ -31,13 +31,13 @@
 @implementation SOGoContactFolder
 
 + (id) contactFolderWithSource: (SOGoContactSource *) source
-                   inContainer: (SOGoObject *) container
+                   inContainer: (SOGoObject *) newContainer
                        andName: (NSString *) name
 {
   SOGoContactFolder *folder;
 
   folder = [[self alloc] initWithSource: source
-                         inContainer: container
+                         inContainer: newContainer
                          andName: name];
   [folder autorelease];
 
