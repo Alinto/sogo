@@ -66,12 +66,12 @@
           </var:if>
 
           <div id="contactsListContent">
-            <var:component-content/>
+            <var:component-content />
           </div>
         </var:if>
 
 	<var:if condition="isPopup">
-          <var:component-content/>
+          <var:component-content />
         </var:if>
       </form>
 
@@ -79,12 +79,10 @@
     </var:if>
 
     <var:if condition="hideFrame">
-      <var:component-content/>
+      <var:component-content />
     </var:if>
-  </var:component>
 
-  <var:if condition="isUIxDebugEnabled">
-    <hr />
-    <small>clientObject: <var:string value="clientObject" /></small>
-  </var:if>
-</var:component>
+    <script type="text/javascript">
+      currentContactFolder = '<var:string value="contactFolderName" />';
+    </script>
+  </var:component>

@@ -1,5 +1,14 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/ContactsUI/UIxContactsListViewContainer.wox: added
+	JS code to initialize the 'currentContactFolder' generic var.
+
+	* SoObjects/Contacts/SOGoContactFolder.m ([SOGoContactFolder
+	+contactFolderWithSource:inContainer:andName:]): new class
+	method meant to return an instance connected to the specified
+	source. Currently useless but won't be anymore in the next few
+	days.
+
 	* SoObjects/SOGo/SOGoUserFolder.h: commented out declaration of
 	the "lookupFreeBusyObject" method since it does not exist.
 
