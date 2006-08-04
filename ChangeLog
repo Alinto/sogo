@@ -1,5 +1,10 @@
 2006-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([UIxContactsListViewContainer -contactFolderName]): new method to
+	return the absolute path to the current contact folder, called
+	from within the template.
+
 	* UI/Templates/ContactsUI/UIxContactsListViewContainer.wox: added
 	JS code to initialize the 'currentContactFolder' generic var.
 

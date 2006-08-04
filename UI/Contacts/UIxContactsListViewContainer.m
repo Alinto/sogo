@@ -20,8 +20,34 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/SoObjects.h>
+
+#import <SoObjects/Contacts/SOGoContactFolders.h>
+
 #import "UIxContactsListViewContainer.h"
 
 @implementation UIxContactsListViewContainer
+
+- (NSString *) contactFolderName
+{
+  NSMutableArray *folders;
+  SOGoObject *currentObject;
+
+  folders = [NSMutableArray new];
+  [folders autorelease];
+
+  currentObject = [self clientObject];
+  while (![currentObject isKindOfClass: [SOGoContactFolders class]])
+    {
+      [folders insertObject: [currentObject nameInContainer] atIndex: 0];
+      currentObject = [currentObject container];
+    }
+
+  return [NSString stringWithFormat: @"/%@",
+                   [folders componentsJoinedByString: @"/"]];
+}
 
 @end
