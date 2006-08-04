@@ -26,9 +26,9 @@
 
 /*
   SOGoContactFolder
-    Parent object: the SOGoUserFolder
+    Parent object: the user's SOGoUserFolders
     Child objects: SOGoContactObject
-    
+
   The SOGoContactFolder maps to an GCS folder of type 'contact', that
   is, a content folder containing vcal?? files (and a proper quicktable).
 */
@@ -36,11 +36,22 @@
 @class NSString, NSArray, NSCalendarDate, NSException;
 @class GCSFolder;
 
+@class SOGoContactSource;
+
 @interface SOGoContactFolder : SOGoFolder
-{
-}
 
 /* fetching */
+
++ (id) contactFolderWithSource: (SOGoContactSource *) source
+                   inContainer: (SOGoObject *) newContainer
+                       andName: (NSString *) name;
+
+- (id) initWithSource: (SOGoContactSource *) source
+          inContainer: (SOGoObject *) newContainer
+              andName: (NSString *) name;
+
+- (void) setContactSource: (SOGoContactSource *) source
+                  andName: name;
 
 - (NSArray *)fetchCoreInfos;
 

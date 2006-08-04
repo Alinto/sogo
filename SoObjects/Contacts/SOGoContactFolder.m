@@ -30,6 +30,35 @@
 
 @implementation SOGoContactFolder
 
++ (id) contactFolderWithSource: (SOGoContactSource *) source
+                   inContainer: (SOGoObject *) container
+                       andName: (NSString *) name
+{
+  SOGoContactFolder *folder;
+
+  folder = [[self alloc] initWithSource: source
+                         inContainer: container
+                         andName: name];
+  [folder autorelease];
+
+  return folder;
+}
+
+- (id) initWithSource: (SOGoContactSource *) source
+          inContainer: (SOGoObject *) newContainer
+              andName: (NSString *) name
+{
+  if ((self = [self initWithName: name inContainer: newContainer]))
+    [self setContactSource: source andName: name];
+
+  return self;
+}
+
+- (void) setContactSource: (SOGoContactSource *) source
+                  andName: name
+{
+}
+
 /* name lookup */
 
 - (BOOL)isValidContactName:(NSString *)_key {
@@ -39,7 +68,9 @@
   return YES;
 }
 
-- (id)contactWithName:(NSString *)_key inContext:(id)_ctx {
+- (id) contactWithName: (NSString *) _key
+             inContext: (id)_ctx
+{
   static Class ctClass = Nil;
   id ct;
   
