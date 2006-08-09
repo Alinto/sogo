@@ -204,16 +204,36 @@ DIV.contactFoldersList
   overflow: hidden;
 }
 
-dsDIV
-{
+DIV.contactFoldersList UL
+{ 
+  list-style-type: none;
+  list-style-image: none;
+  cursor: default;
+  display: block;
   position: absolute;
-  color: #000;
+  color: #000;  
   background: #fff;
   width: 100%;
   top: 2em;
+  left: 0px;
+  right: 0px;
   bottom: 0px;
   overflow: auto;
-  border: 1px solid #fff;
+  padding-left: 0px;
+}
+
+DIV.contactFoldersList LI
+{
+  padding: .2em 1em;
+  margin: 0px;
+  width: auto;
+  white-space: nowrap;
+}
+
+DIV.contactFoldersList LI._selected
+{ 
+  background: #4b6983;
+  color: #fff;
 }
 
 .treecell
@@ -294,6 +314,12 @@ TABLE#contactsList TD
 { 
   height: 1.2em;
   white-space: nowrap;
+}
+
+TABLE#contactsList TD IMG
+{
+  margin-left: 1em;
+  margin-right: .2em;
 }
 
 TABLE#contactsList TR._selected TD
