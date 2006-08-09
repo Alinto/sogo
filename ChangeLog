@@ -1,5 +1,9 @@
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.[hm]: new class that
+	returns a vCard based on contact entries from an LDAP server.
+	Conforms to the new SOGOContactObject protocol.
+
 	* SoObjects/Contacts/NGVCardSimpleValue+Contact.m
 	([NGVCardSimpleValue -vCardEntryString]): generates the correct
 	entry for the textual representation of the vCard.
