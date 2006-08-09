@@ -196,6 +196,7 @@ static BOOL kontactGroupDAV = YES;
       
       if ((etag = [self davEntityTag]) != nil)
 	[r setHeader:etag forKey:@"etag"];
+
       return r;
     }
     

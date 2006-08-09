@@ -86,9 +86,11 @@
 - (GCSFolderManager *)folderManager {
   return [GCSFolderManager defaultFolderManager];
 }
+
 - (GCSFolder *)ocsFolderForPath:(NSString *)_path {
   return [[self folderManager] folderAtPath:_path];
 }
+
 - (GCSFolder *)ocsFolder {
   if (self->ocsFolder != nil)
     return [self->ocsFolder isNotNull] ? self->ocsFolder : nil;
@@ -110,6 +112,7 @@
     return records;
   return [records valueForKey:@"c_name"];
 }
+
 - (NSDictionary *)fetchContentStringsAndNamesOfAllObjects {
   NSDictionary *files;
   
