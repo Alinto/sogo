@@ -1,5 +1,9 @@
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactSource.h,
+	SoObjects/Contacts/SOGoPersonalAB.[hm]: unused classes and
+	protocols.
+
 	* SoObjects/Contacts/NGLdapEntry+Contact.m ([NGLdapEntry
 	-singleAttributeWithName:key]): new method that returns the first
 	object associated with an ldap key (where generally one value is
