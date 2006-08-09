@@ -9,13 +9,16 @@ Contacts_PRINCIPAL_CLASS = SOGoContactsProduct
 Contacts_OBJC_FILES =			\
 	Product.m			\
 					\
-	SOGoContactObject.m		\
-	SOGoContactFolder.m		\
 	SOGoContactFolders.m		\
+	SOGoContactGCSEntry.m		\
+	SOGoContactGCSFolder.m		\
+	SOGoContactLDAPEntry.m		\
+	SOGoContactLDAPFolder.m		\
 					\
-	SOGoPersonalAB.m		\
-					\
-	NSDictionary+Contact.m
+	NSDictionary+Contact.m		\
+	NGLdapEntry+Contact.m		\
+	NGVCard+Contact.m		\
+	NGVCardSimpleValue+Contact.m	\
 
 Contacts_RESOURCE_FILES +=		\
 	Version				\
