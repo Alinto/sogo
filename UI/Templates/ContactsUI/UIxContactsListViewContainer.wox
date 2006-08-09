@@ -48,12 +48,34 @@
         </ul>
       </div>
 
-        <form name="searchform" var:href="view" var:_sort="sortKey"
-          method="GET">
+      <form name="searchform" var:href="view" var:_sort="sortKey"
+        onsubmit="return onSearchFormSubmit();" method="GET">
 	<var:if condition="isPopup" const:negate="YES">
           <var:if condition="hideFolderTree" const:negate="YES">
             <div class="contactFoldersList" id="contactFoldersList">
               <div class="titlediv"><var:string label:value="Addressbook" /></div>
+
+              <ul id="contactFolders" onselectionchange="onFolderSelectionChange();">
+                <var:foreach list="contactFolders" item="currentFolder">
+                  <var:if condition="isFolderCurrent"
+                    ><li var:id="currentContactFolderId"
+                      class="_selected"
+                      onmousedown="return false;"
+                      onclick="return onRowClick(event);"
+                      oncontextmenu="return onContactFolderContextMenu(event);"
+                      ><var:string value="currentContactFolderName" /></li
+                      ></var:if
+                    ><var:if condition="isFolderCurrent"
+                    const:negate="YES"
+                    ><li var:id="currentContactFolderId"
+                      onmousedown="return false;"
+                      onclick="return onRowClick(event);"
+                      oncontextmenu="return onContactFolderContextMenu(event);"
+                      ><var:string value="currentContactFolderName" /></li
+                      ></var:if>
+                </var:foreach>
+              </ul>
+
             </div>
 
             <div class="dragHandle" id="dragHandle"
@@ -83,6 +105,6 @@
     </var:if>
 
     <script type="text/javascript">
-      currentContactFolder = '<var:string value="contactFolderName" />';
+      currentContactFolder = '<var:string value="contactFolderId" />';
     </script>
   </var:component>
