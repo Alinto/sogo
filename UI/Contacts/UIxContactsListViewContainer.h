@@ -25,7 +25,24 @@
 
 #import <SOGoUI/UIxComponent.h>
 
+@class NSArray;
+@class SOGoContactFolder;
+
 @interface UIxContactsListViewContainer : UIxComponent
+{
+  NSString *foldersPrefix;
+  id currentFolder;
+}
+
+- (void) setCurrentFolder: (id) folder;
+
+- (NSString *) foldersPrefix;
+
+- (NSArray *) contactFolders;
+
+- (NSString *) contactFolderId;
+- (NSString *) currentContactFolderId;
+- (NSString *) currentContactFolderName;
 
 @end
 

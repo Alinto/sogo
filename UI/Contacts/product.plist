@@ -17,7 +17,7 @@
       };
     };
 
-    SOGoContactFolder = {
+    SOGoContactGCSFolder = {
       slots = {
         toolbar = {
           protectedBy = "View";
@@ -41,13 +41,59 @@
       };
     };
 
-    SOGoContactObject = {
+    SOGoContactLDAPFolder = {
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoContactObject.toolbar";
+          value = "SOGoContactFolder.toolbar";
         };
       };
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView"; 
+        };
+        new = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "new";
+        };
+        select = {
+          protectedBy = "View";
+          pageName    = "UIxContactsSelectionView"; 
+        };
+      };
+    };
+
+    SOGoContactGCSEntry = {
+      methods = {
+        view = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+        };
+        delete = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+          actionName  = "delete";
+        };
+        edit = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+        };
+        save = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "save";
+        };
+        write = { 
+          protectedBy = "View";
+          pageName    = "UIxContactEditor"; 
+          actionName  = "write";
+        };
+      };
+    };
+
+    SOGoContactLDAPEntry = {
       methods = {
         view = { 
           protectedBy = "View";

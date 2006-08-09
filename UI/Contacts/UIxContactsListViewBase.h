@@ -22,16 +22,16 @@
 #ifndef __UIxContactsListViewBase_H__
 #define __UIxContactsListViewBase_H__
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
-@class NSString, NSArray;
+@class NSString;
+
+@protocol SOGoContactObject;
 
 @interface UIxContactsListViewBase : UIxComponent
 {
-  NSArray  *allRecords;
-  NSArray  *filteredRecords;
   NSString *searchText;
-  id       contact;
+  id <SOGoContactObject> currentContact;
 }
 
 @end

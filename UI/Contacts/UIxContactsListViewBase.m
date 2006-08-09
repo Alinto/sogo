@@ -19,112 +19,104 @@
   02111-1307, USA.
 */
 
-#include "UIxContactsListViewBase.h"
-#include <Contacts/SOGoContactFolder.h>
-#include "common.h"
+#import <Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactFolders.h>
+
+#import "common.h"
+
+#import "UIxContactsListViewBase.h"
 
 @implementation UIxContactsListViewBase
 
-- (void)dealloc {
-  [self->allRecords      release];
-  [self->filteredRecords release];
-  [self->searchText release];
-  [self->contact    release];
+- (void) dealloc
+{
+  if (searchText)
+    [searchText release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setContact:(id)_contact {
-  ASSIGN(self->contact, _contact);
-}
-- (id)contact {
-  return self->contact;
+- (void) setCurrentContact: (id <SOGoContactObject>) _contact
+{
+  currentContact = _contact;
 }
 
-- (void)setSearchText:(NSString *)_txt {
-  ASSIGNCOPY(self->searchText, _txt);
-}
-- (id)searchText {
-  if (self->searchText == nil)
-    [self setSearchText:[[[self context] request] formValueForKey:@"search"]];
-  return self->searchText;
+- (id <SOGoContactObject>) currentContact
+{
+  return currentContact;
 }
 
-- (EOQualifier *)qualifier {
-  NSString *qs, *s;
-  
-  s = [self searchText];
-  if ([s length] == 0)
-    return nil;
-  
-  // TODO: just use qualifier vars
-  qs = [NSString stringWithFormat:
-		   @"(sn isCaseInsensitiveLike: '%@*') OR "
-		   @"(givenname isCaseInsensitiveLike: '%@*') OR "
-		   @"(mail isCaseInsensitiveLike: '*%@*') OR "
-		   @"(telephonenumber isCaseInsensitiveLike: '*%@*')",
-		   s, s, s, s];
-  return [EOQualifier qualifierWithQualifierFormat:qs];
+- (void) setSearchText: (NSString *) _txt
+{
+  ASSIGNCOPY (searchText, _txt);
 }
 
-- (NSString *)defaultSortKey {
-  return @"sn";
+- (id) searchText
+{
+  if (!searchText)
+    [self setSearchText: [self queryParameterForKey:@"search"]];
+
+  return searchText;
 }
-- (NSString *)sortKey {
+
+- (NSString *) defaultSortKey
+{
+  return @"fn";
+}
+
+- (NSString *) sortKey
+{
   NSString *s;
   
-  s = [[[self context] request] formValueForKey:@"sort"];
-  return [s length] > 0 ? s : [self defaultSortKey];
-}
-- (EOSortOrdering *)sortOrdering {
-  SEL sel;
+  s = [self queryParameterForKey: @"sort"];
+  if ([s length] == 0)
+    s = [self defaultSortKey];
 
-  sel = [[[[self context] request] formValueForKey:@"desc"] boolValue]
-    ? EOCompareCaseInsensitiveDescending
-    : EOCompareCaseInsensitiveAscending;
-  
-  return [EOSortOrdering sortOrderingWithKey:[self sortKey] selector:sel];
-}
-- (NSArray *)sortOrderings {
-  return [NSArray arrayWithObjects:[self sortOrdering], nil];
+  return s;
 }
 
-- (NSArray *)contactInfos {
-  // TODO: should be done in the backend, but for Agenor AB its OK here
-  NSArray     *records;
-  EOQualifier *q;
-  
-  if (self->filteredRecords != nil)
-    return self->filteredRecords;
-  
-  records = [[self clientObject] fetchCoreInfos];
-  self->allRecords = 
-    [[records sortedArrayUsingKeyOrderArray:[self sortOrderings]] retain];
-  
-  if ((q = [self qualifier]) != nil) {
-  [self debugWithFormat:@"qs: %@", q];
-    self->filteredRecords = 
-      [[self->allRecords filteredArrayUsingQualifier:q] retain];
-  }
-  else
-    self->filteredRecords = [self->allRecords retain];
-  
-  return self->filteredRecords;
+- (NSComparisonResult) sortOrdering
+{
+  return ([[self queryParameterForKey:@"desc"] boolValue]
+          ? NSOrderedDescending
+          : NSOrderedAscending);
+}
+
+- (NSArray *) contactInfos
+{
+  id <SOGoContactFolder> folder;
+
+  folder = [self clientObject];
+
+  return [folder lookupContactsWithFilter: [self searchText]
+                 sortBy: [self sortKey]
+                 ordering: [self sortOrdering]];
 }
 
 /* notifications */
 
-- (void)sleep {
-  [self->contact         release]; self->contact         = nil;
-  [self->allRecords      release]; self->allRecords      = nil;
-  [self->filteredRecords release]; self->filteredRecords = nil;
+- (void) sleep
+{
+  if (searchText)
+    {
+      [searchText release];
+      searchText = nil;
+    }
+  currentContact = nil;
+//   [allRecords release];
+//   allRecords = nil;
+//   [filteredRecords release];
+//   filteredRecords = nil;
   [super sleep];
 }
 
 /* actions */
 
-- (BOOL)shouldTakeValuesFromRequest:(WORequest *)_rq inContext:(WOContext*)_c{
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
+                           inContext: (WOContext*) _c
+{
   return YES;
 }
 

@@ -14,7 +14,6 @@ ContactsUI_OBJC_FILES =			\
 	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\
-	UIxContactsSelectionView.m	\
 	UIxContactView.m		\
 	UIxContactSelector.m		\
 	UIxContactEditor.m		\

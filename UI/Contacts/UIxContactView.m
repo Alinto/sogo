@@ -75,18 +75,20 @@
 /* action */
 
 - (id<WOActionResults>)defaultAction {
-  if ([[self clientObject] record] == nil) {
+  if ([[self clientObject] vCard] == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"could not locate contact"];
   }
   return self;
 }
 
-- (BOOL)isDeletableClientObject {
-  return [[self clientObject] respondsToSelector:@selector(delete)];
+- (BOOL) isDeletableClientObject
+{
+  return [[self clientObject] respondsToSelector: @selector(delete)];
 }
 
-- (id)deleteAction {
+- (id) deleteAction
+{
   NSException *ex;
   id url;
 

@@ -25,29 +25,84 @@
 
 #import <NGObjWeb/SoObjects.h>
 
-#import <SoObjects/Contacts/SOGoContactFolders.h>
+#import <SoObjects/Contacts/SOGoContactFolder.h>
 
 #import "UIxContactsListViewContainer.h"
 
+@class SOGoContactFolders;
+
 @implementation UIxContactsListViewContainer
 
-- (NSString *) contactFolderName
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      foldersPrefix = nil;
+    }
+
+  return self;
+}
+
+- (void) setCurrentFolder: (id) folder
+{
+  currentFolder = folder;
+}
+
+- (NSString *) foldersPrefix
 {
   NSMutableArray *folders;
   SOGoObject *currentObject;
 
-  folders = [NSMutableArray new];
-  [folders autorelease];
-
-  currentObject = [self clientObject];
-  while (![currentObject isKindOfClass: [SOGoContactFolders class]])
+  if (!foldersPrefix)
     {
-      [folders insertObject: [currentObject nameInContainer] atIndex: 0];
-      currentObject = [currentObject container];
+      folders = [NSMutableArray new];
+      [folders autorelease];
+
+      currentObject = [[self clientObject] container];
+      while (![currentObject isKindOfClass: [SOGoContactFolders class]])
+        {
+          [folders insertObject: [currentObject nameInContainer] atIndex: 0];
+          currentObject = [currentObject container];
+        }
+
+      foldersPrefix = [folders componentsJoinedByString: @"/"];
+      [foldersPrefix retain];
     }
 
-  return [NSString stringWithFormat: @"/%@",
-                   [folders componentsJoinedByString: @"/"]];
+  return foldersPrefix;
+}
+
+- (NSString *) contactFolderId
+{
+  return [NSString stringWithFormat: @"%@/%@",
+                   [self foldersPrefix],
+                   [[self clientObject] nameInContainer]];
+}
+
+- (NSArray *) contactFolders
+{
+  SOGoContactFolders *folderContainer;
+
+  folderContainer = [[self clientObject] container];
+
+  return [folderContainer contactFolders];
+}
+
+- (NSString *) currentContactFolderId
+{
+  return [NSString stringWithFormat: @"%@/%@",
+                   [self foldersPrefix],
+                   [currentFolder nameInContainer]];
+}
+
+- (NSString *) currentContactFolderName
+{
+  return [self labelForKey: [currentFolder displayName]];
+}
+
+- (BOOL) isFolderCurrent
+{
+  return [[self currentContactFolderId] isEqualToString: [self contactFolderId]];
 }
 
 @end

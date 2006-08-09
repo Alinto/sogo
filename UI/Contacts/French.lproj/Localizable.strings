@@ -29,3 +29,6 @@
 "edit"              = "Editer";
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Nouveau";
+
+"Name or Address" = "Le nom ou l'adresse";
+"Personal Addressbook" = "Adresses personnelles";

@@ -19,9 +19,9 @@
  02111-1307, USA.
  */
 
-#include <NGObjWeb/WOComponent.h>
+#include <SOGoUI/UIxComponent.h>
 
-@interface UIxContactsFilterPanel : WOComponent
+@interface UIxContactsFilterPanel : UIxComponent
 {
   NSString *searchText;
   NSString *searchCriteria;
@@ -36,10 +36,10 @@
 
 static NSArray      *filters           = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSMutableDictionary *md;
   NSMutableArray *ma;
-  unsigned i;
   
   md = [[NSMutableDictionary alloc] initWithCapacity:8];
   ma = [[NSMutableArray alloc] initWithCapacity:4];
@@ -60,7 +60,8 @@ static NSArray      *filters           = nil;
   return self;
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [self->searchCriteria release];
   [self->searchText release];
   [super dealloc];
@@ -68,34 +69,30 @@ static NSArray      *filters           = nil;
 
 /* accessors */
 
-- (void)setSearchText: (NSString *)_txt
+- (void) setSearchText: (NSString *)_txt
 {
   ASSIGNCOPY(self->searchText, _txt);
 }
 
-- (void)setSearchCriteria: (NSString *)_txt
+- (void) setSearchCriteria: (NSString *)_txt
 {
   ASSIGNCOPY(self->searchText, _txt);
 }
 
-- (NSString *)searchText
+- (NSString *) searchText
 {
-  if (self->searchText == nil)
-    {
-      self->searchText = 
-	[[[[self context] request] formValueForKey:@"search"] copy];
-    }
-  return self->searchText;
+  if (!searchText)
+    searchText = [[self queryParameterForKey: @"search"] copy];
+
+  return searchText;
 }
 
-- (NSString *)searchCriteria
+- (NSString *) searchCriteria
 {
-  if (self->searchCriteria == nil)
-    {
-      self->searchCriteria = 
-	[[[[self context] request] formValueForKey:@"criteria"] copy];
-    }
-  return self->searchCriteria;
+  if (!searchCriteria)
+    searchCriteria = [[self queryParameterForKey: @"criteria"] copy];
+
+  return searchCriteria;
 }
 
 /* filters */
@@ -118,7 +115,7 @@ static NSArray      *filters           = nil;
 
 - (NSString *) selectedFilter
 {
-  return [[[self context] request] formValueForKey: @"filterpopup"];
+  return [self queryParameterForKey: @"filterpopup"];
 }
 
 @end /* UIxContactsFilterPanel */
