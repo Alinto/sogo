@@ -1,5 +1,10 @@
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/NGVCard+Contact.m ([NGVCard -asString]): new
+	method that generates a textual representation of the vcard.
+
+	* SoObjects/Contacts/NGVCard+Contact.[hm]: new class extension.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.[hm]: new module name of
 	"SOGoContactFolder".
 
