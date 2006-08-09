@@ -1,5 +1,7 @@
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: implemented live-search.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-appendSystemSourcesInContext:context]): populated method with
 	code that creates entries mapped to instances SOGoContactFolder,
