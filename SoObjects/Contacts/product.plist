@@ -19,7 +19,7 @@
       };
     };
 
-    SOGoContactFolder = {
+    SOGoContactGCSFolder = {
       superclass    = "SOGoFolder";
 
       protectedBy   = "View";
@@ -30,7 +30,32 @@
       };
     };
 
-    SOGoContactObject = {
+    SOGoContactGCSEntry = {
+      superclass    = "SOGoContentObject";
+
+      protectedBy   = "View";
+      defaultAccess = "allow"; /* I think this affects key lookup */
+      defaultRoles = {
+        "View"          = "Owner";
+        "WebDAV Access" = "Owner";
+      };
+
+      methods = {
+      };
+    };
+
+    SOGoContactLDAPFolder = {
+      superclass    = "SOGoFolder";
+
+      protectedBy   = "View";
+      defaultAccess = "allow"; /* I think this affects key lookup */
+      defaultRoles = {
+        "View"          = "Owner";
+        "WebDAV Access" = "Owner";
+      };
+    };
+
+    SOGoContactLDAPEntry = {
       superclass    = "SOGoContentObject";
 
       protectedBy   = "View";
