@@ -20,6 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* exchange folder types:                   */
+/* MailItems                IPF.Note
+   ContactItems             IPF.Contact
+   AppointmentItems         IPF.Appointment
+   NoteItems                IPF.StickyNote
+   TaskItems                IPF.Task
+   JournalItems             IPF.Journal     */
+
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -30,10 +38,8 @@
 
 #import "common.h"
 
-#import "SOGoContactFolder.h"
-#import "SOGoContactSource.h"
-#import "SOGoPersonalAB.h"
-
+#import "SOGoContactGCSFolder.h"
+#import "SOGoContactLDAPFolder.h"
 #import "SOGoContactFolders.h"
 
 @implementation SOGoContactFolders
@@ -42,7 +48,7 @@
 {
   if ((self = [super init]))
     {
-      contactSources = nil;
+      contactFolders = nil;
       OCSPath = nil;
     }
 
@@ -51,8 +57,8 @@
 
 - (void) dealloc
 {
-  if (contactSources)
-    [contactSources release];
+  if (contactFolders)
+    [contactFolders release];
   if (OCSPath)
     [OCSPath release];
   [super dealloc];
@@ -60,21 +66,49 @@
 
 - (void) appendPersonalSourcesInContext: (WOContext *) context;
 {
-  SOGoPersonalAB *ab;
+  SOGoContactGCSFolder *ab;
 
-  ab = [SOGoPersonalAB personalABForUser: [[context activeUser] login]];
-  [contactSources setObject: ab forKey: @"personal"];
+  ab = [SOGoContactGCSFolder contactFolderWithName: @"personal"
+                             andDisplayName: @"Personal Addressbook"
+                             inContainer: self];
+  [ab setOCSPath: [NSString stringWithFormat: @"%@/%@",
+                            OCSPath, @"personal"]];
+  [contactFolders setObject: ab forKey: @"personal"];
 }
 
 - (void) appendSystemSourcesInContext: (WOContext *) context;
 {
+  NSUserDefaults *ud;
+  NSEnumerator *ldapABs;
+  NSDictionary *udAB;
+  SOGoContactLDAPFolder *ab;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  ldapABs = [[ud objectForKey: @"SOGoLDAPAddressBooks"] objectEnumerator];
+  udAB = [ldapABs nextObject];
+  while (udAB)
+    {
+      ab = [SOGoContactLDAPFolder contactFolderWithName:
+                                    [udAB objectForKey: @"id"]
+                                  andDisplayName:
+                                    [udAB objectForKey: @"displayName"]
+                                  inContainer: self];
+      [ab LDAPSetHostname: [udAB objectForKey: @"hostname"]
+          setPort: [[udAB objectForKey: @"port"] intValue]
+          setBindDN: [udAB objectForKey: @"bindDN"]
+          setBindPW: [udAB objectForKey: @"bindPW"]
+          setContactIdentifier: [udAB objectForKey: @"idField"]
+          setRootDN: [udAB objectForKey: @"rootDN"]];
+      [contactFolders setObject: ab forKey: [udAB objectForKey: @"id"]];
+      udAB = [ldapABs nextObject];
+    }
 }
 
 - (void) initContactSourcesInContext: (WOContext *) context;
 {
-  if (!contactSources)
+  if (!contactFolders)
     {
-      contactSources = [NSMutableDictionary new];
+      contactFolders = [NSMutableDictionary new];
       [self appendPersonalSourcesInContext: context];
       [self appendSystemSourcesInContext: context];
     }
@@ -85,26 +119,19 @@
           acquire: (BOOL) acquire
 {
   id obj;
-  SOGoContactSource *source;
+  id folder;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: name inContext: context acquire: NO];
   if (!obj)
     {
-      if (!contactSources)
+      if (!contactFolders)
         [self initContactSourcesInContext: context];
 
-      source = [contactSources objectForKey: name];
-      if (source)
-        {
-          obj = [SOGoContactFolder contactFolderWithSource: source
-                                   inContainer: self
-                                   andName: name];
-          [obj setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                                     OCSPath, name]];
-        }
-      else
-        obj = [NSException exceptionWithHTTPStatus: 200];
+      folder = [contactFolders objectForKey: name];
+      obj = ((folder)
+             ? folder
+             : [NSException exceptionWithHTTPStatus: 404]);
     }
 
   return obj;
@@ -114,13 +141,26 @@
 {
   WOContext *context;
 
-  if (!contactSources)
+  if (!contactFolders)
     {
       context = [[WOApplication application] context];
       [self initContactSourcesInContext: context];
     }
 
-  return [contactSources allKeys];
+  return [contactFolders allKeys];
+}
+
+- (NSArray *) contactFolders
+{
+  WOContext *context;
+
+  if (!contactFolders)
+    {
+      context = [[WOApplication application] context];
+      [self initContactSourcesInContext: context];
+    }
+
+  return [contactFolders allValues];
 }
 
 - (BOOL) davIsCollection

@@ -30,12 +30,15 @@
 
 @interface SOGoContactFolders : SOGoObject
 {
-  NSMutableDictionary *contactSources;
+  NSMutableDictionary *contactFolders;
   NSString *OCSPath;
 }
 
 - (NSString *) defaultSourceName;
+
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
+
+- (NSArray *) contactFolders;
 
 @end
 
