@@ -82,24 +82,6 @@ function collectSelectedRows() {
   return rows;
 }
 
-function clearSearch(sender) {
-  var searchField = window.document.getElementById("search");
-  if (searchField) searchField.value="";
-  return true;
-}
-
-/* compose support */
-
-function clickedCompose(sender) {
-  var urlstr;
-  
-  urlstr = "compose";
-  window.open(urlstr, "SOGo_compose",
-	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  return false; /* stop following the link */
-}
-
 /* mail editor */
 
 function validateEditorInput(sender) {
@@ -282,47 +264,35 @@ function onContactsFolderTreeItemClick(element)
   openContactsFolder(contactsFolder);
 }
 
-function openContactsFolder(contactsFolder)
+function openContactsFolder(contactsFolder, params)
 {
-  if (contactsFolder != currentContactFolder) {
+  if (contactsFolder != currentContactFolder || params) {
     currentContactFolder = contactsFolder;
-    var url = ApplicationBaseURL + contactsFolder + "/view?noframe=1&desc=1";
-    var contactsFolderContent = document.getElementById("contactsFolderContent");
-    var contactsFolderDragHandle = document.getElementById("contactsFolderDragHandle");
-    var messageContent = document.getElementById("messageContent");
-    messageContent.innerHTML = '';
-    if (contactsFolder.lastIndexOf("/") == 0) {
-      var url = (ApplicationBaseURL + currentContactFolder + "/"
-                 + "/view?noframe=1");
-      if (document.messageAjaxRequest) {
-        document.messageAjaxRequest.aborted = true;
-        document.messageAjaxRequest.abort();
-      }
-      document.messageAjaxRequest
-        = triggerAjaxRequest(url, messageCallback);
-      contactsFolderContent.innerHTML = '';
-      contactsFolderContent.style.visibility = "hidden;";
-      contactsFolderDragHandle.style.visibility = "hidden;";
-      messageContent.style.top = "0px;";
-    } else {
-      if (document.contactsListAjaxRequest) {
-        document.contactsListAjaxRequest.aborted = true;
-        document.contactsListAjaxRequest.abort();
-      }
-      if (currentMessages[contactsFolder]) {
-        loadMessage(currentMessages[contactsFolder]);
-        url += '&pageforuid=' + currentMessages[contactsFolder];
-      }
-      document.contactsListAjaxRequest
-        = triggerAjaxRequest(url, contactsListCallback,
-                             currentMessages[contactsFolder]);
-      if (contactsFolderContent.style.visibility == "hidden") {
-        contactsFolderContent.style.visibility = "visible;";
-        contactsFolderDragHandle.style.visibility = "visible;";
-        messageContent.style.top = (contactsFolderDragHandle.offsetTop
-                                    + contactsFolderDragHandle.offsetHeight
-                                    + 'px;');
-      }
+    var url = ApplicationBaseURL + contactsFolder + "/view?noframe=1&sort=cn&desc=0";
+    if (params)
+      url += '&' + params;
+
+    var contactsListContent = document.getElementById("contactsListContent");
+//     var contactsFolderDragHandle = document.getElementById("contactsFolderDragHandle");
+//     var messageContent = document.getElementById("messageContent");
+//     messageContent.innerHTML = '';
+    if (document.contactsListAjaxRequest) {
+      document.contactsListAjaxRequest.aborted = true;
+      document.contactsListAjaxRequest.abort();
+    }
+//     if (currentMessages[contactsFolder]) {
+//       loadMessage(currentMessages[contactsFolder]);
+//       url += '&pageforuid=' + currentMessages[contactsFolder];
+//     }
+    document.contactsListAjaxRequest
+      = triggerAjaxRequest(url, contactsListCallback,
+                           currentMessages[contactsFolder]);
+    if (contactsListContent.style.visibility == "hidden") {
+      contactsListContent.style.visibility = "visible;";
+//         contactsFolderDragHandle.style.visibility = "visible;";
+//         messageContent.style.top = (contactsFolderDragHandle.offsetTop
+//                                     + contactsFolderDragHandle.offsetHeight
+//                                     + 'px;');
     }
   }
 //   triggerAjaxRequest(contactsFolder, 'toolbar', toolbarCallback);
@@ -342,7 +312,7 @@ function openContactsFolderAtIndex(element) {
 
 function contactsListCallback(http)
 {
-  var div = document.getElementById('contactsFolderContent');
+  var div = document.getElementById('contactsListContent');
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -353,6 +323,7 @@ function contactsListCallback(http)
       var row = document.getElementById('row_' + selected);
       selectNode(row);
     }
+    initCriteria();
   }
   else
     log ("ajax fuckage");
@@ -574,34 +545,34 @@ function popupSearchMenu(event, menuId)
 
 function setSearchCriteria(event)
 {
-  searchField = document.getElementById('searchValue');
+  searchValue = document.getElementById('searchValue');
   searchCriteria = document.getElementById('searchCriteria');
   
   var node = event.target;
-  searchField.setAttribute("ghost-phrase", node.innerHTML);
+  searchValue.setAttribute("ghost-phrase", node.innerHTML);
   searchCriteria = node.getAttribute('id');
 }
 
 function checkSearchValue(event)
 {
   var form = event.target;
-  var searchField = document.getElementById('searchValue');
-  var ghostPhrase = searchField.getAttribute('ghost-phrase');
+  var searchValue = document.getElementById('searchValue');
+  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
 
-  if (searchField.value == ghostPhrase)
-    searchField.value = "";
+  if (searchValue.value == ghostPhrase)
+    searchValue.value = "";
 }
 
 function onSearchChange()
 {
+  log ("changed...");
 }
 
-function onSearchMouseDown(event)
+function onSearchMouseDown(event, searchValue)
 {
-  searchField = document.getElementById('searchValue');
-  superNode = searchField.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - searchField.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - searchField.offsetTop);
+  superNode = searchValue.parentNode.parentNode.parentNode;
+  relX = (event.pageX - superNode.offsetLeft - searchValue.offsetLeft);
+  relY = (event.pageY - superNode.offsetTop - searchValue.offsetTop);
 
   if (relY < 24) {
     event.cancelBubble = true;
@@ -609,52 +580,49 @@ function onSearchMouseDown(event)
   }
 }
 
-function onSearchFocus(event)
+function onSearchFocus(searchValue)
 {
-  searchField = document.getElementById('searchValue');
-  ghostPhrase = searchField.getAttribute("ghost-phrase");
-  if (searchField.value == ghostPhrase) {
-    searchField.value = "";
-    searchField.setAttribute("modified", "");
+  ghostPhrase = searchValue.getAttribute("ghost-phrase");
+  if (searchValue.value == ghostPhrase) {
+    searchValue.value = "";
+    searchValue.setAttribute("modified", "");
   } else {
-    searchField.select();
+    searchValue.select();
   }
 
-  searchField.style.color = "#000";
+  searchValue.style.color = "#000";
 }
 
-function onSearchBlur()
+function onSearchBlur(searchValue)
 {
-  var searchField = document.getElementById('searchValue');
-  var ghostPhrase = searchField.getAttribute("ghost-phrase");
-
-  if (searchField.value == "") {
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
-    searchField.value = ghostPhrase;
-  } else if (searchField.value == ghostPhrase) {
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
+  var ghostPhrase = searchValue.getAttribute("ghost-phrase");
+  log ("search blur: '" + searchValue.value + "'");
+  if (!searchValue.value) {
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
+    searchValue.value = ghostPhrase;
+  } else if (searchValue.value == ghostPhrase) {
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
   } else {
-    searchField.setAttribute("modified", "yes");
-    searchField.style.color = "#000";
+    searchValue.setAttribute("modified", "yes");
+    searchValue.style.color = "#000";
   }
 }
 
 function initCriteria()
 {
   var searchCriteria = document.getElementById('searchCriteria');
-  var searchField = document.getElementById('searchValue');
+  var searchValue = document.getElementById('searchValue');
   var firstOption;
  
-  if (searchCriteria.value == ''
-      || searchField.value == '') {
-    firstOption = document.getElementById('searchOptions').childNodes[1];
-    searchCriteria.value = firstOption.getAttribute('id');
-    searchField.value = firstOption.innerHTML;
-    searchField.setAttribute('ghost-phrase', firstOption.innerHTML);
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
+  firstOption = document.getElementById('searchOptions').childNodes[1];
+  searchCriteria.value = firstOption.getAttribute('id');
+  searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
+  if (searchValue.value == '') {
+    searchValue.value = firstOption.innerHTML;
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
   }
 }
 
@@ -665,7 +633,7 @@ function onContactRowDblClick(event, node)
 
   openContactWindow(null, contactId,
                     ApplicationBaseURL + currentContactFolder
-                    + "/" + contactId + "/edit");
+                    + "/" + contactId + "/view");
 
   return false;
 }
@@ -780,26 +748,6 @@ function newEmailTo(sender) {
   return false; /* stop following the link */
 }
 
-function initContactsFolderSelection(contactsFolderName)
-{
-  currentContactFolder = contactsFolderName;
-
-  var tree = document.getElementById("d");
-  var treeNodes = getElementsByClassName('DIV', 'dTreeNode', tree);
-  var i = 0;
-  while (i < treeNodes.length
-         && treeNodes[i].getAttribute("dataname") != currentContactFolder)
-    i++;
-  if (i < treeNodes.length) {
-    var links = getElementsByClassName('A', 'node', treeNodes[i]);
-    if (tree.selectedEntry)
-      deselectNode(tree.selectedEntry);
-    selectNode(links[0]);
-    tree.selectedEntry = links[0];
-    expandUpperTree(links[0]);
-  }
-}
-
 function onHeaderClick(node)
 {
   var href = node.getAttribute("href");
@@ -826,11 +774,37 @@ function registerDraggableMessageNodes()
 function newContact(sender) {
   var urlstr;
 
-  urlstr = "new";
+  urlstr = ApplicationBaseURL + currentContactFolder + "/new";
   newcwin = window.open(urlstr, "SOGo_new_contact",
 			"width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
 			"location=0,directories=0,status=0,menubar=0,copyhistory=0");
   newcwin.focus();
 
   return false; /* stop following the link */
+}
+
+function onFolderSelectionChange()
+{
+  var folderList = document.getElementById("contactFolders");
+  var nodes = getSelectedNodes(folderList);
+  var newFolder = nodes[0].getAttribute("id");
+
+  openContactsFolder(newFolder);
+}
+
+function onSearchFormSubmit()
+{
+  var searchValue = document.getElementById("searchValue");
+
+  openContactsFolder(currentContactFolder, "search=" + searchValue.value);
+
+  return false;
+}
+
+function onSearchKeyDown(searchValue)
+{
+  if (searchValue.timer)
+    clearTimeout(searchValue.timer);
+
+  searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
