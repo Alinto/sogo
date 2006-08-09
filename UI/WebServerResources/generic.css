@@ -599,10 +599,11 @@ td.tbtv_headercell a:hover
   /* background-color: #C4C0B8; */
 }
 
-td.tbtv_headercell img.tbtv_sortcell
+td img.tbtv_sortcell
 {
   float: right;
   text-align: right;
+  margin-top: .2em;
   border: 0px;
   width: 12px;
   height: 12px;
