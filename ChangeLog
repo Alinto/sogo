@@ -1,5 +1,9 @@
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactObject.h: new protocol that
+	defines the methods that UIxContactsView, ..Editor and so on...
+	can expect.
+
 	* SoObjects/Contacts/SOGoContactFolder.h: new protocol that
 	defines the methods that UIxContactsListViewBase expects as well
 	as the data fields returned in the contact lists.
