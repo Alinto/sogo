@@ -93,15 +93,24 @@
 }
 
 - (id) lookupName: (NSString *) _key
-        inContext: (id) _ctx
+        inContext: (WOContext *) _ctx
           acquire: (BOOL) _flag
 {
   id obj;
-  
+
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
-    obj = [self lookupContactWithId: _key];
+    {
+      if ([[[_ctx request] method] isEqualToString: @"PUT"])
+        {
+          obj = [[SOGoContactGCSEntry alloc] initWithName: _key
+                                             inContainer: self];
+          [obj autorelease];
+        }
+      else
+        obj = [self lookupContactWithId: _key];
+    }
   if (!obj)
     obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
 

@@ -1,3 +1,10 @@
+2006-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-lookupName:_keyinContext:_ctxacquire:_flag]): when the HTTP
+	request is a PUT, always create an entry, even if we're not sure
+	it does exist.
+
 2006-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js: implemented live-search.
