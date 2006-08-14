@@ -6,9 +6,15 @@
                xmlns:label="OGo:label"
                xmlns:uix="OGo:uix"
                className="UIxPageFrame"
-               title="name">
+               title="name"
+>
 
-  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" width="100%">
+  <table id="skywintable"
+         class="wintable"
+         cellspacing="0"
+         cellpadding="5"
+         width="100%"
+  >
     <tr>
       <td class="wintitle">
         <table cellpadding="0" cellspacing="0" width="100%">
@@ -37,12 +43,14 @@
                              currentQueryParameters="todayQueryParameters"
                              nextQueryParameters="nextWeekQueryParameters"
                              label:label="this week"
-              />
+              />              
             </td>
             <td align="right" valign="middle" width="80%">
-              <var:component className="AnaisUidSelector"
+                <var:component className="UIxContactSelector"
+                  const:selectorId="uids" />
+<!--              <var:component className="AnaisUidSelector"
                              calendarUIDs="clientObject.calendarUIDs"
-              />
+              /> -->
             </td>
           </tr>
         </table>
@@ -57,33 +65,41 @@
                              const:selection="week"
                              currentDate="selectedDate"
               >
-                <table border="0" cellpadding="4" width="100%" cellspacing="2">
+                <table border="0"
+                       cellpadding="4"
+                       width="100%"
+                       cellspacing="2"
+                >
                   <tr>
-                    <td width="1%" align="left" valign="middle" bgcolor="#e8e8e0">
+                    <td width="1%"
+                        align="left"
+                        valign="middle"
+                        bgcolor="#e8e8e0"
+                    >
                       <table border='0' cellpadding='0' cellspacing='0'>
-                        <tr>
+                       <tr>
                           <td><a href="weekoverview"
-                               var:queryDictionary="queryParameters"
-                            ><img rsrc:src="icon_view_overview.gif"
-                                                        label:title="Overview"
-                                                        label:alt="Overview"
-                                                        border="0"
-                                                        valign="top"
-                                                   /></a></td>
-                          <td><img rsrc:src="icon_view_chart_inactive.gif"
-                                   label:title="Chart"
-                                   label:alt="Chart"
-                                   border="0"
-                                   valign="top"
-                              /></td>
-                          <td><a href="weeklistview"
                                  var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_list.gif"
-                                                          label:title="List"
-                                                          label:alt="List"
+                              ><img rsrc:src="icon_view_overview.gif"
+                                                          label:title="Overview"
+                                                          label:alt="Overview"
                                                           border="0"
                                                           valign="top"
                                                      /></a></td>
+                          <td><a href="weekchartview"
+                                 var:queryDictionary="queryParameters"
+                              ><img rsrc:src="icon_view_chart.gif"
+                                                           label:title="Chart"
+                                                           label:alt="Chart"
+                                                           border="0"
+                                                           valign="top"
+                                                      /></a></td>
+                          <td><img rsrc:src="icon_view_list_inactive.gif"
+                                   label:title="List"
+                                   label:alt="List"
+                                   border="0"
+                                   valign="top"
+                              /></td>
                           <td>
                             <a href="weekcolumnsview"
                                var:queryDictionary="queryParameters"
@@ -93,7 +109,7 @@
                                                            border="0"
                                                            valign="top"
                                                       /></a></td>
-                        </tr>
+                       </tr>
                       </table>
                     </td>
                     <td align="left" bgcolor="#e8e8e0" class="button_auto_env">
@@ -106,22 +122,16 @@
                     <td align="right" bgcolor="#e8e8e0">
                       <table border='0' cellpadding='0' cellspacing='1'>
                         <tr>
-                          <td class="button_auto_env"
-                              nowrap="true"
-                              valign='middle'
-                              align='center'
-                          >
+                          <td class="button_auto_env" nowrap="true" valign='middle' 
+                              align='center'>
                             <!--<a class="button_auto"
                                href="weekprintview"
                                var:queryDictionary="queryParameters"
                                target="SOGoPrintView"
                             ><var:string label:value="printview" /></a>-->
                           </td>
-                          <td class="button_auto_env"
-                              nowrap="true"
-                              valign='middle'
-                              align='center'
-                          >
+                          <td class="button_auto_env" nowrap="true" valign='middle' 
+                              align='center'>
                             <a class="button_auto"
                                href="proposal"
                                var:queryDictionary="queryParameters"
@@ -132,12 +142,13 @@
                     </td>
                   </tr>
                 </table>
-                <var:vspan-matrix list="appointments"
+          
+                <var:hspan-matrix list="appointments"
                                   item="appointment"
-                                  rows="hours"
-                                  row="hour"
+                                  rows="uids"
+                                  row="currentUid"
                                   columns="columns"
-                                  column="day"
+                                  column="column"
                                   itemActive="isItemActive"
                                   isRowActive="isRowActive"
                                   const:rowHeight="8"
@@ -149,8 +160,9 @@
                   <var:matrix-label const:elementName="td"
                                     const:position="top"
                                     const:align="center"
+                                    span="columnsPerDay"
                   >
-                    <table cellpadding="5"
+                    <table cellpadding="2"
                            cellspacing="0"
                            width="100%"
                            border="0"
@@ -158,7 +170,7 @@
                     >
                       <tr>
                         <td align="left" valign="top">
-                          <a href="daychartview"
+                          <a href="daylistview"
                              var:queryDictionary="currentDayQueryParameters"
                              class="weekoverview_title_daylink"
                              ><var:string value="currentDay.dayOfMonth"
@@ -178,15 +190,12 @@
                                         
                   <var:matrix-label const:elementName="td"
                                     const:position="left"
-                                    const:width="2"
-                                    const:height="20"
                                     const:bgcolor="#d6d6ce"
+                                    const:width="100"
                   >
-                    <span class="dayoverview_content_time_link">
-                      <var:string value="currentDate"
-                                  const:dateformat="%H:%M"
-                      />
-                    </span>
+                    <var:string value="cnForCurrentUid"
+                                const:style="dayoverview_content_time_link"
+                    />
                   </var:matrix-label>
                   <!-- TODO: use css instead! -->
                   <var:matrix-empty const:elementName="td"
@@ -194,6 +203,11 @@
                   ><var:entity const:name="nbsp"
                    />
                   </var:matrix-empty>
+                  <var:matrix-label const:elementName="td"
+                                    const:position="bottom"
+                  >
+                    <img rsrc:src="invisible_space_2.gif" />
+                  </var:matrix-label>
                   <!-- TODO: use css instead! -->
                   <var:matrix-cell const:elementName="td"
                                    const:bgcolor="#d6d6ce"
@@ -207,12 +221,11 @@
                                      url="appointmentViewURL"
                                      style="aptStyle"
                                      queryDictionary="currentDayQueryParameters"
-                                     referenceDate="currentDay"
                                      canAccess="canAccessApt"
                       />
                     </span>
                   </var:matrix-cell>
-                </var:vspan-matrix>
+                </var:hspan-matrix>
               </var:component>
             </td>
           </tr>

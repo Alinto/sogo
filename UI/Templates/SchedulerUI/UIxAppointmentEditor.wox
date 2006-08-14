@@ -6,16 +6,9 @@
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
+    const:popup="YES"
     title="name"
     >
-    <script type="text/javascript">
-      function submitMeeting(thisForm) {
-      thisForm.submit();
-      opener.window.location.reload();
-      window.close();
-      }
-    </script>
-
     <var:js-stringtable const:framework="SchedulerUI.SOGo"
       const:identifier="labels" />
     
@@ -229,9 +222,12 @@
                     <var:string label:value="Participants" />:</span>
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <!-- use '1' instead of 'YES', otherwise breaks on OSX -->
-                    <var:component className="AnaisSelector"
+                 <span class="aptview_text">
+                    <var:component className="UIxContactSelector"
+                      const:selectorId="participants"
+                      contacts="participants"
+                      />
+<!--                    <var:component className="AnaisSelector"
 		      const:selectorID="participant"
 		      const:role="REQ-PARTICIPANT"
 		      attendees="participants"
@@ -239,14 +235,14 @@
 		      var:cnForUser="cnForUser"
 		      const:withCN="1"
 		      const:withAddressBook="1"
-		      />
+		      /> -->
                   </span>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-        <tr>
+<!--        <tr>
           <td>
             <table border="0" cellpadding="2" cellspacing="0" width="100%"
 	      bgcolor="#e8e8e0"
@@ -266,22 +262,22 @@
                 </td>
                 <td align="left" bgcolor="#FFFFF0">
                   <span class="aptview_text">
-		    <!--
+                    <var:component className="UIxContactSelector"
+                      const:selectorId="rs" />
+
                     <var:component className="AnaisAttendeeSelector"
 		    const:selectorID="resource"
 		    const:role="NON-PARTICIPANT"
 		    attendees="resources"
 		    const:withCN="YES"
-		    const:withAddressBook="YES"
+		    const:withAddressBook="YES" 
                     />
-		    -->
-                    TODO: need attendee selector (AB)
                   </span>
                 </td>
               </tr>
             </table>
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td>
             <table border="0" cellpadding="2" cellspacing="0" width="100%"
@@ -322,21 +318,28 @@
         </tr>
         <tr>
           <td>
-	    <input type="submit" label:value="Save" name="save:method"
+	    <input
+              type="submit"
+              class="button"
+              label:value="Save"
+              name="save:method"
 	      onclick="submitMeeting(this.form); return false;" />
-	    <span class="button_auto_env"
-              ><a href="../weekoverview"
-		onclick="window.close(); return false;"
-		var:queryDictionary="queryParameters"
-		class="button_auto"
-		><var:string label:value="Cancel" /></a></span>
+            <input
+              type="submit"
+              class="button"
+              label:value="Cancel"
+              name="cancel"
+              onclick="window.close(); return false;" />
 	    <var:if condition="isUIxDebugEnabled">
-	      <input type="submit" value="Test" name="test:method" />
+	      <input type="submit"
+                class="button"
+                value="Test" name="test:method" />
 	    </var:if>
           </td>
         </tr>
       </table>
       <input type="hidden" name="ical" var:value="iCalString" />
+      <input type="hidden" id="jsaction" />
     </form>
     <!--
     <var:if condition="canEditApt" const:negate="YES">

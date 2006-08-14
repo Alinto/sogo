@@ -8,12 +8,7 @@
                title="name"
 >
 
-  <table id="skywintable"
-         class="wintable"
-         cellspacing="0"
-         cellpadding="5"
-         width="100%"
-  >
+  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" width="100%">
     <tr>
       <td class="wintitle">
         <table cellpadding="0" cellspacing="0" width="100%">
@@ -37,7 +32,7 @@
       <td id="skywinbodycell" class="wincontent">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr bgcolor="#e8e8e0">
-            <td align="left">
+            <td align="left"  >
               <var:component className="UIxCalBackForthNavView"
                              methodName="ownMethodName"
                              prevQueryParameters="prevDayQueryParameters"
@@ -47,7 +42,8 @@
               />
             </td>
             <td align="right" valign="middle" width="80%">
-              <var:component className="AnaisUidSelector" />
+                <var:component className="UIxContactSelector"
+                  const:selectorId="uids" />
             </td>
           </tr>
         </table>
@@ -58,37 +54,30 @@
         <table border="0" width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td colspan="2">
-              <var:component className="UIxCalSelectTab"
-                             const:selection="day"
-                             currentDate="selectedDate"
-              >
-                <table border="0"
-                       cellpadding="4"
-                       width="100%"
-                       cellspacing="2"
-                >
+    <var:component className="UIxCalSelectTab"
+      const:selection="day"
+      currentDate="selectedDate"
+      >
+
+                <table border="0" cellpadding="4" width="100%" cellspacing="2">
                   <tr>
-                    <td width="1%"
-                        align="left"
-                        valign="middle"
-                        bgcolor="#e8e8e0"
-                    >
+                    <td width="1%" align="left" valign="middle" bgcolor="#e8e8e0">
                       <table border='0' cellpadding='0' cellspacing='0'>
                         <tr>
-                          <td><a href="dayoverview"
-                                 var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_overview.gif"
-                                    label:title="Overview"
-                                    label:alt="Overview"
-                                    border="0"
-                                    valign="top"
-                               /></a> </td>
-                          <td><img rsrc:src="icon_view_chart_inactive.gif"
-                                   label:title="Chart"
-                                   label:alt="Chart"
+                          <td><img rsrc:src="icon_view_overview_inactive.gif"
+                                   label:title="Overview"
+                                   label:alt="Overview"
                                    border="0"
                                    valign="top"
                               /></td>
+                          <td><a href="daychartview"
+                                 var:queryDictionary="queryParameters"
+                              ><img rsrc:src="icon_view_chart.gif"
+                                    label:title="Chart"
+                                    label:alt="Chart"
+                                    border="0"
+                                    valign="top"
+                               /></a></td>
                           <td><a href="daylistview"
                                  var:queryDictionary="queryParameters"
                               ><img rsrc:src="icon_view_list.gif"
@@ -110,22 +99,14 @@
                     <td align="right" bgcolor="#e8e8e0">
                       <table border="0" cellpadding="0" cellspacing="1">
                         <tr>
-                          <td class="button_auto_env"
-                              nowrap="true"
-                              valign="middle"
-                              align="center"
-                          >
+                          <td class="button_auto_env" nowrap="true" valign="middle" align="center">
                             <!--<a class="button_auto"
                                href="dayprintview"
                                var:queryDictionary="queryParameters"
                                target="SOGoPrintView"
                             ><var:string label:value="printview"/></a>-->
                           </td>
-                          <td class="button_auto_env"
-                              nowrap="true"
-                              valign="middle"
-                              align="center"
-                          >
+                          <td class="button_auto_env" nowrap="true" valign="middle" align="center">
                             <a class="button_auto"
                                href="proposal"
                                var:queryDictionary="queryParameters"
@@ -136,7 +117,7 @@
                     </td>
                   </tr>
                 </table>
-                <table>
+                <table width="100%">
                   <tr valign="top">
                     <td>
                       <table>
@@ -145,7 +126,7 @@
                              <var:component className="UIxCalInlineMonthOverview"
                                             selectedDate="thisMonth"
                                             const:showYear="1"
-                                            const:daySelectionHref="daychartview"
+                                            const:daySelectionHref="dayoverview"
                                             const:showWeekColumn="0"
                                             const:style="dayoverview_cal"
                                             const:headerStyle="dayoverview_cal_title"
@@ -162,7 +143,7 @@
                              <var:component className="UIxCalInlineMonthOverview"
                                             selectedDate="nextMonth"
                                             const:showYear="1"
-                                            const:daySelectionHref="daychartview"
+                                            const:daySelectionHref="dayoverview"
                                             const:showWeekColumn="0"
                                             const:style="dayoverview_cal"
                                             const:headerStyle="dayoverview_cal_title"
@@ -177,59 +158,67 @@
                     </td>
                     <td width="100%">
                       <table class="dayoverview_content" width="100%">
-                        <td width="100%" valign="top">
-                          <var:vspan-matrix list="appointments"
-                                            item="appointment"
-                                            rows="dateRange"
-                                            row="currentDate"
-                                            columns="columns"
-                                            column="isPadColumn"
-                                            itemActive="isCurrentDateInApt"
-                                            const:rowHeight="8"
-                                            const:width="100%"
-                                            const:border="0"
-                                            const:cellpadding="5"
-                                            const:cellspacing="2"
-                          >
-                            <var:matrix-label const:elementName="td"
-                                              const:position="left"
-                                              const:bgcolor="#d6d6ce"
-                                              const:width="2"
-                            >
-                              <span class="dayoverview_content_time_link">
-                                <var:string value="currentDate"
-                                            const:dateformat="%H:%M"
-                                />
-                                [<a href="new"
-                                    var:queryDictionary="currentDateQueryParameters"
-                                 ><var:string label:value="new" /></a>]
-                              </span>
-                            </var:matrix-label>
-                            <!-- TODO: use css instead! -->
-                            <var:matrix-empty const:elementName="td"
-                                              const:bgcolor="#efefe7"
-                            >
-                            </var:matrix-empty>
-                            <!-- TODO: use css instead! -->
-                            <var:matrix-cell const:elementName="td"
-                                             const:bgcolor="#d6d6ce"
-                                             const:valign="top"
-                            >
-                              <span class="dayoverview_content_time_link">
+                        <var:if condition="hasHolidayInfo">
+                          <tr>
+                            <td class="dayoverview_content_time" colspan="2">
+                              <b><var:string value="holidayInfo.title" /></b>
+                            </td>
+                          </tr>
+                        </var:if>
+                        <var:foreach list="allDayApts" item="appointment">
+                          <tr>
+                            <td class="dayoverview_content_time">
+                              <var:entity name="nbsp" />
+                            </td>
+                            <td class="dayoverview_content_apts" width="90%">
+                              <var:foreach list="allDayApts" item="appointment">
                                 <var:component className="UIxCalInlineAptView"
                                                appointment="appointment"
                                                formatter="aptFormatter"
                                                tooltipFormatter="aptTooltipFormatter"
                                                url="appointmentViewURL"
-                                               const:style="daychartview"
+                                               const:style="dayoverview"
+                                               queryDictionary="currentDateQueryParameters"
+                                               referenceDate="selectedDate"
+                                               canAccess="canAccessApt"
+                                />
+                                <br />
+                              </var:foreach>
+                            </td>
+                          </tr>
+                        </var:foreach>
+                        <var:foreach list="dateRange" item="currentDate">
+                          <tr>
+                            <td class="dayoverview_content_time">
+                              <var:string value="currentDate"
+                                          const:dateformat="%H:%M"
+                              />
+                              <br />
+                              <span class="dayoverview_content_time_link">
+                                [<a href="new"
+                                    var:queryDictionary="currentDateQueryParameters"
+                                 ><var:string label:value="new" /></a>]
+                              </span>
+                            </td>
+                            <td class="dayoverview_content_apts" width="90%">
+                              <var:foreach list="aptsForCurrentDate"
+                                           item="appointment"
+                              >
+                                <var:component className="UIxCalInlineAptView"
+                                               appointment="appointment"
+                                               formatter="aptFormatter"
+                                               tooltipFormatter="aptTooltipFormatter"
+                                               url="appointmentViewURL"
+                                               const:style="dayoverview"
                                                queryDictionary="currentDayQueryParameters"
                                                referenceDate="currentDate"
                                                canAccess="canAccessApt"
                                 />
-                              </span>
-                            </var:matrix-cell>
-                          </var:vspan-matrix>
-                        </td>
+                                <br />
+                              </var:foreach>
+                            </td>
+                          </tr>
+                        </var:foreach>
                       </table>
                     </td>
                   </tr>

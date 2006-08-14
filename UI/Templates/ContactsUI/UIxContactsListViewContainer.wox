@@ -8,6 +8,7 @@
     xmlns:rsrc="OGo:url"
     className="UIxPageFrame"
     title="name"
+    popup="popup"
     >
     <var:if condition="hideFrame" const:negate="YES">
       <div class="menu" id="contactFolderMenu">

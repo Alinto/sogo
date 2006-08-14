@@ -1,0 +1,43 @@
+<?xml version='1.0' standalone='yes'?>
+  <container 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    >
+    <div class="contactSelector" var:id="selectorId">
+      <input type="hidden"
+        var:id="selectorIdList"
+        var:name="selectorId"
+        var:value="initialParticipantIds" />
+      <div
+        class="contactList"
+        var:id="selectorIdDisplay"
+        var:name="selectorIdDisplay">
+        <var:string value="initialParticipants" />
+      </div>
+<!--      <span xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:var="http://www.skyrix.com/od/binding"
+        xmlns:const="http://www.skyrix.com/od/constant"
+        xmlns:rsrc="OGo:url"
+        class="button_submit_env"
+        >
+        <script language="JavaScript">
+          <var:string value="jsCode" const:escapeHTML="NO" />
+        </script>
+        <a var:href="jsFunctionHref"
+          class="button_submit"
+          ><var:string value="title" /></a>
+      </span> -->
+      <input class="button"
+        type="submit"
+        label:value="Search in Addressbook"
+        onclick="return onContactSelectorPopup(this);" />
+      <input class="button"
+        type="submit"
+        onclick="return onContactRefresh(this);"
+        label:value="Refresh" />
+    </div>
+  </container>

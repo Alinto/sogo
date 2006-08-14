@@ -6,11 +6,12 @@
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
-    className="UIxContactsListViewContainer"
+    className="UIxContactsSelectionViewContainer"
     title="name"
     >
+
     <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-    
+
     <!-- the content -->
     <table border="0" width="100%" id="contactsList" multiselect="yes">
       <tbody>

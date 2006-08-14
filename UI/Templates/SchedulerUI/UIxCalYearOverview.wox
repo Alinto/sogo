@@ -43,9 +43,12 @@
               />
             </td>
             <td align="right" valign="middle" width="80%">
-              <var:component className="AnaisUidSelector"
+                <var:component
+                  className="UIxContactSelector"
+                  const:selectorId="uids" />
+<!--              <var:component className="AnaisUidSelector"
                              calendarUIDs="clientObject.calendarUIDs"
-              />
+              /> -->
             </td>
           </tr>
         </table>

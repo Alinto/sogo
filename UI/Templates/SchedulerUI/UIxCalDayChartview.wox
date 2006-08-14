@@ -46,8 +46,9 @@
                              label:label="today"
               />
             </td>
-            <td align="right" valign="middle" width="80%">
-              <var:component className="AnaisUidSelector" />
+              <td align="right" valign="middle" width="80%">
+                <var:component className="UIxContactSelector"
+                  const:selectorId="uids" />
             </td>
           </tr>
         </table>
@@ -62,9 +63,17 @@
                              const:selection="day"
                              currentDate="selectedDate"
               >
-                <table border="0" cellpadding="4" width="100%" cellspacing="2">
+                <table border="0"
+                       cellpadding="4"
+                       width="100%"
+                       cellspacing="2"
+                >
                   <tr>
-                    <td width="1%" align="left" valign="middle" bgcolor="#e8e8e0">
+                    <td width="1%"
+                        align="left"
+                        valign="middle"
+                        bgcolor="#e8e8e0"
+                    >
                       <table border='0' cellpadding='0' cellspacing='0'>
                         <tr>
                           <td><a href="dayoverview"
@@ -75,20 +84,20 @@
                                     border="0"
                                     valign="top"
                                /></a> </td>
-                          <td><a href="daychartview"
-                                 var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_chart.gif"
-                                    label:title="Chart"
-                                    label:alt="Chart"
-                                    border="0"
-                                    valign="top"
-                               /></a></td>
-                          <td><img rsrc:src="icon_view_list_inactive.gif"
-                                   label:title="List"
-                                   label:alt="List"
+                          <td><img rsrc:src="icon_view_chart_inactive.gif"
+                                   label:title="Chart"
+                                   label:alt="Chart"
                                    border="0"
                                    valign="top"
                               /></td>
+                          <td><a href="daylistview"
+                                 var:queryDictionary="queryParameters"
+                              ><img rsrc:src="icon_view_list.gif"
+                                    label:title="List"
+                                    label:alt="List"
+                                    border="0"
+                                    valign="top"
+                               /></a></td>
                         </tr>
                       </table>
                     </td>
@@ -102,14 +111,22 @@
                     <td align="right" bgcolor="#e8e8e0">
                       <table border="0" cellpadding="0" cellspacing="1">
                         <tr>
-                          <td class="button_auto_env" nowrap="true" valign="middle" align="center">
+                          <td class="button_auto_env"
+                              nowrap="true"
+                              valign="middle"
+                              align="center"
+                          >
                             <!--<a class="button_auto"
                                href="dayprintview"
                                var:queryDictionary="queryParameters"
                                target="SOGoPrintView"
                             ><var:string label:value="printview"/></a>-->
                           </td>
-                          <td class="button_auto_env" nowrap="true" valign="middle" align="center">
+                          <td class="button_auto_env"
+                              nowrap="true"
+                              valign="middle"
+                              align="center"
+                          >
                             <a class="button_auto"
                                href="proposal"
                                var:queryDictionary="queryParameters"
@@ -120,48 +137,74 @@
                     </td>
                   </tr>
                 </table>
-                <table cellpadding="4" width="100%" cellspacing="2">
+                <table>
                   <tr valign="top">
+                    <td>
+                      <table>
+                        <tr>
+                          <td>
+                             <var:component className="UIxCalInlineMonthOverview"
+                                            selectedDate="thisMonth"
+                                            const:showYear="1"
+                                            const:daySelectionHref="daychartview"
+                                            const:showWeekColumn="0"
+                                            const:style="dayoverview_cal"
+                                            const:headerStyle="dayoverview_cal_title"
+                                            const:dayHeaderStyle="dayoverview_cal_day_header"
+                                            const:dayBodyStyle="dayoverview_cal_content"
+                                            const:todayBodyStyle="dayoverview_cal_content_hilite"
+                                            const:selectedDayExtraStyle="dayoverview_cal_content_selected"
+                                            const:inactiveDayBodyStyle="dayoverview_cal_content_dimmed"
+                             />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                             <var:component className="UIxCalInlineMonthOverview"
+                                            selectedDate="nextMonth"
+                                            const:showYear="1"
+                                            const:daySelectionHref="daychartview"
+                                            const:showWeekColumn="0"
+                                            const:style="dayoverview_cal"
+                                            const:headerStyle="dayoverview_cal_title"
+                                            const:dayHeaderStyle="dayoverview_cal_day_header"
+                                            const:dayBodyStyle="dayoverview_cal_content"
+                                            const:todayBodyStyle="dayoverview_cal_content_hilite"
+                                            const:inactiveDayBodyStyle="dayoverview_cal_content_dimmed"
+                             />
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
                     <td width="100%">
                       <table class="dayoverview_content" width="100%">
                         <td width="100%" valign="top">
-                          <var:hspan-matrix list="appointments"
+                          <var:vspan-matrix list="appointments"
                                             item="appointment"
-                                            rows="uids"
-                                            row="currentUid"
-                                            columns="dateRange"
-                                            column="currentDate"
+                                            rows="dateRange"
+                                            row="currentDate"
+                                            columns="columns"
+                                            column="isPadColumn"
                                             itemActive="isCurrentDateInApt"
-                                            isRowActive="isRowActive"
                                             const:rowHeight="8"
                                             const:width="100%"
                                             const:border="0"
-                                            const:cellpadding="2"
+                                            const:cellpadding="5"
                                             const:cellspacing="2"
                           >
                             <var:matrix-label const:elementName="td"
-                                              const:position="top"
+                                              const:position="left"
                                               const:bgcolor="#d6d6ce"
-                                              const:align="center"
+                                              const:width="2"
                             >
                               <span class="dayoverview_content_time_link">
                                 <var:string value="currentDate"
                                             const:dateformat="%H:%M"
-                                /><br />
+                                />
                                 [<a href="new"
                                     var:queryDictionary="currentDateQueryParameters"
                                  ><var:string label:value="new" /></a>]
                               </span>
-                            </var:matrix-label>
-                            
-                            <var:matrix-label const:elementName="td"
-                                              const:position="left"
-                                              const:bgcolor="#d6d6ce"
-                                              const:width="100"
-                            >
-                              <var:string value="cnForCurrentUid"
-                                          const:style="dayoverview_content_time_link"
-                              />
                             </var:matrix-label>
                             <!-- TODO: use css instead! -->
                             <var:matrix-empty const:elementName="td"
@@ -179,14 +222,14 @@
                                                formatter="aptFormatter"
                                                tooltipFormatter="aptTooltipFormatter"
                                                url="appointmentViewURL"
-                                               const:style="daylistview"
+                                               const:style="daychartview"
                                                queryDictionary="currentDayQueryParameters"
                                                referenceDate="currentDate"
                                                canAccess="canAccessApt"
                                 />
                               </span>
                             </var:matrix-cell>
-                          </var:hspan-matrix>
+                          </var:vspan-matrix>
                         </td>
                       </table>
                     </td>

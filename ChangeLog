@@ -1,5 +1,8 @@
 2006-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates: put the templates related to SchedulerUI in its
+	own directory.
+
 	* SoObjects/Contacts/NGLdapEntry+Contact.m ([NGLdapEntry
 	-asDictionaryWithAttributeNames:withUID:andCName:cName]): add an
 	entry for "uid" with the field name representing the login name of
