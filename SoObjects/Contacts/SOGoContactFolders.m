@@ -98,6 +98,7 @@
           setBindDN: [udAB objectForKey: @"bindDN"]
           setBindPW: [udAB objectForKey: @"bindPW"]
           setContactIdentifier: [udAB objectForKey: @"idField"]
+          setUserIdentifier: [udAB objectForKey: @"userIdField"]
           setRootDN: [udAB objectForKey: @"rootDN"]];
       [contactFolders setObject: ab forKey: [udAB objectForKey: @"id"]];
       udAB = [ldapABs nextObject];

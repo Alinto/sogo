@@ -41,11 +41,6 @@
 
 #import <SoObjects/SOGo/SOGoFolder.h>
 
-#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
-                                     @"sn", @"givenname", @"l",          \
-                                     @"mail", @"telephonenumber",        \
-                                     nil]
-
 @protocol SOGoContactFolder <NSObject>
 
 + (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName

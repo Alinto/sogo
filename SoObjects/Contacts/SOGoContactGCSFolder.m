@@ -26,6 +26,11 @@
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSFolder.h"
 
+#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
+                                     @"sn", @"givenname", @"l",          \
+                                     @"mail", @"telephonenumber",        \
+                                     nil]
+
 @implementation SOGoContactGCSFolder
 
 + (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
