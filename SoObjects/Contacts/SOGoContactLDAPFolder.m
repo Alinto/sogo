@@ -42,6 +42,13 @@
 #import "SOGoContactLDAPEntry.h"
 #import "SOGoContactLDAPFolder.h"
 
+#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
+                                     @"sn", @"givenname", @"l",          \
+                                     @"mail", @"telephonenumber",        \
+                                     @"mailNickname",                    \
+                                     @"sAMAccountName",                  \
+                                     nil]
+
 @class WOContext;
 
 @implementation SOGoContactLDAPFolder
@@ -66,6 +73,7 @@
     {
       connection = nil;
       contactIdentifier = nil;
+      userIdentifier = nil;
       rootDN = nil;
       entries = nil;
     }
@@ -94,6 +102,8 @@
     }
   if (contactIdentifier)
     [contactIdentifier release];
+  if (userIdentifier)
+    [userIdentifier release];
   if (rootDN)
     [rootDN release];
   if (entries)
@@ -120,6 +130,7 @@
                setBindDN: (NSString *) aBindDN
                setBindPW: (NSString *) aBindPW
     setContactIdentifier: (NSString *) aCI
+       setUserIdentifier: (NSString *) aUI
                setRootDN: (NSString *) aRootDN;
 {
   connection = [[NGLdapConnection alloc] initWithHostName: aHostname
@@ -134,6 +145,9 @@
   if (contactIdentifier)
     [contactIdentifier release];
   contactIdentifier = [aCI copy];
+  if (userIdentifier)
+    [userIdentifier release];
+  userIdentifier = [aUI copy];
 }
 
 - (NGLdapConnection *) LDAPconnection
@@ -149,7 +163,9 @@
 - (NSArray *) _searchAttributes
 {
   return [NSArray arrayWithObjects:
-                    @"title",
+                    contactIdentifier,
+                  userIdentifier,
+                  @"title",
                   @"company",
                   @"o",
                   @"modifytimestamp",
@@ -191,7 +207,6 @@
                   @"postOfficeBox",
                   @"homePhone",
                   @"cn",
-                  contactIdentifier,
                   @"commonname",
                   @"givenName",
                   @"mozillaHomePostalCode",
@@ -354,7 +369,8 @@
       while (entry)
         {
           [records addObject: [entry asDictionaryWithAttributeNames: nil
-                                     andCName: @"cn"]];
+                                     withUID: userIdentifier
+                                     andCName: contactIdentifier]];
           entry = [contacts nextObject];
         }
 

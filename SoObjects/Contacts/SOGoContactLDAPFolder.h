@@ -33,6 +33,7 @@
 {
   NGLdapConnection *connection;
   NSString *contactIdentifier;
+  NSString *userIdentifier;
   NSString *rootDN;
   NSString *displayName;
   NSMutableDictionary *entries;
@@ -48,6 +49,7 @@
                setBindDN: (NSString *) aBindDN
                setBindPW: (NSString *) aBindPW
     setContactIdentifier: (NSString *) aCI
+       setUserIdentifier: (NSString *) aUI
                setRootDN: (NSString *) aRootDN;
 
 @end

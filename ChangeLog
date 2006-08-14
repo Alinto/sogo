@@ -1,5 +1,11 @@
 2006-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-LDAPSetHostname:setPort:setBindDN:setBindPW:setContactIdentifier:
+	setUserIdentifier:setRootDN:]): an LDAP field specifying the
+	loginname of the users can now be specified.
+
 	* UI/WebServerResources/generic.js: added code to manage contact
 	lists through the new implementation of the UIxContactSelector.
 
