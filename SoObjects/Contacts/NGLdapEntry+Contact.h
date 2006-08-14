@@ -33,6 +33,7 @@
 
 - (NSString *) singleAttributeWithName: (NSString *) key;
 - (NSDictionary *) asDictionaryWithAttributeNames: (NSArray *) attributes
+                                          withUID: (NSString *) uid
                                          andCName: (NSString *) cName;
 
 @end

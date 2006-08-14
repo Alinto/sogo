@@ -37,11 +37,12 @@
 }
 
 - (NSDictionary *) asDictionaryWithAttributeNames: (NSArray *) attributeNames
+                                          withUID: (NSString *) uid
                                          andCName: (NSString *) cName
 {
   NSMutableDictionary *valuesDict;
   NSEnumerator *attrEnum;
-  NSString *attribute;
+  NSString *attribute, *value;
 
   if (!attributeNames)
     attributeNames = [self attributeNames];
@@ -56,9 +57,26 @@
                   forKey: attribute];
       attribute = [attrEnum nextObject];
     }
-  [valuesDict setObject: [[self attributeWithName: cName]
-                           stringValueAtIndex: 0]
-              forKey: @"c_name"];
+  if (cName)
+    {
+      value = [[self attributeWithName: cName]
+                stringValueAtIndex: 0];
+      if (!value)
+        value = @"";
+      NSLog (@"value for '%@' = '%@'", cName, value);
+      [valuesDict setObject: value
+                  forKey: @"c_name"];
+    }
+  if (uid)
+    {
+      value = [[self attributeWithName: uid]
+                stringValueAtIndex: 0];
+      if (!value)
+        value = @"";
+      NSLog (@"value for '%@' = '%@'", uid, value);
+      [valuesDict setObject: value
+                  forKey: @"c_uid"];
+    }
 
   return valuesDict;
 }

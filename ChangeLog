@@ -1,3 +1,10 @@
+2006-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/NGLdapEntry+Contact.m ([NGLdapEntry
+	-asDictionaryWithAttributeNames:withUID:andCName:cName]): add an
+	entry for "uid" with the field name representing the login name of
+	the user in the corresponding LDAP branch.
+
 2006-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
