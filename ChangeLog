@@ -1,5 +1,10 @@
 2006-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewContainerBase.m: 
+	UIxContactsListViewContainer renamed to serve as a base class for
+	the contact lists in both the contact editor and the contact
+	selectors.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	-LDAPSetHostname:setPort:setBindDN:setBindPW:setContactIdentifier:

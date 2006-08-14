@@ -1,4 +1,4 @@
-/* UIxContactsListViewContainer.m - this file is part of $PROJECT_NAME_HERE$
+/* UIxContactsListViewContainerBase.m - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -27,11 +27,11 @@
 
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 
-#import "UIxContactsListViewContainer.h"
+#import "UIxContactsListViewContainerBase.h"
 
 @class SOGoContactFolders;
 
-@implementation UIxContactsListViewContainer
+@implementation UIxContactsListViewContainerBase
 
 - (id) init
 {

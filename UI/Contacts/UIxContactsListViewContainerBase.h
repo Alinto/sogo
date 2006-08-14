@@ -1,4 +1,4 @@
-/* UIxContactsListViewContainer.h - this file is part of SOGo
+/* UIxContactsListViewContainerBase.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -20,15 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCONTACTSLISTVIEWCONTAINER_H
-#define UIXCONTACTSLISTVIEWCONTAINER_H
+#ifndef UIXCONTACTSLISTVIEWCONTAINERBASE_H
+#define UIXCONTACTSLISTVIEWCONTAINERBASE_H
 
 #import <SOGoUI/UIxComponent.h>
 
 @class NSArray;
 @class SOGoContactFolder;
 
-@interface UIxContactsListViewContainer : UIxComponent
+@interface UIxContactsListViewContainerBase : UIxComponent
 {
   NSString *foldersPrefix;
   id currentFolder;
@@ -46,4 +46,4 @@
 
 @end
 
-#endif /* UIXCONTACTSLISTVIEWCONTAINER_H */
+#endif /* UIXCONTACTSLISTVIEWCONTAINERBASE_H */
