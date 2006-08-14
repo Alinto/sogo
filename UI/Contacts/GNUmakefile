@@ -9,16 +9,19 @@ ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 ContactsUI_LANGUAGES = English French
 
 ContactsUI_OBJC_FILES =			\
-	UIxContactsListViewBase.m	\
 	UIxContactEditorBase.m		\
+	UIxContactsListViewBase.m	\
+	UIxContactsListViewContainerBase.m \
 	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\
 	UIxContactView.m		\
-	UIxContactSelector.m		\
 	UIxContactEditor.m		\
 	UIxContactsListView.m		\
 	UIxContactsListViewContainer.m	\
+	UIxContactSelector.m	\
+	UIxContactsSelectionView.m	\
+	UIxContactsSelectionViewContainer.m	\
 	UIxContactFoldersView.m		\
 
 ContactsUI_RESOURCE_FILES +=		\

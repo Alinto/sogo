@@ -14,6 +14,11 @@
           protectedBy = "View";
           pageName    = "UIxContactFoldersView"; 
         };
+        select = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView"; 
+          actionName  = "select";
+        };
       };
     };
 
@@ -37,6 +42,7 @@
         select = {
           protectedBy = "View";
           pageName    = "UIxContactsSelectionView"; 
+          actionName  = "select";
         };
       };
     };
@@ -61,6 +67,7 @@
         select = {
           protectedBy = "View";
           pageName    = "UIxContactsSelectionView"; 
+          actionName  = "select";
         };
       };
     };

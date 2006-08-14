@@ -20,22 +20,31 @@
  */
 // $Id: UIxContactSelector.m 394 2004-10-14 08:47:35Z znek $
 
-
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
+#import <SOGo/AgenorUserManager.h>
+#import <Scheduler/iCalPerson+UIx.h>
 
 @interface UIxContactSelector : UIxComponent
 {
   NSString *title;
   NSString *windowId;
+  NSString *selectorId;
   NSString *callback;
+
+  NSArray *contacts;
 }
 
 - (void)setTitle:(NSString *)_title;
 - (NSString *)title;
 - (void)setWindowId:(NSString *)_winId;
 - (NSString *)windowId;
+- (void)setSelectorId:(NSString *)_selId;
+- (NSString *)selectorId;
 - (void)setCallback:(NSString *)_callback;
 - (NSString *)callback;
+
+- (void) setContacts: (NSArray *) _contacts;
+- (NSArray *) contacts;
 
 - (NSString *)relativeContactsPath;
 
@@ -81,6 +90,22 @@
   return self->windowId;
 }
 
+- (void)setSelectorId:(NSString *)_selId {
+  ASSIGNCOPY(selectorId, _selId);
+}
+
+- (NSString *)selectorId {
+  return selectorId;
+}
+
+- (NSString *)selectorIdList {
+  return [NSString stringWithFormat: @"uixselector-%@-uidList", selectorId];
+}
+
+- (NSString *)selectorIdDisplay {
+  return [NSString stringWithFormat: @"uixselector-%@-display", selectorId];
+}
+
 - (void)setCallback:(NSString *)_callback {
   ASSIGNCOPY(self->callback, _callback);
 }
@@ -118,6 +143,89 @@
     [self relativeContactsPath],
     [self callback],
     [self windowId]];
+}
+
+- (void) setContacts: (NSArray *) _contacts
+{
+  contacts = _contacts;
+}
+
+- (NSArray *) contacts
+{
+  return contacts;
+}
+
+- (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue
+{
+  NSMutableArray *persons;
+  NSEnumerator *uids;
+  NSString *uid;
+
+  persons = [NSMutableArray new];
+  [persons autorelease];
+
+  if ([selectorValue length] > 0)
+    {
+      uids = [[selectorValue componentsSeparatedByString: @","]
+               objectEnumerator];
+      uid = [uids nextObject];
+      while (uid)
+        {
+          [persons addObject: [iCalPerson personWithUid: uid]];
+          uid = [uids nextObject];
+        }
+    }
+
+  return persons;
+}
+
+- (void) takeValuesFromRequest: (WORequest *) _rq
+                     inContext: (WOContext *) _ctx
+{
+  contacts = [self getICalPersonsFromValue: [_rq formValueForKey: selectorId]];
+  if ([contacts count] > 0)
+    NSLog (@"  got %i attendees: %@", [contacts count], contacts);
+  else
+    NSLog (@"go no attendees!");
+}
+
+- (NSString *) initialParticipantIds
+{
+  NSMutableArray *uids;
+  NSEnumerator *persons;
+  iCalPerson *person;
+  AgenorUserManager *um;
+
+  um = [AgenorUserManager sharedUserManager];
+
+  uids = [NSMutableArray arrayWithCapacity: [contacts count]];
+  persons = [contacts objectEnumerator];
+  person = [persons nextObject];
+  while (person)
+    {
+      [uids addObject: [um getUIDForICalPerson: person]];
+      person = [persons nextObject];
+    }
+
+  return [uids componentsJoinedByString: @","];
+}
+
+- (NSString *) initialParticipants
+{
+  NSMutableArray *participants;
+  NSEnumerator *persons;
+  iCalPerson *person;
+
+  participants = [NSMutableArray arrayWithCapacity: [contacts count]];
+  persons = [contacts objectEnumerator];
+  person = [persons nextObject];
+  while (person)
+    {
+      [participants addObject: [person cn]];
+      person = [persons nextObject];
+    }
+
+  return [participants componentsJoinedByString: @","];
 }
 
 @end /* UIxContactSelector */

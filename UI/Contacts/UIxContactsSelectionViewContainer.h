@@ -1,4 +1,4 @@
-/* UIxContactFoldersView.m - this file is part of SOGo
+/* UIxContactsSelectionViewContainer.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -20,37 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
-#import <SoObjects/Contacts/SOGoContactFolders.h>
+#ifndef UIXCONTACTSSELECTIONVIEWCONTAINER_H
+#define UIXCONTACTSSELECTIONVIEWCONTAINER_H
 
-#import "common.h"
+#import "UIxContactsListViewContainerBase.h"
 
-#import "UIxContactFoldersView.h"
-
-@implementation UIxContactFoldersView
-
-- (id) defaultAction
-{
-  SOGoContactFolders *folders;
-
-  folders = [self clientObject];
-
-  return [self redirectToLocation: [folders defaultSourceName]];
-}
-
-- (id) selectAction
-{
-  SOGoContactFolders *folders;
-  NSString *url, *selectorId;
-
-  folders = [self clientObject];
-  selectorId = [self queryParameterForKey: @"selectorId"];
-
-  url = [NSString stringWithFormat: @"%@/select?selectorId=%@",
-                  [folders defaultSourceName],
-                  selectorId];
-
-  return [self redirectToLocation: url];
-}
+@interface UIxContactsSelectionViewContainer : UIxContactsListViewContainerBase
 
 @end
+
+#endif /* UIXCONTACTSSELECTIONVIEWCONTAINER_H */

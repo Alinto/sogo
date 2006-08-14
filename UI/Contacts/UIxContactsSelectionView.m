@@ -27,89 +27,89 @@
   NSString *callback;
 }
 
-- (NSString *)_getCN;
-- (NSString *)getCN;
-- (NSString *)getSN;
-- (NSString *)getMail;
-- (NSString *)getUID;
+// - (NSString *)_getCN;
+// - (NSString *)getCN;
+// - (NSString *)getSN;
+// - (NSString *)getMail;
+// - (NSString *)getUID;
   
 @end
 
-#include "common.h"
-#include <SOGo/AgenorUserManager.h>
+// #include "common.h"
+// #include <SOGo/AgenorUserManager.h>
 
 @implementation UIxContactsSelectionView
 
-static SOGoJSStringFormatter *jsFormatter = nil;
+// static SOGoJSStringFormatter *jsFormatter = nil;
 
-+ (void)initialize {
-  static BOOL didInit = NO;
+// + (void)initialize {
+//   static BOOL didInit = NO;
 
-  if(didInit)
-    return;
+//   if(didInit)
+//     return;
 
-  didInit = YES;
-  jsFormatter = [SOGoJSStringFormatter sharedFormatter];
-}
+//   didInit = YES;
+//   jsFormatter = [SOGoJSStringFormatter sharedFormatter];
+// }
 
-- (void)dealloc {
-  [self->callback release];
-  [super dealloc];
-}
+// - (void)dealloc {
+//   [self->callback release];
+//   [super dealloc];
+// }
 
-- (NSString *)callback {
-  if(!self->callback) {
-    WORequest *r = [[self context] request];
-    self->callback = [[r formValueForKey:@"callback"] retain];
-  }
-  return self->callback;
-}
+// - (NSString *)callback {
+//   if(!self->callback) {
+//     WORequest *r = [[self context] request];
+//     self->callback = [[r formValueForKey:@"callback"] retain];
+//   }
+//   return self->callback;
+// }
 
-- (NSString *)_getCN {
-  return [self->contact valueForKey:@"cn"];
-}
+// - (NSString *)_getCN {
+//   return [self->contact valueForKey:@"cn"];
+// }
 
-- (NSString *)getCN {
-  return [jsFormatter stringByEscapingQuotesInString:[self _getCN]];
-}
+// - (NSString *)getCN {
+//   return [jsFormatter stringByEscapingQuotesInString:[self _getCN]];
+// }
 
-- (NSString *)getSN {
-  NSString *sn = [self->contact valueForKey:@"sn"];
-  return [jsFormatter stringByEscapingQuotesInString:sn];
-}
+// - (NSString *)getSN {
+//   NSString *sn = [self->contact valueForKey:@"sn"];
+//   return [jsFormatter stringByEscapingQuotesInString:sn];
+// }
 
-- (NSString *)getMail {
-  return [self->contact valueForKey:@"mail"];
-}
+// - (NSString *)getMail {
+//   return [self->contact valueForKey:@"mail"];
+// }
 
-- (NSString *)getUID {
-  return [[AgenorUserManager sharedUserManager] getUIDForEmail:[self getMail]];
-}
+// - (NSString *)getUID {
+//   return [[AgenorUserManager sharedUserManager] getUIDForEmail:[self getMail]];
+// }
 
-- (NSString *)jsOnClickCode {
-  /* callback parameters: (type, cn, dn, email, uid, sn) */
-
-
-
-  /* changed to :  type, email, uid, sn, cn, dn */
-  static NSString *jsCode = \
-    @"javascript:opener.window.%@('', '%@', '%@', '%@', '%@', '');";
-
-  return [NSString stringWithFormat:jsCode,
-		   [self callback],
-		   [self getMail],
-		   [self getUID],
-		   [self getSN],
-		   [self getCN]];
+// - (NSString *)jsOnClickCode {
+//   /* callback parameters: (type, cn, dn, email, uid, sn) */
 
 
 
-  //  return [NSString stringWithFormat:jsCode,
-  //    [self callback],
-  //    [self getCN],
-  //    [self getMail],
-  //    [self getUID],
-  //    [self getSN]];
-}
+//   /* changed to :  type, email, uid, sn, cn, dn */
+//   static NSString *jsCode = \
+//     @"javascript:opener.window.%@('', '%@', '%@', '%@', '%@', '');";
+
+//   return [NSString stringWithFormat:jsCode,
+// 		   [self callback],
+// 		   [self getMail],
+// 		   [self getUID],
+// 		   [self getSN],
+// 		   [self getCN]];
+
+
+
+//   //  return [NSString stringWithFormat:jsCode,
+//   //    [self callback],
+//   //    [self getCN],
+//   //    [self getMail],
+//   //    [self getUID],
+//   //    [self getSN]];
+// }
 
 @end /* UIxContactsInlineListView */
