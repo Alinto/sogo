@@ -478,7 +478,7 @@ function onMenuEntryClick(event, menuId)
 
 function initLogConsole() {
   logConsole = document.getElementById('logConsole');
-  logConsole.innerHTML = '';
+  logConsole.innerHTML = '<a style="text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
 }
 
 function toggleLogConsole() {
@@ -696,4 +696,50 @@ function dragHandleDoubleClick(event) {
       lBlock.style.top = (uTop + topDiff) + 'px;';
     }
   }
+}
+ 
+/* contact selector */
+
+function onContactSelectorPopup(node)
+{
+  var contactSelectorId = node.parentNode.getAttribute("id");
+
+  urlstr = ApplicationBaseURL + "../../" + UserLogin + "/Contacts/select?selectorId=" + contactSelectorId;
+  var w = window.open(urlstr, "Addressbook",
+                      "width=640,height=400,left=10,top=10,toolbar=no," +
+                      "dependent=yes,menubar=no,location=no,resizable=yes," +
+                      "scrollbars=yes,directories=no,status=no");
+  w.focus();
+
+  return false;
+}
+
+function addContact(selectorId, contactId, contactName)
+{
+  var uids = document.getElementById('uixselector-' + selectorId
+                                     + '-uidList');
+  log ("contactId: " + contactId);
+  if (contactId)
+    {
+      var re = new RegExp("(^|,)" + contactId + "($|,)");
+
+      if (!re.test(uids.value))
+        {
+          log ("no match... realling adding");
+          if (uids.value.length > 0)
+            uids.value += ',' + contactId;
+          else
+            uids.value = contactId;
+          
+          log ('values: ' + uids.value);
+          var names = document.getElementById('uixselector-' + selectorId
+                                              + '-display');
+          names.innerHTML += ('<img src="' + ResourcesURL + '/abcard.gif" />'
+                              + contactName + '<br />');
+        }
+      else
+        log ("match... ignoring contact");
+    }
+
+  return false;
 }
