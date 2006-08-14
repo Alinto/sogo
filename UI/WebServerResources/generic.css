@@ -285,6 +285,55 @@ DIV.linkbanner A:hover
   text-align: right;
 }
 
+DIV.contactSelector DIV.contactList IMG
+{ margin: 0px .5em; }
+
+DIV.contactSelector DIV.contactList
+{
+  font-size: smaller;
+  white-space: nowrap;
+  width: 40em;
+  height: 3em;
+  overflow: auto;
+  border: 1px solid #444;
+  background: #eee;
+  text-align: left;
+}
+
+TEXTAREA
+{
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+}
+
+INPUT.button, INPUT.button:hover
+{
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+}
+
+INPUT.button:active
+{
+  -moz-outline: 0px;
+  margin: 0px;
+  padding: 0px .5em;
+  color: -moz-buttonhovertext;
+  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+}
+
 .toolbar
 {
   left: 0px;
@@ -466,7 +515,7 @@ DIV#logConsole
   -moz-border-left-colors: ThreeDDarkShadow ThreeDShadow transparent;
   font-family: monospace;
   font-weight: bold;
-  position: absolute;
+  position: fixed;
   background: #000;
   color: #ddd;
   bottom: 0px;
