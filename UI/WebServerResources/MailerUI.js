@@ -225,9 +225,9 @@ function openAnais(sender) {
 function openAddressbook(sender) {
   var urlstr;
   
-  urlstr = "addressbook";
+  urlstr = ApplicationBaseURL + "/../Contacts/select";
   var w = window.open(urlstr, "Addressbook",
-                      "width=600,height=400,left=10,top=10,toolbar=no," +
+                      "width=640,height=400,left=10,top=10,toolbar=no," +
                       "dependent=yes,menubar=no,location=no,resizable=yes," +
                       "scrollbars=yes,directories=no,status=no");
   w.focus();

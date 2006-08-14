@@ -372,3 +372,20 @@ DIV#mailboxDragHandle
   right: 0px;
   height: .4em;
 }
+
+DIV.contactSelector
+{
+  position: absolute;
+  top: 0px;
+  bottom: 3em;
+  right: 0px;
+  left: 0px;
+}
+
+DIV.contactSelection
+{
+  position: absolute;
+  height: 2.5em;
+  bottom: 0px;
+  right: 1em;
+}

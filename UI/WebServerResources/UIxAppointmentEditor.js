@@ -91,3 +91,13 @@ function validateAptEditor() {
 
   return true;
 }
+
+function submitMeeting(thisForm) {
+  var action = document.getElementById('jsaction');
+  action.setAttribute("name", "save:method");
+  action.setAttribute("value", "save");
+
+  thisForm.submit();
+  opener.window.location.reload();
+  window.close();
+}

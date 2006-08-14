@@ -808,3 +808,30 @@ function onSearchKeyDown(searchValue)
 
   searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
+
+function onConfirmContactSelection()
+{
+  var rows = collectSelectedRows();
+
+  var folderLi = document.getElementById(currentContactFolder);
+  var currentContactFolderName = folderLi.innerHTML;
+
+  for (i = 0; i < rows.length; i++)
+    {
+      var row = document.getElementById(rows[i]);
+//       opener.window.log (rows[i] + " selected.");
+//       opener.window.log (row.cells.length);
+      var cid = row.getAttribute("contactid");
+      if (cid)
+        {
+          var cname = '' + row.getAttribute("contactname");
+          opener.window.log('cid = ' + cid + '; cname = ' + cname );
+          if (cid.length > 0)
+            opener.window.addContact(contactSelectorId,
+                                     cid,
+                                     currentContactFolderName + '/' + cname);
+        }
+    }
+
+  return false;
+}
