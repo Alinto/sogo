@@ -1,5 +1,9 @@
 2006-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/iCalPerson+UIx.m ([iCalPerson +personWithUid:]):
+	new class method that returns an iCalPerson based on the UID given
+	as param.
+
 	* UI/Contacts/UIxContactsListViewContainerBase.m: 
 	UIxContactsListViewContainer renamed to serve as a base class for
 	the contact lists in both the contact editor and the contact

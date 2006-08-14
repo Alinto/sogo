@@ -654,11 +654,12 @@
   method = [[self userFolderPath] stringByAppendingPathComponent:method];
 
   /* check if participants have already been provided */
-  ps     = [[[self context] request] formValueForKey:@"ps"];
-  if (ps) {
-    [self setQueryParameter:ps forKey:@"ps"];
-  }
-  else if ([[self clientObject] respondsToSelector:@selector(calendarUIDs)]) {
+  ps     = [self queryParameterForKey:@"ps"];
+//   if (ps) {
+//     [self setQueryParameter:ps forKey:@"ps"];
+//   }
+ if (!ps
+     && [[self clientObject] respondsToSelector:@selector(calendarUIDs)]) {
     AgenorUserManager *um;
     NSArray           *uids;
     NSMutableArray    *emails;

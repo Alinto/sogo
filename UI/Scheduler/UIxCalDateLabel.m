@@ -91,20 +91,20 @@
 }
 
 - (NSString *)weekLabel {
-  NSString *label;
+  NSString *label, *le;
   
-  label = [self localizedNameForMonthOfYear:[self->startDate monthOfYear]];
-  label = [NSString stringWithFormat:@"%@ %d",
-		    label,
-		    [self->startDate yearOfCommonEra]];
-  if ([self->startDate monthOfYear] != [self->endDate monthOfYear]) {
-    NSString *le;
-    
-    le = [self localizedNameForMonthOfYear:[self->endDate monthOfYear]];
-    label = [NSString stringWithFormat:@"<nobr>%@ / %@ %d</nobr>",
-		      label, le,
-		      [self->endDate yearOfCommonEra]];
-  }
+  if ([self->startDate monthOfYear] == [self->endDate monthOfYear])
+    label = [NSString stringWithFormat:@"%@ %d",
+                      [self localizedNameForMonthOfYear: [self->startDate monthOfYear]],
+                      [self->startDate yearOfCommonEra]];
+  else
+    {
+      le = [self localizedNameForMonthOfYear:[self->endDate monthOfYear]];
+      label = [NSString stringWithFormat:@"<nobr>%@ / %@ %d</nobr>",
+                        label, le,
+                        [self->endDate yearOfCommonEra]];
+    }
+
   return label;
 }
 

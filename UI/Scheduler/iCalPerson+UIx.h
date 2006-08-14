@@ -28,6 +28,9 @@
 @class NSString;
 
 @interface iCalPerson(Convenience)
+
++ (iCalPerson *) personWithUid: (NSString *) uid;
+
 - (NSString *)cnForDisplay;
 @end
 

@@ -20,12 +20,32 @@
 */
 // $Id: UIxAppointmentEditor.m 181 2004-08-11 15:13:25Z helge $
 
-#include "iCalPerson+UIx.h"
-#include "common.h"
+#import <SOGo/AgenorUserManager.h>
+#import "iCalPerson+UIx.h"
+#import "common.h"
 
-@implementation iCalPerson(Convenience)
+@implementation iCalPerson (Convenience)
 
-- (NSString *)cnForDisplay {
++ (iCalPerson *) personWithUid: (NSString *) uid
+{
+  iCalPerson *person;
+  AgenorUserManager *um;
+  NSString *email, *cn;
+
+  person = [self new];
+  [person autorelease];
+  
+  um = [AgenorUserManager sharedUserManager];
+  email = [um getEmailForUID: uid];
+  cn = [um getCNForUID: uid];
+  [person setCn: cn];
+  [person setEmail: email];
+
+  return person;
+}
+
+- (NSString *) cnForDisplay
+{
   return [self cnWithoutQuotes];
 }
 

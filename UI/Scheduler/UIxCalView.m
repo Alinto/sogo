@@ -370,7 +370,7 @@ static BOOL shouldDisplayWeekend = NO;
 - (BOOL)shouldDisplayRejectedAppointments {
   NSString *bv;
   
-  bv = [[[self context] request] formValueForKey:@"dr"];
+  bv = [self queryParameterForKey: @"dr"];
   if (!bv) return NO;
   return [bv boolValue];
 }
@@ -427,17 +427,15 @@ static BOOL shouldDisplayWeekend = NO;
 - (id)redirectForUIDsAction {
   NSMutableString *uri;
   NSString   *uidsString, *loc, *prevMethod, *userFolderID;
-  WORequest  *req;
   id <WOActionResults> r;
   BOOL useGroups;
   unsigned index;
 
-  req = [[self context] request];
-
-  uidsString = [req formValueForKey:@"userUIDString"];
+  uidsString = [self queryParameterForKey:@"userUIDString"];
   uidsString = [uidsString stringByTrimmingWhiteSpaces];
+  [self setQueryParameter: nil forKey: @"userUIDString"];
 
-  prevMethod = [req formValueForKey:@"previousMethod"];
+  prevMethod = [self queryParameterForKey:@"previousMethod"];
   if(prevMethod == nil)
     prevMethod = @"";
 
@@ -460,6 +458,7 @@ static BOOL shouldDisplayWeekend = NO;
     [uri appendString:@"Groups/_custom_"];
     [uri appendString:uidsString];
     [uri appendString:@"/"];
+    NSLog (@"Group URI = '%@'", uri);
   }
   else {
       /* check if lastPathComponent is the base that we want to have */
