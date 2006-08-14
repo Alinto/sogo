@@ -1,0 +1,113 @@
+<?xml version='1.0' standalone='yes'?>
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    className="UIxPageFrame"
+    title="name"
+    const:popup="yes"
+    >
+    <div class="menu" id="contactFolderMenu">
+      <ul>
+        <li
+          onmousedown="return false;"
+          onmouseup="return false;"><var:string label:value="Modify" /></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return false;"><var:string label:value="New Card" /></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return false;"><var:string label:value="New List" /></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return false;"><var:string label:value="Delete" /></li>
+      </ul>
+    </div>
+
+    <div class="menu" id="contactMenu">
+      <ul>
+        <li
+          onmousedown="return false;"
+          onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return false;"><var:string label:value="Instant Message" /></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
+      </ul>
+    </div>
+
+    <form name="searchform" var:href="view" var:_sort="sortKey"
+      onsubmit="return onSearchFormSubmit();" method="GET">
+      <div class="contactSelector">
+        <div class="contactFoldersList" id="contactFoldersList">
+          <div class="titlediv"><var:string label:value="Addressbook" /></div>
+          
+          <ul id="contactFolders" onselectionchange="onFolderSelectionChange();">
+            <var:foreach list="contactFolders" item="currentFolder">
+              <var:if condition="isFolderCurrent"
+                ><li var:id="currentContactFolderId"
+                  class="_selected"
+                  onmousedown="return false;"
+                  onclick="return onRowClick(event);"
+                  oncontextmenu="return onContactFolderContextMenu(event);"
+                  ><var:string value="currentContactFolderName" /></li
+                  ></var:if
+                ><var:if condition="isFolderCurrent"
+                const:negate="YES"
+                ><li var:id="currentContactFolderId"
+                  onmousedown="return false;"
+                  onclick="return onRowClick(event);"
+                  oncontextmenu="return onContactFolderContextMenu(event);"
+                  ><var:string value="currentContactFolderName" /></li
+                  ></var:if>
+            </var:foreach>
+          </ul>
+
+        </div>
+
+        <div class="dragHandle" id="dragHandle"
+          onmousedown="startHandleDragging(event);"
+          onmousemove=""
+          ondblclick="dragHandleDoubleClick(event);"
+          leftblock="contactFoldersList"
+          rightblock="contactsListContent">
+        </div>
+
+        <div id="contactsListContent">
+          <var:component-content />
+        </div>
+      </div>
+
+      <div class="contactSelection">
+        <input type="submit"
+          class="button"
+          label:value="Add Selected Contacts"
+          name="validate"
+          onclick="return onConfirmContactSelection();" />
+        <input type="submit"
+          class="button"
+          label:value="Close"
+          name="cancel"
+          onclick="window.close(); return false;" />
+      </div>
+    </form>
+
+    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+
+    <script type="text/javascript">
+      currentContactFolder = '<var:string value="contactFolderId" />';
+      contactSelectorId = '<var:string value="queryParameters.selectorId" />';
+    </script>
+  </var:component>
