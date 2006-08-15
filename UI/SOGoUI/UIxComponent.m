@@ -386,10 +386,10 @@ static BOOL uixDebugEnabled = NO;
 
 /* labels */
 
-- (NSString *)labelForKey:(NSString *)_str {
+- (NSString *) labelForKey: (NSString *)_str
+{
   WOResourceManager *rm;
   NSArray           *languages;
-  NSString          *label;
   NSString          *lKey, *lTable, *lVal;
   NSRange r;
 
@@ -433,12 +433,10 @@ static BOOL uixDebugEnabled = NO;
 #endif
   
   /* lookup string */
-  
-
-  label = [rm stringForKey:lKey inTableNamed:lTable withDefaultValue:lVal
-	      languages:languages];
-
-  return label;
+  return [rm stringForKey: lKey
+             inTableNamed: lTable
+             withDefaultValue: lVal
+             languages: languages];
 }
 
 - (NSString *)localizedNameForDayOfWeek:(unsigned)_dayOfWeek {
