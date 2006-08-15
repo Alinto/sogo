@@ -5,6 +5,7 @@
       onclick = "newEvent(this);return false;";
       image = "new-event.png"; },
     { link  = "new_task";
+      enabled = "NO";
       label="New Task";
       image = "new-task.png"; },
     { link  = "edit";
