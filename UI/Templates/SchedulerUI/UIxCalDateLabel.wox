@@ -6,6 +6,4 @@
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     const:class="window_label"
-    >testcoucou2 - <var:string lbl:value="August"/>
-    -
-    <var:string value="label" const:escapeHTML="NO" /></span>
+    ><var:string value="label" /></span>

@@ -150,6 +150,8 @@
                                             const:dateformat="%H:%M"
                                 /><br />
                                 [<a href="new"
+                                    onclick="return newEvent(this);"
+                                    var:day="currentDayQueryParameters.day"
                                     var:queryDictionary="currentDateQueryParameters"
                                  ><var:string label:value="new" /></a>]
                               </span>

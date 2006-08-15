@@ -1,30 +1,30 @@
 <?xml version='1.0' standalone='yes'?>
 <!-- $Id$ -->
-<span xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:var="http://www.skyrix.com/od/binding"
-      xmlns:const="http://www.skyrix.com/od/constant"
-      xmlns:rsrc="OGo:url"
->
-  <table cellpadding="0" cellspacing="2">
-    <tr>
-      <var:if condition="displayTimeControl">
+  <span xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    >
+    <table cellpadding="0" cellspacing="2">
+      <tr>
+        <var:if condition="displayTimeControl">
+          <td>
+            <var:component className="UIxTimeSelector"
+              timeID="timeID"
+              hour="hour"
+              minute="minute"
+              />
+          </td>
+        </var:if>
         <td>
-          <var:component className="UIxTimeSelector"
-                         timeID="timeID"
-                         hour="hour"
-                         minute="minute"
-          />
+          <var:component className="UIxDatePicker"
+            dateID="dateID"
+            year="year"
+            month="month"
+            day="day"
+            label="label"
+            />
         </td>
-      </var:if>
-      <td>
-        <var:component className="UIxDatePicker"
-                       dateID="dateID"
-                       year="year"
-                       month="month"
-                       day="day"
-                       label="label"
-        />
-      </td>
-    </tr>
-  </table>
-</span>
+      </tr>
+    </table>
+  </span>

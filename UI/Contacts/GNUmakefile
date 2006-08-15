@@ -29,13 +29,6 @@ ContactsUI_RESOURCE_FILES +=		\
 	product.plist			\
 
 ContactsUI_RESOURCE_FILES +=		\
-	Images/delete.png		\
-	Images/new-card.png		\
-	Images/new-list.png		\
-	Images/properties.png		\
-	Images/write.png
-
-ContactsUI_RESOURCE_FILES +=		\
 	Toolbars/SOGoContactFolder.toolbar
 
 ContactsUI_LOCALIZED_RESOURCE_FILES +=	\

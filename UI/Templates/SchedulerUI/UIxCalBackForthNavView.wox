@@ -11,7 +11,7 @@
             <a var:href="^methodName" var:queryDictionary="^prevQueryParameters"><img rsrc:src="previous_week.gif" alt="previous" border="0"/></a>
         </td>
         <td align="right" valign="middle" class="button_auto_env">
-            <a var:href="^methodName" var:queryDictionary="^currentQueryParameters" class="button_auto"><var:string value="^label" escapeHTML="NO" /></a>
+            <a var:href="^methodName" var:queryDictionary="^currentQueryParameters" class="button_auto"><var:string value="^label" /></a>
         </td>
         <td align="right" valign="middle">
             <a var:href="^methodName" var:queryDictionary="^nextQueryParameters"><img rsrc:src="next_week.gif" alt="next" border="0"/></a>

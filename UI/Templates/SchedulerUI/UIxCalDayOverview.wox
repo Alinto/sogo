@@ -196,6 +196,8 @@
                               <br />
                               <span class="dayoverview_content_time_link">
                                 [<a href="new"
+                                    onclick="return newEvent(this);"
+                                    var:day="currentDayQueryParameters.day"
                                     var:queryDictionary="currentDateQueryParameters"
                                  ><var:string label:value="new" /></a>]
                               </span>

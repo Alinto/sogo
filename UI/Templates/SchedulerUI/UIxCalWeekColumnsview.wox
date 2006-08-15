@@ -1,287 +1,289 @@
 <?xml version="1.0" standalone="yes"?>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-               xmlns:var="http://www.skyrix.com/od/binding"
-               xmlns:const="http://www.skyrix.com/od/constant"
-               xmlns:rsrc="OGo:url"
-               xmlns:label="OGo:label"
-               xmlns:uix="OGo:uix"
-               className="UIxPageFrame"
-               title="name">
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    xmlns:uix="OGo:uix"
+    className="UIxPageFrame"
+    title="name">
 
-  <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" width="100%">
-    <tr>
-      <td class="wintitle">
-        <table cellpadding="0" cellspacing="0" width="100%">
-          <tr>
-            <td width="5"/>
-            <td class="wintitle"><var:component className="UIxCalDateLabel"
-                                                startDate="startDate"
-                                                endDate="endDate"
-                                                const:selection="week"
-                                 /></td>
-            <td width="36" align="right" valign="center">
-              <var:component className="UIxWinClose" />
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td id="skywinbodycell" class="wincontent">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-          <tr bgcolor="#e8e8e0">
-            <td align="left">
-              <var:component className="UIxCalBackForthNavView"
-                             methodName="ownMethodName"
-                             prevQueryParameters="prevWeekQueryParameters"
-                             currentQueryParameters="todayQueryParameters"
-                             nextQueryParameters="nextWeekQueryParameters"
-                             label:label="this week"
-              />
-            </td>
-            <td align="right" valign="middle" width="80%">
+    <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5" width="100%">
+      <tr>
+        <td class="wintitle">
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td width="5"/>
+              <td class="wintitle"><var:component className="UIxCalDateLabel"
+                  startDate="startDate"
+                  endDate="endDate"
+                  const:selection="week"
+                  /></td>
+              <td width="36" align="right" valign="center">
+                <var:component className="UIxWinClose" />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td id="skywinbodycell" class="wincontent">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr bgcolor="#e8e8e0">
+              <td align="left">
+                <var:component className="UIxCalBackForthNavView"
+                  methodName="ownMethodName"
+                  prevQueryParameters="prevWeekQueryParameters"
+                  currentQueryParameters="todayQueryParameters"
+                  nextQueryParameters="nextWeekQueryParameters"
+                  label:label="this week"
+                  />
+              </td>
+              <td align="right" valign="middle" width="80%">
                 <var:component className="UIxContactSelector"
                   const:selectorId="uids" />
-<!--              <var:component className="AnaisUidSelector"
-                             calendarUIDs="clientObject.calendarUIDs"
-              /> -->
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td id="skywinbodycell" class="wincontent">
-        <table border="0" width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td colspan="2">
-              <var:component className="UIxCalSelectTab"
-                             const:selection="week"
-                             currentDate="selectedDate"
-              >
-                <table border="0" cellpadding="4" width="100%" cellspacing="2">
-                  <tr>
-                    <td width="1%"
+                <!--              <var:component className="AnaisUidSelector"
+                calendarUIDs="clientObject.calendarUIDs"
+                /> -->
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td id="skywinbodycell" class="wincontent">
+          <table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td colspan="2">
+                <var:component className="UIxCalSelectTab"
+                  const:selection="week"
+                  currentDate="selectedDate"
+                  >
+                  <table border="0" cellpadding="4" width="100%" cellspacing="2">
+                    <tr>
+                      <td width="1%"
                         align="left"
                         valign="middle"
                         bgcolor="#e8e8e0"
-                    >
-                      <table border='0' cellpadding='0' cellspacing='0'>
-                       <tr>
-                          <td><a href="weekoverview"
-                                 var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_overview.gif"
-                                                          label:title="Overview"
-                                                          label:alt="Overview"
-                                                          border="0"
-                                                          valign="top"
-                                                     /></a></td>
-                          <td><a href="weekchartview"
-                                 var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_chart.gif"
-                                                           label:title="Chart"
-                                                           label:alt="Chart"
-                                                           border="0"
-                                                           valign="top"
-                                                      /></a></td>
-                          <td><a href="weeklistview"
-                                 var:queryDictionary="queryParameters"
-                              ><img rsrc:src="icon_view_list.gif"
-                                                          label:title="List"
-                                                          label:alt="List"
-                                                          border="0"
-                                                          valign="top"
-                                                     /></a></td>
-                          <td><img rsrc:src="icon_view_columns_inactive.gif"
-                                   label:title="Columns"
-                                   label:alt="Columns"
-                                   border="0"
-                                   valign="top"
-                              /> </td>
-                       </tr>
-                      </table>
-                    </td>
-                    <td align="left" bgcolor="#e8e8e0" class="button_auto_env">
-                      <a var:href="ownMethodName"
-                         class="button_auto"
-                         var:queryDictionary="toggleShowRejectedAptsQueryParameters"
-                         label:string="$toggleShowRejectedAptsLabel"
-                      />
-                    </td>
-                    <td align="right" bgcolor="#e8e8e0">
-                      <table border='0' cellpadding='0' cellspacing='1'>
-                        <tr>
-                          <td class="button_auto_env"
+                        >
+                        <table border='0' cellpadding='0' cellspacing='0'>
+                          <tr>
+                            <td><a href="weekoverview"
+                                var:queryDictionary="queryParameters"
+                                ><img rsrc:src="icon_view_overview.gif"
+                                  label:title="Overview"
+                                  label:alt="Overview"
+                                  border="0"
+                                  valign="top"
+                                  /></a></td>
+                            <td><a href="weekchartview"
+                                var:queryDictionary="queryParameters"
+                                ><img rsrc:src="icon_view_chart.gif"
+                                  label:title="Chart"
+                                  label:alt="Chart"
+                                  border="0"
+                                  valign="top"
+                                  /></a></td>
+                            <td><a href="weeklistview"
+                                var:queryDictionary="queryParameters"
+                                ><img rsrc:src="icon_view_list.gif"
+                                  label:title="List"
+                                  label:alt="List"
+                                  border="0"
+                                  valign="top"
+                                  /></a></td>
+                            <td><img rsrc:src="icon_view_columns_inactive.gif"
+                                label:title="Columns"
+                                label:alt="Columns"
+                                border="0"
+                                valign="top"
+                                /> </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td align="left" bgcolor="#e8e8e0" class="button_auto_env">
+                        <a var:href="ownMethodName"
+                          class="button_auto"
+                          var:queryDictionary="toggleShowRejectedAptsQueryParameters"
+                          label:string="$toggleShowRejectedAptsLabel"
+                          />
+                      </td>
+                      <td align="right" bgcolor="#e8e8e0">
+                        <table border='0' cellpadding='0' cellspacing='1'>
+                          <tr>
+                            <td class="button_auto_env"
                               nowrap="true"
                               valign='middle'
                               align='center'
-                          >
-                            <!--<a class="button_auto"
-                               href="weekprintview"
-                               var:queryDictionary="queryParameters"
-                               target="SOGoPrintView"
-                            ><var:string label:value="printview" /></a>-->
-                          </td>
-                          <td class="button_auto_env"
+                              >
+                              <!--<a class="button_auto"
+                              href="weekprintview"
+                              var:queryDictionary="queryParameters"
+                              target="SOGoPrintView"
+                              ><var:string label:value="printview" /></a>-->
+                            </td>
+                            <td class="button_auto_env"
                               nowrap="true"
                               valign="middle"
                               align="center"
+                              >
+                              <a class="button_auto"
+                                href="proposal"
+                                var:queryDictionary="queryParameters"
+                                ><var:string label:value="proposal" /></a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%">
+                    <tr valign="top">
+                      <td>
+                        <table>
+                          <tr>
+                            <td>
+                              <var:component className="UIxCalInlineMonthOverview"
+                                selectedDate="thisMonth"
+                                const:showYear="YES"
+                                const:showWeekColumn="YES"
+                                const:weekSelectionHref="weekcolumnsview"
+                                const:style="weekcolumnsview_cal"
+                                const:headerStyle="weekcolumnsview_cal_title"
+                                const:weekStyle="weekcolumnsview_cal_week"
+                                const:dayHeaderStyle="weekcolumnsview_cal_day_header"
+                                const:dayBodyStyle="weekcolumnsview_cal_content"
+                                const:todayBodyStyle="weekcolumnsview_cal_content_hilite"
+                                const:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed"
+                                />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <var:component className="UIxCalInlineMonthOverview"
+                                selectedDate="nextMonth"
+                                const:showYear="YES"
+                                const:showWeekColumn="YES"
+                                const:weekSelectionHref="weekcolumnsview"
+                                const:style="weekcolumnsview_cal"
+                                const:headerStyle="weekcolumnsview_cal_title"
+                                const:weekStyle="weekcolumnsview_cal_week"
+                                const:dayHeaderStyle="weekcolumnsview_cal_day_header"
+                                const:dayBodyStyle="weekcolumnsview_cal_content"
+                                const:todayBodyStyle="weekcolumnsview_cal_content_hilite"
+                                const:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed"
+                                />
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="100%">
+                        <var:weekcol-view list="appointments"
+                          item="appointment"
+                          weekStart="startDate"
+                          dayIndex="dayIndex"
+                          const:startDateKey="startDate"
+                          const:endDateKey="endDate"
+                          const:titleStyle="weekcolumnsview_title"
+                          contentStyle="contentStyle"
+                          const:class="weekcolumnsview"
+                          const:width="100%"
+                          const:contentColor="#e8e8e0"
+                          const:cellpadding="0"
+                          const:cellspacing="2"
+                          const:hideWeekend="shouldHideWeekend"
                           >
-                            <a class="button_auto"
-                               href="proposal"
-                               var:queryDictionary="queryParameters"
-                            ><var:string label:value="proposal" /></a>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-                <table width="100%">
-                  <tr valign="top">
-                    <td>
-                      <table>
-                        <tr>
-                          <td>
-                             <var:component className="UIxCalInlineMonthOverview"
-                                            selectedDate="thisMonth"
-                                            const:showYear="YES"
-                                            const:showWeekColumn="YES"
-                                            const:weekSelectionHref="weekcolumnsview"
-                                            const:style="weekcolumnsview_cal"
-                                            const:headerStyle="weekcolumnsview_cal_title"
-                                            const:weekStyle="weekcolumnsview_cal_week"
-                                            const:dayHeaderStyle="weekcolumnsview_cal_day_header"
-                                            const:dayBodyStyle="weekcolumnsview_cal_content"
-                                            const:todayBodyStyle="weekcolumnsview_cal_content_hilite"
-                                            const:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed"
-                             />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                             <var:component className="UIxCalInlineMonthOverview"
-                                            selectedDate="nextMonth"
-                                            const:showYear="YES"
-                                            const:showWeekColumn="YES"
-                                            const:weekSelectionHref="weekcolumnsview"
-                                            const:style="weekcolumnsview_cal"
-                                            const:headerStyle="weekcolumnsview_cal_title"
-                                            const:weekStyle="weekcolumnsview_cal_week"
-                                            const:dayHeaderStyle="weekcolumnsview_cal_day_header"
-                                            const:dayBodyStyle="weekcolumnsview_cal_content"
-                                            const:todayBodyStyle="weekcolumnsview_cal_content_hilite"
-                                            const:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed"
-                             />
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td width="100%">
-                      <var:weekcol-view list="appointments"
-                                        item="appointment"
-                                        weekStart="startDate"
-                                        dayIndex="dayIndex"
-                                        const:startDateKey="startDate"
-                                        const:endDateKey="endDate"
-                                        const:titleStyle="weekcolumnsview_title"
-                                        contentStyle="contentStyle"
-                                        const:class="weekcolumnsview"
-                                        const:width="100%"
-                                        const:contentColor="#e8e8e0"
-                                        const:cellpadding="0"
-                                        const:cellspacing="2"
-                                        const:hideWeekend="shouldHideWeekend"
-                      >
-                        <var:weekcol-title>
-                          <table cellpadding="0" width="100%" border="0" cellspacing="0"
-                                 var:class="titleStyle">
-                            <tr>
-                              <td align="left" valign="top">
-                                <a href="dayoverview"
-                                   var:queryDictionary="currentDayQueryParameters"
-                                   class="weekcolumnsview_title_daylink"
-                                   ><var:string value="currentDay.dayOfMonth" /></a>
-                              </td>
-                              <td align="center" valign="top" width="97%">
-                                <var:string value="currentDayName" /><br />
+                          <var:weekcol-title>
+                            <table cellpadding="0" width="100%" border="0" cellspacing="0"
+                              var:class="titleStyle">
+                              <tr>
+                                <td align="left" valign="top">
+                                  <a href="dayoverview"
+                                    var:queryDictionary="currentDayQueryParameters"
+                                    class="weekcolumnsview_title_daylink"
+                                    ><var:string value="currentDay.dayOfMonth" /></a>
+                                </td>
+                                <td align="center" valign="top" width="97%">
+                                  <var:string value="currentDayName" /><br />
                                   [<a href="new"
-                                      var:queryDictionary="currentDayQueryParameters"
-                                      class="weekcolumnsview_title_newlink"
-                                   ><var:string label:value="new" /></a>]
-                              </td>
-                            </tr>
-                          </table>
-                        </var:weekcol-title>
-                        <var:if condition="hasDayInfo">
-                          <var:weekcol-info>
-                            <var:if condition="hasHolidayInfo">
-                              <var:string value="holidayInfo" 
-                                        const:class="weekcolumnsview_holidayinfo" />
-                            </var:if>
-                            <var:foreach list="allDayApts" item="appointment">
-                              <var:component className="UIxCalInlineAptView"
-                                             appointment="appointment"
-                                             formatter="aptFormatter"
-                                             tooltipFormatter="aptTooltipFormatter"
-                                             url="appointmentViewURL"
-                                             style="aptStyle"
-                                             queryDictionary="currentDayQueryParameters"
-                                             referenceDate="currentDay"
-                                             canAccess="canAccessApt"
+                                    onclick="return newEvent(this);"
+                                    var:day="currentDayQueryParameters.day"
+                                    var:queryDictionary="currentDayQueryParameters"
+                                    class="weekcolumnsview_title_newlink"
+                                    ><var:string label:value="new" /></a>]
+                                </td>
+                              </tr>
+                            </table>
+                          </var:weekcol-title>
+                          <var:if condition="hasDayInfo">
+                            <var:weekcol-info>
+                              <var:if condition="hasHolidayInfo">
+                                <var:string value="holidayInfo" 
+                                  const:class="weekcolumnsview_holidayinfo" />
+                              </var:if>
+                              <var:foreach list="allDayApts" item="appointment">
+                                <var:component className="UIxCalInlineAptView"
+                                  appointment="appointment"
+                                  formatter="aptFormatter"
+                                  tooltipFormatter="aptTooltipFormatter"
+                                  url="appointmentViewURL"
+                                  style="aptStyle"
+                                  queryDictionary="currentDayQueryParameters"
+                                  referenceDate="currentDay"
+                                  canAccess="canAccessApt"
+                                  />
+                                <br />
+                              </var:foreach>
+                            </var:weekcol-info>
+                          </var:if>
+                          <var:weekcol>
+                            <var:component className="UIxCalInlineAptView"
+                              appointment="appointment"
+                              formatter="aptFormatter"
+                              tooltipFormatter="aptTooltipFormatter"
+                              url="appointmentViewURL"
+                              style="aptStyle"
+                              queryDictionary="currentDayQueryParameters"
+                              referenceDate="currentDay"
+                              canAccess="canAccessApt"
                               />
-                              <br />
-                            </var:foreach>
-                          </var:weekcol-info>
-                        </var:if>
-                        <var:weekcol>
-                          <var:component className="UIxCalInlineAptView"
-                                         appointment="appointment"
-                                         formatter="aptFormatter"
-                                         tooltipFormatter="aptTooltipFormatter"
-                                         url="appointmentViewURL"
-                                         style="aptStyle"
-                                         queryDictionary="currentDayQueryParameters"
-                                         referenceDate="currentDay"
-                                         canAccess="canAccessApt"
-                          />
-                          <br />
-                        </var:weekcol>
-                      </var:weekcol-view>
-                    </td>
-                  </tr>
+                            <br />
+                          </var:weekcol>
+                        </var:weekcol-view>
+                      </td>
+                    </tr>
+                  </table>
+                </var:component>
+              </td>
+            </tr>
+            <tr bgcolor="#F5F5E9">
+              <td align="left" width="10"><var:entity const:name="nbsp"/></td>
+              <td align="right"><img border="0"
+                  alt=""
+                  rsrc:src="corner_right.gif"
+                  /></td>
+            </tr>
+            <tr>
+              <td colspan="2" bgcolor="#F5F5E9">
+                <table border="0" width="100%" cellpadding="10" cellspacing="0">
+                  <tr />
                 </table>
-              </var:component>
-            </td>
-          </tr>
-          <tr bgcolor="#F5F5E9">
-            <td align="left" width="10"><var:entity const:name="nbsp"/></td>
-            <td align="right"><img border="0"
-                                   alt=""
-                                   rsrc:src="corner_right.gif"
-                              /></td>
-          </tr>
-          <tr>
-            <td colspan="2" bgcolor="#F5F5E9">
-              <table border="0" width="100%" cellpadding="10" cellspacing="0">
-                <tr />
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <!--
-  <hr />
-  <var:string value="thisWeekQueryParameters" />
-  -->
-  <!--
-  <hr/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!--
+    <hr />
+    <var:string value="thisWeekQueryParameters" />
+    -->
+    <!--
+    <hr/>
     
     Appointments: 
     <var:component className="UIxAptTableView" appointments="appointments"/>
-  -->
+    -->
     <!-- pre><var:string value="appointments" const:insertBR="YES"/></pre -->
 
-</var:component>
+  </var:component>

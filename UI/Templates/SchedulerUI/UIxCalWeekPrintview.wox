@@ -1,75 +1,75 @@
 <?xml version="1.0" standalone="yes"?>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
-               xmlns:var="http://www.skyrix.com/od/binding"
-               xmlns:const="http://www.skyrix.com/od/constant"
-               xmlns:rsrc="OGo:url"
-               xmlns:label="OGo:label"
-               xmlns:uix="OGo:uix"
-               className="UIxPrintPageFrame"
-               title="title">
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    xmlns:uix="OGo:uix"
+    className="UIxPrintPageFrame"
+    title="title">
 
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-      <td class="weekprintview">
-        <h1 class="weekprintview"><var:string value="title" /></h1>
-        <h2 class="weekprintview"><var:string value="formattedCalendarUIDs" /></h2>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <var:week-overview list="appointments"
-                           item="appointment"
-                           weekStart="startDate"
-                           dayIndex="dayIndex"
-                           const:startDateKey="startDate"
-                           const:endDateKey="endDate"
-                           const:titleStyle="weekprintview_title"
-                           const:contentStyle="weekprintview_content"
-                           const:cellpadding="5"
-                           const:cellspacing="0"
-                           const:border="1"
-                           const:width="100%"
-        >
-          <var:week-title>
-            <table cellpadding="5"
-                   width="100%"
-                   border="0"
-                   cellspacing="0"
-                   class="weekprintview_title"
-            >
-              <tr>
-                <td align="left" valign="top">
-                  <var:string value="currentDay.dayOfMonth"
-                              const:numberformat="02"
-                  />
-                </td>
-                <td align="center" valign="top" width="97%">
-                  <var:string value="currentDayName" />
-                </td>
-              </tr>
-            </table>
-          </var:week-title>
-          <var:if condition="hasDayInfo">
-            <var:week-info>
-              <var:if condition="hasHolidayInfo">
-                <var:string value="holidayInfo"
-                            const:class="weekprintview_holidayinfo"
-                />
-              </var:if>
-              <var:foreach list="allDayApts" item="appointment">
-                <var:string value="shortTextForApt"
-                            const:escapeHTML="NO"
-                />
-              </var:foreach>
-            </var:week-info>
-          </var:if>
-          <var:week>
-            <var:string value="shortTextForApt"
-                        const:escapeHTML="NO"
-            /> <br />
-          </var:week>
-        </var:week-overview>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td class="weekprintview">
+          <h1 class="weekprintview"><var:string value="title" /></h1>
+          <h2 class="weekprintview"><var:string value="formattedCalendarUIDs" /></h2>
         </td>
       </tr>
-  </table>
-</var:component>
+      <tr>
+        <td>
+          <var:week-overview list="appointments"
+            item="appointment"
+            weekStart="startDate"
+            dayIndex="dayIndex"
+            const:startDateKey="startDate"
+            const:endDateKey="endDate"
+            const:titleStyle="weekprintview_title"
+            const:contentStyle="weekprintview_content"
+            const:cellpadding="5"
+            const:cellspacing="0"
+            const:border="1"
+            const:width="100%"
+            >
+            <var:week-title>
+              <table cellpadding="5"
+                width="100%"
+                border="0"
+                cellspacing="0"
+                class="weekprintview_title"
+                >
+                <tr>
+                  <td align="left" valign="top">
+                    <var:string value="currentDay.dayOfMonth"
+                      const:numberformat="02"
+                      />
+                  </td>
+                  <td align="center" valign="top" width="97%">
+                    <var:string value="currentDayName" />
+                  </td>
+                </tr>
+              </table>
+            </var:week-title>
+            <var:if condition="hasDayInfo">
+              <var:week-info>
+                <var:if condition="hasHolidayInfo">
+                  <var:string value="holidayInfo"
+                    const:class="weekprintview_holidayinfo"
+                    />
+                </var:if>
+                <var:foreach list="allDayApts" item="appointment">
+                  <var:string value="shortTextForApt"
+                    const:escapeHTML="NO"
+                    />
+                </var:foreach>
+              </var:week-info>
+            </var:if>
+            <var:week>
+              <var:string value="shortTextForApt"
+                const:escapeHTML="NO"
+                /> <br />
+            </var:week>
+          </var:week-overview>
+        </td>
+      </tr>
+    </table>
+  </var:component>

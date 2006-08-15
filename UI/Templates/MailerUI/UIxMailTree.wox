@@ -50,7 +50,7 @@
 	const:leafCornerIcon  = "tbtv_leaf_corner_17x17.gif"
 	const:cornerPlusIcon  = "tbtv_corner_plus_17x17.gif"
 	const:cornerMinusIcon = "tbtv_corner_minus_17x17.gif"
-	const:spaceIcon       = "tbtv_space_17x17.gif"
+	const:spaceIcon       = "empty.gif"
 	>
 	<var:tree-data const:isTreeElement="YES"
 	  var:icon="item.iconName"

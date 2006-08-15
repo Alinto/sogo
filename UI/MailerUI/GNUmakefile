@@ -49,8 +49,7 @@ MailerUI_OBJC_FILES += \
 MailerUI_RESOURCE_FILES += \
 	Version		\
 	product.plist	\
-	Toolbars/*.toolbar \
-	Images/*.png
+	Toolbars/*.toolbar
 
 MailerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings

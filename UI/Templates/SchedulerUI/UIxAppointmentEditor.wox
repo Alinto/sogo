@@ -15,10 +15,6 @@
     <form var:href="clientObject.baseURL" name="editform"
       onsubmit="return validateAptEditor()">
 
-      <script language="JavaScript"> <!-- TODO: use a resource -->
-        <var:string value="jsCode" const:escapeHTML="NO" />
-      </script>
-
       <table cellspacing="0" cellpadding="5" width="100%">
         <tr>
           <td>

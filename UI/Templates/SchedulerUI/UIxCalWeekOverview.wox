@@ -45,9 +45,9 @@
                 <var:component
                   className="UIxContactSelector"
                   const:selectorId="uids" />
-<!--                <var:component className="AnaisUidSelector"
-                  calendarUIDs="clientObject.calendarUIDs"
-                  /> -->
+                <!--                <var:component className="AnaisUidSelector"
+                calendarUIDs="clientObject.calendarUIDs"
+                /> -->
               </td>
             </tr>
           </table>
@@ -147,6 +147,8 @@
                           <td align="center" valign="top" width="97%">
                             <var:string value="currentDayName" /><br />
                             [<a href="new"
+                              onclick="return newEvent(this);"
+                              var:day="currentDayQueryParameters.day"
                               var:queryDictionary="currentDayQueryParameters"
                               class="weekoverview_title_newlink"
                               ><var:string label:value="new" /></a>]
