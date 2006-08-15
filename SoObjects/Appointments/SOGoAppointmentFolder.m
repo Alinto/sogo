@@ -41,10 +41,13 @@ static NGLogger   *logger    = nil;
 static NSTimeZone *MET       = nil;
 static NSNumber   *sharedYes = nil;
 
-+ (int)version {
++ (int) version
+{
   return [super version] + 1 /* v1 */;
 }
-+ (void)initialize {
+
++ (void) initialize
+{
   NGLoggerManager *lm;
   static BOOL     didInit = NO;
 
@@ -62,7 +65,8 @@ static NSNumber   *sharedYes = nil;
   sharedYes = [[NSNumber numberWithBool:YES] retain];
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [self->uidToFilename release];
   [super dealloc];
 }
@@ -70,13 +74,15 @@ static NSNumber   *sharedYes = nil;
 
 /* logging */
 
-- (id)debugLogger {
+- (id) debugLogger
+{
   return logger;
 }
 
 /* selection */
 
-- (NSArray *)calendarUIDs {
+- (NSArray *) calendarUIDs 
+{
   /* this is used for group calendars (this folder just returns itself) */
   NSString *s;
   
@@ -86,14 +92,17 @@ static NSNumber   *sharedYes = nil;
 
 /* name lookup */
 
-- (BOOL)isValidAppointmentName:(NSString *)_key {
+- (BOOL) isValidAppointmentName: (NSString *)_key
+{
   if ([_key length] == 0)
     return NO;
   
   return YES;
 }
 
-- (id)appointmentWithName:(NSString *)_key inContext:(id)_ctx {
+- (id) appointmentWithName: (NSString *)_key
+                 inContext: (id)_ctx
+{
   static Class aptClass = Nil;
   id apt;
   
@@ -108,7 +117,10 @@ static NSNumber   *sharedYes = nil;
   return [apt autorelease];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *)_key
+        inContext: (id)_ctx
+          acquire: (BOOL)_flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
@@ -124,14 +136,17 @@ static NSNumber   *sharedYes = nil;
 
 /* timezone */
 
-- (NSTimeZone *)viewTimeZone {
+- (NSTimeZone *) viewTimeZone
+{
   // TODO: should use a cookie for configuration? we default to MET
   return MET;
 }
 
 /* vevent UID handling */
 
-- (NSString *)resourceNameForEventUID:(NSString *)_u inFolder:(GCSFolder *)_f {
+- (NSString *) resourceNameForEventUID: (NSString *)_u
+                              inFolder: (GCSFolder *)_f
+{
   static NSArray *nameFields = nil;
   EOQualifier *qualifier;
   NSArray     *records;
@@ -159,7 +174,8 @@ static NSNumber   *sharedYes = nil;
   return [[records objectAtIndex:0] valueForKey:@"c_name"];
 }
 
-- (NSString *)resourceNameForEventUID:(NSString *)_uid {
+- (NSString *) resourceNameForEventUID: (NSString *) _uid
+{
   /* caches UIDs */
   GCSFolder *folder;
   NSString  *rname;
@@ -188,8 +204,8 @@ static NSNumber   *sharedYes = nil;
 
 /* fetching */
 
-- (NSMutableDictionary *)fixupRecord:(NSDictionary *)_record
-  fetchRange:(NGCalendarDateRange *)_r
+- (NSMutableDictionary *) fixupRecord: (NSDictionary *) _record
+                           fetchRange: (NGCalendarDateRange *) _r
 {
   NSMutableDictionary *md;
   id tmp;
@@ -219,8 +235,8 @@ static NSNumber   *sharedYes = nil;
   return md;
 }
 
-- (NSMutableDictionary *)fixupCycleRecord:(NSDictionary *)_record
-  cycleRange:(NGCalendarDateRange *)_r
+- (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) _record
+                                cycleRange: (NGCalendarDateRange *) _r
 {
   NSMutableDictionary *md;
   id tmp;
@@ -238,9 +254,9 @@ static NSNumber   *sharedYes = nil;
   return md;
 }
 
-- (void)_flattenCycleRecord:(NSDictionary *)_row
-  forRange:(NGCalendarDateRange *)_r
-  intoArray:(NSMutableArray *)_ma
+- (void) _flattenCycleRecord: (NSDictionary *) _row
+                    forRange: (NGCalendarDateRange *) _r
+                   intoArray: (NSMutableArray *) _ma
 {
   NSMutableDictionary *row;
   NSDictionary        *cycleinfo;
@@ -283,8 +299,8 @@ static NSNumber   *sharedYes = nil;
   }
 }
 
-- (NSArray *)fixupRecords:(NSArray *)_records
-  fetchRange:(NGCalendarDateRange *)_r
+- (NSArray *) fixupRecords: (NSArray *) _records
+                fetchRange: (NGCalendarDateRange *) _r
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
@@ -305,8 +321,8 @@ static NSNumber   *sharedYes = nil;
   return ma;
 }
 
-- (NSArray *)fixupCyclicRecords:(NSArray *)_records
-  fetchRange:(NGCalendarDateRange *)_r
+- (NSArray *) fixupCyclicRecords: (NSArray *) _records
+                      fetchRange: (NGCalendarDateRange *) _r
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
@@ -326,10 +342,10 @@ static NSNumber   *sharedYes = nil;
   return ma;
 }
 
-- (NSArray *)fetchFields:(NSArray *)_fields
-  fromFolder:(GCSFolder *)_folder
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate 
+- (NSArray *) fetchFields: (NSArray *) _fields
+               fromFolder: (GCSFolder *) _folder
+                     from: (NSCalendarDate *) _startDate
+                       to: (NSCalendarDate *) _endDate 
 {
   EOQualifier         *qualifier;
   NSMutableArray      *fields, *ma = nil;
@@ -406,9 +422,9 @@ static NSNumber   *sharedYes = nil;
 }
 
 /* override this in subclasses */
-- (NSArray *)fetchFields:(NSArray *)_fields
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate 
+- (NSArray *) fetchFields: (NSArray *) _fields
+                     from: (NSCalendarDate *) _startDate
+                       to: (NSCalendarDate *) _endDate 
 {
   GCSFolder *folder;
   
@@ -422,8 +438,8 @@ static NSNumber   *sharedYes = nil;
 }
 
 
-- (NSArray *)fetchFreebusyInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate
+- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+                                  to: (NSCalendarDate *) _endDate
 {
   static NSArray *infos = nil; // TODO: move to a plist file
   if (infos == nil) {
@@ -433,8 +449,8 @@ static NSNumber   *sharedYes = nil;
 }
 
 
-- (NSArray *)fetchOverviewInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate
+- (NSArray *) fetchOverviewInfosFrom: (NSCalendarDate *) _startDate
+                                  to: (NSCalendarDate *) _endDate
 {
   static NSArray *infos = nil; // TODO: move to a plist file
   if (infos == nil) {
@@ -450,8 +466,8 @@ static NSNumber   *sharedYes = nil;
                to:_endDate];
 }
 
-- (NSArray *)fetchCoreInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate 
+- (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
+                              to: (NSCalendarDate *) _endDate 
 {
   static NSArray *infos = nil; // TODO: move to a plist file
   if (infos == nil) {
@@ -462,6 +478,7 @@ static NSNumber   *sharedYes = nil;
                                @"participants", @"partmails",
                                @"partstates", @"sequence", @"priority", nil];
   }
+
   return [self fetchFields:infos
                from:_startDate
                to:_endDate];
@@ -469,7 +486,9 @@ static NSNumber   *sharedYes = nil;
 
 /* URL generation */
 
-- (NSString *)baseURLForAptWithUID:(NSString *)_uid inContext:(id)_ctx {
+- (NSString *) baseURLForAptWithUID: (NSString *)_uid
+                          inContext: (id)_ctx
+{
   // TODO: who calls this?
   NSString *url;
   
@@ -486,7 +505,9 @@ static NSNumber   *sharedYes = nil;
 
 /* folder management */
 
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
+- (id) lookupHomeFolderForUID: (NSString *) _uid
+                    inContext: (id)_ctx
+{
   // TODO: DUP to SOGoGroupFolder
   NSException *error = nil;
   NSArray     *path;
@@ -523,7 +544,9 @@ static NSNumber   *sharedYes = nil;
   return result;
 }
 
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
+- (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
+                                 inContext: (id)_ctx
+{
   /* Note: can return NSNull objects in the array! */
   NSMutableArray *folders;
   NSEnumerator *e;
@@ -550,7 +573,9 @@ static NSNumber   *sharedYes = nil;
   return folders;
 }
 
-- (NSArray *)lookupFreeBusyObjectsForUIDs:(NSArray *)_uids inContext:(id)_ctx {
+- (NSArray *) lookupFreeBusyObjectsForUIDs: (NSArray *) _uids
+                                 inContext: (id) _ctx
+{
   /* Note: can return NSNull objects in the array! */
   NSMutableArray *objs;
   NSEnumerator   *e;
@@ -577,7 +602,8 @@ static NSNumber   *sharedYes = nil;
   return objs;
 }
 
-- (NSArray *)uidsFromICalPersons:(NSArray *)_persons {
+- (NSArray *) uidsFromICalPersons: (NSArray *) _persons
+{
   /* Note: can return NSNull objects in the array! */
   NSMutableArray    *uids;
   AgenorUserManager *um;
@@ -608,8 +634,8 @@ static NSNumber   *sharedYes = nil;
   return uids;
 }
 
-- (NSArray *)lookupCalendarFoldersForICalPerson:(NSArray *)_persons
-  inContext:(id)_ctx
+- (NSArray *)lookupCalendarFoldersForICalPerson: (NSArray *) _persons
+                                      inContext: (id) _ctx
 {
   /* Note: can return NSNull objects in the array! */
   NSArray *uids;
@@ -620,7 +646,9 @@ static NSNumber   *sharedYes = nil;
   return [self lookupCalendarFoldersForUIDs:uids inContext:_ctx];
 }
 
-- (id)lookupGroupFolderForUIDs:(NSArray *)_uids inContext:(id)_ctx {
+- (id) lookupGroupFolderForUIDs: (NSArray *) _uids
+                      inContext: (id)_ctx
+{
   SOGoCustomGroupFolder *folder;
   
   if (_uids == nil)
@@ -629,7 +657,10 @@ static NSNumber   *sharedYes = nil;
   folder = [[SOGoCustomGroupFolder alloc] initWithUIDs:_uids inContainer:self];
   return [folder autorelease];
 }
-- (id)lookupGroupCalendarFolderForUIDs:(NSArray *)_uids inContext:(id)_ctx {
+
+- (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
+                              inContext: (id) _ctx
+{
   SOGoCustomGroupFolder *folder;
   
   if ((folder = [self lookupGroupFolderForUIDs:_uids inContext:_ctx]) == nil)
@@ -649,7 +680,8 @@ static NSNumber   *sharedYes = nil;
 
 /* bulk fetches */
 
-- (NSArray *)fetchAllSOGoAppointments {
+- (NSArray *) fetchAllSOGoAppointments
+{
   /* 
      Note: very expensive method, do not use unless absolutely required.
            returns an array of SOGoAppointment objects.
@@ -689,27 +721,10 @@ static NSNumber   *sharedYes = nil;
   return events;
 }
 
-/* GET */
-
-- (id)GETAction:(id)_ctx {
-  // TODO: I guess this should really be done by SOPE (redirect to
-  //       default method)
-  WOResponse *r;
-  NSString *uri;
-
-  uri = [[(WOContext *)_ctx request] uri];
-  if (![uri hasSuffix:@"/"]) uri = [uri stringByAppendingString:@"/"];
-  uri = [uri stringByAppendingString:@"weekoverview"];
-
-  r = [_ctx response];
-  [r setStatus:302 /* moved */];
-  [r setHeader:uri forKey:@"location"];
-  return r;
-}
-
 /* folder type */
 
-- (NSString *)outlookFolderClass {
+- (NSString *) outlookFolderClass
+{
   return @"IPF.Appointment";
 }
 

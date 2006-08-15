@@ -1,5 +1,9 @@
 2006-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -GETAction:]): removed method. Replaced
+	with an action in the view-related code.
+
 	* UI/Scheduler/UIxAppointmentEditor.m: invoke
 	"stringByEscapingHTMLString" on the resulting value to avoid
 	issues with accented characters.
