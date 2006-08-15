@@ -1,8 +1,0 @@
-# $Id$
-
-
--include GNUmakefile.preamble.local
-
-ifeq ($(findstring darwin, $(GNUSTEP_HOST_OS)),)
-ADDITIONAL_OBJCFLAGS += -DWITHOUT_SOPEX
-endif

@@ -1,5 +1,0 @@
-# $Id: GNUmakefile.preamble,v 1.1.1.1 2003/07/09 22:57:26 cvs Exp $
-
-ADDITIONAL_TOOL_LIBS += \
-	-lNGExtensions	\
-	-lEOControl
