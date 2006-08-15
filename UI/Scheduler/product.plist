@@ -36,6 +36,11 @@
         };
       };
       methods = {
+        view = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekOverview";
+          actionName  = "correctURL";
+        };
         dayoverview = {
           protectedBy = "View";
           pageName    = "UIxCalDayOverview"; 

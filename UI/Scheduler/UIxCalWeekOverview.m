@@ -26,6 +26,11 @@
 
 @implementation UIxCalWeekOverview
 
+- (id) correctURLAction
+{
+  return [self redirectToLocation: @"weekoverview"];
+}
+
 - (void)configureFormatters {
   [super configureFormatters];
   

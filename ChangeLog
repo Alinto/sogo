@@ -1,5 +1,9 @@
 2006-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalWeekOverview.m ([UIxCalWeekOverview
+	-correctURLAction]): new short action method replacing the method
+	below by taking far less code.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -GETAction:]): removed method. Replaced
 	with an action in the view-related code.
