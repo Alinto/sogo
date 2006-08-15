@@ -40,13 +40,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  if (card)
-    [card release];
-  [super dealloc];
-}
-
 /* content */
 
 - (NGVCard *) vCard
