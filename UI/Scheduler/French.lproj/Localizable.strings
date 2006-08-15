@@ -209,7 +209,7 @@
 /* Appointment categories */
 
 "APPOINTMENT"		= "Rendez-vous";
-"NOT IN OFFICE"		= "A l'exterieur";
+"NOT IN OFFICE"		= "A l'extérieur";
 "MEETING"		= "Réunion";
 "HOLIDAY"		= "Vacances";
 "PHONE CALL"		= "Rendez-vous téléphonique";

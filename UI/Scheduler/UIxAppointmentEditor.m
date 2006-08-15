@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
 /* TODO: CLEAN UP */
 
@@ -277,13 +277,14 @@
   return categoryItems;
 }
 
-- (NSString *)itemCategoryText {
-  return [self labelForKey: self->item];
+- (NSString *) itemCategoryText {
+  return [[self labelForKey: self->item] stringByEscapingHTMLString];
 }
 
 - (void)setCategories:(NSArray *)_categories {
   ASSIGN(self->categories, _categories);
 }
+
 - (NSArray *)categories {
   return self->categories;
 }
@@ -916,31 +917,6 @@
 }
 
 /* response generation */
-
-- (NSString *)jsCode {
-  static NSString *script = \
-  @"function showElement(e, show) {\n"
-  @"	e.style.visibility = show ? 'visible' : 'hidden';\n"
-  @"}\n"
-  @"\n"
-  @"function selectHasCycle(sender) {\n"
-  @"  var value = sender.selectedIndex;\n"
-  @"  var show  = (value != 0);\n"
-  @"  var sel   = document.getElementById('cycle_end_mode_selection');"
-  @"  this.showElement(document.getElementById('cycle_end_label'), show);\n"
-  @"  this.showElement(document.getElementById('cycle_end_mode'),  show);\n"
-  @"  this.selectCycleEnd(sel);\n"
-  @"}\n"
-  @"function selectCycleEnd(sender) {\n"
-  @"  var cycleEndUntil = document.getElementById('cycle_end_until');\n"
-  @"  var value = sender.options[sender.selectedIndex].value;\n"
-  @"  var show  = (value == 'cycle_end_until');\n"
-  @"  this.showElement(cycleEndUntil, show);\n"
-  @"}\n"
-  @"\n";
-
-  return script;
-}
 
 - (NSString *)initialCycleVisibility {
   if (![self hasCycle])
