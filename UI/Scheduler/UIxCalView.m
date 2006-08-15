@@ -158,6 +158,7 @@ static BOOL shouldDisplayWeekend = NO;
       self->aptFlags.canAccessApt = [[_apt valueForKey:@"ispublic"] boolValue];
   }
 }
+
 - (id)appointment {
   return self->appointment;
 }
