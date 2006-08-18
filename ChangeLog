@@ -1,5 +1,9 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxDatePicker.m: removed the jsPopup, jsCode and
+	calendarPageURL methods. The javascript code is handled by .js
+	files as much as possible...
+
 	* UI/WebServerResources/ContactsUI.js,
 	UI/WebServerResources/MailerUI.js: adapted to the code refactoring
 	in generic.js.

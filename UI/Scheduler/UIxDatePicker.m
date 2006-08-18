@@ -127,59 +127,14 @@
   return [NSString stringWithCString:buf];
 }
 
-- (NSString *)dateFormat {
+- (NSString *) dateFormat
+{
   return [self useISOFormats] ? @"%Y-%m-%d" : @"%d/%m/%Y";
 }
 
-- (NSString *)jsDateFormat {
+- (NSString *) jsDateFormat
+{
   return [self useISOFormats] ? @"yyyy-mm-dd" : @"dd/mm/yyyy";
-}
-
-
-/* URLs */
-
-- (NSString *)calendarPageURL {
-  WOResourceManager *rm;
-  WOContext *ctx;
-  NSArray   *languages;
-
-  if ((rm = [self resourceManager]) == nil)
-    rm = [[WOApplication application] resourceManager];
-  if (rm == nil)
-    [self warnWithFormat:@"missing resource manager!"];
-
-  ctx       = [self context];
-#if 0
-  languages = [ctx resourceLookupLanguages];
-#else
-#warning !! FIX SoProduct to enable localizable resource, then disable this!
-  languages = nil;
-#endif
-    
-  return [rm urlForResourceNamed:@"skycalendar.html" inFramework:nil
-             languages:languages request:[ctx request]];
-}
-
-/* JavaScript */
-
-- (NSString *)jsPopup {
-  return [NSString stringWithFormat:@"javascript:calendar_%@.popup()",
-        [self dateID]];
-}
-
-- (NSString *)jsCode {
-  static NSString *code = \
-    @"var calendar_%@ = new skycalendar(document.getElementById('%@'));\n"
-    @"calendar_%@.setCalendarPage('%@');\n"
-    @"calendar_%@.setDateFormat('%@');\n";
-  
-  return [NSString stringWithFormat:code,
-		   self->dateID,
-		   self->dateID,
-		   self->dateID,
-		   [self calendarPageURL],
-		   self->dateID,
-		   [self jsDateFormat]];
 }
 
 /* action */
