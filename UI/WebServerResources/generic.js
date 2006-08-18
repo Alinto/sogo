@@ -25,6 +25,7 @@
 /* generic stuff */
 
 var logConsole;
+var queryParameters;
 
 // logArea = null;
 var allDocumentElements = null;
@@ -291,10 +292,12 @@ function removeClassName(node, className) {
 /* selection mechanism */
 
 function selectNode(node) {
+//   log ("selecting a node: '" + node.tagName + "'");
   addClassName(node, '_selected');
 }
 
 function deselectNode(node) {
+//   log ("deselecting a node: '" + node.tagName + "'");
   removeClassName(node, '_selected');
 }
 
@@ -320,25 +323,12 @@ function acceptMultiSelect(node) {
   return (accept == 'yes');
 }
 
-function getSelectedNodes(parentNode) {
-  var selArray = new Array();
-
-  for (var i = 0; i < parentNode.childNodes.length; i++) {
-    node = parentNode.childNodes.item(i);
-    if (node.nodeType == 1
-	&& isNodeSelected(node))
-      selArray.push(node);
-  }
-
-  return selArray;
-}
-
 function onRowClick(event) {
   var node = event.target;
   if (node.tagName == 'TD')
     node = node.parentNode;
 
-  var startSelection = getSelectedNodes(node.parentNode);
+  var startSelection = node.parentNode.getSelectedNodes();
   if (event.shiftKey == 1
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
@@ -351,7 +341,8 @@ function onRowClick(event) {
     deselectAll(node.parentNode);
     selectNode(node);
   }
-  if (startSelection != getSelectedNodes(node.parentNode)) {
+
+  if (startSelection != node.parentNode.getSelectedNodes()) {
     var parentNode = node.parentNode;
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
@@ -476,12 +467,53 @@ function onMenuEntryClick(event, menuId)
   return false;
 }
 
+function initQueryParameters() {
+  queryParameters = parseQueryParameters('' + window.location);
+}
+
+function parseQueryParameters(url) {
+  var parameters = new Array();
+
+  var params = url.split("?")[1];
+  if (params) {
+    var pairs = params.split("&");
+    for (var i = 0; i < pairs.length; i++) {
+      var pair = pairs[i].split("=");
+      parameters[pair[0]] = pair[1];
+    }
+  }
+
+  return parameters;
+}
+
 function initLogConsole() {
-  logConsole = document.getElementById('logConsole');
-  logConsole.innerHTML = '<a style="text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
+  var logConsole = document.getElementById('logConsole');
+  logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
+
+  var node = document.getElementsByTagName('body')[0];
+
+  node.addEventListener("keydown", onBodyKeyDown, false);
+  logConsole.addEventListener("dblclick", onLogDblClick, false);
+}
+
+function onBodyKeyDown(event)
+{
+  if (event.keyCode == 27) {
+    toggleLogConsole();
+    event.cancelBubble = true;
+    event.returnValue = false;
+  }
+}
+
+function onLogDblClick(event)
+{
+  var logConsole = document.getElementById('logConsole');
+  logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
 }
 
 function toggleLogConsole() {
+  var logConsole = document.getElementById('logConsole');
+
   var visibility = '' + logConsole.style.visibility;
   if (visibility.length == 0) {
     logConsole.style.visibility = 'visible;';
@@ -493,6 +525,7 @@ function toggleLogConsole() {
 }
 
 function log(message) {
+  var logConsole = document.getElementById('logConsole');
   logConsole.innerHTML += message + '<br />' + "\n";
 }
 
@@ -506,27 +539,24 @@ function dropDownSubmenu(event)
       var parentNode = getParentMenu(node);
       if (parentNode.submenu)
 	hideMenu(event, parentNode.submenu);
-      var menuTop = (node.parentNode.parentNode.offsetTop
-		     + node.offsetTop - 1);
+      submenuNode.parentMenuItem = node;
+      submenuNode.parentMenu = parentNode;
+      parentNode.submenuItem = node;
+      parentNode.submenu = submenuNode;
+
+      var menuTop = (node.offsetTop - 2);
       
       var heightDiff = (window.innerHeight
 			- (menuTop + submenuNode.offsetHeight));
       if (heightDiff < 0)
 	menuTop += heightDiff;
-      var menuLeft = (node.parentNode.parentNode.offsetLeft
-		      + node.parentNode.parentNode.offsetWidth
-		      - 2);
-      var leftDiff = (window.innerWidth
-		      - (menuLeft + submenuNode.offsetWidth));
-      if (leftDiff < 0)
-	menuLeft -= (node.parentNode.parentNode.offsetWidth
-		     + submenuNode.offsetWidth
-		     - 4);
 
-      submenuNode.parentMenuItem = node;
-      submenuNode.parentMenu = parentNode;
-      parentNode.submenuItem = node;
-      parentNode.submenu = submenuNode;
+      var menuLeft = parentNode.offsetWidth - 3;
+      if (window.innerWidth
+          < (menuLeft + submenuNode.offsetWidth
+             + parentNode.cascadeLeftOffset()))
+	menuLeft = -submenuNode.offsetWidth + 3;
+
       parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
       node.setAttribute('class', 'submenu-selected');
       submenuNode.style.top = menuTop + "px;";
@@ -537,24 +567,24 @@ function dropDownSubmenu(event)
 
 function checkDropDown(event)
 {
-  var parentNode = getParentMenu(event.target);
-  var submenuNode = parentNode.submenu;
-  if (submenuNode)
+  var parentMenu = getParentMenu(event.target);
+  var submenuItem = parentMenu.submenuItem;
+  if (submenuItem)
     {
-      var submenuItem = parentNode.submenuItem;
-      var itemX = submenuItem.offsetLeft + parentNode.offsetLeft;
-      var itemY = submenuItem.offsetTop + parentNode.offsetTop;
+      var menuX = event.clientX - parentMenu.cascadeLeftOffset();
+      var menuY = event.clientY - parentMenu.cascadeTopOffset();
+      var itemX = submenuItem.offsetLeft;
+      var itemY = submenuItem.offsetTop - 75;
 
-      if (event.clientX >= itemX
-	  && event.clientX < submenuNode.offsetLeft
-	  && (event.clientY < itemY
-	      || event.clientY > (itemY
-				  + submenuItem.offsetHeight)))
+      if (menuX >= itemX
+          && menuX < itemX + submenuItem.offsetWidth
+          && (menuY < itemY
+              || menuY > (itemY + submenuItem.offsetHeight)))
 	{
-	  hideMenu(event, submenuNode);
-	  parentNode.submenu = null;
-	  parentNode.submenuItem = null;
-	  parentNode.setAttribute('onmousemove', null);
+	  hideMenu(event, parentMenu.submenu);
+	  parentMenu.submenu = null;
+	  parentMenu.submenuItem = null;
+	  parentMenu.setAttribute('onmousemove', null);
 	}
     }
 }
@@ -742,4 +772,111 @@ function addContact(selectorId, contactId, contactName)
     }
 
   return false;
+}
+
+/* custom extensions to the DOM api */
+HTMLElement.prototype.getParentWithTagName = function(tagName) {
+  var currentElement = this;
+  tagName = tagName.toUpperCase();
+
+  currentElement = currentElement.parentNode;
+  while (currentElement
+         && currentElement.tagName != tagName) {
+    currentElement = currentElement.parentNode;
+  }
+
+  return currentElement;
+}
+
+HTMLElement.prototype.cascadeLeftOffset = function() {
+  var currentElement = this;
+
+  var offset = 0;
+  while (currentElement) {
+    offset += currentElement.offsetLeft;
+    currentElement = currentElement.getParentWithTagName("div");
+  }
+
+  return offset;
+}
+
+HTMLElement.prototype.cascadeTopOffset = function() {
+  var currentElement = this;
+  var offset = 0;
+
+  var i = 0;
+
+  while (currentElement
+         && currentElement instanceof HTMLElement) {
+    offset += currentElement.offsetTop;
+    currentElement = currentElement.parentNode;
+    i++;
+  }
+
+  return offset;
+}
+
+HTMLElement.prototype.dump = function(additionalInfo, additionalKeys) {
+  var id = this.getAttribute("id");
+  var nclass = this.getAttribute("class");
+  
+  var str = this.tagName;
+  if (id)
+    str += "; id = " + id;
+  if (nclass)
+    str += "; class = " + nclass;
+
+  if (additionalInfo)
+    str += "; " + additionalInfo;
+
+  if (additionalKeys)
+    for (var i = 0; i < additionalKeys.length; i++) {
+      var value = this.getAttribute(additionalKeys[i]);
+      if (value)
+        str += "; " + additionalKeys[i] + " = " + value;
+    }
+
+  log (str);
+}
+
+HTMLElement.prototype.getSelectedNodes = function() {
+  var selArray = new Array();
+
+  for (var i = 0; i < this.childNodes.length; i++) {
+    node = this.childNodes.item(i);
+    if (node.nodeType == 1
+	&& isNodeSelected(node))
+      selArray.push(node);
+  }
+
+  return selArray;
+}
+
+HTMLElement.prototype.getSelectedNodesId = function() {
+  var selArray = new Array();
+
+  for (var i = 0; i < this.childNodes.length; i++) {
+    node = this.childNodes.item(i);
+    if (node.nodeType == 1
+	&& isNodeSelected(node))
+      selArray.push(node.getAttribute("id"));
+  }
+
+  return selArray;
+}
+
+HTMLTableElement.prototype.getSelectedRows = function() {
+  var rows = new Array();
+
+  var tbody = (this.getElementsByTagName('tbody'))[0];
+
+  return tbody.getSelectedNodes();
+}
+
+HTMLTableElement.prototype.getSelectedRowsId = function() {
+  var rows = new Array();
+
+  var tbody = (this.getElementsByTagName('tbody'))[0];
+
+  return tbody.getSelectedNodesId();
 }

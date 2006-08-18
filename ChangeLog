@@ -1,5 +1,16 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js,
+	UI/WebServerResources/MailerUI.js: adapted to the code refactoring
+	in generic.js.
+
+	* UI/WebServerResources/SchedulerUI.js: implemented functions to
+	handle the new widgets. XmlHTTPRequest code taken from
+	MailerUI.js.
+
+	* UI/WebServerResources/generic.js: put some functions related to
+	element selections as methods to HTMLElement and HTMLTableElement.
+
 	* UI/Scheduler/UIxCalAptListView.[hm]: new class designed to
 	display the list of appointments (embodies the code-size of
 	UIxCalAptListView; answers to the "aptlist" method).

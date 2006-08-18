@@ -98,6 +98,8 @@ function submitMeeting(thisForm) {
   action.setAttribute("value", "save");
 
   thisForm.submit();
-  opener.window.location.reload();
+
+  opener.window.refreshAppointments();
+
   window.close();
 }

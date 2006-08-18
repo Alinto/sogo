@@ -67,21 +67,6 @@ function toggleMailSelect(sender) {
   row.className = sender.checked ? "tableview_selected" : "tableview";
 }
 
-function collectSelectedRows() {
-  var rows = new Array();
-  var messageList = document.getElementById('messageList');
-  var tbody = (messageList.getElementsByTagName('tbody'))[0];
-  var selectedRows = getSelectedNodes(tbody);
-
-  for (var i = 0; i < selectedRows.length; i++) {
-    var row = selectedRows[i];
-    var rowId = row.getAttribute('id').substring(4);
-    rows[rows.length] = rowId;
-  }
-
-  return rows;
-}
-
 function clearSearch(sender) {
   var searchField = window.document.getElementById("search");
   if (searchField) searchField.value="";
@@ -332,15 +317,16 @@ function reopenToRemoveLocationBar() {
 
 function openMessageWindowsForSelection(sender, action)
 {
-  var rows  = collectSelectedRows();
+  var messageList = document.getElementById("messageList");
+  var rows  = messageList.getSelectedRowsId();
   var idset = "";
-  
-  for (var i = 0; i < rows.length; i++) {
+
+  for (var i = 0; i < rows.length; i++)
     win = openMessageWindow(sender,
-			    rows[i]                /* msguid */,
+			    rows[i].substr(4)        /* msguid */,
 			    ApplicationBaseURL + currentMailbox
-                            + "/" + rows[i] + "/" + action /* url */);
-  }
+                            + "/" + rows[i].substr(4)
+                            + "/" + action /* url */);
 }
 
 function mailListMarkMessage(sender, action, msguid, markread)
@@ -419,17 +405,19 @@ function ctxFolderDelete(sender) {
 /* bulk delete of messages */
 
 function uixDeleteSelectedMessages(sender) {
-  var rows;
   var failCount = 0;
   
-  rows = collectSelectedRows();
+  var messageList = document.getElementById("messageList");
+  var rows = messageList.getSelectedRows();
+
   for (var i = 0; i < rows.length; i++) {
     var url, http, rowElem;
     
     /* send AJAX request (synchronously) */
     
     url = (ApplicationBaseURL + currentMailbox + "/"
-           + rows[i] + "/trash?jsonly=1");
+           + rows[i].getAttribute("id").substr(4)
+           + "/trash?jsonly=1");
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
     http.send("");
@@ -443,9 +431,7 @@ function uixDeleteSelectedMessages(sender) {
     /* remove from page */
 
     /* line-through would be nicer, but hiding is OK too */
-    rowElem = document.getElementById("row_" + rows[i]);
-
-    rowElem.parentNode.removeChild(rowElem);
+    rowElem.parentNode.removeChild(rows[i]);
   }
 
   if (failCount > 0)
@@ -610,12 +596,10 @@ function onMessageContextMenu(event, element)
   onMenuClick(event, 'messageListMenu');
 
   var topNode = document.getElementById('messageList');
-  var selectedNodeIds = collectSelectedRows();
-  topNode.menuSelectedRows = selectedNodeIds;
-  for (var i = 0; i < selectedNodeIds.length; i++) {
-    var selectedNode = document.getElementById("row_" + selectedNodeIds[i]);
-    deselectNode (selectedNode);
-  }
+  var selectedNodes = topNode.getSelectedRows();
+  for (var i = 0; i < selectedNodes.length; i++)
+    deselectNode (selectedNodes[i]);
+  topNode.menuSelectedRows = selectedNodes;
   topNode.menuSelectedEntry = element;
   selectNode(element);
 }
@@ -629,11 +613,9 @@ function onMessageContextMenuHide(event)
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
-    var nodeIds = topNode.menuSelectedRows;
-    for (var i = 0; i < nodeIds.length; i++) {
-      var node = document.getElementById("row_" + nodeIds[i]);
-      selectNode (node);
-    }
+    var nodes = topNode.menuSelectedRows;
+    for (var i = 0; i < nodes.length; i++)
+      selectNode(nodes[i]);
     topNode.menuSelectedRows = null;
   }
 }
@@ -720,16 +702,17 @@ function storeCachedMessage(cachedMessage)
 
 function onMessageSelectionChange()
 {
-  var selection = collectSelectedRows();
-  if (selection.length == 1)
-    {
-      var idx = selection[0];
+  var messageList = document.getElementById("messageList");
+  var rows  = messageList.getSelectedRowsId();
 
-      if (currentMessages[currentMailbox] != idx) {
-        currentMessages[currentMailbox] = idx;
-        loadMessage(idx);
-      }
+  if (rows.length == 1) {
+    var idx = rows[0].substr(4);
+
+    if (currentMessages[currentMailbox] != idx) {
+      currentMessages[currentMailbox] = idx;
+      loadMessage(idx);
     }
+  }
 }
 
 function loadMessage(idx)
@@ -794,10 +777,10 @@ function processMailboxMenuAction(mailbox)
   if (currentNode)
     {
       action = currentNode.getAttribute('mailboxaction');
-      var rows  = collectSelectedRows();
-      var rString = rows.join(', ');
-      alert("performing '" + action + "' on " + rString
-            + " to " + mailboxName);
+//       var rows  = collectSelectedRows();
+//       var rString = rows.join(', ');
+//       alert("performing '" + action + "' on " + rString
+//             + " to " + mailboxName);
     }
 }
 

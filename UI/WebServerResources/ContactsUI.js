@@ -67,21 +67,6 @@ function toggleMailSelect(sender) {
   row.className = sender.checked ? "tableview_selected" : "tableview";
 }
 
-function collectSelectedRows() {
-  var rows = new Array();
-  var contactsList = document.getElementById('contactsList');
-  var tbody = (contactsList.getElementsByTagName('tbody'))[0];
-  var selectedRows = getSelectedNodes(tbody);
-
-  for (var i = 0; i < selectedRows.length; i++) {
-    var row = selectedRows[i];
-    var rowId = row.getAttribute('id');
-    rows[rows.length] = rowId;
-  }
-
-  return rows;
-}
-
 /* mail editor */
 
 function validateEditorInput(sender) {
@@ -336,12 +321,10 @@ function onContactContextMenu(event, element)
   onMenuClick(event, 'contactMenu');
 
   var topNode = document.getElementById('contactsList');
-  var selectedNodeIds = collectSelectedRows();
-  topNode.menuSelectedRows = selectedNodeIds;
-  for (var i = 0; i < selectedNodeIds.length; i++) {
-    var selectedNode = document.getElementById(selectedNodeIds[i]);
-    deselectNode (selectedNode);
-  }
+  var selectedNodes = topNode.getSelectedRows();
+  topNode.menuSelectedRows = selectedNodes;
+  for (var i = 0; i < selectedNodes.length; i++)
+    deselectNode(selectedNode);
   topNode.menuSelectedEntry = element;
   selectNode(element);
 }
@@ -355,11 +338,9 @@ function onContactContextMenuHide(event)
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
-    var nodeIds = topNode.menuSelectedRows;
-    for (var i = 0; i < nodeIds.length; i++) {
-      var node = document.getElementById(nodeIds[i]);
-      selectNode (node);
-    }
+    var nodes = topNode.menuSelectedRows;
+    for (var i = 0; i < nodes.length; i++)
+      selectNode (nodes[i]);
     topNode.menuSelectedRows = null;
   }
 }
@@ -419,7 +400,9 @@ function storeCachedMessage(cachedContact)
 
 function onMessageSelectionChange()
 {
-  var selection = collectSelectedRows();
+  var contactsList = document.getElementById('contactsList');
+
+  var selection = contactsList.getSelectedRowsId();
   if (selection.length == 1)
     {
       var idx = selection[0];
@@ -671,9 +654,9 @@ function onMenuDeleteContact(event, node)
 
 function onToolbarEditSelectedContacts(event)
 {
-  var rows;
-  
-  rows = collectSelectedRows();
+  var contactsList = document.getElementById('contactsList');
+  var rows = contactsList.getSelectedRowsId();
+
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(null, 'edit_' + rows[i],
                       ApplicationBaseURL + currentContactFolder
@@ -685,9 +668,9 @@ function onToolbarEditSelectedContacts(event)
 
 function onToolbarWriteToSelectedContacts(event)
 {
-  var rows;
-  
-  rows = collectSelectedRows();
+  var contactsList = document.getElementById('contactsList');
+  var rows = contactsList.getSelectedRowsId();
+
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(null, 'writeto_' + rows[i],
                       ApplicationBaseURL + currentContactFolder
@@ -699,10 +682,10 @@ function onToolbarWriteToSelectedContacts(event)
 
 function uixDeleteSelectedContacts(sender)
 {
-  var rows;
   var failCount = 0;
-  
-  rows = collectSelectedRows();
+  var contactsList = document.getElementById('contactsList');
+  var rows = contactsList.getSelectedRowsId();
+
   for (var i = 0; i < rows.length; i++) {
     var url, http, rowElem;
     
@@ -811,17 +794,14 @@ function onSearchKeyDown(searchValue)
 
 function onConfirmContactSelection()
 {
-  var rows = collectSelectedRows();
-
   var folderLi = document.getElementById(currentContactFolder);
   var currentContactFolderName = folderLi.innerHTML;
 
+  var contactsList = document.getElementById('contactsList');
+  var rows = contactsList.getSelectedRows();
   for (i = 0; i < rows.length; i++)
     {
-      var row = document.getElementById(rows[i]);
-//       opener.window.log (rows[i] + " selected.");
-//       opener.window.log (row.cells.length);
-      var cid = row.getAttribute("contactid");
+      var cid = rows[i].getAttribute("contactid");
       if (cid)
         {
           var cname = '' + row.getAttribute("contactname");
