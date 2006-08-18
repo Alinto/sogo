@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="yes"?>
+  <table
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    id="appointmentsList"
+    multiselect="yes"
+    onselectionchange="onAppointmentsSelectionChange();"
+    >
+    <tr class="tableview"
+      ><td class="tbtv_headercell tbtv_subject_headercell"
+        ><var:component className="UIxSortableTableHeader"
+          label:label="Title"
+          const:sortKey="Title"
+          const:href="aptlist"
+          var:queryDictionary="context.request.formValues"
+          /></td
+        ><td class="tbtv_headercell"
+        ><var:component className="UIxSortableTableHeader"
+          label:label="Start"
+          const:sortKey="Start"
+          const:href="aptlist"
+          var:queryDictionary="context.request.formValues"
+          /></td
+        ><td class="tbtv_headercell"
+        ><var:component className="UIxSortableTableHeader"
+          label:label="End"
+          const:sortKey="End"
+          const:href="aptlist"
+          var:queryDictionary="context.request.formValues"
+          /></td
+        ><td class="tbtv_headercell"
+        ><var:component className="UIxSortableTableHeader"
+          label:label="Location"
+          const:sortKey="Location"
+          const:href="aptlist"
+          var:queryDictionary="context.request.formValues"
+          /></td
+        ></tr>
+
+    <var:foreach list="fetchCoreInfos" item="currentAppointment"
+      ><tr class="tableview"
+        var:id="currentAppointment.uid"
+        onclick="return onRowClick(event);"
+        oncontextmenu="return onAppointmentContextMenu(event, this);"
+        ><td onmousedown="return false;"
+          ><var:string value="currentAppointment.title"/></td
+          ><td onmousedown="return false;"
+          ><var:string value="currentStartTime"/></td
+          ><td onmousedown="return false;"
+          ><var:string value="currentEndTime"/></td
+          ><td onmousedown="return false;"
+          ><var:string value="currentLocation"/></td
+          ></tr
+        ></var:foreach>
+  </table>

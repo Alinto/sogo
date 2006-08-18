@@ -1,0 +1,59 @@
+<?xml version='1.0' standalone='yes'?>
+  <div xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    id="dateSelector">
+
+<!--  const:style="weekcolumnsview_cal"
+const:headerStyle="weekcolumnsview_cal_title"
+const:weekStyle="weekcolumnsview_cal_week"
+:dayHeaderStyle="weekcolumnsview_cal_day_header"
+:dayBodyStyle="weekcolumnsview_cal_content"
+:todayBodyStyle="weekcolumnsview_cal_content_hilite"
+:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed" -->
+
+    <div id="header">
+      <a href="#"
+        id="leftArrow"
+        var:date="prevMonthAsString"
+        onclick="return onDateSelectorGotoMonth(this);"
+        ><img id="previous" rsrc:src="arrow-lft-sharp.gif" />
+      </a
+        ><span id="monthLabel">
+        <var:string value="headerString" />
+      </span>
+      <a href="#"
+        id="rightArrow"
+        var:date="nextMonthAsString"
+        onclick="return onDateSelectorGotoMonth(this);"
+        ><img id="next" rsrc:src="arrow-rit-sharp.gif"
+          /></a>
+    </div>
+    
+    <var:month-overview
+      currentDay="currentDay"
+      index="dayIndex"
+      year="year"
+      month="month"
+      const:startDateKey="startDate"
+      const:endDateKey="endDate"
+      ><var:month-label
+        const:orientation="top"
+        dayOfWeek="dayOfWeek"
+        class="dayHeaderStyle"
+        ><span class="dayOfWeek"
+          ><var:string value="localizedDayOfWeekName"
+            /></span
+          ></var:month-label>
+      <var:month-title class="contentStyle"
+        ><span var:class="extraStyle"
+          ><a href="#"
+            onclick="return onDaySelect(this);"
+            var:day="currentDayQueryParameters.day"
+            ><var:string value="currentDay.dayOfMonth"/></a
+            ></span
+          ></var:month-title
+        ></var:month-overview>
+  </div>

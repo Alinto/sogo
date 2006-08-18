@@ -1,0 +1,26 @@
+<?xml version='1.0' standalone='yes'?>
+  <container 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+    <div class="menu" id="searchMenu">
+      <ul id="searchOptions">
+        <li id="name_or_address"
+          onmousedown="return false;"
+          onmouseup="setSearchCriteria(event);"><var:string label:value="Title or Description"/></li>
+      </ul>
+    </div>
+
+    <div id="filterPanel">
+      <span class="searchBox" style="float: right">
+        <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
+        <input id="searchValue" autocomplete="off" name="search" type="text" var:value="searchText" onmousedown="onSearchMouseDown(event, this);" onclick="popupSearchMenu(event, 'searchMenu');" onblur="onSearchBlur(this);" onfocus="onSearchFocus(this);" onkeydown="onSearchKeyDown(this);" />
+      </span>
+
+      <script type="text/javascript">
+        initCriteria();
+      </script>
+    </div>
+  </container>

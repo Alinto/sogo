@@ -49,6 +49,7 @@
           <div id="logConsole">
           </div>
           <script type="text/javascript">
+            initQueryParameters();
             initLogConsole();
           </script>
 

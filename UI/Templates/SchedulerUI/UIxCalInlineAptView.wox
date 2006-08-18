@@ -12,8 +12,8 @@
       ><var:if condition="appointment.ispublic" const:negate="YES">
         <img rsrc:src="apt_icon_private.gif"
           /></var:if
-        ><a var:href="url"
-        onclick="return displayAppointment(this);"
+        ><a href="#"
+        ondblclick="return displayAppointment(this);"
         var:aptId="appointment.uid"
         var:title="tooltip"
         var:queryDictionary="queryDictionary"

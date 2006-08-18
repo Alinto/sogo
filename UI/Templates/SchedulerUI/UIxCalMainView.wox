@@ -1,0 +1,115 @@
+<?xml version="1.0" standalone="yes"?>
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    popup="isPopup"
+    >
+    <div class="menu" id="messageListMenu">
+      <ul id="sourceList">
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuOpenMessage(event);"><var:string label:value="Open Message In New Window"/></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
+        <li class="separator"></li>
+        <li
+          class="submenu"
+          mailboxaction="move"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"
+          onmousedown="return false;"><var:string label:value="Move To"/></li>
+        <li
+          class="submenu"
+          mailboxaction="copy"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"
+          onmousedown="return false;"><var:string label:value="Copy To"/></li>
+        <li
+          class="submenu"
+          submenu="label-menu"
+          onmouseover="dropDownSubmenu(event);"
+          onmousedown="return false;"><var:string label:value="Label"/></li>
+        <li
+          class="submenu"
+          submenu="mark-menu"
+          onmouseover="dropDownSubmenu(event);"
+          onmousedown="return false;"><var:string label:value="Mark"/></li>
+        <li class="separator"></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
+        <li
+          onmousedown="return false;"
+          onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+      </ul>
+    </div>
+
+    <div id="leftPanel">
+      <div id="dateSelectorView"
+        ><var:component className="UIxCalDateSelector"
+          selectedDate="thisMonth"
+          /></div>
+
+      <div id="leftDragHandle"
+        class="dragHandle"
+        onmousedown="startHandleDragging(event);"
+        onmousemove=""
+        upperblock="dateSelectorView"
+        lowerblock="tasksView">
+      </div>
+
+      <div id="tasksView">
+        Here are the tasks...
+      </div>
+    </div>
+
+    <div id="verticalDragHandle"
+      class="dragHandle"
+      onmousedown="startHandleDragging(event);"
+      onmousemove=""
+      leftblock="leftPanel"
+      rightblock="rightPanel">
+    </div>
+
+    <div id="rightPanel">
+      <var:component className="UIxCalFilterPanel" />
+
+      <div id="appointmentsListView"
+        ><var:component className="UIxCalAptListView"
+          /></div>
+
+      <div id="rightDragHandle"
+        class="dragHandle"
+        onmousedown="startHandleDragging(event);"
+        onmousemove=""
+        upperblock="appointmentsListView"
+        lowerblock="calendarView">
+      </div>
+
+      <div id="calendarView"
+        ><var:component className="UIxCalDayView"
+          selectedDate="selectedDate"
+          /></div>
+    </div>
+  </var:component>

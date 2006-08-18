@@ -15,10 +15,9 @@
       onselectionchange="onMessageSelectionChange();">
       <tbody>
         <tr class="tableview"
-          ><td class="tbtv_headercell"
-            ><var:entity const:name="nbsp"
-              /></td
-            ><td class="tbtv_headercell">
+          ><td class="tbtv_headercell messageFlagColumn"
+            ><var:entity const:name="nbsp" /></td
+            ><td class="tbtv_headercell messageFlagColumn">
             <img rsrc:src="title_attachment_14x14.png" width="14"
               height="14"
               /></td
@@ -45,7 +44,7 @@
                 var:queryDictionary="context.request.formValues"
                 /></var:if
               ></td
-            ><td class="tbtv_headercell"
+            ><td class="tbtv_headercell messageFlagColumn"
             ><img rsrc:src="title_read_14x14.png" width="14" height="14"
               /></td
             ><td class="tbtv_headercell"
