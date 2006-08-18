@@ -23,12 +23,12 @@
 #import <Foundation/Foundation.h>
 
 #if LIB_FOUNDATION_LIBRARY
-#  include <Foundation/exceptions/GeneralExceptions.h>
+#  import <Foundation/exceptions/GeneralExceptions.h>
 #elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-#  include <NGExtensions/NGObjectMacros.h>
-#  include <NGExtensions/NSString+Ext.h>
+#  import <NGExtensions/NGObjectMacros.h>
+#  import <NGExtensions/NSString+Ext.h>
 #endif
 
-#include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/NGObjWeb.h>
-#include <NGObjWeb/SoObjects.h>
+#import <NGExtensions/NGExtensions.h>
+#import <NGObjWeb/NGObjWeb.h>
+#import <NGObjWeb/SoObjects.h>
