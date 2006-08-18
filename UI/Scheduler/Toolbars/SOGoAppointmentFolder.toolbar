@@ -15,6 +15,7 @@
       label="Delete";
       image = "delete.png"; } ),
   ( { link  = "today";
+      onclick = "return gotoToday();";
       label="Go to Today";
       image = "goto-today.png" } ),
   ( { link  = "dayoverview";

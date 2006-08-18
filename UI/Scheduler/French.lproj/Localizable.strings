@@ -132,7 +132,10 @@
 "Participants"		= "Participants";
 "Resources"		= "Ressources";
 "Organizer"		= "Organisateur";
-"Comment"		="Notes";
+"Comment"		= "Notes";
+"Start"                 = "Début";
+"End"                   = "Fin";
+"Category"              = "Catégorie";
 
 "attributes"		= "Attributs";
 "participants"		= "Participants";
