@@ -21,49 +21,11 @@
 // $Id: UIxCalInlineMonthOverview.m 181 2004-08-11 15:13:25Z helge $
 
 
-#include "UIxCalMonthOverview.h"
-#include <NGExtensions/NGExtensions.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 
+#import "NSCalendarDate+Scheduler.h"
 
-@interface UIxCalInlineMonthOverview : UIxCalMonthOverview
-{
-    NSCalendarDate *selectedDate;
-    NSString *style;
-    NSString *headerStyle;
-    NSString *weekStyle;
-    NSString *todayWeekStyle;
-    NSString *dayHeaderStyle;
-    NSString *dayBodyStyle;
-    NSString *todayBodyStyle;
-    NSString *inactiveDayBodyStyle;
-    NSString *selectedDayExtraStyle;
-    NSString *daySelectionHref;
-    NSString *weekSelectionHref;
-    NSString *monthSelectionHref;
-    BOOL showWeekColumn;
-    BOOL showYear;
-}
-
-@end
-
-
-@interface NSCalendarDate (UIxCalMonthOverviewExtensions)
-- (BOOL)isDateInSameMonth:(NSCalendarDate *)_other;
-@end
-
-
-@implementation NSCalendarDate (UIxCalMonthOverviewExtensions)
-- (BOOL)isDateInSameMonth:(NSCalendarDate *)_other {
-    if(_other == nil)
-        return NO;
-    if(([_other yearOfCommonEra] == [self yearOfCommonEra]) &&
-       ([_other monthOfYear] == [self monthOfYear])) {
-        return YES;
-    }
-    return NO;
-}
-@end
-
+#import "UIxCalInlineMonthOverview.h"
 
 @implementation UIxCalInlineMonthOverview
 

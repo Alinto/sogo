@@ -1,5 +1,8 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalInlineMonthOverview.h: interface extracted
+	from its .m file.
+
 	* UI/Scheduler/UIxCalFilterPanel.[hm]: new class designed to
 	display a widget to handle the information displayed in the
 	appointments list. Not currently used, lacks implementation.
