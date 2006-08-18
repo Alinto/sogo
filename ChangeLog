@@ -1,5 +1,9 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalFilterPanel.[hm]: new class designed to
+	display a widget to handle the information displayed in the
+	appointments list. Not currently used, lacks implementation.
+
 	* UI/Scheduler/UIxCalDateSelector.[hm]: new class designed to
 	display a calendar as a dynamic widget from where one can select
 	the current visible day.
