@@ -1,5 +1,9 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.[hm]: new class to serve as a pseudo
+	component that lays out the different components of SOGoCalendar.
+	Only serves as an Objective-C counterpart to its xml template.
+
 	* UI/Scheduler/UIxCalInlineMonthOverview.h: interface extracted
 	from its .m file.
 
