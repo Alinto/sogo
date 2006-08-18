@@ -36,11 +36,24 @@
         };
       };
       methods = {
-        view = { 
+        view = {
           protectedBy = "View";
-          pageName    = "UIxCalWeekOverview";
-          actionName  = "correctURL";
+          pageName    = "UIxCalMainView";
         };
+
+        dateselector = {
+          protectedBy = "View";
+          pageName    = "UIxCalDateSelector"; 
+        };
+        aptlist = {
+          protectedBy = "View";
+          pageName    = "UIxCalAptListView"; 
+        };
+        dayview = {
+          protectedBy = "View";
+          pageName    = "UIxCalDayView"; 
+        };
+
         dayoverview = {
           protectedBy = "View";
           pageName    = "UIxCalDayOverview"; 

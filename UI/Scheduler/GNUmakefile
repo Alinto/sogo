@@ -13,8 +13,18 @@ SchedulerUI_OBJC_FILES =		\
 	iCalPerson+UIx.m		\
 	NSCalendarDate+UIx.m		\
 	SOGoAppointment+UIx.m		\
+					\
+	UIxCalMainView.m		\
+					\
+	UIxCalFilterPanel.m		\
+					\
+	UIxCalDateSelector.m		\
+					\
+	NSCalendarDate+Scheduler.m	\
+					\
 	UIxComponent+Agenor.m		\
 	UIxCalView.m			\
+	UIxCalAptListView.m		\
 	UIxCalDayView.m			\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
