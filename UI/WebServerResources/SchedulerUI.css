@@ -1,0 +1,277 @@
+DIV#leftPanel
+{ 
+  position: absolute;
+  top: 5.5em;
+  left: 0px;
+  width: 18em;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+DIV#dateSelectorView
+{
+  position: absolute;
+  width: 100%;
+  height: 18em;
+  top: 0px;
+  overflow: auto;
+}
+
+DIV#tasksView
+{
+  position: absolute;
+  background: #eee;
+  top: 18em;
+  bottom: 0px;
+  width: 100%;
+  overflow: auto;
+}
+
+DIV#rightPanel
+{
+  position: absolute;
+  top: 5.5em;
+  left: 18.3em;
+  right: 0px;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+DIV#appointmentsListView
+{ 
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  height: 18em;
+  top: 2em;
+  overflow: auto;
+}
+
+DIV#calendarView
+{ 
+  position: absolute;
+  background: #fff;
+  top: 18em;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+}
+
+DIV#calendarView A
+{ 
+  text-decoration: none;
+  font: inherit;
+  color: inherit;
+}
+
+#leftDragHandle, #rightDragHandle
+{
+  position: absolute;
+  cursor: n-resize;
+  top: 17.7em;
+  left: 0px;
+  right: 0px;
+  height: 5px;
+}
+
+#verticalDragHandle
+{
+  position: absolute;
+  cursor: e-resize;
+  top: 5.5em;
+  left: 18em;
+  width: 5px;
+  bottom: 0px;
+  z-index: 5;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #999;
+}
+
+#filterPanel
+{
+  height: 2em;
+  padding-right: .5em;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#dateSelector
+{
+  width: 16em;
+  margin: .5em auto;
+  background: #fff;
+  border-top: 1px solid #fff; 
+  border-left: 1px solid #fff;
+  border-right: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}
+
+#dateSelector #header
+{ background: #efefef;
+  width: 100%;
+  text-align: center;
+  padding: 0px;
+  border: 0px;
+  margin: 0px; }
+
+#dateSelector #header A
+{
+  position: absolute;
+  top: 1em;
+  width: 1em;
+}
+
+#leftArrow
+{
+  left: 1em;
+}
+
+#rightArrow
+{
+  right: 1em;
+}
+
+#dateSelector #header #monthLabel
+{ font-size: medium;
+  vertical-align: middle;
+  font-weight: bold;
+  margin: 0px; }
+
+#dateSelector .dayOfWeek
+{ color: #00f; }
+
+#dateSelector TABLE,
+#dateSelector TABLE TABLE
+{ border-collapse: collapse; }
+
+#dateSelector TABLE TABLE TD
+{ 
+  cursor: pointer;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid #fff;
+}
+
+#dateSelector TABLE TABLE TD:hover
+{ color: #f00;
+  border: 1px solid #deebf7; }
+
+#dateSelector .inactiveDay
+{ color: #dedfde; }
+
+#dateSelector .dayOfToday
+{ background: #deebf7;
+  border: 1px solid #deebf7; }
+
+#dateSelector TABLE
+{ margin: 0px auto; }
+
+#dateSelector TD SPAN
+{ width: 1.8em;
+  height: 1.5em;
+  text-align: center;
+  display: block; }
+
+#dateSelector TD SPAN A
+{ color: inherit;
+  background: inherit;
+  text-decoration: none; }
+
+#dateSelector TD:active
+{ background: #ddd;
+  border: 1px solid #deebf7; }
+
+#dateSelector TD._selected
+{ 
+  background: #4b6983;
+  color: #fff;
+}
+
+TABLE#appointmentsList TR._selected TD
+{ 
+  background: #4b6983;
+  color: #fff;
+}
+
+TABLE.dayoverview_content
+{ margin: 0px;
+  padding: 0px .5em;
+  border-collapse: collapse; }
+
+TABLE.dayoverview_content TD
+{ border: 1px solid #99f; }
+
+TABLE.dayoverview_content TD.header
+{ text-align: center;
+  color: #77a;
+  width: 90%;
+  font-weight: bold;
+  background: #eef; }
+
+TABLE.dayoverview_content TD.nullheader
+{ border: 0px solid #fff; }
+
+TABLE.dayoverview_content TD.dayoverview_content_time
+{ text-align: right;
+  vertical-align: top;
+  height: 4em;
+  font-weight: bold;
+  width: 5em;
+  color: #77a;
+  background: #eef; }
+
+SPAN.daysHeader
+{ display: block;
+  white-space: nowrap;
+  width: 100%;
+  margin: .2em 0px;
+  padding: 0px;
+  text-align: center; }
+
+SPAN.daysHeader SPAN
+{ margin: .2em 5%;
+  vertical-align: top; }
+
+.day2
+{
+  font-size: medium;
+}
+
+.day1
+{
+  font-size: large;
+}
+
+.day0
+{
+  font-size: x-large;
+}
+
+A.leftNavigationArrow
+{
+  position: absolute;
+  display: block;
+  top: 1em;
+  left: .5em;
+}
+
+A.rightNavigationArrow
+{
+  position: absolute;
+  display: block;
+  top: 1em;
+  right: .5em;
+}
+
+DIV#calendarContent
+{
+  position: absolute;
+  top: 3em;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: auto;
+}

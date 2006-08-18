@@ -20,9 +20,6 @@
 */
 /* TODO: is the section below used in the mailer? */
 
-BODY
-{ overflow: hidden; }
-
 DIV#contactsListContent
 { 
   position: absolute;

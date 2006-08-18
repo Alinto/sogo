@@ -20,9 +20,6 @@
 */
 /* TODO: is the section below used in the mailer? */
 
-BODY
-{ overflow: hidden; }
-
 DIV.folderTree
 {
   position: absolute;
@@ -140,13 +137,16 @@ DIV#messageContent P IMG
   background-color: #DCDAD5;
 
 }
+
 .foldercell
 {
   width: 25%;
 }
+
 .contentcell
 {
 }
+
 .embedwhite_out
 {
   border-width: 1;
@@ -156,6 +156,7 @@ DIV#messageContent P IMG
   border-bottom-color: white;
   border-right-color: white;
 }
+
 .embedwhite_in
 {
   border-width: 1;
@@ -169,6 +170,7 @@ DIV#messageContent P IMG
   /* height: 300px; */
   /* height: 100%; */
 }
+
 .titlediv
 {
   height: 24px;
@@ -183,14 +185,6 @@ table.titletable
   vertical-align: middle;
   padding-top: 6px;
   padding-left: 6px;
-}
-
-td.titlecell
-{
-  height: 22px;
-  vertical-align: middle;
-  padding-bottom: 2px;
-  white-space: nowrap;
 }
 
 table.titletable td.titlecell SELECT
@@ -229,17 +223,6 @@ DIV#folderTreeContent TABLE TD
 
 /* mail tableview */
 
-.tableview
-{
-  cursor: default;
-  vertical-align: top;
-}
-
-td.tbtv_subject_headercell
-{ 
-  width: 100%;
-}
-
 span.mailer_datefield
 {
   white-space: nowrap;
@@ -277,11 +260,6 @@ td.mailer_unreadmailsubject a
 td.mailer_listcell_deleted
 {
   text-decoration: line-through;
-}
-
-td.mailer_listcell_regular
-{
-  white-space: nowrap;
 }
 
 td.mailer_listcell_regular a
@@ -577,4 +555,9 @@ DIV#mailboxDragHandle
 
 PRE.textMessageViewer
 { 
+}
+
+TD.messageFlagColumn
+{
+  width: 1em !important;
 }
