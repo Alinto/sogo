@@ -24,13 +24,37 @@ modified by Martin Hoerning, mh@skyrix.com, 2002-12-05
 
 // months as they appear in the calendar's title
 var ARR_MONTHS = ["January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December"];
+		  "July", "August", "September", "October", "November", "December"];
 // week day titles as they appear on the calendar
 var ARR_WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 // day week starts from (normally 0-Mo or 1-Su)
 var NUM_WEEKSTART = 1;
 // path to the directory where calendar images are stored. trailing slash req.
 var STR_ICONPATH = '';
+
+var labels = window.opener.labels;
+if (labels) {
+  for (var i = 0; i < ARR_MONTHS.length; i++) {
+    var string = ARR_MONTHS[i];
+    if (labels[string])
+      ARR_MONTHS[i] = labels[string];
+  }
+
+ if (labels['a2_Sunday'])
+   ARR_WEEKDAYS[0] = labels['a2_Sunday'];
+ if (labels['a2_Monday'])
+   ARR_WEEKDAYS[1] = labels['a2_Monday'];
+ if (labels['a2_Tuesday'])
+   ARR_WEEKDAYS[2] = labels['a2_Tuesday'];
+ if (labels['a2_Wednesday'])
+   ARR_WEEKDAYS[3] = labels['a2_Wednesday'];
+ if (labels['a2_Thursday'])
+   ARR_WEEKDAYS[4] = labels['a2_Thursday'];
+ if (labels['a2_Friday'])
+   ARR_WEEKDAYS[5] = labels['a2_Friday'];
+ if (labels['a2_Saturday'])
+   ARR_WEEKDAYS[6] = labels['a2_Saturday'];
+}
 
 var re_url = new RegExp('datetime=(\\-?\\d+)');
 var dt_current = (re_url.exec(String(window.location))
