@@ -1,5 +1,9 @@
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDateSelector.[hm]: new class designed to
+	display a calendar as a dynamic widget from where one can select
+	the current visible day.
+
 	* UI/Scheduler/NSCalendarDate+Scheduler.[hm]: category code
 	extracted from UIxCalInlineMonthOverview.m.
 
