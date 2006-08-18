@@ -1,3 +1,9 @@
+2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalAptListView.[hm]: new class designed to
+	display the list of appointments (embodies the code-size of
+	UIxCalAptListView; answers to the "aptlist" method).
+
 2006-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalWeekOverview.m ([UIxCalWeekOverview
