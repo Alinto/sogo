@@ -243,6 +243,21 @@ static BOOL shouldDisplayWeekend = NO;
 	       hours:0 minutes:0 seconds:0];
 }
 
+- (NSCalendarDate *)prevMonth {
+  NSCalendarDate *date = [self thisMonth];
+  return [date dateByAddingYears:0 months:-1 days:0
+	       hours:0 minutes:0 seconds:0];
+}
+
+- (NSString *) prevMonthAsString
+{
+  return [self dateStringForDate: [self prevMonth]];
+}
+
+- (NSString *) nextMonthAsString
+{
+  return [self dateStringForDate: [self nextMonth]];
+}
 
 /* current day related */
 
@@ -250,12 +265,14 @@ static BOOL shouldDisplayWeekend = NO;
   [_day setTimeZone:[self viewTimeZone]];
   ASSIGN(self->currentDay, _day);
 }
-- (NSCalendarDate *)currentDay {
+
+- (NSCalendarDate *) currentDay {
   return self->currentDay;
 }
 
-- (NSString *)currentDayName {
-  return [self localizedNameForDayOfWeek:[self->currentDay dayOfWeek]];
+- (NSString *) currentDayName
+{
+  return [self localizedNameForDayOfWeek: [self->currentDay dayOfWeek]];
 }
 
 - (id)holidayInfo {
@@ -363,6 +380,7 @@ static BOOL shouldDisplayWeekend = NO;
     ed                 = [self endDate];
     [self setAppointments:[folder fetchOverviewInfosFrom:sd to:ed]];
   }
+
   return self->appointments;
 }
 
@@ -393,6 +411,16 @@ static BOOL shouldDisplayWeekend = NO;
 }
 
 /* date selection & conversion */
+
+- (NSDictionary *) _dateQueryParametersWithOffset: (int) daysOffset
+{
+  NSCalendarDate *date;
+  
+  date = [[self startDate] dateByAddingYears: 0 months: 0
+                           days: daysOffset
+                           hours:0 minutes:0 seconds:0];
+  return [self queryParametersBySettingSelectedDate:date];
+}
 
 - (NSDictionary *)todayQueryParameters {
   NSCalendarDate *date;

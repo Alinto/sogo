@@ -289,14 +289,21 @@
   NSString        *s;
 
   aptDescr = [NSMutableString stringWithCapacity:60];
+  [aptDescr appendString: @"Date: "];
   [self appendTimeInfoFromApt:_apt
         usingReferenceDate:_refDate
         toBuffer:aptDescr];  
   if ((s = [self titleForApt:_apt :_refDate]) != nil)
-    [aptDescr appendFormat:@"\n%@", s];
+    [aptDescr appendFormat: @"\n%@%@",
+              @"Title: ",
+              s];
   if ((s = [_apt valueForKey:@"location"]) != nil)
+    [aptDescr appendFormat:@"\n%@%@",
+              @"Location: ",
+              s];
+  if ((s = [_apt valueForKey:@"description"]) != nil)
     [aptDescr appendFormat:@"\n%@", s];
-    
+
   return aptDescr;
 }
 

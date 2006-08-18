@@ -29,7 +29,7 @@
 
 @interface UIxCalDayView : UIxCalView
 {
-    NSCalendarDate *currentDate;
+  NSCalendarDate *currentDate;
 }
 
 - (void)setCurrentDate:(NSCalendarDate *)_date;

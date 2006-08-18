@@ -101,6 +101,9 @@
 
 - (NSString *)aptStyle;
 
+/* protected methods */
+- (NSDictionary *) _dateQueryParametersWithOffset: (int) daysOffset;
+
 @end
 
 #endif /* __SOGo_UIxCalView_H__ */
