@@ -1,3 +1,12 @@
+2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	+objectWithName:inContainer:]): new constructor.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-lookupContactWithId:recordId]): always create a contact object,
+	even if it does not exist.
+
 2006-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMainView.[hm]: new class to serve as a pseudo

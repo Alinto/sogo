@@ -60,6 +60,16 @@ static BOOL kontactGroupDAV = YES;
 
 /* containment */
 
++ (id) objectWithName: (NSString *)_name inContainer:(id)_container
+{
+  SOGoObject *object;
+
+  object = [[self alloc] initWithName: _name inContainer: _container];
+  [object autorelease];
+
+  return object;
+}
+
 - (BOOL)doesRetainContainer {
   return YES;
 }
@@ -72,6 +82,7 @@ static BOOL kontactGroupDAV = YES;
   }
   return self;
 }
+
 - (id)init {
   return [self initWithName:nil inContainer:nil];
 }

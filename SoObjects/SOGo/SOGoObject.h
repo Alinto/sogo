@@ -44,6 +44,8 @@
   id       container;
 }
 
++ (id) objectWithName: (NSString *)_name inContainer:(id)_container;
+
 - (id)initWithName:(NSString *)_name inContainer:(id)_container;
 
 /* accessors */

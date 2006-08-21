@@ -77,20 +77,10 @@
 - (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId
 {
   SOGoContactGCSEntry *contact;
-  NSArray *contactIds;
 
   if ([recordId length] > 0)
-    {
-      contactIds = [self fetchContentObjectNames];
-      if ([contactIds containsObject: recordId])
-        {
-          contact = [[SOGoContactGCSEntry alloc] initWithName: recordId
-                                                 inContainer: self];
-          [contact autorelease];
-        }
-      else
-        contact = nil;
-    }
+    contact = [SOGoContactGCSEntry objectWithName: recordId
+                                   inContainer: self];
   else
     contact = nil;
 
