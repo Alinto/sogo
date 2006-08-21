@@ -39,7 +39,6 @@ static int attachmentFlagSize = 8096;
 
 @implementation UIxMailListView
 
-
 - (void) dealloc 
 {
   [self->qualifier  release];

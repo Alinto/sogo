@@ -127,7 +127,7 @@ static NSDictionary *filterToQualifier = nil;
 
 /* qualifiers */
 
-- (EOQualifier *)searchTextQualifier
+- (EOQualifier *) searchTextQualifier
 {
   EOQualifier *q;
   NSString *s;
