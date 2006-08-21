@@ -656,7 +656,7 @@ td img.tbtv_sortcell
 
 td.tbtv_subject_headercell
 { 
-  width: 100%;
+  width: 50%;
 }
 
 /* drag handles */
@@ -671,4 +671,23 @@ DIV.dragHandle:active
 {
   -moz-opacity: 0.5;
   background: #222;
+}
+
+/* search fields */
+INPUT#searchValue
+{
+  height: 22px;
+  margin-right: 1em;
+  width: 20em;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  padding-left: 24px;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  background-image: url('/SOGo.woa/WebServerResources/Search-bar.png');
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  color: #aaa;
 }
