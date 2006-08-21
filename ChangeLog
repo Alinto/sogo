@@ -1,5 +1,13 @@
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditorBase.m: invokes
+	globallyUniqueObjectId on the clientobject's class instead of the
+	hardcoded "SOGoFolder".
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-newAction]): redirect the "new" action to the personal (default)
+	contact folder.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	+objectWithName:inContainer:]): new constructor.
 

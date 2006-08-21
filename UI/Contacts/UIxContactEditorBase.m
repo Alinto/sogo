@@ -299,7 +299,7 @@
   */
   NSString *uri, *objectId, *nextMethod;
   
-  objectId = [NSClassFromString(@"SOGoContactFolder") globallyUniqueObjectId];
+  objectId = [[[self clientObject] class] globallyUniqueObjectId];
   if ([objectId length] == 0) {
     return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
 			reason:@"could not create a unique ID"];

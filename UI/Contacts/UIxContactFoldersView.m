@@ -38,6 +38,21 @@
   return [self redirectToLocation: [folders defaultSourceName]];
 }
 
+- (id) newAction
+{
+  SOGoContactFolders *folders;
+  NSString *url, *contactEmail;
+
+  folders = [self clientObject];
+  contactEmail = [self queryParameterForKey: @"contactEmail"];
+
+  url = [NSString stringWithFormat: @"%@/new?contactEmail=%@",
+                  [folders defaultSourceName],
+                  contactEmail];
+  
+  return [self redirectToLocation: url];
+}
+
 - (id) selectAction
 {
   SOGoContactFolders *folders;
