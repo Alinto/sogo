@@ -165,24 +165,13 @@
 
 /* labels */
 
-- (NSString *)buttonLabel {
-  WOResourceManager *rm;
-  NSString          *key, *label;
+- (NSString *) buttonLabel
+{
+  NSString          *key;
   
-  key = [[self buttonInfo] valueForKey:@"label"];
-  
-  /* lookup resource manager */
-  
-  if ((rm = [self pageResourceManager]) == nil)
-    rm = [[WOApplication application] resourceManager];
-  if (rm == nil)
-    [self warnWithFormat:@"missing resource manager!"];
-  
-  /* lookup string */
-  
-  label = [rm stringForKey:key inTableNamed:nil withDefaultValue:key
-              languages:[[self context] resourceLookupLanguages]];
-  return label;
+  key = [[self buttonInfo] valueForKey: @"label"];
+
+  return [self labelForKey: key];
 }
 
 - (id) buttonImage

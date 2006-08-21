@@ -1,5 +1,8 @@
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxToolbar.m ([UIxToolbar -buttonLabel]): reduced the
+	code by invoking UIxComponent's labelForKey:.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -labelForKey:]): use
 	[self pageResourceManager] instead of [self resourceManager].
 
