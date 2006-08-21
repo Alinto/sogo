@@ -727,6 +727,122 @@ function dragHandleDoubleClick(event) {
     }
   }
 }
+
+/* search field */
+function popupSearchMenu(event, menuId)
+{
+  var node = event.target;
+  relX = event.pageX - node.cascadeLeftOffset();
+  relY = event.pageY - node.cascadeTopOffset();
+
+  if (event.button == 0
+      && relX < 24) {
+    event.cancelBubble = true;
+    event.returnValue = false;
+
+    var popup = document.getElementById(menuId);
+    hideMenu(event, popup);
+
+    popup.style.top = node.offsetHeight + "px";
+    popup.style.left = (node.offsetLeft + 3) + "px";
+    popup.style.visibility = "visible";
+  
+    bodyOnClick = "" + document.body.getAttribute("onclick");
+    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
+    document.currentPopupMenu = popup;
+  }
+}
+
+function setSearchCriteria(event)
+{
+  searchValue = document.getElementById('searchValue');
+  searchCriteria = document.getElementById('searchCriteria');
+  
+  var node = event.target;
+  searchValue.setAttribute("ghost-phrase", node.innerHTML);
+  searchCriteria = node.getAttribute('id');
+}
+
+function checkSearchValue(event)
+{
+  var form = event.target;
+  var searchValue = document.getElementById('searchValue');
+  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
+
+  if (searchValue.value == ghostPhrase)
+    searchValue.value = "";
+}
+
+function onSearchChange()
+{
+  log ("changed...");
+}
+
+function onSearchMouseDown(event, searchValue)
+{
+  superNode = searchValue.parentNode.parentNode.parentNode;
+  relX = (event.pageX - superNode.offsetLeft - searchValue.offsetLeft);
+  relY = (event.pageY - superNode.offsetTop - searchValue.offsetTop);
+
+  if (relY < 24) {
+    event.cancelBubble = true;
+    event.returnValue = false;
+  }
+}
+
+function onSearchFocus(searchValue)
+{
+  ghostPhrase = searchValue.getAttribute("ghost-phrase");
+  if (searchValue.value == ghostPhrase) {
+    searchValue.value = "";
+    searchValue.setAttribute("modified", "");
+  } else {
+    searchValue.select();
+  }
+
+  searchValue.style.color = "#000";
+}
+
+function onSearchBlur(searchValue)
+{
+  var ghostPhrase = searchValue.getAttribute("ghost-phrase");
+  log ("search blur: '" + searchValue.value + "'");
+  if (!searchValue.value) {
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
+    searchValue.value = ghostPhrase;
+  } else if (searchValue.value == ghostPhrase) {
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
+  } else {
+    searchValue.setAttribute("modified", "yes");
+    searchValue.style.color = "#000";
+  }
+}
+
+function onSearchKeyDown(searchValue)
+{
+  if (searchValue.timer)
+    clearTimeout(searchValue.timer);
+
+  searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
+}
+
+function initCriteria()
+{
+  var searchCriteria = document.getElementById('searchCriteria');
+  var searchValue = document.getElementById('searchValue');
+  var firstOption;
+ 
+  firstOption = document.getElementById('searchOptions').childNodes[1];
+  searchCriteria.value = firstOption.getAttribute('id');
+  searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
+  if (searchValue.value == '') {
+    searchValue.value = firstOption.innerHTML;
+    searchValue.setAttribute("modified", "");
+    searchValue.style.color = "#aaa";
+  }
+}
  
 /* contact selector */
 

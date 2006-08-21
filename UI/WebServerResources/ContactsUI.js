@@ -488,127 +488,6 @@ function moveTo(uri) {
   alert("MoveTo: " + uri);
 }
 
-function popupSearchMenu(event, menuId)
-{
-  var node = event.target;
-
-  superNode = node.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - node.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - node.offsetTop);
-
-  if (event.button == 0
-      && relX < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-
-    var popup = document.getElementById(menuId);
-    hideMenu(event, popup);
-
-    var menuTop = superNode.offsetTop + node.offsetTop + node.offsetHeight;
-    var menuLeft = superNode.offsetLeft + node.offsetLeft;
-    var heightDiff = (window.innerHeight
-		      - (menuTop + popup.offsetHeight));
-    if (heightDiff < 0)
-      menuTop += heightDiff;
-
-    var leftDiff = (window.innerWidth
-		    - (menuLeft + popup.offsetWidth));
-    if (leftDiff < 0)
-      menuLeft -= popup.offsetWidth;
-
-    popup.style.top = menuTop + "px";
-    popup.style.left = menuLeft + "px";
-    popup.style.visibility = "visible";
-  
-    bodyOnClick = "" + document.body.getAttribute("onclick");
-    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
-    document.currentPopupMenu = popup;
-  }
-}
-
-function setSearchCriteria(event)
-{
-  searchValue = document.getElementById('searchValue');
-  searchCriteria = document.getElementById('searchCriteria');
-  
-  var node = event.target;
-  searchValue.setAttribute("ghost-phrase", node.innerHTML);
-  searchCriteria = node.getAttribute('id');
-}
-
-function checkSearchValue(event)
-{
-  var form = event.target;
-  var searchValue = document.getElementById('searchValue');
-  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
-
-  if (searchValue.value == ghostPhrase)
-    searchValue.value = "";
-}
-
-function onSearchChange()
-{
-  log ("changed...");
-}
-
-function onSearchMouseDown(event, searchValue)
-{
-  superNode = searchValue.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - searchValue.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - searchValue.offsetTop);
-
-  if (relY < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
-}
-
-function onSearchFocus(searchValue)
-{
-  ghostPhrase = searchValue.getAttribute("ghost-phrase");
-  if (searchValue.value == ghostPhrase) {
-    searchValue.value = "";
-    searchValue.setAttribute("modified", "");
-  } else {
-    searchValue.select();
-  }
-
-  searchValue.style.color = "#000";
-}
-
-function onSearchBlur(searchValue)
-{
-  var ghostPhrase = searchValue.getAttribute("ghost-phrase");
-  log ("search blur: '" + searchValue.value + "'");
-  if (!searchValue.value) {
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
-    searchValue.value = ghostPhrase;
-  } else if (searchValue.value == ghostPhrase) {
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
-  } else {
-    searchValue.setAttribute("modified", "yes");
-    searchValue.style.color = "#000";
-  }
-}
-
-function initCriteria()
-{
-  var searchCriteria = document.getElementById('searchCriteria');
-  var searchValue = document.getElementById('searchValue');
-  var firstOption;
- 
-  firstOption = document.getElementById('searchOptions').childNodes[1];
-  searchCriteria.value = firstOption.getAttribute('id');
-  searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
-  if (searchValue.value == '') {
-    searchValue.value = firstOption.innerHTML;
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
-  }
-}
-
 /* contact menu entries */
 function onContactRowDblClick(event, node)
 {
@@ -769,7 +648,7 @@ function newContact(sender) {
 function onFolderSelectionChange()
 {
   var folderList = document.getElementById("contactFolders");
-  var nodes = getSelectedNodes(folderList);
+  var nodes = folderList.getSelectedNodes();
   var newFolder = nodes[0].getAttribute("id");
 
   openContactsFolder(newFolder);
@@ -784,14 +663,6 @@ function onSearchFormSubmit()
   return false;
 }
 
-function onSearchKeyDown(searchValue)
-{
-  if (searchValue.timer)
-    clearTimeout(searchValue.timer);
-
-  searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
-}
-
 function onConfirmContactSelection()
 {
   var folderLi = document.getElementById(currentContactFolder);
@@ -804,7 +675,7 @@ function onConfirmContactSelection()
       var cid = rows[i].getAttribute("contactid");
       if (cid)
         {
-          var cname = '' + row.getAttribute("contactname");
+          var cname = '' + rows[i].getAttribute("contactname");
           opener.window.log('cid = ' + cid + '; cname = ' + cname );
           if (cid.length > 0)
             opener.window.addContact(contactSelectorId,

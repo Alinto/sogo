@@ -1,5 +1,12 @@
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: fixed the contact creation
+	from email addresses.
+
+	* UI/WebServerResources/generic.js: centralized the search-related
+	functions here since the same code was used across the 3
+	applications.
+
 	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate]) 
 	([UIxCalAptListView -endDate]): return the required dates needed
 	depending on the value given to the "filterpopup" url parameter.

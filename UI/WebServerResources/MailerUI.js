@@ -813,130 +813,6 @@ function moveTo(uri) {
   alert("MoveTo: " + uri);
 }
 
-function popupSearchMenu(event, menuId)
-{
-  var node = event.target;
-
-  superNode = node.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - node.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - node.offsetTop);
-
-  if (event.button == 0
-      && relX < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-
-    var popup = document.getElementById(menuId);
-    hideMenu(event, popup);
-
-    var menuTop = superNode.offsetTop + node.offsetTop + node.offsetHeight;
-    var menuLeft = superNode.offsetLeft + node.offsetLeft;
-    var heightDiff = (window.innerHeight
-		      - (menuTop + popup.offsetHeight));
-    if (heightDiff < 0)
-      menuTop += heightDiff;
-
-    var leftDiff = (window.innerWidth
-		    - (menuLeft + popup.offsetWidth));
-    if (leftDiff < 0)
-      menuLeft -= popup.offsetWidth;
-
-    popup.style.top = menuTop + "px";
-    popup.style.left = menuLeft + "px";
-    popup.style.visibility = "visible";
-  
-    bodyOnClick = "" + document.body.getAttribute("onclick");
-    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
-    document.currentPopupMenu = popup;
-  }
-}
-
-function setSearchCriteria(event)
-{
-  searchField = document.getElementById('searchValue');
-  searchCriteria = document.getElementById('searchCriteria');
-  
-  var node = event.target;
-  searchField.setAttribute("ghost-phrase", node.innerHTML);
-  searchCriteria = node.getAttribute('id');
-}
-
-function checkSearchValue(event)
-{
-  var form = event.target;
-  var searchField = document.getElementById('searchValue');
-  var ghostPhrase = searchField.getAttribute('ghost-phrase');
-
-  if (searchField.value == ghostPhrase)
-    searchField.value = "";
-}
-
-function onSearchChange()
-{
-}
-
-function onSearchMouseDown(event)
-{
-  searchField = document.getElementById('searchValue');
-  superNode = searchField.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - searchField.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - searchField.offsetTop);
-
-  if (relY < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
-}
-
-function onSearchFocus(event)
-{
-  searchField = document.getElementById('searchValue');
-  ghostPhrase = searchField.getAttribute("ghost-phrase");
-  if (searchField.value == ghostPhrase) {
-    searchField.value = "";
-    searchField.setAttribute("modified", "");
-  } else {
-    searchField.select();
-  }
-
-  searchField.style.color = "#000";
-}
-
-function onSearchBlur()
-{
-  var searchField = document.getElementById('searchValue');
-  var ghostPhrase = searchField.getAttribute("ghost-phrase");
-
-  if (searchField.value == "") {
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
-    searchField.value = ghostPhrase;
-  } else if (searchField.value == ghostPhrase) {
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
-  } else {
-    searchField.setAttribute("modified", "yes");
-    searchField.style.color = "#000";
-  }
-}
-
-function initCriteria()
-{
-  var searchCriteria = document.getElementById('searchCriteria');
-  var searchField = document.getElementById('searchValue');
-  var firstOption;
- 
-  if (searchCriteria.value == ''
-      || searchField.value == '') {
-    firstOption = document.getElementById('searchOptions').childNodes[1];
-    searchCriteria.value = firstOption.getAttribute('id');
-    searchField.value = firstOption.innerHTML;
-    searchField.setAttribute('ghost-phrase', firstOption.innerHTML);
-    searchField.setAttribute("modified", "");
-    searchField.style.color = "#aaa";
-  }
-}
-
 function deleteSelectedMails()
 {
 }
@@ -994,7 +870,7 @@ function newContactFromEmail(sender) {
   if (email.length > 0)
     {
       emailre.exec("");
-      w = window.open(UserFolderURL + "/Contacts/new?contactEmail=" + email,
+      w = window.open(UserFolderURL + "Contacts/new?contactEmail=" + email,
 		      "SOGo_new_contact",
 		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0,"

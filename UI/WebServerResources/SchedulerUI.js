@@ -2,6 +2,7 @@ var activeAjaxRequests = 0;
 
 var sortOrder = '';
 var sortKey = '';
+var listFilter = 'view_all';
 
 function triggerAjaxRequest(url, callback, userdata) {
   this.http = createHTTPClient();
@@ -12,6 +13,7 @@ function triggerAjaxRequest(url, callback, userdata) {
   if (http) {
     http.onreadystatechange
       = function() {
+//         log ("state changed (" + http.readyState + "): " + url);
         try {
           if (http.readyState == 4
               && activeAjaxRequests > 0) {
@@ -65,10 +67,40 @@ var currentView = 'day';
 function newEvent(sender) {
   var urlstr = ApplicationBaseURL + "new";
 
-  window.open(urlstr, "SOGo_compose",
+  window.open(urlstr, "",
 	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
 	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+
   return false; /* stop following the link */
+}
+
+function _editEventId(id) {
+  var urlstr = ApplicationBaseURL + id + "/edit";
+
+  var win = window.open(urlstr, "SOGo_edit_" + id,
+                        "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
+                        "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  win.focus();
+}
+
+function editEvent() {
+  var list = document.getElementById("appointmentsList");
+  var nodes = list.getSelectedRowsId();
+
+  if (nodes.length > 0) {
+    var row = nodes[0];
+    _editEventId(row);
+  }
+
+  return false; /* stop following the link */
+}
+
+function editDoubleClickedEvent(node)
+{
+  var id = node.getAttribute("id");
+  _editEventId(id);
+  
+  return false;
 }
 
 function displayAppointment(sender) {
@@ -125,12 +157,10 @@ function onDaySelect(node)
   document.selectedDate = td;
 
   changeDayDisplay(currentDay, null);
+  if (listFilter == 'view_selectedday')
+    refreshAppointments();
 
   return false;
-}
-
-function initCriteria()
-{
 }
 
 function onDateSelectorGotoMonth(node)
@@ -153,8 +183,8 @@ function onCalendarGotoDay(node)
 
 function gotoToday()
 {
-  changeDateSelectorDisplay();
   changeDayDisplay();
+  changeDateSelectorDisplay();
 
   return false;
 }
@@ -162,6 +192,8 @@ function gotoToday()
 function dateSelectorCallback(http)
 {
   var div = document.getElementById("dateSelectorView");
+
+  log ("dateselectorcallback: " + div);
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -180,18 +212,18 @@ function appointmentsListCallback(http)
 
   if (http.readyState == 4
       && http.status == 200) {
-    log ("babla");
+//     log ("babla");
     document.dateSelectorAjaxRequest = null;
-    log ("babla");
+//     log ("babla");
     div.innerHTML = http.responseText;
-    log ("babla");
+//     log ("babla");
 
-    log ("received " + http.callbackData);
+//     log ("received " + http.callbackData);
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
 
-    log ("sorting = " + sortKey + sortOrder);
+//     log ("sorting = " + sortKey + sortOrder);
   }
   else
     log ("ajax fuckage");
@@ -232,8 +264,10 @@ function changeDateSelectorDisplay(day, event)
 
 //   if (currentDay.length > 0)
 //     url += '&selectedDay=' + currentDay;
+  log ("changeDateSelectorDisplay: " + url);
 
   if (document.dateSelectorAjaxRequest) {
+//     log ("aborting dateselector ajaxrq");
     document.dateSelectorAjaxRequest.aborted = true;
     document.dateSelectorAjaxRequest.abort();
   }
@@ -251,7 +285,10 @@ function changeDayDisplay(day, event)
   if (day)
     url += "?day=" + day;
 
+  log ("changeDayDisplay: " + url);
+
   if (document.dayDisplayAjaxRequest) {
+//     log ("aborting day ajaxrq");
     document.dayDisplayAjaxRequest.aborted = true;
     document.dayDisplayAjaxRequest.abort();
   }
@@ -266,6 +303,7 @@ function dayDisplayCallback(http)
 {
   var div = document.getElementById("calendarView");
 
+  log ("daydisplaycallback: " + div);
   if (http.readyState == 4
       && http.status == 200) {
     document.dateSelectorAjaxRequest = null;
@@ -293,19 +331,17 @@ function onAppointmentContextMenu(event, element)
   var topNode = document.getElementById('appointmentsList');
   log(topNode);
 
-
   var menu = document.getElementById('appointmentsListMenu');
 
   menu.addEventListener("hideMenu", onAppointmentContextMenuHide, false);
   onMenuClick(event, 'appointmentsListMenu');
 
   var topNode = document.getElementById('appointmentsList');
-  var selectedNodeIds = collectSelectedRows();
-  topNode.menuSelectedRows = selectedNodeIds;
-  for (var i = 0; i < selectedNodeIds.length; i++) {
-    var selectedNode = document.getElementById(selectedNodeIds[i]);
-    deselectNode (selectedNode);
-  }
+  var selectedNodes = topNode.getSelectedRows();
+  topNode.menuSelectedRows = selectedNodes;
+  for (var i = 0; i < selectedNodes.length; i++)
+    deselectNode (selectedNodes[i]);
+
   topNode.menuSelectedEntry = element;
   selectNode(element);
 }
@@ -338,7 +374,7 @@ function _loadAppointmentHref(href) {
     this.document.appointmentsListAjaxRequest.abort();
   }
   url = ApplicationBaseURL + href;
-  log ("url: " + url);
+//   log ("url: " + url);
   this.document.appointmentsListAjaxRequest
     = triggerAjaxRequest(url, appointmentsListCallback, href);
 
@@ -353,7 +389,19 @@ function onHeaderClick(node)
 }
 
 function refreshAppointments() {
-  var href = "aptlist?desc=" + sortOrder + "&sort=" + sortKey;
+  var href = ("aptlist?desc=" + sortOrder
+              + "&sort=" + sortKey
+              + "&day=" + currentDay
+              + "&filterpopup=" + listFilter);
 
   return _loadAppointmentHref(href);
+}
+
+function onListFilterChange() {
+  var node = document.getElementById("filterpopup");
+
+  listFilter = node.value;
+//   log ("listFilter = " + listFilter);
+
+  return refreshAppointments();
 }
