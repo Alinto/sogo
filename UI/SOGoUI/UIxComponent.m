@@ -402,7 +402,7 @@ static BOOL uixDebugEnabled = NO;
     
   /* find resource manager */
     
-  if ((rm = [self resourceManager]) == nil)
+  if ((rm = [self pageResourceManager]) == nil)
     rm = [[WOApplication application] resourceManager];
   if (rm == nil)
     [self warnWithFormat:@"missing resource manager!"];

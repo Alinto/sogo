@@ -1,5 +1,8 @@
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -labelForKey:]): use
+	[self pageResourceManager] instead of [self resourceManager].
+
 	* UI/Contacts/UIxContactEditorBase.m: invokes
 	globallyUniqueObjectId on the clientobject's class instead of the
 	hardcoded "SOGoFolder".
