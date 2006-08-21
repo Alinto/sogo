@@ -80,7 +80,7 @@
 
 "new"           = "Nouveau";
 "printview"     = "Version imprimable";
-"edit"			= "Editer";
+"edit"			= "Éditer";
 "delete"		= "Supprimer";
 "proposal"      = "Recherche de plages horaires";
 "Save"			= "Sauvegarder";
@@ -166,6 +166,18 @@
 
 /* Searching */
 
+"view_all" = "Tous";
+"view_today" = "Aujourd'hui";
+"view_next7" = "Les 7 prochains jours";
+"view_next14" = "Les 14 prochains jours";
+"view_next31" = "Les 31 prochains jours";
+"view_thismonth" = "Ce mois-ci";
+"view_future" = "Tous à venir";
+"view_selectedday" = "Le jour sélectionné";
+
+"View:" = "Voir :";
+"Title or Description" = "Le titre ou la description";
+
 "Search"		= "Rechercher";
 "Search participants"	="Recherche de participants";
 "Search resources"	="Recherche de ressources";
@@ -203,16 +215,16 @@
 "cycle_2weeks"		= "Toutes les deux semaines";
 "cycle_4weeks"		= "Toutes les quatre semaines ";
 "cycle_monthly"		= "Tous les mois";
-"cycle_weekday"		= "A chaque même jour de la semaine";
+"cycle_weekday"		= "À chaque même jour de la semaine";
 "cycle_yearly"		= "Chaque année";
 
 "cycle_end_never"	= "Jamais";
-"cycle_end_until"	= "A la date :";
+"cycle_end_until"	= "À la date :";
 
 /* Appointment categories */
 
 "APPOINTMENT"		= "Rendez-vous";
-"NOT IN OFFICE"		= "A l'extérieur";
+"NOT IN OFFICE"		= "À l'extérieur";
 "MEETING"		= "Réunion";
 "HOLIDAY"		= "Vacances";
 "PHONE CALL"		= "Rendez-vous téléphonique";
@@ -223,3 +235,13 @@ validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?
 validate_invalid_startdate = "La date de début est invalide !";
 validate_invalid_enddate   = "La date de fin est invalide !";
 validate_endbeforestart    = "La date de fin est avant la date de début !";
+
+/* toolbar */
+"New Event" = "Nouvel événement";
+"New Task" = "Nouvelle tâche";
+"Edit" = "Éditer";
+"Delete" = "Effacer";
+"Go to Today" = "Aujourd'hui";
+"Day View" = "Par jour";
+"Week View" = "Par semaine";
+"Month View" = "Par mois";
