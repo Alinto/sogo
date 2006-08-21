@@ -35,15 +35,16 @@ static NSArray *filters = nil;
 
 + (void) initialize
 {
-  NSMutableDictionary *md;
-  NSMutableArray *ma;
-  
-  md = [[NSMutableDictionary alloc] initWithCapacity:8];
-  ma = [[NSMutableArray alloc] initWithCapacity:4];
+  static NSString *quals[]
+    = {@"view_all", @"view_today", @"view_next7", @"view_next14",
+       @"view_next31", @"view_thismonth", @"view_future",
+       @"view_selectedday" };
 
-  filters           = [ma copy];
-  [md release]; md = nil;
-  [ma release]; ma = nil;
+  if (!filters)
+    {
+      filters = [NSArray arrayWithObjects: quals count: 8];
+      [filters retain];
+    }
 }
 
 - (id) init
