@@ -31,7 +31,14 @@
       <var:if condition="hideFrame" const:negate="YES"
         ><span class="searchBox" style="float: right">
           <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
-          <input id="searchValue" onmousedown="onSearchMouseDown(event);" onclick="popupSearchMenu(event, 'searchMenu');" autocomplete="off" name="search" type="text" var:value="searchText" onchange="onSearchChange();" onblur="onSearchBlur();" onfocus="onSearchFocus(event);" />
+          <input id="searchValue"
+            autocomplete="off" name="search" type="text" var:value="searchText"
+            onmousedown="onSearchMouseDown(event, this);"
+            onclick="popupSearchMenu(event, 'searchMenu');"
+            onchange="onSearchChange();"
+            onblur="onSearchBlur(this);"
+            onfocus="onSearchFocus(this);"
+            onkeydown="onSearchKeyDown(this);" />
         </span>
 
         <script type="text/javascript">
@@ -39,7 +46,7 @@
           document.pageform.search.focus();
         </script>
 
-        <var:string label:value="View" />:
+        <var:string label:value="View:" />
         <var:popup list="filters" 
           item="filter" string="filterLabel" value="filter"
           selection="selectedFilter"

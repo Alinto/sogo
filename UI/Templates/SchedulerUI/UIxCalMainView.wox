@@ -8,60 +8,37 @@
     title="title"
     popup="isPopup"
     >
-    <div class="menu" id="messageListMenu">
+    <div class="menu" id="appointmentsListMenu">
       <ul id="sourceList">
         <li
           onmousedown="return false;"
-          onmouseup="onMenuOpenMessage(event);"><var:string label:value="Open Message In New Window"/></li>
+          onmouseup="newEvent(this);"><var:string label:value="New Event..."/></li>
         <li class="separator"></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+          onmouseup="newTask(this);"><var:string label:value="New Task..."/></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+          onmouseup="editEvent();"
+          ><var:string label:value="Edit Selected Event..."/></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
-        <li class="separator"></li>
-        <li
-          class="submenu"
-          mailboxaction="move"
-          submenu="mailboxes-menu"
-          onmouseover="dropDownSubmenu(event);"
-          onmousedown="return false;"><var:string label:value="Move To"/></li>
-        <li
-          class="submenu"
-          mailboxaction="copy"
-          submenu="mailboxes-menu"
-          onmouseover="dropDownSubmenu(event);"
-          onmousedown="return false;"><var:string label:value="Copy To"/></li>
-        <li
-          class="submenu"
-          submenu="label-menu"
-          onmouseover="dropDownSubmenu(event);"
-          onmousedown="return false;"><var:string label:value="Label"/></li>
-        <li
-          class="submenu"
-          submenu="mark-menu"
-          onmouseover="dropDownSubmenu(event);"
-          onmousedown="return false;"><var:string label:value="Mark"/></li>
+          onmouseup="onDeleteSelectedEvent();"
+          ><var:string label:value="Delete Selected Event"/></li>
         <li class="separator"></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+          onmouseup="onSelectAll(this);"
+          ><var:string label:value="Select All"/></li>
+        <li class="separator"></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+          onmouseup="onToggleWorkweekDaysOnly();"
+          ><var:string label:value="Workweek days only" /></li>
         <li
           onmousedown="return false;"
-          onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+          onmouseup="onToggleTasksInView();"
+            ><var:string label:value="Tasks in View"/></li>
       </ul>
     </div>
 

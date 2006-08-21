@@ -44,9 +44,12 @@
       ><tr class="tableview"
         var:id="currentAppointment.uid"
         onclick="return onRowClick(event);"
+        ondblclick="return editDoubleClickedEvent(this);"
         oncontextmenu="return onAppointmentContextMenu(event, this);"
         ><td onmousedown="return false;"
-          ><var:string value="currentAppointment.title"/></td
+          var:title="currentAppointment.title"
+          ><var:string value="currentTitle" const:escapeHTML="NO"
+            /></td
           ><td onmousedown="return false;"
           ><var:string value="currentStartTime"/></td
           ><td onmousedown="return false;"
