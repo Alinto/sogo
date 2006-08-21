@@ -4,7 +4,7 @@
 "Addresses"         = "Adresses";
 "Cancel"            = "Annuler";
 "Common"            = "Identité";
-"Contact editor"    = "Editer le contact";
+"Contact editor"    = "Éditer le contact";
 "Contact viewer"    = "Visualiser le contact";
 "Copy from Anais"    = "Ajouter depuis Anaïs";
 "EMail"             = "Courriel";
@@ -26,10 +26,15 @@
 "URL"               = "URL";
 "Unit"              = "Département";
 "delete"            = "Effacer";
-"edit"              = "Editer";
+"edit"              = "Éditer";
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Nouveau";
 
 "Name or Address" = "Le nom ou l'adresse";
 "Personal Addressbook" = "Adresses personnelles";
 "Search in Addressbook" = "Carnet d'adresse...";
+
+"New Card" = "Nouvelle fiche";
+"Modify" = "Modifier";
+"Write" = "Écrire";
+"Delete" = "Effacer";

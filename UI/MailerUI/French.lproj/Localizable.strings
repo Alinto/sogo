@@ -58,9 +58,10 @@
 
 /* MailListView */
 
+"View:"         = "Voir :";
+
 "Subject or Sender contains" = "Sujet ou Expéditeur contient ";
 "Date"          = "Date";
-"View"          = "Voir";
 "All"           = "Tous";
 "Unread"        = "Non lus";
 "messages"      = "message(s)";
