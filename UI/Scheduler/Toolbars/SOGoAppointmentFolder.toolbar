@@ -2,7 +2,7 @@
   ( { link = "#";
       isSafe = NO;
       label = "New Event";
-      onclick = "newEvent(this);return false;";
+      onclick = "return newEvent(this);";
       image = "new-event.png"; },
     { link  = "new_task";
       enabled = "NO";
@@ -10,21 +10,26 @@
       image = "new-task.png"; },
     { link  = "edit";
       label="Edit";
+      onclick = "return editEvent(this);";
       image = "edit.png"; },
     { link  = "delete";
       label="Delete";
+      onclick = "return deleteEvent(this);";
       image = "delete.png"; } ),
   ( { link  = "today";
-      onclick = "return gotoToday();";
       label="Go to Today";
+      onclick = "return gotoToday();";
       image = "goto-today.png" } ),
   ( { link  = "dayoverview";
       label="Day View";
+      onclick = "return onDayOverview();";
       image = "day-view.png"; },
     { link  = "weekoverview";
       label="Week View";
+      onclick = "return onWeekOverview();";
       image = "week-view.png"; },
     { link  = "monthoverview";
       label="Month View";
+      onclick = "return onMonthOverview();";
       image = "month-view.png"; } )
 )
