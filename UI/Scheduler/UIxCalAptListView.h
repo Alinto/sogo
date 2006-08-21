@@ -29,6 +29,9 @@
 
 @interface UIxCalAptListView : UIxCalView
 {
+  NSCalendarDate *startDate;
+  NSCalendarDate *endDate;
+
   NSDictionary *currentAppointment;
 }
 

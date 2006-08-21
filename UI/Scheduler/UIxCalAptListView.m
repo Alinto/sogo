@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 
 #import <SOGoUI/SOGoDateFormatter.h>
@@ -32,15 +33,16 @@
 
 @implementation UIxCalAptListView
 
-// - (id) init
-// {
-//   if ((self = [super init]))
-//     {
-//       allAppointments = nil;
-//     }
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      startDate = nil;
+      endDate = nil;
+    }
 
-//   return self;
-// }
+  return self;
+}
 
 - (void) setCurrentAppointment: (NSDictionary *) apt
 {
@@ -52,14 +54,81 @@
   return currentAppointment;
 }
 
+//     @"view_all", nil,
+//     @"view_today",  @"flags = 'seen'   AND NOT (flags = 'deleted')",
+//     @"view_next7",  @"flags = 'unseen' AND NOT (flags = 'deleted')",
+//     @"view_next14", @"flags = 'deleted'",
+//     @"view_next31", @"flags = 'flagged'",
+//     @"view_thismonth", @"flags = 'flagged'",
+//     @"view_future", @"flags = 'flagged'",
+//     @"view_selectedday", @"flags = 'flagged'",
+
+// - (NSCalendarDate *)firstDayOfMonth;
+// - (NSCalendarDate *)lastDayOfMonth;
+
 - (NSCalendarDate *) startDate
 {
-  return [NSCalendarDate dateWithTimeIntervalSince1970: 0];
+  NSString *filterPopup;
+
+  if (!startDate)
+    {
+      filterPopup = [self queryParameterForKey: @"filterpopup"];
+      if (filterPopup
+          && [filterPopup length] > 0
+          && ![filterPopup isEqualToString: @"view_all"])
+        {
+          if ([filterPopup isEqualToString: @"view_thismonth"])
+            startDate = [[NSCalendarDate date] firstDayOfMonth];
+          else if ([filterPopup isEqualToString: @"view_selectedday"])
+            startDate = [self selectedDate];
+          else
+            startDate = [NSCalendarDate date];
+          startDate = [startDate beginOfDay];
+        }
+      else
+        startDate = [NSCalendarDate dateWithTimeIntervalSince1970: 0];
+    }
+
+  return startDate;
 }
 
 - (NSCalendarDate *) endDate
 {
-  return [NSCalendarDate dateWithTimeIntervalSince1970: 0x7fffffff];
+  NSCalendarDate *today;
+  NSString *filterPopup;
+
+  if (!endDate)
+    {
+      filterPopup = [self queryParameterForKey: @"filterpopup"];
+      if (filterPopup
+          && [filterPopup length] > 0
+          && ![filterPopup isEqualToString: @"view_all"]
+          && ![filterPopup isEqualToString: @"view_future"])
+        {
+          if ([filterPopup isEqualToString: @"view_thismonth"])
+            endDate = [[NSCalendarDate date] lastDayOfMonth];
+          else if ([filterPopup isEqualToString: @"view_selectedday"])
+            endDate = [self selectedDate];
+          else
+            {
+              today = [NSCalendarDate date];
+              if ([filterPopup isEqualToString: @"view_today"])
+                endDate = today;
+              else if ([filterPopup isEqualToString: @"view_next7"])
+                endDate = [today dateByAddingYears: 0 months: 0 days: 7];
+              else if ([filterPopup isEqualToString: @"view_next14"])
+                endDate = [today dateByAddingYears: 0 months: 0 days: 14];
+              else if ([filterPopup isEqualToString: @"view_next31"])
+                endDate = [today dateByAddingYears: 0 months: 1 days: 0];
+            }
+
+          endDate = [endDate endOfDay];
+        }
+      else
+        endDate = [NSCalendarDate dateWithTimeIntervalSince1970: 0x7fffffff];
+    }
+
+  return endDate;
 }
 
 - (SOGoDateFormatter *) itemDateFormatter
@@ -71,6 +140,21 @@
   [fmt setFullWeekdayNameAndDetails];
 
   return fmt;
+}
+
+- (NSString *) currentTitle
+{
+  NSString *fullTitle, *title;
+
+  fullTitle = [currentAppointment objectForKey: @"title"];
+  if ([fullTitle length] > 49)
+    title = [NSString stringWithFormat: @"%@...",
+                      [[currentAppointment objectForKey: @"title"]
+                        substringToIndex: 50]];
+  else
+    title = fullTitle;
+
+  return title;
 }
 
 - (NSString *) currentStartTime

@@ -1,5 +1,9 @@
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate]) 
+	([UIxCalAptListView -endDate]): return the required dates needed
+	depending on the value given to the "filterpopup" url parameter.
+
 	* UI/Common/UIxToolbar.m ([UIxToolbar -buttonLabel]): reduced the
 	code by invoking UIxComponent's labelForKey:.
 
