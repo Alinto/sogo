@@ -161,6 +161,18 @@
 
 /* Searching */
 
+"view_all" = "All Events";
+"view_today" = "Today's Events";
+"view_next7" = "Events in the Next 7 Days";
+"view_next14" = "Events in the Next 14 Days";
+"view_next31" = "Events in the Next 31 Days";
+"view_thismonth" = "Events in this Calendar Month";
+"view_future" = "All Future Events";
+"view_selectedday" = "Currently Selected Day";
+
+"View:" = "View:";
+"Title or Description" = "Title or Description";
+
 "Search"		= "Search";
 "Search participants"	= "Search participants";
 "Search resources"	= "Search resources";
@@ -218,4 +230,14 @@ validate_notitle           = "No title is set, continue?";
 validate_invalid_startdate = "Incorrect startdate field!";
 validate_invalid_enddate   = "Incorrect enddate field!";
 validate_endbeforestart    = "Enddate is before startdate!";
+
+/* toolbar */
+"New Event" = "New Event";
+"New Task" = "New Task";
+"Edit" = "Edit";
+"Delete" = "Delete";
+"Go to Today" = "Go to Today";
+"Day View" = "Day View";
+"Week View" = "Week View";
+"Month View" = "Month View";
 
