@@ -23,9 +23,28 @@
 #ifndef UIXCALMAINVIEW_H
 #define UIXCALMAINVIEW_H
 
+@class NSArray;
+@class NSNumber;
+@class NSString;
+
 #import "UIxCalView.h"
 
 @interface UIxCalMainView : UIxCalView
+{
+  NSString *monthMenuItem;
+  NSNumber *yearMenuItem;
+}
+
+- (NSArray *) monthMenuItems;
+- (NSArray *) yearMenuItems;
+
+- (void) setMonthMenuItem: (NSString *) aMonthMenuItem;
+- (NSString *) monthMenuItem;
+- (NSString *) monthMenuItemLabel;
+
+- (void) setYearMenuItem: (NSNumber *) aYearMenuItem;
+- (NSNumber *) yearMenuItem;
+
 @end
 
 #endif /* UIXCALMAINVIEW_H */

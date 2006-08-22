@@ -20,7 +20,74 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
 #import "UIxCalMainView.h"
 
+static NSMutableArray *monthMenuItems = nil;
+static NSMutableArray *yearMenuItems = nil;
+
 @implementation UIxCalMainView
+
+- (NSArray *) monthMenuItems
+{
+  unsigned int count;
+ 
+  if (!monthMenuItems)
+    {
+      monthMenuItems = [NSMutableArray arrayWithCapacity: 12];
+      
+      for (count = 1; count < 13; count++)
+        [monthMenuItems addObject:
+                          [NSString stringWithFormat: @"%.2d", count]];
+      [monthMenuItems retain];
+    }
+
+  return monthMenuItems;
+}
+
+- (void) setMonthMenuItem: (NSString *) aMonthMenuItem
+{
+  monthMenuItem = aMonthMenuItem;
+}
+
+- (NSString *) monthMenuItem
+{
+  return monthMenuItem;
+}
+
+- (NSString *) monthMenuItemLabel
+{
+  return [self localizedNameForMonthOfYear: [monthMenuItem intValue]];
+}
+
+- (NSArray *) yearMenuItems
+{
+  int count, year;
+ 
+  if (!yearMenuItems)
+    {
+      year = [[NSCalendarDate date] yearOfCommonEra];
+      yearMenuItems = [NSMutableArray arrayWithCapacity: 11];
+      for (count = -5; count < 6; count++)
+        [yearMenuItems addObject: [NSNumber numberWithInt: year + count]];
+      [yearMenuItems retain];
+    }
+
+  return yearMenuItems;
+}
+
+- (void) setYearMenuItem: (NSNumber *) aYearMenuItem
+{
+  yearMenuItem = aYearMenuItem;
+}
+
+- (NSNumber *) yearMenuItem
+{
+  return yearMenuItem;
+}
+
 @end

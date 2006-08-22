@@ -1,5 +1,8 @@
 2006-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m: extended class to populate the
+	entries in the new "monthMenu" and "yearMenu".
+
 	* UI/Scheduler/UIxCalDayView.m ([UIxCalDayView -labelForDay]): new
 	method to return the current day as a string formatted depending
 	on the current locale.
