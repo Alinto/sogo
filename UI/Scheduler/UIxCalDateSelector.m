@@ -95,15 +95,32 @@
 
 /* labels */
 
-- (NSString *) headerString
+- (NSString *) headerMonthValue
 {
   NSCalendarDate *date;
 
   date = [self startDate];
 
-  return [NSString stringWithFormat:@"%@ %d",
-                   [self localizedNameForMonthOfYear: [date monthOfYear]],
-                   [date yearOfCommonEra]];
+  return [NSString stringWithFormat: @"%.2d", [date monthOfYear]];
+}
+
+- (NSString *) headerMonthString
+{
+  NSCalendarDate *date;
+
+  date = [self startDate];
+
+  return [NSString stringWithFormat:@"%@",
+                   [self localizedNameForMonthOfYear: [date monthOfYear]]];
+}
+
+- (NSString *) headerYearString
+{
+  NSCalendarDate *date;
+
+  date = [self startDate];
+
+  return [NSString stringWithFormat: @"%d", [date yearOfCommonEra]];
 }
 
 - (NSString *) localizedDayOfWeekName
