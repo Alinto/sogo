@@ -20,12 +20,21 @@
 */
 // $Id: UIxCalDayView.m 663 2005-07-05 18:13:24Z znek $
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
+#import <EOControl/EOQualifier.h>
+
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+
+#import <SOGoUI/SOGoDateFormatter.h>
 
 #import "UIxCalDayView.h"
-#include "common.h"
-#include <EOControl/EOControl.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-
 
 @interface UIxCalDayView (PrivateAPI)
 - (BOOL)isCurrentDateInApt:(id)_apt;
@@ -84,7 +93,7 @@
   min = [[self startDate] hour:[self dayStartHour] minute:0];
   max = [[self startDate] hour:[self dayEndHour]   minute:0];
 
-  aptDateRanges = [[self appointments] valueForKey:@"startDate"];
+  aptDateRanges = [[self appointments] valueForKey: @"startDate"];
   if([aptDateRanges count] != 0) {
     NSCalendarDate *d;
     
@@ -158,13 +167,15 @@
 
 /* fetching */
 
-- (NSCalendarDate *)startDate {
+- (NSCalendarDate *) startDate
+{
   return [[self selectedDate] beginOfDay];
 }
-- (NSCalendarDate *)endDate {
-  return [[self startDate] endOfDay];
-}
 
+- (NSCalendarDate *) endDate
+{
+  return [[self selectedDate] endOfDay];
+}
 
 /* appointments */
 
@@ -246,6 +257,16 @@
 - (BOOL) hasAptsForCurrentDate
 {
   return [[self aptsForCurrentDate] count] != 0;
+}
+
+- (NSString *) labelForDay
+{
+  SOGoDateFormatter *fmt;
+  
+  fmt = [[SOGoDateFormatter alloc] initWithLocale: [self locale]];
+  [fmt autorelease];
+
+  return [fmt stringForObjectValue: [self startDate]];
 }
 
 - (NSString *) _dayNameWithOffsetFromToday: (int) offset
