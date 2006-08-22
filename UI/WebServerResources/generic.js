@@ -265,47 +265,22 @@ function triggerOpenerCallback() {
   }
 }
 
-function addClassName(node, className) {
-  var classStr = '' + node.getAttribute("class");
-
-  position = classStr.indexOf(className, 0);
-  if (position < 0) {
-    classStr = classStr + ' ' + className;
-    node.setAttribute('class', classStr);
-  }
-}
-
-function removeClassName(node, className) {
-  var classStr = '' + node.getAttribute('class');
-
-  position = classStr.indexOf(className, 0);
-  while (position > -1) {
-    classStr1 = classStr.substring(0, position); 
-    classStr2 = classStr.substring(position + 10, classStr.length);
-    classStr = classStr1 + classStr2;
-    position = classStr.indexOf(className, 0);
-  }
-
-  node.setAttribute('class', classStr);
-}
-
 /* selection mechanism */
 
 function selectNode(node) {
-//   log ("selecting a node: '" + node.tagName + "'");
-  addClassName(node, '_selected');
+  node.addClassName('_selected');
 }
 
 function deselectNode(node) {
 //   log ("deselecting a node: '" + node.tagName + "'");
-  removeClassName(node, '_selected');
+  node.removeClassName('_selected');
 }
 
 function deselectAll(parent) {
   for (var i = 0; i < parent.childNodes.length; i++) {
     var node = parent.childNodes.item(i);
     if (node.nodeType == 1) {
-      removeClassName(node, '_selected');
+      node.removeClassName('_selected');
     }
   }
 }
@@ -740,9 +715,10 @@ function popupSearchMenu(event, menuId)
     event.cancelBubble = true;
     event.returnValue = false;
 
-    var popup = document.getElementById(menuId);
-    hideMenu(event, popup);
+    if (document.currentPopupMenu)
+      hideMenu(event, document.currentPopupMenu);
 
+    var popup = document.getElementById(menuId);
     popup.style.top = node.offsetHeight + "px";
     popup.style.left = (node.offsetLeft + 3) + "px";
     popup.style.visibility = "visible";
@@ -891,6 +867,30 @@ function addContact(selectorId, contactId, contactName)
 }
 
 /* custom extensions to the DOM api */
+HTMLElement.prototype.addClassName = function(className) {
+  var classStr = '' + this.getAttribute("class");
+
+  position = classStr.indexOf(className, 0);
+  if (position < 0) {
+    classStr = classStr + ' ' + className;
+    this.setAttribute('class', classStr);
+  }
+}
+
+HTMLElement.prototype.removeClassName = function(className) {
+  var classStr = '' + this.getAttribute('class');
+
+  position = classStr.indexOf(className, 0);
+  while (position > -1) {
+    classStr1 = classStr.substring(0, position); 
+    classStr2 = classStr.substring(position + 10, classStr.length);
+    classStr = classStr1 + classStr2;
+    position = classStr.indexOf(className, 0);
+  }
+
+  this.setAttribute('class', classStr);
+}
+
 HTMLElement.prototype.getParentWithTagName = function(tagName) {
   var currentElement = this;
   tagName = tagName.toUpperCase();

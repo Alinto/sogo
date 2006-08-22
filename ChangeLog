@@ -1,3 +1,8 @@
+2006-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js: made addClassName and
+	removeClassName methods of HTMLElement.
+
 2006-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: fixed the contact creation
