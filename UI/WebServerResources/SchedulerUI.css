@@ -119,8 +119,18 @@ DIV#calendarView A
 
 #dateSelector #header A
 {
-  position: relative;
   width: 1em;
+  padding: .4em .2em;
+}
+
+#leftArrow
+{
+  float: left;
+}
+
+#rightArrow
+{
+  float: right;
 }
 
 #dateSelector #header SPAN

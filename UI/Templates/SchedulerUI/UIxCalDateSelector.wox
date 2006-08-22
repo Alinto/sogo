@@ -7,6 +7,12 @@
     id="dateSelector">
     <div id="header">
       <a href="#"
+        id="rightArrow"
+        var:date="nextMonthAsString"
+        onclick="return onDateSelectorGotoMonth(this);"
+        ><img id="next" rsrc:src="arrow-rit-sharp.gif"
+          /></a>
+      <a href="#"
         id="leftArrow"
         var:date="prevMonthAsString"
         onclick="return onDateSelectorGotoMonth(this);"
@@ -22,12 +28,6 @@
         onclick="popupMonthMenu(event, 'yearListMenu');"
         ><var:string value="headerYearString"
           /></span>
-      <a href="#"
-        id="rightArrow"
-        var:date="nextMonthAsString"
-        onclick="return onDateSelectorGotoMonth(this);"
-        ><img id="next" rsrc:src="arrow-rit-sharp.gif"
-          /></a>
     </div>
     
     <var:month-overview
