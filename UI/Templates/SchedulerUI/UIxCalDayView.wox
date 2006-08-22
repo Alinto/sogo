@@ -44,9 +44,7 @@
         <tr>
           <td class="nullHeader">
           </td>
-          <td class="header">
-            coucou
-          </td>
+          <td class="header"><var:string value="labelForDay"/> </td>
         </tr>
 
         <var:if condition="hasHolidayInfo">

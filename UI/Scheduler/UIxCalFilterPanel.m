@@ -36,7 +36,7 @@ static NSArray *filters = nil;
 + (void) initialize
 {
   static NSString *quals[]
-    = {@"view_all", @"view_today", @"view_next7", @"view_next14",
+    = {@"view_today", @"view_all", @"view_next7", @"view_next14",
        @"view_next31", @"view_thismonth", @"view_future",
        @"view_selectedday" };
 

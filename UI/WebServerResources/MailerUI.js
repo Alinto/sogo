@@ -248,8 +248,8 @@ function markMailInWindow(win, msguid, markread) {
   msgDiv = win.document.getElementById("div_" + msguid);
   if (msgDiv) {
     if (markread) {
-      removeClassName(msgDiv, 'mailer_unreadmailsubject');
-      addClassName(msgDiv, 'mailer_readmailsubject');
+      msgDiv.removeClassName("mailer_unreadmailsubject");
+      msgDiv.addClassName("mailer_readmailsubject");
       msgDiv = win.document.getElementById("unreaddiv_" + msguid);
       if (msgDiv)
         {
@@ -266,8 +266,8 @@ function markMailInWindow(win, msguid, markread) {
         }
     }
     else {
-      removeClassName(msgDiv, 'mailer_readmailsubject');
-      addClassName(msgDiv, 'mailer_unreadmailsubject');
+      msgDiv.removeClassName('mailer_readmailsubject');
+      msgDiv.addClassName('mailer_unreadmailsubject');
       msgDiv = win.document.getElementById("readdiv_" + msguid);
       if (msgDiv)
         {

@@ -5,15 +5,6 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     id="dateSelector">
-
-<!--  const:style="weekcolumnsview_cal"
-const:headerStyle="weekcolumnsview_cal_title"
-const:weekStyle="weekcolumnsview_cal_week"
-:dayHeaderStyle="weekcolumnsview_cal_day_header"
-:dayBodyStyle="weekcolumnsview_cal_content"
-:todayBodyStyle="weekcolumnsview_cal_content_hilite"
-:inactiveDayBodyStyle="weekcolumnsview_cal_content_dimmed" -->
-
     <div id="header">
       <a href="#"
         id="leftArrow"
@@ -21,9 +12,16 @@ const:weekStyle="weekcolumnsview_cal_week"
         onclick="return onDateSelectorGotoMonth(this);"
         ><img id="previous" rsrc:src="arrow-lft-sharp.gif" />
       </a
-        ><span id="monthLabel">
-        <var:string value="headerString" />
-      </span>
+        ><span id="monthLabel"
+        onmousedown="return false;"
+        var:month="headerMonthValue"
+        onclick="popupMonthMenu(event, 'monthListMenu');"
+        ><var:string value="headerMonthString"
+          /></span><span id="yearLabel"
+        onmousedown="return false;"
+        onclick="popupMonthMenu(event, 'yearListMenu');"
+        ><var:string value="headerYearString"
+          /></span>
       <a href="#"
         id="rightArrow"
         var:date="nextMonthAsString"

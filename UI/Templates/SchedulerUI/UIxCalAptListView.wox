@@ -43,12 +43,13 @@
     <var:foreach list="fetchCoreInfos" item="currentAppointment"
       ><tr class="tableview"
         var:id="currentAppointment.uid"
-        onclick="return onRowClick(event);"
+        onclick="return onAppointmentClick(event);"
         ondblclick="return editDoubleClickedEvent(this);"
         oncontextmenu="return onAppointmentContextMenu(event, this);"
+        var:day="currentSerialDay"
         ><td onmousedown="return false;"
-          var:title="currentAppointment.title"
-          ><var:string value="currentTitle" const:escapeHTML="NO"
+          ><var:string value="currentAppointment.title"
+            const:escapeHTML="NO"
             /></td
           ><td onmousedown="return false;"
           ><var:string value="currentStartTime"/></td

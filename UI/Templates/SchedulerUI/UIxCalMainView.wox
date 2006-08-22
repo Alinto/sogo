@@ -8,8 +8,31 @@
     title="title"
     popup="isPopup"
     >
+    <div class="menu" id="monthListMenu">
+      <ul>
+        <var:foreach list="monthMenuItems" item="monthMenuItem"
+          ><li
+            onmousedown="return false;"
+            onclick="return onMonthMenuItemClick(this);"
+            var:month="monthMenuItem"
+            ><var:string value="monthMenuItemLabel" /></li>
+        </var:foreach
+          ></ul>
+    </div>
+    
+    <div class="menu" id="yearListMenu">
+      <ul>
+        <var:foreach list="yearMenuItems" item="yearMenuItem"
+          ><li
+            onmousedown="return false;"
+            onclick="return onYearMenuItemClick(this);"
+            ><var:string value="yearMenuItem" /></li>
+        </var:foreach
+        ></ul>
+    </div>
+
     <div class="menu" id="appointmentsListMenu">
-      <ul id="sourceList">
+      <ul>
         <li
           onmousedown="return false;"
           onmouseup="newEvent(this);"><var:string label:value="New Event..."/></li>

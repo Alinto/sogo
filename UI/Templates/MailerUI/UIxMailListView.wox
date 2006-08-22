@@ -58,7 +58,7 @@
             ></tr>
         <var:if condition="showsAllMessages" const:negate="YES"
           ><tr class="tableview"
-            ><td colspan="6" class="tbtv_navcell" align="right"
+            ><td colspan="6" class="tbtv_navcell"
               ><var:if condition="hasPrevious">
                 <a href="#"
                   onclick="openMailboxAtIndex(this);"
