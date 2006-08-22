@@ -54,39 +54,25 @@
   return currentAppointment;
 }
 
-//     @"view_all", nil,
-//     @"view_today",  @"flags = 'seen'   AND NOT (flags = 'deleted')",
-//     @"view_next7",  @"flags = 'unseen' AND NOT (flags = 'deleted')",
-//     @"view_next14", @"flags = 'deleted'",
-//     @"view_next31", @"flags = 'flagged'",
-//     @"view_thismonth", @"flags = 'flagged'",
-//     @"view_future", @"flags = 'flagged'",
-//     @"view_selectedday", @"flags = 'flagged'",
-
-// - (NSCalendarDate *)firstDayOfMonth;
-// - (NSCalendarDate *)lastDayOfMonth;
-
 - (NSCalendarDate *) startDate
 {
+  NSCalendarDate *today;
   NSString *filterPopup;
 
   if (!startDate)
     {
       filterPopup = [self queryParameterForKey: @"filterpopup"];
-      if (filterPopup
-          && [filterPopup length] > 0
-          && ![filterPopup isEqualToString: @"view_all"])
-        {
-          if ([filterPopup isEqualToString: @"view_thismonth"])
-            startDate = [[NSCalendarDate date] firstDayOfMonth];
-          else if ([filterPopup isEqualToString: @"view_selectedday"])
-            startDate = [self selectedDate];
-          else
-            startDate = [NSCalendarDate date];
-          startDate = [startDate beginOfDay];
-        }
-      else
+      today = [[NSCalendarDate date] beginOfDay];
+      if (!filterPopup || ![filterPopup length])
+        startDate = today;
+      else if ([filterPopup isEqualToString: @"view_selectedday"])
+        startDate = [[self selectedDate] beginOfDay];
+      else if ([filterPopup isEqualToString: @"view_thismonth"])
+        startDate = [today firstDayOfMonth];
+      else if ([filterPopup isEqualToString: @"view_all"])
         startDate = [NSCalendarDate dateWithTimeIntervalSince1970: 0];
+      else
+        startDate = today;
     }
 
   return startDate;
@@ -100,32 +86,26 @@
   if (!endDate)
     {
       filterPopup = [self queryParameterForKey: @"filterpopup"];
-      if (filterPopup
-          && [filterPopup length] > 0
-          && ![filterPopup isEqualToString: @"view_all"]
-          && ![filterPopup isEqualToString: @"view_future"])
-        {
-          if ([filterPopup isEqualToString: @"view_thismonth"])
-            endDate = [[NSCalendarDate date] lastDayOfMonth];
-          else if ([filterPopup isEqualToString: @"view_selectedday"])
-            endDate = [self selectedDate];
-          else
-            {
-              today = [NSCalendarDate date];
-              if ([filterPopup isEqualToString: @"view_today"])
-                endDate = today;
-              else if ([filterPopup isEqualToString: @"view_next7"])
-                endDate = [today dateByAddingYears: 0 months: 0 days: 7];
-              else if ([filterPopup isEqualToString: @"view_next14"])
-                endDate = [today dateByAddingYears: 0 months: 0 days: 14];
-              else if ([filterPopup isEqualToString: @"view_next31"])
-                endDate = [today dateByAddingYears: 0 months: 1 days: 0];
-            }
 
-          endDate = [endDate endOfDay];
-        }
-      else
+      today = [[NSCalendarDate date] endOfDay];
+      if (!filterPopup || ![filterPopup length]
+          || [filterPopup isEqualToString: @"view_today"])
+        endDate = today;
+      else if ([filterPopup isEqualToString: @"view_all"]
+               || [filterPopup isEqualToString: @"view_future"])
         endDate = [NSCalendarDate dateWithTimeIntervalSince1970: 0x7fffffff];
+      else if ([filterPopup isEqualToString: @"view_thismonth"])
+        endDate = [today lastDayOfMonth];
+      else if ([filterPopup isEqualToString: @"view_selectedday"])
+        endDate = [[self selectedDate] endOfDay];
+      else if ([filterPopup isEqualToString: @"view_next7"])
+        endDate = [today dateByAddingYears: 0 months: 0 days: 7];
+      else if ([filterPopup isEqualToString: @"view_next14"])
+        endDate = [today dateByAddingYears: 0 months: 0 days: 14];
+      else if ([filterPopup isEqualToString: @"view_next31"])
+        endDate = [today dateByAddingYears: 0 months: 1 days: 0];
+      else
+        endDate = today;
     }
 
   return endDate;
@@ -182,6 +162,20 @@
 - (NSString *) currentLocation
 {
   return [currentAppointment objectForKey: @"location"];
+}
+
+- (NSString *) currentSerialDay
+{
+  NSCalendarDate *date;
+  int intDate;
+
+  intDate = [[currentAppointment objectForKey: @"startdate"] intValue];
+  date = [NSCalendarDate dateWithTimeIntervalSince1970: intDate];
+
+  return [NSString stringWithFormat: @"%d%.2d%.2d",
+                   [date yearOfCommonEra],
+                   [date monthOfYear],
+                   [date dayOfMonth]];
 }
 
 @end

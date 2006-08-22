@@ -1,5 +1,12 @@
 2006-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -startDate]) 
+	([UIxCalAptListView -endDate]): "today" is now the default filter
+	for displayed events.
+	([UIxCalAptListView -currentSerialDay]): new method returning the
+	date of the current enumerated appointment in serial form
+	(yyyymmdd).
+
 	* UI/WebServerResources/SchedulerUI.js: added code to select the
 	relevant day when an appointment is selected. Added code to popup
 	a month and a year menu whenever the header entries are clicked in
