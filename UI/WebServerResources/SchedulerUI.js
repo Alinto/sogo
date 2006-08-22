@@ -278,7 +278,7 @@ function changeDateSelectorDisplay(day, event)
 //   log ('should go to ' + day);
 }
 
-function changeDayDisplay(day, event)
+function changeDayDisplay(day)
 {
   var url = ApplicationBaseURL + "dayview";
 
@@ -404,4 +404,92 @@ function onListFilterChange() {
 //   log ("listFilter = " + listFilter);
 
   return refreshAppointments();
+}
+
+function onAppointmentClick(event)
+{
+  var node = event.target.getParentWithTagName("tr");
+  changeDayDisplay(node.getAttribute("day"));
+
+  return onRowClick(event);
+}
+
+function selectMonthInMenu(menu, month)
+{
+  var entries = menu.childNodes[1].childNodes;
+  for (i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+    if (entry instanceof HTMLLIElement) {
+      var entryMonth = entry.getAttribute("month");
+      if (entryMonth == month)
+        entry.addClassName("currentMonth");
+      else
+        entry.removeClassName("currentMonth");
+    }
+  }
+}
+
+function selectYearInMenu(menu, month)
+{
+  var entries = menu.childNodes[1].childNodes;
+  for (i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+    if (entry instanceof HTMLLIElement) {
+      var entryMonth = entry.innerHTML;
+      if (entryMonth == month)
+        entry.addClassName("currentMonth");
+      else
+        entry.removeClassName("currentMonth");
+    }
+  }
+}
+
+function popupMonthMenu(event, menuId)
+{
+  var node = event.target;
+
+  if (event.button == 0) {
+    event.cancelBubble = true;
+    event.returnValue = false;
+
+    if (document.currentPopupMenu)
+      hideMenu(event, document.currentPopupMenu);
+
+    var popup = document.getElementById(menuId);
+    var id = node.getAttribute("id");
+    if (id == "monthLabel")
+      selectMonthInMenu(popup, node.getAttribute("month"));
+    else
+      selectYearInMenu(popup, node.innerHTML);
+
+    var diff = (popup.offsetWidth - node.offsetWidth) /2;
+
+    popup.style.top = (node.offsetTop + 95) + "px";
+    popup.style.left = (node.offsetLeft - diff) + "px";
+    popup.style.visibility = "visible";
+
+    bodyOnClick = "" + document.body.getAttribute("onclick");
+    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
+    document.currentPopupMenu = popup;
+  }
+}
+
+function onMonthMenuItemClick(node)
+{
+  var month = '' + node.getAttribute("month");
+  var year = '' + document.getElementById("yearLabel").innerHTML;
+
+  changeDateSelectorDisplay(year+month+"01");
+
+  return false;
+}
+
+function onYearMenuItemClick(node)
+{
+  var month = '' + document.getElementById("monthLabel").getAttribute("month");;
+  var year = '' + node.innerHTML;
+
+  changeDateSelectorDisplay(year+month+"01");
+
+  return false;
 }

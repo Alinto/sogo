@@ -1,5 +1,10 @@
 2006-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: added code to select the
+	relevant day when an appointment is selected. Added code to popup
+	a month and a year menu whenever the header entries are clicked in
+	the calendar widget.
+
 	* UI/WebServerResources/generic.js: made addClassName and
 	removeClassName methods of HTMLElement.
 
