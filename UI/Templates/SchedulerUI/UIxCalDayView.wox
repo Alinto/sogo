@@ -5,6 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
+
     <a href="#"
       class="leftNavigationArrow"
       var:date="prevDayQueryParameters.day"
@@ -40,73 +41,10 @@
       ><img rsrc:src="arrow-rit-sharp.gif"/></a>
 
     <div id="calendarContent">
-      <table class="dayoverview_content">
-        <tr>
-          <td class="nullHeader">
-          </td>
-          <td class="header"><var:string value="labelForDay"/> </td>
-        </tr>
-
-        <var:if condition="hasHolidayInfo">
-          <tr>
-            <td class="dayoverview_content_time" colspan="2">
-              <b><var:string value="holidayInfo.title" /></b>
-            </td>
-          </tr>
-        </var:if>
-        <var:foreach list="allDayApts" item="appointment">
-          <tr>
-            <td class="dayoverview_content_time">
-              <var:entity name="nbsp" />
-            </td>
-            <td class="dayoverview_content_apts" width="90%">
-              <var:foreach list="allDayApts" item="appointment">
-                <var:component className="UIxCalInlineAptView"
-                  appointment="appointment"
-                  formatter="aptFormatter"
-                  tooltipFormatter="aptTooltipFormatter"
-                  url="appointmentViewURL"
-                  const:style="dayoverview"
-                  queryDictionary="currentDateQueryParameters"
-                  referenceDate="selectedDate"
-                  canAccess="canAccessApt"
-                  />
-                <br />
-              </var:foreach>
-            </td>
-          </tr>
-        </var:foreach>
-        <var:foreach list="dateRange" item="currentDate">
-          <tr>
-            <td class="dayoverview_content_time">
-              <var:string value="currentDate"
-                const:dateformat="%H:%M"
-                />
-              <br />
-            </td>
-            <td class="dayoverview_content_apts"
-              ondblclick="return newEvent(this);"
-              var:day="currentDayQueryParameters.day"
-              >
-              <var:foreach
-                list="aptsForCurrentDate"
-                item="appointment"
-                >
-                <var:component className="UIxCalInlineAptView"
-                  appointment="appointment"
-                  formatter="aptFormatter"
-                  tooltipFormatter="aptTooltipFormatter"
-                  url="appointmentViewURL"
-                  const:style="dayoverview"
-                  queryDictionary="currentDayQueryParameters"
-                  referenceDate="currentDate"
-                  canAccess="canAccessApt"
-                  />
-                <br />
-              </var:foreach>
-            </td>
-          </tr>
-        </var:foreach>
-      </table>
+      <var:component
+        className="UIxCalDayTable"
+        startDate="startDate"
+        const:CSSClass="dayOverview"
+        const:numberOfDays="1" />
     </div>
   </container>
