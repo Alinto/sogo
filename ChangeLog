@@ -1,5 +1,8 @@
 2006-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayView.m ([UIxCalDayView -labelForDay]):
+	removed method.
+
 	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -weekBeforePrevWeekQueryParameters]) 
 	([UIxCalWeekView -prevWeekQueryParameters]) 
 	([UIxCalWeekView -nextWeekQueryParameters]) 

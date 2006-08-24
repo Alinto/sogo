@@ -96,8 +96,9 @@
   aptDateRanges = [[self appointments] valueForKey: @"startDate"];
   if([aptDateRanges count] != 0) {
     NSCalendarDate *d;
-    
-    aptDateRanges = [aptDateRanges sortedArrayUsingSelector:@selector(compareAscending:)];
+
+    aptDateRanges
+      = [aptDateRanges sortedArrayUsingSelector: @selector(compareAscending:)];
     d   = [aptDateRanges objectAtIndex:0];
     if ([d isDateOnSameDay:min])
       min = (NSCalendarDate *)[d earlierDate:min];
@@ -126,7 +127,6 @@
   }
   return [dates autorelease];
 }
-
 
 /* URLs */
 
@@ -257,16 +257,6 @@
 - (BOOL) hasAptsForCurrentDate
 {
   return [[self aptsForCurrentDate] count] != 0;
-}
-
-- (NSString *) labelForDay
-{
-  SOGoDateFormatter *fmt;
-  
-  fmt = [[SOGoDateFormatter alloc] initWithLocale: [self locale]];
-  [fmt autorelease];
-
-  return [fmt stringForObjectValue: [self startDate]];
 }
 
 - (NSString *) _dayNameWithOffsetFromToday: (int) offset
