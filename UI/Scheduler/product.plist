@@ -53,6 +53,14 @@
           protectedBy = "View";
           pageName    = "UIxCalDayView"; 
         };
+        weekview = {
+          protectedBy = "View";
+          pageName    = "UIxCalWeekView"; 
+        };
+        monthview = {
+          protectedBy = "View";
+          pageName    = "UIxCalMonthView"; 
+        };
 
         dayoverview = {
           protectedBy = "View";

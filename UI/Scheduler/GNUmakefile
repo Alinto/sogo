@@ -17,6 +17,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMainView.m		\
 					\
 	UIxCalFilterPanel.m		\
+	UIxCalDayTable.m		\
 					\
 	UIxCalDateSelector.m		\
 					\
