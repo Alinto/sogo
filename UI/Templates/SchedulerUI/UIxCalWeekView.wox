@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="yes"?>
+  <container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
+
+    <a href="#"
+      class="leftNavigationArrow"
+      var:date="prevWeekQueryParameters.day"
+      onclick="return onCalendarGotoDay(this);"
+      ><img rsrc:src="arrow-lft-sharp.gif"/></a>
+    <span class="weeksHeader">
+      <span class="week2"><a href="#"
+          var:date="weekBeforePrevWeekQueryParameters.day"
+          onclick="return onCalendarGotoDay(this);"
+          ><var:string value="weekBeforeLastWeekName"
+            /></a></span
+        ><span class="week1"><a href="#"
+          var:date="prevWeekQueryParameters.day"
+          onclick="return onCalendarGotoDay(this);"
+          ><var:string value="lastWeekName"
+            /></a></span
+        ><span class="week0"><var:string value="currentWeekName" /></span
+        ><span class="week1"><a href="#"
+          var:date="nextWeekQueryParameters.day"
+          onclick="return onCalendarGotoDay(this);"
+          ><var:string value="nextWeekName"
+            /></a></span
+        ><span class="week2"><a href="#"
+          var:date="weekAfterNextWeekQueryParameters.day"
+          onclick="return onCalendarGotoDay(this);"
+          ><var:string value="weekAfterNextWeekName"
+            /></a></span
+        ></span>
+    <a href="#"
+      class="rightNavigationArrow"
+      var:date="nextWeekQueryParameters.day"
+      onclick="return onCalendarGotoDay(this);"
+      ><img rsrc:src="arrow-rit-sharp.gif"/></a>
+
+    <div id="calendarContent">
+      <var:component
+        className="UIxCalDayTable"
+        startDate="startDate"
+        const:CSSClass="weekOverview"
+        const:numberOfDays="7" />
+    </div>
+  </container>

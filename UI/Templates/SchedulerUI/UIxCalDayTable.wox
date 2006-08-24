@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="yes"?>
+  <container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
+    <table
+      var:class="cssClass"
+      var:id="cssId">
+      <tr>
+        <td class="nullHeader">
+        </td>
+        <var:foreach list="daysToDisplay" item="currentTableDay"
+          ><td class="header"><var:string value="labelForDay"/></td
+            ></var:foreach>
+      </tr>
+
+      <var:if condition="hasHolidayInfo">
+        <tr>
+          <td class="hourOfDay" colspan="2">
+            <b><var:string value="holidayInfo.title" /></b>
+          </td>
+        </tr>
+      </var:if>
+
+      <var:foreach list="allDayApts" item="appointment">
+        <tr>
+          <td class="hourOfDay">
+            <var:entity name="nbsp" />
+          </td>
+          <td class="contentOfDay" width="90%">
+            <var:foreach list="allDayApts" item="appointment">
+              <var:component className="UIxCalInlineAptView"
+                appointment="appointment"
+                formatter="aptFormatter"
+                tooltipFormatter="aptTooltipFormatter"
+                url="appointmentViewURL"
+                const:style="dayoverview"
+                queryDictionary="currentDateQueryParameters"
+                referenceDate="selectedDate"
+                canAccess="canAccessApt"
+                />
+              <br />
+            </var:foreach>
+          </td>
+        </tr>
+      </var:foreach>
+
+      <var:foreach list="hoursToDisplay" item="currentTableHour">
+        <tr>
+          <td class="hourOfDay">
+            <var:string value="currentTableHour"
+              />:00
+          </td>
+          <var:foreach list="daysToDisplay" item="currentTableDay"
+            ><td class="contentOfDay"
+              ondblclick="return newEvent(this);"
+              var:day="currentDayQueryParameters.day"
+              ><var:foreach
+                list="aptsForCurrentDate"
+                item="appointment"
+                >
+                <var:component className="UIxCalInlineAptView"
+                  appointment="appointment"
+                  formatter="aptFormatter"
+                  tooltipFormatter="aptTooltipFormatter"
+                  url="appointmentViewURL"
+                  const:style="dayoverview"
+                  queryDictionary="currentDayQueryParameters"
+                  referenceDate="currentDate"
+                  canAccess="canAccessApt"
+                  />
+                <br />
+              </var:foreach
+            ></td>
+          </var:foreach>
+        </tr>
+      </var:foreach>
+    </table>
+  </container>
