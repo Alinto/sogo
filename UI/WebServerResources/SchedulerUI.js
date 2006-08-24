@@ -1,68 +1,10 @@
-var activeAjaxRequests = 0;
-
 var sortOrder = '';
 var sortKey = '';
 var listFilter = 'view_all';
 
-function triggerAjaxRequest(url, callback, userdata) {
-  this.http = createHTTPClient();
-
-  activeAjaxRequests += 1;
-  document.animTimer = setTimeout("checkAjaxRequestsState();", 200);
-
-  if (http) {
-    http.onreadystatechange
-      = function() {
-//         log ("state changed (" + http.readyState + "): " + url);
-        try {
-          if (http.readyState == 4
-              && activeAjaxRequests > 0) {
-                if (!http.aborted) {
-                  http.callbackData = userdata;
-                  callback(http);
-                }
-                activeAjaxRequests -= 1;
-                checkAjaxRequestsState();
-              }
-        }
-        catch( e ) {
-          activeAjaxRequests -= 1;
-          checkAjaxRequestsState();
-          alert('AJAX Request, Caught Exception: ' + e.description);
-        }
-      };
-    http.url = url;
-    http.open("GET", url, true);
-    http.send("");
-  }
-
-  return http;
-}
-
-function checkAjaxRequestsState()
-{
-  if (activeAjaxRequests > 0
-      && !document.busyAnim) {
-    var anim = document.createElement("img");
-    document.busyAnim = anim;
-    anim.setAttribute("src", ResourcesURL + '/busy.gif');
-    anim.style.position = "absolute;";
-    anim.style.top = "2.5em;";
-    anim.style.right = "1em;";
-    anim.style.visibility = "hidden;";
-    anim.style.zindex = "1;";
-    var folderTree = document.getElementById("toolbar");
-    folderTree.appendChild(anim);
-    anim.style.visibility = "visible;";
-  } else if (activeAjaxRequests == 0
-	     && document.busyAnim) {
-    document.busyAnim.parentNode.removeChild(document.busyAnim);
-    document.busyAnim = null;
-  }
-}
-
 var currentDay = '';
-var currentView = 'day';
+var currentCalendarDay = '';
+var currentView = 'dayview';
 
 function newEvent(sender) {
   var urlstr = ApplicationBaseURL + "new";
@@ -84,7 +26,7 @@ function _editEventId(id) {
 }
 
 function editEvent() {
-  var list = document.getElementById("appointmentsList");
+  var list = $("appointmentsList");
   var nodes = list.getSelectedRowsId();
 
   if (nodes.length > 0) {
@@ -156,7 +98,7 @@ function onDaySelect(node)
   selectNode(td);
   document.selectedDate = td;
 
-  changeDayDisplay(currentDay, null);
+  changeCalendarDisplay(currentDay, null);
   if (listFilter == 'view_selectedday')
     refreshAppointments();
 
@@ -176,14 +118,14 @@ function onCalendarGotoDay(node)
 {
   var day = node.getAttribute("date");
 
-  changeDayDisplay(day);
+  changeCalendarDisplay(day);
 
   return false;
 }
 
 function gotoToday()
 {
-  changeDayDisplay();
+  changeCalendarDisplay();
   changeDateSelectorDisplay();
 
   return false;
@@ -191,7 +133,7 @@ function gotoToday()
 
 function dateSelectorCallback(http)
 {
-  var div = document.getElementById("dateSelectorView");
+  var div = $("dateSelectorView");
 
   log ("dateselectorcallback: " + div);
 
@@ -208,7 +150,7 @@ function dateSelectorCallback(http)
 
 function appointmentsListCallback(http)
 {
-  var div = document.getElementById("appointmentsListView");
+  var div = $("appointmentsListView");
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -278,14 +220,18 @@ function changeDateSelectorDisplay(day, event)
 //   log ('should go to ' + day);
 }
 
-function changeDayDisplay(day)
+function changeCalendarDisplay(day, newView)
 {
-  var url = ApplicationBaseURL + "dayview";
+  var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
+  if (!day)
+    day = currentCalendarDay;
   if (day)
     url += "?day=" + day;
 
-  log ("changeDayDisplay: " + url);
+  if (newView)
+    log ("switching to view: " + newView);
+//   log ("changeCalendarDisplay: " + url);
 
   if (document.dayDisplayAjaxRequest) {
 //     log ("aborting day ajaxrq");
@@ -293,21 +239,48 @@ function changeDayDisplay(day)
     document.dayDisplayAjaxRequest.abort();
   }
   document.dayDisplayAjaxRequest = triggerAjaxRequest(url,
-                                                      dayDisplayCallback,
-                                                      null);
+                                                      calendarDisplayCallback,
+                                                      { "view": newView,
+                                                        "day": day });
 
   return false;
 }
 
-function dayDisplayCallback(http)
-{
-  var div = document.getElementById("calendarView");
+function _ensureView(view) {
+  if (currentView != view)
+    changeCalendarDisplay(null, view);
 
-  log ("daydisplaycallback: " + div);
+  return false;
+}
+
+function onDayOverview()
+{
+  return _ensureView("dayview");
+}
+
+function onWeekOverview()
+{
+  return _ensureView("weekview");
+}
+
+function onMonthOverview()
+{
+  return _ensureView("monthview");
+}
+
+function calendarDisplayCallback(http)
+{
+  var div = $("calendarView");
+
+//   log ("calendardisplaycallback: " + div);
   if (http.readyState == 4
       && http.status == 200) {
     document.dateSelectorAjaxRequest = null;
     div.innerHTML = http.responseText;
+    if (http.callbackData["view"])
+      currentView = http.callbackData["view"];
+    if (http.callbackData["day"])
+      currentCalendarDay = http.callbackData["day"];
   }
   else
     log ("ajax fuckage");
@@ -318,7 +291,7 @@ function popupCalendar(node)
   var inputId = node.getAttribute("inputId");
   var dateFormat = node.getAttribute("dateFormat");
 
-  var calendar = new skycalendar(document.getElementById(inputId));
+  var calendar = new skycalendar($(inputId));
   calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
   calendar.setDateFormat(dateFormat);
   calendar.popup();
@@ -328,15 +301,15 @@ function popupCalendar(node)
 
 function onAppointmentContextMenu(event, element)
 {
-  var topNode = document.getElementById('appointmentsList');
+  var topNode = $('appointmentsList');
   log(topNode);
 
-  var menu = document.getElementById('appointmentsListMenu');
+  var menu = $('appointmentsListMenu');
 
   menu.addEventListener("hideMenu", onAppointmentContextMenuHide, false);
   onMenuClick(event, 'appointmentsListMenu');
 
-  var topNode = document.getElementById('appointmentsList');
+  var topNode = $('appointmentsList');
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
@@ -348,7 +321,7 @@ function onAppointmentContextMenu(event, element)
 
 function onAppointmentContextMenuHide(event)
 {
-  var topNode = document.getElementById('appointmentsList');
+  var topNode = $('appointmentsList');
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -357,7 +330,7 @@ function onAppointmentContextMenuHide(event)
   if (topNode.menuSelectedRows) {
     var nodeIds = topNode.menuSelectedRows;
     for (var i = 0; i < nodeIds.length; i++) {
-      var node = document.getElementById(nodeIds[i]);
+      var node = $(nodeIds[i]);
       selectNode (node);
     }
     topNode.menuSelectedRows = null;
@@ -398,7 +371,7 @@ function refreshAppointments() {
 }
 
 function onListFilterChange() {
-  var node = document.getElementById("filterpopup");
+  var node = $("filterpopup");
 
   listFilter = node.value;
 //   log ("listFilter = " + listFilter);
@@ -409,7 +382,7 @@ function onListFilterChange() {
 function onAppointmentClick(event)
 {
   var node = event.target.getParentWithTagName("tr");
-  changeDayDisplay(node.getAttribute("day"));
+  changeCalendarDisplay(node.getAttribute("day"));
 
   return onRowClick(event);
 }
@@ -455,7 +428,7 @@ function popupMonthMenu(event, menuId)
     if (document.currentPopupMenu)
       hideMenu(event, document.currentPopupMenu);
 
-    var popup = document.getElementById(menuId);
+    var popup = $(menuId);
     var id = node.getAttribute("id");
     if (id == "monthLabel")
       selectMonthInMenu(popup, node.getAttribute("month"));
@@ -477,7 +450,7 @@ function popupMonthMenu(event, menuId)
 function onMonthMenuItemClick(node)
 {
   var month = '' + node.getAttribute("month");
-  var year = '' + document.getElementById("yearLabel").innerHTML;
+  var year = '' + $("yearLabel").innerHTML;
 
   changeDateSelectorDisplay(year+month+"01");
 
@@ -486,7 +459,7 @@ function onMonthMenuItemClick(node)
 
 function onYearMenuItemClick(node)
 {
-  var month = '' + document.getElementById("monthLabel").getAttribute("month");;
+  var month = '' + $("monthLabel").getAttribute("month");;
   var year = '' + node.innerHTML;
 
   changeDateSelectorDisplay(year+month+"01");

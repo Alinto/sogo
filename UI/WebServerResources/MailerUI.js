@@ -440,66 +440,6 @@ function uixDeleteSelectedMessages(sender) {
   return false;
 }
 
-/* ajax mailbox handling */
-
-var activeAjaxRequests = 0;
-
-function triggerAjaxRequest(url, callback, userdata) {
-  var http = createHTTPClient();
-
-  activeAjaxRequests += 1;
-  document.animTimer = setTimeout("checkAjaxRequestsState();", 200);
-
-  if (http) {
-    http.onreadystatechange
-      = function() {
-        try {
-          if (http.readyState == 4
-              && activeAjaxRequests > 0) {
-                if (!http.aborted) {
-                  http.callbackData = userdata;
-                  callback(http);
-                }
-                activeAjaxRequests -= 1;
-                checkAjaxRequestsState();
-              }
-        }
-        catch( e ) {
-          activeAjaxRequests -= 1;
-          checkAjaxRequestsState();
-          alert('AJAX Request, Caught Exception: ' + e.description);
-        }
-      };
-    http.url = url;
-    http.open("GET", url, true);
-    http.send("");
-  }
-
-  return http;
-}
-
-function checkAjaxRequestsState()
-{
-  if (activeAjaxRequests > 0
-      && !document.busyAnim) {
-    var anim = document.createElement("img");
-    document.busyAnim = anim;
-    anim.setAttribute("src", ResourcesURL + '/busy.gif');
-    anim.style.position = "absolute;";
-    anim.style.top = "2.5em;";
-    anim.style.right = "1em;";
-    anim.style.visibility = "hidden;";
-    anim.style.zindex = "1;";
-    var folderTree = document.getElementById("toolbar");
-    folderTree.appendChild(anim);
-    anim.style.visibility = "visible;";
-  } else if (activeAjaxRequests == 0
-	     && document.busyAnim) {
-    document.busyAnim.parentNode.removeChild(document.busyAnim);
-    document.busyAnim = null;
-  }
-}
-
 function onMailboxTreeItemClick(element)
 {
   var topNode = document.getElementById('d');

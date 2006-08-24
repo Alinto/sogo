@@ -10,7 +10,7 @@ body
   right: 0px;
   bottom: 0px;
   color: #000000;
-  font-family: Bitstream Vera Sans, Verdana, Tahoma, Arial, Helvetica, Geneva, sans-serif;
+  font-family: sans-serif;
   font-size: small;
   background-color: #dbdad5;
   border: 0px;
@@ -316,8 +316,10 @@ TEXTAREA
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
 }
 
-INPUT.button, INPUT.button:hover
+INPUT.button
 {
+  margin: 0px;
+  padding: 0px .5em;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
   border-bottom: 2px solid #888;
@@ -330,7 +332,7 @@ INPUT.button, INPUT.button:hover
 
 INPUT.button:active
 {
-  -moz-outline: 0px;
+  -moz-outline: none;
   margin: 0px;
   padding: 0px .5em;
   color: -moz-buttonhovertext;
@@ -657,6 +659,7 @@ td img.tbtv_sortcell
 td.tbtv_subject_headercell
 { 
   width: 50%;
+  overflow: hidden;
 }
 
 /* drag handles */

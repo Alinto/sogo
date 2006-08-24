@@ -27,6 +27,8 @@
 var logConsole;
 var queryParameters;
 
+var activeAjaxRequests = 0;
+
 // logArea = null;
 var allDocumentElements = null;
 
@@ -169,6 +171,63 @@ function createHTTPClient() {
   try { return new ActiveXObject("Microsoft.XMLHTTP"); } 
   catch (e) { }
   return null;
+}
+
+function triggerAjaxRequest(url, callback, userdata) {
+  this.http = createHTTPClient();
+
+  activeAjaxRequests += 1;
+  document.animTimer = setTimeout("checkAjaxRequestsState();", 200);
+
+  if (http) {
+    http.onreadystatechange
+      = function() {
+//         log ("state changed (" + http.readyState + "): " + url);
+        try {
+          if (http.readyState == 4
+              && activeAjaxRequests > 0) {
+                if (!http.aborted) {
+                  http.callbackData = userdata;
+                  callback(http);
+                }
+                activeAjaxRequests -= 1;
+                checkAjaxRequestsState();
+              }
+        }
+        catch( e ) {
+          activeAjaxRequests -= 1;
+          checkAjaxRequestsState();
+          alert('AJAX Request, Caught Exception: ' + e.description);
+        }
+      };
+    http.url = url;
+    http.open("GET", url, true);
+    http.send("");
+  }
+
+  return http;
+}
+
+function checkAjaxRequestsState()
+{
+  if (activeAjaxRequests > 0
+      && !document.busyAnim) {
+    var anim = document.createElement("img");
+    document.busyAnim = anim;
+    anim.setAttribute("src", ResourcesURL + '/busy.gif');
+    anim.style.position = "absolute;";
+    anim.style.top = "2.5em;";
+    anim.style.right = "1em;";
+    anim.style.visibility = "hidden;";
+    anim.style.zindex = "1;";
+    var folderTree = document.getElementById("toolbar");
+    folderTree.appendChild(anim);
+    anim.style.visibility = "visible;";
+  } else if (activeAjaxRequests == 0
+	     && document.busyAnim) {
+    document.busyAnim.parentNode.removeChild(document.busyAnim);
+    document.busyAnim = null;
+  }
 }
 
 function resetSelection(win) {

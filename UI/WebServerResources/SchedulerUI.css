@@ -123,12 +123,12 @@ DIV#calendarView A
   padding: .4em .2em;
 }
 
-#leftArrow
+#dateSelector #header #leftArrow
 {
   float: left;
 }
 
-#rightArrow
+#dateSelector #header #rightArrow
 {
   float: right;
 }
@@ -206,25 +206,37 @@ TABLE#appointmentsList TR._selected TD
   color: #fff;
 }
 
-TABLE.dayoverview_content
-{ margin: 0px;
-  padding: 0px .5em;
+TABLE.dayOverview,
+TABLE.weekOverview
+{
+  margin: 0 auto;
+  padding: 1em;
   border-collapse: collapse; }
 
-TABLE.dayoverview_content TD
+TABLE.dayOverview TD,
+TABLE.weekOverview TD
 { border: 1px solid #99f; }
 
-TABLE.dayoverview_content TD.header
+TABLE.dayOverview TD.header
 { text-align: center;
   color: #77a;
-  width: 90%;
+  width: 100%;
   font-weight: bold;
   background: #eef; }
 
-TABLE.dayoverview_content TD.nullheader
+TABLE.weekOverview TD.header
+{ text-align: center;
+  color: #77a;
+  width: 15%;
+  font-weight: bold;
+  background: #eef; }
+
+TABLE.dayOverview TD.nullheader,
+TABLE.weekOverview TD.nullheader
 { border: 0px solid #fff; }
 
-TABLE.dayoverview_content TD.dayoverview_content_time
+TABLE.dayOverview TD.hourOfDay,
+TABLE.weekOverview TD.hourOfDay
 { text-align: right;
   vertical-align: top;
   height: 4em;
@@ -233,24 +245,70 @@ TABLE.dayoverview_content TD.dayoverview_content_time
   color: #77a;
   background: #eef; }
 
-SPAN.daysHeader
+SPAN.daysHeader,
+SPAN.weeksHeader
 { display: block;
   white-space: nowrap;
+  background: #dbdad5;
+  overflow: hidden;
   width: 100%;
-  margin: .2em 0px;
-  padding: 0px;
-  text-align: center; }
+  margin: 0px;
+  height: 2.5em;
+  padding: .1em 1.5em;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #ccc; }
 
-SPAN.daysHeader SPAN
-{ margin: .2em 5%;
+SPAN.daysHeader SPAN,
+SPAN.weeksHeader SPAN
+{ display: block;
+  margin: .1em;
+  float: left;
+  width: 18%;
+  padding: 0px;
+  text-align: center;
+  border: 1px solid transparent;
   vertical-align: top; }
 
-.day2
+SPAN.daysHeader A,
+SPAN.weeksHeader A
+{ padding: 0px .5em; }
+
+A.leftNavigationArrow,
+A.rightNavigationArrow
+{ border: 1px solid transparent;
+  padding: .5em;
+  text-align: center;
+  vertical-align: bottom; }
+
+A.leftNavigationArrow:hover,
+A.rightNavigationArrow:hover,
+SPAN.daysHeader A:hover,
+SPAN.weeksHeader A:hover
+{ border-left: 1px solid #fff;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc; }
+
+A.leftNavigationArrow:active,
+A.rightNavigationArrow:active,
+SPAN.daysHeader A:active,
+SPAN.weeksHeader A:active
+{ border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff; }
+
+.week2
+{
+  font-size: small;
+}
+
+.day2, .week1
 {
   font-size: medium;
 }
 
-.day1
+.day1, .week0
 {
   font-size: large;
 }
@@ -260,11 +318,19 @@ SPAN.daysHeader SPAN
   font-size: x-large;
 }
 
+.day0, .week0
+{ border-top: 1px solid #aaa !important;
+  border-left: 1px solid #aaa !important;
+  border-bottom: 1px solid #fff !important;
+  border-right: 1px solid #fff !important;
+  background: #ccc;
+  color: #222; }
+
 A.leftNavigationArrow
 {
   position: absolute;
   display: block;
-  top: 1em;
+  top: .5em;
   left: .5em;
 }
 
@@ -272,7 +338,7 @@ A.rightNavigationArrow
 {
   position: absolute;
   display: block;
-  top: 1em;
+  top: .5em;
   right: .5em;
 }
 
@@ -280,7 +346,8 @@ DIV#calendarContent
 {
   position: absolute;
   top: 3em;
-  width: 100%;
+  padding: 0px;
+  margin: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -297,3 +364,8 @@ DIV#calendarContent
   background: #ccc;
   color: #222;
 }
+
+SPAN.appointmentView
+{ display: block;
+  background: #dd0;
+  border: 1px dashed #990; }
