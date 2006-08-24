@@ -1,5 +1,17 @@
 2006-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -weekBeforePrevWeekQueryParameters]) 
+	([UIxCalWeekView -prevWeekQueryParameters]) 
+	([UIxCalWeekView -nextWeekQueryParameters]) 
+	([UIxCalWeekView -weekAfterNextWeekQueryParameters]): new methods
+	that return the dates relatively to the current day.
+	([UIxCalWeekView -lastWeekName]) 
+	([UIxCalWeekView -currentWeekName]) 
+	([UIxCalWeekView -nextWeekName]) 
+	([UIxCalWeekView -weekAfterNextWeekName]) 
+	([UIxCalWeekView -_weekNumberWithOffsetFromToday:offset]): new
+	methods that returns the label for the corresponding weeks.
+
 	* UI/Scheduler/UIxCalDayTable.[hm]: new class module/component
 	used by UIxCalDayView and UIxCalWeekView to display the events
 	occuring in one or more days.
