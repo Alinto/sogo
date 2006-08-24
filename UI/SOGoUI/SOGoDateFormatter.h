@@ -42,6 +42,8 @@
 
 - (NSString *)stringForObjectValue:(id)_obj;
 
+- (NSString *)shortDayOfWeek:(int)_day;
+
 @end
 
 #endif	/* __SOGoDateFormatter_H_ */
