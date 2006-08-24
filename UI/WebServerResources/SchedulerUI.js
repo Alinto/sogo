@@ -154,18 +154,11 @@ function appointmentsListCallback(http)
 
   if (http.readyState == 4
       && http.status == 200) {
-//     log ("babla");
     document.dateSelectorAjaxRequest = null;
-//     log ("babla");
     div.innerHTML = http.responseText;
-//     log ("babla");
-
-//     log ("received " + http.callbackData);
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
-
-//     log ("sorting = " + sortKey + sortOrder);
   }
   else
     log ("ajax fuckage");
@@ -342,13 +335,13 @@ function onAppointmentsSelectionChange()
 }
 
 function _loadAppointmentHref(href) {
-  if (this.document.appointmentsListAjaxRequest) {
-    this.document.appointmentsListAjaxRequest.aborted = true;
-    this.document.appointmentsListAjaxRequest.abort();
+  if (document.appointmentsListAjaxRequest) {
+    document.appointmentsListAjaxRequest.aborted = true;
+    document.appointmentsListAjaxRequest.abort();
   }
   url = ApplicationBaseURL + href;
-//   log ("url: " + url);
-  this.document.appointmentsListAjaxRequest
+
+  document.appointmentsListAjaxRequest
     = triggerAjaxRequest(url, appointmentsListCallback, href);
 
   return false;
@@ -356,18 +349,14 @@ function _loadAppointmentHref(href) {
 
 function onHeaderClick(node)
 {
-  var href = node.getAttribute("href");
-
-  return _loadAppointmentHref(href);
+  return _loadAppointmentHref(node.getAttribute("href"));
 }
 
 function refreshAppointments() {
-  var href = ("aptlist?desc=" + sortOrder
-              + "&sort=" + sortKey
-              + "&day=" + currentDay
-              + "&filterpopup=" + listFilter);
-
-  return _loadAppointmentHref(href);
+  return _loadAppointmentHref("aptlist?desc=" + sortOrder
+                              + "&sort=" + sortKey
+                              + "&day=" + currentDay
+                              + "&filterpopup=" + listFilter);
 }
 
 function onListFilterChange() {

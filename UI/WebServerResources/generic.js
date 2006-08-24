@@ -144,23 +144,6 @@ function sanitizeMailTo(dirtyMailTo) {
   return mailto;
 }
 
-/* escaping */
-
-function escapeHTML(s) {
-        s = s.replace(/&/g, "&amp;");
-        s = s.replace(/</g, "&lt;");
-        s = s.replace(/>/g, "&gt;");
-        s = s.replace(/\"/g, "&quot;");
-        return s;
-}
-function unescapeHTML(s) {
-        s = s.replace(/&lt;/g, "<");
-        s = s.replace(/&gt;/g, ">");
-        s = s.replace(/&quot;/g, '"');
-        s = s.replace(/&amp;/g, "&");
-        return s;
-}
-
 function createHTTPClient() {
   // http://developer.apple.com/internet/webcontent/xmlhttpreq.html
   if (typeof XMLHttpRequest != "undefined")
@@ -170,11 +153,12 @@ function createHTTPClient() {
   catch (e) { }
   try { return new ActiveXObject("Microsoft.XMLHTTP"); } 
   catch (e) { }
+
   return null;
 }
 
 function triggerAjaxRequest(url, callback, userdata) {
-  this.http = createHTTPClient();
+  var http = createHTTPClient();
 
   activeAjaxRequests += 1;
   document.animTimer = setTimeout("checkAjaxRequestsState();", 200);

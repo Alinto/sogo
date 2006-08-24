@@ -99,7 +99,7 @@ function submitMeeting(thisForm) {
 
   thisForm.submit();
 
-  opener.window.refreshAppointments();
+  window.opener.setTimeout('refreshAppointments();', 200);
 
   window.close();
 }
