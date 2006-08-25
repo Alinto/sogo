@@ -246,3 +246,6 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Day View" = "Par jour";
 "Week View" = "Par semaine";
 "Month View" = "Par mois";
+
+/* confirmations */
+"appointmentDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
