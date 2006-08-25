@@ -41,13 +41,14 @@
         ></tr>
 
     <var:foreach list="fetchCoreInfos" item="currentAppointment"
-      ><tr class="tableview"
+      ><tr class="tableview appointmentRow"
         var:id="currentAppointment.uid"
         onclick="return onAppointmentClick(event);"
         ondblclick="return editDoubleClickedEvent(this);"
         oncontextmenu="return onAppointmentContextMenu(event, this);"
         var:day="currentSerialDay"
         ><td onmousedown="return false;"
+          class="subjectCell"
           ><var:string value="currentAppointment.title"
             const:escapeHTML="NO"
             /></td

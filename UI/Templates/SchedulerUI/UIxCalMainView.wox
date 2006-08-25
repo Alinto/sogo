@@ -46,12 +46,12 @@
           ><var:string label:value="Edit Selected Event..."/></li>
         <li
           onmousedown="return false;"
-          onmouseup="onDeleteSelectedEvent();"
+          onmouseup="deleteEvent();"
           ><var:string label:value="Delete Selected Event"/></li>
         <li class="separator"></li>
         <li
           onmousedown="return false;"
-          onmouseup="onSelectAll(this);"
+          onmouseup="onSelectAll();"
           ><var:string label:value="Select All"/></li>
         <li class="separator"></li>
         <li
@@ -66,10 +66,21 @@
     </div>
 
     <div id="leftPanel">
-      <div id="dateSelectorView"
-        ><var:component className="UIxCalDateSelector"
-          selectedDate="thisMonth"
-          /></div>
+      <div class="tabsContainer" id="schedulerTabs">
+        <ul>
+          <li target="dateSelectorView"><var:string label:value="Date" /></li>
+          <li target="calendarSelectorView"><var:string label:value="Calendars" /></li>
+        </ul>
+
+        <div id="dateSelectorView"
+          class="tab"
+          ><var:component className="UIxCalDateSelector"
+            selectedDate="thisMonth"
+            /></div>
+        <div id="calendarSelectorView"
+          class="tab"
+          >Soon...</div>
+      </div>
 
       <div id="leftDragHandle"
         class="dragHandle"

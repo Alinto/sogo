@@ -9,9 +9,6 @@
     const:popup="YES"
     title="name"
     >
-    <var:js-stringtable const:framework="SchedulerUI.SOGo"
-      const:identifier="labels" />
-    
     <form var:href="clientObject.baseURL" name="editform"
       onsubmit="return validateAptEditor()">
 

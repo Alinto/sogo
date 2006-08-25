@@ -8,12 +8,7 @@
     className="UIxPageFrame"
     title="name"
     const:popup="YES"
-
     >
-
-    <var:js-stringtable const:framework="ContactsUI.SOGo"
-      const:identifier="labels" />
-    
     <style>
       table.editsec {
       background-color: #e8e8e0;
