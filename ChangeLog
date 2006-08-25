@@ -1,5 +1,9 @@
 2006-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.{css,js}: added a tabview with
+	the date selector in the first page and the container of the
+	future calendar selector in the second page.
+
 	* UI/WebServerResources/generic.js: added code for handling tabbed
 	views.
 
