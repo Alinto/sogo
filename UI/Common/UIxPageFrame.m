@@ -143,6 +143,15 @@
   return [self urlForResourceFilename: fwJSFilename];
 }
 
+- (NSString *) productFrameworkName
+{
+  WOComponent *page;
+
+  page = [[self context] page];
+
+  return [NSString stringWithFormat: @"%@.SOGo", [page frameworkName]];
+}
+
 - (BOOL) hasPageSpecificJavaScript
 {
   return ([[self pageJavaScriptURL] length] > 0);
@@ -175,6 +184,11 @@
 			   [page frameworkName]];
   
   return [self urlForResourceFilename: fwJSFilename];
+}
+
+- (NSString *) thisPageURL
+{
+  return [[[self context] page] uri];
 }
 
 - (BOOL) hasPageSpecificCSS

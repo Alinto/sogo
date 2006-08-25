@@ -45,6 +45,8 @@
 - (BOOL) hasPageSpecificCSS;
 - (BOOL) hasProductSpecificCSS;
 
+- (NSString *) productFrameworkName;
+
 - (void) setPopup: (BOOL) popup;
 - (BOOL) isPopup;
 
