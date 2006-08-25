@@ -1,5 +1,9 @@
 2006-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js: fixed the AJAX
+	exception by invoking a timeout on the opener rather than invoking
+	the list refresh method.
+
 	* UI/Scheduler/UIxCalDayView.m ([UIxCalDayView -labelForDay]):
 	removed method.
 
