@@ -82,7 +82,7 @@ a:hover {
 
 /* tabs */
 
-.tab {
+.oldtab {
   color: #000000;
   background-color: #e8e8e0;
   text-decoration: none;
@@ -92,13 +92,13 @@ a:hover {
   border-right: 1px solid #06348b;
 }
 
-.tab a {
+.oldtab a {
   color: #000000;
   border: none;
   text-decoration: none;
 }
 
-.tab_selected {
+.oldtab_selected {
   color: #000000;
   background-color: #f5f5e9;
   text-decoration: none;
@@ -109,13 +109,13 @@ a:hover {
   border-right: 1px solid #06348b;
 }
 
-.tab_selected a {
+.oldtab_selected a {
   color: #000000;
   border: none;
   text-decoration: none;
 }
 
-.tabview_body {
+.oldtabview_body {
   background-color: #f5f5e9;
 }
 
@@ -353,7 +353,7 @@ INPUT.button:active
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   margin: 0px;
   padding: 1px 0px;
-  height: 3.8em;
+  height: 3.54em;
   background-color: #dbdad5;
   -moz-appearance: toolbar !important;
   white-space: nowrap;
@@ -656,9 +656,9 @@ td img.tbtv_sortcell
   height: 12px;
 }
 
+TD.subjectCell,
 td.tbtv_subject_headercell
 { 
-  width: 50%;
   overflow: hidden;
 }
 
@@ -693,4 +693,144 @@ INPUT#searchValue
   background-repeat: no-repeat;
   background-position: 2px 2px;
   color: #aaa;
+}
+
+DIV#noJavascriptError
+{ 
+  position: absolute;
+  background: #aaa;
+  -moz-opacity: 0.6;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  text-align: center;
+}
+
+DIV.noJavascriptErrorMessage
+{ 
+  position: absolute;
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  padding: 1em;
+  top: 10em;
+  left: 10em;
+  width: 24em;
+  margin: 0px auto;
+  background: #fff;
+  -moz-opacity: 1.0;
+  color: #000;
+  background: #dedede;
+}
+
+DIV.noJavascriptErrorMessage A
+{
+  float: right;
+  cursor: default;
+  margin: 0px auto;
+  padding: .2em;
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  text-decoration: none;
+  color: inherit;
+}
+
+DIV.noJavascriptErrorMessage A:hover
+{ 
+  color: inherit;
+  background: -moz-buttonhoverface;
+}
+
+DIV.noJavascriptErrorMessage A:active
+{
+  color: -moz-buttonhovertext;
+  background-color: #c4c2bd;
+  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+}
+
+/* tabs */
+DIV.tabsContainer
+{ 
+  position: relative;
+  color: #000;
+  background: #dbdad5;
+  margin-top: 1.5em;
+  padding-top: 1em;
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-right: 2px solid #888;
+  border-bottom: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+}
+
+DIV.tabsContainer UL
+{
+  cursor: default;
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0px;
+  margin-top: -2.4em;
+  padding: 0px;
+}
+
+DIV.tabsContainer UL LI
+{
+  z-index: 3;
+  float: left;
+  padding: 0em .5em;
+  padding-top: 1px;
+  border-top: 2px solid #fffffb;
+  border-bottom: 0px solid #fffffb;
+  border-right: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  color: #000;
+  background: #fff;
+  background: #c4c2bd;
+}
+
+DIV.tabsContainer UL LI.first,
+DIV.tabsContainer UL LI.active
+{
+  border-left: 2px solid #fffffb;
+  margin-left: -2px;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+}
+
+DIV.tabsContainer UL LI.active
+{
+  z-index: 5;
+  background: #dbdad5;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-top: -2px;
+}
+
+DIV.tabsContainer DIV.tab
+{
+  position: absolute;
+  top: .5em;
+  left: .5em;
+  right: .5em;
+  bottom: .5em;
+  visibility: hidden;
 }

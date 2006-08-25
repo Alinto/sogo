@@ -909,6 +909,52 @@ function addContact(selectorId, contactId, contactName)
   return false;
 }
 
+/* tabs */
+function initTabs()
+{
+  var containers = document.getElementsByClassName("tabsContainer");
+  for (var x = 0; x < containers.length; x++) {
+    var container = containers[x];
+    var nodes = container.getElementsByTagName("li");
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].addEventListener("mousedown", onTabMouseDown, true);
+      nodes[i].addEventListener("click", onTabClick, true);
+    }
+
+    var firstTab = nodes[0];
+    firstTab.addClassName("first");
+    firstTab.addClassName("active");
+    container.activeTab = firstTab;
+
+    var target = $(firstTab.getAttribute("target"));
+    target.style.visibility = "visible;";
+  }
+}
+
+function onTabMouseDown(event) {
+  event.cancelBubble = true;
+  return false;
+}
+
+function onTabClick(event) {
+  var node = event.target;
+
+  var target = node.getAttribute("target");
+  var container = node.parentNode.parentNode;
+  var oldTarget = container.activeTab.getAttribute("target");
+  var content = $(target);
+  var oldContent = $(oldTarget);
+
+  container.activeTab.removeClassName("active");
+  container.activeTab = node;
+  container.activeTab.addClassName("active");
+
+  oldContent.style.visibility = "hidden;";
+  content.style.visibility = "visible;";
+
+  return false;
+}
+
 /* custom extensions to the DOM api */
 HTMLElement.prototype.addClassName = function(className) {
   var classStr = '' + this.getAttribute("class");
@@ -1025,17 +1071,26 @@ HTMLElement.prototype.getSelectedNodesId = function() {
 }
 
 HTMLTableElement.prototype.getSelectedRows = function() {
-  var rows = new Array();
-
   var tbody = (this.getElementsByTagName('tbody'))[0];
 
   return tbody.getSelectedNodes();
 }
 
 HTMLTableElement.prototype.getSelectedRowsId = function() {
-  var rows = new Array();
-
   var tbody = (this.getElementsByTagName('tbody'))[0];
 
   return tbody.getSelectedNodesId();
+}
+
+HTMLTableElement.prototype.selectRowsMatchingClass = function(className) {
+  var tbody = (this.getElementsByTagName('tbody'))[0];
+  var nodes = tbody.childNodes;
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes.item(i);
+    if (node instanceof HTMLElement ) {
+      var classStr = '' + node.getAttribute("class");
+      if (classStr.indexOf(className, 0) >= 0)
+        selectNode(node);
+    }
+  }
 }

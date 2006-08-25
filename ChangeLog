@@ -1,5 +1,8 @@
 2006-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added code for handling tabbed
+	views.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -productFrameworkName]):
 	returns the bundle name associated to the current running product.
 
