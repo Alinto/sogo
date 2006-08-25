@@ -29,12 +29,39 @@ function editEvent() {
   var list = $("appointmentsList");
   var nodes = list.getSelectedRowsId();
 
-  if (nodes.length > 0) {
-    var row = nodes[0];
-    _editEventId(row);
-  }
+  if (nodes.length > 0)
+    _editEventId(nodes[0]);
 
   return false; /* stop following the link */
+}
+
+function deleteEvent() {
+  var list = $("appointmentsList");
+  var nodes = list.getSelectedRowsId();
+
+  if (nodes.length > 0) {
+    if (confirm(labels["appointmentDeleteConfirmation"])) {
+      var urlstr = ApplicationBaseURL + nodes[0] + "/delete";
+      document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+                                                           deleteEventCallback,
+                                                           nodes[0]);
+    }
+  }
+
+  return false;
+}
+
+function deleteEventCallback(http)
+{
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.deleteEventAjaxRequest = null;
+    var node = $(http.callbackData);
+    log ("deleteEventCallback: " + node);
+    node.parentNode.removeChild(node);
+  }
+  else
+    log ("ajax fuckage");
 }
 
 function editDoubleClickedEvent(node)
@@ -42,6 +69,13 @@ function editDoubleClickedEvent(node)
   var id = node.getAttribute("id");
   _editEventId(id);
   
+  return false;
+}
+
+function onSelectAll() {
+  var list = $("appointmentsList");
+  list.selectRowsMatchingClass("appointmentRow");
+
   return false;
 }
 
@@ -125,6 +159,9 @@ function onCalendarGotoDay(node)
 
 function gotoToday()
 {
+  currentDay = '';
+  currentCalendarDay = '';
+
   changeCalendarDisplay();
   changeDateSelectorDisplay();
 
