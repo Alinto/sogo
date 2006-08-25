@@ -411,7 +411,7 @@ function uixDeleteSelectedMessages(sender) {
   var rows = messageList.getSelectedRows();
 
   for (var i = 0; i < rows.length; i++) {
-    var url, http, rowElem;
+    var url, http;
     
     /* send AJAX request (synchronously) */
     
@@ -431,7 +431,7 @@ function uixDeleteSelectedMessages(sender) {
     /* remove from page */
 
     /* line-through would be nicer, but hiding is OK too */
-    rowElem.parentNode.removeChild(rows[i]);
+    rows[i].parentNode.removeChild(rows[i]);
   }
 
   if (failCount > 0)
