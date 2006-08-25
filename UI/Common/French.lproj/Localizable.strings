@@ -8,3 +8,6 @@
 "User" = "Utilisateur";
 
 "Help" = "Aide";
+
+"noJavascriptError" = "SOGo requiert l'utilisation de Javascript. Veuillez vous assurer que cette option est disponible et activée dans votre fureteur.";
+"noJavascriptRetry" = "Réessayer";
