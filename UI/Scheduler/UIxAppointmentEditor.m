@@ -525,13 +525,13 @@
   
   s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
-		                                      [[self clientObject] nameInContainer],
-		                                      [[NSCalendarDate date] icalString],
-                                          [lStartDate icalString],
-                                          [lEndDate icalString],
-                                          [self transparency],
-                                          [self iCalOrganizerString],
-                                          s];
+                         [[self clientObject] nameInContainer],
+                         [[NSCalendarDate date] icalString],
+                         [lStartDate icalString],
+                         [lEndDate icalString],
+                         [self transparency],
+                         [self iCalOrganizerString],
+                         s];
   return template;
 }
 
