@@ -1,5 +1,9 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-privateContacts:inContext:]): init the SOGoAppointmentFolder's
+	timezone by taking the current user's timezone setting.
+
 	* SoObjects/Appointments/SOGoAptMailNotification.m: same as below.
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

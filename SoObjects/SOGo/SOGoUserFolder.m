@@ -22,7 +22,9 @@
 #import "SOGoUserFolder.h"
 #import "WOContext+Agenor.h"
 #import "common.h"
+#import "SOGoUser.h"
 
+#import "Appointments/SOGoAppointmentFolder.h"
 #import "Contacts/SOGoContactFolders.h"
 
 @implementation SOGoUserFolder
@@ -86,6 +88,8 @@
 - (id)privateCalendar:(NSString *)_key inContext:(id)_ctx {
   static Class calClass = Nil;
   id calendar;
+  NSUserDefaults *userPrefs;
+  NSTimeZone *timeZone;
   
   if (calClass == Nil)
     calClass = NSClassFromString(@"SOGoAppointmentFolder");
@@ -93,9 +97,14 @@
     [self errorWithFormat:@"missing SOGoAppointmentFolder class!"];
     return nil;
   }
-  
+
   calendar = [[calClass alloc] initWithName:_key inContainer:self];
   [calendar setOCSPath:[self ocsPrivateCalendarPath]];
+
+  userPrefs = [[_ctx activeUser] userDefaults];
+  timeZone = [NSTimeZone
+               timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
+  [calendar setTimeZone: timeZone];
   return [calendar autorelease];
 }
 
