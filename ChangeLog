@@ -1,5 +1,8 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTimeDateControl.h: separated interface from
+	UIxTimeDateControl.m.
+
 	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -currentAppointmentDay]) 
 	([UIxCalDayTable -currentAppointmentHour]): new methods that
 	returns correctly formatted values used as attributes for JS code.
