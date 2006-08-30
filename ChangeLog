@@ -1,5 +1,8 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxAppointmentEditor.wox: completely
+	rearranged the layout.
+
 	* UI/WebServerResources/UIxAppointmentEditor.js: added code to
 	manage showing and hiding appointment details.
 

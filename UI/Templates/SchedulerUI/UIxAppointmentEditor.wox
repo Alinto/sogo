@@ -4,333 +4,143 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     const:popup="YES"
     title="name"
     >
-    <form var:href="clientObject.baseURL" name="editform"
+    <script type="text/javascript" rsrc:src="skycalendar.js">
+    </script>
+
+    <form var:href="clientObject.baseURL"
+      name="editform"
       onsubmit="return validateAptEditor()">
 
-      <table cellspacing="0" cellpadding="5" width="100%">
-        <tr>
-          <td>
-            <table cellpadding="0" cellspacing="0" width="100%">
-              <tr>
-                <td width="5"/>
-                <td class="window_label">
-                  <var:string label:value="Appointment editor" /></td>
-                <td width="36" align="right" valign="center">
-                  <var:component className="UIxWinClose" />
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <var:if condition="hasErrorText">
-    	      <div style="background-color: #AA0000;">
-  	        <var:string value="errorText" />
-              </div>
-              <hr />
-            </var:if>
+      <var:if condition="hasErrorText">
+        <p style="background-color: #AA0000;">
+          <var:string value="errorText" />
+        </p>
+        <hr />
+      </var:if>
 
-            <table border="0" cellpadding="2" cellspacing="0" width="100%"
-	      bgcolor="#e8e8e0"
-	      >
-              <tr>
-                <td align="left" colspan="2">
-                  <span class="aptview_title">
-                    <var:string label:value="Appointment on" /> 
-                    <var:string formatter="titleDateFormatter" 
-		      value="aptStartDate" /></span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Start time" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:component className="UIxDatePickerScript" />
-                    <var:component className="UIxTimeDateControl"
-		      const:controlID="startTime"
-		      date="aptStartDate"
-		      />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="End time" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:component className="UIxTimeDateControl"
-		      const:controlID="endTime"
-		      date="aptEndDate"
-		      />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Title" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <input type="text" name="summary" id="summary"
-		      const:size="40" var:value="title" />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Location" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <input type="text" name="location" const:size="40"
-		      var:value="location" />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Priority" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:popup list="priorities" item="item"
-		      string="itemPriorityText" selection="priority"/>
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Cycle" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <table>
-                      <tr>
-                        <td>
-                          <var:popup list="cycles" item="item"
-			    label:string="$cycleLabel"
-			    selection="cycle"
-			    const:onChange="selectHasCycle(this);"
-			    />
-                        </td>
-                        <td id="cycle_end_label"
-			  var:style="initialCycleVisibility"
-			  ><var:string label:value="Cycle End"
-			    const:style="aptview_text"
-                            />:</td>
-                        <td id="cycle_end_mode"
-			  var:style="initialCycleVisibility"
-			  >
-                          <var:popup list="cycleEnds" item="item"
-			    label:string="$item" value="item"
-			    selection="cycleEnd"
-			    const:onChange="selectCycleEnd(this);"
-			    const:id="cycle_end_mode_selection"
-			    />
-                        </td>
-                        <td id="cycle_end_until"
-			  var:style="initialCycleEndUntilVisibility"
-			  >
-                          <var:component className="UIxTimeDateControl"
-			    date="cycleUntilDate"
-			    label="foo"
-			    const:controlID="cycleUntilDate"
-			    const:displayTimeControl="NO"
-			    />
-                        </td>
-                      </tr>
-                    </table>
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Categories" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:checkbox-list list="categoryItems"
-		      item="item"
-		      suffix="itemCategoryText"
-		      selections="categories"
-		      />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Classification" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <input type="checkbox" var:selection="isPrivate"
-		      var:checked="isPrivate" />
-                    <var:string label:value="is private" />
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <table border="0" cellpadding="2" cellspacing="0"
-	      width="100%" bgcolor="#e8e8e0"
-	      >
-              <tr>
-                <td align="left" colspan="2">
-                  <span class="aptview_title">
-                    <var:string label:value="Search participants" /> 
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Participants" />:</span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                 <span class="aptview_text">
-                    <var:component className="UIxContactSelector"
-                      const:selectorId="participants"
-                      contacts="participants"
-                      />
-<!--                    <var:component className="AnaisSelector"
-		      const:selectorID="participant"
-		      const:role="REQ-PARTICIPANT"
-		      attendees="participants"
-		      var:emailForUser="emailForUser"
-		      var:cnForUser="cnForUser"
-		      const:withCN="1"
-		      const:withAddressBook="1"
-		      /> -->
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-<!--        <tr>
-          <td>
-            <table border="0" cellpadding="2" cellspacing="0" width="100%"
-	      bgcolor="#e8e8e0"
-	      >
-              <tr>
-                <td align="left" colspan="2">
-                  <span class="aptview_title">
-                    <var:string label:value="Search resources" />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Resources" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <var:component className="UIxContactSelector"
-                      const:selectorId="rs" />
+      <div>
+        <div class="appointmentLabel"><var:string label:value="Title" /></div>
+        <input type="text" name="summary" id="summary"
+          class="textField"
+          size="60"
+          var:value="title"
+          /><br />
+        <div class="appointmentLabel"><var:string label:value="Location" /></div>
+        <input type="text" name="location"
+          class="textField"
+          size="60"
+          var:value="location"
+          /><br />
+        <div class="appointmentLabel"><var:string label:value="Start time" /></div>
+        <var:component className="UIxTimeDateControl"
+          const:controlID="startTime"
+          var:date="aptStartDate"
+          const:dayStartHour="8"
+          const:dayEndHour="18"
+          /><label><input class="checkBox" type="checkbox" var:selection="isPrivate"
+            var:checked="isPrivate"
+            /><var:string label:value="is private" /></label><br />
+        <br />
+        <div class="appointmentLabel">
+          <var:string label:value="End time" />
+        </div>
+        <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
+          ><var:string label:value="Show Details" /></a>
+        <var:component className="UIxTimeDateControl"
+          const:controlID="endTime"
+          date="aptEndDate"
+          const:dayStartHour="8"
+          const:dayEndHour="18"
+          />
+      </div>
 
-                    <var:component className="AnaisAttendeeSelector"
-		    const:selectorID="resource"
-		    const:role="NON-PARTICIPANT"
-		    attendees="resources"
-		    const:withCN="YES"
-		    const:withAddressBook="YES" 
-                    />
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr> -->
-        <tr>
-          <td>
-            <table border="0" cellpadding="2" cellspacing="0" width="100%"
-	      bgcolor="#e8e8e0"
-	      >
-              <tr>
-                <td align="left" colspan="2">
-                  <span class="aptview_title">
-                    <var:string label:value="Comment" />
-                  </span>
-                </td>
-              </tr>
-              <tr valign="top">
-                <td align="right" width="15%">
-                  <span class="aptview_text">
-                    <var:string label:value="Comment" />:
-                  </span>
-                </td>
-                <td align="left" bgcolor="#FFFFF0">
-                  <span class="aptview_text">
-                    <textarea name="comment" rows="8" cols="80" wrap="physical"
-		      var:value="comment" />
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr valign="top">
-          <td>
-            <span class="aptview_text">
-              <input type="checkbox"
-		var:selection="checkForConflicts"
-		var:checked="checkForConflicts"
-		/> <var:string label:value="check for conflicts" />
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-	    <input
-              type="submit"
-              class="button"
-              label:value="Save"
-              name="save:method"
-	      onclick="submitMeeting(this.form); return false;" />
-            <input
-              type="submit"
-              class="button"
-              label:value="Cancel"
-              name="cancel"
-              onclick="window.close(); return false;" />
-	    <var:if condition="isUIxDebugEnabled">
-	      <input type="submit"
-                class="button"
-                value="Test" name="test:method" />
-	    </var:if>
-          </td>
-        </tr>
-      </table>
+      <div id="details">
+        <div>
+          <div class="appointmentLabel"><var:string label:value="Comment" /></div>
+          <textarea name="comment" rows="8" cols="40"
+            var:value="comment" /><br />
+
+          <div class="appointmentLabel"><var:string label:value="Cycle" /></div>
+          <var:popup list="cycles" item="item"
+            label:string="$cycleLabel"
+            selection="cycle"
+            const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
+            /><br />
+
+          <div class="appointmentLabel"
+            ><span class="cycleSelectionFirstLevel"
+              ><var:string label:value="Cycle End"
+                /></span></div>
+          <span class="cycleSelectionFirstLevel"
+            ><var:popup list="cycleEnds" item="item"
+              label:string="$item" value="item"
+              selection="cycleEnd"
+              const:onChange="toggleCycleVisibility(this, 'cycleSelectionSecondLevel', 'cycle_end_never');"
+              const:id="cycle_end_mode_selection"
+              /><span
+              class="cycleSelectionSecondLevel"
+              ><var:component className="UIxTimeDateControl"
+                date="cycleUntilDate"
+                label="foo"
+                const:controlID="cycleUntilDate"
+                const:displayTimeControl="NO"
+                /></span
+              ></span
+            ><br />
+
+        <div class="appointmentLabel"><var:string label:value="Categories" /></div>
+        <span class="checkBoxList"
+            ><var:checkbox-list list="categoryItems"
+              item="item"
+              suffix="itemCategoryText"
+              selections="categories"
+              /></span>
+        </div>
+
+        <div>
+          <div class="appointmentLabel"><var:string label:value="Participants" /></div>
+          <label id="conflictsLabel"><input type="checkbox"
+              class="checkBox"
+              var:selection="checkForConflicts"
+              var:checked="checkForConflicts"
+              /><var:string label:value="check for conflicts" /></label
+            ><var:component className="UIxContactSelector"
+            const:selectorId="participants"
+            contacts="participants"
+            />
+
+          <div class="appointmentLabel"><var:string label:value="Priority" /></div>
+          <var:popup list="priorities" item="item"
+            string="itemPriorityText" selection="priority" />
+        </div>
+      </div>
+
+      <div id="buttons">
+        <input
+          type="submit"
+          class="button"
+          label:value="Save"
+          name="save:method"
+          onclick="submitMeeting(this.form); return false;" />
+        <input
+          type="submit"
+          class="button"
+          label:value="Cancel"
+          name="cancel"
+          onclick="window.close(); return false;" />
+        <var:if condition="isUIxDebugEnabled">
+          <input type="submit"
+            class="button"
+            value="Test" name="test:method" />
+        </var:if>
+      </div>
+
       <input type="hidden" name="ical" var:value="iCalString" />
       <input type="hidden" id="jsaction" />
     </form>
