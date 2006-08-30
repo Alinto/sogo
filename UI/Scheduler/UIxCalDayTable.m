@@ -161,6 +161,14 @@
   return currentTableDay;
 }
 
+- (NSString *) currentAppointmentDay
+{
+  return [NSString stringWithFormat: @"%d%.2d%.2d",
+                   [currentTableDay yearOfCommonEra],
+                   [currentTableDay monthOfYear],
+                   [currentTableDay dayOfMonth]];
+}
+
 - (void) setCurrentTableHour: (NSString *) aTableHour
 {
   currentTableHour = aTableHour;
@@ -169,6 +177,11 @@
 - (NSString *) currentTableHour
 {
   return currentTableHour;
+}
+
+- (NSString *) currentAppointmentHour
+{
+  return [NSString stringWithFormat: @"%.2d00", [currentTableHour intValue]];
 }
 
 - (NSString *) labelForDay

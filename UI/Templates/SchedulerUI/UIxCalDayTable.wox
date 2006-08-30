@@ -56,7 +56,8 @@
           <var:foreach list="daysToDisplay" item="currentTableDay"
             ><td class="contentOfDay"
               ondblclick="return newEvent(this);"
-              var:day="currentDayQueryParameters.day"
+              var:day="currentAppointmentDay"
+              var:hour="currentAppointmentHour"
               ><var:foreach
                 list="aptsForCurrentDate"
                 item="appointment"
