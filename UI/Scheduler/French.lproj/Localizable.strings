@@ -149,6 +149,9 @@
 "empty title"		= "Titre vide";
 "private appointment"	= "Rendez-vous privé";
 
+"Show Details" = "Afficher les détails";
+"Hide Details" = "Cacher les détails";
+
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION"	= "Décision attendue";
