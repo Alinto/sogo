@@ -616,7 +616,7 @@ function onConfirmContactSelection()
       if (cid)
         {
           var cname = '' + rows[i].getAttribute("contactname");
-          opener.window.log('cid = ' + cid + '; cname = ' + cname );
+          log('cid = ' + cid + '; cname = ' + cname );
           if (cid.length > 0)
             opener.window.addContact(contactSelectorId,
                                      cid,
