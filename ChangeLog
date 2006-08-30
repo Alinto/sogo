@@ -1,5 +1,7 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailNotification.m: same as below.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -changeParticipationStatus:inContext:]):
 	set default timezone to EST, although this code should be

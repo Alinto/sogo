@@ -31,7 +31,7 @@
 @implementation SOGoAptMailNotification
 
 static NSCharacterSet *wsSet  = nil;
-static NSTimeZone     *MET = nil;
+static NSTimeZone     *EST = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -40,7 +40,7 @@ static NSTimeZone     *MET = nil;
   didInit = YES;
 
   wsSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
-  MET   = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
+  EST   = [[NSTimeZone timeZoneWithAbbreviation:@"EST"] retain];
 }
 
 - (void)dealloc {
@@ -86,7 +86,7 @@ static NSTimeZone     *MET = nil;
 
 - (NSTimeZone *)viewTZ {
   if (self->viewTZ) return self->viewTZ;
-  return MET;
+  return EST;
 }
 - (void)setViewTZ:(NSTimeZone *)_viewTZ {
   ASSIGN(self->viewTZ, _viewTZ);
