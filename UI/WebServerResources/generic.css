@@ -287,12 +287,25 @@ DIV.linkbanner A:hover
   text-align: right;
 }
 
-DIV.contactSelector DIV.contactList IMG
+DIV.contactSelector
+{ margin: .5em; }
+
+DIV.contactSelector SPAN A
+{ height: 2em; }
+
+DIV.contactSelector UL.contactList IMG
 { margin: 0px .5em; }
 
 SELECT
-{ -moz-appearance: menulist-button;
-  -moz-outline-radius: 15; }
+{ border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  vertical-align: middle;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  margin: 2px;
+  padding-right: 1px; }
 
 DIV.contactSelector DIV.contactList
 {
@@ -306,8 +319,11 @@ DIV.contactSelector DIV.contactList
   text-align: left;
 }
 
-TEXTAREA
+TEXTAREA,
+INPUT.textField
 {
+  padding: .2em;
+  margin: .15em;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
@@ -328,6 +344,12 @@ INPUT.button
   -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+}
+
+INPUT.button:hover
+{ 
+  color: inherit;
+  background: -moz-buttonhoverface;
 }
 
 INPUT.button:active
@@ -676,19 +698,18 @@ DIV.dragHandle:active
   background: #222;
 }
 
+INPUT.textField
+{ 
+  height: 1.7em;
+  vertical-align: middle;
+}
+
 /* search fields */
 INPUT#searchValue
 {
-  height: 22px;
   margin-right: 1em;
   width: 20em;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
   padding-left: 24px;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
   background-image: url('/SOGo.woa/WebServerResources/Search-bar.png');
   background-repeat: no-repeat;
   background-position: 2px 2px;
@@ -730,10 +751,12 @@ DIV.noJavascriptErrorMessage
 }
 
 DIV.noJavascriptErrorMessage A
+{ float: right;
+  margin: 0px auto; }
+
+A.button
 {
-  float: right;
   cursor: default;
-  margin: 0px auto;
   padding: .2em;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
@@ -747,13 +770,16 @@ DIV.noJavascriptErrorMessage A
   color: inherit;
 }
 
-DIV.noJavascriptErrorMessage A:hover
+A.button IMG
+{ vertical-align: middle; }
+
+A.button:hover
 { 
   color: inherit;
   background: -moz-buttonhoverface;
 }
 
-DIV.noJavascriptErrorMessage A:active
+A.button:active
 {
   color: -moz-buttonhovertext;
   background-color: #c4c2bd;
@@ -834,3 +860,20 @@ DIV.tabsContainer DIV.tab
   bottom: .5em;
   visibility: hidden;
 }
+
+SPAN.datePicker A
+{ padding: 4px 0px;
+  margin: 0px; }
+
+SPAN.datePicker IMG
+{ vertical-align: middle;
+  padding: 0px;
+  margin: 0px; }
+
+SPAN.checkBoxList INPUT,
+INPUT.checkBox
+{ -moz-border-top-colors: #000 #fff;
+  -moz-border-left-colors: #000 #fff; 
+  -moz-border-bottom-colors: #000 #fff;
+  -moz-border-right-colors: #000 #fff;
+  vertical-align: middle; }
