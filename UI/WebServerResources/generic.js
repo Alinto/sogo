@@ -25,6 +25,8 @@
 /* generic stuff */
 
 var logConsole;
+var logWindow = null;
+
 var queryParameters;
 
 var activeAjaxRequests = 0;
@@ -543,7 +545,12 @@ function toggleLogConsole() {
 }
 
 function log(message) {
-  var logConsole = document.getElementById('logConsole');
+  if (!logWindow) {
+    logWindow = window;
+    while (logWindow.opener)
+      logWindow = logWindow.opener;
+  }
+  var logConsole = logWindow.document.getElementById('logConsole');
   logConsole.innerHTML += message + '<br />' + "\n";
 }
 
@@ -865,16 +872,36 @@ function initCriteria()
  
 /* contact selector */
 
-function onContactSelectorPopup(node)
+function onContactAdd(node)
 {
-  var contactSelectorId = node.parentNode.getAttribute("id");
-
-  urlstr = ApplicationBaseURL + "../../" + UserLogin + "/Contacts/select?selectorId=" + contactSelectorId;
+  var selectorId = node.parentNode.parentNode.getAttribute("id");
+  urlstr = ApplicationBaseURL + "../../" + UserLogin + "/Contacts/select?selectorId=" + selectorId;
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,left=10,top=10,toolbar=no," +
                       "dependent=yes,menubar=no,location=no,resizable=yes," +
                       "scrollbars=yes,directories=no,status=no");
   w.focus();
+
+  return false;
+}
+
+function onContactRemove(node) {
+  var selectorId = node.parentNode.parentNode.getAttribute("id");
+
+  var names = $('uixselector-' + selectorId + '-display');
+  var nodes = names.getSelectedNodes();
+  for (var i = 0; i < nodes.length; i++) {
+    var currentNode = nodes[i];
+    currentNode.parentNode.removeChild(currentNode);
+  }
+
+  var uids = $('uixselector-' + selectorId + '-uidList');
+  nodes = node.parentNode.childNodes;
+  var ids = new Array();
+  for (var i = 0; i < nodes.length; i++)
+    if (nodes[i] instanceof HTMLLIElement)
+      ids.push(nodes[i].getAttribute("uid"));
+  uids.value = ids.join(",");
 
   return false;
 }
@@ -888,6 +915,7 @@ function addContact(selectorId, contactId, contactName)
     {
       var re = new RegExp("(^|,)" + contactId + "($|,)");
 
+      log ("uids: " + uids);
       if (!re.test(uids.value))
         {
           log ("no match... realling adding");
@@ -895,12 +923,14 @@ function addContact(selectorId, contactId, contactName)
             uids.value += ',' + contactId;
           else
             uids.value = contactId;
-          
+
           log ('values: ' + uids.value);
           var names = document.getElementById('uixselector-' + selectorId
                                               + '-display');
-          names.innerHTML += ('<img src="' + ResourcesURL + '/abcard.gif" />'
-                              + contactName + '<br />');
+          names.innerHTML += ('<li onmousedown="return false;"'
+                              + ' onclick="onRowClick(event);"><img src="'
+                              + ResourcesURL + '/abcard.gif" />'
+                              + contactName + '</li>');
         }
       else
         log ("match... ignoring contact");

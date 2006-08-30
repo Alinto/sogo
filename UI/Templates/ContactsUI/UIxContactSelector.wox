@@ -8,16 +8,33 @@
     xmlns:rsrc="OGo:url"
     >
     <div class="contactSelector" var:id="selectorId">
+      <span class="contactSelectorButtons">
+        <a href="#" class="button"
+          onclick="return onContactAdd(this);"
+          ><img rsrc:src="add-contact.gif"
+            label:title="Add..."
+            /></a>
+        <a href="#" class="button"
+          onclick="return onContactRemove(this);"
+          ><img rsrc:src="remove-contact.gif"
+            label:title="Remove"
+            /></a>
+      </span>
       <input type="hidden"
         var:id="selectorIdList"
         var:name="selectorId"
-        var:value="initialParticipantIds" />
-      <div
-        class="contactList"
+        var:value="initialContactsAsString" />
+      <ul
         var:id="selectorIdDisplay"
-        var:name="selectorIdDisplay">
-        <var:string value="initialParticipants" />
-      </div>
+        class="contactList">
+        <var:foreach list="contacts" item="currentContact"
+          ><li var:uid="currentContactId"
+            onmousedown="return false;"
+            onclick="onRowClick(event);"
+            ><img rsrc:src="abcard.gif"
+              /><var:string value="currentContactName" /></li>
+        </var:foreach>
+      </ul><br />
 <!--      <span xmlns="http://www.w3.org/1999/xhtml"
         xmlns:var="http://www.skyrix.com/od/binding"
         xmlns:const="http://www.skyrix.com/od/constant"
@@ -30,14 +47,7 @@
         <a var:href="jsFunctionHref"
           class="button_submit"
           ><var:string value="title" /></a>
-      </span> -->
-      <input class="button"
-        type="submit"
-        label:value="Search in Addressbook"
-        onclick="return onContactSelectorPopup(this);" />
-      <input class="button"
-        type="submit"
-        onclick="return onContactRefresh(this);"
-        label:value="Refresh" />
+      </span>
+      <br /> -->
     </div>
   </container>

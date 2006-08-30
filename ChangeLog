@@ -1,5 +1,10 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: adapted code for the new
+	implementation of the UIxContactSelector component (added a
+	"remove" button, removed the previous INPUT and replaced them with
+	links of class "button").
+
 	* UI/Scheduler/UIxTimeDateControl.h: separated interface from
 	UIxTimeDateControl.m.
 
