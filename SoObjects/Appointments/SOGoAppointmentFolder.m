@@ -38,7 +38,6 @@
 @implementation SOGoAppointmentFolder
 
 static NGLogger   *logger    = nil;
-static NSTimeZone *MET       = nil;
 static NSNumber   *sharedYes = nil;
 
 + (int) version
@@ -61,7 +60,6 @@ static NSNumber   *sharedYes = nil;
   lm      = [NGLoggerManager defaultLoggerManager];
   logger  = [lm loggerForDefaultKey:@"SOGoAppointmentFolderDebugEnabled"];
 
-  MET       = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
   sharedYes = [[NSNumber numberWithBool:YES] retain];
 }
 
@@ -71,6 +69,17 @@ static NSNumber   *sharedYes = nil;
   [super dealloc];
 }
 
+/* timezone */
+
+- (void) setTimeZone: (NSTimeZone *) newTZ
+{
+  timeZone = newTZ;
+}
+
+- (NSTimeZone *) viewTimeZone
+{
+  return timeZone;
+}
 
 /* logging */
 
@@ -132,14 +141,6 @@ static NSNumber   *sharedYes = nil;
   
   /* return 404 to stop acquisition */
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
-}
-
-/* timezone */
-
-- (NSTimeZone *) viewTimeZone
-{
-  // TODO: should use a cookie for configuration? we default to MET
-  return MET;
 }
 
 /* vevent UID handling */

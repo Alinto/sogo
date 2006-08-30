@@ -41,9 +41,12 @@
 @class NSString, NSArray, NSCalendarDate, NSException, NSMutableDictionary;
 @class GCSFolder;
 
+@class NSTimeZone;
+
 @interface SOGoAppointmentFolder : SOGoFolder
 {
   NSMutableDictionary *uidToFilename;
+  NSTimeZone *timeZone;
 }
 
 /* selection */
@@ -95,6 +98,9 @@
 /* bulk fetches */
 
 - (NSArray *)fetchAllSOGoAppointments;
+
+- (void) setTimeZone: (NSTimeZone *) newTZ;
+- (NSTimeZone *) viewTimeZone;
 
 @end
 

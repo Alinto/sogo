@@ -1,3 +1,12 @@
+2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -setTimeZone:newTZ]): new method to
+	configure the timezone from SOGoUserFolder when the instance is
+	being created.
+	([SOGoAppointmentFolder -viewTimeZone]): MET was removed. Returns
+	the value of the new "timezone" ivar.
+
 2006-08-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.{css,js}: added a tabview with
