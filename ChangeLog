@@ -1,5 +1,8 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js: added code to
+	manage showing and hiding appointment details.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-privateContacts:inContext:]): init the SOGoAppointmentFolder's
 	timezone by taking the current user's timezone setting.
