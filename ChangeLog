@@ -1,5 +1,14 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
+	-takeValuesFromRequest:_rqinContext:_ctx]): enhanced method to
+	take the values from the hour and minute INPUTs when data is
+	POSTed since we no longer use the UIxTimeSelector component.
+	([UIxTimeDateControl -selectableHours]) 
+	([UIxTimeDateControl -selectableMinutes]): new methods used by the
+	template SELECTs to display reasonable and acceptable values
+	instead of all the possibilities.
+
 	* UI/WebServerResources/generic.js: adapted code for the new
 	implementation of the UIxContactSelector component (added a
 	"remove" button, removed the previous INPUT and replaced them with

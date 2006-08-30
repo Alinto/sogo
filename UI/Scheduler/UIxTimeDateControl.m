@@ -20,87 +20,46 @@
 */
 // $Id: UIxTimeDateControl.m 601 2005-02-22 15:45:03Z znek $
 
-#include <SOGoUI/UIxComponent.h>
+#import "common.h"
 
-@interface UIxTimeDateControl : UIxComponent
-{
-  NSString *controlID;
-  NSString *label;
-  NSCalendarDate *date;
-  id       hour;
-  id       minute;
-  id       second;
-  id       day;
-  id       month;
-  id       year;
-  BOOL     displayTimeControl;
-}
-
-- (void)setControlID:(NSString *)_controlID;
-- (NSString *)controlID;
-- (void)setLabel:(NSString *)_label;
-- (NSString *)label;
-- (void)setDate:(NSCalendarDate *)_date;
-- (NSCalendarDate *)date;
-
-- (void)setHour:(id)_hour;
-- (id)hour;
-- (void)setMinute:(id)_minute;
-- (id)minute;
-- (void)setSecond:(id)_second;
-- (id)second;
-- (void)setDay:(id)_day;
-- (id)day;
-- (void)setMonth:(id)_month;
-- (id)month;
-- (void)setYear:(id)_year;
-- (id)year;
-
-- (NSString *)timeID;
-- (NSString *)dateID;
-
-- (void)_setDate:(NSCalendarDate *)_date;
-
-@end
-
-#include "common.h"
+#import "UIxTimeDateControl.h"
 
 @implementation UIxTimeDateControl
 
 - (id)init {
   self = [super init];
   if (self) {
-    self->displayTimeControl = YES;
+    displayTimeControl = YES;
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->controlID release];
-  [self->label     release];
-  [self->date      release];
-  [self->hour      release];
-  [self->minute    release];
-  [self->second    release];
-  [self->day       release];
-  [self->month     release];
-  [self->year      release];
+  [controlID release];
+  [label     release];
+  [date      release];
+  [hour      release];
+  [minute    release];
+  [second    release];
+  [day       release];
+  [month     release];
+  [year      release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setControlID:(NSString *)_controlID {
-  ASSIGNCOPY(self->controlID, _controlID);
+  ASSIGNCOPY(controlID, _controlID);
 }
 - (NSString *)controlID {
-  return self->controlID;
+  return controlID;
 }
 - (void)setLabel:(NSString *)_label {
-  ASSIGNCOPY(self->label, _label);
+  ASSIGNCOPY(label, _label);
 }
 - (NSString *)label {
-  return self->label;
+  return label;
 }
 - (void)setDate:(NSCalendarDate *)_date {
   if (!_date)
@@ -113,75 +72,163 @@
   [self setDay:[NSNumber numberWithInt:[_date dayOfMonth]]];
 }
 - (void)_setDate:(NSCalendarDate *)_date {
-  ASSIGN(self->date, _date);
+  ASSIGN(date, _date);
 }
 - (NSCalendarDate *)date {
-  return self->date;
+  return date;
 }
 
 - (void)setHour:(id)_hour {
-  ASSIGN(self->hour, _hour);
+  ASSIGN(hour, _hour);
 }
 - (id)hour {
-  return self->hour;
+  return hour;
 }
 - (void)setMinute:(id)_minute {
-  ASSIGN(self->minute, _minute);
+  ASSIGN(minute, _minute);
 }
 - (id)minute {
-  return self->minute;
+  return minute;
 }
 - (void)setSecond:(id)_second {
-  ASSIGN(self->second, _second);
+  ASSIGN(second, _second);
 }
 - (id)second {
-  return self->second;
+  return second;
 }
 
 - (void)setDay:(id)_day {
-  ASSIGN(self->day, _day);
+  ASSIGN(day, _day);
 }
 - (id)day {
-  return self->day;
+  return day;
 }
 - (void)setMonth:(id)_month {
-  ASSIGN(self->month, _month);
+  ASSIGN(month, _month);
 }
 - (id)month {
-  return self->month;
+  return month;
 }
 - (void)setYear:(id)_year {
-  ASSIGN(self->year, _year);
+  ASSIGN(year, _year);
 }
 - (id)year {
-  return self->year;
+  return year;
 }
 
-- (NSString *)timeID {
+- (void) setDayStartHour: (unsigned int) aStartHour
+{
+  startHour = aStartHour;
+}
+
+- (void) setDayEndHour: (unsigned int) anEndHour
+{
+  endHour = anEndHour;
+}
+
+- (void) setHourOption: (NSNumber *) option
+{
+  currentHour = option;
+}
+
+- (BOOL) isCurrentHour
+{
+  return [currentHour isEqual: hour];
+}
+
+- (BOOL) isCurrentMinute
+{
+  return [currentMinute isEqual: minute];
+}
+
+- (int) hourValue
+{
+  return [currentHour intValue];
+}
+
+- (NSString *) hourLabel
+{
+  return [NSString stringWithFormat: @"%.2d", [currentHour intValue]];
+}
+
+- (NSArray *) selectableHours
+{
+  NSMutableArray *hours;
+  unsigned int h;
+
+  hours = [NSMutableArray new];
+  [hours autorelease];
+
+  for (h = startHour; h < (endHour + 1); h++)
+    [hours addObject: [NSNumber numberWithInt: h]];
+
+  return hours;
+}
+
+- (NSString *) hourSelectId
+{
+  return [[self controlID] stringByAppendingString:@"_time_hour"];
+}
+
+- (void) setMinuteOption: (NSNumber *) option
+{
+  currentMinute = option;
+}
+
+- (int) minuteValue
+{
+  return [currentMinute intValue];
+}
+
+- (NSString *) minuteLabel
+{
+  return [NSString stringWithFormat: @"%.2d", [currentMinute intValue]];
+}
+
+- (NSArray *) selectableMinutes
+{
+  NSMutableArray *minutes;
+  unsigned int m;
+
+  minutes = [NSMutableArray new];
+  [minutes autorelease];
+
+  for (m = 0; m < 60; m += 15)
+    [minutes addObject: [NSNumber numberWithInt: m]];
+
+  return minutes;
+}
+
+- (NSString *) minuteSelectId
+{
+  return [[self controlID] stringByAppendingString:@"_time_minute"];
+}
+
+- (NSString *) timeID
+{
   return [[self controlID] stringByAppendingString:@"_time"];
 }
-- (NSString *)dateID {
+
+- (NSString *) dateID
+{
   return [[self controlID] stringByAppendingString:@"_date"];
 }
 
-- (void)setDisplayTimeControl:(BOOL)_displayTimeControl {
-  self->displayTimeControl = _displayTimeControl;
-}
-- (BOOL)displayTimeControl {
-  return self->displayTimeControl;
+- (void) setDisplayTimeControl: (BOOL) _displayTimeControl
+{
+  displayTimeControl = _displayTimeControl;
 }
 
-#if 0
-- (NSString *)timeControlStyle {
-  if (self->displayTimeControl)
-    return @"visibility : visible;";
-  return @"visibility : hidden;";
+- (BOOL) displayTimeControl
+{
+  return displayTimeControl;
 }
-#endif
 
 /* processing request */
 
-- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+- (void) takeValuesFromRequest: (WORequest *) _rq
+                     inContext: (WOContext *) _ctx
+{
   NSCalendarDate *d;
   unsigned _year, _month, _day, _hour, _minute, _second;
 
@@ -189,22 +236,26 @@
   [super takeValuesFromRequest:_rq inContext:_ctx];
 
   _year  = [[self year] intValue];
-  if(_year == 0)
-      return;
+  if (_year > 0)
+    {
+      [self setHour: [_rq formValueForKey: [self hourSelectId]]];
+      [self setMinute: [_rq formValueForKey: [self minuteSelectId]]];
 
-  _month  = [[self month]  intValue];
-  _day    = [[self day]    intValue];
-  _hour   = [[self hour]   intValue];
-  _minute = [[self minute] intValue];
-  _second = [[self second] intValue];
-  d       = [NSCalendarDate dateWithYear:_year
-                            month:_month
-                            day:_day
-                            hour:_hour
-                            minute:_minute
-                            second:_second
-                            timeZone:[self viewTimeZone]];
-  [self _setDate:d];
+      _month  = [[self month]  intValue];
+      _day    = [[self day]    intValue];
+      _hour   = [[self hour]   intValue];
+      _minute = [[self minute] intValue];
+      _second = [[self second] intValue];
+
+      d = [NSCalendarDate dateWithYear:_year
+                          month:_month
+                          day:_day
+                          hour:_hour
+                          minute:_minute
+                          second:_second
+                          timeZone:[self viewTimeZone]];
+      [self _setDate:d];
+    }
 }
 
 @end /* UIxTimeDateControl */

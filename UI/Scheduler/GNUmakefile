@@ -50,7 +50,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalBackForthNavView.m	\
 	UIxAppointmentProposal.m	\
 	UIxDatePicker.m			\
-	UIxTimeSelector.m		\
 	UIxTimeDateControl.m		\
 	UIxCalInlineAptView.m		\
 	UIxCalScheduleOverview.m	\
