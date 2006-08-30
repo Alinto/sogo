@@ -1,5 +1,10 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -changeParticipationStatus:inContext:]):
+	set default timezone to EST, although this code should be
+	rewritten to handle a system and a user default value.
+
 	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
 	-takeValuesFromRequest:_rqinContext:_ctx]): enhanced method to
 	take the values from the hour and minute INPUTs when data is

@@ -59,7 +59,7 @@
 static id<NSObject,SaxXMLReader> parser  = nil;
 static SaxObjectDecoder          *sax    = nil;
 static NGLogger                  *logger = nil;
-static NSTimeZone                *MET    = nil;
+static NSTimeZone                *EST    = nil;
 static NSString                  *mailTemplateDefaultLanguage = nil;
 
 + (void)initialize {
@@ -86,7 +86,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   [parser setContentHandler:sax];
   [parser setErrorHandler:sax];
 
-  MET = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
+  EST = [[NSTimeZone timeZoneWithAbbreviation:@"EST"] retain];
   
   ud = [NSUserDefaults standardUserDefaults];
   mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
@@ -578,7 +578,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   /* TODO: get this from user config as soon as this is available and only
    *       fall back to default timeZone if config data is not available
    */
-  return MET;
+  return EST;
 }
 
 
