@@ -1,16 +1,20 @@
 var sortOrder = '';
 var sortKey = '';
-var listFilter = 'view_all';
+var listFilter = 'view_today';
 
 var currentDay = '';
 var currentCalendarDay = '';
 var currentView = 'dayview';
 
 function newEvent(sender) {
-  var urlstr = ApplicationBaseURL + "new";
+  var day = sender.getAttribute("day");
+  var hour = sender.getAttribute("hour");
+  var urlstr = (ApplicationBaseURL + "new"
+                + "?day=" + day
+                + "&hm=" + hour);
 
   window.open(urlstr, "",
-	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
+	      "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
 	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   return false; /* stop following the link */
@@ -20,7 +24,7 @@ function _editEventId(id) {
   var urlstr = ApplicationBaseURL + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
+                        "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
                         "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   win.focus();
 }
@@ -84,7 +88,7 @@ function displayAppointment(sender) {
   var urlstr = ApplicationBaseURL + aptId + "/view";
   
   var win = window.open(urlstr, "SOGo_view_" + aptId,
-                        "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
+                        "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
                         "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   win.focus();
 
@@ -316,15 +320,22 @@ function calendarDisplayCallback(http)
     log ("ajax fuckage");
 }
 
+function assignCalendar(name)
+{
+  var node = $(name);
+
+  node.calendar = new skycalendar(node);
+  node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
+  var dateFormat = node.getAttribute("dateFormat");
+  if (dateFormat)
+    node.calendar.setDateFormat(dateFormat);
+}
+
 function popupCalendar(node)
 {
-  var inputId = node.getAttribute("inputId");
-  var dateFormat = node.getAttribute("dateFormat");
-
-  var calendar = new skycalendar($(inputId));
-  calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
-  calendar.setDateFormat(dateFormat);
-  calendar.popup();
+  var nodeId = node.getAttribute("inputId");
+  var input = $(nodeId);
+  input.calendar.popup();
 
   return false;
 }
@@ -489,6 +500,13 @@ function onYearMenuItemClick(node)
   var year = '' + node.innerHTML;
 
   changeDateSelectorDisplay(year+month+"01");
+
+  return false;
+}
+
+function onSearchFormSubmit()
+{
+  log ("search not implemented");
 
   return false;
 }
