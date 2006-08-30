@@ -1,5 +1,8 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactSelector.h: separated interface from
+	UIxContactSelector.m.
+
 	* UI/Scheduler/UIxDatePickerScript.[hm]: component removed since
 	all javascript code is now put in Scheduler.js/generic.js.
 
