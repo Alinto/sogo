@@ -898,3 +898,10 @@ function registerDraggableMessageNodes()
 {
   log ("can we drag...");
 }
+
+function onSearchFormSubmit()
+{
+  log ("search not implemented");
+
+  return false;
+}
