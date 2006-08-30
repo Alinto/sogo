@@ -24,9 +24,12 @@
 
 #import <Foundation/NSCalendarDate.h>
 
-@interface NSCalendarDate (UIxCalMonthOverviewExtensions)
+@interface NSCalendarDate (SchedulerExtensions)
 
 - (BOOL) isDateInSameMonth: (NSCalendarDate *) _other;
+- (NSCalendarDate *) dayOfWeeK: (unsigned) _day
+              offsetFromSunday: (unsigned) _off;
+- (NSCalendarDate *) sundayOfWeek;
 
 @end
 

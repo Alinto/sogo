@@ -19,17 +19,39 @@
    02111-1307, USA.
 */
 
+#import <NGExtensions/NSCalendarDate+misc.h>
+
 #import "NSCalendarDate+Scheduler.h"
 
-@implementation NSCalendarDate (UIxCalMonthOverviewExtensions)
+@implementation NSCalendarDate (SchedulerExtensions)
 
-- (BOOL) isDateInSameMonth: (NSCalendarDate *)_other
+- (BOOL) isDateInSameMonth: (NSCalendarDate *) _other
 {
   return (([_other yearOfCommonEra] == [self yearOfCommonEra]) &&
           ([_other monthOfYear] == [self monthOfYear]));
 }
 
+- (NSCalendarDate *) dayOfWeeK: (unsigned) _day 
+              offsetFromSunday: (unsigned) _offset
+{
+  unsigned dayOfWeek, distance;
+    
+  /* perform "locale" correction */
+  dayOfWeek = (7 + [self dayOfWeek] - _offset) % 7;
+
+  _day = (_day % 7);
+  if(_day == dayOfWeek)
+    return self;
+
+  distance = _day - dayOfWeek;
+  return [self dateByAddingYears:0 months:0 days:distance];
+}
+
+/* this implies that monday is the start of week! */
+
+- (NSCalendarDate *) sundayOfWeek
+{
+  return [self dayOfWeeK:6 offsetFromSunday:1];
+}
+
 @end
-
-
-

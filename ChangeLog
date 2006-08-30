@@ -1,5 +1,8 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/NSCalendarDate+UIx.[hm]: category removed, code
+	moved into NSCalendarDate+Scheduler instead.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -setTimeZone:newTZ]): new method to
 	configure the timezone from SOGoUserFolder when the instance is
