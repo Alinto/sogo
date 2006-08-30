@@ -1,5 +1,14 @@
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector
+	-initialContactsAsString]): renamed implementation of
+	initialParticipants.
+	([UIxContactSelector -currentContactId]) 
+	([UIxContactSelector -currentContactName]): new methods used when
+	listing the initial contacts in the widget. Currently, both return
+	the person's cn but the latter should ultimately return a user
+	fullname.
+
 	* UI/Contacts/UIxContactSelector.h: separated interface from
 	UIxContactSelector.m.
 

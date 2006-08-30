@@ -20,41 +20,15 @@
  */
 // $Id: UIxContactSelector.m 394 2004-10-14 08:47:35Z znek $
 
+#import <NGExtensions/NGExtensions.h>
+
 #import <SOGoUI/UIxComponent.h>
 #import <SOGo/AgenorUserManager.h>
 #import <Scheduler/iCalPerson+UIx.h>
 
-@interface UIxContactSelector : UIxComponent
-{
-  NSString *title;
-  NSString *windowId;
-  NSString *selectorId;
-  NSString *callback;
+#import "common.h"
 
-  NSArray *contacts;
-}
-
-- (void)setTitle:(NSString *)_title;
-- (NSString *)title;
-- (void)setWindowId:(NSString *)_winId;
-- (NSString *)windowId;
-- (void)setSelectorId:(NSString *)_selId;
-- (NSString *)selectorId;
-- (void)setCallback:(NSString *)_callback;
-- (NSString *)callback;
-
-- (void) setContacts: (NSArray *) _contacts;
-- (NSArray *) contacts;
-
-- (NSString *)relativeContactsPath;
-
-- (NSString *)jsFunctionName;
-- (NSString *)jsFunctionHref;
-- (NSString *)jsCode;
-@end
-
-#include "common.h"
-#include <NGExtensions/NGExtensions.h>
+#import "UIxContactSelector.h"
 
 @implementation UIxContactSelector
 
@@ -189,32 +163,16 @@
     NSLog (@"go no attendees!");
 }
 
-- (NSString *) initialParticipantIds
+- (void) setCurrentContact: (iCalPerson *) aContact
 {
-  NSMutableArray *uids;
-  NSEnumerator *persons;
-  iCalPerson *person;
-  AgenorUserManager *um;
-
-  um = [AgenorUserManager sharedUserManager];
-
-  uids = [NSMutableArray arrayWithCapacity: [contacts count]];
-  persons = [contacts objectEnumerator];
-  person = [persons nextObject];
-  while (person)
-    {
-      [uids addObject: [um getUIDForICalPerson: person]];
-      person = [persons nextObject];
-    }
-
-  return [uids componentsJoinedByString: @","];
+  currentContact = aContact;
 }
 
-- (NSString *) initialParticipants
+- (NSString *) initialContactsAsString
 {
-  NSMutableArray *participants;
   NSEnumerator *persons;
   iCalPerson *person;
+  NSMutableArray *participants;
 
   participants = [NSMutableArray arrayWithCapacity: [contacts count]];
   persons = [contacts objectEnumerator];
@@ -226,6 +184,16 @@
     }
 
   return [participants componentsJoinedByString: @","];
+}
+
+- (NSString *) currentContactId
+{
+  return [currentContact cn];
+}
+
+- (NSString *) currentContactName
+{
+  return [currentContact cn];
 }
 
 @end /* UIxContactSelector */
