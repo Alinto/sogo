@@ -11,8 +11,8 @@ SchedulerUI_LANGUAGES = English French German
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\
 	iCalPerson+UIx.m		\
-	NSCalendarDate+UIx.m		\
 	SOGoAppointment+UIx.m		\
+	NSCalendarDate+Scheduler.m	\
 					\
 	UIxCalMainView.m		\
 					\
@@ -20,8 +20,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDayTable.m		\
 					\
 	UIxCalDateSelector.m		\
-					\
-	NSCalendarDate+Scheduler.m	\
 					\
 	UIxComponent+Agenor.m		\
 	UIxCalView.m			\
@@ -52,7 +50,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalBackForthNavView.m	\
 	UIxAppointmentProposal.m	\
 	UIxDatePicker.m			\
-	UIxDatePickerScript.m		\
 	UIxTimeSelector.m		\
 	UIxTimeDateControl.m		\
 	UIxCalInlineAptView.m		\
