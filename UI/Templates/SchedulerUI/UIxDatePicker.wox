@@ -3,18 +3,24 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
+    class="datePicker"
     ><input type="text"
+      class="textField"
       var:name="dateID"
       var:id="dateID"
+      var:dateFormat="jsDateFormat"
       var:value="formattedDateString"
       size="12"
       /><a href="#"
+      class="button"
       var:inputId="dateID"
-      var:dateFormat="jsDateFormat"
       onclick="return popupCalendar(this);"
-      ><img rsrc:src="icon_popupcalendar.gif"
+      ><img rsrc:src="choose-date.png"
         var:title="label"
         var:alt="label"
-        border="0"
         /></a
-      ></span>
+      >
+    <script type="text/javascript">
+      assignCalendar('<var:string value="dateID" />');
+    </script>
+  </span>
