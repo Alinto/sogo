@@ -457,10 +457,10 @@ static NSNumber   *sharedYes = nil;
   if (infos == nil) {
     infos = [[NSArray alloc] initWithObjects:
                                @"title", 
-                               @"location", @"orgmail", @"status", @"ispublic",
-                               @"isallday", @"priority",
-                               @"partmails", @"partstates",
-                               nil];
+                             @"location", @"orgmail", @"status", @"ispublic",
+                             @"isallday", @"priority",
+                             @"partmails", @"partstates",
+                             nil];
   }
   return [self fetchFields:infos
                from:_startDate
