@@ -14,7 +14,7 @@
         <img rsrc:src="apt_icon_private.gif"
           /></var:if
         ><a href="#"
-        ondblclick="return displayAppointment(this);"
+        ondblclick="displayAppointment(event, this);"
         var:aptId="appointment.uid"
         var:title="tooltip"
         var:queryDictionary="queryDictionary"
