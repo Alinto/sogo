@@ -79,18 +79,17 @@ function validateAptEditor() {
     // TODO: check time
     var start, end;
     
-    start = document.forms[0]['startTime_time_hour'].value;
-    end   = document.forms[0]['endTime_time_hour'].value;
+    start = parseInt(document.forms[0]['startTime_time_hour'].value);
+    end = parseInt(document.forms[0]['endTime_time_hour'].value);
+
     if (start > end) {
-      window.alert("coucou1");
       alert(labels.validate_endbeforestart);
       return false;
     }
     else if (start == end) {
-      start = document.forms[0]['startTime_time_minute'].value;
-      end   = document.forms[0]['endTime_time_minute'].value;
+      start = parseInt(document.forms[0]['startTime_time_minute'].value);
+      end = parseInt(document.forms[0]['endTime_time_minute'].value);
       if (start > end) {
-        window.alert("coucou2");
 	alert(labels.validate_endbeforestart);
 	return false;
       }
