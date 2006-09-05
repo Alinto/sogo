@@ -114,6 +114,7 @@ static BOOL uixDebugEnabled = NO;
   if ((self = [super init]))
     {
       viewTimeZone = nil;
+      selectedDate = nil;
     }
 
   return self;
@@ -124,6 +125,8 @@ static BOOL uixDebugEnabled = NO;
   [self->queryParameters release];
   if (viewTimeZone)
     [viewTimeZone release];
+  if (selectedDate)
+    [selectedDate release];
   [super dealloc];
 }
 
@@ -341,37 +344,43 @@ static BOOL uixDebugEnabled = NO;
   return GMT;
 }
 
-- (NSCalendarDate *)selectedDate {
-  NSString       *s;
+- (NSCalendarDate *) selectedDate
+{
+  NSString *s, *dateString;
   NSCalendarDate *cdate;
+  unsigned hour, minute;
 
-  s = [self queryParameterForKey:@"day"];
-  cdate = ([s length] > 0)
-    ? [self dateForDateString:s]
-    : [NSCalendarDate date];
-  [cdate setTimeZone:[self viewTimeZone]];
-  s = [self queryParameterForKey:@"hm"];
-  if([s length] == 4) {
-    unsigned hour, minute;
-      
-    hour = [[s substringToIndex:2] unsignedIntValue];
-    minute = [[s substringFromIndex:2] unsignedIntValue];
-    cdate = [cdate hour:hour minute:minute];
-  }
-  else {
-    cdate = [cdate hour:12 minute:0];
-  }
-  return cdate;
+  if (!selectedDate)
+    {
+      s = [self queryParameterForKey: @"day"];
+      if ([s length] > 0)
+        {
+          dateString = [s stringByAppendingFormat: @" %@",
+                          [[self viewTimeZone] abbreviation]];
+          cdate = [NSCalendarDate dateWithString: dateString
+                                  calendarFormat: @"%Y%m%d %Z"];
+        }
+      else
+        cdate = [NSCalendarDate date];
+      s = [self queryParameterForKey: @"hm"];
+      if ([s length] == 4)
+        {
+          hour = [[s substringToIndex: 2] unsignedIntValue];
+          minute = [[s substringFromIndex: 2] unsignedIntValue];
+          selectedDate = [cdate hour: hour minute: minute];
+        }
+      else
+        selectedDate = [cdate hour: 12 minute: 0];
+
+      [selectedDate retain];
+    }
+
+  return selectedDate;
 }
 
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date {
   [_date setTimeZone:[self viewTimeZone]];
   return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
-}
-
-- (NSCalendarDate *)dateForDateString:(NSString *)_dateString {
-  return [NSCalendarDate dateWithString:_dateString 
-			 calendarFormat:@"%Y%m%d"];
 }
 
 - (BOOL) hideFrame

@@ -1,5 +1,9 @@
 2006-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -selectedDate]): add the
+	user's timezone abbreviation to the date string passed as parameter to
+	NSCalendarDate to generate an accurate date instance.
+
 	* UI/WebServerResources/UIxAppointmentEditor.js: convert the
 	form's time values to integers before comparing them.
 

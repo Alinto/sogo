@@ -38,6 +38,7 @@
 {
   NSMutableDictionary *queryParameters;
   NSTimeZone *viewTimeZone;
+  NSCalendarDate *selectedDate;
 }
 
 - (NSString *)queryParameterForKey:(NSString *)_key;
@@ -65,7 +66,6 @@
 - (NSTimeZone *)backendTimeZone;
 - (NSCalendarDate *)selectedDate;
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date;
-- (NSCalendarDate *)dateForDateString:(NSString *)_dateString;
 
 - (BOOL) hideFrame;
 
