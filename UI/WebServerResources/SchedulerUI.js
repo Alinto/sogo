@@ -85,7 +85,7 @@ function onSelectAll() {
 
 function displayAppointment(event, sender) {
   var aptId = sender.getAttribute("aptId");
-  var urlstr = ApplicationBaseURL + aptId + "/view";
+  var urlstr = ApplicationBaseURL + aptId + "/edit";
   
   var win = window.open(urlstr, "SOGo_view_" + aptId,
                         "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +

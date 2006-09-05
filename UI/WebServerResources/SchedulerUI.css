@@ -3,7 +3,7 @@ DIV#leftPanel
   position: absolute;
   top: 5.2em;
   left: 0px;
-  width: 18em;
+  width: 16em;
   bottom: 0px;
   overflow: hidden;
 }
@@ -12,8 +12,8 @@ DIV#schedulerTabs
 {
   top: 0px;
   left: .2em;
-  width: 17.2em;
-  height: 14em;
+  width: 15em;
+  height: 14.2em;
 }
 
 DIV#tasksView
@@ -30,7 +30,7 @@ DIV#rightPanel
 {
   position: absolute;
   top: 5.5em;
-  left: 18.7em;
+  left: 16.7em;
   right: 0px;
   bottom: 0px;
   overflow: hidden;
@@ -80,7 +80,7 @@ DIV#calendarView A
   position: absolute;
   cursor: e-resize;
   top: 5em;
-  left: 18em;
+  left: 16em;
   width: 5px;
   bottom: 0px;
   z-index: 5;
@@ -98,7 +98,8 @@ DIV#calendarView A
 
 #dateSelector
 {
-  width: 16em;
+  width: 14em;
+  margin: 0px auto;
   background: #fff;
   border-top: 1px solid #fff; 
   border-left: 1px solid #fff;
