@@ -1,5 +1,9 @@
 2006-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView -currentStartTime]) 
+	([UIxCalAptListView -currentEndTime]): initialize the resulting
+	dates timezone with [self viewTimeZone].
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -init]): new
 	"viewTimeZone" ivar destined to hold an instance of the user's
 	timezone in memory.
