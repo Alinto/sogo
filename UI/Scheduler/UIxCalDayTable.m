@@ -213,8 +213,8 @@
     {
       apt = [apts objectAtIndex:i];
       aptStartDate = [apt valueForKey:@"startDate"];
-      if([aptStartDate isGreaterThanOrEqualTo: start]
-         && [aptStartDate isLessThan: end])
+      if ([aptStartDate isGreaterThanOrEqualTo: start]
+          && [aptStartDate isLessThan: end])
         [filtered addObject:apt];
     }
   
