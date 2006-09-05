@@ -143,14 +143,16 @@
 
 /* helpers */
 
-- (NSString *)title {
-  return [self->formatter stringForObjectValue:self->appointment
-                          referenceDate:[self referenceDate]];
+- (NSString *) title
+{
+  return [self->formatter stringForObjectValue: self->appointment
+                          referenceDate: [self referenceDate]];
 }
 
-- (NSString *)tooltip {
+- (NSString *) tooltip
+{
   return [self->tooltipFormatter stringForObjectValue:self->appointment
-                                 referenceDate:[self referenceDate]];
+              referenceDate:[self referenceDate]];
 }
 
 @end
