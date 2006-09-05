@@ -8,6 +8,9 @@ var currentView = 'dayview';
 
 function newEvent(sender) {
   var day = sender.getAttribute("day");
+  if (!day)
+    day = currentDay;
+
   var hour = sender.getAttribute("hour");
   var urlstr = (ApplicationBaseURL + "new"
                 + "?day=" + day
@@ -84,13 +87,7 @@ function onSelectAll() {
 }
 
 function displayAppointment(event, sender) {
-  var aptId = sender.getAttribute("aptId");
-  var urlstr = ApplicationBaseURL + aptId + "/edit";
-  
-  var win = window.open(urlstr, "SOGo_view_" + aptId,
-                        "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
-                        "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  win.focus();
+  _editEventId(sender.getAttribute("aptId"));
 
   event.cancelBubble = true;
   event.returnValue = false;
