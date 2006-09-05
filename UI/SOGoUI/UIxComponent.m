@@ -114,7 +114,7 @@ static BOOL uixDebugEnabled = NO;
   if ((self = [super init]))
     {
       viewTimeZone = nil;
-      selectedDate = nil;
+      _selectedDate = nil;
     }
 
   return self;
@@ -125,8 +125,8 @@ static BOOL uixDebugEnabled = NO;
   [self->queryParameters release];
   if (viewTimeZone)
     [viewTimeZone release];
-  if (selectedDate)
-    [selectedDate release];
+  if (_selectedDate)
+    [_selectedDate release];
   [super dealloc];
 }
 
@@ -350,7 +350,7 @@ static BOOL uixDebugEnabled = NO;
   NSCalendarDate *cdate;
   unsigned hour, minute;
 
-  if (!selectedDate)
+  if (!_selectedDate)
     {
       s = [self queryParameterForKey: @"day"];
       if ([s length] > 0)
@@ -367,15 +367,15 @@ static BOOL uixDebugEnabled = NO;
         {
           hour = [[s substringToIndex: 2] unsignedIntValue];
           minute = [[s substringFromIndex: 2] unsignedIntValue];
-          selectedDate = [cdate hour: hour minute: minute];
+          _selectedDate = [cdate hour: hour minute: minute];
         }
       else
-        selectedDate = [cdate hour: 12 minute: 0];
+        _selectedDate = [cdate hour: 12 minute: 0];
 
-      [selectedDate retain];
+      [_selectedDate retain];
     }
 
-  return selectedDate;
+  return _selectedDate;
 }
 
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date {

@@ -421,11 +421,11 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (NSArray *) fetchCoreInfos
 {
-  if (!self->appointments)
+  SOGoAppointmentFolder *folder;
+  NSCalendarDate *sd, *ed;
+ 
+ if (!self->appointments)
     {
-      id             folder;
-      NSCalendarDate *sd, *ed;
-
       folder = [self clientObject];
       sd = [self startDate];
       ed = [self endDate];

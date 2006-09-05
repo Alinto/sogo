@@ -38,7 +38,7 @@
 {
   NSMutableDictionary *queryParameters;
   NSTimeZone *viewTimeZone;
-  NSCalendarDate *selectedDate;
+  NSCalendarDate *_selectedDate;
 }
 
 - (NSString *)queryParameterForKey:(NSString *)_key;
