@@ -132,51 +132,63 @@ static BOOL uixDebugEnabled = NO;
 
 /* query parameters */
 
-- (void)_parseQueryString:(NSString *)_s {
+- (void)_parseQueryString: (NSString *) _s
+{
   NSEnumerator *e;
   NSString *part;
+  NSRange  r;
+  NSString *key, *value;
 
   e = [[_s componentsSeparatedByString:@"&"] objectEnumerator];
-  while ((part = [e nextObject]) != nil) {
-    NSRange  r;
-    NSString *key, *value;
-        
-    r = [part rangeOfString:@"="];
-    if (r.length == 0) {
+  part = [e nextObject];
+  while (part)
+    {
+      r = [part rangeOfString:@"="];
+      if (r.length == 0)
+        {
       /* missing value of query parameter */
-      key   = [part stringByUnescapingURL];
-      value = @"1";
+          key   = [part stringByUnescapingURL];
+          value = @"1";
+        }
+      else
+        {
+          key   = [[part substringToIndex:r.location] stringByUnescapingURL];
+          value = [[part substringFromIndex:(r.location + r.length)] 
+                    stringByUnescapingURL];
+        }
+      [self->queryParameters setObject:value forKey:key];
+      part = [e nextObject];
     }
-    else {
-      key   = [[part substringToIndex:r.location] stringByUnescapingURL];
-      value = [[part substringFromIndex:(r.location + r.length)] 
-                stringByUnescapingURL];
-    }
-    [self->queryParameters setObject:value forKey:key];
-  }
-}
-- (void)addKeepAliveFormValuesToQueryParameters {
 }
 
-- (NSString *)queryParameterForKey:(NSString *)_key {
+- (void) addKeepAliveFormValuesToQueryParameters
+{
+}
+
+- (NSString *) queryParameterForKey: (NSString *) _key
+{
   return [[self _queryParameters] objectForKey:_key];
 }
 
-- (void)setQueryParameter:(NSString *)_param forKey:(NSString *)_key {
-  if(_key == nil)
-    return;
-
-  if(_param != nil)
-    [[self _queryParameters] setObject:_param forKey:_key];
-  else
-    [[self _queryParameters] removeObjectForKey:_key];
+- (void) setQueryParameter: (NSString *) _param
+                    forKey: (NSString *) _key
+{
+  if (_key)
+    {
+      if (_param)
+        [[self _queryParameters] setObject: _param forKey: _key];
+      else
+        [[self _queryParameters] removeObjectForKey: _key];
+    }
 }
 
-- (NSMutableDictionary *)_queryParameters {
+- (NSMutableDictionary *) _queryParameters
+{
   // TODO: this code is weird, should use WORequest methods for parsing
   WORequest *req;
   NSString  *uri;
   NSRange   r;
+  NSString *qs;
   
   if (self->queryParameters)
     return self->queryParameters;
@@ -186,12 +198,11 @@ static BOOL uixDebugEnabled = NO;
   req = [[self context] request];
   uri = [req uri];
   r   = [uri rangeOfString:@"?" options:NSBackwardsSearch];
-  if (r.length > 0) {
-    NSString *qs;
-    
-    qs = [uri substringFromIndex:NSMaxRange(r)];
-    [self _parseQueryString:qs];
-  }
+  if (r.length > 0)
+    {
+      qs = [uri substringFromIndex:NSMaxRange(r)];
+      [self _parseQueryString:qs];
+    }
   
   /* add form values */
   [self addKeepAliveFormValuesToQueryParameters];
@@ -199,11 +210,13 @@ static BOOL uixDebugEnabled = NO;
   return self->queryParameters;
 }
 
-- (NSDictionary *)queryParameters {
+- (NSDictionary *) queryParameters
+{
   return [self _queryParameters];
 }
 
-- (NSDictionary *)queryParametersBySettingSelectedDate:(NSCalendarDate *)_date{
+- (NSDictionary *) queryParametersBySettingSelectedDate: (NSCalendarDate *) _date
+{
   NSMutableDictionary *qp;
     
   qp = [[self queryParameters] mutableCopy];
@@ -211,33 +224,39 @@ static BOOL uixDebugEnabled = NO;
   return [qp autorelease];
 }
 
-- (void)setSelectedDateQueryParameter:(NSCalendarDate *)_newDate
-  inDictionary:(NSMutableDictionary *)_qp;
+- (void) setSelectedDateQueryParameter: (NSCalendarDate *) _newDate
+                          inDictionary: (NSMutableDictionary *) _qp
 {
-  if(_newDate != nil)
-    [_qp setObject:[self dateStringForDate:_newDate] forKey:@"day"];
+  if (_newDate)
+    [_qp setObject: [self dateStringForDate: _newDate] forKey: @"day"];
   else
     [_qp removeObjectForKey:@"day"];
 }
 
-- (NSString *)completeHrefForMethod:(NSString *)_method {
-  WOContext    *ctx;
+- (NSString *) completeHrefForMethod: (NSString *) _method
+{
+  WOContext *ctx;
   NSDictionary *qp;
-  NSString     *qs, *qps;
+  NSString *qs, *qps, *href;
 
   qp = [self queryParameters];
-  if([qp count] == 0)
-    return _method;
+  if ([qp count] > 0)
+    {
+      ctx = [self context];
+      qps = [ctx queryPathSeparator];
+      [ctx setQueryPathSeparator: @"&"];
+      qs = [ctx queryStringFromDictionary: qp];
+      [ctx setQueryPathSeparator: qps];
+      href = [_method stringByAppendingFormat:@"?%@", qs];
+    }
+  else
+    href = _method;
 
-  ctx = [self context];
-  qps = [ctx queryPathSeparator];
-  [ctx setQueryPathSeparator:@"&"];
-  qs = [ctx queryStringFromDictionary:qp];
-  [ctx setQueryPathSeparator:qps];
-  return [_method stringByAppendingFormat:@"?%@", qs];
+  return href;
 }
 
-- (NSString *)ownMethodName {
+- (NSString *) ownMethodName
+{
   NSString *uri;
   NSRange  r;
     
@@ -251,15 +270,16 @@ static BOOL uixDebugEnabled = NO;
     
   /* next: strip trailing slash */
     
-  if ([uri hasSuffix:@"/"]) uri = [uri substringToIndex:([uri length] - 1)];
-  r = [uri rangeOfString:@"/" options:NSBackwardsSearch];
+  if ([uri hasSuffix: @"/"])
+    uri = [uri substringToIndex: ([uri length] - 1)];
+  r = [uri rangeOfString:@"/" options: NSBackwardsSearch];
     
   /* then: cut of last path component */
     
   if (r.length == 0) // no slash? are we at root?
     return @"/";
     
-  return [uri substringFromIndex:(r.location + 1)];
+  return [uri substringFromIndex: (r.location + 1)];
 }
 
 - (NSString *) _urlForTraversalObject: (int) traversal
@@ -299,7 +319,8 @@ static BOOL uixDebugEnabled = NO;
   return [rm webServerResourcesPath];
 }
 
-- (NSString *)ownPath {
+- (NSString *) ownPath
+{
   NSString *uri;
   NSRange  r;
   
@@ -310,14 +331,17 @@ static BOOL uixDebugEnabled = NO;
   r = [uri rangeOfString:@"?" options:NSBackwardsSearch];
   if (r.length > 0)
     uri = [uri substringToIndex:r.location];
+
   return uri;
 }
 
-- (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub {
+- (NSString *) relativePathToUserFolderSubPath: (NSString *) _sub
+{
   NSString *dst, *rel;
 
   dst = [[self userFolderPath] stringByAppendingPathComponent:_sub];
   rel = [dst urlPathRelativeToPath:[self ownPath]];
+
   return rel;
 }
   
@@ -340,7 +364,8 @@ static BOOL uixDebugEnabled = NO;
   return viewTimeZone;
 }
 
-- (NSTimeZone *)backendTimeZone {
+- (NSTimeZone *) backendTimeZone
+{
   return GMT;
 }
 
@@ -390,14 +415,17 @@ static BOOL uixDebugEnabled = NO;
 
 /* SoUser */
 
-- (SoUser *)user {
+- (SoUser *) user
+{
   WOContext *ctx;
   
   ctx = [self context];
-  return [[[self clientObject] authenticatorInContext:ctx] userInContext:ctx];
+
+  return [[[self clientObject] authenticatorInContext: ctx] userInContext: ctx];
 }
 
-- (NSString *)shortUserNameForDisplay {
+- (NSString *) shortUserNameForDisplay
+{
   // TODO: better use a SoUser formatter?
   // TODO: who calls that?
   NSString *s;
@@ -420,11 +448,11 @@ static BOOL uixDebugEnabled = NO;
 
 /* labels */
 
-- (NSString *) labelForKey: (NSString *)_str
+- (NSString *) labelForKey: (NSString *) _str
 {
   WOResourceManager *rm;
-  NSArray           *languages;
-  NSString          *lKey, *lTable, *lVal;
+  NSArray *languages;
+  NSString *lKey, *lTable, *lVal;
   NSRange r;
 
   if ([_str length] == 0)
@@ -473,7 +501,7 @@ static BOOL uixDebugEnabled = NO;
              languages: languages];
 }
 
-- (NSString *)localizedNameForDayOfWeek:(unsigned)_dayOfWeek {
+- (NSString *) localizedNameForDayOfWeek:(unsigned)_dayOfWeek {
   NSString *key =  [dayLabelKeys objectAtIndex:_dayOfWeek % 7];
   return [self labelForKey:key];
 }
