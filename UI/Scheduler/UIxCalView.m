@@ -478,10 +478,7 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (NSDictionary *) todayQueryParameters
 {
-  NSCalendarDate *date;
-    
-  date = [NSCalendarDate date]; /* today */
-  return [self queryParametersBySettingSelectedDate: date];
+  return [self queryParametersBySettingSelectedDate: [NSCalendarDate date]];
 }
 
 - (NSDictionary *) currentDayQueryParameters
