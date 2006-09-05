@@ -1,3 +1,11 @@
+2006-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -init]): new
+	"viewTimeZone" ivar destined to hold an instance of the user's
+	timezone in memory.
+	([UIxComponent -viewTimeZone]): take the timezone from the user's
+	prefs.
+
 2006-08-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Templates/SchedulerUI/UIxAppointmentEditor.wox: completely

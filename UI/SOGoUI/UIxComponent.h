@@ -37,6 +37,7 @@
 @interface UIxComponent : SoComponent
 {
   NSMutableDictionary *queryParameters;
+  NSTimeZone *viewTimeZone;
 }
 
 - (NSString *)queryParameterForKey:(NSString *)_key;

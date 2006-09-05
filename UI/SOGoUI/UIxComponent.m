@@ -26,6 +26,8 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WOResourceManager.h>
 
+#import <SOGo/SOGoUser.h>
+
 @interface UIxComponent (PrivateAPI)
 - (void)_parseQueryString:(NSString *)_s;
 - (NSMutableDictionary *)_queryParameters;
@@ -33,7 +35,6 @@
 
 @implementation UIxComponent
 
-static NSTimeZone *MET = nil;
 static NSTimeZone *GMT = nil;
 
 static NSMutableArray *dayLabelKeys       = nil;
@@ -56,10 +57,9 @@ static BOOL uixDebugEnabled = NO;
   
   uixDebugEnabled = [ud boolForKey:@"SOGoUIxDebugEnabled"];
 
-  if (MET == nil) {
-    MET = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
+  if (!GMT)
     GMT = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
-  }
+
   if (dayLabelKeys == nil) {
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
     [dayLabelKeys addObject:@"Sunday"];
@@ -109,8 +109,21 @@ static BOOL uixDebugEnabled = NO;
   }
 }
 
-- (void)dealloc {
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      viewTimeZone = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
   [self->queryParameters release];
+  if (viewTimeZone)
+    [viewTimeZone release];
   [super dealloc];
 }
 
@@ -307,9 +320,21 @@ static BOOL uixDebugEnabled = NO;
   
 /* date */
 
-- (NSTimeZone *)viewTimeZone {
-  // Note: also in the folder, should be based on a cookie?
-  return MET;
+- (NSTimeZone *) viewTimeZone
+{
+  NSUserDefaults *userPrefs;
+  SOGoUser *currentUser;
+
+  if (!viewTimeZone)
+    {
+      currentUser = [[self context] activeUser];
+      userPrefs = [currentUser userDefaults];
+      viewTimeZone = [NSTimeZone timeZoneWithName:
+                                   [userPrefs stringForKey: @"timezonename"]];
+      [viewTimeZone retain];
+    }
+
+  return viewTimeZone;
 }
 
 - (NSTimeZone *)backendTimeZone {
