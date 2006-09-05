@@ -83,7 +83,7 @@ function onSelectAll() {
   return false;
 }
 
-function displayAppointment(sender) {
+function displayAppointment(event, sender) {
   var aptId = sender.getAttribute("aptId");
   var urlstr = ApplicationBaseURL + aptId + "/view";
   
@@ -92,7 +92,8 @@ function displayAppointment(sender) {
                         "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   win.focus();
 
-  return false; /* stop following the link */
+  event.cancelBubble = true;
+  event.returnValue = false;
 }
 
 function onContactRefresh(node)
