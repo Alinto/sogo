@@ -379,14 +379,20 @@ static BOOL uixDebugEnabled = NO;
     {
       s = [self queryParameterForKey: @"day"];
       if ([s length] > 0)
-        {
-          dateString = [s stringByAppendingFormat: @" %@",
-                          [[self viewTimeZone] abbreviation]];
-          cdate = [NSCalendarDate dateWithString: dateString
-                                  calendarFormat: @"%Y%m%d %Z"];
-        }
+        dateString = [s stringByAppendingFormat: @" %@",
+                        [[self viewTimeZone] abbreviation]];
       else
-        cdate = [NSCalendarDate date];
+        {
+          cdate = [NSCalendarDate calendarDate];
+          dateString = [NSString stringWithFormat: @"%d%d%d %@",
+                                 [cdate yearOfCommonEra],
+                                 [cdate monthOfYear],
+                                 [cdate dayOfMonth],
+                                 [[self viewTimeZone] abbreviation]];
+        }
+
+      cdate = [NSCalendarDate dateWithString: dateString
+                              calendarFormat: @"%Y%m%d %Z"];
       s = [self queryParameterForKey: @"hm"];
       if ([s length] == 4)
         {
