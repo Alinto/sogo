@@ -324,9 +324,8 @@ function deselectNode(node) {
 function deselectAll(parent) {
   for (var i = 0; i < parent.childNodes.length; i++) {
     var node = parent.childNodes.item(i);
-    if (node.nodeType == 1) {
-      node.removeClassName('_selected');
-    }
+    if (node.nodeType == 1)
+      deselectNode(node);
   }
 }
 
@@ -1123,4 +1122,10 @@ HTMLTableElement.prototype.selectRowsMatchingClass = function(className) {
         selectNode(node);
     }
   }
+}
+
+HTMLTableElement.prototype.deselectAll = function() {
+  var nodes = this.getSelectedRows();
+  for (var i = 0; i < nodes.length; i++)
+    deselectNode(nodes[i]);
 }
