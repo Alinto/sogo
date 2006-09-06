@@ -24,13 +24,13 @@
 
 @interface UIxCalInlineAptView : WOComponent
 {
-  id   appointment;
-  id   formatter;
-  id   tooltipFormatter;
-  id   url;
-  id   style;
-  id   queryDictionary;
-  id   referenceDate;
+  id appointment;
+  id formatter;
+  id tooltipFormatter;
+  id url;
+  id style;
+  id queryDictionary;
+  id referenceDate;
   BOOL canAccess;
 }
 
@@ -44,61 +44,60 @@
 @implementation UIxCalInlineAptView
 
 - (void)dealloc {
-  [self->appointment      release];
-  [self->formatter        release];
-  [self->tooltipFormatter release];
-  [self->url              release];
-  [self->style            release];
-  [self->queryDictionary  release];
-  [self->referenceDate    release];
+  [appointment release];
+  [formatter release];
+  [tooltipFormatter release];
+  [url release];
+  [style release];
+  [queryDictionary release];
+  [referenceDate release];
   [super dealloc];
 }
 
 - (void)setAppointment:(id)_appointment {
-  ASSIGN(self->appointment, _appointment);
+  ASSIGN(appointment, _appointment);
 }
 - (id)appointment {
-  return self->appointment;
+  return appointment;
 }
 
 - (void)setFormatter:(id)_formatter {
-  ASSIGN(self->formatter, _formatter);
+  ASSIGN(formatter, _formatter);
 }
 - (id)formatter {
-  return self->formatter;
+  return formatter;
 }
 
 - (void)setTooltipFormatter:(id)_tooltipFormatter {
-  ASSIGN(self->tooltipFormatter, _tooltipFormatter);
+  ASSIGN(tooltipFormatter, _tooltipFormatter);
 }
 - (id)tooltipFormatter {
-  return self->tooltipFormatter;
+  return tooltipFormatter;
 }
 
 - (void)setUrl:(id)_url {
-  ASSIGN(self->url, _url);
+  ASSIGN(url, _url);
 }
 - (id)url {
-  return self->url;
+  return url;
 }
 
 - (void)setStyle:(id)_style {
   NSMutableString *ms;
-  NSNumber        *prio;
-  NSString        *s;
-  NSString        *email;
+  NSNumber *prio;
+  NSString *s;
+  NSString *email;
 
-  if (_style) {
-    ms = [NSMutableString stringWithString:_style];
-  }
-  else {
+  if (_style)
+    ms = [NSMutableString stringWithString: _style];
+  else
     ms = (NSMutableString *)[NSMutableString string];
-  }
-  if ((prio = [self->appointment valueForKey:@"priority"])) {
+
+  if ((prio = [appointment valueForKey:@"priority"])) {
     [ms appendFormat:@" apt_prio%@", prio];
   }
   email = [[[self context] activeUser] email];
-  if ((s = [self->appointment valueForKey:@"orgmail"])) {
+  if ((s = [appointment valueForKey:@"orgmail"])) {
     if ([s rangeOfString:email].length > 0) {
       [ms appendString:@" apt_organizer"];
     }
@@ -106,7 +105,7 @@
       [ms appendString:@" apt_other"];
     }
   }
-  if ((s = [self->appointment valueForKey:@"partmails"])) {
+  if ((s = [appointment valueForKey:@"partmails"])) {
     if ([s rangeOfString:email].length > 0) {
       [ms appendString:@" apt_participant"];
     }
@@ -114,45 +113,45 @@
       [ms appendString:@" apt_nonparticipant"];
     }
   }
-  ASSIGNCOPY(self->style, ms);
+  ASSIGNCOPY(style, ms);
 }
 - (id)style {
-  return self->style;
+  return style;
 }
 
 - (void)setQueryDictionary:(id)_queryDictionary {
-  ASSIGN(self->queryDictionary, _queryDictionary);
+  ASSIGN(queryDictionary, _queryDictionary);
 }
 - (id)queryDictionary {
-  return self->queryDictionary;
+  return queryDictionary;
 }
 
 - (void)setReferenceDate:(id)_referenceDate {
-  ASSIGN(self->referenceDate, _referenceDate);
+  ASSIGN(referenceDate, _referenceDate);
 }
 - (id)referenceDate {
-  return self->referenceDate;
+  return referenceDate;
 }
 
 - (void)setCanAccess:(BOOL)_canAccess {
-  self->canAccess = _canAccess;
+  canAccess = _canAccess;
 }
 - (BOOL)canAccess {
-  return self->canAccess;
+  return canAccess;
 }
 
 /* helpers */
 
 - (NSString *) title
 {
-  return [self->formatter stringForObjectValue: self->appointment
-                          referenceDate: [self referenceDate]];
+  return [formatter stringForObjectValue: appointment
+                    referenceDate: [self referenceDate]];
 }
 
 - (NSString *) tooltip
 {
-  return [self->tooltipFormatter stringForObjectValue:self->appointment
-              referenceDate:[self referenceDate]];
+  return [tooltipFormatter stringForObjectValue: appointment
+                           referenceDate: [self referenceDate]];
 }
 
 @end
