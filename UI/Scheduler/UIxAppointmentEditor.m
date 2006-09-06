@@ -38,19 +38,19 @@
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
   NSCalendarDate *cycleUntilDate;
-  NSString       *title;
-  NSString       *location;
-  NSString       *comment;
-  iCalPerson     *organizer;
-  NSArray        *participants;     /* array of iCalPerson's */
-  NSArray        *resources;        /* array of iCalPerson's */
-  NSString       *priority;
-  NSArray        *categories;
-  NSString       *accessClass;
-  BOOL           isPrivate;         /* default: NO */
-  BOOL           checkForConflicts; /* default: NO */
-  NSDictionary   *cycle;
-  NSString       *cycleEnd;
+  NSString *title;
+  NSString *location;
+  NSString *comment;
+  iCalPerson *organizer;
+  NSArray *participants;     /* array of iCalPerson's */
+  NSArray *resources;        /* array of iCalPerson's */
+  NSString *priority;
+  NSArray *categories;
+  NSString *accessClass;
+  BOOL isPrivate;         /* default: NO */
+  BOOL checkForConflicts; /* default: NO */
+  NSDictionary *cycle;
+  NSString *cycleEnd;
 }
 
 - (NSString *)iCalStringTemplate;
@@ -129,44 +129,44 @@
 }
 
 - (void)dealloc {
-  [self->iCalString     release];
-  [self->errorText      release];
-  [self->item           release];
+  [iCalString release];
+  [errorText release];
+  [item release];
 
-  [self->startDate      release];
-  [self->endDate        release];
-  [self->cycleUntilDate release];
-  [self->title          release];
-  [self->location       release];
-  [self->organizer      release];
-  [self->comment        release];
-  [self->participants   release];
-  [self->resources      release];
-  [self->priority       release];
-  [self->categories     release];
-  [self->accessClass    release];
-  [self->cycle          release];
-  [self->cycleEnd      release];
+  [startDate release];
+  [endDate release];
+  [cycleUntilDate release];
+  [title release];
+  [location release];
+  [organizer release];
+  [comment release];
+  [participants release];
+  [resources release];
+  [priority release];
+  [categories release];
+  [accessClass release];
+  [cycle release];
+  [cycleEnd release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
+  ASSIGN(item, _item);
 }
 - (id)item {
-  return self->item;
+  return item;
 }
 
 - (void)setErrorText:(NSString *)_txt {
-  ASSIGNCOPY(self->errorText, _txt);
+  ASSIGNCOPY(errorText, _txt);
 }
 - (NSString *)errorText {
-  return self->errorText;
+  return errorText;
 }
 - (BOOL)hasErrorText {
-  return [self->errorText length] > 0 ? YES : NO;
+  return [errorText length] > 0 ? YES : NO;
 }
 
 - (NSFormatter *)titleDateFormatter {
@@ -178,48 +178,48 @@
 }
 
 - (void)setAptStartDate:(NSCalendarDate *)_date {
-  ASSIGN(self->startDate, _date);
+  ASSIGN(startDate, _date);
 }
 - (NSCalendarDate *)aptStartDate {
-  return self->startDate;
+  return startDate;
 }
 - (void)setAptEndDate:(NSCalendarDate *)_date {
-  ASSIGN(self->endDate, _date);
+  ASSIGN(endDate, _date);
 }
 - (NSCalendarDate *)aptEndDate {
-  return self->endDate;
+  return endDate;
 }
 
 - (void)setTitle:(NSString *)_value {
-  ASSIGNCOPY(self->title, _value);
+  ASSIGNCOPY(title, _value);
 }
 - (NSString *)title {
-  return self->title;
+  return title;
 }
 - (void)setLocation:(NSString *)_value {
-  ASSIGNCOPY(self->location, _value);
+  ASSIGNCOPY(location, _value);
 }
 - (NSString *)location {
-  return self->location;
+  return location;
 }
 - (void)setComment:(NSString *)_value {
-  ASSIGNCOPY(self->comment, _value);
+  ASSIGNCOPY(comment, _value);
 }
 - (NSString *)comment {
-  return self->comment;
+  return comment;
 }
 
 - (void)setParticipants:(NSArray *)_parts {
-  ASSIGN(self->participants, _parts);
+  ASSIGN(participants, _parts);
 }
 - (NSArray *)participants {
-  return self->participants;
+  return participants;
 }
 - (void)setResources:(NSArray *)_res {
-  ASSIGN(self->resources, _res);
+  ASSIGN(resources, _res);
 }
 - (NSArray *)resources {
-  return self->resources;
+  return resources;
 }
 
 /* priorities */
@@ -239,15 +239,15 @@
 - (NSString *)itemPriorityText {
   NSString *key;
   
-  key = [NSString stringWithFormat:@"prio_%@", self->item];
+  key = [NSString stringWithFormat:@"prio_%@", item];
   return [self labelForKey:key];
 }
 
 - (void)setPriority:(NSString *)_priority {
-  ASSIGN(self->priority, _priority);
+  ASSIGN(priority, _priority);
 }
 - (NSString *)priority {
-  return self->priority;
+  return priority;
 }
 
 
@@ -278,15 +278,15 @@
 }
 
 - (NSString *) itemCategoryText {
-  return [[self labelForKey: self->item] stringByEscapingHTMLString];
+  return [[self labelForKey: item] stringByEscapingHTMLString];
 }
 
 - (void)setCategories:(NSArray *)_categories {
-  ASSIGN(self->categories, _categories);
+  ASSIGN(categories, _categories);
 }
 
 - (NSArray *)categories {
-  return self->categories;
+  return categories;
 }
 
 /* class */
@@ -303,10 +303,10 @@
 #endif
 
 - (void)setAccessClass:(NSString *)_class {
-  ASSIGN(self->accessClass, _class);
+  ASSIGN(accessClass, _class);
 }
 - (NSString *)accessClass {
-  return self->accessClass;
+  return accessClass;
 }
 
 - (void)setIsPrivate:(BOOL)_yn {
@@ -314,17 +314,17 @@
     [self setAccessClass:@"PRIVATE"];
   else
     [self setAccessClass:@"PUBLIC"];
-  self->isPrivate = _yn;
+  isPrivate = _yn;
 }
 - (BOOL)isPrivate {
-  return self->isPrivate;
+  return isPrivate;
 }
 
 - (void)setCheckForConflicts:(BOOL)_checkForConflicts {
-  self->checkForConflicts = _checkForConflicts;
+  checkForConflicts = _checkForConflicts;
 }
 - (BOOL)checkForConflicts {
-  return self->checkForConflicts;
+  return checkForConflicts;
 }
 
 - (NSArray *)cycles {
@@ -344,21 +344,21 @@
 }
 
 - (void)setCycle:(NSDictionary *)_cycle {
-  ASSIGN(self->cycle, _cycle);
+  ASSIGN(cycle, _cycle);
 }
 - (NSDictionary *)cycle {
-  return self->cycle;
+  return cycle;
 }
 - (BOOL)hasCycle {
-  [self debugWithFormat:@"cycle: %@", self->cycle];
-  if (![self->cycle objectForKey:@"rule"])
+  [self debugWithFormat:@"cycle: %@", cycle];
+  if (![cycle objectForKey:@"rule"])
     return NO;
   return YES;
 }
 - (NSString *)cycleLabel {
   NSString *key;
   
-  key = [(NSDictionary *)self->item objectForKey:@"label"];
+  key = [(NSDictionary *)item objectForKey:@"label"];
   return [self labelForKey:key];
 }
 
@@ -367,32 +367,32 @@
   NSCalendarDate *until;
 
   /* copy hour/minute/second from startDate */
-  until = [_cycleUntilDate hour:[self->startDate hourOfDay]
-                           minute:[self->startDate minuteOfHour]
-                           second:[self->startDate secondOfMinute]];
-  [until setTimeZone:[self->startDate timeZone]];
-  ASSIGN(self->cycleUntilDate, until);
+  until = [_cycleUntilDate hour:[startDate hourOfDay]
+                           minute:[startDate minuteOfHour]
+                           second:[startDate secondOfMinute]];
+  [until setTimeZone:[startDate timeZone]];
+  ASSIGN(cycleUntilDate, until);
 }
 - (NSCalendarDate *)cycleUntilDate {
-  return self->cycleUntilDate;
+  return cycleUntilDate;
 }
 
 - (iCalRecurrenceRule *)rrule {
-  NSString           *ruleRep;
+  NSString *ruleRep;
   iCalRecurrenceRule *rule;
 
   if (![self hasCycle])
     return nil;
-  ruleRep = [self->cycle objectForKey:@"rule"];
+  ruleRep = [cycle objectForKey:@"rule"];
   rule    = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation:ruleRep];
 
-  if (self->cycleUntilDate && [self isCycleEndUntil])
-    [rule setUntilDate:self->cycleUntilDate];
+  if (cycleUntilDate && [self isCycleEndUntil])
+    [rule setUntilDate:cycleUntilDate];
   return rule;
 }
 
 - (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule {
-  NSDictionary   *c;
+  NSDictionary *c;
   NSCalendarDate *until;
   
   c = [self cycleMatchingRRule:_rrule];
@@ -400,7 +400,7 @@
 
   until = [[[_rrule untilDate] copy] autorelease];
   if (!until)
-    until = self->startDate;
+    until = startDate;
   else
     [self setIsCycleEndUntil];
 
@@ -420,7 +420,7 @@
  */
 - (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule {
   NSString *cycleRep;
-  NSArray  *cycles;
+  NSArray *cycles;
   unsigned i, count;
 
   if (!_rrule)
@@ -431,7 +431,7 @@
   count    = [cycles count];
   for (i = 1; i < count; i++) {
     NSDictionary *c;
-    NSString     *cr;
+    NSString *cr;
 
     c  = [cycles objectAtIndex:i];
     cr = [c objectForKey:@"rule"];
@@ -455,14 +455,14 @@
 }
 
 - (void)setCycleEnd:(NSString *)_cycleEnd {
-  ASSIGNCOPY(self->cycleEnd, _cycleEnd);
+  ASSIGNCOPY(cycleEnd, _cycleEnd);
 }
 - (NSString *)cycleEnd {
-  return self->cycleEnd;
+  return cycleEnd;
 }
 - (BOOL)isCycleEndUntil {
-  return (self->cycleEnd &&
-          [self->cycleEnd isEqualToString:@"cycle_end_until"]);
+  return (cycleEnd &&
+          [cycleEnd isEqualToString:@"cycle_end_until"]);
 }
 - (void)setIsCycleEndUntil {
   [self setCycleEnd:@"cycle_end_until"];
@@ -481,10 +481,10 @@
 /* iCal */
 
 - (void)setICalString:(NSString *)_s {
-  ASSIGNCOPY(self->iCalString, _s);
+  ASSIGNCOPY(iCalString, _s);
 }
 - (NSString *)iCalString {
-  return self->iCalString;
+  return iCalString;
 }
 
 - (NSString *)iCalStringTemplate {
@@ -509,8 +509,8 @@
     @"END:VCALENDAR";
 
   NSCalendarDate *lStartDate, *lEndDate;
-  NSString       *template, *s;
-  unsigned       minutes;
+  NSString *template, *s;
+  unsigned minutes;
 
   s = [self queryParameterForKey:@"dur"];
   if(s && [s length] > 0) {
@@ -596,7 +596,7 @@
 #if 0
 - (iCalPerson *)getOrganizer {
   iCalPerson *p;
-  NSString   *emailProp;
+  NSString *emailProp;
   
   emailProp = [@"mailto:" stringByAppendingString:[self emailForUser]];
   p = [[[iCalPerson alloc] init] autorelease];
@@ -662,9 +662,9 @@
  if (!ps
      && [[self clientObject] respondsToSelector:@selector(calendarUIDs)]) {
     AgenorUserManager *um;
-    NSArray           *uids;
-    NSMutableArray    *emails;
-    unsigned          i, count;
+    NSArray *uids;
+    NSMutableArray *emails;
+    unsigned i, count;
 
     /* add all current calendarUIDs as default participants */
 
@@ -708,8 +708,8 @@
   count = [_values count];
   result = [[NSMutableArray alloc] initWithCapacity:count];
   for (i = 0; i < count; i++) {
-    NSString   *pString, *email, *cn;
-    NSRange    r;
+    NSString *pString, *email, *cn;
+    NSRange r;
     iCalPerson *p;
     
     pString = [_values objectAtIndex:i];
@@ -766,26 +766,28 @@
 }
 
 - (void)loadValuesFromAppointment:(SOGoAppointment *)_appointment {
-  NSString           *s;
+  NSString *s;
   iCalRecurrenceRule *rrule;
 
-  if ((self->startDate = [[_appointment startDate] copy]) == nil)
-    self->startDate = [[[NSCalendarDate date] hour:11 minute:0] copy];
-  if ((self->endDate = [[_appointment endDate] copy]) == nil) {
-    self->endDate =
-      [[self->startDate hour:[self->startDate hourOfDay] + 1 minute:0] copy];
+  if ((startDate = [[_appointment startDate] copy]) == nil)
+    startDate = [[[NSCalendarDate date] hour:11 minute:0] copy];
+  if ((endDate = [[_appointment endDate] copy]) == nil) {
+    endDate =
+      [[startDate hour:[startDate hourOfDay] + 1 minute:0] copy];
   }
-  [self->startDate setTimeZone:[self viewTimeZone]];
-  [self->endDate   setTimeZone:[self viewTimeZone]];
+  [startDate setTimeZone:[self viewTimeZone]];
+  [endDate setTimeZone:[self viewTimeZone]];
   
-  self->title        = [[_appointment summary]  copy];
-  self->location     = [[_appointment location] copy];
-  self->comment      = [[_appointment comment]  copy];
-  self->priority     = [[_appointment priority] copy];
-  self->categories   = [[_appointment categories]   retain];
-  self->organizer    = [[_appointment organizer]    retain];
-  self->participants = [[_appointment participants] retain];
-  self->resources    = [[_appointment resources]    retain];
+  title        = [[_appointment summary]  copy];
+  location     = [[_appointment location] copy];
+  comment      = [[_appointment comment]  copy];
+  priority     = [[_appointment priority] copy];
+  categories   = [[_appointment categories]   retain];
+  organizer    = [[_appointment organizer]    retain];
+  participants = [[_appointment participants] retain];
+  resources    = [[_appointment resources]    retain];
+
+  NSLog (@"summary יאט: '%@'", title);
 
   s                  = [_appointment accessClass];
   if(!s || [s isEqualToString:@"PUBLIC"])
@@ -804,10 +806,10 @@
   
   [_appointment setStartDate:[self aptStartDate]];
   [_appointment setEndDate:[self aptEndDate]];
-  
-  [_appointment setSummary:[self title]];
-  [_appointment setLocation:[self location]];
-  [_appointment setComment:[self comment]];
+
+  [_appointment setSummary: [self title]];
+  [_appointment setLocation: [self location]];
+  [_appointment setComment: [self comment]];
   [_appointment setPriority:[self priority]];
   [_appointment setCategories:[self categories]];
 
@@ -819,7 +821,7 @@
     Note: bad, bad, bad!
     Organizer is no form value, thus we MUST NOT change it
   */
-  [_appointment setOrganizer:self->organizer];
+  [_appointment setOrganizer:organizer];
 #endif
   attendees  = [self participants];
   lResources = [self resources];
@@ -859,11 +861,11 @@
 /* access */
 
 - (BOOL)isMyApt {
-  if (self->organizer == nil)
+  if (organizer == nil)
     return YES; // assume this is safe to do, right?
   
   // TODO: this should check a set of emails against the SoUser
-  return [[self->organizer rfc822Email] isEqualToString:[self emailForUser]];
+  return [[organizer rfc822Email] isEqualToString:[self emailForUser]];
 }
 
 - (BOOL)canAccessApt {
@@ -878,11 +880,11 @@
 /* conflict management */
 
 - (BOOL)containsConflict:(SOGoAppointment *)_apt {
-  NSArray               *attendees, *uids;
+  NSArray *attendees, *uids;
   SOGoAppointmentFolder *groupCalendar;
-  NSArray               *infos;
-  NSArray               *ranges;
-  id                    folder;
+  NSArray *infos;
+  NSArray *ranges;
+  id folder;
 
   [self logWithFormat:@"search from %@ to %@", 
 	  [_apt startDate], [_apt endDate]];
@@ -939,9 +941,9 @@
 
 - (id)testAction {
   /* for testing only */
-  WORequest       *req;
+  WORequest *req;
   SOGoAppointment *apt;
-  NSString        *content;
+  NSString *content;
 
   req = [[self context] request];
   apt = [[SOGoAppointment alloc] initWithICalString:[self iCalString]];
@@ -976,10 +978,10 @@
 
 - (id)saveAction {
   SOGoAppointment *apt;
-  iCalPerson      *p;
-  NSString        *content;
-  NSException     *ex;
-  
+  iCalPerson *p;
+  NSString *content;
+  NSException *ex;
+
   if (![self isWriteableClientObject]) {
     /* return 400 == Bad Request */
     return [NSException exceptionWithHTTPStatus:400
