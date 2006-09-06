@@ -395,12 +395,12 @@ SPAN.toolbarSeparator
 A.toolbarButton
 {
   color: #000;
-  cursor: default;
   text-decoration: none;
 }
 
 SPAN.toolbarButton, SPAN.disabledToolbarButton
 {
+  cursor: default;
   display: block;
   float: left; 
   text-align: center;
