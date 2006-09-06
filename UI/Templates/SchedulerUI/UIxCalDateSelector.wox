@@ -17,8 +17,7 @@
         var:date="prevMonthAsString"
         onclick="return onDateSelectorGotoMonth(this);"
         ><img id="previous" rsrc:src="arrow-lft-sharp.gif" />
-      </a
-        ><span id="monthLabel"
+      </a><span id="monthLabel"
         onmousedown="return false;"
         var:month="headerMonthValue"
         onclick="popupMonthMenu(event, 'monthListMenu');"
@@ -29,12 +28,13 @@
         ><var:string value="headerYearString"
           /></span>
     </div>
-    
+
     <var:month-overview
       currentDay="currentDay"
       index="dayIndex"
       year="year"
       month="month"
+      var:timeZone="viewTimeZone"
       const:startDateKey="startDate"
       const:endDateKey="endDate"
       ><var:month-label

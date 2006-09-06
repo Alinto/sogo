@@ -1,5 +1,9 @@
 2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxCalDateSelector.wox: pass the user's
+	timezone ([self viewTimeZone]) to the WEMonthOverview component to
+	avoid a confusion with the days.
+
 	* UI/Templates/SchedulerUI/UIxCalInlineAptView.wox: appointments
 	can now be clicked.
 
