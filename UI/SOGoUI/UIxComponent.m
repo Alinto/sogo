@@ -27,6 +27,8 @@
 #import <NGObjWeb/WOResourceManager.h>
 
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoCustomGroupFolder.h>
 
 @interface UIxComponent (PrivateAPI)
 - (void)_parseQueryString:(NSString *)_s;
@@ -306,7 +308,32 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSString *) applicationPath
 {
-  return [self _urlForTraversalObject: 2];
+  SOGoObject *currentClient, *parent;
+  NSString *url;
+  BOOL found;
+  Class parentClass, groupFolderClass, userFolderClass;
+  WOContext *ctx;
+
+  found = NO;
+  groupFolderClass = [SOGoCustomGroupFolder class];
+  userFolderClass = [SOGoUserFolder class];
+
+  currentClient = [self clientObject];
+  while (!found && currentClient)
+    {
+      parent = [currentClient container];
+      parentClass = [parent class];
+      if (parentClass == groupFolderClass
+          || parentClass == userFolderClass)
+        found = YES;
+      else
+        currentClient = parent;
+    }
+
+  ctx = [self context];
+  url = [currentClient baseURLInContext: ctx];
+
+  return [[NSURL URLWithString: url] path];
 }
 
 - (NSString *) resourcesPath

@@ -4,6 +4,9 @@
 	sure the numbers in dateString are formatted so as to take 4 chars
 	for the year and 2 for the day and the month, otherwise
 	NSCalendarDate will return a nil date.
+	([UIxComponent -applicationPath]): return a path based on the
+	object's context instead of the second level in SOGo's object
+	hierarchy...
 
 2006-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
