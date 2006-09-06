@@ -143,6 +143,9 @@
 "empty title"		= "Empty title";
 "private appointment"	= "Private appointment";
 
+"Show Details" = "Show Details";
+"Hide Details" = "Hide Details";
+
 /* Appointments (participation state) */
 
 "partStat_NEEDS-ACTION"	= "Not decided, yet";
