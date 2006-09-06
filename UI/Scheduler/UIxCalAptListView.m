@@ -122,21 +122,6 @@
   return fmt;
 }
 
-- (NSString *) currentTitle
-{
-  NSString *fullTitle, *title;
-
-  fullTitle = [currentAppointment objectForKey: @"title"];
-  if ([fullTitle length] > 49)
-    title = [NSString stringWithFormat: @"%@...",
-                      [[currentAppointment objectForKey: @"title"]
-                        substringToIndex: 50]];
-  else
-    title = fullTitle;
-
-  return title;
-}
-
 - (NSString *) currentStartTime
 {
   NSCalendarDate *date;
