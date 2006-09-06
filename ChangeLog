@@ -1,3 +1,10 @@
+2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -selectedDate]): make
+	sure the numbers in dateString are formatted so as to take 4 chars
+	for the year and 2 for the day and the month, otherwise
+	NSCalendarDate will return a nil date.
+
 2006-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -selectedDate]): add the

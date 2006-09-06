@@ -384,7 +384,7 @@ static BOOL uixDebugEnabled = NO;
       else
         {
           cdate = [NSCalendarDate calendarDate];
-          dateString = [NSString stringWithFormat: @"%d%d%d %@",
+          dateString = [NSString stringWithFormat: @"%.4d%.2d%.2d %@",
                                  [cdate yearOfCommonEra],
                                  [cdate monthOfYear],
                                  [cdate dayOfMonth],
