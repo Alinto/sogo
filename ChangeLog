@@ -1,5 +1,8 @@
 2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: implemented a mechanism to
+	imitate Sunbird's synchronization between the 3 visible views.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -selectedDate]): make
 	sure the numbers in dateString are formatted so as to take 4 chars
 	for the year and 2 for the day and the month, otherwise

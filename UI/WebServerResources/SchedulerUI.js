@@ -3,7 +3,6 @@ var sortKey = '';
 var listFilter = 'view_today';
 
 var currentDay = '';
-var currentCalendarDay = '';
 var currentView = 'dayview';
 
 function newEvent(sender) {
@@ -121,7 +120,7 @@ function onContactRefresh(node)
 
 function onDaySelect(node)
 {
-  currentDay = node.getAttribute("day");
+  var day = node.getAttribute("day");
 
   var td = node.getParentWithTagName("td");
   var table = td.getParentWithTagName("table");
@@ -134,7 +133,7 @@ function onDaySelect(node)
   selectNode(td);
   document.selectedDate = td;
 
-  changeCalendarDisplay(currentDay, null);
+  changeCalendarDisplay(day);
   if (listFilter == 'view_selectedday')
     refreshAppointments();
 
@@ -145,7 +144,7 @@ function onDateSelectorGotoMonth(node)
 {
   var day = node.getAttribute("date");
 
-  changeDateSelectorDisplay(day);
+  changeDateSelectorDisplay(day, true);
 
   return false;
 }
@@ -154,6 +153,7 @@ function onCalendarGotoDay(node)
 {
   var day = node.getAttribute("date");
 
+  changeDateSelectorDisplay(day);
   changeCalendarDisplay(day);
 
   return false;
@@ -161,11 +161,8 @@ function onCalendarGotoDay(node)
 
 function gotoToday()
 {
-  currentDay = '';
-  currentCalendarDay = '';
-
+  changeDateSelectorDisplay('');
   changeCalendarDisplay();
-  changeDateSelectorDisplay();
 
   return false;
 }
@@ -230,26 +227,24 @@ function restoreCurrentDaySelection(div)
     }
 }
 
-function changeDateSelectorDisplay(day, event)
+function changeDateSelectorDisplay(day, keepCurrentDay)
 {
   var url = ApplicationBaseURL + "dateselector";
   if (day)
     url += "?day=" + day;
 
-//   if (currentDay.length > 0)
-//     url += '&selectedDay=' + currentDay;
-  log ("changeDateSelectorDisplay: " + url);
+  if (day != currentDay) {
+    if (!keepCurrentDay)
+      currentDay = day;
 
-  if (document.dateSelectorAjaxRequest) {
-//     log ("aborting dateselector ajaxrq");
-    document.dateSelectorAjaxRequest.aborted = true;
-    document.dateSelectorAjaxRequest.abort();
+    if (document.dateSelectorAjaxRequest) {
+      document.dateSelectorAjaxRequest.aborted = true;
+      document.dateSelectorAjaxRequest.abort();
+    }
+    document.dateSelectorAjaxRequest = triggerAjaxRequest(url,
+                                                          dateSelectorCallback,
+                                                          null);
   }
-
-  document.dateSelectorAjaxRequest = triggerAjaxRequest(url,
-                                                        dateSelectorCallback,
-                                                        null);
-//   log ('should go to ' + day);
 }
 
 function changeCalendarDisplay(day, newView)
@@ -257,7 +252,7 @@ function changeCalendarDisplay(day, newView)
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
   if (!day)
-    day = currentCalendarDay;
+    day = currentDay;
   if (day)
     url += "?day=" + day;
 
@@ -312,7 +307,7 @@ function calendarDisplayCallback(http)
     if (http.callbackData["view"])
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
-      currentCalendarDay = http.callbackData["day"];
+      currentDay = http.callbackData["day"];
   }
   else
     log ("ajax fuckage");
@@ -417,7 +412,10 @@ function onListFilterChange() {
 function onAppointmentClick(event)
 {
   var node = event.target.getParentWithTagName("tr");
-  changeCalendarDisplay(node.getAttribute("day"));
+  var day = node.getAttribute("day");
+
+  changeCalendarDisplay(day);
+  changeDateSelectorDisplay(day);
 
   return onRowClick(event);
 }
@@ -486,8 +484,8 @@ function onMonthMenuItemClick(node)
 {
   var month = '' + node.getAttribute("month");
   var year = '' + $("yearLabel").innerHTML;
-
-  changeDateSelectorDisplay(year+month+"01");
+  
+  changeDateSelectorDisplay(year+month+"01", true);
 
   return false;
 }
@@ -497,7 +495,7 @@ function onYearMenuItemClick(node)
   var month = '' + $("monthLabel").getAttribute("month");;
   var year = '' + node.innerHTML;
 
-  changeDateSelectorDisplay(year+month+"01");
+  changeDateSelectorDisplay(year+month+"01", true);
 
   return false;
 }
@@ -507,4 +505,28 @@ function onSearchFormSubmit()
   log ("search not implemented");
 
   return false;
+}
+
+function onCalendarSelectAppointment(event, node)
+{
+  var list = $("appointmentsList");
+  list.deselectAll();
+
+  var aptId = node.getAttribute("aptId");
+  var row = $(aptId);
+  log ("row: " + row);
+  selectNode(row);
+
+  event.cancelBubble = false;
+  event.returnValue = false;
+}
+
+function onCalendarSelectDay(event, node)
+{
+  var day = node.getAttribute("day");
+
+  changeDateSelectorDisplay(day);
+
+  event.cancelBubble = true;
+  event.returnValue = false;
 }
