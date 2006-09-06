@@ -28,7 +28,6 @@
 #import <EOControl/EOQualifier.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
-#import <SOGoUI/SOGoDateFormatter.h>
 
 #include "UIxCalWeekView.h"
 
