@@ -1,5 +1,8 @@
 2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxCalDayTable.wox: day columns can now
+	be clicked.
+
 	* UI/Templates/SchedulerUI/UIxCalDateSelector.wox: pass the user's
 	timezone ([self viewTimeZone]) to the WEMonthOverview component to
 	avoid a confusion with the days.
