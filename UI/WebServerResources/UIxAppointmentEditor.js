@@ -117,8 +117,7 @@ function toggleDetails() {
   var buttonsDiv = $("buttons");
   var wHeight = 0;
   if (!window._fullHeight) {
-    var minHeight = (document.getElementsByTagName("div")[0].clientHeight
-                     + 2 * buttonsDiv.clientHeight);
+    var minHeight = (buttonsDiv.offsetTop + 2 * buttonsDiv.clientHeight);
     window._fullHeight = minHeight + div.clientHeight;
     window._hiddenHeight = minHeight;
   }
