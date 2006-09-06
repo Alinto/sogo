@@ -1,5 +1,8 @@
 2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxCalInlineAptView.wox: appointments
+	can now be clicked.
+
 	* UI/WebServerResources/SchedulerUI.js: implemented a mechanism to
 	imitate Sunbird's synchronization between the 3 visible views.
 
