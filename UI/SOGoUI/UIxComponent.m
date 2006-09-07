@@ -284,26 +284,29 @@ static BOOL uixDebugEnabled = NO;
   return [uri substringFromIndex: (r.location + 1)];
 }
 
-- (NSString *) _urlForTraversalObject: (int) traversal
-{
-  WOContext *ctx;
-  NSArray   *traversalObjects;
-  NSString  *url;
-  NSString  *path;
-
-  ctx = [self context];
-  traversalObjects = [ctx objectTraversalStack];
-  url = [[traversalObjects objectAtIndex: traversal]
-                           baseURLInContext:ctx];
-  path = [[NSURL URLWithString:url] path];
-//   path = [path stringByAppendingPathComponent:[[ctx activeUser] login]];
-
-  return path;
-}
-
 - (NSString *) userFolderPath
 {
-  return [self _urlForTraversalObject: 1];
+  WOContext *ctx;
+  NSString  *url, *path;
+  NSEnumerator *objects;
+  SOGoObject *currentObject;
+  BOOL found;
+
+  ctx = [self context];
+  objects = [[ctx objectTraversalStack] objectEnumerator];
+  currentObject = [objects nextObject];
+  found = NO;
+  while (currentObject
+         && !found)
+    if ([currentObject isKindOfClass: [SOGoUserFolder class]])
+      found = YES;
+    else
+      currentObject = [objects nextObject];
+
+  url = [currentObject baseURLInContext:ctx];
+  path = [[NSURL URLWithString:url] path];
+
+  return path;
 }
 
 - (NSString *) applicationPath
@@ -371,7 +374,7 @@ static BOOL uixDebugEnabled = NO;
 
   return rel;
 }
-  
+
 /* date */
 
 - (NSTimeZone *) viewTimeZone

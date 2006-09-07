@@ -1,3 +1,9 @@
+2006-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -userFolderPath]):
+	return a path based on the object's context instead of the first
+	level in SOGo's object hierarchy...
+
 2006-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Templates/SchedulerUI/UIxCalDayTable.wox: day columns can now
