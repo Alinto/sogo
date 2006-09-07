@@ -5,6 +5,8 @@ var listFilter = 'view_today';
 var currentDay = '';
 var currentView = 'dayview';
 
+var cachedDateSelectors = new Array();
+
 function newEvent(sender) {
   var day = sender.getAttribute("day");
   if (!day)
@@ -167,18 +169,23 @@ function gotoToday()
   return false;
 }
 
-function dateSelectorCallback(http)
+function setDateSelectorContent(content)
 {
   var div = $("dateSelectorView");
 
-  log ("dateselectorcallback: " + div);
+  div.innerHTML = content;
+  if (currentDay.length > 0)
+    restoreCurrentDaySelection(div);
+}
 
+function dateSelectorCallback(http)
+{
   if (http.readyState == 4
       && http.status == 200) {
     document.dateSelectorAjaxRequest = null;
-    div.innerHTML = http.responseText;
-    if (currentDay.length > 0)
-      restoreCurrentDaySelection(div);
+    var content = http.responseText;
+    setDateSelectorContent(content);
+    cachedDateSelectors[http.callbackData] = content;
   }
   else
     log ("ajax fuckage");
@@ -237,13 +244,22 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
     if (!keepCurrentDay)
       currentDay = day;
 
-    if (document.dateSelectorAjaxRequest) {
-      document.dateSelectorAjaxRequest.aborted = true;
-      document.dateSelectorAjaxRequest.abort();
+    var month = day.substr(0, 6);
+    if (cachedDateSelectors[month]) {
+      log ("restoring cached selector for month: " + month);
+      setDateSelectorContent(cachedDateSelectors[month]);
     }
-    document.dateSelectorAjaxRequest = triggerAjaxRequest(url,
-                                                          dateSelectorCallback,
-                                                          null);
+    else {
+      log ("loading selector for month: " + month);
+      if (document.dateSelectorAjaxRequest) {
+        document.dateSelectorAjaxRequest.aborted = true;
+        document.dateSelectorAjaxRequest.abort();
+      }
+      document.dateSelectorAjaxRequest
+        = triggerAjaxRequest(url,
+                             dateSelectorCallback,
+                             month);
+    }
   }
 }
 
@@ -514,8 +530,10 @@ function onCalendarSelectAppointment(event, node)
 
   var aptId = node.getAttribute("aptId");
   var row = $(aptId);
-  log ("row: " + row);
-  selectNode(row);
+  if (row) {
+    log ("row: " + row);
+    selectNode(row);
+  }
 
   event.cancelBubble = false;
   event.returnValue = false;
