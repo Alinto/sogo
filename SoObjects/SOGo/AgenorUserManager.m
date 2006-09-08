@@ -959,9 +959,9 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
     
     /* calculate emitter address (check for proper access right) */
     
-    emitterAddress = [self hasUser:_uid partageAccess:"GC" inEntry:entry]
-      ? [self emissionEMailFromEntry:entry]
-      : nil;
+    emitterAddress = ([self hasUser:_uid partageAccess:"GC" inEntry:entry]
+                      ? [self emissionEMailFromEntry:entry]
+                      : nil);
     
     /* set value */
     
