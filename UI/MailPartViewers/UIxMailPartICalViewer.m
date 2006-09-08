@@ -175,7 +175,7 @@
   NSCalendarDate *date;
   
   date = [[self authorativeEvent] startDate];
-  [date setTimeZone:[self viewTimeZone]];
+  [date setTimeZone:[[self clientObject] userTimeZone]];
   return date;
 }
 
@@ -183,7 +183,7 @@
   NSCalendarDate *date;
   
   date = [[self authorativeEvent] endDate];
-  [date setTimeZone:[self viewTimeZone]];
+  [date setTimeZone:[[self clientObject] userTimeZone]];
   return date;
 }
 
