@@ -1,5 +1,9 @@
 2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m: 
+	([SOGoAppointmentObject -viewTimeZoneForPerson:_person]): returns
+	[self serverTimeZone] instead of "EST" (which was removed).
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.[hm]: removed the
 	"timeZone" ivar and its accessors.
 
