@@ -23,6 +23,7 @@
 #import "SOGoJSStringFormatter.h"
 #import "NSString+URL.h"
 #import "common.h"
+
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WOResourceManager.h>
 
@@ -36,8 +37,6 @@
 @end
 
 @implementation UIxComponent
-
-static NSTimeZone *GMT = nil;
 
 static NSMutableArray *dayLabelKeys       = nil;
 static NSMutableArray *abbrDayLabelKeys   = nil;
@@ -58,9 +57,6 @@ static BOOL uixDebugEnabled = NO;
             NSStringFromClass([self superclass]), [super version]);
   
   uixDebugEnabled = [ud boolForKey:@"SOGoUIxDebugEnabled"];
-
-  if (!GMT)
-    GMT = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
 
   if (dayLabelKeys == nil) {
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
@@ -115,7 +111,6 @@ static BOOL uixDebugEnabled = NO;
 {
   if ((self = [super init]))
     {
-      viewTimeZone = nil;
       _selectedDate = nil;
     }
 
@@ -125,8 +120,6 @@ static BOOL uixDebugEnabled = NO;
 - (void) dealloc
 {
   [self->queryParameters release];
-  if (viewTimeZone)
-    [viewTimeZone release];
   if (_selectedDate)
     [_selectedDate release];
   [super dealloc];
@@ -377,28 +370,6 @@ static BOOL uixDebugEnabled = NO;
 
 /* date */
 
-- (NSTimeZone *) viewTimeZone
-{
-  NSUserDefaults *userPrefs;
-  SOGoUser *currentUser;
-
-  if (!viewTimeZone)
-    {
-      currentUser = [[self context] activeUser];
-      userPrefs = [currentUser userDefaults];
-      viewTimeZone = [NSTimeZone timeZoneWithName:
-                                   [userPrefs stringForKey: @"timezonename"]];
-      [viewTimeZone retain];
-    }
-
-  return viewTimeZone;
-}
-
-- (NSTimeZone *) backendTimeZone
-{
-  return GMT;
-}
-
 - (NSCalendarDate *) selectedDate
 {
   NSString *s, *dateString;
@@ -410,7 +381,7 @@ static BOOL uixDebugEnabled = NO;
       s = [self queryParameterForKey: @"day"];
       if ([s length] > 0)
         dateString = [s stringByAppendingFormat: @" %@",
-                        [[self viewTimeZone] abbreviation]];
+                        [[[self clientObject] userTimeZone] abbreviation]];
       else
         {
           cdate = [NSCalendarDate calendarDate];
@@ -418,7 +389,7 @@ static BOOL uixDebugEnabled = NO;
                                  [cdate yearOfCommonEra],
                                  [cdate monthOfYear],
                                  [cdate dayOfMonth],
-                                 [[self viewTimeZone] abbreviation]];
+                                 [[[self clientObject] userTimeZone] abbreviation]];
         }
 
       cdate = [NSCalendarDate dateWithString: dateString
@@ -440,7 +411,7 @@ static BOOL uixDebugEnabled = NO;
 }
 
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date {
-  [_date setTimeZone:[self viewTimeZone]];
+  [_date setTimeZone: [[self clientObject] userTimeZone]];
   return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
 }
 

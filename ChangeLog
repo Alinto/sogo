@@ -1,5 +1,8 @@
 2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.[hm]: removed the "viewTimeZone" ivar and
+	method. Removed the "backendTimeZone" method.
+
 	* UI/MainUI/SOGoUserHomePage.[hm]: made a subclass of UIxComponent
 	instead of SoComponent.
 

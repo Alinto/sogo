@@ -22,7 +22,10 @@
 #ifndef	__UIxComponent_H_
 #define	__UIxComponent_H_
 
-#include <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <SOGo/SOGoObject.h>
 
 /*
   UIxComponent
@@ -37,7 +40,6 @@
 @interface UIxComponent : SoComponent
 {
   NSMutableDictionary *queryParameters;
-  NSTimeZone *viewTimeZone;
   NSCalendarDate *_selectedDate;
 }
 
@@ -62,8 +64,6 @@
 - (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub;
 
 /* date selection */
-- (NSTimeZone *)viewTimeZone;
-- (NSTimeZone *)backendTimeZone;
 - (NSCalendarDate *)selectedDate;
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date;
 
