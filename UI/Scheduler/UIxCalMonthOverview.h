@@ -21,11 +21,9 @@
 // $Id: UIxCalMonthOverview.h 181 2004-08-11 15:13:25Z helge $
 
 
-#include "UIxCalMonthView.h"
-
+#import "UIxCalMonthView.h"
 
 @class NSCalendarDate, NSString, NSDictionary, NSArray;
-
 
 @interface UIxCalMonthOverview : UIxCalMonthView
 {
@@ -49,17 +47,12 @@
 - (NSString *)localizedDayOfWeekName;
 - (NSDictionary *)currentWeekQueryParameters;
 
-
 /* style sheet */
 
-
 - (NSString *)weekStyle;
-
 - (NSString *)contentStyle;
 
-
 /* appointments */
-
 
 - (NSArray *)appointments;
     
