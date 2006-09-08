@@ -1,5 +1,10 @@
 2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-privateContacts:inContext:]): no long configure the calendar
+	object with the user's timezone since it's now accessible
+	application-wide throught the SOGoObject methods.
+
 	* UI/SOGoUI/UIxComponent.[hm]: removed the "viewTimeZone" ivar and
 	method. Removed the "backendTimeZone" method.
 
