@@ -34,7 +34,7 @@
   lookup.
 */
 
-@class NSString, NSArray, NSMutableString, NSException;
+@class NSString, NSArray, NSMutableString, NSException, NSTimeZone;
 @class GCSFolderManager, GCSFolder;
 @class SOGoUserFolder, SOGoGroupsFolder;
 
@@ -42,6 +42,7 @@
 {
   NSString *nameInContainer;
   id       container;
+  NSTimeZone *userTimeZone;
 }
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;
@@ -52,6 +53,9 @@
 
 - (NSString *)nameInContainer;
 - (id)container;
+
+- (NSTimeZone *) serverTimeZone;
+- (NSTimeZone *) userTimeZone;
 
 /* ownership */
 

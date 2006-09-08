@@ -19,11 +19,12 @@
   02111-1307, USA.
 */
 
-#include "SOGoObject.h"
-#include "SOGoUserFolder.h"
-#include <NGObjWeb/WEClientCapabilities.h>
-#include <NGObjWeb/SoObject+SoDAV.h>
-#include "common.h"
+#import "SOGoUser.h"
+#import "SOGoObject.h"
+#import "SOGoUserFolder.h"
+#import <NGObjWeb/WEClientCapabilities.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import "common.h"
 
 @interface SOGoObject(Content)
 - (NSString *)contentAsString;
@@ -32,12 +33,16 @@
 @implementation SOGoObject
 
 static BOOL kontactGroupDAV = YES;
+static NSTimeZone *serverTimeZone = nil;
 
 + (int)version {
   return 0;
 }
 
-+ (void)initialize {
++ (void) initialize
+{
+  NSString *tzName;
+
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   kontactGroupDAV = 
@@ -56,6 +61,15 @@ static BOOL kontactGroupDAV = YES;
                               asDefaultForPermission:SoPerm_View];
   [[self soClassSecurityInfo] declareRole:SoRole_Authenticated
                               asDefaultForPermission:SoPerm_WebDAVAccess];
+
+  if (!serverTimeZone)
+    {
+      tzName = [ud stringForKey: @"SOGoServerTimeZone"];
+      if (!tzName)
+        tzName = @"Canada/Eastern";
+      serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
+      [serverTimeZone retain];
+    }
 }
 
 /* containment */
@@ -76,9 +90,10 @@ static BOOL kontactGroupDAV = YES;
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
   if ((self = [super init])) {
-    self->nameInContainer = [_name copy];
-    self->container = 
+    nameInContainer = [_name copy];
+    container = 
       [self doesRetainContainer] ? [_container retain] : _container;
+    userTimeZone = nil;
   }
   return self;
 }
@@ -89,18 +104,20 @@ static BOOL kontactGroupDAV = YES;
 
 - (void)dealloc {
   if ([self doesRetainContainer])
-    [self->container release];
-  [self->nameInContainer release];
+    [container release];
+  if (userTimeZone)
+    [userTimeZone release];
+  [nameInContainer release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (NSString *)nameInContainer {
-  return self->nameInContainer;
+  return nameInContainer;
 }
 - (id)container {
-  return self->container;
+  return container;
 }
 
 /* ownership */
@@ -139,10 +156,10 @@ static BOOL kontactGroupDAV = YES;
 /* looking up shared objects */
 
 - (SOGoUserFolder *)lookupUserFolder {
-  if (![self->container respondsToSelector:_cmd])
+  if (![container respondsToSelector:_cmd])
     return nil;
   
-  return [self->container lookupUserFolder];
+  return [container lookupUserFolder];
 }
 - (SOGoGroupsFolder *)lookupGroupsFolder {
   return [[self lookupUserFolder] lookupGroupsFolder];
@@ -150,8 +167,8 @@ static BOOL kontactGroupDAV = YES;
 
 - (void)sleep {
   if ([self doesRetainContainer])
-    [self->container release];
-  self->container = nil;
+    [container release];
+  container = nil;
 }
 
 /* operations */
@@ -369,15 +386,39 @@ static BOOL kontactGroupDAV = YES;
   return nil;
 }
 
+- (NSTimeZone *) serverTimeZone
+{
+  return serverTimeZone;
+}
+
+- (NSTimeZone *) userTimeZone
+{
+  NSUserDefaults *userPrefs;
+  WOContext *context;
+
+  if (!userTimeZone)
+    {
+      context = [[WOApplication application] context];
+      userPrefs = [[context activeUser] userDefaults];
+      userTimeZone = [NSTimeZone
+                       timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
+      if (userTimeZone)
+        [userTimeZone retain];
+      else
+        userTimeZone = [self serverTimeZone];
+    }
+
+  return userTimeZone;
+}
+
 /* description */
 
 - (void)appendAttributesToDescription:(NSMutableString *)_ms {
-  if (self->nameInContainer != nil) 
-    [_ms appendFormat:@" name=%@", self->nameInContainer];
-  if (self->container != nil) {
+  if (nameInContainer) 
+    [_ms appendFormat:@" name=%@", nameInContainer];
+  if (container)
     [_ms appendFormat:@" container=0x%08X/%@", 
-	   self->container, [self->container valueForKey:@"nameInContainer"]];
-  }
+         container, [container valueForKey:@"nameInContainer"]];
 }
 
 - (NSString *)description {
@@ -387,6 +428,7 @@ static BOOL kontactGroupDAV = YES;
   [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
+
   return ms;
 }
 

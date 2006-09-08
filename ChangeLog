@@ -1,3 +1,12 @@
+2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -serverTimeZone]): new
+	centralized method returing the timezone configured in the
+	userdefaults db or "Canada/Eastern" if missing.
+	([SOGoObject -userTimeZone]): new centralized method returing the
+	timezone of the current user or the server timezone if missing
+	from the user configuration table.
+
 2006-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: implemented caching of
