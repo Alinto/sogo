@@ -1,5 +1,8 @@
 2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.[hm]: removed the
+	"timeZone" ivar and its accessors.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -serverTimeZone]): new
 	centralized method returing the timezone configured in the
 	userdefaults db or "Canada/Eastern" if missing.

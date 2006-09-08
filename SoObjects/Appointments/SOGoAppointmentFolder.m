@@ -69,18 +69,6 @@ static NSNumber   *sharedYes = nil;
   [super dealloc];
 }
 
-/* timezone */
-
-- (void) setTimeZone: (NSTimeZone *) newTZ
-{
-  timeZone = newTZ;
-}
-
-- (NSTimeZone *) viewTimeZone
-{
-  return timeZone;
-}
-
 /* logging */
 
 - (id) debugLogger
@@ -216,7 +204,7 @@ static NSNumber   *sharedYes = nil;
   if ((tmp = [_record objectForKey:@"startdate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone:[self viewTimeZone]];
+    [tmp setTimeZone: [self userTimeZone]];
     if (tmp) [md setObject:tmp forKey:@"startDate"];
     [tmp release];
   }
@@ -226,7 +214,7 @@ static NSNumber   *sharedYes = nil;
   if ((tmp = [_record objectForKey:@"enddate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone:[self viewTimeZone]];
+    [tmp setTimeZone: [self userTimeZone]];
     if (tmp) [md setObject:tmp forKey:@"endDate"];
     [tmp release];
   }
@@ -246,10 +234,10 @@ static NSNumber   *sharedYes = nil;
   
   /* cycle is in _r */
   tmp = [_r startDate];
-  [tmp setTimeZone:[self viewTimeZone]];
+  [tmp setTimeZone:[self userTimeZone]];
   [md setObject:tmp forKey:@"startDate"];
   tmp = [_r endDate];
-  [tmp setTimeZone:[self viewTimeZone]];
+  [tmp setTimeZone:[self userTimeZone]];
   [md setObject:tmp forKey:@"endDate"];
   
   return md;
