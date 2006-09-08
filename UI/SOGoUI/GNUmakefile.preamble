@@ -13,3 +13,4 @@ libSOGoUI_LIBRARIES_DEPEND_UPON += \
 	-lXmlRpc -lDOM -lSaxObjC
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+ADDITIONAL_INCLUDE_DIRS += -I../../SoObjects
