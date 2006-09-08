@@ -404,7 +404,7 @@
   else
     [self setIsCycleEndUntil];
 
-  [until setTimeZone:[self viewTimeZone]];
+  [until setTimeZone:[[self clientObject] userTimeZone]];
   [self setCycleUntilDate:until];
 }
 
@@ -695,7 +695,7 @@
   
   date = [NSCalendarDate dateWithString:_str 
 			 calendarFormat:@"%Y-%m-%d %H:%M %Z"];
-  [date setTimeZone:[self backendTimeZone]];
+  [date setTimeZone:[[self clientObject] serverTimeZone]];
   return date;
 }
 
@@ -775,8 +775,8 @@
     endDate =
       [[startDate hour:[startDate hourOfDay] + 1 minute:0] copy];
   }
-  [startDate setTimeZone:[self viewTimeZone]];
-  [endDate setTimeZone:[self viewTimeZone]];
+  [startDate setTimeZone:[[self clientObject] userTimeZone]];
+  [endDate setTimeZone:[[self clientObject] userTimeZone]];
   
   title        = [[_appointment summary]  copy];
   location     = [[_appointment location] copy];
@@ -787,7 +787,7 @@
   participants = [[_appointment participants] retain];
   resources    = [[_appointment resources]    retain];
 
-  NSLog (@"summary יאט: '%@'", title);
+//   NSLog (@"summary יאט: '%@'", title);
 
   s                  = [_appointment accessClass];
   if(!s || [s isEqualToString:@"PUBLIC"])

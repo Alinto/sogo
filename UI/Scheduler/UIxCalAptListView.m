@@ -129,7 +129,7 @@
   date = [NSCalendarDate dateWithTimeIntervalSince1970:
                            [[currentAppointment objectForKey: @"startdate"]
                              intValue]];
-  [date setTimeZone: [self viewTimeZone]];
+  [date setTimeZone: [[self clientObject] userTimeZone]];
 
   return [[self itemDateFormatter] stringForObjectValue: date];
 }
@@ -141,7 +141,7 @@
   date = [NSCalendarDate dateWithTimeIntervalSince1970:
                            [[currentAppointment objectForKey: @"enddate"]
                              intValue]];
-  [date setTimeZone: [self viewTimeZone]];
+  [date setTimeZone: [[self clientObject] userTimeZone]];
 
   return [[self itemDateFormatter] stringForObjectValue: date];
 }

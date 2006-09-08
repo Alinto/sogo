@@ -52,7 +52,7 @@
 /* binding accessors */
 
 - (void)setSelectedDate:(NSCalendarDate *)_date {
-    [_date setTimeZone:[self viewTimeZone]];
+    [_date setTimeZone:[[self clientObject] userTimeZone]];
     ASSIGN(self->selectedDate, _date);
 }
 - (NSCalendarDate *)selectedDate {

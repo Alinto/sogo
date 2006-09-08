@@ -33,7 +33,7 @@
 - (void) setSelectedDate: (NSCalendarDate *) _date
 {
   ASSIGN (selectedDate, _date);
-  [selectedDate setTimeZone: [self viewTimeZone]];
+  [selectedDate setTimeZone: [[self clientObject] userTimeZone]];
 }
 
 - (NSCalendarDate *) selectedDate
