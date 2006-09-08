@@ -46,10 +46,10 @@
   canAccessApt = [self canAccessApt];
   spansRange   = NO;
   startDate    = [apt valueForKey:@"startDate"];
-  [startDate setTimeZone:[self viewTimeZone]];
+  [startDate setTimeZone:[[self clientObject] userTimeZone]];
   endDate      = [apt valueForKey:@"endDate"];
   if(endDate != nil) {
-    [endDate setTimeZone:[self viewTimeZone]];
+    [endDate setTimeZone:[[self clientObject] userTimeZone]];
     spansRange = ![endDate isEqualToDate:startDate];
   }
   aptDescr = [[NSMutableString alloc] init];

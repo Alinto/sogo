@@ -253,7 +253,7 @@
                           hour:_hour
                           minute:_minute
                           second:_second
-                          timeZone:[self viewTimeZone]];
+                          timeZone: [[self clientObject] userTimeZone]];
       [self _setDate:d];
     }
 }

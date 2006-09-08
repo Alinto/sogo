@@ -52,7 +52,7 @@
 }
 
 - (void)setCurrentDate:(NSCalendarDate *)_date {
-    [_date setTimeZone:[self viewTimeZone]];
+    [_date setTimeZone:[[self clientObject] userTimeZone]];
     ASSIGN(self->currentDate, _date);
 }
 

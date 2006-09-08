@@ -37,7 +37,7 @@ static BOOL shouldDisplayWeekend = NO;
     {
       NSTimeZone *tz;
 
-      tz = [self viewTimeZone];
+      tz = [[self clientObject] userTimeZone];
       self->aptFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
       self->aptTooltipFormatter
@@ -295,7 +295,7 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (void) setCurrentDay:(NSCalendarDate *) _day
 {
-  [_day setTimeZone: [self viewTimeZone]];
+  [_day setTimeZone: [[self clientObject] userTimeZone]];
   ASSIGN(self->currentDay, _day);
 }
 
