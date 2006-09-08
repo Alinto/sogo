@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSKeyValueCoding.h>
 #import <NGExtensions/NGExtensions.h>
 #import <NGObjWeb/NGObjWeb.h>
 #import <NGObjWeb/SoObjects.h>
