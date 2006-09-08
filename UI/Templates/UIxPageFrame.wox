@@ -158,7 +158,8 @@
             </div>
             <div class="noJavascriptErrorMessage">
               <var:string label:value="noJavascriptError"
-                /><br /><br /><a var:href="page.context.uri"
+                /><br /><br
+                /><a class="button" var:href="page.context.uri"
                 ><var:string label:value="noJavascriptRetry"
                   /></a>
             </div>
