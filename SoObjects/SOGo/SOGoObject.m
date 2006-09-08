@@ -402,10 +402,9 @@ static NSTimeZone *serverTimeZone = nil;
       userPrefs = [[context activeUser] userDefaults];
       userTimeZone = [NSTimeZone
                        timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
-      if (userTimeZone)
-        [userTimeZone retain];
-      else
+      if (!userTimeZone)
         userTimeZone = [self serverTimeZone];
+      [userTimeZone retain];
     }
 
   return userTimeZone;

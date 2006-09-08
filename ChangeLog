@@ -1,5 +1,8 @@
 2006-09-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -userTimeZone]): retain
+	the timezone even when it's the server timezone.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-privateContacts:inContext:]): no long configure the calendar
 	object with the user's timezone since it's now accessible
