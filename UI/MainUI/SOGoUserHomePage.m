@@ -19,9 +19,10 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/SoComponent.h>
+#import <SOGoUI/UIxComponent.h>
+#import <Scheduler/UIxComponent+Agenor.h>
 
-@interface SOGoUserHomePage : SoComponent
+@interface SOGoUserHomePage : UIxComponent
 {
   id item;
 }
