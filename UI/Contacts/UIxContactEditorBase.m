@@ -224,10 +224,10 @@
 
 - (id) saveAction
 {
-  NSException *ex;
-  NSString *uri;
+//   NSException *ex;
+//   NSString *uri;
 //   NSDictionary *record;
-  NSMutableDictionary *newRecord;
+//   NSMutableDictionary *newRecord;
   
 //   if ([[self clientObject] 
 //         respondsToSelector: @selector (saveContentString:)])
