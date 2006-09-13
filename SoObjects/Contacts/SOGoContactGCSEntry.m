@@ -22,9 +22,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <NGiCal/NGVCard.h>
-
-#import "NGVCard+Contact.h"
+#import <NGCards/NGVCard.h>
 
 #import "SOGoContactGCSEntry.h"
 
@@ -38,6 +36,13 @@
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  if (card)
+    [card release];
+  [super dealloc];
 }
 
 /* content */
@@ -54,8 +59,15 @@
         {
           cards = [NGVCard parseVCardsFromSource: contentStr];
           if ([cards count] > 0)
-            card = [cards objectAtIndex: 0];
+            {
+              card = [cards objectAtIndex: 0];
+              [card retain];
+            }
+          else
+            card = [NGVCard new];
         }
+      else
+        card = [NGVCard new];
     }
 
   return card;
@@ -76,7 +88,7 @@
 
   vcard = [self vCard];
 
-  return [self saveContentString: [vcard asString]];
+  return [self saveContentString: [vcard versitString]];
 }
 
 /* message type */
