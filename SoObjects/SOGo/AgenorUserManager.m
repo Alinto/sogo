@@ -23,7 +23,7 @@
 #include "AgenorUserDefaults.h"
 #include <NGExtensions/NGExtensions.h>
 #include <NGLdap/NGLdap.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include "SOGoLRUCache.h"
 
 @interface AgenorUserManager (PrivateAPI)

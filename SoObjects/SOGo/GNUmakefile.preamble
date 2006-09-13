@@ -19,7 +19,7 @@ libSOGo_LIBRARIES_DEPEND_UPON += \
 	-lOGoContentStore	\
 	-lGDLAccess		\
 	-lNGObjWeb		\
-	-lNGiCal		\
+	-lNGCards		\
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC \
