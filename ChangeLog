@@ -1,5 +1,8 @@
 2006-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.h: separated interface from
+	UIxContactView.m.
+
 	* UI/WebServerResources/ContactsUI.js: added code to download card
 	views and display them beneath the list.
 
