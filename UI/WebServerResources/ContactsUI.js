@@ -51,7 +51,8 @@ function openContactWindow(sender, contactuid, url) {
 function clickedUid(sender, contactuid) {
   resetSelection(window);
   openContactWindow(sender, contactuid,
-                    ApplicationBaseURL + currentContactFolder + "/" + contactuid + "/view");
+                    ApplicationBaseURL + currentContactFolder
+                    + "/" + contactuid + "/edit");
   return true;
 }
 
@@ -264,7 +265,7 @@ function onContactContextMenu(event, element)
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    deselectNode(selectedNode);
+    deselectNode(selectedNodes[i]);
   topNode.menuSelectedEntry = element;
   selectNode(element);
 }
@@ -338,62 +339,30 @@ function storeCachedMessage(cachedContact)
   cachedContacts[oldest] = cachedContact;
 }
 
-function onMessageSelectionChange()
+function loadContact(idx)
 {
-  var contactsList = document.getElementById('contactsList');
-
-  var selection = contactsList.getSelectedRowsId();
-  if (selection.length == 1)
-    {
-      var idx = selection[0];
-
-      if (currentMessages[currentContactFolder] != idx) {
-        currentMessages[currentContactFolder] = idx;
-        loadMessage(idx);
-      }
-    }
-}
-
-function loadMessage(idx)
-{
-  var cachedContact = getCachedMessage(idx);
-
-  if (document.messageAjaxRequest) {
-    document.messageAjaxRequest.aborted = true;
-    document.messageAjaxRequest.abort();
+  if (document.contactAjaxRequest) {
+    document.contactAjaxRequest.aborted = true;
+    document.contactAjaxRequest.abort();
   }
 
-  if (cachedContact == null) {
-    var url = (ApplicationBaseURL + currentContactFolder + "/"
-               + idx + "/view?noframe=1");
-    document.messageAjaxRequest
-      = triggerAjaxRequest(url, messageCallback, idx);
-    markMailInWindow(window, idx, true);
-  } else {
-    var div = document.getElementById('messageContent');
-    div.innerHTML = cachedContact['text'];
-    cachedContact['time'] = (new Date()).getTime();
-    document.messageAjaxRequest = null;
-  }
+  var url = (ApplicationBaseURL + currentContactFolder + "/"
+             + idx + "/view?noframe=1");
+  log ("url: " + url);
+  document.contactAjaxRequest
+    = triggerAjaxRequest(url, contactLoadCallback, idx);
 }
 
-function messageCallback(http)
+function contactLoadCallback(http)
 {
-  var div = document.getElementById('messageContent');
+  var div = $('contactView');
+  log ("div: " + div);
+  log ("http: " + http.status);
 
   if (http.readyState == 4
       && http.status == 200) {
-    document.messageAjaxRequest = null;
+    document.contactAjaxRequest = null;
     div.innerHTML = http.responseText;
-    
-    if (http.callbackData) {
-      var cachedContact = new Array();
-      cachedContact['idx'] = currentContactFolder + '/' + http.callbackData;
-      cachedContact['time'] = (new Date()).getTime();
-      cachedContact['text'] = http.responseText;
-      if (cachedContact['text'].length < 30000)
-        storeCachedMessage(cachedContact);
-    }
   }
   else
     log ("ajax fuckage");
@@ -429,13 +398,25 @@ function moveTo(uri) {
 }
 
 /* contact menu entries */
+function onContactRowClick(event, node)
+{
+  var contactId = node.getAttribute('id');
+
+  loadContact(contactId);
+  log ("clicked contact: " + contactId);
+//   changeCalendarDisplay(day);
+//   changeDateSelectorDisplay(day);
+
+  return onRowClick(event);
+}
+
 function onContactRowDblClick(event, node)
 {
   var contactId = node.getAttribute('id');
 
   openContactWindow(null, contactId,
                     ApplicationBaseURL + currentContactFolder
-                    + "/" + contactId + "/view");
+                    + "/" + contactId + "/edit");
 
   return false;
 }

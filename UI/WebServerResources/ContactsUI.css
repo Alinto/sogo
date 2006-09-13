@@ -24,13 +24,17 @@ DIV#contactsListContent
 { 
   position: absolute;
   left: 15em;
-  top: 5.5em;
+  top: 7.5em;
   right: 0px;
-  bottom: 0px;
   border: 0px dashed #f00;
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  height: 15.7em;
+  overflow: auto;
 }
 
 DIV#mailboxContent
@@ -315,6 +319,7 @@ TABLE#contactsList TD
 
 TABLE#contactsList TD IMG
 {
+  vertical-align: middle;
   margin-left: 1em;
   margin-right: .2em;
 }
@@ -328,6 +333,59 @@ TABLE#contactsList TR._selected TD
 TABLE#contactsList TR._deleted TD
 { 
   text-decoration: line-through;
+}
+
+DIV#rightDragHandle
+{
+  cursor: n-resize;
+  top: 23em;
+  left: 15em;
+  right: 0px;
+  height: 5px;
+}
+
+DIV#contactView
+{ 
+  position: absolute;
+  background: #fff;
+  padding: .5em;
+  top: 23.5em;
+  left: 15em;
+  bottom: 0em;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  line-height: 1em;
+}
+
+DIV#contactView H3.contactCardTitle
+{ display: block;
+  margin: .2em 0px;
+  font-size: large;
+  font-weight: bold;
+  width: 100%;
+  text-decoration: underline; }
+
+DIV.contactColumn
+{ 
+  width: 38%;
+  padding: .5em;
+  float: left;
+}
+
+DIV.contactColumn DIV
+{ margin-bottom: 1em; }
+
+DIV.contactColumn H4
+{
+  margin: .2em 0px;
+  margin-left: -.5em;
+  font-weight: bold;
+  color: #fff;
+  background: #4b6983;
+  width: 100%;
+  padding: .1em .2em;
 }
 
 INPUT#searchValue:focus
@@ -350,6 +408,18 @@ DIV#mailboxDragHandle
   left: 0px;
   right: 0px;
   height: .4em;
+}
+
+DIV#calendarView
+{ 
+  position: absolute;
+  background: #fff;
+  top: 18em;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
 }
 
 DIV.contactSelector
