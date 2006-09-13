@@ -1,14 +1,78 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component xmlns="http://www.w3.org/1999/xhtml"
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
+    xmlns:uix="OGo:uix"
     className="UIxPageFrame"
     title="name"
     const:popup="YES"
     >
     
+    <h3 class="contactCardTitle"><var:string value="contactCardTitle" /></h3>
+
+    <div id="leftContactColumn" class="contactColumn">
+      <div id="primaryInfos">
+        <h4><var:string label:value="Contact" /></h4>
+        <var:string value="displayName" escapeHTML="NO" />
+        <var:string value="nickName" escapeHTML="NO" />
+        <var:string value="preferredEmail" escapeHTML="NO" />
+        <var:string value="preferredTel" escapeHTML="NO" />
+        <var:string value="preferredAddress" escapeHTML="NO" />
+      </div>
+
+      <var:if condition="hasHomeInfos">
+        <div id="homeInfos">
+          <h4><var:string label:value="Home" /></h4>
+          <var:string value="homePobox" escapeHTML="NO" />
+          <var:string value="homeExtendedAddress" escapeHTML="NO" />
+          <var:string value="homeStreetAddress" escapeHTML="NO" />
+          <var:string value="homeCityAndProv" escapeHTML="NO" />
+          <var:string value="homePostalCodeAndCountry" escapeHTML="NO" />
+          <var:string value="homeUrl" escapeHTML="NO" />
+        </div>
+      </var:if>
+
+      <var:if condition="hasOtherInfos">
+        <div id="otherInfos">
+          <h4><var:string label:value="Other Infos" /></h4>
+          <var:string value="bday" escapeHTML="NO" />
+          <var:string value="tz" escapeHTML="NO" />
+          <var:string value="note" escapeHTML="NO" />
+        </div>
+      </var:if>
+    </div>
+
+    <div id="rightContactColumn" class="contactColumn">
+      <var:if condition="hasTelephones">
+        <div id="phoneInfos">
+          <h4><var:string label:value="Telephone" /></h4>
+          <var:string value="workPhone" escapeHTML="NO" />
+          <var:string value="homePhone" escapeHTML="NO" />
+          <var:string value="fax" escapeHTML="NO" />
+          <var:string value="mobile" escapeHTML="NO" />
+          <var:string value="pager" escapeHTML="NO" />
+        </div>
+      </var:if>
+
+      <var:if condition="hasWorkInfos">
+        <div id="workInfos">
+          <h4><var:string label:value="Work" /></h4>
+          <var:string value="workTitle" escapeHTML="NO" />
+          <var:string value="workService" escapeHTML="NO" />
+          <var:string value="workCompany" escapeHTML="NO" />
+          <var:string value="workPobox" escapeHTML="NO" />
+          <var:string value="workExtendedAddress" escapeHTML="NO" />
+          <var:string value="workStreetAddress" escapeHTML="NO" />
+          <var:string value="workCityAndProv" escapeHTML="NO" />
+          <var:string value="workPostalCodeAndCountry" escapeHTML="NO" />
+          <var:string value="workUrl" escapeHTML="NO" />
+        </div>
+      </var:if>
+    </div>
+
     <table id="skywintable" class="wintable" cellspacing="0" cellpadding="5"
       width="100%"
       >

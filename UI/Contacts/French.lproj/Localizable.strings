@@ -11,7 +11,6 @@
 "Extended"          = "Informations complémentaires";
 "Fax"               = "Fax";
 "Firstname"         = "Prénom";
-"Home"              = "Personnelle";
 "HomePhone"         = "Domicile";
 "Lastname"          = "Nom";
 "Location"          = "Lieux";
@@ -41,3 +40,23 @@
 
 "Add..." = "Ajouter...";
 "Remove" = "Enlever";
+
+"Card for %@" = "Fiche pour %@";
+"Display Name: " = "Nom &agrave; afficher : ";
+"Email Address: " = "Adresse &eacute;lectronique : ";
+"Nickname: " = "Surnom : ";
+
+"Telephone" = "Téléphone";
+"Work: " = "Travail : ";
+"Home: " = "Domicile : ";
+"Fax: " = "T&eacute;l&eacute;copieur : ";
+"Mobile: " = "Portable : ";
+"Pager: " = "Téléavertisseur : ";
+
+"Home" = "Domicile";
+"Work" = "Travail";
+"Other Infos" = "Informations supplémentaires";
+
+"Note: " = "Commentaires : ";
+"Timezone: " = "Fuseau horaire : ";
+"Birthday: " = "Date de naissance : ";
