@@ -31,8 +31,8 @@
 #include <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #include <SoObjects/Appointments/SOGoAppointmentObject.h>
 #include <SOGo/SOGoAppointment.h>
-#include <NGiCal/NGiCal.h>
-#include <NGiCal/iCalRenderer.h>
+#include <NGCards/NGCards.h>
+#include <NGCards/iCalRenderer.h>
 #include <SaxObjC/SaxObjC.h>
 #include "common.h"
 
@@ -51,7 +51,7 @@ static SaxObjectDecoder          *sax   = nil;
       NSLog(@"ERROR: did not find a parser for text/calendar!");
   }
   if (sax == nil) {
-    sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGiCal"];
+    sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
     if (sax == nil)
       NSLog(@"ERROR: could not create the iCal SAX handler!");
   }

@@ -88,7 +88,7 @@
 @end
 
 #include "common.h"
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <NGExtensions/NGCalendarDateRange.h>
 #include <SOGoUI/SOGoDateFormatter.h>
 #include <SOGo/SOGoAppointment.h>
@@ -103,7 +103,7 @@
 @end
 
 @interface NSDate(UsedPrivates)
-- (NSString *)icalString; // TODO: this is in NGiCal
+- (NSString *)icalString; // TODO: this is in NGCards
 @end
 
 @implementation UIxAppointmentEditor

@@ -23,7 +23,7 @@
 #include <SOGo/AgenorUserManager.h>
 #include <SOGo/SOGoAppointment.h>
 #include <SaxObjC/SaxObjC.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <NGMime/NGMime.h>
 #include <NGMail/NGMail.h>
 #include <NGMail/NGSendMail.h>
@@ -78,7 +78,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     retain];
   if (parser == nil)
     [logger fatalWithFormat:@"did not find a parser for text/calendar!"];
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGiCal"];
+  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
   if (sax == nil)
     [logger fatalWithFormat:@"could not create the iCal SAX handler!"];
   

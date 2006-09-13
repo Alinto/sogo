@@ -51,7 +51,7 @@
 #include <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #include <SoObjects/Appointments/SOGoAppointmentObject.h>
 #include <SoObjects/Mailer/SOGoMailObject.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <NGImap4/NGImap4EnvelopeAddress.h>
 #include "common.h"
 

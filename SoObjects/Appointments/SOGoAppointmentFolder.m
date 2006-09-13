@@ -25,7 +25,7 @@
 #include <SOGo/AgenorUserManager.h>
 #include <GDLContentStore/GCSFolder.h>
 #include <SaxObjC/SaxObjC.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <NGExtensions/NGCalendarDateRange.h>
 #include "common.h"
 

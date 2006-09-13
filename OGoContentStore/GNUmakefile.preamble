@@ -3,7 +3,7 @@
 libOGoContentStore_LIBRARIES_DEPEND_UPON += \
 	-lGDLContentStore	\
 	-lGDLAccess	\
-	-lNGiCal	\
+	-lNGCards	\
 	-lNGExtensions	\
 	-lEOControl	\
 	-lSaxObjC
@@ -24,7 +24,7 @@ test_quick_extract_TOOL_LIBS += \
 	-lSaxObjC		\
 	-lDOM			\
 	-lNGExtensions		\
-	-lNGiCal		\
+	-lNGCards		\
 	-lGDLContentStore	\
 	-lGDLAccess		\
 	-lOGoContentStore

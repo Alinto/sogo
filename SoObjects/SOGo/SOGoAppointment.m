@@ -21,7 +21,7 @@
 
 #include "SOGoAppointment.h"
 #include <SaxObjC/SaxObjC.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <EOControl/EOControl.h>
 #include "SOGoAppointmentICalRenderer.h"
 #include "common.h"
@@ -52,7 +52,7 @@ static NGLogger                  *logger = nil;
     retain];
   if (parser == nil)
     [logger fatalWithFormat:@"did not find a parser for text/calendar!"];
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGiCal"];
+  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
   if (sax == nil)
     [logger fatalWithFormat:@"could not create the iCal SAX handler!"];
   
@@ -422,8 +422,8 @@ static NGLogger                  *logger = nil;
 
 
 /*
- NOTE: this is not the same API as used by NGiCal!
- SOGo/OGo cannot deal with the complete NGiCal API properly, although
+ NOTE: this is not the same API as used by NGCards!
+ SOGo/OGo cannot deal with the complete NGCards API properly, although
  SOGo COULD do so in the future
 */
 - (void)setRecurrenceRule:(iCalRecurrenceRule *)_rrule {

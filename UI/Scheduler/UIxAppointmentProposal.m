@@ -57,7 +57,7 @@
 #include <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #include <SoObjects/Appointments/SOGoFreeBusyObject.h>
 #include <NGExtensions/NGCalendarDateRange.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include "common.h"
 
 @implementation UIxAppointmentProposal

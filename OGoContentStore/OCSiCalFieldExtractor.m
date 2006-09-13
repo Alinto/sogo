@@ -22,7 +22,7 @@
 #include "OCSiCalFieldExtractor.h"
 #include "common.h"
 #include <SaxObjC/SaxObjC.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include "iCalEntityObject+OCS.h"
 #include "iCalRepeatableEntityObject+OCS.h"
 
@@ -45,7 +45,7 @@ static NSNumber                  *distantFutureNumber = nil;
 	        retain];
   if (parser == nil)
     NSLog(@"ERROR: did not find a parser for text/calendar!");
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGiCal"];
+  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
   if (sax == nil)
       NSLog(@"ERROR: could not create the iCal SAX handler!");
   [parser setContentHandler:sax];

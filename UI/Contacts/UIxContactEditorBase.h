@@ -28,7 +28,6 @@
 
 @interface UIxContactEditorBase : UIxComponent
 {
-  NSString *contentString;
   NSString *errorText;
   NSString *anaisCN;
   NSMutableDictionary *snapshot; /* contains the values for editing */

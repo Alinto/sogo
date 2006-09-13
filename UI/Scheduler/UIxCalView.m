@@ -7,7 +7,7 @@
 #include <NGObjWeb/SoUser.h>
 #include <SOGoUI/SOGoAptFormatter.h>
 #include <NGExtensions/NGCalendarDateRange.h>
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include "UIxComponent+Agenor.h"
 
 @interface UIxCalView (PrivateAPI)

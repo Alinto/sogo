@@ -23,11 +23,11 @@
 #include "SOGoFreeBusyObject.h"
 #include "common.h"
 #include <SOGo/AgenorUserManager.h>
-#include <NGiCal/NGiCal.h>
-#include <NGiCal/iCalRenderer.h>
+#include <NGCards/NGCards.h>
+#include <NGCards/iCalRenderer.h>
 
 @interface NSDate(UsedPrivates)
-- (NSString *)icalString; // declared in NGiCal
+- (NSString *)icalString; // declared in NGCards
 @end
 
 @interface SOGoFreeBusyObject (PrivateAPI)

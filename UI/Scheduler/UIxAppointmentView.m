@@ -20,7 +20,7 @@
 */
 
 #include "UIxAppointmentView.h"
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include <SOGo/SOGoAppointment.h>
 #include <SOGo/WOContext+Agenor.h>
 #include <Appointments/SOGoAppointmentObject.h>

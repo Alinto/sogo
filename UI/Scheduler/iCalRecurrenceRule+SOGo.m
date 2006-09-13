@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 #include "common.h"
 
 /* HACK ALERT

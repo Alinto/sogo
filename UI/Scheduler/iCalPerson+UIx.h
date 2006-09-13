@@ -23,7 +23,7 @@
 #ifndef __iCalPerson_UIx_H__
 #define __iCalPerson_UIx_H__
 
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 
 @class NSString;
 

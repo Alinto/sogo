@@ -37,7 +37,7 @@
 @end
 
 #include "common.h"
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 
 @implementation UIxCalDateLabel
 

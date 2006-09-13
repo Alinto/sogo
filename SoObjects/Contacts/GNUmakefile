@@ -17,8 +17,6 @@ Contacts_OBJC_FILES =			\
 					\
 	NSDictionary+Contact.m		\
 	NGLdapEntry+Contact.m		\
-	NGVCard+Contact.m		\
-	NGVCardSimpleValue+Contact.m	\
 
 Contacts_RESOURCE_FILES +=		\
 	Version				\

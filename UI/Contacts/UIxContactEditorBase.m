@@ -38,24 +38,10 @@
   [self->snapshot      release];
   [self->anaisCN      release];
   [self->errorText     release];
-  [self->contentString release];
   [super dealloc];
 }
 
 /* accessors */
-
-- (void)setContentString:(NSString *)_cstr
-{
-  ASSIGNCOPY(self->contentString, _cstr);
-}
-
-- (NSString *)contentString {
-  return self->contentString;
-}
-
-- (NSString *)contentStringTemplate {
-  return @"{}"; /* empty property list */
-}
 
 - (NSMutableDictionary *) snapshot
 {
@@ -91,24 +77,6 @@
 
 
 /* load/store content format */
-
-- (void)loadValuesFromContentString:(NSString *)_s {
-  NSDictionary *plist;
-
-  if ([_s hasPrefix:@"BEGIN:VCARD"]) {
-    // TODO: load vCard values
-    [self errorWithFormat:@"Editing of vCard's is not yet supported!"];
-    return;
-  }
-  
-  if ((plist = [_s propertyList]) == nil) {
-    [self errorWithFormat:@"could not parse content string!"];
-    return;
-  }
-  
-  [self->snapshot removeAllObjects];
-  [self->snapshot addEntriesFromDictionary:plist];
-}
 
 - (void)_fixupSnapshot {
   // TODO: perform sanity checking, eg build CN on demand

@@ -21,7 +21,7 @@ $(SOGOD)_TOOL_LIBS += \
 	-lGDLContentStore	\
 	-lGDLAccess		\
 	-lWEExtensions		\
-	-lNGiCal		\
+	-lNGCards		\
 	-lNGObjWeb		\
 	-lNGMime -lNGLdap	\
 	-lNGStreams -lNGExtensions -lEOControl \

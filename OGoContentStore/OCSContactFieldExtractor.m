@@ -24,7 +24,7 @@
 @interface OCSContactFieldExtractor : GCSFieldExtractor
 @end
 
-#include <NGiCal/NGVCard.h>
+#include <NGCards/NGVCard.h>
 #include "common.h"
 
 @implementation OCSContactFieldExtractor

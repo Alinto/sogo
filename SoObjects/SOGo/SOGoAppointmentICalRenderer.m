@@ -21,14 +21,14 @@
 
 #include "SOGoAppointmentICalRenderer.h"
 #include "SOGoAppointment.h"
-#include <NGiCal/NGiCal.h>
-#include <NGiCal/iCalRenderer.h>
+#include <NGCards/NGCards.h>
+#include <NGCards/iCalRenderer.h>
 #include "common.h"
 
-// TODO: the basic renderer should be part of NGiCal
+// TODO: the basic renderer should be part of NGCards
 
 @interface NSDate(UsedPrivates)
-- (NSString *)icalString; // declared in NGiCal
+- (NSString *)icalString; // declared in NGCards
 @end
 
 @implementation SOGoAppointmentICalRenderer

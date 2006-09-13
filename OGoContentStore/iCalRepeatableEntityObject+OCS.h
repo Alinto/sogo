@@ -24,7 +24,7 @@
 #ifndef	__OGoContentStore_iCalRepeatableEntityObject_OCS_H_
 #define	__OGoContentStore_iCalRepeatableEntityObject_OCS_H_
 
-#include <NGiCal/NGiCal.h>
+#include <NGCards/NGCards.h>
 
 @interface iCalRepeatableEntityObject (OCS)
 

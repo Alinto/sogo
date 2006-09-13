@@ -31,7 +31,7 @@
 
 @end
 
-#include <NGiCal/NGiCal.h> /* for iCalPersonPartStat */
+#include <NGCards/NGCards.h> /* for iCalPersonPartStat */
 #include "common.h"
 
 @implementation UIxCalParticipationStatusView

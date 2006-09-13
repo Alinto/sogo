@@ -43,6 +43,6 @@ BUNDLE_LIBS += \
 	-lGDLContentStore			\
 	-lGDLAccess				\
 	-lNGObjWeb				\
-	-lNGMime -lNGiCal -lNGLdap		\
+	-lNGMime -lNGCards -lNGLdap		\
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
