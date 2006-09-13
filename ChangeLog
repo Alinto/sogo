@@ -1,5 +1,8 @@
 2006-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	+contactEntryWithName:aNamewithLDAPEntry:anEntryinContainer:aContainer]): adapted the mapping of the LDIF data with the new NGVCard API.
+
 	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
 	-vCard]): create a new NGVCard instance when no data is available
 	and retain it.

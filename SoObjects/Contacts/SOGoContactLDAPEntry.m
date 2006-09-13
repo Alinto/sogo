@@ -24,15 +24,12 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
-#import <NGiCal/NGVCard.h>
-#import <NGiCal/NGVCardName.h>
-#import <NGiCal/NGVCardAddress.h>
-#import <NGiCal/NGVCardPhone.h>
+#import <NGCards/NGVCard.h>
+#import <NGCards/CardVersitRenderer.h>
 
 #import <NGLdap/NGLdapEntry.h>
 #import <NGLdap/NGLdapAttribute.h>
 
-#import "NGVCard+Contact.h"
 #import "NGLdapEntry+Contact.h"
 
 #import "SOGoContactLDAPEntry.h"
@@ -84,6 +81,13 @@
   return self;
 }
 
+- (void) dealloc
+{
+  if (vcard)
+    [vcard release];
+  [super dealloc];
+}
+
 - (void) setLDAPEntry: (NGLdapEntry *) anEntry;
 {
   ldapEntry = anEntry;
@@ -91,106 +95,33 @@
 
 - (NSString *) contentAsString
 {
-  return [[self vCard] asString];
-}
-
-- (void) _setNOfVCard: (NGVCard *) vCard
-{
-  NSString *info;
-  NGVCardName *vName;
-
-  vName = [[NGVCardName alloc] initWithGroup: @"N"
-                               types: nil
-                               arguments: nil];
-  [vName autorelease];
-
-  info = [ldapEntry singleAttributeWithName: @"givenName"];
-  if (info)
-    [vName setGiven: info];
-  info = [ldapEntry singleAttributeWithName: @"sn"];
-  if (info)
-    [vName setFamily: info];
-  info = [ldapEntry singleAttributeWithName: @"surname"];
-  if (info)
-    [vName setFamily: info];
-
-  [vCard setN: vName];
+  return [[self vCard] versitString];
 }
 
 - (void) _setPhonesOfVCard: (NGVCard *) vCard
 {
   NSString *info;
-  NSMutableArray *values;
-  NGVCardPhone *phoneEntry;
 
-  values = [NSMutableArray arrayWithCapacity: 5];
-                                     
   info = [ldapEntry singleAttributeWithName: @"telephoneNumber"];
   if (info)
-    {
-      phoneEntry = [[NGVCardPhone alloc] initWithValue: info
-                                         group: @"TEL"
-                                         types: [NSArray arrayWithObjects:
-                                                           @"work",
-                                                         @"voice",
-                                                         @"pref", nil]
-                                         arguments: nil];
-      [phoneEntry autorelease];
-      [values addObject: phoneEntry];
-    }
-
+    [vCard addTel: info
+           types: [NSArray arrayWithObjects: @"work", @"voice", @"pref", nil]];
   info = [ldapEntry singleAttributeWithName: @"homePhone"];
   if (info)
-    {
-      phoneEntry = [[NGVCardPhone alloc] initWithValue: info
-                                         group: @"TEL"
-                                         types: [NSArray arrayWithObjects:
-                                                           @"home",
-                                                         @"voice", nil]
-                                         arguments: nil];
-      [phoneEntry autorelease];
-      [values addObject: phoneEntry];
-    }
-
+    [vCard addTel: info
+           types: [NSArray arrayWithObjects: @"home", @"voice", nil]];
   info = [ldapEntry singleAttributeWithName: @"fax"];
   if (info)
-    {
-      phoneEntry = [[NGVCardPhone alloc] initWithValue: info
-                                         group: @"TEL"
-                                         types: [NSArray arrayWithObjects:
-                                                           @"work",
-                                                         @"fax", nil]
-                                         arguments: nil];
-      [phoneEntry autorelease];
-      [values addObject: phoneEntry];
-    }
-
+    [vCard addTel: info
+           types: [NSArray arrayWithObjects: @"work", @"fax", nil]];
   info = [ldapEntry singleAttributeWithName: @"pager"];
   if (info)
-    {
-      phoneEntry = [[NGVCardPhone alloc] initWithValue: info
-                                         group: @"TEL"
-                                         types: [NSArray arrayWithObjects:
-                                                           @"pager", nil]
-                                         arguments: nil];
-      [phoneEntry autorelease];
-      [values addObject: phoneEntry];
-    }
-
+    [vCard addTel: info
+           types: [NSArray arrayWithObjects: @"pager", nil]];
   info = [ldapEntry singleAttributeWithName: @"mobile"];
   if (info)
-    {
-      phoneEntry = [[NGVCardPhone alloc] initWithValue: info
-                                         group: @"TEL"
-                                         types: [NSArray arrayWithObjects:
-                                                           @"cell",
-                                                         @"voice", nil]
-                                         arguments: nil];
-      [phoneEntry autorelease];
-      [values addObject: phoneEntry];
-    }
-
-  [vCard setTel: values];
+    [vCard addTel: info
+           types: [NSArray arrayWithObjects: @"cell", @"voice", nil]];
 
 // telephoneNumber: work phone
 // homePhone: home phone
@@ -203,6 +134,7 @@
 - (NGVCard *) vCard
 {
   NSString *info;
+  NSString *surname;
 
   if (!vcard)
     {
@@ -212,6 +144,14 @@
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];
       [vcard setFn: [ldapEntry singleAttributeWithName: @"cn"]];
+      surname = [ldapEntry singleAttributeWithName: @"sn"];
+      if (!surname)
+        surname = [ldapEntry singleAttributeWithName: @"surname"];
+      [vcard setNWithFamily: surname
+             given: [ldapEntry singleAttributeWithName: @"givenName"]
+             additional: nil
+             prefixes: nil
+             suffixes: nil];
       info = [ldapEntry singleAttributeWithName: @"title"];
       if (info)
         [vcard setTitle: info];
@@ -226,8 +166,8 @@
         [vcard setNote: info];
       info = [ldapEntry singleAttributeWithName: @"mail"];
       if (info)
-        [vcard setEmail: [NSArray arrayWithObject: info]];
-      [self _setNOfVCard: vcard];
+        [vcard addEmail: info
+               types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
       [self _setPhonesOfVCard: vcard];
     }
               
