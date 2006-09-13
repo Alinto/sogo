@@ -21,18 +21,14 @@
 // $Id: UIxContactView.m 932 2005-08-01 13:17:55Z helge $
 
 
-#include <SOGoUI/UIxComponent.h>
+#import <NGCards/NGVCard.h>
+#import <NGCards/CardElement.h>
+#import <NGCards/NSArray+NGCards.h>
 
-@interface UIxContactView : UIxComponent
-{
-}
+#import <Contacts/SOGoContactObject.h>
+#import "common.h"
 
-- (BOOL)isDeletableClientObject;
-
-@end
-
-#include <Contacts/SOGoContactObject.h>
-#include "common.h"
+#import "UIxContactView.h"
 
 @implementation UIxContactView
 
@@ -47,11 +43,352 @@
   return selection;
 }
 
+- (NSString *) _cardStringWithLabel: (NSString *) label
+                              value: (NSString *) value
+{
+  NSMutableString *cardString;
+
+  cardString = [NSMutableString new];
+  [cardString autorelease];
+
+  if (value && [value length] > 0)
+    {
+      if (label)
+        [cardString appendFormat: @"%@%@<br />\n",
+                    [self labelForKey: label], value];
+      else
+        [cardString appendFormat: @"%@<br />\n", value];
+    }
+
+  return cardString;
+}
+
+- (NSString *) contactCardTitle
+{
+  return [NSString stringWithFormat:
+                     [self labelForKey: @"Card for %@"],
+                   [card fn]];
+}
+
+- (NSString *) displayName
+{
+  return [self _cardStringWithLabel: @"Display Name: "
+               value: [card fn]];
+}
+
+- (NSString *) nickName
+{
+  return [self _cardStringWithLabel: @"Nickname: "
+               value: [card nickname]];
+}
+
+- (NSString *) preferredEmail
+{
+  return [self _cardStringWithLabel: @"Email Address: "
+               value: [card preferredEMail]];
+}
+
+- (NSString *) preferredTel
+{
+  return [self _cardStringWithLabel: @"Phone Number: "
+               value: [card preferredTel]];
+}
+
+- (NSString *) preferredAddress
+{
+  return @"";
+}
+
+- (BOOL) hasTelephones
+{
+  if (!phones)
+    phones = [card childrenWithTag: @"tel"];
+
+  return ([phones count] > 0);
+}
+
+- (NSString *) _phoneOfType: (NSString *) aType
+                  withLabel: (NSString *) aLabel
+{
+  NSArray *elements;
+  NSString *phone;
+
+  elements = [phones cardElementsWithAttribute: @"type"
+                     havingValue: aType];
+
+  if ([elements count] > 0)
+    phone = [[elements objectAtIndex: 0] value: 0];
+  else
+    phone = nil;
+
+  return [self _cardStringWithLabel: aLabel value: phone];
+}
+
+- (NSString *) workPhone
+{
+  return [self _phoneOfType: @"work" withLabel: @"Work: "];
+}
+
+- (NSString *) homePhone
+{
+  return [self _phoneOfType: @"home" withLabel: @"Home: "];
+}
+
+- (NSString *) fax
+{
+  return [self _phoneOfType: @"fax" withLabel: @"Fax: "];
+}
+
+- (NSString *) mobile
+{
+  return [self _phoneOfType: @"cell" withLabel: @"Mobile: "];
+}
+
+- (NSString *) pager
+{
+  return [self _phoneOfType: @"pager" withLabel: @"Pager: "];
+}
+
+- (BOOL) hasHomeInfos
+{
+  BOOL result;
+  NSArray *elements;
+
+  elements = [card childrenWithTag: @"adr"
+                   andAttribute: @"type"
+                   havingValue: @"home"];
+  if ([elements count] > 0)
+    {
+      result = YES;
+      homeAdr = [elements objectAtIndex: 0];
+    }
+  else
+    result = ([[card childrenWithTag: @"url"
+                     andAttribute: @"type"
+                     havingValue: @"home"] count] > 0);
+
+  return result;
+}
+
+- (NSString *) homePobox
+{
+  return [self _cardStringWithLabel: nil value: [homeAdr value: 0]];
+}
+
+- (NSString *) homeExtendedAddress
+{
+  return [self _cardStringWithLabel: nil value: [homeAdr value: 1]];
+}
+
+- (NSString *) homeStreetAddress
+{
+  return [self _cardStringWithLabel: nil value: [homeAdr value: 2]];
+}
+
+- (NSString *) homeCityAndProv
+{
+  NSString *city, *prov;
+  NSMutableString *data;
+
+  city = [homeAdr value: 3];
+  prov = [homeAdr value: 4];
+
+  data = [NSMutableString new];
+  [data autorelease];
+  [data appendString: city];
+  if ([city length] > 0 && [prov length] > 0)
+    [data appendString: @", "];
+  [data appendString: prov];
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (NSString *) homePostalCodeAndCountry
+{
+  NSString *postalCode, *country;
+  NSMutableString *data;
+
+  postalCode = [homeAdr value: 5];
+  country = [homeAdr value: 6];
+
+  data = [NSMutableString new];
+  [data autorelease];
+  [data appendString: postalCode];
+  if ([postalCode length] > 0 && [country length] > 0)
+    [data appendFormat: @", ", country];
+  [data appendString: country];
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (NSString *) homeUrl
+{
+  NSArray *elements;
+  NSString *data;
+
+  elements = [card childrenWithTag: @"url"
+                   andAttribute: @"type"
+                   havingValue: @"home"];
+  if ([elements count] > 0)
+    data = [[elements objectAtIndex: 0] value: 0];
+  else
+    data = nil;
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (BOOL) hasWorkInfos
+{
+  BOOL result;
+  NSArray *elements;
+
+  elements = [card childrenWithTag: @"adr"
+                   andAttribute: @"type"
+                   havingValue: @"work"];
+  if ([elements count] > 0)
+    {
+      result = YES;
+      workAdr = [elements objectAtIndex: 0];
+    }
+  else
+    result = (([[card childrenWithTag: @"url"
+                      andAttribute: @"type"
+                     havingValue: @"work"] count] > 0)
+              || [[card childrenWithTag: @"org"] count] > 0);
+
+  return result;
+}
+
+- (NSString *) workTitle
+{
+  return [self _cardStringWithLabel: nil value: [card title]];
+}
+
+- (NSString *) workService
+{
+  NSArray *org, *orgServices;
+  NSRange aRange;
+  NSString *services;
+
+  org = [card org];
+  if (org && [org count] > 1)
+    {
+      aRange = NSMakeRange (1, [org count] - 2);
+      orgServices = [org subarrayWithRange: aRange];
+      services = [orgServices componentsJoinedByString: @", "];
+    }
+  else
+    services = nil;
+
+  return [self _cardStringWithLabel: nil value: services];
+}
+
+- (NSString *) workCompany
+{
+  NSArray *org;
+  NSString *company;
+
+  org = [card org];
+  if (org && [org count] > 0)
+    company = [org objectAtIndex: 0];
+
+  return [self _cardStringWithLabel: nil value: company];
+}
+
+- (NSString *) workPobox
+{
+  return [self _cardStringWithLabel: nil value: [workAdr value: 0]];
+}
+
+- (NSString *) workExtendedAddress
+{
+  return [self _cardStringWithLabel: nil value: [workAdr value: 1]];
+}
+
+- (NSString *) workStreetAddress
+{
+  return [self _cardStringWithLabel: nil value: [workAdr value: 2]];
+}
+
+- (NSString *) workCityAndProv
+{
+  NSString *city, *prov;
+  NSMutableString *data;
+
+  city = [workAdr value: 3];
+  prov = [workAdr value: 4];
+
+  data = [NSMutableString new];
+  [data autorelease];
+  [data appendString: city];
+  if ([city length] > 0 && [prov length] > 0)
+    [data appendString: @", "];
+  [data appendString: prov];
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (NSString *) workPostalCodeAndCountry
+{
+  NSString *postalCode, *country;
+  NSMutableString *data;
+
+  postalCode = [workAdr value: 5];
+  country = [workAdr value: 6];
+
+  data = [NSMutableString new];
+  [data autorelease];
+  [data appendString: postalCode];
+  if ([postalCode length] > 0 && [country length] > 0)
+    [data appendFormat: @", ", country];
+  [data appendString: country];
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (NSString *) workUrl
+{
+  NSArray *elements;
+  NSString *data;
+
+  elements = [card childrenWithTag: @"url"
+                   andAttribute: @"type"
+                   havingValue: @"work"];
+  if ([elements count] > 0)
+    data = [[elements objectAtIndex: 0] value: 0];
+  else
+    data = nil;
+
+  return [self _cardStringWithLabel: nil value: data];
+}
+
+- (BOOL) hasOtherInfos
+{
+  return ([card note]
+          || [card bday]
+          || [card tz]);
+}
+
+- (NSString *) bday
+{
+  return [self _cardStringWithLabel: @"Birthday: " value: [card bday]];
+}
+
+- (NSString *) tz
+{
+  return [self _cardStringWithLabel: @"Timezone: " value: [card tz]];
+}
+
+- (NSString *) note
+{
+  return [self _cardStringWithLabel: @"Note: " value: [card note]];
+}
+
 /* hrefs */
 
-- (NSString *)completeHrefForMethod:(NSString *)_method
-  withParameter:(NSString *)_param
-  forKey:(NSString *)_key
+- (NSString *) completeHrefForMethod: (NSString *) _method
+                       withParameter: (NSString *) _param
+                              forKey: (NSString *) _key
 {
   NSString *href;
 
@@ -74,11 +411,36 @@
 
 /* action */
 
-- (id<WOActionResults>)defaultAction {
-  if ([[self clientObject] vCard] == nil) {
+- (id <WOActionResults>) vcardAction
+{
+  WOResponse *response;
+
+  card = [[self clientObject] vCard];
+  if (!card)
+    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                        reason:@"could not locate contact"];
+  else
+    {
+      response = [WOResponse new];
+      [response autorelease];
+      [response setHeader: @"text/vcard" forKey: @"Content-type"];
+      [response appendContentString: [card versitString]];
+    }
+
+  return response;
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  card = [[self clientObject] vCard];
+  if (!card)
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"could not locate contact"];
-  }
+                        reason:@"could not locate contact"];
+
+  phones = nil;
+  homeAdr = nil;
+  workAdr = nil;
+
   return self;
 }
 

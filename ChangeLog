@@ -1,5 +1,11 @@
 2006-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m: added many wrapper methods to
+	display blocks of data à la Thunderbird Addressbook. If data is
+	available, those wrappers (around the NGVCard methods) will
+	enclose the results in a proper HTML output with the correct label
+	(if present), otherwise it will return an empty string.
+
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
 	+contactEntryWithName:aNamewithLDAPEntry:anEntryinContainer:aContainer]): adapted the mapping of the LDIF data with the new NGVCard API.
 
