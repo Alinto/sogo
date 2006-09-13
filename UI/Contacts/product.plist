@@ -102,6 +102,11 @@
           pageName    = "UIxContactEditor"; 
           actionName  = "write";
         };
+        vcard = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+          actionName  = "vcard";
+        };
       };
     };
 
@@ -129,6 +134,11 @@
           protectedBy = "View";
           pageName    = "UIxContactEditor"; 
           actionName  = "write";
+        };
+        vcard = { 
+          protectedBy = "View";
+          pageName    = "UIxContactView"; 
+          actionName  = "vcard";
         };
       };
     };
