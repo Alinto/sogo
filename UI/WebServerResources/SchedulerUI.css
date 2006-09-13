@@ -67,7 +67,6 @@ DIV#calendarView A
 
 #leftDragHandle, #rightDragHandle
 {
-  position: absolute;
   cursor: n-resize;
   top: 17.7em;
   left: 0px;
