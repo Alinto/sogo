@@ -88,6 +88,17 @@
         <div id="contactsListContent">
           <var:component-content />
         </div>
+
+        <div id="rightDragHandle"
+          class="dragHandle"
+          onmousedown="startHandleDragging(event);"
+          onmousemove=""
+          upperblock="contactsListContent"
+          lowerblock="contactView">
+        </div>
+
+        <div id="contactView" onmousedown="return false;"
+          ></div>
       </div>
 
       <div class="contactSelection">
