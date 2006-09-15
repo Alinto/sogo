@@ -41,9 +41,13 @@
 "Add..." = "Ajouter...";
 "Remove" = "Enlever";
 
+"Preferred" = "Préféré";
 "Card for %@" = "Fiche pour %@";
 "Display Name: " = "Nom &agrave; afficher : ";
 "Email Address: " = "Adresse &eacute;lectronique : ";
+
+"Firstname: " = "Pr&eacute;nom : ";
+"Lastname: " = "Nom : ";
 "Nickname: " = "Surnom : ";
 
 "Telephone" = "Téléphone";
@@ -51,11 +55,21 @@
 "Home: " = "Domicile : ";
 "Fax: " = "T&eacute;l&eacute;copieur : ";
 "Mobile: " = "Portable : ";
-"Pager: " = "Téléavertisseur : ";
+"Pager: " = "T&eacute;l&eacute;avertisseur : ";
+
+"Title: " = "Titre/fonction : ";
+"Service: " = "Service : ";
+"Company: " = "Entreprise : ";
+"Street Address: " = "Adresse : ";
+"City: " = "Ville : ";
+"Province: " = "Province : ";
+"Zip or Postal Code: " = "Code postal : ";
+"Country: " = "Pays : ";
+"Web: " = "Adresse web : ";
 
 "Home" = "Domicile";
 "Work" = "Travail";
-"Other Infos" = "Informations supplémentaires";
+"Other Infos" = "Informations complémentaires";
 
 "Note: " = "Commentaires : ";
 "Timezone: " = "Fuseau horaire : ";
