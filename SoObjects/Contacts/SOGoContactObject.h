@@ -41,6 +41,7 @@
 
 - (NSString *) contentAsString;
 - (NGVCard *) vCard;
+- (void) save;
 
 - (NSString *) davEntityTag;
 
