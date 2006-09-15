@@ -82,13 +82,13 @@
 
 /* specialized actions */
 
-- (NSException *) save
+- (void) save
 {
   NGVCard *vcard;
 
   vcard = [self vCard];
 
-  return [self saveContentString: [vcard versitString]];
+  [self saveContentString: [vcard versitString]];
 }
 
 /* message type */
