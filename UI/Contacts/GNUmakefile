@@ -9,7 +9,6 @@ ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 ContactsUI_LANGUAGES = English French
 
 ContactsUI_OBJC_FILES =			\
-	UIxContactEditorBase.m		\
 	UIxContactsListViewBase.m	\
 	UIxContactsListViewContainerBase.m \
 	\
