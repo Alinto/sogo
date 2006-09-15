@@ -1,5 +1,8 @@
 2006-09-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-save]): new dummy method.
+
 	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
 	-save]): made method void.
 

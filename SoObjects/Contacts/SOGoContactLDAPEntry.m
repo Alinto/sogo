@@ -185,6 +185,10 @@
   return @"text/x-vcard";
 }
 
+- (void) save
+{
+}
+
 /* message type */
 
 - (NSString *) outlookMessageClass
