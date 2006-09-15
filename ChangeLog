@@ -1,5 +1,10 @@
 2006-09-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView -preferredEmail]):
+	return a string with a "mailto" url.
+	([UIxContactView -_urlOfType:aType]): generic method to return a
+	url string with a html anchor pointing to it.
+
 	* UI/Contacts/UIxContactEditor.[hm]: UIxContactEditorBase renamed
 	since subclass "UIxContactEditor" did nothing. Implemented code to
 	display and modify the values parsed from the vcards, displayed in

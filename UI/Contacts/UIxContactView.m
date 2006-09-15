@@ -84,8 +84,18 @@
 
 - (NSString *) preferredEmail
 {
+  NSString *email, *mailTo;
+
+  email = [card preferredEMail];
+  if (email && [email length] > 0)
+    mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+                       @" onclick=\"return onContactMailTo(this);\">"
+                       @"%@</a>", email, email];
+  else
+    mailTo = nil;
+
   return [self _cardStringWithLabel: @"Email Address: "
-               value: [card preferredEMail]];
+               value: mailTo];
 }
 
 - (NSString *) preferredTel
@@ -221,20 +231,30 @@
   return [self _cardStringWithLabel: nil value: data];
 }
 
-- (NSString *) homeUrl
+- (NSString *) _urlOfType: (NSString *) aType
 {
   NSArray *elements;
-  NSString *data;
+  NSString *data, *url;
 
   elements = [card childrenWithTag: @"url"
                    andAttribute: @"type"
-                   havingValue: @"home"];
+                   havingValue: aType];
   if ([elements count] > 0)
-    data = [[elements objectAtIndex: 0] value: 0];
+    {
+      url = [[elements objectAtIndex: 0] value: 0];
+      data = [NSString stringWithFormat:
+                         @"<a href=\"%@\" onclick=\"return openExternalLink(this);\">%@</a>",
+                       url, url];
+    }
   else
     data = nil;
 
   return [self _cardStringWithLabel: nil value: data];
+}
+
+- (NSString *) homeUrl
+{
+  return [self _urlOfType: @"home"];
 }
 
 - (BOOL) hasWorkInfos
@@ -273,7 +293,7 @@
   org = [card org];
   if (org && [org count] > 1)
     {
-      aRange = NSMakeRange (1, [org count] - 2);
+      aRange = NSMakeRange (1, [org count] - 1);
       orgServices = [org subarrayWithRange: aRange];
       services = [orgServices componentsJoinedByString: @", "];
     }
@@ -348,25 +368,12 @@
 
 - (NSString *) workUrl
 {
-  NSArray *elements;
-  NSString *data;
-
-  elements = [card childrenWithTag: @"url"
-                   andAttribute: @"type"
-                   havingValue: @"work"];
-  if ([elements count] > 0)
-    data = [[elements objectAtIndex: 0] value: 0];
-  else
-    data = nil;
-
-  return [self _cardStringWithLabel: nil value: data];
+  return [self _urlOfType: @"home"];
 }
 
 - (BOOL) hasOtherInfos
 {
-  return ([card note]
-          || [card bday]
-          || [card tz]);
+  return ([card note] || [card bday] || [card tz]);
 }
 
 - (NSString *) bday
@@ -416,16 +423,16 @@
   WOResponse *response;
 
   card = [[self clientObject] vCard];
-  if (!card)
-    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
-                        reason:@"could not locate contact"];
-  else
+  if (card)
     {
       response = [WOResponse new];
       [response autorelease];
       [response setHeader: @"text/vcard" forKey: @"Content-type"];
       [response appendContentString: [card versitString]];
     }
+  else
+    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                        reason:@"could not locate contact"];
 
   return response;
 }
@@ -433,13 +440,16 @@
 - (id <WOActionResults>) defaultAction
 {
   card = [[self clientObject] vCard];
-  if (!card)
+  if (card)
+    {
+      NSLog (@"displaying card for contact id: %@", [[self clientObject] nameInContainer]);
+      phones = nil;
+      homeAdr = nil;
+      workAdr = nil;
+    }
+  else
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
                         reason:@"could not locate contact"];
-
-  phones = nil;
-  homeAdr = nil;
-  workAdr = nil;
 
   return self;
 }
