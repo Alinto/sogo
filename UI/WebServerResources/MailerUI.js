@@ -822,18 +822,7 @@ function newContactFromEmail(sender) {
 }
 
 function newEmailTo(sender) {
-  var mailto = sanitizeMailTo(sender.parentNode.parentNode.menuTarget.innerHTML);
-
-  if (mailto.length > 0)
-    {
-      w = window.open("compose?mailto=" + mailto,
-		      "SOGo_compose",
-		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-		      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-      w.focus();
-    }
-
-  return false; /* stop following the link */
+  return openMailTo(sender.parentNode.parentNode.menuTarget.innerHTML);
 }
 
 function expandUpperTree(node)

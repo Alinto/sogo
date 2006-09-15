@@ -42,7 +42,7 @@ var currentContactFolder = '';
 function openContactWindow(sender, contactuid, url) {
   log ("message window at url: " + url);
   var msgWin = window.open(url, "SOGo_msg_" + contactuid,
-			   "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
+			   "width=546,height=490,resizable=1,scrollbars=1,toolbar=0," +
 			   "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   msgWin.focus();
@@ -606,4 +606,8 @@ function onConfirmContactSelection()
     }
 
   return false;
+}
+
+function onContactMailTo(node) {
+  return openMailTo(node.innerHTML);
 }

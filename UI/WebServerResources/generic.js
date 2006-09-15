@@ -146,6 +146,21 @@ function sanitizeMailTo(dirtyMailTo) {
   return mailto;
 }
 
+function openMailTo(senderMailto) {
+  var mailto = sanitizeMailTo(senderMailto);
+
+  if (mailto.length > 0)
+    {
+      w = window.open(ApplicationBaseURL + "/../Mail/compose?mailto=" + mailto,
+		      "SOGo_compose",
+		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
+		      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+      w.focus();
+    }
+
+  return false; /* stop following the link */
+}
+
 function createHTTPClient() {
   // http://developer.apple.com/internet/webcontent/xmlhttpreq.html
   if (typeof XMLHttpRequest != "undefined")
@@ -962,6 +977,10 @@ function initTabs()
 
 function onTabMouseDown(event) {
   event.cancelBubble = true;
+  return false;
+}
+
+function openExternalLink(anchor) {
   return false;
 }
 
