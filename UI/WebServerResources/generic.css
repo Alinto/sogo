@@ -319,6 +319,11 @@ DIV.contactSelector DIV.contactList
   text-align: left;
 }
 
+TEXTAREA
+{ font-family: Bitstream VeraSans, Verdana, Tahoma, FreeSans, Helvetica, sans-serif;
+  vertical-align: top;
+  font-size: smaller; }
+
 TEXTAREA,
 INPUT.textField
 {

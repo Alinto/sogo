@@ -1,0 +1,22 @@
+DIV#editorTabs
+{
+  top: 0px;
+  left: .2em;
+  width: 40em;
+  height: 31em;
+  margin-bottom: 1em;
+}
+
+DIV#buttons
+{ visibility: visible;
+  position: absolute;
+  right: 1em;
+  bottom: 1em; }
+
+TABLE
+{ text-align: right;
+  margin: auto; }
+
+#otherInfos TABLE,
+TABLE TD.titleCell
+{ text-align: left; }
