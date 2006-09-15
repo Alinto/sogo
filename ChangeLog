@@ -1,5 +1,10 @@
 2006-09-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.[hm]: UIxContactEditorBase renamed
+	since subclass "UIxContactEditor" did nothing. Implemented code to
+	display and modify the values parsed from the vcards, displayed in
+	a way similar to the Thunderbird addressbook.
+
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
 	-save]): new dummy method.
 

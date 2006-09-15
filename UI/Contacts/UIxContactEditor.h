@@ -19,20 +19,24 @@
   02111-1307, USA.
 */
 
-#ifndef __UIxContactEditorBase_H__
-#define __UIxContactEditorBase_H__
+#ifndef __UIxContactEditor_H__
+#define __UIxContactEditor_H__
 
 #include <SOGoUI/UIxComponent.h>
 
-@class NSString, NSMutableDictionary;
+@class NSString;
+@class NSMutableDictionary;
 
-@interface UIxContactEditorBase : UIxComponent
+@class NGVCard;
+
+@interface UIxContactEditor : UIxComponent
 {
   NSString *errorText;
-  NSString *anaisCN;
+  NSString *preferredEmail;
+  NGVCard *card;
   NSMutableDictionary *snapshot; /* contains the values for editing */
 }
 
 @end
 
-#endif /* __UIxContactEditorBase_H__ */
+#endif /* __UIxContactEditor_H__ */

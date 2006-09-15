@@ -19,10 +19,523 @@
   02111-1307, USA.
 */
 
-#include "UIxContactEditorBase.h"
+#import <NGCards/NGVCard.h>
+#import <NGCards/NSArray+NGCards.h>
 
-@interface UIxContactEditor : UIxContactEditorBase
-@end
+#import <Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactFolder.h>
+#import "common.h"
+
+#import "UIxContactEditor.h"
 
 @implementation UIxContactEditor
+
+- (id)init {
+  if ((self = [super init])) {
+    self->snapshot = [[NSMutableDictionary alloc] initWithCapacity:16];
+    preferredEmail = nil;
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [self->snapshot      release];
+  [self->errorText     release];
+  [super dealloc];
+}
+
+/* accessors */
+
+- (NSMutableDictionary *) snapshot
+{
+  NSString *email;
+
+  email = [self queryParameterForKey:@"contactEmail"];
+
+  if ([email length] > 0
+      && ![[self->snapshot objectForKey: @"mail"] length])
+    [self->snapshot setObject: email forKey: @"mail"];
+
+  return self->snapshot;
+}
+
+- (void)setErrorText:(NSString *)_txt {
+  ASSIGNCOPY(self->errorText, _txt);
+}
+- (NSString *)errorText {
+  return self->errorText;
+}
+
+- (BOOL)hasErrorText {
+  return [self->errorText length] > 0 ? YES : NO;
+}
+
+/* load/store content format */
+
+- (void)_fixupSnapshot {
+  // TODO: perform sanity checking, eg build CN on demand
+  NSString *cn, *gn, *sn;
+  
+  cn = [self->snapshot objectForKey:@"cn"];
+  gn = [self->snapshot objectForKey:@"givenName"];
+  sn = [self->snapshot objectForKey:@"sn"];
+  
+  if (![sn isNotNull] || [sn length] == 0)
+    sn = nil;
+  if (![cn isNotNull] || [cn length] == 0)
+    cn = nil;
+  
+  if (sn == nil) {
+    if (cn == nil)
+      sn = @"[noname]";
+    else {
+      // TODO: need a better name parser here
+      NSRange r;
+      
+      r = [cn rangeOfString:@" "];
+      sn = (r.length > 0)
+	? [cn substringFromIndex:(r.location + r.length)]
+	: cn;
+    }
+    [self->snapshot setObject:sn forKey:@"sn"];
+  }
+  if (sn == nil && gn == nil)
+    cn = @"[noname]";
+  else if (sn == nil)
+    cn = gn;
+  else if (gn == nil)
+    cn = sn;
+  else
+    cn = [[gn stringByAppendingString:@" "] stringByAppendingString:sn];
+  [self->snapshot setObject:cn forKey:@"cn"];
+}
+
+/* helper */
+
+- (NSString *)_completeURIForMethod:(NSString *)_method {
+  // TODO: this is a DUP of UIxAppointmentEditor
+  NSString *uri;
+  NSRange r;
+    
+  uri = [[[self context] request] uri];
+    
+  /* first: identify query parameters */
+  r = [uri rangeOfString:@"?" options:NSBackwardsSearch];
+  if (r.length > 0)
+    uri = [uri substringToIndex:r.location];
+    
+  /* next: append trailing slash */
+  if (![uri hasSuffix:@"/"])
+    uri = [uri stringByAppendingString:@"/"];
+  
+  /* next: append method */
+  uri = [uri stringByAppendingString:_method];
+    
+  /* next: append query parameters */
+  return [self completeHrefForMethod:uri];
+}
+
+/* actions */
+
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
+                           inContext: (WOContext*) _c
+{
+  return YES;
+}
+
+- (void) _setSnapshotValue: (NSString *) key
+                        to: (NSString *) aValue
+{
+  if (!aValue)
+    aValue = @"";
+
+  [snapshot setObject: aValue forKey: key];
+}
+
+- (NSString *) _simpleValueForType: (NSString *) aType
+                           inArray: (NSArray *) anArray
+{
+  NSArray *elements;
+  NSString *value;
+
+  elements = [anArray cardElementsWithAttribute: @"type"
+                      havingValue: aType];
+  if ([elements count] > 0)
+    value = [[elements objectAtIndex: 0] value: 0];
+  else
+    value = nil;
+
+  return value;
+}
+
+- (void) _setupEmailFields
+{
+  NSArray *elements;
+  NSString *workMail, *homeMail, *prefMail, *potential;
+  unsigned int max;
+
+  elements = [card childrenWithTag: @"email"];
+  max = [elements count];
+  workMail = [self _simpleValueForType: @"work"
+                   inArray: elements];
+  homeMail = [self _simpleValueForType: @"home"
+                   inArray: elements];
+  prefMail = [self _simpleValueForType: @"pref"
+                   inArray: elements];
+
+  if (max > 0)
+    {
+      potential = [[elements objectAtIndex: 0] value: 0];
+      if (!workMail)
+        {
+          if (homeMail && homeMail == potential && max > 1)
+            workMail = [[elements objectAtIndex: 1] value: 0];
+          else
+            workMail = potential;
+        }
+      if (!homeMail)
+        {
+          if (workMail && max > 1)
+            {
+              if (workMail == potential)
+                homeMail = [[elements objectAtIndex: 1] value: 0];
+              else
+                homeMail = potential;
+            }
+          else
+            homeMail = potential;
+        }
+
+      if (prefMail)
+        {
+          if (prefMail == workMail)
+            preferredEmail = @"work";
+          else if (prefMail == homeMail)
+            preferredEmail = @"home";
+        }
+    }
+
+  [self _setSnapshotValue: @"workMail" to: workMail];
+  [self _setSnapshotValue: @"homeMail" to: homeMail];
+}
+
+- (void) _setupOrgFields
+{
+  NSArray *org, *orgServices;
+  NSRange aRange;
+  unsigned int max;
+
+  org = [card org];
+  max = [org count];
+  if (max > 0)
+    {
+      [self _setSnapshotValue: @"workCompany" to: [org objectAtIndex: 0]];
+      if (max > 1)
+        {
+          aRange = NSMakeRange (1, max - 1);
+          orgServices = [org subarrayWithRange: aRange];
+          [self _setSnapshotValue: @"workService"
+                to: [orgServices componentsJoinedByString: @", "]];
+        }
+    }
+}
+
+- (NSString *) preferredEmail
+{
+  return preferredEmail;
+}
+
+- (void) setPreferredEmail: (NSString *) aString
+{
+  preferredEmail = aString;
+}
+
+- (void) initSnapshot
+{
+  NSArray *n, *elements;
+  CardElement *element;
+
+  n = [card n];
+
+  [self _setSnapshotValue: @"sn" to: [n objectAtIndex: 0]];
+  [self _setSnapshotValue: @"givenName" to: [n objectAtIndex: 1]];
+  [self _setSnapshotValue: @"fn" to: [card fn]];
+  [self _setSnapshotValue: @"nickname" to: [card nickname]];
+
+  elements = [card childrenWithTag: @"tel"];
+  [self _setSnapshotValue: @"telephoneNumber"
+        to: [self _simpleValueForType: @"work" inArray: elements]];
+  [self _setSnapshotValue: @"homeTelephoneNumber"
+        to: [self _simpleValueForType: @"home" inArray: elements]];
+  [self _setSnapshotValue: @"mobile"
+        to: [self _simpleValueForType: @"cell" inArray: elements]];
+  [self _setSnapshotValue: @"facsimileTelephoneNumber"
+        to: [self _simpleValueForType: @"fax" inArray: elements]];
+  [self _setSnapshotValue: @"pager"
+        to: [self _simpleValueForType: @"pager" inArray: elements]];
+
+  [self _setupEmailFields];
+
+  elements = [card childrenWithTag: @"adr"
+                   andAttribute: @"type" havingValue: @"work"];
+  if (elements && [elements count] > 0)
+    {
+      element = [elements objectAtIndex: 0];
+      [self _setSnapshotValue: @"workStreetAddress"
+            to: [element value: 2]];
+      [self _setSnapshotValue: @"workCity"
+            to: [element value: 3]];
+      [self _setSnapshotValue: @"workState"
+            to: [element value: 4]];
+      [self _setSnapshotValue: @"workPostalCode"
+            to: [element value: 5]];
+      [self _setSnapshotValue: @"workCountry"
+            to: [element value: 6]];
+    }
+
+  elements = [card childrenWithTag: @"adr"
+                   andAttribute: @"type" havingValue: @"home"];
+  if (elements && [elements count] > 0)
+    {
+      element = [elements objectAtIndex: 0];
+      [self _setSnapshotValue: @"homeStreetAddress"
+            to: [element value: 2]];
+      [self _setSnapshotValue: @"homeCity"
+            to: [element value: 3]];
+      [self _setSnapshotValue: @"homeState"
+            to: [element value: 4]];
+      [self _setSnapshotValue: @"homePostalCode"
+            to: [element value: 5]];
+      [self _setSnapshotValue: @"homeCountry"
+            to: [element value: 6]];
+    }
+
+  elements = [card childrenWithTag: @"url"];
+  [self _setSnapshotValue: @"workURL"
+        to: [self _simpleValueForType: @"work" inArray: elements]];
+  [self _setSnapshotValue: @"homeURL"
+        to: [self _simpleValueForType: @"home" inArray: elements]];
+
+  [self _setSnapshotValue: @"title" to: [card title]];
+  [self _setupOrgFields];
+
+  [self _setSnapshotValue: @"bday" to: [card bday]];
+  [self _setSnapshotValue: @"tz" to: [card tz]];
+  [self _setSnapshotValue: @"note" to: [card note]];
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  card = [[self clientObject] vCard];
+  if (card)
+    [self initSnapshot];
+  else
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                        reason:@"could not open contact"];
+
+  return self;
+}
+
+- (NSString *) viewActionName
+{
+  /* this is overridden in the mail based contacts UI to redirect to tb.edit */
+  return @"";
+}
+
+- (NSString *) editActionName
+{
+  /* this is overridden in the mail based contacts UI to redirect to tb.edit */
+  return @"edit";
+}
+
+- (CardElement *) _elementWithTag: (NSString *) tag
+                           ofType: (NSString *) type
+{
+  NSArray *elements;
+  CardElement *element;
+
+  elements = [card childrenWithTag: tag
+                   andAttribute: @"type" havingValue: type];
+  if ([elements count] > 0)
+    element = [elements objectAtIndex: 0];
+  else
+    {
+      element = [CardElement new];
+      [element autorelease];
+      [element setTag: tag];
+      [element addType: type];
+      [card addChild: element];
+    }
+
+  return element;
+}
+
+- (void) _savePhoneValues
+{
+  CardElement *phone;
+
+  phone = [self _elementWithTag: @"tel" ofType: @"work"];
+  [phone setValue: 0 to: [snapshot objectForKey: @"telephoneNumber"]];
+  phone = [self _elementWithTag: @"tel" ofType: @"home"];
+  [phone setValue: 0 to: [snapshot objectForKey: @"homeTelephoneNumber"]];
+  phone = [self _elementWithTag: @"tel" ofType: @"cell"];
+  [phone setValue: 0 to: [snapshot objectForKey: @"mobile"]];
+  phone = [self _elementWithTag: @"tel" ofType: @"fax"];
+  [phone setValue: 0
+         to: [snapshot objectForKey: @"facsimileTelephoneNumber"]];
+  phone = [self _elementWithTag: @"tel" ofType: @"pager"];
+  [phone setValue: 0
+         to: [snapshot objectForKey: @"pager"]];
+}
+
+- (void) _saveEmails
+{
+  CardElement *workMail, *homeMail;
+
+  workMail = [self _elementWithTag: @"email" ofType: @"work"];
+  [workMail setValue: 0 to: [snapshot objectForKey: @"workMail"]];
+  homeMail = [self _elementWithTag: @"email" ofType: @"home"];
+  [homeMail setValue: 0 to: [snapshot objectForKey: @"homeMail"]];
+  if (preferredEmail)
+    {
+      if ([preferredEmail isEqualToString: @"work"])
+        [card setPreferred: workMail];
+      else
+        [card setPreferred: homeMail];
+    }
+}
+
+- (void) _saveSnapshot
+{
+  CardElement *element;
+
+  [card setNWithFamily: [snapshot objectForKey: @"sn"]
+        given: [snapshot objectForKey: @"givenName"]
+        additional: nil
+        prefixes: nil
+        suffixes: nil];
+  [card setNickname: [snapshot objectForKey: @"nickname"]];
+  [card setFn: [snapshot objectForKey: @"fn"]];
+  [card setTitle: [snapshot objectForKey: @"title"]];
+  [card setBday: [snapshot objectForKey: @"bday"]];
+  [card setNote: [snapshot objectForKey: @"note"]];
+  [card setTz: [snapshot objectForKey: @"tz"]];
+
+  element = [self _elementWithTag: @"adr" ofType: @"home"];
+  [element setValue: 2 to: [snapshot objectForKey: @"homeStreetAddress"]];
+  [element setValue: 3 to: [snapshot objectForKey: @"homeCity"]];
+  [element setValue: 4 to: [snapshot objectForKey: @"homeState"]];
+  [element setValue: 5 to: [snapshot objectForKey: @"homePostalCode"]];
+  [element setValue: 6 to: [snapshot objectForKey: @"homeCountry"]];
+
+  element = [self _elementWithTag: @"adr" ofType: @"work"];
+  [element setValue: 2 to: [snapshot objectForKey: @"workStreetAddress"]];
+  [element setValue: 3 to: [snapshot objectForKey: @"workCity"]];
+  [element setValue: 4 to: [snapshot objectForKey: @"workState"]];
+  [element setValue: 5 to: [snapshot objectForKey: @"workPostalCode"]];
+  [element setValue: 6 to: [snapshot objectForKey: @"workCountry"]];
+
+  [self _savePhoneValues];
+  [self _saveEmails];
+}
+
+- (id) saveAction
+{
+  id <SOGoContactObject> contact;
+
+  contact = [self clientObject];
+  card = [contact vCard];
+  if (card)
+    {
+      [self _saveSnapshot];
+      [contact save];
+    }
+//   NSException *ex;
+//   NSString *uri;
+//   NSDictionary *record;
+//   NSMutableDictionary *newRecord;
+  
+//   if ([[self clientObject] 
+//         respondsToSelector: @selector (saveContentString:)])
+//     {
+//       if (contentString)
+//         {
+//           record = [contentString propertyList];
+//           if (record)
+//             {
+//               newRecord = [[record mutableCopy] autorelease];
+//               [self saveValuesIntoRecord: newRecord];
+//               ex = [[self clientObject] saved];
+//               if (ex)
+//                 {
+//                   [self setErrorText: [ex reason]];
+
+//                   return self;
+//                 }
+//               else
+//                 {
+//                   uri = [self viewActionName];
+//                   if ([uri length] <= 0)
+//                     uri = @"..";
+
+//                   return [self redirectToLocation: [self _completeURIForMethod: uri]];
+//                 }
+//             }
+//           else
+//             {
+//               [self setErrorText: @"Invalid property list data ..."]; // localize
+//               return self;
+//             }
+//         }
+//       else
+//         {
+//           [self setErrorText: @"Missing object content!"]; // localize
+//           return self;
+//         }
+//     }
+//   else
+    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+                        reason: @"method cannot be invoked on "
+                        @"the specified object"];
+}
+
+- (id) writeAction
+{
+  NSString *email, *url;
+
+  [self initSnapshot];
+  email = [snapshot objectForKey: @"mail"];
+  if (email)
+    url = [NSString stringWithFormat: @"Mail/compose?mailto=%@", email];
+  else
+    url = @"Mail/compose";
+
+  return
+    [self redirectToLocation: [self relativePathToUserFolderSubPath: url]];
+}
+
+- (id)newAction {
+  // TODO: this is almost a DUP of UIxAppointmentEditor
+  /*
+    This method creates a unique ID and redirects to the "edit" method on the
+    new ID.
+    It is actually a folder method and should be defined on the folder.
+    
+    Note: 'clientObject' is the SOGoAppointmentFolder!
+          Update: remember that there are group folders as well.
+  */
+  NSString *uri, *objectId, *nextMethod;
+  
+  objectId = [[[self clientObject] class] globallyUniqueObjectId];
+  if ([objectId length] == 0) {
+    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
+			reason:@"could not create a unique ID"];
+  }
+  
+  nextMethod = [NSString stringWithFormat:@"../%@/%@", 
+			   objectId, [self editActionName]];
+  uri = [self _completeURIForMethod:nextMethod];
+  return [self redirectToLocation:uri];
+}
+
 @end /* UIxContactEditor */
