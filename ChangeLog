@@ -1,5 +1,13 @@
 2006-09-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView -hasOtherInfos]):
+	test the length of the returned string since they will never be
+	nil.
+
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor -saveAction]):
+	return self if the process went successful, returns an exception
+	otherwise (and only otherwise...).
+
 	* OGoContentStore/OCSContactFieldExtractor.m
 	([OCSContactFieldExtractor -extractQuickFieldsFromVCard:_vCard]):
 	adapted method to the new VCard api. Since the cards are stored in
