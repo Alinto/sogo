@@ -442,6 +442,7 @@
 - (id) saveAction
 {
   id <SOGoContactObject> contact;
+  id result;
 
   contact = [self clientObject];
   card = [contact vCard];
@@ -449,54 +450,14 @@
     {
       [self _saveSnapshot];
       [contact save];
+      result = self;
     }
-//   NSException *ex;
-//   NSString *uri;
-//   NSDictionary *record;
-//   NSMutableDictionary *newRecord;
-  
-//   if ([[self clientObject] 
-//         respondsToSelector: @selector (saveContentString:)])
-//     {
-//       if (contentString)
-//         {
-//           record = [contentString propertyList];
-//           if (record)
-//             {
-//               newRecord = [[record mutableCopy] autorelease];
-//               [self saveValuesIntoRecord: newRecord];
-//               ex = [[self clientObject] saved];
-//               if (ex)
-//                 {
-//                   [self setErrorText: [ex reason]];
+  else
+    result = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+                          reason: @"method cannot be invoked on "
+                          @"the specified object"];
 
-//                   return self;
-//                 }
-//               else
-//                 {
-//                   uri = [self viewActionName];
-//                   if ([uri length] <= 0)
-//                     uri = @"..";
-
-//                   return [self redirectToLocation: [self _completeURIForMethod: uri]];
-//                 }
-//             }
-//           else
-//             {
-//               [self setErrorText: @"Invalid property list data ..."]; // localize
-//               return self;
-//             }
-//         }
-//       else
-//         {
-//           [self setErrorText: @"Missing object content!"]; // localize
-//           return self;
-//         }
-//     }
-//   else
-    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-                        reason: @"method cannot be invoked on "
-                        @"the specified object"];
+  return result;
 }
 
 - (id) writeAction
