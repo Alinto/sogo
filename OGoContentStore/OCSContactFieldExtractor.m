@@ -42,25 +42,55 @@ static NSString *fieldNames[] = {
   nil, nil
 };
 
-- (NSMutableDictionary *)extractQuickFieldsFromVCard:(NGVCard *)_vCard {
+- (NSMutableDictionary *) extractQuickFieldsFromVCard: (NGVCard *) _vCard
+{
   NSMutableDictionary *fields;
-  unsigned i;
+  NSArray *values;
+  CardElement *adr;
+  NSString *value;
+  unsigned int max;
 
   if (_vCard == nil)
     return nil;
-  
+
   fields = [NSMutableDictionary dictionaryWithCapacity:16];
 
-  for (i = 0; fieldNames[i] != nil; i += 2) {
-    id value;
+  value = [_vCard fn];
+  if (value)
+    [fields setObject: value forKey: @"cn"];
+  values = [_vCard n];
+  if (values)
+    {
+      max = [values count];
+      if (max > 0)
+        {
+          [fields setObject: [values objectAtIndex: 0] forKey: @"sn"];
+          if (max > 1)
+            [fields setObject: [values objectAtIndex: 1]
+                    forKey: @"givenName"];
+        }
+    }
+  value = [_vCard preferredTel];
+  if (value)
+    [fields setObject: value forKey: @"telephoneNumber"];
+  value = [_vCard preferredEMail];
+  if (value)
+    [fields setObject: value forKey: @"mail"];
+  values = [_vCard org];
+  if (values)
+    {
+      max = [values count];
+      if (max > 0)
+        {
+          [fields setObject: [values objectAtIndex: 0] forKey: @"o"];
+          if (max > 1)
+            [fields setObject: [values objectAtIndex: 1] forKey: @"ou"];
+        }
+    }
+  adr = [_vCard preferredAdr];
+  if (adr)
+    [fields setObject: [adr value: 3] forKey: @"l"];
 
-    value = ([fieldNames[i + 1] length] > 0)
-      ? [_vCard valueForKeyPath:fieldNames[i + 1]]
-      : nil;
-    if (![value isNotNull]) value = [NSNull null];
-    
-    [fields setObject:value forKey:[fieldNames[i] lowercaseString]];
-  }
   return fields;
 }
 
