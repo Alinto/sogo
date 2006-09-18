@@ -373,7 +373,9 @@
 
 - (BOOL) hasOtherInfos
 {
-  return ([card note] || [card bday] || [card tz]);
+  return ([[card note] length] > 0
+          || [[card bday] length] > 0
+          || [[card tz] length] > 0);
 }
 
 - (NSString *) bday
