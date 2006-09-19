@@ -801,20 +801,29 @@ function onMenuDeleteMessage(event)
 
 /* contacts */
 function newContactFromEmail(sender) {
+  var mailto = sender.parentNode.parentNode.menuTarget.innerHTML;
+
   var emailre
     = /([a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])/g;
-
-  emailre.exec(sender.parentNode.parentNode.menuTarget.innerHTML);
+  emailre.exec(mailto);
   email = RegExp.$1;
+
+  var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
+  var c_name = '';
+  if (namere.test(mailto)) {
+    namere.exec(mailto);
+    c_name += RegExp.$1;
+  }
 
   if (email.length > 0)
     {
       emailre.exec("");
-      w = window.open(UserFolderURL + "Contacts/new?contactEmail=" + email,
-		      "SOGo_new_contact",
-		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-                      + "location=0,directories=0,status=0,menubar=0,"
-                      + "copyhistory=0");
+      var url = UserFolderURL + "Contacts/new?contactEmail=" + email;
+      if (c_name)
+        url += "&contactFN=" + c_name;
+      w = window.open(url, null,
+                      "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
+                      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
       w.focus();
     }
 
