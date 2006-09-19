@@ -311,6 +311,7 @@ div.mailer_unreadicon a
 table.mailer_fieldtable
 {
   top: 0px;
+  left: 0px;
   padding-top: .5em;
   overflow: auto;
   height: 7em;
@@ -335,13 +336,10 @@ DIV#messageContent div.mailer_mailcontent
   top: 7em;
 }
 
-tr.mailer_fieldrow
-{
-}
-
 td.mailer_fieldname
 {
-  padding-left: 24px;
+  white-space: nowrap;
+  padding-left: 1em;
   text-align: right;
   font-weight: bold;
   vertical-align: top;
