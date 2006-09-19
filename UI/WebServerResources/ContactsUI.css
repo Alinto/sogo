@@ -137,7 +137,7 @@ table.titletable td.titlecell SELECT
 DIV.contactFoldersList
 {
   position: absolute;
-  top: 5.5em;
+  top: 6em;
   left: 0px;
   width: 14.7em;
   bottom: 0px;
@@ -159,6 +159,8 @@ DIV.contactFoldersList UL
   top: 2em;
   left: 0px;
   right: 0px;
+  margin: 0px;
+  padding: 0px;
   bottom: 0px;
   overflow: auto;
   padding-left: 0px;
@@ -275,15 +277,6 @@ TABLE#contactsList TR._deleted TD
   text-decoration: line-through;
 }
 
-DIV#rightDragHandle
-{
-  cursor: n-resize;
-  top: 17.7em;
-  left: 0px;
-  right: 0px;
-  height: 5px;
-}
-
 DIV#contactView
 { 
   position: absolute;
@@ -336,41 +329,44 @@ INPUT#searchValue:focus
 DIV#dragHandle
 { 
   cursor: e-resize;
-  top: 7.5em;
+  top: 6em;
   left: 14.6em;
   width: .4em;
   bottom: 0px;
 }
 
-DIV#mailboxDragHandle
-{ 
+DIV#rightDragHandle
+{
   cursor: n-resize;
-  top: 50%;
+  top: 17.7em;
   left: 0px;
   right: 0px;
-  height: .4em;
-}
-
-DIV#calendarView
-{ 
-  position: absolute;
-  background: #fff;
-  top: 18em;
-  bottom: 0px;
-  width: 100%;
-  overflow: hidden;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
+  height: 5px;
 }
 
 DIV.contactSelector
 {
   position: absolute;
   top: 0px;
-  bottom: 3em;
+  bottom: 0px;
   right: 0px;
   left: 0px;
 }
+
+DIV.contactSelector DIV#rightPanel
+{ top: 4em; }
+
+DIV.contactSelector DIV#contactsListContent
+{ height: 8em; }
+
+DIV.contactSelector DIV.contactFoldersList
+{ top: 4em; }
+
+DIV.contactSelector DIV#rightDragHandle
+{ top: 10em; }
+
+DIV.contactSelector DIV#contactView
+{ top: 10.5em; }
 
 DIV.contactSelection
 {

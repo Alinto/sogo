@@ -9,10 +9,6 @@
     className="UIxContactsSelectionViewContainer"
     title="name"
     >
-
-    <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-
-    <!-- the content -->
     <table id="contactsList" multiselect="yes">
       <tbody>
         <tr class="tableview">
@@ -46,7 +42,7 @@
             var:id="currentContact.c_name"
             var:contactname="currentContact.cn"
             var:contactid="currentContact.c_uid"
-            onclick="return onRowClick(event);"
+            onclick="return onContactRowClick(event, this);"
             ondblclick="return onContactRowDblClick(event, this);"
             oncontextmenu="return onContactContextMenu(event, this);">
             <td onmousedown="return false;"><img rsrc:src="abcard.gif" /><var:string value="currentContact.cn" /></td>

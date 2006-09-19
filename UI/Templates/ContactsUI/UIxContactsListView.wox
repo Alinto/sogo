@@ -9,8 +9,7 @@
     className="UIxContactsListViewContainer"
     title="name"
     >
-    <!-- the content -->
-    <table border="0" width="100%" id="contactsList" multiselect="yes">
+    <table id="contactsList" multiselect="yes">
       <tbody>
         <tr class="tableview">
           <!-- localize -->

@@ -52,7 +52,7 @@
       onsubmit="return onSearchFormSubmit();" method="GET">
       <div class="contactSelector">
         <div class="contactFoldersList" id="contactFoldersList">
-          <div class="titlediv"><var:string label:value="Addressbook" /></div>
+          <div class="titlediv"><var:string label:value="Address Books" /></div>
           
           <ul id="contactFolders" onselectionchange="onFolderSelectionChange();">
             <var:foreach list="contactFolders" item="currentFolder">
@@ -82,23 +82,27 @@
           onmousemove=""
           ondblclick="dragHandleDoubleClick(event);"
           leftblock="contactFoldersList"
-          rightblock="contactsListContent">
+          rightblock="rightPanel">
         </div>
 
-        <div id="contactsListContent">
-          <var:component-content />
-        </div>
+        <div id="rightPanel">
+          <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
 
-        <div id="rightDragHandle"
-          class="dragHandle"
-          onmousedown="startHandleDragging(event);"
-          onmousemove=""
-          upperblock="contactsListContent"
-          lowerblock="contactView">
-        </div>
+          <div id="contactsListContent">
+            <var:component-content />
+          </div>
 
-        <div id="contactView" onmousedown="return false;"
-          ></div>
+          <div id="rightDragHandle"
+            class="dragHandle"
+            onmousedown="startHandleDragging(event);"
+            onmousemove=""
+            upperblock="contactsListContent"
+            lowerblock="contactView">
+          </div>
+
+          <div id="contactView" onmousedown="return false;"
+            ></div>
+        </div>
       </div>
 
       <div class="contactSelection">
