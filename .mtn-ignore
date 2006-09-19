@@ -1,4 +1,4 @@
 shared_debug_obj
 obj
-imgs-thunderbird
+imgs-.*
 .*\.SOGo
