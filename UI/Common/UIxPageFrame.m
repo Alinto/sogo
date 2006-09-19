@@ -44,7 +44,7 @@
   if ([self isUIxDebugEnabled])
     return self->title;
 
-  return [self labelForKey: @"OpenGroupware.org"];
+  return [self labelForKey: @"SOGo"];
 }
 
 - (void)setItem:(id)_item {
