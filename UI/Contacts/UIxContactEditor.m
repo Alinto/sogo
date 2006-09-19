@@ -30,44 +30,39 @@
 
 @implementation UIxContactEditor
 
-- (id)init {
-  if ((self = [super init])) {
-    self->snapshot = [[NSMutableDictionary alloc] initWithCapacity:16];
-    preferredEmail = nil;
-  }
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      snapshot = [[NSMutableDictionary alloc] initWithCapacity:16];
+      preferredEmail = nil;
+    }
+
   return self;
 }
 
-- (void)dealloc {
-  [self->snapshot      release];
-  [self->errorText     release];
+- (void) dealloc
+{
+  [snapshot      release];
+  [errorText     release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (NSMutableDictionary *) snapshot
+- (void) setErrorText: (NSString *) _txt
 {
-  NSString *email;
-
-  email = [self queryParameterForKey:@"contactEmail"];
-
-  if ([email length] > 0
-      && ![[self->snapshot objectForKey: @"mail"] length])
-    [self->snapshot setObject: email forKey: @"mail"];
-
-  return self->snapshot;
+  ASSIGNCOPY(errorText, _txt);
 }
 
-- (void)setErrorText:(NSString *)_txt {
-  ASSIGNCOPY(self->errorText, _txt);
-}
-- (NSString *)errorText {
-  return self->errorText;
+- (NSString *) errorText
+{
+  return errorText;
 }
 
-- (BOOL)hasErrorText {
-  return [self->errorText length] > 0 ? YES : NO;
+- (BOOL) hasErrorText
+{
+  return [errorText length] > 0 ? YES : NO;
 }
 
 /* load/store content format */
@@ -76,9 +71,9 @@
   // TODO: perform sanity checking, eg build CN on demand
   NSString *cn, *gn, *sn;
   
-  cn = [self->snapshot objectForKey:@"cn"];
-  gn = [self->snapshot objectForKey:@"givenName"];
-  sn = [self->snapshot objectForKey:@"sn"];
+  cn = [snapshot objectForKey:@"cn"];
+  gn = [snapshot objectForKey:@"givenName"];
+  sn = [snapshot objectForKey:@"sn"];
   
   if (![sn isNotNull] || [sn length] == 0)
     sn = nil;
@@ -97,7 +92,7 @@
 	? [cn substringFromIndex:(r.location + r.length)]
 	: cn;
     }
-    [self->snapshot setObject:sn forKey:@"sn"];
+    [snapshot setObject:sn forKey:@"sn"];
   }
   if (sn == nil && gn == nil)
     cn = @"[noname]";
@@ -107,7 +102,7 @@
     cn = sn;
   else
     cn = [[gn stringByAppendingString:@" "] stringByAppendingString:sn];
-  [self->snapshot setObject:cn forKey:@"cn"];
+  [snapshot setObject:cn forKey:@"cn"];
 }
 
 /* helper */
@@ -152,6 +147,11 @@
   [snapshot setObject: aValue forKey: key];
 }
 
+- (NSMutableDictionary *) snapshot
+{
+  return snapshot;
+}
+
 - (NSString *) _simpleValueForType: (NSString *) aType
                            inArray: (NSArray *) anArray
 {
@@ -193,15 +193,10 @@
           else
             workMail = potential;
         }
-      if (!homeMail)
+      if (!homeMail && max > 1)
         {
-          if (workMail && max > 1)
-            {
-              if (workMail == potential)
-                homeMail = [[elements objectAtIndex: 1] value: 0];
-              else
-                homeMail = potential;
-            }
+          if (workMail && workMail == potential)
+            homeMail = [[elements objectAtIndex: 1] value: 0];
           else
             homeMail = potential;
         }
@@ -248,6 +243,16 @@
 - (void) setPreferredEmail: (NSString *) aString
 {
   preferredEmail = aString;
+}
+
+- (void) _retrieveQueryParameter: (NSString *) queryKey
+               intoSnapshotValue: (NSString *) snapshotKey
+{
+  NSString *queryValue;
+
+  queryValue = [self queryParameterForKey: queryKey];
+  if (queryValue && [queryValue length] > 0)
+    [self _setSnapshotValue: snapshotKey to: queryValue];
 }
 
 - (void) initSnapshot
@@ -322,6 +327,11 @@
   [self _setSnapshotValue: @"bday" to: [card bday]];
   [self _setSnapshotValue: @"tz" to: [card tz]];
   [self _setSnapshotValue: @"note" to: [card note]];
+
+  [self  _retrieveQueryParameter: @"contactEmail"
+         intoSnapshotValue: @"workMail"];
+  [self  _retrieveQueryParameter: @"contactFN"
+         intoSnapshotValue: @"fn"];
 }
 
 - (id <WOActionResults>) defaultAction
