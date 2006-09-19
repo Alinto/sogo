@@ -58,11 +58,11 @@ DIV#mailboxContent
 DIV#messageContent
 {
   position: absolute;
-  overflow: auto;
+  overflow: hidden;
   font-size: small;
-  top: 18.1em;
+  top: 18.5em;
   bottom: 0px;
-  width: 100%;
+  right: 0px;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   background: #fff;
@@ -311,6 +311,9 @@ div.mailer_unreadicon a
 table.mailer_fieldtable
 {
   top: 0px;
+  padding-top: .5em;
+  overflow: auto;
+  height: 7em;
   border-bottom: 1px solid #808080;
   background: #dbdad5;
 }
@@ -318,8 +321,18 @@ table.mailer_fieldtable
 div.mailer_mailcontent
 {
   background-color: #fff;
+  position: absolute;
   padding: .5em;
-  height: 100%;
+  top: 10.8em;
+  overflow: auto;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+DIV#messageContent div.mailer_mailcontent
+{
+  top: 7em;
 }
 
 tr.mailer_fieldrow
@@ -358,7 +371,7 @@ img.mailer_imagecontent
 DIV.mailer_plaincontent
 { 
   font-family: monospace, fixed;
-  white-space: pre;
+  white-space: normal;
   font-size: small;
   margin: 0px;
   padding: 0px;
@@ -529,10 +542,6 @@ DIV#mailboxDragHandle
   left: 0px;
   right: 0px;
   height: 5px;
-}
-
-PRE.textMessageViewer
-{ 
 }
 
 TD.messageFlagColumn
