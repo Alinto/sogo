@@ -93,13 +93,10 @@ function submitContact(thisForm) {
   action.setAttribute("name", "save:method");
   action.setAttribute("value", "save");
 
-  window.opener.log ("form: " + thisForm);
-
-  window.opener.log ("validating...");
   if (validateContactEditor()) {
     thisForm.submit();
-    window.opener.setTimeout("refreshContacts(\""+ window.contactId +"\");", 200);
-    window.opener.log ("we close...");
+    if (window.opener.refreshContacts)
+      window.opener.setTimeout("refreshContacts(\""+ window.contactId +"\");", 200);
     window.close();
   }
 }
