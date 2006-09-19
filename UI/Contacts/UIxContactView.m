@@ -244,7 +244,7 @@
     {
       url = [[elements objectAtIndex: 0] value: 0];
       data = [NSString stringWithFormat:
-                         @"<a href=\"%@\" onclick=\"return openExternalLink(this);\">%@</a>",
+                         @"<a href=\"%@\">%@</a>",
                        url, url];
     }
   else

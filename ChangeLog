@@ -1,5 +1,9 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView
+	-_urlOfType:aType]): don't manage non-mailto urls through
+	javascript, let the user decide what's best for him.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-newAction]): transfer all the query parameters by using the
 	"asURLParameters"'s result string from [self queryParameters].
