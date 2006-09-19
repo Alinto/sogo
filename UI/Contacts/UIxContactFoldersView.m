@@ -23,6 +23,8 @@
 #import <Foundation/NSString.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 
+#import <SOGoUI/NSDictionary+URL.h>
+
 #import "common.h"
 
 #import "UIxContactFoldersView.h"
@@ -41,14 +43,12 @@
 - (id) newAction
 {
   SOGoContactFolders *folders;
-  NSString *url, *contactEmail;
+  NSString *url;
 
   folders = [self clientObject];
-  contactEmail = [self queryParameterForKey: @"contactEmail"];
-
-  url = [NSString stringWithFormat: @"%@/new?contactEmail=%@",
+  url = [NSString stringWithFormat: @"%@/new%@",
                   [folders defaultSourceName],
-                  contactEmail];
+                  [[self queryParameters] asURLParameters]];
   
   return [self redirectToLocation: url];
 }

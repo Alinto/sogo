@@ -1,5 +1,9 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-newAction]): transfer all the query parameters by using the
+	"asURLParameters"'s result string from [self queryParameters].
+
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
 	-initSnapshot]): retrieve "contactEmail" and "contactFN" from the
 	query parameters and put their values (if any) into the snapshot.
