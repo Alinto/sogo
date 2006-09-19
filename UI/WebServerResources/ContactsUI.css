@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-/* TODO: is the section below used in the mailer? */
 
 DIV#rightPanel
 {
@@ -66,9 +65,11 @@ DIV#contactsListContent
 {
   width: 25%;
 }
+
 .contentcell
 {
 }
+
 .embedwhite_out
 {
   border-width: 1;
@@ -229,30 +230,6 @@ TABLE#contactsList
   height: 100%;
 }
 
-TABLE#contactsList TH
-{
-  width: 100%;
-  background-color: #DCDAD5;
-  padding-left: .3em;
-  padding-right: .3em;
-  border-top: 1px solid #fff;
-  border-left: 1px solid #fff;
-  border-right: 2px solid #222;
-  border-bottom: 2px solid #222;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-}
-
-TABLE#contactsList TBODY
-{
-  right: 0px;
-  left: 0px;
-  bottom: 3em;
-  width: 100%;
-  background: #fff;
-  color: #000;
-}
-
 TABLE#contactsList TD
 { 
   height: 1.2em;
@@ -370,8 +347,18 @@ DIV.contactSelector DIV#contactView
 
 DIV.contactSelection
 {
+  background: inherit;
   position: absolute;
-  height: 2.5em;
-  bottom: 0px;
-  right: 1em;
+  bottom: 1em;
+  padding: 1em;
+  right: 2em;
+  background: #dbdad5;
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-right: 2px solid #888;
+  border-bottom: 2px solid #888;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
 }

@@ -290,9 +290,6 @@ DIV.linkbanner A:hover
 DIV.contactSelector
 { margin: .5em; }
 
-DIV.contactSelector SPAN A
-{ height: 2em; }
-
 DIV.contactSelector UL.contactList IMG
 { margin: 0px .5em; }
 
@@ -634,7 +631,6 @@ td.tbtv_actcell
   padding-bottom: 3px;
   padding-left: 4px;
   padding-right: 4px;
-  
   background-color: #DCDAD5;
 }
 
