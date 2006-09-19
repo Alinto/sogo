@@ -127,7 +127,7 @@ static BOOL uixDebugEnabled = NO;
 
 /* query parameters */
 
-- (void)_parseQueryString: (NSString *) _s
+- (void) _parseQueryString: (NSString *) _s
 {
   NSEnumerator *e;
   NSString *part;
@@ -410,8 +410,10 @@ static BOOL uixDebugEnabled = NO;
   return _selectedDate;
 }
 
-- (NSString *)dateStringForDate:(NSCalendarDate *)_date {
+- (NSString *) dateStringForDate: (NSCalendarDate *) _date
+{
   [_date setTimeZone: [[self clientObject] userTimeZone]];
+
   return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
 }
 
