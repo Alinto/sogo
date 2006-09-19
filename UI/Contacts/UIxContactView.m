@@ -312,6 +312,8 @@
   org = [card org];
   if (org && [org count] > 0)
     company = [org objectAtIndex: 0];
+  else
+    company = nil;
 
   return [self _cardStringWithLabel: nil value: company];
 }
@@ -416,6 +418,7 @@
   [self setQueryParameter:_param forKey:_key];
   href = [self completeHrefForMethod:[self ownMethodName]];
   [self setQueryParameter:nil forKey:_key];
+
   return href;
 }
 
@@ -456,14 +459,13 @@
   card = [[self clientObject] vCard];
   if (card)
     {
-      NSLog (@"displaying card for contact id: %@", [[self clientObject] nameInContainer]);
       phones = nil;
       homeAdr = nil;
       workAdr = nil;
     }
   else
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason:@"could not locate contact"];
+    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                        reason: @"could not locate contact"];
 
   return self;
 }
@@ -478,20 +480,23 @@
   NSException *ex;
   id url;
 
-  if (![self isDeletableClientObject]) {
+  if (![self isDeletableClientObject])
     /* return 400 == Bad Request */
     return [NSException exceptionWithHTTPStatus:400
                         reason:@"method cannot be invoked on "
-                               @"the specified object"];
-  }
+                        @"the specified object"];
 
-  if ((ex = [[self clientObject] delete]) != nil) {
+  ex = [[self clientObject] delete];
+  if (ex)
+    {
     // TODO: improve error handling
-    [self debugWithFormat:@"failed to delete: %@", ex];
-    return ex;
-  }
+      [self debugWithFormat:@"failed to delete: %@", ex];
+
+      return ex;
+    }
 
   url = [[[self clientObject] container] baseURLInContext:[self context]];
+
   return [self redirectToLocation:url];
 }
 
