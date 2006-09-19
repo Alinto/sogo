@@ -2,7 +2,7 @@
 
 "Home"        = "Accueil";
 "Calendar"	  = "Agenda";
-"Addressbook"	= "Carnet d'adresses";
+"Address Books"	= "Carnets d'adresses";
 "Mail"		    = "Mail";
 
 "User" = "Utilisateur";

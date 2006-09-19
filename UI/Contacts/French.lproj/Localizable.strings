@@ -1,12 +1,11 @@
 /* this file is in UTF-8 format! */
 
-"Addressbook"       = "Carnet d'adresse";
+"Address Books"      = "Carnets d'adresse";
 "Addresses"         = "Adresses";
 "Cancel"            = "Annuler";
 "Common"            = "Identité";
 "Contact editor"    = "Éditer le contact";
 "Contact viewer"    = "Visualiser le contact";
-"Copy from Anais"    = "Ajouter depuis Anaïs";
 "EMail"             = "Courriel";
 "Extended"          = "Informations complémentaires";
 "Fax"               = "Fax";

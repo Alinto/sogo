@@ -54,7 +54,7 @@
 	<var:if condition="isPopup" const:negate="YES">
           <var:if condition="hideFolderTree" const:negate="YES">
             <div class="contactFoldersList" id="contactFoldersList">
-              <div class="titlediv"><var:string label:value="Addressbook" /></div>
+              <div class="titlediv"><var:string label:value="Address Books" /></div>
 
               <ul id="contactFolders" onselectionchange="onFolderSelectionChange();">
                 <var:foreach list="contactFolders" item="currentFolder">
