@@ -19,24 +19,18 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartViewer.h"
-
 /*
   UIxMailPartTextViewer
 
-  Show plain/text mail parts in a <pre> section.
-  
+  Show plaintext mail parts correctly formatted.
+
   TODO: add server side wrapping.
   TODO: add contained link detection.
 */
 
-@interface UIxMailPartTextViewer : UIxMailPartViewer
-{
-}
+#import "common.h"
 
-@end
-
-#include "common.h"
+#import "UIxMailPartTextViewer.h"
 
 @implementation UIxMailPartTextViewer
 
