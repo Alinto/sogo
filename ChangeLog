@@ -1,5 +1,13 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (newContactFromEmail): fully
+	parse the email field and provide the address full name if found
+	as the "contactFN" parameter.
+
+	* UI/WebServerResources/generic.js (openMailTo): do not give a
+	name to the opened window so that serveral ones can be opened at
+	the same time.
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m
 	([UIxMailPartTextViewer -flatContentAsString]): override method by
 	replacing carriage returns with "<br />" in the result string from
