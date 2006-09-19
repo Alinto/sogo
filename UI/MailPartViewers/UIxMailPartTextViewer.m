@@ -40,7 +40,7 @@
 
 @implementation UIxMailPartTextViewer
 
-- (NSString *)flatContentAsString
+- (NSString *) flatContentAsString
 {
   NSString *content;
 
