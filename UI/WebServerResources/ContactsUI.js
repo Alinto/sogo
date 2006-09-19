@@ -42,9 +42,9 @@ var currentContactFolder = '';
 function openContactWindow(sender, contactuid, url) {
   log ("message window at url: " + url);
   var msgWin = window.open(url, "SOGo_msg_" + contactuid,
-			   "width=546,height=490,resizable=1,scrollbars=1,toolbar=0," +
-			   "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-
+			   "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
+			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  msgWin.contactId = contactuid;
   msgWin.focus();
 }
 
@@ -298,47 +298,6 @@ function onFolderMenuHide(event)
     selectNode(topNode.selectedEntry);
 }
 
-function getCachedMessage(idx)
-{
-  var message = null;
-  var counter = 0;
-
-  while (counter < cachedContacts.length
-         && message == null)
-    if (cachedContacts[counter]
-        && cachedContacts[counter]['idx'] == currentContactFolder + '/' + idx)
-      message = cachedContacts[counter];
-    else
-      counter++;
-
-  return message;
-}
-
-function storeCachedMessage(cachedContact)
-{
-  var oldest = -1;
-  var timeOldest = -1;
-  var counter = 0;
-
-  if (cachedContacts.length < maxCachedMessages)
-    oldest = cachedContacts.length;
-  else {
-    while (cachedContacts[counter]) {
-      if (oldest == -1
-          || cachedContacts[counter]['time'] < timeOldest) {
-        oldest = counter;
-        timeOldest = cachedContacts[counter]['time'];
-      }
-      counter++;
-    }
-
-    if (oldest == -1)
-      oldest = 0;
-  }
-
-  cachedContacts[oldest] = cachedContact;
-}
-
 function loadContact(idx)
 {
   if (document.contactAjaxRequest) {
@@ -346,23 +305,28 @@ function loadContact(idx)
     document.contactAjaxRequest.abort();
   }
 
-  var url = (ApplicationBaseURL + currentContactFolder + "/"
-             + idx + "/view?noframe=1");
-  log ("url: " + url);
-  document.contactAjaxRequest
-    = triggerAjaxRequest(url, contactLoadCallback, idx);
+  if (cachedContacts[currentContactFolder + "/" + idx]) {
+    var div = $('contactView');
+    div.innerHTML = cachedContacts[currentContactFolder + "/" + idx];
+  }
+  else {
+    var url = (ApplicationBaseURL + currentContactFolder + "/"
+               + idx + "/view?noframe=1");
+    document.contactAjaxRequest
+      = triggerAjaxRequest(url, contactLoadCallback, idx);
+  }
 }
 
 function contactLoadCallback(http)
 {
   var div = $('contactView');
-  log ("div: " + div);
-  log ("http: " + http.status);
 
   if (http.readyState == 4
       && http.status == 200) {
     document.contactAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    var content = http.responseText;
+    cachedContacts[currentContactFolder + "/" + http.callbackData] = content;
+    div.innerHTML = content;
   }
   else
     log ("ajax fuckage");
@@ -610,4 +574,12 @@ function onConfirmContactSelection()
 
 function onContactMailTo(node) {
   return openMailTo(node.innerHTML);
+}
+
+function refreshContacts(contactId) {
+  openContactsFolder(currentContactFolder, "reload=true");
+  cachedContacts[currentContactFolder + "/" + idx] = null;
+  loadContact(contactId);
+
+  return false;
 }
