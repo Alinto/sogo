@@ -1,5 +1,8 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js (uixDeleteSelectedContacts):
+	empty the contact view when the current contact is being deleted.
+
 	* UI/WebServerResources/MailerUI.js (newContactFromEmail): fully
 	parse the email field and provide the address full name if found
 	as the "contactFN" parameter.

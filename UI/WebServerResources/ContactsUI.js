@@ -64,7 +64,7 @@ function doubleClickedUid(sender, contactuid) {
 
 function toggleMailSelect(sender) {
   var row;
-  row = document.getElementById(sender.name);
+  row = $(sender.name);
   row.className = sender.checked ? "tableview_selected" : "tableview";
 }
 
@@ -126,9 +126,9 @@ function clickedEditorDelete(sender) {
 function showInlineAttachmentList(sender) {
   var r, l;
   
-  r = document.getElementById('compose_rightside');
+  r = $('compose_rightside');
   r.style.display = 'block';
-  l = document.getElementById('compose_leftside');
+  l = $('compose_leftside');
   l.style.width = "67%";
   this.adjustInlineAttachmentListHeight(sender);
 }
@@ -147,7 +147,7 @@ function updateInlineAttachmentList(sender, attachments) {
     text = text + '<br />';
   }
 
-  e = document.getElementById('compose_attachments_list');
+  e = $('compose_attachments_list');
   e.innerHTML = text;
   this.showInlineAttachmentList(sender);
 }
@@ -155,7 +155,7 @@ function updateInlineAttachmentList(sender, attachments) {
 function adjustInlineAttachmentListHeight(sender) {
   var e;
   
-  e = document.getElementById('compose_rightside');
+  e = $('compose_rightside');
   if (e.style.display == 'none') return;
 
   /* need to lower left size first, because left auto-adjusts to right! */
@@ -171,15 +171,15 @@ function hideInlineAttachmentList(sender) {
   var e;
   
 //  xVisibility('compose_rightside', false);
-  e = document.getElementById('compose_rightside');
+  e = $('compose_rightside');
   e.style.display = 'none';
-  e = document.getElementById('compose_leftside');
+  e = $('compose_leftside');
   e.style.width = "100%";
 }
 
 function onContactsFolderTreeItemClick(element)
 {
-  var topNode = document.getElementById('d');
+  var topNode = $('d');
   var contactsFolder = element.parentNode.getAttribute("dataname");
 
   if (topNode.selectedEntry)
@@ -198,9 +198,9 @@ function openContactsFolder(contactsFolder, params)
     if (params)
       url += '&' + params;
 
-    var contactsListContent = document.getElementById("contactsListContent");
-//     var contactsFolderDragHandle = document.getElementById("contactsFolderDragHandle");
-//     var messageContent = document.getElementById("messageContent");
+    var contactsListContent = $("contactsListContent");
+//     var contactsFolderDragHandle = $("contactsFolderDragHandle");
+//     var messageContent = $("messageContent");
 //     messageContent.innerHTML = '';
     if (document.contactsListAjaxRequest) {
       document.contactsListAjaxRequest.aborted = true;
@@ -238,7 +238,7 @@ function openContactsFolderAtIndex(element) {
 
 function contactsListCallback(http)
 {
-  var div = document.getElementById('contactsListContent');
+  var div = $('contactsListContent');
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -246,7 +246,7 @@ function contactsListCallback(http)
     div.innerHTML = http.responseText;
     var selected = http.callbackData;
     if (selected) {
-      var row = document.getElementById('row_' + selected);
+      var row = $('row_' + selected);
       selectNode(row);
     }
     initCriteria();
@@ -257,11 +257,11 @@ function contactsListCallback(http)
 
 function onContactContextMenu(event, element)
 {
-  var menu = document.getElementById('contactMenu');
+  var menu = $('contactMenu');
   menu.addEventListener("hideMenu", onContactContextMenuHide, false);
   onMenuClick(event, 'contactMenu');
 
-  var topNode = document.getElementById('contactsList');
+  var topNode = $('contactsList');
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
@@ -272,7 +272,7 @@ function onContactContextMenu(event, element)
 
 function onContactContextMenuHide(event)
 {
-  var topNode = document.getElementById('contactsList');
+  var topNode = $('contactsList');
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -288,7 +288,7 @@ function onContactContextMenuHide(event)
 
 function onFolderMenuHide(event)
 {
-  var topNode = document.getElementById('d');
+  var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -353,7 +353,7 @@ function enableElement(e, shouldEnable) {
 }
 
 function validateControls() {
-  var e = document.getElementById("moveto");
+  var e = $("moveto");
   this.enableElement(e, rowSelectionCount > 0);
 }
 
@@ -418,7 +418,7 @@ function onMenuDeleteContact(event, node)
 
 function onToolbarEditSelectedContacts(event)
 {
-  var contactsList = document.getElementById('contactsList');
+  var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
 
   for (var i = 0; i < rows.length; i++) {
@@ -432,7 +432,7 @@ function onToolbarEditSelectedContacts(event)
 
 function onToolbarWriteToSelectedContacts(event)
 {
-  var contactsList = document.getElementById('contactsList');
+  var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
 
   for (var i = 0; i < rows.length; i++) {
@@ -447,8 +447,11 @@ function onToolbarWriteToSelectedContacts(event)
 function uixDeleteSelectedContacts(sender)
 {
   var failCount = 0;
-  var contactsList = document.getElementById('contactsList');
+  var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
+
+  var contactView = $('contactView');
+  contactView.innerHTML = '';
 
   for (var i = 0; i < rows.length; i++) {
     var url, http, rowElem;
@@ -470,7 +473,7 @@ function uixDeleteSelectedContacts(sender)
     /* remove from page */
 
     /* line-through would be nicer, but hiding is OK too */
-    rowElem = document.getElementById(rows[i]);
+    rowElem = $(rows[i]);
     rowElem.parentNode.removeChild(rowElem);
   }
 
@@ -523,8 +526,8 @@ function newContact(sender) {
 
   urlstr = ApplicationBaseURL + currentContactFolder + "/new";
   newcwin = window.open(urlstr, "SOGo_new_contact",
-			"width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-			"location=0,directories=0,status=0,menubar=0,copyhistory=0");
+                        "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
+                        + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   newcwin.focus();
 
   return false; /* stop following the link */
@@ -532,7 +535,7 @@ function newContact(sender) {
 
 function onFolderSelectionChange()
 {
-  var folderList = document.getElementById("contactFolders");
+  var folderList = $("contactFolders");
   var nodes = folderList.getSelectedNodes();
   var newFolder = nodes[0].getAttribute("id");
 
@@ -541,7 +544,7 @@ function onFolderSelectionChange()
 
 function onSearchFormSubmit()
 {
-  var searchValue = document.getElementById("searchValue");
+  var searchValue = $("searchValue");
 
   openContactsFolder(currentContactFolder, "search=" + searchValue.value);
 
@@ -550,10 +553,10 @@ function onSearchFormSubmit()
 
 function onConfirmContactSelection()
 {
-  var folderLi = document.getElementById(currentContactFolder);
+  var folderLi = $(currentContactFolder);
   var currentContactFolderName = folderLi.innerHTML;
 
-  var contactsList = document.getElementById('contactsList');
+  var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRows();
   for (i = 0; i < rows.length; i++)
     {
