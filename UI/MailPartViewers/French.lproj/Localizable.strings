@@ -5,3 +5,5 @@ DELEGATED    = "Délégué"
 IN-PROCESS   = "En cours de traitement"
 NEEDS-ACTION = "Prise de décision nécessaire"
 TENTATIVE    = "Proposition"
+
+"Size" = "Taille";
