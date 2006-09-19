@@ -1,7 +1,5 @@
 <?xml version='1.0' standalone='yes'?>
 <table
-  style="font-size: 11px;"
-  border="0" cellspacing="0" cellpadding="2"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
