@@ -61,7 +61,7 @@
               <a var:href="relativeCalendarPath"
                 ><var:string label:value="Calendar" /></a> |
               <a var:href="relativeContactsPath"
-                ><var:string label:value="Address Books" /></a> |
+                ><var:string label:value="Address Book" /></a> |
               <a var:href="relativeMailPath"
                 ><var:string label:value="Mail" /></a> |
               <a var:href="logoffPath"
