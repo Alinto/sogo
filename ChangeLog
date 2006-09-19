@@ -1,5 +1,10 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView -note]): convert
+	carriage-returns to "<br />".
+	([UIxContactView -workCompany]): explicitly initialize company to
+	nil if org is nil or empty.
+
 	* UI/WebServerResources/UIxContactEditor.js: updated validation
 	code after we added and renamed some fields.
 
