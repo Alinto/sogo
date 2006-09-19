@@ -20,12 +20,13 @@
 */
 // $Id: UIxContactView.m 932 2005-08-01 13:17:55Z helge $
 
+#import <Contacts/SOGoContactObject.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
+#import <NGExtensions/NSString+Ext.h>
 
-#import <Contacts/SOGoContactObject.h>
 #import "common.h"
 
 #import "UIxContactView.h"
@@ -390,7 +391,18 @@
 
 - (NSString *) note
 {
-  return [self _cardStringWithLabel: @"Note: " value: [card note]];
+  NSString *note;
+
+  note = [card note];
+  if (note)
+    {
+      note = [note stringByReplacingString: @"\r\n"
+                   withString: @"<br />"];
+      note = [note stringByReplacingString: @"\n"
+                   withString: @"<br />"];
+    }
+
+  return [self _cardStringWithLabel: @"Note: " value: note];
 }
 
 /* hrefs */
