@@ -6,4 +6,4 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   class="mailer_plaincontent"
-><var:string value="flatContentAsString" /></div>
+><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
