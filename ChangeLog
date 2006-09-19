@@ -1,5 +1,10 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m
+	([UIxMailPartTextViewer -flatContentAsString]): override method by
+	replacing carriage returns with "<br />" in the result string from
+	super's implementation.
+
 	* UI/Contacts/UIxContactView.m ([UIxContactView
 	-_urlOfType:aType]): don't manage non-mailto urls through
 	javascript, let the user decide what's best for him.

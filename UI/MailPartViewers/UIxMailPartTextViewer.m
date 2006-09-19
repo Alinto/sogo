@@ -40,4 +40,16 @@
 
 @implementation UIxMailPartTextViewer
 
+- (NSString *)flatContentAsString
+{
+  NSString *content;
+
+  content = [[super flatContentAsString] stringByEscapingHTMLString];
+  content = [content stringByReplacingString: @"\r\n"
+                     withString: @"<br />"];
+
+  return [content stringByReplacingString: @"\n"
+                  withString: @"<br />"];
+}
+
 @end /* UIxMailPartTextViewer */
