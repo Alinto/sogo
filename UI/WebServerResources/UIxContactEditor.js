@@ -46,34 +46,40 @@ function copyContact(type, email, uid, sn,
     //  var departmentNumber = arguments[10]; 
     //  var l = arguments[11]; 
   var e;
-  e = document.getElementById('cn');
+  e = $('cn');
   e.setAttribute('value', unescapeCallbackParameter(cn));
-  e = document.getElementById('email');
+  e = $('email');
   e.setAttribute('value', email);
-  e = document.getElementById('sn');
+  e = $('sn');
   e.setAttribute('value', unescapeCallbackParameter(sn));
-  e = document.getElementById('givenName');
+  e = $('givenName');
   e.setAttribute('value', unescapeCallbackParameter(givenName));
-  e = document.getElementById('telephoneNumber');
+  e = $('telephoneNumber');
   e.setAttribute('value', telephoneNumber);
-  e = document.getElementById('facsimileTelephoneNumber');
+  e = $('facsimileTelephoneNumber');
   e.setAttribute('value', facsimileTelephoneNumber);
-  e = document.getElementById('mobile');
+  e = $('mobile');
   e.setAttribute('value', mobile);
-  e = document.getElementById('postalAddress');
+  e = $('postalAddress');
   e.setAttribute('value', unescapeCallbackParameter(postalAddress));
-  e = document.getElementById('homePostalAddress');
+  e = $('homePostalAddress');
   e.setAttribute('value', unescapeCallbackParameter(homePostalAddress));
-  e = document.getElementById('departmentNumber');
+  e = $('departmentNumber');
   e.setAttribute('value', unescapeCallbackParameter(departmentNumber));
-  e = document.getElementById('l');
+  e = $('l');
   e.setAttribute('value', unescapeCallbackParameter(l));
 };
 
 function validateContactEditor() {
   var e;
   
-  e = document.getElementById('email');
+  e = $('workMail');
+  if (e.value.length == 0)
+    return true;
+  if (uixEmailRegex.test(e.value) != true)
+    return confirm(labels.invalidemailwarn);
+
+  e = $('homeMail');
   if (e.value.length == 0)
     return true;
   if (uixEmailRegex.test(e.value) != true)
@@ -83,7 +89,7 @@ function validateContactEditor() {
 }
 
 function submitContact(thisForm) {
-  var action = document.getElementById('jsaction');
+  var action = $('jsaction');
   action.setAttribute("name", "save:method");
   action.setAttribute("value", "save");
 
@@ -91,12 +97,9 @@ function submitContact(thisForm) {
 
   window.opener.log ("validating...");
   if (validateContactEditor()) {
-    window.opener.log ("submitting");
     thisForm.submit();
-    window.opener.log ("setting timeout...");
-    window.opener.setTimeout('refreshAppointments();', 200);
+    window.opener.setTimeout("refreshContacts(\""+ window.contactId +"\");", 200);
     window.opener.log ("we close...");
     window.close();
-    window.opener.log ("closed");
   }
 }

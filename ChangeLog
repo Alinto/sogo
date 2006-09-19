@@ -1,5 +1,8 @@
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js: updated validation
+	code after we added and renamed some fields.
+
 	* UI/WebServerResources/ContactsUI.js: added code to cache contact
 	cards and to handle card updates.
 
