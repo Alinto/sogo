@@ -44,31 +44,38 @@
         </tr>
 
         <tr class="mailer_fieldrow">
-          <td class="mailer_fieldname" ><var:string label:value="To"/>:</td>
+          <td class="mailer_fieldname"><var:string label:value="To"/>:</td>
           <td class="mailer_fieldvalue">
             <var:foreach list="clientObject.toEnvelopeAddresses"
-              item="currentAddress">
-              <a var:href="currentAddressLink" onmousedown="return false;" onclick="return onMenuClick(event, 'addressMenu');" oncontextmenu="onMenuClick(event, 'addressMenu');">
+              item="currentAddress"
+              ><a var:href="currentAddressLink"
+                onmousedown="return false;"
+                onclick="return onMenuClick(event, 'addressMenu');"
+                oncontextmenu="onMenuClick(event, 'addressMenu');">
                 <var:string value="currentAddress"
-                  formatter="context.mailEnvelopeFullAddressFormatter" /></a>
+                  formatter="context.mailEnvelopeFullAddressFormatter"
+                  /></a>
             </var:foreach>
           </td>
         </tr>
         <var:if condition="hasCC">
           <tr class="mailer_fieldrow">
-            <td class="mailer_fieldname" ><var:string label:value="CC"/>:</td>
+            <td class="mailer_fieldname"><var:string label:value="CC"/>:</td>
             <td class="mailer_fieldvalue">
               <var:foreach list="clientObject.ccEnvelopeAddresses" 
                 item="currentAddress">
-                <a var:href="currentAddressLink" onclick="return onMenuClick(event, 'addressMenu');" oncontextmenu="onMenuClick(event, 'addressMenu');" onmousedown="return false;">
-                  <var:string value="currentAddress"
-                    formatter="context.mailEnvelopeFullAddressFormatter" /></a>
-                <br /> <!-- TODO: better to use li+CSS -->
+                <a var:href="currentAddressLink"
+                  onclick="return onMenuClick(event, 'addressMenu');"
+                  oncontextmenu="onMenuClick(event, 'addressMenu');"
+                  onmousedown="return false;"
+                  ><var:string value="currentAddress"
+                    formatter="context.mailEnvelopeFullAddressFormatter"
+                    /></a>
+                <!-- TODO: better to use li+CSS -->
               </var:foreach>
             </td>
           </tr>
         </var:if>
-
 
         <!-- header fields if available -->
         <var:if condition="clientObject.hasMailHeaderInCoreInfos">
