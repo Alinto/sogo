@@ -59,8 +59,7 @@ DIV#messageContent
 {
   position: absolute;
   overflow: hidden;
-  font-size: small;
-  top: 18.5em;
+  top: 18.2em;
   bottom: 0px;
   right: 0px;
   border-top: 1px solid #aaa;
@@ -370,7 +369,7 @@ DIV.mailer_plaincontent
 { 
   font-family: monospace, fixed;
   white-space: normal;
-  font-size: small;
+  font-size: inherit;
   margin: 0px;
   padding: 0px;
 }
@@ -467,16 +466,6 @@ DIV#filterPanel
   height: 2em;
   vertical-align: middle;
   width: 100%;
-}
-
-TABLE#compose_table, TABLE#compose_table DIV
-{ 
-  width: 100%;
-}
-
-TABLE#compose_label
-{
-  text-align: right;
 }
 
 TABLE#addr_table

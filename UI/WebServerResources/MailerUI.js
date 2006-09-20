@@ -63,12 +63,12 @@ function doubleClickedUid(sender, msguid) {
 
 function toggleMailSelect(sender) {
   var row;
-  row = document.getElementById(sender.name);
+  row = $(sender.name);
   row.className = sender.checked ? "tableview_selected" : "tableview";
 }
 
 function clearSearch(sender) {
-  var searchField = window.document.getElementById("search");
+  var searchField = window.$("search");
   if (searchField) searchField.value="";
   return true;
 }
@@ -143,9 +143,9 @@ function clickedEditorDelete(sender) {
 function showInlineAttachmentList(sender) {
   var r, l;
   
-  r = document.getElementById('compose_rightside');
+  r = $('compose_rightside');
   r.style.display = 'block';
-  l = document.getElementById('compose_leftside');
+  l = $('compose_leftside');
   l.style.width = "67%";
   this.adjustInlineAttachmentListHeight(sender);
 }
@@ -164,47 +164,9 @@ function updateInlineAttachmentList(sender, attachments) {
     text = text + '<br />';
   }
 
-  e = document.getElementById('compose_attachments_list');
+  e = $('compose_attachments_list');
   e.innerHTML = text;
   this.showInlineAttachmentList(sender);
-}
-
-function adjustInlineAttachmentListHeight(sender) {
-  var e;
-  
-  e = document.getElementById('compose_rightside');
-  if (e.style.display == 'none') return;
-
-  /* need to lower left size first, because left auto-adjusts to right! */
-  xHeight('compose_attachments_list', 10);
-
-  var leftHeight, rightHeaderHeight;
-  leftHeight        = xHeight('compose_leftside');
-  rightHeaderHeight = xHeight('compose_attachments_header');
-  xHeight('compose_attachments_list', (leftHeight - rightHeaderHeight) - 16);
-}
-
-function hideInlineAttachmentList(sender) {
-  var e;
-  
-//  xVisibility('compose_rightside', false);
-  e = document.getElementById('compose_rightside');
-  e.style.display = 'none';
-  e = document.getElementById('compose_leftside');
-  e.style.width = "100%";
-}
-
-/* addressbook helpers */
-
-function openAnais(sender) {
-  var urlstr;
-
-  urlstr = "anais";
-  var w = window.open(urlstr, "Anais",
-                      "width=350,height=600,left=10,top=10,toolbar=no," +
-                      "dependent=yes,menubar=no,location=no,resizable=yes," +
-                      "scrollbars=yes,directories=no,status=no");
-  w.focus();
 }
 
 function openAddressbook(sender) {
@@ -245,12 +207,12 @@ function clickedNewFilter(sender) {
 function markMailInWindow(win, msguid, markread) {
   var msgDiv;
 
-  msgDiv = win.document.getElementById("div_" + msguid);
+  msgDiv = win.$("div_" + msguid);
   if (msgDiv) {
     if (markread) {
       msgDiv.removeClassName("mailer_unreadmailsubject");
       msgDiv.addClassName("mailer_readmailsubject");
-      msgDiv = win.document.getElementById("unreaddiv_" + msguid);
+      msgDiv = win.$("unreaddiv_" + msguid);
       if (msgDiv)
         {
           msgDiv.setAttribute("class", "mailerUnreadIcon");
@@ -268,7 +230,7 @@ function markMailInWindow(win, msguid, markread) {
     else {
       msgDiv.removeClassName('mailer_readmailsubject');
       msgDiv.addClassName('mailer_unreadmailsubject');
-      msgDiv = win.document.getElementById("readdiv_" + msguid);
+      msgDiv = win.$("readdiv_" + msguid);
       if (msgDiv)
         {
           msgDiv.setAttribute("class", "mailerReadIcon");
@@ -317,7 +279,7 @@ function reopenToRemoveLocationBar() {
 
 function openMessageWindowsForSelection(sender, action)
 {
-  var messageList = document.getElementById("messageList");
+  var messageList = $("messageList");
   var rows  = messageList.getSelectedRowsId();
   var idset = "";
 
@@ -407,7 +369,7 @@ function ctxFolderDelete(sender) {
 function uixDeleteSelectedMessages(sender) {
   var failCount = 0;
   
-  var messageList = document.getElementById("messageList");
+  var messageList = $("messageList");
   var rows = messageList.getSelectedRows();
 
   for (var i = 0; i < rows.length; i++) {
@@ -442,7 +404,7 @@ function uixDeleteSelectedMessages(sender) {
 
 function onMailboxTreeItemClick(element)
 {
-  var topNode = document.getElementById('d');
+  var topNode = $('d');
   var mailbox = element.parentNode.getAttribute("dataname");
 
   if (topNode.selectedEntry)
@@ -458,9 +420,9 @@ function openMailbox(mailbox)
   if (mailbox != currentMailbox) {
     currentMailbox = mailbox;
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
-    var mailboxContent = document.getElementById("mailboxContent");
-    var mailboxDragHandle = document.getElementById("mailboxDragHandle");
-    var messageContent = document.getElementById("messageContent");
+    var mailboxContent = $("mailboxContent");
+    var mailboxDragHandle = $("mailboxDragHandle");
+    var messageContent = $("messageContent");
     messageContent.innerHTML = '';
     if (mailbox.lastIndexOf("/") == 0) {
       var url = (ApplicationBaseURL + currentMailbox + "/"
@@ -513,7 +475,7 @@ function openMailboxAtIndex(element) {
 
 function messageListCallback(http)
 {
-  var div = document.getElementById('mailboxContent');
+  var div = $('mailboxContent');
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -521,7 +483,7 @@ function messageListCallback(http)
     div.innerHTML = http.responseText;
     var selected = http.callbackData;
     if (selected) {
-      var row = document.getElementById('row_' + selected);
+      var row = $('row_' + selected);
       selectNode(row);
     }
   }
@@ -531,11 +493,11 @@ function messageListCallback(http)
 
 function onMessageContextMenu(event, element)
 {
-  var menu = document.getElementById('messageListMenu');
+  var menu = $('messageListMenu');
   menu.addEventListener("hideMenu", onMessageContextMenuHide, false);
   onMenuClick(event, 'messageListMenu');
 
-  var topNode = document.getElementById('messageList');
+  var topNode = $('messageList');
   var selectedNodes = topNode.getSelectedRows();
   for (var i = 0; i < selectedNodes.length; i++)
     deselectNode (selectedNodes[i]);
@@ -546,7 +508,7 @@ function onMessageContextMenu(event, element)
 
 function onMessageContextMenuHide(event)
 {
-  var topNode = document.getElementById('messageList');
+  var topNode = $('messageList');
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -574,11 +536,11 @@ function onFolderMenuClick(event, element, menutype)
     menuName = "mailboxIconMenu";
   }
 
-  var menu = document.getElementById(menuName);
+  var menu = $(menuName);
   menu.addEventListener("hideMenu", onFolderMenuHide, false);
   onMenuClick(event, menuName);
 
-  var topNode = document.getElementById('d');
+  var topNode = $('d');
   if (topNode.selectedEntry)
     deselectNode(topNode.selectedEntry);
   if (topNode.menuSelectedEntry)
@@ -589,7 +551,7 @@ function onFolderMenuClick(event, element, menutype)
 
 function onFolderMenuHide(event)
 {
-  var topNode = document.getElementById('d');
+  var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -642,7 +604,7 @@ function storeCachedMessage(cachedMessage)
 
 function onMessageSelectionChange()
 {
-  var messageList = document.getElementById("messageList");
+  var messageList = $("messageList");
   var rows  = messageList.getSelectedRowsId();
 
   if (rows.length == 1) {
@@ -671,7 +633,7 @@ function loadMessage(idx)
       = triggerAjaxRequest(url, messageCallback, idx);
     markMailInWindow(window, idx, true);
   } else {
-    var div = document.getElementById('messageContent');
+    var div = $('messageContent');
     div.innerHTML = cachedMessage['text'];
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
@@ -680,7 +642,7 @@ function loadMessage(idx)
 
 function messageCallback(http)
 {
-  var div = document.getElementById('messageContent');
+  var div = $('messageContent');
 
   if (http.readyState == 4
       && http.status == 200) {
@@ -745,7 +707,7 @@ function enableElement(e, shouldEnable) {
 }
 
 function validateControls() {
-  var e = document.getElementById("moveto");
+  var e = $("moveto");
   this.enableElement(e, rowSelectionCount > 0);
 }
 
@@ -858,7 +820,7 @@ function initMailboxSelection(mailboxName)
 {
   currentMailbox = mailboxName;
 
-  var tree = document.getElementById("d");
+  var tree = $("d");
   var treeNodes = getElementsByClassName('DIV', 'dTreeNode', tree);
   var i = 0;
   while (i < treeNodes.length
