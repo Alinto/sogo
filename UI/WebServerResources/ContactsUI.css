@@ -191,7 +191,7 @@ DIV.contactFoldersList LI._selected
 }
 
 DIV#folderTreeContent TABLE TD
-{ height: 18px;
+{ height: 2em;
   border-top: 1px solid #fff;
   margin: 0px;
   padding: 0px; }
@@ -231,10 +231,7 @@ TABLE#contactsList
 }
 
 TABLE#contactsList TD
-{ 
-  height: 1.2em;
-  white-space: nowrap;
-}
+{ white-space: nowrap; }
 
 TABLE#contactsList TD IMG
 {
@@ -306,7 +303,7 @@ INPUT#searchValue:focus
 DIV#dragHandle
 { 
   cursor: e-resize;
-  top: 6em;
+  top: 7.5em;
   left: 14.6em;
   width: .4em;
   bottom: 0px;

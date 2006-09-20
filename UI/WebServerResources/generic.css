@@ -375,7 +375,6 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
 SPAN.disabledToolbarButton
 { -moz-opacity: 0.4; }
 
-
 SPAN.toolbarButton:hover
 { color: -moz-buttonhovertext;
   background-color: -moz-buttonhoverface;
@@ -583,23 +582,19 @@ td img.tbtv_sortcell
 
 TD.subjectCell,
 td.tbtv_subject_headercell
-{ 
-  overflow: hidden; }
+{ overflow: hidden; }
 
 /* drag handles */
 DIV.dragHandle
-{ 
-  position: absolute;
+{ position: absolute;
   z-index: 1;
   background: #dbdad5; }
 
 DIV.dragHandle:active
-{ -moz-opacity: 0.5;
-  background: #222; }
+{ background: #99a; }
 
 INPUT.textField
-{ 
-  height: 1.7em;
+{ height: 1.7em;
   vertical-align: middle; }
 
 /* search fields */

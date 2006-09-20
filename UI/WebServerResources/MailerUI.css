@@ -61,6 +61,7 @@ DIV#messageContent
   overflow: hidden;
   top: 18.2em;
   bottom: 0px;
+  left: 0px;
   right: 0px;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
@@ -312,8 +313,9 @@ table.mailer_fieldtable
   top: 0px;
   left: 0px;
   padding-top: .5em;
-  overflow: auto;
-  height: 7em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 6.5em;
   border-bottom: 1px solid #808080;
   background: #dbdad5;
 }
@@ -323,7 +325,8 @@ div.mailer_mailcontent
   background-color: #fff;
   position: absolute;
   padding: .5em;
-  top: 10.8em;
+  margin-top: .5em;
+  top: 10em;
   overflow: auto;
   left: 0px;
   right: 0px;
@@ -332,7 +335,7 @@ div.mailer_mailcontent
 
 DIV#messageContent div.mailer_mailcontent
 {
-  top: 7em;
+  top: 6em;
 }
 
 td.mailer_fieldname
