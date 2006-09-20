@@ -11,79 +11,49 @@
     const:popup="YES"
     >
     <div id="compose_panel">
-      <var:if condition="showInternetMarker">
-        <div id="compose_internetmarker">
-          <var:string
-            label:value="This mail is being sent from an unsecure network!" />
-        </div>
-      </var:if>
-      <table id="compose_table">
-        <tr>
-          <td id="compose_leftside" var:style="initialLeftsideStyle">
-            <div id="compose_fromline">
-              <table>
-                <tr>
-                  <td class="compose_label" width="20%">
-                    <var:string label:value="From" />:
-                  </td>
-                  <td width="80%">
-                    <var:popup const:name="from" list="fromEMails" item="item"
-                      selection="from"
-                      const:style="width: 100%;"
-                      />
-                  </td>
-                </tr>
-            </table>
-            </div>
-            
-            <div id="compose_toselection">
-	      <var:component className="UIxMailToSelection"
-                to="to"
-                cc="cc"
-                bcc="bcc"
-                />
-            </div>
-            <!-- moved below to selection to make it look better -->
-            <div id="compose_subject">
-              <table>
-                <tr>
-                  <td class="compose_label" width="20%">
-                    <var:string label:value="Subject" />:
-                  </td>
-                  <td width="80%"><input name="subject"
-                      id="compose_subject_input"
-                      type="text"
-                      var:value="subject"
-                      /></td>
-                </tr>
-              </table>
-            </div>
-          </td>
-          <td id="compose_rightside" var:style="initialRightsideStyle">
-            <div id="compose_attachments">
-              <div id="compose_attachments_header">  
-                <span class="compose_label"
-                  ><var:string label:value="Attachments" />:</span>
+      <div id="attachmentsArea">
+        <var:string label:value="Attachments" />
                 <!--<a href="#"
                 onclick="hideInlineAttachmentList(this);"
                 ><var:string label:value="close" /></a>-->
-              </div>
-              <div id="compose_attachments_list"
-                onclick="clickedEditorAttach(this);"
-                >
-                <var:foreach list="attachmentNames" item="attachmentName">
-                  <var:string value="attachmentName" /><br />
-                </var:foreach>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </table>
-      <!-- separator line -->
-      <div id="compose_text">
-        <textarea name="content" var:value="text" />
+        <div id="compose_attachments_list"
+          onclick="clickedEditorAttach(this);"
+          ><var:foreach list="attachmentNames" item="attachmentName">
+            <var:string value="attachmentName" /><br />
+          </var:foreach>
+        </div>
       </div>
-
+      <div id="headerArea">
+        <var:if condition="showInternetMarker">
+          <div id="compose_internetmarker">
+            <var:string
+              label:value="This mail is being sent from an unsecure network!" />
+          </div>
+        </var:if>
+        <span class="headerField"
+          ><var:string label:value="From"
+            />:</span
+          ><var:popup const:name="from"
+          list="fromEMails"
+          item="item"
+          selection="from"
+          /><br />
+        <var:component className="UIxMailToSelection"
+          to="to"
+          cc="cc"
+          bcc="bcc"
+          />
+        <span class="headerField"
+          ><var:string label:value="Subject"
+            />:</span><input name="subject"
+            id="compose_subject_input"
+            type="text"
+            class="textField"
+            var:value="subject"
+            /><br />
+      </div>
+      <!-- separator line -->
+      <textarea name="content" var:value="text" />
       <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
     </div>
   </var:component>

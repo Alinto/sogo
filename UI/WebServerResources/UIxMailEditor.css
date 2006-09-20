@@ -3,6 +3,17 @@
 div#compose_panel div table {
   padding: 2px;
 }
+
+TABLE#compose_table, TABLE#compose_table DIV
+{ 
+  width: 100%;
+}
+
+TABLE#compose_label
+{
+  text-align: right;
+}
+
 table#compose_table {
   border-bottom-color: #808080;
   border-bottom-width: 1;
@@ -29,13 +40,29 @@ div#compose_internetmarker {
   border-width:     2px;
   border-style:     solid;
 }
-div#compose_attachments {
-    padding-top: 4px;
-  padding-right: 10px;
-}
+
+div#headerArea
+{ margin-right: 10em; }
+
+div#headerArea INPUT
+{ width: 35em; }
+
+div#attachmentsArea
+{ float: right;
+  width: 8em;
+  height: 2em;
+  padding-right: 1em; }
+
+SPAN.headerField
+{ display: block;
+  float: left;
+  line-height: 1.8em;
+  width: 5em;
+  text-align: right; }
+
 div#compose_attachments_list  {
   width:            100%;
-  height:           100px;
+  height:           6em;
   background-color: #FFFFFF;
   margin-left:      0px;
   padding:          2px;
@@ -44,26 +71,9 @@ div#compose_attachments_list  {
   border-style:     solid;
 }
 
-div#compose_subject { 
-/*   border-bottom-color: #808080;
-  border-bottom-width: 1;
-  border-bottom-style: solid;
- */}
-div#compose_text { 
-  border-top-color:    white;
-  border-top-width:    1;
-  border-top-style:    solid;
-}
-
-input#compose_subject_input {
-  width:     100%;
-}
-
-.compose_label { 
-  text-align: left;
-}
-
-div#compose_text textarea { 
-  width:  100%;
-  height: 280px;
-}
+TEXTAREA
+{ position: absolute;
+  left: .5em;
+  right: .5em;
+  bottom: .5em;
+  height: 280px; }

@@ -1,5 +1,8 @@
 2006-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/MailerUI/UIxMailEditor.wox: arranged the message
+	header fields by converting the tables to DIVs and SPANs.
+
 	* UI/WebServerResources/generic.css: attempted unification of font
 	families and size across all the elements. changed the
 	logConsole's "position" from "fixed" to "absolute" to avoid
