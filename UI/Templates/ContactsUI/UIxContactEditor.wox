@@ -348,20 +348,20 @@
               <td>
                 <label><var:string label:value="Birthday: " const:escapeHTML="NO" />
                   <input type="text" class="textField" name="birthday" id="birthday"
-                    var:value="snapshot.bday" size="20" />
+                    var:value="snapshot.bday" size="16" />
                 </label>
               </td>
               <td>
                 <label><var:string label:value="Timezone: " const:escapeHTML="NO" />
                   <input type="text" class="textField" name="tz" id="tz"
-                    var:value="snapshot.tz" size="30" />
+                    var:value="snapshot.tz" size="16" />
                 </label>
               </td>
             </tr>
             <tr>
               <td colspan="2">
                 <label><var:string label:value="Note: " const:escapeHTML="NO" />
-                  <textarea rows="10" cols="64" var:value="snapshot.note" name="note" id="note"></textarea>
+                  <textarea rows="10" cols="60" var:value="snapshot.note" name="note" id="note"></textarea>
                 </label>
               </td>
             </tr>
