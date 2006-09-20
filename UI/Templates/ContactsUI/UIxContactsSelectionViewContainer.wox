@@ -111,11 +111,6 @@
           label:value="Add Selected Contacts"
           name="validate"
           onclick="return onConfirmContactSelection();" />
-        <input type="submit"
-          class="button"
-          label:value="Close"
-          name="cancel"
-          onclick="window.close(); return false;" />
       </div>
     </form>
 
