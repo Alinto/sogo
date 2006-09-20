@@ -3,7 +3,7 @@ BODY
 
 DIV.appointmentLabel
 { float: left;
-  margin-top: .6em;
+  line-height: 1.8em;
   text-align: right;
   width: 10em; }
 
@@ -61,10 +61,6 @@ DIV#participants
 SPAN.contactSelectorButtons
 { vertical-align: top;
   line-height: 2em; }
-
-LABEL
-{ white-space: nowrap;
-  margin-left: .5em; }
 
 LABEL#conflictsLabel
 { float: right;
