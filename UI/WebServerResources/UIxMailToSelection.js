@@ -38,7 +38,7 @@ function sanitizedCn(cn) {
 }
 
 function hasAddress(email) {
-  var e = document.getElementById(email);
+  var e = $(email);
   if(e)
     return true;
   return false;
@@ -47,7 +47,7 @@ function hasAddress(email) {
 function rememberAddress(email) {
   var list, span, idx;
   
-  list    = document.getElementById('addr_addresses');
+  list    = $('addr_addresses');
   span    = document.createElement('span');
   span.id = email;
   idx     = document.createTextNode(currentIndex);
@@ -71,7 +71,7 @@ function addAddress(type, email, uid, sn, cn, dn) {
   if(this.hasAddress(email))
     return;
   
-  e = document.getElementById('addr_0');
+  e = $('addr_0');
   if(e.value == '') {
     e.value = s;
     shouldAddRow = false;
@@ -83,42 +83,44 @@ function addAddress(type, email, uid, sn, cn, dn) {
 }
 
 function fancyAddRow(shouldEdit, text) {
-  var addr, table, lastChild, proto, row, select, input;
+  var addr, addressList, lastChild, proto, row, select, input;
   
-  addr = document.getElementById('addr_' + lastIndex);
+  addr = $('addr_' + lastIndex);
   if (addr && addr.value == '') {
-    input = document.getElementById('compose_subject_input');
+    input = $('compose_subject_input');
     if (input && input.value != '') {
       input.focus();
       input.select();
       return;
     }
   }
-  table = this.getTable();
-  lastChild = document.getElementById('row_last');
+  addressList = $("addressList");
+  lastChild = $('row_last');
   
   currentIndex++;
   
-  proto = document.getElementById('row_' + lastIndex);
+  proto = $('row_' + lastIndex);
   row = proto.cloneNode(true);
   row.id = 'row_' + currentIndex;
-  
-  // select popup
-  select = row.childNodes[1].childNodes[1];
-  select.name = 'popup_' + currentIndex;
-  select.value = proto.childNodes[1].childNodes[1].value;
-  input = row.childNodes[3].childNodes[1];
-  input.name  = 'addr_' + currentIndex;
-  input.id    = 'addr_' + currentIndex;
-  input.value = text;
-  
-  table.insertBefore(row, lastChild);
 
-  if(shouldEdit) {
+  // select popup
+  select = row.childNodes[0].childNodes[0];
+  select.name = 'popup_' + currentIndex;
+  select.value = proto.childNodes[0].childNodes[0].value;
+  input = row.childNodes[1];
+  input.name  = 'addr_' + currentIndex;
+  input.id = 'addr_' + currentIndex;
+  input.value = text;
+
+  addressList.insertBefore(row, lastChild);
+
+  if (shouldEdit) {
+    input.setAttribute('autocomplete', 'off');
     input.focus();
     input.select();
+    input.setAttribute('autocomplete', 'on');
   }
-  this.adjustInlineAttachmentListHeight(this);
+//   this.adjustInlineAttachmentListHeight(this);
 }
 
 function addressFieldGotFocus(sender) {
@@ -127,7 +129,6 @@ function addressFieldGotFocus(sender) {
   idx = this.getIndexFromIdentifier(sender.id);
   if ((lastIndex == idx) || (idx == 0)) return;
   this.removeLastEditedRowIfEmpty();
-
 
   return false;
 }
@@ -139,27 +140,27 @@ function addressFieldLostFocus(sender) {
 }
 
 function removeLastEditedRowIfEmpty() {
-  var idx, addr, table, senderRow;
+  var idx, addr, addressList, senderRow;
   
   idx = lastIndex;
   if (idx == 0) return;
-  addr = document.getElementById('addr_' + idx);
+  addr = $('addr_' + idx);
   if (!addr) return;
   if (addr.value != '') return;
   addr = this.findAddressWithIndex(idx);
   if(addr) {
-    var addresses = document.getElementById('addr_addresses');
+    var addresses = $('addr_addresses');
     addresses.removeChild(addr);
   }
-  table = this.getTable();
+  addressList = $("addressList");
   senderRow = this.findRowWithIndex(idx);
-  table.removeChild(senderRow);
+  addressList.removeChild(senderRow);
   this.adjustInlineAttachmentListHeight(this);
 }
 
 function findAddressWithIndex(idx) {
   var list, i, count, addr, idx
-  list = document.getElementById('addr_addresses').childNodes;
+  list = $('addr_addresses').childNodes;
   count = list.length;
   for(i = 0; i < count; i++) {
     addr = list[i];
@@ -171,30 +172,26 @@ function findAddressWithIndex(idx) {
 
 function findRowWithIndex(idx) {
   var id = 'row_' + idx;
-  return document.getElementById(id);
+  return $(id);
 }
 
 function getIndexFromIdentifier(id) {
   return id.split('_')[1];
 }
 
-function getTable() {
-  return document.getElementById('addr_table').childNodes[1];
-};
-
 function getAddressIDs() {
-  var table, rows, i, count, addressIDs;
+  var addressList, rows, i, count, addressIDs;
 
   addressIDs = new Array();
 
-  table = this.getTable();
-  rows  = table.childNodes;
+  addressList = $("addressList");
+  rows  = addressList.childNodes;
   count = rows.length;
-  
+
   for (i = 0; i < count; i++) {
     var row, rowId;
     
-    row   = table.childNodes[i];
+    row = addressList.childNodes[i];
     rowId = row.id;
     if (rowId && rowId != 'row_last') {
       var idx;
@@ -216,7 +213,7 @@ function getAddressCount() {
     var idx, input;
 
     idx   = addressIDs[i];
-    input = document.getElementById('addr_' + idx);
+    input = $('addr_' + idx);
     if (input.value != '')
       addressCount++;
   }
@@ -231,3 +228,32 @@ function UIxRecipientSelectorHasRecipients() {
     return true;
   return false;
 }
+
+function adjustInlineAttachmentListHeight(sender) {
+  var e;
+  
+  e = $('attachmentsArea');
+  if (e.style.display != 'none') {
+    /* need to lower left size first, because left auto-adjusts to right! */
+    xHeight('compose_attachments_list', 10);
+
+    var leftHeight, rightHeaderHeight;
+    leftHeight        = xHeight('compose_leftside');
+    rightHeaderHeight = xHeight('compose_attachments_header');
+    xHeight('compose_attachments_list',
+            (leftHeight - rightHeaderHeight) - 16);
+  }
+}
+
+function hideInlineAttachmentList(sender) {
+  var e;
+  
+//  xVisibility('compose_rightside', false);
+  e = $('compose_rightside');
+  e.style.display = 'none';
+  e = $('compose_leftside');
+  e.style.width = "100%";
+}
+
+/* addressbook helpers */
+
