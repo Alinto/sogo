@@ -67,52 +67,49 @@ static NSString *mailETag = nil;
 }
 
 - (void)dealloc {
-  [self->currentAddress release];
   [super dealloc];
-}
-
-/* notifications */
-
-- (void)sleep {
-  [self->currentAddress release]; self->currentAddress = nil;
-  [super sleep];
 }
 
 /* accessors */
 
-- (void)setCurrentAddress:(id)_addr {
-  ASSIGN(self->currentAddress, _addr);
-}
-- (id)currentAddress {
-  return self->currentAddress;
+- (void) setCurrentAddress: (id) _addr
+{
+  currentAddress = _addr;
 }
 
-- (NSString *)objectTitle {
+- (id) currentAddress
+{
+  return currentAddress;
+}
+
+- (NSString *) objectTitle
+{
   return [[self clientObject] subject];
 }
-- (NSString *)panelTitle {
-  NSString *s;
-  
-  s = [self labelForKey:@"View Mail"];
-  s = [s stringByAppendingString:@": "];
-  s = [s stringByAppendingString:[self objectTitle]];
-  return s;
+
+- (NSString *) panelTitle
+{
+  return [NSString stringWithFormat: @"%@: %@",
+                   [self labelForKey: @"View Mail"],
+                   [self objectTitle]];
 }
 
 /* expunge / delete setup and permissions */
 
-- (BOOL)isTrashingAllowed {
+- (BOOL) isTrashingAllowed
+{
   id trash;
   
   trash = [[[self clientObject] mailAccountFolder] 
-	          trashFolderInContext:[self context]];
+            trashFolderInContext:[self context]];
   if ([trash isKindOfClass:[NSException class]])
     return NO;
-  
+
   return [trash isWriteAllowed];
 }
 
-- (BOOL)showMarkDeletedButton {
+- (BOOL) showMarkDeletedButton
+{
   // TODO: we might also want to add a default to always show delete
   if (![[self clientObject] isDeletionAllowed])
     return NO;
@@ -120,7 +117,8 @@ static NSString *mailETag = nil;
   return [self isTrashingAllowed] ? NO : YES;
 }
 
-- (BOOL)showTrashButton {
+- (BOOL) showTrashButton
+{
   if (![[self clientObject] isDeletionAllowed])
     return NO;
   
