@@ -1,3 +1,10 @@
+2006-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.css: attempted unification of font
+	families and size across all the elements. changed the
+	logConsole's "position" from "fixed" to "absolute" to avoid
+	performance issues.
+
 2006-09-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (uixDeleteSelectedContacts):
