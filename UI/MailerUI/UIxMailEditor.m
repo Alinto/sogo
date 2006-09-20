@@ -450,6 +450,7 @@ static NSArray      *infoKeys            = nil;
     return @"width: 67%";
   return @"width: 100%";
 }
+
 - (NSString *)initialRightsideStyle {
   if ([self hasAttachments])
     return @"display: block";
