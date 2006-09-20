@@ -1,5 +1,8 @@
 2006-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-vCard]): handle the "streetAddress" and "l" fields.
+
 	* UI/Templates/MailerUI/UIxMailEditor.wox: arranged the message
 	header fields by converting the tables to DIVs and SPANs.
 

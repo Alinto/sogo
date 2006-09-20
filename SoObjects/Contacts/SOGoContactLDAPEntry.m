@@ -133,8 +133,8 @@
 
 - (NGVCard *) vCard
 {
-  NSString *info;
-  NSString *surname;
+  NSString *info, *surname, *streetAddress, *location;
+  CardElement *element;
 
   if (!vcard)
     {
@@ -169,6 +169,16 @@
         [vcard addEmail: info
                types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
       [self _setPhonesOfVCard: vcard];
+      streetAddress = [ldapEntry singleAttributeWithName: @"streetAddress"];
+      location = [ldapEntry singleAttributeWithName: @"l"];
+      element = [CardElement elementWithTag: @"adr"
+                             attributes: nil values: nil];
+      if (streetAddress)
+        [element setValue: 2 to: streetAddress];
+      if (location)
+        [element setValue: 3 to: location];
+      if (streetAddress || location)
+        [vcard addChild: element];
     }
               
   return vcard;
