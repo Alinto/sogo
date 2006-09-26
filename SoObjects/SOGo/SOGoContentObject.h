@@ -23,7 +23,7 @@
 #ifndef __SOGo_SOGoContentObject_H__
 #define __SOGo_SOGoContentObject_H__
 
-#include <SOGo/SOGoObject.h>
+#import <SOGo/SOGoObject.h>
 
 @class NSString, NSException;
 
