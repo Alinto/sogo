@@ -14,354 +14,325 @@
 
       <div class="tabsContainer" id="editorTabs">
         <ul>
-          <li target="contactInfos"><var:string label:value="Contact" /></li>
+          <li target="baseInfos"><var:string label:value="Contact" /></li>
           <li target="addressesInfos"><var:string label:value="Addresses" /></li>
           <li target="otherInfos"><var:string label:value="Other Infos" /></li>
         </ul>
 
-        <div id="contactInfos" class="tab">
+        <div id="baseInfos" class="tab">
           <table>
             <tr>
+              <td class="titleCell"><var:string label:value="Common" /></td>
+            </tr>
+            <tr>
               <td>
-                <table class="editsec">
-                  <tr>
-                    <td class="titleCell">
-                      <span class="aptview_title">
-                        <var:string label:value="Common" />
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Firstname: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="givenName" id="givenName"
-                          var:value="snapshot.givenName" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Lastname: " const:escapeHTML="NO" />
-                      <input type="text" class="textField" name="sn" id="sn"
-                        var:value="snapshot.sn" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Display Name: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="fn" id="fn"
-                          var:value="snapshot.fn" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Nickname: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="nickname" id="nickname"
-                          var:value="snapshot.nickname" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                </table>
-                <br />
-
-
-                <table class="editsec">
-                  <tr>
-                    <td class="titleCell">
-                      <span class="aptview_title">
-                        <var:string label:value="EMail" />
-                      </span>
-                    </td>
-                    <td>
-                      <var:string label:value="Preferred" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Work: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workMail" id="workMail"
-                          var:value="snapshot.workMail" size="40" />
-                      </label>
-                    </td>
-                    <td>
-                      <input type="radio" name="preferredEmail"
-                        var:selection="preferredEmail" const:value="work" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Home: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeMail"
-                          id="homeMail" var:value="snapshot.homeMail" size="40" />
-                      </label>
-                    </td>
-                    <td>
-                      <input type="radio"
-                        name="preferredEmail"
-                        var:selection="preferredEmail"
-                        const:value="home"
-                        />
-                    </td>
-                  </tr>
-                </table>
-                <br />
-
-                <table class="editsec">
-                  <tr>
-                    <td class="titleCell">
-                      <span class="aptview_title">
-                        <var:string label:value="Phones" />
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Work: " const:escapeHTML="NO" />
-                        <input type="text" class="textField"
-                          name="telephoneNumber"
-                          id="telephoneNumber"
-                          var:value="snapshot.telephoneNumber"
-                          size="60"
-                          />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Home: " const:escapeHTML="NO" />
-                        <input type="text" class="textField"
-                          name="homeTelephoneNumber"
-                          id="homeTelephoneNumber"
-                          var:value="snapshot.homeTelephoneNumber"
-                          size="60"
-                          />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Mobile: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="mobile" id="mobile"
-                          var:value="snapshot.mobile" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Fax: " const:escapeHTML="NO" />
-                        <input type="text" class="textField"
-                          name="facsimileTelephoneNumber"
-                          id="facsimileTelephoneNumber"
-                          var:value="snapshot.facsimileTelephoneNumber"
-                          size="60"
-                          />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="Pager: " const:escapeHTML="NO" />
-                        <input type="text" class="textField"
-                          name="pager"
-                          id="pager"
-                          var:value="snapshot.pager"
-                          size="60"
-                          />
-                      </label>
-                    </td>
-                  </tr>
-                </table>
+                <label><var:string label:value="Firstname: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="givenName"
+                    id="givenName"
+                    var:value="snapshot.givenName" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Lastname: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="sn" id="sn"
+                    var:value="snapshot.sn" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Display Name: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="fn" id="fn"
+                    var:value="snapshot.fn" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Nickname: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="nickname" id="nickname"
+                    var:value="snapshot.nickname" />
+                </label>
               </td>
             </tr>
           </table>
 
-
+          <br />
+          <table id="emailInfos">
+            <tr>
+              <td class="titleCell"><var:string label:value="EMail" /></td>
+              <td class="preferred">
+                <var:string label:value="Preferred" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Work: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workMail" id="workMail"
+                    var:value="snapshot.workMail" />
+                </label>
+              </td>
+              <td class="preferred">
+                <input type="radio" name="preferredEmail"
+                  var:selection="preferredEmail" const:value="work" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Home: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeMail"
+                    id="homeMail" var:value="snapshot.homeMail" />
+                </label>
+              </td>
+              <td class="preferred">
+                <input type="radio"
+                  name="preferredEmail"
+                  var:selection="preferredEmail"
+                  const:value="home"
+                  />
+              </td>
+            </tr>
+          </table>
+          <br />
+          <table>
+            <tr>
+              <td class="titleCell"><var:string label:value="Phones" /></td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Work: " const:escapeHTML="NO" />
+                  <input type="text" class="textField"
+                    name="telephoneNumber"
+                    id="telephoneNumber"
+                    var:value="snapshot.telephoneNumber"
+                    /></label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Home: " const:escapeHTML="NO" />
+                  <input type="text" class="textField"
+                    name="homeTelephoneNumber"
+                    id="homeTelephoneNumber"
+                    var:value="snapshot.homeTelephoneNumber"
+                    
+                    />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Mobile: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="mobile" id="mobile"
+                    var:value="snapshot.mobile" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Fax: " const:escapeHTML="NO" />
+                  <input type="text" class="textField"
+                    name="facsimileTelephoneNumber"
+                    id="facsimileTelephoneNumber"
+                    var:value="snapshot.facsimileTelephoneNumber"
+                    
+                    />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Pager: " const:escapeHTML="NO" />
+                  <input type="text" class="textField"
+                    name="pager"
+                    id="pager"
+                    var:value="snapshot.pager"
+                    
+                    />
+                </label>
+              </td>
+            </tr>
+          </table>
         </div>
 
         <div id="addressesInfos" class="tab">
           <table>
             <tr>
-              <td>
-                <table class="editsec">
-                  <tr>
-                    <td class="titleCell" colspan="2">
-                      <span class="aptview_title">
-                        <var:string label:value="Work" />
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>
-                        <var:string label:value="Title: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="title"
-                          id="title"
-                          var:value="snapshot.title" size="15" />
-                      </label>
-                    </td>
-                    <td>
-                      <label>
-                        <var:string label:value="Service: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workService"
-                          id="workService"
-                          var:value="snapshot.workService" size="15" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Company: " const:escapeHTML="NO" />
-                      <input type="text" class="textField" name="workCompany"
-                        id="workCompany"
-                        var:value="snapshot.workCompany" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Street Address: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workStreetAddress"
-                          id="workStreetAddress"
-                          var:value="snapshot.workStreetAddress" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="City: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workCity"
-                          id="workCity"
-                          var:value="snapshot.workCity" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="State/Province: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workState"
-                          id="workState"
-                          var:value="snapshot.workState" size="15" />
-                      </label>
-                    </td>
-                    <td>
-                      <label><var:string
-                          label:value="Zip or Postal Code: "
-                          const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workPostalCode"
-                          id="workPostalCode"
-                          var:value="snapshot.workPostalCode" size="15" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Country: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workCountry"
-                          id="workCountry"
-                          var:value="snapshot.workCountry" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Web: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="workURL"
-                          var:value="snapshot.workURL" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                </table>
+              <td class="titleCell" colspan="2">
+                <span class="aptview_title">
+                  <var:string label:value="Work" />
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="firstColumn">
+                <label>
+                  <var:string label:value="Title: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="title"
+                    id="title"
+                    var:value="snapshot.title" />
+                </label>
+              </td>
+              <td class="secondColumn">
+                <label>
+                  <var:string label:value="Service: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workService"
+                    id="workService"
+                    var:value="snapshot.workService" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Company: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workCompany"
+                    id="workCompany"
+                    var:value="snapshot.workCompany" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Street Address: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workStreetAddress"
+                    id="workStreetAddress"
+                    var:value="snapshot.workStreetAddress" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="City: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workCity"
+                    id="workCity"
+                    var:value="snapshot.workCity" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td class="firstColumn">
+                <label><var:string label:value="State/Province: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workState"
+                    id="workState"
+                    var:value="snapshot.workState" />
+                </label>
+              </td>
+              <td class="secondColumn">
+                <label><var:string
+                    label:value="Zip or Postal Code: "
+                    const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workPostalCode"
+                    id="workPostalCode"
+                    var:value="snapshot.workPostalCode" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Country: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workCountry"
+                    id="workCountry"
+                    var:value="snapshot.workCountry" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Web: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="workURL"
+                    var:value="snapshot.workURL" />
+                </label>
+              </td>
+            </tr>
+          </table>
 
-                <table class="editsec">
-                  <tr>
-                    <td class="titleCell" colspan="2">
-                      <span class="aptview_title">
-                        <var:string label:value="Home" />
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Street Address: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeStreetAddress"
-                          id="homeStreetAddress"
-                          var:value="snapshot.homeStreetAddress" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="City: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeCity"
-                          id="homeCity"
-                          var:value="snapshot.homeCity" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label><var:string label:value="State/Province: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeState"
-                          id="homeState"
-                          var:value="snapshot.homeState" size="15" />
-                      </label>
-                    </td>
-                    <td>
-                      <label><var:string
-                          label:value="Zip or Postal Code: "
-                          const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homePostalCode"
-                          id="homePostalCode"
-                          var:value="snapshot.homePostalCode" size="15" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label><var:string label:value="Country: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeCountry"
-                          id="homeCountry"
-                          var:value="snapshot.homeCountry" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <label>
-                        <var:string label:value="Web: " const:escapeHTML="NO" />
-                        <input type="text" class="textField" name="homeURL"
-                          var:value="snapshot.homeURL" size="60" />
-                      </label>
-                    </td>
-                  </tr>
-                </table>
+          <table>
+            <tr>
+              <td class="titleCell" colspan="2">
+                <span class="aptview_title">
+                  <var:string label:value="Home" />
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Street Address: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeStreetAddress"
+                    id="homeStreetAddress"
+                    var:value="snapshot.homeStreetAddress" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="City: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeCity"
+                    id="homeCity"
+                    var:value="snapshot.homeCity" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td class="firstColumn">
+                <label><var:string label:value="State/Province: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeState"
+                    id="homeState"
+                    var:value="snapshot.homeState" />
+                </label>
+              </td>
+              <td class="secondColumn">
+                <label><var:string
+                    label:value="Zip or Postal Code: "
+                    const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homePostalCode"
+                    id="homePostalCode"
+                    var:value="snapshot.homePostalCode" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label><var:string label:value="Country: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeCountry"
+                    id="homeCountry"
+                    var:value="snapshot.homeCountry" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <label>
+                  <var:string label:value="Web: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="homeURL"
+                    var:value="snapshot.homeURL" />
+                </label>
               </td>
             </tr>
           </table>
         </div>
 
         <div id="otherInfos" class="tab">
-          <table class="editsec">
+          <table>
             <tr>
-              <td>
+              <td class="firstColumn">
                 <label><var:string label:value="Birthday: " const:escapeHTML="NO" />
                   <input type="text" class="textField" name="birthday" id="birthday"
-                    var:value="snapshot.bday" size="16" />
+                    var:value="snapshot.bday" />
                 </label>
               </td>
-              <td>
+              <td class="secondColumn">
                 <label><var:string label:value="Timezone: " const:escapeHTML="NO" />
                   <input type="text" class="textField" name="tz" id="tz"
-                    var:value="snapshot.tz" size="16" />
+                    var:value="snapshot.tz" />
                 </label>
               </td>
             </tr>
             <tr>
               <td colspan="2">
                 <label><var:string label:value="Note: " const:escapeHTML="NO" />
-                  <textarea rows="10" cols="60" var:value="snapshot.note" name="note" id="note"></textarea>
+                  <textarea var:value="snapshot.note" name="note" id="note"></textarea>
                 </label>
               </td>
             </tr>
@@ -382,7 +353,17 @@
           label:value="Cancel"
           name="cancel"
           onclick="window.close(); return false;" />
+        <input
+          type="submit"
+          class="button"
+          label:value="PouetPouet"
+          name="pouet"
+          onclick="showCoords(this); return false;" />
         <input type="hidden" id="jsaction" />
       </div>
     </form>
+
+    <script type="text/javascript">
+      initEditorForm();
+    </script>
   </var:component>
