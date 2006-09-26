@@ -1,5 +1,11 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupName:inContext:acquire:]): be
+	sensitive to the CalDAV method names.
+	([SOGoAppointmentFolder -doCalendarQuery:context]): method for the
+	"calendar-query" CalDAV method name.
+
 	* UI/WebServerResources/ContactsUI.js: removed a lot of useless
 	code coming originally from MailerUI.js.
 

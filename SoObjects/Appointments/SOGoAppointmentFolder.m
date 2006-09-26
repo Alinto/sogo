@@ -29,11 +29,42 @@
 #include <NGExtensions/NGCalendarDateRange.h>
 #include "common.h"
 
+#import "SOGoAppointmentObject.h"
+
 #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
 @interface NSDate(UsedPrivates)
 - (id)initWithTimeIntervalSince1970:(NSTimeInterval)_interval;
 @end
 #endif
+
+@interface NSString (SOGoExtensions)
+
+- calDavMethodToObjC;
+
+@end
+
+@implementation NSString (SOGoExtensions)
+
+- calDavMethodToObjC
+{
+  NSMutableString *newName;
+  NSEnumerator *components;
+  NSString *component;
+
+  newName = [NSMutableString new];
+  [newName autorelease];
+  components = [[self componentsSeparatedByString: @"-"] objectEnumerator];
+  component = [components nextObject];
+  while (component)
+    {
+      [newName appendString: [component capitalizedString]];
+      component = [components nextObject];
+    }
+
+  return newName;
+}
+
+@end
 
 @implementation SOGoAppointmentFolder
 
@@ -61,6 +92,13 @@ static NSNumber   *sharedYes = nil;
   logger  = [lm loggerForDefaultKey:@"SOGoAppointmentFolderDebugEnabled"];
 
   sharedYes = [[NSNumber numberWithBool:YES] retain];
+}
+
+- (id) REPORTAction: (id) _ctx
+{
+  NSLog (@"report action...");
+
+  return @"coucou";
 }
 
 - (void) dealloc
@@ -101,7 +139,6 @@ static NSNumber   *sharedYes = nil;
                  inContext: (id)_ctx
 {
   static Class aptClass = Nil;
-  id apt;
   
   if (aptClass == Nil)
     aptClass = NSClassFromString(@"SOGoAppointmentObject");
@@ -110,8 +147,104 @@ static NSNumber   *sharedYes = nil;
     return nil;
   }
   
-  apt = [[aptClass alloc] initWithName:_key inContainer:self];
-  return [apt autorelease];
+  return [aptClass objectWithName: _key inContainer: self];
+}
+
+- (id) lookupActionForCalDAVMethod: (NSString *)_key
+{
+  SoSelectorInvocation *invocation;
+  NSString *name;
+
+  name = [NSString stringWithFormat: @"do%@:",
+                   [_key calDavMethodToObjC]];
+
+  invocation = [[SoSelectorInvocation alloc]
+                 initWithSelectorNamed: name
+                 addContextParameter: YES];
+  [invocation autorelease];
+
+  return invocation;
+}
+
+- (void) appendAppointment: (NSDictionary *) appointment
+               withBaseURL: (NSString *) baseURL
+          toREPORTResponse: (WOResponse *) r
+{
+  SOGoAppointmentObject *realApt;
+  NSString *uid, *etagLine, *dataLine;
+
+  uid = [appointment objectForKey: @"uid"];
+
+  realApt = [SOGoAppointmentObject objectWithName: uid
+                                   inContainer: self];
+
+  [r appendContentString: @"  <D:response>\r\n"];
+  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: baseURL];
+  if (![baseURL hasSuffix: @"/"])
+    [r appendContentString: @"/"];
+  [r appendContentString: uid];
+  [r appendContentString: @"</D:href>\r\n"];
+
+  [r appendContentString: @"    <D:propstat>\r\n"];
+  [r appendContentString: @"      <D:prop>\r\n"];
+  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
+                       [realApt davEntityTag]];
+  [r appendContentString: etagLine];
+  [r appendContentString: @"      </D:prop>\r\n"];
+  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
+  [r appendContentString: @"    </D:propstat>\r\n"];
+
+  dataLine
+    = [NSString
+        stringWithFormat: @"    <C:calendar-data>%@</C:calendar-data>\r\n",
+        [realApt contentAsString]];
+  [r appendContentString: dataLine];
+
+  [r appendContentString: @"  </D:response>\r\n"];
+}
+
+- (id) doCalendarQuery: (id) context
+{
+  WOResponse *r;
+  NSString *baseURL;
+  NSArray *apts;
+  NSEnumerator *appointments;
+  NSDictionary *appointment;
+
+//  FIXME: this is f00ked UP
+// FIXME: no, just kidding... actually we should take the date range into
+// account otherwise all events will be returned. We should also manage the
+// VTODO... and well, have a clean implementation.
+
+  apts
+    = [self fetchCoreInfosFrom:
+              [NSCalendarDate dateWithTimeIntervalSince1970: 0]
+            to:
+              [NSCalendarDate dateWithTimeIntervalSince1970: 0x7fffffff]];
+
+  baseURL = [self baseURLInContext: context];
+  r = [context response];
+  [r setStatus: 207];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
+     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
+  appointments = [apts objectEnumerator];
+  appointment = [appointments nextObject];
+  while (appointment)
+    {
+      [self appendAppointment: appointment
+            withBaseURL: baseURL
+            toREPORTResponse: r];
+      appointment = [appointments nextObject];
+    }
+  [r appendContentString:@"</D:multistatus>\r\n"];
+
+  return r;
 }
 
 - (id) lookupName: (NSString *)_key
@@ -124,6 +257,9 @@ static NSNumber   *sharedYes = nil;
   if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
     return obj;
   
+  if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
+    return [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
+
   if ([self isValidAppointmentName:_key])
     return [self appointmentWithName:_key inContext:_ctx];
   
