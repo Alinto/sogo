@@ -1,3 +1,9 @@
+2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-vCard]): set the card's fn to attribute "displayName" if found
+	before "cn".
+
 2006-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry

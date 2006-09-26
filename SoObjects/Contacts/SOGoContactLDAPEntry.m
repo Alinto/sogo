@@ -143,7 +143,10 @@
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];
-      [vcard setFn: [ldapEntry singleAttributeWithName: @"cn"]];
+      info = [ldapEntry singleAttributeWithName: @"displayName"];
+      if (!(info && [info length] > 0))
+        info = [ldapEntry singleAttributeWithName: @"cn"];
+      [vcard setFn: info];
       surname = [ldapEntry singleAttributeWithName: @"sn"];
       if (!surname)
         surname = [ldapEntry singleAttributeWithName: @"surname"];
