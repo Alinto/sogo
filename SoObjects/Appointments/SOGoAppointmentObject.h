@@ -22,7 +22,7 @@
 #ifndef __Appointments_SOGoAppointmentObject_H__
 #define __Appointments_SOGoAppointmentObject_H__
 
-#include <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoContentObject.h>
 
 /*
   SOGoAppointmentObject

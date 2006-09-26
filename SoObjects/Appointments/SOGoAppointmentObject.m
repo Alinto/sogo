@@ -96,6 +96,21 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   [super dealloc];
 }
 
+// - (BOOL) isCallable
+// {
+//   NSLog (@"object callable");
+
+//   return YES;
+// }
+
+// - (id) callOnObject: (id) _client
+//           inContext: (id) _ctx
+// {
+//   NSLog (@"coucou");
+
+//   return self;
+// }
+
 /* accessors */
 
 - (NSString *)iCalString {
