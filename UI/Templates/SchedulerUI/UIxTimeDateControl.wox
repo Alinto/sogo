@@ -1,9 +1,11 @@
 <?xml version='1.0' standalone='yes'?>
 <!-- $Id$ -->
-  <span xmlns="http://www.w3.org/1999/xhtml"
+  <span
+    xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
+    class="timeDateControl"
     >
     <var:component className="UIxDatePicker"
       dateID="dateID"
