@@ -24,6 +24,7 @@
 
 #import <SOGoUI/UIxComponent.h>
 
+@class NSDictionary;
 @class NSString;
 
 @protocol SOGoContactObject;
@@ -31,7 +32,7 @@
 @interface UIxContactsListViewBase : UIxComponent
 {
   NSString *searchText;
-  id <SOGoContactObject> currentContact;
+  NSDictionary *currentContact;
 }
 
 @end
