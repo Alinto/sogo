@@ -25,100 +25,64 @@
       </var:if>
 
       <div>
-        <div class="appointmentLabel"><var:string label:value="Title" /></div>
+        <label><var:string label:value="Title" />
         <input type="text" name="summary" id="summary"
           class="textField"
-          size="60"
           var:value="title"
-          /><br />
-        <div class="appointmentLabel"><var:string label:value="Location" /></div>
-        <input type="text" name="location"
+          /></label>
+        <label><var:string label:value="Location" />
+        <input type="text" name="location" id="location"
           class="textField"
-          size="60"
           var:value="location"
-          /><br />
-        <div class="appointmentLabel"><var:string label:value="Start time" /></div>
-        <var:component className="UIxTimeDateControl"
-          const:controlID="startTime"
-          var:date="aptStartDate"
-          const:dayStartHour="8"
-          const:dayEndHour="18"
-          /><label><input class="checkBox" type="checkbox" var:selection="isPrivate"
+          /></label>
+        <label id="isPrivate"><input class="checkBox"
+            type="checkbox" var:selection="isPrivate"
             var:checked="isPrivate"
-            /><var:string label:value="is private" /></label><br />
-        <br />
-        <div class="appointmentLabel">
-          <var:string label:value="End time" />
-        </div>
+            /><var:string label:value="is private" /></label>
+        <label><var:string label:value="Start time" />
+          <var:component className="UIxTimeDateControl"
+            const:controlID="startTime"
+            var:date="aptStartDate"
+            const:dayStartHour="8"
+            const:dayEndHour="18"
+            /></label>
         <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
           ><var:string label:value="Show Details" /></a>
-        <var:component className="UIxTimeDateControl"
-          const:controlID="endTime"
-          date="aptEndDate"
-          const:dayStartHour="8"
-          const:dayEndHour="18"
-          />
+        <label><var:string label:value="End time" />
+          <var:component className="UIxTimeDateControl"
+            const:controlID="endTime"
+            date="aptEndDate"
+            const:dayStartHour="8"
+            const:dayEndHour="18"
+            /></label>
       </div>
 
       <div id="details">
-        <div>
-          <div class="appointmentLabel"><var:string label:value="Comment" /></div>
-          <textarea name="comment" rows="8" cols="40"
-            var:value="comment" /><br />
-
-          <div class="appointmentLabel"><var:string label:value="Cycle" /></div>
+        <label><var:string label:value="Cycle" />
           <var:popup list="cycles" item="item"
             label:string="$cycleLabel"
             selection="cycle"
             const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
-            /><br />
+            /></label>
 
-          <div class="appointmentLabel"
-            ><span class="cycleSelectionFirstLevel"
-              ><var:string label:value="Cycle End"
-                /></span></div>
+        <label><var:string label:value="Cycle End"/>
           <span class="cycleSelectionFirstLevel"
             ><var:popup list="cycleEnds" item="item"
               label:string="$item" value="item"
               selection="cycleEnd"
               const:onChange="toggleCycleVisibility(this, 'cycleSelectionSecondLevel', 'cycle_end_never');"
               const:id="cycle_end_mode_selection"
-              /><span
-              class="cycleSelectionSecondLevel"
+              /><span class="cycleSelectionSecondLevel"
               ><var:component className="UIxTimeDateControl"
                 date="cycleUntilDate"
                 label="foo"
                 const:controlID="cycleUntilDate"
                 const:displayTimeControl="NO"
                 /></span
-              ></span
-            ><br />
+              ></span></label>
 
-        <div class="appointmentLabel"><var:string label:value="Categories" /></div>
-        <span class="checkBoxList"
-            ><var:checkbox-list list="categoryItems"
-              item="item"
-              suffix="itemCategoryText"
-              selections="categories"
-              /></span>
-        </div>
-
-        <div>
-          <div class="appointmentLabel"><var:string label:value="Participants" /></div>
-          <label id="conflictsLabel"><input type="checkbox"
-              class="checkBox"
-              var:selection="checkForConflicts"
-              var:checked="checkForConflicts"
-              /><var:string label:value="check for conflicts" /></label
-            ><var:component className="UIxContactSelector"
-            const:selectorId="participants"
-            contacts="participants"
-            />
-
-          <div class="appointmentLabel"><var:string label:value="Priority" /></div>
-          <var:popup list="priorities" item="item"
-            string="itemPriorityText" selection="priority" />
-        </div>
+        <label><var:string label:value="Comment"
+            /><textarea name="comment" var:value="comment" /></label>
       </div>
 
       <div id="buttons">
@@ -140,6 +104,35 @@
             value="Test" name="test:method" />
         </var:if>
       </div>
+
+
+      <!--
+      <div class="appointmentLabel"><var:string label:value="Categories" /></div>
+      <span class="checkBoxList"
+        ><var:checkbox-list list="categoryItems"
+          item="item"
+              suffix="itemCategoryText"
+              selections="categories"
+              /></span>
+        </div>
+
+        <div>
+          <div class="appointmentLabel"><var:string label:value="Participants" /></div>
+          <label id="conflictsLabel"><input type="checkbox"
+              class="checkBox"
+              var:selection="checkForConflicts"
+              var:checked="checkForConflicts"
+              /><var:string label:value="check for conflicts" /></label
+            ><var:component className="UIxContactSelector"
+            const:selectorId="participants"
+            contacts="participants"
+            />
+
+          <div class="appointmentLabel"><var:string label:value="Priority" /></div>
+          <var:popup list="priorities" item="item"
+            string="itemPriorityText" selection="priority" />
+        </div>
+      </div> -->
 
       <input type="hidden" name="ical" var:value="iCalString" />
       <input type="hidden" id="jsaction" />
