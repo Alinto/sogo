@@ -101,8 +101,8 @@ function validateAptEditor() {
 
 function submitMeeting(thisForm) {
   var action = document.getElementById('jsaction');
-  action.setAttribute("name", "save:method");
-  action.setAttribute("value", "save");
+//   action.setAttribute("name", "save:method");
+//   action.setAttribute("value", "save");
 
   window.opener.log ("form: " + thisForm);
 
@@ -120,24 +120,16 @@ function submitMeeting(thisForm) {
 
 function toggleDetails() {
   var div = $("details");
-
-  var buttonsDiv = $("buttons");
-  var wHeight = 0;
-  if (!window._fullHeight) {
-    var minHeight = (buttonsDiv.offsetTop + 2 * buttonsDiv.clientHeight);
-    window._fullHeight = minHeight + div.clientHeight;
-    window._hiddenHeight = minHeight;
-  }
+  var buttons = $("buttons");
+  var buttonsHeight = buttons.clientHeight * 3;
 
   if (div.style.visibility) {
     div.style.visibility = null;
-    buttonsDiv.top = (window._hiddenHeight + buttonsDiv.clientHeight) + 'px;';
-    window.resizeTo(document.body.clientWidth, window._hiddenHeight);
+    window.resizeBy(0, -(div.clientHeight + buttonsHeight));
     $("detailsButton").innerHTML = labels["Show Details"];
   } else {
     div.style.visibility = 'visible;';
-    buttonsDiv.top = null;
-    window.resizeTo(document.body.clientWidth, window._fullHeight);
+    window.resizeBy(0, (div.clientHeight + buttonsHeight));
     $("detailsButton").innerHTML = labels["Hide Details"];
   }
 

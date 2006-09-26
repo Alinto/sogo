@@ -18,7 +18,7 @@ function newEvent(sender) {
                 + "&hm=" + hour);
 
   window.open(urlstr, "",
-	      "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
+	      "width=570,height=200,resizable=0,scrollbars=0,toolbar=0," +
 	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   return false; /* stop following the link */
@@ -28,7 +28,7 @@ function _editEventId(id) {
   var urlstr = ApplicationBaseURL + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=560,height=170,resizable=1,scrollbars=1,toolbar=0," +
+                        "width=570,height=200,resizable=0,scrollbars=0,toolbar=0," +
                         "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   win.focus();
 }
