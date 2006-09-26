@@ -43,6 +43,7 @@
 #import "SOGoContactLDAPFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
+                                     @"displayName",
                                      @"sn", @"givenname", @"l",          \
                                      @"mail", @"telephonenumber",        \
                                      @"mailNickname",                    \
@@ -168,6 +169,7 @@
                   @"title",
                   @"company",
                   @"o",
+                  @"displayName",
                   @"modifytimestamp",
                   @"mozillaHomeState",
                   @"mozillaHomeUrl",
@@ -330,6 +332,7 @@
     {
       qs = [NSString stringWithFormat:
                        @"(cn='*%@*')"
+                     @"OR (displayName='*%@*')"
                      @"OR (mail='*%@*')"
                      @"OR (telephoneNumber='*%@*')",
                      filter, filter, filter];
