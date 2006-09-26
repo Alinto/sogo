@@ -19,6 +19,7 @@
  02111-1307, USA.
 */
 
+var displayNameChanged = false;
 
 function unescapeCallbackParameter(s) {
   if(!s || s.length == 0)
@@ -99,4 +100,43 @@ function submitContact(thisForm) {
       window.opener.setTimeout("refreshContacts(\""+ window.contactId +"\");", 200);
     window.close();
   }
+}
+
+function showCoords(node) {
+  node = $("givenName");
+  window.alert("x: " + node.cascadeLeftOffset()
+               + ";y: " + node.cascadeTopOffset()
+               + ";width: " + window.innerWidth
+               + ";height: " + window.innerHeight);
+}
+
+function onFnKeyDown() {
+  var fn = $("fn");
+  fn.onkeydown = null;
+  displayNameChanged = true;
+
+  return true;
+}
+
+function onFnNewValue(event) {
+  if (!displayNameChanged) {
+    var sn = $("sn").value.trim();
+    var givenName = $("givenName").value.trim();
+
+    var fullName = givenName;
+    if (fullName && sn)
+      fullName += ' ';
+    fullName += sn;
+
+    $("fn").value = fullName;
+  }
+
+  return true;
+}
+
+function initEditorForm() {
+  displayNameChanged = ($("fn").value.length > 0);
+  $("fn").onkeydown = onFnKeyDown;
+  $("sn").onkeyup = onFnNewValue;
+  $("givenName").onkeyup = onFnNewValue;
 }

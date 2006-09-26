@@ -1,5 +1,10 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js: imitate the
+	Thunderbird address book by completing the display name with the
+	content of the first and last name fields, until the display name
+	is modified manually.
+
 	* UI/WebServerResources/generic.js: added a "trim" method to the
 	String class.
 
