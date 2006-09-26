@@ -1,5 +1,8 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: removed a lot of useless
+	code coming originally from MailerUI.js.
+
 	* UI/WebServerResources/UIxContactEditor.js: imitate the
 	Thunderbird address book by completing the display name with the
 	content of the first and last name fields, until the display name

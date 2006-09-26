@@ -42,7 +42,7 @@ var currentContactFolder = '';
 function openContactWindow(sender, contactuid, url) {
   log ("message window at url: " + url);
   var msgWin = window.open(url, "SOGo_msg_" + contactuid,
-			   "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
+			   "width=544,height=525,resizable=1,scrollbars=1,toolbar=0,"
 			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   msgWin.contactId = contactuid;
   msgWin.focus();
@@ -88,95 +88,6 @@ function validateEditorInput(sender) {
   return true;
 }
 
-function clickedEditorSend(sender) {
-  if (!validateEditorInput(sender))
-    return false;
-
-  document.pageform.action="send";
-  document.pageform.submit();
-  // if everything is ok, close the window
-  return true;
-}
-
-function clickedEditorAttach(sender) {
-  var urlstr;
-  
-  urlstr = "viewAttachments";
-  window.open(urlstr, "SOGo_attach",
-	      "width=320,height=320,resizable=1,scrollbars=1,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  return false; /* stop following the link */
-}
-
-function clickedEditorSave(sender) {
-  document.pageform.action="save";
-  document.pageform.submit();
-  refreshOpener();
-  return true;
-}
-
-function clickedEditorDelete(sender) {
-  document.pageform.action="delete";
-  document.pageform.submit();
-  refreshOpener();
-  window.close();
-  return true;
-}
-
-function showInlineAttachmentList(sender) {
-  var r, l;
-  
-  r = $('compose_rightside');
-  r.style.display = 'block';
-  l = $('compose_leftside');
-  l.style.width = "67%";
-  this.adjustInlineAttachmentListHeight(sender);
-}
-
-function updateInlineAttachmentList(sender, attachments) {
-  if (!attachments || (attachments.length == 0)) {
-    this.hideInlineAttachmentList(sender);
-    return;
-  }
-  var e, i, count, text;
-  
-  count = attachments.length;
-  text  = "";
-  for (i = 0; i < count; i++) {
-    text = text + attachments[i];
-    text = text + '<br />';
-  }
-
-  e = $('compose_attachments_list');
-  e.innerHTML = text;
-  this.showInlineAttachmentList(sender);
-}
-
-function adjustInlineAttachmentListHeight(sender) {
-  var e;
-  
-  e = $('compose_rightside');
-  if (e.style.display == 'none') return;
-
-  /* need to lower left size first, because left auto-adjusts to right! */
-  xHeight('compose_attachments_list', 10);
-
-  var leftHeight, rightHeaderHeight;
-  leftHeight        = xHeight('compose_leftside');
-  rightHeaderHeight = xHeight('compose_attachments_header');
-  xHeight('compose_attachments_list', (leftHeight - rightHeaderHeight) - 16);
-}
-
-function hideInlineAttachmentList(sender) {
-  var e;
-  
-//  xVisibility('compose_rightside', false);
-  e = $('compose_rightside');
-  e.style.display = 'none';
-  e = $('compose_leftside');
-  e.style.width = "100%";
-}
-
 function onContactsFolderTreeItemClick(element)
 {
   var topNode = $('d');
@@ -198,30 +109,14 @@ function openContactsFolder(contactsFolder, params)
     if (params)
       url += '&' + params;
 
-    var contactsListContent = $("contactsListContent");
-//     var contactsFolderDragHandle = $("contactsFolderDragHandle");
-//     var messageContent = $("messageContent");
-//     messageContent.innerHTML = '';
+    var selection = $("contactsList").getSelectedRowsId();
     if (document.contactsListAjaxRequest) {
       document.contactsListAjaxRequest.aborted = true;
       document.contactsListAjaxRequest.abort();
     }
-//     if (currentMessages[contactsFolder]) {
-//       loadMessage(currentMessages[contactsFolder]);
-//       url += '&pageforuid=' + currentMessages[contactsFolder];
-//     }
     document.contactsListAjaxRequest
-      = triggerAjaxRequest(url, contactsListCallback,
-                           currentMessages[contactsFolder]);
-    if (contactsListContent.style.visibility == "hidden") {
-      contactsListContent.style.visibility = "visible;";
-//         contactsFolderDragHandle.style.visibility = "visible;";
-//         messageContent.style.top = (contactsFolderDragHandle.offsetTop
-//                                     + contactsFolderDragHandle.offsetHeight
-//                                     + 'px;');
-    }
+      = triggerAjaxRequest(url, contactsListCallback, selection);
   }
-//   triggerAjaxRequest(contactsFolder, 'toolbar', toolbarCallback);
 }
 
 function openContactsFolderAtIndex(element) {
@@ -246,10 +141,9 @@ function contactsListCallback(http)
     div.innerHTML = http.responseText;
     var selected = http.callbackData;
     if (selected) {
-      var row = $('row_' + selected);
-      selectNode(row);
+      for (var i = 0; i < selected.length; i++)
+        selectNode($(selected[i]));
     }
-    initCriteria();
   }
   else
     log ("ajax fuckage");
@@ -522,13 +416,8 @@ function registerDraggableMessageNodes()
 }
 
 function newContact(sender) {
-  var urlstr;
-
-  urlstr = ApplicationBaseURL + currentContactFolder + "/new";
-  newcwin = window.open(urlstr, "SOGo_new_contact",
-                        "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
-                        + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  newcwin.focus();
+  openContactWindow(sender, "new",
+                    ApplicationBaseURL + currentContactFolder + "/new");
 
   return false; /* stop following the link */
 }
