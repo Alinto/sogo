@@ -2,7 +2,8 @@ BODY
 { padding: 1em; }
 
 DIV.appointmentLabel
-{ float: left;
+{ display: block;
+  position: relative;
   line-height: 1.8em;
   text-align: right;
   width: 10em; }
@@ -13,13 +14,10 @@ DIV.appointmentRightLabel
 
 DIV#details
 { visibility: hidden;
+  padding-top: 1em;
   width: 100%;
   margin: 0px;
   margin-bottom: 1em; }
-
-A#detailsButton
-{ float: right;
-  margin-top: .2em; }
 
 DIV#buttons
 { visibility: visible;
@@ -58,16 +56,55 @@ DIV#participants
 { margin-left: 10em;
   padding: .2em; }
 
+LABEL
+{ display: block;
+  position: relative;
+  height: 2em;
+  margin-top: .5em;
+  width: 100%; }
+
+INPUT#summary, INPUT#location, SPAN.timeDateControl,
+SPAN.cycleSelectionFirstLevel
+{ position: absolute;
+  top: 0px;
+  left: 10em;
+  right: 0em; }
+
+DIV#details TEXTAREA
+{ position: absolute;
+  top: 0px;
+  left: 10em;
+  vertical-align: bottom;
+  height: 5em;
+  right: 0px;
+  padding-bottom: 1em; }
+
+DIV#details SELECT
+{ position: absolute;
+  top: 0px;
+  left: 10em; }
+
+LABEL#isPrivate
+{ position: absolute;
+  z-index: 1;
+  right: 1em;
+  width: auto; }
+
+A#detailsButton
+{ position: absolute;
+  right: 1em;
+  z-index: 1; }
+
 SPAN.contactSelectorButtons
 { vertical-align: top;
   line-height: 2em; }
 
-LABEL#conflictsLabel
+/* LABEL#conflictsLabel
 { float: right;
   margin-top: .5em;
   margin-left: 0em;
   margin-right: 14em; }
-
+ */
 SPAN.cycleSelectionFirstLevel,
 SPAN.cycleSelectionSecondLevel
 { visibility: hidden; }

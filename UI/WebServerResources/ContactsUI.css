@@ -40,12 +40,6 @@ DIV#contactsListContent
   left: 0px;
 }
 
-.aptview_title
-{
-  color: #000000;
-  font-weight: bold;
-}
-
 .aptview_text
 {
   color: #000000;
@@ -70,28 +64,6 @@ DIV#contactsListContent
 {
 }
 
-.embedwhite_out
-{
-  border-width: 1;
-  border-style: solid;
-  border-top-color: #808080;
-  border-left-color: #808080;
-  border-bottom-color: white;
-  border-right-color: white;
-}
-.embedwhite_in
-{
-  border-width: 1;
-  border-style: solid;
-  border-top-color: #808080; /* TODO */
-  border-left-color: #808080; /* TODO */
-  border-bottom-color: #808080;
-  border-right-color: #808080;
-
-  background-color: white;
-  /* height: 300px; */
-  /* height: 100%; */
-}
 .titlediv
 {
   height: 24px;
@@ -204,22 +176,6 @@ DIV#filterPanel
   width: 100%;
 }
 
-TABLE#compose_table, TABLE#compose_table DIV
-{ 
-  width: 100%;
-}
-
-TABLE#compose_label
-{
-  text-align: right;
-}
-
-TABLE#addr_table
-{ 
-  margin-left: 30%;
-  width: 100%;
-}
-
 TABLE#contactsList
 { 
   display: block;
@@ -305,7 +261,7 @@ DIV#dragHandle
   cursor: e-resize;
   top: 7.5em;
   left: 14.6em;
-  width: .4em;
+  width: 5px;
   bottom: 0px;
 }
 

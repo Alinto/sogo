@@ -521,7 +521,7 @@ DIV#dragHandle
   cursor: e-resize;
   top: 7.5em;
   left: 14.6em;
-  width: .4em;
+  width: 5px;
   bottom: 0px;
 }
 

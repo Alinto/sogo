@@ -17,8 +17,10 @@ body
   padding: 0px;
   overflow: hidden; }
 
-DIV, IMG
-{ border: 0px;
+TABLE, DIV, IMG
+{ font-family: inherit;
+  font-size: inherit;
+  border: 0px;
   margin: 0px;
   padding: 0px; }
 
@@ -35,7 +37,7 @@ LABEL
 
 TABLE
 { display: block;
-  font-size: inherit;
+  table-layout: fixed;
   border-spacing: 0px;
   padding: 0px;
   margin: 0px;
@@ -276,11 +278,12 @@ DIV.contactSelector DIV.contactList
 TEXTAREA
 { vertical-align: top; }
 
-TEXTAREA,
-INPUT.textField
+DIV, TEXTAREA, INPUT
 { font-family: inherit;
-  font-size: inherit;
-  padding: .2em;
+  font-size: inherit; }
+
+TEXTAREA, INPUT.textField
+{ padding: .2em;
   margin: .15em;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -289,6 +292,10 @@ INPUT.textField
   -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent; }
 
+INPUT.textField
+{ line-height: 2em;
+  vertical-align: middle; }
+
 INPUT.button
 { margin: 0px;
   padding: 0px .5em;
@@ -296,14 +303,14 @@ INPUT.button
   border-left: 2px solid #fffffb;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
+  background-color: #dbdad5;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
 
 INPUT.button:hover
-{ 
-  color: inherit;
+{ color: inherit;
   background: -moz-buttonhoverface; }
 
 INPUT.button:active
@@ -316,7 +323,7 @@ INPUT.button:active
   -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
 
-.toolbar
+DIV#toolbar
 { left: 0px;
   border-top: 1px solid #fffffb;
   border-left: 1px solid #fffffb;
@@ -325,10 +332,10 @@ INPUT.button:active
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   margin: 0px;
-  padding: 1px 0px;
-  height: 3.54em;
+  padding: 2px;
+/*   background: #f00;
+ */  height: 4em;
   background-color: #dbdad5;
-  -moz-appearance: toolbar !important;
   white-space: nowrap;
   overflow: auto; }
 
@@ -349,7 +356,8 @@ A.toolbarButton
 SPAN.toolbarButton, SPAN.disabledToolbarButton
 { cursor: default;
   display: block;
-  float: left; 
+  float: left;
+  height: 3.4em;
   text-align: center;
   -moz-appearance: toolbarbutton;
   -moz-box-align: center;
@@ -361,16 +369,7 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
   border-bottom: 2px solid transparent;
   padding: 1px 2px;
   background-color: transparent;
-  color: -moz-DialogText;
-/* 
- display: block;
-  text-align: center;
-  height: 2.5em;
-  float: left; 
-  padding: .5em;
-  border: 2px solid transparent;
- */ 
- }
+  color: -moz-DialogText; }
 
 SPAN.disabledToolbarButton
 { -moz-opacity: 0.4; }
@@ -483,7 +482,7 @@ DIV#logConsole
 
 /* content lists */
 td.tbtv_actcell
-{ border-width: 1;
+{ border-width: 1px;
   border-style: solid;
   border-top-color: #808080;
   border-left-color: #808080;
@@ -593,10 +592,6 @@ DIV.dragHandle
 DIV.dragHandle:active
 { background: #99a; }
 
-INPUT.textField
-{ height: 1.7em;
-  vertical-align: middle; }
-
 /* search fields */
 INPUT#searchValue
 { margin-right: 1em;
@@ -645,7 +640,7 @@ DIV.noJavascriptErrorMessage A
 
 A.button
 { cursor: default;
-  padding: .2em;
+  padding: 1px .5em;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
   border-bottom: 2px solid #888;
@@ -734,15 +729,6 @@ DIV.tabsContainer DIV.tab
   bottom: .5em;
   visibility: hidden; }
 
-SPAN.datePicker A
-{ padding: 4px 0px;
-  margin: 0px; }
-
-SPAN.datePicker IMG
-{ vertical-align: middle;
-  padding: 0px;
-  margin: 0px; }
-
 SPAN.checkBoxList INPUT,
 INPUT.checkBox
 { -moz-border-top-colors: #000 #fff;
@@ -750,3 +736,4 @@ INPUT.checkBox
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff;
   vertical-align: middle; }
+

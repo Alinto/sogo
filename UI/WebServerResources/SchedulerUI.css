@@ -65,6 +65,15 @@ DIV#calendarView A
   color: inherit;
 }
 
+#verticalDragHandle
+{
+  cursor: e-resize;
+  top: 6em;
+  left: 16em;
+  width: 5px;
+  bottom: 0px;
+}
+
 #leftDragHandle, #rightDragHandle
 {
   cursor: n-resize;
@@ -72,19 +81,6 @@ DIV#calendarView A
   left: 0px;
   right: 0px;
   height: 5px;
-}
-
-#verticalDragHandle
-{
-  position: absolute;
-  cursor: e-resize;
-  top: 5em;
-  left: 16em;
-  width: 5px;
-  bottom: 0px;
-  z-index: 5;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #999;
 }
 
 #filterPanel

@@ -1,11 +1,16 @@
 DIV#editorTabs
 {
+  position: absolute;
   top: 0px;
-  left: .2em;
-  width: 40em;
-  height: 31em;
+  left: 0px;
+  right: 0px;
+  bottom: 2.5em;;
   margin-bottom: 1em;
 }
+
+DIV#editorTabs DIV.tab
+{ padding: .5em;
+  overflow: auto; }
 
 DIV#buttons
 { visibility: visible;
@@ -13,10 +18,42 @@ DIV#buttons
   right: 1em;
   bottom: 1em; }
 
-TABLE
-{ text-align: right;
-  margin: auto; }
+TR
+{ width: 100% !important;
+  border: 2px solid #0ff; }
 
-#otherInfos TABLE,
-TABLE TD.titleCell
-{ text-align: left; }
+DIV#editorTabs DIV.tab TD.titleCell
+{ text-align: left;
+  font-weight: bold; }
+
+/* DIV#contactInfos INPUT.textField,
+DIV#contactInfos TABLE
+{ width: 100%; }
+ */
+
+DIV#contactInfos INPUT.textField
+{ width: 65%; }
+
+TABLE#emailInfos TD
+{ width: 90%; }
+
+TABLE#emailInfos TD.preferred
+{ width: 10% !important;
+  overflow: visible;
+  text-align: center; }
+
+TABLE
+{ display: table;
+  text-align: right;
+  width: 90%; }
+
+DIV.tab TD INPUT.textField
+{ width: 70%; }
+
+DIV.tab TD.firstColumn INPUT.textField,
+DIV.tab TD.secondColumn INPUT.textField
+{ width: 40%; }
+
+#otherInfos TEXTAREA
+{ width: 70%;
+  height: 10em; }
