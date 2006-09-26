@@ -38,12 +38,12 @@
 
 /* accessors */
 
-- (void) setCurrentContact: (id <SOGoContactObject>) _contact
+- (void) setCurrentContact: (NSDictionary *) _contact
 {
   currentContact = _contact;
 }
 
-- (id <SOGoContactObject>) currentContact
+- (NSDictionary *) currentContact
 {
   return currentContact;
 }
@@ -64,6 +64,17 @@
 - (NSString *) defaultSortKey
 {
   return @"fn";
+}
+
+- (NSString *) displayName
+{
+  NSString *displayName;
+
+  displayName = [currentContact objectForKey: @"displayName"];
+  if (!(displayName && [displayName length] > 0))
+    displayName = [currentContact objectForKey: @"cn"];
+
+  return displayName;
 }
 
 - (NSString *) sortKey

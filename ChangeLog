@@ -1,5 +1,9 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewBase.m ([UIxContactsListViewBase
+	-displayName]): new method that returns the display name from "cn"
+	or from the "displayName" key if found.
+
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
 	-initSnapshot]): check if "[card n]" returns anything to avoid a
 	crash.
