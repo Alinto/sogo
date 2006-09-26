@@ -1148,3 +1148,7 @@ HTMLTableElement.prototype.deselectAll = function() {
   for (var i = 0; i < nodes.length; i++)
     deselectNode(nodes[i]);
 }
+
+String.prototype.trim = function() {
+  return this.replace(/(^\s+|\s+$)/g, '');
+}

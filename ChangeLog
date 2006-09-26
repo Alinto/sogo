@@ -1,5 +1,8 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added a "trim" method to the
+	String class.
+
 	* UI/Contacts/UIxContactsListViewBase.m ([UIxContactsListViewBase
 	-displayName]): new method that returns the display name from "cn"
 	or from the "displayName" key if found.
