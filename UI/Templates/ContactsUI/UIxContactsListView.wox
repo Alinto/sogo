@@ -40,12 +40,12 @@
         <var:foreach list="contactInfos" item="currentContact">
           <tr class="tableview"
             var:id="currentContact.c_name"
-            var:contactname="currentContact.cn"
+            var:contactname="displayName"
             var:contactid="currentContact.c_uid"
             onclick="return onContactRowClick(event, this);"
             ondblclick="return onContactRowDblClick(event, this);"
             oncontextmenu="return onContactContextMenu(event, this);">
-            <td onmousedown="return false;"><img rsrc:src="abcard.gif" /><var:string value="currentContact.cn" /></td>
+            <td onmousedown="return false;"><img rsrc:src="abcard.gif" /><var:string value="displayName" /></td>
             <td onmousedown="return false;"><var:string value="currentContact.mail"            /></td>
             <td onmousedown="return false;"><var:string value="currentContact.telephonenumber" /></td>
             <td onmousedown="return false;"><var:string value="currentContact.l"               /></td>
