@@ -43,7 +43,7 @@
 #import "SOGoContactLDAPFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
-                                     @"displayName",
+                                     @"displayName",                     \
                                      @"sn", @"givenname", @"l",          \
                                      @"mail", @"telephonenumber",        \
                                      @"mailNickname",                    \
