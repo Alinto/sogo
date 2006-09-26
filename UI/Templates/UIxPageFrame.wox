@@ -4,9 +4,10 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
-    <var:if condition="hideFrame" const:negate="YES">
-      <html>
+    xmlns:label="OGo:label"
+    ><var:string var:value="doctype" const:escapeHTML="NO" />
+    <var:if condition="hideFrame" const:negate="YES"
+      ><html>
         <head>
           <title>
             <var:string value="title"/>
