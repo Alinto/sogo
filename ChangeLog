@@ -1,5 +1,9 @@
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-initSnapshot]): check if "[card n]" returns anything to avoid a
+	crash.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -doctype]): new method
 	that returns an unparsed doctype definition for the pages.
 

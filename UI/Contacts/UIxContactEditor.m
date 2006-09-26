@@ -259,11 +259,19 @@
 {
   NSArray *n, *elements;
   CardElement *element;
+  unsigned int max;
 
   n = [card n];
-
-  [self _setSnapshotValue: @"sn" to: [n objectAtIndex: 0]];
-  [self _setSnapshotValue: @"givenName" to: [n objectAtIndex: 1]];
+  if (n)
+    {
+      max = [n count];
+      if (max > 0)
+        {
+          [self _setSnapshotValue: @"sn" to: [n objectAtIndex: 0]];
+          if (max > 1)
+            [self _setSnapshotValue: @"givenName" to: [n objectAtIndex: 1]];
+        }
+    }
   [self _setSnapshotValue: @"fn" to: [card fn]];
   [self _setSnapshotValue: @"nickname" to: [card nickname]];
 
