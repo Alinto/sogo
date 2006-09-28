@@ -19,9 +19,10 @@
   02111-1307, USA.
 */
 
-#include "SOGoAptMailNotification.h"
-#include <SOGo/SOGoAppointment.h>
-#include "common.h"
+#import <NGCards/iCalEvent.h>
+
+#import "SOGoAptMailNotification.h"
+#import "common.h"
 
 @interface SOGoAptMailNotification (PrivateAPI)
 - (BOOL)isSubject;
@@ -57,14 +58,16 @@ static NSTimeZone     *EST = nil;
 - (id)oldApt {
   return self->oldApt;
 }
-- (void)setOldApt:(id)_oldApt {
+- (void)setOldApt:(iCalEvent *)_oldApt {
   ASSIGN(self->oldApt, _oldApt);
 }
 
 - (id)newApt {
   return self->newApt;
 }
-- (void)setNewApt:(id)_newApt {
+
+- (void)setNewApt:(iCalEvent *) _newApt
+{
   ASSIGN(self->newApt, _newApt);
 }
 

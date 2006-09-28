@@ -25,6 +25,7 @@
 #include <NGObjWeb/SoComponent.h>
 
 @class NSString, NSTimeZone, NSCalendarDate;
+@class iCalEvent;
 
 /*
  * NOTE: We inherit from SoComponent in order to get the correct
@@ -32,20 +33,20 @@
  */
 @interface SOGoAptMailNotification : SoComponent
 {
-  id             oldApt;
-  id             newApt;
-  NSString       *homePageURL;
-  NSTimeZone     *viewTZ;
+  iCalEvent* oldApt;
+  iCalEvent* newApt;
+  NSString *homePageURL;
+  NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
   NSCalendarDate *newStartDate;
-  BOOL           isSubject;
+  BOOL isSubject;
 }
 
-- (id)oldApt;
-- (void)setOldApt:(id)_oldApt;
+- (id) oldApt;
+- (void) setOldApt: (iCalEvent *) _oldApt;
 
-- (id)newApt;
-- (void)setNewApt:(id)_newApt;
+- (id) newApt;
+- (void) setNewApt: (iCalEvent *) _newApt;
 
 - (NSString *)homePageURL;
 - (void)setHomePageURL:(NSString *)_homePageURL;
