@@ -19,18 +19,19 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/WODirectAction.h>
+#import <NGObjWeb/WODirectAction.h>
+#import "SOGoICalHTTPHandler.h"
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+
+#import <NGCards/iCalEvent.h>
+
+#import "common.h"
 
 @interface SOGoICalFileFetch : WODirectAction
 {
 }
 
 @end
-
-#include "SOGoICalHTTPHandler.h"
-#include <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#include <SOGo/SOGoAppointment.h>
-#include "common.h"
 
 @implementation SOGoICalFileFetch
 
@@ -45,7 +46,7 @@
 - (id)defaultAction {
   NSAutoreleasePool *pool;
   WOResponse      *response;
-  SOGoAppointment *event;
+  iCalEvent *event;
   NSEnumerator    *e;
   NSArray         *events;
 
@@ -65,9 +66,8 @@
   events = [[self clientObject] fetchAllSOGoAppointments];
   [self debugWithFormat:@"generate %d appointments ...", [events count]];
   e = [events objectEnumerator];
-  while ((event = [e nextObject]) != nil) {
-    [response appendContentString:[event vEventString]];
-  }
+  while ((event = [e nextObject]) != nil)
+    [response appendContentString: [event versitString]];
 
   /* vcal postamble */
   [response appendContentString:@"END:VCALENDAR\r\n"];

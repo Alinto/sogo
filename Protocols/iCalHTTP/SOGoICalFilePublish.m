@@ -135,7 +135,6 @@ static SaxObjectDecoder          *sax   = nil;
 
 - (NSException *)writeNewVEvents:(NSArray *)_events {
   SOGoAppointmentFolder *folder;
-  iCalRenderer *renderer;
   NSException *error;
   unsigned i, count;
   
@@ -144,15 +143,13 @@ static SaxObjectDecoder          *sax   = nil;
 			reason:@"did not find clientObject?!"];
   }
 
-  renderer = [iCalRenderer sharedICalendarRenderer];
-  
   for (i = 0, count = [_events count]; i < count; i++) {
     SOGoAppointmentObject *object;
     iCalEvent *event;
     NSString  *ical;
     
     event = [_events objectAtIndex:i];
-    ical  = [renderer iCalendarStringForEvent:event];
+    ical  = [event versitString];
 
     if (![ical isNotNull] && ([ical length] == 0)) {
       [self logWithFormat:@"ERROR: got no ical representation of event: %@",
