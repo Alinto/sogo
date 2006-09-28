@@ -11,7 +11,6 @@ SchedulerUI_LANGUAGES = English French German
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\
 	iCalPerson+UIx.m		\
-	SOGoAppointment+UIx.m		\
 	NSCalendarDate+Scheduler.m	\
 					\
 	UIxCalMainView.m		\
@@ -54,8 +53,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalInlineAptView.m		\
 	UIxCalScheduleOverview.m	\
 	UIxCalParticipationStatusView.m	\
-	\
-	iCalRecurrenceRule+SOGo.m	\
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\

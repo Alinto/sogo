@@ -28,7 +28,6 @@ libSOGo_HEADER_FILES = \
 	SOGoGroupFolder.h		\
 	SOGoCustomGroupFolder.h		\
 	\
-	SOGoAppointment.h		\
 	AgenorUserManager.h		\
 	SOGoLRUCache.h			\
 	NSString+iCal.h			\
@@ -47,8 +46,6 @@ libSOGo_OBJC_FILES = \
 	SOGoGroupFolder.m		\
 	SOGoCustomGroupFolder.m		\
 	\
-	SOGoAppointment.m		\
-	SOGoAppointmentICalRenderer.m	\
 	SOGoLRUCache.m			\
 	AgenorUserManager.m		\
 	NSObject+AptComparison.m	\
