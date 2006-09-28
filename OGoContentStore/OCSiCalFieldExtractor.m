@@ -21,59 +21,48 @@
 
 #include "OCSiCalFieldExtractor.h"
 #include "common.h"
-#include <SaxObjC/SaxObjC.h>
 #include <NGCards/NGCards.h>
 #include "iCalEntityObject+OCS.h"
 #include "iCalRepeatableEntityObject+OCS.h"
 
 @implementation OCSiCalFieldExtractor
 
-static id<NSObject,SaxXMLReader> parser               = nil;
-static SaxObjectDecoder          *sax                 = nil;
 static OCSiCalFieldExtractor     *extractor           = nil;
 static NSCalendarDate            *distantFuture       = nil;
 static NSNumber                  *distantFutureNumber = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   static BOOL didInit = NO;
   
   if (didInit) return;
   didInit = YES;
-
-  parser = [[[SaxXMLReaderFactory standardXMLReaderFactory] 
-		createXMLReaderForMimeType:@"text/calendar"]
-	        retain];
-  if (parser == nil)
-    NSLog(@"ERROR: did not find a parser for text/calendar!");
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
-  if (sax == nil)
-      NSLog(@"ERROR: could not create the iCal SAX handler!");
-  [parser setContentHandler:sax];
-  [parser setErrorHandler:sax];
 
   distantFuture       = [[NSCalendarDate distantFuture] retain];
   /* INT_MAX due to Postgres constraint */
   distantFutureNumber = [[NSNumber numberWithUnsignedInt:INT_MAX] retain];
 }
 
-+ (id)sharedICalFieldExtractor {
-  if (extractor == nil) extractor = [[self alloc] init];
-  return extractor;
-}
++ (id) sharedICalFieldExtractor
+{
+  if (extractor == nil)
+    extractor = [self new];
 
-- (void)dealloc {
-  [super dealloc];
+  return extractor;
 }
 
 /* operations */
 
-- (NSNumber *)numberForDate:(NSCalendarDate *)_date {
+- (NSNumber *) numberForDate: (NSCalendarDate *) _date
+{
   if (_date == distantFuture)
     return distantFutureNumber;
+
   return [NSNumber numberWithUnsignedInt:[_date timeIntervalSince1970]];
 }
 
-- (NSMutableDictionary *)extractQuickFieldsFromEvent:(iCalEvent *)_event {
+- (NSMutableDictionary *) extractQuickFieldsFromEvent: (iCalEvent *) _event
+{
   NSMutableDictionary *row;
   NSCalendarDate      *startDate, *endDate;
   NSArray             *attendees;
@@ -219,29 +208,29 @@ static NSNumber                  *distantFutureNumber = nil;
 - (NSMutableDictionary *)extractQuickFieldsFromContent:(NSString *)_content {
   NSAutoreleasePool *pool;
   NSDictionary *fields;
+  NSArray *cals;
   id cal;
   
-  if (parser == nil || sax == nil)
-    return nil;
   if ([_content length] == 0)
     return nil;
 
   pool = [[NSAutoreleasePool alloc] init];
+  cals = [CardGroup groupsOfClass: [iCalCalendar class]
+                    fromSource: _content];
+  if ([cals count] > 0)
+    {
+      cal = [cals objectAtIndex: 0];
   
-  [parser parseFromSource:_content];
-  cal = [sax rootObject];
-  
-  fields = nil;
-  if ([cal isKindOfClass:[iCalEvent class]])
-    fields = [[self extractQuickFieldsFromEvent:cal] retain];
-  else if ([cal isKindOfClass:[iCalCalendar class]])
-    fields = [[self extractQuickFieldsFromCalendar:cal] retain];
-  else if ([cal isNotNull]) {
-    [self logWithFormat:@"ERROR: unexpected iCalendar parse result: %@",
-	    cal];
-  }
-  
-  [sax reset];
+      fields = nil;
+      if ([cal isKindOfClass:[iCalEvent class]])
+        fields = [[self extractQuickFieldsFromEvent:cal] retain];
+      else if ([cal isKindOfClass:[iCalCalendar class]])
+        fields = [[self extractQuickFieldsFromCalendar:cal] retain];
+      else if ([cal isNotNull]) {
+        [self logWithFormat:@"ERROR: unexpected iCalendar parse result: %@",
+              cal];
+      }
+    }
 
   [pool release];
   
