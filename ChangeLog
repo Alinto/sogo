@@ -1,5 +1,14 @@
 2006-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -doCalendarQuery:context]): added a
+	hackish test to detect whether the request concernes VEVENT's or
+	anything else. Return events only in the former case.
+	([SOGoAppointmentFolder
+	-fetchOverviewInfosFrom:_startDateto:_endDate]): retrieve the
+	c_name quickfield so that the calendar list can identify the
+	appointments with their complete "filename".
+
 	* OGoContentStore/OCSiCalFieldExtractor.m: use CardGroup's
 	groupsOfClass:fromSource: to parse the given vcalendar.
 

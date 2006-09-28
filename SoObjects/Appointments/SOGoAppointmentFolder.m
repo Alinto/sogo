@@ -21,7 +21,6 @@
 
 #include "SOGoAppointmentFolder.h"
 #include <SOGo/SOGoCustomGroupFolder.h>
-#include <SOGo/SOGoAppointment.h>
 #include <SOGo/AgenorUserManager.h>
 #include <GDLContentStore/GCSFolder.h>
 #include <SaxObjC/SaxObjC.h>
@@ -207,7 +206,7 @@ static NSNumber   *sharedYes = nil;
 - (id) doCalendarQuery: (id) context
 {
   WOResponse *r;
-  NSString *baseURL;
+  NSString *baseURL, *content;
   NSArray *apts;
   NSEnumerator *appointments;
   NSDictionary *appointment;
@@ -233,14 +232,22 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
-  appointments = [apts objectEnumerator];
-  appointment = [appointments nextObject];
-  while (appointment)
+
+  content = [[NSString alloc] initWithData: [[context request] content]
+                              encoding: NSUTF8StringEncoding];
+  [content autorelease];
+  if ([content indexOfString: @"VEVENT"] != NSNotFound
+      || [content indexOfString: @"vevent"] != NSNotFound)
     {
-      [self appendAppointment: appointment
-            withBaseURL: baseURL
-            toREPORTResponse: r];
+      appointments = [apts objectEnumerator];
       appointment = [appointments nextObject];
+      while (appointment)
+        {
+          [self appendAppointment: appointment
+                withBaseURL: baseURL
+                toREPORTResponse: r];
+          appointment = [appointments nextObject];
+        }
     }
   [r appendContentString:@"</D:multistatus>\r\n"];
 
@@ -580,7 +587,7 @@ static NSNumber   *sharedYes = nil;
   static NSArray *infos = nil; // TODO: move to a plist file
   if (infos == nil) {
     infos = [[NSArray alloc] initWithObjects:
-                               @"title", 
+                               @"c_name", @"title", 
                              @"location", @"orgmail", @"status", @"ispublic",
                              @"isallday", @"priority",
                              @"partmails", @"partstates",
@@ -829,19 +836,9 @@ static NSNumber   *sharedYes = nil;
   
   events   = [NSMutableArray arrayWithCapacity:[files count]];
   contents = [files objectEnumerator];
-  while ((content = [contents nextObject]) != nil) {
-    SOGoAppointment *event;
-    
-    event = [[SOGoAppointment alloc] initWithICalString:content];
-    if (![event isNotNull]) {
-      [self errorWithFormat:@"(%s): could not parse an iCal file!",
-              __PRETTY_FUNCTION__];
-      continue;
-    }
-
-    [events addObject:event];
-    [event release];
-  }
+  while ((content = [contents nextObject]) != nil)
+    [events addObjectsFromArray: [CardGroup groupsOfClass: [iCalCalendar class]
+                                            fromSource: content]];
   
   return events;
 }
