@@ -1,3 +1,14 @@
+2006-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/iCalRecurrenceRule+SOGo.m: removed obsolete class.
+
+	* UI/Scheduler/SOGoAppointment+UIx.h: removed obsolete class.
+
+	* SoObjects/SOGo/SOGoAppointmentICalRenderer.[hm]: removed
+	obsolete class.
+
+	* SoObjects/SOGo/SOGoAppointment.[hm]: removed obsolete class.
+
 2006-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
