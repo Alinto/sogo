@@ -353,12 +353,12 @@
           label:value="Cancel"
           name="cancel"
           onclick="window.close(); return false;" />
-        <input
+<!--        <input
           type="submit"
           class="button"
           label:value="PouetPouet"
           name="pouet"
-          onclick="showCoords(this); return false;" />
+          onclick="showCoords(this); return false;" /> -->
         <input type="hidden" id="jsaction" />
       </div>
     </form>

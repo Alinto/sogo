@@ -42,7 +42,7 @@
 
     <var:foreach list="fetchCoreInfos" item="currentAppointment"
       ><tr class="tableview appointmentRow"
-        var:id="currentAppointment.uid"
+        var:id="currentAppointment.c_name"
         onclick="return onAppointmentClick(event);"
         ondblclick="return editDoubleClickedEvent(this);"
         oncontextmenu="return onAppointmentContextMenu(event, this);"

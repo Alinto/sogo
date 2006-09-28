@@ -78,7 +78,7 @@
                   <var:string label:value="Title" />:
                 </td>
                 <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                  <var:string value="appointment.summary" />
+                  <var:string value="appointment.summary" const:escapeHTML="NO" />
                 </td>
               </tr>
               <tr valign="top">
@@ -86,7 +86,7 @@
                   <var:string label:value="Location" />:
                 </td>
                 <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                  <var:string value="appointment.location" />
+                  <var:string value="appointment.location" const:escapeHTML="NO" />
                 </td>
               </tr>
               <tr valign="top">
@@ -94,7 +94,7 @@
                   <var:string label:value="Priority" />:
                 </td>
                 <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                  <var:string label:value="$appointment.priorityLabelKey" />
+                  <var:string label:value="$priorityLabelKey" />
                 </td>
               </tr>
             </var:if>
@@ -162,7 +162,7 @@
                       <var:string label:value="Categories" />:
                     </td>
                     <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                      <var:string value="categoriesAsString" />
+                      <var:string value="categoriesAsString"  const:escapeHTML="NO" />
                     </td>
                   </tr>
                   <!-- Resources removed for v0.8
@@ -190,7 +190,7 @@
                       <var:string label:value="Organizer" />:
                     </td>
                     <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                      <var:string value="appointment.organizer.cnForDisplay" />
+                      <var:string value="eventOrganizer" />
                     </td>
                   </tr>
                   <tr valign="top">
@@ -202,7 +202,8 @@
                       <var:string label:value="Comment" />:
                     </td>
                     <td align="left" bgcolor="#FFFFF0" class="aptview_text">
-                      <var:string value="appointment.comment" const:insertBR="1" />
+                      <var:string value="appointment.comment" const:insertBR="1"
+                        const:escapeHTML="NO" />
                     </td>
                   </tr>
                 </var:if>

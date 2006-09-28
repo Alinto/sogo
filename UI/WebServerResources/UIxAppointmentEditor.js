@@ -101,8 +101,8 @@ function validateAptEditor() {
 
 function submitMeeting(thisForm) {
   var action = document.getElementById('jsaction');
-//   action.setAttribute("name", "save:method");
-//   action.setAttribute("value", "save");
+  action.setAttribute("name", "save:method");
+  action.setAttribute("value", "save");
 
   window.opener.log ("form: " + thisForm);
 
@@ -136,9 +136,22 @@ function toggleDetails() {
   return false;
 }
 
-function toggleCycleVisibility(node, className, hiddenValue) {
-  var containers = document.getElementsByClassName(className);
+function toggleCycleVisibility(node, nodeName, hiddenValue) {
+  var spanNode = $(nodeName);
   var newVisibility = ((node.value == hiddenValue) ? null : 'visible;');
-  for (var i = 0; i < containers.length; i++)
-    containers[i].style.visibility = newVisibility;
+  spanNode.style.visibility = newVisibility;
+
+  if (nodeName == 'cycleSelectionFirstLevel') {
+    var otherSpanNode = $('cycleSelectionSecondLevel');
+    if (!newVisibility)
+      {
+        otherSpanNode.superVisibility = otherSpanNode.style.visibility;
+        otherSpanNode.style.visibility = null;
+      }
+    else
+      {
+        otherSpanNode.style.visibility = otherSpanNode.superVisibility;
+        otherSpanNode.superVisibility = null;
+      }
+  }
 }

@@ -52,23 +52,23 @@ UL.contactList LI._selected
 { background: #4b6983;
   color: #fff; }
 
-DIV#participants
-{ margin-left: 10em;
-  padding: .2em; }
-
-LABEL
+LABEL, SPAN.checkBoxList
 { display: block;
   position: relative;
   height: 2em;
+  margin-left: .5em;
   margin-top: .5em;
   width: 100%; }
 
-INPUT#summary, INPUT#location, SPAN.timeDateControl,
-SPAN.cycleSelectionFirstLevel
+SPAN.checkBoxList SPAN.content LABEL
+{ display: inline; }
+
+INPUT#summary, INPUT#location,
+SPAN.content
 { position: absolute;
   top: 0px;
   left: 10em;
-  right: 0em; }
+  right: 0px; }
 
 DIV#details TEXTAREA
 { position: absolute;
@@ -84,7 +84,7 @@ DIV#details SELECT
   top: 0px;
   left: 10em; }
 
-LABEL#isPrivate
+LABEL#isPrivate, LABEL#conflictsLabel
 { position: absolute;
   z-index: 1;
   right: 1em;
@@ -99,12 +99,12 @@ SPAN.contactSelectorButtons
 { vertical-align: top;
   line-height: 2em; }
 
-/* LABEL#conflictsLabel
-{ float: right;
-  margin-top: .5em;
-  margin-left: 0em;
-  margin-right: 14em; }
- */
-SPAN.cycleSelectionFirstLevel,
-SPAN.cycleSelectionSecondLevel
-{ visibility: hidden; }
+SPAN#cycleSelectionFirstLevel,
+SPAN#cycleSelectionSecondLevel
+{ visibility: hidden;
+  margin-left: 1em; }
+
+DIV#details SPAN.content SELECT,
+SPAN#cycleSelectionSecondLevel SPAN.timeDateControl
+{ position: static;
+  margin: 0px; }
