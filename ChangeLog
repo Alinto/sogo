@@ -1,5 +1,10 @@
 2006-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -calendarFromContent:cnt]): new helper method.
+	([SOGoAppointmentObject -firstEventFromCalendar:calendar]): new
+	helper method.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -doCalendarQuery:context]): added a
 	hackish test to detect whether the request concernes VEVENT's or

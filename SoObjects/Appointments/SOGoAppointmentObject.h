@@ -35,11 +35,14 @@
         appointments with an externally generated unique key.
 */
 
-@class NSString, NSArray, NSException, iCalEvent;
+@class NSArray;
+@class NSException;
+@class NSString;
+
+@class iCalEvent;
+@class iCalCalendar;
 
 @interface SOGoAppointmentObject : SOGoContentObject
-{
-}
 
 /* accessors */
 
@@ -66,6 +69,9 @@
 
 - (NSException *)changeParticipationStatus:(NSString *)_status
   inContext:(id)_ctx;
+
+- (iCalCalendar *) calendarFromContent: (NSString *) cnt;
+- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar;
 
 @end
 
