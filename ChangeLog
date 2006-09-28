@@ -1,5 +1,11 @@
 2006-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentView.m ([UIxAppointmentView
+	-categoriesAsString]): same as below.
+
+	* UI/Scheduler/UIxAppointmentEditor.m: adapted by using the new
+	vcalendar API's iCalEvent instead of the removed SOGoAppointment.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -calendarFromContent:cnt]): new helper method.
 	([SOGoAppointmentObject -firstEventFromCalendar:calendar]): new

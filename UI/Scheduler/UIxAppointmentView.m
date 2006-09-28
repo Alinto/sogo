@@ -19,14 +19,13 @@
   02111-1307, USA.
 */
 
-#include "UIxAppointmentView.h"
-#include <NGCards/NGCards.h>
-#include <SOGo/SOGoAppointment.h>
-#include <SOGo/WOContext+Agenor.h>
-#include <Appointments/SOGoAppointmentObject.h>
-#include <SOGoUI/SOGoDateFormatter.h>
-#include "UIxComponent+Agenor.h"
-#include "common.h"
+#import "UIxAppointmentView.h"
+#import <NGCards/NGCards.h>
+#import <SOGo/WOContext+Agenor.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <SOGoUI/SOGoDateFormatter.h>
+#import "UIxComponent+Agenor.h"
+#import "common.h"
 
 @interface UIxAppointmentView (PrivateAPI)
 - (BOOL)isAttendeeActiveUser;
@@ -35,10 +34,10 @@
 @implementation UIxAppointmentView
 
 - (void)dealloc {
-  [self->appointment   release];
-  [self->attendee      release];
-  [self->dateFormatter release];
-  [self->item          release];
+  [appointment   release];
+  [attendee      release];
+  [dateFormatter release];
+  [item          release];
   [super dealloc];
 }
 
@@ -54,19 +53,22 @@
 }
 
 - (void)setAttendee:(id)_attendee {
-  ASSIGN(self->attendee, _attendee);
+  ASSIGN(attendee, _attendee);
 }
 - (id)attendee {
-  return self->attendee;
+  return attendee;
 }
 
 - (BOOL)isAttendeeActiveUser {
   NSString *email, *attEmail;
-  
+
   email    = [[[self context] activeUser] email];
-  attEmail = [[self attendee] rfc822Email];
-  return [email isEqualToString:attEmail];
+  attendee = [self attendee];
+  attEmail = [attendee rfc822Email];
+
+  return [email isEqualToString: attEmail];
 }
+
 - (BOOL)showAcceptButton {
   return [[self attendee] participationStatus] != iCalPersonPartStatAccepted;
 }
@@ -78,19 +80,19 @@
 }
 
 - (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
+  ASSIGN(item, _item);
 }
 - (id)item {
-  return self->item;
+  return item;
 }
 
 - (SOGoDateFormatter *)dateFormatter {
-  if (self->dateFormatter == nil) {
-    self->dateFormatter =
+  if (dateFormatter == nil) {
+    dateFormatter =
       [[SOGoDateFormatter alloc] initWithLocale:[self locale]];
-    [self->dateFormatter setFullWeekdayNameAndDetails];
+    [dateFormatter setFullWeekdayNameAndDetails];
   }
-  return self->dateFormatter;
+  return dateFormatter;
 }
 
 - (NSCalendarDate *)startTime {
@@ -117,43 +119,70 @@
   return [cns componentsJoinedByString:@"<br />"];
 }
 
-- (NSString *)categoriesAsString {
-  unsigned i, count;
-  NSArray *cats;
-  NSMutableString *s;
-  
-  s = [NSMutableString stringWithCapacity:32];
-  cats = [((SOGoAppointment *)self->appointment) categories];
-  count = [cats count];
-  for(i = 0; i < count; i++) {
-    NSString *cat, *label;
+- (NSString *) categoriesAsString
+{
+  NSEnumerator *categories;
+  NSArray *rawCategories;
+  NSMutableArray *l10nCategories;
+  NSString *currentCategory, *l10nCategory;
 
-    cat = [cats objectAtIndex:i];
-    label = [self labelForKey:cat];
-    [s appendString:label];
-    if(i != (count - 1))
-      [s appendString:@", "];
-  }
-  return s;
+  rawCategories
+    = [[appointment categories] componentsSeparatedByString: @","];
+  l10nCategories = [NSMutableArray arrayWithCapacity: [rawCategories count]];
+  categories = [rawCategories objectEnumerator];
+  currentCategory = [categories nextObject];
+  while (currentCategory)
+    {
+      l10nCategory
+        = [self labelForKey: [currentCategory stringByTrimmingSpaces]];
+      if (l10nCategory)
+        [l10nCategories addObject: l10nCategory];
+      currentCategory = [categories nextObject];
+    }
+
+  return [l10nCategories componentsJoinedByString: @", "];
+}
+
+// appointment.organizer.cnForDisplay
+- (NSString *) eventOrganizer
+{
+  CardElement *organizer;
+
+  organizer = [[self appointment] uniqueChildWithTag: @"organizer"];
+
+  return [organizer value: 0 ofAttribute: @"cn"];
+}
+
+- (NSString *) priorityLabelKey
+{
+  return [NSString stringWithFormat: @"prio_%@", [appointment priority]];
 }
 
 /* backend */
 
-- (SOGoAppointment *)appointment {
+- (iCalEvent *) appointment
+{
   NSString *iCalString;
+  iCalCalendar *calendar;
+  SOGoAppointmentObject *clientObject;
     
-  if (self->appointment != nil)
-    return self->appointment;
-    
+  if (appointment != nil)
+    return appointment;
+
+  clientObject = [self clientObject];
+
   iCalString = [[self clientObject] valueForKey:@"iCalString"];
   if (![iCalString isNotNull] || [iCalString length] == 0) {
     [self errorWithFormat:@"(%s): missing iCal string!", 
             __PRETTY_FUNCTION__];
     return nil;
   }
-    
-  self->appointment = [[SOGoAppointment alloc] initWithICalString:iCalString];
-  return self->appointment;
+
+  calendar = [clientObject calendarFromContent: iCalString];
+  appointment = [clientObject firstEventFromCalendar: calendar];
+  [appointment retain];
+
+  return appointment;
 }
 
 
@@ -210,7 +239,7 @@
     return YES;
   
   /* not my apt - can access if it's public */
-  if ([[self appointment] isPublic])
+  if ([[[self appointment] accessClass] isEqualToString: @"PUBLIC"])
     return YES;
 
   /* can access it if I'm invited :-) */

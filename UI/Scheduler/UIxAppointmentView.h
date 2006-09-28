@@ -6,18 +6,19 @@
 #include <SOGoUI/UIxComponent.h>
 
 @class NSCalendarDate;
-@class SOGoAppointment;
+@class iCalEvent;
+@class iCalPerson;
 @class SOGoDateFormatter;
 
 @interface UIxAppointmentView : UIxComponent
 {
-  id appointment;
-  id attendee;
+  iCalEvent* appointment;
+  iCalPerson* attendee;
   SOGoDateFormatter *dateFormatter;
   id item;
 }
 
-- (SOGoAppointment *)appointment;
+- (iCalEvent *)appointment;
 
 /* permissions */
 - (BOOL)canAccessApt;

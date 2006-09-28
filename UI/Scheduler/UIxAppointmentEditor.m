@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <NGCards/NSString+NGCards.h>
+
 #import <SOGoUI/UIxComponent.h>
 
 /* TODO: CLEAN UP */
@@ -26,7 +28,6 @@
 @class NSString;
 @class iCalPerson;
 @class iCalRecurrenceRule;
-@class SOGoAppointment;
 
 @interface UIxAppointmentEditor : UIxComponent
 {
@@ -91,16 +92,11 @@
 #include <NGCards/NGCards.h>
 #include <NGExtensions/NGCalendarDateRange.h>
 #include <SOGoUI/SOGoDateFormatter.h>
-#include <SOGo/SOGoAppointment.h>
 #include <SOGo/AgenorUserManager.h>
 #include <Appointments/SOGoAppointmentFolder.h>
 #include <Appointments/SOGoAppointmentObject.h>
 #include "iCalPerson+UIx.h"
 #include "UIxComponent+Agenor.h"
-
-@interface iCalRecurrenceRule (SOGoExtensions)
-- (NSString *)cycleRepresentationForSOGo;
-@end
 
 @interface NSDate(UsedPrivates)
 - (NSString *)icalString; // TODO: this is in NGCards
@@ -426,7 +422,7 @@
   if (!_rrule)
     return [[self cycles] objectAtIndex:0];
 
-  cycleRep = [_rrule cycleRepresentationForSOGo];
+  cycleRep = [_rrule versitString];
   cycles   = [self cycles];
   count    = [cycles count];
   for (i = 1; i < count; i++) {
@@ -765,7 +761,8 @@
   return nil;
 }
 
-- (void)loadValuesFromAppointment:(SOGoAppointment *)_appointment {
+- (void)loadValuesFromAppointment: (iCalEvent *)_appointment
+{
   NSString *s;
   iCalRecurrenceRule *rrule;
 
@@ -782,7 +779,7 @@
   location     = [[_appointment location] copy];
   comment      = [[_appointment comment]  copy];
   priority     = [[_appointment priority] copy];
-  categories   = [[_appointment categories]   retain];
+  categories   = [[[_appointment categories] commaSeparatedValues] retain];
   organizer    = [[_appointment organizer]    retain];
   participants = [[_appointment participants] retain];
   resources    = [[_appointment resources]    retain];
@@ -796,13 +793,17 @@
     [self setIsPrivate:YES]; /* we're possibly loosing information here */
 
   /* cycles */
-  rrule = [_appointment recurrenceRule];
-  [self adjustCycleControlsForRRule:rrule];
+  if ([_appointment isRecurrent])
+    {
+      rrule = [[_appointment recurrenceRules] objectAtIndex: 0];
+      [self adjustCycleControlsForRRule:rrule];
+    }
 }
 
-- (void)saveValuesIntoAppointment:(SOGoAppointment *)_appointment {
+- (void)saveValuesIntoAppointment:(iCalEvent *)_appointment {
   /* merge in form values */
   NSArray *attendees, *lResources;
+  iCalRecurrenceRule *rrule;
   
   [_appointment setStartDate:[self aptStartDate]];
   [_appointment setEndDate:[self aptEndDate]];
@@ -811,8 +812,8 @@
   [_appointment setLocation: [self location]];
   [_appointment setComment: [self comment]];
   [_appointment setPriority:[self priority]];
-  [_appointment setCategories:[self categories]];
-
+  [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
+  
   [_appointment setAccessClass:[self accessClass]];
   [_appointment setTransparency:[self transparency]];
 
@@ -830,18 +831,33 @@
       ? [attendees arrayByAddingObjectsFromArray:lResources]
       : lResources;
   }
+  [attendees makeObjectsPerformSelector: @selector (setTag:)
+             withObject: @"attendee"];
   [_appointment setAttendees:attendees];
 
   /* cycles */
-  [_appointment setRecurrenceRule:[self rrule]];
+  [_appointment removeAllRecurrenceRules];
+  rrule = [self rrule];
+  if (rrule)
+    [_appointment addToRecurrenceRules: rrule];
 }
 
-- (void)loadValuesFromICalString:(NSString *)_ical {
-  SOGoAppointment *apt;
+- (iCalEvent *) appointmentFromString: (NSString *) _iCalString
+{
+  iCalCalendar *calendar;
+  iCalEvent *appointment;
+  SOGoAppointmentObject *clientObject;
 
-  apt = [[SOGoAppointment alloc] initWithICalString:_ical];
-  [self loadValuesFromAppointment:apt];
-  [apt release];
+  clientObject = [self clientObject];
+  calendar = [clientObject calendarFromContent: _iCalString];
+  appointment = [clientObject firstEventFromCalendar: calendar];
+
+  return appointment;
+}
+
+- (void) loadValuesFromICalString: (NSString *) _iCalString
+{
+  [self loadValuesFromAppointment: [self appointmentFromString: _iCalString]];
 }
 
 /* contact editor compatibility */
@@ -879,7 +895,7 @@
 
 /* conflict management */
 
-- (BOOL)containsConflict:(SOGoAppointment *)_apt {
+- (BOOL)containsConflict:(iCalEvent *)_apt {
   NSArray *attendees, *uids;
   SOGoAppointmentFolder *groupCalendar;
   NSArray *infos;
@@ -942,17 +958,17 @@
 - (id)testAction {
   /* for testing only */
   WORequest *req;
-  SOGoAppointment *apt;
+  iCalEvent *apt;
   NSString *content;
 
   req = [[self context] request];
-  apt = [[SOGoAppointment alloc] initWithICalString:[self iCalString]];
+  apt = [self appointmentFromString: [self iCalString]];
   [self saveValuesIntoAppointment:apt];
-  content = [apt iCalString];
+  content = [[apt parent] versitString];
   [self logWithFormat:@"%s -- iCal:\n%@",
     __PRETTY_FUNCTION__,
     content];
-  [apt release];
+
   return self;
 }
 
@@ -962,7 +978,8 @@
   /* load iCalendar file */
   
   // TODO: can't we use [clientObject contentAsString]?
-  ical = [[self clientObject] valueForKey:@"iCalString"];
+//   ical = [[self clientObject] valueForKey:@"iCalString"];
+  ical = [[self clientObject] contentAsString];
   if ([ical length] == 0) /* a new appointment */
     ical = [self contentStringTemplate];
   
@@ -977,7 +994,7 @@
 }
 
 - (id)saveAction {
-  SOGoAppointment *apt;
+  iCalEvent *apt;
   iCalPerson *p;
   NSString *content;
   NSException *ex;
@@ -989,7 +1006,7 @@
                                @"the specified object"];
   }
   
-  apt = [[SOGoAppointment alloc] initWithICalString:[self iCalString]];
+  apt = [self appointmentFromString: [self iCalString]];
   if (apt == nil) {
     NSString *s;
     
@@ -1010,12 +1027,12 @@
       
       s = [self labelForKey:@"Conflicts found!"];
       [self setErrorText:s];
-      [apt release];
+
       return self;
     }
   }
-  content = [apt iCalString];
-  [apt release]; apt = nil;
+  content = [[apt parent] versitString];
+//   [apt release]; apt = nil;
   
   if (content == nil) {
     NSString *s;
