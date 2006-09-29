@@ -1,3 +1,9 @@
+2006-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
+	-iCalPersonWithUid:uid]): new method taken from removed module
+	'iCalPerson+UIx';
+
 2006-09-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentView.m ([UIxAppointmentView

@@ -53,7 +53,9 @@
 - (NSString *)getUIDForEmail:(NSString *)_email;
 - (NSString *)getEmailForUID:(NSString *)_uid;
 
-- (NSString *)getUIDForICalPerson:(iCalPerson *)_person;
+- (iCalPerson *) iCalPersonWithUid: (NSString *) uid;
+
+- (NSString *) getUIDForICalPerson: (iCalPerson *) _person;
 /* may insert NSNulls into returned array if _mapStrictly -> YES */
 - (NSArray  *)getUIDsForICalPersons:(NSArray *)_persons
   applyStrictMapping:(BOOL)_mapStrictly;

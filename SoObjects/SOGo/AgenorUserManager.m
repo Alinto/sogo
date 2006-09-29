@@ -930,8 +930,8 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 		     attributes:[self mailServerDiscoveryAttributes]];
   
   while ((entry = [resultEnum nextObject]) != nil) {
-    NSString *server, *shareLogin, *emitterAddress;
-    id shareUid;
+    NSString *server, *shareLogin;
+    id shareUid, emitterAddress;
 
     /* calculate server connect string */
     
@@ -959,14 +959,15 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
     
     /* calculate emitter address (check for proper access right) */
     
-    emitterAddress = ([self hasUser:_uid partageAccess:"GC" inEntry:entry]
-                      ? [self emissionEMailFromEntry:entry]
-                      : nil);
+    if ([self hasUser:_uid partageAccess:"GC" inEntry:entry])
+      emitterAddress = [self emissionEMailFromEntry:entry];
+    else
+      emitterAddress = [NSNull null];
     
     /* set value */
     
-    [shares setObject:(emitterAddress ? emitterAddress : (id)[NSNull null])
-	    forKey:shareLogin];
+    [shares setObject: emitterAddress
+	    forKey: shareLogin];
   }
   
   /* cache */
@@ -1148,6 +1149,18 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   }
   attr = [entry attributeWithName:mailAutoresponderAttrName];
   return attr;
+}
+
+- (iCalPerson *) iCalPersonWithUid: (NSString *) uid
+{
+  iCalPerson *person;
+
+  person = [iCalPerson new];
+  [person autorelease];
+  [person setCn: [self getCNForUID: uid]];
+  [person setEmail: [self getEmailForUID: uid]];
+
+  return person;
 }
 
 /* debugging */
