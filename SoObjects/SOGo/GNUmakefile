@@ -57,15 +57,12 @@ libSOGo_OBJC_FILES = \
 
 # tools
 
-COMMON_TOOL_FILES = \
-	AgenorUserManager.m	\
-	AgenorUserDefaults.m	\
-	SOGoLRUCache.m		\
+agenor_email2uid_OBJC_FILES  += agenor_email2uid.m
+agenor_shares4uid_OBJC_FILES += agenor_shares4uid.m
+agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m
+agenor_defaults_OBJC_FILES   += agenor_defaults.m
 
-agenor_email2uid_OBJC_FILES  += agenor_email2uid.m  $(COMMON_TOOL_FILES)
-agenor_shares4uid_OBJC_FILES += agenor_shares4uid.m $(COMMON_TOOL_FILES)
-agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m $(COMMON_TOOL_FILES)
-agenor_defaults_OBJC_FILES   += agenor_defaults.m   $(COMMON_TOOL_FILES)
+ADDITIONAL_TOOL_LIBS += -Lshared_debug_obj -lSOGo$(LIBRARY_NAME_SUFFIX)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

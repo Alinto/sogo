@@ -91,7 +91,7 @@
 
 
 
-//   /* changed to :  type, email, uid, sn, cn, dn */
+//    changed to :  type, email, uid, sn, cn, dn 
 //   static NSString *jsCode = \
 //     @"javascript:opener.window.%@('', '%@', '%@', '%@', '%@', '');";
 
