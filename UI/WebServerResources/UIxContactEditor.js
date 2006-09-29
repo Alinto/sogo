@@ -97,7 +97,7 @@ function submitContact(thisForm) {
   if (validateContactEditor()) {
     thisForm.submit();
     if (window.opener.refreshContacts)
-      window.opener.setTimeout("refreshContacts(\""+ window.contactId +"\");", 200);
+      window.opener.setTimeout("refreshContacts(\""+ self.contactId +"\");", 200);
     window.close();
   }
 }
@@ -134,7 +134,8 @@ function onFnNewValue(event) {
   return true;
 }
 
-function initEditorForm() {
+function initEditorForm(contactId) {
+  self.contactId = contactId;
   displayNameChanged = ($("fn").value.length > 0);
   $("fn").onkeydown = onFnKeyDown;
   $("sn").onkeyup = onFnNewValue;

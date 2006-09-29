@@ -33,18 +33,15 @@
           menubar, copyhistory
 */
 
-var currentMessages = new Array();
-var maxCachedMessages = 20;
 var cachedContacts = new Array();
 var currentContactFolder = '';
 /* mail list */
 
-function openContactWindow(sender, contactuid, url) {
+function openContactWindow(sender, url) {
   log ("message window at url: " + url);
-  var msgWin = window.open(url, "SOGo_msg_" + contactuid,
+  var msgWin = window.open(url, null,
 			   "width=544,height=525,resizable=1,scrollbars=1,toolbar=0,"
 			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  msgWin.contactId = contactuid;
   msgWin.focus();
 }
 
@@ -104,12 +101,18 @@ function onContactsFolderTreeItemClick(element)
 function openContactsFolder(contactsFolder, params)
 {
   if (contactsFolder != currentContactFolder || params) {
+    if (contactsFolder == currentContactFolder)
+      selection = $("contactsList").getSelectedRowsId();
+    else
+      selection = null;
+
     currentContactFolder = contactsFolder;
     var url = ApplicationBaseURL + contactsFolder + "/view?noframe=1&sort=cn&desc=0";
     if (params)
       url += '&' + params;
 
-    var selection = $("contactsList").getSelectedRowsId();
+    log ("reload url = '" + url + "'");
+    var selection;
     if (document.contactsListAjaxRequest) {
       document.contactsListAjaxRequest.aborted = true;
       document.contactsListAjaxRequest.abort();
@@ -272,7 +275,7 @@ function onContactRowDblClick(event, node)
 {
   var contactId = node.getAttribute('id');
 
-  openContactWindow(null, contactId,
+  openContactWindow(null,
                     ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/edit");
 
@@ -284,7 +287,7 @@ function onMenuEditContact(event, node)
   var node = getParentMenu(node).menuTarget.parentNode;
   var contactId = node.getAttribute('id');
 
-  openContactWindow(null, contactId,
+  openContactWindow(null,
                     ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/edit");
 
@@ -296,7 +299,7 @@ function onMenuWriteToContact(event, node)
   var node = getParentMenu(node).menuTarget.parentNode;
   var contactId = node.getAttribute('id');
 
-  openContactWindow(null, contactId,
+  openContactWindow(null,
                     ApplicationBaseURL + currentContactFolder
                     + "/" + contactId + "/write");
 
@@ -316,7 +319,7 @@ function onToolbarEditSelectedContacts(event)
   var rows = contactsList.getSelectedRowsId();
 
   for (var i = 0; i < rows.length; i++) {
-    openContactWindow(null, 'edit_' + rows[i],
+    openContactWindow(null,
                       ApplicationBaseURL + currentContactFolder
                       + "/" + rows[i] + "/edit");
   }
@@ -330,7 +333,7 @@ function onToolbarWriteToSelectedContacts(event)
   var rows = contactsList.getSelectedRowsId();
 
   for (var i = 0; i < rows.length; i++) {
-    openContactWindow(null, 'writeto_' + rows[i],
+    openContactWindow(null,
                       ApplicationBaseURL + currentContactFolder
                       + "/" + rows[i] + "/write");
   }
@@ -416,7 +419,7 @@ function registerDraggableMessageNodes()
 }
 
 function newContact(sender) {
-  openContactWindow(sender, "new",
+  openContactWindow(sender,
                     ApplicationBaseURL + currentContactFolder + "/new");
 
   return false; /* stop following the link */
@@ -427,6 +430,8 @@ function onFolderSelectionChange()
   var folderList = $("contactFolders");
   var nodes = folderList.getSelectedNodes();
   var newFolder = nodes[0].getAttribute("id");
+
+  $('contactView').innerHTML = '';
 
   openContactsFolder(newFolder);
 }

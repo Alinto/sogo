@@ -1,5 +1,11 @@
 2006-09-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: hide the current contact
+	whenever the user changes of contact folder.
+
+	* UI/WebServerResources/UIxContactEditor.js: the contact UID is
+	now provided by the template when loading the page.
+
 	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
 	-iCalPersonWithUid:uid]): new method taken from removed module
 	'iCalPerson+UIx';
