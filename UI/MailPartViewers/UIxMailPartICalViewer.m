@@ -19,41 +19,22 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartViewer.h"
-
 /*
   UIxMailPartICalViewer
   
   Show plain/calendar mail parts.
 */
 
-@class SOGoDateFormatter;
-@class iCalEvent, iCalCalendar;
+#import <SOGoUI/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <NGCards/NGCards.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import "common.h"
 
-@interface UIxMailPartICalViewer : UIxMailPartViewer
-{
-  iCalCalendar      *inCalendar;
-  iCalEvent         *inEvent;
-  id                attendee;
-  SOGoDateFormatter *dateFormatter;
-  id                item;
-  id                storedEventObject;
-  iCalEvent         *storedEvent;
-}
-
-- (iCalEvent *)authorativeEvent;
-
-@end
-
-#include <SOGoUI/SOGoDateFormatter.h>
-#include <SOGo/SOGoAppointment.h>
-#include <SOGo/SOGoUser.h>
-#include <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#include <SoObjects/Appointments/SOGoAppointmentObject.h>
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <NGCards/NGCards.h>
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include "common.h"
+#import "UIxMailPartICalViewer.h"
 
 @implementation UIxMailPartICalViewer
 
@@ -101,28 +82,18 @@
 
 /* accessors */
 
-- (iCalCalendar *)inCalendar {
-  NSString *iCalString;
-  
-  if (self->inCalendar != nil)
-    return [self->inCalendar isNotNull] ? self->inCalendar : nil;
-  
-  if ((iCalString = [self flatContentAsString]) == nil) {
-    [self errorWithFormat:@"Could not retrieve content string for part!"];
-    self->inCalendar = [[NSNull null] retain];
-    return nil;
-  }
-  
-  self->inCalendar = 
-    [[iCalCalendar parseCalendarFromSource:iCalString] retain];
-  if (self->inCalendar == nil) {
-    [self warnWithFormat:@"Could not parse a vcalendar string."];
-    self->inCalendar = [[NSNull null] retain];
-    return nil;
-  }
-  else
-    return self->inCalendar;
+- (iCalCalendar *) inCalendar
+{
+  if (!inCalendar)
+    {
+      inCalendar
+        = [iCalCalendar parseSingleFromSource: [self flatContentAsString]];
+      [inCalendar retain];
+    }
+
+  return inCalendar;
 }
+
 - (BOOL)couldParseCalendar {
   return [[self inCalendar] isNotNull];
 }

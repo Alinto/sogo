@@ -47,7 +47,7 @@
       iCalRecurrenceRule *rule;
       
       rule = [a objectAtIndex:i];
-      [ma addObject:[rule iCalRepresentation]];
+      [ma addObject: [rule versitString]];
     }
     [cycleInfo setObject:ma forKey:@"rules"];
   }
@@ -63,7 +63,7 @@
       iCalRecurrenceRule *rule;
       
       rule = [a objectAtIndex:i];
-      [ma addObject:[rule iCalRepresentation]];
+      [ma addObject: [rule versitString]];
     }
     [cycleInfo setObject:ma forKey:@"exRules"];
   }

@@ -21,10 +21,10 @@
 // $Id: UIxContactSelector.m 394 2004-10-14 08:47:35Z znek $
 
 #import <NGExtensions/NGExtensions.h>
+#import <NGCards/iCalPerson.h>
 
 #import <SOGoUI/UIxComponent.h>
 #import <SOGo/AgenorUserManager.h>
-#import <Scheduler/iCalPerson+UIx.h>
 
 #import "common.h"
 
@@ -134,6 +134,9 @@
   NSMutableArray *persons;
   NSEnumerator *uids;
   NSString *uid;
+  AgenorUserManager *um;
+
+  um = [AgenorUserManager sharedUserManager];
 
   persons = [NSMutableArray new];
   [persons autorelease];
@@ -145,7 +148,7 @@
       uid = [uids nextObject];
       while (uid)
         {
-          [persons addObject: [iCalPerson personWithUid: uid]];
+          [persons addObject: [um iCalPersonWithUid: uid]];
           uid = [uids nextObject];
         }
     }

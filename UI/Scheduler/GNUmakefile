@@ -10,7 +10,6 @@ SchedulerUI_LANGUAGES = English French German
 
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\
-	iCalPerson+UIx.m		\
 	NSCalendarDate+Scheduler.m	\
 					\
 	UIxCalMainView.m		\
@@ -31,18 +30,14 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDayOverview.m		\
 	UIxCalDayChartview.m		\
 	UIxCalDayListview.m		\
-	UIxCalDayPrintview.m		\
 	UIxCalWeekOverview.m		\
 	UIxCalWeekChartview.m		\
 	UIxCalWeekListview.m		\
 	UIxCalWeekColumnsview.m		\
-	UIxCalWeekPrintview.m		\
 	UIxCalMonthOverview.m		\
-	UIxCalMonthPrintview.m		\
 	UIxCalYearOverview.m		\
 	UIxCalInlineMonthOverview.m	\
 	UIxAppointmentView.m		\
-	UIxAppointmentPrintview.m	\
 	UIxAppointmentEditor.m		\
 	UIxCalSelectTab.m		\
 	UIxCalDateLabel.m		\
@@ -53,6 +48,10 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalInlineAptView.m		\
 	UIxCalScheduleOverview.m	\
 	UIxCalParticipationStatusView.m	\
+#	UIxCalDayPrintview.m		\
+#	UIxCalWeekPrintview.m		\
+#	UIxCalMonthPrintview.m		\
+#	UIxAppointmentPrintview.m	\
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\

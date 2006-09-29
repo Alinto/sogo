@@ -178,13 +178,12 @@
     return nil;
   }
 
-  calendar = [clientObject calendarFromContent: iCalString];
+  calendar = [iCalCalendar parseSingleFromSource: iCalString];
   appointment = [clientObject firstEventFromCalendar: calendar];
   [appointment retain];
 
   return appointment;
 }
-
 
 /* hrefs */
 

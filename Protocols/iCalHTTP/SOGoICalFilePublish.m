@@ -30,9 +30,7 @@
 #include "SOGoICalHTTPHandler.h"
 #include <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #include <SoObjects/Appointments/SOGoAppointmentObject.h>
-#include <SOGo/SOGoAppointment.h>
 #include <NGCards/NGCards.h>
-#include <NGCards/iCalRenderer.h>
 #include <SaxObjC/SaxObjC.h>
 #include "common.h"
 

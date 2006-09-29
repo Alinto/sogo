@@ -88,15 +88,14 @@
 
 @end
 
-#include "common.h"
-#include <NGCards/NGCards.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-#include <SOGoUI/SOGoDateFormatter.h>
-#include <SOGo/AgenorUserManager.h>
-#include <Appointments/SOGoAppointmentFolder.h>
-#include <Appointments/SOGoAppointmentObject.h>
-#include "iCalPerson+UIx.h"
-#include "UIxComponent+Agenor.h"
+#import "common.h"
+#import <NGCards/NGCards.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <SOGoUI/SOGoDateFormatter.h>
+#import <SOGo/AgenorUserManager.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import "UIxComponent+Agenor.h"
 
 @interface NSDate(UsedPrivates)
 - (NSString *)icalString; // TODO: this is in NGCards
@@ -849,7 +848,7 @@
   SOGoAppointmentObject *clientObject;
 
   clientObject = [self clientObject];
-  calendar = [clientObject calendarFromContent: _iCalString];
+  calendar = [iCalCalendar parseSingleFromSource: _iCalString];
   appointment = [clientObject firstEventFromCalendar: calendar];
 
   return appointment;
@@ -876,12 +875,11 @@
 
 /* access */
 
-- (BOOL)isMyApt {
-  if (organizer == nil)
-    return YES; // assume this is safe to do, right?
-  
+- (BOOL) isMyApt
+{
   // TODO: this should check a set of emails against the SoUser
-  return [[organizer rfc822Email] isEqualToString:[self emailForUser]];
+  return (![[organizer email] length]
+          || [[organizer rfc822Email] isEqualToString: [self emailForUser]]);
 }
 
 - (BOOL)canAccessApt {

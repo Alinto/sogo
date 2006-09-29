@@ -70,7 +70,6 @@
 - (NSException *)changeParticipationStatus:(NSString *)_status
   inContext:(id)_ctx;
 
-- (iCalCalendar *) calendarFromContent: (NSString *) cnt;
 - (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar;
 
 @end

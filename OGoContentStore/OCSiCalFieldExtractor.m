@@ -208,20 +208,17 @@ static NSNumber                  *distantFutureNumber = nil;
 - (NSMutableDictionary *)extractQuickFieldsFromContent:(NSString *)_content {
   NSAutoreleasePool *pool;
   NSDictionary *fields;
-  NSArray *cals;
   id cal;
   
   if ([_content length] == 0)
     return nil;
 
   pool = [[NSAutoreleasePool alloc] init];
-  cals = [CardGroup groupsOfClass: [iCalCalendar class]
-                    fromSource: _content];
-  if ([cals count] > 0)
-    {
-      cal = [cals objectAtIndex: 0];
+  cal = [iCalCalendar parseSingleFromSource: _content];
   
-      fields = nil;
+  fields = nil;
+  if (cal)
+    {
       if ([cal isKindOfClass:[iCalEvent class]])
         fields = [[self extractQuickFieldsFromEvent:cal] retain];
       else if ([cal isKindOfClass:[iCalCalendar class]])
@@ -231,6 +228,8 @@ static NSNumber                  *distantFutureNumber = nil;
               cal];
       }
     }
+  else
+    [self logWithFormat:@"ERROR: parsing source didn't return anything"];
 
   [pool release];
   

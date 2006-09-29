@@ -95,21 +95,14 @@ static NSString *fieldNames[] = {
 }
 
 - (NSMutableDictionary *)extractQuickFieldsFromVCardString:(NSString *)_str {
-  NSArray *vCards;
+  NGVCard *vCard;
   
-  if ((vCards = [NGVCard parseVCardsFromSource:_str]) == nil) {
-    [self errorWithFormat:@"Could not parse content as a vCard."];
-    return nil;
-  }
-  if ([vCards count] == 0) {
+  if ((vCard = [NGVCard parseSingleFromSource: _str]) == nil) {
     [self errorWithFormat:@"Could not parse content as a vCard."];
     return nil;
   }
   
-  if ([vCards count] > 1)
-    [self warnWithFormat:@"More than one vCard in content, using first."];
-  
-  return [self extractQuickFieldsFromVCard:[vCards objectAtIndex:0]];
+  return [self extractQuickFieldsFromVCard: vCard];
 }
 
 - (NSMutableDictionary *)extractQuickFieldsFromContent:(NSString *)_content {

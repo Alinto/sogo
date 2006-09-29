@@ -837,8 +837,7 @@ static NSNumber   *sharedYes = nil;
   events   = [NSMutableArray arrayWithCapacity:[files count]];
   contents = [files objectEnumerator];
   while ((content = [contents nextObject]) != nil)
-    [events addObjectsFromArray: [CardGroup groupsOfClass: [iCalCalendar class]
-                                            fromSource: content]];
+    [events addObject: [iCalCalendar parseSingleFromSource: content]];
   
   return events;
 }
