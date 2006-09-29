@@ -170,11 +170,11 @@ static NSNumber   *sharedYes = nil;
           toREPORTResponse: (WOResponse *) r
 {
   SOGoAppointmentObject *realApt;
-  NSString *uid, *etagLine, *dataLine;
+  NSString *c_name, *etagLine, *dataLine;
 
-  uid = [appointment objectForKey: @"uid"];
+  c_name = [appointment objectForKey: @"c_name"];
 
-  realApt = [SOGoAppointmentObject objectWithName: uid
+  realApt = [SOGoAppointmentObject objectWithName: c_name
                                    inContainer: self];
 
   [r appendContentString: @"  <D:response>\r\n"];
@@ -182,7 +182,7 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: baseURL];
   if (![baseURL hasSuffix: @"/"])
     [r appendContentString: @"/"];
-  [r appendContentString: uid];
+  [r appendContentString: c_name];
   [r appendContentString: @"</D:href>\r\n"];
 
   [r appendContentString: @"    <D:propstat>\r\n"];
@@ -604,6 +604,7 @@ static NSNumber   *sharedYes = nil;
   static NSArray *infos = nil; // TODO: move to a plist file
   if (infos == nil) {
     infos = [[NSArray alloc] initWithObjects:
+                               @"c_name",
                                @"title", @"location", @"orgmail",
                                @"status", @"ispublic",
                                @"isallday", @"isopaque",
