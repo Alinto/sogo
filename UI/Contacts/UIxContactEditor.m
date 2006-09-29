@@ -366,6 +366,11 @@
   return @"edit";
 }
 
+- (NSString *) contactUID
+{
+  return [[self clientObject] nameInContainer];
+}
+
 - (CardElement *) _elementWithTag: (NSString *) tag
                            ofType: (NSString *) type
 {
@@ -468,7 +473,8 @@
     {
       [self _saveSnapshot];
       [contact save];
-      result = self;
+
+      result = [self redirectToLocation: @".."];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */

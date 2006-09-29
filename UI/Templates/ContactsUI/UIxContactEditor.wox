@@ -339,7 +339,6 @@
           </table>
         </div>
       </div>
-
       <div id="buttons">
         <input
           type="submit"
@@ -364,6 +363,6 @@
     </form>
 
     <script type="text/javascript">
-      initEditorForm();
+      initEditorForm('<var:string value="contactUID" />');
     </script>
   </var:component>
