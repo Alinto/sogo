@@ -256,21 +256,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return allErrors;
 }
 
-- (iCalCalendar *) calendarFromContent: (NSString *) cnt
-{
-  iCalCalendar *calendar;
-  NSArray *calendars;
-
-  calendars = [CardGroup groupsOfClass: [iCalCalendar class]
-                         fromSource: cnt];
-  if (calendars && [calendars count])
-    calendar = [calendars objectAtIndex: 0];
-  else
-    calendar = nil;
-  
-  return calendar;
-}
-
 - (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar
 {
   iCalEvent *event;
@@ -338,7 +323,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     }
   else
     {
-      calendar = [self calendarFromContent: oldContent];
+      calendar = [iCalCalendar parseSingleFromSource: oldContent];
       oldApt = [self firstEventFromCalendar: calendar];
     }
   
@@ -351,7 +336,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   
   /* handle new content */
   
-  calendar = [self calendarFromContent: _iCal];
+  calendar = [iCalCalendar parseSingleFromSource: _iCal];
   newApt = [self firstEventFromCalendar: calendar];
   if (newApt == nil) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
@@ -488,7 +473,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
   /* load existing content */
   
-  calendar = [self calendarFromContent: [self iCalString]];
+  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
   if (calendar)
     apt = [self firstEventFromCalendar: calendar];
   else
@@ -541,7 +526,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSString        *myEMail;
   
   // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
-  calendar = [self calendarFromContent: [self iCalString]];
+  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
   if (calendar)
     apt = [self firstEventFromCalendar: calendar];
   else

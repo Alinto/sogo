@@ -91,12 +91,18 @@
   return [[self folderManager] folderAtPath:_path];
 }
 
-- (GCSFolder *)ocsFolder {
-  if (self->ocsFolder != nil)
-    return [self->ocsFolder isNotNull] ? self->ocsFolder : nil;
-  
-  self->ocsFolder = [[self ocsFolderForPath:[self ocsPath]] retain];
-  return self->ocsFolder;
+- (GCSFolder *) ocsFolder {
+  GCSFolder *folder;
+
+  if (!ocsFolder)
+    ocsFolder = [[self ocsFolderForPath:[self ocsPath]] retain];
+
+  if ([ocsFolder isNotNull])
+    folder = ocsFolder;
+  else
+    folder = nil;
+
+  return folder;
 }
 
 - (NSArray *)fetchContentObjectNames {

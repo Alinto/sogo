@@ -42,7 +42,7 @@ static NSString *SOGoUIDSeparator = @",";
 /* accessors */
 
 - (NSArray *)unescapeURLComponents:(NSArray *)_parts {
-#warning TODO: implement URL UID unescaping if necessary
+// #warning TODO: implement URL UID unescaping if necessary
   // TODO: who calls this for what?
   // Note: remember URL encoding!
   return _parts;

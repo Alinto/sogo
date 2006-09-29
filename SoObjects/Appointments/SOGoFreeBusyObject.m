@@ -24,7 +24,6 @@
 #include "common.h"
 #include <SOGo/AgenorUserManager.h>
 #include <NGCards/NGCards.h>
-#include <NGCards/iCalRenderer.h>
 
 @interface NSDate(UsedPrivates)
 - (NSString *)icalString; // declared in NGCards
@@ -123,8 +122,9 @@
 {
   AgenorUserManager *um;
   NSMutableString   *ms;
-  NSString          *uid, *x;
+  NSString          *uid;
   unsigned          i, count;
+  iCalPerson *person;
 
   um  = [AgenorUserManager sharedUserManager];
   uid = [[self container] login];
@@ -145,17 +145,9 @@
   /* ORGANIZER - strictly required but missing for now */
 
   /* ATTENDEE */
-  [ms appendString:@"ATTENDEE"];
-  if ((x = [um getCNForUID:uid])) {
-    [ms appendString:@";CN=\""];
-    [ms appendString:[x iCalDQUOTESafeString]];
-    [ms appendString:@"\""];
-  }
-  if ((x = [um getEmailForUID:uid])) {
-    [ms appendString:@":"]; /* sic! */
-    [ms appendString:[x iCalSafeString]];
-  }
-  [ms appendString:@"\r\n"];
+  person = [um iCalPersonWithUid: uid];
+  [person setTag: @"ATTENDEE"];
+  [ms appendString: [person versitString]];
 
   /* DTSTART */
   [ms appendString:@"DTSTART:"];

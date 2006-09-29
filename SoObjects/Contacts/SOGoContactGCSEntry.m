@@ -49,7 +49,6 @@
 
 - (NGVCard *) vCard
 {
-  NSArray *cards;
   NSString *contentStr;
 
   if (!card)
@@ -57,17 +56,14 @@
       contentStr = [self contentAsString];
       if ([contentStr hasPrefix:@"BEGIN:VCARD"])
         {
-          cards = [NGVCard parseVCardsFromSource: contentStr];
-          if ([cards count] > 0)
-            {
-              card = [cards objectAtIndex: 0];
-              [card retain];
-            }
-          else
-            card = [NGVCard new];
+          card = [NGVCard parseSingleFromSource: contentStr];
+          [card retain];
         }
       else
-        card = [NGVCard new];
+        {
+          card = [NGVCard new];
+          [card setTag: @"vcard"];
+        }
     }
 
   return card;
