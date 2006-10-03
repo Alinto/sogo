@@ -1,3 +1,5 @@
+var contactSelectorAction = 'mailer-contacts';
+
 function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 {
   if (!mailIsRecipient(contactEmail)) {
@@ -7,8 +9,6 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
     else if (tag == "bcc")
       neededOptionValue = 2;
     var rows = $("addressList").childNodes;
-//   log ("tag: /" + tag + "/");
-//   log ("neededOptionValue: " + neededOptionValue);
 
     var stop = false;
     var counter = 0;
@@ -17,7 +17,6 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
            && !stop) {
       var currentValue = currentRow.childNodes[0].childNodes[0].value;
       if (currentValue == neededOptionValue) {
-//       log ("currentValue: " + currentValue);
         stop = true;
         insertContact($("addr_" + counter), contactName, contactEmail);
       }
