@@ -112,14 +112,6 @@ function ml_stripActionInURL(url) {
   return url;
 }
 
-/* emails */
-
-// var uixEmailUsr = 
-//   "([a-zA-Z0-9][a-zA-Z0-9_.-]*|\"([^\\\\\x80-\xff\015\012\"]|\\\\[^\x80-\xff])+\")";
-// var uixEmailDomain = 
-//   "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
-// var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
-
 function extractEmailAddress(mailTo) {
   var email = "";
 
@@ -898,10 +890,10 @@ function initCriteria()
 
 function onContactAdd(node)
 {
-  var selectorUrl = '';
+  var selectorUrl = '?popup=YES';
   if (node)
-    selectorUrl = ("?selectorId="
-                   + node.parentNode.parentNode.getAttribute("id"));
+    selectorUrl += ("&selectorId="
+                    + node.parentNode.parentNode.getAttribute("id"));
 
   urlstr = ApplicationBaseURL;
   if (urlstr[urlstr.length-1] != '/')

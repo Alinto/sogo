@@ -19,6 +19,12 @@
  02111-1307, USA.
 */
 
+var uixEmailUsr = 
+  "([a-zA-Z0-9][a-zA-Z0-9_.-]*|\"([^\\\\\x80-\xff\015\012\"]|\\\\[^\x80-\xff])+\")";
+var uixEmailDomain = 
+  "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
+var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
+
 var displayNameChanged = false;
 
 function unescapeCallbackParameter(s) {
