@@ -39,20 +39,25 @@ var cachedMessages = new Array();
 var currentMailbox = '';
 /* mail list */
 
-function openMessageWindow(sender, msguid, url) {
+function openMessageWindow(msguid, url) {
   log ("message window at url: " + url);
-  var msgWin = window.open(url, "SOGo_msg_" + msguid,
-			   "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
-			   "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  var wId = '';
+  if (msguid)
+    wId += "SOGo_msg_" + msguid;
+  var msgWin = window.open(url, wId,
+			   "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+                           + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   msgWin.focus();
+
+  return false;
 }
 
 function clickedUid(sender, msguid) {
   resetSelection(window);
-  openMessageWindow(sender, msguid,
-                    ApplicationBaseURL + currentMailbox + "/" + msguid + "/view");
-  return true;
+  return openMessageWindow(msguid,
+                           ApplicationBaseURL + currentMailbox + "/"
+                           + msguid + "/view");
 }
 
 function doubleClickedUid(sender, msguid) {
@@ -71,18 +76,6 @@ function clearSearch(sender) {
   var searchField = window.$("search");
   if (searchField) searchField.value="";
   return true;
-}
-
-/* compose support */
-
-function clickedCompose(sender) {
-  var urlstr;
-  
-  urlstr = "compose";
-  window.open(urlstr, "SOGo_compose",
-	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  return false; /* stop following the link */
 }
 
 /* mail editor */
@@ -152,7 +145,7 @@ function showInlineAttachmentList(sender) {
 
 function updateInlineAttachmentList(sender, attachments) {
   if (!attachments || (attachments.length == 0)) {
-    this.hideInlineAttachmentList(sender);
+//     this.hideInlineAttachmentList(sender);
     return;
   }
   var e, i, count, text;
@@ -172,34 +165,13 @@ function updateInlineAttachmentList(sender, attachments) {
 function openAddressbook(sender) {
   var urlstr;
   
-  urlstr = ApplicationBaseURL + "/../Contacts/select";
+  urlstr = ApplicationBaseURL + "/../Contacts/?popup=YES";
   var w = window.open(urlstr, "Addressbook",
-                      "width=640,height=400,left=10,top=10,toolbar=no," +
-                      "dependent=yes,menubar=no,location=no,resizable=yes," +
-                      "scrollbars=yes,directories=no,status=no");
+                      "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
+                      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   w.focus();
-}
 
-/* filters */
-
-function clickedFilter(sender, scriptname) {
-  var urlstr;
-  
-  urlstr = scriptname + "/edit";
-  window.open(urlstr, "SOGo_filter_" + scriptname,
-	      "width=640,height=480,resizable=1,scrollbars=1,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0")
-  return true;
-}
-
-function clickedNewFilter(sender) {
-  var urlstr;
-  
-  urlstr = "create";
-  window.open(urlstr, "SOGo_filter",
-	      "width=680,height=480,resizable=1,scrollbars=1,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  return false; /* stop following the link */
+  return false;
 }
 
 /* mail list DOM changes */
@@ -277,18 +249,19 @@ function reopenToRemoveLocationBar() {
 
 /* mail list reply */
 
-function openMessageWindowsForSelection(sender, action)
+function openMessageWindowsForSelection(action)
 {
   var messageList = $("messageList");
   var rows  = messageList.getSelectedRowsId();
   var idset = "";
 
   for (var i = 0; i < rows.length; i++)
-    win = openMessageWindow(sender,
-			    rows[i].substr(4)        /* msguid */,
+    win = openMessageWindow(rows[i].substr(4)        /* msguid */,
 			    ApplicationBaseURL + currentMailbox
                             + "/" + rows[i].substr(4)
                             + "/" + action /* url */);
+
+  return false;
 }
 
 function mailListMarkMessage(sender, action, msguid, markread)
@@ -726,39 +699,9 @@ function onMenuOpenMessage(event)
   var node = getParentMenu(event.target).menuTarget.parentNode;
   var msgId = node.getAttribute('id').substr(4);
 
-  openMessageWindow(null, msgId,
-                    ApplicationBaseURL + currentMailbox
-                    + "/" + msgId + "/view");
-
-  return false;
-}
-
-function onMenuReplyToSender(event)
-{
-  openMessageWindowsForSelection(null, 'reply');
-
-  return false;
-}
-
-function onMenuReplyToAll(event)
-{
-  openMessageWindowsForSelection(null, 'replyall');
-
-  return false;
-}
-
-function onMenuForwardMessage(event)
-{
-  openMessageWindowsForSelection(null, 'forward');
-
-  return false;
-}
-
-function onMenuDeleteMessage(event)
-{
-  uixDeleteSelectedMessages(null);
-
-  return false;
+  return openMessageWindow(msgId,
+                           ApplicationBaseURL + currentMailbox
+                           + "/" + msgId + "/view");
 }
 
 /* contacts */

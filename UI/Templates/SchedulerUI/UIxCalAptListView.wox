@@ -57,7 +57,7 @@
           ><td onmousedown="return false;"
           ><var:string value="currentEndTime"/></td
           ><td onmousedown="return false;"
-          ><var:string value="currentLocation" const:escapeHTML="NO"/></td
+          ><var:string value="currentLocation" /></td
           ></tr
         ></var:foreach>
   </table>

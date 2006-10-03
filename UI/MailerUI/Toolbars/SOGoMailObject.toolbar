@@ -4,11 +4,10 @@
     { link  = "getMail";
       image = "tb-mail-getmail-flat-24x24.png";
       cssClass = "tbicon_getmail"; label = "Get Mail"; },
-
-    { link     = "#"; // "compose"; // target = "_blank";
+    { link     = "#";
       isSafe   = NO;
       image = "tb-mail-write-flat-24x24.png";
-      onclick  = "clickedCompose(this);return false;";
+      onclick  = "return openMessageWindow(null, 'compose');";
       cssClass = "tbicon_compose"; label = "Write";    },
     { link  = "#"; target = "addressbook";
       onclick  = "openAddressbook(this);return false;";
@@ -18,19 +17,19 @@
 
   ( // second group
     { link = "reply";
-      onclick = "return onMenuReplyToSender(event);";
+      onclick = "return openMessageWindowsForSelection('reply');";
       isSafe   = NO;
       image = "tb-mail-reply-flat-24x24.png";
       cssClass = "tbicon_reply";    label = "Reply";     },
 
     { link = "replyall";
-      onclick = "return onMenuReplyToAll(event);";
+      onclick = "return openMessageWindowsForSelection('replyall');";
       isSafe   = NO;
       image = "tb-mail-replyall-flat-24x24.png";
       cssClass = "tbicon_replyall"; label = "Reply All"; },
 
     { link = "forward";
-      onclick = "return onMenuForwardMessage(event);";
+      onclick = "return openMessageWindowsForSelection('forward');";
       isSafe   = NO;
       image = "tb-mail-forward-flat-24x24.png";
       cssClass = "tbicon_forward";  label = "Forward";   },

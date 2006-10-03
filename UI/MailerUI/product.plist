@@ -298,7 +298,7 @@
               {
 	       link     = "#"; // "compose"; // target = "_blank";
 	       isSafe = NO;
-	       onclick  = "clickedCompose(this);return false;";
+               onclick  = "return openMessageWindow(null, 'compose');";
 	       image = "tb-mail-write-flat-24x24.png";
 	       cssClass = "tbicon_compose"; label = "Write"; },
             )

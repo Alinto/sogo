@@ -64,12 +64,6 @@
             var:checked="checkForConflicts"
             /><var:string label:value="check for conflicts"
             /></label>
-        <span class="checkBoxList"><var:string label:value="Participants" />
-          <span class="content" style="display: block; height: 10em;"><var:component className="UIxContactSelector"
-            const:selectorId="participants"
-            contacts="participants"
-            /></span></span>
-
         <label><var:string label:value="Cycle"
             />
           <span class="content"
@@ -94,14 +88,20 @@
               ></span
             ></label>
         
-        <span class="checkBoxList" style="height: 10em;"
+        <span class="checkBoxList" id="participantsCB"><var:string label:value="Participants" />
+          <span class="content"><var:component className="UIxContactSelector"
+              const:selectorId="participants"
+              contacts="participants"
+              /></span></span>
+        
+        <span class="checkBoxList"
           ><var:string label:value="Categories"
             /><span class="content"><var:checkbox-list list="categoryItems"
               item="item"
               suffix="itemCategoryText"
               selections="categories"
               /></span></span>
-        
+
         <label><var:string label:value="Priority" />
         <var:popup list="priorities" item="item"
           string="itemPriorityText" selection="priority" /></label>

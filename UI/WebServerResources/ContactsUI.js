@@ -38,7 +38,6 @@ var currentContactFolder = '';
 /* mail list */
 
 function openContactWindow(sender, url) {
-  log ("message window at url: " + url);
   var msgWin = window.open(url, null,
 			   "width=544,height=525,resizable=1,scrollbars=1,toolbar=0,"
 			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
@@ -111,7 +110,6 @@ function openContactsFolder(contactsFolder, params)
     if (params)
       url += '&' + params;
 
-    log ("reload url = '" + url + "'");
     var selection;
     if (document.contactsListAjaxRequest) {
       document.contactsListAjaxRequest.aborted = true;
@@ -261,12 +259,7 @@ function moveTo(uri) {
 /* contact menu entries */
 function onContactRowClick(event, node)
 {
-  var contactId = node.getAttribute('id');
-
-  loadContact(contactId);
-  log ("clicked contact: " + contactId);
-//   changeCalendarDisplay(day);
-//   changeDateSelectorDisplay(day);
+  loadContact(node.getAttribute('id'));
 
   return onRowClick(event);
 }
@@ -406,7 +399,6 @@ function onHeaderClick(node)
   url = ApplicationBaseURL + currentContactFolder + "/" + href;
   if (!href.match(/noframe=/))
     url += "&noframe=1";
-  log ("url: " + url);
   document.contactsListAjaxRequest
     = triggerAjaxRequest(url, contactsListCallback);
 
@@ -445,7 +437,7 @@ function onSearchFormSubmit()
   return false;
 }
 
-function onConfirmContactSelection()
+function onConfirmContactSelection(tag)
 {
   var folderLi = $(currentContactFolder);
   var currentContactFolderName = folderLi.innerHTML;
@@ -455,15 +447,10 @@ function onConfirmContactSelection()
   for (i = 0; i < rows.length; i++)
     {
       var cid = rows[i].getAttribute("contactid");
-      if (cid)
-        {
-          var cname = '' + rows[i].getAttribute("contactname");
-          log('cid = ' + cid + '; cname = ' + cname );
-          if (cid.length > 0)
-            opener.window.addContact(contactSelectorId,
-                                     cid,
-                                     currentContactFolderName + '/' + cname);
-        }
+      var cname = '' + rows[i].getAttribute("contactname");
+      var email = '' + rows[i].cells[1].innerHTML;
+      opener.window.addContact(tag, currentContactFolderName + '/' + cname,
+                               cid, cname, email);
     }
 
   return false;

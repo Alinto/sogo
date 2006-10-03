@@ -8,6 +8,7 @@
     xmlns:rsrc="OGo:url"
     className="UIxContactsListViewContainer"
     title="name"
+    var:popup="isPopup"
     >
     <table id="contactsList" multiselect="yes">
       <tbody>

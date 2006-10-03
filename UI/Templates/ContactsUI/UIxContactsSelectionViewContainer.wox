@@ -89,7 +89,50 @@
           <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
 
           <div id="contactsListContent">
-            <var:component-content />
+            <table id="contactsList" multiselect="yes">
+              <tbody>
+                <tr class="tableview">
+                  <!-- localize -->
+                  <td class="tbtv_headercell">
+                    <var:component className="UIxSortableTableHeader"
+                      label:label="Lastname"
+                      const:sortKey="cn"
+                      const:href="view"
+                      var:queryDictionary="context.request.formValues"
+                      />
+                  </td>
+                  <td class="tbtv_headercell">
+                    <var:component className="UIxSortableTableHeader"
+                      label:label="EMail"
+                      const:sortKey="mail"
+                      const:href="view"
+                      var:queryDictionary="context.request.formValues"
+                      />
+                  </td>
+                  <td class="tbtv_headercell">
+                    <var:string label:value="Phone" />
+                  </td>
+                  <td class="tbtv_headercell">
+                    <var:string label:value="Location" />
+                  </td>
+                </tr>
+                
+                <var:foreach list="contactInfos" item="currentContact">
+                  <tr class="tableview"
+                    var:id="currentContact.c_name"
+                    var:contactname="currentContact.cn"
+                    var:contactid="currentContact.c_uid"
+                    onclick="return onContactRowClick(event, this);"
+                    ondblclick="return onContactRowDblClick(event, this);"
+                    oncontextmenu="return onContactContextMenu(event, this);">
+                    <td onmousedown="return false;"><img rsrc:src="abcard.gif" /><var:string value="currentContact.cn" /></td>
+                    <td onmousedown="return false;"><var:string value="currentContact.mail"            /></td>
+                    <td onmousedown="return false;"><var:string value="currentContact.telephonenumber" /></td>
+                    <td onmousedown="return false;"><var:string value="currentContact.l"               /></td>
+                  </tr>
+                </var:foreach>
+              </tbody>
+            </table>
           </div>
 
           <div id="rightDragHandle"
@@ -106,11 +149,7 @@
       </div>
 
       <div class="contactSelection">
-        <input type="submit"
-          class="button"
-          label:value="Add Selected Contacts"
-          name="validate"
-          onclick="return onConfirmContactSelection();" />
+        <var:component-content />
       </div>
     </form>
 
@@ -118,6 +157,5 @@
 
     <script type="text/javascript">
       currentContactFolder = '<var:string value="contactFolderId" />';
-      contactSelectorId = '<var:string value="queryParameters.selectorId" />';
     </script>
   </var:component>

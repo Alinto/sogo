@@ -19,7 +19,7 @@
  02111-1307, USA.
 */
 
-// var cuicui = '';
+var contactSelectorAction = 'scheduler-contacts';
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
@@ -154,4 +154,35 @@ function toggleCycleVisibility(node, nodeName, hiddenValue) {
         otherSpanNode.superVisibility = null;
       }
   }
+}
+
+function addContact(tag, fullContactName, contactId, contactName, contactEmail)
+{
+  var uids = $('uixselector-participants-uidList');
+  log ("contactId: " + contactId);
+  if (contactId)
+    {
+      var re = new RegExp("(^|,)" + contactId + "($|,)");
+
+      log ("uids: " + uids);
+      if (!re.test(uids.value))
+        {
+          log ("no match... realling adding");
+          if (uids.value.length > 0)
+            uids.value += ',' + contactId;
+          else
+            uids.value = contactId;
+
+          log ('values: ' + uids.value);
+          var names = $('uixselector-participants-display');
+          names.innerHTML += ('<li onmousedown="return false;"'
+                              + ' onclick="onRowClick(event);"><img src="'
+                              + ResourcesURL + '/abcard.gif" />'
+                              + contactName + '</li>');
+        }
+      else
+        log ("match... ignoring contact");
+    }
+
+  return false;
 }
