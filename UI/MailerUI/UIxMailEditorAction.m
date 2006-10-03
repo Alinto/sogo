@@ -19,15 +19,15 @@
   02111-1307, USA.
 */
 
-#include "UIxMailEditorAction.h"
+#import "UIxMailEditorAction.h"
 
-#include <SoObjects/Mailer/SOGoDraftsFolder.h>
-#include <SoObjects/Mailer/SOGoDraftObject.h>
-#include <SoObjects/Mailer/SOGoMailAccount.h>
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include "common.h"
+#import <SoObjects/Mailer/SOGoDraftsFolder.h>
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import "common.h"
 
-#import "../SOGoUI/NSString+URL.h"
+#import <SOGo/NSString+URL.h>
 
 @implementation UIxMailEditorAction
 
