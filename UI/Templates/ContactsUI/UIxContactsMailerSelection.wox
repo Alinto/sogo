@@ -1,0 +1,28 @@
+<?xml version='1.0' standalone='yes'?>
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
+    className="UIxContactsSelectionViewContainer"
+    title="name"
+    >
+    <span id="selectionLabel"><var:string label:value="Add as..." /></span><br />
+    <input type="submit"
+      class="button"
+      label:value="Recipient"
+      name="to"
+      onclick="return onConfirmContactSelection('to');" /><br />
+    <input type="submit"
+      class="button"
+      label:value="Carbon Copy"
+      name="cc"
+      onclick="return onConfirmContactSelection('cc');" /><br />
+    <input type="submit"
+      class="button"
+      label:value="Blind Carbon Copy"
+      name="bcc"
+      onclick="return onConfirmContactSelection('bcc');" />
+  </var:component>
