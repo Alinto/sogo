@@ -19,8 +19,8 @@
  02111-1307, USA.
 */
 
-#ifndef __UIxContactsListViewBase_H__
-#define __UIxContactsListViewBase_H__
+#ifndef __UIxContactsListView_H__
+#define __UIxContactsListView_H__
 
 #import <SOGoUI/UIxComponent.h>
 
@@ -29,12 +29,13 @@
 
 @protocol SOGoContactObject;
 
-@interface UIxContactsListViewBase : UIxComponent
+@interface UIxContactsListView : UIxComponent
 {
   NSString *searchText;
   NSDictionary *currentContact;
+  NSString *selectorComponentClass;
 }
 
 @end
 
-#endif /* __UIxContactsListViewBase_H__ */
+#endif /* __UIxContactsListView_H__ */

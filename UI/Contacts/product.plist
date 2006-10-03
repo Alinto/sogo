@@ -51,11 +51,13 @@
         };
         scheduler-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactsSchedulerSelection";
+          pageName    = "UIxContactsListView";
+          actionName = "schedulerContacts";
         };
         mailer-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactsMailerSelection";
+          pageName    = "UIxContactsListView";
+          actionName = "mailerContacts";
         };
       };
     };
@@ -76,6 +78,16 @@
           protectedBy = "View";
           pageName    = "UIxContactEditor"; 
           actionName  = "new";
+        };
+        scheduler-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "schedulerContacts";
+        };
+        mailer-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "mailerContacts";
         };
       };
     };

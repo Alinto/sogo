@@ -20,13 +20,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCONTACTSLISTVIEWCONTAINER_H
-#define UIXCONTACTSLISTVIEWCONTAINER_H
+#ifndef UIXCONTACTSLISTVIEWCONTAINERBASE_H
+#define UIXCONTACTSLISTVIEWCONTAINERBASE_H
 
-#import "UIxContactsListViewContainerBase.h"
+#import <SOGoUI/UIxComponent.h>
 
-@interface UIxContactsListViewContainer : UIxContactsListViewContainerBase
+@class NSArray;
+@class SOGoContactFolder;
+
+@interface UIxContactsListViewContainer : UIxComponent
+{
+  NSString *foldersPrefix;
+  NSString *selectorComponentClass;
+  id currentFolder;
+}
+
+- (void) setCurrentFolder: (id) folder;
+
+- (NSString *) foldersPrefix;
+
+- (NSArray *) contactFolders;
+
+- (NSString *) contactFolderId;
+- (NSString *) currentContactFolderId;
+- (NSString *) currentContactFolderName;
 
 @end
 
-#endif /* UIXCONTACTSLISTVIEWCONTAINER_H */
+#endif /* UIXCONTACTSLISTVIEWCONTAINERBASE_H */

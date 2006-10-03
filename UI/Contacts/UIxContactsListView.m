@@ -19,10 +19,150 @@
   02111-1307, USA.
 */
 
-#include "UIxContactsListViewBase.h"
+#import <Contacts/SOGoContactObject.h>
+#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactFolders.h>
 
-@interface UIxContactsListView : UIxContactsListViewBase
-@end
+#import "common.h"
+
+#import "UIxContactsListView.h"
 
 @implementation UIxContactsListView
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      selectorComponentClass = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  if (searchText)
+    [searchText release];
+  [super dealloc];
+}
+
+/* accessors */
+
+- (void) setCurrentContact: (NSDictionary *) _contact
+{
+  currentContact = _contact;
+}
+
+- (NSDictionary *) currentContact
+{
+  return currentContact;
+}
+
+- (void) setSearchText: (NSString *) _txt
+{
+  ASSIGNCOPY (searchText, _txt);
+}
+
+- (id) searchText
+{
+  if (!searchText)
+    [self setSearchText: [self queryParameterForKey:@"search"]];
+
+  return searchText;
+}
+
+- (NSString *) selectorComponentClass
+{
+  return selectorComponentClass;
+}
+
+- (id) schedulerContactsAction
+{
+  selectorComponentClass = @"UIxContactsSchedulerSelection";
+
+  return self;
+}
+
+- (id) mailerContactsAction
+{
+  selectorComponentClass = @"UIxContactsMailerSelection";
+
+  return self;
+}
+
+- (NSString *) defaultSortKey
+{
+  return @"fn";
+}
+
+- (NSString *) displayName
+{
+  NSString *displayName;
+
+  displayName = [currentContact objectForKey: @"displayName"];
+  if (!(displayName && [displayName length] > 0))
+    displayName = [currentContact objectForKey: @"cn"];
+
+  return displayName;
+}
+
+- (NSString *) sortKey
+{
+  NSString *s;
+  
+  s = [self queryParameterForKey: @"sort"];
+  if ([s length] == 0)
+    s = [self defaultSortKey];
+
+  return s;
+}
+
+- (NSComparisonResult) sortOrdering
+{
+  return ([[self queryParameterForKey:@"desc"] boolValue]
+          ? NSOrderedDescending
+          : NSOrderedAscending);
+}
+
+- (NSArray *) contactInfos
+{
+  id <SOGoContactFolder> folder;
+
+  folder = [self clientObject];
+
+  return [folder lookupContactsWithFilter: [self searchText]
+                 sortBy: [self sortKey]
+                 ordering: [self sortOrdering]];
+}
+
+/* notifications */
+
+- (void) sleep
+{
+  if (searchText)
+    {
+      [searchText release];
+      searchText = nil;
+    }
+  currentContact = nil;
+//   [allRecords release];
+//   allRecords = nil;
+//   [filteredRecords release];
+//   filteredRecords = nil;
+  [super sleep];
+}
+
+/* actions */
+
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
+                           inContext: (WOContext*) _c
+{
+  return YES;
+}
+
+- (BOOL) isPopup
+{
+  return [[self queryParameterForKey: @"popup"] boolValue];
+}
+
 @end /* UIxContactsListView */
