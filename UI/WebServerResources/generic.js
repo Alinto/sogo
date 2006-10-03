@@ -114,28 +114,38 @@ function ml_stripActionInURL(url) {
 
 /* emails */
 
-var uixEmailUsr = 
-  "([a-zA-Z0-9][a-zA-Z0-9_.-]*|\"([^\\\\\x80-\xff\015\012\"]|\\\\[^\x80-\xff])+\")";
-var uixEmailDomain = 
-  "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
-var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
+// var uixEmailUsr = 
+//   "([a-zA-Z0-9][a-zA-Z0-9_.-]*|\"([^\\\\\x80-\xff\015\012\"]|\\\\[^\x80-\xff])+\")";
+// var uixEmailDomain = 
+//   "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,5}";
+// var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
 
-function sanitizeMailTo(dirtyMailTo) {
+function extractEmailAddress(mailTo) {
   var email = "";
-  var name = "";
 
   var emailre
     = /([a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+)/g;
-  if (emailre.test(dirtyMailTo)) {
-    emailre.exec(dirtyMailTo);
+  if (emailre.test(mailTo)) {
+    emailre.exec(mailTo);
     email = RegExp.$1;
   }
 
+  return email;
+}
+
+function extractEmailName(mailTo) {
+  var name = "";
+
   var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
-  if (namere.test(dirtyMailTo)) {
-    namere.exec(dirtyMailTo);
+  if (namere.test(mailTo)) {
+    namere.exec(mailTo);
     name = RegExp.$1;
   }
+}
+
+function sanitizeMailTo(dirtyMailTo) {
+  var name = extractEmailName(dirtyMailTo);
+  var email = extractEmailAddress(dirtyMailTo);
 
   var mailto = "";
   if (name.length > 0)
@@ -846,7 +856,7 @@ function onSearchFocus(searchValue)
 function onSearchBlur(searchValue)
 {
   var ghostPhrase = searchValue.getAttribute("ghost-phrase");
-  log ("search blur: '" + searchValue.value + "'");
+//   log ("search blur: '" + searchValue.value + "'");
   if (!searchValue.value) {
     searchValue.setAttribute("modified", "");
     searchValue.style.color = "#aaa";
@@ -888,12 +898,16 @@ function initCriteria()
 
 function onContactAdd(node)
 {
-  var selectorId = node.parentNode.parentNode.getAttribute("id");
-  urlstr = ApplicationBaseURL + "../../" + UserLogin + "/Contacts/select?selectorId=" + selectorId;
+  var selectorUrl = '';
+  if (node)
+    selectorUrl = ("?selectorId="
+                   + node.parentNode.parentNode.getAttribute("id"));
+
+  urlstr = (ApplicationBaseURL + "../../" + UserLogin + "/Contacts/"
+            + contactSelectorAction + selectorUrl);
   var w = window.open(urlstr, "Addressbook",
-                      "width=640,height=400,left=10,top=10,toolbar=no," +
-                      "dependent=yes,menubar=no,location=no,resizable=yes," +
-                      "scrollbars=yes,directories=no,status=no");
+                      "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
+                      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   w.focus();
 
   return false;
@@ -916,39 +930,6 @@ function onContactRemove(node) {
     if (nodes[i] instanceof HTMLLIElement)
       ids.push(nodes[i].getAttribute("uid"));
   uids.value = ids.join(",");
-
-  return false;
-}
-
-function addContact(selectorId, contactId, contactName)
-{
-  var uids = document.getElementById('uixselector-' + selectorId
-                                     + '-uidList');
-  log ("contactId: " + contactId);
-  if (contactId)
-    {
-      var re = new RegExp("(^|,)" + contactId + "($|,)");
-
-      log ("uids: " + uids);
-      if (!re.test(uids.value))
-        {
-          log ("no match... realling adding");
-          if (uids.value.length > 0)
-            uids.value += ',' + contactId;
-          else
-            uids.value = contactId;
-
-          log ('values: ' + uids.value);
-          var names = document.getElementById('uixselector-' + selectorId
-                                              + '-display');
-          names.innerHTML += ('<li onmousedown="return false;"'
-                              + ' onclick="onRowClick(event);"><img src="'
-                              + ResourcesURL + '/abcard.gif" />'
-                              + contactName + '</li>');
-        }
-      else
-        log ("match... ignoring contact");
-    }
 
   return false;
 }
