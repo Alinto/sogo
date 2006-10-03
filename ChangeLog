@@ -1,5 +1,8 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewBase.m ([UIxContactsListViewBase
+	-isPopup]): return YES if the "popup" query parameter is set.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-defaultAction]): keep the url parameters when redirecting.
 	([UIxContactFoldersView -selectForSchedulerAction]) 

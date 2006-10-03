@@ -131,4 +131,9 @@
   return YES;
 }
 
+- (BOOL) isPopup
+{
+  return [[self queryParameterForKey: @"popup"] boolValue];
+}
+
 @end /* UIxContactsListViewBase */
