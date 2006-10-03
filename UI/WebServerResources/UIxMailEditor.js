@@ -39,10 +39,10 @@ function mailIsRecipient(mailto) {
   var counter = 0;
   var currentRow = $('row_' + counter);
 
-  var email = extractEmailAddress(mailto);
+  var email = extractEmailAddress(mailto).toUpperCase();
 
   while (currentRow && !isRecipient) {
-    var currentValue = $("addr_"+counter).value;
+    var currentValue = $("addr_"+counter).value.toUpperCase();
     if (currentValue.indexOf(email) > -1)
       isRecipient = true;
     else
