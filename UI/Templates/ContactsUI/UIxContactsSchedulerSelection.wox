@@ -1,17 +1,15 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
+  <span
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
-    className="UIxContactsSelectionViewContainer"
-    title="name"
     >
     <input type="submit"
       class="button"
       label:value="Add Selected Contacts"
       name="validate"
       onclick="return onConfirmContactSelection(null);" />
-  </var:component>
+  </span>
