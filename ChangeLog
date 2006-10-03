@@ -1,5 +1,8 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([UIxCalView -dayStartHour]): returns 0.
+	([UIxCalView -dayEndHour]): returns 24.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView -defaultAction]) 
 	([UIxContactFoldersView -newAction]): invoke
 	_selectActionForApplication: on self with the proper attribute too.
