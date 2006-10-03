@@ -19,17 +19,19 @@
   02111-1307, USA.
 */
 
-#import "UIxComponent.h"
 #import "SOGoJSStringFormatter.h"
-#import "NSString+URL.h"
 #import "common.h"
 
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WOResourceManager.h>
 
+#import <SOGo/NSString+URL.h>
+
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
+
+#import "UIxComponent.h"
 
 @interface UIxComponent (PrivateAPI)
 - (void)_parseQueryString:(NSString *)_s;
