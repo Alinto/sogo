@@ -138,8 +138,7 @@
 
   if (!vcard)
     {
-      vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]
-                               version: @"3.0"];
+      vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];

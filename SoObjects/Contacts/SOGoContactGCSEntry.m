@@ -55,15 +55,10 @@
     {
       contentStr = [self contentAsString];
       if ([contentStr hasPrefix:@"BEGIN:VCARD"])
-        {
-          card = [NGVCard parseSingleFromSource: contentStr];
-          [card retain];
-        }
+        card = [NGVCard parseSingleFromSource: contentStr];
       else
-        {
-          card = [NGVCard new];
-          [card setTag: @"vcard"];
-        }
+        card = [NGVCard cardWithUid: [self nameInContainer]];
+      [card retain];
     }
 
   return card;
