@@ -1,5 +1,8 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m: compose the action url using the
+	newly available NSString+URL category.
+
 	* SoObjects/SOGo/NSDictionary+URL.m ([NSDictionary
 	-asURLParameters]): handle dictionary entries which could be
 	instances of NSArray rather than NSString.

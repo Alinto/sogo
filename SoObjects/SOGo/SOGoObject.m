@@ -26,6 +26,8 @@
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import "common.h"
 
+#import "NSString+URL.h"
+
 @interface SOGoObject(Content)
 - (NSString *)contentAsString;
 @end
@@ -207,7 +209,7 @@ static NSTimeZone *serverTimeZone = nil;
   //       default method)
   WORequest  *rq;
   WOResponse *r;
-  NSString   *uri;
+  NSString *uri;
   
   r  = [(WOContext *)_ctx response];
   rq = [(WOContext *)_ctx request];
@@ -233,11 +235,12 @@ static NSTimeZone *serverTimeZone = nil;
   }
   
   uri = [rq uri];
-  if (![uri hasSuffix:@"/"]) uri = [uri stringByAppendingString:@"/"];
-  uri = [uri stringByAppendingString:@"view"];
-  
   [r setStatus:302 /* moved */];
-  [r setHeader:uri forKey:@"location"];
+  [r setHeader: [uri composeURLWithAction: @"view"
+                     parameters: [rq formValues]
+                     andHash: NO]
+     forKey:@"location"];
+
   return r;
 }
 
