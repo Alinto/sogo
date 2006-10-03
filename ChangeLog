@@ -1,5 +1,8 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: added code to scroll the
+	view of the day at the height of hour 8:00.
+
 	* UI/Scheduler/UIxCalView.m ([UIxCalView -dayStartHour]): returns 0.
 	([UIxCalView -dayEndHour]): returns 24.
 

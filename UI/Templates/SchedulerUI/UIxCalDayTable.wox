@@ -80,4 +80,8 @@
         </tr>
       </var:foreach>
     </table>
+
+    <script type="text/javascript">
+      scrollDayViewTo8();
+    </script>
   </container>

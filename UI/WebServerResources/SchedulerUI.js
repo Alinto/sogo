@@ -311,6 +311,18 @@ function onMonthOverview()
   return _ensureView("monthview");
 }
 
+function scrollDayViewTo8()
+{
+  var calContent = $("calendarContent");
+  var tables = calContent.getElementsByTagName("table");
+  if (tables.length > 0) {
+    var row = tables[0].rows[9];
+    var cell = row.cells[1];
+
+    calContent.scrollTop = cell.offsetTop;
+  }
+}
+
 function calendarDisplayCallback(http)
 {
   var div = $("calendarView");
@@ -324,6 +336,7 @@ function calendarDisplayCallback(http)
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
       currentDay = http.callbackData["day"];
+    scrollDayViewTo8();
   }
   else
     log ("ajax fuckage");
