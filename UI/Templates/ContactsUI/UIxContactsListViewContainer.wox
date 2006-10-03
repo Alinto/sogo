@@ -51,7 +51,7 @@
 
       <form name="searchform" var:href="view" var:_sort="sortKey"
         onsubmit="return onSearchFormSubmit();" method="GET">
-	<var:if condition="isPopup" const:negate="YES">
+<!--	var:if condition="isPopup" const:negate="YES"> -->
           <var:if condition="hideFolderTree" const:negate="YES">
             <div class="contactFoldersList" id="contactFoldersList">
               <div class="titlediv"><var:string label:value="Address Books" /></div>
@@ -106,10 +106,16 @@
             <div id="contactView" onmousedown="return false;"
               ></div>
           </div>
-        </var:if>
+<!--          /var:if> -->
 
-	<var:if condition="isPopup">
-          <var:component-content />
+<!--	var:if condition="isPopup">
+          var:component-content />
+        /var:if> -->
+
+        <var:if condition="hasContactSelectionButtons">
+          <div class="contactSelection">
+            <var:component value="selectorComponent" />
+          </div>
         </var:if>
       </form>
 
