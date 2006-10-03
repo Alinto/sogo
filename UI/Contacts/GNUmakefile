@@ -12,6 +12,9 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactsListViewBase.m	\
 	UIxContactsListViewContainerBase.m \
 	\
+	UIxContactsSchedulerSelection.m	\
+	UIxContactsMailerSelection.m	\
+	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\
 	UIxContactView.m		\
@@ -19,7 +22,6 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactsListView.m		\
 	UIxContactsListViewContainer.m	\
 	UIxContactSelector.m	\
-	UIxContactsSelectionView.m	\
 	UIxContactsSelectionViewContainer.m	\
 	UIxContactFoldersView.m		\
 

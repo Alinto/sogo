@@ -29,3 +29,5 @@
 "edit"              = "edit";
 "invalidemailwarn"  = "Invalid email field, continue?";
 "new"               = "new";
+
+"Add as..." = "Add as...";

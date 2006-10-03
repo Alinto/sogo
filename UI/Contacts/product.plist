@@ -19,10 +19,15 @@
           pageName    = "UIxContactFoldersView"; 
           actionName  = "new";
         };
-        select = {
+        scheduler-contacts = {
           protectedBy = "View";
           pageName    = "UIxContactFoldersView"; 
-          actionName  = "select";
+          actionName  = "selectForScheduler";
+        };
+        mailer-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView"; 
+          actionName  = "selectForMailer";
         };
       };
     };
@@ -44,10 +49,13 @@
           pageName    = "UIxContactEditor"; 
           actionName  = "new";
         };
-        select = {
+        scheduler-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactsSelectionView"; 
-          actionName  = "select";
+          pageName    = "UIxContactsSchedulerSelection";
+        };
+        mailer-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsMailerSelection";
         };
       };
     };
@@ -68,11 +76,6 @@
           protectedBy = "View";
           pageName    = "UIxContactEditor"; 
           actionName  = "new";
-        };
-        select = {
-          protectedBy = "View";
-          pageName    = "UIxContactsSelectionView"; 
-          actionName  = "select";
         };
       };
     };
