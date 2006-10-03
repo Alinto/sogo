@@ -34,10 +34,14 @@
 - (id) defaultAction
 {
   SOGoContactFolders *folders;
+  NSString *url;
 
   folders = [self clientObject];
+  url = [NSString stringWithFormat: @"%@/view%@",
+                  [folders defaultSourceName],
+                  [[self queryParameters] asURLParameters]];
 
-  return [self redirectToLocation: [folders defaultSourceName]];
+  return [self redirectToLocation: url];
 }
 
 - (id) newAction
@@ -53,7 +57,7 @@
   return [self redirectToLocation: url];
 }
 
-- (id) selectAction
+- (id) _selectActionForApplication: (NSString *) actionName
 {
   SOGoContactFolders *folders;
   NSString *url, *selectorId;
@@ -61,11 +65,21 @@
   folders = [self clientObject];
   selectorId = [self queryParameterForKey: @"selectorId"];
 
-  url = [NSString stringWithFormat: @"%@/select?selectorId=%@",
+  url = [NSString stringWithFormat: @"%@/%@?selectorId=%@",
                   [folders defaultSourceName],
-                  selectorId];
+                  actionName, selectorId];
 
   return [self redirectToLocation: url];
+}
+
+- (id) selectForSchedulerAction
+{
+  return [self _selectActionForApplication: @"scheduler-contacts"];
+}
+
+- (id) selectForMailerAction
+{
+  return [self _selectActionForApplication: @"mailer-contacts"];
 }
 
 @end

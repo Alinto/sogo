@@ -1,5 +1,11 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-defaultAction]): keep the url parameters when redirecting.
+	([UIxContactFoldersView -selectForSchedulerAction]) 
+	([UIxContactFoldersView -selectForMailerAction]): new action
+	methods for the /scheduler-contacts and /mailer-contacts invocations.
+
 	* SoObjects/SOGo/SOGoObject.m: compose the action url using the
 	newly available NSString+URL category.
 
