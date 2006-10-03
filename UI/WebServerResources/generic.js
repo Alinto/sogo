@@ -903,8 +903,9 @@ function onContactAdd(node)
     selectorUrl = ("?selectorId="
                    + node.parentNode.parentNode.getAttribute("id"));
 
-  urlstr = (ApplicationBaseURL + "../../" + UserLogin + "/Contacts/"
+  urlstr = (ApplicationBaseURL + "/../../" + UserLogin + "/Contacts/"
             + contactSelectorAction + selectorUrl);
+  log (urlstr);
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
