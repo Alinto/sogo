@@ -1,5 +1,9 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxMailEditor.js: add support for
+	additions of different types (to, cc, bcc) of recipients from the
+	address book.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -doctype]): added the
 	"<?xml..." header.
 

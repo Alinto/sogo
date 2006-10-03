@@ -153,7 +153,7 @@ function removeLastEditedRowIfEmpty() {
     addresses.removeChild(addr);
   }
   addressList = $("addressList");
-  senderRow = this.findRowWithIndex(idx);
+  senderRow = $("row_" + idx);
   addressList.removeChild(senderRow);
   this.adjustInlineAttachmentListHeight(this);
 }
@@ -168,11 +168,6 @@ function findAddressWithIndex(idx) {
       return addr;
   }
   return null;
-}
-
-function findRowWithIndex(idx) {
-  var id = 'row_' + idx;
-  return $(id);
 }
 
 function getIndexFromIdentifier(id) {
@@ -243,16 +238,6 @@ function adjustInlineAttachmentListHeight(sender) {
     xHeight('compose_attachments_list',
             (leftHeight - rightHeaderHeight) - 16);
   }
-}
-
-function hideInlineAttachmentList(sender) {
-  var e;
-  
-//  xVisibility('compose_rightside', false);
-  e = $('compose_rightside');
-  e.style.display = 'none';
-  e = $('compose_leftside');
-  e.style.width = "100%";
 }
 
 /* addressbook helpers */
