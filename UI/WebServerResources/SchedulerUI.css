@@ -1,19 +1,19 @@
 DIV#leftPanel
 { 
   position: absolute;
-  top: 5.2em;
+  top: 5.5em;
   left: 0px;
-  width: 16em;
+  width: 17.5em;
   bottom: 0px;
   overflow: hidden;
 }
 
 DIV#schedulerTabs
 {
-  top: 0px;
+  top: 0.5em;
   left: .2em;
-  width: 15em;
-  height: 14.2em;
+  width: 16em;
+  height: 15em;
 }
 
 DIV#tasksView
@@ -30,7 +30,7 @@ DIV#rightPanel
 {
   position: absolute;
   top: 5.5em;
-  left: 16.7em;
+  left: 17.75em;
   right: 0px;
   bottom: 0px;
   overflow: hidden;
@@ -69,7 +69,7 @@ DIV#calendarView A
 {
   cursor: e-resize;
   top: 6em;
-  left: 16em;
+  left: 17.5em;
   width: 5px;
   bottom: 0px;
 }

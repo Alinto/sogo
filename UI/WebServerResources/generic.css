@@ -656,8 +656,7 @@ A.button IMG
 { vertical-align: middle; }
 
 A.button:hover
-{ 
-  color: inherit;
+{ color: inherit;
   background: -moz-buttonhoverface; }
 
 A.button:active
@@ -675,7 +674,6 @@ DIV.tabsContainer
   color: #000;
   background: #dbdad5;
   margin-top: 1.5em;
-  padding-top: 1em;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
   border-right: 2px solid #888;
@@ -690,14 +688,14 @@ DIV.tabsContainer UL
   list-style-type: none;
   list-style-image: none;
   margin: 0px;
-  margin-top: -2.4em;
+  margin-top: -1.5em;
   padding: 0px; }
 
 DIV.tabsContainer UL LI
 { z-index: 3;
   float: left;
-  padding: 0em .5em;
-  padding-top: 1px;
+  padding: 0px .5em;
+  padding-top: 2px;
   border-top: 2px solid #fffffb;
   border-bottom: 0px solid #fffffb;
   border-right: 2px solid #888;

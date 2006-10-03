@@ -52,6 +52,9 @@ UL.contactList LI._selected
 { background: #4b6983;
   color: #fff; }
 
+DIV.contactSelector
+{ margin: 0px; }
+
 LABEL, SPAN.checkBoxList
 { display: block;
   position: relative;
@@ -59,6 +62,12 @@ LABEL, SPAN.checkBoxList
   margin-left: .5em;
   margin-top: .5em;
   width: 100%; }
+
+SPAN.checkBoxList#participantsCB
+{ height: 7em; }
+
+DIV#participants UL.contactList
+{ height: 4.5em; }
 
 SPAN.checkBoxList SPAN.content LABEL
 { display: inline; }

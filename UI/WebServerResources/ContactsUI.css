@@ -300,11 +300,13 @@ DIV.contactSelector DIV#contactView
 
 DIV.contactSelection
 {
+  z-index: 10;
   background: inherit;
   position: absolute;
   bottom: 1em;
   padding: 1em;
   right: 2em;
+  text-align: right;
   background: #dbdad5;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
@@ -315,3 +317,9 @@ DIV.contactSelection
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
 }
+
+DIV.contactSelection INPUT.button
+{ margin-top: .25em; }
+
+DIV.contactSelection SPAN#selectionLabel
+{ float: left; }

@@ -16,7 +16,7 @@ TABLE#compose_label
 
 table#compose_table {
   border-bottom-color: #808080;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
   border-bottom-style: solid;
 }
 

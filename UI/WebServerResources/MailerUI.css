@@ -128,14 +128,12 @@ DIV#messageContent P IMG
 .vertframerow
 {
   border-top-color: white;
-  border-top-width: 1;
+  border-top-width: 1px;
   border-top-style: solid;
   border-bottom-color: #808080;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
   border-bottom-style: solid;
-
   background-color: #DCDAD5;
-
 }
 
 .foldercell
@@ -149,7 +147,7 @@ DIV#messageContent P IMG
 
 .embedwhite_out
 {
-  border-width: 1;
+  border-width: 1px;
   border-style: solid;
   border-top-color: #808080;
   border-left-color: #808080;
@@ -159,7 +157,7 @@ DIV#messageContent P IMG
 
 .embedwhite_in
 {
-  border-width: 1;
+  border-width: 1px;
   border-style: solid;
   border-top-color: #808080; /* TODO */
   border-left-color: #808080; /* TODO */
@@ -388,14 +386,14 @@ form#attachment_form
 div#attachment_list
 {
   border-top-color: white;
-  border-top-width: 1;
+  border-top-width: 1px;
   border-top-style: solid;
 }
 
 div#attachment_upload
 {
   border-bottom-color: #808080;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
   border-bottom-style: solid;
   padding: 4px;
 }
@@ -417,8 +415,7 @@ div.linked_attachment_frame
 div.linked_attachment_body
 {
   padding: 4px;
-
-  border-width: 1;
+  border-width: 1px;
   border-style: solid;
   border-top-color: white;
   border-left-color: white;
