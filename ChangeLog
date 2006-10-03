@@ -1,5 +1,19 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSDictionary+URL.m ([NSDictionary
+	-asURLParameters]): handle dictionary entries which could be
+	instances of NSArray rather than NSString.
+
+	* SoObjects/SOGo/NSString+URL.m ([NSString
+	-composeURLWithAction:actionparameters:urlParametersandHash:useHash]): when composing the url, remove the encoded parameters first since they will be added later.
+	([NSString -urlWithoutParameters]): new method that returns the
+	url without its parameters.
+
+	* SoObjects/SOGo/NSString+iCal.h: deleted obsolete file.
+
+	* SoObjects/SOGo/NSDictionary+URL.[hm],
+	UI/SOGoUI/NSString+URL.[hm]: moved from UI/SOGoUI/.
+
 	* UI/WebServerResources/UIxMailEditor.js: add support for
 	additions of different types (to, cc, bcc) of recipients from the
 	address book.

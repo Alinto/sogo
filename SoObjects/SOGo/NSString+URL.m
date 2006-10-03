@@ -34,7 +34,7 @@
   completeURL = [NSMutableString new];
   [completeURL autorelease];
 
-  [completeURL appendString: self];
+  [completeURL appendString: [self urlWithoutParameters]];
   if (![completeURL hasSuffix: @"/"])
     [completeURL appendString: @"/"];
   [completeURL appendString: action];
@@ -61,6 +61,20 @@
     }
 
   return newURL;
+}
+
+- (NSString *) urlWithoutParameters;
+{
+  NSRange r;
+  NSString *newUrl;
+  
+  r = [self rangeOfString:@"?" options: NSBackwardsSearch];
+  if (r.length > 0)
+    newUrl = [self substringToIndex: NSMaxRange(r) - 1];
+  else
+    newUrl = self;
+
+  return newUrl;
 }
 
 @end

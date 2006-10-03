@@ -30,9 +30,10 @@ libSOGo_HEADER_FILES = \
 	\
 	AgenorUserManager.h		\
 	SOGoLRUCache.h			\
-	NSString+iCal.h			\
 	NSObject+AptComparison.h	\
 	WOContext+Agenor.h		\
+	NSString+URL.h			\
+	NSDictionary+URL.h		\
 	\
 	SOGoAuthenticator.h		\
 	SOGoUser.h			\
@@ -51,6 +52,9 @@ libSOGo_OBJC_FILES = \
 	NSObject+AptComparison.m	\
 	WOContext+Agenor.m		\
 	AgenorUserDefaults.m		\
+	NSDictionary+URL.m		\
+	NSString+URL.m			\
+	\
 	\
 	SOGoAuthenticator.m		\
 	SOGoUser.m			\

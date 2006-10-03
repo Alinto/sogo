@@ -33,7 +33,8 @@
   NSMutableString *urlParameters;
   NSArray *keys;
   NSEnumerator *keysEnum;
-  NSString *currentKey;
+  NSString *currentKey, *separator;
+  id currentValue;
   BOOL isFirst;
 
   urlParameters = [NSMutableString new];
@@ -47,9 +48,16 @@
       currentKey = [keysEnum nextObject];
       while (currentKey)
 	{
-	  [urlParameters appendFormat: @"%@%@=%@",
-			 ((isFirst) ? @"?" : @"&"),
-			 currentKey, [self objectForKey: currentKey]];
+          currentValue = [self objectForKey: currentKey];
+          if ([currentValue isKindOfClass: [NSArray class]])
+            {
+              separator = [NSString stringWithFormat: @"&%@=", currentKey];
+              currentValue
+                = [currentValue componentsJoinedByString: separator];
+            }
+          [urlParameters appendFormat: @"%@%@=%@",
+                         ((isFirst) ? @"?" : @"&"),
+                         currentKey, currentValue];
 	  isFirst = NO;
 	  currentKey = [keysEnum nextObject];
 	}

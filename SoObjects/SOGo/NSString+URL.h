@@ -34,6 +34,8 @@
 			    andHash: (BOOL) useHash;
 - (NSString *) hostlessURL;
 
+- (NSString *) urlWithoutParameters;
+
 @end
 
 #endif /* NSSTRING_URL_H */
