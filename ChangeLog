@@ -1,5 +1,9 @@
 2006-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView -defaultAction]) 
+	([UIxContactFoldersView -newAction]): invoke
+	_selectActionForApplication: on self with the proper attribute too.
+
 	* UI/Contacts/UIxContactsSelectionViewContainer.m: removed since
 	we now use the action mechanism in UIxContactsListView to keep the
 	same view for the contact selectors and the regular contact view.

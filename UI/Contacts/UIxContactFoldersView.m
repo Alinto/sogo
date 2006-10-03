@@ -23,7 +23,7 @@
 #import <Foundation/NSString.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 
-#import <SOGoUI/NSDictionary+URL.h>
+#import <SOGo/NSString+URL.h>
 
 #import "common.h"
 
@@ -31,45 +31,34 @@
 
 @implementation UIxContactFoldersView
 
-- (id) defaultAction
+- (id) _selectActionForApplication: (NSString *) actionName
 {
   SOGoContactFolders *folders;
-  NSString *url;
+  NSString *url, *action;
+  WORequest *request;
 
   folders = [self clientObject];
-  url = [NSString stringWithFormat: @"%@/view%@",
-                  [folders defaultSourceName],
-                  [[self queryParameters] asURLParameters]];
+  action = [NSString stringWithFormat: @"../%@/%@",
+                     [folders defaultSourceName],
+                     actionName];
+
+  request = [[self context] request];
+
+  url = [[request uri] composeURLWithAction: action
+                       parameters: [self queryParameters]
+                       andHash: NO];
 
   return [self redirectToLocation: url];
+}
+
+- (id) defaultAction
+{
+  return [self _selectActionForApplication: @"view"];
 }
 
 - (id) newAction
 {
-  SOGoContactFolders *folders;
-  NSString *url;
-
-  folders = [self clientObject];
-  url = [NSString stringWithFormat: @"%@/new%@",
-                  [folders defaultSourceName],
-                  [[self queryParameters] asURLParameters]];
-  
-  return [self redirectToLocation: url];
-}
-
-- (id) _selectActionForApplication: (NSString *) actionName
-{
-  SOGoContactFolders *folders;
-  NSString *url, *selectorId;
-
-  folders = [self clientObject];
-  selectorId = [self queryParameterForKey: @"selectorId"];
-
-  url = [NSString stringWithFormat: @"%@/%@?selectorId=%@",
-                  [folders defaultSourceName],
-                  actionName, selectorId];
-
-  return [self redirectToLocation: url];
+  return [self _selectActionForApplication: @"new"];
 }
 
 - (id) selectForSchedulerAction
