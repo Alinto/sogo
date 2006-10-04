@@ -19,10 +19,16 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/NGObjWeb.h>
-#include "common.h"
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSTimeZone.h>
 
-int main(int argc, char **argv, char **env) {
+#import <NGObjWeb/NGObjWeb.h>
+#import "common.h"
+
+int main(int argc, char **argv, char **env)
+{
+  NSString *tzName;
+  NSUserDefaults *ud;
   NSAutoreleasePool *pool;
 
   pool = [[NSAutoreleasePool alloc] init];
@@ -30,7 +36,13 @@ int main(int argc, char **argv, char **env) {
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
   [NGBundleManager defaultBundleManager];
-  
+
+  ud = [NSUserDefaults standardUserDefaults];
+  tzName = [ud stringForKey: @"SOGoServerTimeZone"];
+  if (!tzName)
+    tzName = @"Canada/Eastern";
+  [NSTimeZone setDefaultTimeZone: [NSTimeZone timeZoneWithName: tzName]];
+
   WOWatchDogApplicationMain(@"SOGo", argc, (void*)argv);
 
   [pool release];
