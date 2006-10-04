@@ -23,7 +23,7 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 
-#import "NSCalendarDate+Scheduler.h"
+#import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "UIxCalInlineMonthOverview.h"
 

@@ -63,7 +63,6 @@
 
 - (id)holidayInfo;
 
-
 /* related to current day */
 - (void)setCurrentDay:(NSCalendarDate *)_day;
 - (NSCalendarDate *)currentDay;

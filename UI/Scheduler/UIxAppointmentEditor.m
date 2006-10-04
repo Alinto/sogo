@@ -20,7 +20,9 @@
 */
 
 #import <NGCards/NSString+NGCards.h>
+#import <NGCards/NSCalendarDate+NGCards.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
 /* TODO: CLEAN UP */
@@ -96,10 +98,6 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import "UIxComponent+Agenor.h"
-
-@interface NSDate(UsedPrivates)
-- (NSString *)icalString; // TODO: this is in NGCards
-@end
 
 @implementation UIxAppointmentEditor
 
@@ -521,9 +519,9 @@
   s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
                          [[self clientObject] nameInContainer],
-                         [[NSCalendarDate date] icalString],
-                         [lStartDate icalString],
-                         [lEndDate icalString],
+                         [[NSCalendarDate date] iCalFormattedString],
+                         [lStartDate iCalFormattedString],
+                         [lEndDate iCalFormattedString],
                          [self transparency],
                          [self iCalOrganizerString],
                          s];
@@ -685,15 +683,6 @@
 /* save */
 
 /* returned dates are in GMT */
-- (NSCalendarDate *)_dateFromString:(NSString *)_str {
-  NSCalendarDate *date;
-  
-  date = [NSCalendarDate dateWithString:_str 
-			 calendarFormat:@"%Y-%m-%d %H:%M %Z"];
-  [date setTimeZone:[[self clientObject] serverTimeZone]];
-  return date;
-}
-
 - (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
   treatAsResource:(BOOL)_isResource
 {
@@ -764,16 +753,23 @@
 {
   NSString *s;
   iCalRecurrenceRule *rrule;
+  NSTimeZone *uTZ;
 
-  if ((startDate = [[_appointment startDate] copy]) == nil)
-    startDate = [[[NSCalendarDate date] hour:11 minute:0] copy];
-  if ((endDate = [[_appointment endDate] copy]) == nil) {
+  if ((startDate = [_appointment startDate]) == nil)
+    startDate = [[NSCalendarDate date] hour:11 minute:0];
+  if ((endDate = [_appointment endDate]) == nil) {
     endDate =
-      [[startDate hour:[startDate hourOfDay] + 1 minute:0] copy];
+      [startDate hour:[startDate hourOfDay] + 1 minute:0];
   }
-  [startDate setTimeZone:[[self clientObject] userTimeZone]];
-  [endDate setTimeZone:[[self clientObject] userTimeZone]];
-  
+
+  uTZ = [[self clientObject] userTimeZone];
+  [startDate setTimeZone: uTZ];
+  [endDate setTimeZone: uTZ];
+//   startDate = [startDate adjustedDate];
+//   endDate = [endDate adjustedDate];
+  [startDate retain];
+  [endDate retain];
+
   title        = [[_appointment summary]  copy];
   location     = [[_appointment location] copy];
   comment      = [[_appointment comment]  copy];
@@ -854,11 +850,6 @@
   return appointment;
 }
 
-- (void) loadValuesFromICalString: (NSString *) _iCalString
-{
-  [self loadValuesFromAppointment: [self appointmentFromString: _iCalString]];
-}
-
 /* contact editor compatibility */
 
 - (void)setContentString:(NSString *)_s {
@@ -867,11 +858,6 @@
 - (NSString *)contentStringTemplate {
   return [self iCalStringTemplate];
 }
-
-- (void)loadValuesFromContentString:(NSString *)_s {
-  [self loadValuesFromICalString:_s];
-}
-
 
 /* access */
 
@@ -982,7 +968,7 @@
     ical = [self contentStringTemplate];
   
   [self setContentString:ical];
-  [self loadValuesFromContentString:ical];
+  [self loadValuesFromAppointment: [self appointmentFromString: ical]];
   
   if (![self canEditApt]) {
     /* TODO: we need proper ACLs */

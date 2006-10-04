@@ -42,7 +42,7 @@
         <span class="checkBoxList"><var:string label:value="Start time" />
           <span class="content"><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
-            var:date="aptStartDate"
+            date="aptStartDate"
             const:dayStartHour="8"
             const:dayEndHour="18"
             /></span></span>

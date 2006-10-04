@@ -20,7 +20,13 @@
 */
 // $Id: UIxTimeDateControl.m 601 2005-02-22 15:45:03Z znek $
 
-#import "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/SoObjects.h>
+
+#import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "UIxTimeDateControl.h"
 
@@ -64,7 +70,11 @@
 - (void)setDate:(NSCalendarDate *)_date {
   if (!_date)
     _date = [NSCalendarDate date];
-  [self _setDate:_date];
+  [self _setDate: [_date driftedDate]];
+
+  NSLog (@"date Hour, before: %d; after: %d (tz: %@)",
+         [_date hourOfDay], [[_date driftedDate] hourOfDay],
+         [[_date timeZone] timeZoneName]);
   [self setHour:[NSNumber numberWithInt:[_date hourOfDay]]];
   [self setMinute:[NSNumber numberWithInt:[_date minuteOfHour]]];
   [self setYear:[NSNumber numberWithInt:[_date yearOfCommonEra]]];
@@ -241,20 +251,16 @@
       [self setHour: [_rq formValueForKey: [self hourSelectId]]];
       [self setMinute: [_rq formValueForKey: [self minuteSelectId]]];
 
-      _month  = [[self month]  intValue];
-      _day    = [[self day]    intValue];
-      _hour   = [[self hour]   intValue];
+      _month  = [[self month] intValue];
+      _day    = [[self day] intValue];
+      _hour   = [[self hour] intValue];
       _minute = [[self minute] intValue];
       _second = [[self second] intValue];
 
-      d = [NSCalendarDate dateWithYear:_year
-                          month:_month
-                          day:_day
-                          hour:_hour
-                          minute:_minute
-                          second:_second
+      d = [NSCalendarDate dateWithYear: _year month:_month day:_day
+                          hour:_hour minute:_minute second:_second
                           timeZone: [[self clientObject] userTimeZone]];
-      [self _setDate:d];
+      [self _setDate: [d adjustedDate]];
     }
 }
 

@@ -1,14 +1,14 @@
 // $Id: UIxCalView.m 885 2005-07-21 16:41:34Z znek $
 
-#include "UIxCalView.h"
-#include "common.h"
-//#include <OGoContentStore/OCSFolder.h>
-#include "SoObjects/Appointments/SOGoAppointmentFolder.h"
-#include <NGObjWeb/SoUser.h>
-#include <SOGoUI/SOGoAptFormatter.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-#include <NGCards/NGCards.h>
-#include "UIxComponent+Agenor.h"
+#import "UIxCalView.h"
+#import "common.h"
+//#import <OGoContentStore/OCSFolder.h>
+#import "SoObjects/Appointments/SOGoAppointmentFolder.h"
+#import <NGObjWeb/SoUser.h>
+#import <SOGoUI/SOGoAptFormatter.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <NGCards/NGCards.h>
+#import "UIxComponent+Agenor.h"
 
 @interface UIxCalView (PrivateAPI)
 - (NSString *) _userFolderURI;
