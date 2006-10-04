@@ -93,13 +93,6 @@ static NSNumber   *sharedYes = nil;
   sharedYes = [[NSNumber numberWithBool:YES] retain];
 }
 
-- (id) REPORTAction: (id) _ctx
-{
-  NSLog (@"report action...");
-
-  return @"coucou";
-}
-
 - (void) dealloc
 {
   [self->uidToFilename release];
