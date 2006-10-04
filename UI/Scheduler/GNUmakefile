@@ -10,7 +10,6 @@ SchedulerUI_LANGUAGES = English French German
 
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\
-	NSCalendarDate+Scheduler.m	\
 					\
 	UIxCalMainView.m		\
 					\

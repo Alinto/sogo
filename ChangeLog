@@ -1,5 +1,17 @@
 2006-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m: module replacing and
+	extending UI/Scheduler/NSCalendarDate+Scheduler.m.
+	([NSCalendarDate
+	+dateFromShortDateString:dateStringandShortTimeString:timeStringinTimeZone:timeZone]): new method that generates a date from two short string formatted as follow: "yyyymmdd" and "hhmm". Thismethod replaces a similar method from UIxComponent (noted below).
+	([NSCalendarDate -adjustedDate]): this method returns another
+	instance set to the correct hour after the original date was set
+	from a non-GMT timezone. This date can be used for storage.
+	([NSCalendarDate -driftedDate]): this method does exactly the
+	opposite of -adjutedDate, that is, it enables the method
+	hourOfDay, minuteOfHour etc... to return the values according to
+	the original date's timezone. This date CANNOT be used for storage.
+
 	* UI/Scheduler/NSCalendarDate+Scheduler.m ([NSCalendarDate
 	-shortDateString]): new method that will return a "short date
 	string" (yyyymmdd) from a calendar date object.

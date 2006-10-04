@@ -34,6 +34,7 @@ libSOGo_HEADER_FILES = \
 	WOContext+Agenor.h		\
 	NSString+URL.h			\
 	NSDictionary+URL.h		\
+	NSCalendarDate+SOGo.h		\
 	\
 	SOGoAuthenticator.h		\
 	SOGoUser.h			\
@@ -54,7 +55,7 @@ libSOGo_OBJC_FILES = \
 	AgenorUserDefaults.m		\
 	NSDictionary+URL.m		\
 	NSString+URL.m			\
-	\
+	NSCalendarDate+SOGo.m		\
 	\
 	SOGoAuthenticator.m		\
 	SOGoUser.m			\

@@ -1,4 +1,4 @@
-/* NSCalendarDate+Scheduler.h - this file is part of SOGo
+/* NSCalendarDate+SOGo.h - this file is part of SOGo
    Copyright (C) 2000-2004 SKYRIX Software AG
 
    This file is part of OGo
@@ -24,7 +24,18 @@
 
 #import <Foundation/NSCalendarDate.h>
 
-@interface NSCalendarDate (SchedulerExtensions)
+@class NSString;
+@class NSTimeZone;
+
+@interface NSCalendarDate (SOGoExtensions)
+
++ (id) dateFromShortDateString: (NSString *) dateString
+            andShortTimeString: (NSString *) timeString
+                    inTimeZone: (NSTimeZone *) timeZone;
+
+/* a date tuned to its timezone when initialized with local values */
+- (NSCalendarDate *) adjustedDate;
+- (NSCalendarDate *) driftedDate;
 
 - (BOOL) isDateInSameMonth: (NSCalendarDate *) _other;
 - (NSCalendarDate *) dayOfWeeK: (unsigned) _day
