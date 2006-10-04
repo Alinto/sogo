@@ -49,7 +49,7 @@
         ><span var:class="extraStyle"
           ><a href="#"
             onclick="return onDaySelect(this);"
-            var:day="currentDayQueryParameters.day"
+            var:day="currentDay.shortDateString"
             ><var:string value="currentDay.dayOfMonth"/></a
             ></span
           ></var:month-title
