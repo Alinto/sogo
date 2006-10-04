@@ -30,6 +30,7 @@
 - (NSCalendarDate *) dayOfWeeK: (unsigned) _day
               offsetFromSunday: (unsigned) _off;
 - (NSCalendarDate *) sundayOfWeek;
+- (NSString *) shortDateString;
 
 @end
 

@@ -54,4 +54,16 @@
   return [self dayOfWeeK:6 offsetFromSunday:1];
 }
 
+- (NSString *) shortDateString
+{
+  NSString *str;
+
+  str = [NSString stringWithFormat: @"%.4d%.2d%.2d",
+                  [self yearOfCommonEra],
+                  [self monthOfYear],
+                  [self dayOfMonth]];
+
+  return str;
+}
+
 @end

@@ -1,5 +1,9 @@
 2006-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/NSCalendarDate+Scheduler.m ([NSCalendarDate
+	-shortDateString]): new method that will return a "short date
+	string" (yyyymmdd) from a calendar date object.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent
 	-_cDateFromShortDateString:dateStringandShortTimeString:timeString]): new method to compute the selected date from the "day" and "hm" query parameters (if found). This method replaces the old algorithm that was found in the "selectedDate" method.
 
