@@ -64,7 +64,8 @@
 - (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub;
 
 /* date selection */
-- (NSCalendarDate *)selectedDate;
+- (NSCalendarDate *) selectedDate;
+
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date;
 
 - (BOOL) hideFrame;

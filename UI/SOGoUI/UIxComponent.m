@@ -30,6 +30,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "UIxComponent.h"
 
@@ -370,93 +371,17 @@ static BOOL uixDebugEnabled = NO;
   return rel;
 }
 
-/* date */
-- (NSCalendarDate *) _cDateFromShortDateString: (NSString *) dateString
-                            andShortTimeString: (NSString *) timeString
-{
-  unsigned int year, month, day, hour, minute, total;
-  NSCalendarDate *cDate, *tmpDate;
-  NSTimeZone *uTZ;
-
-  uTZ = [[self clientObject] userTimeZone];
-
-  if (dateString && [dateString length] == 8)
-    {
-      total = [dateString intValue];
-      year = total / 10000;
-      total -= year * 10000;
-      month = total / 100;
-      day = total - (month * 100);
-    }
-  else
-    {
-      tmpDate = [NSCalendarDate calendarDate];
-      [tmpDate setTimeZone: uTZ];
-
-      year = [tmpDate yearOfCommonEra];
-      month = [tmpDate monthOfYear];
-      day = [tmpDate dayOfMonth];
-    }
-
-  if (timeString && [timeString length] == 4)
-    {
-      total = [timeString intValue];
-      hour = total / 100;
-      minute = total = (hour * 100);
-    }
-  else
-    {
-      hour = 12;
-      minute = 0;
-    }
-
-  cDate = [NSCalendarDate dateWithYear: year month: month day: day
-                          hour: hour minute: minute second: 0
-                          timeZone: uTZ];
-
-  return cDate;
-}
-
 - (NSCalendarDate *) selectedDate
 {
   if (!_selectedDate)
     {
       _selectedDate
-        = [self _cDateFromShortDateString: [self queryParameterForKey: @"day"]
-                andShortTimeString: [self queryParameterForKey: @"hm"]];
+        = [NSCalendarDate
+            dateFromShortDateString: [self queryParameterForKey: @"day"]
+            andShortTimeString: [self queryParameterForKey: @"hm"]
+            inTimeZone: [[self clientObject] userTimeZone]];
       [_selectedDate retain];
     }
-//       s = [self queryParameterForKey: @"day"];
-
-//       NSLog (@"query value 'day' = '%@'", s);
-//       if ([s length] > 0)
-//         dateString = [s stringByAppendingFormat: @" %@",
-//                         [[[self clientObject] userTimeZone] abbreviation]];
-//       else
-//         {
-//           cdate = [NSCalendarDate calendarDate];
-//           dateString = [NSString stringWithFormat: @"%.4d%.2d%.2d %@",
-//                                  [cdate yearOfCommonEra],
-//                                  [cdate monthOfYear],
-//                                  [cdate dayOfMonth],
-//                                  [[[self clientObject] userTimeZone] abbreviation]];
-//         }
-
-//       cdate = [NSCalendarDate dateWithString: dateString
-//                               calendarFormat: @"%Y%m%d %Z"];
-//       s = [self queryParameterForKey: @"hm"];
-//       NSLog (@"query value 'hm' = '%@'", s);
-//       if ([s length] == 4)
-//         {
-//           hour = [[s substringToIndex: 2] unsignedIntValue];
-//           minute = [[s substringFromIndex: 2] unsignedIntValue];
-//           _selectedDate = [cdate hour: hour minute: minute];
-//         }
-//       else
-//         _selectedDate = [cdate hour: 12 minute: 0];
-
-//       [_selectedDate retain];
-//     }
 
   return _selectedDate;
 }
