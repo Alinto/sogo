@@ -1,5 +1,8 @@
 2006-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent
+	-_cDateFromShortDateString:dateStringandShortTimeString:timeString]): new method to compute the selected date from the "day" and "hm" query parameters (if found). This method replaces the old algorithm that was found in the "selectedDate" method.
+
 	* Main/sogod.m (main): initialize the NSTimeZone's defaultTimeZone
 	to the value of SOGoServerTimeZone or "Canada/Eastern" if not found.
 
