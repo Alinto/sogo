@@ -18,4 +18,4 @@ CommonUI_BUNDLE_LIBS += \
 	-lNGObjWeb	\
 	-lNGMime	\
 	-lNGStreams -lNGExtensions -lEOControl	\
-	-lXmlRpc -lDOM -lSaxObjC
+	-lXmlRpc -lDOM -lSaxObjC -lWOExtensions

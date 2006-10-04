@@ -10,7 +10,7 @@ libSOGoUI_LIBRARIES_DEPEND_UPON += \
 	-lNGObjWeb	\
 	-lNGMime	\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lXmlRpc -lDOM -lSaxObjC
+	-lXmlRpc -lDOM -lSaxObjC -lWOExtensions
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 ADDITIONAL_INCLUDE_DIRS += -I../../SoObjects
