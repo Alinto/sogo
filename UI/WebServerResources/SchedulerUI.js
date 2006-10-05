@@ -13,6 +13,8 @@ function newEvent(sender) {
     day = currentDay;
 
   var hour = sender.getAttribute("hour");
+  if (!hour)
+    hour = '0800';
   var urlstr = (ApplicationBaseURL + "new"
                 + "?day=" + day
                 + "&hm=" + hour);

@@ -126,22 +126,22 @@ function extractEmailAddress(mailTo) {
 }
 
 function extractEmailName(mailTo) {
-  var name = "";
+  var emailName = "";
 
-  var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
-  if (namere.test(mailTo)) {
-    namere.exec(mailTo);
-    name = RegExp.$1;
+  var emailNamere = /(\w[\w\ _-]+)\ (&lt;|<)/;
+  if (emailNamere.test(mailTo)) {
+    emailNamere.exec(mailTo);
+    emailName = RegExp.$1;
   }
 }
 
 function sanitizeMailTo(dirtyMailTo) {
-  var name = extractEmailName(dirtyMailTo);
+  var emailName = extractEmailName(dirtyMailTo);
   var email = extractEmailAddress(dirtyMailTo);
 
   var mailto = "";
-  if (name.length > 0)
-    mailto = name + ' <' + email + '>';
+  if (emailName.length > 0)
+    mailto = emailName + ' <' + email + '>';
   else
     mailto = email;
 
@@ -294,6 +294,7 @@ function getQueryParaArray(s) {
   if (s.charAt(0) == "?") s = s.substr(1, s.length - 1);
   return s.split("&");
 }
+
 function getQueryParaValue(s, name) {
   var t;
   
