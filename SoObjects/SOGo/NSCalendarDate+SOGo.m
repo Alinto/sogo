@@ -32,24 +32,6 @@
   unsigned int year, month, day, hour, minute, total;
   NSCalendarDate *cDate, *tmpDate;
 
-  if (dateString && [dateString length] == 8)
-    {
-      total = [dateString intValue];
-      year = total / 10000;
-      total -= year * 10000;
-      month = total / 100;
-      day = total - (month * 100);
-    }
-  else
-    {
-      tmpDate = [NSCalendarDate calendarDate];
-      tmpDate = [tmpDate addYear: 0 month: 0 day: 0 hour: 0 minute: 0
-                         second: [timeZone secondsFromGMT]];
-      year = [tmpDate yearOfCommonEra];
-      month = [tmpDate monthOfYear];
-      day = [tmpDate dayOfMonth];
-    }
-
   if (timeString && [timeString length] == 4)
     {
       total = [timeString intValue];
@@ -62,31 +44,29 @@
       minute = 0;
     }
 
-  cDate = [self dateWithYear: year month: month day: day
-                hour: hour minute: minute second: 0
-                timeZone: timeZone];
+  if (dateString && [dateString length] == 8)
+    {
+      total = [dateString intValue];
+      year = total / 10000;
+      total -= year * 10000;
+      month = total / 100;
+      day = total - (month * 100);
+      cDate = [self dateWithYear: year month: month day: day
+                    hour: hour minute: minute second: 0
+                    timeZone: timeZone];
+    }
+  else
+    {
+      tmpDate = [NSCalendarDate calendarDate];
+      [tmpDate setTimeZone: timeZone];
+      cDate = [self dateWithYear: [tmpDate yearOfCommonEra]
+                    month: [tmpDate monthOfYear]
+                    day: [tmpDate dayOfMonth]
+                    hour: hour minute: minute second: 0
+                    timeZone: timeZone];
+    }
 
-  return [cDate adjustedDate];
-}
-
-- (NSCalendarDate *) adjustedDate
-{
-  NSTimeZone *dTZ;
-
-  dTZ = [self timeZone];
-
-  return [self addYear: 0 month: 0 day: 0 hour: 0 minute: 0
-               second: -[dTZ secondsFromGMT]];
-}
-
-- (NSCalendarDate *) driftedDate
-{
-  NSTimeZone *dTZ;
-
-  dTZ = [self timeZone];
-
-  return [self addYear: 0 month: 0 day: 0 hour: 0 minute: 0
-               second: [dTZ secondsFromGMT]];
+  return cDate;
 }
 
 - (BOOL) isDateInSameMonth: (NSCalendarDate *) _other

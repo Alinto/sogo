@@ -1,3 +1,9 @@
+2006-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate -adjustedDate]) 
+	([NSCalendarDate -driftedDate]): methods made useless by a better
+	comprehension of the NSTimeZone API...
+
 2006-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -selectedDate]): call

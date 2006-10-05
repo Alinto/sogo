@@ -33,10 +33,6 @@
             andShortTimeString: (NSString *) timeString
                     inTimeZone: (NSTimeZone *) timeZone;
 
-/* a date tuned to its timezone when initialized with local values */
-- (NSCalendarDate *) adjustedDate;
-- (NSCalendarDate *) driftedDate;
-
 - (BOOL) isDateInSameMonth: (NSCalendarDate *) _other;
 - (NSCalendarDate *) dayOfWeeK: (unsigned) _day
               offsetFromSunday: (unsigned) _off;
