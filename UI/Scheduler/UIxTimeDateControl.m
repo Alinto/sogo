@@ -67,20 +67,20 @@
 - (NSString *)label {
   return label;
 }
+
 - (void)setDate:(NSCalendarDate *)_date {
   if (!_date)
     _date = [NSCalendarDate date];
-  [self _setDate: [_date driftedDate]];
+  [_date setTimeZone: [[self clientObject] userTimeZone]];
+  [self _setDate: _date];
 
-  NSLog (@"date Hour, before: %d; after: %d (tz: %@)",
-         [_date hourOfDay], [[_date driftedDate] hourOfDay],
-         [[_date timeZone] timeZoneName]);
-  [self setHour:[NSNumber numberWithInt:[_date hourOfDay]]];
-  [self setMinute:[NSNumber numberWithInt:[_date minuteOfHour]]];
-  [self setYear:[NSNumber numberWithInt:[_date yearOfCommonEra]]];
-  [self setMonth:[NSNumber numberWithInt:[_date monthOfYear]]];
-  [self setDay:[NSNumber numberWithInt:[_date dayOfMonth]]];
+  [self setHour: [NSNumber numberWithInt: [_date hourOfDay]]];
+  [self setMinute: [NSNumber numberWithInt: [_date minuteOfHour]]];
+  [self setYear: [NSNumber numberWithInt: [_date yearOfCommonEra]]];
+  [self setMonth: [NSNumber numberWithInt: [_date monthOfYear]]];
+  [self setDay: [NSNumber numberWithInt: [_date dayOfMonth]]];
 }
+
 - (void)_setDate:(NSCalendarDate *)_date {
   ASSIGN(date, _date);
 }
@@ -260,7 +260,7 @@
       d = [NSCalendarDate dateWithYear: _year month:_month day:_day
                           hour:_hour minute:_minute second:_second
                           timeZone: [[self clientObject] userTimeZone]];
-      [self _setDate: [d adjustedDate]];
+      [self _setDate: d];
     }
 }
 

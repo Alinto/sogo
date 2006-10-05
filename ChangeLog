@@ -1,5 +1,9 @@
 2006-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
+	-setDayStartHour:aStartHour]): specifies the user timezone on the
+	given date.
+
 	* UI/Scheduler/UIxAppointmentEditor.m: indicate DTSTAMP with "GMT"
 	as timezone.
 
