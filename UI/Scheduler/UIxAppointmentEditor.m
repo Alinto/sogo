@@ -490,7 +490,7 @@
     @"UID:%@\r\n"
     @"CLASS:PUBLIC\r\n"
     @"STATUS:CONFIRMED\r\n" /* confirmed by default */
-    @"DTSTAMP:%@\r\n"
+    @"DTSTAMP:%@Z\r\n"
     @"DTSTART:%@\r\n"
     @"DTEND:%@\r\n"
     @"TRANSP:%@\r\n"
@@ -501,7 +501,7 @@
     @"END:VEVENT\r\n"
     @"END:VCALENDAR";
 
-  NSCalendarDate *lStartDate, *lEndDate;
+  NSCalendarDate *lStartDate, *lEndDate, *stamp;
   NSString *template, *s;
   unsigned minutes;
 
@@ -515,13 +515,16 @@
   lStartDate = [self selectedDate];
   lEndDate   = [lStartDate dateByAddingYears:0 months:0 days:0
                            hours:0 minutes:minutes seconds:0];
+
+  stamp = [NSCalendarDate calendarDate];
+  [stamp setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   
   s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
                          [[self clientObject] nameInContainer],
-                         [[NSCalendarDate date] iCalFormattedString],
-                         [lStartDate iCalFormattedString],
-                         [lEndDate iCalFormattedString],
+                         [stamp iCalFormattedDateTimeString],
+                         [lStartDate iCalFormattedDateTimeString],
+                         [lEndDate iCalFormattedDateTimeString],
                          [self transparency],
                          [self iCalOrganizerString],
                          s];
