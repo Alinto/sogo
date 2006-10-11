@@ -10,8 +10,10 @@ Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 
 Appointments_OBJC_FILES = \
 	Product.m			\
+	NSArray+Appointments.m		\
 	\
 	SOGoAppointmentObject.m		\
+	SOGoTaskObject.m		\
 	SOGoAppointmentFolder.m		\
 	SOGoGroupAppointmentFolder.m	\
 	SOGoFreeBusyObject.m		\

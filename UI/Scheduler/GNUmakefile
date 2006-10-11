@@ -21,6 +21,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxComponent+Agenor.m		\
 	UIxCalView.m			\
 	UIxCalAptListView.m		\
+	UIxCalTasksListView.m		\
 	UIxCalDayView.m			\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
@@ -38,19 +39,18 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalInlineMonthOverview.m	\
 	UIxAppointmentView.m		\
 	UIxAppointmentEditor.m		\
+	UIxAppointmentProposal.m	\
+	UIxTaskView.m		\
+	UIxTaskEditor.m		\
+	UIxTaskProposal.m	\
 	UIxCalSelectTab.m		\
 	UIxCalDateLabel.m		\
 	UIxCalBackForthNavView.m	\
-	UIxAppointmentProposal.m	\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
 	UIxCalInlineAptView.m		\
 	UIxCalScheduleOverview.m	\
 	UIxCalParticipationStatusView.m	\
-#	UIxCalDayPrintview.m		\
-#	UIxCalWeekPrintview.m		\
-#	UIxCalMonthPrintview.m		\
-#	UIxAppointmentPrintview.m	\
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\
