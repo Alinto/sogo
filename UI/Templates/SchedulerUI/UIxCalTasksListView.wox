@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="yes"?>
+  <container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
+    <h2>Tasks</h2>
+    <label><input class="checkBox"
+        var:checked="shouldHideCompletedTasks"
+        type="checkbox"
+        onclick="return onHideCompletedTasks(this);"
+        /><var:string label:value="Hide completed tasks"
+        /></label>
+    <ul id="tasksList">
+      <var:foreach list="fetchCoreTasksInfos" item="currentTask"
+        ><var:if condition="shouldDisplayCurrentTask"
+          ><li var:id="currentTask.c_name"
+            var:class="currentStatusClass"
+            onmousedown="return false;"
+            onclick="return onRowClick(event);"
+            ondblclick="return editDoubleClickedEvent(this);"
+            ><input class="checkBox"
+              var:checked="isCurrentTaskCompleted"
+              type="checkbox"
+              onchange="return updateTaskStatus(this);"
+              /><var:string value="currentTask.title" const:escapeHTML="NO"
+                /></li></var:if>
+      </var:foreach>
+    </ul>
+  </container>

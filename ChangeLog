@@ -1,5 +1,8 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalTasksListView.[hm]: clone of
+	UIxCalAptListView adapted for the handling of tasks.
+
 	* UI/Scheduler/UIxTaskProposal.[hm],
 	UI/Scheduler/UIxTaskView.[hm], UI/Scheduler/UIxTaskEditor.[hm]:
 	clones of the UIxAppointment* classes for the handling of tasks.
