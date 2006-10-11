@@ -1,0 +1,139 @@
+<?xml version='1.0' standalone='yes'?>
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    const:popup="YES"
+    title="name"
+    >
+    <script type="text/javascript" rsrc:src="skycalendar.js">
+    </script>
+
+    <form var:href="saveUrl" name="editform">
+
+      <var:if condition="hasErrorText">
+        <p style="background-color: #AA0000;">
+          <var:string value="errorText" />
+        </p>
+        <hr />
+      </var:if>
+
+      <div>
+        <label><var:string label:value="Title" />
+          <input type="text" name="summary" id="summary"
+            class="textField"
+            var:value="title"
+            /></label>
+        <label><var:string label:value="Location" />
+          <input type="text" name="location" id="location"
+            class="textField"
+            var:value="location"
+            /></label>
+        <label id="isPrivate"><input class="checkBox"
+            type="checkbox" var:selection="isPrivate"
+            var:checked="isPrivate"
+            /><var:string label:value="is private" /></label>
+        <span class="checkBoxList"><var:string label:value="Date" />
+          <span class="content"><var:component className="UIxTimeDateControl"
+            const:controlID="startTime"
+            date="taskStartDate"
+            const:dayStartHour="8"
+            const:dayEndHour="18"
+            /></span></span>
+        <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
+          ><var:string label:value="Show Details" /></a>
+        <span class="checkBoxList"><var:string label:value="Due Time" />
+          <span class="content"><var:component className="UIxTimeDateControl"
+            const:controlID="endTime"
+            date="taskDueDate"
+            const:dayStartHour="8"
+            const:dayEndHour="18"
+            /></span></span>
+      </div>
+      
+      <div id="details">
+        <label id="conflictsLabel"><input type="checkbox"
+            class="checkBox"
+            var:selection="checkForConflicts"
+            var:checked="checkForConflicts"
+            /><var:string label:value="check for conflicts"
+            /></label>
+        <label><var:string label:value="Cycle"
+            />
+          <span class="content"
+            ><var:popup list="cycles" item="item"
+              label:string="$cycleLabel"
+              selection="cycle"
+            const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
+              /><span id="cycleSelectionFirstLevel"
+              ><var:popup list="cycleEnds" item="item"
+                label:string="$item" value="item"
+                selection="cycleEnd"
+                const:onChange="toggleCycleVisibility(this, 'cycleSelectionSecondLevel', 'cycle_end_never');"
+                const:id="cycle_end_mode_selection"
+                /><span id="cycleSelectionSecondLevel"
+                ><var:component className="UIxTimeDateControl"
+                  date="cycleUntilDate"
+                  label="foo"
+                  const:controlID="cycleUntilDate"
+                  const:displayTimeControl="NO"
+                  /></span
+                ></span
+              ></span
+            ></label>
+        
+        <span class="checkBoxList" id="participantsCB"><var:string label:value="Participants" />
+          <span class="content"><var:component className="UIxContactSelector"
+              const:selectorId="participants"
+              contacts="participants"
+              /></span></span>
+        
+        <span class="checkBoxList"
+          ><var:string label:value="Categories"
+            /><span class="content"><var:checkbox-list list="categoryItems"
+              item="item"
+              suffix="itemCategoryText"
+              selections="categories"
+              /></span></span>
+
+        <label><var:string label:value="Priority" />
+        <var:popup list="priorities" item="item"
+          string="itemPriorityText" selection="priority" /></label>
+        
+        <label><var:string label:value="Comment"
+            /><textarea name="comment" var:value="comment" /></label>
+      </div>
+
+      <div id="buttons">
+        <input
+          type="submit"
+          class="button"
+          label:value="Save"
+          name="submittask"
+          onclick="submitTask(this.form);" />
+        <input
+          type="submit"
+          class="button"
+          label:value="Cancel"
+          name="cancel"
+          onclick="window.close(); return false;" />
+        <var:if condition="isUIxDebugEnabled">
+          <input type="submit"
+            class="button"
+            value="Test" name="test:method" />
+        </var:if>
+      </div>
+
+      <input type="hidden" name="ical" var:value="iCalString" />
+      <!-- input type="hidden" id="jsaction" -->
+    </form>
+    <!--
+    <var:if condition="canEditTask" const:negate="YES">
+    Forbidden ... <var:redirect const:setURL="view" />
+  </var:if>
+    -->
+  </var:component>
