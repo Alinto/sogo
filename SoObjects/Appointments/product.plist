@@ -11,11 +11,16 @@
     SOGoAppointmentFolder = {
       superclass    = "SOGoFolder";
     };
+
     SOGoGroupAppointmentFolder = {
       superclass    = "SOGoAppointmentFolder";
     };
 
     SOGoAppointmentObject = {
+      superclass    = "SOGoContentObject";
+    };
+
+    SOGoTaskObject = {
       superclass    = "SOGoContentObject";
     };
 

@@ -49,6 +49,10 @@
           protectedBy = "View";
           pageName    = "UIxCalAptListView"; 
         };
+        taskslist = {
+          protectedBy = "View";
+          pageName    = "UIxCalTasksListView"; 
+        };
         dayview = {
           protectedBy = "View";
           pageName    = "UIxCalDayView"; 
@@ -74,10 +78,6 @@
           protectedBy = "View";
           pageName    = "UIxCalDayListview"; 
         };
-        dayprintview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalDayPrintview"; 
-        };
         weekoverview = { 
           protectedBy = "View";
           pageName    = "UIxCalWeekOverview"; 
@@ -94,25 +94,22 @@
           protectedBy = "View";
           pageName    = "UIxCalWeekColumnsview"; 
         };
-        weekprintview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalWeekPrintview"; 
-        };
         monthoverview = { 
           protectedBy = "View";
           pageName    = "UIxCalMonthOverview"; 
-        };
-        monthprintview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalMonthPrintview"; 
         };
         yearoverview = { 
           protectedBy = "View";
           pageName    = "UIxCalYearOverview"; 
         };
-        new = { 
+        newevent = { 
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
+          actionName  = "new";
+        };
+        newtask = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
           actionName  = "new";
         };
         show = { 
@@ -134,10 +131,6 @@
 
     SOGoAppointmentObject = {
       methods = {
-        printview = { 
-          protectedBy = "View";
-          pageName    = "UIxAppointmentPrintview"; 
-        };
         view = { 
           protectedBy = "View";
           pageName    = "UIxAppointmentView"; 
@@ -151,7 +144,16 @@
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
         };
+        editAsAppointment = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+        };
         save = { 
+          protectedBy = "View";
+          pageName    = "UIxAppointmentEditor"; 
+          actionName  = "save";
+        };
+        saveAsAppointment = {
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "save";
@@ -169,6 +171,58 @@
         test = { 
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
+          actionName  = "test";
+        };
+      };
+    };
+
+    SOGoTaskObject = {
+      methods = {
+        view = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskView"; 
+        };
+        delete = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskView"; 
+          actionName  = "delete";
+        };
+        edit = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+        };
+        editAsTask = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+        };
+        save = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+          actionName  = "save";
+        };
+        saveAsTask = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+          actionName  = "save";
+        };
+        changeStatus = {
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+          actionName  = "changeStatus";
+        };
+        accept = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+          actionName  = "accept";
+        };
+        decline = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
+          actionName  = "decline";
+        };
+        test = { 
+          protectedBy = "View";
+          pageName    = "UIxTaskEditor"; 
           actionName  = "test";
         };
       };

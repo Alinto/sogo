@@ -2,11 +2,12 @@
   ( { link = "#";
       isSafe = NO;
       label = "New Event";
-      onclick = "return newEvent(this);";
+      onclick = "return newEvent(this, 'event');";
       image = "new-event.png"; },
     { link  = "new_task";
-      enabled = "NO";
       label="New Task";
+      image = "new-task.png";
+      onclick = "return newEvent(this, 'task');";
       image = "new-task.png"; },
     { link  = "edit";
       label="Edit";
