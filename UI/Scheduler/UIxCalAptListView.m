@@ -158,11 +158,26 @@
 
   intDate = [[currentAppointment objectForKey: @"startdate"] intValue];
   date = [NSCalendarDate dateWithTimeIntervalSince1970: intDate];
+  [date setTimeZone: [[self clientObject] userTimeZone]];
 
   return [NSString stringWithFormat: @"%d%.2d%.2d",
                    [date yearOfCommonEra],
                    [date monthOfYear],
                    [date dayOfMonth]];
+}
+
+- (NSString *) currentSerialHour
+{
+  NSCalendarDate *date;
+  int intDate;
+
+  intDate = [[currentAppointment objectForKey: @"startdate"] intValue];
+  date = [NSCalendarDate dateWithTimeIntervalSince1970: intDate];
+  [date setTimeZone: [[self clientObject] userTimeZone]];
+
+  return [NSString stringWithFormat: @"%.2d%.2d",
+                   [date hourOfDay],
+                   [date minuteOfHour]];
 }
 
 @end
