@@ -100,21 +100,20 @@ function validateAptEditor() {
 }
 
 function submitMeeting(thisForm) {
-  var action = document.getElementById('jsaction');
-  action.setAttribute("name", "save:method");
-  action.setAttribute("value", "save");
+//   var action = document.getElementById('jsaction');
+//   action.setAttribute("name", "save:method");
+//   action.setAttribute("value", "save");
 
-  window.opener.log ("form: " + thisForm);
-
-  window.opener.log ("validating...");
+  log ("form: " + thisForm);
+  log ("validating...");
   if (validateAptEditor()) {
-    window.opener.log ("submitting");
+    log ("submitting");
     thisForm.submit();
-    window.opener.log ("setting timeout...");
+    log ("setting timeout...");
     window.opener.setTimeout('refreshAppointments();', 200);
-    window.opener.log ("we close...");
+    log ("we close...");
     window.close();
-    window.opener.log ("closed");
+    log ("closed");
   }
 }
 
