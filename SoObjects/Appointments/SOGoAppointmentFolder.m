@@ -19,16 +19,20 @@
   02111-1307, USA.
 */
 
-#include "SOGoAppointmentFolder.h"
-#include <SOGo/SOGoCustomGroupFolder.h>
-#include <SOGo/AgenorUserManager.h>
-#include <GDLContentStore/GCSFolder.h>
-#include <SaxObjC/SaxObjC.h>
-#include <NGCards/NGCards.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-#include "common.h"
+#import <SOGo/SOGoCustomGroupFolder.h>
+#import <SOGo/AgenorUserManager.h>
+#import <GDLContentStore/GCSFolder.h>
+#import <SaxObjC/SaxObjC.h>
+#import <NGCards/NGCards.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+#import "common.h"
+
+#import <SOGo/NSString+URL.h>
 
 #import "SOGoAppointmentObject.h"
+#import "SOGoTaskObject.h"
+
+#import "SOGoAppointmentFolder.h"
 
 #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
 @interface NSDate(UsedPrivates)
@@ -121,25 +125,7 @@ static NSNumber   *sharedYes = nil;
 
 - (BOOL) isValidAppointmentName: (NSString *)_key
 {
-  if ([_key length] == 0)
-    return NO;
-  
-  return YES;
-}
-
-- (id) appointmentWithName: (NSString *)_key
-                 inContext: (id)_ctx
-{
-  static Class aptClass = Nil;
-  
-  if (aptClass == Nil)
-    aptClass = NSClassFromString(@"SOGoAppointmentObject");
-  if (aptClass == Nil) {
-    [self errorWithFormat:@"missing SOGoAppointmentObject class!"];
-    return nil;
-  }
-  
-  return [aptClass objectWithName: _key inContainer: self];
+  return ([_key length] != 0);
 }
 
 - (id) lookupActionForCalDAVMethod: (NSString *)_key
@@ -158,17 +144,17 @@ static NSNumber   *sharedYes = nil;
   return invocation;
 }
 
-- (void) appendAppointment: (NSDictionary *) appointment
-               withBaseURL: (NSString *) baseURL
-          toREPORTResponse: (WOResponse *) r
+- (void) appendObject: (NSDictionary *) object
+          withBaseURL: (NSString *) baseURL
+     toREPORTResponse: (WOResponse *) r
 {
-  SOGoAppointmentObject *realApt;
+  SOGoContentObject *ocsObject;
   NSString *c_name, *etagLine, *dataLine;
 
-  c_name = [appointment objectForKey: @"c_name"];
+  c_name = [object objectForKey: @"c_name"];
 
-  realApt = [SOGoAppointmentObject objectWithName: c_name
-                                   inContainer: self];
+  ocsObject = [SOGoContentObject objectWithName: c_name
+                                 inContainer: self];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];
@@ -181,7 +167,7 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: @"    <D:propstat>\r\n"];
   [r appendContentString: @"      <D:prop>\r\n"];
   etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                       [realApt davEntityTag]];
+                       [ocsObject davEntityTag]];
   [r appendContentString: etagLine];
   [r appendContentString: @"      </D:prop>\r\n"];
   [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
@@ -190,7 +176,7 @@ static NSNumber   *sharedYes = nil;
   dataLine
     = [NSString
         stringWithFormat: @"    <C:calendar-data>%@</C:calendar-data>\r\n",
-        [realApt contentAsString]];
+        [ocsObject contentAsString]];
   [r appendContentString: dataLine];
 
   [r appendContentString: @"  </D:response>\r\n"];
@@ -201,6 +187,7 @@ static NSNumber   *sharedYes = nil;
   WOResponse *r;
   NSString *baseURL, *content;
   NSArray *apts;
+  NSMutableArray *components;
   NSEnumerator *appointments;
   NSDictionary *appointment;
 
@@ -208,12 +195,6 @@ static NSNumber   *sharedYes = nil;
 // FIXME: no, just kidding... actually we should take the date range into
 // account otherwise all events will be returned. We should also manage the
 // VTODO... and well, have a clean implementation.
-
-  apts
-    = [self fetchCoreInfosFrom:
-              [NSCalendarDate dateWithTimeIntervalSince1970: 0]
-            to:
-              [NSCalendarDate dateWithTimeIntervalSince1970: 0x7fffffff]];
 
   baseURL = [self baseURLInContext: context];
   r = [context response];
@@ -229,22 +210,78 @@ static NSNumber   *sharedYes = nil;
   content = [[NSString alloc] initWithData: [[context request] content]
                               encoding: NSUTF8StringEncoding];
   [content autorelease];
+
+  components = [NSMutableArray new];
   if ([content indexOfString: @"VEVENT"] != NSNotFound
       || [content indexOfString: @"vevent"] != NSNotFound)
+    [components addObject: @"vevent"];
+  if ([content indexOfString: @"VTODO"] != NSNotFound
+      || [content indexOfString: @"vtodo"] != NSNotFound)
+    [components addObject: @"vtodo"];
+
+  apts = [self fetchCoreInfosFrom: nil to: nil component: components];
+  [components release];
+  appointments = [apts objectEnumerator];
+  appointment = [appointments nextObject];
+  while (appointment)
     {
-      appointments = [apts objectEnumerator];
+      [self appendObject: appointment
+            withBaseURL: baseURL
+            toREPORTResponse: r];
       appointment = [appointments nextObject];
-      while (appointment)
-        {
-          [self appendAppointment: appointment
-                withBaseURL: baseURL
-                toREPORTResponse: r];
-          appointment = [appointments nextObject];
-        }
     }
   [r appendContentString:@"</D:multistatus>\r\n"];
 
   return r;
+}
+
+- (Class) objectClassForContent: (NSString *) content
+{
+  iCalCalendar *calendar;
+  NSArray *elements;
+  NSString *firstTag;
+  Class objectClass;
+
+  objectClass = Nil;
+
+  calendar = [iCalCalendar parseSingleFromSource: content];
+  if (calendar)
+    {
+      elements = [calendar allObjects];
+      if ([elements count])
+        {
+          firstTag = [[[elements objectAtIndex: 0] tag] uppercaseString];
+          if ([firstTag isEqualToString: @"VEVENT"])
+            objectClass = [SOGoAppointmentObject class];
+          else if ([firstTag isEqualToString: @"VTODO"])
+            objectClass = [SOGoTaskObject class];
+        }
+    }
+
+  return objectClass;
+}
+
+- (id) deduceObjectForName: (NSString *)_key
+                 inContext: (id)_ctx
+{
+  WORequest *request;
+  NSString *method;
+  Class objectClass;
+  id obj;
+
+  request = [_ctx request];
+  method = [request method];
+  if ([method isEqualToString: @"PUT"])
+    objectClass = [self objectClassForContent: [request contentAsString]];
+  else
+    objectClass = [self objectClassForResourceNamed: _key];
+
+  if (objectClass)
+    obj = [objectClass objectWithName: _key inContainer: self];
+  else
+    obj = nil;
+
+  return obj;
 }
 
 - (id) lookupName: (NSString *)_key
@@ -252,19 +289,36 @@ static NSNumber   *sharedYes = nil;
           acquire: (BOOL)_flag
 {
   id obj;
-  
-  /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
-  
-  if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
-    return [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
+  NSString *url;
 
-  if ([self isValidAppointmentName:_key])
-    return [self appointmentWithName:_key inContext:_ctx];
-  
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+  NSLog (@"lookup name '%@' in apt folder", _key);
+
+  /* first check attributes directly bound to the application */
+  obj = [super lookupName:_key inContext:_ctx acquire:NO];
+  if (!obj)
+    {
+      if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
+        obj
+          = [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
+      else if ([self isValidAppointmentName:_key])
+        {
+          url = [[[_ctx request] uri] urlWithoutParameters];
+          if ([url hasSuffix: @"AsTask"])
+            obj = [SOGoTaskObject objectWithName: _key
+                                  inContainer: self];
+          else if ([url hasSuffix: @"AsAppointment"])
+            obj = [SOGoAppointmentObject objectWithName: _key
+                                         inContainer: self];
+          else
+            obj = [self deduceObjectForName: _key
+                        inContext: _ctx];
+        }
+    }
+
+  if (!obj)
+    obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+
+  return obj;
 }
 
 /* vevent UID handling */
@@ -325,6 +379,33 @@ static NSNumber   *sharedYes = nil;
     [self->uidToFilename setObject:rname forKey:_uid];
   
   return rname;
+}
+
+- (Class) objectClassForResourceNamed: (NSString *) c_name
+{
+  EOQualifier *qualifier;
+  NSArray *records;
+  NSString *component;
+  Class objectClass;
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", c_name];
+  records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"component"]
+                              matchingQualifier: qualifier];
+
+  if ([records count])
+    {
+      component = [[records objectAtIndex:0] valueForKey: @"component"];
+      if ([component isEqualToString: @"vevent"])
+        objectClass = [SOGoAppointmentObject class];
+      else if ([component isEqualToString: @"vtodo"])
+        objectClass = [SOGoTaskObject class];
+      else
+        objectClass = Nil;
+    }
+  else
+    objectClass = Nil;
+  
+  return objectClass;
 }
 
 /* fetching */
@@ -396,7 +477,7 @@ static NSNumber   *sharedYes = nil;
     return;
   }
 
-  row = [self fixupRecord:_row fetchRange:_r];
+  row = [self fixupRecord:_row fetchRange: _r];
   [row removeObjectForKey:@"cycleinfo"];
   [row setObject:sharedYes forKey:@"isRecurrentEvent"];
 
@@ -467,15 +548,38 @@ static NSNumber   *sharedYes = nil;
   return ma;
 }
 
+- (NSString *) _sqlStringForComponent: (id) _component
+{
+  NSString *sqlString;
+  NSArray *components;
+
+  if (_component)
+    {
+      if ([_component isKindOfClass: [NSArray class]])
+        components = _component;
+      else
+        components = [NSArray arrayWithObject: _component];
+
+      sqlString
+        = [NSString stringWithFormat: @" AND (component = '%@')",
+                    [components componentsJoinedByString: @"' OR component = '"]];
+    }
+  else
+    sqlString = @"";
+
+  return sqlString;
+}
+
 - (NSArray *) fetchFields: (NSArray *) _fields
                fromFolder: (GCSFolder *) _folder
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate 
+                component: (id) _component
 {
-  EOQualifier         *qualifier;
-  NSMutableArray      *fields, *ma = nil;
-  NSArray             *records;
-  NSString            *sql;
+  EOQualifier *qualifier;
+  NSMutableArray *fields, *ma = nil;
+  NSArray *records;
+  NSString *sql, *dateSqlString, *componentSqlString;
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -484,65 +588,84 @@ static NSNumber   *sharedYes = nil;
     return nil;
   }
   
-  r = [NGCalendarDateRange calendarDateRangeWithStartDate:_startDate
-                           endDate:_endDate];
+  if (_startDate && _endDate)
+    {
+      r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
+                               endDate: _endDate];
+      dateSqlString
+        = [NSString stringWithFormat: @" AND (startdate > %d) AND (enddate < %d)",
+                    (unsigned int) [_startDate timeIntervalSince1970],
+                    (unsigned int) [_endDate timeIntervalSince1970]];
+    }
+  else
+    {
+      r = nil;
+      dateSqlString = @"";
+    }
+
+  componentSqlString = [self _sqlStringForComponent: _component];
 
   /* prepare mandatory fields */
 
-  fields = [NSMutableArray arrayWithArray:_fields];
-  [fields addObject:@"uid"];
-  [fields addObject:@"startdate"];
-  [fields addObject:@"enddate"];
-  
+  fields = [NSMutableArray arrayWithArray: _fields];
+  [fields addObject: @"uid"];
+  [fields addObject: @"startdate"];
+  [fields addObject: @"enddate"];
+
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
-  
-  sql = [NSString stringWithFormat:@"(startdate < %d) AND (enddate > %d)"
-                                   @" AND (iscycle = 0)",
-		  (unsigned int)[_endDate   timeIntervalSince1970],
-		  (unsigned int)[_startDate timeIntervalSince1970]];
+
+  sql = [NSString stringWithFormat: @"(iscycle = 0)%@%@",
+                  dateSqlString, componentSqlString];
 
   /* fetch non-recurrent apts first */
-  qualifier = [EOQualifier qualifierWithQualifierFormat:sql];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  records   = [_folder fetchFields:fields matchingQualifier:qualifier];
-  if (records != nil) {
-    records = [self fixupRecords:records fetchRange:r];
-    if (logger)
-      [self debugWithFormat:@"fetched %i records: %@",[records count],records];
-    ma = [NSMutableArray arrayWithArray:records];
-  }
-  
+  records = [_folder fetchFields: fields matchingQualifier: qualifier];
+  if (records)
+    {
+      if (r)
+        records = [self fixupRecords: records fetchRange: r];
+      if (logger)
+        [self debugWithFormat: @"fetched %i records: %@",
+              [records count], records];
+      ma = [NSMutableArray arrayWithArray: records];
+    }
+
   /* fetch recurrent apts now */
-  sql = [NSString stringWithFormat:@"(startdate < %d) AND (cycleenddate > %d)"
-                                   @" AND (iscycle = 1)",
-		  (unsigned int)[_endDate   timeIntervalSince1970],
-		  (unsigned int)[_startDate timeIntervalSince1970]];
-  qualifier = [EOQualifier qualifierWithQualifierFormat:sql];
+  sql = [NSString stringWithFormat: @"(iscycle = 1)%@%@",
+                  dateSqlString, componentSqlString];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  [fields addObject:@"cycleinfo"];
+  [fields addObject: @"cycleinfo"];
 
-  records = [_folder fetchFields:fields matchingQualifier:qualifier];
-  if (records != nil) {
-    if (logger)
-      [self debugWithFormat:@"fetched %i cyclic records: %@",
-        [records count], records];
-    records = [self fixupCyclicRecords:records fetchRange:r];
-    if (!ma) ma = [NSMutableArray arrayWithCapacity:[records count]];
-    [ma addObjectsFromArray:records];
-  }
-  else if (ma == nil) {
-    [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
-    return nil;
-  }
+  records = [_folder fetchFields: fields matchingQualifier: qualifier];
+  if (records)
+    {
+      if (logger)
+        [self debugWithFormat: @"fetched %i cyclic records: %@",
+              [records count], records];
+      if (r)
+        records = [self fixupCyclicRecords: records fetchRange: r];
+      if (!ma)
+        ma = [NSMutableArray arrayWithCapacity: [records count]];
+      [ma addObjectsFromArray: records];
+    }
+  else if (!ma)
+    {
+      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+      return nil;
+    }
+
   /* NOTE: why do we sort here?
      This probably belongs to UI but cannot be achieved as fast there as
      we can do it here because we're operating on a mutable array -
      having the apts sorted is never a bad idea, though
   */
-  [ma sortUsingSelector:@selector(compareAptsAscending:)];
+  [ma sortUsingSelector: @selector (compareAptsAscending:)];
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
+
   return ma;
 }
 
@@ -550,6 +673,7 @@ static NSNumber   *sharedYes = nil;
 - (NSArray *) fetchFields: (NSArray *) _fields
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate 
+                component: (id) _component
 {
   GCSFolder *folder;
   
@@ -558,8 +682,10 @@ static NSNumber   *sharedYes = nil;
       __PRETTY_FUNCTION__];
     return nil;
   }
-  return [self fetchFields:_fields fromFolder:folder
-               from:_startDate to:_endDate];
+
+  return [self fetchFields: _fields fromFolder: folder
+               from: _startDate to: _endDate
+               component: _component];
 }
 
 
@@ -570,44 +696,28 @@ static NSNumber   *sharedYes = nil;
   if (infos == nil) {
     infos = [[NSArray alloc] initWithObjects:@"partmails", @"partstates", nil];
   }
-  return [self fetchFields:infos from:_startDate to:_endDate];
+  return [self fetchFields: infos
+               from: _startDate to: _endDate
+               component: nil];
 }
 
-
-- (NSArray *) fetchOverviewInfosFrom: (NSCalendarDate *) _startDate
-                                  to: (NSCalendarDate *) _endDate
-{
-  static NSArray *infos = nil; // TODO: move to a plist file
-  if (infos == nil) {
-    infos = [[NSArray alloc] initWithObjects:
-                               @"c_name", @"title", 
-                             @"location", @"orgmail", @"status", @"ispublic",
-                             @"isallday", @"priority",
-                             @"partmails", @"partstates",
-                             nil];
-  }
-  return [self fetchFields:infos
-               from:_startDate
-               to:_endDate];
-}
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
-                              to: (NSCalendarDate *) _endDate 
+                              to: (NSCalendarDate *) _endDate
+                       component: (id) _component
 {
   static NSArray *infos = nil; // TODO: move to a plist file
-  if (infos == nil) {
-    infos = [[NSArray alloc] initWithObjects:
-                               @"c_name",
-                               @"title", @"location", @"orgmail",
-                               @"status", @"ispublic",
-                               @"isallday", @"isopaque",
-                               @"participants", @"partmails",
-                               @"partstates", @"sequence", @"priority", nil];
-  }
 
-  return [self fetchFields:infos
-               from:_startDate
-               to:_endDate];
+  if (!infos)
+    infos = [[NSArray alloc] initWithObjects:
+                               @"c_name", @"component",
+                             @"title", @"location", @"orgmail",
+                             @"status", @"ispublic",
+                             @"isallday", @"isopaque",
+                             @"participants", @"partmails",
+                             @"partstates", @"sequence", @"priority", nil];
+
+  return [self fetchFields: infos from: _startDate to: _endDate component: _component];
 }
 
 /* URL generation */

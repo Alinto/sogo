@@ -1,5 +1,16 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): added a "component" parameter to match the query against the specified component types. Made startDate and endDate optional by ignoring them altogether in the query whenever one of them is nil.
+	([SOGoAppointmentFolder -doCalendarQuery:context]): fetch
+	components of type "vtodo" as well as "vevent".
+	([SOGoAppointmentFolder -lookupName:inContext:acquire:]): if the
+	url specified ends with AsTask or AsAppointment, returns the
+	an object of the appropriate class, otherwise deduce it from its
+	content if the HTTP method is "PUT", otherwise read its type from
+	the quick table.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromTodo:_task]): extract quick fields from
 	tasks.

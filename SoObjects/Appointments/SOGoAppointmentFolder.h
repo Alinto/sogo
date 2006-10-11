@@ -48,53 +48,60 @@
 
 /* selection */
 
-- (NSArray *)calendarUIDs;
+- (NSArray *) calendarUIDs;
 
 /* vevent UID handling */
 
-- (NSString *)resourceNameForEventUID:(NSString *)_uid;
+- (NSString *) resourceNameForEventUID: (NSString *) _uid;
+- (Class) objectClassForResourceNamed: (NSString *) c_name;
 
 /* fetching */
 
-- (NSArray *)fetchFields:(NSArray *)_fields
-  fromFolder:(GCSFolder *)_folder
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSArray *) fetchFields: (NSArray *) _fields
+               fromFolder: (GCSFolder *) _folder
+                     from: (NSCalendarDate *) _startDate
+                       to: (NSCalendarDate *) _endDate
+                component: (id) _component;
 
-- (NSArray *)fetchFields:(NSArray *)_fields
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSArray * ) fetchFields: (NSArray *) _fields
+                      from: (NSCalendarDate *) _startDate
+                        to: (NSCalendarDate *) _endDate
+                 component: (id) _component;
 
-- (NSArray *)fetchCoreInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
+                              to: (NSCalendarDate *) _endDate
+                       component: (id) _component;
 
-- (NSArray *)fetchOverviewInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
-
-- (NSArray *)fetchFreebusyInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+                                  to: (NSCalendarDate *) _endDate;
 
 /* URL generation */
 
-- (NSString *)baseURLForAptWithUID:(NSString *)_uid inContext:(id)_ctx;
+- (NSString *) baseURLForAptWithUID: (NSString *) _uid
+                          inContext: (id) _ctx;
 
 /* folder management */
 
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx;
+- (id) lookupHomeFolderForUID: (NSString *) _uid
+                    inContext: (id) _ctx;
 
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx;
-- (NSArray *)lookupFreeBusyObjectsForUIDs:(NSArray *)_uids inContext:(id)_ctx;
+- (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
+                                 inContext: (id) _ctx;
+- (NSArray *) lookupFreeBusyObjectsForUIDs: (NSArray *) _uids
+                                 inContext: (id) _ctx;
 
-- (NSArray *)uidsFromICalPersons:(NSArray *)_persons;
-- (NSArray *)lookupCalendarFoldersForICalPerson:(NSArray *)_persons
-  inContext:(id)_ctx;
+- (NSArray *) uidsFromICalPersons: (NSArray *) _persons;
+- (NSArray *) lookupCalendarFoldersForICalPerson: (NSArray *) _persons
+                                       inContext: (id) _ctx;
 
-- (id)lookupGroupFolderForUIDs:(NSArray *)_uids         inContext:(id)_ctx;
-- (id)lookupGroupCalendarFolderForUIDs:(NSArray *)_uids inContext:(id)_ctx;
+- (id) lookupGroupFolderForUIDs: (NSArray *) _uids
+                      inContext: (id) _ctx;
+- (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
+                              inContext: (id) _ctx;
 
 /* bulk fetches */
 
-- (NSArray *)fetchAllSOGoAppointments;
+- (NSArray *) fetchAllSOGoAppointments;
 
 @end
 
