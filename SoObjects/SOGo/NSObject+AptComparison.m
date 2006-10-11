@@ -26,32 +26,49 @@
 
 @implementation NSObject (SOGoAptComparison)
 
-- (NSComparisonResult)compareAptsAscending:(id)_other {
+- (NSComparisonResult) compareAptsAscending: (id) _other
+{
   NSCalendarDate      *sd, *ed;
   NGCalendarDateRange *r1, *r2;
   NSComparisonResult  result;
   NSTimeInterval      t1, t2;
-  
-  sd = [self valueForKey:@"startDate"];
-  ed = [self valueForKey:@"endDate"];
-  r1 = [NGCalendarDateRange calendarDateRangeWithStartDate:sd
-                            endDate:ed];
-  
-  sd = [_other valueForKey:@"startDate"];
-  ed = [_other valueForKey:@"endDate"];
-  r2 = [NGCalendarDateRange calendarDateRangeWithStartDate:sd
-                            endDate:ed];
-  
-  result = [r1 compare:r2];
-  if (result != NSOrderedSame)
-    return result;
-  
-  t1 = [r1 duration];
-  t2 = [r2 duration];
-  if (t1 == t2)
-    return NSOrderedSame;
-  if (t1 > t2)
-    return NSOrderedDescending;
+
+  sd = [self valueForKey: @"startDate"];
+  ed = [self valueForKey: @"endDate"];
+  if (sd && ed)
+    r1 = [NGCalendarDateRange calendarDateRangeWithStartDate: sd
+                              endDate: ed];
+  else
+    r1 = nil;
+
+  sd = [_other valueForKey: @"startDate"];
+  ed = [_other valueForKey: @"endDate"];
+  if (sd && ed)
+    r2 = [NGCalendarDateRange calendarDateRangeWithStartDate: sd
+                              endDate: ed];
+  else
+    r2 = nil;
+
+  if (r1)
+    if (r2)
+      {
+        result = [r1 compare: r2];
+        if (result != NSOrderedSame)
+          return result;
+        
+        t1 = [r1 duration];
+        t2 = [r2 duration];
+        if (t1 == t2)
+          return NSOrderedSame;
+        if (t1 > t2)
+          return NSOrderedDescending;
+      }
+    else
+      return NSOrderedDescending;
+  else
+    if (!r2)
+      return NSOrderedSame;
+
   return NSOrderedAscending;
 }
 
