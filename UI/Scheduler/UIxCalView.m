@@ -38,13 +38,13 @@ static BOOL shouldDisplayWeekend = NO;
       NSTimeZone *tz;
 
       tz = [[self clientObject] userTimeZone];
-      self->aptFormatter
+      aptFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
-      self->aptTooltipFormatter
+      aptTooltipFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
-      self->privateAptFormatter
+      privateAptFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
-      self->privateAptTooltipFormatter
+      privateAptTooltipFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
       [self configureFormatters];
     }
@@ -53,14 +53,14 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (void) dealloc
 {
-  [self->appointments               release];
-  [self->allDayApts                 release];
-  [self->appointment                release];
-  [self->currentDay                 release];
-  [self->aptFormatter               release];
-  [self->aptTooltipFormatter        release];
-  [self->privateAptFormatter        release];
-  [self->privateAptTooltipFormatter release];
+  [appointments               release];
+  [allDayApts                 release];
+  [appointment                release];
+  [currentDay                 release];
+  [aptFormatter               release];
+  [aptTooltipFormatter        release];
+  [privateAptFormatter        release];
+  [privateAptTooltipFormatter release];
   [super dealloc];
 }
 
@@ -69,18 +69,18 @@ static BOOL shouldDisplayWeekend = NO;
 {
   NSString *title;
 
-  [self->aptFormatter setFullDetails];
-  [self->aptTooltipFormatter setTooltip];
-  [self->privateAptFormatter setPrivateDetails];
-  [self->privateAptTooltipFormatter setPrivateTooltip];
+  [aptFormatter setFullDetails];
+  [aptTooltipFormatter setTooltip];
+  [privateAptFormatter setPrivateDetails];
+  [privateAptTooltipFormatter setPrivateTooltip];
 
   title = [self labelForKey: @"empty title"];
-  [self->aptFormatter setTitlePlaceholder: title];
-  [self->aptTooltipFormatter setTitlePlaceholder: title];
+  [aptFormatter setTitlePlaceholder: title];
+  [aptTooltipFormatter setTitlePlaceholder: title];
 
   title = [self labelForKey: @"private appointment"];
-  [self->privateAptFormatter setPrivateTitle: title];
-  [self->privateAptTooltipFormatter setPrivateTitle: title];
+  [privateAptFormatter setPrivateTitle: title];
+  [privateAptTooltipFormatter setPrivateTitle: title];
 }
 
 - (NSArray *) filterAppointments:(NSArray *) _apts
@@ -137,11 +137,12 @@ static BOOL shouldDisplayWeekend = NO;
 - (void) setAppointments:(NSArray *) _apts
 {
   _apts = [self filterAppointments: _apts];
-  ASSIGN(self->appointments, _apts);
+  ASSIGN(appointments, _apts);
 }
+
 - (NSArray *) appointments
 {
-  return self->appointments;
+  return appointments;
 }
 
 - (void) setAppointment:(id) _apt
@@ -149,7 +150,7 @@ static BOOL shouldDisplayWeekend = NO;
   NSString *mailtoChunk;
   NSString *myEmail;
 
-  ASSIGN(self->appointment, _apt);
+  ASSIGN(appointment, _apt);
 
   /* cache some info about apt for faster access */
   
@@ -157,41 +158,51 @@ static BOOL shouldDisplayWeekend = NO;
   myEmail = [self emailForUser];
   if ([mailtoChunk rangeOfString: myEmail].length > 0)
     {
-      self->aptFlags.isMyApt = YES;
-      self->aptFlags.canAccessApt = YES;
+      aptFlags.isMyApt = YES;
+      aptFlags.canAccessApt = YES;
     }
   else
     {
       NSString *partmails;
 
-      self->aptFlags.isMyApt = NO;
+      aptFlags.isMyApt = NO;
 
       partmails = [_apt valueForKey: @"partmails"];
       if ([partmails rangeOfString: myEmail].length)
-        self->aptFlags.canAccessApt = YES;
+        aptFlags.canAccessApt = YES;
       else
-        self->aptFlags.canAccessApt = [[_apt valueForKey: @"ispublic"] boolValue];
+        aptFlags.canAccessApt = [[_apt valueForKey: @"ispublic"] boolValue];
     }
+}
+
+- (void) setTasks: (NSArray *) _tasks
+{
+  ASSIGN(tasks, _tasks);
+}
+
+- (NSArray *) tasks
+{
+  return tasks;
 }
 
 - (id) appointment
 {
-  return self->appointment;
+  return appointment;
 }
 
 - (BOOL) isMyApt
 {
-  return self->aptFlags.isMyApt ? YES : NO;
+  return aptFlags.isMyApt ? YES : NO;
 }
 
 - (BOOL) canAccessApt
 {
-  return self->aptFlags.canAccessApt ? YES : NO;
+  return aptFlags.canAccessApt ? YES : NO;
 }
 
 - (BOOL) canNotAccessApt
 {
-  return self->aptFlags.canAccessApt ? NO : YES;
+  return aptFlags.canAccessApt ? NO : YES;
 }
 
 - (NSDictionary *) aptTypeDict
@@ -209,16 +220,16 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (SOGoAptFormatter *) aptFormatter
 {
-  if (self->aptFlags.canAccessApt)
-    return self->aptFormatter;
-  return self->privateAptFormatter;
+  if (aptFlags.canAccessApt)
+    return aptFormatter;
+  return privateAptFormatter;
 }
 
 - (SOGoAptFormatter *) aptTooltipFormatter
 {
-  if (self->aptFlags.canAccessApt)
-    return self->aptTooltipFormatter;
-  return self->privateAptTooltipFormatter;
+  if (aptFlags.canAccessApt)
+    return aptTooltipFormatter;
+  return privateAptTooltipFormatter;
 }
 
 /* TODO: remove this */
@@ -227,7 +238,7 @@ static BOOL shouldDisplayWeekend = NO;
   [self warnWithFormat: @"%s IS DEPRECATED!", __PRETTY_FUNCTION__];
   if (![self canAccessApt])
     return @"";
-  return [[self aptFormatter] stringForObjectValue: self->appointment];
+  return [[self aptFormatter] stringForObjectValue: appointment];
 }
 
 - (NSString *) shortTitleForApt
@@ -238,7 +249,7 @@ static BOOL shouldDisplayWeekend = NO;
 
   if (![self canAccessApt])
     return @"";
-  title = [self->appointment valueForKey: @"title"];
+  title = [appointment valueForKey: @"title"];
   if ([title length] > 12)
     title = [[title substringToIndex: 11] stringByAppendingString: @"..."];
   
@@ -248,7 +259,7 @@ static BOOL shouldDisplayWeekend = NO;
 - (NSString *) tooltipForApt
 {
   [self warnWithFormat: @"%s IS DEPRECATED!", __PRETTY_FUNCTION__];
-  return [[self aptTooltipFormatter] stringForObjectValue: self->appointment
+  return [[self aptTooltipFormatter] stringForObjectValue: appointment
                                      referenceDate: [self currentDay]];
 }
 
@@ -296,17 +307,17 @@ static BOOL shouldDisplayWeekend = NO;
 - (void) setCurrentDay:(NSCalendarDate *) _day
 {
   [_day setTimeZone: [[self clientObject] userTimeZone]];
-  ASSIGN(self->currentDay, _day);
+  ASSIGN(currentDay, _day);
 }
 
 - (NSCalendarDate *) currentDay
 {
-  return self->currentDay;
+  return currentDay;
 }
 
 - (NSString *) currentDayName
 {
-  return [self localizedNameForDayOfWeek: [self->currentDay dayOfWeek]];
+  return [self localizedNameForDayOfWeek: [currentDay dayOfWeek]];
 }
 
 - (id) holidayInfo
@@ -320,8 +331,8 @@ static BOOL shouldDisplayWeekend = NO;
   NSMutableArray *filtered;
   unsigned       i, count;
 
-  if (self->allDayApts)
-    return self->allDayApts;
+  if (allDayApts)
+    return allDayApts;
 
   apts = [self appointments];
   count = [apts count];
@@ -337,9 +348,9 @@ static BOOL shouldDisplayWeekend = NO;
         [filtered addObject: apt];
     }
     
-  ASSIGN(self->allDayApts, filtered);
+  ASSIGN(allDayApts, filtered);
   [filtered release];
-  return self->allDayApts;
+  return allDayApts;
 }
 
 
@@ -419,20 +430,33 @@ static BOOL shouldDisplayWeekend = NO;
   return [[self startDate] tomorrow];
 }
 
-- (NSArray *) fetchCoreInfos
+- (NSArray *) _fetchCoreInfosForComponent: (NSString *) component
 {
   SOGoAppointmentFolder *folder;
   NSCalendarDate *sd, *ed;
- 
- if (!self->appointments)
-    {
-      folder = [self clientObject];
-      sd = [self startDate];
-      ed = [self endDate];
-      [self setAppointments: [folder fetchOverviewInfosFrom: sd to: ed]];
-    }
 
-  return self->appointments;
+  folder = [self clientObject];
+  sd = [self startDate];
+  ed = [self endDate];
+
+  return [folder fetchCoreInfosFrom: sd to: ed
+                 component: component];
+}
+
+- (NSArray *) fetchCoreAppointmentsInfos
+{
+  if (!appointments)
+    [self setAppointments: [self _fetchCoreInfosForComponent: @"vevent"]];
+  
+  return appointments;
+}
+
+- (NSArray *) fetchCoreTasksInfos
+{
+  if (!tasks)
+    [self setTasks: [self _fetchCoreInfosForComponent: @"vtodo"]];
+  
+  return tasks;
 }
 
 /* query parameters */
@@ -483,7 +507,7 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (NSDictionary *) currentDayQueryParameters
 {
-  return [self queryParametersBySettingSelectedDate: self->currentDay];
+  return [self queryParametersBySettingSelectedDate: currentDay];
 }
 
 /* calendarUIDs */

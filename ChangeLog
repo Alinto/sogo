@@ -1,5 +1,11 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([UIxCalView
+	-fetchCoreAppointmentsInfos]): replacement methods for
+	fetchCoreInfos but by retrieving object with component "vevent".
+	([UIxCalView -fetchCoreTasksInfos]): same as above for "vtodo"
+	components.
+
 	* UI/Scheduler/UIxCalTasksListView.[hm]: clone of
 	UIxCalAptListView adapted for the handling of tasks.
 

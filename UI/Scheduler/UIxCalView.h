@@ -17,6 +17,7 @@
 @interface UIxCalView : UIxComponent
 {
   NSArray          *appointments;
+  NSArray          *tasks;
   NSArray          *allDayApts;
   id               appointment;
   NSCalendarDate   *currentDay;
@@ -39,8 +40,11 @@
 
 /* accessors */
 
-- (NSArray *)appointments;
-- (void)setAppointments:(NSArray *)_apts;
+- (NSArray *) appointments;
+- (void) setAppointments: (NSArray *) _apts;
+
+- (void) setTasks: (NSArray *) _tasks;
+- (NSArray *) tasks;
 
 - (NSArray *)allDayApts;
 - (id)appointment;
@@ -85,7 +89,8 @@
 
 - (NSCalendarDate *)startDate;
 - (NSCalendarDate *)endDate;
-- (NSArray *)fetchCoreInfos;
+- (NSArray *) fetchCoreAppointmentsInfos;
+- (NSArray *) fetchCoreTasksInfos;
 
 /* date selection */
 
