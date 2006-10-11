@@ -112,9 +112,11 @@
 "Appointment proposal"	= "Proposition de rendez-vous";
 "Appointment on"     	= "Rendez-vous le";
 "Start time" 	     	= "Heure de début";
-"End time"		="Heure de fin";
+"End time"		= "Heure de fin";
+"Due time"		= "Écheance";
 "Start date"		= "Date de début";
 "End date"		= "Date de fin";
+"Due date"		= "Écheance";
 "Earliest start time"	= "Au plus tôt";
 "Latest end time"	= "Au plus tard";
 "browse start date"	= "Sélection Date de début";
@@ -239,6 +241,8 @@ validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?
 validate_invalid_startdate = "La date de début est invalide !";
 validate_invalid_enddate   = "La date de fin est invalide !";
 validate_endbeforestart    = "La date de fin est avant la date de début !";
+
+"Tasks" = "Tâches";
 
 /* toolbar */
 "New Event" = "Nouvel événement";

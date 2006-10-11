@@ -110,8 +110,10 @@
 "Appointment on"	= "Appointment on";
 "Start time"		= "Start time";
 "End time"		= "End time";
+"Due time"		= "Due time";
 "Start date"		= "Start date";
 "End date"		= "End date";
+"Due date"		= "Due date";
 "Earliest start time"	= "Earliest start time";
 "Latest end time"	= "Latest end time";
 "browse start date"	= "browse start date";
@@ -233,6 +235,8 @@ validate_notitle           = "No title is set, continue?";
 validate_invalid_startdate = "Incorrect startdate field!";
 validate_invalid_enddate   = "Incorrect enddate field!";
 validate_endbeforestart    = "Enddate is before startdate!";
+
+"Tasks" = "Tasks";
 
 /* toolbar */
 "New Event" = "New Event";
