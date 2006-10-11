@@ -13,9 +13,7 @@
     <script type="text/javascript" rsrc:src="skycalendar.js">
     </script>
 
-    <form var:href="clientObject.baseURL"
-      name="editform"
-      onsubmit="return validateAptEditor()">
+    <form var:href="saveUrl" name="editform">
 
       <var:if condition="hasErrorText">
         <p style="background-color: #AA0000;">
@@ -115,8 +113,8 @@
           type="submit"
           class="button"
           label:value="Save"
-          name="save:method"
-          onclick="submitMeeting(this.form); return false;" />
+          name="submitmeeting"
+          onclick="submitMeeting(this.form);" />
         <input
           type="submit"
           class="button"
@@ -131,7 +129,7 @@
       </div>
 
       <input type="hidden" name="ical" var:value="iCalString" />
-      <input type="hidden" id="jsaction" />
+      <!-- input type="hidden" id="jsaction" -->
     </form>
     <!--
     <var:if condition="canEditApt" const:negate="YES">

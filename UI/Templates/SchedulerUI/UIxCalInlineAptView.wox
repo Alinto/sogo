@@ -16,7 +16,7 @@
         ><a href="#"
         onclick="onCalendarSelectAppointment(event, this);"
         ondblclick="displayAppointment(event, this);"
-        var:aptId="appointment.uid"
+        var:aptCName="appointment.c_name"
         var:title="tooltip"
         var:queryDictionary="queryDictionary"
         ><var:string value="title"

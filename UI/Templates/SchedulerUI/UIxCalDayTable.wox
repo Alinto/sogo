@@ -82,6 +82,6 @@
     </table>
 
     <script type="text/javascript">
-      scrollDayViewTo8();
+      scrollDayView();
     </script>
   </container>

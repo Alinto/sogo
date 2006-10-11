@@ -82,17 +82,9 @@
           >Soon...</div>
       </div>
 
-      <div id="leftDragHandle"
-        class="dragHandle"
-        onmousedown="startHandleDragging(event);"
-        onmousemove=""
-        upperblock="dateSelectorView"
-        lowerblock="tasksView">
-      </div>
-
-      <div id="tasksView">
-        Here are the tasks...
-      </div>
+      <div id="tasksListView"
+        ><var:component className="UIxCalTasksListView"
+          /></div>
     </div>
 
     <div id="verticalDragHandle"
