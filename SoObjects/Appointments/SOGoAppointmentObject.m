@@ -19,22 +19,20 @@
   02111-1307, USA.
 */
 
-#include "SOGoAppointmentObject.h"
+#import "SOGoAppointmentObject.h"
 
-#include <SOGo/AgenorUserManager.h>
-#include <SaxObjC/SaxObjC.h>
-#include <NGCards/NGCards.h>
-#include <NGCards/iCalCalendar.h>
-#include <NGCards/iCalEvent.h>
-#include <NGMime/NGMime.h>
-#include <NGMail/NGMail.h>
-#include <NGMail/NGSendMail.h>
-#include "SOGoAptMailNotification.h"
-#include "common.h"
+#import <SOGo/AgenorUserManager.h>
+#import <SaxObjC/SaxObjC.h>
+#import <NGCards/NGCards.h>
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
+#import <NGMime/NGMime.h>
+#import <NGMail/NGMail.h>
+#import <NGMail/NGSendMail.h>
+#import "SOGoAptMailNotification.h"
+#import "common.h"
 
-@interface NSMutableArray (iCalPersonConvenience)
-- (void)removePerson:(iCalPerson *)_person;
-@end
+#import "NSArray+Appointments.h"
 
 @interface SOGoAppointmentObject (PrivateAPI)
 - (NSString *)homePageURLForPerson:(iCalPerson *)_person;
@@ -786,19 +784,3 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 }
 
 @end /* SOGoAppointmentObject */
-
-@implementation NSMutableArray (iCalPersonConvenience)
-
-- (void)removePerson:(iCalPerson *)_person {
-  int i;
-  
-  for (i = [self count] - 1; i >= 0; i--) {
-    iCalPerson *p;
-    
-    p = [self objectAtIndex:i];
-    if ([p hasSameEmailAddress:_person])
-      [self removeObjectAtIndex:i];
-  }
-}
-
-@end /* NSMutableArray (iCalPersonConvenience) */

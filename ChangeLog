@@ -1,5 +1,8 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/NSArray+Appointments.[hm]: category
+	extracted from SOGoAppointmentObject.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-saveUrl]): returns the url needed to POST the new form to.
 	redirect the user to <aptid>/editAsAppointment instead of /edit,
