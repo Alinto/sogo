@@ -204,7 +204,7 @@
   end = [start dateByAddingYears: 0 months: 0 days: 0
                hours: 0 minutes: 59 seconds: 59];
 
-  apts     = [self fetchCoreInfos];
+  apts = [self fetchCoreAppointmentsInfos];
   filtered = [NSMutableArray new];
   [filtered autorelease];
 

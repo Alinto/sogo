@@ -54,7 +54,7 @@
 
 - (NSArray *) appointments
 {
-  return [self fetchCoreInfos];
+  return [self fetchCoreAppointmentsInfos];
 }
 
 /* URLs */

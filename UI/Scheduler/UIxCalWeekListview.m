@@ -52,18 +52,18 @@
 /* NOTE: this fetches coreInfos instead of overviewInfos
  * as is done in the superclass!
  */
-- (NSArray *)fetchCoreInfos {
-  if (!self->appointments) {
-    id             folder;
-    NSCalendarDate *sd, *ed;
+// - (NSArray *)fetchCoreInfos {
+//   if (!self->appointments) {
+//     id             folder;
+//     NSCalendarDate *sd, *ed;
     
-    folder             = [self clientObject];
-    sd                 = [self startDate];
-    ed                 = [self endDate];
-    [self setAppointments:[folder fetchCoreInfosFrom:sd to:ed]];
-  }
-  return self->appointments;
-}
+//     folder             = [self clientObject];
+//     sd                 = [self startDate];
+//     ed                 = [self endDate];
+//     [self setAppointments: [folder fetchCoreAppointmentsInfos]];
+//   }
+//   return self->appointments;
+// }
 
 /* accessors */
 

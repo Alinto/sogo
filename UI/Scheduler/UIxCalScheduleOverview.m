@@ -296,7 +296,7 @@
   return self->foreignApts;
 }
 
-- (void)fetchInfos {
+- (void) fetchInfos {
   static NSArray *orders = nil;
   id       aptFolder;
   NSArray  *apts;
@@ -311,8 +311,9 @@
   }
 
   aptFolder = [self clientObject];
-  apts      = [aptFolder fetchCoreInfosFrom:[self startDate]
-                         to:[self endDate]];
+  apts      = [aptFolder fetchCoreInfosFrom: [self startDate]
+                         to: [self endDate]
+                         component: @"vevent"];
   userEmail = [self emailForUser];
   count     = [apts count];
 

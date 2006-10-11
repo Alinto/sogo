@@ -181,7 +181,7 @@
 
 - (NSArray *) appointments
 {
-  return [self fetchCoreInfos];
+  return [self fetchCoreAppointmentsInfos];
 }
 
 - (NSArray *)aptsForCurrentDate {

@@ -97,7 +97,7 @@
 
 
 - (NSArray *)appointments {
-  return [self fetchCoreInfos];
+  return [self fetchCoreAppointmentsInfos];
 }
 
 @end /* UIxCalMonthOverview */
