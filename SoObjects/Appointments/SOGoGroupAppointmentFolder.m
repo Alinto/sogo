@@ -110,7 +110,7 @@
   if (![aptFolder isNotNull])
     return nil;
   
-  if (![aptFolder respondsToSelector:@selector(fetchCoreInfosFrom:to:)]) {
+  if (![aptFolder respondsToSelector:@selector(fetchCoreInfosFrom:to:component:)]) {
     [self errorWithFormat:@"folder does not implemented required API: %@",
 	    _folder];
     return nil;
@@ -119,9 +119,10 @@
 }
 
 /* overridden */
-- (NSArray *)fetchFields:(NSArray *)_fields
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate 
+- (NSArray *) fetchFields: (NSArray *) _fields
+                     from: (NSCalendarDate *) _startDate
+                       to: (NSCalendarDate *) _endDate
+                component: (id) _component
 {
   NSArray             *folders;
   NSMutableArray      *result;
@@ -158,9 +159,10 @@
       continue;
     }
     
-    results = [aptFolder fetchFields:_fields
-                         from:_startDate
-                         to:_endDate];
+    results = [aptFolder fetchFields: _fields
+                         from: _startDate
+                         to: _endDate
+                         component: _component];
     if (![results isNotNull]) continue;
     
     results = [results objectEnumerator];
