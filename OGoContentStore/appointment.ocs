@@ -12,12 +12,12 @@
     {
       columnName = startdate;
       sqlType    = "INT";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = enddate;
       sqlType    = "INT";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = cylceenddate;
@@ -32,7 +32,7 @@
     {
       columnName = participants;
       sqlType    = "VARCHAR(1000000)";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = isallday;
@@ -67,7 +67,7 @@
     {
       columnName = priority;
       sqlType    = "INT";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = location;
@@ -82,17 +82,22 @@
     {
       columnName = partmails;
       sqlType    = "VARCHAR(100000)";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = partstates;
       sqlType    = "VARCHAR(256)";
-      allowsNull = NO;
+      allowsNull = YES;
     },
     {
       columnName = sequence;
       sqlType    = "INT";
       allowsNull = YES;
+    },
+    {
+      columnName = component;
+      sqlType    = "VARCHAR(10)";
+      allowsNull = NO;
     },
   );
 }

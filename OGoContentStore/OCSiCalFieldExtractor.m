@@ -96,6 +96,8 @@ static NSNumber                  *distantFutureNumber = nil;
   /* build row */
 
   row = [NSMutableDictionary dictionaryWithCapacity:8];
+
+  [row setObject: @"vevent" forKey: @"component"];
   
   if ([uid isNotNull]) 
     [row setObject:uid forKey:@"uid"];
@@ -116,10 +118,9 @@ static NSNumber                  *distantFutureNumber = nil;
   if ([sequence isNotNull]) [row setObject:sequence forKey:@"sequence"];
   
   if ([startDate isNotNull]) 
-    [row setObject:[self numberForDate:startDate] forKey:@"startdate"];
+    [row setObject: [self numberForDate: startDate] forKey:@"startdate"];
   if ([endDate isNotNull]) 
-    [row setObject:[self numberForDate:endDate] forKey:@"enddate"];
-
+    [row setObject: [self numberForDate: endDate] forKey:@"enddate"];
   if ([_event isRecurrent]) {
     NSCalendarDate *date;
     
@@ -132,6 +133,7 @@ static NSNumber                  *distantFutureNumber = nil;
     [row setObject:[self numberForDate:date] forKey:@"cycleenddate"];
     [row setObject:[_event cycleInfo] forKey:@"cycleinfo"];
   }
+
   if ([participants length] > 0)
     [row setObject:participants forKey:@"participants"];
   if ([partmails length] > 0)
@@ -185,24 +187,139 @@ static NSNumber                  *distantFutureNumber = nil;
   return row;
 }
 
-- (NSMutableDictionary *)extractQuickFieldsFromCalendar:(iCalCalendar *)_cal {
-  NSArray *events;
-  
-  if (_cal == nil)
+- (NSMutableDictionary *) extractQuickFieldsFromTodo: (iCalToDo *) _task
+{
+  NSMutableDictionary *row;
+  NSCalendarDate      *startDate, *dueDate;
+  NSArray             *attendees;
+  NSString            *uid, *title, *location, *status, *accessClass;
+  NSNumber            *sequence;
+  id                  organizer;
+  id                  participants, partmails;
+  NSMutableString     *partstates;
+  unsigned            i, count, code;
+
+  if (_task == nil)
     return nil;
+
+  /* extract values */
   
-  events = [_cal events];
-  if ([events count] == 0) {
-    [self logWithFormat:@"ERROR: given calendar contains no events: %@", _cal];
-    return nil;
+  startDate    = [_task startDate];
+  dueDate      = [_task due];
+  uid          = [_task uid];
+  title        = [_task summary];
+  location     = [_task location];
+  sequence     = [_task sequence];
+  accessClass  = [[_task accessClass] uppercaseString];
+  status       = [[_task status] uppercaseString];
+
+  attendees    = [_task attendees];
+  partmails    = [attendees valueForKey:@"rfc822Email"];
+  partmails    = [partmails componentsJoinedByString:@"\n"];
+  participants = [attendees valueForKey:@"cn"];
+  participants = [participants componentsJoinedByString:@"\n"];
+
+  /* build row */
+
+  row = [NSMutableDictionary dictionaryWithCapacity:8];
+
+  [row setObject: @"vtodo" forKey: @"component"];
+
+  if ([uid isNotNull]) 
+    [row setObject:uid forKey:@"uid"];
+  else
+    [self logWithFormat:@"WARNING: could not extract a uid from event!"];
+
+  [row setObject:[NSNumber numberWithBool:[_task isRecurrent]]
+       forKey:@"iscycle"];
+  [row setObject:[NSNumber numberWithInt:[_task priorityNumber]]
+       forKey:@"priority"];
+
+  if ([title isNotNull]) [row setObject: title forKey:@"title"];
+  if ([location isNotNull]) [row setObject: location forKey:@"location"];
+  if ([sequence isNotNull]) [row setObject: sequence forKey:@"sequence"];
+  
+  if ([startDate isNotNull]) 
+    [row setObject: [self numberForDate:startDate] forKey:@"startdate"];
+  if ([dueDate isNotNull]) 
+    [row setObject: [self numberForDate:dueDate] forKey:@"enddate"];
+  if ([participants length] > 0)
+    [row setObject:participants forKey:@"participants"];
+  if ([partmails length] > 0)
+    [row setObject:partmails forKey:@"partmails"];
+
+  if ([status isNotNull]) {
+    code = 0; /* NEEDS-ACTION */
+    if ([status isEqualToString:@"COMPLETED"])
+      code = 1;
+    else if ([status isEqualToString:@"IN-PROCESS"])
+      code = 2;
+    else if ([status isEqualToString:@"CANCELLED"])
+      code = 3;
+    [row setObject: [NSNumber numberWithInt: code] forKey:@"status"];
   }
-  if ([events count] > 1) {
-    [self logWithFormat:
-	    @"WARNING: given calendar contains more than one event: %@",
-	    _cal];
+  else {
+    /* confirmed by default */
+    [row setObject:[NSNumber numberWithInt:1] forKey:@"status"];
+  }
+
+  if([accessClass isNotNull] && ![accessClass isEqualToString:@"PUBLIC"]) {
+    [row setObject:[NSNumber numberWithBool:NO] forKey:@"ispublic"];
+  }
+  else {
+    [row setObject:[NSNumber numberWithBool:YES] forKey:@"ispublic"];
+  }
+
+  organizer = [_task organizer];
+  if (organizer) {
+    NSString *email;
+    
+    email = [organizer valueForKey:@"rfc822Email"];
+    if (email)
+      [row setObject:email forKey:@"orgmail"];
   }
   
-  return [self extractQuickFieldsFromEvent:[events objectAtIndex:0]];
+  /* construct partstates */
+  count        = [attendees count];
+  partstates   = [[NSMutableString alloc] initWithCapacity:count * 2];
+  for ( i = 0; i < count; i++) {
+    iCalPerson         *p;
+    iCalPersonPartStat stat;
+    
+    p    = [attendees objectAtIndex:i];
+    stat = [p participationStatus];
+    if(i != 0)
+      [partstates appendString:@"\n"];
+    [partstates appendFormat:@"%d", stat];
+  }
+  [row setObject:partstates forKey:@"partstates"];
+  [partstates release];
+  return row;
+}
+
+- (CardGroup *) firstElementFromCalendar: (iCalCalendar *) ical
+{
+  NSArray *elements;
+  CardGroup *element;
+  unsigned int count;
+  
+  elements = [ical allObjects];
+  count = [elements count];
+  if (count)
+    {
+      if (count > 1)
+        [self logWithFormat:
+                @"WARNING: given calendar contains more than one event: %@",
+              ical];
+      element = [elements objectAtIndex: 0];
+    }
+  else
+    {
+      [self logWithFormat:@"ERROR: given calendar contains no elements: %@", ical];
+      element = nil;
+    }
+
+  return element;
 }
 
 - (NSMutableDictionary *)extractQuickFieldsFromContent:(NSString *)_content {
@@ -219,10 +336,13 @@ static NSNumber                  *distantFutureNumber = nil;
   fields = nil;
   if (cal)
     {
+      if ([cal isKindOfClass:[iCalCalendar class]])
+        cal = [self firstElementFromCalendar: cal];
+
       if ([cal isKindOfClass:[iCalEvent class]])
         fields = [[self extractQuickFieldsFromEvent:cal] retain];
-      else if ([cal isKindOfClass:[iCalCalendar class]])
-        fields = [[self extractQuickFieldsFromCalendar:cal] retain];
+      else if ([cal isKindOfClass:[iCalToDo class]])
+        fields = [[self extractQuickFieldsFromTodo:cal] retain];
       else if ([cal isNotNull]) {
         [self logWithFormat:@"ERROR: unexpected iCalendar parse result: %@",
               cal];
