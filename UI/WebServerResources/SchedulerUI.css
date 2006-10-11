@@ -16,21 +16,69 @@ DIV#schedulerTabs
   height: 15em;
 }
 
-DIV#tasksView
+DIV#tasksListView
 {
   position: absolute;
-  background: #eee;
   top: 18em;
   bottom: 0px;
-  width: 100%;
-  overflow: auto;
+  width: 16em;
+  padding: 0px;
 }
+
+DIV#tasksListView H2
+{ font-size: 12pt;
+  margin: 0px;
+  margin-left: .25em;
+  padding: 0px; }
+
+DIV#tasksListView LABEL
+{ margin: .25em; }
+
+UL#tasksList
+{ position: absolute;
+  cursor: default;
+  width: 100%;
+  margin: .25px;
+  padding: 0px;
+  top: 3em;
+  left: .25em;
+  right: .25em;
+  bottom: .25em;
+  overflow: auto;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  background: #fff;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  list-style-type: none;
+  list-style-image: none; }
+
+UL#tasksList LI._selected
+{ 
+  background: #4b6983;
+  color: #fff !important;
+}
+
+UL#tasksList LI.overdue
+{ color: #f00; }
+
+UL#tasksList LI.duetoday
+{ color: #00f; }
+
+UL#tasksList LI.completed
+{ text-decoration: line-through;
+  color: #000; }
+
+UL#tasksList LI.duelater
+{ color: #999; }
 
 DIV#rightPanel
 {
   position: absolute;
   top: 5.5em;
-  left: 17.75em;
+  left: 17em;
   right: 0px;
   bottom: 0px;
   overflow: hidden;
@@ -69,12 +117,12 @@ DIV#calendarView A
 {
   cursor: e-resize;
   top: 6em;
-  left: 17.5em;
+  left: 16.5em;
   width: 5px;
   bottom: 0px;
 }
 
-#leftDragHandle, #rightDragHandle
+#rightDragHandle
 {
   cursor: n-resize;
   top: 17.7em;

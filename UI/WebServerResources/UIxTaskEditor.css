@@ -1,0 +1,119 @@
+BODY
+{ padding: 1em; }
+
+DIV.appointmentLabel
+{ display: block;
+  position: relative;
+  line-height: 1.8em;
+  text-align: right;
+  width: 10em; }
+
+DIV.appointmentRightLabel
+{ display: inline;
+  vertical-align: middle; }
+
+DIV#details
+{ visibility: hidden;
+  padding-top: 1em;
+  width: 100%;
+  margin: 0px;
+  margin-bottom: 1em; }
+
+DIV#buttons
+{ visibility: visible;
+  position: absolute;
+  right: 1em;
+  bottom: 1em; }
+
+UL.contactList
+{ 
+  display: block;
+  cursor: default;
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0px;
+  padding: 0px;
+  background: #fff;
+  border: 1px solid #000;
+  width: 15em;
+  height: 5em;
+  overflow: auto;
+}
+
+UL.contactList LI IMG
+{ vertical-align: middle; }
+
+UL.contactList LI
+{ width: 100%;
+  white-space: nowrap;
+  vertical-align: middle; }
+
+UL.contactList LI._selected
+{ background: #4b6983;
+  color: #fff; }
+
+DIV.contactSelector
+{ margin: 0px; }
+
+LABEL, SPAN.checkBoxList
+{ display: block;
+  position: relative;
+  height: 2em;
+  margin-left: .5em;
+  margin-top: .5em;
+  width: 100%; }
+
+SPAN.checkBoxList#participantsCB
+{ height: 7em; }
+
+DIV#participants UL.contactList
+{ height: 4.5em; }
+
+SPAN.checkBoxList SPAN.content LABEL
+{ display: inline; }
+
+INPUT#summary, INPUT#location,
+SPAN.content
+{ position: absolute;
+  top: 0px;
+  left: 10em;
+  right: 0px; }
+
+DIV#details TEXTAREA
+{ position: absolute;
+  top: 0px;
+  left: 10em;
+  vertical-align: bottom;
+  height: 5em;
+  right: 0px;
+  padding-bottom: 1em; }
+
+DIV#details SELECT
+{ position: absolute;
+  top: 0px;
+  left: 10em; }
+
+LABEL#isPrivate, LABEL#conflictsLabel
+{ position: absolute;
+  z-index: 1;
+  right: 1em;
+  width: auto; }
+
+A#detailsButton
+{ position: absolute;
+  right: 1em;
+  z-index: 1; }
+
+SPAN.contactSelectorButtons
+{ vertical-align: top;
+  line-height: 2em; }
+
+SPAN#cycleSelectionFirstLevel,
+SPAN#cycleSelectionSecondLevel
+{ visibility: hidden;
+  margin-left: 1em; }
+
+DIV#details SPAN.content SELECT,
+SPAN#cycleSelectionSecondLevel SPAN.timeDateControl
+{ position: static;
+  margin: 0px; }
