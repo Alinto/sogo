@@ -1,5 +1,12 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskProposal.[hm],
+	UI/Scheduler/UIxTaskView.[hm], UI/Scheduler/UIxTaskEditor.[hm]:
+	clones of the UIxAppointment* classes for the handling of tasks.
+
+	* UI/WebServerResources/UIxTaskEditor.js: clone of
+	UIxAppointmentEditor adapted for the handling of tasks.
+
 	* UI/WebServerResources/SchedulerUI.js: added support for tasks.
 	Scroll the daily view to the appropriate hour when an appointment
 	is selected in the appointments list.
