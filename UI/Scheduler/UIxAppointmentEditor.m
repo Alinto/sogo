@@ -647,7 +647,7 @@
 			reason:@"could not create a unique ID"];
   }
 
-  method = [NSString stringWithFormat:@"Calendar/%@/edit", objectId];
+  method = [NSString stringWithFormat:@"Calendar/%@/editAsAppointment", objectId];
   method = [[self userFolderPath] stringByAppendingPathComponent:method];
 
   /* check if participants have already been provided */
@@ -1036,6 +1036,12 @@
   }
   
   return [self redirectToLocation:[self _completeURIForMethod:@".."]];
+}
+
+- (NSString *) saveUrl
+{
+  return [NSString stringWithFormat: @"%@/saveAsAppointment",
+                   [[self clientObject] baseURL]];
 }
 
 - (id)acceptAction {

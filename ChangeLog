@@ -1,5 +1,10 @@
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-saveUrl]): returns the url needed to POST the new form to.
+	redirect the user to <aptid>/editAsAppointment instead of /edit,
+	so that SOGoAppointmentFolder can return the correct object type.
+
 	* SoObjects/SOGo/NSObject+AptComparison.m ([NSObject
 	-compareAptsAscending:_other]): accept empty start or end dates.
 
