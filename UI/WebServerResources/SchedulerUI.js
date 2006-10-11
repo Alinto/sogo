@@ -2,12 +2,14 @@ var sortOrder = '';
 var sortKey = '';
 var listFilter = 'view_today';
 
+var hideCompletedTasks = 0;
+
 var currentDay = '';
 var currentView = 'dayview';
 
 var cachedDateSelectors = new Array();
 
-function newEvent(sender) {
+function newEvent(sender, type) {
   var day = sender.getAttribute("day");
   if (!day)
     day = currentDay;
@@ -16,6 +18,7 @@ function newEvent(sender) {
   if (!hour)
     hour = '0800';
   var urlstr = (ApplicationBaseURL + "new"
+                + type
                 + "?day=" + day
                 + "&hm=" + hour);
 
@@ -90,7 +93,7 @@ function onSelectAll() {
 }
 
 function displayAppointment(event, sender) {
-  _editEventId(sender.getAttribute("aptId"));
+  _editEventId(sender.getAttribute("aptCName"));
 
   event.cancelBubble = true;
   event.returnValue = false;
@@ -137,7 +140,7 @@ function onDaySelect(node)
   selectNode(td);
   document.selectedDate = td;
 
-  changeCalendarDisplay(day);
+  changeCalendarDisplay( { "day": day } );
   if (listFilter == 'view_selectedday')
     refreshAppointments();
 
@@ -158,7 +161,7 @@ function onCalendarGotoDay(node)
   var day = node.getAttribute("date");
 
   changeDateSelectorDisplay(day);
-  changeCalendarDisplay(day);
+  changeCalendarDisplay( { "day": day } );
 
   return false;
 }
@@ -199,11 +202,29 @@ function appointmentsListCallback(http)
 
   if (http.readyState == 4
       && http.status == 200) {
-    document.dateSelectorAjaxRequest = null;
+    document.appointmentsListAjaxRequest = null;
     div.innerHTML = http.responseText;
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
+  }
+  else
+    log ("ajax fuckage");
+}
+
+function tasksListCallback(http)
+{
+  var div = $("tasksListView");
+
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.tasksListAjaxRequest = null;
+    div.innerHTML = http.responseText;
+    if (http.callbackData) {
+      var selectedNodesId = http.callbackData;
+      for (var i = 0; i < selectedNodesId.length; i++)
+        selectNode($(selectedNodesId[i]));
+    }
   }
   else
     log ("ajax fuckage");
@@ -265,9 +286,12 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
   }
 }
 
-function changeCalendarDisplay(day, newView)
+function changeCalendarDisplay(time, newView)
 {
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
+
+  var day = time['day'];
+  var hour = time['hour'];
 
   if (!day)
     day = currentDay;
@@ -286,7 +310,8 @@ function changeCalendarDisplay(day, newView)
   document.dayDisplayAjaxRequest = triggerAjaxRequest(url,
                                                       calendarDisplayCallback,
                                                       { "view": newView,
-                                                        "day": day });
+                                                        "day": day,
+                                                        "hour": hour });
 
   return false;
 }
@@ -313,12 +338,25 @@ function onMonthOverview()
   return _ensureView("monthview");
 }
 
-function scrollDayViewTo8()
+function scrollDayView(hour)
 {
+  var rowNumber;
+  if (hour) {
+    if (hour.length == 3)
+      rowNumber = parseInt(hour.substr(0, 1));
+    else {
+      if (hour.substr(0, 1) == "0")
+        rowNumber = parseInt(hour.substr(1, 1));
+      else
+        rowNumber = parseInt(hour.substr(0, 2));
+    }
+  } else
+    rowNumber = 8;
+
   var calContent = $("calendarContent");
   var tables = calContent.getElementsByTagName("table");
   if (tables.length > 0) {
-    var row = tables[0].rows[9];
+    var row = tables[0].rows[rowNumber + 1];
     var cell = row.cells[1];
 
     calContent.scrollTop = cell.offsetTop;
@@ -338,7 +376,10 @@ function calendarDisplayCallback(http)
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
       currentDay = http.callbackData["day"];
-    scrollDayViewTo8();
+    var hour = null;
+    if (http.callbackData["hour"])
+      hour = http.callbackData["hour"]
+    scrollDayView(hour);
   }
   else
     log ("ajax fuckage");
@@ -419,8 +460,21 @@ function _loadAppointmentHref(href) {
   return false;
 }
 
-function onHeaderClick(node)
-{
+function _loadTasksHref(href) {
+  if (document.tasksListAjaxRequest) {
+    document.tasksListAjaxRequest.aborted = true;
+    document.tasksListAjaxRequest.abort();
+  }
+  url = ApplicationBaseURL + href;
+
+  var selectedIds = $("tasksList").getSelectedNodesId();
+  document.tasksListAjaxRequest
+    = triggerAjaxRequest(url, tasksListCallback, selectedIds);
+
+  return false;
+}
+
+function onHeaderClick(node) {
   return _loadAppointmentHref(node.getAttribute("href"));
 }
 
@@ -429,6 +483,10 @@ function refreshAppointments() {
                               + "&sort=" + sortKey
                               + "&day=" + currentDay
                               + "&filterpopup=" + listFilter);
+}
+
+function refreshTasks() {
+  return _loadTasksHref("taskslist?hide-completed=" + hideCompletedTasks);
 }
 
 function onListFilterChange() {
@@ -444,8 +502,9 @@ function onAppointmentClick(event)
 {
   var node = event.target.getParentWithTagName("tr");
   var day = node.getAttribute("day");
+  var hour = node.getAttribute("hour");
 
-  changeCalendarDisplay(day);
+  changeCalendarDisplay( { "day": day, "hour": hour} );
   changeDateSelectorDisplay(day);
 
   return onRowClick(event);
@@ -543,8 +602,8 @@ function onCalendarSelectAppointment(event, node)
   var list = $("appointmentsList");
   list.deselectAll();
 
-  var aptId = node.getAttribute("aptId");
-  var row = $(aptId);
+  var aptCName = node.getAttribute("aptCName");
+  var row = $(aptCName);
   if (row) {
     log ("row: " + row);
     selectNode(row);
@@ -562,4 +621,32 @@ function onCalendarSelectDay(event, node)
 
   event.cancelBubble = true;
   event.returnValue = false;
+}
+
+function onHideCompletedTasks(node)
+{
+  hideCompletedTasks = (node.checked ? 1 : 0);
+
+  return refreshTasks();
+}
+
+function updateTaskStatus(node)
+{
+  var taskId = node.parentNode.getAttribute("id");
+  var newStatus = (node.checked ? 1 : 0);
+
+  var http = createHTTPClient();
+
+  url = ApplicationBaseURL + taskId + "/changeStatus?status=" + newStatus;
+
+  if (http) {
+    // TODO: add parameter to signal that we are only interested in OK
+    http.url = url;
+    http.open("GET", url, false /* not async */);
+    http.send("");
+    if (http.status == 200)
+      refreshTasks();
+  }
+
+  return false;
 }

@@ -1,3 +1,9 @@
+2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js: added support for tasks.
+	Scroll the daily view to the appropriate hour when an appointment
+	is selected in the appointments list.
+
 2006-10-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
