@@ -40,8 +40,8 @@
           <span class="content"><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
-            const:dayStartHour="8"
-            const:dayEndHour="18"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
             /></span></span>
         <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
           ><var:string label:value="Show Details" /></a>
@@ -49,8 +49,8 @@
           <span class="content"><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"
-            const:dayStartHour="8"
-            const:dayEndHour="18"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
             /></span></span>
       </div>
       

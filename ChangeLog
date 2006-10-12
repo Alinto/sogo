@@ -1,5 +1,8 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxAppointmentEditor.wox: time ranges
+	may cover hour 0 to hour 23.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-iCalStringFromQueryParameter:format:]): dates explicitly set to
 	utc tz.
