@@ -43,36 +43,36 @@ function validateAptEditor() {
 
   e = document.getElementById('summary');
   if (e.value.length == 0) {
-    if (!confirm(labels.validate_notitle))
+    if (!confirm(labels.validate_notitle.decodeEntities()))
       return false;
   }
 
   e = document.getElementById('startTime_date');
   if (e.value.length != 10) {
-    alert(labels.validate_invalid_startdate);
+    alert(labels.validate_invalid_startdate.decodeEntities());
     return false;
   }
   startdate = e.calendar.prs_date(e.value);
   if (startdate == null) {
-    alert(labels.validate_invalid_startdate);
+    alert(labels.validate_invalid_startdate.decodeEntities());
     return false;
   }
       
   e = document.getElementById('endTime_date');
   if (e.value.length != 10) {
-    alert(labels.validate_invalid_enddate);
+    alert(labels.validate_invalid_enddate.decodeEntities());
     return false;
   }
   enddate = e.calendar.prs_date(e.value);
   if (enddate == null) {
-    alert(labels.validate_invalid_enddate);
+    alert(labels.validate_invalid_enddate.decodeEntities());
     return false;
   }
 //   cuicui = '';
   tmpdate = uixEarlierDate(startdate, enddate);
   if (tmpdate == enddate) {
 //     window.alert(cuicui);
-    alert(labels.validate_endbeforestart);
+    alert(labels.validate_endbeforestart.decodeEntities());
     return false;
   }
   else if (tmpdate == null /* means: same date */) {
@@ -83,14 +83,14 @@ function validateAptEditor() {
     end = parseInt(document.forms[0]['endTime_time_hour'].value);
 
     if (start > end) {
-      alert(labels.validate_endbeforestart);
+      alert(labels.validate_endbeforestart.decodeEntities());
       return false;
     }
     else if (start == end) {
       start = parseInt(document.forms[0]['startTime_time_minute'].value);
       end = parseInt(document.forms[0]['endTime_time_minute'].value);
       if (start > end) {
-	alert(labels.validate_endbeforestart);
+	alert(labels.validate_endbeforestart.decodeEntities());
 	return false;
       }
     }
