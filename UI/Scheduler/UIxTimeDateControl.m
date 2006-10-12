@@ -84,6 +84,7 @@
 - (void)_setDate:(NSCalendarDate *)_date {
   ASSIGN(date, _date);
 }
+
 - (NSCalendarDate *)date {
   return date;
 }
