@@ -32,6 +32,8 @@
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 
+#import "../Common/UIxJSClose.h"
+
 #import "UIxComponent.h"
 
 @interface UIxComponent (PrivateAPI)
@@ -396,6 +398,17 @@ static BOOL uixDebugEnabled = NO;
 - (BOOL) hideFrame
 {
   return ([[self queryParameterForKey: @"noframe"] boolValue]);
+}
+
+- (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName
+{
+  UIxJSClose *jsClose;
+
+  jsClose = [UIxJSClose new];
+  [jsClose autorelease];
+  [jsClose setRefreshMethod: methodName];
+
+  return jsClose;
 }
 
 /* SoUser */

@@ -60,6 +60,8 @@
 - (NSString *)ownMethodName;
 
 - (NSString *)userFolderPath;
+- (NSString *) applicationPath;
+
 - (NSString *)ownPath;
 - (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub;
 
@@ -69,6 +71,8 @@
 - (NSString *)dateStringForDate:(NSCalendarDate *)_date;
 
 - (BOOL) hideFrame;
+
+- (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName;
 
 /* SoUser */
 - (SoUser *)user;

@@ -1,5 +1,8 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent
+	-jsCloseWithRefreshMethod:methodName]): new method with explicit purpose.
+
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -saveAction]),
 	UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-saveAction]), UI/MailerUI/UIxMailEditor.m ([UIxMailEditor
