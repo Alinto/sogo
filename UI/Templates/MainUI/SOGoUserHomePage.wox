@@ -12,8 +12,6 @@
     <var:string label:value="Forbidden" const:style="window_label" />
   </var:if>
   <var:if condition="canAccess">
-      <script rsrc:src="generic.js"  > <!-- space required --></script>
-      <script rsrc:src="homepage.js" > <!-- space required --></script>
     <table id="skywintable"
            class="wintable"
            cellspacing="0"
@@ -21,21 +19,7 @@
            width="100%"
     >
       <tr>
-        <td class="wintitle">
-          <table cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td width="5"/>
-              <td class="wintitle">
-                <span class="window_label">
-                <var:string label:value="Homepage"/>
-                </span>
-              </td>
-              <td width="36" align="right" valign="center">
-                <var:component className="UIxWinClose"/>
-              </td>
-            </tr>
-          </table>
-        </td>
+        <td class="window_label"><var:string label:value="Homepage"/></td>
       </tr>
       <tr>
         <td class="wincontent">

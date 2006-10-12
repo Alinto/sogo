@@ -12,19 +12,9 @@
          width="100%"
   >
     <tr>
-      <td class="wintitle">
-        <table cellpadding="0" cellspacing="0" width="100%">
-          <tr>
-            <td width="5"/>
-            <td class="window_label">
-              <var:string label:value="Search appointments" />
-            </td>
-            <td width="36" align="right" valign="center">
-              <var:component className="UIxWinClose" />
-            </td>
-          </tr>
-        </table>
-      </td>
+        <td class="window_label">
+          <var:string label:value="Search appointments" />
+        </td>
     </tr>
     <tr>
       <td id="skywinbodycell" class="wincontent">
