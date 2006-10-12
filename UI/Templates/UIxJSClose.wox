@@ -1,0 +1,13 @@
+<?xml version='1.0' standalone='yes'?>
+<container xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    ><var:string var:value="doctype" const:escapeHTML="NO" />
+<html><head></head><body
+        ><script type="text/javascript"
+          ><var:if condition="hasRefreshMethod"
+            >window.opener.setTimeout('<var:string value="refreshMethod"
+              const:escapeHTML="NO" />;', 200);</var:if
+            >window.close();</script
+></body></html
+></container>
