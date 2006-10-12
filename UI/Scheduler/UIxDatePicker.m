@@ -139,7 +139,9 @@
 
 /* action */
 
-- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+- (void) takeValuesFromRequest: (WORequest *) _rq
+                     inContext: (WOContext *)_ctx
+{
   NSString       *dateString;
   NSCalendarDate *d;
 
