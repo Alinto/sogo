@@ -1,5 +1,9 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -deleteEntriesWithIds:ids]): new method
+	that delete identified entries in batch.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent
 	-jsCloseWithRefreshMethod:methodName]): new method with explicit purpose.
 
