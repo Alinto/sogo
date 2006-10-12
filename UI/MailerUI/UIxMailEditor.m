@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
 /*
   UIxMailEditor
@@ -48,16 +48,16 @@
 
 @end
 
-#include <SoObjects/Mailer/SOGoDraftObject.h>
-#include <SoObjects/Mailer/SOGoMailFolder.h>
-#include <SoObjects/Mailer/SOGoMailAccount.h>
-#include <SoObjects/Mailer/SOGoMailAccounts.h>
-#include <SoObjects/Mailer/SOGoMailIdentity.h>
-#include <SoObjects/SOGo/WOContext+Agenor.h>
-#include <NGMail/NGMimeMessage.h>
-#include <NGMail/NGMimeMessageGenerator.h>
-#include <NGObjWeb/SoSubContext.h>
-#include "common.h"
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailAccounts.h>
+#import <SoObjects/Mailer/SOGoMailIdentity.h>
+#import <SoObjects/SOGo/WOContext+Agenor.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+#import <NGObjWeb/SoSubContext.h>
+#import "common.h"
 
 @implementation UIxMailEditor
 
@@ -491,11 +491,13 @@ static NSArray      *infoKeys            = nil;
   return nil;
 }
 
-- (id)sendAction {
+- (id <WOActionResults>) sendAction
+{
   NSException  *error;
   NSString     *mailPath;
   NSDictionary *h;
-  
+  id <WOActionResults> result;
+
   // TODO: need to validate whether we have a To etc
   
   /* first, save form data */
@@ -553,8 +555,12 @@ static NSArray      *infoKeys            = nil;
   if ((error = [[self clientObject] delete]) != nil)
     return error;
 
-  // if everything is ok, close the window (send a JS closing the Window)
-  return [self pageWithName:@"UIxMailWindowCloser"];
+  if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
+    result = [self redirectToLocation: [self applicationPath]];
+  else
+    result = [self jsCloseWithRefreshMethod: nil];
+
+  return result;
 }
 
 - (id)deleteAction {

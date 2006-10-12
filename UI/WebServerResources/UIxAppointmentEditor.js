@@ -99,24 +99,6 @@ function validateAptEditor() {
   return true;
 }
 
-function submitMeeting(thisForm) {
-//   var action = document.getElementById('jsaction');
-//   action.setAttribute("name", "save:method");
-//   action.setAttribute("value", "save");
-
-  log ("form: " + thisForm);
-  log ("validating...");
-  if (validateAptEditor()) {
-    log ("submitting");
-    thisForm.submit();
-    log ("setting timeout...");
-    window.opener.setTimeout('refreshAppointments();', 200);
-    log ("we close...");
-    window.close();
-    log ("closed");
-  }
-}
-
 function toggleDetails() {
   var div = $("details");
   var buttons = $("buttons");

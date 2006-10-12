@@ -23,72 +23,6 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
-#import <SOGoUI/UIxComponent.h>
-
-/* TODO: CLEAN UP */
-
-@class NSString;
-@class iCalPerson;
-@class iCalRecurrenceRule;
-
-@interface UIxAppointmentEditor : UIxComponent
-{
-  NSString *iCalString;
-  NSString *errorText;
-  id item;
-  
-  /* individual values */
-  NSCalendarDate *startDate;
-  NSCalendarDate *endDate;
-  NSCalendarDate *cycleUntilDate;
-  NSString *title;
-  NSString *location;
-  NSString *comment;
-  iCalPerson *organizer;
-  NSArray *participants;     /* array of iCalPerson's */
-  NSArray *resources;        /* array of iCalPerson's */
-  NSString *priority;
-  NSArray *categories;
-  NSString *accessClass;
-  BOOL isPrivate;         /* default: NO */
-  BOOL checkForConflicts; /* default: NO */
-  NSDictionary *cycle;
-  NSString *cycleEnd;
-}
-
-- (NSString *)iCalStringTemplate;
-- (NSString *)iCalString;
-
-- (void)setIsPrivate:(BOOL)_yn;
-- (void)setAccessClass:(NSString *)_class;
-
-- (void)setCheckForConflicts:(BOOL)_checkForConflicts;
-- (BOOL)checkForConflicts;
-
-- (BOOL)hasCycle;
-- (iCalRecurrenceRule *)rrule;
-- (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule;
-- (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule;
-
-- (BOOL)isCycleEndUntil;
-- (void)setIsCycleEndUntil;
-- (void)setIsCycleEndNever;
-
-- (NSString *)_completeURIForMethod:(NSString *)_method;
-
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource;
-
-- (NSString *)iCalParticipantsAndResourcesStringFromQueryParameters;
-- (NSString *)iCalParticipantsStringFromQueryParameters;
-- (NSString *)iCalResourcesStringFromQueryParameters;
-- (NSString *)iCalStringFromQueryParameter:(NSString *)_qp
-              format:(NSString *)_format;
-- (NSString *)iCalOrganizerString;
-
-- (id)acceptOrDeclineAction:(BOOL)_accept;
-
-@end
 
 #import "common.h"
 #import <NGCards/NGCards.h>
@@ -98,6 +32,10 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import "UIxComponent+Agenor.h"
+
+#import "UIxAppointmentEditor.h"
+
+/* TODO: CLEAN UP */
 
 @implementation UIxAppointmentEditor
 
@@ -913,8 +851,8 @@
                          to:[_apt endDate]];
   [self debugWithFormat:@"  process: %d events", [infos count]];
 
-  ranges = [infos arrayByCreatingDateRangesFromObjectsWithStartDateKey:@"startDate"
-                  andEndDateKey:@"endDate"];
+  ranges = [infos arrayByCreatingDateRangesFromObjectsWithStartDateKey: @"startDate"
+                  andEndDateKey: @"endDate"];
   ranges = [ranges arrayByCompactingContainedDateRanges];
   [self debugWithFormat:@"  blocked ranges: %@", ranges];
 
@@ -980,9 +918,11 @@
   return self;
 }
 
-- (id)saveAction {
+- (id <WOActionResults>) saveAction
+{
   iCalEvent *apt;
   iCalPerson *p;
+  id <WOActionResults> result;
   NSString *content;
   NSException *ex;
 
@@ -1035,7 +975,12 @@
     return self;
   }
   
-  return [self redirectToLocation:[self _completeURIForMethod:@".."]];
+  if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
+    result = [self redirectToLocation: [self applicationPath]];
+  else
+    result = [self jsCloseWithRefreshMethod: @"refreshAppointments()"];
+
+  return result;
 }
 
 - (NSString *) saveUrl

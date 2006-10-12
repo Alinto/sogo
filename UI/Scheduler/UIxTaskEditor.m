@@ -23,72 +23,10 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
-#import <SOGoUI/UIxComponent.h>
+
+#import "UIxTaskEditor.h"
 
 /* TODO: CLEAN UP */
-
-@class NSString;
-@class iCalPerson;
-@class iCalRecurrenceRule;
-
-@interface UIxTaskEditor : UIxComponent
-{
-  NSString *iCalString;
-  NSString *errorText;
-  id item;
-  
-  /* individual values */
-  NSCalendarDate *startDate;
-  NSCalendarDate *dueDate;
-  NSCalendarDate *cycleUntilDate;
-  NSString *title;
-  NSString *location;
-  NSString *comment;
-  iCalPerson *organizer;
-  NSArray *participants;     /* array of iCalPerson's */
-  NSArray *resources;        /* array of iCalPerson's */
-  NSString *priority;
-  NSArray *categories;
-  NSString *accessClass;
-  BOOL isPrivate;         /* default: NO */
-  BOOL checkForConflicts; /* default: NO */
-  NSDictionary *cycle;
-  NSString *cycleEnd;
-}
-
-- (NSString *)iCalStringTemplate;
-- (NSString *)iCalString;
-
-- (void)setIsPrivate:(BOOL)_yn;
-- (void)setAccessClass:(NSString *)_class;
-
-- (void)setCheckForConflicts:(BOOL)_checkForConflicts;
-- (BOOL)checkForConflicts;
-
-- (BOOL)hasCycle;
-- (iCalRecurrenceRule *)rrule;
-- (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule;
-- (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule;
-
-- (BOOL)isCycleEndUntil;
-- (void)setIsCycleEndUntil;
-- (void)setIsCycleEndNever;
-
-- (NSString *)_completeURIForMethod:(NSString *)_method;
-
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource;
-
-- (NSString *)iCalParticipantsAndResourcesStringFromQueryParameters;
-- (NSString *)iCalParticipantsStringFromQueryParameters;
-- (NSString *)iCalResourcesStringFromQueryParameters;
-- (NSString *)iCalStringFromQueryParameter:(NSString *)_qp
-              format:(NSString *)_format;
-- (NSString *)iCalOrganizerString;
-
-- (id)acceptOrDeclineAction:(BOOL)_accept;
-
-@end
 
 #import "common.h"
 #import <NGCards/NGCards.h>
@@ -145,10 +83,13 @@
 
 /* accessors */
 
-- (void)setItem:(id)_item {
+- (void) setItem: (id) _item
+{
   ASSIGN(item, _item);
 }
-- (id)item {
+
+- (id) item
+{
   return item;
 }
 
@@ -678,8 +619,8 @@
 /* save */
 
 /* returned dates are in GMT */
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource
+- (NSArray *) getICalPersonsFromFormValues: (NSArray *) _values
+                           treatAsResource: (BOOL) _isResource
 {
   unsigned i, count;
   NSMutableArray *result;
@@ -905,7 +846,7 @@
   [self debugWithFormat:@"  process: %d tasks", [infos count]];
 
   ranges = [infos arrayByCreatingDateRangesFromObjectsWithStartDateKey:@"startDate"
-                  andDueDateKey:@"dueDate"];
+                  andEndDateKey:@"dueDate"];
   ranges = [ranges arrayByCompactingContainedDateRanges];
   [self debugWithFormat:@"  blocked ranges: %@", ranges];
 
@@ -929,11 +870,14 @@
 
 /* actions */
 
-- (BOOL)shouldTakeValuesFromRequest:(WORequest *)_rq inContext:(WOContext*)_c{
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
+                           inContext: (WOContext*) _c
+{
   return YES;
 }
 
-- (id)testAction {
+- (id) testAction
+{
   /* for testing only */
   WORequest *req;
   iCalToDo *task;
@@ -950,9 +894,10 @@
   return self;
 }
 
-- (id<WOActionResults>)defaultAction {
+- (id <WOActionResults>) defaultAction
+{
   NSString *ical;
-  
+
   /* load iCalendar file */
   
   // TODO: can't we use [clientObject contentAsString]?
@@ -968,31 +913,35 @@
     /* TODO: we need proper ACLs */
     return [self redirectToLocation:[self _completeURIForMethod:@"../view"]];
   }
+
   return self;
 }
 
-- (id)saveAction {
+- (id <WOActionResults>) saveAction
+{
   iCalToDo *task;
   iCalPerson *p;
+  id <WOActionResults> result;
   NSString *content;
   NSException *ex;
 
   if (![self isWriteableClientObject]) {
     /* return 400 == Bad Request */
     return [NSException exceptionWithHTTPStatus:400
-                        reason:@"method cannot be invoked on "
-                               @"the specified object"];
+                        reason: @"method cannot be invoked on "
+                                @"the specified object"];
   }
-  
+
   task = [self taskFromString: [self iCalString]];
   if (task == nil) {
     NSString *s;
     
-    s = [self labelForKey:@"Invalid iCal data!"];
-    [self setErrorText:s];
+    s = [self labelForKey: @"Invalid iCal data!"];
+    [self setErrorText: s];
+
     return self;
   }
-  
+
   [self saveValuesIntoTask:task];
   p = [task findParticipantWithEmail:[self emailForUser]];
   if (p) {
@@ -1015,8 +964,8 @@
   if (content == nil) {
     NSString *s;
     
-    s = [self labelForKey:@"Could not create iCal data!"];
-    [self setErrorText:s];
+    s = [self labelForKey: @"Could not create iCal data!"];
+    [self setErrorText: s];
     return self;
   }
   
@@ -1025,8 +974,13 @@
     [self setErrorText:[ex reason]];
     return self;
   }
-  
-  return [self redirectToLocation:[self _completeURIForMethod:@".."]];
+
+  if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
+    result = [self redirectToLocation: [self applicationPath]];
+  else
+    result = [self jsCloseWithRefreshMethod: @"refreshTasks()"];
+
+  return result;
 }
 
 - (id) changeStatusAction

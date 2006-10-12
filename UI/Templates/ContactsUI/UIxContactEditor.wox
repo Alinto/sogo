@@ -344,8 +344,7 @@
           type="submit"
           class="button"
           label:value="Save"
-          name="save:method"
-          onclick="submitContact(this.form); return false;" />
+          name="save:method" />
         <input
           type="submit"
           class="button"
@@ -358,11 +357,10 @@
           label:value="PouetPouet"
           name="pouet"
           onclick="showCoords(this); return false;" /> -->
-        <input type="hidden" id="jsaction" />
       </div>
     </form>
 
     <script type="text/javascript">
-      initEditorForm('<var:string value="contactUID" />');
+      initEditorForm();
     </script>
   </var:component>

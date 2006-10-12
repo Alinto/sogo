@@ -99,25 +99,6 @@ function validateAptEditor() {
   return true;
 }
 
-function submitTask(thisForm) {
-//   var action = document.getElementById('jsaction');
-//   action.setAttribute("name", "save:method");
-//   action.setAttribute("value", "save");
-
-  window.opener.log ("form: " + thisForm);
-
-  window.opener.log ("validating...");
-  if (validateAptEditor()) {
-    window.opener.log ("submitting");
-    thisForm.submit();
-    window.opener.log ("setting timeout...");
-    window.opener.setTimeout('refreshTasks();', 200);
-    window.opener.log ("we close...");
-    window.close();
-    window.opener.log ("closed");
-  }
-}
-
 function toggleDetails() {
   var div = $("details");
   var buttons = $("buttons");

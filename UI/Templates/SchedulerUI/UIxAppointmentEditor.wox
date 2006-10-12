@@ -13,8 +13,7 @@
     <script type="text/javascript" rsrc:src="skycalendar.js">
     </script>
 
-    <form var:href="saveUrl" name="editform">
-
+    <form var:href="saveUrl" name="editform" onsubmit="return validateAptEditor();">
       <var:if condition="hasErrorText">
         <p style="background-color: #AA0000;">
           <var:string value="errorText" />
@@ -113,8 +112,7 @@
           type="submit"
           class="button"
           label:value="Save"
-          name="submitmeeting"
-          onclick="submitMeeting(this.form);" />
+          name="submitmeeting" />
         <input
           type="submit"
           class="button"

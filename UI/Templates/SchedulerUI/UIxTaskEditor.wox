@@ -1,20 +1,17 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
+  <var:component className="UIxPageFrame"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    className="UIxPageFrame"
     const:popup="YES"
-    title="name"
-    >
+    title="name">
     <script type="text/javascript" rsrc:src="skycalendar.js">
     </script>
 
-    <form var:href="saveUrl" name="editform">
-
+    <form var:href="saveUrl" name="editform" onsubmit="return validateAptEditor();">
       <var:if condition="hasErrorText">
         <p style="background-color: #AA0000;">
           <var:string value="errorText" />
@@ -39,20 +36,20 @@
             /><var:string label:value="is private" /></label>
         <span class="checkBoxList"><var:string label:value="Date" />
           <span class="content"><var:component className="UIxTimeDateControl"
-            const:controlID="startTime"
-            date="taskStartDate"
-            const:dayStartHour="8"
-            const:dayEndHour="18"
-            /></span></span>
+              const:controlID="startTime"
+              date="taskStartDate"
+              const:dayStartHour="8"
+              const:dayEndHour="18"
+              /></span></span>
         <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
           ><var:string label:value="Show Details" /></a>
         <span class="checkBoxList"><var:string label:value="Due Time" />
           <span class="content"><var:component className="UIxTimeDateControl"
-            const:controlID="endTime"
-            date="taskDueDate"
-            const:dayStartHour="8"
-            const:dayEndHour="18"
-            /></span></span>
+              const:controlID="endTime"
+              date="taskDueDate"
+              const:dayStartHour="8"
+              const:dayEndHour="18"
+              /></span></span>
       </div>
       
       <div id="details">
@@ -68,7 +65,7 @@
             ><var:popup list="cycles" item="item"
               label:string="$cycleLabel"
               selection="cycle"
-            const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
+              const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
               /><span id="cycleSelectionFirstLevel"
               ><var:popup list="cycleEnds" item="item"
                 label:string="$item" value="item"
@@ -101,20 +98,22 @@
               /></span></span>
 
         <label><var:string label:value="Priority" />
-        <var:popup list="priorities" item="item"
-          string="itemPriorityText" selection="priority" /></label>
+          <var:popup list="priorities" item="item"
+            string="itemPriorityText" selection="priority" /></label>
         
         <label><var:string label:value="Comment"
             /><textarea name="comment" var:value="comment" /></label>
       </div>
+
+      <input type="hidden" name="ical" var:value="iCalString" />
+      <noscript><input type="hidden" name="nojs" const:value="1" /></noscript>
 
       <div id="buttons">
         <input
           type="submit"
           class="button"
           label:value="Save"
-          name="submittask"
-          onclick="submitTask(this.form);" />
+          name="submittask" />
         <input
           type="submit"
           class="button"
@@ -127,8 +126,6 @@
             value="Test" name="test:method" />
         </var:if>
       </div>
-
-      <input type="hidden" name="ical" var:value="iCalString" />
       <!-- input type="hidden" id="jsaction" -->
     </form>
     <!--

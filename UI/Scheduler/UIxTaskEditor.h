@@ -33,7 +33,6 @@
 {
   NSString *iCalString;
   NSString *errorText;
-  NSString *action;
   id item;
   
   /* individual values */

@@ -95,19 +95,6 @@ function validateContactEditor() {
   return true;
 }
 
-function submitContact(thisForm) {
-  var action = $('jsaction');
-  action.setAttribute("name", "save:method");
-  action.setAttribute("value", "save");
-
-  if (validateContactEditor()) {
-    thisForm.submit();
-    if (window.opener.refreshContacts)
-      window.opener.setTimeout("refreshContacts(\""+ self.contactId +"\");", 200);
-    window.close();
-  }
-}
-
 function showCoords(node) {
   node = $("givenName");
   window.alert("x: " + node.cascadeLeftOffset()
@@ -140,8 +127,7 @@ function onFnNewValue(event) {
   return true;
 }
 
-function initEditorForm(contactId) {
-  self.contactId = contactId;
+function initEditorForm() {
   displayNameChanged = ($("fn").value.length > 0);
   $("fn").onkeydown = onFnKeyDown;
   $("sn").onkeyup = onFnNewValue;

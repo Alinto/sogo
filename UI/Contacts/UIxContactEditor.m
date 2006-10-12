@@ -366,11 +366,6 @@
   return @"edit";
 }
 
-- (NSString *) contactUID
-{
-  return [[self clientObject] nameInContainer];
-}
-
 - (CardElement *) _elementWithTag: (NSString *) tag
                            ofType: (NSString *) type
 {
@@ -462,10 +457,11 @@
   [self _saveEmails];
 }
 
-- (id) saveAction
+- (id <WOActionResults>) saveAction
 {
   id <SOGoContactObject> contact;
   id result;
+  NSString *jsRefreshMethod;
 
   contact = [self clientObject];
   card = [contact vCard];
@@ -474,7 +470,15 @@
       [self _saveSnapshot];
       [contact save];
 
-      result = [self redirectToLocation: @".."];
+      if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
+        result = [self redirectToLocation: [self applicationPath]];
+      else
+        {
+          jsRefreshMethod
+            = [NSString stringWithFormat: @"refreshContacts(\"%@\")",
+                        [contact nameInContainer]];
+          result = [self jsCloseWithRefreshMethod: jsRefreshMethod];
+        }
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */

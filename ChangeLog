@@ -1,5 +1,12 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -saveAction]),
+	UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-saveAction]), UI/MailerUI/UIxMailEditor.m ([UIxMailEditor
+	-sendAction]), UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-saveAction]):
+	return a UIxJSClose component if everything went fine.
+
 	* UI/Scheduler/UIxTaskEditor.h: interface extracted from
 	UIxTaskEditor.m.
 
