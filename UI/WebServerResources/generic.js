@@ -1127,6 +1127,58 @@ HTMLTableElement.prototype.deselectAll = function() {
     deselectNode(nodes[i]);
 }
 
+HTMLUListElement.prototype.getSelectedRowsId = function() {
+  return this.getSelectedNodesId();
+}
+
 String.prototype.trim = function() {
   return this.replace(/(^\s+|\s+$)/g, '');
 }
+
+String.prototype.decodeEntities = function() {
+  return this.replace(/&#(\d+);/g,
+                      function(wholematch, parenmatch1) {
+                        return String.fromCharCode(+parenmatch1);
+                      });
+}
+
+// function BatchAjaxRequest()
+// {
+//   this.init();
+
+//   return this;
+// }
+
+// BatchAjaxRequest.prototype.init = function() {
+//   this.urls = null;
+//   this.currentUrl = 0;
+//   this.requestsLeft = 0;
+//   this.returnCodes = new Array();
+//   this.state = "waiting";
+//   this.callback = null;
+//   this.callbackData = null;
+// }
+
+// BatchAjaxRequest.prototype.setUrls = function(urls) {
+//   this.urls = urls;
+// }
+
+// BatchAjaxRequest.prototype.setCallback = function(callback, callbackData) {
+//   this.callback = callback;
+//   this.callbackData = callbackData;
+// }
+
+// BatchAjaxRequest.prototype._handler = function(http) {
+//   if (
+//   this.requestsLeft--;
+//   if (this.requestsLeft == 0
+//       && this.callback)
+//     this.callback(this, callbackData);
+// }
+
+// BatchAjaxRequest.prototype.run = function() {
+//   this.requestsLeft = this.urls.length;
+//   this.currentUrl = 0;
+// }
+
+// test = new BatchAjaxRequest();
