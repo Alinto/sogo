@@ -30,6 +30,7 @@
     </div>
 
     <var:month-overview
+      const:id="dateSelectorTable"
       currentDay="currentDay"
       index="dayIndex"
       year="year"
