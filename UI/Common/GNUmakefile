@@ -12,9 +12,9 @@ CommonUI_OBJC_FILES +=		\
 	CommonUIProduct.m	\
 	UIxPageFrame.m		\
 	UIxPrintPageFrame.m	\
-	UIxWinClose.m		\
 	UIxSortButton.m		\
 	UIxAppNavView.m		\
+	UIxJSClose.m		\
 	\
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
