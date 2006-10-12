@@ -1,3 +1,10 @@
+2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxJSClose.[hm]: new UIxComponent designed to display
+	a very light page with javascript code to close a window, by
+	calling a method on the opener if specified. This component is
+	designed to work as a response to form postings.
+
 2006-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoTaskObject.[hm]: clone of
