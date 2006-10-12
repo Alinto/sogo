@@ -1,5 +1,8 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: manage both lists of
+	objects wrt to the toolbar actions.
+
 	* UI/WebServerResources/generic.js: added code to the "String"
 	class to decode number-encoded char entities.
 

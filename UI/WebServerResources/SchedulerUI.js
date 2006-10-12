@@ -2,6 +2,8 @@ var sortOrder = '';
 var sortKey = '';
 var listFilter = 'view_today';
 
+var listOfSelection = null;
+
 var hideCompletedTasks = 0;
 
 var currentDay = '';
@@ -39,25 +41,29 @@ function _editEventId(id) {
 }
 
 function editEvent() {
-  var list = $("appointmentsList");
-  var nodes = list.getSelectedRowsId();
+  if (listOfSelection) {
+    var nodes = listOfSelection.getSelectedRowsId();
 
-  if (nodes.length > 0)
-    _editEventId(nodes[0]);
+    for (var i = 0; i < nodes.length; i++)
+      _editEventId(nodes[i]);
+  }
 
   return false; /* stop following the link */
 }
 
-function deleteEvent() {
-  var list = $("appointmentsList");
-  var nodes = list.getSelectedRowsId();
+function deleteEvent()
+{
+  if (listOfSelection) {
+    var nodes = listOfSelection.getSelectedRowsId();
 
-  if (nodes.length > 0) {
-    if (confirm(labels["appointmentDeleteConfirmation"])) {
-      var urlstr = ApplicationBaseURL + nodes[0] + "/delete";
-      document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
-                                                           deleteEventCallback,
-                                                           nodes[0]);
+    if (nodes.length > 0) {
+      if (confirm(labels["appointmentDeleteConfirmation"].decodeEntities())) {
+        var urlstr = (ApplicationBaseURL
+                      + "batchDelete?ids=" + nodes.join('/'));
+        document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+                                                             deleteEventCallback,
+                                                             nodes);
+      }
     }
   }
 
@@ -69,9 +75,11 @@ function deleteEventCallback(http)
   if (http.readyState == 4
       && http.status == 200) {
     document.deleteEventAjaxRequest = null;
-    var node = $(http.callbackData);
-    log ("deleteEventCallback: " + node);
-    node.parentNode.removeChild(node);
+    var nodes = $(http.callbackData);
+    for (var i = 0; i < nodes.length; i++) {
+      var node = $(nodes[i]);
+      node.parentNode.removeChild(node);
+    }
   }
   else
     log ("ajax fuckage");
@@ -449,6 +457,16 @@ function onAppointmentContextMenuHide(event)
 
 function onAppointmentsSelectionChange()
 {
+  listOfSelection = $("appointmentsList");
+  listOfSelection.removeClassName("_unfocused");
+  $("tasksList").addClassName("_unfocused");
+}
+
+function onTasksSelectionChange()
+{
+  listOfSelection = $("tasksList");
+  listOfSelection.removeClassName("_unfocused");
+  $("appointmentsList").addClassName("_unfocused");
 }
 
 function _loadAppointmentHref(href) {
