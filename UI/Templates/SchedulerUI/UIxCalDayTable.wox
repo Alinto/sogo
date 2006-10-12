@@ -56,7 +56,7 @@
           <var:foreach list="daysToDisplay" item="currentTableDay"
             ><td class="contentOfDay"
               onclick="onCalendarSelectDay(event, this);"
-              ondblclick="return newEvent(this);"
+              ondblclick="return newEvent(this, 'event');"
               var:day="currentAppointmentDay"
               var:hour="currentAppointmentHour"
               ><var:foreach
