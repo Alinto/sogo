@@ -290,8 +290,12 @@ function changeCalendarDisplay(time, newView)
 {
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
-  var day = time['day'];
-  var hour = time['hour'];
+  var day = null;
+  var hour = null;
+  if (time) {
+    day = time['day'];
+    hour = time['hour'];
+  }
 
   if (!day)
     day = currentDay;
