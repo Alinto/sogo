@@ -60,12 +60,6 @@ UL#tasksList
 UL#tasksList LI
 { white-space: nowrap; }
 
-UL#tasksList LI._selected
-{ 
-  background: #4b6983;
-  color: #fff !important;
-}
-
 UL#tasksList LI.overdue
 { color: #f00; }
 
@@ -247,18 +241,22 @@ DIV#calendarView A
 { background: #ddd;
   border: 1px solid #deebf7; }
 
-#dateSelector TD._selected
+TABLE#appointmentsList
+{ width: auto; }
+
+#dateSelector TD._selected,
+UL#tasksList LI._selected,
+TABLE#appointmentsList TR._selected TD
 { 
   background: #4b6983;
   color: #fff;
 }
 
-TABLE#appointmentsList
-{ width: auto; }
-
-TABLE#appointmentsList TR._selected TD
+._unfocused#dateSelector TD._selected,
+UL._unfocused#tasksList LI._selected,
+TABLE._unfocused#appointmentsList TR._selected TD
 { 
-  background: #4b6983;
+  background: #dbdad5;
   color: #fff;
 }
 
