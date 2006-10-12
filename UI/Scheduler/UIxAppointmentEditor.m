@@ -429,8 +429,8 @@
     @"CLASS:PUBLIC\r\n"
     @"STATUS:CONFIRMED\r\n" /* confirmed by default */
     @"DTSTAMP:%@Z\r\n"
-    @"DTSTART:%@\r\n"
-    @"DTEND:%@\r\n"
+    @"DTSTART:%@Z\r\n"
+    @"DTEND:%@Z\r\n"
     @"TRANSP:%@\r\n"
     @"SEQUENCE:1\r\n"
     @"PRIORITY:5\r\n"
@@ -439,6 +439,7 @@
     @"END:VEVENT\r\n"
     @"END:VCALENDAR";
 
+  NSTimeZone *utc;
   NSCalendarDate *lStartDate, *lEndDate, *stamp;
   NSString *template, *s;
   unsigned minutes;
@@ -450,13 +451,16 @@
   else {
     minutes = 60;
   }
+
+  utc = [NSTimeZone timeZoneWithName: @"GMT"];
   lStartDate = [self selectedDate];
-  lEndDate   = [lStartDate dateByAddingYears:0 months:0 days:0
-                           hours:0 minutes:minutes seconds:0];
+  [lStartDate setTimeZone: utc];
+  lEndDate   = [lStartDate dateByAddingYears: 0 months: 0 days: 0
+                           hours: 0 minutes: minutes seconds: 0];
 
   stamp = [NSCalendarDate calendarDate];
-  [stamp setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
-  
+  [stamp setTimeZone: utc];
+
   s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
                          [[self clientObject] nameInContainer],

@@ -1,5 +1,9 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-iCalStringFromQueryParameter:format:]): dates explicitly set to
+	utc tz.
+
 	* UI/WebServerResources/SchedulerUI.js: manage both lists of
 	objects wrt to the toolbar actions.
 
