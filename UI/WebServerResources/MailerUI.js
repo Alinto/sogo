@@ -92,7 +92,8 @@ function validateEditorInput(sender) {
     errortext = errortext + labels.error_missingrecipients + "\n";
   
   if (errortext.length > 0) {
-    alert(labels.error_validationfailed + ":\n" + errortext);
+    alert(labels.error_validationfailed.decodeEntities() + ":\n"
+          + errortext.decodeEntities());
     return false;
   }
   return true;
@@ -329,7 +330,7 @@ function ctxFolderAdd(sender) {
 }
 
 function ctxFolderDelete(sender) {
-  if (!confirm("Delete current folder?"))
+  if (!confirm("Delete current folder?").decodeEntities())
     return false;
   
   // TODO: should use a form-POST or AJAX
@@ -691,7 +692,6 @@ function moveTo(uri) {
 function deleteSelectedMails()
 {
 }
-
 
 /* message menu entries */
 function onMenuOpenMessage(event)
