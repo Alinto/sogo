@@ -157,7 +157,7 @@
   NSCalendarDate *date;
     
   date = [self currentDate];
-  hmString = [NSString stringWithFormat:@"%02d%02d",
+  hmString = [NSString stringWithFormat:@"%.2d%.2d",
                        [date hourOfDay], [date minuteOfHour]];
   qp = [[self queryParameters] mutableCopy];
   [self setSelectedDateQueryParameter:date inDictionary:qp];
