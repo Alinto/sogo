@@ -1,5 +1,11 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.h: interface extracted from
+	UIxTaskEditor.m.
+
+	* UI/Scheduler/UIxAppointmentEditor.h: interface extracted from
+	UIxAppointmentEditor.m.
+
 	* UI/Common/UIxJSClose.[hm]: new UIxComponent designed to display
 	a very light page with javascript code to close a window, by
 	calling a method on the opener if specified. This component is
