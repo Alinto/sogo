@@ -27,6 +27,8 @@
 
 #import "UIxCalMainView.h"
 
+#import <Appointments/SOGoAppointmentFolder.h>
+
 static NSMutableArray *monthMenuItems = nil;
 static NSMutableArray *yearMenuItems = nil;
 
@@ -88,6 +90,22 @@ static NSMutableArray *yearMenuItems = nil;
 - (NSNumber *) yearMenuItem
 {
   return yearMenuItem;
+}
+
+- (id) batchDeleteAction
+{
+  NSArray *ids;
+  SOGoAppointmentFolder *clientObject;
+
+  ids = [[self queryParameterForKey: @"ids"]
+          componentsSeparatedByString: @"/"];
+  if (ids)
+    {
+      clientObject = [self clientObject];
+      [clientObject deleteEntriesWithIds: ids];
+    }
+
+  return self;
 }
 
 @end

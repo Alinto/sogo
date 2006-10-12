@@ -1,5 +1,9 @@
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-batchDeleteAction]): new method to delete selected entries in the
+	lists.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -deleteEntriesWithIds:ids]): new method
 	that delete identified entries in batch.
