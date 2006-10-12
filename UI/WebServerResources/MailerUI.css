@@ -25,7 +25,7 @@ DIV.folderTree
   position: absolute;
   top: 5.5em;
   left: 0px;
-  width: 14.7em;
+  width: 15em;
   bottom: 0px;
   margin: 0px;
   padding: 0px;
@@ -35,11 +35,10 @@ DIV.folderTree
 DIV#mailerPageContent
 { 
   position: absolute;
-  left: 15em;
   top: 5.5em;
+  left: 15em;
   right: 0px;
   bottom: 0px;
-  border: 0px dashed #f00;
   margin: 0px;
   padding: 0px;
   overflow: hidden;
@@ -61,7 +60,7 @@ DIV#messageContent
   overflow: hidden;
   top: 18.2em;
   bottom: 0px;
-  left: 0px;
+  left: 5px;
   right: 0px;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
@@ -195,7 +194,6 @@ table.titletable td.titlecell SELECT
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   background: #DCDAD5;
-  -moz-appearance: toolbarbutton !important;
 }
 
 .whitesec_title
@@ -478,9 +476,10 @@ TABLE#messageList
 { 
   display: block;
   position: absolute;
-  color: #000;  
   background: #fff;
+  color: #000;  
   width: 100%;
+  left: 5px;
   top: 2em;
   bottom: 5px;
   overflow: auto;
@@ -517,7 +516,7 @@ DIV#dragHandle
 {
   cursor: e-resize;
   top: 7.5em;
-  left: 14.6em;
+  left: 15em;
   width: 5px;
   bottom: 0px;
 }

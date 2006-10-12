@@ -3,16 +3,17 @@ DIV#leftPanel
   position: absolute;
   top: 5.5em;
   left: 0px;
-  width: 17.5em;
+  width: 16.5em;
   bottom: 0px;
   overflow: hidden;
 }
 
 DIV#schedulerTabs
 {
+  position: absolute;
   top: 0.5em;
   left: .2em;
-  width: 16em;
+  right: .2em;
   height: 15em;
 }
 
@@ -21,7 +22,8 @@ DIV#tasksListView
   position: absolute;
   top: 18em;
   bottom: 0px;
-  width: 16em;
+  left: .2em;
+  right: .7em;
   padding: 0px;
 }
 
@@ -55,6 +57,9 @@ UL#tasksList
   list-style-type: none;
   list-style-image: none; }
 
+UL#tasksList LI
+{ white-space: nowrap; }
+
 UL#tasksList LI._selected
 { 
   background: #4b6983;
@@ -78,9 +83,12 @@ DIV#rightPanel
 {
   position: absolute;
   top: 5.5em;
-  left: 17em;
+  left: 16.5em;
   right: 0px;
   bottom: 0px;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 5px;
   overflow: hidden;
 }
 
@@ -116,7 +124,7 @@ DIV#calendarView A
 #verticalDragHandle
 {
   cursor: e-resize;
-  top: 6em;
+  top: 7.5em;
   left: 16.5em;
   width: 5px;
   bottom: 0px;
@@ -141,7 +149,7 @@ DIV#calendarView A
 
 #dateSelector
 {
-  width: 14em;
+  width: 100%;
   margin: 0px auto;
   background: #fff;
   border-top: 1px solid #fff; 
@@ -192,15 +200,24 @@ DIV#calendarView A
 #dateSelector .dayOfWeek
 { color: #00f; }
 
+#dateSelector TABLE#dateSelectorTable TD
+{ width: 14%; }
+
+#dateSelector TABLE#dateSelectorTable TD TABLE TD
+{ width: 100% }
+
 #dateSelector TABLE,
 #dateSelector TABLE TABLE
-{ border-collapse: collapse; }
+{ border-collapse: collapse;
+  margin: 0px auto;
+  width: 100%; }
 
 #dateSelector TABLE TABLE TD
 { 
   cursor: pointer;
   margin: 0px;
   padding: 0px;
+  width: 100%;
   border: 1px solid #fff;
 }
 
@@ -214,9 +231,6 @@ DIV#calendarView A
 #dateSelector .dayOfToday
 { background: #deebf7;
   border: 1px solid #deebf7; }
-
-#dateSelector TABLE
-{ margin: 0px auto; }
 
 #dateSelector TD SPAN
 { width: 1.5em;

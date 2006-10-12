@@ -98,7 +98,6 @@ table.titletable td.titlecell SELECT
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   background: #DCDAD5;
-  -moz-appearance: toolbarbutton !important;
 }
 
 .whitesec_title

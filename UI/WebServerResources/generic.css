@@ -359,7 +359,6 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
   float: left;
   height: 3.4em;
   text-align: center;
-  -moz-appearance: toolbarbutton;
   -moz-box-align: center;
   -moz-box-pack: center;
   margin: 0px;
@@ -729,9 +728,10 @@ DIV.tabsContainer DIV.tab
 
 SPAN.checkBoxList INPUT,
 INPUT.checkBox
-{ -moz-border-top-colors: #000 #fff;
+{ border: 2px solid #000;
+  vertical-align: middle;
+  -moz-border-top-colors: #000 #fff;
   -moz-border-left-colors: #000 #fff; 
   -moz-border-bottom-colors: #000 #fff;
-  -moz-border-right-colors: #000 #fff;
-  vertical-align: middle; }
+  -moz-border-right-colors: #000 #fff; }
 
