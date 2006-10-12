@@ -604,8 +604,9 @@ INPUT#searchValue
 DIV#noJavascriptError
 { 
   position: absolute;
-  background: #aaa;
-  -moz-opacity: 0.6;
+  background: #999;
+  -moz-opacity: 0.6; 
+  z-index: 2;
   top: 0px;
   left: 0px;
   right: 0px;
@@ -615,6 +616,7 @@ DIV#noJavascriptError
 DIV.noJavascriptErrorMessage
 { 
   position: absolute;
+  z-index: 2;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
   border-bottom: 2px solid #888;
@@ -625,7 +627,7 @@ DIV.noJavascriptErrorMessage
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   padding: 1em;
   top: 10em;
-  left: 10em;
+  left: 17em;
   width: 24em;
   margin: 0px auto;
   background: #fff;
