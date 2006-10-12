@@ -40,7 +40,6 @@
           protectedBy = "View";
           pageName    = "UIxCalMainView";
         };
-
         dateselector = {
           protectedBy = "View";
           pageName    = "UIxCalDateSelector"; 
@@ -125,6 +124,11 @@
           protectedBy = "View";
           pageName    = "UIxAppointmentProposal"; 
           actionName  = "proposalSearch";
+        };
+        batchDelete = {
+          protectedBy = "View";
+          pageName    = "UIxCalMainView";
+          actionName  = "batchDelete";
         };
       };
     };
