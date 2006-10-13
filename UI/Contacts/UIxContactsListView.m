@@ -90,6 +90,13 @@
   return self;
 }
 
+- (id) calendarsContactsAction
+{
+  selectorComponentClass = @"UIxContactsCalendarsSelection";
+
+  return self;
+}
+
 - (NSString *) defaultSortKey
 {
   return @"fn";

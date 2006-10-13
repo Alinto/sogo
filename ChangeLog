@@ -1,5 +1,8 @@
 2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-calendarsContactsAction]): new method.
+
 	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector -setCheckedBoxes:boxes]) 
 	([UIxContactSelector -setHasCheckBoxes:aBool]) 
 	([UIxContactSelector -isCheckBoxChecked]): new accessors method to
