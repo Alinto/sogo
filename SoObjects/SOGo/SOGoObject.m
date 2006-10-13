@@ -394,6 +394,7 @@ static NSTimeZone *serverTimeZone = nil;
   return serverTimeZone;
 }
 
+/* TODO: should be moved into SOGoUser */
 - (NSTimeZone *) userTimeZone
 {
   NSUserDefaults *userPrefs;
