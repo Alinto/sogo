@@ -79,7 +79,8 @@
             /></div>
         <div id="calendarSelectorView"
           class="tab"
-          >Soon...</div>
+          ><var:component className="UIxCalCalendarsListView"
+            /></div>
       </div>
 
       <div id="tasksListView"
@@ -115,4 +116,8 @@
           selectedDate="selectedDate"
           /></div>
     </div>
+
+    <script type="text/javascript">
+      initCalendarContactsSelector('calendarsList');
+    </script>
   </var:component>

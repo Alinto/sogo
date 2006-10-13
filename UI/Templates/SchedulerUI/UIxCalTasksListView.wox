@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-    <h2>Tasks</h2>
+    <h2><var:string label:value="Tasks" /></h2>
     <label><input class="checkBox"
         var:checked="shouldHideCompletedTasks"
         type="checkbox"
