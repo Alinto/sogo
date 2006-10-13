@@ -891,10 +891,10 @@ function initCriteria()
 
 function onContactAdd(node)
 {
+  var selector = node.parentNode.parentNode;
   var selectorUrl = '?popup=YES';
   if (node)
-    selectorUrl += ("&selectorId="
-                    + node.parentNode.parentNode.getAttribute("id"));
+    selectorUrl += ("&selectorId=" + selector.getAttribute("id"));
 
   urlstr = ApplicationBaseURL;
   if (urlstr[urlstr.length-1] != '/')
@@ -903,18 +903,21 @@ function onContactAdd(node)
              + contactSelectorAction + selectorUrl);
   log (urlstr);
   var w = window.open(urlstr, "Addressbook",
-                      "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
-                      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+                      "width=640,height=400,resizable=1,scrollbars=0");
+  w.selector = selector;
   w.focus();
 
   return false;
 }
 
 function onContactRemove(node) {
-  var selectorId = node.parentNode.parentNode.getAttribute("id");
+  var selector = node.parentNode.parentNode;
+  var selectorId = selector.getAttribute("id");
+  var hasChanged = false;
 
   var names = $('uixselector-' + selectorId + '-display');
   var nodes = names.getSelectedNodes();
+  hasChanged = (nodes.length > 0);
   for (var i = 0; i < nodes.length; i++) {
     var currentNode = nodes[i];
     currentNode.parentNode.removeChild(currentNode);
@@ -928,6 +931,9 @@ function onContactRemove(node) {
       ids.push(nodes[i].getAttribute("uid"));
   uids.value = ids.join(",");
 
+  if (selector.changeNotification && hasChanged)
+    selector.changeNotification();
+
   return false;
 }
 
@@ -937,13 +943,19 @@ function initTabs()
   var containers = document.getElementsByClassName("tabsContainer");
   for (var x = 0; x < containers.length; x++) {
     var container = containers[x];
-    var nodes = container.getElementsByTagName("li");
+    var nodes = container.childNodes[1].childNodes;
+
+    var firstTab;
     for (var i = 0; i < nodes.length; i++) {
-      nodes[i].addEventListener("mousedown", onTabMouseDown, true);
-      nodes[i].addEventListener("click", onTabClick, true);
+      if (nodes[i] instanceof HTMLLIElement) {
+        if (!firstTab) {
+          firstTab = nodes[i];
+        }
+        nodes[i].addEventListener("mousedown", onTabMouseDown, true);
+        nodes[i].addEventListener("click", onTabClick, true);
+      }
     }
 
-    var firstTab = nodes[0];
     firstTab.addClassName("first");
     firstTab.addClassName("active");
     container.activeTab = firstTab;
@@ -1113,7 +1125,7 @@ HTMLTableElement.prototype.selectRowsMatchingClass = function(className) {
   var nodes = tbody.childNodes;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes.item(i);
-    if (node instanceof HTMLElement ) {
+    if (node instanceof HTMLElement) {
       var classStr = '' + node.getAttribute("class");
       if (classStr.indexOf(className, 0) >= 0)
         selectNode(node);
