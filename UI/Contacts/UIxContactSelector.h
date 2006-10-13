@@ -30,8 +30,17 @@
   NSString *callback;
 
   NSArray *contacts;
+  NSArray *checkedBoxes;
   iCalPerson *currentContact;
+
+  BOOL hasCheckBoxes;
+  NSString *checkBoxOnChange;
 }
+
+- (void) setHasCheckBoxes: (BOOL) aBool;
+- (BOOL) hasCheckBoxes;
+- (void) setCheckBoxOnChange: (NSString *) aString;
+- (NSString *) checkBoxOnChange;
 
 - (void)setTitle:(NSString *)_title;
 - (NSString *)title;

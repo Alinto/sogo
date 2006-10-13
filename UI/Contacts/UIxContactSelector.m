@@ -37,6 +37,7 @@
     [self setTitle:@"UIxContacts"];
     [self setWindowId:@"UIxContacts"];
     [self setCallback:@"undefined"];
+    checkedBoxes = nil;
   }
   return self;
 }
@@ -197,6 +198,37 @@
 - (NSString *) currentContactName
 {
   return [currentContact cn];
+}
+
+- (void) setCheckedBoxes: (NSArray *) boxes
+{
+  checkedBoxes = boxes;
+}
+
+- (void) setHasCheckBoxes: (BOOL) aBool
+{
+  hasCheckBoxes = aBool;
+}
+
+- (BOOL) hasCheckBoxes
+{
+  return hasCheckBoxes;
+}
+
+- (BOOL) isCheckBoxChecked
+{
+  return (checkedBoxes != nil
+          && [checkedBoxes containsObject: currentContact]);
+}
+
+- (void) setCheckBoxOnChange: (NSString *) aString
+{
+  checkBoxOnChange = aString;
+}
+
+- (NSString *) checkBoxOnChange
+{
+  return  checkBoxOnChange;
 }
 
 @end /* UIxContactSelector */
