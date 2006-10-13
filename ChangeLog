@@ -1,3 +1,8 @@
+2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactsCalendarsSelection.m: buttons for the
+	new user calendar selector.
+
 2006-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Templates/SchedulerUI/UIxAppointmentEditor.wox: time ranges
