@@ -23,7 +23,12 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+
+#import <NGObjWeb/WOResponse.h>
+
+#import <SOGo/SOGoUser.h>
 
 #import "UIxCalMainView.h"
 
@@ -97,8 +102,7 @@ static NSMutableArray *yearMenuItems = nil;
   NSArray *ids;
   SOGoAppointmentFolder *clientObject;
 
-  ids = [[self queryParameterForKey: @"ids"]
-          componentsSeparatedByString: @"/"];
+  ids = [[self queryParameterForKey: @"ids"] componentsSeparatedByString: @"/"];
   if (ids)
     {
       clientObject = [self clientObject];
@@ -106,6 +110,22 @@ static NSMutableArray *yearMenuItems = nil;
     }
 
   return self;
+}
+
+- (id) updateCalendarsAction
+{
+  WOResponse *response;
+  NSUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  [ud setObject: [self queryParameterForKey: @"ids"]
+                       forKey: @"calendaruids"];
+  [ud synchronize];
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/html; charset=\"utf-8\"" forKey: @"content-type"];
+
+  return response;
 }
 
 @end

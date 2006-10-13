@@ -1,5 +1,9 @@
 2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-updateCalendarsAction]): proxy method to update the user
+	preference table with the new selected calendar uids.
+
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
 	-calendarsContactsAction]): new method.
 
