@@ -1,5 +1,8 @@
 2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: added handling of
+	notification of changes to contact selectors.
+
 	* UI/WebServerResources/generic.js: added handling of notification
 	of changes to contact selectors.
 

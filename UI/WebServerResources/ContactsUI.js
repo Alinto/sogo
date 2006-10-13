@@ -38,9 +38,7 @@ var currentContactFolder = '';
 /* mail list */
 
 function openContactWindow(sender, url) {
-  var msgWin = window.open(url, null,
-			   "width=544,height=525,resizable=1,scrollbars=1,toolbar=0,"
-			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  var msgWin = window.open(url, null, "width=544,height=525");
   msgWin.focus();
 }
 
@@ -442,6 +440,18 @@ function onConfirmContactSelection(tag)
 {
   var folderLi = $(currentContactFolder);
   var currentContactFolderName = folderLi.innerHTML;
+  var selectorList = null;
+  var initialValues = null;
+
+  if (selector)
+    {
+      var selectorId = selector.getAttribute("id");
+      selectorList = opener.window.document.getElementById('uixselector-'
+                                                           + selectorId
+                                                           + '-uidList');
+      initialValues = selectorList.value;
+      log("values: " + initialValues);
+    }
 
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRows();
@@ -453,6 +463,10 @@ function onConfirmContactSelection(tag)
       opener.window.addContact(tag, currentContactFolderName + '/' + cname,
                                cid, cname, email);
     }
+
+  if (selector && selector.changeNotification
+      && selectorList.value != initialValues)
+    selector.changeNotification();
 
   return false;
 }
