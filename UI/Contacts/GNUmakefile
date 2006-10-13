@@ -11,6 +11,7 @@ ContactsUI_LANGUAGES = English French
 ContactsUI_OBJC_FILES =			\
 	UIxContactsSchedulerSelection.m	\
 	UIxContactsMailerSelection.m	\
+	UIxContactsCalendarsSelection.m	\
 	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\

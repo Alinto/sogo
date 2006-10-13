@@ -71,4 +71,9 @@
   return [self _selectActionForApplication: @"mailer-contacts"];
 }
 
+- (id) selectForCalendarsAction
+{
+  return [self _selectActionForApplication: @"calendars-contacts"];
+}
+
 @end

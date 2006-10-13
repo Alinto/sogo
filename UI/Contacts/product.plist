@@ -29,6 +29,11 @@
           pageName    = "UIxContactFoldersView"; 
           actionName  = "selectForMailer";
         };
+        calendars-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView"; 
+          actionName  = "selectForCalendars";
+        };
       };
     };
 
@@ -59,6 +64,11 @@
           pageName    = "UIxContactsListView";
           actionName = "mailerContacts";
         };
+        calendars-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "calendarsContacts";
+        };
       };
     };
 
@@ -88,6 +98,11 @@
           protectedBy = "View";
           pageName    = "UIxContactsListView";
           actionName = "mailerContacts";
+        };
+        calendars-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "calendarsContacts";
         };
       };
     };

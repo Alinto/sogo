@@ -20,6 +20,7 @@ SchedulerUI_OBJC_FILES =		\
 					\
 	UIxComponent+Agenor.m		\
 	UIxCalView.m			\
+	UIxCalCalendarsListView.m	\
 	UIxCalAptListView.m		\
 	UIxCalTasksListView.m		\
 	UIxCalDayView.m			\
