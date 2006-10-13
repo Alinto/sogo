@@ -1,5 +1,8 @@
 2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalCalendarsListView.m: new component class that
+	wrap a selector the the "Calendars" tab.
+
 	* UI/Contacts/UIxContactsCalendarsSelection.m: buttons for the
 	new user calendar selector.
 

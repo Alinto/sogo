@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="yes"?>
+  <container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label">
+    <var:component className="UIxContactSelector"
+      const:selectorId="calendarsList"
+      const:hasCheckBoxes="YES"
+      const:checkBoxOnChange="return updateCalendarStatus(this);"
+      contacts="contacts"
+      checkedBoxes="checkedContacts"
+      />
+<!--    <ul id="calendarsList"
+      onselectionchange="onCalendarSelectionChange();"
+      multiselect="yes">
+      <var:foreach list="fetchUsersCalendar"
+        item="currentCalendar"
+        ><li var:id="currentCalendar.uid"
+          var:class="currentStatusClass"
+          onmousedown="return false;"
+          onclick="return onRowClick(event);"
+          ><input class="checkBox"
+            var:checked="currentCalendar.visible"
+            type="checkbox"
+            onchange="return updateCalendarStatus(this);"
+            /><var:string value="currentCalendar.fullName"
+            const:escapeHTML="NO"
+            /></li>
+      </var:foreach> 
+    </ul> -->
+  </container>
