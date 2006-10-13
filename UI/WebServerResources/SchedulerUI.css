@@ -36,16 +36,15 @@ DIV#tasksListView H2
 DIV#tasksListView LABEL
 { margin: .25em; }
 
-UL#tasksList
-{ position: absolute;
-  cursor: default;
-  width: 100%;
+DIV#calendarsList
+{ height: 100%;
+  padding: 0px;
+  margin: 0px; }
+
+UL#tasksList, UL#uixselector-calendarsList-display
+{ cursor: default;
   margin: .25px;
   padding: 0px;
-  top: 3em;
-  left: .25em;
-  right: .25em;
-  bottom: .25em;
   overflow: auto;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -56,6 +55,18 @@ UL#tasksList
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
   list-style-type: none;
   list-style-image: none; }
+
+UL#tasksList
+{ position: absolute;
+  width: 100%;
+  top: 3em;
+  left: .25em;
+  right: .25em;
+  bottom: .25em; }
+
+UL#uixselector-calendarsList-display
+{ height: 10.5em;
+  margin: 0px; }
 
 UL#tasksList LI
 { white-space: nowrap; }
@@ -143,7 +154,6 @@ DIV#calendarView A
 
 #dateSelector
 {
-  width: 100%;
   margin: 0px auto;
   background: #fff;
   border-top: 1px solid #fff; 
@@ -245,19 +255,19 @@ TABLE#appointmentsList
 { width: auto; }
 
 #dateSelector TD._selected,
-UL#tasksList LI._selected,
+UL > LI._selected,
 TABLE#appointmentsList TR._selected TD
 { 
-  background: #4b6983;
-  color: #fff;
+  background: #4b6983 !important;
+  color: #fff !important;
 }
 
 ._unfocused#dateSelector TD._selected,
-UL._unfocused#tasksList LI._selected,
+UL._unfocused > LI._selected,
 TABLE._unfocused#appointmentsList TR._selected TD
 { 
-  background: #dbdad5;
-  color: #fff;
+  background: #dbdad5 !important;;
+  color: #fff !important;;
 }
 
 TABLE.dayOverview,

@@ -684,7 +684,7 @@ DIV.tabsContainer
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent; }
 
-DIV.tabsContainer UL
+DIV.tabsContainer > UL
 { cursor: default;
   list-style-type: none;
   list-style-image: none;
@@ -692,7 +692,7 @@ DIV.tabsContainer UL
   margin-top: -1.5em;
   padding: 0px; }
 
-DIV.tabsContainer UL LI
+DIV.tabsContainer > UL LI
 { z-index: 3;
   float: left;
   padding: 0px .5em;
@@ -707,21 +707,22 @@ DIV.tabsContainer UL LI
   background: #fff;
   background: #c4c2bd; }
 
-DIV.tabsContainer UL LI.first,
-DIV.tabsContainer UL LI.active
+DIV.tabsContainer > UL LI.first,
+DIV.tabsContainer > UL LI.active
 { border-left: 2px solid #fffffb;
   margin-left: -2px;
   -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight; }
 
-DIV.tabsContainer UL LI.active
+DIV.tabsContainer > UL LI.active
 { z-index: 5;
   background: #dbdad5;
   padding-top: 2px;
   padding-bottom: 2px;
   margin-top: -2px; }
 
-DIV.tabsContainer DIV.tab
+DIV.tabsContainer > DIV.tab
 { position: absolute;
+  overflow: auto;
   top: .5em;
   left: .5em;
   right: .5em;
