@@ -1,5 +1,10 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: edit and delete events
+	with their owner-relative urls. Generate a correct entry in the
+	css color table when a user is added to the calendars list. Put
+	the same color next to the user id.
+
 	* UI/WebServerResources/generic.js: implemented some new helper
 	methods.
 

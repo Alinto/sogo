@@ -35,8 +35,13 @@ function newEvent(sender, type) {
   return false; /* stop following the link */
 }
 
-function _editEventId(id) {
-  var urlstr = CalendarBaseURL + id + "/edit";
+function _editEventId(id, owner) {
+  var urlBase;
+  if (owner)
+    urlBase = UserFolderURL + "../" + owner + "/";
+  urlBase += "Calendar/"
+
+  var urlstr = urlBase + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
                         "width=570,height=200,resizable=0,scrollbars=0,toolbar=0," +
@@ -46,27 +51,52 @@ function _editEventId(id) {
 
 function editEvent() {
   if (listOfSelection) {
-    var nodes = listOfSelection.getSelectedRowsId();
+    var nodes = listOfSelection.getSelectedRows();
 
     for (var i = 0; i < nodes.length; i++)
-      _editEventId(nodes[i]);
+      _editEventId(nodes.getAttribute("id"),
+                   nodes.getAttribute("owner"));
   }
 
   return false; /* stop following the link */
 }
 
+function _batchDeleteEvents(events, owner) {
+  var urlstr = (UserFolderURL + "../" + owner + "/Calendar/batchDelete?ids="
+                + events.join('/'));
+  if (document.deleteEventAjaxRequest) {
+    document.deleteEventAjaxRequest.nextUrls.push(urlstr);
+    document.deleteEventAjaxRequest.callbackData.push(events);
+  } else {
+    document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+                                                         deleteEventCallback,
+                                                         events);
+    document.deleteEventAjaxRequest.nextUrls = new Array();
+    document.deleteEventAjaxRequest.callbackData = new Array();
+  }
+}
+
 function deleteEvent()
 {
   if (listOfSelection) {
-    var nodes = listOfSelection.getSelectedRowsId();
+    var nodes = listOfSelection.getSelectedRows();
 
     if (nodes.length > 0) {
       if (confirm(labels["appointmentDeleteConfirmation"].decodeEntities())) {
-        var urlstr = (CalendarBaseURL
-                      + "batchDelete?ids=" + nodes.join('/'));
-        document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
-                                                             deleteEventCallback,
-                                                             nodes);
+        var sortedNodes = new Array();
+        var owners = new Array();
+
+        for (var i = 0; i < nodes.length; i++) {
+          var owner = nodes[i].getAttribute("owner");
+          if (!sortedNodes[owner])
+            {
+              sortedNodes[owner] = new Array();
+              owners.push(owner);
+            }
+          sortedNodes[owner].push(nodes[i].getAttribute("id"));
+        }
+        for (var i = 0; i < owners.length; i++)
+          _batchDeleteEvents(sortedNodes[owners[i]], owners[i]);
       }
     }
   }
@@ -74,12 +104,28 @@ function deleteEvent()
   return false;
 }
 
+/* ugly piece of non-working code.
+   If you want to implement chained ajax events, implement it correctly!! */
+
 function deleteEventCallback(http)
 {
   if (http.readyState == 4
       && http.status == 200) {
-    document.deleteEventAjaxRequest = null;
-    var nodes = $(http.callbackData);
+    var nodes = null;
+    if (document.deleteEventAjaxRequest.nextUrls.length) {
+      var nextUrls = document.deleteEventAjaxRequest.nextUrls;
+      var nextCBd = document.deleteEventAjaxRequest.callbackData;
+      nodes = $(nextCBd.shift());
+      document.deleteEventAjaxRequest
+        = triggerAjaxRequest(nextUrls.shift(),
+                             deleteEventCallback,
+                             nextCBd);
+      document.deleteEventAjaxRequest.nextUrls = nextUrls;
+      document.deleteEventAjaxRequest.callbackData = nextCBd;
+    } else {
+      document.deleteEventAjaxRequest = null;
+      nodes = $(http.callbackData);
+    }
     for (var i = 0; i < nodes.length; i++) {
       var node = $(nodes[i]);
       node.parentNode.removeChild(node);
@@ -91,8 +137,8 @@ function deleteEventCallback(http)
 
 function editDoubleClickedEvent(node)
 {
-  var id = node.getAttribute("id");
-  _editEventId(id);
+  _editEventId(node.getAttribute("id"),
+               node.getAttribute("owner"));
   
   return false;
 }
@@ -105,7 +151,8 @@ function onSelectAll() {
 }
 
 function displayAppointment(event, sender) {
-  _editEventId(sender.getAttribute("aptCName"));
+  _editEventId(sender.getAttribute("aptCName"),
+               sender.getAttribute("owner"));
 
   event.cancelBubble = true;
   event.returnValue = false;
@@ -268,11 +315,11 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
 
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
-      log ("restoring cached selector for month: " + month);
+//       log ("restoring cached selector for month: " + month);
       setDateSelectorContent(cachedDateSelectors[month]);
     }
     else {
-      log ("loading selector for month: " + month);
+//       log ("loading selector for month: " + month);
       if (document.dateSelectorAjaxRequest) {
         document.dateSelectorAjaxRequest.aborted = true;
         document.dateSelectorAjaxRequest.abort();
@@ -302,7 +349,7 @@ function changeCalendarDisplay(time, newView)
     url += "?day=" + day;
 
   if (newView)
-    log ("switching to view: " + newView);
+//     log ("switching to view: " + newView);
 //   log ("changeCalendarDisplay: " + url);
 
   if (document.dayDisplayAjaxRequest) {
@@ -411,7 +458,7 @@ function popupCalendar(node)
 function onAppointmentContextMenu(event, element)
 {
   var topNode = $('appointmentsList');
-  log(topNode);
+//   log(topNode);
 
   var menu = $('appointmentsListMenu');
 
@@ -525,16 +572,14 @@ function onAppointmentClick(event)
 
 function selectMonthInMenu(menu, month)
 {
-  var entries = menu.childNodes[1].childNodes;
+  var entries = menu.childNodes[1].childNodesWithTag("LI");
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
-    if (entry instanceof HTMLLIElement) {
-      var entryMonth = entry.getAttribute("month");
-      if (entryMonth == month)
-        entry.addClassName("currentMonth");
-      else
-        entry.removeClassName("currentMonth");
-    }
+    var entryMonth = entry.getAttribute("month");
+    if (entryMonth == month)
+      entry.addClassName("currentMonth");
+    else
+      entry.removeClassName("currentMonth");
   }
 }
 
@@ -696,15 +741,13 @@ function calendarUidsList()
   var list = "";
 
   var clist = $("calendarsList");
-  var nodes = clist.childNodes[5].childNodes;
+  var nodes = clist.childNodes[5].childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
     var currentNode = nodes[i];
-    if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[3];
-      if (!input.checked)
-        list += "-";
-      list += currentNode.getAttribute("uid") + ",";
-    }
+    var input = currentNode.childNodesWithTag("input")[0];
+    if (!input.checked)
+      list += "-";
+    list += currentNode.getAttribute("uid") + ",";
   }
 
   return list.substr(0, list.length - 1);
@@ -772,7 +815,7 @@ function initCalendarContactsSelector(selId)
 function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 {
   var uids = $('uixselector-calendarsList-uidList');
-  log("addContact");
+//   log("addContact");
   if (contactId)
     {
       var re = new RegExp("(^|,)" + contactId + "($|,)");
@@ -784,13 +827,23 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
           else
             uids.value = contactId;
           var names = $('uixselector-calendarsList-display');
+          var listElems = names.childNodesWithTag("li");
+          var colorDef = indexColor(listElems.length);
           names.innerHTML += ('<li onmousedown="return false;"'
                               + ' uid="' + contactId + '"'
                               + ' onclick="onRowClick(event);">'
-                              + '<input class="checkBox" type="checkbox"'
+                              + ' <span class="colorBox"'
+                              + ' style="background-color: '
+                              + colorDef + ';"></span>'
+                              + ' <input class="checkBox" type="checkbox"'
                               + ' onchange="return updateCalendarStatus(this);"'
                               + ' />'
                               + contactName + '</li>');
+
+          var styles = document.getElementsByTagName("style");
+          styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
+                                  + ' background-color: ' + colorDef
+                                  + ' !important; }');
         }
     }
 
