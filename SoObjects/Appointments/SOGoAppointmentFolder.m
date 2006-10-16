@@ -21,6 +21,7 @@
 
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/AgenorUserManager.h>
+#import <SOGo/NSObject+Owner.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
@@ -579,7 +580,7 @@ static NSNumber   *sharedYes = nil;
   EOQualifier *qualifier;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
-  NSString *sql, *dateSqlString, *componentSqlString;
+  NSString *sql, *dateSqlString, *componentSqlString, *owner;
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -649,6 +650,8 @@ static NSNumber   *sharedYes = nil;
         records = [self fixupCyclicRecords: records fetchRange: r];
       if (!ma)
         ma = [NSMutableArray arrayWithCapacity: [records count]];
+
+      owner = [self ownerInContext: nil];
       [ma addObjectsFromArray: records];
     }
   else if (!ma)
@@ -665,6 +668,9 @@ static NSNumber   *sharedYes = nil;
   [ma sortUsingSelector: @selector (compareAptsAscending:)];
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
+
+  [ma makeObjectsPerformSelector: @selector (setOwnerByLogin:)
+      withObject: owner];
 
   return ma;
 }

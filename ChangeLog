@@ -1,5 +1,9 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): associate each returned record with the owner of the table they are retrieved from.
+
 	* SoObjects/SOGo/NSObject+Owner.[hm]: new extension module to
 	NSObject to associate an instance with a user.
 
