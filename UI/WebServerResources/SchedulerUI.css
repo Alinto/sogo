@@ -439,3 +439,11 @@ SPAN.appointmentView
 { display: block;
   background: #dd0;
   border: 1px dashed #990; }
+
+SPAN.colorBox
+{ display: block;
+  float: right;
+  border: 1px solid #333;
+  margin: .12em;
+  width: 1em;
+  height: .75em; }
