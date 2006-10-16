@@ -730,8 +730,12 @@ static NSNumber   *sharedYes = nil;
 {
   Class objectClass;
   unsigned int count, max;
-  NSString *currentId;
+  NSString *currentId, *currentUser;
+  WOContext *context;
   id deleteObject;
+
+  context = [[WOApplication application] context];
+  currentUser = [[context activeUser] login];
 
   max = [ids count];
   for (count = 0; count < max; count++)
@@ -741,8 +745,11 @@ static NSNumber   *sharedYes = nil;
         = [self objectClassForResourceNamed: currentId];
       deleteObject = [objectClass objectWithName: currentId
                                   inContainer: self];
-      [deleteObject delete];
-      [deleteObject primaryDelete];
+      if ([currentUser isEqualToString: [deleteObject ownerInContext: nil]])
+        {
+          [deleteObject delete];
+          [deleteObject primaryDelete];
+        }
     }
 }
 
