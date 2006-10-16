@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
@@ -37,21 +38,89 @@
     {
       contacts = nil;
       checkedContacts = nil;
+      currentContactPerson = nil;
+      colors = nil;
     }
 
   return self;
 }
 
+- (void) dealloc
+{
+  if (currentContactPerson)
+    [currentContactPerson release];
+  if (contacts)
+    [contacts release];
+  if (checkedContacts)
+    [checkedContacts release];
+  if (colors)
+    [colors release];
+  [super dealloc];
+}
+
+- (NSString *) _colorForNumber: (unsigned int) number
+{
+  unsigned int index, currentValue;
+  unsigned char colorTable[] = { 1, 1, 1 };
+  NSString *color;
+
+  if (number == NSNotFound)
+    color = @"#f00";
+  else
+    {
+      currentValue = number;
+      index = 0;
+      while (currentValue)
+        {
+          if (currentValue & 1)
+            colorTable[index]++;
+          if (index == 3)
+            index = 0;
+          currentValue >>= 1;
+          index++;
+        }
+      color = [NSString stringWithFormat: @"#%2x%2x%2x",
+                        (256 / colorTable[2]) - 1,
+                        (256 / colorTable[1]) - 1,
+                        (256 / colorTable[0]) - 1];
+    }
+
+  NSLog(@"color = '%@'", color);
+
+  return color;
+}
+
+- (void) _addContactId: (NSString *) contactId
+                withUm: (AgenorUserManager *) um
+             andNumber: (unsigned int) count
+{
+  NSString *contactRealId;
+  iCalPerson *currentContact;
+
+  if ([contactId hasPrefix: @"-"])
+    contactRealId = [contactId substringFromIndex: 1];
+  else
+    contactRealId = contactId;
+
+  currentContact = [um iCalPersonWithUid: contactRealId];
+  [contacts addObject: currentContact];
+  if (contactId == contactRealId)
+    [checkedContacts addObject: currentContact];
+  [colors setObject: [self _colorForNumber: count]
+          forKey: contactRealId];
+}
+
 - (void) _setupContacts
 {
-  AgenorUserManager *um;
   SOGoUser *user;
   NSString *list, *currentId;
   NSEnumerator *rawContacts;
-  iCalPerson *currentContact;
+  AgenorUserManager *um;
+  unsigned int count;
 
-  contacts = [NSMutableArray array];
-  checkedContacts = [NSMutableArray array];
+  contacts = [NSMutableArray new];
+  checkedContacts = [NSMutableArray new];
+  colors = [NSMutableDictionary new];
 
   um = [AgenorUserManager sharedUserManager];
   user = [context activeUser];
@@ -62,18 +131,12 @@
   rawContacts
     = [[list componentsSeparatedByString: @","] objectEnumerator];
   currentId = [rawContacts nextObject];
+  count = 0;
   while (currentId)
     {
-      if ([currentId hasPrefix: @"-"])
-        currentContact
-          = [um iCalPersonWithUid: [currentId substringFromIndex: 1]];
-      else
-        {
-          currentContact = [um iCalPersonWithUid: currentId];
-          [checkedContacts addObject: currentContact];
-        }
-      [contacts addObject: currentContact];
+      [self _addContactId: currentId withUm: um andNumber: count];
       currentId = [rawContacts nextObject];
+      count++;
     }
 }
 
@@ -91,6 +154,30 @@
     [self _setupContacts];
 
   return checkedContacts;
+}
+
+- (void) setCurrentContactPerson: (iCalPerson *) contact
+{
+  if (currentContactPerson)
+    [currentContactPerson release];
+  currentContactPerson = contact;
+  if (currentContactPerson)
+    [currentContactPerson retain];
+}
+
+- (NSString *) currentContactLogin
+{
+  return [currentContactPerson cn];
+}
+
+- (NSString *) currentContactSpanBG
+{
+  return [colors objectForKey: [currentContactPerson cn]];
+}
+
+- (NSDictionary *) colors
+{
+  return colors;
 }
 
 @end

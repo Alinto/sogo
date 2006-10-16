@@ -1,5 +1,9 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalCalendarsListView.m: added method to create
+	and associate a color for each user login depending on its
+	position in the list.
+
 	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView
 	-currentRowCSSClass]): return the correct class for the current
 	row depending on the owner of the event.

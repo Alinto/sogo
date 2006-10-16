@@ -25,10 +25,16 @@
 
 #import <SOGoUI/UIxComponent.h>
 
+@class NSMutableArray;
+@class NSMutableDictionary;
+@class iCalPerson;
+
 @interface UIxCalCalendarsListView : UIxComponent
 {
   NSMutableArray *checkedContacts;
   NSMutableArray *contacts;
+  NSMutableDictionary *colors;
+  iCalPerson *currentContactPerson;
 }
 
 @end
