@@ -1,5 +1,8 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: implemented some new helper
+	methods.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -deleteEntriesWithIds:ids]): don't delete
 	entries if their owner is not the current user.

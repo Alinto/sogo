@@ -200,7 +200,8 @@ function triggerAjaxRequest(url, callback, userdata) {
         catch( e ) {
           activeAjaxRequests -= 1;
           checkAjaxRequestsState();
-          alert('AJAX Request, Caught Exception: ' + e.description);
+          log("AJAX Request, Caught Exception: " + e.name);
+          log(e.message);
         }
       };
     http.url = url;
@@ -905,6 +906,7 @@ function onContactAdd(node)
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
   w.selector = selector;
+  w.opener = this;
   w.focus();
 
   return false;
@@ -994,6 +996,23 @@ function onTabClick(event) {
 }
 
 /* custom extensions to the DOM api */
+HTMLElement.prototype.childNodesWithTag = function(tagName) {
+  var matchingNodes = new Array();
+  var tagName = tagName.toUpperCase();
+
+  for (var i = 0; i < this.childNodes.length; i++) {
+//     log("(" + tagName + ") childNodes " + i + " = " + this.childNodes[i]);
+    if (typeof(this.childNodes[i]) == "object"
+        && this.childNodes[i].tagName
+        && this.childNodes[i].tagName.toUpperCase() == tagName)
+      matchingNodes.push(this.childNodes[i]);
+  }
+
+//   log ("matching: " + matchingNodes.length);
+
+  return matchingNodes;
+}
+
 HTMLElement.prototype.addClassName = function(className) {
   var classStr = '' + this.getAttribute("class");
 
@@ -1139,6 +1158,10 @@ HTMLTableElement.prototype.deselectAll = function() {
     deselectNode(nodes[i]);
 }
 
+HTMLUListElement.prototype.getSelectedRows = function() {
+  return this.getSelectedNodes();
+}
+
 HTMLUListElement.prototype.getSelectedRowsId = function() {
   return this.getSelectedNodesId();
 }
@@ -1152,6 +1175,37 @@ String.prototype.decodeEntities = function() {
                       function(wholematch, parenmatch1) {
                         return String.fromCharCode(+parenmatch1);
                       });
+}
+
+function d2h(d) {
+  var hD = "0123456789abcdef";
+  var h = hD.substr(d&15,1);
+  while (d>15) {
+    d>>=4;
+    h=hD.substr(d&15,1)+h;
+  }
+  return h;
+}
+
+function indexColor(number) {
+  var colorTable = new Array(1, 1, 1);
+
+  var currentValue = number;
+  var index = 0;
+  while (currentValue)
+    {
+      if (currentValue & 1)
+        colorTable[index]++;
+      if (index == 3)
+        index = 0;
+      currentValue >>= 1;
+      index++;
+    }
+
+  return ("#"
+          + d2h((256 / colorTable[2]) - 1)
+          + d2h((256 / colorTable[1]) - 1)
+          + d2h((256 / colorTable[0]) - 1));
 }
 
 // function BatchAjaxRequest()
