@@ -3,7 +3,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
-    class="appointmentView"
+    var:class="displayClasses"
     >
     <var:if condition="appointment.isRecurrentEvent">
       <!-- TODO: maxime needs to provide an image instead! -->

@@ -31,16 +31,19 @@
           ><li var:uid="currentContactId"
             onmousedown="return false;"
             onclick="onRowClick(event);"
-            ><var:if condition="hasCheckBoxes"
-              ><input type="checkbox" class="checkBox"
+            >
+            <var:if condition="hasColors"
+              ><span class="colorBox" var:style="currentContactStyle"><!-- spacer --></span>
+            </var:if><var:if condition="hasCheckBoxes">
+              <input type="checkbox" class="checkBox"
                 var:checked="isCheckBoxChecked"
-                var:onchange="checkBoxOnChange"
-             /></var:if
-              ><var:if condition="hasCheckBoxes"
-              const:negate="YES"
-              ><img rsrc:src="abcard.gif"
-                /></var:if
-              ><var:string value="currentContactName" /></li>
+                var:onchange="checkBoxOnChange" />
+            </var:if>
+            <var:if condition="hasCheckBoxes"
+              const:negate="YES">
+              <img rsrc:src="abcard.gif" />
+            </var:if>
+            <var:string value="currentContactName" /></li>
         </var:foreach>
       </ul><br />
 <!--      <span xmlns="http://www.w3.org/1999/xhtml"
