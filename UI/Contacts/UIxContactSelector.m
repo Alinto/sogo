@@ -38,6 +38,7 @@
     [self setWindowId:@"UIxContacts"];
     [self setCallback:@"undefined"];
     checkedBoxes = nil;
+    userColors = nil;
   }
   return self;
 }
@@ -229,6 +230,22 @@
 - (NSString *) checkBoxOnChange
 {
   return  checkBoxOnChange;
+}
+
+- (void) setColors: (NSDictionary *) colors
+{
+  userColors = colors;
+}
+
+- (BOOL) hasColors
+{
+  return (userColors != nil);
+}
+
+- (NSString *) currentContactStyle
+{
+  return [NSString stringWithFormat: @"background-color: %@;",
+                   [userColors objectForKey: [currentContact cn]]];
 }
 
 @end /* UIxContactSelector */

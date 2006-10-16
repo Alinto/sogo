@@ -22,6 +22,11 @@
 #ifndef UIXCONTACTSELECTOR_H
 #define UIXCONTACTSELECTOR_H
 
+@class NSArray;
+@class NSDictionary;
+@class NSString;
+@class iCalPerson;
+
 @interface UIxContactSelector : UIxComponent
 {
   NSString *title;
@@ -35,6 +40,8 @@
 
   BOOL hasCheckBoxes;
   NSString *checkBoxOnChange;
+
+  NSDictionary *userColors;
 }
 
 - (void) setHasCheckBoxes: (BOOL) aBool;

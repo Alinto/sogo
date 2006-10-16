@@ -1,5 +1,9 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector
+	-setColors:colors]): new method to associate a color table with
+	each user in the list.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): associate each returned record with the owner of the table they are retrieved from.
