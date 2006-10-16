@@ -20,7 +20,8 @@
  */
 // $Id: UIxCalInlineAptView.m 885 2005-07-21 16:41:34Z znek $
 
-#include <NGObjWeb/NGObjWeb.h>
+#import <NGObjWeb/NGObjWeb.h>
+#import <SOGo/NSObject+Owner.h>
 
 @interface UIxCalInlineAptView : WOComponent
 {
@@ -138,6 +139,12 @@
 }
 - (BOOL)canAccess {
   return canAccess;
+}
+
+- (NSString *) displayClasses
+{
+  return [NSString stringWithFormat: @"appointmentView ownerIs%@",
+                   [appointment ownerLogin]];
 }
 
 /* helpers */

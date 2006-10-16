@@ -1,5 +1,9 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalInlineAptView.m ([UIxCalInlineAptView
+	-displayClasses]): return the correct class for the current event
+	representation depending on its owner.
+
 	* UI/Scheduler/UIxCalCalendarsListView.m: added method to create
 	and associate a color for each user login depending on its
 	position in the list.
