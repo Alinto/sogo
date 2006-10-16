@@ -27,7 +27,7 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <Appointments/SOGoAppointmentFolder.h>
-
+#import <SOGo/NSObject+Owner.h>
 #import <SOGoUI/SOGoDateFormatter.h>
 
 #import "UIxCalTasksListView.h"
@@ -70,7 +70,7 @@
 - (NSString *) currentStatusClass
 {
   NSCalendarDate *taskDate, *now;
-  NSString *statusClass;
+  NSString *statusClass, *allClasses;
   NSNumber *taskDueStamp;
 
   if ([[currentTask objectForKey: @"status"] intValue] == 1)
@@ -96,8 +96,11 @@
       else
         statusClass = @"duelater";
     }
-  
-  return statusClass;
+
+  allClasses = [NSString stringWithFormat: @"%@ ownerIs%@",
+                         statusClass, [currentTask ownerLogin]];
+
+  return allClasses;
 }
 
 - (BOOL) shouldDisplayCurrentTask
