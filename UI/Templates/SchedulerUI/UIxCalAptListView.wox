@@ -43,6 +43,7 @@
     <var:foreach list="fetchCoreAppointmentsInfos" item="currentAppointment"
       ><tr var:class="currentRowCSSClass"
         var:id="currentAppointment.c_name"
+        var:owner="currentAptOwner"
         onclick="return onAppointmentClick(event);"
         ondblclick="return editDoubleClickedEvent(this);"
         oncontextmenu="return onAppointmentContextMenu(event, this);"

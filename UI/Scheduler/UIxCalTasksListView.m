@@ -133,4 +133,9 @@
   return ([[currentTask objectForKey: @"status"] intValue] == 1);
 }
 
+- (NSString *) currentTaskOwner
+{
+  return [currentTask ownerLogin];
+}
+
 @end

@@ -188,4 +188,9 @@
                    [currentAppointment ownerLogin]];
 }
 
+- (NSString *) currentAptOwner
+{
+  return [currentAppointment ownerLogin];
+}
+
 @end

@@ -161,4 +161,9 @@
                            referenceDate: [self referenceDate]];
 }
 
+- (NSString *) appointmentOwner
+{
+  return [appointment ownerLogin];
+}
+
 @end

@@ -15,6 +15,7 @@
           /></var:if
         ><a href="#"
         onclick="onCalendarSelectAppointment(event, this);"
+        var:owner="appointmentOwner"
         ondblclick="displayAppointment(event, this);"
         var:aptCName="appointment.c_name"
         var:title="tooltip"
