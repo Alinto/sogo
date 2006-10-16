@@ -1,5 +1,9 @@
 2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalAptListView.m ([UIxCalAptListView
+	-currentRowCSSClass]): return the correct class for the current
+	row depending on the owner of the event.
+
 	* UI/Contacts/UIxContactSelector.m ([UIxContactSelector
 	-setColors:colors]): new method to associate a color table with
 	each user in the list.
