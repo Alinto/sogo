@@ -1,3 +1,8 @@
+2006-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSObject+Owner.[hm]: new extension module to
+	NSObject to associate an instance with a user.
+
 2006-10-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: added handling of multiple
