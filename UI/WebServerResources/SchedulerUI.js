@@ -671,7 +671,7 @@ function updateCalendarStatus(node)
   for (var i = 0; i < nodes.length; i++) {
     var currentNode = nodes[i];
     if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[0];
+      var input = currentNode.childNodes[3];
       if (input.checked)
         list[list.length] = currentNode.getAttribute("uid");
     }
@@ -700,7 +700,7 @@ function calendarUidsList()
   for (var i = 0; i < nodes.length; i++) {
     var currentNode = nodes[i];
     if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[0];
+      var input = currentNode.childNodes[3];
       if (!input.checked)
         list += "-";
       list += currentNode.getAttribute("uid") + ",";
@@ -719,7 +719,7 @@ function calendarUidsList()
 //   for (var i = 0; i < nodes.length; i++) {
 //     var currentNode = nodes[i];
 //     if (currentNode instanceof HTMLLIElement) {
-//       var input = currentNode.childNodes[0];
+//       var input = currentNode.childNodes[3];
 //       if (!input.checked)
 //         list += "-";
 //       list += currentNode.getAttribute("uid") + ",";
@@ -737,7 +737,7 @@ function inhibitMyCalendarEntry()
   while (!done && i < nodes.length) {
     var currentNode = nodes[i];
     if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[0];
+      var input = currentNode.childNodes[3];
       if (currentNode.getAttribute("uid") == UserLogin) {
         done = true;
         currentNode.style.color = "#999;";
