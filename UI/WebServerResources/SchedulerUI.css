@@ -3,7 +3,7 @@ DIV#leftPanel
   position: absolute;
   top: 5.5em;
   left: 0px;
-  width: 16.5em;
+  width: 17em;
   bottom: 0px;
   overflow: hidden;
 }
@@ -88,7 +88,7 @@ DIV#rightPanel
 {
   position: absolute;
   top: 5.5em;
-  left: 16.5em;
+  left: 17em;
   right: 0px;
   bottom: 0px;
   margin: 0px;
@@ -130,7 +130,7 @@ DIV#calendarView A
 {
   cursor: e-resize;
   top: 7.5em;
-  left: 16.5em;
+  left: 17em;
   width: 5px;
   bottom: 0px;
 }
