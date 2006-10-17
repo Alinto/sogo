@@ -711,12 +711,10 @@ function updateCalendarStatus()
 {
   var list = new Array();
 
-  log ("update...");
   var clist = $("calendarsList");
   var nodes = clist.childNodesWithTag("ul")[0].childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
     var input = nodes[i].childNodesWithTag("input")[0];
-    log("input: " + input + input.checked);
     if (input.checked)
       list.push(nodes[i].getAttribute("uid"));
   }
