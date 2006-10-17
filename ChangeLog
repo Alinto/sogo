@@ -1,5 +1,9 @@
 2006-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -doCalendarQuery:context]): now supports
+	the handling of time-ranges.
+
 	* UI/WebServerResources/ContactsUI.js: specify a notification type as
 	parameters when onConfirmContactSelection in invoked.
 

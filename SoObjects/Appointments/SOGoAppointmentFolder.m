@@ -183,21 +183,102 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: @"  </D:response>\r\n"];
 }
 
+- (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
+                 toFilter: (NSMutableDictionary *) filter
+{
+  NSCalendarDate *parsedDate;
+
+  parsedDate = [[timeRangeElement attribute: @"start"] asCalendarDate];
+  [filter setObject: parsedDate forKey: @"start"];
+  parsedDate = [[timeRangeElement attribute: @"end"] asCalendarDate];
+  [filter setObject: parsedDate forKey: @"end"];
+}
+
+- (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
+{
+  NSMutableDictionary *filterData;
+  id <DOMElement> parentNode;
+  id <DOMNodeList> ranges;
+  NSString *componentName;
+
+  parentNode = [filterElement parentNode];
+  if ([[parentNode tagName] isEqualToString: @"comp-filter"]
+      && [[parentNode attribute: @"name"] isEqualToString: @"VCALENDAR"])
+    {
+      componentName = [[filterElement attribute: @"name"] lowercaseString];
+      filterData = [NSMutableDictionary new];
+      [filterData autorelease];
+      [filterData setObject: componentName forKey: @"name"];
+      ranges = [filterElement getElementsByTagName: @"time-range"];
+      if ([ranges count])
+        [self _appendTimeRange: [ranges objectAtIndex: 0]
+              toFilter: filterData];
+    }
+  else
+    filterData = nil;
+
+  return filterData;
+}
+
+- (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
+{
+  NSEnumerator *children;
+  id<DOMElement> node;
+  NSMutableArray *filters;
+  NSDictionary *filter;
+
+  filters = [NSMutableArray new];
+
+  children = [[parentNode getElementsByTagName: @"comp-filter"] objectEnumerator];
+  node = [children nextObject];
+  while (node)
+    {
+      filter = [self _parseCalendarFilter: node];
+      if (filter)
+        [filters addObject: filter];
+      node = [children nextObject];
+    }
+
+  return filters;
+}
+
+- (void) _appendComponentsMatchingFilters: (NSArray *) filters
+                               toResponse: (WOResponse *) response
+                                inContext: (WOContext *) context
+{
+  NSArray *apts;
+  unsigned int count, max;
+  NSDictionary *currentFilter, *appointment;
+  NSEnumerator *appointments;
+  NSString *baseURL;
+
+  baseURL = [self baseURLInContext: context];
+
+  max = [filters count];
+  for (count = 0; count < max; count++)
+    {
+      currentFilter = [filters objectAtIndex: 0];
+      apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
+                   to: [currentFilter objectForKey: @"end"]
+                   component: [currentFilter objectForKey: @"name"]];
+      appointments = [apts objectEnumerator];
+      appointment = [appointments nextObject];
+      while (appointment)
+        {
+          [self appendObject: appointment
+                withBaseURL: baseURL
+                toREPORTResponse: response];
+          appointment = [appointments nextObject];
+        }
+    }
+}
+
 - (id) doCalendarQuery: (id) context
 {
   WOResponse *r;
-  NSString *baseURL, *content;
-  NSArray *apts;
-  NSMutableArray *components;
-  NSEnumerator *appointments;
-  NSDictionary *appointment;
+  NSArray *filters;
+  id <DOMDocument> document;
 
-//  FIXME: this is f00ked UP
-// FIXME: no, just kidding... actually we should take the date range into
-// account otherwise all events will be returned. We should also manage the
-// VTODO... and well, have a clean implementation.
-
-  baseURL = [self baseURLInContext: context];
   r = [context response];
   [r setStatus: 207];
   [r setContentEncoding: NSUTF8StringEncoding];
@@ -208,29 +289,11 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
 
-  content = [[NSString alloc] initWithData: [[context request] content]
-                              encoding: NSUTF8StringEncoding];
-  [content autorelease];
-
-  components = [NSMutableArray new];
-  if ([content indexOfString: @"VEVENT"] != NSNotFound
-      || [content indexOfString: @"vevent"] != NSNotFound)
-    [components addObject: @"vevent"];
-  if ([content indexOfString: @"VTODO"] != NSNotFound
-      || [content indexOfString: @"vtodo"] != NSNotFound)
-    [components addObject: @"vtodo"];
-
-  apts = [self fetchCoreInfosFrom: nil to: nil component: components];
-  [components release];
-  appointments = [apts objectEnumerator];
-  appointment = [appointments nextObject];
-  while (appointment)
-    {
-      [self appendObject: appointment
-            withBaseURL: baseURL
-            toREPORTResponse: r];
-      appointment = [appointments nextObject];
-    }
+  document = [[context request] contentAsDOMDocument];
+  filters = [self _parseCalendarFilters: [document documentElement]];
+  [self _appendComponentsMatchingFilters: filters
+        toResponse: r
+        inContext: context];
   [r appendContentString:@"</D:multistatus>\r\n"];
 
   return r;
@@ -342,7 +405,7 @@ static NSNumber   *sharedYes = nil;
     nameFields = [[NSArray alloc] initWithObjects:@"c_name", nil];
   
   qualifier = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _u];
-  records   = [_f fetchFields:nameFields matchingQualifier:qualifier];
+  records   = [_f fetchFields: nameFields matchingQualifier: qualifier];
   
   if ([records count] == 1)
     return [[records objectAtIndex:0] valueForKey:@"c_name"];
@@ -594,7 +657,7 @@ static NSNumber   *sharedYes = nil;
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
                                endDate: _endDate];
       dateSqlString
-        = [NSString stringWithFormat: @" AND (startdate > %d) AND (enddate < %d)",
+        = [NSString stringWithFormat: @" AND (startdate >= %d) AND (enddate <= %d)",
                     (unsigned int) [_startDate timeIntervalSince1970],
                     (unsigned int) [_endDate timeIntervalSince1970]];
     }
