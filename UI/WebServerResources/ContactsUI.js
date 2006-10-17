@@ -466,7 +466,7 @@ function onConfirmContactSelection(tag)
 
   if (selector && selector.changeNotification
       && selectorList.value != initialValues)
-    selector.changeNotification();
+    selector.changeNotification("addition");
 
   return false;
 }
