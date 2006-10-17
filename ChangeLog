@@ -1,5 +1,8 @@
 2006-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: specify a notification type as
+	parameters when onContactRemove in invoked.
+
 	* UI/WebServerResources/SchedulerUI.js: when the user deselects
 	all calendars, select his entry.
 

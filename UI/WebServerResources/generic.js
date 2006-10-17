@@ -934,7 +934,7 @@ function onContactRemove(node) {
   uids.value = ids.join(",");
 
   if (selector.changeNotification && hasChanged)
-    selector.changeNotification();
+    selector.changeNotification("removal");
 
   return false;
 }
