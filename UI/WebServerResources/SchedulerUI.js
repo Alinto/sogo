@@ -707,26 +707,26 @@ function updateTaskStatus(node)
   return false;
 }
 
-function updateCalendarStatus(node)
+function updateCalendarStatus()
 {
   var list = new Array();
 
+  log ("update...");
   var clist = $("calendarsList");
-  var nodes = clist.childNodes[5].childNodes;
+  var nodes = clist.childNodesWithTag("ul")[0].childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
-    var currentNode = nodes[i];
-    if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[3];
-      if (input.checked)
-        list[list.length] = currentNode.getAttribute("uid");
-    }
+    var input = nodes[i].childNodesWithTag("input")[0];
+    log("input: " + input + input.checked);
+    if (input.checked)
+      list.push(nodes[i].getAttribute("uid"));
   }
 
-  if (list.length)
-    CalendarBaseURL = (UserFolderURL + "Groups/_custom_"
-                       + list.join(",") + "/Calendar/");
-  else
-    CalendarBaseURL = ApplicationBaseURL;
+  if (!list.length) {
+    list.push(nodes[0].getAttribute("uid"));
+    nodes[0].childNodesWithTag("input")[0].checked = true;
+  }
+  CalendarBaseURL = (UserFolderURL + "Groups/_custom_"
+                     + list.join(",") + "/Calendar/");
 
   refreshAppointments();
   refreshTasks();
@@ -792,7 +792,7 @@ function inhibitMyCalendarEntry()
   }
 }
 
-function updateCalendarsList()
+function updateCalendarsList(method)
 {
   var url = (ApplicationBaseURL + "updateCalendars?ids="
              + calendarUidsList());
@@ -802,6 +802,8 @@ function updateCalendarsList()
   }
   document.calendarsListAjaxRequest
     = triggerAjaxRequest(url, calendarsListCallback);
+  if (method == "removal")
+    updateCalendarStatus();
 }
 
 function initCalendarContactsSelector(selId)
