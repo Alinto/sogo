@@ -689,20 +689,25 @@ function onHideCompletedTasks(node)
 function updateTaskStatus(node)
 {
   var taskId = node.parentNode.getAttribute("id");
+  var taskOwner = node.parentNode.getAttribute("owner");
   var newStatus = (node.checked ? 1 : 0);
+//   log ("update task status: " + taskId);
 
   var http = createHTTPClient();
 
-  url = CalendarBaseURL + taskId + "/changeStatus?status=" + newStatus;
+  url = (UserFolderURL + "../" + taskOwner + "/Calendar/"
+         + taskId + "/changeStatus?status=" + newStatus);
 
   if (http) {
+//     log ("url: " + url);
     // TODO: add parameter to signal that we are only interested in OK
     http.url = url;
     http.open("GET", url, false /* not async */);
     http.send("");
     if (http.status == 200)
       refreshTasks();
-  }
+  } else
+    log ("no http client?");
 
   return false;
 }
