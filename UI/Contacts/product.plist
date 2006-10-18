@@ -54,11 +54,6 @@
           pageName    = "UIxContactEditor"; 
           actionName  = "new";
         };
-        scheduler-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "schedulerContacts";
-        };
         mailer-contacts = {
           protectedBy = "View";
           pageName    = "UIxContactsListView";

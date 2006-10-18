@@ -76,13 +76,6 @@
   return selectorComponentClass;
 }
 
-- (id) schedulerContactsAction
-{
-  selectorComponentClass = @"UIxContactsSchedulerSelection";
-
-  return self;
-}
-
 - (id) mailerContactsAction
 {
   selectorComponentClass = @"UIxContactsMailerSelection";
