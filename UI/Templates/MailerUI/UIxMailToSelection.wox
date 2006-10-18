@@ -4,51 +4,56 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    border="0"
-    width="100%"
     >
     <script type="text/javascript">
       var currentIndex = <var:string value="currentIndex" />;
     </script>
     <script type="text/javascript" rsrc:src="UIxMailToSelection.js"> <!-- Space! --></script>
     <script type="text/javascript" rsrc:src="layout2or3_xlib.js"> <!-- Space! --></script>
-
+    
     <div id="addressList"
       ><var:foreach list="addressLists" item="addressList"
-        ><var:foreach list="addressList" item="address"
-          ><span class="addressListElement" var:id="currentRowId"
-            ><span class="headerField"
-              ><var:popup name="currentPopUpId"
-                list="headers"
-                item="item"
-                label:string="$item"
-                selection="currentHeader"
-                /></span><input var:id="currentAddressId"
+        ><var:foreach list="addressList" item="address">
+          <div class="addressListElement" var:id="currentRowId">
+            <span class="headerField">
+            <var:popup name="currentPopUpId"
+              list="headers"
+              item="item"
+              label:string="$item"
+              selection="currentHeader"
+              />
+            </span>
+            <span class="headerInput">
+            <input var:id="currentAddressId"
               var:name="currentAddressId"
               class="textField"
               type="text"
               var:value="address"
               onfocus="addressFieldGotFocus(this);"
               onblur="addressFieldLostFocus(this);"
-            
-              /><var:string value="nextId"
-              /></span><br />
-        </var:foreach
-          ></var:foreach
-        ></div>
-    <!-- todo: use stylesheet? -->
-    <span class="addressListElement" id="lastRow"><span class="headerField"
-        ><select disabled="1"><option value="to"
-            ><var:string label:value="to"
-              />:</option></select></span>
-      <!-- todo: use stylesheet? -->
-      <input onfocus="fancyAddRow(true,'');"
-        type="text"
-        class="textField"
-        /></span><br />
+              />
+            </span>
+          </div>
+        </var:foreach>
+      </var:foreach>
+      <div class="addressListElement" id="lastRow">
+        <span class="headerField">
+          <select disabled="1">
+            <option value="to"><var:string label:value="to" />:</option>
+          </select>
+        </span>
+        <span class="headerInput">
+          <input onfocus="fancyAddRow(true,'');"
+            readonly="1"
+            type="text"
+            class="textField" />
+        </span>
+      </div>
     <!--<var:if condition="isUIxDebugEnabled">
     <a href="#" onclick="checkAddresses();">check addresses</a>
   </var:if>-->
+    </div>
     <span id="addr_addresses" style="visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
     </span>
   </span>
+

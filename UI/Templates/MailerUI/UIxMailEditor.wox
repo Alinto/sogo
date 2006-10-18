@@ -10,12 +10,9 @@
     title="panelTitle"
     const:popup="YES"
     >
-    <div id="compose_panel">
+    <div id="headerArea">
       <div id="attachmentsArea">
-        <var:string label:value="Attachments" />
-                <!--<a href="#"
-                onclick="hideInlineAttachmentList(this);"
-                ><var:string label:value="close" /></a>-->
+        <var:string label:value="Attachments:" />
         <div id="compose_attachments_list"
           onclick="clickedEditorAttach(this);"
           ><var:foreach list="attachmentNames" item="attachmentName">
@@ -23,37 +20,28 @@
           </var:foreach>
         </div>
       </div>
-      <div id="headerArea">
-        <var:if condition="showInternetMarker">
-          <div id="compose_internetmarker">
-            <var:string
-              label:value="This mail is being sent from an unsecure network!" />
-          </div>
-        </var:if>
-        <span class="headerField"
-          ><var:string label:value="From"
-            />:</span
-          ><var:popup const:name="from"
-          list="fromEMails"
-          item="item"
-          selection="from"
-          /><br />
-        <var:component className="UIxMailToSelection"
-          to="to"
-          cc="cc"
-          bcc="bcc"
-          />
-        <span class="headerField"
-          ><var:string label:value="Subject"
-            />:</span><input name="subject"
-            id="compose_subject_input"
+      <span class="headerField"><var:string label:value="From" />:</span>
+      <var:popup const:name="from"
+        list="fromEMails"
+        item="item"
+        selection="from"
+        /><br />
+      <var:component className="UIxMailToSelection"
+        to="to"
+        cc="cc"
+        bcc="bcc"
+        />
+      <div class="addressListElement" id="subjectRow"
+        ><span class="headerField"><var:string label:value="Subject" />:</span
+          ><span class="headerInput"
+          ><input name="subject"
             type="text"
             class="textField"
             var:value="subject"
-            /><br />
-      </div>
-      <!-- separator line -->
-      <textarea name="content" var:value="text" />
-      <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
+            /></span></div>
     </div>
+    <!-- separator line -->
+    <textarea name="content" var:value="text" />
+    <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
+  </div>
   </var:component>
