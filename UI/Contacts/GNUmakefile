@@ -9,7 +9,6 @@ ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 ContactsUI_LANGUAGES = English French
 
 ContactsUI_OBJC_FILES =			\
-	UIxContactsSchedulerSelection.m	\
 	UIxContactsMailerSelection.m	\
 	UIxContactsCalendarsSelection.m	\
 	\
