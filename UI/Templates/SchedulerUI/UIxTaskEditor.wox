@@ -129,7 +129,7 @@
       <!-- input type="hidden" id="jsaction" -->
     </form>
     <!--
-    <var:if condition="canEditTask" const:negate="YES">
+    <var:if condition="canEditComponent" const:negate="YES">
     Forbidden ... <var:redirect const:setURL="view" />
   </var:if>
     -->
