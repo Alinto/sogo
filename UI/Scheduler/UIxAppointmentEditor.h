@@ -23,68 +23,50 @@
 #ifndef UIXAPPOINTMENTEDITOR_H
 #define UIXAPPOINTMENTEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
+#import <UIxComponentEditor.h>
 
 @class NSString;
 @class iCalPerson;
 @class iCalRecurrenceRule;
 
-@interface UIxAppointmentEditor : UIxComponent
+@interface UIxAppointmentEditor : UIxComponentEditor
 {
-  NSString *iCalString;
-  NSString *errorText;
-  id item;
-  
-  /* individual values */
-  NSCalendarDate *startDate;
   NSCalendarDate *endDate;
-  NSCalendarDate *cycleUntilDate;
-  NSString *title;
-  NSString *location;
-  NSString *comment;
-  iCalPerson *organizer;
-  NSArray *participants;     /* array of iCalPerson's */
-  NSArray *resources;        /* array of iCalPerson's */
-  NSString *priority;
-  NSArray *categories;
-  NSString *accessClass;
-  BOOL isPrivate;         /* default: NO */
-  BOOL checkForConflicts; /* default: NO */
-  NSDictionary *cycle;
-  NSString *cycleEnd;
 }
 
-- (NSString *)iCalStringTemplate;
-- (NSString *)iCalString;
+- (void) setAptStartDate: (NSCalendarDate *) _date;
+- (NSCalendarDate *) aptStartDate;
 
-- (void)setIsPrivate:(BOOL)_yn;
-- (void)setAccessClass:(NSString *)_class;
+- (void) setAptEndDate: (NSCalendarDate *) _date;
+- (NSCalendarDate *) aptEndDate;
 
-- (void)setCheckForConflicts:(BOOL)_checkForConflicts;
-- (BOOL)checkForConflicts;
+/* iCal */
 
-- (BOOL)hasCycle;
-- (iCalRecurrenceRule *)rrule;
-- (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule;
-- (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule;
+- (NSString *) iCalStringTemplate;
 
-- (BOOL)isCycleEndUntil;
-- (void)setIsCycleEndUntil;
-- (void)setIsCycleEndNever;
+/* new */
 
-- (NSString *)_completeURIForMethod:(NSString *)_method;
+- (id) newAction;
 
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource;
+/* save */
 
-- (NSString *)iCalParticipantsAndResourcesStringFromQueryParameters;
-- (NSString *)iCalParticipantsStringFromQueryParameters;
-- (NSString *)iCalResourcesStringFromQueryParameters;
-- (NSString *)iCalStringFromQueryParameter:(NSString *)_qp
-              format:(NSString *)_format;
-- (NSString *)iCalOrganizerString;
+- (void) loadValuesFromAppointment: (iCalEvent *) _apt;
+- (void) saveValuesIntoAppointment: (iCalEvent *) _apt;
+- (iCalEvent *) appointmentFromString: (NSString *) _iCalString;
 
-- (id)acceptOrDeclineAction:(BOOL)_accept;
+/* conflict management */
+
+- (BOOL) containsConflict: (id) _apt;
+- (id <WOActionResults>) defaultAction;
+- (id <WOActionResults>) saveAction;
+- (id) acceptAction;
+- (id) declineAction;
+
+- (NSString *) saveUrl;
+
+// TODO: add tentatively
+
+- (id) acceptOrDeclineAction: (BOOL) _accept;
 
 @end
 

@@ -22,13 +22,13 @@
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 
+#import <SOGo/AgenorUserManager.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "common.h"
 #import <NGCards/NGCards.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <SOGoUI/SOGoDateFormatter.h>
-#import <SOGo/AgenorUserManager.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import "UIxComponent+Agenor.h"
@@ -49,357 +49,32 @@
             NSStringFromClass([self superclass]), [super version]);
 }
 
-- (id)init {
-  self = [super init];
-  if(self) {
-    [self setIsPrivate:NO];
-    [self setCheckForConflicts:NO];
-    [self setIsCycleEndNever];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [iCalString release];
-  [errorText release];
-  [item release];
-
-  [startDate release];
+- (void) dealloc
+{
   [endDate release];
-  [cycleUntilDate release];
-  [title release];
-  [location release];
-  [organizer release];
-  [comment release];
-  [participants release];
-  [resources release];
-  [priority release];
-  [categories release];
-  [accessClass release];
-  [cycle release];
-  [cycleEnd release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setItem:(id)_item {
-  ASSIGN(item, _item);
-}
-- (id)item {
-  return item;
+- (void) setAptStartDate: (NSCalendarDate *)_date
+{
+  [self setStartDate: _date];
 }
 
-- (void)setErrorText:(NSString *)_txt {
-  ASSIGNCOPY(errorText, _txt);
-}
-- (NSString *)errorText {
-  return errorText;
-}
-- (BOOL)hasErrorText {
-  return [errorText length] > 0 ? YES : NO;
+- (NSCalendarDate *) aptStartDate
+{
+  return [self startDate];
 }
 
-- (NSFormatter *)titleDateFormatter {
-  SOGoDateFormatter *fmt;
-  
-  fmt = [[[SOGoDateFormatter alloc] initWithLocale:[self locale]] autorelease];
-  [fmt setFullWeekdayNameAndDetails];
-  return fmt;
-}
-
-- (void)setAptStartDate:(NSCalendarDate *)_date {
-  ASSIGN(startDate, _date);
-}
-- (NSCalendarDate *)aptStartDate {
-  return startDate;
-}
-- (void)setAptEndDate:(NSCalendarDate *)_date {
+- (void) setAptEndDate: (NSCalendarDate *) _date
+{
   ASSIGN(endDate, _date);
 }
-- (NSCalendarDate *)aptEndDate {
+
+- (NSCalendarDate *) aptEndDate
+{
   return endDate;
-}
-
-- (void)setTitle:(NSString *)_value {
-  ASSIGNCOPY(title, _value);
-}
-- (NSString *)title {
-  return title;
-}
-- (void)setLocation:(NSString *)_value {
-  ASSIGNCOPY(location, _value);
-}
-- (NSString *)location {
-  return location;
-}
-- (void)setComment:(NSString *)_value {
-  ASSIGNCOPY(comment, _value);
-}
-- (NSString *)comment {
-  return comment;
-}
-
-- (void)setParticipants:(NSArray *)_parts {
-  ASSIGN(participants, _parts);
-}
-- (NSArray *)participants {
-  return participants;
-}
-- (void)setResources:(NSArray *)_res {
-  ASSIGN(resources, _res);
-}
-- (NSArray *)resources {
-  return resources;
-}
-
-/* priorities */
-
-- (NSArray *)priorities {
-  /* 0 == undefined
-     5 == normal
-     1 == high
-  */
-  static NSArray *priorities = nil;
-
-  if (!priorities)
-    priorities = [[NSArray arrayWithObjects:@"0", @"5", @"1", nil] retain];
-  return priorities;
-}
-
-- (NSString *)itemPriorityText {
-  NSString *key;
-  
-  key = [NSString stringWithFormat:@"prio_%@", item];
-  return [self labelForKey:key];
-}
-
-- (void)setPriority:(NSString *)_priority {
-  ASSIGN(priority, _priority);
-}
-- (NSString *)priority {
-  return priority;
-}
-
-
-/* categories */
-
-- (NSArray *)categoryItems {
-  // TODO: make this configurable?
-  /*
-   Tasks categories will be modified as follow :
-   – by default (a simple logo or no logo at all),
-   – appointment,
-   – outside,
-   – meeting,
-   – holidays,
-   – phone.
-  */
-  static NSArray *categoryItems = nil;
-  
-  if (!categoryItems) {
-    categoryItems = [[NSArray arrayWithObjects:@"APPOINTMENT",
-                                               @"NOT IN OFFICE",
-                                               @"MEETING",
-                                               @"HOLIDAY",
-                                               @"PHONE CALL",
-                                               nil] retain];
-  }
-  return categoryItems;
-}
-
-- (NSString *) itemCategoryText {
-  return [[self labelForKey: item] stringByEscapingHTMLString];
-}
-
-- (void)setCategories:(NSArray *)_categories {
-  ASSIGN(categories, _categories);
-}
-
-- (NSArray *)categories {
-  return categories;
-}
-
-/* class */
-
-#if 0
-- (NSArray *)accessClassItems {
-  static NSArray classItems = nil;
-  
-  if (!classItems) {
-    return [[NSArray arrayWithObjects:@"PUBLIC", @"PRIVATE", nil] retain];
-  }
-  return classItems;
-}
-#endif
-
-- (void)setAccessClass:(NSString *)_class {
-  ASSIGN(accessClass, _class);
-}
-- (NSString *)accessClass {
-  return accessClass;
-}
-
-- (void)setIsPrivate:(BOOL)_yn {
-  if (_yn)
-    [self setAccessClass:@"PRIVATE"];
-  else
-    [self setAccessClass:@"PUBLIC"];
-  isPrivate = _yn;
-}
-- (BOOL)isPrivate {
-  return isPrivate;
-}
-
-- (void)setCheckForConflicts:(BOOL)_checkForConflicts {
-  checkForConflicts = _checkForConflicts;
-}
-- (BOOL)checkForConflicts {
-  return checkForConflicts;
-}
-
-- (NSArray *)cycles {
-  static NSArray *cycles = nil;
-  
-  if (!cycles) {
-    NSBundle *bundle;
-    NSString *path;
-
-    bundle = [NSBundle bundleForClass:[self class]];
-    path   = [bundle pathForResource:@"cycles" ofType:@"plist"];
-    NSAssert(path != nil, @"Cannot find cycles.plist!");
-    cycles = [[NSArray arrayWithContentsOfFile:path] retain];
-    NSAssert(cycles != nil, @"Cannot instantiate cycles from cycles.plist!");
-  }
-  return cycles;
-}
-
-- (void)setCycle:(NSDictionary *)_cycle {
-  ASSIGN(cycle, _cycle);
-}
-- (NSDictionary *)cycle {
-  return cycle;
-}
-- (BOOL)hasCycle {
-  [self debugWithFormat:@"cycle: %@", cycle];
-  if (![cycle objectForKey:@"rule"])
-    return NO;
-  return YES;
-}
-- (NSString *)cycleLabel {
-  NSString *key;
-  
-  key = [(NSDictionary *)item objectForKey:@"label"];
-  return [self labelForKey:key];
-}
-
-
-- (void)setCycleUntilDate:(NSCalendarDate *)_cycleUntilDate {
-  NSCalendarDate *until;
-
-  /* copy hour/minute/second from startDate */
-  until = [_cycleUntilDate hour:[startDate hourOfDay]
-                           minute:[startDate minuteOfHour]
-                           second:[startDate secondOfMinute]];
-  [until setTimeZone:[startDate timeZone]];
-  ASSIGN(cycleUntilDate, until);
-}
-- (NSCalendarDate *)cycleUntilDate {
-  return cycleUntilDate;
-}
-
-- (iCalRecurrenceRule *)rrule {
-  NSString *ruleRep;
-  iCalRecurrenceRule *rule;
-
-  if (![self hasCycle])
-    return nil;
-  ruleRep = [cycle objectForKey:@"rule"];
-  rule    = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation:ruleRep];
-
-  if (cycleUntilDate && [self isCycleEndUntil])
-    [rule setUntilDate:cycleUntilDate];
-  return rule;
-}
-
-- (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule {
-  NSDictionary *c;
-  NSCalendarDate *until;
-  
-  c = [self cycleMatchingRRule:_rrule];
-  [self setCycle:c];
-
-  until = [[[_rrule untilDate] copy] autorelease];
-  if (!until)
-    until = startDate;
-  else
-    [self setIsCycleEndUntil];
-
-  [until setTimeZone:[[self clientObject] userTimeZone]];
-  [self setCycleUntilDate:until];
-}
-
-/*
- This method is necessary, because we have a fixed sets of cycles in the UI.
- The model is able to represent arbitrary rules, however.
- There SHOULD be a different UI, similar to iCal.app, to allow modelling
- of more complex rules.
- 
- This method obviously cannot map all existing rules back to the fixed list
- in cycles.plist. This should be fixed in a future version when interop
- becomes more important.
- */
-- (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule {
-  NSString *cycleRep;
-  NSArray *cycles;
-  unsigned i, count;
-
-  if (!_rrule)
-    return [[self cycles] objectAtIndex:0];
-
-  cycleRep = [_rrule versitString];
-  cycles   = [self cycles];
-  count    = [cycles count];
-  for (i = 1; i < count; i++) {
-    NSDictionary *c;
-    NSString *cr;
-
-    c  = [cycles objectAtIndex:i];
-    cr = [c objectForKey:@"rule"];
-    if ([cr isEqualToString:cycleRep])
-      return c;
-  }
-  [self warnWithFormat:@"No default cycle for rrule found! -> %@", _rrule];
-  return nil;
-}
-
-/* cycle "ends" - supposed to be 'never', 'COUNT' or 'UNTIL' */
-- (NSArray *)cycleEnds {
-  static NSArray *ends = nil;
-  
-  if (!ends) {
-    ends = [[NSArray alloc] initWithObjects:@"cycle_end_never",
-                                            @"cycle_end_until",
-                                            nil];
-  }
-  return ends;
-}
-
-- (void)setCycleEnd:(NSString *)_cycleEnd {
-  ASSIGNCOPY(cycleEnd, _cycleEnd);
-}
-- (NSString *)cycleEnd {
-  return cycleEnd;
-}
-- (BOOL)isCycleEndUntil {
-  return (cycleEnd &&
-          [cycleEnd isEqualToString:@"cycle_end_until"]);
-}
-- (void)setIsCycleEndUntil {
-  [self setCycleEnd:@"cycle_end_until"];
-}
-- (void)setIsCycleEndNever {
-  [self setCycleEnd:@"cycle_end_never"];
 }
 
 /* transparency */
@@ -408,15 +83,7 @@
   return @"TRANSPARENT";
 }
 
-
 /* iCal */
-
-- (void)setICalString:(NSString *)_s {
-  ASSIGNCOPY(iCalString, _s);
-}
-- (NSString *)iCalString {
-  return iCalString;
-}
 
 - (NSString *)iCalStringTemplate {
   static NSString *iCalStringTemplate = \
@@ -473,105 +140,10 @@
   return template;
 }
 
-- (NSString *)iCalParticipantsAndResourcesStringFromQueryParameters {
-  NSString *s;
-  
-  s = [self iCalParticipantsStringFromQueryParameters];
-  return [s stringByAppendingString:
-            [self iCalResourcesStringFromQueryParameters]];
-}
-
-- (NSString *)iCalParticipantsStringFromQueryParameters {
-  static NSString *iCalParticipantString = \
-    @"ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"%@\":mailto:%@\r\n";
-  
-  return [self iCalStringFromQueryParameter:@"ps"
-               format:iCalParticipantString];
-}
-
-- (NSString *)iCalResourcesStringFromQueryParameters {
-  static NSString *iCalResourceString = \
-    @"ATTENDEE;ROLE=NON-PARTICIPANT;CN=\"%@\":mailto:%@\r\n";
-
-  return [self iCalStringFromQueryParameter:@"rs"
-               format:iCalResourceString];
-}
-
-- (NSString *)iCalStringFromQueryParameter:(NSString *)_qp
-              format:(NSString *)_format
-{
-  AgenorUserManager *um;
-  NSMutableString *iCalRep;
-  NSString *s;
-
-  um = [AgenorUserManager sharedUserManager];
-  iCalRep = (NSMutableString *)[NSMutableString string];
-  s = [self queryParameterForKey:_qp];
-  if(s && [s length] > 0) {
-    NSArray *es;
-    unsigned i, count;
-    
-    es = [s componentsSeparatedByString:@","];
-    count = [es count];
-    for(i = 0; i < count; i++) {
-      NSString *email, *cn;
-      
-      email = [es objectAtIndex:i];
-      cn = [um getCNForUID:[um getUIDForEmail:email]];
-      [iCalRep appendFormat:_format, cn, email];
-    }
-  }
-  return iCalRep;
-}
-
-- (NSString *)iCalOrganizerString {
-  static NSString *fmt = @"ORGANIZER;CN=\"%@\":mailto:%@\r\n";
-  return [NSString stringWithFormat:fmt,
-                                      [self cnForUser],
-                                      [self emailForUser]];
-}
-
-#if 0
-- (iCalPerson *)getOrganizer {
-  iCalPerson *p;
-  NSString *emailProp;
-  
-  emailProp = [@"mailto:" stringByAppendingString:[self emailForUser]];
-  p = [[[iCalPerson alloc] init] autorelease];
-  [p setEmail:emailProp];
-  [p setCn:[self cnForUser]];
-  return p;
-}
-#endif
-
-
-/* helper */
-
-- (NSString *)_completeURIForMethod:(NSString *)_method {
-  NSString *uri;
-  NSRange r;
-    
-  uri = [[[self context] request] uri];
-    
-  /* first: identify query parameters */
-  r = [uri rangeOfString:@"?" options:NSBackwardsSearch];
-  if (r.length > 0)
-    uri = [uri substringToIndex:r.location];
-    
-  /* next: append trailing slash */
-  if (![uri hasSuffix:@"/"])
-    uri = [uri stringByAppendingString:@"/"];
-  
-  /* next: append method */
-  uri = [uri stringByAppendingString:_method];
-    
-  /* next: append query parameters */
-  return [self completeHrefForMethod:uri];
-}
-
 /* new */
 
-- (id)newAction {
+- (id) newAction
+{
   /*
     This method creates a unique ID and redirects to the "edit" method on the
     new ID.
@@ -627,117 +199,20 @@
 
 /* save */
 
-/* returned dates are in GMT */
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource
+- (void) loadValuesFromAppointment: (iCalEvent *) appointment
 {
-  unsigned i, count;
-  NSMutableArray *result;
-
-  count = [_values count];
-  result = [[NSMutableArray alloc] initWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NSString *pString, *email, *cn;
-    NSRange r;
-    iCalPerson *p;
-    
-    pString = [_values objectAtIndex:i];
-    if ([pString length] == 0)
-      continue;
-    
-    /* delimiter between email and cn */
-    r = [pString rangeOfString:@";"];
-    if (r.length > 0) {
-      email = [pString substringToIndex:r.location];
-      cn = (r.location + 1 < [pString length])
-	? [pString substringFromIndex:r.location + 1]
-	: nil;
-    }
-    else {
-      email = pString;
-      cn    = nil;
-    }
-    if (cn == nil) {
-      /* fallback */
-      AgenorUserManager *um = [AgenorUserManager sharedUserManager];
-      cn = [um getCNForUID:[um getUIDForEmail:email]];
-    }
-    
-    p = [[iCalPerson alloc] init];
-    [p setEmail:[@"mailto:" stringByAppendingString:email]];
-    if ([cn isNotNull]) [p setCn:cn];
-    
-    /* see RFC2445, sect. 4.2.16 for details */
-    [p setRole:_isResource ? @"NON-PARTICIPANT" : @"REQ-PARTICIPANT"];
-    [result addObject:p];
-    [p release];
-  }
-  return [result autorelease];
-}
-
-- (BOOL)isWriteableClientObject {
-  return [[self clientObject] 
-	        respondsToSelector:@selector(saveContentString:)];
-}
-
-- (NSException *)validateObjectForStatusChange {
-  BOOL ok;
-  id co;
-
-  co = [self clientObject];
-  ok = [co respondsToSelector:@selector(changeParticipationStatus:inContext:)];
-  if (!ok) {
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:
-                          @"method cannot be invoked on the specified object"];
-  }
-  return nil;
-}
-
-- (void)loadValuesFromAppointment: (iCalEvent *)_appointment
-{
-  NSString *s;
-  iCalRecurrenceRule *rrule;
   NSTimeZone *uTZ;
 
-  if ((startDate = [_appointment startDate]) == nil)
-    startDate = [[NSCalendarDate date] hour:11 minute:0];
-  if ((endDate = [_appointment endDate]) == nil) {
-    endDate =
-      [startDate hour:[startDate hourOfDay] + 1 minute:0];
-  }
+  [self loadValuesFromComponent: appointment];
 
   uTZ = [[self clientObject] userTimeZone];
-  [startDate setTimeZone: uTZ];
+  endDate = [appointment endDate];
+  if (!endDate)
+    endDate = [[self startDate] dateByAddingYears: 0 months: 0 days: 0
+                                hours: 1 minutes: 0 seconds: 0];
+
   [endDate setTimeZone: uTZ];
-//   startDate = [startDate adjustedDate];
-//   endDate = [endDate adjustedDate];
-  [startDate retain];
   [endDate retain];
-
-  title        = [[_appointment summary]  copy];
-  location     = [[_appointment location] copy];
-  comment      = [[_appointment comment]  copy];
-  priority     = [[_appointment priority] copy];
-  categories   = [[[_appointment categories] commaSeparatedValues] retain];
-  organizer    = [[_appointment organizer]    retain];
-  participants = [[_appointment participants] retain];
-  resources    = [[_appointment resources]    retain];
-
-//   NSLog (@"summary ���: '%@'", title);
-
-  s                  = [_appointment accessClass];
-  if(!s || [s isEqualToString:@"PUBLIC"])
-    [self setIsPrivate:NO];
-  else
-    [self setIsPrivate:YES]; /* we're possibly loosing information here */
-
-  /* cycles */
-  if ([_appointment isRecurrent])
-    {
-      rrule = [[_appointment recurrenceRules] objectAtIndex: 0];
-      [self adjustCycleControlsForRRule:rrule];
-    }
 }
 
 - (void)saveValuesIntoAppointment:(iCalEvent *)_appointment {
@@ -795,36 +270,10 @@
   return appointment;
 }
 
-/* contact editor compatibility */
-
-- (void)setContentString:(NSString *)_s {
-  [self setICalString:_s];
-}
-- (NSString *)contentStringTemplate {
-  return [self iCalStringTemplate];
-}
-
-/* access */
-
-- (BOOL) isMyApt
-{
-  // TODO: this should check a set of emails against the SoUser
-  return (![[organizer email] length]
-          || [[organizer rfc822Email] isEqualToString: [self emailForUser]]);
-}
-
-- (BOOL)canAccessApt {
-  return [self isMyApt];
-}
-
-- (BOOL)canEditApt {
-  return [self isMyApt];
-}
-
-
 /* conflict management */
 
-- (BOOL)containsConflict:(iCalEvent *)_apt {
+- (BOOL) containsConflict: (id) _apt
+{
   NSArray *attendees, *uids;
   SOGoAppointmentFolder *groupCalendar;
   NSArray *infos;
@@ -863,28 +312,10 @@
   return [ranges count] != 0 ? YES : NO;
 }
 
-/* response generation */
-
-- (NSString *)initialCycleVisibility {
-  if (![self hasCycle])
-    return @"visibility: hidden;";
-  return @"visibility: visible;";
-}
-
-- (NSString *)initialCycleEndUntilVisibility {
-  if ([self isCycleEndUntil])
-    return @"visibility: visible;";
-  return @"visibility: hidden;";
-}
-
-
 /* actions */
 
-- (BOOL)shouldTakeValuesFromRequest:(WORequest *)_rq inContext:(WOContext*)_c{
-  return YES;
-}
-
-- (id)testAction {
+- (id) testAction
+{
   /* for testing only */
   WORequest *req;
   iCalEvent *apt;
@@ -901,7 +332,8 @@
   return self;
 }
 
-- (id<WOActionResults>)defaultAction {
+- (id<WOActionResults>) defaultAction
+{
   NSString *ical;
   
   /* load iCalendar file */
@@ -910,14 +342,14 @@
 //   ical = [[self clientObject] valueForKey:@"iCalString"];
   ical = [[self clientObject] contentAsString];
   if ([ical length] == 0) /* a new appointment */
-    ical = [self contentStringTemplate];
+    ical = [self iCalStringTemplate];
   
-  [self setContentString:ical];
+  [self setICalString:ical];
   [self loadValuesFromAppointment: [self appointmentFromString: ical]];
   
-  if (![self canEditApt]) {
+  if (![self canEditComponent]) {
     /* TODO: we need proper ACLs */
-    return [self redirectToLocation:[self _completeURIForMethod:@"../view"]];
+    return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
   }
   return self;
 }
@@ -993,17 +425,20 @@
                    [[self clientObject] baseURL]];
 }
 
-- (id)acceptAction {
+- (id) acceptAction
+{
   return [self acceptOrDeclineAction:YES];
 }
 
-- (id)declineAction {
+- (id) declineAction
+{
   return [self acceptOrDeclineAction:NO];
 }
 
 // TODO: add tentatively
 
-- (id)acceptOrDeclineAction:(BOOL)_accept {
+- (id) acceptOrDeclineAction: (BOOL) _accept
+{
   // TODO: this should live in the SoObjects
   NSException *ex;
 
@@ -1015,7 +450,7 @@
                             inContext:[self context]];
   if (ex != nil) return ex;
   
-  return [self redirectToLocation:[self _completeURIForMethod:@"../view"]];
+  return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
 }
 
 @end /* UIxAppointmentEditor */

@@ -1,3 +1,13 @@
+2006-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m,
+	UI/Scheduler/UIxTaskEditor.m:
+	refactored to user UIxComponentEditor as parent class.
+
+	* UI/Scheduler/UIxComponentEditor.[hm]: new class module
+	containing the methods common to the UIxTaskEditor and the
+	UIxAppointmentEditor.
+
 2006-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

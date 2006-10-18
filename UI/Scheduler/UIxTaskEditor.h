@@ -23,68 +23,52 @@
 #ifndef UIXTASKEDITOR_H
 #define UIXTASKEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
+#import "UIxComponentEditor.h"
 
 @class NSString;
 @class iCalPerson;
 @class iCalRecurrenceRule;
+@class iCalToDo;
 
-@interface UIxTaskEditor : UIxComponent
+@interface UIxTaskEditor : UIxComponentEditor
 {
-  NSString *iCalString;
-  NSString *errorText;
-  id item;
-  
-  /* individual values */
-  NSCalendarDate *startDate;
   NSCalendarDate *dueDate;
-  NSCalendarDate *cycleUntilDate;
-  NSString *title;
-  NSString *location;
-  NSString *comment;
-  iCalPerson *organizer;
-  NSArray *participants;     /* array of iCalPerson's */
-  NSArray *resources;        /* array of iCalPerson's */
-  NSString *priority;
-  NSArray *categories;
-  NSString *accessClass;
-  BOOL isPrivate;         /* default: NO */
-  BOOL checkForConflicts; /* default: NO */
-  NSDictionary *cycle;
-  NSString *cycleEnd;
 }
 
-- (NSString *)iCalStringTemplate;
-- (NSString *)iCalString;
+- (void) setTaskStartDate: (NSCalendarDate *) _date;
+- (NSCalendarDate *) taskStartDate;
 
-- (void)setIsPrivate:(BOOL)_yn;
-- (void)setAccessClass:(NSString *)_class;
+- (void) setTaskDueDate: (NSCalendarDate *) _date;
+- (NSCalendarDate *) taskDueDate;
 
-- (void)setCheckForConflicts:(BOOL)_checkForConflicts;
-- (BOOL)checkForConflicts;
+/* iCal */
 
-- (BOOL)hasCycle;
-- (iCalRecurrenceRule *)rrule;
-- (void)adjustCycleControlsForRRule:(iCalRecurrenceRule *)_rrule;
-- (NSDictionary *)cycleMatchingRRule:(iCalRecurrenceRule *)_rrule;
+- (NSString *) iCalStringTemplate;
 
-- (BOOL)isCycleEndUntil;
-- (void)setIsCycleEndUntil;
-- (void)setIsCycleEndNever;
+/* new */
 
-- (NSString *)_completeURIForMethod:(NSString *)_method;
+- (id) newAction;
 
-- (NSArray *)getICalPersonsFromFormValues:(NSArray *)_values
-  treatAsResource:(BOOL)_isResource;
+/* save */
 
-- (NSString *)iCalParticipantsAndResourcesStringFromQueryParameters;
-- (NSString *)iCalParticipantsStringFromQueryParameters;
-- (NSString *)iCalResourcesStringFromQueryParameters;
-- (NSString *)iCalStringFromQueryParameter:(NSString *)_qp
-              format:(NSString *)_format;
-- (NSString *)iCalOrganizerString;
+- (void) loadValuesFromTask: (iCalToDo *) _task;
+- (void) saveValuesIntoTask: (iCalToDo *) _task;
+- (iCalToDo *) taskFromString: (NSString *) _iCalString;
 
-- (id)acceptOrDeclineAction:(BOOL)_accept;
+/* conflict management */
+
+- (BOOL) containsConflict: (id) _task;
+- (id <WOActionResults>) defaultAction;
+- (id <WOActionResults>) saveAction;
+- (id) changeStatusAction;
+- (id) acceptAction;
+- (id) declineAction;
+
+- (NSString *) saveUrl;
+
+// TODO: add tentatively
+
+- (id) acceptOrDeclineAction: (BOOL) _accept;
 
 @end
 
