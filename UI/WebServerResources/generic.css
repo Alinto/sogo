@@ -529,6 +529,12 @@ TR.tableview TD
   padding-left: .3em;
   padding-right: .3em; }
 
+TR.tableview TD.headerDateTime
+{ width: 14em; }
+
+TR.tableview TD.headerLocation
+{ width: 10em; }
+
 td.tbtv_actcell
 { border-width: 1px;
   border-style: solid;
@@ -580,7 +586,8 @@ td img.tbtv_sortcell
 
 TD.subjectCell,
 td.tbtv_subject_headercell
-{ overflow: hidden; }
+{ overflow: hidden;
+  width: auto; }
 
 /* drag handles */
 DIV.dragHandle

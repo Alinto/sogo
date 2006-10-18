@@ -84,6 +84,24 @@ UL#tasksList LI.completed
 UL#tasksList LI.duelater
 { color: #999; }
 
+UL#tasksList LI[class~="_selected"].overdue
+{ 
+  color: #fff !important;
+  background-color: #f00 !important;
+}
+
+UL#tasksList LI[class~="_selected"].duetoday
+{ 
+  color: #fff !important;
+  background-color: #00f !important;
+}
+
+UL#tasksList LI[class~="_selected"].duelater
+{ 
+  color: #fff !important;
+  background-color: #999 !important;
+}
+
 DIV#rightPanel
 {
   position: absolute;
@@ -252,7 +270,7 @@ DIV#calendarView A
   border: 1px solid #deebf7; }
 
 TABLE#appointmentsList
-{ width: auto; }
+{ width: 100%; }
 
 #dateSelector TD._selected,
 UL > LI._selected,
