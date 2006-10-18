@@ -184,8 +184,7 @@
 
 - (NSString *) currentRowCSSClass
 {
-  return [NSString stringWithFormat: @"tableview appointmentRow ownerIs%@",
-                   [currentAppointment ownerLogin]];
+  return @"tableview appointmentRow";
 }
 
 - (NSString *) currentAptOwner
