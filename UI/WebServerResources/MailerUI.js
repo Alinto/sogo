@@ -134,35 +134,6 @@ function clickedEditorDelete(sender) {
   return true;
 }
 
-function showInlineAttachmentList(sender) {
-  var r, l;
-  
-  r = $('compose_rightside');
-  r.style.display = 'block';
-  l = $('compose_leftside');
-  l.style.width = "67%";
-  this.adjustInlineAttachmentListHeight(sender);
-}
-
-function updateInlineAttachmentList(sender, attachments) {
-  if (!attachments || (attachments.length == 0)) {
-//     this.hideInlineAttachmentList(sender);
-    return;
-  }
-  var e, i, count, text;
-  
-  count = attachments.length;
-  text  = "";
-  for (i = 0; i < count; i++) {
-    text = text + attachments[i];
-    text = text + '<br />';
-  }
-
-  e = $('compose_attachments_list');
-  e.innerHTML = text;
-  this.showInlineAttachmentList(sender);
-}
-
 function openAddressbook(sender) {
   var urlstr;
   
