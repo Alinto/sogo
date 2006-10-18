@@ -414,7 +414,7 @@
   if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
     result = [self redirectToLocation: [self applicationPath]];
   else
-    result = [self jsCloseWithRefreshMethod: @"refreshAppointments()"];
+    result = [self jsCloseWithRefreshMethod: @"refreshAppointmentsAndDisplay()"];
 
   return result;
 }
