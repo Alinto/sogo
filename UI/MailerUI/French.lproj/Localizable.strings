@@ -40,6 +40,8 @@
 "Subject"       = "Sujet";
 "Add address"   = "Ajouter Adresse";
 
+"Attachments:" = "Pièces jointes :";
+
 "to"            = "À";
 "cc"            = "Cc";
 "bcc"           = "Cci";

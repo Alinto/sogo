@@ -41,6 +41,8 @@
 "Subject"       = "Subject";
 "Add address"   = "Add address";
 
+"Attachments:" = "Attachments:";
+
 "to"            = "To";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
