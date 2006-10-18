@@ -9,7 +9,7 @@
     >
     <input type="submit"
       class="button"
-      label:value="Add Selected Contacts"
+      label:value="Add Attendee..."
       name="validate"
       onclick="return onConfirmContactSelection(null);" />
   </span>
