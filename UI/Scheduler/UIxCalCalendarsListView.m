@@ -64,7 +64,9 @@
   unsigned char colorTable[] = { 1, 1, 1 };
   NSString *color;
 
-  if (number == NSNotFound)
+  if (number == 0)
+    color = @"#ccf";
+  else if (number == NSNotFound)
     color = @"#f00";
   else
     {
@@ -80,9 +82,9 @@
           index++;
         }
       color = [NSString stringWithFormat: @"#%2x%2x%2x",
-                        (256 / colorTable[2]) - 1,
-                        (256 / colorTable[1]) - 1,
-                        (256 / colorTable[0]) - 1];
+                        (255 / colorTable[2]) - 1,
+                        (255 / colorTable[1]) - 1,
+                        (255 / colorTable[0]) - 1];
     }
 
   NSLog(@"color = '%@'", color);
