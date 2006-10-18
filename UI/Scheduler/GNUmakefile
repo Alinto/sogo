@@ -38,6 +38,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMonthOverview.m		\
 	UIxCalYearOverview.m		\
 	UIxCalInlineMonthOverview.m	\
+	UIxComponentEditor.m		\
 	UIxAppointmentView.m		\
 	UIxAppointmentEditor.m		\
 	UIxAppointmentProposal.m	\
