@@ -19,7 +19,7 @@
  02111-1307, USA.
 */
 
-var contactSelectorAction = 'scheduler-contacts';
+var contactSelectorAction = 'calendars-contacts';
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?

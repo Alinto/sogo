@@ -87,7 +87,7 @@ function fancyAddRow(shouldEdit, text) {
   
   addr = $('addr_' + lastIndex);
   if (addr && addr.value == '') {
-    input = $('compose_subject_input');
+    input = $('subjectField');
     if (input && input.value != '') {
       input.focus();
       input.select();
@@ -95,19 +95,20 @@ function fancyAddRow(shouldEdit, text) {
     }
   }
   addressList = $("addressList");
-  lastChild = $('row_last');
+  lastChild = $("lastRow");
   
   currentIndex++;
-  
+
   proto = $('row_' + lastIndex);
   row = proto.cloneNode(true);
   row.id = 'row_' + currentIndex;
 
   // select popup
-  select = row.childNodes[0].childNodes[0];
+  var rowNodes = row.childNodesWithTag("span");
+  select = rowNodes[0].childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
-  select.value = proto.childNodes[0].childNodes[0].value;
-  input = row.childNodes[1];
+//   select.value = row.childNodesWithTag("span")[0].childNodesWithTag("select")[0].value;
+  input = rowNodes[1].childNodesWithTag("input")[0];
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
   input.value = text;

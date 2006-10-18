@@ -15,6 +15,9 @@ var cachedDateSelectors = new Array();
 
 var contactSelectorAction = 'calendars-contacts';
 
+var eventsToDelete = new Array();
+var ownersOfEventsToDelete = new Array();
+
 function newEvent(sender, type) {
   var day = sender.getAttribute("day");
   if (!day)
@@ -61,19 +64,14 @@ function editEvent() {
   return false; /* stop following the link */
 }
 
-function _batchDeleteEvents(events, owner) {
+function _batchDeleteEvents() {
+  var events = eventsToDelete.shift();
+  var owner = ownersOfEventsToDelete.shift();
   var urlstr = (UserFolderURL + "../" + owner + "/Calendar/batchDelete?ids="
                 + events.join('/'));
-  if (document.deleteEventAjaxRequest) {
-    document.deleteEventAjaxRequest.nextUrls.push(urlstr);
-    document.deleteEventAjaxRequest.callbackData.push(events);
-  } else {
-    document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
-                                                         deleteEventCallback,
-                                                         events);
-    document.deleteEventAjaxRequest.nextUrls = new Array();
-    document.deleteEventAjaxRequest.callbackData = new Array();
-  }
+  document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+                                                       deleteEventCallback,
+                                                       events);
 }
 
 function deleteEvent()
@@ -83,20 +81,26 @@ function deleteEvent()
 
     if (nodes.length > 0) {
       if (confirm(labels["appointmentDeleteConfirmation"].decodeEntities())) {
+        if (document.deleteEventAjaxRequest) {
+          document.deleteEventAjaxRequest.aborted = true;
+          document.deleteEventAjaxRequest.abort();
+        }
         var sortedNodes = new Array();
         var owners = new Array();
 
         for (var i = 0; i < nodes.length; i++) {
           var owner = nodes[i].getAttribute("owner");
-          if (!sortedNodes[owner])
-            {
+          if (!sortedNodes[owner]) {
               sortedNodes[owner] = new Array();
               owners.push(owner);
-            }
+          }
           sortedNodes[owner].push(nodes[i].getAttribute("id"));
         }
-        for (var i = 0; i < owners.length; i++)
-          _batchDeleteEvents(sortedNodes[owners[i]], owners[i]);
+        for (var i = 0; i < owners.length; i++) {
+          ownersOfEventsToDelete.push(owners[i]);
+          eventsToDelete.push(sortedNodes[owners[i]]);
+        }
+        _batchDeleteEvents();
       }
     }
   }
@@ -104,31 +108,22 @@ function deleteEvent()
   return false;
 }
 
-/* ugly piece of non-working code.
-   If you want to implement chained ajax events, implement it correctly!! */
-
 function deleteEventCallback(http)
 {
   if (http.readyState == 4
       && http.status == 200) {
-    var nodes = null;
-    if (document.deleteEventAjaxRequest.nextUrls.length) {
-      var nextUrls = document.deleteEventAjaxRequest.nextUrls;
-      var nextCBd = document.deleteEventAjaxRequest.callbackData;
-      nodes = $(nextCBd.shift());
-      document.deleteEventAjaxRequest
-        = triggerAjaxRequest(nextUrls.shift(),
-                             deleteEventCallback,
-                             nextCBd);
-      document.deleteEventAjaxRequest.nextUrls = nextUrls;
-      document.deleteEventAjaxRequest.callbackData = nextCBd;
-    } else {
-      document.deleteEventAjaxRequest = null;
-      nodes = $(http.callbackData);
-    }
+    var nodes = $(http.callbackData);
     for (var i = 0; i < nodes.length; i++) {
       var node = $(nodes[i]);
       node.parentNode.removeChild(node);
+    }
+    if (eventsToDelete.length)
+      _batchDeleteEvents();
+    else {
+      document.deleteEventAjaxRequest = null;
+      refreshAppointments();
+      refreshTasks();
+      changeCalendarDisplay();
     }
   }
   else
@@ -428,7 +423,7 @@ function calendarDisplayCallback(http)
       currentDay = http.callbackData["day"];
     var hour = null;
     if (http.callbackData["hour"])
-      hour = http.callbackData["hour"]
+      hour = http.callbackData["hour"];
     scrollDayView(hour);
   }
   else
@@ -547,6 +542,12 @@ function refreshAppointments() {
 
 function refreshTasks() {
   return _loadTasksHref("taskslist?hide-completed=" + hideCompletedTasks);
+}
+
+function refreshAppointmentsAndDisplay()
+{
+  refreshAppointments();
+  changeCalendarDisplay();
 }
 
 function onListFilterChange() {

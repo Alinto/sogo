@@ -8,14 +8,13 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
       neededOptionValue = 1;
     else if (tag == "bcc")
       neededOptionValue = 2;
-    var rows = $("addressList").childNodes;
 
     var stop = false;
     var counter = 0;
     var currentRow = $('row_' + counter);
     while (currentRow
            && !stop) {
-      var currentValue = currentRow.childNodes[0].childNodes[0].value;
+      var currentValue = currentRow.childNodesWithTag("span")[1].childNodesWithTag("input")[0].value;
       if (currentValue == neededOptionValue) {
         stop = true;
         insertContact($("addr_" + counter), contactName, contactEmail);
@@ -26,7 +25,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 
     if (!stop) {
       fancyAddRow(false, "");
-      $("row_" + counter).childNodes[0].childNodes[0].value
+      $("row_" + counter).childNodesWithTag("span")[0].childNodesWithTag("select")[0].value
         = neededOptionValue;
       insertContact($("addr_" + counter), contactName, contactEmail);
     }
@@ -69,4 +68,37 @@ function insertContact(inputNode, contactName, contactEmail) {
   value += newContact;
 
   inputNode.value = value;
+}
+
+function toggleAttachments() {
+  var div = $("attachmentsArea");
+  if (div.style.display)
+    div.style.display = "";
+  else
+    div.style.display = "block;";
+
+  return false;
+}
+
+function updateInlineAttachmentList(sender, attachments) {
+  var count = 0;
+
+  var div = $("attachmentsArea");
+  if (attachments)
+    count = attachments.length;
+  if (count)
+    {
+      var text  = "";
+      for (var i = 0; i < count; i++) {
+        text = text + attachments[i];
+        text = text + '<br />';
+      }
+
+      var e = $('compose_attachments_list');
+      e.innerHTML = text;
+      if (!div.style.display)
+        div.style.display = "block;";
+    }
+  else
+    div.style.display = "";
 }

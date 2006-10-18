@@ -1,5 +1,9 @@
 2006-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxMailEditor.js: update the algorithm
+	that handles the creation of new fields with the new APIs and the
+	new node structure on the page.
+
 	* UI/Scheduler/UIxAppointmentEditor.m,
 	UI/Scheduler/UIxTaskEditor.m:
 	refactored to user UIxComponentEditor as parent class.

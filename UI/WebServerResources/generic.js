@@ -892,10 +892,12 @@ function initCriteria()
 
 function onContactAdd(node)
 {
-  var selector = node.parentNode.parentNode;
+  var selector = null;
   var selectorUrl = '?popup=YES';
-  if (node)
+  if (node) {
+    selector = node.parentNode.parentNode;
     selectorUrl += ("&selectorId=" + selector.getAttribute("id"));
+  }
 
   urlstr = ApplicationBaseURL;
   if (urlstr[urlstr.length-1] != '/')
