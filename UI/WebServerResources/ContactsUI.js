@@ -291,9 +291,8 @@ function onMenuWriteToContact(event, node)
   var node = getParentMenu(node).menuTarget.parentNode;
   var contactId = node.getAttribute('id');
 
-  openContactWindow(null,
-                    ApplicationBaseURL + currentContactFolder
-                    + "/" + contactId + "/write");
+  openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+                        + "/" + contactId + "/write");
 
   return false;
 }
@@ -324,11 +323,9 @@ function onToolbarWriteToSelectedContacts(event)
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
 
-  for (var i = 0; i < rows.length; i++) {
-    openContactWindow(null,
-                      ApplicationBaseURL + currentContactFolder
-                      + "/" + rows[i] + "/write");
-  }
+  for (var i = 0; i < rows.length; i++)
+    openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+                          + "/" + rows[i] + "/write");
 
   return false;
 }

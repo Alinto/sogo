@@ -148,17 +148,22 @@ function sanitizeMailTo(dirtyMailTo) {
   return mailto;
 }
 
+function openMailComposeWindow(url) {
+  w = window.open(url, null,
+                  "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+                  + "location=0,directories=0,status=0,menubar=0"
+                  + ",copyhistory=0");
+  w.focus();
+
+  return w;
+}
+
 function openMailTo(senderMailto) {
   var mailto = sanitizeMailTo(senderMailto);
 
   if (mailto.length > 0)
-    {
-      w = window.open(ApplicationBaseURL + "/../Mail/compose?mailto=" + mailto,
-		      null,
-		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-		      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-      w.focus();
-    }
+    openMailComposeWindow(ApplicationBaseURL
+                          + "/../Mail/compose?mailto=" + mailto);
 
   return false; /* stop following the link */
 }
