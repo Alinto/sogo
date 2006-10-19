@@ -17,6 +17,7 @@ TABLE#compose_label
 DIV#addressList
 {
   height: 8em;
+  margin-bottom: .25em;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -29,7 +30,8 @@ DIV.addressListElement
 SPAN.headerField
 { display: block;
   float: left;
-  width: 8em;
+  line-height: 1.8em;
+  width: 5em;
   text-align: right; }
 
 SPAN.headerInput > INPUT
@@ -37,7 +39,7 @@ SPAN.headerInput > INPUT
   padding-left: 24px;
   background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
   background-repeat: no-repeat;
-  background-position: left middle;
+  background-position: 2px center;
   margin-right: -9em; }
 
 DIV#subjectRow INPUT
@@ -55,12 +57,10 @@ div#compose_internetmarker {
 }
 
 div#headerArea
-{ border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
+{ border-top: 1px solid #fffffb;
+  border-left: 1px solid #fffffb;
   border-right: 2px solid #888;
   border-bottom: 2px solid #888;
-  -moz-border-top-colors: -moz-buttonhoverface transparent;
-  -moz-border-left-colors: -moz-buttonhoverface transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent; }
 
@@ -73,11 +73,6 @@ div#attachmentsArea
   padding-right: 1em;
   padding-left: 5px;
   border-left: 1px solid #888; }
-
-SPAN.headerField
-{ line-height: 1.8em;
-  width: 5em;
-  text-align: right; }
 
 div#compose_attachments_list
 {

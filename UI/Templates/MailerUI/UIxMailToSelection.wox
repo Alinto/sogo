@@ -53,7 +53,7 @@
     <a href="#" onclick="checkAddresses();">check addresses</a>
   </var:if>-->
     </div>
-    <span id="addr_addresses" style="visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
+    <span id="addr_addresses" style="display: none; visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
     </span>
   </container>
 
