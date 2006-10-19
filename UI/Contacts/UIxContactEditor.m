@@ -492,8 +492,13 @@
 {
   NSString *email, *url;
 
+  card = [[self clientObject] vCard];
   [self initSnapshot];
-  email = [snapshot objectForKey: @"mail"];
+  if ([preferredEmail isEqualToString: @"home"])
+    email = [snapshot objectForKey: @"homeMail"];
+  else
+    email = [snapshot objectForKey: @"workMail"];
+
   if (email)
     url = [NSString stringWithFormat: @"Mail/compose?mailto=%@", email];
   else

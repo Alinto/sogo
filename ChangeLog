@@ -1,5 +1,9 @@
 2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-writeAction]): updated method to fetch the card before initing
+	the snapshot.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromTodo:_task]): fixed to use NSNull instead
 	of NSNotFound.
