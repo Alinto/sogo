@@ -31,4 +31,7 @@
 "new"               = "new";
 
 "Add as..." = "Add as...";
-"Add Attendee... " = "Add Attendee...";
+"Recipient" = "Recipient";
+"Carbon Copy" = "Carbon Copy";
+"Blind Carbon Copy" = "Blind Carbon Copy";
+"Add Attendee..." = "Add Attendee...";

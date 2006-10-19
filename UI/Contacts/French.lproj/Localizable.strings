@@ -74,5 +74,8 @@
 "Timezone: " = "Fuseau horaire : ";
 "Birthday: " = "D. de naissance : ";
 
-"Add as..." = "Add as...";
-"Add Attendee... " = "Ajouter participant...";
+"Add as..." = "Ajouter...";
+"Recipient" = "Destinataire";
+"Carbon Copy" = "Copie carbone";
+"Blind Carbon Copy" = "C. carbone cachée";
+"Add Attendee..." = "Ajouter participant...";
