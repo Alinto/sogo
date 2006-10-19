@@ -210,7 +210,7 @@ function getAddressCount() {
 
     idx   = addressIDs[i];
     input = $('addr_' + idx);
-    if (input.value != '')
+    if (input && input.value != '')
       addressCount++;
   }
   return addressCount;
