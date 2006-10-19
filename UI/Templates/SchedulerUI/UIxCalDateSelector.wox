@@ -5,7 +5,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     id="dateSelector">
-    <div id="header">
+    <div class="header">
       <a href="#"
         id="rightArrow"
         var:date="nextMonthAsString"
