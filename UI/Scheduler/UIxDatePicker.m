@@ -30,6 +30,7 @@
   id       month;
   id       year;
   NSString *label;
+  BOOL isDisabled;
 }
 
 - (NSString *)dateID;
@@ -41,6 +42,16 @@
 #include "common.h"
 
 @implementation UIxDatePicker
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      isDisabled = NO;
+    }
+
+  return self;
+}
 
 - (void)dealloc {
   [self->dateID release];
@@ -157,11 +168,22 @@
     [self warnWithFormat:@"Could not parse dateString: '%@'", 
             dateString];
   }
+
   [self setDay:  [NSNumber numberWithInt:[d dayOfMonth]]];
   [self setMonth:[NSNumber numberWithInt:[d monthOfYear]]];
   [self setYear: [NSNumber numberWithInt:[d yearOfCommonEra]]];
   
   [super takeValuesFromRequest:_rq inContext:_ctx];
+}
+
+- (void) setDisabled: (BOOL) disabled
+{
+  isDisabled = disabled;
+}
+
+- (BOOL) disabled
+{
+  return isDisabled;
 }
 
 @end /* UIxDatePicker */

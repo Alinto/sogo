@@ -5,6 +5,7 @@
     xmlns:rsrc="OGo:url"
     class="datePicker"
     ><input type="text"
+      var:disabled="disabled"
       class="textField"
       var:name="dateID"
       var:id="dateID"
