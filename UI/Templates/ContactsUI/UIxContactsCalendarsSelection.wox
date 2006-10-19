@@ -1,15 +1,16 @@
 <?xml version='1.0' standalone='yes'?>
-<span
+  <div
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:uix="OGo:uix"
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
+    class="calendar"
     >
     <input type="submit"
       class="button"
       label:value="Add Attendee..."
       name="validate"
       onclick="return onConfirmContactSelection(null);" />
-  </span>
+  </div>

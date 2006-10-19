@@ -302,20 +302,21 @@ DIV.contactSelection
   z-index: 10;
   background: inherit;
   position: absolute;
-  bottom: 1em;
+  bottom: 0em;
   padding: 1em;
-  right: 2em;
+  left: 0px;
+  right: 0px;
   text-align: right;
   background: #dbdad5;
   border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
-  border-right: 2px solid #888;
-  border-bottom: 2px solid #888;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
 }
+
+DIV.contactSelection > DIV.calendar
+{ text-align: center; }
 
 DIV.contactSelection INPUT.button
 { margin-top: .25em; }

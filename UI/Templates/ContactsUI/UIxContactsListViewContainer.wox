@@ -77,6 +77,11 @@
                 </var:foreach>
               </ul>
 
+            <var:if condition="hasContactSelectionButtons">
+              <div class="contactSelection">
+                <var:component value="selectorComponent" />
+              </div>
+            </var:if>
             </div>
 
             <div class="dragHandle" id="dragHandle"
@@ -111,12 +116,6 @@
 <!--	var:if condition="isPopup">
           var:component-content />
         /var:if> -->
-
-        <var:if condition="hasContactSelectionButtons">
-          <div class="contactSelection">
-            <var:component value="selectorComponent" />
-          </div>
-        </var:if>
       </form>
 
       <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
