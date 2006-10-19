@@ -1,5 +1,22 @@
 2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-iCalStringTemplate]): start and due date are now optional.
+
+	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
+	-setDayStartHour:aStartHour]):  added a new "isDisabled" ivar with
+	appropriate accessors to be settable through the templates.
+
+	* UI/Scheduler/UIxDatePicker.m ([UIxDatePicker -init]): added a
+	new "isDisabled" ivar with appropriate accessors to be
+	settable through the templates.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-availableCalendars]): new method that list the calendars to which
+	the user has subscribed.
+	([UIxComponentEditor -componentOwner]): returns the owner of the
+	editted object.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromTodo:_task]): set the start and enddate of
 	quickentries to null whenever each or all of them are null, by
