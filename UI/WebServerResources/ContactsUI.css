@@ -308,11 +308,11 @@ DIV.contactSelection
   right: 0px;
   text-align: right;
   background: #dbdad5;
-  border-top: 2px solid #fffffb;
+  border-top: 1px solid #fffffb;
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: -moz-buttonhoverface;
 }
 
 DIV.contactSelection > DIV.calendar
