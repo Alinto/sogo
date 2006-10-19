@@ -13,30 +13,59 @@
       month="month"
       day="day"
       label="label"
+      var:disabled="disabled"
       />
     <var:if condition="displayTimeControl">
-      <select var:name="hourSelectId">
-        <var:foreach list="selectableHours" item="hourOption"
-          ><var:if condition="isCurrentHour"
-            ><option var:value="hourValue" selected="selected"
-              ><var:string value="hourLabel"
-                /></option></var:if
-            ><var:if condition="isCurrentHour" const:negate="YES"
-            ><option var:value="hourValue"><var:string value="hourLabel"
-                /></option></var:if>
-        </var:foreach
-          ></select>
-      <select var:name="minuteSelectId">
-        <var:foreach list="selectableMinutes" item="minuteOption"
-          ><var:if condition="isCurrentMinute"
-            ><option var:value="minuteValue" selected="selected"
-              ><var:string value="minuteLabel"
-                /></option></var:if
-            ><var:if condition="isCurrentMinute" const:negate="YES"
-            ><option var:value="minuteValue"
-              ><var:string value="minuteLabel"
-                /></option></var:if>
-        </var:foreach
-      ></select>
+      <var:if condition="disabled">
+        <select var:name="hourSelectId" const:disabled="disabled">
+          <var:foreach list="selectableHours" item="hourOption"
+            ><var:if condition="isCurrentHour"
+              ><option var:value="hourValue" selected="selected"
+                ><var:string value="hourLabel"
+                  /></option></var:if
+              ><var:if condition="isCurrentHour" const:negate="YES"
+              ><option var:value="hourValue"><var:string value="hourLabel"
+                  /></option></var:if>
+          </var:foreach
+            ></select>
+        <select var:name="minuteSelectId" const:disabled="disabled">
+          <var:foreach list="selectableMinutes" item="minuteOption"
+            ><var:if condition="isCurrentMinute"
+              ><option var:value="minuteValue" selected="selected"
+                ><var:string value="minuteLabel"
+                  /></option></var:if
+              ><var:if condition="isCurrentMinute" const:negate="YES"
+              ><option var:value="minuteValue"
+                ><var:string value="minuteLabel"
+                  /></option></var:if>
+          </var:foreach
+            ></select>
+      </var:if
+
+        ><var:if-not condition="disabled">
+        <select var:name="hourSelectId">
+          <var:foreach list="selectableHours" item="hourOption"
+            ><var:if condition="isCurrentHour"
+              ><option var:value="hourValue" selected="selected"
+                ><var:string value="hourLabel"
+                  /></option></var:if
+              ><var:if condition="isCurrentHour" const:negate="YES"
+              ><option var:value="hourValue"><var:string value="hourLabel"
+                  /></option></var:if>
+          </var:foreach
+            ></select>
+        <select var:name="minuteSelectId">
+          <var:foreach list="selectableMinutes" item="minuteOption"
+            ><var:if condition="isCurrentMinute"
+              ><option var:value="minuteValue" selected="selected"
+                ><var:string value="minuteLabel"
+                  /></option></var:if
+              ><var:if condition="isCurrentMinute" const:negate="YES"
+              ><option var:value="minuteValue"
+                ><var:string value="minuteLabel"
+                  /></option></var:if>
+          </var:foreach
+            ></select>
+      </var:if-not>
     </var:if>
   </span>

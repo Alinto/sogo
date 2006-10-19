@@ -44,6 +44,7 @@
   unsigned int endHour;
   NSNumber *currentHour;
   NSNumber *currentMinute;
+  BOOL isDisabled;
 }
 
 - (void) setDayStartHour: (unsigned int) hour;

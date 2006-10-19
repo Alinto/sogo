@@ -36,6 +36,7 @@
   self = [super init];
   if (self) {
     displayTimeControl = YES;
+    isDisabled = NO;
   }
   return self;
 }
@@ -257,12 +258,22 @@
       _hour   = [[self hour] intValue];
       _minute = [[self minute] intValue];
       _second = [[self second] intValue];
-
+      
       d = [NSCalendarDate dateWithYear: _year month:_month day:_day
                           hour:_hour minute:_minute second:_second
                           timeZone: [[self clientObject] userTimeZone]];
       [self _setDate: d];
     }
+}
+
+- (void) setDisabled: (BOOL) disabled
+{
+  isDisabled = disabled;
+}
+
+- (BOOL) disabled
+{
+  return isDisabled;
 }
 
 @end /* UIxTimeDateControl */
