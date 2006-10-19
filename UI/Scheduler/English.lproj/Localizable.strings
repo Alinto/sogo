@@ -239,6 +239,8 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Tasks" = "Tasks";
 "Hide completed tasks" = "Hide completed tasks";
 
+"Calendar" = "Calendar";
+
 /* toolbar */
 "New Event" = "New Event";
 "New Task" = "New Task";

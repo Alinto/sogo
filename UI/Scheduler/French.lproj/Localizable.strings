@@ -245,6 +245,8 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Tasks" = "Tâches";
 "Hide completed tasks" = "Masquer les tâches accomplies";
 
+"Calendar" = "Calendrier";
+
 /* toolbar */
 "New Event" = "Nouvel événement";
 "New Task" = "Nouvelle tâche";
