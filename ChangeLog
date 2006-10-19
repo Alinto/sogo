@@ -1,5 +1,9 @@
 2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailToSelection.m ([UIxMailToSelection -to]):
+	"to" should be retained, otherwise it will be autoreleased and a
+	crash will occur.
+
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
 	-writeAction]): updated method to fetch the card before initing
 	the snapshot.

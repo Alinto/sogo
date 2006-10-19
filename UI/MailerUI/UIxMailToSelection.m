@@ -114,7 +114,10 @@ static NSArray *headers = nil;
  
   mailto = [self queryParameterForKey:@"mailto"];
   if ([mailto length] > 0 && ![to count])
-    to = [NSArray arrayWithObject: mailto];
+    {
+      to = [NSArray arrayWithObject: mailto];
+      [to retain];
+    }
 
   return self->to;
 }
