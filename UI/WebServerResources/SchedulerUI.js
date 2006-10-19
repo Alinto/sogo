@@ -855,3 +855,11 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 
   return false;
 }
+
+function onChangeCalendar(list) {
+   var form = document.forms.editform;
+   var urlElems = form.getAttribute("action").split("/");
+   urlElems[urlElems.length-4]
+      = list.childNodesWithTag("option")[list.value].innerHTML;
+   form.setAttribute("action", urlElems.join("/"));
+}

@@ -37,11 +37,12 @@ SPAN.headerInput > INPUT
   padding-left: 24px;
   background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
   background-repeat: no-repeat;
-  background-position: 2px 2px;
+  background-position: left middle;
   margin-right: -9em; }
 
 DIV#subjectRow INPUT
 { background-image: none;
+  width: 38em;
   padding-left: .5em; }
 
 div#compose_internetmarker { 
@@ -54,11 +55,7 @@ div#compose_internetmarker {
 }
 
 div#headerArea
-{ position: absolute;
-  left: 0px;
-  right: 0px;
-  height: 12em;
-  border-top: 2px solid #fffffb;
+{ border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
   border-right: 2px solid #888;
   border-bottom: 2px solid #888;
@@ -71,7 +68,7 @@ div#attachmentsArea
 { display: none;
   float: right;
   width: 12em;
-  height: 12em;
+  height: 100%;
   margin: 0px;
   padding-right: 1em;
   padding-left: 5px;
