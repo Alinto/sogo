@@ -35,17 +35,26 @@
             var:checked="isPrivate"
             /><var:string label:value="is private" /></label>
         <span class="checkBoxList"><var:string label:value="Date" />
-          <span class="content"><var:component className="UIxTimeDateControl"
+          <span class="content"
+            ><input var:checked="hasStartDate" type="checkbox" class="checkBox"
+              onchange="onTimeControlCheck(this);"
+              /><var:component className="UIxTimeDateControl"
+              var:disabled="startDateDisabled"
               const:controlID="startTime"
               date="taskStartDate"
               const:dayStartHour="0"
               const:dayEndHour="23"
               /></span></span>
-        <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
+        <a class="button" href="#" onclick="return toggleDetails();"
+          id="detailsButton"
           ><var:string label:value="Show Details" /></a>
         <span class="checkBoxList"><var:string label:value="Due Time" />
-          <span class="content"><var:component className="UIxTimeDateControl"
-              const:controlID="endTime"
+          <span class="content"
+            ><input var:checked="hasDueDate" type="checkbox" class="checkBox"
+              onchange="onTimeControlCheck(this);"
+              /><var:component className="UIxTimeDateControl"
+              var:disabled="dueDateDisabled"
+              const:controlID="dueTime"
               date="taskDueDate"
               const:dayStartHour="0"
               const:dayEndHour="23"
@@ -83,7 +92,8 @@
               ></span
             ></label>
         
-        <span class="checkBoxList" id="participantsCB"><var:string label:value="Participants" />
+        <span class="checkBoxList" id="participantsCB"
+          ><var:string label:value="Participants" />
           <span class="content"><var:component className="UIxContactSelector"
               const:selectorId="participants"
               contacts="participants"
@@ -101,6 +111,11 @@
           <var:popup list="priorities" item="item"
             string="itemPriorityText" selection="priority" /></label>
         
+        <label style="clear: both;"><var:string label:value="Calendar" />
+          <var:popup list="availableCalendars" item="item"
+            const:onChange="onChangeCalendar(this);"
+            string="item" selection="componentOwner" /></label>
+
         <label><var:string label:value="Comment"
             /><textarea name="comment" var:value="comment" /></label>
       </div>

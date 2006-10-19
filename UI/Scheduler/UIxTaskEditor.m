@@ -77,8 +77,6 @@
     @"STATUS:NEEDS-ACTION\r\n" /* confirmed by default */
     @"PERCENT-COMPLETE:0\r\n"
     @"DTSTAMP:%@Z\r\n"
-    @"DTSTART:%@\r\n"
-    @"DUE:%@\r\n"
     @"SEQUENCE:1\r\n"
     @"PRIORITY:5\r\n"
     @"%@"                   /* organizer */
@@ -86,7 +84,7 @@
     @"END:VTODO\r\n"
     @"END:VCALENDAR";
 
-  NSCalendarDate *lStartDate, *lDueDate, *stamp;
+  NSCalendarDate *stamp;
   NSString *template, *s;
   unsigned minutes;
 
@@ -97,19 +95,13 @@
   else {
     minutes = 60;
   }
-  lStartDate = [self selectedDate];
-  lDueDate   = [lStartDate dateByAddingYears:0 months:0 days:0
-                           hours:0 minutes:minutes seconds:0];
-
   stamp = [NSCalendarDate calendarDate];
   [stamp setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   
-  s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
+  s = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
                          [[self clientObject] nameInContainer],
                          [stamp iCalFormattedDateTimeString],
-                         [lStartDate iCalFormattedDateTimeString],
-                         [lDueDate iCalFormattedDateTimeString],
                          [self iCalOrganizerString],
                          s];
   return template;
@@ -182,12 +174,14 @@
 
   uTZ = [[self clientObject] userTimeZone];
   dueDate = [_task due];
-  if (!dueDate)
-    dueDate = [[self startDate] dateByAddingYears: 0 months: 0 days: 0
-                                hours: 1 minutes: 0 seconds: 0];
-
-  [dueDate setTimeZone: uTZ];
-  [dueDate retain];
+//   if (!dueDate)
+//     dueDate = [[self startDate] dateByAddingYears: 0 months: 0 days: 0
+//                                 hours: 1 minutes: 0 seconds: 0];
+  if (dueDate)
+    {
+      [dueDate setTimeZone: uTZ];
+      [dueDate retain];
+    }
 }
 
 - (void) saveValuesIntoTask: (iCalToDo *) _task
@@ -195,9 +189,18 @@
   /* merge in form values */
   NSArray *attendees, *lResources;
   iCalRecurrenceRule *rrule;
-  
-  [_task setStartDate: [self taskStartDate]];
-  [_task setDue: [self taskDueDate]];
+  NSCalendarDate *dateTime;
+
+  if (hasStartDate)
+    dateTime = [self taskStartDate];
+  else
+    dateTime = nil;
+  [_task setStartDate: dateTime];
+  if (hasDueDate)
+    dateTime = [self taskDueDate];
+  else
+    dateTime = nil;
+  [_task setDue: dateTime];
 
   [_task setSummary: [self title]];
   [_task setLocation: [self location]];
@@ -442,6 +445,44 @@
   if (ex != nil) return ex;
   
   return [self redirectToLocation: [self completeURIForMethod:@"../view"]];
+}
+
+- (void) setHasStartDate: (BOOL) aBool
+{
+  hasStartDate = aBool;
+}
+
+- (BOOL) hasStartDate
+{
+  return ([self taskStartDate] != nil);
+}
+
+- (BOOL) startDateDisabled
+{
+  return ![self hasStartDate];
+}
+
+- (void) setHasDueDate: (BOOL) aBool
+{
+  hasDueDate = aBool;
+}
+
+- (BOOL) hasDueDate
+{
+  return ([self taskDueDate] != nil);
+}
+
+- (BOOL) dueDateDisabled
+{
+  return ![self hasDueDate];
+}
+
+- (void) setDueDateDisabled: (BOOL) aBool
+{
+}
+
+- (void) setStartDateDisabled: (BOOL) aBool
+{
 }
 
 @end /* UIxTaskEditor */

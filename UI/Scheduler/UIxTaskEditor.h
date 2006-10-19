@@ -33,6 +33,8 @@
 @interface UIxTaskEditor : UIxComponentEditor
 {
   NSCalendarDate *dueDate;
+  BOOL hasStartDate;
+  BOOL hasDueDate;
 }
 
 - (void) setTaskStartDate: (NSCalendarDate *) _date;
