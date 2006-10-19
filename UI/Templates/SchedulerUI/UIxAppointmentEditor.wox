@@ -67,7 +67,7 @@
             ><var:popup list="cycles" item="item"
               label:string="$cycleLabel"
               selection="cycle"
-            const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
+              const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
               /><span id="cycleSelectionFirstLevel"
               ><var:popup list="cycleEnds" item="item"
                 label:string="$item" value="item"
@@ -101,7 +101,12 @@
 
         <label><var:string label:value="Priority" />
         <var:popup list="priorities" item="item"
-          string="itemPriorityText" selection="priority" /></label>
+            string="itemPriorityText" selection="priority" /></label>
+
+        <label style="clear: both;"><var:string label:value="Calendar" />
+          <var:popup list="availableCalendars" item="item"
+            const:onChange="onChangeCalendar(this);"
+            string="item" selection="componentOwner" /></label>
         
         <label><var:string label:value="Comment"
             /><textarea name="comment" var:value="comment" /></label>
