@@ -1,3 +1,10 @@
+2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromTodo:_task]): set the start and enddate of
+	quickentries to null whenever each or all of them are null, by
+	providing an impossible timestamp from with NSNotFound as value.
+
 2006-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxMailEditor.js: update the algorithm
