@@ -193,8 +193,8 @@ static NSNumber                  *distantFutureNumber = nil;
   NSCalendarDate      *startDate, *dueDate;
   NSArray             *attendees;
   NSString            *uid, *title, *location, *status, *accessClass;
-  NSNumber            *sequence, *date;
-  id                  organizer;
+  NSNumber            *sequence;
+  id                  organizer, date;
   id                  participants, partmails;
   NSMutableString     *partstates;
   unsigned            i, count, code;
@@ -242,12 +242,13 @@ static NSNumber                  *distantFutureNumber = nil;
   if ([startDate isNotNull])
     date = [self numberForDate: startDate];
   else
-    date = [NSNumber numberWithInt: NSNotFound];
+    date = [NSNull null];
   [row setObject: date forKey: @"startdate"];
+
   if ([dueDate isNotNull]) 
     date = [self numberForDate: dueDate];
   else
-    date = [NSNumber numberWithInt: NSNotFound];
+    date = [NSNull null];
   [row setObject: date forKey: @"enddate"];
 
   if ([participants length] > 0)

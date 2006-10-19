@@ -1,5 +1,9 @@
 2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromTodo:_task]): fixed to use NSNull instead
+	of NSNotFound.
+
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
 	-iCalStringTemplate]): start and due date are now optional.
 
