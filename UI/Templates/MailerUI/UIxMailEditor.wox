@@ -26,19 +26,18 @@
         item="item"
         selection="from"
         /><br />
-      <var:component className="UIxMailToSelection"
-        to="to"
-        cc="cc"
-        bcc="bcc"
-        />
-      <div class="addressListElement" id="subjectRow"
-        ><span class="headerField"><var:string label:value="Subject" />:</span
-          ><span class="headerInput"
-          ><input name="subject"
-            type="text"
-            class="textField"
-            var:value="subject"
-            /></span></div>
+      <div>
+        <var:component className="UIxMailToSelection"
+          to="to" cc="cc" bcc="bcc" />
+        <div class="addressListElement" id="subjectRow"
+          ><span class="headerField"><var:string label:value="Subject" />:</span
+            ><span class="headerInput"
+            ><input name="subject"
+              type="text"
+              class="textField"
+              var:value="subject"
+              /></span></div></div></div><
+      </div>
     </div>
     <!-- separator line -->
     <textarea name="content" var:value="text" />

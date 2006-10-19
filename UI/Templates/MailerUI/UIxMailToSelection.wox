@@ -1,5 +1,5 @@
 <?xml version='1.0' standalone='yes'?>
-  <span xmlns="http://www.w3.org/1999/xhtml"
+  <container xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
@@ -55,5 +55,5 @@
     </div>
     <span id="addr_addresses" style="visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
     </span>
-  </span>
+  </container>
 
