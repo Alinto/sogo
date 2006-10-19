@@ -66,6 +66,7 @@
 
 /* Menu */
 
+"Calendars"		= "Agendas";
 "Calendar"		= "Calendar";
 "Contacts"		= "Contacts";
 
@@ -97,7 +98,7 @@
 "action"		= "Action";
 "accept"		= "Accept";
 "decline"		= "Decline";
-"more participants"     = "more participants";
+"more attendees"     = "more attendees";
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
 
@@ -129,13 +130,13 @@
 "Categories"		= "Categories";
 "Classification"	= "Classification";
 "Duration"		= "Duration";
-"Participants"		= "Participants";
+"Attendees"		= "Attendees";
 "Resources"		= "Resources";
 "Organizer"		= "Organizer";
 "Comment"		= "Comment";
 
 "attributes"		= "Attributes";
-"participants"		= "Participants";
+"attendees"		= "Attendees";
 /* checkbox title */
 "is private"            = "is private";
 /* classification */
@@ -179,7 +180,7 @@
 "Title or Description" = "Title or Description";
 
 "Search"		= "Search";
-"Search participants"	= "Search participants";
+"Search attendees"	= "Search attendees";
 "Search resources"	= "Search resources";
 "Search appointments"	= "Search appointments";
 "Search in Anais"	= "Search in Anaïs";
@@ -238,8 +239,6 @@ validate_endbeforestart    = "Enddate is before startdate!";
 
 "Tasks" = "Tasks";
 "Hide completed tasks" = "Hide completed tasks";
-
-"Calendar" = "Calendar";
 
 /* toolbar */
 "New Event" = "New Event";

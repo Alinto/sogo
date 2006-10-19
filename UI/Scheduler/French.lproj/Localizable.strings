@@ -67,6 +67,7 @@
 
 /* Menu */
 
+"Calendars"		= "Agendas";
 "Calendar"		= "Agenda";
 "Contacts"		= "Contacts";
 
@@ -100,7 +101,7 @@
 "action"		= "Action";
 "accept"		= "Accepter";
 "decline"		= "Refuser";
-"more participants"     = "Autres participants";
+"more attendees"     = "Autres participants";
 "Hide already accepted and rejected appointments"    = "Cacher les invitations refusées";
 "Show already accepted and rejected appointments"    = "Montrer aussi les invitations refusées";
 
@@ -111,12 +112,12 @@
 "Appointment editor"	= "Edition de rendez-vous";
 "Appointment proposal"	= "Proposition de rendez-vous";
 "Appointment on"     	= "Rendez-vous le";
-"Start time" 	     	= "Heure de début";
-"End time"		= "Heure de fin";
-"Due time"		= "Écheance";
+"Start Time" 	     	= "Heure de début";
+"End Time"		= "Heure de fin";
+"Due Time"		= "Écheance";
 "Start date"		= "Date de début";
-"End date"		= "Date de fin";
-"Due date"		= "Écheance";
+"End Date"		= "Date de fin";
+"Due Date"		= "Écheance";
 "Earliest start time"	= "Au plus tôt";
 "Latest end time"	= "Au plus tard";
 "browse start date"	= "Sélection Date de début";
@@ -132,7 +133,7 @@
 "Categories"		= "Categories";
 "Classification"	= "Classification";
 "Duration"		= "Durée";
-"Participants"		= "Participants";
+"Attendees"		= "Participants";
 "Resources"		= "Ressources";
 "Organizer"		= "Organisateur";
 "Comment"		= "Notes";
@@ -141,7 +142,7 @@
 "Category"              = "Catégorie";
 
 "attributes"		= "Attributs";
-"participants"		= "Participants";
+"attendees"		= "Participants";
 /* checkbox title */
 "is private"            = "Rendez-vous privé";
 /* classification */
@@ -185,7 +186,7 @@
 "Title or Description" = "Le titre ou la description";
 
 "Search"		= "Rechercher";
-"Search participants"	="Recherche de participants";
+"Search attendees"	="Recherche de participants";
 "Search resources"	="Recherche de ressources";
 "Search appointments"	= "Recherche de rendez-vous";
 "Search in Anais"	= "Recherche par Anaïs";
@@ -244,8 +245,6 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 
 "Tasks" = "Tâches";
 "Hide completed tasks" = "Masquer les tâches accomplies";
-
-"Calendar" = "Calendrier";
 
 /* toolbar */
 "New Event" = "Nouvel événement";
