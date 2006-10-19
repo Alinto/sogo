@@ -4,9 +4,9 @@ BODY
 DIV.appointmentLabel
 { display: block;
   position: relative;
-  line-height: 1.8em;
+  line-height: 1.7.5em;
   text-align: right;
-  width: 10em; }
+  width: 7.5em; }
 
 DIV.appointmentRightLabel
 { display: inline;
@@ -76,13 +76,13 @@ INPUT#summary, INPUT#location,
 SPAN.content
 { position: absolute;
   top: 0px;
-  left: 10em;
+  left: 7.5em;
   right: 0px; }
 
 DIV#details TEXTAREA
 { position: absolute;
   top: 0px;
-  left: 10em;
+  left: 7.5em;
   vertical-align: bottom;
   height: 5em;
   right: 0px;
@@ -91,7 +91,7 @@ DIV#details TEXTAREA
 DIV#details SELECT
 { position: absolute;
   top: 0px;
-  left: 10em; }
+  left: 7.5em; }
 
 LABEL#isPrivate, LABEL#conflictsLabel
 { position: absolute;

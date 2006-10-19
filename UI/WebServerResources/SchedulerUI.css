@@ -180,32 +180,33 @@ DIV#calendarView A
   border-bottom: 1px solid #aaa;
 }
 
-#dateSelector #header
+#dateSelector > .header
 { background: #efefef;
   width: 100%;
+  white-space: nowrap;
   vertical-align: middle;
   text-align: center;
   padding: .2em 0px;
   margin: 0px;
   border: 0px; }
 
-#dateSelector #header A
+#dateSelector > .header A
 {
   width: 1em;
   padding: .4em .2em;
 }
 
-#dateSelector #header #leftArrow
+#dateSelector > .header #leftArrow
 {
   float: left;
 }
 
-#dateSelector #header #rightArrow
+#dateSelector > .header #rightArrow
 {
   float: right;
 }
 
-#dateSelector #header SPAN
+#dateSelector > .header SPAN
 { cursor: default;
   font-size: medium;
   vertical-align: middle;
@@ -213,7 +214,7 @@ DIV#calendarView A
   border: 1px solid transparent;
   margin: .5em .2em; }
 
-#dateSelector #header SPAN:hover
+#dateSelector > .header SPAN:hover
 { border-left: 1px solid #fff;
   border-top: 1px solid #fff;
   border-right: 1px solid #ccc;

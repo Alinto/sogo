@@ -36,7 +36,7 @@
             type="checkbox" var:selection="isPrivate"
             var:checked="isPrivate"
             /><var:string label:value="is private" /></label>
-        <span class="checkBoxList"><var:string label:value="Start time" />
+        <span class="checkBoxList"><var:string label:value="Start Time" />
           <span class="content"><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
@@ -45,7 +45,7 @@
             /></span></span>
         <a class="button" href="#" onclick="return toggleDetails();" id="detailsButton"
           ><var:string label:value="Show Details" /></a>
-        <span class="checkBoxList"><var:string label:value="End time" />
+        <span class="checkBoxList"><var:string label:value="End Time" />
           <span class="content"><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"
@@ -85,7 +85,7 @@
               ></span
             ></label>
         
-        <span class="checkBoxList" id="participantsCB"><var:string label:value="Participants" />
+        <span class="checkBoxList" id="participantsCB"><var:string label:value="Attendees" />
           <span class="content"><var:component className="UIxContactSelector"
               const:selectorId="participants"
               contacts="participants"
