@@ -25,6 +25,7 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
@@ -38,6 +39,7 @@
 #import <NGObjWeb/WORequest.h>
 
 #import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGoUI/SOGoDateFormatter.h>
 
 #import "UIxComponent+Agenor.h"
@@ -53,6 +55,7 @@
       [self setIsPrivate: NO];
       [self setCheckForConflicts: NO];
       [self setIsCycleEndNever];
+      componentOwner = @"";
     }
 
   return self;
@@ -556,13 +559,20 @@
   NSString *s;
   iCalRecurrenceRule *rrule;
   NSTimeZone *uTZ;
+  SOGoObject *co;
 
-  if ((startDate = [component startDate]) == nil)
-    startDate = [[NSCalendarDate date] hour:11 minute:0];
-
-  uTZ = [[self clientObject] userTimeZone];
-  [startDate setTimeZone: uTZ];
-  [startDate retain];
+  co = [self clientObject];
+  componentOwner = [co ownerInContext: nil];
+      
+  startDate = [component startDate];
+//   if ((startDate = [component startDate]) == nil)
+//     startDate = [[NSCalendarDate date] hour:11 minute:0];
+  if (startDate)
+    {
+      uTZ = [co userTimeZone];
+      [startDate setTimeZone: uTZ];
+      [startDate retain];
+    }
 
   title        = [[component summary] copy];
   location     = [[component location] copy];
@@ -687,6 +697,41 @@
 - (NSString *) iCalString
 {
   return iCalString;
+}
+
+
+- (NSArray *) availableCalendars
+{
+  NSEnumerator *rawContacts;
+  NSString *list, *currentId;
+  NSMutableArray *calendars;
+  SOGoUser *user;
+
+  calendars = [NSMutableArray array];
+
+  user = [context activeUser];
+  list = [[user userDefaults] stringForKey: @"calendaruids"];
+  if ([list length] == 0)
+    list = [self shortUserNameForDisplay];
+
+  rawContacts
+    = [[list componentsSeparatedByString: @","] objectEnumerator];
+  currentId = [rawContacts nextObject];
+  while (currentId)
+    {
+      if ([currentId hasPrefix: @"-"])
+        [calendars addObject: [currentId substringFromIndex: 1]];
+      else
+        [calendars addObject: currentId];
+      currentId = [rawContacts nextObject];
+    }
+
+  return calendars;
+}
+
+- (NSString *) componentOwner
+{
+  return componentOwner;
 }
 
 @end

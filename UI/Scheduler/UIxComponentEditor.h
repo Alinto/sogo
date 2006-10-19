@@ -37,7 +37,6 @@
 
 @interface UIxComponentEditor : UIxComponent
 {
-@private
   NSString *iCalString;
   NSString *errorText;
   id item;
@@ -58,6 +57,7 @@
   BOOL checkForConflicts; /* default: NO */
   NSDictionary *cycle;
   NSString *cycleEnd;
+  NSString *componentOwner;
 }
 
 - (void) setAccessClass: (NSString *) _class;
@@ -123,6 +123,9 @@
 - (BOOL) isCycleEndUntil;
 - (void) setIsCycleEndUntil;
 - (void) setIsCycleEndNever;
+
+- (NSString *) componentOwner;
+- (NSArray *) availableCalendars;
 
 /* access */
 - (BOOL) isMyComponent;
