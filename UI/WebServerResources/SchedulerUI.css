@@ -456,7 +456,6 @@ DIV#calendarContent
 
 SPAN.appointmentView
 { display: block;
-  background: #dd0;
   border: 1px solid #000; }
 
 SPAN.colorBox

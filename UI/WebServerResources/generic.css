@@ -2,6 +2,7 @@
 
 /* common stuff */
 
+/* Bitstream VeraSans, , Tahoma, FreeSans, Helvetica, sans-serif */
 body
 { position: absolute;
   top: 0px;
@@ -9,7 +10,7 @@ body
   right: 0px;
   bottom: 0px;
   color: #000000;
-  font-family: Bitstream VeraSans, Verdana, Tahoma, FreeSans, Helvetica, sans-serif;
+  font-family: Bitstream VeraSans, Tahoma;
   font-size: 10pt;
   background-color: #dbdad5;
   border: 0px;
@@ -332,7 +333,7 @@ DIV#toolbar
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   margin: 0px;
-  padding: 2px;
+  padding: 0px;
 /*   background: #f00;
  */  height: 4em;
   background-color: #dbdad5;
@@ -343,9 +344,11 @@ SPAN.toolbarSeparator
 { display: block;
   float: left;
   height: 90%;
+  vertical-align: middle;
   border-right : 1px solid ThreeDHighlight;
   border-left : 1px solid ThreeDShadow;
-  margin : 2px 0.2em;
+  margin: 0px .25em;
+  margin-top: 0.125em;
   width: 0px;
   padding: 0px; }
 
@@ -357,11 +360,12 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
 { cursor: default;
   display: block;
   float: left;
-  height: 3.4em;
+  height: 80%;
   text-align: center;
   -moz-box-align: center;
   -moz-box-pack: center;
   margin: 0px;
+  margin-top: 0.125em;
   border-left: 2px solid transparent;
   border-top: 2px solid transparent;
   border-right: 2px solid transparent;
