@@ -1,5 +1,9 @@
 2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): set ownership of returned records by adding an "owner" key to the resulting dictionaries.
+
 	* SoObjects/SOGo/NSObject+Owner.[hm]: removed module since it's a
 	bad way of handling ownership that way.
 

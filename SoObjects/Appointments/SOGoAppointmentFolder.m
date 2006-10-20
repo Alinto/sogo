@@ -732,8 +732,9 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
 
-  [ma makeObjectsPerformSelector: @selector (setOwnerByLogin:)
-      withObject: owner];
+  [ma makeObjectsPerform: @selector (setObject:forKey:)
+      withObject: owner
+      withObject: @"owner"];
 
   return ma;
 }
