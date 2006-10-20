@@ -1,5 +1,8 @@
 2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSObject+Owner.[hm]: removed module since it's a
+	bad way of handling ownership that way.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -_qualifierForFilter:filter]): search also
 	on "cn", just like Mozilla.
