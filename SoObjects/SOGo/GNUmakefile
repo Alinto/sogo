@@ -32,7 +32,6 @@ libSOGo_HEADER_FILES = \
 	SOGoLRUCache.h			\
 	NSObject+AptComparison.h	\
 	WOContext+Agenor.h		\
-	NSObject+Owner.h		\
 	NSString+URL.h			\
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
@@ -52,7 +51,6 @@ libSOGo_OBJC_FILES = \
 	SOGoLRUCache.m			\
 	AgenorUserManager.m		\
 	NSObject+AptComparison.m	\
-	NSObject+Owner.m		\
 	WOContext+Agenor.m		\
 	AgenorUserDefaults.m		\
 	NSDictionary+URL.m		\
