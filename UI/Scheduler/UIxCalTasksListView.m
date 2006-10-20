@@ -27,7 +27,6 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <Appointments/SOGoAppointmentFolder.h>
-#import <SOGo/NSObject+Owner.h>
 #import <SOGoUI/SOGoDateFormatter.h>
 
 #import "UIxCalTasksListView.h"
@@ -98,7 +97,8 @@
     }
 
   allClasses = [NSString stringWithFormat: @"%@ ownerIs%@",
-                         statusClass, [currentTask ownerLogin]];
+                         statusClass,
+                         [currentTask objectForKey: @"owner"]];
 
   return allClasses;
 }
@@ -131,11 +131,6 @@
 - (BOOL) isCurrentTaskCompleted
 {
   return ([[currentTask objectForKey: @"status"] intValue] == 1);
-}
-
-- (NSString *) currentTaskOwner
-{
-  return [currentTask ownerLogin];
 }
 
 @end

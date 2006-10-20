@@ -21,7 +21,6 @@
 // $Id: UIxCalInlineAptView.m 885 2005-07-21 16:41:34Z znek $
 
 #import <NGObjWeb/NGObjWeb.h>
-#import <SOGo/NSObject+Owner.h>
 
 @interface UIxCalInlineAptView : WOComponent
 {
@@ -144,7 +143,7 @@
 - (NSString *) displayClasses
 {
   return [NSString stringWithFormat: @"appointmentView ownerIs%@",
-                   [appointment ownerLogin]];
+                   [appointment objectForKey: @"owner"]];
 }
 
 /* helpers */
@@ -159,11 +158,6 @@
 {
   return [tooltipFormatter stringForObjectValue: appointment
                            referenceDate: [self referenceDate]];
-}
-
-- (NSString *) appointmentOwner
-{
-  return [appointment ownerLogin];
 }
 
 @end

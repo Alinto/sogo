@@ -27,8 +27,6 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 
-#import <SOGo/NSObject+Owner.h>
-
 #import <SOGoUI/SOGoDateFormatter.h>
 
 #import "UIxCalAptListView.h"
@@ -180,16 +178,6 @@
   return [NSString stringWithFormat: @"%.2d%.2d",
                    [date hourOfDay],
                    [date minuteOfHour]];
-}
-
-- (NSString *) currentRowCSSClass
-{
-  return @"tableview appointmentRow";
-}
-
-- (NSString *) currentAptOwner
-{
-  return [currentAppointment ownerLogin];
 }
 
 @end
