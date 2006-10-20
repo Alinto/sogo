@@ -1,5 +1,8 @@
 2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailNotification.[hm]: work on
+	iCalEntityObject instances instead of just iCalEvent's.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): set ownership of returned records by adding an "owner" key to the resulting dictionaries.

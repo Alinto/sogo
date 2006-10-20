@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalEntityObject.h>
 
 #import "SOGoAptMailNotification.h"
 #import "common.h"
@@ -58,7 +58,7 @@ static NSTimeZone     *EST = nil;
 - (id)oldApt {
   return self->oldApt;
 }
-- (void)setOldApt:(iCalEvent *)_oldApt {
+- (void)setOldApt:(iCalEntityObject *)_oldApt {
   ASSIGN(self->oldApt, _oldApt);
 }
 
@@ -66,7 +66,7 @@ static NSTimeZone     *EST = nil;
   return self->newApt;
 }
 
-- (void)setNewApt:(iCalEvent *) _newApt
+- (void)setNewApt:(iCalEntityObject *) _newApt
 {
   ASSIGN(self->newApt, _newApt);
 }
