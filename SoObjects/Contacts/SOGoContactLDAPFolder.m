@@ -331,12 +331,12 @@
   if (filter && [filter length] > 0)
     {
       qs = [NSString stringWithFormat:
-                       @"(cn='*%@*')"
-                     @"OR (sn='*%@*')"
-                     @"OR (displayName='*%@*')"
-                     @"OR (mail='*%@*')"
+                       @"(cn='%@*')"
+                     @"OR (sn='%@*')"
+                     @"OR (displayName='%@*')"
+                     @"OR (mail='%@*')"
                      @"OR (telephoneNumber='*%@*')",
-                     filter, filter, filter, filter];
+                     filter, filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else

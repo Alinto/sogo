@@ -1,5 +1,9 @@
 2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]): perform the searchs on objects which start with instead of contain the lookup key.
+
 	* SoObjects/Appointments/SOGoAptMailNotification.[hm]: work on
 	iCalEntityObject instances instead of just iCalEvent's.
 
