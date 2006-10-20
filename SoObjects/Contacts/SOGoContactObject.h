@@ -44,6 +44,7 @@
 - (void) save;
 
 - (NSString *) davEntityTag;
+- (NSString *) nameInContainer;
 
 @end
 
