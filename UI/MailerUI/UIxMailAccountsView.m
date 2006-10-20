@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
+#include <SOGo/NSString+URL.h>
+
 #include <SOGoUI/UIxComponent.h>
-#include <SOGoUI/NSString+URL.h>
 
 @interface UIxMailAccountsView : UIxComponent
 {
