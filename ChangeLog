@@ -1,3 +1,9 @@
+2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -_qualifierForFilter:filter]): search also
+	on "cn", just like Mozilla.
+
 2006-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailToSelection.m ([UIxMailToSelection -to]):

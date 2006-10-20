@@ -332,6 +332,7 @@
     {
       qs = [NSString stringWithFormat:
                        @"(cn='*%@*')"
+                     @"OR (sn='*%@*')"
                      @"OR (displayName='*%@*')"
                      @"OR (mail='*%@*')"
                      @"OR (telephoneNumber='*%@*')",
