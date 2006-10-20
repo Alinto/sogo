@@ -32,8 +32,8 @@
 
 - (NSString *) singleAttributeWithName: (NSString *) key
 {
-  return  [[self attributeWithName: key]
-            stringValueAtIndex: 0];
+  return [[self attributeWithName: key]
+           stringValueAtIndex: 0];
 }
 
 - (NSDictionary *) asDictionaryWithAttributeNames: (NSArray *) attributeNames
@@ -52,15 +52,13 @@
   attribute = [attrEnum nextObject];
   while (attribute)
     {
-      [valuesDict setObject: [[self attributeWithName: attribute]
-                               stringValueAtIndex: 0]
+      [valuesDict setObject: [self singleAttributeWithName: attribute]
                   forKey: attribute];
       attribute = [attrEnum nextObject];
     }
   if (cName)
     {
-      value = [[self attributeWithName: cName]
-                stringValueAtIndex: 0];
+      value = [self singleAttributeWithName: cName];
       if (!value)
         value = @"";
       NSLog (@"value for '%@' = '%@'", cName, value);
@@ -69,8 +67,7 @@
     }
   if (uid)
     {
-      value = [[self attributeWithName: uid]
-                stringValueAtIndex: 0];
+      value = [self singleAttributeWithName: uid];
       if (!value)
         value = @"";
       NSLog (@"value for '%@' = '%@'", uid, value);
