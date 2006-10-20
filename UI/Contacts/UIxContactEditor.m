@@ -22,6 +22,8 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
+#import <NGObjWeb/SoObject.h>
+
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
 #import "common.h"
