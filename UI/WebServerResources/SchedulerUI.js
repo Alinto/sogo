@@ -32,7 +32,7 @@ function newEvent(sender, type) {
                 + "&hm=" + hour);
 
   window.open(urlstr, "",
-	      "width=570,height=200,resizable=0,scrollbars=0,toolbar=0," +
+	      "width=620,height=600,resizable=0,scrollbars=0,toolbar=0," +
 	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   return false; /* stop following the link */
@@ -47,7 +47,7 @@ function _editEventId(id, owner) {
   var urlstr = urlBase + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=570,height=200,resizable=0,scrollbars=0,toolbar=0," +
+                        "width=620,height=600,resizable=0,scrollbars=0,toolbar=0," +
                         "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   win.focus();
 }
@@ -862,4 +862,25 @@ function onChangeCalendar(list) {
    urlElems[urlElems.length-4]
       = list.childNodesWithTag("option")[list.value].innerHTML;
    form.setAttribute("action", urlElems.join("/"));
+}
+
+function validateBrowseURL(input) {
+  var button = $("browseUrlBtn");
+
+  if (input.value.length) {
+    if (!button.enabled)
+      enableAnchor(button);
+  } else if (!button.disabled)
+    disableAnchor(button);
+}
+
+function browseUrl(anchor, event) {
+  if (event.button == 0) {
+    var input = $("url");
+    var url = input.value;
+    if (url.length)
+      window.open(url, '_blank');
+  }
+
+  return false;
 }

@@ -18,6 +18,9 @@ body
   padding: 0px;
   overflow: hidden; }
 
+HR
+{ height: 0px; }
+
 TABLE, DIV, IMG
 { font-family: inherit;
   font-size: inherit;
@@ -650,7 +653,21 @@ DIV.noJavascriptErrorMessage A
 { float: right;
   margin: 0px auto; }
 
-A.button
+A.button:hover
+{ color: inherit;
+  background: -moz-buttonhoverface; }
+
+A.button:active
+{ color: -moz-buttonhovertext;
+  background-color: #c4c2bd;
+  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+
+A.button,
+A[class~="_disabled"].button:hover,
+A[class~="_disabled"].button:active
 { cursor: default;
   padding: 1px .5em;
   border-top: 2px solid #fffffb;
@@ -667,17 +684,11 @@ A.button
 A.button IMG
 { vertical-align: middle; }
 
-A.button:hover
-{ color: inherit;
-  background: -moz-buttonhoverface; }
-
-A.button:active
-{ color: -moz-buttonhovertext;
-  background-color: #c4c2bd;
-  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+A[class~="_disabled"].button,
+A[class~="_disabled"].button:hover,
+A[class~="_disabled"].button:active
+{ color: #999;
+  background: inherit; }
 
 /* tabs */
 DIV.tabsContainer
@@ -740,7 +751,6 @@ DIV.tabsContainer > DIV.tab
   bottom: .5em;
   visibility: hidden; }
 
-SPAN.checkBoxList INPUT,
 INPUT.checkBox
 { border: 2px solid #000;
   vertical-align: middle;
@@ -748,4 +758,3 @@ INPUT.checkBox
   -moz-border-left-colors: #000 #fff; 
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
-
