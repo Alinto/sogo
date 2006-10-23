@@ -779,3 +779,9 @@ function onSearchFormSubmit()
 
   return false;
 }
+
+/* stub */
+
+function refreshContacts() {
+}
+
