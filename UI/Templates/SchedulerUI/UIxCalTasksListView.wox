@@ -18,7 +18,7 @@
       <var:foreach list="fetchCoreTasksInfos" item="currentTask"
         ><var:if condition="shouldDisplayCurrentTask"
           ><li var:id="currentTask.c_name"
-            var:owner="currentTaskOwner"
+            var:owner="currentTask.owner"
             var:class="currentStatusClass"
             onmousedown="return false;"
             onclick="return onRowClick(event);"
