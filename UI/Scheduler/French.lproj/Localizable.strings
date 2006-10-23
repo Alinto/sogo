@@ -85,7 +85,7 @@
 "edit"			= "Éditer";
 "delete"		= "Supprimer";
 "proposal"      = "Recherche de plages horaires";
-"Save"			= "Sauvegarder";
+"Save"			= "Enregistrer";
 "Cancel"		= "Annuler";
 "show_rejected_apts"    = "Afficher les rendez-vous refusés";
 "hide_rejected_apts"    = "Cacher les rendez-vous refusés";
@@ -112,8 +112,8 @@
 "Appointment editor"	= "Edition de rendez-vous";
 "Appointment proposal"	= "Proposition de rendez-vous";
 "Appointment on"     	= "Rendez-vous le";
-"Start Time" 	     	= "Heure de début";
-"End Time"		= "Heure de fin";
+"From"   	     	= "Du";
+"To"	        	= "Au";
 "Due Time"		= "Écheance";
 "Start date"		= "Date de début";
 "End Date"		= "Date de fin";
@@ -136,7 +136,7 @@
 "Attendees"		= "Participants";
 "Resources"		= "Ressources";
 "Organizer"		= "Organisateur";
-"Comment"		= "Notes";
+"Description"		= "Description";
 "Start"                 = "Début";
 "End"                   = "Fin";
 "Category"              = "Catégorie";
@@ -191,7 +191,10 @@
 "Search appointments"	= "Recherche de rendez-vous";
 "Search in Anais"	= "Recherche par Anaïs";
 
+"All Day" = "Toute la journée";
 "check for conflicts" = "Vérifier les conflits";
+
+"Browse URL" = "Visiter l'URL";
 
 /* calendar modes */
 
@@ -245,6 +248,10 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 
 "Tasks" = "Tâches";
 "Hide completed tasks" = "Masquer les tâches accomplies";
+
+/* tabs */
+"Event" = "Événement";
+"Recurrence" = "Répétition";
 
 /* toolbar */
 "New Event" = "Nouvel événement";

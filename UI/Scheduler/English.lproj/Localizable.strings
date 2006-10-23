@@ -109,8 +109,8 @@
 "Appointment editor"	= "Appointment Editor";
 "Appointment proposal"	= "Appointment Proposal";
 "Appointment on"	= "Appointment on";
-"Start time"		= "Start time";
-"End time"		= "End time";
+"From"   	     	= "From";
+"To"	        	= "To";
 "Due time"		= "Due time";
 "Start date"		= "Start date";
 "End date"		= "End date";
@@ -133,7 +133,10 @@
 "Attendees"		= "Attendees";
 "Resources"		= "Resources";
 "Organizer"		= "Organizer";
-"Comment"		= "Comment";
+"Description"		= "Description";
+"Start"                 = "Start";
+"End"                   = "End";
+"Category"              = "Category";
 
 "attributes"		= "Attributes";
 "attendees"		= "Attendees";
@@ -185,7 +188,10 @@
 "Search appointments"	= "Search appointments";
 "Search in Anais"	= "Search in Anaïs";
 
+"All Day" = "All Day";
 "check for conflicts" = "check for conflicts";
+
+"Browse URL" = "Browse URL";
 
 /* calendar modes */
 
