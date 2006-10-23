@@ -1,3 +1,19 @@
+2006-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor -init]):
+	added new "url" ivar with its classic accessors.
+	([UIxComponentEditor -urlButtonClasses]): new method that returns
+	the class strings for the url button on the appointment/task
+	editor (depending on the validity of the url).
+
+	* UI/Templates/SchedulerUI/UIxTaskEditor.wox,
+	UI/Templates/SchedulerUI/UIxAppointmentEditor.wox: start rewriting
+	the template to match the Lightning's new task/appointment editor.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor -saveValuesIntoAppointment:_appointment]): initialize url from the components'url.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -saveValuesIntoTask:_task]): initialize url from the components'url.
+
 2006-10-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m

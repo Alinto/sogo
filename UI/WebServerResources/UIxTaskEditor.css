@@ -1,29 +1,23 @@
-BODY
-{ padding: 1em; }
-
 DIV.appointmentLabel
 { display: block;
   position: relative;
   line-height: 1.8em;
   text-align: right;
-  width: 7.5em; }
+  width: 3em; }
+
+DIV#editorTabs
+{
+  width: 100%;
+  height: 38em;
+}
+
+DIV#editorTabs > DIV.tab
+{ overflow: hidden;
+  padding: .5em; }
 
 DIV.appointmentRightLabel
 { display: inline;
   vertical-align: middle; }
-
-DIV#details
-{ visibility: hidden;
-  padding-top: 1em;
-  width: 100%;
-  margin: 0px;
-  margin-bottom: 1em; }
-
-DIV#buttons
-{ visibility: visible;
-  position: absolute;
-  right: 1em;
-  bottom: 1em; }
 
 UL.contactList
 { 
@@ -58,13 +52,19 @@ DIV.contactSelector
 LABEL, SPAN.checkBoxList
 { display: block;
   position: relative;
-  height: 2em;
+  height: 1.5em;
   margin-left: .5em;
-  margin-top: .5em;
+  margin-bottom: .5em;
   width: 100%; }
+
+LABEL#commentArea
+{ height: 11.5em; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
+
+SPAN.checkBoxList#categoriesCB
+{ height: 3em; }
 
 DIV#participants UL.contactList
 { height: 4.5em; }
@@ -72,32 +72,20 @@ DIV#participants UL.contactList
 SPAN.checkBoxList SPAN.content LABEL
 { display: inline; }
 
-INPUT#summary, INPUT#location,
 SPAN.content
 { position: absolute;
-  top: 0px;
-  left: 7.5em;
-  right: 0px; }
+  top: -.25em;
+  left: 8em;
+  right: 1em; }
 
-DIV#details TEXTAREA
+TEXTAREA
 { position: absolute;
   top: 0px;
-  left: 7.5em;
+  left: 8em;
   vertical-align: bottom;
-  height: 5em;
-  right: 0px;
-  padding-bottom: 1em; }
-
-DIV#details SELECT
-{ position: absolute;
-  top: 0px;
-  left: 7.5em; }
-
-LABEL#isPrivate, LABEL#conflictsLabel
-{ position: absolute;
-  z-index: 1;
+  height: 10em;
   right: 1em;
-  width: auto; }
+  padding-bottom: 1em; }
 
 A#detailsButton
 { position: absolute;
@@ -113,7 +101,29 @@ SPAN#cycleSelectionSecondLevel
 { visibility: hidden;
   margin-left: 1em; }
 
-DIV#details SPAN.content SELECT,
 SPAN#cycleSelectionSecondLevel SPAN.timeDateControl
 { position: static;
   margin: 0px; }
+
+SPAN#categoriesCB INPUT
+{ border: 2px solid #000;
+  vertical-align: middle;
+  -moz-border-top-colors: #000 #fff;
+  -moz-border-left-colors: #000 #fff; 
+  -moz-border-bottom-colors: #000 #fff;
+  -moz-border-right-colors: #000 #fff; }
+
+SPAN#categoriesCB LABEL
+{ margin-left: 0px;
+  margin-right: 1em; }
+
+SPAN.content > INPUT
+{ position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px; }
+
+INPUT#startDateCB,
+INPUT#dueDateCB,
+LABEL#urlArea INPUT
+{ position: static; }

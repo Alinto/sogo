@@ -215,7 +215,8 @@
   [endDate retain];
 }
 
-- (void)saveValuesIntoAppointment:(iCalEvent *)_appointment {
+- (void) saveValuesIntoAppointment: (iCalEvent *) _appointment
+{
   /* merge in form values */
   NSArray *attendees, *lResources;
   iCalRecurrenceRule *rrule;
@@ -224,13 +225,14 @@
   [_appointment setEndDate:[self aptEndDate]];
 
   [_appointment setSummary: [self title]];
+  [_appointment setUrl: [self url]];
   [_appointment setLocation: [self location]];
   [_appointment setComment: [self comment]];
   [_appointment setPriority:[self priority]];
   [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
   
-  [_appointment setAccessClass:[self accessClass]];
-  [_appointment setTransparency:[self transparency]];
+  [_appointment setAccessClass: [self accessClass]];
+  [_appointment setTransparency: [self transparency]];
 
 #if 0
   /*

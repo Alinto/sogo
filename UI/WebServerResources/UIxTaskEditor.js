@@ -53,7 +53,7 @@ function validateDate(date, label) {
   return result;
 }
 
-function validateAptEditor() {
+function validateTaskEditor() {
   var e, startdate, enddate, tmpdate;
 
   e = document.getElementById('summary');
@@ -185,4 +185,11 @@ function onTimeControlCheck(checkBox) {
   for (var i = 0; i < selects.length; i++)
     if (selects[i] != checkBox)
       selects[i].disabled = !checkBox.checked;
+}
+
+function saveEvent(sender) {
+  if (validateTaskEditor())
+    document.forms['editform'].submit();
+
+  return false;
 }

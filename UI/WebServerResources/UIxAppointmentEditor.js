@@ -167,3 +167,10 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 
   return false;
 }
+
+function saveEvent(sender) {
+  if (validateAptEditor())
+    document.forms['editform'].submit();
+
+  return false;
+}

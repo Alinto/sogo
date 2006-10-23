@@ -47,6 +47,7 @@
   NSString *title;
   NSString *location;
   NSString *comment;
+  NSString *url;
   iCalPerson *organizer;
   NSArray *participants;     /* array of iCalPerson's */
   NSArray *resources;        /* array of iCalPerson's */
@@ -97,6 +98,9 @@
 
 - (void) setComment: (NSString *) _value;
 - (NSString *) comment;
+
+- (void) setUrl: (NSString *) _url;
+- (NSString *) url;
 
 - (void) setParticipants: (NSArray *) _parts;
 - (NSArray *) participants;

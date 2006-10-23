@@ -203,6 +203,7 @@
   [_task setDue: dateTime];
 
   [_task setSummary: [self title]];
+  [_task setUrl: [self url]];
   [_task setLocation: [self location]];
   [_task setComment: [self comment]];
   [_task setPriority:[self priority]];

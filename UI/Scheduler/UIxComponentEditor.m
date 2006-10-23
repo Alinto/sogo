@@ -26,6 +26,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSURL.h>
 
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
@@ -79,6 +80,7 @@
   [accessClass release];
   [cycle release];
   [cycleEnd release];
+  [url release];
 
   [super dealloc];
 }
@@ -158,6 +160,16 @@
 - (NSString *) title
 {
   return title;
+}
+
+- (void) setUrl: (NSString *) _url
+{
+  ASSIGNCOPY(url, _url);
+}
+
+- (NSString *) url
+{
+  return url;
 }
 
 - (void) setLocation: (NSString *) _value
@@ -577,6 +589,7 @@
   title        = [[component summary] copy];
   location     = [[component location] copy];
   comment      = [[component comment] copy];
+  url          = [[[component url] absoluteString] copy];
   priority     = [[component priority] copy];
   categories   = [[[component categories] commaSeparatedValues] retain];
   organizer    = [[component organizer] retain];
@@ -732,6 +745,18 @@
 - (NSString *) componentOwner
 {
   return componentOwner;
+}
+
+- (NSString *) urlButtonClasses
+{
+  NSString *classes;
+
+  if ([url length])
+    classes = @"button";
+  else
+    classes = @"button _disabled";
+
+  return classes;
 }
 
 @end
