@@ -139,6 +139,12 @@
     };
 
     SOGoAppointmentObject = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoAppointmentObject.toolbar";
+        };
+      };
       methods = {
         view = { 
           protectedBy = "View";
@@ -186,6 +192,12 @@
     };
 
     SOGoTaskObject = {
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoAppointmentObject.toolbar";
+        };
+      };
       methods = {
         view = { 
           protectedBy = "View";
