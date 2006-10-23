@@ -1002,6 +1002,42 @@ function onTabClick(event) {
   return false;
 }
 
+function enableAnchor(anchor) {
+  var classStr = '' + anchor.getAttribute("class");
+  var position = classStr.indexOf("_disabled", 0);
+  if (position > -1) {
+    var disabledHref = anchor.getAttribute("disabled-href");
+    if (disabledHref)
+      anchor.setAttribute("href", disabledHref);
+    var disabledOnclick = anchor.getAttribute("disabled-onclick");
+    if (disabledOnclick)
+      anchor.setAttribute("onclick", disabledOnclick);
+    anchor.removeClassName("_disabled");
+    anchor.setAttribute("disabled-href", null);
+    anchor.setAttribute("disabled-onclick", null);
+    anchor.disabled = 0;
+    anchor.enabled = 1;
+  }
+}
+
+function disableAnchor(anchor) {
+  var classStr = '' + anchor.getAttribute("class");
+  var position = classStr.indexOf("_disabled", 0);
+  if (position < 0) {
+    var href = anchor.getAttribute("href");
+    if (href)
+      anchor.setAttribute("disabled-href", href);
+    var onclick = anchor.getAttribute("onclick");
+    if (onclick)
+      anchor.setAttribute("disabled-onclick", onclick);
+    anchor.addClassName("_disabled");
+    anchor.setAttribute("href", null);
+    anchor.setAttribute("onclick", null);
+    anchor.disabled = 1;
+    anchor.enabled = 0;
+  }
+}
+
 /* custom extensions to the DOM api */
 HTMLElement.prototype.childNodesWithTag = function(tagName) {
   var matchingNodes = new Array();

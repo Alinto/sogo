@@ -1,5 +1,8 @@
 2006-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added code to enable or
+	disable anchor visually (following our internal algorithm).
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor -init]):
 	added new "url" ivar with its classic accessors.
 	([UIxComponentEditor -urlButtonClasses]): new method that returns
