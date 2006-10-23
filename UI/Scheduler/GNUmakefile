@@ -59,7 +59,8 @@ SchedulerUI_RESOURCE_FILES += \
 	product.plist	
 
 SchedulerUI_RESOURCE_FILES += \
-	Toolbars/SOGoAppointmentFolder.toolbar
+	Toolbars/SOGoAppointmentFolder.toolbar \
+	Toolbars/SOGoAppointmentObject.toolbar
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\
