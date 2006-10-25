@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, CommonUI, Appointments );
+  requires = ( MAIN, CommonUI, Appointments, Contacts );
 
   publicResources = (
     previous_week.gif,
@@ -187,6 +187,11 @@
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "test";
+        };
+        contactSearch = {
+          protectedBy = "View";
+          pageName    = "UIxFreeBusyUserSelector";
+          actionName  = "contactSearch";
         };
       };
     };
