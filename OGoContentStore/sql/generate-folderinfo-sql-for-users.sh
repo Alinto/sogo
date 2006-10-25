@@ -81,12 +81,13 @@ CREATE TABLE SOGo_${USER_TABLE}_privcal_quick (
   ispublic     INT             NOT NULL,
   status       INT             NOT NULL,
   priority     INT             NOT NULL, -- for marking high prio apts
-  isopaque     INT             NULL,
+  isopaque     INT             NOT NULL,
   location     VARCHAR(256)    NULL,
   orgmail      VARCHAR(256)    NULL,
   partmails    VARCHAR(100000) NOT NULL, -- the emails of the participants
   partstates   VARCHAR(256)    NOT NULL, -- the status of each participant
   sequence     INT             NULL      -- the iCal sequence
+  component    VARCHAR(10)     NOT NULL, -- the type of component (vevent/vtodo) in the vcalendar
 );
 
 CREATE TABLE SOGo_${USER_TABLE}_privcal (

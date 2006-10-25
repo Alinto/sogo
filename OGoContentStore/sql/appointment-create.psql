@@ -13,7 +13,7 @@ CREATE TABLE %s_quick (
   iscycle      INT             NULL,     -- client needs to fetch to resolve
   ispublic     INT             NOT NULL,
   status       INT             NOT NULL,
-  isopaque     INT             NULL,
+  isopaque     INT             NOT NULL,
   location     VARCHAR(256)    NULL,
   orgmail      VARCHAR(256)    NULL,
   partmails    VARCHAR(100000) NOT NULL, -- the emails of the participants

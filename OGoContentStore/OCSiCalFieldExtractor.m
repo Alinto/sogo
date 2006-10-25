@@ -104,19 +104,19 @@ static NSNumber                  *distantFutureNumber = nil;
   else
     [self logWithFormat:@"WARNING: could not extract a uid from event!"];
 
-  [row setObject:[NSNumber numberWithBool:[_event isAllDay]]
-       forKey:@"isallday"];
-  [row setObject:[NSNumber numberWithBool:[_event isRecurrent]]
-       forKey:@"iscycle"];
-  [row setObject:[NSNumber numberWithBool:[_event isOpaque]]
-       forKey:@"isopaque"];
-  [row setObject:[NSNumber numberWithInt:[_event priorityNumber]]
-       forKey:@"priority"];
+  [row setObject:[NSNumber numberWithBool: [_event isAllDay]]
+       forKey: @"isallday"];
+  [row setObject:[NSNumber numberWithBool: [_event isRecurrent]]
+       forKey: @"iscycle"];
+  [row setObject:[NSNumber numberWithBool: [_event isOpaque]]
+       forKey: @"isopaque"];
+  [row setObject:[NSNumber numberWithInt: [_event priorityNumber]]
+       forKey: @"priority"];
 
-  if ([title    isNotNull]) [row setObject:title    forKey:@"title"];
-  if ([location isNotNull]) [row setObject:location forKey:@"location"];
-  if ([sequence isNotNull]) [row setObject:sequence forKey:@"sequence"];
-  
+  if ([title isNotNull]) [row setObject: title forKey:@"title"];
+  if ([location isNotNull]) [row setObject: location forKey:@"location"];
+  if ([sequence isNotNull]) [row setObject: sequence forKey:@"sequence"];
+
   if ([startDate isNotNull]) 
     [row setObject: [self numberForDate: startDate] forKey:@"startdate"];
   if ([endDate isNotNull]) 
@@ -135,14 +135,14 @@ static NSNumber                  *distantFutureNumber = nil;
   }
 
   if ([participants length] > 0)
-    [row setObject:participants forKey:@"participants"];
+    [row setObject: participants forKey:@"participants"];
   if ([partmails length] > 0)
-    [row setObject:partmails forKey:@"partmails"];
+    [row setObject: partmails forKey:@"partmails"];
 
   if ([status isNotNull]) {
     int code = 1;
     
-    if ([status isEqualToString:@"TENTATIVE"])
+    if ([status isEqualToString:@"TENTATIVE"]
       code = 0;
     else if ([status isEqualToString:@"CANCELLED"])
       code = 2;
