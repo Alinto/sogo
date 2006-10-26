@@ -19,6 +19,11 @@
   02111-1307, USA.
 */
 
+#import <NGObjWeb/WOResponse.h>
+#import <SoObjects/Appointments/SOGoFreeBusyObject.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+
 #import <SOGoUI/UIxComponent.h>
 #import <Scheduler/UIxComponent+Agenor.h>
 
@@ -231,6 +236,112 @@ static NSArray *internetAccessStates = nil;
   state = [[[self context] request] formValueForKey:@"allowinternet"];
   [self setInternetAccessState:state];
   return [NSException exceptionWithHTTPStatus:200 /* OK */];
+}
+
+- (void) _fillFreeBusyItems: (NSMutableArray *) items
+                withRecords: (NSEnumerator *) records
+              fromStartDate: (NSCalendarDate *) startDate
+                  toEndDate: (NSCalendarDate *) endDate
+{
+  NSDictionary *record;
+  unsigned int count, startInterval, endInterval, value;
+  NSNumber *status;
+  NSCalendarDate *currentDate;
+
+  record = [records nextObject];
+  while (record)
+    {
+      status = [record objectForKey: @"status"];
+
+      value = [[record objectForKey: @"startdate"] intValue];
+      currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
+      if ([currentDate earlierDate: startDate] == currentDate)
+        startInterval = 0;
+      else
+        startInterval
+          = ([currentDate timeIntervalSinceDate: startDate] / 900);
+
+      value = [[record objectForKey: @"enddate"] intValue];
+      currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
+      if ([currentDate earlierDate: endDate] == endDate)
+        endInterval = [items count] - 1;
+      else
+        endInterval = ([currentDate timeIntervalSinceDate: startDate] / 900);
+
+      for (count = startInterval; count < endInterval; count++)
+        [items replaceObjectAtIndex: count withObject: status];
+
+      record = [records nextObject];
+    }
+}
+
+- (NSString *) _freeBusyAsTextFromStartDate: (NSCalendarDate *) startDate
+                                  toEndDate: (NSCalendarDate *) endDate
+                                forFreeBusy: (SOGoFreeBusyObject *) fb
+{
+  NSEnumerator *records;
+  NSMutableArray *freeBusyItems;
+  NSTimeInterval interval;
+  unsigned int count, intervals;
+
+  interval = [endDate timeIntervalSinceDate: startDate] + 60;
+  intervals = interval / 900; /* slices of 15 minutes */
+  freeBusyItems = [NSMutableArray arrayWithCapacity: intervals];
+  for (count = 0; count < intervals - 1; count++)
+    [freeBusyItems addObject: @"0"];
+
+  records = [[fb fetchFreebusyInfosFrom: startDate to: endDate] objectEnumerator];
+  [self _fillFreeBusyItems: freeBusyItems withRecords: records
+        fromStartDate: startDate toEndDate: endDate];
+
+  return [freeBusyItems componentsJoinedByString: @","];
+}
+
+- (NSString *) _freeBusyAsText
+{
+  SOGoFreeBusyObject *co;
+  NSCalendarDate *startDate, *endDate;
+  NSString *queryDay;
+  NSTimeZone *uTZ;
+
+  co = [self clientObject];
+  uTZ = [co userTimeZone];
+
+  queryDay = [self queryParameterForKey: @"sday"];
+  if ([queryDay length])
+    startDate = [NSCalendarDate dateFromShortDateString: queryDay
+                                andShortTimeString: @"0000"
+                                inTimeZone: uTZ];
+  else
+    {
+      startDate = [NSCalendarDate calendarDate];
+      [startDate setTimeZone: uTZ];
+      startDate = [startDate hour: 0 minute: 0];
+    }
+
+  queryDay = [self queryParameterForKey: @"eday"];
+  if ([queryDay length])
+    endDate = [NSCalendarDate dateFromShortDateString: queryDay
+                              andShortTimeString: @"2359"
+                              inTimeZone: uTZ];
+  else
+    endDate = [startDate hour: 23 minute: 59];
+
+  return [self _freeBusyAsTextFromStartDate: startDate toEndDate: endDate
+               forFreeBusy: co];
+}
+
+- (id <WOActionResults>) readFreeBusyAction
+{
+  WOResponse *response;
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=iso-8859-1"
+            forKey: @"Content-Type"];
+  [response appendContentString: [self _freeBusyAsText]];
+
+  return response;
 }
 
 @end /* SOGoUserHomePage */

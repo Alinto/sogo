@@ -1,5 +1,12 @@
 2006-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-readFreeBusyAction]): new method that returns an array of numbers
+	corresponding to the state in the freebusy of each "quarter of an
+	hour" between the "sday" and "eday" date parameters passed in the
+	url. This permits to handle the display of the freebusy with Ajax
+	mechanisms.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-contactSearchAction]): new action that returns the uid and the
 	username + email of the user whose name contain the value of the

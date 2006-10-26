@@ -77,6 +77,16 @@
         };
       };
     };
+    SOGoFreeBusyObject = {
+      superclass = "SOGoObject";
+      methods = {
+        ajaxRead = { 
+          protectedBy = "View";
+          pageName    = "SOGoUserHomePage"; 
+          actionName  = "readFreeBusy";
+        };
+      };
+    };
     SOGoCustomGroupFolder = {
       superclass = "SOGoGroupFolder";
       methods = {
