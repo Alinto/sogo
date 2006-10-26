@@ -24,8 +24,11 @@
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGCards/iCalPerson.h>
+#import <NGObjWeb/WORequest.h>
 
 #import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/AgenorUserManager.h>
 
 #import "UIxFreeBusyUserSelector.h"
 
@@ -35,14 +38,14 @@
 {
   if ((self = [super init]))
     {
-      startDate = [NSCalendarDate calendarDate];
-      [startDate retain];
-      endDate = [NSCalendarDate calendarDate];
-      [endDate retain];
+      startDate = nil;
+      endDate = nil;
       dayStartHour = [NSNumber numberWithInt: 8];
       [dayStartHour retain];
       dayEndHour = [NSNumber numberWithInt: 18];
       [dayEndHour retain];
+      contacts = nil;
+      selectorId = nil;
       daysToDisplay = nil;
       hoursToDisplay = nil;
       dateFormatter = [[SOGoDateFormatter alloc]
@@ -54,22 +57,23 @@
 
 - (void) dealloc
 {
-  [startDate release];
-  [endDate release];
   [dayStartHour release];
   [dayEndHour release];
   if (daysToDisplay)
     [daysToDisplay release];
   if (hoursToDisplay)
     [hoursToDisplay release];
+  if (contacts)
+    [contacts release];
+  if (selectorId)
+    [selectorId release];
   [dateFormatter release];
   [super dealloc];
 }
 
 - (void) setStartDate: (NSCalendarDate *) newStartDate
 {
-  ASSIGN (startDate, newStartDate);
-#warning The following code is hackish and should not be shown to children < 18.
+  startDate = newStartDate;
   if (daysToDisplay)
     {
       [daysToDisplay release];
@@ -77,14 +81,24 @@
     }
 }
 
+- (NSCalendarDate *) startDate
+{
+  return startDate;
+}
+
 - (void) setEndDate: (NSCalendarDate *) newEndDate
 {
-  ASSIGN (endDate, newEndDate);
+  endDate = newEndDate;
   if (daysToDisplay)
     {
       [daysToDisplay release];
       daysToDisplay = nil;
     }
+}
+
+- (NSCalendarDate *) endDate
+{
+  return endDate;
 }
 
 - (void) setDayStartHour: (NSNumber *) newDayStartHour
@@ -97,7 +111,107 @@
   ASSIGN (dayEndHour, newDayEndHour);
 }
 
+- (void) setSelectorId: (NSString *) newSelectorId
+{
+  ASSIGN (selectorId, newSelectorId);
+}
+
+- (NSString *) selectorId
+{
+  return selectorId;
+}
+
+- (void) setContacts: (NSArray *) newContacts
+{
+  ASSIGN (contacts, newContacts);
+}
+
+- (NSArray *) contacts
+{
+  return contacts;
+}
+
+/* callbacks */
+- (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue
+{
+  NSMutableArray *persons;
+  NSEnumerator *uids;
+  NSString *uid;
+  AgenorUserManager *um;
+
+  um = [AgenorUserManager sharedUserManager];
+
+  persons = [NSMutableArray new];
+  [persons autorelease];
+
+  if ([selectorValue length] > 0)
+    {
+      uids = [[selectorValue componentsSeparatedByString: @","]
+               objectEnumerator];
+      uid = [uids nextObject];
+      while (uid)
+        {
+          [persons addObject: [um iCalPersonWithUid: uid]];
+          uid = [uids nextObject];
+        }
+    }
+
+  return persons;
+}
+
+- (void) takeValuesFromRequest: (WORequest *) request
+                     inContext: (WOContext *) context
+{
+  NSArray *newContacts;
+
+  newContacts
+    = [self getICalPersonsFromValue: [request formValueForKey: selectorId]];
+  ASSIGN (contacts, newContacts);
+  if ([contacts count] > 0)
+    NSLog (@"got %i attendees: %@", [contacts count], contacts);
+  else
+    NSLog (@"got no attendees!");
+}
+
 /* in-template operations */
+- (NSString *) initialContactsAsString
+{
+  NSEnumerator *persons;
+  iCalPerson *person;
+  NSMutableArray *participants;
+
+  participants = [NSMutableArray arrayWithCapacity: [contacts count]];
+  persons = [contacts objectEnumerator];
+  person = [persons nextObject];
+  while (person)
+    {
+      [participants addObject: [person cn]];
+      person = [persons nextObject];
+    }
+
+  return [participants componentsJoinedByString: @","];
+}
+
+- (void) setCurrentContact: (iCalPerson *) newCurrentContact
+{
+  currentContact = newCurrentContact;
+}
+
+- (iCalPerson *) currentContact
+{
+  return currentContact;
+}
+
+- (NSString *) currentContactId
+{
+  return [currentContact cn];
+}
+
+- (NSString *) currentContactName
+{
+  return [currentContact cn];
+}
+
 - (NSArray *) daysToDisplay
 {
   NSCalendarDate *currentDay, *finalDay;

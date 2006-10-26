@@ -30,6 +30,7 @@
 @class NSCalendarDate;
 @class NSNumber;
 @class SOGoDateFormatter;
+@class iCalPerson;
 
 @interface UIxFreeBusyUserSelector : UIxComponent
 {
@@ -42,6 +43,11 @@
   NSMutableArray *hoursToDisplay;
   NSCalendarDate *currentDayToDisplay;
   NSNumber *currentHourToDisplay;
+
+  NSArray *contacts;
+  iCalPerson *currentContact;
+
+  NSString *selectorId;
 }
 
 - (void) setStartDate: (NSCalendarDate *) newStartDate;
@@ -49,6 +55,12 @@
 
 - (void) setDayStartHour: (NSNumber *) newDayStartHour;
 - (void) setDayEndHour: (NSNumber *) newDayEndHour;
+
+- (void) setContacts: (NSArray *) contacts;
+- (NSArray *) contacts;
+
+- (void) setSelectorId: (NSString *) newSelectorId;
+- (NSString *) selectorId;
 
 - (NSArray *) daysToDisplay;
 - (NSArray *) hoursToDisplay;

@@ -1,5 +1,9 @@
 2006-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxFreeBusyUserSelector.[hm]: added code an ivars
+	from UIxContactSelector to handle contact lists (current and
+	additional contacts).
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
 	-_freeBusyAsText]): added handling of an "additional"-named query
 	parameter that describe the number of additional days after
