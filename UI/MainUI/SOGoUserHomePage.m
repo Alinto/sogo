@@ -301,7 +301,7 @@ static NSArray *internetAccessStates = nil;
 {
   SOGoFreeBusyObject *co;
   NSCalendarDate *startDate, *endDate;
-  NSString *queryDay;
+  NSString *queryDay, *additionalDays;
   NSTimeZone *uTZ;
 
   co = [self clientObject];
@@ -326,8 +326,12 @@ static NSArray *internetAccessStates = nil;
                               inTimeZone: uTZ];
   else
     endDate = [startDate hour: 23 minute: 59];
-  endDate = [endDate dateByAddingYears: 0 months: 0 days: 2
-                     hours: 0 minutes: 0 seconds: 0];
+
+  additionalDays = [self queryParameterForKey: @"additional"];
+  if ([additionalDays length] > 0)
+    endDate = [endDate dateByAddingYears: 0 months: 0
+                       days: [additionalDays intValue]
+                       hours: 0 minutes: 0 seconds: 0];
 
   return [self _freeBusyAsTextFromStartDate: startDate toEndDate: endDate
                forFreeBusy: co];

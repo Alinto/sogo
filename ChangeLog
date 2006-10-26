@@ -1,5 +1,10 @@
 2006-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-_freeBusyAsText]): added handling of an "additional"-named query
+	parameter that describe the number of additional days after
+	enddate that should be returned.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-_responseForResults:results]): give priority to results with
 	"c_uid" fields. If none returned, use the first contact received.
