@@ -79,8 +79,9 @@
 
 /* transparency */
 
-- (NSString *)transparency {
-  return @"TRANSPARENT";
+- (NSString *) transparency
+{
+  return @"OPAQUE";
 }
 
 /* iCal */
@@ -89,7 +90,7 @@
   static NSString *iCalStringTemplate = \
     @"BEGIN:VCALENDAR\r\n"
     @"METHOD:REQUEST\r\n"
-    @"PRODID:OpenGroupware.org SOGo 0.9\r\n"
+    @"PRODID://Inverse groupe conseil/SOGo 0.9\r\n"
     @"VERSION:2.0\r\n"
     @"BEGIN:VEVENT\r\n"
     @"UID:%@\r\n"
@@ -230,7 +231,7 @@
   [_appointment setComment: [self comment]];
   [_appointment setPriority:[self priority]];
   [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
-  
+
   [_appointment setAccessClass: [self accessClass]];
   [_appointment setTransparency: [self transparency]];
 

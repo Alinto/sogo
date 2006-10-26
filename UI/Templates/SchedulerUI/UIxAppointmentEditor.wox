@@ -126,15 +126,15 @@
               ></label>
         </div>
 
-        <div id="attendeesView" class="tab">
-          <span class="checkBoxList" id="participantsCB"><var:string label:value="Attendees" />
-            <span class="content"><var:component className="UIxContactSelector"
-                const:selectorId="participants"
-                contacts="participants"
-                /></span></span>
-        </div>
+        <div id="attendeesView" class="tab"
+          ><var:component className="UIxFreeBusyUserSelector"
+            startDate="aptStartDate" endDate="aptEndDate" /></div>
       </div>
 
+      <script type="text/javascript">
+        initTimeWidgets();
+        redisplayFreeBusyZone();
+      </script>
       <!-- div id="buttons">
       <input
       type="submit"
