@@ -142,7 +142,7 @@ static NSNumber                  *distantFutureNumber = nil;
   if ([status isNotNull]) {
     int code = 1;
     
-    if ([status isEqualToString:@"TENTATIVE"]
+    if ([status isEqualToString:@"TENTATIVE"])
       code = 0;
     else if ([status isEqualToString:@"CANCELLED"])
       code = 2;
