@@ -11,3 +11,4 @@ SUBPROJECTS = \
 	Protocols	\
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
+
