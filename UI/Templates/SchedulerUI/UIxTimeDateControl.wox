@@ -42,7 +42,7 @@
             ></select>
       </var:if
 
-        ><var:if-not condition="disabled">
+        ><var:if condition="disabled" const:negate="YES">
         <select var:name="hourSelectId">
           <var:foreach list="selectableHours" item="hourOption"
             ><var:if condition="isCurrentHour"
@@ -66,6 +66,6 @@
                   /></option></var:if>
           </var:foreach
             ></select>
-      </var:if-not>
+      </var:if>
     </var:if>
   </span>
