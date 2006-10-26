@@ -74,7 +74,63 @@
         </tbody>
       </table>
     </div>
+    <div class="elvis" onmousedown="return false;">
+      <hr />
+      <ul>
+        <li><img rsrc:src="required-participant.png"
+            /><var:string label:value="Required participant" /></li>
+        <li><img rsrc:src="optional-participant.png"
+            /><var:string label:value="Optional participant" /></li>
+        <li><img rsrc:src="chair.png"
+            /><var:string label:value="Chair" /></li>
+      </ul>
+      <ul>
+        <li><img rsrc:src="needs-action.png"
+            /><var:string label:value="Needs action" /></li>
+        <li><img rsrc:src="accepted.png"
+            /><var:string label:value="Accepted" /></li>
+        <li><img rsrc:src="declined.png"
+            /><var:string label:value="Declined" /></li>
+        <li><img rsrc:src="tentative.png"
+            /><var:string label:value="Tentative" /></li>
+      </ul>
+      <ul>
+        <li><span class="colorBox free"><!-- spacer --></span><var:string label:value="Free" /></li>
+        <li><span class="colorBox busy"><!-- spacer --></span><var:string label:value="Busy" /></li>
+        <li><span class="colorBox maybe-busy"><!-- spacer --></span><var:string label:value="Maybe busy" /></li>
+        <li><span class="colorBox noFreeBusy"><!-- spacer --></span><var:string label:value="No free-busy information" /></li>
+      </ul>
+    </div>
+    <div id="freeBusyFooter">
+      <hr />
+      <div id="freeBusyButtons">
+        <a href="#" class="button _disabled"><var:string label:value="Previous slot" /></a>
+        <a href="#" class="button _disabled"><var:string label:value="Next slot" /></a><br />
+        <a href="#" class="button _disabled"><var:string label:value="Previous hour" /></a>
+        <a href="#" class="button _disabled"><var:string label:value="Next hour" /></a>
+      </div>
+      <div id="freeBusyReplicas">
+        <label><var:string label:value="From"
+            /><var:component className="UIxTimeDateControl"
+            const:disabled="yes"
+            const:controlID="FBStartTimeReplica"
+            date="startDate"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
+            /></label>
+        <label><var:string label:value="To"
+            /><var:component className="UIxTimeDateControl"
+            const:disabled="yes"
+            const:controlID="FBEndTimeReplica"
+            date="endDate"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
+            /></label>
+      </div>
+    </div>
     <script type="text/javascript">
       initializeFreeBusyUserSelector('<var:string value="selectorId" />');
+      disableAnchor($('FBStartTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
+      disableAnchor($('FBEndTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
     </script>
   </container>

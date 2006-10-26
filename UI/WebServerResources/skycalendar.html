@@ -110,6 +110,9 @@ function set_datetime(n_datetime, b_close) {
             ? obj_caller.gen_tsmp(dt_datetime)
             : obj_caller.gen_date(dt_datetime)
           );
+          var onChangeEvent = document.createEvent("Event");
+          onChangeEvent.initEvent("change", false, true);
+          obj_caller.target.dispatchEvent(onChangeEvent );
         }
 	if (b_close) window.close();
 	else obj_caller.popup(dt_datetime.valueOf());
