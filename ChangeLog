@@ -1,5 +1,10 @@
 2006-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFreebusyInfosFrom:_startDateto:_endDate]): added fields
+	useful for the computing of the status of the freebusy.
+
 	* UI/Scheduler/UIxFreeBusyUserSelector.m ([UIxFreeBusyUserSelector
 	-init]): new component that incarnates a user selector for events
 	inspired by the new one found in Thunderbird Lightning.
