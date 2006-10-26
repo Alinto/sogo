@@ -258,3 +258,24 @@ validate_endbeforestart    = "Enddate is before startdate!";
 
 /* confirmations */
 "appointmentDeleteConfirmation" = "Erasing this event will not be reversible.\\nDo you want to confirm anyway?";
+
+/* Legend */
+"Required participant" = "Required participant";
+"Optional participant" = "Optional participant";
+"Chair" = "Chair";
+
+"Needs action" = "Needs action";
+"Accepted" = "Accepted";
+"Declined" = "Declined";
+"Tentative" = "Tentative";
+
+"Free" = "Free";
+"Busy" = "Busy";
+"Maybe busy" = "Maybe busy©";
+"No free-busy information" = "No free-busy information";
+
+/* FreeBusy panel buttons */
+"Previous slot" = "Previous slot";
+"Next slot" = "Next slot";
+"Previous hour" = "Previous hour";
+"Next hour" = "Next hour";

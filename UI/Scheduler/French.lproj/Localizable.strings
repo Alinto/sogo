@@ -265,3 +265,24 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 
 /* confirmations */
 "appointmentDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
+
+/* Legend */
+"Required participant" = "Participant obligatoire";
+"Optional participant" = "Participant facultatif";
+"Chair" = "Chaise";
+
+"Needs action" = "En attente";
+"Accepted" = "Accepté";
+"Declined" = "Décliné";
+"Tentative" = "Tentative";
+
+"Free" = "Libre";
+"Busy" = "Occupé";
+"Maybe busy" = "Peut-être occupé";
+"No free-busy information" = "Pas d'information";
+
+/* FreeBusy panel buttons */
+"Previous slot" = "Période précédente";
+"Next slot" = "Période suivante";
+"Previous hour" = "Heure précédente";
+"Next hour" = "Heure suivante";
