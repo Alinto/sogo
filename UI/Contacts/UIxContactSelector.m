@@ -163,9 +163,9 @@
 {
   contacts = [self getICalPersonsFromValue: [_rq formValueForKey: selectorId]];
   if ([contacts count] > 0)
-    NSLog (@"  got %i attendees: %@", [contacts count], contacts);
+    NSLog (@"got %i attendees: %@", [contacts count], contacts);
   else
-    NSLog (@"go no attendees!");
+    NSLog (@"got no attendees!");
 }
 
 - (void) setCurrentContact: (iCalPerson *) aContact
