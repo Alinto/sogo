@@ -25,38 +25,36 @@
 #include <SOGo/AgenorUserManager.h>
 #include <NGCards/NGCards.h>
 
-@interface NSDate(UsedPrivates)
-- (NSString *)icalString; // declared in NGCards
+@interface NSDate (UsedPrivates)
+- (NSString *) icalString; // declared in NGCards
 @end
 
 @interface SOGoFreeBusyObject (PrivateAPI)
-- (NSString *)iCalStringForFreeBusyInfos:(NSArray *)_infos
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
+                                     from: (NSCalendarDate *) _startDate
+                                       to: (NSCalendarDate *) _endDate;
 @end
 
 @implementation SOGoFreeBusyObject
 
-- (NSString *)iCalString {
+- (NSString *) iCalString
+{
   // for UI-X appointment viewer
   return [self contentAsString];
 }
 
-- (NSString *)contentAsString {
+- (NSString *) contentAsString
+{
   NSCalendarDate *startDate, *endDate;
   
   startDate = [[[NSCalendarDate calendarDate] mondayOfWeek] beginOfDay];
-  endDate   = [startDate dateByAddingYears:0
-                                    months:0
-                                      days:7
-                                     hours:23
-                                   minutes:59
-                                   seconds:59];
-  return [self contentAsStringFrom:startDate to:endDate];
+  endDate   = [startDate dateByAddingYears: 0 months: 0 days: 7
+                                     hours: 23 minutes: 59 seconds: 59];
+  return [self contentAsStringFrom: startDate to: endDate];
 }
 
-- (NSString *)contentAsStringFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate
+- (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
+                                to: (NSCalendarDate *) _endDate
 {
   NSArray *infos;
   
@@ -64,141 +62,100 @@
   return [self iCalStringForFreeBusyInfos:infos from:_startDate to:_endDate];
 }
 
-- (NSArray *)fetchFreebusyInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate
+- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+                                  to: (NSCalendarDate *) _endDate
 {
-  id                userFolder, calFolder;
-  NSArray           *infos;
-  AgenorUserManager *um;
-  NSString          *email;
-  NSMutableArray    *filtered;
-  unsigned          i, count;
+  id calFolder;
 
-  userFolder = [self container];
-  calFolder  = [userFolder lookupName:@"Calendar" inContext:nil acquire:NO];
-  infos      = [calFolder fetchFreebusyInfosFrom:_startDate to:_endDate];
-  um         = [AgenorUserManager sharedUserManager];
-  email      = [um getEmailForUID:[userFolder login]];
-  count      = [infos count];
-  filtered   = [[[NSMutableArray alloc] initWithCapacity:count] autorelease];
+  calFolder = [container lookupName: @"Calendar" inContext: nil acquire: NO];
 
-  for (i = 0; i < count; i++) {
-    NSDictionary *info;
-    NSArray      *partmails;
-    unsigned     p, pCount;
-
-    info      = [infos objectAtIndex:i];
-    partmails = [[info objectForKey:@"partmails"]
-                       componentsSeparatedByString:@"\n"];
-    pCount    = [partmails count];
-    for (p = 0; p < pCount; p++) {
-      NSString *pEmail;
-      
-      pEmail = [partmails objectAtIndex:p];
-      if ([pEmail isEqualToString:email]) {
-        NSArray  *partstates;
-        NSString *state;
-
-        partstates = [[info objectForKey:@"partstates"]
-                            componentsSeparatedByString:@"\n"];
-        state      = [partstates objectAtIndex:p];
-        if ([state intValue] == iCalPersonPartStatAccepted) {
-          // TODO: add tentative apts as well, but put state and email
-          //       into info
-          [filtered addObject:info];
-        }
-        break;
-      }
-    }
-  }
-  return filtered;
+  return [calFolder fetchFreebusyInfosFrom: _startDate
+                    to: _endDate];
 }
 
 /* Private API */
+- (iCalFreeBusyType) _fbTypeForEventStatus: (NSNumber *) eventStatus
+{
+  unsigned int status;
+  iCalFreeBusyType fbType;
 
-- (NSString *)iCalStringForFreeBusyInfos:(NSArray *)_infos
-  from:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate
+  status = [eventStatus unsignedIntValue];
+  if (status == 0)
+    fbType = iCalFBBusyTentative;
+  else if (status == 1)
+    fbType = iCalFBBusy;
+  else
+    fbType = iCalFBFree;
+
+  return fbType;    
+}
+
+- (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
+                                     from: (NSCalendarDate *) _startDate
+                                       to: (NSCalendarDate *) _endDate
 {
   AgenorUserManager *um;
-  NSMutableString   *ms;
-  NSString          *uid;
-  unsigned          i, count;
-  iCalPerson *person;
+  NSString *uid;
+  NSEnumerator *events;
+  iCalCalendar *calendar;
+  iCalFreeBusy *freebusy;
+  NSDictionary *info;
+  iCalFreeBusyType type;
 
   um  = [AgenorUserManager sharedUserManager];
   uid = [[self container] login];
-  ms  = [[[NSMutableString alloc] initWithCapacity:128] autorelease];
 
-  /* preamble */
-  [ms appendString:@"BEGIN:VCALENDAR\r\n"];
-  [ms appendString:@"BEGIN:VFREEBUSY\r\n"];
-  /* PRODID */
-  [ms appendString:@"PRODID:SOGo/0.9\r\n"];
-  /* VERSION */
-  [ms appendString:@"VERSION:2.0\r\n"];
-  /* DTSTAMP */
-  [ms appendString:@"DTSTAMP:"];
-  [ms appendString:[[NSCalendarDate calendarDate] icalString]];
-  [ms appendString:@"\r\n"];
-  
+  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
+  [calendar setProdID: @"//Inverse groupe conseil/SOGo 0.9"];
+  [calendar setVersion: @"2.0"];
+
+  freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
+  [freebusy addToAttendees: [um iCalPersonWithUid: uid]];
+  [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
+  [freebusy setStartDate: _startDate];
+  [freebusy setEndDate: _endDate];
+
   /* ORGANIZER - strictly required but missing for now */
 
   /* ATTENDEE */
-  person = [um iCalPersonWithUid: uid];
-  [person setTag: @"ATTENDEE"];
-  [ms appendString: [person versitString]];
-
-  /* DTSTART */
-  [ms appendString:@"DTSTART:"];
-  [ms appendString:[_startDate icalString]];
-  [ms appendString:@"\r\n"];
-
-  /* DTEND */
-  [ms appendString:@"DTEND:"];
-  [ms appendString:[_endDate icalString]];
-  [ms appendString:@"\r\n"];
+//   person = [um iCalPersonWithUid: uid];
+//   [person setTag: @"ATTENDEE"];
+//   [ms appendString: [person versitString]];
 
   /* FREEBUSY */
-  count = [_infos count];
-  for (i = 0; i < count; i++) {
-    NSDictionary   *info;
-    NSCalendarDate *startDate, *endDate;
+  events = [_infos objectEnumerator];
+  info = [events nextObject];
+  while (info)
+    {
+      if ([[info objectForKey: @"isopaque"] boolValue])
+        {
+          type = [self _fbTypeForEventStatus: [info objectForKey: @"status"]];
+          [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
+                    to: [info objectForKey: @"endDate"]
+                    type: type];
+        }
+      info = [events nextObject];
+    }
 
-    info      = [_infos objectAtIndex:i];
-    startDate = [info objectForKey:@"startDate"];
-    endDate   = [info objectForKey:@"endDate"];
+  [calendar setUniqueChild: freebusy];
 
-    /* NOTE: currently we cannot differentiate between all the types defined
-     *       in RFC2445, Section 4.2.9.
-     *       These are: FREE" / "BUSY" / "BUSY-UNAVAILABLE" / "BUSY-TENTATIVE"
-     */
-    
-    [ms appendString:@"FREEBUSY;FBTYPE=BUSY:"];
-    [ms appendString:[startDate icalString]];
-    [ms appendString:@"/"];
-    [ms appendString:[endDate icalString]];
-    [ms appendString:@"\r\n"];
-  }
-
-  /* postamble */
-  [ms appendString:@"END:VFREEBUSY\r\n"];
-  [ms appendString:@"END:VCALENDAR\r\n"];
-  return ms;
+  return [calendar versitString];
 }
 
 /* deliver content without need for view method */
 
-- (id)GETAction:(id)_ctx {
+- (id) GETAction: (id)_ctx
+{
   WOResponse *r;
   NSData     *contentData;
 
-  contentData = [[self contentAsString] dataUsingEncoding:NSUTF8StringEncoding];
+  contentData = [[self contentAsString] dataUsingEncoding: NSUTF8StringEncoding];
 
-  r = [(WOContext *)_ctx response];
-  [r setHeader:@"text/calendar" forKey:@"content-type"];
-  [r setContent:contentData];
-  [r setStatus:200];
+  r = [(WOContext *) _ctx response];
+  [r setHeader: @"text/calendar" forKey: @"content-type"];
+  [r setContent: contentData];
+  [r setStatus: 200];
+
   return r;
 }
 
