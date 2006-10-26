@@ -287,7 +287,7 @@ static NSArray *internetAccessStates = nil;
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / 900; /* slices of 15 minutes */
   freeBusyItems = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = 0; count < intervals - 1; count++)
+  for (count = 1; count < intervals; count++)
     [freeBusyItems addObject: @"0"];
 
   records = [[fb fetchFreebusyInfosFrom: startDate to: endDate] objectEnumerator];
