@@ -69,7 +69,7 @@
   static NSString *iCalStringTemplate = \
     @"BEGIN:VCALENDAR\r\n"
     @"METHOD:REQUEST\r\n"
-    @"PRODID:OpenGroupware.org SOGo 0.9\r\n"
+    @"PRODID://Inverse groupe conseil/SOGo 0.9\r\n"
     @"VERSION:2.0\r\n"
     @"BEGIN:VTODO\r\n"
     @"UID:%@\r\n"
