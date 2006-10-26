@@ -143,14 +143,14 @@ static NSNumber                  *distantFutureNumber = nil;
     int code = 1;
     
     if ([status isEqualToString:@"TENTATIVE"])
-      code = 0;
-    else if ([status isEqualToString:@"CANCELLED"])
       code = 2;
+    else if ([status isEqualToString:@"CANCELLED"])
+      code = 0;
     [row setObject:[NSNumber numberWithInt:code] forKey:@"status"];
   }
   else {
     /* confirmed by default */
-    [row setObject:[NSNumber numberWithInt:1] forKey:@"status"];
+    [row setObject: [NSNumber numberWithInt:1] forKey: @"status"];
   }
 
   if([accessClass isNotNull] && ![accessClass isEqualToString:@"PUBLIC"]) {
