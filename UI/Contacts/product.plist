@@ -12,27 +12,32 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
+          pageName    = "UIxContactFoldersView";
         };
         new = {
           protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
+          pageName    = "UIxContactFoldersView";
           actionName  = "new";
         };
         scheduler-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
+          pageName    = "UIxContactFoldersView";
           actionName  = "selectForScheduler";
         };
         mailer-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
+          pageName    = "UIxContactFoldersView";
           actionName  = "selectForMailer";
         };
         calendars-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
+          pageName    = "UIxContactFoldersView";
           actionName  = "selectForCalendars";
+        };
+        contactSearch = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "contactSearch";
         };
       };
     };
@@ -47,11 +52,11 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxContactsListView"; 
+          pageName    = "UIxContactsListView";
         };
         new = { 
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "new";
         };
         mailer-contacts = {

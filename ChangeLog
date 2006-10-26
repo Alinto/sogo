@@ -1,5 +1,10 @@
 2006-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): new action that returns the uid and the
+	username + email of the user whose name contain the value of the
+	"search" url parameter.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFreebusyInfosFrom:_startDateto:_endDate]): added fields

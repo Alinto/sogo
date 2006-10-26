@@ -21,9 +21,13 @@
  */
 
 #import <Foundation/NSString.h>
-#import <SoObjects/Contacts/SOGoContactFolders.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WOResponse.h>
 
-#import <SOGo/NSString+URL.h>
+#import <SoObjects/SOGo/NSString+URL.h>
+#import <SoObjects/Contacts/SOGoContactFolders.h>
+#import <SoObjects/Contacts/SOGoContactFolder.h>
 
 #import "common.h"
 
@@ -74,6 +78,94 @@
 - (id) selectForCalendarsAction
 {
   return [self _selectActionForApplication: @"calendars-contacts"];
+}
+
+
+- (NSArray *) _searchResults: (NSString *) contact
+{
+  NSMutableArray *results;
+  SOGoContactFolders *topFolder;
+  NSEnumerator *sogoContactFolders;
+  id <SOGoContactFolder> currentFolder;
+
+  results = [NSMutableArray new];
+  [results autorelease];
+
+  topFolder = [self clientObject];
+  sogoContactFolders = [[topFolder contactFolders] objectEnumerator];
+  currentFolder = [sogoContactFolders nextObject];
+  while (currentFolder)
+    {
+      [results addObjectsFromArray: [currentFolder
+                                      lookupContactsWithFilter: contact
+                                      sortBy: @"cn"
+                                      ordering: NSOrderedAscending]];
+      currentFolder = [sogoContactFolders nextObject];
+    }
+  [topFolder release];
+
+  return results;
+}
+
+- (NSString *) _emailForResult: (NSDictionary *) result
+{
+  NSMutableString *email;
+  NSString *name, *mail;
+
+  email = [NSMutableString string];
+  name = [result objectForKey: @"displayName"];
+  if (![name length])
+    name = [result objectForKey: @"cn"];
+  mail = [result objectForKey: @"mail"];
+  if ([name length])
+    [email appendFormat: @"%@ <%@>", name, mail];
+  else
+    [email appendString: mail];
+
+  NSLog(@"email: '%@'", email);
+
+  return email;
+}
+
+- (WOResponse *) _responseForResults: (NSArray *) results
+{
+  WOResponse *response;
+  NSString *email, *responseString;
+  NSDictionary *result;
+
+  response = [context response];
+
+  if ([results count])
+    {
+      result = [results objectAtIndex: 0];
+      email = [self _emailForResult: result];
+      responseString = [NSString stringWithFormat: @"%@:%@",
+                                 [result objectForKey: @"c_uid"],
+                                 email];
+      [response setStatus: 200];
+      [response setHeader: @"text/plain; charset=iso-8859-1"
+                forKey: @"Content-Type"];
+      [response appendContentString: responseString];
+    }
+  else
+    [response setStatus: 404];
+
+  return response;
+}
+
+- (id <WOActionResults>) contactSearchAction
+{
+  NSString *contact;
+  id <WOActionResults> result;
+
+  contact = [self queryParameterForKey: @"search"];
+  if ([contact length])
+    result = [self _responseForResults: [self _searchResults: contact]];
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'search' parameter"];
+
+  return result;
 }
 
 @end
