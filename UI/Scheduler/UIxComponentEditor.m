@@ -599,7 +599,7 @@
 //   NSLog (@"summary יאט: '%@'", title);
 
   s = [component accessClass];
-  if (!s || [s isEqualToString:@"PUBLIC"])
+  if (!s || [s isEqualToString: @"PUBLIC"])
     [self setIsPrivate:NO];
   else
     [self setIsPrivate:YES]; /* we're possibly loosing information here */
