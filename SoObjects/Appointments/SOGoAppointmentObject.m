@@ -239,9 +239,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     
     apt = [folder lookupName:[self nameInContainer] inContext:ctx
 		  acquire:NO];
-    if (![apt isNotNull]) {
-      [self logWithFormat:@"Note: did not find '%@' in folder: %@",
-	      [self nameInContainer], folder];
+    if ([apt isKindOfClass: [NSException class]]) {
+      [self logWithFormat: @"%@", [apt reason]];
       continue;
     }
     
