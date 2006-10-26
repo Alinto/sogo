@@ -193,3 +193,11 @@ function saveEvent(sender) {
 
   return false;
 }
+
+function startDayAsShortString() {
+  return dayAsShortDateString($('startTime_date'));
+}
+
+function dueDayAsShortString() {
+  return dayAsShortDateString($('dueTime_date'));
+}

@@ -175,23 +175,10 @@ function saveEvent(sender) {
   return false;
 }
 
-function _dayAsShortString(node) {
-  var dateStr = '';
-  var date = node.value.split("/");
-  if (date.length == 3)
-    dateStr += date[2] + date[1] + date[0];
-  else {
-    date = node.value.split("-");
-    dateStr += date[0] + date[1] + date[2];
-  }
-
-  return dateStr;
-}
-
 function startDayAsShortString() {
-  return _dayAsShortString($('startTime_date'));
+  return dayAsShortDateString($('startTime_date'));
 }
 
 function endDayAsShortString() {
-  return _dayAsShortString($('endTime_date'));
+  return dayAsShortDateString($('endTime_date'));
 }

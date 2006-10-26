@@ -749,7 +749,10 @@ DIV.tabsContainer > DIV.tab
   left: .5em;
   right: .5em;
   bottom: .5em;
-  visibility: hidden; }
+  display: none; }
+
+DIV.tabsContainer > DIV[class~="active"].tab
+{ display: block !important; }
 
 INPUT.checkBox
 { border: 2px solid #000;

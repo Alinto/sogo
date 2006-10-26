@@ -31,9 +31,7 @@ function newEvent(sender, type) {
                 + "?day=" + day
                 + "&hm=" + hour);
 
-  window.open(urlstr, "",
-	      "width=620,height=600,resizable=0,scrollbars=0,toolbar=0," +
-	      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  window.open(urlstr, "", "width=620,height=600,resizable=0");
 
   return false; /* stop following the link */
 }
@@ -891,9 +889,29 @@ function initTimeWidgets()
   document.forms['editform']["startTime_time_minute"].addEventListener("change", onTimeWidgetChange, false);
   document.forms['editform']["endTime_time_hour"].addEventListener("change", onTimeWidgetChange, false);
   document.forms['editform']["endTime_time_minute"].addEventListener("change", onTimeWidgetChange, false);
+
+  document.forms['editform']["startTime_date"].assignReplica($("FBStartTimeReplica_date"));
+  document.forms['editform']["endTime_date"].assignReplica($("FBEndTimeReplica_date"));
+  document.forms['editform']["startTime_time_hour"].assignReplica(document.forms['editform']["FBStartTimeReplica_time_hour"]);
+  document.forms['editform']["endTime_time_hour"].assignReplica(document.forms['editform']["FBEndTimeReplica_time_hour"]);
+  document.forms['editform']["startTime_time_minute"].assignReplica(document.forms['editform']["FBStartTimeReplica_time_minute"]);
+  document.forms['editform']["endTime_time_minute"].assignReplica(document.forms['editform']["FBEndTimeReplica_time_minute"]);
 }
 
 function onTimeWidgetChange()
 {
   setTimeout("redisplayFreeBusyZone();", 1000);
+}
+
+function dayAsShortDateString(node) {
+  var dateStr = '';
+  var date = node.value.split("/");
+  if (date.length == 3)
+    dateStr += date[2] + date[1] + date[0];
+  else {
+    date = node.value.split("-");
+    dateStr += date[0] + date[1] + date[2];
+  }
+
+  return dateStr;
 }

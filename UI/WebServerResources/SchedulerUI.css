@@ -486,9 +486,9 @@ TABLE.freeBusy TH.attendees,
 TABLE.freeBusy TD.attendees
 { position: absolute;
   padding: 0px .5em;
+  width: 10em;
   border: 0px !important;
   background: #dbdad5 !important;
-  width: 10em;
   overflow: hidden;
   left: 1em; }
 
@@ -522,10 +522,10 @@ TABLE.freeBusy TD
 { border-bottom: 1px solid #cecbff;
   border-right: 1px solid #cecbff;
   height: 2em;
-  background: #fff; }
+  background-color: #fff; }
 
 TABLE.freeBusy TD.noFreeBusy
-{ background: #559;
+{ background-color: #559;
   border-right: 0px; }
 
 SPAN.freeBusyZoneElement
@@ -540,14 +540,22 @@ TABLE.freeBusy TR.freeBusyHeader3 SPAN.freeBusyZoneElement
 { height: .25em; }
 
 TABLE.freeBusy TD SPAN.freeBusyZoneElement
-{ height: 100%;
-  background-color: #8ca6bd; }
+{ height: 100%; }
+
+SPAN[class~="colorBox"].free,
+TABLE.freeBusy TD SPAN.freeBusyZoneElement
+{ background-color: #8ca6bd; }
 
 TABLE.freeBusy TH SPAN[class~="freeBusyZoneElement"].busy
 { background-color: #c55 !important; }
 
+SPAN[class~="colorBox"].busy,
 SPAN[class~="freeBusyZoneElement"].busy
 { background-color: #5a6b79 !important; }
 
+SPAN[class~="colorBox"].maybe-busy,
 SPAN[class~="freeBusyZoneElement"].maybe-busy
 { background-color: #adc0d0 !important; }
+
+SPAN[class~="colorBox"].noFreeBusy
+{ background-color: #559; }

@@ -970,7 +970,7 @@ function initTabs()
     container.activeTab = firstTab;
 
     var target = $(firstTab.getAttribute("target"));
-    target.style.visibility = "visible;";
+    target.addClassName("active");
   }
 }
 
@@ -987,17 +987,17 @@ function onTabClick(event) {
   var node = event.target;
 
   var target = node.getAttribute("target");
+
   var container = node.parentNode.parentNode;
   var oldTarget = container.activeTab.getAttribute("target");
   var content = $(target);
   var oldContent = $(oldTarget);
 
+  oldContent.removeClassName("active");
   container.activeTab.removeClassName("active");
   container.activeTab = node;
   container.activeTab.addClassName("active");
-
-  oldContent.style.visibility = "hidden;";
-  content.style.visibility = "visible;";
+  content.addClassName("active");
 
   return false;
 }
@@ -1031,8 +1031,8 @@ function disableAnchor(anchor) {
     if (onclick)
       anchor.setAttribute("disabled-onclick", onclick);
     anchor.addClassName("_disabled");
-    anchor.setAttribute("href", null);
-    anchor.setAttribute("onclick", null);
+    anchor.setAttribute("href", "#");
+    anchor.setAttribute("onclick", "return false;");
     anchor.disabled = 1;
     anchor.enabled = 0;
   }
@@ -1218,6 +1218,24 @@ String.prototype.decodeEntities = function() {
                       function(wholematch, parenmatch1) {
                         return String.fromCharCode(+parenmatch1);
                       });
+}
+
+HTMLInputElement.prototype._replicate = function() {
+  this.replica.value = this.value;
+}
+
+HTMLInputElement.prototype.assignReplica = function(otherInput) {
+  this.replica = otherInput;
+  this.addEventListener("change", this._replicate, false);
+}
+
+HTMLSelectElement.prototype._replicate = function() {
+  this.replica.value = this.value;
+}
+
+HTMLSelectElement.prototype.assignReplica = function(otherSelect) {
+  this.replica = otherSelect;
+  this.addEventListener("change", this._replicate, false);
 }
 
 function d2h(d) {

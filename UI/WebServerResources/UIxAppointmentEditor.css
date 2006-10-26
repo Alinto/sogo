@@ -7,7 +7,9 @@ DIV.appointmentLabel
 
 DIV#editorTabs
 {
-  width: 100%;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   height: 38em;
 }
 
@@ -125,3 +127,47 @@ SPAN.content > INPUT
 
 LABEL#urlArea INPUT
 { position: static; }
+
+DIV.freeBusyView
+{ height: 24em;
+  overflow: auto; }
+
+DIV#freeBusyFooter
+{ position: absolute;
+  left: .5em;
+  right: .5em;
+  height: 6em;
+  line-height: 2em;
+  text-align: right;
+  bottom: 0px; }
+
+DIV#freeBusyButtons
+{ float: left;
+  text-align: center; }
+
+DIV#freeBusyButtons A.button
+{ width: 5em; }
+
+DIV#freeBusyReplicas LABEL
+{ line-height: 1.5em; }
+
+DIV.elvis UL
+{ cursor: default;
+  float: left;
+  width: 30%;
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+  list-style-image: none; }
+
+DIV.elvis UL LI
+{ white-space: nowrap;
+  margin: 0px;
+  padding: 0px; }
+
+DIV.elvis UL IMG
+{ margin-right: .5em; }
+
+DIV.elvis UL LI SPAN.colorBox
+{ float: left;
+  margin-right: .5em; }

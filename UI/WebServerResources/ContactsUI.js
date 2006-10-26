@@ -38,7 +38,7 @@ var currentContactFolder = '';
 /* mail list */
 
 function openContactWindow(sender, url) {
-  var msgWin = window.open(url, null, "width=544,height=525");
+  var msgWin = window.open(url, null, "width=545,height=545,resizable=0");
   msgWin.focus();
 }
 
