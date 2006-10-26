@@ -127,6 +127,21 @@
   return email;
 }
 
+- (NSDictionary *) _nextResultWithUid: (NSEnumerator *) results
+{
+  NSDictionary *result, *possibleResult;
+
+  result = nil;
+  possibleResult = [results nextObject];
+  while (possibleResult && !result)
+    if ([[possibleResult objectForKey: @"c_uid"] length])
+      result = possibleResult;
+    else
+      possibleResult = [results nextObject];
+
+  return result;
+}
+
 - (WOResponse *) _responseForResults: (NSArray *) results
 {
   WOResponse *response;
@@ -137,7 +152,9 @@
 
   if ([results count])
     {
-      result = [results objectAtIndex: 0];
+      result = [self _nextResultWithUid: [results objectEnumerator]];
+      if (!result)
+        result = [results objectAtIndex: 0];
       email = [self _emailForResult: result];
       responseString = [NSString stringWithFormat: @"%@:%@",
                                  [result objectForKey: @"c_uid"],

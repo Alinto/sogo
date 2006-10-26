@@ -1,5 +1,9 @@
 2006-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-_responseForResults:results]): give priority to results with
+	"c_uid" fields. If none returned, use the first contact received.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromEvent:_event]): changed "TENTATIVE" code to
 	2 and "CANCELLED" to 0.
