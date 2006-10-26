@@ -177,6 +177,8 @@ function saveEvent(sender) {
 
 function _dayAsShortString(node) {
   var date = node.value.split("/");
+  if (date.length != 3)
+    date = node.value.split("-");
   return date[2] + date[1] + date[0];
 }
 

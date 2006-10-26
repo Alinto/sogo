@@ -1,5 +1,8 @@
 2006-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js: handle conversion
+	of start and end dates to short string dates.
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
 	-readFreeBusyAction]): new method that returns an array of numbers
 	corresponding to the state in the freebusy of each "quarter of an
