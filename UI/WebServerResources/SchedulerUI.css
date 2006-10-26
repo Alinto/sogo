@@ -465,3 +465,75 @@ SPAN.colorBox
   margin: .12em;
   width: 1em;
   height: .75em; }
+
+DIV.freeBusyView
+{ margin-left: 12em;
+  overflow: auto;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+
+TABLE.freeBusy TH.attendees,
+TABLE.freeBusy TD.attendees
+{ position: absolute;
+  padding: 0px .5em;
+  margin: 0px;
+  background: #dbdad5 !important;
+  width: 10em;
+  overflow: hidden;
+  left: 1em;
+  border-bottom: 0px none;
+  border-right: 0px none; }
+
+TABLE.freeBusy TD.attendees INPUT
+{ width: 100%; }
+
+TABLE.freeBusy TR.freeBusyHeader2 TH
+{ font-weight: normal; }
+
+TABLE.freeBusy TR.freeBusyHeader1 TH,
+TABLE.freeBusy TR.freeBusyHeader2 TH,
+TABLE.freeBusy TR.freeBusyHeader3 TH
+{ text-align: left;
+  color: #777;
+  background: #fff;
+  border-collapse: collapse; }
+
+TABLE.freeBusy TR.freeBusyHeader3 TH
+{ border: 0px;
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid #cecbff; }
+
+TABLE.freeBusy TR.freeBusyHeader2 TH
+{ width: 5em; }
+
+TABLE.freeBusy TR.attendeeModel
+{ display: none; }
+
+TABLE.freeBusy TD
+{ border-bottom: 1px solid #cecbff;
+  border-right: 1px solid #cecbff;
+  height: 2em;
+  background: #fff; }
+
+TABLE.freeBusy TD.noFreeBusy
+{ background: #bbb;
+  border-right: 0px; }
+
+SPAN.freeBusyZoneElement
+{ display: block;
+  float: left;
+  width: 25%; }
+
+TABLE.freeBusy TR.freeBusyHeader3 SPAN.freeBusyZoneElement
+{ height: .25em; }
+
+TABLE.freeBusy TD SPAN.freeBusyZoneElement
+{ height: 100%; }
+
+SPAN[class~="freeBusyZoneElement"].busy
+{ background-color: #c55; }

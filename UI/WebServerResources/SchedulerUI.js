@@ -884,3 +884,16 @@ function browseUrl(anchor, event) {
 
   return false;
 }
+
+function initTimeWidgets()
+{
+  document.forms['editform']["startTime_time_hour"].addEventListener("change", onTimeWidgetChange, false);
+  document.forms['editform']["startTime_time_minute"].addEventListener("change", onTimeWidgetChange, false);
+  document.forms['editform']["endTime_time_hour"].addEventListener("change", onTimeWidgetChange, false);
+  document.forms['editform']["endTime_time_minute"].addEventListener("change", onTimeWidgetChange, false);
+}
+
+function onTimeWidgetChange()
+{
+  setTimeout("redisplayFreeBusyZone();", 1000);
+}

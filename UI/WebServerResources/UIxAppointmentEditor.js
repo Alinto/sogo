@@ -41,13 +41,13 @@ function uixEarlierDate(date1, date2) {
 function validateAptEditor() {
   var e, startdate, enddate, tmpdate;
 
-  e = document.getElementById('summary');
+  e = $('summary');
   if (e.value.length == 0) {
     if (!confirm(labels.validate_notitle.decodeEntities()))
       return false;
   }
 
-  e = document.getElementById('startTime_date');
+  e = $('startTime_date');
   if (e.value.length != 10) {
     alert(labels.validate_invalid_startdate.decodeEntities());
     return false;
@@ -58,7 +58,7 @@ function validateAptEditor() {
     return false;
   }
       
-  e = document.getElementById('endTime_date');
+  e = $('endTime_date');
   if (e.value.length != 10) {
     alert(labels.validate_invalid_enddate.decodeEntities());
     return false;
@@ -173,4 +173,17 @@ function saveEvent(sender) {
     document.forms['editform'].submit();
 
   return false;
+}
+
+function _dayAsShortString(node) {
+  var date = node.value.split("/");
+  return date[2] + date[1] + date[0];
+}
+
+function startDayAsShortString() {
+  return _dayAsShortString($('startTime_date'));
+}
+
+function endDayAsShortString() {
+  return _dayAsShortString($('endTime_date'));
 }
