@@ -128,7 +128,9 @@
 
         <div id="attendeesView" class="tab"
           ><var:component className="UIxFreeBusyUserSelector"
-            startDate="aptStartDate" endDate="aptEndDate" /></div>
+            const:selectorId="participants"
+            contacts="participants"
+            var:startDate="aptStartDate" var:endDate="aptEndDate" /></div>
       </div>
 
       <script type="text/javascript">
