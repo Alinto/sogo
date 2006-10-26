@@ -4,6 +4,8 @@ var running = false;
 var address;
 var delay = 500;
 var requestField;
+var awaitingFreeBusyRequests = new Array();
+var freeBusySelectorId;
 
 function onContactKeyUp(node, event)
 {
@@ -140,12 +142,13 @@ function checkAttendee(node)
     displayFreeBusyForNode(node);
     node.hasfreebusy = true;
   }
+  resetAttendeesValue();
 }
 
 function displayFreeBusyForNode(node)
 {
+  var nodes = node.parentNode.parentNode.cells;
   if (node.uid) {
-    var nodes = node.parentNode.parentNode.cells;
     for (var i = 1; i < nodes.length; i++) {
       nodes[i].removeClassName("noFreeBusy");
       nodes[i].innerHTML = ('<span class="freeBusyZoneElement"></span>'
@@ -160,12 +163,12 @@ function displayFreeBusyForNode(node)
     var sd = startDayAsShortString();
     var ed = endDayAsShortString();
     var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
-                   + "sday=" + sd + "&eday=" + ed);
-    document.contactFreeBusyAjaxRequest = triggerAjaxRequest(urlstr,
-                                                             updateFreeBusyData,
-                                                             node);
+                   + "sday=" + sd + "&eday=" + ed + "&additional=2" );
+    document.contactFreeBusyAjaxRequest
+      = triggerAjaxRequest(urlstr,
+                           updateFreeBusyData,
+                           node);
   } else {
-    var nodes = node.parentNode.parentNode.cells;
     for (var i = 1; i < nodes.length; i++) {
       nodes[i].addClassName("noFreeBusy");
       nodes[i].innerHTML = '';
@@ -185,7 +188,10 @@ function setSlot(tds, nbr, status) {
     var i = (days * 11 + tdnbr - 7);
     var td = tds[i];
     var spans = td.childNodesWithTag("span");
-    spans[spannbr].addClassName("busy");
+    if (status == '2')
+      spans[spannbr].addClassName("maybe-busy");
+    else
+      spans[spannbr].addClassName("busy");
   }
 }
 
@@ -202,5 +208,47 @@ function updateFreeBusyData(http)
       }
     }
     document.contactFreeBusyAjaxRequest = null;
+    if (awaitingFreeBusyRequests.length > 0)
+      displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
   }
+}
+
+function resetAttendeesValue()
+{
+  var table = $("attendeesView").childNodesWithTag("div")[0].childNodesWithTag("table")[0];
+  var inputs = table.getElementsByTagName("input");
+  var uids = new Array();
+  for (var i = 0; i < inputs.length - 2; i++) {
+    var currentInput = inputs[i];
+    var uid = currentInput.getAttribute("uid");
+    if (uid) {
+      currentInput.uid = uid;
+      currentInput.setAttribute("uid", null);
+    }
+    uids.push(currentInput.uid);
+  }
+  var input = $(freeBusySelectorId);
+  input.value = uids.join(",");
+}
+
+function initializeFreeBusyUserSelector(selectorId)
+{
+  freeBusySelectorId = selectorId;
+  resetAttendeesValue();
+  resetAllFreeBusys();
+}
+
+function resetAllFreeBusys()
+{
+  var table = $("attendeesView").childNodesWithTag("div")[0].childNodesWithTag("table")[0];
+  var inputs = table.getElementsByTagName("input");
+
+  for (var i = 0; i < inputs.length - 2; i++) {
+    var currentInput = inputs[i];
+    currentInput.hasfreebusy = false;
+    log ("input: " + currentInput.uid);
+    awaitingFreeBusyRequests.push(currentInput);
+  }
+  if (awaitingFreeBusyRequests.length > 0)
+    displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
 }

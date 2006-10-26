@@ -476,20 +476,24 @@ DIV.freeBusyView
   -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
 
+TABLE.freeBusy TD,
+TABLE.freeBusy TH
+{ padding: 0px;
+  margin: 0px;
+  border: 0px; }
+
 TABLE.freeBusy TH.attendees,
 TABLE.freeBusy TD.attendees
 { position: absolute;
   padding: 0px .5em;
-  margin: 0px;
+  border: 0px !important;
   background: #dbdad5 !important;
   width: 10em;
   overflow: hidden;
-  left: 1em;
-  border-bottom: 0px none;
-  border-right: 0px none; }
+  left: 1em; }
 
 TABLE.freeBusy TD.attendees INPUT
-{ width: 100%; }
+{ width: 95%; }
 
 TABLE.freeBusy TR.freeBusyHeader2 TH
 { font-weight: normal; }
@@ -502,17 +506,17 @@ TABLE.freeBusy TR.freeBusyHeader3 TH
   background: #fff;
   border-collapse: collapse; }
 
-TABLE.freeBusy TR.freeBusyHeader3 TH
-{ border: 0px;
-  padding: 0px;
-  margin: 0px;
-  border-bottom: 1px solid #cecbff; }
-
 TABLE.freeBusy TR.freeBusyHeader2 TH
-{ width: 5em; }
+{ width: 6em; }
+
+TABLE.freeBusy TR.freeBusyHeader3 TH
+{ border-bottom: 1px solid #cecbff; }
 
 TABLE.freeBusy TR.attendeeModel
 { display: none; }
+
+TABLE.freeBusy TR.futureAttendee TD
+{ border-right: none; }
 
 TABLE.freeBusy TD
 { border-bottom: 1px solid #cecbff;
@@ -521,19 +525,29 @@ TABLE.freeBusy TD
   background: #fff; }
 
 TABLE.freeBusy TD.noFreeBusy
-{ background: #bbb;
+{ background: #559;
   border-right: 0px; }
 
 SPAN.freeBusyZoneElement
 { display: block;
   float: left;
-  width: 25%; }
+  width: 25%;
+  margin: 0px;
+  padding: 0px;
+  border: 0px; }
 
 TABLE.freeBusy TR.freeBusyHeader3 SPAN.freeBusyZoneElement
 { height: .25em; }
 
 TABLE.freeBusy TD SPAN.freeBusyZoneElement
-{ height: 100%; }
+{ height: 100%;
+  background-color: #8ca6bd; }
+
+TABLE.freeBusy TH SPAN[class~="freeBusyZoneElement"].busy
+{ background-color: #c55 !important; }
 
 SPAN[class~="freeBusyZoneElement"].busy
-{ background-color: #c55; }
+{ background-color: #5a6b79 !important; }
+
+SPAN[class~="freeBusyZoneElement"].maybe-busy
+{ background-color: #adc0d0 !important; }
