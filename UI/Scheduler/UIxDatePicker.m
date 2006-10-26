@@ -120,7 +120,9 @@
  }
   return [useISOFormats boolValue];
 }
-- (NSString *)formattedDateString {
+
+- (NSString *) formattedDateString
+{
   char buf[22];
 
   if ([self useISOFormats]) {
