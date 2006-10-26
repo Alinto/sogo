@@ -21,7 +21,6 @@
 
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/AgenorUserManager.h>
-#import <SOGo/NSObject+Owner.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
@@ -763,14 +762,14 @@ static NSNumber   *sharedYes = nil;
                                   to: (NSCalendarDate *) _endDate
 {
   static NSArray *infos = nil; // TODO: move to a plist file
-  if (infos == nil) {
-    infos = [[NSArray alloc] initWithObjects:@"partmails", @"partstates", nil];
-  }
-  return [self fetchFields: infos
-               from: _startDate to: _endDate
-               component: nil];
-}
+  
+  if (!infos)
+    infos = [[NSArray alloc] initWithObjects: @"partmails", @"partstates",
+                             @"isopaque", @"status", nil];
 
+  return [self fetchFields: infos from: _startDate to: _endDate
+               component: @"vevent"];
+}
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
