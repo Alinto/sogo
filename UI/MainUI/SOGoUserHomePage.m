@@ -326,6 +326,8 @@ static NSArray *internetAccessStates = nil;
                               inTimeZone: uTZ];
   else
     endDate = [startDate hour: 23 minute: 59];
+  endDate = [endDate dateByAddingYears: 0 months: 0 days: 2
+                     hours: 0 minutes: 0 seconds: 0];
 
   return [self _freeBusyAsTextFromStartDate: startDate toEndDate: endDate
                forFreeBusy: co];

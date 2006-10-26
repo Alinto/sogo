@@ -6,6 +6,8 @@
 	hour" between the "sday" and "eday" date parameters passed in the
 	url. This permits to handle the display of the freebusy with Ajax
 	mechanisms.
+	([SOGoUserHomePage -_freeBusyAsText]): add 2 days to the end date
+	since the free busy displays 2 days ahead.
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-contactSearchAction]): new action that returns the uid and the
