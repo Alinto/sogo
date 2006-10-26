@@ -3,11 +3,11 @@
 # Usage: generate-folderinfo-sql-for-users user1 [user2] [user3] [...]
 #
 
-DB_USER="postgres"
-DB_PASS=""
-DB_HOST="agenor-db"
+DB_USER="sogo"
+DB_PASS="sogo"
+DB_HOST="192.168.0.4"
 DB_PORT="5432"
-DB_NAME="test"
+DB_NAME="sogo"
 
 
 while [ "$1" != "" ]; do
@@ -86,8 +86,8 @@ CREATE TABLE SOGo_${USER_TABLE}_privcal_quick (
   orgmail      VARCHAR(256)    NULL,
   partmails    VARCHAR(100000) NOT NULL, -- the emails of the participants
   partstates   VARCHAR(256)    NOT NULL, -- the status of each participant
-  sequence     INT             NULL      -- the iCal sequence
-  component    VARCHAR(10)     NOT NULL, -- the type of component (vevent/vtodo) in the vcalendar
+  sequence     INT             NULL,      -- the iCal sequence
+  component    VARCHAR(10)     NOT NULL -- the type of component (vevent/vtodo) in the vcalendar
 );
 
 CREATE TABLE SOGo_${USER_TABLE}_privcal (
