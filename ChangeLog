@@ -1,5 +1,8 @@
 2006-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js: correctly handles
+	french and ISO dates.
+
 	* UI/Scheduler/UIxFreeBusyUserSelector.[hm]: added code an ivars
 	from UIxContactSelector to handle contact lists (current and
 	additional contacts).

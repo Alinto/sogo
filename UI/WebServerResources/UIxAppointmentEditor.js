@@ -176,10 +176,15 @@ function saveEvent(sender) {
 }
 
 function _dayAsShortString(node) {
+  var dateStr = '';
   var date = node.value.split("/");
-  if (date.length != 3)
+  if (date.length == 3)
+    dateStr += date[2] + date[1] + date[0];
+  else {
     date = node.value.split("-");
-  return date[2] + date[1] + date[0];
+    dateStr += date[0] + date[1] + date[2];
+  }
+  return dateStr;
 }
 
 function startDayAsShortString() {
