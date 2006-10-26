@@ -178,14 +178,12 @@ function setSlot(tds, nbr, status) {
   var spannbr = nbr - (tdnbr * 4);
   var days = 0;
   if (tdnbr > 24) {
-    days = tdnbr / 24;
+    days = Math.floor(tdnbr / 24);
     tdnbr -= (days * 24);
   }
-  log("td: " + tdnbr);
   if (tdnbr > 7 && tdnbr < 19) {
-    log("length: " + tds.length);
-    log("td: " + days * 12 + tdnbr - 8);
-    var td = tds[days * 12 + tdnbr - 7];
+    var i = (days * 11 + tdnbr - 7);
+    var td = tds[i];
     var spans = td.childNodesWithTag("span");
     spans[spannbr].addClassName("busy");
   }
