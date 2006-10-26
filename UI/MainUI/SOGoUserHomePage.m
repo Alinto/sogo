@@ -244,9 +244,10 @@ static NSArray *internetAccessStates = nil;
                   toEndDate: (NSCalendarDate *) endDate
 {
   NSDictionary *record;
-  unsigned int count, startInterval, endInterval, value;
+  unsigned int startInterval, endInterval, value;
   NSNumber *status;
   NSCalendarDate *currentDate;
+  int count;
 
   record = [records nextObject];
   while (record)
@@ -282,7 +283,8 @@ static NSArray *internetAccessStates = nil;
   NSEnumerator *records;
   NSMutableArray *freeBusyItems;
   NSTimeInterval interval;
-  unsigned int count, intervals;
+  unsigned int intervals;
+  int count;
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / 900; /* slices of 15 minutes */
