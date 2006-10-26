@@ -129,7 +129,7 @@ LABEL#urlArea INPUT
 { position: static; }
 
 DIV.freeBusyView
-{ height: 24em;
+{ height: 22em;
   overflow: auto; }
 
 DIV#freeBusyFooter
@@ -157,6 +157,7 @@ DIV.elvis UL
   width: 30%;
   margin: 0px;
   padding: 0px;
+  line-height: 1.4em;
   list-style-type: none;
   list-style-image: none; }
 
