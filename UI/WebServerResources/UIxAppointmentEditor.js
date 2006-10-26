@@ -184,6 +184,7 @@ function _dayAsShortString(node) {
     date = node.value.split("-");
     dateStr += date[0] + date[1] + date[2];
   }
+
   return dateStr;
 }
 
