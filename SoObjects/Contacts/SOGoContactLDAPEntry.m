@@ -175,6 +175,7 @@
       location = [ldapEntry singleAttributeWithName: @"l"];
       element = [CardElement elementWithTag: @"adr"
                              attributes: nil values: nil];
+      [element setValue: 0 ofAttribute: @"type" to: @"work"];
       if (streetAddress)
         [element setValue: 2 to: streetAddress];
       if (location)
@@ -182,7 +183,7 @@
       if (streetAddress || location)
         [vcard addChild: element];
     }
-              
+
   return vcard;
 }
 

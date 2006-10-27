@@ -1,5 +1,8 @@
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-vCard]): mark address returned from LDAP as the work address.
+
 	* UI/Templates/SchedulerUI/UIxCalInlineAptView.wox: made the whole
 	span covered with the anchor, not only the textual information
 	within.
