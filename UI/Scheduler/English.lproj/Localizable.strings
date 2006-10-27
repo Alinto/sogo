@@ -271,7 +271,7 @@ validate_endbeforestart    = "Enddate is before startdate!";
 
 "Free" = "Free";
 "Busy" = "Busy";
-"Maybe busy" = "Maybe busy©";
+"Maybe busy" = "Maybe busy";
 "No free-busy information" = "No free-busy information";
 
 /* FreeBusy panel buttons */
