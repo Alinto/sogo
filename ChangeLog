@@ -1,5 +1,9 @@
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m: check whether the client contact
+	folder has selector "globallyUniqueObjectId" before calling that
+	method.
+
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
 	-vCard]): the "setVClass" NGVCard method really is "setClass"
 	instead.

@@ -521,13 +521,18 @@
           Update: remember that there are group folders as well.
   */
   NSString *uri, *objectId, *nextMethod;
-  
-  objectId = [[[self clientObject] class] globallyUniqueObjectId];
-  if ([objectId length] == 0) {
+  id <SOGoContactFolder> co;
+
+  co = [self clientObject];
+  if ([[co class] respondsToSelector: @selector (globallyUniqueObjectId)])
+    objectId = [[[self clientObject] class] globallyUniqueObjectId];
+  else
+    objectId = nil;
+
+  if ([objectId length] == 0)
     return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
-			reason:@"could not create a unique ID"];
-  }
-  
+                        reason:@"could not create a unique ID"];
+
   nextMethod = [NSString stringWithFormat:@"../%@/%@", 
 			   objectId, [self editActionName]];
   uri = [self _completeURIForMethod:nextMethod];
