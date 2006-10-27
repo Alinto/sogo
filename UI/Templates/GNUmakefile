@@ -10,3 +10,5 @@ install :: all
 clean ::
 
 distclean :: clean
+
+uninstall ::
