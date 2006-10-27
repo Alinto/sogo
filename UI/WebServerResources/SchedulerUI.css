@@ -436,7 +436,7 @@ DIV#calendarContent
   position: absolute;
   top: 3em;
   padding: 0px;
-  margin: 0px;
+  margin: 0px .5em;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -456,6 +456,8 @@ DIV#calendarContent
 
 SPAN.appointmentView
 { display: block;
+  overflow: hidden;
+  white-space: nowrap;
   border: 1px solid #000; }
 
 SPAN.colorBox

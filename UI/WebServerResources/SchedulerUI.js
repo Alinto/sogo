@@ -55,9 +55,10 @@ function editEvent() {
     var nodes = listOfSelection.getSelectedRows();
 
     for (var i = 0; i < nodes.length; i++)
-      _editEventId(nodes.getAttribute("id"),
-                   nodes.getAttribute("owner"));
+      _editEventId(nodes[i].getAttribute("id"),
+                   nodes[i].getAttribute("owner"));
   }
+
 
   return false; /* stop following the link */
 }
