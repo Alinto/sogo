@@ -1,5 +1,9 @@
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-vCard]): the "setVClass" NGVCard method really is "setClass"
+	instead.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -_searchAttributes]): fixed typo to
 	request the "streetAddress" instead of the "streetaddress".
