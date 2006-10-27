@@ -1,5 +1,9 @@
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/SchedulerUI/UIxCalMainView.wox: specify the type
+	argument (event or task) to newEvent in the appointmentListMenu.
+	Make the appointmentsListView display the appointmentsListMenu.
+
 	* UI/SOGoUI/SOGoAptFormatter.m: enlarge the text size limit from
 	12 to 50 before displaying "...".
 	([SOGoAptFormatter -fullDetailsForApt::]): display location only

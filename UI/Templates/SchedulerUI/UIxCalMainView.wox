@@ -35,11 +35,11 @@
       <ul>
         <li
           onmousedown="return false;"
-          onmouseup="newEvent(this);"><var:string label:value="New Event..."/></li>
+          onmouseup="newEvent(this, 'event');"><var:string label:value="New Event..."/></li>
         <li class="separator"></li>
         <li
           onmousedown="return false;"
-          onmouseup="newTask(this);"><var:string label:value="New Task..."/></li>
+          onmouseup="newEvent(this, 'task');"><var:string label:value="New Task..."/></li>
         <li
           onmousedown="return false;"
           onmouseup="editEvent();"
@@ -100,6 +100,7 @@
       <var:component className="UIxCalFilterPanel" />
 
       <div id="appointmentsListView"
+        oncontextmenu="return onAppointmentContextMenu(event, this);"
         ><var:component className="UIxCalAptListView"
           /></div>
 
