@@ -65,12 +65,12 @@
                 ><var:string label:value="Address Book" /></a> |
               <a var:href="relativeMailPath"
                 ><var:string label:value="Mail" /></a> |
-              <a var:href="logoffPath"
-                ><var:string label:value="Logoff" /></a> |
               <a href="http://to.be.done/"
                 ><var:string label:value="Right Administration" /></a> |
+              <a var:href="logoffPath"
+                ><var:string label:value="Logoff" /></a> |
               <a href="#" onclick="toggleLogConsole();"
-                ><var:string label:value="Log Console" /></a>
+                ><var:string label:value="Log Console (dev.)" /></a>
             </div>
           </var:if
             
