@@ -1,9 +1,12 @@
 /* this file is in UTF-8 format! */
 
-"Home"        = "Accueil";
-"Calendar"	  = "Agenda";
+"Home" = "Accueil";
+"Calendar" = "Agenda";
 "Address Book"	= "Carnet d'adresses";
-"Mail"		    = "Mail";
+"Mail" = "Courrier";
+"Logoff" = "Quitter";
+"Right Administration" = "Partage";
+"Log Console (dev.)" = "Journal (dév.)";
 
 "User" = "Utilisateur";
 
