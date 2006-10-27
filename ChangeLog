@@ -1,5 +1,12 @@
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -_searchAttributes]): fixed typo to
+	request the "streetAddress" instead of the "streetaddress".
+	([SOGoContactLDAPFolder -_qualifierForFilter:filter]): lookup
+	mails that *contain*, and not just *start with* the search
+	pattern.
+
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
 	-vCard]): mark address returned from LDAP as the work address.
 

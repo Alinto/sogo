@@ -44,6 +44,7 @@
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
                                      @"displayName",                     \
+                                     @"streetAddress",                   \
                                      @"sn", @"givenname", @"l",          \
                                      @"mail", @"telephonenumber",        \
                                      @"mailNickname",                    \
@@ -205,7 +206,7 @@
                   @"nsAIMid",
                   @"nscpaimscreenname",
                   @"street",
-                  @"streetaddress",
+                  @"streetAddress",
                   @"postOfficeBox",
                   @"homePhone",
                   @"cn",
@@ -284,7 +285,7 @@
   id obj;
   NGLdapEntry *entry;
 
-  NSLog (@"looking up name '%@'...", name);
+//   NSLog (@"looking up name '%@'...", name);
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: name inContext: context acquire: NO];
@@ -334,7 +335,7 @@
                        @"(cn='%@*')"
                      @"OR (sn='%@*')"
                      @"OR (displayName='%@*')"
-                     @"OR (mail='%@*')"
+                     @"OR (mail='*%@*')"
                      @"OR (telephoneNumber='*%@*')",
                      filter, filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
@@ -359,9 +360,9 @@
 
   if (filter && [filter length] > 0)
     {
-      NSLog (@"%@: fetching records matching '*%@*', sorted by '%@'"
-             @" in order %d",
-             self, filter, sortKey, sortOrdering);
+//       NSLog (@"%@: fetching records matching '*%@*', sorted by '%@'"
+//              @" in order %d",
+//              self, filter, sortKey, sortOrdering);
 
       records = [NSMutableArray new];
       [records autorelease];
