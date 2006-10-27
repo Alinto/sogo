@@ -240,7 +240,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     apt = [folder lookupName:[self nameInContainer] inContext:ctx
 		  acquire:NO];
     if ([apt isKindOfClass: [NSException class]]) {
-      [self logWithFormat: @"%@", [apt reason]];
+      [self logWithFormat: @"%@", [(NSException *) apt reason]];
       continue;
     }
     
