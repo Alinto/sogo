@@ -139,7 +139,7 @@
   if (!vcard)
     {
       vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
-      [vcard setClass: @"PUBLIC"];
+      [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];
       info = [ldapEntry singleAttributeWithName: @"displayName"];
