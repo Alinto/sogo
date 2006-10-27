@@ -221,8 +221,8 @@
   NSString *title;
   
   title = [self titleForApt:_apt :_refDate];
-  if ([title length] > 12)
-    title = [[title substringToIndex:11] stringByAppendingString:@"..."];
+  if ([title length] > 50)
+    title = [[title substringToIndex: 49] stringByAppendingString:@"..."];
   
   return title;
 }
@@ -243,26 +243,33 @@
   return aptDescr;
 }
 
-- (NSString *)fullDetailsForApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) fullDetailsForApt: (id)_apt
+                                : (NSCalendarDate *)_refDate
+{
   NSMutableString *aptDescr;
-  NSString        *s;
-    
-  aptDescr = [NSMutableString stringWithCapacity:60];
-  [self appendTimeInfoFromApt:_apt
-        usingReferenceDate:_refDate
-        toBuffer:aptDescr];
-  if ((s = [_apt valueForKey:@"location"]) != nil) {
-    if([s length] > 12)
-      s = [[s substringToIndex:11] stringByAppendingString:@"..."];
-    [aptDescr appendFormat:@" (%@)", s];
-  }
-  if ((s = [self shortTitleForApt:_apt :_refDate]) != nil)
+  NSString *s;
+
+  aptDescr = [NSMutableString stringWithCapacity: 60];
+  [self appendTimeInfoFromApt: _apt
+        usingReferenceDate: _refDate
+        toBuffer: aptDescr];
+  s = [_apt valueForKey: @"location"];
+  if ([s length] > 0)
+    {
+      if ([s length] > 50)
+        s = [[s substringToIndex: 49] stringByAppendingString: @"..."];
+      [aptDescr appendFormat:@" (%@)", s];
+    }
+  s = [self shortTitleForApt: _apt : _refDate];
+  if ([s length] > 0)
     [aptDescr appendFormat:@"<br />%@", s];
   
   return aptDescr;
 }
 
-- (NSString *)detailsForPrivateApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) detailsForPrivateApt: (id) _apt
+                                   : (NSCalendarDate *) _refDate
+{
   NSMutableString *aptDescr;
   NSString        *s;
 
@@ -275,53 +282,61 @@
   return aptDescr;
 }
 
-- (NSString *)titleOnlyForPrivateApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) titleOnlyForPrivateApt: (id)_apt
+                                     : (NSCalendarDate *) _refDate
+{
   NSString *s;
   
   s = [self privateTitle];
-  if(!s)
-    return @"";
+  if (!s)
+    s = @"";
+
   return s;
 }
 
-- (NSString *)tooltipForApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) tooltipForApt: (id)_apt
+                            : (NSCalendarDate *) _refDate
+{
   NSMutableString *aptDescr;
-  NSString        *s;
+  NSString *s;
 
-  aptDescr = [NSMutableString stringWithCapacity:60];
+  aptDescr = [NSMutableString stringWithCapacity: 60];
   [aptDescr appendString: @"Date: "];
-  [self appendTimeInfoFromApt:_apt
-        usingReferenceDate:_refDate
-        toBuffer:aptDescr];  
-  if ((s = [self titleForApt:_apt :_refDate]) != nil)
-    [aptDescr appendFormat: @"\n%@%@",
-              @"Title: ",
-              s];
-  if ((s = [_apt valueForKey:@"location"]) != nil)
-    [aptDescr appendFormat:@"\n%@%@",
-              @"Location: ",
-              s];
-  if ((s = [_apt valueForKey:@"description"]) != nil)
+  [self appendTimeInfoFromApt: _apt
+        usingReferenceDate: _refDate
+        toBuffer: aptDescr];
+  s = [self titleForApt: _apt : _refDate];
+  if ([s length] > 0)
+    [aptDescr appendFormat: @"\nTitle: %@", s];
+  s = [_apt valueForKey: @"location"];
+  if ([s length] > 0)
+    [aptDescr appendFormat: @"\nLocation: %@", s];
+  s = [_apt valueForKey: @"description"];
+  if ([s length] > 0)
     [aptDescr appendFormat:@"\n%@", s];
 
   return aptDescr;
 }
 
-- (NSString *)tooltipForPrivateApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) tooltipForPrivateApt: (id) _apt
+                                   : (NSCalendarDate *) _refDate
+{
   NSMutableString *aptDescr;
-  NSString        *s;
+  NSString *s;
   
-  aptDescr = [NSMutableString stringWithCapacity:25];
-  [self appendTimeInfoFromApt:_apt
-        usingReferenceDate:_refDate
-        toBuffer:aptDescr];  
+  aptDescr = [NSMutableString stringWithCapacity: 25];
+  [self appendTimeInfoFromApt: _apt
+        usingReferenceDate: _refDate
+        toBuffer: aptDescr];  
   if ((s = [self privateTitle]) != nil)
     [aptDescr appendFormat:@"\n%@", s];
 
   return aptDescr;
 }
 
-- (NSString *)suppressApt:(id)_apt :(NSCalendarDate *)_refDate {
+- (NSString *) suppressApt: (id) _apt
+                          : (NSCalendarDate *) _refDate
+{
   return @"";
 }
 

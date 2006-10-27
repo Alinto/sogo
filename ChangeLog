@@ -1,3 +1,12 @@
+2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/SOGoAptFormatter.m: enlarge the text size limit from
+	12 to 50 before displaying "...".
+	([SOGoAptFormatter -fullDetailsForApt::]): display location only
+	if its length > 0, whether location itself is nil or not...
+	([SOGoAptFormatter -tooltipForApt::_refDate]): display information
+	of which the length > 0.
+
 2006-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxAppointmentEditor.js: correctly handles
