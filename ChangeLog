@@ -1,5 +1,9 @@
 2006-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): reverted to search algorithm to search for events happening outside 0 or 1 (at most) boundary of the timerange.
+
 	* UI/Scheduler/UIxFreeBusyUserSelectorTable.[hm]: new subcomponent
 	derived and taken as a subset of UIxFreeBusyUserSelector that
 	implements the table part of the FreeBusy view. Most of the

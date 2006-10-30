@@ -633,6 +633,19 @@ static NSNumber   *sharedYes = nil;
   return sqlString;
 }
 
+- (NSString *) _sqlStringRangeFrom: (NSCalendarDate *) _startDate
+                                to: (NSCalendarDate *) _endDate
+{
+  unsigned int start, end;
+
+  start = (unsigned int) [_startDate timeIntervalSince1970];
+  end = (unsigned int) [_endDate timeIntervalSince1970];
+
+  return [NSString stringWithFormat:
+                     @" AND (startdate <= %d) AND (enddate >= %d)",
+                   end, start];
+}
+
 - (NSArray *) fetchFields: (NSArray *) _fields
                fromFolder: (GCSFolder *) _folder
                      from: (NSCalendarDate *) _startDate
@@ -655,10 +668,7 @@ static NSNumber   *sharedYes = nil;
     {
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
                                endDate: _endDate];
-      dateSqlString
-        = [NSString stringWithFormat: @" AND (startdate >= %d) AND (enddate <= %d)",
-                    (unsigned int) [_startDate timeIntervalSince1970],
-                    (unsigned int) [_endDate timeIntervalSince1970]];
+      dateSqlString = [self _sqlStringRangeFrom: _startDate to: _endDate];
     }
   else
     {
