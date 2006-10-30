@@ -1,4 +1,4 @@
-/* UIxFreeBusyUserSelector.h - this file is part of SOGo
+/* UIxFreeBusyUserSelectorTable.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -20,28 +20,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXFREEBUSYUSERSELECTOR_H
-#define UIXFREEBUSYUSERSELECTOR_H
+#ifndef UIXFREEBUSYUSERSELECTORTABLE_H
+#define UIXFREEBUSYUSERSELECTORTABLE_H
 
 #import <SOGoUI/UIxComponent.h>
 
 @class NSArray;
-@class NSMutableArray;
 @class NSCalendarDate;
 @class NSNumber;
-@class iCalPerson;
 
-@interface UIxFreeBusyUserSelector : UIxComponent
+@class iCalPerson;
+@class SOGoDateFormatter;
+
+@interface UIxFreeBusyUserSelectorTable : UIxComponent
 {
-  NSCalendarDate *startDate;
-  NSCalendarDate *endDate;
-  NSNumber *dayStartHour;
-  NSNumber *dayEndHour;
+  BOOL standAlone;
+  NSMutableArray *daysToDisplay;
+  NSMutableArray *hoursToDisplay;
+  SOGoDateFormatter *dateFormatter;
 
   NSArray *contacts;
+  NSNumber *dayStartHour;
+  NSNumber *dayEndHour;
+  NSCalendarDate *startDate;
+  NSCalendarDate *endDate;
 
-  NSString *selectorId;
+  iCalPerson *currentContact;
+  NSNumber *currentHourToDisplay;
+  NSCalendarDate *currentDayToDisplay;
 }
+
+- (void) setContacts: (NSArray *) newContacts;
+- (NSArray *) contacts;
 
 - (void) setStartDate: (NSCalendarDate *) newStartDate;
 - (void) setEndDate: (NSCalendarDate *) newEndDate;
@@ -51,12 +61,22 @@
 - (void) setDayEndHour: (NSNumber *) newDayEndHour;
 - (NSNumber *) dayEndHour;
 
-- (void) setContacts: (NSArray *) contacts;
-- (NSArray *) contacts;
+- (void) setCurrentContact: (iCalPerson *) newCurrentContact;
+- (iCalPerson *) currentContact;
+- (NSString *) currentContactId;
+- (NSString *) currentContactName;
 
-- (void) setSelectorId: (NSString *) newSelectorId;
-- (NSString *) selectorId;
+- (void) setCurrentDayToDisplay: (NSCalendarDate *) newCurrentDayToDisplay;
+- (NSCalendarDate *) currentDayToDisplay;
+
+- (void) setCurrentHourToDisplay: (NSNumber *) newCurrentHourToDisplay;
+- (NSNumber *) currentHourToDisplay;
+
+- (NSString *) currentFormattedDay;
+
+- (NSArray *) daysToDisplay;
+- (NSArray *) hoursToDisplay;
 
 @end
 
-#endif /* UIXFREEBUSYUSERSELECTOR_H */
+#endif /* UIXFREEBUSYUSERSELECTORTABLE_H */

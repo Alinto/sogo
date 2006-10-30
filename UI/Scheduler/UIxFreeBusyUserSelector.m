@@ -23,13 +23,12 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSValue.h>
 
-#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGCards/iCalPerson.h>
 #import <NGObjWeb/WORequest.h>
 
-#import <SOGoUI/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/AgenorUserManager.h>
 
+#import "UIxComponent+Agenor.h"
 #import "UIxFreeBusyUserSelector.h"
 
 @implementation UIxFreeBusyUserSelector
@@ -46,10 +45,6 @@
       [dayEndHour retain];
       contacts = nil;
       selectorId = nil;
-      daysToDisplay = nil;
-      hoursToDisplay = nil;
-      dateFormatter = [[SOGoDateFormatter alloc]
-                        initWithLocale: [self locale]];
     }
 
   return self;
@@ -59,26 +54,16 @@
 {
   [dayStartHour release];
   [dayEndHour release];
-  if (daysToDisplay)
-    [daysToDisplay release];
-  if (hoursToDisplay)
-    [hoursToDisplay release];
   if (contacts)
     [contacts release];
   if (selectorId)
     [selectorId release];
-  [dateFormatter release];
   [super dealloc];
 }
 
 - (void) setStartDate: (NSCalendarDate *) newStartDate
 {
   startDate = newStartDate;
-  if (daysToDisplay)
-    {
-      [daysToDisplay release];
-      daysToDisplay = nil;
-    }
 }
 
 - (NSCalendarDate *) startDate
@@ -89,11 +74,6 @@
 - (void) setEndDate: (NSCalendarDate *) newEndDate
 {
   endDate = newEndDate;
-  if (daysToDisplay)
-    {
-      [daysToDisplay release];
-      daysToDisplay = nil;
-    }
 }
 
 - (NSCalendarDate *) endDate
@@ -106,9 +86,19 @@
   ASSIGN (dayStartHour, newDayStartHour);
 }
 
+- (NSNumber *) dayStartHour
+{
+  return dayStartHour;
+}
+
 - (void) setDayEndHour: (NSNumber *) newDayEndHour
 {
   ASSIGN (dayEndHour, newDayEndHour);
+}
+
+- (NSNumber *) dayEndHour
+{
+  return dayEndHour;
 }
 
 - (void) setSelectorId: (NSString *) newSelectorId
@@ -132,33 +122,6 @@
 }
 
 /* callbacks */
-- (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue
-{
-  NSMutableArray *persons;
-  NSEnumerator *uids;
-  NSString *uid;
-  AgenorUserManager *um;
-
-  um = [AgenorUserManager sharedUserManager];
-
-  persons = [NSMutableArray new];
-  [persons autorelease];
-
-  if ([selectorValue length] > 0)
-    {
-      uids = [[selectorValue componentsSeparatedByString: @","]
-               objectEnumerator];
-      uid = [uids nextObject];
-      while (uid)
-        {
-          [persons addObject: [um iCalPersonWithUid: uid]];
-          uid = [uids nextObject];
-        }
-    }
-
-  return persons;
-}
-
 - (void) takeValuesFromRequest: (WORequest *) request
                      inContext: (WOContext *) context
 {
@@ -192,92 +155,9 @@
   return [participants componentsJoinedByString: @","];
 }
 
-- (void) setCurrentContact: (iCalPerson *) newCurrentContact
+- (NSString *) freeBusyViewId
 {
-  currentContact = newCurrentContact;
+  return [NSString stringWithFormat: @"parentOf%@", [selectorId capitalizedString]];
 }
-
-- (iCalPerson *) currentContact
-{
-  return currentContact;
-}
-
-- (NSString *) currentContactId
-{
-  return [currentContact cn];
-}
-
-- (NSString *) currentContactName
-{
-  return [currentContact cn];
-}
-
-- (NSArray *) daysToDisplay
-{
-  NSCalendarDate *currentDay, *finalDay;
-
-  if (!daysToDisplay)
-    {
-      daysToDisplay = [NSMutableArray new];
-      finalDay = [endDate  dateByAddingYears: 0 months: 0 days: 2];
-      currentDay = startDate;
-      [daysToDisplay addObject: currentDay];
-      while (![currentDay isDateOnSameDay: finalDay])
-        {
-          currentDay = [currentDay dateByAddingYears: 0 months: 0 days: 1];
-          [daysToDisplay addObject: currentDay];
-        }
-    }
-
-  return daysToDisplay;
-}
-
-- (NSArray *) hoursToDisplay
-{
-  NSNumber *currentHour;
-
-  if (!hoursToDisplay)
-    {
-      hoursToDisplay = [NSMutableArray new];
-      currentHour = dayStartHour;
-      [hoursToDisplay addObject: currentHour];
-      while (![currentHour isEqual: dayEndHour])
-        {
-          currentHour = [NSNumber numberWithInt: [currentHour intValue] + 1];
-          [hoursToDisplay addObject: currentHour];
-        }
-    }
-
-  return hoursToDisplay;
-}
-
-- (void) setCurrentDayToDisplay: (NSCalendarDate *) newCurrentDayToDisplay
-{
-  currentDayToDisplay = newCurrentDayToDisplay;
-}
-
-- (void) setCurrentHourToDisplay: (NSNumber *) newCurrentHourToDisplay
-{
-  currentHourToDisplay = newCurrentHourToDisplay;
-}
-
-- (NSCalendarDate *) currentDayToDisplay
-{
-  return currentDayToDisplay;
-}
-
-- (NSNumber *) currentHourToDisplay
-{
-  return currentHourToDisplay;
-}
-
-- (NSString *) currentFormattedDay
-{
-  return [NSString stringWithFormat: @"%@, %.4d-%.2d-%.2d",
-                   [dateFormatter shortDayOfWeek: [currentDayToDisplay dayOfWeek]],
-                   [currentDayToDisplay yearOfCommonEra],
-                   [currentDayToDisplay monthOfYear],
-                   [currentDayToDisplay dayOfMonth]];
-}
-
+ 
 @end

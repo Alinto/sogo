@@ -40,6 +40,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalInlineMonthOverview.m	\
 	UIxComponentEditor.m		\
 	UIxFreeBusyUserSelector.m	\
+	UIxFreeBusyUserSelectorTable.m	\
 	UIxAppointmentView.m		\
 	UIxAppointmentEditor.m		\
 	UIxAppointmentProposal.m	\

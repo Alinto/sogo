@@ -1,3 +1,12 @@
+2006-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxFreeBusyUserSelectorTable.[hm]: new subcomponent
+	derived and taken as a subset of UIxFreeBusyUserSelector that
+	implements the table part of the FreeBusy view. Most of the
+	methods of UIxFreeBusyUserSelector relative to that table were
+	moved into UIxFreeBusyUserSelectorTable, which can also be used as
+	a standalone view for AJAX operations.
+
 2006-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry

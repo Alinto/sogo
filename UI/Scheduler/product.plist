@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, CommonUI, Appointments, Contacts );
+  requires = ( MAIN, CommonUI, Appointments, Contacts, ContactsUI );
 
   publicResources = (
     previous_week.gif,
@@ -64,7 +64,6 @@
           protectedBy = "View";
           pageName    = "UIxCalMonthView"; 
         };
-
         dayoverview = {
           protectedBy = "View";
           pageName    = "UIxCalDayOverview"; 
@@ -134,7 +133,11 @@
           protectedBy = "View";
           pageName    = "UIxCalMainView";
           actionName = "updateCalendars";
-        }
+        };
+        freeBusyTable = {
+          protectedBy = "View";
+          pageName    = "UIxFreeBusyUserSelectorTable";
+        };
       };
     };
 
