@@ -2,8 +2,7 @@
 <table
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
->
+  xmlns:const="http://www.skyrix.com/od/constant">
   <tr>
     <th>ID</th>
     <th>Title</th>

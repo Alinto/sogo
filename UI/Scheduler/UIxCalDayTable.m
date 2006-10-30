@@ -217,7 +217,7 @@
           && [aptStartDate isLessThan: end])
         [filtered addObject:apt];
     }
-  
+
   return filtered;
 }
 

@@ -54,7 +54,7 @@
           protectedBy = "View";
           pageName    = "UIxContactsListView";
         };
-        new = { 
+        new = {
           protectedBy = "View";
           pageName    = "UIxContactEditor";
           actionName  = "new";
@@ -82,11 +82,11 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxContactsListView"; 
+          pageName    = "UIxContactsListView";
         };
-        new = { 
+        new = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "new";
         };
         scheduler-contacts = {
@@ -109,32 +109,32 @@
 
     SOGoContactGCSEntry = {
       methods = {
-        view = { 
+        view = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
         };
-        delete = { 
+        delete = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
           actionName  = "delete";
         };
-        edit = { 
+        edit = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
         };
-        save = { 
+        save = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "save";
         };
-        write = { 
+        write = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "write";
         };
-        vcard = { 
+        vcard = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
           actionName  = "vcard";
         };
       };
@@ -142,32 +142,32 @@
 
     SOGoContactLDAPEntry = {
       methods = {
-        view = { 
+        view = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
         };
-        delete = { 
+        delete = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
           actionName  = "delete";
         };
-        edit = { 
+        edit = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
         };
-        save = { 
+        save = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "save";
         };
-        write = { 
+        write = {
           protectedBy = "View";
-          pageName    = "UIxContactEditor"; 
+          pageName    = "UIxContactEditor";
           actionName  = "write";
         };
-        vcard = { 
+        vcard = {
           protectedBy = "View";
-          pageName    = "UIxContactView"; 
+          pageName    = "UIxContactView";
           actionName  = "vcard";
         };
       };

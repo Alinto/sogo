@@ -122,8 +122,6 @@
   else
     [email appendString: mail];
 
-  NSLog(@"email: '%@'", email);
-
   return email;
 }
 
