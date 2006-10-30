@@ -27,12 +27,16 @@
 #include <SOGoUI/UIxComponent.h>
 
 @interface UIxComponent (Agenor)
+
+- (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue;
+
 /* email, cn */
 - (NSString *)emailForUser;
 - (NSString *)cnForUser;
 
 /* restrictions */
 - (BOOL)isAccessRestricted;
+
 @end
 
 #endif	/* __UIxComponent_Agenor_H_ */

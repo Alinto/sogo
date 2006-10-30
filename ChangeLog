@@ -1,5 +1,10 @@
 2006-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponent+Agenor.m ([UIxComponent
+	-getICalPersonsFromValue:selectorValue]): method taken from
+	UIxFreeBusyUserSelector, that is shared both by
+	UIxFreeBusyUserSelector and UIxFreeBusyUserSelectorTable.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): reverted to search algorithm to search for events happening outside 0 or 1 (at most) boundary of the timerange.

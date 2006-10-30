@@ -27,6 +27,33 @@
 
 @implementation UIxComponent(Agenor)
 
+- (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue
+{
+  NSMutableArray *persons;
+  NSEnumerator *uids;
+  NSString *uid;
+  AgenorUserManager *um;
+
+  um = [AgenorUserManager sharedUserManager];
+
+  persons = [NSMutableArray new];
+  [persons autorelease];
+
+  if ([selectorValue length] > 0)
+    {
+      uids = [[selectorValue componentsSeparatedByString: @","]
+               objectEnumerator];
+      uid = [uids nextObject];
+      while (uid)
+        {
+          [persons addObject: [um iCalPersonWithUid: uid]];
+          uid = [uids nextObject];
+        }
+    }
+
+  return persons;
+}
+
 - (NSString *)emailForUser {
   return [[[self context] activeUser] email];
 }
