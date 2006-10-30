@@ -176,9 +176,9 @@ function saveEvent(sender) {
 }
 
 function startDayAsShortString() {
-  return dayAsShortDateString($('startTime_date'));
+  return $('startTime_date').valueAsShortDateString();
 }
 
 function endDayAsShortString() {
-  return dayAsShortDateString($('endTime_date'));
+  return $('endTime_date').valueAsShortDateString();
 }

@@ -56,12 +56,11 @@ function resetFreeBusyZone()
 {
   var table = $("attendeesView").childNodesWithTag("div")[0].childNodesWithTag("table")[0];
   var row = table.tHead.rows[2];
-  for (var i = 1; i < row.cells.length; i++)
-    {
-      var nodes = row.cells[i].childNodesWithTag("span");
-      for (var j = 0; j < nodes.length; j++)
-        nodes[j].removeClassName("busy");
-    }
+  for (var i = 1; i < row.cells.length; i++) {
+    var nodes = row.cells[i].childNodesWithTag("span");
+    for (var j = 0; j < nodes.length; j++)
+      nodes[j].removeClassName("busy");
+  }
 }
 
 function redisplayFreeBusyZone()
@@ -231,6 +230,11 @@ function resetAttendeesValue()
   input.value = uids.join(",");
 }
 
+function onTimeRangeChange(event)
+{
+  window.alert("onchange: " + event);
+}
+
 function initializeFreeBusyUserSelector(selectorId)
 {
   freeBusySelectorId = selectorId;
@@ -246,9 +250,61 @@ function resetAllFreeBusys()
   for (var i = 0; i < inputs.length - 2; i++) {
     var currentInput = inputs[i];
     currentInput.hasfreebusy = false;
-    log ("input: " + currentInput.uid);
+//     log ("input: " + currentInput.uid);
     awaitingFreeBusyRequests.push(currentInput);
   }
   if (awaitingFreeBusyRequests.length > 0)
     displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
+}
+
+function initTimeWidgets(widgets)
+{
+  this.timeWidgets = widgets;
+
+  widgets['start']['hour'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['end']['minute'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['start']['hour'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['end']['minute'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['start']['date'].addEventListener("change", onTimeDateWidgetChange, false);
+  widgets['end']['date'].addEventListener("change", onTimeDateWidgetChange, false);
+
+  widgets['start']['date'].assignReplica($("FBStartTimeReplica_date"));
+  widgets['start']['hour'].assignReplica($("FBStartTimeReplica_time_hour"));
+  widgets['start']['minute'].assignReplica($("FBStartTimeReplica_time_minute"));
+  widgets['end']['date'].assignReplica($("FBEndTimeReplica_date"));
+  widgets['end']['hour'].assignReplica($("FBEndTimeReplica_time_hour"));
+  widgets['end']['minute'].assignReplica($("FBEndTimeReplica_time_minute"));
+}
+
+function onTimeDateWidgetChange(event) {
+  if (document.timeWidgetsFreeBusyAjaxRequest) {
+    document.timeWidgetsFreeBusyAjaxRequest.aborted = true;
+    document.timeWidgetsFreeBusyAjaxRequest.abort();
+  }
+
+  var date1 = window.timeWidgets['start']['date'].valueAsShortDateString();
+  var date2 = window.timeWidgets['end']['date'].valueAsShortDateString();
+  var attendees = $(freeBusySelectorId).value;
+  var urlstr = ( "../freeBusyTable?sday=" + date1 + "&eday=" + date2
+                 + "&attendees=" + attendees );
+  document.timeWidgetsFreeBusyAjaxRequest
+    = triggerAjaxRequest(urlstr, timeWidgetsFreeBusyCallback);
+}
+
+function timeWidgetsFreeBusyCallback(http)
+{
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      var div = $("parentOf" + freeBusySelectorId.capitalize());
+      div.innerHTML = http.responseText;
+      resetAttendeesValue();
+      resetAllFreeBusys();
+    }
+    document.timeWidgetsFreeBusyAjaxRequest = null;
+  }
+}
+
+function onTimeWidgetChange()
+{
+  setTimeout("redisplayFreeBusyZone();", 1000);
 }

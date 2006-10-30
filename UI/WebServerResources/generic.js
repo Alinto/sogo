@@ -1213,6 +1213,14 @@ String.prototype.trim = function() {
   return this.replace(/(^\s+|\s+$)/g, '');
 }
 
+String.prototype.capitalize = function() {
+  return this.replace(/\w+/g,
+                      function(a) {
+                        return ( a.charAt(0).toUpperCase()
+                                 + a.substr(1).toLowerCase() );
+                      });
+}
+
 String.prototype.decodeEntities = function() {
   return this.replace(/&#(\d+);/g,
                       function(wholematch, parenmatch1) {
@@ -1221,21 +1229,37 @@ String.prototype.decodeEntities = function() {
 }
 
 HTMLInputElement.prototype._replicate = function() {
-  this.replica.value = this.value;
+  if (this.replica) {
+    this.replica.value = this.value;
+    var onReplicaChangeEvent = document.createEvent("Event");
+    onReplicaChangeEvent.initEvent("change", true, true);
+    this.replica.dispatchEvent(onReplicaChangeEvent);
+  }
 }
 
 HTMLInputElement.prototype.assignReplica = function(otherInput) {
+  if (!this._onChangeBound) {
+    this.addEventListener("change", this._replicate, false);
+    this._onChangeBound = true;
+  }
   this.replica = otherInput;
-  this.addEventListener("change", this._replicate, false);
 }
 
 HTMLSelectElement.prototype._replicate = function() {
-  this.replica.value = this.value;
+  if (this.replica) {
+    this.replica.value = this.value;
+    var onReplicaChangeEvent = document.createEvent("Event");
+    onReplicaChangeEvent.initEvent("change", true, true);
+    this.replica.dispatchEvent(onReplicaChangeEvent);
+  }
 }
 
 HTMLSelectElement.prototype.assignReplica = function(otherSelect) {
+  if (!this._onChangeBound) {
+    this.addEventListener("change", this._replicate, false);
+    this._onChangeBound = true;
+  }
   this.replica = otherSelect;
-  this.addEventListener("change", this._replicate, false);
 }
 
 function d2h(d) {
