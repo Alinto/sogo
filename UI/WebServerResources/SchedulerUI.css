@@ -441,7 +441,10 @@ DIV#calendarContent
   left: 0px;
   right: 0px;
   overflow: auto;
-}
+/*   background-position: top center;
+  background-repeat: no-repeat;
+  background-image: url("/SOGo.woa/WebServerResources/background.jpg");
+ */}
 
 .menu LI.currentMonth,
 .menu LI.currentYear
