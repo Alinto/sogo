@@ -67,26 +67,28 @@ function redisplayFreeBusyZone()
 {
   var table = $("attendeesView").childNodesWithTag("div")[0].childNodesWithTag("table")[0];
   var row = table.tHead.rows[2];
-  var stHour = parseInt(document.forms['editform']["startTime_time_hour"].value);
-  var stMinute
-    = parseInt(document.forms['editform']["startTime_time_minute"].value) / 15;
-  var etHour = parseInt(document.forms['editform']["endTime_time_hour"].value);
-  var etMinute
-    = parseInt(document.forms['editform']["endTime_time_minute"].value) / 15;
+  var stDay = this.timeWidgets['start']['date'].valueAsDate();
+  var etDay = this.timeWidgets['end']['date'].valueAsDate();
+  var days = stDay.daysUpTo(etDay);
+  var addDays = days.length - 1;
+  var stHour = parseInt(this.timeWidgets['start']['hour'].value);
+  var stMinute = parseInt(this.timeWidgets['start']['minute'].value) / 15;
+  var etHour = parseInt(this.timeWidgets['end']['hour'].value);
+  var etMinute = parseInt(this.timeWidgets['end']['minute'].value) / 15;
   if (stHour < 8) {
     stHour = 8;
     stMinute = 0;
   }
-  if (stHour > 18) {
-    stHour = 18;
+  if (stHour > 19) {
+    stHour = 19
     stMinute = 0;
   }
   if (etHour < 8) {
     etHour = 8;
     etMinute = 0;
   }
-  if (etHour > 18) {
-    etHour = 18;
+  if (etHour > 19) {
+    etHour = 19;
     etMinute = 0;
   }
   if (stHour > etHour) {
@@ -96,9 +98,15 @@ function redisplayFreeBusyZone()
     swap = etMinute;
     etMinute = stMinute;
     stMinute = etMinute;
+  } else {
+    if (stMinute > etMinute) {
+      var swap = etMinute;
+      etMinute = stMinute;
+      stMinute = swap;
+    }
   }
 
-  var deltaCells = (etHour - stHour);
+  var deltaCells = (etHour - stHour) + (11 * addDays);
   var deltaSpans = (deltaCells * 4 ) + (etMinute - stMinute);
   var currentCellNbr = stHour - 7;
   var currentCell = row.cells[currentCellNbr];
@@ -230,11 +238,6 @@ function resetAttendeesValue()
   input.value = uids.join(",");
 }
 
-function onTimeRangeChange(event)
-{
-  window.alert("onchange: " + event);
-}
-
 function initializeFreeBusyUserSelector(selectorId)
 {
   freeBusySelectorId = selectorId;
@@ -262,18 +265,20 @@ function initTimeWidgets(widgets)
   this.timeWidgets = widgets;
 
   widgets['start']['hour'].addEventListener("change", onTimeWidgetChange, false);
-  widgets['end']['minute'].addEventListener("change", onTimeWidgetChange, false);
-  widgets['start']['hour'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['start']['minute'].addEventListener("change", onTimeWidgetChange, false);
+  widgets['end']['hour'].addEventListener("change", onTimeWidgetChange, false);
   widgets['end']['minute'].addEventListener("change", onTimeWidgetChange, false);
   widgets['start']['date'].addEventListener("change", onTimeDateWidgetChange, false);
   widgets['end']['date'].addEventListener("change", onTimeDateWidgetChange, false);
 
   widgets['start']['date'].assignReplica($("FBStartTimeReplica_date"));
-  widgets['start']['hour'].assignReplica($("FBStartTimeReplica_time_hour"));
-  widgets['start']['minute'].assignReplica($("FBStartTimeReplica_time_minute"));
   widgets['end']['date'].assignReplica($("FBEndTimeReplica_date"));
-  widgets['end']['hour'].assignReplica($("FBEndTimeReplica_time_hour"));
-  widgets['end']['minute'].assignReplica($("FBEndTimeReplica_time_minute"));
+
+  var form = $("FBStartTimeReplica_date").form;
+  widgets['end']['hour'].assignReplica(form["FBEndTimeReplica_time_hour"]);
+  widgets['end']['minute'].assignReplica(form["FBEndTimeReplica_time_minute"]);
+  widgets['start']['hour'].assignReplica(form["FBStartTimeReplica_time_hour"]);
+  widgets['start']['minute'].assignReplica(form["FBStartTimeReplica_time_minute"]);
 }
 
 function onTimeDateWidgetChange(event) {
@@ -299,6 +304,7 @@ function timeWidgetsFreeBusyCallback(http)
       div.innerHTML = http.responseText;
       resetAttendeesValue();
       resetAllFreeBusys();
+      redisplayFreeBusyZone();
     }
     document.timeWidgetsFreeBusyAjaxRequest = null;
   }

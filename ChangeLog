@@ -1,5 +1,10 @@
 2006-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxFreeBusyUserSelector.js: make sure
+	every replica widgets are declared as such to their master
+	counterpart. Take the days into account when displaying the time
+	range taken by the appointment.
+
 	* UI/Scheduler/UIxComponent+Agenor.m ([UIxComponent
 	-getICalPersonsFromValue:selectorValue]): method taken from
 	UIxFreeBusyUserSelector, that is shared both by
