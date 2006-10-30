@@ -151,7 +151,7 @@ DIV#freeBusyButtons A.button
 DIV#freeBusyReplicas LABEL
 { line-height: 1.5em; }
 
-DIV.elvis UL
+DIV.legend UL
 { cursor: default;
   float: left;
   width: 30%;
@@ -161,14 +161,14 @@ DIV.elvis UL
   list-style-type: none;
   list-style-image: none; }
 
-DIV.elvis UL LI
+DIV.legend UL LI
 { white-space: nowrap;
   margin: 0px;
   padding: 0px; }
 
-DIV.elvis UL IMG
+DIV.legend UL IMG
 { margin-right: .5em; }
 
-DIV.elvis UL LI SPAN.colorBox
+DIV.legend UL LI SPAN.colorBox
 { float: left;
   margin-right: .5em; }
