@@ -824,7 +824,7 @@ function checkSearchValue(event)
 
 function onSearchChange()
 {
-  log ("changed...");
+  log ("onSearchChange()...");
 }
 
 function onSearchMouseDown(event, searchValue)
@@ -909,7 +909,7 @@ function onContactAdd(node)
     urlstr += '/';
   urlstr += ("../../" + UserLogin + "/Contacts/"
              + contactSelectorAction + selectorUrl);
-  log (urlstr);
+//   log (urlstr);
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
   w.selector = selector;
