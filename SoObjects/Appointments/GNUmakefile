@@ -11,6 +11,7 @@ Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
+	iCalEntityObject+Agenor.m	\
 	\
 	SOGoAppointmentObject.m		\
 	SOGoTaskObject.m		\

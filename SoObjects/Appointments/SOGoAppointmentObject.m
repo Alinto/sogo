@@ -29,7 +29,10 @@
 #import <NGMime/NGMime.h>
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
+
 #import "SOGoAptMailNotification.h"
+#import "iCalEntityObject+Agenor.h"
+
 #import "common.h"
 
 #import "NSArray+Appointments.h"
@@ -507,6 +510,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 - (NSException *)saveContentString:(NSString *)_iCalString {
   return [self saveContentString:_iCalString baseSequence:0];
 }
+
 - (NSException *)delete {
   return [self deleteWithBaseSequence:0];
 }
@@ -610,6 +614,34 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return [self serverTimeZone];
 }
 
+- (NSException *) saveContentString: (NSString *) contentString
+                        baseVersion: (unsigned int) baseVersion
+{
+  NSString *newContentString, *oldContentString;
+  iCalCalendar *eventCalendar;
+  iCalEvent *event;
+  NSArray *organizers;
+
+  oldContentString = [self iCalString];
+  if (oldContentString)
+    newContentString = contentString;
+  else
+    {
+      eventCalendar = [iCalCalendar parseSingleFromSource: contentString];
+      event = [self firstEventFromCalendar: eventCalendar];
+      organizers = [event childrenWithTag: @"organizer"];
+      if ([organizers count])
+        newContentString = contentString;
+      else
+        {
+          [event setOrganizerWithUid: [self ownerInContext: nil]];
+          newContentString = [eventCalendar versitString];
+        }
+    }
+
+  return [super saveContentString: newContentString
+                baseVersion: baseVersion];
+}
 
 - (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
   forOldAppointment:(iCalEvent *)_oldApt
