@@ -1,5 +1,9 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalCalendarsListView.m ([UIxCalCalendarsListView
+	-currentContactAptBorder]): new method that returns the
+	appropriate border color for the specified user.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject
 	-saveContentString:contentStringbaseVersion:baseVersion]):

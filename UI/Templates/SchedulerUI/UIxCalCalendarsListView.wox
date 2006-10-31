@@ -11,6 +11,10 @@
       {
         background-color: <var:string value="currentContactSpanBG" /> !important;
       }
+      DIV[class~='appointmentView'].ownerIs<var:string value="currentContactLogin" />
+      {
+        border: 1px solid <var:string value="currentContactAptBorder" /> !important;
+      }
       </var:foreach>
     </style>
     <var:component className="UIxContactSelector"

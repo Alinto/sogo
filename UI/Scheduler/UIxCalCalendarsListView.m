@@ -30,6 +30,23 @@
 
 #import "UIxCalCalendarsListView.h"
 
+static inline char
+darkenedColor (const char value)
+{
+  char newValue;
+
+  if (value >= '0' && value <= '9')
+    newValue = ((value - '0') / 2) + '0';
+  else if (value >= 'a' && value <= 'f')
+    newValue = ((value + 10 - 'a') / 2) + '0';
+  else if (value >= 'A' && value <= 'F')
+    newValue = ((value + 10 - 'A') / 2) + '0';
+  else
+    newValue = value;
+
+  return newValue;
+}
+
 @implementation UIxCalCalendarsListView
 
 - (id) init
@@ -175,6 +192,21 @@
 - (NSString *) currentContactSpanBG
 {
   return [colors objectForKey: [currentContactPerson cn]];
+}
+
+- (NSString *) currentContactAptBorder
+{
+  NSString *spanBG;
+  char cColor[8];
+  unsigned int count;
+
+  spanBG = [colors objectForKey: [currentContactPerson cn]];
+  [spanBG getCString: cColor];
+  cColor[7] = 0;
+  for (count = 1; count < 7; count++)
+    cColor[count] = darkenedColor(cColor[count]);
+
+  return [NSString stringWithCString: cColor];
 }
 
 - (NSDictionary *) colors
