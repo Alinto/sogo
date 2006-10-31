@@ -1,3 +1,8 @@
+2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/product.plist: give full access to ANY
+	authenticated user, not just the owner (to every objects...).
+
 2006-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxFreeBusyUserSelector.js: make sure

@@ -14,7 +14,7 @@
       protectedBy   = "View";
       defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Owner";
+        "View"          = "Authenticated";
         "WebDAV Access" = "Owner";
       };
     };
@@ -25,7 +25,7 @@
       protectedBy   = "View";
       defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Owner";
+        "View"          = "Authenticated";
         "WebDAV Access" = "Owner";
       };
     };
@@ -36,7 +36,7 @@
       protectedBy   = "View";
       defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Owner";
+        "View"          = "Authenticated";
         "WebDAV Access" = "Owner";
       };
 
@@ -50,7 +50,7 @@
       protectedBy   = "View";
       defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Owner";
+        "View"          = "Authenticated";
         "WebDAV Access" = "Owner";
       };
     };
@@ -61,7 +61,7 @@
       protectedBy   = "View";
       defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Owner";
+        "View"          = "Authenticated";
         "WebDAV Access" = "Owner";
       };
 
