@@ -1,5 +1,9 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: added code to handle the
+	display of the selected day (the day pointed by the mouse, or the
+	current day when changing the view).
+
 	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
 	-dayCellClasses]): new method that returns a string containing the
 	css classes applicable to the current cell, depending on the

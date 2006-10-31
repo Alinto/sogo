@@ -673,10 +673,41 @@ function onCalendarSelectDay(event, node)
 {
   var day = node.getAttribute("day");
 
+  changeCalendarDisplayOfSelectedDay(node);
   changeDateSelectorDisplay(day);
 
   event.cancelBubble = true;
   event.returnValue = false;
+}
+
+function changeCalendarDisplayOfSelectedDay(node)
+{
+  var tr = node.parentNode;
+  var tbody = tr.parentNode;
+
+  var oldSelected = -1;
+  var newSelected = -1;
+  var rows = tbody.rows;
+
+  var cells = tr.cells;
+  var i = 0;
+  while (i < cells.length && newSelected == -1)
+    if (cells[i] == node)
+      newSelected = i;
+    else
+      i++;
+
+  var i = 0;
+  while (i < cells.length && oldSelected == -1)
+    if (cells[i].hasClassName("selectedDay"))
+      oldSelected = i;
+    else
+      i++;
+
+  for (i = 1; i < rows.length; i++) {
+    rows[i].cells[oldSelected].removeClassName("selectedDay");
+    rows[i].cells[newSelected].addClassName("selectedDay");
+  }
 }
 
 function onHideCompletedTasks(node)
