@@ -20,11 +20,13 @@
  */
 // $Id: UIxCalInlineAptView.m 885 2005-07-21 16:41:34Z znek $
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/NGObjWeb.h>
 
 @interface UIxCalInlineAptView : WOComponent
 {
-  id appointment;
+  NSDictionary *appointment;
   id formatter;
   id tooltipFormatter;
   id url;
@@ -54,10 +56,10 @@
   [super dealloc];
 }
 
-- (void)setAppointment:(id)_appointment {
+- (void) setAppointment: (NSDictionary *)_appointment {
   ASSIGN(appointment, _appointment);
 }
-- (id)appointment {
+- (NSDictionary *)appointment {
   return appointment;
 }
 
@@ -144,6 +146,35 @@
 {
   return [NSString stringWithFormat: @"appointmentView ownerIs%@",
                    [appointment objectForKey: @"owner"]];
+}
+
+- (NSString *) displayStyle
+{
+  NSCalendarDate *startDate, *endDate, *dayStart, *dayEnd;
+  int sSeconds, eSeconds, deltaMinutes;
+  unsigned int height;
+  NSTimeZone *uTZ;
+
+  uTZ = [referenceDate timeZone];
+  dayStart = [referenceDate beginOfDay];
+  dayEnd = [referenceDate endOfDay];
+
+  sSeconds = [[appointment objectForKey: @"startdate"] intValue];
+  eSeconds = [[appointment objectForKey: @"enddate"] intValue];
+  startDate = [NSCalendarDate dateWithTimeIntervalSince1970: sSeconds];
+  [startDate setTimeZone: uTZ];
+  if ([startDate earlierDate: dayStart] == startDate)
+    startDate = dayStart;
+  endDate = [NSCalendarDate dateWithTimeIntervalSince1970: eSeconds];
+  [endDate setTimeZone: uTZ];
+  if ([endDate earlierDate: dayEnd] == dayEnd)
+    endDate = dayEnd;
+
+  deltaMinutes = (([endDate hourOfDay] - [startDate hourOfDay]) * 60
+                  + [endDate minuteOfHour] - [startDate minuteOfHour]);
+  height = ceil(deltaMinutes / 15) * 25;
+
+  return [NSString stringWithFormat: @"height: %d%%;", height];
 }
 
 /* helpers */

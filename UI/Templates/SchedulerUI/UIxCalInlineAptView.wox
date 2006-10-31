@@ -12,7 +12,7 @@
         var:aptCName="appointment.c_name"
         var:title="tooltip"
         var:queryDictionary="queryDictionary">
-        <span var:class="displayClasses">
+        <div var:class="displayClasses">
           <var:if condition="appointment.isRecurrentEvent">
             <!-- TODO: maxime needs to provide an image instead! -->
             <var:string const:value="[R]" style="style" />
@@ -21,13 +21,13 @@
             <img rsrc:src="apt_icon_private.gif" />
           </var:if>
           <var:string value="title" const:escapeHTML="NO" style="style" />
-        </span>
+        </div>
       </a>
     </var:if>
     <var:if condition="canAccess" const:negate="YES">
       <span var:class="displayClasses">
         <img rsrc:src="apt_icon_private.gif" />
         <var:string value="title" const:escapeHTML="NO" style="style" />
-      </span>
-    </var:if>
+        </span>
+      </var:if>
   </container>

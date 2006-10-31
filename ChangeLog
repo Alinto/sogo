@@ -1,5 +1,10 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalInlineAptView.m ([UIxCalInlineAptView
+	-displayStyle]): new method that returns a string containing the
+	css style relative to the current appointment cell. This code is
+	currently inactive but might be reused later.
+
 	* UI/WebServerResources/SchedulerUI.js: added code to handle the
 	display of the selected day (the day pointed by the mouse, or the
 	current day when changing the view).
