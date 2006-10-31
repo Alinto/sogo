@@ -41,7 +41,6 @@
                 referenceDate="selectedDate"
                 canAccess="canAccessApt"
                 />
-              <br />
             </var:foreach>
           </td>
         </tr>
@@ -54,7 +53,7 @@
               />:00
           </td>
           <var:foreach list="daysToDisplay" item="currentTableDay"
-            ><td class="contentOfDay"
+            ><td var:class="dayCellClasses"
               onclick="onCalendarSelectDay(event, this);"
               ondblclick="return newEvent(this, 'event');"
               var:day="currentAppointmentDay"
@@ -70,10 +69,9 @@
                   url="appointmentViewURL"
                   const:style="dayoverview"
                   queryDictionary="currentDayQueryParameters"
-                  referenceDate="currentDate"
+                  referenceDate="currentTableDay"
                   canAccess="canAccessApt"
                   />
-                <br />
               </var:foreach
             ></td>
           </var:foreach>

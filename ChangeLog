@@ -1,5 +1,11 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
+	-dayCellClasses]): new method that returns a string containing the
+	css classes applicable to the current cell, depending on the
+	position of the day in the week, the day of today and the
+	requested day.
+
 	* UI/Scheduler/UIxCalCalendarsListView.m ([UIxCalCalendarsListView
 	-currentContactAptBorder]): new method that returns the
 	appropriate border color for the specified user.

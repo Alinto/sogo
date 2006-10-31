@@ -161,6 +161,28 @@
   return currentTableDay;
 }
 
+- (NSString *) dayCellClasses
+{
+  NSMutableString *classes;
+  int dayOfWeek;
+
+  classes = [NSMutableString new];
+  [classes autorelease];
+  [classes appendString: @"contentOfDay"];
+  if (numberOfDays > 1)
+    {
+      dayOfWeek = [currentTableDay dayOfWeek];
+      if (dayOfWeek == 0 || dayOfWeek == 6)
+        [classes appendString: @" weekEndDay"];
+      if ([currentTableDay isToday])
+        [classes appendString: @" dayOfToday"];
+      if ([[self selectedDate] isDateOnSameDay: currentTableDay])
+        [classes appendString: @" selectedDay"];
+    }
+
+  return classes;
+}
+
 - (NSString *) currentAppointmentDay
 {
   return [NSString stringWithFormat: @"%d%.2d%.2d",
