@@ -1080,6 +1080,12 @@ HTMLElement.prototype.removeClassName = function(className) {
   this.setAttribute('class', classStr);
 }
 
+HTMLElement.prototype.hasClassName = function(className) {
+  var classStr = '' + this.getAttribute('class');
+  position = classStr.indexOf(className, 0);
+  return (position > -1);
+}
+
 HTMLElement.prototype.getParentWithTagName = function(tagName) {
   var currentElement = this;
   tagName = tagName.toUpperCase();
