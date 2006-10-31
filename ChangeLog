@@ -1,5 +1,9 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEntityObject+Agenor.[hm]: new
+	category that provides facility methods and interfaces to the
+	AgenorUserManager.
+
 	* SoObjects/Contacts/product.plist: give full access to ANY
 	authenticated user, not just the owner (to every objects...).
 
