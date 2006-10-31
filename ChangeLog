@@ -1,5 +1,13 @@
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject
+	-saveContentString:contentStringbaseVersion:baseVersion]):
+	overloaded method that parse new events and detects if they have
+	an organizer or not. If they are new and have no organizer set
+	(Sunbird/Lightning...), the owner of the event is set as
+	organizer.
+
 	* SoObjects/Appointments/iCalEntityObject+Agenor.[hm]: new
 	category that provides facility methods and interfaces to the
 	AgenorUserManager.
