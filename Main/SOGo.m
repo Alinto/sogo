@@ -124,6 +124,7 @@ static BOOL doCrashOnSessionCreate = NO;
 }
 
 - (id)lookupUser:(NSString *)_key inContext:(id)_ctx {
+
   NSLog (@"lookupUser: %@", _key);
   return [[[NSClassFromString(@"SOGoUserFolder") alloc] 
 	    initWithName:_key inContainer:self] autorelease];

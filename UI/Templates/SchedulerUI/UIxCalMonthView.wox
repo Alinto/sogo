@@ -1,49 +1,80 @@
+<?xml version="1.0" standalone="yes"?>
   <container
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-
-    <a href="#"
-      class="leftNavigationArrow"
-      var:date="prevMonthQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-lft-sharp.gif"/></a>
-    <span class="monthsHeader">
-      <span class="month2"><a href="#"
-          var:date="monthBeforePrevMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthBeforeLastMonthName"
-            /></a></span
-        ><span class="month1"><a href="#"
-          var:date="prevMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="lastMonthName"
-            /></a></span
-        ><span class="month0"><var:string value="currentMonthName" /></span
-        ><span class="month1"><a href="#"
-          var:date="nextMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="nextMonthName"
-            /></a></span
-        ><span class="month2"><a href="#"
-          var:date="monthAfterNextMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthAfterNextMonthName"
-            /></a></span
-        ></span>
-    <a href="#"
-      class="rightNavigationArrow"
-      var:date="nextMonthQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-rit-sharp.gif"/></a>
-
-    <div id="calendarContent">
-      <var:component
-        className="UIxCalDayTable"
-        startDate="startDate"
-        const:CSSClass="monthOverview"
-        const:numberOfDays="7" />
-    </div>
+    <var:month-overview
+      list="appointments"
+      item="appointment"
+      currentDay="currentDay"
+      index="dayIndex"
+      year="year"
+      month="month"
+      const:startDateKey="startDate"
+      const:endDateKey="endDate"
+      const:class="monthoverview"
+      contentStyle="contentStyle"
+      >
+      <var:month-info>
+        <var:if condition="hasHolidayInfo">
+          <var:string value="holidayInfo"
+            const:class="monthoverview_holidayinfo"
+            />
+        </var:if>
+        <var:foreach list="allDayApts" item="appointment">
+          <var:component className="UIxCalInlineAptView"
+            appointment="appointment"
+            formatter="aptFormatter"
+            tooltipFormatter="aptTooltipFormatter"
+            url="appointmentViewURL"
+            const:style="monthoverview"
+            referenceDate="currentDay"
+            canAccess="canAccessApt"
+            />
+          <br />
+        </var:foreach>
+      </var:month-info>
+      <var:month-label const:orientation="top"
+        dayOfWeek="dayOfWeek"
+        const:class="monthoverview_title"
+        >
+        <var:string value="localizedDayOfWeekName"/>
+      </var:month-label>
+      <var:month-label const:orientation="left"
+        weekOfYear="weekOfYear"
+        class="weekStyle"
+        >
+        <a href="weekoverview"
+          var:queryDictionary="currentWeekQueryParameters"
+          ><var:string value="weekOfYear"/></a>
+      </var:month-label>
+      <var:month-title class="contentStyle">
+        <span class="monthoverview_day">
+          <a href="dayoverview"
+            var:queryDictionary="currentDayQueryParameters"
+            ><var:string value="currentDay.dayOfMonth"/></a>
+        </span>
+        <!-- removed for 0.8
+        <br/>
+        <span class="monthoverview_day_new">
+        <a href="new"
+        var:queryDictionary="currentDayQueryParameters"
+        >[<var:string label:value="new"/>]</a>
+      </span>-->
+      </var:month-title>
+      <var:month class="contentStyle">
+        <var:component className="UIxCalInlineAptView"
+          appointment="appointment"
+          formatter="aptFormatter"
+          tooltipFormatter="aptTooltipFormatter"
+          url="appointmentViewURL"
+          const:style="monthoverview"
+          referenceDate="currentDay"
+          canAccess="canAccessApt"
+          />
+        <br />
+      </var:month>
+    </var:month-overview>
   </container>

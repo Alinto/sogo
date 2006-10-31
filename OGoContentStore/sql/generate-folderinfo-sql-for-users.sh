@@ -54,11 +54,11 @@ INSERT INTO SOGo_folder_info
   ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
     c_location, c_quick_location, c_folder_type ) 
 VALUES 
-  ( '/Users/${USER_ID}/Contacts/personal', 
+  ( '/Users/${USER_ID}/Contacts', 
     'Users',
     '${USER_ID}',
     'Contacts',
-    'personal',
+     NULL,
     'Contacts', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_quick', 
