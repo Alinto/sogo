@@ -29,7 +29,16 @@ TABLE, DIV, IMG
   padding: 0px; }
 
 DIV.pageContent
-{ clear: both; }
+{ /* position: absolute;
+  background: #ffa;
+  top: 3em;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+   */clear: both; }
 
 A
 { text-decoration: none;
