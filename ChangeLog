@@ -1,5 +1,8 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: same strip down as for
+	generic.js below.
+
 	* UI/Contacts/UIxContactsListViewContainer.m ([UIxContactsListViewContainer -additionalAddressBooks]) 
 	([UIxContactsListViewContainer -additionalFolders]) 
 	([UIxContactsListViewContainer -setCurrentAdditionalFolder:newCurrentAdditionalFolder]) 
