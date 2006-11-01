@@ -1,5 +1,12 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewContainer.m ([UIxContactsListViewContainer -additionalAddressBooks]) 
+	([UIxContactsListViewContainer -additionalFolders]) 
+	([UIxContactsListViewContainer -setCurrentAdditionalFolder:newCurrentAdditionalFolder]) 
+	([UIxContactsListViewContainer -currentAdditionalFolder]): new
+	methods to handle the external addressbooks a user has subscribed
+	too, by retriving them from his preferences.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-updateAdditionalAddressBooksAction]): new method that updates the
 	user settings with the list of addressbook he has subscribed to.

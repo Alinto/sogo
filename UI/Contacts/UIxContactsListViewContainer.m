@@ -24,7 +24,9 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoObjects.h>
+#import <NGExtensions/NSObject+Values.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 
 #import "UIxContactsListViewContainer.h"
@@ -132,9 +134,38 @@
   return [[self currentContactFolderId] isEqualToString: [self contactFolderId]];
 }
 
+- (NSString *) additionalAddressBooks
+{
+  NSUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud objectForKey: @"additionaladdressbooks"];
+}
+
+- (NSArray *) additionalFolders
+{
+  return [[self additionalAddressBooks] componentsSeparatedByString: @","];
+}
+
+- (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder
+{
+  currentAdditionalFolder = newCurrentAdditionalFolder;
+}
+
+- (NSString *) currentAdditionalFolder
+{
+  return currentAdditionalFolder;
+}
+
 - (BOOL) hasContactSelectionButtons
 {
   return (selectorComponentClass != nil);
+}
+
+- (BOOL) isPopup
+{
+  return [[self queryParameterForKey: @"popup"] boolValue];
 }
 
 @end

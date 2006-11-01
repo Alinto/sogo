@@ -26,12 +26,14 @@
 #import <SOGoUI/UIxComponent.h>
 
 @class NSArray;
+@class NSString;
 @class SOGoContactFolder;
 
 @interface UIxContactsListViewContainer : UIxComponent
 {
   NSString *foldersPrefix;
   NSString *selectorComponentClass;
+  NSString *currentAdditionalFolder;
   id currentFolder;
 }
 
@@ -44,6 +46,12 @@
 - (NSString *) contactFolderId;
 - (NSString *) currentContactFolderId;
 - (NSString *) currentContactFolderName;
+
+- (NSString *) additionalAddressBooks;
+- (NSArray *) additionalFolders;
+
+- (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder;
+- (NSString *) currentAdditionalFolder;
 
 @end
 
