@@ -107,7 +107,7 @@ table.titletable td.titlecell SELECT
   padding: 4px;
 }
 
-DIV.contactFoldersList
+DIV#contactFoldersList
 {
   position: absolute;
   top: 6em;
@@ -119,27 +119,27 @@ DIV.contactFoldersList
   overflow: hidden;
 }
 
-DIV.contactFoldersList UL
-{ 
-  list-style-type: none;
+DIV#contactFoldersList > DIV.toolbar
+{ width: 100%;
+  background: #f00;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa; }
+
+DIV#contactFoldersList UL
+{ list-style-type: none;
   list-style-image: none;
+  clear: both;
   cursor: default;
-  display: block;
-  position: absolute;
   color: #000;  
   background: #fff;
   width: 100%;
-  top: 2em;
-  left: 0px;
-  right: 0px;
+  height: 100%;
   margin: 0px;
   padding: 0px;
-  bottom: 0px;
-  overflow: auto;
-  padding-left: 0px;
-}
+  border: 0px;
+  overflow: auto; }
 
-DIV.contactFoldersList LI
+DIV#contactFoldersList LI
 {
   padding: .2em 1em;
   margin: 0px;
@@ -147,7 +147,7 @@ DIV.contactFoldersList LI
   white-space: nowrap;
 }
 
-DIV.contactFoldersList LI._selected
+DIV#contactFoldersList LI._selected
 { 
   background: #4b6983;
   color: #fff;
@@ -284,20 +284,23 @@ DIV.contactSelector
   left: 0px;
 }
 
-DIV.contactSelector DIV#rightPanel
+DIV.popup DIV#rightPanel
 { top: 4em; }
 
-DIV.contactSelector DIV#contactsListContent
+DIV.popup DIV#dragHandle
+{ top: 6em; }
+
+DIV.popup DIV#contactsListContent
 { height: 8em; }
 
-DIV.contactSelector DIV.contactFoldersList
+DIV.popup DIV#contactFoldersList
 { top: 4em; }
 
-DIV.contactSelector DIV#rightDragHandle
+DIV.popup DIV#rightDragHandle
 { top: 10em; }
 
-DIV.contactSelector DIV#contactView
-{ top: 10.5em; }
+DIV.popup DIV#contactView
+{ top: 10em; }
 
 DIV.contactSelection
 {
