@@ -90,6 +90,13 @@
   return self;
 }
 
+- (id) addressBooksContactsAction
+{
+  selectorComponentClass = @"UIxContactsAddressBooksSelection";
+
+  return self;
+}
+
 - (NSString *) defaultSortKey
 {
   return @"fn";
@@ -158,11 +165,6 @@
                            inContext: (WOContext*) _c
 {
   return YES;
-}
-
-- (BOOL) isPopup
-{
-  return [[self queryParameterForKey: @"popup"] boolValue];
 }
 
 @end /* UIxContactsListView */
