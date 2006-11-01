@@ -125,6 +125,11 @@
   return isPopup;
 }
 
+- (NSString *) pageContentClasses
+{
+  return (isPopup ? @"pageContent popup" : @"pageContent");
+}
+
 /* page based JavaScript */
 
 - (NSString *) pageJavaScriptURL

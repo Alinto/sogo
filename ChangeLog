@@ -1,3 +1,10 @@
+2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -pageContentClasses]):
+	new method that returns "pageContent" as class, but also "popup"
+	for the DIV where the page content lies, so that we can manipulate
+	the content of popup's with CSS identifiers.
+
 2006-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalInlineAptView.m ([UIxCalInlineAptView

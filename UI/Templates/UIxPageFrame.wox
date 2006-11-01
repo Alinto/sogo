@@ -36,10 +36,15 @@
             var UserLogin = '<var:string value="shortUserNameForDisplay" />';
           </script>
 
-          <script type="text/javascript" rsrc:src="prototype.js"> <!-- space required --></script>
-          <script type="text/javascript" rsrc:src="generic.js"> <!-- space required --></script>
+          <script type="text/javascript" rsrc:src="prototype.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="HTMLUListElement.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="generic.js"><!-- space required --></script>
           <var:if condition="hasProductSpecificJavaScript"
-            ><script type="text/javascript" var:src="productJavaScriptURL"> <!-- space required --></script
+            ><script type="text/javascript" var:src="productJavaScriptURL"><!-- space required --></script
               ></var:if>
           <var:if condition="hasPageSpecificJavaScript"
             ><script type="text/javascript" var:src="pageJavaScriptURL"> <!-- space required --></script
@@ -77,10 +82,10 @@
             ><var:component className="UIxToolbar"
             />
 
-          <div class="pageContent">
-            <var:component-content
+          <div var:class="pageContentClasses"
+            ><var:component-content
               /></div>
-          <var:if condition="isUIxDebugEnabled">
+<!--          <var:if condition="isUIxDebugEnabled">
             <table border="0" style="font-size: 9pt; visibility: hidden;">
               <tr>
                 <td valign="top">clientObject:</td>
@@ -153,7 +158,7 @@
                 </td>
               </tr>
             </table>
-          </var:if>
+          </var:if> -->
           <noscript>
             <div id="noJavascriptError">
             </div>
