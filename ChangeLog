@@ -1,5 +1,9 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-updateAdditionalAddressBooksAction]): new method that updates the
+	user settings with the list of addressbook he has subscribed to.
+
 	* UI/Contacts/UIxContactsAddressBooksSelection.m: new component
 	module for the address book selector.
 

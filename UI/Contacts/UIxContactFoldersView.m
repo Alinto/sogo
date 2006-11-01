@@ -21,10 +21,12 @@
  */
 
 #import <Foundation/NSString.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSString+URL.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
@@ -80,6 +82,10 @@
   return [self _selectActionForApplication: @"calendars-contacts"];
 }
 
+- (id) selectForAddressBooksAction
+{
+  return [self _selectActionForApplication: @"addressbooks-contacts"];
+}
 
 - (NSArray *) _searchResults: (NSString *) contact
 {
@@ -181,6 +187,22 @@
                           reason: @"missing 'search' parameter"];
 
   return result;
+}
+
+- (id <WOActionResults>) updateAdditionalAddressBooksAction
+{
+  WOResponse *response;
+  NSUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  [ud setObject: [self queryParameterForKey: @"ids"]
+      forKey: @"additionaladdressbooks"];
+  [ud synchronize];
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/html; charset=\"utf-8\"" forKey: @"content-type"];
+
+  return response;
 }
 
 @end
