@@ -631,7 +631,7 @@
 - (NSString *) iCalParticipantsStringFromQueryParameters
 {
   static NSString *iCalParticipantString = \
-    @"ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"%@\":mailto:%@\r\n";
+    @"ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=\"%@\":mailto:%@\r\n";
   
   return [self iCalStringFromQueryParameter: @"ps"
                format: iCalParticipantString];
