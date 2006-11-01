@@ -1,5 +1,10 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js: added code to handle
+	"external addressbooks" from the Javascript point-of-view, by
+	extending existing methods and adding code for the "add ab" and
+	"remove ab" buttons.
+
 	* UI/WebServerResources/generic.js: moved extensions methods to
 	DOM elements to separate files for better clarity.
 
