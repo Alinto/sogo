@@ -1,5 +1,9 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/ContactsUI/UIxContactsListViewContainer.wox: added
+	a toolbar with two buttons ("add" and "remove") to manage the
+	additional addressbooks a user might subscribe to.
+
 	* UI/WebServerResources/ContactsUI.js: added code to handle
 	"external addressbooks" from the Javascript point-of-view, by
 	extending existing methods and adding code for the "add ab" and
