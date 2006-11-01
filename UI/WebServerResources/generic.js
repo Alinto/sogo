@@ -661,7 +661,7 @@ function startHandleDragging(event) {
       dragHandleOrigX = dragHandle.offsetLeft;
       dragHandleOrigLeft = document.getElementById(leftBlock).offsetWidth;
       dragHandleDiff = 0;
-      dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft;
+      dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft - 5;
       document.body.style.cursor = "e-resize";
     } else if (upperBlock && lowerBlock) {
       dragHandle.dhType = 'vertical';
@@ -670,7 +670,7 @@ function startHandleDragging(event) {
       dragHandleOrigY = dragHandle.offsetTop;
       dragHandleOrigUpper = uBlock.offsetHeight;
       dragHandleDiff = event.clientY - dragHandle.offsetTop;
-      dragHandleOrigLower = lBlock.offsetTop;
+      dragHandleOrigLower = lBlock.offsetTop - 5;
       document.body.style.cursor = "n-resize";
     }
 

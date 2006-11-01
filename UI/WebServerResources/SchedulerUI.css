@@ -110,8 +110,8 @@ DIV#rightPanel
   right: 0px;
   bottom: 0px;
   margin: 0px;
+  margin-left: 5px;
   padding: 0px;
-  padding-left: 5px;
   overflow: hidden;
 }
 
@@ -119,9 +119,10 @@ DIV#appointmentsListView
 { 
   position: absolute;
   background: #fff;
-  width: 100%;
-  height: 15.7em;
+  height: 16em;
   top: 2em;
+  left: 0px;
+  width: 100%;
   overflow: auto;
 }
 
@@ -130,6 +131,7 @@ DIV#calendarView
   position: absolute;
   background: #fff;
   top: 18em;
+  margin-top: 5px;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
@@ -156,7 +158,7 @@ DIV#calendarView A
 #rightDragHandle
 {
   cursor: n-resize;
-  top: 17.7em;
+  top: 18em;
   left: 0px;
   right: 0px;
   height: 5px;
@@ -291,8 +293,7 @@ TABLE._unfocused#appointmentsList TR._selected TD
 
 TABLE.dayOverview,
 TABLE.weekOverview
-{
-  margin: 0 auto;
+{ margin: 0 auto;
   padding: 1em;
   border-collapse: collapse; }
 
@@ -349,7 +350,7 @@ SPAN.monthsHeader
   margin: 0px;
   height: 2.5em;
   padding: .1em 1.5em;
-  border-top: 1px solid #aaa;
+  border: 0px;
   border-bottom: 1px solid #ccc; }
 
 SPAN.daysHeader SPAN,
@@ -445,7 +446,7 @@ DIV#calendarContent
   position: absolute;
   top: 3em;
   padding: 0px;
-  margin: 0px .5em;
+  margin: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;

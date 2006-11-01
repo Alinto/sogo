@@ -40,6 +40,7 @@ DIV#mailerPageContent
   right: 0px;
   bottom: 0px;
   margin: 0px;
+  margin-left: 5px;
   padding: 0px;
   overflow: hidden;
 }
@@ -58,10 +59,14 @@ DIV#messageContent
 {
   position: absolute;
   overflow: hidden;
-  top: 18.2em;
+  top: 18em;
   bottom: 0px;
-  left: 5px;
+  left: 0px;
   right: 0px;
+  margin: 0px;
+  margin-top: 5px;
+  padding: 0px;
+  border: 0px;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   background: #fff;
@@ -479,9 +484,10 @@ TABLE#messageList
   background: #fff;
   color: #000;  
   width: 100%;
-  left: 5px;
+  left: 0px;
+  right: 0px;
   top: 2em;
-  bottom: 5px;
+  bottom: 0px;
   overflow: auto;
 }
 
@@ -524,7 +530,7 @@ DIV#dragHandle
 DIV#mailboxDragHandle
 { 
   cursor: n-resize;
-  top: 17.7em;
+  top: 18em;
   left: 0px;
   right: 0px;
   height: 5px;
