@@ -1,5 +1,8 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsAddressBooksSelection.m: new component
+	module for the address book selector.
+
 	* UI/Templates/ContactsUI/UIxContactsListViewContainer.wox: added
 	a toolbar with two buttons ("add" and "remove") to manage the
 	additional addressbooks a user might subscribe to.

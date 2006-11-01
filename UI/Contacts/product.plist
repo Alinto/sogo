@@ -34,10 +34,20 @@
           pageName    = "UIxContactFoldersView";
           actionName  = "selectForCalendars";
         };
+        addressbooks-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName  = "selectForAddressBooks";
+        };
         contactSearch = {
           protectedBy = "View";
           pageName    = "UIxContactFoldersView";
           actionName  = "contactSearch";
+        };
+        updateAdditionalAddressBooks = {
+          protectedBy = "View";
+          pageName    = "UIxContactFoldersView";
+          actionName = "updateAdditionalAddressBooks";
         };
       };
     };
@@ -68,6 +78,11 @@
           protectedBy = "View";
           pageName    = "UIxContactsListView";
           actionName = "calendarsContacts";
+        };
+        addressbooks-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "addressBooksContacts";
         };
       };
     };
@@ -103,6 +118,11 @@
           protectedBy = "View";
           pageName    = "UIxContactsListView";
           actionName = "calendarsContacts";
+        };
+        addressbooks-contacts = {
+          protectedBy = "View";
+          pageName    = "UIxContactsListView";
+          actionName = "addressBooksContacts";
         };
       };
     };
