@@ -32,7 +32,11 @@
     </thead>
     <tbody>
       <var:foreach list="contacts" item="currentContact"
-        ><tr><td class="attendees"><input type="text"
+        ><tr><td class="attendees"
+            ><var:if condition="currentContactHasStatus"
+              ><img var:src="currentContactStatusImage"
+                /></var:if
+            ><input type="text"
               var:value="currentContactName"
               var:uid="currentContactId"
               class="textField"
