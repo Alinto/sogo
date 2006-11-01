@@ -1,5 +1,12 @@
 2006-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxFreeBusyUserSelectorTable.m
+	([UIxFreeBusyUserSelectorTable -currentContactHasStatus]): new
+	method.
+	([UIxFreeBusyUserSelectorTable -currentContactStatusImage]):
+	returns an image name based on the participation status of the
+	current attendee.
+
 	* UI/WebServerResources/SchedulerUI.js: same strip down as for
 	generic.js below.
 

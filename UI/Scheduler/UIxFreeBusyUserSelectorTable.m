@@ -195,6 +195,20 @@
   return currentContact;
 }
 
+- (BOOL) currentContactHasStatus
+{
+  return ([currentContact participationStatus] != 0);
+}
+
+- (NSString *) currentContactStatusImage
+{
+  NSString *basename;
+
+  basename = [[currentContact partStatWithDefault] lowercaseString];
+                       
+  return [self urlForResourceFilename: [NSString stringWithFormat: @"%@.png", basename]];;
+}
+
 - (NSString *) currentContactId
 {
   return [currentContact cn];
