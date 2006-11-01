@@ -540,17 +540,19 @@ function addressBooksCallback(http) {
           ul.removeChild(children[i]);
 
       ul.setAttribute("additional-addressbooks", http.callbackData);
-      var list = http.callbackData.split(",");
-      var newCode = "";
-      for (var i = 0; i < list.length; i++) {
-        var username = list[i];
-        newCode += ( "<li external-addressbook=\"" + username + "\""
-                     + " onmousedown=\"return false;\""
-                     + " onclick=\"return onRowClick(event);\""
-                     + " oncontextmenu=\"return onContactFolderContextMenu(event);\">" );
-        newCode += ( username + "</li>" );
+      if (http.callbackData.length > 0) {
+        var list = http.callbackData.split(",");
+        var newCode = "";
+        for (var i = 0; i < list.length; i++) {
+          var username = list[i];
+          newCode += ( "<li external-addressbook=\"" + username + "\""
+                       + " onmousedown=\"return false;\""
+                       + " onclick=\"return onRowClick(event);\""
+                       + " oncontextmenu=\"return onContactFolderContextMenu(event);\">" );
+          newCode += ( username + "</li>" );
+        }
+        ul.innerHTML += newCode;
       }
-      ul.innerHTML += newCode;
     }
     document.addressBooksAjaxRequest = null;
   }
