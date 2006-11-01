@@ -246,12 +246,12 @@
   lResources = [self resources];
   if ([lResources count] > 0) {
     attendees = ([attendees count] > 0)
-      ? [attendees arrayByAddingObjectsFromArray:lResources]
+      ? [attendees arrayByAddingObjectsFromArray: lResources]
       : lResources;
   }
   [attendees makeObjectsPerformSelector: @selector (setTag:)
              withObject: @"attendee"];
-  [_appointment setAttendees:attendees];
+  [_appointment setAttendees: attendees];
 
   /* cycles */
   [_appointment removeAllRecurrenceRules];
