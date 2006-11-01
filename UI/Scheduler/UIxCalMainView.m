@@ -112,7 +112,7 @@ static NSMutableArray *yearMenuItems = nil;
   return self;
 }
 
-- (id) updateCalendarsAction
+- (id <WOActionResults>) updateCalendarsAction
 {
   WOResponse *response;
   NSUserDefaults *ud;
