@@ -565,7 +565,7 @@ function onContactMailTo(node) {
 }
 
 function refreshContacts(contactId) {
-  openContactsFolder(currentContactFolder, "reload=true");
+  openContactsFolder(currentContactFolder, "reload=true", currentFolderIsExternal);
   cachedContacts[currentContactFolder + "/" + contactId] = null;
   loadContact(contactId);
 
