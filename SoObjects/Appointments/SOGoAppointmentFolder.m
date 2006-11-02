@@ -19,14 +19,16 @@
   02111-1307, USA.
 */
 
-#import <SOGo/SOGoCustomGroupFolder.h>
-#import <SOGo/AgenorUserManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGExtensions/NGCalendarDateRange.h>
-#import "common.h"
 
+#import <SOGo/SOGoCustomGroupFolder.h>
+#import <SOGo/AgenorUserManager.h>
+
+#import "common.h"
 #import <SOGo/NSString+URL.h>
 
 #import "SOGoAppointmentObject.h"
@@ -347,41 +349,70 @@ static NSNumber   *sharedYes = nil;
   return obj;
 }
 
+- (BOOL) requestNamedIsHandledLater: (NSString *) name
+                          inContext: (WOContext *) context
+{
+  return [name isEqualToString: @"OPTIONS"];
+}
+
 - (id) lookupName: (NSString *)_key
         inContext: (id)_ctx
           acquire: (BOOL)_flag
 {
   id obj;
   NSString *url;
+  BOOL handledLater;
 
   NSLog (@"lookup name '%@' in apt folder", _key);
 
   /* first check attributes directly bound to the application */
-  obj = [super lookupName:_key inContext:_ctx acquire:NO];
-  if (!obj)
+  handledLater = [self requestNamedIsHandledLater: _key inContext: _ctx];
+  if (handledLater)
+    obj = nil;
+  else
     {
-      if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
-        obj
-          = [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
-      else if ([self isValidAppointmentName:_key])
+      obj = [super lookupName:_key inContext:_ctx acquire:NO];
+      if (!obj)
         {
-          url = [[[_ctx request] uri] urlWithoutParameters];
-          if ([url hasSuffix: @"AsTask"])
-            obj = [SOGoTaskObject objectWithName: _key
-                                  inContainer: self];
-          else if ([url hasSuffix: @"AsAppointment"])
-            obj = [SOGoAppointmentObject objectWithName: _key
-                                         inContainer: self];
-          else
-            obj = [self deduceObjectForName: _key
-                        inContext: _ctx];
+          if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
+            obj
+              = [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
+          else if ([self isValidAppointmentName:_key])
+            {
+              url = [[[_ctx request] uri] urlWithoutParameters];
+              if ([url hasSuffix: @"AsTask"])
+                obj = [SOGoTaskObject objectWithName: _key
+                                      inContainer: self];
+              else if ([url hasSuffix: @"AsAppointment"])
+                obj = [SOGoAppointmentObject objectWithName: _key
+                                             inContainer: self];
+              else
+                obj = [self deduceObjectForName: _key
+                            inContext: _ctx];
+            }
         }
+      if (!obj)
+        obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
     }
 
-  if (!obj)
-    obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
-
   return obj;
+}
+
+- (NSArray *) davComplianceClassesInContext: (id)_ctx
+{
+  NSMutableArray *classes;
+  NSArray *primaryClasses;
+
+  classes = [NSMutableArray new];
+  [classes autorelease];
+
+  primaryClasses = [super davComplianceClassesInContext: _ctx];
+  if (primaryClasses)
+    [classes addObjectsFromArray: primaryClasses];
+  [classes addObject: @"access-control"];
+  [classes addObject: @"calendar-access"];
+
+  return classes;
 }
 
 /* vevent UID handling */

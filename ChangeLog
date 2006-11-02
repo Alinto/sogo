@@ -1,5 +1,17 @@
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupName:inContext:acquire:]): certain
+	HTTP methods are handled by SOPE and requires nil to be returned,
+	this method now invokes the new
+	"requestNamedIsHandledLater:inContext:" method to check that.
+	([SOGoAppointmentFolder
+	-requestNamedIsHandledLater:nameinContext:context]): new methods
+	that returns "YES" only for the "OPTIONS" http method (for now...).
+	([SOGoAppointmentFolder -davComplianceClassesInContext:]):
+	overloaded method to append the "access-control" and
+	"calendar-access" DAV abilities to the initial declaration.
+
 	* UI/Scheduler/UIxCalMonthView.[hm]: rewritten module entirely to
 	imitate the look of Sunbird/Lightning's monthly view.
 
