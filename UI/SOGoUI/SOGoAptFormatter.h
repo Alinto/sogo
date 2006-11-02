@@ -44,6 +44,7 @@
 - (void)setFullDetails;
 - (void)setTitleOnly;
 - (void)setShortTitleOnly;
+- (void)setShortMonthTitleOnly;
 - (void)setOmitsEndDate;
 
 - (void)setPrivateTooltip;
