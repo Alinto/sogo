@@ -292,6 +292,7 @@
   NSCalendarDate *currentDate, *firstDayOfMonth, *lastDayOfMonth;
   NSMutableArray *rangesOf7Days;
   NSArray *currentRange;
+  int monthOfYear;
 
   rangesOf7Days = [NSMutableArray new];
   [rangesOf7Days autorelease];
@@ -299,7 +300,13 @@
   firstDayOfMonth = [[self selectedDate] firstDayOfMonth];
   lastDayOfMonth = [firstDayOfMonth lastDayOfMonth];
   currentDate = [firstDayOfMonth mondayOfWeek];
-  while ([currentDate earlierDate: lastDayOfMonth] == currentDate)
+  currentRange = [self _rangeOf7DaysForWeekStartingOn: currentDate];
+  [rangesOf7Days addObject: currentRange];
+
+  currentDate = [[currentRange objectAtIndex: 6] dateByAddingYears: 0
+                                                 months: 0 days: 1];
+  monthOfYear = [currentDate monthOfYear];
+  while ([currentDate monthOfYear] == monthOfYear)
     {
       currentRange = [self _rangeOf7DaysForWeekStartingOn: currentDate];
       [rangesOf7Days addObject: currentRange];

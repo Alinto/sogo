@@ -1,5 +1,9 @@
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView
+	rangesOf7Days]): enhanced and debugged algorithm to feed the array
+	with slices where the first day is still in the requested month.
+
 	* UI/Templates/UIxPageFrame.wox: the logConsole is created only on
 	non-popup pages.
 
