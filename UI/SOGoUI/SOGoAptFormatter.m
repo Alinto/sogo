@@ -88,6 +88,10 @@
   self->formatAction = @selector(shortTitleForApt::);
 }
 
+- (void)setShortMonthTitleOnly {
+  self->formatAction = @selector(shortMonthTitleForApt::);
+}
+
 - (void)setPrivateSuppressAll {
   self->formatAction = @selector(suppressApt::);
 }
@@ -223,6 +227,24 @@
   title = [self titleForApt:_apt :_refDate];
   if ([title length] > 50)
     title = [[title substringToIndex: 49] stringByAppendingString:@"..."];
+  
+  return title;
+}
+
+- (NSString *)shortMonthTitleForApt:(id)_apt :(NSCalendarDate *)_refDate {
+  NSMutableString *title;
+  NSCalendarDate *startDate;
+  NSTimeZone *dtz;
+
+  title = [NSMutableString new];
+  [title autorelease];
+
+  dtz        = [self displayTZ];
+  startDate  = [_apt valueForKey: @"startDate"];
+  [startDate setTimeZone:dtz];
+  [self appendTimeInfoForDate: startDate usingReferenceDate: nil
+        toBuffer: title];
+  [title appendFormat: @" %@", [self titleForApt:_apt :_refDate]];
   
   return title;
 }
