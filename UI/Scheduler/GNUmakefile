@@ -26,6 +26,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDayView.m			\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
+	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
 					\
 	UIxCalDayOverview.m		\

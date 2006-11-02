@@ -12,8 +12,9 @@ Class Hierarchy
     [SoComponent]
       UIxAppointmentView
       UIxCalView
-        UIxCalMonthView
+        UIxCalMonthViewOld
           UIxCalMonthOverview
+        UIxCalMonthView
         UIxCalWeekView
           UIxCalWeekOverview
             UIxCalWeekPrintview
