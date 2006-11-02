@@ -53,15 +53,14 @@
             var:framework="productFrameworkName"
             const:identifier="labels" />
 
-          <div id="logConsole">
-          </div>
-          <script type="text/javascript">
-            initQueryParameters();
-            initLogConsole();
-          </script>
-
           <var:if condition="isPopup" const:negate="YES"
-            ><div class="linkbanner">
+            ><div id="logConsole"><!-- space --></div>
+            <script type="text/javascript">
+              initQueryParameters();
+              initLogConsole();
+            </script>
+
+            <div class="linkbanner">
               <a var:href="relativeHomePath"
                 ><var:string label:value="Home" /></a> |
               <a var:href="relativeCalendarPath"

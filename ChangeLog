@@ -1,5 +1,8 @@
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/UIxPageFrame.wox: the logConsole is created only on
+	non-popup pages.
+
 	* UI/SOGoUI/SOGoAptFormatter.m: added code to handle the display
 	of events in the day boxes of the calendar's monthly view.
 
