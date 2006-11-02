@@ -64,42 +64,6 @@
           protectedBy = "View";
           pageName    = "UIxCalMonthView"; 
         };
-        dayoverview = {
-          protectedBy = "View";
-          pageName    = "UIxCalDayOverview"; 
-        };
-        daychartview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalDayChartview"; 
-        };
-        daylistview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalDayListview"; 
-        };
-        weekoverview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalWeekOverview"; 
-        };
-        weekchartview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalWeekChartview"; 
-        };
-        weeklistview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalWeekListview"; 
-        };
-        weekcolumnsview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalWeekColumnsview"; 
-        };
-        monthoverview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalMonthOverview"; 
-        };
-        yearoverview = { 
-          protectedBy = "View";
-          pageName    = "UIxCalYearOverview"; 
-        };
         newevent = { 
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
@@ -137,6 +101,44 @@
         freeBusyTable = {
           protectedBy = "View";
           pageName    = "UIxFreeBusyUserSelectorTable";
+        };
+
+/* TODO: delete the following components */
+        dayoverview = {
+          protectedBy = "View";
+          pageName    = "UIxCalDayOverview"; 
+        };
+        daychartview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalDayChartview"; 
+        };
+        daylistview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalDayListview"; 
+        };
+        weekoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekOverview"; 
+        };
+        weekchartview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekChartview"; 
+        };
+        weeklistview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekListview"; 
+        };
+        weekcolumnsview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalWeekColumnsview"; 
+        };
+        monthoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalMonthOverview"; 
+        };
+        yearoverview = { 
+          protectedBy = "View";
+          pageName    = "UIxCalYearOverview"; 
         };
       };
     };

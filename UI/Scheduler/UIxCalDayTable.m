@@ -183,14 +183,6 @@
   return classes;
 }
 
-- (NSString *) currentAppointmentDay
-{
-  return [NSString stringWithFormat: @"%d%.2d%.2d",
-                   [currentTableDay yearOfCommonEra],
-                   [currentTableDay monthOfYear],
-                   [currentTableDay dayOfMonth]];
-}
-
 - (void) setCurrentTableHour: (NSString *) aTableHour
 {
   currentTableHour = aTableHour;

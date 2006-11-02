@@ -425,6 +425,7 @@ static BOOL shouldDisplayWeekend = NO;
 {
   return [self selectedDate];
 }
+
 - (NSCalendarDate *) endDate
 {
   return [[self startDate] tomorrow];
@@ -432,15 +433,9 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (NSArray *) _fetchCoreInfosForComponent: (NSString *) component
 {
-  SOGoAppointmentFolder *folder;
-  NSCalendarDate *sd, *ed;
-
-  folder = [self clientObject];
-  sd = [self startDate];
-  ed = [self endDate];
-
-  return [folder fetchCoreInfosFrom: sd to: ed
-                 component: component];
+  return [[self clientObject] fetchCoreInfosFrom: [[self startDate] beginOfDay]
+                              to: [[self endDate] endOfDay]
+                              component: component];
 }
 
 - (NSArray *) fetchCoreAppointmentsInfos

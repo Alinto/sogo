@@ -5,9 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-    <table
-      var:class="cssClass"
-      var:id="cssId">
+    <table var:class="cssClass" var:id="cssId">
       <tr>
         <td class="nullHeader">
         </td>
@@ -56,7 +54,7 @@
             ><td var:class="dayCellClasses"
               onclick="onCalendarSelectDay(event, this);"
               ondblclick="return newEvent(this, 'event');"
-              var:day="currentAppointmentDay"
+              var:day="currentTableDay.shortDateString"
               var:hour="currentAppointmentHour"
               ><var:foreach
                 list="aptsForCurrentDate"

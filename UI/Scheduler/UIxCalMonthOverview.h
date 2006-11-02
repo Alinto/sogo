@@ -21,11 +21,11 @@
 // $Id: UIxCalMonthOverview.h 181 2004-08-11 15:13:25Z helge $
 
 
-#import "UIxCalMonthView.h"
+#import "UIxCalMonthViewOld.h"
 
 @class NSCalendarDate, NSString, NSDictionary, NSArray;
 
-@interface UIxCalMonthOverview : UIxCalMonthView
+@interface UIxCalMonthOverview : UIxCalMonthViewOld
 {
     int dayIndex;
     int dayOfWeek;
