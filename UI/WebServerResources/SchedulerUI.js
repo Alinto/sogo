@@ -673,7 +673,8 @@ function onCalendarSelectDay(event, node)
 {
   var day = node.getAttribute("day");
 
-  changeCalendarDisplayOfSelectedDay(node);
+  if (currentView != 'dayview')
+    changeCalendarDisplayOfSelectedDay(node);
   changeDateSelectorDisplay(day);
 
   event.cancelBubble = true;

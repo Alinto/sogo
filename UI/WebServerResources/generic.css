@@ -3,7 +3,7 @@
 /* common stuff */
 
 /* Bitstream VeraSans, , Tahoma, FreeSans, Helvetica, sans-serif */
-body
+BODY
 { position: absolute;
   top: 0px;
   left: 0px;
@@ -475,7 +475,10 @@ SPAN.toolbarButton:active
 { background-image: url('submenu-active.gif') !important; }
 
 DIV#logConsole
-{ z-index: 1000;
+{ position: absolute;
+  overflow: auto;
+  display: none;
+  z-index: 1000;
   -moz-opacity: 0.7;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
@@ -485,15 +488,12 @@ DIV#logConsole
   -moz-border-left-colors: ThreeDDarkShadow ThreeDShadow transparent;
   font-family: monospace;
   font-weight: bold;
-  position: absolute;
   background: #000;
   color: #ddd;
   top: 1em;
   left: 0px;
   right: 0px;
-  height: 15em;
-  overflow: auto;
-  visibility: hidden; }
+  height: 15em; }
 
 /* content lists */
 td.tbtv_actcell
@@ -625,8 +625,7 @@ INPUT#searchValue
   color: #aaa; }
 
 DIV#noJavascriptError
-{ 
-  position: absolute;
+{ position: absolute;
   background: #999;
   -moz-opacity: 0.6; 
   z-index: 2;
@@ -637,8 +636,7 @@ DIV#noJavascriptError
   text-align: center; }
 
 DIV.noJavascriptErrorMessage
-{ 
-  position: absolute;
+{ position: absolute;
   z-index: 2;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;

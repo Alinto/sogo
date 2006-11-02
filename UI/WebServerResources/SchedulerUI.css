@@ -292,23 +292,61 @@ TABLE._unfocused#appointmentsList TR._selected TD
 }
 
 TABLE.dayOverview,
-TABLE.weekOverview
+TABLE.weekOverview,
+TABLE.monthOverview
 { margin: 0 auto;
   padding: 1em;
   border-collapse: collapse; }
 
+TABLE.monthOverview
+{ position: absolute;
+  display: table;
+  margin: 0px auto;
+  padding: 0px;
+  width: 98%;
+  height: 98%; }
+
+TABLE.monthOverview
+{ min-width: 60em;
+  min-height: 25em; }
+
+TABLE.monthOverview DIV.appointmentView
+{ border: 0px;
+  margin: 0px; 
+  padding: 0px; }
+
+TABLE.monthOverview TD.contentOfDay
+{ vertical-align: top; }
+
+SPAN.dayCellLabel
+{ color: #77a;
+  font-weight: bold; }
+
 TABLE.weekOverview TD.dayOfToday
 { background-color: #deebf7; }
 
-TABLE.weekOverview TD.weekEndDay
+TABLE.monthOverview TD.dayOfToday
+{ border: 3px solid #99f;
+  background-color: #deebf7; }
+
+TABLE.weekOverview TD.weekEndDay,
+TABLE.monthOverview TD.weekEndDay
 { background-color: #fffbe7; }
 
-TABLE.weekOverview TD.selectedDay
+TABLE.monthOverview TD.dayOfAnotherMonth
+{ background-color: #eef; }
+
+TABLE.weekOverview TD.selectedDay,
+TABLE.monthOverview TD.selectedDay
 { background-color: #ffe79c; }
 
 TABLE.dayOverview TD,
 TABLE.weekOverview TD
 { border: 1px solid #99f; }
+
+TABLE.monthOverview TD
+{ border: 2px solid #99f;
+  height: 15%; }
 
 TABLE.dayOverview TD.header
 { text-align: center;
@@ -317,10 +355,12 @@ TABLE.dayOverview TD.header
   font-weight: bold;
   background: #eef; }
 
-TABLE.weekOverview TD.header
+TABLE.weekOverview TD.header,
+TABLE.monthOverview TD.header
 { text-align: center;
   color: #77a;
   width: 14%;
+  height: 2em;
   font-weight: bold;
   background: #eef; }
 

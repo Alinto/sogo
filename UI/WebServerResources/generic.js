@@ -557,11 +557,11 @@ function onLogDblClick(event)
 function toggleLogConsole() {
   var logConsole = document.getElementById('logConsole');
 
-  var visibility = '' + logConsole.style.visibility;
-  if (visibility.length == 0) {
-    logConsole.style.visibility = 'visible;';
+  var display = '' + logConsole.style.display;
+  if (display.length == 0) {
+    logConsole.style.display = 'block;';
   } else {
-    logConsole.style.visibility = '';
+    logConsole.style.display = '';
   }
 
   return false;

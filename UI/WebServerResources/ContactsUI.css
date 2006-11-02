@@ -67,10 +67,9 @@ DIV#contactsListContent
 
 .titlediv
 {
-  height: 24px;
-  vertical-align: middle;
-  padding-top: 6px;
-  padding-left: 6px;
+  line-height: 2em;
+  vertical-align: bottom;
+  padding-left: 1em;
 }
 
 table.titletable
@@ -122,10 +121,12 @@ DIV#contactFoldersList
 DIV#contactFoldersList > DIV.toolbar
 { width: 100%;
   background: #f00;
+  padding: 0px;
+  margin: 0px;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa; }
 
-DIV#contactFoldersList UL
+UL#contactFolders
 { list-style-type: none;
   list-style-image: none;
   clear: both;
