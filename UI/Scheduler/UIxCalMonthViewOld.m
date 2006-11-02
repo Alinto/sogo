@@ -1,10 +1,10 @@
 // $Id: UIxCalMonthView.m 191 2004-08-12 16:28:32Z helge $
 
 #include <SOGo/NSCalendarDate+SOGo.h>
-#include "UIxCalMonthView.h"
+#include "UIxCalMonthViewOld.h"
 #include "common.h"
 
-@implementation UIxCalMonthView
+@implementation UIxCalMonthViewOld
 
 - (NSCalendarDate *)startOfMonth {
   return [[[super startDate] firstDayOfMonth] beginOfDay];
