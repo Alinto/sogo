@@ -22,16 +22,6 @@
 #include "SOGoDateFormatter.h"
 #include "common.h"
 
-@interface SOGoDateFormatter (PrivateAPI)
-- (NSString *)shortDayOfWeek:(int)_day;
-- (NSString *)fullDayOfWeek:(int)_day;
-- (NSString *)shortMonthOfYear:(int)_month;
-- (NSString *)fullMonthOfYear:(int)_month;
-
-- (NSString *)isoDateFormatForDate:(NSCalendarDate *)_date;
-- (NSString *)fullWeekdayNameAndDetailsForDate:(NSCalendarDate *)_date;
-@end
-
 @implementation SOGoDateFormatter
 
 - (id)initWithLocale:(NSDictionary *)_locale {

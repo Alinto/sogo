@@ -24,7 +24,7 @@
 
 #import <Foundation/NSFormatter.h>
 
-@class NSString, NSDictionary;
+@class NSString, NSCalendarDate, NSDictionary;
 
 @interface SOGoDateFormatter : NSFormatter
 {
@@ -43,6 +43,12 @@
 - (NSString *)stringForObjectValue:(id)_obj;
 
 - (NSString *)shortDayOfWeek:(int)_day;
+- (NSString *)fullDayOfWeek:(int)_day;
+- (NSString *)shortMonthOfYear:(int)_month;
+- (NSString *)fullMonthOfYear:(int)_month;
+
+- (NSString *)isoDateFormatForDate:(NSCalendarDate *)_date;
+- (NSString *)fullWeekdayNameAndDetailsForDate:(NSCalendarDate *)_date;
 
 @end
 
