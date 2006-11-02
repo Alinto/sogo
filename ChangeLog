@@ -1,5 +1,12 @@
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoTaskObject.m ([SOGoTaskObject
+	-davContentType]): declare "text/calendar".
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -davContentType]): declare
+	"text/calendar".
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -lookupName:inContext:acquire:]): certain
 	HTTP methods are handled by SOPE and requires nil to be returned,

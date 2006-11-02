@@ -814,4 +814,9 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
         toAttendees:_attendees];
 }
 
+- (NSString *) davContentType
+{
+  return @"text/calendar";
+}
+
 @end /* SOGoAppointmentObject */
