@@ -1,5 +1,8 @@
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMonthView.[hm]: rewritten module entirely to
+	imitate the look of Sunbird/Lightning's monthly view.
+
 	* UI/Scheduler/UIxCalMonthView.[hm]: renamed to
 	UIxCalMonthViewOld.[hm].
 
