@@ -316,7 +316,9 @@ TABLE.monthOverview DIV.appointmentView
   padding: 0px; }
 
 TABLE.monthOverview TD.contentOfDay
-{ vertical-align: top; }
+{ vertical-align: top;
+  overflow: hidden;
+  height: 15%; }
 
 SPAN.dayCellLabel
 { color: #77a;
@@ -345,8 +347,7 @@ TABLE.weekOverview TD
 { border: 1px solid #99f; }
 
 TABLE.monthOverview TD
-{ border: 2px solid #99f;
-  height: 15%; }
+{ border: 2px solid #99f; }
 
 TABLE.dayOverview TD.header
 { text-align: center;

@@ -274,7 +274,7 @@ function restoreCurrentDaySelection(div)
 {
   var elements = div.getElementsByTagName("a");
   var day = null;
-  var i = 7;
+  var i = 9;
   while (!day && i < elements.length)
     {
       day = elements[i].getAttribute("day");
@@ -423,7 +423,8 @@ function calendarDisplayCallback(http)
     var hour = null;
     if (http.callbackData["hour"])
       hour = http.callbackData["hour"];
-    scrollDayView(hour);
+    if (hour)
+      scrollDayView(hour);
   }
   else
     log ("ajax fuckage");
@@ -662,8 +663,11 @@ function onCalendarSelectAppointment(event, node)
 
   var aptCName = node.getAttribute("aptCName");
   var row = $(aptCName);
-  if (row)
+  if (row) {
+    var div = row.parentNode.parentNode.parentNode;
+    div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
     selectNode(row);
+  }
 
   event.cancelBubble = false;
   event.returnValue = false;
@@ -673,42 +677,73 @@ function onCalendarSelectDay(event, node)
 {
   var day = node.getAttribute("day");
 
-  if (currentView != 'dayview')
-    changeCalendarDisplayOfSelectedDay(node);
+  if (currentView == 'weekview')
+    changeWeekCalendarDisplayOfSelectedDay(node);
+  else if (currentView == 'monthview')
+    changeMonthCalendarDisplayOfSelectedDay(node);
   changeDateSelectorDisplay(day);
 
   event.cancelBubble = true;
   event.returnValue = false;
 }
 
-function changeCalendarDisplayOfSelectedDay(node)
+function changeWeekCalendarDisplayOfSelectedDay(node)
 {
   var tr = node.parentNode;
   var tbody = tr.parentNode;
 
   var oldSelected = -1;
-  var newSelected = -1;
+  if (tbody.parentNode.selectedCell)
+    oldSelected = tbody.parentNode.selectedCell.cellIndex;
+  else {
+    var cells = tr.cells;
+    var i = 0;
+    while (i < cells.length && oldSelected == -1)
+      if (cells[i].hasClassName("selectedDay"))
+        oldSelected = i;
+      else
+        i++;
+  }
+  tbody.parentNode.selectedCell = node;
+  var newSelected = node.cellIndex;
+
   var rows = tbody.rows;
-
-  var cells = tr.cells;
-  var i = 0;
-  while (i < cells.length && newSelected == -1)
-    if (cells[i] == node)
-      newSelected = i;
-    else
-      i++;
-
-  var i = 0;
-  while (i < cells.length && oldSelected == -1)
-    if (cells[i].hasClassName("selectedDay"))
-      oldSelected = i;
-    else
-      i++;
-
   for (i = 1; i < rows.length; i++) {
     rows[i].cells[oldSelected].removeClassName("selectedDay");
     rows[i].cells[newSelected].addClassName("selectedDay");
   }
+}
+
+function findMonthCalendarSelectedCell(table) {
+  var tbody = table.tBodies[0];
+  var rows = tbody.rows;
+
+  var i = 1;
+  while (i < rows.length && !table.selectedCell) {
+    var cells = rows[i].cells;
+    var j = 0;
+    while (j < cells.length && !table.selectedCell) {
+      if (cells[j].hasClassName("selectedDay"))
+        table.selectedCell = cells[j];
+      else
+        j++;
+    }
+    i++;
+  }
+}
+
+function changeMonthCalendarDisplayOfSelectedDay(node)
+{
+  var tr = node.parentNode;
+  var table = tr.parentNode.parentNode;
+
+  if (!table.selectedCell)
+    findMonthCalendarSelectedCell(table);
+
+  if (table.selectedCell)
+    table.selectedCell.removeClassName("selectedDay");
+  table.selectedCell = node;
+  node.addClassName("selectedDay");
 }
 
 function onHideCompletedTasks(node)
