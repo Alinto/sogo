@@ -137,10 +137,10 @@ function extractEmailName(mailTo) {
 
 function sanitizeMailTo(dirtyMailTo) {
   var emailName = extractEmailName(dirtyMailTo);
-  var email = extractEmailAddress(dirtyMailTo);
+  var email = "" + extractEmailAddress(dirtyMailTo);
 
   var mailto = "";
-  if (emailName.length > 0)
+  if (emailName && emailName.length > 0)
     mailto = emailName + ' <' + email + '>';
   else
     mailto = email;

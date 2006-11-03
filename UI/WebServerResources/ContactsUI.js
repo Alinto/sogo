@@ -160,13 +160,28 @@ function contactsListCallback(http)
     log ("ajax fuckage");
 }
 
+function onContactFoldersContextMenu(event, element)
+{
+  var menu = $("contactFoldersMenu");
+  menu.addEventListener("hideMenu", onContactFoldersContextMenuHide, false);
+  onMenuClick(event, "contactFoldersMenu");
+
+  var topNode = $("contactFolders");
+  var selectedNodes = topNode.getSelectedRows();
+  topNode.menuSelectedRows = selectedNodes;
+  for (var i = 0; i < selectedNodes.length; i++)
+    deselectNode(selectedNodes[i]);
+  topNode.menuSelectedEntry = element;
+  selectNode(element);
+}
+
 function onContactContextMenu(event, element)
 {
-  var menu = $('contactMenu');
+  var menu = $("contactMenu");
   menu.addEventListener("hideMenu", onContactContextMenuHide, false);
-  onMenuClick(event, 'contactMenu');
+  onMenuClick(event, "contactMenu");
 
-  var topNode = $('contactsList');
+  var topNode = $("contactsList");
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
@@ -177,7 +192,23 @@ function onContactContextMenu(event, element)
 
 function onContactContextMenuHide(event)
 {
-  var topNode = $('contactsList');
+  var topNode = $("contactsList");
+
+  if (topNode.menuSelectedEntry) {
+    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry = null;
+  }
+  if (topNode.menuSelectedRows) {
+    var nodes = topNode.menuSelectedRows;
+    for (var i = 0; i < nodes.length; i++)
+      selectNode (nodes[i]);
+    topNode.menuSelectedRows = null;
+  }
+}
+
+function onContactFoldersContextMenuHide(event)
+{
+  var topNode = $("contactFolders");
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);

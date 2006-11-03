@@ -10,7 +10,7 @@
     title="name"
     var:popup="isPopup">
     <var:if condition="hideFrame" const:negate="YES">
-      <div class="menu" id="contactFolderMenu">
+      <div class="menu" id="contactFoldersMenu">
         <ul>
           <li
             onmousedown="return false;"
@@ -60,11 +60,11 @@
               ><div class="toolbar">
                 <a href="#" class="toolbarButton" onclick="return onAddressBookAdd(this);"
                   ><span class="toolbarButton"
-                    ><img rsrc:src="add-contact.gif" label:title="Add..."
+                    ><img rsrc:src="add-addressbook.png" label:title="Add an Addressbook..."
                       /></span></a
                   ><a href="#" class="toolbarButton" onclick="return onAddressBookRemove(this);"
                   ><span class="toolbarButton"
-                    ><img rsrc:src="remove-contact.gif" label:title="Remove"
+                    ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
                       /></span></a
                   ></div></var:if>
 
@@ -77,7 +77,7 @@
                     class="_selected"
                     onmousedown="return false;"
                     onclick="return onRowClick(event);"
-                    oncontextmenu="return onContactFolderContextMenu(event);"
+                    oncontextmenu="return onContactFoldersContextMenu(event, this);"
                     ><var:string value="currentContactFolderName" /></li
                     ></var:if
                   ><var:if condition="isFolderCurrent"
@@ -85,7 +85,7 @@
                   ><li var:id="currentContactFolderId"
                     onmousedown="return false;"
                     onclick="return onRowClick(event);"
-                    oncontextmenu="return onContactFolderContextMenu(event);"
+                    oncontextmenu="return onContactFoldersContextMenu(event, this);"
                     ><var:string value="currentContactFolderName" /></li
                     ></var:if>
               </var:foreach
@@ -95,7 +95,7 @@
                   var:external-addressbook="currentAdditionalFolder"
                   onmousedown="return false;"
                   onclick="return onRowClick(event);"
-                  oncontextmenu="return onContactFolderContextMenu(event);"
+                  oncontextmenu="return onContactFoldersContextMenu(event, this);"
                   ><var:string value="currentAdditionalFolder" /></li
                   ></var:foreach>
             </ul>
