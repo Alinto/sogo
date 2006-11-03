@@ -207,10 +207,11 @@
   [_task setLocation: [self location]];
   [_task setComment: [self comment]];
   [_task setPriority:[self priority]];
+  [_task setAccessClass: [self privacy]];
+  [_task setStatus: [self status]];
+
   [_task setCategories: [[self categories] componentsJoinedByString: @","]];
   
-  [_task setAccessClass:[self accessClass]];
-
 #if 0
   /*
     Note: bad, bad, bad!

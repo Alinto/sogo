@@ -53,7 +53,7 @@
 {
   if ((self = [super init]))
     {
-      [self setIsPrivate: NO];
+      [self setPrivacy: @"PUBLIC"];
       [self setCheckForConflicts: NO];
       [self setIsCycleEndNever];
       componentOwner = @"";
@@ -77,7 +77,6 @@
   [resources release];
   [priority release];
   [categories release];
-  [accessClass release];
   [cycle release];
   [cycleEnd release];
   [url release];
@@ -86,31 +85,6 @@
 }
 
 /* accessors */
-
-- (void) setAccessClass: (NSString *) _class
-{
-  ASSIGN(accessClass, _class);
-}
-
-- (NSString *) accessClass
-{
-  return accessClass;
-}
-
-- (void) setIsPrivate: (BOOL) _yn
-{
-  if (_yn)
-    [self setAccessClass:@"PRIVATE"];
-  else
-    [self setAccessClass:@"PUBLIC"];
-
-  isPrivate = _yn;
-}
-
-- (BOOL) isPrivate
-{
-  return isPrivate;
-}
 
 - (void) setItem: (id) _item
 {
@@ -125,6 +99,16 @@
 - (NSString *) itemPriorityText
 {
   return [self labelForKey: [NSString stringWithFormat: @"prio_%@", item]];
+}
+
+- (NSString *) itemPrivacyText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"privacy_%@", item]];
+}
+
+- (NSString *) itemStatusText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"status_%@", item]];
 }
 
 - (void) setErrorText: (NSString *) _txt
@@ -262,6 +246,52 @@
 - (NSString *) priority
 {
   return priority;
+}
+
+- (NSArray *) privacyClasses
+{
+  static NSArray *priorities = nil;
+
+  if (!priorities)
+    {
+      priorities = [NSArray arrayWithObjects: @"PUBLIC", @"PRIVATE", @"CONFIDENTIAL", nil];
+      [priorities retain];
+    }
+
+  return priorities;
+}
+
+- (void) setPrivacy: (NSString *) _privacy
+{
+  ASSIGN(privacy, _privacy);
+}
+
+- (NSString *) privacy
+{
+  return privacy;
+}
+
+- (NSArray *) statusTypes
+{
+  static NSArray *priorities = nil;
+
+  if (!priorities)
+    {
+      priorities = [NSArray arrayWithObjects: @"", @"TENTATIVE", @"CONFIRMED", @"CANCELLED", nil];
+      [priorities retain];
+    }
+
+  return priorities;
+}
+
+- (void) setStatus: (NSString *) _status
+{
+  ASSIGN(status, _status);
+}
+
+- (NSString *) status
+{
+  return status;
 }
 
 - (void) setParticipants: (NSArray *) _parts
@@ -568,7 +598,6 @@
 /* subclasses */
 - (void) loadValuesFromComponent: (iCalRepeatableEntityObject *) component
 {
-  NSString *s;
   iCalRecurrenceRule *rrule;
   NSTimeZone *uTZ;
   SOGoObject *co;
@@ -590,19 +619,13 @@
   location     = [[component location] copy];
   comment      = [[component comment] copy];
   url          = [[[component url] absoluteString] copy];
+  privacy      = [[component accessClass] copy];
   priority     = [[component priority] copy];
+  status       = [[component status] copy];
   categories   = [[[component categories] commaSeparatedValues] retain];
   organizer    = [[component organizer] retain];
   participants = [[component participants] retain];
   resources    = [[component resources] retain];
-
-//   NSLog (@"summary יאט: '%@'", title);
-
-  s = [component accessClass];
-  if (!s || [s isEqualToString: @"PUBLIC"])
-    [self setIsPrivate:NO];
-  else
-    [self setIsPrivate:YES]; /* we're possibly loosing information here */
 
   /* cycles */
   if ([component isRecurrent])

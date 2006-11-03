@@ -230,9 +230,11 @@
   [_appointment setLocation: [self location]];
   [_appointment setComment: [self comment]];
   [_appointment setPriority:[self priority]];
+  [_appointment setAccessClass: [self privacy]];
+  [_appointment setStatus: [self status]];
+
   [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
 
-  [_appointment setAccessClass: [self accessClass]];
   [_appointment setTransparency: [self transparency]];
 
 #if 0

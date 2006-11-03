@@ -1,3 +1,13 @@
+2006-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-loadValuesFromComponent:component]): handles access class
+	(privacy) and status.
+
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([UIxContactsListViewContainer -additionalFolders]): return nil if
+	[self additionalAddressBooks] returns an empty string.
+
 2006-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView
