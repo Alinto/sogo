@@ -77,22 +77,26 @@
             <span class="content"><var:popup list="availableCalendars" item="item"
                 const:onChange="onChangeCalendar(this);"
                 string="item" selection="componentOwner" /></span></label>
+          <label><var:string label:value="Privacy" />
+            <span class="content"><var:popup list="privacyClasses" item="item"
+                string="itemPrivacyText" selection="privacy"
+                /></span></label>
           <label><var:string label:value="Priority" />
             <span class="content"><var:popup list="priorities" item="item"
                 string="itemPriorityText" selection="priority"
                 /></span></label>
-          <span id="categoriesCB" class="checkBoxList"
+          <label><var:string label:value="Status" />
+            <span class="content"><var:popup list="statusTypes" item="item"
+                string="itemStatusText" selection="status"
+                /></span></label>
+<!--          <span id="categoriesCB" class="checkBoxList"
             ><var:string label:value="Categories"
               /><span class="content categoriesContent"><var:checkbox-list
                 list="categoryItems"
                 item="item"
                 suffix="itemCategoryText"
                 selections="categories"
-                /></span></span>
-
-          <label><var:string label:value="Priority" />
-            <span class="content"><var:popup list="priorities" item="item"
-                string="itemPriorityText" selection="priority" /></span></label>
+                /></span></span> -->
           <hr />
           <label id="commentArea"><var:string label:value="Description"
               /><textarea name="comment" var:value="comment" /></label> 
