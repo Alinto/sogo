@@ -125,9 +125,10 @@
 "Title"			="Titre";
 "Name"			= "Nom";
 "Email"			= "Email";
-"Status"		= "Status";
-"Location"		="Lieu";
+"Status"		= "Statut";
+"Location"		= "Lieu";
 "Priority"		= "Priorité";
+"Privacy"		= "Confidentialité";
 "Cycle"			= "Récurence";
 "Cycle End"		= "s'arreter";
 "Categories"		= "Categories";
@@ -261,6 +262,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Hide completed tasks" = "Masquer les tâches accomplies";
 
 /* tabs */
+"Task" = "Tâche";
 "Event" = "Événement";
 "Recurrence" = "Répétition";
 
