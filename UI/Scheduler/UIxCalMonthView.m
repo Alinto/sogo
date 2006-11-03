@@ -93,7 +93,7 @@
     {
       [self _addEventToSortedEvents: currentEvent];
       currentEvent = [events nextObject];
-      NSLog (@"event:\n'%@'", currentEvent);
+//       NSLog (@"event:\n'%@'", currentEvent);
     }
 
   return self;

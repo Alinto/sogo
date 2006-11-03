@@ -145,7 +145,16 @@
 
 - (NSArray *) additionalFolders
 {
-  return [[self additionalAddressBooks] componentsSeparatedByString: @","];
+  NSString *folders;
+  NSArray *folderNames;
+
+  folders = [self additionalAddressBooks];
+  if ([folders length] > 0)
+    folderNames = [folders componentsSeparatedByString: @","];
+  else
+    folderNames = nil;
+
+  return folderNames;
 }
 
 - (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder

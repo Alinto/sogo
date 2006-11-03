@@ -52,20 +52,14 @@
   NSArray *participants;     /* array of iCalPerson's */
   NSArray *resources;        /* array of iCalPerson's */
   NSString *priority;
+  NSString *privacy;
+  NSString *status;
   NSArray *categories;
-  NSString *accessClass;
-  BOOL isPrivate;         /* default: NO */
   BOOL checkForConflicts; /* default: NO */
   NSDictionary *cycle;
   NSString *cycleEnd;
   NSString *componentOwner;
 }
-
-- (void) setAccessClass: (NSString *) _class;
-- (NSString *) accessClass;
-
-- (void) setIsPrivate: (BOOL) _yn;
-- (BOOL) isPrivate;
 
 - (NSArray *) categoryItems;
 - (void) setCategories: (NSArray *) _categories;
@@ -75,6 +69,17 @@
 - (NSArray *) priorities;
 - (void) setPriority: (NSString *) _priority;
 - (NSString *) priority;
+- (NSString *) itemPriorityText;
+
+- (NSArray *) privacyClasses;
+- (void) setPrivacy: (NSString *) _privacy;
+- (NSString *) privacy;
+- (NSString *) itemPrivacyText;
+
+- (NSArray *) statusTypes;
+- (void) setStatus: (NSString *) _status;
+- (NSString *) status;
+- (NSString *) itemStatusText;
 
 - (void) setItem: (id) _item;
 - (id) item;
