@@ -254,7 +254,8 @@
 
   if (!priorities)
     {
-      priorities = [NSArray arrayWithObjects: @"PUBLIC", @"PRIVATE", @"CONFIDENTIAL", nil];
+      priorities = [NSArray arrayWithObjects: @"PUBLIC",
+                            @"CONFIDENTIAL", @"PRIVATE", nil];
       [priorities retain];
     }
 

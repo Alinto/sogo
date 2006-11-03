@@ -233,7 +233,7 @@
   [_appointment setAccessClass: [self privacy]];
   [_appointment setStatus: [self status]];
 
-  [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
+//   [_appointment setCategories: [[self categories] componentsJoinedByString: @","]];
 
   [_appointment setTransparency: [self transparency]];
 

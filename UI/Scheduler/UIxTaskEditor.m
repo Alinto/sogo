@@ -210,7 +210,7 @@
   [_task setAccessClass: [self privacy]];
   [_task setStatus: [self status]];
 
-  [_task setCategories: [[self categories] componentsJoinedByString: @","]];
+//   [_task setCategories: [[self categories] componentsJoinedByString: @","]];
   
 #if 0
   /*
