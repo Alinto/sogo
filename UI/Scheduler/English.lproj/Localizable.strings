@@ -217,8 +217,8 @@
 
 /* access classes (privacy) */
 "privacy_PUBLIC" = "Public";
-"privacy_PRIVATE" = "Time and Date Only";
-"privacy_CONFIDENTIAL" = "Private";
+"privacy_CONFIDENTIAL" = "Time and Date Only";
+"privacy_PRIVATE" = "Private";
 
 /* status type */
 "status_" = "Not specified";

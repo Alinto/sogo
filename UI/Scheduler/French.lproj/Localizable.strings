@@ -220,8 +220,8 @@
 
 /* access classes (privacy) */
 "privacy_PUBLIC" = "Public";
-"privacy_PRIVATE" = "Date et heure seulement";
-"privacy_CONFIDENTIAL" = "Privé";
+"privacy_CONFIDENTIAL" = "Date et heure seulement";
+"privacy_PRIVATE" = "Privé";
 
 /* status type */
 "status_" = "Non-spécifié";
