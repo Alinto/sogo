@@ -206,7 +206,7 @@
 
 /* Priorities */
 
-"prio_0"		= "Non précisée";
+"prio_0"		= "Non-spécifiée";
 "prio_1"		= "Haute";
 "prio_2"		= "Haute";
 "prio_3"		= "Haute";
@@ -216,6 +216,17 @@
 "prio_7"		= "Basse";
 "prio_8"		= "Basse";
 "prio_9"		= "Basse";
+
+/* access classes (privacy) */
+"privacy_PUBLIC" = "Public";
+"privacy_PRIVATE" = "Date et heure seulement";
+"privacy_CONFIDENTIAL" = "Privé";
+
+/* status type */
+"status_" = "Non-spécifié";
+"status_TENTATIVE" = "Tentative";
+"status_CONFIRMED" = "Confirmé";
+"status_CANCELLED" = "Annulé";
 
 /* Cycles */
 

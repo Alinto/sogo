@@ -33,6 +33,7 @@
 "Search in Addressbook" = "Carnet d'adresse...";
 
 "New Card" = "Nouvelle fiche";
+"New List" = "Nouvelle liste";
 "Modify" = "Modifier";
 "Write" = "Écrire";
 "Delete" = "Effacer";
@@ -79,3 +80,6 @@
 "Carbon Copy" = "Copie carbone";
 "Blind Carbon Copy" = "C. carbone cachée";
 "Add Attendee..." = "Ajouter participant...";
+
+"Add an Addressbook..." = "Ajouter un carnet d'adresses...";
+"Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";

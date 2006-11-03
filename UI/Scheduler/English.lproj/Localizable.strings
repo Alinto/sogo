@@ -203,7 +203,7 @@
 
 /* Priorities */
 
-"prio_0"		= "Undefined";
+"prio_0"		= "Not specified";
 "prio_1"		= "High";
 "prio_2"		= "High";
 "prio_3"		= "High";
@@ -213,6 +213,17 @@
 "prio_7"		= "Low";
 "prio_8"		= "Low";
 "prio_9"		= "Low";
+
+/* access classes (privacy) */
+"privacy_PUBLIC" = "Public";
+"privacy_PRIVATE" = "Time and Date Only";
+"privacy_CONFIDENTIAL" = "Private";
+
+/* status type */
+"status_" = "Not specified";
+"status_TENTATIVE" = "Tentative";
+"status_CONFIRMED" = "Confirmed";
+"status_CANCELLED" = "Cancelled";
 
 /* Cycles */
 

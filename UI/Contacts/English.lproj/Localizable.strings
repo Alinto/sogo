@@ -1,37 +1,87 @@
 /* this file is in UTF-8 format! */
 
-"Addressbook"       = "Addressbook";
-"Addresses"         = "Addresses";
-"Cancel"            = "Cancel";
-"Common"            = "Common";
-"Contact editor"    = "Contact Editor";
-"Contact viewer"    = "Contact Viewer";
-"Copy from Anais"   = "Copy from Anaïs";
-"EMail"             = "Email";
-"Extended"          = "Extended";
-"Fax"               = "Fax";
-"Firstname"         = "Firstname";
-"Home"              = "Home";
-"HomePhone"         = "Home";
-"Lastname"          = "Lastname";
-"Location"          = "Location";
-"MobilePhone"       = "Mobile";
-"Name"              = "Name";
-"OfficePhone"       = "Office";
-"Organisation"      = "Organisation";
-"Phone"             = "Phone";
-"Phones"            = "Phone numbers";
-"Postal"            = "Postal";
-"Save"              = "Save";
-"URL"               = "URL";
-"Unit"              = "Unit";
-"delete"            = "delete";
-"edit"              = "edit";
-"invalidemailwarn"  = "Invalid email field, continue?";
-"new"               = "new";
+"Addressbook" = "Addressbook";
+"Addresses" = "Addresses";
+"Cancel" = "Cancel";
+"Common" = "Common";
+"Contact editor" = "Contact editor";
+"Contact viewer" = "Contact viewer";
+"Copy from Anais" = "Copy from Anais";
+"EMail" = "EMail";
+"Extended" = "Extended";
+"Fax" = "Fax";
+"Firstname" = "Firstname";
+"Home" = "Home";
+"HomePhone" = "HomePhone";
+"Lastname" = "Lastname";
+"Location" = "Location";
+"MobilePhone" = "MobilePhone";
+"Name" = "Name";
+"OfficePhone" = "OfficePhone";
+"Organisation" = "Organisation";
+"Phone" = "Phone";
+"Phones" = "Phones";
+"Postal" = "Postal";
+"Save" = "Save";
+"URL" = "URL";
+"Unit" = "Unit";
+"delete" = "delete";
+"edit" = "edit";
+"invalidemailwarn" = "invalidemailwarn";
+"new" = "new";
+
+"Name or Address" = "Name or Address";
+"Personal Addressbook" = "Personal Addressbook";
+"Search in Addressbook" = "Search in Addressbook";
+
+"New Card" = "New Card";
+"New List" = "New List";
+"Modify" = "Modify";
+"Write" = "Write";
+"Delete" = "Delete";
+
+"Add..." = "Add...";
+"Remove" = "Remove";
+
+"Preferred" = "Preferred";
+"Card for %@" = "Card for %@";
+"Display Name: " = "Display Name: ";
+"Email Address: " = "Email Address: "
+
+"Firstname: " = "Firstname: ";
+"Lastname: " = "Lastname: ";
+"Nickname: " = "Nickname: ";
+
+"Telephone" = "Telephone";
+"Work: " = "Work: ";
+"Home: " = "Home: ";
+"Fax: " = "Fax: ";
+"Mobile: " = "Mobile: ";
+"Pager: " = "Pager: ";
+
+"Title: " = "Title: ";
+"Service: " = "Service: ";
+"Company: " = "Company: ";
+"Street Address: " = "Street Address: ";
+"City: " = "City: ";
+"Province: " = "Province: ";
+"Zip or Postal Code: " = "Zip or Postal Code: ";
+"Country: " = "Country: ";
+"Web: " = "Web: ";
+
+"Home" = "Home";
+"Work" = "Work";
+"Other Infos" = "Other Infos";
+
+"Note: " = "Note: ";
+"Timezone: " = "Timezone: ";
+"Birthday: " = "Birthday: ";
 
 "Add as..." = "Add as...";
 "Recipient" = "Recipient";
 "Carbon Copy" = "Carbon Copy";
 "Blind Carbon Copy" = "Blind Carbon Copy";
 "Add Attendee..." = "Add Attendee...";
+
+"Add an Addressbook..." = "Add an Addressbook...";
+"Remove the selected Addressbook" = "Remove the selected Addressbook";
