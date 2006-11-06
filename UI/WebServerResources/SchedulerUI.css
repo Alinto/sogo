@@ -328,7 +328,7 @@ TABLE.weekOverview TD.dayOfToday
 { background-color: #deebf7; }
 
 TABLE.monthOverview TD.dayOfToday
-{ border: 3px solid #99f;
+{ border: 3px solid #397d94;
   background-color: #deebf7; }
 
 TABLE.weekOverview TD.weekEndDay,
@@ -336,7 +336,7 @@ TABLE.monthOverview TD.weekEndDay
 { background-color: #fffbe7; }
 
 TABLE.monthOverview TD.dayOfAnotherMonth
-{ background-color: #eef; }
+{ background-color: #e7efef; }
 
 TABLE.weekOverview TD.selectedDay,
 TABLE.monthOverview TD.selectedDay
@@ -344,26 +344,26 @@ TABLE.monthOverview TD.selectedDay
 
 TABLE.dayOverview TD,
 TABLE.weekOverview TD
-{ border: 1px solid #99f; }
+{ border: 1px solid #397d94; }
 
 TABLE.monthOverview TD
-{ border: 2px solid #99f; }
+{ border: 2px solid #397d94; }
 
 TABLE.dayOverview TD.header
 { text-align: center;
-  color: #77a;
+  color: #397d94;
   width: 100%;
   font-weight: bold;
-  background: #eef; }
+  background: #e7efef; }
 
 TABLE.weekOverview TD.header,
 TABLE.monthOverview TD.header
 { text-align: center;
-  color: #77a;
+  color: #397d94;
   width: 14%;
   height: 2em;
   font-weight: bold;
-  background: #eef; }
+  background: #e7efef; }
 
 TABLE.dayOverview TD.nullHeader,
 TABLE.weekOverview TD.nullHeader
@@ -378,7 +378,7 @@ TABLE.weekOverview TD.hourOfDay
   overflow: auto;
   width: 5em;
   color: #77a;
-  background: #eef; }
+  background: #e7efef; }
 
 SPAN.daysHeader,
 SPAN.weeksHeader,

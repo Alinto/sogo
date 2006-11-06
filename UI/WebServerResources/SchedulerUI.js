@@ -79,7 +79,13 @@ function deleteEvent()
     var nodes = listOfSelection.getSelectedRows();
 
     if (nodes.length > 0) {
-      if (confirm(labels["appointmentDeleteConfirmation"].decodeEntities())) {
+      var label = "";
+      if (listOfSelection == $("tasksList"))
+        label = labels["taskDeleteConfirmation"].decodeEntities();
+      else
+        label = labels["appointmentDeleteConfirmation"].decodeEntities();
+      
+      if (confirm(label)) {
         if (document.deleteEventAjaxRequest) {
           document.deleteEventAjaxRequest.aborted = true;
           document.deleteEventAjaxRequest.abort();
@@ -282,8 +288,7 @@ function restoreCurrentDaySelection(div)
     }
 
   if (day
-      && day.substr(0, 6) == currentDay.substr(0, 6))
-    {
+      && day.substr(0, 6) == currentDay.substr(0, 6)) {
       for (i = 0; i < elements.length; i++) {
         day = elements[i].getAttribute("day");
         if (day && day == currentDay) {
@@ -342,7 +347,7 @@ function changeCalendarDisplay(time, newView)
   if (day)
     url += "?day=" + day;
 
-  if (newView)
+//   if (newView)
 //     log ("switching to view: " + newView);
 //   log ("changeCalendarDisplay: " + url);
 
@@ -423,7 +428,7 @@ function calendarDisplayCallback(http)
     var hour = null;
     if (http.callbackData["hour"])
       hour = http.callbackData["hour"];
-    if (hour)
+    if (currentView != 'monthview')
       scrollDayView(hour);
   }
   else

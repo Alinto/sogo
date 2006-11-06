@@ -9,13 +9,17 @@ var freeBusySelectorId;
 
 function onContactKeyUp(node, event)
 {
-  if (!running && (event.keyCode == 8
-                   || event.keyCode == 13
-                   || event.keyCode == 32
-                   || event.keyCode > 47)) {
-    running = true;
-    requestField = node;
-    setTimeout("triggerRequest()", delay);
+  if (!running) {
+    if (event.keyCode == 8
+        || event.keyCode == 32
+        || event.keyCode > 47) {
+      running = true;
+      requestField = node;
+      setTimeout("triggerRequest()", delay);
+    } else if (node.confirmedValue && event.keyCode == 13) {
+      node.value = node.confirmedValue;
+      node.setSelectionRange(node.value.length, node.value.length);
+    }
   }
 }
 
@@ -43,7 +47,13 @@ function updateResults(http)
       else
         searchField.uid = null;
       searchField.hasfreebusy = false;
-      searchField.value = text[1];
+      if (text[1].substring(0, searchField.value.length).toUpperCase()
+          == searchField.value.toUpperCase())
+        searchField.value = text[1];
+      else {
+        searchField.value += ' >> ' + text[1];
+      }
+      searchField.confirmedValue = text[1];
       var end = searchField.value.length;
       searchField.setSelectionRange(start, end);
     }
