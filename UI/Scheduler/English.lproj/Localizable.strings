@@ -270,6 +270,7 @@ validate_endbeforestart    = "Enddate is before startdate!";
 
 /* confirmations */
 "appointmentDeleteConfirmation" = "Erasing this event will not be reversible.\\nDo you want to confirm anyway?";
+"taskDeleteConfirmation" = "Erasing this task will be nonreversible.\\nDo you want to confirm anyway?";
 
 /* Legend */
 "Required participant" = "Required participant";

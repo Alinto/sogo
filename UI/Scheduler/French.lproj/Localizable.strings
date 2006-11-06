@@ -276,8 +276,17 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Week View" = "Par semaine";
 "Month View" = "Par mois";
 
-/* confirmations */
+/* menu */
+"New Event..." = "Nouvel événement...";
+"New Task..." = "Nouvelle tâche...";
+"Edit Selected Event..." = "Modifier l'événement sélectionné...";
+"Delete Selected Event" = "Supprimer l'événement sélectionné";
+"Select All" = "Tout sélectionner";
+"Workweek days only" = "Semaine de travail seulement";
+"Tasks in View" = "Afficher les tâches";
+
 "appointmentDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
+"taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
 
 /* Legend */
 "Required participant" = "Participant obligatoire";
