@@ -159,6 +159,7 @@
 - (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
                                      format: (NSString *) _format;
 - (NSString *) iCalOrganizerString;
+- (NSString *) toolbar;
 
 @end
 
