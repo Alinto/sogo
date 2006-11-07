@@ -59,6 +59,7 @@
       [self setCheckForConflicts: NO];
       [self setIsCycleEndNever];
       componentOwner = @"";
+      componentLoaded = NO;
     }
 
   return self;
@@ -572,11 +573,6 @@
   return ([[organizer rfc822Email] isEqualToString: [self emailForUser]]);
 }
 
-- (BOOL) canAccessComponent
-{
-  return [self isMyComponent];
-}
-
 - (BOOL) canEditComponent
 {
   return [self isMyComponent];
@@ -633,7 +629,8 @@
 
   co = [self clientObject];
   componentOwner = [co ownerInContext: nil];
-      
+  componentLoaded = YES;
+
   startDate = [component startDate];
 //   if ((startDate = [component startDate]) == nil)
 //     startDate = [[NSCalendarDate date] hour:11 minute:0];
@@ -811,43 +808,55 @@
   return classes;
 }
 
-- (NSString *) toolbar
+- (NSString *) _toolbarForCalObject: (iCalEntityObject *) calObject
 {
   NSString *filename, *myEmail;
-  iCalEntityObject *calObject;
   iCalPersonPartStat myParticipationStatus;
-  id co;
-  BOOL isEditable;
 
-  co = [self clientObject];
-  isEditable = YES;
-  if ([co isKindOfClass: [SOGoAppointmentObject class]])
-    calObject = (iCalEntityObject *) [co event];
-  else if ([co isKindOfClass: [SOGoTaskObject class]])
-    calObject = (iCalEntityObject *) [co task];
+  myEmail = [[[self context] activeUser] email];
+  if ([self canEditComponent])
+    filename = @"SOGoAppointmentObject.toolbar";
   else
-    isEditable = NO;
-  if (isEditable)
     {
-      myEmail = [[[self context] activeUser] email];
-      if ([self canEditComponent])
-        filename = @"SOGoAppointmentObject.toolbar";
-      else
+      if ([calObject isParticipant: myEmail])
         {
-          if ([calObject isParticipant: myEmail])
-            {
-              myParticipationStatus
-                = [[calObject findParticipantWithEmail: myEmail] participationStatus];
-              if (myParticipationStatus == iCalPersonPartStatAccepted)
-                filename = @"SOGoAppointmentObjectDecline.toolbar";
-              else if (myParticipationStatus == iCalPersonPartStatDeclined)
-                filename = @"SOGoAppointmentObjectAccept.toolbar";
-              else
-                filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-            }
+          myParticipationStatus
+            = [[calObject findParticipantWithEmail: myEmail] participationStatus];
+          if (myParticipationStatus == iCalPersonPartStatAccepted)
+            filename = @"SOGoAppointmentObjectDecline.toolbar";
+          else if (myParticipationStatus == iCalPersonPartStatDeclined)
+            filename = @"SOGoAppointmentObjectAccept.toolbar";
           else
-            filename = @"";
+            filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
         }
+      else
+        filename = @"";
+    }
+
+  return filename;
+}
+
+- (NSString *) toolbar
+{
+  NSString *filename;
+  iCalEntityObject *calObject;
+  id co;
+
+  if (componentLoaded)
+    {
+      co = [self clientObject];
+      if ([co isKindOfClass: [SOGoAppointmentObject class]])
+        {
+          calObject = (iCalEntityObject *) [co event];
+          filename = [self _toolbarForCalObject: calObject];
+        }
+      else if ([co isKindOfClass: [SOGoTaskObject class]])
+        {
+          calObject = (iCalEntityObject *) [co task];
+          filename = [self _toolbarForCalObject: calObject];
+        }
+      else
+        filename = @"";
     }
   else
     filename = @"";

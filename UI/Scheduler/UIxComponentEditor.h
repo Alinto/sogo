@@ -59,6 +59,8 @@
   NSDictionary *cycle;
   NSString *cycleEnd;
   NSString *componentOwner;
+
+  BOOL componentLoaded;
 }
 
 - (NSArray *) categoryItems;
@@ -140,7 +142,6 @@
 
 /* access */
 - (BOOL) isMyComponent;
-- (BOOL) canAccessComponent;
 - (BOOL) canEditComponent;
 
 /* helpers */
