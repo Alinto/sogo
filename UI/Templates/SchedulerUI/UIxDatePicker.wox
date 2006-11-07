@@ -10,6 +10,7 @@
       var:name="dateID"
       var:id="dateID"
       var:dateFormat="jsDateFormat"
+      var:shadow-value="formattedDateString"
       var:value="formattedDateString"
       size="12"
       /><a href="#"

@@ -1,3 +1,9 @@
+2006-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxAppointmentEditor.js,
+	UI/WebServerResources/UIxTaskEditor.js: added code to manage start
+	date change.
+
 2006-11-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor

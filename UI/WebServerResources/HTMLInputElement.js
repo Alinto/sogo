@@ -16,16 +16,17 @@ HTMLInputElement.prototype.assignReplica = function(otherInput) {
 }
 
 HTMLInputElement.prototype.valueAsDate = function () {
-  var newDate;
-  var date = this.value.split("/");
-  if (date.length == 3)
-    newDate = new Date(date[2], date[1] - 1, date[0]);
-  else {
-    date = this.value.split("-");
-    newDate = new Date(date[0], date[1] - 1, date[2]);
-  }
+  return this.value.asDate();
+}
 
-  return newDate;  
+HTMLInputElement.prototype.setValueAsDate = function(dateValue) {
+  if (!this.dateSeparator)
+    this._detectDateSeparator();
+  this.value = dateValue.stringWithSeparator(this.dateSeparator);
+}
+
+HTMLInputElement.prototype.updateShadowValue = function () {
+  this.setAttribute("shadow-value", this.value);
 }
 
 HTMLInputElement.prototype._detectDateSeparator = function() {
@@ -67,4 +68,8 @@ HTMLSelectElement.prototype.assignReplica = function(otherSelect) {
     this._onChangeBound = true;
   }
   this.replica = otherSelect;
+}
+
+HTMLSelectElement.prototype.updateShadowValue = function () {
+  this.setAttribute("shadow-value", this.value);
 }

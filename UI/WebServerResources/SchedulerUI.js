@@ -24,12 +24,14 @@ function newEvent(sender, type) {
     day = currentDay;
 
   var hour = sender.getAttribute("hour");
-  if (!hour)
-    hour = '0800';
-  var urlstr = (ApplicationBaseURL + "new"
-                + type
-                + "?day=" + day
-                + "&hm=" + hour);
+  var urlstr = ApplicationBaseURL + "new" + type;
+  var params = new Array();
+  if (day)
+    params.push("day=" + day);
+  if (hour)
+    params.push("hm=" + hour);
+  if (params.length > 0)
+    urlstr += "?" + params.join("&");
 
   window.open(urlstr, "", "width=620,height=600,resizable=0");
 

@@ -17,6 +17,19 @@ String.prototype.decodeEntities = function() {
                       });
 }
 
+String.prototype.asDate = function () {
+  var newDate;
+  var date = this.split("/");
+  if (date.length == 3)
+    newDate = new Date(date[2], date[1] - 1, date[0]);
+  else {
+    date = this.split("-");
+    newDate = new Date(date[0], date[1] - 1, date[2]);
+  }
+
+  return newDate;  
+}
+
 Date.prototype.sogoDayName = function() {
   var dayName = "";
 
@@ -55,12 +68,22 @@ Date.prototype.daysUpTo = function(otherDate) {
   return days;
 }
 
-Date.prototype.sogoFreeBusyStringWithSeparator = function(separator) {
-  var str = this.sogoDayName() + ", ";
+Date.prototype.stringWithSeparator = function(separator) {
+  var month = '' + (this.getMonth() + 1);
+  var day = '' + this.getDate();
+  if (month.length == 1)
+    month = '0' + month;
+  if (day.length == 1)
+    day = '0' + day;
+
   if (separator == '-')
-    str += (this.getYear() + 1900) + '-' + (this.getMonth() + 1) + '-' + this.getDate();
+    str = (this.getYear() + 1900) + '-' + month + '-' + day;
   else
-    str += this.getDate() + '/' + (this.getMonth() + 1) + '/' + (this.getYear() + 1900);
+    str = day + '/' + month + '/' + (this.getYear() + 1900);
 
   return str;
+}
+
+Date.prototype.sogoFreeBusyStringWithSeparator = function(separator) {
+  return this.sogoDayName() + ", " + this.stringWithSeparator(separator);
 }

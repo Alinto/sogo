@@ -270,8 +270,13 @@ function resetAllFreeBusys()
     displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
 }
 
-function initTimeWidgets(widgets)
-{
+if (this.initTimeWidgets)
+  this.oldInitTimeWidgets = this.initTimeWidgets;
+
+this.initTimeWidgets = function(widgets) {
+  if (this.oldInitTimeWidgets)
+    this.oldInitTimeWidgets(widgets);
+
   this.timeWidgets = widgets;
 
   widgets['start']['hour'].addEventListener("change", onTimeWidgetChange, false);

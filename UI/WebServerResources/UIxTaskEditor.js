@@ -201,3 +201,76 @@ function startDayAsShortString() {
 function dueDayAsShortString() {
   return dayAsShortDateString($('dueTime_date'));
 }
+
+this._getDate = function(which) {
+  var date = window.timeWidgets[which]['date'].valueAsDate();
+  date.setHours( window.timeWidgets[which]['hour'].value );
+  date.setMinutes( window.timeWidgets[which]['minute'].value );
+
+  return date;
+}
+
+this._getShadowDate = function(which) {
+  var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
+  var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
+  date.setHours(intValue);
+  intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
+  date.setMinutes(intValue);
+//   window.alert("shadow: " + date);
+
+  return date;
+}
+
+this.getStartDate = function() {
+  return this._getDate('start');
+}
+
+this.getDueDate = function() {
+  return this._getDate('due');
+}
+
+this.getShadowStartDate = function() {
+  return this._getShadowDate('start');
+}
+
+this.getShadowDueDate = function() {
+  return this._getShadowDate('due');
+}
+
+this._setDate = function(which, newDate) {
+  window.timeWidgets[which]['date'].setValueAsDate(newDate);
+  window.timeWidgets[which]['hour'].value = newDate.getHours();
+  var minutes = newDate.getMinutes();
+  if (minutes % 15)
+    minutes += (15 - minutes % 15);
+  window.timeWidgets[which]['minute'].value = minutes;
+}
+
+this.setStartDate = function(newStartDate) {
+  this._setDate('start', newStartDate);
+}
+
+this.setDueDate = function(newDueDate) {
+//   window.alert(newDueDate);
+  this._setDate('due', newDueDate);
+}
+
+this.onAdjustDueTime = function(event) {
+  if (!window.timeWidgets['due']['date'].disabled) {
+    var dateDelta = (window.getStartDate().valueOf()
+                     - window.getShadowStartDate().valueOf());
+    var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
+    window.setDueDate(newDueDate);
+  }
+  window.timeWidgets['start']['date'].updateShadowValue();
+  window.timeWidgets['start']['hour'].updateShadowValue();
+  window.timeWidgets['start']['minute'].updateShadowValue();
+}
+
+this.initTimeWidgets = function (widgets) {
+  this.timeWidgets = widgets;
+
+  widgets['start']['date'].addEventListener("change", this.onAdjustDueTime, false);
+  widgets['start']['hour'].addEventListener("change", this.onAdjustDueTime, false);
+  widgets['start']['minute'].addEventListener("change", this.onAdjustDueTime, false);
+}

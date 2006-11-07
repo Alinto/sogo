@@ -145,6 +145,15 @@
         </div>
       </div>
 
+      <script type="text/javascript">
+        initTimeWidgets( { 'start': { 'hour': document.forms['editform']['startTime_time_hour'],
+                                      'minute': document.forms['editform']['startTime_time_minute'],
+                                      'date': document.forms['editform']['startTime_date'] },
+                           'due': { 'hour': document.forms['editform']['dueTime_time_hour'],
+                                    'minute': document.forms['editform']['dueTime_time_minute'],
+                                    'date': document.forms['editform']['dueTime_date'] } } );
+      </script>
+
       <!-- div id="buttons">
       <input
       type="submit"
