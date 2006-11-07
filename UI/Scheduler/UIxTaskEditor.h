@@ -35,6 +35,7 @@
   NSCalendarDate *dueDate;
   BOOL hasStartDate;
   BOOL hasDueDate;
+  BOOL newTask;
 }
 
 - (void) setTaskStartDate: (NSCalendarDate *) _date;

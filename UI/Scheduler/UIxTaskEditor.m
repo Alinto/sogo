@@ -76,6 +76,8 @@
     @"CLASS:PUBLIC\r\n"
     @"STATUS:NEEDS-ACTION\r\n" /* confirmed by default */
     @"PERCENT-COMPLETE:0\r\n"
+    @"DTSTART:%@Z\r\n"
+    @"DUE:%@Z\r\n"
     @"DTSTAMP:%@Z\r\n"
     @"SEQUENCE:1\r\n"
     @"PRIORITY:5\r\n"
@@ -84,23 +86,30 @@
     @"END:VTODO\r\n"
     @"END:VCALENDAR";
 
-  NSCalendarDate *stamp;
+  NSCalendarDate *stamp, *lStartDate, *lDueDate;
   NSString *template, *s;
+  NSTimeZone *utc;
   unsigned minutes;
 
   s = [self queryParameterForKey:@"dur"];
-  if(s && [s length] > 0) {
+  if ([s length] > 0)
     minutes = [s intValue];
-  }
-  else {
+  else
     minutes = 60;
-  }
+
+  utc = [NSTimeZone timeZoneWithName: @"GMT"];
+  lStartDate = [self newStartDate];
+  [lStartDate setTimeZone: utc];
+  lDueDate = [lStartDate dateByAddingYears: 0 months: 0 days: 0
+                         hours: 0 minutes: minutes seconds: 0];
   stamp = [NSCalendarDate calendarDate];
-  [stamp setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
+  [stamp setTimeZone: utc];
   
   s = [self iCalParticipantsAndResourcesStringFromQueryParameters];
   template   = [NSString stringWithFormat:iCalStringTemplate,
                          [[self clientObject] nameInContainer],
+                         [lStartDate iCalFormattedDateTimeString],
+                         [lDueDate iCalFormattedDateTimeString],
                          [stamp iCalFormattedDateTimeString],
                          [self iCalOrganizerString],
                          s];
@@ -301,9 +310,14 @@
   // TODO: can't we use [clientObject contentAsString]?
 //   ical = [[self clientObject] valueForKey:@"iCalString"];
   ical = [[self clientObject] contentAsString];
-  if ([ical length] == 0) /* a new task */
-    ical = [self iCalStringTemplate];
-  
+  if ([ical length] == 0)
+    {
+      newTask = YES;
+      ical = [self iCalStringTemplate];
+    }
+  else
+    newTask = NO;
+
   [self setICalString:ical];
   [self loadValuesFromTask: [self taskFromString: ical]];
   
@@ -456,12 +470,12 @@
 
 - (BOOL) hasStartDate
 {
-  return ([self taskStartDate] != nil);
+  return (!newTask && [self taskStartDate] != nil);
 }
 
 - (BOOL) startDateDisabled
 {
-  return ![self hasStartDate];
+  return (![self hasStartDate]);
 }
 
 - (void) setHasDueDate: (BOOL) aBool
@@ -471,12 +485,12 @@
 
 - (BOOL) hasDueDate
 {
-  return ([self taskDueDate] != nil);
+  return (!newTask && [self taskDueDate] != nil);
 }
 
 - (BOOL) dueDateDisabled
 {
-  return ![self hasDueDate];
+  return (![self hasDueDate]);
 }
 
 - (void) setDueDateDisabled: (BOOL) aBool

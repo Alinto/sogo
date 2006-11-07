@@ -113,18 +113,16 @@
   unsigned minutes;
 
   s = [self queryParameterForKey:@"dur"];
-  if(s && [s length] > 0) {
+  if ([s length] > 0)
     minutes = [s intValue];
-  }
-  else {
+  else
     minutes = 60;
-  }
 
   utc = [NSTimeZone timeZoneWithName: @"GMT"];
-  lStartDate = [self selectedDate];
+  lStartDate = [self newStartDate];
   [lStartDate setTimeZone: utc];
-  lEndDate   = [lStartDate dateByAddingYears: 0 months: 0 days: 0
-                           hours: 0 minutes: minutes seconds: 0];
+  lEndDate = [lStartDate dateByAddingYears: 0 months: 0 days: 0
+                         hours: 0 minutes: minutes seconds: 0];
 
   stamp = [NSCalendarDate calendarDate];
   [stamp setTimeZone: utc];
@@ -348,10 +346,10 @@
   ical = [[self clientObject] contentAsString];
   if ([ical length] == 0) /* a new appointment */
     ical = [self iCalStringTemplate];
-  
+
   [self setICalString:ical];
   [self loadValuesFromAppointment: [self appointmentFromString: ical]];
-  
+
   if (![self canEditComponent]) {
     /* TODO: we need proper ACLs */
     return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
