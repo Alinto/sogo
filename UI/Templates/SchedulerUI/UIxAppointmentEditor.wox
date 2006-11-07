@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     const:popup="YES"
     title="name"
-    >
+    var:toolbar="toolbar">
     <script type="text/javascript" rsrc:src="skycalendar.js">
     </script>
 

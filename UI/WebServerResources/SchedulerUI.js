@@ -115,6 +115,14 @@ function deleteEvent()
   return false;
 }
 
+function modifyEvent(sender, modification) {
+  var currentLocation = '' + window.location;
+  var arr = currentLocation.split("/");
+  arr[arr.length-1] = modification;
+  window.location = arr.join("/");
+  window.close();
+}
+
 function deleteEventCallback(http)
 {
   if (http.readyState == 4

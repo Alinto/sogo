@@ -78,7 +78,7 @@
             </div>
           </var:if
             
-            ><var:component className="UIxToolbar"
+            ><var:component className="UIxToolbar" var:toolbar="toolbar"
             />
 
           <div var:class="pageContentClasses"
