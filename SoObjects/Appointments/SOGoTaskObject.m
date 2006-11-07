@@ -105,9 +105,17 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   iCalToDo *task;
   iCalCalendar *calendar;
 
-  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
-  if (calendar)
-    task = [self firstTaskFromCalendar: calendar];
+  NSString *iCalString;
+
+  iCalString = [self iCalString];
+  if (iCalString)
+    {
+      calendar = [iCalCalendar parseSingleFromSource: iCalString];
+      if (calendar)
+        task = [self firstTaskFromCalendar: calendar];
+      else
+        task = nil;
+    }
   else
     task = nil;
 
