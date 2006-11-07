@@ -1,5 +1,9 @@
 2006-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
+	-setDayStartHour:aStartHour]): adjust the minutes to the next
+	quarter of hour, if not already set to a quarter.
+
 	* UI/WebServerResources/UIxAppointmentEditor.js,
 	UI/WebServerResources/UIxTaskEditor.js: added code to manage start
 	date change.

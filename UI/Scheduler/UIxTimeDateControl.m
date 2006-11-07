@@ -70,13 +70,17 @@
 }
 
 - (void)setDate:(NSCalendarDate *)_date {
+  int minuteValue;
   if (!_date)
     _date = [NSCalendarDate date];
   [_date setTimeZone: [[self clientObject] userTimeZone]];
   [self _setDate: _date];
 
+  minuteValue = [_date minuteOfHour];
+  if (minuteValue % 15)
+    minuteValue += 15 - (minuteValue % 15);
   [self setHour: [NSNumber numberWithInt: [_date hourOfDay]]];
-  [self setMinute: [NSNumber numberWithInt: [_date minuteOfHour]]];
+  [self setMinute: [NSNumber numberWithInt: minuteValue]];
   [self setYear: [NSNumber numberWithInt: [_date yearOfCommonEra]]];
   [self setMonth: [NSNumber numberWithInt: [_date monthOfYear]]];
   [self setDay: [NSNumber numberWithInt: [_date dayOfMonth]]];
