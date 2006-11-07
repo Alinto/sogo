@@ -103,21 +103,25 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return [self contentAsString];
 }
 
-- (iCalEvent *)event {
-  NSString  *iCalString;
+- (iCalEvent *) event
+{
   iCalEvent *event;
+  iCalCalendar *calendar;
+  NSString *iCalString;
 
   iCalString = [self iCalString];
-  if ([iCalString length] > 0) {
-    iCalCalendar *cal;
+  if (iCalString)
+    {
+      calendar = [iCalCalendar parseSingleFromSource: iCalString];
+      if (calendar)
+        event = [self firstEventFromCalendar: calendar];
+      else
+        event = nil;
+    }
+  else
+    event = nil;
 
-    [parser parseFromSource:iCalString];
-    cal   = [sax rootObject];
-    [sax reset];
-    event = [[cal events] lastObject];
-    return event;
-  }
-  return nil;
+  return event;
 }
 
 /* iCal handling */
