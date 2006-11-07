@@ -31,6 +31,7 @@
 @interface UIxPageFrame : UIxComponent
 {
   NSString *title;
+  NSString *toolbar;
   id item;
   BOOL isPopup;
 }
@@ -49,6 +50,9 @@
 
 - (void) setPopup: (BOOL) popup;
 - (BOOL) isPopup;
+
+- (void) setToolbar: (NSString *) newToolbar;
+- (NSString *) toolbar;
 
 @end
 

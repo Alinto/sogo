@@ -28,31 +28,43 @@
 
 @implementation UIxPageFrame
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      toolbar = nil;
+    }
+
+  return self;
+}
+
 - (void)dealloc {
-  [self->item  release];
-  [self->title release];
+  [item release];
+  [title release];
+  if (toolbar)
+    [toolbar release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setTitle:(NSString *)_value {
-  ASSIGNCOPY(self->title, _value);
+  ASSIGNCOPY(title, _value);
 }
 
 - (NSString *)title {
   if ([self isUIxDebugEnabled])
-    return self->title;
+    return title;
 
   return [self labelForKey: @"SOGo"];
 }
 
 - (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
+  ASSIGN(item, _item);
 }
 
 - (id)item {
-  return self->item;
+  return item;
 }
 
 - (NSString *)ownerInContext {
@@ -71,18 +83,19 @@
 
 - (NSString *)helpURL
 {
-  return [NSString stringWithFormat: @"help/%@.html", self->title];
+  return [NSString stringWithFormat: @"help/%@.html", title];
 }
 
 - (NSString *)helpWindowTarget
 {
-  return [NSString stringWithFormat: @"Help_%@", self->title];
+  return [NSString stringWithFormat: @"Help_%@", title];
 }
 
 /* notifications */
 
 - (void)sleep {
-  [self->item release]; self->item = nil;
+  [item release];
+  item = nil;
   [super sleep];
 }
 
@@ -212,6 +225,16 @@
 - (BOOL) hasProductSpecificCSS
 {
   return ([[self productCSSURL] length] > 0);
+}
+
+- (void) setToolbar: (NSString *) newToolbar
+{
+  ASSIGN (toolbar, newToolbar);
+}
+
+- (NSString *) toolbar
+{
+  return toolbar;
 }
 
 @end /* UIxPageFrame */

@@ -34,44 +34,61 @@
 {
   NSArray      *toolbarConfig;
   NSArray      *toolbarGroup;
+  NSString *toolbar;
   NSDictionary *buttonInfo;
 }
+
+- (void) setToolbar: (NSString *) newToolbar;
+- (NSString *) toolbar;
+
 @end
 
 @implementation UIxToolbar
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      toolbar = nil;
+    }
+
+  return self;
+}
+
 - (void)dealloc {
-  [self->toolbarGroup  release];
-  [self->toolbarConfig release];
-  [self->buttonInfo    release];
+  [toolbarGroup  release];
+  [toolbarConfig release];
+  [buttonInfo    release];
+  if (toolbar)
+    [toolbar release];
   [super dealloc];
 }
 
 /* notifications */
 
 - (void)sleep {
-  [self->toolbarGroup  release]; self->toolbarGroup  = nil;
-  [self->toolbarConfig release]; self->toolbarConfig = nil;
-  [self->buttonInfo    release]; self->buttonInfo    = nil;
+  [toolbarGroup  release]; toolbarGroup  = nil;
+  [toolbarConfig release]; toolbarConfig = nil;
+  [buttonInfo    release]; buttonInfo    = nil;
   [super sleep];
 }
 
 /* accessors */
 
 - (void)setToolbarGroup:(id)_group {
-  ASSIGN(self->toolbarGroup, _group);
+  ASSIGN(toolbarGroup, _group);
 }
 
 - (id)toolbarGroup {
-  return self->toolbarGroup;
+  return toolbarGroup;
 }
 
 - (void)setButtonInfo:(id)_info {
-  ASSIGN(self->buttonInfo, _info);
+  ASSIGN(buttonInfo, _info);
 }
 
 - (id)buttonInfo {
-  return self->buttonInfo;
+  return buttonInfo;
 }
 
 /* toolbar */
@@ -144,24 +161,28 @@
 - (id)toolbarConfig {
   id tb;
   
-  if (self->toolbarConfig != nil)
-    return [self->toolbarConfig isNotNull] ? self->toolbarConfig : nil;
+  if (toolbarConfig != nil)
+    return [toolbarConfig isNotNull] ? toolbarConfig : nil;
   
-  tb = [[self clientObject] lookupName:@"toolbar" inContext:[self context]
-			    acquire:NO];
+  if (toolbar)
+    tb = toolbar;
+  else
+    tb = [[self clientObject] lookupName:@"toolbar" inContext:[self context]
+                              acquire:NO];
+
   if ([tb isKindOfClass:[NSException class]]) {
     [self errorWithFormat:
             @"not toolbar configuration found on SoObject: %@ (%@)",
             [self clientObject], [[self clientObject] soClass]];
-    self->toolbarConfig = [[NSNull null] retain];
+    toolbarConfig = [[NSNull null] retain];
     return nil;
   }
   
   if ([tb isKindOfClass:[NSString class]])
     tb = [self loadToolbarConfigFromResourceNamed:tb];
   
-  self->toolbarConfig = [tb retain];
-  return self->toolbarConfig;
+  toolbarConfig = [tb retain];
+  return toolbarConfig;
 }
 
 /* labels */
@@ -217,6 +238,16 @@
     amount += [[tbConfig objectAtIndex: count] count];
 
   return (amount > 0);
+}
+
+- (void) setToolbar: (NSString *) newToolbar
+{
+  ASSIGN(toolbar, newToolbar);
+}
+
+- (NSString *) toolbar
+{
+  return toolbar;
 }
 
 @end /* UIxToolbar */
