@@ -556,7 +556,7 @@
   iCalPerson *p;
   NSString *emailProp;
   
-  emailProp = [@"mailto:" stringByAppendingString:[self emailForUser]];
+  emailProp = [@"MAILTO:" stringByAppendingString:[self emailForUser]];
   p = [[[iCalPerson alloc] init] autorelease];
   [p setEmail:emailProp];
   [p setCn:[self cnForUser]];
@@ -597,6 +597,33 @@
 }
 
 /* subclasses */
+- (NSCalendarDate *) newStartDate
+{
+  NSCalendarDate *newStartDate, *now;
+  BOOL hmSpecified;
+  int hour;
+
+  newStartDate = [self selectedDate];
+  hmSpecified = ([[self queryParameterForKey: @"hm"] length] > 0);
+  if (!hmSpecified)
+    {
+      now = [NSCalendarDate calendarDate];
+      [now setTimeZone: [[self clientObject] userTimeZone]];
+      if (!([[now hour: 8 minute: 0] earlierDate: newStartDate] == newStartDate))
+        {
+          hour = [now hourOfDay];
+          if (hour < 8)
+            newStartDate = [now hour: 8 minute: 0];
+          else if (hour > 18)
+            newStartDate = [[now tomorrow] hour: 8 minute: 0];
+          else
+            newStartDate = now;
+        }
+    }
+
+  return newStartDate;
+}
+
 - (void) loadValuesFromComponent: (iCalRepeatableEntityObject *) component
 {
   iCalRecurrenceRule *rrule;
@@ -609,9 +636,9 @@
   startDate = [component startDate];
 //   if ((startDate = [component startDate]) == nil)
 //     startDate = [[NSCalendarDate date] hour:11 minute:0];
+  uTZ = [co userTimeZone];
   if (startDate)
     {
-      uTZ = [co userTimeZone];
       [startDate setTimeZone: uTZ];
       [startDate retain];
     }
@@ -655,7 +682,7 @@
 - (NSString *) iCalParticipantsStringFromQueryParameters
 {
   static NSString *iCalParticipantString = \
-    @"ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=\"%@\":mailto:%@\r\n";
+    @"ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=\"%@\":MAILTO:%@\r\n";
   
   return [self iCalStringFromQueryParameter: @"ps"
                format: iCalParticipantString];
@@ -664,7 +691,7 @@
 - (NSString *) iCalResourcesStringFromQueryParameters
 {
   static NSString *iCalResourceString = \
-    @"ATTENDEE;ROLE=NON-PARTICIPANT;CN=\"%@\":mailto:%@\r\n";
+    @"ATTENDEE;ROLE=NON-PARTICIPANT;CN=\"%@\":MAILTO:%@\r\n";
 
   return [self iCalStringFromQueryParameter: @"rs"
                format: iCalResourceString];
@@ -699,7 +726,7 @@
 
 - (NSString *) iCalOrganizerString
 {
-  return [NSString stringWithFormat: @"ORGANIZER;CN=\"%@\":mailto:%@\r\n",
+  return [NSString stringWithFormat: @"ORGANIZER;CN=\"%@\":MAILTO:%@\r\n",
                    [self cnForUser], [self emailForUser]];
 }
 

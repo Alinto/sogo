@@ -92,6 +92,8 @@
 - (void) setICalString: (NSString *) _s;
 - (NSString *) iCalString;
 
+- (NSCalendarDate *) newStartDate;
+
 - (void) setStartDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) startDate;
 

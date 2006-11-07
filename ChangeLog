@@ -1,5 +1,9 @@
 2006-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-newStartDate]): new method to determine the start date depending
+	on the URL parameters, the current day and the current time.
+
 	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
 	-setDayStartHour:aStartHour]): adjust the minutes to the next
 	quarter of hour, if not already set to a quarter.
