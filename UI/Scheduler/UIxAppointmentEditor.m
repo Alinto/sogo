@@ -350,10 +350,10 @@
   [self setICalString:ical];
   [self loadValuesFromAppointment: [self appointmentFromString: ical]];
 
-  if (![self canEditComponent]) {
-    /* TODO: we need proper ACLs */
-    return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
-  }
+//   if (![self canEditComponent]) {
+//     /* TODO: we need proper ACLs */
+//     return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
+//   }
   return self;
 }
 
@@ -452,8 +452,9 @@
                               _accept ? @"ACCEPTED" : @"DECLINED"
                             inContext:[self context]];
   if (ex != nil) return ex;
-  
-  return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
+
+  return self;  
+//   return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
 }
 
 @end /* UIxAppointmentEditor */

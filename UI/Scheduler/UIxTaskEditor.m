@@ -321,10 +321,10 @@
   [self setICalString:ical];
   [self loadValuesFromTask: [self taskFromString: ical]];
   
-  if (![self canEditComponent]) {
-    /* TODO: we need proper ACLs */
-    return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
-  }
+//   if (![self canEditComponent]) {
+//     /* TODO: we need proper ACLs */
+//     return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
+//   }
 
   return self;
 }
@@ -460,7 +460,8 @@
                             inContext:[self context]];
   if (ex != nil) return ex;
   
-  return [self redirectToLocation: [self completeURIForMethod:@"../view"]];
+  return self;
+//   return [self redirectToLocation: [self completeURIForMethod:@"../view"]];
 }
 
 - (void) setHasStartDate: (BOOL) aBool

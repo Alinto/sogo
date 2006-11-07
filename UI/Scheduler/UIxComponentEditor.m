@@ -42,6 +42,8 @@
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/Appointments/SOGoAppointmentObject.h>
+#import <SoObjects/Appointments/SOGoTaskObject.h>
 
 #import "UIxComponent+Agenor.h"
 
@@ -567,8 +569,7 @@
 - (BOOL) isMyComponent
 {
   // TODO: this should check a set of emails against the SoUser
-  return (![[organizer email] length]
-          || [[organizer rfc822Email] isEqualToString: [self emailForUser]]);
+  return ([[organizer rfc822Email] isEqualToString: [self emailForUser]]);
 }
 
 - (BOOL) canAccessComponent
@@ -808,6 +809,50 @@
     classes = @"button _disabled";
 
   return classes;
+}
+
+- (NSString *) toolbar
+{
+  NSString *filename, *myEmail;
+  iCalEntityObject *calObject;
+  iCalPersonPartStat myParticipationStatus;
+  id co;
+  BOOL isEditable;
+
+  co = [self clientObject];
+  isEditable = YES;
+  if ([co isKindOfClass: [SOGoAppointmentObject class]])
+    calObject = (iCalEntityObject *) [co event];
+  else if ([co isKindOfClass: [SOGoTaskObject class]])
+    calObject = (iCalEntityObject *) [co task];
+  else
+    isEditable = NO;
+  if (isEditable)
+    {
+      myEmail = [[[self context] activeUser] email];
+      if ([self canEditComponent])
+        filename = @"SOGoAppointmentObject.toolbar";
+      else
+        {
+          if ([calObject isParticipant: myEmail])
+            {
+              myParticipationStatus
+                = [[calObject findParticipantWithEmail: myEmail] participationStatus];
+              if (myParticipationStatus == iCalPersonPartStatAccepted)
+                filename = @"SOGoAppointmentObjectDecline.toolbar";
+              else if (myParticipationStatus == iCalPersonPartStatDeclined)
+                filename = @"SOGoAppointmentObjectAccept.toolbar";
+              else
+                filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+            }
+          else
+            filename = @"";
+        }
+    }
+  else
+    filename = @"";
+
+  return filename;
 }
 
 @end
