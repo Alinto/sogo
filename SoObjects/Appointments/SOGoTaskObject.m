@@ -263,18 +263,11 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 {
   iCalToDo *event;
   NSArray *events;
-  NSString *iCalString;
 
-  iCalString = [self iCalString];
-  if (iCalString)
-    {
-      events = [calendar childrenWithTag: @"vtodo"];
-      if ([events count])
-        event = (iCalToDo *) [[events objectAtIndex: 0]
-                               groupWithClass: [iCalToDo class]];
-      else
-        event = nil;
-    }
+  events = [calendar childrenWithTag: @"vtodo"];
+  if ([events count])
+    event = (iCalToDo *) [[events objectAtIndex: 0]
+                           groupWithClass: [iCalToDo class]];
   else
     event = nil;
 
