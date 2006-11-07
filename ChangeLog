@@ -3,6 +3,10 @@
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-newStartDate]): new method to determine the start date depending
 	on the URL parameters, the current day and the current time.
+	([UIxComponentEditor -toolbar]): new method to determine the
+	filename of the toolbar that should be drawn depending on the
+	ownership and the list of attendees of the task/event wrt to the
+	current user...
 
 	* UI/Scheduler/UIxTimeDateControl.m ([UIxTimeDateControl
 	-setDayStartHour:aStartHour]): adjust the minutes to the next

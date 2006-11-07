@@ -811,26 +811,34 @@
 - (NSString *) _toolbarForCalObject: (iCalEntityObject *) calObject
 {
   NSString *filename, *myEmail;
+  iCalPerson *person;
+  NSEnumerator *persons;
   iCalPersonPartStat myParticipationStatus;
+  BOOL found;
 
   myEmail = [[[self context] activeUser] email];
-  if ([self canEditComponent])
+  if ([[organizer rfc822Email] isEqualToString: myEmail])
     filename = @"SOGoAppointmentObject.toolbar";
   else
     {
-      if ([calObject isParticipant: myEmail])
-        {
-          myParticipationStatus
-            = [[calObject findParticipantWithEmail: myEmail] participationStatus];
-          if (myParticipationStatus == iCalPersonPartStatAccepted)
-            filename = @"SOGoAppointmentObjectDecline.toolbar";
-          else if (myParticipationStatus == iCalPersonPartStatDeclined)
-            filename = @"SOGoAppointmentObjectAccept.toolbar";
-          else
-            filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-        }
-      else
-        filename = @"";
+      filename = @"";
+      found = NO;
+      persons = [participants objectEnumerator];
+      person = [persons nextObject];
+      while (person && !found)
+        if ([[person rfc822Email] isEqualToString: myEmail])
+          {
+            found = YES;
+            myParticipationStatus = [person participationStatus];
+            if (myParticipationStatus == iCalPersonPartStatAccepted)
+              filename = @"SOGoAppointmentObjectDecline.toolbar";
+            else if (myParticipationStatus == iCalPersonPartStatDeclined)
+              filename = @"SOGoAppointmentObjectAccept.toolbar";
+            else
+              filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+          }
+        else
+          person = [persons nextObject];
     }
 
   return filename;
