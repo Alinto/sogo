@@ -1,5 +1,12 @@
 2006-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString]): new method that returns the special QP
+	string with its qp declaration for email subjects.
+	([SOGoDraftObject -bodyPartForText]) 
+	([SOGoDraftObject -mimeMessageForContentWithHeaderMap:]): don't
+	double-encode data in UTF-8.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-newStartDate]): new method to determine the start date depending
 	on the URL parameters, the current day and the current time.

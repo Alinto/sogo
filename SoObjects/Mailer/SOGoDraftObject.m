@@ -28,10 +28,45 @@
 #include <NGMime/NGMimeFileData.h>
 #include <NGMime/NGMimeMultipartBody.h>
 #include <NGMime/NGMimeType.h>
+#include <NGMime/NGMimeHeaderFieldGenerator.h>
 #include <NGImap4/NGImap4Envelope.h>
 #include <NGImap4/NGImap4EnvelopeAddress.h>
 #include <NGExtensions/NSFileManager+Extensions.h>
 #include "common.h"
+
+@interface NSString (NGMimeHelpers)
+
+- (NSString *) asQPSubjectString;
+
+@end
+
+@implementation NSString (NGMimeHelpers)
+
+- (NSString *) asQPSubjectString
+{
+  NSString *qpString;
+  unsigned char *data, *dest;
+  unsigned int dataLen, destLen;
+
+  dataLen = [self length];
+  data = malloc(dataLen * sizeof(unsigned char*));
+  *(data + dataLen - 1) = 0;
+  [self getCString: data];
+
+  destLen = dataLen * 3;
+  dest = malloc(dataLen * 3 * sizeof(unsigned char*));
+  *(dest + destLen - 1) = 0;
+  NGEncodeQuotedPrintableMime (data, dataLen, dest, destLen);
+
+  qpString = [NSString stringWithFormat: @"=?utf-8?Q?%s?=", dest];
+
+  free (data);
+  free (dest);
+
+  return qpString;
+}
+
+@end
 
 @implementation SOGoDraftObject
 
@@ -274,7 +309,8 @@ static NSString    *fromInternetSuffixPattern = nil;
 
 /* NGMime representations */
 
-- (NGMimeBodyPart *)bodyPartForText {
+- (NGMimeBodyPart *)bodyPartForText
+{
   /*
     This add the text typed by the user (the primary plain/text part).
   */
@@ -295,7 +331,7 @@ static NSString    *fromInternetSuffixPattern = nil;
   if ((body = [lInfo objectForKey:@"text"]) != nil) {
     if ([body isKindOfClass:[NSString class]]) {
       [map setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
-      body = [body dataUsingEncoding:NSUTF8StringEncoding];
+//       body = [body dataUsingEncoding:NSUTF8StringEncoding];
     }
   }
   
@@ -306,7 +342,8 @@ static NSString    *fromInternetSuffixPattern = nil;
   return bodyPart;
 }
 
-- (NGMimeMessage *)mimeMessageForContentWithHeaderMap:(NGMutableHashMap *)map {
+- (NGMimeMessage *)mimeMessageForContentWithHeaderMap:(NGMutableHashMap *)map
+{
   NSDictionary  *lInfo;
   NGMimeMessage *message;  
   WOContext     *ctx;
@@ -336,13 +373,12 @@ static NSString    *fromInternetSuffixPattern = nil;
       
       /* Note: just 'utf8' is displayed wrong in Mail.app */
       [map setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
-      body = [body dataUsingEncoding:NSUTF8StringEncoding];
+//       body = [body dataUsingEncoding:NSUTF8StringEncoding];
     }
     else if ([body isKindOfClass:[NSData class]] && addSuffix) {
       body = [[body mutableCopy] autorelease];
-      [(NSMutableData *)body appendData:
-			  [fromInternetSuffix dataUsingEncoding:
-						NSUTF8StringEncoding]];
+      [(NSMutableData *)body
+                        appendData: [fromInternetSuffix dataUsingEncoding:NSUTF8StringEncoding]];
     }
     else if (addSuffix) {
       [self warnWithFormat:@"Note: cannot add Internet marker to body: %@",
@@ -350,7 +386,7 @@ static NSString    *fromInternetSuffixPattern = nil;
     }
   }
   else if (addSuffix)
-    body = [fromInternetSuffix dataUsingEncoding:NSUTF8StringEncoding];
+    body = fromInternetSuffix;
   
   message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
   [message setBody:body];
@@ -374,11 +410,9 @@ static NSString    *fromInternetSuffixPattern = nil;
   NSString *s;
   
   s = [self mimeTypeForExtension:[_name pathExtension]];
-  if ([_name length] > 0) {
-    s = [s stringByAppendingString:@"; name=\""];
-    s = [s stringByAppendingString:_name];
-    s = [s stringByAppendingString:@"\""];
-  }
+  if ([_name length] > 0)
+    s = [s stringByAppendingFormat:@"; name=\"%@\"", _name];
+
   return s;
 }
 - (NSString *)contentDispositionForAttachmentWithName:(NSString *)_name {
@@ -624,7 +658,7 @@ static NSString    *fromInternetSuffixPattern = nil;
   /* add subject */
   
   if ([(s = [lInfo objectForKey:@"subject"]) length] > 0)
-    [map setObject:s forKey:@"subject"];
+    [map setObject: [s asQPSubjectString] forKey:@"subject"];
   
   /* add standard headers */
   
