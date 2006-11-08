@@ -1,5 +1,9 @@
 2006-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: initialize tabs from the
+	"unload" event listener that is added programmatically instead of
+	from the template... Also, added the new DNDManager object.
+
 	* UI/WebServerResources/HTMLTableElement.js: added code to
 	simulate XUL drag n drop events. This code will possibly be moved
 	to HTMLElement.js instead later...
