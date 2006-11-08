@@ -416,6 +416,8 @@ function openMailboxAtIndex(element) {
   }
   document.messageListAjaxRequest
     = triggerAjaxRequest(url, messageListCallback);
+
+  return false;
 }
 
 function messageListCallback(http)
@@ -780,8 +782,69 @@ function onSearchFormSubmit()
   return false;
 }
 
+function pouetpouet(event) {
+  window.alert("pouet pouet");
+}
+
+var mailboxSpanAcceptType = function(type) {
+  return (type == "mailRow");
+}
+
+var mailboxSpanEnter = function() {
+  this.addClassName("_dragOver");
+}
+
+var mailboxSpanExit = function() {
+  this.removeClassName("_dragOver");
+}
+
+var messageListGhost = function () {
+  var newDiv = document.createElement("div");
+//   newDiv.style.width = "25px;";
+//   newDiv.style.height = "25px;";
+  newDiv.style.backgroundColor = "#aae;";
+  newDiv.style.border = "2px solid #a3a;";
+  newDiv.style.padding = "5px;";
+  newDiv.ghostOffsetX = 10;
+  newDiv.ghostOffsetY = 5;
+
+  var imgCode = '<img src="' + ResourcesURL + '/message-mail.png" />';
+  var count = this.getSelectedRows().length;
+  var text = imgCode + '<br />' + count + ' messages...';
+  newDiv.innerHTML = text;
+
+  return newDiv;
+}
+
+/* dnd */
+function initDnd() {
+  log ("MailerUI initDnd");
+  var msgList = $("messageList");
+  if (msgList) {
+    msgList.workAroundDragGesture();
+    msgList.dndTypes = function() { return new Array("mailRow"); };
+    msgList.dndGhost = messageListGhost;
+    document.DNDManager.registerSource(msgList);
+
+    var nodes = document.getElementsByClassName("leaf", $("d"));
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].dndAcceptType = this.mailboxSpanAcceptType;
+      nodes[i].dndEnter = this.mailboxSpanEnter;
+      nodes[i].dndExit = this.mailboxSpanExit;
+      document.DNDManager.registerDestination(nodes[i]);
+    }
+  }
+}
+
 /* stub */
 
 function refreshContacts() {
 }
 
+var initMailer = {
+  handleEvent: function (event) {
+    initDnd();
+  }
+}
+
+window.addEventListener("load", initMailer, false);

@@ -1,5 +1,9 @@
 2006-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: register the messageList
+	table as a dragging source and the leaf of the navigation tree as
+	dnd destinations to the DNDManager.
+
 	* UI/WebServerResources/generic.js: initialize tabs from the
 	"unload" event listener that is added programmatically instead of
 	from the template... Also, added the new DNDManager object.
