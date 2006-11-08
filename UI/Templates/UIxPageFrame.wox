@@ -84,80 +84,6 @@
           <div var:class="pageContentClasses"
             ><var:component-content
               /></div>
-<!--          <var:if condition="isUIxDebugEnabled">
-            <table border="0" style="font-size: 9pt; visibility: hidden;">
-              <tr>
-                <td valign="top">clientObject:</td>
-                <td valign="top"><var:string value="clientObject" /></td>
-              </tr>
-              <tr>
-                <td valign="top">ownerInContext:</td>
-                <td valign="top"><var:string value="ownerInContext" /></td>
-              </tr>
-              <tr>
-                <td valign="top">traversal stack:</td>
-                <td valign="top">
-                  <var:foreach list="context.objectTraversalStack" item="item">
-                    <var:string value="item" /><br />
-                  </var:foreach>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">traversal path:</td>
-                <td valign="top">
-                  <var:foreach list="context.soRequestTraversalPath"
-                    item="item" const:separator=" => ">
-                    <var:string value="item" />
-                  </var:foreach>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">request type:</td>
-                <td valign="top"><var:string value="context.soRequestType"/>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">path info:</td>
-                <td valign="top"><var:string value="context.pathInfo"/></td>
-              </tr>
-              <tr>
-                <td valign="top">rootURL:</td>
-                <td valign="top"><var:string value="context.rootURL"/></td>
-              </tr>
-              <tr>
-                <td valign="top">active user:</td>
-                <td valign="top"><var:string value="context.activeUser"/></td>
-              </tr>
-              <tr>
-                <td valign="top">CN / email:</td>
-                <td valign="top">
-                  <var:string value="cnForUser"/>
-                  <var:entity const:name="lt"
-                    /><var:string value="emailForUser"
-                    /><var:entity const:name="gt"
-                    /></td>
-              </tr>
-              <tr>
-                <td valign="top">Access Restricted:</td>
-                <td valign="top">
-                  <var:if condition="isAccessRestricted">YES</var:if>
-                  <var:if condition="isAccessRestricted"
-                    const:negate="YES"
-                    >NO</var:if>  
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">Headers:</td>
-                <td valign="top">
-                  <span style="white-space: pre;">
-                    <var:string value="context.request.headers"
-                      const:escapeHTML="YES"
-                      />
-                  </span>
-                </td>
-              </tr>
-            </table>
-          </var:if> -->
           <noscript>
             <div id="noJavascriptError">
             </div>
@@ -169,9 +95,6 @@
                   /></a>
             </div>
           </noscript>
-          <script type="text/javascript">
-            initTabs();
-          </script>
         </body>
       </html>
     </var:if>
