@@ -335,7 +335,7 @@
                        @"(cn='%@*')"
                      @"OR (sn='%@*')"
                      @"OR (displayName='%@*')"
-                     @"OR (mail='*%@*')"
+                     @"OR (mail='%@*')"
                      @"OR (telephoneNumber='*%@*')",
                      filter, filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];

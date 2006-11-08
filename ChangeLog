@@ -1,3 +1,13 @@
+2006-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -_qualifierForFilter:filter]): same as
+	below.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-_qualifierForFilter:filter]): only search records which starts
+	with the specified pattern.
+
 2006-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([NSString

@@ -128,9 +128,9 @@
   if (filter && [filter length] > 0)
     {
       qs = [NSString stringWithFormat:
-                       @"(sn isCaseInsensitiveLike: '%%%@%%') OR "
-                     @"(givenname isCaseInsensitiveLike: '%%%@%%') OR "
-                     @"(mail isCaseInsensitiveLike: '%%%@%%') OR "
+                       @"(sn isCaseInsensitiveLike: '%@%%') OR "
+                     @"(givenname isCaseInsensitiveLike: '%@%%') OR "
+                     @"(mail isCaseInsensitiveLike: '%@%%') OR "
                      @"(telephonenumber isCaseInsensitiveLike: '%%%@%%')",
                      filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
