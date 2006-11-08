@@ -12,6 +12,7 @@
 // Node object
 function Node(id, pid, name, url, onclick, dataname, datatype, title, target,
               icon, iconOpen, open) {
+  this.isParent = false;
   this.id = id;
   this.pid = pid;
   this.name = name;
@@ -104,6 +105,7 @@ dTree.prototype.toString = function() {
 dTree.prototype.addNode = function(pNode) {
   var str = '';
   var n=0;
+  pNode.isParent = true;
   if (this.config.inOrder) n = pNode._ai;
   for (n; n<this.aNodes.length; n++) {
     if (this.aNodes[n].pid == pNode.id) {
@@ -157,7 +159,10 @@ dTree.prototype.node = function(node, nodeId) {
       }
       str += '<img id="i' + this.obj + nodeId + '" src="' + ((node._io) ? node.iconOpen : node.icon) + '" alt="" />';
     }
-    str += '<span class="nodeName">' + node.name + '</span>';
+    str += '<span class="nodeName';
+    if (!node.isParent)
+      str += ' leaf';
+    str += '">' + node.name + '</span>';
     if (node.url || ((!this.config.folderLinks || !node.url) && node._hc)) str += '</a>';
     str += '</div>';
   }

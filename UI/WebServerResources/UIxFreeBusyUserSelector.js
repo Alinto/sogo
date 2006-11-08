@@ -7,18 +7,21 @@ var requestField;
 var awaitingFreeBusyRequests = new Array();
 var freeBusySelectorId;
 
-function onContactKeyUp(node, event)
-{
+function onContactKeyUp(node, event) {
   if (!running) {
     if (event.keyCode == 8
         || event.keyCode == 32
         || event.keyCode > 47) {
+      log ("keycode: " + event.keyCode);
       running = true;
       requestField = node;
       setTimeout("triggerRequest()", delay);
-    } else if (node.confirmedValue && event.keyCode == 13) {
-      node.value = node.confirmedValue;
-      node.setSelectionRange(node.value.length, node.value.length);
+    } else if (node.confirmedValue) {
+      log ("keycode: " + event.keyCode);
+      if (event.keyCode == 13) {
+        node.value = node.confirmedValue;
+        node.setSelectionRange(node.value.length, node.value.length);
+      }
     }
   }
 }
