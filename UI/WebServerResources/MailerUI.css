@@ -449,6 +449,12 @@ DIV.dTreeNode A SPAN.nodeName
 }
 
 DIV.dTreeNode A._selected SPAN.nodeName
+{
+  background: #4b6983;
+  color: #fff;
+}
+
+DIV.dTreeNode SPAN._dragOver
 { 
   background: #4b6983;
   color: #fff;

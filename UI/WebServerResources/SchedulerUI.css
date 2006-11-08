@@ -542,11 +542,12 @@ TABLE.freeBusy TH.attendees,
 TABLE.freeBusy TD.attendees
 { position: absolute;
   padding: 0px .5em;
-  width: 10em;
+  margin: 0px;
+  width: 11em;
   border: 0px !important;
   background: #dbdad5 !important;
   overflow: hidden;
-  left: -4px; }
+  left: 0px; }
 
 TABLE.freeBusy TD.attendees IMG
 { position: absolute;
@@ -555,7 +556,7 @@ TABLE.freeBusy TD.attendees IMG
 
 TABLE.freeBusy TD.attendees INPUT
 { width: 10em;
-  margin-left: 2em; }
+  margin: 0px; }
 
 TABLE.freeBusy TR.freeBusyHeader2 TH
 { font-weight: normal; }
