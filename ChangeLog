@@ -1,5 +1,9 @@
 2006-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/HTMLTableElement.js: added code to
+	simulate XUL drag n drop events. This code will possibly be moved
+	to HTMLElement.js instead later...
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -_qualifierForFilter:filter]): same as
 	below.
