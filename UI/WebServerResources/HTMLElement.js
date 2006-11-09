@@ -1,4 +1,10 @@
 /* custom extensions to the DOM api */
+HTMLElement.prototype.addInterface = function(objectInterface) {
+  Object.extend(this, objectInterface);
+  if (this.bind)
+    this.bind();
+}
+
 HTMLElement.prototype.childNodesWithTag = function(tagName) {
   var matchingNodes = new Array();
   var tagName = tagName.toUpperCase();
