@@ -33,14 +33,14 @@ var SOGoDragHandlesInterface = {
       } else if (this.dhType == 'vertical') {
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
-        delta = event.clientY - this.offsetTop;
+        delta = event.clientY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.style.cursor = "n-resize";
       }
 
       document._currentDragHandle = this;
-      document.addEventListener('mouseup', this.documentStopHandleDragging, true);
-      document.addEventListener('mousemove', this.documentMove, true);
+      document.addEventListener("mouseup", this.documentStopHandleDragging, true);
+      document.addEventListener("mousemove", this.documentMove, true);
       this.move(event);
       event.cancelBubble = true;
     }
@@ -70,8 +70,8 @@ var SOGoDragHandlesInterface = {
       this.upperBlock.style.height = (this.origUpper + deltaY - delta) + 'px;';
     }
  
-    document.removeEventListener('mouseup', this.documentStopHandleDragging, true);
-    document.removeEventListener('mousemove', this.documentMove, true);
+    document.removeEventListener("mouseup", this.documentStopHandleDragging, true);
+    document.removeEventListener("mousemove", this.documentMove, true);
     document.body.setAttribute('style', '');
 
     this.move(event);

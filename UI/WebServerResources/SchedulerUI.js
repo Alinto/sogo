@@ -250,6 +250,7 @@ function appointmentsListCallback(http)
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
+    configureSortableTableHeaders();
   }
   else
     log ("ajax fuckage");
@@ -503,15 +504,13 @@ function onAppointmentContextMenuHide(event)
   }
 }
 
-function onAppointmentsSelectionChange()
-{
+function onAppointmentsSelectionChange() {
   listOfSelection = $("appointmentsList");
   listOfSelection.removeClassName("_unfocused");
   $("tasksList").addClassName("_unfocused");
 }
 
-function onTasksSelectionChange()
-{
+function onTasksSelectionChange() {
   listOfSelection = $("tasksList");
   listOfSelection.removeClassName("_unfocused");
   $("appointmentsList").addClassName("_unfocused");
@@ -522,10 +521,9 @@ function _loadAppointmentHref(href) {
     document.appointmentsListAjaxRequest.aborted = true;
     document.appointmentsListAjaxRequest.abort();
   }
-  url = CalendarBaseURL + href;
-
+  var url = CalendarBaseURL + href;
   document.appointmentsListAjaxRequest
-    = triggerAjaxRequest(url, appointmentsListCallback, href);
+    = triggerAjaxRequest(href, appointmentsListCallback, href);
 
   return false;
 }
@@ -544,8 +542,11 @@ function _loadTasksHref(href) {
   return false;
 }
 
-function onHeaderClick(node) {
-  return _loadAppointmentHref(node.getAttribute("href"));
+function onHeaderClick(event) {
+  log("onHeaderClick: " + this.link);
+  _loadAppointmentHref(this.link);
+
+  event.preventDefault();
 }
 
 function refreshAppointments() {
@@ -964,4 +965,20 @@ function browseUrl(anchor, event) {
   }
 
   return false;
+}
+
+function configureDragHandles() {
+  var handle = $("verticalDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.leftBlock=$("leftPanel");
+    handle.rightBlock=$("rightPanel");
+  }
+
+  handle = $("rightDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.upperBlock=$("appointmentsListView");
+    handle.lowerBlock=$("calendarView");
+  }
 }

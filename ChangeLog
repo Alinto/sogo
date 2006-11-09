@@ -1,5 +1,10 @@
 2006-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added and activated many
+	"load" handlers to configure generic widgets used across the
+	modules. More events are now handled in a DOM-fashion way instead
+	of by setting the relative attributes in the templates.
+
 	* UI/Templates/UIxSortableTableHeader.wox: all the events are
 	declared from the javascript DOM onload handlers.
 

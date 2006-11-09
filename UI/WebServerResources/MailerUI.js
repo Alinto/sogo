@@ -53,17 +53,12 @@ function openMessageWindow(msguid, url) {
   return false;
 }
 
-function clickedUid(sender, msguid) {
+function onMessageDoubleClick(event) {
   resetSelection(window);
+  var msguid = this.parentNode.id.substr(4);
   return openMessageWindow(msguid,
                            ApplicationBaseURL + currentMailbox + "/"
                            + msguid + "/view");
-}
-
-function doubleClickedUid(sender, msguid) {
-  alert("DOUBLE Clicked " + msguid);
-
-  return false;
 }
 
 function toggleMailSelect(sender) {
@@ -236,12 +231,9 @@ function openMessageWindowsForSelection(action)
   return false;
 }
 
-function mailListMarkMessage(sender, action, msguid, markread)
-{
-  var url;
+function mailListMarkMessage(event) {
   var http = createHTTPClient();
-
-  url = ApplicationBaseURL + currentMailbox + "/" + action + "?uid=" + msguid;
+  var url = ApplicationBaseURL + currentMailbox + "/" + action + "?uid=" + msguid;
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK
@@ -433,6 +425,8 @@ function messageListCallback(http)
       var row = $('row_' + selected);
       selectNode(row);
     }
+    configureMessageListEvents();
+    configureSortableTableHeaders();
   }
   else
     log ("ajax fuckage");
@@ -551,9 +545,7 @@ function storeCachedMessage(cachedMessage)
 
 function onMessageSelectionChange()
 {
-  var messageList = $("messageList");
-  var rows  = messageList.getSelectedRowsId();
-
+  var rows = this.getSelectedRowsId();
   if (rows.length == 1) {
     var idx = rows[0].substr(4);
 
@@ -737,13 +729,13 @@ function initMailboxSelection(mailboxName)
   currentMailbox = mailboxName;
 
   var tree = $("d");
-  var treeNodes = getElementsByClassName('DIV', 'dTreeNode', tree);
+  var treeNodes = document.getElementsByClassName("dTreeNode", tree);
   var i = 0;
   while (i < treeNodes.length
          && treeNodes[i].getAttribute("dataname") != currentMailbox)
     i++;
   if (i < treeNodes.length) {
-    var links = getElementsByClassName('A', 'node', treeNodes[i]);
+    var links = document.getElementsByClassName("node", treeNodes[i]);
     if (tree.selectedEntry)
       deselectNode(tree.selectedEntry);
     selectNode(links[0]);
@@ -752,27 +744,19 @@ function initMailboxSelection(mailboxName)
   }
 }
 
-function onHeaderClick(node)
+function onHeaderClick(event)
 {
-  var href = node.getAttribute("href");
-
   if (document.messageListAjaxRequest) {
     document.messageListAjaxRequest.aborted = true;
     document.messageListAjaxRequest.abort();
   }
-  url = ApplicationBaseURL + currentMailbox + "/" + href;
-  if (!href.match(/noframe=/))
+  url = ApplicationBaseURL + currentMailbox + "/" + this.link;
+  if (!this.link.match(/noframe=/))
     url += "&noframe=1";
-  log ("url: " + url);
   document.messageListAjaxRequest
     = triggerAjaxRequest(url, messageListCallback);
 
-  return false;
-}
-
-function registerDraggableMessageNodes()
-{
-  log ("can we drag...");
+  event.preventDefault();
 }
 
 function onSearchFormSubmit()
@@ -816,6 +800,49 @@ var messageListGhost = function () {
   return newDiv;
 }
 
+function configureMessageListEvents() {
+  var messageList = $("messageList");
+  if (messageList) {
+    messageList.addEventListener("selectionchange",
+                                 onMessageSelectionChange, false);
+    var rows = messageList.tBodies[0].rows;
+    var start = 0;
+    while (rows[start].cells[0].hasClassName("tbtv_headercell")
+           || rows[start].cells[0].hasClassName("tbtv_navcell"))
+      start++;
+    for (var i = start; i < rows.length; i++) {
+      rows[i].addEventListener("click", onRowClick, false);
+      rows[i].addEventListener("contextmenu", onMessageContextMenu, false);
+      for (var j = 0; j < rows[i].cells.length; j++) {
+        var cell = rows[i].cells[j];
+        cell.addEventListener("mousedown", listRowMouseDownHandler, true);
+        if (j == 2 || j == 3 || j == 5)
+          cell.addEventListener("dblclick", onMessageDoubleClick, false);
+        else if (j == 4) {
+          var img = cell.childNodesWithTag("img")[0];
+          img.addEventListener("click", mailListMarkMessage, false);
+        }
+      }
+    }
+  }
+}
+
+function configureDragHandles() {
+  var handle = $("dragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.leftBlock=$("mailerFolderTree");
+    handle.rightBlock=$("mailerPageContent");
+  }
+
+  handle = $("mailboxDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.upperBlock=$("mailboxContent");
+    handle.lowerBlock=$("messageContent");
+  }
+}
+
 /* dnd */
 function initDnd() {
   log ("MailerUI initDnd");
@@ -843,6 +870,7 @@ function refreshContacts() {
 
 var initMailer = {
   handleEvent: function (event) {
+    configureMessageListEvents();
 //     initDnd();
   }
 }

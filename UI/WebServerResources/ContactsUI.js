@@ -155,6 +155,7 @@ function contactsListCallback(http)
       for (var i = 0; i < selected.length; i++)
         selectNode($(selected[i]));
     }
+    configureSortableTableHeaders();
   }
   else
     log ("ajax fuckage");
@@ -426,21 +427,19 @@ function newEmailTo(sender) {
   return false; /* stop following the link */
 }
 
-function onHeaderClick(node)
+function onHeaderClick(event)
 {
-  var href = node.getAttribute("href");
-
   if (document.contactsListAjaxRequest) {
     document.contactsListAjaxRequest.aborted = true;
     document.contactsListAjaxRequest.abort();
   }
-  url = CurrentContactFolderURL() + "/" + href;
-  if (!href.match(/noframe=/))
+  url = CurrentContactFolderURL() + "/" + this.link;
+  if (!this.link.match(/noframe=/))
     url += "&noframe=1";
   document.contactsListAjaxRequest
     = triggerAjaxRequest(url, contactsListCallback);
 
-  return false;
+  event.preventDefault();
 }
 
 function registerDraggableMessageNodes()
@@ -638,3 +637,35 @@ function onAddressBookRemove(node) {
 
   return false;
 }
+
+function configureDragHandles() {
+  var handle = $("dragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.leftBlock=$("contactFoldersList");
+    handle.rightBlock=$("rightPanel");
+  }
+
+  handle = $("rightDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.upperBlock=$("contactsListContent");
+    handle.lowerBlock=$("contactView");
+  }
+}
+
+function configureContactFolders() {
+  var contactFolders = $("contactFolders");
+  if (contactFolders) {
+    contactFolders.addEventListener("selectionchange", onFolderSelectionChange, false);
+  }
+}
+
+var initContacts = {
+  handleEvent: function (event) {
+    configureContactFolders();
+//     initDnd();
+  }
+}
+
+window.addEventListener("load", initContacts, false);

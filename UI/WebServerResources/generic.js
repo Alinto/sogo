@@ -75,7 +75,7 @@ function getAllElements(scope)
 
 /* from
    http://www.robertnyman.com/2005/11/07/the-ultimate-getelementsbyclassname/ */
-function getElementsByClassName(_tag, _class, _scope) {
+function getElementsByClassName2(_tag, _class, _scope) {
   var regexp, classes, elements, element, returnElements;
 
   _scope = _scope || document;
@@ -217,25 +217,27 @@ function triggerAjaxRequest(url, callback, userdata) {
   return http;
 }
 
-function checkAjaxRequestsState()
-{
-  if (activeAjaxRequests > 0
-      && !document.busyAnim) {
-    var anim = document.createElement("img");
-    document.busyAnim = anim;
-    anim.setAttribute("src", ResourcesURL + '/busy.gif');
-    anim.style.position = "absolute;";
-    anim.style.top = "2.5em;";
-    anim.style.right = "1em;";
-    anim.style.visibility = "hidden;";
-    anim.style.zindex = "1;";
-    var folderTree = document.getElementById("toolbar");
-    folderTree.appendChild(anim);
-    anim.style.visibility = "visible;";
-  } else if (activeAjaxRequests == 0
+function checkAjaxRequestsState() {
+  var toolbar = document.getElementById("toolbar");
+  if (toolbar) {
+    if (activeAjaxRequests > 0
+        && !document.busyAnim) {
+      var anim = document.createElement("img");
+      document.busyAnim = anim;
+      anim.src = ResourcesURL + "/busy.gif";
+      anim.style.position = "absolute;";
+      anim.style.top = "2.5em;";
+      anim.style.right = "1em;";
+      anim.style.visibility = "hidden;";
+      anim.style.zindex = "1;";
+      toolbar.appendChild(anim);
+      anim.style.visibility = "visible;";
+    }
+    else if (activeAjaxRequests == 0
 	     && document.busyAnim) {
-    document.busyAnim.parentNode.removeChild(document.busyAnim);
-    document.busyAnim = null;
+      document.busyAnim.parentNode.removeChild(document.busyAnim);
+      document.busyAnim = null;
+    }
   }
 }
 
@@ -387,12 +389,11 @@ function onRowClick(event) {
 
   if (startSelection != node.parentNode.getSelectedNodes()) {
     var parentNode = node.parentNode;
-    if (parentNode.tagName == 'TBODY')
+    if (parentNode instanceof HTMLTableSectionElement)
       parentNode = parentNode.parentNode;
-    var code = '' + parentNode.getAttribute('onselectionchange');
-    if (code.length > 0) {
-      node.eval(code);
-    }
+    var onSelectionChangeEvent = document.createEvent("Event");
+    onSelectionChangeEvent.initEvent("selectionchange", true, true);
+    parentNode.dispatchEvent(onSelectionChangeEvent);
   }
 }
 
@@ -440,7 +441,7 @@ function onMenuClick(event, menuId)
 function setupMenuTarget(menu, target)
 {
   menu.menuTarget = target;
-  var menus = getElementsByClassName("*", "menu", menu);
+  var menus = getElementsByClassName("menu", menu);
   for (var i = 0; i < menus.length; i++) {
     menus[i].menuTarget = target;
   }
@@ -574,7 +575,8 @@ function log(message) {
       logWindow = logWindow.opener;
   }
   var logConsole = logWindow.document.getElementById('logConsole');
-  logConsole.innerHTML += message + '<br />' + "\n";
+  if (logConsole)
+    logConsole.innerHTML += message + '<br />' + "\n";
 }
 
 function dropDownSubmenu(event)
@@ -635,145 +637,6 @@ function checkDropDown(event)
 	  parentMenu.setAttribute('onmousemove', null);
 	}
     }
-}
-
-/* drag handle */
-
-var dragHandle;
-var dragHandleOrigX;
-var dragHandleOrigLeft;
-var dragHandleOrigRight;
-var dragHandleOrigY;
-var dragHandleOrigUpper;
-var dragHandleOrigLower;
-var dragHandleDiff;
-
-function startHandleDragging(event) {
-  if (event.button == 0) {
-    var leftBlock = event.target.getAttribute('leftblock');
-    var rightBlock = event.target.getAttribute('rightblock');
-    var upperBlock = event.target.getAttribute('upperblock');
-    var lowerBlock = event.target.getAttribute('lowerblock');
-
-    dragHandle = event.target;
-    if (leftBlock && rightBlock) {
-      dragHandle.dhType = 'horizontal';
-      dragHandleOrigX = dragHandle.offsetLeft;
-      dragHandleOrigLeft = document.getElementById(leftBlock).offsetWidth;
-      dragHandleDiff = 0;
-      dragHandleOrigRight = document.getElementById(rightBlock).offsetLeft - 5;
-      document.body.style.cursor = "e-resize";
-    } else if (upperBlock && lowerBlock) {
-      dragHandle.dhType = 'vertical';
-      var uBlock = document.getElementById(upperBlock);
-      var lBlock = document.getElementById(lowerBlock);
-      dragHandleOrigY = dragHandle.offsetTop;
-      dragHandleOrigUpper = uBlock.offsetHeight;
-      dragHandleDiff = event.clientY - dragHandle.offsetTop;
-      dragHandleOrigLower = lBlock.offsetTop - 5;
-      document.body.style.cursor = "n-resize";
-    }
-
-    document.addEventListener('mouseup', stopHandleDragging, true);
-    document.addEventListener('mousemove', dragHandleMove, true);
-
-    dragHandleMove(event);
-    event.cancelBubble = true;
-  }
-
-  return false;
-}
-
-function stopHandleDragging(event) {
-  if (dragHandle.dhType == 'horizontal') {
-    var diffX = Math.floor(event.clientX - dragHandleOrigX
-                           - (dragHandle.offsetWidth / 2));
-    var lBlock
-      = document.getElementById(dragHandle.getAttribute('leftblock'));
-    var rBlock
-      = document.getElementById(dragHandle.getAttribute('rightblock'));
-    
-    rBlock.style.left = (dragHandleOrigRight + diffX) + 'px;';
-    lBlock.style.width = (dragHandleOrigLeft + diffX) + 'px;';
-  } else if (dragHandle.dhType == 'vertical') {
-    var diffY = Math.floor(event.clientY - dragHandleOrigY
-                           - (dragHandle.offsetHeight / 2));
-    var uBlock
-      = document.getElementById(dragHandle.getAttribute('upperblock'));
-    var lBlock
-      = document.getElementById(dragHandle.getAttribute('lowerblock'));
-
-    lBlock.style.top = (dragHandleOrigLower + diffY
-                        - dragHandleDiff) + 'px;';
-    uBlock.style.height = (dragHandleOrigUpper + diffY - dragHandleDiff) + 'px;';
-  }
- 
-  document.removeEventListener('mouseup', stopHandleDragging, true);
-  document.removeEventListener('mousemove', dragHandleMove, true);
-  document.body.setAttribute('style', '');
-  event.cancelBubble = true;
-
-  dragHandleMove(event);
-
-  return false;
-}
-
-function dragHandleMove(event) {
-  if (dragHandle.dhType == 'horizontal') {
-    var width = dragHandle.offsetWidth;
-    var hX = event.clientX;
-    if (hX > -1) {
-      var newLeft = Math.floor(hX - (width / 2));
-      dragHandle.style.left = newLeft + 'px;';
-      event.cancelBubble = true;
-      
-      return false;
-    }
-  } else if (dragHandle.dhType == 'vertical') {
-    var height = dragHandle.offsetHeight;
-    var hY = event.clientY;
-    if (hY > -1) {
-      var newTop = Math.floor(hY - (height / 2))  - dragHandleDiff;
-      dragHandle.style.top = newTop + 'px;';
-      event.cancelBubble = true;
-
-      return false;
-    }
-  }
-}
-
-function dragHandleDoubleClick(event) {
-  dragHandle = event.target;
-
-  if (dragHandle.dhType == 'horizontal') {
-    var lBlock
-      = document.getElementById(dragHandle.getAttribute('leftblock'));
-    var lLeft = lBlock.offsetLeft;
-    
-    if (dragHandle.offsetLeft > lLeft) {
-      var rBlock
-        = document.getElementById(dragHandle.getAttribute('rightblock'));
-      var leftDiff = rBlock.offsetLeft - dragHandle.offsetLeft;
-
-      dragHandle.style.left = lLeft + 'px;';
-      lBlock.style.width = '0px';
-      rBlock.style.left = (lLeft + leftDiff) + 'px;';
-    }
-  } else if (dragHandle.dhType == 'vertical') {
-    var uBlock
-      = document.getElementById(dragHandle.getAttribute('upperblock'));
-    var uTop = uBlock.offsetTop;
-
-    if (dragHandle.offsetTop > uTop) {
-      var lBlock
-        = document.getElementById(dragHandle.getAttribute('lowerblock'));
-      var topDiff = lBlock.offsetTop - dragHandle.offsetTop;
-      
-      dragHandle.style.top = uTop + 'px;';
-      uBlock.style.width = '0px';
-      lBlock.style.top = (uTop + topDiff) + 'px;';
-    }
-  }
 }
 
 /* search field */
@@ -946,6 +809,10 @@ function onContactRemove(node) {
   return false;
 }
 
+function listRowMouseDownHandler(event) {
+  event.preventDefault();
+}
+
 /* tabs */
 function initTabs()
 {
@@ -1072,7 +939,23 @@ function indexColor(number) {
 var onLoadHandler = {
   handleEvent: function (event) {
     initTabs();
+    configureDragHandles();
+    configureSortableTableHeaders();
 //     genericInitDnd();
+  }
+}
+
+function configureSortableTableHeaders() {
+  var headers = document.getElementsByClassName("sortableTableHeader");
+  log("length: " + headers.length);
+  for (var i = 0; i < headers.length; i++) {
+    var anchor = headers[i].childNodesWithTag("a")[0];
+    if (!anchor.link) {
+      log("anchor " + i);
+      anchor.link = anchor.getAttribute("href");
+      anchor.href = "#";
+      anchor.addEventListener("click", onHeaderClick, true);
+    }
   }
 }
 
@@ -1259,4 +1142,12 @@ function genericInitDnd() {
 //     tables[i].addEventListener("dragstart", document.DNDManager.sourceStart, false);
 //     tables[i].addEventListener("dragstop", document.DNDManager.sourceStop, false);
 //   }
+}
+
+/* stubs */
+function configureDragHandles() {
+}
+
+function onHeaderClick(event) {
+  window.alert("generic headerClick");
 }
