@@ -339,6 +339,11 @@ function uixDeleteSelectedMessages(sender) {
   return false;
 }
 
+function onMenuDeleteMessage(event) {
+  uixDeleteSelectedMessages();
+  event.preventDefault();
+}
+
 function onMailboxTreeItemClick(element)
 {
   var topNode = $('d');
@@ -871,7 +876,7 @@ function refreshContacts() {
 var initMailer = {
   handleEvent: function (event) {
     configureMessageListEvents();
-//     initDnd();
+    initDnd();
   }
 }
 

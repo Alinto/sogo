@@ -37,14 +37,14 @@ HTMLTableElement.prototype.workAroundDragGesture = function() {
 
 HTMLTableElement.prototype._dragGestureMouseDownHandler = function(event) {
   this.addEventListener("mousemove", this._dragGestureMouseMoveHandler, false);
-  this.addEventListener("mousedown", this._dragGestureMouseUpHandler, false);
+  this.addEventListener("mouseup", this._dragGestureMouseUpHandler, false);
   this._dragGestureStartPoint = new Array(event.clientX, event.clientY);
   this._dragGestureTarget = event.target;
 }
 
 HTMLTableElement.prototype._dragGestureMouseUpHandler = function(event) {
   this.removeEventListener("mousemove", this._dragGestureMouseMoveHandler, false);
-  this.removeEventListener("mousedown", this._dragGestureMouseUpHandler, false);
+  this.removeEventListener("mouseup", this._dragGestureMouseUpHandler, false);
   this._dragGestureStartPoint = null;
 }
 
