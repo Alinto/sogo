@@ -184,12 +184,12 @@
 
         delete = {
           protectedBy = "View";
-          pageName    = "UIxMailViewContainer";
+          pageName    = "UIxMailView";
           actionName  = "delete";
         };
         trash = {
           protectedBy = "View";
-          pageName    = "UIxMailViewContainer";
+          pageName    = "UIxMailView";
           actionName  = "trash";
         };
         junk = {

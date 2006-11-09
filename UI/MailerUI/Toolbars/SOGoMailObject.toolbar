@@ -36,9 +36,9 @@
   ),
 
   ( // third group
-    { link     = "delete";
+    { link = "#";
       isSafe = NO;
-      onclick = "return onMenuDeleteMessage(event);";
+      onclick = "onMenuDeleteMessage(event);";
 //       enabled  = showMarkDeletedButton;
       image = "tb-mail-delete-flat-24x24.png";
       cssClass = "tbicon_delete"; label = "Delete"; },
