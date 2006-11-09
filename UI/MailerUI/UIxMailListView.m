@@ -377,47 +377,6 @@ static int attachmentFlagSize = 8096;
   return [@"unreaddiv_" stringByAppendingString:[self messageUidString]];
 }
 
-- (NSString *) clickedMsgJS 
-{
-  /* return 'false' aborts processing */
-  return [NSString stringWithFormat:@"clickedUid(this, '%@'); return false", 
-		     [self messageUidString]];
-}
-
-// the following are unused?
-- (NSString *) dblClickedMsgJS 
-{
-  return [NSString stringWithFormat:@"doubleClickedUid(this, '%@')", 
-		     [self messageUidString]];
-}
-
-// the following are unused?
-- (NSString *) highlightRowJS 
-{
-  return [NSString stringWithFormat:@"highlightUid(this, '%@')", 
-		     [self messageUidString]];
-}
-- (NSString *) lowlightRowJS 
-{
-  return [NSString stringWithFormat:@"lowlightUid(this, '%@')", 
-		     [self messageUidString]];
-}
-
-- (NSString *) markUnreadJS 
-{
-  return [NSString stringWithFormat:
-		     @"mailListMarkMessage(this, 'markMessageUnread', "
-		     @"'%@', false)", 
-		     [self messageUidString]];
-}
-- (NSString *) markReadJS 
-{
-  return [NSString stringWithFormat:
-		     @"mailListMarkMessage(this, 'markMessageRead', "
-		     @"'%@', true)", 
-		     [self messageUidString]];
-}
-
 /* error redirects */
 
 - (id) redirectToViewWithError: (id) _error 
