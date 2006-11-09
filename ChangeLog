@@ -1,3 +1,13 @@
+2006-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SOGoDragHandles.js: new module containing
+	the "SOGoDragHandlesInterface", implementing methods that can be
+	attributed to DIV so that they can be used as drag handles.
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString]): initialize the tmp strings with '0' to make
+	sure they don't contain garbage.
+
 2006-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: register the messageList
