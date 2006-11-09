@@ -1,5 +1,8 @@
 2006-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/MailerUI/UIxMailListView.wox: all the events are
+	declared from the javascript DOM onload handlers.
+
 	* UI/MailerUI/UIxMailListView.m: removed all the JS methods since
 	we want everything to be separated from each other, as much as
 	possible.

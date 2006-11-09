@@ -11,8 +11,7 @@
     >
     <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
 
-    <table multiselect="yes" id="messageList"
-      onselectionchange="onMessageSelectionChange();">
+    <table multiselect="yes" id="messageList">
       <tbody>
         <tr class="tableview"
           ><td class="tbtv_headercell messageFlagColumn"
@@ -84,29 +83,21 @@
             ></var:if>
         <var:foreach list="messages" item="message"
           ><tr class="tableview" var:id="msgRowID"
-            onclick="return onRowClick(event);"
-            oncontextmenu="return onMessageContextMenu(event, this);"
-            ><td onmousedown="return false;"
-              ></td
-              ><td onmousedown="return false;"
-              ><var:if condition="hasMessageAttachment"
+            ><td></td
+              ><td><var:if condition="hasMessageAttachment"
                 ><img rsrc:src="title_attachment_14x14.png"
                   /></var:if
                 ></td
               
               ><td
-              onmousedown="return false;"
               var:class="messageSubjectCellStyleClass"
-              var:ondblclick="clickedMsgJS"
               var:id="msgDivID"
               ><var:string value="message.envelope.subject"
                 formatter="context.mailSubjectFormatter"
                 /></td
 
               ><td
-              onmousedown="return false;"
               var:class="messageCellStyleClass"
-              var:ondblclick="clickedMsgJS"
               ><var:if condition="showToAddress" const:negate="YES"
                 ><var:string value="message.envelope.from"
                   formatter="context.mailEnvelopeAddressFormatter"
@@ -117,12 +108,10 @@
                   /></var:if
                 ></td
               
-              ><td onmousedown="return false;"
-              var:class="messageCellStyleClass"
+              ><td var:class="messageCellStyleClass"
               ><var:if condition="isMessageRead"
                 ><img rsrc:src="icon_read.gif"
                   class="mailerReadIcon"
-                  var:onclick="markUnreadJS"
                   label:title="Mark Unread"
                   label:title-markread="Mark Read"
                   label:title-markunread="Mark Unread"
@@ -131,7 +120,6 @@
                 ><var:if condition="isMessageRead" const:negate="YES"
                 ><img rsrc:src="icon_unread.gif"
                   class="mailerUnreadIcon"
-                  var:onclick="markReadJS"
                   label:title="Mark Read"
                   label:title-markread="Mark Read"
                   label:title-markunread="Mark Unread"
@@ -139,9 +127,7 @@
                   /></var:if
                 ></td
               
-              ><td onmousedown="return false;"
-              var:class="messageCellStyleClass"
-              var:ondblclick="clickedMsgJS"
+              ><td var:class="messageCellStyleClass"
               ><span class="mailer_datefield"
                 ><var:string value="message.envelope.date" 
                   formatter="context.mailDateFormatter"
@@ -152,9 +138,6 @@
         </var:foreach>
       </tbody>
     </table>
-    <script type="text/javascript">
-      registerDraggableMessageNodes();
-    </script>
     <!--
     <tr class="tableview">
     <td colspan="6" class="tbtv_actcell">
