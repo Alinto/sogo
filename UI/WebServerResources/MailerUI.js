@@ -843,7 +843,7 @@ function refreshContacts() {
 
 var initMailer = {
   handleEvent: function (event) {
-    initDnd();
+//     initDnd();
   }
 }
 

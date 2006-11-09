@@ -1072,7 +1072,7 @@ function indexColor(number) {
 var onLoadHandler = {
   handleEvent: function (event) {
     initTabs();
-    genericInitDnd();
+//     genericInitDnd();
   }
 }
 
