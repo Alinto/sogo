@@ -574,6 +574,12 @@ TD.tbtv_navcell
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
 
+TD.tbtv_headercell:active
+{ background-color: #DCDAD5;
+  border: 1px solid #9c9a94;
+  -moz-border-bottom-colors: #9c9a94;
+  -moz-border-right-colors: #9c9a94; }
+
 td.tbtv_headercell SPAN
 { float: left;
   width: 100%; }
