@@ -107,13 +107,7 @@
             </var:if>
           </div>
 
-          <div class="dragHandle" id="dragHandle"
-            onmousedown="startHandleDragging(event);"
-            onmousemove=""
-            ondblclick="dragHandleDoubleClick(event);"
-            leftblock="contactFoldersList"
-            rightblock="rightPanel">
-          </div>
+          <div class="dragHandle" id="dragHandle"><!-- space --></div>
         </var:if>
 
         <div id="rightPanel">
@@ -123,13 +117,7 @@
             <var:component-content />
           </div>
 
-          <div id="rightDragHandle"
-            class="dragHandle"
-            onmousedown="startHandleDragging(event);"
-            onmousemove=""
-            upperblock="contactsListContent"
-            lowerblock="contactView">
-          </div>
+          <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
 
           <div id="contactView" onmousedown="return false;"
             ></div>

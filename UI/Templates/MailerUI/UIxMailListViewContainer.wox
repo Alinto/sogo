@@ -9,20 +9,13 @@
     className="UIxMailMainFrame"
     title="name"
     >
-
     <var:if condition="hideFrame" const:negate="YES">
       <div id="mailboxContent">
         <var:component-content/>
       </div>
 
-      <div class="dragHandle" id="mailboxDragHandle"
-        onmousedown="startHandleDragging(event);"
-        onmousemove=""
-        ondblclick="dragHandleDoubleClick(event);"
-        upperblock="mailboxContent"
-        lowerblock="messageContent">
-      </div>
-      
+      <div class="dragHandle" id="mailboxDragHandle"><!-- space --></div>
+
       <div id="messageContent">
       </div>
 

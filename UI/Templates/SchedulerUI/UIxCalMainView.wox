@@ -88,13 +88,7 @@
           /></div>
     </div>
 
-    <div id="verticalDragHandle"
-      class="dragHandle"
-      onmousedown="startHandleDragging(event);"
-      onmousemove=""
-      leftblock="leftPanel"
-      rightblock="rightPanel">
-    </div>
+    <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
 
     <div id="rightPanel">
       <var:component className="UIxCalFilterPanel" />
@@ -104,13 +98,7 @@
         ><var:component className="UIxCalAptListView"
           /></div>
 
-      <div id="rightDragHandle"
-        class="dragHandle"
-        onmousedown="startHandleDragging(event);"
-        onmousemove=""
-        upperblock="appointmentsListView"
-        lowerblock="calendarView">
-      </div>
+      <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
 
       <div id="calendarView"
         ><var:component className="UIxCalDayView"

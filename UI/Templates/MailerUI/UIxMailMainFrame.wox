@@ -316,13 +316,7 @@
                 />
             </div>
             
-            <div class="dragHandle" id="dragHandle"
-              onmousedown="startHandleDragging(event);"
-              onmousemove=""
-              ondblclick="dragHandleDoubleClick(event);"
-              leftblock="mailerFolderTree"
-              rightblock="mailerPageContent">
-            </div>
+            <div class="dragHandle" id="dragHandle"><!-- space --></div>
           </var:if>
 
           <div id="mailerPageContent">
