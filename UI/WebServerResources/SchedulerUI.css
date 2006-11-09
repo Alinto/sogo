@@ -551,12 +551,13 @@ TABLE.freeBusy TD.attendees
 
 TABLE.freeBusy TD.attendees IMG
 { position: absolute;
-  left: 1em;
+  left: 0em;
   top: .5em; }
 
 TABLE.freeBusy TD.attendees INPUT
 { width: 10em;
-  margin: 0px; }
+  margin: 0px;
+  margin-left: 10px; }
 
 TABLE.freeBusy TR.freeBusyHeader2 TH
 { font-weight: normal; }
