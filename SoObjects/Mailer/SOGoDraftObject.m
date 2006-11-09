@@ -49,13 +49,11 @@
   unsigned int dataLen, destLen;
 
   dataLen = [self length];
-  data = malloc(dataLen * sizeof(unsigned char*));
-  *(data + dataLen - 1) = 0;
-  [self getCString: data];
+  data = calloc(dataLen, sizeof (unsigned char*));
+  [self getCString: (char *) data];
 
   destLen = dataLen * 3;
-  dest = malloc(dataLen * 3 * sizeof(unsigned char*));
-  *(dest + destLen - 1) = 0;
+  dest = calloc(dataLen * 3, sizeof (unsigned char*));
   NGEncodeQuotedPrintableMime (data, dataLen, dest, destLen);
 
   qpString = [NSString stringWithFormat: @"=?utf-8?Q?%s?=", dest];
