@@ -1,3 +1,9 @@
+2006-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-moveToFolderNamed:folderNameinContext:]): new method base on
+	-trashInContext:.
+
 2006-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js: added and activated many

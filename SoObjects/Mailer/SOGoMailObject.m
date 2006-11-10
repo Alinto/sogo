@@ -800,6 +800,71 @@ static BOOL debugSoParts       = NO;
   return nil;
 }
 
+- (NSException *) moveToFolderNamed: (NSString *) folderName
+                          inContext: (id)_ctx
+{
+  /*
+    Trashing is three actions:
+    a) copy to trash folder
+    b) mark mail as deleted
+    c) expunge folder
+    
+    In case b) or c) fails, we can't do anything because IMAP4 doesn't tell us
+    the ID used in the trash folder.
+  */
+  SOGoMailFolder *destFolder;
+  NSEnumerator *folders;
+  NSString *currentFolderName, *reason;
+  NSException    *error;
+
+  // TODO: check for safe HTTP method
+
+  destFolder = [self mailAccountsFolder];
+  folders = [[folderName componentsSeparatedByString: @"/"] objectEnumerator];
+  currentFolderName = [folders nextObject];
+  currentFolderName = [folders nextObject];
+
+  while (currentFolderName)
+    {
+      destFolder = [destFolder lookupName: currentFolderName
+                               inContext: _ctx
+                               acquire: NO];
+      if ([destFolder isKindOfClass: [NSException class]])
+        return (NSException *) destFolder;
+      currentFolderName = [folders nextObject];
+    }
+
+  if (!([destFolder isKindOfClass: [SOGoMailFolder class]]
+        && [destFolder isNotNull]))
+    {
+      reason = [NSString stringWithFormat: @"Did not find folder name '%@'!",
+                         folderName];
+      return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                          reason: reason];
+    }
+  [destFolder flushMailCaches];
+
+  /* a) copy */
+  
+  error = [self davCopyToTargetObject: destFolder
+		newName:@"fakeNewUnusedByIMAP4" /* autoassigned */
+		inContext:_ctx];
+  if (error != nil) return error;
+
+  /* b) mark deleted */
+  
+  error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
+  if (error != nil) return error;
+  
+  /* c) expunge */
+
+  error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
+  if (error != nil) return error; // TODO: unflag as deleted?
+  [self flushMailCaches];
+  
+  return nil;
+}
+
 - (NSException *)delete {
   /* 
      Note: delete is different to DELETEAction: for mails! The 'delete' runs
