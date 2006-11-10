@@ -101,7 +101,7 @@ static NSString *mailETag = nil;
   id trash;
   
   trash = [[[self clientObject] mailAccountFolder] 
-            trashFolderInContext:[self context]];
+            trashFolderInContext:context];
   if ([trash isKindOfClass:[NSException class]])
     return NO;
 
@@ -154,7 +154,7 @@ static NSString *mailETag = nil;
   id info;
   
   info = [[self clientObject] bodyStructure];
-  return [[[self context] mailRenderingContext] viewerForBodyInfo:info];
+  return [[context mailRenderingContext] viewerForBodyInfo:info];
 }
 
 /* actions */
@@ -170,7 +170,7 @@ static NSString *mailETag = nil;
     */
     NSString *s;
     
-    if ((s = [[[self context] request] headerForKey:@"if-none-match"])) {
+    if ((s = [[context request] headerForKey:@"if-none-match"])) {
       if ([s rangeOfString:mailETag].length > 0) { /* not perfectly correct */
 	/* client already has the proper entity */
 	// [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
@@ -180,8 +180,8 @@ static NSString *mailETag = nil;
 			      reason:@"message got deleted"];
 	}
 	
-	[[[self context] response] setStatus:304 /* Not Modified */];
-	return [[self context] response];
+	[[context response] setStatus:304 /* Not Modified */];
+	return [context response];
       }
     }
   }
@@ -205,7 +205,7 @@ static NSString *mailETag = nil;
 - (id)redirectToParentFolder {
   id url;
   
-  url = [[[self clientObject] container] baseURLInContext:[self context]];
+  url = [[[self clientObject] container] baseURLInContext:context];
   return [self redirectToLocation:url];
 }
 
@@ -252,10 +252,10 @@ static NSString *mailETag = nil;
     [self logWithFormat:@"WARNING: method is invoked using safe HTTP method!"];
   }
   
-  if ((ex = [[self clientObject] trashInContext:[self context]]) != nil) {
+  if ((ex = [[self clientObject] trashInContext:context]) != nil) {
     id url;
     
-    if ([[[[self context] request] formValueForKey:@"jsonly"] boolValue])
+    if ([[[context request] formValueForKey:@"jsonly"] boolValue])
       /* called using XMLHttpRequest */
       return ex;
     
@@ -264,10 +264,10 @@ static NSString *mailETag = nil;
     return [self redirectToLocation:url];
   }
 
-  if ([[[[self context] request] formValueForKey:@"jsonly"] boolValue]) {
+  if ([[[context request] formValueForKey:@"jsonly"] boolValue]) {
     /* called using XMLHttpRequest */
-    [[[self context] response] setStatus:200 /* OK */];
-    return [[self context] response];
+    [[context response] setStatus:200 /* OK */];
+    return [context response];
   }
   
   if (![self isInlineViewer]) {
@@ -280,6 +280,44 @@ static NSString *mailETag = nil;
   }
   
   return [self redirectToParentFolder];
+}
+
+- (id <WOActionResults>) moveAction
+{
+  id <WOActionResults> *result;
+  NSString *destinationFolder;
+  id url;
+
+  if ([self isInvokedBySafeMethod]) {
+    // TODO: fix UI to use POST for unsafe actions
+    [self logWithFormat:@"WARNING: method is invoked using safe HTTP method!"];
+  }
+
+  destinationFolder = [self queryParameterForKey: @"tofolder"];
+  if ([destinationFolder length] > 0)
+    {
+      result = [[self clientObject] moveToFolderNamed: destinationFolder
+                                    inContext: context];
+      if (result)
+        {
+          if (![[[context request] formValueForKey:@"jsonly"] boolValue])
+            {
+              url = [NSString stringWithFormat: @"view?error=%@",
+                              [[result reason] stringByEscapingURL]];
+              result = [self redirectToLocation: url];
+            }
+        }
+      else
+        {
+          result = [context response];
+          [result setStatus: 200];
+        }
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                          reason: @"No destination folder given"];
+
+  return result;
 }
 
 - (id)getMailAction {

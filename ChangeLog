@@ -1,5 +1,9 @@
 2006-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m ([UIxMailView -moveAction]): new
+	action to move the current message to the mailbox named after the
+	value of parameter "tofolder".
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-moveToFolderNamed:folderNameinContext:]): new method base on
 	-trashInContext:.
