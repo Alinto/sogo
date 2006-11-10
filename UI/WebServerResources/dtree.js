@@ -10,9 +10,9 @@
   |--------------------------------------------------*/
 
 // Node object
-function Node(id, pid, name, url, onclick, dataname, datatype, title, target,
+function Node(id, pid, name, isParent, url, onclick, dataname, datatype, title, target,
               icon, iconOpen, open) {
-  this.isParent = false;
+  this.isParent = isParent;
   this.id = id;
   this.pid = pid;
   this.name = name;
@@ -72,9 +72,9 @@ function dTree(objName) {
 };
 
 // Adds a new node to the node array
-dTree.prototype.add = function(id, pid, name, url, onclick, datatype,
+dTree.prototype.add = function(id, pid, name, isParent, url, onclick, datatype,
                                title, target, icon, iconOpen, open) {
-  this.aNodes[this.aNodes.length] = new Node(id, pid, name, url, onclick,
+  this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url, onclick,
                                              datatype, title, target, icon,
                                              iconOpen, open);
 };
@@ -105,7 +105,6 @@ dTree.prototype.toString = function() {
 dTree.prototype.addNode = function(pNode) {
   var str = '';
   var n=0;
-  pNode.isParent = true;
   if (this.config.inOrder) n = pNode._ai;
   for (n; n<this.aNodes.length; n++) {
     if (this.aNodes[n].pid == pNode.id) {

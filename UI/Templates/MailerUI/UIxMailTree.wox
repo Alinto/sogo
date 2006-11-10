@@ -36,7 +36,7 @@
           /></var:foreach>
       document.write(d);
     </script>
-    <noscript>
+<!--    <noscript>
       <var:treeview
 	list="rootNodes" item="item" sublist="item.children"
 	zoom="item.isPathNode"
@@ -68,5 +68,5 @@
               ></a
             ></var:tree-data>
       </var:treeview>
-    </noscript>
+    </noscript> -->
   </div>

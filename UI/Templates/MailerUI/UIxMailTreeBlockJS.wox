@@ -3,5 +3,5 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    ><var:string value="treeObjectName" />.add(<var:string value="item.serial" />, <var:string value="item.parent" />, '<var:string value="item.title" />', '#', 'onMailboxTreeItemClick(this);', '<var:string value="item.name" />', '<var:string value="item.folderType" />', '', '', '<var:string value="iconName" />', '<var:string value="iconName" />');
+    ><var:string value="treeObjectName" />.add(<var:string value="item.serial" />, <var:string value="item.parent" />, '<var:string value="item.title" />', <var:string value="item.hasChildren" />, '#', 'onMailboxTreeItemClick(this);', '<var:string value="item.name" />', '<var:string value="item.folderType" />', '', '', '<var:string value="iconName" />', '<var:string value="iconName" />');
   </container>
