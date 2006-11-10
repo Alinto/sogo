@@ -313,17 +313,23 @@ function uixDeleteSelectedMessages(sender) {
     var url, http;
     
     /* send AJAX request (synchronously) */
-    
-    url = (ApplicationBaseURL + currentMailbox + "/"
-           + rows[i].getAttribute("id").substr(4)
-           + "/trash?jsonly=1");
+
+    var messageId = currentMailbox + "/" + rowIds[i];
+    url = ApplicationBaseURL + messageId + "/trash?jsonly=1";
     http = createHTTPClient();
-    http.open("POST", url, false /* not async */);
+    http.open("GET", url, false /* not async */);
     http.send("");
     if (http.status != 200) { /* request failed */
       failCount++;
       http = null;
       continue;
+    } else {
+      deleteCachedMessage(messageId);
+      if (currentMessages[currentMailbox] == rowIds[i]) {
+        var div = $('messageContent');
+        div.innerHTML = "";
+        currentMessages[currentMailbox] = null;
+      }
     }
     http = null;
 
@@ -337,6 +343,43 @@ function uixDeleteSelectedMessages(sender) {
     alert("Could not delete " + failCount + " messages!");
   
   return false;
+}
+
+function moveMessages(rowIds, folder) {
+  var failCount = 0;
+
+  for (var i = 0; i < rowIds.length; i++) {
+    var url, http;
+
+    /* send AJAX request (synchronously) */
+    
+    var messageId = currentMailbox + "/" + rowIds[i];
+    url = ApplicationBaseURL + messageId + "/move?jsonly=1&tofolder=" + folder;
+    http = createHTTPClient();
+    http.open("GET", url, false /* not async */);
+    http.send("");
+    if (http.status == 200) {
+      var row = $("row_" + rowIds[i]);
+      row.parentNode.removeChild(row);
+      deleteCachedMessage(messageId);
+      if (currentMessages[currentMailbox] == rowIds[i]) {
+        var div = $('messageContent');
+        div.innerHTML = "";
+        currentMessages[currentMailbox] = null;
+      }
+    }
+    else /* request failed */
+      failCount++;
+
+    /* remove from page */
+
+    /* line-through would be nicer, but hiding is OK too */
+  }
+
+  if (failCount > 0)
+    alert("Could not move " + failCount + " messages!");
+  
+  return failCount;
 }
 
 function onMenuDeleteMessage(event) {
@@ -505,6 +548,21 @@ function onFolderMenuHide(event)
   }
   if (topNode.selectedEntry)
     selectNode(topNode.selectedEntry);
+}
+
+function deleteCachedMessage(messageId) {
+  var done = false;
+  var counter = 0;
+
+  while (counter < cachedMessages.length
+         && !done)
+    if (cachedMessages[counter]
+        && cachedMessages[counter]['idx'] == messageId) {
+      cachedMessages.splice(counter, 1);
+      done = true;
+    }
+    else
+      counter++;
 }
 
 function getCachedMessage(idx)
@@ -787,6 +845,39 @@ var mailboxSpanExit = function() {
   this.removeClassName("_dragOver");
 }
 
+var mailboxSpanDrop = function(data) {
+  var success = false;
+
+  if (data) {
+    var folder = this.parentNode.parentNode.getAttribute("dataname");
+    if (folder != currentMailbox)
+      success = (moveMessages(data, folder) == 0);
+  }
+  else
+    success = false;
+
+  return success;
+}
+
+var plusSignEnter = function() {
+  var nodeNr = parseInt(this.id.substr(2));
+  if (!d.aNodes[nodeNr]._io)
+    this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
+}
+
+var plusSignExit = function() {
+  if (this.plusSignTimer) {
+    clearTimeout(this.plusSignTimer);
+    this.plusSignTimer = null;
+  }
+}
+
+function openPlusSign(nodeNr) {
+  d.nodeStatus(1, nodeNr, d.aNodes[nodeNr]._ls);
+  d.aNodes[nodeNr]._io = 1;
+  this.plusSignTimer = null;
+}
+
 var messageListGhost = function () {
   var newDiv = document.createElement("div");
 //   newDiv.style.width = "25px;";
@@ -805,6 +896,15 @@ var messageListGhost = function () {
   return newDiv;
 }
 
+var messageListData = function(type) {
+  var rows = this.getSelectedRowsId();
+  var msgIds = new Array();
+  for (var i = 0; i < rows.length; i++)
+    msgIds.push(rows[i].substr(4));
+
+  return msgIds;
+}
+
 function configureMessageListEvents() {
   var messageList = $("messageList");
   if (messageList) {
@@ -816,11 +916,11 @@ function configureMessageListEvents() {
            || rows[start].cells[0].hasClassName("tbtv_navcell"))
       start++;
     for (var i = start; i < rows.length; i++) {
-      rows[i].addEventListener("click", onRowClick, false);
+      rows[i].addEventListener("mousedown", onRowClick, false);
       rows[i].addEventListener("contextmenu", onMessageContextMenu, false);
       for (var j = 0; j < rows[i].cells.length; j++) {
         var cell = rows[i].cells[j];
-        cell.addEventListener("mousedown", listRowMouseDownHandler, true);
+        cell.addEventListener("mousedown", listRowMouseDownHandler, false);
         if (j == 2 || j == 3 || j == 5)
           cell.addEventListener("dblclick", onMessageDoubleClick, false);
         else if (j == 4) {
@@ -829,6 +929,11 @@ function configureMessageListEvents() {
         }
       }
     }
+
+    messageList.dndTypes = function() { return new Array("mailRow"); };
+    messageList.dndGhost = messageListGhost;
+    messageList.dndDataForType = messageListData;
+    document.DNDManager.registerSource(messageList);
   }
 }
 
@@ -851,19 +956,25 @@ function configureDragHandles() {
 /* dnd */
 function initDnd() {
   log ("MailerUI initDnd");
-  var msgList = $("messageList");
-  if (msgList) {
-    msgList.workAroundDragGesture();
-    msgList.dndTypes = function() { return new Array("mailRow"); };
-    msgList.dndGhost = messageListGhost;
-    document.DNDManager.registerSource(msgList);
 
-    var nodes = document.getElementsByClassName("leaf", $("d"));
+  var tree = $("d");
+  if (tree) {
+    var images = tree.getElementsByTagName("img");
+    for (var i = 0; i < images.length; i++) {
+      if (images[i].id[0] == 'j') {
+        images[i].dndAcceptType = mailboxSpanAcceptType;
+        images[i].dndEnter = plusSignEnter;
+        images[i].dndExit = plusSignExit;
+        document.DNDManager.registerDestination(images[i]);
+      }
+    }
+    var nodes = document.getElementsByClassName("leaf", tree);
     for (var i = 0; i < nodes.length; i++) {
-      nodes[i].dndAcceptType = this.mailboxSpanAcceptType;
-      nodes[i].dndEnter = this.mailboxSpanEnter;
-      nodes[i].dndExit = this.mailboxSpanExit;
-      document.DNDManager.registerDestination(nodes[i]);
+      nodes[i].dndAcceptType = mailboxSpanAcceptType;
+      nodes[i].dndEnter = mailboxSpanEnter;
+      nodes[i].dndExit = mailboxSpanExit;
+        nodes[i].dndDrop = mailboxSpanDrop;
+        document.DNDManager.registerDestination(nodes[i]);
     }
   }
 }

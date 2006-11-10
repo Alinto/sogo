@@ -1,5 +1,9 @@
 2006-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: added code to handle the
+	possible drag and drop events to manager in the mail module.
+	Moving messages, opening parent folders, ...
+
 	* UI/WebServerResources/SOGoDragAndDrop.js: new file containing
 	the drag and drop manager as well as the interface to HTMLElement
 	to trigger drag and drop events.
