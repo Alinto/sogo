@@ -37,7 +37,6 @@ var SOGoDragHandlesInterface = {
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.style.cursor = "n-resize";
       }
-
       document._currentDragHandle = this;
       document.addEventListener("mouseup", this.documentStopHandleDragging, true);
       document.addEventListener("mousemove", this.documentMove, true);
