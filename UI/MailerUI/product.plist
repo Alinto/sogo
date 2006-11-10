@@ -182,6 +182,11 @@
           actionName  = "getMail";
         };
 
+        move = {
+          protectedBy = "View";
+          pageName    = "UIxMailView";
+          actionName  = "move";
+        };
         delete = {
           protectedBy = "View";
           pageName    = "UIxMailView";
