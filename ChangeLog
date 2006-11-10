@@ -1,5 +1,9 @@
 2006-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SOGoDragAndDrop.js: new file containing
+	the drag and drop manager as well as the interface to HTMLElement
+	to trigger drag and drop events.
+
 	* UI/MailerUI/UIxMailView.m ([UIxMailView -moveAction]): new
 	action to move the current message to the mailbox named after the
 	value of parameter "tofolder".

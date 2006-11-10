@@ -441,7 +441,7 @@ function onMenuClick(event, menuId)
 function setupMenuTarget(menu, target)
 {
   menu.menuTarget = target;
-  var menus = getElementsByClassName("menu", menu);
+  var menus = document.getElementsByClassName("menu", menu);
   for (var i = 0; i < menus.length; i++) {
     menus[i].menuTarget = target;
   }
@@ -941,17 +941,14 @@ var onLoadHandler = {
     initTabs();
     configureDragHandles();
     configureSortableTableHeaders();
-//     genericInitDnd();
   }
 }
 
 function configureSortableTableHeaders() {
   var headers = document.getElementsByClassName("sortableTableHeader");
-  log("length: " + headers.length);
   for (var i = 0; i < headers.length; i++) {
     var anchor = headers[i].childNodesWithTag("a")[0];
     if (!anchor.link) {
-      log("anchor " + i);
       anchor.link = anchor.getAttribute("href");
       anchor.href = "#";
       anchor.addEventListener("click", onHeaderClick, true);
@@ -960,189 +957,6 @@ function configureSortableTableHeaders() {
 }
 
 window.addEventListener("load", onLoadHandler, false);
-
-/* drag and drop */
-document.DNDManager = {
-  lastSource: 0,
-  lastDestination: 0,
-  sources: new Array(),
-  destinations: new Array(),
-  registerSource: function (source) {
-    var id = source.getAttribute("id");
-    if (!id) {
-      id = "_dndSource" + (this.lastSource + 1);
-      source.setAttribute("id", id);
-    }
-    this.sources[id] = source;
-    this.lastSource++;
-    if (source instanceof HTMLTableElement) {
-      source.addEventListener("draggesture-hack",
-                              document.DNDManager.sourceGesture, false);
-    }
-  },
-  registerDestination: function (destination) {
-    var id = destination.getAttribute("id");
-    if (!id) {
-      id = "_dndDestination" + (this.lastDestination + 1);
-      destination.setAttribute("id", id);
-    }
-    this.destinations[id] = destination;
-    this.lastDestination++;
-  },
-  _lookupSource: function (target) {
-    var source = null;
-    var id = target.getAttribute("id");
-    if (id)
-      source = document.DNDManager.sources[id];
-    return source;
-  },
-  _lookupDestination: function (target) {
-    var destination = null;
-    var id = target.getAttribute("id");
-    if (id)
-      destination = document.DNDManager.destinations[id];
-    return destination;
-  },
-  sourceGesture: function (event) {
-    var source = document.DNDManager._lookupSource (event.target);
-    if (source)
-      document.DNDManager.currentDndOperation = new document.DNDOperation (source);
-  },
-  destinationEnter: function (event) {
-    var operation = document.DNDManager.currentDndOperation;
-    var destination = document.DNDManager._lookupDestination (event.target);
-    if (operation && destination && destination.dndAcceptType) {
-      operation.type = null;
-      var i = 0;
-      while (operation.type == null
-             && i < operation.types.length) {
-        if (destination.dndAcceptType(operation.types[i])) {
-          operation.type = operation.types[i];
-          operation.setDestination(destination);
-          if (destination.dndEnter)
-            destination.dndEnter(event, operation.source, operation.type);
-        }
-        else
-          i++;
-      }
-    }
-  },
-  destinationExit: function (event) {
-    var operation = document.DNDManager.currentDndOperation;
-    if (operation
-        && operation.destination == event.target) {
-//       log("exit: " + event.target);
-      if (operation.destination.dndExit)
-        event.target.dndExit();
-      operation.setDestination(null);
-    }
-  },
-  destinationOver: function (event) {
-//     var operation = document.DNDManager.currentDndOperation;
-//     if (operation
-//         && operation.destination == event.target)
-//       log("over: " + event.target);
-  },
-  destinationDrop: function (event) {
-    var operation = document.DNDManager.currentDndOperation;
-    if (operation) {
-      if (operation.ghost)
-        operation.bustGhost();
-      if (operation.source instanceof HTMLTableElement) {
-        window.removeEventListener("mouseup",
-                                   document.DNDManager.destinationDrop, false);
-        window.removeEventListener("mouseover",
-                                   document.DNDManager.destinationEnter, false);
-        window.removeEventListener("mousemove",
-                                   document.DNDManager.destinationOver, false);
-        window.removeEventListener("mouseout",
-                                   document.DNDManager.destinationExit, false);
-      }
-      if (operation.destination == event.target) {
-        log("drag / drop: " + operation.source + " to " + operation.destination);
-        if (operation.destination.dndExit)
-          event.target.dndExit();
-        if (operation.destination.dndDrop) {
-          var data = operation.source.dndDataForType(operation.type);
-          event.target.dndDrop(data);
-        }
-      }
-      document.DNDManager.currentDndOperation = null;
-    }
-  },
-  currentDndOperation: null,
-}
-
-document.DNDOperation = function (source) {
-  this.source = source;
-  if (source.dndTypes) {
-    this.types = source.dndTypes();
-  }
-  this.type = null;
-  this.destination = null;
-  if (source.dndGhost) {
-    var ghost = source.dndGhost();
-    ghost.style.position = "absolute;";
-    ghost.style.zIndex = 10000;
-    ghost.style.MozOpacity = 0.8;
-    document.body.appendChild(ghost);
-    this.ghost = ghost;
-
-    document.addEventListener("mousemove", this.moveGhost, false);
-  }
-
-  return this;
-};
-
-document.DNDOperation.prototype.setDestination = function(destination) {
-  this.destination = destination;
-}
-
-document.DNDOperation.prototype.moveGhost = function(event) {
-  var offsetX = event.clientX;
-  var offsetY = event.clientY;
-  if (document.DNDManager.currentDndOperation.ghost.ghostOffsetX)
-    offsetX += document.DNDManager.currentDndOperation.ghost.ghostOffsetX;
-  if (document.DNDManager.currentDndOperation.ghost.ghostOffsetY)
-    offsetY += document.DNDManager.currentDndOperation.ghost.ghostOffsetY;
-
-  document.DNDManager.currentDndOperation.ghost.style.left = offsetX + "px;";
-  document.DNDManager.currentDndOperation.ghost.style.top = offsetY + "px;";
-}
-
-document.DNDOperation.prototype.bustGhost = function() {
-  document._dyingOperation = this;
-  document.removeEventListener("mousemove", this.moveGhost, false);
-  this.ghost.bustStep = 10;
-  setTimeout("document._dyingOperation._fadeGhost();", 50);
-}
-
-document.DNDOperation.prototype._fadeGhost = function() {
-  if (this.ghost.bustStep) {
-    this.ghost.style.MozOpacity = (0.1 * this.ghost.bustStep);
-    this.ghost.bustStep--;
-    setTimeout("document._dyingOperation._fadeGhost();", 50);
-  }
-  else {
-    document.body.removeChild(this.ghost);
-    this.ghost = null;
-  }
-}
-
-function genericInitDnd() {
-  log ("generic initDnd");
-//   var tables = document.getElementsByTagName("table");
-  window.addEventListener("draggesture", document.DNDManager.sourceGesture, false);
-  window.addEventListener("dragenter", document.DNDManager.destinationEnter, false);
-  window.addEventListener("dragexit", document.DNDManager.destinationExit, false);
-  window.addEventListener("dragover", document.DNDManager.destinationOver, false);
-  window.addEventListener("dragdrop", document.DNDManager.destinationDrop, false);
-//   for (var i = 0; i < tables.length; i++) {
-//     tables[i].addEventListener("draggesture", document.DNDManager.sourceGesture, false);
-//     tables[i].addEventListener("dragstart", document.DNDManager.sourceStart, false);
-//     tables[i].addEventListener("dragstop", document.DNDManager.sourceStop, false);
-//   }
-}
 
 /* stubs */
 function configureDragHandles() {
