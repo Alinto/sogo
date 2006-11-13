@@ -1,3 +1,8 @@
+2006-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxFreeBusyUserSelector.js: handle tab
+	navigation and focus handling of INPUTs.
+
 2006-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js: added code to handle the
