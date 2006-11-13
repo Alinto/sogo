@@ -111,6 +111,8 @@ function deleteEvent()
       }
     }
   }
+  else
+    window.alert("no selection");
 
   return false;
 }
@@ -250,6 +252,9 @@ function appointmentsListCallback(http)
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
+    var list = $("appointmentsList");
+    list.addEventListener("selectionchange",
+                          onAppointmentsSelectionChange, true);
     configureSortableTableHeaders();
   }
   else
@@ -264,6 +269,9 @@ function tasksListCallback(http)
       && http.status == 200) {
     document.tasksListAjaxRequest = null;
     div.innerHTML = http.responseText;
+    var list = $("tasksList");
+    list.addEventListener("selectionchange",
+                          onTasksSelectionChange, true);
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
       for (var i = 0; i < selectedNodesId.length; i++)
@@ -505,14 +513,14 @@ function onAppointmentContextMenuHide(event)
 }
 
 function onAppointmentsSelectionChange() {
-  listOfSelection = $("appointmentsList");
-  listOfSelection.removeClassName("_unfocused");
+  listOfSelection = this;
+  this.removeClassName("_unfocused");
   $("tasksList").addClassName("_unfocused");
 }
 
 function onTasksSelectionChange() {
-  listOfSelection = $("tasksList");
-  listOfSelection.removeClassName("_unfocused");
+  listOfSelection = this;
+  this.removeClassName("_unfocused");
   $("appointmentsList").addClassName("_unfocused");
 }
 

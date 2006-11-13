@@ -6,8 +6,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     id="appointmentsList"
-    multiselect="yes"
-    onselectionchange="onAppointmentsSelectionChange();">
+    multiselect="yes">
     <tr class="tableview"
       ><td class="tbtv_headercell tbtv_subject_headercell"
         ><var:component className="UIxSortableTableHeader"

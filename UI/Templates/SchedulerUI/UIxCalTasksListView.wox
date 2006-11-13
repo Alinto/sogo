@@ -12,9 +12,7 @@
         onclick="return onHideCompletedTasks(this);"
         /><var:string label:value="Hide completed tasks"
         /></label>
-    <ul id="tasksList"
-      onselectionchange="onTasksSelectionChange();"
-      multiselect="yes">
+    <ul id="tasksList" multiselect="yes">
       <var:foreach list="fetchCoreTasksInfos" item="currentTask"
         ><var:if condition="shouldDisplayCurrentTask"
           ><li var:id="currentTask.c_name"

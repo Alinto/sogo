@@ -1,5 +1,9 @@
 2006-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: updated the list
+	initialization code to use the new event management scheme, adding
+	what was missing to be able to delete events and tasks again.
+
 	* UI/WebServerResources/MailerUI.js: added code to activate the
 	"Get mails" button. Fixed a bug which prevented messages to be
 	deleted.
