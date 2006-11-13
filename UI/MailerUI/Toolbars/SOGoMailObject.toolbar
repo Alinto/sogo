@@ -1,9 +1,12 @@
 ( /* the toolbar groups -*-cperl-*- */
 
   ( /* first group */
-    { link  = "getMail";
+    { link  = "#";
       image = "tb-mail-getmail-flat-24x24.png";
-      cssClass = "tbicon_getmail"; label = "Get Mail"; },
+      cssClass = "tbicon_getmail";
+      label = "Get Mail";
+      onclick = "return refreshMailbox(this);";
+    },
     { link     = "#";
       isSafe   = NO;
       image = "tb-mail-write-flat-24x24.png";
