@@ -1,5 +1,9 @@
 2006-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js: added code to activate the
+	"Get mails" button. Fixed a bug which prevented messages to be
+	deleted.
+
 	* UI/WebServerResources/UIxFreeBusyUserSelector.js: handle tab
 	navigation and focus handling of INPUTs.
 

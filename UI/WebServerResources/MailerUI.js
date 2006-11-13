@@ -307,14 +307,14 @@ function uixDeleteSelectedMessages(sender) {
   var failCount = 0;
   
   var messageList = $("messageList");
-  var rows = messageList.getSelectedRows();
+  var rowIds = messageList.getSelectedRowsId();
 
-  for (var i = 0; i < rows.length; i++) {
+  for (var i = 0; i < rowIds.length; i++) {
     var url, http;
-    
+    var rowId = rowIds[i].substr(4);
     /* send AJAX request (synchronously) */
 
-    var messageId = currentMailbox + "/" + rowIds[i];
+    var messageId = currentMailbox + "/" + rowId;
     url = ApplicationBaseURL + messageId + "/trash?jsonly=1";
     http = createHTTPClient();
     http.open("GET", url, false /* not async */);
@@ -325,7 +325,7 @@ function uixDeleteSelectedMessages(sender) {
       continue;
     } else {
       deleteCachedMessage(messageId);
-      if (currentMessages[currentMailbox] == rowIds[i]) {
+      if (currentMessages[currentMailbox] == rowId) {
         var div = $('messageContent');
         div.innerHTML = "";
         currentMessages[currentMailbox] = null;
@@ -336,7 +336,8 @@ function uixDeleteSelectedMessages(sender) {
     /* remove from page */
 
     /* line-through would be nicer, but hiding is OK too */
-    rows[i].parentNode.removeChild(rows[i]);
+    var row = $(rowIds[i]);
+    row.parentNode.removeChild(row);
   }
 
   if (failCount > 0)
@@ -400,9 +401,15 @@ function onMailboxTreeItemClick(element)
   openMailbox(mailbox);
 }
 
-function openMailbox(mailbox)
+function refreshMailbox() {
+  openMailbox(currentMailbox, true);
+
+  return false;
+}
+
+function openMailbox(mailbox, reload)
 {
-  if (mailbox != currentMailbox) {
+  if (mailbox != currentMailbox || reload) {
     currentMailbox = mailbox;
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
     var mailboxContent = $("mailboxContent");
@@ -889,7 +896,11 @@ var messageListGhost = function () {
   newDiv.ghostOffsetY = 5;
 
   var imgCode = '<img src="' + ResourcesURL + '/message-mail.png" />';
-  var count = this.getSelectedRows().length;
+
+  var current = this;
+  while (!current.getSelectedRows)
+    current = current.parentNode;
+  var count = current.getSelectedRows().length;
   var text = imgCode + '<br />' + count + ' messages...';
   newDiv.innerHTML = text;
 
@@ -918,6 +929,12 @@ function configureMessageListEvents() {
     for (var i = start; i < rows.length; i++) {
       rows[i].addEventListener("mousedown", onRowClick, false);
       rows[i].addEventListener("contextmenu", onMessageContextMenu, false);
+
+      rows[i].dndTypes = function() { return new Array("mailRow"); };
+      rows[i].dndGhost = messageListGhost;
+      rows[i].dndDataForType = messageListData;
+      document.DNDManager.registerSource(rows[i]);
+
       for (var j = 0; j < rows[i].cells.length; j++) {
         var cell = rows[i].cells[j];
         cell.addEventListener("mousedown", listRowMouseDownHandler, false);
@@ -929,11 +946,6 @@ function configureMessageListEvents() {
         }
       }
     }
-
-    messageList.dndTypes = function() { return new Array("mailRow"); };
-    messageList.dndGhost = messageListGhost;
-    messageList.dndDataForType = messageListData;
-    document.DNDManager.registerSource(messageList);
   }
 }
 
