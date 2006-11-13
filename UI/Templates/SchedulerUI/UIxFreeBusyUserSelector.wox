@@ -7,6 +7,9 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
     <script type="text/javascript" rsrc:src="UIxFreeBusyUserSelector.js"><!-- space --></script>
+    <script type="text/javascript">
+      freeBusySelectorId = '<var:string value="selectorId" />';
+    </script>
     <input type="hidden"
       var:id="selectorId"
       var:name="selectorId"
@@ -73,9 +76,4 @@
             /></label>
       </div>
     </div>
-    <script type="text/javascript">
-      initializeFreeBusyUserSelector('<var:string value="selectorId" />');
-      disableAnchor($('FBStartTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
-      disableAnchor($('FBEndTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
-    </script>
   </container>

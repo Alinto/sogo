@@ -39,9 +39,7 @@
             ><input type="text"
               var:value="currentContactName"
               var:uid="currentContactId"
-              class="textField"
-              onkeyup="onContactKeyUp(this, event);"
-              onblur="checkAttendee(this);" /></td
+              class="textField" /></td
             ><var:foreach list="daysToDisplay" item="currentDayToDisplay"
             ><var:foreach list="hoursToDisplay" item="currentHourToDisplay"
               ><td></td
@@ -50,8 +48,7 @@
         </tr></var:foreach>
       <tr class="futureAttendee"
         ><td class="attendees"><input type="text" class="textField"
-            readonly="readonly"
-            onclick="newAttendee(this);" /></td
+            readonly="readonly" /></td
           ><var:foreach list="daysToDisplay" item="currentDayToDisplay"
           ><var:foreach list="hoursToDisplay" item="currentHourToDisplay"
             ><td></td
@@ -59,9 +56,7 @@
             ></var:foreach
           ></tr>
       <tr class="attendeeModel"
-        ><td class="attendees"><input type="text" class="textField"
-            onkeyup="onContactKeyUp(this, event);"
-            onblur="checkAttendee(this);" /></td
+        ><td class="attendees"><input type="text" class="textField" /></td
           ><var:foreach list="daysToDisplay" item="currentDayToDisplay"
           ><var:foreach list="hoursToDisplay" item="currentHourToDisplay"
             ><td></td

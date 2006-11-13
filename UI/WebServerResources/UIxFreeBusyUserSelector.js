@@ -7,20 +7,35 @@ var requestField;
 var awaitingFreeBusyRequests = new Array();
 var freeBusySelectorId;
 
-function onContactKeyUp(node, event) {
-  if (!running) {
+function onContactKeydown(event) {
+  if (event.keyCode == 9) {
+    event.preventDefault();
+    if (this.confirmedValue)
+      this.value = this.confirmedValue;
+    var row = this.parentNode.parentNode.nextSibling;
+    while (!(row instanceof HTMLTableRowElement))
+      row = row.nextSibling;
+    this.blur();
+    var input = row.cells[0].childNodesWithTag("input")[0];
+    if (input.readOnly)
+      newAttendee(null);
+    else {
+      input.focus();
+      input.select();
+      input.focussed = true;
+    }
+  }
+  else if (!running) {
     if (event.keyCode == 8
         || event.keyCode == 32
         || event.keyCode > 47) {
-      log ("keycode: " + event.keyCode);
       running = true;
-      requestField = node;
+      requestField = this;
       setTimeout("triggerRequest()", delay);
-    } else if (node.confirmedValue) {
-      log ("keycode: " + event.keyCode);
+    }
+    else if (this.confirmedValue) {
       if (event.keyCode == 13) {
-        node.value = node.confirmedValue;
-        node.setSelectionRange(node.value.length, node.value.length);
+        this.setSelectionRange(this.value.length, this.value.length);
       }
     }
   }
@@ -38,8 +53,7 @@ function triggerRequest() {
                                                          requestField);
 }
 
-function updateResults(http)
-{
+function updateResults(http) {
   if (http.readyState == 4) {
     if (http.status == 200) {
       var searchField = http.callbackData;
@@ -57,8 +71,12 @@ function updateResults(http)
         searchField.value += ' >> ' + text[1];
       }
       searchField.confirmedValue = text[1];
-      var end = searchField.value.length;
-      searchField.setSelectionRange(start, end);
+      if (searchField.focussed) {
+        var end = searchField.value.length;
+        searchField.setSelectionRange(start, end);
+      }
+      else
+        searchField.value = text[1];
     }
     running = false;
     document.contactLookupAjaxRequest = null;
@@ -140,27 +158,36 @@ function redisplayFreeBusyZone()
   }
 }
 
-function newAttendee(node)
+function newAttendee(event)
 {
   var table = $("attendeesView").childNodesWithTag("div")[0].childNodesWithTag("table")[0];
-  var tbody = table.childNodesWithTag("tbody")[0];
+  var tbody = table.tBodies[0];
   var model = tbody.rows[tbody.rows.length - 1];
   var newAttendeeRow = tbody.rows[tbody.rows.length - 2]
   var newRow = model.cloneNode(true);
+  var input = newRow.cells[0].childNodesWithTag("input")[0];
+  input.setAttribute("autocomplete", "off");
   newRow.setAttribute("class", "");
   tbody.insertBefore(newRow, newAttendeeRow);
-  newRow.childNodesWithTag("td")[0].childNodesWithTag("input")[0].focus();
+  input.serial = "pouet";
+  input.addEventListener("blur", checkAttendee, false);
+  input.addEventListener("keydown", onContactKeydown, false);
+  input.focus();
+  input.focussed = true;
 }
 
-function checkAttendee(node)
+function checkAttendee()
 {
-  var th = node.parentNode.parentNode;
+  this.focussed = false;
+  var th = this.parentNode.parentNode;
   var tbody = th.parentNode;
-  if (node.value.trim().length == 0)
+  if (this.value.trim().length == 0)
     tbody.removeChild(th);
-  else if (!node.hasfreebusy) {
-    displayFreeBusyForNode(node);
-    node.hasfreebusy = true;
+  else if (!this.hasfreebusy) {
+    if (this.confirmedValue)
+      this.value = this.confirmedValue;
+    displayFreeBusyForNode(this);
+    this.hasfreebusy = true;
   }
   resetAttendeesValue();
 }
@@ -246,16 +273,22 @@ function resetAttendeesValue()
       currentInput.setAttribute("uid", null);
     }
     uids.push(currentInput.uid);
+    currentInput.setAttribute("autocomplete", "off");
+    currentInput.addEventListener("keydown", onContactKeydown, false);
+    currentInput.addEventListener("blur", checkAttendee, false);
   }
   var input = $(freeBusySelectorId);
   input.value = uids.join(",");
+  inputs[inputs.length - 2].setAttribute("autocomplete", "off");
+  inputs[inputs.length - 2].addEventListener("click", newAttendee, false);
 }
 
-function initializeFreeBusyUserSelector(selectorId)
+function initializeFreeBusyUserSelector()
 {
-  freeBusySelectorId = selectorId;
   resetAttendeesValue();
   resetAllFreeBusys();
+  disableAnchor($('FBStartTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
+  disableAnchor($('FBEndTimeReplica_date').parentNode.childNodesWithTag('a')[0]);
 }
 
 function resetAllFreeBusys()
@@ -332,3 +365,9 @@ function onTimeWidgetChange()
 {
   setTimeout("redisplayFreeBusyZone();", 1000);
 }
+
+function onFreeBusyLoadHandler() {
+  initializeFreeBusyUserSelector();
+}
+
+window.addEventListener("load", onFreeBusyLoadHandler, false);
