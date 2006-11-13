@@ -12,27 +12,33 @@ var SOGODragAndDropSourceInterface = {
     this.addEventListener("mousedown", this.dragGestureMouseDownHandler, false);
   },
   dragGestureMouseDownHandler: function (event) {
+//     log("mousedown");
     document._dragGestureStartPoint = new Array(event.clientX, event.clientY);
     document._currentMouseGestureObject = this;
     window.addEventListener("mousemove", this.dragGestureMouseMoveHandler, false);
     window.addEventListener("mouseup", this.dragGestureMouseUpHandler, false);
   },
   dragGestureMouseUpHandler: function (event) {
+    log("mouseup");
     document._currentMouseGestureObject._removeGestureHandlers();
   },
   dragGestureMouseMoveHandler: function (event) {
-    log("source mouse move (target: " + event.target + ")");
+//     log("source mouse move (target: " + event.target + ")");
     var deltaX = event.clientX - document._dragGestureStartPoint[0];
     var deltaY = event.clientY - document._dragGestureStartPoint[1];
     if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) > 10) {
-      event.stopPropagation();
-      event.preventDefault();
-      event.returnValue = false;
-      event.cancelBubble = false;
+//       log("event: " + event);
+//       event.stopPropagation();
+//       event.preventDefault();
+      event.returnValue = true;
+      event.cancelBubble = true;
       var object = document._currentMouseGestureObject;
       var point = document._dragGestureStartPoint;
-      document._currentMouseGestureObject._removeGestureHandlers();
       document.DNDManager.startDragging(object, point);
+      document._currentMouseGestureObject._removeGestureHandlers();
+//       var mouseup = document.createEvent("MouseEvent");
+//       mouseup.initEvent("mouseup", true, true);
+//       event.target.dispatchEvent(mouseup);
 //       var dragStart = document.createEvent("MouseEvents");
 //       dragStart.initMouseEvent("draggesture-hack", true, true, window,
 //                                event.detail, event.screenX, event.screenY,
@@ -88,8 +94,7 @@ document.DNDManager = {
     var source = document.DNDManager._lookupSource (object);
     if (source) {
 //       log("source known");
-      document.DNDManager.currentDndOperation
-        = new document.DNDOperation (source, point);
+      document.DNDManager.currentDndOperation = new document.DNDOperation(source, point);
       window.addEventListener("mouseup",
                               document.DNDManager.destinationDrop, false);
       window.addEventListener("mouseover",
@@ -138,6 +143,7 @@ document.DNDManager = {
 //       log("over: " + event.target);
   },
   destinationDrop: function (event) {
+//     log ("drop...");
     var operation = document.DNDManager.currentDndOperation;
     if (operation) {
       window.removeEventListener("mouseup",
@@ -149,7 +155,7 @@ document.DNDManager = {
       window.removeEventListener("mouseout",
                                  document.DNDManager.destinationExit, false);
       if (operation.destination == event.target) {
-        log("drag / drop: " + operation.source + " to " + operation.destination);
+//         log("drag / drop: " + operation.source + " to " + operation.destination);
         if (operation.destination.dndExit)
           event.target.dndExit();
         if (operation.destination.dndDrop) {
