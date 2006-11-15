@@ -45,6 +45,11 @@
             var:day="currentTableDay.shortDateString"
             ><div class="header"><var:string value="labelForDay" /></div>
             <div class="appointments">
+            <var:foreach list="hoursToDisplay" item="currentTableHour"
+              ><div var:class="clickableHourCellClass"
+                var:day="currentTableDay.shortDateString"
+                var:hour="currentAppointmentHour">
+              </div></var:foreach>
             <var:foreach list="appointmentsForCurrentDay" item="currentAppointment"
               ><var:component className="UIxCalInlineAptView"
                 dayStartHour="dayStartHour"

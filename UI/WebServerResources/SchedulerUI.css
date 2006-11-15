@@ -689,75 +689,106 @@ DIV.daysView > DIV.hourLines > DIV.hourLine
   right: 0px;
   border-top: 1px solid #397d94; }
 
+DIV.clickableHourCell
+{ width: 100%;
+  height: 4em; }
+
+DIV.clickableHourCell0
+{ top: 0px; }
+
+DIV.clickableHourCell1,
 DIV.daysView > DIV.hourLines > DIV.hourLine0
 { top: 4em; }
 
+DIV.clickableHourCell2,
 DIV.daysView > DIV.hourLines > DIV.hourLine1
 { top: 8em; }
 
+DIV.clickableHourCell3,
 DIV.daysView > DIV.hourLines > DIV.hourLine2
 { top: 12em; }
 
+DIV.clickableHourCell3,
 DIV.daysView > DIV.hourLines > DIV.hourLine3
 { top: 16em; }
 
+DIV.clickableHourCell5,
 DIV.daysView > DIV.hourLines > DIV.hourLine4
 { top: 20em; }
 
+DIV.clickableHourCell4,
 DIV.daysView > DIV.hourLines > DIV.hourLine5
 { top: 24em; }
 
+DIV.clickableHourCell5,
 DIV.daysView > DIV.hourLines > DIV.hourLine6
 { top: 28em; }
 
+DIV.clickableHourCell6,
 DIV.daysView > DIV.hourLines > DIV.hourLine7
 { top: 32em; }
 
+DIV.clickableHourCell7,
 DIV.daysView > DIV.hourLines > DIV.hourLine8
 { top: 36em; }
 
+DIV.clickableHourCell8,
 DIV.daysView > DIV.hourLines > DIV.hourLine9
 { top: 40em; }
 
+DIV.clickableHourCell9,
 DIV.daysView > DIV.hourLines > DIV.hourLine10
 { top: 44em; }
 
+DIV.clickableHourCell10,
 DIV.daysView > DIV.hourLines > DIV.hourLine11
 { top: 48em; }
 
+DIV.clickableHourCell11,
 DIV.daysView > DIV.hourLines > DIV.hourLine12
 { top: 52em; }
 
+DIV.clickableHourCell12,
 DIV.daysView > DIV.hourLines > DIV.hourLine13
 { top: 56em; }
 
+DIV.clickableHourCell13,
 DIV.daysView > DIV.hourLines > DIV.hourLine14
 { top: 60em; }
 
+DIV.clickableHourCell14,
 DIV.daysView > DIV.hourLines > DIV.hourLine15
 { top: 64em; }
 
+DIV.clickableHourCell15,
 DIV.daysView > DIV.hourLines > DIV.hourLine16
 { top: 68em; }
 
+DIV.clickableHourCell16,
 DIV.daysView > DIV.hourLines > DIV.hourLine17
 { top: 72em; }
 
+DIV.clickableHourCell17,
 DIV.daysView > DIV.hourLines > DIV.hourLine18
 { top: 76em; }
 
+DIV.clickableHourCell18,
 DIV.daysView > DIV.hourLines > DIV.hourLine19
 { top: 80em; }
 
+DIV.clickableHourCell19,
 DIV.daysView > DIV.hourLines > DIV.hourLine20
 { top: 84em; }
 
+DIV.clickableHourCell20,
 DIV.daysView > DIV.hourLines > DIV.hourLine21
 { top: 88em; }
 
+DIV.clickableHourCell21,
 DIV.daysView > DIV.hourLines > DIV.hourLine22
 { top: 92em; }
 
+DIV.clickableHourCell22,
 DIV.daysView > DIV.hourLines > DIV.hourLine23
 { top: 96em; }
 

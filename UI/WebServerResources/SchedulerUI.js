@@ -448,6 +448,10 @@ function scrollDayView(hour)
     daysView.parentNode.scrollTop = hours[rowNumber + 1].offsetTop;
 }
 
+function onClickableCellsDblClick(event) {
+  newEvent(this, 'event');
+}
+
 function calendarDisplayCallback(http)
 {
   var div = $("calendarView");
@@ -474,8 +478,15 @@ function calendarDisplayCallback(http)
       appointments[i].addEventListener("dblclick", displayAppointment, true);
     }
     var days = document.getElementsByClassName("day", daysView);
-    for (var i = 0; i < days.length; i++)
+    for (var i = 0; i < days.length; i++) {
       days[i].addEventListener("click", onCalendarSelectDay, true);
+      var clickableCells = document.getElementsByClassName("clickableHourCell",
+                                                           days[i]);
+      for (var j = 0; j < clickableCells.length; j++) {
+        clickableCells[j].addEventListener("dblclick",
+                                           onClickableCellsDblClick, true);
+      }
+    }
   }
   else
     log ("ajax fuckage");
@@ -707,8 +718,7 @@ function onSearchFormSubmit()
   return false;
 }
 
-function onCalendarSelectAppointment(event)
-{
+function onCalendarSelectAppointment(event) {
   var list = $("appointmentsList");
   list.deselectAll();
 

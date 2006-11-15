@@ -61,6 +61,8 @@
     [allAppointments release];
   if (daysToDisplay)
     [daysToDisplay release];
+  if (hoursToDisplay)
+    [hoursToDisplay release];
   [dateFormatter release];
   [super dealloc];
 }
@@ -137,8 +139,7 @@
     {
       currentHour = [self dayStartHour];
       lastHour = [self dayEndHour];
-      hoursToDisplay
-        = [NSMutableArray arrayWithCapacity: (lastHour - currentHour)];
+      hoursToDisplay = [NSMutableArray new];
 
       while (currentHour < lastHour)
         {
@@ -313,6 +314,11 @@
     }
 
   return classes;
+}
+
+- (NSString *) clickableHourCellClass
+{
+  return [NSString stringWithFormat: @"clickableHourCell clickableHourCell%@", currentTableHour];
 }
 
 @end
