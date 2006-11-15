@@ -1,5 +1,9 @@
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: the progress indicator is on
+	when loading the page so we turn it off, and we turn it back on
+	whenever we switch to another module...
+
 	* UI/WebServerResources/SchedulerUI.js: make sure the day view
 	synchronization mechanism works everywhere.
 

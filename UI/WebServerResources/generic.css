@@ -28,6 +28,11 @@ TABLE, DIV, IMG
   margin: 0px;
   padding: 0px; }
 
+IMG#progressIndicator
+{ position: absolute;
+  top: 2.5em;
+  right: 1em; }
+
 DIV.pageContent
 { /* position: absolute;
   background: #ffa;

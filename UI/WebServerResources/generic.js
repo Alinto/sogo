@@ -224,12 +224,9 @@ function checkAjaxRequestsState() {
         && !document.busyAnim) {
       var anim = document.createElement("img");
       document.busyAnim = anim;
+      anim.id = "progressIndicator";
       anim.src = ResourcesURL + "/busy.gif";
-      anim.style.position = "absolute;";
-      anim.style.top = "2.5em;";
-      anim.style.right = "1em;";
       anim.style.visibility = "hidden;";
-      anim.style.zindex = "1;";
       toolbar.appendChild(anim);
       anim.style.visibility = "visible;";
     }
@@ -941,6 +938,10 @@ var onLoadHandler = {
     initTabs();
     configureDragHandles();
     configureSortableTableHeaders();
+    configureLinkBanner();
+    var progressImage = $("progressIndicator");
+    if (progressImage)
+      progressImage.parentNode.removeChild(progressImage);
   }
 }
 
@@ -952,6 +953,22 @@ function configureSortableTableHeaders() {
       anchor.link = anchor.getAttribute("href");
       anchor.href = "#";
       anchor.addEventListener("click", onHeaderClick, true);
+    }
+  }
+}
+
+function onLinkBannerClick() {
+  activeAjaxRequests++;
+  checkAjaxRequestsState();
+}
+
+function configureLinkBanner() {
+  var linkBanner = $("linkBanner");
+  if (linkBanner) {
+    var anchors = linkBanner.childNodesWithTag("a");
+    for (var i = 0; i < anchors.length; i++) {
+      anchors[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+      anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
   }
 }

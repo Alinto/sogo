@@ -59,7 +59,7 @@
             ><var:if condition="context.isUIxDebugEnabled"
               ><div id="logConsole"><!-- space --></div></var:if>
 
-            <div class="linkbanner">
+            <div id="linkBanner" class="linkbanner">
               <a var:href="relativeHomePath"
                 ><var:string label:value="Home" /></a> |
               <a var:href="relativeCalendarPath"
