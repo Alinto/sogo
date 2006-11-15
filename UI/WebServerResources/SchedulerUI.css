@@ -307,6 +307,8 @@ TABLE.monthOverview
 TABLE.monthOverview TD.contentOfDay
 { vertical-align: top;
   overflow: hidden;
+  margin: 0px;
+  padding: 0px;
   height: 15%; }
 
 SPAN.dayCellLabel
@@ -327,7 +329,9 @@ TABLE.monthOverview TD.selectedDay
 { background-color: #ffe79c; }
 
 TABLE.monthOverview TD
-{ border: 2px solid #397d94; }
+{ border: 2px solid #397d94;
+  padding: 0px;
+  margin: 0px; }
 
 TABLE.monthOverview TD.header
 { text-align: center;
@@ -346,7 +350,7 @@ SPAN.monthsHeader
   overflow: hidden;
   width: 100%;
   margin: 0px;
-  height: 2.5em;
+  height: 2.75em;
   padding: .1em 1.5em;
   border: 0px;
   border-bottom: 1px solid #ccc; }
@@ -653,18 +657,26 @@ DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
 
-TABLE.monthOverview DIV.appointment,
+TABLE.monthOverview DIV.appointment
+{ margin: 0px;
+  margin-top: 1px;
+  padding: 1px;
+  border: 0px;
+  height: auto;
+  width: auto;
+  position: static;
+  overflow: hidden;
+  background-color: #fff; }
+
 TABLE.monthOverview DIV.appointmentInside
-{ margin: 1px;
+{ cursor: default;
+  margin: 0px;
   padding: 1px;
   border: 0px;
   height: auto;
   width: auto;
   position: static; }
 
-TABLE.monthOverview DIV.appointment
-{ background-color: #fff;
-  margin-top: 1px; }
 
 DIV.daysView > DIV.hours
 { position: absolute;
