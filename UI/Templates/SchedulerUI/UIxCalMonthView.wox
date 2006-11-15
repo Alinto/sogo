@@ -60,7 +60,7 @@
             <td class="hourOfDay">
               <var:entity name="nbsp" />
             </td>
-            <td class="contentOfDay" width="90%">
+            <td class="day" width="90%">
               <var:foreach list="allDayApts" item="appointment">
                 <var:component className="UIxCalInlineAptView"
                   appointment="appointment"
@@ -82,7 +82,7 @@
             <var:foreach list="currentRangeOf7Days" item="currentTableDay"
               ><td var:class="dayCellClasses"
                 var:day="currentTableDay.shortDateString"
-                ><span class="dayCellLabel"
+                ><div class="dayContent"><span class="dayCellLabel"
                   ><var:string value="labelForCurrentDayCell" /></span
                   ><br /><var:foreach
                   list="aptsForCurrentDate"
@@ -97,7 +97,7 @@
                     referenceDate="currentTableDay"
                     canAccess="canAccessApt"
                     />
-                </var:foreach></td>
+                </var:foreach></div></td>
             </var:foreach>
           </tr>
         </var:foreach>

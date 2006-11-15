@@ -1,5 +1,8 @@
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: make sure the day view
+	synchronization mechanism works everywhere.
+
 	* UI/WebServerResources/generic.js: the log window is not only
 	visible when UIxDebugEnabled is set.
 

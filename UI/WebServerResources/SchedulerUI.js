@@ -9,7 +9,7 @@ var listOfSelection = null;
 var hideCompletedTasks = 0;
 
 var currentDay = '';
-var currentView = 'dayview';
+var currentView = "dayview";
 
 var cachedDateSelectors = new Array();
 
@@ -192,6 +192,8 @@ function displayAppointment(event) {
 function onDaySelect(node)
 {
   var day = node.getAttribute("day");
+  var needRefresh = (listFilter == 'view_selectedday'
+                     && day != currentDay);
 
   var td = node.getParentWithTagName("td");
   var table = td.getParentWithTagName("table");
@@ -205,7 +207,7 @@ function onDaySelect(node)
   document.selectedDate = td;
 
   changeCalendarDisplay( { "day": day } );
-  if (listFilter == 'view_selectedday')
+  if (needRefresh)
     refreshAppointments();
 
   return false;
@@ -430,6 +432,7 @@ function onMonthOverview()
 
 function scrollDayView(hour)
 {
+  log("stest1");
   var rowNumber;
   if (hour) {
     if (hour.length == 3)
@@ -447,6 +450,8 @@ function scrollDayView(hour)
   var hours = daysView.childNodesWithTag("div")[0].childNodesWithTag("div");
   if (hours.length > 0)
     daysView.parentNode.scrollTop = hours[rowNumber + 1].offsetTop;
+
+  log("stest2");
 }
 
 function onClickableCellsDblClick(event) {
@@ -472,42 +477,37 @@ function calendarDisplayCallback(http)
     var hour = null;
     if (http.callbackData["hour"])
       hour = http.callbackData["hour"];
-    if (currentView != 'monthview')
-      scrollDayView(hour);
-    var daysView = $("daysView");
-    if (daysView) {
-      var appointments = document.getElementsByClassName("appointment", daysView);
-      for (var i = 0; i < appointments.length; i++) {
-        appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
-        appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
-        appointments[i].addEventListener("dblclick", displayAppointment, true);
-      }
-      var days = document.getElementsByClassName("day", daysView);
-      for (var i = 0; i < days.length; i++) {
-        days[i].addEventListener("click", onCalendarSelectDay, true);
-        var clickableCells = document.getElementsByClassName("clickableHourCell",
-                                                             days[i]);
-        for (var j = 0; j < clickableCells.length; j++) {
-          clickableCells[j].addEventListener("dblclick",
-                                             onClickableCellsDblClick, false);
-        }
-      }
-    }
+    var contentView;
+    log ("currentView: " + currentView);
+    if (currentView == "monthview")
+      contentView = $("calendarContent");
     else {
-      var content = $("calendarContent");
-      var appointments = document.getElementsByClassName("appointment", content);
-      for (var i = 0; i < appointments.length; i++) {
-        appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
-        appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
-        appointments[i].addEventListener("dblclick", displayAppointment, true);
-      }
-      var days = document.getElementsByClassName("contentOfDay", content);
-      log("days: " + days.length);
+      scrollDayView(hour);
+      log("cbtest1");
+      contentView = $("daysView");
+    }
+    var appointments = document.getElementsByClassName("appointment", contentView);
+    for (var i = 0; i < appointments.length; i++) {
+      appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
+      appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
+      appointments[i].addEventListener("dblclick", displayAppointment, true);
+    }
+    var days = document.getElementsByClassName("day", contentView);
+    if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
         days[i].addEventListener("click", onCalendarSelectDay, true);
         days[i].addEventListener("dblclick", onClickableCellsDblClick, false);
       }
-    }
+    else
+      for (var i = 0; i < days.length; i++) {
+        days[i].addEventListener("click", onCalendarSelectDay, true);
+        var clickableCells = document.getElementsByClassName("clickableHourCell",
+                                                             days[i]);
+        for (var j = 0; j < clickableCells.length; j++)
+          clickableCells[j].addEventListener("dblclick",
+                                             onClickableCellsDblClick, false);
+      }
+    log("cbtest1");
   }
   else
     log ("ajax fuckage");
@@ -758,12 +758,17 @@ function onCalendarSelectAppointment(event) {
 function onCalendarSelectDay(event)
 {
   var day = this.getAttribute("day");
+  var needRefresh = (listFilter == 'view_selectedday'
+                     && day != currentDay);
 
   if (currentView == 'weekview')
     changeWeekCalendarDisplayOfSelectedDay(this);
   else if (currentView == 'monthview')
     changeMonthCalendarDisplayOfSelectedDay(this);
   changeDateSelectorDisplay(day);
+
+  if (needRefresh)
+    refreshAppointments();
 
   event.cancelBubble = true;
   event.returnValue = false;
