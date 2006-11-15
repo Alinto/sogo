@@ -292,26 +292,17 @@ TABLE._unfocused#appointmentsList TR._selected TD
 }
 
 TABLE.monthOverview
-{ margin: 0 auto;
-  padding: 1em;
-  border-collapse: collapse; }
-
-TABLE.monthOverview
 { position: absolute;
+  margin: 0 auto;
+  padding: 1em;
+  border-collapse: collapse;
   display: table;
   margin: 0px auto;
   padding: 0px;
   width: 98%;
-  height: 98%; }
-
-TABLE.monthOverview
-{ min-width: 60em;
+  height: 98%;
+  min-width: 60em;
   min-height: 25em; }
-
-TABLE.monthOverview DIV.appointmentView
-{ border: 0px;
-  margin: 0px; 
-  padding: 0px; }
 
 TABLE.monthOverview TD.contentOfDay
 { vertical-align: top;
@@ -661,6 +652,16 @@ DIV.daysViewFor7Days DIV.day6
 DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
+
+TABLE.monthOverview DIV.appointment,
+TABLE.monthOverview DIV.appointmentInside
+{ display: inline !important;
+  position: static;
+  height: 1em;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  width: 100%; }
 
 DIV.daysView > DIV.hours
 { position: absolute;
