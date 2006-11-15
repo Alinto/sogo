@@ -655,7 +655,7 @@ DIV.daysViewFor7Days DIV.day0
 
 TABLE.monthOverview DIV.appointment,
 TABLE.monthOverview DIV.appointmentInside
-{ margin: 0px;
+{ margin: 1px;
   padding: 1px;
   border: 0px;
   height: auto;
