@@ -27,18 +27,22 @@
 
 @class NSArray;
 @class NSCalendarDay;
+@class NSDictionary;
 @class NSString;
 @class SOGoDateFormatter;
 
 @interface UIxCalDayTable : UIxCalView
 {
+  SOGoDateFormatter *dateFormatter;
   int numberOfDays;
   NSCalendarDate *startDate;
   NSCalendarDate *currentTableDay;
   NSString *currentTableHour;
-  NSArray *daysToDisplay;
+  NSMutableArray *daysToDisplay;
   NSMutableArray *hoursToDisplay;
-  SOGoDateFormatter *dateFormatter;
+  NSArray *allAppointments;
+
+  NSDictionary *currentAppointment;
 
   NSString *cssClass;
   NSString *cssId;
@@ -51,6 +55,7 @@
 - (NSString *) cssId;
 
 - (void) setNumberOfDays: (NSString *) aNumber;
+- (NSString *) numberOfDays;
 
 - (void) setStartDate: (NSCalendarDate *) aStartDate;
 - (NSCalendarDate *) startDate;
@@ -59,6 +64,9 @@
 - (NSArray *) daysToDisplay;
 - (void) setCurrentTableDay: (NSCalendarDate *) aTableDay;
 - (NSCalendarDate *) currentTableDay;
+
+- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment;
+- (NSDictionary *) currentAppointment;
 
 @end
 

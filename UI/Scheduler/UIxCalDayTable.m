@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 
@@ -40,6 +41,7 @@
 {
   if ((self = [super init]))
     {
+      allAppointments = nil;
       daysToDisplay = nil;
       hoursToDisplay = nil;
       numberOfDays = 1;
@@ -55,6 +57,10 @@
 
 - (void) dealloc
 {
+  if (allAppointments)
+    [allAppointments release];
+  if (daysToDisplay)
+    [daysToDisplay release];
   [dateFormatter release];
   [super dealloc];
 }
@@ -82,11 +88,26 @@
 - (void) setNumberOfDays: (NSString *) aNumber
 {
   numberOfDays = [aNumber intValue];
+  if (daysToDisplay)
+    {
+      [daysToDisplay release];
+      daysToDisplay = nil;
+    }
+}
+
+- (NSString *) numberOfDays
+{
+  return [NSString stringWithFormat: @"%d", numberOfDays];
 }
 
 - (void) setStartDate: (NSCalendarDate *) aStartDate
 {
   startDate = aStartDate;
+  if (daysToDisplay)
+    {
+      [daysToDisplay release];
+      daysToDisplay = nil;
+    }
 }
 
 - (NSCalendarDate *) startDate
@@ -132,23 +153,22 @@
 
 - (NSArray *) daysToDisplay
 {
-  NSMutableArray *days;
   NSCalendarDate *currentDate;
   int count;
 
-  days = [NSMutableArray arrayWithCapacity: numberOfDays];
-  currentDate = [[self startDate] hour: [currentTableHour intValue]
-                                  minute: 0];
-  [days addObject: currentDate];
-  for (count = 1; count < numberOfDays; count++)
+  if (!daysToDisplay)
     {
-      currentDate = [currentDate dateByAddingYears: 0
-                                 months: 0
-                                 days: 1];
-      [days addObject: currentDate];
+      daysToDisplay = [NSMutableArray new];
+      currentDate = [[self startDate] hour: [self dayStartHour]
+                                      minute: 0];
+      [daysToDisplay addObject: currentDate];
+      for (count = 1; count < numberOfDays; count++)
+        [daysToDisplay addObject: [currentDate dateByAddingYears: 0
+                                               months: 0
+                                               days: count]];
     }
 
-  return days;
+  return daysToDisplay;
 }
 
 - (void) setCurrentTableDay: (NSCalendarDate *) aTableDay
@@ -159,28 +179,6 @@
 - (NSCalendarDate *) currentTableDay
 {
   return currentTableDay;
-}
-
-- (NSString *) dayCellClasses
-{
-  NSMutableString *classes;
-  int dayOfWeek;
-
-  classes = [NSMutableString new];
-  [classes autorelease];
-  [classes appendString: @"contentOfDay"];
-  if (numberOfDays > 1)
-    {
-      dayOfWeek = [currentTableDay dayOfWeek];
-      if (dayOfWeek == 0 || dayOfWeek == 6)
-        [classes appendString: @" weekEndDay"];
-      if ([currentTableDay isToday])
-        [classes appendString: @" dayOfToday"];
-      if ([[self selectedDate] isDateOnSameDay: currentTableDay])
-        [classes appendString: @" selectedDay"];
-    }
-
-  return classes;
 }
 
 - (void) setCurrentTableHour: (NSString *) aTableHour
@@ -205,34 +203,116 @@
                    [dateFormatter stringForObjectValue: currentTableDay]];
 }
 
-- (NSArray *) aptsForCurrentDate
+- (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment
+                               forStart: (NSCalendarDate *) start
+                                 andEnd: (NSCalendarDate *) end
 {
-  NSArray        *apts;
-  NSMutableArray *filtered;
-  unsigned       i, count;
-  NSCalendarDate *start, *end;
-  SOGoAppointment *apt;
-  NSCalendarDate *aptStartDate;
+  NSMutableDictionary *newMutableAppointment;
+  NSDictionary *newAppointment;
+  BOOL startIsEarlier, endIsLater;
 
-  start = currentTableDay;
-  end = [start dateByAddingYears: 0 months: 0 days: 0
-               hours: 0 minutes: 59 seconds: 59];
+  startIsEarlier
+    = ([[anAppointment objectForKey: @"startDate"] laterDate: start] == start);
+  endIsLater
+    = ([[anAppointment objectForKey: @"endDate"] earlierDate: end] == end);
 
-  apts = [self fetchCoreAppointmentsInfos];
-  filtered = [NSMutableArray new];
-  [filtered autorelease];
-
-  count    = [apts count];
-  for (i = 0; i < count; i++)
+  if (startIsEarlier || endIsLater)
     {
-      apt = [apts objectAtIndex:i];
-      aptStartDate = [apt valueForKey:@"startDate"];
-      if ([aptStartDate isGreaterThanOrEqualTo: start]
-          && [aptStartDate isLessThan: end])
-        [filtered addObject:apt];
+      newMutableAppointment
+        = [NSMutableDictionary dictionaryWithDictionary: anAppointment];
+      
+      if (startIsEarlier)
+        [newMutableAppointment setObject: start
+                               forKey: @"startDate"];
+      if (endIsLater)
+        [newMutableAppointment setObject: end
+                               forKey: @"endDate"];
+
+      newAppointment = newMutableAppointment;
+    }
+  else
+    newAppointment = anAppointment;
+
+  return newAppointment;
+}
+
+- (NSArray *) appointmentsForCurrentDay
+{
+  NSMutableArray *filteredAppointments;
+  NSEnumerator *aptsEnumerator;
+  NSDictionary *currentDayAppointment;
+  NSCalendarDate *start, *end;
+
+  if (!allAppointments)
+    {
+      allAppointments = [self fetchCoreAppointmentsInfos];
+      [allAppointments retain];
     }
 
-  return filtered;
+  filteredAppointments = [NSMutableArray new];
+  [filteredAppointments autorelease];
+
+  start = [currentTableDay hour: [self dayStartHour] minute: 0];
+  end = [currentTableDay hour: [self dayEndHour] minute: 0];
+
+  aptsEnumerator = [allAppointments objectEnumerator];
+  currentDayAppointment = [aptsEnumerator nextObject];
+  while (currentDayAppointment)
+    {
+      if (([end laterDate: [currentDayAppointment
+                             valueForKey: @"startDate"]] == end)
+          && ([start earlierDate: [currentDayAppointment
+                                    valueForKey: @"endDate"]] == start))
+        [filteredAppointments
+          addObject: [self _adjustedAppointment: currentDayAppointment
+                           forStart: start andEnd: end]];
+      currentDayAppointment = [aptsEnumerator nextObject];
+    }
+
+  return filteredAppointments;
+}
+
+- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment
+{
+  currentAppointment = newCurrentAppointment;
+}
+
+- (NSDictionary *) currentAppointment
+{
+  return currentAppointment;
+}
+
+- (NSArray *) appointmentsClasses
+{
+  return [NSString stringWithFormat: @"appointments appointmentsFor%dDays",
+                   numberOfDays];
+}
+
+- (NSString *) daysViewClasses
+{
+  return [NSString stringWithFormat: @"daysView daysViewFor%dDays", numberOfDays];
+}
+
+- (NSString *) dayClasses
+{
+  NSMutableString *classes;
+  int dayOfWeek;
+
+  classes = [NSMutableString new];
+  [classes autorelease];
+  [classes appendFormat: @"day day%d", [currentTableDay dayOfWeek]];
+  if (numberOfDays > 1)
+    {
+      dayOfWeek = [currentTableDay dayOfWeek];
+      if (dayOfWeek == 0 || dayOfWeek == 6)
+        [classes appendString: @" weekEndDay"];
+      if ([currentTableDay isToday])
+        [classes appendString: @" dayOfToday"];
+      if ([[self selectedDate] isDateOnSameDay: currentTableDay])
+        [classes appendString: @" selectedDay"];
+    }
+
+  return classes;
 }
 
 @end
