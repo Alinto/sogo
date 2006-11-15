@@ -632,6 +632,10 @@ function onAddressBookRemove(node) {
       var newValues = initialValues.replace(re, "");
       if (initialValues != newValues)
         setAdditionalAddressBooks(newValues);
+      
+      var personal = $("/personal");
+      selectNode(personal);
+      onFolderSelectionChange();
     }
   }
 
