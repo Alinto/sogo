@@ -46,8 +46,6 @@
 "cc"            = "Cc";
 "bcc"           = "Cci";
 
-"Mailinglist"         = "List de diffusion";
-
 "This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
 
 /* Popup "show" */

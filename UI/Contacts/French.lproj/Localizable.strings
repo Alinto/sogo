@@ -37,7 +37,7 @@
 "Modify" = "Modifier";
 "Write" = "Écrire";
 "Delete" = "Effacer";
-
+"Instant Message" = "Message instantané";
 "Add..." = "Ajouter...";
 "Remove" = "Enlever";
 
@@ -80,7 +80,8 @@
 "Recipient" = "Destinataire";
 "Carbon Copy" = "Copie carbone";
 "Blind Carbon Copy" = "C. carbone cachée";
-"Add Attendee..." = "Ajouter participant...";
+"Add Attendee..." = "Ajouter participant(s)...";
+"Add Agenda..." = "Ajouter calendrier(s)...";
 
 "Add an Addressbook..." = "Ajouter un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";

@@ -129,7 +129,7 @@
 "Location"		= "Lieu";
 "Priority"		= "Priorité";
 "Privacy"		= "Confidentialité";
-"Cycle"			= "Récurence";
+"Cycle"			= "Récurrence";
 "Cycle End"		= "s'arreter";
 "Categories"		= "Categories";
 "Classification"	= "Classification";
@@ -231,7 +231,7 @@
 
 /* Cycles */
 
-"cycle_once"		= "Sans récurence";
+"cycle_once"		= "Sans récurrence";
 "cycle_daily"		= "Chaque jour";
 "cycle_weekly"		= "Chaque semaine";
 "cycle_2weeks"		= "Toutes les deux semaines";
