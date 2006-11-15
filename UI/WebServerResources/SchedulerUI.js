@@ -61,7 +61,6 @@ function editEvent() {
                    nodes[i].getAttribute("owner"));
   }
 
-
   return false; /* stop following the link */
 }
 
@@ -184,6 +183,8 @@ function displayAppointment(event) {
   _editEventId(this.getAttribute("aptCName"),
                this.getAttribute("owner"));
 
+  event.preventDefault();
+  event.stopPropagation();
   event.cancelBubble = true;
   event.returnValue = false;
 }
@@ -450,6 +451,9 @@ function scrollDayView(hour)
 
 function onClickableCellsDblClick(event) {
   newEvent(this, 'event');
+
+  event.cancelBubble = true;
+  event.returnValue = false;
 }
 
 function calendarDisplayCallback(http)
@@ -471,20 +475,37 @@ function calendarDisplayCallback(http)
     if (currentView != 'monthview')
       scrollDayView(hour);
     var daysView = $("daysView");
-    var appointments = document.getElementsByClassName("appointment", daysView);
-    for (var i = 0; i < appointments.length; i++) {
-      appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
-      appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
-      appointments[i].addEventListener("dblclick", displayAppointment, true);
+    if (daysView) {
+      var appointments = document.getElementsByClassName("appointment", daysView);
+      for (var i = 0; i < appointments.length; i++) {
+        appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
+        appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
+        appointments[i].addEventListener("dblclick", displayAppointment, true);
+      }
+      var days = document.getElementsByClassName("day", daysView);
+      for (var i = 0; i < days.length; i++) {
+        days[i].addEventListener("click", onCalendarSelectDay, true);
+        var clickableCells = document.getElementsByClassName("clickableHourCell",
+                                                             days[i]);
+        for (var j = 0; j < clickableCells.length; j++) {
+          clickableCells[j].addEventListener("dblclick",
+                                             onClickableCellsDblClick, false);
+        }
+      }
     }
-    var days = document.getElementsByClassName("day", daysView);
-    for (var i = 0; i < days.length; i++) {
-      days[i].addEventListener("click", onCalendarSelectDay, true);
-      var clickableCells = document.getElementsByClassName("clickableHourCell",
-                                                           days[i]);
-      for (var j = 0; j < clickableCells.length; j++) {
-        clickableCells[j].addEventListener("dblclick",
-                                           onClickableCellsDblClick, true);
+    else {
+      var content = $("calendarContent");
+      var appointments = document.getElementsByClassName("appointment", content);
+      for (var i = 0; i < appointments.length; i++) {
+        appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
+        appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
+        appointments[i].addEventListener("dblclick", displayAppointment, true);
+      }
+      var days = document.getElementsByClassName("contentOfDay", content);
+      log("days: " + days.length);
+      for (var i = 0; i < days.length; i++) {
+        days[i].addEventListener("click", onCalendarSelectDay, true);
+        days[i].addEventListener("dblclick", onClickableCellsDblClick, false);
       }
     }
   }

@@ -81,8 +81,6 @@
           <tr>
             <var:foreach list="currentRangeOf7Days" item="currentTableDay"
               ><td var:class="dayCellClasses"
-                onclick="onCalendarSelectDay(event, this);"
-                ondblclick="return newEvent(this, 'event');"
                 var:day="currentTableDay.shortDateString"
                 ><span class="dayCellLabel"
                   ><var:string value="labelForCurrentDayCell" /></span

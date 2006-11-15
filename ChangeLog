@@ -1,5 +1,9 @@
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: the month overview's day
+	cells are now initialized with the DOM event interface methods
+	instead of with html attributes.
+
 	* UI/Templates/MailerUI/UIxMailView.wox: don't display useless
 	headers (should be made configurable at some point)...
 
