@@ -1,33 +1,13 @@
 <?xml version='1.0' standalone='yes'?>
-  <container
+  <div
+    var:class="displayClasses"
+    var:aptCName="appointment.c_name"
+    var:owner="appointment.owner"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url">
-    <var:if condition="canAccess">
-      <a href="#"
-        onclick="onCalendarSelectAppointment(event, this);"
-        var:owner="appointment.owner"
-        ondblclick="displayAppointment(event, this);"
-        var:aptCName="appointment.c_name"
-        var:title="tooltip"
-        var:queryDictionary="queryDictionary">
-        <div var:class="displayClasses">
-          <var:if condition="appointment.isRecurrentEvent">
-            <!-- TODO: maxime needs to provide an image instead! -->
-            <var:string const:value="[R]" style="style" />
-          </var:if>
-          <var:if condition="appointment.ispublic" const:negate="YES">
-            <img rsrc:src="apt_icon_private.gif" />
-          </var:if>
-          <var:string value="title" const:escapeHTML="NO" style="style" />
-        </div>
-      </a>
-    </var:if>
-    <var:if condition="canAccess" const:negate="YES">
-      <span var:class="displayClasses">
-        <img rsrc:src="apt_icon_private.gif" />
-        <var:string value="title" const:escapeHTML="NO" style="style" />
-        </span>
-      </var:if>
-  </container>
+    <div var:class="innerDisplayClasses">
+      <var:string value="appointment.title" const:escapeHTML="NO" />
+    </div>
+  </div>

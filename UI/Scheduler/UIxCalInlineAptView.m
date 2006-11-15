@@ -33,6 +33,8 @@
   id style;
   id queryDictionary;
   id referenceDate;
+  int dayStartHour;
+  int dayEndHour;
   BOOL canAccess;
 }
 
@@ -45,7 +47,20 @@
 
 @implementation UIxCalInlineAptView
 
-- (void)dealloc {
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      dayStartHour = 0;
+      dayEndHour = 24;
+      appointment = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
   [appointment release];
   [formatter release];
   [tooltipFormatter release];
@@ -56,35 +71,58 @@
   [super dealloc];
 }
 
-- (void) setAppointment: (NSDictionary *)_appointment {
+- (void) setAppointment: (NSDictionary *) _appointment
+{
   ASSIGN(appointment, _appointment);
 }
-- (NSDictionary *)appointment {
+
+- (NSDictionary *) appointment
+{
   return appointment;
 }
 
-- (void)setFormatter:(id)_formatter {
+- (void) setDayStartHour: (unsigned int) anHour
+{
+  dayStartHour = anHour;
+}
+
+- (void) setDayEndHour: (unsigned int) anHour
+{
+  dayEndHour = anHour;
+}
+
+- (void) setFormatter: (id) _formatter
+{
   ASSIGN(formatter, _formatter);
 }
-- (id)formatter {
+
+- (id) formatter
+{
   return formatter;
 }
 
-- (void)setTooltipFormatter:(id)_tooltipFormatter {
+- (void) setTooltipFormatter: (id) _tooltipFormatter
+{
   ASSIGN(tooltipFormatter, _tooltipFormatter);
 }
-- (id)tooltipFormatter {
+
+- (id) tooltipFormatter
+{
   return tooltipFormatter;
 }
 
-- (void)setUrl:(id)_url {
+- (void) setUrl: (id) _url
+{
   ASSIGN(url, _url);
 }
-- (id)url {
+
+- (id) url
+{
   return url;
 }
 
-- (void)setStyle:(id)_style {
+- (void) setStyle: (id) _style 
+{
   NSMutableString *ms;
   NSNumber *prio;
   NSString *s;
@@ -117,34 +155,66 @@
   }
   ASSIGNCOPY(style, ms);
 }
+
 - (id)style {
   return style;
 }
 
-- (void)setQueryDictionary:(id)_queryDictionary {
+- (void) setQueryDictionary: (id) _queryDictionary
+{
   ASSIGN(queryDictionary, _queryDictionary);
 }
-- (id)queryDictionary {
+
+- (id) queryDictionary
+{
   return queryDictionary;
 }
 
-- (void)setReferenceDate:(id)_referenceDate {
+- (void) setReferenceDate: (id) _referenceDate
+{
   ASSIGN(referenceDate, _referenceDate);
 }
-- (id)referenceDate {
+
+- (id) referenceDate
+{
   return referenceDate;
 }
 
-- (void)setCanAccess:(BOOL)_canAccess {
+- (void) setCanAccess: (BOOL) _canAccess
+{
   canAccess = _canAccess;
 }
-- (BOOL)canAccess {
+
+- (BOOL) canAccess
+{
   return canAccess;
 }
 
 - (NSString *) displayClasses
 {
-  return [NSString stringWithFormat: @"appointmentView ownerIs%@",
+  NSTimeInterval secondsStart, secondsEnd, delta;
+  NSCalendarDate *startDate;
+  int deltaStart, deltaLength;
+
+  startDate = [appointment objectForKey: @"startDate"];
+  secondsStart = [startDate timeIntervalSince1970];
+  secondsEnd = [[appointment objectForKey: @"endDate"] timeIntervalSince1970];
+  delta = (secondsEnd - [startDate timeIntervalSince1970]) / 60;
+  deltaLength = delta / 15;
+  if (((int) delta % 15) > 0)
+    deltaLength += 1;
+
+  deltaStart = (([startDate hourOfDay] * 60 + [startDate minuteOfHour]
+                 - dayStartHour * 60) / 15);
+
+  return [NSString stringWithFormat: @"appointment ownerIs%@ starts%d lasts%d",
+                   [appointment objectForKey: @"owner"],
+                   deltaStart, deltaLength, [startDate dayOfWeek]];
+}
+
+- (NSString *) innerDisplayClasses
+{
+  return [NSString stringWithFormat: @"appointmentInside ownerIs%@",
                    [appointment objectForKey: @"owner"]];
 }
 

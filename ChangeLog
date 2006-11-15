@@ -1,5 +1,10 @@
 2006-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalInlineAptView.m: same as the first below...
+
+	* UI/Scheduler/UIxCalDayTable.m: enhanced to provide the new
+	DIV-based presentation of the days and weeks.
+
 	* SoObjects/Appointments/SOGoTaskObject.m: same as below...
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m: lookupName:...
