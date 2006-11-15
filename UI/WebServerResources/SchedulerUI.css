@@ -293,6 +293,7 @@ TABLE._unfocused#appointmentsList TR._selected TD
 
 TABLE.monthOverview
 { position: absolute;
+  display: table;
   margin: 0 auto;
   padding: 1em;
   border-collapse: collapse;
@@ -304,16 +305,32 @@ TABLE.monthOverview
   min-width: 60em;
   min-height: 25em; }
 
-TABLE.monthOverview TD.contentOfDay
+TABLE.monthOverview TD
+{ border: 2px solid #397d94;
+  padding: 0px;
+  margin: 0px; }
+
+TABLE.monthOverview TD.day
 { vertical-align: top;
-  overflow: hidden;
   margin: 0px;
   padding: 0px;
-  height: 15%; }
+  height: 15%;
+  min-height: 15%;
+  max-height: 15%; }
 
-SPAN.dayCellLabel
-{ color: #77a;
-  font-weight: bold; }
+TABLE.monthOverview TD.day > DIV.dayContent
+{ display: block;
+  width: 100%;
+  height: 100%;
+  overflow: auto; }
+
+TABLE.monthOverview TD.header
+{ text-align: center;
+  color: #397d94;
+  width: 14%;
+  height: 2em;
+  font-weight: bold;
+  background: #e7efef; }
 
 TABLE.monthOverview TD.dayOfToday
 { border: 3px solid #397d94;
@@ -328,18 +345,9 @@ TABLE.monthOverview TD.dayOfAnotherMonth
 TABLE.monthOverview TD.selectedDay
 { background-color: #ffe79c; }
 
-TABLE.monthOverview TD
-{ border: 2px solid #397d94;
-  padding: 0px;
-  margin: 0px; }
-
-TABLE.monthOverview TD.header
-{ text-align: center;
-  color: #397d94;
-  width: 14%;
-  height: 2em;
-  font-weight: bold;
-  background: #e7efef; }
+SPAN.dayCellLabel
+{ color: #77a;
+  font-weight: bold; }
 
 SPAN.daysHeader,
 SPAN.weeksHeader,
