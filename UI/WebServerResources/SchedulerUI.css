@@ -655,13 +655,16 @@ DIV.daysViewFor7Days DIV.day0
 
 TABLE.monthOverview DIV.appointment,
 TABLE.monthOverview DIV.appointmentInside
-{ display: inline !important;
-  position: static;
-  height: 1em;
-  margin: 0px;
-  padding: 0px;
+{ margin: 0px;
+  padding: 1px;
   border: 0px;
-  width: 100%; }
+  height: auto;
+  width: auto;
+  position: static; }
+
+TABLE.monthOverview DIV.appointment
+{ background-color: #fff;
+  margin-top: 1px; }
 
 DIV.daysView > DIV.hours
 { position: absolute;
