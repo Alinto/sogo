@@ -1,5 +1,8 @@
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: the log window is not only
+	visible when UIxDebugEnabled is set.
+
 	* UI/WebServerResources/SchedulerUI.js: the month overview's day
 	cells are now initialized with the DOM event interface methods
 	instead of with html attributes.
