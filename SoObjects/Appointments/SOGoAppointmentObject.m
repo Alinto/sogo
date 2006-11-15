@@ -213,9 +213,18 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     
     if (![folder isNotNull]) /* no folder was found for given UID */
       continue;
-    
-    apt = [folder lookupName:[self nameInContainer] inContext:ctx
-		  acquire:NO];
+
+    apt = [folder lookupName: [self nameInContainer] inContext:ctx
+		  acquire: NO];
+    if ([apt isKindOfClass: [NSException class]])
+      {
+        [self logWithFormat:@"Note: an exception occured finding '%@' in folder: %@",
+	      [self nameInContainer], folder];
+        [self logWithFormat:@"the exception reason was: %@",
+              [(NSException *) apt reason]];
+        continue;
+      }
+
     if (![apt isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];

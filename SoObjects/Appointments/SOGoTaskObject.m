@@ -207,20 +207,29 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 	     objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
-    SOGoTaskObject *apt;
+    SOGoTaskObject *task;
     
     if (![folder isNotNull]) /* no folder was found for given UID */
       continue;
     
-    apt = [folder lookupName:[self nameInContainer] inContext:ctx
+    task = [folder lookupName:[self nameInContainer] inContext:ctx
 		  acquire:NO];
-    if (![apt isNotNull]) {
+    if ([task isKindOfClass: [NSException class]])
+      {
+        [self logWithFormat:@"Note: an exception occured finding '%@' in folder: %@",
+	      [self nameInContainer], folder];
+        [self logWithFormat:@"the exception reason was: %@",
+              [(NSException *) task reason]];
+        continue;
+      }
+
+    if (![task isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];
       continue;
     }
     
-    if ((error = [apt primarySaveContentString:_iCal]) != nil) {
+    if ((error = [task primarySaveContentString:_iCal]) != nil) {
       [self logWithFormat:@"Note: failed to save iCal in folder: %@", folder];
       // TODO: make compound
       allErrors = error;
@@ -240,17 +249,17 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 	     objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;
-    SOGoTaskObject *apt;
+    SOGoTaskObject *task;
     
-    apt = [folder lookupName:[self nameInContainer] inContext:ctx
+    task = [folder lookupName:[self nameInContainer] inContext:ctx
 		  acquire:NO];
-    if (![apt isNotNull]) {
+    if (![task isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];
       continue;
     }
     
-    if ((error = [apt primaryDelete]) != nil) {
+    if ((error = [task primaryDelete]) != nil) {
       [self logWithFormat:@"Note: failed to delete in folder: %@", folder];
       // TODO: make compound
       allErrors = error;

@@ -1,3 +1,11 @@
+2006-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoTaskObject.m: same as below...
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m: lookupName:...
+	might return an exception so we have to handle it if we don't
+	wanna crash...
+
 2006-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: updated the list
