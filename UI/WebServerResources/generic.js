@@ -511,10 +511,6 @@ function onMenuEntryClick(event, menuId)
   return false;
 }
 
-function initQueryParameters() {
-  queryParameters = parseQueryParameters('' + window.location);
-}
-
 function parseQueryParameters(url) {
   var parameters = new Array();
 
@@ -532,12 +528,14 @@ function parseQueryParameters(url) {
 
 function initLogConsole() {
   var logConsole = document.getElementById('logConsole');
-  logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
+  if (logConsole) {
+    logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
+    
+    var node = document.getElementsByTagName('body')[0];
 
-  var node = document.getElementsByTagName('body')[0];
-
-  node.addEventListener("keydown", onBodyKeyDown, false);
-  logConsole.addEventListener("dblclick", onLogDblClick, false);
+    node.addEventListener("keydown", onBodyKeyDown, false);
+    logConsole.addEventListener("dblclick", onLogDblClick, false);
+  }
 }
 
 function onBodyKeyDown(event)
@@ -938,6 +936,8 @@ function indexColor(number) {
 
 var onLoadHandler = {
   handleEvent: function (event) {
+    queryParameters = parseQueryParameters('' + window.location);
+    initLogConsole();
     initTabs();
     configureDragHandles();
     configureSortableTableHeaders();
