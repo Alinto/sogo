@@ -1,5 +1,8 @@
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Templates/MailerUI/UIxMailView.wox: don't display useless
+	headers (should be made configurable at some point)...
+
 	* OGoContentStore/sql/generate-folderinfo-sql-for-users.sh: drop
 	"not null" constraint on startdate, enddate, isopaque,
 	participants and partmails.
