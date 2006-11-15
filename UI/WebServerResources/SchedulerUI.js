@@ -121,8 +121,26 @@ function modifyEvent(sender, modification) {
   var currentLocation = '' + window.location;
   var arr = currentLocation.split("/");
   arr[arr.length-1] = modification;
-  window.location = arr.join("/");
-  window.close();
+
+  document.modifyEventAjaxRequest = triggerAjaxRequest(arr.join("/"),
+                                                       modifyEventCallback,
+                                                       modification);
+
+  return false;
+}
+
+function modifyEventCallback(http) {
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      log("closing window...?");
+      window.close();
+    }
+    else {
+      log("showing alert...");
+      window.alert(labels["eventPartStatModificationError"]);
+    }
+    document.modifyEventAjaxRequest = null;
+  }
 }
 
 function deleteEventCallback(http)
@@ -162,9 +180,9 @@ function onSelectAll() {
   return false;
 }
 
-function displayAppointment(event, sender) {
-  _editEventId(sender.getAttribute("aptCName"),
-               sender.getAttribute("owner"));
+function displayAppointment(event) {
+  _editEventId(this.getAttribute("aptCName"),
+               this.getAttribute("owner"));
 
   event.cancelBubble = true;
   event.returnValue = false;
@@ -268,10 +286,13 @@ function tasksListCallback(http)
   if (http.readyState == 4
       && http.status == 200) {
     document.tasksListAjaxRequest = null;
-    div.innerHTML = http.responseText;
     var list = $("tasksList");
+    var scroll = list.scrollTop;
+    div.innerHTML = http.responseText;
+    list = $("tasksList");
     list.addEventListener("selectionchange",
                           onTasksSelectionChange, true);
+    list.scrollTop = scroll;
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
       for (var i = 0; i < selectedNodesId.length; i++)
@@ -421,14 +442,10 @@ function scrollDayView(hour)
   } else
     rowNumber = 8;
 
-  var calContent = $("calendarContent");
-  var tables = calContent.getElementsByTagName("table");
-  if (tables.length > 0) {
-    var row = tables[0].rows[rowNumber + 1];
-    var cell = row.cells[1];
-
-    calContent.scrollTop = cell.offsetTop;
-  }
+  var daysView = $("daysView");
+  var hours = daysView.childNodesWithTag("div")[0].childNodesWithTag("div");
+  if (hours.length > 0)
+    daysView.parentNode.scrollTop = hours[rowNumber + 1].offsetTop;
 }
 
 function calendarDisplayCallback(http)
@@ -449,6 +466,16 @@ function calendarDisplayCallback(http)
       hour = http.callbackData["hour"];
     if (currentView != 'monthview')
       scrollDayView(hour);
+    var daysView = $("daysView");
+    var appointments = document.getElementsByClassName("appointment", daysView);
+    for (var i = 0; i < appointments.length; i++) {
+      appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
+      appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
+      appointments[i].addEventListener("dblclick", displayAppointment, true);
+    }
+    var days = document.getElementsByClassName("day", daysView);
+    for (var i = 0; i < days.length; i++)
+      days[i].addEventListener("click", onCalendarSelectDay, true);
   }
   else
     log ("ajax fuckage");
@@ -531,7 +558,7 @@ function _loadAppointmentHref(href) {
   }
   var url = CalendarBaseURL + href;
   document.appointmentsListAjaxRequest
-    = triggerAjaxRequest(href, appointmentsListCallback, href);
+    = triggerAjaxRequest(url, appointmentsListCallback, href);
 
   return false;
 }
@@ -680,12 +707,12 @@ function onSearchFormSubmit()
   return false;
 }
 
-function onCalendarSelectAppointment(event, node)
+function onCalendarSelectAppointment(event)
 {
   var list = $("appointmentsList");
   list.deselectAll();
 
-  var aptCName = node.getAttribute("aptCName");
+  var aptCName = this.getAttribute("aptCName");
   var row = $(aptCName);
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
@@ -697,14 +724,14 @@ function onCalendarSelectAppointment(event, node)
   event.returnValue = false;
 }
 
-function onCalendarSelectDay(event, node)
+function onCalendarSelectDay(event)
 {
-  var day = node.getAttribute("day");
+  var day = this.getAttribute("day");
 
   if (currentView == 'weekview')
-    changeWeekCalendarDisplayOfSelectedDay(node);
+    changeWeekCalendarDisplayOfSelectedDay(this);
   else if (currentView == 'monthview')
-    changeMonthCalendarDisplayOfSelectedDay(node);
+    changeMonthCalendarDisplayOfSelectedDay(this);
   changeDateSelectorDisplay(day);
 
   event.cancelBubble = true;
@@ -713,29 +740,13 @@ function onCalendarSelectDay(event, node)
 
 function changeWeekCalendarDisplayOfSelectedDay(node)
 {
-  var tr = node.parentNode;
-  var tbody = tr.parentNode;
+  var days = document.getElementsByClassName("day", node.parentNode);
 
-  var oldSelected = -1;
-  if (tbody.parentNode.selectedCell)
-    oldSelected = tbody.parentNode.selectedCell.cellIndex;
-  else {
-    var cells = tr.cells;
-    var i = 0;
-    while (i < cells.length && oldSelected == -1)
-      if (cells[i].hasClassName("selectedDay"))
-        oldSelected = i;
-      else
-        i++;
-  }
-  tbody.parentNode.selectedCell = node;
-  var newSelected = node.cellIndex;
+  for (var i = 0; i < days.length; i++)
+    if (days[i] != node)
+      days[i].removeClassName("selectedDay");
 
-  var rows = tbody.rows;
-  for (i = 1; i < rows.length; i++) {
-    rows[i].cells[oldSelected].removeClassName("selectedDay");
-    rows[i].cells[newSelected].addClassName("selectedDay");
-  }
+  node.addClassName("selectedDay");
 }
 
 function findMonthCalendarSelectedCell(table) {
