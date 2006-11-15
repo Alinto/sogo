@@ -236,7 +236,7 @@
 
   classes = [NSMutableString new];
   [classes autorelease];
-  [classes appendString: @"contentOfDay"];
+  [classes appendString: @"day"];
   dayOfWeek = [currentTableDay dayOfWeek];
   if (dayOfWeek == 0 || dayOfWeek == 6)
     [classes appendString: @" weekEndDay"];
