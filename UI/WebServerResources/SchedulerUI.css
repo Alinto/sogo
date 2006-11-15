@@ -810,6 +810,7 @@ DIV.appointments > DIV.appointment
 
 DIV.appointment > DIV
 { position: absolute;
+  overflow: hidden;
   top: 2px;
   bottom: 2px;
   left: 2px;
