@@ -70,21 +70,21 @@ DROP TABLE SOGo_${USER_TABLE}_privcal;
 CREATE TABLE SOGo_${USER_TABLE}_privcal_quick (
   c_name       VARCHAR(256)    NOT NULL PRIMARY KEY, -- the filename
   uid          VARCHAR(256)    NOT NULL,
-  startdate    INT             NOT NULL,
-  enddate      INT             NOT NULL,
+  startdate    INT             NULL,
+  enddate      INT             NULL,
   cycleenddate INT             NULL,     -- enddate for cyclic events
   title        VARCHAR(1000)   NOT NULL,
   cycleinfo    VARCHAR(1000)   NULL,     -- property list with cycle infos
-  participants VARCHAR(100000) NOT NULL, -- the CNs of the participants
+  participants VARCHAR(100000) NULL, -- the CNs of the participants
   isallday     INT             NULL,
   iscycle      INT             NULL,     -- client needs to fetch to resolve
   ispublic     INT             NOT NULL,
   status       INT             NOT NULL,
   priority     INT             NOT NULL, -- for marking high prio apts
-  isopaque     INT             NOT NULL,
+  isopaque     INT             NULL,
   location     VARCHAR(256)    NULL,
   orgmail      VARCHAR(256)    NULL,
-  partmails    VARCHAR(100000) NOT NULL, -- the emails of the participants
+  partmails    VARCHAR(100000) NULL, -- the emails of the participants
   partstates   VARCHAR(256)    NOT NULL, -- the status of each participant
   sequence     INT             NULL,      -- the iCal sequence
   component    VARCHAR(10)     NOT NULL -- the type of component (vevent/vtodo) in the vcalendar

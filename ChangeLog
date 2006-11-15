@@ -1,3 +1,9 @@
+2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/sql/generate-folderinfo-sql-for-users.sh: drop
+	"not null" constraint on startdate, enddate, isopaque,
+	participants and partmails.
+
 2006-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
