@@ -56,12 +56,7 @@
                 date="aptEndDate"
                 const:dayStartHour="0"
                 const:dayEndHour="23"
-                /><label><input type="checkbox"
-                  class="checkBox"
-                  var:selection="checkForConflicts"
-                  var:checked="checkForConflicts"
-                  /><var:string label:value="check for conflicts"
-                  /></label></span></span>
+                /></span></span>
           <hr />
           <!-- label id="isPrivate"><input class="checkBox"
           type="checkbox" var:selection="isPrivate"
