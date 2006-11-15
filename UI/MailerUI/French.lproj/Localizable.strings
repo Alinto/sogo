@@ -42,6 +42,10 @@
 
 "Attachments:" = "Pièces jointes :";
 
+"To"            = "À";
+"Cc"            = "Cc";
+"Bcc"           = "Cci";
+
 "to"            = "À";
 "cc"            = "Cc";
 "bcc"           = "Cci";

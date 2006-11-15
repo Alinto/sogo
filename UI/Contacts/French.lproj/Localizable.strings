@@ -1,6 +1,6 @@
 /* this file is in UTF-8 format! */
 
-"Address Books"      = "Carnets d'adresse";
+"Address Books"      = "Carnet d'adresses";
 "Addresses"         = "Adresses";
 "Cancel"            = "Annuler";
 "Common"            = "Identité";
@@ -30,7 +30,7 @@
 
 "Name or Address" = "Le nom ou l'adresse";
 "Personal Addressbook" = "Adresses personnelles";
-"Search in Addressbook" = "Carnet d'adresse...";
+"Search in Addressbook" = "Carnet d'adresses...";
 
 "New Card" = "Nouvelle fiche";
 "New List" = "Nouvelle liste";
@@ -80,8 +80,9 @@
 "Recipient" = "Destinataire";
 "Carbon Copy" = "Copie carbone";
 "Blind Carbon Copy" = "C. carbone cachée";
-"Add Attendee..." = "Ajouter participant(s)...";
-"Add Agenda..." = "Ajouter calendrier(s)...";
+"Add Attendee..." = "Ajouter participant...";
+"Add Calendar..." = "Ajouter agenda...";
+"Add Address Book..." = "Ajouter carnet...";
 
 "Add an Addressbook..." = "Ajouter un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";
