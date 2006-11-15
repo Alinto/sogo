@@ -276,6 +276,8 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Week View" = "Par semaine";
 "Month View" = "Par mois";
 
+"eventPartStatModificationError" = "Votre état de participation à l'événement n'a pas pu être modifié.";
+
 /* menu */
 "New Event..." = "Nouvel événement...";
 "New Task..." = "Nouvelle tâche...";

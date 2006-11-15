@@ -268,6 +268,8 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Week View" = "Week View";
 "Month View" = "Month View";
 
+"eventPartStatModificationError" = "Your participation status at the event could not be modified.";
+
 /* confirmations */
 "appointmentDeleteConfirmation" = "Erasing this event will not be reversible.\\nDo you want to confirm anyway?";
 "taskDeleteConfirmation" = "Erasing this task will be nonreversible.\\nDo you want to confirm anyway?";
