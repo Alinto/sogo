@@ -101,9 +101,9 @@
       <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
 
       <div id="calendarView"
-        ><var:component className="UIxCalDayView"
+        ><!-- var:component className="UIxCalDayView"
           selectedDate="selectedDate"
-          /></div>
+          --></div>
     </div>
 
     <script type="text/javascript">
