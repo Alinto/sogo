@@ -1,5 +1,11 @@
 2006-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
+	-hoursToDisplay]): prevent a crash by retaining the
+	"hoursToDisplay" array after it's created.
+	([UIxCalDayTable -clickableHourCellClass]): new method for the new
+	clickable hours DIV.
+
 	* UI/WebServerResources/SchedulerUI.js: made the event
 	participation status modification asynchronous, which also fixes a
 	bug where the window would sometimes close before the accept or
