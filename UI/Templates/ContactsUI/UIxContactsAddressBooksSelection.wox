@@ -10,7 +10,7 @@
     >
     <input type="submit"
       class="button"
-      label:value="Add Address Book..."
+      label:value="Add Agenda..."
       name="validate"
       onclick="return onConfirmAddressBookSelection();" />
   </div>

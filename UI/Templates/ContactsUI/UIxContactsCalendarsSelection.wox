@@ -10,7 +10,7 @@
     >
     <input type="submit"
       class="button"
-      label:value="Add Attendee..."
+      label:value="Add Agenda..."
       name="validate"
       onclick="return onConfirmContactSelection(null);" />
   </div>
