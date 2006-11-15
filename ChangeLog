@@ -1,5 +1,11 @@
 2006-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js: made the event
+	participation status modification asynchronous, which also fixes a
+	bug where the window would sometimes close before the accept or
+	decline action was completed. Also, adapted the event handling
+	related to the days or weeks view with the new DIV-based layout.
+
 	* UI/Scheduler/UIxCalInlineAptView.m: same as the first below...
 
 	* UI/Scheduler/UIxCalDayTable.m: enhanced to provide the new
