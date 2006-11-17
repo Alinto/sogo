@@ -73,8 +73,8 @@
               <a var:href="logoffPath"
                 ><var:string label:value="Logoff" /></a>
               <var:if condition="context.isUIxDebugEnabled"
-                >| <a href="#" onclick="toggleLogConsole();"
-                  ><var:string label:value="Log Console (dev.)" /></a
+                >| <a href="#"><var:string
+                    label:value="Log Console (dev.)" /></a
                   ></var:if>
             </div>
           </var:if
