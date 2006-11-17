@@ -22,6 +22,7 @@
 #import "SOGoUser.h"
 #import "SOGoObject.h"
 #import "SOGoUserFolder.h"
+#import "AgenorUserManager.h"
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import "common.h"
@@ -410,6 +411,20 @@ static NSTimeZone *serverTimeZone = nil;
         userTimeZone = [self serverTimeZone];
       [userTimeZone retain];
     }
+
+  return userTimeZone;
+}
+
+- (NSTimeZone *) userTimeZone: (NSString *) username
+{
+  NSUserDefaults *userPrefs;
+  AgenorUserManager *am;
+
+  am = [AgenorUserManager sharedUserManager];
+  userPrefs = [am getUserDefaultsForUID: username];
+  userTimeZone = [NSTimeZone timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
+  if (!userTimeZone)
+    userTimeZone = [self serverTimeZone];
 
   return userTimeZone;
 }

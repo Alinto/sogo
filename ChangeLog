@@ -1,5 +1,10 @@
 2006-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-userTimeZone:username]): new method that returns the timezone for
+	the specified user depending on his preferences and the server
+	defaults.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-stringForData:partInfo:]): take the encoding into account and
 	translate the text to "normal" before processing the charset data.
