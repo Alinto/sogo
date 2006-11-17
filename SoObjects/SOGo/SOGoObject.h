@@ -56,6 +56,7 @@
 
 - (NSTimeZone *) serverTimeZone;
 - (NSTimeZone *) userTimeZone;
+- (NSTimeZone *) userTimeZone: (NSString *) username;
 
 /* ownership */
 
