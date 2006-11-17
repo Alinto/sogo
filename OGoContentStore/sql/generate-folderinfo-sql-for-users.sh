@@ -8,6 +8,7 @@ DB_PASS="sogo"
 DB_HOST="192.168.0.4"
 DB_PORT="5432"
 DB_NAME="sogo"
+TIMEZONE="Canada/Eastern"
 
 
 while [ "$1" != "" ]; do
@@ -119,6 +120,18 @@ CREATE TABLE SOGo_${USER_TABLE}_contacts (
   c_creationdate INT             NOT NULL, -- creation date
   c_lastmodified INT             NOT NULL, -- last modification (UPDATE)
   c_version      INT             NOT NULL  -- version counter
+);
+
+DELETE FROM SOGo_user_profile WHERE uid = '${USER_ID}';
+
+INSERT INTO SOGo_user_profile ( 
+  uid,
+  allowinternet,
+  timezonename,
+  calendaruids
+)
+VALUES (
+    '${USER_ID}', 1, '${TIMEZONE}', '${USER_ID}'
 );
 
 EOF
