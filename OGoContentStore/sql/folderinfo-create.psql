@@ -37,31 +37,3 @@ VALUES
     'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
     'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
     'Container' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/helge', 
-    'Users',
-    'helge',
-    NULL,
-    NULL,
-    'helge', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
-    'Container' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/helge/Calendar', 
-    'Users',
-    'helge',
-    'Calendar',
-     NULL,
-    'Calendar', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_helge_privcal', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_helge_privcal_quick', 
-    'Appointment' );
