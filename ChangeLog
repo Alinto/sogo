@@ -1,3 +1,9 @@
+2006-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-stringForData:partInfo:]): take the encoding into account and
+	translate the text to "normal" before processing the charset data.
+
 2006-11-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js: the progress indicator is on

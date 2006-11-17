@@ -570,23 +570,34 @@ static BOOL debugSoParts       = NO;
 /* convert parts to strings */
 
 - (NSString *)stringForData:(NSData *)_data partInfo:(NSDictionary *)_info {
-  NSString *charset;
-  NSString *s;
+  NSString *charset, *encoding, *s;
+  NSData *mailData;
   
   if (![_data isNotNull])
     return nil;
 
   s = nil;
+
+  encoding = [[_info objectForKey:@"encoding"] lowercaseString];
+
+  if ([encoding isEqualToString: @"7bit"]
+      || [encoding isEqualToString: @"8bit"])
+    mailData = _data;
+  else if ([encoding isEqualToString: @"base64"])
+    mailData = [_data dataByDecodingBase64];
+  else if ([encoding isEqualToString: @"quoted-printable"])
+    mailData = [_data dataByDecodingQuotedPrintable];
   
-  charset = [[_info valueForKey:@"parameterList"] valueForKey:@"charset"];
-  if ([charset isNotNull] && [charset length] > 0)
-    s = [NSString stringWithData:_data usingEncodingNamed:charset];
-  
-  if (s == nil) { /* no charset provided, fall back to UTF-8 */
-    s = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];
-    s = [s autorelease];
-  }
-  
+  charset = [[_info valueForKey:@"parameterList"] valueForKey: @"charset"];
+  if (![charset length])
+    {
+      s = [[NSString alloc] initWithData:mailData encoding:NSUTF8StringEncoding];
+      [s autorelease];
+    }
+  else
+    s = [NSString stringWithData: mailData
+                  usingEncodingNamed: charset];
+
   return s;
 }
 
