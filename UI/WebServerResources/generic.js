@@ -524,14 +524,15 @@ function parseQueryParameters(url) {
 }
 
 function initLogConsole() {
-  var logConsole = document.getElementById('logConsole');
+  var logConsole = $("logConsole");
   if (logConsole) {
-    logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
-    
-    var node = document.getElementsByTagName('body')[0];
-
-    node.addEventListener("keydown", onBodyKeyDown, false);
+    logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#">X</a>';
     logConsole.addEventListener("dblclick", onLogDblClick, false);
+    var node = $("logConsoleClose");
+    node.addEventListener("click", toggleLogConsole, true);
+    log ("button: " + node);
+    node = document.getElementsByTagName('body')[0];
+    node.addEventListener("keydown", onBodyKeyDown, true);
   }
 }
 
@@ -546,21 +547,24 @@ function onBodyKeyDown(event)
 
 function onLogDblClick(event)
 {
-  var logConsole = document.getElementById('logConsole');
-  logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#" onclick="return toggleLogConsole();">X</a>';
+  var logConsole = $("logConsole");
+  logConsole.innerHTML = '<a id="logConsoleClose" href="#">X</a>';
+  var node = $("logConsoleClose");
+  node.addEventListener("click", toggleLogConsole, true);
 }
 
-function toggleLogConsole() {
-  var logConsole = document.getElementById('logConsole');
-
+function toggleLogConsole(event) {
+  var logConsole = $("logConsole");
+  log("toggle pouet pouet");
   var display = '' + logConsole.style.display;
   if (display.length == 0) {
     logConsole.style.display = 'block;';
   } else {
     logConsole.style.display = '';
   }
-
-  return false;
+  event.cancelBubble = true;
+  event.returnValue = false;
+  event.preventDefault();
 }
 
 function log(message) {
@@ -966,10 +970,13 @@ function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
-    for (var i = 0; i < anchors.length; i++) {
-      anchors[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+    for (var i = 0; i < 4; i++) {
+      anchors[i].addEventListener("mousedown", listRowMouseDownHandler,
+                                  false);
       anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
+    if (anchors.length > 4)
+      anchors[6].addEventListener("click", toggleLogConsole, true);
   }
 }
 
