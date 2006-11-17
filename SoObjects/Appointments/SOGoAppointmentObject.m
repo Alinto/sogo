@@ -22,6 +22,7 @@
 #import "SOGoAppointmentObject.h"
 
 #import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoObject.h>
 #import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
 #import <NGCards/iCalCalendar.h>
@@ -38,8 +39,7 @@
 #import "NSArray+Appointments.h"
 
 @interface SOGoAppointmentObject (PrivateAPI)
-- (NSString *)homePageURLForPerson:(iCalPerson *)_person;
-- (NSTimeZone *)viewTimeZoneForPerson:(iCalPerson *)_person;
+- (NSString *) homePageURLForPerson: (iCalPerson *) _person;
   
 - (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
   forOldAppointment:(iCalEvent *)_newApt
@@ -228,6 +228,10 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     if (![apt isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];
+      continue;
+    }
+    if ([apt isKindOfClass: [NSException class]]) {
+      [self logWithFormat:@"Exception: %@", [(NSException *) apt reason]];
       continue;
     }
     
@@ -619,14 +623,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return [NSString stringWithFormat:@"%@%@", baseURL, uid];
 }
 
-- (NSTimeZone *) viewTimeZoneForPerson: (iCalPerson *) _person
-{
-  /* TODO: get this from user config as soon as this is available and only
-   *       fall back to default timeZone if config data is not available
-   */
-  return [self serverTimeZone];
-}
-
 - (NSException *) saveContentString: (NSString *) contentString
                         baseVersion: (unsigned int) baseVersion
 {
@@ -728,7 +724,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     [p setNewApt:_newApt];
     [p setOldApt:_oldApt];
     [p setHomePageURL:[self homePageURLForPerson:attendee]];
-    [p setViewTZ:[self viewTimeZoneForPerson:attendee]];
+    [p setViewTZ: [self userTimeZone: cn]];
     subject = [p getSubject];
     text    = [p getBody];
 

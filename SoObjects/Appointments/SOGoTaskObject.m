@@ -36,7 +36,6 @@
 
 @interface SOGoTaskObject (PrivateAPI)
 - (NSString *)homePageURLForPerson:(iCalPerson *)_person;
-- (NSTimeZone *)viewTimeZoneForPerson:(iCalPerson *)_person;
   
 - (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
   forOldTask:(iCalToDo *)_newApt
@@ -256,6 +255,10 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     if (![task isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];
+      continue;
+    }
+    if ([task isKindOfClass: [NSException class]]) {
+      [self logWithFormat:@"Exception: %@", [(NSException *) task reason]];
       continue;
     }
     
@@ -619,15 +622,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return [NSString stringWithFormat:@"%@%@", baseURL, uid];
 }
 
-- (NSTimeZone *) viewTimeZoneForPerson: (iCalPerson *) _person
-{
-  /* TODO: get this from user config as soon as this is available and only
-   *       fall back to default timeZone if config data is not available
-   */
-  return [self serverTimeZone];
-}
-
-
 - (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
   forOldTask:(iCalToDo *)_oldApt
   andNewTask:(iCalToDo *)_newApt
@@ -700,7 +694,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     [p setNewApt: _newApt];
     [p setOldApt: _oldApt];
     [p setHomePageURL:[self homePageURLForPerson:attendee]];
-    [p setViewTZ:[self viewTimeZoneForPerson:attendee]];
+    [p setViewTZ: [self userTimeZone: cn]];
     subject = [p getSubject];
     text    = [p getBody];
 
