@@ -975,7 +975,7 @@ function configureLinkBanner() {
                                   false);
       anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
-    if (anchors.length > 4)
+    if (anchors.length > 5)
       anchors[6].addEventListener("click", toggleLogConsole, true);
   }
 }
