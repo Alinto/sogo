@@ -67,7 +67,7 @@ agenor_shares4uid_OBJC_FILES += agenor_shares4uid.m
 agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m
 agenor_defaults_OBJC_FILES   += agenor_defaults.m
 
-ADDITIONAL_TOOL_LIBS += -Lobj -L -lSOGo$(LIBRARY_NAME_SUFFIX)
+ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
