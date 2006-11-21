@@ -569,7 +569,8 @@ static BOOL debugSoParts       = NO;
 
 /* convert parts to strings */
 
-- (NSString *)stringForData:(NSData *)_data partInfo:(NSDictionary *)_info {
+- (NSString *)stringForData:(NSData *)_data partInfo:(NSDictionary *)_info
+{
   NSString *charset, *encoding, *s;
   NSData *mailData;
   
