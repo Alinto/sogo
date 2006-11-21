@@ -526,11 +526,8 @@ function parseQueryParameters(url) {
 function initLogConsole() {
   var logConsole = $("logConsole");
   if (logConsole) {
-    logConsole.innerHTML = '<a style="-moz-opacity: 1.0; text-decoration: none; float: right; padding: .5em; background: #aaa; color: #333;" id="logConsoleClose" href="#">X</a>';
     logConsole.addEventListener("dblclick", onLogDblClick, false);
-    var node = $("logConsoleClose");
-    node.addEventListener("click", toggleLogConsole, true);
-    log ("button: " + node);
+    logConsole.innerHTML = "";
     node = document.getElementsByTagName('body')[0];
     node.addEventListener("keydown", onBodyKeyDown, true);
   }
@@ -548,14 +545,11 @@ function onBodyKeyDown(event)
 function onLogDblClick(event)
 {
   var logConsole = $("logConsole");
-  logConsole.innerHTML = '<a id="logConsoleClose" href="#">X</a>';
-  var node = $("logConsoleClose");
-  node.addEventListener("click", toggleLogConsole, true);
+  logConsole.innerHTML = "";
 }
 
 function toggleLogConsole(event) {
   var logConsole = $("logConsole");
-  log("toggle pouet pouet");
   var display = '' + logConsole.style.display;
   if (display.length == 0) {
     logConsole.style.display = 'block;';
