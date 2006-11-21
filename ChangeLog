@@ -1,3 +1,10 @@
+2006-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-lookupFolder:ofClassNamed:inContext:]): added the ability to
+	configure the name of the SOGoDraftFolders with the ud var
+	"SOGoDraftsFolderName".
+
 2006-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject

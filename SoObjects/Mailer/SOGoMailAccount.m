@@ -43,6 +43,7 @@ static BOOL     useAltNamespace       = NO;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *cfgDraftsFolderName;
 
   NSAssert2([super version] == 1,
             @"invalid superclass (%@) version %i !",
@@ -52,10 +53,15 @@ static BOOL     useAltNamespace       = NO;
   
   sharedFolderName     = [ud stringForKey:@"SOGoSharedFolderName"];
   otherUsersFolderName = [ud stringForKey:@"SOGoOtherUsersFolderName"];
-  
+  cfgDraftsFolderName = [ud stringForKey:@"SOGoDraftsFolderName"];
+  if ([cfgDraftsFolderName length] > 0)
+    {
+      ASSIGN (draftsFolderName, cfgDraftsFolderName);
+      NSLog(@"Note: using drafts folder named:      '%@'", draftsFolderName);
+    }
+
   NSLog(@"Note: using shared-folders name:      '%@'", sharedFolderName);
   NSLog(@"Note: using other-users-folders name: '%@'", otherUsersFolderName);
-  
   if ([ud boolForKey:@"SOGoEnableSieveFolder"]) {
     rootFolderNames = [[NSArray alloc] initWithObjects:
 				        draftsFolderName, 
