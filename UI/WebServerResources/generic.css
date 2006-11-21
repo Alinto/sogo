@@ -483,14 +483,6 @@ SPAN.toolbarButton:active
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('submenu-active.gif') !important; }
 
-A#logConsoleClose
-{ -moz-opacity: 1.0;
-  text-decoration: none;
-  float: right;
-  padding: .5em;
-  background: #aaa;
-  color: #333; }
-
 DIV#logConsole
 { position: absolute;
   overflow: auto;
