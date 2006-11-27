@@ -22,7 +22,8 @@ libOGoContentStore_OBJC_FILES +=		\
 
 libOGoContentStore_TYPEMODELS += \
 	appointment.ocs	\
-	contact.ocs	\
+	contact.ocs 	\
+	acls.ocs
 
 
 test_quick_extract_OBJC_FILES += \
