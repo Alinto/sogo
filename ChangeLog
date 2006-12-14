@@ -1,3 +1,10 @@
+2006-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVRendererTypes.m ([SOGoDAVSet
+	+davSetWithArray:newValuesofValuesTaggedAs:newValueTag]): a new
+	subclass module of SoWebDAVValue that supports collections of
+	properties of the same type.
+
 2006-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
@@ -10,7 +17,7 @@
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-userTimeZone:username]): new method that returns the timezone for
 	the specified user depending on his preferences and the server
-	defaults.
+	defaults
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-stringForData:partInfo:]): take the encoding into account and
