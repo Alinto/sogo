@@ -1,5 +1,7 @@
 2006-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m: declare "Freebusy" permissions for the top objects.
+
 	* UI/Contacts/UIxContactsAclsSelection.m: new component specific
 	to the handling of the user selection for the acls.
 

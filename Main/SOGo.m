@@ -87,9 +87,9 @@ static BOOL doCrashOnSessionCreate = NO;
     WOResourceManager *rm;
     
     /* ensure core SoClass'es are setup */
-    [NSClassFromString(@"SOGoObject")        soClass];
-    [NSClassFromString(@"SOGoContentObject") soClass];
-    [NSClassFromString(@"SOGoFolder")        soClass];
+    [$(@"SOGoObject")        soClass];
+    [$(@"SOGoContentObject") soClass];
+    [$(@"SOGoFolder")        soClass];
     
     /* setup locale cache */
     self->localeLUT = [[NSMutableDictionary alloc] initWithCapacity:2];
@@ -129,7 +129,7 @@ static BOOL doCrashOnSessionCreate = NO;
 
 - (id)lookupUser:(NSString *)_key inContext:(id)_ctx {
   NSLog (@"lookupUser: %@", _key);
-  return [[[NSClassFromString(@"SOGoUserFolder") alloc] 
+  return [[[$(@"SOGoUserFolder") alloc] 
 	    initWithName:_key inContainer:self] autorelease];
 }
 
@@ -267,7 +267,7 @@ static BOOL doCrashOnSessionCreate = NO;
     return lpath;
   
   if (MainProduct == Nil) {
-    if ((MainProduct = NSClassFromString(@"MainUIProduct")) == Nil)
+    if ((MainProduct = $(@"MainUIProduct")) == Nil)
       [self errorWithFormat:@"did not find MainUIProduct class!"];
   }
   
