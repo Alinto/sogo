@@ -137,7 +137,7 @@ DIV#messageContent P IMG
   border-bottom-color: #808080;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  background-color: #DCDAD5;
+  background-color: #dcdad5;
 }
 
 .foldercell
@@ -198,12 +198,12 @@ table.titletable td.titlecell SELECT
   border-bottom: 2px solid #222;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  background: #DCDAD5;
+  background: #dcdad5;
 }
 
 .whitesec_title
 {
-  background-color: #DCDAD5;
+  background-color: #dcdad5;
   padding: 4px;
 }
 
@@ -382,7 +382,7 @@ DIV.mailer_plaincontent
 
 form#attachment_form
 {
-  background-color: #DCDAD5;
+  background-color: #dcdad5;
   padding: 1px;
 }
 
@@ -411,7 +411,7 @@ td.attachment_uplabel
 
 div.linked_attachment_frame
 {
-  background-color: #DCDAD5;
+  background-color: #dcdad5;
   padding: 4px;
 }
 

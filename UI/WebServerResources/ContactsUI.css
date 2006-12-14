@@ -285,22 +285,22 @@ DIV.contactSelector
   left: 0px;
 }
 
-DIV.popup DIV#rightPanel
+BODY.popup DIV#rightPanel
 { top: 4em; }
 
-DIV.popup DIV#dragHandle
+BODY.popup DIV#dragHandle
 { top: 6em; }
 
-DIV.popup DIV#contactsListContent
+BODY.popup DIV#contactsListContent
 { height: 8em; }
 
-DIV.popup DIV#contactFoldersList
+BODY.popup DIV#contactFoldersList
 { top: 4em; }
 
-DIV.popup DIV#rightDragHandle
+BODY.popup DIV#rightDragHandle
 { top: 10em; }
 
-DIV.popup DIV#contactView
+BODY.popup DIV#contactView
 { top: 10em; }
 
 DIV.contactSelection
