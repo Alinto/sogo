@@ -34,9 +34,8 @@
     context.activeUser
 */
 
-@class NSString, NSArray, NSDictionary, NSUserDefaults;
-
-@class NSString, NSArray, NSURL, NSUserDefaults;
+@class NSString, NSArray, NSDictionary, NSURL, NSUserDefaults;
+@class WOContext;
 
 @interface SOGoUser : SoUser
 {
@@ -67,6 +66,9 @@
 
 - (id)homeFolderInContext:(id)_ctx;
 - (id)schedulingCalendarInContext:(id)_ctx;
+
+- (NSArray *) rolesForObject: (NSObject *) object
+                   inContext: (WOContext *) context;
 
 @end
 

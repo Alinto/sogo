@@ -19,18 +19,18 @@
   02111-1307, USA.
 */
 
-#include "SOGoTaskObject.h"
+#import "SOGoTaskObject.h"
 
-#include <SOGo/AgenorUserManager.h>
-#include <SaxObjC/SaxObjC.h>
-#include <NGCards/NGCards.h>
-#include <NGCards/iCalCalendar.h>
-#include <NGCards/iCalToDo.h>
-#include <NGMime/NGMime.h>
-#include <NGMail/NGMail.h>
-#include <NGMail/NGSendMail.h>
-#include "SOGoAptMailNotification.h"
-#include "common.h"
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalToDo.h>
+#import <NGCards/iCalEventChanges.h>
+#import <NGCards/iCalPerson.h>
+#import <SOGo/AgenorUserManager.h>
+#import <NGMime/NGMime.h>
+#import <NGMail/NGMail.h>
+#import <NGMail/NGSendMail.h>
+#import "SOGoAptMailNotification.h"
+#import "common.h"
 
 #import "NSArray+Appointments.h"
 
@@ -55,35 +55,15 @@
 
 @implementation SOGoTaskObject
 
-static id<NSObject,SaxXMLReader> parser  = nil;
-static SaxObjectDecoder          *sax    = nil;
-static NGLogger                  *logger = nil;
 static NSString                  *mailTemplateDefaultLanguage = nil;
 
 + (void)initialize {
   NSUserDefaults      *ud;
-  NGLoggerManager     *lm;
-  SaxXMLReaderFactory *factory;
   static BOOL         didInit = NO;
   
   if (didInit) return;
   didInit = YES;
   
-  lm      = [NGLoggerManager defaultLoggerManager];
-  logger  = [lm loggerForClass:self];
-  
-  factory = [SaxXMLReaderFactory standardXMLReaderFactory];
-  parser  = [[factory createXMLReaderForMimeType:@"text/calendar"]
-    retain];
-  if (parser == nil)
-    [logger fatalWithFormat:@"did not find a parser for text/calendar!"];
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
-  if (sax == nil)
-    [logger fatalWithFormat:@"could not create the iCal SAX handler!"];
-  
-  [parser setContentHandler:sax];
-  [parser setErrorHandler:sax];
-
   ud = [NSUserDefaults standardUserDefaults];
   mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
                                      retain];
@@ -93,32 +73,9 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
 /* accessors */
 
-- (NSString *) iCalString
-{
-  // for UI-X task viewer
-  return [self contentAsString];
-}
-
 - (iCalToDo *) task
 {
-  iCalToDo *task;
-  iCalCalendar *calendar;
-
-  NSString *iCalString;
-
-  iCalString = [self iCalString];
-  if (iCalString)
-    {
-      calendar = [iCalCalendar parseSingleFromSource: iCalString];
-      if (calendar)
-        task = [self firstTaskFromCalendar: calendar];
-      else
-        task = nil;
-    }
-  else
-    task = nil;
-
-  return task;
+  return [self firstTaskFromCalendar: [self calendar]];
 }
 
 /* iCal handling */
@@ -271,19 +228,19 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return allErrors;
 }
 
-- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) calendar
+- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) aCalendar
 {
-  iCalToDo *event;
-  NSArray *events;
+  iCalToDo *task;
+  NSArray *tasks;
 
-  events = [calendar childrenWithTag: @"vtodo"];
-  if ([events count])
-    event = (iCalToDo *) [[events objectAtIndex: 0]
+  tasks = [aCalendar childrenWithTag: @"vtodo"];
+  if ([tasks count])
+    task = (iCalToDo *) [[tasks objectAtIndex: 0]
                            groupWithClass: [iCalToDo class]];
   else
-    event = nil;
+    task = nil;
 
-  return event;
+  return task;
 }
 
 /* "iCal multifolder saves" */
@@ -483,18 +440,13 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - delete in removed folders
      - send iMIP mail for all folders not found
   */
-  iCalCalendar *calendar;
-  iCalToDo *apt;
+  iCalToDo *task;
   NSArray         *removedUIDs;
   NSMutableArray  *attendees;
 
   /* load existing content */
   
-  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
-  if (calendar)
-    apt = [self firstTaskFromCalendar: calendar];
-  else
-    NSLog (@"this is not good at all, totally fucked we are going tyo crash...");
+  task = [self task];
   
   /* compare sequence if requested */
 
@@ -502,21 +454,21 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     // TODO
   }
   
-  removedUIDs = [self attendeeUIDsFromTask:apt];
+  removedUIDs = [self attendeeUIDsFromTask:task];
 
   /* send notification email to attendees excluding organizer */
-  attendees = [NSMutableArray arrayWithArray:[apt attendees]];
-  [attendees removePerson:[apt organizer]];
+  attendees = [NSMutableArray arrayWithArray:[task attendees]];
+  [attendees removePerson:[task organizer]];
   
   /* flag task as being canceled */
-  [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
-  [apt increaseSequence];
+  [(iCalCalendar *) [task parent] setMethod: @"cancel"];
+  [task increaseSequence];
 
   /* remove all attendees to signal complete removal */
-  [apt removeAllAttendees];
+  [task removeAllAttendees];
 
   /* send notification email */
-  [self sendTaskDeletionEMailForTask:apt
+  [self sendTaskDeletionEMailForTask:task
         toAttendees:attendees];
 
   /* perform */
@@ -527,49 +479,37 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 - (NSException *)saveContentString:(NSString *)_iCalString {
   return [self saveContentString:_iCalString baseSequence:0];
 }
-- (NSException *)delete {
-  return [self deleteWithBaseSequence:0];
-}
-
 
 - (NSException *)changeParticipationStatus:(NSString *)_status
   inContext:(id)_ctx
 {
-  iCalCalendar *calendar;
-  iCalToDo *apt;
+  iCalToDo *task;
   iCalPerson      *p;
   NSString        *newContent;
   NSException     *ex;
   NSString        *myEMail;
   
   // TODO: do we need to use SOGoTask? (prefer iCalToDo?)
-  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
-  if (calendar)
-    apt = [self firstTaskFromCalendar: calendar];
-  else
-    {
-      apt = nil;
-      NSLog (@"this is not good at all, totally fucked we are going tyo crash...");
-    }
+  task = [self task];
 
-  if (apt == nil) {
+  if (task == nil) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
                         reason:@"unable to parse task record"];
   }
   
   myEMail = [[_ctx activeUser] email];
-  if ((p = [apt findParticipantWithEmail:myEMail]) == nil) {
+  if ((p = [task findParticipantWithEmail:myEMail]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
                         reason:@"user does not participate in this "
                                @"task"];
   }
   
   [p setPartStat:_status];
-  newContent = [[apt parent] versitString];
+  newContent = [[task parent] versitString];
   
   // TODO: send iMIP reply mails?
   
-//   [apt release]; apt = nil;
+//   [task release]; task = nil;
   
   if (newContent == nil) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */

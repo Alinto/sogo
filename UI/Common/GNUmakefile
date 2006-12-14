@@ -16,6 +16,7 @@ CommonUI_OBJC_FILES +=		\
 	UIxAppNavView.m		\
 	UIxJSClose.m		\
 	\
+	UIxAclEditor.m  \
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\
@@ -27,6 +28,9 @@ CommonUI_OBJC_FILES +=		\
 CommonUI_RESOURCE_FILES += \
 	Version			\
 	product.plist		\
+	Toolbars/SOGoAclOwner.toolbar \
+	Toolbars/SOGoAclAssistant.toolbar \
+
 
 CommonUI_LOCALIZED_RESOURCE_FILES +=	\
 	Localizable.strings		\

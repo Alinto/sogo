@@ -1,196 +1,219 @@
-{
+{ /* -*-javascript-*- */
   requires = ( MAIN, CommonUI, Contacts );
 
-  publicResources = (
-  );
+  publicResources = ();
 
-  factories = {
-  };
+  factories = {};
 
   categories = {
-    SOGoContactFolders = {
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
+     SOGoContactFolders = {
+        methods = {
+           view = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+           };
+           new = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "new";
+           };
+           scheduler-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "selectForScheduler";
+           };
+           mailer-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "selectForMailer";
+           };
+           calendars-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "selectForCalendars";
+           };
+           addressbooks-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "selectForAddressBooks";
+           };
+           acls-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "selectForAcls";
+           };
+           contactSearch = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "contactSearch";
+           };
+           updateAdditionalAddressBooks = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName = "updateAdditionalAddressBooks";
+           };
+           acls = {
+              protectedBy = "ReadAcls";
+              pageName    = "UIxAclEditor";
+           };
+           saveAcls = {
+              protectedBy = "SaveAcls";
+              pageName    = "UIxAclEditor";
+              actionName = "saveAcls";
+           };
         };
-        new = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "new";
-        };
-        scheduler-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "selectForScheduler";
-        };
-        mailer-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "selectForMailer";
-        };
-        calendars-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "selectForCalendars";
-        };
-        addressbooks-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "selectForAddressBooks";
-        };
-        contactSearch = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "contactSearch";
-        };
-        updateAdditionalAddressBooks = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName = "updateAdditionalAddressBooks";
-        };
-      };
-    };
+     };
 
-    SOGoContactGCSFolder = {
-      slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoContactFolder.toolbar";
+     SOGoContactGCSFolder = {
+        slots = {
+           toolbar = {
+              protectedBy = "View";
+              value = "SOGoContactFolder.toolbar";
+           };
         };
-      };
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
+        methods = {
+           view = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+           };
+           new = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "new";
+           };
+           mailer-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "mailerContacts";
+           };
+           calendars-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "calendarsContacts";
+           };
+           acls-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName  = "aclsContacts";
+           };
+           addressbooks-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "addressBooksContacts";
+           };
         };
-        new = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "new";
-        };
-        mailer-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "mailerContacts";
-        };
-        calendars-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "calendarsContacts";
-        };
-        addressbooks-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "addressBooksContacts";
-        };
-      };
-    };
+     };
 
-    SOGoContactLDAPFolder = {
-      slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoContactFolder.toolbar";
+     SOGoContactLDAPFolder = {
+        slots = {
+           toolbar = {
+              protectedBy = "View";
+              value = "SOGoContactFolder.toolbar";
+           };
         };
-      };
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
+        methods = {
+           view = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+           };
+           new = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "new";
+           };
+           scheduler-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "schedulerContacts";
+           };
+           mailer-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "mailerContacts";
+           };
+           calendars-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "calendarsContacts";
+           };
+           acls-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName  = "aclsContacts";
+           };
+           addressbooks-contacts = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "addressBooksContacts";
+           };
         };
-        new = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "new";
-        };
-        scheduler-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "schedulerContacts";
-        };
-        mailer-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "mailerContacts";
-        };
-        calendars-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "calendarsContacts";
-        };
-        addressbooks-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactsListView";
-          actionName = "addressBooksContacts";
-        };
-      };
-    };
+     };
 
-    SOGoContactGCSEntry = {
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
+     SOGoContactGCSEntry = {
+        methods = {
+           view = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+           };
+           delete = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+              actionName  = "delete";
+           };
+           edit = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+           };
+           save = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "save";
+           };
+           write = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "write";
+           };
+           vcard = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+              actionName  = "vcard";
+           };
         };
-        delete = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
-          actionName  = "delete";
-        };
-        edit = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-        };
-        save = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "save";
-        };
-        write = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "write";
-        };
-        vcard = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
-          actionName  = "vcard";
-        };
-      };
-    };
+     };
 
-    SOGoContactLDAPEntry = {
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
+     SOGoContactLDAPEntry = {
+        methods = {
+           view = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+           };
+           delete = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+              actionName  = "delete";
+           };
+           edit = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+           };
+           save = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "save";
+           };
+           write = {
+              protectedBy = "View";
+              pageName    = "UIxContactEditor";
+              actionName  = "write";
+           };
+           vcard = {
+              protectedBy = "View";
+              pageName    = "UIxContactView";
+              actionName  = "vcard";
+           };
         };
-        delete = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
-          actionName  = "delete";
-        };
-        edit = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-        };
-        save = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "save";
-        };
-        write = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "write";
-        };
-        vcard = {
-          protectedBy = "View";
-          pageName    = "UIxContactView";
-          actionName  = "vcard";
-        };
-      };
-    };
+     };
   };
 }
+

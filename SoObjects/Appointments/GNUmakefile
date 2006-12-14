@@ -13,6 +13,7 @@ Appointments_OBJC_FILES = \
 	NSArray+Appointments.m		\
 	iCalEntityObject+Agenor.m	\
 	\
+	SOGoCalendarComponent.m		\
 	SOGoAppointmentObject.m		\
 	SOGoTaskObject.m		\
 	SOGoAppointmentFolder.m		\

@@ -290,7 +290,7 @@ static NSArray *internetAccessStates = nil;
   for (count = 1; count < intervals; count++)
     [freeBusyItems addObject: @"0"];
 
-  records = [[fb fetchFreebusyInfosFrom: startDate to: endDate] objectEnumerator];
+  records = [[fb fetchFreeBusyInfosFrom: startDate to: endDate] objectEnumerator];
   [self _fillFreeBusyItems: freeBusyItems withRecords: records
         fromStartDate: startDate toEndDate: endDate];
 

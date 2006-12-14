@@ -64,13 +64,13 @@
           protectedBy = "View";
           pageName    = "UIxCalMonthView"; 
         };
-        newevent = { 
-          protectedBy = "View";
+        newevent = {
+          protectedBy = "Add Documents, Images, and Files";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "new";
         };
         newtask = { 
-          protectedBy = "View";
+          protectedBy = "Add Documents, Images, and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "new";
         };
@@ -89,7 +89,7 @@
           actionName  = "proposalSearch";
         };
         batchDelete = {
-          protectedBy = "View";
+          protectedBy = "Delete Objects";
           pageName    = "UIxCalMainView";
           actionName  = "batchDelete";
         };
@@ -160,7 +160,7 @@
           pageName    = "UIxAppointmentView"; 
           actionName  = "delete";
         };
-        edit = { 
+        edit = {
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
         };
@@ -219,35 +219,35 @@
           actionName  = "delete";
         };
         edit = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
         };
         editAsTask = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
         };
         save = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "save";
         };
         saveAsTask = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "save";
         };
         changeStatus = {
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "changeStatus";
         };
         accept = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "accept";
         };
         decline = { 
-          protectedBy = "View";
+          protectedBy = "Change Images and Files";
           pageName    = "UIxTaskEditor"; 
           actionName  = "decline";
         };

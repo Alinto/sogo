@@ -12,11 +12,15 @@ var SOGODragAndDropSourceInterface = {
     this.addEventListener("mousedown", this.dragGestureMouseDownHandler, false);
   },
   dragGestureMouseDownHandler: function (event) {
-//     log("mousedown");
-    document._dragGestureStartPoint = new Array(event.clientX, event.clientY);
-    document._currentMouseGestureObject = this;
-    window.addEventListener("mousemove", this.dragGestureMouseMoveHandler, false);
-    window.addEventListener("mouseup", this.dragGestureMouseUpHandler, false);
+    if (event.button == 0) {
+      document._dragGestureStartPoint = new Array(event.clientX,
+                                                  event.clientY);
+      document._currentMouseGestureObject = this;
+      window.addEventListener("mousemove", this.dragGestureMouseMoveHandler,
+                              false);
+      window.addEventListener("mouseup", this.dragGestureMouseUpHandler,
+                              false);
+    }
   },
   dragGestureMouseUpHandler: function (event) {
     log("mouseup");

@@ -37,6 +37,10 @@
 @class NSString, NSArray, NSMutableString, NSException, NSTimeZone;
 @class GCSFolderManager, GCSFolder;
 @class SOGoUserFolder, SOGoGroupsFolder;
+@class WOContext;
+@class SOGoDAVSet;
+
+#define $(class) NSClassFromString(class)
 
 @interface SOGoObject : NSObject
 {
@@ -77,6 +81,8 @@
 
 - (NSException *)delete;
 - (id)GETAction:(id)_ctx;
+
+- (SOGoDAVSet *) davCurrentUserPrivilegeSet;
 
 /* etag support */
 

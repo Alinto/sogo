@@ -46,19 +46,5 @@
             <var:string value="currentContactName" /></li>
         </var:foreach>
       </ul><br />
-<!--      <span xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:var="http://www.skyrix.com/od/binding"
-        xmlns:const="http://www.skyrix.com/od/constant"
-        xmlns:rsrc="OGo:url"
-        class="button_submit_env"
-        >
-        <script language="JavaScript">
-          <var:string value="jsCode" const:escapeHTML="NO" />
-        </script>
-        <a var:href="jsFunctionHref"
-          class="button_submit"
-          ><var:string value="title" /></a>
-      </span>
-      <br /> -->
     </div>
   </container>

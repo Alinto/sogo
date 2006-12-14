@@ -255,11 +255,11 @@ static BOOL     useAltNamespace       = NO;
   
   // TODO: those should be product.plist bindings? (can't be class bindings
   //       though because they are 'per-account')
-  if ([_key isEqualToString:draftsFolderName]) {
+  if ([_key isEqualToString: draftsFolderName]) {
     if ((obj = [self lookupDraftsFolder:_key inContext:_ctx]) != nil)
       return obj;
   }
-  if ([_key isEqualToString:sieveFolderName]) {
+  if ([_key isEqualToString: sieveFolderName]) {
     if ((obj = [self lookupFiltersFolder:_key inContext:_ctx]) != nil)
       return obj;
   }

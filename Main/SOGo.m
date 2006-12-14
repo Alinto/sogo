@@ -26,15 +26,16 @@
     NSMutableDictionary *localeLUT;
 }
 
-- (NSDictionary *)currentLocaleConsideringLanguages:(NSArray *)_langs;
-- (NSDictionary *)localeForLanguageNamed:(NSString *)_name;
+- (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
+- (NSDictionary *) localeForLanguageNamed:(NSString *)_name;
 
 @end
 
 #include "SOGoProductLoader.h"
-#include <SOGo/SOGoAuthenticator.h>
 #include <WEExtensions/WEResourceManager.h>
+#include <SOGo/SOGoAuthenticator.h>
 #include <SOGo/SOGoUserFolder.h>
+#include <SOGo/SOGoPermissions.h>
 #include "common.h"
 
 @implementation SOGo
@@ -44,6 +45,8 @@ static BOOL doCrashOnSessionCreate = NO;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SoClassSecurityInfo *sInfo;
+  NSArray *basicRoles;
   id tmp;
   
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
@@ -64,18 +67,19 @@ static BOOL doCrashOnSessionCreate = NO;
 #endif
 
   /* SoClass security declarations */
-  
+  sInfo = [self soClassSecurityInfo];
   /* require View permission to access the root (bound to authenticated ...) */
-  [[self soClassSecurityInfo] declareObjectProtected:SoPerm_View];
-  
+  [sInfo declareObjectProtected: SoPerm_View];
+
   /* to allow public access to all contained objects (subkeys) */
-  [[self soClassSecurityInfo] setDefaultAccess:@"allow"];
-  
+  [sInfo setDefaultAccess: @"allow"];
+
+  basicRoles = [NSArray arrayWithObjects: SoRole_Authenticated,
+                        SOGoRole_FreeBusy, nil];
+
   /* require Authenticated role for View and WebDAV */
-  [[self soClassSecurityInfo] declareRole: SoRole_Authenticated
-                              asDefaultForPermission: SoPerm_View];
-  [[self soClassSecurityInfo] declareRole: SoRole_Authenticated
-                              asDefaultForPermission: SoPerm_WebDAVAccess];
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 }
 
 - (id)init {
@@ -108,7 +112,7 @@ static BOOL doCrashOnSessionCreate = NO;
 /* authenticator */
 
 - (id)authenticatorInContext:(id)_ctx {
-  return [SOGoAuthenticator sharedSOGoAuthenticator];
+  return [$(@"SOGoAuthenticator") sharedSOGoAuthenticator];
 }
 
 /* name lookup */

@@ -3,7 +3,6 @@ var sortKey = '';
 var listFilter = 'view_today';
 
 var CalendarBaseURL = ApplicationBaseURL;
-
 var listOfSelection = null;
 
 var hideCompletedTasks = 0;
@@ -478,12 +477,11 @@ function calendarDisplayCallback(http)
     if (http.callbackData["hour"])
       hour = http.callbackData["hour"];
     var contentView;
-    log ("currentView: " + currentView);
     if (currentView == "monthview")
       contentView = $("calendarContent");
     else {
       scrollDayView(hour);
-      log("cbtest1");
+//       log("cbtest1");
       contentView = $("daysView");
     }
     var appointments = document.getElementsByClassName("appointment", contentView);
@@ -507,7 +505,7 @@ function calendarDisplayCallback(http)
           clickableCells[j].addEventListener("dblclick",
                                              onClickableCellsDblClick, false);
       }
-    log("cbtest1");
+//     log("cbtest1");
   }
   else
     log ("ajax fuckage");
@@ -610,7 +608,7 @@ function _loadTasksHref(href) {
 }
 
 function onHeaderClick(event) {
-  log("onHeaderClick: " + this.link);
+//   log("onHeaderClick: " + this.link);
   _loadAppointmentHref(this.link);
 
   event.preventDefault();
@@ -947,14 +945,6 @@ function updateCalendarsList(method)
     updateCalendarStatus();
 }
 
-function initCalendarContactsSelector(selId)
-{
-  var selector = $(selId);
-  inhibitMyCalendarEntry();
-  updateCalendarStatus();
-  selector.changeNotification = updateCalendarsList;
-}
-
 function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 {
   var uids = $('uixselector-calendarsList-uidList');
@@ -1002,7 +992,7 @@ function onChangeCalendar(list) {
 }
 
 function validateBrowseURL(input) {
-  var button = $("browseUrlBtn");
+  var button = $("browseURLBtn");
 
   if (input.value.length) {
     if (!button.enabled)
@@ -1011,7 +1001,7 @@ function validateBrowseURL(input) {
     disableAnchor(button);
 }
 
-function browseUrl(anchor, event) {
+function browseURL(anchor, event) {
   if (event.button == 0) {
     var input = $("url");
     var url = input.value;
@@ -1020,6 +1010,32 @@ function browseUrl(anchor, event) {
   }
 
   return false;
+}
+
+function initializeMenus() {
+  var menus = new Array("monthListMenu", "yearListMenu",
+                        "appointmentsListMenu", "calendarsMenu", "searchMenu");
+  initMenusNamed(menus);
+
+  var calendarsList = $("calendarsList");
+  calendarsList.attachMenu("calendarsMenu");
+
+  var accessRightsMenuEntry = $("accessRightsMenuEntry");
+  accessRightsMenuEntry.addEventListener("mouseup",
+                                         onAccessRightsMenuEntryMouseUp,
+                                         false);
+}
+
+function onAccessRightsMenuEntryMouseUp(event) {
+  var folders = $("uixselector-calendarsList-display");
+  var selected = folders.getSelectedNodes()[0];
+  var uid = selected.getAttribute("uid");
+  if (uid == UserLogin)
+    url = ApplicationBaseURL + "acl";
+  else
+    url = UserFolderURL + "../" + uid + "/Calendar/acl";
+
+  openAclWindow(url, uid);
 }
 
 function configureDragHandles() {
@@ -1037,3 +1053,17 @@ function configureDragHandles() {
     handle.lowerBlock=$("calendarView");
   }
 }
+
+function initCalendarContactsSelector() {
+  var selector = $("calendarsList");
+  inhibitMyCalendarEntry();
+  updateCalendarStatus();
+  selector.changeNotification = updateCalendarsList;
+}
+
+function initCalendars() {
+  if (!document.body.hasClassName("popup"))
+    initCalendarContactsSelector();
+}
+
+window.addEventListener("load", initCalendars, false);

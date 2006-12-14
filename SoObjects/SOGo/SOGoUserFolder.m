@@ -19,207 +19,181 @@
   02111-1307, USA.
 */
 
-#import "SOGoUserFolder.h"
 #import "WOContext+Agenor.h"
 #import "common.h"
 #import "SOGoUser.h"
 
 #import "Appointments/SOGoAppointmentFolder.h"
+#import "Appointments/SOGoFreeBusyObject.h"
 #import "Contacts/SOGoContactFolders.h"
+#import "Mailer/SOGoMailAccounts.h"
+
+#import "SOGoUserFolder.h"
 
 @implementation SOGoUserFolder
 
 /* accessors */
 
-- (NSString *)login {
-  return [self nameInContainer];
+- (NSString *) login
+{
+  return nameInContainer;
 }
 
 /* hierarchy */
 
-- (NSArray *)toManyRelationshipKeys {
+- (NSArray *) toManyRelationshipKeys
+{
   static NSArray *children = nil;
-  
-  if (children == nil) {
+
+  if (!children)
     children = [[NSArray alloc] initWithObjects:
 				  @"Calendar", @"Contacts", @"Mail", nil];
-  }
+
   return children;
 }
 
 /* ownership */
 
-- (NSString *)ownerInContext:(id)_ctx {
-  return [self login];
+- (NSString *) ownerInContext: (WOContext *) _ctx
+{
+  return nameInContainer;
 }
 
 /* looking up shared objects */
 
-- (SOGoUserFolder *)lookupUserFolder {
+- (SOGoUserFolder *) lookupUserFolder
+{
   return self;
 }
 
-- (SOGoGroupsFolder *)lookupGroupsFolder {
-  return [self lookupName:@"Groups" inContext:nil acquire:NO];
+- (SOGoGroupsFolder *) lookupGroupsFolder
+{
+  return [self lookupName: @"Groups" inContext: nil acquire: NO];
 }
 
 /* pathes */
 
-- (void)setOCSPath:(NSString *)_path {
+- (void) setOCSPath: (NSString *) _path
+{
   [self warnWithFormat:
           @"rejected attempt to reset user-folder path: '%@'", _path];
 }
-- (NSString *)ocsPath {
-  return [@"/Users/" stringByAppendingString:[self login]];
+
+- (NSString *) ocsPath
+{
+  return [@"/Users/" stringByAppendingString: [self login]];
 }
 
-- (NSString *)ocsUserPath {
+- (NSString *) ocsUserPath
+{
   return [self ocsPath];
 }
-- (NSString *)ocsPrivateCalendarPath {
+
+- (NSString *) ocsPrivateCalendarPath
+{
   return [[self ocsUserPath] stringByAppendingString:@"/Calendar"];
 }
-- (NSString *)ocsPrivateContactsPath {
+
+- (NSString *) ocsPrivateContactsPath
+{
   return [[self ocsUserPath] stringByAppendingString:@"/Contacts"];
 }
 
 /* name lookup */
 
-- (id)privateCalendar:(NSString *)_key inContext:(id)_ctx {
-  static Class calClass = Nil;
-  id calendar;
+// - (NSString *) permissionForKey: (NSString *) key
+// {
+//   return ([key isEqualToString: @"freebusy.ifb"]
+//           ? SoPerm_WebDAVAccess
+//           : [super permissionForKey: key]);
+// }
+
+- (SOGoAppointmentFolder *) privateCalendar: (NSString *) _key
+                                  inContext: (WOContext *) _ctx
+{
+  SOGoAppointmentFolder *calendar;
   
-  if (calClass == Nil)
-    calClass = NSClassFromString(@"SOGoAppointmentFolder");
-  if (calClass == Nil) {
-    [self errorWithFormat:@"missing SOGoAppointmentFolder class!"];
-    return nil;
-  }
+  calendar = [$(@"SOGoAppointmentFolder") objectWithName: _key inContainer: self];
+  [calendar setOCSPath: [self ocsPrivateCalendarPath]];
 
-  calendar = [[calClass alloc] initWithName:_key inContainer:self];
-  [calendar setOCSPath:[self ocsPrivateCalendarPath]];
-
-  return [calendar autorelease];
+  return calendar;
 }
 
-- (SOGoContactFolders *) privateContacts: (NSString *)_key inContext:(id)_ctx
+- (SOGoContactFolders *) privateContacts: (NSString *) _key
+                               inContext: (WOContext *) _ctx
 {
-  static Class contactsClass = Nil;
   SOGoContactFolders *contacts;
 
-  if (!contactsClass)
-    contactsClass = NSClassFromString (@"SOGoContactFolders");
-  if (!contactsClass)
-    {
-      [self errorWithFormat:@"missing SOGoContactFolders class!"];
-      contacts = nil;
-    }
-  else
-    {
-      contacts = [[contactsClass alloc] initWithName:_key inContainer: self];
-      [contacts autorelease];
-      [contacts setBaseOCSPath: [self ocsPrivateContactsPath]];
-    }
+  contacts = [$(@"SOGoContactFolders") objectWithName:_key inContainer: self];
+  [contacts setBaseOCSPath: [self ocsPrivateContactsPath]];
 
   return contacts;
 }
 
-- (id)groupsFolder:(NSString *)_key inContext:(id)_ctx {
-  static Class fldClass = Nil;
-  id folder;
-  
-  if (fldClass == Nil)
-    fldClass = NSClassFromString(@"SOGoGroupsFolder");
-  if (fldClass == Nil) {
-    [self errorWithFormat:@"missing SOGoGroupsFolder class!"];
-    return nil;
-  }
-  
-  folder = [[fldClass alloc] initWithName:_key inContainer:self];
-  return [folder autorelease];
+- (id) groupsFolder: (NSString *) _key
+          inContext: (WOContext *) _ctx
+{
+  return [$(@"SOGoGroupsFolder") objectWithName: _key inContainer: self];
 }
 
-- (id)mailAccountsFolder:(NSString *)_key inContext:(id)_ctx {
-  static Class fldClass = Nil;
-  id folder;
-  
-  if (fldClass == Nil)
-    fldClass = NSClassFromString(@"SOGoMailAccounts");
-  if (fldClass == Nil) {
-    [self errorWithFormat:@"missing SOGoMailAccounts class!"];
-    return nil;
-  }
-  
-  folder = [[fldClass alloc] initWithName:_key inContainer:self];
-  return [folder autorelease];
+- (id) mailAccountsFolder: (NSString *) _key
+                inContext: (WOContext *) _ctx
+{
+  return [$(@"SOGoMailAccounts") objectWithName: _key inContainer: self];
 }
 
-- (id)freeBusyObject:(NSString *)_key inContext:(id)_ctx {
-  static Class fbClass = Nil;
-  id fb;
-
-  if (fbClass == Nil)
-    fbClass = NSClassFromString(@"SOGoFreeBusyObject");
-  if (fbClass == Nil) {
-    [self errorWithFormat:@"missing SOGoFreeBusyObject class!"];
-    return nil;
-  }
-  
-  fb = [[fbClass alloc] initWithName:_key inContainer:self];
-  return [fb autorelease];
+- (id) freeBusyObject: (NSString *) _key
+            inContext: (WOContext *) _ctx
+{
+  return [$(@"SOGoFreeBusyObject") objectWithName: _key inContainer: self];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+        inContext: (WOContext *) _ctx
+          acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
-  
-  if ([_key hasPrefix:@"Calendar"]) {
-    id calendar;
-    
-    calendar = [self privateCalendar:@"Calendar" inContext:_ctx];
-    if ([_key isEqualToString:@"Calendar"])
-      return calendar;
-    
-    return [calendar lookupName:[_key pathExtension] 
-		     inContext:_ctx acquire:NO];
-  }
-
-  if ([_key isEqualToString:@"Contacts"])
-    return [self privateContacts:_key inContext:_ctx];
-  
-  if ([_key isEqualToString:@"Groups"]) {
-    /* Agenor requirement, return 403 to stop acquisition */
-    if (![_ctx isAccessFromIntranet]) {
-      return [NSException exceptionWithHTTPStatus:403 /* Forbidden */];
+  obj = [super lookupName: _key inContext: _ctx acquire: NO];
+  if (!obj)
+    {
+      if ([_key hasPrefix: @"Calendar"])
+        {
+          obj = [self privateCalendar: @"Calendar" inContext: _ctx];
+          if (![_key isEqualToString: @"Calendar"])
+            obj = [obj lookupName: [_key pathExtension] 
+                       inContext: _ctx acquire: NO];
+        }
+      else if ([_key isEqualToString: @"Contacts"])
+        obj = [self privateContacts: _key inContext: _ctx];
+      else if ([_key isEqualToString: @"Groups"])
+        obj = [self groupsFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: @"Mail"])
+        obj = [self mailAccountsFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: @"freebusy.ifb"])
+        obj = [self freeBusyObject:_key inContext:_ctx];
+      else
+        obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }
-    return [self groupsFolder:_key inContext:_ctx];
-  }
 
-  if ([_key isEqualToString:@"Mail"])
-    return [self mailAccountsFolder:_key inContext:_ctx];
-
-  if ([_key isEqualToString:@"freebusy.ifb"])
-    return [self freeBusyObject:_key inContext:_ctx];
-
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+  return obj;
 }
 
 /* WebDAV */
 
-- (NSArray *)fetchContentObjectNames {
+- (NSArray *) fetchContentObjectNames
+{
   static NSArray *cos = nil;
   
-  if (!cos) {
-    cos = [[NSArray alloc] initWithObjects:@"freebusy.ifb", nil];
-  }
+  if (!cos)
+    cos = [[NSArray alloc] initWithObjects: @"freebusy.ifb", nil];
+
   return cos;
 }
 
-- (BOOL) davIsCollection {
+- (BOOL) davIsCollection
+{
   return YES;
 }
 

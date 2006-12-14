@@ -22,7 +22,7 @@
 #ifndef __SOGo_SOGoUserFolder_H__
 #define __SOGo_SOGoUserFolder_H__
 
-#include <SOGo/SOGoFolder.h>
+#import "SOGoFolder.h"
 
 /*
   SOGoUserFolder
@@ -37,10 +37,9 @@
 */
 
 @class NSString;
+@class WOContext;
 
 @interface SOGoUserFolder : SOGoFolder
-{
-}
 
 /* accessors */
 
@@ -48,7 +47,7 @@
 
 /* ownership */
 
-- (NSString *) ownerInContext: (id) _ctx;
+- (NSString *) ownerInContext: (WOContext *) _ctx;
 
 /* pathes */
 

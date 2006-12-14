@@ -22,10 +22,11 @@
 #ifndef __SOGo_SOGoFolder_H__
 #define __SOGo_SOGoFolder_H__
 
-#include <SOGo/SOGoObject.h>
+#import "SOGoObject.h"
 
 @class NSString, NSArray, NSDictionary;
 @class GCSFolder;
+@class SOGoAclsFolder;
 
 /*
   SOGoFolder
@@ -54,13 +55,18 @@
 - (GCSFolder *)ocsFolder;
 
 /* lower level fetches */
-
 - (NSArray *)fetchContentObjectNames;
 - (NSDictionary *)fetchContentStringsAndNamesOfAllObjects;
 
 /* folder type */
 
 - (NSString *)outlookFolderClass;
+
+@end
+
+@interface SOGoFolder (GroupDAVExtensions)
+
+- (NSString *) groupDavResourceType;
 
 @end
 

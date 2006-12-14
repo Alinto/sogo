@@ -174,6 +174,11 @@
   return records;
 }
 
+- (NSString *) groupDavResourceType
+{
+  return @"vcard-collection";
+}
+
 // /* GET */
 
 // - (id) GETAction: (id)_ctx

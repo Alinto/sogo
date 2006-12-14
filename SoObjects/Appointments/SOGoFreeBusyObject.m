@@ -20,14 +20,15 @@
 */
 // $Id: SOGoFreeBusyObject.m 675 2005-07-06 20:56:09Z znek $
 
-#include "SOGoFreeBusyObject.h"
-#include "common.h"
-#include <SOGo/AgenorUserManager.h>
-#include <NGCards/NGCards.h>
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalFreeBusy.h>
 
-@interface NSDate (UsedPrivates)
-- (NSString *) icalString; // declared in NGCards
-@end
+#import "common.h"
+
+#import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoPermissions.h>
+
+#import "SOGoFreeBusyObject.h"
 
 @interface SOGoFreeBusyObject (PrivateAPI)
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
@@ -58,19 +59,34 @@
 {
   NSArray *infos;
   
-  infos = [self fetchFreebusyInfosFrom:_startDate to:_endDate];
+  infos = [self fetchFreeBusyInfosFrom:_startDate to:_endDate];
   return [self iCalStringForFreeBusyInfos:infos from:_startDate to:_endDate];
 }
 
-- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate
 {
   id calFolder;
+  SoSecurityManager *sm;
+  WOApplication *woApp;
+  NSArray *infos;
+
+  woApp = [WOApplication application];
 
   calFolder = [container lookupName: @"Calendar" inContext: nil acquire: NO];
+  sm = [SoSecurityManager sharedSecurityManager];
+  if (![sm validatePermission: SOGoPerm_FreeBusyLookup
+           onObject: calFolder
+           inContext: [woApp context]])
+    infos = [calFolder fetchFreeBusyInfosFrom: _startDate
+                       to: _endDate];
+  else
+    {
+      infos = [NSArray new];
+      [infos autorelease];
+    }
 
-  return [calFolder fetchFreebusyInfosFrom: _startDate
-                    to: _endDate];
+  return infos;
 }
 
 /* Private API */

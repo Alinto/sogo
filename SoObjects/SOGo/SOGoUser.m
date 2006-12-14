@@ -19,9 +19,19 @@
   02111-1307, USA.
 */
 
-#include "SOGoUser.h"
-#include <SOGo/AgenorUserManager.h>
-#include "common.h"
+#import <NGObjWeb/SoObject.h>
+#import "AgenorUserManager.h"
+#import "SOGoAclsFolder.h"
+#import "common.h"
+
+#import "SOGoUser.h"
+
+@interface NSObject (SOGoRoles)
+
+- (NSString *) roleOfUser: (NSString *) uid
+                inContext: (WOContext *) context;
+
+@end
 
 @implementation SOGoUser
 
@@ -129,6 +139,37 @@
   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
 		     forKey:@"ActiveUserCalendar"];
   return folder;
+}
+
+- (NSArray *) rolesForObject: (NSObject *) object
+                   inContext: (WOContext *) context
+{
+  NSMutableArray *rolesForObject;
+  SOGoAclsFolder *aclsFolder;
+  NSArray *sogoRoles;
+  NSString *role;
+
+  rolesForObject
+    = [NSMutableArray arrayWithArray: [super rolesForObject: object
+                                             inContext: context]];
+  if ([[object ownerInContext: context] isEqualToString: [self login]])
+    [rolesForObject addObject: SoRole_Owner];
+  if ([object isKindOfClass: [SOGoObject class]])
+    {
+      aclsFolder = [SOGoAclsFolder new];
+      sogoRoles = [aclsFolder aclsForObject: (SOGoObject *) object
+                              forUser: login];
+      [rolesForObject addObjectsFromArray: sogoRoles];
+      [aclsFolder release];
+    }
+  if ([object respondsToSelector: @selector (roleOfUser:inContext:)])
+    {
+      role = [object roleOfUser: login inContext: context];
+      if (role)
+        [rolesForObject addObject: role];
+    }
+
+  return rolesForObject;
 }
 
 @end /* SOGoUser */

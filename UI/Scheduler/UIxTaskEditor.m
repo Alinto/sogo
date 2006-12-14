@@ -284,12 +284,12 @@
                           inContext:[self context]];
   [self debugWithFormat:@"group calendar: %@", groupCalendar];
   
-  if (![groupCalendar respondsToSelector:@selector(fetchFreebusyInfosFrom:to:)]) {
+  if (![groupCalendar respondsToSelector:@selector(fetchFreeBusyInfosFrom:to:)]) {
     [self errorWithFormat:@"invalid folder to run freebusy query on!"];
     return NO;
   }
 
-  infos = [groupCalendar fetchFreebusyInfosFrom:[_task startDate]
+  infos = [groupCalendar fetchFreeBusyInfosFrom:[_task startDate]
                          to:[_task due]];
   [self debugWithFormat:@"  process: %d tasks", [infos count]];
 

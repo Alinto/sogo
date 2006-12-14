@@ -393,4 +393,9 @@
   return result;
 }
 
+- (NSString *) groupDavResourceType
+{
+  return @"vcard-collection";
+}
+
 @end

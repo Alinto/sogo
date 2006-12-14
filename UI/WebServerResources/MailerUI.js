@@ -487,7 +487,7 @@ function messageListCallback(http)
     log ("ajax fuckage");
 }
 
-function onMessageContextMenu(event, element)
+function onMessageContextMenu(event)
 {
   var menu = $('messageListMenu');
   menu.addEventListener("hideMenu", onMessageContextMenuHide, false);
@@ -498,8 +498,8 @@ function onMessageContextMenu(event, element)
   for (var i = 0; i < selectedNodes.length; i++)
     deselectNode (selectedNodes[i]);
   topNode.menuSelectedRows = selectedNodes;
-  topNode.menuSelectedEntry = element;
-  selectNode(element);
+  topNode.menuSelectedEntry = this;
+  selectNode(this);
 }
 
 function onMessageContextMenuHide(event)
@@ -1001,6 +1001,14 @@ var initMailer = {
     configureMessageListEvents();
     initDnd();
   }
+}
+
+function initializeMenus() {
+  var menus = new Array("accountIconMenu", "inboxIconMenu", "trashIconMenu",
+                        "mailboxIconMenu", "addressMenu", "messageListMenu",
+                        "messageContentMenu", "label-menu", "mailboxes-menu",
+                        "mark-menu", "searchMenu");
+  initMenusNamed(menus);
 }
 
 window.addEventListener("load", initMailer, false);

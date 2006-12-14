@@ -50,13 +50,14 @@
      Note: we cannot use acquisition to find the nearest drafts folder, because
            the IMAP4 server might contains an own Drafts folder.
   */
-  SOGoDraftsFolder *drafts;
-  id client;
+//   SOGoDraftsFolder *drafts;
+  SOGoMailAccount *accountFolder;
   
-  client = [self clientObject];
-  drafts = [[client mailAccountFolder]
-	            lookupName:@"Drafts" inContext:[self context] acquire:NO];
-  return drafts;
+  accountFolder = [[self clientObject] mailAccountFolder];
+
+  return [accountFolder
+           lookupName: [accountFolder draftsFolderNameInContext: context]
+           inContext: context acquire: NO];
 }
 
 /* errors */
@@ -93,7 +94,7 @@
 	returnValue = drafts;
       else
 	{
-	  urlBase = [drafts newObjectBaseURLInContext: [self context]];
+	  urlBase = [drafts newObjectBaseURLInContext: context];
 	  if ([urlBase isNotNull])
 	    {
 	      urlParams = [NSMutableDictionary new];
@@ -119,7 +120,7 @@
 	      
 	      [self debugWithFormat:@"compose on %@: %@", drafts, url];
   
-	      r = [[self context] response];
+	      r = [context response];
 	      [r setStatus: 302 /* move	d */];
 	      [r setHeader: url forKey: @"location"];
 	      [self reset];
@@ -147,7 +148,7 @@
   if ([drafts isKindOfClass:[NSException class]])
     return drafts;
 
-  return [drafts newObjectInContext:[self context]];
+  return [drafts newObjectInContext:context];
 }
 
 - (NSException *)_setupNewDraft {
@@ -178,14 +179,14 @@
     return nil;
   }
   
-  url = [self->newDraft baseURLInContext:[self context]];
+  url = [self->newDraft baseURLInContext:context];
   if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
   url = [url stringByAppendingString:@"edit"];
   
   // TODO: debug log
   [self logWithFormat:@"compose on %@", url];
   
-  r = [[self context] response];
+  r = [context response];
   [r setStatus:302 /* moved */];
   [r setHeader:url forKey:@"location"];
   [self reset];

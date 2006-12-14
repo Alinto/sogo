@@ -141,3 +141,39 @@ HTMLElement.prototype.getSelectedNodesId = function() {
 
   return selArray;
 }
+
+HTMLElement.prototype.onContextMenu = function(event) {
+  var popup = this.sogoContextMenu;
+
+  if (document.currentPopupMenu)
+    hideMenu(event, document.currentPopupMenu);
+
+  var menuTop = event.pageY;
+  var menuLeft = event.pageX;
+  var heightDiff = (window.innerHeight
+		    - (menuTop + popup.offsetHeight));
+  if (heightDiff < 0)
+    menuTop += heightDiff;
+
+  var leftDiff = (window.innerWidth
+		  - (menuLeft + popup.offsetWidth));
+  if (leftDiff < 0)
+    menuLeft -= popup.offsetWidth;
+
+  popup.style.top = menuTop + "px;";
+  popup.style.left = menuLeft + "px;";
+  popup.style.visibility = "visible;";
+//   setupMenuTarget(popup, event.target);
+
+  bodyOnClick = "" + document.body.getAttribute("onclick");
+  document.body.setAttribute("onclick", "onBodyClick(event);");
+  document.currentPopupMenu = popup;
+
+//   event.cancelBubble = true;
+//   event.returnValue = false;
+}
+
+HTMLElement.prototype.attachMenu = function(menuName) {
+  this.sogoContextMenu = $(menuName);
+  this.addEventListener("contextmenu", this.onContextMenu, true);
+}

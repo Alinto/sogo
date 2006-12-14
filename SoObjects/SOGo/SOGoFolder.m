@@ -19,12 +19,16 @@
   02111-1307, USA.
 */
 
+#import <NGObjWeb/SoObject.h>
+
 #include "SOGoFolder.h"
 #include "common.h"
 #include <GDLContentStore/GCSFolderManager.h>
 #include <GDLContentStore/GCSFolder.h>
 #include <unistd.h>
 #include <stdlib.h>
+
+#import "SOGoAclsFolder.h"
 
 @implementation SOGoFolder
 
@@ -143,35 +147,49 @@
   return nil;
 }
 
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *) davResourceType
+{
+  NSArray *rType, *groupDavCollection;
+
+  if ([self respondsToSelector: @selector (groupDavResourceType)])
+    {
+      groupDavCollection = [NSArray arrayWithObjects: [self groupDavResourceType],
+                                    @"http://groupdav.org/", @"G", nil];
+      rType = [NSArray arrayWithObjects: @"collection", groupDavCollection, nil];
+    }
+  else
+    rType = [NSArray arrayWithObject: @"collection"];
+
+  return rType;
+}
+
+- (NSArray *) toOneRelationshipKeys {
   /* toOneRelationshipKeys are the 'files' contained in a folder */
   NSMutableArray *ma;
   NSArray  *names;
-  NSString *ext;
+  NSString *name, *ext;
   unsigned i, count;
+  NSRange  r;
 
-  if ((names = [self fetchContentObjectNames]) == nil)
-    return names;
-  
-  if ((count = [names count]) == 0)
-    return names;
-  
-  if ((ext = [self defaultFilenameExtension]) == nil)
-    return names;
-  
-  ma = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NSRange  r;
-    NSString *name;
-    
-    name = [names objectAtIndex:i];
-    r = [name rangeOfString:@"."];
-    if (r.length == 0)
-      name = [[name stringByAppendingString:@"."] stringByAppendingString:ext];
-    
-    [ma addObject:name];
-  }
-  return ma;
+  names = [self fetchContentObjectNames];
+  count = [names count];
+  ext = [self defaultFilenameExtension];
+  if (count && [ext length] > 0)
+    {
+      ma = [NSMutableArray arrayWithCapacity: count];
+      for (i = 0; i < count; i++)
+        {
+          name = [names objectAtIndex: i];
+          r = [name rangeOfString: @"."];
+          if (r.length == 0)
+            name = [[name stringByAppendingString:@"."] stringByAppendingString: ext];
+          [ma addObject:name];
+        }
+
+      names = ma;
+    }
+
+  return names;
 }
 
 /* WebDAV */

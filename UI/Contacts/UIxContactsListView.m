@@ -97,6 +97,13 @@
   return self;
 }
 
+- (id) aclsContactsAction
+{
+  selectorComponentClass = @"UIxContactsAclsSelection";
+
+  return self;
+}
+
 - (NSString *) defaultSortKey
 {
   return @"fn";

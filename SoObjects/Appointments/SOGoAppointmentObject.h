@@ -42,12 +42,14 @@
 @class iCalEvent;
 @class iCalCalendar;
 
-@interface SOGoAppointmentObject : SOGoContentObject
+#import "SOGoCalendarComponent.h"
+
+@interface SOGoAppointmentObject : SOGoCalendarComponent
 
 /* accessors */
 
-- (NSString *)iCalString;
-- (iCalEvent *)event;
+- (iCalEvent *) event;
+- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar;
 
 /* folder management */
 
@@ -70,7 +72,6 @@
 - (NSException *)changeParticipationStatus:(NSString *)_status
   inContext:(id)_ctx;
 
-- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar;
 
 @end
 

@@ -9,9 +9,10 @@ ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 ContactsUI_LANGUAGES = English French
 
 ContactsUI_OBJC_FILES =			\
-	UIxContactsMailerSelection.m	\
-	UIxContactsCalendarsSelection.m	\
+	UIxContactsAclsSelection.m \
 	UIxContactsAddressBooksSelection.m \
+	UIxContactsCalendarsSelection.m	\
+	UIxContactsMailerSelection.m	\
 	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\

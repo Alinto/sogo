@@ -72,7 +72,7 @@
                               to: (NSCalendarDate *) _endDate
                        component: (id) _component;
 
-- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate;
 
 - (void) deleteEntriesWithIds: (NSArray *) ids;

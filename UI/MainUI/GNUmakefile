@@ -17,7 +17,7 @@ MainUI_OBJC_FILES += \
 
 MainUI_RESOURCE_FILES += 	\
 	Version			\
-	product.plist		
+	product.plist
 
 MainUI_LOCALIZED_RESOURCE_FILES += \
 	Locale Localizable.strings

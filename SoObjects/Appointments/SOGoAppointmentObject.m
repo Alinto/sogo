@@ -21,15 +21,16 @@
 
 #import "SOGoAppointmentObject.h"
 
-#import <SOGo/AgenorUserManager.h>
-#import <SOGo/SOGoObject.h>
-#import <SaxObjC/SaxObjC.h>
-#import <NGCards/NGCards.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalEventChanges.h>
+#import <NGCards/iCalPerson.h>
 #import <NGMime/NGMime.h>
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
+
+#import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoObject.h>
 
 #import "SOGoAptMailNotification.h"
 #import "iCalEntityObject+Agenor.h"
@@ -59,35 +60,15 @@
 
 @implementation SOGoAppointmentObject
 
-static id<NSObject,SaxXMLReader> parser  = nil;
-static SaxObjectDecoder          *sax    = nil;
-static NGLogger                  *logger = nil;
 static NSString                  *mailTemplateDefaultLanguage = nil;
 
 + (void)initialize {
   NSUserDefaults      *ud;
-  NGLoggerManager     *lm;
-  SaxXMLReaderFactory *factory;
   static BOOL         didInit = NO;
   
   if (didInit) return;
   didInit = YES;
   
-  lm      = [NGLoggerManager defaultLoggerManager];
-  logger  = [lm loggerForClass:self];
-  
-  factory = [SaxXMLReaderFactory standardXMLReaderFactory];
-  parser  = [[factory createXMLReaderForMimeType:@"text/calendar"]
-    retain];
-  if (parser == nil)
-    [logger fatalWithFormat:@"did not find a parser for text/calendar!"];
-  sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGCards"];
-  if (sax == nil)
-    [logger fatalWithFormat:@"could not create the iCal SAX handler!"];
-  
-  [parser setContentHandler:sax];
-  [parser setErrorHandler:sax];
-
   ud = [NSUserDefaults standardUserDefaults];
   mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
                                      retain];
@@ -97,31 +78,9 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
 /* accessors */
 
-- (NSString *) iCalString
-{
-  // for UI-X appointment viewer
-  return [self contentAsString];
-}
-
 - (iCalEvent *) event
 {
-  iCalEvent *event;
-  iCalCalendar *calendar;
-  NSString *iCalString;
-
-  iCalString = [self iCalString];
-  if (iCalString)
-    {
-      calendar = [iCalCalendar parseSingleFromSource: iCalString];
-      if (calendar)
-        event = [self firstEventFromCalendar: calendar];
-      else
-        event = nil;
-    }
-  else
-    event = nil;
-
-  return event;
+  return [self firstEventFromCalendar: [self calendar]];
 }
 
 /* iCal handling */
@@ -273,12 +232,12 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return allErrors;
 }
 
-- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar
+- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) aCalendar
 {
   iCalEvent *event;
   NSArray *events;
 
-  events = [calendar childrenWithTag: @"vevent"];
+  events = [aCalendar childrenWithTag: @"vevent"];
   if ([events count])
     event = (iCalEvent *) [[events objectAtIndex: 0]
                             groupWithClass: [iCalEvent class]];
@@ -310,7 +269,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - send iMIP mail for all folders not found
   */
   AgenorUserManager *um;
-  iCalCalendar *calendar;
+  iCalCalendar *newCalendar;
   iCalEvent *oldApt, *newApt;
   iCalEventChanges  *changes;
   iCalPerson        *organizer;
@@ -339,10 +298,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
       oldApt = nil;
     }
   else
-    {
-      calendar = [iCalCalendar parseSingleFromSource: oldContent];
-      oldApt = [self firstEventFromCalendar: calendar];
-    }
+    oldApt = [self firstEventFromCalendar: [self calendar]];
   
   /* compare sequence if requested */
 
@@ -353,8 +309,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   
   /* handle new content */
   
-  calendar = [iCalCalendar parseSingleFromSource: _iCal];
-  newApt = [self firstEventFromCalendar: calendar];
+  newCalendar = [iCalCalendar parseSingleFromSource: _iCal];
+  newApt = [self firstEventFromCalendar: newCalendar];
   if (newApt == nil) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
 			reason:@"could not parse iCalendar content!"];
@@ -462,7 +418,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     canceledApt = [newApt copy];
     [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
     [self sendAttendeeRemovalEMailForAppointment:canceledApt
-          toAttendees:attendees];
+          toAttendees: attendees];
     [canceledApt release];
   }
   return nil;
@@ -483,18 +439,13 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - delete in removed folders
      - send iMIP mail for all folders not found
   */
-  iCalCalendar *calendar;
   iCalEvent *apt;
   NSArray         *removedUIDs;
   NSMutableArray  *attendees;
 
   /* load existing content */
-  
-  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
-  if (calendar)
-    apt = [self firstEventFromCalendar: calendar];
-  else
-    NSLog (@"this is not good at all, totally fucked we are going tyo crash...");
+
+  apt = [self event];  
   
   /* compare sequence if requested */
 
@@ -528,15 +479,9 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return [self saveContentString:_iCalString baseSequence:0];
 }
 
-- (NSException *)delete {
-  return [self deleteWithBaseSequence:0];
-}
-
-
 - (NSException *)changeParticipationStatus:(NSString *)_status
   inContext:(id)_ctx
 {
-  iCalCalendar *calendar;
   iCalEvent *apt;
   iCalPerson      *p;
   NSString        *newContent;
@@ -544,14 +489,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSString        *myEMail;
   
   // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
-  calendar = [iCalCalendar parseSingleFromSource: [self iCalString]];
-  if (calendar)
-    apt = [self firstEventFromCalendar: calendar];
-  else
-    {
-      apt = nil;
-      NSLog (@"this is not good at all, totally fucked we are going tyo crash...");
-    }
+  apt = [self event];
 
   if (apt == nil) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
@@ -643,7 +581,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
         newContentString = contentString;
       else
         {
-          [event setOrganizerWithUid: [self ownerInContext: nil]];
+          [event setOrganizerWithUid: [[self container] ownerInContext: nil]];
           newContentString = [eventCalendar versitString];
         }
     }
@@ -652,10 +590,10 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
                 baseVersion: baseVersion];
 }
 
-- (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
-  forOldAppointment:(iCalEvent *)_oldApt
-  andNewAppointment:(iCalEvent *)_newApt
-  toAttendees:(NSArray *)_attendees
+- (void)sendEMailUsingTemplateNamed: (NSString *)_pageName
+                  forOldAppointment: (iCalEvent *)_oldApt
+                  andNewAppointment: (iCalEvent *)_newApt
+                        toAttendees: (NSArray *)_attendees
 {
   NSString                *pageName;
   iCalPerson              *organizer;
@@ -828,4 +766,28 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return @"text/calendar";
 }
 
+- (NSString *) roleOfUser: (NSString *) login
+                inContext: (WOContext *) context
+{
+  AgenorUserManager *um;
+  iCalEvent *event;
+  NSString *role, *email;
+
+  um = [AgenorUserManager sharedUserManager];
+  email = [um getEmailForUID: login];
+
+  event = [self event];
+  if ([event isOrganizer: email])
+    role = @"Organizer";
+  else if ([event isParticipant: email])
+    role = @"Participant";
+  else
+    role = nil;
+
+  return role;
+}
+
 @end /* SOGoAppointmentObject */
+
+
+

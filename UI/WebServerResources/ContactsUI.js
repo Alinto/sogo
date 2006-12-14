@@ -498,14 +498,13 @@ function onConfirmContactSelection(tag)
 
   var contactsList = $("contactsList");
   var rows = contactsList.getSelectedRows();
-  for (i = 0; i < rows.length; i++)
-    {
-      var cid = rows[i].getAttribute("contactid");
-      var cname = '' + rows[i].getAttribute("contactname");
-      var email = '' + rows[i].cells[1].innerHTML;
-      opener.window.addContact(tag, currentContactFolderName + '/' + cname,
-                               cid, cname, email);
-    }
+  for (i = 0; i < rows.length; i++) {
+    var cid = rows[i].getAttribute("contactid");
+    var cname = '' + rows[i].getAttribute("contactname");
+    var email = '' + rows[i].cells[1].innerHTML;
+    opener.window.addContact(tag, currentContactFolderName + '/' + cname,
+                             cid, cname, email);
+  }
 
   if (selector && selector.changeNotification
       && selectorList.value != initialValues)
@@ -604,13 +603,13 @@ function refreshContacts(contactId) {
 
 function onAddressBookAdd(node) {
   var selector = $("contactFolders");
-  var selectorUrl = '?popup=YES&selectorId=contactFolders';
+  var selectorURL = '?popup=YES&selectorId=contactFolders';
 
   urlstr = ApplicationBaseURL;
   if (urlstr[urlstr.length-1] != '/')
     urlstr += '/';
   urlstr += ("../../" + UserLogin + "/Contacts/"
-             + contactSelectorAction + selectorUrl);
+             + contactSelectorAction + selectorURL);
 //   log (urlstr);
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
@@ -660,9 +659,29 @@ function configureDragHandles() {
 
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
-  if (contactFolders) {
+  if (contactFolders)
     contactFolders.addEventListener("selectionchange", onFolderSelectionChange, false);
-  }
+}
+
+function onAccessRightsMenuEntryMouseUp(event) {
+  var folders = $("contactFolders");
+  var selected = folders.getSelectedNodes()[0];
+  var external = selected.getAttribute("external-addressbook");
+  var title = this.innerHTML;
+  if (external)
+    url = UserFolderURL + "../" + external + "/Contacts/personal/acl";
+  else
+    url = ApplicationBaseURL + selected.getAttribute("id") + "/acl";
+
+  openAclWindow(url, title);
+}
+
+function initializeMenus() {
+  var menus = new Array("contactFoldersMenu", "contactMenu", "searchMenu");
+  initMenusNamed(menus);
+
+  var menuEntry = $("accessRightsMenuEntry");
+  menuEntry.addEventListener("mouseup", onAccessRightsMenuEntryMouseUp, false);
 }
 
 var initContacts = {

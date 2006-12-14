@@ -25,11 +25,13 @@
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
+#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import "common.h"
-#import <SOGo/NSString+URL.h>
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoTaskObject.h"
@@ -41,35 +43,6 @@
 - (id)initWithTimeIntervalSince1970:(NSTimeInterval)_interval;
 @end
 #endif
-
-@interface NSString (SOGoExtensions)
-
-- calDavMethodToObjC;
-
-@end
-
-@implementation NSString (SOGoExtensions)
-
-- calDavMethodToObjC
-{
-  NSMutableString *newName;
-  NSEnumerator *components;
-  NSString *component;
-
-  newName = [NSMutableString new];
-  [newName autorelease];
-  components = [[self componentsSeparatedByString: @"-"] objectEnumerator];
-  component = [components nextObject];
-  while (component)
-    {
-      [newName appendString: [component capitalizedString]];
-      component = [components nextObject];
-    }
-
-  return newName;
-}
-
-@end
 
 @implementation SOGoAppointmentFolder
 
@@ -85,6 +58,7 @@ static NSNumber   *sharedYes = nil;
 {
   NGLoggerManager *lm;
   static BOOL     didInit = NO;
+  SoClassSecurityInfo *securityInfo;
 
   if (didInit) return;
   didInit = YES;
@@ -95,6 +69,16 @@ static NSNumber   *sharedYes = nil;
 
   lm      = [NGLoggerManager defaultLoggerManager];
   logger  = [lm loggerForDefaultKey:@"SOGoAppointmentFolderDebugEnabled"];
+
+  securityInfo = [self soClassSecurityInfo];
+  [securityInfo declareRole: SOGoRole_Delegate
+                asDefaultForPermission: SoPerm_AddDocumentsImagesAndFiles];
+  [securityInfo declareRole: SOGoRole_Delegate
+                asDefaultForPermission: SoPerm_ChangeImagesAndFiles];
+  [securityInfo declareRoles: [NSArray arrayWithObjects:
+                                         SOGoRole_Delegate,
+                                       SOGoRole_Assistant, nil]
+                asDefaultForPermission: SoPerm_View];
 
   sharedYes = [[NSNumber numberWithBool:YES] retain];
 }
@@ -135,8 +119,7 @@ static NSNumber   *sharedYes = nil;
   SoSelectorInvocation *invocation;
   NSString *name;
 
-  name = [NSString stringWithFormat: @"do%@:",
-                   [_key calDavMethodToObjC]];
+  name = [NSString stringWithFormat: @"%@:", [_key davMethodToObjC]];
 
   invocation = [[SoSelectorInvocation alloc]
                  initWithSelectorNamed: name
@@ -198,7 +181,7 @@ static NSNumber   *sharedYes = nil;
 - (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
 {
   NSMutableDictionary *filterData;
-  id <DOMElement> parentNode;
+  id <DOMNode> parentNode;
   id <DOMNodeList> ranges;
   NSString *componentName;
 
@@ -274,7 +257,7 @@ static NSNumber   *sharedYes = nil;
     }
 }
 
-- (id) doCalendarQuery: (id) context
+- (id) davCalendarQuery: (id) context
 {
   WOResponse *r;
   NSArray *filters;
@@ -413,6 +396,11 @@ static NSNumber   *sharedYes = nil;
   [classes addObject: @"calendar-access"];
 
   return classes;
+}
+
+- (NSString *) groupDavResourceType
+{
+  return @"vevent-collection";
 }
 
 /* vevent UID handling */
@@ -799,7 +787,7 @@ static NSNumber   *sharedYes = nil;
 }
 
 
-- (NSArray *) fetchFreebusyInfosFrom: (NSCalendarDate *) _startDate
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate
 {
   static NSArray *infos = nil; // TODO: move to a plist file

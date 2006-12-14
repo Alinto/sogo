@@ -138,9 +138,9 @@
   return isPopup;
 }
 
-- (NSString *) pageContentClasses
+- (NSString *) bodyClasses
 {
-  return (isPopup ? @"pageContent popup" : @"pageContent");
+  return (isPopup ? @"popup" : @"main");
 }
 
 /* page based JavaScript */

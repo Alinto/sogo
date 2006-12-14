@@ -27,7 +27,7 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSString+URL.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 
@@ -85,6 +85,11 @@
 - (id) selectForAddressBooksAction
 {
   return [self _selectActionForApplication: @"addressbooks-contacts"];
+}
+
+- (id) selectForAclsAction
+{
+  return [self _selectActionForApplication: @"acls-contacts"];
 }
 
 - (NSArray *) _searchResults: (NSString *) contact

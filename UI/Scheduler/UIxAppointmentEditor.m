@@ -298,12 +298,12 @@
                           inContext:[self context]];
   [self debugWithFormat:@"group calendar: %@", groupCalendar];
   
-  if (![groupCalendar respondsToSelector:@selector(fetchFreebusyInfosFrom:to:)]) {
+  if (![groupCalendar respondsToSelector:@selector(fetchFreeBusyInfosFrom:to:)]) {
     [self errorWithFormat:@"invalid folder to run freebusy query on!"];
     return NO;
   }
 
-  infos = [groupCalendar fetchFreebusyInfosFrom:[_apt startDate]
+  infos = [groupCalendar fetchFreeBusyInfosFrom:[_apt startDate]
                          to:[_apt endDate]];
   [self debugWithFormat:@"  process: %d events", [infos count]];
 

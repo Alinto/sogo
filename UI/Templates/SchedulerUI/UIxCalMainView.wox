@@ -33,35 +33,31 @@
 
     <div class="menu" id="appointmentsListMenu">
       <ul>
-        <li
-          onmousedown="return false;"
-          onmouseup="newEvent(this, 'event');"><var:string label:value="New Event..."/></li>
+        <li onmouseup="newEvent(this, 'event');"><var:string label:value="New Event..."/></li>
         <li class="separator"></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="newEvent(this, 'task');"><var:string label:value="New Task..."/></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="editEvent();"
-          ><var:string label:value="Edit Selected Event..."/></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="deleteEvent();"
-          ><var:string label:value="Delete Selected Event"/></li>
+        <li onmouseup="newEvent(this, 'task');"><var:string label:value="New Task..."/></li>
+        <li onmouseup="editEvent();"><var:string label:value="Edit Selected Event..."/></li>
+        <li onmouseup="deleteEvent();"><var:string label:value="Delete Selected Event"/></li>
         <li class="separator"></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="onSelectAll();"
-          ><var:string label:value="Select All"/></li>
+        <li onmouseup="onSelectAll();"><var:string label:value="Select All"/></li>
         <li class="separator"></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="onToggleWorkweekDaysOnly();"
-          ><var:string label:value="Workweek days only" /></li>
-        <li
-          onmousedown="return false;"
-          onmouseup="onToggleTasksInView();"
-            ><var:string label:value="Tasks in View"/></li>
+        <li onmouseup="onToggleWorkweekDaysOnly();"><var:string label:value="Workweek days only" /></li>
+        <li onmouseup="onToggleTasksInView();"><var:string label:value="Tasks in View"/></li>
+      </ul>
+    </div>
+
+    <div class="menu" id="calendarsMenu">
+      <ul>
+        <li id="newCalendarMenuEntry"><var:string label:value="New Calendar..."/></li>
+        <li id="deleteCalendarMenuEntry"><var:string label:value="Delete Calendar"/></li>
+        <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
+        <li class="separator"></li>
+        <li id="exportCalendarMenuEntry"><var:string label:value="Export Calendar..."/></li>
+        <li id="publishCalendarMenuEntry"><var:string label:value="Publish Calendar..."/></li>
+        <li class="separator"></li>
+        <li id="publishCalendarMenuEntry"><var:string label:value="Reload Remote Calendars"/></li>
+        <li class="separator"></li>
+        <li id="calendarPropertiesMenuEntry"><var:string label:value="Properties"/></li>
       </ul>
     </div>
 
@@ -105,8 +101,4 @@
           selectedDate="selectedDate"
           --></div>
     </div>
-
-    <script type="text/javascript">
-      initCalendarContactsSelector('calendarsList');
-    </script>
   </var:component>

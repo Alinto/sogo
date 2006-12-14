@@ -22,7 +22,7 @@
 #ifndef __Appointments_SOGoTaskObject_H__
 #define __Appointments_SOGoTaskObject_H__
 
-#import <SOGo/SOGoContentObject.h>
+#import "SOGoCalendarComponent.h"
 
 /*
   SOGoTaskObject
@@ -42,12 +42,12 @@
 @class iCalToDo;
 @class iCalCalendar;
 
-@interface SOGoTaskObject : SOGoContentObject
+@interface SOGoTaskObject : SOGoCalendarComponent
 
 /* accessors */
 
-- (NSString *) iCalString;
 - (iCalToDo *) task;
+- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) calendar;
 
 /* folder management */
 
@@ -70,7 +70,6 @@
 - (NSException *)changeParticipationStatus:(NSString *)_status
                                  inContext:(id)_ctx;
 
-- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) calendar;
 
 @end
 

@@ -128,6 +128,11 @@
   NSMutableArray      *result;
   NSMutableDictionary *uidToRecord;
   unsigned            i, count;
+  WOContext *context;
+  SoSecurityManager *securityManager;
+
+  context = [[WOApplication application] context];
+  securityManager = [SoSecurityManager sharedSecurityManager];
 
   if ((folders = [[self container] valueForKey:@"memberFolders"]) == nil) {
     [self errorWithFormat:@"calendar container has no 'memberFolders'?!"];
@@ -158,7 +163,15 @@
 	      [folders objectAtIndex:i]];
       continue;
     }
-    
+
+    if ([securityManager validatePermission: SoPerm_AccessContentsInformation
+                           onObject: aptFolder
+                           inContext: context]) {
+      [self debugWithFormat:@"no permission to read the content of calendar: %@",
+	      [folders objectAtIndex:i]];
+      continue;
+    }
+
     results = [aptFolder fetchFields: _fields
                          from: _startDate
                          to: _endDate

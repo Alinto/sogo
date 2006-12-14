@@ -12,39 +12,24 @@
     <var:if condition="hideFrame" const:negate="YES">
       <div class="menu" id="contactFoldersMenu">
         <ul>
-          <li
-            onmousedown="return false;"
-            onmouseup="return false;"><var:string label:value="Modify" /></li>
+          <li><var:string label:value="Modify" /></li>
+          <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
           <li class="separator"></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return false;"><var:string label:value="New Card" /></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return false;"><var:string label:value="New List" /></li>
+          <li><var:string label:value="New Card" /></li>
+          <li><var:string label:value="New List" /></li>
           <li class="separator"></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return false;"><var:string label:value="Delete" /></li>
+          <li><var:string label:value="Delete" /></li>
         </ul>
       </div>
 
       <div class="menu" id="contactMenu">
         <ul>
-          <li
-            onmousedown="return false;"
-            onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
+          <li id="modifyContactMenuEntry" onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
           <li class="separator"></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return false;"><var:string label:value="Instant Message" /></li>
+          <li id="writeToContactMenuEntry" onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
+          <li id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
           <li class="separator"></li>
-          <li
-            onmousedown="return false;"
-            onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
+          <li id="deleteContactMenuEntry" onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
         </ul>
       </div>
 

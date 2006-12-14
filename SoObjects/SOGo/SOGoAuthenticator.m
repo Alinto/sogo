@@ -20,6 +20,7 @@
 */
 
 #import <NGLdap/NGLdapConnection.h>
+#import "SOGoPermissions.h"
 
 #include "SOGoAuthenticator.h"
 #include "SOGoUser.h"
@@ -73,6 +74,7 @@ static SOGoAuthenticator *auth = nil;
 {
   BOOL result;
 
+//   return YES;
   if ([authMethod isEqualToString: @"LDAP"])
     result = [self LDAPCheckLogin: _login password: _pwd];
   else
@@ -98,29 +100,64 @@ static SOGoAuthenticator *auth = nil;
 
 /* create SOGoUser */
 
-- (SoUser *)userInContext:(WOContext *)_ctx
+- (SoUser *) userInContext:(WOContext *)_ctx
 {
-  static SoUser *anonymous = nil;
+  static SoUser *anonymous = nil, *freebusy;
   NSString  *login;
-  NSArray   *uroles;
   
   if (!anonymous)
     anonymous
       = [[SOGoUser alloc] initWithLogin:@"anonymous"
 			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-  
+
+  if (!freebusy)
+    freebusy
+      = [[SOGoUser alloc] initWithLogin: @"freebusy"
+                          roles: [NSArray arrayWithObject: SOGoRole_FreeBusy]];
+
   if ((login = [self checkCredentialsInContext:_ctx]) == nil)
     /* some error (otherwise result would have been anonymous */
     return nil;
   
-  if ([login isEqualToString:@"anonymous"])
+  if ([login isEqualToString: @"anonymous"])
     return anonymous;
+  else if ([login isEqualToString: @"freebusy"])
+    return freebusy;
 
-  uroles = [self rolesForLogin:login];
+//   uroles = [NSMutableArray arrayWithArray: ];
 
-  return [[[SOGoUser alloc] initWithLogin:login
-			    roles:uroles]
+  return [[[SOGoUser alloc] initWithLogin: login
+                            roles: [self rolesForLogin: login]]
 	   autorelease];
 }
+
+// - (BOOL) renderException: (NSException *) exception
+//                inContext: (WOContext *) context
+// {
+//   id renderedException;
+//   WOComponent *tmpComponent;
+//   WOResponse *response;
+//   BOOL rc;
+
+//   rc = [super renderException: exception inContext: context];
+//   if (!rc)
+//     {
+//       tmpComponent = [WOComponent new];
+//       renderedException = [tmpComponent pageWithName: @"UIxException"];
+//       if (renderedException)
+//         {
+//           rc = YES;
+//           response = [context response];
+//           [response setHeader: @"text/html" forKey: @"content-type"];
+//           [renderedException setClientObject: exception];
+//           [context setPage: renderedException];
+//           [renderedException appendToResponse: response
+//                              inContext: context];
+//         }
+//       [tmpComponent release];
+//     }
+
+//   return rc;
+// }
 
 @end /* SOGoAuthenticator */

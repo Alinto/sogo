@@ -149,10 +149,10 @@ function sanitizeMailTo(dirtyMailTo) {
 }
 
 function openMailComposeWindow(url) {
-  w = window.open(url, null,
-                  "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-                  + "location=0,directories=0,status=0,menubar=0"
-                  + ",copyhistory=0");
+  var w = window.open(url, null,
+                      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+                      + "location=0,directories=0,status=0,menubar=0"
+                      + ",copyhistory=0");
   w.focus();
 
   return w;
@@ -367,6 +367,7 @@ function acceptMultiSelect(node) {
 
 function onRowClick(event) {
   var node = event.target;
+
   if (node.tagName == 'TD')
     node = node.parentNode;
 
@@ -754,17 +755,17 @@ function initCriteria()
 function onContactAdd(node)
 {
   var selector = null;
-  var selectorUrl = '?popup=YES';
+  var selectorURL = '?popup=YES';
   if (node) {
     selector = node.parentNode.parentNode;
-    selectorUrl += ("&selectorId=" + selector.getAttribute("id"));
+    selectorURL += ("&selectorId=" + selector.getAttribute("id"));
   }
 
   urlstr = ApplicationBaseURL;
   if (urlstr[urlstr.length-1] != '/')
     urlstr += '/';
   urlstr += ("../../" + UserLogin + "/Contacts/"
-             + contactSelectorAction + selectorUrl);
+             + contactSelectorAction + selectorURL);
 //   log (urlstr);
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
@@ -834,13 +835,43 @@ function initTabs()
   }
 }
 
+function initMenusNamed(menuDivNames) {
+  for (var i = 0; i < menuDivNames.length; i++) {
+    var menuDIV = $(menuDivNames[i]);
+    if (menuDIV)
+      initMenu(menuDIV);
+    else
+      log("menu named '" + menuDivNames[i] + "' not found");
+  }
+}
+
+function initMenu(menuDIV) {
+  var lis = menuDIV.childNodesWithTag("ul")[0].childNodesWithTag("li");
+  for (var j = 0; j < lis.length; j++)
+    lis[j].addEventListener("mousedown", listRowMouseDownHandler, false);
+  var subMenus = menuDIV.childNodesWithTag("div");
+  for (var i = 0; i < subMenus.length; i++)
+    initMenu(subMenus[i]);
+}
+
 function onTabMouseDown(event) {
   event.cancelBubble = true;
-  return false;
+  event.preventDefault();
 }
 
 function openExternalLink(anchor) {
   return false;
+}
+
+function openAclWindow(url, objectTitle) {
+  var w = window.open(url, "aclWindow",
+                      "width=300,height=300,resizable=1,scrollbars=1,toolbar=0,"
+                      + "location=0,directories=0,status=0,menubar=0"
+                      + ",copyhistory=0");
+  w.focus();
+  w.title = "Poil: " + objectTitle;
+
+  return w;
 }
 
 function onTabClick(event) {
@@ -932,7 +963,10 @@ function indexColor(number) {
 var onLoadHandler = {
   handleEvent: function (event) {
     queryParameters = parseQueryParameters('' + window.location);
-    initLogConsole();
+    if (!document.body.hasClassName("popup")) {
+      initLogConsole();
+      initializeMenus();
+    }
     initTabs();
     configureDragHandles();
     configureSortableTableHeaders();
@@ -960,6 +994,14 @@ function onLinkBannerClick() {
   checkAjaxRequestsState();
 }
 
+function onRightsAdministrationClick(event) {
+  var url = ApplicationBaseURL;
+  if (!url)
+    url = UserFolderURL;
+  openAclWindow(url+ "/acls");
+  event.preventDefault();
+}
+
 function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
@@ -969,6 +1011,7 @@ function configureLinkBanner() {
                                   false);
       anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
+    anchors[4].addEventListener("click", onRightsAdministrationClick, false);
     if (anchors.length > 6)
       anchors[6].addEventListener("click", toggleLogConsole, true);
   }
@@ -978,6 +1021,9 @@ window.addEventListener("load", onLoadHandler, false);
 
 /* stubs */
 function configureDragHandles() {
+}
+
+function initializeMenus() {
 }
 
 function onHeaderClick(event) {

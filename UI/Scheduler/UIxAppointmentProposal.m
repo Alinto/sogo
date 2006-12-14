@@ -416,7 +416,7 @@
     
     fb    = [fbos objectAtIndex:i];
     if (fb != (SOGoFreeBusyObject *)[NSNull null]) {
-      infos = [fb fetchFreebusyInfosFrom:[self startDate] to:[self endDate]];
+      infos = [fb fetchFreeBusyInfosFrom:[self startDate] to:[self endDate]];
       [allInfos addObjectsFromArray:infos];
     }
   }

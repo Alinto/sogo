@@ -28,7 +28,7 @@
               /></var:if>
         </head>
 
-        <body oncontextmenu="return false;">
+        <body oncontextmenu="return false;" var:class="bodyClasses">
           <script type="text/javascript">
             var UserFolderURL = '<var:string value="userFolderPath" />';
             var ApplicationBaseURL = '<var:string value="applicationPath" />';
@@ -68,7 +68,7 @@
                 ><var:string label:value="Address Book" /></a> |
               <a var:href="relativeMailPath"
                 ><var:string label:value="Mail" /></a> |
-              <a href="http://to.be.done/"
+              <a href="#" id="rightAdministrationLink"
                 ><var:string label:value="Right Administration" /></a> |
               <a var:href="logoffPath"
                 ><var:string label:value="Logoff" /></a>
@@ -82,7 +82,7 @@
             ><var:component className="UIxToolbar" var:toolbar="toolbar"
             />
 
-          <div var:class="pageContentClasses"
+          <div class="pageContent"
             ><var:component-content
               /></div>
           <noscript>
