@@ -35,6 +35,7 @@
 "New Card" = "Nouvelle fiche";
 "New List" = "Nouvelle liste";
 "Modify" = "Modifier";
+"Access Rights..." = "Partage...";
 "Write" = "Écrire";
 "Delete" = "Effacer";
 "Instant Message" = "Message instantané";
@@ -83,6 +84,8 @@
 "Add Attendee..." = "Ajouter participant...";
 "Add Calendar..." = "Ajouter agenda...";
 "Add Address Book..." = "Ajouter carnet...";
+"Add Assistant" = "Ajouter comme assistant";
+"Add Delegate" = "Ajouter comme délégué";
 
 "Add an Addressbook..." = "Ajouter un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";

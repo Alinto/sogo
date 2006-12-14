@@ -1,5 +1,9 @@
 /* this file is in UTF-8 format! */
 
+/* toolbars */
+"Save" = "Save";
+"Close" = "Close";
+
 "Home" = "Home";
 "Calendar" = "Calendar";
 "Address Book"	= "Address Book";

@@ -1,5 +1,9 @@
 /* this file is in UTF-8 format! */
 
+/* toolbars */
+"Save" = "Sauver";
+"Close" = "Fermer";
+
 "Home" = "Accueil";
 "Calendar" = "Agenda";
 "Address Book"	= "Carnet d'adresses";
@@ -14,3 +18,7 @@
 
 "noJavascriptError" = "SOGo requiert l'utilisation de Javascript. Veuillez vous assurer que cette option est disponible et activée dans votre fureteur.";
 "noJavascriptRetry" = "Réessayer";
+
+"Owner:" = "Propriétaire :";
+"Associated Users:" = "Utilisateurs associés :";
+"(Unchecked = assistant, checked = delegate)" = "(Coché = assistant, décoché = délégué)";

@@ -37,6 +37,7 @@
 "New Card" = "New Card";
 "New List" = "New List";
 "Modify" = "Modify";
+"Access Rights..." = "Access Rights...";
 "Write" = "Write";
 "Delete" = "Delete";
 "Instant Message" = "Instant Message";
@@ -69,7 +70,6 @@
 "Country: " = "Country: ";
 "Web: " = "Web: ";
 
-"Home" = "Home";
 "Work" = "Work";
 "Other Infos" = "Other Infos";
 
@@ -82,6 +82,8 @@
 "Carbon Copy" = "Carbon Copy";
 "Blind Carbon Copy" = "Blind Carbon Copy";
 "Add Attendee..." = "Add Attendee...";
+"Add Assistant" = "Add Assistant";
+"Add Delegate" = "Add Delegate";
 
 "Add an Addressbook..." = "Add an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
