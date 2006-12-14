@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="yes"?>
+  <var:component xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:uix="OGo:uix"
+    xmlns:label="OGo:label"
+    className="UIxPageFrame"
+    title="title"
+    var:toolbar="toolbar"
+    const:popup="YES">
+
+    <form id="aclForm" const:href="saveAcls">
+      <div class="acls">
+        <input type="hidden" name="action" value="saveAcls" />
+        <input type="hidden" name="delegates" id="delegates" />
+        <input type="hidden" name="assistants" id="assistants" />
+        <label><var:string label:value="Owner:" />
+          <span class="value"><strong><var:string value="ownerCN" /></strong></span></label><br />
+        <var:component className="UIxContactSelector"
+          const:selectorId="userRoles"
+          const:hasCheckBoxes="YES"
+          const:checkBoxOnChange="return updateAclStatus(this);"
+          contacts="usersForFolder"
+          checkedBoxes="checkedUsers"
+          />
+        <span class="legend"><var:string label:value="(Unchecked = assistant, checked = delegate)" /></span>
+      </div>
+    </form>
+  </var:component>
