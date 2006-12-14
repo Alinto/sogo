@@ -23,16 +23,20 @@ libSOGo_HEADER_FILES = \
 	SOGoObject.h			\
 	SOGoFolder.h			\
 	SOGoContentObject.h		\
+	SOGoAclsFolder.h		\
 	SOGoUserFolder.h		\
 	SOGoGroupsFolder.h		\
 	SOGoGroupFolder.h		\
 	SOGoCustomGroupFolder.h		\
 	\
 	AgenorUserManager.h		\
+	SOGoPermissions.h		\
 	SOGoLRUCache.h			\
+	NSArray+Utilities.h		\
 	NSObject+AptComparison.h	\
 	WOContext+Agenor.h		\
-	NSString+URL.h			\
+	SOGoDAVRendererTypes.h		\
+	NSString+Utilities.h			\
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
 	\
@@ -43,18 +47,22 @@ libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
 	SOGoFolder.m			\
 	SOGoContentObject.m		\
+	SOGoAclsFolder.m		\
 	SOGoUserFolder.m		\
 	SOGoGroupsFolder.m		\
 	SOGoGroupFolder.m		\
 	SOGoCustomGroupFolder.m		\
 	\
+	SOGoPermissions.m		\
 	SOGoLRUCache.m			\
 	AgenorUserManager.m		\
 	NSObject+AptComparison.m	\
 	WOContext+Agenor.m		\
+	SOGoDAVRendererTypes.m		\
 	AgenorUserDefaults.m		\
+	NSArray+Utilities.m		\
 	NSDictionary+URL.m		\
-	NSString+URL.m			\
+	NSString+Utilities.m		\
 	NSCalendarDate+SOGo.m		\
 	\
 	SOGoAuthenticator.m		\
