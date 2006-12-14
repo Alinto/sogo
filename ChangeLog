@@ -1,5 +1,10 @@
 2006-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.[hm]: old "NSString+URL"
+	renamed. 
+	([NSString -davMethodToObjC]): method that returns the method name
+	for a DAV property implementation.
+
 	* SoObjects/SOGo/NSArray+Utilities.m: new extension module to
 	NSArray.
 	([NSArray -stringsWithFormat:format]): new method that returns

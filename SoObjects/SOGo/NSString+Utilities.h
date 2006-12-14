@@ -36,6 +36,8 @@
 
 - (NSString *) urlWithoutParameters;
 
+- (NSString *) davMethodToObjC;
+
 @end
 
 #endif /* NSSTRING_URL_H */

@@ -20,7 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "NSString+URL.h"
+#import "NSString+Utilities.h"
 #import "NSDictionary+URL.h"
 
 @implementation NSString (SOGoURLExtension)
@@ -51,7 +51,10 @@
   NSRange hostR, locationR;
 
   if ([self hasPrefix: @"/"])
-    newURL = [self copy];
+    {
+      newURL = [self copy];
+      [newURL autorelease];
+    }
   else
     {
       hostR = [self rangeOfString: @"://"];
@@ -75,6 +78,24 @@
     newUrl = self;
 
   return newUrl;
+}
+
+- (NSString *) davMethodToObjC
+{
+  NSMutableString *newName;
+  NSEnumerator *components;
+  NSString *component;
+
+  newName = [NSMutableString stringWithString: @"dav"];
+  components = [[self componentsSeparatedByString: @"-"] objectEnumerator];
+  component = [components nextObject];
+  while (component)
+    {
+      [newName appendString: [component capitalizedString]];
+      component = [components nextObject];
+    }
+
+  return newName;
 }
 
 @end
