@@ -1,0 +1,23 @@
+{
+  blobTablePattern   = "SOGo_$folderId$_blob";
+  quickTablePattern  = "SOGo_$folderId$_quick";
+  extractorClassName = "";
+
+  fields = (
+    {
+      columnName = uid;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = object;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = role;
+      sqlType    = "VARCHAR(80)";
+      allowsNull = NO;
+    },
+  );
+}
