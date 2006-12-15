@@ -312,20 +312,21 @@ static BOOL uixDebugEnabled = NO;
   SOGoObject *currentClient, *parent;
   NSString *url;
   BOOL found;
-  Class parentClass, groupFolderClass, userFolderClass;
+  Class objectClass, groupFolderClass, userFolderClass;
   WOContext *ctx;
 
-  found = NO;
   groupFolderClass = [SOGoCustomGroupFolder class];
   userFolderClass = [SOGoUserFolder class];
 
   currentClient = [self clientObject];
+  objectClass = [currentClient class];
+  found = (objectClass == groupFolderClass || objectClass == userFolderClass);
   while (!found && currentClient)
     {
       parent = [currentClient container];
-      parentClass = [parent class];
-      if (parentClass == groupFolderClass
-          || parentClass == userFolderClass)
+      objectClass = [parent class];
+      if (objectClass == groupFolderClass
+          || objectClass == userFolderClass)
         found = YES;
       else
         currentClient = parent;
