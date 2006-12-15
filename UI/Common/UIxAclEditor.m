@@ -93,13 +93,13 @@
   currentAcl = [aclsEnum nextObject];
   while (currentAcl)
     {
-      currentUID = [currentAcl objectForKey: @"uid"];
+      currentUID = [currentAcl objectForKey: @"c_uid"];
       if (![currentUID isEqualToString: @"freebusy"])
         {
           currentUser = [um iCalPersonWithUid: currentUID];
           if (![[currentUser cn] isEqualToString: [self ownerCN]])
             {
-              if ([[currentAcl objectForKey: @"role"]
+              if ([[currentAcl objectForKey: @"c_role"]
                     isEqualToString: SOGoRole_Delegate])
                 [checkedUsers addObject: currentUser];
               [users addObject: currentUser];
