@@ -11,11 +11,7 @@
     SOGoAppointmentFolder = {
       superclass    = "SOGoFolder";
       defaultRoles = {
-        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
-        "View"          = ( "Owner", "Delegate", "Assistant" );
-        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
         "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusyLookup" );
-        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
       };
     };
 
@@ -33,7 +29,7 @@
     SOGoTaskObject = {
       superclass    = "SOGoContentObject";
       defaultRoles = {
-        "View"          = ( "Owner", "Delegate", "Organizer" );
+        "View" = ( "Owner", "Delegate", "Organizer" );
       };
     };
     SOGoFreeBusyObject = {

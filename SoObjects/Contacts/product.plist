@@ -10,63 +10,30 @@
   classes = {
     SOGoContactFolders = {
       superclass    = "SOGoObject";
-
-      protectedBy   = "View";
-      defaultAccess = "allow"; /* I think this affects key lookup */
       defaultRoles = {
-        "View"          = "Authenticated";
-        "WebDAV Access" = "Owner";
+        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
+        "View"          = ( "Owner", "Delegate", "Assistant" );
+        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
+        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
+        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
+        "SaveAcls" = ( "Owner" );
       };
     };
 
     SOGoContactGCSFolder = {
       superclass    = "SOGoFolder";
-
-      protectedBy   = "View";
-      defaultAccess = "allow"; /* I think this affects key lookup */
-      defaultRoles = {
-        "View"          = "Authenticated";
-        "WebDAV Access" = "Owner";
-      };
     };
 
     SOGoContactGCSEntry = {
       superclass    = "SOGoContentObject";
-
-      protectedBy   = "View";
-      defaultAccess = "allow"; /* I think this affects key lookup */
-      defaultRoles = {
-        "View"          = "Authenticated";
-        "WebDAV Access" = "Owner";
-      };
-
-      methods = {
-      };
     };
 
     SOGoContactLDAPFolder = {
       superclass    = "SOGoFolder";
-
-      protectedBy   = "View";
-      defaultAccess = "allow"; /* I think this affects key lookup */
-      defaultRoles = {
-        "View"          = "Authenticated";
-        "WebDAV Access" = "Owner";
-      };
     };
 
     SOGoContactLDAPEntry = {
       superclass    = "SOGoContentObject";
-
-      protectedBy   = "View";
-      defaultAccess = "allow"; /* I think this affects key lookup */
-      defaultRoles = {
-        "View"          = "Authenticated";
-        "WebDAV Access" = "Owner";
-      };
-
-      methods = {
-      };
     };
   };
 }

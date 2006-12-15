@@ -14,12 +14,26 @@
 
     SOGoMailAccounts = {
       superclass    = "SOGoMailBaseObject";
+      defaultRoles = {
+        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
+        "View"          = ( "Owner", "Delegate", "Assistant" );
+        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
+        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
+        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
+        "SaveAcls" = ( "Owner" );
+      };
     };
 
     SOGoMailAccount = {
       superclass    = "SOGoMailBaseObject";
       defaultRoles = {
-        "Add Folders" = "Owner";
+        "Add Folders" = ( "Owner", "Delegate" );
+        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
+        "View"          = ( "Owner", "Delegate", "Assistant" );
+        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
+        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
+        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
+        "SaveAcls" = ( "Owner" );
       };
     };
     SOGoSharedMailAccount = {
@@ -29,7 +43,13 @@
     SOGoMailFolder = {
       superclass    = "SOGoMailBaseObject";
       defaultRoles = {
-        "Add Folders" = "Owner";
+        "Add Folders" = ( "Owner", "Delegate" );
+        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
+        "View"          = ( "Owner", "Delegate", "Assistant" );
+        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
+        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
+        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
+        "SaveAcls" = ( "Owner" );
       };
     };
     SOGoSharedInboxFolder = {
