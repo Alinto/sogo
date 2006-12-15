@@ -116,7 +116,7 @@
     return folder;
   
   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
-		     forKey:@"ActiveUserHomeFolder"];
+                forKey: @"ActiveUserHomeFolder"];
   return folder;
 }
 
@@ -137,7 +137,7 @@
     return folder;
   
   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
-		     forKey:@"ActiveUserCalendar"];
+                forKey:@"ActiveUserCalendar"];
   return folder;
 }
 
@@ -156,11 +156,10 @@
     [rolesForObject addObject: SoRole_Owner];
   if ([object isKindOfClass: [SOGoObject class]])
     {
-      aclsFolder = [SOGoAclsFolder new];
+      aclsFolder = [SOGoAclsFolder aclsFolder];
       sogoRoles = [aclsFolder aclsForObject: (SOGoObject *) object
                               forUser: login];
       [rolesForObject addObjectsFromArray: sogoRoles];
-      [aclsFolder release];
     }
   if ([object respondsToSelector: @selector (roleOfUser:inContext:)])
     {
