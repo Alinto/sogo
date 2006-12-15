@@ -65,65 +65,8 @@ VALUES
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_quick', 
     'Contact' );
 
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/acls', 
-    'Users',
-    '${USER_ID}',
-    'acls',
-    NULL,
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_user_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_user_acls', 
-    'Acls' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/Calendar/acls', 
-    'Users',
-    '${USER_ID}',
-    'Calendar',
-    'acls',
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acls', 
-    'Acls' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/Contacts/acls', 
-    'Users',
-    '${USER_ID}',
-    'Contacts',
-    'acls',
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'Acls' );
-
-DROP TABLE SOGo_${USER_TABLE}_acls;
-
-CREATE TABLE SOGo_${USER_TABLE}_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
-);
-
-DROP TABLE SOGo_${USER_TABLE}_privcal_acls;
 DROP TABLE SOGo_${USER_TABLE}_privcal_quick;
 DROP TABLE SOGo_${USER_TABLE}_privcal;
-
-CREATE TABLE SOGo_${USER_TABLE}_privcal_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
-);
 
 CREATE TABLE SOGo_${USER_TABLE}_privcal_quick (
   c_name       VARCHAR(256)    NOT NULL PRIMARY KEY, -- the filename
@@ -156,15 +99,8 @@ CREATE TABLE SOGo_${USER_TABLE}_privcal (
   c_version      INT             NOT NULL  -- version counter
 );
 
-DROP TABLE SOGo_${USER_TABLE}_contacts_acls;
 DROP TABLE SOGo_${USER_TABLE}_contacts_quick;
 DROP TABLE SOGo_${USER_TABLE}_contacts;
-
-CREATE TABLE SOGo_${USER_TABLE}_contacts_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
-);
 
 CREATE TABLE SOGo_${USER_TABLE}_contacts_quick (
   c_name          VARCHAR(256)    NOT NULL PRIMARY KEY, -- the filename
