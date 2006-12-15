@@ -669,9 +669,9 @@ function onAccessRightsMenuEntryMouseUp(event) {
   var external = selected.getAttribute("external-addressbook");
   var title = this.innerHTML;
   if (external)
-    url = UserFolderURL + "../" + external + "/Contacts/personal/acl";
+    url = UserFolderURL + "../" + external + "/Contacts/personal/acls";
   else
-    url = ApplicationBaseURL + selected.getAttribute("id") + "/acl";
+    url = ApplicationBaseURL + selected.getAttribute("id") + "/acls";
 
   openAclWindow(url, title);
 }

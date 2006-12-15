@@ -1031,9 +1031,9 @@ function onAccessRightsMenuEntryMouseUp(event) {
   var selected = folders.getSelectedNodes()[0];
   var uid = selected.getAttribute("uid");
   if (uid == UserLogin)
-    url = ApplicationBaseURL + "acl";
+    url = ApplicationBaseURL + "acls";
   else
-    url = UserFolderURL + "../" + uid + "/Calendar/acl";
+    url = UserFolderURL + "../" + uid + "/Calendar/acls";
 
   openAclWindow(url, uid);
 }
