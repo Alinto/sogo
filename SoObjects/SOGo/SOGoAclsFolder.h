@@ -23,11 +23,16 @@
 #ifndef SOGOACLSFOLDER_H
 #define SOGOACLSFOLDER_H
 
-#import "SOGoFolder.h"
+#import <Foundation/NSObject.h>
 
-@interface SOGoAclsFolder : SOGoFolder
+@class NSString;
+@class GCSFolder;
+@class SOGoObject;
+
+@interface SOGoAclsFolder : NSObject
 {
-//   SOGoObject *clientObject;
+  NSString *ocsPath;
+  GCSFolder *ocsFolder;
 }
 
 + (id) aclsFolder;

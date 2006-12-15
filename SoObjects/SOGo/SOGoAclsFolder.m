@@ -24,26 +24,17 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 
-#import <NGObjWeb/SoObjects.h>
-#import <NGObjWeb/SoObjects.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGObjWeb/SoObject.h>
 #import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSFolder.h>
+#import <GDLContentStore/GCSFolderManager.h>
 
+#import "SOGoFolder.h"
 #import "SOGoAclsFolder.h"
 
-static NSArray *fields = nil;
-
 @implementation SOGoAclsFolder
-
-+ (void) initialize
-{
-  if (!fields)
-    {
-      fields = [NSArray arrayWithObjects: @"uid", @"object", @"role", nil];
-      [fields retain];
-    }
-}
 
 + (id) aclsFolder
 {
@@ -55,19 +46,79 @@ static NSArray *fields = nil;
   return aclsFolder;
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      ocsPath = nil;
+      ocsFolder = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  if (ocsPath)
+    [ocsPath release];
+  if (ocsFolder)
+    [ocsFolder release];
+  [super dealloc];
+}
+
+- (void) setOCSPath: (NSString *) newOCSPath
+{
+  if (ocsPath)
+    [ocsPath release];
+  ocsPath = newOCSPath;
+  if (ocsPath)
+    [ocsPath retain];
+}
+
+- (GCSFolderManager *)folderManager {
+  return [GCSFolderManager defaultFolderManager];
+}
+
+- (GCSFolder *)ocsFolderForPath:(NSString *)_path {
+  return [[self folderManager] folderAtPath:_path];
+}
+
+- (GCSFolder *) ocsFolder {
+  GCSFolder *folder;
+
+  if (!ocsFolder)
+    ocsFolder = [[self ocsFolderForPath: ocsPath] retain];
+
+  if ([ocsFolder isNotNull])
+    folder = ocsFolder;
+  else
+    folder = nil;
+
+  return folder;
+}
+
 - (NSString *) _ocsPathForObject: (SOGoObject *) object
 {
   NSString *pathForObject;
   id currentObject;
+  BOOL done;
 
+  NSLog (@"lookup ocs path for '%@' (%s)", [object nameInContainer], [object class]->name);
   pathForObject = nil;
   currentObject = object;
-  while (currentObject && !pathForObject)
+  done = NO;
+  while (currentObject && !done)
     if ([currentObject isKindOfClass: [SOGoFolder class]])
-      pathForObject = [NSString stringWithFormat: @"%@/acls",
-                                [(SOGoFolder *) currentObject ocsPath]];
+      {
+        pathForObject = [(SOGoFolder *) currentObject ocsPath];
+        done = YES;
+//         if (!pathForObject)
+//           currentObject = [currentObject container];
+      }
     else
       currentObject = [currentObject container];
+
+  NSLog (@"path found = '%@'", pathForObject);
 
   return pathForObject;
 }
@@ -83,9 +134,9 @@ static NSArray *fields = nil;
     = [NSString stringWithFormat: @"/%@",
                 [[object pathArrayToSoObject] componentsJoinedByString: @"/"]];
   qualifier
-    = [EOQualifier qualifierWithQualifierFormat: @"object = %@", objectPath];
+    = [EOQualifier qualifierWithQualifierFormat: @"c_object = %@", objectPath];
 
-  return [[self ocsFolder] fetchFields: fields matchingQualifier: qualifier];
+  return [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 }
 
 - (NSArray *) aclsForObject: (SOGoObject *) object
@@ -101,12 +152,12 @@ static NSArray *fields = nil;
     = [NSString stringWithFormat: @"/%@",
                 [[object pathArrayToSoObject] componentsJoinedByString: @"/"]];
   qualifier = [EOQualifier
-                qualifierWithQualifierFormat: @"(object = %@) AND (uid = %@)",
+                qualifierWithQualifierFormat: @"(c_object = %@) AND (c_uid = %@)",
                 objectPath, uid];
 
-  records = [[self ocsFolder] fetchFields: fields matchingQualifier: qualifier];
+  records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 
-  return [records valueForKey: @"role"];
+  return [records valueForKey: @"c_role"];
 }
 
 - (void) removeUsersWithRole: (NSString *) role
@@ -116,12 +167,12 @@ static NSArray *fields = nil;
   NSString *deleteSQL;
   EOAdaptorChannel *channel;
 
-  channel = [folder acquireQuickChannel];
+  channel = [folder acquireAclChannel];
 
   deleteSQL = [NSString stringWithFormat: @"DELETE FROM %@"
-                        @" WHERE object = '%@'"
-                        @" AND role = '%@'",
-                        [folder quickTableName], objectPath, role];
+                        @" WHERE c_object = '%@'"
+                        @" AND c_role = '%@'",
+                        [folder aclTableName], objectPath, role];
   [channel evaluateExpressionX: deleteSQL];
 }
 
@@ -133,16 +184,16 @@ static NSArray *fields = nil;
   NSString *SQL;
   EOAdaptorChannel *channel;
 
-  channel = [folder acquireQuickChannel];
+  channel = [folder acquireAclChannel];
 
   SQL = [NSString stringWithFormat: @"DELETE FROM %@"
-                  @" WHERE object = '%@'"
-                  @" AND uid = '%@'",
-                  [folder quickTableName], objectPath, uid];
+                  @" WHERE c_object = '%@'"
+                  @" AND c_uid = '%@'",
+                  [folder aclTableName], objectPath, uid];
   [channel evaluateExpressionX: SQL];
   SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                  @" (object, uid, role)"
-                  @" VALUES ('%@', '%@', '%@')", [folder quickTableName],
+                  @" (c_object, c_uid, c_role)"
+                  @" VALUES ('%@', '%@', '%@')", [folder aclTableName],
                   objectPath, uid, role];
   [channel evaluateExpressionX: SQL];
 }

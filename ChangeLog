@@ -1,5 +1,8 @@
 2006-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoAclsFolder.m: convert the class to user the
+	new acl facilities method from sope-gdl/GCSFolder.m.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-roleOfUser:uidinContext:context]): new method that returns
 	SOGoRole_Assistant when the user is an assistant or a delegate on
