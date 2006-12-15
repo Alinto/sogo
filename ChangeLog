@@ -1,3 +1,11 @@
+2006-12-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-roleOfUser:uidinContext:context]): new method that returns
+	SOGoRole_Assistant when the user is an assistant or a delegate on
+	the "personal" ab object. This is so that setting roles on the
+	SOGoContactFolders object is not required.
+
 2006-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m: declare "Freebusy" permissions for the top objects.
