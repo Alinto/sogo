@@ -184,23 +184,26 @@
 - (NSString *) roleOfUser: (NSString *) uid
                 inContext: (WOContext *) context
 {
-  NSArray *roles;
+  NSArray *roles, *traversalPath;
   NSString *objectName, *role;
 
   role = nil;
-  objectName = [[context objectForKey: @"SoRequestTraversalPath"]
-                 objectAtIndex: 1];
-  if ([objectName isEqualToString: @"Calendar"]
-      || [objectName isEqualToString: @"Contacts"])
+  traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
+  if ([traversalPath count] > 1)
     {
-      roles = [[context activeUser]
-                rolesForObject: [self lookupName: objectName
-                                      inContext: context
-                                      acquire: NO]
-                inContext: context];
-      if ([roles containsObject: SOGoRole_Assistant]
-          || [roles containsObject: SOGoRole_Delegate])
-        role = SOGoRole_Assistant;
+      objectName = [traversalPath objectAtIndex: 1];
+      if ([objectName isEqualToString: @"Calendar"]
+          || [objectName isEqualToString: @"Contacts"])
+        {
+          roles = [[context activeUser]
+                    rolesForObject: [self lookupName: objectName
+                                          inContext: context
+                                          acquire: NO]
+                    inContext: context];
+          if ([roles containsObject: SOGoRole_Assistant]
+              || [roles containsObject: SOGoRole_Delegate])
+            role = SOGoRole_Assistant;
+        }
     }
 
   return role;
