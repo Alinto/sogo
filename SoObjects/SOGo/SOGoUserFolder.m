@@ -27,6 +27,7 @@
 #import "Appointments/SOGoFreeBusyObject.h"
 #import "Contacts/SOGoContactFolders.h"
 #import "Mailer/SOGoMailAccounts.h"
+#import "SOGoPermissions.h"
 
 #import "SOGoUserFolder.h"
 
@@ -178,6 +179,31 @@
     }
 
   return obj;
+}
+
+- (NSString *) roleOfUser: (NSString *) uid
+                inContext: (WOContext *) context
+{
+  NSArray *roles;
+  NSString *objectName, *role;
+
+  role = nil;
+  objectName = [[context objectForKey: @"SoRequestTraversalPath"]
+                 objectAtIndex: 1];
+  if ([objectName isEqualToString: @"Calendar"]
+      || [objectName isEqualToString: @"Contacts"])
+    {
+      roles = [[context activeUser]
+                rolesForObject: [self lookupName: objectName
+                                      inContext: context
+                                      acquire: NO]
+                inContext: context];
+      if ([roles containsObject: SOGoRole_Assistant]
+          || [roles containsObject: SOGoRole_Delegate])
+        role = SOGoRole_Assistant;
+    }
+
+  return role;
 }
 
 /* WebDAV */
