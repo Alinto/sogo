@@ -21,6 +21,7 @@ CREATE TABLE SOGo_folder_info (
   c_foldername     VARCHAR(255)  NOT NULL, -- last path component
   c_location       VARCHAR(2048) NOT NULL, -- URL to folder
   c_quick_location VARCHAR(2048) NULL,     -- URL to quicktable of folder
+  c_acl_location VARCHAR(2048) NULL,     -- URL to quicktable of folder
   c_folder_type    VARCHAR(255)  NOT NULL  -- the folder type ...
 );
 
@@ -36,4 +37,5 @@ VALUES
     'Users', 
     'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
     'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
+    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_acl', 
     'Container' );

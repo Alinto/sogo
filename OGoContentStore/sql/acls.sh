@@ -21,84 +21,43 @@ cat << EOF
 -- TODO:
 --   add a unique constraints on path
 
-DELETE FROM SOGo_folder_info WHERE c_path2 = '${USER_ID}' AND c_folder_type = 'Acls';
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/acls', 
-    'Users',
-    '${USER_ID}',
-    'acls',
-    NULL,
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_acls', 
-    'Acls' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/Calendar/acls', 
-    'Users',
-    '${USER_ID}',
-    'Calendar',
-    'acls',
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acls', 
-    'Acls' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/Contacts/acls', 
-    'Users',
-    '${USER_ID}',
-    'Contacts',
-    'acls',
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'Acls' );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users/${USER_ID}/Contacts/personal/acls', 
-    'Users',
-    '${USER_ID}',
-    'Contacts',
-    'personal',
-    'acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acls', 
-    'Acls' );
+UPDATE SOGo_folder_info
+  SET c_acl_location = 'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_acl'
+  WHERE c_folder_type = 'Container'
+  AND c_path2 = '${USER_ID}';
+UPDATE SOGo_folder_info
+  SET c_acl_location = 'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acl'
+  WHERE c_folder_type = 'Contact'
+  AND c_path2 = '${USER_ID}';
+UPDATE SOGo_folder_info
+  SET c_acl_location = 'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acl'
+  WHERE c_folder_type = 'Appointment'
+  AND c_path2 = '${USER_ID}';
 
 DROP TABLE SOGo_${USER_TABLE}_acls;
 DROP TABLE SOGo_${USER_TABLE}_privcal_acls;
 DROP TABLE SOGo_${USER_TABLE}_contacts_acls;
 
-CREATE TABLE SOGo_${USER_TABLE}_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
+DROP TABLE SOGo_${USER_TABLE}_acl;
+DROP TABLE SOGo_${USER_TABLE}_privcal_acl;
+DROP TABLE SOGo_${USER_TABLE}_contacts_acl;
+
+CREATE TABLE SOGo_${USER_TABLE}_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
 );
 
-CREATE TABLE SOGo_${USER_TABLE}_privcal_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
+CREATE TABLE SOGo_${USER_TABLE}_privcal_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
 );
 
-CREATE TABLE SOGo_${USER_TABLE}_contacts_acls (
-  uid          VARCHAR(256)    NOT NULL,
-  object        VARCHAR(256)    NOT NULL,
-  role          VARCHAR(80)     NOT NULL
+CREATE TABLE SOGo_${USER_TABLE}_contacts_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
 );
 
 EOF

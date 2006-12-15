@@ -25,7 +25,7 @@ DELETE FROM SOGo_folder_info WHERE c_path2 = '${USER_ID}';
 
 INSERT INTO SOGo_folder_info 
   ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
+    c_location, c_quick_location, c_acl_location, c_folder_type )
 VALUES 
   ( '/Users/${USER_ID}', 
     'Users',
@@ -33,13 +33,14 @@ VALUES
     NULL,
     NULL,
     '${USER_ID}', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_user_folder', 
-    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_user_folder_quick', 
+    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_folder', 
+    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_quick', 
+    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_acl', 
     'Container' );
 
 INSERT INTO SOGo_folder_info 
   ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
+    c_location, c_quick_location, c_acl_location, c_folder_type ) 
 VALUES 
   ( '/Users/${USER_ID}/Calendar', 
     'Users',
@@ -49,11 +50,12 @@ VALUES
     'Calendar', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_quick', 
+    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_privcal_acl', 
     'Appointment' );
 
 INSERT INTO SOGo_folder_info 
   ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername, 
-    c_location, c_quick_location, c_folder_type ) 
+    c_location, c_quick_location, c_acl_location, c_folder_type ) 
 VALUES 
   ( '/Users/${USER_ID}/Contacts/personal', 
     'Users',
@@ -63,6 +65,7 @@ VALUES
     'Contacts', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts', 
     'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_quick', 
+    'http://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}/SOGo_${USER_TABLE}_contacts_acl', 
     'Contact' );
 
 DROP TABLE SOGo_${USER_TABLE}_privcal_quick;
@@ -120,6 +123,28 @@ CREATE TABLE SOGo_${USER_TABLE}_contacts (
   c_creationdate INT             NOT NULL, -- creation date
   c_lastmodified INT             NOT NULL, -- last modification (UPDATE)
   c_version      INT             NOT NULL  -- version counter
+);
+
+DROP TABLE SOGo_${USER_TABLE}_acl;
+DROP TABLE SOGo_${USER_TABLE}_privcal_acl;
+DROP TABLE SOGo_${USER_TABLE}_contacts_acl;
+
+CREATE TABLE SOGo_${USER_TABLE}_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
+);
+
+CREATE TABLE SOGo_${USER_TABLE}_privcal_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
+);
+
+CREATE TABLE SOGo_${USER_TABLE}_contacts_acl (
+  c_uid          VARCHAR(256)    NOT NULL,
+  c_object       VARCHAR(256)    NOT NULL,
+  c_role         VARCHAR(80)     NOT NULL
 );
 
 DELETE FROM SOGo_user_profile WHERE uid = '${USER_ID}';
