@@ -922,9 +922,9 @@ function inhibitMyCalendarEntry()
       var input = currentNode.childNodes[3];
       if (currentNode.getAttribute("uid") == UserLogin) {
         done = true;
-        currentNode.style.color = "#999;";
+//         currentNode.style.color = "#999;";
         currentNode.style.fontWeight = "bold;";
-        currentNode.setAttribute("onclick", "");
+//         currentNode.setAttribute("onclick", "");
       }
     }
     i++;
@@ -1030,6 +1030,7 @@ function onAccessRightsMenuEntryMouseUp(event) {
   var folders = $("uixselector-calendarsList-display");
   var selected = folders.getSelectedNodes()[0];
   var uid = selected.getAttribute("uid");
+  log("application base url: " + ApplicationBaseURL);
   if (uid == UserLogin)
     url = ApplicationBaseURL + "acls";
   else
