@@ -674,7 +674,7 @@ static NSNumber   *sharedYes = nil;
   EOQualifier *qualifier;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
-  NSString *sql, *dateSqlString, *componentSqlString, *owner;
+  NSString *sql, *dateSqlString, *componentSqlString; /* , *owner; */
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -742,7 +742,7 @@ static NSNumber   *sharedYes = nil;
       if (!ma)
         ma = [NSMutableArray arrayWithCapacity: [records count]];
 
-      owner = [self ownerInContext: nil];
+//       owner = [self ownerInContext: nil];
       [ma addObjectsFromArray: records];
     }
   else if (!ma)
@@ -760,9 +760,9 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
 
-  [ma makeObjectsPerform: @selector (setObject:forKey:)
-      withObject: owner
-      withObject: @"owner"];
+//   [ma makeObjectsPerform: @selector (setObject:forKey:)
+//       withObject: owner
+//       withObject: @"owner"];
 
   return ma;
 }

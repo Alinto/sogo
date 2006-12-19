@@ -22,8 +22,6 @@
 #ifndef __Appointments_SOGoAppointmentFolder_H__
 #define __Appointments_SOGoAppointmentFolder_H__
 
-#include <SOGo/SOGoFolder.h>
-
 /*
   SOGoAppointmentFolder
     Parent object: the SOGoUserFolder
@@ -37,6 +35,8 @@
   resource name in the content store. In other words, you are not allowed to
   create two different vevent-files with the same uid in the store.
 */
+
+#import "SOGo/SOGoFolder.h"
 
 @class NSString, NSArray, NSCalendarDate, NSException, NSMutableDictionary;
 @class GCSFolder;
