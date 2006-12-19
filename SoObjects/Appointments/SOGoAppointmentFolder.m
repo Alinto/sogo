@@ -346,8 +346,6 @@ static NSNumber   *sharedYes = nil;
   NSString *url;
   BOOL handledLater;
 
-  NSLog (@"lookup name '%@' in apt folder", _key);
-
   /* first check attributes directly bound to the application */
   handledLater = [self requestNamedIsHandledLater: _key inContext: _ctx];
   if (handledLater)

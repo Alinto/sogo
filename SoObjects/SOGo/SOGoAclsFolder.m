@@ -103,7 +103,6 @@
   id currentObject;
   BOOL done;
 
-  NSLog (@"lookup ocs path for '%@' (%s)", [object nameInContainer], [object class]->name);
   pathForObject = nil;
   currentObject = object;
   done = NO;
@@ -117,8 +116,6 @@
       }
     else
       currentObject = [currentObject container];
-
-  NSLog (@"path found = '%@'", pathForObject);
 
   return pathForObject;
 }

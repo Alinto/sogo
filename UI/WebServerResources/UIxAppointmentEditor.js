@@ -154,7 +154,6 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
           else
             uids.value = contactId;
 
-          log ('values: ' + uids.value);
           var names = $('uixselector-participants-display');
           names.innerHTML += ('<li onmousedown="return false;"'
                               + ' onclick="onRowClick(event);"><img src="'

@@ -493,7 +493,6 @@ function onConfirmContactSelection(tag)
                                                            + selectorId
                                                            + '-uidList');
       initialValues = selectorList.value;
-      log("values: " + initialValues);
     }
 
   var contactsList = $("contactsList");
@@ -522,7 +521,6 @@ function onConfirmAddressBookSelection() {
   if (!initialValues)
     initialValues = "";
   var newValues = initialValues;
-  log("values: " + initialValues);
 
   var contactsList = $("contactsList");
   var rows = contactsList.getSelectedRows();
