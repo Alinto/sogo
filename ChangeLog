@@ -1,5 +1,11 @@
 2006-12-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-checkRightsAction]): new action method that returns a
+	comma-separated list of boolean values matching the right of the
+	current user to "view" (as a permission) each foreign calendar
+	stored in his preferences.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -setOwner:newOwner]):
 	new method that sets a customOwner, which can be returned with
 	ownerInContext it set.

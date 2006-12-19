@@ -128,4 +128,43 @@ static NSMutableArray *yearMenuItems = nil;
   return response;
 }
 
+- (id <WOActionResults>) checkRightsAction
+{
+  WOResponse *response;
+  NSUserDefaults *ud;
+  NSString *uids, *uid;
+  NSMutableString *rights;
+  NSArray *ids;
+  unsigned int count, max;
+  BOOL result;
+
+  ud = [[context activeUser] userDefaults];
+  uids = [ud stringForKey: @"calendaruids"];
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=\"utf-8\""
+            forKey: @"content-type"];
+  rights = [NSMutableString string];
+  if ([uids length] > 0)
+    {
+      ids = [uids componentsSeparatedByString: @","];
+      max = [ids count];
+      for (count = 0; count < max; count++)
+        {
+          uid = [ids objectAtIndex: count];
+          if ([uid hasPrefix: @"-"])
+            uid = [uid substringFromIndex: 1];
+          result = ([self calendarFolderForUID: uid] != nil);
+          if (count == 0)
+            [rights appendFormat: @"%d", result];
+          else
+            [rights appendFormat: @",%d", result];
+        }
+    }
+  [response appendContentString: rights];
+
+  return response;
+}
+
 @end
