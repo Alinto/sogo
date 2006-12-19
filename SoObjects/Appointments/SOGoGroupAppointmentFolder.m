@@ -134,11 +134,7 @@
   context = [[WOApplication application] context];
   securityManager = [SoSecurityManager sharedSecurityManager];
 
-  if ((folders = [[self container] valueForKey:@"memberFolders"]) == nil) {
-    [self errorWithFormat:@"calendar container has no 'memberFolders'?!"];
-    return nil;
-  }
-  
+  folders = [[self container] memberFolders];
   [self resetFolderCaches];
   
   if ((count = [folders count]) == 0)
@@ -165,8 +161,8 @@
     }
 
     if ([securityManager validatePermission: SoPerm_AccessContentsInformation
-                           onObject: aptFolder
-                           inContext: context]) {
+                         onObject: aptFolder
+                         inContext: context]) {
       [self debugWithFormat:@"no permission to read the content of calendar: %@",
 	      [folders objectAtIndex:i]];
       continue;
