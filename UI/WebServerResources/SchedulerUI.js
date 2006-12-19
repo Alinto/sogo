@@ -923,6 +923,28 @@ function updateCalendarsList(method)
 
     if (method == "removal")
       updateCalendarStatus();
+
+    http = createHTTPClient();
+    http.url = ApplicationBaseURL + "checkRights";
+    http.open("GET", http.url, false /* not async */);
+    http.send("");
+    if (http.status == 200
+        && http.responseText.length > 0) {
+      rights = http.responseText.split(",");
+      var list = $("uixselector-calendarsList-display").childNodesWithTag("li");
+      for (var i = 0; i < list.length; i++) {
+        var input = list[i].childNodesWithTag("input")[0];
+        if (rights[i] == "1") {
+          list[i].removeClassName("denied");
+          input.disabled = false;
+        }
+        else {
+          input.checked = false;
+          input.disabled = true;
+          list[i].addClassName("denied");
+        }
+      }
+    }
   }
 }
 
@@ -940,23 +962,27 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
             uids.value += ',' + contactId;
           else
             uids.value = contactId;
-          var names = $('uixselector-calendarsList-display');
+          var names = $("uixselector-calendarsList-display");
           names.innerHTML += ('<li onmousedown="return false;"'
-                              + ' uid="' + contactId + '"'
-                              + ' onclick="onRowClick(event);">'
-                              + ' <span class="colorBox"'
-                              + ' style="background-color: '
-                              + colorDef + ';"></span>'
+                              + ' uid="' + contactId + '">'
+                              + ' <span class="colorBox"></span>'
                               + ' <input class="checkBox" type="checkbox" />'
                               + contactName + '</li>');
           var listElems = names.childNodesWithTag("li");
-          var input = listElems.childNodesWithTag("input")[0];
+          var i = (listElems.length - 1);
+          var colorDef = indexColor(i);
+          log("colorDef: " + colorDef);
+          var input = listElems[i].childNodesWithTag("input")[0];
+          listElems[i].addEventListener("click", onRowClick, false);
+          var colorBox = listElems[i].childNodesWithTag("span")[0];
+          log("colorBox: " + colorBox);
+          colorBox.style.backgroundColor = colorDef + ";";
           input.addEventListener("change", updateCalendarStatus, false);
 
           var styles = document.getElementsByTagName("style");
           styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
                                   + ' background-color: '
-                                  + indexColor(listElems.length - 1)
+                                  + colorDef
                                   + ' !important; }');
         }
     }
@@ -1042,35 +1068,10 @@ function initCalendarContactsSelector() {
   updateCalendarStatus();
   selector.changeNotification = updateCalendarsList;
 
-  var rights;
-  var http = createHTTPClient();
-  if (http) {
-//     log ("url: " + url);
-    // TODO: add parameter to signal that we are only interested in OK
-    http.url = ApplicationBaseURL + "checkRights";
-    http.open("GET", http.url, false /* not async */);
-    http.send("");
-    if (http.status == 200
-        && http.responseText.length > 0)
-      rights = http.responseText.split(",");
-  }
-
   var list = $("uixselector-calendarsList-display").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
-    if (rights) {
-      if (rights[i] == "1") {
-        input.addEventListener("change", updateCalendarStatus, false);
-        list[i].removeClassName("denied");
-      }
-      else {
-        input.checked = false;
-        input.disabled = true;
-        list[i].addClassName("denied");
-      }
-    } else {
-      input.addEventListener("change", updateCalendarStatus, false);
-    }
+    input.addEventListener("change", updateCalendarStatus, false);
   }
 }
 
