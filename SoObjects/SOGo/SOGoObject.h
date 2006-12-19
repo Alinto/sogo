@@ -47,6 +47,7 @@
   NSString *nameInContainer;
   id       container;
   NSTimeZone *userTimeZone;
+  NSString *customOwner;
 }
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;

@@ -401,6 +401,7 @@ static NSTimeZone *serverTimeZone = nil;
     container = 
       [self doesRetainContainer] ? [_container retain] : _container;
     userTimeZone = nil;
+    customOwner = nil;
   }
   return self;
 }
@@ -410,6 +411,8 @@ static NSTimeZone *serverTimeZone = nil;
 }
 
 - (void)dealloc {
+  if (customOwner)
+    [customOwner release];
   if ([self doesRetainContainer])
     [container release];
   if (userTimeZone)
@@ -429,8 +432,15 @@ static NSTimeZone *serverTimeZone = nil;
 
 /* ownership */
 
+- (void) setOwner: (NSString *) newOwner
+{
+  ASSIGN (customOwner, newOwner);
+}
+
 - (NSString *)ownerInContext:(id)_ctx {
-  return [[self container] ownerInContext:_ctx];
+  return ((customOwner)
+          ? customOwner
+          : [[self container] ownerInContext:_ctx]);
 }
 
 /* hierarchy */
