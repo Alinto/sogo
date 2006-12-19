@@ -597,12 +597,10 @@
 - (NSCalendarDate *) newStartDate
 {
   NSCalendarDate *newStartDate, *now;
-  BOOL hmSpecified;
   int hour;
 
   newStartDate = [self selectedDate];
-  hmSpecified = ([[self queryParameterForKey: @"hm"] length] > 0);
-  if (!hmSpecified)
+  if ([[self queryParameterForKey: @"hm"] length] == 0)
     {
       now = [NSCalendarDate calendarDate];
       [now setTimeZone: [[self clientObject] userTimeZone]];

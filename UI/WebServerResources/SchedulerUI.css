@@ -56,6 +56,14 @@ UL#tasksList, UL#uixselector-calendarsList-display
   list-style-type: none;
   list-style-image: none; }
 
+UL#uixselector-calendarsList-display
+{ height: 10.5em;
+  margin: 0px; }
+
+UL#uixselector-calendarsList-display LI.denied
+{ background: #f00;
+  color: #000; }
+
 UL#tasksList
 { position: absolute;
   width: 100%;
@@ -63,10 +71,6 @@ UL#tasksList
   left: .25em;
   right: .25em;
   bottom: .25em; }
-
-UL#uixselector-calendarsList-display
-{ height: 10.5em;
-  margin: 0px; }
 
 UL#tasksList LI
 { white-space: nowrap; }

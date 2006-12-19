@@ -2,7 +2,6 @@ var sortOrder = '';
 var sortKey = '';
 var listFilter = 'view_today';
 
-var CalendarBaseURL = ApplicationBaseURL;
 var listOfSelection = null;
 
 var hideCompletedTasks = 0;
@@ -305,19 +304,6 @@ function tasksListCallback(http)
     log ("ajax fuckage");
 }
 
-function calendarsListCallback(http)
-{
-//   var div = $("calendarSelectorView");
-
-  if (http.readyState == 4
-      && http.status == 200) {
-//     document.calendarsListAjaxRequest = null;
-//     div.innerHTML = http.responseText;
-  }
-  else
-    log ("ajax fuckage");
-}
-
 function restoreCurrentDaySelection(div)
 {
   var elements = div.getElementsByTagName("a");
@@ -375,7 +361,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
 
 function changeCalendarDisplay(time, newView)
 {
-  var url = CalendarBaseURL + ((newView) ? newView : currentView);
+  var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
   var day = null;
   var hour = null;
@@ -533,15 +519,15 @@ function popupCalendar(node)
 
 function onAppointmentContextMenu(event, element)
 {
-  var topNode = $('appointmentsList');
+  var topNode = $("appointmentsList");
 //   log(topNode);
 
-  var menu = $('appointmentsListMenu');
+  var menu = $("appointmentsListMenu");
 
   menu.addEventListener("hideMenu", onAppointmentContextMenuHide, false);
-  onMenuClick(event, 'appointmentsListMenu');
+  onMenuClick(event, "appointmentsListMenu");
 
-  var topNode = $('appointmentsList');
+  var topNode = $("appointmentsList");
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
@@ -553,7 +539,7 @@ function onAppointmentContextMenu(event, element)
 
 function onAppointmentContextMenuHide(event)
 {
-  var topNode = $('appointmentsList');
+  var topNode = $("appointmentsList");
 
   if (topNode.menuSelectedEntry) {
     deselectNode(topNode.menuSelectedEntry);
@@ -586,7 +572,7 @@ function _loadAppointmentHref(href) {
     document.appointmentsListAjaxRequest.aborted = true;
     document.appointmentsListAjaxRequest.abort();
   }
-  var url = CalendarBaseURL + href;
+  var url = ApplicationBaseURL + href;
   document.appointmentsListAjaxRequest
     = triggerAjaxRequest(url, appointmentsListCallback, href);
 
@@ -598,7 +584,7 @@ function _loadTasksHref(href) {
     document.tasksListAjaxRequest.aborted = true;
     document.tasksListAjaxRequest.abort();
   }
-  url = CalendarBaseURL + href;
+  url = ApplicationBaseURL + href;
 
   var selectedIds = $("tasksList").getSelectedNodesId();
   document.tasksListAjaxRequest
@@ -864,13 +850,13 @@ function updateCalendarStatus()
     list.push(nodes[0].getAttribute("uid"));
     nodes[0].childNodesWithTag("input")[0].checked = true;
   }
-  CalendarBaseURL = (UserFolderURL + "Groups/_custom_"
-                     + list.join(",") + "/Calendar/");
+//   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
+//                      + list.join(",") + "/Calendar/");
 
+  updateCalendarsList();
   refreshAppointments();
   refreshTasks();
   changeCalendarDisplay();
-  updateCalendarsList();
 
   return false;
 }
@@ -939,15 +925,20 @@ function updateCalendarsList(method)
     document.calendarsListAjaxRequest.aborted = true;
     document.calendarsListAjaxRequest.abort();
   }
-  document.calendarsListAjaxRequest
-    = triggerAjaxRequest(url, calendarsListCallback);
-  if (method == "removal")
-    updateCalendarStatus();
+  var http = createHTTPClient();
+  if (http) {
+    http.url = url;
+    http.open("GET", url, false);
+    http.send("");
+
+    if (method == "removal")
+      updateCalendarStatus();
+  }
 }
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 {
-  var uids = $('uixselector-calendarsList-uidList');
+  var uids = $("uixselector-calendarsList-uidList");
 //   log("addContact");
   if (contactId)
     {
@@ -960,22 +951,22 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
           else
             uids.value = contactId;
           var names = $('uixselector-calendarsList-display');
-          var listElems = names.childNodesWithTag("li");
-          var colorDef = indexColor(listElems.length);
           names.innerHTML += ('<li onmousedown="return false;"'
                               + ' uid="' + contactId + '"'
                               + ' onclick="onRowClick(event);">'
                               + ' <span class="colorBox"'
                               + ' style="background-color: '
                               + colorDef + ';"></span>'
-                              + ' <input class="checkBox" type="checkbox"'
-                              + ' onchange="return updateCalendarStatus(this);"'
-                              + ' />'
+                              + ' <input class="checkBox" type="checkbox" />'
                               + contactName + '</li>');
+          var listElems = names.childNodesWithTag("li");
+          var input = listElems.childNodesWithTag("input")[0];
+          input.addEventListener("change", updateCalendarStatus, false);
 
           var styles = document.getElementsByTagName("style");
           styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
-                                  + ' background-color: ' + colorDef
+                                  + ' background-color: '
+                                  + indexColor(listElems.length - 1)
                                   + ' !important; }');
         }
     }
@@ -1060,6 +1051,37 @@ function initCalendarContactsSelector() {
   inhibitMyCalendarEntry();
   updateCalendarStatus();
   selector.changeNotification = updateCalendarsList;
+
+  var rights;
+  var http = createHTTPClient();
+  if (http) {
+//     log ("url: " + url);
+    // TODO: add parameter to signal that we are only interested in OK
+    http.url = ApplicationBaseURL + "checkRights";
+    http.open("GET", http.url, false /* not async */);
+    http.send("");
+    if (http.status == 200
+        && http.responseText.length > 0)
+      rights = http.responseText.split(",");
+  }
+
+  var list = $("uixselector-calendarsList-display").childNodesWithTag("li");
+  for (var i = 0; i < list.length; i++) {
+    var input = list[i].childNodesWithTag("input")[0];
+    if (rights) {
+      if (rights[i] == "1") {
+        input.addEventListener("change", updateCalendarStatus, false);
+        list[i].removeClassName("denied");
+      }
+      else {
+        input.checked = false;
+        input.disabled = true;
+        list[i].addClassName("denied");
+      }
+    } else {
+      input.addEventListener("change", updateCalendarStatus, false);
+    }
+  }
 }
 
 function initCalendars() {

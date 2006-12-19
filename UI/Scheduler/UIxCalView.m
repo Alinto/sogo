@@ -1,14 +1,21 @@
 // $Id: UIxCalView.m 885 2005-07-21 16:41:34Z znek $
 
-#import "UIxCalView.h"
 #import "common.h"
 //#import <OGoContentStore/OCSFolder.h>
-#import "SoObjects/Appointments/SOGoAppointmentFolder.h"
+
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
-#import <SOGoUI/SOGoAptFormatter.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGCards/NGCards.h>
+
+#import <SOGoUI/SOGoAptFormatter.h>
 #import "UIxComponent+Agenor.h"
+
+#import "SoObjects/Appointments/SOGoAppointmentFolder.h"
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoObject.h>
+
+#import "UIxCalView.h"
 
 @interface UIxCalView (PrivateAPI)
 - (NSString *) _userFolderURI;
@@ -47,12 +54,14 @@ static BOOL shouldDisplayWeekend = NO;
       privateAptTooltipFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
       [self configureFormatters];
+      componentsData = [NSMutableDictionary new];
     }
   return self;
 }
 
 - (void) dealloc
 {
+  [componentsData release];
   [appointments               release];
   [allDayApts                 release];
   [appointment                release];
@@ -431,11 +440,85 @@ static BOOL shouldDisplayWeekend = NO;
   return [[self startDate] tomorrow];
 }
 
+- (SOGoAppointmentFolder *) calendarFolderForUID: (NSString *) uid
+{
+  SOGoFolder *upperContainer;
+  SOGoUserFolder *userFolder;
+  SOGoAppointmentFolder *calendarFolder;
+  SoSecurityManager *securityManager;
+
+  upperContainer = [[[self clientObject] container] container];
+  userFolder = [SOGoUserFolder objectWithName: uid
+                               inContainer: upperContainer];
+  calendarFolder = [SOGoAppointmentFolder objectWithName: @"Calendar"
+                                         inContainer: userFolder];
+  [calendarFolder
+    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar", uid]];
+  [calendarFolder setOwner: uid];
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
+
+  return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+                            onObject: calendarFolder
+                            inContext: context] == nil)
+          ? calendarFolder : nil);
+}
+
+- (NSArray *) activeCalendarFolders
+{
+  NSUserDefaults *ud;
+  NSEnumerator *calendarUIDs;
+  SOGoAppointmentFolder *currentFolder;
+  NSMutableArray *folders;
+  NSString *currentUID;
+
+  folders = [NSMutableArray array];
+  ud = [[context activeUser] userDefaults];
+  calendarUIDs = [[[ud stringForKey: @"calendaruids"]
+                    componentsSeparatedByString: @","] objectEnumerator];
+  currentUID = [calendarUIDs nextObject];
+  while (currentUID)
+    {
+      if (![currentUID hasPrefix: @"-"])
+        {
+          currentFolder = [self calendarFolderForUID: currentUID];
+          if (currentFolder)
+            [folders addObject: currentFolder];
+        }
+      currentUID = [calendarUIDs nextObject];
+    }
+
+  return folders;
+}
+
 - (NSArray *) _fetchCoreInfosForComponent: (NSString *) component
 {
-  return [[self clientObject] fetchCoreInfosFrom: [[self startDate] beginOfDay]
-                              to: [[self endDate] endOfDay]
-                              component: component];
+  NSArray *currentInfos;
+  NSMutableArray *infos;
+  NSEnumerator *folders;
+  SOGoAppointmentFolder *currentFolder;
+
+  infos = [componentsData objectForKey: component];
+  if (!infos)
+    {
+      infos = [NSMutableArray array];
+      folders = [[self activeCalendarFolders] objectEnumerator];
+      currentFolder = [folders nextObject];
+      while (currentFolder)
+        {
+          currentInfos = [currentFolder fetchCoreInfosFrom: [[self startDate] beginOfDay]
+                                        to: [[self endDate] endOfDay]
+                                        component: component];
+          [currentInfos makeObjectsPerform: @selector (setObject:forKey:)
+                        withObject: [currentFolder ownerInContext: nil]
+                        withObject: @"owner"];
+          [infos addObjectsFromArray: currentInfos];
+          currentFolder = [folders nextObject];
+        }
+      [componentsData setObject: infos forKey: component];
+    }
+
+  return infos;
 }
 
 - (NSArray *) fetchCoreAppointmentsInfos

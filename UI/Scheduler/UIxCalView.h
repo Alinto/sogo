@@ -12,11 +12,13 @@
   a SOPE clientObject (which usually is an SOGoAppointmentFolder).
 */
 
-@class NSString, NSArray, NSDictionary, NSCalendarDate, SOGoAptFormatter;
+@class NSString, NSArray, NSDictionary, NSMutableDictionary, NSCalendarDate, SOGoAptFormatter;
+@class SOGoAppointmentFolder;
 
 @interface UIxCalView : UIxComponent
 {
   NSArray          *appointments;
+  NSMutableDictionary *componentsData;
   NSArray          *tasks;
   NSArray          *allDayApts;
   id               appointment;
@@ -100,6 +102,7 @@
 /* calendarUIDs */
 
 - (NSString *)formattedCalendarUIDs;
+- (SOGoAppointmentFolder *) calendarFolderForUID: (NSString *) uid;
 
 /* CSS related */
 

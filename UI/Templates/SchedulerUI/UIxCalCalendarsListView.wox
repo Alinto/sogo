@@ -20,7 +20,6 @@
     <var:component className="UIxContactSelector"
       const:selectorId="calendarsList"
       const:hasCheckBoxes="YES"
-      const:checkBoxOnChange="return updateCalendarStatus(this);"
       colors="colors"
       contacts="contacts"
       checkedBoxes="checkedContacts"

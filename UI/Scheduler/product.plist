@@ -96,7 +96,12 @@
         updateCalendars = {
           protectedBy = "View";
           pageName    = "UIxCalMainView";
-          actionName = "updateCalendars";
+          actionName  = "updateCalendars";
+        };
+        checkRights = {
+          protectedBy = "View";
+          pageName    = "UIxCalMainView";
+          actionName  = "checkRights";
         };
         freeBusyTable = {
           protectedBy = "View";

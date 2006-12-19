@@ -82,6 +82,7 @@
             <var:foreach list="currentRangeOf7Days" item="currentTableDay"
               ><td var:class="dayCellClasses"
                 var:day="currentTableDay.shortDateString"
+                const:hour="0800"
                 ><div class="dayContent"><span class="dayCellLabel"
                   ><var:string value="labelForCurrentDayCell" /></span
                   ><br /><var:foreach
