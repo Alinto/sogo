@@ -174,7 +174,7 @@
 
   role = nil;
   traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
-  if ([traversalPath count] > 1)
+  if ([traversalPath count] > 2)
     {
       objectName = [traversalPath objectAtIndex: 2];
       if ([objectName isEqualToString: @"personal"])
