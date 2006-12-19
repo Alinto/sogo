@@ -22,14 +22,14 @@
     SOGoAppointmentObject = {
       superclass    = "SOGoContentObject";
       defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer" );
+        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
       };
     };
 
     SOGoTaskObject = {
       superclass    = "SOGoContentObject";
       defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer" );
+        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
       };
     };
     SOGoFreeBusyObject = {
