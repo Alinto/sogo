@@ -994,14 +994,6 @@ function onLinkBannerClick() {
   checkAjaxRequestsState();
 }
 
-function onRightsAdministrationClick(event) {
-  var url = ApplicationBaseURL;
-  if (!url)
-    url = UserFolderURL;
-  openAclWindow(url+ "/acls");
-  event.preventDefault();
-}
-
 function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
@@ -1011,9 +1003,8 @@ function configureLinkBanner() {
                                   false);
       anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
-    anchors[4].addEventListener("click", onRightsAdministrationClick, false);
-    if (anchors.length > 6)
-      anchors[6].addEventListener("click", toggleLogConsole, true);
+    if (anchors.length > 5)
+      anchors[5].addEventListener("click", toggleLogConsole, true);
   }
 }
 

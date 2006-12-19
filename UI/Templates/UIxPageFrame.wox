@@ -68,8 +68,6 @@
                 ><var:string label:value="Address Book" /></a> |
               <a var:href="relativeMailPath"
                 ><var:string label:value="Mail" /></a> |
-              <a href="#" id="rightAdministrationLink"
-                ><var:string label:value="Right Administration" /></a> |
               <a var:href="logoffPath"
                 ><var:string label:value="Logoff" /></a>
               <var:if condition="context.isUIxDebugEnabled"

@@ -473,7 +473,7 @@ function calendarDisplayCallback(http)
     var appointments = document.getElementsByClassName("appointment", contentView);
     for (var i = 0; i < appointments.length; i++) {
       appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
-      appointments[i].addEventListener("click", onCalendarSelectAppointment, true);
+      appointments[i].addEventListener("click", onCalendarSelectAppointment, false);
       appointments[i].addEventListener("dblclick", displayAppointment, true);
     }
     var days = document.getElementsByClassName("day", contentView);
@@ -484,7 +484,7 @@ function calendarDisplayCallback(http)
       }
     else
       for (var i = 0; i < days.length; i++) {
-        days[i].addEventListener("click", onCalendarSelectDay, true);
+        days[i].addEventListener("click", onCalendarSelectDay, false);
         var clickableCells = document.getElementsByClassName("clickableHourCell",
                                                              days[i]);
         for (var j = 0; j < clickableCells.length; j++)
@@ -706,8 +706,7 @@ function onMonthMenuItemClick(node)
   return false;
 }
 
-function onYearMenuItemClick(node)
-{
+function onYearMenuItemClick(node) {
   var month = '' + $("monthLabel").getAttribute("month");;
   var year = '' + node.innerHTML;
 
@@ -716,14 +715,13 @@ function onYearMenuItemClick(node)
   return false;
 }
 
-function onSearchFormSubmit()
-{
+function onSearchFormSubmit() {
   log ("search not implemented");
 
   return false;
 }
 
-function onCalendarSelectAppointment(event) {
+function onCalendarSelectAppointment() {
   var list = $("appointmentsList");
   list.deselectAll();
 
@@ -734,13 +732,9 @@ function onCalendarSelectAppointment(event) {
     div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
     selectNode(row);
   }
-
-  event.cancelBubble = false;
-  event.returnValue = false;
 }
 
-function onCalendarSelectDay(event)
-{
+function onCalendarSelectDay(event) {
   var day = this.getAttribute("day");
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
@@ -753,13 +747,9 @@ function onCalendarSelectDay(event)
 
   if (needRefresh)
     refreshAppointments();
-
-  event.cancelBubble = true;
-  event.returnValue = false;
 }
 
-function changeWeekCalendarDisplayOfSelectedDay(node)
-{
+function changeWeekCalendarDisplayOfSelectedDay(node) {
   var days = document.getElementsByClassName("day", node.parentNode);
 
   for (var i = 0; i < days.length; i++)
