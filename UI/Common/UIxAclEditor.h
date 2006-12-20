@@ -28,6 +28,7 @@
 @interface UIxAclEditor : UIxComponent
 {
   BOOL prepared;
+  BOOL publishInFreeBusy;
   NSArray *acls;
   NSMutableArray *users;
   NSMutableArray *checkedUsers;
