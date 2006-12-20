@@ -26,6 +26,9 @@
 
     SOGoContactGCSEntry = {
       superclass    = "SOGoContentObject";
+      defaultRoles = {
+        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
+      };
     };
 
     SOGoContactLDAPFolder = {
@@ -34,6 +37,9 @@
 
     SOGoContactLDAPEntry = {
       superclass    = "SOGoContentObject";
+      defaultRoles = {
+        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
+      };
     };
   };
 }
