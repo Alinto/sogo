@@ -87,5 +87,3 @@
 
 "Add an Addressbook..." = "Add an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
-
-error_ab_access_denied = "You do not have the required privileges to access this addressbook.";
