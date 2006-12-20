@@ -1,5 +1,9 @@
 2006-12-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-checkRightsAction]): new method similar to the one with the same
+	name in UIxCalMainView.m.
+
 	* UI/Common/UIxAclEditor.m ([UIxAclEditor -saveAclsAction]): added
 	code to handle the publishing of freebusy information.
 

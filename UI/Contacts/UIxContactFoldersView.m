@@ -30,6 +30,7 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
+#import <SoObjects/Contacts/SOGoContactGCSFolder.h>
 
 #import "common.h"
 
@@ -206,6 +207,69 @@
   response = [context response];
   [response setStatus: 200];
   [response setHeader: @"text/html; charset=\"utf-8\"" forKey: @"content-type"];
+
+  return response;
+}
+
+- (SOGoContactGCSFolder *) contactFolderForUID: (NSString *) uid
+{
+  SOGoFolder *upperContainer;
+  SOGoUserFolder *userFolder;
+  SOGoContactFolders *contactFolders;
+  SOGoContactGCSFolder *contactFolder;
+  SoSecurityManager *securityManager;
+
+  upperContainer = [[[self clientObject] container] container];
+  userFolder = [SOGoUserFolder objectWithName: uid
+                               inContainer: upperContainer];
+  contactFolders = [SOGoContactFolders objectWithName: @"Contacts"
+                                       inContainer: userFolder];
+  contactFolder = [SOGoContactGCSFolder objectWithName: @"personal"
+                                        inContainer: contactFolders];
+  [contactFolder
+    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Contacts/personal", uid]];
+  [contactFolder setOwner: uid];
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
+
+  return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+                            onObject: contactFolder
+                            inContext: context] == nil)
+          ? contactFolder : nil);
+}
+
+- (id <WOActionResults>) checkRightsAction
+{
+  WOResponse *response;
+  NSUserDefaults *ud;
+  NSString *uids;
+  NSMutableString *rights;
+  NSArray *ids;
+  unsigned int count, max;
+  BOOL result;
+
+  ud = [[context activeUser] userDefaults];
+  uids = [ud objectForKey: @"additionaladdressbooks"];
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=\"utf-8\""
+            forKey: @"content-type"];
+  rights = [NSMutableString string];
+  if ([uids length] > 0)
+    {
+      ids = [uids componentsSeparatedByString: @","];
+      max = [ids count];
+      for (count = 0; count < max; count++)
+        {
+          result = ([self contactFolderForUID: [ids objectAtIndex: count]] != nil);
+          if (count == 0)
+            [rights appendFormat: @"%d", result];
+          else
+            [rights appendFormat: @",%d", result];
+        }
+    }
+  [response appendContentString: rights];
 
   return response;
 }
