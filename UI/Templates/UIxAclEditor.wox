@@ -23,7 +23,13 @@
           contacts="usersForFolder"
           checkedBoxes="checkedUsers"
           />
-        <span class="legend"><var:string label:value="(Unchecked = assistant, checked = delegate)" /></span>
+        <span class="legend"><var:string label:value="(Unchecked = assistant, checked = delegate)" /></span><br />
+        <var:if condition="clientIsCalendar"
+          ><label id="freeBusyLabel"><input type="checkbox"
+              var:checked="publishInFreeBusy"
+              class="checkBox" name="freebusy" id="freebusy"
+              /><var:string label:value="Localizable/Publish the Free/Busy information"
+              /></label></var:if>
       </div>
     </form>
   </var:component>
