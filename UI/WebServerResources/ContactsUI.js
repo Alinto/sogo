@@ -90,8 +90,8 @@ function onContactsFolderTreeItemClick(element)
   var contactsFolder = element.parentNode.getAttribute("dataname");
 
   if (topNode.selectedEntry)
-    deselectNode(topNode.selectedEntry);
-  selectNode(element);
+    topNode.selectedEntry.deselect();
+  element.select();
   topNode.selectedEntry = element;
 
   openContactsFolder(contactsFolder);
@@ -146,28 +146,22 @@ function contactsListCallback(http)
 {
   var div = $("contactsListContent");
 
-  if (http.readyState == 4) {
-    if (http.status == 200) {
-      document.contactsListAjaxRequest = null;
-      div.innerHTML = http.responseText;
-      var selected = http.callbackData;
-      if (selected) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.contactsListAjaxRequest = null;
+    div.innerHTML = http.responseText;
+    var selected = http.callbackData;
+    if (selected) {
         for (var i = 0; i < selected.length; i++)
-          selectNode($(selected[i]));
-      }
-      configureSortableTableHeaders();
-    } else if (http.status == 403) {
-      window.alert(labels.error_ab_access_denied.decodeEntities());
-      openContactsFolder("/personal", null, false);
-      var cf = $("contactFolders");
-      cf.deselectAll();
+          $(selected[i]).select();
     }
+    configureSortableTableHeaders();
   }
   else
     log ("ajax fuckage");
 }
 
-function onContactFoldersContextMenu(event, element)
+function onContactFoldersContextMenu(event)
 {
   var menu = $("contactFoldersMenu");
   menu.addEventListener("hideMenu", onContactFoldersContextMenuHide, false);
@@ -177,9 +171,9 @@ function onContactFoldersContextMenu(event, element)
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    deselectNode(selectedNodes[i]);
-  topNode.menuSelectedEntry = element;
-  selectNode(element);
+    selectedNodes[i].deselect();
+  topNode.menuSelectedEntry = this;
+  this.select();
 }
 
 function onContactContextMenu(event, element)
@@ -192,9 +186,9 @@ function onContactContextMenu(event, element)
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    deselectNode(selectedNodes[i]);
+    selectedNodes[i].deselect();
   topNode.menuSelectedEntry = element;
-  selectNode(element);
+  element.select();
 }
 
 function onContactContextMenuHide(event)
@@ -202,13 +196,13 @@ function onContactContextMenuHide(event)
   var topNode = $("contactsList");
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      selectNode (nodes[i]);
+      nodes[i].select();
     topNode.menuSelectedRows = null;
   }
 }
@@ -218,13 +212,13 @@ function onContactFoldersContextMenuHide(event)
   var topNode = $("contactFolders");
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      selectNode (nodes[i]);
+      nodes[i].select();
     topNode.menuSelectedRows = null;
   }
 }
@@ -234,11 +228,11 @@ function onFolderMenuHide(event)
   var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.selectedEntry)
-    selectNode(topNode.selectedEntry);
+    topNode.selectedEntry.select();
 }
 
 function loadContact(idx)
@@ -464,16 +458,22 @@ function onFolderSelectionChange()
 {
   var folderList = $("contactFolders");
   var nodes = folderList.getSelectedNodes();
-  var newFolder;
-  var externalFolder = nodes[0].getAttribute("external-addressbook");
-  if (externalFolder)
-    newFolder = externalFolder;
-  else
-    newFolder = nodes[0].getAttribute("id");
+  $("contactView").innerHTML = '';
 
-  $('contactView').innerHTML = '';
+  if (nodes[0].hasClassName("denied")) {
+    var div = $("contactsListContent");
+    div.innerHTML = "";
+  }
+  else {
+    var newFolder;
+    var externalFolder = nodes[0].getAttribute("external-addressbook");
+    if (externalFolder)
+      newFolder = externalFolder;
+    else
+      newFolder = nodes[0].getAttribute("id");
 
-  openContactsFolder(newFolder, null, externalFolder);
+    openContactsFolder(newFolder, null, externalFolder);
+  }
 }
 
 function onSearchFormSubmit()
@@ -637,7 +637,7 @@ function onAddressBookRemove(node) {
         setAdditionalAddressBooks(newValues);
       
       var personal = $("/personal");
-      selectNode(personal);
+      personal.select();
       onFolderSelectionChange();
     }
   }
@@ -661,10 +661,46 @@ function configureDragHandles() {
   }
 }
 
+function lookupDeniedFolders() {
+  var rights;
+  var http = createHTTPClient();
+  if (http) {
+    http.url = ApplicationBaseURL + "/checkRights";
+    http.open("GET", http.url, false /* not async */);
+    http.send("");
+    if (http.status == 200
+        && http.responseText.length > 0) {
+      rights = http.responseText.split(",");
+    }
+  }
+
+  return rights;
+}
+
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
-  if (contactFolders)
-    contactFolders.addEventListener("selectionchange", onFolderSelectionChange, false);
+  if (contactFolders) {
+    contactFolders.addEventListener("selectionchange",
+                                    onFolderSelectionChange, false);
+    var lis = contactFolders.childNodesWithTag("li");
+    for (var i = 0; i < lis.length; i++) {
+      lis[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+      lis[i].addEventListener("click", onRowClick, false);
+      lis[i].addEventListener("contextmenu", onContactFoldersContextMenu, false);
+    }
+
+    var denieds = lookupDeniedFolders();
+    if (denieds) {
+      var start = (lis.length - denieds.length);
+      for (var i = start; i < lis.length; i++) {
+        if (denieds[i-start] == "1")
+          lis[i].removeClassName("denied");
+        else
+          lis[i].addClassName("denied");
+      }
+    }
+    contactFolders.style.visibility = "visible;";
+  }
 }
 
 function onAccessRightsMenuEntryMouseUp(event) {
