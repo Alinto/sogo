@@ -65,6 +65,7 @@
 
 /* ownership */
 
+- (void) setOwner: (NSString *) newOwner;
 - (NSString *)ownerInContext:(id)_ctx;
 
 /* looking up shared objects */
