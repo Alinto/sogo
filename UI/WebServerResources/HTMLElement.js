@@ -177,3 +177,19 @@ HTMLElement.prototype.attachMenu = function(menuName) {
   this.sogoContextMenu = $(menuName);
   this.addEventListener("contextmenu", this.onContextMenu, true);
 }
+
+HTMLElement.prototype.select = function() {
+  this.addClassName('_selected');
+}
+
+HTMLElement.prototype.deselect = function() {
+  this.removeClassName('_selected');
+}
+
+HTMLElement.prototype.deselectAll = function () {
+  for (var i = 0; i < this.childNodes.length; i++) {
+    var node = this.childNodes.item(i);
+    if (node.nodeType == 1)
+      node.deselect();
+  }
+}
