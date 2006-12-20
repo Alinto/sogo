@@ -5,6 +5,7 @@ DIV.acls
 
 DIV.acls LABEL
 { position: relative;
+  white-space: normal;
   width: 100%; }
 
 DIV.acls LABEL > SPAN.value

@@ -940,24 +940,32 @@ function d2h(d) {
 }
 
 function indexColor(number) {
-  var colorTable = new Array(1, 1, 1);
+  var color;
 
-  var currentValue = number;
-  var index = 0;
-  while (currentValue)
-    {
-      if (currentValue & 1)
-        colorTable[index]++;
+  if (number == 0)
+    color = "#ccf";
+  else {
+    var colorTable = new Array(1, 1, 1);
+    
+    var currentValue = number;
+    var index = 0;
+    while (currentValue)
+      {
+        if (currentValue & 1)
+          colorTable[index]++;
       if (index == 3)
         index = 0;
       currentValue >>= 1;
       index++;
-    }
+      }
+    
+    color = ("#"
+             + d2h((256 / colorTable[2]) - 1)
+             + d2h((256 / colorTable[1]) - 1)
+             + d2h((256 / colorTable[0]) - 1));
+  }
 
-  return ("#"
-          + d2h((256 / colorTable[2]) - 1)
-          + d2h((256 / colorTable[1]) - 1)
-          + d2h((256 / colorTable[0]) - 1));
+  return color;
 }
 
 var onLoadHandler = {

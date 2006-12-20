@@ -855,8 +855,7 @@ function calendarUidsList()
 {
   var list = "";
 
-  var clist = $("calendarsList");
-  var nodes = clist.childNodes[5].childNodesWithTag("li");
+  var nodes = $("uixselector-calendarsList-display").childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
     var currentNode = nodes[i];
     var input = currentNode.childNodesWithTag("input")[0];
@@ -907,8 +906,44 @@ function inhibitMyCalendarEntry()
   }
 }
 
+function userCalendarEntry(user, color) {
+  var li = document.createElement("li");
+  li.setAttribute("uid", user);
+  li.addEventListener("mousedown", listRowMouseDownHandler, false);
+  li.addEventListener("click", onRowClick, false);
+  var colorBox = document.createElement("span");
+  colorBox.addClassName("colorBox");
+  if (color) {
+    log("color:  " + color);
+    colorBox.style.backgroundColor = color + ";";
+  }
+  li.appendChild(colorBox);
+  var checkBox = document.createElement("input");
+  checkBox.addClassName("checkBox");
+  checkBox.type = "checkbox";
+  checkBox.addEventListener("change", updateCalendarStatus, false);
+  li.appendChild(checkBox);
+  var text = document.createTextNode(" " + user);
+  li.appendChild(text);
+
+  return li;
+}
+
+function ensureSelfIfPresent() {
+  var ul = $("uixselector-calendarsList-display");
+  var list = ul.childNodesWithTag("li");
+  var selfEntry = userCalendarEntry(UserLogin, indexColor(0));
+  selfEntry.style.fontWeight = "bold;";
+  if (list.length < 1) {
+    ul.appendChild(selfEntry);
+  } else if (list[0].getAttribute("uid") != UserLogin) {
+    ul.insertBefore(selfEntry, list[0]);
+  }
+}
+
 function updateCalendarsList(method)
 {
+  ensureSelfIfPresent();
   var url = (ApplicationBaseURL + "updateCalendars?ids="
              + calendarUidsList());
   if (document.calendarsListAjaxRequest) {
@@ -963,21 +998,9 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
           else
             uids.value = contactId;
           var names = $("uixselector-calendarsList-display");
-          names.innerHTML += ('<li onmousedown="return false;"'
-                              + ' uid="' + contactId + '">'
-                              + ' <span class="colorBox"></span>'
-                              + ' <input class="checkBox" type="checkbox" />'
-                              + contactName + '</li>');
           var listElems = names.childNodesWithTag("li");
-          var i = (listElems.length - 1);
-          var colorDef = indexColor(i);
-          log("colorDef: " + colorDef);
-          var input = listElems[i].childNodesWithTag("input")[0];
-          listElems[i].addEventListener("click", onRowClick, false);
-          var colorBox = listElems[i].childNodesWithTag("span")[0];
-          log("colorBox: " + colorBox);
-          colorBox.style.backgroundColor = colorDef + ";";
-          input.addEventListener("change", updateCalendarStatus, false);
+          var colorDef = indexColor(listElems.length);
+          names.appendChild(userCalendarEntry(contactId, colorDef));
 
           var styles = document.getElementsByTagName("style");
           styles[0].innerHTML += ('.ownerIs' + contactId + ' {'

@@ -144,18 +144,24 @@ function openContactsFolderAtIndex(element) {
 
 function contactsListCallback(http)
 {
-  var div = $('contactsListContent');
+  var div = $("contactsListContent");
 
-  if (http.readyState == 4
-      && http.status == 200) {
-    document.contactsListAjaxRequest = null;
-    div.innerHTML = http.responseText;
-    var selected = http.callbackData;
-    if (selected) {
-      for (var i = 0; i < selected.length; i++)
-        selectNode($(selected[i]));
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      document.contactsListAjaxRequest = null;
+      div.innerHTML = http.responseText;
+      var selected = http.callbackData;
+      if (selected) {
+        for (var i = 0; i < selected.length; i++)
+          selectNode($(selected[i]));
+      }
+      configureSortableTableHeaders();
+    } else if (http.status == 403) {
+      window.alert(labels.error_ab_access_denied.decodeEntities());
+      openContactsFolder("/personal", null, false);
+      var cf = $("contactFolders");
+      cf.deselectAll();
     }
-    configureSortableTableHeaders();
   }
   else
     log ("ajax fuckage");
