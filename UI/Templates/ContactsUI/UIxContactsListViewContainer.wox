@@ -54,23 +54,14 @@
                   ></div></var:if>
 
             <ul id="contactFolders"
-              onselectionchange="onFolderSelectionChange();"
               var:additional-addressbooks="additionalAddressBooks">
               <var:foreach list="contactFolders" item="currentFolder"
                 ><var:if condition="isFolderCurrent"
-                  ><li var:id="currentContactFolderId"
-                    class="_selected"
-                    onmousedown="return false;"
-                    onclick="return onRowClick(event);"
-                    oncontextmenu="return onContactFoldersContextMenu(event, this);"
+                  ><li var:id="currentContactFolderId" class="_selected"
                     ><var:string value="currentContactFolderName" /></li
                     ></var:if
-                  ><var:if condition="isFolderCurrent"
-                  const:negate="YES"
+                  ><var:if condition="isFolderCurrent" const:negate="YES"
                   ><li var:id="currentContactFolderId"
-                    onmousedown="return false;"
-                    onclick="return onRowClick(event);"
-                    oncontextmenu="return onContactFoldersContextMenu(event, this);"
                     ><var:string value="currentContactFolderName" /></li
                     ></var:if>
               </var:foreach
@@ -78,9 +69,6 @@
                 item="currentAdditionalFolder"
                 ><li var:id="currentAdditionalFolder"
                   var:external-addressbook="currentAdditionalFolder"
-                  onmousedown="return false;"
-                  onclick="return onRowClick(event);"
-                  oncontextmenu="return onContactFoldersContextMenu(event, this);"
                   ><var:string value="currentAdditionalFolder" /></li
                   ></var:foreach>
             </ul>
