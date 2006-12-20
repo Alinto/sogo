@@ -39,6 +39,7 @@
     {
       acls = nil;
       prepared = NO;
+      publishInFreeBusy = NO;
       users = [NSMutableArray new];
       checkedUsers = [NSMutableArray new];
       ownerCN = nil;
@@ -94,7 +95,9 @@
   while (currentAcl)
     {
       currentUID = [currentAcl objectForKey: @"c_uid"];
-      if (![currentUID isEqualToString: @"freebusy"])
+      if ([currentUID isEqualToString: @"freebusy"])
+        publishInFreeBusy = YES;
+      else
         {
           currentUser = [um iCalPersonWithUid: currentUID];
           if (![[currentUser cn] isEqualToString: [self ownerCN]])
@@ -127,15 +130,30 @@
   return checkedUsers;
 }
 
+- (BOOL) publishInFreeBusy
+{
+  if (!prepared)
+    [self _prepareUsers];
+
+  return publishInFreeBusy;
+}
+
 - (NSString *) toolbar
 {
   return (([[self ownerCN] isEqualToString: [[context activeUser] login]])
           ? @"SOGoAclOwner.toolbar" : @"SOGoAclAssistant.toolbar");
 }
 
+- (BOOL) clientIsCalendar
+{
+  return [NSStringFromClass ([[self clientObject] class])
+                            isEqualToString: @"SOGoAppointmentFolder"];
+}
+
 - (id) saveAclsAction
 {
   NSString *uids;
+  NSArray *fbUsers;
   WORequest *request;
   SOGoAclsFolder *folder;
   SOGoObject *clientObject;
@@ -151,6 +169,15 @@
   [folder setRoleForObject: clientObject
           forUsers: [uids componentsSeparatedByString: @","]
           to: SOGoRole_Assistant];
+  if ([self clientIsCalendar]) {
+    if ([[request formValueForKey: @"freebusy"] intValue])
+      fbUsers = [NSArray arrayWithObject: @"freebusy"];
+    else
+      fbUsers = nil;
+    [folder setRoleForObject: clientObject
+            forUsers: fbUsers
+            to: SOGoRole_FreeBusy];
+  }
 
   return [self jsCloseWithRefreshMethod: nil];
 }
