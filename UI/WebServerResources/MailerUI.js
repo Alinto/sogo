@@ -394,8 +394,8 @@ function onMailboxTreeItemClick(element)
   var mailbox = element.parentNode.getAttribute("dataname");
 
   if (topNode.selectedEntry)
-    deselectNode(topNode.selectedEntry);
-  selectNode(element);
+    topNode.selectedEntry.deselect();
+  element.select();
   topNode.selectedEntry = element;
 
   openMailbox(mailbox);
@@ -478,7 +478,7 @@ function messageListCallback(http)
     var selected = http.callbackData;
     if (selected) {
       var row = $('row_' + selected);
-      selectNode(row);
+      row.select();
     }
     configureMessageListEvents();
     configureSortableTableHeaders();
@@ -496,10 +496,10 @@ function onMessageContextMenu(event)
   var topNode = $('messageList');
   var selectedNodes = topNode.getSelectedRows();
   for (var i = 0; i < selectedNodes.length; i++)
-    deselectNode (selectedNodes[i]);
+    selectedNodes[i].deselect();
   topNode.menuSelectedRows = selectedNodes;
   topNode.menuSelectedEntry = this;
-  selectNode(this);
+  this.select();
 }
 
 function onMessageContextMenuHide(event)
@@ -507,13 +507,13 @@ function onMessageContextMenuHide(event)
   var topNode = $('messageList');
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      selectNode(nodes[i]);
+      nodes[i].select();
     topNode.menuSelectedRows = null;
   }
 }
@@ -538,11 +538,11 @@ function onFolderMenuClick(event, element, menutype)
 
   var topNode = $('d');
   if (topNode.selectedEntry)
-    deselectNode(topNode.selectedEntry);
+    topNode.selectedEntry.deselect();
   if (topNode.menuSelectedEntry)
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
   topNode.menuSelectedEntry = element;
-  selectNode(element);
+  element.select();
 }
 
 function onFolderMenuHide(event)
@@ -550,11 +550,11 @@ function onFolderMenuHide(event)
   var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.selectedEntry)
-    selectNode(topNode.selectedEntry);
+    topNode.selectedEntry.select();
 }
 
 function deleteCachedMessage(messageId) {
@@ -807,8 +807,8 @@ function initMailboxSelection(mailboxName)
   if (i < treeNodes.length) {
     var links = document.getElementsByClassName("node", treeNodes[i]);
     if (tree.selectedEntry)
-      deselectNode(tree.selectedEntry);
-    selectNode(links[0]);
+      tree.selectedEntry.deselect();
+    links[0].select();
     tree.selectedEntry = links[0];
     expandUpperTree(links[0]);
   }

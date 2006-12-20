@@ -335,20 +335,11 @@ function triggerOpenerCallback() {
 
 /* selection mechanism */
 
-function selectNode(node) {
-  node.addClassName('_selected');
-}
-
-function deselectNode(node) {
-//   log ("deselecting a node: '" + node.tagName + "'");
-  node.removeClassName('_selected');
-}
-
 function deselectAll(parent) {
   for (var i = 0; i < parent.childNodes.length; i++) {
     var node = parent.childNodes.item(i);
     if (node.nodeType == 1)
-      deselectNode(node);
+      node.deselect();
   }
 }
 
@@ -376,13 +367,13 @@ function onRowClick(event) {
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
     if (isNodeSelected(node) == true) {
-      deselectNode(node);
+      node.deselect();
     } else {
-      selectNode(node);
+      node.select();
     }
   } else {
     deselectAll(node.parentNode);
-    selectNode(node);
+    node.select();
   }
 
   if (startSelection != node.parentNode.getSelectedNodes()) {

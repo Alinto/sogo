@@ -15,16 +15,14 @@ HTMLTableElement.prototype.selectRowsMatchingClass = function(className) {
   var nodes = tbody.childNodes;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes.item(i);
-    if (node instanceof HTMLElement) {
-      var classStr = '' + node.getAttribute("class");
-      if (classStr.indexOf(className, 0) >= 0)
-        selectNode(node);
-    }
+    if (node instanceof HTMLElement
+        && node.hasClassName(className))
+      node.select();
   }
 }
 
 HTMLTableElement.prototype.deselectAll = function() {
   var nodes = this.getSelectedRows();
   for (var i = 0; i < nodes.length; i++)
-    deselectNode(nodes[i]);
+    nodes[i].deselect();
 }

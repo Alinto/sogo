@@ -199,9 +199,9 @@ function onDaySelect(node)
 //   log ("table.selected: " + table.selected);
 
   if (document.selectedDate)
-    deselectNode(document.selectedDate);
+    document.selectedDate.deselect();
 
-  selectNode(td);
+  td.select();
   document.selectedDate = td;
 
   changeCalendarDisplay( { "day": day } );
@@ -297,7 +297,7 @@ function tasksListCallback(http)
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
       for (var i = 0; i < selectedNodesId.length; i++)
-        selectNode($(selectedNodesId[i]));
+        $(selectedNodesId[i]).select();
     }
   }
   else
@@ -322,8 +322,8 @@ function restoreCurrentDaySelection(div)
         if (day && day == currentDay) {
           var td = elements[i].getParentWithTagName("td");
           if (document.selectedDate)
-            deselectNode(document.selectedDate);
-          selectNode(td);
+            document.selectedDate.deselect();
+          td.select();
           document.selectedDate = td;
         }
       }
@@ -531,10 +531,10 @@ function onAppointmentContextMenu(event, element)
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    deselectNode (selectedNodes[i]);
+    selectedNodes[i].deselect();
 
   topNode.menuSelectedEntry = element;
-  selectNode(element);
+  element.select();
 }
 
 function onAppointmentContextMenuHide(event)
@@ -542,14 +542,14 @@ function onAppointmentContextMenuHide(event)
   var topNode = $("appointmentsList");
 
   if (topNode.menuSelectedEntry) {
-    deselectNode(topNode.menuSelectedEntry);
+    topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
     var nodeIds = topNode.menuSelectedRows;
     for (var i = 0; i < nodeIds.length; i++) {
       var node = $(nodeIds[i]);
-      selectNode (node);
+      node.select();
     }
     topNode.menuSelectedRows = null;
   }
@@ -730,7 +730,7 @@ function onCalendarSelectAppointment() {
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
     div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
-    selectNode(row);
+    row.select();
   }
 }
 
