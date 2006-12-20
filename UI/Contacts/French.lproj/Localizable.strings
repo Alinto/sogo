@@ -89,3 +89,5 @@
 
 "Add an Addressbook..." = "Ajouter un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";
+
+error_ab_access_denied = "Vous n'avez pas les droits suffisants pour accéder à ce carnet d'adresses.";
