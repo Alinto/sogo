@@ -127,7 +127,8 @@ DIV#contactFoldersList > DIV.toolbar
   border-left: 1px solid #aaa; }
 
 UL#contactFolders
-{ list-style-type: none;
+{ visibility: hidden;
+  list-style-type: none;
   list-style-image: none;
   clear: both;
   cursor: default;
@@ -139,6 +140,11 @@ UL#contactFolders
   padding: 0px;
   border: 0px;
   overflow: auto; }
+
+UL#contactFolders LI.denied
+{ background: #fefefe;
+  font-style: italic;
+  color: #f33; }
 
 DIV#contactFoldersList LI
 {
