@@ -61,6 +61,11 @@
               pageName    = "UIxAclEditor";
               actionName = "saveAcls";
            };
+           checkRights = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView"; 
+              actionName  = "checkRights";
+           };
         };
      };
 
