@@ -1,4 +1,5 @@
 shared_debug_obj
 obj
 imgs-.*
+.*\.d
 .*\.SOGo
