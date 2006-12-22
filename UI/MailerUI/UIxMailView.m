@@ -19,6 +19,9 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSException.h>
+#import <NGExtensions/NSException+misc.h>
+
 #include <SOGoUI/UIxComponent.h>
 
 @interface UIxMailView : UIxComponent
@@ -284,7 +287,7 @@ static NSString *mailETag = nil;
 
 - (id <WOActionResults>) moveAction
 {
-  id <WOActionResults> *result;
+  id <WOActionResults> result;
   NSString *destinationFolder;
   id url;
 
@@ -318,11 +321,6 @@ static NSString *mailETag = nil;
                           reason: @"No destination folder given"];
 
   return result;
-}
-
-- (id)getMailAction {
-  // TODO: we might want to flush the caches?
-  return [self redirectToLocation:@"view"];
 }
 
 /* generating response */
