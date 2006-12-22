@@ -20,7 +20,7 @@
 */
 /* TODO: is the section below used in the mailer? */
 
-DIV.folderTree
+DIV#leftPanel
 {
   position: absolute;
   top: 5.5em;
@@ -32,7 +32,7 @@ DIV.folderTree
   overflow: hidden;
 }
 
-DIV#mailerPageContent
+DIV#rightPanel
 { 
   position: absolute;
   top: 5.5em;
@@ -469,14 +469,6 @@ IMG.dragMessage
   -moz-opacity: 0.7;
 }
 
-/* message list */
-DIV#filterPanel
-{ 
-  height: 2em;
-  vertical-align: middle;
-  width: 100%;
-}
-
 TABLE#addr_table
 { 
   margin-left: 30%;
@@ -524,7 +516,7 @@ TABLE#messageList TR._deleted TD
 }
 
 /* drag handles */
-DIV#dragHandle
+DIV#verticalDragHandle
 {
   cursor: e-resize;
   top: 7.5em;
@@ -533,7 +525,7 @@ DIV#dragHandle
   bottom: 0px;
 }
 
-DIV#mailboxDragHandle
+DIV#rightDragHandle
 { 
   cursor: n-resize;
   top: 18em;

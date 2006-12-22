@@ -175,14 +175,6 @@ DIV#folderTreeContent TABLE TD
   margin: 0px;
   padding: 0px; }
 
-/* message list */
-DIV#filterPanel
-{ 
-  height: 2em;
-  vertical-align: middle;
-  width: 100%;
-}
-
 TABLE#contactsList
 { 
   display: block;

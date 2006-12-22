@@ -171,10 +171,7 @@ DIV#calendarView A
 
 #filterPanel
 {
-  height: 2em;
   padding-right: .5em;
-  vertical-align: middle;
-  width: 100%;
 }
 
 #dateSelector

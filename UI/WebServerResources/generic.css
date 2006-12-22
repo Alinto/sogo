@@ -29,9 +29,9 @@ TABLE, DIV, IMG
   padding: 0px; }
 
 IMG#progressIndicator
-{ position: absolute;
-  top: 2.5em;
-  right: 1em; }
+{ float: right;
+  margin-top: 1.5em;
+  margin-right: 1em; }
 
 DIV.pageContent
 { /* position: absolute;
@@ -630,6 +630,13 @@ DIV.dragHandle:active
 { background: #99a; }
 
 /* search fields */
+DIV#filterPanel
+{
+  height: 2em;
+  vertical-align: middle;
+  width: 100%;
+}
+
 INPUT#searchValue
 { margin-right: 1em;
   width: 20em;
