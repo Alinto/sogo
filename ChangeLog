@@ -1,5 +1,9 @@
 2006-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountView.m: renamed to UIxMailSplashView,
+	since its the component that displays the same splash screen than
+	the one in Thunderbird/Icedove.
+
 	* UI/MailerUI/UIxMailAccountViewContainer.[hm],
 	UI/MailerUI/UI/MailerUI/UIxMailAccountsView.m,
 	UI/MailerUI/UIxMailListViewContainer.[hm],
