@@ -42,11 +42,6 @@
             onkeydown="onSearchKeyDown(this);" />
         </span>
 
-        <script type="text/javascript">
-          initCriteria();
-          document.pageform.search.focus();
-        </script>
-
         <var:string label:value="View:" />
         <var:popup list="filters" 
           item="filter" string="filterLabel" value="filter"

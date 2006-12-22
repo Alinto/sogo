@@ -1,159 +1,133 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
+  <table multiselect="yes" id="messageList"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    className="UIxMailListViewContainer"
-    title="name"
-    >
-    <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
-
-    <table multiselect="yes" id="messageList">
-      <tbody>
-        <tr class="tableview"
-          ><td class="tbtv_headercell messageFlagColumn"
-            ><var:entity const:name="nbsp" /></td
-            ><td class="tbtv_headercell messageFlagColumn">
-            <img rsrc:src="title_attachment_14x14.png" width="14"
-              height="14"
-              /></td
-            ><td class="tbtv_headercell tbtv_subject_headercell"
+    xmlns:label="OGo:label">
+    <tbody>
+      <tr class="tableview"
+        ><td class="tbtv_headercell messageFlagColumn"
+          ><var:entity const:name="nbsp" /></td
+          ><td class="tbtv_headercell messageFlagColumn">
+          <img rsrc:src="title_attachment_14x14.png" width="14"
+            height="14"
+            /></td
+          ><td class="tbtv_headercell tbtv_subject_headercell"
+          ><var:component className="UIxSortableTableHeader"
+            label:label="Subject"
+            const:sortKey="subject"
+            const:href="view"
+            var:queryDictionary="context.request.formValues"
+            /></td
+          ><td class="tbtv_headercell"
+          ><var:if condition="showToAddress" const:negate="YES"
             ><var:component className="UIxSortableTableHeader"
-              label:label="Subject"
-              const:sortKey="subject"
+              label:label="From"
+              const:sortKey="from"
               const:href="view"
               var:queryDictionary="context.request.formValues"
-              /></td
-            ><td class="tbtv_headercell"
-            ><var:if condition="showToAddress" const:negate="YES"
-              ><var:component className="UIxSortableTableHeader"
-                label:label="From"
-                const:sortKey="from"
-                const:href="view"
-                var:queryDictionary="context.request.formValues"
-                /></var:if
-              ><var:if condition="showToAddress"
-              ><var:component className="UIxSortableTableHeader"
-                label:label="To"
-                const:sortKey="to"
-                const:href="view"
-                var:queryDictionary="context.request.formValues"
+              /></var:if
+            ><var:if condition="showToAddress"
+            ><var:component className="UIxSortableTableHeader"
+              label:label="To"
+              const:sortKey="to"
+              const:href="view"
+              var:queryDictionary="context.request.formValues"
+              /></var:if
+            ></td
+          ><td class="tbtv_headercell messageFlagColumn"
+          ><img rsrc:src="title_read_14x14.png" width="14" height="14"
+            /></td
+          ><td class="tbtv_headercell"
+          ><var:component className="UIxSortableTableHeader"
+            label:label="Date"
+            const:sortKey="date"
+            const:href="view"
+            var:queryDictionary="context.request.formValues"
+            const:isDefault="YES"
+            /></td
+          ></tr>
+      <var:if condition="showsAllMessages" const:negate="YES"
+        ><tr class="tableview"
+          ><td colspan="6" class="tbtv_navcell"
+            ><var:if condition="hasPrevious">
+              <a href="#"
+                onclick="openMailboxAtIndex(this);"
+                idx="1"><var:string label:value="first"/></a> |
+              <a href="#"
+                onclick="openMailboxAtIndex(this);"
+                var:idx="prevFirstMessageNumber"
+                ><var:string label:value="previous"/></a> |
+            </var:if>
+            <var:string value="firstMessageNumber" />
+            <var:string label:value="msgnumber_to" />
+            <var:string value="lastMessageNumber" />
+            <var:string label:value="msgnumber_of" />
+            <var:string value="sortedUIDs.count" />
+            <var:if condition="hasNext"
+              >| <a href="#"
+                onclick="openMailboxAtIndex(this);"
+                var:idx="nextFirstMessageNumber"
+                ><var:string label:value="next" /></a>
+            </var:if
+              ></td
+            ></tr
+          ></var:if>
+      <var:foreach list="messages" item="message"
+        ><tr class="tableview" var:id="msgRowID"
+          ><td></td
+            ><td><var:if condition="hasMessageAttachment"
+              ><img rsrc:src="title_attachment_14x14.png"
                 /></var:if
               ></td
-            ><td class="tbtv_headercell messageFlagColumn"
-            ><img rsrc:src="title_read_14x14.png" width="14" height="14"
+            
+            ><td
+            var:class="messageSubjectCellStyleClass"
+            var:id="msgDivID"
+            ><var:string value="message.envelope.subject"
+              formatter="context.mailSubjectFormatter"
               /></td
-            ><td class="tbtv_headercell"
-            ><var:component className="UIxSortableTableHeader"
-              label:label="Date"
-              const:sortKey="date"
-              const:href="view"
-              var:queryDictionary="context.request.formValues"
-              const:isDefault="YES"
+
+            ><td
+            var:class="messageCellStyleClass"
+            ><var:if condition="showToAddress" const:negate="YES"
+              ><var:string value="message.envelope.from"
+                formatter="context.mailEnvelopeAddressFormatter"
+                /></var:if
+              ><var:if condition="showToAddress"
+              ><var:string value="message.envelope.to"
+                formatter="context.mailEnvelopeAddressFormatter"
+                /></var:if
+              ></td
+            
+            ><td var:class="messageCellStyleClass"
+            ><var:if condition="isMessageRead"
+              ><img rsrc:src="icon_read.gif"
+                class="mailerReadIcon"
+                label:title="Mark Unread"
+                label:title-markread="Mark Read"
+                label:title-markunread="Mark Unread"
+                var:id="msgIconReadImgID"
+                /></var:if
+              ><var:if condition="isMessageRead" const:negate="YES"
+              ><img rsrc:src="icon_unread.gif"
+                class="mailerUnreadIcon"
+                label:title="Mark Read"
+                label:title-markread="Mark Read"
+                label:title-markunread="Mark Unread"
+                var:id="msgIconUnreadImgID"
+                /></var:if
+              ></td
+            
+            ><td var:class="messageCellStyleClass"
+            ><span class="mailer_datefield"
+              ><var:string value="message.envelope.date" 
+                formatter="context.mailDateFormatter"
+                /></span
+              ><entity name="nbsp"
               /></td
             ></tr>
-        <var:if condition="showsAllMessages" const:negate="YES"
-          ><tr class="tableview"
-            ><td colspan="6" class="tbtv_navcell"
-              ><var:if condition="hasPrevious">
-                <a href="#"
-                  onclick="openMailboxAtIndex(this);"
-                  idx="1"><var:string label:value="first"/></a> |
-                <a href="#"
-                  onclick="openMailboxAtIndex(this);"
-                  var:idx="prevFirstMessageNumber"
-                  ><var:string label:value="previous"/></a> |
-              </var:if>
-              <var:string value="firstMessageNumber" />
-              <var:string label:value="msgnumber_to" />
-              <var:string value="lastMessageNumber" />
-              <var:string label:value="msgnumber_of" />
-              <var:string value="sortedUIDs.count" />
-              <var:if condition="hasNext"
-                >| <a href="#"
-                  onclick="openMailboxAtIndex(this);"
-                  var:idx="nextFirstMessageNumber"
-                  ><var:string label:value="next" /></a>
-              </var:if
-            ></td
-              ></tr
-            ></var:if>
-        <var:foreach list="messages" item="message"
-          ><tr class="tableview" var:id="msgRowID"
-            ><td></td
-              ><td><var:if condition="hasMessageAttachment"
-                ><img rsrc:src="title_attachment_14x14.png"
-                  /></var:if
-                ></td
-              
-              ><td
-              var:class="messageSubjectCellStyleClass"
-              var:id="msgDivID"
-              ><var:string value="message.envelope.subject"
-                formatter="context.mailSubjectFormatter"
-                /></td
-
-              ><td
-              var:class="messageCellStyleClass"
-              ><var:if condition="showToAddress" const:negate="YES"
-                ><var:string value="message.envelope.from"
-                  formatter="context.mailEnvelopeAddressFormatter"
-                  /></var:if
-                ><var:if condition="showToAddress"
-                ><var:string value="message.envelope.to"
-                  formatter="context.mailEnvelopeAddressFormatter"
-                  /></var:if
-                ></td
-              
-              ><td var:class="messageCellStyleClass"
-              ><var:if condition="isMessageRead"
-                ><img rsrc:src="icon_read.gif"
-                  class="mailerReadIcon"
-                  label:title="Mark Unread"
-                  label:title-markread="Mark Read"
-                  label:title-markunread="Mark Unread"
-                  var:id="msgIconReadImgID"
-                  /></var:if
-                ><var:if condition="isMessageRead" const:negate="YES"
-                ><img rsrc:src="icon_unread.gif"
-                  class="mailerUnreadIcon"
-                  label:title="Mark Read"
-                  label:title-markread="Mark Read"
-                  label:title-markunread="Mark Unread"
-                  var:id="msgIconUnreadImgID"
-                  /></var:if
-                ></td
-              
-              ><td var:class="messageCellStyleClass"
-              ><span class="mailer_datefield"
-                ><var:string value="message.envelope.date" 
-                  formatter="context.mailDateFormatter"
-                  /></span
-		><entity name="nbsp"
-                /></td
-              ></tr>
-        </var:foreach>
-      </tbody>
-    </table>
-    <!--
-    <tr class="tableview">
-    <td colspan="6" class="tbtv_actcell">
-    <! TODO: fix used tree, treeNavigationNodes is the _wrong_ choice
-    <var:component className="UIxMailMoveToPopUp"
-    const:identifier="moveto"
-    const:callback="moveTo"
-    rootNodes="clientObject.treeNavigationNodes"
-    />
-    >
-    <! enable once we have buttons and functionality to actually move sth #1211
-    <var:popup const:name="moveto" const:id="moveto"
-    list="clientObject.mailAccountFolder.allFolderPathes"
-    item="item" value="item" displayString="item" />
-    ->
-  </td>
-  </tr>
-    -->
-  </var:component>
+      </var:foreach>
+    </tbody>
+  </table>

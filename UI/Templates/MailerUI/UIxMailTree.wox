@@ -7,7 +7,7 @@
     xmlns:label="OGo:label">
     <!-- TODO: extend treeview to use CSS -->
 
-    <script type="text/javascript" rsrc:src="dtree.js"> <!-- space --></script>
+    <script type="text/javascript" rsrc:src="dtree.js"><!-- space --></script>
     <script type="text/javascript">
       d = new dTree('d');
       d.config.folderLlinks = true;
@@ -37,36 +37,4 @@
       document.write(d);
     </script>
 <!--    <noscript>
-      <var:treeview
-	list="rootNodes" item="item" sublist="item.children"
-	zoom="item.isPathNode"
-	const:iconWidth       = "17"
-	const:plusIcon        = "tbtv_plus_17x17.gif"
-	const:minusIcon       = "tbtv_minus_17x17.gif"
-	const:lineIcon        = "tbtv_line_17x17.gif"
-	const:cornerIcon      = "tbtv_corner_17x17.gif"
-	const:junctionIcon    = "tbtv_junction_17x17.gif"
-	const:leafIcon        = "tbtv_leaf_corner_17x17.gif"
-	const:leafCornerIcon  = "tbtv_leaf_corner_17x17.gif"
-	const:cornerPlusIcon  = "tbtv_corner_plus_17x17.gif"
-	const:cornerMinusIcon = "tbtv_corner_minus_17x17.gif"
-	const:spaceIcon       = "empty.gif"
-	>
-	<var:tree-data const:isTreeElement="YES"
-	  var:icon="item.iconName"
-	  var:cornerIcon="item.iconName"
-	  var:treeLink="item.link"
-	  ><a var:href="item.link"
-	    ><span class="treecell"
-	      ><var:if condition="item.isActiveNode"
-		><b><var:string value="item.title" /></b
-                  ></var:if
-                ><var:if condition="item.isActiveNode" const:negate="YES"
-		><var:string value="item.title"
-                  /></var:if
-                ></span
-              ></a
-            ></var:tree-data>
-      </var:treeview>
-    </noscript> -->
   </div>

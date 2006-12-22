@@ -8,265 +8,216 @@
     title="title"
     popup="isPopup"
     >
-    <var:if condition="hideFrame" const:negate="YES">
-      <div class="menu" id="accountIconMenu">
-        <ul id="sourceList">
-          <li
-            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Get Messages for Account" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="New Folder..." /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Properties..." /></li>
-        </ul>
-      </div>
+    <div class="menu" id="accountIconMenu">
+      <ul id="sourceList">
+        <li><var:string label:value="Subscribe..." /></li>
+        <li><var:string label:value="Get Messages for Account" /></li>
+        <li><var:string label:value="New Folder..." /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Search Messages..." /></li>
+        <li><var:string label:value="Properties..." /></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="inboxIconMenu">
-        <ul id="sourceList">
-          <li
-            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="New Folder..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Properties..." /></li>
-        </ul>
-      </div>
+    <div class="menu" id="inboxIconMenu">
+      <ul id="sourceList">
+        <li><var:string label:value="Open in New Mail Window" /></li>
+        <li><var:string label:value="Copy Folder Location" /></li>
+        <li><var:string label:value="Subscribe..." /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Mark Folder Read..." /></li>
+        <li><var:string label:value="New Folder..." /></li>
+        <li><var:string label:value="Compact This Folder" /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Search Messages..." /></li>
+        <li><var:string label:value="Properties..." /></li>
+      </ul>
+    </div>
       
-      <div class="menu" id="trashIconMenu">
-        <ul id="sourceList">
-          <li
-            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="New Subfolder..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Empty Trash" /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Properties..." /></li>
-        </ul>
-      </div>
+    <div class="menu" id="trashIconMenu">
+      <ul id="sourceList">
+        <li><var:string label:value="Open in New Mail Window" /></li>
+        <li><var:string label:value="Copy Folder Location" /></li>
+        <li><var:string label:value="Subscribe..." /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Mark Folder Read..." /></li>
+        <li><var:string label:value="New Subfolder..." /></li>
+        <li><var:string label:value="Compact This Folder" /></li>
+        <li><var:string label:value="Empty Trash" /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Search Messages..." /></li>
+        <li><var:string label:value="Properties..." /></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="mailboxIconMenu">
-        <ul id="sourceList">
-          <li
-            onmouseup="return false;"><var:string label:value="Open in New Mail Window" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Copy Folder Location" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Subscribe..." /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Mark Folder Read..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="New Subfolder..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Rename Folder..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Compact This Folder" /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Delete Folder" /></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Search Messages..." /></li>
-          <li
-            onmouseup="return false;"><var:string label:value="Properties..." /></li>
-        </ul>
-      </div>
+    <div class="menu" id="mailboxIconMenu">
+      <ul id="sourceList">
+        <li><var:string label:value="Open in New Mail Window" /></li>
+        <li><var:string label:value="Copy Folder Location" /></li>
+        <li><var:string label:value="Subscribe..." /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Mark Folder Read..." /></li>
+        <li><var:string label:value="New Subfolder..." /></li>
+        <li><var:string label:value="Rename Folder..." /></li>
+        <li><var:string label:value="Compact This Folder" /></li>
+        <li><var:string label:value="Delete Folder" /></li>
+        <li class="separator"></li>
+        <li><var:string label:value="Search Messages..." /></li>
+        <li><var:string label:value="Properties..." /></li>
+      </ul>
+    </div>
+    
+    <div class="menu" id="addressMenu">
+      <ul id="sourceList">
+        <li id="add_to_addressbook"
+          onmouseup="newContactFromEmail(this);"><var:string label:value="Add to Address Book..."/></li>
+        <li id="compose_mailto"
+          onmouseup="newEmailTo(this);"><var:string label:value="Compose Mail To"/></li>
+        <li id="create_filter"
+          onmouseup="onMenuEntryClick(this, event);"><var:string label:value="Create Filter From Message..."/></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="addressMenu">
-        <ul id="sourceList">
-          <li id="add_to_addressbook"
-            onmouseup="newContactFromEmail(this);"><var:string label:value="Add to Address Book..."/></li>
-          <li id="compose_mailto"
-            onmouseup="newEmailTo(this);"><var:string label:value="Compose Mail To"/></li>
-          <li id="create_filter"
-            onmouseup="onMenuEntryClick(this, event);"><var:string label:value="Create Filter From Message..."/></li>
-        </ul>
-      </div>
+    <div class="menu" id="messageListMenu">
+      <ul id="sourceList">
+        <li
+          onmouseup="onMenuOpenMessage(event);"><var:string label:value="Open Message In New Window"/></li>
+        <li class="separator"></li>
+        <li
+          onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+        <li
+          onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+        <li
+          onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
+        <li
+          onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
+        <li class="separator"></li>
+        <li
+          class="submenu"
+          mailboxaction="move"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Move To"/></li>
+        <li
+          class="submenu"
+          mailboxaction="copy"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Copy To"/></li>
+        <li
+          class="submenu"
+          submenu="label-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Label"/></li>
+        <li
+          class="submenu"
+          submenu="mark-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Mark"/></li>
+        <li class="separator"></li>
+        <li
+          onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+        <li
+          onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+        <li
+          onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
+        <li
+          onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="messageListMenu">
-        <ul id="sourceList">
-          <li
-            onmouseup="onMenuOpenMessage(event);"><var:string label:value="Open Message In New Window"/></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
-          <li
-            onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
-          <li
-            onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
-          <li
-            onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
-          <li class="separator"></li>
-          <li
-            class="submenu"
-            mailboxaction="move"
-            submenu="mailboxes-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Move To"/></li>
-          <li
-            class="submenu"
-            mailboxaction="copy"
-            submenu="mailboxes-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Copy To"/></li>
-          <li
-            class="submenu"
-            submenu="label-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Label"/></li>
-          <li
-            class="submenu"
-            submenu="mark-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Mark"/></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
-          <li
-            onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
-          <li
-            onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
-          <li
-            onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
-        </ul>
-      </div>
+    <div class="menu" id="messageContentMenu">
+      <ul>
+        <li
+          onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
+        <li
+          onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
+        <li
+          onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
+        <li
+          onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
+        <li
+          class="submenu"
+          mailboxaction="move"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Move To"/></li>
+        <li
+          class="submenu"
+          mailboxaction="copy"
+          submenu="mailboxes-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Copy To"/></li>
+        <li class="separator"></li>
+        <li
+          class="submenu"
+          submenu="label-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Label"/></li>
+        <li
+          class="submenu"
+          submenu="mark-menu"
+          onmouseover="dropDownSubmenu(event);"><var:string label:value="Mark"/></li>
+        <li class="separator"></li>
+        <li
+          onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
+        <li
+          onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
+        <li
+          onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
+        <li
+          onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="messageContentMenu">
-        <ul>
-          <li
-            onmouseup="onMenuReplyToSender(event);"><var:string label:value="Reply to Sender Only"/></li>
-          <li
-            onmouseup="onMenuReplyToAll(event);"><var:string label:value="Reply to All"/></li>
-          <li
-            onmouseup="onMenuForwardMessage(event);"><var:string label:value="Forward"/></li>
-          <li
-            onmouseup="onMenuEditMessageAsNew(event);"><var:string label:value="Edit As New..."/></li>
-          <li
-            class="submenu"
-            mailboxaction="move"
-            submenu="mailboxes-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Move To"/></li>
-          <li
-            class="submenu"
-            mailboxaction="copy"
-            submenu="mailboxes-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Copy To"/></li>
-          <li class="separator"></li>
-          <li
-            class="submenu"
-            submenu="label-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Label"/></li>
-          <li
-            class="submenu"
-            submenu="mark-menu"
-            onmouseover="dropDownSubmenu(event);"
-            onmousedown="return false;"><var:string label:value="Mark"/></li>
-          <li class="separator"></li>
-          <li
-            onmouseup="onMenuSaveMessageAs(event);"><var:string label:value="Save As..."/></li>
-          <li
-            onmouseup="onMenuPreviewPrintMessage(event);"><var:string label:value="Print Preview"/></li>
-          <li
-            onmouseup="onMenuPrintMessage(event);"><var:string label:value="Print..."/></li>
-          <li
-            onmouseup="onMenuDeleteMessage(event);"><var:string label:value="Delete Message"/></li>
-        </ul>
-      </div>
+    <div class="menu" id="label-menu">
+      <ul id="">
+        <li onmouseup="onMenuLabelMessage(event, 'none');"><var:string label:value="None" /></li>
+        <li class="separator"></li>
+        <li onmouseup="onMenuLabelMessage(event, 'important);"><var:string label:value="Important" /></li>
+        <li onmouseup="onMenuLabelMessage(event, 'work');"><var:string label:value="Work" /></li>
+        <li onmouseup="onMenuLabelMessage(event, 'personal');"><var:string label:value="Personal" /></li>
+        <li onmouseup="onMenuLabelMessage(event, 'todo');"><var:string label:value="To Do" /></li>
+        <li onmouseup="onMenuLab-elMessage(event, 'later');"><var:string label:value="Later" /></li>
+      </ul>
+    </div>
 
-      <div class="menu" id="label-menu">
-        <ul id="">
-          <li onmouseup="onMenuLabelMessage(event, 'none');"><var:string label:value="None" /></li>
-          <li class="separator"></li>
-          <li onmouseup="onMenuLabelMessage(event, 'important);"><var:string label:value="Important" /></li>
-          <li onmouseup="onMenuLabelMessage(event, 'work');"><var:string label:value="Work" /></li>
-          <li onmouseup="onMenuLabelMessage(event, 'personal');"><var:string label:value="Personal" /></li>
-          <li onmouseup="onMenuLabelMessage(event, 'todo');"><var:string label:value="To Do" /></li>
-          <li onmouseup="onMenuLab-elMessage(event, 'later');"><var:string label:value="Later" /></li>
-        </ul>
-      </div>
+    <var:component
+      className="UIxMailFolderMenu"
+      const:menuId="mailboxes-menu"
+      const:parentMenu="0"
+      rootClassName="treeRootClassName" 
+      const:treeFolderAction="view" />
 
-      <var:component
-        className="UIxMailFolderMenu"
-        const:menuId="mailboxes-menu"
-        const:parentMenu="0"
+    <div class="menu" id="mark-menu">
+      <ul id="">
+        <li onmouseup="onMenuMarkMessage(event, 'read');"><var:string label:value="As Read" /></li>
+        <li onmouseup="onMenuMarkMessage(event, 'threadread');"><var:string label:value="Thread As Read" /></li>
+        <li onmouseup="onMenuMarkMessage(event, 'readbydate);"><var:string label:value="As Read By Date..." /></li>
+        <li onmouseup="onMenuMarkMessage(event, 'allread);"><var:string label:value="All Read" /></li>
+        <li class="separator"></li>
+        <li onmouseup="onMenuMarkMessage(event, 'flag);"><var:string label:value="Flag" /></li>
+        <li class="separator"></li>
+        <li onmouseup="onMenuMarkMessage(event, 'junk);"><var:string label:value="As Junk" /></li>
+        <li onmouseup="onMenuMarkMessage(event, 'notjunk);"><var:string label:value="As Not Junk" /></li>
+        <li onmouseup="onMenuMarkMessage(event, 'runjunkmailcontrols);"><var:string label:value="Run Junk Mail Controls" /></li>
+      </ul>
+    </div>
+
+    <div id="leftPanel">
+      <div class="titlediv"><var:string label:value="Folders" /></div>
+      <var:component className="UIxMailTree" 
         rootClassName="treeRootClassName" 
         const:treeFolderAction="view" 
         />
+    </div>
       
-      <div class="menu" id="mark-menu">
-        <ul id="">
-          <li onmouseup="onMenuMarkMessage(event, 'read');"><var:string label:value="As Read" /></li>
-          <li onmouseup="onMenuMarkMessage(event, 'threadread');"><var:string label:value="Thread As Read" /></li>
-          <li onmouseup="onMenuMarkMessage(event, 'readbydate);"><var:string label:value="As Read By Date..." /></li>
-          <li onmouseup="onMenuMarkMessage(event, 'allread);"><var:string label:value="All Read" /></li>
-          <li class="separator"></li>
-          <li onmouseup="onMenuMarkMessage(event, 'flag);"><var:string label:value="Flag" /></li>
-          <li class="separator"></li>
-          <li onmouseup="onMenuMarkMessage(event, 'junk);"><var:string label:value="As Junk" /></li>
-          <li onmouseup="onMenuMarkMessage(event, 'notjunk);"><var:string label:value="As Not Junk" /></li>
-          <li onmouseup="onMenuMarkMessage(event, 'runjunkmailcontrols);"><var:string label:value="Run Junk Mail Controls" /></li>
-        </ul>
-      </div>
-      
-      <form name="pageform" var:href="pageFormURL" _wosid="0" onsubmit="checkSearchValue(event);">
-        <var:if condition="isPopup" const:negate="YES">
-          <var:if condition="hideFolderTree" const:negate="YES">
-            <div class="folderTree" id="mailerFolderTree">
-              <div class="titlediv"><var:string label:value="Folders" /></div>
-              <var:component className="UIxMailTree" 
-                rootClassName="treeRootClassName" 
-                const:treeFolderAction="view" 
-                />
-            </div>
-            
-            <div class="dragHandle" id="dragHandle"><!-- space --></div>
-          </var:if>
-        
-          <div id="mailerPageContent">
-            <var:component-content/>
-          </div>
-        </var:if>
-        
-        <var:if condition="isPopup">
-          <var:component-content/>
-        </var:if>
-      </form>
+    <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
 
-      <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
-    </var:if>
-    
-    <var:if condition="hideFrame">
-      <var:component-content/>
-    </var:if>
+    <div id="rightPanel">
+      <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
+      
+        <div id="mailboxContent"><!-- space --></div>
+        <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
+        <div id="messageContent"><!-- space --></div>
+        <script type="text/javascript">
+          initMailboxSelection('<var:string value="mailFolderName" />');
+        </script>
+      </div>
+    </form>
+
+    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
   </var:component>

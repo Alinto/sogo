@@ -6,7 +6,7 @@
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
-    className="UIxMailMainFrame"
+    className="UIxPageFrame"
     title="panelTitle"
     const:popup="YES"
     >
