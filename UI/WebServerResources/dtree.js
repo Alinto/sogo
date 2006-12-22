@@ -38,7 +38,7 @@ function dTree(objName) {
     hideRoot : false,
     folderLinks : true,
     useSelection : true,
-    useCookies : true,
+    useCookies : false,
     useLines : true,
     useIcons : true,
     useStatusText : false,
@@ -136,7 +136,7 @@ dTree.prototype.node = function(node, nodeId) {
     if (node.dataname) str += ' dataname="' + node.dataname + '"';
     str += '>' + this.indent(node, nodeId);
     if (node.url) {
-      str += '<a id="s' + this.obj + nodeId + '" class="' + ((this.config.useSelection) ? ((node._is ? 'nodeSel' : 'node')) : 'node') + '" href="' + node.url + '"';
+      str += '<a id="s' + this.obj + nodeId + '" class="node" href="' + node.url + '"';
       if (node.title) str += ' title="' + node.title + '"';
       if (node.target) str += ' target="' + node.target + '"';
       if (this.config.useStatusText) str += ' onmouseover="window.status=\'' + node.name + '\';return true;" onmouseout="window.status=\'\';return true;" ';
@@ -181,7 +181,7 @@ dTree.prototype.indent = function(node, nodeId) {
     (node._ls) ? this.aIndent.push(0) : this.aIndent.push(1);
     if (node._hc)
       {
-	str += '<a href="#" onclick="' + this.obj + '.o(' + nodeId + ');"><img id="j' + this.obj + nodeId + '" src="';
+	str += '<a href="#" onclick="return ' + this.obj + '.o(' + nodeId + ');"><img id="j' + this.obj + nodeId + '" src="';
 	if (!this.config.useLines) str += (node._io) ? this.icon.nlMinus : this.icon.nlPlus;
 	else str += ( (node._io) ? ((node._ls && this.config.useLines) ? this.icon.minusBottom : this.icon.minus) : ((node._ls && this.config.useLines) ? this.icon.plusBottom : this.icon.plus ) );
 	str += '" alt="" /></a>';
@@ -216,10 +216,10 @@ dTree.prototype.s = function(id) {
   if (this.selectedNode != id) {
     if (this.selectedNode || this.selectedNode==0) {
       eOld = document.getElementById("s" + this.obj + this.selectedNode);
-      eOld.className = "node";
+      eOld.deselect();
     }
     eNew = document.getElementById("s" + this.obj + id);
-    eNew.className = "nodeSel";
+    eNew.select();
     this.selectedNode = id;
     if (this.config.useCookies) this.setCookie('cs' + this.obj, cn.id);
   }
@@ -232,6 +232,8 @@ dTree.prototype.o = function(id) {
   cn._io = !cn._io;
   if (this.config.closeSameLevel) this.closeLevel(cn);
   if (this.config.useCookies) this.updateCookie();
+
+  return false;
 };
 
 // Open or close all nodes

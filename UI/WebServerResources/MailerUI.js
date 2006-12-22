@@ -40,16 +40,19 @@ var currentMailbox = '';
 /* mail list */
 
 function openMessageWindow(msguid, url) {
-  log ("message window at url: " + url);
   var wId = '';
-  if (msguid)
+  if (msguid) {
     wId += "SOGo_msg_" + msguid;
+    markMailReadInWindow(window, msguid);
+  }
   var msgWin = window.open(url, wId,
 			   "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
                            + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-
+  if (msguid) {
+    msgWin.messageId = msguid;
+    msgWin.messageURL = ApplicationBaseURL + currentMailbox + "/" + msguid;
+  }
   msgWin.focus();
-  markMailReadInWindow(window, msguid);
 
   return false;
 }
@@ -220,15 +223,19 @@ function reopenToRemoveLocationBar() {
 
 function openMessageWindowsForSelection(action)
 {
+  if (document.body.hasClassName("popup"))
+    win = openMessageWindow(window.messageId,
+                            window.messageURL + "/" + action /* url */);
+  else {
   var messageList = $("messageList");
   var rows  = messageList.getSelectedRowsId();
   var idset = "";
-
   for (var i = 0; i < rows.length; i++)
     win = openMessageWindow(rows[i].substr(4)        /* msguid */,
 			    ApplicationBaseURL + currentMailbox
                             + "/" + rows[i].substr(4)
                             + "/" + action /* url */);
+  }
 
   return false;
 }
@@ -415,7 +422,7 @@ function openMailbox(mailbox, reload)
     currentMailbox = mailbox;
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
     var mailboxContent = $("mailboxContent");
-    var mailboxDragHandle = $("mailboxDragHandle");
+    var rightDragHandle = $("rightDragHandle");
     var messageContent = $("messageContent");
     messageContent.innerHTML = '';
     if (mailbox.lastIndexOf("/") == 0) {
@@ -429,7 +436,7 @@ function openMailbox(mailbox, reload)
         = triggerAjaxRequest(url, messageCallback);
       mailboxContent.innerHTML = '';
       mailboxContent.style.visibility = "hidden;";
-      mailboxDragHandle.style.visibility = "hidden;";
+      rightDragHandle.style.visibility = "hidden;";
       messageContent.style.top = "0px;";
     } else {
       if (document.messageListAjaxRequest) {
@@ -445,9 +452,9 @@ function openMailbox(mailbox, reload)
                              currentMessages[mailbox]);
       if (mailboxContent.style.visibility == "hidden") {
         mailboxContent.style.visibility = "visible;";
-        mailboxDragHandle.style.visibility = "visible;";
-        messageContent.style.top = (mailboxDragHandle.offsetTop
-                                    + mailboxDragHandle.offsetHeight
+        rightDragHandle.style.visibility = "visible;";
+        messageContent.style.top = (rightDragHandle.offsetTop
+                                    + rightDragHandle.offsetHeight
                                     + 'px;');
       }
     }
@@ -520,16 +527,23 @@ function onMessageContextMenuHide(event)
   }
 }
 
-function onFolderMenuClick(event, menutype)
+function onFolderMenuClick(event)
 {
   var onhide, menuName;
-
-  if (menutype == "inbox") {
-    menuName = "inboxIconMenu";
-  } else if (menutype == "account") {
-    menuName = "accountIconMenu";
-  } else if (menutype == "trash") {
-    menuName = "trashIconMenu";
+  
+  var menutype = this.parentNode.getAttribute("datatype");
+  log("parentNode: " + this.parentNode.tagName);
+  log("menutype: " + menutype);
+  if (menutype) {
+    if (menutype == "inbox") {
+      menuName = "inboxIconMenu";
+    } else if (menutype == "account") {
+      menuName = "accountIconMenu";
+    } else if (menutype == "trash") {
+      menuName = "trashIconMenu";
+    } else {
+      menuName = "mailboxIconMenu";
+    }
   } else {
     menuName = "mailboxIconMenu";
   }
@@ -925,45 +939,31 @@ function configureMessageListEvents() {
                                  onMessageSelectionChange, false);
     var rows = messageList.tBodies[0].rows;
     var start = 0;
-    while (rows[start].cells[0].hasClassName("tbtv_headercell")
-           || rows[start].cells[0].hasClassName("tbtv_navcell"))
-      start++;
-    for (var i = start; i < rows.length; i++) {
-      rows[i].addEventListener("mousedown", onRowClick, false);
-      rows[i].addEventListener("contextmenu", onMessageContextMenu, false);
-
-      rows[i].dndTypes = function() { return new Array("mailRow"); };
-      rows[i].dndGhost = messageListGhost;
-      rows[i].dndDataForType = messageListData;
-      document.DNDManager.registerSource(rows[i]);
-
-      for (var j = 0; j < rows[i].cells.length; j++) {
-        var cell = rows[i].cells[j];
-        cell.addEventListener("mousedown", listRowMouseDownHandler, false);
-        if (j == 2 || j == 3 || j == 5)
-          cell.addEventListener("dblclick", onMessageDoubleClick, false);
-        else if (j == 4) {
-          var img = cell.childNodesWithTag("img")[0];
-          img.addEventListener("click", mailListMarkMessage, false);
+    if (rows.length > 1) {
+      while (rows[start].cells[0].hasClassName("tbtv_headercell")
+             || rows[start].cells[0].hasClassName("tbtv_navcell"))
+        start++;
+      for (var i = start; i < rows.length; i++) {
+        rows[i].addEventListener("mousedown", onRowClick, false);
+        rows[i].addEventListener("contextmenu", onMessageContextMenu, false);
+        
+        rows[i].dndTypes = function() { return new Array("mailRow"); };
+        rows[i].dndGhost = messageListGhost;
+        rows[i].dndDataForType = messageListData;
+        document.DNDManager.registerSource(rows[i]);
+        
+        for (var j = 0; j < rows[i].cells.length; j++) {
+          var cell = rows[i].cells[j];
+          cell.addEventListener("mousedown", listRowMouseDownHandler, false);
+          if (j == 2 || j == 3 || j == 5)
+            cell.addEventListener("dblclick", onMessageDoubleClick, false);
+          else if (j == 4) {
+            var img = cell.childNodesWithTag("img")[0];
+            img.addEventListener("click", mailListMarkMessage, false);
+          }
         }
       }
     }
-  }
-}
-
-function configureDragHandles() {
-  var handle = $("dragHandle");
-  if (handle) {
-    handle.addInterface(SOGoDragHandlesInterface);
-    handle.leftBlock=$("mailerFolderTree");
-    handle.rightBlock=$("mailerPageContent");
-  }
-
-  handle = $("mailboxDragHandle");
-  if (handle) {
-    handle.addInterface(SOGoDragHandlesInterface);
-    handle.upperBlock=$("mailboxContent");
-    handle.lowerBlock=$("messageContent");
   }
 }
 
@@ -1014,16 +1014,38 @@ function initDnd() {
 function refreshContacts() {
 }
 
+function openInbox(node) {
+  var done = false;
+  openMailbox(node.parentNode.getAttribute("dataname"));
+  node.select();
+  var currentNode = node.parentNode.parentNode;
+  while (!done) {
+    var number = currentNode.getAttribute("id").substr(2);
+    d.o(number);
+    if (number == "1")
+      done = true;
+    else
+      currentNode = currentNode.parentNode;
+  }
+}
+
 var initMailer = {
   handleEvent: function (event) {
-    configureMessageListEvents();
-    initDnd();
-    var tree = $("d");
-    var nodes = document.getElementsByClassName("node", tree);
-    nodes = nodes.concat(document.getElementsByClassName("nodeSel", tree));
-    for (i = 0; i < nodes.length; i++) {
-      nodes[i].addEventListener("click", onMailboxTreeItemClick, false);
-      nodes[i].addEventListener("contextmenu", onFolderMenuClick, false);
+    if (!document.body.hasClassName("popup")) {
+      var inboxFound = false;
+      configureMessageListEvents();
+      initDnd();
+      var tree = $("d");
+      var nodes = document.getElementsByClassName("node", tree);
+      for (i = 0; i < nodes.length; i++) {
+        nodes[i].addEventListener("click", onMailboxTreeItemClick, false);
+        nodes[i].addEventListener("contextmenu", onFolderMenuClick, false);
+        if (!inboxFound
+            && nodes[i].parentNode.getAttribute("datatype") == "inbox") {
+          openInbox(nodes[i]);
+          inboxFound = true;
+        }
+      }
     }
 
     /*

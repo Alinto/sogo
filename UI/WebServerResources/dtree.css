@@ -25,21 +25,15 @@
   text-decoration: none;
 }
 
-.dtree a.node, .dtree a.nodeSel
+.dtree a.node
 {
   white-space: nowrap;
   padding: 1px 2px;
 }
 
-.dtree a.node:hover, .dtree a.nodeSel:hover
+.dtree a.node:hover
 {
   text-decoration: none;
-}
-
-.dtree a.nodeSel
-{
-  color: #fff;
-  background-color: #4b6983;
 }
 
 .dtree .clip
