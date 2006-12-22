@@ -21,14 +21,11 @@ MailerUI_OBJC_FILES += \
 	UIxMailTreeBlock.m		\
 	UIxMailTreeBlockJS.m		\
 	UIxMailFolderMenu.m		\
+	UIxMailSplashView.m		\
 	\
-	UIxMailAccountsView.m		\
-	UIxMailAccountView.m		\
-	UIxMailAccountViewContainer.m	\
 	UIxMailListView.m		\
-	UIxMailListViewContainer.m	\
 	UIxMailView.m			\
-	UIxMailViewContainer.m		\
+	UIxMailPopupView.m		\
 	UIxMailMoveToPopUp.m		\
 	UIxMailFilterPanel.m		\
 	\
