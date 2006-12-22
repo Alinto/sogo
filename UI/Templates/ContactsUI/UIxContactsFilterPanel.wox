@@ -18,9 +18,5 @@
         <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
         <input id="searchValue" class="textField" autocomplete="off" name="search" type="text" var:value="searchText" onmousedown="onSearchMouseDown(event, this);" onclick="popupSearchMenu(event, 'searchMenu');" onblur="onSearchBlur(this);" onfocus="onSearchFocus(this);" onkeydown="onSearchKeyDown(this);" />
       </span>
-
-      <script type="text/javascript">
-        initCriteria();
-      </script>
     </div>
   </container>

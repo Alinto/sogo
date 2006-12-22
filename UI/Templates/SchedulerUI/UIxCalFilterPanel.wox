@@ -27,10 +27,6 @@
           onkeydown="onSearchKeyDown(this);" />
       </span>
 
-      <script type="text/javascript">
-        initCriteria();
-      </script>
-
       <var:string label:value="View:" />
       <var:popup list="filters"
         const:id="filterpopup"

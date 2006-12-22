@@ -88,17 +88,11 @@
 
     <div id="rightPanel">
       <var:component className="UIxCalFilterPanel" />
-
       <div id="appointmentsListView"
         oncontextmenu="return onAppointmentContextMenu(event, this);"
         ><var:component className="UIxCalAptListView"
           /></div>
-
       <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
-
-      <div id="calendarView"
-        ><!-- var:component className="UIxCalDayView"
-          selectedDate="selectedDate"
-          --></div>
+      <div id="calendarView"><!-- space --></div>
     </div>
   </var:component>

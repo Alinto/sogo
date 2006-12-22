@@ -1,12 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
-  <table
+  <table id="appointmentsList" multiselect="yes"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    id="appointmentsList"
-    multiselect="yes">
+    xmlns:label="OGo:label">
     <tr class="tableview"
       ><td class="tbtv_headercell tbtv_subject_headercell"
         ><var:component className="UIxSortableTableHeader"
