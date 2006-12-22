@@ -132,12 +132,10 @@
           pageName    = "UIxMailListView";
           actionName  = "deleteFolder";
         };
-	
         editACL = {
           protectedBy = "View";
           pageName    = "UIxMailFolderACLEditor";
         };
-
         compose = {
           protectedBy = "View";
           actionClass = "UIxMailEditorAction";
@@ -173,15 +171,12 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailViewContainer";
+          pageName    = "UIxMailView";
         };
-
-        getMail = {
+        popupview = {
           protectedBy = "View";
-          pageName    = "UIxMailViewContainer";
-          actionName  = "getMail";
+          pageName    = "UIxMailPopupView";
         };
-
         move = {
           protectedBy = "View";
           pageName    = "UIxMailView";
@@ -199,7 +194,7 @@
         };
         junk = {
           protectedBy = "View";
-          pageName    = "UIxMailViewContainer";
+          pageName    = "UIxMailView";
           actionName  = "junk";
         };
         edit = {
@@ -239,11 +234,11 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountsView";
+          pageName    = "UIxMailMainFrame";
         };
         compose = {
           protectedBy = "View";
-          pageName    = "UIxMailAccountsView";
+          pageName    = "UIxMailMainFrame";
           actionName  = "compose";
         };
         getMail = {
