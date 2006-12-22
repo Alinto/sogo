@@ -70,6 +70,13 @@
 "Calendar"		= "Calendar";
 "Contacts"		= "Contacts";
 
+"New Calendar..." = "New Calendar...";
+"Delete Calendar" = "Delete Calendar";
+"Access Rights..." = "Access Rights...";
+"Export Calendar..." = "Export Calendar...";
+"Publish Calendar..." = "Publish Calendar...";
+"Reload Remote Calendars" = "Reload Remote Calendars";
+"Properties" = "Properties";
 
 /* Misc */
 
