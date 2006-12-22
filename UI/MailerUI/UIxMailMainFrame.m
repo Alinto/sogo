@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SOGoUI/UIxComponent.h>
 #import "UIxMailMainFrame.h"
 
@@ -181,6 +182,57 @@ static NSString *treeRootClassName = nil;
 		     @"<script language=\"JavaScript\">"
 		     @"alert(\"%@\");"
 		     @"</script>", errorText];
+}
+
+/* FIXME: migrated methods which might not work yet... */
+#warning check this
+- (NSString *) mailFolderName
+{
+  NSMutableArray *mailboxes;
+  SOGoMailObject *currentObject;
+
+  mailboxes = [NSMutableArray new];
+  [mailboxes autorelease];
+
+  currentObject = [self clientObject];
+  while (![currentObject isKindOfClass: [SOGoMailAccounts class]])
+    {
+      [mailboxes insertObject: [currentObject nameInContainer] atIndex: 0];
+      currentObject = [currentObject container];
+    }
+
+  return [NSString stringWithFormat: @"/%@",
+                   [mailboxes componentsJoinedByString: @"/"]];
+}
+
+- (id) composeAction
+{
+  NSArray *c;
+  NSString *inbox, *url, *parameter;
+  NSMutableDictionary *urlParams;
+  id actionResult;
+
+  c = [[self clientObject] toManyRelationshipKeys];
+  if ([c count] > 0)
+    {
+      urlParams = [NSMutableDictionary new];
+      [urlParams autorelease];
+
+      parameter = [self queryParameterForKey: @"mailto"];
+      if (parameter)
+        [urlParams setObject: parameter
+                   forKey: @"mailto"];
+      inbox = [NSString stringWithFormat: @"%@/INBOX",
+                        [c objectAtIndex: 0]];
+      url = [inbox composeURLWithAction: @"compose"
+                   parameters: urlParams
+                   andHash: NO];
+      actionResult = [self redirectToLocation: url];
+    }
+  else
+    actionResult = self;
+
+  return actionResult;
 }
 
 @end /* UIxMailMainFrame */

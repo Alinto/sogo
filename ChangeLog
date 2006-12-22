@@ -1,5 +1,10 @@
 2006-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-composeAction]): method imported from removed container modules.
+	([UIxMailMainFrame -mailFolderName]): method imported from removed
+	container modules.
+
 	* UI/MailerUI/UIxMailPopupView.m: a new special popup component
 	for wrapping UIxMailView with the "popupview" action.
 
