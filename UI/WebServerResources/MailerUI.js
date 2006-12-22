@@ -49,6 +49,7 @@ function openMessageWindow(msguid, url) {
                            + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 
   msgWin.focus();
+  markMailReadInWindow(window, msguid);
 
   return false;
 }
@@ -56,9 +57,10 @@ function openMessageWindow(msguid, url) {
 function onMessageDoubleClick(event) {
   resetSelection(window);
   var msguid = this.parentNode.id.substr(4);
+  
   return openMessageWindow(msguid,
                            ApplicationBaseURL + currentMailbox + "/"
-                           + msguid + "/view");
+                           + msguid + "/popupview");
 }
 
 function toggleMailSelect(sender) {
@@ -388,17 +390,17 @@ function onMenuDeleteMessage(event) {
   event.preventDefault();
 }
 
-function onMailboxTreeItemClick(element)
-{
+function onMailboxTreeItemClick(event) {
   var topNode = $('d');
-  var mailbox = element.parentNode.getAttribute("dataname");
+  var mailbox = this.parentNode.getAttribute("dataname");
 
   if (topNode.selectedEntry)
     topNode.selectedEntry.deselect();
-  element.select();
-  topNode.selectedEntry = element;
+  this.select();
+  topNode.selectedEntry = this;
 
   openMailbox(mailbox);
+  event.preventDefault();
 }
 
 function refreshMailbox() {
@@ -518,7 +520,7 @@ function onMessageContextMenuHide(event)
   }
 }
 
-function onFolderMenuClick(event, element, menutype)
+function onFolderMenuClick(event, menutype)
 {
   var onhide, menuName;
 
@@ -541,8 +543,8 @@ function onFolderMenuClick(event, element, menutype)
     topNode.selectedEntry.deselect();
   if (topNode.menuSelectedEntry)
     topNode.menuSelectedEntry.deselect();
-  topNode.menuSelectedEntry = element;
-  element.select();
+  topNode.menuSelectedEntry = this;
+  this.select();
 }
 
 function onFolderMenuHide(event)
@@ -965,6 +967,22 @@ function configureDragHandles() {
   }
 }
 
+function configureDragHandles() {
+  var handle = $("verticalDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.leftBlock=$("leftPanel");
+    handle.rightBlock=$("rightPanel");
+  }
+
+  handle = $("rightDragHandle");
+  if (handle) {
+    handle.addInterface(SOGoDragHandlesInterface);
+    handle.upperBlock=$("mailboxContent");
+    handle.lowerBlock=$("messageContent");
+  }
+}
+
 /* dnd */
 function initDnd() {
   log ("MailerUI initDnd");
@@ -985,8 +1003,8 @@ function initDnd() {
       nodes[i].dndAcceptType = mailboxSpanAcceptType;
       nodes[i].dndEnter = mailboxSpanEnter;
       nodes[i].dndExit = mailboxSpanExit;
-        nodes[i].dndDrop = mailboxSpanDrop;
-        document.DNDManager.registerDestination(nodes[i]);
+      nodes[i].dndDrop = mailboxSpanDrop;
+      document.DNDManager.registerDestination(nodes[i]);
     }
   }
 }
@@ -1000,6 +1018,20 @@ var initMailer = {
   handleEvent: function (event) {
     configureMessageListEvents();
     initDnd();
+    var tree = $("d");
+    var nodes = document.getElementsByClassName("node", tree);
+    nodes = nodes.concat(document.getElementsByClassName("nodeSel", tree));
+    for (i = 0; i < nodes.length; i++) {
+      nodes[i].addEventListener("click", onMailboxTreeItemClick, false);
+      nodes[i].addEventListener("contextmenu", onFolderMenuClick, false);
+    }
+
+    /*
+, 'onMailboxTreeItemClick(this);'
+<!--      if (typeof(node.datatype) != "undefined") str += ' oncontextmenu="onFolderMenuClick(event, this);"';
+
+    */
+
   }
 }
 

@@ -1047,8 +1047,7 @@ function initializeMenus() {
                         "appointmentsListMenu", "calendarsMenu", "searchMenu");
   initMenusNamed(menus);
 
-  var calendarsList = $("calendarsList");
-  calendarsList.attachMenu("calendarsMenu");
+  $("calendarsList").attachMenu("calendarsMenu");
 
   var accessRightsMenuEntry = $("accessRightsMenuEntry");
   accessRightsMenuEntry.addEventListener("mouseup",

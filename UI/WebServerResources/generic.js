@@ -965,6 +965,7 @@ var onLoadHandler = {
     if (!document.body.hasClassName("popup")) {
       initLogConsole();
       initializeMenus();
+      initCriteria();
     }
     initTabs();
     configureDragHandles();

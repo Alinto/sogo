@@ -10,14 +10,13 @@
   |--------------------------------------------------*/
 
 // Node object
-function Node(id, pid, name, isParent, url, onclick, dataname, datatype, title, target,
+function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
               icon, iconOpen, open) {
   this.isParent = isParent;
   this.id = id;
   this.pid = pid;
   this.name = name;
   this.url = url; 
-  this.onclick = onclick;
   this.title = title;
   this.target = target;
   this.icon = icon;
@@ -72,9 +71,9 @@ function dTree(objName) {
 };
 
 // Adds a new node to the node array
-dTree.prototype.add = function(id, pid, name, isParent, url, onclick, datatype,
+dTree.prototype.add = function(id, pid, name, isParent, url, datatype,
                                title, target, icon, iconOpen, open) {
-  this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url, onclick,
+  this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url,
                                              datatype, title, target, icon,
                                              iconOpen, open);
 };
@@ -138,8 +137,6 @@ dTree.prototype.node = function(node, nodeId) {
     str += '>' + this.indent(node, nodeId);
     if (node.url) {
       str += '<a id="s' + this.obj + nodeId + '" class="' + ((this.config.useSelection) ? ((node._is ? 'nodeSel' : 'node')) : 'node') + '" href="' + node.url + '"';
-      if (node.onclick) str += ' onclick="' + node.onclick + '"';
-      if (typeof(node.datatype) != "undefined") str += ' oncontextmenu="onFolderMenuClick(event, this);"';
       if (node.title) str += ' title="' + node.title + '"';
       if (node.target) str += ' target="' + node.target + '"';
       if (this.config.useStatusText) str += ' onmouseover="window.status=\'' + node.name + '\';return true;" onmouseout="window.status=\'\';return true;" ';
