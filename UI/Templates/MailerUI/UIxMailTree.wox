@@ -36,5 +36,4 @@
           /></var:foreach>
       document.write(d);
     </script>
-<!--    <noscript>
   </div>
