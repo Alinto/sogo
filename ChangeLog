@@ -1,3 +1,13 @@
+2007-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -assistantsValue]): new
+	accessor that returns the comma-separated list of users with role
+	"Assistant".
+	([UIxAclEditor -delegatesValue]): same as above for "Delegate".
+	([UIxAclEditor -_prepareUsers]): there is no longer a concept of
+	"checkedUsers". Instead, each user is either classified in the
+	list of assistants or the list of delegates.
+
 2006-12-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame

@@ -31,12 +31,15 @@
   BOOL publishInFreeBusy;
   NSArray *acls;
   NSMutableArray *users;
-  NSMutableArray *checkedUsers;
+  NSMutableArray *assistants;
+  NSMutableArray *delegates;
   NSString *ownerCN;
 }
 
 - (NSArray *) aclsForFolder;
 - (NSString *) ownerCN;
+- (NSString *) assistantsValue;
+- (NSString *) delegatesValue;
 
 @end
 

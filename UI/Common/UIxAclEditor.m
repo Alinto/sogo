@@ -41,7 +41,8 @@
       prepared = NO;
       publishInFreeBusy = NO;
       users = [NSMutableArray new];
-      checkedUsers = [NSMutableArray new];
+      delegates = [NSMutableArray new];
+      assistants = [NSMutableArray new];
       ownerCN = nil;
     }
 
@@ -51,7 +52,8 @@
 - (void) dealloc
 {
   [users release];
-  [checkedUsers release];
+  [delegates release];
+  [assistants release];
   if (ownerCN)
     [ownerCN release];
   [super dealloc];
@@ -104,7 +106,9 @@
             {
               if ([[currentAcl objectForKey: @"c_role"]
                     isEqualToString: SOGoRole_Delegate])
-                [checkedUsers addObject: currentUser];
+                [delegates addObject: [currentUser cn]];
+              else
+                [assistants addObject: [currentUser cn]];
               [users addObject: currentUser];
             }
         }
@@ -122,12 +126,28 @@
   return users;
 }
 
-- (NSArray *) checkedUsers
+- (NSArray *) delegates
 {
   if (!prepared)
     [self _prepareUsers];
 
-  return checkedUsers;
+  return delegates;
+}
+
+- (NSString *) assistantsValue
+{
+  if (!prepared)
+    [self _prepareUsers];
+
+  return [assistants componentsJoinedByString: @","];
+}
+
+- (NSString *) delegatesValue
+{
+  if (!prepared)
+    [self _prepareUsers];
+
+  return [delegates componentsJoinedByString: @","];
 }
 
 - (BOOL) publishInFreeBusy
