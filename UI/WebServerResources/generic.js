@@ -391,8 +391,7 @@ function onRowClick(event) {
 var bodyOnClick = "";
 // var acceptClick = false;
 
-function onMenuClick(event, menuId)
-{
+function onMenuClick(event, menuId) {
   var node = event.target;
 
   if (document.currentPopupMenu)
@@ -427,8 +426,7 @@ function onMenuClick(event, menuId)
   return false;
 }
 
-function setupMenuTarget(menu, target)
-{
+function setupMenuTarget(menu, target) {
   menu.menuTarget = target;
   var menus = document.getElementsByClassName("menu", menu);
   for (var i = 0; i < menus.length; i++) {
@@ -436,8 +434,7 @@ function setupMenuTarget(menu, target)
   }
 }
 
-function getParentMenu(node)
-{
+function getParentMenu(node) {
   var currentNode, menuNode;
 
   menuNode = null;
@@ -454,8 +451,7 @@ function getParentMenu(node)
   return menuNode;
 }
 
-function onBodyClick(event)
-{
+function onBodyClick(event) {
   document.currentPopupMenu.menuTarget = null;
   hideMenu(event, document.currentPopupMenu);
   document.body.setAttribute("onclick", bodyOnClick);
@@ -463,35 +459,31 @@ function onBodyClick(event)
   return false;
 }
 
-function hideMenu(event, menuNode)
-{
+function hideMenu(event, menuNode) {
   var onHide;
 
 //   log('hiding menu "' + menuNode.getAttribute('id') + '"');
-  if (menuNode.submenu)
-    {
-      hideMenu(event, menuNode.submenu);
-      menuNode.submenu = null;
-    }
+  if (menuNode.submenu) {
+    hideMenu(event, menuNode.submenu);
+    menuNode.submenu = null;
+  }
 
   menuNode.style.visibility = "hidden";
-  if (menuNode.parentMenuItem)
-    {
-      menuNode.parentMenuItem.setAttribute('class', 'submenu');
-      menuNode.parentMenuItem = null;
-      menuNode.parentMenu.setAttribute('onmousemove', null);
-      menuNode.parentMenu.submenuItem = null;
-      menuNode.parentMenu.submenu = null;
-      menuNode.parentMenu = null;
-    }
+  if (menuNode.parentMenuItem) {
+    menuNode.parentMenuItem.setAttribute('class', 'submenu');
+    menuNode.parentMenuItem = null;
+    menuNode.parentMenu.setAttribute('onmousemove', null);
+    menuNode.parentMenu.submenuItem = null;
+    menuNode.parentMenu.submenu = null;
+    menuNode.parentMenu = null;
+  }
 
   var onhideEvent = document.createEvent("Event");
   onhideEvent.initEvent("hideMenu", false, true);
   menuNode.dispatchEvent(onhideEvent);
 }
 
-function onMenuEntryClick(event, menuId)
-{
+function onMenuEntryClick(event, menuId) {
   var node = event.target;
 
   id = getParentMenu(node).menuTarget;
@@ -525,8 +517,7 @@ function initLogConsole() {
   }
 }
 
-function onBodyKeyDown(event)
-{
+function onBodyKeyDown(event) {
   if (event.keyCode == 27) {
     toggleLogConsole();
     event.cancelBubble = true;
@@ -534,8 +525,7 @@ function onBodyKeyDown(event)
   }
 }
 
-function onLogDblClick(event)
-{
+function onLogDblClick(event) {
   var logConsole = $("logConsole");
   logConsole.innerHTML = "";
 }
@@ -559,74 +549,68 @@ function log(message) {
     while (logWindow.opener)
       logWindow = logWindow.opener;
   }
-  var logConsole = logWindow.document.getElementById('logConsole');
+  var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole)
     logConsole.innerHTML += message + '<br />' + "\n";
 }
 
-function dropDownSubmenu(event)
-{
+function dropDownSubmenu(event) {
   var node = event.target;
   var submenu = node.getAttribute("submenu");
-  if (submenu && submenu != "")
-    {
-      var submenuNode = document.getElementById(submenu);
-      var parentNode = getParentMenu(node);
-      if (parentNode.submenu)
-	hideMenu(event, parentNode.submenu);
-      submenuNode.parentMenuItem = node;
-      submenuNode.parentMenu = parentNode;
-      parentNode.submenuItem = node;
-      parentNode.submenu = submenuNode;
-
-      var menuTop = (node.offsetTop - 2);
-      
-      var heightDiff = (window.innerHeight
-			- (menuTop + submenuNode.offsetHeight));
-      if (heightDiff < 0)
-	menuTop += heightDiff;
-
-      var menuLeft = parentNode.offsetWidth - 3;
-      if (window.innerWidth
-          < (menuLeft + submenuNode.offsetWidth
-             + parentNode.cascadeLeftOffset()))
+  if (submenu && submenu != "") {
+    var submenuNode = document.getElementById(submenu);
+    var parentNode = getParentMenu(node);
+    if (parentNode.submenu)
+      hideMenu(event, parentNode.submenu);
+    submenuNode.parentMenuItem = node;
+    submenuNode.parentMenu = parentNode;
+    parentNode.submenuItem = node;
+    parentNode.submenu = submenuNode;
+    
+    var menuTop = (node.offsetTop - 2);
+    
+    var heightDiff = (window.innerHeight
+                      - (menuTop + submenuNode.offsetHeight));
+    if (heightDiff < 0)
+      menuTop += heightDiff;
+    
+    var menuLeft = parentNode.offsetWidth - 3;
+    if (window.innerWidth
+        < (menuLeft + submenuNode.offsetWidth
+           + parentNode.cascadeLeftOffset()))
 	menuLeft = -submenuNode.offsetWidth + 3;
-
-      parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
-      node.setAttribute('class', 'submenu-selected');
-      submenuNode.style.top = menuTop + "px;";
-      submenuNode.style.left = menuLeft + "px;";
-      submenuNode.style.visibility = "visible;";
-    }
+    
+    parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
+    node.setAttribute('class', 'submenu-selected');
+    submenuNode.style.top = menuTop + "px;";
+    submenuNode.style.left = menuLeft + "px;";
+    submenuNode.style.visibility = "visible;";
+  }
 }
 
-function checkDropDown(event)
-{
+function checkDropDown(event) {
   var parentMenu = getParentMenu(event.target);
   var submenuItem = parentMenu.submenuItem;
-  if (submenuItem)
-    {
-      var menuX = event.clientX - parentMenu.cascadeLeftOffset();
-      var menuY = event.clientY - parentMenu.cascadeTopOffset();
-      var itemX = submenuItem.offsetLeft;
-      var itemY = submenuItem.offsetTop - 75;
+  if (submenuItem) {
+    var menuX = event.clientX - parentMenu.cascadeLeftOffset();
+    var menuY = event.clientY - parentMenu.cascadeTopOffset();
+    var itemX = submenuItem.offsetLeft;
+    var itemY = submenuItem.offsetTop - 75;
 
-      if (menuX >= itemX
-          && menuX < itemX + submenuItem.offsetWidth
-          && (menuY < itemY
-              || menuY > (itemY + submenuItem.offsetHeight)))
-	{
-	  hideMenu(event, parentMenu.submenu);
-	  parentMenu.submenu = null;
-	  parentMenu.submenuItem = null;
-	  parentMenu.setAttribute('onmousemove', null);
-	}
+    if (menuX >= itemX
+        && menuX < itemX + submenuItem.offsetWidth
+        && (menuY < itemY
+            || menuY > (itemY + submenuItem.offsetHeight))) {
+      hideMenu(event, parentMenu.submenu);
+      parentMenu.submenu = null;
+      parentMenu.submenuItem = null;
+      parentMenu.setAttribute('onmousemove', null);
     }
+  }
 }
 
 /* search field */
-function popupSearchMenu(event, menuId)
-{
+function popupSearchMenu(event, menuId) {
   var node = event.target;
   relX = event.pageX - node.cascadeLeftOffset();
   relY = event.pageY - node.cascadeTopOffset();
@@ -650,33 +634,29 @@ function popupSearchMenu(event, menuId)
   }
 }
 
-function setSearchCriteria(event)
-{
-  searchValue = document.getElementById('searchValue');
-  searchCriteria = document.getElementById('searchCriteria');
+function setSearchCriteria(event) {
+  searchValue = $("searchValue");
+  searchCriteria = $("searchCriteria");
   
   var node = event.target;
   searchValue.setAttribute("ghost-phrase", node.innerHTML);
   searchCriteria = node.getAttribute('id');
 }
 
-function checkSearchValue(event)
-{
+function checkSearchValue(event) {
   var form = event.target;
-  var searchValue = document.getElementById('searchValue');
+  var searchValue = $("searchValue");
   var ghostPhrase = searchValue.getAttribute('ghost-phrase');
 
   if (searchValue.value == ghostPhrase)
     searchValue.value = "";
 }
 
-function onSearchChange()
-{
+function onSearchChange() {
   log ("onSearchChange()...");
 }
 
-function onSearchMouseDown(event, searchValue)
-{
+function onSearchMouseDown(event, searchValue) {
   superNode = searchValue.parentNode.parentNode.parentNode;
   relX = (event.pageX - superNode.offsetLeft - searchValue.offsetLeft);
   relY = (event.pageY - superNode.offsetTop - searchValue.offsetTop);
@@ -687,8 +667,7 @@ function onSearchMouseDown(event, searchValue)
   }
 }
 
-function onSearchFocus(searchValue)
-{
+function onSearchFocus(searchValue) {
   ghostPhrase = searchValue.getAttribute("ghost-phrase");
   if (searchValue.value == ghostPhrase) {
     searchValue.value = "";
@@ -700,8 +679,7 @@ function onSearchFocus(searchValue)
   searchValue.style.color = "#000";
 }
 
-function onSearchBlur(searchValue)
-{
+function onSearchBlur(searchValue) {
   var ghostPhrase = searchValue.getAttribute("ghost-phrase");
 //   log ("search blur: '" + searchValue.value + "'");
   if (!searchValue.value) {
@@ -717,30 +695,31 @@ function onSearchBlur(searchValue)
   }
 }
 
-function onSearchKeyDown(searchValue)
-{
+function onSearchKeyDown(searchValue) {
   if (searchValue.timer)
     clearTimeout(searchValue.timer);
 
   searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
-function initCriteria()
-{
-  var searchCriteria = document.getElementById('searchCriteria');
-  var searchValue = document.getElementById('searchValue');
+function initCriteria() {
+  var searchCriteria = $("searchCriteria");
+  var searchValue = $("searchValue");
   var firstOption;
  
-  firstOption = document.getElementById('searchOptions').childNodes[1];
-  searchCriteria.value = firstOption.getAttribute('id');
-  searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
-  if (searchValue.value == '') {
-    searchValue.value = firstOption.innerHTML;
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
+  var searchOptions = $("searchOptions");
+  if (searchOptions) {
+    firstOption = searchOptions.childNodes[1];
+    searchCriteria.value = firstOption.getAttribute('id');
+    searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
+    if (searchValue.value == '') {
+      searchValue.value = firstOption.innerHTML;
+      searchValue.setAttribute("modified", "");
+      searchValue.style.color = "#aaa";
+    }
   }
 }
- 
+
 /* contact selector */
 
 function onContactAdd(node)
