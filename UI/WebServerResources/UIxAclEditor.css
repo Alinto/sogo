@@ -42,6 +42,10 @@ UL#uixselector-userRoles-display > LI._selected
   color: #fff !important;
 }
 
+SELECT#userRoleDropDown
+{ visibility: hidden;
+  margin-left: 2em; }
+
 SPAN.legend
 { margin-left: 1em;
   font-size: smaller; }
