@@ -126,11 +126,27 @@ function modifyEvent(sender, modification) {
   return false;
 }
 
+function closeInvitationWindow() {
+  var closeDiv = document.createElement("div");
+  closeDiv.addClassName("javascriptPopupBackground");
+  var closePseudoWin = document.createElement("div");
+  closePseudoWin.addClassName("javascriptMessagePseudoWindow");
+  closePseudoWin.style.top = "0px;";
+  closePseudoWin.style.left = "0px;";
+  closePseudoWin.style.right = "0px;";
+  closePseudoWin.appendChild(document.createTextNode(labels["closeThisWindowMessage"].decodeEntities()));
+  document.body.appendChild(closeDiv);
+  document.body.appendChild(closePseudoWin);
+}
+
 function modifyEventCallback(http) {
   if (http.readyState == 4) {
     if (http.status == 200) {
       log("closing window...?");
-      window.close();
+      if (queryParameters["mail-invitation"] == "yes")
+        closeInvitationWindow();
+      else
+        window.close();
     }
     else {
       log("showing alert...");

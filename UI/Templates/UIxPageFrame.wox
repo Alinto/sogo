@@ -84,9 +84,9 @@
             ><var:component-content
               /></div>
           <noscript>
-            <div id="noJavascriptError">
+            <div class="javascriptPopupBackground">
             </div>
-            <div class="noJavascriptErrorMessage">
+            <div class="javascriptMessagePseudoWindow noJavascriptErrorMessage">
               <var:string label:value="noJavascriptError"
                 /><br /><br
                 /><a class="button" var:href="page.context.uri"

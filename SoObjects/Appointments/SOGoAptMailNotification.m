@@ -82,7 +82,7 @@ static NSTimeZone     *EST = nil;
   NSString *aptUID;
   
   aptUID = [[self newApt] uid];
-  return [NSString stringWithFormat:@"%@/Calendar/%@/view?tab=participants",
+  return [NSString stringWithFormat:@"%@/Calendar/%@/edit?mail-invitation=yes",
                                     [self homePageURL],
                                     aptUID];
 }

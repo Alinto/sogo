@@ -646,7 +646,7 @@ INPUT#searchValue
   background-position: 2px 2px;
   color: #aaa; }
 
-DIV#noJavascriptError
+DIV.javascriptPopupBackground
 { position: absolute;
   background: #999;
   -moz-opacity: 0.6; 
@@ -657,7 +657,7 @@ DIV#noJavascriptError
   bottom: 0px;
   text-align: center; }
 
-DIV.noJavascriptErrorMessage
+DIV.javascriptMessagePseudoWindow
 { position: absolute;
   z-index: 2;
   border-top: 2px solid #fffffb;
@@ -669,14 +669,15 @@ DIV.noJavascriptErrorMessage
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   padding: 1em;
-  top: 10em;
-  left: 17em;
-  width: 24em;
   margin: 0px auto;
-  background: #fff;
   -moz-opacity: 1.0;
   color: #000;
   background: #dedede; }
+
+DIV.noJavascriptErrorMessage
+{ top: 10em;
+  left: 17em;
+  width: 24em; }
 
 DIV.noJavascriptErrorMessage A
 { float: right;
