@@ -66,6 +66,23 @@
   return calendar;
 }
 
+/* raw saving */
+
+- (NSException *)primarySaveContentString:(NSString *)_iCalString {
+  return [super saveContentString:_iCalString];
+}
+
+- (NSException *)primaryDelete {
+  return [super delete];
+}
+
+- (NSException *)deleteWithBaseSequence: (int) a
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (NSException *) delete
 {
   return [self deleteWithBaseSequence:0];

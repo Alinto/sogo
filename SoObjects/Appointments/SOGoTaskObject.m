@@ -130,15 +130,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return uids;
 }
 
-/* raw saving */
-
-- (NSException *)primarySaveContentString:(NSString *)_iCalString {
-  return [super saveContentString:_iCalString];
-}
-- (NSException *)primaryDelete {
-  return [super delete];
-}
-
 /* folder management */
 
 - (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
@@ -208,7 +199,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     SOGoTaskObject *task;
     
     task = [folder lookupName:[self nameInContainer] inContext:ctx
-		  acquire:NO];
+                   acquire:NO];
     if (![task isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];

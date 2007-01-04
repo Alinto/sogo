@@ -135,15 +135,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return uids;
 }
 
-/* raw saving */
-
-- (NSException *)primarySaveContentString:(NSString *)_iCalString {
-  return [super saveContentString:_iCalString];
-}
-- (NSException *)primaryDelete {
-  return [super delete];
-}
-
 /* folder management */
 
 - (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
