@@ -1,4 +1,4 @@
-// $Id: UIxCalView.m 885 2005-07-21 16:41:34Z znek $
+// $Id: UIxCalView.m 1007 2007-01-04 14:42:10Z wolfgang $
 
 #import "common.h"
 //#import <OGoContentStore/OCSFolder.h>

@@ -1,4 +1,4 @@
-// $Id: UIxCalView.h 720 2005-07-12 13:56:19Z znek $
+// $Id: UIxCalView.h 1007 2007-01-04 14:42:10Z wolfgang $
 
 #ifndef __SOGo_UIxCalView_H__
 #define __SOGo_UIxCalView_H__
