@@ -604,7 +604,7 @@
     {
       now = [NSCalendarDate calendarDate];
       [now setTimeZone: [[self clientObject] userTimeZone]];
-      if (!([[now hour: 8 minute: 0] earlierDate: newStartDate] == newStartDate))
+      if ([now isDateOnSameDay: newStartDate])
         {
           hour = [now hourOfDay];
           if (hour < 8)
@@ -614,6 +614,8 @@
           else
             newStartDate = now;
         }
+      else
+        newStartDate = [newStartDate hour: 8 minute: 0];
     }
 
   return newStartDate;

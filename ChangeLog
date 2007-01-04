@@ -1,5 +1,9 @@
 2007-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-newStartDate]): fix the handling of the component start date
+	depending on the "hm" and the "day" parameters.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-roleOfUser:uidinContext:context]): set role of current user to
 	"Assistant" if the object that is accessed is "freebusy.ifb".
