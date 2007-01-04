@@ -903,6 +903,24 @@ static NSNumber   *sharedYes = nil;
   return result;
 }
 
+- (SOGoAppointmentFolder *) lookupCalendarFolderForUID: (NSString *) uid
+{
+  SOGoFolder *upperContainer;
+  SOGoUserFolder *userFolder;
+  SOGoAppointmentFolder *calendarFolder;
+
+  upperContainer = [[self container] container];
+  userFolder = [SOGoUserFolder objectWithName: uid
+                               inContainer: upperContainer];
+  calendarFolder = [SOGoAppointmentFolder objectWithName: @"Calendar"
+                                          inContainer: userFolder];
+  [calendarFolder
+    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar", uid]];
+  [calendarFolder setOwner: uid];
+
+  return calendarFolder;
+}
+
 - (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
                                  inContext: (id)_ctx
 {
@@ -917,12 +935,7 @@ static NSNumber   *sharedYes = nil;
   while ((uid = [e nextObject])) {
     id folder;
     
-    folder = [self lookupHomeFolderForUID:uid inContext:nil];
-    if ([folder isNotNull]) {
-      folder = [folder lookupName:@"Calendar" inContext:nil acquire:NO];
-      if ([folder isKindOfClass:[NSException class]])
-	folder = nil;
-    }
+    folder = [self lookupCalendarFolderForUID: uid];
     if (![folder isNotNull])
       [self logWithFormat:@"Note: did not find folder for uid: '%@'", uid];
     

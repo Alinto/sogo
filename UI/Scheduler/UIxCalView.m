@@ -440,30 +440,6 @@ static BOOL shouldDisplayWeekend = NO;
   return [[self startDate] tomorrow];
 }
 
-- (SOGoAppointmentFolder *) calendarFolderForUID: (NSString *) uid
-{
-  SOGoFolder *upperContainer;
-  SOGoUserFolder *userFolder;
-  SOGoAppointmentFolder *calendarFolder;
-  SoSecurityManager *securityManager;
-
-  upperContainer = [[[self clientObject] container] container];
-  userFolder = [SOGoUserFolder objectWithName: uid
-                               inContainer: upperContainer];
-  calendarFolder = [SOGoAppointmentFolder objectWithName: @"Calendar"
-                                         inContainer: userFolder];
-  [calendarFolder
-    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar", uid]];
-  [calendarFolder setOwner: uid];
-
-  securityManager = [SoSecurityManager sharedSecurityManager];
-
-  return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-                            onObject: calendarFolder
-                            inContext: context] == nil)
-          ? calendarFolder : nil);
-}
-
 - (NSArray *) activeCalendarFolders
 {
   NSUserDefaults *ud;
@@ -471,6 +447,9 @@ static BOOL shouldDisplayWeekend = NO;
   SOGoAppointmentFolder *currentFolder;
   NSMutableArray *folders;
   NSString *currentUID;
+  SoSecurityManager *securityManager;
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
 
   folders = [NSMutableArray array];
   ud = [[context activeUser] userDefaults];
@@ -481,8 +460,11 @@ static BOOL shouldDisplayWeekend = NO;
     {
       if (![currentUID hasPrefix: @"-"])
         {
-          currentFolder = [self calendarFolderForUID: currentUID];
-          if (currentFolder)
+          currentFolder = [[self clientObject] lookupCalendarFolderForUID: currentUID];
+          if (currentFolder
+              && ![securityManager validatePermission: SoPerm_AccessContentsInformation
+                                   onObject: currentFolder
+                                   inContext: context])
             [folders addObject: currentFolder];
         }
       currentUID = [calendarUIDs nextObject];

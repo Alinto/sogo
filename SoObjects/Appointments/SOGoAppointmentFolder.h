@@ -87,6 +87,7 @@
 - (id) lookupHomeFolderForUID: (NSString *) _uid
                     inContext: (id) _ctx;
 
+- (SOGoAppointmentFolder *) lookupCalendarFolderForUID: (NSString *) uid;
 - (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
                                  inContext: (id) _ctx;
 - (NSArray *) lookupFreeBusyObjectsForUIDs: (NSArray *) _uids

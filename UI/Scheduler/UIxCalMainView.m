@@ -26,8 +26,10 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 
 #import "UIxCalMainView.h"
@@ -128,15 +130,49 @@ static NSMutableArray *yearMenuItems = nil;
   return response;
 }
 
+- (NSString *) _rightsForUIDs: (NSString *) uids
+{
+  NSEnumerator *ids;
+  NSString *uid;
+  NSMutableString *rights;
+  SOGoAppointmentFolder *refFolder, *currentFolder;
+  SoSecurityManager *securityManager;
+  BOOL result;
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
+  refFolder = [self clientObject];
+
+  rights = [NSMutableString string];
+  if ([uids length] > 0)
+    {
+      ids = [[uids componentsSeparatedByString: @","] objectEnumerator];
+      uid = [ids nextObject];
+      while (uid)
+        {
+          currentFolder
+            = [refFolder
+                lookupCalendarFolderForUID: (([uid hasPrefix: @"-"])
+                                             ? [uid substringFromIndex: 1]
+                                             : uid)];
+          result = (![securityManager validatePermission: SoPerm_AccessContentsInformation
+                                      onObject: currentFolder
+                                      inContext: context]);
+          if ([rights length] == 0)
+            [rights appendFormat: @"%d", result];
+          else
+            [rights appendFormat: @",%d", result];
+          uid = [ids nextObject];
+        }
+    }
+
+  return rights;
+}
+
 - (id <WOActionResults>) checkRightsAction
 {
   WOResponse *response;
   NSUserDefaults *ud;
-  NSString *uids, *uid;
-  NSMutableString *rights;
-  NSArray *ids;
-  unsigned int count, max;
-  BOOL result;
+  NSString *uids, *rights;
 
   ud = [[context activeUser] userDefaults];
   uids = [ud stringForKey: @"calendaruids"];
@@ -145,23 +181,8 @@ static NSMutableArray *yearMenuItems = nil;
   [response setStatus: 200];
   [response setHeader: @"text/plain; charset=\"utf-8\""
             forKey: @"content-type"];
-  rights = [NSMutableString string];
-  if ([uids length] > 0)
-    {
-      ids = [uids componentsSeparatedByString: @","];
-      max = [ids count];
-      for (count = 0; count < max; count++)
-        {
-          uid = [ids objectAtIndex: count];
-          if ([uid hasPrefix: @"-"])
-            uid = [uid substringFromIndex: 1];
-          result = ([self calendarFolderForUID: uid] != nil);
-          if (count == 0)
-            [rights appendFormat: @"%d", result];
-          else
-            [rights appendFormat: @",%d", result];
-        }
-    }
+
+  rights = [self _rightsForUIDs: uids];
   [response appendContentString: rights];
 
   return response;

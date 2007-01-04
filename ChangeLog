@@ -1,3 +1,13 @@
+2007-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFolderForUID:uid]): method
+	moved from UI/Scheduler/UIxCalView:calendarFolderForUID:.
+	([SOGoAppointmentFolder
+	-lookupCalendarFoldersForUIDs:_uidsinContext:]): now use the new
+	lookupCalendarFolderForUID: method, which doesn't do security
+	checks.
+
 2007-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxAclEditor.m ([UIxAclEditor -assistantsValue]): new

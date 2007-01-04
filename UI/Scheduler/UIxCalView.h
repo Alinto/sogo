@@ -102,7 +102,6 @@
 /* calendarUIDs */
 
 - (NSString *)formattedCalendarUIDs;
-- (SOGoAppointmentFolder *) calendarFolderForUID: (NSString *) uid;
 
 /* CSS related */
 
