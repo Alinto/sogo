@@ -301,3 +301,5 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Next slot" = "Next slot";
 "Previous hour" = "Previous hour";
 "Next hour" = "Next hour";
+
+"closeThisWindowMessage" = "Thank you! You may now close this window.";
