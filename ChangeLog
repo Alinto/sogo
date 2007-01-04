@@ -1,5 +1,9 @@
 2007-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-roleOfUser:uidinContext:context]): set role of current user to
+	"Assistant" if the object that is accessed is "freebusy.ifb".
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -lookupCalendarFolderForUID:uid]): method
 	moved from UI/Scheduler/UIxCalView:calendarFolderForUID:.

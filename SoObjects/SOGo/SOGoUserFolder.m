@@ -181,6 +181,9 @@
   return obj;
 }
 
+/* FIXME: here is a vault of hackish ways to gain access to subobjects by
+   granting ro access to the homepage depending on the subobject in question.
+   This is wrong and dangerous. */
 - (NSString *) roleOfUser: (NSString *) uid
                 inContext: (WOContext *) context
 {
@@ -204,6 +207,8 @@
               || [roles containsObject: SOGoRole_Delegate])
             role = SOGoRole_Assistant;
         }
+      else if ([objectName isEqualToString: @"freebusy.ifb"])
+        role = SOGoRole_Assistant;
     }
 
   return role;
