@@ -97,6 +97,7 @@
 
   return davPermissions;
 }
+
 - (NSArray *) DAVPermissionsForRole: (NSString *) role
 {
   return [self DAVPermissionsForRoles: [NSArray arrayWithObject: role]];
