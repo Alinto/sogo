@@ -469,7 +469,7 @@ function calendarDisplayCallback(http)
 //   log ("calendardisplaycallback: " + div);
   if (http.readyState == 4
       && http.status == 200) {
-    document.dateSelectorAjaxRequest = null;
+    document.dayDisplayAjaxRequest = null;
     div.innerHTML = http.responseText;
     if (http.callbackData["view"])
       currentView = http.callbackData["view"];

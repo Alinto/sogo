@@ -1,3 +1,8 @@
+2007-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js: fixed a bug where the
+	calendar view would not be updated properly.
+
 2007-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
