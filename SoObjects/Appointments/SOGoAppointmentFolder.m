@@ -134,7 +134,7 @@ static NSNumber   *sharedYes = nil;
      toREPORTResponse: (WOResponse *) r
 {
   SOGoContentObject *ocsObject;
-  NSString *c_name, *etagLine, *dataLine;
+  NSString *c_name, *etagLine, *calString;
 
   c_name = [object objectForKey: @"c_name"];
 
@@ -157,13 +157,10 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: @"      </D:prop>\r\n"];
   [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
   [r appendContentString: @"    </D:propstat>\r\n"];
-
-  dataLine
-    = [NSString
-        stringWithFormat: @"    <C:calendar-data>%@</C:calendar-data>\r\n",
-        [ocsObject contentAsString]];
-  [r appendContentString: dataLine];
-
+  [r appendContentString: @"    <C:calendar-data>"];
+  calString = [[ocsObject contentAsString] stringByEscapingXMLString];
+  [r appendContentString: calString];
+  [r appendContentString: @"</C:calendar-data>\r\n"];
   [r appendContentString: @"  </D:response>\r\n"];
 }
 

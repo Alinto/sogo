@@ -1,3 +1,10 @@
+2007-01-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]):
+	escape the record string in a way suitable with XML encoding.
+
 2007-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js: fixed a bug where the
