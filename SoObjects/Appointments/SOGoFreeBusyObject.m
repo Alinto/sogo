@@ -46,11 +46,15 @@
 
 - (NSString *) contentAsString
 {
-  NSCalendarDate *startDate, *endDate;
+  NSCalendarDate *today, *startDate, *endDate;
   
-  startDate = [[[NSCalendarDate calendarDate] mondayOfWeek] beginOfDay];
-  endDate   = [startDate dateByAddingYears: 0 months: 0 days: 7
-                                     hours: 23 minutes: 59 seconds: 59];
+  today = [[NSCalendarDate calendarDate] beginOfDay];
+  [today setTimeZone: [self userTimeZone]];
+
+  startDate = [today dateByAddingYears: 0 months: 0 days: -14
+                     hours: 0 minutes: 0 seconds: 0];
+  endDate = [startDate dateByAddingYears: 0 months: 1 days: 0
+                       hours: 0 minutes: 0 seconds: 0];
   return [self contentAsStringFrom: startDate to: endDate];
 }
 

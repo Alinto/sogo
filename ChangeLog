@@ -1,3 +1,9 @@
+2007-01-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-contentAsString]): the default timerange is now 14 days before
+	currentday and 1 month after.
+
 2007-01-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
