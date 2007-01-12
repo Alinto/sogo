@@ -72,20 +72,11 @@ static SOGoAuthenticator *auth = nil;
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
-  BOOL result;
-
-//   return YES;
-  if ([authMethod isEqualToString: @"LDAP"])
-    result = [self LDAPCheckLogin: _login password: _pwd];
-  else
-    {
-      if ([_login length] == 0)
-	result = NO;
-      else
-	result = YES;
-    }
-
-  return result;
+  return (([_login isEqualToString: @"freebusy"]
+           && [_pwd isEqualToString: @"freebusy"])
+          || ([authMethod isEqualToString: @"LDAP"]
+              && [self LDAPCheckLogin: _login password: _pwd])
+          || [_login length] > 0);
 }
 
 - (BOOL) LDAPCheckLogin: (NSString *) _login
