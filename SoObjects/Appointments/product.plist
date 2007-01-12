@@ -11,7 +11,7 @@
     SOGoAppointmentFolder = {
       superclass    = "SOGoFolder";
       defaultRoles = {
-        "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusyLookup" );
+        "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusy" );
       };
     };
 
