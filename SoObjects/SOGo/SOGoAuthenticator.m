@@ -94,32 +94,39 @@ static SOGoAuthenticator *auth = nil;
 - (SoUser *) userInContext:(WOContext *)_ctx
 {
   static SoUser *anonymous = nil, *freebusy;
-  NSString  *login;
-  
+  SoUser *user;
+  NSArray *traversalPath;
+  NSString *login;
+
   if (!anonymous)
     anonymous
       = [[SOGoUser alloc] initWithLogin:@"anonymous"
 			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-
   if (!freebusy)
     freebusy
       = [[SOGoUser alloc] initWithLogin: @"freebusy"
                           roles: [NSArray arrayWithObject: SOGoRole_FreeBusy]];
 
-  if ((login = [self checkCredentialsInContext:_ctx]) == nil)
-    /* some error (otherwise result would have been anonymous */
-    return nil;
-  
-  if ([login isEqualToString: @"anonymous"])
-    return anonymous;
-  else if ([login isEqualToString: @"freebusy"])
-    return freebusy;
+  login = [self checkCredentialsInContext:_ctx];
+  if (login)
+    {
+      if ([login isEqualToString: @"anonymous"])
+        {
+          traversalPath = [_ctx objectForKey: @"SoRequestTraversalPath"];
+          if ([[traversalPath lastObject] isEqualToString: @"freebusy.ifb"])
+            user = freebusy;
+          else
+            user = anonymous;
+        }
+      else
+        user = [[[SOGoUser alloc] initWithLogin: login
+                                  roles: [self rolesForLogin: login]]
+                 autorelease];
+    }
+  else
+    user = nil;
 
-//   uroles = [NSMutableArray arrayWithArray: ];
-
-  return [[[SOGoUser alloc] initWithLogin: login
-                            roles: [self rolesForLogin: login]]
-	   autorelease];
+  return user;
 }
 
 // - (BOOL) renderException: (NSException *) exception

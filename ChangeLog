@@ -1,3 +1,10 @@
+2007-01-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-userInContext:]): if the lookup is on "freebusy.ifb" and the
+	username is "anonymous" the user is automatically set to
+	"freebusy".
+
 2007-01-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
