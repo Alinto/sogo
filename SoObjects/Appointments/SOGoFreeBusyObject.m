@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoFreeBusyObject.m 675 2005-07-06 20:56:09Z znek $
+// $Id: SOGoFreeBusyObject.m 1011 2007-01-13 00:07:16Z wolfgang $
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalFreeBusy.h>

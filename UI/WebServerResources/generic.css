@@ -300,7 +300,7 @@ DIV.contactSelector DIV.contactList
 TEXTAREA
 { vertical-align: top; }
 
-DIV, TEXTAREA, INPUT
+DIV, TEXTAREA, INPUT, SELECT
 { font-family: inherit;
   font-size: inherit; }
 

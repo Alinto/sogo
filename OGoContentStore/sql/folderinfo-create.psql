@@ -4,6 +4,8 @@
 -- TODO:
 --   add a unique constraints on path
 
+DROP SEQUENCE SOGo_folder_info_seq;
+
 CREATE SEQUENCE SOGo_folder_info_seq;
 
 DROP TABLE SOGo_folder_info;
@@ -24,18 +26,3 @@ CREATE TABLE SOGo_folder_info (
   c_acl_location VARCHAR(2048) NULL,     -- URL to quicktable of folder
   c_folder_type    VARCHAR(255)  NOT NULL  -- the folder type ...
 );
-
-INSERT INTO SOGo_folder_info 
-  ( c_path, c_path1, c_path2, c_path3, c_path4, c_foldername,
-    c_location, c_quick_location, c_folder_type ) 
-VALUES 
-  ( '/Users', 
-    'Users',
-    NULL,
-    NULL,
-    NULL,
-    'Users', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_quick', 
-    'http://OGo:OGo@localhost:5432/OGo/SOGo_user_folder_acl', 
-    'Container' );
