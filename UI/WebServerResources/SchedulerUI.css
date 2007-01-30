@@ -687,7 +687,6 @@ TABLE.monthOverview DIV.appointmentInside
   width: auto;
   position: static; }
 
-
 DIV.daysView > DIV.hours
 { position: absolute;
   border: 0px;
@@ -833,6 +832,9 @@ DIV.appointments > DIV.appointment
   left: 0px;
   right: 0px;
   padding: 0px; }
+
+DIV[class~="appointment"]._selected > DIV.appointmentInside
+{ background-color: #ffa !important; }
 
 DIV.appointment > DIV
 { position: absolute;

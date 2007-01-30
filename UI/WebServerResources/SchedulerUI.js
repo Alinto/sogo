@@ -3,6 +3,7 @@ var sortKey = '';
 var listFilter = 'view_today';
 
 var listOfSelection = null;
+var selectedCalendarCell;
 
 var hideCompletedTasks = 0;
 
@@ -57,6 +58,9 @@ function editEvent() {
     for (var i = 0; i < nodes.length; i++)
       _editEventId(nodes[i].getAttribute("id"),
                    nodes[i].getAttribute("owner"));
+  } else if (selectedCalendarCell) {
+      _editEventId(selectedCalendarCell.getAttribute("aptCName"),
+                   selectedCalendarCell.getAttribute("owner"));
   }
 
   return false; /* stop following the link */
@@ -107,6 +111,18 @@ function deleteEvent()
         _batchDeleteEvents();
       }
     }
+  }
+  else if (selectedCalendarCell) {
+     var label = labels["appointmentDeleteConfirmation"].decodeEntities();
+     if (confirm(label)) {
+        if (document.deleteEventAjaxRequest) {
+           document.deleteEventAjaxRequest.aborted = true;
+           document.deleteEventAjaxRequest.abort();
+        }
+        eventsToDelete.push([selectedCalendarCell.getAttribute("aptCName")]);
+        ownersOfEventsToDelete.push(selectedCalendarCell.getAttribute("owner"));
+        _batchDeleteEvents();
+     }
   }
   else
     window.alert("no selection");
@@ -378,6 +394,8 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
 function changeCalendarDisplay(time, newView)
 {
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
+
+  selectedCalendarCell = null;
 
   var day = null;
   var hour = null;
@@ -742,6 +760,11 @@ function onCalendarSelectAppointment() {
   list.deselectAll();
 
   var aptCName = this.getAttribute("aptCName");
+  listOfSelection = null;
+  if (selectedCalendarCell)
+    selectedCalendarCell.deselect();
+  this.select();
+  selectedCalendarCell = this;
   var row = $(aptCName);
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
