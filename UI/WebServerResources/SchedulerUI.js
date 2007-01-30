@@ -161,8 +161,10 @@ function modifyEventCallback(http) {
       log("closing window...?");
       if (queryParameters["mail-invitation"] == "yes")
         closeInvitationWindow();
-      else
-        window.close();
+      else {
+        window.opener.setTimeout("refreshAppointmentsAndDisplay();", 100);
+        window.setTimeout("window.close();", 100);
+      }
     }
     else {
       log("showing alert...");
