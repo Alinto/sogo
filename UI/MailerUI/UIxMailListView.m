@@ -453,6 +453,9 @@ static int attachmentFlagSize = 8096;
   NSString *specificMessage;
 
   request = [[self context] request];
+
+  [[self clientObject] flushMailCaches];
+
   specificMessage = [request formValueForKey: @"pageforuid"];
   self->firstMessageNumber
     = ((specificMessage)
