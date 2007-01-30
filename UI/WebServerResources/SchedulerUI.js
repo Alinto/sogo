@@ -178,10 +178,11 @@ function deleteEventCallback(http)
 {
   if (http.readyState == 4
       && http.status == 200) {
-    var nodes = $(http.callbackData);
+    var nodes = http.callbackData;
     for (var i = 0; i < nodes.length; i++) {
       var node = $(nodes[i]);
-      node.parentNode.removeChild(node);
+      if (node)
+        node.parentNode.removeChild(node);
     }
     if (eventsToDelete.length)
       _batchDeleteEvents();
@@ -453,7 +454,6 @@ function onMonthOverview()
 
 function scrollDayView(hour)
 {
-  log("stest1");
   var rowNumber;
   if (hour) {
     if (hour.length == 3)
@@ -471,8 +471,6 @@ function scrollDayView(hour)
   var hours = daysView.childNodesWithTag("div")[0].childNodesWithTag("div");
   if (hours.length > 0)
     daysView.parentNode.scrollTop = hours[rowNumber + 1].offsetTop;
-
-  log("stest2");
 }
 
 function onClickableCellsDblClick(event) {
@@ -762,7 +760,6 @@ function onCalendarSelectAppointment() {
   list.deselectAll();
 
   var aptCName = this.getAttribute("aptCName");
-  listOfSelection = null;
   if (selectedCalendarCell)
     selectedCalendarCell.deselect();
   this.select();
@@ -785,6 +782,11 @@ function onCalendarSelectDay(event) {
   else if (currentView == 'monthview')
     changeMonthCalendarDisplayOfSelectedDay(this);
   changeDateSelectorDisplay(day);
+
+  if (listOfSelection) {
+    listOfSelection.addClassName("_unfocused");
+    listOfSelection = null;
+  }
 
   if (needRefresh)
     refreshAppointments();

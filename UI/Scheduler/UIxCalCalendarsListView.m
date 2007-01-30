@@ -104,8 +104,6 @@ darkenedColor (const char value)
                         (255 / colorTable[0]) - 1];
     }
 
-  NSLog(@"color = '%@'", color);
-
   return color;
 }
 
