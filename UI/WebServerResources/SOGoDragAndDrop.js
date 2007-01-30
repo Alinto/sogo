@@ -23,7 +23,7 @@ var SOGODragAndDropSourceInterface = {
     }
   },
   dragGestureMouseUpHandler: function (event) {
-    log("mouseup");
+//     log("mouseup");
     document._currentMouseGestureObject._removeGestureHandlers();
   },
   dragGestureMouseMoveHandler: function (event) {
@@ -160,13 +160,19 @@ document.DNDManager = {
                                  document.DNDManager.destinationExit, false);
       if (operation.destination == event.target) {
 //         log("drag / drop: " + operation.source + " to " + operation.destination);
-        if (operation.destination.dndExit)
-          event.target.dndExit();
+        if (operation.destination.dndExit) {
+//           log ("destination.dndExit...");
+          operation.destination.dndExit();
+        }
         if (operation.destination.dndDrop) {
+//           log ("destination.dndDrop...");
           var data = null;
+//           log ("optype: " + operation.type);
           if (operation.source.dndDataForType)
             data = operation.source.dndDataForType(operation.type);
-          var result = event.target.dndDrop(data);
+//           log ("data: " + data);
+          var result = operation.destination.dndDrop(data);
+//           log ("result: " + result);
           if (operation.ghost) {
             if (result)
               operation.bustGhost();

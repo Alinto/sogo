@@ -901,11 +901,13 @@ function disableAnchor(anchor) {
 
 function d2h(d) {
   var hD = "0123456789abcdef";
-  var h = hD.substr(d&15,1);
-  while (d>15) {
-    d>>=4;
-    h=hD.substr(d&15,1)+h;
+  var h = hD.substr(d & 15, 1);
+
+  while (d > 15) {
+    d >>= 4;
+    h = hD.substr(d & 15, 1) + h;
   }
+
   return h;
 }
 

@@ -398,11 +398,13 @@ function onMenuDeleteMessage(event) {
 }
 
 function onMailboxTreeItemClick(event) {
-  var topNode = $('d');
+  var topNode = $("d");
   var mailbox = this.parentNode.getAttribute("dataname");
 
-  if (topNode.selectedEntry)
+  if (topNode.selectedEntry) {
+    log ("deselecting");
     topNode.selectedEntry.deselect();
+  }
   this.select();
   topNode.selectedEntry = this;
 
@@ -532,8 +534,8 @@ function onFolderMenuClick(event)
   var onhide, menuName;
   
   var menutype = this.parentNode.getAttribute("datatype");
-  log("parentNode: " + this.parentNode.tagName);
-  log("menutype: " + menutype);
+//   log("parentNode: " + this.parentNode.tagName);
+//   log("menutype: " + menutype);
   if (menutype) {
     if (menutype == "inbox") {
       menuName = "inboxIconMenu";
@@ -813,7 +815,7 @@ function expandUpperTree(node)
 function initMailboxSelection(mailboxName)
 {
   currentMailbox = mailboxName;
-
+  log("initMailboxSelection: " + mailboxName);
   var tree = $("d");
   var treeNodes = document.getElementsByClassName("dTreeNode", tree);
   var i = 0;
@@ -821,6 +823,7 @@ function initMailboxSelection(mailboxName)
          && treeNodes[i].getAttribute("dataname") != currentMailbox)
     i++;
   if (i < treeNodes.length) {
+    log ("found mailbox");
     var links = document.getElementsByClassName("node", treeNodes[i]);
     if (tree.selectedEntry)
       tree.selectedEntry.deselect();
@@ -924,7 +927,7 @@ var messageListGhost = function () {
 }
 
 var messageListData = function(type) {
-  var rows = this.getSelectedRowsId();
+  var rows = this.parentNode.parentNode.getSelectedRowsId();
   var msgIds = new Array();
   for (var i = 0; i < rows.length; i++)
     msgIds.push(rows[i].substr(4));
@@ -985,7 +988,7 @@ function configureDragHandles() {
 
 /* dnd */
 function initDnd() {
-  log ("MailerUI initDnd");
+//   log ("MailerUI initDnd");
 
   var tree = $("d");
   if (tree) {
@@ -1017,6 +1020,8 @@ function refreshContacts() {
 function openInbox(node) {
   var done = false;
   openMailbox(node.parentNode.getAttribute("dataname"));
+  var tree = $("d");
+  tree.selectedEntry = node;
   node.select();
   var currentNode = node.parentNode.parentNode;
   while (!done) {

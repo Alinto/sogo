@@ -8,39 +8,40 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="panelTitle"
-    const:popup="YES"
-    >
-    <div id="headerArea">
-      <div id="attachmentsArea">
-        <var:string label:value="Attachments:" />
-        <div id="compose_attachments_list"
-          onclick="clickedEditorAttach(this);"
-          ><var:foreach list="attachmentNames" item="attachmentName">
+    const:popup="YES">
+    <form name="pageform">
+      <div id="headerArea">
+        <div id="attachmentsArea">
+          <var:string label:value="Attachments:" />
+          <div id="compose_attachments_list"
+            onclick="clickedEditorAttach(this);"
+            ><var:foreach list="attachmentNames" item="attachmentName">
             <var:string value="attachmentName" /><br />
-          </var:foreach>
+            </var:foreach>
+          </div>
         </div>
+        <span class="headerField"><var:string label:value="From" />:</span>
+        <var:popup const:name="from"
+          list="fromEMails"
+          item="item"
+          selection="from"
+          /><br />
+        <div>
+          <var:component className="UIxMailToSelection"
+            to="to" cc="cc" bcc="bcc" />
+        </div>
+        <div class="addressListElement" id="subjectRow"
+          ><span class="headerField"><var:string label:value="Subject"
+              />:</span
+            ><span class="headerInput"
+            ><input name="subject"
+              type="text"
+              class="textField"
+              var:value="subject"
+              /></span></div>
       </div>
-      <span class="headerField"><var:string label:value="From" />:</span>
-      <var:popup const:name="from"
-        list="fromEMails"
-        item="item"
-        selection="from"
-        /><br />
-      <div>
-        <var:component className="UIxMailToSelection"
-          to="to" cc="cc" bcc="bcc" />
-      </div>
-      <div class="addressListElement" id="subjectRow"
-        ><span class="headerField"><var:string label:value="Subject"
-            />:</span
-          ><span class="headerInput"
-          ><input name="subject"
-            type="text"
-            class="textField"
-            var:value="subject"
-            /></span></div>
-    </div>
     <!-- separator line -->
-    <textarea name="content" var:value="text" />
+      <textarea name="content" var:value="text" />
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
+    </form>
   </var:component>
