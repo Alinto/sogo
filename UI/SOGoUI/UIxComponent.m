@@ -25,7 +25,7 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WOResourceManager.h>
 
-#import <SOGo/NSString+URL.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoObject.h>
