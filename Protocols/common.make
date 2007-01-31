@@ -12,14 +12,18 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I..		\
 	-I../..		\
 	-I../../..	\
-	-I../../SoObjects
+	-I../../SoObjects \
+	-I../../SOPE
 
+RELBUILD_DIR_libNGCards = \
+	$(GNUSTEP_BUILD_DIR)/../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR_NAME)
 RELBUILD_DIR_libSOGo = \
 	$(GNUSTEP_BUILD_DIR)/../../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR_NAME)
 RELBUILD_DIR_libOGoContentStore = \
 	$(GNUSTEP_BUILD_DIR)/../../OGoContentStore/$(GNUSTEP_OBJ_DIR_NAME)
 
 ADDITIONAL_LIB_DIRS += 				\
+	-L$(RELBUILD_DIR_libNGCards)		\
 	-L$(RELBUILD_DIR_libSOGo)		\
 	-L$(RELBUILD_DIR_libOGoContentStore)
 

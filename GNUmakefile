@@ -4,6 +4,7 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS = \
+	SOPE/NGCards \
 	OGoContentStore	\
 	SoObjects	\
 	Main		\
@@ -11,4 +12,3 @@ SUBPROJECTS = \
 	Protocols	\
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
-
