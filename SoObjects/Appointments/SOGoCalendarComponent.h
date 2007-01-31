@@ -39,6 +39,9 @@
 - (NSString *) iCalString;
 - (iCalCalendar *) calendar;
 
+- (NSException *) primarySaveContentString: (NSString *) _iCalString;
+- (NSException *) primaryDelete;
+
 - (NSException *) delete;
 
 @end
