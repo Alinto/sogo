@@ -1,0 +1,48 @@
+# compilation settings
+
+SOPE_ROOT=../..
+SOPE_OBJ_ROOT=$(GNUSTEP_BUILD_DIR)/$(SOPE_ROOT)
+
+ifeq ($(frameworks),yes)
+# hm, we might prefer /Library/SaxDrivers-$(MAJOR_VERSION).$(MINOR_VERSION)/
+# but this is harder with the FRAMEWORK_INSTALL_DIR
+BUNDLE_INSTALL_DIR := $(FRAMEWORK_INSTALL_DIR)/SaxObjC.framework/Versions/A/Resources/SaxDrivers/
+endif
+
+
+ADDITIONAL_INCLUDE_DIRS +=			\
+	-I../..           			\
+	-I$(SOPE_ROOT)/sope-xml			\
+	-I$(SOPE_ROOT)/sope-core/NGExtensions
+
+
+# dependencies
+
+ifneq ($(frameworks),yes)
+BUNDLE_LIBS += -lSaxObjC
+else
+BUNDLE_LIBS += -framework SaxObjC
+endif
+ADDITIONAL_BUNDLE_LIBS += $(BUNDLE_LIBS)
+
+
+# library/framework search pathes
+
+DEP_DIRS = \
+	$(SOPE_ROOT)/sope-core/NGExtensions	\
+	$(SOPE_ROOT)/sope-xml/SaxObjC
+
+ifneq ($(frameworks),yes)
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),\
+	  -L$(GNUSTEP_BUILD_DIR)/$(dir)/$(GNUSTEP_OBJ_DIR_NAME))
+else
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+endif
+
+ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
+SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
+else
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+endif

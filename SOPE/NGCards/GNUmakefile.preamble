@@ -1,0 +1,61 @@
+# compilation settings
+
+SOPE_ROOT=../..
+
+ADDITIONAL_CPPFLAGS += \
+        -Wall -DCOMPILE_FOR_GSTEP_MAKE=1        \
+        -DSOPE_MAJOR_VERSION=$(MAJOR_VERSION)   \
+        -DSOPE_MINOR_VERSION=$(MINOR_VERSION)   \
+        -DSOPE_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I. -I..			\
+	-I$(SOPE_ROOT)/sope-core/NGExtensions/	\
+	-I$(SOPE_ROOT)/sope-core		\
+	-I$(SOPE_ROOT)/sope-xml
+
+
+# dependencies
+
+libNGCards_LIBRARIES_DEPEND_UPON += \
+	-lNGExtensions	\
+	-lEOControl	\
+	-lDOM		\
+	-lSaxObjC
+
+NGCards_LIBRARIES_DEPEND_UPON += \
+	-framework NGExtensions	-framework EOControl \
+	-framework DOM -framework SaxObjC
+
+
+# library/framework search pathes
+
+DEP_DIRS = \
+	$(SOPE_ROOT)/sope-core/NGExtensions	\
+	$(SOPE_ROOT)/sope-core/EOControl	\
+	$(SOPE_ROOT)/sope-xml/DOM		\
+	$(SOPE_ROOT)/sope-xml/SaxObjC
+
+ifneq ($(frameworks),yes)
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),\
+	  -L$(GNUSTEP_BUILD_DIR)/$(dir)/$(GNUSTEP_OBJ_DIR_NAME))
+else
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+endif
+
+ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
+SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
+else
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+endif
+
+
+# Apple
+
+ifeq ($(FOUNDATION_LIB),apple)
+libNGCards_PREBIND_ADDR="0xC1E00000"
+libNGCards_LDFLAGS += -seg1addr $(libNGCards_PREBIND_ADDR)
+NGCards_LDFLAGS += -seg1addr $(libNGCards_PREBIND_ADDR)
+endif

@@ -1,0 +1,9 @@
+sope-ical/samples
+
+This directory contains sample programs for the sope-ical libraries.
+
+Tools
+=====
+
+ical2 - uses SaxObjectDecoder with NGiCal.xmap
+ical3 - uses iCalDataSource to run queries on iCal files

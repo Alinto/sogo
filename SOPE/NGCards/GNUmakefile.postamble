@@ -1,0 +1,13 @@
+# compilation settings
+
+ifeq ($(FHS_INSTALL_ROOT),)
+MAPDIR="$(GNUSTEP_INSTALLATION_DIR)/Library/SaxMappings/"
+else
+MAPDIR="$(FHS_INSTALL_ROOT)/share/sope-$(MAJOR_VERSION).$(MINOR_VERSION)/saxmappings/"
+endif
+
+mappings-dir ::
+	$(MKDIRS) $(MAPDIR)
+
+after-install :: mappings-dir
+	cp NGCards.xmap $(MAPDIR)

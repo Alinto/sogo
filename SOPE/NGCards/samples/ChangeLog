@@ -1,0 +1,157 @@
+2005-09-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ievalrrule.m: started tool to evaluate iCal rrules on the shell
+
+2005-08-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* link tools against OSX frameworks if configured so
+
+2005-05-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* renamed ical3.m to icalds.m, ical2.m to icalparsetest
+
+2005-04-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* properly include config.make
+
+	* fixed some gcc 4.0 warnings
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed makefiles for SOPE inline compilation
+
+2004-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added hack to install the tools in FHS locations - the executables
+	  will be installed in FHS_INSTALL_ROOT if specified (eg make
+	  FHS_INSTALL_ROOT=/usr/local)
+
+2004-08-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* subclassing.m: fixed a compiler warning
+
+2004-07-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* bmlookup.m: major code cleanups, improved output
+
+2004-06-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ldap2dsml.m: fixed a compile warning
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.h: fixed compatibility with gstep-base
+
+2004-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added 'testurl' to test NSURL for the Cocoa Foundation bug wrt the
+	  trailing suffix in -path
+
+2004-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* subclassing.m: added support for Apple runtime
+
+2004-04-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ImapListTool, ImapTool.m, imapls.m: minor code cleanups
+
+2004-01-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ldapls.m: minor fixes (moved NSAutoreleasePool to correct place)
+
+2004-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* minor cleanups to log messages
+
+2003-10-12  Helge Hess  <helge@opengroupware.org>
+
+	* EOQualTool.m: fix: returned value in a void method
+
+	* GNUmakefile (TOOL_NAME): do not compile subclassing.m on
+	  MacOSX
+
+	* EncodingTool.m: fixed compilation on MacOSX
+
+2003-05-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* added parserule for testing parsing of NGRule objects
+
+2003-05-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* some gcc 3.3 warnings fixed
+
+2003-04-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added ldapchkpwd tool
+
+	* ldap2dsml.m: added autorelease-pool to main()
+
+2003-04-01  GNUstep User  <helge.hess@skyrix.com>
+
+	* ImapListTool.m: do not use NSFileIdentifier constant
+
+	* EncodingTool.m: removed some undeclared encodings when compiling for
+	  GNUstep Base
+
+2003-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* added ical2.m, ical3.m - examples for NGiCal
+
+2003-01-30  Helge Hess  <helge.hess@skyrix.com>
+	
+	* added httpu_notify, a small tool to send out HTTP-over-UDP 
+	  NOTIFY notifications
+
+2003-01-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* testsock.m: improved test code
+
+2003-01-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* subclassing.m, ImapQuotaTool.m, imapquota.m: fixed compilation 
+	  warnings
+	  
+	* moved in testsock.m from NGStreams
+
+	* changes for improved compilation on MacOSX, replaced RETAIN macros
+	  with methods
+
+Fri Dec 27 10:54:40 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* Mime2XmlTool.m: fixed a protocol warning
+
+Mon Dec 23 15:36:01 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* ImapListTool.m: pass correct filemanager as a parameter
+
+2002-12-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* testdirenum.m: cleanups
+
+Tue Dec 17 15:07:40 2002    <jan@skyrix.com>
+
+	* imapquota.m: add quota test
+
+2002-11-21  Jan Reichmann <jr@skyrix.com>
+
+	* added Imap-Super class, improve imapls
+
+2002-11-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* added ldapls, ldap2dsml as examples for NGLdap
+
+2002-11-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* EOQualTool.m: added test for complex cast
+
+2002-10-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* EOQualTool.m: added support for parsing SQL using the new EOSQLParser
+
+2002-10-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* added eoqual tool for parsing EOQualifier's (useful for syntax 
+	  checks)
+
+	* created ChangeLog
+

@@ -1,0 +1,8 @@
+This folder contains unit tests for the NGiCal project.
+
+It uses SEN:TE's OCUnit project which can be found at
+http://www.sente.ch/software/ocunit/
+
+I used OCUnitRoot v38, later versions might work as well.
+
+NOTE: This is currently provided in Xcode only.

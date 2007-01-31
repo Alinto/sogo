@@ -1,0 +1,53 @@
+Overview
+========
+
+Two SaxObjC drivers for iCalendar and vCard files, initially written by
+Max Berger <max@berger.name>.
+
+VSiCalSaxDriver basically maps iCal 2.0 components, properties and parameters
+to the XML events according to the xCal 02 draft (iCal 3.0).
+
+Having a SAX driver for iCal might seem strange and a bit inefficient at
+first look, but the time saved for the application-level developer is
+significant, since he only needs to learn (or usually already knows) the
+SAX or DOM APIs and any XML API based on them (like XPATH, XQUERY).
+
+The VSiCalSaxDriver is aimed to be a replacement for the older (but better
+tested as of now) iCalSaxDriver. However, the iCalSaxDriver depends on the
+abandoned and hardly maintainable libical, which itself is an additional
+dependency to the OGo project and thus a welcome candidate for replacement.
+
+The VSSaxDriver attempts to follow RFC2445 closely, however the parser is
+written to be robust when it comes to parsing real life content. Currently,
+unescaping is done for more characters then it MUST according to RFC2445, but
+this is probably not a bad idea - wrongly escaped characters will still be
+parsed according to the original intent. Also, the VSSaxDriver supports Unix
+style terminated lines/folding.
+
+ToDo
+====
+
+- improve error handling (SaxExceptions !)
+- make the driver fully xCal compliant
+
+
+Defaults
+========
+
+Name                            Type        Description
+------------------------------------------------------------------------------
+VSSaxDriverDebugEnabled         BOOL        YES -> log some debug information
+                                                   via NSLog
+
+
+Examples
+========
+
+To "convert" an iCalendar to xCal (the test programs print out some XML):
+
+  saxxml -XMLReader VSiCalSaxDriver test1.ics
+  domxml -XMLReader VSiCalSaxDriver -xml  test1.ics
+
+To "convert" an iCalendar to PYX:
+
+  domxml -XMLReader VSiCalSaxDriver -pyx  test1.ics

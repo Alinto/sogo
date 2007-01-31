@@ -1,0 +1,313 @@
+{
+  "http://www.ietf.org/internet-drafts/draft-ietf-calsch-many-xcal-01.txt" = {
+
+    // components
+    
+    iCalendar = {
+      class  = NSMutableDictionary; // "ICalXRoot";
+      tagKey = "tag";
+      
+      ToManyRelationships = {
+        "subcomponents" = ( vcalendar );
+      };
+    };
+    
+    vcalendar = {
+      class  = iCalCalendar; // ICalVCalendar;
+
+      attributes = {
+        prodid   = prodId;
+        version  = version;
+        calscale = calscale;
+	method   = method;
+      };
+      
+      ToManyRelationships = {
+        events    = ( vevent    );
+        todos     = ( vtodo     );
+        journals  = ( journals  );
+        freeBusys = ( vfreebusy );
+        timezones = ( vtimezone );
+      };
+    };
+    
+    vevent = {
+      class  = iCalEvent;
+
+      attributes = {
+      };
+
+      ToManyRelationships = {
+        "alarms"          = ( valarm   );
+        "attendees"       = ( attendee );
+        "recurrenceRules" = ( rrule    );
+        "exceptionRules"  = ( exrule   );
+        "exceptionDates"  = ( exdate   );
+      };
+    };
+    
+    vtodo = {
+      class = "iCalToDo";
+
+      attributes = {
+      };
+
+      ToManyRelationships = {
+        "alarms"    = ( valarm   );
+        "attendees" = ( attendee );
+      };
+    };
+    
+    valarm = {
+      class = "iCalAlarm";
+
+      attributes = {
+        rrule = recurrenceRule;
+      };
+    };
+    
+    vfreebusy = {
+      class = "iCalFreeBusy";
+      
+      ToManyRelationships = {
+        "entries" = ( freebusy );
+      };
+    };
+    
+    vtimezone = {
+      class = NSMutableDictionary;
+      
+      attributes = {
+        tzid             = timeZoneID;
+        "X-LIC-LOCATION" = location;
+        daylight         = daylightInfo;
+        standard         = standardInfo;
+      };
+    };
+    daylight = {
+      class = NSMutableDictionary;
+      
+      attributes = {
+        tzoffsetfrom = tzOffsetFrom;
+        tzoffsetto   = tzOffsetTo;
+        tzname       = tzName;
+        dtstart      = startDate;
+        rrule        = recurrenceRule;
+      };
+    };
+    standard = {
+      class = NSMutableDictionary;
+      
+      attributes = {
+        tzoffsetfrom = tzOffsetFrom;
+        tzoffsetto   = tzOffsetTo;
+        tzname       = tzName;
+        dtstart      = startDate;
+        rrule        = recurrenceRule;
+      };
+    };
+    
+    // attributes
+    
+    dtstamp = {
+      class      = iCalDateHolder;
+      key        = "timeStampAsDate";
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    created = {
+      class      = iCalDateHolder;
+      key        = "created";
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    "last-modified" = {
+      class      = iCalDateHolder;
+      key        = "lastModified";
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    
+    dtstart = {
+      class = iCalDateHolder;
+      key   = "startDate";
+      attributes = {
+        tzid = tzid;
+      };
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    dtend = {
+      class = iCalDateHolder;
+      key   = "endDate";
+      attributes = {
+        tzid = tzid;
+      };
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    exdate = {
+      class = iCalDateHolder;
+      key   = "recurrenceRuleExceptionDate";
+      attributes = {
+        tzid = tzid;
+      };
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    due = {
+      class = iCalDateHolder;
+      attributes = {
+        tzid = tzid;
+      };
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    completed = {
+      class = iCalDateHolder;
+      attributes = {
+        tzid = tzid;
+      };
+      tagKey     = "tag";
+      contentKey = "string";
+    };
+    
+    duration = {
+      class = NSString;
+    };
+    
+    summary     = { class = NSString; };
+    description = { class = NSString; key = comment; };
+    comment     = { class = NSString; key = userComment; };
+    uid         = { class = NSString; };
+    action      = { class = NSString; };
+    priority    = { class = NSString; };
+    status      = { class = NSString; };
+    transp      = { class = NSString; key = transparency; };
+    sequence    = { class = NSString; };
+    categories  = { class = NSString; };
+    class       = { class = NSString; key = accessClass; };
+    percent-complete = { class = NSString; key = "percentComplete"; };
+    
+    attendee = {
+      class = iCalPerson;
+      attributes = {
+        cn = cn;
+        rsvp = rsvp;
+        role = role;
+        partstat = partStat;
+      };
+      contentKey = "email";
+    };
+    organizer = {
+      class      = iCalPerson;
+      attributes = {
+        cn = cn;
+      };
+      contentKey = "email";
+    };
+    
+    freebusy = {
+      class = NSString;
+    };
+    url = {
+      class = NSString;
+    };
+    
+    trigger = {
+      class = iCalTrigger;
+      attributes = {
+        value = valueType;
+      };
+      contentKey = "value";
+    };
+    attach = {
+      class = iCalAttachment;
+      attributes = {
+        value = valueType;
+      };
+      contentKey = "value";
+    };
+
+    tzid = {
+      class = NSString;
+    };
+    tzname = {
+      class = NSString;
+    };
+    tzoffsetfrom = {
+      class = NSString;
+    };
+    tzoffsetto = {
+      class = NSString;
+    };
+    rrule = {
+      class = iCalRecurrenceRule;
+      /*
+      attributes = {
+        freq       = rrFreq;
+        until      = rrUntil;
+        count      = rrCount;
+        interval   = rrInterval;
+        bysecond   = rrBySecondList;
+        byminute   = rrByMinuteList;
+        byhour     = rrByHourList;
+        byday      = rrByDayList;
+        bymonthday = rrByMonthDayList;
+        byyearday  = rrByYearDayList;
+        byweekno   = rrByWeekNumberList;
+        bymonth    = rrByMonthList;
+        bysetpos   = rrBySetPosList;
+        wkst       = rrWeekStart;
+      };
+      */
+      contentKey = "rrule";
+      key        = "recurrenceRule";
+    };
+    location = {
+      class = NSString;
+    };
+    
+    // extra tags
+
+    "X-LIC-LOCATION" = {
+      class = NSString;
+    };
+    
+    "X-WR-TIMEZONE" = {
+      rejectWithContent = YES;
+    };
+    "X-WR-CALNAME" = {
+      rejectWithContent = YES;
+    };
+    "X-WR-RELCALID" = {
+      rejectWithContent = YES;
+    };
+
+    "X-MICROSOFT-CDO-TZID" = {
+      rejectWithContent = YES;
+    };
+    "X-MICROSOFT-CDO-BUSYSTATUS" = {
+      rejectWithContent = YES;
+    };
+    "X-MICROSOFT-CDO-INSTTYPE" = {
+      rejectWithContent = YES;
+    };
+    "X-MICROSOFT-CDO-INTENDEDSTATUS" = {
+      rejectWithContent = YES;
+    };
+    "X-MICROSOFT-CDO-ALLDAYEVENT" = {
+      rejectWithContent = YES;
+    };
+    "X-MICROSOFT-CDO-IMPORTANCE" = {
+      rejectWithContent = YES;
+    };
+
+    "X-PILOTID" = {
+      rejectWithContent = YES;
+    };
+    "X-PILOTSTAT" = {
+      rejectWithContent = YES;
+    };
+  };
+}

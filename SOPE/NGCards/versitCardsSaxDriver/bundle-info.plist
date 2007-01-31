@@ -1,0 +1,19 @@
+{
+  requires = {
+    bundleManagerVersion = 1;
+    classes = ( { name = NSObject; } );
+  };
+  
+  provides = {
+    SAXDrivers = ( 
+      {
+        name        = "VSCardSaxDriver";
+        sourceTypes = ( "text/x-vcard", "text/vcard",
+                        "text/x-calendar", "text/calendar" );
+      }
+    );
+    classes = ( 
+      { name = "VSCardSaxDriver"; }
+    );
+  };
+}

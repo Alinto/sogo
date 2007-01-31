@@ -1,0 +1,64 @@
+# compilation flags
+
+SOPE_ROOT=../..
+SOPE_CORE="../../sope-core"
+SOPE_XML="../../sope-xml"
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I..			\
+	-I$(SOPE_CORE)/NGStreams	\
+	-I$(SOPE_CORE)/NGExtensions	\
+
+
+# PCH
+
+icalparsetest_PCH_FILE = common.h
+icalds_PCH_FILE        = common.h
+vcf2xml_PCH_FILE       = common.h
+vcfparsetest_PCH_FILE  = common.h
+ievalrrule_PCH_FILE    = common.h
+
+
+# dependencies
+
+ifneq ($(frameworks),yes)
+icalparsetest_TOOL_LIBS += -lNGCards
+icalds_TOOL_LIBS        += -lNGCards
+vcfparsetest_TOOL_LIBS  += -lNGCards
+ievalrrule_TOOL_LIBS    += -lNGCards
+
+ADDITIONAL_TOOL_LIBS += \
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+else
+icalparsetest_TOOL_LIBS += -framework NGCards
+icalds_TOOL_LIBS        += -framework NGCards
+vcfparsetest_TOOL_LIBS  += -framework NGCards
+ievalrrule_TOOL_LIBS    += -framework NGCards
+
+ADDITIONAL_TOOL_LIBS += \
+	-framework NGStreams -framework NGExtensions -framework EOControl \
+	-framework DOM -framework SaxObjC
+endif
+
+
+# library/framework search pathes
+
+DEP_DIRS = \
+	../NGCards/ \
+	$(SOPE_ROOT)/sope-core/NGExtensions	\
+	$(SOPE_ROOT)/sope-core/NGStreams	\
+	$(SOPE_ROOT)/sope-core/EOControl	\
+	$(SOPE_ROOT)/sope-xml/DOM		\
+	$(SOPE_ROOT)/sope-xml/SaxObjC
+
+ifneq ($(frameworks),yes)
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),\
+	  -L$(GNUSTEP_BUILD_DIR)/$(dir)/$(GNUSTEP_OBJ_DIR_NAME))
+else
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+endif
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

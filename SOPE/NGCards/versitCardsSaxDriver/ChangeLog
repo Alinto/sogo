@@ -1,0 +1,295 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* use %p for pointer formats, fixed gcc 4.1 warnings (v4.5.24)
+
+2006-04-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: properly declare principal class (v4.5.23)
+
+2006-04-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* VSSaxDriver.m: improved error reporting in case no data could be
+	  retrieved from a URL (v4.5.22)
+	
+2005-12-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.5.21
+
+	* VSSaxDriver.m: added some debug logs, throw an error if a tagline
+	  starts with a colon/semicolon (tagname missing)
+
+	* VSvCardSaxDriver.m: minor code cleanups
+
+2005-11-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* VSSaxDriver.m: renamed internal -error: method to -reportError: to
+	  avoid a conflict with gstep-base (v4.5.20)
+
+2005-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: install bundle in proper SaxObjC framework
+	  location (v4.5.19)
+
+2005-08-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* install into /Library/SaxDrivers-4.5 when compiling for frameworks
+	  (v4.5.18)
+
+	* GNUmakefile.preamble: added support for OSX frameworks (v4.5.17)
+
+2005-06-02  Helge Hess  <helge.hess@skyrix.com>
+	
+	* VSSaxDriver.m: transparently decode property values if
+	  ENCODING=QUOTED-PRINTABLE is set as an attribute (used by Outlook
+	  vCards, needs testing against umlauts/charsets) (v4.5.16)
+
+2005-05-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* VSSaxDriver.m: more reorganisations, added support for groupings
+	  (v4.5.15)
+
+2005-05-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* VSSaxDriver.m: code cleanups / reorgs, properly embed reported
+	  contents in <vCardSet> tag, added support for vCards in Unicode
+	  16-bit encoding (v4.5.14)
+	
+	* VSSaxDriver.m: improved parsing entry methods, added support for SAX
+	  error handlers (v4.5.13)
+
+2005-04-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* VSSaxDriver.m: fixed a gcc 4.0 warning (v4.5.12)
+
+2004-12-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* versitSaxDriver.xcode: minor changes and updated
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* VSSaxDriver.m: fixed edge case problem introduced in v4.3.10
+	  (v4.3.11)
+
+	* VSSaxDriver.m: remove surrounding double quotes from attribute values
+	  if any. During parsing, check if end tags match expectations and
+	  issue warnings if they don't. Added some logic to get parsing
+	  straight nevertheless in such events. (v4.3.10)
+
+2004-10-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.3.9
+
+	* VSSaxDriver.m: improved robustness in respect to illegal content
+	  lines - the parser shouldn't crash anymore. Also, changed the
+	  "OGoDebugVersitSaxDriver" default to "VSSaxDriverDebugEnabled".
+
+	* README: documented the default
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.3.8
+
+	* VSSaxDriver.m: added support in _parseString: for Unix style
+	  terminated content lines. Such content lines clearly violate the
+	  RFC but such ical files happen to appear in the wildlife.
+
+	* README: updated
+
+	* v4.3.7
+
+	* Version: removed major and minor. This effectively bumps the version
+	  to v4.3.7 which is in sync with the rest of sope-ical.
+
+2004-10-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added fhs.make, some other minor fixes to makefiles (v1.0.6)
+
+2004-10-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.5
+
+	* VSSaxDriver.m: rewrote _parseLine: to properly parse content lines
+	  according to RFC2445.
+
+	* README: updated
+
+	* v1.0.4
+
+	* VSStringFormatter.m: properly unescape '\N'
+
+	* README: updated, need to fix _parseLine:
+
+	* v1.0.3
+
+	* VSStringFormatter.[hm]: new singleton to perform unescaping on
+	  iCal content/attributes.
+
+	* VSSaxDriver.m: uses the new VSStringFormatter in some funky places.
+	  Unescaping is pretty memory efficient, hence its slight overuse is
+	  justifyable I guess.
+
+2004-10-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: NGExtensions was missing for proper inline
+	  compilation to work (v1.0.2)
+
+	* v1.0.1
+
+	* README: corrected the examples
+
+	* GNUmakefile.preamble: properly add paths
+
+2004-10-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.0
+
+	* README, COPYRIGHT, COPYING, AUTHORS: new files
+
+	* VersitSaxDriver.[hm]: renamed to VSSaxDriver.[hm]
+
+	* ICalendarSaxDriver.[hm]: renamed to VSiCalSaxDriver.[hm]
+
+	* VCardSaxDriver.[hm]: renamed to VSvCardSaxDriver.[hm]
+
+	* ICalendarSaxDriver.[hm]: renamed to VSiCalSaxDriver.[hm]
+
+	* VSSaxDriver.m: Major cleanups, cache all character sets as class
+	  variables, rewrote _parseString: to properly do unfolding. Bugfixes.
+
+	* VSiCalSaxDriver.m, VSvCardSaxDriver.m: cache character sets, cleanup,
+	  minor fixes.
+
+	* bundle-info.plist: adjusted names
+
+2004-04-09  Max Berger  <max@berger.name>
+
+	* fixed another bug related to libFoundation that applied to
+	  NSMutableCharacterSet (v0.1.18)
+
+2004-02-24  Max Berger  <max@berger.name>
+
+	* fixed bug to crash on libFoundation in scanner line (v0.1.17)
+
+2004-02-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.1.16
+
+	* GNUmakefile.preamble: properly link with OGo gstep-make
+
+	* added a common.h file (and use that in the source files)
+
+	* VersitSaxDriver.m: fixed type, fixed a "==" vs "=" bug in -init,
+	  minor code cleanups
+
+2004-02-24  Max Berger  <max@berger.name>
+
+	* v0.1.15
+
+	* added new initialize function to check for debug property
+
+	* added debug messages to parseFromSource
+
+	* updated Copyright in VersitSaxDriver.m
+  
+2003-12-13  Max Berger  <max@berger.name>
+
+	* replaces commas by spaces in attrs (as in spec) (v0.1.15)
+
+2003-12-13  Max Berger  <max@berger.name>
+
+	* v0.1.14
+
+	* added support for apple item1.adr elements
+
+	* added support for multiple attributes of same type
+
+
+2003-12-12  Max Berger  <max@berger.name>
+
+	* added support for subitems, added subitems for ical and vcard (v0.1.13)
+
+2003-12-12  Max Berger  <max@berger.name>
+
+	* added mappings into vcard driver (v0.1.12)
+
+2003-12-11  Max Berger  <max@berger.name>
+
+	* collapsed drivers for vcard 21 and 30 (v0.1.11)
+
+2003-12-11  Max Berger  <max@berger.name>
+
+	* fixed range check (v0.1.10)
+
+2003-12-11  Max Berger  <max@berger.name>
+
+	* fixed another missing () in malloc (v0.1.9)
+
+2003-12-11  Max Berger  <max@berger.name>
+
+	* fixed a missing () in malloc (v0.1.8)
+
+2003-12-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.1.7
+
+	* minor tweaks to sourcecode style ;-)
+
+	* created GNUmakefile's
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* v0.1.6
+
+	* added GNUmakefile for unix
+
+	* fixed bundle-info.plist
+
+	* fixed a bug that caused libFondation to crash
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* v0.1.5
+
+	* Implemented attribute mapping
+
+	* Added list of attributes for xcal
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* v0.1.4
+
+	* implemented handling via list and stack
+        
+	* added support for name mapping and mapping to attributes
+
+	* added complete iCalendar Name mapping
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* v0.1.3
+
+	* VersitSaxDriver.m: Split up in lines works correctly
+
+	* VersitSaxDriver: added support for contentHandler
+
+	* VersitSaxDriver: added support for namespace
+
+	* VersitSaxDriver: now has begin/end document
+
+	* ICalendarSaxDriver: now set correct namespace
+
+	* VersitSaxDriver: now parses Tags, attibutes and values
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* v0.1.2
+
+	* fixed Copyright notice
+
+	* added Data Retrieval
+        
+	* added unfold method (doesnt do anything yet)
+
+2003-11-23  Max Berger  <max@berger.name>
+
+	* Initial Version (v0.1.1)

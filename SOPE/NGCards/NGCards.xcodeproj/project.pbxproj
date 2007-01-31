@@ -1,0 +1,1093 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AD2EC1C408E2E630006B7836 /* iCalDailyRecurrenceCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2EC1C008E2E630006B7836 /* iCalDailyRecurrenceCalculator.m */; };
+		AD2EC1C508E2E630006B7836 /* iCalMonthlyRecurrenceCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2EC1C108E2E630006B7836 /* iCalMonthlyRecurrenceCalculator.m */; };
+		AD2EC1C608E2E630006B7836 /* iCalWeeklyRecurrenceCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2EC1C208E2E630006B7836 /* iCalWeeklyRecurrenceCalculator.m */; };
+		AD2EC1C708E2E630006B7836 /* iCalYearlyRecurrenceCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2EC1C308E2E630006B7836 /* iCalYearlyRecurrenceCalculator.m */; };
+		AD596D9E083769C500C4D81D /* NGICalSaxHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D8A083769C500C4D81D /* NGICalSaxHandler.h */; };
+		AD596D9F083769C500C4D81D /* NGICalSaxHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D8B083769C500C4D81D /* NGICalSaxHandler.m */; };
+		AD596DA0083769C500C4D81D /* NGVCard.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D8C083769C500C4D81D /* NGVCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DA1083769C500C4D81D /* NGVCard.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D8D083769C500C4D81D /* NGVCard.m */; };
+		AD596DA2083769C500C4D81D /* NGVCardAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D8E083769C500C4D81D /* NGVCardAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DA3083769C500C4D81D /* NGVCardAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D8F083769C500C4D81D /* NGVCardAddress.m */; };
+		AD596DA4083769C500C4D81D /* NGVCardName.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D90083769C500C4D81D /* NGVCardName.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DA5083769C500C4D81D /* NGVCardName.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D91083769C500C4D81D /* NGVCardName.m */; };
+		AD596DA6083769C500C4D81D /* NGVCardOrg.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D92083769C500C4D81D /* NGVCardOrg.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DA7083769C500C4D81D /* NGVCardOrg.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D93083769C500C4D81D /* NGVCardOrg.m */; };
+		AD596DA8083769C500C4D81D /* NGVCardPhone.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D94083769C500C4D81D /* NGVCardPhone.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DA9083769C500C4D81D /* NGVCardPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D95083769C500C4D81D /* NGVCardPhone.m */; };
+		AD596DAA083769C500C4D81D /* NGVCardSaxHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D96083769C500C4D81D /* NGVCardSaxHandler.h */; };
+		AD596DAB083769C500C4D81D /* NGVCardSaxHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D97083769C500C4D81D /* NGVCardSaxHandler.m */; };
+		AD596DAC083769C500C4D81D /* NGVCardSimpleValue.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D98083769C500C4D81D /* NGVCardSimpleValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DAD083769C500C4D81D /* NGVCardSimpleValue.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D99083769C500C4D81D /* NGVCardSimpleValue.m */; };
+		AD596DAE083769C500C4D81D /* NGVCardStrArrayValue.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D9A083769C500C4D81D /* NGVCardStrArrayValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DAF083769C500C4D81D /* NGVCardStrArrayValue.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D9B083769C500C4D81D /* NGVCardStrArrayValue.m */; };
+		AD596DB0083769C500C4D81D /* NGVCardValue.h in Headers */ = {isa = PBXBuildFile; fileRef = AD596D9C083769C500C4D81D /* NGVCardValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD596DB1083769C500C4D81D /* NGVCardValue.m in Sources */ = {isa = PBXBuildFile; fileRef = AD596D9D083769C500C4D81D /* NGVCardValue.m */; };
+		AD770E6907AE627500F5C7A1 /* iCalRecurrenceRule.h in Headers */ = {isa = PBXBuildFile; fileRef = AD770E6707AE627500F5C7A1 /* iCalRecurrenceRule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD770E6A07AE627500F5C7A1 /* iCalRecurrenceRule.m in Sources */ = {isa = PBXBuildFile; fileRef = AD770E6807AE627500F5C7A1 /* iCalRecurrenceRule.m */; };
+		AD77103E07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.h in Headers */ = {isa = PBXBuildFile; fileRef = AD77103C07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD77103F07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AD77103D07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.m */; };
+		AD8BF0F80701902800EC239A /* XmlRpc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8BF0F70701902800EC239A /* XmlRpc.framework */; };
+		ADAACE6807B3973900FC48D6 /* iCalRecurrenceCalculator.h in Headers */ = {isa = PBXBuildFile; fileRef = ADAACE6607B3973900FC48D6 /* iCalRecurrenceCalculator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADAACE6907B3973900FC48D6 /* iCalRecurrenceCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADAACE6707B3973900FC48D6 /* iCalRecurrenceCalculator.m */; };
+		ADAAD00707B6AF7700FC48D6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADAAD00607B6AF7700FC48D6 /* SenTestingKit.framework */; };
+		ADAAD02307B6AFD700FC48D6 /* iCalRecurrenceCalculatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ADAAD02107B6AFD700FC48D6 /* iCalRecurrenceCalculatorTests.m */; };
+		ADAAD04207B6B05000FC48D6 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = ADAAD04107B6B05000FC48D6 /* common.h */; };
+		ADAAD0A307B6B74F00FC48D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503B06DE528200C4E7F8 /* Foundation.framework */; };
+		ADAAD11107B6B75300FC48D6 /* NGExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503F06DE52F600C4E7F8 /* NGExtensions.framework */; };
+		ADAAD11207B6B7A100FC48D6 /* NGCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF4E6006DE4FF200C4E7F8 /* NGCards.framework */; };
+		ADBE3DF8072713AF000FEA6A /* iCalRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = ADBE3DF7072713AF000FEA6A /* iCalRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADBE3DFA072713C2000FEA6A /* iCalRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = ADBE3DF9072713C2000FEA6A /* iCalRenderer.m */; };
+		ADD1FC9B06E4D6D400E387F0 /* iCalEventChanges.h in Headers */ = {isa = PBXBuildFile; fileRef = ADD1FC9906E4D6D400E387F0 /* iCalEventChanges.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADD1FC9C06E4D6D400E387F0 /* iCalEventChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD1FC9A06E4D6D400E387F0 /* iCalEventChanges.m */; };
+		ADDF4F4106DE513D00C4E7F8 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F1306DE513D00C4E7F8 /* common.h */; };
+		ADDF4F4206DE513D00C4E7F8 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = ADDF4F1406DE513D00C4E7F8 /* COPYING */; };
+		ADDF4F4306DE513D00C4E7F8 /* COPYRIGHT in Resources */ = {isa = PBXBuildFile; fileRef = ADDF4F1506DE513D00C4E7F8 /* COPYRIGHT */; };
+		ADDF4F4706DE513D00C4E7F8 /* iCalAlarm.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F1906DE513D00C4E7F8 /* iCalAlarm.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F4806DE513D00C4E7F8 /* iCalAlarm.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F1A06DE513D00C4E7F8 /* iCalAlarm.m */; };
+		ADDF4F4906DE513D00C4E7F8 /* iCalAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F1B06DE513D00C4E7F8 /* iCalAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F4A06DE513D00C4E7F8 /* iCalAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F1C06DE513D00C4E7F8 /* iCalAttachment.m */; };
+		ADDF4F4B06DE513D00C4E7F8 /* iCalCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F1D06DE513D00C4E7F8 /* iCalCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F4C06DE513D00C4E7F8 /* iCalCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F1E06DE513D00C4E7F8 /* iCalCalendar.m */; };
+		ADDF4F4D06DE513D00C4E7F8 /* iCalDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F1F06DE513D00C4E7F8 /* iCalDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F4E06DE513D00C4E7F8 /* iCalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2006DE513D00C4E7F8 /* iCalDataSource.m */; };
+		ADDF4F4F06DE513D00C4E7F8 /* iCalDateHolder.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2106DE513D00C4E7F8 /* iCalDateHolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5006DE513D00C4E7F8 /* iCalDateHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2206DE513D00C4E7F8 /* iCalDateHolder.m */; };
+		ADDF4F5106DE513D00C4E7F8 /* iCalDuration.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2306DE513D00C4E7F8 /* iCalDuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5206DE513D00C4E7F8 /* iCalDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2406DE513D00C4E7F8 /* iCalDuration.m */; };
+		ADDF4F5406DE513D00C4E7F8 /* iCalEntityObject.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2606DE513D00C4E7F8 /* iCalEntityObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5506DE513D00C4E7F8 /* iCalEntityObject.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2706DE513D00C4E7F8 /* iCalEntityObject.m */; };
+		ADDF4F5606DE513D00C4E7F8 /* iCalEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2806DE513D00C4E7F8 /* iCalEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5706DE513D00C4E7F8 /* iCalEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2906DE513D00C4E7F8 /* iCalEvent.m */; };
+		ADDF4F5806DE513D00C4E7F8 /* iCalFreeBusy.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2A06DE513D00C4E7F8 /* iCalFreeBusy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5906DE513D00C4E7F8 /* iCalFreeBusy.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2B06DE513D00C4E7F8 /* iCalFreeBusy.m */; };
+		ADDF4F5A06DE513D00C4E7F8 /* iCalJournal.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2C06DE513D00C4E7F8 /* iCalJournal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5B06DE513D00C4E7F8 /* iCalJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2D06DE513D00C4E7F8 /* iCalJournal.m */; };
+		ADDF4F5C06DE513D00C4E7F8 /* iCalObject.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F2E06DE513D00C4E7F8 /* iCalObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5D06DE513D00C4E7F8 /* iCalObject.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F2F06DE513D00C4E7F8 /* iCalObject.m */; };
+		ADDF4F5E06DE513D00C4E7F8 /* iCalPerson.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F3006DE513D00C4E7F8 /* iCalPerson.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F5F06DE513D00C4E7F8 /* iCalPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F3106DE513D00C4E7F8 /* iCalPerson.m */; };
+		ADDF4F6206DE513D00C4E7F8 /* iCalToDo.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F3406DE513D00C4E7F8 /* iCalToDo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F6306DE513D00C4E7F8 /* iCalToDo.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F3506DE513D00C4E7F8 /* iCalToDo.m */; };
+		ADDF4F6406DE513D00C4E7F8 /* iCalTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F3606DE513D00C4E7F8 /* iCalTrigger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F6506DE513D00C4E7F8 /* iCalTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F3706DE513D00C4E7F8 /* iCalTrigger.m */; };
+		ADDF4F6606DE513D00C4E7F8 /* NGCards.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F3806DE513D00C4E7F8 /* NGCards.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F6806DE513D00C4E7F8 /* NSCalendarDate+ICal.h in Headers */ = {isa = PBXBuildFile; fileRef = ADDF4F3A06DE513D00C4E7F8 /* NSCalendarDate+ICal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ADDF4F6906DE513D00C4E7F8 /* NSCalendarDate+ICal.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDF4F3B06DE513D00C4E7F8 /* NSCalendarDate+ICal.m */; };
+		ADDF4F6C06DE513D00C4E7F8 /* README in Resources */ = {isa = PBXBuildFile; fileRef = ADDF4F3E06DE513D00C4E7F8 /* README */; };
+		ADDF503C06DE528200C4E7F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503B06DE528200C4E7F8 /* Foundation.framework */; };
+		ADDF504106DE52F600C4E7F8 /* DOM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503D06DE52F600C4E7F8 /* DOM.framework */; };
+		ADDF504206DE52F600C4E7F8 /* EOControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503E06DE52F600C4E7F8 /* EOControl.framework */; };
+		ADDF504306DE52F600C4E7F8 /* NGExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF503F06DE52F600C4E7F8 /* NGExtensions.framework */; };
+		ADDF504406DE52F600C4E7F8 /* SaxObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDF504006DE52F600C4E7F8 /* SaxObjC.framework */; };
+		ADDF51AC06DE56E100C4E7F8 /* NGCards.xmap in CopyFiles */ = {isa = PBXBuildFile; fileRef = ADDF4F3906DE513D00C4E7F8 /* NGCards.xmap */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		ADDF4E5306DE4FC600C4E7F8 /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+					"DEBUG=1",
+				);
+			};
+			name = Development;
+		};
+		ADDF4E5406DE4FC800C4E7F8 /* Wrapper */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path/../Frameworks/";
+				FRAMEWORK_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+				);
+				SKIP_INSTALL = YES;
+				SYMROOT = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build";
+				UNSTRIPPED_PRODUCT = NO;
+				ZERO_LINK = NO;
+			};
+			name = Wrapper;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		ADAACFED07B6AEBF00FC48D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADDF4E5506DE4FC800C4E7F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ADDF4E5F06DE4FF200C4E7F8;
+			remoteInfo = NGCards;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ADDF51AB06DE56C500C4E7F8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /Library/SaxMappings;
+			dstSubfolderSpec = 0;
+			files = (
+				ADDF51AC06DE56E100C4E7F8 /* NGCards.xmap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		AD2EC1C008E2E630006B7836 /* iCalDailyRecurrenceCalculator.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iCalDailyRecurrenceCalculator.m; sourceTree = "<group>"; };
+		AD2EC1C108E2E630006B7836 /* iCalMonthlyRecurrenceCalculator.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iCalMonthlyRecurrenceCalculator.m; sourceTree = "<group>"; };
+		AD2EC1C208E2E630006B7836 /* iCalWeeklyRecurrenceCalculator.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iCalWeeklyRecurrenceCalculator.m; sourceTree = "<group>"; };
+		AD2EC1C308E2E630006B7836 /* iCalYearlyRecurrenceCalculator.m */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.objc; path = iCalYearlyRecurrenceCalculator.m; sourceTree = "<group>"; };
+		AD596D8A083769C500C4D81D /* NGICalSaxHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGICalSaxHandler.h; sourceTree = "<group>"; };
+		AD596D8B083769C500C4D81D /* NGICalSaxHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGICalSaxHandler.m; sourceTree = "<group>"; };
+		AD596D8C083769C500C4D81D /* NGVCard.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCard.h; sourceTree = "<group>"; };
+		AD596D8D083769C500C4D81D /* NGVCard.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCard.m; sourceTree = "<group>"; };
+		AD596D8E083769C500C4D81D /* NGVCardAddress.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardAddress.h; sourceTree = "<group>"; };
+		AD596D8F083769C500C4D81D /* NGVCardAddress.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardAddress.m; sourceTree = "<group>"; };
+		AD596D90083769C500C4D81D /* NGVCardName.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardName.h; sourceTree = "<group>"; };
+		AD596D91083769C500C4D81D /* NGVCardName.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardName.m; sourceTree = "<group>"; };
+		AD596D92083769C500C4D81D /* NGVCardOrg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardOrg.h; sourceTree = "<group>"; };
+		AD596D93083769C500C4D81D /* NGVCardOrg.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardOrg.m; sourceTree = "<group>"; };
+		AD596D94083769C500C4D81D /* NGVCardPhone.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardPhone.h; sourceTree = "<group>"; };
+		AD596D95083769C500C4D81D /* NGVCardPhone.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardPhone.m; sourceTree = "<group>"; };
+		AD596D96083769C500C4D81D /* NGVCardSaxHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardSaxHandler.h; sourceTree = "<group>"; };
+		AD596D97083769C500C4D81D /* NGVCardSaxHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardSaxHandler.m; sourceTree = "<group>"; };
+		AD596D98083769C500C4D81D /* NGVCardSimpleValue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardSimpleValue.h; sourceTree = "<group>"; };
+		AD596D99083769C500C4D81D /* NGVCardSimpleValue.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardSimpleValue.m; sourceTree = "<group>"; };
+		AD596D9A083769C500C4D81D /* NGVCardStrArrayValue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardStrArrayValue.h; sourceTree = "<group>"; };
+		AD596D9B083769C500C4D81D /* NGVCardStrArrayValue.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardStrArrayValue.m; sourceTree = "<group>"; };
+		AD596D9C083769C500C4D81D /* NGVCardValue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NGVCardValue.h; sourceTree = "<group>"; };
+		AD596D9D083769C500C4D81D /* NGVCardValue.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NGVCardValue.m; sourceTree = "<group>"; };
+		AD770E6707AE627500F5C7A1 /* iCalRecurrenceRule.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalRecurrenceRule.h; sourceTree = "<group>"; };
+		AD770E6807AE627500F5C7A1 /* iCalRecurrenceRule.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalRecurrenceRule.m; sourceTree = "<group>"; };
+		AD77103C07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalRepeatableEntityObject.h; sourceTree = "<group>"; };
+		AD77103D07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalRepeatableEntityObject.m; sourceTree = "<group>"; };
+		AD8BF0F70701902800EC239A /* XmlRpc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XmlRpc.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/XmlRpc.framework"; sourceTree = "<absolute>"; };
+		ADAACE6607B3973900FC48D6 /* iCalRecurrenceCalculator.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalRecurrenceCalculator.h; sourceTree = "<group>"; };
+		ADAACE6707B3973900FC48D6 /* iCalRecurrenceCalculator.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalRecurrenceCalculator.m; sourceTree = "<group>"; };
+		ADAACFEB07B6AEB500FC48D6 /* NGCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NGCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADAACFEC07B6AEB500FC48D6 /* NGCardsTests-Info.plist */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = text.xml; path = "NGCardsTests-Info.plist"; sourceTree = "<group>"; };
+		ADAAD00607B6AF7700FC48D6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		ADAAD02107B6AFD700FC48D6 /* iCalRecurrenceCalculatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCalRecurrenceCalculatorTests.m; sourceTree = "<group>"; };
+		ADAAD04007B6B02400FC48D6 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		ADAAD04107B6B05000FC48D6 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		ADBE3DF7072713AF000FEA6A /* iCalRenderer.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalRenderer.h; sourceTree = "<group>"; };
+		ADBE3DF9072713C2000FEA6A /* iCalRenderer.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalRenderer.m; sourceTree = "<group>"; };
+		ADBE3DFE072713DB000FEA6A /* fhs.make */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = fhs.make; sourceTree = "<group>"; tabWidth = 8; };
+		ADD1FC9906E4D6D400E387F0 /* iCalEventChanges.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalEventChanges.h; sourceTree = "<group>"; };
+		ADD1FC9A06E4D6D400E387F0 /* iCalEventChanges.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalEventChanges.m; sourceTree = "<group>"; };
+		ADDF4E6006DE4FF200C4E7F8 /* NGCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NGCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADDF4E6206DE4FF200C4E7F8 /* NGCards-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "NGCards-Info.plist"; sourceTree = "<group>"; };
+		ADDF4F1206DE513D00C4E7F8 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4F1306DE513D00C4E7F8 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		ADDF4F1406DE513D00C4E7F8 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		ADDF4F1506DE513D00C4E7F8 /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		ADDF4F1606DE513D00C4E7F8 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4F1706DE513D00C4E7F8 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4F1806DE513D00C4E7F8 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF4F1906DE513D00C4E7F8 /* iCalAlarm.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalAlarm.h; sourceTree = "<group>"; };
+		ADDF4F1A06DE513D00C4E7F8 /* iCalAlarm.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalAlarm.m; sourceTree = "<group>"; };
+		ADDF4F1B06DE513D00C4E7F8 /* iCalAttachment.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalAttachment.h; sourceTree = "<group>"; };
+		ADDF4F1C06DE513D00C4E7F8 /* iCalAttachment.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalAttachment.m; sourceTree = "<group>"; };
+		ADDF4F1D06DE513D00C4E7F8 /* iCalCalendar.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalCalendar.h; sourceTree = "<group>"; };
+		ADDF4F1E06DE513D00C4E7F8 /* iCalCalendar.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalCalendar.m; sourceTree = "<group>"; };
+		ADDF4F1F06DE513D00C4E7F8 /* iCalDataSource.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalDataSource.h; sourceTree = "<group>"; };
+		ADDF4F2006DE513D00C4E7F8 /* iCalDataSource.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalDataSource.m; sourceTree = "<group>"; };
+		ADDF4F2106DE513D00C4E7F8 /* iCalDateHolder.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalDateHolder.h; sourceTree = "<group>"; };
+		ADDF4F2206DE513D00C4E7F8 /* iCalDateHolder.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalDateHolder.m; sourceTree = "<group>"; };
+		ADDF4F2306DE513D00C4E7F8 /* iCalDuration.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalDuration.h; sourceTree = "<group>"; };
+		ADDF4F2406DE513D00C4E7F8 /* iCalDuration.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalDuration.m; sourceTree = "<group>"; };
+		ADDF4F2506DE513D00C4E7F8 /* IcalElements.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = IcalElements.m; sourceTree = "<group>"; };
+		ADDF4F2606DE513D00C4E7F8 /* iCalEntityObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalEntityObject.h; sourceTree = "<group>"; };
+		ADDF4F2706DE513D00C4E7F8 /* iCalEntityObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalEntityObject.m; sourceTree = "<group>"; };
+		ADDF4F2806DE513D00C4E7F8 /* iCalEvent.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalEvent.h; sourceTree = "<group>"; };
+		ADDF4F2906DE513D00C4E7F8 /* iCalEvent.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalEvent.m; sourceTree = "<group>"; };
+		ADDF4F2A06DE513D00C4E7F8 /* iCalFreeBusy.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalFreeBusy.h; sourceTree = "<group>"; };
+		ADDF4F2B06DE513D00C4E7F8 /* iCalFreeBusy.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalFreeBusy.m; sourceTree = "<group>"; };
+		ADDF4F2C06DE513D00C4E7F8 /* iCalJournal.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalJournal.h; sourceTree = "<group>"; };
+		ADDF4F2D06DE513D00C4E7F8 /* iCalJournal.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalJournal.m; sourceTree = "<group>"; };
+		ADDF4F2E06DE513D00C4E7F8 /* iCalObject.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalObject.h; sourceTree = "<group>"; };
+		ADDF4F2F06DE513D00C4E7F8 /* iCalObject.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalObject.m; sourceTree = "<group>"; };
+		ADDF4F3006DE513D00C4E7F8 /* iCalPerson.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalPerson.h; sourceTree = "<group>"; };
+		ADDF4F3106DE513D00C4E7F8 /* iCalPerson.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalPerson.m; sourceTree = "<group>"; };
+		ADDF4F3206DE513D00C4E7F8 /* IcalResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = IcalResponse.h; sourceTree = "<group>"; };
+		ADDF4F3306DE513D00C4E7F8 /* IcalResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = IcalResponse.m; sourceTree = "<group>"; };
+		ADDF4F3406DE513D00C4E7F8 /* iCalToDo.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalToDo.h; sourceTree = "<group>"; };
+		ADDF4F3506DE513D00C4E7F8 /* iCalToDo.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalToDo.m; sourceTree = "<group>"; };
+		ADDF4F3606DE513D00C4E7F8 /* iCalTrigger.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = iCalTrigger.h; sourceTree = "<group>"; };
+		ADDF4F3706DE513D00C4E7F8 /* iCalTrigger.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = iCalTrigger.m; sourceTree = "<group>"; };
+		ADDF4F3806DE513D00C4E7F8 /* NGCards.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = NGCards.h; sourceTree = "<group>"; };
+		ADDF4F3906DE513D00C4E7F8 /* NGCards.xmap */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = NGCards.xmap; sourceTree = "<group>"; };
+		ADDF4F3A06DE513D00C4E7F8 /* NSCalendarDate+ICal.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSCalendarDate+ICal.h"; sourceTree = "<group>"; };
+		ADDF4F3B06DE513D00C4E7F8 /* NSCalendarDate+ICal.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSCalendarDate+ICal.m"; sourceTree = "<group>"; };
+		ADDF4F3C06DE513D00C4E7F8 /* NSString+ICal.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = "NSString+ICal.h"; sourceTree = "<group>"; };
+		ADDF4F3D06DE513D00C4E7F8 /* NSString+ICal.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "NSString+ICal.m"; sourceTree = "<group>"; };
+		ADDF4F3E06DE513D00C4E7F8 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		ADDF4F3F06DE513D00C4E7F8 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		ADDF503B06DE528200C4E7F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		ADDF503D06DE52F600C4E7F8 /* DOM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DOM.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/DOM.framework"; sourceTree = "<absolute>"; };
+		ADDF503E06DE52F600C4E7F8 /* EOControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EOControl.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/EOControl.framework"; sourceTree = "<absolute>"; };
+		ADDF503F06DE52F600C4E7F8 /* NGExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NGExtensions.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/NGExtensions.framework"; sourceTree = "<absolute>"; };
+		ADDF504006DE52F600C4E7F8 /* SaxObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SaxObjC.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/SaxObjC.framework"; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ADAACFE807B6AEB500FC48D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADAAD0A307B6B74F00FC48D6 /* Foundation.framework in Frameworks */,
+				ADAAD11107B6B75300FC48D6 /* NGExtensions.framework in Frameworks */,
+				ADAAD00707B6AF7700FC48D6 /* SenTestingKit.framework in Frameworks */,
+				ADAAD11207B6B7A100FC48D6 /* NGCards.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ADDF4E5E06DE4FF200C4E7F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADDF503C06DE528200C4E7F8 /* Foundation.framework in Frameworks */,
+				ADDF504206DE52F600C4E7F8 /* EOControl.framework in Frameworks */,
+				ADDF504306DE52F600C4E7F8 /* NGExtensions.framework in Frameworks */,
+				ADDF504406DE52F600C4E7F8 /* SaxObjC.framework in Frameworks */,
+				ADDF504106DE52F600C4E7F8 /* DOM.framework in Frameworks */,
+				AD8BF0F80701902800EC239A /* XmlRpc.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AD596D730837697900C4D81D /* iCal */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F7306DE516A00C4E7F8 /* Headers */,
+				ADDF4FD406DE517900C4E7F8 /* Classes */,
+			);
+			name = iCal;
+			sourceTree = "<group>";
+		};
+		AD596D830837698200C4D81D /* vCard */ = {
+			isa = PBXGroup;
+			children = (
+				AD596D860837699600C4D81D /* Headers */,
+				AD596D890837699A00C4D81D /* Classes */,
+			);
+			name = vCard;
+			sourceTree = "<group>";
+		};
+		AD596D860837699600C4D81D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				AD596D96083769C500C4D81D /* NGVCardSaxHandler.h */,
+				AD596D8C083769C500C4D81D /* NGVCard.h */,
+				AD596D9C083769C500C4D81D /* NGVCardValue.h */,
+				AD596D98083769C500C4D81D /* NGVCardSimpleValue.h */,
+				AD596D9A083769C500C4D81D /* NGVCardStrArrayValue.h */,
+				AD596D8E083769C500C4D81D /* NGVCardAddress.h */,
+				AD596D90083769C500C4D81D /* NGVCardName.h */,
+				AD596D92083769C500C4D81D /* NGVCardOrg.h */,
+				AD596D94083769C500C4D81D /* NGVCardPhone.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		AD596D890837699A00C4D81D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD596D97083769C500C4D81D /* NGVCardSaxHandler.m */,
+				AD596D8D083769C500C4D81D /* NGVCard.m */,
+				AD596D9D083769C500C4D81D /* NGVCardValue.m */,
+				AD596D99083769C500C4D81D /* NGVCardSimpleValue.m */,
+				AD596D9B083769C500C4D81D /* NGVCardStrArrayValue.m */,
+				AD596D8F083769C500C4D81D /* NGVCardAddress.m */,
+				AD596D91083769C500C4D81D /* NGVCardName.m */,
+				AD596D93083769C500C4D81D /* NGVCardOrg.m */,
+				AD596D95083769C500C4D81D /* NGVCardPhone.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADAACFFF07B6AF0E00FC48D6 /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				ADAAD04007B6B02400FC48D6 /* README */,
+				ADAAD01F07B6AFA600FC48D6 /* Classes */,
+				ADAAD05C07B6B0CB00FC48D6 /* Resources */,
+			);
+			fileEncoding = 5;
+			indentWidth = 2;
+			name = "Unit Tests";
+			path = tests;
+			sourceTree = "<group>";
+		};
+		ADAAD01F07B6AFA600FC48D6 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADAAD04107B6B05000FC48D6 /* common.h */,
+				ADAAD02107B6AFD700FC48D6 /* iCalRecurrenceCalculatorTests.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADAAD05C07B6B0CB00FC48D6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ADAACFEC07B6AEB500FC48D6 /* NGCardsTests-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		ADDF4E5106DE4FC600C4E7F8 = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F3E06DE513D00C4E7F8 /* README */,
+				ADDF4F1406DE513D00C4E7F8 /* COPYING */,
+				ADDF4F1506DE513D00C4E7F8 /* COPYRIGHT */,
+				ADDF4F1206DE513D00C4E7F8 /* ChangeLog */,
+				ADDF4F3F06DE513D00C4E7F8 /* Version */,
+				ADDF4F7006DE514B00C4E7F8 /* Makefiles */,
+				AD596D730837697900C4D81D /* iCal */,
+				AD596D830837698200C4D81D /* vCard */,
+				ADDF503706DE520000C4E7F8 /* Unused */,
+				ADAACFFF07B6AF0E00FC48D6 /* Unit Tests */,
+				ADDF4E6506DE500200C4E7F8 /* Resources */,
+				ADDF4E6106DE4FF200C4E7F8 /* Products */,
+				ADDF503A06DE524200C4E7F8 /* Linked Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		ADDF4E6106DE4FF200C4E7F8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4E6006DE4FF200C4E7F8 /* NGCards.framework */,
+				ADAACFEB07B6AEB500FC48D6 /* NGCardsTests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ADDF4E6506DE500200C4E7F8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4E6206DE4FF200C4E7F8 /* NGCards-Info.plist */,
+				ADDF4F3906DE513D00C4E7F8 /* NGCards.xmap */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		ADDF4F7006DE514B00C4E7F8 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F1606DE513D00C4E7F8 /* GNUmakefile */,
+				ADDF4F1806DE513D00C4E7F8 /* GNUmakefile.preamble */,
+				ADDF4F1706DE513D00C4E7F8 /* GNUmakefile.postamble */,
+				ADBE3DFE072713DB000FEA6A /* fhs.make */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		ADDF4F7306DE516A00C4E7F8 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F3806DE513D00C4E7F8 /* NGCards.h */,
+				AD596D8A083769C500C4D81D /* NGICalSaxHandler.h */,
+				ADDF4F1906DE513D00C4E7F8 /* iCalAlarm.h */,
+				ADDF4F1B06DE513D00C4E7F8 /* iCalAttachment.h */,
+				ADDF4F1D06DE513D00C4E7F8 /* iCalCalendar.h */,
+				ADDF4F1F06DE513D00C4E7F8 /* iCalDataSource.h */,
+				ADDF4F2106DE513D00C4E7F8 /* iCalDateHolder.h */,
+				ADDF4F2306DE513D00C4E7F8 /* iCalDuration.h */,
+				ADDF4F2606DE513D00C4E7F8 /* iCalEntityObject.h */,
+				AD77103C07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.h */,
+				ADDF4F2806DE513D00C4E7F8 /* iCalEvent.h */,
+				ADDF4F2A06DE513D00C4E7F8 /* iCalFreeBusy.h */,
+				ADDF4F2C06DE513D00C4E7F8 /* iCalJournal.h */,
+				ADDF4F2E06DE513D00C4E7F8 /* iCalObject.h */,
+				ADDF4F3006DE513D00C4E7F8 /* iCalPerson.h */,
+				ADDF4F3406DE513D00C4E7F8 /* iCalToDo.h */,
+				ADDF4F3606DE513D00C4E7F8 /* iCalTrigger.h */,
+				ADD1FC9906E4D6D400E387F0 /* iCalEventChanges.h */,
+				ADBE3DF7072713AF000FEA6A /* iCalRenderer.h */,
+				AD770E6707AE627500F5C7A1 /* iCalRecurrenceRule.h */,
+				ADAACE6607B3973900FC48D6 /* iCalRecurrenceCalculator.h */,
+				ADDF4F3A06DE513D00C4E7F8 /* NSCalendarDate+ICal.h */,
+			);
+			fileEncoding = 5;
+			indentWidth = 2;
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		ADDF4FD406DE517900C4E7F8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F1306DE513D00C4E7F8 /* common.h */,
+				AD596D8B083769C500C4D81D /* NGICalSaxHandler.m */,
+				ADDF4F1A06DE513D00C4E7F8 /* iCalAlarm.m */,
+				ADDF4F1C06DE513D00C4E7F8 /* iCalAttachment.m */,
+				ADDF4F1E06DE513D00C4E7F8 /* iCalCalendar.m */,
+				ADDF4F2006DE513D00C4E7F8 /* iCalDataSource.m */,
+				ADDF4F2206DE513D00C4E7F8 /* iCalDateHolder.m */,
+				ADDF4F2406DE513D00C4E7F8 /* iCalDuration.m */,
+				ADDF4F2706DE513D00C4E7F8 /* iCalEntityObject.m */,
+				AD77103D07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.m */,
+				ADDF4F2906DE513D00C4E7F8 /* iCalEvent.m */,
+				ADDF4F2B06DE513D00C4E7F8 /* iCalFreeBusy.m */,
+				ADDF4F2D06DE513D00C4E7F8 /* iCalJournal.m */,
+				ADDF4F2F06DE513D00C4E7F8 /* iCalObject.m */,
+				ADDF4F3106DE513D00C4E7F8 /* iCalPerson.m */,
+				ADDF4F3506DE513D00C4E7F8 /* iCalToDo.m */,
+				ADDF4F3706DE513D00C4E7F8 /* iCalTrigger.m */,
+				ADD1FC9A06E4D6D400E387F0 /* iCalEventChanges.m */,
+				ADBE3DF9072713C2000FEA6A /* iCalRenderer.m */,
+				AD770E6807AE627500F5C7A1 /* iCalRecurrenceRule.m */,
+				ADAACE6707B3973900FC48D6 /* iCalRecurrenceCalculator.m */,
+				AD2EC1C008E2E630006B7836 /* iCalDailyRecurrenceCalculator.m */,
+				AD2EC1C208E2E630006B7836 /* iCalWeeklyRecurrenceCalculator.m */,
+				AD2EC1C108E2E630006B7836 /* iCalMonthlyRecurrenceCalculator.m */,
+				AD2EC1C308E2E630006B7836 /* iCalYearlyRecurrenceCalculator.m */,
+				ADDF4F3B06DE513D00C4E7F8 /* NSCalendarDate+ICal.m */,
+			);
+			fileEncoding = 5;
+			indentWidth = 2;
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		ADDF503706DE520000C4E7F8 /* Unused */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF4F3206DE513D00C4E7F8 /* IcalResponse.h */,
+				ADDF4F3306DE513D00C4E7F8 /* IcalResponse.m */,
+				ADDF4F2506DE513D00C4E7F8 /* IcalElements.m */,
+				ADDF4F3C06DE513D00C4E7F8 /* NSString+ICal.h */,
+				ADDF4F3D06DE513D00C4E7F8 /* NSString+ICal.m */,
+			);
+			name = Unused;
+			sourceTree = "<group>";
+		};
+		ADDF503A06DE524200C4E7F8 /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF503B06DE528200C4E7F8 /* Foundation.framework */,
+				ADDF503E06DE52F600C4E7F8 /* EOControl.framework */,
+				ADDF503F06DE52F600C4E7F8 /* NGExtensions.framework */,
+				ADAAD00607B6AF7700FC48D6 /* SenTestingKit.framework */,
+				ADDF510206DE54BE00C4E7F8 /* sope-xml */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		ADDF510206DE54BE00C4E7F8 /* sope-xml */ = {
+			isa = PBXGroup;
+			children = (
+				ADDF504006DE52F600C4E7F8 /* SaxObjC.framework */,
+				ADDF503D06DE52F600C4E7F8 /* DOM.framework */,
+				AD8BF0F70701902800EC239A /* XmlRpc.framework */,
+			);
+			name = "sope-xml";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		ADAACFE507B6AEB500FC48D6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADAAD04207B6B05000FC48D6 /* common.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ADDF4E5B06DE4FF200C4E7F8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADDF4F4106DE513D00C4E7F8 /* common.h in Headers */,
+				ADDF4F4706DE513D00C4E7F8 /* iCalAlarm.h in Headers */,
+				ADDF4F4906DE513D00C4E7F8 /* iCalAttachment.h in Headers */,
+				ADDF4F4B06DE513D00C4E7F8 /* iCalCalendar.h in Headers */,
+				ADDF4F4D06DE513D00C4E7F8 /* iCalDataSource.h in Headers */,
+				ADDF4F4F06DE513D00C4E7F8 /* iCalDateHolder.h in Headers */,
+				ADDF4F5106DE513D00C4E7F8 /* iCalDuration.h in Headers */,
+				ADDF4F5406DE513D00C4E7F8 /* iCalEntityObject.h in Headers */,
+				ADDF4F5606DE513D00C4E7F8 /* iCalEvent.h in Headers */,
+				ADDF4F5806DE513D00C4E7F8 /* iCalFreeBusy.h in Headers */,
+				ADDF4F5A06DE513D00C4E7F8 /* iCalJournal.h in Headers */,
+				ADDF4F5C06DE513D00C4E7F8 /* iCalObject.h in Headers */,
+				ADDF4F5E06DE513D00C4E7F8 /* iCalPerson.h in Headers */,
+				ADDF4F6206DE513D00C4E7F8 /* iCalToDo.h in Headers */,
+				ADDF4F6406DE513D00C4E7F8 /* iCalTrigger.h in Headers */,
+				ADDF4F6606DE513D00C4E7F8 /* NGCards.h in Headers */,
+				ADDF4F6806DE513D00C4E7F8 /* NSCalendarDate+ICal.h in Headers */,
+				ADD1FC9B06E4D6D400E387F0 /* iCalEventChanges.h in Headers */,
+				ADBE3DF8072713AF000FEA6A /* iCalRenderer.h in Headers */,
+				AD770E6907AE627500F5C7A1 /* iCalRecurrenceRule.h in Headers */,
+				AD77103E07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.h in Headers */,
+				ADAACE6807B3973900FC48D6 /* iCalRecurrenceCalculator.h in Headers */,
+				AD596D9E083769C500C4D81D /* NGICalSaxHandler.h in Headers */,
+				AD596DA0083769C500C4D81D /* NGVCard.h in Headers */,
+				AD596DA2083769C500C4D81D /* NGVCardAddress.h in Headers */,
+				AD596DA4083769C500C4D81D /* NGVCardName.h in Headers */,
+				AD596DA6083769C500C4D81D /* NGVCardOrg.h in Headers */,
+				AD596DA8083769C500C4D81D /* NGVCardPhone.h in Headers */,
+				AD596DAA083769C500C4D81D /* NGVCardSaxHandler.h in Headers */,
+				AD596DAC083769C500C4D81D /* NGVCardSimpleValue.h in Headers */,
+				AD596DAE083769C500C4D81D /* NGVCardStrArrayValue.h in Headers */,
+				AD596DB0083769C500C4D81D /* NGVCardValue.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		ADAACFEA07B6AEB500FC48D6 /* NGCardsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADA07A4D0857394900993825 /* Build configuration list for PBXNativeTarget "NGCardsTests" */;
+			buildPhases = (
+				ADAACFE507B6AEB500FC48D6 /* Headers */,
+				ADAACFE607B6AEB500FC48D6 /* Resources */,
+				ADAACFE707B6AEB500FC48D6 /* Sources */,
+				ADAACFE807B6AEB500FC48D6 /* Frameworks */,
+				ADAACFE907B6AEB500FC48D6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "\"$(USER_LIBRARY_DIR)/EmbeddedFrameworks\"";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "tests/NGCardsTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "-fobjc-exceptions";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCardsTests;
+				SECTORDER_FLAGS = "";
+				TEST_AFTER_BUILD = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+				ADAACFEE07B6AEBF00FC48D6 /* PBXTargetDependency */,
+			);
+			name = NGCardsTests;
+			productName = NGCardsTests;
+			productReference = ADAACFEB07B6AEB500FC48D6 /* NGCardsTests.framework */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>NGCardsTests</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.NGCardsTests</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0d1</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		ADDF4E5F06DE4FF200C4E7F8 /* NGCards */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADA07A490857394900993825 /* Build configuration list for PBXNativeTarget "NGCards" */;
+			buildPhases = (
+				ADDF4E5B06DE4FF200C4E7F8 /* Headers */,
+				ADDF4E5C06DE4FF200C4E7F8 /* Resources */,
+				ADDF4E5D06DE4FF200C4E7F8 /* Sources */,
+				ADDF4E5E06DE4FF200C4E7F8 /* Frameworks */,
+				ADDF51AB06DE56C500C4E7F8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "NGCards-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = (
+					"-DSOPE_MAJOR_VERSION=4",
+					"-DSOPE_MINOR_VERSION=5",
+				);
+				OTHER_LDFLAGS = (
+					"-seg1addr",
+					0xC1E00000,
+					"-headerpad_max_install_names",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCards;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			name = NGCards;
+			productName = NGCards;
+			productReference = ADDF4E6006DE4FF200C4E7F8 /* NGCards.framework */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>NGCards</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.NGCards</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ADDF4E5506DE4FC800C4E7F8 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = ADA07A510857394900993825 /* Build configuration list for PBXProject "NGCards" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				ADDF4E5306DE4FC600C4E7F8 /* Development */,
+				ADDF4E5406DE4FC800C4E7F8 /* Wrapper */,
+			);
+			hasScannedForEncodings = 0;
+			mainGroup = ADDF4E5106DE4FC600C4E7F8;
+			productRefGroup = ADDF4E6106DE4FF200C4E7F8 /* Products */;
+			projectDirPath = "";
+			targets = (
+				ADDF4E5F06DE4FF200C4E7F8 /* NGCards */,
+				ADAACFEA07B6AEB500FC48D6 /* NGCardsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ADAACFE607B6AEB500FC48D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ADDF4E5C06DE4FF200C4E7F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADDF4F4206DE513D00C4E7F8 /* COPYING in Resources */,
+				ADDF4F4306DE513D00C4E7F8 /* COPYRIGHT in Resources */,
+				ADDF4F6C06DE513D00C4E7F8 /* README in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ADAACFE907B6AEB500FC48D6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = /Developer/Tools/RunTargetUnitTests;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ADAACFE707B6AEB500FC48D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADAAD02307B6AFD700FC48D6 /* iCalRecurrenceCalculatorTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ADDF4E5D06DE4FF200C4E7F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADDF4F4806DE513D00C4E7F8 /* iCalAlarm.m in Sources */,
+				ADDF4F4A06DE513D00C4E7F8 /* iCalAttachment.m in Sources */,
+				ADDF4F4C06DE513D00C4E7F8 /* iCalCalendar.m in Sources */,
+				ADDF4F4E06DE513D00C4E7F8 /* iCalDataSource.m in Sources */,
+				ADDF4F5006DE513D00C4E7F8 /* iCalDateHolder.m in Sources */,
+				ADDF4F5206DE513D00C4E7F8 /* iCalDuration.m in Sources */,
+				ADDF4F5506DE513D00C4E7F8 /* iCalEntityObject.m in Sources */,
+				ADDF4F5706DE513D00C4E7F8 /* iCalEvent.m in Sources */,
+				ADDF4F5906DE513D00C4E7F8 /* iCalFreeBusy.m in Sources */,
+				ADDF4F5B06DE513D00C4E7F8 /* iCalJournal.m in Sources */,
+				ADDF4F5D06DE513D00C4E7F8 /* iCalObject.m in Sources */,
+				ADDF4F5F06DE513D00C4E7F8 /* iCalPerson.m in Sources */,
+				ADDF4F6306DE513D00C4E7F8 /* iCalToDo.m in Sources */,
+				ADDF4F6506DE513D00C4E7F8 /* iCalTrigger.m in Sources */,
+				ADDF4F6906DE513D00C4E7F8 /* NSCalendarDate+ICal.m in Sources */,
+				ADD1FC9C06E4D6D400E387F0 /* iCalEventChanges.m in Sources */,
+				ADBE3DFA072713C2000FEA6A /* iCalRenderer.m in Sources */,
+				AD770E6A07AE627500F5C7A1 /* iCalRecurrenceRule.m in Sources */,
+				AD77103F07AE8F8500F5C7A1 /* iCalRepeatableEntityObject.m in Sources */,
+				ADAACE6907B3973900FC48D6 /* iCalRecurrenceCalculator.m in Sources */,
+				AD596D9F083769C500C4D81D /* NGICalSaxHandler.m in Sources */,
+				AD596DA1083769C500C4D81D /* NGVCard.m in Sources */,
+				AD596DA3083769C500C4D81D /* NGVCardAddress.m in Sources */,
+				AD596DA5083769C500C4D81D /* NGVCardName.m in Sources */,
+				AD596DA7083769C500C4D81D /* NGVCardOrg.m in Sources */,
+				AD596DA9083769C500C4D81D /* NGVCardPhone.m in Sources */,
+				AD596DAB083769C500C4D81D /* NGVCardSaxHandler.m in Sources */,
+				AD596DAD083769C500C4D81D /* NGVCardSimpleValue.m in Sources */,
+				AD596DAF083769C500C4D81D /* NGVCardStrArrayValue.m in Sources */,
+				AD596DB1083769C500C4D81D /* NGVCardValue.m in Sources */,
+				AD2EC1C408E2E630006B7836 /* iCalDailyRecurrenceCalculator.m in Sources */,
+				AD2EC1C508E2E630006B7836 /* iCalMonthlyRecurrenceCalculator.m in Sources */,
+				AD2EC1C608E2E630006B7836 /* iCalWeeklyRecurrenceCalculator.m in Sources */,
+				AD2EC1C708E2E630006B7836 /* iCalYearlyRecurrenceCalculator.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ADAACFEE07B6AEBF00FC48D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ADDF4E5F06DE4FF200C4E7F8 /* NGCards */;
+			targetProxy = ADAACFED07B6AEBF00FC48D6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		ADA07A4A0857394900993825 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+					"DEBUG=1",
+				);
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "NGCards-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = (
+					"-DSOPE_MAJOR_VERSION=4",
+					"-DSOPE_MINOR_VERSION=5",
+				);
+				OTHER_LDFLAGS = (
+					"-seg1addr",
+					0xC1E00000,
+					"-headerpad_max_install_names",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCards;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Development;
+		};
+		ADA07A4B0857394900993825 /* Wrapper */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path/../Frameworks/";
+				FRAMEWORK_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+				);
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "NGCards-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = (
+					"-DSOPE_MAJOR_VERSION=4",
+					"-DSOPE_MINOR_VERSION=5",
+				);
+				OTHER_LDFLAGS = (
+					"-seg1addr",
+					0xC1E00000,
+					"-headerpad_max_install_names",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCards;
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
+				SYMROOT = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build";
+				UNSTRIPPED_PRODUCT = NO;
+				WARNING_CFLAGS = "-Wmost";
+				ZERO_LINK = NO;
+			};
+			name = Wrapper;
+		};
+		ADA07A4C0857394900993825 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "NGCards-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = (
+					"-DSOPE_MAJOR_VERSION=4",
+					"-DSOPE_MINOR_VERSION=5",
+				);
+				OTHER_LDFLAGS = (
+					"-seg1addr",
+					0xC1E00000,
+					"-headerpad_max_install_names",
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCards;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Default;
+		};
+		ADA07A4E0857394900993825 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "\"$(USER_LIBRARY_DIR)/EmbeddedFrameworks\"";
+				FRAMEWORK_VERSION = A;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+					"DEBUG=1",
+				);
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "tests/NGCardsTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "-fobjc-exceptions";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCardsTests;
+				SECTORDER_FLAGS = "";
+				TEST_AFTER_BUILD = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Development;
+		};
+		ADA07A4F0857394900993825 /* Wrapper */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path/../Frameworks/";
+				FRAMEWORK_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"APPLE_RUNTIME=1",
+					"NeXT_Foundation_LIBRARY=1",
+					"COCOA_Foundation_LIBRARY=1",
+					"NeXT_RUNTIME=1",
+					"COMPILE_AS_FRAMEWORK=1",
+				);
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "tests/NGCardsTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "-fobjc-exceptions";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCardsTests;
+				SECTORDER_FLAGS = "";
+				SKIP_INSTALL = YES;
+				SYMROOT = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build";
+				TEST_AFTER_BUILD = YES;
+				UNSTRIPPED_PRODUCT = NO;
+				WARNING_CFLAGS = "-Wmost";
+				ZERO_LINK = NO;
+			};
+			name = Wrapper;
+		};
+		ADA07A500857394900993825 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 4.5.74;
+				FRAMEWORK_SEARCH_PATHS = "\"$(USER_LIBRARY_DIR)/EmbeddedFrameworks\"";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "tests/NGCardsTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "-fobjc-exceptions";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NGCardsTests;
+				SECTORDER_FLAGS = "";
+				TEST_AFTER_BUILD = YES;
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Default;
+		};
+		ADA07A520857394900993825 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		ADA07A530857394900993825 /* Wrapper */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Wrapper;
+		};
+		ADA07A540857394900993825 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ADA07A490857394900993825 /* Build configuration list for PBXNativeTarget "NGCards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA07A4A0857394900993825 /* Development */,
+				ADA07A4B0857394900993825 /* Wrapper */,
+				ADA07A4C0857394900993825 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		ADA07A4D0857394900993825 /* Build configuration list for PBXNativeTarget "NGCardsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA07A4E0857394900993825 /* Development */,
+				ADA07A4F0857394900993825 /* Wrapper */,
+				ADA07A500857394900993825 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		ADA07A510857394900993825 /* Build configuration list for PBXProject "NGCards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA07A520857394900993825 /* Development */,
+				ADA07A530857394900993825 /* Wrapper */,
+				ADA07A540857394900993825 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ADDF4E5506DE4FC800C4E7F8 /* Project object */;
+}

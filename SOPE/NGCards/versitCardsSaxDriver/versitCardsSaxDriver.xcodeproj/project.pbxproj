@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1656CD26058806680012D2BC /* VSSaxDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1656CD24058806680012D2BC /* VSSaxDriver.h */; };
+		1656CD27058806680012D2BC /* VSSaxDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1656CD25058806680012D2BC /* VSSaxDriver.m */; };
+		1656CD38058806CE0012D2BC /* bundle-info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1656CD37058806CE0012D2BC /* bundle-info.plist */; };
+		1656CD7E058809660012D2BC /* VSCardSaxDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1656CD7C058809660012D2BC /* VSCardSaxDriver.h */; };
+		1656CD7F058809660012D2BC /* VSCardSaxDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1656CD7D058809660012D2BC /* VSCardSaxDriver.m */; };
+		AD0CFACC071FFF0000E72147 /* VSStringFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = AD0CFACA071FFF0000E72147 /* VSStringFormatter.h */; };
+		AD0CFACD071FFF0000E72147 /* VSStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0CFACB071FFF0000E72147 /* VSStringFormatter.m */; };
+		AD5010A6071F18AE0020300E /* README in Resources */ = {isa = PBXBuildFile; fileRef = AD5010A5071F18AE0020300E /* README */; };
+		AD5010A8071F18B80020300E /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = AD5010A7071F18B80020300E /* AUTHORS */; };
+		AD5010BF071F18F00020300E /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = AD5010BE071F18F00020300E /* COPYING */; };
+		AD5010C1071F18FA0020300E /* COPYRIGHT in Resources */ = {isa = PBXBuildFile; fileRef = AD5010C0071F18FA0020300E /* COPYRIGHT */; };
+		AD665AB0071EB30200EC5911 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD665AAF071EB30200EC5911 /* Foundation.framework */; };
+		AD665AB4071EB36D00EC5911 /* SaxObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD665AB3071EB36D00EC5911 /* SaxObjC.framework */; };
+		AD665AB6071EB38C00EC5911 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AD665AB5071EB38C00EC5911 /* common.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		1656CC9F058802980012D2BC /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		1656CCA0058802990012D2BC /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		1656CCB80588036A0012D2BC /* versitCardsSaxDriver-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = "versitCardsSaxDriver-Info.plist"; sourceTree = "<group>"; };
+		1656CD24058806680012D2BC /* VSSaxDriver.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = VSSaxDriver.h; sourceTree = "<group>"; };
+		1656CD25058806680012D2BC /* VSSaxDriver.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = VSSaxDriver.m; sourceTree = "<group>"; };
+		1656CD37058806CE0012D2BC /* bundle-info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = "bundle-info.plist"; sourceTree = "<group>"; };
+		1656CD7C058809660012D2BC /* VSCardSaxDriver.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = VSCardSaxDriver.h; sourceTree = "<group>"; };
+		1656CD7D058809660012D2BC /* VSCardSaxDriver.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = VSCardSaxDriver.m; sourceTree = "<group>"; };
+		16800E2F05880E8E007700A5 /* versitCardsSaxDriver.sax */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = versitCardsSaxDriver.sax; sourceTree = BUILT_PRODUCTS_DIR; };
+		16800E4205880EC4007700A5 /* ChangeLog */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 30; indentWidth = 8; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		16800E4305880EC4007700A5 /* Version */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 30; indentWidth = 8; path = Version; sourceTree = "<group>"; tabWidth = 8; };
+		AD0CFACA071FFF0000E72147 /* VSStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = VSStringFormatter.h; sourceTree = "<group>"; };
+		AD0CFACB071FFF0000E72147 /* VSStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 5; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = VSStringFormatter.m; sourceTree = "<group>"; };
+		AD5010A5071F18AE0020300E /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		AD5010A7071F18B80020300E /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		AD5010BE071F18F00020300E /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		AD5010C0071F18FA0020300E /* COPYRIGHT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYRIGHT; sourceTree = "<group>"; };
+		AD665AAF071EB30200EC5911 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		AD665AB3071EB36D00EC5911 /* SaxObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SaxObjC.framework; path = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks/Wrapper/SaxObjC.framework"; sourceTree = "<absolute>"; };
+		AD665AB5071EB38C00EC5911 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		AD665AB7071EB39600EC5911 /* GNUmakefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile; sourceTree = "<group>"; tabWidth = 8; };
+		AD665AB8071EB39600EC5911 /* GNUmakefile.postamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.postamble; sourceTree = "<group>"; tabWidth = 8; };
+		AD665AB9071EB39600EC5911 /* GNUmakefile.preamble */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = GNUmakefile.preamble; sourceTree = "<group>"; tabWidth = 8; };
+		ADB07DC207666226003C5ACF /* fhs.make */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 5; indentWidth = 8; path = fhs.make; sourceTree = "<group>"; tabWidth = 8; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1656CCAD058802B80012D2BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD665AB0071EB30200EC5911 /* Foundation.framework in Frameworks */,
+				AD665AB4071EB36D00EC5911 /* SaxObjC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1656CC9D058802980012D2BC = {
+			isa = PBXGroup;
+			children = (
+				AD5010A5071F18AE0020300E /* README */,
+				AD5010C0071F18FA0020300E /* COPYRIGHT */,
+				AD5010BE071F18F00020300E /* COPYING */,
+				AD5010A7071F18B80020300E /* AUTHORS */,
+				16800E4205880EC4007700A5 /* ChangeLog */,
+				16800E4305880EC4007700A5 /* Version */,
+				AD665AAE071EB2C200EC5911 /* Makefiles */,
+				AD665ABF071EB3D500EC5911 /* Headers */,
+				1656CD1F0588063D0012D2BC /* Classes */,
+				1656CD8F058809E30012D2BC /* Resources */,
+				1656CD92058809FD0012D2BC /* Frameworks */,
+				16800E3905880EA1007700A5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1656CD1F0588063D0012D2BC /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AD665AB5071EB38C00EC5911 /* common.h */,
+				1656CD25058806680012D2BC /* VSSaxDriver.m */,
+				1656CD7D058809660012D2BC /* VSCardSaxDriver.m */,
+				AD0CFACB071FFF0000E72147 /* VSStringFormatter.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1656CD8F058809E30012D2BC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1656CCB80588036A0012D2BC /* versitCardsSaxDriver-Info.plist */,
+				1656CD37058806CE0012D2BC /* bundle-info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1656CD92058809FD0012D2BC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD665AB3071EB36D00EC5911 /* SaxObjC.framework */,
+				AD665AAF071EB30200EC5911 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		16800E3905880EA1007700A5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				16800E2F05880E8E007700A5 /* versitCardsSaxDriver.sax */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AD665AAE071EB2C200EC5911 /* Makefiles */ = {
+			isa = PBXGroup;
+			children = (
+				AD665AB7071EB39600EC5911 /* GNUmakefile */,
+				AD665AB9071EB39600EC5911 /* GNUmakefile.preamble */,
+				AD665AB8071EB39600EC5911 /* GNUmakefile.postamble */,
+				ADB07DC207666226003C5ACF /* fhs.make */,
+			);
+			name = Makefiles;
+			sourceTree = "<group>";
+		};
+		AD665ABF071EB3D500EC5911 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				1656CD24058806680012D2BC /* VSSaxDriver.h */,
+				1656CD7C058809660012D2BC /* VSCardSaxDriver.h */,
+				AD0CFACA071FFF0000E72147 /* VSStringFormatter.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1656CCAA058802B80012D2BC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1656CD26058806680012D2BC /* VSSaxDriver.h in Headers */,
+				1656CD7E058809660012D2BC /* VSCardSaxDriver.h in Headers */,
+				AD665AB6071EB38C00EC5911 /* common.h in Headers */,
+				AD0CFACC071FFF0000E72147 /* VSStringFormatter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1656CCAE058802B80012D2BC /* versitCardsSaxDriver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADA07A610857395900993825 /* Build configuration list for PBXNativeTarget "versitCardsSaxDriver" */;
+			buildPhases = (
+				1656CCAA058802B80012D2BC /* Headers */,
+				1656CCAB058802B80012D2BC /* Resources */,
+				1656CCAC058802B80012D2BC /* Sources */,
+				1656CCAD058802B80012D2BC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				INFOPLIST_FILE = "versitCardsSaxDriver-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/SaxDrivers-4.5";
+				PRODUCT_NAME = versitCardsSaxDriver;
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = sax;
+			};
+			dependencies = (
+			);
+			name = versitCardsSaxDriver;
+			productName = versitCardsSaxDriver;
+			productReference = 16800E2F05880E8E007700A5 /* versitCardsSaxDriver.sax */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>versitCardsSaxDriver</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.versitCardsSaxDriver</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0d1</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1656CCA1058802990012D2BC /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = ADA07A650857395900993825 /* Build configuration list for PBXProject "versitCardsSaxDriver" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				1656CC9F058802980012D2BC /* Development */,
+				1656CCA0058802990012D2BC /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 1656CC9D058802980012D2BC;
+			productRefGroup = 1656CC9D058802980012D2BC;
+			projectDirPath = "";
+			targets = (
+				1656CCAE058802B80012D2BC /* versitCardsSaxDriver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1656CCAB058802B80012D2BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1656CD38058806CE0012D2BC /* bundle-info.plist in Resources */,
+				AD5010A6071F18AE0020300E /* README in Resources */,
+				AD5010A8071F18B80020300E /* AUTHORS in Resources */,
+				AD5010BF071F18F00020300E /* COPYING in Resources */,
+				AD5010C1071F18FA0020300E /* COPYRIGHT in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1656CCAC058802B80012D2BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1656CD27058806680012D2BC /* VSSaxDriver.m in Sources */,
+				1656CD7F058809660012D2BC /* VSCardSaxDriver.m in Sources */,
+				AD0CFACD071FFF0000E72147 /* VSStringFormatter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		ADA07A620857395900993825 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				INFOPLIST_FILE = "versitCardsSaxDriver-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/SaxDrivers-4.5";
+				PRODUCT_NAME = versitCardsSaxDriver;
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = sax;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		ADA07A630857395900993825 /* Wrapper */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				INFOPLIST_FILE = "versitCardsSaxDriver-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/SaxDrivers-4.5";
+				PRODUCT_NAME = versitCardsSaxDriver;
+				SYMROOT = "$(USER_LIBRARY_DIR)/EmbeddedFrameworks";
+				TEMP_DIR = "$(SYMROOT)/$(PROJECT_NAME).build";
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = sax;
+				ZERO_LINK = NO;
+			};
+			name = Wrapper;
+		};
+		ADA07A640857395900993825 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = common.h;
+				INFOPLIST_FILE = "versitCardsSaxDriver-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/SaxDrivers-4.5";
+				PRODUCT_NAME = versitCardsSaxDriver;
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = sax;
+			};
+			name = Default;
+		};
+		ADA07A660857395900993825 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		ADA07A670857395900993825 /* Wrapper */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Wrapper;
+		};
+		ADA07A680857395900993825 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ADA07A610857395900993825 /* Build configuration list for PBXNativeTarget "versitCardsSaxDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA07A620857395900993825 /* Development */,
+				ADA07A630857395900993825 /* Wrapper */,
+				ADA07A640857395900993825 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		ADA07A650857395900993825 /* Build configuration list for PBXProject "versitCardsSaxDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA07A660857395900993825 /* Development */,
+				ADA07A670857395900993825 /* Wrapper */,
+				ADA07A680857395900993825 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1656CCA1058802990012D2BC /* Project object */;
+}

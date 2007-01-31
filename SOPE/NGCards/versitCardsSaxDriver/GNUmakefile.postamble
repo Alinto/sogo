@@ -1,0 +1,5 @@
+# $Id: GNUmakefile.postamble 257 2004-10-14 21:01:23Z znek $
+
+after-all ::
+	@(cp bundle-info.plist \
+	  $(GNUSTEP_BUILD_DIR)/$(BUNDLE_NAME)$(BUNDLE_EXTENSION))

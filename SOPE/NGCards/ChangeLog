@@ -1,0 +1,600 @@
+2006-08-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGVCardSaxHandler.m: fixed a bug with returning parsing results.
+	  Properly make a copy of the vCard array so that -clear doesn't
+	  destroy references. Thanks go to Wolfgang Sourdeau for documenting
+	  the issue! (v4.5.76)
+
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* use %p for pointer formats, fixed gcc 4.1 warnings (v4.5.75)
+
+2006-05-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalDataSource.h, common.h: changed EOControl related includes into
+	  imports to enable compilation against MulleEOF (v4.5.74)
+
+2006-04-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalEntityObject.h: added missing forward declaration for
+	  gstep-base compile (v4.5.73)
+
+2006-04-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.72
+
+	* iCalEntityObject.[hm]: added "url" property - unfortunately
+	  this was missing before. Increased class version to "1".
+
+	* iCalRepeatableEntityObject.m, iCalEvent.m, iCalToDo.m: adjusted
+	  super class version check.
+
+2006-01-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalRecurrenceRule.m: properly include NSString+Ext.h to avoid a
+	  warning during Cocoa compilation (v4.5.71)
+
+2005-11-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* include string.h where required (v4.5.70)
+
+2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalMonthlyRecurrenceCalculator.m: implemented calculation of
+	  negative byday occurrences (eg -1TH) (v4.5.69)
+
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* iCalRecurrenceRule.m: added direct parser support for 'interval',
+	  allow 'until' values w/o Z marker for date-only values (v4.5.68)
+
+2005-09-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.5.67
+
+	* iCalMonthlyRecurrenceCalculator.m: finished 'byday' calculation
+
+	* iCalRecurrenceRule.m: added support for 'bymonthday', fixed handling
+	  of occurrence1
+
+2005-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.5.66
+
+	* iCalRecurrenceRule.m: temporarily expose byDayOccurence1 until the
+	  API is fixed
+
+	* iCalMonthlyRecurrenceCalculator.m: prepared for byday/bymonthday
+	  rule specs
+
+	* v4.5.65
+
+	* iCalMonthlyRecurrenceCalculator.m: fixed calculation of 'count' field
+
+	* iCalRecurrenceCalculator.m: minor code cleanups
+
+	* iCalRecurrenceRule.m: improved rrule parser
+
+2005-09-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalMonthlyRecurrenceCalculator.m: stop calculation if a byday part
+	  was detected in the rule (v4.5.64)
+
+	* iCalRecurrenceCalculator.m: moved cluster subclasses to own source
+	  files (v4.5.63)
+
+	* iCalRecurrenceRule.m: added some parsing/gen support for BYDAY
+	  (v4.5.62)
+
+2005-09-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalRecurrenceRule.m: minor code improvements, more tolerant on
+	  invalid iCal rrule input (v4.5.61)
+
+2005-08-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile, GNUmakefile.preamble: added OSX framework compilation
+	  (v4.5.60)
+
+2005-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalCalendar.m, NGVCardName.m: fixed gcc 4.0 warnings (v4.5.59)
+
+2005-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGVCardSaxHandler.h: fixed a gcc 4.0 warning (v4.5.58)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalPerson.m: added -partStatWithDefault method to retrieve the
+	  partstat and return NEEDS-ACTION in case none is set (v4.5.57)
+
+2005-07-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalObject.[hm], iCalEntityObject.m, iCalToDo.m, iCalAlarm.m,
+	  iCalPerson.m, iCalCalendar.m, iCalEvent.m, iCalTrigger.m,
+	  iCalObject.m, iCalFreeBusy.m, iCalRepeatableEntityObject.m:
+	  fixed NSCopying (v4.5.56)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added fragile base class version checks (v4.5.55)
+
+2005-07-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalObject.[hm], iCalEntityObject.m, iCalToDo.m, iCalAlarm.m,
+	  iCalPerson.m, iCalCalendar.m, iCalEvent.m, iCalTrigger.m,
+	  iCalObject.m, iCalFreeBusy.m, iCalRepeatableEntityObject.m:
+	  added NSCopying (v4.5.54)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.5.53
+
+	* iCalCalendar.m: added +parseCalendarFromSource: convenience method
+
+	* NGVCard.m: properly reset sax driver after parsing
+
+2005-07-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalEntityObject.[hm]: added -increaseSequence (v4.5.52)
+
+	* iCalPerson.m: fixed -hasSameEmailAddress: to lowercase email
+	  addresses before attempting comparison (v4.5.51)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.5.50
+	
+	* NGiCal.xmap: fixed mapping of 'method' property (is an attribute of
+	  the calendar)
+	  
+	* iCalCalendar.m: use ASSIGNCOPY in accessors, added 'method' to
+	  -description
+	  
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.49
+
+	* iCalCalendar.[hm]: added 'method'
+
+	* iCalEntityObject.[hm]: added 'userComment', changed all email
+	  related comparisons to lowercase all strings before comparison
+
+	* iCalEvent.h: pretty printed iVars
+
+	* NGiCal.xmap: added mapping for 'comment' -> 'userComment' and
+	  'method' -> 'method'
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.5.48
+
+	* NGVCard.m: added some convenience methods to access the preferred
+	  email, tel and adr
+
+	* NGVCardOrg.m: added a convenience method to access the first orgunit
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSCalendarDate+ICal.m: fixed 'gmtcalfmt' which removed seconds from
+	  format for no obvious reason (v4.5.47)
+
+2005-05-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGVCardSaxHandler.m: ensure that types are always uppercase, improved
+	  check for DUPs (v4.5.46)
+
+2005-05-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: reorganized ordering of headers/classes
+
+2005-05-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: added vCard related stuff
+
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGVCard.m: added support for profile, source, name (v4.5.45)
+
+2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* first version of working vCard SAX handler (v4.5.54)
+
+2005-05-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on vCard parsing (v4.5.53)
+
+	* work on vCard objects (incomplete) (v4.5.52)
+
+2005-04-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalDateHolder.m, iCalDataSource.m: fixed gcc 4.0 warnings (v4.5.51)
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.50
+
+	* iCalRenderer.h: added missing paranthesis for iVar declarations
+
+	* iCalTrigger.m, iCalEntityObject.m, iCalToDo.m,
+	  iCalRecurrenceCalculator.m, iCalDateHolder.m, iCalDataSource.m,
+	  iCalPerson.m, iCalCalendar.m: numerous dealloc bugs/leaks fixed
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalRecurrenceCalculator.m: bugfix for monthly and yearly recurrences
+	  (v4.5.49)
+
+	* iCalRecurrenceCalculator.m: optimized exception date handling in
+	  complex calculation method quite a bit. Fixed bugs in all calculation
+	  methods by introducing checks on the desired range. (v4.5.48)
+
+2005-02-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.47
+
+	* iCalRepeatableEntityObject.m:  shifted code to
+	  iCalRecurrenceCalculator
+
+	* iCalRecurrenceCalculator.[hm]: new class method to calculate
+	  complex recurrences. In SOGo this information is stored in quick
+	  fields to reduce the complexity of lookups, hence we need to offer
+	  a proper API to calculate date ranges from this information.
+	  Fixed all calculations to explicitly set timeZone for all newly
+	  created startDates - it seems the timeZone information is not
+	  properly retained by the hour:minute:second: method from NGExtensions
+	  which lead to improper DST related shifts.
+
+	* iCalDateHolder.h: exposed the API
+
+	* NSCalendarDate+ICal.[hm]: new convenience constructor for calendar
+	  dates from iCal representations (uses iCalDateHolder internally)
+
+	* iCalRecurrenceRule.m: changed setUntil: to utilize new public
+	  NSCalendarDate+ICal category
+
+	* NGiCal.h: added NSCalendarDate+ICal.h to the public headers
+
+	* GNUmakefile: NSCalendarDate+ICal.h is public now
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGiCal.xmap: fixed a missing semicolon (did not load on MacOSX)
+	  (v.4.5.46)
+
+2005-02-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: fixed linking locations for dependencies
+	  (v4.5.45)
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.44
+
+	* iCalEntityObject.[hm]: added convenience API
+
+	* iCalRepeatableEntityObject.[hm]: added convenience API
+
+	* iCalRecurrenceRule.m: bugfixes in -byDayList and
+	  -iCalRepresentationForWeekDay:
+
+	* iCalRecurrenceCalculator.m: implemented 'BYDAY' calculations for
+	  weekly frequency. Note that 'COUNT' is still broken for this case.
+
+	* iCalRenderer.m: updated rendering, now can render recurrence rules
+	  and accompanied stuff properly.
+
+2005-02-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.43
+
+	* iCalRecurrenceRule.[hm]: exposed some more of the API
+
+	* iCalRecurrenceCalculator.m: some bugfixes. Split the code and gave
+	  iCalWeeklyRecurrenceCalculator its own calculation - there are a
+	  number of foreseeable differences to daily calculation that make
+	  this necessary in the near future anyways.
+
+	* v4.5.42
+
+	* iCalRepeatableEntityObject.[hm]: added ability to properly calculate
+	  the recurrence ranges within a specific calendar date range, taking
+	  all possible exceptions into account.
+
+	* iCalEvent.[hm]: convenience wrapper for the new method found in
+	  iCalRepeatableEntityObject.
+
+2005-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.5.41
+
+	* GNUmakefile.preamble: added missing dependency on libNGExtensions
+	  (which also adds the dependency on libDOM)
+
+	* iCalRecurrenceCalculator.h: fixed missing forward declaration in
+	  header
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.40
+
+	* iCalRecurrenceCalculator.[hm]: implemented all required (and simple)
+	  calculations. Added some convenience API to query some of the more
+	  obvious ranges suitable as limits for fetching/comparison. 
+
+	* iCalRepeatableEntityObject.[hm]: new method for calculating the
+	  last possible recurrence start date. This can be used for fetches
+	  as well.
+
+	* iCalEvent.[hm]: more convenient wrapper for the new method found in
+	  iCalRepeatableEntityObject.
+
+	* NSCalendarDate+ICal.[hm]: convenience methods for calculating
+	  "distances" between dates.
+
+	* tests/*: updated
+
+2005-02-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.39
+
+	* README: updated
+
+	* iCalRepeatableEntityObject.[hm]: new base class for all other
+	  repeatable entity objects. Offers a convenience API for generating
+	  recurrence ranges and tests, taking all exceptions into account.
+
+	* iCalRecurrenceRule.[hm]: an iCal recurrence rule, modeled as closely
+	  as possible to RFC2445. Please note that this is work in progress
+	  and far from being complete, yet.
+
+	* iCalRecurrenceCalculator.[hm]: a controller implementing RFC2445
+	  to properly generate recurrence ranges and accompanied functionality.
+
+	* iCalEvent.[hm], iCalToDo.[hm]: now subclasses from
+	  iCalRepeatableEntityObject, thus removed code dealing with
+	  recurrences
+
+	* NGiCal.h: added new headers
+
+	* NGiCal.xmap: changed recurrenceRule mappings due to model change
+
+	* tests/*: contains unit tests for stuff dealing with recurrences. See
+	  accompanied README for details
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalPerson.[hm]: formalized participationStatus according to RFC2445.
+	  Provided convenience API to set status without concrete knowledge
+	  of string values involved. (v4.5.38)
+
+2004-12-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.5.37
+
+	* iCalEvent.[hm]: Added transparency 'TRANSP'. Also multiple
+	  convenience methods provided.
+
+	* NGiCal.xmap: added proper mapping for 'transp'.
+
+2004-12-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: minor changes and updated
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalPerson.[hm]: added -cnWithoutQuotes and -rfc822Email convenience
+	  methods to simplify client code dealing with these properties
+	  (v4.5.36)
+
+2004-11-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: provide SOPE_{MAJOR,MINOR}_VERSION to the build
+
+2004-11-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalRenderer.m: use SOPE version defines for iCalendar product id
+	  (v4.5.35)
+
+2004-11-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* use Version file for install directory location of sax mapping
+
+2004-10-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalAlarm.[hm], iCalEvent.[hm], iCalToDo.[hm],
+	  NGiCal.xmap: added recurrenceRule (v4.3.34)
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: added iCalRenderer.[hm], bumped framework version
+
+2004-10-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalRenderer.m: fixed some issue with Cocoa Foundation (v4.3.33)
+
+	* v4.3.32
+
+	* iCalEvent.m: added -vEvent method to produce an iCalendar
+	  representation of an event
+
+	* added iCalRenderer class based on the SOGo render by ZNeK
+
+2004-10-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xmap: added "categories" mapping (v4.3.31)
+
+2004-10-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalEntityObject.[hm]: added categories property (v4.3.30)
+
+2004-09-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: fixed several build parameters
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v4.3.29
+
+	* iCalEventChanges.[hm]: new class for tracking changes between
+	  two given events
+
+	* iCalEvent.[hm]: new API to generate iCalEventChanges objects.
+
+	* common.h: inline function and macro for "safe" comparison of
+	  object values
+
+2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.postamble: copy sax-model to FHS_INSTALL_ROOT + 
+	  /share/sope-4.3/saxmappings/ when compiling for FHS (v4.3.28)
+
+2004-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added hack to install the project in FHS locations - the library,
+	  its headers, the tools and the resources will be installed in
+	  FHS_INSTALL_ROOT if specified (eg make FHS_INSTALL_ROOT=/usr/local)
+	  (v4.3.27)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NGiCal.xcode: new Xcode project
+
+2004-08-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed for SOPE 3.3 directory layout (v4.3.26)
+
+	* moved to sope-ical
+
+	* moved to SOPE 4.3 (v4.3.25)
+
+2004-08-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalEntityObject.m: changed "sequence" attribute from NSString to
+	  NSNumber (this might break some code, though some care was taken to
+	  accept NSString parameters) (v4.2.24)
+
+2004-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalEvent.h: moved 'status' field to iCalEntityObject, because it is
+	  also available in todo objects (v4.2.23)
+
+2004-06-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalEntityObject.m: added -removeAllAttendees and -removeAllAlarms.
+	  These are necessary in case you want to remake the contents of these
+	  collections, but keep all other attributes otherwise. (v4.2.22)
+
+2004-06-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.2.21
+
+	* GNUmakefile.preamble: added prebinding
+
+	* GNUmakefile: create GNUmakefile.preamble, GNUmakefile.postamble
+
+2004-05-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: added support for building with
+	  GNUSTEP_BUILD_DIR environment variable set for recent
+	  gnustep-make package. (v4.2.20)
+
+2004-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* iCalDataSource.m: added some sanity checks, improved to work better
+	  with Mozilla generated iCal files (v4.2.19)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* iCalDateHolder.m: small fix not to print a warning for "YYYYMMDD"
+	  style dates (which are supported) (v4.2.18)
+
+2003-12-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v4.2.17
+
+	* iCalEvent.m: added parsing of duration values and calculation of 
+	  end-dates based on that (eg required for Panther iCal.app)
+	
+	* iCalEvent.m: added support for 'status' and 'duration' fields 
+
+Thu Nov 20 16:31:15 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* iCalDateHolder.m: added timeless date format: YYYYMMDD
+	  (solves ogo bug 424) (v4.2.16)
+
+Wed Oct 29 22:04:32 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* iCalDateHolder.m, iCalObject.[m|h]: added iCalDefaultTimeZone to 
+	  create date from iCalDates without timeZone. (solves OGoo bug 257) 
+	  (v4.2.15)
+
+2003-10-12  Helge Hess  <helge@opengroupware.org>
+
+	* GNUmakefile (libNGiCal_LIBRARIES_DEPEND_UPON): link against
+	  libSaxObjC on MacOSX (v4.2.14)
+
+Fri Jul 18 17:04:55 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* iCalToDo.h, iCalPerson.h, iCalEvent.h, iCalEntityObject.h: added 
+	  accessor-methods to interface (v4.2.13)
+
+2003-07-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* iCalDateHolder.m: replaces and indexOfString with rangeOfString,
+	  thanks to Filip Van Raemdonck for pointing that out (v4.2.12)
+
+2003-03-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* added some method prototypes
+
+2003-03-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved iCalEntityObject to a separate file (v4.2.11)
+
+Mon Mar 10 18:41:10 2003  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* NGiCal.xmap: added missing attendee attributes (as dictated by
+	  mh on the phone)
+
+2003-03-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* iCalPerson.h: added some method prototypes
+
+2003-02-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* iCalObject.h: added some accessors (v4.2.10)
+
+2003-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved to skyrix-core (v4.2.9)
+
+2003-01-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* added some support for timezones to be able to parse Evolution
+	  apt creation requests (v4.2.7)
+
+2002-10-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* added iCalDateHolder for decoding xCal date values with timezone
+	  attributes to a NSCalendarDate
+
+	* iCalObject.m: ignore X- keys
+
+	* removed all the old stuff (v4.2.4)
+
+	* ICalVEvent.m: renamed -class to -eventClass since -class conflicts
+	  with the NSObject method
+
+	* started XML based iCal (v4.2.3)
+
+2002-10-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* ICalParser.m: small cleanups (v4.2.2)
+
+2002-10-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog, created NGiCal library into SkyCore
+
+

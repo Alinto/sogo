@@ -1,0 +1,19 @@
+TODO: improve text
+
+Objective-C classes for representing iCalendar entities as objects. To
+actually parse iCalendar entities the sope-xml versitSaxDriver is used.
+Note that this library doesn't make any use of the now deprecated libical but
+rather relies on the SAX interface (SaxObjectDecoder is used).
+
+Recurrences
+===========
+
+Recurrences are modeled via iCalRecurrenceRules and an iCalRecurrenceCalculator
+which contains all the necessary logic according to RFC2445 to interpret
+iCalRecurrenceRules. The calculator needs a referrence date for the first
+instance of a recurrence which is usually provided by any of the repeatable
+entity objects (i.e. iCalEvent).
+
+Please note that recurrences are work in progress and far from being
+complete/compliant with RFC2445. So far only the most simple cases are done
+properly.
