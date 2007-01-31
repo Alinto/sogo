@@ -1,3 +1,12 @@
+2007-01-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -sendEMailNotifications]): new method that
+	returns the value of ud "SOGoAppointmentSendEMailNotifications"
+	(iMIP/iTIP).
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]): method moved from SOGoAppointmentObject/SOGoTaskObject, replacing occurences of "appointment" to "object" in its name.
+
 2007-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView

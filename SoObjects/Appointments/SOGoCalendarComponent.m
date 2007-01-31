@@ -20,11 +20,46 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <NGCards/iCalCalendar.h>
+#import <Foundation/NSString.h>
 
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRepeatableEntityObject.h>
+#import <NGMime/NGMime.h>
+#import <NGMail/NGMail.h>
+#import <NGMail/NGSendMail.h>
+
+#import <SOGo/AgenorUserManager.h>
+
+#import "common.h"
+
+#import "SOGoAptMailNotification.h"
 #import "SOGoCalendarComponent.h"
 
+static NSString *mailTemplateDefaultLanguage = nil;
+static BOOL sendEMailNotifications = NO;
+
 @implementation SOGoCalendarComponent
+
++ (void) initialize
+{
+  NSUserDefaults      *ud;
+  static BOOL         didInit = NO;
+  
+  if (!didInit)
+    {
+      didInit = YES;
+  
+      ud = [NSUserDefaults standardUserDefaults];
+      mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
+                                      retain];
+      if (!mailTemplateDefaultLanguage)
+        mailTemplateDefaultLanguage = @"French";
+
+      sendEMailNotifications
+        = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
+    }
+}
 
 - (id) init
 {
@@ -43,10 +78,9 @@
   [super dealloc];
 }
 
-- (NSString *) iCalString
+- (NSString *) davContentType
 {
-  // for UI-X appointment viewer
-  return [self contentAsString];
+  return @"text/calendar";
 }
 
 - (iCalCalendar *) calendar
@@ -55,7 +89,7 @@
 
   if (!calendar)
     {
-      iCalString = [self iCalString];
+      iCalString = [self contentAsString];
       if (iCalString)
         {
           calendar = [iCalCalendar parseSingleFromSource: iCalString];
@@ -70,7 +104,7 @@
 
 - (NSException *) primarySaveContentString: (NSString *) _iCalString
 {
-  return [super saveContentString:_iCalString];
+  return [super saveContentString: _iCalString];
 }
 
 - (NSException *) primaryDelete
@@ -88,6 +122,161 @@
 - (NSException *) delete
 {
   return [self deleteWithBaseSequence:0];
+}
+
+/* EMail Notifications */
+- (NSString *) homePageURLForPerson: (iCalPerson *) _person
+{
+  NSString *baseURL;
+  NSString *uid;
+  WOContext *ctx;
+  NSArray *traversalObjects;
+
+  /* generate URL from traversal stack */
+  ctx = [[WOApplication application] context];
+  traversalObjects = [ctx objectTraversalStack];
+  if ([traversalObjects count] > 0)
+    baseURL = [[traversalObjects objectAtIndex:0] baseURLInContext:ctx];
+  else
+    {
+      baseURL = @"http://localhost/";
+      [self warnWithFormat:@"Unable to create baseURL from context!"];
+    }
+  uid = [[AgenorUserManager sharedUserManager]
+          getUIDForEmail: [_person rfc822Email]];
+
+  return ((uid)
+          ? [NSString stringWithFormat:@"%@%@", baseURL, uid]
+          : nil);
+}
+
+- (BOOL) sendEMailNotifications
+{
+  return sendEMailNotifications;
+}
+
+- (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
+                        forOldObject: (iCalRepeatableEntityObject *) _oldObject
+                        andNewObject: (iCalRepeatableEntityObject *) _newObject
+                         toAttendees: (NSArray *) _attendees
+{
+  NSString *pageName;
+  iCalPerson *organizer;
+  NSString *cn, *sender, *iCalString;
+  NGSendMail *sendmail;
+  WOApplication *app;
+  unsigned i, count;
+  iCalPerson *attendee;
+  NSString *recipient;
+  SOGoAptMailNotification *p;
+  NSString *subject, *text, *header;
+  NGMutableHashMap *headerMap;
+  NGMimeMessage *msg;
+  NGMimeBodyPart *bodyPart;
+  NGMimeMultipartBody *body;
+
+  if ([_attendees count])
+    {
+      /* sender */
+
+      organizer = [_newObject organizer];
+      cn = [organizer cnWithoutQuotes];
+      if (cn)
+        sender = [NSString stringWithFormat:@"%@ <%@>",
+                           cn,
+                           [organizer rfc822Email]];
+      else
+        sender = [organizer rfc822Email];
+
+      /* generate iCalString once */
+      iCalString = [[_newObject parent] versitString];
+  
+      /* get sendmail object */
+      sendmail = [NGSendMail sharedSendMail];
+
+      /* get WOApplication instance */
+      app = [WOApplication application];
+
+      /* generate dynamic message content */
+
+      count = [_attendees count];
+      for (i = 0; i < count; i++)
+        {
+          attendee = [_attendees objectAtIndex:i];
+
+          /* construct recipient */
+          cn = [attendee cn];
+          if (cn)
+            recipient = [NSString stringWithFormat: @"%@ <%@>",
+                                  cn,
+                                  [attendee rfc822Email]];
+          else
+            recipient = [attendee rfc822Email];
+
+          /* create page name */
+          // TODO: select user's default language?
+          pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
+                               mailTemplateDefaultLanguage,
+                               _pageName];
+          /* construct message content */
+          p = [app pageWithName: pageName inContext: [WOContext context]];
+          [p setNewApt: _newObject];
+          [p setOldApt: _oldObject];
+          [p setHomePageURL: [self homePageURLForPerson: attendee]];
+          [p setViewTZ: [self userTimeZone: cn]];
+          subject = [p getSubject];
+          text = [p getBody];
+
+          /* construct message */
+          headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+    
+          /* NOTE: multipart/alternative seems like the correct choice but
+           * unfortunately Thunderbird doesn't offer the rich content alternative
+           * at all. Mail.app shows the rich content alternative _only_
+           * so we'll stick with multipart/mixed for the time being.
+           */
+          [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+          [headerMap setObject: sender forKey: @"From"];
+          [headerMap setObject: recipient forKey: @"To"];
+          [headerMap setObject: [NSCalendarDate date] forKey: @"date"];
+          [headerMap setObject: subject forKey: @"Subject"];
+          msg = [NGMimeMessage messageWithHeader: headerMap];
+
+          /* multipart body */
+          body = [[NGMimeMultipartBody alloc] initWithPart: msg];
+    
+          /* text part */
+          headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+          [headerMap setObject: @"text/plain; charset=utf-8"
+                     forKey: @"content-type"];
+          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+          [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
+
+          /* attach text part to multipart body */
+          [body addBodyPart: bodyPart];
+    
+          /* calendar part */
+          header = [NSString stringWithFormat: @"text/calendar; method=%@;"
+                             @" charset=utf-8",
+                             [(iCalCalendar *) [_newObject parent] method]];
+          headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+          [headerMap setObject:header forKey: @"content-type"];
+          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+          [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
+
+          /* attach calendar part to multipart body */
+          [body addBodyPart: bodyPart];
+    
+          /* attach multipart body to message */
+          [msg setBody: body];
+          [body release];
+
+          /* send the damn thing */
+          [sendmail sendMimePart: msg
+                    toRecipients: [NSArray arrayWithObject: [attendee rfc822Email]]
+                    sender: [organizer rfc822Email]];
+        }
+    }
 }
 
 @end

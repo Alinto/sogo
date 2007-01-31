@@ -54,18 +54,12 @@
 - (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx;
 - (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx;
 
-/* raw saving */
-
-- (NSException *)primarySaveContentString:(NSString *)_iCalString;
-- (NSException *)primaryDelete;
-
 /* "iCal multifolder saves" */
 
 - (NSException *)saveContentString:(NSString *)_iCal baseSequence:(int)_v;
 - (NSException *)deleteWithBaseSequence:(int)_v;
 
 - (NSException *)saveContentString:(NSString *)_iCalString;
-- (NSException *)delete;
 
 - (NSException *)changeParticipationStatus:(NSString *)_status
                                  inContext:(id)_ctx;

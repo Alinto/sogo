@@ -35,22 +35,9 @@
 #import "NSArray+Appointments.h"
 
 @interface SOGoTaskObject (PrivateAPI)
-- (NSString *)homePageURLForPerson:(iCalPerson *)_person;
-  
-- (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
-  forOldTask:(iCalToDo *)_newApt
-  andNewTask:(iCalToDo *)_oldApt
-  toAttendees:(NSArray *)_attendees;
 
-- (void)sendInvitationEMailForTask:(iCalToDo *)_task
-  toAttendees:(NSArray *)_attendees;
-- (void)sendTaskUpdateEMailForOldTask:(iCalToDo *)_oldApt
-  newTask:(iCalToDo *)_newApt
-  toAttendees:(NSArray *)_attendees;
-- (void)sendAttendeeRemovalEMailForTask:(iCalToDo *)_task
-  toAttendees:(NSArray *)_attendees;
-- (void)sendTaskDeletionEMailForTask:(iCalToDo *)_task
-  toAttendees:(NSArray *)_attendees;
+- (NSString *) homePageURLForPerson: (iCalPerson *) _person;
+  
 @end
 
 @implementation SOGoTaskObject
@@ -277,7 +264,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
 //   /* handle old content */
   
-//   oldContent = [self iCalString]; /* if nil, this is a new task */
+//   oldContent = [self contentAsString]; /* if nil, this is a new task */
 //   if ([oldContent length] == 0)
 //     {
 //     /* new task */
@@ -387,7 +374,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 //   if (delError   != nil) return delError;
 
   /* email notifications */
-
+//   if ([self sendEMailNotifications])
+//     {
 //   attendees = [NSMutableArray arrayWithArray:[changes insertedAttendees]];
 //   [attendees removePerson:organizer];
 //   [self sendInvitationEMailForTask:newApt
@@ -397,9 +385,10 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 //     attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
 //     [attendees removeObjectsInArray:[changes insertedAttendees]];
 //     [attendees removePerson:organizer];
-//     [self sendTaskUpdateEMailForOldTask:oldApt
-//           newTask:newApt
-//           toAttendees:attendees];
+//       [self sendEMailUsingTemplateNamed: @"Update"
+//             forOldObject: oldApt
+//             andNewObject: newApt
+//             toAttendees: attendees];
 //   }
 
 //   attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
@@ -409,10 +398,14 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     
 //     canceledApt = [newApt copy];
 //     [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
-//     [self sendAttendeeRemovalEMailForTask:canceledApt
-//           toAttendees:attendees];
+//           [self sendEMailUsingTemplateNamed: @"Removal"
+//                 forOldObject: nil
+//                 andNewObject: canceledApt
+//                 toAttendees: attendees];
 //     [canceledApt release];
 //   }
+// }
+
   return nil;
 }
 
@@ -447,20 +440,25 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   
   removedUIDs = [self attendeeUIDsFromTask:task];
 
-  /* send notification email to attendees excluding organizer */
-  attendees = [NSMutableArray arrayWithArray:[task attendees]];
-  [attendees removePerson:[task organizer]];
+  if ([self sendEMailNotifications])
+    {
+      /* send notification email to attendees excluding organizer */
+      attendees = [NSMutableArray arrayWithArray:[task attendees]];
+      [attendees removePerson:[task organizer]];
   
-  /* flag task as being canceled */
-  [(iCalCalendar *) [task parent] setMethod: @"cancel"];
-  [task increaseSequence];
+      /* flag task as being canceled */
+      [(iCalCalendar *) [task parent] setMethod: @"cancel"];
+      [task increaseSequence];
 
-  /* remove all attendees to signal complete removal */
-  [task removeAllAttendees];
+      /* remove all attendees to signal complete removal */
+      [task removeAllAttendees];
 
-  /* send notification email */
-  [self sendTaskDeletionEMailForTask:task
-        toAttendees:attendees];
+      /* send notification email */
+      [self sendEMailUsingTemplateNamed: @"Deletion"
+            forOldObject: nil
+            andNewObject: task
+            toAttendees: attendees];
+    }
 
   /* perform */
   
@@ -551,182 +549,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   uid = [um getUIDForEmail:[_person rfc822Email]];
   if (!uid) return nil;
   return [NSString stringWithFormat:@"%@%@", baseURL, uid];
-}
-
-- (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
-  forOldTask:(iCalToDo *)_oldApt
-  andNewTask:(iCalToDo *)_newApt
-  toAttendees:(NSArray *)_attendees
-{
-  NSString                *pageName;
-  iCalPerson              *organizer;
-  NSString                *cn, *sender, *iCalString;
-  NGSendMail              *sendmail;
-  WOApplication           *app;
-  unsigned                i, count;
-
-  if (![_attendees count]) return; // another job neatly done :-)
-
-  /* sender */
-
-  organizer = [_newApt organizer];
-  cn        = [organizer cnWithoutQuotes];
-  if (cn) {
-    sender = [NSString stringWithFormat:@"%@ <%@>",
-                                        cn,
-                                        [organizer rfc822Email]];
-  }
-  else {
-    sender = [organizer rfc822Email];
-  }
-
-  /* generate iCalString once */
-  iCalString = [[_newApt parent] versitString];
-  
-  /* get sendmail object */
-  sendmail   = [NGSendMail sharedSendMail];
-
-  /* get WOApplication instance */
-  app        = [WOApplication application];
-
-  /* generate dynamic message content */
-
-  count = [_attendees count];
-  for (i = 0; i < count; i++) {
-    iCalPerson              *attendee;
-    NSString                *recipient;
-    SOGoAptMailNotification *p;
-    NSString                *subject, *text, *header;
-    NGMutableHashMap        *headerMap;
-    NGMimeMessage           *msg;
-    NGMimeBodyPart          *bodyPart;
-    NGMimeMultipartBody     *body;
-    
-    attendee  = [_attendees objectAtIndex:i];
-    
-    /* construct recipient */
-    cn        = [attendee cn];
-    if (cn) {
-      recipient = [NSString stringWithFormat:@"%@ <%@>",
-                                             cn,
-                                             [attendee rfc822Email]];
-    }
-    else {
-      recipient = [attendee rfc822Email];
-    }
-
-    /* create page name */
-    // TODO: select user's default language?
-    pageName   = [NSString stringWithFormat:@"SOGoAptMail%@%@",
-                                            mailTemplateDefaultLanguage,
-                                            _pageName];
-    /* construct message content */
-    p = [app pageWithName:pageName inContext:[WOContext context]];
-    [p setNewApt: _newApt];
-    [p setOldApt: _oldApt];
-    [p setHomePageURL:[self homePageURLForPerson:attendee]];
-    [p setViewTZ: [self userTimeZone: cn]];
-    subject = [p getSubject];
-    text    = [p getBody];
-
-    /* construct message */
-    headerMap = [NGMutableHashMap hashMapWithCapacity:5];
-    
-    /* NOTE: multipart/alternative seems like the correct choice but
-     * unfortunately Thunderbird doesn't offer the rich content alternative
-     * at all. Mail.app shows the rich content alternative _only_
-     * so we'll stick with multipart/mixed for the time being.
-     */
-    [headerMap setObject:@"multipart/mixed"    forKey:@"content-type"];
-    [headerMap setObject:sender                forKey:@"From"];
-    [headerMap setObject:recipient             forKey:@"To"];
-    [headerMap setObject:[NSCalendarDate date] forKey:@"date"];
-    [headerMap setObject:subject               forKey:@"Subject"];
-    msg = [NGMimeMessage messageWithHeader:headerMap];
-    
-    /* multipart body */
-    body = [[NGMimeMultipartBody alloc] initWithPart:msg];
-    
-    /* text part */
-    headerMap = [NGMutableHashMap hashMapWithCapacity:1];
-    [headerMap setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
-    bodyPart = [NGMimeBodyPart bodyPartWithHeader:headerMap];
-    [bodyPart setBody:[text dataUsingEncoding:NSUTF8StringEncoding]];
-
-    /* attach text part to multipart body */
-    [body addBodyPart:bodyPart];
-    
-    /* calendar part */
-    header     = [NSString stringWithFormat:@"text/calendar; method=%@;"
-                                            @" charset=utf-8",
-                           [(iCalCalendar *) [_newApt parent] method]];
-    headerMap  = [NGMutableHashMap hashMapWithCapacity:1];
-    [headerMap setObject:header forKey:@"content-type"];
-    bodyPart   = [NGMimeBodyPart bodyPartWithHeader:headerMap];
-    [bodyPart setBody:[iCalString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    /* attach calendar part to multipart body */
-    [body addBodyPart:bodyPart];
-    
-    /* attach multipart body to message */
-    [msg setBody:body];
-    [body release];
-
-    /* send the damn thing */
-    [sendmail sendMimePart:msg
-              toRecipients:[NSArray arrayWithObject:[attendee rfc822Email]]
-              sender:[organizer rfc822Email]];
-  }
-}
-
-- (void)sendInvitationEMailForTask:(iCalToDo *)_task
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return; // another job neatly done :-)
-
-  [self sendEMailUsingTemplateNamed:@"Invitation"
-        forOldTask:nil
-        andNewTask:_task
-        toAttendees:_attendees];
-}
-
-- (void)sendTaskUpdateEMailForOldTask:(iCalToDo *)_oldApt
-  newTask:(iCalToDo *)_newApt
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return;
-  
-  [self sendEMailUsingTemplateNamed:@"Update"
-        forOldTask:_oldApt
-        andNewTask:_newApt
-        toAttendees:_attendees];
-}
-
-- (void) sendAttendeeRemovalEMailForTask:(iCalToDo *)_task
-                             toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return;
-
-  [self sendEMailUsingTemplateNamed:@"Removal"
-        forOldTask:nil
-        andNewTask:_task
-        toAttendees:_attendees];
-}
-
-- (void) sendTaskDeletionEMailForTask: (iCalToDo *) _task
-                          toAttendees: (NSArray *) _attendees
-{
-  if (![_attendees count]) return;
-
-  [self sendEMailUsingTemplateNamed:@"Deletion"
-        forOldTask:nil
-        andNewTask:_task
-        toAttendees:_attendees];
-}
-
-- (NSString *) davContentType
-{
-  return @"text/calendar";
 }
 
 @end /* SOGoTaskObject */

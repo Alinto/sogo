@@ -25,9 +25,11 @@
 
 #import <SOGo/SOGoContentObject.h>
 
+@class NSArray;
 @class NSString;
 
 @class iCalCalendar;
+@class iCalRepeatableEntityObject;
 
 @interface SOGoCalendarComponent : SOGoContentObject
 {
@@ -36,13 +38,19 @@
 
 /* accessors */
 
-- (NSString *) iCalString;
 - (iCalCalendar *) calendar;
 
 - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 - (NSException *) primaryDelete;
 
 - (NSException *) delete;
+
+/* mail notifications */
+- (BOOL) sendEMailNotifications;
+- (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
+                        forOldObject: (iCalRepeatableEntityObject *) _oldObject
+                        andNewObject: (iCalRepeatableEntityObject *) _newObject
+                         toAttendees: (NSArray *) _attendees;
 
 @end
 

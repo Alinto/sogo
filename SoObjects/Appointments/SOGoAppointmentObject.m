@@ -25,56 +25,17 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
-#import <NGMime/NGMime.h>
-#import <NGMail/NGMail.h>
-#import <NGMail/NGSendMail.h>
 
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoObject.h>
 
-#import "SOGoAptMailNotification.h"
 #import "iCalEntityObject+Agenor.h"
 
 #import "common.h"
 
 #import "NSArray+Appointments.h"
 
-@interface SOGoAppointmentObject (PrivateAPI)
-- (NSString *) homePageURLForPerson: (iCalPerson *) _person;
-  
-- (void)sendEMailUsingTemplateNamed:(NSString *)_pageName
-  forOldAppointment:(iCalEvent *)_newApt
-  andNewAppointment:(iCalEvent *)_oldApt
-  toAttendees:(NSArray *)_attendees;
-
-- (void)sendInvitationEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees;
-- (void)sendAppointmentUpdateEMailForOldAppointment:(iCalEvent *)_oldApt
-  newAppointment:(iCalEvent *)_newApt
-  toAttendees:(NSArray *)_attendees;
-- (void)sendAttendeeRemovalEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees;
-- (void)sendAppointmentDeletionEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees;
-@end
-
 @implementation SOGoAppointmentObject
-
-static NSString                  *mailTemplateDefaultLanguage = nil;
-
-+ (void)initialize {
-  NSUserDefaults      *ud;
-  static BOOL         didInit = NO;
-  
-  if (didInit) return;
-  didInit = YES;
-  
-  ud = [NSUserDefaults standardUserDefaults];
-  mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
-                                     retain];
-  if (!mailTemplateDefaultLanguage)
-    mailTemplateDefaultLanguage = @"French";
-}
 
 /* accessors */
 
@@ -84,11 +45,11 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 }
 
 /* iCal handling */
-
-- (NSArray *)attendeeUIDsFromAppointment:(iCalEvent *)_apt {
+- (NSArray *) attendeeUIDsFromAppointment: (iCalEvent *) _apt
+{
   AgenorUserManager *um;
-  NSMutableArray    *uids;
-  NSArray  *attendees;
+  NSMutableArray *uids;
+  NSArray *attendees;
   unsigned i, count;
   NSString *email, *uid;
   
@@ -149,8 +110,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
 - (NSException *)saveContentString:(NSString *)_iCal inUIDs:(NSArray *)_uids {
   NSEnumerator *e;
-  id           folder;
-  NSException  *allErrors = nil;
+  id folder;
+  NSException *allErrors = nil;
   id ctx;
 
   ctx = [[WOApplication application] context];
@@ -191,13 +152,15 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
       allErrors = error;
     }
   }
+
   return allErrors;
 }
+
 - (NSException *)deleteInUIDs:(NSArray *)_uids {
   NSEnumerator *e;
-  id           folder;
-  NSException  *allErrors = nil;
-  id           ctx;
+  id folder;
+  NSException *allErrors = nil;
+  id ctx;
   
   ctx = [[WOApplication application] context];
   
@@ -262,13 +225,13 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   AgenorUserManager *um;
   iCalCalendar *newCalendar;
   iCalEvent *oldApt, *newApt;
-  iCalEventChanges  *changes;
-  iCalPerson        *organizer;
-  NSString          *oldContent, *uid;
-  NSArray           *uids, *props;
-  NSMutableArray    *attendees, *storeUIDs, *removedUIDs;
-  NSException       *storeError, *delError;
-  BOOL              updateForcesReconsider;
+  iCalEventChanges *changes;
+  iCalPerson *organizer;
+  NSString *oldContent, *uid;
+  NSArray *uids, *props;
+  NSMutableArray *attendees, *storeUIDs, *removedUIDs;
+  NSException *storeError, *delError;
+  BOOL updateForcesReconsider;
   
   updateForcesReconsider = NO;
 
@@ -281,7 +244,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
   /* handle old content */
   
-  oldContent = [self iCalString]; /* if nil, this is a new appointment */
+  oldContent = [self contentAsString]; /* if nil, this is a new appointment */
   if ([oldContent length] == 0)
     {
     /* new appointment */
@@ -312,14 +275,14 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   changes = [iCalEventChanges changesFromEvent: oldApt
                               toEvent: newApt];
 
-  uids        = [um getUIDsForICalPersons:[changes deletedAttendees]
+  uids = [um getUIDsForICalPersons:[changes deletedAttendees]
                     applyStrictMapping:NO];
   removedUIDs = [NSMutableArray arrayWithArray:uids];
 
-  uids        = [um getUIDsForICalPersons:[newApt attendees]
+  uids = [um getUIDsForICalPersons:[newApt attendees]
                     applyStrictMapping:NO];
-  storeUIDs   = [NSMutableArray arrayWithArray:uids];
-  props       = [changes updatedProperties];
+  storeUIDs = [NSMutableArray arrayWithArray:uids];
+  props = [changes updatedProperties];
 
   /* detect whether sequence has to be increased */
   if ([changes hasChanges])
@@ -328,7 +291,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   /* preserve organizer */
 
   organizer = [newApt organizer];
-  uid       = [um getUIDForICalPerson:organizer];
+  uid = [um getUIDForICalPerson:organizer];
   if (uid) {
     if (![storeUIDs containsObject:uid])
       [storeUIDs addObject:uid];
@@ -379,39 +342,48 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   /* perform storing */
 
   storeError = [self saveContentString:_iCal inUIDs:storeUIDs];
-  delError   = [self deleteInUIDs:removedUIDs];
+  delError = [self deleteInUIDs:removedUIDs];
 
   // TODO: make compound
   if (storeError != nil) return storeError;
   if (delError   != nil) return delError;
 
   /* email notifications */
+  if ([self sendEMailNotifications])
+    {
+      attendees = [NSMutableArray arrayWithArray: [changes insertedAttendees]];
+      [attendees removePerson: organizer];
+      [self sendEMailUsingTemplateNamed: @"Invitation"
+            forOldObject: nil
+            andNewObject: newApt
+            toAttendees: attendees];
 
-  attendees = [NSMutableArray arrayWithArray:[changes insertedAttendees]];
-  [attendees removePerson:organizer];
-  [self sendInvitationEMailForAppointment:newApt
-        toAttendees:attendees];
+      if (updateForcesReconsider) {
+        attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
+        [attendees removeObjectsInArray:[changes insertedAttendees]];
+        [attendees removePerson:organizer];
+        [self sendEMailUsingTemplateNamed: @"Update"
+              forOldObject: oldApt
+              andNewObject: newApt
+              toAttendees: attendees];
+      }
 
-  if (updateForcesReconsider) {
-    attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
-    [attendees removeObjectsInArray:[changes insertedAttendees]];
-    [attendees removePerson:organizer];
-    [self sendAppointmentUpdateEMailForOldAppointment:oldApt
-          newAppointment:newApt
-          toAttendees:attendees];
-  }
-
-  attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
-  [attendees removePerson: organizer];
-  if ([attendees count]) {
-    iCalEvent *canceledApt;
+      attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
+      [attendees removePerson: organizer];
+      if ([attendees count])
+        {
+          iCalEvent *canceledApt;
     
-    canceledApt = [newApt copy];
-    [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
-    [self sendAttendeeRemovalEMailForAppointment:canceledApt
-          toAttendees: attendees];
-    [canceledApt release];
-  }
+          canceledApt = [newApt copy];
+          [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
+          [self sendEMailUsingTemplateNamed: @"Removal"
+                forOldObject: nil
+                andNewObject: canceledApt
+                toAttendees: attendees];
+          [canceledApt release];
+        }
+    }
+
   return nil;
 }
 
@@ -431,8 +403,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - send iMIP mail for all folders not found
   */
   iCalEvent *apt;
-  NSArray         *removedUIDs;
-  NSMutableArray  *attendees;
+  NSArray *removedUIDs;
+  NSMutableArray *attendees;
 
   /* load existing content */
 
@@ -440,116 +412,98 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   
   /* compare sequence if requested */
 
-  if (_v != 0) {
-    // TODO
-  }
+//   if (_v != 0) {
+//     // TODO
+//   }
   
   removedUIDs = [self attendeeUIDsFromAppointment:apt];
 
-  /* send notification email to attendees excluding organizer */
-  attendees = [NSMutableArray arrayWithArray:[apt attendees]];
-  [attendees removePerson:[apt organizer]];
+  if ([self sendEMailNotifications])
+    {
+      /* send notification email to attendees excluding organizer */
+      attendees = [NSMutableArray arrayWithArray:[apt attendees]];
+      [attendees removePerson:[apt organizer]];
   
-  /* flag appointment as being canceled */
-  [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
-  [apt increaseSequence];
+      /* flag appointment as being canceled */
+      [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
+      [apt increaseSequence];
 
-  /* remove all attendees to signal complete removal */
-  [apt removeAllAttendees];
+      /* remove all attendees to signal complete removal */
+      [apt removeAllAttendees];
 
-  /* send notification email */
-  [self sendAppointmentDeletionEMailForAppointment:apt
-        toAttendees:attendees];
+      /* send notification email */
+      [self sendEMailUsingTemplateNamed: @"Deletion"
+            forOldObject: nil
+            andNewObject: apt
+            toAttendees: attendees];
+    }
 
   /* perform */
-  
+
   return [self deleteInUIDs:removedUIDs];
 }
 
-- (NSException *)saveContentString:(NSString *)_iCalString {
-  return [self saveContentString:_iCalString baseSequence:0];
+- (NSException *) saveContentString: (NSString *) _iCalString
+{
+  return [self saveContentString: _iCalString baseSequence: 0];
 }
 
-- (NSException *)changeParticipationStatus:(NSString *)_status
-  inContext:(id)_ctx
+- (NSException *) changeParticipationStatus: (NSString *) _status
+                                  inContext: (id) _ctx
 {
   iCalEvent *apt;
-  iCalPerson      *p;
-  NSString        *newContent;
-  NSException     *ex;
-  NSString        *myEMail;
+  iCalPerson *p;
+  NSString *newContent;
+  NSException *ex;
+  NSString *myEMail;
   
+  ex = nil;
+
   // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
   apt = [self event];
 
-  if (apt == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:@"unable to parse appointment record"];
-  }
-  
-  myEMail = [[_ctx activeUser] email];
-  if ((p = [apt findParticipantWithEmail:myEMail]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason:@"user does not participate in this "
-                               @"appointment"];
-  }
-  
-  [p setPartStat:_status];
-  newContent = [[apt parent] versitString];
-  
+  if (apt)
+    {
+      myEMail = [[_ctx activeUser] email];
+      p = [apt findParticipantWithEmail: myEMail];
+      if (p)
+        {
   // TODO: send iMIP reply mails?
   
-//   [apt release]; apt = nil;
-  
-  if (newContent == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:@"Could not generate iCalendar data ..."];
-  }
-  
-  if ((ex = [self saveContentString:newContent]) != nil) {
-    // TODO: why is the exception wrapped?
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:[ex reason]];
-  }
-  
-  return nil /* means: no error */;
+          [p setPartStat:_status];
+          newContent = [[apt parent] versitString];
+          if (newContent)
+            {
+              ex = [self saveContentString:newContent];
+              if (ex)
+                // TODO: why is the exception wrapped?
+                /* Server Error */
+                ex = [NSException exceptionWithHTTPStatus: 500
+                                  reason: [ex reason]];
+            }
+          else
+            ex
+              = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                             reason: @"Could not generate iCalendar data ..."];
+        }
+      else
+        ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                          reason: @"user does not participate in this "
+                          @"appointment"];
+    }
+  else
+    ex = [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                      reason:@"unable to parse appointment record"];
+
+  return ex;
 }
 
 
 /* message type */
 
-- (NSString *)outlookMessageClass {
+- (NSString *) outlookMessageClass
+{
   return @"IPM.Appointment";
-}
-
-/* EMail Notifications */
-
-- (NSString *)homePageURLForPerson:(iCalPerson *)_person {
-  static AgenorUserManager *um      = nil;
-  static NSString          *baseURL = nil;
-  NSString *uid;
-
-  if (!um) {
-    WOContext *ctx;
-    NSArray   *traversalObjects;
-
-    um = [[AgenorUserManager sharedUserManager] retain];
-
-    /* generate URL from traversal stack */
-    ctx = [[WOApplication application] context];
-    traversalObjects = [ctx objectTraversalStack];
-    if ([traversalObjects count] >= 1) {
-      baseURL = [[[traversalObjects objectAtIndex:0] baseURLInContext:ctx]
-                                                     retain];
-    }
-    else {
-      [self warnWithFormat:@"Unable to create baseURL from context!"];
-      baseURL = @"http://localhost/";
-    }
-  }
-  uid = [um getUIDForEmail:[_person rfc822Email]];
-  if (!uid) return nil;
-  return [NSString stringWithFormat:@"%@%@", baseURL, uid];
 }
 
 - (NSException *) saveContentString: (NSString *) contentString
@@ -560,7 +514,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   iCalEvent *event;
   NSArray *organizers;
 
-  oldContentString = [self iCalString];
+  oldContentString = [self contentAsString];
   if (oldContentString)
     newContentString = contentString;
   else
@@ -579,182 +533,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
   return [super saveContentString: newContentString
                 baseVersion: baseVersion];
-}
-
-- (void)sendEMailUsingTemplateNamed: (NSString *)_pageName
-                  forOldAppointment: (iCalEvent *)_oldApt
-                  andNewAppointment: (iCalEvent *)_newApt
-                        toAttendees: (NSArray *)_attendees
-{
-  NSString                *pageName;
-  iCalPerson              *organizer;
-  NSString                *cn, *sender, *iCalString;
-  NGSendMail              *sendmail;
-  WOApplication           *app;
-  unsigned                i, count;
-
-  if (![_attendees count]) return; // another job neatly done :-)
-
-  /* sender */
-
-  organizer = [_newApt organizer];
-  cn        = [organizer cnWithoutQuotes];
-  if (cn) {
-    sender = [NSString stringWithFormat:@"%@ <%@>",
-                                        cn,
-                                        [organizer rfc822Email]];
-  }
-  else {
-    sender = [organizer rfc822Email];
-  }
-
-  /* generate iCalString once */
-  iCalString = [[_newApt parent] versitString];
-  
-  /* get sendmail object */
-  sendmail   = [NGSendMail sharedSendMail];
-
-  /* get WOApplication instance */
-  app        = [WOApplication application];
-
-  /* generate dynamic message content */
-
-  count = [_attendees count];
-  for (i = 0; i < count; i++) {
-    iCalPerson              *attendee;
-    NSString                *recipient;
-    SOGoAptMailNotification *p;
-    NSString                *subject, *text, *header;
-    NGMutableHashMap        *headerMap;
-    NGMimeMessage           *msg;
-    NGMimeBodyPart          *bodyPart;
-    NGMimeMultipartBody     *body;
-    
-    attendee  = [_attendees objectAtIndex:i];
-    
-    /* construct recipient */
-    cn        = [attendee cn];
-    if (cn) {
-      recipient = [NSString stringWithFormat:@"%@ <%@>",
-                                             cn,
-                                             [attendee rfc822Email]];
-    }
-    else {
-      recipient = [attendee rfc822Email];
-    }
-
-    /* create page name */
-    // TODO: select user's default language?
-    pageName   = [NSString stringWithFormat:@"SOGoAptMail%@%@",
-                                            mailTemplateDefaultLanguage,
-                                            _pageName];
-    /* construct message content */
-    p = [app pageWithName:pageName inContext:[WOContext context]];
-    [p setNewApt:_newApt];
-    [p setOldApt:_oldApt];
-    [p setHomePageURL:[self homePageURLForPerson:attendee]];
-    [p setViewTZ: [self userTimeZone: cn]];
-    subject = [p getSubject];
-    text    = [p getBody];
-
-    /* construct message */
-    headerMap = [NGMutableHashMap hashMapWithCapacity:5];
-    
-    /* NOTE: multipart/alternative seems like the correct choice but
-     * unfortunately Thunderbird doesn't offer the rich content alternative
-     * at all. Mail.app shows the rich content alternative _only_
-     * so we'll stick with multipart/mixed for the time being.
-     */
-    [headerMap setObject:@"multipart/mixed"    forKey:@"content-type"];
-    [headerMap setObject:sender                forKey:@"From"];
-    [headerMap setObject:recipient             forKey:@"To"];
-    [headerMap setObject:[NSCalendarDate date] forKey:@"date"];
-    [headerMap setObject:subject               forKey:@"Subject"];
-    msg = [NGMimeMessage messageWithHeader:headerMap];
-    
-    /* multipart body */
-    body = [[NGMimeMultipartBody alloc] initWithPart:msg];
-    
-    /* text part */
-    headerMap = [NGMutableHashMap hashMapWithCapacity:1];
-    [headerMap setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
-    bodyPart = [NGMimeBodyPart bodyPartWithHeader:headerMap];
-    [bodyPart setBody:[text dataUsingEncoding:NSUTF8StringEncoding]];
-
-    /* attach text part to multipart body */
-    [body addBodyPart:bodyPart];
-    
-    /* calendar part */
-    header     = [NSString stringWithFormat:@"text/calendar; method=%@;"
-                                            @" charset=utf-8",
-                           [(iCalCalendar *) [_newApt parent] method]];
-    headerMap  = [NGMutableHashMap hashMapWithCapacity:1];
-    [headerMap setObject:header forKey:@"content-type"];
-    bodyPart   = [NGMimeBodyPart bodyPartWithHeader:headerMap];
-    [bodyPart setBody:[iCalString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    /* attach calendar part to multipart body */
-    [body addBodyPart:bodyPart];
-    
-    /* attach multipart body to message */
-    [msg setBody:body];
-    [body release];
-
-    /* send the damn thing */
-    [sendmail sendMimePart:msg
-              toRecipients:[NSArray arrayWithObject:[attendee rfc822Email]]
-              sender:[organizer rfc822Email]];
-  }
-}
-
-- (void)sendInvitationEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return; // another job neatly done :-)
-
-  [self sendEMailUsingTemplateNamed:@"Invitation"
-        forOldAppointment:nil
-        andNewAppointment:_apt
-        toAttendees:_attendees];
-}
-
-- (void)sendAppointmentUpdateEMailForOldAppointment:(iCalEvent *)_oldApt
-  newAppointment:(iCalEvent *)_newApt
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return;
-  
-  [self sendEMailUsingTemplateNamed:@"Update"
-        forOldAppointment:_oldApt
-        andNewAppointment:_newApt
-        toAttendees:_attendees];
-}
-
-- (void)sendAttendeeRemovalEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return;
-
-  [self sendEMailUsingTemplateNamed:@"Removal"
-        forOldAppointment:nil
-        andNewAppointment:_apt
-        toAttendees:_attendees];
-}
-
-- (void)sendAppointmentDeletionEMailForAppointment:(iCalEvent *)_apt
-  toAttendees:(NSArray *)_attendees
-{
-  if (![_attendees count]) return;
-
-  [self sendEMailUsingTemplateNamed:@"Deletion"
-        forOldAppointment:nil
-        andNewAppointment:_apt
-        toAttendees:_attendees];
-}
-
-- (NSString *) davContentType
-{
-  return @"text/calendar";
 }
 
 - (NSString *) roleOfUser: (NSString *) login
