@@ -68,15 +68,17 @@
 
 /* raw saving */
 
-- (NSException *)primarySaveContentString:(NSString *)_iCalString {
+- (NSException *) primarySaveContentString: (NSString *) _iCalString
+{
   return [super saveContentString:_iCalString];
 }
 
-- (NSException *)primaryDelete {
+- (NSException *) primaryDelete
+{
   return [super delete];
 }
 
-- (NSException *)deleteWithBaseSequence: (int) a
+- (NSException *) deleteWithBaseSequence: (int) a
 {
   [self subclassResponsibility: _cmd];
 
