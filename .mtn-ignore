@@ -3,3 +3,4 @@ obj
 imgs-.*
 .*\.d
 .*\.SOGo
+.*\.sax
