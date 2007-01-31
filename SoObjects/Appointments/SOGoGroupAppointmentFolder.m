@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <SOGo/SOGoGroupFolder.h>
+
 #include "SOGoGroupAppointmentFolder.h"
 #include "common.h"
 
