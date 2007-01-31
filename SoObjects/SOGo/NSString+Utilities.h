@@ -1,4 +1,4 @@
-/* NSString+URL.h - this file is part of SOGo
+/* NSString+Utilities.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
