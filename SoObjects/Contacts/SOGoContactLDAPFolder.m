@@ -233,6 +233,7 @@
                   @"locality",
                   @"birthyear",
                   @"serialNumber",
+                  @"calFBURL",
                   nil];
 }
 

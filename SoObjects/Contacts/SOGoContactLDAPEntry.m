@@ -182,6 +182,11 @@
         [element setValue: 3 to: location];
       if (streetAddress || location)
         [vcard addChild: element];
+      info = [ldapEntry singleAttributeWithName: @"calFBURL"];
+      if (info)
+        [vcard addChildWithTag: @"FBURL"
+               types: nil
+               singleValue: info];
     }
 
   return vcard;
