@@ -76,6 +76,7 @@
 "Note: " = "Note: ";
 "Timezone: " = "Timezone: ";
 "Birthday: " = "Birthday: ";
+"Freebusy URL: " = "Freebusy URL: ";
 
 "Add as..." = "Add as...";
 "Recipient" = "Recipient";

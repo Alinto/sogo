@@ -331,6 +331,14 @@
             </tr>
             <tr>
               <td colspan="2">
+                <label><var:string label:value="Freebusy URL: " const:escapeHTML="NO" />
+                  <input type="text" class="textField" name="calFBURL" id="calFBURL"
+                    var:value="snapshot.calFBURL" />
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
                 <label><var:string label:value="Note: " const:escapeHTML="NO" />
                   <textarea var:value="snapshot.note" name="note" id="note"></textarea>
                 </label>

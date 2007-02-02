@@ -1,5 +1,8 @@
 2007-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m: display and handle the new
+	Freebusy URL entry.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -_searchAttributes]): retrieve "calFBURL"
 	from the server.

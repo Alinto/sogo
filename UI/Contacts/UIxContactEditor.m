@@ -36,7 +36,7 @@
 {
   if ((self = [super init]))
     {
-      snapshot = [[NSMutableDictionary alloc] initWithCapacity:16];
+      snapshot = [[NSMutableDictionary alloc] initWithCapacity: 16];
       preferredEmail = nil;
     }
 
@@ -330,6 +330,8 @@
         to: [self _simpleValueForType: @"work" inArray: elements]];
   [self _setSnapshotValue: @"homeURL"
         to: [self _simpleValueForType: @"home" inArray: elements]];
+  [self _setSnapshotValue: @"calFBURL"
+        to: [[card uniqueChildWithTag: @"FBURL"] value: 0]];
 
   [self _setSnapshotValue: @"title" to: [card title]];
   [self _setupOrgFields];
@@ -338,10 +340,10 @@
   [self _setSnapshotValue: @"tz" to: [card tz]];
   [self _setSnapshotValue: @"note" to: [card note]];
 
-  [self  _retrieveQueryParameter: @"contactEmail"
-         intoSnapshotValue: @"workMail"];
-  [self  _retrieveQueryParameter: @"contactFN"
-         intoSnapshotValue: @"fn"];
+  [self _retrieveQueryParameter: @"contactEmail"
+        intoSnapshotValue: @"workMail"];
+  [self _retrieveQueryParameter: @"contactFN"
+        intoSnapshotValue: @"fn"];
 }
 
 - (id <WOActionResults>) defaultAction
@@ -454,6 +456,10 @@
   [element setValue: 4 to: [snapshot objectForKey: @"workState"]];
   [element setValue: 5 to: [snapshot objectForKey: @"workPostalCode"]];
   [element setValue: 6 to: [snapshot objectForKey: @"workCountry"]];
+
+  element = [CardElement simpleElementWithTag: @"fburl"
+                         value: [snapshot objectForKey: @"calFBURL"]];
+  [card setUniqueChild: element];
 
   [self _savePhoneValues];
   [self _saveEmails];

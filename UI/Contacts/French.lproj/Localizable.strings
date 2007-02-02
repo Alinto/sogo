@@ -76,6 +76,7 @@
 "Note: " = "Commentaires : ";
 "Timezone: " = "Fuseau horaire : ";
 "Birthday: " = "D. de naissance : ";
+"Freebusy URL: " = "Adresse du FreeBusy : ";
 
 "Add as..." = "Ajouter...";
 "Recipient" = "Destinataire";
