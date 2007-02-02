@@ -1,3 +1,8 @@
+2007-02-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCard.m ([NGVCard -classForTag:classTag]): declare an entry
+	for "FBURL".
+
 2006-08-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* NGVCardSaxHandler.m: fixed a bug with returning parsing results.

@@ -79,6 +79,7 @@
       || [classTag isEqualToString: @"TEL"]
       || [classTag isEqualToString: @"TZ"]
       || [classTag isEqualToString: @"URL"]
+      || [classTag isEqualToString: @"FBURL"]
       || [classTag isEqualToString: @"LABEL"]
       || [classTag isEqualToString: @"EMAIL"]
       || [classTag isEqualToString: @"NICKNAME"]
