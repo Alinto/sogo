@@ -28,7 +28,7 @@
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Nouveau";
 
-"Name or Address" = "Le nom ou l'adresse";
+"Name or Email" = "Le nom ou l'adresse";
 "Personal Addressbook" = "Adresses personnelles";
 "Search in Addressbook" = "Carnet d'adresses...";
 
