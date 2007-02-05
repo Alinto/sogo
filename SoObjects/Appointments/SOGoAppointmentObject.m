@@ -550,6 +550,8 @@
     role = @"Organizer";
   else if ([event isParticipant: email])
     role = @"Participant";
+  else if ([[[self container] ownerInContext: nil] isEqualToString: login])
+    role = @"SoRole_Owner";
   else
     role = nil;
 
