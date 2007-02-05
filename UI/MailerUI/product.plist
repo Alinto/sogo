@@ -1,5 +1,5 @@
 { /* -*-cperl-*- */
-  requires = ( MAIN, CommonUI, Mailer, Sieve );
+  requires = ( MAIN, CommonUI, Mailer ); /* , Sieve */
 
   publicResources = (
     "uix.css",
@@ -385,12 +385,12 @@
 
     /* Sieve */
 
-    SOGoSieveScriptsFolder = {
+/*    SOGoSieveScriptsFolder = {
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = ( /* the toolbar groups */
-            ( /* first group */
+          value = (
+            (
               {
 	       link  = "getMail";
 	       image = "tb-mail-getmail-flat-24x24.png";
@@ -403,9 +403,9 @@
 	       cssClass = "tbicon_compose"; label = "New Filter";
               },
             ),
-            ( /* second group
+            (
               { link = "#";
-                cssClass = "tbicon_delete"; label = "Delete"; },*/
+                cssClass = "tbicon_delete"; label = "Delete"; },
             ),
           );
         };
@@ -427,9 +427,8 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = ( /* the toolbar groups */
-            ( /* first group */
-              { link  = "#";
+          value = (
+            ( { link  = "#";
                 onclick  = "clickedEditorSave(this);return false;";
 		image = "tb-mail-file-flat-24x24.png";
 		cssClass = "tbicon_save"; label = "Save"; },
@@ -458,6 +457,6 @@
           actionName  = "delete";
         };
       };
-    };
+    }; */
   };
 }

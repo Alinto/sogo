@@ -252,12 +252,12 @@ static BOOL debugBlocks = NO;
       *_ft = @"drafts";
       return;
     }
-    if ([ftype isEqualToString:@"IPF.Filter"]) {
-      *_t = [self labelForKey:@"SieveFolderName"];
-      *_icon = nil;
-      *_ft = @"sieve";
-      return;
-    }
+//     if ([ftype isEqualToString:@"IPF.Filter"]) {
+//       *_t = [self labelForKey:@"SieveFolderName"];
+//       *_icon = nil;
+//       *_ft = @"sieve";
+//       return;
+//     }
     break;
   }
 

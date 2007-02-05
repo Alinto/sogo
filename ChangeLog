@@ -1,5 +1,9 @@
 2007-02-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailTree.m ([UIxMailTree
+	-getTitle:folderType:andIcon:forObject:]): disabled Sieve folders
+	for the moment.
+
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
 	-checkLogin:_loginpassword:_pwd]): fixed a bug where a wrong
 	password would be accepted anyway as long as its length was > 0.

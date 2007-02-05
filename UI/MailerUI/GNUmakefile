@@ -39,9 +39,9 @@ MailerUI_OBJC_FILES += \
 	UIxMailWindowCloser.m		\
 	\
 	UIxFilterList.m			\
-	UIxSieveEditor.m		\
 	\
 	UIxMailFolderACLEditor.m
+# 	UIxSieveEditor.m
 
 MailerUI_RESOURCE_FILES += \
 	Version		\
