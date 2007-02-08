@@ -45,4 +45,17 @@
   return formattedStrings;
 }
 
+- (void) makeObjectsPerform: (SEL) selector
+                 withObject: (id) object1
+                 withObject: (id) object2
+{
+  int count, max;
+
+  max = [self count];
+  for (count = 0; count < max; count++)
+    [[self objectAtIndex: count] performSelector: selector
+                                 withObject: object1
+                                 withObject: object2];
+}
+
 @end

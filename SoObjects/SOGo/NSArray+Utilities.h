@@ -31,6 +31,12 @@
 
 - (NSArray *) stringsWithFormat: (NSString *) format;
 
+#ifdef GNUSTEP_BASE_LIBRARY
+- (void) makeObjectsPerform: (SEL) selector
+                 withObject: (id) object1
+                 withObject: (id) object2;
+#endif
+
 @end
 
 #endif /* NSARRAY_UTILITIES_H */
