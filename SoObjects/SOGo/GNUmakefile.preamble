@@ -13,7 +13,7 @@ endif
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
 libSOGo_LIB_DIRS +=				\
-	-L$(RELBUILD_DIR_libOGoContentStore)
+	-L$(RELBUILD_DIR_libOGoContentStore) -L$(RELBUILD_DIR_libOGoContentStore)/../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)
 
 libSOGo_LIBRARIES_DEPEND_UPON += \
 	-lOGoContentStore	\
@@ -26,6 +26,8 @@ libSOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGLdap
 
 ADDITIONAL_TOOL_LIBS += \
+        -L$(GNUSTEP_OBJ_DIR)/ \
+        $(libSOGO_LIB_DIRS) \
 	-lGDLContentStore -lGDLAccess	\
 	-lNGLdap			\
 	-lNGExtensions -lEOControl	\
