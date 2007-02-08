@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSRange.h>
 #import <Foundation/NSString.h>
 
 #import "NSArray+NGCards.h"
@@ -300,7 +301,8 @@
 
 - (NSString *) namedValue: (NSString *) aValueName
 {
-  unsigned int index, equalSign;
+  unsigned int index;
+  NSRange equalSign;
   NSString *value;
 
   index = [self _namedValue: aValueName];
@@ -309,9 +311,9 @@
   else
     {
       value = [values objectAtIndex: index];
-      equalSign = [value indexOfString: @"="];
-      if (equalSign != NSNotFound)
-        value = [value substringFromIndex: equalSign + 1];
+      equalSign = [value rangeOfString: @"="];
+      if (equalSign.location != NSNotFound)
+        value = [value substringFromIndex: equalSign.location + 1];
     }
 
   return value;
