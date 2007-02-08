@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSString+Ext.h>
 #import <NGExtensions/NSObject+Logs.h>

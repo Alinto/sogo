@@ -21,8 +21,9 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import "NSCalendarDate+NGCards.h"
 #import "NSString+NGCards.h"
