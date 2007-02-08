@@ -1,5 +1,9 @@
 2007-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m: added an implementation of
+	makeObjectsPerform:withObject:withObject: for GNUstep
+	compatibility.
+	
 	* OGoContentStore/GNUmakefile, Protocols/common.make,
 	SoObjects/common.make, UI/common.make: install in
 	GNUSTEP_INSTALLATION_DIR instead of GNUSTEP_USER_DIR.
