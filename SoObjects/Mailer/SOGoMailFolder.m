@@ -294,13 +294,13 @@ static BOOL useAltNamespace = NO;
     */
     return [self lookupImap4Message:_key inContext:_ctx];
   }
+
+  obj = [self lookupImap4Folder:_key  inContext:_ctx];
+  if (obj != nil)
+    return obj;
   
   /* check attributes directly bound to the app */
   if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
-  
-  obj = [self lookupImap4Folder:_key  inContext:_ctx];
-  if (obj != nil)
     return obj;
   
   /* return 404 to stop acquisition */
