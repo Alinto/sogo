@@ -1,3 +1,9 @@
+2007-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/GNUmakefile, Protocols/common.make,
+	SoObjects/common.make, UI/common.make: install in
+	GNUSTEP_INSTALLATION_DIR instead of GNUSTEP_USER_DIR.
+
 2007-02-07  Ludovic Marcotte <ludovic@inverse.ca>
 
 	* UI/Scheduler/English.lproj/Localizable.strings

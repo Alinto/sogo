@@ -7,7 +7,7 @@ include ./Version
 LIBRARY_NAME = libOGoContentStore
 TOOL_NAME    = test_quick_extract
 
-TYPEMODELS_DIR = $(GNUSTEP_SYSTEM_ROOT)/Library/OCSTypeModels/
+TYPEMODELS_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OCSTypeModels/
 
 libOGoContentStore_HEADER_FILES_DIR         = .
 libOGoContentStore_HEADER_FILES_INSTALL_DIR = /OGoContentStore
