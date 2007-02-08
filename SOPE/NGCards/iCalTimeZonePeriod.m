@@ -22,6 +22,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import "iCalDateTime.h"
 #import "iCalRecurrenceRule.h"
