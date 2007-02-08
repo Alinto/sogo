@@ -243,6 +243,7 @@
   NSEnumerator *aptsEnumerator;
   NSDictionary *currentDayAppointment;
   NSCalendarDate *start, *end;
+  int endHour;
 
   if (!allAppointments)
     {
@@ -254,7 +255,11 @@
   [filteredAppointments autorelease];
 
   start = [currentTableDay hour: [self dayStartHour] minute: 0];
-  end = [currentTableDay hour: [self dayEndHour] minute: 0];
+  endHour = [self dayEndHour];
+  if (endHour < 24)
+    end = [currentTableDay hour: [self dayEndHour] minute: 0];
+  else
+    end = [[currentTableDay tomorrow] hour: 0 minute: 0];
 
   aptsEnumerator = [allAppointments objectEnumerator];
   currentDayAppointment = [aptsEnumerator nextObject];
