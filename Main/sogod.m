@@ -31,7 +31,7 @@ int main(int argc, char **argv, char **env)
   NSUserDefaults *ud;
   NSAutoreleasePool *pool;
 
-  pool = [[NSAutoreleasePool alloc] init];
+  pool = [NSAutoreleasePool new];
 #if LIB_FOUNDATION_LIBRARY
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
