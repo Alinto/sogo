@@ -6,7 +6,6 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    popup="isPopup"
     >
     <div class="menu" id="monthListMenu">
       <ul>

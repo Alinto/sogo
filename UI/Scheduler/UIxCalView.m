@@ -12,6 +12,7 @@
 #import "UIxComponent+Agenor.h"
 
 #import "SoObjects/Appointments/SOGoAppointmentFolder.h"
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoObject.h>
 

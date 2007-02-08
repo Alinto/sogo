@@ -20,6 +20,8 @@
  */
 // $Id: UIxCalInlineAptView.m 885 2005-07-21 16:41:34Z znek $
 
+#import <math.h>
+
 #import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/NGObjWeb.h>

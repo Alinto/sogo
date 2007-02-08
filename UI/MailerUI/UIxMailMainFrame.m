@@ -19,7 +19,8 @@
   02111-1307, USA.
 */
 
-#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailObject.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
 #import "UIxMailMainFrame.h"
 
