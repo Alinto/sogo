@@ -70,15 +70,15 @@ static NSNumber   *sharedYes = nil;
   lm      = [NGLoggerManager defaultLoggerManager];
   logger  = [lm loggerForDefaultKey:@"SOGoAppointmentFolderDebugEnabled"];
 
-  securityInfo = [self soClassSecurityInfo];
-  [securityInfo declareRole: SOGoRole_Delegate
-                asDefaultForPermission: SoPerm_AddDocumentsImagesAndFiles];
-  [securityInfo declareRole: SOGoRole_Delegate
-                asDefaultForPermission: SoPerm_ChangeImagesAndFiles];
-  [securityInfo declareRoles: [NSArray arrayWithObjects:
-                                         SOGoRole_Delegate,
-                                       SOGoRole_Assistant, nil]
-                asDefaultForPermission: SoPerm_View];
+//   securityInfo = [self soClassSecurityInfo];
+//   [securityInfo declareRole: SOGoRole_Delegate
+//                 asDefaultForPermission: SoPerm_AddDocumentsImagesAndFiles];
+//   [securityInfo declareRole: SOGoRole_Delegate
+//                 asDefaultForPermission: SoPerm_ChangeImagesAndFiles];
+//   [securityInfo declareRoles: [NSArray arrayWithObjects:
+//                                          SOGoRole_Delegate,
+//                                        SOGoRole_Assistant, nil]
+//                 asDefaultForPermission: SoPerm_View];
 
   sharedYes = [[NSNumber numberWithBool:YES] retain];
 }
