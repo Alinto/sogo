@@ -86,5 +86,8 @@
 "Add Assistant" = "Add Assistant";
 "Add Delegate" = "Add Delegate";
 
-"Add an Addressbook..." = "Add an Addressbook...";
+"New Addressbook..." = "New Addressbook...";
+"Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
+
+"Name of the Address Book" = "Nom du carnet d'adresses";

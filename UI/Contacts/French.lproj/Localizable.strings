@@ -88,5 +88,8 @@
 "Add Assistant" = "Ajouter comme assistant";
 "Add Delegate" = "Ajouter comme délégué";
 
-"Add an Addressbook..." = "Ajouter un carnet d'adresses...";
+"New Addressbook..." = "Nouveau carnet d'adresses...";
+"Subscribe to an Addressbook..." = "S'inscrire à un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";
+
+"Name of the Address Book" = "Nom du carnet d'adresses";
