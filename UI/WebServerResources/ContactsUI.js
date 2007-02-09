@@ -605,7 +605,38 @@ function refreshContacts(contactId) {
   return false;
 }
 
-function onAddressBookAdd(node) {
+function onAddressBookNew(event) {
+  var name = window.prompt(labels["Name of the Address Book"].decodeEntities());
+  if (name) {
+    if (document.newAbAjaxRequest) {
+      document.newAbAjaxRequest.aborted = true;
+      document.newAbAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + "/newAb?name=" + name;
+    document.newAbAjaxRequest
+       = triggerAjaxRequest(url, newAbCallback, name);
+  }
+  event.preventDefault();
+}
+
+function newAbCallback(http) {
+  if (http.readyState == 4
+      && http.status == 201) {
+     var ul = $("contactFolders");
+     var name = http.callbackData;
+     var li = document.createElement("li");
+     li.setAttribute("id", "/" + name);
+     li.appendChild(document.createTextNode(name));
+     li.addEventListener("mousedown", listRowMouseDownHandler, false);
+     li.addEventListener("click", onRowClick, false);
+     li.addEventListener("contextmenu", onContactFoldersContextMenu, false);
+     ul.appendChild(li);
+  }
+  else
+    log ("ajax fuckage:" + http.status);
+}
+
+function onAddressBookAdd(event) {
   var selector = $("contactFolders");
   var selectorURL = '?popup=YES&selectorId=contactFolders';
 
@@ -621,10 +652,10 @@ function onAddressBookAdd(node) {
   w.opener = this;
   w.focus();
 
-  return false;
+  event.preventDefault();
 }
 
-function onAddressBookRemove(node) {
+function onAddressBookRemove(event) {
   var selector = $("contactFolders");
   var nodes = selector.getSelectedNodes();
   if (nodes.length > 0) {
@@ -642,7 +673,7 @@ function onAddressBookRemove(node) {
     }
   }
 
-  return false;
+  event.preventDefault();
 }
 
 function configureDragHandles() {
@@ -675,6 +706,14 @@ function lookupDeniedFolders() {
   }
 
   return rights;
+}
+
+function configureAbToolbar() {
+  var toolbar = $("abToolbar");
+  var links = toolbar.childNodesWithTag("a");
+  links[0].addEventListener("click", onAddressBookNew, false);
+  links[1].addEventListener("click", onAddressBookAdd, false);
+  links[2].addEventListener("click", onAddressBookRemove, false);
 }
 
 function configureContactFolders() {
@@ -726,6 +765,7 @@ function initializeMenus() {
 
 var initContacts = {
   handleEvent: function (event) {
+    configureAbToolbar();
     configureContactFolders();
 //     initDnd();
   }

@@ -42,12 +42,16 @@
               ><var:string label:value="Address Books"
                 /></div>
             <var:if var:condition="isPopup" const:negate="YES"
-              ><div class="toolbar">
-                <a href="#" class="toolbarButton" onclick="return onAddressBookAdd(this);"
+              ><div class="toolbar" id="abToolbar">
+                <a href="#" class="toolbarButton"
                   ><span class="toolbarButton"
-                    ><img rsrc:src="add-addressbook.png" label:title="Add an Addressbook..."
+                    ><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
                       /></span></a
-                  ><a href="#" class="toolbarButton" onclick="return onAddressBookRemove(this);"
+                  ><a href="#" class="toolbarButton"
+                  ><span class="toolbarButton"
+                    ><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
+                      /></span></a
+                  ><a href="#" class="toolbarButton"
                   ><span class="toolbarButton"
                     ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
                       /></span></a
