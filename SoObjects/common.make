@@ -14,7 +14,8 @@ WOBUNDLE_INSTALL_DIR = $(BUNDLE_INSTALL_DIR)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I.. \
-	-I../..
+	-I../.. \
+        -I../../SOPE
 
 ADDITIONAL_LIB_DIRS += \
         -L../SOGo/$(GNUSTEP_OBJ_DIR)/ \
