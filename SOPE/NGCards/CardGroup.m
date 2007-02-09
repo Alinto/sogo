@@ -43,10 +43,15 @@ static NGCardsSaxHandler *sax = nil;
   
   if (!parser)
     {
+#if 1
+      parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
+                 createXMLReaderWithName: @"VSCardSaxDriver"];
+      [parser retain];
+#else
       parser =
         [[[SaxXMLReaderFactory standardXMLReaderFactory] 
-           createXMLReaderForMimeType:@"text/x-vcard"]
-          retain];
+           createXMLReaderForMimeType:@"text/x-vcard"] retain];
+#endif
       if (parser)
         {
           [parser setContentHandler:sax];

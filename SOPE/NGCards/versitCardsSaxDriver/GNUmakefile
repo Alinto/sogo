@@ -8,7 +8,7 @@ BUNDLE_NAME        = versitCardsSaxDriver
 BUNDLE_EXTENSION   = .sax
 BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SaxDrivers-$(MAJOR_VERSION).$(MINOR_VERSION)/
 
-versitCardsSaxDriver_PRINCIPAL_CLASS = VSSaxDriver
+versitCardsSaxDriver_PRINCIPAL_CLASS = VSCardSaxDriver
 
 versitCardsSaxDriver_PCH_FILE = common.h
 

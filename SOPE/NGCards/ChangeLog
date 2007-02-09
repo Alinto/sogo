@@ -1,3 +1,10 @@
+2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup +cardParser]): find the correct parser
+	by requesting a parser by name instead of by mime-type. This way,
+	any parser which would declare the same types would not
+	enter in conflict.
+
 2007-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m ([CardElement -namedValue:aValueName]): use
