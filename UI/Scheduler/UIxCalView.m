@@ -401,7 +401,7 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (unsigned) dayEndHour
 {
-  return 24;
+  return 23;
 }
 
 - (BOOL) shouldDisplayWeekend
