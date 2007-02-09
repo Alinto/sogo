@@ -213,11 +213,10 @@
         <div id="mailboxContent"><!-- space --></div>
         <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
         <div id="messageContent"><!-- space --></div>
-        <script type="text/javascript">
-          initMailboxSelection('<var:string value="mailFolderName" />');
-        </script>
-      </div>
-    </form>
+      <script type="text/javascript">
+        initMailboxSelection('<var:string value="mailFolderName" />');
+      </script>
+    </div>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
   </var:component>
