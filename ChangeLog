@@ -1,5 +1,11 @@
 2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendPersonalSourcesInContext:context]): we now fetch all
+	folders with type "Contact" that belong to the current user.
+	([SOGoContactFolders -newFolderWithName:name]): new method to
+	create a new contact folder.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -userFolderPath]): treat
 	resulting url with [NSString+Utilities hostlessURL] instead of
 	using NSURL. This is because the url in question sometimes has a

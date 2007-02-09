@@ -36,6 +36,11 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/SoUser.h>
 
+#import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/GCSChannelManager.h>
+#import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLContentStore/NSURL+GCS.h>
+
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "common.h"
@@ -69,13 +74,69 @@
 - (void) appendPersonalSourcesInContext: (WOContext *) context;
 {
   SOGoContactGCSFolder *ab;
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql;
+  NSArray *attrs;
+  NSDictionary *row;
 
-  ab = [SOGoContactGCSFolder contactFolderWithName: @"personal"
-                             andDisplayName: @"Personal Addressbook"
-                             inContainer: self];
-  [ab setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                            OCSPath, @"personal"]];
-  [contactFolders setObject: ab forKey: @"personal"];
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation
+    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if (fc)
+    {
+      sql
+        = [NSString stringWithFormat: @"SELECT c_path4, c_foldername FROM %@"
+                    @" WHERE c_path2 = '%@' AND c_folder_type = 'Contact'",
+                    [folderLocation gcsTableName],
+                    [self ownerInContext: nil]];
+      [fc evaluateExpressionX: sql];
+      attrs = [fc describeResults: NO];
+      row = [fc fetchAttributes: attrs withZone: NULL];
+      while (row)
+        {
+          ab = [SOGoContactGCSFolder contactFolderWithName: [row objectForKey: @"c_path4"]
+                                     andDisplayName: [row objectForKey: @"c_foldername"]
+                                     inContainer: self];
+          [ab setOCSPath: [NSString stringWithFormat: @"%@/%@",
+                                    OCSPath, [row objectForKey: @"c_path4"]]];
+          [contactFolders setObject: ab forKey: [row objectForKey: @"c_path4"]];
+          row = [fc fetchAttributes: attrs withZone: NULL];
+        }
+
+//       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
+//                  uidColumnName, [self uid]];
+    }
+}
+
+- (WOResponse *) newFolderWithName: (NSString *) name
+{
+  SOGoContactGCSFolder *newFolder;
+  WOResponse *response;
+
+  newFolder = [SOGoContactGCSFolder contactFolderWithName: name
+                                    andDisplayName: name
+                                    inContainer: [self clientObject]];
+  if ([newFolder isKindOfClass: [NSException class]])
+    response = (WOResponse *) newFolder;
+  else
+    {
+      [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
+                                       OCSPath, name]];
+      if ([newFolder create])
+        {
+          response = [WOResponse new];
+          [response setStatus: 201];
+          [response autorelease];
+        }
+      else
+        response = [NSException exceptionWithHTTPStatus: 400
+                                reason: @"The new folder could not be created"];
+    }
+
+  return response;
 }
 
 - (void) appendSystemSourcesInContext: (WOContext *) context;
