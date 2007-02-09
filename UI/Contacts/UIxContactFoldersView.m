@@ -25,6 +25,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WOContext.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -66,6 +67,21 @@
 - (id) newAction
 {
   return [self _selectActionForApplication: @"new"];
+}
+
+- (id <WOActionResults>) newAbAction
+{
+  id <WOActionResults> response;
+  NSString *name;
+
+  name = [self queryParameterForKey: @"name"];
+  if ([name length] > 0)
+    response = [[self clientObject] newFolderWithName: name];
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+                            reason: @"The name is missing"];
+  
+  return response;
 }
 
 - (id) selectForSchedulerAction

@@ -17,6 +17,11 @@
               pageName    = "UIxContactFoldersView";
               actionName  = "new";
            };
+           newAb = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "newAb";
+           };
            scheduler-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
