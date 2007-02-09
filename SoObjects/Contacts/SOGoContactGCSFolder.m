@@ -200,6 +200,11 @@
 
 /* folder type */
 
+- (NSString *) folderType
+{
+  return @"Contact";
+}
+
 - (NSString *)outlookFolderClass {
   return @"IPF.Contact";
 }

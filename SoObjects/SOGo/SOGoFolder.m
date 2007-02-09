@@ -20,13 +20,14 @@
 */
 
 #import <NGObjWeb/SoObject.h>
+#import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/GCSFolder.h>
+#import <GDLContentStore/GCSFolderType.h>
 
-#include "SOGoFolder.h"
-#include "common.h"
-#include <GDLContentStore/GCSFolderManager.h>
-#include <GDLContentStore/GCSFolder.h>
-#include <unistd.h>
-#include <stdlib.h>
+#import "SOGoFolder.h"
+#import "common.h"
+#import <unistd.h>
+#import <stdlib.h>
 
 #import "SOGoAclsFolder.h"
 
@@ -83,6 +84,7 @@
   
   ASSIGNCOPY(self->ocsPath, _path);
 }
+
 - (NSString *)ocsPath {
   return self->ocsPath;
 }
@@ -107,6 +109,23 @@
     folder = nil;
 
   return folder;
+}
+
+- (NSString *) folderType
+{
+  return @"";
+}
+
+- (BOOL) create
+{
+  NSException *result;
+
+  [GCSFolderType setFolderNamePrefix: @"SOGo_"];
+
+  result = [[self folderManager] createFolderOfType: [self folderType]
+                                 atPath: ocsPath];
+
+  return (result == nil);
 }
 
 - (NSArray *)fetchContentObjectNames {

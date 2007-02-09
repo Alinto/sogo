@@ -1,5 +1,16 @@
 2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -create]): new method
+	that requests the folder manager to create a folder table with the
+	specified type at the specified path. The type is taken from [self
+	folderType].
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-folderType]): implemented.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -folderType]): implemented.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-appendPersonalSourcesInContext:context]): we now fetch all
 	folders with type "Contact" that belong to the current user.

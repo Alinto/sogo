@@ -23,9 +23,11 @@
 #import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOMessage.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
-#import <NGObjWeb/SoClassSecurityInfo.h>
+// #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoPermissions.h>
@@ -58,7 +60,7 @@ static NSNumber   *sharedYes = nil;
 {
   NGLoggerManager *lm;
   static BOOL     didInit = NO;
-  SoClassSecurityInfo *securityInfo;
+//   SoClassSecurityInfo *securityInfo;
 
   if (didInit) return;
   didInit = YES;
@@ -1080,6 +1082,11 @@ static NSNumber   *sharedYes = nil;
 }
 
 /* folder type */
+
+- (NSString *) folderType
+{
+  return @"Appointment";
+}
 
 - (NSString *) outlookFolderClass
 {
