@@ -1,5 +1,9 @@
 2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-newAbAction]): new action method to crate a new contact folder
+	from the web UI.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -create]): new method
 	that requests the folder manager to create a folder table with the
 	specified type at the specified path. The type is taken from [self
