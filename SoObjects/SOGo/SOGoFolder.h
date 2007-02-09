@@ -62,6 +62,8 @@
 
 - (NSString *)outlookFolderClass;
 
+- (BOOL) create;
+
 @end
 
 @interface SOGoFolder (GroupDAVExtensions)
