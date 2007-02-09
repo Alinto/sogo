@@ -285,7 +285,6 @@ static BOOL uixDebugEnabled = NO;
 - (NSString *) userFolderPath
 {
   WOContext *ctx;
-  NSString  *url, *path;
   NSEnumerator *objects;
   SOGoObject *currentObject;
   BOOL found;
@@ -301,16 +300,12 @@ static BOOL uixDebugEnabled = NO;
     else
       currentObject = [objects nextObject];
 
-  url = [currentObject baseURLInContext:ctx];
-  path = [[NSURL URLWithString:url] path];
-
-  return path;
+  return [[currentObject baseURLInContext:ctx] hostlessURL];
 }
 
 - (NSString *) applicationPath
 {
   SOGoObject *currentClient, *parent;
-  NSString *url;
   BOOL found;
   Class objectClass, groupFolderClass, userFolderClass;
   WOContext *ctx;
@@ -333,9 +328,8 @@ static BOOL uixDebugEnabled = NO;
     }
 
   ctx = [self context];
-  url = [currentClient baseURLInContext: ctx];
 
-  return [[NSURL URLWithString: url] path];
+  return [[currentClient baseURLInContext:ctx] hostlessURL];
 }
 
 - (NSString *) resourcesPath

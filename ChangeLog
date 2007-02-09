@@ -1,8 +1,16 @@
+2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -userFolderPath]): treat
+	resulting url with [NSString+Utilities hostlessURL] instead of
+	using NSURL. This is because the url in question sometimes has a
+	hostname and sometimes not. "hostlessURL" ensure the hostname is
+	removed anyway.
+	([UIxComponent -applicationPath]): same as above.
+
 2007-02-08  Ludovic Marcotte <ludovic@inverse.ca>
 
-        * SoObjects/Mailer/SOGoMailFolder.m
-	  Priorize the look of folders before doing
-	  the one on messages. 
+	* SoObjects/Mailer/SOGoMailFolder.m: priorize the lookup of
+	folders before doing the one on messages.
 
 2007-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
