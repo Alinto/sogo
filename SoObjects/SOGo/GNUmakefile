@@ -78,6 +78,7 @@ agenor_defaults_OBJC_FILES   += agenor_defaults.m
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
 
 -include GNUmakefile.preamble
+include ../common.make
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
