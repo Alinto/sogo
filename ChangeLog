@@ -24,9 +24,8 @@
 
 2007-02-07  Ludovic Marcotte <ludovic@inverse.ca>
 
-	* UI/Scheduler/English.lproj/Localizable.strings
-	  Fixed typo for "Agendas" 
-
+	* UI/Scheduler/English.lproj/Localizable.strings: fixed typo for
+	"Agendas"
 
 2007-02-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
