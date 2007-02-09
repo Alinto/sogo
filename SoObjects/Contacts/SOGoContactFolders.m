@@ -106,6 +106,7 @@
           row = [fc fetchAttributes: attrs withZone: NULL];
         }
 
+      [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
 //                  uidColumnName, [self uid]];
     }

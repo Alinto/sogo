@@ -1,5 +1,9 @@
 2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendPersonalSourcesInContext:context]): release connectoin
+	channel when everything is done.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-newAbAction]): new action method to crate a new contact folder
 	from the web UI.
