@@ -27,6 +27,7 @@
 
 @class NSMutableDictionary;
 @class NSString;
+@class WOResponse;
 
 @interface SOGoContactFolders : SOGoObject
 {
@@ -39,6 +40,8 @@
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
 - (NSArray *) contactFolders;
+
+- (WOResponse *) newFolderWithName: (NSString *) name;
 
 @end
 
