@@ -5,6 +5,11 @@
 
   fields = (
     {
+      columnName = c_name;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = NO;
+    },
+    {
       columnName = uid;
       sqlType    = "VARCHAR(256)";
       allowsNull = NO;
