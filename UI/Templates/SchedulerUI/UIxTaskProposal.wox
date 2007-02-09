@@ -148,9 +148,9 @@
                   <var:component className="UIxContactSelector"
                     const:selectorId="participants" />
               </td>
-<!--              <td align="left" bgcolor="#FFFFF0">
+<!--              <td align="left" bgcolor="#FFFFF0"
                 <span class="aptview_text">
-                  <!-- use '1' instead of 'YES', otherwise breaks on OSX -->
+                   use '1' instead of 'YES', otherwise breaks on OSX -->
 <!--                  <var:component className="AnaisAttendeeSelector"
                                  const:selectorID="participant"
                                  const:division="CC"
