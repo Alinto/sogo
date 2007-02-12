@@ -7,9 +7,11 @@ DIV.appointmentLabel
 
 DIV#editorTabs
 {
+  position: absolute;
+  top: 4.5em;
   left: 0px;
   right: 0px;
-  height: 38em;
+  bottom: 0px;
 }
 
 DIV#editorTabs > DIV.tab
@@ -84,7 +86,7 @@ TEXTAREA
   top: 0px;
   left: 8em;
   vertical-align: bottom;
-  height: 10em;
+  bottom: 1em;
   right: 1em;
   padding-bottom: 1em; }
 
