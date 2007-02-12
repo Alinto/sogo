@@ -106,9 +106,14 @@ function CurrentContactFolderURL() {
 function openContactsFolder(contactsFolder, params, external)
 {
   if (contactsFolder != currentContactFolder || params) {
-    if (contactsFolder == currentContactFolder)
-      selection = $("contactsList").getSelectedRowsId();
-    else
+     if (contactsFolder == currentContactFolder) {
+        var contactsList = $("contactsList");
+        if (contactsList)
+           selection = contactsList.getSelectedRowsId();
+        else
+           window.alert("no contactsList");
+     }
+     else
       selection = null;
 
     currentContactFolder = contactsFolder;
@@ -158,7 +163,7 @@ function contactsListCallback(http)
     configureSortableTableHeaders();
   }
   else
-    log ("ajax fuckage");
+    log ("ajax fuckage 1");
 }
 
 function onContactFoldersContextMenu(event)
@@ -266,7 +271,7 @@ function contactLoadCallback(http)
     div.innerHTML = content;
   }
   else
-    log ("ajax fuckage");
+    log ("ajax fuckage 2");
 }
 
 var rowSelectionCount = 0;
@@ -590,7 +595,7 @@ function addressBooksCallback(http) {
     document.addressBooksAjaxRequest = null;
   }
   else
-    log ("ajax fuckage");
+    log ("ajax fuckage 3");
 }
 
 function onContactMailTo(node) {
@@ -633,7 +638,7 @@ function newAbCallback(http) {
      ul.appendChild(li);
   }
   else
-    log ("ajax fuckage:" + http.status);
+    log ("ajax fuckage 4:" + http.status);
 }
 
 function onAddressBookAdd(event) {
@@ -649,7 +654,7 @@ function onAddressBookAdd(event) {
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
   w.selector = selector;
-  w.opener = this;
+  w.opener = window;
   w.focus();
 
   event.preventDefault();

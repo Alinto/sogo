@@ -35,14 +35,14 @@
 
       <form name="searchform" var:href="view" var:_sort="sortKey"
         onsubmit="return onSearchFormSubmit();" method="GET">
-<!--	var:if condition="isPopup" const:negate="YES"> -->
-          <var:if condition="hideFolderTree" const:negate="YES">
+<!--	var:if condition="isPopup" const:negate="YES" -->
+<!--          <var:if condition="hideFolderTree" const:negate="YES" -->
             <div class="contactFoldersList" id="contactFoldersList">
               <div class="titlediv"
               ><var:string label:value="Address Books"
                 /></div>
-            <var:if var:condition="isPopup" const:negate="YES"
-              ><div class="toolbar" id="abToolbar">
+            <!-- var:if var:condition="isPopup" const:negate="YES" -->
+            <div class="toolbar" id="abToolbar">
                 <a href="#" class="toolbarButton"
                   ><span class="toolbarButton"
                     ><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
@@ -55,7 +55,7 @@
                   ><span class="toolbarButton"
                     ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
                       /></span></a
-                  ></div></var:if>
+                  ></div><!-- var:if -->
 
             <ul id="contactFolders"
               var:additional-addressbooks="additionalAddressBooks">
@@ -85,7 +85,7 @@
           </div>
 
           <div class="dragHandle" id="dragHandle"><!-- space --></div>
-        </var:if>
+        <!-- var:if -->
 
         <div id="rightPanel">
           <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
