@@ -554,6 +554,29 @@ function log(message) {
     logConsole.innerHTML += message + '<br />' + "\n";
 }
 
+function backtrace() {
+   var func = backtrace.caller;
+   var str = "backtrace:<br/>";
+
+   while (func)
+   {
+      if (func.name)
+      {
+         str += "  " + func.name;
+         if (this)
+            str += " (" + this + ")";
+      }
+      else
+         str += "[anonymous]\n";
+
+      str += "<br/>";
+      func = func.caller;
+   }
+   str += "--\n";
+
+   return str;
+}
+
 function dropDownSubmenu(event) {
   var node = event.target;
   var submenu = node.getAttribute("submenu");
