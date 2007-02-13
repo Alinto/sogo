@@ -15,7 +15,6 @@
 	UI/Scheduler/UIxCalWeekChartview.m,
 	UI/Scheduler/UIxCalWeekListview.m,
 	UI/Scheduler/UIxCalInlineMonthOverview.m,
-	UI/Scheduler/UIxCalInlineAptView.m,
 	UI/Scheduler/UIxCalYearOverview.m: removed unused modules.
 
 2007-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
