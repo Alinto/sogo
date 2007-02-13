@@ -1,10 +1,10 @@
-ACCEPTED     = "Accepté"
-COMPLETED    = "Terminé"
-DECLINED     = "Refusé"
-DELEGATED    = "Délégué"
-IN-PROCESS   = "En cours de traitement"
-NEEDS-ACTION = "Prise de décision nécessaire"
-TENTATIVE    = "Proposition"
+ACCEPTED     = "Accepté";
+COMPLETED    = "Terminé";
+DECLINED     = "Refusé";
+DELEGATED    = "Délégué";
+IN-PROCESS   = "En cours de traitement";
+NEEDS-ACTION = "Prise de décision nécessaire";
+TENTATIVE    = "Proposition";
 organized_by_you    = "vous êtes l'organisateur";
 you_are_an_attendee = "vous êtes invité";
 add_info_text       = "iMIP 'ADD' requests are not yet supported by SOGo.";
