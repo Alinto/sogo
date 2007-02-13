@@ -147,6 +147,8 @@
             addObject: [NSString stringWithFormat: @"%d", currentHour]];
           currentHour++;
         }
+      [hoursToDisplay
+        addObject: [NSString stringWithFormat: @"%d", currentHour]];
     }
 
   return hoursToDisplay;
@@ -257,7 +259,7 @@
   start = [currentTableDay hour: [self dayStartHour] minute: 0];
   endHour = [self dayEndHour];
   if (endHour < 24)
-    end = [currentTableDay hour: [self dayEndHour] minute: 0];
+    end = [currentTableDay hour: [self dayEndHour] minute: 59];
   else
     end = [[currentTableDay tomorrow] hour: 0 minute: 0];
 
@@ -288,7 +290,7 @@
   return currentAppointment;
 }
 
-- (NSArray *) appointmentsClasses
+- (NSString *) appointmentsClasses
 {
   return [NSString stringWithFormat: @"appointments appointmentsFor%dDays",
                    numberOfDays];
