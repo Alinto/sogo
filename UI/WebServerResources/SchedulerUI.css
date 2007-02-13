@@ -611,10 +611,13 @@ DIV.daysView DIV.days
   left: 5em;
   right: 0px; }
 
+DIV.multicolumnDayView DIV.lastDayUser
+{ border-right: 1px solid #397d94; }
+
 DIV.daysView DIV.day
 { position: absolute;
-  left: 0px;
   border-left: 1px solid #397d94;
+  left: 0px;
   top: 0px;
   bottom: 0px; }
 

@@ -22,8 +22,12 @@ function newEvent(sender, type) {
   if (!day)
     day = currentDay;
 
+  var user = UserLogin;
+  if (currentView == "multicolumndayview" && type == "event")
+     user = sender.parentNode.parentNode.getAttribute("user");
+
   var hour = sender.getAttribute("hour");
-  var urlstr = ApplicationBaseURL + "new" + type;
+  var urlstr = UserFolderURL + "../" + user + "/Calendar/new" + type;
   var params = new Array();
   if (day)
     params.push("day=" + day);
@@ -375,6 +379,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
     if (!keepCurrentDay)
       currentDay = day;
 
+    log (backtrace());
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
 //       log ("restoring cached selector for month: " + month);
@@ -440,6 +445,11 @@ function _ensureView(view) {
 function onDayOverview()
 {
   return _ensureView("dayview");
+}
+
+function onMulticolumnDayOverview()
+{
+  return _ensureView("multicolumndayview");
 }
 
 function onWeekOverview()
@@ -773,7 +783,11 @@ function onCalendarSelectAppointment() {
 }
 
 function onCalendarSelectDay(event) {
-  var day = this.getAttribute("day");
+  var day;
+  if (currentView == "multicolumndayview")
+     day = this.parentNode.getAttribute("day");
+  else
+     day = this.getAttribute("day");
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
 
