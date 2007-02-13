@@ -257,7 +257,7 @@
   NSString   *cn;
   
   if ((organizer = [[self authorativeEvent] organizer]) != nil) {
-    cn = [organizer valueForKey:@"cnForDisplay"];
+    cn = [organizer valueForKey:@"cnWithoutQuotes"];
     if ([cn isNotNull] && [cn length] > 0)
       return cn;
     
