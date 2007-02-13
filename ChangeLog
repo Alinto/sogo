@@ -1,5 +1,9 @@
 2007-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMulticolumnDayView.[hm]: new daily view
+	module which shows each selected user's calendar in a different
+	column instead of mixing their events together.
+
 	* UI/Scheduler/UIxCalView.m ([UIxCalView -redirectForUIDsAction]):
 	replaced use of [NSString stringByTrimmingWhiteSpaces] with
 	[NSString stringByTrimmingSpaces].

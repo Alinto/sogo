@@ -13,6 +13,7 @@
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Assistant" );
         "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusy" );
+        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
       };
     };
 
