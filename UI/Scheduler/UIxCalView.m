@@ -1,4 +1,4 @@
-// $Id: UIxCalView.m 1018 2007-02-08 16:37:00Z wolfgang $
+// $Id: UIxCalView.m 1021 2007-02-12 20:56:24Z wolfgang $
 
 #import "common.h"
 //#import <OGoContentStore/OCSFolder.h>
@@ -602,7 +602,7 @@ static BOOL shouldDisplayWeekend = NO;
   unsigned index;
 
   uidsString = [self queryParameterForKey: @"userUIDString"];
-  uidsString = [uidsString stringByTrimmingWhiteSpaces];
+  uidsString = [uidsString stringByTrimmingSpaces];
   [self setQueryParameter: nil forKey: @"userUIDString"];
 
   prevMethod = [self queryParameterForKey: @"previousMethod"];

@@ -1,5 +1,9 @@
 2007-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([UIxCalView -redirectForUIDsAction]):
+	replaced use of [NSString stringByTrimmingWhiteSpaces] with
+	[NSString stringByTrimmingSpaces].
+
 	* UI/MailPartViewers/UIxMailPartICalViewer.m: request the key
 	"cnWithoutQuotes" instead of "cnForDisplay", which no longer
 	exists.
