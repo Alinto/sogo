@@ -30,7 +30,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
 					\
-	UIxCalInlineMonthOverview.m	\
 	UIxComponentEditor.m		\
 	UIxFreeBusyUserSelector.m	\
 	UIxFreeBusyUserSelectorTable.m	\
