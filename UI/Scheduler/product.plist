@@ -56,6 +56,10 @@
           protectedBy = "View";
           pageName    = "UIxCalDayView"; 
         };
+        multicolumndayview = {
+          protectedBy = "View";
+          pageName    = "UIxCalMulticolumnDayView"; 
+        };
         weekview = {
           protectedBy = "View";
           pageName    = "UIxCalWeekView"; 

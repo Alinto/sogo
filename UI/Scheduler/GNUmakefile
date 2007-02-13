@@ -24,20 +24,12 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalAptListView.m		\
 	UIxCalTasksListView.m		\
 	UIxCalDayView.m			\
+	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
 	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
 					\
-	UIxCalDayOverview.m		\
-	UIxCalDayChartview.m		\
-	UIxCalDayListview.m		\
-	UIxCalWeekOverview.m		\
-	UIxCalWeekChartview.m		\
-	UIxCalWeekListview.m		\
-	UIxCalWeekColumnsview.m		\
-	UIxCalMonthOverview.m		\
-	UIxCalYearOverview.m		\
 	UIxCalInlineMonthOverview.m	\
 	UIxComponentEditor.m		\
 	UIxFreeBusyUserSelector.m	\
@@ -56,6 +48,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalInlineAptView.m		\
 	UIxCalScheduleOverview.m	\
 	UIxCalParticipationStatusView.m	\
+	UIxCalMonthOverview.m
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\
