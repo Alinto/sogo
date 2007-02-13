@@ -1,0 +1,13 @@
+<?xml version='1.0' standalone='yes'?>
+  <div
+    var:class="displayClasses"
+    var:aptCName="appointment.c_name"
+    var:owner="appointment.owner"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url">
+    <div var:class="innerDisplayClasses">
+      <var:string value="appointment.title" const:escapeHTML="NO" />
+    </div>
+  </div>
