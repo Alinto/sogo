@@ -90,7 +90,7 @@
   if ((self = [self initWithName: aName
                     inContainer: aContainer]))
     [self setDisplayName: aDisplayName];
-
+  
   return self;
 }
 
