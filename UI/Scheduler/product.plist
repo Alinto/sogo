@@ -190,11 +190,11 @@
           actionName  = "delete";
         };
         edit = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "View";
           pageName    = "UIxTaskEditor"; 
         };
         editAsTask = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "View";
           pageName    = "UIxTaskEditor"; 
         };
         save = { 
