@@ -34,6 +34,10 @@ NSString *SOGoRole_FreeBusyLookup = @"FreeBusyLookup"; /* for users that have
 NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
                                             */
 
+/* Calendar */
+NSString *SOGoRole_Organizer = @"Organizer";
+NSString *SOGoRole_Participant = @"Participant";
+
 #warning ReadAcls still not used...
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is

@@ -36,4 +36,7 @@ extern NSString *SOGoPerm_ReadAcls;
 extern NSString *SOGoPerm_CreateAndModifyAcls;
 extern NSString *SOGoPerm_FreeBusyLookup;
 
+extern NSString *SOGoRole_Organizer;
+extern NSString *SOGoRole_Participant;
+
 #endif /* SOGOPERMISSIONS_H */
