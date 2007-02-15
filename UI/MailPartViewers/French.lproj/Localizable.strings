@@ -25,3 +25,5 @@ do_tentative        = "tentative";
 do_update_status    = "mettre l'agenda à jour";
 reply_info_no_attendee = "Vous avez reçu une réponse à un événement mais l'expéditeur n'est pas un invité.";
 reply_info          = "Ceci est une réponse à un événement que vous avez organisé.";
+
+"Size" = "Taille";
