@@ -89,10 +89,11 @@
   if ((count = [_types count]) == 0)
     return NSNotFound;
   
-  /* we always choose text/plain if available */
+  if ((i = [_types indexOfObject:@"text/html"]) != NSNotFound)
+    return i;
   if ((i = [_types indexOfObject:@"text/plain"]) != NSNotFound)
     return i;
-  
+
   /* then we scan for other text types and choose the first one found */
   for (i = 0; i < count; i++) {
     if ([(NSString *)[_types objectAtIndex:i] hasPrefix:@"text/"])

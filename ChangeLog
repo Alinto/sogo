@@ -1,5 +1,8 @@
 2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m: select the
+	text/html component before text/plain.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-addRequiredKeysOfStructure:path:toArray:recurse:]): accepts the
 	fetching of HTML parts.
