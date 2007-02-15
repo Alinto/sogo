@@ -72,6 +72,13 @@ DIV#messageContent
   background: #fff;
 }
 
+DIV#messageContent P IMG
+{
+  border: 0px;
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
 DIV#folderTreeContent
 {
   position: absolute;
@@ -82,18 +89,6 @@ DIV#folderTreeContent
   bottom: 0px;
   overflow: auto;
   border: 1px solid #fff;
-}
-
-DIV#messageContent P
-{
-  line-height: 3em;
-}
-
-DIV#messageContent P IMG
-{
-  border: 0px;
-  vertical-align: middle;
-  margin-right: 1em;
 }
 
 .aptview_title
@@ -373,6 +368,23 @@ DIV.mailer_plaincontent
 { 
   font-family: monospace, fixed;
   white-space: normal;
+  font-size: inherit;
+  margin: 0px;
+  padding: 0px;
+}
+
+DIV.mailer_plaincontent P
+{
+  line-height: 3em;
+  height: auto;
+  margin: 0px;
+  padding: 0px;
+}
+
+DIV.mailer_htmlcontent P
+{ 
+  white-space: normal;
+  font-family: serif;
   font-size: inherit;
   margin: 0px;
   padding: 0px;
