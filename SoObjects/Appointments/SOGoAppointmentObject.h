@@ -46,11 +46,6 @@
 
 @interface SOGoAppointmentObject : SOGoCalendarComponent
 
-/* accessors */
-
-- (iCalEvent *) event;
-- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) calendar;
-
 /* folder management */
 
 - (id) lookupHomeFolderForUID: (NSString *) _uid inContext: (id)_ctx;

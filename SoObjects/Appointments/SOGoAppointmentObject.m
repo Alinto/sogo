@@ -28,6 +28,7 @@
 
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "iCalEntityObject+Agenor.h"
 
@@ -37,11 +38,9 @@
 
 @implementation SOGoAppointmentObject
 
-/* accessors */
-
-- (iCalEvent *) event
+- (NSString *) componentTag
 {
-  return [self firstEventFromCalendar: [self calendar]];
+  return @"vevent";
 }
 
 /* iCal handling */
@@ -77,22 +76,23 @@
 
   /* add attendees */
   
-  for (i = 0; i < count; i++) {
-    iCalPerson *person;
+  for (i = 0; i < count; i++)
+    {
+      iCalPerson *person;
     
-    person = [attendees objectAtIndex:i];
-    email  = [person rfc822Email];
-    if (![email isNotNull]) continue;
+      person = [attendees objectAtIndex:i];
+      email  = [person rfc822Email];
+      if (![email isNotNull]) continue;
     
-    uid = [um getUIDForEmail:email];
-    if (![uid isNotNull]) {
-      [self logWithFormat:@"Note: got no uid for email: '%@'", email];
-      continue;
+      uid = [um getUIDForEmail:email];
+      if (![uid isNotNull]) {
+        [self logWithFormat:@"Note: got no uid for email: '%@'", email];
+        continue;
+      }
+      if (![uids containsObject:uid])
+        [uids addObject:uid];
     }
-    if (![uids containsObject:uid])
-      [uids addObject:uid];
-  }
-  
+
   return uids;
 }
 
@@ -186,21 +186,6 @@
   return allErrors;
 }
 
-- (iCalEvent *) firstEventFromCalendar: (iCalCalendar *) aCalendar
-{
-  iCalEvent *event;
-  NSArray *events;
-
-  events = [aCalendar childrenWithTag: @"vevent"];
-  if ([events count])
-    event = (iCalEvent *) [[events objectAtIndex: 0]
-                            groupWithClass: [iCalEvent class]];
-  else
-    event = nil;
-
-  return event;
-}
-
 /* "iCal multifolder saves" */
 
 - (NSException *) saveContentString: (NSString *) _iCal
@@ -252,7 +237,7 @@
       oldApt = nil;
     }
   else
-    oldApt = [self firstEventFromCalendar: [self calendar]];
+    oldApt = (iCalEvent *) [self component];
   
   /* compare sequence if requested */
 
@@ -264,7 +249,7 @@
   /* handle new content */
   
   newCalendar = [iCalCalendar parseSingleFromSource: _iCal];
-  newApt = [self firstEventFromCalendar: newCalendar];
+  newApt = (iCalEvent *) [newCalendar firstChildWithTag: [self componentTag]];
   if (newApt == nil) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
 			reason:@"could not parse iCalendar content!"];
@@ -408,7 +393,7 @@
 
   /* load existing content */
 
-  apt = [self event];  
+  apt = (iCalEvent *) [self component];
   
   /* compare sequence if requested */
 
@@ -460,7 +445,7 @@
   ex = nil;
 
   // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
-  apt = [self event];
+  apt = (iCalEvent *) [self component];
 
   if (apt)
     {
@@ -520,7 +505,7 @@
   else
     {
       eventCalendar = [iCalCalendar parseSingleFromSource: contentString];
-      event = [self firstEventFromCalendar: eventCalendar];
+      event = (iCalEvent *) [eventCalendar firstChildWithTag: [self componentTag]];
       organizers = [event childrenWithTag: @"organizer"];
       if ([organizers count])
         newContentString = contentString;
@@ -533,29 +518,6 @@
 
   return [super saveContentString: newContentString
                 baseVersion: baseVersion];
-}
-
-- (NSString *) roleOfUser: (NSString *) login
-                inContext: (WOContext *) context
-{
-  AgenorUserManager *um;
-  iCalEvent *event;
-  NSString *role, *email;
-
-  um = [AgenorUserManager sharedUserManager];
-  email = [um getEmailForUID: login];
-
-  event = [self event];
-  if ([event isOrganizer: email])
-    role = @"Organizer";
-  else if ([event isParticipant: email])
-    role = @"Participant";
-  else if ([[[self container] ownerInContext: nil] isEqualToString: login])
-    role = @"SoRole_Owner";
-  else
-    role = nil;
-
-  return role;
 }
 
 @end /* SOGoAppointmentObject */

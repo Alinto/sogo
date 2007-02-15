@@ -1,3 +1,15 @@
+2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -componentTag]): new template method that
+	returns the vcalendar tag of the current object.
+	([SOGoCalendarComponent -component]): new method that returns the
+	first object matching [self componentTag] within the current
+	calendar object. This method replaces 'firstEventInCalendar:' as
+	well as "firstTaskInCalendar:".
+	([SOGoCalendarComponent -roleOfUser:logininContext:context]):
+	moved method from SOGoAppointmentObject.m.
+
 2007-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMulticolumnDayView.[hm]: new daily view

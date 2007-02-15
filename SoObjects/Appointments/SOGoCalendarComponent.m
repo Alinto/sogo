@@ -30,6 +30,7 @@
 #import <NGMail/NGSendMail.h>
 
 #import <SOGo/AgenorUserManager.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "common.h"
 
@@ -83,6 +84,13 @@ static BOOL sendEMailNotifications = NO;
   return @"text/calendar";
 }
 
+- (NSString *) componentTag
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (iCalCalendar *) calendar
 {
   NSString *iCalString;
@@ -98,6 +106,13 @@ static BOOL sendEMailNotifications = NO;
     }
 
   return calendar;
+}
+
+- (iCalRepeatableEntityObject *) component
+{
+  return (iCalRepeatableEntityObject *)
+    [[self calendar]
+      firstChildWithTag: [self componentTag]];
 }
 
 /* raw saving */
@@ -229,7 +244,7 @@ static BOOL sendEMailNotifications = NO;
 
           /* construct message */
           headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
-    
+          
           /* NOTE: multipart/alternative seems like the correct choice but
            * unfortunately Thunderbird doesn't offer the rich content alternative
            * at all. Mail.app shows the rich content alternative _only_
@@ -277,6 +292,29 @@ static BOOL sendEMailNotifications = NO;
                     sender: [organizer rfc822Email]];
         }
     }
+}
+
+- (NSString *) roleOfUser: (NSString *) login
+                inContext: (WOContext *) context
+{
+  AgenorUserManager *um;
+  iCalRepeatableEntityObject *component;
+  NSString *role, *email;
+
+  um = [AgenorUserManager sharedUserManager];
+  email = [um getEmailForUID: login];
+
+  component = [self component];
+  if ([component isOrganizer: email])
+    role = SOGoRole_Organizer;
+  else if ([component isParticipant: email])
+    role = SOGoRole_Participant;
+  else if ([[[self container] ownerInContext: nil] isEqualToString: login])
+    role = SoRole_Owner;
+  else
+    role = nil;
+
+  return role;
 }
 
 @end

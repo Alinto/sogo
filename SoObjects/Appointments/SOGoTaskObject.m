@@ -58,11 +58,9 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     mailTemplateDefaultLanguage = @"French";
 }
 
-/* accessors */
-
-- (iCalToDo *) task
+- (NSString *) componentTag
 {
-  return [self firstTaskFromCalendar: [self calendar]];
+  return @"vtodo";
 }
 
 /* iCal handling */
@@ -204,21 +202,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     }
   }
   return allErrors;
-}
-
-- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) aCalendar
-{
-  iCalToDo *task;
-  NSArray *tasks;
-
-  tasks = [aCalendar childrenWithTag: @"vtodo"];
-  if ([tasks count])
-    task = (iCalToDo *) [[tasks objectAtIndex: 0]
-                           groupWithClass: [iCalToDo class]];
-  else
-    task = nil;
-
-  return task;
 }
 
 /* "iCal multifolder saves" */
@@ -430,7 +413,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
   /* load existing content */
   
-  task = [self task];
+  task = (iCalToDo *) [self component];
   
   /* compare sequence if requested */
 
@@ -479,7 +462,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSString        *myEMail;
   
   // TODO: do we need to use SOGoTask? (prefer iCalToDo?)
-  task = [self task];
+  task = (iCalToDo *) [self component];
 
   if (task == nil) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */

@@ -36,9 +36,9 @@
   iCalCalendar *calendar;
 }
 
-/* accessors */
-
+- (NSString *) componentTag;
 - (iCalCalendar *) calendar;
+- (iCalRepeatableEntityObject *) component;
 
 - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 - (NSException *) primaryDelete;

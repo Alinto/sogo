@@ -44,11 +44,6 @@
 
 @interface SOGoTaskObject : SOGoCalendarComponent
 
-/* accessors */
-
-- (iCalToDo *) task;
-- (iCalToDo *) firstTaskFromCalendar: (iCalCalendar *) calendar;
-
 /* folder management */
 
 - (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx;
