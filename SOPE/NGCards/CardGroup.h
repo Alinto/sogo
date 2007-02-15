@@ -50,6 +50,7 @@
 - (void) addChildren: (NSArray *) someChildren;
 
 - (NSArray *) children;
+- (CardElement *) firstChildWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithAttribute: (NSString *) anAttribute
                         havingValue: (NSString *) aValue;
@@ -63,7 +64,6 @@
 - (void) addChildWithTag: (NSString *) aTag
                    types: (NSArray *) someTypes
              singleValue: (NSString *) aValue;
-
 
 - (CardGroup *) groupWithClass: (Class) groupClass;
 - (void) setChildrenAsCopy: (NSMutableArray *) someChildren;

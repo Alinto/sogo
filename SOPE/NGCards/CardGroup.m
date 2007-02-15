@@ -232,6 +232,33 @@ static NGCardsSaxHandler *sax = nil;
   [self addChild: aChild];
 }
 
+- (CardElement *) firstChildWithTag: (NSString *) aTag;
+{
+  Class mappedClass;
+  CardElement *child, *mappedChild;
+  NSArray *existing;
+
+  existing = [self childrenWithTag: aTag];
+  if ([existing count])
+    {
+      child = [existing objectAtIndex: 0];
+      mappedClass = [self classForTag: [aTag uppercaseString]];
+      if (mappedClass)
+        {
+          if ([child isKindOfClass: [CardGroup class]])
+            mappedChild = [(CardGroup *) child groupWithClass: mappedClass];
+          else
+            mappedChild = [child elementWithClass: mappedClass];
+        }
+      else
+        mappedChild = child;
+    }
+  else
+    mappedChild = nil;
+
+  return mappedChild;
+}
+
 - (void) addChildren: (NSArray *) someChildren
 {
   CardElement *currentChild;
