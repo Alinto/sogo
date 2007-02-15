@@ -1,5 +1,8 @@
 2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: reimplemented module
+	from scratch.
+
 	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m: select the
 	text/html component before text/plain.
 

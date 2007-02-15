@@ -1,23 +1,9 @@
 <?xml version="1.0" standalone="yes"?>
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:var="http://www.skyrix.com/od/binding"
-     xmlns:label="OGo:label"
-     class="linked_attachment_frame"
->
-  <!-- TODO: make an optional iframe -->
-  <!-- TODO: add a server side 'safe' renderer -->
-  
-  <div class="linked_attachment_body">
-    <a var:href="pathToAttachment"
-       var:title="filenameForDisplay"
-       ><var:string value="filenameForDisplay" /></a>
-    <div class="linked_attachment_meta">
-      <var:string label:value="Type" />:
-      <var:string value="bodyInfo.type" /> / 
-      <var:string value="bodyInfo.subtype" />,
-
-      <var:string label:value="Size" />:
-      <var:string value="bodyInfo.size" formatter="sizeFormatter" />
-    </div>
-  </div>
-</div>
+<div
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  class="mailer_htmlcontent"
+><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
