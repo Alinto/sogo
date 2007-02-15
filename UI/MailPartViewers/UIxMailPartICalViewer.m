@@ -212,7 +212,7 @@
 }
 
 - (iCalEvent *)storedEvent {
-  return [(SOGoAppointmentObject *)[self storedEventObject] event];
+  return (iCalEvent *) [(SOGoAppointmentObject *)[self storedEventObject] component];
 }
 
 /* organizer tracking */
