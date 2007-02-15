@@ -848,23 +848,13 @@
 {
   NSString *filename;
   iCalEntityObject *calObject;
-  id co;
+  SOGoCalendarComponent *co;
 
   if (componentLoaded)
     {
       co = [self clientObject];
-      if ([co isKindOfClass: [SOGoAppointmentObject class]])
-        {
-          calObject = (iCalEntityObject *) [co event];
-          filename = [self _toolbarForCalObject: calObject];
-        }
-      else if ([co isKindOfClass: [SOGoTaskObject class]])
-        {
-          calObject = (iCalEntityObject *) [co task];
-          filename = [self _toolbarForCalObject: calObject];
-        }
-      else
-        filename = @"";
+      calObject = [co component];
+      filename = [self _toolbarForCalObject: calObject];
     }
   else
     filename = @"";

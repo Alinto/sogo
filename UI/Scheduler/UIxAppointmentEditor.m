@@ -264,11 +264,9 @@
 {
   iCalCalendar *calendar;
   iCalEvent *appointment;
-  SOGoAppointmentObject *clientObject;
 
-  clientObject = [self clientObject];
   calendar = [iCalCalendar parseSingleFromSource: _iCalString];
-  appointment = [clientObject firstEventFromCalendar: calendar];
+  appointment = (iCalEvent *) [calendar firstChildWithTag: @"vevent"];
 
   return appointment;
 }

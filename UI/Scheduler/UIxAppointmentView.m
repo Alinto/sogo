@@ -162,25 +162,14 @@
 
 - (iCalEvent *) appointment
 {
-  NSString *iCalString;
-  iCalCalendar *calendar;
   SOGoAppointmentObject *clientObject;
-    
-  if (appointment != nil)
-    return appointment;
 
-  clientObject = [self clientObject];
-
-  iCalString = [[self clientObject] valueForKey:@"iCalString"];
-  if (![iCalString isNotNull] || [iCalString length] == 0) {
-    [self errorWithFormat:@"(%s): missing iCal string!", 
-            __PRETTY_FUNCTION__];
-    return nil;
-  }
-
-  calendar = [iCalCalendar parseSingleFromSource: iCalString];
-  appointment = [clientObject firstEventFromCalendar: calendar];
-  [appointment retain];
+  if (!appointment)
+    {
+      clientObject = [self clientObject];
+      appointment = (iCalEvent *) [clientObject component];
+      [appointment retain];
+    }
 
   return appointment;
 }

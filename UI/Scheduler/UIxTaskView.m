@@ -162,25 +162,14 @@
 
 - (iCalToDo *) task
 {
-  NSString *iCalString;
-  iCalCalendar *calendar;
   SOGoTaskObject *clientObject;
-    
-  if (task != nil)
-    return task;
 
-  clientObject = [self clientObject];
-
-  iCalString = [[self clientObject] valueForKey:@"iCalString"];
-  if (![iCalString isNotNull] || [iCalString length] == 0) {
-    [self errorWithFormat:@"(%s): missing iCal string!", 
-            __PRETTY_FUNCTION__];
-    return nil;
-  }
-
-  calendar = [iCalCalendar parseSingleFromSource: iCalString];
-  task = [clientObject firstTaskFromCalendar: calendar];
-  [task retain];
+  if (!task)
+    {
+      clientObject = [self clientObject];
+      task = (iCalToDo *) [clientObject component];
+      [task retain];
+    }
 
   return task;
 }

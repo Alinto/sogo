@@ -250,11 +250,9 @@
 {
   iCalCalendar *calendar;
   iCalToDo *task;
-  SOGoTaskObject *clientObject;
 
-  clientObject = [self clientObject];
   calendar = [iCalCalendar parseSingleFromSource: _iCalString];
-  task = [clientObject firstTaskFromCalendar: calendar];
+  task = (iCalToDo *) [calendar firstChildWithTag: @"vtodo"];
 
   return task;
 }
@@ -406,7 +404,7 @@
   newStatus = [[self queryParameterForKey: @"status"] intValue];
 
   taskObject = [self clientObject];
-  task = [taskObject task];
+  task = (iCalToDo *) [taskObject component];
   switch (newStatus)
     {
     case 1:
