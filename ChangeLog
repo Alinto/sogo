@@ -1,5 +1,8 @@
 2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailRenderingContext.m: returns the
+	alternativeViewer a multipart/related message is being handled.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: reimplemented module
 	from scratch.
 
