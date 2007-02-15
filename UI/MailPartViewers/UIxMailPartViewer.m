@@ -122,17 +122,17 @@
   }
   
   charset = [(NSDictionary *)
-	      [(NSDictionary *)[self bodyInfo] objectForKey:@"parameterList"] 
-	                                       objectForKey:@"charset"];
+	      [(NSDictionary *)[self bodyInfo] objectForKey:@"parameterList"]
+              objectForKey:@"charset"];
   charset = [charset lowercaseString];
-  
+
   // TODO: properly decode charset, might need to handle encoding?
   
   if ([charset length] > 0) {
-    s = [NSString stringWithData:content usingEncodingNamed:charset];
+    s = [NSString stringWithData: content usingEncodingNamed: charset];
   }
   else {
-    s = [[NSString alloc] initWithData:content encoding:NSUTF8StringEncoding];
+    s = [[NSString alloc] initWithData: content encoding: NSUTF8StringEncoding];
     s = [s autorelease];
   }
   
