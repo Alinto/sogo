@@ -25,13 +25,14 @@
       superclass    = "SOGoContentObject";
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
+        "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
       };
     };
-
     SOGoTaskObject = {
       superclass    = "SOGoContentObject";
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
+        "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
       };
     };
     SOGoFreeBusyObject = {
