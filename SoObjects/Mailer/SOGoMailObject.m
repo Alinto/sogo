@@ -418,7 +418,8 @@ static BOOL debugSoParts       = NO;
   _subtype = [_subtype lowercaseString];
   
   if ([_type isEqualToString:@"text"]) {
-    if ([_subtype isEqualToString:@"plain"])
+    if ([_subtype isEqualToString:@"plain"]
+        || [_subtype isEqualToString:@"html"])
       return YES;
 
     if ([_subtype isEqualToString:@"calendar"]) /* we also fetch calendars */
