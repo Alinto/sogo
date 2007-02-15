@@ -18,13 +18,13 @@ MailPartViewers_OBJC_FILES += \
 	\
 	UIxMailPartViewer.m		\
 	UIxMailPartTextViewer.m		\
+	UIxMailPartHTMLViewer.m		\
 	UIxMailPartImageViewer.m	\
 	UIxMailPartLinkViewer.m		\
 	UIxMailPartMixedViewer.m	\
 	UIxMailPartAlternativeViewer.m	\
 	UIxMailPartMessageViewer.m	\
 	UIxMailPartICalViewer.m		\
-	UIxMailPartHTMLViewer.m		\
 	\
 	UIxMailPartICalAction.m		\
 	\
