@@ -35,6 +35,7 @@
         "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
         "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
         "SaveAcls" = ( "Owner" );
+        "Delete Objects" = ( "Owner", "Delegate" );
       };
     };
     SOGoGroupsFolder = {
