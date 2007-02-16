@@ -834,11 +834,8 @@ static NSNumber   *sharedYes = nil;
         = [self objectClassForResourceNamed: currentId];
       deleteObject = [objectClass objectWithName: currentId
                                   inContainer: self];
-      if ([currentUser isEqualToString: [deleteObject ownerInContext: nil]])
-        {
-          [deleteObject delete];
-          [deleteObject primaryDelete];
-        }
+      [deleteObject delete];
+      [deleteObject primaryDelete];
     }
 }
 
