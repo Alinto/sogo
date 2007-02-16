@@ -417,23 +417,13 @@ static BOOL debugSoParts       = NO;
   _type    = [_type    lowercaseString];
   _subtype = [_subtype lowercaseString];
   
-  if ([_type isEqualToString:@"text"]) {
-    if ([_subtype isEqualToString:@"plain"]
-        || [_subtype isEqualToString:@"html"])
-      return YES;
-
-    if ([_subtype isEqualToString:@"calendar"]) /* we also fetch calendars */
-      return YES;
-  }
-
-  if ([_type isEqualToString:@"application"]) {
-    if ([_subtype isEqualToString:@"pgp-signature"])
-      return YES;
-    if ([_subtype hasPrefix:@"x-vnd.kolab."])
-      return YES;
-  }
-  
-  return NO;
+  return (([_type isEqualToString:@"text"]
+           && ([_subtype isEqualToString:@"plain"]
+               || [_subtype isEqualToString:@"html"]
+               || [_subtype isEqualToString:@"calendar"]))
+          || ([_type isEqualToString:@"application"]
+              && ([_subtype isEqualToString:@"pgp-signature"]
+                  || [_subtype hasPrefix:@"x-vnd.kolab."])));
 }
 
 - (void)addRequiredKeysOfStructure:(id)_info path:(NSString *)_p
@@ -825,7 +815,7 @@ static BOOL debugSoParts       = NO;
     In case b) or c) fails, we can't do anything because IMAP4 doesn't tell us
     the ID used in the trash folder.
   */
-  SOGoMailFolder *destFolder;
+  SOGoMailAccounts *destFolder;
   NSEnumerator *folders;
   NSString *currentFolderName, *reason;
   NSException    *error;
