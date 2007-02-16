@@ -23,7 +23,8 @@ function newEvent(sender, type) {
     day = currentDay;
 
   var user = UserLogin;
-  if (currentView == "multicolumndayview" && type == "event")
+  if (sender.parentNode.getAttribute("id") != "toolbar"
+      && currentView == "multicolumndayview" && type == "event")
      user = sender.parentNode.parentNode.getAttribute("user");
 
   var hour = sender.getAttribute("hour");
@@ -1072,10 +1073,12 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail)
 
 function onChangeCalendar(list) {
    var form = document.forms.editform;
+   log ("before: " + form.getAttribute("action"));
    var urlElems = form.getAttribute("action").split("/");
    urlElems[urlElems.length-4]
       = list.childNodesWithTag("option")[list.value].innerHTML;
    form.setAttribute("action", urlElems.join("/"));
+   log ("after: " + form.getAttribute("action"));
 }
 
 function validateBrowseURL(input) {
