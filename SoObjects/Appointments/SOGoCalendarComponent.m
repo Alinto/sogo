@@ -31,6 +31,7 @@
 
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
 #import "common.h"
 
@@ -294,27 +295,40 @@ static BOOL sendEMailNotifications = NO;
     }
 }
 
-- (NSString *) roleOfUser: (NSString *) login
+- (NSArray *) rolesOfUser: (NSString *) login
                 inContext: (WOContext *) context
 {
   AgenorUserManager *um;
   iCalRepeatableEntityObject *component;
-  NSString *role, *email;
+  NSMutableArray *sogoRoles;
+  NSString *email;
+  SOGoUser *user;
+
+  sogoRoles = [NSMutableArray new];
+  [sogoRoles autorelease];
 
   um = [AgenorUserManager sharedUserManager];
   email = [um getEmailForUID: login];
 
   component = [self component];
-  if ([component isOrganizer: email])
-    role = SOGoRole_Organizer;
-  else if ([component isParticipant: email])
-    role = SOGoRole_Participant;
-  else if ([[[self container] ownerInContext: nil] isEqualToString: login])
-    role = SoRole_Owner;
+  if (component)
+    {
+      if ([component isOrganizer: email])
+        [sogoRoles addObject: SOGoRole_Organizer];
+      else if ([component isParticipant: email])
+        [sogoRoles addObject: SOGoRole_Participant];
+      else if ([[container ownerInContext: nil] isEqualToString: login])
+        [sogoRoles addObject: SoRole_Owner];
+    }
   else
-    role = nil;
+    {
+      user = [[SOGoUser alloc] initWithLogin: login roles: nil];
+      [sogoRoles addObjectsFromArray: [user rolesForObject: container
+                                            inContext: context]];
+      [user release];
+    }
 
-  return role;
+  return sogoRoles;
 }
 
 @end

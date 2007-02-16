@@ -1,3 +1,10 @@
+2007-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -rolesOfUser:logininContext:context]):
+	returns the roles of the user on the container object if the event
+	is uncreated.
+
 2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m: returns the
