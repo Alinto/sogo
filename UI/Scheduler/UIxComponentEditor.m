@@ -761,7 +761,6 @@
   return iCalString;
 }
 
-
 - (NSArray *) availableCalendars
 {
   NSEnumerator *rawContacts;

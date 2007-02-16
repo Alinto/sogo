@@ -128,7 +128,7 @@
   [stamp setTimeZone: utc];
 
   s          = [self iCalParticipantsAndResourcesStringFromQueryParameters];
-  template   = [NSString stringWithFormat:iCalStringTemplate,
+  template   = [NSString stringWithFormat: iCalStringTemplate,
                          [[self clientObject] nameInContainer],
                          [stamp iCalFormattedDateTimeString],
                          [lStartDate iCalFormattedDateTimeString],
