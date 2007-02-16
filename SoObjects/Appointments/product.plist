@@ -14,6 +14,7 @@
         "View" = ( "Owner", "Delegate", "Assistant" );
         "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusy" );
         "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
+        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
       };
     };
 
@@ -26,6 +27,7 @@
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
         "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
+        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
       };
     };
     SOGoTaskObject = {
@@ -33,6 +35,7 @@
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
         "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
+        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
       };
     };
     SOGoFreeBusyObject = {
