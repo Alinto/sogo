@@ -319,3 +319,4 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Next hour" = "Heure suivante";
 
 "closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre.";
+"Multicolumn Day View" = "Multicolonne";

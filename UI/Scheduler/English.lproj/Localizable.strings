@@ -303,3 +303,4 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Next hour" = "Next hour";
 
 "closeThisWindowMessage" = "Thank you! You may now close this window.";
+"Multicolumn Day View" = "Multicolumn Day View";
