@@ -30,6 +30,8 @@
 
 - (NSString *) roleOfUser: (NSString *) uid
                 inContext: (WOContext *) context;
+- (NSArray *) rolesOfUser: (NSString *) uid
+                inContext: (WOContext *) context;
 
 @end
 
@@ -159,7 +161,14 @@
       aclsFolder = [SOGoAclsFolder aclsFolder];
       sogoRoles = [aclsFolder aclsForObject: (SOGoObject *) object
                               forUser: login];
-      [rolesForObject addObjectsFromArray: sogoRoles];
+      if (sogoRoles)
+        [rolesForObject addObjectsFromArray: sogoRoles];
+    }
+  if ([object respondsToSelector: @selector (rolesOfUser:inContext:)])
+    {
+      sogoRoles = [object rolesOfUser: login inContext: context];
+      if (sogoRoles)
+        [rolesForObject addObjectsFromArray: sogoRoles];
     }
   if ([object respondsToSelector: @selector (roleOfUser:inContext:)])
     {

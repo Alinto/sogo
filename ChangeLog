@@ -1,5 +1,9 @@
 2007-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-rolesForObject:objectinContext:context]): test for
+	"rolesOfUser:inContext:" in addition to "roleOfUser:...".
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -rolesOfUser:logininContext:context]):
 	returns the roles of the user on the container object if the event
