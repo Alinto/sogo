@@ -21,7 +21,9 @@
 
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGCards/NSDictionary+NGCards.h>
 
