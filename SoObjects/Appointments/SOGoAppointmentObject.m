@@ -521,6 +521,3 @@
 }
 
 @end /* SOGoAppointmentObject */
-
-
-
