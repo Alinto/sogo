@@ -142,6 +142,23 @@
   return [records valueForKey:@"c_name"];
 }
 
+- (BOOL) nameExistsInFolder: (NSString *) objectName
+{
+  NSArray *fields, *records;
+  EOQualifier *qualifier;
+
+  qualifier
+    = [EOQualifier qualifierWithQualifierFormat:
+                     [NSString stringWithFormat: @"c_name='%@'", objectName]];
+
+  fields = [NSArray arrayWithObject: @"c_name"];
+  records = [[self ocsFolder] fetchFields: fields
+                              matchingQualifier: qualifier];
+  return (records
+          && ![records isKindOfClass:[NSException class]]
+          && [records count] > 0);
+}
+
 - (NSDictionary *)fetchContentStringsAndNamesOfAllObjects {
   NSDictionary *files;
   

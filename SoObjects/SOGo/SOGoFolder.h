@@ -55,6 +55,8 @@
 - (GCSFolder *)ocsFolder;
 
 /* lower level fetches */
+- (BOOL) nameExistsInFolder: (NSString *) objectName;
+
 - (NSArray *)fetchContentObjectNames;
 - (NSDictionary *)fetchContentStringsAndNamesOfAllObjects;
 
