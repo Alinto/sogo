@@ -151,9 +151,13 @@
   NSArray *sogoRoles;
   NSString *role;
 
-  rolesForObject
-    = [NSMutableArray arrayWithArray: [super rolesForObject: object
-                                             inContext: context]];
+  rolesForObject = [NSMutableArray new];
+  [rolesForObject autorelease];
+
+  sogoRoles = [super rolesForObject: object inContext: context];
+  if (sogoRoles)
+    [rolesForObject addObjectsFromArray: sogoRoles];
+
   if ([[object ownerInContext: context] isEqualToString: [self login]])
     [rolesForObject addObject: SoRole_Owner];
   if ([object isKindOfClass: [SOGoObject class]])
