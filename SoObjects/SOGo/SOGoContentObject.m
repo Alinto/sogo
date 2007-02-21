@@ -19,10 +19,13 @@
   02111-1307, USA.
 */
 
-#include "SOGoContentObject.h"
-#include "SOGoFolder.h"
-#include "common.h"
-#include <GDLContentStore/GCSFolder.h>
+#import <GDLContentStore/GCSFolder.h>
+
+#import <SOGo/SOGoUser.h>
+
+#import "common.h"
+#import "SOGoFolder.h"
+#import "SOGoContentObject.h"
 
 @interface SOGoContentObject(ETag)
 - (NSArray *)parseETagList:(NSString *)_c;
@@ -234,6 +237,27 @@
   }
   
   return [_ctx response];
+}
+
+/* security */
+- (NSArray *) rolesOfUser: (NSString *) login
+                inContext: (WOContext *) context
+{
+  NSMutableArray *sogoRoles;
+  SOGoUser *user;
+
+  sogoRoles = [NSMutableArray new];
+  [sogoRoles autorelease];
+
+  if (![container nameExistsInFolder: nameInContainer])
+    {
+      user = [[SOGoUser alloc] initWithLogin: login roles: nil];
+      [sogoRoles addObjectsFromArray: [user rolesForObject: container
+                                            inContext: context]];
+      [user release];
+    }
+
+  return sogoRoles;
 }
 
 /* E-Tags */
