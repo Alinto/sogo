@@ -1,3 +1,15 @@
+2007-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-rolesOfUser:logininContext:context]): if object does not exists
+	(for example when it's being created), the current user has the
+	same rights on it than he/she has on its parent container.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-nameExistsInFolder:objectName]): methods that tests if a c_name
+	corresponding to the name passed as parameter is present in the db
+	folder.
+
 2007-02-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
