@@ -42,6 +42,7 @@
   BOOL inStyle;
   BOOL inScript;
   BOOL inCSSDeclaration;
+  BOOL hasEmbeddedCSS;
   NSMutableArray *crumb;
 }
 
@@ -107,6 +108,7 @@
   inStyle = NO;
   inScript = NO;
   inCSSDeclaration = NO;
+  hasEmbeddedCSS = NO;
 }
 
 - (void) endDocument
@@ -133,26 +135,6 @@
   showWhoWeAre();
 }
 
-- (NSString *) _valueForCSSIdentifier: (NSString *) primaryValue
-{
-  NSMutableString *value;
-  NSEnumerator *classes;
-  NSString *currentValue;
-
-  value = [NSMutableString new];
-  [value autorelease];
-
-  classes = [[primaryValue componentsSeparatedByString: @" "] objectEnumerator];
-  currentValue = [classes nextObject];
-  while (currentValue)
-    {
-      [value appendFormat: @"SOGoHTMLMail-%@ ", currentValue];
-      currentValue = [classes nextObject];
-    }
-
-  return value;
-}
-
 - (void) _appendStyle: (unichar *) _chars
                length: (int) _len
 {
@@ -167,24 +149,35 @@
       if (inCSSDeclaration)
         {
           if (*(char *) currentChar == '}')
-            inCSSDeclaration = NO;
+            {
+              inCSSDeclaration = NO;
+              hasEmbeddedCSS = NO;
+            }
         }
       else
         {
           if (*(char *) currentChar == '{')
             inCSSDeclaration = YES;
-          else if (*(char *) currentChar == '.'
-                   || *(char *) currentChar == '#')
+          if (*(char *) currentChar == ',')
+            hasEmbeddedCSS = NO;
+          else if (!hasEmbeddedCSS)
             {
-              [css appendString: [NSString stringWithCharacters: start
-                                           length: (currentChar - start + 1)]];
-              [css appendString: @"SOGoHTMLMail-"];
-              start = currentChar + 1;
+              if (*(char *) currentChar == '@')
+                hasEmbeddedCSS = YES;
+              else
+                if (*(char *) currentChar > 32)
+                  {
+                    [css appendString: [NSString stringWithCharacters: start
+                                                 length: (currentChar - start)]];
+                    [css appendString: @".SOGoHTMLMail-CSS-Delimiter "];
+                    hasEmbeddedCSS = YES;
+                    start = currentChar;
+                  }
             }
         }
     }
   [css appendString: [NSString stringWithCharacters: start
-                               length: (currentChar - start + 1)]];
+                               length: (currentChar - start)]];
 }
 
 - (void) startElement: (NSString *) _localName
@@ -215,10 +208,7 @@
         {
           skipAttribute = NO;
           name = [_attributes nameAtIndex: count];
-          if ([name caseInsensitiveCompare: @"class"] == NSOrderedSame
-              || [name caseInsensitiveCompare: @"id"] == NSOrderedSame)
-            value = [self _valueForCSSIdentifier: [_attributes valueAtIndex: count]];
-          else if ([[name lowercaseString] hasPrefix: @"on"])
+          if ([[name lowercaseString] hasPrefix: @"on"])
             skipAttribute = YES;
           else if ([name caseInsensitiveCompare: @"src"] == NSOrderedSame)
             {

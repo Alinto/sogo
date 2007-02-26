@@ -1,3 +1,11 @@
+2007-02-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([_UIxHTMLMailContentHandler -_appendStyle:_charslength:_len]):
+	don't prepend anything to the class and id named. Instead, we
+	make each style embedded in the ".SOGoHTMLMail-CSS-Delimiter"
+	class.
+
 2007-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

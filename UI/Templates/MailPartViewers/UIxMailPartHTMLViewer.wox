@@ -5,5 +5,5 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
-  class="mailer_htmlcontent"
+  class="mailer_htmlcontent SOGoHTMLMail-CSS-Delimiter"
 ><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
