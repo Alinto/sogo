@@ -58,7 +58,7 @@
         
         ><var:if condition="hasWorkInfos"
         ><div id="workInfos"
-          ><h4>/><var:string label:value="Work" /></h4
+          ><h4><var:string label:value="Work" /></h4
             ><var:string value="workTitle" escapeHTML="NO"
             /><var:string value="workService" escapeHTML="NO"
             /><var:string value="workCompany" escapeHTML="NO"
