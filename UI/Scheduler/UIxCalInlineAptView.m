@@ -18,7 +18,7 @@
  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  02111-1307, USA.
  */
-// $Id: UIxCalInlineAptView.m 1018 2007-02-08 16:37:00Z wolfgang $
+// $Id: UIxCalInlineAptView.m 1029 2007-03-02 22:28:13Z wolfgang $
 
 #import <math.h>
 
