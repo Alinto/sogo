@@ -7,7 +7,16 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url">
-    <div var:class="innerDisplayClasses">
-      <var:string value="appointment.title" const:escapeHTML="NO" />
+    <div class="shadow shadow1"><!-- space --></div
+      ><div class="shadow shadow2"><!-- space --></div
+      ><div class="shadow shadow3"><!-- space --></div
+      ><div class="shadow shadow4"><!-- space --></div
+      ><div var:class="innerDisplayClasses"
+      ><div class="gradient"
+        ><img rsrc:src="event-gradient.png" class="gradient"
+          /></div
+        ><div class="text"
+        ><var:string value="appointment.title" const:escapeHTML="NO"
+          /></div>
     </div>
   </div>

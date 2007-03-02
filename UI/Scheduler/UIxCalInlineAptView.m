@@ -209,8 +209,7 @@
   deltaStart = (([startDate hourOfDay] * 60 + [startDate minuteOfHour]
                  - dayStartHour * 60) / 15);
 
-  return [NSString stringWithFormat: @"appointment ownerIs%@ starts%d lasts%d",
-                   [appointment objectForKey: @"owner"],
+  return [NSString stringWithFormat: @"appointment starts%d lasts%d",
                    deltaStart, deltaLength, [startDate dayOfWeek]];
 }
 

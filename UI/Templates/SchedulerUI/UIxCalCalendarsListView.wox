@@ -11,7 +11,7 @@
       {
         background-color: <var:string value="currentContactSpanBG" /> !important;
       }
-      DIV[class~='appointment'].ownerIs<var:string value="currentContactLogin" />
+      TABLE.monthOverview DIV[owner~='<var:string value="currentContactLogin" />'].appointment
       {
         background-color: <var:string value="currentContactAptBorder" /> !important;
       }

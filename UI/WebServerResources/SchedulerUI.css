@@ -670,26 +670,6 @@ DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
 
-TABLE.monthOverview DIV.appointment
-{ margin: 0px;
-  margin-top: 1px;
-  padding: 1px;
-  border: 0px;
-  height: auto;
-  width: auto;
-  position: static;
-  overflow: hidden;
-  background-color: #fff; }
-
-TABLE.monthOverview DIV.appointmentInside
-{ cursor: default;
-  margin: 0px;
-  padding: 1px;
-  border: 0px;
-  height: auto;
-  width: auto;
-  position: static; }
-
 DIV.daysView > DIV.hours
 { position: absolute;
   border: 0px;
@@ -834,18 +814,90 @@ DIV.appointments > DIV.appointment
   position: absolute;
   left: 0px;
   right: 0px;
-  padding: 0px; }
+  padding: 1px; }
 
 DIV[class~="appointment"]._selected > DIV.appointmentInside
-{ background-color: #ffa !important; }
+{ -moz-opacity: 0.7; }
 
-DIV.appointment > DIV
+DIV.appointment > DIV.appointmentInside
 { position: absolute;
   overflow: hidden;
   top: 2px;
   bottom: 2px;
   left: 2px;
   right: 2px; }
+
+DIV.shadow
+{ position: absolute;
+  background-color: #000; }
+
+DIV.shadow1
+{ left: 0px;
+  right: 0px;
+  top: 2px;
+  bottom: 0px;
+  -moz-opacity: 0.1; }
+
+DIV.shadow2
+{ left: 1px;
+  right: 1px;
+  top: 3px;
+  bottom: -2px;
+  -moz-opacity: 0.1;
+  -moz-border-radius: 3px; }
+
+DIV.shadow3
+{ left: 2px;
+  right: 2px;
+  top: 4px;
+  bottom: 0px;
+  -moz-opacity: 0.4; }
+
+DIV.shadow4
+{ left: 3px;
+  right: 3px;
+  top: 5px;
+  bottom: 1px;
+  -moz-opacity: 0.4; }
+
+DIV.gradient, DIV.text
+{ position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  overflow: hidden; }
+
+DIV.gradient > IMG
+{ height: 100%;
+  width: 100%; }
+
+TABLE.monthOverview DIV.appointment
+{ margin: 0px;
+  margin-top: 1px;
+  padding: 1px;
+  border: 0px;
+  height: auto;
+  width: auto;
+  position: static;
+  overflow: hidden;
+  background-color: #fff; }
+
+TABLE.monthOverview DIV.appointmentInside
+{ cursor: default;
+  margin: 0px;
+  padding: 1px;
+  border: 0px;
+  height: auto;
+  width: auto;
+  position: static; }
+
+TABLE.monthOverview DIV.shadow,
+TABLE.monthOverview DIV.gradient
+{ display: none; }
+
+TABLE.monthOverview DIV.text
+{ position: static; }
 
 DIV[class~="appointment"].starts0
 { top: 0.000000%; }
