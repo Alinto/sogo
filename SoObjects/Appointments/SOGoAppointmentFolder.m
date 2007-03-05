@@ -807,12 +807,13 @@ static NSNumber   *sharedYes = nil;
     infos = [[NSArray alloc] initWithObjects:
                                @"c_name", @"component",
                              @"title", @"location", @"orgmail",
-                             @"status", @"ispublic",
+                             @"status", @"classification",
                              @"isallday", @"isopaque",
                              @"participants", @"partmails",
                              @"partstates", @"sequence", @"priority", nil];
 
-  return [self fetchFields: infos from: _startDate to: _endDate component: _component];
+  return [self fetchFields: infos from: _startDate to: _endDate
+               component: _component];
 }
 
 - (void) deleteEntriesWithIds: (NSArray *) ids

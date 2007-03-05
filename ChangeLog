@@ -1,5 +1,10 @@
 2007-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchCoreInfosFrom:_startDateto:_endDatecomponent:_component]):
+	see below, the query is adapted consequently.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromTodo:_task]): the field "ispublic" was
 	renamed to "classification" and can any integer as value.
