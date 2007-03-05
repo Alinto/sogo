@@ -11,7 +11,7 @@ CREATE TABLE %s_quick (
   participants VARCHAR(100000) NOT NULL, -- the CNs of the participants
   isallday     INT             NULL,
   iscycle      INT             NULL,     -- client needs to fetch to resolve
-  ispublic     INT             NOT NULL,
+  classification     INT             NOT NULL,
   status       INT             NOT NULL,
   isopaque     INT             NOT NULL,
   location     VARCHAR(256)    NULL,

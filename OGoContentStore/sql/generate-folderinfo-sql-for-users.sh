@@ -5,7 +5,7 @@
 
 DB_USER="sogo"
 DB_PASS="sogo"
-DB_HOST="127.0.0.1"
+DB_HOST="192.168.0.4"
 DB_PORT="5432"
 DB_NAME="sogo"
 TIMEZONE="Canada/Eastern"
@@ -82,7 +82,7 @@ CREATE TABLE SOGo_${USER_TABLE}_privcal_quick (
   participants VARCHAR(100000) NULL, -- the CNs of the participants
   isallday     INT             NULL,
   iscycle      INT             NULL,     -- client needs to fetch to resolve
-  ispublic     INT             NOT NULL,
+  classification INT             NOT NULL,
   status       INT             NOT NULL,
   priority     INT             NOT NULL, -- for marking high prio apts
   isopaque     INT             NULL,

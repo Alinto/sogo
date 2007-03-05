@@ -71,7 +71,7 @@ static NSNumber                  *distantFutureNumber = nil;
   id                  organizer;
   id                  participants, partmails;
   NSMutableString     *partstates;
-  unsigned            i, count;
+  unsigned            i, count, accessClassOrder;
 
   if (_event == nil)
     return nil;
@@ -117,9 +117,9 @@ static NSNumber                  *distantFutureNumber = nil;
   if ([location isNotNull]) [row setObject: location forKey:@"location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey:@"sequence"];
 
-  if ([startDate isNotNull]) 
+  if ([startDate isNotNull])
     [row setObject: [self numberForDate: startDate] forKey:@"startdate"];
-  if ([endDate isNotNull]) 
+  if ([endDate isNotNull])
     [row setObject: [self numberForDate: endDate] forKey:@"enddate"];
   if ([_event isRecurrent]) {
     NSCalendarDate *date;
@@ -153,12 +153,19 @@ static NSNumber                  *distantFutureNumber = nil;
     [row setObject: [NSNumber numberWithInt:1] forKey: @"status"];
   }
 
-  if([accessClass isNotNull] && ![accessClass isEqualToString:@"PUBLIC"]) {
-    [row setObject:[NSNumber numberWithBool:NO] forKey:@"ispublic"];
-  }
-  else {
-    [row setObject:[NSNumber numberWithBool:YES] forKey:@"ispublic"];
-  }
+  if ([accessClass isNotNull])
+    {
+      if ([accessClass isEqualToString: @"PRIVATE"])
+        accessClassOrder = 1;
+      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+        accessClassOrder = 2;
+      else
+        accessClassOrder = 0;
+    }
+  else
+    accessClassOrder = 0;
+  [row setObject: [NSNumber numberWithUnsignedInt: accessClassOrder]
+       forKey: @"classification"];
 
   organizer = [_event organizer];
   if (organizer) {
@@ -197,7 +204,7 @@ static NSNumber                  *distantFutureNumber = nil;
   id                  organizer, date;
   id                  participants, partmails;
   NSMutableString     *partstates;
-  unsigned            i, count, code;
+  unsigned            i, count, code, accessClassOrder;
 
   if (_task == nil)
     return nil;
@@ -271,12 +278,19 @@ static NSNumber                  *distantFutureNumber = nil;
     [row setObject:[NSNumber numberWithInt:1] forKey:@"status"];
   }
 
-  if([accessClass isNotNull] && ![accessClass isEqualToString:@"PUBLIC"]) {
-    [row setObject:[NSNumber numberWithBool:NO] forKey:@"ispublic"];
-  }
-  else {
-    [row setObject:[NSNumber numberWithBool:YES] forKey:@"ispublic"];
-  }
+  if ([accessClass isNotNull])
+    {
+      if ([accessClass isEqualToString: @"PRIVATE"])
+        accessClassOrder = 1;
+      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+        accessClassOrder = 2;
+      else
+        accessClassOrder = 0;
+    }
+  else
+    accessClassOrder = 0;
+  [row setObject: [NSNumber numberWithUnsignedInt: accessClassOrder]
+       forKey: @"classification"];
 
   organizer = [_task organizer];
   if (organizer) {

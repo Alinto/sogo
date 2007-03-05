@@ -55,7 +55,7 @@
       allowsNull = YES;
     },
     {
-      columnName = ispublic;
+      columnName = classification;
       sqlType    = "INT";
       allowsNull = NO;
     },
