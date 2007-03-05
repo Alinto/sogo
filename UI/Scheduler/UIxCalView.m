@@ -181,7 +181,9 @@ static BOOL shouldDisplayWeekend = NO;
       if ([partmails rangeOfString: myEmail].length)
         aptFlags.canAccessApt = YES;
       else
-        aptFlags.canAccessApt = [[_apt valueForKey: @"ispublic"] boolValue];
+        aptFlags.canAccessApt
+          = ([[_apt valueForKey: @"classification"] intValue]
+             == iCalAccessPublic);
     }
 }
 
