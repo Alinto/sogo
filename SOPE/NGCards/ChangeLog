@@ -1,3 +1,8 @@
+2007-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEntityObject.h (enum): added an enum with iCalAccessPublic,
+	iCalAccessPrivate and iCalAccessConfidential values.
+
 2007-02-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m ([CardGroup -firstChildWithTag:aTag]): new method.
