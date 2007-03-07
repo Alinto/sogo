@@ -1,22 +1,35 @@
 <?xml version='1.0' standalone='yes'?>
-  <div
-    var:class="displayClasses"
-    var:aptCName="appointment.c_name"
-    var:owner="appointment.owner"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url">
-    <div class="shadow shadow1"><!-- space --></div
-      ><div class="shadow shadow2"><!-- space --></div
-      ><div class="shadow shadow3"><!-- space --></div
-      ><div class="shadow shadow4"><!-- space --></div
-      ><div var:class="innerDisplayClasses"
-      ><div class="gradient"
-        ><img rsrc:src="event-gradient.png" class="gradient"
-          /></div
-        ><div class="text"
-        ><var:string value="appointment.title" const:escapeHTML="NO"
-          /></div>
-    </div>
+<!DOCTYPE div>
+<div
+  var:class="displayClasses"
+  var:aptCName="appointment.c_name"
+  var:owner="appointment.owner"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url">
+  <div class="shadow shadow1"><!-- space --></div
+    ><div class="shadow shadow2"><!-- space --></div
+    ><div class="shadow shadow3"><!-- space --></div
+    ><div class="shadow shadow4"><!-- space --></div
+    ><div var:class="innerDisplayClasses"
+    ><div class="gradient"
+      ><img rsrc:src="event-gradient.png" class="gradient"
+        /></div
+      ><div class="text"
+      ><span class="eventHeader"><var:string value="startHour"
+          const:escapeHTML="NO"
+          /><var:if condition="appointment.iscycle"
+          ><img rsrc:src="repeat-16.png" class="gradient"
+            /></var:if
+          ><var:if condition="appointment.hasalarm"
+          ><img rsrc:src="alarm.png" class="gradient"
+            /></var:if
+          ></span
+        ><var:if condition="isConfidential" const:negate="YES"
+        ><br
+          /><var:string value="appointment.title" const:escapeHTML="NO"
+          /></var:if
+        ></div>
   </div>
+</div>

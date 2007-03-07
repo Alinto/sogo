@@ -25,6 +25,7 @@
 #import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/NGObjWeb.h>
+#import <NGCards/iCalEntityObject.h>
 
 @interface UIxCalInlineAptView : WOComponent
 {
@@ -139,22 +140,22 @@
     [ms appendFormat:@" apt_prio%@", prio];
   }
   email = [[[self context] activeUser] email];
-  if ((s = [appointment valueForKey:@"orgmail"])) {
-    if ([s rangeOfString:email].length > 0) {
-      [ms appendString:@" apt_organizer"];
+  s = [appointment valueForKey:@"orgmail"];
+  if ([s isNotNull])
+    {
+      if ([s rangeOfString: email].length > 0)
+        [ms appendString:@" apt_organizer"];
+      else
+        [ms appendString:@" apt_other"];
     }
-    else {
-      [ms appendString:@" apt_other"];
+  s = [appointment valueForKey:@"partmails"];
+  if ([s isNotNull])
+    {
+      if ([s rangeOfString:email].length > 0)
+        [ms appendString:@" apt_participant"];
+      else
+        [ms appendString:@" apt_nonparticipant"];
     }
-  }
-  if ((s = [appointment valueForKey:@"partmails"])) {
-    if ([s rangeOfString:email].length > 0) {
-      [ms appendString:@" apt_participant"];
-    }
-    else {
-      [ms appendString:@" apt_nonparticipant"];
-    }
-  }
   ASSIGNCOPY(style, ms);
 }
 
@@ -250,6 +251,16 @@
 
 /* helpers */
 
+- (NSString *) startHour
+{
+  NSCalendarDate *start;
+
+  start = [appointment objectForKey: @"startDate"];
+
+  return [NSString stringWithFormat: @"%.2d:%.2d",
+                   [start hourOfDay], [start minuteOfHour]];
+}
+
 - (NSString *) title
 {
   return [formatter stringForObjectValue: appointment
@@ -260,6 +271,11 @@
 {
   return [tooltipFormatter stringForObjectValue: appointment
                            referenceDate: [self referenceDate]];
+}
+
+- (BOOL) isConfidential
+{
+  return ([[appointment objectForKey: @"classification"] intValue] == iCalAccessConfidential);
 }
 
 @end
