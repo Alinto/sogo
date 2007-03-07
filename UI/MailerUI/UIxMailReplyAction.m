@@ -19,16 +19,16 @@
   02111-1307, USA.
 */
 
-#include "UIxMailEditorAction.h"
+#import "UIxMailEditorAction.h"
 
 @interface UIxMailReplyAction : UIxMailEditorAction
 @end
 
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <SoObjects/Mailer/SOGoDraftObject.h>
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include <NGImap4/NGImap4Envelope.h>
-#include "common.h"
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGImap4/NGImap4Envelope.h>
+#import "common.h"
 
 @implementation UIxMailReplyAction
 
@@ -110,18 +110,19 @@
   }
 }
 
-- (NSString *)contentForReplyOnParts:(NSDictionary *)_prts keys:(NSArray *)_k {
+- (NSString *) contentForReplyOnParts: (NSDictionary *) _prts
+                                 keys: (NSArray *) _k
+{
   static NSString *textPartSeparator = @"\n---\n";
   NSMutableString *ms;
   unsigned i, count;
   
   ms = [NSMutableString stringWithCapacity:16000];
-  
   for (i = 0, count = [_k count]; i < count; i++) {
     NSString *k, *v;
     
     k = [_k objectAtIndex:i];
-    
+   
     // TODO: this is DUP code to SOGoMailObject
     if ([k isEqualToString:@"body[text]"])
       k = @"";
@@ -145,10 +146,18 @@
 }
 
 - (NSString *)contentForReply {
-  NSArray      *keys;
-  NSDictionary *parts;
-  
+  NSArray      *keys, *partInfos;
+  NSDictionary *parts, *infos;
+
   keys = [[self clientObject] plainTextContentFetchKeys];
+//   SOGoMailObject *co;
+
+//   co = [self clientObject];
+//   keys = [co plainTextContentFetchKeys];
+//   infos = [co fetchCoreInfos];
+//   partInfos = [infos objectForKey: keys];
+//   NSLog (@"infos: '%@'", infos);
+
   if ([keys count] == 0)
     return nil;
   
