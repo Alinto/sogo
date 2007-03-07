@@ -1,5 +1,10 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* NSString+NGCards.m ([NSString -foldedForVersitCards]):
+	simplified method by initializing and returning folderString
+	unconditionnally. If length < 76, the original string is appended
+	to it.
+
 	* CardGroup.m ([CardGroup +groupWithTag:aTag]): simply invoke
 	[self elementWithTag:].
 	([CardGroup +groupWithTag:aTagchildren:someChildren]): same as

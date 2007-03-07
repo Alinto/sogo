@@ -42,19 +42,18 @@ static NSString *commaSeparator = nil;
 
 - (NSString *) foldedForVersitCards
 {
-  NSString *newString;
   NSMutableString *foldedString;
   unsigned int length;
   NSRange subStringRange;
 
+  foldedString = [NSMutableString new];
+  [foldedString autorelease];
+
   length = [self length];
   if (length < 76)
-    newString = self;
+    [foldedString appendString: self];
   else
     {
-      foldedString = [NSMutableString new];
-      [foldedString autorelease];
-
       subStringRange = NSMakeRange (0, 75);
       [foldedString appendFormat: @"%@\r\n",
                     [self substringWithRange: subStringRange]];
@@ -68,11 +67,9 @@ static NSString *commaSeparator = nil;
       subStringRange.length = length - subStringRange.location;
       [foldedString appendFormat: @" %@",
                     [self substringWithRange: subStringRange]];
-
-      newString = foldedString;
     }
 
-  return newString;
+  return foldedString;
 }
 
 - (NSArray *) asCardAttributeValues
