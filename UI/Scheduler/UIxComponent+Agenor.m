@@ -54,16 +54,14 @@
   return persons;
 }
 
-- (NSString *)emailForUser {
-  return [[[self context] activeUser] email];
+- (NSString *) emailForUser
+{
+  return [[context activeUser] email];
 }
 
-- (NSString *)cnForUser {
-  return [[[self context] activeUser] cn];
-}
-
-- (BOOL)isAccessRestricted {
-  return [[self context] isAccessFromIntranet] ? NO : YES;
+- (NSString *) cnForUser
+{
+  return [[context activeUser] cn];
 }
 
 @end /* UIxComponent(Agenor) */

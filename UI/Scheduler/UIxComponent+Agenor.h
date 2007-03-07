@@ -31,11 +31,8 @@
 - (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue;
 
 /* email, cn */
-- (NSString *)emailForUser;
-- (NSString *)cnForUser;
-
-/* restrictions */
-- (BOOL)isAccessRestricted;
+- (NSString *) emailForUser;
+- (NSString *) cnForUser;
 
 @end
 
