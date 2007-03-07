@@ -417,8 +417,8 @@
 
 - (NSString *) versitString
 {
-  CardVersitRenderer *renderer;
   NSString *string;
+  CardVersitRenderer *renderer;
 
   renderer = [CardVersitRenderer new];
   string = [renderer render: self];
