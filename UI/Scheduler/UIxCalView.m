@@ -96,49 +96,52 @@ static BOOL shouldDisplayWeekend = NO;
 - (NSArray *) filterAppointments:(NSArray *) _apts
 {
   NSMutableArray *filtered;
-  unsigned       i, count;
-  NSString       *email;
+  unsigned i, count;
+  NSString *email;
+  NSDictionary *info;
+  NSArray *partmails;
+  unsigned p, pCount;
+  BOOL shouldAdd;
+  NSString *partmailsString;
+  NSArray  *partstates;
+  NSString *state;
+  NSString *pEmail;
 
-  count = [_apts count];
-  if (!count) return _apts;
-  if ([self shouldDisplayRejectedAppointments]) return _apts;
+  if ([self shouldDisplayRejectedAppointments])
+    return _apts;
+  {
+    count = [_apts count];
+    filtered = [[[NSMutableArray alloc] initWithCapacity: count] autorelease];
+    email = [self emailForUser];
 
-  filtered = [[[NSMutableArray alloc] initWithCapacity: count] autorelease];
-  email = [self emailForUser];
+    for (i = 0; i < count; i++)
+      {
+        shouldAdd = YES;
+        info = [_apts objectAtIndex: i];
+        partmailsString = [info objectForKey: @"partmails"];
+        if ([partmailsString isNotNull])
+          {
+            partmails = [partmailsString componentsSeparatedByString: @"\n"];
+            pCount = [partmails count];
+            for (p = 0; p < pCount; p++)
+              {
+                pEmail = [partmails objectAtIndex: p];
+                if ([pEmail isEqualToString: email])
+                  {
+                    partstates = [[info objectForKey: @"partstates"]
+                                   componentsSeparatedByString: @"\n"];
+                    state = [partstates objectAtIndex: p];
+                    if ([state intValue] == iCalPersonPartStatDeclined)
+                      shouldAdd = NO;
+                    break;
+                  }
+              }
+          }
+        if (shouldAdd)
+          [filtered addObject: info];
+      }
+  }
 
-  for (i = 0; i < count; i++)
-    {
-      NSDictionary *info;
-      NSArray      *partmails;
-      unsigned     p, pCount;
-      BOOL         shouldAdd;
-    
-      shouldAdd = YES;
-      info = [_apts objectAtIndex: i];
-      partmails = [[info objectForKey: @"partmails"]
-                    componentsSeparatedByString: @"\n"];
-      pCount = [partmails count];
-      for (p = 0; p < pCount; p++)
-        {
-          NSString *pEmail;
-
-          pEmail = [partmails objectAtIndex: p];
-          if ([pEmail isEqualToString: email])
-            {
-              NSArray  *partstates;
-              NSString *state;
-
-              partstates = [[info objectForKey: @"partstates"]
-                             componentsSeparatedByString: @"\n"];
-              state = [partstates objectAtIndex: p];
-              if ([state intValue] == iCalPersonPartStatDeclined)
-                shouldAdd = NO;
-              break;
-            }
-        }
-      if (shouldAdd)
-        [filtered addObject: info];
-    }
   return filtered;
 }
 
