@@ -1171,4 +1171,4 @@ function onSchedulerBodyKeyUp(event) {
 }
 
 window.addEventListener("load", initCalendars, false);
-document.body.addEventListener("keyup", onSchedulerBodyKeyUp, false);
+// document.body.addEventListener("keyup", onSchedulerBodyKeyUp, false);
