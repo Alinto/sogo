@@ -32,6 +32,7 @@
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
 
 #import "common.h"
 
@@ -135,13 +136,18 @@ static NSNumber   *sharedYes = nil;
           withBaseURL: (NSString *) baseURL
      toREPORTResponse: (WOResponse *) r
 {
-  SOGoContentObject *ocsObject;
+  SOGoCalendarComponent *component;
+  Class componentClass;
   NSString *c_name, *etagLine, *calString;
 
   c_name = [object objectForKey: @"c_name"];
 
-  ocsObject = [SOGoContentObject objectWithName: c_name
-                                 inContainer: self];
+  if ([[object objectForKey: @"component"] isEqualToString: @"vevent"])
+    componentClass = [SOGoAppointmentObject class];
+  else
+    componentClass = [SOGoTaskObject class];
+
+  component = [componentClass objectWithName: c_name inContainer: self];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];
@@ -154,13 +160,13 @@ static NSNumber   *sharedYes = nil;
   [r appendContentString: @"    <D:propstat>\r\n"];
   [r appendContentString: @"      <D:prop>\r\n"];
   etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                       [ocsObject davEntityTag]];
+                       [component davEntityTag]];
   [r appendContentString: etagLine];
   [r appendContentString: @"      </D:prop>\r\n"];
   [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
   [r appendContentString: @"    </D:propstat>\r\n"];
   [r appendContentString: @"    <C:calendar-data>"];
-  calString = [[ocsObject contentAsString] stringByEscapingXMLString];
+  calString = [[component contentAsString] stringByEscapingXMLString];
   [r appendContentString: calString];
   [r appendContentString: @"</C:calendar-data>\r\n"];
   [r appendContentString: @"  </D:response>\r\n"];
@@ -658,8 +664,35 @@ static NSNumber   *sharedYes = nil;
   end = (unsigned int) [_endDate timeIntervalSince1970];
 
   return [NSString stringWithFormat:
-                     @" AND (startdate <= %d) AND (enddate >= %d)",
+                     @" AND (startdate <= %u) AND (enddate >= %u)",
                    end, start];
+}
+
+- (NSString *) _privacySqlString
+{
+  NSString *privacySqlString, *owner, *currentUser, *email;
+  WOContext *context;
+  SOGoUser *activeUser;
+
+  context = [[WOApplication application] context];
+  activeUser = [context activeUser];
+  currentUser = [activeUser login];
+  owner = [self ownerInContext: context];
+
+  if ([currentUser isEqualToString: owner])
+    privacySqlString = @"";
+  else
+    {
+      email = [activeUser email];
+      privacySqlString
+        = [NSString stringWithFormat:
+                      @"(classification != %d or (orgmail = '%@')"
+                      @" or ((partmails caseInsensitiveLike '%@%%'"
+                      @" or partmails caseInsensitiveLike '%%\\n%@%%')))",
+                    iCalAccessPrivate, email, email, email];
+    }
+
+  return privacySqlString;
 }
 
 - (NSArray *) fetchFields: (NSArray *) _fields
@@ -671,7 +704,7 @@ static NSNumber   *sharedYes = nil;
   EOQualifier *qualifier;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
-  NSString *sql, *dateSqlString, *componentSqlString; /* , *owner; */
+  NSString *sql, *dateSqlString, *componentSqlString, *privacySqlString; /* , *owner; */
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -693,6 +726,7 @@ static NSNumber   *sharedYes = nil;
     }
 
   componentSqlString = [self _sqlStringForComponent: _component];
+  privacySqlString = [self _privacySqlString];
 
   /* prepare mandatory fields */
 
@@ -704,8 +738,8 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
 
-  sql = [NSString stringWithFormat: @"(iscycle = 0)%@%@",
-                  dateSqlString, componentSqlString];
+  sql = [NSString stringWithFormat: @"(iscycle = 0)%@%@%@",
+                  dateSqlString, componentSqlString, privacySqlString];
 
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
@@ -722,8 +756,8 @@ static NSNumber   *sharedYes = nil;
     }
 
   /* fetch recurrent apts now */
-  sql = [NSString stringWithFormat: @"(iscycle = 1)%@%@",
-                  dateSqlString, componentSqlString];
+  sql = [NSString stringWithFormat: @"(iscycle = 1)%@%@%@",
+                  dateSqlString, componentSqlString, privacySqlString];
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
   [fields addObject: @"cycleinfo"];

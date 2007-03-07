@@ -1,5 +1,15 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]): make
+	sure the cards are now handled as instances of
+	SOGoCalendarComponent instead of SOGoContentObject so that their
+	content string is taking the privacy classifiction into account.
+	([SOGoAppointmentFolder -_privacySqlString]): new method that
+	generates a query to determine what information can be given and
+	if the card itself has to be shown.
+
 	* UI/Scheduler/UIxComponent+Agenor.m ([UIxComponent
 	-getICalPersonsFromValue:selectorValue]): removed useless
 	"isAccessRestricted" method.
