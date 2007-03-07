@@ -21,6 +21,92 @@
 
 #include <NGObjWeb/SoApplication.h>
 
+// @interface classtree : NSObject
+// {
+//   Class topClass;
+//   int indentLevel;
+// }
+
+// - (id) initWithTopClass: (Class) newTopClass;
+// - (void) dumpSiblings: (Class) node;
+
+// @end
+
+// @implementation classtree
+
+// + (id) newWithTopClass: (Class) newTopClass
+// {
+//   id newTree;
+
+//   newTree = [[self alloc] initWithTopClass: newTopClass];
+//   [newTree autorelease];
+
+//   return newTree;
+// }
+
+// - (id) initWithTopClass: (Class) newTopClass
+// {
+//   if ((self = [self init]))
+//     topClass = newTopClass;
+
+//   return self;
+// }
+
+// #define indentGap 2
+
+// - (NSString *) indentSpaces
+// {
+//   char *spaceString;
+
+//   spaceString = malloc(sizeof (char *) * indentGap * indentLevel + 1);
+//   *(spaceString + indentGap * indentLevel) = 0;
+//   memset (spaceString, ' ', indentGap * indentLevel);
+
+//   return [[NSString alloc] initWithCStringNoCopy: spaceString
+//                            length: indentGap * indentLevel
+//                            freeWhenDone: YES];
+// }
+
+// - (void) dumpNode: (Class) node
+// {
+//   Class currentSubclass;
+//   unsigned int count;
+
+//   count = 0;
+//   currentSubclass = node->subclass_list;
+//   if (currentSubclass)
+//     {
+//       NSLog(@"%@%@:",
+//             [[self indentSpaces] autorelease], NSStringFromClass(node));
+//       indentLevel++;
+//       [self dumpSiblings: currentSubclass];
+//       indentLevel--;
+//     }
+//   else
+//     NSLog(@"%@%@", [self indentSpaces], NSStringFromClass(node));
+// }
+
+// - (void) dumpSiblings: (Class) node
+// {
+//   Class currentNode;
+
+//   currentNode = node;
+//   while (currentNode && currentNode->instance_size)
+//     {
+//       [self dumpNode: currentNode];
+//       currentNode = currentNode->sibling_class;
+//     }
+// }
+
+// - (void) dumpTree
+// {
+//   indentLevel = 0;
+
+//   [self dumpSiblings: topClass];
+// }
+
+// @end
+
 @interface SOGo : SoApplication
 {
     NSMutableDictionary *localeLUT;
@@ -189,6 +275,14 @@ static BOOL doCrashOnSessionCreate = NO;
 
 /* runtime maintenance */
 
+// - (void) _dumpClassAllocation
+// {
+//   classtree *ct;
+
+//   ct = [classtree newWithTopClass: [NSObject class]];
+//   [ct dumpTree];
+// }
+
 - (void)checkIfDaemonHasToBeShutdown {
   unsigned int limit, vmem;
   
@@ -202,6 +296,7 @@ static BOOL doCrashOnSessionCreate = NO;
           @"terminating app, vMem size limit (%d MB) has been reached"
           @" (currently %d MB)",
           limit, vmem];
+//     [self _dumpClassAllocation];
     [self terminate];
   }
 }
