@@ -15,6 +15,7 @@
         "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusy" );
         "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
         "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
+        "Delete Objects" = ( "Owner", "Organizer", "Delegate" );
       };
     };
 
