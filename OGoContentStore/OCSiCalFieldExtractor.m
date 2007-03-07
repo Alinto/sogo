@@ -66,12 +66,13 @@ static NSNumber                  *distantFutureNumber = nil;
   NSMutableDictionary *row;
   NSCalendarDate      *startDate, *endDate;
   NSArray             *attendees;
-  NSString            *uid, *title, *location, *status, *accessClass;
+  NSString            *uid, *title, *location, *status;
   NSNumber            *sequence;
   id                  organizer;
   id                  participants, partmails;
   NSMutableString     *partstates;
-  unsigned            i, count, accessClassOrder;
+  unsigned            i, count;
+  iCalAccessClass accessClass;
 
   if (_event == nil)
     return nil;
@@ -84,7 +85,7 @@ static NSNumber                  *distantFutureNumber = nil;
   title        = [_event summary];
   location     = [_event location];
   sequence     = [_event sequence];
-  accessClass  = [[_event accessClass] uppercaseString];
+  accessClass  = [_event symbolicAccessClass];
   status       = [[_event status] uppercaseString];
 
   attendees    = [_event attendees];
@@ -153,18 +154,7 @@ static NSNumber                  *distantFutureNumber = nil;
     [row setObject: [NSNumber numberWithInt:1] forKey: @"status"];
   }
 
-  if ([accessClass isNotNull])
-    {
-      if ([accessClass isEqualToString: @"PRIVATE"])
-        accessClassOrder = 1;
-      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
-        accessClassOrder = 2;
-      else
-        accessClassOrder = 0;
-    }
-  else
-    accessClassOrder = 0;
-  [row setObject: [NSNumber numberWithUnsignedInt: accessClassOrder]
+  [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
        forKey: @"classification"];
 
   organizer = [_event organizer];
@@ -199,12 +189,13 @@ static NSNumber                  *distantFutureNumber = nil;
   NSMutableDictionary *row;
   NSCalendarDate      *startDate, *dueDate;
   NSArray             *attendees;
-  NSString            *uid, *title, *location, *status, *accessClass;
+  NSString            *uid, *title, *location, *status;
   NSNumber            *sequence;
   id                  organizer, date;
   id                  participants, partmails;
   NSMutableString     *partstates;
-  unsigned            i, count, code, accessClassOrder;
+  unsigned            i, count, code;
+  iCalAccessClass accessClass;
 
   if (_task == nil)
     return nil;
@@ -217,7 +208,7 @@ static NSNumber                  *distantFutureNumber = nil;
   title        = [_task summary];
   location     = [_task location];
   sequence     = [_task sequence];
-  accessClass  = [[_task accessClass] uppercaseString];
+  accessClass  = [_task symbolicAccessClass];
   status       = [[_task status] uppercaseString];
 
   attendees    = [_task attendees];
@@ -278,18 +269,7 @@ static NSNumber                  *distantFutureNumber = nil;
     [row setObject:[NSNumber numberWithInt:1] forKey:@"status"];
   }
 
-  if ([accessClass isNotNull])
-    {
-      if ([accessClass isEqualToString: @"PRIVATE"])
-        accessClassOrder = 1;
-      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
-        accessClassOrder = 2;
-      else
-        accessClassOrder = 0;
-    }
-  else
-    accessClassOrder = 0;
-  [row setObject: [NSNumber numberWithUnsignedInt: accessClassOrder]
+  [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
        forKey: @"classification"];
 
   organizer = [_task organizer];

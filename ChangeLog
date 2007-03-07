@@ -1,3 +1,12 @@
+2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromEvent:_event]): we now use the new
+	"symbolicAccessClass" method from iCalEntity to determine the
+	value of the "classifiction" field.
+	([OCSiCalFieldExtractor -extractQuickFieldsFromTodo:_task]): same
+	as above.
+
 2007-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
