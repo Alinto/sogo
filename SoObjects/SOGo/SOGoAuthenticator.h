@@ -34,6 +34,8 @@
 @class NSUserDefaults;
 @class NSString;
 
+@class SOGoUser;
+
 @interface SOGoAuthenticator : SoHTTPAuthenticator
 {
   NSUserDefaults *ud;
@@ -46,6 +48,8 @@
 + (id) sharedSOGoAuthenticator;
 
 - (BOOL) LDAPCheckLogin: (NSString *) _login password: (NSString *) _pwd;
+
+- (SOGoUser *) userInContext: (WOContext *) _ctx;
 
 @end
 

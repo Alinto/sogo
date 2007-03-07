@@ -1,5 +1,8 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-userInContext:]): returns "SOGoUser".
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -contentAsString]): overriden method that
 	takes the privacy into account and discard the relevant fields if
