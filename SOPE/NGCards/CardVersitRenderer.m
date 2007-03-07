@@ -61,7 +61,6 @@
   if (![anElement isVoid])
     {
       rendering = [NSMutableString new];
-      [rendering autorelease];
       if ([anElement group])
         [rendering appendFormat: @"%@.", [anElement group]];
       tag = [anElement tag];
@@ -94,6 +93,7 @@
         [rendering appendString: @"\r\n"];
 
       finalRendering = [rendering foldedForVersitCards];
+      [rendering release];
     }
   else
     finalRendering = @"";
