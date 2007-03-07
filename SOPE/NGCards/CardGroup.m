@@ -112,13 +112,7 @@ static NGCardsSaxHandler *sax = nil;
 
 + (id) groupWithTag: (NSString *) aTag
 {
-  id newGroup;
-
-  newGroup = [self new];
-  [newGroup autorelease];
-  [newGroup setTag: aTag];
-
-  return newGroup;
+  return [self elementWithTag: aTag];
 }
 
 + (id) groupWithTag: (NSString *) aTag
@@ -126,9 +120,7 @@ static NGCardsSaxHandler *sax = nil;
 {
   id newGroup;
 
-  newGroup = [self new];
-  [newGroup autorelease];
-  [newGroup setTag: aTag];
+  newGroup = [self elementWithTag: aTag];
   [newGroup addChildren: someChildren];
 
   return newGroup;

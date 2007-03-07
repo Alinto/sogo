@@ -1,3 +1,10 @@
+2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup +groupWithTag:aTag]): simply invoke
+	[self elementWithTag:].
+	([CardGroup +groupWithTag:aTagchildren:someChildren]): same as
+	above.
+
 2007-03-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEntityObject.h (enum): added an enum with iCalAccessPublic,
