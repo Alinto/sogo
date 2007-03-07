@@ -25,6 +25,7 @@
 #import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/NGObjWeb.h>
+#import <SOGo/SOGoAuthenticator.h>
 #import <NGCards/iCalEntityObject.h>
 
 @interface UIxCalInlineAptView : WOComponent
@@ -273,9 +274,47 @@
                            referenceDate: [self referenceDate]];
 }
 
-- (BOOL) isConfidential
+- (BOOL) _userIsInTheCard: (NSString *) email
 {
-  return ([[appointment objectForKey: @"classification"] intValue] == iCalAccessConfidential);
+  NSString *orgMailString, *partMailsString;
+  NSArray *partMails;
+  BOOL userIsInTheCard;
+
+  orgMailString = [appointment objectForKey: @"orgmail"];
+  if ([orgMailString isNotNull] && [orgMailString isEqualToString: email])
+    userIsInTheCard = YES;
+  else
+    {
+      partMailsString = [appointment objectForKey: @"partmails"];
+      if ([partMailsString isNotNull])
+        {
+          partMails = [partMailsString componentsSeparatedByString: @"\n"];
+          userIsInTheCard = [partMails containsObject: email];
+        }
+      else
+        userIsInTheCard = NO;
+    }
+
+  return userIsInTheCard;
+}
+
+- (BOOL) titleShouldBeHidden
+{
+  BOOL shouldBeHidden;
+  SOGoUser *user;
+  SOGoAuthenticator *sAuth;
+
+  sAuth = [SOGoAuthenticator sharedSOGoAuthenticator];
+  user = [sAuth userInContext: context];
+
+  if ([[appointment objectForKey: @"owner"] isEqualToString: [user login]]
+      || ([[appointment objectForKey: @"classification"] intValue]
+          != iCalAccessConfidential))
+    shouldBeHidden = NO;
+  else
+    shouldBeHidden = ![self _userIsInTheCard: [user email]];
+
+  return shouldBeHidden;
 }
 
 @end

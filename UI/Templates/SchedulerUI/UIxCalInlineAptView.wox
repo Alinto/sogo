@@ -26,7 +26,7 @@
           ><img rsrc:src="alarm.png" class="gradient"
             /></var:if
           ></span
-        ><var:if condition="isConfidential" const:negate="YES"
+        ><var:if condition="titleShouldBeHidden" const:negate="YES"
         ><br
           /><var:string value="appointment.title" const:escapeHTML="NO"
           /></var:if
