@@ -68,6 +68,7 @@ static BOOL sendEMailNotifications = NO;
   if ((self = [super init]))
     {
       calendar = nil;
+      calContent = nil;
     }
 
   return self;
@@ -77,6 +78,8 @@ static BOOL sendEMailNotifications = NO;
 {
   if (calendar)
     [calendar release];
+  if (calContent)
+    [calContent release];
   [super dealloc];
 }
 
@@ -90,6 +93,69 @@ static BOOL sendEMailNotifications = NO;
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (void) _filterPrivateComponent: (iCalEntityObject *) component
+{
+  [component setSummary: @""];
+  [component setComment: @""];
+  [component setUserComment: @""];
+  [component setLocation: @""];
+  [component setCategories: @""];
+  [component setUrl: @""];
+  [component removeAllAttendees];
+  [component removeAllAlarms];
+}
+
+- (NSString *) contentAsString
+{
+  NSString *tmpContent, *email;
+  iCalCalendar *tmpCalendar;
+  iCalRepeatableEntityObject *tmpComponent;
+  WOContext *context;
+
+  if (!calContent)
+    {
+      tmpContent = [super contentAsString];
+      calContent = tmpContent;
+      if ([tmpContent length] > 0)
+        {
+          tmpCalendar = [iCalCalendar parseSingleFromSource: tmpContent];
+          tmpComponent = (iCalRepeatableEntityObject *) [tmpCalendar firstChildWithTag: [self componentTag]];
+          if (![tmpComponent isPublic])
+            {
+              context = [[WOApplication application] context];
+              email = [[context activeUser] email];
+              if (!([tmpComponent isOrganizer: email]
+                    || [tmpComponent isParticipant: email]))
+                {
+                  //             content = tmpContent;
+                  [self _filterPrivateComponent: tmpComponent];
+                  calContent = [tmpCalendar versitString];
+                }
+            }
+        }
+
+      [calContent retain];
+    }
+
+  return calContent;
+}
+
+- (NSException *) saveContentString: (NSString *) contentString
+                        baseVersion: (unsigned int) baseVersion
+{
+  NSException *result;
+
+  result = [super saveContentString: contentString
+                  baseVersion: baseVersion];
+  if (!result && calContent)
+    {
+      [calContent release];
+      calContent = nil;
+    }
+
+  return result;
 }
 
 - (iCalCalendar *) calendar

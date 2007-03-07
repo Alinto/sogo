@@ -1,5 +1,18 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -contentAsString]): overriden method that
+	takes the privacy into account and discard the relevant fields if
+	needed by generating a new content string and caching it.
+	([SOGoCalendarComponent
+	-saveContentString:contentStringbaseVersion:baseVersion]): if the
+	new method above has cached a content string, release it and set
+	it to nil so that it will have to be regenerated in the case it is
+	requested further.
+	([SOGoCalendarComponent -_filterPrivateComponent:component]):
+	discard the fields that have to be hidden when the card is
+	private.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]): make

@@ -34,6 +34,7 @@
 @interface SOGoCalendarComponent : SOGoContentObject
 {
   iCalCalendar *calendar;
+  NSString *calContent;
 }
 
 - (NSString *) componentTag;
