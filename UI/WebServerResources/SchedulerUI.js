@@ -1162,4 +1162,13 @@ function initCalendars() {
     initCalendarContactsSelector();
 }
 
+function onSchedulerBodyKeyUp(event) {
+   if (event.which == 46) {
+      window.alert("coucou");
+      deleteEvent();
+      event.cancelBubble = true;
+   }
+}
+
 window.addEventListener("load", initCalendars, false);
+document.body.addEventListener("keyup", onSchedulerBodyKeyUp, false);
