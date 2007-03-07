@@ -1,5 +1,9 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEntityObject.m ([iCalEntityObject -symbolicAccessClass]):
+	new method that parses the "CLASS" element of the card and returns
+	an enum value.
+
 	* NSString+NGCards.m ([NSString -foldedForVersitCards]):
 	simplified method by initializing and returning folderString
 	unconditionnally. If length < 76, the original string is appended

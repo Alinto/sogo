@@ -60,6 +60,7 @@ typedef enum
 
 - (void) setAccessClass:(NSString *) _value;
 - (NSString *) accessClass;
+- (iCalAccessClass) symbolicAccessClass;
 - (BOOL) isPublic;
 
 - (void) setPriority: (NSString *) _value;

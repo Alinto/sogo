@@ -118,9 +118,25 @@
   return [[self uniqueChildWithTag: @"class"] value: 0];
 }
 
+- (iCalAccessClass) symbolicAccessClass
+{
+  iCalAccessClass symbolicAccessClass;
+  NSString *accessClass;
+
+  accessClass = [[self accessClass] uppercaseString];
+  if ([accessClass isEqualToString: @"PRIVATE"])
+    symbolicAccessClass = iCalAccessPrivate;
+  else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+    symbolicAccessClass = iCalAccessConfidential;
+  else
+    symbolicAccessClass = iCalAccessPublic;
+
+  return symbolicAccessClass;
+}
+
 - (BOOL) isPublic
 {
-  return [[[self accessClass] uppercaseString] isEqualToString: @"PUBLIC"];
+  return ([self symbolicAccessClass] == iCalAccessPublic);
 }
 
 - (void) setPriority: (NSString *) _value
