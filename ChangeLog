@@ -1,5 +1,14 @@
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponent+Agenor.m ([UIxComponent
+	-getICalPersonsFromValue:selectorValue]): removed useless
+	"isAccessRestricted" method.
+
+	* UI/Scheduler/UIxCalInlineAptView.m ([UIxCalInlineAptView
+	-setStyle:_style]): test whether the values of orgmail and
+	partmails are null before manipulating them, otherwise SOGo sends
+	a "rangeOfString:" message to an NSNull, which makes it crashes.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromEvent:_event]): we now use the new
 	"symbolicAccessClass" method from iCalEntity to determine the
