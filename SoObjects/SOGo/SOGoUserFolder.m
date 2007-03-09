@@ -231,4 +231,27 @@
   return YES;
 }
 
+/* CalDAV support */
+- (NSArray *) davCalendarHomeSet
+{
+  /*
+    <C:calendar-home-set xmlns:D="DAV:"
+        xmlns:C="urn:ietf:params:xml:ns:caldav">
+      <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
+    </C:calendar-home-set>
+
+    Note: this is the *container* for calendar collections, not the
+          collections itself. So for use its the home folder, the
+	  public folder and the groups folder.
+  */
+  WOContext *context;
+  NSArray *tag;
+
+  context = [[WOApplication application] context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [self baseURLInContext: context], nil];
+
+  return [NSArray arrayWithObject: tag];
+}
+
 @end /* SOGoUserFolder */

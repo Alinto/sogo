@@ -1,3 +1,11 @@
+2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m: added CalDAV
+	  resourcetype
+
+	* SoObjects/SOGo/SOGoUserFolder.m: added davCalendarHomeSet CalDAV
+	  property to point at the user folder
+
 2007-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator

@@ -20,12 +20,13 @@
 */
 
 #import <GDLContentStore/GCSFolder.h>
-#import <SaxObjC/SaxObjC.h>
 #import <NGCards/NGCards.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <SaxObjC/SaxObjC.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
@@ -107,6 +108,8 @@ static NSNumber   *sharedYes = nil;
   NSString *s;
   
   s = [[self container] nameInContainer];
+#warning HH DEBUG
+  [self logWithFormat:@"CAL UID: %@", s];
   return [s isNotNull] ? [NSArray arrayWithObjects:&s count:1] : nil;
 }
 
@@ -404,6 +407,23 @@ static NSNumber   *sharedYes = nil;
 - (NSString *) groupDavResourceType
 {
   return @"vevent-collection";
+}
+
+- (NSArray *) davResourceType
+{
+  static NSArray *colType = nil;
+  NSArray *gdCol, *cdCol;
+
+  if (!colType)
+    {
+      cdCol = [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil];
+      gdCol = [NSArray arrayWithObjects: [self groupDavResourceType],
+                       XMLNS_GROUPDAV, nil];
+      colType = [NSArray arrayWithObjects: @"collection", cdCol, gdCol, nil];
+      [colType retain];
+    }
+
+  return colType;
 }
 
 /* vevent UID handling */
