@@ -948,6 +948,7 @@ DIV.gradient > IMG
 
 DIV.monthView DIV.appointment
 { position: relative !important;
+  cursor: default;
   white-space: nowrap;
   padding: 1px;
   height: 1.5em; }
