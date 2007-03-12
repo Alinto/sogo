@@ -41,9 +41,9 @@
   SOGoDateFormatter *dateFormatter;
 
   NSMutableDictionary *sortedAppointments;
+  NSArray *daysToDisplay;
   NSCalendarDate *currentTableDay;
-//   NSArray *rangesOf7Days;
-  NSArray *currentRangeOf7Days;
+  NSArray *currentTableColumn;
 }
 
 - (id <WOActionResults>) defaultAction;
@@ -67,11 +67,6 @@
 - (void) setCurrentTableDay: (NSCalendarDate *) newCurrentTableDay;
 - (NSCalendarDate *) currentTableDay;
 - (NSString *) labelForCurrentDayCell;
-
-- (NSArray *) rangesOf7Days;
-
-- (void) setCurrentRangeOf7Days: (NSArray *) newCurrentRangeOf7Days;
-- (NSArray *) currentRangeOf7Days;
 
 @end
 

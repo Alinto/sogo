@@ -1,3 +1,9 @@
+2007-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalMonthView.m: changed view to use divs instead
+	of a table, the same way the dayly and weekly views have been for
+	a few months now.
+
 2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m: added CalDAV

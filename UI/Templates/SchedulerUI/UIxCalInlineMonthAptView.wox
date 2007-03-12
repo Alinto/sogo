@@ -1,0 +1,25 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE div>
+<div
+  var:class="displayClasses"
+  var:aptCName="appointment.c_name"
+  var:owner="appointment.owner"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url">
+  <div class="shadow shadow1"><!-- space --></div
+    ><div class="shadow shadow2"><!-- space --></div
+    ><div class="shadow shadow3"><!-- space --></div
+    ><div class="shadow shadow4"><!-- space --></div
+    ><div var:class="innerDisplayClasses"
+    ><div class="gradient"
+      ><img rsrc:src="event-gradient.png" class="gradient"
+        /></div
+      ><div class="text"
+      ><span class="eventHeader"><var:string value="startHour"
+          const:escapeHTML="NO" />
+        <var:string value="appointment.title" const:escapeHTML="NO"
+          /></div>
+  </div>
+</div>

@@ -45,6 +45,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
 	UIxCalInlineAptView.m		\
+	UIxCalInlineMonthAptView.m	\
 	UIxCalScheduleOverview.m	\
 	UIxCalParticipationStatusView.m	\
 	UIxCalMonthOverview.m

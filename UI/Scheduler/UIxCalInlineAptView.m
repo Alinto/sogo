@@ -18,36 +18,22 @@
  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
  02111-1307, USA.
  */
-// $Id: UIxCalInlineAptView.m 1029 2007-03-02 22:28:13Z wolfgang $
+// $Id: UIxCalInlineAptView.m 1031 2007-03-07 22:52:32Z wolfgang $
 
 #import <math.h>
 
 #import <Foundation/NSDictionary.h>
 
-#import <NGObjWeb/NGObjWeb.h>
-#import <SOGo/SOGoAuthenticator.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
 #import <NGCards/iCalEntityObject.h>
+#import <SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGoUI/SOGoAptFormatter.h>
 
-@interface UIxCalInlineAptView : WOComponent
-{
-  NSDictionary *appointment;
-  id formatter;
-  id tooltipFormatter;
-  id url;
-  id style;
-  id queryDictionary;
-  id referenceDate;
-  int dayStartHour;
-  int dayEndHour;
-  BOOL canAccess;
-}
-
-@end
-
-#include "common.h"
-#include <SOGoUI/SOGoAptFormatter.h>
-#include <SOGo/SOGoUser.h>
-#include <NGObjWeb/WOContext+SoObjects.h>
+#import "UIxCalInlineAptView.h"
 
 @implementation UIxCalInlineAptView
 

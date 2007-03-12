@@ -293,60 +293,6 @@ TABLE._unfocused#appointmentsList TR._selected TD
   color: #fff !important;;
 }
 
-TABLE.monthOverview
-{ position: absolute;
-  display: table;
-  margin: 0 auto;
-  padding: 1em;
-  border-collapse: collapse;
-  display: table;
-  margin: 0px auto;
-  padding: 0px;
-  width: 98%;
-  height: 98%;
-  min-width: 60em;
-  min-height: 25em; }
-
-TABLE.monthOverview TD
-{ border: 2px solid #397d94;
-  padding: 0px;
-  margin: 0px; }
-
-TABLE.monthOverview TD.day
-{ vertical-align: top;
-  margin: 0px;
-  padding: 0px;
-  height: 15%;
-  min-height: 15%;
-  max-height: 15%; }
-
-TABLE.monthOverview TD.day > DIV.dayContent
-{ display: block;
-  width: 100%;
-  height: 100%;
-  overflow: auto; }
-
-TABLE.monthOverview TD.header
-{ text-align: center;
-  color: #397d94;
-  width: 14%;
-  height: 2em;
-  font-weight: bold;
-  background: #e7efef; }
-
-TABLE.monthOverview TD.dayOfToday
-{ border: 3px solid #397d94;
-  background-color: #deebf7; }
-
-TABLE.monthOverview TD.weekEndDay
-{ background-color: #fffbe7; }
-
-TABLE.monthOverview TD.dayOfAnotherMonth
-{ background-color: #e7efef; }
-
-TABLE.monthOverview TD.selectedDay
-{ background-color: #ffe79c; }
-
 SPAN.dayCellLabel
 { color: #77a;
   font-weight: bold; }
@@ -595,7 +541,6 @@ SPAN[class~="freeBusyZoneElement"].maybe-busy
 SPAN[class~="colorBox"].noFreeBusy
 { background-color: #559; }
 
-
 /* new draggable presentation */
 
 DIV.daysView
@@ -613,6 +558,126 @@ DIV.daysView DIV.days
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #397d94; }
+
+DIV.monthView
+{ position: absolute;
+  left: .5em;
+  top: .5em;
+  right: .5em;
+  bottom: .5em;
+  padding: 0px;
+  width: 98%;
+  height: 98%;
+  min-width: 60em;
+  min-height: 25em; }
+
+DIV.monthView > DIV,
+DIV.monthView > DIV.days > DIV
+{ position: absolute; }
+
+DIV.monthView > DIV.headerDay
+{ text-align: center;
+  border-left: 2px solid #397d94;
+  border-top: 2px solid #397d94;
+  top: 0px;
+  color: #397d94;
+  height: 2em;
+  font-weight: bold;
+  background: #e7efef; }
+
+DIV.monthView DIV.dayOfToday
+{ border: 1px solid #397d94;
+  background-color: #deebf7; }
+
+DIV.monthView DIV.weekEndDay
+{ background-color: #fffbe7; }
+
+DIV.monthView DIV.dayOfAnotherMonth
+{ background-color: #e7efef; }
+
+DIV.monthView DIV.selectedDay
+{ background-color: #ffe79c; }
+
+DIV.monthView DIV.dayHeader
+{ margin-left: 1em;
+  color: #397d94;
+  font-weight: bold; }
+
+DIV.monthView DIV.days
+{ position: absolute;
+  top: 2em;
+  bottom: 0px;
+  left: 0px;
+  right: 0px; }
+
+DIV.monthView DIV.day
+{ position: absolute;
+  border-left: 2px solid #397d94;
+  border-top: 2px solid #397d94;
+  min-height: 4em;
+  overflow: auto; }
+
+DIV.weekOf4
+{ height: 25%; }
+
+DIV.weekOf5
+{ height: 20%; }
+
+DIV.weekOf6
+{ height: 16.666667%; }
+
+DIV.monthView DIV.week0of4,
+DIV.monthView DIV.week0of5,
+DIV.monthView DIV.week0of6
+{ top: 0px; }
+
+DIV.monthView DIV.week1of4
+{ top: 25%; }
+
+DIV.monthView DIV.week2of4
+{ top: 50%; }
+
+DIV.monthView DIV.week3of4
+{ top: 75%; }
+
+DIV.monthView DIV.week1of5
+{ top: 20%; }
+
+DIV.monthView DIV.week2of5
+{ top: 40%; }
+
+DIV.monthView DIV.week3of5
+{ top: 60%; }
+
+DIV.monthView DIV.week4of5
+{ top: 80%; }
+
+DIV.monthView DIV.week1of6
+{ top: 16.666667%; }
+
+DIV.monthView DIV.week2of6
+{ top: 33.333333%; }
+
+DIV.monthView DIV.week3of6
+{ top: 50%; }
+
+DIV.monthView DIV.week4of6
+{ top: 66.666667%; }
+
+DIV.monthView DIV.week4of6
+{ top: 83.333333%; }
+
+DIV.monthView DIV.week3
+{ top: 45%; }
+
+DIV.monthView DIV.week4
+{ top: 60%; }
+
+DIV.monthView DIV.week5
+{ top: 75%; }
+
+DIV.monthView DIV.week6
+{ top: 90%; }
 
 DIV.daysView DIV.day
 { position: absolute;
@@ -645,27 +710,36 @@ DIV.daysViewFor1Days DIV.day
   border-right: 1px solid #397d94;
   left: 0px; }
 
+DIV.monthView DIV.headerDay,
+DIV.monthView DIV.day,
 DIV.daysViewFor7Days DIV.day
 { width: 14.2857%; }
 
+DIV.monthView DIV.day1,
 DIV.daysViewFor7Days DIV.day1
 { left: 0px; }
 
+DIV.monthView DIV.day2,
 DIV.daysViewFor7Days DIV.day2
 { left: 14.2857%; }
 
+DIV.monthView DIV.day3,
 DIV.daysViewFor7Days DIV.day3
 { left: 28.5714%; }
 
+DIV.monthView DIV.day4,
 DIV.daysViewFor7Days DIV.day4
 { left: 42.8571%; }
 
+DIV.monthView DIV.day5,
 DIV.daysViewFor7Days DIV.day5
 { left: 57.1428%; }
 
+DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
 { left: 71.4285%; }
 
+DIV.monthView DIV.day0,
 DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
@@ -872,611 +946,590 @@ DIV.gradient > IMG
 { height: 100%;
   width: 100%; }
 
-TABLE.monthOverview DIV.appointment
-{ margin: 0px;
-  margin-top: 1px;
+DIV.monthView DIV.appointment
+{ position: relative !important;
+  white-space: nowrap;
   padding: 1px;
-  border: 0px;
-  height: auto;
-  width: auto;
-  position: static;
-  overflow: hidden;
-  background-color: #fff; }
+  height: 1.5em; }
 
-TABLE.monthOverview DIV.appointmentInside
-{ cursor: default;
-  margin: 0px;
-  padding: 1px;
-  border: 0px;
-  height: auto;
-  width: auto;
-  position: static; }
-
-TABLE.monthOverview DIV.shadow,
-TABLE.monthOverview DIV.gradient
-{ display: none; }
-
-TABLE.monthOverview DIV.text
-{ position: static; }
-
-DIV[class~="appointment"].starts0
+DIV.daysView DIV[class~="appointment"].starts0
 { top: 0.000000%; }
 
-DIV[class~="appointment"].starts1
+DIV.daysView DIV[class~="appointment"].starts1
 { top: 1.041667%; }
 
-DIV[class~="appointment"].starts2
+DIV.daysView DIV[class~="appointment"].starts2
 { top: 2.083333%; }
 
-DIV[class~="appointment"].starts3
+DIV.daysView DIV[class~="appointment"].starts3
 { top: 3.125000%; }
 
-DIV[class~="appointment"].starts4
+DIV.daysView DIV[class~="appointment"].starts4
 { top: 4.166667%; }
 
-DIV[class~="appointment"].starts5
+DIV.daysView DIV[class~="appointment"].starts5
 { top: 5.208333%; }
 
-DIV[class~="appointment"].starts6
+DIV.daysView DIV[class~="appointment"].starts6
 { top: 6.250000%; }
 
-DIV[class~="appointment"].starts7
+DIV.daysView DIV[class~="appointment"].starts7
 { top: 7.291667%; }
 
-DIV[class~="appointment"].starts8
+DIV.daysView DIV[class~="appointment"].starts8
 { top: 8.333333%; }
 
-DIV[class~="appointment"].starts9
+DIV.daysView DIV[class~="appointment"].starts9
 { top: 9.375000%; }
 
-DIV[class~="appointment"].starts10
+DIV.daysView DIV[class~="appointment"].starts10
 { top: 10.416667%; }
 
-DIV[class~="appointment"].starts11
+DIV.daysView DIV[class~="appointment"].starts11
 { top: 11.458333%; }
 
-DIV[class~="appointment"].starts12
+DIV.daysView DIV[class~="appointment"].starts12
 { top: 12.500000%; }
 
-DIV[class~="appointment"].starts13
+DIV.daysView DIV[class~="appointment"].starts13
 { top: 13.541667%; }
 
-DIV[class~="appointment"].starts14
+DIV.daysView DIV[class~="appointment"].starts14
 { top: 14.583333%; }
 
-DIV[class~="appointment"].starts15
+DIV.daysView DIV[class~="appointment"].starts15
 { top: 15.625000%; }
 
-DIV[class~="appointment"].starts16
+DIV.daysView DIV[class~="appointment"].starts16
 { top: 16.666667%; }
 
-DIV[class~="appointment"].starts17
+DIV.daysView DIV[class~="appointment"].starts17
 { top: 17.708333%; }
 
-DIV[class~="appointment"].starts18
+DIV.daysView DIV[class~="appointment"].starts18
 { top: 18.750000%; }
 
-DIV[class~="appointment"].starts19
+DIV.daysView DIV[class~="appointment"].starts19
 { top: 19.791667%; }
 
-DIV[class~="appointment"].starts20
+DIV.daysView DIV[class~="appointment"].starts20
 { top: 20.833333%; }
 
-DIV[class~="appointment"].starts21
+DIV.daysView DIV[class~="appointment"].starts21
 { top: 21.875000%; }
 
-DIV[class~="appointment"].starts22
+DIV.daysView DIV[class~="appointment"].starts22
 { top: 22.916667%; }
 
-DIV[class~="appointment"].starts23
+DIV.daysView DIV[class~="appointment"].starts23
 { top: 23.958333%; }
 
-DIV[class~="appointment"].starts24
+DIV.daysView DIV[class~="appointment"].starts24
 { top: 25.000000%; }
 
-DIV[class~="appointment"].starts25
+DIV.daysView DIV[class~="appointment"].starts25
 { top: 26.041667%; }
 
-DIV[class~="appointment"].starts26
+DIV.daysView DIV[class~="appointment"].starts26
 { top: 27.083333%; }
 
-DIV[class~="appointment"].starts27
+DIV.daysView DIV[class~="appointment"].starts27
 { top: 28.125000%; }
 
-DIV[class~="appointment"].starts28
+DIV.daysView DIV[class~="appointment"].starts28
 { top: 29.166667%; }
 
-DIV[class~="appointment"].starts29
+DIV.daysView DIV[class~="appointment"].starts29
 { top: 30.208333%; }
 
-DIV[class~="appointment"].starts30
+DIV.daysView DIV[class~="appointment"].starts30
 { top: 31.250000%; }
 
-DIV[class~="appointment"].starts31
+DIV.daysView DIV[class~="appointment"].starts31
 { top: 32.291667%; }
 
-DIV[class~="appointment"].starts32
+DIV.daysView DIV[class~="appointment"].starts32
 { top: 33.333333%; }
 
-DIV[class~="appointment"].starts33
+DIV.daysView DIV[class~="appointment"].starts33
 { top: 34.375000%; }
 
-DIV[class~="appointment"].starts34
+DIV.daysView DIV[class~="appointment"].starts34
 { top: 35.416667%; }
 
-DIV[class~="appointment"].starts35
+DIV.daysView DIV[class~="appointment"].starts35
 { top: 36.458333%; }
 
-DIV[class~="appointment"].starts36
+DIV.daysView DIV[class~="appointment"].starts36
 { top: 37.500000%; }
 
-DIV[class~="appointment"].starts37
+DIV.daysView DIV[class~="appointment"].starts37
 { top: 38.541667%; }
 
-DIV[class~="appointment"].starts38
+DIV.daysView DIV[class~="appointment"].starts38
 { top: 39.583333%; }
 
-DIV[class~="appointment"].starts39
+DIV.daysView DIV[class~="appointment"].starts39
 { top: 40.625000%; }
 
-DIV[class~="appointment"].starts40
+DIV.daysView DIV[class~="appointment"].starts40
 { top: 41.666667%; }
 
-DIV[class~="appointment"].starts41
+DIV.daysView DIV[class~="appointment"].starts41
 { top: 42.708333%; }
 
-DIV[class~="appointment"].starts42
+DIV.daysView DIV[class~="appointment"].starts42
 { top: 43.750000%; }
 
-DIV[class~="appointment"].starts43
+DIV.daysView DIV[class~="appointment"].starts43
 { top: 44.791667%; }
 
-DIV[class~="appointment"].starts44
+DIV.daysView DIV[class~="appointment"].starts44
 { top: 45.833333%; }
 
-DIV[class~="appointment"].starts45
+DIV.daysView DIV[class~="appointment"].starts45
 { top: 46.875000%; }
 
-DIV[class~="appointment"].starts46
+DIV.daysView DIV[class~="appointment"].starts46
 { top: 47.916667%; }
 
-DIV[class~="appointment"].starts47
+DIV.daysView DIV[class~="appointment"].starts47
 { top: 48.958333%; }
 
-DIV[class~="appointment"].starts48
+DIV.daysView DIV[class~="appointment"].starts48
 { top: 50.000000%; }
 
-DIV[class~="appointment"].starts49
+DIV.daysView DIV[class~="appointment"].starts49
 { top: 51.041667%; }
 
-DIV[class~="appointment"].starts50
+DIV.daysView DIV[class~="appointment"].starts50
 { top: 52.083333%; }
 
-DIV[class~="appointment"].starts51
+DIV.daysView DIV[class~="appointment"].starts51
 { top: 53.125000%; }
 
-DIV[class~="appointment"].starts52
+DIV.daysView DIV[class~="appointment"].starts52
 { top: 54.166667%; }
 
-DIV[class~="appointment"].starts53
+DIV.daysView DIV[class~="appointment"].starts53
 { top: 55.208333%; }
 
-DIV[class~="appointment"].starts54
+DIV.daysView DIV[class~="appointment"].starts54
 { top: 56.250000%; }
 
-DIV[class~="appointment"].starts55
+DIV.daysView DIV[class~="appointment"].starts55
 { top: 57.291667%; }
 
-DIV[class~="appointment"].starts56
+DIV.daysView DIV[class~="appointment"].starts56
 { top: 58.333333%; }
 
-DIV[class~="appointment"].starts57
+DIV.daysView DIV[class~="appointment"].starts57
 { top: 59.375000%; }
 
-DIV[class~="appointment"].starts58
+DIV.daysView DIV[class~="appointment"].starts58
 { top: 60.416667%; }
 
-DIV[class~="appointment"].starts59
+DIV.daysView DIV[class~="appointment"].starts59
 { top: 61.458333%; }
 
-DIV[class~="appointment"].starts60
+DIV.daysView DIV[class~="appointment"].starts60
 { top: 62.500000%; }
 
-DIV[class~="appointment"].starts61
+DIV.daysView DIV[class~="appointment"].starts61
 { top: 63.541667%; }
 
-DIV[class~="appointment"].starts62
+DIV.daysView DIV[class~="appointment"].starts62
 { top: 64.583333%; }
 
-DIV[class~="appointment"].starts63
+DIV.daysView DIV[class~="appointment"].starts63
 { top: 65.625000%; }
 
-DIV[class~="appointment"].starts64
+DIV.daysView DIV[class~="appointment"].starts64
 { top: 66.666667%; }
 
-DIV[class~="appointment"].starts65
+DIV.daysView DIV[class~="appointment"].starts65
 { top: 67.708333%; }
 
-DIV[class~="appointment"].starts66
+DIV.daysView DIV[class~="appointment"].starts66
 { top: 68.750000%; }
 
-DIV[class~="appointment"].starts67
+DIV.daysView DIV[class~="appointment"].starts67
 { top: 69.791667%; }
 
-DIV[class~="appointment"].starts68
+DIV.daysView DIV[class~="appointment"].starts68
 { top: 70.833333%; }
 
-DIV[class~="appointment"].starts69
+DIV.daysView DIV[class~="appointment"].starts69
 { top: 71.875000%; }
 
-DIV[class~="appointment"].starts70
+DIV.daysView DIV[class~="appointment"].starts70
 { top: 72.916667%; }
 
-DIV[class~="appointment"].starts71
+DIV.daysView DIV[class~="appointment"].starts71
 { top: 73.958333%; }
 
-DIV[class~="appointment"].starts72
+DIV.daysView DIV[class~="appointment"].starts72
 { top: 75.000000%; }
 
-DIV[class~="appointment"].starts73
+DIV.daysView DIV[class~="appointment"].starts73
 { top: 76.041667%; }
 
-DIV[class~="appointment"].starts74
+DIV.daysView DIV[class~="appointment"].starts74
 { top: 77.083333%; }
 
-DIV[class~="appointment"].starts75
+DIV.daysView DIV[class~="appointment"].starts75
 { top: 78.125000%; }
 
-DIV[class~="appointment"].starts76
+DIV.daysView DIV[class~="appointment"].starts76
 { top: 79.166667%; }
 
-DIV[class~="appointment"].starts77
+DIV.daysView DIV[class~="appointment"].starts77
 { top: 80.208333%; }
 
-DIV[class~="appointment"].starts78
+DIV.daysView DIV[class~="appointment"].starts78
 { top: 81.250000%; }
 
-DIV[class~="appointment"].starts79
+DIV.daysView DIV[class~="appointment"].starts79
 { top: 82.291667%; }
 
-DIV[class~="appointment"].starts80
+DIV.daysView DIV[class~="appointment"].starts80
 { top: 83.333333%; }
 
-DIV[class~="appointment"].starts81
+DIV.daysView DIV[class~="appointment"].starts81
 { top: 84.375000%; }
 
-DIV[class~="appointment"].starts82
+DIV.daysView DIV[class~="appointment"].starts82
 { top: 85.416667%; }
 
-DIV[class~="appointment"].starts83
+DIV.daysView DIV[class~="appointment"].starts83
 { top: 86.458333%; }
 
-DIV[class~="appointment"].starts84
+DIV.daysView DIV[class~="appointment"].starts84
 { top: 87.500000%; }
 
-DIV[class~="appointment"].starts85
+DIV.daysView DIV[class~="appointment"].starts85
 { top: 88.541667%; }
 
-DIV[class~="appointment"].starts86
+DIV.daysView DIV[class~="appointment"].starts86
 { top: 89.583333%; }
 
-DIV[class~="appointment"].starts87
+DIV.daysView DIV[class~="appointment"].starts87
 { top: 90.625000%; }
 
-DIV[class~="appointment"].starts88
+DIV.daysView DIV[class~="appointment"].starts88
 { top: 91.666667%; }
 
-DIV[class~="appointment"].starts89
+DIV.daysView DIV[class~="appointment"].starts89
 { top: 92.708333%; }
 
-DIV[class~="appointment"].starts90
+DIV.daysView DIV[class~="appointment"].starts90
 { top: 93.750000%; }
 
-DIV[class~="appointment"].starts91
+DIV.daysView DIV[class~="appointment"].starts91
 { top: 94.791667%; }
 
-DIV[class~="appointment"].starts92
+DIV.daysView DIV[class~="appointment"].starts92
 { top: 95.833333%; }
 
-DIV[class~="appointment"].starts93
+DIV.daysView DIV[class~="appointment"].starts93
 { top: 96.875000%; }
 
-DIV[class~="appointment"].starts94
+DIV.daysView DIV[class~="appointment"].starts94
 { top: 97.916667%; }
 
-DIV[class~="appointment"].starts95
+DIV.daysView DIV[class~="appointment"].starts95
 { top: 98.958333%; }
 
-DIV[class~="appointment"].starts96
+DIV.daysView DIV[class~="appointment"].starts96
 { top: 100.000000%; }
 
-DIV[class~="appointment"].lasts0
+DIV.daysView DIV[class~="appointment"].lasts0
 { height: 0px; }
 
-DIV[class~="appointment"].lasts1
+DIV.daysView DIV[class~="appointment"].lasts1
 { height: 1.041667%; }
 
-DIV[class~="appointment"].lasts2
+DIV.daysView DIV[class~="appointment"].lasts2
 { height: 2.083333%; }
 
-DIV[class~="appointment"].lasts3
+DIV.daysView DIV[class~="appointment"].lasts3
 { height: 3.125000%; }
 
-DIV[class~="appointment"].lasts4
+DIV.daysView DIV[class~="appointment"].lasts4
 { height: 4.166667%; }
 
-DIV[class~="appointment"].lasts5
+DIV.daysView DIV[class~="appointment"].lasts5
 { height: 5.208333%; }
 
-DIV[class~="appointment"].lasts6
+DIV.daysView DIV[class~="appointment"].lasts6
 { height: 6.250000%; }
 
-DIV[class~="appointment"].lasts7
+DIV.daysView DIV[class~="appointment"].lasts7
 { height: 7.291667%; }
 
-DIV[class~="appointment"].lasts8
+DIV.daysView DIV[class~="appointment"].lasts8
 { height: 8.333333%; }
 
-DIV[class~="appointment"].lasts9
+DIV.daysView DIV[class~="appointment"].lasts9
 { height: 9.375000%; }
 
-DIV[class~="appointment"].lasts10
+DIV.daysView DIV[class~="appointment"].lasts10
 { height: 10.416667%; }
 
-DIV[class~="appointment"].lasts11
+DIV.daysView DIV[class~="appointment"].lasts11
 { height: 11.458333%; }
 
-DIV[class~="appointment"].lasts12
+DIV.daysView DIV[class~="appointment"].lasts12
 { height: 12.500000%; }
 
-DIV[class~="appointment"].lasts13
+DIV.daysView DIV[class~="appointment"].lasts13
 { height: 13.541667%; }
 
-DIV[class~="appointment"].lasts14
+DIV.daysView DIV[class~="appointment"].lasts14
 { height: 14.583333%; }
 
-DIV[class~="appointment"].lasts15
+DIV.daysView DIV[class~="appointment"].lasts15
 { height: 15.625000%; }
 
-DIV[class~="appointment"].lasts16
+DIV.daysView DIV[class~="appointment"].lasts16
 { height: 16.666667%; }
 
-DIV[class~="appointment"].lasts17
+DIV.daysView DIV[class~="appointment"].lasts17
 { height: 17.708333%; }
 
-DIV[class~="appointment"].lasts18
+DIV.daysView DIV[class~="appointment"].lasts18
 { height: 18.750000%; }
 
-DIV[class~="appointment"].lasts19
+DIV.daysView DIV[class~="appointment"].lasts19
 { height: 19.791667%; }
 
-DIV[class~="appointment"].lasts20
+DIV.daysView DIV[class~="appointment"].lasts20
 { height: 20.833333%; }
 
-DIV[class~="appointment"].lasts21
+DIV.daysView DIV[class~="appointment"].lasts21
 { height: 21.875000%; }
 
-DIV[class~="appointment"].lasts22
+DIV.daysView DIV[class~="appointment"].lasts22
 { height: 22.916667%; }
 
-DIV[class~="appointment"].lasts23
+DIV.daysView DIV[class~="appointment"].lasts23
 { height: 23.958333%; }
 
-DIV[class~="appointment"].lasts24
+DIV.daysView DIV[class~="appointment"].lasts24
 { height: 25.000000%; }
 
-DIV[class~="appointment"].lasts25
+DIV.daysView DIV[class~="appointment"].lasts25
 { height: 26.041667%; }
 
-DIV[class~="appointment"].lasts26
+DIV.daysView DIV[class~="appointment"].lasts26
 { height: 27.083333%; }
 
-DIV[class~="appointment"].lasts27
+DIV.daysView DIV[class~="appointment"].lasts27
 { height: 28.125000%; }
 
-DIV[class~="appointment"].lasts28
+DIV.daysView DIV[class~="appointment"].lasts28
 { height: 29.166667%; }
 
-DIV[class~="appointment"].lasts29
+DIV.daysView DIV[class~="appointment"].lasts29
 { height: 30.208333%; }
 
-DIV[class~="appointment"].lasts30
+DIV.daysView DIV[class~="appointment"].lasts30
 { height: 31.250000%; }
 
-DIV[class~="appointment"].lasts31
+DIV.daysView DIV[class~="appointment"].lasts31
 { height: 32.291667%; }
 
-DIV[class~="appointment"].lasts32
+DIV.daysView DIV[class~="appointment"].lasts32
 { height: 33.333333%; }
 
-DIV[class~="appointment"].lasts33
+DIV.daysView DIV[class~="appointment"].lasts33
 { height: 34.375000%; }
 
-DIV[class~="appointment"].lasts34
+DIV.daysView DIV[class~="appointment"].lasts34
 { height: 35.416667%; }
 
-DIV[class~="appointment"].lasts35
+DIV.daysView DIV[class~="appointment"].lasts35
 { height: 36.458333%; }
 
-DIV[class~="appointment"].lasts36
+DIV.daysView DIV[class~="appointment"].lasts36
 { height: 37.500000%; }
 
-DIV[class~="appointment"].lasts37
+DIV.daysView DIV[class~="appointment"].lasts37
 { height: 38.541667%; }
 
-DIV[class~="appointment"].lasts38
+DIV.daysView DIV[class~="appointment"].lasts38
 { height: 39.583333%; }
 
-DIV[class~="appointment"].lasts39
+DIV.daysView DIV[class~="appointment"].lasts39
 { height: 40.625000%; }
 
-DIV[class~="appointment"].lasts40
+DIV.daysView DIV[class~="appointment"].lasts40
 { height: 41.666667%; }
 
-DIV[class~="appointment"].lasts41
+DIV.daysView DIV[class~="appointment"].lasts41
 { height: 42.708333%; }
 
-DIV[class~="appointment"].lasts42
+DIV.daysView DIV[class~="appointment"].lasts42
 { height: 43.750000%; }
 
-DIV[class~="appointment"].lasts43
+DIV.daysView DIV[class~="appointment"].lasts43
 { height: 44.791667%; }
 
-DIV[class~="appointment"].lasts44
+DIV.daysView DIV[class~="appointment"].lasts44
 { height: 45.833333%; }
 
-DIV[class~="appointment"].lasts45
+DIV.daysView DIV[class~="appointment"].lasts45
 { height: 46.875000%; }
 
-DIV[class~="appointment"].lasts46
+DIV.daysView DIV[class~="appointment"].lasts46
 { height: 47.916667%; }
 
-DIV[class~="appointment"].lasts47
+DIV.daysView DIV[class~="appointment"].lasts47
 { height: 48.958333%; }
 
-DIV[class~="appointment"].lasts48
+DIV.daysView DIV[class~="appointment"].lasts48
 { height: 50.000000%; }
 
-DIV[class~="appointment"].lasts49
+DIV.daysView DIV[class~="appointment"].lasts49
 { height: 51.041667%; }
 
-DIV[class~="appointment"].lasts50
+DIV.daysView DIV[class~="appointment"].lasts50
 { height: 52.083333%; }
 
-DIV[class~="appointment"].lasts51
+DIV.daysView DIV[class~="appointment"].lasts51
 { height: 53.125000%; }
 
-DIV[class~="appointment"].lasts52
+DIV.daysView DIV[class~="appointment"].lasts52
 { height: 54.166667%; }
 
-DIV[class~="appointment"].lasts53
+DIV.daysView DIV[class~="appointment"].lasts53
 { height: 55.208333%; }
 
-DIV[class~="appointment"].lasts54
+DIV.daysView DIV[class~="appointment"].lasts54
 { height: 56.250000%; }
 
-DIV[class~="appointment"].lasts55
+DIV.daysView DIV[class~="appointment"].lasts55
 { height: 57.291667%; }
 
-DIV[class~="appointment"].lasts56
+DIV.daysView DIV[class~="appointment"].lasts56
 { height: 58.333333%; }
 
-DIV[class~="appointment"].lasts57
+DIV.daysView DIV[class~="appointment"].lasts57
 { height: 59.375000%; }
 
-DIV[class~="appointment"].lasts58
+DIV.daysView DIV[class~="appointment"].lasts58
 { height: 60.416667%; }
 
-DIV[class~="appointment"].lasts59
+DIV.daysView DIV[class~="appointment"].lasts59
 { height: 61.458333%; }
 
-DIV[class~="appointment"].lasts60
+DIV.daysView DIV[class~="appointment"].lasts60
 { height: 62.500000%; }
 
-DIV[class~="appointment"].lasts61
+DIV.daysView DIV[class~="appointment"].lasts61
 { height: 63.541667%; }
 
-DIV[class~="appointment"].lasts62
+DIV.daysView DIV[class~="appointment"].lasts62
 { height: 64.583333%; }
 
-DIV[class~="appointment"].lasts63
+DIV.daysView DIV[class~="appointment"].lasts63
 { height: 65.625000%; }
 
-DIV[class~="appointment"].lasts64
+DIV.daysView DIV[class~="appointment"].lasts64
 { height: 66.666667%; }
 
-DIV[class~="appointment"].lasts65
+DIV.daysView DIV[class~="appointment"].lasts65
 { height: 67.708333%; }
 
-DIV[class~="appointment"].lasts66
+DIV.daysView DIV[class~="appointment"].lasts66
 { height: 68.750000%; }
 
-DIV[class~="appointment"].lasts67
+DIV.daysView DIV[class~="appointment"].lasts67
 { height: 69.791667%; }
 
-DIV[class~="appointment"].lasts68
+DIV.daysView DIV[class~="appointment"].lasts68
 { height: 70.833333%; }
 
-DIV[class~="appointment"].lasts69
+DIV.daysView DIV[class~="appointment"].lasts69
 { height: 71.875000%; }
 
-DIV[class~="appointment"].lasts70
+DIV.daysView DIV[class~="appointment"].lasts70
 { height: 72.916667%; }
 
-DIV[class~="appointment"].lasts71
+DIV.daysView DIV[class~="appointment"].lasts71
 { height: 73.958333%; }
 
-DIV[class~="appointment"].lasts72
+DIV.daysView DIV[class~="appointment"].lasts72
 { height: 75.000000%; }
 
-DIV[class~="appointment"].lasts73
+DIV.daysView DIV[class~="appointment"].lasts73
 { height: 76.041667%; }
 
-DIV[class~="appointment"].lasts74
+DIV.daysView DIV[class~="appointment"].lasts74
 { height: 77.083333%; }
 
-DIV[class~="appointment"].lasts75
+DIV.daysView DIV[class~="appointment"].lasts75
 { height: 78.125000%; }
 
-DIV[class~="appointment"].lasts76
+DIV.daysView DIV[class~="appointment"].lasts76
 { height: 79.166667%; }
 
-DIV[class~="appointment"].lasts77
+DIV.daysView DIV[class~="appointment"].lasts77
 { height: 80.208333%; }
 
-DIV[class~="appointment"].lasts78
+DIV.daysView DIV[class~="appointment"].lasts78
 { height: 81.250000%; }
 
-DIV[class~="appointment"].lasts79
+DIV.daysView DIV[class~="appointment"].lasts79
 { height: 82.291667%; }
 
-DIV[class~="appointment"].lasts80
+DIV.daysView DIV[class~="appointment"].lasts80
 { height: 83.333333%; }
 
-DIV[class~="appointment"].lasts81
+DIV.daysView DIV[class~="appointment"].lasts81
 { height: 84.375000%; }
 
-DIV[class~="appointment"].lasts82
+DIV.daysView DIV[class~="appointment"].lasts82
 { height: 85.416667%; }
 
-DIV[class~="appointment"].lasts83
+DIV.daysView DIV[class~="appointment"].lasts83
 { height: 86.458333%; }
 
-DIV[class~="appointment"].lasts84
+DIV.daysView DIV[class~="appointment"].lasts84
 { height: 87.500000%; }
 
-DIV[class~="appointment"].lasts85
+DIV.daysView DIV[class~="appointment"].lasts85
 { height: 88.541667%; }
 
-DIV[class~="appointment"].lasts86
+DIV.daysView DIV[class~="appointment"].lasts86
 { height: 89.583333%; }
 
-DIV[class~="appointment"].lasts87
+DIV.daysView DIV[class~="appointment"].lasts87
 { height: 90.625000%; }
 
-DIV[class~="appointment"].lasts88
+DIV.daysView DIV[class~="appointment"].lasts88
 { height: 91.666667%; }
 
-DIV[class~="appointment"].lasts89
+DIV.daysView DIV[class~="appointment"].lasts89
 { height: 92.708333%; }
 
-DIV[class~="appointment"].lasts90
+DIV.daysView DIV[class~="appointment"].lasts90
 { height: 93.750000%; }
 
-DIV[class~="appointment"].lasts91
+DIV.daysView DIV[class~="appointment"].lasts91
 { height: 94.791667%; }
 
-DIV[class~="appointment"].lasts92
+DIV.daysView DIV[class~="appointment"].lasts92
 { height: 95.833333%; }
 
-DIV[class~="appointment"].lasts93
+DIV.daysView DIV[class~="appointment"].lasts93
 { height: 96.875000%; }
 
-DIV[class~="appointment"].lasts94
+DIV.daysView DIV[class~="appointment"].lasts94
 { height: 97.916667%; }
 
-DIV[class~="appointment"].lasts95
+DIV.daysView DIV[class~="appointment"].lasts95
 { height: 98.958333%; }
 
-DIV[class~="appointment"].lasts96
+DIV.daysView DIV[class~="appointment"].lasts96
 { height: 100.000000%; }

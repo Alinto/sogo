@@ -817,36 +817,32 @@ function changeWeekCalendarDisplayOfSelectedDay(node) {
   node.addClassName("selectedDay");
 }
 
-function findMonthCalendarSelectedCell(table) {
-  var tbody = table.tBodies[0];
-  var rows = tbody.rows;
+function findMonthCalendarSelectedCell(daysContainer) {
+   var found = false;
+   var i = 0;
 
-  var i = 1;
-  while (i < rows.length && !table.selectedCell) {
-    var cells = rows[i].cells;
-    var j = 0;
-    while (j < cells.length && !table.selectedCell) {
-      if (cells[j].hasClassName("selectedDay"))
-        table.selectedCell = cells[j];
+   while (!found && i < daysContainer.childNodes.length) {
+      var currentNode = daysContainer.childNodes[i];
+      if (currentNode instanceof HTMLDivElement
+          && currentNode.hasClassName("selectedDay")) {
+         daysContainer.selectedCell = currentNode;
+         found = true;
+      }
       else
-        j++;
-    }
-    i++;
-  }
+         i++;
+   }
 }
 
 function changeMonthCalendarDisplayOfSelectedDay(node)
 {
-  var tr = node.parentNode;
-  var table = tr.parentNode.parentNode;
-
-  if (!table.selectedCell)
-    findMonthCalendarSelectedCell(table);
-
-  if (table.selectedCell)
-    table.selectedCell.removeClassName("selectedDay");
-  table.selectedCell = node;
-  node.addClassName("selectedDay");
+   var daysContainer = node.parentNode;
+   if (!daysContainer.selectedCell)
+      findMonthCalendarSelectedCell(daysContainer);
+   
+   if (daysContainer.selectedCell)
+      daysContainer.selectedCell.removeClassName("selectedDay");
+   daysContainer.selectedCell = node;
+   node.addClassName("selectedDay");
 }
 
 function onHideCompletedTasks(node)

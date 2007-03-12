@@ -1,6 +1,6 @@
 /* UIxCalMonthView.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006, 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -48,6 +48,7 @@
       dateFormatter = [[SOGoDateFormatter alloc]
                         initWithLocale: [self locale]];
       sortedAppointments = [NSMutableDictionary new];
+      daysToDisplay = nil;
     }
 
   return self;
@@ -60,6 +61,7 @@
 
 - (void) dealloc
 {
+  [daysToDisplay release];
   [monthAptFormatter release];
   [dateFormatter release];
   [sortedAppointments release];
@@ -99,19 +101,46 @@
   return self;
 }
 
+- (NSArray *) headerDaysToDisplay
+{
+  NSMutableArray *headerDaysToDisplay;
+  unsigned int counter;
+
+  headerDaysToDisplay = [NSMutableArray arrayWithCapacity: 7];
+  currentTableDay = [[self selectedDate] mondayOfWeek];
+  for (counter = 0; counter < 7; counter++)
+    {
+      [headerDaysToDisplay addObject: currentTableDay];
+      currentTableDay = [currentTableDay tomorrow];
+    }
+
+  return headerDaysToDisplay;
+}
+
 - (NSArray *) daysToDisplay
 {
-  NSMutableArray *daysToDisplay;
-  NSCalendarDate *currentDayToDisplay;
-  unsigned int day;
+  NSMutableArray *days[7];
+  unsigned int counter;
+  NSCalendarDate *firstOfAllDays, *lastDayOfMonth;
 
-  daysToDisplay = [NSMutableArray arrayWithCapacity: 7];
-  currentDayToDisplay = [[NSCalendarDate calendarDate] mondayOfWeek];
-  for (day = 0; day < 7; day++)
+  if (!daysToDisplay)
     {
-      [daysToDisplay addObject: currentDayToDisplay];
-      currentDayToDisplay
-        = [currentDayToDisplay dateByAddingYears: 0 months: 0 days: 1];
+      firstOfAllDays = [[[self selectedDate] firstDayOfMonth] mondayOfWeek];
+      lastDayOfMonth  = [[self selectedDate] lastDayOfMonth];
+      for (counter = 0; counter < 7; counter++)
+        {
+          days[counter] = [NSMutableArray new];
+          [days[counter] autorelease];
+        }
+      currentTableDay = firstOfAllDays;
+      while ([currentTableDay earlierDate: lastDayOfMonth] == currentTableDay)
+        for (counter = 0; counter < 7; counter++)
+          {
+            [days[counter] addObject: currentTableDay];
+            currentTableDay = [currentTableDay tomorrow];
+          }
+      daysToDisplay = [NSArray arrayWithObjects: days count: 7];
+      [daysToDisplay retain];
     }
 
   return daysToDisplay;
@@ -197,14 +226,14 @@
   return currentTableDay;
 }
 
-- (void) setCurrentRangeOf7Days: (NSArray *) newCurrentRangeOf7Days
+- (void) setCurrentTableColumn: (NSArray *) newCurrentTableColumn
 {
-  currentRangeOf7Days = newCurrentRangeOf7Days;
+  currentTableColumn = newCurrentTableColumn;
 }
 
-- (NSArray *) currentRangeOf7Days
+- (NSArray *) currentTableColumn
 {
-  return currentRangeOf7Days;
+  return currentTableColumn;
 }
 
 - (NSString *) labelForCurrentDayCell
@@ -228,16 +257,48 @@
   return label;
 }
 
+- (NSString *) headerDayCellClasses
+{
+  return [NSString stringWithFormat: @"headerDay day%d",
+                   [currentTableDay dayOfWeek]];
+}
+
+- (NSString *) dayHeaderNumber
+{
+  NSString *nameOfMonth, *dayHeaderNumber;
+  unsigned int dayOfMonth;
+
+  dayOfMonth = [currentTableDay dayOfMonth];
+  if (dayOfMonth == 1
+      || [currentTableDay isDateOnSameDay: [currentTableDay lastDayOfMonth]])
+    {
+      nameOfMonth
+        = [self localizedNameForMonthOfYear: [currentTableDay monthOfYear]];
+      dayHeaderNumber = [NSString stringWithFormat: @"%d %@", dayOfMonth,
+                                  nameOfMonth];
+    }
+  else
+    dayHeaderNumber = [NSString stringWithFormat: @"%d", dayOfMonth];
+
+  return dayHeaderNumber;
+}
+
 - (NSString *) dayCellClasses
 {
   NSMutableString *classes;
   NSCalendarDate *selectedDate;
-  int dayOfWeek;
+  int dayOfWeek, numberOfWeeks;
 
   classes = [NSMutableString new];
   [classes autorelease];
-  [classes appendString: @"day"];
+
   dayOfWeek = [currentTableDay dayOfWeek];
+  numberOfWeeks = [currentTableColumn count];
+
+  [classes appendFormat: @"day weekOf%d week%dof%d day%d",
+           numberOfWeeks,
+           [currentTableColumn indexOfObject: currentTableDay],
+           numberOfWeeks, dayOfWeek];
   if (dayOfWeek == 0 || dayOfWeek == 6)
     [classes appendString: @" weekEndDay"];
   selectedDate = [self selectedDate];
@@ -285,36 +346,6 @@
   lastDayOfMonth = [[self selectedDate] lastDayOfMonth];
 
   return [[lastDayOfMonth mondayOfWeek] dateByAddingYears: 0 months: 0 days: 6];
-}
-
-- (NSArray *) rangesOf7Days
-{
-  NSCalendarDate *currentDate, *firstDayOfMonth, *lastDayOfMonth;
-  NSMutableArray *rangesOf7Days;
-  NSArray *currentRange;
-  int monthOfYear;
-
-  rangesOf7Days = [NSMutableArray new];
-  [rangesOf7Days autorelease];
-
-  firstDayOfMonth = [[self selectedDate] firstDayOfMonth];
-  lastDayOfMonth = [firstDayOfMonth lastDayOfMonth];
-  currentDate = [firstDayOfMonth mondayOfWeek];
-  currentRange = [self _rangeOf7DaysForWeekStartingOn: currentDate];
-  [rangesOf7Days addObject: currentRange];
-
-  currentDate = [[currentRange objectAtIndex: 6] dateByAddingYears: 0
-                                                 months: 0 days: 1];
-  monthOfYear = [currentDate monthOfYear];
-  while ([currentDate monthOfYear] == monthOfYear)
-    {
-      currentRange = [self _rangeOf7DaysForWeekStartingOn: currentDate];
-      [rangesOf7Days addObject: currentRange];
-      currentDate = [[currentRange objectAtIndex: 6] dateByAddingYears: 0
-                                                     months: 0 days: 1];
-    }
-
-  return rangesOf7Days;
 }
 
 - (NSArray *) aptsForCurrentDate

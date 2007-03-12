@@ -1,107 +1,135 @@
 <?xml version="1.0" standalone="yes"?>
-  <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
-    <a href="#"
-      class="leftNavigationArrow"
-      var:date="prevMonthQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-lft-sharp.gif"/></a>
-    <span class="monthsHeader">
-      <span class="month2"><a href="#"
-          var:date="monthBeforePrevMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthNameOfTwoMonthAgo"
-            /></a></span
-        ><span class="month1"><a href="#"
-          var:date="prevMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthNameOfOneMonthAgo"
-            /></a></span
-        ><span class="month0"><var:string value="monthNameOfThisMonth" /></span
-        ><span class="month1"><a href="#"
-          var:date="nextMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthNameOfNextMonth"
-            /></a></span
-        ><span class="month2"><a href="#"
-          var:date="monthAfterNextMonthQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="monthNameOfTheMonthAfterNextMonth"
-            /></a></span
-        ></span>
-    <a href="#"
-      class="rightNavigationArrow"
-      var:date="nextMonthQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-rit-sharp.gif"/></a>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  <a href="#"
+    class="leftNavigationArrow"
+    var:date="prevMonthQueryParameters.day"
+    onclick="return onCalendarGotoDay(this);"
+    ><img rsrc:src="arrow-lft-sharp.gif"/></a>
+  <span class="monthsHeader">
+    <span class="month2"><a href="#"
+        var:date="monthBeforePrevMonthQueryParameters.day"
+        onclick="return onCalendarGotoDay(this);"
+        ><var:string value="monthNameOfTwoMonthAgo"
+          /></a></span
+      ><span class="month1"><a href="#"
+        var:date="prevMonthQueryParameters.day"
+        onclick="return onCalendarGotoDay(this);"
+        ><var:string value="monthNameOfOneMonthAgo"
+          /></a></span
+      ><span class="month0"><var:string value="monthNameOfThisMonth" /></span
+      ><span class="month1"><a href="#"
+        var:date="nextMonthQueryParameters.day"
+        onclick="return onCalendarGotoDay(this);"
+        ><var:string value="monthNameOfNextMonth"
+          /></a></span
+      ><span class="month2"><a href="#"
+        var:date="monthAfterNextMonthQueryParameters.day"
+        onclick="return onCalendarGotoDay(this);"
+        ><var:string value="monthNameOfTheMonthAfterNextMonth"
+          /></a></span
+      ></span>
+  <a href="#"
+    class="rightNavigationArrow"
+    var:date="nextMonthQueryParameters.day"
+    onclick="return onCalendarGotoDay(this);"
+    ><img rsrc:src="arrow-rit-sharp.gif"/></a>
 
-    <div id="calendarContent">
-      <table class="monthOverview">
-        <tr>
-          <var:foreach list="daysToDisplay" item="currentTableDay"
-            ><td class="header"><var:string value="labelForCurrentDayToDisplay"
-                /></td></var:foreach>
-        </tr>
-
-        <var:if condition="hasHolidayInfo">
-          <tr>
-            <td class="hourOfDay" colspan="2">
-              <b><var:string value="holidayInfo.title" /></b>
-            </td>
-          </tr>
-        </var:if>
-
-<!--        <var:foreach list="allDayApts" item="appointment">
-          <tr>
-            <td class="hourOfDay">
-              <var:entity name="nbsp" />
-            </td>
-            <td class="day" width="90%">
-              <var:foreach list="allDayApts" item="appointment">
-                <var:component className="UIxCalInlineAptView"
+  <div id="calendarContent">
+    <div class="monthView">
+      <var:foreach list="headerDaysToDisplay" item="currentTableDay"
+        ><div var:class="headerDayCellClasses"
+          ><var:string value="labelForCurrentDayToDisplay"
+            /></div></var:foreach>
+      <div class="days"
+        ><var:foreach list="daysToDisplay" item="currentTableColumn">
+          <var:foreach list="currentTableColumn" item="currentTableDay">
+            <div var:class="dayCellClasses"
+              var:day="currentTableDay.shortDateString">
+              <div class="dayHeader"><var:string value="dayHeaderNumber"/></div>
+              <var:foreach
+                list="aptsForCurrentDate"
+              item="appointment">
+                <var:component className="UIxCalInlineMonthAptView"
                   appointment="appointment"
-                  formatter="aptFormatter"
+                  formatter="monthAptFormatter"
                   tooltipFormatter="aptTooltipFormatter"
                   url="appointmentViewURL"
                   const:style="dayoverview"
-                  queryDictionary="currentDateQueryParameters"
-                  referenceDate="selectedDate"
+                queryDictionary="currentDayQueryParameters"
+                  referenceDate="currentTableDay"
                   canAccess="canAccessApt"
-                  />
-              </var:foreach>
-            </td>
-          </tr>
-        </var:foreach> -->
-
-        <var:foreach list="rangesOf7Days" item="currentRangeOf7Days">
-          <tr>
-            <var:foreach list="currentRangeOf7Days" item="currentTableDay"
-              ><td var:class="dayCellClasses"
-                var:day="currentTableDay.shortDateString"
-                const:hour="0800"
-                ><div class="dayContent"><span class="dayCellLabel"
-                  ><var:string value="labelForCurrentDayCell" /></span
-                  ><br /><var:foreach
-                  list="aptsForCurrentDate"
-                  item="appointment"
-                  ><var:component className="UIxCalInlineAptView"
-                    appointment="appointment"
-                    formatter="monthAptFormatter"
-                    tooltipFormatter="aptTooltipFormatter"
-                    url="appointmentViewURL"
-                    const:style="dayoverview"
-                    queryDictionary="currentDayQueryParameters"
-                    referenceDate="currentTableDay"
-                    canAccess="canAccessApt"
-                    />
-                </var:foreach></div></td>
-            </var:foreach>
-          </tr>
+                  /></var:foreach>
+            </div>
+          </var:foreach>
         </var:foreach>
-      </table>
+      </div>
     </div>
-  </container>
+  </div>
+</container>
+
+    <!--      <table class="monthOverview">
+    <tr>
+  </tr>
+
+    <var:if condition="hasHolidayInfo">
+    <tr>
+    <td class="hourOfDay" colspan="2">
+    <b><var:string value="holidayInfo.title" /></b>
+  </td>
+  </tr>
+  </var:if> -->
+
+    <!--        <var:foreach list="allDayApts" item="appointment">
+    <tr>
+    <td class="hourOfDay">
+    <var:entity name="nbsp" />
+  </td>
+    <td class="day" width="90%">
+    <var:foreach list="allDayApts" item="appointment">
+    <var:component className="UIxCalInlineAptView"
+    appointment="appointment"
+    formatter="aptFormatter"
+    tooltipFormatter="aptTooltipFormatter"
+    url="appointmentViewURL"
+    const:style="dayoverview"
+    queryDictionary="currentDateQueryParameters"
+    referenceDate="selectedDate"
+    canAccess="canAccessApt"
+    />
+  </var:foreach>
+  </td>
+  </tr>
+  </var:foreach> -->
+
+    <!--        <var:foreach list="rangesOf7Days" item="currentRangeOf7Days">
+    <tr>
+    <var:foreach list="currentRangeOf7Days" item="currentTableDay"
+    ><td var:class="dayCellClasses"
+    var:day="currentTableDay.shortDateString"
+    const:hour="0800"
+    ><div class="dayContent"><span class="dayCellLabel"
+    ><var:string value="labelForCurrentDayCell" /></span
+    ><br /><var:foreach
+    list="aptsForCurrentDate"
+    item="appointment"
+    ><var:component className="UIxCalInlineAptView"
+    appointment="appointment"
+    formatter="monthAptFormatter"
+    tooltipFormatter="aptTooltipFormatter"
+    url="appointmentViewURL"
+    const:style="dayoverview"
+    queryDictionary="currentDayQueryParameters"
+    referenceDate="currentTableDay"
+    canAccess="canAccessApt"
+    />
+  </var:foreach></div></td>
+  </var:foreach>
+  </tr>
+  </var:foreach>
+  </table> -->

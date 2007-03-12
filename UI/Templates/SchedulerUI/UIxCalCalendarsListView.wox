@@ -11,10 +11,6 @@
       {
         background-color: <var:string value="currentContactSpanBG" /> !important;
       }
-      TABLE.monthOverview DIV[owner~='<var:string value="currentContactLogin" />'].appointment
-      {
-        background-color: <var:string value="currentContactAptBorder" /> !important;
-      }
       </var:foreach>
     </style>
     <var:component className="UIxContactSelector"
