@@ -563,30 +563,33 @@ DIV.monthView
 { position: absolute;
   left: .5em;
   top: .5em;
-  right: .5em;
-  bottom: .5em;
+  right: 1em;
+  bottom: 1em;
+  border: 0px;
+  margin: 0px;
   padding: 0px;
-  width: 98%;
-  height: 98%;
-  min-width: 60em;
+  min-width: 20em;
   min-height: 25em; }
 
 DIV.monthView > DIV,
 DIV.monthView > DIV.days > DIV
-{ position: absolute; }
+{ position: absolute;
+  padding: 0px;
+  margin: 0px; }
 
 DIV.monthView > DIV.headerDay
 { text-align: center;
-  border-left: 2px solid #397d94;
-  border-top: 2px solid #397d94;
+  padding-top: .5em;
+  border-left: 2px solid #397d94 !important;
+  border-top: 2px solid #397d94 !important;
   top: 0px;
   color: #397d94;
-  height: 2em;
+  height: 1.5em;
   font-weight: bold;
   background: #e7efef; }
 
 DIV.monthView DIV.dayOfToday
-{ border: 1px solid #397d94;
+{ border: 0px solid #397d94;
   background-color: #deebf7; }
 
 DIV.monthView DIV.weekEndDay
@@ -604,8 +607,7 @@ DIV.monthView DIV.dayHeader
   font-weight: bold; }
 
 DIV.monthView DIV.days
-{ position: absolute;
-  top: 2em;
+{ top: 2em;
   bottom: 0px;
   left: 0px;
   right: 0px; }
@@ -638,7 +640,8 @@ DIV.monthView DIV.week2of4
 { top: 50%; }
 
 DIV.monthView DIV.week3of4
-{ top: 75%; }
+{ top: 75%;
+  border-bottom: 2px solid #397d94 !important; }
 
 DIV.monthView DIV.week1of5
 { top: 20%; }
@@ -650,7 +653,8 @@ DIV.monthView DIV.week3of5
 { top: 60%; }
 
 DIV.monthView DIV.week4of5
-{ top: 80%; }
+{ top: 80%;
+  border-bottom: 2px solid #397d94 !important; }
 
 DIV.monthView DIV.week1of6
 { top: 16.666667%; }
@@ -664,8 +668,9 @@ DIV.monthView DIV.week3of6
 DIV.monthView DIV.week4of6
 { top: 66.666667%; }
 
-DIV.monthView DIV.week4of6
-{ top: 83.333333%; }
+DIV.monthView DIV.week5of6
+{ top: 83.333333%;
+  border-bottom: 2px solid #397d94 !important; }
 
 DIV.monthView DIV.week3
 { top: 45%; }
@@ -739,7 +744,10 @@ DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
 { left: 71.4285%; }
 
-DIV.monthView DIV.day0,
+DIV.monthView DIV.day0
+{ left: 85.7142%;
+  border-right: 2px solid #397d94; }
+
 DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
@@ -947,9 +955,10 @@ DIV.gradient > IMG
   width: 100%; }
 
 DIV.monthView DIV.appointment
-{ position: relative !important;
+{ position: relative;
   cursor: default;
   white-space: nowrap;
+  margin: 4px;
   padding: 1px;
   height: 1.5em; }
 
