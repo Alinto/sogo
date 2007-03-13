@@ -904,7 +904,7 @@ DIV[class~="appointment"]._selected > DIV.appointmentInside
 DIV.appointment > DIV.appointmentInside
 { position: absolute;
   overflow: hidden;
-  top: 2px;
+  top: 1px;
   bottom: 2px;
   left: 2px;
   right: 2px; }
@@ -923,22 +923,21 @@ DIV.shadow1
 DIV.shadow2
 { left: 1px;
   right: 1px;
-  top: 3px;
-  bottom: -2px;
-  -moz-opacity: 0.1;
-  -moz-border-radius: 3px; }
+  top: 1px;
+  bottom: -1px;
+  -moz-opacity: 0.1; }
 
 DIV.shadow3
 { left: 2px;
   right: 2px;
-  top: 4px;
+  top: 0px;
   bottom: 0px;
-  -moz-opacity: 0.4; }
+  -moz-opacity: 0.1; }
 
 DIV.shadow4
 { left: 3px;
   right: 3px;
-  top: 5px;
+  top: 3px;
   bottom: 1px;
   -moz-opacity: 0.4; }
 
