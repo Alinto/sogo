@@ -905,7 +905,7 @@ DIV.appointment > DIV.appointmentInside
 { position: absolute;
   overflow: hidden;
   top: 1px;
-  bottom: 2px;
+  bottom: 5px;
   left: 2px;
   right: 2px; }
 
@@ -917,28 +917,28 @@ DIV.shadow1
 { left: 0px;
   right: 0px;
   top: 2px;
-  bottom: 0px;
+  bottom: 3px;
   -moz-opacity: 0.1; }
 
 DIV.shadow2
 { left: 1px;
   right: 1px;
   top: 1px;
-  bottom: -1px;
+  bottom: 2px;
   -moz-opacity: 0.1; }
 
 DIV.shadow3
 { left: 2px;
   right: 2px;
   top: 0px;
-  bottom: 0px;
+  bottom: 3px;
   -moz-opacity: 0.1; }
 
 DIV.shadow4
 { left: 3px;
   right: 3px;
   top: 3px;
-  bottom: 1px;
+  bottom: 4px;
   -moz-opacity: 0.4; }
 
 DIV.gradient, DIV.text
@@ -957,7 +957,7 @@ DIV.monthView DIV.appointment
 { position: relative;
   cursor: default;
   white-space: nowrap;
-  margin: 4px;
+  margin: 2px;
   padding: 1px;
   height: 1.5em; }
 
