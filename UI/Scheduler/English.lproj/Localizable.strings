@@ -2,73 +2,72 @@
 
 /* Day */
 
-"Sunday"		= "Sunday";
-"Monday"		= "Monday";
-"Tuesday"		= "Tuesday";
-"Wednesday"		= "Wednesday";
-"Thursday"		= "Thursday";
-"Friday"		= "Friday";
-"Saturday"		= "Saturday";
+"Sunday" = "Sunday";
+"Monday" = "Monday";
+"Tuesday" = "Tuesday";
+"Wednesday" = "Wednesday";
+"Thursday" = "Thursday";
+"Friday" = "Friday";
+"Saturday" = "Saturday";
 
-"a2_Sunday"		= "Su";
-"a2_Monday"		= "Mo";
-"a2_Tuesday"		= "Tu";
-"a2_Wednesday"		= "We";
-"a2_Thursday"		= "Th";
-"a2_Friday"		= "Fr";
-"a2_Saturday"		= "Sa";
+"a2_Sunday" = "a2_Sunday";
+"a2_Monday" = "a2_Monday";
+"a2_Tuesday" = "a2_Tuesday";
+"a2_Wednesday" = "a2_Wednesday";
+"a2_Thursday" = "a2_Thursday";
+"a2_Friday" = "a2_Friday";
+"a2_Saturday" = "a2_Saturday";
 
-"dayLabelFormat"	= "%Y-%m-%d";
-"today"			= "today";
-
+"dayLabelFormat" = "dayLabelFormat";
+"today" = "today";
 
 /* Week */
 
-"Week"			= "Week";
-"this week"		= "this week";
+"Week" = "Week";
+"this week" = "this week";
 
+"Week %d" = "Week %d";
 
 /* Month */
 
-"this month"		= "this month";
+"this month" = "this month";
 
-"January"		= "January";
-"February"		= "February";
-"March"			= "March";
-"April"			= "April";
-"May"			= "May";
-"June"			= "June";
-"July"			= "July";
-"August"		= "August";
-"September"		= "September";
-"October"		= "October";
-"November"		= "November";
-"December"		= "December";
+"January" = "January";
+"February" = "February";
+"March" = "March";
+"April" = "April";
+"May" = "May";
+"June" = "June";
+"July" = "July";
+"August" = "August";
+"September" = "September";
+"October" = "October";
+"November" = "November";
+"December" = "December";
 
-"a3_January"		= "Jan";
-"a3_February"		= "Feb";
-"a3_March"		= "Mar";
-"a3_April"		= "Apr";
-"a3_May"		= "May";
-"a3_June"		= "Jun";
-"a3_July"		= "Jul";
-"a3_August"		= "Aug";
-"a3_September"		= "Sep";
-"a3_October"		= "Oct";
-"a3_November"		= "Nov";
-"a3_December"		= "Dec";
-
+"a3_January" = "a3_January";
+"a3_February" = "a3_February";
+"a3_March" = "a3_March";
+"a3_April" = "a3_April";
+"a3_May" = "a3_May";
+"a3_June" = "a3_June";
+"a3_July" = "a3_July";
+"a3_August" = "a3_August";
+"a3_September" = "a3_September";
+"a3_October" = "a3_October";
+"a3_November" = "a3_November";
+"a3_December" = "a3_December";
 
 /* Year */
 
-"this year"		= "this year";
+"this year" = "this year";
 
 
 /* Menu */
 
-"Calendars"		= "Calendars";
-"Calendar"		= "Calendar";
-"Contacts"		= "Contacts";
+"Calendars" = "Calendars";
+"Calendar" = "Calendar";
+"Contacts" = "Contacts";
 
 "New Calendar..." = "New Calendar...";
 "Delete Calendar" = "Delete Calendar";
@@ -80,180 +79,222 @@
 
 /* Misc */
 
-"OpenGroupware.org"	= "OpenGroupware.org";
-"Forbidden"		= "Forbidden";
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Forbidden";
 
-/* Button titles */
 
-"new"			= "new";
-"printview"		= "printview";
-"edit"			= "edit";
-"delete"		= "delete";
-"proposal"		= "proposal";
-"Save"			= "Save";
-"Cancel"		= "Cancel";
-"show_rejected_apts"    = "Show rejected appointments";
-"hide_rejected_apts"    = "Hide rejected appointments";
+/* Button Titles */
+
+"new" = "new";
+"printview" = "printview";
+"edit" = "edit";
+"delete" = "delete";
+"proposal" = "proposal";
+"Save and Close" = "Save and Close";
+"Invite Attendees" = "Invite Attendees";
+"Documents" = "Documents";
+"Cancel" = "Cancel";
+"show_rejected_apts" = "show_rejected_apts";
+"hide_rejected_apts" = "hide_rejected_apts";
+
 
 /* Schedule */
 
-"Schedule"		= "Appointment propositions";
-"No appointments found" = "You don't have any appointments in the near future.";
+"Schedule" = "Schedule";
+"No appointments found" = "No appointments found";
 "Meetings proposed by you" = "Meetings proposed by you";
 "Meetings proposed to you" = "Meetings proposed to you";
-"sched_startDateFormat" = "%d.%m. %H:%M";
-"action"		= "Action";
-"accept"		= "Accept";
-"decline"		= "Decline";
-"more attendees"     = "more attendees";
+"sched_startDateFormat" = "sched_startDateFormat";
+"action" = "action";
+"accept" = "accept";
+"decline" = "decline";
+"more attendees" = "more attendees";
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
 
 
 /* Appointments */
 
-"Appointment viewer"	= "Appointment Viewer";
-"Appointment editor"	= "Appointment Editor";
-"Appointment proposal"	= "Appointment Proposal";
-"Appointment on"	= "Appointment on";
-"From"   	     	= "From";
-"To"	        	= "To";
-"Due time"		= "Due time";
-"Start date"		= "Start date";
-"End date"		= "End date";
-"Due date"		= "Due date";
-"Earliest start time"	= "Earliest start time";
-"Latest end time"	= "Latest end time";
-"browse start date"	= "browse start date";
-"browse end date"	= "browse end date";
-"Title"			= "Title";
-"Name"			= "Name";
-"Email"			= "Email";
-"Status"		= "Status";
-"Location"		= "Location";
-"Priority"		= "Priority";
-"Privacy"		= "Privacy";
-"Cycle"			= "Cycle";
-"Cycle End"		= "End";
-"Categories"		= "Categories";
-"Classification"	= "Classification";
-"Duration"		= "Duration";
-"Attendees"		= "Attendees";
-"Resources"		= "Resources";
-"Organizer"		= "Organizer";
-"Description"		= "Description";
-"Start"                 = "Start";
-"End"                   = "End";
-"Category"              = "Category";
+"Appointment viewer" = "Appointment viewer";
+"Appointment editor" = "Appointment editor";
+"Appointment proposal" = "Appointment proposal";
+"Appointment on" = "Appointment on";
+"Start:" = "Start:";
+"Due Date:" = "Due Date:";
+"Title:" = "Title:";
+"Calendar:" = "Calendar:";
+"Name" = "Name";
+"Email" = "Email";
+"Status:" = "Status:";
+"% complete" = "% complete";
+"Location:" = "Location:";
+"Priority:" = "Priority:";
+"Privacy" = "Privacy";
+"Cycle" = "Cycle";
+"Cycle End" = "Cycle End";
+"Categories" = "Categories";
+"Classification" = "Classification";
+"Duration" = "Duration";
+"Attendees:" = "Attendees:";
+"Resources" = "Resources";
+"Organizer:" = "Organizer:";
+"Description:" = "Description:";
+"Document:" = "Document:";
+"Start:" = "Start:";
+"End:" = "End:";
+"Category:" = "Category:";
+"Repeat:" = "Repeat:";
+"Reminder:" = "Reminder:";
 
-"attributes"		= "Attributes";
-"attendees"		= "Attendees";
+"Target:" = "Target:";
+
+"attributes" = "attributes";
+"attendees" = "attendees";
 /* checkbox title */
-"is private"            = "is private";
+"is private" = "is private";
 /* classification */
-"Public"		= "Public";
-"Private"		= "Private";
+"Public" = "Public";
+"Private" = "Private";
 /* text used in overviews and tooltips */
-"empty title"		= "Empty title";
-"private appointment"	= "Private appointment";
+"empty title" = "empty title";
+"private appointment" = "private appointment";
 
-"Show Details" = "Show Details";
-"Hide Details" = "Hide Details";
+"Change..." = "Change...";
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION"	= "Not decided, yet";
-"partStat_ACCEPTED"	= "Accepted";
-"partStat_DECLINED"	= "Declined";
-"partStat_TENTATIVE"	= "Tentative";
-"partStat_DELEGATED"	= "Delegated";
-"partStat_OTHER"	= "???";
+"partStat_NEEDS-ACTION" = "partStat_NEEDS-ACTION";
+"partStat_ACCEPTED" = "partStat_ACCEPTED";
+"partStat_DECLINED" = "partStat_DECLINED";
+"partStat_TENTATIVE" = "partStat_TENTATIVE";
+"partStat_DELEGATED" = "partStat_DELEGATED";
+"partStat_OTHER" = "partStat_OTHER";
 
 /* Appointments (error messages) */
 
-"Conflicts found!"		= "One or more conflicts were found.";
-"Invalid iCal data!"		= "Invalid iCalendar data ...";
-"Could not create iCal data!"	= "Could not create iCalendar data ...";
+"Conflicts found!" = "Conflicts found!";
+"Invalid iCal data!" = "Invalid iCal data!";
+"Could not create iCal data!" = "Could not create iCal data!";
 
 
 /* Searching */
 
-"view_all" = "All Events";
-"view_today" = "Today's Events";
-"view_next7" = "Events in the Next 7 Days";
-"view_next14" = "Events in the Next 14 Days";
-"view_next31" = "Events in the Next 31 Days";
-"view_thismonth" = "Events in this Calendar Month";
-"view_future" = "All Future Events";
-"view_selectedday" = "Currently Selected Day";
+"view_all" = "view_all";
+"view_today" = "view_today";
+"view_next7" = "view_next7";
+"view_next14" = "view_next14";
+"view_next31" = "view_next31";
+"view_thismonth" = "view_thismonth";
+"view_future" = "view_future";
+"view_selectedday" = "view_selectedday";
 
 "View:" = "View:";
 "Title or Description" = "Title or Description";
 
-"Search"		= "Search";
-"Search attendees"	= "Search attendees";
-"Search resources"	= "Search resources";
-"Search appointments"	= "Search appointments";
-"Search in Anais"	= "Search in Anaïs";
+"Search" = "Search";
+"Search attendees" = "Search attendees";
+"Search resources" = "Search resources";
+"Search appointments" = "Search appointments";
+"Search in Anais" = "Search in Anais";
 
-"All Day" = "All Day";
+"All day Event" = "All day Event";
 "check for conflicts" = "check for conflicts";
 
 "Browse URL" = "Browse URL";
 
 /* calendar modes */
 
-"Overview"		= "Overview";
-"Chart"			= "Chart";
-"List"			= "List";
-"Columns"		= "Columns";
-
+"Overview" = "Overview";
+"Chart" = "Chart";
+"List" = "List";
+"Columns" = "Columns";
 
 /* Priorities */
 
-"prio_0"		= "Not specified";
-"prio_1"		= "High";
-"prio_2"		= "High";
-"prio_3"		= "High";
-"prio_4"		= "High";
-"prio_5"		= "Normal";
-"prio_6"		= "Low";
-"prio_7"		= "Low";
-"prio_8"		= "Low";
-"prio_9"		= "Low";
+"prio_0" = "prio_0";
+"prio_1" = "prio_1";
+"prio_2" = "prio_2";
+"prio_3" = "prio_3";
+"prio_4" = "prio_4";
+"prio_5" = "prio_5";
+"prio_6" = "prio_6";
+"prio_7" = "prio_7";
+"prio_8" = "prio_8";
+"prio_9" = "prio_9";
 
 /* access classes (privacy) */
-"privacy_PUBLIC" = "Public";
-"privacy_CONFIDENTIAL" = "Time and Date Only";
-"privacy_PRIVATE" = "Private";
+"privacy_PUBLIC" = "privacy_PUBLIC";
+"privacy_CONFIDENTIAL" = "privacy_CONFIDENTIAL";
+"privacy_PRIVATE" = "privacy_PRIVATE";
 
 /* status type */
-"status_" = "Not specified";
-"status_TENTATIVE" = "Tentative";
-"status_CONFIRMED" = "Confirmed";
-"status_CANCELLED" = "Cancelled";
+"status_" = "status_";
+"status_TENTATIVE" = "status_TENTATIVE";
+"status_CONFIRMED" = "status_CONFIRMED";
+"status_CANCELLED" = "status_CANCELLED";
 
 /* Cycles */
 
-"cycle_once"		= "once";
-"cycle_daily"		= "daily";
-"cycle_weekly"		= "weekly";
-"cycle_2weeks"		= "all 2 weeks";
-"cycle_4weeks"		= "all 4 weeks";
-"cycle_monthly"		= "monthly";
-"cycle_weekday"		= "weekday";
-"cycle_yearly"		= "yearly";
+"cycle_once" = "cycle_once";
+"cycle_daily" = "cycle_daily";
+"cycle_weekly" = "cycle_weekly";
+"cycle_2weeks" = "cycle_2weeks";
+"cycle_4weeks" = "cycle_4weeks";
+"cycle_monthly" = "cycle_monthly";
+"cycle_weekday" = "cycle_weekday";
+"cycle_yearly" = "cycle_yearly";
 
-"cycle_end_never"	= "never";
-"cycle_end_until"	= "on date";
+"cycle_end_never" = "cycle_end_never";
+"cycle_end_until" = "cycle_end_until";
 
 /* Appointment categories */
 
-"APPOINTMENT"		= "Appointment";
-"NOT IN OFFICE"		= "Outside";
-"MEETING"		= "Meeting";
-"HOLIDAY"		= "Holiday";
-"PHONE CALL"		= "Phone";
+"category_NONE" = "None";
+"category_ANNIVERSARY" = "Anniversary";
+"category_BIRTHDAY" = "Birthday";
+"category_BUSINESS" = "Business";
+"category_CALLS" = "Calls"; 
+"category_CLIENTS" = "Clients";
+"category_COMPETITION" = "Competition";
+"category_CUSTOMER" = "Customer";
+"category_FAVORITES" = "Favorites";
+"category_FOLLOW UP" = "Follow up";
+"category_GIFTS" = "Gifts";
+"category_HOLIDAYS" = "Holidays";
+"category_IDEAS" = "Ideas";
+"category_ISSUES" = "Issues";
+"category_MISCELLANEOUS" = "Miscellaneous";
+"category_PERSONAL" = "Personal";
+"category_PROJECTS" = "Projects";
+"category_PUBLIC HOLIDAY" = "Public Holiday";
+"category_STATUS" = "Status";
+"category_SUPPLIERS" = "Suppliers";
+"category_TRAVEL" = "Travel";
+"category_VACATION" = "Vacation";
+
+"repeat_NEVER" = "Does not repeat";
+"repeat_DAILY" = "Daily";
+"repeat_WEEKLY" = "Weekly";
+"repeat_BI-WEEKLY" = "Bi-weekly";
+"repeat_EVERY WEEKDAY" = "Every Weekday";
+"repeat_MONTHLY" = "Monthly";
+"repeat_YEARLY" = "Yearly";
+"repeat_CUSTOM" = "Custom...";
+
+"reminder_NONE" = "No reminder";
+"reminder_5_MINUTES_BEFORE" = "5 minutes before";
+"reminder_10_MINUTES_BEFORE" = "10 minutes before";
+"reminder_15_MINUTES_BEFORE" = "15 minutes before";
+"reminder_30_MINUTES_BEFORE" = "30 minutes before";
+"reminder_45_MINUTES_BEFORE" = "45 minutes before";
+"reminder_1_HOUR_BEFORE" = "1 hour before";
+"reminder_2_HOURS_BEFORE" = "2 hours before";
+"reminder_5_HOURS_BEFORE" = "5 hours before";
+"reminder_15_HOURS_BEFORE" = "15 hours before";
+"reminder_1_DAY_BEFORE" = "1 day before";
+"reminder_2_DAYS_BEFORE" = "2 days before";
+"reminder_1_WEEK_BEFORE" = "1 week before";
+"reminder_CUSTOM" = "Custom...";
 
 /* validation errors */
 
@@ -265,6 +306,11 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Tasks" = "Tasks";
 "Hide completed tasks" = "Hide completed tasks";
 
+/* tabs */
+"Task" = "Task";
+"Event" = "Event";
+"Recurrence" = "Recurrence";
+
 /* toolbar */
 "New Event" = "New Event";
 "New Task" = "New Task";
@@ -275,11 +321,19 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Week View" = "Week View";
 "Month View" = "Month View";
 
-"eventPartStatModificationError" = "Your participation status at the event could not be modified.";
+"eventPartStatModificationError" = "eventPartStatModificationError";
 
-/* confirmations */
-"appointmentDeleteConfirmation" = "Erasing this event will not be reversible.\\nDo you want to confirm anyway?";
-"taskDeleteConfirmation" = "Erasing this task will be nonreversible.\\nDo you want to confirm anyway?";
+/* menu */
+"New Event..." = "New Event...";
+"New Task..." = "New Task...";
+"Edit Selected Event..." = "Edit Selected Event...";
+"Delete Selected Event" = "Delete Selected Event";
+"Select All" = "Select All";
+"Workweek days only" = "Workweek days only";
+"Tasks in View" = "Tasks in View";
+
+"appointmentDeleteConfirmation" = "appointmentDeleteConfirmation";
+"taskDeleteConfirmation" = "taskDeleteConfirmation";
 
 /* Legend */
 "Required participant" = "Required participant";
@@ -302,5 +356,5 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Previous hour" = "Previous hour";
 "Next hour" = "Next hour";
 
-"closeThisWindowMessage" = "Thank you! You may now close this window.";
+"closeThisWindowMessage" = "closeThisWindowMessage";
 "Multicolumn Day View" = "Multicolumn Day View";
