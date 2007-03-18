@@ -107,6 +107,10 @@
           pageName    = "UIxCalMainView";
           actionName  = "checkRights";
         };
+        editAttendees = {
+          protectedBy = "View";
+          pageName    = "UIxAttendeesEditor";
+        };
         freeBusyTable = {
           protectedBy = "View";
           pageName    = "UIxFreeBusyUserSelectorTable";
