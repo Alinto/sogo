@@ -171,7 +171,7 @@
 - (WOResponse *) _responseForResults: (NSArray *) results
 {
   WOResponse *response;
-  NSString *email, *responseString;
+  NSString *email, *responseString, *uid;
   NSDictionary *result;
 
   response = [context response];
@@ -182,9 +182,11 @@
       if (!result)
         result = [results objectAtIndex: 0];
       email = [self _emailForResult: result];
+      uid = [result objectForKey: @"c_uid"];
+      if ([uid length] == 0)
+        uid = @"";
       responseString = [NSString stringWithFormat: @"%@:%@",
-                                 [result objectForKey: @"c_uid"],
-                                 email];
+                                 uid, email];
       [response setStatus: 200];
       [response setHeader: @"text/plain; charset=iso-8859-1"
                 forKey: @"Content-Type"];

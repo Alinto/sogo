@@ -322,8 +322,10 @@ function onEditorOkClick(event) {
    var inputs = table.getElementsByTagName("input");
    for (var i = 0; i < inputs.length - 2; i++) {
      var name = inputs[i].uid;
-     if (!(name && name.length > 0))
+     if (!(name && name.length > 0)) {
        name = extractEmailName(inputs[i].value);
+       log ("name: " + name);
+     }
      var email = extractEmailAddress(inputs[i].value);
      var pos = attendeesEmails.indexOf(email);
      if (pos == -1)
