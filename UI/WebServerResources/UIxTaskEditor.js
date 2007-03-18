@@ -1,25 +1,6 @@
-/*
-  Copyright (C) 2005 SKYRIX Software AG
- 
-  This file is part of SOGo.
- 
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
- 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
- 
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
 var contactSelectorAction = 'calendars-contacts';
+
+window.addEventListener("load", onTaskEditorLoad, false);
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
@@ -272,4 +253,45 @@ this.initTimeWidgets = function (widgets) {
   widgets['start']['date'].addEventListener("change", this.onAdjustDueTime, false);
   widgets['start']['hour'].addEventListener("change", this.onAdjustDueTime, false);
   widgets['start']['minute'].addEventListener("change", this.onAdjustDueTime, false);
+}
+
+function onStatusListChange(event) {
+   var value = $("statusList").value;
+   var statusTimeDate = $("statusTime_date");
+   var statusPercent = $("statusPercent");
+
+   if (value == "WONoSelectionString") {
+      statusTimeDate.disabled = true;
+      statusPercent.disabled = true;
+      statusPercent.value = "";
+   }
+   else if (value == "0") {
+      statusTimeDate.disabled = true;
+      statusPercent.disabled = false;
+   }
+   else if (value == "1") {
+      statusTimeDate.disabled = true;
+      statusPercent.disabled = false;
+   }
+   else if (value == "2") {
+      statusTimeDate.disabled = false;
+      statusPercent.disabled = false;
+      statusPercent.value = "100";
+   }
+   else if (value == "3") {
+      statusTimeDate.disabled = true;
+      statusPercent.disabled = true;
+   }
+   else {
+      statusTimeDate.disabled = true;
+   }
+}
+
+function initializeStatusLine() {
+   var statusList = $("statusList");
+   statusList.addEventListener("mouseup", onStatusListChange, false);
+}
+
+function onTaskEditorLoad() {
+   initializeStatusLine();
 }

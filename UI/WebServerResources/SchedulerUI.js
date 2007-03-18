@@ -37,7 +37,7 @@ function newEvent(sender, type) {
   if (params.length > 0)
     urlstr += "?" + params.join("&");
 
-  window.open(urlstr, "", "width=620,height=600,resizable=0");
+  window.open(urlstr, "", "width=463,height=600,resizable=0");
 
   return false; /* stop following the link */
 }
@@ -51,8 +51,7 @@ function _editEventId(id, owner) {
   var urlstr = urlBase + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=620,height=600,resizable=0,scrollbars=0,toolbar=0," +
-                        "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+                        "width=463,height=600,resizable=0");
   win.focus();
 }
 
@@ -542,24 +541,24 @@ function calendarDisplayCallback(http)
     log ("ajax fuckage");
 }
 
-function assignCalendar(name)
-{
-  var node = $(name);
-
-  node.calendar = new skycalendar(node);
-  node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
-  var dateFormat = node.getAttribute("dateFormat");
-  if (dateFormat)
-    node.calendar.setDateFormat(dateFormat);
+function assignCalendar(name) {
+   if (typeof(skycalendar) != "undefined") {
+      var node = $(name);
+      
+      node.calendar = new skycalendar(node);
+      node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
+      var dateFormat = node.getAttribute("dateFormat");
+      if (dateFormat)
+	 node.calendar.setDateFormat(dateFormat);
+   }
 }
 
-function popupCalendar(node)
-{
-  var nodeId = node.getAttribute("inputId");
-  var input = $(nodeId);
-  input.calendar.popup();
+function popupCalendar(node) {
+   var nodeId = node.getAttribute("inputId");
+   var input = $(nodeId);
+   input.calendar.popup();
 
-  return false;
+   return false;
 }
 
 function onAppointmentContextMenu(event, element)

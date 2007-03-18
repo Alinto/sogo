@@ -5,13 +5,7 @@ DIV.appointmentLabel
   text-align: right;
   width: 3em; }
 
-DIV#editorTabs
-{
-  width: 100%;
-  height: 38em;
-}
-
-DIV#editorTabs > DIV.tab
+DIV#eventView
 { overflow: hidden;
   padding: .5em; }
 
@@ -19,35 +13,15 @@ DIV.appointmentRightLabel
 { display: inline;
   vertical-align: middle; }
 
-UL.contactList
-{ 
-  display: block;
-  cursor: default;
-  list-style-type: none;
-  list-style-image: none;
-  margin: 0px;
-  padding: 0px;
-  background: #fff;
-  border: 1px solid #000;
-  width: 15em;
-  height: 5em;
-  overflow: auto;
-}
+#privacy-menu LI
+{ list-style-position: inside;
+  list-style-image: url("menu-nocheck.gif"); }
 
-UL.contactList LI IMG
-{ vertical-align: middle; }
+#privacy-menu LI._chosen
+{ list-style-image: url("menu-check.gif"); }
 
-UL.contactList LI
-{ width: 100%;
-  white-space: nowrap;
-  vertical-align: middle; }
-
-UL.contactList LI._selected
-{ background: #4b6983;
-  color: #fff; }
-
-DIV.contactSelector
-{ margin: 0px; }
+#privacy-menu LI._chosen:hover
+{ list-style-image: url("menu-check-hover.gif"); }
 
 LABEL, SPAN.checkBoxList
 { display: block;
@@ -58,7 +32,7 @@ LABEL, SPAN.checkBoxList
   width: 100%; }
 
 LABEL#commentArea
-{ height: 11.5em; }
+{ height: 15em; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
@@ -75,17 +49,20 @@ SPAN.checkBoxList SPAN.content LABEL
 SPAN.content
 { position: absolute;
   top: -.25em;
-  left: 8em;
+  left: 7em;
   right: 1em; }
 
 TEXTAREA
 { position: absolute;
   top: 0px;
-  left: 8em;
+  left: 7em;
   vertical-align: bottom;
-  height: 10em;
+  bottom: 1em;
   right: 1em;
-  padding-bottom: 1em; }
+  padding-bottom: 0em; }
+
+A#changeUrlButton
+{ margin-left: 1em; }
 
 A#detailsButton
 { position: absolute;
@@ -109,13 +86,16 @@ SPAN#categoriesCB INPUT
 { border: 2px solid #000;
   vertical-align: middle;
   -moz-border-top-colors: #000 #fff;
-  -moz-border-left-colors: #000 #fff; 
+  -moz-border-left-colors: #000 #fff;
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
 
 SPAN#categoriesCB LABEL
 { margin-left: 0px;
   margin-right: 1em; }
+
+SPAN#allDay > INPUT
+{ position: static; }
 
 SPAN.content > INPUT
 { position: absolute;
@@ -125,5 +105,12 @@ SPAN.content > INPUT
 
 INPUT#startDateCB,
 INPUT#dueDateCB,
+INPUT#statusPercent,
 LABEL#urlArea INPUT
 { position: static; }
+
+INPUT#statusPercent
+{ width: 2em; }
+
+INPUT#statusTime_date
+{ width: 5em; }

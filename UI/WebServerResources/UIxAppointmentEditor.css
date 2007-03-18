@@ -5,16 +5,7 @@ DIV.appointmentLabel
   text-align: right;
   width: 3em; }
 
-DIV#editorTabs
-{
-  position: absolute;
-  top: 4.5em;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-}
-
-DIV#editorTabs > DIV.tab
+DIV#eventView
 { overflow: hidden;
   padding: .5em; }
 
@@ -22,9 +13,18 @@ DIV.appointmentRightLabel
 { display: inline;
   vertical-align: middle; }
 
+#privacy-menu LI
+{ list-style-position: inside;
+  list-style-image: url("menu-nocheck.gif"); }
+
+#privacy-menu LI._chosen
+{ list-style-image: url("menu-check.gif"); }
+
+#privacy-menu LI._chosen:hover
+{ list-style-image: url("menu-check-hover.gif"); }
+
 UL.contactList
-{ 
-  display: block;
+{ display: block;
   cursor: default;
   list-style-type: none;
   list-style-image: none;
@@ -34,8 +34,7 @@ UL.contactList
   border: 1px solid #000;
   width: 15em;
   height: 5em;
-  overflow: auto;
-}
+  overflow: auto; }
 
 UL.contactList LI IMG
 { vertical-align: middle; }
@@ -61,7 +60,7 @@ LABEL, SPAN.checkBoxList
   width: 100%; }
 
 LABEL#commentArea
-{ height: 11.5em; }
+{ height: 15em; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
@@ -88,7 +87,10 @@ TEXTAREA
   vertical-align: bottom;
   bottom: 1em;
   right: 1em;
-  padding-bottom: 1em; }
+  padding-bottom: 0em; }
+
+A#changeUrlButton
+{ margin-left: 1em; }
 
 A#detailsButton
 { position: absolute;
@@ -112,13 +114,16 @@ SPAN#categoriesCB INPUT
 { border: 2px solid #000;
   vertical-align: middle;
   -moz-border-top-colors: #000 #fff;
-  -moz-border-left-colors: #000 #fff; 
+  -moz-border-left-colors: #000 #fff;
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
 
 SPAN#categoriesCB LABEL
 { margin-left: 0px;
   margin-right: 1em; }
+
+SPAN#allDay > INPUT
+{ position: static; }
 
 SPAN.content > INPUT
 { position: absolute;
@@ -128,48 +133,3 @@ SPAN.content > INPUT
 
 LABEL#urlArea INPUT
 { position: static; }
-
-DIV.freeBusyView
-{ height: 22em;
-  overflow: auto; }
-
-DIV#freeBusyFooter
-{ position: absolute;
-  left: .5em;
-  right: .5em;
-  height: 6em;
-  line-height: 2em;
-  text-align: right;
-  bottom: 0px; }
-
-DIV#freeBusyButtons
-{ float: left;
-  text-align: center; }
-
-DIV#freeBusyButtons A.button
-{ width: 5em; }
-
-DIV#freeBusyReplicas LABEL
-{ line-height: 1.5em; }
-
-DIV.legend UL
-{ cursor: default;
-  float: left;
-  width: 30%;
-  margin: 0px;
-  padding: 0px;
-  line-height: 1.5em;
-  list-style-type: none;
-  list-style-image: none; }
-
-DIV.legend UL LI
-{ white-space: nowrap;
-  margin: 0px;
-  padding: 0px; }
-
-DIV.legend UL IMG
-{ margin-right: .5em; }
-
-DIV.legend UL LI SPAN.colorBox
-{ float: left;
-  margin-right: .5em; }

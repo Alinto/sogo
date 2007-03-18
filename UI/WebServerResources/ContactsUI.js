@@ -770,7 +770,9 @@ function initializeMenus() {
 
 var initContacts = {
   handleEvent: function (event) {
-    configureAbToolbar();
+    if (!document.body.hasClassName("popup")) {
+      configureAbToolbar();
+    }
     configureContactFolders();
 //     initDnd();
   }

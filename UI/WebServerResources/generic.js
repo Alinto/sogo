@@ -128,11 +128,13 @@ function extractEmailAddress(mailTo) {
 function extractEmailName(mailTo) {
   var emailName = "";
 
-  var emailNamere = /(\w[\w\ _-]+)\ (&lt;|<)/;
+  var emailNamere = /(.+)\ </;
   if (emailNamere.test(mailTo)) {
     emailNamere.exec(mailTo);
     emailName = RegExp.$1;
   }
+
+  return emailName;
 }
 
 function sanitizeMailTo(dirtyMailTo) {
@@ -743,6 +745,33 @@ function initCriteria() {
   }
 }
 
+/* toolbar buttons */
+function popupToolbarMenu(event, menuId) {
+   var toolbar = $("toolbar");
+   var node = event.target;
+   if (node.tagName != 'A')
+      node = node.getParentWithTagName("a");
+   node = node.childNodesWithTag("span")[0];
+
+   if (event.button == 0) {
+      event.cancelBubble = true;
+      event.returnValue = false;
+      
+      if (document.currentPopupMenu)
+	 hideMenu(event, document.currentPopupMenu);
+      
+      var popup = document.getElementById(menuId);
+      var top = node.offsetTop + node.offsetHeight - 2;
+      popup.style.top = top + "px";
+      popup.style.left = node.cascadeLeftOffset() + "px";
+      popup.style.visibility = "visible";
+      
+      bodyOnClick = "" + document.body.getAttribute("onclick");
+      document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
+      document.currentPopupMenu = popup;
+   }
+}
+
 /* contact selector */
 
 function onContactAdd(node)
@@ -1023,4 +1052,8 @@ function initializeMenus() {
 
 function onHeaderClick(event) {
   window.alert("generic headerClick");
+}
+
+function parent$(element) {
+   return window.opener.document.getElementById(element);
 }
