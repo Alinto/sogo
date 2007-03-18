@@ -35,11 +35,13 @@
 {
   iCalCalendar *calendar;
   NSString *calContent;
+  BOOL isNew;
 }
 
 - (NSString *) componentTag;
-- (iCalCalendar *) calendar;
-- (iCalRepeatableEntityObject *) component;
+- (iCalCalendar *) calendar: (BOOL) create;
+- (iCalRepeatableEntityObject *) component: (BOOL) create;
+- (BOOL) isNew;
 
 - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 - (NSException *) primaryDelete;
@@ -52,6 +54,10 @@
                         forOldObject: (iCalRepeatableEntityObject *) _oldObject
                         andNewObject: (iCalRepeatableEntityObject *) _newObject
                          toAttendees: (NSArray *) _attendees;
+
+- (BOOL) isOrganizer: (NSString *) email
+             orOwner: (NSString *) login;
+- (BOOL) isParticipant: (NSString *) email;
 
 @end
 

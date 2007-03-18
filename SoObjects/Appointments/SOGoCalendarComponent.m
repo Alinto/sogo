@@ -69,6 +69,7 @@ static BOOL sendEMailNotifications = NO;
     {
       calendar = nil;
       calContent = nil;
+      isNew = NO;
     }
 
   return self;
@@ -158,28 +159,47 @@ static BOOL sendEMailNotifications = NO;
   return result;
 }
 
-- (iCalCalendar *) calendar
+- (iCalCalendar *) calendar: (BOOL) create
 {
-  NSString *iCalString;
+  NSString *iCalString, *componentTag;
+  CardGroup *newComponent;
 
   if (!calendar)
     {
       iCalString = [self contentAsString];
-      if (iCalString)
+      if ([iCalString length] > 0)
+        calendar = [iCalCalendar parseSingleFromSource: iCalString];
+      else
         {
-          calendar = [iCalCalendar parseSingleFromSource: iCalString];
-          [calendar retain];
+          if (create)
+            {
+              calendar = [iCalCalendar groupWithTag: @"vcalendar"];
+              [calendar setVersion: @"2.0"];
+              [calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
+              componentTag = [[self componentTag] uppercaseString];
+              newComponent = [[calendar classForTag: componentTag]
+                               groupWithTag: componentTag];
+              [calendar addChild: newComponent];
+              isNew = YES;
+            }
         }
+      if (calendar)
+        [calendar retain];
     }
 
   return calendar;
 }
 
-- (iCalRepeatableEntityObject *) component
+- (iCalRepeatableEntityObject *) component: (BOOL) create
 {
   return (iCalRepeatableEntityObject *)
-    [[self calendar]
+    [[self calendar: create]
       firstChildWithTag: [self componentTag]];
+}
+
+- (BOOL) isNew
+{
+  return isNew;
 }
 
 /* raw saving */
@@ -376,7 +396,7 @@ static BOOL sendEMailNotifications = NO;
   um = [AgenorUserManager sharedUserManager];
   email = [um getEmailForUID: login];
 
-  component = [self component];
+  component = [self component: NO];
   if (component)
     {
       if ([component isOrganizer: email])
@@ -395,6 +415,38 @@ static BOOL sendEMailNotifications = NO;
     }
 
   return sogoRoles;
+}
+
+- (BOOL) isOrganizer: (NSString *) email
+             orOwner: (NSString *) login
+{
+  BOOL isOrganizerOrOwner;
+  iCalRepeatableEntityObject *component;
+
+  component = [self component: NO];
+  if (component)
+    isOrganizerOrOwner
+      = ([component isOrganizer: email]
+         || [[container ownerInContext: nil] isEqualToString: login]);
+  else
+    isOrganizerOrOwner
+      = [[container ownerInContext: nil] isEqualToString: login];
+
+  return isOrganizerOrOwner;
+}
+
+- (BOOL) isParticipant: (NSString *) email
+{
+  BOOL isParticipant;
+  iCalRepeatableEntityObject *component;
+
+  component = [self component: NO];
+  if (component)
+    isParticipant = [component isParticipant: email];
+  else
+    isParticipant = NO;
+
+  return isParticipant;
 }
 
 @end

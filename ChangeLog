@@ -1,3 +1,13 @@
+2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -isOrganizer:emailorOwner:login]): new
+	method.
+	([SOGoCalendarComponent -isParticipant:email]): new method.
+	([SOGoCalendarComponent -calendar:create]): takes one parameter
+	"create" which is a boolean indicating whether we want to create
+	the calendar if it does not exist.
+
 2007-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m: changed view to use divs instead
