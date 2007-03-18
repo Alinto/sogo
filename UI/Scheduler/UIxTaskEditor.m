@@ -429,4 +429,25 @@
     }
 }
 
+- (id) acceptAction
+{
+  return [self acceptOrDeclineAction:YES];
+}
+
+- (id) declineAction
+{
+  return [self acceptOrDeclineAction:NO];
+}
+
+// TODO: add tentatively
+
+- (id) acceptOrDeclineAction: (BOOL) _accept
+{
+  [[self clientObject] changeParticipationStatus:
+                         _accept ? @"ACCEPTED" : @"DECLINED"
+                       inContext: [self context]];
+
+  return self;
+}
+
 @end

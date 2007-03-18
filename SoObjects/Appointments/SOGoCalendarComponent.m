@@ -422,12 +422,13 @@ static BOOL sendEMailNotifications = NO;
 {
   BOOL isOrganizerOrOwner;
   iCalRepeatableEntityObject *component;
+  NSString *organizerEmail;
 
   component = [self component: NO];
-  if (component)
+  organizerEmail = [[component organizer] email];
+  if (component && [organizerEmail length] > 0)
     isOrganizerOrOwner
-      = ([component isOrganizer: email]
-         || [[container ownerInContext: nil] isEqualToString: login]);
+      = ([organizerEmail caseInsensitiveCompare: email] == NSOrderedSame);
   else
     isOrganizerOrOwner
       = [[container ownerInContext: nil] isEqualToString: login];
