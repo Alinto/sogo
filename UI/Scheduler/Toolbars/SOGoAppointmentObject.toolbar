@@ -1,7 +1,19 @@
 ( /* the toolbar groups -*-cperl-*- */
   ( { link = "#";
-      isSafe = NO;
-      label = "Save";
-      onclick = "return saveEvent(this);";
-      image = "tb-compose-save-flat-24x24.png"; } )
+      label = "Save and Close";
+      onclick = "return saveEvent();";
+      image = "tb-compose-save-flat-24x24.png"; },
+    { link = "#";
+      label = "Invite Attendees";
+      onclick = "return onPopupAttendeesWindow();";
+      image = "tb-compose-contacts-flat-24x24.png"; },
+    { link = "#";
+      hasMenu = YES;
+      label = "Privacy";
+      onclick = "return onSelectPrivacy(event);";
+      image = "tb-compose-security-flat-24x24.png"; },
+    { link = "#";
+      label = "Documents";
+      onclick = "return onPopupUrlWindow();";
+      image = "tb-compose-attach-flat-24x24.png"; } )
 )
