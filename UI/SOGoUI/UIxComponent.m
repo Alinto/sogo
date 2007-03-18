@@ -269,7 +269,7 @@ static BOOL uixDebugEnabled = NO;
     uri = [uri substringToIndex:r.location];
     
   /* next: strip trailing slash */
-    
+
   if ([uri hasSuffix: @"/"])
     uri = [uri substringToIndex: ([uri length] - 1)];
   r = [uri rangeOfString:@"/" options: NSBackwardsSearch];
