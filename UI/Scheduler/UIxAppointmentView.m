@@ -167,7 +167,7 @@
   if (!appointment)
     {
       clientObject = [self clientObject];
-      appointment = (iCalEvent *) [clientObject component];
+      appointment = (iCalEvent *) [clientObject component: NO];
       [appointment retain];
     }
 

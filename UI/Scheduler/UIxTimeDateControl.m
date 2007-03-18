@@ -70,6 +70,7 @@
 }
 
 - (void)setDate:(NSCalendarDate *)_date {
+  NSLog (@"^^^^^^ %@: setDate: %@", self, _date);
   int minuteValue;
   if (!_date)
     _date = [NSCalendarDate date];
@@ -95,8 +96,10 @@
 }
 
 - (void)setHour:(id)_hour {
+  NSLog (@"---------------- setHour:");
   ASSIGN(hour, _hour);
 }
+
 - (id)hour {
   return hour;
 }
@@ -134,6 +137,7 @@
 
 - (void) setDayStartHour: (unsigned int) aStartHour
 {
+  NSLog (@"******************** setDayStartHour...");
   startHour = aStartHour;
 }
 
@@ -248,6 +252,7 @@
   NSCalendarDate *d;
   unsigned _year, _month, _day, _hour, _minute, _second;
 
+  NSLog (@"******************** %@: take values...", self);
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
 

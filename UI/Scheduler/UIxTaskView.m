@@ -167,7 +167,7 @@
   if (!task)
     {
       clientObject = [self clientObject];
-      task = (iCalToDo *) [clientObject component];
+      task = (iCalToDo *) [clientObject component: NO];
       [task retain];
     }
 
