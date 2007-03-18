@@ -30,6 +30,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
 					\
+	UIxAttendeesEditor.m		\
 	UIxComponentEditor.m		\
 	UIxFreeBusyUserSelector.m	\
 	UIxFreeBusyUserSelectorTable.m	\
@@ -59,7 +60,8 @@ SchedulerUI_RESOURCE_FILES += \
 	Toolbars/SOGoAppointmentObject.toolbar \
 	Toolbars/SOGoAppointmentObjectAccept.toolbar \
 	Toolbars/SOGoAppointmentObjectDecline.toolbar \
-	Toolbars/SOGoAppointmentObjectAcceptOrDecline.toolbar
+	Toolbars/SOGoAppointmentObjectAcceptOrDecline.toolbar \
+	Toolbars/SOGoTaskObject.toolbar
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\
