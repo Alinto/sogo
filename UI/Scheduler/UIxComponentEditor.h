@@ -37,33 +37,36 @@
 
 @interface UIxComponentEditor : UIxComponent
 {
-  NSString *iCalString;
-  NSString *errorText;
+  iCalRepeatableEntityObject *component;
   id item;
+
+  NSString *saveURL;
   
   /* individual values */
-  NSCalendarDate *startDate;
   NSCalendarDate *cycleUntilDate;
   NSString *title;
   NSString *location;
   NSString *comment;
   NSString *url;
   iCalPerson *organizer;
-  NSArray *participants;     /* array of iCalPerson's */
-  NSArray *resources;        /* array of iCalPerson's */
   NSString *priority;
   NSString *privacy;
   NSString *status;
   NSArray *categories;
-  BOOL checkForConflicts; /* default: NO */
   NSDictionary *cycle;
   NSString *cycleEnd;
   NSString *componentOwner;
 
-  BOOL componentLoaded;
+  NSString *attendeesNames;
+  NSString *attendeesEmails;
 }
 
-- (NSArray *) categoryItems;
+- (void) setComponent: (iCalRepeatableEntityObject *) newComponent;
+
+- (void) setSaveURL: (NSString *) newSaveURL;
+- (NSString *) saveURL;
+
+- (NSArray *) categoryList;
 - (void) setCategories: (NSArray *) _categories;
 - (NSArray *) categories;
 - (NSString *) itemCategoryText;
@@ -87,18 +90,6 @@
 - (id) item;
 - (NSString *) itemPriorityText;
 
-- (void) setErrorText: (NSString *) _txt;
-- (NSString *) errorText;
-- (BOOL) hasErrorText;
-
-- (void) setICalString: (NSString *) _s;
-- (NSString *) iCalString;
-
-- (NSCalendarDate *) newStartDate;
-
-- (void) setStartDate: (NSCalendarDate *) _date;
-- (NSCalendarDate *) startDate;
-
 - (void) setTitle: (NSString *) _value;
 - (NSString *) title;
 
@@ -111,14 +102,11 @@
 - (void) setUrl: (NSString *) _url;
 - (NSString *) url;
 
-- (void) setParticipants: (NSArray *) _parts;
-- (NSArray *) participants;
+- (void) setAttendeesNames: (NSString *) newAttendeesNames;
+- (NSString *) attendeesNames;
 
-- (void) setResources: (NSArray *) _res;
-- (NSArray *) resources;
-
-- (void) setCheckForConflicts: (BOOL) _checkForConflicts;
-- (BOOL) checkForConflicts;
+- (void) setAttendeesEmails: (NSString *) newAttendeesEmails;
+- (NSString *) attendeesEmails;
 
 - (NSArray *) cycles;
 - (void) setCycle: (NSDictionary *) _cycle;
@@ -150,17 +138,12 @@
 - (BOOL) isWriteableClientObject;
 - (NSException *) validateObjectForStatusChange;
 
-/* subclasses */
-- (void) loadValuesFromComponent: (iCalRepeatableEntityObject *) component;
-
-- (NSString *) iCalStringTemplate;
 - (NSString *) iCalParticipantsAndResourcesStringFromQueryParameters;
 - (NSString *) iCalParticipantsStringFromQueryParameters;
 - (NSString *) iCalResourcesStringFromQueryParameters;
 - (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
                                      format: (NSString *) _format;
 - (NSString *) iCalOrganizerString;
-- (NSString *) toolbar;
 
 @end
 

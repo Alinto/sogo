@@ -1,6 +1,6 @@
 /* UIxTaskEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,59 +20,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXTASKEDITOR_H
-#define UIXTASKEDITOR_H
+#ifndef UIXAPPOINTMENTEDITOR_H
+#define UIXAPPOINTMENTEDITOR_H
 
-#import "UIxComponentEditor.h"
+#import <SOGoUI/UIxComponent.h>
 
-@class NSString;
-@class iCalPerson;
-@class iCalRecurrenceRule;
 @class iCalToDo;
+@class NSString;
 
-@interface UIxTaskEditor : UIxComponentEditor
+@interface UIxTaskEditor : UIxComponent
 {
-  NSCalendarDate *dueDate;
+  iCalToDo *todo;
+  NSCalendarDate *taskStartDate;
+  NSCalendarDate *taskDueDate;
+  NSCalendarDate *statusDate;
+  NSString *status;
+  NSString *statusPercent;
   BOOL hasStartDate;
   BOOL hasDueDate;
-  BOOL newTask;
+  NSString *item;
 }
 
+/* template values */
+- (NSString *) saveURL;
+- (iCalToDo *) todo;
+
+/* icalendar values */
 - (void) setTaskStartDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) taskStartDate;
 
 - (void) setTaskDueDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) taskDueDate;
 
-/* iCal */
-
-- (NSString *) iCalStringTemplate;
-
-/* new */
-
-- (id) newAction;
-
-/* save */
-
-- (void) loadValuesFromTask: (iCalToDo *) _task;
-- (void) saveValuesIntoTask: (iCalToDo *) _task;
-- (iCalToDo *) taskFromString: (NSString *) _iCalString;
-
-/* conflict management */
-
-- (BOOL) containsConflict: (id) _task;
-- (id <WOActionResults>) defaultAction;
-- (id <WOActionResults>) saveAction;
-- (id) changeStatusAction;
-- (id) acceptAction;
-- (id) declineAction;
-
-- (NSString *) saveUrl;
-
-// TODO: add tentatively
-
-- (id) acceptOrDeclineAction: (BOOL) _accept;
+- (NSString *) repeat;
+- (void) setRepeat: (NSString *) newRepeat;
 
 @end
 
-#endif /* UIXTASKEDITOR_H */
+#endif /* UIXAPPOINTMENTEDITOR_H */

@@ -1,5 +1,14 @@
 2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m: no longer a superclass for
+	the task and appointment editors. Now a container component
+	handling the common elements of tasks and events.
+
+	* UI/Scheduler/UIxTaskEditor.m: same as below.
+
+	* UI/Scheduler/UIxAppointmentEditor.m: rewrote template. No longer
+	a subclass of UIxComponentEditor but a subcomponent of it.
+
 	* UI/Common/UIxToolbar.m ([UIxToolbar -toolbarConfig]): the
 	toolbar can have the special value "none" to indicate there is
 	none attached to the window.

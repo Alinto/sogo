@@ -1,503 +1,432 @@
-/*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+/* UIxTaskEditor.m - this file is part of SOGo
+ *
+ * Copyright (C) 2007 Inverse groupe conseil
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of OpenGroupware.org.
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
+#import <NGCards/iCalToDo.h>
+#import <NGCards/iCalPerson.h>
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
+#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoContentObject.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoTaskObject.h>
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
-#import <SOGo/NSCalendarDate+SOGo.h>
-
+#import "UIxComponentEditor.h"
 #import "UIxTaskEditor.h"
-
-/* TODO: CLEAN UP */
-
-#import "common.h"
-#import <NGCards/NGCards.h>
-#import <NGExtensions/NGCalendarDateRange.h>
-#import <SOGoUI/SOGoDateFormatter.h>
-#import <SOGo/AgenorUserManager.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoTaskObject.h>
-#import "UIxComponent+Agenor.h"
 
 @implementation UIxTaskEditor
 
-- (void) dealloc
+- (id) init
 {
-  [dueDate release];
-  [super dealloc];
-}
-
-- (void) setTaskStartDate: (NSCalendarDate *) _date
-{
-  [self setStartDate: _date];
-}
-
-- (NSCalendarDate *) taskStartDate
-{
-  return [self startDate];
-}
-
-- (void) setTaskDueDate: (NSCalendarDate *) _date
-{
-  ASSIGN(dueDate, _date);
-}
-
-- (NSCalendarDate *) taskDueDate
-{
-  return dueDate;
-}
-
-/* iCal */
-
-- (NSString *) iCalStringTemplate
-{
-  static NSString *iCalStringTemplate = \
-    @"BEGIN:VCALENDAR\r\n"
-    @"METHOD:REQUEST\r\n"
-    @"PRODID://Inverse groupe conseil/SOGo 0.9\r\n"
-    @"VERSION:2.0\r\n"
-    @"BEGIN:VTODO\r\n"
-    @"UID:%@\r\n"
-    @"CLASS:PUBLIC\r\n"
-    @"STATUS:NEEDS-ACTION\r\n" /* confirmed by default */
-    @"PERCENT-COMPLETE:0\r\n"
-    @"DTSTART:%@Z\r\n"
-    @"DUE:%@Z\r\n"
-    @"DTSTAMP:%@Z\r\n"
-    @"SEQUENCE:1\r\n"
-    @"PRIORITY:5\r\n"
-    @"%@"                   /* organizer */
-    @"%@"                   /* participants and resources */
-    @"END:VTODO\r\n"
-    @"END:VCALENDAR";
-
-  NSCalendarDate *stamp, *lStartDate, *lDueDate;
-  NSString *template, *s;
-  NSTimeZone *utc;
-  unsigned minutes;
-
-  s = [self queryParameterForKey:@"dur"];
-  if ([s length] > 0)
-    minutes = [s intValue];
-  else
-    minutes = 60;
-
-  utc = [NSTimeZone timeZoneWithName: @"GMT"];
-  lStartDate = [self newStartDate];
-  [lStartDate setTimeZone: utc];
-  lDueDate = [lStartDate dateByAddingYears: 0 months: 0 days: 0
-                         hours: 0 minutes: minutes seconds: 0];
-  stamp = [NSCalendarDate calendarDate];
-  [stamp setTimeZone: utc];
-  
-  s = [self iCalParticipantsAndResourcesStringFromQueryParameters];
-  template   = [NSString stringWithFormat:iCalStringTemplate,
-                         [[self clientObject] nameInContainer],
-                         [lStartDate iCalFormattedDateTimeString],
-                         [lDueDate iCalFormattedDateTimeString],
-                         [stamp iCalFormattedDateTimeString],
-                         [self iCalOrganizerString],
-                         s];
-  return template;
-}
-
-/* new */
-
-- (id) newAction
-{
-  /*
-    This method creates a unique ID and redirects to the "edit" method on the
-    new ID.
-    It is actually a folder method and should be defined on the folder.
-    
-    Note: 'clientObject' is the SOGoAppointmentFolder!
-          Update: remember that there are group folders as well.
-  */
-  NSString *uri, *objectId, *method, *ps;
-
-  objectId = [NSClassFromString(@"SOGoAppointmentFolder")
-			       globallyUniqueObjectId];
-  if ([objectId length] == 0) {
-    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
-			reason:@"could not create a unique ID"];
-  }
-
-  method = [NSString stringWithFormat:@"Calendar/%@/editAsTask", objectId];
-  method = [[self userFolderPath] stringByAppendingPathComponent:method];
-
-  /* check if participants have already been provided */
-  ps     = [self queryParameterForKey:@"ps"];
-//   if (ps) {
-//     [self setQueryParameter:ps forKey:@"ps"];
-//   }
- if (!ps
-     && [[self clientObject] respondsToSelector:@selector(calendarUIDs)]) {
-    AgenorUserManager *um;
-    NSArray *uids;
-    NSMutableArray *emails;
-    unsigned i, count;
-
-    /* add all current calendarUIDs as default participants */
-
-    um     = [AgenorUserManager sharedUserManager];
-    uids   = [[self clientObject] calendarUIDs];
-    count  = [uids count];
-    emails = [NSMutableArray arrayWithCapacity:count];
-    
-    for (i = 0; i < count; i++) {
-      NSString *email;
-      
-      email = [um getEmailForUID:[uids objectAtIndex:i]];
-      if (email)
-        [emails addObject:email];
-    }
-    ps = [emails componentsJoinedByString:@","];
-    [self setQueryParameter:ps forKey:@"ps"];
-  }
-  uri = [self completeHrefForMethod:method];
-  return [self redirectToLocation:uri];
-}
-
-/* save */
-
-- (void) loadValuesFromTask: (iCalToDo *) _task
-{
-  NSTimeZone *uTZ;
-
-  [self loadValuesFromComponent: _task];
-
-  uTZ = [[self clientObject] userTimeZone];
-  dueDate = [_task due];
-//   if (!dueDate)
-//     dueDate = [[self startDate] dateByAddingYears: 0 months: 0 days: 0
-//                                 hours: 1 minutes: 0 seconds: 0];
-  if (dueDate)
+  if ((self = [super init]))
     {
-      [dueDate setTimeZone: uTZ];
-      [dueDate retain];
+      taskStartDate = nil;
+      taskDueDate = nil;
+      statusDate = nil;
+      hasStartDate = NO;
+      hasDueDate = NO;
+      status = nil;
+      statusPercent = nil;
+      item = nil;
+      todo = nil;
     }
-}
-
-- (void) saveValuesIntoTask: (iCalToDo *) _task
-{
-  /* merge in form values */
-  NSArray *attendees, *lResources;
-  iCalRecurrenceRule *rrule;
-  NSCalendarDate *dateTime;
-
-  if (hasStartDate)
-    dateTime = [self taskStartDate];
-  else
-    dateTime = nil;
-  [_task setStartDate: dateTime];
-  if (hasDueDate)
-    dateTime = [self taskDueDate];
-  else
-    dateTime = nil;
-  [_task setDue: dateTime];
-
-  [_task setSummary: [self title]];
-  [_task setUrl: [self url]];
-  [_task setLocation: [self location]];
-  [_task setComment: [self comment]];
-  [_task setPriority:[self priority]];
-  [_task setAccessClass: [self privacy]];
-  [_task setStatus: [self status]];
-
-//   [_task setCategories: [[self categories] componentsJoinedByString: @","]];
-  
-#if 0
-  /*
-    Note: bad, bad, bad!
-    Organizer is no form value, thus we MUST NOT change it
-  */
-  [_task setOrganizer:organizer];
-#endif
-  attendees  = [self participants];
-  lResources = [self resources];
-  if ([lResources count] > 0) {
-    attendees = ([attendees count] > 0)
-      ? [attendees arrayByAddingObjectsFromArray:lResources]
-      : lResources;
-  }
-  [attendees makeObjectsPerformSelector: @selector (setTag:)
-             withObject: @"attendee"];
-  [_task setAttendees:attendees];
-
-  /* cycles */
-  [_task removeAllRecurrenceRules];
-  rrule = [self rrule];
-  if (rrule)
-    [_task addToRecurrenceRules: rrule];
-}
-
-- (iCalToDo *) taskFromString: (NSString *) _iCalString
-{
-  iCalCalendar *calendar;
-  iCalToDo *task;
-
-  calendar = [iCalCalendar parseSingleFromSource: _iCalString];
-  task = (iCalToDo *) [calendar firstChildWithTag: @"vtodo"];
-
-  return task;
-}
-
-/* conflict management */
-
-- (BOOL) containsConflict: (id) _task
-{
-  NSArray *attendees, *uids;
-  SOGoAppointmentFolder *groupCalendar;
-  NSArray *infos;
-  NSArray *ranges;
-  id folder;
-
-  [self logWithFormat:@"search from %@ to %@", 
-	  [_task startDate], [_task due]];
-
-  folder    = [[self clientObject] container];
-  attendees = [_task attendees];
-  uids      = [folder uidsFromICalPersons:attendees];
-  if ([uids count] == 0) {
-    [self logWithFormat:@"Note: no UIDs selected."];
-    return NO;
-  }
-
-  groupCalendar = [folder lookupGroupCalendarFolderForUIDs:uids
-                          inContext:[self context]];
-  [self debugWithFormat:@"group calendar: %@", groupCalendar];
-  
-  if (![groupCalendar respondsToSelector:@selector(fetchFreeBusyInfosFrom:to:)]) {
-    [self errorWithFormat:@"invalid folder to run freebusy query on!"];
-    return NO;
-  }
-
-  infos = [groupCalendar fetchFreeBusyInfosFrom:[_task startDate]
-                         to:[_task due]];
-  [self debugWithFormat:@"  process: %d tasks", [infos count]];
-
-  ranges = [infos arrayByCreatingDateRangesFromObjectsWithStartDateKey:@"startDate"
-                  andEndDateKey:@"dueDate"];
-  ranges = [ranges arrayByCompactingContainedDateRanges];
-  [self debugWithFormat:@"  blocked ranges: %@", ranges];
-
-  return [ranges count] != 0 ? YES : NO;
-}
-
-- (id <WOActionResults>) defaultAction
-{
-  NSString *ical;
-
-  /* load iCalendar file */
-  
-  // TODO: can't we use [clientObject contentAsString]?
-//   ical = [[self clientObject] valueForKey:@"iCalString"];
-  ical = [[self clientObject] contentAsString];
-  if ([ical length] == 0)
-    {
-      newTask = YES;
-      ical = [self iCalStringTemplate];
-    }
-  else
-    newTask = NO;
-
-  [self setICalString:ical];
-  [self loadValuesFromTask: [self taskFromString: ical]];
-  
-//   if (![self canEditComponent]) {
-//     /* TODO: we need proper ACLs */
-//     return [self redirectToLocation: [self completeURIForMethod: @"../view"]];
-//   }
 
   return self;
 }
 
-- (id <WOActionResults>) saveAction
+- (void) dealloc
 {
-  iCalToDo *task;
-  iCalPerson *p;
-  id <WOActionResults> result;
-  NSString *content;
-  NSException *ex;
-
-  if (![self isWriteableClientObject]) {
-    /* return 400 == Bad Request */
-    return [NSException exceptionWithHTTPStatus:400
-                        reason: @"method cannot be invoked on "
-                                @"the specified object"];
-  }
-
-  task = [self taskFromString: [self iCalString]];
-  if (task == nil) {
-    NSString *s;
-    
-    s = [self labelForKey: @"Invalid iCal data!"];
-    [self setErrorText: s];
-
-    return self;
-  }
-
-  [self saveValuesIntoTask:task];
-  p = [task findParticipantWithEmail:[self emailForUser]];
-  if (p) {
-    [p setParticipationStatus:iCalPersonPartStatAccepted];
-  }
-
-  if ([self checkForConflicts]) {
-    if ([self containsConflict:task]) {
-      NSString *s;
-      
-      s = [self labelForKey:@"Conflicts found!"];
-      [self setErrorText:s];
-
-      return self;
-    }
-  }
-  content = [[task parent] versitString];
-//   [task release]; task = nil;
-  
-  if (content == nil) {
-    NSString *s;
-    
-    s = [self labelForKey: @"Could not create iCal data!"];
-    [self setErrorText: s];
-    return self;
-  }
-  
-  ex = [[self clientObject] saveContentString:content];
-  if (ex != nil) {
-    [self setErrorText:[ex reason]];
-    return self;
-  }
-
-  if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
-    result = [self redirectToLocation: [self applicationPath]];
-  else
-    result = [self jsCloseWithRefreshMethod: @"refreshTasks()"];
-
-  return result;
+  [taskStartDate release];
+  [taskDueDate release];
+  [statusDate release];
+  [status release];
+  [statusPercent release];
+  [super dealloc];
 }
 
-- (id) changeStatusAction
+/* template values */
+- (iCalToDo *) todo
 {
-  iCalToDo *task;
-  SOGoTaskObject *taskObject;
-  NSString *content;
-  id ex;
-  int newStatus;
-
-  newStatus = [[self queryParameterForKey: @"status"] intValue];
-
-  taskObject = [self clientObject];
-  task = (iCalToDo *) [taskObject component];
-  switch (newStatus)
-    {
-    case 1:
-      [task setCompleted: [NSCalendarDate calendarDate]];
-      break;
-    case 2:
-      [task setStatus: @"IN-PROCESS"];
-      break;
-    case 3:
-      [task setStatus: @"CANCELLED"];
-      break;
-    default:
-      [task setStatus: @"NEEDS-ACTION"];
-    }
-
-  content = [[task parent] versitString];
-  ex = [[self clientObject] saveContentString: content];
-  if (ex != nil) {
-    [self setErrorText:[ex reason]];
-    return self;
-  }
-  
-  return [self redirectToLocation: [self completeURIForMethod: @".."]];
+  return todo;
 }
 
-- (id)acceptAction {
-  return [self acceptOrDeclineAction:YES];
-}
-
-- (id)declineAction {
-  return [self acceptOrDeclineAction:NO];
-}
-
-- (NSString *) saveUrl
+- (NSString *) saveURL
 {
   return [NSString stringWithFormat: @"%@/saveAsTask",
                    [[self clientObject] baseURL]];
 }
 
-// TODO: add tentatively
+- (NSString *) _toolbarForCalObject
+{
+  SOGoUser *currentUser;
+  SOGoTaskObject *clientObject;
+  NSString *filename, *email;
+  iCalPerson *person;
+  iCalPersonPartStat participationStatus;
 
-- (id)acceptOrDeclineAction:(BOOL)_accept {
-  // TODO: this should live in the SoObjects
-  NSException *ex;
+  clientObject = [self clientObject];
+  currentUser = [[self context] activeUser];
+  email = [currentUser email];
+  if ([clientObject isOrganizer: email
+                    orOwner: [currentUser login]])
+    filename = @"SOGoTaskObject.toolbar";
+  else
+    {
+      if ([clientObject isParticipant: email])
+        {
+          person = [[clientObject component: NO] findParticipantWithEmail: email];
+          participationStatus = [person participationStatus];
+          if (participationStatus == iCalPersonPartStatAccepted)
+            filename = @"SOGoTaskObjectDecline.toolbar";
+          else if (participationStatus == iCalPersonPartStatDeclined)
+            filename = @"SOGoTaskObjectAccept.toolbar";
+          else
+            filename = @"SOGoTaskObjectAcceptOrDecline.toolbar";
+        }
+      else
+        filename = @"";
+    }
 
-  if ((ex = [self validateObjectForStatusChange]) != nil)
-    return ex;
-  
-  ex = [[self clientObject] changeParticipationStatus:
-                              _accept ? @"ACCEPTED" : @"DECLINED"
-                            inContext:[self context]];
-  if (ex != nil) return ex;
-  
-  return self;
-//   return [self redirectToLocation: [self completeURIForMethod:@"../view"]];
+  return filename;
 }
 
-- (void) setHasStartDate: (BOOL) aBool
+- (NSString *) toolbar
 {
-  hasStartDate = aBool;
+  return ([self _toolbarForCalObject]);
+}
+
+/* icalendar values */
+- (void) setTaskStartDate: (NSCalendarDate *) newTaskStartDate
+{
+  ASSIGN (taskStartDate, newTaskStartDate);
+}
+
+- (NSCalendarDate *) taskStartDate
+{
+  return taskStartDate;
+}
+
+- (void) setHasStartDate: (BOOL) newHasStartDate
+{
+  hasStartDate = newHasStartDate;
 }
 
 - (BOOL) hasStartDate
 {
-  return (!newTask && [self taskStartDate] != nil);
+  return hasStartDate;
 }
 
 - (BOOL) startDateDisabled
 {
-  return (![self hasStartDate]);
+  return !hasStartDate;
 }
 
-- (void) setHasDueDate: (BOOL) aBool
+- (void) setTaskDueDate: (NSCalendarDate *) newTaskDueDate
 {
-  hasDueDate = aBool;
+  ASSIGN (taskDueDate, newTaskDueDate);
+}
+
+- (NSCalendarDate *) taskDueDate
+{
+  return taskDueDate;
+}
+
+- (void) setHasDueDate: (BOOL) newHasDueDate
+{
+  hasDueDate = newHasDueDate;
 }
 
 - (BOOL) hasDueDate
 {
-  return (!newTask && [self taskDueDate] != nil);
+  return hasDueDate;
 }
 
 - (BOOL) dueDateDisabled
 {
-  return (![self hasDueDate]);
+  return !hasDueDate;
 }
 
-- (void) setDueDateDisabled: (BOOL) aBool
+- (NSArray *) repeatList
+{
+  static NSArray *repeatItems = nil;
+
+  if (!repeatItems)
+    {
+      repeatItems = [NSArray arrayWithObjects: @"DAILY",
+                             @"WEEKLY",
+                             @"BI-WEEKLY",
+                             @"EVERY WEEKDAY",
+                             @"MONTHLY",
+                             @"YEARLY",
+                             @"-",
+                             @"CUSTOM",
+                             nil];
+      [repeatItems retain];
+    }
+
+  return repeatItems;
+}
+
+- (NSString *) itemRepeatText
+{
+  NSString *text;
+
+  if ([item isEqualToString: @"-"])
+    text = item;
+  else
+    text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
+
+  return text;
+}
+
+- (NSArray *) statusList
+{
+  static NSArray *statusItems = nil;
+
+  if (!statusItems)
+    {
+      statusItems = [NSArray arrayWithObjects: @"NEEDS-ACTION",
+                             @"IN-PROCESS",
+                             @"COMPLETED",
+                             @"CANCELLED",
+                             nil];
+      [statusItems retain];
+    }
+
+  return statusItems;
+}
+
+- (NSString *) itemStatusText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"status_%@", item]];
+}
+
+- (void) setItem: (NSString *) newItem
+{
+  item = newItem;
+}
+
+- (NSString *) item
+{
+  return item;
+}
+
+- (NSString *) repeat
+{
+  return @"";
+}
+
+- (void) setRepeat: (NSString *) newRepeat
 {
 }
 
-- (void) setStartDateDisabled: (BOOL) aBool
+- (NSString *) status
 {
+  return status;
 }
 
-@end /* UIxTaskEditor */
+- (void) setStatus: (NSString *) newStatus
+{
+  status = newStatus;
+}
+
+- (void) setStatusDate: (NSCalendarDate *) newStatusDate
+{
+  ASSIGN (statusDate, newStatusDate);
+}
+
+- (NSCalendarDate *) statusDate
+{
+  return statusDate;
+}
+
+- (BOOL) statusDateDisabled
+{
+  return ![status isEqualToString: @"COMPLETED"];
+}
+
+- (BOOL) statusPercentDisabled
+{
+  NSLog (@"status: '%@'", status);
+  return ([status length] == 0
+	  || [status isEqualToString: @"CANCELLED"]);
+}
+
+- (void) setStatusPercent: (NSString *) newStatusPercent
+{
+  ASSIGN (statusPercent, newStatusPercent);
+}
+
+- (NSString *) statusPercent
+{
+  return statusPercent;
+}
+
+/* actions */
+- (NSCalendarDate *) newStartDate
+{
+  NSCalendarDate *newStartDate, *now;
+  int hour;
+
+  newStartDate = [self selectedDate];
+  if ([[self queryParameterForKey: @"hm"] length] == 0)
+    {
+      now = [NSCalendarDate calendarDate];
+      [now setTimeZone: [[self clientObject] userTimeZone]];
+      if ([now isDateOnSameDay: newStartDate])
+        {
+          hour = [now hourOfDay];
+          if (hour < 8)
+            newStartDate = [now hour: 8 minute: 0];
+          else if (hour > 18)
+            newStartDate = [[now tomorrow] hour: 8 minute: 0];
+          else
+            newStartDate = now;
+        }
+      else
+        newStartDate = [newStartDate hour: 8 minute: 0];
+    }
+
+  return newStartDate;
+}
+
+- (id <WOActionResults>) defaultAction
+{
+  NSCalendarDate *startDate, *dueDate;
+  NSString *duration;
+  unsigned int minutes;
+
+  todo = (iCalToDo *) [[self clientObject] component: NO];
+  if (todo)
+    {
+      startDate = [todo startDate];
+      dueDate = [todo due];
+      hasStartDate = (startDate != nil);
+      hasDueDate = (dueDate != nil);
+      ASSIGN (status, [todo status]);
+      if ([status isEqualToString: @"COMPLETED"])
+	ASSIGN (statusDate, [todo completed]);
+      else
+	ASSIGN (statusDate, [self newStartDate]);
+      ASSIGN (statusPercent, [todo percentComplete]);
+    }
+  else
+    {
+      startDate = [self newStartDate];
+      duration = [self queryParameterForKey:@"dur"];
+      if ([duration length] > 0)
+	minutes = [duration intValue];
+      else
+	minutes = 60;
+      dueDate = [startDate dateByAddingYears: 0 months: 0 days: 0
+			   hours: 0 minutes: minutes seconds: 0];
+      hasStartDate = NO;
+      hasDueDate = NO;
+      ASSIGN (statusDate, [self newStartDate]);
+      ASSIGN (status, @"");
+      ASSIGN (statusPercent, @"");
+    }
+
+  ASSIGN (taskStartDate, startDate);
+  ASSIGN (taskDueDate, dueDate);
+
+  /* here comes the code for initializing repeat, reminder and isAllDay... */
+
+  return self;
+}
+
+- (id <WOActionResults>) newAction
+{
+  NSString *objectId, *method, *uri;
+  id <WOActionResults> result;
+  Class clientKlazz;
+
+  clientKlazz = [[self clientObject] class];
+  objectId = [clientKlazz globallyUniqueObjectId];
+  if ([objectId length] > 0)
+    {
+      method = [NSString stringWithFormat:@"%@/Calendar/%@/editAsTask",
+                         [self userFolderPath], objectId];
+      uri = [self completeHrefForMethod: method];
+      result = [self redirectToLocation: uri];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
+                          reason: @"could not create a unique ID"];
+
+  return result;
+}
+
+- (id <WOActionResults>) saveAction
+{
+  SOGoTaskObject *clientObject;
+  NSString *iCalString;
+
+  clientObject = [self clientObject];
+  iCalString = [[clientObject calendar: NO] versitString];
+  [clientObject saveContentString: iCalString];
+
+  return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
+}
+
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+                           inContext: (WOContext*) context
+{
+  return ([[self clientObject] isKindOfClass: [SOGoTaskObject class]]
+	  && [[request method] isEqualToString: @"POST"]);
+}
+
+- (void) takeValuesFromRequest: (WORequest *) _rq
+                     inContext: (WOContext *) _ctx
+{
+  SOGoTaskObject *clientObject;
+
+  clientObject = [self clientObject];
+  todo = (iCalToDo *) [clientObject component: YES];
+
+  [super takeValuesFromRequest: _rq inContext: _ctx];
+
+  if (hasStartDate)
+    [todo setStartDate: taskStartDate];
+  if (hasDueDate)
+    [todo setDue: taskDueDate];
+  if ([status isEqualToString: @"COMPLETED"])
+    [todo setCompleted: statusDate];
+  else
+    [todo setCompleted: nil];
+  if ([status length] > 0)
+    {
+      [todo setStatus: status];
+      [todo setPercentComplete: statusPercent];
+    }
+  else
+    {
+      [todo setStatus: @""];
+      [todo setPercentComplete: @""];
+    }
+}
+
+@end

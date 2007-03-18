@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,16 +23,26 @@
 #ifndef UIXAPPOINTMENTEDITOR_H
 #define UIXAPPOINTMENTEDITOR_H
 
-#import <UIxComponentEditor.h>
+#import <SOGoUI/UIxComponent.h>
 
+@class iCalEvent;
 @class NSString;
-@class iCalPerson;
-@class iCalRecurrenceRule;
 
-@interface UIxAppointmentEditor : UIxComponentEditor
+@interface UIxAppointmentEditor : UIxComponent
 {
-  NSCalendarDate *endDate;
+  iCalEvent *event;
+  NSCalendarDate *aptStartDate;
+  NSCalendarDate *aptEndDate;
+  NSString *item;
 }
+
+/* template values */
+- (NSString *) saveURL;
+- (iCalEvent *) event;
+
+/* icalendar values */
+- (BOOL) isAllDay;
+- (void) setIsAllDay: (BOOL) newIsAllDay;
 
 - (void) setAptStartDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) aptStartDate;
@@ -40,33 +50,11 @@
 - (void) setAptEndDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) aptEndDate;
 
-/* iCal */
+- (NSString *) repeat;
+- (void) setRepeat: (NSString *) newRepeat;
 
-- (NSString *) iCalStringTemplate;
-
-/* new */
-
-- (id) newAction;
-
-/* save */
-
-- (void) loadValuesFromAppointment: (iCalEvent *) _apt;
-- (void) saveValuesIntoAppointment: (iCalEvent *) _apt;
-- (iCalEvent *) appointmentFromString: (NSString *) _iCalString;
-
-/* conflict management */
-
-- (BOOL) containsConflict: (id) _apt;
-- (id <WOActionResults>) defaultAction;
-- (id <WOActionResults>) saveAction;
-- (id) acceptAction;
-- (id) declineAction;
-
-- (NSString *) saveUrl;
-
-// TODO: add tentatively
-
-- (id) acceptOrDeclineAction: (BOOL) _accept;
+- (NSString *) reminder;
+- (void) setReminder: (NSString *) newReminder;
 
 @end
 
