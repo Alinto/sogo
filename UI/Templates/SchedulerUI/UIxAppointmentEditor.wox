@@ -1,170 +1,47 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    const:popup="YES"
-    title="name"
-    var:toolbar="toolbar">
-    <script type="text/javascript" rsrc:src="skycalendar.js">
-    </script>
-
-    <form var:href="saveUrl" name="editform" onsubmit="return validateAptEditor();">
-      <var:if condition="hasErrorText">
-        <p style="background-color: #AA0000;"><var:string value="errorText"
-            /></p>
-        <hr />
-      </var:if>
-
-      <div id="editorTabs" class="tabsContainer">
-        <ul>
-          <li target="eventView"><var:string label:value="Event" /></li>
-          <li target="recurrenceView"><var:string label:value="Recurrence" /></li>
-          <li target="attendeesView"><var:string label:value="Attendees" /></li>
-        </ul>
-
-        <div id="eventView" class="tab">
-          <label><var:string label:value="Title" /><span class="content"
-              ><input type="text" name="summary" id="summary"
-                class="textField"
-                var:value="title"
-                /></span></label>
-          <label><var:string label:value="Location" /><span class="content"
-              ><input type="text" name="location" id="location"
-                class="textField"
-                var:value="location"
-                /></span></label>
-          <hr />
-          <span class="checkBoxList"><var:string label:value="From" />
-            <span class="content"><var:component className="UIxTimeDateControl"
-                const:controlID="startTime"
-                date="aptStartDate"
-                const:dayStartHour="0"
-                const:dayEndHour="23"
-                /><label><input class="checkBox"
-                  type="checkbox" var:selection="isAllDay"
-                  var:checked="isAllDay"
-                  /><var:string label:value="All Day"
-                  /></label></span></span>
-          <span class="checkBoxList"><var:string label:value="To" />
-            <span class="content"><var:component className="UIxTimeDateControl"
-                const:controlID="endTime"
-                date="aptEndDate"
-                const:dayStartHour="0"
-                const:dayEndHour="23"
-                /></span></span>
-          <hr />
-          <!-- label id="isPrivate"><input class="checkBox"
-          type="checkbox" var:selection="isPrivate"
-          var:checked="isPrivate"
-          /><var:string label:value="is private" /></label -->
-          <label><var:string label:value="Calendar" />
-            <span class="content"><var:popup list="availableCalendars" item="item"
-                const:onChange="onChangeCalendar(this);"
-                string="item" selection="componentOwner" /></span></label>
-          <label><var:string label:value="Privacy" />
-            <span class="content"><var:popup list="privacyClasses" item="item"
-                string="itemPrivacyText" selection="privacy"
-                /></span></label>
-          <label><var:string label:value="Priority" />
-            <span class="content"><var:popup list="priorities" item="item"
-                string="itemPriorityText" selection="priority"
-                /></span></label>
-          <label><var:string label:value="Status" />
-            <span class="content"><var:popup list="statusTypes" item="item"
-                string="itemStatusText" selection="status"
-                /></span></label>
-<!--          <span id="categoriesCB" class="checkBoxList"
-            ><var:string label:value="Categories"
-              /><span class="content categoriesContent"><var:checkbox-list
-                list="categoryItems"
-                item="item"
-                suffix="itemCategoryText"
-                selections="categories"
-                /></span></span> -->
-          <hr />
-          <label id="commentArea"><var:string label:value="Description"
-              /><textarea name="comment" var:value="comment" /></label> 
-          <label id="urlArea"><var:string label:value="URL" />
-            <span class="content"><input type="text" name="url" id="url"
-                size="40"
-                onkeyup="validateBrowseURL(this);"
-                class="textField"
-                var:value="url"
-                /><a id="browseUrlBtn" var:class="urlButtonClasses" var:href="#" onclick="return browseUrl(this, event);"><var:string value="Browse URL" /><var:string label:value="Browse URL" /></a
-                ></span></label>
-        </div>
-
-        <div id="recurrenceView" class="tab">
-          <label><var:string label:value="Cycle"
-              />
-            <span class="content"
-              ><var:popup list="cycles" item="item"
-                label:string="$cycleLabel"
-                selection="cycle"
-                const:onChange="toggleCycleVisibility(this, 'cycleSelectionFirstLevel', 0);"
-                /><span id="cycleSelectionFirstLevel"
-                ><var:popup list="cycleEnds" item="item"
-                  label:string="$item" value="item"
-                  selection="cycleEnd"
-                  const:onChange="toggleCycleVisibility(this, 'cycleSelectionSecondLevel', 'cycle_end_never');"
-                  const:id="cycle_end_mode_selection"
-                  /><span id="cycleSelectionSecondLevel"
-                  ><var:component className="UIxTimeDateControl"
-                    date="cycleUntilDate"
-                    label="foo"
-                    const:controlID="cycleUntilDate"
-                    const:displayTimeControl="NO"
-                    /></span
-                  ></span
-                ></span
-              ></label>
-        </div>
-
-        <div id="attendeesView" class="tab"
-          ><var:component className="UIxFreeBusyUserSelector"
-            const:selectorId="participants"
-            contacts="participants"
-            var:startDate="aptStartDate" var:endDate="aptEndDate" /></div>
-      </div>
-
-      <script type="text/javascript">
-        initTimeWidgets( { 'start': { 'hour': document.forms['editform']['startTime_time_hour'],
-                                      'minute': document.forms['editform']['startTime_time_minute'],
-                                      'date': document.forms['editform']['startTime_date'] },
-                           'end': { 'hour': document.forms['editform']['endTime_time_hour'],
-                                    'minute': document.forms['editform']['endTime_time_minute'],
-                                    'date': document.forms['editform']['endTime_date'] } } );
-        redisplayFreeBusyZone();
-      </script>
-      <!-- div id="buttons">
-      <input
-      type="submit"
-      class="button"
-      label:value="Save"
-      name="submitmeeting" />
-      <input
-      type="submit"
-      class="button"
-      label:value="Cancel"
-      name="cancel"
-      onclick="window.close(); return false;" />
-      <var:if condition="isUIxDebugEnabled">
-      <input type="submit"
-      class="button"
-      value="Test" name="test:method" />
-    </var:if>
-    </div -->
-      <input type="hidden" name="ical" var:value="iCalString" />
-      <!-- input type="hidden" id="jsaction" -->
-    </form>
-    <!--
-    <var:if condition="canEditComponent" const:negate="YES">
-    Forbidden ... <var:redirect const:setURL="view" />
-  </var:if>
-    -->
-  </var:component>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxComponentEditor"
+  var:component="event"
+  var:toolbar="toolbar"
+  var:saveURL="saveURL">
+  <label><span id="allDay" class="content"><input class="checkBox"
+        type="checkbox" var:selection="isAllDay"
+        var:checked="isAllDay"
+        /><var:string label:value="All day Event"
+        /></span></label>
+  <span class="checkBoxList"><var:string label:value="Start:" />
+    <span class="content"><var:component className="UIxTimeDateControl"
+        const:controlID="startTime"
+        date="aptStartDate"
+        const:dayStartHour="0"
+        const:dayEndHour="23"
+        /></span></span>
+  <span class="checkBoxList"><var:string label:value="End:" />
+    <span class="content"><var:component className="UIxTimeDateControl"
+        const:controlID="endTime"
+        date="aptEndDate"
+        const:dayStartHour="0"
+        const:dayEndHour="23"
+        /></span></span>
+  <hr />
+  <label><var:string label:value="Repeat:" />
+    <span class="content"><var:popup list="repeatList" item="item"
+        label:noSelectionString="repeat_NEVER"
+        const:disabledValue="-"
+        string="itemRepeatText" selection="repeat"
+        /></span></label>
+  <hr />
+  <label><var:string label:value="Reminder:" />
+    <span class="content"><var:popup list="reminderList" item="item"
+        const:disabledValue="-"
+        label:noSelectionString="reminder_NONE"
+        string="itemReminderText" selection="reminder"
+        /></span></label>
+</var:component>

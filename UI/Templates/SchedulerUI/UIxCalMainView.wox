@@ -7,6 +7,9 @@
     className="UIxPageFrame"
     title="title"
     >
+    <div class="preload" style="visibility: hidden;">
+      <img rsrc:src="event-gradient.png"/>
+    </div>
     <div class="menu" id="monthListMenu">
       <ul>
         <var:foreach list="monthMenuItems" item="monthMenuItem"

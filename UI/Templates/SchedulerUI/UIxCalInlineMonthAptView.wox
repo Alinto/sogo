@@ -20,6 +20,6 @@
       ><span class="eventHeader"><var:string value="startHour"
           const:escapeHTML="NO" />
         <var:string value="appointment.title" const:escapeHTML="NO"
-          /></div>
+          /></span></div>
   </div>
 </div>

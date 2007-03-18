@@ -17,7 +17,8 @@
       />
     <var:if condition="displayTimeControl">
       <var:if condition="disabled">
-        <select var:shadow-value="hour" var:name="hourSelectId" const:disabled="disabled">
+        <select var:shadow-value="hour"
+	  var:id="hourSelectId" var:name="hourSelectId" const:disabled="disabled">
           <var:foreach list="selectableHours" item="hourOption"
             ><var:if condition="isCurrentHour"
               ><option var:value="hourValue" selected="selected"
@@ -28,7 +29,8 @@
                   /></option></var:if>
           </var:foreach
             ></select>
-        <select var:shadow-value="minute" var:name="minuteSelectId" const:disabled="disabled">
+        <select var:shadow-value="minute"
+	  var:id="minuteSelectId" var:name="minuteSelectId" const:disabled="disabled">
           <var:foreach list="selectableMinutes" item="minuteOption"
             ><var:if condition="isCurrentMinute"
               ><option var:value="minuteValue" selected="selected"
@@ -43,7 +45,7 @@
       </var:if
 
         ><var:if condition="disabled" const:negate="YES">
-        <select var:shadow-value="hour" var:name="hourSelectId">
+        <select var:shadow-value="hour" var:id="hourSelectId" var:name="hourSelectId">
           <var:foreach list="selectableHours" item="hourOption"
             ><var:if condition="isCurrentHour"
               ><option var:value="hourValue" selected="selected"
@@ -54,7 +56,7 @@
                   /></option></var:if>
           </var:foreach
             ></select>
-        <select var:shadow-value="minute" var:name="minuteSelectId">
+        <select var:shadow-value="minute" var:id="minuteSelectId" var:name="minuteSelectId">
           <var:foreach list="selectableMinutes" item="minuteOption"
             ><var:if condition="isCurrentMinute"
               ><option var:value="minuteValue" selected="selected"
