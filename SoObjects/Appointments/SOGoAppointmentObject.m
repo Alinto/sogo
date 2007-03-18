@@ -208,7 +208,6 @@
      - send iMIP mail for all folders not found
   */
   AgenorUserManager *um;
-  iCalCalendar *newCalendar;
   iCalEvent *oldApt, *newApt;
   iCalEventChanges *changes;
   iCalPerson *organizer;
@@ -220,10 +219,9 @@
   
   updateForcesReconsider = NO;
 
-  if ([_iCal length] == 0) {
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-			reason:@"got no iCalendar content to store!"];
-  }
+  if ([_iCal length] == 0)
+    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+			reason: @"got no iCalendar content to store!"];
 
   um = [AgenorUserManager sharedUserManager];
 
@@ -237,7 +235,7 @@
       oldApt = nil;
     }
   else
-    oldApt = (iCalEvent *) [self component];
+    oldApt = (iCalEvent *) [self component: NO];
   
   /* compare sequence if requested */
 
@@ -245,28 +243,23 @@
     // TODO
   }
   
-  
   /* handle new content */
   
-  newCalendar = [iCalCalendar parseSingleFromSource: _iCal];
-  newApt = (iCalEvent *) [newCalendar firstChildWithTag: [self componentTag]];
-  if (newApt == nil) {
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-			reason:@"could not parse iCalendar content!"];
-  }
-  
+  newApt = (iCalEvent *) [self component: NO];
+  if (!newApt)
+    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+			reason: @"could not parse iCalendar content!"];
+
   /* diff */
   
-  changes = [iCalEventChanges changesFromEvent: oldApt
-                              toEvent: newApt];
+  changes = [iCalEventChanges changesFromEvent: oldApt toEvent: newApt];
+  uids = [um getUIDsForICalPersons: [changes deletedAttendees]
+             applyStrictMapping: NO];
+  removedUIDs = [NSMutableArray arrayWithArray: uids];
 
-  uids = [um getUIDsForICalPersons:[changes deletedAttendees]
-                    applyStrictMapping:NO];
-  removedUIDs = [NSMutableArray arrayWithArray:uids];
-
-  uids = [um getUIDsForICalPersons:[newApt attendees]
-                    applyStrictMapping:NO];
-  storeUIDs = [NSMutableArray arrayWithArray:uids];
+  uids = [um getUIDsForICalPersons: [newApt attendees]
+             applyStrictMapping: NO];
+  storeUIDs = [NSMutableArray arrayWithArray: uids];
   props = [changes updatedProperties];
 
   /* detect whether sequence has to be increased */
@@ -276,7 +269,9 @@
   /* preserve organizer */
 
   organizer = [newApt organizer];
-  uid = [um getUIDForICalPerson:organizer];
+  uid = [um getUIDForICalPerson: organizer];
+  if (!uid)
+    uid = [self ownerInContext: nil];
   if (uid) {
     if (![storeUIDs containsObject:uid])
       [storeUIDs addObject:uid];
@@ -304,9 +299,9 @@
    */
 
   if (oldApt != nil &&
-      ([props containsObject:@"startDate"] ||
-       [props containsObject:@"endDate"]   ||
-       [props containsObject:@"duration"]))
+      ([props containsObject: @"startDate"] ||
+       [props containsObject: @"endDate"]   ||
+       [props containsObject: @"duration"]))
   {
     NSArray  *ps;
     unsigned i, count;
@@ -326,8 +321,8 @@
 
   /* perform storing */
 
-  storeError = [self saveContentString:_iCal inUIDs:storeUIDs];
-  delError = [self deleteInUIDs:removedUIDs];
+  storeError = [self saveContentString: _iCal inUIDs: storeUIDs];
+  delError = [self deleteInUIDs: removedUIDs];
 
   // TODO: make compound
   if (storeError != nil) return storeError;
@@ -393,7 +388,7 @@
 
   /* load existing content */
 
-  apt = (iCalEvent *) [self component];
+  apt = (iCalEvent *) [self component: NO];
   
   /* compare sequence if requested */
 
@@ -445,7 +440,7 @@
   ex = nil;
 
   // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
-  apt = (iCalEvent *) [self component];
+  apt = (iCalEvent *) [self component: NO];
 
   if (apt)
     {

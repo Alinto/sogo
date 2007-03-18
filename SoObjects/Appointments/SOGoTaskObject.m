@@ -413,7 +413,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 
   /* load existing content */
   
-  task = (iCalToDo *) [self component];
+  task = (iCalToDo *) [self component: NO];
   
   /* compare sequence if requested */
 
@@ -462,7 +462,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSString        *myEMail;
   
   // TODO: do we need to use SOGoTask? (prefer iCalToDo?)
-  task = (iCalToDo *) [self component];
+  task = (iCalToDo *) [self component: NO];
 
   if (task == nil) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
