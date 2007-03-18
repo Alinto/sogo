@@ -75,46 +75,46 @@ typedef enum
 - (void) setTimeStampAsDate: (NSCalendarDate *)_date;
 - (NSCalendarDate *) timeStampAsDate;
 
-- (void)setStartDate:(NSCalendarDate *)_date;
-- (NSCalendarDate *)startDate;
+- (void) setStartDate: (NSCalendarDate *) _date;
+- (NSCalendarDate *) startDate;
 - (BOOL) hasStartDate;
 
-- (void)setLastModified:(NSCalendarDate *)_value;
-- (NSCalendarDate *)lastModified;
+- (void) setLastModified: (NSCalendarDate *) _value;
+- (NSCalendarDate *) lastModified;
 
-- (void)setCreated:(NSCalendarDate *)_value;
-- (NSCalendarDate *)created;
+- (void) setCreated: (NSCalendarDate *) _value;
+- (NSCalendarDate *) created;
 
-- (void)setSequence:(NSNumber *)_value; /* this is an int */
-- (NSNumber *)sequence;
-- (void)increaseSequence;
+- (void) setSequence: (NSNumber *) _value; /* this is an int */
+- (NSNumber *) sequence;
+- (void) increaseSequence;
 
 /* url can either be set as NSString or NSURL */ 
-- (void)setUrl:(id)_value;
-- (NSURL *)url;
+- (void) setUrl: (id) _value;
+- (NSURL *) url;
   
-- (void)setOrganizer:(iCalPerson *)_organizer;
-- (iCalPerson *)organizer;
+- (void) setOrganizer: (iCalPerson *) _organizer;
+- (iCalPerson *) organizer;
 - (BOOL)isOrganizer:(id)_email;
 
-- (void)setStatus:(NSString *)_value;
-- (NSString *)status;
+- (void) setStatus: (NSString *) _value;
+- (NSString *) status;
 
-- (void)removeAllAttendees;
-- (void)addToAttendees:(iCalPerson *)_person;
-- (NSArray *)attendees;
+- (void) removeAllAttendees;
+- (void) addToAttendees: (iCalPerson *) _person;
+- (NSArray *) attendees;
 - (void) setAttendees: (NSArray *) attendees;
 
 /* categorize attendees into participants and resources */
-- (NSArray *)participants;
-- (NSArray *)resources;
-- (BOOL)isParticipant:(id)_email;
-- (iCalPerson *)findParticipantWithEmail:(id)_email;
+- (NSArray *) participants;
+- (NSArray *) resources;
+- (BOOL) isParticipant: (id) _email;
+- (iCalPerson *) findParticipantWithEmail: (id) _email;
   
-- (void)removeAllAlarms;
-- (void)addToAlarms:(id)_alarm;
-- (NSArray *)alarms;
-- (BOOL)hasAlarms;
+- (void) removeAllAlarms;
+- (void) addToAlarms: (id) _alarm;
+- (NSArray *) alarms;
+- (BOOL) hasAlarms;
 
 @end
 
