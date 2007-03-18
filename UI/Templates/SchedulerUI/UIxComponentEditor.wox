@@ -1,0 +1,95 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:popup="YES"
+  title="name"
+  var:toolbar="toolbar">
+  <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
+  <script type="text/javascript" rsrc:src="UIxComponentEditor.js"><!-- space --></script>
+
+  <div class="menu" id="privacy-menu">
+    <ul id="">
+      <li onmouseup="onMenuSetClassification(event, 'PUBLIC');"><var:string
+          label:value="Public Event" /></li>
+      <li onmouseup="onMenuSetClassification(event, 'CONFIDENTIAL');"><var:string
+          label:value="Show Time and Date Only" /></li>
+      <li onmouseup="onMenuSetClassification(event, 'PRIVACY');"><var:string
+          label:value="Private Event" /></li>
+    </ul>
+  </div>
+
+  <form var:href="saveURL" name="editform" onsubmit="return validateAptEditor();">
+    <div id="eventView">
+      <label><var:string label:value="Title:" /><span class="content"
+          ><input type="text" name="summary" id="summary"
+            class="textField"
+            var:value="title"
+            /></span></label>
+      <label><var:string label:value="Location:" /><span class="content"
+          ><input type="text" name="location" id="location"
+            class="textField"
+            var:value="location"
+            /></span></label>
+      <span class="checkBoxList"><var:string label:value="Category:" />
+        <span class="content"><var:popup list="categoryList" item="item"
+            label:noSelectionString="category_NONE"
+            string="itemCategoryText" selection="category"
+            /><var:string label:value="Calendar:" />
+          <var:popup list="availableCalendars" item="item"
+            const:onChange="onChangeCalendar(this);"
+            string="item" selection="componentOwner" /></span></span>
+      <label id="attendeesLabel" style="display: none;"><var:string label:value="Attendees:"
+	  /><span class="content"
+	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
+      <hr />
+      <var:component-content />
+      <hr />
+      <label id="commentArea"><var:string label:value="Description:"
+	  /><textarea name="comment" var:value="comment" /></label>
+      <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
+	  /><span class="content"
+	  ><a href="#" id="documentHref"><!-- space --></a
+	    ><a id="changeUrlButton" class="button" var:href="#"
+	    ><var:string label:value="Change..."/></a
+	    ></span></label>
+
+      <!-- hidden -->
+      <input type="hidden" name="url" id="url" var:value="url"/>
+      <input type="hidden" name="privacy" id="privacy"
+	var:value="privacy"/>
+      <input type="hidden" name="attendeesNames" id="attendeesNames"
+	var:value="attendeesNames"/>
+      <input type="hidden" name="attendeesEmails" id="attendeesEmails"
+	var:value="attendeesEmails"/>
+
+      <!--      <label><var:string label:value="Privacy" />
+      <span class="content"><var:popup list="privacyClasses" item="item"
+      string="itemPrivacyText" selection="privacy"
+      /></span></label>
+      <label><var:string label:value="Priority" />
+      <span class="content"><var:popup list="priorities" item="item"
+      string="itemPriorityText" selection="priority"
+      /></span></label>
+      <label><var:string label:value="Status" />
+      <span class="content"><var:popup list="statusTypes" item="item"
+      string="itemStatusText" selection="status"
+      /></span></label>
+      <hr /> -->
+      <!--      <label id="urlArea"><var:string label:value="URL" />
+      <span class="content"><input type="text" name="url" id="url"
+      size="40"
+      onkeyup="validateBrowseURL(this);"
+      class="textField"
+      var:value="url"
+      /><a id="browseUrlBtn" var:class="urlButtonClasses" var:href="#" onclick="return browseUrl(this, event);"><var:string value="Browse URL" /><var:string label:value="Browse URL" /></a
+      ></span></label> -->
+    </div>
+  </form>
+</var:component>
