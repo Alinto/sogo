@@ -59,6 +59,7 @@
       [self setPrivacy: @"PUBLIC"];
       [self setIsCycleEndNever];
       componentOwner = @"";
+      organizer = nil;
       attendeesNames = nil;
       attendeesEmails = nil;
     }
@@ -797,6 +798,10 @@
   [component setUrl: url];
   if ([[self clientObject] isNew])
     {
+      ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+      [organizer setCn: [self cnForUser]];
+      [organizer setEmail: [self emailForUser]];
+      [component setOrganizer: organizer];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
       [component setPriority: @"0"];

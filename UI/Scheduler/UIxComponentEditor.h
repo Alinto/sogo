@@ -48,13 +48,13 @@
   NSString *location;
   NSString *comment;
   NSString *url;
-  iCalPerson *organizer;
   NSString *priority;
   NSString *privacy;
   NSString *status;
   NSArray *categories;
   NSDictionary *cycle;
   NSString *cycleEnd;
+  iCalPerson *organizer;
   NSString *componentOwner;
 
   NSString *attendeesNames;

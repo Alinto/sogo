@@ -10,16 +10,16 @@
 "Friday" = "Friday";
 "Saturday" = "Saturday";
 
-"a2_Sunday" = "a2_Sunday";
-"a2_Monday" = "a2_Monday";
-"a2_Tuesday" = "a2_Tuesday";
-"a2_Wednesday" = "a2_Wednesday";
-"a2_Thursday" = "a2_Thursday";
-"a2_Friday" = "a2_Friday";
-"a2_Saturday" = "a2_Saturday";
+"a2_Sunday" = "Su";
+"a2_Monday" = "Mo";
+"a2_Tuesday" = "Tu";
+"a2_Wednesday" = "We";
+"a2_Thursday" = "Th";
+"a2_Friday" = "Fr";
+"a2_Saturday" = "Sa";
 
-"dayLabelFormat" = "dayLabelFormat";
-"today" = "today";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Today";
 
 /* Week */
 
@@ -45,18 +45,18 @@
 "November" = "November";
 "December" = "December";
 
-"a3_January" = "a3_January";
-"a3_February" = "a3_February";
-"a3_March" = "a3_March";
-"a3_April" = "a3_April";
-"a3_May" = "a3_May";
-"a3_June" = "a3_June";
-"a3_July" = "a3_July";
-"a3_August" = "a3_August";
-"a3_September" = "a3_September";
-"a3_October" = "a3_October";
-"a3_November" = "a3_November";
-"a3_December" = "a3_December";
+"a3_January" = "January";
+"a3_February" = "February";
+"a3_March" = "March";
+"a3_April" = "April";
+"a3_May" = "May";
+"a3_June" = "June";
+"a3_July" = "July";
+"a3_August" = "August";
+"a3_September" = "September";
+"a3_October" = "October";
+"a3_November" = "November";
+"a3_December" = "December";
 
 /* Year */
 
@@ -85,17 +85,17 @@
 
 /* Button Titles */
 
-"new" = "new";
-"printview" = "printview";
-"edit" = "edit";
-"delete" = "delete";
-"proposal" = "proposal";
+"new" = "New";
+"printview" = "Print View";
+"edit" = "Edit";
+"delete" = "Delete";
+"proposal" = "Proposal";
 "Save and Close" = "Save and Close";
 "Invite Attendees" = "Invite Attendees";
 "Documents" = "Documents";
 "Cancel" = "Cancel";
-"show_rejected_apts" = "show_rejected_apts";
-"hide_rejected_apts" = "hide_rejected_apts";
+"show_rejected_apts" = "Show rejected appointments";
+"hide_rejected_apts" = "Hide rejected appointments";
 
 
 /* Schedule */
@@ -104,20 +104,20 @@
 "No appointments found" = "No appointments found";
 "Meetings proposed by you" = "Meetings proposed by you";
 "Meetings proposed to you" = "Meetings proposed to you";
-"sched_startDateFormat" = "sched_startDateFormat";
-"action" = "action";
-"accept" = "accept";
-"decline" = "decline";
-"more attendees" = "more attendees";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Action";
+"accept" = "Accept";
+"decline" = "Decline";
+"more attendees" = "More Attendees";
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
 
 
 /* Appointments */
 
-"Appointment viewer" = "Appointment viewer";
-"Appointment editor" = "Appointment editor";
-"Appointment proposal" = "Appointment proposal";
+"Appointment viewer" = "Appointment Viewer";
+"Appointment editor" = "Appointment Editor";
+"Appointment proposal" = "Appointment Proposal";
 "Appointment on" = "Appointment on";
 "Start:" = "Start:";
 "Due Date:" = "Due Date:";
@@ -156,19 +156,19 @@
 "Public" = "Public";
 "Private" = "Private";
 /* text used in overviews and tooltips */
-"empty title" = "empty title";
-"private appointment" = "private appointment";
+"empty title" = "Empty title";
+"private appointment" = "Private appointment";
 
 "Change..." = "Change...";
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "partStat_NEEDS-ACTION";
-"partStat_ACCEPTED" = "partStat_ACCEPTED";
-"partStat_DECLINED" = "partStat_DECLINED";
-"partStat_TENTATIVE" = "partStat_TENTATIVE";
-"partStat_DELEGATED" = "partStat_DELEGATED";
-"partStat_OTHER" = "partStat_OTHER";
+"partStat_NEEDS-ACTION" = "Needs action";
+"partStat_ACCEPTED" = "Accepted";
+"partStat_DECLINED" = "Declined";
+"partStat_TENTATIVE" = "Tentative";
+"partStat_DELEGATED" = "Delegated";
+"partStat_OTHER" = "Other";
 
 /* Appointments (error messages) */
 
@@ -176,17 +176,16 @@
 "Invalid iCal data!" = "Invalid iCal data!";
 "Could not create iCal data!" = "Could not create iCal data!";
 
-
 /* Searching */
 
-"view_all" = "view_all";
-"view_today" = "view_today";
-"view_next7" = "view_next7";
-"view_next14" = "view_next14";
-"view_next31" = "view_next31";
-"view_thismonth" = "view_thismonth";
-"view_future" = "view_future";
-"view_selectedday" = "view_selectedday";
+"view_all" = "All";
+"view_today" = "Today";
+"view_next7" = "Next 7 days";
+"view_next14" = "Next 14 days";
+"view_next31" = "Next 31 days";
+"view_thismonth" = "This Month";
+"view_future" = "All Future Events";
+"view_selectedday" = "Selected Day";
 
 "View:" = "View:";
 "Title or Description" = "Title or Description";
@@ -198,7 +197,7 @@
 "Search in Anais" = "Search in Anais";
 
 "All day Event" = "All day Event";
-"check for conflicts" = "check for conflicts";
+"check for conflicts" = "Check for conflicts";
 
 "Browse URL" = "Browse URL";
 
@@ -211,27 +210,27 @@
 
 /* Priorities */
 
-"prio_0" = "prio_0";
-"prio_1" = "prio_1";
-"prio_2" = "prio_2";
-"prio_3" = "prio_3";
-"prio_4" = "prio_4";
-"prio_5" = "prio_5";
-"prio_6" = "prio_6";
-"prio_7" = "prio_7";
-"prio_8" = "prio_8";
-"prio_9" = "prio_9";
+"prio_0" = "Not specified";
+"prio_1" = "High";
+"prio_2" = "High";
+"prio_3" = "High";
+"prio_4" = "High";
+"prio_5" = "Normal";
+"prio_6" = "Low";
+"prio_7" = "Low";
+"prio_8" = "Low";
+"prio_9" = "Low";
 
 /* access classes (privacy) */
-"privacy_PUBLIC" = "privacy_PUBLIC";
-"privacy_CONFIDENTIAL" = "privacy_CONFIDENTIAL";
-"privacy_PRIVATE" = "privacy_PRIVATE";
+"privacy_PUBLIC" = "Public";
+"privacy_CONFIDENTIAL" = "Confidential";
+"privacy_PRIVATE" = "Private";
 
 /* status type */
-"status_" = "status_";
-"status_TENTATIVE" = "status_TENTATIVE";
-"status_CONFIRMED" = "status_CONFIRMED";
-"status_CANCELLED" = "status_CANCELLED";
+"status_" = "Not specified";
+"status_TENTATIVE" = "Tentative";
+"status_CONFIRMED" = "Confirmed";
+"status_CANCELLED" = "Cancelled";
 
 /* Cycles */
 
@@ -321,7 +320,7 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Week View" = "Week View";
 "Month View" = "Month View";
 
-"eventPartStatModificationError" = "eventPartStatModificationError";
+"eventPartStatModificationError" = "Your participation status could not be modified.";
 
 /* menu */
 "New Event..." = "New Event...";
@@ -332,8 +331,8 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Workweek days only" = "Workweek days only";
 "Tasks in View" = "Tasks in View";
 
-"appointmentDeleteConfirmation" = "appointmentDeleteConfirmation";
-"taskDeleteConfirmation" = "taskDeleteConfirmation";
+"appointmentDeleteConfirmation" = "Erasing this event will be permanent.\\nWould you like to continue?";
+"taskDeleteConfirmation" = "Erasing this task will be permanent.\\nWould you like to continue?";
 
 /* Legend */
 "Required participant" = "Required participant";
@@ -356,5 +355,5 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Previous hour" = "Previous hour";
 "Next hour" = "Next hour";
 
-"closeThisWindowMessage" = "closeThisWindowMessage";
+"closeThisWindowMessage" = "Thank you! You may now close this window.";
 "Multicolumn Day View" = "Multicolumn Day View";

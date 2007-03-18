@@ -425,7 +425,7 @@ static BOOL sendEMailNotifications = NO;
   NSString *organizerEmail;
 
   component = [self component: NO];
-  organizerEmail = [[component organizer] email];
+  organizerEmail = [[component organizer] rfc822Email];
   if (component && [organizerEmail length] > 0)
     isOrganizerOrOwner
       = ([organizerEmail caseInsensitiveCompare: email] == NSOrderedSame);
