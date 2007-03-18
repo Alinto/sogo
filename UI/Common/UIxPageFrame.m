@@ -19,12 +19,14 @@
   02111-1307, USA.
 */
 
+#import "common.h"
+#import <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/WOComponent.h>
+
 #import <SOGoUI/UIxComponent.h>
 #import <SOGo/SOGoUser.h>
 
-#include "common.h"
-#include <NGObjWeb/SoComponent.h>
-#include "UIxPageFrame.h"
+#import "UIxPageFrame.h"
 
 @implementation UIxPageFrame
 
@@ -38,7 +40,8 @@
   return self;
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [item release];
   [title release];
   if (toolbar)
@@ -48,27 +51,32 @@
 
 /* accessors */
 
-- (void)setTitle:(NSString *)_value {
+- (void) setTitle: (NSString *) _value
+{
   ASSIGNCOPY(title, _value);
 }
 
-- (NSString *)title {
+- (NSString *) title
+{
   if ([self isUIxDebugEnabled])
     return title;
 
   return [self labelForKey: @"SOGo"];
 }
 
-- (void)setItem:(id)_item {
+- (void) setItem: (id) _item
+{
   ASSIGN(item, _item);
 }
 
-- (id)item {
+- (id) item
+{
   return item;
 }
 
-- (NSString *)ownerInContext {
-  return [[self clientObject] ownerInContext:[self context]];
+- (NSString *) ownerInContext
+{
+  return [[self clientObject] ownerInContext: nil];
 }
 
 - (NSString *) doctype
@@ -81,19 +89,20 @@
 
 /* Help URL/target */
 
-- (NSString *)helpURL
+- (NSString *) helpURL
 {
   return [NSString stringWithFormat: @"help/%@.html", title];
 }
 
-- (NSString *)helpWindowTarget
+- (NSString *) helpWindowTarget
 {
   return [NSString stringWithFormat: @"Help_%@", title];
 }
 
 /* notifications */
 
-- (void)sleep {
+- (void) sleep
+{
   [item release];
   item = nil;
   [super sleep];
@@ -107,22 +116,22 @@
   return [self relativePathToUserFolderSubPath: @""];
 }
 
-- (NSString *)relativeCalendarPath
+- (NSString *) relativeCalendarPath
 {
   return [self relativePathToUserFolderSubPath: @"Calendar/"];
 }
 
-- (NSString *)relativeContactsPath
+- (NSString *) relativeContactsPath
 {
   return [self relativePathToUserFolderSubPath: @"Contacts/"];
 }
 
-- (NSString *)relativeMailPath
+- (NSString *) relativeMailPath
 {
   return [self relativePathToUserFolderSubPath: @"Mail/"];
 }
 
-- (NSString *)logoffPath
+- (NSString *) logoffPath
 {
   return [self relativePathToUserFolderSubPath: @"logoff"];
 }
@@ -192,8 +201,8 @@
 {
   WOComponent *page;
   NSString *pageJSFilename;
-  
-  page     = [[self context] page];
+
+  page = [[self context] page];
   pageJSFilename = [NSString stringWithFormat: @"%@.css",
 			     NSStringFromClass([page class])];
 

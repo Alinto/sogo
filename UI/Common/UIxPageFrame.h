@@ -22,6 +22,8 @@
 #ifndef UIXPAGEFRAME_H
 #define UIXPAGEFRAME_H
 
+#import <SOGoUI/UIxComponent.h>
+
 @interface WOComponent (PopupExtension)
 
 - (BOOL) isPopup;
