@@ -107,7 +107,7 @@
             filename = @"SOGoTaskObjectAcceptOrDecline.toolbar";
         }
       else
-        filename = @"";
+        filename = @"SOGoComponentClose.toolbar";
     }
 
   return filename;

@@ -92,7 +92,7 @@
             filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
         }
       else
-        filename = @"";
+        filename = @"SOGoComponentClose.toolbar";
     }
 
   return filename;
