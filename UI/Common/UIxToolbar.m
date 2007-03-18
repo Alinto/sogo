@@ -158,7 +158,8 @@
   return tb;
 }
 
-- (id)toolbarConfig {
+- (id) toolbarConfig
+{
   id tb;
   
   if (toolbarConfig != nil)
@@ -167,7 +168,7 @@
   if (toolbar)
     tb = toolbar;
   else
-    tb = [[self clientObject] lookupName:@"toolbar" inContext:[self context]
+    tb = [[self clientObject] lookupName: @"toolbar" inContext:[self context]
                               acquire:NO];
 
   if ([tb isKindOfClass:[NSException class]]) {
@@ -177,11 +178,17 @@
     toolbarConfig = [[NSNull null] retain];
     return nil;
   }
-  
-  if ([tb isKindOfClass:[NSString class]])
-    tb = [self loadToolbarConfigFromResourceNamed:tb];
+
+  if ([tb isKindOfClass: [NSString class]])
+    {
+      if ([tb isEqualToString: @"none"])
+        tb = [NSNull null];
+      else
+        tb = [self loadToolbarConfigFromResourceNamed:tb];
+    }
   
   toolbarConfig = [tb retain];
+
   return toolbarConfig;
 }
 
@@ -238,6 +245,11 @@
     amount += [[tbConfig objectAtIndex: count] count];
 
   return (amount > 0);
+}
+
+- (BOOL) hasMenu
+{
+  return [[[self buttonInfo] valueForKey:@"hasMenu"] boolValue];
 }
 
 - (void) setToolbar: (NSString *) newToolbar

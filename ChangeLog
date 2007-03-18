@@ -1,5 +1,9 @@
 2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxToolbar.m ([UIxToolbar -toolbarConfig]): the
+	toolbar can have the special value "none" to indicate there is
+	none attached to the window.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -isOrganizer:emailorOwner:login]): new
 	method.
