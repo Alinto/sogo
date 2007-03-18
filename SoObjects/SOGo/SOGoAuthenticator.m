@@ -99,7 +99,7 @@ static SOGoAuthenticator *auth = nil;
 - (SOGoUser *) userInContext: (WOContext *)_ctx
 {
   static SOGoUser *anonymous = nil, *freebusy;
-  SoUser *user;
+  SOGoUser *user;
   NSArray *traversalPath;
   NSString *login;
 
