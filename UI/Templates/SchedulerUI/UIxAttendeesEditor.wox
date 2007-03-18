@@ -1,0 +1,92 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:toolbar="none"
+  const:popup="YES">
+  <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
+  <div id="attendeesView">
+    <div id="freeBusyView">
+      <table id="freeBusy"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:var="http://www.skyrix.com/od/binding"
+	xmlns:const="http://www.skyrix.com/od/constant"
+	xmlns:uix="OGo:uix"
+	xmlns:rsrc="OGo:url"
+	xmlns:label="OGo:label">
+	<thead>
+	  <tr class="freeBusyHeader1"
+	    ><th class="attendees"><!--space --></th
+	      ></tr>
+	  <tr class="freeBusyHeader2"
+	    ><th class="attendees"><!--space --></th
+	      ></tr>
+	  <tr class="freeBusyHeader3"
+	    ><th class="attendees"><!--space --></th
+	      ></tr>
+	</thead>
+
+	<tbody>
+	  <tr class="futureAttendee"
+	    ><td class="attendees"><input type="text" class="textField"
+		readonly="readonly" /></td
+	      ></tr>
+	  <tr class="attendeeModel"
+	    ><td class="attendees"><input type="text" class="textField" /></td
+	      ></tr>
+	</tbody>
+      </table>
+    </div>
+    <div id="freeBusyFooter">
+      <div id="legend" onmousedown="return false;">
+	<ul>
+	  <li><span class="colorBox free"><!-- spacer --></span
+	      ><var:string label:value="Free" /></li>
+	  <li><span class="colorBox busy"><!-- spacer --></span
+	      ><var:string label:value="Busy" /></li>
+	  <li><span class="colorBox maybe-busy"><!-- spacer --></span
+	      ><var:string label:value="Maybe busy" /></li>
+	  <li><span class="colorBox noFreeBusy"><!-- spacer --></span
+	      ><var:string label:value="No free-busy information" /></li>
+	</ul>
+      </div>
+      <div id="freeBusyButtons">
+        <a href="#" class="button _disabled"
+	  ><var:string label:value="Previous slot" /></a>
+        <a href="#" class="button _disabled"
+	  ><var:string label:value="Next slot" /></a><br />
+        <a href="#" class="button _disabled"
+	  ><var:string label:value="Previous hour" /></a>
+        <a href="#" class="button _disabled"
+	  ><var:string label:value="Next hour" /></a>
+      </div>
+      <div id="freeBusyReplicas">
+	<div><var:string label:value="From"
+            /><var:component className="UIxTimeDateControl"
+            const:controlID="startTime"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
+            /></div>
+	<div><var:string label:value="To"
+            /><var:component className="UIxTimeDateControl"
+            const:controlID="endTime"
+            const:dayStartHour="0"
+            const:dayEndHour="23"
+            /></div>
+      </div>
+      <div id="windowButtons">
+	<hr />
+	<a id="cancelButton" href="#" class="button"
+	  ><var:string label:value="Cancel"/></a>
+	<a id="okButton" href="#" class="button"
+	  ><var:string label:value="OK"/></a>
+      </div>
+    </div>
+  </div>
+</var:component>

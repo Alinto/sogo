@@ -1,0 +1,184 @@
+DIV#attendeesView
+{ position: absolute;
+  left: 1em;
+  right: 1em;
+  top: 1em;
+  bottom: 1em;
+  margin: 0px;
+  padding: 0px;
+  border: 0px; }
+
+DIV#freeBusyView
+{ position: static;
+  margin-left: 12.5em;
+  overflow: auto;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+
+TABLE#freeBusy TD,
+TABLE#freeBusy TH
+{ padding: 0px;
+  margin: 0px;
+  border: 0px; }
+
+TABLE#freeBusy TH.attendees,
+TABLE#freeBusy TD.attendees
+{ position: absolute;
+  padding: 0px .5em;
+  margin: 0px;
+  width: 11em;
+  border: 0px !important;
+  background: #dbdad5 !important;
+  overflow: hidden;
+  left: 0px; }
+
+TABLE#freeBusy TD.attendees IMG
+{ position: absolute;
+  left: 0em;
+  top: .5em; }
+
+TABLE#freeBusy TD.attendees INPUT
+{ width: 10em;
+  margin: 0px;
+  margin-left: 10px; }
+
+TABLE#freeBusy TR.freeBusyHeader2 TH
+{ font-weight: normal; }
+
+TABLE#freeBusy TR.freeBusyHeader1 TH,
+TABLE#freeBusy TR.freeBusyHeader2 TH,
+TABLE#freeBusy TR.freeBusyHeader3 TH
+{ text-align: left;
+  color: #777;
+  background: #fff;
+  border-collapse: collapse; }
+
+TABLE#freeBusy TR.freeBusyHeader2 TH
+{ width: 6em; }
+
+TABLE#freeBusy TR.freeBusyHeader3 TH
+{ border-bottom: 1px solid #cecbff; }
+
+TABLE#freeBusy TR.attendeeModel
+{ display: none; }
+
+TABLE#freeBusy TR.futureAttendee TD
+{ border-right: none; }
+
+TABLE#freeBusy TD
+{ border-bottom: 1px solid #cecbff;
+  border-right: 1px solid #cecbff;
+  height: 2em;
+  background-color: #fff; }
+
+TABLE#freeBusy TD.noFreeBusy
+{ background-color: #559;
+  border-right: 0px; }
+
+SPAN.freeBusyZoneElement
+{ display: block;
+  float: left;
+  width: 25%;
+  margin: 0px;
+  padding: 0px;
+  border: 0px; }
+
+TABLE#freeBusy TR.freeBusyHeader3 SPAN.freeBusyZoneElement
+{ height: .25em; }
+
+TABLE#freeBusy TD SPAN.freeBusyZoneElement
+{ height: 100%; }
+
+SPAN[class~="colorBox"].free,
+TABLE#freeBusy TD SPAN.freeBusyZoneElement
+{ background-color: #8ca6bd; }
+
+TABLE#freeBusy TH SPAN[class~="freeBusyZoneElement"].busy
+{ background-color: #c55 !important; }
+
+DIV#freeBusyFooter
+{ position: absolute;
+  height: 14em;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  line-height: 2em;
+  text-align: right; }
+
+DIV#legend
+{ margin-left: 1em;
+  text-align: left; }
+
+DIV#legend UL
+{ cursor: default;
+  float: left;
+  width: 30%;
+  margin: 0px;
+  padding: 0px;
+  line-height: 1.5em;
+  list-style-type: none;
+  list-style-image: none; }
+
+DIV#legend UL LI
+{ white-space: nowrap;
+  margin: 0px;
+  padding: 0px; }
+
+DIV#legend UL IMG
+{ margin-right: .5em; }
+
+DIV#legend UL LI SPAN.colorBox
+{ float: left;
+  margin-right: .5em; }
+
+SPAN.colorBox
+{ display: block;
+  float: right;
+  border: 1px solid #333;
+  margin: .12em;
+  width: 1em;
+  height: .75em; }
+
+SPAN[class~="colorBox"].busy,
+SPAN[class~="freeBusyZoneElement"].busy
+{ background-color: #5a6b79 !important; }
+
+SPAN[class~="colorBox"].maybe-busy,
+SPAN[class~="freeBusyZoneElement"].maybe-busy
+{ background-color: #adc0d0 !important; }
+
+SPAN[class~="colorBox"].noFreeBusy
+{ background-color: #559; }
+
+DIV#freeBusyButtons
+{ position: absolute;
+  top: 6em;
+  left: 0px;
+  width: 30em;
+  height: 4em;
+  text-align: center; }
+
+DIV#freeBusyButtons A.button
+{ width: 5em; }
+
+DIV#freeBusyReplicas
+{ position: absolute;
+  top: 6em;
+  right: 0px;
+  width: 30em;
+  height: 4em; }
+
+DIV#freeBusyReplicas LABEL
+{ line-height: 1.5em; }
+
+DIV#windowButtons
+{ position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 4em;
+  text-align: right; }

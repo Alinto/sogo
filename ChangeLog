@@ -1,5 +1,7 @@
 2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAttendeesEditor.m): new component.
+
 	* UI/Scheduler/UIxComponentEditor.m: no longer a superclass for
 	the task and appointment editors. Now a container component
 	handling the common elements of tasks and events.
