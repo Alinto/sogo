@@ -330,6 +330,9 @@ function onEditorOkClick(event) {
    parent$("attendeesEmails").value = attendeesEmails.join(",");
    window.opener.refreshAttendees();
 
+   updateParentDateFields("startTime", "startTime");
+   updateParentDateFields("endTime", "endTime");
+
    window.close();
 }
 
@@ -349,6 +352,20 @@ function synchronizeWithParent(srcWidgetName, dstWidgetName) {
 
    var srcMinute = parent$(srcWidgetName + "_time_minute");
    var dstMinute = $(dstWidgetName + "_time_minute");
+   dstMinute.value = srcMinute.value;
+}
+
+function updateParentDateFields(srcWidgetName, dstWidgetName) {
+   var srcDate = $(srcWidgetName + "_date");
+   var dstDate = parent$(dstWidgetName + "_date");
+   dstDate.value = srcDate.value;
+
+   var srcHour = $(srcWidgetName + "_time_hour");
+   var dstHour = parent$(dstWidgetName + "_time_hour");
+   dstHour.value = srcHour.value;
+
+   var srcMinute = $(srcWidgetName + "_time_minute");
+   var dstMinute = parent$(dstWidgetName + "_time_minute");
    dstMinute.value = srcMinute.value;
 }
 

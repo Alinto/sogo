@@ -859,6 +859,9 @@ DIV.monthView DIV.appointment
   padding: 1px;
   height: 1.5em; }
 
+DIV.monthView DIV.appointment DIV.text
+{ font-size: 80%; }
+
 DIV.daysView DIV[class~="appointment"].starts0
 { top: 0.000000%; }
 
