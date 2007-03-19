@@ -133,3 +133,7 @@ SPAN.content > INPUT
 
 LABEL#urlArea INPUT
 { position: static; }
+
+A#attendeesHref
+{ color: #00f;
+  text-decoration: underline; }
