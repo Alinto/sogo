@@ -26,6 +26,9 @@
 #include <NGCards/NGCards.h>
 #include "SOGoLRUCache.h"
 
+#warning we should rely on the LDAP sources instead...
+#define qualifierFormat @"mailNickname = %@"
+
 @interface AgenorUserManager (PrivateAPI)
 - (NGLdapConnection *)ldapConnection;
 
@@ -322,39 +325,54 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   return uid;
 }
 
-- (NSString *)getUIDForEmail:(NSString *)_email {
+- (NSString *) getUIDForEmail: (NSString *)_email
+{
   NSString *uid;
+  NSRange r;
+  NSString *domain;
+
+  uid = nil;
+  if ([_email length] > 0)
+    {
+      uid = [self _cachedUIDForEmail:_email];
+      if (!uid)
+	{
+	  if (useLDAP)
+	    uid = [self primaryGetAgenorUIDForEmail:_email];
+
+	  if (!uid)
+	    {    
+	      r = [_email rangeOfString:@"@"];
+	      if (r.length == 0)
+		return nil;
+    
+	      domain = [_email substringFromIndex:NSMaxRange(r)];
+	      if (![domain isEqualToString:defaultMailDomain])
+		uid = _email;
+	      else
+		uid = [_email substringToIndex:r.location];
+	    }
+	  if (uid)
+	    [self _cacheUID:uid forEmail:_email];
+	}
+    }
   
-  if ((uid = [self _cachedUIDForEmail:_email]) != nil)
-    return uid;
-    
-  if (useLDAP) {
-    uid = [self primaryGetAgenorUIDForEmail:_email];
-  }
-  else {
-    NSRange r;
-    NSString *domain;
-    
-    if(!_email || [_email length] == 0)
-      return nil;
-    
-    r = [_email rangeOfString:@"@"];
-    if (r.length == 0)
-      return nil;
-    
-    domain = [_email substringFromIndex:NSMaxRange(r)];
-    if (![domain isEqualToString:defaultMailDomain])
-      uid = _email;
-    else
-      uid = [_email substringToIndex:r.location];
-  }
-  
-  [self _cacheUID:uid forEmail:_email];
   return uid;
 }
 
-- (NSString *)getUIDForICalPerson:(iCalPerson *)_person {
-  return [self getUIDForEmail:[_person rfc822Email]];
+#warning big ugly hack. LDAP lookup should be fixed
+- (NSString *) getUIDForICalPerson: (iCalPerson *) _person
+{
+  NSString *domainString, *email, *uid;
+
+  domainString = [NSString stringWithFormat: @"@%@", defaultMailDomain];
+  email = [_person rfc822Email];
+  if ([email hasSuffix: domainString])
+    uid = [_person cn];
+  else
+    uid = [self getUIDForEmail: email];
+
+  return uid;
 }
 
   /* may insert NSNulls into returned array */
@@ -389,7 +407,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   NSString         *email;
   unsigned         count;
     
-  q = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _uid];
+  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
     
   conn       = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -434,28 +452,35 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   return email;
 }
 
-- (NSString *)getEmailForUID:(NSString *)_uid {
+- (NSString *)getEmailForUID:(NSString *)_uid
+{
   NSString *email;
+  NSRange r;
   
-  if (![_uid isNotNull] || [_uid length] == 0)
-    return nil;
-  if ((email = [self _cachedEmailForUID:_uid]) != nil)
-    return email;
-  
-  if (useLDAP) {
-    email = [self primaryGetEmailForAgenorUID:_uid];
-  }
-  else {
-    NSRange r;
-    
-    r = [_uid rangeOfString:@"@"];
-    email = (r.length > 0)
-      ? _uid
-      : [[_uid stringByAppendingString:@"@"]
-	       stringByAppendingString:defaultMailDomain];
-  }
-  
-  [self _cacheEmail:email forUID:_uid];
+  email = nil;
+
+  if ([_uid length] > 0)
+    {
+      email = [self _cachedEmailForUID: _uid];
+      if (!email)
+	{
+	  if (useLDAP)
+	    email = [self primaryGetEmailForAgenorUID:_uid];
+
+	  if (!email)
+	    {
+	      r = [_uid rangeOfString:@"@"];
+	      email = ((r.length > 0)
+		       ? _uid
+		       : [[_uid stringByAppendingString:@"@"]
+			   stringByAppendingString: defaultMailDomain]);
+	    }
+
+	  if (email)
+	    [self _cacheEmail: email forUID: _uid];
+	}
+    }
+
   return email;
 }
 
@@ -474,7 +499,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (cnAttrs == nil)
     cnAttrs = [[NSArray alloc] initWithObjects:@"cn", nil];
   
-  q = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _uid];
+  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
   
   conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -564,7 +589,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   NSEnumerator     *resultEnum;
   NGLdapEntry      *entry;
   
-  q = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _uid];
+  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
   
   conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -1031,7 +1056,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (attrs == nil)
     attrs = [[NSArray alloc] initWithObjects:changeInternetAccessAttrName, nil];
   
-  q = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _uid];
+  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
   
   conn       = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -1132,7 +1157,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (attrs == nil)
     attrs = [[NSArray alloc] initWithObjects:mailAutoresponderAttrName, nil];
 
-  q = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _uid];
+  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
   
   conn       = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
