@@ -429,6 +429,17 @@
     }
 }
 
+// TODO: add tentatively
+
+- (id) acceptOrDeclineAction: (BOOL) _accept
+{
+  [[self clientObject] changeParticipationStatus:
+                         _accept ? @"ACCEPTED" : @"DECLINED"
+                       inContext: [self context]];
+
+  return self;
+}
+
 - (id) acceptAction
 {
   return [self acceptOrDeclineAction:YES];
@@ -439,13 +450,28 @@
   return [self acceptOrDeclineAction:NO];
 }
 
-// TODO: add tentatively
-
-- (id) acceptOrDeclineAction: (BOOL) _accept
+- (id) changeStatusAction
 {
-  [[self clientObject] changeParticipationStatus:
-                         _accept ? @"ACCEPTED" : @"DECLINED"
-                       inContext: [self context]];
+  SOGoTaskObject *clientObject;
+  NSString *newStatus, *iCalString;
+
+  clientObject = [self clientObject];
+  todo = (iCalToDo *) [clientObject component: NO];
+  if (todo)
+    {
+      newStatus = [self queryParameterForKey: @"status"];
+      if ([newStatus intValue])
+	[todo setCompleted: [NSCalendarDate date]];
+      else
+	{
+	  [todo setCompleted: nil];
+	  [todo setPercentComplete: 0];
+	  [todo setStatus: @"IN-PROCESS"];
+	}
+
+      iCalString = [[clientObject calendar: NO] versitString];
+      [clientObject saveContentString: iCalString];
+    }
 
   return self;
 }

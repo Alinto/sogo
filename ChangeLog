@@ -1,5 +1,8 @@
 2007-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-changeStatusAction]): rewrote method.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-_handleAttendeesEdition]): make sure "attendeesNames" has a
 	length > 0 before computing the attendees. Otherwise there will be
