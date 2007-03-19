@@ -90,8 +90,7 @@ function updateResults(http) {
   }
 }
 
-function resetFreeBusyZone()
-{
+function resetFreeBusyZone() {
   var table = $("freeBusy");
   var row = table.tHead.rows[2];
   for (var i = 1; i < row.cells.length; i++) {
@@ -101,8 +100,7 @@ function resetFreeBusyZone()
   }
 }
 
-function redisplayFreeBusyZone()
-{
+function redisplayFreeBusyZone() {
   var table = $("freeBusy");
   var row = table.tHead.rows[2];
   var stDay = $("startTime_date").valueAsDate();
@@ -166,8 +164,7 @@ function redisplayFreeBusyZone()
   }
 }
 
-function newAttendee(event)
-{
+function newAttendee(event) {
   var table = $("freeBusy");
   var tbody = table.tBodies[0];
   var model = tbody.rows[tbody.rows.length - 1];
@@ -184,8 +181,7 @@ function newAttendee(event)
   input.focussed = true;
 }
 
-function checkAttendee()
-{
+function checkAttendee() {
   this.focussed = false;
   var th = this.parentNode.parentNode;
   var tbody = th.parentNode;
@@ -200,8 +196,7 @@ function checkAttendee()
   resetAttendeesValue();
 }
 
-function displayFreeBusyForNode(node)
-{
+function displayFreeBusyForNode(node) {
   var nodes = node.parentNode.parentNode.cells;
   if (node.uid) {
     for (var i = 1; i < nodes.length; i++) {
@@ -250,8 +245,7 @@ function setSlot(tds, nbr, status) {
   }
 }
 
-function updateFreeBusyData(http)
-{
+function updateFreeBusyData(http) {
   if (http.readyState == 4) {
     if (http.status == 200) {
       var node = http.callbackData;
@@ -268,8 +262,7 @@ function updateFreeBusyData(http)
   }
 }
 
-function resetAttendeesValue()
-{
+function resetAttendeesValue() {
   var table = $("freeBusy");
   var inputs = table.getElementsByTagName("input");
   var uids = new Array();
@@ -289,8 +282,7 @@ function resetAttendeesValue()
   inputs[inputs.length - 2].addEventListener("click", newAttendee, false);
 }
 
-function resetAllFreeBusys()
-{
+function resetAllFreeBusys() {
   var table = $("freeBusy");
   var inputs = table.getElementsByTagName("input");
 
@@ -374,8 +366,7 @@ function initializeTimeWidgets() {
    $("endTime_time_minute").addEventListener("change", onTimeWidgetChange, false);
 }
 
-function onTimeWidgetChange()
-{
+function onTimeWidgetChange() {
    redisplayFreeBusyZone();
 }
 

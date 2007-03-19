@@ -37,7 +37,7 @@ function newEvent(sender, type) {
   if (params.length > 0)
     urlstr += "?" + params.join("&");
 
-  window.open(urlstr, "", "width=463,height=600,resizable=0");
+  window.open(urlstr, "", "width=490,height=600,resizable=0");
 
   return false; /* stop following the link */
 }
@@ -51,7 +51,7 @@ function _editEventId(id, owner) {
   var urlstr = urlBase + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=463,height=600,resizable=0");
+                        "width=490,height=600,resizable=0");
   win.focus();
 }
 
@@ -80,8 +80,7 @@ function _batchDeleteEvents() {
                                                        events);
 }
 
-function deleteEvent()
-{
+function deleteEvent() {
   if (listOfSelection) {
     var nodes = listOfSelection.getSelectedRows();
 
@@ -178,8 +177,7 @@ function modifyEventCallback(http) {
   }
 }
 
-function deleteEventCallback(http)
-{
+function deleteEventCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     var nodes = http.callbackData;
@@ -201,8 +199,7 @@ function deleteEventCallback(http)
     log ("ajax fuckage");
 }
 
-function editDoubleClickedEvent(node)
-{
+function editDoubleClickedEvent(node) {
   _editEventId(node.getAttribute("id"),
                node.getAttribute("owner"));
   
@@ -226,8 +223,7 @@ function displayAppointment(event) {
   event.returnValue = false;
 }
 
-function onDaySelect(node)
-{
+function onDaySelect(node) {
   var day = node.getAttribute("day");
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
@@ -250,8 +246,7 @@ function onDaySelect(node)
   return false;
 }
 
-function onDateSelectorGotoMonth(node)
-{
+function onDateSelectorGotoMonth(node) {
   var day = node.getAttribute("date");
 
   changeDateSelectorDisplay(day, true);
@@ -259,8 +254,7 @@ function onDateSelectorGotoMonth(node)
   return false;
 }
 
-function onCalendarGotoDay(node)
-{
+function onCalendarGotoDay(node) {
   var day = node.getAttribute("date");
 
   changeDateSelectorDisplay(day);
@@ -269,16 +263,14 @@ function onCalendarGotoDay(node)
   return false;
 }
 
-function gotoToday()
-{
+function gotoToday() {
   changeDateSelectorDisplay('');
   changeCalendarDisplay();
 
   return false;
 }
 
-function setDateSelectorContent(content)
-{
+function setDateSelectorContent(content) {
   var div = $("dateSelectorView");
 
   div.innerHTML = content;
@@ -286,8 +278,7 @@ function setDateSelectorContent(content)
     restoreCurrentDaySelection(div);
 }
 
-function dateSelectorCallback(http)
-{
+function dateSelectorCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     document.dateSelectorAjaxRequest = null;
@@ -299,8 +290,7 @@ function dateSelectorCallback(http)
     log ("ajax fuckage");
 }
 
-function appointmentsListCallback(http)
-{
+function appointmentsListCallback(http) {
   var div = $("appointmentsListView");
 
   if (http.readyState == 4
@@ -319,8 +309,7 @@ function appointmentsListCallback(http)
     log ("ajax fuckage");
 }
 
-function tasksListCallback(http)
-{
+function tasksListCallback(http) {
   var div = $("tasksListView");
 
   if (http.readyState == 4
@@ -343,8 +332,7 @@ function tasksListCallback(http)
     log ("ajax fuckage");
 }
 
-function restoreCurrentDaySelection(div)
-{
+function restoreCurrentDaySelection(div) {
   var elements = div.getElementsByTagName("a");
   var day = null;
   var i = 9;
@@ -369,8 +357,7 @@ function restoreCurrentDaySelection(div)
     }
 }
 
-function changeDateSelectorDisplay(day, keepCurrentDay)
-{
+function changeDateSelectorDisplay(day, keepCurrentDay) {
   var url = ApplicationBaseURL + "dateselector";
   if (day)
     url += "?day=" + day;
@@ -399,8 +386,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay)
   }
 }
 
-function changeCalendarDisplay(time, newView)
-{
+function changeCalendarDisplay(time, newView) {
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
   selectedCalendarCell = null;
@@ -442,28 +428,23 @@ function _ensureView(view) {
   return false;
 }
 
-function onDayOverview()
-{
+function onDayOverview() {
   return _ensureView("dayview");
 }
 
-function onMulticolumnDayOverview()
-{
+function onMulticolumnDayOverview() {
   return _ensureView("multicolumndayview");
 }
 
-function onWeekOverview()
-{
+function onWeekOverview() {
   return _ensureView("weekview");
 }
 
-function onMonthOverview()
-{
+function onMonthOverview() {
   return _ensureView("monthview");
 }
 
-function scrollDayView(hour)
-{
+function scrollDayView(hour) {
   var rowNumber;
   if (hour) {
     if (hour.length == 3)
@@ -490,8 +471,7 @@ function onClickableCellsDblClick(event) {
   event.returnValue = false;
 }
 
-function calendarDisplayCallback(http)
-{
+function calendarDisplayCallback(http) {
   var div = $("calendarView");
 
 //   log ("calendardisplaycallback: " + div);
@@ -561,8 +541,7 @@ function popupCalendar(node) {
    return false;
 }
 
-function onAppointmentContextMenu(event, element)
-{
+function onAppointmentContextMenu(event, element) {
   var topNode = $("appointmentsList");
 //   log(topNode);
 
@@ -581,8 +560,7 @@ function onAppointmentContextMenu(event, element)
   element.select();
 }
 
-function onAppointmentContextMenuHide(event)
-{
+function onAppointmentContextMenuHide(event) {
   var topNode = $("appointmentsList");
 
   if (topNode.menuSelectedEntry) {
@@ -655,8 +633,7 @@ function refreshTasks() {
   return _loadTasksHref("taskslist?hide-completed=" + hideCompletedTasks);
 }
 
-function refreshAppointmentsAndDisplay()
-{
+function refreshAppointmentsAndDisplay() {
   refreshAppointments();
   changeCalendarDisplay();
 }
@@ -670,8 +647,7 @@ function onListFilterChange() {
   return refreshAppointments();
 }
 
-function onAppointmentClick(event)
-{
+function onAppointmentClick(event) {
   var node = event.target.getParentWithTagName("tr");
   var day = node.getAttribute("day");
   var hour = node.getAttribute("hour");
@@ -682,8 +658,7 @@ function onAppointmentClick(event)
   return onRowClick(event);
 }
 
-function selectMonthInMenu(menu, month)
-{
+function selectMonthInMenu(menu, month) {
   var entries = menu.childNodes[1].childNodesWithTag("LI");
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
@@ -695,8 +670,7 @@ function selectMonthInMenu(menu, month)
   }
 }
 
-function selectYearInMenu(menu, month)
-{
+function selectYearInMenu(menu, month) {
   var entries = menu.childNodes[1].childNodes;
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
@@ -710,8 +684,7 @@ function selectYearInMenu(menu, month)
   }
 }
 
-function popupMonthMenu(event, menuId)
-{
+function popupMonthMenu(event, menuId) {
   var node = event.target;
 
   if (event.button == 0) {
@@ -740,8 +713,7 @@ function popupMonthMenu(event, menuId)
   }
 }
 
-function onMonthMenuItemClick(node)
-{
+function onMonthMenuItemClick(node) {
   var month = '' + node.getAttribute("month");
   var year = '' + $("yearLabel").innerHTML;
   
@@ -832,8 +804,7 @@ function findMonthCalendarSelectedCell(daysContainer) {
    }
 }
 
-function changeMonthCalendarDisplayOfSelectedDay(node)
-{
+function changeMonthCalendarDisplayOfSelectedDay(node) {
    var daysContainer = node.parentNode;
    if (!daysContainer.selectedCell)
       findMonthCalendarSelectedCell(daysContainer);
@@ -844,15 +815,13 @@ function changeMonthCalendarDisplayOfSelectedDay(node)
    node.addClassName("selectedDay");
 }
 
-function onHideCompletedTasks(node)
-{
+function onHideCompletedTasks(node) {
   hideCompletedTasks = (node.checked ? 1 : 0);
 
   return refreshTasks();
 }
 
-function updateTaskStatus(node)
-{
+function updateTaskStatus(node) {
   var taskId = node.parentNode.getAttribute("id");
   var taskOwner = node.parentNode.getAttribute("owner");
   var newStatus = (node.checked ? 1 : 0);
@@ -877,8 +846,7 @@ function updateTaskStatus(node)
   return false;
 }
 
-function updateCalendarStatus()
-{
+function updateCalendarStatus() {
   var list = new Array();
 
   var clist = $("calendarsList");
@@ -904,8 +872,7 @@ function updateCalendarStatus()
   return false;
 }
 
-function calendarUidsList()
-{
+function calendarUidsList() {
   var list = "";
 
   var nodes = $("uixselector-calendarsList-display").childNodesWithTag("li");
@@ -937,8 +904,7 @@ function calendarUidsList()
 //   }
 // }
 
-function inhibitMyCalendarEntry()
-{
+function inhibitMyCalendarEntry() {
   var clist = $("calendarsList");
   var nodes = clist.childNodes[5].childNodes;
   var done = false;
@@ -994,8 +960,7 @@ function ensureSelfIfPresent() {
   }
 }
 
-function updateCalendarsList(method)
-{
+function updateCalendarsList(method) {
   ensureSelfIfPresent();
   var url = (ApplicationBaseURL + "updateCalendars?ids="
              + calendarUidsList());
@@ -1036,8 +1001,7 @@ function updateCalendarsList(method)
   }
 }
 
-function addContact(tag, fullContactName, contactId, contactName, contactEmail)
-{
+function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   var uids = $("uixselector-calendarsList-uidList");
 //   log("addContact");
   if (contactId)

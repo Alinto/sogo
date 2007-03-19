@@ -221,8 +221,7 @@ function reopenToRemoveLocationBar() {
 
 /* mail list reply */
 
-function openMessageWindowsForSelection(action)
-{
+function openMessageWindowsForSelection(action) {
   if (document.body.hasClassName("popup"))
     win = openMessageWindow(window.messageId,
                             window.messageURL + "/" + action /* url */);
@@ -266,16 +265,14 @@ function mailListMarkMessage(event) {
 
 var oldMaillistHighlight = null; // to remember deleted/selected style
 
-function ml_highlight(sender)
-{
+function ml_highlight(sender) {
   oldMaillistHighlight = sender.className;
   if (oldMaillistHighlight == "tableview_highlight")
     oldMaillistHighlight = null;
   sender.className = "tableview_highlight";
 }
 
-function ml_lowlight(sender)
-{
+function ml_lowlight(sender) {
   if (oldMaillistHighlight) {
     sender.className = oldMaillistHighlight;
     oldMaillistHighlight = null;
@@ -418,8 +415,7 @@ function refreshMailbox() {
   return false;
 }
 
-function openMailbox(mailbox, reload)
-{
+function openMailbox(mailbox, reload) {
   if (mailbox != currentMailbox || reload) {
     currentMailbox = mailbox;
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
@@ -478,8 +474,7 @@ function openMailboxAtIndex(element) {
   return false;
 }
 
-function messageListCallback(http)
-{
+function messageListCallback(http) {
   var div = $('mailboxContent');
 
   if (http.readyState == 4
@@ -498,8 +493,7 @@ function messageListCallback(http)
     log ("ajax fuckage");
 }
 
-function onMessageContextMenu(event)
-{
+function onMessageContextMenu(event) {
   var menu = $('messageListMenu');
   menu.addEventListener("hideMenu", onMessageContextMenuHide, false);
   onMenuClick(event, 'messageListMenu');
@@ -513,8 +507,7 @@ function onMessageContextMenu(event)
   this.select();
 }
 
-function onMessageContextMenuHide(event)
-{
+function onMessageContextMenuHide(event) {
   var topNode = $('messageList');
 
   if (topNode.menuSelectedEntry) {
@@ -529,8 +522,7 @@ function onMessageContextMenuHide(event)
   }
 }
 
-function onFolderMenuClick(event)
-{
+function onFolderMenuClick(event) {
   var onhide, menuName;
   
   var menutype = this.parentNode.getAttribute("datatype");
@@ -563,8 +555,7 @@ function onFolderMenuClick(event)
   this.select();
 }
 
-function onFolderMenuHide(event)
-{
+function onFolderMenuHide(event) {
   var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
@@ -590,8 +581,7 @@ function deleteCachedMessage(messageId) {
       counter++;
 }
 
-function getCachedMessage(idx)
-{
+function getCachedMessage(idx) {
   var message = null;
   var counter = 0;
 
@@ -606,8 +596,7 @@ function getCachedMessage(idx)
   return message;
 }
 
-function storeCachedMessage(cachedMessage)
-{
+function storeCachedMessage(cachedMessage) {
   var oldest = -1;
   var timeOldest = -1;
   var counter = 0;
@@ -631,8 +620,7 @@ function storeCachedMessage(cachedMessage)
   cachedMessages[oldest] = cachedMessage;
 }
 
-function onMessageSelectionChange()
-{
+function onMessageSelectionChange() {
   var rows = this.getSelectedRowsId();
   if (rows.length == 1) {
     var idx = rows[0].substr(4);
@@ -644,8 +632,7 @@ function onMessageSelectionChange()
   }
 }
 
-function loadMessage(idx)
-{
+function loadMessage(idx) {
   var cachedMessage = getCachedMessage(idx);
 
   if (document.messageAjaxRequest) {
@@ -667,8 +654,7 @@ function loadMessage(idx)
   }
 }
 
-function messageCallback(http)
-{
+function messageCallback(http) {
   var div = $('messageContent');
 
   if (http.readyState == 4
@@ -689,8 +675,7 @@ function messageCallback(http)
     log ("ajax fuckage");
 }
 
-function processMailboxMenuAction(mailbox)
-{
+function processMailboxMenuAction(mailbox) {
   var currentNode, upperNode;
   var mailboxName;
   var action;
@@ -742,13 +727,11 @@ function moveTo(uri) {
   alert("MoveTo: " + uri);
 }
 
-function deleteSelectedMails()
-{
+function deleteSelectedMails() {
 }
 
 /* message menu entries */
-function onMenuOpenMessage(event)
-{
+function onMenuOpenMessage(event) {
   var node = getParentMenu(event.target).menuTarget.parentNode;
   var msgId = node.getAttribute('id').substr(4);
 
@@ -792,8 +775,7 @@ function newEmailTo(sender) {
   return openMailTo(sender.parentNode.parentNode.menuTarget.innerHTML);
 }
 
-function expandUpperTree(node)
-{
+function expandUpperTree(node) {
   var currentNode = node.parentNode;
 
   while (currentNode.className != "dtree")
@@ -812,8 +794,7 @@ function expandUpperTree(node)
     }
 }
 
-function initMailboxSelection(mailboxName)
-{
+function initMailboxSelection(mailboxName) {
   currentMailbox = mailboxName;
   log("initMailboxSelection: " + mailboxName);
   var tree = $("d");
@@ -833,8 +814,7 @@ function initMailboxSelection(mailboxName)
   }
 }
 
-function onHeaderClick(event)
-{
+function onHeaderClick(event) {
   if (document.messageListAjaxRequest) {
     document.messageListAjaxRequest.aborted = true;
     document.messageListAjaxRequest.abort();
@@ -848,8 +828,7 @@ function onHeaderClick(event)
   event.preventDefault();
 }
 
-function onSearchFormSubmit()
-{
+function onSearchFormSubmit() {
   log ("search not implemented");
 
   return false;

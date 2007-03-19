@@ -84,8 +84,7 @@ function validateEditorInput(sender) {
   return true;
 }
 
-function onContactsFolderTreeItemClick(element)
-{
+function onContactsFolderTreeItemClick(element) {
   var topNode = $('d');
   var contactsFolder = element.parentNode.getAttribute("dataname");
 
@@ -103,8 +102,7 @@ function CurrentContactFolderURL() {
           : ApplicationBaseURL + currentContactFolder);
 }
 
-function openContactsFolder(contactsFolder, params, external)
-{
+function openContactsFolder(contactsFolder, params, external) {
   if (contactsFolder != currentContactFolder || params) {
      if (contactsFolder == currentContactFolder) {
         var contactsList = $("contactsList");
@@ -147,8 +145,7 @@ function openContactsFolderAtIndex(element) {
     = triggerAjaxRequest(url, contactsListCallback);
 }
 
-function contactsListCallback(http)
-{
+function contactsListCallback(http) {
   var div = $("contactsListContent");
 
   if (http.readyState == 4
@@ -166,8 +163,7 @@ function contactsListCallback(http)
     log ("ajax fuckage 1");
 }
 
-function onContactFoldersContextMenu(event)
-{
+function onContactFoldersContextMenu(event) {
   var menu = $("contactFoldersMenu");
   menu.addEventListener("hideMenu", onContactFoldersContextMenuHide, false);
   onMenuClick(event, "contactFoldersMenu");
@@ -181,8 +177,7 @@ function onContactFoldersContextMenu(event)
   this.select();
 }
 
-function onContactContextMenu(event, element)
-{
+function onContactContextMenu(event, element) {
   var menu = $("contactMenu");
   menu.addEventListener("hideMenu", onContactContextMenuHide, false);
   onMenuClick(event, "contactMenu");
@@ -196,8 +191,7 @@ function onContactContextMenu(event, element)
   element.select();
 }
 
-function onContactContextMenuHide(event)
-{
+function onContactContextMenuHide(event) {
   var topNode = $("contactsList");
 
   if (topNode.menuSelectedEntry) {
@@ -212,8 +206,7 @@ function onContactContextMenuHide(event)
   }
 }
 
-function onContactFoldersContextMenuHide(event)
-{
+function onContactFoldersContextMenuHide(event) {
   var topNode = $("contactFolders");
 
   if (topNode.menuSelectedEntry) {
@@ -228,8 +221,7 @@ function onContactFoldersContextMenuHide(event)
   }
 }
 
-function onFolderMenuHide(event)
-{
+function onFolderMenuHide(event) {
   var topNode = $('d');
 
   if (topNode.menuSelectedEntry) {
@@ -240,8 +232,7 @@ function onFolderMenuHide(event)
     topNode.selectedEntry.select();
 }
 
-function loadContact(idx)
-{
+function loadContact(idx) {
   if (document.contactAjaxRequest) {
     document.contactAjaxRequest.aborted = true;
     document.contactAjaxRequest.abort();
@@ -259,8 +250,7 @@ function loadContact(idx)
   }
 }
 
-function contactLoadCallback(http)
-{
+function contactLoadCallback(http) {
   var div = $('contactView');
 
   if (http.readyState == 4
@@ -304,15 +294,13 @@ function moveTo(uri) {
 }
 
 /* contact menu entries */
-function onContactRowClick(event, node)
-{
+function onContactRowClick(event, node) {
   loadContact(node.getAttribute('id'));
 
   return onRowClick(event);
 }
 
-function onContactRowDblClick(event, node)
-{
+function onContactRowDblClick(event, node) {
   var contactId = node.getAttribute('id');
 
   openContactWindow(null,
@@ -322,8 +310,7 @@ function onContactRowDblClick(event, node)
   return false;
 }
 
-function onMenuEditContact(event, node)
-{
+function onMenuEditContact(event, node) {
   var node = getParentMenu(node).menuTarget.parentNode;
   var contactId = node.getAttribute('id');
 
@@ -334,8 +321,7 @@ function onMenuEditContact(event, node)
   return false;
 }
 
-function onMenuWriteToContact(event, node)
-{
+function onMenuWriteToContact(event, node) {
   var node = getParentMenu(node).menuTarget.parentNode;
   var contactId = node.getAttribute('id');
 
@@ -345,15 +331,13 @@ function onMenuWriteToContact(event, node)
   return false;
 }
 
-function onMenuDeleteContact(event, node)
-{
+function onMenuDeleteContact(event, node) {
   uixDeleteSelectedContacts(node);
 
   return false;
 }
 
-function onToolbarEditSelectedContacts(event)
-{
+function onToolbarEditSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
 
@@ -366,8 +350,7 @@ function onToolbarEditSelectedContacts(event)
   return false;
 }
 
-function onToolbarWriteToSelectedContacts(event)
-{
+function onToolbarWriteToSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
 
@@ -378,8 +361,7 @@ function onToolbarWriteToSelectedContacts(event)
   return false;
 }
 
-function uixDeleteSelectedContacts(sender)
-{
+function uixDeleteSelectedContacts(sender) {
   var failCount = 0;
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
@@ -432,8 +414,7 @@ function newEmailTo(sender) {
   return false; /* stop following the link */
 }
 
-function onHeaderClick(event)
-{
+function onHeaderClick(event) {
   if (document.contactsListAjaxRequest) {
     document.contactsListAjaxRequest.aborted = true;
     document.contactsListAjaxRequest.abort();
@@ -447,8 +428,7 @@ function onHeaderClick(event)
   event.preventDefault();
 }
 
-function registerDraggableMessageNodes()
-{
+function registerDraggableMessageNodes() {
   log ("can we drag...");
 }
 
@@ -459,8 +439,7 @@ function newContact(sender) {
   return false; /* stop following the link */
 }
 
-function onFolderSelectionChange()
-{
+function onFolderSelectionChange() {
   var folderList = $("contactFolders");
   var nodes = folderList.getSelectedNodes();
   $("contactView").innerHTML = '';
@@ -481,8 +460,7 @@ function onFolderSelectionChange()
   }
 }
 
-function onSearchFormSubmit()
-{
+function onSearchFormSubmit() {
   var searchValue = $("searchValue");
 
   openContactsFolder(currentContactFolder, "search=" + searchValue.value);
@@ -490,8 +468,7 @@ function onSearchFormSubmit()
   return false;
 }
 
-function onConfirmContactSelection(tag)
-{
+function onConfirmContactSelection(tag) {
   var folderLi = $(currentContactFolder);
   var currentContactFolderName = folderLi.innerHTML;
   var selectorList = null;

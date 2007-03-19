@@ -1,7 +1,6 @@
 var contactSelectorAction = 'mailer-contacts';
 
-function addContact(tag, fullContactName, contactId, contactName, contactEmail)
-{
+function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   if (!mailIsRecipient(contactEmail)) {
     var neededOptionValue = 0;
     if (tag == "cc")

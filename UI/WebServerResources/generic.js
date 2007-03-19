@@ -35,8 +35,7 @@ var activeAjaxRequests = 0;
 var allDocumentElements = null;
 
 /* a W3C compliant document.all */
-function getAllScopeElements(scope)
-{
+function getAllScopeElements(scope) {
   var elements = new Array();
 
   for (var i = 0; i < scope.childNodes.length; i++)
@@ -53,8 +52,7 @@ function getAllScopeElements(scope)
   return elements;
 }
 
-function getAllElements(scope)
-{
+function getAllElements(scope) {
   var elements;
 
   if (scope == null)
@@ -774,8 +772,7 @@ function popupToolbarMenu(event, menuId) {
 
 /* contact selector */
 
-function onContactAdd(node)
-{
+function onContactAdd(node) {
   var selector = null;
   var selectorURL = '?popup=YES';
   if (node) {
@@ -830,8 +827,7 @@ function listRowMouseDownHandler(event) {
 }
 
 /* tabs */
-function initTabs()
-{
+function initTabs() {
   var containers = document.getElementsByClassName("tabsContainer");
   for (var x = 0; x < containers.length; x++) {
     var container = containers[x];

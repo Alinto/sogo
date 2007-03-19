@@ -126,8 +126,7 @@ function toggleCycleVisibility(node, nodeName, hiddenValue) {
   }
 }
 
-function addContact(tag, fullContactName, contactId, contactName, contactEmail)
-{
+function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   var uids = $('uixselector-participants-uidList');
   log ("contactId: " + contactId);
   if (contactId)
