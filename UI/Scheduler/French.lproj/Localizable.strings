@@ -229,9 +229,13 @@
 
 /* status type */
 "status_" = "Non-spécifié";
+"status_NOT-SPECIFIED" = "Non spécifié";
 "status_TENTATIVE" = "Tentative";
 "status_CONFIRMED" = "Confirmé";
 "status_CANCELLED" = "Annulé";
+"status_NEEDS-ACTION" = "En attente";
+"status_IN-PROCESS" = "En cours";
+"status_COMPLETED" = "Complété le";
 
 /* Cycles */
 
@@ -295,12 +299,6 @@
 "reminder_2_DAYS_BEFORE" = "2 jours avant";
 "reminder_1_WEEK_BEFORE" = "1 semaine avant";
 "reminder_CUSTOM" = "Personnaliser...";
-
-"status_NOT-SPECIFIED" = "Non spécifié";
-"status_NEEDS-ACTION" = "En attente";
-"status_IN-PROCESS" = "En cours";
-"status_COMPLETED" = "Complété le";
-"status_CANCELLED" = "Annulé";
 
 /* validation errors */
 

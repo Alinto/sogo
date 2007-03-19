@@ -228,9 +228,13 @@
 
 /* status type */
 "status_" = "Not specified";
+"status_NOT-SPECIFIED" = "Not specified";
 "status_TENTATIVE" = "Tentative";
 "status_CONFIRMED" = "Confirmed";
 "status_CANCELLED" = "Cancelled";
+"status_NEEDS-ACTION" = "Needs Action";
+"status_IN-PROCESS" = "In Process";
+"status_COMPLETED" = "Completed on";
 
 /* Cycles */
 

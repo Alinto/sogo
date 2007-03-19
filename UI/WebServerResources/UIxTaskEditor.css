@@ -49,13 +49,13 @@ SPAN.checkBoxList SPAN.content LABEL
 SPAN.content
 { position: absolute;
   top: -.25em;
-  left: 7em;
+  left: 6em;
   right: 1em; }
 
 TEXTAREA
 { position: absolute;
   top: 0px;
-  left: 7em;
+  left: 6em;
   vertical-align: bottom;
   bottom: 1em;
   right: 1em;
