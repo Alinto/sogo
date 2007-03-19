@@ -4,6 +4,9 @@
 	-_handleAttendeesEdition]): make sure "attendeesNames" has a
 	length > 0 before computing the attendees. Otherwise there will be
 	an invalid empty entry.
+	([UIxComponentEditor -_handleOrganizer]): new method that adds the
+	organizer when there are attendees and remove it when the
+	attendees are removed.
 
 2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
