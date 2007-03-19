@@ -302,6 +302,16 @@ function initializeWindowButtons() {
 
    okButton.addEventListener("click", onEditorOkClick, false);
    cancelButton.addEventListener("click", onEditorCancelClick, false);
+
+   var buttons = $("freeBusyViewButtons").childNodesWithTag("a");
+   for (var i = 0; i < buttons.length; i++)
+      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
+   buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
+   for (var i = 0; i < buttons.length; i++)
+      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
+   buttons = $("freeBusyButtons").childNodesWithTag("a");
+   for (var i = 0; i < buttons.length; i++)
+      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
 }
 
 function onEditorOkClick(event) {

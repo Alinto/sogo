@@ -299,6 +299,12 @@
 "reminder_1_WEEK_BEFORE" = "1 week before";
 "reminder_CUSTOM" = "Custom...";
 
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
 /* validation errors */
 
 validate_notitle           = "No title is set, continue?";

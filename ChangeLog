@@ -1,5 +1,8 @@
 2007-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAttendeesEditor.m ([UIxAttendeesEditor
+	-zoomList]): new method that returns the list of available zoom factors.
+
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
 	-changeStatusAction]): rewrote method.
 

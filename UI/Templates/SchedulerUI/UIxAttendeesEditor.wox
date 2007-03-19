@@ -12,6 +12,20 @@
   const:popup="YES">
   <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
   <div id="attendeesView">
+    <div id="freeBusyViewButtons">
+      <var:string label:value="Suggest time slot:"/>
+      <a href="#" class="button _disabled"
+	><var:string label:value="Previous slot" /></a>
+      <a href="#" class="button _disabled"
+	><var:string label:value="Next slot" /></a>
+    </div>
+    <div id="freeBusyZoomButtons">
+      <var:string label:value="Zoom:"/>
+      <a href="#" class="button _disabled"><var:string label:value="-" /></a>
+      <var:popup list="zoomList" item="item"
+	string="itemZoomText" selection="zoom"/>
+      <a href="#" class="button _disabled"><var:string label:value="+" /></a>
+    </div>
     <div id="freeBusyView">
       <table id="freeBusy"
 	xmlns="http://www.w3.org/1999/xhtml"
@@ -57,10 +71,6 @@
 	</ul>
       </div>
       <div id="freeBusyButtons">
-        <a href="#" class="button _disabled"
-	  ><var:string label:value="Previous slot" /></a>
-        <a href="#" class="button _disabled"
-	  ><var:string label:value="Next slot" /></a><br />
         <a href="#" class="button _disabled"
 	  ><var:string label:value="Previous hour" /></a>
         <a href="#" class="button _disabled"
