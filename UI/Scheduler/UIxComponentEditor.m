@@ -761,27 +761,55 @@
   iCalPerson *currentAttendee;
 
   newAttendees = [NSMutableArray new];
-  names = [attendeesNames componentsSeparatedByString: @","];
-  emails = [attendeesEmails componentsSeparatedByString: @","];
-  max = [emails count];
-  for (count = 0; count < max; count++)
+  if ([attendeesNames length] > 0)
     {
-      currentEmail = [emails objectAtIndex: count];
-      currentAttendee = [component findParticipantWithEmail: currentEmail];
-      if (!currentAttendee)
-        {
-          currentAttendee = [iCalPerson elementWithTag: @"attendee"];
-          [currentAttendee setCn: [names objectAtIndex: count]];
-          [currentAttendee setEmail: currentEmail];
-          [currentAttendee setRole: @"REQ-PARTICIPANT"];
-          [currentAttendee
-            setParticipationStatus: iCalPersonPartStatNeedsAction];
-        }
-      [newAttendees addObject: currentAttendee];
+      names = [attendeesNames componentsSeparatedByString: @","];
+      emails = [attendeesEmails componentsSeparatedByString: @","];
+      max = [emails count];
+      for (count = 0; count < max; count++)
+	{
+	  currentEmail = [emails objectAtIndex: count];
+	  currentAttendee = [component findParticipantWithEmail: currentEmail];
+	  if (!currentAttendee)
+	    {
+	      currentAttendee = [iCalPerson elementWithTag: @"attendee"];
+	      [currentAttendee setCn: [names objectAtIndex: count]];
+	      [currentAttendee setEmail: currentEmail];
+	      [currentAttendee setRole: @"REQ-PARTICIPANT"];
+	      [currentAttendee
+		setParticipationStatus: iCalPersonPartStatNeedsAction];
+	    }
+	  [newAttendees addObject: currentAttendee];
+	}
     }
 
   [component setAttendees: newAttendees];
   [newAttendees release];
+}
+
+- (void) _handleOrganizer
+{
+  NSString *organizerEmail;
+
+  organizerEmail = [[component organizer] email];
+  if ([organizerEmail length] == 0)
+    {
+      if ([[component attendees] count] > 0)
+	{
+	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+	  [organizer setCn: [self cnForUser]];
+	  [organizer setEmail: [self emailForUser]];
+	  [component setOrganizer: organizer];
+	}
+    }
+  else
+    {
+      if ([[component attendees] count] == 0)
+	{
+	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+	  [component setOrganizer: organizer];
+	}
+    }
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
@@ -796,18 +824,15 @@
   [component setLocation: location];
   [component setComment: comment];
   [component setUrl: url];
+  [self _handleAttendeesEdition];
+  [self _handleOrganizer];
   if ([[self clientObject] isNew])
     {
-      ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-      [organizer setCn: [self cnForUser]];
-      [organizer setEmail: [self emailForUser]];
-      [component setOrganizer: organizer];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
       [component setPriority: @"0"];
     }
   [component setLastModified: now];
-  [self _handleAttendeesEdition];
 }
 
 @end

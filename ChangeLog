@@ -1,3 +1,10 @@
+2007-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_handleAttendeesEdition]): make sure "attendeesNames" has a
+	length > 0 before computing the attendees. Otherwise there will be
+	an invalid empty entry.
+
 2007-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxAttendeesEditor.m): new component.
