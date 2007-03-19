@@ -32,8 +32,6 @@ SchedulerUI_OBJC_FILES =		\
 					\
 	UIxAttendeesEditor.m		\
 	UIxComponentEditor.m		\
-	UIxFreeBusyUserSelector.m	\
-	UIxFreeBusyUserSelectorTable.m	\
 	UIxAppointmentView.m		\
 	UIxAppointmentEditor.m		\
 	UIxAppointmentProposal.m	\
