@@ -1,7 +1,7 @@
 ( /* the toolbar groups -*-cperl-*- */
   ( { link = "#";
       isSafe = NO;
-      label = "Cancel";
+      label = "Close";
       onclick = "window.close(); return false;";
-      image = "tb-ab-delete-flat-24x24.png"; } )
+      image = "tb-mail-stop-flat-24x24.png"; } )
 )

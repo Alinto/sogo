@@ -363,16 +363,6 @@
     [event setTransparency: @"OPAQUE"];
 }
 
-- (id) acceptAction
-{
-  return [self acceptOrDeclineAction:YES];
-}
-
-- (id) declineAction
-{
-  return [self acceptOrDeclineAction:NO];
-}
-
 // TODO: add tentatively
 
 - (id) acceptOrDeclineAction: (BOOL) _accept
@@ -382,6 +372,16 @@
                        inContext: [self context]];
 
   return self;
+}
+
+- (id) acceptAction
+{
+  return [self acceptOrDeclineAction:YES];
+}
+
+- (id) declineAction
+{
+  return [self acceptOrDeclineAction:NO];
 }
 
 @end
