@@ -65,6 +65,7 @@
 - (NSString *)outlookFolderClass;
 
 - (BOOL) create;
+- (NSException *) delete;
 
 @end
 

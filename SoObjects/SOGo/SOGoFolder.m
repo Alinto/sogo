@@ -128,6 +128,11 @@
   return (result == nil);
 }
 
+- (NSException *) delete
+{
+  return [[self folderManager] deleteFolderAtPath: ocsPath];
+}
+
 - (NSArray *)fetchContentObjectNames {
   NSArray *fields, *records;
   
