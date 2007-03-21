@@ -179,6 +179,14 @@
   return @"vcard-collection";
 }
 
+- (NSException *) delete
+{
+  return (([nameInContainer isEqualToString: @"personal"])
+	  ? [NSException exceptionWithHTTPStatus: 403
+			 reason: @"the 'personal' folder cannot be deleted"]
+	  : [super delete]);
+}
+
 // /* GET */
 
 // - (id) GETAction: (id)_ctx

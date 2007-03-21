@@ -1,5 +1,9 @@
 2007-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-delete]): override method to refuse the deletion of the folder if
+	its nameInContainer is "personal".
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -delete]): new method
 	that forwards the deletion request to the folder manager.
 
