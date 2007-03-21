@@ -1,119 +1,120 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    xmlns:rsrc="OGo:url"
-    className="UIxPageFrame"
-    title="name"
-    var:popup="isPopup">
-    <var:if condition="hideFrame" const:negate="YES">
-      <div class="menu" id="contactFoldersMenu">
-        <ul>
-          <li><var:string label:value="Modify" /></li>
-          <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
-          <li class="separator"></li>
-          <li><var:string label:value="New Card" /></li>
-          <li><var:string label:value="New List" /></li>
-          <li class="separator"></li>
-          <li><var:string label:value="Delete" /></li>
-        </ul>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="name"
+  var:popup="isPopup">
+  <var:if condition="hideFrame" const:negate="YES">
+    <div class="menu" id="contactFoldersMenu">
+      <ul>
+	<li><var:string label:value="Modify" /></li>
+	<li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
+	<li class="separator"></li>
+	<li><var:string label:value="New Card" /></li>
+	<li><var:string label:value="New List" /></li>
+	<li class="separator"></li>
+	<li><var:string label:value="Delete" /></li>
+      </ul>
+    </div>
+
+    <div class="menu" id="contactMenu">
+      <ul>
+	<li id="modifyContactMenuEntry" onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
+	<li class="separator"></li>
+	<li id="writeToContactMenuEntry" onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
+	<li id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
+	<li class="separator"></li>
+	<li id="deleteContactMenuEntry" onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
+      </ul>
+    </div>
+
+    <form name="searchform" var:href="view" var:_sort="sortKey"
+      onsubmit="return onSearchFormSubmit();" method="GET">
+      <!--	var:if condition="isPopup" const:negate="YES" -->
+      <!--          <var:if condition="hideFolderTree" const:negate="YES" -->
+      <div class="contactFoldersList" id="contactFoldersList">
+	<div class="titlediv"
+	  ><var:string label:value="Address Books"
+	    /></div>
+	<!-- var:if var:condition="isPopup" const:negate="YES" -->
+	<div class="toolbar" id="abToolbar">
+	  <a href="#" class="toolbarButton"
+	    ><span class="toolbarButton"
+	      ><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
+		/></span></a
+	    ><a href="#" class="toolbarButton"
+	    ><span class="toolbarButton"
+	      ><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
+		/></span></a
+	    ><a href="#" class="toolbarButton"
+	    ><span class="toolbarButton"
+	      ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
+		/></span></a
+	    ></div><!-- var:if -->
+
+	<ul id="contactFolders"
+	  var:additional-addressbooks="additionalAddressBooks">
+	  <var:foreach list="contactFolders" item="currentFolder"
+	    ><var:if condition="isFolderCurrent"
+	      ><li var:id="currentContactFolderId" class="_selected"
+		><var:string value="currentContactFolderName" /></li
+		></var:if
+	      ><var:if condition="isFolderCurrent" const:negate="YES"
+	      ><li var:id="currentContactFolderId"
+		><var:string value="currentContactFolderName" /></li
+		></var:if>
+	  </var:foreach
+	    ><var:foreach list="additionalFolders"
+	    item="currentAdditionalFolder"
+	    ><li var:id="currentAdditionalFolder"
+	      var:external-addressbook="currentAdditionalFolder"
+	      ><var:string value="currentAdditionalFolder" /></li
+	      ></var:foreach>
+	</ul>
+
+	<var:if condition="hasContactSelectionButtons">
+	  <div class="contactSelection">
+	    <var:component value="selectorComponent" />
+	  </div>
+	</var:if>
       </div>
 
-      <div class="menu" id="contactMenu">
-        <ul>
-          <li id="modifyContactMenuEntry" onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
-          <li class="separator"></li>
-          <li id="writeToContactMenuEntry" onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
-          <li id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
-          <li class="separator"></li>
-          <li id="deleteContactMenuEntry" onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
-        </ul>
+      <div class="dragHandle" id="dragHandle"><!-- space --></div>
+      <!-- var:if -->
+
+      <div id="rightPanel">
+	<var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
+
+	<div id="contactsListContent">
+	  <var:component-content />
+	</div>
+
+	<div class="dragHandle" id="rightDragHandle"><!-- space --></div>
+
+	<div id="contactView" onmousedown="return false;"
+	  ></div>
       </div>
+      <!--          /var:if> -->
 
-      <form name="searchform" var:href="view" var:_sort="sortKey"
-        onsubmit="return onSearchFormSubmit();" method="GET">
-<!--	var:if condition="isPopup" const:negate="YES" -->
-<!--          <var:if condition="hideFolderTree" const:negate="YES" -->
-            <div class="contactFoldersList" id="contactFoldersList">
-              <div class="titlediv"
-              ><var:string label:value="Address Books"
-                /></div>
-            <!-- var:if var:condition="isPopup" const:negate="YES" -->
-            <div class="toolbar" id="abToolbar">
-                <a href="#" class="toolbarButton"
-                  ><span class="toolbarButton"
-                    ><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
-                      /></span></a
-                  ><a href="#" class="toolbarButton"
-                  ><span class="toolbarButton"
-                    ><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
-                      /></span></a
-                  ><a href="#" class="toolbarButton"
-                  ><span class="toolbarButton"
-                    ><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
-                      /></span></a
-                  ></div><!-- var:if -->
+      <!--	var:if condition="isPopup">
+      var:component-content />
+      /var:if> -->
+    </form>
 
-            <ul id="contactFolders"
-              var:additional-addressbooks="additionalAddressBooks">
-              <var:foreach list="contactFolders" item="currentFolder"
-                ><var:if condition="isFolderCurrent"
-                  ><li var:id="currentContactFolderId" class="_selected"
-                    ><var:string value="currentContactFolderName" /></li
-                    ></var:if
-                  ><var:if condition="isFolderCurrent" const:negate="YES"
-                  ><li var:id="currentContactFolderId"
-                    ><var:string value="currentContactFolderName" /></li
-                    ></var:if>
-              </var:foreach
-                ><var:foreach list="additionalFolders"
-                item="currentAdditionalFolder"
-                ><li var:id="currentAdditionalFolder"
-                  var:external-addressbook="currentAdditionalFolder"
-                  ><var:string value="currentAdditionalFolder" /></li
-                  ></var:foreach>
-            </ul>
+    <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
+  </var:if>
 
-            <var:if condition="hasContactSelectionButtons">
-              <div class="contactSelection">
-                <var:component value="selectorComponent" />
-              </div>
-            </var:if>
-          </div>
+  <var:if condition="hideFrame">
+    <var:component-content />
+  </var:if>
 
-          <div class="dragHandle" id="dragHandle"><!-- space --></div>
-        <!-- var:if -->
-
-        <div id="rightPanel">
-          <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-
-          <div id="contactsListContent">
-            <var:component-content />
-          </div>
-
-          <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
-
-          <div id="contactView" onmousedown="return false;"
-            ></div>
-        </div>
-        <!--          /var:if> -->
-
-        <!--	var:if condition="isPopup">
-        var:component-content />
-        /var:if> -->
-      </form>
-
-      <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
-    </var:if>
-
-    <var:if condition="hideFrame">
-      <var:component-content />
-    </var:if>
-
-    <script type="text/javascript">
-      currentContactFolder = '<var:string value="contactFolderId" />';
-    </script>
-  </var:component>
+  <script type="text/javascript">
+    currentContactFolder = '<var:string value="contactFolderId" />';
+  </script>
+</var:component>

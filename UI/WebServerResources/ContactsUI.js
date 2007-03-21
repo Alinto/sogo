@@ -648,14 +648,53 @@ function onAddressBookRemove(event) {
       var newValues = initialValues.replace(re, "");
       if (initialValues != newValues)
         setAdditionalAddressBooks(newValues);
-      
-      var personal = $("/personal");
-      personal.select();
-      onFolderSelectionChange();
     }
+    else {
+       nodes[0].deselect();
+       var folderId = nodes[0].getAttribute("id").substr(1);
+       deletePersonalAddressBook(folderId);
+    }
+
+    var personal = $("/personal");
+    personal.select();
+    onFolderSelectionChange();
   }
 
   event.preventDefault();
+}
+
+function deletePersonalAddressBook(folderId) {
+   if (document.deletePersonalABAjaxRequest) {
+      document.deletePersonalABAjaxRequest.aborted = true;
+      document.deletePersonalABAjaxRequest.abort();
+   }
+   var url = ApplicationBaseURL + "/" + folderId + "/delete";
+   document.deletePersonalABAjaxRequest
+      = triggerAjaxRequest(url, deletePersonalAddressBookCallback, folderId);
+}
+
+function deletePersonalAddressBookCallback(http) {
+  if (http.readyState == 4) {
+     if (http.status == 200) {
+	var ul = $("contactFolders");
+	
+	var children = ul.childNodesWithTag("li");
+	var i = 0;
+	var done = false;
+	while (!done && i < children.length) {
+	   var currentFolderId = children[i].getAttribute("id").substr(1);
+	   if (currentFolderId == http.callbackData) {
+	      ul.removeChild(children[i]);
+	      done = true;
+	   }
+	   else
+	      i++;
+	}
+     }
+     document.deletePersonalABAjaxRequest = null;
+  }
+  else
+     log ("ajax fuckage");
 }
 
 function configureDragHandles() {
