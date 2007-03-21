@@ -91,3 +91,5 @@
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
 
 "Name of the Address Book" = "Name of the Address Book";
+"Are you sure you want to delete the selected address book?"
+= "Are you sure you want to delete the selected address book?";

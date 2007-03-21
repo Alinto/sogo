@@ -93,3 +93,5 @@
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";
 
 "Name of the Address Book" = "Nom du carnet d'adresses";
+"Are you sure you want to delete the selected address book?"
+= "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";

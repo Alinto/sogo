@@ -664,13 +664,18 @@ function onAddressBookRemove(event) {
 }
 
 function deletePersonalAddressBook(folderId) {
-   if (document.deletePersonalABAjaxRequest) {
-      document.deletePersonalABAjaxRequest.aborted = true;
-      document.deletePersonalABAjaxRequest.abort();
+   var label
+      = labels["Are you sure you want to delete the selected address book?"];
+   if (window.confirm(label.decodeEntities())) {
+      if (document.deletePersonalABAjaxRequest) {
+	 document.deletePersonalABAjaxRequest.aborted = true;
+	 document.deletePersonalABAjaxRequest.abort();
+      }
+      var url = ApplicationBaseURL + "/" + folderId + "/delete";
+      document.deletePersonalABAjaxRequest
+	 = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+			      folderId);
    }
-   var url = ApplicationBaseURL + "/" + folderId + "/delete";
-   document.deletePersonalABAjaxRequest
-      = triggerAjaxRequest(url, deletePersonalAddressBookCallback, folderId);
 }
 
 function deletePersonalAddressBookCallback(http) {
