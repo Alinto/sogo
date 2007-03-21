@@ -90,7 +90,15 @@
 }
 
 - (GCSFolderManager *)folderManager {
-  return [GCSFolderManager defaultFolderManager];
+  static GCSFolderManager *folderManager = nil;
+
+  if (!folderManager)
+    {
+      folderManager = [GCSFolderManager defaultFolderManager];
+      [folderManager setFolderNamePrefix: @"SOGo_"];
+    }
+
+  return folderManager;
 }
 
 - (GCSFolder *)ocsFolderForPath:(NSString *)_path {
@@ -119,8 +127,6 @@
 - (BOOL) create
 {
   NSException *result;
-
-  [GCSFolderType setFolderNamePrefix: @"SOGo_"];
 
   result = [[self folderManager] createFolderOfType: [self folderType]
                                  atPath: ocsPath];
