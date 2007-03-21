@@ -1,5 +1,9 @@
 2007-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-deleteAction]): new web method to delete personal addressbook
+	folders.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	-delete]): override method to refuse the deletion of the folder if
 	its nameInContainer is "personal".

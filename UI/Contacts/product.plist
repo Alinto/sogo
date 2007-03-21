@@ -111,6 +111,11 @@
               pageName    = "UIxContactsListView";
               actionName = "addressBooksContacts";
            };
+	   delete = {
+              protectedBy = "View";
+              pageName    = "UIxContactsListView";
+              actionName = "delete";
+	   };
         };
      };
 
