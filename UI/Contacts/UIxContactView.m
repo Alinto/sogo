@@ -55,7 +55,7 @@
   if (value && [value length] > 0)
     {
       if (label)
-        [cardString appendFormat: @"%@%@<br />\n",
+        [cardString appendFormat: @"%@&nbsp;%@<br />\n",
                     [self labelForKey: label], value];
       else
         [cardString appendFormat: @"%@<br />\n", value];
@@ -73,35 +73,74 @@
 
 - (NSString *) displayName
 {
-  return [self _cardStringWithLabel: @"Display Name: "
+  return [self _cardStringWithLabel: @"Display Name:"
                value: [card fn]];
 }
 
 - (NSString *) nickName
 {
-  return [self _cardStringWithLabel: @"Nickname: "
+  return [self _cardStringWithLabel: @"Nickname:"
                value: [card nickname]];
 }
 
-- (NSString *) preferredEmail
+- (NSString *) primaryEmail
 {
   NSString *email, *mailTo;
 
   email = [card preferredEMail];
-  if (email && [email length] > 0)
+  if ([email length] > 0)
     mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
                        @" onclick=\"return onContactMailTo(this);\">"
                        @"%@</a>", email, email];
   else
     mailTo = nil;
 
-  return [self _cardStringWithLabel: @"Email Address: "
+  return [self _cardStringWithLabel: @"Email:"
                value: mailTo];
+}
+
+- (NSString *) secondaryEmail
+{
+  NSString *email, *mailTo;
+  NSMutableArray *emails;
+
+  emails = [NSMutableArray new];
+  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+  [emails removeObjectsInArray: [card childrenWithTag: @"email"
+				      andAttribute: @"type"
+				      havingValue: @"pref"]];
+
+  if ([emails count] > 1)
+    {
+      email = [[emails objectAtIndex: 0] value: 0];
+      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+			 @" onclick=\"return onContactMailTo(this);\">"
+			 @"%@</a>", email, email];
+    }
+  else
+    mailTo = nil;
+
+  return [self _cardStringWithLabel: @"Additional Email:"
+               value: mailTo];
+}
+
+- (NSString *) screenName
+{
+  NSString *screenName, *goim;
+
+  screenName = [[card uniqueChildWithTag: @"x-aim"] value: 0];
+  if ([screenName length] > 0)
+    goim = [NSString stringWithFormat: @"<a href=\"aim:goim?screenname=%@\""
+		     @">%@</a>", screenName, screenName];
+  else
+    goim = nil;
+
+  return [self _cardStringWithLabel: @"Screen Name:" value: goim];
 }
 
 - (NSString *) preferredTel
 {
-  return [self _cardStringWithLabel: @"Phone Number: "
+  return [self _cardStringWithLabel: @"Phone Number:"
                value: [card preferredTel]];
 }
 
@@ -137,27 +176,27 @@
 
 - (NSString *) workPhone
 {
-  return [self _phoneOfType: @"work" withLabel: @"Work: "];
+  return [self _phoneOfType: @"work" withLabel: @"Work:"];
 }
 
 - (NSString *) homePhone
 {
-  return [self _phoneOfType: @"home" withLabel: @"Home: "];
+  return [self _phoneOfType: @"home" withLabel: @"Home:"];
 }
 
 - (NSString *) fax
 {
-  return [self _phoneOfType: @"fax" withLabel: @"Fax: "];
+  return [self _phoneOfType: @"fax" withLabel: @"Fax:"];
 }
 
 - (NSString *) mobile
 {
-  return [self _phoneOfType: @"cell" withLabel: @"Mobile: "];
+  return [self _phoneOfType: @"cell" withLabel: @"Mobile:"];
 }
 
 - (NSString *) pager
 {
-  return [self _phoneOfType: @"pager" withLabel: @"Pager: "];
+  return [self _phoneOfType: @"pager" withLabel: @"Pager:"];
 }
 
 - (BOOL) hasHomeInfos
@@ -383,12 +422,12 @@
 
 - (NSString *) bday
 {
-  return [self _cardStringWithLabel: @"Birthday: " value: [card bday]];
+  return [self _cardStringWithLabel: @"Birthday:" value: [card bday]];
 }
 
 - (NSString *) tz
 {
-  return [self _cardStringWithLabel: @"Timezone: " value: [card tz]];
+  return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
 }
 
 - (NSString *) note
@@ -404,7 +443,7 @@
                    withString: @"<br />"];
     }
 
-  return [self _cardStringWithLabel: @"Note: " value: note];
+  return [self _cardStringWithLabel: @"Note:" value: note];
 }
 
 /* hrefs */

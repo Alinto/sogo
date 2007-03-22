@@ -31,8 +31,8 @@
 
 @interface UIxContactEditor : UIxComponent
 {
-  NSString *errorText;
   NSString *preferredEmail;
+  NSString *item;
   NGVCard *card;
   NSMutableDictionary *snapshot; /* contains the values for editing */
 }

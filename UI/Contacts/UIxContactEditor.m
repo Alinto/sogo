@@ -46,25 +46,39 @@
 - (void) dealloc
 {
   [snapshot      release];
-  [errorText     release];
+  [preferredEmail release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void) setErrorText: (NSString *) _txt
+- (NSArray *) htmlMailFormatList
 {
-  ASSIGNCOPY(errorText, _txt);
+  static NSArray *htmlMailFormatItems = nil;
+
+  if (!htmlMailFormatItems)
+    {
+      htmlMailFormatItems = [NSArray arrayWithObjects: @"FALSE", @"TRUE", nil];
+      [htmlMailFormatItems retain];
+    }
+
+  return htmlMailFormatItems;
 }
 
-- (NSString *) errorText
+- (NSString *) itemHtmlMailFormatText
 {
-  return errorText;
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"htmlMailFormat_%@", item]];
 }
 
-- (BOOL) hasErrorText
+- (void) setItem: (NSString *) newItem
 {
-  return [errorText length] > 0 ? YES : NO;
+  item = newItem;
+}
+
+- (NSString *) item
+{
+  return item;
 }
 
 /* load/store content format */
@@ -214,6 +228,9 @@
 
   [self _setSnapshotValue: @"workMail" to: workMail];
   [self _setSnapshotValue: @"homeMail" to: homeMail];
+
+  [self _setSnapshotValue: @"mozillaUseHtmlMail"
+        to: [[card uniqueChildWithTag: @"x-mozilla-html"] value: 0]];
 }
 
 - (void) _setupOrgFields
@@ -290,6 +307,9 @@
         to: [self _simpleValueForType: @"pager" inArray: elements]];
 
   [self _setupEmailFields];
+
+  [self _setSnapshotValue: @"screenName"
+        to: [[card uniqueChildWithTag: @"x-aim"] value: 0]];
 
   elements = [card childrenWithTag: @"adr"
                    andAttribute: @"type" havingValue: @"work"];
@@ -425,6 +445,10 @@
       else
         [card setPreferred: homeMail];
     }
+
+  [[card uniqueChildWithTag: @"x-mozilla-html"]
+    setValue: 0
+    to: [snapshot objectForKey: @"mozillaUseHtmlMail"]];
 }
 
 - (void) _saveSnapshot
@@ -463,6 +487,8 @@
 
   [self _savePhoneValues];
   [self _saveEmails];
+  [[card uniqueChildWithTag: @"x-aim"]
+    setValue: 0 to: [snapshot objectForKey: @"screenName"]];
 }
 
 - (id <WOActionResults>) saveAction
