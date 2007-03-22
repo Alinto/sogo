@@ -39,7 +39,7 @@ var currentFolderIsExternal = false;
 var contactSelectorAction = 'addressbooks-contacts';
 
 function openContactWindow(sender, url) {
-  var msgWin = window.open(url, null, "width=545,height=545,resizable=0");
+  var msgWin = window.open(url, null, "width=450,height=600,resizable=0");
   msgWin.focus();
 }
 

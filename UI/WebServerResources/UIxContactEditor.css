@@ -1,16 +1,46 @@
 DIV#editorTabs
-{
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 2.5em;;
-  margin-bottom: 1em;
-}
+{ position: absolute;
+  top: .5em;
+  left: .5em;
+  right: .5em;
+  bottom: 2.5em;
+  margin-bottom: 1em; }
 
 DIV#editorTabs DIV.tab
 { padding: .5em;
-  overflow: auto; }
+  overflow: hidden; }
+
+SELECT
+{ width: 8em; }
+
+DIV.tab TABLE
+{ border: 1px solid #aaa;
+  margin-top: -.5em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  padding: 1em;
+  -moz-border-radius: 6px;
+  display: table;
+  text-align: right;
+  width: 100%; }
+
+SPAN.caption
+{ text-align: center;
+  cursor: default;
+  background: #999;
+  width: auto;
+  padding: .25em;
+  margin-left: 7px;
+  border-top: 2px solid #fffffb;
+  border-left: 2px solid #fffffb;
+  border-bottom: 2px solid #888;
+  border-right: 2px solid #888;
+  background-color: #dbdad5;
+  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
 
 DIV#buttons
 { visibility: visible;
@@ -32,7 +62,10 @@ DIV#contactInfos TABLE
  */
 
 DIV#contactInfos INPUT.textField
-{ width: 65%; }
+{ width: 60%; }
+
+TD#htmlMailFormat
+{ text-align: left !important; }
 
 TABLE#emailInfos TD
 { width: 90%; }
@@ -42,17 +75,13 @@ TABLE#emailInfos TD.preferred
   overflow: visible;
   text-align: center; }
 
-TABLE
-{ display: table;
-  text-align: right;
-  width: 90%; }
-
 DIV.tab TD INPUT.textField
-{ width: 70%; }
+{ width: 60%;
+  margin-left: .5em; }
 
 DIV.tab TD.firstColumn INPUT.textField,
 DIV.tab TD.secondColumn INPUT.textField
-{ width: 40%; }
+{ width: 35%; }
 
 #otherInfos TEXTAREA
 { width: 70%; }

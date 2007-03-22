@@ -222,6 +222,10 @@ DIV#contactView
   line-height: 1em;
 }
 
+DIV#contactView A
+{ color: #00f;
+  text-decoration: none; }
+
 DIV#contactView H3.contactCardTitle
 { display: block;
   margin: .2em 0px;

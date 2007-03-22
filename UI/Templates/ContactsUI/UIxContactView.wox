@@ -17,7 +17,9 @@
         ><h4><var:string label:value="Contact" /></h4
           ><var:string value="displayName" escapeHTML="NO"
           /><var:string value="nickName" escapeHTML="NO"
-          /><var:string value="preferredEmail" escapeHTML="NO"
+          /><var:string value="primaryEmail" escapeHTML="NO"
+          /><var:string value="secondaryEmail" escapeHTML="NO"
+          /><var:string value="screenName" escapeHTML="NO"
           /><var:string value="preferredTel" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
           /></div
