@@ -1,5 +1,15 @@
 /* this file is in UTF-8 format! */
 
+"Contact" = "Contact";
+"Address" = "Adresses";
+"Other" = "Informations complémentaires";
+
+"Name"              = "Identité";
+"Internet"          = "E-mail";
+"Phones"            = "Numéros de téléphone";
+"Home" = "Personnelle";
+"Work" = "Professionnelle";
+
 "Address Books"      = "Carnet d'adresses";
 "Addresses"         = "Adresses";
 "Cancel"            = "Annuler";
@@ -14,11 +24,9 @@
 "Lastname"          = "Nom";
 "Location"          = "Lieux";
 "MobilePhone"       = "Mobile";
-"Name"              = "Nom";
 "OfficePhone"       = "Bureau";
 "Organisation"      = "Société";
 "Phone"             = "Téléphone";
-"Phones"            = "Téléphones";
 "Postal"            = "Professionnelle";
 "Save"              = "Sauvegarder";
 "URL"               = "URL";
@@ -27,6 +35,10 @@
 "edit"              = "Éditer";
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Nouveau";
+
+"htmlMailFormat_UNKNOWN" = "Inconnu";
+"htmlMailFormat_FALSE" = "Texte simple (sans HTML)";
+"htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Le nom ou l'adresse";
 "Personal Addressbook" = "Adresses personnelles";
@@ -44,39 +56,43 @@
 
 "Preferred" = "Préféré";
 "Card for %@" = "Fiche pour %@";
-"Display Name: " = "Nom &agrave; afficher : ";
-"Email Address: " = "Adresse &eacute;lectronique : ";
-"Phone Number: " = "Num&eacute;ro de t&eacute;l&eacute;phone : ";
+"Display:" = "Nom à afficher :";
+"Display Name:" = "Nom à afficher :";
+"Email:" = "Adresse électronique :";
+"Additional Email:" = "Adresse alternative :";
 
-"Firstname: " = "Pr&eacute;nom : ";
-"Lastname: " = "Nom : ";
-"Nickname: " = "Surnom : ";
+"Phone Number:" = "Numéro de téléphone :";
+"Prefers to receive messages formatted as:"
+= "Préfère recevoir les messages au format :";
+"Screen Name:" = "Pseudo :";
+
+"First:" = "Prénom :";
+"Last:" = "Nom :";
+"Nickname:" = "Surnom :";
 
 "Telephone" = "Téléphone";
-"Work: " = "Travail : ";
-"Home: " = "Domicile : ";
-"Fax: " = "T&eacute;l&eacute;copieur : ";
-"Mobile: " = "Portable : ";
-"Pager: " = "T&eacute;l&eacute;avertisseur : ";
+"Work:" = "Travail :";
+"Home:" = "Domicile :";
+"Fax:" = "Télécopieur :";
+"Mobile:" = "Portable :";
+"Pager:" = "Téléavertisseur :";
 
-"Title: " = "Titre/fonction : ";
-"Service: " = "Service : ";
-"Company: " = "Entreprise : ";
-"Street Address: " = "Adresse : ";
-"City: " = "Ville : ";
-"Province: " = "Province : ";
-"Zip or Postal Code: " = "Code postal : ";
-"Country: " = "Pays : ";
-"Web: " = "Adresse web : ";
+"Title:" = "Fonction :";
+"Department:" = "Service :";
+"Organization:" = "Société :";
+"Address:" = "Adresse :";
+"City:" = "Ville/Localité :";
+"State_Province:" = "État/Prov. :";
+"ZIP_Postal Code:" = "Code postal :";
+"Country:" = "Pays :";
+"Web Page:" = "Page Web:";
 
-"Home" = "Domicile";
-"Work" = "Travail";
 "Other Infos" = "Informations complémentaires";
 
-"Note: " = "Commentaires : ";
-"Timezone: " = "Fuseau horaire : ";
-"Birthday: " = "D. de naissance : ";
-"Freebusy URL: " = "Adresse du FreeBusy : ";
+"Note:" = "Remarques :";
+"Timezone:" = "Fuseau horaire :";
+"Birthday:" = "D. de naissance :";
+"Freebusy URL:" = "Adresse du FreeBusy :";
 
 "Add as..." = "Ajouter...";
 "Recipient" = "Destinataire";

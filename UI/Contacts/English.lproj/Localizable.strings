@@ -30,6 +30,10 @@
 "invalidemailwarn" = "invalidemailwarn";
 "new" = "new";
 
+"htmlMailFormat_UNKNOWN" = "Unknown";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+
 "Name or Email" = "Name or Email";
 "Personal Addressbook" = "Personal Addressbook";
 "Search in Addressbook" = "Search in Addressbook";
@@ -65,8 +69,8 @@
 "Company: " = "Company: ";
 "Street Address: " = "Street Address: ";
 "City: " = "City: ";
-"Province: " = "Province: ";
-"Zip or Postal Code: " = "Zip or Postal Code: ";
+"State_Province:" = "State/Province:";
+"ZIP_Postal Code:" = "ZIP/Postal Code:";
 "Country: " = "Country: ";
 "Web: " = "Web: ";
 
