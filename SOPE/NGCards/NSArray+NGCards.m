@@ -33,28 +33,21 @@
 {
   NSString *currentString, *resultString, *cmpString;
   unsigned int count, max;
-  BOOL found;
 
-  found = NO;
+  resultString = nil;
 
-  cmpString = [aString uppercaseString];
   max = [self count];
   count = 0;
+  cmpString = [aString uppercaseString];
 
-  currentString = nil;
-  while (!found && count < max)
+  while (!resultString && count < max)
     {
       currentString = [self objectAtIndex: count];
       if ([[currentString uppercaseString] isEqualToString: cmpString])
-        found = YES;
+        resultString = currentString;
       else
         count++;
     }
-
-  if (found)
-    resultString = currentString;
-  else
-    resultString = nil;
 
   return resultString;
 }
