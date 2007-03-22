@@ -1027,13 +1027,13 @@ function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 2; i++) {
       anchors[i].addEventListener("mousedown", listRowMouseDownHandler,
                                   false);
       anchors[i].addEventListener("click", onLinkBannerClick, false);
     }
-    if (anchors.length > 5)
-      anchors[5].addEventListener("click", toggleLogConsole, true);
+    if (anchors.length > 3)
+      anchors[3].addEventListener("click", toggleLogConsole, true);
   }
 }
 

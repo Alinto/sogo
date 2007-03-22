@@ -60,16 +60,14 @@
               ><div id="logConsole"><!-- space --></div></var:if>
 
             <div id="linkBanner" class="linkbanner">
-              <a var:href="relativeHomePath"
-                ><var:string label:value="Home" /></a> |
               <a var:href="relativeCalendarPath"
                 ><var:string label:value="Calendar" /></a> |
               <a var:href="relativeContactsPath"
                 ><var:string label:value="Address Book" /></a> |
               <a var:href="relativeMailPath"
-                ><var:string label:value="Mail" /></a> |
-              <a var:href="logoffPath"
-                ><var:string label:value="Logoff" /></a>
+                ><var:string label:value="Mail" /></a>
+<!--              | <a var:href="logoffPath"
+                ><var:string label:value="Logoff" /></a> -->
               <var:if condition="context.isUIxDebugEnabled"
                 >| <a href="#"><var:string
                     label:value="Log Console (dev.)" /></a
