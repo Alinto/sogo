@@ -15,7 +15,6 @@ Contacts_OBJC_FILES =			\
 	SOGoContactLDAPEntry.m		\
 	SOGoContactLDAPFolder.m		\
 					\
-	NSDictionary+Contact.m		\
 	NGLdapEntry+Contact.m		\
 
 Contacts_RESOURCE_FILES +=		\
