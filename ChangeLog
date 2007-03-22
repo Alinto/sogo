@@ -1,5 +1,9 @@
 2007-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-defaultAction]): remade module to redirect automatically to the
+	Calendar url.
+
 	* SoObjects/Contacts/NSDictionary+Contact.m: removed module.
 
 2007-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
