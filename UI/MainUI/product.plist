@@ -70,20 +70,9 @@
     SOGoUserFolder = {
       methods = {
         view = { 
-          protectedBy = "HomePage Access";
+          protectedBy = "View";
           pageName    = "SOGoUserHomePage"; 
         };
-        edit = { 
-          protectedBy = "HomePage Access";
-          pageName    = "SOGoUserHomePage"; 
-          actionName  = "saveInternetAccessState";
-        };
-        /*
-          GET = { // more or less a hack, see README of dbd
-            protectedBy = "HomePage Access";
-            pageName    = "SOGoUserHomePage"; 
-          };
-        */
       };
     };
     SOGoGroupsFolder = {
