@@ -16,7 +16,9 @@
     <div id="filterPanel">
       <span class="searchBox" style="float: right">
         <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
-        <input id="searchValue" class="textField" autocomplete="off" name="search" type="text" var:value="searchText" onmousedown="onSearchMouseDown(event, this);" onclick="popupSearchMenu(event, 'searchMenu');" onblur="onSearchBlur(this);" onfocus="onSearchFocus(this);" onkeydown="onSearchKeyDown(this);" />
+        <input id="searchValue" class="textField" autocomplete="off" name="search"
+	  menuid="searchMenu"
+	  type="text" var:value="searchText" />
       </span>
     </div>
   </container>

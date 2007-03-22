@@ -19,12 +19,7 @@
         <input id="searchValue"
           class="textField"
           autocomplete="off" name="search" type="text" var:value="searchText"
-          onmousedown="onSearchMouseDown(event, this);"
-          onclick="popupSearchMenu(event, 'searchMenu');"
-          onchange="onSearchChange();"
-          onblur="onSearchBlur(this);"
-          onfocus="onSearchFocus(this);"
-          onkeydown="onSearchKeyDown(this);" />
+	  menuid="searchMenu" />
       </span>
 
       <var:string label:value="View:" />

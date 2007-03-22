@@ -1116,9 +1116,21 @@ function initCalendarContactsSelector() {
   }
 }
 
+function configureSearchField() {
+   var searchValue = $("searchValue");
+
+   searchValue.addEventListener("mousedown", onSearchMouseDown, false);
+   searchValue.addEventListener("click", popupSearchMenu, false);
+   searchValue.addEventListener("blur", onSearchBlur, false);
+   searchValue.addEventListener("focus", onSearchFocus, false);
+   searchValue.addEventListener("keydown", onSearchKeyDown, false);
+}
+
 function initCalendars() {
-  if (!document.body.hasClassName("popup"))
-    initCalendarContactsSelector();
+   if (!document.body.hasClassName("popup")) {
+      initCalendarContactsSelector();
+      configureSearchField();
+   }
 }
 
 function onSchedulerBodyKeyUp(event) {

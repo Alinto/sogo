@@ -633,8 +633,10 @@ function checkDropDown(event) {
 }
 
 /* search field */
-function popupSearchMenu(event, menuId) {
+function popupSearchMenu(event) {
   var node = event.target;
+
+  var menuId = this.getAttribute("menuid");
   relX = event.pageX - node.cascadeLeftOffset();
   relY = event.pageY - node.cascadeTopOffset();
 
@@ -679,50 +681,50 @@ function onSearchChange() {
   log ("onSearchChange()...");
 }
 
-function onSearchMouseDown(event, searchValue) {
-  superNode = searchValue.parentNode.parentNode.parentNode;
-  relX = (event.pageX - superNode.offsetLeft - searchValue.offsetLeft);
-  relY = (event.pageY - superNode.offsetTop - searchValue.offsetTop);
+function onSearchMouseDown(event) {
+   var superNode = this.parentNode.parentNode.parentNode;
+   relX = (event.pageX - superNode.offsetLeft - this.offsetLeft);
+   relY = (event.pageY - superNode.offsetTop - this.offsetTop);
 
-  if (relY < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
+   if (relY < 24) {
+      event.cancelBubble = true;
+      event.returnValue = false;
+   }
 }
 
-function onSearchFocus(searchValue) {
-  ghostPhrase = searchValue.getAttribute("ghost-phrase");
-  if (searchValue.value == ghostPhrase) {
-    searchValue.value = "";
-    searchValue.setAttribute("modified", "");
+function onSearchFocus() {
+  ghostPhrase = this.getAttribute("ghost-phrase");
+  if (this.value == ghostPhrase) {
+    this.value = "";
+    this.setAttribute("modified", "");
   } else {
-    searchValue.select();
+    this.select();
   }
 
-  searchValue.style.color = "#000";
+  this.style.color = "#000";
 }
 
-function onSearchBlur(searchValue) {
-  var ghostPhrase = searchValue.getAttribute("ghost-phrase");
-//   log ("search blur: '" + searchValue.value + "'");
-  if (!searchValue.value) {
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
-    searchValue.value = ghostPhrase;
-  } else if (searchValue.value == ghostPhrase) {
-    searchValue.setAttribute("modified", "");
-    searchValue.style.color = "#aaa";
+function onSearchBlur(event) {
+  var ghostPhrase = this.getAttribute("ghost-phrase");
+//   log ("search blur: '" + this.value + "'");
+  if (!this.value) {
+    this.setAttribute("modified", "");
+    this.style.color = "#aaa";
+    this.value = ghostPhrase;
+  } else if (this.value == ghostPhrase) {
+    this.setAttribute("modified", "");
+    this.style.color = "#aaa";
   } else {
-    searchValue.setAttribute("modified", "yes");
-    searchValue.style.color = "#000";
+    this.setAttribute("modified", "yes");
+    this.style.color = "#000";
   }
 }
 
-function onSearchKeyDown(searchValue) {
-  if (searchValue.timer)
-    clearTimeout(searchValue.timer);
+function onSearchKeyDown(event) {
+  if (this.timer)
+    clearTimeout(this.timer);
 
-  searchValue.timer = setTimeout("onSearchFormSubmit()", 1000);
+  this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
 function initCriteria() {

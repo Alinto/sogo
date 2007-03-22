@@ -789,10 +789,21 @@ function initializeMenus() {
   menuEntry.addEventListener("mouseup", onAccessRightsMenuEntryMouseUp, false);
 }
 
+function configureSearchField() {
+   var searchValue = $("searchValue");
+
+   searchValue.addEventListener("mousedown", onSearchMouseDown, false);
+   searchValue.addEventListener("click", popupSearchMenu, false);
+   searchValue.addEventListener("blur", onSearchBlur, false);
+   searchValue.addEventListener("focus", onSearchFocus, false);
+   searchValue.addEventListener("keydown", onSearchKeyDown, false);
+}
+
 var initContacts = {
   handleEvent: function (event) {
     if (!document.body.hasClassName("popup")) {
       configureAbToolbar();
+      configureSearchField();
     }
     configureContactFolders();
 //     initDnd();

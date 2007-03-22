@@ -1013,32 +1013,42 @@ function openInbox(node) {
   }
 }
 
+function configureSearchField() {
+   var searchValue = $("searchValue");
+
+   searchValue.addEventListener("mousedown", onSearchMouseDown, false);
+   searchValue.addEventListener("click", popupSearchMenu, false);
+   searchValue.addEventListener("blur", onSearchBlur, false);
+   searchValue.addEventListener("focus", onSearchFocus, false);
+   searchValue.addEventListener("keydown", onSearchKeyDown, false);
+}
+
 var initMailer = {
-  handleEvent: function (event) {
-    if (!document.body.hasClassName("popup")) {
-      var inboxFound = false;
-      configureMessageListEvents();
-      initDnd();
-      var tree = $("d");
-      var nodes = document.getElementsByClassName("node", tree);
-      for (i = 0; i < nodes.length; i++) {
-        nodes[i].addEventListener("click", onMailboxTreeItemClick, false);
-        nodes[i].addEventListener("contextmenu", onFolderMenuClick, false);
-        if (!inboxFound
-            && nodes[i].parentNode.getAttribute("datatype") == "inbox") {
-          openInbox(nodes[i]);
-          inboxFound = true;
-        }
+   handleEvent: function (event) {
+      if (!document.body.hasClassName("popup")) {
+	 configureSearchField();
+	 var inboxFound = false;
+	 configureMessageListEvents();
+	 initDnd();
+	 var tree = $("d");
+	 var nodes = document.getElementsByClassName("node", tree);
+	 for (i = 0; i < nodes.length; i++) {
+	    nodes[i].addEventListener("click", onMailboxTreeItemClick, false);
+	    nodes[i].addEventListener("contextmenu", onFolderMenuClick, false);
+	    if (!inboxFound
+		&& nodes[i].parentNode.getAttribute("datatype") == "inbox") {
+	       openInbox(nodes[i]);
+	       inboxFound = true;
+	    }
+	 }
       }
-    }
-
-    /*
-, 'onMailboxTreeItemClick(this);'
-<!--      if (typeof(node.datatype) != "undefined") str += ' oncontextmenu="onFolderMenuClick(event, this);"';
-
-    */
-
-  }
+      
+      /*
+      , 'onMailboxTreeItemClick(this);'
+      <!--      if (typeof(node.datatype) != "undefined") str += ' oncontextmenu="onFolderMenuClick(event, this);"';
+      
+      */
+   }
 }
 
 function initializeMenus() {
