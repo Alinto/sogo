@@ -465,7 +465,7 @@
       else
 	{
 	  [todo setCompleted: nil];
-	  [todo setPercentComplete: 0];
+	  [todo setPercentComplete: @"0"];
 	  [todo setStatus: @"IN-PROCESS"];
 	}
 
