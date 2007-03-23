@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxContactView.m 932 2005-08-01 13:17:55Z helge $
+// $Id: UIxContactView.m 1033 2007-03-22 19:04:08Z wolfgang $
 
 #import <Contacts/SOGoContactObject.h>
 
