@@ -201,7 +201,7 @@
 
 - (NSString *) labelForDay
 {
-  return [NSString stringWithFormat: @"%@ %@",
+  return [NSString stringWithFormat: @"%@<br />%@",
                    [dateFormatter shortDayOfWeek: [currentTableDay dayOfWeek]],
                    [dateFormatter stringForObjectValue: currentTableDay]];
 }

@@ -1,5 +1,8 @@
 2007-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -labelForDay]):
+	put a carriage return after the day name.
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
 	-readFreeBusyAction]): restored method.
 

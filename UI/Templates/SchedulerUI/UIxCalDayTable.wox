@@ -43,7 +43,8 @@
         <var:foreach list="daysToDisplay" item="currentTableDay"
           ><div var:class="dayClasses"
             var:day="currentTableDay.shortDateString"
-            ><div class="header"><var:string value="labelForDay" /></div>
+            ><div class="header"><var:string value="labelForDay"
+		const:escapeHTML="NO"/></div>
             <div class="appointments">
             <var:foreach list="hoursToDisplay" item="currentTableHour"
               ><div var:class="clickableHourCellClass"
