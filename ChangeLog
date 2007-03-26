@@ -1,3 +1,8 @@
+2007-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-readFreeBusyAction]): restored method.
+
 2007-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
