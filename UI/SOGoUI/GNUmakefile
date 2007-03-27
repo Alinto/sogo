@@ -14,6 +14,7 @@ FHS_HEADER_DIRS = SOGoUI
 
 libSOGoUI_HEADER_FILES +=	\
 	\
+	UIxJSClose.h		\
 	UIxComponent.h		\
 	SOGoDateFormatter.h	\
 	SOGoAptFormatter.h	\
@@ -22,6 +23,7 @@ libSOGoUI_HEADER_FILES +=	\
 
 libSOGoUI_OBJC_FILES +=		\
 	\
+	UIxJSClose.m		\
 	UIxComponent.m		\
 	SOGoDateFormatter.m	\
 	SOGoAptFormatter.m	\
