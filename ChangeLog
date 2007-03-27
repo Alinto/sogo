@@ -1,3 +1,8 @@
+2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxFolderActions.m: new module implementing web
+	actions common to all GCS-based folders.
+
 2007-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable -labelForDay]):

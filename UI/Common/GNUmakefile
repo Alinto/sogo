@@ -14,9 +14,9 @@ CommonUI_OBJC_FILES +=		\
 	UIxPrintPageFrame.m	\
 	UIxSortButton.m		\
 	UIxAppNavView.m		\
-	UIxJSClose.m		\
 	\
 	UIxAclEditor.m  \
+	UIxFolderActions.m	\
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\

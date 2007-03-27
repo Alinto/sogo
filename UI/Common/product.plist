@@ -1,47 +1,57 @@
 { /* -*-javascript-*- */
-  requires = ( MAIN, Mailer );
+   requires = ( MAIN, Mailer );
 
-  publicResources = (
-     calendar.css,
-     uix.css,
-     menu_logo_top.gif,
-     line_left.gif,
-     line_stretch.gif,
-     line_right.gif,
-     box_topleft.gif,
-     box_top.gif,
-     box_topright.gif,
-     box_left.gif,
-     box_right.gif,
-     box_botleft.gif,
-     box_bottom.gif,
-     box_botright.gif,
-     tab_selected.gif,
-     tab_.gif,
-     corner_right.gif,
-     closewindow.gif,
-     OGoLogo.gif,
-     upward_sorted.gif,
-     downward_sorted.gif,
-     non_sorted.gif
+   publicResources = (
+      calendar.css,
+      uix.css,
+      menu_logo_top.gif,
+      line_left.gif,
+      line_stretch.gif,
+      line_right.gif,
+      box_topleft.gif,
+      box_top.gif,
+      box_topright.gif,
+      box_left.gif,
+      box_right.gif,
+      box_botleft.gif,
+      box_bottom.gif,
+      box_botright.gif,
+      tab_selected.gif,
+      tab_.gif,
+      corner_right.gif,
+      closewindow.gif,
+      OGoLogo.gif,
+      upward_sorted.gif,
+      downward_sorted.gif,
+      non_sorted.gif
      );
 
-  factories = {
-  };
+   factories = {
+   };
 
-  categories = {
-     SOGoFolder = {
-        methods = {
-           acls = {
-              protectedBy = "ReadAcls";
-              pageName    = "UIxAclEditor";
-           };
-           saveAcls = {
-              protectedBy = "SaveAcls";
-              pageName    = "UIxAclEditor";
-              actionName = "saveAcls";
-           };
-        };
-     };
-  };
+   categories = {
+      SOGoFolder = {
+	 methods = {
+	    subscribe = {
+	       protectedBy = "View";
+	       actionClass = "UIxFolderActions";
+	       actionName = "subscribe";
+	    };
+	    unsubscribe = {
+	       protectedBy = "View";
+	       actionClass = "UIxFolderActions";
+	       actionName = "unsubscribe";
+	    };
+	    acls = {
+	       protectedBy = "ReadAcls";
+	       pageName    = "UIxAclEditor";
+	    };
+	    saveAcls = {
+	       protectedBy = "SaveAcls";
+	       pageName    = "UIxAclEditor";
+	       actionName = "saveAcls";
+	    };
+	 };
+      };
+   };
 }
