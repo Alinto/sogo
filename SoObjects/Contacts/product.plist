@@ -12,7 +12,7 @@
       superclass    = "SOGoObject";
       defaultRoles = {
         "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
-        "View"          = ( "Owner", "Delegate", "Assistant" );
+        "View" = ( "Owner", "Delegate", "Assistant" );
         "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
         "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
         "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
