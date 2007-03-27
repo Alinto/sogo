@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, CommonUI, Appointments, Contacts, ContactsUI );
+  requires = ( MAIN, MainUI, CommonUI, Appointments, Contacts, ContactsUI );
 
   publicResources = (
     previous_week.gif,

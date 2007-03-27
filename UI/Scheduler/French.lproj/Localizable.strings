@@ -362,10 +362,11 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "No free-busy information" = "Pas d'information";
 
 /* FreeBusy panel buttons */
-"Previous slot" = "Période précédente";
-"Next slot" = "Période suivante";
+"Suggest time slot:" = "Suggérer un créneau horaire :";
+"Previous slot" = "Précédent";
+"Next slot" = "Prochain";
 "Previous hour" = "Heure précédente";
-"Next hour" = "Heure suivante";
+"Next hour" = "Prochaine heure";
 
 "closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre.";
 "Multicolumn Day View" = "Multicolonne";
