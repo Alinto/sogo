@@ -1,0 +1,41 @@
+DIV#filterPanel
+{ position: absolute;
+  text-align: center;
+  width: auto;
+  top: 1em;
+  left: 1em;
+  right: 1em; }
+
+SPAN.searchBox
+{ float: none !important; }
+
+INPUT#searchValue
+{ margin: 0px; }
+
+DIV#folders
+{ position: absolute;
+  left: 1em;
+  right: 1em;
+  top: 3em;
+  bottom: 3em;
+  background-color: #fff;
+  padding: .5em;
+  padding-top: 0px;
+  overflow: auto;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent; }
+
+DIV#folders DIV
+{ width: auto; }
+
+DIV#buttons
+{ position: absolute;
+  text-align: center;
+  height: 1.5em;
+  left: 1em;
+  right: 1em;
+  bottom: 1em;  }

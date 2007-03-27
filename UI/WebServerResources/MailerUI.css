@@ -452,26 +452,6 @@ table.linked_attachment_meta
   font-style: italic;
 }
 
-/* folder tree (js) )*/
-DIV.dTreeNode A SPAN.nodeName
-{
-  margin: 0px .2em;
-  padding-left: .2em;
-  padding-right: .2em;
-}
-
-DIV.dTreeNode A._selected SPAN.nodeName
-{
-  background: #4b6983;
-  color: #fff;
-}
-
-DIV.dTreeNode SPAN._dragOver
-{ 
-  background: #4b6983;
-  color: #fff;
-}
-
 /* drag-n-drop */
 IMG.dragMessage
 {
