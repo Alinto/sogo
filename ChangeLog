@@ -1,5 +1,13 @@
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
+	-getUserDefaultsForUID:uid]): rewrote method to use the "defaults"
+	field of the sogo_user_profile table, where the user-customizable
+	changes will be saved.
+	([AgenorUserManager -getUserSettingsForUID:uid]): new method
+	similar to the one above, using the "settings" field where the
+	automatic settings will be saved.
+
 	* SoObjects/SOGo/AgenorUserDefaults.m: rewrote a big part of the
 	module to bind the userdefaults to a property list contained in a
 	specified field of the sogo_user_profile table.

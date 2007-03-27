@@ -75,7 +75,8 @@
 
 - (NSURL *)getFreeBusyURLForUID:(NSString *)_uid;
 
-- (NSUserDefaults *)getUserDefaultsForUID:(NSString *)_uid;
+- (NSUserDefaults *) getUserDefaultsForUID: (NSString *) uid;
+- (NSUserDefaults *) getUserSettingsForUID: (NSString *) uid;
 
 - (BOOL)isUserAllowedToChangeSOGoInternetAccess:(NSString *)_uid;
 

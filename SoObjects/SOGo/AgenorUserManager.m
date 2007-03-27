@@ -1012,20 +1012,37 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 
 /* defaults */
 
-- (NSUserDefaults *)getUserDefaultsForUID:(NSString *)_uid {
+- (NSUserDefaults *) _getUserDefaultsForUID: (NSString *) uid
+				  fieldName: (NSString *) fieldName
+{
   id defaults;
   
-  if (AgenorProfileURL == nil) {
-    [self warnWithFormat:
-	    @"no profile configured, cannot retrieve defaults for user: '%@'",
-	    _uid];
-    return nil;
-  }
-  
-  /* Note: do not cache, otherwise updates can be quite tricky */
-  defaults = [[[AgenorUserDefaults alloc] 
-		initWithTableURL:AgenorProfileURL uid:_uid] autorelease];
+  if (AgenorProfileURL)
+    {
+      /* Note: do not cache, otherwise updates can be quite tricky */
+      defaults = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
+					     uid: uid fieldName: fieldName];
+      [defaults autorelease];
+    }
+  else
+    {
+      [self warnWithFormat:
+	      @"no profile configured, cannot retrieve defaults for user: '%@'",
+	    uid];
+      return defaults = nil;
+    }
+
   return defaults;
+}
+
+- (NSUserDefaults *) getUserDefaultsForUID: (NSString *) uid
+{
+  return [self _getUserDefaultsForUID: uid fieldName: @"defaults"];
+}
+
+- (NSUserDefaults *) getUserSettingsForUID: (NSString *) uid
+{
+  return [self _getUserDefaultsForUID: uid fieldName: @"settings"];
 }
 
 /* internet access lock */
@@ -1192,17 +1209,6 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 
 - (BOOL)isDebuggingEnabled {
   return debugOn;
-}
-
-/* description */
-
-- (NSString *)description {
-  NSMutableString *ms;
-  
-  ms = [NSMutableString stringWithCapacity:16];
-  [ms appendFormat:@"<0x%08X[%@]", self, NSStringFromClass([self class])];
-  [ms appendString:@">"];
-  return ms;
 }
 
 @end /* AgenorUserManager */
