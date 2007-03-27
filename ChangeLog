@@ -1,5 +1,9 @@
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-roleOfUser:uidinContext:context]): take all the subkeys into
+	account, not only the "personal" folder.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-takeValuesFromRequest:_rqinContext:_ctx]): append a "uid" field
 	to the new components.
