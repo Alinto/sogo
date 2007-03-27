@@ -1,5 +1,8 @@
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userSettings]): new method
+	(see below).
+
 	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
 	-getUserDefaultsForUID:uid]): rewrote method to use the "defaults"
 	field of the sogo_user_profile table, where the user-customizable

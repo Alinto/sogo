@@ -37,8 +37,20 @@
 
 @implementation SOGoUser
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      userDefaults = nil;
+      userSettings = nil;
+    }
+
+  return self;
+}
+
 - (void)dealloc {
   [self->userDefaults release];
+  [self->userSettings release];
   [self->cn    release];
   [self->email release];
   [super dealloc];
@@ -90,12 +102,26 @@
 
 /* defaults */
 
-- (NSUserDefaults *)userDefaults {
-  if (self->userDefaults == nil) {
-    self->userDefaults = 
-      [[[self userManager] getUserDefaultsForUID:[self login]] retain];
-  }
-  return self->userDefaults;
+- (NSUserDefaults *) userDefaults
+{
+  if (!userDefaults)
+    {
+      userDefaults = [[self userManager] getUserDefaultsForUID: [self login]];
+      [userDefaults retain];
+    }
+
+  return userDefaults;
+}
+
+- (NSUserDefaults *) userSettings
+{
+  if (!userSettings)
+    {
+      userSettings = [[self userManager] getUserSettingsForUID: [self login]];
+      [userSettings retain];
+    }
+
+  return userSettings;
 }
 
 /* folders */

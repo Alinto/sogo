@@ -42,6 +42,7 @@
   NSString       *cn;
   NSString       *email;
   NSUserDefaults *userDefaults;
+  NSUserDefaults *userSettings;
 }
 
 /* properties */
@@ -60,7 +61,8 @@
 
 /* defaults */
 
-- (NSUserDefaults *)userDefaults;
+- (NSUserDefaults *) userDefaults;
+- (NSUserDefaults *) userSettings;
 
 /* folders */
 
