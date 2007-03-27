@@ -32,7 +32,7 @@
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 
-#import "../Common/UIxJSClose.h"
+#import "UIxJSClose.h"
 
 #import "UIxComponent.h"
 
