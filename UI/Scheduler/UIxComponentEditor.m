@@ -816,6 +816,7 @@
                      inContext: (WOContext *) _ctx
 {
   NSCalendarDate *now;
+  SOGoCalendarComponent *clientObject;
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
@@ -826,8 +827,10 @@
   [component setUrl: url];
   [self _handleAttendeesEdition];
   [self _handleOrganizer];
-  if ([[self clientObject] isNew])
+  clientObject = [self clientObject];
+  if ([clientObject isNew])
     {
+      [component setUid: [clientObject nameInContainer]];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
       [component setPriority: @"0"];

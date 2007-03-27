@@ -1,5 +1,9 @@
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): append a "uid" field
+	to the new components.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -userSettings]): new method
 	(see below).
 
