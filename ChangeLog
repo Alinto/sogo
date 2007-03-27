@@ -1,5 +1,12 @@
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m: rewrote a big part of the
+	module to bind the userdefaults to a property list contained in a
+	specified field of the sogo_user_profile table.
+	([AgenorUserDefaults
+	-initWithTableURL:tableURLuid:userIDfieldName:defaultsFieldName]):
+	added a "fieldName" parameter.
+
 	* UI/Common/UIxFolderActions.m: new module implementing web
 	actions common to all GCS-based folders.
 

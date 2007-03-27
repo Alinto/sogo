@@ -34,51 +34,54 @@
 @class NSString, NSURL, NSUserDefaults, NSArray, NSDictionary, NSData;
 @class NSCalendarDate, NSMutableDictionary;
 
-@interface AgenorUserDefaults : NSObject
+@interface AgenorUserDefaults :  NSObject
 {
   NSUserDefaults *parent;
   NSURL    *url;
   NSString *uid;
+  NSString *fieldName;
   
-  NSArray             *fieldNames;
-  NSDictionary        *attributes;
+  NSArray *fieldNames;
   NSMutableDictionary *values;
-  NSCalendarDate      *lastFetch;
+  NSCalendarDate *lastFetch;
 
-  struct {
-    int modified:1;
-    int isNew:1;
-    int reserved:30;
+  struct
+  {
+    int modified: 1;
+    int isNew: 1;
+    int reserved: 30;
   } defFlags;
 }
 
-- (id)initWithTableURL:(NSURL *)_url uid:(NSString *)_uid;
+- (id) initWithTableURL: (NSURL *) url
+		    uid: (NSString *) uid
+	      fieldName: (NSString *) fieldName;
 
 /* value access */
 
-- (void)setObject:(id)_value forKey:(NSString *)_key;
-- (id)objectForKey:(NSString *)_key;
-- (void)removeObjectForKey:(NSString *)_key;
+- (void) setObject: (id) value
+	    forKey: (NSString *) key;
+- (id) objectForKey: (NSString *) key;
+- (void) removeObjectForKey: (NSString *) key;
 
 /* typed accessors */
 
-- (NSArray *)arrayForKey:(NSString *)_key;
-- (NSDictionary *)dictionaryForKey:(NSString *)_key;
-- (NSData *)dataForKey:(NSString *)_key;
-- (NSArray *)stringArrayForKey:(NSString *)_key;
-- (NSString *)stringForKey:(NSString *)_key;
-- (BOOL)boolForKey:(NSString *)_key;
-- (float)floatForKey:(NSString *)_key;
-- (int)integerForKey:(NSString *)_key;
+- (NSArray *) arrayForKey: (NSString *)key;
+- (NSDictionary *) dictionaryForKey: (NSString *)key;
+- (NSData *) dataForKey: (NSString *)key;
+- (NSString *) stringForKey: (NSString *)key;
+- (BOOL) boolForKey: (NSString *) key;
+- (float) floatForKey: (NSString *) key;
+- (int) integerForKey: (NSString *) key;
 
-- (void)setBool:(BOOL)value   forKey:(NSString *)_key;
-- (void)setFloat:(float)value forKey:(NSString *)_key;
-- (void)setInteger:(int)value forKey:(NSString *)_key;
+- (void) setBool: (BOOL) value   forKey: (NSString *) key;
+- (void) setFloat: (float) value forKey: (NSString *) key;
+- (void) setInteger: (int) value forKey: (NSString *) key;
 
 /* saving changes */
 
-- (BOOL)synchronize;
+- (BOOL) synchronize;
 
 @end
 
-#endif /* __AgenorUserDefaults_H_ */
+#endif /* __AgenorUserDefaults_H__ */
