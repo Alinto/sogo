@@ -44,25 +44,25 @@
   GCSFolder *ocsFolder;
 }
 
-+ (NSString *)globallyUniqueObjectId;
++ (NSString *) globallyUniqueObjectId;
 
 /* accessors */
 
-- (void)setOCSPath:(NSString *)_Path;
-- (NSString *)ocsPath;
+- (void) setOCSPath: (NSString *)_Path;
+- (NSString *) ocsPath;
 
-- (GCSFolder *)ocsFolderForPath:(NSString *)_path;
-- (GCSFolder *)ocsFolder;
+- (GCSFolder *) ocsFolderForPath: (NSString *)_path;
+- (GCSFolder *) ocsFolder;
 
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
 
-- (NSArray *)fetchContentObjectNames;
-- (NSDictionary *)fetchContentStringsAndNamesOfAllObjects;
+- (NSArray *) fetchContentObjectNames;
+- (NSDictionary *) fetchContentStringsAndNamesOfAllObjects;
 
 /* folder type */
 
-- (NSString *)outlookFolderClass;
+- (NSString *) outlookFolderClass;
 
 - (BOOL) create;
 - (NSException *) delete;
