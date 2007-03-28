@@ -102,11 +102,6 @@
           pageName    = "UIxCalMainView";
           actionName  = "updateCalendars";
         };
-        checkRights = {
-          protectedBy = "View";
-          pageName    = "UIxCalMainView";
-          actionName  = "checkRights";
-        };
         editAttendees = {
           protectedBy = "View";
           pageName    = "UIxAttendeesEditor";

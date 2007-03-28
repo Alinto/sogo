@@ -1,3 +1,12 @@
+2007-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-checkRightsAction]): removed method.
+
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions
+	-canAccessContentAction]): new method designed to replace
+	[UIxCalMainView checkRightsAction] in a more universal way.
+
 2007-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
