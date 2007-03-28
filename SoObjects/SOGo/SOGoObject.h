@@ -52,12 +52,12 @@
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;
 
-- (id)initWithName:(NSString *)_name inContainer:(id)_container;
+- (id) initWithName: (NSString *) _name inContainer:(id)_container;
 
 /* accessors */
 
-- (NSString *)nameInContainer;
-- (id)container;
+- (NSString *) nameInContainer;
+- (id) container;
 
 - (NSTimeZone *) serverTimeZone;
 - (NSTimeZone *) userTimeZone;
@@ -66,18 +66,18 @@
 /* ownership */
 
 - (void) setOwner: (NSString *) newOwner;
-- (NSString *)ownerInContext:(id)_ctx;
+- (NSString *) ownerInContext: (id) _ctx;
 
 /* looking up shared objects */
 
-- (SOGoUserFolder *)lookupUserFolder;
-- (SOGoGroupsFolder *)lookupGroupsFolder;
+- (SOGoUserFolder *) lookupUserFolder;
+- (SOGoGroupsFolder *) lookupGroupsFolder;
 
-- (void)sleep;
+- (void) sleep;
 
 /* hierarchy */
 
-- (NSArray *)fetchSubfolders; /* uses toManyRelationshipKeys */
+- (NSArray *) fetchSubfolders; /* uses toManyRelationshipKeys */
 
 /* operations */
 
