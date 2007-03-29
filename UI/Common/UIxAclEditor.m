@@ -44,7 +44,8 @@
       users = [NSMutableArray new];
       delegates = [NSMutableArray new];
       assistants = [NSMutableArray new];
-      ownerCN = nil;
+      ownerLogin = nil;
+      currentUser = nil;
     }
 
   return self;
@@ -55,8 +56,8 @@
   [users release];
   [delegates release];
   [assistants release];
-  if (ownerCN)
-    [ownerCN release];
+  [ownerLogin release];
+  [currentUser release];
   [super dealloc];
 }
 
@@ -73,15 +74,31 @@
   return acls;
 }
 
-- (NSString *) ownerCN
+- (NSString *) ownerLogin
 {
-  if (!ownerCN)
+  if (!ownerLogin)
     {
-      ownerCN = [[self clientObject] ownerInContext: context];
-      [ownerCN retain];
+      ownerLogin = [[self clientObject] ownerInContext: context];
+      [ownerLogin retain];
     }
 
-  return ownerCN;
+  return ownerLogin;
+}
+
+- (NSString *) _displayNameForUID: (NSString *) uid
+{
+  AgenorUserManager *um;
+  
+  um = [AgenorUserManager sharedUserManager];
+
+  return [NSString stringWithFormat: @"%@ <%@>",
+		   [um getCNForUID: uid],
+		   [um getEmailForUID: uid]];
+}
+
+- (NSString *) ownerName
+{
+  return [self _displayNameForUID: [self ownerLogin]];
 }
 
 - (void) _prepareUsers
@@ -89,7 +106,6 @@
   NSEnumerator *aclsEnum;
   AgenorUserManager *um;
   NSDictionary *currentAcl;
-  iCalPerson *currentUser;
   NSString *currentUID;
 
   aclsEnum = [[self aclsForFolder] objectEnumerator];
@@ -102,15 +118,15 @@
         publishInFreeBusy = YES;
       else
         {
-          currentUser = [um iCalPersonWithUid: currentUID];
-          if (![[currentUser cn] isEqualToString: [self ownerCN]])
+          if (![[um getCNForUID: currentUID]
+		 isEqualToString: [self ownerLogin]])
             {
               if ([[currentAcl objectForKey: @"c_role"]
                     isEqualToString: SOGoRole_Delegate])
-                [delegates addObject: [currentUser cn]];
+                [delegates addObject: currentUID];
               else
-                [assistants addObject: [currentUser cn]];
-              [users addObject: currentUser];
+                [assistants addObject: currentUID];
+              [users addObject: currentUID];
             }
         }
       currentAcl = [aclsEnum nextObject];
@@ -125,6 +141,21 @@
     [self _prepareUsers];
 
   return users;
+}
+
+- (void) setCurrentUser: (NSString *) newCurrentUser
+{
+  ASSIGN (currentUser, newCurrentUser);
+}
+
+- (NSString *) currentUser
+{
+  return currentUser;
+}
+
+- (NSString *) currentUserDisplayName
+{
+  return [self _displayNameForUID: currentUser];
 }
 
 - (NSArray *) delegates
@@ -161,7 +192,11 @@
 
 - (NSString *) toolbar
 {
-  return (([[self ownerCN] isEqualToString: [[context activeUser] login]])
+  NSString *currentLogin;
+
+  currentLogin = [[context activeUser] login];
+
+  return (([[self ownerLogin] isEqualToString: currentLogin])
           ? @"SOGoAclOwner.toolbar" : @"SOGoAclAssistant.toolbar");
 }
 
