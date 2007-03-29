@@ -1,5 +1,9 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxMailEditor.js: moved previous generic
+	method "onContactAdd" here since the Mailer is now the only module
+	to use it when composing emails.
+
 	* UI/WebServerResources/generic.js: added code for handling the
 	new scheme used for describing SOGo folders, common code to handle
 	folder addition or removal.
