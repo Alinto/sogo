@@ -1,5 +1,9 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js: added code for handling the
+	new scheme used for describing SOGo folders, common code to handle
+	folder addition or removal.
+
 	* UI/Common/UIxFolderActions.m ([UIxFolderActions
 	-activateFolderAction]): new method that change the "active"
 	settings in the folder-related fields in the user settings.

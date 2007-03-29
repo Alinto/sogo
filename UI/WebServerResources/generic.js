@@ -110,6 +110,24 @@ function ml_stripActionInURL(url) {
   return url;
 }
 
+function URLForFolderID(folderID) {
+   var folderInfos = folderID.split(":");
+   var url;
+   if (folderInfos.length > 1) {
+      url = UserFolderURL + "../" + folderInfos[0];
+      if (folderInfos[1][0] != '/')
+        url += '/';
+      url += folderInfos[1];
+   }
+   else
+      url = ApplicationBaseURL + folderInfos[0];
+   
+   if (url[url.length-1] == '/')
+      url = url.substr(0, url.length-1);
+
+   return url;
+}
+
 function extractEmailAddress(mailTo) {
   var email = "";
 
@@ -146,6 +164,19 @@ function sanitizeMailTo(dirtyMailTo) {
     mailto = email;
 
   return mailto;
+}
+
+function openUserFolderSelector(callback, type) {
+   var urlstr = ApplicationBaseURL;
+   if (urlstr[urlstr.length-1] != '/')
+      urlstr += '/';
+   urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
+   var w = window.open(urlstr, "User Selector",
+		       "width=322,height=250,resizable=1,scrollbars=0");
+   w.opener = window;
+   w.userFolderCallback = callback;
+   w.userFolderType = type;
+   w.focus();
 }
 
 function openMailComposeWindow(url) {
@@ -774,54 +805,75 @@ function popupToolbarMenu(event, menuId) {
 
 /* contact selector */
 
-function onContactAdd(node) {
-  var selector = null;
-  var selectorURL = '?popup=YES';
-  if (node) {
-    selector = node.parentNode.parentNode;
-    selectorURL += ("&selectorId=" + selector.getAttribute("id"));
-  }
-
-  urlstr = ApplicationBaseURL;
-  if (urlstr[urlstr.length-1] != '/')
-    urlstr += '/';
-  urlstr += ("../../" + UserLogin + "/Contacts/"
-             + contactSelectorAction + selectorURL);
-//   log (urlstr);
-  var w = window.open(urlstr, "Addressbook",
-                      "width=640,height=400,resizable=1,scrollbars=0");
-  w.selector = selector;
-  w.opener = this;
-  w.focus();
-
-  return false;
+function folderSubscriptionCallback(http) {
+   if (http.readyState == 4) {
+      if (http.status == 204) {
+	 if (http.callbackData)
+	    http.callbackData["method"](http.callbackData["data"]);
+      }
+      else
+	 window.alert(labels["Unable to subscribe to that folder!"].decodeEntities());
+      document.subscriptionAjaxRequest = null;
+   }
+   else
+      log ("ajax fuckage");
 }
 
-function onContactRemove(node) {
-  var selector = node.parentNode.parentNode;
-  var selectorId = selector.getAttribute("id");
-  var hasChanged = false;
+function subscribeToFolder(refreshCallback, refreshCallbackData) {
+   var folderData = refreshCallbackData["folder"].split(":");
+   var username = folderData[0];
+   var folderPath = folderData[1];
+   if (username != UserLogin) {
+      var url = (UserFolderURL + "../" + username
+		 + "/" + folderPath + "/subscribe");
+      if (document.subscriptionAjaxRequest) {
+	 document.subscriptionAjaxRequest.aborted = true;
+	 document.subscriptionAjaxRequest.abort();
+      }
+      var rfCbData = { method: refreshCallback, data: refreshCallbackData };
+      document.subscriptionAjaxRequest = triggerAjaxRequest(url,
+							    folderSubscriptionCallback,
+							    rfCbData);
+   }
+   else
+      window.alert(labels["You cannot subscribe to a folder that you own!"].decodeEntities());
+}
 
-  var names = $('uixselector-' + selectorId + '-display');
-  var nodes = names.getSelectedNodes();
-  hasChanged = (nodes.length > 0);
-  for (var i = 0; i < nodes.length; i++) {
-    var currentNode = nodes[i];
-    currentNode.parentNode.removeChild(currentNode);
-  }
+function folderUnsubscriptionCallback(http) {
+   if (http.readyState == 4) {
+      if (http.status == 204) {
+	 if (http.callbackData)
+	    http.callbackData["method"](http.callbackData["data"]);
+      }
+      else
+	 window.alert(labels["Unable to unsubscribe from that folder!"].decodeEntities());
+      document.unsubscriptionAjaxRequest = null;
+   }
+}
 
-  var uids = $('uixselector-' + selectorId + '-uidList');
-  nodes = node.parentNode.childNodes;
-  var ids = new Array();
-  for (var i = 0; i < nodes.length; i++)
-    if (nodes[i] instanceof HTMLLIElement)
-      ids.push(nodes[i].getAttribute("uid"));
-  uids.value = ids.join(",");
-
-  if (selector.changeNotification && hasChanged)
-    selector.changeNotification("removal");
-
-  return false;
+function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
+   if (document.body.hasClassName("popup")) {
+      window.opener.unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData);
+   }
+   else {
+      var folderData = folder.split(":");
+      var username = folderData[0];
+      var folderPath = folderData[1];
+      if (username != UserLogin) {
+	 var url = (UserFolderURL + "../" + username
+		    + "/" + folderPath + "/unsubscribe");
+	 if (document.unsubscriptionAjaxRequest) {
+	    document.unsubscriptionAjaxRequest.aborted = true;
+	    document.unsubscriptionAjaxRequest.abort();
+	 }
+	 var rfCbData = { method: refreshCallback, data: refreshCallbackData };
+	 document.unsubscriptionAjaxRequest = triggerAjaxRequest(url,
+								 folderUnsubscriptionCallback,
+								 rfCbData);
+      }
+      else
+	 window.alert(labels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
+   }
 }
 
 function listRowMouseDownHandler(event) {
@@ -883,13 +935,13 @@ function openExternalLink(anchor) {
   return false;
 }
 
-function openAclWindow(url, objectTitle) {
+function openAclWindow(url) {
   var w = window.open(url, "aclWindow",
                       "width=300,height=300,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0"
                       + ",copyhistory=0");
+  w.opener = window;
   w.focus();
-  w.title = "Poil: " + objectTitle;
 
   return w;
 }
