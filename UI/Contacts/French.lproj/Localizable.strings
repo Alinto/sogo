@@ -98,11 +98,6 @@
 "Recipient" = "Destinataire";
 "Carbon Copy" = "Copie carbone";
 "Blind Carbon Copy" = "C. carbone cachée";
-"Add Attendee..." = "Ajouter participant...";
-"Add Calendar..." = "Ajouter agenda...";
-"Add Address Book..." = "Ajouter carnet...";
-"Add Assistant" = "Ajouter comme assistant";
-"Add Delegate" = "Ajouter comme délégué";
 
 "New Addressbook..." = "Nouveau carnet d'adresses...";
 "Subscribe to an Addressbook..." = "S'inscrire à un carnet d'adresses...";
@@ -111,3 +106,8 @@
 "Name of the Address Book" = "Nom du carnet d'adresses";
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
+
+"You cannot subscribe to a folder that you own!"
+= "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
+"Unable to subscribe to that folder!"
+= "Impossible de vous inscrire à ce dossier!";

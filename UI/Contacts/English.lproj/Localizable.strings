@@ -86,9 +86,6 @@
 "Recipient" = "Recipient";
 "Carbon Copy" = "Carbon Copy";
 "Blind Carbon Copy" = "Blind Carbon Copy";
-"Add Attendee..." = "Add Attendee...";
-"Add Assistant" = "Add Assistant";
-"Add Delegate" = "Add Delegate";
 
 "New Addressbook..." = "New Addressbook...";
 "Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
@@ -97,3 +94,8 @@
 "Name of the Address Book" = "Name of the Address Book";
 "Are you sure you want to delete the selected address book?"
 = "Are you sure you want to delete the selected address book?";
+
+"You cannot subscribe to a folder that you own!"
+= "You cannot subscribe to a folder that you own!";
+"Unable to subscribe to that folder!"
+= "Unable to subscribe to that folder!";

@@ -17,7 +17,7 @@
     };
     SOGoUserFolder = {
       superclass  = "SOGoFolder";
-      protectedBy = "HomePage Access";
+      /* protectedBy = "HomePage Access"; */
       defaultRoles = {
         "Homepage Access" = ( "Owner", "Assistant", "Delegate", "FreeBusy" );
         "WebDAV Access" = ( "Owner", "Assistant", "Delegate", "FreeBusy" );

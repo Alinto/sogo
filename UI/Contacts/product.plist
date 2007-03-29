@@ -1,5 +1,5 @@
 { /* -*-javascript-*- */
-  requires = ( MAIN, CommonUI, Contacts );
+  requires = ( MAIN, MainUI, CommonUI, Contacts );
 
   publicResources = ();
 
@@ -22,35 +22,20 @@
               pageName    = "UIxContactFoldersView";
               actionName  = "newAb";
            };
-           scheduler-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "selectForScheduler";
-           };
            mailer-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
               actionName  = "selectForMailer";
            };
-           calendars-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "selectForCalendars";
-           };
-           addressbooks-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "selectForAddressBooks";
-           };
-           acls-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "selectForAcls";
-           };
            contactSearch = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
               actionName  = "contactSearch";
+           };
+           foldersSearch = {
+              protectedBy = "View";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "foldersSearch";
            };
            updateAdditionalAddressBooks = {
               protectedBy = "View";
@@ -64,13 +49,17 @@
            saveAcls = {
               protectedBy = "SaveAcls";
               pageName    = "UIxAclEditor";
-              actionName = "saveAcls";
+              actionName  = "saveAcls";
            };
            checkRights = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView"; 
               actionName  = "checkRights";
            };
+	   userFolders = {
+              protectedBy = "View";
+              pageName    = "UIxContactsUserFolders"; 
+	   };
         };
      };
 
@@ -94,27 +83,12 @@
            mailer-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactsListView";
-              actionName = "mailerContacts";
-           };
-           calendars-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName = "calendarsContacts";
-           };
-           acls-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName  = "aclsContacts";
-           };
-           addressbooks-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName = "addressBooksContacts";
+              actionName  = "mailerContacts";
            };
 	   delete = {
               protectedBy = "View";
               pageName    = "UIxContactsListView";
-              actionName = "delete";
+              actionName  = "delete";
 	   };
         };
      };
@@ -136,31 +110,16 @@
               pageName    = "UIxContactEditor";
               actionName  = "new";
            };
-           scheduler-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName = "schedulerContacts";
-           };
            mailer-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactsListView";
               actionName = "mailerContacts";
            };
-           calendars-contacts = {
-              protectedBy = "View";
+	   canAccessContent = {
+	      protectedBy = "View";
               pageName    = "UIxContactsListView";
-              actionName = "calendarsContacts";
-           };
-           acls-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName  = "aclsContacts";
-           };
-           addressbooks-contacts = {
-              protectedBy = "View";
-              pageName    = "UIxContactsListView";
-              actionName = "addressBooksContacts";
-           };
+	      actionName = "canAccessContent";
+	   };
         };
      };
 
