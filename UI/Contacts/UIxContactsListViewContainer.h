@@ -34,6 +34,7 @@
   NSString *foldersPrefix;
   NSString *selectorComponentClass;
   NSString *currentAdditionalFolder;
+  NSDictionary *additionalFolders;
   id currentFolder;
 }
 
@@ -43,15 +44,14 @@
 
 - (NSArray *) contactFolders;
 
-- (NSString *) contactFolderId;
 - (NSString *) currentContactFolderId;
 - (NSString *) currentContactFolderName;
 
-- (NSString *) additionalAddressBooks;
 - (NSArray *) additionalFolders;
 
 - (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder;
 - (NSString *) currentAdditionalFolder;
+- (NSString *) currentAdditionalFolderName;
 
 @end
 

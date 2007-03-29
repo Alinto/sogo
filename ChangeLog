@@ -1,5 +1,11 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([UIxContactsListViewContainer -additionalFolders]): take the list
+	of subscribed folders from the new property list used for the user
+	settings. The value of its key is SubscribedFolders for the
+	dictionary entry named "Contacts".
+
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
 	-canAccessContentAction]): new method to override the one from
 	UIxFoldersActions by taking into account the fact that, this time,

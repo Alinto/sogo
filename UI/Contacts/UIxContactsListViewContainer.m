@@ -21,11 +21,13 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGExtensions/NSObject+Values.h>
 
+#import <SoObjects/SOGo/AgenorUserManager.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 
@@ -41,9 +43,16 @@
     {
       foldersPrefix = nil;
       selectorComponentClass = nil;
+      additionalFolders = nil;
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [additionalFolders release];
+  [super dealloc];
 }
 
 - (void) setSelectorComponentClass: (NSString *) aComponentClass
@@ -101,13 +110,6 @@
   return foldersPrefix;
 }
 
-- (NSString *) contactFolderId
-{
-  return [NSString stringWithFormat: @"%@/%@",
-                   [self foldersPrefix],
-                   [[self clientObject] nameInContainer]];
-}
-
 - (NSArray *) contactFolders
 {
   SOGoContactFolders *folderContainer;
@@ -129,32 +131,23 @@
   return [self labelForKey: [currentFolder displayName]];
 }
 
-- (BOOL) isFolderCurrent
-{
-  return [[self currentContactFolderId] isEqualToString: [self contactFolderId]];
-}
-
-- (NSString *) additionalAddressBooks
-{
-  NSUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
-
-  return [ud objectForKey: @"additionaladdressbooks"];
-}
-
 - (NSArray *) additionalFolders
 {
-  NSString *folders;
-  NSArray *folderNames;
+  AgenorUserManager *um;
+  NSUserDefaults *ud;
+  NSString *login;
 
-  folders = [self additionalAddressBooks];
-  if ([folders length] > 0)
-    folderNames = [folders componentsSeparatedByString: @","];
-  else
-    folderNames = nil;
+  if (!additionalFolders)
+    {
+      um = [AgenorUserManager sharedUserManager];
+      login = [[context activeUser] login];
+      ud = [um getUserSettingsForUID: login];
+      additionalFolders
+	= [[ud objectForKey: @"Contacts"] objectForKey: @"SubscribedFolders"];
+      [additionalFolders retain];
+    }
 
-  return folderNames;
+  return [additionalFolders allKeys];
 }
 
 - (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder
@@ -165,6 +158,12 @@
 - (NSString *) currentAdditionalFolder
 {
   return currentAdditionalFolder;
+}
+
+- (NSString *) currentAdditionalFolderName
+{
+  return [[additionalFolders objectForKey: currentAdditionalFolder]
+	   objectForKey: @"displayName"];
 }
 
 - (BOOL) hasContactSelectionButtons
