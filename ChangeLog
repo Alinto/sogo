@@ -1,5 +1,8 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayView.m: commented out many unused methods
+	to make sure they can be removed.
+
 	* UI/Scheduler/UIxCalView.m ([UIxCalView -_setupCalendarFolders]):
 	populate the calendar entries based on the user settings plist.
 

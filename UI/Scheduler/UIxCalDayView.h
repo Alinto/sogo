@@ -25,24 +25,23 @@
 #define	__UIxCalDayView_H_
 
 
-#include "UIxCalView.h"
+#import "UIxCalView.h"
 
 @interface UIxCalDayView : UIxCalView
-{
-  NSCalendarDate *currentDate;
-}
 
-- (void)setCurrentDate:(NSCalendarDate *)_date;
-- (NSCalendarDate *)currentDate;
-- (BOOL)isCurrentDateInApt;
-    
-- (NSDictionary *)currentDateQueryParameters;
+- (NSDictionary *) dayBeforePrevDayQueryParameters;
+- (NSDictionary *) prevDayQueryParameters;
+- (NSDictionary *) nextDayQueryParameters;
+- (NSDictionary *) dayAfterNextDayQueryParameters;
+- (NSDictionary *) currentDateQueryParameters;
 
-- (NSArray *)dateRange;
+- (NSCalendarDate *) startDate;
 
-/* appointments */
-- (NSArray *)aptsForCurrentDate;
-- (BOOL)hasAptsForCurrentDate;
+- (NSString *) dayBeforeYesterdayName;
+- (NSString *) yesterdayName;
+- (NSString *) currentDayName;
+- (NSString *) tomorrowName;
+- (NSString *) dayAfterTomorrowName;
 
 @end
 
