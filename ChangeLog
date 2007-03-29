@@ -1,3 +1,14 @@
+2007-03-29  Wolfgang Sourdeau  <Wolfgang@Contre.COM>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-checkRightsAction]): removed method.
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-updateAdditionalAddressBooksAction]): removed method.
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-updateCalendarsAction]): removed method.
+
 2007-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView

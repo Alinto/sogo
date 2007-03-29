@@ -114,20 +114,4 @@ static NSMutableArray *yearMenuItems = nil;
   return self;
 }
 
-- (id <WOActionResults>) updateCalendarsAction
-{
-  WOResponse *response;
-  NSUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
-  [ud setObject: [self queryParameterForKey: @"ids"]
-                       forKey: @"calendaruids"];
-  [ud synchronize];
-  response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/html; charset=\"utf-8\"" forKey: @"content-type"];
-
-  return response;
-}
-
 @end

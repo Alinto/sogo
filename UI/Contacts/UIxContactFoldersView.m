@@ -27,11 +27,15 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext.h>
 
+#import <GDLContentStore/GCSFolder.h>
+#import <GDLContentStore/GCSFolderManager.h>
+
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
+#import <SoObjects/Contacts/SOGoContactLDAPFolder.h>
 
 #import "common.h"
 
@@ -84,32 +88,13 @@
   return response;
 }
 
-- (id) selectForSchedulerAction
-{
-  return [self _selectActionForApplication: @"scheduler-contacts"];
-}
-
-- (id) selectForMailerAction
-{
-  return [self _selectActionForApplication: @"mailer-contacts"];
-}
-
-- (id) selectForCalendarsAction
-{
-  return [self _selectActionForApplication: @"calendars-contacts"];
-}
-
-- (id) selectForAddressBooksAction
-{
-  return [self _selectActionForApplication: @"addressbooks-contacts"];
-}
-
 - (id) selectForAclsAction
 {
   return [self _selectActionForApplication: @"acls-contacts"];
 }
 
 - (NSArray *) _searchResults: (NSString *) contact
+	     ldapFoldersOnly: (BOOL) ldapFoldersOnly
 {
   NSMutableArray *results;
   SOGoContactFolders *topFolder;
@@ -124,10 +109,12 @@
   currentFolder = [sogoContactFolders nextObject];
   while (currentFolder)
     {
-      [results addObjectsFromArray: [currentFolder
-                                      lookupContactsWithFilter: contact
-                                      sortBy: @"cn"
-                                      ordering: NSOrderedAscending]];
+      if (!ldapFoldersOnly
+	  || [currentFolder isKindOfClass: [SOGoContactLDAPFolder class]])
+	[results addObjectsFromArray: [currentFolder
+					lookupContactsWithFilter: contact
+					sortBy: @"cn"
+					ordering: NSOrderedAscending]];
       currentFolder = [sogoContactFolders nextObject];
     }
   [topFolder release];
@@ -202,31 +189,174 @@
 {
   NSString *contact;
   id <WOActionResults> result;
+  BOOL ldapFoldersOnly;
 
   contact = [self queryParameterForKey: @"search"];
-  if ([contact length])
-    result = [self _responseForResults: [self _searchResults: contact]];
+  ldapFoldersOnly = [[self queryParameterForKey: @"ldap-only"] boolValue];
+  if ([contact length] > 0)
+    result
+      = [self _responseForResults: [self _searchResults: contact
+					 ldapFoldersOnly: ldapFoldersOnly]];
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'search' parameter"];
+  
+  return result;
+}
+
+- (NSArray *) _gcsFoldersFromFolder: (SOGoContactFolders *) contactFolders
+{
+  NSMutableArray *gcsFolders;
+  NSEnumerator *contactSubfolders;
+  SOGoContactGCSFolder *currentContactFolder;
+  NSString *folderName, *displayName;
+  NSMutableDictionary *currentDictionary;
+
+  gcsFolders = [NSMutableArray new];
+  [gcsFolders autorelease];
+
+  contactSubfolders = [[contactFolders contactFolders] objectEnumerator];
+  currentContactFolder = [contactSubfolders nextObject];
+  while (currentContactFolder)
+    {
+      if ([currentContactFolder
+	    isKindOfClass: [SOGoContactGCSFolder class]])
+	{
+	  folderName = [NSString stringWithFormat: @"/Contacts/%@",
+				 [currentContactFolder nameInContainer]];
+	  currentDictionary = [NSMutableDictionary new];
+	  [currentDictionary autorelease];
+	  displayName = [[currentContactFolder ocsFolder] folderName];
+	  [currentDictionary setObject: displayName forKey: @"displayName"];
+	  [currentDictionary setObject: folderName forKey: @"name"];
+	  [currentDictionary setObject: @"contact" forKey: @"type"];
+	  [gcsFolders addObject: currentDictionary];
+	}
+      currentContactFolder = [contactSubfolders nextObject];
+    }
+
+  return gcsFolders;
+}
+
+- (NSArray *) _foldersForUID: (NSString *) uid
+		      ofType: (NSString *) folderType
+{
+  NSObject *topFolder, *userFolder;
+  SOGoContactFolders *contactFolders;
+  NSMutableArray *folders;
+  NSMutableDictionary *currentDictionary;
+
+  folders = [NSMutableArray new];
+  [folders autorelease];
+
+  topFolder = [[[self clientObject] container] container];
+  userFolder = [topFolder lookupName: uid inContext: context acquire: NO];
+
+  /* FIXME: should be moved in the SOGo* classes. Maybe by having a SOGoFolderManager. */
+#warning this might need adjustments whenever we permit multiple calendar folders per-user
+  if ([folderType length] == 0 || [folderType isEqualToString: @"calendar"])
+    {
+      currentDictionary = [NSMutableDictionary new];
+      [currentDictionary autorelease];
+      [currentDictionary setObject: [self labelForKey: @"Calendar"]
+			 forKey: @"displayName"];
+      [currentDictionary setObject: @"/Calendar" forKey: @"name"];
+      [currentDictionary setObject: @"calendar" forKey: @"type"];
+      [folders addObject: currentDictionary];
+    }
+  if ([folderType length] == 0 || [folderType isEqualToString: @"contact"])
+    {
+      contactFolders = [userFolder lookupName: @"Contacts"
+				   inContext: context acquire: NO];
+      [folders
+	addObjectsFromArray: [self _gcsFoldersFromFolder: contactFolders]];
+    }
+
+  return folders;
+}
+
+- (NSString *) _foldersStringForFolders: (NSEnumerator *) folders
+{
+  NSMutableString *foldersString;
+  NSDictionary *currentFolder;
+
+  foldersString = [NSMutableString new];
+  [foldersString autorelease];
+
+  currentFolder = [folders nextObject];
+  while (currentFolder)
+    {
+      [foldersString appendFormat: @";%@:%@:%@",
+		     [currentFolder objectForKey: @"displayName"],
+		     [currentFolder objectForKey: @"name"],
+		     [currentFolder objectForKey: @"type"]];
+      currentFolder = [folders nextObject];
+    }
+
+  return foldersString;
+}
+
+- (WOResponse *) _foldersResponseForResults: (NSArray *) results
+				   withType: (NSString *) folderType
+{
+  WOResponse *response;
+  NSString *uid, *foldersString;
+  NSMutableString *responseString;
+  NSDictionary *result;
+  NSEnumerator *resultsEnum;
+  NSArray *folders;
+
+  response = [context response];
+
+  if ([results count])
+    {
+      [response setStatus: 200];
+      [response setHeader: @"text/plain; charset=iso-8859-1"
+                forKey: @"Content-Type"];
+
+      responseString = [NSMutableString new];
+      resultsEnum = [results objectEnumerator];
+      result = [resultsEnum nextObject];
+      while (result)
+	{
+	  uid = [result objectForKey: @"c_uid"];
+	  folders = [self _foldersForUID: uid ofType: folderType];
+	  foldersString
+	    = [self _foldersStringForFolders: [folders objectEnumerator]];
+	  [responseString appendFormat: @"%@:%@%@\n",
+			  uid, [self _emailForResult: result], foldersString];
+	  result = [resultsEnum nextObject];
+	}
+      [response appendContentString: responseString];
+      [responseString release];
+    }
+  else
+    [response setStatus: 404];
+
+  return response;
+}
+
+- (id <WOActionResults>) foldersSearchAction
+{
+  NSString *contact, *folderType;
+  id <WOActionResults> result;
+  BOOL ldapOnly;
+
+  contact = [self queryParameterForKey: @"search"];
+  if ([contact length] > 0)
+    {
+      ldapOnly = [[self queryParameterForKey: @"ldap-only"] boolValue];
+      folderType = [self queryParameterForKey: @"type"];
+      result = [self _foldersResponseForResults:
+		       [self _searchResults: contact
+			     ldapFoldersOnly: ldapOnly]
+		     withType: folderType];
+    }
   else
     result = [NSException exceptionWithHTTPStatus: 400
                           reason: @"missing 'search' parameter"];
 
   return result;
-}
-
-- (id <WOActionResults>) updateAdditionalAddressBooksAction
-{
-  WOResponse *response;
-  NSUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
-  [ud setObject: [self queryParameterForKey: @"ids"]
-      forKey: @"additionaladdressbooks"];
-  [ud synchronize];
-  response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/html; charset=\"utf-8\"" forKey: @"content-type"];
-
-  return response;
 }
 
 - (SOGoContactGCSFolder *) contactFolderForUID: (NSString *) uid
@@ -254,42 +384,6 @@
                             onObject: contactFolder
                             inContext: context] == nil)
           ? contactFolder : nil);
-}
-
-- (id <WOActionResults>) checkRightsAction
-{
-  WOResponse *response;
-  NSUserDefaults *ud;
-  NSString *uids;
-  NSMutableString *rights;
-  NSArray *ids;
-  unsigned int count, max;
-  BOOL result;
-
-  ud = [[context activeUser] userDefaults];
-  uids = [ud objectForKey: @"additionaladdressbooks"];
-
-  response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/plain; charset=\"utf-8\""
-            forKey: @"content-type"];
-  rights = [NSMutableString string];
-  if ([uids length] > 0)
-    {
-      ids = [uids componentsSeparatedByString: @","];
-      max = [ids count];
-      for (count = 0; count < max; count++)
-        {
-          result = ([self contactFolderForUID: [ids objectAtIndex: count]] != nil);
-          if (count == 0)
-            [rights appendFormat: @"%d", result];
-          else
-            [rights appendFormat: @",%d", result];
-        }
-    }
-  [response appendContentString: rights];
-
-  return response;
 }
 
 @end
