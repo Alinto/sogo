@@ -166,7 +166,7 @@ static NSString *uidColumnName = @"uid";
 - (NSString *) generateSQLForInsert
 {
   NSMutableString *sql;
-  NSString *serializedDefaults, *error;
+  NSString *serializedDefaults;
 
 #if LIB_FOUNDATION_LIBRARY
   serializedDefaults = [values stringRepresentation];
@@ -179,6 +179,7 @@ static NSString *uidColumnName = @"uid";
 		  [serializedDefaults stringByReplacingString:@"'" withString:@"''"]];
 #else
   NSData *serializedDefaultsData;
+  NSString *error;
 
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
@@ -208,7 +209,7 @@ static NSString *uidColumnName = @"uid";
 - (NSString *) generateSQLForUpdate
 {
   NSMutableString *sql;
-  NSString *serializedDefaults, *error;
+  NSString *serializedDefaults;
 
 #if LIB_FOUNDATION_LIBRARY
   serializedDefaults = [values stringRepresentation];
@@ -222,6 +223,7 @@ static NSString *uidColumnName = @"uid";
 		  uidColumnName, [self uid]];
 #else
   NSData *serializedDefaultsData;
+  NSString *error;
 
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
