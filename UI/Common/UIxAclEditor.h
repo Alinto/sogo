@@ -33,13 +33,20 @@
   NSMutableArray *users;
   NSMutableArray *assistants;
   NSMutableArray *delegates;
-  NSString *ownerCN;
+  NSString *currentUser;
+  NSString *ownerLogin;
 }
 
 - (NSArray *) aclsForFolder;
-- (NSString *) ownerCN;
 - (NSString *) assistantsValue;
 - (NSString *) delegatesValue;
+
+- (NSArray *) usersForFolder;
+- (void) setCurrentUser: (NSString *) newCurrentUser;
+- (NSString *) currentUser;
+
+- (NSString *) ownerLogin;
+- (NSString *) ownerName;
 
 @end
 
