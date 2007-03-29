@@ -1,5 +1,8 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-selectForMailerAction]): restored method.
+
 	* UI/Scheduler/UIxCalendarSelector.m: new template module derived
 	from a simplified version of the old UIxContactEditor (removed).
 

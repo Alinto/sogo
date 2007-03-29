@@ -88,9 +88,9 @@
   return response;
 }
 
-- (id) selectForAclsAction
+- (id) selectForMailerAction
 {
-  return [self _selectActionForApplication: @"acls-contacts"];
+  return [self _selectActionForApplication: @"mailer-contacts"];
 }
 
 - (NSArray *) _searchResults: (NSString *) contact
