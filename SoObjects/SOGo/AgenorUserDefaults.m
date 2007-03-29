@@ -169,12 +169,14 @@ static NSString *uidColumnName = @"uid";
   NSString *serializedDefaults, *error;
 
 #if LIB_FOUNDATION_LIBRARY
-  NSMutableData *serializedDefaultsData;
+  serializedDefaults = [values stringRepresentation];
 
-  serializedDefaultsData = [NSData new];
-  [serializedDefaultsData autorelease];
-  [NSSerializer serializePropertyList: values
-		intoData: serializedDefaultsData];
+  sql = [NSString stringWithFormat: (@"INSERT INTO %@"
+				     @"            (%@, %@)"
+				     @"     VALUES ('%@', '%@')"),
+		  [[self tableURL] gcsTableName], uidColumnName, fieldName,
+		  [self uid],
+		  [serializedDefaults stringByReplacingString:@"'" withString:@"''"]];
 #else
   NSData *serializedDefaultsData;
 
@@ -182,7 +184,6 @@ static NSString *uidColumnName = @"uid";
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
-#endif
 
   if (error)
     sql = nil;
@@ -199,6 +200,7 @@ static NSString *uidColumnName = @"uid";
 		      [serializedDefaults stringByReplacingString:@"'" withString:@"''"]];
       [serializedDefaults release];
     }
+#endif
 
   return sql;
 }
@@ -209,12 +211,15 @@ static NSString *uidColumnName = @"uid";
   NSString *serializedDefaults, *error;
 
 #if LIB_FOUNDATION_LIBRARY
-  NSMutableData *serializedDefaultsData;
+  serializedDefaults = [values stringRepresentation];
 
-  serializedDefaultsData = [NSData new];
-  [serializedDefaultsData autorelease];
-  [NSSerializer serializePropertyList: values
-		intoData: serializedDefaultsData];
+  sql = [NSString stringWithFormat: (@"UPDATE %@"
+				     @"     SET %@ = '%@'"
+				     @"   WHERE %@ = '%@'"),
+		  [[self tableURL] gcsTableName],
+		  fieldName,
+		  [serializedDefaults stringByReplacingString:@"'" withString:@"''"],
+		  uidColumnName, [self uid]];
 #else
   NSData *serializedDefaultsData;
 
@@ -222,7 +227,6 @@ static NSString *uidColumnName = @"uid";
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
-#endif
   error = nil;
   if (error)
     {
@@ -243,6 +247,7 @@ static NSString *uidColumnName = @"uid";
 		      uidColumnName, [self uid]];
       [serializedDefaults release];
     }
+#endif
 
   return sql;
 }
