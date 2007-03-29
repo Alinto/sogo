@@ -1,5 +1,8 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([UIxCalView -_setupCalendarFolders]):
+	populate the calendar entries based on the user settings plist.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-selectForMailerAction]): restored method.
 

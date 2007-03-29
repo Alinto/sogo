@@ -18,6 +18,7 @@
 @interface UIxCalView : UIxComponent
 {
   NSArray          *appointments;
+  NSMutableArray *calendarFolders;
   NSMutableDictionary *componentsData;
   NSArray          *tasks;
   NSArray          *allDayApts;

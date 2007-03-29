@@ -56,12 +56,15 @@ static BOOL shouldDisplayWeekend = NO;
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
       [self configureFormatters];
       componentsData = [NSMutableDictionary new];
+      calendarFolders = nil;
     }
+
   return self;
 }
 
 - (void) dealloc
 {
+  [calendarFolders release];
   [componentsData release];
   [appointments               release];
   [allDayApts                 release];
@@ -446,37 +449,120 @@ static BOOL shouldDisplayWeekend = NO;
   return [[self startDate] tomorrow];
 }
 
-- (NSArray *) activeCalendarFolders
+#warning We only support ONE calendar per user at this time
+- (BOOL) _appendSubscribedFolders: (NSDictionary *) subscribedFolders
 {
-  NSUserDefaults *ud;
-  NSEnumerator *calendarUIDs;
-  SOGoAppointmentFolder *currentFolder;
-  NSMutableArray *folders;
-  NSString *currentUID;
-  SoSecurityManager *securityManager;
+  NSEnumerator *keys;
+  NSString *currentKey;
+  NSMutableDictionary *currentCalendar;
+  BOOL firstShouldBeActive;
+  unsigned int count;
 
-  securityManager = [SoSecurityManager sharedSecurityManager];
+  firstShouldBeActive = YES;
 
-  folders = [NSMutableArray array];
-  ud = [[context activeUser] userDefaults];
-  calendarUIDs = [[[ud stringForKey: @"calendaruids"]
-                    componentsSeparatedByString: @","] objectEnumerator];
-  currentUID = [calendarUIDs nextObject];
-  while (currentUID)
+  keys = [[subscribedFolders allKeys] objectEnumerator];
+  currentKey = [keys nextObject];
+  count = 1;
+  while (currentKey)
     {
-      if (![currentUID hasPrefix: @"-"])
-        {
-          currentFolder = [[self clientObject] lookupCalendarFolderForUID: currentUID];
-          if (currentFolder
-              && ![securityManager validatePermission: SoPerm_AccessContentsInformation
-                                   onObject: currentFolder
-                                   inContext: context])
-            [folders addObject: currentFolder];
-        }
-      currentUID = [calendarUIDs nextObject];
+      currentCalendar = [NSMutableDictionary new];
+      [currentCalendar autorelease];
+      [currentCalendar
+	setDictionary: [subscribedFolders objectForKey: currentKey]];
+      [currentCalendar setObject: currentKey forKey: @"folder"];
+      [calendarFolders addObject: currentCalendar];
+      if ([[currentCalendar objectForKey: @"active"] boolValue])
+	firstShouldBeActive = NO;
+      count++;
+      currentKey = [keys nextObject];
     }
 
-  return folders;
+  return firstShouldBeActive;
+}
+
+- (void) _setupCalendarFolders
+{
+  NSMutableDictionary *userCalendar, *calendarDict;
+  SOGoUser *activeUser;
+  BOOL firstActive;
+
+  calendarFolders = [NSMutableArray new];
+  activeUser = [context activeUser];
+
+  userCalendar = [NSMutableDictionary new];
+  [userCalendar autorelease];
+  [userCalendar setObject: @"/" forKey: @"folder"];
+  [userCalendar setObject: [self labelForKey: @"Calendar"]
+		   forKey: @"displayName"];
+  [calendarFolders addObject: userCalendar];
+
+  calendarDict = [[activeUser userSettings] objectForKey: @"Calendar"];
+  firstActive = [[calendarDict objectForKey: @"activateUserFolder"] boolValue];
+  firstActive = ([self _appendSubscribedFolders:
+			 [calendarDict objectForKey: @"SubscribedFolders"]]
+		 || firstActive);
+  [userCalendar setObject: [NSNumber numberWithBool: firstActive]
+		forKey: @"active"];
+}
+
+- (SOGoAppointmentFolder *) _aptFolder: (NSString *) folder
+		      withClientObject: (SOGoAppointmentFolder *) clientObject
+{
+  SOGoAppointmentFolder *aptFolder;
+  NSArray *folderParts;
+
+  if ([folder isEqualToString: @"/"])
+    aptFolder = clientObject;
+  else
+    {
+      folderParts = [folder componentsSeparatedByString: @":"];
+      aptFolder
+	= [clientObject lookupCalendarFolderForUID:
+			  [folderParts objectAtIndex: 0]];
+    }
+
+  return aptFolder;
+}
+
+- (NSArray *) calendarFolders
+{
+  if (!calendarFolders)
+    [self _setupCalendarFolders];
+
+  return calendarFolders;
+}
+
+- (NSArray *) _activeCalendarFolders
+{
+  NSMutableArray *activeFolders;
+  NSEnumerator *folders;
+  NSDictionary *currentFolderDict;
+  SOGoAppointmentFolder *currentFolder, *clientObject;
+
+  activeFolders = [NSMutableArray new];
+  [activeFolders autorelease];
+
+  if (!calendarFolders)
+    [self _setupCalendarFolders];
+
+  clientObject = [self clientObject];
+
+  folders = [calendarFolders objectEnumerator];
+  currentFolderDict = [folders nextObject];
+  while (currentFolderDict)
+    {
+      if ([[currentFolderDict objectForKey: @"active"] boolValue])
+	{
+	  currentFolder
+	    = [self _aptFolder: [currentFolderDict objectForKey: @"folder"]
+		    withClientObject: clientObject];
+	  [activeFolders addObject: currentFolder];
+	}
+
+      currentFolderDict = [folders nextObject];
+    }
+
+  return activeFolders;
 }
 
 - (NSArray *) _fetchCoreInfosForComponent: (NSString *) component
@@ -490,7 +576,7 @@ static BOOL shouldDisplayWeekend = NO;
   if (!infos)
     {
       infos = [NSMutableArray array];
-      folders = [[self activeCalendarFolders] objectEnumerator];
+      folders = [[self _activeCalendarFolders] objectEnumerator];
       currentFolder = [folders nextObject];
       while (currentFolder)
         {
