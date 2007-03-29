@@ -42,6 +42,21 @@
 	       actionClass = "UIxFolderActions";
 	       actionName = "unsubscribe";
 	    };
+	    canAccessContent = {
+	       protectedBy = "View";
+	       actionClass = "UIxFolderActions";
+	       actionName = "canAccessContent";
+	    };
+            activateFolder = {
+	       protectedBy = "View";
+	       actionClass = "UIxFolderActions";
+	       actionName = "activateFolder";
+            };
+            deactivateFolder = {
+	       protectedBy = "View";
+	       actionClass = "UIxFolderActions";
+	       actionName = "deactivateFolder";
+            };
 	    acls = {
 	       protectedBy = "ReadAcls";
 	       pageName    = "UIxAclEditor";

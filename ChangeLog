@@ -1,4 +1,9 @@
-2007-03-29  Wolfgang Sourdeau  <Wolfgang@Contre.COM>
+2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions
+	-activateFolderAction]): new method that change the "active"
+	settings in the folder-related fields in the user settings.
+	([UIxFolderActions -deactivateFolderAction]): see above.
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-checkRightsAction]): removed method.

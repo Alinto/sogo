@@ -45,6 +45,9 @@
 
 - (WOResponse *) subscribeAction;
 - (WOResponse *) unsubscribeAction;
+- (WOResponse *) canAccessContentAction;
+- (WOResponse *) activateFolderAction;
+- (WOResponse *) deactivateFolderAction;
 
 @end
 

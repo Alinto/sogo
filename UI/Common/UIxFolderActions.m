@@ -28,14 +28,19 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/SoSecurityManager.h>
 
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "UIxFolderActions.h"
 
 @implementation UIxFolderActions
+
+#warning some of this code could probably be moved in one of the \
+         clientObject classes...
 
 - (void) _setupContext
 {
@@ -132,6 +137,67 @@
   [self _setupContext];
 
   return [self _realActionWithFolderName: nil];
+}
+
+- (WOResponse *) canAccessContentAction
+{
+  WOResponse *response;
+  SoSecurityManager *securityManager;
+  BOOL result;
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
+  result = (![securityManager validatePermission: SoPerm_AccessContentsInformation
+			      onObject: [self clientObject]
+			      inContext: context]);
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=\"ascii\""
+            forKey: @"content-type"];
+  [response appendContentString: (result) ? @"1" : @"0"];
+
+  return response;
+}
+
+- (WOResponse *) _realFolderActivation: (BOOL) makeActive
+{
+  WOResponse *response;
+  NSMutableDictionary *folderSubscription, *folderDict;
+  NSNumber *active;
+  
+  response = [context response];
+
+  [self _setupContext];
+  active = [NSNumber numberWithBool: makeActive];
+  if ([owner isEqualToString: login])
+    [moduleSettings setObject: active forKey: @"activateUserFolder"];
+  else
+    {
+      folderSubscription
+	= [moduleSettings objectForKey: @"SubscribedFolders"];
+      if (folderSubscription)
+	{
+          folderDict = [folderSubscription objectForKey: subscriptionPointer];
+          if (folderDict)
+            [folderDict setObject: active
+                        forKey: @"active"];
+	}
+    }
+
+  [ud synchronize];
+  [response setStatus: 204];
+
+  return response;
+}
+
+- (WOResponse *) activateFolderAction
+{
+  return [self _realFolderActivation: YES];
+}
+
+- (WOResponse *) deactivateFolderAction
+{
+  return [self _realFolderActivation: NO];
 }
 
 @end
