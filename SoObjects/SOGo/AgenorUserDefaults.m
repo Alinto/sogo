@@ -167,12 +167,23 @@ static NSString *uidColumnName = @"uid";
 {
   NSMutableString *sql;
   NSString *serializedDefaults, *error;
+
+#if LIB_FOUNDATION_LIBRARY
+  NSMutableData *serializedDefaultsData;
+
+  serializedDefaultsData = [NSData new];
+  [serializedDefaultsData autorelease];
+  [NSSerializer serializePropertyList: values
+		intoData: serializedDefaultsData];
+#else
   NSData *serializedDefaultsData;
 
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
+#endif
+
   if (error)
     sql = nil;
   else
@@ -196,13 +207,23 @@ static NSString *uidColumnName = @"uid";
 {
   NSMutableString *sql;
   NSString *serializedDefaults, *error;
+
+#if LIB_FOUNDATION_LIBRARY
+  NSMutableData *serializedDefaultsData;
+
+  serializedDefaultsData = [NSData new];
+  [serializedDefaultsData autorelease];
+  [NSSerializer serializePropertyList: values
+		intoData: serializedDefaultsData];
+#else
   NSData *serializedDefaultsData;
 
-  error = nil;
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
+#endif
+  error = nil;
   if (error)
     {
       sql = nil;
