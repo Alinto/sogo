@@ -1,3 +1,4 @@
+
 DIV#leftPanel
 { 
   position: absolute;
@@ -36,20 +37,24 @@ DIV#tasksListView H2
 DIV#tasksListView LABEL
 { margin: .25em; }
 
+DIV#calendarSelectorView
+{ top: 0px; }
+
 DIV#calendarsList
 { height: 100%;
   padding: 0px;
   margin: 0px; }
 
-SPAN.colorBox
-{ display: block;
-  float: right;
+DIV.colorBox
+{ display: inline;
   border: 1px solid #333;
-  margin: .12em;
+  font-weight: normal; 
+  margin: 0px;
+  font-size: 80%;
   width: 1em;
   height: .75em; }
 
-UL#tasksList, UL#uixselector-calendarsList-display
+UL#tasksList, UL#calendarList
 { cursor: default;
   margin: .25px;
   padding: 0px;
@@ -64,12 +69,16 @@ UL#tasksList, UL#uixselector-calendarsList-display
   list-style-type: none;
   list-style-image: none; }
 
-UL#uixselector-calendarsList-display
-{ height: 10.5em;
+UL#calendarList
+{ clear: both;
+  height: 10.5em;
   margin: 0px; }
 
-UL#uixselector-calendarsList-display LI.denied
-{ background: #fefefe;
+UL#calendarList LI
+{ white-space: nowrap; }
+
+UL#calendarList LI.denied
+{ background-color: #fefefe;
   font-style: italic;
   color: #f33; }
 
@@ -793,7 +802,7 @@ DIV.appointments > DIV.appointment
 { cursor: default;
   position: absolute;
   left: 0px;
-  right: 0px;
+  right: 1px;
   padding: 1px; }
 
 DIV[class~="appointment"]._selected > DIV.appointmentInside
@@ -856,6 +865,7 @@ DIV.monthView DIV.appointment
   cursor: default;
   white-space: nowrap;
   margin: 2px;
+  margin-right: 3px;
   padding: 1px;
   height: 1.5em; }
 

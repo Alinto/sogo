@@ -1,3 +1,5 @@
+/* JavaScript for SOGoCalendar */
+
 var sortOrder = '';
 var sortKey = '';
 var listFilter = 'view_today';
@@ -846,158 +848,87 @@ function updateTaskStatus(node) {
   return false;
 }
 
-function updateCalendarStatus() {
+function updateCalendarStatus(event) {
   var list = new Array();
 
-  var clist = $("calendarsList");
-  var nodes = clist.childNodesWithTag("ul")[0].childNodesWithTag("li");
+  var nodes = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
     var input = nodes[i].childNodesWithTag("input")[0];
-    if (input.checked)
-      list.push(nodes[i].getAttribute("uid"));
+    if (input.checked) {
+       var folderId = nodes[i].getAttribute("id");
+       var elems = folderId.split(":");
+       if (elems.length > 1)
+	  list.push(elems[0]);
+       else
+	  list.push(UserLogin);
+    }
   }
 
   if (!list.length) {
-    list.push(nodes[0].getAttribute("uid"));
-    nodes[0].childNodesWithTag("input")[0].checked = true;
+     list.push(UserLogin);
+     nodes[0].childNodesWithTag("input")[0].checked = true;
   }
 //   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
-//                      + list.join(",") + "/Calendar/");
+// 			+ list.join(",") + "/Calendar/");
 
-  updateCalendarsList();
-  refreshAppointments();
-  refreshTasks();
-  changeCalendarDisplay();
+  if (event) {
+     var folderID = this.parentNode.getAttribute("id");
+     var urlstr = URLForFolderID(folderID);
+     if (this.checked)
+	urlstr += "/activateFolder";
+     else
+	urlstr += "/deactivateFolder";
+     triggerAjaxRequest(urlstr, calendarStatusCallback, folderID);
+  }
+  else {
+     updateCalendarsList();
+     refreshAppointments();
+     refreshTasks();
+     changeCalendarDisplay();
+  }
 
   return false;
 }
 
-function calendarUidsList() {
-  var list = "";
-
-  var nodes = $("uixselector-calendarsList-display").childNodesWithTag("li");
-  for (var i = 0; i < nodes.length; i++) {
-    var currentNode = nodes[i];
-    var input = currentNode.childNodesWithTag("input")[0];
-    if (!input.checked)
-      list += "-";
-    list += currentNode.getAttribute("uid") + ",";
-  }
-
-  return list.substr(0, list.length - 1);
-}
-
-// function updateCalendarContacts(contacts)
-// {
-//   var list = contacts.split(",");
-
-//   var clist = $("calendarsList");
-//   var nodes = clist.childNodes[5].childNodes;
-//   for (var i = 0; i < nodes.length; i++) {
-//     var currentNode = nodes[i];
-//     if (currentNode instanceof HTMLLIElement) {
-//       var input = currentNode.childNodes[3];
-//       if (!input.checked)
-//         list += "-";
-//       list += currentNode.getAttribute("uid") + ",";
-//     }
-//   }
-// }
-
-function inhibitMyCalendarEntry() {
-  var clist = $("calendarsList");
-  var nodes = clist.childNodes[5].childNodes;
-  var done = false;
-
-  var i = 0;
-  while (!done && i < nodes.length) {
-    var currentNode = nodes[i];
-    if (currentNode instanceof HTMLLIElement) {
-      var input = currentNode.childNodes[3];
-      if (currentNode.getAttribute("uid") == UserLogin) {
-        done = true;
-//         currentNode.style.color = "#999;";
-        currentNode.style.fontWeight = "bold;";
-//         currentNode.setAttribute("onclick", "");
+function calendarStatusCallback(http) {
+   if (http.readyState == 4) {
+      if (http.status == 204) {
+         refreshAppointments();
+         refreshTasks();
+         changeCalendarDisplay();
       }
-    }
-    i++;
-  }
+      else {
+         var folder = $(http.callbackData);
+         var input = folder.childNodesWithTag("input")[0];
+         input.checked = (!input.checked);
+      }
+   }
 }
 
-function userCalendarEntry(user, color) {
-  var li = document.createElement("li");
-  li.setAttribute("uid", user);
-  li.addEventListener("mousedown", listRowMouseDownHandler, false);
-  li.addEventListener("click", onRowClick, false);
-  var colorBox = document.createElement("span");
-  colorBox.addClassName("colorBox");
-  if (color) {
-    log("color:  " + color);
-    colorBox.style.backgroundColor = color + ";";
-  }
-  li.appendChild(colorBox);
-  var checkBox = document.createElement("input");
-  checkBox.addClassName("checkBox");
-  checkBox.type = "checkbox";
-  checkBox.addEventListener("change", updateCalendarStatus, false);
-  li.appendChild(checkBox);
-  var text = document.createTextNode(" " + user);
-  li.appendChild(text);
+function calendarEntryCallback(http) {
+   var disabled = true;
 
-  return li;
-}
-
-function ensureSelfIfPresent() {
-  var ul = $("uixselector-calendarsList-display");
-  var list = ul.childNodesWithTag("li");
-  var selfEntry = userCalendarEntry(UserLogin, indexColor(0));
-  selfEntry.style.fontWeight = "bold;";
-  if (list.length < 1) {
-    ul.appendChild(selfEntry);
-  } else if (list[0].getAttribute("uid") != UserLogin) {
-    ul.insertBefore(selfEntry, list[0]);
-  }
+   if (http.readyState == 4) {
+      if (http.status == 200)
+	 disabled = (http.responseText == "0");
+      var entry = $(http.callbackData);
+      var input = entry.childNodesWithTag("input")[0];
+      input.disabled = disabled;
+      if (disabled) {
+	 input.checked = false;
+	 entry.addClassName("denied");
+      }
+      else
+	 entry.removeClassName("denied");
+   }
 }
 
 function updateCalendarsList(method) {
-  ensureSelfIfPresent();
-  var url = (ApplicationBaseURL + "updateCalendars?ids="
-             + calendarUidsList());
-  if (document.calendarsListAjaxRequest) {
-    document.calendarsListAjaxRequest.aborted = true;
-    document.calendarsListAjaxRequest.abort();
-  }
-  var http = createHTTPClient();
-  if (http) {
-    http.url = url;
-    http.open("GET", url, false);
-    http.send("");
-
-    if (method == "removal")
-      updateCalendarStatus();
-
-    http = createHTTPClient();
-    http.url = ApplicationBaseURL + "checkRights";
-    http.open("GET", http.url, false /* not async */);
-    http.send("");
-    if (http.status == 200
-        && http.responseText.length > 0) {
-      rights = http.responseText.split(",");
-      var list = $("uixselector-calendarsList-display").childNodesWithTag("li");
-      for (var i = 0; i < list.length; i++) {
-        var input = list[i].childNodesWithTag("input")[0];
-        if (rights[i] == "1") {
-          list[i].removeClassName("denied");
-          input.disabled = false;
-        }
-        else {
-          input.checked = false;
-          input.disabled = true;
-          list[i].addClassName("denied");
-        }
-      }
-    }
+  var list = $("calendarList").childNodesWithTag("li");
+  for (var i = 0; i < list.length; i++) {
+     var folderID = list[i].getAttribute("id");
+     var url = URLForFolderID(folderID) + "/canAccessContent";
+     triggerAjaxRequest(url, calendarEntryCallback, folderID);
   }
 }
 
@@ -1014,16 +945,11 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
             uids.value += ',' + contactId;
           else
             uids.value = contactId;
-          var names = $("uixselector-calendarsList-display");
+          var names = $("calendarList");
           var listElems = names.childNodesWithTag("li");
           var colorDef = indexColor(listElems.length);
           names.appendChild(userCalendarEntry(contactId, colorDef));
 
-          var styles = document.getElementsByTagName("style");
-          styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
-                                  + ' background-color: '
-                                  + colorDef
-                                  + ' !important; }');
         }
     }
 
@@ -1066,7 +992,7 @@ function initializeMenus() {
                         "appointmentsListMenu", "calendarsMenu", "searchMenu");
   initMenusNamed(menus);
 
-  $("calendarsList").attachMenu("calendarsMenu");
+  $("calendarSelector").attachMenu("calendarsMenu");
 
   var accessRightsMenuEntry = $("accessRightsMenuEntry");
   accessRightsMenuEntry.addEventListener("mouseup",
@@ -1075,16 +1001,12 @@ function initializeMenus() {
 }
 
 function onAccessRightsMenuEntryMouseUp(event) {
-  var folders = $("uixselector-calendarsList-display");
+  var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
-  var uid = selected.getAttribute("uid");
-  log("application base url: " + ApplicationBaseURL);
-  if (uid == UserLogin)
-    url = ApplicationBaseURL + "acls";
-  else
-    url = UserFolderURL + "../" + uid + "/Calendar/acls";
+  var folderID = selected.getAttribute("id");
+  var urlstr = URLForFolderID(folderID) + "/acls";
 
-  openAclWindow(url, uid);
+  openAclWindow(urlstr);
 }
 
 function configureDragHandles() {
@@ -1103,17 +1025,90 @@ function configureDragHandles() {
   }
 }
 
-function initCalendarContactsSelector() {
-  var selector = $("calendarsList");
-  inhibitMyCalendarEntry();
+function initCalendarSelector() {
+  var selector = $("calendarSelector");
   updateCalendarStatus();
   selector.changeNotification = updateCalendarsList;
 
-  var list = $("uixselector-calendarsList-display").childNodesWithTag("li");
+  var list = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
     input.addEventListener("change", updateCalendarStatus, false);
+    list[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+    list[i].addEventListener("click", onRowClick, false);
+//     list[i].addEventListener("contextmenu", onContactFoldersContextMenu, false);
   }
+
+  var links = $("calendarSelectorButtons").childNodesWithTag("a");
+  links[0].addEventListener("click", onCalendarAdd, false);
+  links[1].addEventListener("click", onCalendarRemove, false);
+}
+
+function onCalendarAdd(event) {
+   openUserFolderSelector(onFolderSubscribeCB, "calendar");
+
+   event.preventDefault();
+}
+
+function appendCalendar(folderName, folder) {
+   var calendarList = $("calendarList");
+   var lis = calendarList.childNodesWithTag("li");
+   var color = indexColor(lis.length);
+   log ("color: " + color);
+   var li = document.createElement("li");
+   li.setAttribute("id", folder);
+   li.addEventListener("mousedown", listRowMouseDownHandler, false);
+   li.addEventListener("click", onRowClick, false);
+   var checkBox = document.createElement("input");
+   checkBox.addClassName("checkBox");
+   checkBox.type = "checkbox";
+   checkBox.addEventListener("change", updateCalendarStatus, false);
+   li.appendChild(checkBox);
+   var colorBox = document.createElement("div");
+   colorBox.appendChild(document.createTextNode("OO"));
+   colorBox.addClassName("colorBox");
+   if (color) {
+      colorBox.style.color = color + ";";
+      colorBox.style.backgroundColor = color + ";";
+   }
+   li.appendChild(colorBox);
+   li.appendChild(document.createTextNode(folderName));
+
+   calendarList.appendChild(li);
+
+   var contactId = folder.split(":")[0];
+   var styles = document.getElementsByTagName("style");
+   styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
+			   + ' color: '
+			   + color + ';'
+			   + ' background-color: '
+			   + color
+			   + ' !important; }');
+}
+
+function onFolderSubscribeCB(folderData) {
+   var folder = $(folderData["folder"]);
+   if (!folder)
+      appendCalendar(folderData["folderName"], folderData["folder"]);
+}
+
+function onFolderUnsubscribeCB(folderId) {
+   var node = $(folderId);
+   node.parentNode.removeChild(node);
+}
+
+function onCalendarRemove(event) {
+  var nodes = $("calendarList").getSelectedNodes();
+  if (nodes.length > 0) { 
+     nodes[0].deselect();
+     var folderId = nodes[0].getAttribute("id");
+     var folderIdElements = folderId.split(":");
+     if (folderIdElements.length > 1) {
+	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+     }
+  }
+
+  event.preventDefault();
 }
 
 function configureSearchField() {
@@ -1128,18 +1123,9 @@ function configureSearchField() {
 
 function initCalendars() {
    if (!document.body.hasClassName("popup")) {
-      initCalendarContactsSelector();
+      initCalendarSelector();
       configureSearchField();
    }
 }
 
-function onSchedulerBodyKeyUp(event) {
-   if (event.which == 46) {
-      window.alert("coucou");
-      deleteEvent();
-      event.cancelBubble = true;
-   }
-}
-
 window.addEventListener("load", initCalendars, false);
-// document.body.addEventListener("keyup", onSchedulerBodyKeyUp, false);

@@ -2,47 +2,24 @@
 
 var contactSelectorAction = 'acls-contacts';
 
-function addContact(tag, fullContactName, contactId, contactName,
-                    contactEmail) {
-   if (tag == "assistant")
-      addUser(contactName, contactId, false);
-   else if (tag == "delegate")
-      addUser(contactName, contactId, true);
-}
-
-function addUser(userName, userId, delegate) {
-   var uidList = $("uixselector-userRoles-uidList");
-   var uids;
-
-   if (uidList.value.length > 0) {
-      uids = uidList.value.split(",");
-   } else {
-      uids = new Array();
-   }
-
-   if (uids.indexOf(userId) < 0) {
-      uids.push(userId);
-      var ul = $("uixselector-userRoles-display");
-      ul.appendChild(nodeForUser(userName, userId));
-      uidList.value = uids.join(",");
-      var roleList;
-      if (delegate)
-        roleList = $("delegates");
-      else
-        roleList = $("assistants");
+function addUser(userName, userID) {
+   if (!$(userID)) {
+      var ul = $("userList");
+      ul.appendChild(nodeForUser(userName, userID));
+      var roleList = $("assistants");
       if (roleList.value.length > 0) {
-        uids = roleList.value.split(",");
-        uids.push(userId);
-        roleList.value = uids.join(",");
+	 var uids = roleList.value.split(",");
+	 uids.push(userID);
+	 roleList.value = uids.join(",");
       }
       else
-        roleList.value = userId;
+	 roleList.value = userID;
    }
 }
 
 function nodeForUser(userName, userId) {
    var node = document.createElement("li");
-   node.setAttribute("uid", userId);
+   node.setAttribute("id", userId);
    node.setAttribute("class", "");
    node.addEventListener("mousedown", listRowMouseDownHandler, true);
    node.addEventListener("click", onRowClick, true);
@@ -69,7 +46,7 @@ function updateSelectedRole(list) {
     select.style.visibility = "visible;";
     var selected = selection[0];
     var assistantsValue = $("assistants");
-    var uid = selected.getAttribute("uid");
+    var uid = selected.getAttribute("id");
     var regexp = new RegExp("(^|,)" + uid + "(,|$)","i");
     if (regexp.test(assistantsValue.value))
       select.selectedIndex = 0;
@@ -85,32 +62,6 @@ function onAclSelectionChange() {
   updateSelectedRole(this);
 }
 
-function onUsersChange(type) {
-  var select = $("userRoleDropDown");
-  if (type == "removal") {
-    var list;
-    if (select.selectedIndex == 0)
-      list = $("assistants");
-    else
-      list = $("delegates");
-
-    var uids = $("uixselector-userRoles-uidList");
-    var listArray = list.value.split(",");
-    var newListArray = new Array();
-    for (var i = 0; i < listArray.length; i++) {
-      var regexp = new RegExp("(^|,)" + listArray[i] + "($|,)");
-      if (regexp.test(uids.value))
-        newListArray.push(listArray[i]);
-    }
-    if (newListArray.length > 0)
-      list.value = newListArray.join(",");
-    else
-      list.value = "";
-  }
-
-  updateSelectedRole($("uixselector-userRoles-display"));
-}
-
 function onUserRoleDropDownChange() {
   var oldList;
   var newList;
@@ -123,7 +74,7 @@ function onUserRoleDropDownChange() {
     newList = $("delegates");
   }
 
-  var uid = $("uixselector-userRoles-display").getSelectedRows()[0].getAttribute("uid");
+  var uid = $("userList").getSelectedRows()[0].getAttribute("id");
   var newListArray;
   if (newList.value.length > 0) {
     newListArray = newList.value.split(",");
@@ -143,14 +94,55 @@ function onUserRoleDropDownChange() {
   log("delegates: " + $("delegates").value);
 }
 
-function onAclLoadHandler() {
-  $("userRoles").changeNotification = onUsersChange;
+function onUserAdd(event) {
+   openUserFolderSelector(null, "user");
 
-  var ul = $("uixselector-userRoles-display");
+   event.preventDefault();
+}
+
+function onUserRemove(event) {
+   var userlist = $("userList");
+   var node = userlist.getSelectedRows()[0];
+   var uid = node.getAttribute("id");
+   var regexp = new RegExp("(^|,)" + uid + "($|,)");
+   var uids = $("assistants");
+   if (!regexp.test(uids.value))
+      uids = $("delegates");
+   if (regexp.test(uids.value)) {
+      var list = uids.value.split(",");
+      var newList = new Array();
+      for (var i = 0; i < list.length; i++) {
+	 if (list[i] != uid)
+	    newList.push(list[i]);
+      }
+      uids.value = newList.join(",");
+      node.parentNode.removeChild(node);
+   }
+   updateSelectedRole(userlist);
+   event.preventDefault();
+}
+
+function subscribeToFolder(refreshCallback, refreshCallbackData) {
+   addUser(refreshCallbackData["folderName"],
+	   refreshCallbackData["folder"]);
+}
+
+function onAclLoadHandler() {
+  var ul = $("userList");
   ul.addEventListener("selectionchange",
                       onAclSelectionChange, false);
+  var lis = ul.childNodesWithTag("li");
+  for (var i = 0; i < lis.length; i++) {
+     lis[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+     lis[i].addEventListener("click", onRowClick, false);
+  }
+
   var select = $("userRoleDropDown");
   select.addEventListener("change", onUserRoleDropDownChange, false);
+
+  var buttons = $("userSelectorButtons").childNodesWithTag("a");
+  buttons[0].addEventListener("click", onUserAdd, false);
+  buttons[1].addEventListener("click", onUserRemove, false);
 }
 
 window.addEventListener("load", onAclLoadHandler, false);

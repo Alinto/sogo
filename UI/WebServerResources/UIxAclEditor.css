@@ -4,14 +4,8 @@ DIV.acls
 { padding: 1em; }
 
 DIV.acls LABEL
-{ position: relative;
-  white-space: normal;
+{ white-space: nowrap;
   width: 100%; }
-
-DIV.acls LABEL > SPAN.value
-{ position: absolute;
-  top: 0px;
-  left: 11em; }
 
 DIV.acls UL
 { height: 100%;
@@ -21,7 +15,7 @@ DIV#userRoles
 { height: 7em;
   padding-bottom: 2em; }
 
-UL#uixselector-userRoles-display
+UL#userList
 { cursor: default;
   margin: .25px;
   padding: 0px;
@@ -36,7 +30,7 @@ UL#uixselector-userRoles-display
   list-style-type: none;
   list-style-image: none; }
 
-UL#uixselector-userRoles-display > LI._selected
+UL#userList > LI._selected
 { 
   background: #4b6983 !important;
   color: #fff !important;
