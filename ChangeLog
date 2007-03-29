@@ -1,5 +1,8 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m: new template module derived
+	from a simplified version of the old UIxContactEditor (removed).
+
 	* UI/Contacts/UIxContactsUserFolders.m: new template module for
 	selecting users or user folders through an LDAP search of which
 	the results are displayed as a tree.
