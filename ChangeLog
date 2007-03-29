@@ -1,5 +1,9 @@
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsUserFolders.m: new template module for
+	selecting users or user folders through an LDAP search of which
+	the results are displayed as a tree.
+
 	* UI/WebServerResources/UIxMailEditor.js: moved previous generic
 	method "onContactAdd" here since the Mailer is now the only module
 	to use it when composing emails.
