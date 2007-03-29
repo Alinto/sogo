@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  <style type="text/css">
+    <var:foreach list="calendarFolders" item="currentCalendarFolder">
+.ownerIs<var:string value="currentCalendarLogin" />
+{ background-color: <var:string value="currentCalendarSpanBG" /> !important; }
+    </var:foreach>
+  </style>
+  <div id="calendarSelector">
+    <span id="calendarSelectorButtons">
+      <a href="#" class="toolbarButton"
+	><span class="toolbarButton"><img rsrc:src="add-calendar.png"
+	  label:title="Add..."
+	  /></span></a>
+      <a href="#" class="toolbarButton"
+	><span class="toolbarButton"><img rsrc:src="remove-calendar.png"
+	    label:title="Remove"
+	    /></span></a>
+    </span>
+    <ul id="calendarList" multiselect="yes">
+      <var:foreach list="calendarFolders" item="currentCalendarFolder"
+	><li class="denied" var:id="currentCalendarFolder.folder">
+	  <input type="checkbox" class="checkBox"
+	    const:disabled="disabled"
+	    var:checked="currentCalendarFolder.active" />
+	  <div class="colorBox" var:style="currentCalendarStyle">OO</div>
+	  <var:string value="currentCalendarFolder.displayName"
+	    /></li>
+      </var:foreach>
+    </ul>
+  </div>
+</container>

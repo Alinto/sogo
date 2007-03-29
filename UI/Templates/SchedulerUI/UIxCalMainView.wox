@@ -75,10 +75,9 @@
           ><var:component className="UIxCalDateSelector"
             selectedDate="thisMonth"
             /></div>
-        <div id="calendarSelectorView"
-          class="tab"
-          ><var:component className="UIxCalCalendarsListView"
-            /></div>
+        <div id="calendarSelectorView" class="tab"
+          ><var:component className="UIxCalendarSelector"
+	    var:calendarFolders="calendarFolders" /></div>
       </div>
 
       <div id="tasksListView"

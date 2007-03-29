@@ -1,26 +1,24 @@
 <?xml version='1.0' standalone='yes'?>
-  <span
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    xmlns:rsrc="OGo:url"
-    >
-    <span id="selectionLabel"><var:string label:value="Add as..." /></span><br />
-    <input type="submit"
+<!DOCTYPE span>
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  id="contactSelectionButtons">
+  <span id="selectionLabel"><var:string label:value="Add as..."/></span><br/>
+  <input type="submit"
+    class="button"
+    label:value="Recipient"
+    name="to"/><br/>
+  <input type="submit"
       class="button"
-      label:value="Recipient"
-      name="to"
-      onclick="return onConfirmContactSelection('to');" /><br />
-    <input type="submit"
-      class="button"
-      label:value="Carbon Copy"
-      name="cc"
-      onclick="return onConfirmContactSelection('cc');" /><br />
-    <input type="submit"
-      class="button"
-      label:value="Blind Carbon Copy"
-      name="bcc"
-      onclick="return onConfirmContactSelection('bcc');" />
-  </span>
+    label:value="Carbon Copy"
+    name="cc"/><br/>
+  <input type="submit"
+    class="button"
+    label:value="Blind Carbon Copy"
+    name="bcc"/>
+</span>

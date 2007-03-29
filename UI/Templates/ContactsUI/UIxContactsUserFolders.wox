@@ -1,0 +1,21 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="name"
+  const:toolbar="none"
+  const:popup="YES">
+  <script type="text/javascript" rsrc:src="dtree.js"><!-- space --></script>
+  <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
+  <div id="folders">
+  </div>
+  <div id="buttons">
+    <input type="submit" id="addButton" class="button" label:value="Add..."/>
+  </div>
+</var:component>

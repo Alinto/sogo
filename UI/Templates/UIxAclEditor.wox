@@ -1,37 +1,64 @@
 <?xml version="1.0" standalone="yes"?>
-  <var:component xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    title="title"
-    var:toolbar="toolbar"
-    const:popup="YES">
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="title"
+  var:toolbar="toolbar"
+  const:popup="YES">
 
-    <form id="aclForm" const:href="saveAcls">
-      <div class="acls">
-        <input type="hidden" name="action" value="saveAcls" />
-        <input type="hidden" name="delegates" var:value="delegatesValue"
-          id="delegates" />
-        <input type="hidden" name="assistants" var:value="assistantsValue"
-          id="assistants" />
-        <label><var:string label:value="Owner:" />
-          <span class="value"><strong><var:string value="ownerCN" /></strong></span></label><br />
-        <var:component className="UIxContactSelector"
-          const:selectorId="userRoles"
-          const:checkBoxOnChange="return updateAclStatus(this);"
-          contacts="usersForFolder" />
-        <select id="userRoleDropDown" name="currentUserRole">
-          <option value="assistant"><var:string label:value="Assistant" /></option>
-          <option value="delegate"><var:string label:value="Delegate" /></option>
-        </select><br />
-        <var:if condition="clientIsCalendar"
-          ><label id="freeBusyLabel"><input type="checkbox"
-              var:checked="publishInFreeBusy"
-              class="checkBox" name="freebusy" id="freebusy"
-              /><var:string label:value="Localizable/Publish the Free/Busy information"
-              /></label></var:if>
+  <form id="aclForm" const:href="saveAcls">
+    <div class="acls">
+      <input type="hidden" name="action" value="saveAcls"/>
+      <input type="hidden" name="delegates" var:value="delegatesValue"
+	id="delegates"/>
+      <input type="hidden" name="assistants" var:value="assistantsValue"
+	id="assistants"/>
+      <label><var:string label:value="Owner:"/><br/>
+	<span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
+
+      <!-- var:component className="UIxContactSelector"
+      const:checkBoxOnChange="return updateAclStatus(this);"
+      contacts="usersForFolder" -->
+
+      <div class="userSelector" id="userRoles">
+	<span id="userSelectorButtons">
+	  <a href="#"
+	    class="button"><img rsrc:src="add-contact.gif"
+	      label:title="Add..."
+	      /></a>
+	  <a href="#"
+	    class="button"><img rsrc:src="remove-contact.gif"
+	      label:title="Remove"
+	      /></a>
+	</span>
+	<input type="hidden"
+	  var:id="selectorIdList"
+	  var:name="selectorId"
+	  var:value="initialContactsAsString"/>
+	<ul id="userList" multiselect="yes">
+	  <var:foreach list="usersForFolder" item="currentUser"
+	    ><li var:id="currentUser">
+	      <img rsrc:src="abcard.gif"/>
+	      <var:string value="currentUserDisplayName"/></li>
+	  </var:foreach>
+	</ul>
       </div>
-    </form>
-  </var:component>
+      
+      <select id="userRoleDropDown" name="currentUserRole">
+	<option value="assistant"><var:string label:value="Assistant"/></option>
+	<option value="delegate"><var:string label:value="Delegate"/></option>
+      </select><br/>
+      <var:if condition="clientIsCalendar"
+	><label id="freeBusyLabel"><input type="checkbox"
+	    var:checked="publishInFreeBusy"
+	    class="checkBox" name="freebusy" id="freebusy"
+	    /><var:string label:value="Localizable/Publish the Free/Busy information"
+	    /></label></var:if>
+    </div>
+  </form>
+</var:component>
