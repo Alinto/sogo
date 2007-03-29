@@ -106,10 +106,6 @@
           protectedBy = "View";
           pageName    = "UIxAttendeesEditor";
         };
-        freeBusyTable = {
-          protectedBy = "View";
-          pageName    = "UIxFreeBusyUserSelectorTable";
-        };
       };
     };
 
@@ -162,11 +158,6 @@
           protectedBy = "View";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "test";
-        };
-        contactSearch = {
-          protectedBy = "View";
-          pageName    = "UIxFreeBusyUserSelector";
-          actionName  = "contactSearch";
         };
       };
     };
