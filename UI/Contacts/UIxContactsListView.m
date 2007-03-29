@@ -74,35 +74,9 @@
   return searchText;
 }
 
-- (NSString *) selectorComponentClass
-{
-  return selectorComponentClass;
-}
-
-- (id) mailerContactsAction
+- (id <WOActionResults>) mailerContactsAction
 {
   selectorComponentClass = @"UIxContactsMailerSelection";
-
-  return self;
-}
-
-- (id) calendarsContactsAction
-{
-  selectorComponentClass = @"UIxContactsCalendarsSelection";
-
-  return self;
-}
-
-- (id) addressBooksContactsAction
-{
-  selectorComponentClass = @"UIxContactsAddressBooksSelection";
-
-  return self;
-}
-
-- (id) aclsContactsAction
-{
-  selectorComponentClass = @"UIxContactsAclsSelection";
 
   return self;
 }
@@ -194,6 +168,25 @@
                            inContext: (WOContext*) _c
 {
   return YES;
+}
+
+- (WOResponse *) canAccessContentAction
+{
+  WOResponse *response;
+  NSString *clientClass;
+
+  clientClass = NSStringFromClass([[self clientObject] class]);
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=\"ascii\""
+            forKey: @"content-type"];
+  [response
+    appendContentString:
+      ([clientClass isEqualToString: @"SOGoContactLDAPFolder"])
+    ? @"1" : @"0"];
+
+  return response;
 }
 
 @end /* UIxContactsListView */
