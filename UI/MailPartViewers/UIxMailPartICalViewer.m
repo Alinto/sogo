@@ -135,6 +135,18 @@
   return self->attendee;
 }
 
+- (NSString *) _personForDisplay: (iCalPerson *) person
+{
+  return [NSString stringWithFormat: @"%@ <%@>",
+		   [person cnWithoutQuotes],
+		   [person rfc822Email]];
+}
+
+- (NSString *) attendeeForDisplay
+{
+  return [self _personForDisplay: attendee];
+}
+
 - (void)setItem:(id)_item {
   ASSIGN(self->item, _item);
 }
@@ -252,23 +264,18 @@
 
 /* derived fields */
 
-- (NSString *)organizerDisplayName {
+- (NSString *) organizerDisplayName
+{
   iCalPerson *organizer;
-  NSString   *cn;
-  
-  if ((organizer = [[self authorativeEvent] organizer]) != nil) {
-    cn = [organizer valueForKey:@"cnWithoutQuotes"];
-    if ([cn isNotNull] && [cn length] > 0)
-      return cn;
-    
-    cn = [organizer valueForKey:@"rfc822Email"];
-    if ([cn isNotNull] && [cn length] > 0)
-      return cn;
-    
-    return @"[error: unable to derive organizer name]";
-  }
+  NSString *value;
 
-  return @"[todo: no organizer set, use 'from']";
+  organizer = [[self authorativeEvent] organizer];
+  if (organizer)
+    value = [self _personForDisplay: organizer];
+  else
+    value = @"[todo: no organizer set, use 'from']";
+
+  return value;
 }
 
 /* replies */
