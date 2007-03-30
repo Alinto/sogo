@@ -56,7 +56,7 @@ DIV.colorBox
 
 UL#tasksList, UL#calendarList
 { cursor: default;
-  margin: .25px;
+  margin: .25em;
   padding: 0px;
   overflow: auto;
   border-bottom: 1px solid #fff;

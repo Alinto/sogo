@@ -12,13 +12,14 @@ DIV.acls UL
   width: 100%; }
 
 DIV#userRoles
-{ height: 7em;
+{ height: 8em;
   padding-bottom: 2em; }
 
 UL#userList
 { cursor: default;
-  margin: .25px;
+  margin: .25em;
   padding: 0px;
+  white-space: nowrap;
   overflow: auto;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -31,13 +32,12 @@ UL#userList
   list-style-image: none; }
 
 UL#userList > LI._selected
-{ 
-  background: #4b6983 !important;
-  color: #fff !important;
-}
+{ background: #4b6983 !important;
+  color: #fff !important; }
 
 SELECT#userRoleDropDown
 { visibility: hidden;
+  margin-top: 1em;
   margin-left: 2em; }
 
 SPAN.legend
