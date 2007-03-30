@@ -1,5 +1,9 @@
 2007-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-toManyRelationshipKeys]): don't put the predefined folders in the
+	list if they are returned by the server.
+
 	* UI/MailerUI/UIxMailTree.m ([UIxMailTree -flattenedNodes]): we no
 	longer store the "flattenedBlocks" in a dictionary since the
 	object will be deleted anyway and we don't need to put the folders

@@ -100,12 +100,25 @@ static BOOL     useAltNamespace       = NO;
   return rootFolderNames;
 }
 
-- (NSArray *)toManyRelationshipKeys {
-  NSArray *a, *b;
-  
-  a = [self additionalRootFolderNames];
-  b = [[self imap4Connection] subfoldersForURL:[self imap4URL]];
-  return [b count] > 0 ? [b arrayByAddingObjectsFromArray:a] : a;
+- (NSArray *) toManyRelationshipKeys
+{
+  NSMutableArray *folders;
+  NSArray *imapFolders, *additionalFolders;
+
+  folders = [NSMutableArray new];
+  [folders autorelease];
+
+  imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
+  additionalFolders = [self additionalRootFolderNames];
+  if ([imapFolders count] > 0)
+    [folders addObjectsFromArray: imapFolders];
+  if ([additionalFolders count] > 0)
+    {
+      [folders removeObjectsInArray: additionalFolders];
+      [folders addObjectsFromArray: additionalFolders];
+    }
+
+  return folders;
 }
 
 /* identity */
