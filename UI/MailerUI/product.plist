@@ -1,4 +1,4 @@
-{ /* -*-cperl-*- */
+{ /* -*-javascript-*- */
   requires = ( MAIN, CommonUI, Mailer ); /* , Sieve */
 
   publicResources = (
@@ -121,7 +121,6 @@
           pageName    = "UIxMailListView";
           actionName  = "expunge";
         };
-
         createFolder = {
           protectedBy = "View";
           pageName    = "UIxMailListView";
