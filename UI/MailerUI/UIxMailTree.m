@@ -60,17 +60,18 @@ static BOOL debugBlocks = NO;
 {
   if ((self = [super init]))
     {
-      flattenedNodes = [NSMutableDictionary new];
+      flattenedNodes = nil;
     }
+
   return self;
 }
 
 - (void) dealloc
 {
-  [self->treeFolderAction release];
-  [self->rootClassName    release];
-  [self->rootNodes release];
-  [self->item      release];
+  [treeFolderAction release];
+  [rootClassName release];
+  [rootNodes release];
+  [item release];
   [flattenedNodes release];
   [super dealloc];
 }
@@ -94,24 +95,24 @@ static BOOL debugBlocks = NO;
 /* accessors */
 
 - (void)setRootClassName:(id)_rootClassName {
-  ASSIGNCOPY(self->rootClassName, _rootClassName);
+  ASSIGNCOPY(rootClassName, _rootClassName);
 }
 - (id)rootClassName {
-  return self->rootClassName;
+  return rootClassName;
 }
 
 - (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
+  ASSIGN(item, _item);
 }
 - (id)item {
-  return self->item;
+  return item;
 }
 
 - (void)setTreeFolderAction:(NSString *)_action {
-  ASSIGNCOPY(self->treeFolderAction, _action);
+  ASSIGNCOPY(treeFolderAction, _action);
 }
 - (NSString *)treeFolderAction {
-  return self->treeFolderAction;
+  return treeFolderAction;
 }
 
 - (NSString *)itemIconName {
@@ -556,17 +557,17 @@ static BOOL debugBlocks = NO;
 - (NSArray *)rootNodes {
   UIxMailTreeBlock *navNode;
   
-  if (self->rootNodes != nil)
-    return self->rootNodes;
+  if (rootNodes != nil)
+    return rootNodes;
   
   navNode = [self buildNavigationNodesForObject:[self clientObject]];
   
   if ([navNode hasChildren] && [navNode areChildrenLoaded])
-    self->rootNodes = [[navNode children] retain];
+    rootNodes = [[navNode children] retain];
   else if (navNode)
-    self->rootNodes = [[NSArray alloc] initWithObjects:&navNode count:1];
+    rootNodes = [[NSArray alloc] initWithObjects:&navNode count:1];
   
-  return self->rootNodes;
+  return rootNodes;
 }
 
 - (int) addNodes: (NSArray *) nodes
@@ -604,17 +605,13 @@ static BOOL debugBlocks = NO;
 
 - (NSArray *) flattenedNodes
 {
-  NSMutableArray *flattenedBlocks = nil;
-  NSString *userKey;
   UIxMailTreeBlock *rootNode; // , *curNode;
   id mailAccounts;
 //   unsigned int count, max;
 
-  userKey = [[self user] login];
-  flattenedBlocks = [flattenedNodes objectForKey: userKey];
-  if (!flattenedBlocks)
+  if (!flattenedNodes)
     {
-      flattenedBlocks = [NSMutableArray new];
+      flattenedNodes = [NSMutableArray new];
 
       if (![[self clientObject] isKindOfClass: NSClassFromString(@"SOGoMailAccounts")])
 	mailAccounts = [[self clientObject] mailAccountsFolder];
@@ -626,9 +623,7 @@ static BOOL debugBlocks = NO;
 	    atSerial: 1
 	    forParent: 0
 	    withRootName: @""
-	    toArray: flattenedBlocks];
-
-      [flattenedNodes setObject: flattenedBlocks forKey: userKey];
+	    toArray: flattenedNodes];
 //       max = [flattenedBlocks count];
 //       for (count = 0; count < max; count++)
 // 	{
@@ -637,14 +632,15 @@ static BOOL debugBlocks = NO;
 // 	}
     }
 
-  return flattenedBlocks;
+  return flattenedNodes;
 }
 
 /* notifications */
 
-- (void)sleep {
-  [self->item      release]; self->item      = nil;
-  [self->rootNodes release]; self->rootNodes = nil;
+- (void) sleep
+{
+  [item release]; item = nil;
+  [rootNodes release]; rootNodes = nil;
   [super sleep];
 }
 

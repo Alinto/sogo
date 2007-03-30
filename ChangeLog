@@ -1,5 +1,10 @@
 2007-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailTree.m ([UIxMailTree -flattenedNodes]): we no
+	longer store the "flattenedBlocks" in a dictionary since the
+	object will be deleted anyway and we don't need to put the folders
+	in cache.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	([UIxMailPartHTMLViewer -_attachmentIds]): take the current
 	attachment path into account when computing the part urls.
