@@ -33,7 +33,7 @@
     </legend>
     
     
-    <var:if condition="inCalendar.method" const:value="REQUEST">
+    <!-- var:if condition="inCalendar.method" const:value="REQUEST" -->
       <!-- sent to attendees to propose or update a meeting -->
       <var:if condition="isLoggedInUserAnAttendee">
         <p class="uix_ical_toolbar">
@@ -61,7 +61,7 @@
           <var:string label:value="request_info_no_attendee" />
         </p>
       </var:if>
-    </var:if>
+    <!-- var:if -->
 
     
     <var:if condition="inCalendar.method" const:value="REPLY">
@@ -173,8 +173,7 @@
           <td valign="top"><var:string label:value="Attendees"/>:</td>
           <td>
             <var:foreach list="authorativeEvent.participants" item="attendee">
-              <a var:href="attendee.email"
-                 ><var:string value="attendee.cnForDisplay" /></a>
+              <a var:href="attendee.email"><var:string value="attendeeForDisplay"/></a>
               (<var:string label:value="$attendee.partStatWithDefault" />)
               <br />
             </var:foreach>
