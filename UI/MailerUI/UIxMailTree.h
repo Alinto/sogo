@@ -31,7 +31,7 @@
 {
   NSString *rootClassName;
   NSString *treeFolderAction;
-  NSMutableDictionary *flattenedNodes;
+  NSMutableArray *flattenedNodes;
   id rootNodes;
   id item;
 }
