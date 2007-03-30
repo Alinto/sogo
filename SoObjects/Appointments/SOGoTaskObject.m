@@ -504,34 +504,4 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return @"IPM.Task";
 }
 
-/* EMail Notifications */
-
-- (NSString *)homePageURLForPerson:(iCalPerson *)_person {
-  static AgenorUserManager *um      = nil;
-  static NSString          *baseURL = nil;
-  NSString *uid;
-
-  if (!um) {
-    WOContext *ctx;
-    NSArray   *traversalObjects;
-
-    um = [[AgenorUserManager sharedUserManager] retain];
-
-    /* generate URL from traversal stack */
-    ctx = [[WOApplication application] context];
-    traversalObjects = [ctx objectTraversalStack];
-    if ([traversalObjects count] >= 1) {
-      baseURL = [[[traversalObjects objectAtIndex:0] baseURLInContext:ctx]
-                                                     retain];
-    }
-    else {
-      [self warnWithFormat:@"Unable to create baseURL from context!"];
-      baseURL = @"http://localhost/";
-    }
-  }
-  uid = [um getUIDForEmail:[_person rfc822Email]];
-  if (!uid) return nil;
-  return [NSString stringWithFormat:@"%@%@", baseURL, uid];
-}
-
 @end /* SOGoTaskObject */
