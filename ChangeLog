@@ -1,3 +1,9 @@
+2007-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([UIxMailPartHTMLViewer -_attachmentIds]): take the current
+	attachment path into account when computing the part urls.
+
 2007-03-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactsListViewContainer.m

@@ -397,6 +397,7 @@
   NSMutableDictionary *attachmentIds;
   UIxMailPartViewer *parent;
   unsigned int count, max;
+  NSMutableString *url;
   NSString *baseURL;
   NSArray *parts;
 
@@ -408,16 +409,20 @@
                          isEqualToString: @"UIxMailPartAlternativeViewer"])
     {
       baseURL = [[self clientObject] baseURLInContext: context];
+      url = [NSMutableString new];
+      [url appendString: baseURL];
+      [url appendFormat: @"/%@", [partPath componentsJoinedByString: @"/"]];
+      [url deleteCharactersInRange: NSMakeRange([url length] - 3, 2)];
       parts = [[parent bodyInfo] objectForKey: @"parts"];
       max = [parts count];
       for (count = 0; count < max; count++)
         [self _convertReferencesForPart: [parts objectAtIndex: count]
               withCount: count + 1
-              andBaseURL: baseURL
+              andBaseURL: url
               intoDictionary: attachmentIds];
+      [url release];
     }
 
-  NSLog(@"attc: '%@'", attachmentIds);
   return attachmentIds;
 }
 
