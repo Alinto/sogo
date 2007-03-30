@@ -33,20 +33,22 @@
 
 /* URLs */
 
-- (NSString *)pathToImage {
-  NSString *url;
+- (NSString *) pathToImage
+{
+  NSMutableString *url;
   NSString *s;
-  
-  url = [[self clientObject] baseURLInContext:[self context]];
-  if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+
+  s = [[self clientObject] baseURLInContext: [self context]];
+  url = [NSMutableString stringWithString: s];
+  if (![url hasSuffix: @"/"])
+    [url appendString: @"/"];
 
   s = [[self partPath] componentsJoinedByString:@"/"];
-  url = [url stringByAppendingString:s];
+  [url appendString: s];
 
-  if ((s = [self preferredPathExtension]) != nil) {
-    url = [url stringByAppendingString:@"."];
-    url = [url stringByAppendingString:s];
-  }
+  s = [self preferredPathExtension];
+  if (s)
+    [url appendFormat: @".%@", s];
   
   return url;
 }
