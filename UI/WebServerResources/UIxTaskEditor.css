@@ -61,6 +61,9 @@ TEXTAREA
   right: 1em;
   padding-bottom: 0em; }
 
+SELECT#calendarList
+{ width: 7em; }
+
 A#changeUrlButton
 { margin-left: 1em; }
 

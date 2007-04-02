@@ -956,16 +956,6 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
   return false;
 }
 
-function onChangeCalendar(list) {
-   var form = document.forms.editform;
-   log ("before: " + form.getAttribute("action"));
-   var urlElems = form.getAttribute("action").split("/");
-   urlElems[urlElems.length-4]
-      = list.childNodesWithTag("option")[list.value].innerHTML;
-   form.setAttribute("action", urlElems.join("/"));
-   log ("after: " + form.getAttribute("action"));
-}
-
 function validateBrowseURL(input) {
   var button = $("browseURLBtn");
 
