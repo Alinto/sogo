@@ -1,5 +1,8 @@
 2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-calendarList]): new method replacing "availableCalendars".
+
 	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
 	-calendarFolders]): we now take the list of subscribed calendar
 	from the container.

@@ -42,6 +42,7 @@
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 
@@ -62,6 +63,7 @@
       organizer = nil;
       attendeesNames = nil;
       attendeesEmails = nil;
+      calendarList = nil;
     }
 
   return self;
@@ -82,6 +84,7 @@
   [url release];
   [attendeesNames release];
   [attendeesEmails release];
+  [calendarList release];
 
   [super dealloc];
 }
@@ -293,7 +296,51 @@
 
 - (NSString *) itemCategoryText
 {
-  return [self labelForKey: [NSString stringWithFormat: @"category_%@", item]];
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"category_%@", item]];
+}
+
+- (NSArray *) calendarList
+{
+  SOGoAppointmentFolder *folder;
+  NSEnumerator *allCalendars;
+  NSDictionary *currentCalendar;
+
+  if (!calendarList)
+    {
+      calendarList = [NSMutableArray new];
+      folder = [[self clientObject] container];
+      allCalendars
+	= [[folder calendarFoldersInContext: context] objectEnumerator];
+      currentCalendar = [allCalendars nextObject];
+      while (currentCalendar)
+	{
+	  if ([[currentCalendar objectForKey: @"active"] boolValue])
+	    [calendarList addObject: currentCalendar];
+	  currentCalendar = [allCalendars nextObject];
+	}
+    }
+
+  return calendarList;
+}
+
+- (NSString *) itemCalendarText
+{
+  return item;
+}
+
+- (NSString *) calendarsFoldersList
+{
+  NSArray *calendars;
+
+  calendars = [[self calendarList] valueForKey: @"folder"];
+
+  return [calendars componentsJoinedByString: @","];
+}
+
+- (NSString *) componentCalendar
+{
+  return @"/";
 }
 
 /* priorities */
@@ -705,40 +752,6 @@
 }
 
 /* contact editor compatibility */
-
-- (NSArray *) availableCalendars
-{
-  NSEnumerator *rawContacts;
-  NSString *list, *currentId;
-  NSMutableArray *calendars;
-  SOGoUser *user;
-
-  calendars = [NSMutableArray array];
-
-  user = [context activeUser];
-  list = [[user userDefaults] stringForKey: @"calendaruids"];
-  if ([list length] == 0)
-    list = [self shortUserNameForDisplay];
-
-  rawContacts
-    = [[list componentsSeparatedByString: @","] objectEnumerator];
-  currentId = [rawContacts nextObject];
-  while (currentId)
-    {
-      if ([currentId hasPrefix: @"-"])
-        [calendars addObject: [currentId substringFromIndex: 1]];
-      else
-        [calendars addObject: currentId];
-      currentId = [rawContacts nextObject];
-    }
-
-  return calendars;
-}
-
-- (NSString *) componentOwner
-{
-  return componentOwner;
-}
 
 - (NSString *) urlButtonClasses
 {

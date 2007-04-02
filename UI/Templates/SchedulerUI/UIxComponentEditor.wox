@@ -42,9 +42,11 @@
             label:noSelectionString="category_NONE"
             string="itemCategoryText" selection="category"
             /><var:string label:value="Calendar:" />
-          <var:popup list="availableCalendars" item="item"
-            const:onChange="onChangeCalendar(this);"
-            string="item" selection="componentOwner" /></span></span>
+          <var:popup const:id="calendarList"
+	    list="calendarList" item="item"
+            string="item.displayName"
+	    selection="componentCalendar"
+	    /></span></span>
       <label id="attendeesLabel" style="display: none;"><var:string label:value="Attendees:"
 	  /><span class="content"
 	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
@@ -68,28 +70,9 @@
 	var:value="attendeesNames"/>
       <input type="hidden" name="attendeesEmails" id="attendeesEmails"
 	var:value="attendeesEmails"/>
-
-      <!--      <label><var:string label:value="Privacy" />
-      <span class="content"><var:popup list="privacyClasses" item="item"
-      string="itemPrivacyText" selection="privacy"
-      /></span></label>
-      <label><var:string label:value="Priority" />
-      <span class="content"><var:popup list="priorities" item="item"
-      string="itemPriorityText" selection="priority"
-      /></span></label>
-      <label><var:string label:value="Status" />
-      <span class="content"><var:popup list="statusTypes" item="item"
-      string="itemStatusText" selection="status"
-      /></span></label>
-      <hr /> -->
-      <!--      <label id="urlArea"><var:string label:value="URL" />
-      <span class="content"><input type="text" name="url" id="url"
-      size="40"
-      onkeyup="validateBrowseURL(this);"
-      class="textField"
-      var:value="url"
-      /><a id="browseUrlBtn" var:class="urlButtonClasses" var:href="#" onclick="return browseUrl(this, event);"><var:string value="Browse URL" /><var:string label:value="Browse URL" /></a
-      ></span></label> -->
+      <input type="hidden" name="calendarFoldersList"
+	id="calendarFoldersList"
+	var:value="calendarsFoldersList"/>
     </div>
   </form>
 </var:component>

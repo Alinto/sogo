@@ -67,6 +67,22 @@ function onMenuSetClassification(event, classification) {
    privacyInput.value = classification;
 }
 
+function onChangeCalendar(event) {
+   var calendars = $("calendarFoldersList").value.split(",");
+   var form = document.forms["editform"];
+   var urlElems = form.getAttribute("action").split("/");
+   var choice = calendars[this.value];
+   var ownerLogin;
+   if (choice.indexOf(":") > -1)
+      ownerLogin = choice.split(":")[0];
+   else
+      ownerLogin = UserLogin;
+   urlElems[urlElems.length-4] = ownerLogin;
+   
+   form.setAttribute("action", urlElems.join("/"));
+   log ("after: " + form.getAttribute("action"));
+}
+
 function refreshAttendees() {
    var attendeesLabel = $("attendeesLabel");
    var attendeesNames = $("attendeesNames");
@@ -137,4 +153,5 @@ function onComponentEditorLoad(event) {
       initializeAttendeesHref();
    initializeDocumentHref();
    initializePrivacyMenu();
+   $("calendarList").addEventListener("change", onChangeCalendar, false);
 }

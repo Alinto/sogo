@@ -41,6 +41,7 @@
   id item;
 
   NSString *saveURL;
+  NSMutableArray *calendarList;
   
   /* individual values */
   NSCalendarDate *cycleUntilDate;
@@ -124,9 +125,6 @@
 - (BOOL) isCycleEndUntil;
 - (void) setIsCycleEndUntil;
 - (void) setIsCycleEndNever;
-
-- (NSString *) componentOwner;
-- (NSArray *) availableCalendars;
 
 /* access */
 - (BOOL) isMyComponent;
