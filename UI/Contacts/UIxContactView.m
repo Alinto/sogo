@@ -410,7 +410,7 @@
 
 - (NSString *) workUrl
 {
-  return [self _urlOfType: @"home"];
+  return [self _urlOfType: @"work"];
 }
 
 - (BOOL) hasOtherInfos

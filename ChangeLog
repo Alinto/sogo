@@ -1,5 +1,8 @@
 2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView -workUrl]): we
+	want the "work" url instead of the "home".
+
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
 	-_saveSnapshot]): save url values from snapshot.
 	([UIxContactEditor -initSnapshot]): load url values from snapshot.
