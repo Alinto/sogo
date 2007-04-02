@@ -16,7 +16,8 @@
 "Common"            = "Identité";
 "Contact editor"    = "Éditer le contact";
 "Contact viewer"    = "Visualiser le contact";
-"EMail"             = "Courriel";
+"Email"             = "Adresse électronique";
+"Screen Name"	    = "Pseudo";
 "Extended"          = "Informations complémentaires";
 "Fax"               = "Fax";
 "Firstname"         = "Prénom";
@@ -25,7 +26,8 @@
 "Location"          = "Lieux";
 "MobilePhone"       = "Mobile";
 "OfficePhone"       = "Bureau";
-"Organisation"      = "Société";
+"Organization"      = "Société";
+"Work Phone" = "Travail";
 "Phone"             = "Téléphone";
 "Postal"            = "Professionnelle";
 "Save"              = "Sauvegarder";

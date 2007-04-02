@@ -6,8 +6,8 @@
 "Common" = "Common";
 "Contact editor" = "Contact editor";
 "Contact viewer" = "Contact viewer";
-"Copy from Anais" = "Copy from Anais";
-"EMail" = "EMail";
+"Email" = "Email";
+"Screen Name" = "Screen Name";
 "Extended" = "Extended";
 "Fax" = "Fax";
 "Firstname" = "Firstname";
@@ -18,7 +18,8 @@
 "MobilePhone" = "MobilePhone";
 "Name" = "Name";
 "OfficePhone" = "OfficePhone";
-"Organisation" = "Organisation";
+"Organization" = "Organization";
+"Work Phone" = "Work Phone";
 "Phone" = "Phone";
 "Phones" = "Phones";
 "Postal" = "Postal";

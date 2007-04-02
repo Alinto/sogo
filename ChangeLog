@@ -1,5 +1,9 @@
 2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-_saveSnapshot]): save url values from snapshot.
+	([UIxContactEditor -initSnapshot]): load url values from snapshot.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-calendarList]): new method replacing "availableCalendars".
 

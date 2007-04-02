@@ -83,13 +83,14 @@
 
 /* load/store content format */
 
-- (void)_fixupSnapshot {
+- (void) _fixupSnapshot
+{
   // TODO: perform sanity checking, eg build CN on demand
   NSString *cn, *gn, *sn;
   
-  cn = [snapshot objectForKey:@"cn"];
-  gn = [snapshot objectForKey:@"givenName"];
-  sn = [snapshot objectForKey:@"sn"];
+  cn = [snapshot objectForKey: @"cn"];
+  gn = [snapshot objectForKey: @"givenName"];
+  sn = [snapshot objectForKey: @"sn"];
   
   if (![sn isNotNull] || [sn length] == 0)
     sn = nil;
@@ -103,12 +104,12 @@
       // TODO: need a better name parser here
       NSRange r;
       
-      r = [cn rangeOfString:@" "];
+      r = [cn rangeOfString: @" "];
       sn = (r.length > 0)
 	? [cn substringFromIndex:(r.location + r.length)]
 	: cn;
     }
-    [snapshot setObject:sn forKey:@"sn"];
+    [snapshot setObject:sn forKey: @"sn"];
   }
   if (sn == nil && gn == nil)
     cn = @"[noname]";
@@ -117,8 +118,8 @@
   else if (gn == nil)
     cn = sn;
   else
-    cn = [[gn stringByAppendingString:@" "] stringByAppendingString:sn];
-  [snapshot setObject:cn forKey:@"cn"];
+    cn = [[gn stringByAppendingString: @" "] stringByAppendingString:sn];
+  [snapshot setObject:cn forKey: @"cn"];
 }
 
 /* helper */
@@ -131,13 +132,13 @@
   uri = [[[self context] request] uri];
     
   /* first: identify query parameters */
-  r = [uri rangeOfString:@"?" options:NSBackwardsSearch];
+  r = [uri rangeOfString: @"?" options:NSBackwardsSearch];
   if (r.length > 0)
     uri = [uri substringToIndex:r.location];
     
   /* next: append trailing slash */
-  if (![uri hasSuffix:@"/"])
-    uri = [uri stringByAppendingString:@"/"];
+  if (![uri hasSuffix: @"/"])
+    uri = [uri stringByAppendingString: @"/"];
   
   /* next: append method */
   uri = [uri stringByAppendingString:_method];
@@ -373,7 +374,7 @@
     [self initSnapshot];
   else
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason:@"could not open contact"];
+                        reason: @"could not open contact"];
 
   return self;
 }
@@ -492,8 +493,14 @@
 
   [self _savePhoneValues];
   [self _saveEmails];
+  [[self _elementWithTag: @"url" ofType: @"home"]
+    setValue: 0 to: [snapshot objectForKey: @"homeURL"]];
+  [[self _elementWithTag: @"url" ofType: @"work"]
+    setValue: 0 to: [snapshot objectForKey: @"workURL"]];
+
   [[card uniqueChildWithTag: @"x-aim"]
-    setValue: 0 to: [snapshot objectForKey: @"screenName"]];
+    setValue: 0
+    to: [snapshot objectForKey: @"screenName"]];
 }
 
 - (id <WOActionResults>) saveAction
@@ -547,7 +554,8 @@
     [self redirectToLocation: [self relativePathToUserFolderSubPath: url]];
 }
 
-- (id)newAction {
+- (id) newAction
+{
   // TODO: this is almost a DUP of UIxAppointmentEditor
   /*
     This method creates a unique ID and redirects to the "edit" method on the
@@ -568,10 +576,10 @@
 
   if ([objectId length] == 0)
     return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
-                        reason:@"could not create a unique ID"];
+                        reason: @"could not create a unique ID"];
 
-  nextMethod = [NSString stringWithFormat:@"../%@/%@", 
-			   objectId, [self editActionName]];
+  nextMethod = [NSString stringWithFormat: @"../%@/%@", 
+			 objectId, [self editActionName]];
   uri = [self _completeURIForMethod:nextMethod];
   return [self redirectToLocation:uri];
 }
