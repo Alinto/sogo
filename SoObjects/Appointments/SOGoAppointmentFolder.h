@@ -106,6 +106,8 @@
 
 - (NSArray *) fetchAllSOGoAppointments;
 
+- (NSArray *) calendarFoldersInContext: (WOContext *) context;
+
 @end
 
 #endif /* __Appointments_SOGoAppointmentFolder_H__ */

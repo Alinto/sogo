@@ -72,7 +72,7 @@ static NSNumber   *sharedYes = nil;
             NSStringFromClass([self superclass]), [super version]);
 
   lm      = [NGLoggerManager defaultLoggerManager];
-  logger  = [lm loggerForDefaultKey:@"SOGoAppointmentFolderDebugEnabled"];
+  logger  = [lm loggerForDefaultKey: @"SOGoAppointmentFolderDebugEnabled"];
 
 //   securityInfo = [self soClassSecurityInfo];
 //   [securityInfo declareRole: SOGoRole_Delegate
@@ -221,7 +221,8 @@ static NSNumber   *sharedYes = nil;
 
   filters = [NSMutableArray new];
 
-  children = [[parentNode getElementsByTagName: @"comp-filter"] objectEnumerator];
+  children = [[parentNode getElementsByTagName: @"comp-filter"]
+	       objectEnumerator];
   node = [children nextObject];
   while (node)
     {
@@ -443,7 +444,7 @@ static NSNumber   *sharedYes = nil;
   }
   
   if (nameFields == nil)
-    nameFields = [[NSArray alloc] initWithObjects:@"c_name", nil];
+    nameFields = [[NSArray alloc] initWithObjects: @"c_name", nil];
   
   qualifier = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _u];
   records   = [_f fetchFields: nameFields matchingQualifier: qualifier];
@@ -1131,6 +1132,68 @@ static NSNumber   *sharedYes = nil;
     [events addObject: [iCalCalendar parseSingleFromSource: content]];
   
   return events;
+}
+
+#warning We only support ONE calendar per user at this time
+- (BOOL) _appendSubscribedFolders: (NSDictionary *) subscribedFolders
+		     toFolderList: (NSMutableArray *) calendarFolders
+{
+  NSEnumerator *keys;
+  NSString *currentKey;
+  NSMutableDictionary *currentCalendar;
+  BOOL firstShouldBeActive;
+  unsigned int count;
+
+  firstShouldBeActive = YES;
+
+  keys = [[subscribedFolders allKeys] objectEnumerator];
+  currentKey = [keys nextObject];
+  count = 1;
+  while (currentKey)
+    {
+      currentCalendar = [NSMutableDictionary new];
+      [currentCalendar autorelease];
+      [currentCalendar
+	setDictionary: [subscribedFolders objectForKey: currentKey]];
+      [currentCalendar setObject: currentKey forKey: @"folder"];
+      [calendarFolders addObject: currentCalendar];
+      if ([[currentCalendar objectForKey: @"active"] boolValue])
+	firstShouldBeActive = NO;
+      count++;
+      currentKey = [keys nextObject];
+    }
+
+  return firstShouldBeActive;
+}
+
+- (NSArray *) calendarFoldersInContext: (WOContext *) context
+{
+  NSMutableDictionary *userCalendar, *calendarDict;
+  NSMutableArray *calendarFolders;
+  SOGoUser *activeUser;
+  BOOL firstActive;
+
+  calendarFolders = [NSMutableArray new];
+  [calendarFolders autorelease];
+
+  activeUser = [context activeUser];
+
+  userCalendar = [NSMutableDictionary new];
+  [userCalendar autorelease];
+  [userCalendar setObject: @"/" forKey: @"folder"];
+  [userCalendar setObject: @"Calendar" forKey: @"displayName"];
+  [calendarFolders addObject: userCalendar];
+
+  calendarDict = [[activeUser userSettings] objectForKey: @"Calendar"];
+  firstActive = [[calendarDict objectForKey: @"activateUserFolder"] boolValue];
+  firstActive = ([self _appendSubscribedFolders:
+			 [calendarDict objectForKey: @"SubscribedFolders"]
+		       toFolderList: calendarFolders]
+		 || firstActive);
+  [userCalendar setObject: [NSNumber numberWithBool: firstActive]
+		forKey: @"active"];
+
+  return calendarFolders;
 }
 
 /* folder type */
