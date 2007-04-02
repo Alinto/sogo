@@ -25,6 +25,11 @@
       allowsNull = YES;
     },
     {
+      columnName = screenname;
+      sqlType    = "VARCHAR(256)";
+      allowsNull = YES;
+    },
+    {
       columnName = l;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;

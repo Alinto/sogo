@@ -27,8 +27,8 @@
 #import "SOGoContactGCSFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
-                                     @"sn", @"givenname", @"l",          \
-                                     @"mail", @"telephonenumber",        \
+                                     @"givenname", @"screenname", \
+				     @"o", @"mail", @"telephonenumber", \
                                      nil]
 
 @implementation SOGoContactGCSFolder
@@ -155,7 +155,7 @@
   fields = folderListingFields;
   qualifier = [self _qualifierForFilter: filter];
   records = [[self ocsFolder] fetchFields: fields
-                              matchingQualifier: qualifier];
+			      matchingQualifier: qualifier];
   if (records)
     {
       ordering

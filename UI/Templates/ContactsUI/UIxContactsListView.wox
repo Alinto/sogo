@@ -15,7 +15,7 @@
           <!-- localize -->
           <td class="tbtv_headercell">
             <var:component className="UIxSortableTableHeader"
-              label:label="Lastname"
+              label:label="Name"
               const:sortKey="cn"
               const:href="view"
               var:queryDictionary="context.request.formValues"
@@ -23,17 +23,20 @@
           </td>
           <td class="tbtv_headercell">
             <var:component className="UIxSortableTableHeader"
-              label:label="EMail"
+              label:label="Email"
               const:sortKey="mail"
               const:href="view"
               var:queryDictionary="context.request.formValues"
               />
           </td>
           <td class="tbtv_headercell">
-            <var:string label:value="Phone" />
+            <var:string label:value="Screen Name" />
           </td>
           <td class="tbtv_headercell">
-            <var:string label:value="Location" />
+            <var:string label:value="Organization" />
+          </td>
+          <td class="tbtv_headercell">
+            <var:string label:value="Work Phone" />
           </td>
         </tr>
 
@@ -45,10 +48,12 @@
             onclick="return onContactRowClick(event, this);"
             ondblclick="return onContactRowDblClick(event, this);"
             oncontextmenu="return onContactContextMenu(event, this);">
-            <td onmousedown="return false;"><img rsrc:src="abcard.gif" /><var:string value="displayName" const:escapeHTML="YES" /></td>
-            <td onmousedown="return false;"><var:string value="currentContact.mail"            /></td>
-            <td onmousedown="return false;"><var:string value="currentContact.telephonenumber" /></td>
-            <td onmousedown="return false;"><var:string value="currentContact.l"               /></td>
+            <td onmousedown="return false;"><img rsrc:src="abcard.gif"
+		/><var:string value="displayName" const:escapeHTML="YES" /></td>
+            <td onmousedown="return false;"><var:string value="currentContact.mail"/></td>
+            <td onmousedown="return false;"><var:string value="currentContact.screenname"/></td>
+            <td onmousedown="return false;"><var:string value="currentContact.o"/></td>
+            <td onmousedown="return false;"><var:string value="currentContact.telephonenumber"/></td>
           </tr>
         </var:foreach>
       </tbody>

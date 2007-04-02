@@ -42,7 +42,7 @@ static NSString *fieldNames[] = {
   nil, nil
 };
 
-- (NSMutableDictionary *) extractQuickFieldsFromVCard: (NGVCard *) _vCard
+- (NSMutableDictionary *) extractQuickFieldsFromVCard: (NGVCard *) vCard
 {
   NSMutableDictionary *fields;
   NSArray *values;
@@ -50,15 +50,15 @@ static NSString *fieldNames[] = {
   NSString *value;
   unsigned int max;
 
-  if (_vCard == nil)
+  if (vCard == nil)
     return nil;
 
   fields = [NSMutableDictionary dictionaryWithCapacity:16];
 
-  value = [_vCard fn];
+  value = [vCard fn];
   if (value)
     [fields setObject: value forKey: @"cn"];
-  values = [_vCard n];
+  values = [vCard n];
   if (values)
     {
       max = [values count];
@@ -70,26 +70,25 @@ static NSString *fieldNames[] = {
                     forKey: @"givenName"];
         }
     }
-  value = [_vCard preferredTel];
+  value = [vCard preferredTel];
   if (value)
     [fields setObject: value forKey: @"telephoneNumber"];
-  value = [_vCard preferredEMail];
+  value = [vCard preferredEMail];
   if (value)
     [fields setObject: value forKey: @"mail"];
-  values = [_vCard org];
-  if (values)
+  values = [vCard org];
+  max = [values count];
+  if (max > 0)
     {
-      max = [values count];
-      if (max > 0)
-        {
-          [fields setObject: [values objectAtIndex: 0] forKey: @"o"];
-          if (max > 1)
-            [fields setObject: [values objectAtIndex: 1] forKey: @"ou"];
-        }
+      [fields setObject: [values objectAtIndex: 0] forKey: @"o"];
+      if (max > 1)
+	[fields setObject: [values objectAtIndex: 1] forKey: @"ou"];
     }
-  adr = [_vCard preferredAdr];
+  adr = [vCard preferredAdr];
   if (adr)
     [fields setObject: [adr value: 3] forKey: @"l"];
+  value = [[vCard uniqueChildWithTag: @"X-AIM"] value: 0];
+  [fields setObject: value forKey: @"screenname"];
 
   return fields;
 }

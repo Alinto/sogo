@@ -110,6 +110,7 @@ CREATE TABLE SOGo_${USER_TABLE}_contacts_quick (
   givenname       VARCHAR(256),
   cn              VARCHAR(256),
   sn              VARCHAR(256),
+  screenname      VARCHAR(256),
   l               VARCHAR(256),
   mail            VARCHAR(256),
   o               VARCHAR(256),

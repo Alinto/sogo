@@ -45,6 +45,7 @@
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
                                      @"displayName",                     \
                                      @"streetAddress",                   \
+                                     @"o", \
                                      @"sn", @"givenname", @"l",          \
                                      @"mail", @"telephonenumber",        \
                                      @"mailNickname",                    \

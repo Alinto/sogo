@@ -377,7 +377,7 @@ function onFolderSelectionChange() {
 function onSearchFormSubmit() {
   var searchValue = $("searchValue");
 
-  openContactsFolder(URLForFolderID(currentContactFolder),
+  openContactsFolder(currentContactFolder,
 		     "search=" + searchValue.value);
 
   return false;

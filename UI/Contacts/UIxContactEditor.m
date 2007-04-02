@@ -454,6 +454,7 @@
 - (void) _saveSnapshot
 {
   CardElement *element;
+  NSArray *units;
 
   [card setNWithFamily: [snapshot objectForKey: @"sn"]
         given: [snapshot objectForKey: @"givenName"]
@@ -484,6 +485,10 @@
   element = [CardElement simpleElementWithTag: @"fburl"
                          value: [snapshot objectForKey: @"calFBURL"]];
   [card setUniqueChild: element];
+
+  units = [NSArray arrayWithObject: [snapshot objectForKey: @"workService"]];
+  [card setOrg: [snapshot objectForKey: @"workCompany"]
+	units: units];
 
   [self _savePhoneValues];
   [self _saveEmails];
