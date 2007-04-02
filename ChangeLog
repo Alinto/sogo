@@ -1,3 +1,9 @@
+2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -calendarFoldersInContext:context]): new
+	method derived from and replacing [UIxCalView calendarFolders].
+
 2007-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
