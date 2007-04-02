@@ -27,9 +27,9 @@
         ><var:if condition="hasHomeInfos"
         ><div id="homeInfos"
           ><h4><var:string label:value="Home" /></h4
-            ><var:string value="homePobox" escapeHTML="NO"
+            ><var:string value="homeStreetAddress" escapeHTML="NO"
             /><var:string value="homeExtendedAddress" escapeHTML="NO"
-            /><var:string value="homeStreetAddress" escapeHTML="NO"
+            /><var:string value="homePobox" escapeHTML="NO"
             /><var:string value="homeCityAndProv" escapeHTML="NO"
             /><var:string value="homePostalCodeAndCountry" escapeHTML="NO"
             /><var:string value="homeUrl" escapeHTML="NO"
