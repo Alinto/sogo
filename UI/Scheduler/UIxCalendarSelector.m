@@ -31,6 +31,7 @@
 #import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGoUI/UIxComponent.h>
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import "UIxCalendarSelector.h"
 
@@ -90,8 +91,7 @@ colorForNumber (unsigned int number)
 {
   if ((self = [super init]))
     {
-      colors = [NSMutableDictionary new];
-      calendarFolders = nil;
+      colors = nil;
       currentCalendarFolder = nil;
     }
 
@@ -100,34 +100,35 @@ colorForNumber (unsigned int number)
 
 - (void) dealloc
 {
-  [calendarFolders release];
   [currentCalendarFolder release];
   [colors release];
   [super dealloc];
 }
 
-- (void) setCalendarFolders: (NSArray *) newCalendarFolders
+- (NSArray *) calendarFolders
 {
+  NSArray *calendarFolders;
   NSEnumerator *newFolders;
   NSDictionary *currentFolder;
   unsigned int count;
 
-  ASSIGN (calendarFolders, newCalendarFolders);
-
-  newFolders = [calendarFolders objectEnumerator];
-  currentFolder = [newFolders nextObject];
-  count = 0;
-  while (currentFolder)
+  calendarFolders
+    = [[self clientObject] calendarFoldersInContext: context];
+  if (!colors)
     {
-      [colors setObject: colorForNumber (count)
-	      forKey: [currentFolder objectForKey: @"folder"]];
-      count++;
+      colors = [NSMutableDictionary new];
+      count = 0;
+      newFolders = [calendarFolders objectEnumerator];
       currentFolder = [newFolders nextObject];
+      while (currentFolder)
+	{
+	  [colors setObject: colorForNumber (count)
+		  forKey: [currentFolder objectForKey: @"folder"]];
+	  count++;
+	  currentFolder = [newFolders nextObject];
+	}
     }
-}
 
-- (NSArray *) calendarFolders
-{
   return calendarFolders;
 }
 

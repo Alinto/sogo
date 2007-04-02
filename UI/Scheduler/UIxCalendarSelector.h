@@ -32,7 +32,6 @@
 
 @interface UIxCalendarSelector : UIxComponent
 {
-  NSMutableArray *calendarFolders;
   NSMutableDictionary *colors;
 
   NSDictionary *currentCalendarFolder;
@@ -40,6 +39,7 @@
 }
 
 - (NSArray *) calendarFolders;
+
 - (void) setCurrentCalendarFolder: (NSDictionary *) newCurrentCalendarFolder;
 - (NSDictionary *) currentCalendarFolder;
 

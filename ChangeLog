@@ -1,5 +1,9 @@
 2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-calendarFolders]): we now take the list of subscribed calendar
+	from the container.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -calendarFoldersInContext:context]): new
 	method derived from and replacing [UIxCalView calendarFolders].
