@@ -12,7 +12,7 @@ BODY
   color: #000000;
   font-family: Bitstream VeraSans, Tahoma;
   font-size: 10pt;
-  background-color: #dbdad5;
+  background-color: #d4d0c8;
   border: 0px;
   margin: 0px;
   padding: 0px;
@@ -325,7 +325,7 @@ INPUT.button
   border-left: 2px solid #fffffb;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
-  background-color: #dbdad5;
+  background-color: #d4d0c8;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
@@ -356,8 +356,8 @@ DIV#toolbar
   margin: 0px;
   padding: 0px;
 /*   background: #f00;
- */  height: 4em;
-  background-color: #dbdad5;
+ */  height: 4.2m;
+  background-color: #d4d0c8;
   white-space: nowrap;
   overflow: auto; }
 
@@ -624,7 +624,7 @@ td.tbtv_subject_headercell
 DIV.dragHandle
 { position: absolute;
   z-index: 1;
-  background: #dbdad5; }
+  background: #d4d0c8; }
 
 DIV.dragHandle:active
 { background: #99a; }
@@ -745,7 +745,7 @@ DIV.tabsContainer
 { 
   position: relative;
   color: #000;
-  background: #dbdad5;
+  background: #d4d0c8;
   margin-top: 1.5em;
   border-top: 2px solid #fffffb;
   border-left: 2px solid #fffffb;
@@ -787,7 +787,7 @@ DIV.tabsContainer > UL LI.active
 
 DIV.tabsContainer > UL LI.active
 { z-index: 5;
-  background: #dbdad5;
+  background: #d4d0c8;
   padding-top: 2px;
   padding-bottom: 2px;
   margin-top: -2px; }

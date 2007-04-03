@@ -306,7 +306,7 @@ TABLE#appointmentsList TR._selected TD
 UL._unfocused > LI._selected,
 TABLE._unfocused#appointmentsList TR._selected TD
 { 
-  background: #dbdad5 !important;;
+  background: #d4d0c8 !important;;
   color: #fff !important;;
 }
 
@@ -319,7 +319,7 @@ SPAN.weeksHeader,
 SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
-  background: #dbdad5;
+  background: #d4d0c8;
   overflow: hidden;
   width: 100%;
   margin: 0px;
