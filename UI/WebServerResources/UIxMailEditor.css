@@ -57,12 +57,8 @@ div#compose_internetmarker {
 }
 
 div#headerArea
-{ border-top: 1px solid #fffffb;
-  border-left: 1px solid #fffffb;
-  border-right: 2px solid #888;
-  border-bottom: 2px solid #888;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent; }
+{ border-top: 1px solid #fff;
+  border-bottom: 1px solid #848284; }
 
 div#attachmentsArea
 { display: none;

@@ -10,8 +10,8 @@ BODY
   right: 0px;
   bottom: 0px;
   color: #000000;
-  font-family: Bitstream VeraSans, Tahoma;
-  font-size: 10pt;
+  font-family: Lucida Grande, Bitstream VeraSans, Tahoma;
+  font-size: 8pt;
   background-color: #d4d0c8;
   border: 0px;
   margin: 0px;
@@ -68,7 +68,7 @@ a:visited
 { color: #660066; }
 
 a:hover
-{ color: #FF0000;
+{ color: #ff0000;
   text-decoration: underline; }
 
 .linecolor
@@ -85,112 +85,6 @@ a:hover
 .homepagefont
 { text-decoration: none;
   color: #000000; }
-
-
-/* tabs */
-
-.oldtab
-{ color: #000000;
-  background-color: #e8e8e0;
-  text-decoration: none;
-  width: 100px; 
-  height: 22px;
-  border-top: 1px solid #06348b;
-  border-right: 1px solid #06348b; }
-
-.oldtab a
-{ color: #000000;
-  border: none;
-  text-decoration: none; }
-
-.oldtab_selected
-{ color: #000000;
-  background-color: #f5f5e9;
-  text-decoration: none;
-  font-weight: bold;
-  width: 100px; 
-  height: 22px;
-  border-top: 1px solid #06348b;
-  border-right: 1px solid #06348b; }
-
-.oldtab_selected a
-{ color: #000000;
-  border: none;
-  text-decoration: none; }
-
-.oldtabview_body
-{ background-color: #f5f5e9; }
-
-
-/* buttons */
-
-.button_auto_env
-{ height: 16px;
-  text-align: center;
-  vertical-align: middle;
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  overflow: hidden; }
-
-.button_auto_env a
-{ text-decoration: none;
-  color: #000000; }
-
-.button_auto_env a:hover
-{ text-decoration: underline;
-  color: #ff0000; }
-
-.button_auto
-{ height: 20px;
-  border-style: outset;
-  border-color: #DDDDDD;
-  border-width: 2px;
-  color: #000000;
-  background-color: #e8e8e0;
-  letter-spacing: 0pt;
-  text-decoration: none;
-  color: #000000;
-  text-align: center;
-  vertical-align: middle;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  overflow: hidden; }
-
-.button_submit_env
-{ height: 24px;
-  text-align: center;
-  vertical-align: middle;
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  overflow: hidden; }
-
-.button_submit_env a
-{ text-decoration: none;
-  color: #000000; }
-
-.button_submit_env a:hover
-{ text-decoration: underline;
-  color: #ff0000; }
-
-.button_submit
-{ height: 30px;
-  border-style: outset;
-  border-color: #DDDDDD;
-  border-width: 2px;
-  color: #000000;
-  background-color: #e8e8e0;
-  letter-spacing: 0pt;
-  text-decoration: none;
-  color: #000000;
-  text-align: center;
-  vertical-align: middle;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 2px;
-  padding-bottom: 3px;
-  overflow: hidden; }
 
 /* header */
 
@@ -241,7 +135,6 @@ table.skytextdocktable
 { padding: 0px;
   table-layout: auto; }
 
-
 DIV.linkbanner
 { 
   background: #222;
@@ -261,7 +154,6 @@ DIV.linkbanner A
 
 DIV.linkbanner A:hover
 { color: #dd5; }
-
 
 .linkbannerlinks
 { vertical-align: bottom;
@@ -318,53 +210,23 @@ INPUT.textField
 { line-height: 2em;
   vertical-align: middle; }
 
-INPUT.button
-{ margin: 0px;
-  padding: 0px .5em;
-  border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
-  border-bottom: 2px solid #888;
-  border-right: 2px solid #888;
-  background-color: #d4d0c8;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
-
-INPUT.button:hover
-{ color: inherit;
-  background: -moz-buttonhoverface; }
-
-INPUT.button:active
-{ -moz-outline: none;
-  margin: 0px;
-  padding: 0px .5em;
-  color: -moz-buttonhovertext;
-  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
-
 DIV#toolbar
 { left: 0px;
-  border-top: 1px solid #fffffb;
-  border-left: 1px solid #fffffb;
-  border-bottom: 2px solid #888;
-  border-right: 2px solid #888;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #848284;
   margin: 0px;
   padding: 0px;
-/*   background: #f00;
- */  height: 4.2m;
   background-color: #d4d0c8;
   white-space: nowrap;
   overflow: auto; }
 
+BODY.popup DIV#toolbar
+{ border-top: 0px; }
+
 SPAN.toolbarSeparator
 { display: block;
   float: left;
-  height: 90%;
+  height: 3.8em;
   vertical-align: middle;
   border-right : 1px solid ThreeDHighlight;
   border-left : 1px solid ThreeDShadow;
@@ -386,11 +248,10 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
   -moz-box-align: center;
   -moz-box-pack: center;
   margin: 0px;
-  margin-top: 0.125em;
-  border-left: 2px solid transparent;
-  border-top: 2px solid transparent;
-  border-right: 2px solid transparent;
-  border-bottom: 2px solid transparent;
+  border-left: 1px solid transparent;
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
   padding: 1px 2px;
   background-color: transparent;
   color: -moz-DialogText; }
@@ -400,19 +261,17 @@ SPAN.disabledToolbarButton
 
 SPAN.toolbarButton:hover
 { color: -moz-buttonhovertext;
-  background-color: -moz-buttonhoverface;
-  -moz-border-left-colors: ThreeDHighlight -moz-buttonhoverface;
-  -moz-border-top-colors: ThreeDHighlight -moz-buttonhoverface;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow; }
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #828482;
+  border-right: 1px solid #828482; }
 
 SPAN.toolbarButton:active
 { color: -moz-buttonhovertext;
-  background-color: #c4c2bd;
-  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+  border-top: 1px solid #828482;
+  border-left: 1px solid #828482;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff; }
 
 .toolbarButton IMG.buttonImage
 { border: 0px;
@@ -429,11 +288,14 @@ SPAN.toolbarButton:active
 { visibility: hidden;
   position: absolute;
   z-index: 1000;
-  background-color: #dcdad5;
+  background-color: #d6cfc6;
   color: #000;
   margin: 0px;
   padding: 0px;
-  border: 1px solid #000; }
+  border-top: 1px solid #d6cfc6;
+  border-left: 1px solid #d6cfc6;
+  border-right: 1px solid #424142;
+  border-bottom: 1px solid #424142; }
 
 .menu UL
 { 
@@ -489,8 +351,8 @@ DIV#logConsole
   display: none;
   z-index: 1000;
   -moz-opacity: 0.7;
-  border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-right: 2px solid #999;
   border-bottom: 2px solid #999;
   -moz-border-top-colors: ThreeDDarkShadow ThreeDShadow transparent;
@@ -515,9 +377,23 @@ td.tbtv_actcell
   padding-top: 4px;
   padding-bottom: 3px;
   padding-left: 4px;
-  padding-right: 4px;
-  
-  background-color: #DCDAD5; }
+  padding-right: 4px; }
+
+TD.tbtv_headercell,
+TD.tbtv_navcell
+{ background-color: #d4d0c8; 
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 2px solid #222;
+  border-bottom: 2px solid #222;
+  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
+
+TD.tbtv_headercell:active
+{ background-color: #DCDAD5;
+  border: 1px solid #9c9a94;
+  -moz-border-bottom-colors: #9c9a94;
+  -moz-border-right-colors: #9c9a94; }
 
 td.tbtv_headercell SPAN
 { float: left;
@@ -559,53 +435,6 @@ TR.tableview TD.headerDateTime
 
 TR.tableview TD.headerLocation
 { width: 10em; }
-
-td.tbtv_actcell
-{ border-width: 1px;
-  border-style: solid;
-  border-top-color: #808080;
-  border-left-color: #808080;
-  border-bottom-color: #808080;
-  border-right-color: #808080;
-  padding-top: 4px;
-  padding-bottom: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  background-color: #DCDAD5; }
-
-TD.tbtv_headercell,
-TD.tbtv_navcell
-{ background-color: #DCDAD5;
-  border-top: 1px solid #fff;
-  border-left: 1px solid #fff;
-  border-right: 2px solid #222;
-  border-bottom: 2px solid #222;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
-
-TD.tbtv_headercell:active
-{ background-color: #DCDAD5;
-  border: 1px solid #9c9a94;
-  -moz-border-bottom-colors: #9c9a94;
-  -moz-border-right-colors: #9c9a94; }
-
-td.tbtv_headercell SPAN
-{ float: left;
-  width: 100%; }
-
-td.tbtv_headercell a
-{ cursor: default;
-  margin: 0px auto;
-  color: black;
-  width: 100%; }
-
-td.tbtv_headercell a:hover
-{ margin: 0px auto;
-  display: block;
-  color: black;
-  text-decoration: none;
-  /* background-color: #C4C0B8; */
-}
 
 td img.tbtv_sortcell
 { float: right;
@@ -660,8 +489,8 @@ DIV.javascriptPopupBackground
 DIV.javascriptMessagePseudoWindow
 { position: absolute;
   z-index: 2;
-  border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
@@ -687,6 +516,7 @@ A.button:hover
 { color: inherit;
   background: -moz-buttonhoverface; }
 
+INPUT.button:active,
 A.button:active
 { color: -moz-buttonhovertext;
   background-color: #c4c2bd;
@@ -695,13 +525,14 @@ A.button:active
   -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
   -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
 
+INPUT.button,
 A.button,
 A[class~="_disabled"].button:hover,
 A[class~="_disabled"].button:active
 { cursor: default;
   padding: 1px .5em;
-  border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
@@ -747,8 +578,8 @@ DIV.tabsContainer
   color: #000;
   background: #d4d0c8;
   margin-top: 1.5em;
-  border-top: 2px solid #fffffb;
-  border-left: 2px solid #fffffb;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-right: 2px solid #888;
   border-bottom: 2px solid #888;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
@@ -761,36 +592,38 @@ DIV.tabsContainer > UL
   list-style-type: none;
   list-style-image: none;
   margin: 0px;
-  margin-top: -1.5em;
+  margin-top: -17px;
   padding: 0px; }
 
 DIV.tabsContainer > UL LI
 { z-index: 3;
   float: left;
   padding: 0px .5em;
-  padding-top: 2px;
-  border-top: 2px solid #fffffb;
-  border-bottom: 0px solid #fffffb;
+  padding-top: 0px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-topright: 3px;
+  border-top: 2px solid #fff;
+  border-bottom: 0px solid #fff;
   border-right: 2px solid #888;
+  padding-bottom: 1px;
   -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
   -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
   -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
-  color: #000;
-  background: #fff;
-  background: #c4c2bd; }
+  color: #000; }
 
 DIV.tabsContainer > UL LI.first,
 DIV.tabsContainer > UL LI.active
-{ border-left: 2px solid #fffffb;
+{ border-left: 2px solid #fff;
   margin-left: -2px;
   -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight; }
 
 DIV.tabsContainer > UL LI.active
 { z-index: 5;
   background: #d4d0c8;
+  border-bottom: 1px solid none;
   padding-top: 2px;
-  padding-bottom: 2px;
-  margin-top: -2px; }
+  padding-bottom: 3px;
+  margin-top: -3px; }
 
 DIV.tabsContainer > DIV.tab
 { position: absolute;

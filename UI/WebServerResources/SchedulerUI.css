@@ -15,13 +15,13 @@ DIV#schedulerTabs
   top: 0.5em;
   left: .2em;
   right: .2em;
-  height: 15em;
+  height: 16em;
 }
 
 DIV#tasksListView
 {
   position: absolute;
-  top: 18em;
+  top: 18.5em;
   bottom: 0px;
   left: .2em;
   right: .7em;
@@ -29,7 +29,7 @@ DIV#tasksListView
 }
 
 DIV#tasksListView H2
-{ font-size: 12pt;
+{ font-size: 10pt;
   margin: 0px;
   margin-left: .25em;
   padding: 0px; }
@@ -141,8 +141,8 @@ DIV#appointmentsListView
 { 
   position: absolute;
   background: #fff;
-  height: 16em;
-  top: 2em;
+  height: 15.5em;
+  top: 2.5em;
   left: 0px;
   width: 100%;
   overflow: auto;
@@ -323,8 +323,8 @@ SPAN.monthsHeader
   overflow: hidden;
   width: 100%;
   margin: 0px;
-  height: 2.75em;
-  padding: .1em 1.5em;
+  height: 3em;
+  padding: 2px 1.5em;
   border: 0px;
   border-bottom: 1px solid #ccc; }
 
@@ -357,20 +357,20 @@ A.rightNavigationArrow:hover,
 SPAN.daysHeader A:hover,
 SPAN.weeksHeader A:hover,
 SPAN.monthsHeader A:hover
-{ border-left: 1px solid #fff;
-  border-top: 1px solid #fff;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc; }
+{ border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #828482;
+  border-right: 1px solid #828482; }
 
 A.leftNavigationArrow:active,
 A.rightNavigationArrow:active,
 SPAN.daysHeader A:active,
 SPAN.weeksHeader A:active,
 SPAN.monthsHeader A:active
-{ border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff; }
+{ border-top: 1px solid #828482;
+  border-left: 1px solid #828482;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff; }
 
 SPAN.week2, SPAN.month2
 {
@@ -388,17 +388,14 @@ SPAN.day1, SPAN.week0, SPAN.month0
 }
 
 SPAN.day0
-{
-  font-size: x-large;
-}
+{ font-size: x-large; }
 
 SPAN.day0, SPAN.week0, SPAN.month0
-{ border-top: 1px solid #aaa !important;
-  border-left: 1px solid #aaa !important;
+{ border-top: 1px solid #828482 !important;
+  border-left: 1px solid #828482 !important;
   border-bottom: 1px solid #fff !important;
   border-right: 1px solid #fff !important;
-  background: #ccc;
-  color: #222; }
+  background: #ddd; }
 
 A.leftNavigationArrow
 {
@@ -417,9 +414,8 @@ A.rightNavigationArrow
 }
 
 DIV#calendarContent
-{
-  position: absolute;
-  top: 3em;
+{ position: absolute;
+  top: 3.5em;
   padding: 0px;
   margin: 0px;
   bottom: 0px;
@@ -867,10 +863,10 @@ DIV.monthView DIV.appointment
   margin: 2px;
   margin-right: 3px;
   padding: 1px;
-  height: 1.5em; }
+  height: 2em; }
 
 DIV.appointment DIV.text
-{ font-size: 80%; }
+{ font-size: 92%; }
 
 DIV.daysView DIV[class~="appointment"].starts0
 { top: 0.000000%; }
