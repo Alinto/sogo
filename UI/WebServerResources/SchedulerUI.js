@@ -1069,8 +1069,6 @@ function appendCalendar(folderName, folder) {
    var contactId = folder.split(":")[0];
    var styles = document.getElementsByTagName("style");
    styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
-			   + ' color: '
-			   + color + ';'
 			   + ' background-color: '
 			   + color
 			   + ' !important; }');
