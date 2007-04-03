@@ -32,8 +32,8 @@
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
 
-  BOOL knowsToHide;
-  BOOL hideCompleted;
+  BOOL knowsToShow;
+  BOOL showCompleted;
 
   NSDictionary *currentTask;
 }

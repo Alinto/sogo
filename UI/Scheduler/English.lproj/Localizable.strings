@@ -314,7 +314,7 @@ validate_invalid_enddate   = "Incorrect enddate field!";
 validate_endbeforestart    = "Enddate is before startdate!";
 
 "Tasks" = "Tasks";
-"Hide completed tasks" = "Hide completed tasks";
+"Show completed tasks" = "Show completed tasks";
 
 /* tabs */
 "Task" = "Task";

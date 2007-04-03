@@ -315,7 +315,7 @@ validate_invalid_enddate   = "La date de fin est invalide !";
 validate_endbeforestart    = "La date de fin est avant la date de début !";
 
 "Tasks" = "Tâches";
-"Hide completed tasks" = "Masquer les tâches accomplies";
+"Show completed tasks" = "Afficher les tâches accomplies";
 
 /* tabs */
 "Task" = "Tâche";

@@ -7,10 +7,10 @@
     xmlns:label="OGo:label">
     <h2><var:string label:value="Tasks" /></h2>
     <label><input class="checkBox"
-        var:checked="shouldHideCompletedTasks"
+        var:checked="shouldShowCompletedTasks"
         type="checkbox"
-        onclick="return onHideCompletedTasks(this);"
-        /><var:string label:value="Hide completed tasks"
+        onclick="return onShowCompletedTasks(this);"
+        /><var:string label:value="Show completed tasks"
         /></label>
     <ul id="tasksList" multiselect="yes">
       <var:foreach list="fetchCoreTasksInfos" item="currentTask"

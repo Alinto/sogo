@@ -7,7 +7,7 @@ var listFilter = 'view_today';
 var listOfSelection = null;
 var selectedCalendarCell;
 
-var hideCompletedTasks = 0;
+var showCompletedTasks = 0;
 
 var currentDay = '';
 var currentView = "dayview";
@@ -632,7 +632,7 @@ function refreshAppointments() {
 }
 
 function refreshTasks() {
-  return _loadTasksHref("taskslist?hide-completed=" + hideCompletedTasks);
+  return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks);
 }
 
 function refreshAppointmentsAndDisplay() {
@@ -817,8 +817,8 @@ function changeMonthCalendarDisplayOfSelectedDay(node) {
    node.addClassName("selectedDay");
 }
 
-function onHideCompletedTasks(node) {
-  hideCompletedTasks = (node.checked ? 1 : 0);
+function onShowCompletedTasks(node) {
+  showCompletedTasks = (node.checked ? 1 : 0);
 
   return refreshTasks();
 }

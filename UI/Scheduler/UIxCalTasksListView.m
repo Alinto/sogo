@@ -39,8 +39,8 @@
     {
       startDate = nil;
       endDate = nil;
-      knowsToHide = NO;
-      hideCompleted = NO;
+      knowsToShow = NO;
+      showCompleted = NO;
     }
 
   return self;
@@ -105,27 +105,27 @@
 
 - (BOOL) shouldDisplayCurrentTask
 {
-  if (!knowsToHide)
+  if (!knowsToShow)
     {
-      hideCompleted
-        = [[self queryParameterForKey: @"hide-completed"] intValue];
-      knowsToHide = YES;
+      showCompleted
+        = [[self queryParameterForKey: @"show-completed"] intValue];
+      knowsToShow = YES;
     }
 
-  return !(hideCompleted
-           && [[currentTask objectForKey: @"status"] intValue] == 1);
+  return ([[currentTask objectForKey: @"status"] intValue] != 1
+	   || showCompleted);
 }
 
-- (BOOL) shouldHideCompletedTasks
+- (BOOL) shouldShowCompletedTasks
 {
-  if (!knowsToHide)
+  if (!knowsToShow)
     {
-      hideCompleted
-        = [[self queryParameterForKey: @"hide-completed"] intValue];
-      knowsToHide = YES;
+      showCompleted
+        = [[self queryParameterForKey: @"show-completed"] intValue];
+      knowsToShow = YES;
     }
 
-  return hideCompleted;
+  return showCompleted;
 }
 
 - (BOOL) isCurrentTaskCompleted

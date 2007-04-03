@@ -1,3 +1,10 @@
+2007-04-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalTasksListView.m ([UIxCalTasksListView
+	-shouldDisplayCurrentTask]): the current task is not displayed if
+	it is NOT completed or if the "showCompletedTasks" flag is set.
+	The logic was inverted in Lightning and is now in SOGo too.
+
 2007-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m ([UIxContactView -workUrl]): we
