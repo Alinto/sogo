@@ -620,7 +620,7 @@ DIV.tabsContainer > UL LI.active
 DIV.tabsContainer > UL LI.active
 { z-index: 5;
   background: #d4d0c8;
-  border-bottom: 1px solid none;
+  border-bottom: 1px none #fff;
   padding-top: 2px;
   padding-bottom: 3px;
   margin-top: -3px; }
