@@ -85,6 +85,9 @@
 
 /* Button Titles */
 
+"Add..." = "Ajouter...";
+"Remove" = "Enlever";
+
 "new" = "Nouveau";
 "printview" = "Version imprimable";
 "edit" = "Éditer";
@@ -97,7 +100,6 @@
 "Cancel" = "Annuler";
 "show_rejected_apts" = "Afficher les rendez-vous refusés";
 "hide_rejected_apts" = "Cacher les rendez-vous refusés";
-
 
 /* Schedule */
 

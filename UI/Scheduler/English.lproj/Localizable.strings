@@ -85,6 +85,9 @@
 
 /* Button Titles */
 
+"Add..." = "Add...";
+"Remove" = "Remove";
+
 "new" = "New";
 "printview" = "Print View";
 "edit" = "Edit";
