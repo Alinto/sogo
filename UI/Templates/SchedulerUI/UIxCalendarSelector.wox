@@ -16,8 +16,8 @@
     <span id="calendarSelectorButtons">
       <a href="#" class="toolbarButton"
 	><span class="toolbarButton"><img rsrc:src="add-calendar.png"
-	  label:title="Add..."
-	  /></span></a>
+	    label:title="Add..."
+	    /></span></a>
       <a href="#" class="toolbarButton"
 	><span class="toolbarButton"><img rsrc:src="remove-calendar.png"
 	    label:title="Remove"
