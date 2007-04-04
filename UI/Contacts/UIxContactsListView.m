@@ -81,6 +81,11 @@
   return self;
 }
 
+- (NSString *) selectorComponentClass
+{
+  return selectorComponentClass;
+}
+
 - (id <WOActionResults>) deleteAction
 {
   id <WOActionResults> result;

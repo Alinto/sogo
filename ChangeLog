@@ -1,3 +1,8 @@
+2007-04-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-selectorComponentClass]): restored method.
+
 2007-04-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalTasksListView.m ([UIxCalTasksListView
