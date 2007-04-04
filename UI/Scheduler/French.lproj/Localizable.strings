@@ -179,7 +179,6 @@
 "Invalid iCal data!" = "Données iCal non valides ...";
 "Could not create iCal data!" = "Les données iCal n'ont pu être crées ...";
 
-
 /* Searching */
 
 "view_all" = "Tous";
@@ -369,6 +368,12 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Next slot" = "Prochain";
 "Previous hour" = "Heure précédente";
 "Next hour" = "Prochaine heure";
+
+/* apt list */
+"Title" = "Titre";
+"Start" = "Début";
+"End" = "Fin";
+"Location" = "Lieu";
 
 "closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre.";
 "Multicolumn Day View" = "Multicolonne";

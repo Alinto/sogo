@@ -369,5 +369,11 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Previous hour" = "Previous hour";
 "Next hour" = "Next hour";
 
+/* apt list */
+"Title" = "Title";
+"Start" = "Start";
+"End" = "End";
+"Location" = "Location";
+
 "closeThisWindowMessage" = "Thank you! You may now close this window.";
 "Multicolumn Day View" = "Multicolumn Day View";
