@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <SaxObjC/SaxAttributes.h>
 #import <SaxObjC/SaxContentHandler.h>
 #import <SaxObjC/SaxLexicalHandler.h>
