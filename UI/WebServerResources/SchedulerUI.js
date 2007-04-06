@@ -39,7 +39,7 @@ function newEvent(sender, type) {
   if (params.length > 0)
     urlstr += "?" + params.join("&");
 
-  window.open(urlstr, "", "width=490,height=600,resizable=0");
+  window.open(urlstr, "", "width=490,height=470,resizable=0");
 
   return false; /* stop following the link */
 }
@@ -53,7 +53,7 @@ function _editEventId(id, owner) {
   var urlstr = urlBase + id + "/edit";
 
   var win = window.open(urlstr, "SOGo_edit_" + id,
-                        "width=490,height=600,resizable=0");
+                        "width=490,height=470,resizable=0");
   win.focus();
 }
 
@@ -1062,7 +1062,7 @@ function appendCalendar(folderName, folder) {
       colorBox.style.backgroundColor = color + ";";
    }
    li.appendChild(colorBox);
-   li.appendChild(document.createTextNode(folderName));
+   li.appendChild(document.createTextNode(" " + folderName));
 
    calendarList.appendChild(li);
 

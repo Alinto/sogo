@@ -745,20 +745,17 @@ function newEmailTo(sender) {
 function expandUpperTree(node) {
   var currentNode = node.parentNode;
 
-  while (currentNode.className != "dtree")
-    {
-      if (currentNode.className == 'clip')
-        {
-          var id = currentNode.getAttribute("id");
-          var number = parseInt(id.substr(2));
-          if (number > 0)
-            {
-              var cn = d.aNodes[number];
-              d.nodeStatus(1, number, cn._ls);
-            }
-        }
+  while (currentNode.className != "dtree") {
+      if (currentNode.className == 'clip') {
+	 var id = currentNode.getAttribute("id");
+	 var number = parseInt(id.substr(2));
+	 if (number > 0) {
+	    var cn = d.aNodes[number];
+	    d.nodeStatus(1, number, cn._ls);
+	 }
+      }
       currentNode = currentNode.parentNode;
-    }
+  }
 }
 
 function initMailboxSelection(mailboxName) {
