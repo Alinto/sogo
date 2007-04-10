@@ -54,7 +54,7 @@
   if (!card)
     {
       contentStr = [self contentAsString];
-      if ([contentStr hasPrefix:@"BEGIN:VCARD"])
+      if ([[contentStr uppercaseString] hasPrefix:@"BEGIN:VCARD"])
         card = [NGVCard parseSingleFromSource: contentStr];
       else
         card = [NGVCard cardWithUid: [self nameInContainer]];

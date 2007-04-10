@@ -1,5 +1,8 @@
 2007-04-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
+	-vCard]): test the prefix of the card in a case-independent way.
+
 	* OGoContentStore/OCSContactFieldExtractor.m
 	([OCSContactFieldExtractor
 	-extractQuickFieldsFromContent:content]): we no longer accept
