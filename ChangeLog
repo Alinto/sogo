@@ -1,3 +1,11 @@
+2007-04-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/OCSContactFieldExtractor.m
+	([OCSContactFieldExtractor
+	-extractQuickFieldsFromContent:content]): we no longer accept
+	records in a format other than versit vCard so we can get rid of a
+	lot of code.
+
 2007-04-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
