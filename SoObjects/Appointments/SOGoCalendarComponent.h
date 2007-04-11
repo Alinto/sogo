@@ -48,6 +48,8 @@
 
 - (NSException *) delete;
 
+- (NSException *) changeParticipationStatus: (NSString *) _status;
+
 /* mail notifications */
 - (BOOL) sendEMailNotifications;
 - (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
