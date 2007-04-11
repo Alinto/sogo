@@ -45,6 +45,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "UIxComponent+Agenor.h"
 
