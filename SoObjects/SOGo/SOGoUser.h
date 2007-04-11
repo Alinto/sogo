@@ -34,7 +34,12 @@
     context.activeUser
 */
 
-@class NSString, NSArray, NSDictionary, NSURL, NSUserDefaults;
+@class NSString;
+@class NSArray;
+@class NSDictionary;
+@class NSURL;
+@class NSUserDefaults;
+@class NSTimeZone;
 @class WOContext;
 
 @interface SOGoUser : SoUser
