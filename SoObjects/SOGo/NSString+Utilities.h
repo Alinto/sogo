@@ -38,6 +38,10 @@
 
 - (NSString *) davMethodToObjC;
 
+#ifndef GNUSTEP
+- (BOOL) boolValue;
+#endif
+
 @end
 
 #endif /* NSSTRING_URL_H */

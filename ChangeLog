@@ -1,5 +1,9 @@
 2007-04-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString -boolValue]): new
+	method that SOGo will need with non-gnustep Foundation
+	implementation.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -timeZone]): method moved
 	from SOGoObject.m.
 

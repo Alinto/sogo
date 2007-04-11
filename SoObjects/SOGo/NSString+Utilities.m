@@ -100,4 +100,12 @@
   return newName;
 }
 
+#ifndef GNUSTEP
+- (BOOL) boolValue
+{
+  return !([self isEqualToString: @"0"]
+	   || [self isEqualToString: @"NO"]);
+}
+#endif
+
 @end
