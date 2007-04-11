@@ -1,5 +1,9 @@
 2007-04-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m: new ivar "context" that permits
+	every subclass to access [WOApplication context] without having to
+	invoke it more than once.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -changeParticipationStatus:_status]):
 	moved method from SOGoTaskObject and SOGoAppointmentObject up to

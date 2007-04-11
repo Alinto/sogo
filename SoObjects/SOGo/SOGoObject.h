@@ -44,9 +44,9 @@
 
 @interface SOGoObject : NSObject
 {
+  WOContext *context;
   NSString *nameInContainer;
   id       container;
-  NSTimeZone *userTimeZone;
   NSString *customOwner;
 }
 
@@ -58,10 +58,6 @@
 
 - (NSString *) nameInContainer;
 - (id) container;
-
-- (NSTimeZone *) serverTimeZone;
-- (NSTimeZone *) userTimeZone;
-- (NSTimeZone *) userTimeZone: (NSString *) username;
 
 /* ownership */
 

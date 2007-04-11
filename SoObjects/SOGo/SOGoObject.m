@@ -140,7 +140,6 @@
 @implementation SOGoObject
 
 static BOOL kontactGroupDAV = YES;
-static NSTimeZone *serverTimeZone = nil;
 
 + (int)version {
   return 0;
@@ -148,8 +147,6 @@ static NSTimeZone *serverTimeZone = nil;
 
 + (void) initialize
 {
-  NSString *tzName;
-
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
   kontactGroupDAV = 
@@ -168,15 +165,6 @@ static NSTimeZone *serverTimeZone = nil;
                               asDefaultForPermission: SoPerm_View];
   [[self soClassSecurityInfo] declareRole: SoRole_Owner
                               asDefaultForPermission: SoPerm_WebDAVAccess];
-
-  if (!serverTimeZone)
-    {
-      tzName = [ud stringForKey: @"SOGoServerTimeZone"];
-      if (!tzName)
-        tzName = @"Canada/Eastern";
-      serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
-      [serverTimeZone retain];
-    }
 }
 
 + (void) _fillDictionary: (NSMutableDictionary *) dictionary
@@ -237,20 +225,11 @@ static NSTimeZone *serverTimeZone = nil;
 }
 
 /* DAV ACL properties */
-- (NSString *) _principalForUser: (NSString *) user
-{
-  WOContext *context;
-
-  context = [[WOApplication application] context];
-
-  return [NSString stringWithFormat: @"%@users/%@",
-                   [self rootURLInContext: context],
-                   user];
-}
-
 - (NSString *) davOwner
 {
-  return [self _principalForUser: [self ownerInContext: nil]];
+  return [NSString stringWithFormat: @"%@users/%@",
+                   [self rootURLInContext: context],
+		   [self ownerInContext: nil]];
 }
 
 - (NSString *) davAclRestrictions
@@ -267,9 +246,7 @@ static NSTimeZone *serverTimeZone = nil;
 - (SOGoDAVSet *) davPrincipalCollectionSet
 {
   NSString *usersUrl;
-  WOContext *context;
 
-  context = [[WOApplication application] context];
   usersUrl = [NSString stringWithFormat: @"%@users",
                        [self rootURLInContext: context]];
 
@@ -282,12 +259,10 @@ static NSTimeZone *serverTimeZone = nil;
   SOGoAuthenticator *sAuth;
   SoUser *user;
   NSArray *roles;
-  WOContext *context;
   SoClassSecurityInfo *sInfo;
   NSArray *davPermissions;
 
   sAuth = [SOGoAuthenticator sharedSOGoAuthenticator];
-  context = [[WOApplication application] context];
   user = [sAuth userInContext: context];
   roles = [user rolesForObject: self inContext: context];
   sInfo = [[self class] soClassSecurityInfo];
@@ -318,7 +293,7 @@ static NSTimeZone *serverTimeZone = nil;
   NSArray *privileges;
   NSMutableString *currentAce;
   NSMutableArray *davAces;
-  NSString *currentKey;
+  NSString *currentKey, *principal;
   SOGoDAVSet *privilegesDS;
 
   davAces = [NSMutableArray array];
@@ -332,9 +307,15 @@ static NSTimeZone *serverTimeZone = nil;
           appendFormat: @"<D:principal><D:property><D:%@/></D:property></D:principal>",
           [currentKey substringFromIndex: 1]];
       else
-        [currentAce
-          appendFormat: @"<D:principal><D:href>%@</D:href></D:principal>",
-          [self _principalForUser: currentKey]];
+	{
+	  principal = [NSString stringWithFormat: @"%@users/%@",
+				[self rootURLInContext: context],
+				currentKey];
+	  [currentAce
+	    appendFormat: @"<D:principal><D:href>%@</D:href></D:principal>",
+	    principal];
+	}
+
       privileges = [[aclsDictionary objectForKey: currentKey]
                      stringsWithFormat: @"<D:%@/>"];
       privilegesDS = [SOGoDAVSet davSetWithArray: privileges
@@ -395,16 +376,18 @@ static NSTimeZone *serverTimeZone = nil;
 
 /* end of properties */
 
-- (BOOL)doesRetainContainer {
+- (BOOL) doesRetainContainer
+{
   return YES;
 }
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
   if ((self = [super init])) {
+    context = [[WOApplication application] context];
+    [context retain];
     nameInContainer = [_name copy];
     container = 
       [self doesRetainContainer] ? [_container retain] : _container;
-    userTimeZone = nil;
     customOwner = nil;
   }
   return self;
@@ -415,12 +398,10 @@ static NSTimeZone *serverTimeZone = nil;
 }
 
 - (void)dealloc {
-  if (customOwner)
-    [customOwner release];
+  [context release];
+  [customOwner release];
   if ([self doesRetainContainer])
     [container release];
-  if (userTimeZone)
-    [userTimeZone release];
   [nameInContainer release];
   [super dealloc];
 }
@@ -707,45 +688,6 @@ static NSTimeZone *serverTimeZone = nil;
   }
   
   return nil;
-}
-
-- (NSTimeZone *) serverTimeZone
-{
-  return serverTimeZone;
-}
-
-/* TODO: should be moved into SOGoUser */
-- (NSTimeZone *) userTimeZone
-{
-  NSUserDefaults *userPrefs;
-  WOContext *context;
-
-  if (!userTimeZone)
-    {
-      context = [[WOApplication application] context];
-      userPrefs = [[context activeUser] userDefaults];
-      userTimeZone = [NSTimeZone
-                       timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
-      if (!userTimeZone)
-        userTimeZone = [self serverTimeZone];
-      [userTimeZone retain];
-    }
-
-  return userTimeZone;
-}
-
-- (NSTimeZone *) userTimeZone: (NSString *) username
-{
-  NSUserDefaults *userPrefs;
-  AgenorUserManager *am;
-
-  am = [AgenorUserManager sharedUserManager];
-  userPrefs = [am getUserDefaultsForUID: username];
-  userTimeZone = [NSTimeZone timeZoneWithName: [userPrefs stringForKey: @"timezonename"]];
-  if (!userTimeZone)
-    userTimeZone = [self serverTimeZone];
-
-  return userTimeZone;
 }
 
 /* description */
