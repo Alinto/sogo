@@ -38,7 +38,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxTaskView.m		\
 	UIxTaskEditor.m		\
 	UIxTaskProposal.m	\
-	UIxCalSelectTab.m		\
 	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
