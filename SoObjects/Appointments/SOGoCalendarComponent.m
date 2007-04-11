@@ -29,9 +29,9 @@
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
 
-#import <SOGo/AgenorUserManager.h>
-#import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "common.h"
 
@@ -113,7 +113,6 @@ static BOOL sendEMailNotifications = NO;
   NSString *tmpContent, *email;
   iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
-  WOContext *context;
 
   if (!calContent)
     {
@@ -125,7 +124,6 @@ static BOOL sendEMailNotifications = NO;
           tmpComponent = (iCalRepeatableEntityObject *) [tmpCalendar firstChildWithTag: [self componentTag]];
           if (![tmpComponent isPublic])
             {
-              context = [[WOApplication application] context];
               email = [[context activeUser] email];
               if (!([tmpComponent isOrganizer: email]
                     || [tmpComponent isParticipant: email]))
@@ -231,14 +229,12 @@ static BOOL sendEMailNotifications = NO;
 {
   NSString *baseURL;
   NSString *uid;
-  WOContext *ctx;
   NSArray *traversalObjects;
 
   /* generate URL from traversal stack */
-  ctx = [[WOApplication application] context];
-  traversalObjects = [ctx objectTraversalStack];
+  traversalObjects = [context objectTraversalStack];
   if ([traversalObjects count] > 0)
-    baseURL = [[traversalObjects objectAtIndex:0] baseURLInContext:ctx];
+    baseURL = [[traversalObjects objectAtIndex:0] baseURLInContext: context];
   else
     {
       baseURL = @"http://localhost/";
@@ -252,9 +248,64 @@ static BOOL sendEMailNotifications = NO;
           : nil);
 }
 
+- (NSException *) changeParticipationStatus: (NSString *) _status
+{
+  iCalRepeatableEntityObject *component;
+  iCalPerson *p;
+  NSString *newContent;
+  NSException *ex;
+  NSString *myEMail;
+  
+  ex = nil;
+
+  component = [self component: NO];
+  if (component)
+    {
+      myEMail = [[context activeUser] email];
+      p = [component findParticipantWithEmail: myEMail];
+      if (p)
+        {
+	  // TODO: send iMIP reply mails?
+          [p setPartStat: _status];
+          newContent = [[component parent] versitString];
+          if (newContent)
+            {
+              ex = [self saveContentString:newContent];
+              if (ex)
+                // TODO: why is the exception wrapped?
+                /* Server Error */
+                ex = [NSException exceptionWithHTTPStatus: 500
+                                  reason: [ex reason]];
+            }
+          else
+            ex
+              = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                             reason: @"Could not generate iCalendar data ..."];
+        }
+      else
+        ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
+                          reason: @"user does not participate in this "
+                          @"calendar component"];
+    }
+  else
+    ex = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                      reason: @"unable to parse component record"];
+
+  return ex;
+}
+
 - (BOOL) sendEMailNotifications
 {
   return sendEMailNotifications;
+}
+
+- (NSTimeZone *) timeZoneForUser: (NSString *) email
+{
+  NSString *uid;
+
+  uid = [[AgenorUserManager sharedUserManager] getUIDForEmail: email];
+
+  return [[SOGoUser userWithLogin: uid andRoles: nil] timeZone];
 }
 
 - (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
@@ -264,7 +315,7 @@ static BOOL sendEMailNotifications = NO;
 {
   NSString *pageName;
   iCalPerson *organizer;
-  NSString *cn, *sender, *iCalString;
+  NSString *cn, *email, *sender, *iCalString;
   NGSendMail *sendmail;
   WOApplication *app;
   unsigned i, count;
@@ -308,12 +359,12 @@ static BOOL sendEMailNotifications = NO;
 
           /* construct recipient */
           cn = [attendee cn];
+	  email = [attendee rfc822Email];
           if (cn)
             recipient = [NSString stringWithFormat: @"%@ <%@>",
-                                  cn,
-                                  [attendee rfc822Email]];
+                                  cn, email];
           else
-            recipient = [attendee rfc822Email];
+            recipient = email;
 
           /* create page name */
           // TODO: select user's default language?
@@ -321,11 +372,11 @@ static BOOL sendEMailNotifications = NO;
                                mailTemplateDefaultLanguage,
                                _pageName];
           /* construct message content */
-          p = [app pageWithName: pageName inContext: [WOContext context]];
+          p = [app pageWithName: pageName inContext: context];
           [p setNewApt: _newObject];
           [p setOldApt: _oldObject];
           [p setHomePageURL: [self homePageURLForPerson: attendee]];
-          [p setViewTZ: [self userTimeZone: cn]];
+          [p setViewTZ: [self timeZoneForUser: email]];
           subject = [p getSubject];
           text = [p getBody];
 
@@ -375,14 +426,13 @@ static BOOL sendEMailNotifications = NO;
 
           /* send the damn thing */
           [sendmail sendMimePart: msg
-                    toRecipients: [NSArray arrayWithObject: [attendee rfc822Email]]
+                    toRecipients: [NSArray arrayWithObject: email]
                     sender: [organizer rfc822Email]];
         }
     }
 }
 
 - (NSArray *) rolesOfUser: (NSString *) login
-                inContext: (WOContext *) context
 {
   AgenorUserManager *um;
   iCalRepeatableEntityObject *component;
@@ -403,15 +453,14 @@ static BOOL sendEMailNotifications = NO;
         [sogoRoles addObject: SOGoRole_Organizer];
       else if ([component isParticipant: email])
         [sogoRoles addObject: SOGoRole_Participant];
-      else if ([[container ownerInContext: nil] isEqualToString: login])
+      else if ([[container ownerInContext: context] isEqualToString: login])
         [sogoRoles addObject: SoRole_Owner];
     }
   else
     {
-      user = [[SOGoUser alloc] initWithLogin: login roles: nil];
+      user = [SOGoUser userWithLogin: login andRoles: nil];
       [sogoRoles addObjectsFromArray: [user rolesForObject: container
                                             inContext: context]];
-      [user release];
     }
 
   return sogoRoles;
@@ -431,7 +480,7 @@ static BOOL sendEMailNotifications = NO;
       = ([organizerEmail caseInsensitiveCompare: email] == NSOrderedSame);
   else
     isOrganizerOrOwner
-      = [[container ownerInContext: nil] isEqualToString: login];
+      = [[container ownerInContext: context] isEqualToString: login];
 
   return isOrganizerOrOwner;
 }

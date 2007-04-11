@@ -1,5 +1,10 @@
 2007-04-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -changeParticipationStatus:_status]):
+	moved method from SOGoTaskObject and SOGoAppointmentObject up to
+	their parent class.
+
 	* UI/Scheduler/UIxCalSelectTab.m: removed module.
 
 2007-04-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
