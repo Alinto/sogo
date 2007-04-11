@@ -23,6 +23,7 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSPathUtilities.h>
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOResourceManager.h>

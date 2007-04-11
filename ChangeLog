@@ -4,7 +4,9 @@
 	method that SOGo will need with non-gnustep Foundation
 	implementation.
 	([NSString -stringByAppendingPathComponent:component]): new method
-	that SOGo will need when building with libFoundation.
+	that SOGo will need when building with libFoundation. Method
+	removed later since it is available from
+	Foundation/NSPathUtilities.h.
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -timeZone]): method moved
 	from SOGoObject.m.
