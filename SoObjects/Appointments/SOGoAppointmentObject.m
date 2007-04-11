@@ -112,11 +112,8 @@
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
-  id ctx;
-
-  ctx = [[WOApplication application] context];
   
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext:ctx]
+  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
@@ -125,7 +122,7 @@
     if (![folder isNotNull]) /* no folder was found for given UID */
       continue;
 
-    apt = [folder lookupName: [self nameInContainer] inContext:ctx
+    apt = [folder lookupName: [self nameInContainer] inContext: context
 		  acquire: NO];
     if ([apt isKindOfClass: [NSException class]])
       {
@@ -160,17 +157,14 @@
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
-  id ctx;
   
-  ctx = [[WOApplication application] context];
-  
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext:ctx]
+  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;
     SOGoAppointmentObject *apt;
     
-    apt = [folder lookupName:[self nameInContainer] inContext:ctx
+    apt = [folder lookupName:[self nameInContainer] inContext: context
 		  acquire:NO];
     if ([apt isKindOfClass: [NSException class]]) {
       [self logWithFormat: @"%@", [(NSException *) apt reason]];
@@ -427,57 +421,6 @@
 {
   return [self saveContentString: _iCalString baseSequence: 0];
 }
-
-- (NSException *) changeParticipationStatus: (NSString *) _status
-                                  inContext: (id) _ctx
-{
-  iCalEvent *apt;
-  iCalPerson *p;
-  NSString *newContent;
-  NSException *ex;
-  NSString *myEMail;
-  
-  ex = nil;
-
-  // TODO: do we need to use SOGoAppointment? (prefer iCalEvent?)
-  apt = (iCalEvent *) [self component: NO];
-
-  if (apt)
-    {
-      myEMail = [[_ctx activeUser] email];
-      p = [apt findParticipantWithEmail: myEMail];
-      if (p)
-        {
-  // TODO: send iMIP reply mails?
-  
-          [p setPartStat:_status];
-          newContent = [[apt parent] versitString];
-          if (newContent)
-            {
-              ex = [self saveContentString:newContent];
-              if (ex)
-                // TODO: why is the exception wrapped?
-                /* Server Error */
-                ex = [NSException exceptionWithHTTPStatus: 500
-                                  reason: [ex reason]];
-            }
-          else
-            ex
-              = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-                             reason: @"Could not generate iCalendar data ..."];
-        }
-      else
-        ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
-                          reason: @"user does not participate in this "
-                          @"appointment"];
-    }
-  else
-    ex = [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                      reason:@"unable to parse appointment record"];
-
-  return ex;
-}
-
 
 /* message type */
 

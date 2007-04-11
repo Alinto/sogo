@@ -84,12 +84,23 @@ static NSNumber   *sharedYes = nil;
 //                                        SOGoRole_Assistant, nil]
 //                 asDefaultForPermission: SoPerm_View];
 
-  sharedYes = [[NSNumber numberWithBool:YES] retain];
+  sharedYes = [[NSNumber numberWithBool: YES] retain];
+}
+
+- (id) initWithName: (NSString *) name
+	inContainer: (id) newContainer
+{
+  if ((self = [super initWithName: name inContainer: newContainer]))
+    {
+      timeZone = [[context activeUser] timeZone];
+    }
+
+  return self;
 }
 
 - (void) dealloc
 {
-  [self->uidToFilename release];
+  [uidToFilename release];
   [super dealloc];
 }
 
@@ -108,8 +119,7 @@ static NSNumber   *sharedYes = nil;
   NSString *s;
   
   s = [[self container] nameInContainer];
-#warning HH DEBUG
-  [self logWithFormat:@"CAL UID: %@", s];
+//   [self logWithFormat:@"CAL UID: %@", s];
   return [s isNotNull] ? [NSArray arrayWithObjects:&s count:1] : nil;
 }
 
@@ -237,7 +247,6 @@ static NSNumber   *sharedYes = nil;
 
 - (void) _appendComponentsMatchingFilters: (NSArray *) filters
                                toResponse: (WOResponse *) response
-                                inContext: (WOContext *) context
 {
   NSArray *apts;
   unsigned int count, max;
@@ -266,7 +275,7 @@ static NSNumber   *sharedYes = nil;
     }
 }
 
-- (id) davCalendarQuery: (id) context
+- (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;
   NSArray *filters;
@@ -285,8 +294,7 @@ static NSNumber   *sharedYes = nil;
   document = [[context request] contentAsDOMDocument];
   filters = [self _parseCalendarFilters: [document documentElement]];
   [self _appendComponentsMatchingFilters: filters
-        toResponse: r
-        inContext: context];
+        toResponse: r];
   [r appendContentString:@"</D:multistatus>\r\n"];
 
   return r;
@@ -342,7 +350,6 @@ static NSNumber   *sharedYes = nil;
 }
 
 - (BOOL) requestNamedIsHandledLater: (NSString *) name
-                          inContext: (WOContext *) context
 {
   return [name isEqualToString: @"OPTIONS"];
 }
@@ -356,7 +363,7 @@ static NSNumber   *sharedYes = nil;
   BOOL handledLater;
 
   /* first check attributes directly bound to the application */
-  handledLater = [self requestNamedIsHandledLater: _key inContext: _ctx];
+  handledLater = [self requestNamedIsHandledLater: _key];
   if (handledLater)
     obj = nil;
   else
@@ -467,7 +474,7 @@ static NSNumber   *sharedYes = nil;
   
   if (![_uid isNotNull])
     return nil;
-  if ((rname = [self->uidToFilename objectForKey:_uid]) != nil)
+  if ((rname = [uidToFilename objectForKey:_uid]) != nil)
     return [rname isNotNull] ? rname : nil;
   
   if ((folder = [self ocsFolder]) == nil) {
@@ -476,13 +483,13 @@ static NSNumber   *sharedYes = nil;
     return nil;
   }
 
-  if (self->uidToFilename == nil)
-    self->uidToFilename = [[NSMutableDictionary alloc] initWithCapacity:16];
+  if (uidToFilename == nil)
+    uidToFilename = [[NSMutableDictionary alloc] initWithCapacity:16];
   
   if ((rname = [self resourceNameForEventUID:_uid inFolder:folder]) == nil)
-    [self->uidToFilename setObject:[NSNull null] forKey:_uid];
+    [uidToFilename setObject:[NSNull null] forKey:_uid];
   else
-    [self->uidToFilename setObject:rname forKey:_uid];
+    [uidToFilename setObject:rname forKey:_uid];
   
   return rname;
 }
@@ -527,7 +534,7 @@ static NSNumber   *sharedYes = nil;
   if ((tmp = [_record objectForKey:@"startdate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: [self userTimeZone]];
+    [tmp setTimeZone: timeZone];
     if (tmp) [md setObject:tmp forKey:@"startDate"];
     [tmp release];
   }
@@ -537,7 +544,7 @@ static NSNumber   *sharedYes = nil;
   if ((tmp = [_record objectForKey:@"enddate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: [self userTimeZone]];
+    [tmp setTimeZone: timeZone];
     if (tmp) [md setObject:tmp forKey:@"endDate"];
     [tmp release];
   }
@@ -557,13 +564,39 @@ static NSNumber   *sharedYes = nil;
   
   /* cycle is in _r */
   tmp = [_r startDate];
-  [tmp setTimeZone:[self userTimeZone]];
+  [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"startDate"];
   tmp = [_r endDate];
-  [tmp setTimeZone:[self userTimeZone]];
+  [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"endDate"];
   
   return md;
+}
+
+- (NSArray *) fixupRecords: (NSArray *) records
+                fetchRange: (NGCalendarDateRange *) r
+{
+  // TODO: is the result supposed to be sorted by date?
+  NSMutableArray *ma;
+  unsigned count, max;
+  id row; // TODO: what is the type of the record?
+
+  if (records)
+    {
+      max = [records count];
+      ma = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+	{
+	  row = [self fixupRecord: [records objectAtIndex: count]
+		      fetchRange: r];
+	  if (row)
+	    [ma addObject: row];
+	}
+    }
+  else
+    ma = nil;
+
+  return ma;
 }
 
 - (void) _flattenCycleRecord: (NSDictionary *) _row
@@ -609,28 +642,6 @@ static NSNumber   *sharedYes = nil;
     fixedRow = [self fixupCycleRecord:row cycleRange:rRange];
     if (fixedRow != nil) [_ma addObject:fixedRow];
   }
-}
-
-- (NSArray *) fixupRecords: (NSArray *) _records
-                fetchRange: (NGCalendarDateRange *) _r
-{
-  // TODO: is the result supposed to be sorted by date?
-  NSMutableArray *ma;
-  unsigned i, count;
-
-  if (_records == nil) return nil;
-  if ((count = [_records count]) == 0)
-    return _records;
-  
-  ma = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    id row; // TODO: what is the type of the record?
-    
-    row = [_records objectAtIndex:i];
-    row = [self fixupRecord:row fetchRange:_r];
-    if (row != nil) [ma addObject:row];
-  }
-  return ma;
 }
 
 - (NSArray *) fixupCyclicRecords: (NSArray *) _records
@@ -692,10 +703,8 @@ static NSNumber   *sharedYes = nil;
 - (NSString *) _privacySqlString
 {
   NSString *privacySqlString, *owner, *currentUser, *email;
-  WOContext *context;
   SOGoUser *activeUser;
 
-  context = [[WOApplication application] context];
   activeUser = [context activeUser];
   currentUser = [activeUser login];
   owner = [self ownerInContext: context];
@@ -876,10 +885,8 @@ static NSNumber   *sharedYes = nil;
   Class objectClass;
   unsigned int count, max;
   NSString *currentId, *currentUser;
-  WOContext *context;
   id deleteObject;
 
-  context = [[WOApplication application] context];
   currentUser = [[context activeUser] login];
 
   max = [ids count];
@@ -927,11 +934,9 @@ static NSNumber   *sharedYes = nil;
   if (![_uid isNotNull])
     return nil;
   
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
-  
   /* create subcontext, so that we don't destroy our environment */
   
-  if ((ctx = [_ctx createSubContext]) == nil) {
+  if ((ctx = [context createSubContext]) == nil) {
     [self errorWithFormat:@"could not create SOPE subcontext!"];
     return nil;
   }
@@ -1166,7 +1171,7 @@ static NSNumber   *sharedYes = nil;
   return firstShouldBeActive;
 }
 
-- (NSArray *) calendarFoldersInContext: (WOContext *) context
+- (NSArray *) calendarFolders
 {
   NSMutableDictionary *userCalendar, *calendarDict;
   NSMutableArray *calendarFolders;
@@ -1177,7 +1182,6 @@ static NSNumber   *sharedYes = nil;
   [calendarFolders autorelease];
 
   activeUser = [context activeUser];
-
   userCalendar = [NSMutableDictionary new];
   [userCalendar autorelease];
   [userCalendar setObject: @"/" forKey: @"folder"];

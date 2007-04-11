@@ -69,12 +69,15 @@
   return label;
 }
 
-- (void)setDate:(NSCalendarDate *)_date {
-  NSLog (@"^^^^^^ %@: setDate: %@", self, _date);
+- (void) setDate: (NSCalendarDate *) _date
+{
+  NSTimeZone *timeZone;
   int minuteValue;
+
+  timeZone = [[context activeUser] timeZone];
   if (!_date)
     _date = [NSCalendarDate date];
-  [_date setTimeZone: [[self clientObject] userTimeZone]];
+  [_date setTimeZone: timeZone];
   [self _setDate: _date];
 
   minuteValue = [_date minuteOfHour];
@@ -251,8 +254,9 @@
 {
   NSCalendarDate *d;
   unsigned _year, _month, _day, _hour, _minute, _second;
+  NSTimeZone *timeZone;
 
-  NSLog (@"******************** %@: take values...", self);
+  timeZone = [[context activeUser] timeZone];
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
 
@@ -270,7 +274,7 @@
       
       d = [NSCalendarDate dateWithYear: _year month:_month day:_day
                           hour:_hour minute:_minute second:_second
-                          timeZone: [[self clientObject] userTimeZone]];
+                          timeZone: timeZone];
       [self _setDate: d];
     }
 }

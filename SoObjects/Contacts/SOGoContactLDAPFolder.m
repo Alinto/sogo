@@ -281,7 +281,7 @@
 }
 
 - (id) lookupName: (NSString *) name
-        inContext: (WOContext *) context
+        inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
 {
   id obj;
@@ -290,7 +290,7 @@
 //   NSLog (@"looking up name '%@'...", name);
 
   /* first check attributes directly bound to the application */
-  obj = [super lookupName: name inContext: context acquire: NO];
+  obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
     {
       [self _loadEntries: name];

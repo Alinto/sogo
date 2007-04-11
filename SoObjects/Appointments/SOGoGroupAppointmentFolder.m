@@ -130,10 +130,8 @@
   NSMutableArray      *result;
   NSMutableDictionary *uidToRecord;
   unsigned            i, count;
-  WOContext *context;
   SoSecurityManager *securityManager;
 
-  context = [[WOApplication application] context];
   securityManager = [SoSecurityManager sharedSecurityManager];
 
   folders = [[self container] memberFolders];
@@ -166,7 +164,7 @@
                          onObject: aptFolder
                          inContext: context]) {
       [self debugWithFormat:@"no permission to read the content of calendar: %@",
-	      [folders objectAtIndex:i]];
+	    [folders objectAtIndex:i]];
       continue;
     }
 

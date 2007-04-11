@@ -97,17 +97,23 @@
 
 - (NSCalendarDate *)startTime {
   NSCalendarDate *date;
-    
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
   date = [[self appointment] startDate];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 
 - (NSCalendarDate *)endTime {
   NSCalendarDate *date;
-  
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
   date = [[self appointment] endDate];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 

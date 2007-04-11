@@ -121,6 +121,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   // TODO: what does this do? lookup the home of the organizer?
   return [[self container] lookupHomeFolderForUID:_uid inContext:_ctx];
 }
+
 - (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
   return [[self container] lookupCalendarFoldersForUIDs:_uids inContext:_ctx];
 }
@@ -131,11 +132,8 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSEnumerator *e;
   id           folder;
   NSException  *allErrors = nil;
-  id ctx;
 
-  ctx = [[WOApplication application] context];
-  
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext:ctx]
+  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
@@ -173,18 +171,16 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   NSEnumerator *e;
   id           folder;
   NSException  *allErrors = nil;
-  id           ctx;
   
-  ctx = [[WOApplication application] context];
-  
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext:ctx]
+  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;
     SOGoTaskObject *task;
     
-    task = [folder lookupName:[self nameInContainer] inContext:ctx
-                   acquire:NO];
+    task = [folder lookupName: [self nameInContainer]
+		   inContext: context
+                   acquire: NO];
     if (![task isNotNull]) {
       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
 	      [self nameInContainer], folder];
@@ -451,52 +447,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 - (NSException *)saveContentString:(NSString *)_iCalString {
   return [self saveContentString:_iCalString baseSequence:0];
 }
-
-- (NSException *)changeParticipationStatus:(NSString *)_status
-  inContext:(id)_ctx
-{
-  iCalToDo *task;
-  iCalPerson      *p;
-  NSString        *newContent;
-  NSException     *ex;
-  NSString        *myEMail;
-  
-  // TODO: do we need to use SOGoTask? (prefer iCalToDo?)
-  task = (iCalToDo *) [self component: NO];
-
-  if (task == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:@"unable to parse task record"];
-  }
-  
-  myEMail = [[_ctx activeUser] email];
-  if ((p = [task findParticipantWithEmail:myEMail]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason:@"user does not participate in this "
-                               @"task"];
-  }
-  
-  [p setPartStat:_status];
-  newContent = [[task parent] versitString];
-  
-  // TODO: send iMIP reply mails?
-  
-//   [task release]; task = nil;
-  
-  if (newContent == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:@"Could not generate iCalendar data ..."];
-  }
-  
-  if ((ex = [self saveContentString:newContent]) != nil) {
-    // TODO: why is the exception wrapped?
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                        reason:[ex reason]];
-  }
-  
-  return nil /* means: no error */;
-}
-
 
 /* message type */
 

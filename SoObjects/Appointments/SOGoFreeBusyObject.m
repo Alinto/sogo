@@ -47,14 +47,17 @@
 - (NSString *) contentAsString
 {
   NSCalendarDate *today, *startDate, *endDate;
+  NSTimeZone *timeZone;
   
   today = [[NSCalendarDate calendarDate] beginOfDay];
-  [today setTimeZone: [self userTimeZone]];
+  timeZone = [[context activeUser] timeZone];
+  [today setTimeZone: timeZone];
 
   startDate = [today dateByAddingYears: 0 months: 0 days: -14
                      hours: 0 minutes: 0 seconds: 0];
   endDate = [startDate dateByAddingYears: 0 months: 1 days: 0
                        hours: 0 minutes: 0 seconds: 0];
+
   return [self contentAsStringFrom: startDate to: endDate];
 }
 
@@ -72,16 +75,13 @@
 {
   id calFolder;
   SoSecurityManager *sm;
-  WOApplication *woApp;
   NSArray *infos;
-
-  woApp = [WOApplication application];
 
   calFolder = [container lookupName: @"Calendar" inContext: nil acquire: NO];
   sm = [SoSecurityManager sharedSecurityManager];
   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
            onObject: calFolder
-           inContext: [woApp context]])
+           inContext: context]])
     infos = [calFolder fetchFreeBusyInfosFrom: _startDate
                        to: _endDate];
   else

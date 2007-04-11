@@ -67,10 +67,10 @@
   return self;
 }
 
-- (SOGoGroupsFolder *) lookupGroupsFolder
-{
-  return [self lookupName: @"Groups" inContext: nil acquire: NO];
-}
+// - (SOGoGroupsFolder *) lookupGroupsFolder
+// {
+//   return [self lookupName: @"Groups" inContext: nil acquire: NO];
+// }
 
 /* pathes */
 
@@ -131,11 +131,11 @@
   return contacts;
 }
 
-- (id) groupsFolder: (NSString *) _key
-          inContext: (WOContext *) _ctx
-{
-  return [$(@"SOGoGroupsFolder") objectWithName: _key inContainer: self];
-}
+// - (id) groupsFolder: (NSString *) _key
+//           inContext: (WOContext *) _ctx
+// {
+//   return [$(@"SOGoGroupsFolder") objectWithName: _key inContainer: self];
+// }
 
 - (id) mailAccountsFolder: (NSString *) _key
                 inContext: (WOContext *) _ctx
@@ -168,12 +168,12 @@
         }
       else if ([_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
-      else if ([_key isEqualToString: @"Groups"])
-        obj = [self groupsFolder: _key inContext: _ctx];
+//       else if ([_key isEqualToString: @"Groups"])
+//         obj = [self groupsFolder: _key inContext: _ctx];
       else if ([_key isEqualToString: @"Mail"])
         obj = [self mailAccountsFolder: _key inContext: _ctx];
       else if ([_key isEqualToString: @"freebusy.ifb"])
-        obj = [self freeBusyObject:_key inContext:_ctx];
+        obj = [self freeBusyObject:_key inContext: _ctx];
       else
         obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }
@@ -181,38 +181,38 @@
   return obj;
 }
 
-/* FIXME: here is a vault of hackish ways to gain access to subobjects by
-   granting ro access to the homepage depending on the subobject in question.
-   This is wrong and dangerous. */
-- (NSString *) roleOfUser: (NSString *) uid
-                inContext: (WOContext *) context
-{
-  NSArray *roles, *traversalPath;
-  NSString *objectName, *role;
+// /* FIXME: here is a vault of hackish ways to gain access to subobjects by
+//    granting ro access to the homepage depending on the subobject in question.
+//    This is wrong and dangerous. */
+// - (NSString *) roleOfUser: (NSString *) uid
+//                 inContext: (WOContext *) context
+// {
+//   NSArray *roles, *traversalPath;
+//   NSString *objectName, *role;
 
-  role = nil;
-  traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
-  if ([traversalPath count] > 1)
-    {
-      objectName = [traversalPath objectAtIndex: 1];
-      if ([objectName isEqualToString: @"Calendar"]
-          || [objectName isEqualToString: @"Contacts"])
-        {
-          roles = [[context activeUser]
-                    rolesForObject: [self lookupName: objectName
-                                          inContext: context
-                                          acquire: NO]
-                    inContext: context];
-          if ([roles containsObject: SOGoRole_Assistant]
-              || [roles containsObject: SOGoRole_Delegate])
-            role = SOGoRole_Assistant;
-        }
-      else if ([objectName isEqualToString: @"freebusy.ifb"])
-        role = SOGoRole_Assistant;
-    }
+//   role = nil;
+//   traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
+//   if ([traversalPath count] > 1)
+//     {
+//       objectName = [traversalPath objectAtIndex: 1];
+//       if ([objectName isEqualToString: @"Calendar"]
+//           || [objectName isEqualToString: @"Contacts"])
+//         {
+//           roles = [[context activeUser]
+//                     rolesForObject: [self lookupName: objectName
+//                                           inContext: context
+//                                           acquire: NO]
+//                     inContext: context];
+//           if ([roles containsObject: SOGoRole_Assistant]
+//               || [roles containsObject: SOGoRole_Delegate])
+//             role = SOGoRole_Assistant;
+//         }
+//       else if ([objectName isEqualToString: @"freebusy.ifb"])
+//         role = SOGoRole_Assistant;
+//     }
 
-  return role;
-}
+//   return role;
+// }
 
 /* WebDAV */
 
@@ -244,10 +244,8 @@
           collections itself. So for use its the home folder, the
 	  public folder and the groups folder.
   */
-  WOContext *context;
   NSArray *tag;
 
-  context = [[WOApplication application] context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
                  [self baseURLInContext: context], nil];
 

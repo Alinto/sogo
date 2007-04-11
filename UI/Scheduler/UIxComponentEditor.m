@@ -310,8 +310,7 @@
     {
       calendarList = [NSMutableArray new];
       folder = [[self clientObject] container];
-      allCalendars
-	= [[folder calendarFoldersInContext: context] objectEnumerator];
+      allCalendars = [[folder calendarFolders] objectEnumerator];
       currentCalendar = [allCalendars nextObject];
       while (currentCalendar)
 	{
@@ -743,7 +742,7 @@
 
   co = [self clientObject];
   if (![co
-         respondsToSelector: @selector(changeParticipationStatus:inContext:)])
+         respondsToSelector: @selector(changeParticipationStatus:)])
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
                         reason:
                           @"method cannot be invoked on the specified object"];

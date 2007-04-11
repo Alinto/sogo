@@ -17,6 +17,7 @@
 @class NSDictionary;
 @class NSMutableDictionary;
 @class NSString;
+@class NSTimeZone;
 
 @class SOGoAptFormatter;
 @class SOGoAppointmentFolder;
@@ -29,6 +30,7 @@
   NSArray *allDayApts;
   id appointment;
   NSCalendarDate *currentDay;
+  NSTimeZone *timeZone;
   SOGoAptFormatter *aptFormatter;
   SOGoAptFormatter *aptTooltipFormatter;
   SOGoAptFormatter *privateAptFormatter;

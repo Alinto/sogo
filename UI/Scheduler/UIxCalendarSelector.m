@@ -112,8 +112,7 @@ colorForNumber (unsigned int number)
   NSDictionary *currentFolder;
   unsigned int count;
 
-  calendarFolders
-    = [[self clientObject] calendarFoldersInContext: context];
+  calendarFolders = [[self clientObject] calendarFolders];
   if (!colors)
     {
       colors = [NSMutableDictionary new];

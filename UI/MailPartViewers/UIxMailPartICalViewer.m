@@ -154,19 +154,27 @@
   return self->item;
 }
 
-- (NSCalendarDate *)startTime {
+- (NSCalendarDate *) startTime
+{
   NSCalendarDate *date;
+  NSTimeZone *timeZone;
   
   date = [[self authorativeEvent] startDate];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  timeZone = [[context activeUser] timeZone];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 
-- (NSCalendarDate *)endTime {
+- (NSCalendarDate *) endTime
+{
   NSCalendarDate *date;
+  NSTimeZone *timeZone;
   
   date = [[self authorativeEvent] endDate];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  timeZone = [[context activeUser] timeZone];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 

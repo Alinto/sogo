@@ -17,13 +17,9 @@
     };
     SOGoUserFolder = {
       superclass  = "SOGoFolder";
+      protectedBy = "<public>";
+      defaultAccess = "allow";
       /* protectedBy = "HomePage Access"; */
-      defaultRoles = {
-        "Homepage Access" = ( "Owner", "Assistant", "Delegate", "FreeBusy" );
-        "WebDAV Access" = ( "Owner", "Assistant", "Delegate", "FreeBusy" );
-        "Access Contents Information" = ( "Owner", "Assistant", "Delegate",
-                                          "FreeBusy" );
-      };
     };
     SOGoFolder = {
       superclass    = "SOGoObject";
@@ -68,12 +64,6 @@
     SOGoRootPage = {
     };
     SOGoUserFolder = {
-      methods = {
-        view = { 
-          protectedBy = "View";
-          pageName    = "SOGoUserHomePage"; 
-        };
-      };
     };
     SOGoGroupsFolder = {
       methods = {

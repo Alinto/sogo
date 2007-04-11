@@ -129,7 +129,7 @@
   date = [NSCalendarDate dateWithTimeIntervalSince1970:
                            [[currentAppointment objectForKey: @"startdate"]
                              intValue]];
-  [date setTimeZone: [[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
 
   return [[self itemDateFormatter] stringForObjectValue: date];
 }
@@ -141,7 +141,7 @@
   date = [NSCalendarDate dateWithTimeIntervalSince1970:
                            [[currentAppointment objectForKey: @"enddate"]
                              intValue]];
-  [date setTimeZone: [[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
 
   return [[self itemDateFormatter] stringForObjectValue: date];
 }
@@ -158,7 +158,7 @@
 
   intDate = [[currentAppointment objectForKey: @"startdate"] intValue];
   date = [NSCalendarDate dateWithTimeIntervalSince1970: intDate];
-  [date setTimeZone: [[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
 
   return [NSString stringWithFormat: @"%d%.2d%.2d",
                    [date yearOfCommonEra],
@@ -173,7 +173,7 @@
 
   intDate = [[currentAppointment objectForKey: @"startdate"] intValue];
   date = [NSCalendarDate dateWithTimeIntervalSince1970: intDate];
-  [date setTimeZone: [[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
 
   return [NSString stringWithFormat: @"%.2d%.2d",
                    [date hourOfDay],

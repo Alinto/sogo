@@ -28,6 +28,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
@@ -112,9 +113,11 @@
   NSCalendarDate *startDate, *endDate;
   NSString *queryDay, *additionalDays;
   NSTimeZone *uTZ;
+  SOGoUser *user;
 
   co = [self clientObject];
-  uTZ = [co userTimeZone];
+  user = [context activeUser];
+  uTZ = [user timeZone];
 
   queryDay = [self queryParameterForKey: @"sday"];
   if ([queryDay length])

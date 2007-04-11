@@ -38,11 +38,17 @@
 
 #import "SOGo/SOGoFolder.h"
 
-@class NSString, NSArray, NSCalendarDate, NSException, NSMutableDictionary;
+@class NSArray;
+@class NSCalendarDate;
+@class NSException;
+@class NSMutableDictionary;
+@class NSString;
+@class NSTimeZone;
 @class GCSFolder;
 
 @interface SOGoAppointmentFolder : SOGoFolder
 {
+  NSTimeZone *timeZone;
   NSMutableDictionary *uidToFilename;
 }
 
@@ -106,7 +112,7 @@
 
 - (NSArray *) fetchAllSOGoAppointments;
 
-- (NSArray *) calendarFoldersInContext: (WOContext *) context;
+- (NSArray *) calendarFolders;
 
 @end
 

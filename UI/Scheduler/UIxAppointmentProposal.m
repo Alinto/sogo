@@ -170,30 +170,44 @@
   [self setStartDateMonth:[NSNumber numberWithInt:[_date monthOfYear]]];
   [self setStartDateYear:[NSNumber numberWithInt:[_date yearOfCommonEra]]];
 }
-- (NSCalendarDate *)startDate {
+
+- (NSCalendarDate *) startDate
+{
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
+
   return [NSCalendarDate dateWithYear:[[self startDateYear] intValue]
 			 month:[[self startDateMonth] intValue]
 			 day:[[self startDateDay] intValue]
 			 hour:[[self startDateHour] intValue]
 			 minute:[[self startDateMinute] intValue]
 			 second:0
-			 timeZone:[[self clientObject] userTimeZone]];
+			 timeZone: timeZone];
 }
-- (void)setEndDate:(NSCalendarDate *)_date {
+
+- (void) setEndDate: (NSCalendarDate *) _date
+{
   [self setEndDateHour:[NSNumber numberWithInt:[_date hourOfDay]]];
   [self setEndDateMinute:[NSNumber numberWithInt:[_date minuteOfHour]]];
   [self setEndDateDay:[NSNumber numberWithInt:[_date dayOfMonth]]];
   [self setEndDateMonth:[NSNumber numberWithInt:[_date monthOfYear]]];
   [self setEndDateYear:[NSNumber numberWithInt:[_date yearOfCommonEra]]];
 }
-- (NSCalendarDate *)endDate {
+
+- (NSCalendarDate *) endDate
+{
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
+
   return [NSCalendarDate dateWithYear:[[self endDateYear] intValue]
 			 month:[[self endDateMonth] intValue]
 			 day:[[self endDateDay] intValue]
 			 hour:[[self endDateHour] intValue]
 			 minute:[[self endDateMinute] intValue]
 			 second:59
-			 timeZone:[[self clientObject] userTimeZone]];
+			 timeZone: timeZone];
 }
 
 - (void)setDuration:(id)_duration {
@@ -273,28 +287,31 @@
   // TODO: from startdate to enddate
   NSMutableArray *ma;
   NSCalendarDate *base, *stop, *current;
-  
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
   base = [NSCalendarDate dateWithYear:[[self startDateYear] intValue]
 			 month:[[self startDateMonth] intValue]
 			 day:[[self startDateDay] intValue]
 			 hour:12 minute:0 second:0
-			 timeZone:[[self clientObject] userTimeZone]];
+			 timeZone: timeZone];
   stop = [NSCalendarDate dateWithYear:[[self endDateYear] intValue]
 			 month:[[self endDateMonth] intValue]
 			 day:[[self endDateDay] intValue]
 			 hour:12 minute:0 second:0
-			 timeZone:[[self clientObject] userTimeZone]];
-  
-  ma = [NSMutableArray arrayWithCapacity:16];
+			 timeZone: timeZone];
+  ma = [NSMutableArray arrayWithCapacity: 16];
   
   current = base;
-  while ([current compare:stop] != NSOrderedDescending) {
-    [current setTimeZone:[[self clientObject] userTimeZone]];
-    [ma addObject:current];
+  while ([current compare:stop] != NSOrderedDescending)
+    {
+      [current setTimeZone: timeZone];
+      [ma addObject:current];
     
     /* Note: remember the timezone behaviour of the method below! */
-    current = [current dateByAddingYears:0 months:0 days:1];
-  }
+      current = [current dateByAddingYears:0 months:0 days:1];
+    }
+
   return ma;
 }
 
@@ -323,6 +340,7 @@
 - (BOOL)isSlotRangeGreen:(NGCalendarDateRange *)_slotRange {
   NGCalendarDateRange *aptRange;
   NSCalendarDate *aptStartDate, *aptEndDate;
+  NSTimeZone *timeZone;
 
   if (_slotRange == nil)
     return NO;
@@ -334,8 +352,9 @@
   aptEndDate   = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
 					   [aptStartDate timeIntervalSince1970]
 					 + [self durationAsTimeInterval]];
-  [aptStartDate setTimeZone:[[self clientObject] userTimeZone]];
-  [aptEndDate   setTimeZone:[[self clientObject] userTimeZone]];
+  timeZone = [[context activeUser] timeZone];
+  [aptStartDate setTimeZone: timeZone];
+  [aptEndDate   setTimeZone: timeZone];
   aptRange = [NGCalendarDateRange calendarDateRangeWithStartDate:aptStartDate
 				  endDate:aptEndDate];
   [aptEndDate release]; aptEndDate = nil;

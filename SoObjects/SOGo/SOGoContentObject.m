@@ -241,7 +241,6 @@
 
 /* security */
 - (NSArray *) rolesOfUser: (NSString *) login
-                inContext: (WOContext *) context
 {
   NSMutableArray *sogoRoles;
   SOGoUser *user;

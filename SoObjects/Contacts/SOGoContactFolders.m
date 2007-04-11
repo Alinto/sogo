@@ -169,7 +169,7 @@
     }
 }
 
-- (void) initContactSourcesInContext: (WOContext *) context;
+- (void) initContactSources
 {
   if (!contactFolders)
     {
@@ -180,18 +180,18 @@
 }
 
 - (id) lookupName: (NSString *) name
-        inContext: (WOContext *) context
+        inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
 {
   id obj;
   id folder;
 
   /* first check attributes directly bound to the application */
-  obj = [super lookupName: name inContext: context acquire: NO];
+  obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
     {
       if (!contactFolders)
-        [self initContactSourcesInContext: context];
+        [self initContactSources];
 
       folder = [contactFolders objectForKey: name];
       obj = ((folder)
@@ -204,32 +204,21 @@
 
 - (NSArray *) toManyRelationshipKeys
 {
-  WOContext *context;
-
   if (!contactFolders)
-    {
-      context = [[WOApplication application] context];
-      [self initContactSourcesInContext: context];
-    }
+    [self initContactSources];
 
   return [contactFolders allKeys];
 }
 
 - (NSArray *) contactFolders
 {
-  WOContext *context;
-
   if (!contactFolders)
-    {
-      context = [[WOApplication application] context];
-      [self initContactSourcesInContext: context];
-    }
+    [self initContactSources];
 
   return [contactFolders allValues];
 }
 
 - (NSString *) roleOfUser: (NSString *) uid
-                inContext: (WOContext *) context
 {
   NSArray *roles, *traversalPath;
   NSString *objectName, *role;

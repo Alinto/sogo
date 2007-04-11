@@ -18,22 +18,22 @@
   id item;
 }
 
-- (iCalEvent *)appointment;
+- (iCalEvent *) appointment;
 
 /* permissions */
-- (BOOL)canAccessApt;
-- (BOOL)canEditApt;
+- (BOOL) canAccessApt;
+- (BOOL) canEditApt;
   
-- (SOGoDateFormatter *)dateFormatter;
-- (NSCalendarDate *)startTime;
-- (NSCalendarDate *)endTime;
+- (SOGoDateFormatter *) dateFormatter;
+- (NSCalendarDate *) startTime;
+- (NSCalendarDate *) endTime;
   
-- (NSString *)attributesTabLink;
-- (NSString *)participantsTabLink;
+- (NSString *) attributesTabLink;
+- (NSString *) participantsTabLink;
 
-- (NSString *)completeHrefForMethod:(NSString *)_method
-  withParameter:(NSString *)_param
-  forKey:(NSString *)_key;
+- (NSString *) completeHrefForMethod: (NSString *) _method
+		       withParameter: (NSString *) _param
+			      forKey: (NSString *) _key;
 
 @end
 

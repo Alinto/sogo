@@ -95,19 +95,27 @@
   return dateFormatter;
 }
 
-- (NSCalendarDate *)startTime {
+- (NSCalendarDate *) startTime
+{
   NSCalendarDate *date;
-    
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
   date = [[self task] startDate];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 
-- (NSCalendarDate *)endTime {
+- (NSCalendarDate *) endTime
+{
   NSCalendarDate *date;
-  
+  NSTimeZone *timeZone;
+
+  timeZone = [[context activeUser] timeZone];
   date = [[self task] due];
-  [date setTimeZone:[[self clientObject] userTimeZone]];
+  [date setTimeZone: timeZone];
+
   return date;
 }
 

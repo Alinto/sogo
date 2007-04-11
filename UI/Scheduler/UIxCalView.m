@@ -43,17 +43,16 @@ static BOOL shouldDisplayWeekend = NO;
   self = [super init];
   if (self)
     {
-      NSTimeZone *tz;
-
-      tz = [[self clientObject] userTimeZone];
+      timeZone = [[context activeUser] timeZone];
+      [timeZone retain];
       aptFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
+        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       aptTooltipFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
+        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       privateAptFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
+        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       privateAptTooltipFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
+        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       [self configureFormatters];
       componentsData = [NSMutableDictionary new];
     }
@@ -72,6 +71,7 @@ static BOOL shouldDisplayWeekend = NO;
   [aptTooltipFormatter release];
   [privateAptFormatter release];
   [privateAptTooltipFormatter release];
+  [timeZone release];
   [super dealloc];
 }
 
@@ -322,8 +322,8 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (void) setCurrentDay:(NSCalendarDate *) _day
 {
-  [_day setTimeZone: [[self clientObject] userTimeZone]];
-  ASSIGN(currentDay, _day);
+  [_day setTimeZone: timeZone];
+  ASSIGN (currentDay, _day);
 }
 
 - (NSCalendarDate *) currentDay
@@ -478,8 +478,7 @@ static BOOL shouldDisplayWeekend = NO;
 
   clientObject = [self clientObject];
 
-  folders = [[clientObject calendarFoldersInContext: context]
-	      objectEnumerator];
+  folders = [[clientObject calendarFolders] objectEnumerator];
   currentFolderDict = [folders nextObject];
   while (currentFolderDict)
     {

@@ -36,14 +36,10 @@
 
 - (id) init
 {
-  NSTimeZone *tz;
-
   if ((self = [super init]))
     {
-      tz = [[self clientObject] userTimeZone];
- 
       monthAptFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: tz];
+        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       [monthAptFormatter setShortMonthTitleOnly];
       dateFormatter = [[SOGoDateFormatter alloc]
                         initWithLocale: [self locale]];

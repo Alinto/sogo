@@ -249,13 +249,15 @@
 - (NSCalendarDate *) newStartDate
 {
   NSCalendarDate *newStartDate, *now;
+  NSTimeZone *timeZone;
   int hour;
 
   newStartDate = [self selectedDate];
   if ([[self queryParameterForKey: @"hm"] length] == 0)
     {
       now = [NSCalendarDate calendarDate];
-      [now setTimeZone: [[self clientObject] userTimeZone]];
+      timeZone = [[context activeUser] timeZone];
+      [now setTimeZone: timeZone];
       if ([now isDateOnSameDay: newStartDate])
         {
           hour = [now hourOfDay];
@@ -365,23 +367,23 @@
 
 // TODO: add tentatively
 
-- (id) acceptOrDeclineAction: (BOOL) _accept
+- (id) acceptOrDeclineAction: (BOOL) accept
 {
-  [[self clientObject] changeParticipationStatus:
-                         _accept ? @"ACCEPTED" : @"DECLINED"
-                       inContext: [self context]];
+  [[self clientObject] changeParticipationStatus: (accept
+						   ? @"ACCEPTED"
+						   : @"DECLINED")];
 
   return self;
 }
 
 - (id) acceptAction
 {
-  return [self acceptOrDeclineAction:YES];
+  return [self acceptOrDeclineAction: YES];
 }
 
 - (id) declineAction
 {
-  return [self acceptOrDeclineAction:NO];
+  return [self acceptOrDeclineAction: NO];
 }
 
 @end

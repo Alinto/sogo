@@ -19,22 +19,25 @@
   02111-1307, USA.
 */
 
-#import "SOGoJSStringFormatter.h"
-#import "common.h"
-
+#import <Foundation/NSException.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <NGObjWeb/SoHTTPAuthenticator.h>
+#import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOResourceManager.h>
-
-#import <SOGo/NSString+Utilities.h>
-
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoCustomGroupFolder.h>
-#import <SOGo/NSCalendarDate+SOGo.h>
-
-#import "UIxJSClose.h"
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSURL+misc.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "UIxComponent.h"
+#import "UIxJSClose.h"
 
 @interface UIxComponent (PrivateAPI)
 - (void)_parseQueryString:(NSString *)_s;
@@ -370,13 +373,16 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSCalendarDate *) selectedDate
 {
+  NSTimeZone *userTimeZone;
+
   if (!_selectedDate)
     {
+      userTimeZone = [[context activeUser] timeZone];
       _selectedDate
         = [NSCalendarDate
             dateFromShortDateString: [self queryParameterForKey: @"day"]
             andShortTimeString: [self queryParameterForKey: @"hm"]
-            inTimeZone: [[self clientObject] userTimeZone]];
+            inTimeZone: userTimeZone];
       [_selectedDate retain];
     }
 
@@ -385,7 +391,10 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) _date
 {
-  [_date setTimeZone: [[self clientObject] userTimeZone]];
+  NSTimeZone *userTimeZone;
+
+  userTimeZone = [[context activeUser] timeZone];
+  [_date setTimeZone: userTimeZone];
 
   return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
 }
