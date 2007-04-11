@@ -100,7 +100,7 @@
   return newName;
 }
 
-#ifndef GNUSTEP
+#ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue
 {
   return !([self isEqualToString: @"0"]

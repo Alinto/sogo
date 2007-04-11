@@ -24,6 +24,7 @@
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>

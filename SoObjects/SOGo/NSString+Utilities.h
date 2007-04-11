@@ -38,7 +38,7 @@
 
 - (NSString *) davMethodToObjC;
 
-#ifndef GNUSTEP
+#ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif
 
