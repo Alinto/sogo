@@ -43,31 +43,38 @@
   NSString       *email;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
+  NSTimeZone *userTimeZone;
 }
+
++ (SOGoUser *) userWithLogin: (NSString *) login
+		    andRoles: (NSArray *) roles;
 
 /* properties */
 
-- (NSString *)email;
-- (NSString *)cn;
-- (NSURL *)freeBusyURL;
+- (NSString *) email;
+- (NSString *) cn;
+- (NSURL *) freeBusyURL;
 
 /* shares and identities */
 
-- (NSString *)primaryIMAP4AccountString;
-- (NSString *)primaryMailServer;
-- (NSArray *)additionalIMAP4AccountStrings;
-- (NSArray *)additionalEMailAddresses;
-- (NSDictionary *)additionalIMAP4AccountsAndEMails;
+- (NSString *) primaryIMAP4AccountString;
+- (NSString *) primaryMailServer;
+- (NSArray *) additionalIMAP4AccountStrings;
+- (NSArray *) additionalEMailAddresses;
+- (NSDictionary *) additionalIMAP4AccountsAndEMails;
 
 /* defaults */
 
 - (NSUserDefaults *) userDefaults;
 - (NSUserDefaults *) userSettings;
 
+- (NSTimeZone *) timeZone;
+- (NSTimeZone *) serverTimeZone;
+
 /* folders */
 
-- (id)homeFolderInContext:(id)_ctx;
-- (id)schedulingCalendarInContext:(id)_ctx;
+- (id) homeFolderInContext: (id) _ctx;
+- (id) schedulingCalendarInContext: (id) _ctx;
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context;

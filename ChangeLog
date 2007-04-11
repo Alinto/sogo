@@ -1,5 +1,8 @@
 2007-04-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -timeZone]): method moved
+	from SOGoObject.m.
+
 	* SoObjects/SOGo/SOGoObject.m: new ivar "context" that permits
 	every subclass to access [WOApplication context] without having to
 	invoke it more than once.

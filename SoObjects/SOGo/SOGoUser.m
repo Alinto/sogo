@@ -26,16 +26,42 @@
 
 #import "SOGoUser.h"
 
+static NSTimeZone *serverTimeZone = nil;
+
 @interface NSObject (SOGoRoles)
 
-- (NSString *) roleOfUser: (NSString *) uid
-                inContext: (WOContext *) context;
-- (NSArray *) rolesOfUser: (NSString *) uid
-                inContext: (WOContext *) context;
+- (NSString *) roleOfUser: (NSString *) uid;
+- (NSArray *) rolesOfUser: (NSString *) uid;
 
 @end
 
 @implementation SOGoUser
+
++ (void) initialize
+{
+  NSString *tzName;
+
+  if (!serverTimeZone)
+    {
+      tzName = [[NSUserDefaults standardUserDefaults]
+		 stringForKey: @"SOGoServerTimeZone"];
+      if (!tzName)
+        tzName = @"Canada/Eastern";
+      serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
+      [serverTimeZone retain];
+    }
+}
+
++ (SOGoUser *) userWithLogin: (NSString *) login
+		    andRoles: (NSArray *) roles
+{
+  SOGoUser *user;
+
+  user = [[self alloc] initWithLogin: login roles: roles];
+  [user autorelease];
+
+  return user;
+}
 
 - (id) init
 {
@@ -48,56 +74,77 @@
   return self;
 }
 
-- (void)dealloc {
-  [self->userDefaults release];
-  [self->userSettings release];
-  [self->cn    release];
-  [self->email release];
+- (void) dealloc
+{
+  [userDefaults release];
+  [userSettings release];
+  [cn    release];
+  [email release];
   [super dealloc];
 }
 
 /* internals */
 
-- (AgenorUserManager *)userManager {
+- (AgenorUserManager *) userManager
+{
   static AgenorUserManager *um = nil;
   if (um == nil) um = [[AgenorUserManager sharedUserManager] retain];
+
   return um;
 }
 
 /* properties */
 
-- (NSString *)email {
-  if (self->email == nil)
-    self->email = [[[self userManager] getEmailForUID:[self login]] copy];
-  return self->email;
+- (NSString *) email
+{
+  if (email == nil)
+    {
+      email = [[self userManager] getEmailForUID: [self login]];
+      [email retain];
+    }
+
+  return email;
 }
 
-- (NSString *)cn {
-  if (self->cn == nil)
-    self->cn = [[[self userManager] getCNForUID:[self login]] copy];
-  return self->cn;
+- (NSString *) cn
+{
+  if (cn == nil)
+    {
+      cn = [[self userManager] getCNForUID: [self login]];
+      [cn retain];
+    }
+
+  return cn;
 }
 
-- (NSString *)primaryIMAP4AccountString {
-  return [[self userManager] getIMAPAccountStringForUID:[self login]];
-}
-- (NSString *)primaryMailServer {
-  return [[self userManager] getServerForUID:[self login]];
+- (NSString *) primaryIMAP4AccountString
+{
+  return [[self userManager] getIMAPAccountStringForUID: [self login]];
 }
 
-- (NSArray *)additionalIMAP4AccountStrings {
-  return [[self userManager]getSharedMailboxAccountStringsForUID:[self login]];
-}
-- (NSArray *)additionalEMailAddresses {
-  return [[self userManager] getSharedMailboxEMailsForUID:[self login]];
+- (NSString *) primaryMailServer
+{
+  return [[self userManager] getServerForUID: [self login]];
 }
 
-- (NSDictionary *)additionalIMAP4AccountsAndEMails {
-  return [[self userManager] getSharedMailboxesAndEMailsForUID:[self login]];
+- (NSArray *) additionalIMAP4AccountStrings
+{
+  return [[self userManager]getSharedMailboxAccountStringsForUID: [self login]];
 }
 
-- (NSURL *)freeBusyURL {
-  return [[self userManager] getFreeBusyURLForUID:[self login]];
+- (NSArray *) additionalEMailAddresses
+{
+  return [[self userManager] getSharedMailboxEMailsForUID: [self login]];
+}
+
+- (NSDictionary *) additionalIMAP4AccountsAndEMails
+{
+  return [[self userManager] getSharedMailboxesAndEMailsForUID: [self login]];
+}
+
+- (NSURL *) freeBusyURL
+{
+  return [[self userManager] getFreeBusyURLForUID: [self login]];
 }
 
 /* defaults */
@@ -124,12 +171,37 @@
   return userSettings;
 }
 
+- (NSTimeZone *) timeZone
+{
+  NSString *timeZoneName;
+
+  if (!userTimeZone)
+    {
+      timeZoneName = [[self userDefaults] stringForKey: @"TimeZone"];
+      if ([timeZoneName length] > 0)
+	userTimeZone = [NSTimeZone timeZoneWithName: timeZoneName];
+      else
+	userTimeZone = nil;
+      if (!userTimeZone)
+	userTimeZone = [self serverTimeZone];
+      [userTimeZone retain];
+    }
+
+  return userTimeZone;
+}
+
+- (NSTimeZone *) serverTimeZone
+{
+  return serverTimeZone;
+}
+
 /* folders */
 
 // TODO: those methods should check whether the traversal stack in the context
 //       already contains proper folders to improve caching behaviour
 
-- (id)homeFolderInContext:(id)_ctx {
+- (id) homeFolderInContext: (id) _ctx
+{
   /* Note: watch out for cyclic references */
   // TODO: maybe we should add an [activeUser reset] method to SOPE
   id folder;
@@ -148,7 +220,8 @@
   return folder;
 }
 
-- (id)schedulingCalendarInContext:(id)_ctx {
+- (id) schedulingCalendarInContext: (id) _ctx
+{
   /* Note: watch out for cyclic references */
   id folder;
 
@@ -196,13 +269,13 @@
     }
   if ([object respondsToSelector: @selector (rolesOfUser:inContext:)])
     {
-      sogoRoles = [object rolesOfUser: login inContext: context];
+      sogoRoles = [object rolesOfUser: login];
       if (sogoRoles)
         [rolesForObject addObjectsFromArray: sogoRoles];
     }
   if ([object respondsToSelector: @selector (roleOfUser:inContext:)])
     {
-      role = [object roleOfUser: login inContext: context];
+      role = [object roleOfUser: login];
       if (role)
         [rolesForObject addObject: role];
     }
