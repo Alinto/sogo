@@ -92,7 +92,6 @@ static NGLogger *logger = nil;
 }
 
 - (void)_setupFolders {
-  WOContext           *ctx;
   NSMutableDictionary *md;
   NSMutableArray      *ma;
   NSArray  *luids;
@@ -103,8 +102,6 @@ static NGLogger *logger = nil;
   if ((luids = [self uids]) == nil)
     return;
   
-  ctx = [[WOApplication application] context];
-  
   count = [luids count];
   ma = [NSMutableArray arrayWithCapacity:count + 1];
   md = [NSMutableDictionary dictionaryWithCapacity:count];
@@ -114,7 +111,7 @@ static NGLogger *logger = nil;
     id folder;
     
     uid    = [luids objectAtIndex:i];
-    folder = [self _primaryLookupFolderForUID:uid inContext:ctx];
+    folder = [self _primaryLookupFolderForUID:uid inContext: context];
     
     if ([folder isNotNull]) {
       [md setObject:folder forKey:uid];

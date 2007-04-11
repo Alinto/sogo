@@ -81,7 +81,7 @@
   sm = [SoSecurityManager sharedSecurityManager];
   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
            onObject: calFolder
-           inContext: context]])
+           inContext: context])
     infos = [calFolder fetchFreeBusyInfosFrom: _startDate
                        to: _endDate];
   else

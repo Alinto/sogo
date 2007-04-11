@@ -124,16 +124,8 @@ static BOOL     useAltNamespace       = NO;
 /* identity */
 
 - (SOGoMailIdentity *)preferredIdentity {
-  WOContext *ctx;
-  
-  if ((ctx = [[WOApplication application] context]) == nil) {
-    [self logWithFormat:@"ERROR(%s): cannot procede without context!",
-	    __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
-  return [[ctx activeUser] primaryMailIdentityForAccount:
-			     [self nameInContainer]];
+  return [[context activeUser] primaryMailIdentityForAccount:
+				 [self nameInContainer]];
 }
 
 /* hierarchy */
@@ -161,7 +153,7 @@ static BOOL     useAltNamespace       = NO;
   NSString  *s;
   NSArray   *creds;
   
-  rq = [[(WOApplication *)[WOApplication application] context] request];
+  rq = [context request];
   
   s = [rq headerForKey:@"x-webobjects-remote-user"];
   if ([s length] > 0)

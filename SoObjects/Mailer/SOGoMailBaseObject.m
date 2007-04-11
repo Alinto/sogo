@@ -149,7 +149,7 @@ static BOOL debugOn = YES;
   NSString  *auth;
   NSArray   *creds;
   
-  rq = [[(WOApplication *)[WOApplication application] context] request];
+  rq = [context request];
   if ((auth = [rq headerForKey:@"authorization"]) == nil) {
     /* no basic auth */
     return nil;

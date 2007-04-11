@@ -344,7 +344,6 @@ static NSString    *fromInternetSuffixPattern = nil;
 {
   NSDictionary  *lInfo;
   NGMimeMessage *message;  
-  WOContext     *ctx;
   NSString *fromInternetSuffix;
   BOOL     addSuffix;
   id       body;
@@ -352,12 +351,11 @@ static NSString    *fromInternetSuffixPattern = nil;
   if ((lInfo = [self fetchInfo]) == nil)
     return nil;
   
-  ctx       = [[WOApplication application] context];
-  addSuffix = [ctx isAccessFromIntranet] ? NO : YES;
+  addSuffix = [context isAccessFromIntranet] ? NO : YES;
   if (addSuffix) {
     fromInternetSuffix = 
       [fromInternetSuffixPattern stringByReplacingVariablesWithBindings:
-				   [ctx request]
+				   [context request]
 				 stringForUnknownBindings:@""];
     
     addSuffix = [fromInternetSuffix length] > 0 ? YES : NO;

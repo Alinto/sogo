@@ -32,8 +32,7 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 /* detect webmail being accessed from the outside */
 
 - (BOOL)isInternetRequest {
-  return [[(WOApplication *)[WOApplication application] context] 
-	    isAccessFromIntranet] ? NO : YES;
+  return ([context isAccessFromIntranet] ? NO : YES);
 }
 
 /* listing the available mailboxes */
@@ -41,27 +40,14 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 - (BOOL)isInHomeFolderBranchOfLoggedInAccount:(id)_ctx {
   id user;
 
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
-  if (_ctx == nil) {
-    [self errorWithFormat:@"Missing context!"];
-    return NO;
-  }
-  
   user = [_ctx activeUser];
   return [[[self container] nameInContainer] isEqualToString:[user login]];
 }
 
 - (NSArray *)toManyRelationshipKeys {
-  WOContext *ctx;
   id        user;
   id        account;
   NSArray   *shares;
-  
-  if ((ctx = [[WOApplication application] context]) == nil) {
-    [self logWithFormat:@"ERROR(%s): cannot procede without context!",
-	    __PRETTY_FUNCTION__];
-    return nil;
-  }
   
   /*
     Note: this is not strictly correct. The accounts being retrieved should be
@@ -73,10 +59,10 @@ static NSString *AgenorShareLoginMarker  = @".-.";
           functionality which isn't perfect either.
 	  => TODO
   */
-  user = [ctx activeUser];
+  user = [context activeUser];
   
   /* for now: return nothing if the home-folder does not belong to the login */
-  if (![self isInHomeFolderBranchOfLoggedInAccount:ctx]) {
+  if (![self isInHomeFolderBranchOfLoggedInAccount: context]) {
     [self warnWithFormat:@"User %@ tried to access mail hierarchy of %@",
 	  [user login], [[self container] nameInContainer]];
     return nil;
@@ -97,17 +83,11 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 - (NSArray *)fetchIdentitiesWithOnlyEmitterAccess:(BOOL)_flag {
   WOContext *ctx;
   
-  if ((ctx = [[WOApplication application] context]) == nil) {
-    [self logWithFormat:@"ERROR(%s): cannot procede without context!",
-	    __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
   if ([self isInternetRequest]) { /* only show primary mailbox in Internet */
     // just return the primary identity
     id identity;
     
-    identity = [[ctx activeUser] primaryMailIdentity];
+    identity = [[context activeUser] primaryMailIdentity];
     return [identity isNotNull] ? [NSArray arrayWithObject:identity] : nil;
   }
   

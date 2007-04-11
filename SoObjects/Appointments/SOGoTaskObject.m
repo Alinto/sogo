@@ -142,7 +142,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
     if (![folder isNotNull]) /* no folder was found for given UID */
       continue;
     
-    task = [folder lookupName:[self nameInContainer] inContext:ctx
+    task = [folder lookupName:[self nameInContainer] inContext: context
 		  acquire:NO];
     if ([task isKindOfClass: [NSException class]])
       {
