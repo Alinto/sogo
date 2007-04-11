@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -365,7 +366,7 @@ static BOOL uixDebugEnabled = NO;
 {
   NSString *dst, *rel;
 
-  dst = [[self userFolderPath] stringByAppendingPathComponent:_sub];
+  dst = [[self userFolderPath] stringByAppendingPathComponent: _sub];
   rel = [dst urlPathRelativeToPath:[self ownPath]];
 
   return rel;

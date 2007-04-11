@@ -40,6 +40,10 @@
 
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
+
+#ifdef LIB_FOUNDATION_LIBRARY
+- (NSString *) stringByAppendingPathComponent: (NSString *) component
+#endif
 #endif
 
 @end

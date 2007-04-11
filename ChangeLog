@@ -3,6 +3,8 @@
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString -boolValue]): new
 	method that SOGo will need with non-gnustep Foundation
 	implementation.
+	([NSString -stringByAppendingPathComponent:component]): new method
+	that SOGo will need when building with libFoundation.
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -timeZone]): method moved
 	from SOGoObject.m.

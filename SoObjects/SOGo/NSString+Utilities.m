@@ -106,6 +106,23 @@
   return !([self isEqualToString: @"0"]
 	   || [self isEqualToString: @"NO"]);
 }
+
+#ifdef LIB_FOUNDATION_LIBRARY
+- (NSString *) stringByAppendingPathComponent: (NSString *) component
+{
+  NSMutableArray *components;
+  NSString *newString;
+
+  components = [NSMutableArray new];
+  [components addObjectsFromArray: [self componentsSeparatedByString: @"/"]];
+  [components addObject: component];
+  newString = [components componentsJoinedByString: @"/"];
+  [components release];
+
+  return newString;
+}
+#endif
+
 #endif
 
 @end
