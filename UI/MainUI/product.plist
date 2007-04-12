@@ -19,6 +19,9 @@
       superclass  = "SOGoFolder";
       protectedBy = "<public>";
       defaultAccess = "allow";
+      defaultRoles = {
+        "View" = ( "Owner" );
+      };
       /* protectedBy = "HomePage Access"; */
     };
     SOGoFolder = {
@@ -64,6 +67,12 @@
     SOGoRootPage = {
     };
     SOGoUserFolder = {
+      methods = {
+        view = {
+          protectedBy = "View";
+          pageName    = "SOGoUserHomePage";
+        };
+      };
     };
     SOGoGroupsFolder = {
       methods = {
