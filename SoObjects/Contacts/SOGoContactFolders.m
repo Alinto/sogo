@@ -218,28 +218,28 @@
   return [contactFolders allValues];
 }
 
-- (NSString *) roleOfUser: (NSString *) uid
-{
-  NSArray *roles, *traversalPath;
-  NSString *objectName, *role;
+// - (NSString *) roleOfUser: (NSString *) uid
+// {
+//   NSArray *roles, *traversalPath;
+//   NSString *objectName, *role;
 
-  role = nil;
-  traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
-  if ([traversalPath count] > 2)
-    {
-      objectName = [traversalPath objectAtIndex: 2];
-      roles = [[context activeUser]
-		rolesForObject: [self lookupName: objectName
-				      inContext: context
-				      acquire: NO]
-		inContext: context];
-      if ([roles containsObject: SOGoRole_Assistant]
-	  || [roles containsObject: SOGoRole_Delegate])
-	role = SOGoRole_Assistant;
-    }
+//   role = nil;
+//   traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
+//   if ([traversalPath count] > 2)
+//     {
+//       objectName = [traversalPath objectAtIndex: 2];
+//       roles = [[context activeUser]
+// 		rolesForObject: [self lookupName: objectName
+// 				      inContext: context
+// 				      acquire: NO]
+// 		inContext: context];
+//       if ([roles containsObject: SOGoRole_Assistant]
+// 	  || [roles containsObject: SOGoRole_Delegate])
+// 	role = SOGoRole_Assistant;
+//     }
 
-  return role;
-}
+//   return role;
+// }
 
 - (BOOL) davIsCollection
 {

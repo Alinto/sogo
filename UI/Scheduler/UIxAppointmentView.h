@@ -1,4 +1,4 @@
-// $Id: UIxAppointmentView.h 768 2005-07-15 00:13:01Z helge $
+// $Id: UIxAppointmentView.h 1045 2007-04-11 20:13:07Z wolfgang $
 
 #ifndef __SOGo_UIxAppointmentView_H__
 #define __SOGo_UIxAppointmentView_H__

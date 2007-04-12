@@ -37,17 +37,16 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 
 /* listing the available mailboxes */
 
-- (BOOL)isInHomeFolderBranchOfLoggedInAccount:(id)_ctx {
-  id user;
-
-  user = [_ctx activeUser];
-  return [[[self container] nameInContainer] isEqualToString:[user login]];
+- (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
+{
+  return [[[self container] nameInContainer] isEqualToString: userLogin];
 }
 
 - (NSArray *)toManyRelationshipKeys {
-  id        user;
+  SOGoUser *user;
   id        account;
   NSArray   *shares;
+  NSString *userLogin;
   
   /*
     Note: this is not strictly correct. The accounts being retrieved should be
@@ -60,15 +59,16 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 	  => TODO
   */
   user = [context activeUser];
+  userLogin = [user login];
   
   /* for now: return nothing if the home-folder does not belong to the login */
-  if (![self isInHomeFolderBranchOfLoggedInAccount: context]) {
+  if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
     [self warnWithFormat:@"User %@ tried to access mail hierarchy of %@",
 	  [user login], [[self container] nameInContainer]];
     return nil;
   }
   
-  account = [user valueForKey:@"primaryIMAP4AccountString"];
+  account = [user primaryIMAP4AccountString];
   if ([account isNotNull]) account = [NSArray arrayWithObject:account];
   
   if ([self isInternetRequest]) /* only show primary mailbox in Internet */
@@ -141,16 +141,20 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return [ct autorelease];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag
+{
   id obj;
+  NSString *userLogin;
+
+  userLogin = [[context activeUser] login];
   
   /* first check attributes directly bound to the application */
   if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
     return obj;
   
-  if (![self isInHomeFolderBranchOfLoggedInAccount:_ctx]) {
+  if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
     [self warnWithFormat:@"User %@ tried to access mail hierarchy of %@",
-	  [[_ctx activeUser] login], [[self container] nameInContainer]];
+	  userLogin, [[self container] nameInContainer]];
     
     return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
 			reason:@"Tried to access the mail of another user"];

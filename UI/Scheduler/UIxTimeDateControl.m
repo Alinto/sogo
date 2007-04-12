@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxTimeDateControl.m 1033 2007-03-22 19:04:08Z wolfgang $
+// $Id: UIxTimeDateControl.m 1045 2007-04-11 20:13:07Z wolfgang $
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
