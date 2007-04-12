@@ -9,14 +9,11 @@
   
   classes = {
     SOGoContactFolders = {
-      superclass    = "SOGoObject";
+      superclass  = "SOGoFolder";
+      protectedBy = "<public>";
+      defaultAccess = "allow";
       defaultRoles = {
-        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
-        "View" = ( "Owner", "Delegate", "Assistant" );
-        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
-        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
-        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
-        "SaveAcls" = ( "Owner" );
+        "View" = ( "Owner" );
       };
     };
 
