@@ -149,7 +149,7 @@
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-  NSLog (@"fetching records matching '*%@*', sorted by '%@' in order %d",
+  NSLog (@"fetching records matching '%@', sorted by '%@' in order %d",
          filter, sortKey, sortOrdering);
 
   fields = folderListingFields;
