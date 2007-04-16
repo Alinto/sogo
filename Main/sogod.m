@@ -25,16 +25,15 @@
 #import <NGObjWeb/NGObjWeb.h>
 #import "common.h"
 
-int main(int argc, char **argv, char **env)
+int
+main (int argc, char **argv, char **env)
 {
   NSString *tzName;
   NSUserDefaults *ud;
   NSAutoreleasePool *pool;
 
   pool = [NSAutoreleasePool new];
-#if LIB_FOUNDATION_LIBRARY
-  [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
-#endif
+//   [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
   [NGBundleManager defaultBundleManager];
 
   ud = [NSUserDefaults standardUserDefaults];
@@ -43,7 +42,7 @@ int main(int argc, char **argv, char **env)
     tzName = @"Canada/Eastern";
   [NSTimeZone setDefaultTimeZone: [NSTimeZone timeZoneWithName: tzName]];
 
-  WOWatchDogApplicationMain(@"SOGo", argc, (void*)argv);
+  WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
 
   [pool release];
   return 0;
