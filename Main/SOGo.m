@@ -21,92 +21,6 @@
 
 #include <NGObjWeb/SoApplication.h>
 
-// @interface classtree : NSObject
-// {
-//   Class topClass;
-//   int indentLevel;
-// }
-
-// - (id) initWithTopClass: (Class) newTopClass;
-// - (void) dumpSiblings: (Class) node;
-
-// @end
-
-// @implementation classtree
-
-// + (id) newWithTopClass: (Class) newTopClass
-// {
-//   id newTree;
-
-//   newTree = [[self alloc] initWithTopClass: newTopClass];
-//   [newTree autorelease];
-
-//   return newTree;
-// }
-
-// - (id) initWithTopClass: (Class) newTopClass
-// {
-//   if ((self = [self init]))
-//     topClass = newTopClass;
-
-//   return self;
-// }
-
-// #define indentGap 2
-
-// - (NSString *) indentSpaces
-// {
-//   char *spaceString;
-
-//   spaceString = malloc(sizeof (char *) * indentGap * indentLevel + 1);
-//   *(spaceString + indentGap * indentLevel) = 0;
-//   memset (spaceString, ' ', indentGap * indentLevel);
-
-//   return [[NSString alloc] initWithCStringNoCopy: spaceString
-//                            length: indentGap * indentLevel
-//                            freeWhenDone: YES];
-// }
-
-// - (void) dumpNode: (Class) node
-// {
-//   Class currentSubclass;
-//   unsigned int count;
-
-//   count = 0;
-//   currentSubclass = node->subclass_list;
-//   if (currentSubclass)
-//     {
-//       NSLog(@"%@%@:",
-//             [[self indentSpaces] autorelease], NSStringFromClass(node));
-//       indentLevel++;
-//       [self dumpSiblings: currentSubclass];
-//       indentLevel--;
-//     }
-//   else
-//     NSLog(@"%@%@", [self indentSpaces], NSStringFromClass(node));
-// }
-
-// - (void) dumpSiblings: (Class) node
-// {
-//   Class currentNode;
-
-//   currentNode = node;
-//   while (currentNode && currentNode->instance_size)
-//     {
-//       [self dumpNode: currentNode];
-//       currentNode = currentNode->sibling_class;
-//     }
-// }
-
-// - (void) dumpTree
-// {
-//   indentLevel = 0;
-
-//   [self dumpSiblings: topClass];
-// }
-
-// @end
-
 @interface SOGo : SoApplication
 {
     NSMutableDictionary *localeLUT;
@@ -129,27 +43,37 @@
 static unsigned int vMemSizeLimit = 0;
 static BOOL doCrashOnSessionCreate = NO;
 
-+ (void)initialize {
+#ifdef GNUSTEP_BASE_LIBRARY
+static BOOL debugObjectAllocation = NO;
+#endif
+
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
   id tmp;
   
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
+#ifdef GNUSTEP_BASE_LIBRARY
+  debugObjectAllocation = [ud boolForKey: @"SOGoDebugObjectAllocation"];
+  if (debugObjectAllocation)
+    {
+      NSLog (@"activating stats on object allocation");
+      GSDebugAllocationActive (YES);
+    }
+#endif
 
   /* vMem size check - default is 200MB */
     
-  tmp = [ud objectForKey:@"SxVMemLimit"];
-  vMemSizeLimit = (tmp != nil)
-    ? [tmp intValue]
-    : 200;
-  if (vMemSizeLimit > 0) {
+  tmp = [ud objectForKey: @"SxVMemLimit"];
+  vMemSizeLimit = ((tmp != nil) ? [tmp intValue] : 200);
+  if (vMemSizeLimit > 0)
     NSLog(@"Note: vmem size check enabled: shutting down app when "
 	  @"vmem > %d MB", vMemSizeLimit);
-  }
 #if LIB_FOUNDATION_LIBRARY
   if ([ud boolForKey:@"SOGoEnableDoubleReleaseCheck"])
-    [NSAutoreleasePool enableDoubleReleaseCheck:YES];
+    [NSAutoreleasePool enableDoubleReleaseCheck: YES];
 #endif
 
   /* SoClass security declarations */
@@ -168,42 +92,49 @@ static BOOL doCrashOnSessionCreate = NO;
   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 }
 
-- (id)init {
-  if ((self = [super init])) {
-    WOResourceManager *rm;
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      WOResourceManager *rm;
+
+      /* ensure core SoClass'es are setup */
+      [$(@"SOGoObject") soClass];
+      [$(@"SOGoContentObject") soClass];
+      [$(@"SOGoFolder") soClass];
+
+      /* setup locale cache */
+      localeLUT = [[NSMutableDictionary alloc] initWithCapacity:2];
     
-    /* ensure core SoClass'es are setup */
-    [$(@"SOGoObject")        soClass];
-    [$(@"SOGoContentObject") soClass];
-    [$(@"SOGoFolder")        soClass];
+      /* load products */
+      [[SOGoProductLoader productLoader] loadProducts];
     
-    /* setup locale cache */
-    self->localeLUT = [[NSMutableDictionary alloc] initWithCapacity:2];
-    
-    /* load products */
-    [[SOGoProductLoader productLoader] loadProducts];
-    
-    /* setup resource manager */
-    rm = [[WEResourceManager alloc] init];
-    [self setResourceManager:rm];
-  }
+      /* setup resource manager */
+      rm = [[WEResourceManager alloc] init];
+      [self setResourceManager:rm];
+    }
+
   return self;
 }
 
-- (void)dealloc {
-  [self->localeLUT release];
+- (void) dealloc
+{
+  [localeLUT release];
   [super dealloc];
 }
 
 /* authenticator */
 
-- (id)authenticatorInContext:(id)_ctx {
+- (id) authenticatorInContext: (id) _ctx
+{
   return [$(@"SOGoAuthenticator") sharedSOGoAuthenticator];
 }
 
 /* name lookup */
 
-- (BOOL)isUserName:(NSString *)_key inContext:(id)_ctx {
+- (BOOL) isUserName: (NSString *) _key
+          inContext: (id) _ctx
+{
   if ([_key length] < 1)
     return NO;
   
@@ -218,21 +149,29 @@ static BOOL doCrashOnSessionCreate = NO;
 	    initWithName:_key inContainer:self] autorelease];
 }
 
-- (void)_setupLocaleInContext:(WOContext *)_ctx {
+- (void) _setupLocaleInContext: (WOContext *) _ctx
+{
   NSArray      *langs;
   NSDictionary *locale;
   
   if ([[_ctx valueForKey:@"locale"] isNotNull])
     return;
 
-  langs = [[(WOContext *)_ctx request] browserLanguages];
+  langs = [[_ctx request] browserLanguages];
   locale = [self currentLocaleConsideringLanguages:langs];
   [_ctx takeValue:locale forKey:@"locale"];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+        inContext: (id) _ctx
+          acquire: (BOOL) _flag
+{
   id obj;
 
+#ifdef GNUSTEP_BASE_LIBRARY
+  if (debugObjectAllocation)
+    NSLog(@"objects allocated\n%s", GSDebugAllocationList (YES));
+#endif
   /* put locale info into the context in case it's not there */
   [self _setupLocaleInContext:_ctx];
   
@@ -259,15 +198,16 @@ static BOOL doCrashOnSessionCreate = NO;
 
 /* WebDAV */
 
-- (NSString *)davDisplayName {
+- (NSString *) davDisplayName
+{
   /* this is used in the UI, eg in the navigation */
   return @"SOGo";
 }
 
 /* exception handling */
 
-- (WOResponse *)handleException:(NSException *)_exc
-  inContext:(WOContext *)_ctx
+- (WOResponse *) handleException: (NSException *) _exc
+                       inContext: (WOContext *) _ctx
 {
   printf("EXCEPTION: %s\n", [[_exc description] cString]);
   abort();
@@ -275,56 +215,54 @@ static BOOL doCrashOnSessionCreate = NO;
 
 /* runtime maintenance */
 
-// - (void) _dumpClassAllocation
-// {
-//   classtree *ct;
+- (void) checkIfDaemonHasToBeShutdown
+{
+  unsigned int vmem;
 
-//   ct = [classtree newWithTopClass: [NSObject class]];
-//   [ct dumpTree];
-// }
+  if (vMemSizeLimit > 0)
+    {
+      vmem = [[NSProcessInfo processInfo] virtualMemorySize]/1048576;
 
-- (void)checkIfDaemonHasToBeShutdown {
-  unsigned int limit, vmem;
-  
-  if ((limit = vMemSizeLimit) == 0)
-    return;
-
-  vmem = [[NSProcessInfo processInfo] virtualMemorySize]/1048576;
-
-  if (vmem > limit) {
-    [self logWithFormat:
-          @"terminating app, vMem size limit (%d MB) has been reached"
-          @" (currently %d MB)",
-          limit, vmem];
-//     [self _dumpClassAllocation];
-    [self terminate];
-  }
+      if (vmem > vMemSizeLimit)
+        {
+          [self logWithFormat:
+                  @"terminating app, vMem size limit (%d MB) has been reached"
+                @" (currently %d MB)",
+                vMemSizeLimit, vmem];
+//           if (debugObjectAllocation)
+//             [self _dumpClassAllocation];
+          [self terminate];
+        }
+    }
 }
 
-- (WOResponse *)dispatchRequest:(WORequest *)_request {
+- (WOResponse *) dispatchRequest: (WORequest *) _request
+{
   static NSArray *runLoopModes = nil;
   WOResponse *resp;
 
-  resp = [super dispatchRequest:_request];
+  resp = [super dispatchRequest: _request];
 
-  if ([self isTerminating])
-    return resp;
-
-  if (runLoopModes == nil)
-    runLoopModes = [[NSArray alloc] initWithObjects:NSDefaultRunLoopMode, nil];
+  if (![self isTerminating])
+    {
+      if (!runLoopModes)
+        runLoopModes = [[NSArray alloc] initWithObjects: NSDefaultRunLoopMode, nil];
   
-  // TODO: a bit complicated? (-perform:afterDelay: doesn't work?)
-  [[NSRunLoop currentRunLoop] performSelector:
-				@selector(checkIfDaemonHasToBeShutdown)
-			      target:self argument:nil
-			      order:1 modes:runLoopModes];
+      // TODO: a bit complicated? (-perform:afterDelay: doesn't work?)
+      [[NSRunLoop currentRunLoop] performSelector:
+                                    @selector (checkIfDaemonHasToBeShutdown)
+                                  target: self argument: nil
+                                  order:1 modes:runLoopModes];
+    }
+
   return resp;
 }
 
 /* session management */
 
-- (id)createSessionForRequest:(WORequest *)_request {
-  [self warnWithFormat:@"session creation requested!"];
+- (id) createSessionForRequest: (WORequest *) _request
+{
+  [self warnWithFormat: @"session creation requested!"];
   if (doCrashOnSessionCreate)
     abort();
   return [super createSessionForRequest:_request];
@@ -332,87 +270,102 @@ static BOOL doCrashOnSessionCreate = NO;
 
 /* localization */
 
-- (NSDictionary *)currentLocaleConsideringLanguages:(NSArray *)_langs {
-  unsigned i, count;
+- (NSDictionary *) currentLocaleConsideringLanguages: (NSArray *) langs
+{
+  NSEnumerator *enumerator;
+  NSString *lname;
+  NSDictionary *locale;
 
-  /* assume _langs is ordered by priority */
-  count = [_langs count];
-  for (i = 0; i < count; i++) {
-    NSString     *lname;
-    NSDictionary *locale;
-    
-    lname  = [_langs objectAtIndex:i];
-    locale = [self localeForLanguageNamed:lname];
-    if (locale != nil)
-      return locale;
-  }
+  enumerator = [langs objectEnumerator];
+  lname = nil;
+  locale = nil;
+  lname = [enumerator nextObject];
+  while (lname && !locale)
+    {
+      locale = [self localeForLanguageNamed: lname];
+      lname = [enumerator nextObject];
+    }
+
+  if (!locale)
+    locale = [self localeForLanguageNamed: @"English"];
+
   /* no appropriate language, fallback to default */
-  return [self localeForLanguageNamed:@"English"];
+  return locale;
 }
 
-- (NSString *)pathToLocaleForLanguageNamed:(NSString *)_name {
+- (NSString *) pathToLocaleForLanguageNamed: (NSString *) _name
+{
   static Class MainProduct = Nil;
   NSString *lpath;
 
-  lpath = [[self resourceManager] pathForResourceNamed:@"Locale"
-				  inFramework:nil
-				  languages:[NSArray arrayWithObject:_name]];
-  if ([lpath isNotNull])
-    return lpath;
-  
-  if (MainProduct == Nil) {
-    if ((MainProduct = $(@"MainUIProduct")) == Nil)
-      [self errorWithFormat:@"did not find MainUIProduct class!"];
-  }
-  
-  lpath = [(id)MainProduct pathToLocaleForLanguageNamed:_name];
-  if ([lpath isNotNull])
-    return lpath;
-  
-  return nil;
+  lpath = [[self resourceManager] pathForResourceNamed: @"Locale"
+				  inFramework: nil
+				  languages: [NSArray arrayWithObject:_name]];
+  if (![lpath length])
+    {
+      if (!MainProduct)
+        {
+          MainProduct = $(@"MainUIProduct");
+          if (!MainProduct)
+            [self errorWithFormat: @"did not find MainUIProduct class!"];
+        }
+
+      lpath = [(id) MainProduct pathToLocaleForLanguageNamed: _name];
+      if (![lpath length])
+        lpath = nil;
+    }
+
+  return lpath;
 }
 
-- (NSDictionary *)localeForLanguageNamed:(NSString *)_name {
+- (NSDictionary *) localeForLanguageNamed: (NSString *) _name
+{
   NSString     *lpath;
   id           data;
   NSDictionary *locale;
-  
-  if (![_name isNotNull]) {
+
+  locale = nil;
+  if ([_name length] > 0)
+    {
+      locale = [localeLUT objectForKey: _name];
+      if (!locale)
+        {
+          lpath = [self pathToLocaleForLanguageNamed:_name];
+          if (lpath)
+            {
+              data = [NSData dataWithContentsOfFile: lpath];
+              if (data)
+                {
+                  data = [[[NSString alloc] initWithData: data
+                                            encoding: NSUTF8StringEncoding] autorelease];
+                  locale = [data propertyList];
+                  if (locale) 
+                    [localeLUT setObject: locale forKey: _name];
+                  else
+                    [self logWithFormat:@"%s couldn't load locale with name:%@",
+                          __PRETTY_FUNCTION__,
+                          _name];
+                }
+              else
+                [self logWithFormat:@"%s didn't find locale with name: %@",
+                      __PRETTY_FUNCTION__,
+                      _name];
+            }
+          else
+            [self errorWithFormat:@"did not find Locale for language: %@", _name];
+        }
+    }
+  else
     [self errorWithFormat:@"%s: name parameter must not be nil!",
-	  __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
-  if ((locale = [self->localeLUT objectForKey:_name]) != nil)
-    return locale;
-  
-  if ((lpath = [self pathToLocaleForLanguageNamed:_name]) == nil) {
-    [self errorWithFormat:@"did not find Locale for language: %@", _name];
-    return nil;
-  }
-  
-  if ((data = [NSData dataWithContentsOfFile:lpath]) == nil) {
-    [self logWithFormat:@"%s didn't find locale with name:%@",
-	  __PRETTY_FUNCTION__,
-	  _name];
-    return nil;
-  }
-  data = [[[NSString alloc] initWithData:data
-                            encoding:NSUTF8StringEncoding] autorelease];
-  locale = [data propertyList];
-  if (locale == nil) {
-    [self logWithFormat:@"%s couldn't load locale with name:%@",
-	  __PRETTY_FUNCTION__,
-	  _name];
-    return nil;
-  }
-  [self->localeLUT setObject:locale forKey:_name];
+          __PRETTY_FUNCTION__];
+
   return locale;
 }
 
 /* name (used by the WEResourceManager) */
 
-- (NSString *)name {
+- (NSString *) name
+{
   return @"SOGo-0.9";
 }
 

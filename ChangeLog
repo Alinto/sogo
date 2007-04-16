@@ -1,3 +1,9 @@
+2007-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m ([SOGo +initialize]): on GNUstep, trigger some
+	debugging facilities when the SOGoDebugObjectAllocation user
+	default is set.
+
 2007-04-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString -boolValue]): new
