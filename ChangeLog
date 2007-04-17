@@ -1,5 +1,9 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxAclEditor.m: modified module so as to simplify it
+	to the point where it will only list the users (and their name)
+	associated with an object acl.
+
 	* SoObjects/SOGo/SOGoAclsFolder.m: removed module because its
 	methods have been moved into SOGoObject and SOGoFolder during a
 	refactoring.
