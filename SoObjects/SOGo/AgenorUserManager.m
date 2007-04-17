@@ -27,7 +27,7 @@
 #include "SOGoLRUCache.h"
 
 #warning we should rely on the LDAP sources instead...
-#define qualifierFormat @"mailNickname = %@"
+#define qualifierFormat @"uid = %@"
 
 @interface AgenorUserManager (PrivateAPI)
 - (NGLdapConnection *)ldapConnection;
@@ -54,19 +54,19 @@
 
 @implementation AgenorUserManager
 
-static BOOL     debugOn     = NO;
-static BOOL     useLDAP     = NO;
-static NSString *ldapHost   = nil;
+static BOOL     debugOn = NO;
+static BOOL     useLDAP = NO;
+static NSString *ldapHost = nil;
 static NSString *ldapBaseDN = nil;
 static NSNull   *sharedNull = nil;
-static NSString *fallbackIMAP4Server          = nil;
-static NSString *defaultMailDomain            = nil;
-static NSString *shareLDAPClass               = @"mineqMelBoite";
-static NSString *shareLoginSeparator          = @".-.";
-static NSString *mailEmissionAttrName         = @"mineqMelmailEmission";
+static NSString *fallbackIMAP4Server = nil;
+static NSString *defaultMailDomain = nil;
+static NSString *shareLDAPClass = @"mineqMelBoite";
+static NSString *shareLoginSeparator = @".-.";
+static NSString *mailEmissionAttrName = @"mineqMelmailEmission";
 static NSString *changeInternetAccessAttrName = @"mineqOgoAccesInternet";
-static NSString *mailAutoresponderAttrName    = @"mineqMelReponse"; /* sic! */
-static NSURL    *AgenorProfileURL             = nil;
+static NSString *mailAutoresponderAttrName = @"mineqMelReponse"; /* sic! */
+static NSURL    *AgenorProfileURL = nil;
 
 static NSArray *fromEMailAttrs = nil;
 
@@ -81,13 +81,13 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (didInit) return;
   didInit = YES;
   
-  ud      = [NSUserDefaults standardUserDefaults];
+  ud = [NSUserDefaults standardUserDefaults];
   debugOn = [ud boolForKey:@"SOGoUserManagerDebugEnabled"];
   
   useLDAP = [ud boolForKey:@"SOGoUserManagerUsesLDAP"];
   if (useLDAP) {
-    ldapHost   = [[ud stringForKey:@"SOGoLDAPHost"]   copy];
-    ldapBaseDN = [[ud stringForKey:@"SOGoLDAPBaseDN"] copy];
+    ldapHost = [[ud stringForKey:@"LDAPHost"]   copy];
+    ldapBaseDN = [[ud stringForKey:@"LDAPRootDN"] copy];
     NSLog(@"Note: using LDAP host to manage accounts: %@", ldapHost);
   }
   else
@@ -150,26 +150,26 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 - (id)init {
   self = [super init];
   if(self) {
-    self->serverCache     = 
+    serverCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->cnCache         = 
+    cnCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->uidCache        = 
+    uidCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->emailCache      = 
+    emailCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->shareStoreCache = 
+    shareStoreCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->shareEMailCache = 
+    shareEMailCache = 
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->changeInternetAccessCache =
+    changeInternetAccessCache =
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->internetAutoresponderFlagCache =
+    internetAutoresponderFlagCache =
       [[NSMutableDictionary alloc] initWithCapacity:10000];
-    self->intranetAutoresponderFlagCache =
+    intranetAutoresponderFlagCache =
       [[NSMutableDictionary alloc] initWithCapacity:10000];
     
-    self->gcTimer = [[NSTimer scheduledTimerWithTimeInterval:
+    gcTimer = [[NSTimer scheduledTimerWithTimeInterval:
 				PoolScanInterval
 			      target:self selector:@selector(_garbageCollect:)
 			      userInfo:nil repeats:YES] retain];
@@ -178,33 +178,33 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 }
 
 - (void)dealloc {
-  if (self->gcTimer) [self->gcTimer invalidate];
-  [self->serverCache     release];
-  [self->cnCache         release];
-  [self->uidCache        release];
-  [self->emailCache      release];
-  [self->shareStoreCache release];
-  [self->shareEMailCache release];
-  [self->changeInternetAccessCache      release];
-  [self->internetAutoresponderFlagCache release];
-  [self->intranetAutoresponderFlagCache release];
-  [self->gcTimer release];
+  if (gcTimer) [gcTimer invalidate];
+  [serverCache     release];
+  [cnCache         release];
+  [uidCache        release];
+  [emailCache      release];
+  [shareStoreCache release];
+  [shareEMailCache release];
+  [changeInternetAccessCache      release];
+  [internetAutoresponderFlagCache release];
+  [intranetAutoresponderFlagCache release];
+  [gcTimer release];
   [super dealloc];
 }
 
 /* cache */
 
 - (void)flush {
-  [self->cnCache         removeAllObjects];
-  [self->serverCache     removeAllObjects];
-  [self->uidCache        removeAllObjects];
-  [self->emailCache      removeAllObjects];
-  [self->shareStoreCache removeAllObjects];
-  [self->shareEMailCache removeAllObjects];
+  [cnCache         removeAllObjects];
+  [serverCache     removeAllObjects];
+  [uidCache        removeAllObjects];
+  [emailCache      removeAllObjects];
+  [shareStoreCache removeAllObjects];
+  [shareEMailCache removeAllObjects];
   
-  [self->changeInternetAccessCache      removeAllObjects];
-  [self->internetAutoresponderFlagCache removeAllObjects];
-  [self->intranetAutoresponderFlagCache removeAllObjects];
+  [changeInternetAccessCache      removeAllObjects];
+  [internetAutoresponderFlagCache removeAllObjects];
+  [intranetAutoresponderFlagCache removeAllObjects];
 }
 
 - (void)_garbageCollect:(NSTimer *)_timer {
@@ -217,7 +217,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 - (NGLdapConnection *)ldapConnection {
   static NGLdapConnection *ldapConnection = nil;
   if(!ldapConnection) {
-    ldapConnection = [[NGLdapConnection alloc] initWithHostName:ldapHost];
+    ldapConnection = [[NGLdapConnection alloc] initWithHostName: ldapHost];
 #if 0
     [ldapConnection setUseCache:YES];
 #endif
@@ -231,34 +231,34 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 
 - (void)_cacheCN:(NSString *)_cn forUID:(NSString *)_uid {
   if (_cn == nil) return;
-  [self->cnCache setObject:_cn forKey:_uid];
+  [cnCache setObject:_cn forKey:_uid];
 }
 - (NSString *)_cachedCNForUID:(NSString *)_uid {
-  return [self->cnCache objectForKey:_uid];
+  return [cnCache objectForKey:_uid];
 }
 
 - (void)_cacheServer:(NSString *)_server forUID:(NSString *)_uid {
   if (_server == nil) return;
-  [self->serverCache setObject:_server forKey:_uid];
+  [serverCache setObject:_server forKey:_uid];
 }
 - (NSString *)_cachedServerForUID:(NSString *)_uid {
-  return [self->serverCache objectForKey:_uid];
+  return [serverCache objectForKey:_uid];
 }
 
 - (void)_cacheEmail:(NSString *)_email forUID:(NSString *)_uid {
   if (_email == nil) return;
-  [self->emailCache setObject:_email forKey:_uid];
+  [emailCache setObject:_email forKey:_uid];
 }
 - (NSString *)_cachedEmailForUID:(NSString *)_uid {
-  return [self->emailCache objectForKey:_uid];
+  return [emailCache objectForKey:_uid];
 }
 
 - (void)_cacheUID:(NSString *)_uid forEmail:(NSString *)_email {
   if (_uid == nil) return;
-  [self->uidCache setObject:_uid forKey:_email];
+  [uidCache setObject:_uid forKey:_email];
 }
 - (NSString *)_cachedUIDForEmail:(NSString *)_email {
-  return [self->uidCache objectForKey:_email];
+  return [uidCache objectForKey:_email];
 }
 
 
@@ -305,7 +305,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
     
   q = [EOQualifier qualifierWithQualifierFormat:@"mail = %@", _email];
     
-  conn       = [self ldapConnection];
+  conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
 		     qualifier:q
 		     attributes:uidAttrs];
@@ -383,12 +383,12 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   unsigned       i, count;
 
   count = [_persons count];
-  ma    = [[[NSMutableArray alloc] initWithCapacity:count] autorelease];
+  ma = [[[NSMutableArray alloc] initWithCapacity:count] autorelease];
   for (i = 0; i < count; i++) {
     iCalPerson *p;
     id         uid;
     
-    p   = [_persons objectAtIndex:i];
+    p = [_persons objectAtIndex:i];
     uid = [self getUIDForICalPerson:p];
     if (uid != nil)
       [ma addObject:uid];
@@ -407,9 +407,9 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   NSString         *email;
   unsigned         count;
     
-  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
+  q = [EOQualifier qualifierWithQualifierFormat: qualifierFormat, _uid];
     
-  conn       = [self ldapConnection];
+  conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
 		     qualifier:q
 		     attributes:fromEMailAttrs];
@@ -499,7 +499,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (cnAttrs == nil)
     cnAttrs = [[NSArray alloc] initWithObjects:@"cn", nil];
   
-  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
+  q = [EOQualifier qualifierWithQualifierFormat: qualifierFormat, _uid];
   
   conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -589,7 +589,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   NSEnumerator     *resultEnum;
   NGLdapEntry      *entry;
   
-  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
+  q = [EOQualifier qualifierWithQualifierFormat: qualifierFormat, _uid];
   
   conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
@@ -617,7 +617,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   NSMutableArray *serverCandidates;
   unsigned i, count;
 
-  count            = [attr count];
+  count = [attr count];
   serverCandidates = [NSMutableArray arrayWithCapacity:count];
   for (i = 0; i < count; i++) {
     NSRange  r;
@@ -824,7 +824,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   }
   
   /* check cache */
-  if ((shares = [self->shareEMailCache objectForKey:_uid]) != nil)
+  if ((shares = [shareEMailCache objectForKey:_uid]) != nil)
     return shares;
   
   /* G and C mean "emission access" */
@@ -857,7 +857,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   
   /* cache */
   shares = (shares == nil) ? [NSArray array] : [[shares copy] autorelease];
-  [self->shareEMailCache setObject:shares forKey:_uid];
+  [shareEMailCache setObject:shares forKey:_uid];
   return shares;
 }
 
@@ -939,7 +939,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   }
 
   /* check cache */
-  if ((shares = [self->shareStoreCache objectForKey:_uid]) != nil)
+  if ((shares = [shareStoreCache objectForKey:_uid]) != nil)
     return shares;
   
   sharePattern = [_uid stringByAppendingString:@":*"];
@@ -999,7 +999,7 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   shares = (shares == nil) 
     ? [NSDictionary dictionary] 
     : [[shares copy] autorelease];
-  [self->shareStoreCache setObject:shares forKey:_uid];
+  [shareStoreCache setObject:shares forKey:_uid];
   return shares;
 }
 
@@ -1050,13 +1050,13 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
 - (BOOL)isUserAllowedToChangeSOGoInternetAccess:(NSString *)_uid {
   NSNumber *bv;
   
-  bv = [self->changeInternetAccessCache objectForKey:_uid];
+  bv = [changeInternetAccessCache objectForKey:_uid];
   if (!bv) {
     BOOL value;
     
     value = [self primaryIsUserAllowedToChangeSOGoInternetAccess:_uid];
-    bv    = [NSNumber numberWithBool:value];
-    [self->changeInternetAccessCache setObject:bv forKey:_uid];
+    bv = [NSNumber numberWithBool:value];
+    [changeInternetAccessCache setObject:bv forKey:_uid];
   }
   return [bv boolValue];
 }
@@ -1073,9 +1073,9 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (attrs == nil)
     attrs = [[NSArray alloc] initWithObjects:changeInternetAccessAttrName, nil];
   
-  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
+  q = [EOQualifier qualifierWithQualifierFormat: qualifierFormat, _uid];
   
-  conn       = [self ldapConnection];
+  conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
                      qualifier:q
                      attributes:attrs];
@@ -1100,43 +1100,49 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   return [value boolValue];
 }
 
-- (BOOL)isInternetAutoresponderEnabledForUser:(NSString *)_uid {
+- (BOOL) isInternetAutoresponderEnabledForUser: (NSString *) _uid
+{
   NSNumber *bv;
+  BOOL value;
 
-  bv = [self->internetAutoresponderFlagCache objectForKey:_uid];
+  bv = [internetAutoresponderFlagCache objectForKey:_uid];
   if (!bv) {
-    BOOL value;
-    
     value = [self primaryIsInternetAutoresponderEnabledForUser:_uid];
-    bv    = [NSNumber numberWithBool:value];
-    [self->internetAutoresponderFlagCache setObject:bv forKey:_uid];
+    bv = [NSNumber numberWithBool:value];
+    [internetAutoresponderFlagCache setObject:bv forKey:_uid];
   }
   return [bv boolValue];
 }
 
-- (BOOL)primaryIsInternetAutoresponderEnabledForUser:(NSString *)_uid {
+- (BOOL) primaryIsInternetAutoresponderEnabledForUser: (NSString *) _uid
+{
   NGLdapAttribute *attr;
   
   attr = [self primaryGetMailAutoresponderAttribute:_uid];
   if (!attr) return NO;
-  return [self isAutoresponderEnabledForAttribute:attr matchingPrefix:@"60~"];
+
+  return [self isAutoresponderEnabledForAttribute: attr
+               matchingPrefix: @"60~"];
 }
 
-- (BOOL)isIntranetAutoresponderEnabledForUser:(NSString *)_uid {
+- (BOOL) isIntranetAutoresponderEnabledForUser: (NSString *) _uid
+{
   NSNumber *bv;
+  BOOL value;
   
-  bv = [self->intranetAutoresponderFlagCache objectForKey:_uid];
-  if (!bv) {
-    BOOL value;
-    
-    value = [self primaryIsIntranetAutoresponderEnabledForUser:_uid];
-    bv    = [NSNumber numberWithBool:value];
-    [self->intranetAutoresponderFlagCache setObject:bv forKey:_uid];
-  }
+  bv = [intranetAutoresponderFlagCache objectForKey:_uid];
+  if (!bv)
+    {
+      value = [self primaryIsIntranetAutoresponderEnabledForUser:_uid];
+      bv = [NSNumber numberWithBool:value];
+      [intranetAutoresponderFlagCache setObject:bv forKey:_uid];
+    }
+
   return [bv boolValue];
 }
 
-- (BOOL)primaryIsIntranetAutoresponderEnabledForUser:(NSString *)_uid {
+- (BOOL) primaryIsIntranetAutoresponderEnabledForUser: (NSString *) _uid
+{
   NGLdapAttribute *attr;
   
   attr = [self primaryGetMailAutoresponderAttribute:_uid];
@@ -1144,8 +1150,8 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   return [self isAutoresponderEnabledForAttribute:attr matchingPrefix:@"50~"];
 }
 
-- (BOOL)isAutoresponderEnabledForAttribute:(NGLdapAttribute *)_attr
-  matchingPrefix:(NSString *)_prefix
+- (BOOL) isAutoresponderEnabledForAttribute: (NGLdapAttribute *)_attr
+                             matchingPrefix: (NSString *)_prefix
 {
   unsigned i, count;
   
@@ -1160,10 +1166,12 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
       return YES;
     }
   }
+
   return NO;
 }
 
-- (NGLdapAttribute *)primaryGetMailAutoresponderAttribute:(NSString *)_uid {
+- (NGLdapAttribute *) primaryGetMailAutoresponderAttribute: (NSString *) _uid
+{
   static NSArray   *attrs = nil;
   NGLdapConnection *conn;
   EOQualifier      *q;
@@ -1174,9 +1182,9 @@ static unsigned PoolScanInterval = 5 * 60 /* every five minutes */;
   if (attrs == nil)
     attrs = [[NSArray alloc] initWithObjects:mailAutoresponderAttrName, nil];
 
-  q = [EOQualifier qualifierWithQualifierFormat:qualifierFormat, _uid];
+  q = [EOQualifier qualifierWithQualifierFormat: qualifierFormat, _uid];
   
-  conn       = [self ldapConnection];
+  conn = [self ldapConnection];
   resultEnum = [conn deepSearchAtBaseDN:ldapBaseDN
                      qualifier:q
                      attributes:attrs];
