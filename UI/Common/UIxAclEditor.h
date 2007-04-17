@@ -1,6 +1,6 @@
 /* UIxAclEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006, 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -30,22 +30,17 @@
   BOOL prepared;
   BOOL publishInFreeBusy;
   NSArray *acls;
+  NSArray *savedUIDs;
   NSMutableArray *users;
-  NSMutableArray *assistants;
-  NSMutableArray *delegates;
   NSString *currentUser;
-  NSString *ownerLogin;
 }
 
-- (NSArray *) aclsForFolder;
-- (NSString *) assistantsValue;
-- (NSString *) delegatesValue;
+- (NSArray *) aclsForObject;
 
-- (NSArray *) usersForFolder;
+- (NSArray *) usersForObject;
 - (void) setCurrentUser: (NSString *) newCurrentUser;
 - (NSString *) currentUser;
 
-- (NSString *) ownerLogin;
 - (NSString *) ownerName;
 
 @end
