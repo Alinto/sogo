@@ -825,7 +825,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
    var folderPath = folderData[1];
    if (username != UserLogin) {
       var url = (UserFolderURL + "../" + username
-		 + "/" + folderPath + "/subscribe");
+                 + folderPath + "/subscribe");
       if (document.subscriptionAjaxRequest) {
 	 document.subscriptionAjaxRequest.aborted = true;
 	 document.subscriptionAjaxRequest.abort();
