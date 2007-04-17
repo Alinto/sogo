@@ -1,5 +1,12 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject -acls]):
+	new method to comply with the new acl "protocol" in SOGoObject.
+	Uses SOGoFolder's new facilities for ACLS.
+	([SOGoContentObject -aclsForUser:uid]): idem.
+	([SOGoContentObject -setRoles:rolesforUser:uid]): idem.
+	([SOGoContentObject -removeAclsForUsers:users]): idem.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-aclsForObjectAtPath:objectPathArray]): new method generic to GCS
 	based folders. This method is derived from the code that was in

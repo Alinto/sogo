@@ -36,15 +36,15 @@
 // TODO: check superclass version
 
 - (void)dealloc {
-  [self->content release];
-  [self->ocsPath release];
+  [content release];
+  [ocsPath release];
   [super dealloc];
 }
 
 /* notifications */
 
 - (void)sleep {
-  [self->content release]; self->content = nil;
+  [content release]; content = nil;
   [super sleep];
 }
 
@@ -55,26 +55,26 @@
 }
 
 - (void)setOCSPath:(NSString *)_path {
-  if ([self->ocsPath isEqualToString:_path])
+  if ([ocsPath isEqualToString:_path])
     return;
   
-  if (self->ocsPath)
+  if (ocsPath)
     [self warnWithFormat:@"GCS path is already set! '%@'", _path];
   
-  ASSIGNCOPY(self->ocsPath, _path);
+  ASSIGNCOPY(ocsPath, _path);
 }
 
 - (NSString *)ocsPath {
-  if (self->ocsPath == nil) {
+  if (ocsPath == nil) {
     NSString *p;
     
     if ((p = [self ocsPathOfContainer]) != nil) {
       if (![p hasSuffix:@"/"]) p = [p stringByAppendingString:@"/"];
       p = [p stringByAppendingString:[self nameInContainer]];
-      self->ocsPath = [p copy];
+      ocsPath = [p copy];
     }
   }
-  return self->ocsPath;
+  return ocsPath;
 }
 
 - (NSString *)ocsPathOfContainer {
@@ -84,32 +84,26 @@
   return [[self container] ocsPath];
 }
 
-- (GCSFolder *)ocsFolder {
-  if (![[self container] respondsToSelector:@selector(ocsFolder)])
-    return nil;
-  
-  return [[self container] ocsFolder];
+- (GCSFolder *) ocsFolder
+{
+  return [container ocsFolder];
 }
 
 /* content */
 
-- (NSString *)contentAsString {
-  GCSFolder *folder;
+- (NSString *) contentAsString
+{
+  if (!content)
+    {
+      content = [[self ocsFolder] fetchContentWithName: nameInContainer];
+      [content retain];
+    }
 
-  if (self->content != nil)
-    return self->content;
-  
-  if ((folder = [self ocsFolder]) == nil) {
-    [self errorWithFormat:@"Did not find folder of content object."];
-    return nil;
-  }
-  
-  self->content = [[folder fetchContentWithName:[self nameInContainer]] copy];
-  return self->content;
+  return content;
 }
 
-- (NSException *)saveContentString:(NSString *)_str
-  baseVersion:(unsigned int)_baseVersion
+- (NSException *) saveContentString: (NSString *) _str
+                        baseVersion: (unsigned int) _baseVersion
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
   GCSFolder   *folder;
@@ -184,8 +178,8 @@
 	    @"reassigned a new location for special new-location: %@", tmp];
     
     /* kinda dangerous */
-    ASSIGNCOPY(self->nameInContainer, tmp);
-    ASSIGN(self->ocsPath, nil);
+    ASSIGNCOPY(nameInContainer, tmp);
+    ASSIGN(ocsPath, nil);
   }
   
   /* determine base version from etag in if-match header */
@@ -309,6 +303,39 @@
 
 - (BOOL)davIsCollection {
   return [self isFolderish];
+}
+
+/* acls */
+
+- (NSString *) defaultAclRoles
+{
+#warning this should be changed to something useful
+  return @"tourist";
+}
+
+- (NSArray *) acls
+{
+  return [container aclsForObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return [container aclsForUser: uid
+                    forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid
+{
+  return [container setRoles: roles
+                    forUser: uid
+                    forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+{
+  return [container removeAclsForUsers: users
+                    forObjectAtPath: [self pathArrayToSoObject]];
 }
 
 /* message type */

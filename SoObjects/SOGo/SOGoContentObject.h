@@ -25,7 +25,9 @@
 
 #import <SOGo/SOGoObject.h>
 
-@class NSString, NSException;
+@class NSArray;
+@class NSException;
+@class NSString;
 
 @interface SOGoContentObject : SOGoObject
 {
@@ -35,29 +37,29 @@
 
 /* accessors */
 
-- (void)setOCSPath:(NSString *)_path;
-- (NSString *)ocsPath;
+- (void) setOCSPath: (NSString *) _path;
+- (NSString *) ocsPath;
 
 /* folder */
 
-- (NSString *)ocsPathOfContainer;
-- (GCSFolder *)ocsFolder;
+- (NSString *) ocsPathOfContainer;
+- (GCSFolder *) ocsFolder;
 
 /* content */
 
-- (NSString *)contentAsString;
-- (NSException *)saveContentString:(NSString *)_str
-  baseVersion:(unsigned int)_baseVersion;
-- (NSException *)saveContentString:(NSString *)_str;
-- (NSException *)delete;
+- (NSString *) contentAsString;
+- (NSException *) saveContentString: (NSString *) _str
+                        baseVersion: (unsigned int) _baseVersion;
+- (NSException *) saveContentString: (NSString *)_str;
+- (NSException *) delete;
 
 /* etag support */
 
-- (id)davEntityTag;
+- (id) davEntityTag;
 
 /* message type */
 
-- (NSString *)outlookMessageClass;
+- (NSString *) outlookMessageClass;
 
 @end
 
