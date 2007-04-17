@@ -1,5 +1,12 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -acls]): stub method
+	that requires overriding by subclasses.
+	([SOGoObject -aclsForUser:uid]): idem.
+	([SOGoObject -defaultAclRoles]): idem.
+	([SOGoObject -setRoles:rolesforUser:uid]): idem.
+	([SOGoObject -removeAclsForUsers:users]): idem.
+
 	* UI/Common/UIxObjectActions.m: new module implementing the web
 	actions common to SOGoObject and all its subclasses.
 	([UIxObjectActions -addUserInAclsAction]): new method that adds a

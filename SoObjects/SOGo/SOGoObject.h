@@ -86,9 +86,18 @@
 
 - (NSException *)matchesRequestConditionInContext:(id)_ctx;
 
+/* acls */
+
+- (NSString *) defaultAclRoles;
+- (NSArray *) acls;
+- (NSArray *) aclsForUser: (NSString *) uid;
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid;
+- (void) removeAclsForUsers: (NSArray *) users;
+
 /* description */
 
-- (void)appendAttributesToDescription:(NSMutableString *)_ms;
+- (void) appendAttributesToDescription:(NSMutableString *)_ms;
 
 @end
 

@@ -26,6 +26,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGCards/NSDictionary+NGCards.h>
+#import <GDLContentStore/GCSFolder.h>
 
 #import "common.h"
 
@@ -34,7 +35,6 @@
 
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
-#import "SOGoAclsFolder.h"
 #import "SOGoAuthenticator.h"
 #import "SOGoUserFolder.h"
 
@@ -354,7 +354,7 @@ static BOOL kontactGroupDAV = YES;
   NSDictionary *currentAcl;
   SoClassSecurityInfo *sInfo;
 
-  acls = [[[SOGoAclsFolder aclsFolder] aclsForObject: self] objectEnumerator];
+  acls = [[self acls] objectEnumerator];
   aclsDictionary = [NSMutableDictionary dictionary];
   sInfo = [[self class] soClassSecurityInfo];
 
@@ -688,6 +688,40 @@ static BOOL kontactGroupDAV = YES;
   }
   
   return nil;
+}
+
+/* acls */
+
+- (NSArray *) acls
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSString *) defaultAclRoles
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid
+{
+  [self subclassResponsibility: _cmd];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+{
+  [self subclassResponsibility: _cmd];
 }
 
 /* description */
