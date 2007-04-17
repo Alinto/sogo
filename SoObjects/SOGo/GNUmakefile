@@ -23,7 +23,6 @@ libSOGo_HEADER_FILES = \
 	SOGoObject.h			\
 	SOGoFolder.h			\
 	SOGoContentObject.h		\
-	SOGoAclsFolder.h		\
 	SOGoUserFolder.h		\
 	SOGoGroupsFolder.h		\
 	SOGoGroupFolder.h		\
@@ -47,7 +46,6 @@ libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
 	SOGoFolder.m			\
 	SOGoContentObject.m		\
-	SOGoAclsFolder.m		\
 	SOGoUserFolder.m		\
 	SOGoGroupsFolder.m		\
 	SOGoGroupFolder.m		\

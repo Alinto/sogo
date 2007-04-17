@@ -1,5 +1,8 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoAclsFolder.m: removed module because its
+	methods have been moved into SOGoObject and SOGoFolder during a refactoring.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-iCalParticipantsAndResourcesStringFromQueryParameters]): removed
 	method made useless by the programmatic handling of iCalendar
