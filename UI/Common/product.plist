@@ -30,6 +30,28 @@
    };
 
    categories = {
+      SOGoObject = {
+	 methods = {
+            addUserInAcls = { 
+               protectedBy = "SaveAcls";
+               actionClass = "UIxObjectActions";
+               actionName  = "addUserInAcls";
+            };
+	    acls = {
+	       protectedBy = "ReadAcls";
+	       pageName    = "UIxAclEditor";
+	    };
+	    saveAcls = {
+	       protectedBy = "SaveAcls";
+	       pageName    = "UIxAclEditor";
+	       actionName  = "saveAcls";
+	    };
+            userRights = {
+              protectedBy = "ReadAcls";
+              pageName    = "UIxUserRightsEditor";
+            };
+         };
+      };
       SOGoFolder = {
 	 methods = {
 	    subscribe = {
@@ -55,17 +77,8 @@
             deactivateFolder = {
 	       protectedBy = "View";
 	       actionClass = "UIxFolderActions";
-	       actionName = "deactivateFolder";
+	       actionName  = "deactivateFolder";
             };
-	    acls = {
-	       protectedBy = "ReadAcls";
-	       pageName    = "UIxAclEditor";
-	    };
-	    saveAcls = {
-	       protectedBy = "SaveAcls";
-	       pageName    = "UIxAclEditor";
-	       actionName = "saveAcls";
-	    };
 	 };
       };
    };

@@ -16,10 +16,12 @@ CommonUI_OBJC_FILES +=		\
 	UIxAppNavView.m		\
 	\
 	UIxAclEditor.m  \
+	UIxObjectActions.m	\
 	UIxFolderActions.m	\
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\
+	UIxUserRightsEditor.m	\
 	\
 	UIxSortableTableHeader.m \
 	\
