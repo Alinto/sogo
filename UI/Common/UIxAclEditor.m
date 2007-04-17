@@ -1,6 +1,6 @@
 /* UIxAclEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006, 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -27,7 +27,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGCards/iCalPerson.h>
 #import <SoObjects/SOGo/AgenorUserManager.h>
-#import <SoObjects/SOGo/SOGoAclsFolder.h>
+#import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxAclEditor.h"
@@ -42,10 +42,8 @@
       prepared = NO;
       publishInFreeBusy = NO;
       users = [NSMutableArray new];
-      delegates = [NSMutableArray new];
-      assistants = [NSMutableArray new];
-      ownerLogin = nil;
       currentUser = nil;
+      savedUIDs = nil;
     }
 
   return self;
@@ -53,36 +51,18 @@
 
 - (void) dealloc
 {
+  [savedUIDs release];
   [users release];
-  [delegates release];
-  [assistants release];
-  [ownerLogin release];
   [currentUser release];
   [super dealloc];
 }
 
-- (NSArray *) aclsForFolder
+- (NSArray *) aclsForObject
 {
-  SOGoAclsFolder *folder;
-
   if (!acls)
-    {
-      folder = [SOGoAclsFolder aclsFolder];
-      acls = [folder aclsForObject: [self clientObject]];
-    }
+    acls = [[self clientObject] acls];
 
   return acls;
-}
-
-- (NSString *) ownerLogin
-{
-  if (!ownerLogin)
-    {
-      ownerLogin = [[self clientObject] ownerInContext: context];
-      [ownerLogin retain];
-    }
-
-  return ownerLogin;
 }
 
 - (NSString *) _displayNameForUID: (NSString *) uid
@@ -98,44 +78,35 @@
 
 - (NSString *) ownerName
 {
-  return [self _displayNameForUID: [self ownerLogin]];
+  NSString *ownerLogin;
+
+  ownerLogin = [[self clientObject] ownerInContext: context];
+
+  return [self _displayNameForUID: ownerLogin];
 }
 
 - (void) _prepareUsers
 {
   NSEnumerator *aclsEnum;
-  AgenorUserManager *um;
   NSDictionary *currentAcl;
-  NSString *currentUID;
+  NSString *currentUID, *ownerLogin;
 
-  aclsEnum = [[self aclsForFolder] objectEnumerator];
-  um = [AgenorUserManager sharedUserManager];
+  ownerLogin = [[self clientObject] ownerInContext: context];
+
+  aclsEnum = [[self aclsForObject] objectEnumerator];
   currentAcl = [aclsEnum nextObject];
   while (currentAcl)
     {
       currentUID = [currentAcl objectForKey: @"c_uid"];
-      if ([currentUID isEqualToString: @"freebusy"])
-        publishInFreeBusy = YES;
-      else
-        {
-          if (![[um getCNForUID: currentUID]
-		 isEqualToString: [self ownerLogin]])
-            {
-              if ([[currentAcl objectForKey: @"c_role"]
-                    isEqualToString: SOGoRole_Delegate])
-                [delegates addObject: currentUID];
-              else
-                [assistants addObject: currentUID];
-              [users addObject: currentUID];
-            }
-        }
+      if (![currentUID isEqualToString: ownerLogin])
+        [users addObject: currentUID];
       currentAcl = [aclsEnum nextObject];
 
       prepared = YES;
     }
 }
 
-- (NSArray *) usersForFolder
+- (NSArray *) usersForObject
 {
   if (!prepared)
     [self _prepareUsers];
@@ -158,84 +129,61 @@
   return [self _displayNameForUID: currentUser];
 }
 
-- (NSArray *) delegates
-{
-  if (!prepared)
-    [self _prepareUsers];
-
-  return delegates;
-}
-
-- (NSString *) assistantsValue
-{
-  if (!prepared)
-    [self _prepareUsers];
-
-  return [assistants componentsJoinedByString: @","];
-}
-
-- (NSString *) delegatesValue
-{
-  if (!prepared)
-    [self _prepareUsers];
-
-  return [delegates componentsJoinedByString: @","];
-}
-
-- (BOOL) publishInFreeBusy
-{
-  if (!prepared)
-    [self _prepareUsers];
-
-  return publishInFreeBusy;
-}
-
 - (NSString *) toolbar
 {
-  NSString *currentLogin;
+  NSString *currentLogin, *ownerLogin;
 
   currentLogin = [[context activeUser] login];
+  ownerLogin = [[self clientObject] ownerInContext: context];
 
-  return (([[self ownerLogin] isEqualToString: currentLogin])
+  return (([ownerLogin isEqualToString: currentLogin])
           ? @"SOGoAclOwner.toolbar" : @"SOGoAclAssistant.toolbar");
 }
 
-- (BOOL) clientIsCalendar
+- (void) setUserUIDS: (NSString *) retainedUsers
 {
-  return [NSStringFromClass ([[self clientObject] class])
-                            isEqualToString: @"SOGoAppointmentFolder"];
+  if ([retainedUsers length] > 0)
+    savedUIDs = [retainedUsers componentsSeparatedByString: @","];
+  else
+    savedUIDs = [NSArray new];
 }
 
-- (id) saveAclsAction
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+                           inContext: (WOContext *) context
 {
-  NSString *uids;
-  NSArray *fbUsers;
-  WORequest *request;
-  SOGoAclsFolder *folder;
-  SOGoObject *clientObject;
+  return ([[request method] isEqualToString: @"POST"]);
+}
 
-  folder = [SOGoAclsFolder aclsFolder];
-  request = [context request];
+- (id <WOActionResults>) saveAclsAction
+{
+  NSEnumerator *aclsEnum;
+  SOGoObject *clientObject;
+  NSString *currentUID, *ownerLogin;
+
   clientObject = [self clientObject];
-  uids = [request formValueForKey: @"delegates"];
-  [folder setRoleForObject: clientObject
-          forUsers: [uids componentsSeparatedByString: @","]
-          to: SOGoRole_Delegate];
-  uids = [request formValueForKey: @"assistants"];
-  [folder setRoleForObject: clientObject
-          forUsers: [uids componentsSeparatedByString: @","]
-          to: SOGoRole_Assistant];
-  if ([self clientIsCalendar]) {
-    if ([[request formValueForKey: @"freebusy"] intValue])
-      fbUsers = [NSArray arrayWithObject: @"freebusy"];
-    else
-      fbUsers = nil;
-    [folder setRoleForObject: clientObject
-            forUsers: fbUsers
-            to: SOGoRole_FreeBusy];
-  }
+  ownerLogin = [clientObject ownerInContext: context];
+  aclsEnum = [[self aclsForObject] objectEnumerator];
+  currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"];
+  while (currentUID)
+    {
+      if ([currentUID isEqualToString: ownerLogin]
+	  || [savedUIDs containsObject: currentUID])
+        [users removeObject: currentUID];
+      currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"];
+    }
+  [clientObject removeAclsForUsers: users];
 
   return [self jsCloseWithRefreshMethod: nil];
 }
+
+// - (id <WOActionResults>) addUserInAcls
+// {
+//   SOGoObject *clientObject;
+//   NSString *uid;
+
+//   uid = [self queryParameterForKey: @"uid"];
+
+//   clientObject = [self clientObject];
+// }
 
 @end

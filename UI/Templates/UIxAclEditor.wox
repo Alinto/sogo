@@ -14,16 +14,10 @@
   <form id="aclForm" const:href="saveAcls">
     <div class="acls">
       <input type="hidden" name="action" value="saveAcls"/>
-      <input type="hidden" name="delegates" var:value="delegatesValue"
-	id="delegates"/>
-      <input type="hidden" name="assistants" var:value="assistantsValue"
-	id="assistants"/>
+      <input type="hidden" id="userUIDS" name="userUIDS"
+        var:value="userUIDS"/>
       <label><var:string label:value="Owner:"/><br/>
 	<span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
-
-      <!-- var:component className="UIxContactSelector"
-      const:checkBoxOnChange="return updateAclStatus(this);"
-      contacts="usersForFolder" -->
 
       <div class="userSelector" id="userRoles">
 	<span id="userSelectorButtons">
@@ -36,29 +30,14 @@
 	      label:title="Remove"
 	      /></a>
 	</span>
-	<input type="hidden"
-	  var:id="selectorIdList"
-	  var:name="selectorId"
-	  var:value="initialContactsAsString"/>
 	<ul id="userList" multiselect="yes">
-	  <var:foreach list="usersForFolder" item="currentUser"
+	  <var:foreach list="usersForObject" item="currentUser"
 	    ><li var:id="currentUser">
 	      <img rsrc:src="abcard.gif"/>
 	      <var:string value="currentUserDisplayName"/></li>
 	  </var:foreach>
 	</ul>
       </div>
-      
-      <select id="userRoleDropDown" name="currentUserRole">
-	<option value="assistant"><var:string label:value="Assistant"/></option>
-	<option value="delegate"><var:string label:value="Delegate"/></option>
-      </select><br/>
-      <var:if condition="clientIsCalendar"
-	><label id="freeBusyLabel"><input type="checkbox"
-	    var:checked="publishInFreeBusy"
-	    class="checkBox" name="freebusy" id="freebusy"
-	    /><var:string label:value="Localizable/Publish the Free/Busy information"
-	    /></label></var:if>
     </div>
   </form>
 </var:component>

@@ -6,15 +6,15 @@ function addUser(userName, userID) {
    if (!$(userID)) {
       var ul = $("userList");
       ul.appendChild(nodeForUser(userName, userID));
-      var roleList = $("assistants");
-      if (roleList.value.length > 0) {
-	 var uids = roleList.value.split(",");
-	 uids.push(userID);
-	 roleList.value = uids.join(",");
-      }
-      else
-	 roleList.value = userID;
+      var url = window.location.href;
+      var elements = url.split("/");
+      elements[elements.length-1] = ("addUserInAcls?uid="
+                                     + userID);
+      triggerAjaxRequest(elements.join("/"), addUserCallback);
    }
+}
+
+function addUserCallback(http) {
 }
 
 function nodeForUser(userName, userId) {
@@ -34,64 +34,14 @@ function nodeForUser(userName, userId) {
 }
 
 function saveAcls() {
-  $("aclForm").submit();
+   var uidList = new Array();
+   var users = $("userList").childNodesWithTag("li");
+   for (var i = 0; i < users.length; i++)
+      uidList.push(users[i].getAttribute("id"));
+   $("userUIDS").value = uidList.join(",");
+   $("aclForm").submit();
 
-  return false;
-}
-
-function updateSelectedRole(list) {
-  var select = $("userRoleDropDown");
-  var selection = list.getSelectedRows(); 
-  if (selection.length > 0) {
-    select.style.visibility = "visible;";
-    var selected = selection[0];
-    var assistantsValue = $("assistants");
-    var uid = selected.getAttribute("id");
-    var regexp = new RegExp("(^|,)" + uid + "(,|$)","i");
-    if (regexp.test(assistantsValue.value))
-      select.selectedIndex = 0;
-    else
-      select.selectedIndex = 1;
-  }
-  else
-    select.style.visibility = "hidden;";
-}
-
-function onAclSelectionChange() {
-  log("selectionchange");
-  updateSelectedRole(this);
-}
-
-function onUserRoleDropDownChange() {
-  var oldList;
-  var newList;
-
-  if (this.selectedIndex == 0) {
-    oldList = $("delegates");
-    newList = $("assistants");
-  } else {
-    oldList = $("assistants");
-    newList = $("delegates");
-  }
-
-  var uid = $("userList").getSelectedRows()[0].getAttribute("id");
-  var newListArray;
-  if (newList.value.length > 0) {
-    newListArray = newList.value.split(",");
-    newListArray.push(uid);
-  }
-  else
-    newListArray = new Array(uid);
-  newList.value = newListArray.join(",");
-
-  var oldListArray = oldList.value.split(",").without(uid);
-  if (oldListArray.length > 0)
-    oldList.value = oldListArray.join(",");
-  else
-    oldList.value = "";
-
-  log("assistants: " + $("assistants").value);
-  log("delegates: " + $("delegates").value);
+   return false;
 }
 
 function onUserAdd(event) {
@@ -101,24 +51,10 @@ function onUserAdd(event) {
 }
 
 function onUserRemove(event) {
-   var userlist = $("userList");
-   var node = userlist.getSelectedRows()[0];
-   var uid = node.getAttribute("id");
-   var regexp = new RegExp("(^|,)" + uid + "($|,)");
-   var uids = $("assistants");
-   if (!regexp.test(uids.value))
-      uids = $("delegates");
-   if (regexp.test(uids.value)) {
-      var list = uids.value.split(",");
-      var newList = new Array();
-      for (var i = 0; i < list.length; i++) {
-	 if (list[i] != uid)
-	    newList.push(list[i]);
-      }
-      uids.value = newList.join(",");
-      node.parentNode.removeChild(node);
-   }
-   updateSelectedRole(userlist);
+   var userList = $("userList");
+   var nodes = userList.getSelectedRows();
+   for (var i = 0; i < nodes.length; i++)
+      userList.removeChild(nodes[i]);
    event.preventDefault();
 }
 
@@ -127,18 +63,32 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 	   refreshCallbackData["folder"]);
 }
 
+function openRightsForUser(button) {
+  var nodes = $("userList").getSelectedRows();
+  if (nodes.length > 0) {
+    var url = window.location.href;
+    var elements = url.split("/");
+    elements[elements.length-1] = ("userRights?uid="
+                                   + nodes[0].getAttribute("id"));
+    window.open(elements.join("/"));
+  }
+
+  return false;
+}
+
+function onOpenUserRights(event) {
+  window.alert("user: " + this.getAttribute("id"));
+  event.preventDefault();
+}
+
 function onAclLoadHandler() {
   var ul = $("userList");
-  ul.addEventListener("selectionchange",
-                      onAclSelectionChange, false);
   var lis = ul.childNodesWithTag("li");
   for (var i = 0; i < lis.length; i++) {
      lis[i].addEventListener("mousedown", listRowMouseDownHandler, false);
+     lis[i].addEventListener("dblclick", onOpenUserRights, false);
      lis[i].addEventListener("click", onRowClick, false);
   }
-
-  var select = $("userRoleDropDown");
-  select.addEventListener("change", onUserRoleDropDownChange, false);
 
   var buttons = $("userSelectorButtons").childNodesWithTag("a");
   buttons[0].addEventListener("click", onUserAdd, false);
