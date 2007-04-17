@@ -1,5 +1,8 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (initDnd): enable drag and
+	drop on all folder nodes, not just on leaves.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]): request field "uid" when doing a search.

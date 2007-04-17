@@ -760,7 +760,7 @@ function expandUpperTree(node) {
 
 function initMailboxSelection(mailboxName) {
   currentMailbox = mailboxName;
-  log("initMailboxSelection: " + mailboxName);
+//   log("initMailboxSelection: " + mailboxName);
   var tree = $("d");
   var treeNodes = document.getElementsByClassName("dTreeNode", tree);
   var i = 0;
@@ -768,7 +768,7 @@ function initMailboxSelection(mailboxName) {
          && treeNodes[i].getAttribute("dataname") != currentMailbox)
     i++;
   if (i < treeNodes.length) {
-    log ("found mailbox");
+//     log ("found mailbox");
     var links = document.getElementsByClassName("node", treeNodes[i]);
     if (tree.selectedEntry)
       tree.selectedEntry.deselect();
@@ -944,7 +944,7 @@ function initDnd() {
         document.DNDManager.registerDestination(images[i]);
       }
     }
-    var nodes = document.getElementsByClassName("leaf", tree);
+    var nodes = document.getElementsByClassName("nodeName", tree);
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].dndAcceptType = mailboxSpanAcceptType;
       nodes[i].dndEnter = mailboxSpanEnter;
