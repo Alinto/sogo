@@ -26,7 +26,6 @@
 
 @class NSString, NSArray, NSDictionary;
 @class GCSFolder;
-@class SOGoAclsFolder;
 
 /*
   SOGoFolder
@@ -66,6 +65,16 @@
 
 - (BOOL) create;
 - (NSException *) delete;
+
+/* acls as a container */
+- (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray;
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid
+  forObjectAtPath: (NSArray *) objectPathArray;
+- (void) removeAclsForUsers: (NSArray *) users
+            forObjectAtPath: (NSArray *) objectPathArray;
 
 @end
 

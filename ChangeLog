@@ -1,5 +1,18 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-aclsForObjectAtPath:objectPathArray]): new method generic to GCS
+	based folders. This method is derived from the code that was in
+	UIxAclFolder before its removal.
+	([SOGoFolder -aclsForUser:uidforObjectAtPath:objectPathArray]):
+	idem.
+	([SOGoFolder
+	-removeAclsForUsers:usersforObjectAtPath:objectPathArray]): idem.
+	([SOGoFolder
+	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]): idem.
+	([SOGoFolder -setRoleForUsers:uidsto:role]) 
+	([SOGoFolder -setRoleForUsers:uidsto:role]): removed method.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -acls]): stub method
 	that requires overriding by subclasses.
 	([SOGoObject -aclsForUser:uid]): idem.

@@ -20,6 +20,7 @@
 */
 
 #import <NGObjWeb/SoObject.h>
+#import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
@@ -28,8 +29,6 @@
 #import "common.h"
 #import <unistd.h>
 #import <stdlib.h>
-
-#import "SOGoAclsFolder.h"
 
 @implementation SOGoFolder
 
@@ -237,6 +236,106 @@
     }
 
   return names;
+}
+
+/* acls as a container */
+
+- (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
+{
+  EOQualifier *qualifier;
+  NSString *qs;
+
+  qs = [NSString stringWithFormat: @"c_object = '/%@'",
+		 [objectPathArray componentsJoinedByString: @"/"]];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+
+  return [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  EOQualifier *qualifier;
+  NSArray *records;
+  NSString *qs;
+
+  qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@')",
+		 [objectPathArray componentsJoinedByString: @"/"], uid];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+  records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
+
+  return [records valueForKey: @"c_role"];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+            forObjectAtPath: (NSArray *) objectPathArray
+{
+  EOQualifier *qualifier;
+  NSString *uids, *qs;
+
+  if ([users count] > 0)
+    {
+      uids = [users componentsJoinedByString: @"') OR (c_uid = '"];
+      qs = [NSString
+	     stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
+	     [objectPathArray componentsJoinedByString: @"/"], uids];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+      [[self ocsFolder] deleteAclMatchingQualifier: qualifier];
+    }
+}
+
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid
+  forObjectAtPath: (NSArray *) objectPathArray
+{
+  EOAdaptorChannel *channel;
+  GCSFolder *folder;
+  NSString *SQL;
+
+  [self removeAclsForUsers: [NSArray arrayWithObject: uid]
+        forObjectAtPath: objectPathArray];
+  folder = [self ocsFolder];
+  channel = [folder acquireAclChannel];
+  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+                  @" (c_object, c_uid, c_role)"
+                  @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
+                  [objectPathArray componentsJoinedByString: @"/"],
+                  uid, roles];
+  [channel evaluateExpressionX: SQL];
+
+  [folder releaseChannel: channel];
+}
+
+/* acls */
+- (NSString *) defaultAclRoles
+{
+#warning this should be changed to something useful
+  return @"tourist";
+}
+
+- (NSArray *) acls
+{
+  return [self aclsForObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return [self aclsForUser: uid
+               forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (void) setRoles: (NSString *) roles
+          forUser: (NSString *) uid
+{
+  return [self setRoles: roles
+               forUser: uid
+               forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+{
+  return [self removeAclsForUsers: users
+               forObjectAtPath: [self pathArrayToSoObject]];
 }
 
 /* WebDAV */
