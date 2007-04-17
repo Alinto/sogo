@@ -1,3 +1,9 @@
+2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]): request field "uid" when doing a search.
+
 2007-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m ([SOGo +initialize]): on GNUstep, trigger some

@@ -50,6 +50,7 @@
                                      @"mail", @"telephonenumber",        \
                                      @"mailNickname",                    \
                                      @"sAMAccountName",                  \
+                                     @"uid",                  \
                                      nil]
 
 @class WOContext;
@@ -97,20 +98,11 @@
 
 - (void) dealloc
 {
-  if (connection)
-    {
-      if ([connection isBound])
-        [connection unbind];
-      [connection release];
-    }
-  if (contactIdentifier)
-    [contactIdentifier release];
-  if (userIdentifier)
-    [userIdentifier release];
-  if (rootDN)
-    [rootDN release];
-  if (entries)
-    [entries release];
+  [connection release];
+  [contactIdentifier release];
+  [userIdentifier release];
+  [rootDN release];
+  [entries release];
   [super dealloc];
 }
 
@@ -333,13 +325,16 @@
 
   if (filter && [filter length] > 0)
     {
-      qs = [NSString stringWithFormat:
-                       @"(cn='%@*')"
-                     @"OR (sn='%@*')"
-                     @"OR (displayName='%@*')"
-                     @"OR (mail='%@*')"
-                     @"OR (telephoneNumber='*%@*')",
-                     filter, filter, filter, filter, filter];
+      if ([filter isEqualToString: @"."])
+        qs = @"(cn='*')";
+      else
+        qs = [NSString stringWithFormat:
+                         @"(cn='%@*')"
+                       @"OR (sn='%@*')"
+                       @"OR (displayName='%@*')"
+                       @"OR (mail='%@*')"
+                       @"OR (telephoneNumber='*%@*')",
+                       filter, filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else
@@ -362,9 +357,9 @@
 
   if (filter && [filter length] > 0)
     {
-//       NSLog (@"%@: fetching records matching '*%@*', sorted by '%@'"
-//              @" in order %d",
-//              self, filter, sortKey, sortOrdering);
+      NSLog (@"%@: fetching records matching '%@', sorted by '%@'"
+             @" in order %d",
+             self, filter, sortKey, sortOrdering);
 
       records = [NSMutableArray new];
       [records autorelease];
