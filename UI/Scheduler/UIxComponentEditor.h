@@ -136,13 +136,6 @@
 - (BOOL) isWriteableClientObject;
 - (NSException *) validateObjectForStatusChange;
 
-- (NSString *) iCalParticipantsAndResourcesStringFromQueryParameters;
-- (NSString *) iCalParticipantsStringFromQueryParameters;
-- (NSString *) iCalResourcesStringFromQueryParameters;
-- (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
-                                     format: (NSString *) _format;
-- (NSString *) iCalOrganizerString;
-
 @end
 
 #endif /* UIXCOMPONENTEDITOR_H */

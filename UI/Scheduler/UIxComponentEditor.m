@@ -678,74 +678,65 @@
           : @"visibility: hidden;");
 }
 
-- (NSString *) iCalParticipantsAndResourcesStringFromQueryParameters
-{
-  NSString *s;
+// - (NSString *) iCalParticipantsAndResourcesStringFromQueryParameters
+// {
+//   NSString *s;
   
-  s = [self iCalParticipantsStringFromQueryParameters];
-  return [s stringByAppendingString:
-              [self iCalResourcesStringFromQueryParameters]];
-}
+//   s = [self iCalParticipantsStringFromQueryParameters];
+//   return [s stringByAppendingString:
+//               [self iCalResourcesStringFromQueryParameters]];
+// }
 
-- (NSString *) iCalParticipantsStringFromQueryParameters
-{
-  static NSString *iCalParticipantString = \
-    @"ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=\"%@\":MAILTO:%@\r\n";
+// - (NSString *) iCalParticipantsStringFromQueryParameters
+// {
+//   static NSString *iCalParticipantString = @"ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;CN=\"%@\":MAILTO:%@\r\n";
   
-  return [self iCalStringFromQueryParameter: @"ps"
-               format: iCalParticipantString];
-}
+//   return [self iCalStringFromQueryParameter: @"ps"
+//                format: iCalParticipantString];
+// }
 
-- (NSString *) iCalResourcesStringFromQueryParameters
-{
-  static NSString *iCalResourceString = \
-    @"ATTENDEE;ROLE=NON-PARTICIPANT;CN=\"%@\":MAILTO:%@\r\n";
+// - (NSString *) iCalResourcesStringFromQueryParameters
+// {
+//   static NSString *iCalResourceString = @"ATTENDEE;ROLE=NON-PARTICIPANT;CN=\"%@\":MAILTO:%@\r\n";
 
-  return [self iCalStringFromQueryParameter: @"rs"
-               format: iCalResourceString];
-}
+//   return [self iCalStringFromQueryParameter: @"rs"
+//                format: iCalResourceString];
+// }
 
-- (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
-                                     format: (NSString *) _format
-{
-  AgenorUserManager *um;
-  NSMutableString *iCalRep;
-  NSString *s;
+// - (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
+//                                      format: (NSString *) _format
+// {
+//   AgenorUserManager *um;
+//   NSMutableString *iCalRep;
+//   NSString *s;
 
-  um = [AgenorUserManager sharedUserManager];
-  iCalRep = (NSMutableString *)[NSMutableString string];
-  s = [self queryParameterForKey:_qp];
-  if(s && [s length] > 0) {
-    NSArray *es;
-    unsigned i, count;
+//   um = [AgenorUserManager sharedUserManager];
+//   iCalRep = (NSMutableString *)[NSMutableString string];
+//   s = [self queryParameterForKey:_qp];
+//   if(s && [s length] > 0) {
+//     NSArray *es;
+//     unsigned i, count;
     
-    es = [s componentsSeparatedByString: @","];
-    count = [es count];
-    for(i = 0; i < count; i++) {
-      NSString *email, *cn;
+//     es = [s componentsSeparatedByString: @","];
+//     count = [es count];
+//     for(i = 0; i < count; i++) {
+//       NSString *email, *cn;
       
-      email = [es objectAtIndex:i];
-      cn = [um getCNForUID:[um getUIDForEmail:email]];
-      [iCalRep appendFormat:_format, cn, email];
-    }
-  }
-  return iCalRep;
-}
-
-- (NSString *) iCalOrganizerString
-{
-  return [NSString stringWithFormat: @"ORGANIZER;CN=\"%@\":MAILTO:%@\r\n",
-                   [self cnForUser], [self emailForUser]];
-}
+//       email = [es objectAtIndex:i];
+//       cn = [um getCNForUID:[um getUIDForEmail:email]];
+//       [iCalRep appendFormat:_format, cn, email];
+//     }
+//   }
+//   return iCalRep;
+// }
 
 - (NSException *) validateObjectForStatusChange
 {
   id co;
 
   co = [self clientObject];
-  if (![co
-         respondsToSelector: @selector(changeParticipationStatus:)])
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+  if (![co respondsToSelector: @selector(changeParticipationStatus:)])
+    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
                         reason:
                           @"method cannot be invoked on the specified object"];
 

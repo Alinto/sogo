@@ -1,5 +1,13 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-iCalParticipantsAndResourcesStringFromQueryParameters]): removed
+	method made useless by the programmatic handling of iCalendar
+	objects.
+	([UIxComponentEditor -iCalParticipantsStringFromQueryParameters]): idem.
+	([UIxComponentEditor -iCalResourcesStringFromQueryParameters]): idem.
+	([UIxComponentEditor -iCalStringFromQueryParameter:_qpformat:_format]): idem.
+
 	* UI/WebServerResources/MailerUI.js (initDnd): enable drag and
 	drop on all folder nodes, not just on leaves.
 
