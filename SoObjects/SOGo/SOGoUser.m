@@ -19,18 +19,23 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUserDefaults.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/SoObject.h>
-#import "AgenorUserManager.h"
-#import "SOGoAclsFolder.h"
-#import "common.h"
+#import <NGExtensions/NSNull+misc.h>
 
+#import "AgenorUserManager.h"
+#import "SOGoContentObject.h"
 #import "SOGoUser.h"
+#import "SOGoPermissions.h"
 
 static NSTimeZone *serverTimeZone = nil;
 
 @interface NSObject (SOGoRoles)
 
-- (NSString *) roleOfUser: (NSString *) uid;
 - (NSArray *) rolesOfUser: (NSString *) uid;
 
 @end
@@ -246,7 +251,6 @@ static NSTimeZone *serverTimeZone = nil;
                    inContext: (WOContext *) context
 {
   NSMutableArray *rolesForObject;
-  SOGoAclsFolder *aclsFolder;
   NSArray *sogoRoles;
   NSString *role;
 
@@ -261,9 +265,7 @@ static NSTimeZone *serverTimeZone = nil;
     [rolesForObject addObject: SoRole_Owner];
   if ([object isKindOfClass: [SOGoObject class]])
     {
-      aclsFolder = [SOGoAclsFolder aclsFolder];
-      sogoRoles = [aclsFolder aclsForObject: (SOGoObject *) object
-                              forUser: login];
+      sogoRoles = [(SOGoObject *) object aclsForUser: login];
       if (sogoRoles)
         [rolesForObject addObjectsFromArray: sogoRoles];
     }
@@ -272,12 +274,6 @@ static NSTimeZone *serverTimeZone = nil;
       sogoRoles = [object rolesOfUser: login];
       if (sogoRoles)
         [rolesForObject addObjectsFromArray: sogoRoles];
-    }
-  if ([object respondsToSelector: @selector (roleOfUser:)])
-    {
-      role = [object roleOfUser: login];
-      if (role)
-        [rolesForObject addObject: role];
     }
 
   return rolesForObject;

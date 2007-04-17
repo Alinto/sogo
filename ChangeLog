@@ -1,5 +1,10 @@
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-rolesForObject:objectinContext:context]): no longer query objects
+	for "roleForUser:". Instead, all objects should implement
+	"rolesForUser:".
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject -acls]):
 	new method to comply with the new acl "protocol" in SOGoObject.
 	Uses SOGoFolder's new facilities for ACLS.
