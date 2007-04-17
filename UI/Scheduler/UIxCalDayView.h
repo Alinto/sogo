@@ -18,8 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxCalDayView.h 181 2004-08-11 15:13:25Z helge $
-
 
 #ifndef	__UIxCalDayView_H_
 #define	__UIxCalDayView_H_
