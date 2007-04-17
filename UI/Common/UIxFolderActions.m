@@ -27,6 +27,7 @@
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoSecurityManager.h>
 
