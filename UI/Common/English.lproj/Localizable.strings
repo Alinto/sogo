@@ -20,3 +20,5 @@
 "noJavascriptRetry" = "Retry";
 
 "Publish the Free/Busy information" = "Publish the Free/Busy information";
+
+"Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";

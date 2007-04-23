@@ -23,3 +23,5 @@
 "Associated Users:" = "Utilisateurs associés :";
 "(Unchecked = assistant, checked = delegate)" = "(Coché = assistant, décoché = délégué)";
 "Publish the Free/Busy information" = "Publier l'occupation du temps";
+
+"Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
