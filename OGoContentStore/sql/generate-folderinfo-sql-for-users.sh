@@ -152,12 +152,11 @@ DELETE FROM SOGo_user_profile WHERE uid = '${USER_ID}';
 
 INSERT INTO SOGo_user_profile ( 
   uid,
-  allowinternet,
-  timezonename,
-  calendaruids
+  defaults,
+  settings
 )
 VALUES (
-    '${USER_ID}', 1, '${TIMEZONE}', '${USER_ID}'
+    '${USER_ID}', '{}', '{}'
 );
 
 EOF

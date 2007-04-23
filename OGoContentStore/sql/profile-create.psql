@@ -3,9 +3,7 @@
 --
 
 CREATE TABLE SOGo_user_profile (
-  uid           VARCHAR(255) NOT NULL PRIMARY KEY,
-  allowinternet SMALLINT     DEFAULT 0,
-  timezonename  VARCHAR(255) DEFAULT 'MET',
-  calendaruids  TEXT,
-  additionaladdressbooks  TEXT
+  uid      VARCHAR(255) NOT NULL PRIMARY KEY,
+  defaults TEXT,
+  settings TEXT
 );
