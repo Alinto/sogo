@@ -412,22 +412,26 @@ static NSNumber   *sharedYes = nil;
   return classes;
 }
 
-- (NSString *) groupDavResourceType
+- (NSArray *) groupDavResourceType
 {
-  return @"vevent-collection";
+  return [NSArray arrayWithObjects: @"vevent-collection",
+		  @"vtodo-collection", nil];
 }
 
 - (NSArray *) davResourceType
 {
   static NSArray *colType = nil;
-  NSArray *gdCol, *cdCol;
+  NSArray *cdCol;
+  NSMutableArray *gdCol;
 
   if (!colType)
     {
+      gdCol = [NSMutableArray new];
+      [gdCol addObjectsFromArray: [self groupDavResourceType]];
+      [gdCol addObject: XMLNS_GROUPDAV];
       cdCol = [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil];
-      gdCol = [NSArray arrayWithObjects: [self groupDavResourceType],
-                       XMLNS_GROUPDAV, nil];
       colType = [NSArray arrayWithObjects: @"collection", cdCol, gdCol, nil];
+      [gdCol release];
       [colType retain];
     }
 
