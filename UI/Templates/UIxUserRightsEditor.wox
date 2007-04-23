@@ -10,6 +10,5 @@
   title="title"
   var:toolbar="toolbar"
   const:popup="YES">
-
-  coucou!
+  <div><var:string label:value="Sorry, the user rights can not be configured for that object."/></div>
 </var:component>
