@@ -1,3 +1,8 @@
+2007-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxUserRightsEditor.[hm]: new template class module
+	that implements the detailed editor of user rights per-object.
+
 2007-04-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
