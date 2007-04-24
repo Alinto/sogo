@@ -70,15 +70,20 @@ function openRightsForUser(button) {
     var elements = url.split("/");
     elements[elements.length-1] = ("userRights?uid="
                                    + nodes[0].getAttribute("id"));
-    window.open(elements.join("/"));
+
+			   
+
+    window.open(elements.join("/"), "",
+		"width=502,height=250,resizable=0,scrollbars=0,toolbar=0,"
+		+ "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   }
 
   return false;
 }
 
 function onOpenUserRights(event) {
-  window.alert("user: " + this.getAttribute("id"));
-  event.preventDefault();
+   openRightsForUser();
+   event.preventDefault();
 }
 
 function onAclLoadHandler() {

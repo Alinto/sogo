@@ -82,6 +82,20 @@
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Accès non autorisée";
 
+/* acls */
+"User rights for:" = "Autorisations pour :";
+"label_Public" = "Public";
+"label_Private" = "Privé";
+"label_Confidential" = "Confidentiel";
+"View All" = "Voir tout";
+"View the Date & Time" = "Voir la date & l'heure";
+"Modify" = "Modifier";
+"Respond To" = "Répondre";
+"None" = "Aucun";
+"This person can create objects in my calendar."
+= "Cette personne peut ajouter des objets à mon agenda.";
+"This person can erase objects from my calendar."
+= "Cette personne peut effacer des objets de mon agenda.";
 
 /* Button Titles */
 
@@ -97,12 +111,12 @@
 "Close" = "Fermer";
 "Invite Attendees" = "Participants";
 "Documents" = "Documents";
+"Update" = "Mettre à jour";
 "Cancel" = "Annuler";
 "show_rejected_apts" = "Afficher les rendez-vous refusés";
 "hide_rejected_apts" = "Cacher les rendez-vous refusés";
 
 /* Schedule */
-
 "Schedule" = "Suivi de rendez-vous";
 "No appointments found" = "Aucun rendez-vous";
 "Meetings proposed by you" = "Rendez-vous que vous proposez";
@@ -114,7 +128,6 @@
 "more attendees" = "Autres participants";
 "Hide already accepted and rejected appointments" = "Cacher les invitations refusées";
 "Show already accepted and rejected appointments" = "Montrer aussi les invitations refusées";
-
 
 /* Appointments */
 

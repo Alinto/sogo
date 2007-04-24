@@ -62,7 +62,6 @@
 
 "this year" = "this year";
 
-
 /* Menu */
 
 "Calendars" = "Calendars";
@@ -82,6 +81,20 @@
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Forbidden";
 
+/* acls */
+"User rights for:" = "User rights for:";
+"label_Public" = "Public";
+"label_Private" = "Private";
+"label_Confidential" = "Confidential";
+"View All" = "View All";
+"View the Date & Time" = "View the Date & Time";
+"Modify" = "Modify";
+"Respond To" = "Respond To";
+"None" = "None";
+"This person can create objects in my calendar."
+= "This person can create objects in my calendar.";
+"This person can erase objects from my calendar."
+= "This person can erase objects from my calendar."
 
 /* Button Titles */
 
@@ -97,6 +110,7 @@
 "Close" = "Close";
 "Invite Attendees" = "Invite Attendees";
 "Documents" = "Documents";
+"Update" = "Update";
 "Cancel" = "Cancel";
 "show_rejected_apts" = "Show rejected appointments";
 "hide_rejected_apts" = "Hide rejected appointments";
