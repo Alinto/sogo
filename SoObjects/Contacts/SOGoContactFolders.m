@@ -218,6 +218,12 @@
   return [contactFolders allValues];
 }
 
+/* acls */
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
+}
+
 // - (NSString *) roleOfUser: (NSString *) uid
 // {
 //   NSArray *roles, *traversalPath;

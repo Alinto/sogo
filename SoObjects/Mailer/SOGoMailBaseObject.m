@@ -183,12 +183,11 @@ static BOOL debugOn = YES;
   return NO;
 }
 
-/* debugging */
-
-- (NSString *)loggingPrefix {
-  /* improve perf ... */
-  return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
-		     self, NSStringFromClass([self class]),
-		     [self nameInContainer]];
+/* acls */
+#warning one day there will be code here to support IMAP acls
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
 }
+
 @end /* SOGoMailBaseObject */

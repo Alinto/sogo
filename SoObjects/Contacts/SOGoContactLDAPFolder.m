@@ -395,4 +395,11 @@
   return @"vcard-collection";
 }
 
+/* acls */
+/* TODO: this might change one day when we support LDAP acls */
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
+}
+
 @end

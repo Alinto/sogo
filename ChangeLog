@@ -1,5 +1,19 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-aclsForUser:uid]): new override that returns nil until we add
+	support for IMAP acls.
+
+	* SoObjects/Mailer/SOGoMailAccounts.m
+	([SOGoMailAccounts -aclsForUser:uid]): same as below.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -aclsForUser:uid]): same as below.
+
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-aclsForUser:uid]): override this method which will always return
+	nil.
+
 	* SoObjects/SOGo/SOGoPermissions.[hm]: added
 	[Public,Private,Confidential]
 	x[Viewer,DAndTViewer,Responder,Modifier]. Renamed

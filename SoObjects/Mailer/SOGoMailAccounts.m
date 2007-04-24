@@ -189,4 +189,11 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return YES;
 }
 
+/* acls */
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
+}
+
+
 @end /* SOGoMailAccounts */
