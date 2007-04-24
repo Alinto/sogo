@@ -70,7 +70,7 @@
 - (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
 - (NSArray *) aclsForUser: (NSString *) uid
           forObjectAtPath: (NSArray *) objectPathArray;
-- (void) setRoles: (NSString *) roles
+- (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
   forObjectAtPath: (NSArray *) objectPathArray;
 - (void) removeAclsForUsers: (NSArray *) users
