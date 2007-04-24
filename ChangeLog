@@ -1,5 +1,20 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -defaultAction]) 
+	([UIxUserRightsEditor -saveUserRightsAction]): new action methods
+	which should never be overriden.
+	([UIxUserRightsEditor -appendRight:newRight]) 
+	([UIxUserRightsEditor -removeRight:right]) 
+	([UIxUserRightsEditor -appendExclusiveRight:newRightfromList:list]) 
+	([UIxUserRightsEditor -removeAllRightsFromList:list]): new utility
+	methods that can be used by the subclasses.
+	([UIxUserRightsEditor -prepareRightsForm]): new method that should
+	mandatorily be overriden to prepare the elements of the subclassed
+	form.
+	([UIxUserRightsEditor -updateRights]): new method that should
+	mandatorily be overriden to update the user rights from the
+	elements of the subclassed form.
+
 	* UI/Common/UIxAclEditor.m ([UIxAclEditor -_prepareUsers]): we
 	check if the uid is already listed before adding it to our array.
 	This is because the acl table can contain more than one record per

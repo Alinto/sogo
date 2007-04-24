@@ -25,7 +25,28 @@
 
 #import <SOGoUI/UIxComponent.h>
 
+@class NSMutableArray;
+@class NSString;
+
+@protocol WOActionResults;
+
 @interface UIxUserRightsEditor : UIxComponent
+{
+  NSMutableArray *userRights;
+  NSString *uid;
+}
+
+- (NSString *) userDisplayName;
+- (NSString *) uid;
+
+- (void) appendRight: (NSString *) newRight;
+- (void) appendExclusiveRight: (NSString *) newRight
+		     fromList: (NSArray *) list;
+- (void) removeRight: (NSString *) right;
+- (void) removeAllRightsFromList: (NSArray *) list;
+
+- (void) prepareRightsForm;
+- (void) updateRights;
 
 @end
 
