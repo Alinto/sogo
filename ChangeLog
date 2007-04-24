@@ -1,5 +1,12 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]): the
+	"roles" parameter is now an NSArray instead of a string. Therefore
+	we loop throughout the array to populate the table. All the
+	relevant records are removed prior to the addition of the new
+	rights.
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
 	-aclsForUser:uid]): new override that returns nil until we add
 	support for IMAP acls.

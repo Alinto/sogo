@@ -284,33 +284,41 @@
     }
 }
 
-- (void) setRoles: (NSString *) roles
+- (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
   forObjectAtPath: (NSArray *) objectPathArray
 {
   EOAdaptorChannel *channel;
   GCSFolder *folder;
-  NSString *SQL;
+  NSEnumerator *userRoles;
+  NSString *SQL, *currentRole;
 
   [self removeAclsForUsers: [NSArray arrayWithObject: uid]
         forObjectAtPath: objectPathArray];
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
-  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                  @" (c_object, c_uid, c_role)"
-                  @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
-                  [objectPathArray componentsJoinedByString: @"/"],
-                  uid, roles];
-  [channel evaluateExpressionX: SQL];
+
+  userRoles = [roles objectEnumerator];
+  currentRole = [userRoles nextObject];
+  while (currentRole)
+    {
+      SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+		      @" (c_object, c_uid, c_role)"
+		      @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
+		      [objectPathArray componentsJoinedByString: @"/"],
+		      uid, currentRole];
+      [channel evaluateExpressionX: SQL];
+      currentRole = [userRoles nextObject];
+    }
 
   [folder releaseChannel: channel];
 }
 
 /* acls */
-- (NSString *) defaultAclRoles
+- (NSArray *) defaultAclRoles
 {
 #warning this should be changed to something useful
-  return @"tourist";
+  return nil;
 }
 
 - (NSArray *) acls
@@ -324,7 +332,7 @@
                forObjectAtPath: [self pathArrayToSoObject]];
 }
 
-- (void) setRoles: (NSString *) roles
+- (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {
   return [self setRoles: roles

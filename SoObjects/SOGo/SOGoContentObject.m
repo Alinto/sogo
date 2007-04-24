@@ -307,12 +307,6 @@
 
 /* acls */
 
-- (NSString *) defaultAclRoles
-{
-#warning this should be changed to something useful
-  return @"tourist";
-}
-
 - (NSArray *) acls
 {
   return [container aclsForObjectAtPath: [self pathArrayToSoObject]];
@@ -324,7 +318,7 @@
                     forObjectAtPath: [self pathArrayToSoObject]];
 }
 
-- (void) setRoles: (NSString *) roles
+- (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {
   return [container setRoles: roles

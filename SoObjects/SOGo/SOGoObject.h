@@ -88,10 +88,10 @@
 
 /* acls */
 
-- (NSString *) defaultAclRoles;
+- (NSArray *) defaultAclRoles;
 - (NSArray *) acls;
 - (NSArray *) aclsForUser: (NSString *) uid;
-- (void) setRoles: (NSString *) roles
+- (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid;
 - (void) removeAclsForUsers: (NSArray *) users;
 
