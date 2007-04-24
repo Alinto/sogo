@@ -450,9 +450,9 @@ static BOOL sendEMailNotifications = NO;
   if (component)
     {
       if ([component isOrganizer: email])
-        [sogoRoles addObject: SOGoRole_Organizer];
+        [sogoRoles addObject: SOGoCalendarRole_Organizer];
       else if ([component isParticipant: email])
-        [sogoRoles addObject: SOGoRole_Participant];
+        [sogoRoles addObject: SOGoCalendarRole_Participant];
       else if ([[container ownerInContext: context] isEqualToString: login])
         [sogoRoles addObject: SoRole_Owner];
     }

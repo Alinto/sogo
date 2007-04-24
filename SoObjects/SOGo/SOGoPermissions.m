@@ -22,25 +22,38 @@
 
 #import "SOGoPermissions.h"
 
-NSString *SOGoRole_Assistant = @"Assistant";               /* a colleague */
-NSString *SOGoRole_Delegate = @"Delegate"; /* a colleague or person that I
-                                              trust in adding or modifying my
-                                              data */
+/* General */
+NSString *SOGoRole_ObjectCreator = @"ObjectCreator";
+NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
+
+NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
+                                            */
 NSString *SOGoRole_FreeBusyLookup = @"FreeBusyLookup"; /* for users that have
                                                           access to the
                                                           freebusy information
                                                           from a specific
                                                           calendar */
-NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
-                                            */
 
 /* Calendar */
-NSString *SOGoRole_Organizer = @"Organizer";
-NSString *SOGoRole_Participant = @"Participant";
+NSString *SOGoCalendarRole_Organizer = @"Organizer";
+NSString *SOGoCalendarRole_Participant = @"Participant";
 
+NSString *SOGoCalendarRole_PublicViewer = @"PublicViewer";
+NSString *SOGoCalendarRole_PublicDAndTViewer = @"PublicDAndTViewer";
+NSString *SOGoCalendarRole_PublicModifier = @"PublicModifier";
+NSString *SOGoCalendarRole_PublicResponder = @"PublicResponder";
+NSString *SOGoCalendarRole_PrivateViewer = @"PrivateViewer";
+NSString *SOGoCalendarRole_PrivateDAndTViewer = @"PrivateDAndTViewer";
+NSString *SOGoCalendarRole_PrivateModifier = @"PrivateModifier";
+NSString *SOGoCalendarRole_PrivateResponder = @"PrivateResponder";
+NSString *SOGoCalendarRole_ConfidentialViewer = @"ConfidentialViewer";
+NSString *SOGoCalendarRole_ConfidentialDAndTViewer = @"ConfidentialDAndTViewer";
+NSString *SOGoCalendarRole_ConfidentialModifier = @"ConfidentialModifier";
+NSString *SOGoCalendarRole_ConfidentialResponder = @"ConfidentialResponder";
+
+/* permissions */
 #warning ReadAcls still not used...
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
                                               currently missing from SOPE */
-NSString *SOGoPerm_CreateAndModifyAcls = @"CreateAndModifyAcls";
 NSString *SOGoPerm_FreeBusyLookup = @"FreeBusyLookup";

@@ -1,5 +1,11 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoPermissions.[hm]: added
+	[Public,Private,Confidential]
+	x[Viewer,DAndTViewer,Responder,Modifier]. Renamed
+	SOGoRole_ORganizer to SOGoCalendarRole_Organizer. Same for
+	..._Participant. Removed SOGoRole_Assistant and SOGoRole_Delegate.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -defaultAclRoles]): new overriden method
 	that defines default roles for new elements in the acl.

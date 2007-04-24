@@ -27,16 +27,29 @@
 
 #import <NGObjWeb/SoPermissions.h>
 
-extern NSString *SOGoRole_Assistant;
-extern NSString *SOGoRole_Delegate;
-extern NSString *SOGoRole_FreeBusyLookup;
+extern NSString *SOGoRole_ObjectCreator;
+extern NSString *SOGoRole_ObjectEraser;
+
 extern NSString *SOGoRole_FreeBusy;
+extern NSString *SOGoRole_FreeBusyLookup;
 
 extern NSString *SOGoPerm_ReadAcls;
-extern NSString *SOGoPerm_CreateAndModifyAcls;
 extern NSString *SOGoPerm_FreeBusyLookup;
 
-extern NSString *SOGoRole_Organizer;
-extern NSString *SOGoRole_Participant;
+extern NSString *SOGoCalendarRole_Organizer;
+extern NSString *SOGoCalendarRole_Participant;
+
+extern NSString *SOGoCalendarRole_PublicViewer;
+extern NSString *SOGoCalendarRole_PublicDAndTViewer;
+extern NSString *SOGoCalendarRole_PublicModifier;
+extern NSString *SOGoCalendarRole_PublicResponder;
+extern NSString *SOGoCalendarRole_PrivateViewer;
+extern NSString *SOGoCalendarRole_PrivateDAndTViewer;
+extern NSString *SOGoCalendarRole_PrivateModifier;
+extern NSString *SOGoCalendarRole_PrivateResponder;
+extern NSString *SOGoCalendarRole_ConfidentialViewer;
+extern NSString *SOGoCalendarRole_ConfidentialDAndTViewer;
+extern NSString *SOGoCalendarRole_ConfidentialModifier;
+extern NSString *SOGoCalendarRole_ConfidentialResponder;
 
 #endif /* SOGOPERMISSIONS_H */
