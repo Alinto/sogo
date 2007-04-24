@@ -252,7 +252,6 @@ static NSTimeZone *serverTimeZone = nil;
 {
   NSMutableArray *rolesForObject;
   NSArray *sogoRoles;
-  NSString *role;
 
   rolesForObject = [NSMutableArray new];
   [rolesForObject autorelease];
