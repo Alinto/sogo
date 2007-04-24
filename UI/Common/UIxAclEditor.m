@@ -98,8 +98,9 @@
   while (currentAcl)
     {
       currentUID = [currentAcl objectForKey: @"c_uid"];
-      if (![currentUID isEqualToString: ownerLogin])
-        [users addObject: currentUID];
+      if (!([currentUID isEqualToString: ownerLogin]
+	    || [users containsObject: currentUID]))
+	  [users addObject: currentUID];
       currentAcl = [aclsEnum nextObject];
 
       prepared = YES;

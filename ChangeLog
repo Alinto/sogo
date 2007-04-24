@@ -1,5 +1,10 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -_prepareUsers]): we
+	check if the uid is already listed before adding it to our array.
+	This is because the acl table can contain more than one record per
+	user/object relationship.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]): the
 	"roles" parameter is now an NSArray instead of a string. Therefore
