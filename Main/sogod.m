@@ -33,7 +33,9 @@ main (int argc, char **argv, char **env)
   NSAutoreleasePool *pool;
 
   pool = [NSAutoreleasePool new];
-//   [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
+#if LIB_FOUNDATION_LIBRARY
+  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
+#endif
   [NGBundleManager defaultBundleManager];
 
   ud = [NSUserDefaults standardUserDefaults];
