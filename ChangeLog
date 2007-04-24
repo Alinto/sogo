@@ -1,5 +1,9 @@
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -defaultAclRoles]): new overriden method
+	that defines default roles for new elements in the acl.
+
 	* UI/Scheduler/UIxCalUserRightsEditor.[hm]: new component class
 	module and subclass of UIxUserRightsEditor specific to the
 	handling of user rights on calendar folders.

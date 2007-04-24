@@ -1216,4 +1216,13 @@ static NSNumber   *sharedYes = nil;
   return @"IPF.Appointment";
 }
 
+/* acls */
+- (NSArray *) defaultAclRoles
+{
+  return [NSArray arrayWithObjects:
+		    SOGoCalendarRole_PublicViewer,
+		  SOGoCalendarRole_PrivateDAndTViewer,
+		  nil];
+}
+
 @end /* SOGoAppointmentFolder */
