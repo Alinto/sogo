@@ -105,7 +105,16 @@
         editAttendees = {
           protectedBy = "View";
           pageName    = "UIxAttendeesEditor";
+	};
+        userRights = {
+          protectedBy = "ReadAcls";
+          pageName    = "UIxCalUserRightsEditor";
         };
+        saveUserRights = {
+	  protectedBy = "ReadAcls";
+	  pageName    = "UIxCalUserRightsEditor";
+	  actionName = "saveUserRights";
+	};
       };
     };
 

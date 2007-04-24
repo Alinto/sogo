@@ -50,6 +50,11 @@
               protectedBy = "ReadAcls";
               pageName    = "UIxUserRightsEditor";
             };
+            saveUserRights = {
+              protectedBy = "ReadAcls";
+              pageName    = "UIxUserRightsEditor";
+	      actionName = "saveUserRights";
+            };
          };
       };
       SOGoFolder = {
