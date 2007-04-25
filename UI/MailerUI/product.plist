@@ -364,7 +364,6 @@
           pageName    = "UIxMailEditorAttach";
           actionName  = "deleteAttachment";
         };
-
         send = {
           protectedBy = "View";
           pageName    = "UIxMailEditor";
