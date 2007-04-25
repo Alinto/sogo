@@ -21,6 +21,7 @@
 
 #include "SOGoDraftObject.h"
 #include <SoObjects/SOGo/WOContext+Agenor.h>
+#include <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #include <NGMail/NGMimeMessage.h>
 #include <NGMail/NGMimeMessageGenerator.h>
 #include <NGMail/NGSendMail.h>
@@ -608,7 +609,7 @@ static NSString    *fromInternetSuffixPattern = nil;
   NGMutableHashMap *map;
   NSDictionary *lInfo; // TODO: this should be some kind of object?
   NSArray      *emails;
-  NSString     *s;
+  NSString     *s, *dateString;
   id           from, replyTo;
   
   if ((lInfo = [self fetchInfo]) == nil)
@@ -657,10 +658,11 @@ static NSString    *fromInternetSuffixPattern = nil;
     [map setObject: [s asQPSubjectString] forKey:@"subject"];
   
   /* add standard headers */
-  
-  [map addObject:[NSCalendarDate date] forKey:@"date"];
-  [map addObject:@"1.0"                forKey:@"MIME-Version"];
-  [map addObject:userAgent             forKey:@"X-Mailer"];
+
+  dateString = [[NSCalendarDate date] rfc822DateString];
+  [map addObject: dateString forKey:@"date"];
+  [map addObject: @"1.0"                forKey:@"MIME-Version"];
+  [map addObject: userAgent             forKey:@"X-Mailer"];
 
   /* add custom headers */
   

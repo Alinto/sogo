@@ -1,3 +1,9 @@
+2007-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m: invoke the new
+	"rfc822DateString" category method on the date we put in the
+	header.
+
 2007-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -defaultAction]) 
