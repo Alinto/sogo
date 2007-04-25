@@ -1,5 +1,9 @@
 2007-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
+	rfc822DateString]): new method that returns a string conform to
+	rfc 822 and suitable for email headers.
+
 	* SoObjects/Mailer/SOGoDraftObject.m: invoke the new
 	"rfc822DateString" category method on the date we put in the
 	header.

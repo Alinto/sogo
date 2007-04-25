@@ -19,9 +19,17 @@
    02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import "NSCalendarDate+SOGo.h"
+
+static NSString *rfc822Days[] = {@"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
+			         @"Fri", @"Sat"};
+static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
+				   @"May", @"Jun", @"Jul", @"Aug" , @"Sep",
+				   @"Oct", @"Nov", @"Dec"};
 
 @implementation NSCalendarDate (SOGoExtensions)
 
@@ -108,6 +116,24 @@
                   [self dayOfMonth]];
 
   return str;
+}
+
+- (NSString *) rfc822DateString
+{
+  int timeZoneShift, tzSeconds;
+
+  tzSeconds = [[self timeZone] secondsFromGMT];
+  timeZoneShift = (tzSeconds / 3600);
+  tzSeconds -= timeZoneShift * 3600;
+  timeZoneShift *= 100;
+  timeZoneShift += tzSeconds / 60;
+
+  return
+    [NSString stringWithFormat: @"%@, %.2d %@ %d %.2d:%.2d:%.2d %.4d",
+	      rfc822Days[[self dayOfWeek]], [self dayOfMonth],
+	      rfc822Months[[self monthOfYear]], [self yearOfCommonEra],
+	      [self hourOfDay], [self minuteOfHour], [self secondOfMinute],
+	      timeZoneShift];
 }
 
 @end

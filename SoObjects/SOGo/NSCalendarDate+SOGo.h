@@ -39,6 +39,8 @@
 - (NSCalendarDate *) sundayOfWeek;
 - (NSString *) shortDateString;
 
+- (NSString *) rfc822DateString;
+
 @end
 
 #endif /* NSCALENDARDATE_SCHEDULER_H */
