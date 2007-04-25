@@ -35,7 +35,7 @@ IMG#progressIndicator
 
 DIV.pageContent
 { /* position: absolute;
-  background: #ffa;
+  background-color: #ffa;
   top: 3em;
   left: 0px;
   right: 0px;
@@ -136,8 +136,7 @@ table.skytextdocktable
   table-layout: auto; }
 
 DIV.linkbanner
-{ 
-  background: #222;
+{ background-color: #222;
   width: 100%;
   top: 0px;
   left: 0px;
@@ -145,8 +144,7 @@ DIV.linkbanner
   color: #aaa; }
 
 DIV.linkbanner A
-{ 
-  top: 0px;
+{ top: 0px;
   left: 0px;
   color: #ddd;
   text-decoration: none;
@@ -186,7 +184,7 @@ DIV.contactSelector DIV.contactList
   height: 3em;
   overflow: auto;
   border: 1px solid #444;
-  background: #eee;
+  background-color: #eee;
   text-align: left; }
 
 TEXTAREA
@@ -324,7 +322,7 @@ SPAN.toolbarButton:active
   vertical-align: middle; }
 
 .menu LI:hover, .menu LI.submenu-selected
-{ background: #4b6983;
+{ background-color: #4b6983;
   color: #fff; }
 
 .menu LI.separator, .menu LI.separator:hover
@@ -359,7 +357,7 @@ DIV#logConsole
   -moz-border-left-colors: ThreeDDarkShadow ThreeDShadow transparent;
   font-family: monospace;
   font-weight: bold;
-  background: #000;
+  background-color: #000;
   color: #ddd;
   top: 1em;
   left: 0px;
@@ -453,10 +451,10 @@ td.tbtv_subject_headercell
 DIV.dragHandle
 { position: absolute;
   z-index: 1;
-  background: #d4d0c8; }
+  background-color: #d4d0c8; }
 
 DIV.dragHandle:active
-{ background: #99a; }
+{ background-color: #99a; }
 
 /* search fields */
 DIV#filterPanel
@@ -477,7 +475,7 @@ INPUT#searchValue
 
 DIV.javascriptPopupBackground
 { position: absolute;
-  background: #999;
+  background-color: #999;
   -moz-opacity: 0.6; 
   z-index: 2;
   top: 0px;
@@ -501,7 +499,7 @@ DIV.javascriptMessagePseudoWindow
   margin: 0px auto;
   -moz-opacity: 1.0;
   color: #000;
-  background: #dedede; }
+  background-color: #dedede; }
 
 DIV.noJavascriptErrorMessage
 { top: 10em;
@@ -561,13 +559,13 @@ DIV.dTreeNode A SPAN.nodeName
 
 DIV.dTreeNode A._selected SPAN.nodeName
 {
-  background: #4b6983;
+  background-color: #4b6983;
   color: #fff;
 }
 
 DIV.dTreeNode SPAN._dragOver
 { 
-  background: #4b6983;
+  background-color: #4b6983;
   color: #fff;
 }
 
@@ -576,7 +574,7 @@ DIV.tabsContainer
 { 
   position: relative;
   color: #000;
-  background: #d4d0c8;
+  background-color: #d4d0c8;
   margin-top: 1.5em;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
@@ -619,7 +617,7 @@ DIV.tabsContainer > UL LI.active
 
 DIV.tabsContainer > UL LI.active
 { z-index: 5;
-  background: #d4d0c8;
+  background-color: #d4d0c8;
   border-bottom: 1px none #fff;
   padding-top: 2px;
   padding-bottom: 3px;
