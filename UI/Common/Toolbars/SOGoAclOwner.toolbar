@@ -8,5 +8,10 @@
       isSafe = NO;
       label = "Close";
       onclick = "window.close();";
-      image = "tb-mail-stop-flat-24x24.png"; } )
+      image = "tb-mail-stop-flat-24x24.png"; } ),
+  ( { link = "#";
+      isSafe = NO;
+      label = "Edit User Rights";
+      onclick = "return openRightsForUser();";
+      image = "edit.png"; } ),
 )
