@@ -421,17 +421,18 @@ static NSNumber   *sharedYes = nil;
 - (NSArray *) davResourceType
 {
   static NSArray *colType = nil;
-  NSArray *cdCol;
-  NSMutableArray *gdCol;
+  NSArray *cdCol, *gdRT, *gdVEventCol, *gdVTodoCol;
 
   if (!colType)
     {
-      gdCol = [NSMutableArray new];
-      [gdCol addObjectsFromArray: [self groupDavResourceType]];
-      [gdCol addObject: XMLNS_GROUPDAV];
+      gdRT = [self groupDavResourceType];
+      gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
+			     XMLNS_GROUPDAV, nil];
+      gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
+			    XMLNS_GROUPDAV, nil];
       cdCol = [NSArray arrayWithObjects: @"calendar", XMLNS_CALDAV, nil];
-      colType = [NSArray arrayWithObjects: @"collection", cdCol, gdCol, nil];
-      [gdCol release];
+      colType = [NSArray arrayWithObjects: @"collection", cdCol,
+			 gdVEventCol, gdVTodoCol, nil];
       [colType retain];
     }
 

@@ -1,5 +1,10 @@
 2007-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davResourceType]): fixed a problem with
+	our double declaration where the resulting XML would be screwed.
+	There is only one collection per namespace.
+
 	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
 	rfc822DateString]): new method that returns a string conform to
 	rfc 822 and suitable for email headers.
