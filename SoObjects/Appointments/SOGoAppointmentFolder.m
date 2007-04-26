@@ -728,15 +728,17 @@ static NSNumber   *sharedYes = nil;
 
 - (NSString *) _privacySqlString
 {
-  NSString *privacySqlString, *owner, *currentUser, *email;
+  NSString *privacySqlString, *owner, *login, *email;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
-  currentUser = [activeUser login];
+  login = [activeUser login];
   owner = [self ownerInContext: context];
 
-  if ([currentUser isEqualToString: owner])
+  if ([login isEqualToString: owner])
     privacySqlString = @"";
+  else if ([login isEqualToString: @"freebusy"])
+    privacySqlString = @"and (isopaque = 1)";
   else
     {
       email = [activeUser email];
@@ -746,7 +748,7 @@ static NSNumber   *sharedYes = nil;
                       @"(%@(orgmail = '%@')"
                       @" or ((partmails caseInsensitiveLike '%@%%'"
                       @" or partmails caseInsensitiveLike '%%\\n%@%%')))",
-		    [self _privacyClassificationStringsForUID: currentUser],
+		    [self _privacyClassificationStringsForUID: login],
 		    email, email, email];
     }
 
@@ -941,10 +943,8 @@ static NSNumber   *sharedYes = nil;
 {
   Class objectClass;
   unsigned int count, max;
-  NSString *currentId, *currentUser;
+  NSString *currentId;
   id deleteObject;
-
-  currentUser = [[context activeUser] login];
 
   max = [ids count];
   for (count = 0; count < max; count++)
