@@ -26,10 +26,7 @@
           ><img rsrc:src="alarm.png" class="gradient"
             /></var:if
           ></span
-        ><var:if condition="titleShouldBeHidden" const:negate="YES"
-        ><br
-          /><var:string value="appointment.title" const:escapeHTML="NO"
-          /></var:if
-        ></div>
+        ><br/><var:string value="appointment.title" const:escapeHTML="NO" />
+    </div>
   </div>
 </div>

@@ -20,7 +20,7 @@
           label:value="Public Event" /></li>
       <li onmouseup="onMenuSetClassification(event, 'CONFIDENTIAL');"><var:string
           label:value="Show Time and Date Only" /></li>
-      <li onmouseup="onMenuSetClassification(event, 'PRIVACY');"><var:string
+      <li onmouseup="onMenuSetClassification(event, 'PRIVATE');"><var:string
           label:value="Private Event" /></li>
     </ul>
   </div>

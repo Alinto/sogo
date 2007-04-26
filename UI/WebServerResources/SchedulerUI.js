@@ -1054,6 +1054,7 @@ function appendCalendar(folderName, folder) {
    checkBox.type = "checkbox";
    checkBox.addEventListener("change", updateCalendarStatus, false);
    li.appendChild(checkBox);
+   li.appendChild(document.createTextNode(" "));
    var colorBox = document.createElement("div");
    colorBox.appendChild(document.createTextNode("OO"));
    colorBox.addClassName("colorBox");
@@ -1068,6 +1069,10 @@ function appendCalendar(folderName, folder) {
 
    var contactId = folder.split(":")[0];
    var styles = document.getElementsByTagName("style");
+
+   var url = URLForFolderID(folder) + "/canAccessContent";
+   triggerAjaxRequest(url, calendarEntryCallback, folder);
+
    styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
 			   + ' background-color: '
 			   + color

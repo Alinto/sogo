@@ -78,9 +78,8 @@ function onChangeCalendar(event) {
    else
       ownerLogin = UserLogin;
    urlElems[urlElems.length-4] = ownerLogin;
-   
+
    form.setAttribute("action", urlElems.join("/"));
-   log ("after: " + form.getAttribute("action"));
 }
 
 function refreshAttendees() {
@@ -153,5 +152,9 @@ function onComponentEditorLoad(event) {
       initializeAttendeesHref();
    initializeDocumentHref();
    initializePrivacyMenu();
-   $("calendarList").addEventListener("change", onChangeCalendar, false);
+   var list = $("calendarList");
+   list.addEventListener("change", onChangeCalendar, false);
+   var onSelectionChangeEvent = document.createEvent("Event");
+   onSelectionChangeEvent.initEvent("change", false, false);
+   list.dispatchEvent(onSelectionChangeEvent);
 }
