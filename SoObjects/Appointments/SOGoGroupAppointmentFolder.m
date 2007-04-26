@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <NGCards/iCalEntityObject.h>
 #import <SOGo/SOGoGroupFolder.h>
 
 #include "SOGoGroupAppointmentFolder.h"

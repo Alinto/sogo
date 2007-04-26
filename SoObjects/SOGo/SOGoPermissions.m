@@ -25,6 +25,7 @@
 /* General */
 NSString *SOGoRole_ObjectCreator = @"ObjectCreator";
 NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
+NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
 
 NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
                                             */
@@ -51,9 +52,32 @@ NSString *SOGoCalendarRole_ConfidentialDAndTViewer = @"ConfidentialDAndTViewer";
 NSString *SOGoCalendarRole_ConfidentialModifier = @"ConfidentialModifier";
 NSString *SOGoCalendarRole_ConfidentialResponder = @"ConfidentialResponder";
 
+NSString *SOGoCalendarRole_ComponentViewer = @"ComponentViewer";
+NSString *SOGoCalendarRole_ComponentDAndTViewer = @"ComponentDAndTViewer";
+NSString *SOGoCalendarRole_ComponentModifier = @"ComponentModifier";
+NSString *SOGoCalendarRole_ComponentResponder = @"ComponentResponder";
+
 /* permissions */
 #warning ReadAcls still not used...
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
                                               currently missing from SOPE */
 NSString *SOGoPerm_FreeBusyLookup = @"FreeBusyLookup";
+
+NSString *SOGoCalendarPerm_ViewWholePublicRecords = @"ViewWholePublicRecords";
+NSString *SOGoCalendarPerm_ViewDAndTOfPublicRecords = @"ViewDAndTOfPublicRecords";
+NSString *SOGoCalendarPerm_ModifyPublicRecords = @"ModifyPublicRecords";
+NSString *SOGoCalendarPerm_RespondToPublicRecords = @"RespondToPublicRecords";
+NSString *SOGoCalendarPerm_ViewWholePrivateRecords = @"ViewWholePrivateRecords";
+NSString *SOGoCalendarPerm_ViewDAndTOfPrivateRecords = @"ViewDAndTOfPrivateRecords";
+NSString *SOGoCalendarPerm_ModifyPrivateRecords = @"ModifyPrivateRecords";
+NSString *SOGoCalendarPerm_RespondToPrivateRecords = @"RespondToPrivateRecords";
+NSString *SOGoCalendarPerm_ViewWholeConfidentialRecords = @"ViewWholeConfidentialRecords";
+NSString *SOGoCalendarPerm_ViewDAndTOfConfidentialRecords = @"ViewDAndTOfConfidentialRecords";
+NSString *SOGoCalendarPerm_ModifyConfidentialRecords = @"ModifyConfidentialRecords";
+NSString *SOGoCalendarPerm_RespondToConfidentialRecords = @"RespondToConfidentialRecords";
+
+NSString *SOGoCalendarPerm_ViewAllComponent = @"ViewAllComponent";
+NSString *SOGoCalendarPerm_ViewDAndT = @"ViewDAndT";
+NSString *SOGoCalendarPerm_ModifyComponent = @"ModifyComponent";
+NSString *SOGoCalendarPerm_RespondToComponent = @"RespondToComponent";

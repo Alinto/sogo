@@ -29,6 +29,7 @@
 
 extern NSString *SOGoRole_ObjectCreator;
 extern NSString *SOGoRole_ObjectEraser;
+extern NSString *SOGoRole_AuthorizedSubscriber;
 
 extern NSString *SOGoRole_FreeBusy;
 extern NSString *SOGoRole_FreeBusyLookup;
@@ -51,5 +52,28 @@ extern NSString *SOGoCalendarRole_ConfidentialViewer;
 extern NSString *SOGoCalendarRole_ConfidentialDAndTViewer;
 extern NSString *SOGoCalendarRole_ConfidentialModifier;
 extern NSString *SOGoCalendarRole_ConfidentialResponder;
+
+extern NSString *SOGoCalendarRole_ComponentViewer;
+extern NSString *SOGoCalendarRole_ComponentDAndTViewer;
+extern NSString *SOGoCalendarRole_ComponentModifier;
+extern NSString *SOGoCalendarRole_ComponentResponder;
+
+extern NSString *SOGoCalendarPerm_ViewWholePublicRecords;
+extern NSString *SOGoCalendarPerm_ViewDAndTOfPublicRecords;
+extern NSString *SOGoCalendarPerm_ModifyPublicRecords;
+extern NSString *SOGoCalendarPerm_RespondToPublicRecords;
+extern NSString *SOGoCalendarPerm_ViewWholePrivateRecords;
+extern NSString *SOGoCalendarPerm_ViewDAndTOfPrivateRecords;
+extern NSString *SOGoCalendarPerm_ModifyPrivateRecords;
+extern NSString *SOGoCalendarPerm_RespondToPrivateRecords;
+extern NSString *SOGoCalendarPerm_ViewWholeConfidentialRecords;
+extern NSString *SOGoCalendarPerm_ViewDAndTOfConfidentialRecords;
+extern NSString *SOGoCalendarPerm_ModifyConfidentialRecords;
+extern NSString *SOGoCalendarPerm_RespondToConfidentialRecords;
+
+extern NSString *SOGoCalendarPerm_ViewAllComponent;
+extern NSString *SOGoCalendarPerm_ViewDAndT;
+extern NSString *SOGoCalendarPerm_ModifyComponent;
+extern NSString *SOGoCalendarPerm_RespondToComponent;
 
 #endif /* SOGOPERMISSIONS_H */

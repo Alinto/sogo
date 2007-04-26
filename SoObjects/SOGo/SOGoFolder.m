@@ -25,6 +25,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
 
+#import "SOGoPermissions.h"
 #import "SOGoFolder.h"
 #import "common.h"
 #import <unistd.h>
@@ -240,6 +241,7 @@
 
 /* acls as a container */
 
+#warning we should cache those data to avoid numerous accesses to the database
 - (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
 {
   EOQualifier *qualifier;
@@ -257,6 +259,7 @@
 {
   EOQualifier *qualifier;
   NSArray *records;
+  NSMutableArray *acls;
   NSString *qs;
 
   qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@')",
@@ -264,7 +267,14 @@
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 
-  return [records valueForKey: @"c_role"];
+  acls = [NSMutableArray array];
+  if ([records count] > 0)
+    {
+      [acls addObject: SOGoRole_AuthorizedSubscriber];
+      [acls addObjectsFromArray: [records valueForKey: @"c_role"]];
+    }
+
+  return acls;
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
@@ -302,12 +312,15 @@
   currentRole = [userRoles nextObject];
   while (currentRole)
     {
-      SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-		      @" (c_object, c_uid, c_role)"
-		      @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
-		      [objectPathArray componentsJoinedByString: @"/"],
-		      uid, currentRole];
-      [channel evaluateExpressionX: SQL];
+      if (![currentRole isEqualToString: SOGoRole_AuthorizedSubscriber])
+	{
+	  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+			  @" (c_object, c_uid, c_role)"
+			  @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
+			  [objectPathArray componentsJoinedByString: @"/"],
+			  uid, currentRole];
+	  [channel evaluateExpressionX: SQL];
+	}
       currentRole = [userRoles nextObject];
     }
 

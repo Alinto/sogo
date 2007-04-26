@@ -705,6 +705,27 @@ static NSNumber   *sharedYes = nil;
                    end, start];
 }
 
+- (NSString *) _privacyClassificationStringsForUID: (NSString *) uid
+{
+  NSMutableString *classificationString;
+  NSString *currentRole;
+  unsigned int counter;
+  iCalAccessClass classes[] = {iCalAccessPublic, iCalAccessPrivate,
+			       iCalAccessConfidential};
+
+  classificationString = [NSMutableString string];
+  for (counter = 0; counter < 3; counter++)
+    {
+      currentRole = [self roleForComponentsWithAccessClass: classes[counter]
+			  forUser: uid];
+      if ([currentRole length] > 0)
+	[classificationString appendFormat: @"classification = %d or ",
+			      classes[counter]];
+    }
+
+  return classificationString;
+}
+
 - (NSString *) _privacySqlString
 {
   NSString *privacySqlString, *owner, *currentUser, *email;
@@ -719,15 +740,46 @@ static NSNumber   *sharedYes = nil;
   else
     {
       email = [activeUser email];
+      
       privacySqlString
         = [NSString stringWithFormat:
-                      @"(classification != %d or (orgmail = '%@')"
+                      @"(%@(orgmail = '%@')"
                       @" or ((partmails caseInsensitiveLike '%@%%'"
                       @" or partmails caseInsensitiveLike '%%\\n%@%%')))",
-                    iCalAccessPrivate, email, email, email];
+		    [self _privacyClassificationStringsForUID: currentUser],
+		    email, email, email];
     }
 
   return privacySqlString;
+}
+
+- (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
+					forUser: (NSString *) uid
+{
+  NSString *accessRole, *prefix, *currentRole, *suffix;
+  NSEnumerator *acls;
+
+  accessRole = nil;
+
+  if (accessClass == iCalAccessPublic)
+    prefix = @"Public";
+  else if (accessClass == iCalAccessPrivate)
+    prefix = @"Private";
+  else
+    prefix = @"Confidential";
+
+  acls = [[self aclsForUser: uid] objectEnumerator];
+  currentRole = [acls nextObject];
+  while (currentRole && !accessRole)
+    if ([currentRole hasPrefix: prefix])
+      {
+	suffix = [currentRole substringFromIndex: [prefix length]];
+	accessRole = [NSString stringWithFormat: @"Component%@", suffix];
+      }
+    else
+      currentRole = [acls nextObject];
+
+  return accessRole;
 }
 
 - (NSArray *) fetchFields: (NSArray *) _fields
@@ -1222,7 +1274,7 @@ static NSNumber   *sharedYes = nil;
 {
   return [NSArray arrayWithObjects:
 		    SOGoCalendarRole_PublicViewer,
-		  SOGoCalendarRole_PrivateDAndTViewer,
+		  SOGoCalendarRole_ConfidentialDAndTViewer,
 		  nil];
 }
 

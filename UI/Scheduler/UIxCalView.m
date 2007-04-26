@@ -161,45 +161,39 @@ static BOOL shouldDisplayWeekend = NO;
 
 - (void) setAppointment:(id) _apt
 {
-  NSString *mailtoChunk;
-  NSString *myEmail;
+  ASSIGN (appointment, _apt);
+}
 
-  ASSIGN(appointment, _apt);
+// - (void) setAppointment:(id) _apt
+// {
+//   NSString *mailtoChunk;
+//   NSString *myEmail;
+//   NSString *partmails;
 
-  /* cache some info about apt for faster access */
+//   ASSIGN(appointment, _apt);
+
+//   /* cache some info about apt for faster access */
   
-  mailtoChunk = [_apt valueForKey: @"orgmail"];
-  myEmail = [self emailForUser];
-  if ([mailtoChunk rangeOfString: myEmail].length > 0)
-    {
-      aptFlags.isMyApt = YES;
-      aptFlags.canAccessApt = YES;
-    }
-  else
-    {
-      NSString *partmails;
+//   mailtoChunk = [_apt valueForKey: @"orgmail"];
+//   myEmail = [self emailForUser];
+//   if ([mailtoChunk rangeOfString: myEmail].length > 0)
+//     {
+//       aptFlags.isMyApt = YES;
+//       aptFlags.canAccessApt = YES;
+//     }
+//   else
+//     {
+//       aptFlags.isMyApt = NO;
 
-      aptFlags.isMyApt = NO;
-
-      partmails = [_apt valueForKey: @"partmails"];
-      if ([partmails rangeOfString: myEmail].length)
-        aptFlags.canAccessApt = YES;
-      else
-        aptFlags.canAccessApt
-          = ([[_apt valueForKey: @"classification"] intValue]
-             == iCalAccessPublic);
-    }
-}
-
-- (void) setTasks: (NSArray *) _tasks
-{
-  ASSIGN(tasks, _tasks);
-}
-
-- (NSArray *) tasks
-{
-  return tasks;
-}
+//       partmails = [_apt valueForKey: @"partmails"];
+//       if ([partmails rangeOfString: myEmail].length)
+//         aptFlags.canAccessApt = YES;
+//       else
+//         aptFlags.canAccessApt
+//           = ([[_apt valueForKey: @"classification"] intValue]
+//              == iCalAccessPublic);
+//     }
+// }
 
 - (id) appointment
 {
@@ -246,6 +240,16 @@ static BOOL shouldDisplayWeekend = NO;
   if (aptFlags.canAccessApt)
     return aptTooltipFormatter;
   return privateAptTooltipFormatter;
+}
+
+- (void) setTasks: (NSArray *) _tasks
+{
+  ASSIGN(tasks, _tasks);
+}
+
+- (NSArray *) tasks
+{
+  return tasks;
 }
 
 /* TODO: remove this */
@@ -496,6 +500,38 @@ static BOOL shouldDisplayWeekend = NO;
   return activeFolders;
 }
 
+- (void) _updatePrivacyInObjects: (NSArray *) objectInfos
+		      fromFolder: (SOGoAppointmentFolder *) folder
+{
+  int hideDetails[] = {-1, -1, -1};
+  NSMutableDictionary *currentRecord;
+  int privacyFlag;
+  NSString *roleString, *userLogin;
+  NSEnumerator *infos;
+
+  userLogin = [[context activeUser] login];
+  infos = [objectInfos objectEnumerator];
+  currentRecord = [infos nextObject];
+  while (currentRecord)
+    {
+      privacyFlag = [[currentRecord objectForKey: @"classification"] intValue];
+      if (hideDetails[privacyFlag] == -1)
+	{
+	  roleString = [folder roleForComponentsWithAccessClass: privacyFlag
+			       forUser: userLogin];
+	  hideDetails[privacyFlag] = ([roleString isEqualToString: @"ComponentDAndTViewer"]
+				      ? 1 : 0);
+	}
+      if (hideDetails[privacyFlag])
+	{
+	  [currentRecord setObject: [self labelForKey: @"(Private Event)"]
+			 forKey: @"title"];
+	  [currentRecord setObject: @"" forKey: @"location"];
+	}
+      currentRecord = [infos nextObject];
+    }
+}
+
 - (NSArray *) _fetchCoreInfosForComponent: (NSString *) component
 {
   NSArray *currentInfos;
@@ -517,6 +553,8 @@ static BOOL shouldDisplayWeekend = NO;
           [currentInfos makeObjectsPerform: @selector (setObject:forKey:)
                         withObject: [currentFolder ownerInContext: nil]
                         withObject: @"owner"];
+	  [self _updatePrivacyInObjects: currentInfos
+		fromFolder: currentFolder];
           [infos addObjectsFromArray: currentInfos];
           currentFolder = [folders nextObject];
         }

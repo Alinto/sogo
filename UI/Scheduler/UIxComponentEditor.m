@@ -830,6 +830,7 @@
   [component setLocation: location];
   [component setComment: comment];
   [component setUrl: url];
+  [component setAccessClass: privacy];
   [self _handleAttendeesEdition];
   [self _handleOrganizer];
   clientObject = [self clientObject];

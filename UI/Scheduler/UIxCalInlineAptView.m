@@ -284,23 +284,4 @@
   return userIsInTheCard;
 }
 
-- (BOOL) titleShouldBeHidden
-{
-  BOOL shouldBeHidden;
-  SOGoUser *user;
-  SOGoAuthenticator *sAuth;
-
-  sAuth = [SOGoAuthenticator sharedSOGoAuthenticator];
-  user = [sAuth userInContext: context];
-
-  if ([[appointment objectForKey: @"owner"] isEqualToString: [user login]]
-      || ([[appointment objectForKey: @"classification"] intValue]
-          != iCalAccessConfidential))
-    shouldBeHidden = NO;
-  else
-    shouldBeHidden = ![self _userIsInTheCard: [user email]];
-
-  return shouldBeHidden;
-}
-
 @end

@@ -46,6 +46,7 @@
 @class NSTimeZone;
 @class GCSFolder;
 
+#import <NGCards/iCalEntityObject.h>
 @interface SOGoAppointmentFolder : SOGoFolder
 {
   NSTimeZone *timeZone;
@@ -113,6 +114,9 @@
 - (NSArray *) fetchAllSOGoAppointments;
 
 - (NSArray *) calendarFolders;
+
+- (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
+					forUser: (NSString *) uid;
 
 @end
 

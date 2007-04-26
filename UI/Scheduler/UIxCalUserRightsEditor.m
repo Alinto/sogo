@@ -154,7 +154,7 @@
 - (NSArray *) rightTypes
 {
   return
-    [NSArray arrayWithObjects: @"Public", @"Private", @"Confidential", nil];
+    [NSArray arrayWithObjects: @"Public", @"Confidential", @"Private", nil];
 }
 
 - (void) setCurrentRightType: (NSString *) newCurrentRightType

@@ -268,12 +268,6 @@ static NSTimeZone *serverTimeZone = nil;
       if (sogoRoles)
         [rolesForObject addObjectsFromArray: sogoRoles];
     }
-  if ([object respondsToSelector: @selector (rolesOfUser:)])
-    {
-      sogoRoles = [object rolesOfUser: login];
-      if (sogoRoles)
-        [rolesForObject addObjectsFromArray: sogoRoles];
-    }
 
   return rolesForObject;
 }

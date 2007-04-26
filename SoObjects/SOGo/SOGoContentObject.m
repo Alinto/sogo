@@ -21,10 +21,10 @@
 
 #import <GDLContentStore/GCSFolder.h>
 
-#import <SOGo/SOGoUser.h>
-
 #import "common.h"
 #import "SOGoFolder.h"
+#import "SOGoUser.h"
+#import "SOGoPermissions.h"
 #import "SOGoContentObject.h"
 
 @interface SOGoContentObject(ETag)
@@ -234,24 +234,24 @@
 }
 
 /* security */
-- (NSArray *) rolesOfUser: (NSString *) login
-{
-  NSMutableArray *sogoRoles;
-  SOGoUser *user;
+// - (NSArray *) rolesOfUser: (NSString *) login
+// {
+//   NSMutableArray *sogoRoles;
+//   SOGoUser *user;
 
-  sogoRoles = [NSMutableArray new];
-  [sogoRoles autorelease];
+//   sogoRoles = [NSMutableArray new];
+//   [sogoRoles autorelease];
 
-  if (![container nameExistsInFolder: nameInContainer])
-    {
-      user = [[SOGoUser alloc] initWithLogin: login roles: nil];
-      [sogoRoles addObjectsFromArray: [user rolesForObject: container
-                                            inContext: context]];
-      [user release];
-    }
+//   if (![container nameExistsInFolder: nameInContainer])
+//     {
+//       user = [[SOGoUser alloc] initWithLogin: login roles: nil];
+//       [sogoRoles addObjectsFromArray: [user rolesForObject: container
+//                                             inContext: context]];
+//       [user release];
+//     }
 
-  return sogoRoles;
-}
+//   return sogoRoles;
+// }
 
 /* E-Tags */
 
@@ -314,8 +314,23 @@
 
 - (NSArray *) aclsForUser: (NSString *) uid
 {
-  return [container aclsForUser: uid
-                    forObjectAtPath: [self pathArrayToSoObject]];
+  NSMutableArray *acls;
+  NSArray *ownAcls, *containerAcls;
+
+  acls = [NSMutableArray array];
+  ownAcls = [container aclsForUser: uid
+		       forObjectAtPath: [self pathArrayToSoObject]];
+  [acls addObjectsFromArray: ownAcls];
+  containerAcls = [container aclsForUser: uid];
+  if ([containerAcls count] > 0)
+    {
+      if ([containerAcls containsObject: SOGoRole_ObjectCreator])
+	[acls addObject: SOGoRole_ObjectCreator];
+      if ([containerAcls containsObject: SOGoRole_ObjectEraser])
+	[acls addObject: SOGoRole_ObjectEraser];
+    }
+
+  return acls;
 }
 
 - (void) setRoles: (NSArray *) roles

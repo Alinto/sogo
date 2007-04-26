@@ -152,19 +152,19 @@ static BOOL kontactGroupDAV = YES;
   kontactGroupDAV = 
     [ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"] ? NO : YES;
 
-  /* SoClass security declarations */
+//   SoClass security declarations
   
-  /* require View permission to access the root (bound to authenticated ...) */
+//   require View permission to access the root (bound to authenticated ...)
   [[self soClassSecurityInfo] declareObjectProtected: SoPerm_View];
 
-  /* to allow public access to all contained objects (subkeys) */
+//   to allow public access to all contained objects (subkeys)
   [[self soClassSecurityInfo] setDefaultAccess: @"allow"];
   
-  /* require Authenticated role for View and WebDAV */
-  [[self soClassSecurityInfo] declareRole: SoRole_Owner
-                              asDefaultForPermission: SoPerm_View];
-  [[self soClassSecurityInfo] declareRole: SoRole_Owner
-                              asDefaultForPermission: SoPerm_WebDAVAccess];
+//   /* require Authenticated role for View and WebDAV */
+//   [[self soClassSecurityInfo] declareRole: SoRole_Owner
+//                               asDefaultForPermission: SoPerm_View];
+//   [[self soClassSecurityInfo] declareRole: SoRole_Owner
+//                               asDefaultForPermission: SoPerm_WebDAVAccess];
 }
 
 + (void) _fillDictionary: (NSMutableDictionary *) dictionary
