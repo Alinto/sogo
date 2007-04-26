@@ -15,39 +15,19 @@
         "View" = ( "Authenticated", "FreeBusy" );
       };
     };
-    SOGoUserFolder = {
-      superclass  = "SOGoFolder";
+    SOGoFolder = {
+      superclass = "SOGoObject";
       protectedBy = "<public>";
       defaultAccess = "allow";
       defaultRoles = {
-        "View" = ( "Owner" );
-      };
-      /* protectedBy = "HomePage Access"; */
-    };
-    SOGoFolder = {
-      superclass    = "SOGoObject";
-      protectedBy = "Access Contents Information";
-      defaultRoles = {
-        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
-        "View"          = ( "Owner", "Delegate", "Assistant" );
-        "WebDAV Access" = ( "Owner", "Delegate", "Assistant" );
-        "Access Contents Information" = ( "Owner", "Assistant", "Delegate" );
-        "ReadAcls" = ( "Owner", "Delegate", "Assistant" );
+        "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
+        "View" = ( "Owner", "AuthorizedSubscriber" );
+        "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
+        "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
         "SaveAcls" = ( "Owner" );
-        "Delete Objects" = ( "Owner", "Delegate" );
+        "Delete Objects" = ( "Owner", "ObjectEraser" );
       };
-    };
-    SOGoGroupsFolder = {
-      superclass    = "SOGoObject";
-      protectedBy = "View";
-    };
-    SOGoGroupFolder = {
-      superclass    = "SOGoObject";
-      protectedBy = "View";
-    };
-    SOGoCustomGroupFolder = {
-      superclass = "SOGoGroupFolder";
-      protectedBy = "View";
     };
   };
 

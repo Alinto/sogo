@@ -60,27 +60,27 @@
       SOGoFolder = {
 	 methods = {
 	    subscribe = {
-	       protectedBy = "View";
+	       protectedBy = "<public>";
 	       actionClass = "UIxFolderActions";
 	       actionName = "subscribe";
 	    };
 	    unsubscribe = {
-	       protectedBy = "View";
+	       protectedBy = "<public>";
 	       actionClass = "UIxFolderActions";
 	       actionName = "unsubscribe";
 	    };
 	    canAccessContent = {
-	       protectedBy = "View";
+	       protectedBy = "<public>";
 	       actionClass = "UIxFolderActions";
 	       actionName = "canAccessContent";
 	    };
             activateFolder = {
-	       protectedBy = "View";
+	       protectedBy = "<public>";
 	       actionClass = "UIxFolderActions";
 	       actionName = "activateFolder";
             };
             deactivateFolder = {
-	       protectedBy = "View";
+	       protectedBy = "<public>";
 	       actionClass = "UIxFolderActions";
 	       actionName  = "deactivateFolder";
             };

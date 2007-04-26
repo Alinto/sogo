@@ -9,35 +9,40 @@
   
   classes = {
     SOGoAppointmentFolder = {
-      superclass    = "SOGoFolder";
+      superclass = "SOGoFolder";
       defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Assistant" );
-        "FreeBusyLookup" = ( "Owner", "Delegate", "Assistant", "FreeBusy" );
-        "Add Documents, Images, and Files" = ( "Owner", "Delegate" );
-        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
-        "Delete Objects" = ( "Owner", "Organizer", "Delegate" );
+        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );
+	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
+	"ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
+	"ModifyPublicRecords" = ( "Owner", "PublicModifier" );
+	"RespondToPublicRecords" = ( "Owner", "PublicModifier", "PublicResponder" );
+	"ViewWholePrivateRecords" = ( "Owner", "PrivateResponder", "PrivateModifier", "PrivateViewer" );
+	"ViewDAndTOfPrivateRecords" = ( "Owner", "PrivateDAndTViewer" );
+	"ModifyPrivateRecords" = ( "Owner", "PrivateModifier" );
+	"RespondToPrivateRecords" = ( "Owner", "PrivateModifier", "PrivateResponder" );
+	"ViewWholeConfidentialRecords" = ( "Owner", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer" );
+	"ViewDAndTOfConfidentialRecords" = ( "Owner", "ConfidentialDAndTViewer" );
+	"ModifyConfidentialRecords" = ( "Owner", "ConfidentialModifier" );
+	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
       };
     };
-
     SOGoGroupAppointmentFolder = {
       superclass    = "SOGoAppointmentFolder";
     };
-
-    SOGoAppointmentObject = {
+    SOGoCalendarComponent = {
       superclass    = "SOGoContentObject";
       defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
-        "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
-        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
+	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentViewer", "ComponentModifier" );
+	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
+	"ModifyComponent" = ( "Owner", "ComponentModifier" );
+	"RespondToComponent" = ( "Participant", "ComponentResponder" );
       };
     };
+    SOGoAppointmentObject = {
+      superclass    = "SOGoCalendarComponent";
+    };
     SOGoTaskObject = {
-      superclass    = "SOGoContentObject";
-      defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
-        "Change Images and Files" = ( "Owner", "Delegate", "Organizer" );
-        "Access Contents Information" = ( "Owner", "Delegate", "Assistant" );
-      };
+      superclass    = "SOGoCalendarComponent";
     };
     SOGoFreeBusyObject = {
       superclass    = "SOGoContentObject";

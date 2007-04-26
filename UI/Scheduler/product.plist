@@ -111,11 +111,13 @@
           pageName    = "UIxCalUserRightsEditor";
         };
         saveUserRights = {
-	  protectedBy = "ReadAcls";
+	  protectedBy = "SaveAcls";
 	  pageName    = "UIxCalUserRightsEditor";
-	  actionName = "saveUserRights";
+	  actionName  = "saveUserRights";
 	};
       };
+    };
+    SOGoCalendarComponent = {
     };
 
     SOGoAppointmentObject = {
@@ -127,46 +129,41 @@
       };
       methods = {
         view = { 
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxAppointmentView"; 
         };
         delete = { 
-          protectedBy = "View";
+          protectedBy = "Delete Objects";
           pageName    = "UIxAppointmentView"; 
           actionName  = "delete";
         };
         edit = {
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxAppointmentEditor"; 
         };
         editAsAppointment = { 
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxAppointmentEditor"; 
         };
         save = { 
-          protectedBy = "View";
+          protectedBy = "ModifyComponent";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "save";
         };
         saveAsAppointment = {
-          protectedBy = "View";
+          protectedBy = "ModifyComponent";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "save";
         };
         accept = { 
-          protectedBy = "View";
+          protectedBy = "RespondToComponent";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "accept";
         };
         decline = { 
-          protectedBy = "View";
+          protectedBy = "RespondToComponent";
           pageName    = "UIxAppointmentEditor"; 
           actionName  = "decline";
-        };
-        test = { 
-          protectedBy = "View";
-          pageName    = "UIxAppointmentEditor"; 
-          actionName  = "test";
         };
       };
     };
@@ -180,51 +177,46 @@
       };
       methods = {
         view = { 
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxTaskView"; 
         };
         delete = { 
-          protectedBy = "View";
+          protectedBy = "Delete Objects";
           pageName    = "UIxTaskView"; 
           actionName  = "delete";
         };
         edit = { 
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxTaskEditor"; 
         };
         editAsTask = { 
-          protectedBy = "View";
+          protectedBy = "ViewAllComponent";
           pageName    = "UIxTaskEditor"; 
         };
         save = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "ModifyComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "save";
         };
         saveAsTask = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "ModifyComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "save";
         };
         changeStatus = {
-          protectedBy = "Change Images and Files";
+          protectedBy = "ModifyComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "changeStatus";
         };
         accept = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "RespondToComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "accept";
         };
         decline = { 
-          protectedBy = "Change Images and Files";
+          protectedBy = "RespondToComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "decline";
-        };
-        test = { 
-          protectedBy = "View";
-          pageName    = "UIxTaskEditor"; 
-          actionName  = "test";
         };
       };
     };
