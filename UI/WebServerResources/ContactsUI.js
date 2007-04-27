@@ -3,6 +3,9 @@
 var cachedContacts = new Array();
 var currentContactFolder = '/personal';
 
+var usersRightsWindowHeight = 180;
+var usersRightsWindowWidth = 450;
+
 function openContactWindow(sender, url) {
   var msgWin = window.open(url, null, "width=450,height=600,resizable=0");
   msgWin.focus();

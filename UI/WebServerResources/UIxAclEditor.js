@@ -71,10 +71,10 @@ function openRightsForUser(button) {
     elements[elements.length-1] = ("userRights?uid="
                                    + nodes[0].getAttribute("id"));
 
-			   
-
     window.open(elements.join("/"), "",
-		"width=502,height=250,resizable=0,scrollbars=0,toolbar=0,"
+		"width=" + this.userRightsWidth
+		+ ",height=" + this.userRightsHeight
+		+ ",resizable=0,scrollbars=0,toolbar=0,"
 		+ "location=0,directories=0,status=0,menubar=0,copyhistory=0");
   }
 
@@ -98,6 +98,9 @@ function onAclLoadHandler() {
   var buttons = $("userSelectorButtons").childNodesWithTag("a");
   buttons[0].addEventListener("click", onUserAdd, false);
   buttons[1].addEventListener("click", onUserRemove, false);
+
+  this.userRightsHeight = window.opener.getUsersRightsWindowHeight();
+  this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
 }
 
 window.addEventListener("load", onAclLoadHandler, false);

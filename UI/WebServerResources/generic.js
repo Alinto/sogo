@@ -836,7 +836,8 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 							    rfCbData);
    }
    else
-      window.alert(labels["You cannot subscribe to a folder that you own!"].decodeEntities());
+      window.alert(labels["You cannot subscribe to a folder that you own!"]
+		   .decodeEntities());
 }
 
 function folderUnsubscriptionCallback(http) {
@@ -853,7 +854,8 @@ function folderUnsubscriptionCallback(http) {
 
 function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
    if (document.body.hasClassName("popup")) {
-      window.opener.unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData);
+      window.opener.unsubscribeFromFolder(folder, refreshCallback,
+					  refreshCallbackData);
    }
    else {
       var folderData = folder.split(":");
@@ -867,9 +869,9 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 	    document.unsubscriptionAjaxRequest.abort();
 	 }
 	 var rfCbData = { method: refreshCallback, data: refreshCallbackData };
-	 document.unsubscriptionAjaxRequest = triggerAjaxRequest(url,
-								 folderUnsubscriptionCallback,
-								 rfCbData);
+	 document.unsubscriptionAjaxRequest
+	    = triggerAjaxRequest(url, folderUnsubscriptionCallback,
+				 rfCbData);
       }
       else
 	 window.alert(labels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
@@ -944,6 +946,14 @@ function openAclWindow(url) {
   w.focus();
 
   return w;
+}
+
+function getUsersRightsWindowHeight() {
+   return usersRightsWindowHeight;
+}
+
+function getUsersRightsWindowWidth() {
+   return usersRightsWindowWidth;
 }
 
 function onTabClick(event) {
@@ -1023,15 +1033,14 @@ function indexColor(number) {
     
     var currentValue = number;
     var index = 0;
-    while (currentValue)
-      {
-        if (currentValue & 1)
+    while (currentValue) {
+       if (currentValue & 1)
           colorTable[index]++;
-      if (index == 3)
-        index = 0;
-      currentValue >>= 1;
-      index++;
-      }
+       if (index == 3)
+	  index = 0;
+       currentValue >>= 1;
+       index++;
+    }
     
     color = ("#"
              + d2h((256 / colorTable[2]) - 1)

@@ -19,6 +19,9 @@ var contactSelectorAction = 'calendars-contacts';
 var eventsToDelete = new Array();
 var ownersOfEventsToDelete = new Array();
 
+var usersRightsWindowHeight = 250;
+var usersRightsWindowWidth = 502;
+
 function newEvent(sender, type) {
   var day = sender.getAttribute("day");
   if (!day)
