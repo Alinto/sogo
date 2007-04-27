@@ -203,6 +203,11 @@
   return @"text/x-vcard";
 }
 
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
+}
+
 - (void) save
 {
 }
