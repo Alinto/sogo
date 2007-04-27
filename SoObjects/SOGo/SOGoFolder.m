@@ -31,65 +31,90 @@
 #import <unistd.h>
 #import <stdlib.h>
 
+static NSString *defaultUser = @"<default>";
+
 @implementation SOGoFolder
 
-+ (int)version {
++ (int) version
+{
   return [super version] + 0 /* v0 */;
 }
-+ (void)initialize {
+
++ (void) initialize
+{
   NSAssert2([super version] == 0,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
 }
 
-+ (NSString *)globallyUniqueObjectId {
++ (NSString *) globallyUniqueObjectId
+{
   /*
     4C08AE1A-A808-11D8-AC5A-000393BBAFF6
     SOGo-Web-28273-18283-288182
     printf( "%x", *(int *) &f);
   */
-  static int   pid = 0;
-  static int   sequence = 0;
+  static int pid = 0;
+  static int sequence = 0;
   static float rndm = 0;
   float f;
 
-  if (pid == 0) { /* break if we fork ;-) */
-    pid = getpid();
-    rndm = random();
-  }
+  if (pid == 0)
+    { /* break if we fork ;-) */
+      pid = getpid();
+      rndm = random();
+    }
   sequence++;
   f = [[NSDate date] timeIntervalSince1970];
   return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
 		   pid, *(int *)&f, sequence++, random];
 }
 
-- (void)dealloc {
-  [self->ocsFolder release];
-  [self->ocsPath   release];
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      ocsPath = nil;
+      ocsFolder = nil;
+      aclCache = [NSMutableDictionary new];
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [ocsFolder release];
+  [ocsPath release];
+  [aclCache release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (BOOL)isFolderish {
+- (BOOL) isFolderish
+{
   return YES;
 }
 
-- (void)setOCSPath:(NSString *)_path {
-  if ([self->ocsPath isEqualToString:_path])
+- (void) setOCSPath: (NSString *) _path
+{
+  if ([ocsPath isEqualToString:_path])
     return;
   
-  if (self->ocsPath)
+  if (ocsPath)
     [self warnWithFormat:@"GCS path is already set! '%@'", _path];
   
-  ASSIGNCOPY(self->ocsPath, _path);
+  ASSIGNCOPY(ocsPath, _path);
 }
 
-- (NSString *)ocsPath {
-  return self->ocsPath;
+- (NSString *) ocsPath
+{
+  return ocsPath;
 }
 
-- (GCSFolderManager *)folderManager {
+- (GCSFolderManager *) folderManager
+{
   static GCSFolderManager *folderManager = nil;
 
   if (!folderManager)
@@ -101,11 +126,13 @@
   return folderManager;
 }
 
-- (GCSFolder *)ocsFolderForPath:(NSString *)_path {
+- (GCSFolder *) ocsFolderForPath: (NSString *) _path
+{
   return [[self folderManager] folderAtPath:_path];
 }
 
-- (GCSFolder *) ocsFolder {
+- (GCSFolder *) ocsFolder
+{
   GCSFolder *folder;
 
   if (!ocsFolder)
@@ -241,7 +268,6 @@
 
 /* acls as a container */
 
-#warning we should cache those data to avoid numerous accesses to the database
 - (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
 {
   EOQualifier *qualifier;
@@ -254,8 +280,8 @@
   return [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 }
 
-- (NSArray *) aclsForUser: (NSString *) uid
-          forObjectAtPath: (NSArray *) objectPathArray
+- (NSArray *) _fetchAclsForUser: (NSString *) uid
+		forObjectAtPath: (NSString *) objectPath
 {
   EOQualifier *qualifier;
   NSArray *records;
@@ -263,7 +289,7 @@
   NSString *qs;
 
   qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@')",
-		 [objectPathArray componentsJoinedByString: @"/"], uid];
+		 objectPath, uid];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 
@@ -277,18 +303,67 @@
   return acls;
 }
 
+- (void) _cacheRoles: (NSArray *) roles
+	     forUser: (NSString *) uid
+     forObjectAtPath: (NSString *) objectPath
+{
+  NSMutableDictionary *aclsForObject;
+
+  aclsForObject = [aclCache objectForKey: objectPath];
+  if (!aclsForObject)
+    {
+      aclsForObject = [NSMutableDictionary dictionary];
+      [aclCache setObject: aclsForObject
+		forKey: objectPath];
+    }
+  if (roles)
+    [aclsForObject setObject: roles forKey: uid];
+  else
+    [aclsForObject removeObjectForKey: uid];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  NSArray *acls;
+  NSString *objectPath;
+  NSDictionary *aclsForObject;
+
+  objectPath = [objectPathArray componentsJoinedByString: @"/"];
+  aclsForObject = [aclCache objectForKey: objectPath];
+  if (aclsForObject)
+    acls = [aclsForObject objectForKey: uid];
+  else
+    acls = nil;
+  if (!acls)
+    {
+      acls = [self _fetchAclsForUser: uid forObjectAtPath: objectPath];
+      [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
+    }
+
+  if (!([acls count] || [uid isEqualToString: defaultUser]))
+    acls = [self aclsForUser: defaultUser forObjectAtPath: objectPathArray];
+
+  return acls;
+}
+
 - (void) removeAclsForUsers: (NSArray *) users
             forObjectAtPath: (NSArray *) objectPathArray
 {
   EOQualifier *qualifier;
-  NSString *uids, *qs;
+  NSString *uids, *qs, *objectPath;
+  NSMutableDictionary *aclsForObject;
 
   if ([users count] > 0)
     {
+      objectPath = [objectPathArray componentsJoinedByString: @"/"];
+      aclsForObject = [aclCache objectForKey: objectPath];
+      if (aclsForObject)
+	[aclsForObject removeObjectsForKeys: users];
       uids = [users componentsJoinedByString: @"') OR (c_uid = '"];
       qs = [NSString
 	     stringWithFormat: @"(c_object = '/%@') AND ((c_uid = '%@'))",
-	     [objectPathArray componentsJoinedByString: @"/"], uids];
+	     objectPath, uids];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
       [[self ocsFolder] deleteAclMatchingQualifier: qualifier];
     }
@@ -301,13 +376,15 @@
   EOAdaptorChannel *channel;
   GCSFolder *folder;
   NSEnumerator *userRoles;
-  NSString *SQL, *currentRole;
+  NSString *SQL, *currentRole, *objectPath;
 
   [self removeAclsForUsers: [NSArray arrayWithObject: uid]
         forObjectAtPath: objectPathArray];
+  objectPath = [objectPathArray componentsJoinedByString: @"/"];
+  [self _cacheRoles: roles forUser: uid forObjectAtPath: objectPath];
+
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
-
   userRoles = [roles objectEnumerator];
   currentRole = [userRoles nextObject];
   while (currentRole)
@@ -316,9 +393,9 @@
 	{
 	  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
 			  @" (c_object, c_uid, c_role)"
-			  @" VALUES ('/%@', '%@', '%@')", [folder aclTableName],
-			  [objectPathArray componentsJoinedByString: @"/"],
-			  uid, currentRole];
+			  @" VALUES ('/%@', '%@', '%@')",
+			  [folder aclTableName],
+			  objectPath, uid, currentRole];
 	  [channel evaluateExpressionX: SQL];
 	}
       currentRole = [userRoles nextObject];
@@ -361,7 +438,8 @@
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection
+{
   return [self isFolderish];
 }
 

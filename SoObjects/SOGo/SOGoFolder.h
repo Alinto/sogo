@@ -37,10 +37,15 @@
              cyclic references.
 */
 
+@class NSString;
+@class GCSFolder;
+@class NSMutableDictionary;
+
 @interface SOGoFolder : SOGoObject
 {
   NSString  *ocsPath;
   GCSFolder *ocsFolder;
+  NSMutableDictionary *aclCache;
 }
 
 + (NSString *) globallyUniqueObjectId;
