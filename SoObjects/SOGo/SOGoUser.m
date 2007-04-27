@@ -185,10 +185,8 @@ static NSTimeZone *serverTimeZone = nil;
       timeZoneName = [[self userDefaults] stringForKey: @"TimeZone"];
       if ([timeZoneName length] > 0)
 	userTimeZone = [NSTimeZone timeZoneWithName: timeZoneName];
-      else
-	userTimeZone = nil;
       if (!userTimeZone)
-	userTimeZone = [self serverTimeZone];
+	userTimeZone = serverTimeZone;
       [userTimeZone retain];
     }
 
