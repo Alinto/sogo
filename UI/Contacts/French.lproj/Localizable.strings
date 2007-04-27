@@ -12,6 +12,7 @@
 
 "Address Books"      = "Carnet d'adresses";
 "Addresses"         = "Adresses";
+"Update" = "Mettre à jour";
 "Cancel"            = "Annuler";
 "Common"            = "Identité";
 "Contact editor"    = "Éditer le contact";
@@ -113,3 +114,14 @@
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier!";
+
+"User rights for:" = "Autorisations pour :";
+
+"This person can add cards to this addressbook."
+= "Cette personne peut ajouter des fiches à ce carnet d'adresses.";
+"This person can edit the cards of this addressbook."
+= "Cette personne peut éditer des fiches de ce carnet d'adresses.";
+"This person can view the cards of this addressbook."
+= "Cette personne peut visionner des fiches de ce carnet d'adresses.";
+"This person can erase cards from this addressbook."
+= "Cette personne peut effacer des fiches de ce carnet d'adresses.";

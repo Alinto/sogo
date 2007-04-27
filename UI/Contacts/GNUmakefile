@@ -11,6 +11,7 @@ ContactsUI_LANGUAGES = English French
 ContactsUI_OBJC_FILES =			\
 	UIxContactsUserFolders.m \
 	UIxContactsMailerSelection.m	\
+	UIxContactsUserRightsEditor.m	\
 	\
 	ContactsUIProduct.m		\
 	UIxContactsFilterPanel.m	\

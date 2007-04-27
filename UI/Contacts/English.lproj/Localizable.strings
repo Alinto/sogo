@@ -2,6 +2,7 @@
 
 "Addressbook" = "Addressbook";
 "Addresses" = "Addresses";
+"Update" = "Update";
 "Cancel" = "Cancel";
 "Common" = "Common";
 "Contact editor" = "Contact editor";
@@ -100,3 +101,14 @@
 = "You cannot subscribe to a folder that you own!";
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder!";
+
+"User rights for:" = "User rights for:";
+
+"This person can add cards to this addressbook."
+= "This person can add cards to this addressbook.";
+"This person can edit the cards of this addressbook."
+= "This person can edit the cards of this addressbook.";
+"This person can view the cards of this addressbook."
+= "This person can view the cards of this addressbook.";
+"This person can erase cards from this addressbook."
+= "This person can erase cards from this addressbook.";

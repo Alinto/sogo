@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="title"
+  const:toolbar="none"
+  const:popup="YES">
+  <form id="userRightsForm" const:href="saveUserRights">
+    <input type="hidden" name="uid" var:value="uid"/>
+    <div class="title">
+      <label><var:string label:value="User rights for:"/><br/>
+	<span class="value"><var:string value="userDisplayName"/></span></label>
+    </div>
+    <div class="calendarUserRights">
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectCreator"
+	  var:checked="userCanCreateObjects"/><var:string
+	  label:value="This person can add cards to this addressbook."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectEditor"
+	  var:checked="userCanEditObjects"/><var:string
+	  label:value="This person can edit the cards of this addressbook."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectViewer"
+	  var:checked="userCanViewObjects"/><var:string
+	  label:value="This person can view the cards of this addressbook."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectEraser"
+	  var:checked="userCanEraseObjects"/><var:string
+	  label:value="This person can erase cards from this addressbook."/></label>
+    </div>
+    <div class="buttons">
+      <input const:name="updateButton" id="updateButton"
+	class="button" type="submit" label:value="Update"/>
+      <input const:name="cancelButton" id="cancelButton"
+	class="button" type="button" label:value="Cancel"/>
+    </div>
+  </form>
+</var:component>

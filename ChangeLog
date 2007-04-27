@@ -1,5 +1,11 @@
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsUserRightsEditor.m
+	([UIxContactsUserRightsEditor
+	-setUserCanCreateObjects:userCanCreateObjects]): new subclass
+	module to handle acls related to the address books. Partial
+	implementation.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]): cache
 	newly set roles.

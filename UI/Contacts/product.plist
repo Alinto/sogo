@@ -76,7 +76,7 @@
               pageName    = "UIxContactsListView";
            };
            new = {
-              protectedBy = "View";
+              protectedBy = "Add Documents, Images, and Files";
               pageName    = "UIxContactEditor";
               actionName  = "new";
            };
@@ -86,9 +86,18 @@
               actionName  = "mailerContacts";
            };
 	   delete = {
-              protectedBy = "View";
+              protectedBy = "SaveAcls"; /* a hack to force "owner" */
               pageName    = "UIxContactsListView";
               actionName  = "delete";
+	   };
+	   userRights = {
+	      protectedBy = "ReadAcls";
+	      pageName    = "UIxContactsUserRightsEditor";
+	   };
+	   saveUserRights = {
+	      protectedBy = "SaveAcls";
+	      pageName    = "UIxContactsUserRightsEditor";
+	      actionName  = "saveUserRights";
 	   };
         };
      };
@@ -126,20 +135,20 @@
      SOGoContactGCSEntry = {
         methods = {
            view = {
-              protectedBy = "View";
+              protectedBy = "Access Contents Information";
               pageName    = "UIxContactView";
            };
            delete = {
-              protectedBy = "View";
+              protectedBy = "Delete Objects";
               pageName    = "UIxContactView";
               actionName  = "delete";
            };
            edit = {
-              protectedBy = "View";
+              protectedBy = "Change Images And Files";
               pageName    = "UIxContactEditor";
            };
            save = {
-              protectedBy = "View";
+              protectedBy = "Change Images And Files";
               pageName    = "UIxContactEditor";
               actionName  = "save";
            };
@@ -147,11 +156,6 @@
               protectedBy = "View";
               pageName    = "UIxContactEditor";
               actionName  = "write";
-           };
-           vcard = {
-              protectedBy = "View";
-              pageName    = "UIxContactView";
-              actionName  = "vcard";
            };
         };
      };
@@ -180,11 +184,6 @@
               protectedBy = "View";
               pageName    = "UIxContactEditor";
               actionName  = "write";
-           };
-           vcard = {
-              protectedBy = "View";
-              pageName    = "UIxContactView";
-              actionName  = "vcard";
            };
         };
      };
