@@ -29,6 +29,8 @@
 
 extern NSString *SOGoRole_ObjectCreator;
 extern NSString *SOGoRole_ObjectEraser;
+extern NSString *SOGoRole_ObjectViewer;
+extern NSString *SOGoRole_ObjectEditor;
 extern NSString *SOGoRole_AuthorizedSubscriber;
 
 extern NSString *SOGoRole_FreeBusy;
