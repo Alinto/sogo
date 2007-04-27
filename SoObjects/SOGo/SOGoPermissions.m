@@ -25,6 +25,8 @@
 /* General */
 NSString *SOGoRole_ObjectCreator = @"ObjectCreator";
 NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
+NSString *SOGoRole_ObjectViewer = @"ObjectViewer";
+NSString *SOGoRole_ObjectEditor = @"ObjectEditor";
 NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
 
 NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
@@ -58,7 +60,6 @@ NSString *SOGoCalendarRole_ComponentModifier = @"ComponentModifier";
 NSString *SOGoCalendarRole_ComponentResponder = @"ComponentResponder";
 
 /* permissions */
-#warning ReadAcls still not used...
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
                                               currently missing from SOPE */

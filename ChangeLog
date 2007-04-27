@@ -1,5 +1,8 @@
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoPermissions.m: added "SOGoRole_ObjectViewer"
+	and "SOGoRole_ObjectEditor".
+
 	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor
 	-prepareRightsForm]): this method is no longer mandatory.
 
