@@ -22,7 +22,8 @@
       defaultRoles = {
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "View" = ( "Owner", "AuthorizedSubscriber" );
-        "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer", "AuthorizedSubscriber" );
+	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
         "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
         "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
         "SaveAcls" = ( "Owner" );
