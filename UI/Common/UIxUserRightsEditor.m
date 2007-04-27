@@ -152,7 +152,6 @@
 
 - (void) prepareRightsForm
 {
-  [self subclassResponsibility: _cmd];
 }
 
 - (void) updateRights

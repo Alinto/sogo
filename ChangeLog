@@ -1,5 +1,8 @@
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor
+	-prepareRightsForm]): this method is no longer mandatory.
+
 	* UI/Contacts/UIxContactsUserRightsEditor.m
 	([UIxContactsUserRightsEditor
 	-setUserCanCreateObjects:userCanCreateObjects]): new subclass
