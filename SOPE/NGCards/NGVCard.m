@@ -297,15 +297,7 @@
 
 - (NSArray *) n
 {
-  NSArray *elements, *n;
-
-  elements = [self childrenWithTag: @"n"];
-  if ([elements count] > 0)
-    n = [[elements objectAtIndex: 0] values];
-  else
-    n = nil;
-
-  return n;
+  return [[self uniqueChildWithTag: @"n"] values];
 }
 
 - (void) setOrg: (NSString *) anOrg
