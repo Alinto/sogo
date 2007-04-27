@@ -382,19 +382,28 @@ static BOOL kontactGroupDAV = YES;
 }
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
-  if ((self = [super init])) {
-    context = [[WOApplication application] context];
-    [context retain];
-    nameInContainer = [_name copy];
-    container = 
-      [self doesRetainContainer] ? [_container retain] : _container;
-    customOwner = nil;
-  }
+  if ((self = [self init]))
+    {
+      context = [[WOApplication application] context];
+      [context retain];
+      nameInContainer = [_name copy];
+      container = 
+	[self doesRetainContainer] ? [_container retain] : _container;
+      customOwner = nil;
+    }
+
   return self;
 }
 
-- (id)init {
-  return [self initWithName:nil inContainer:nil];
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      nameInContainer = nil;
+      container = nil;
+    }
+
+  return self;
 }
 
 - (void)dealloc {

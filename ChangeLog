@@ -1,5 +1,10 @@
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -init]): do not invoke
+	initWithName:inContainer:. Instead, directly initialize the ivars
+	as it is supposed to be to avoid an infinite loop whenever one of
+	those two methods are overriden.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([-rolesOfUser:login]):
 	removed method.
 
