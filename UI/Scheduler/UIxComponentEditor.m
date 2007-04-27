@@ -184,7 +184,11 @@
 
 - (NSString *) itemPrivacyText
 {
-  return [self labelForKey: [NSString stringWithFormat: @"privacy_%@", item]];
+  NSString *tag;
+
+  tag = [[self clientObject] componentTag];
+
+  return [self labelForKey: [NSString stringWithFormat: @"%@_%@", item, tag]];
 }
 
 - (NSString *) itemStatusText
@@ -323,11 +327,6 @@
     }
 
   return calendarList;
-}
-
-- (NSString *) itemCalendarText
-{
-  return item;
 }
 
 - (NSString *) calendarsFoldersList

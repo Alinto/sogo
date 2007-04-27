@@ -1,5 +1,3 @@
-window.addEventListener("load", onComponentEditorLoad, false);
-
 function onPopupAttendeesWindow(event) {
    if (event)
       event.preventDefault();
@@ -51,16 +49,14 @@ function onPopupDocumentWindow(event) {
    return false;
 }
 
-function onMenuSetClassification(event, classification) {
+function onMenuSetClassification(event) {
    event.cancelBubble = true;
 
-   var node = event.target;
-   if (node.tagName != "LI")
-      node = node.getParentWithTagName("li");
-   if (node.parentNode.chosenNode)
-      node.parentNode.chosenNode.removeClassName("_chosen");
-   node.addClassName("_chosen");
-   node.parentNode.chosenNode = node;
+   var classification = this.getAttribute("classification");
+   if (this.parentNode.chosenNode)
+      this.parentNode.chosenNode.removeClassName("_chosen");
+   this.addClassName("_chosen");
+   this.parentNode.chosenNode = this;
 
    log("classification: " + classification);
    var privacyInput = document.getElementById("privacy");
@@ -157,4 +153,10 @@ function onComponentEditorLoad(event) {
    var onSelectionChangeEvent = document.createEvent("Event");
    onSelectionChangeEvent.initEvent("change", false, false);
    list.dispatchEvent(onSelectionChangeEvent);
+
+   var menuItems = $("itemPrivacyList").childNodesWithTag("li");
+   for (var i = 0; i < menuItems.length; i++)
+      menuItems[i].addEventListener("mouseup", onMenuSetClassification, false);
 }
+
+window.addEventListener("load", onComponentEditorLoad, false);

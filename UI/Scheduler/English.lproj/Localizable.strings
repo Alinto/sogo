@@ -240,9 +240,12 @@
 "prio_9" = "Low";
 
 /* access classes (privacy) */
-"privacy_PUBLIC" = "Public";
-"privacy_CONFIDENTIAL" = "Confidential";
-"privacy_PRIVATE" = "Private";
+"PUBLIC_vevent" = "Public Event";
+"CONFIDENTIAL_vevent" = "Confidential Event";
+"PRIVATE_vevent" = "Private Event";
+"PUBLIC_vtodo" = "Public Task";
+"CONFIDENTIAL_vtodo" = "Confidential Task";
+"PRIVATE_vtodo" = "Private Task";
 
 /* status type */
 "status_" = "Not specified";

@@ -15,13 +15,11 @@
   <script type="text/javascript" rsrc:src="UIxComponentEditor.js"><!-- space --></script>
 
   <div class="menu" id="privacy-menu">
-    <ul id="">
-      <li onmouseup="onMenuSetClassification(event, 'PUBLIC');"><var:string
-          label:value="Public Event" /></li>
-      <li onmouseup="onMenuSetClassification(event, 'CONFIDENTIAL');"><var:string
-          label:value="Show Time and Date Only" /></li>
-      <li onmouseup="onMenuSetClassification(event, 'PRIVATE');"><var:string
-          label:value="Private Event" /></li>
+    <ul id="itemPrivacyList">
+      <var:foreach list="privacyClasses" item="item">
+	<li var:classification="item"><var:string
+	    var:value="itemPrivacyText" /></li>
+      </var:foreach>
     </ul>
   </div>
 

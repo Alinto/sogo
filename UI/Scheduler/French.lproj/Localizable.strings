@@ -238,9 +238,12 @@
 "prio_9" = "Basse";
 
 /* access classes (privacy) */
-"privacy_PUBLIC" = "Public";
-"privacy_CONFIDENTIAL" = "Date et heure seulement";
-"privacy_PRIVATE" = "Privé";
+"PUBLIC_vevent" = "Événement public";
+"CONFIDENTIAL_vevent" = "Événement confidentiel";
+"PRIVATE_vevent" = "Événement privé";
+"PUBLIC_vtodo" = "Tâche publique";
+"CONFIDENTIAL_vtodo" = "Tâche confidentielle";
+"PRIVATE_vtodo" = "Tâche privée";
 
 /* status type */
 "status_" = "Non-spécifié";
