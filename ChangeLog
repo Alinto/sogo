@@ -1,3 +1,9 @@
+2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
+	-aclsForUser:uid]): override method so that SOGo won't crash when
+	loading the contact card.
+
 2007-04-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
