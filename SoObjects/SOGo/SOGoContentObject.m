@@ -64,16 +64,22 @@
   ASSIGNCOPY(ocsPath, _path);
 }
 
-- (NSString *)ocsPath {
-  if (ocsPath == nil) {
-    NSString *p;
+- (NSString *) ocsPath
+{
+  NSString *p;
     
-    if ((p = [self ocsPathOfContainer]) != nil) {
-      if (![p hasSuffix:@"/"]) p = [p stringByAppendingString:@"/"];
-      p = [p stringByAppendingString:[self nameInContainer]];
-      ocsPath = [p copy];
+  if (!ocsPath)
+    {
+      p = [self ocsPathOfContainer];
+      if (p)
+	{
+	  if (![p hasSuffix:@"/"])
+	    p = [p stringByAppendingString: @"/"];
+	  ocsPath = [p stringByAppendingString: [self nameInContainer]];
+	  [ocsPath retain];
+	}
     }
-  }
+
   return ocsPath;
 }
 
@@ -233,48 +239,37 @@
   return [_ctx response];
 }
 
-/* security */
-// - (NSArray *) rolesOfUser: (NSString *) login
-// {
-//   NSMutableArray *sogoRoles;
-//   SOGoUser *user;
-
-//   sogoRoles = [NSMutableArray new];
-//   [sogoRoles autorelease];
-
-//   if (![container nameExistsInFolder: nameInContainer])
-//     {
-//       user = [[SOGoUser alloc] initWithLogin: login roles: nil];
-//       [sogoRoles addObjectsFromArray: [user rolesForObject: container
-//                                             inContext: context]];
-//       [user release];
-//     }
-
-//   return sogoRoles;
-// }
-
 /* E-Tags */
 
-- (id)davEntityTag {
+- (id) davEntityTag
+{
   // TODO: cache tag in ivar? => if you do, remember to flush after PUT
   GCSFolder *folder;
   char buf[64];
+  NSString *entityTag;
+  NSNumber *versionValue;
   
-  if ((folder = [self ocsFolder]) == nil) {
-    [self errorWithFormat:@"Did not find folder of content object."];
-    return nil;
-  }
-  
-  sprintf(buf, "\"gcs%08d\"",
-	  [[folder versionOfContentWithName:[self nameInContainer]]
-	    unsignedIntValue]);
-  return [NSString stringWithCString:buf];
+  folder = [self ocsFolder];
+  if (folder)
+    {
+      versionValue = [folder versionOfContentWithName: [self nameInContainer]];
+      sprintf (buf, "\"gcs%08d\"", [versionValue unsignedIntValue]);
+      entityTag = [NSString stringWithCString: buf];
+    }
+  else
+    {
+      [self errorWithFormat:@"Did not find folder of content object."];
+      entityTag = nil;
+    }
+
+  return entityTag;
 }
 
 /* WebDAV */
 
-- (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+- (NSException *) davMoveToTargetObject: (id) _target
+				newName: (NSString *) _name
+			      inContext: (id) _ctx
 {
   /*
     Note: even for new objects we won't get a new name but a preinstantiated
@@ -287,8 +282,9 @@
                       reason:@"this object cannot be copied via WebDAV"];
 }
 
-- (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+- (NSException *) davCopyToTargetObject: (id)_target
+				newName: (NSString *) _name
+			      inContext: (id) _ctx
 {
   /*
     Note: even for new objects we won't get a new name but a preinstantiated
@@ -349,13 +345,15 @@
 
 /* message type */
 
-- (NSString *)outlookMessageClass {
+- (NSString *) outlookMessageClass
+{
   return nil;
 }
 
 /* description */
 
-- (void)appendAttributesToDescription:(NSMutableString *)_ms {
+- (void) appendAttributesToDescription: (NSMutableString *) _ms
+{
   [super appendAttributesToDescription:_ms];
   
   [_ms appendFormat:@" ocs=%@", [self ocsPath]];
