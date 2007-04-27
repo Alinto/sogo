@@ -1,5 +1,8 @@
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([-rolesOfUser:login]):
+	removed method.
+
 	* SoObjects/Contacts/SOGoContactLDAPEntry.m ([SOGoContactLDAPEntry
 	-aclsForUser:uid]): override method so that SOGo won't crash when
 	loading the contact card.
