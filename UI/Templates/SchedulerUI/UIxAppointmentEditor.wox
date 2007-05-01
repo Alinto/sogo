@@ -11,9 +11,14 @@
   var:component="event"
   var:toolbar="toolbar"
   var:saveURL="saveURL">
-  <label><span id="allDay" class="content"><input class="checkBox"
+  <!-- <label><span id="allDay" class="content"><input class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"
+        /><var:string label:value="All day Event"
+        /></span></label> -->
+  <label><span id="allDay" class="content"><input class="checkBox"
+        type="checkbox" var:selection="isAllDay"
+        const:disabled="1"
         /><var:string label:value="All day Event"
         /></span></label>
   <span class="checkBoxList"><var:string label:value="Start:" />
