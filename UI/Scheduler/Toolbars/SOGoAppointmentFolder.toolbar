@@ -25,10 +25,11 @@
       label="Day View";
       onclick = "return onDayOverview();";
       image = "day-view.png"; },
-    { link  = "dayoverview";
+/* disabled until we fix the view */
+/*    { link  = "dayoverview";
       label="Multicolumn Day View";
       onclick = "return onMulticolumnDayOverview();";
-      image = "day-view-multicolumn.png"; },
+      image = "day-view-multicolumn.png"; }, */
     { link  = "weekoverview";
       label="Week View";
       onclick = "return onWeekOverview();";
