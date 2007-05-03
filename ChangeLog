@@ -1,5 +1,19 @@
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-toolbar]): method replacing the one with the same name in the
+	task and appointment editor classes. This method makes also use of
+	the new method "isOrganizerOrOwner:" and "participant:" in
+	SOGoCalendarComponent.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-toolbar]): removed method, replaced with a method with the same
+	name in UIxComponentEditor.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -toolbar]): removed
+	method, replaced with a method with the same name in
+	UIxComponentEditor.
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): the values returned from the database are
 	converted to a put dictionary first, since the dictionary returned

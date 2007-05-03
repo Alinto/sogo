@@ -62,6 +62,7 @@
   NSString *attendeesEmails;
 }
 
+- (NSString *) toolbar;
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent;
 
 - (void) setSaveURL: (NSString *) newSaveURL;

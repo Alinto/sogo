@@ -843,4 +843,42 @@
   [component setLastModified: now];
 }
 
+- (NSString *) toolbar
+{
+  SOGoUser *currentUser;
+  SOGoCalendarComponent *clientObject;
+  NSString *toolbarFilename;
+  iCalPerson *person;
+  iCalPersonPartStat participationStatus;
+
+  clientObject = [self clientObject];
+  currentUser = [[self context] activeUser];
+  if ([clientObject isOrganizerOrOwner: currentUser])
+    {
+      if ([[clientObject componentTag] isEqualToString: @"vevent"])
+	toolbarFilename = @"SOGoAppointmentObject.toolbar";
+      else
+	toolbarFilename = @"SOGoTaskObject.toolbar";
+    }
+  else
+    {
+      /* Lightning does not manage participation status within tasks */
+      person = [clientObject participant: currentUser];
+      if (person)
+        {
+          participationStatus = [person participationStatus];
+          if (participationStatus == iCalPersonPartStatAccepted)
+            toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
+          else if (participationStatus == iCalPersonPartStatDeclined)
+            toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
+          else
+            toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+        }
+      else
+        toolbarFilename = @"SOGoComponentClose.toolbar";
+    }
+
+  return toolbarFilename;
+}
+
 @end
