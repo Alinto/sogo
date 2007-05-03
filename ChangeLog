@@ -1,5 +1,15 @@
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -isOrganizerOrOwner:user]): new method
+	replacing "isOrganizer:orOwner:" by taking only one instance of
+	SOGoUser as parameter.
+	([SOGoCalendarComponent -participant:user]): new method replacing
+	the previous "isParticipant" boolean method by returning the first
+	participant matching the user passed as parameter. This method is
+	used so that both the regular email address and the "system email
+	address" of the user are matched against the participants emails.
+
 	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
 	-getSystemEMailForUID:uid]): new method that returns the email
 	formed with the user's uid and the default mail domain.

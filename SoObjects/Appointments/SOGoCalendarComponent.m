@@ -201,9 +201,9 @@ static BOOL sendEMailNotifications = NO;
 
 - (iCalRepeatableEntityObject *) component: (BOOL) create
 {
-  return (iCalRepeatableEntityObject *)
-    [[self calendar: create]
-      firstChildWithTag: [self componentTag]];
+  return
+    (iCalRepeatableEntityObject *) [[self calendar: create]
+				     firstChildWithTag: [self componentTag]];
 }
 
 - (BOOL) isNew
@@ -443,42 +443,7 @@ static BOOL sendEMailNotifications = NO;
     }
 }
 
-// - (NSArray *) rolesOfUser: (NSString *) login
-// {
-//   AgenorUserManager *um;
-//   iCalRepeatableEntityObject *component;
-//   NSMutableArray *sogoRoles;
-//   NSString *email;
-//   SOGoUser *user;
-
-//   sogoRoles = [NSMutableArray new];
-//   [sogoRoles autorelease];
-
-//   um = [AgenorUserManager sharedUserManager];
-//   email = [um getEmailForUID: login];
-
-//   component = [self component: NO];
-//   if (component)
-//     {
-//       if ([component isOrganizer: email])
-//         [sogoRoles addObject: SOGoCalendarRole_Organizer];
-//       else if ([component isParticipant: email])
-//         [sogoRoles addObject: SOGoCalendarRole_Participant];
-//       else if ([[container ownerInContext: context] isEqualToString: login])
-//         [sogoRoles addObject: SoRole_Owner];
-//     }
-//   else
-//     {
-//       user = [SOGoUser userWithLogin: login andRoles: nil];
-//       [sogoRoles addObjectsFromArray: [user rolesForObject: container
-//                                             inContext: context]];
-//     }
-
-//   return sogoRoles;
-// }
-
-- (BOOL) isOrganizer: (NSString *) email
-             orOwner: (NSString *) login
+- (BOOL) isOrganizerOrOwner: (SOGoUser *) user
 {
   BOOL isOrganizerOrOwner;
   iCalRepeatableEntityObject *component;
@@ -488,26 +453,44 @@ static BOOL sendEMailNotifications = NO;
   organizerEmail = [[component organizer] rfc822Email];
   if (component && [organizerEmail length] > 0)
     isOrganizerOrOwner
-      = ([organizerEmail caseInsensitiveCompare: email] == NSOrderedSame);
+      = (([organizerEmail caseInsensitiveCompare: [user email]]
+	  == NSOrderedSame)
+	 || ([organizerEmail caseInsensitiveCompare: [user systemEMail]]
+	     == NSOrderedSame));
   else
     isOrganizerOrOwner
-      = [[container ownerInContext: context] isEqualToString: login];
+      = [[container ownerInContext: context] isEqualToString: [user login]];
 
   return isOrganizerOrOwner;
 }
 
-- (BOOL) isParticipant: (NSString *) email
+- (iCalPerson *) participant: (SOGoUser *) user
 {
-  BOOL isParticipant;
-  iCalRepeatableEntityObject *component;
+  iCalPerson *participant, *currentParticipant;
+  iCalEntityObject *component;
+  NSString *email, *systemEmail, *currentEmail;
+  NSEnumerator *participants;
 
+  participant = nil;
   component = [self component: NO];
   if (component)
-    isParticipant = [component isParticipant: email];
-  else
-    isParticipant = NO;
+    {
+      email = [[user email] lowercaseString];
+      systemEmail = [[user systemEMail] lowercaseString];
+      participants = [[component participants] objectEnumerator];
+      currentParticipant = [participants nextObject];
+      while (currentParticipant && !participant)
+	{
+	  currentEmail = [[currentParticipant rfc822Email] lowercaseString];
+	  if ([currentEmail isEqualToString: email]
+	      || [currentEmail isEqualToString: systemEmail])
+	    participant = currentParticipant;
+	  else
+	    currentParticipant = [participants nextObject];
+	}
+    }
 
-  return isParticipant;
+  return participant;
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid

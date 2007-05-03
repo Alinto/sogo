@@ -29,7 +29,10 @@
 @class NSString;
 
 @class iCalCalendar;
+@class iCalPerson;
 @class iCalRepeatableEntityObject;
+
+@class SOGoUser;
 
 @interface SOGoCalendarComponent : SOGoContentObject
 {
@@ -57,9 +60,8 @@
                         andNewObject: (iCalRepeatableEntityObject *) _newObject
                          toAttendees: (NSArray *) _attendees;
 
-- (BOOL) isOrganizer: (NSString *) email
-             orOwner: (NSString *) login;
-- (BOOL) isParticipant: (NSString *) email;
+- (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
+- (iCalPerson *) participant: (SOGoUser *) user;
 
 @end
 
