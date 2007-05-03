@@ -1,10 +1,10 @@
 <?xml version='1.0' standalone='yes'?>
-<!DOCTYPE var:component>
-  <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
-  </container>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+</container>
