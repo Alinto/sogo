@@ -104,7 +104,7 @@ static NSString *uidColumnName = @"uid";
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
-  NSDictionary *row;
+  NSDictionary *row, *oldValues;
   NSException *ex;
   NSString *sql;
   NSArray *attrs;
@@ -122,15 +122,15 @@ static NSString *uidColumnName = @"uid";
 					 @" WHERE %@ = '%@'"),
 		      fieldName, [[self tableURL] gcsTableName],
 		      uidColumnName, [self uid]];
-  
+      
+      [values release];
+      values = [NSMutableDictionary new];
+
       /* run SQL */
 
       ex = [channel evaluateExpressionX: sql];
       if (ex)
-	{
-	  [self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
-	  values = [NSMutableDictionary new];
-	}
+	[self errorWithFormat:@"could not run SQL '%@': %@", sql, ex];
       else
 	{
 	  /* fetch schema */
@@ -142,14 +142,10 @@ static NSString *uidColumnName = @"uid";
 	  [channel cancelFetch];
   
 	  /* remember values */
-	  [values release];
-	  values = [[row objectForKey: fieldName] propertyList];
-	  if (values)
-	    [values retain];
-	  else
-	    values = [NSMutableDictionary new];
+	  oldValues = [[row objectForKey: fieldName] propertyList];
+	  [values setDictionary: oldValues];
 
-	  ASSIGN(lastFetch, [NSCalendarDate date]);
+	  ASSIGN (lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;
 	  rc = YES;
 	}
