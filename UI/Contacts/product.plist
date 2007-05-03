@@ -28,7 +28,7 @@
               actionName  = "selectForMailer";
            };
            contactSearch = {
-              protectedBy = "View";
+              protectedBy = "<public>";
               pageName    = "UIxContactFoldersView";
               actionName  = "contactSearch";
            };
