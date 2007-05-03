@@ -44,8 +44,9 @@
 
 @interface SOGoUser : SoUser
 {
-  NSString       *cn;
-  NSString       *email;
+  NSString *cn;
+  NSString *email;
+  NSString *systemEmail;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
   NSTimeZone *userTimeZone;
@@ -57,6 +58,7 @@
 /* properties */
 
 - (NSString *) email;
+- (NSString *) systemEmail;
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
 
