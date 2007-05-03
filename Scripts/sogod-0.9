@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PIDFILE=/var/run/sogo/sogod.pid
+
+. /usr/local/lib/GNUstep-SOPE/Library/Makefiles/GNUstep.sh
+
+echo $$ > $PIDFILE
+exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 >& /var/log/sogo/sogod.log
+
