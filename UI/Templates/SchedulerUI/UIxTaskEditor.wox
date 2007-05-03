@@ -9,7 +9,6 @@
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
   var:component="todo"
-  var:toolbar="toolbar"
   var:saveURL="saveURL">
   <span class="checkBoxList"><var:string label:value="Start:" />
     <span class="content"><input var:checked="hasStartDate"

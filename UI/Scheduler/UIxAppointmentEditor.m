@@ -64,45 +64,6 @@
                    [[self clientObject] baseURL]];
 }
 
-- (NSString *) _toolbarForCalObject
-{
-  SOGoUser *currentUser;
-  SOGoAppointmentObject *clientObject;
-  NSString *filename, *email;
-  iCalPerson *person;
-  iCalPersonPartStat participationStatus;
-
-  clientObject = [self clientObject];
-  currentUser = [[self context] activeUser];
-  email = [currentUser email];
-  if ([clientObject isOrganizer: email
-                    orOwner: [currentUser login]])
-    filename = @"SOGoAppointmentObject.toolbar";
-  else
-    {
-      if ([clientObject isParticipant: email])
-        {
-          person = [[clientObject component: NO] findParticipantWithEmail: email];
-          participationStatus = [person participationStatus];
-          if (participationStatus == iCalPersonPartStatAccepted)
-            filename = @"SOGoAppointmentObjectDecline.toolbar";
-          else if (participationStatus == iCalPersonPartStatDeclined)
-            filename = @"SOGoAppointmentObjectAccept.toolbar";
-          else
-            filename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-        }
-      else
-        filename = @"SOGoComponentClose.toolbar";
-    }
-
-  return filename;
-}
-
-- (NSString *) toolbar
-{
-  return ([self _toolbarForCalObject]);
-}
-
 /* icalendar values */
 - (BOOL) isAllDay
 {

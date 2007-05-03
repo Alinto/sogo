@@ -79,45 +79,6 @@
                    [[self clientObject] baseURL]];
 }
 
-- (NSString *) _toolbarForCalObject
-{
-  SOGoUser *currentUser;
-  SOGoTaskObject *clientObject;
-  NSString *filename, *email;
-  iCalPerson *person;
-  iCalPersonPartStat participationStatus;
-
-  clientObject = [self clientObject];
-  currentUser = [[self context] activeUser];
-  email = [currentUser email];
-  if ([clientObject isOrganizer: email
-                    orOwner: [currentUser login]])
-    filename = @"SOGoTaskObject.toolbar";
-  else
-    {
-      if ([clientObject isParticipant: email])
-        {
-          person = [[clientObject component: NO] findParticipantWithEmail: email];
-          participationStatus = [person participationStatus];
-          if (participationStatus == iCalPersonPartStatAccepted)
-            filename = @"SOGoTaskObjectDecline.toolbar";
-          else if (participationStatus == iCalPersonPartStatDeclined)
-            filename = @"SOGoTaskObjectAccept.toolbar";
-          else
-            filename = @"SOGoTaskObjectAcceptOrDecline.toolbar";
-        }
-      else
-        filename = @"SOGoComponentClose.toolbar";
-    }
-
-  return filename;
-}
-
-- (NSString *) toolbar
-{
-  return ([self _toolbarForCalObject]);
-}
-
 /* icalendar values */
 - (void) setTaskStartDate: (NSCalendarDate *) newTaskStartDate
 {

@@ -9,7 +9,6 @@
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
   var:component="event"
-  var:toolbar="toolbar"
   var:saveURL="saveURL">
   <!-- <label><span id="allDay" class="content"><input class="checkBox"
         type="checkbox" var:selection="isAllDay"
