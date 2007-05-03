@@ -115,7 +115,7 @@ static NSTimeZone *serverTimeZone = nil;
 {
   if (!systemEMail)
     {
-      systemEMail = [[self userManager] getSystemEmailForUID: [self login]];
+      systemEMail = [[self userManager] getSystemEMailForUID: [self login]];
       [systemEMail retain];
     }
 
