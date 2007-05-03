@@ -184,9 +184,9 @@ static VSStringFormatter *stringFormatter = nil;
   commaCharSet =
     [[NSCharacterSet characterSetWithCharactersInString: @","] retain];
   colonAndSemicolonCharSet =
-    [[NSCharacterSet characterSetWithCharactersInString: @": ;"] retain];
+    [[NSCharacterSet characterSetWithCharactersInString: @":;"] retain];
   colonSemicolonAndDquoteCharSet =
-    [[NSCharacterSet characterSetWithCharactersInString: @": ;\""] retain];
+    [[NSCharacterSet characterSetWithCharactersInString: @":;\""] retain];
   whitespaceCharSet =
     [[NSCharacterSet whitespaceCharacterSet] retain];
 
