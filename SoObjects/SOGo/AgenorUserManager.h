@@ -48,40 +48,41 @@
   NSTimer *gcTimer;
 }
 
-+ (id)sharedUserManager;
++ (id) sharedUserManager;
 
-- (NSString *)getUIDForEmail:(NSString *)_email;
-- (NSString *)getEmailForUID:(NSString *)_uid;
+- (NSString *) getUIDForEmail: (NSString *) email;
+- (NSString *) getEmailForUID: (NSString *) uid;
+- (NSString *) getSystemEMailForUID: (NSString *) uid;
 
 - (iCalPerson *) iCalPersonWithUid: (NSString *) uid;
 
-- (NSString *) getUIDForICalPerson: (iCalPerson *) _person;
-/* may insert NSNulls into returned array if _mapStrictly -> YES */
-- (NSArray  *)getUIDsForICalPersons:(NSArray *)_persons
-  applyStrictMapping:(BOOL)_mapStrictly;
+- (NSString *) getUIDForICalPerson: (iCalPerson *) person;
+/* may insert NSNulls into returned array if mapStrictly -> YES */
+- (NSArray  *) getUIDsForICalPersons: (NSArray *) persons
+		  applyStrictMapping: (BOOL) mapStrictly;
 
 /* i.e. BUTTO Hercule, CETE Lyon/DI/ET/TEST */
-- (NSString *)getCNForUID:(NSString *)_uid;
+- (NSString *) getCNForUID: (NSString *) uid;
 
 /* i.e. hercule.butto@amelie-ida01.melanie2.i2 */
-- (NSString *)getIMAPAccountStringForUID:(NSString *)_uid;
+- (NSString *) getIMAPAccountStringForUID: (NSString *) uid;
 
 /* i.e. amelie-ida01.melanie2.i2 */
-- (NSString *)getServerForUID:(NSString *)_uid;
+- (NSString *) getServerForUID: (NSString *) uid;
 
-- (NSArray *)getSharedMailboxAccountStringsForUID:(NSString *)_uid;
-- (NSArray *)getSharedMailboxEMailsForUID:(NSString *)_uid;
-- (NSDictionary *)getSharedMailboxesAndEMailsForUID:(NSString *)_uid;
+- (NSArray *) getSharedMailboxAccountStringsForUID: (NSString *) uid;
+- (NSArray *) getSharedMailboxEMailsForUID: (NSString *) uid;
+- (NSDictionary *) getSharedMailboxesAndEMailsForUID: (NSString *) uid;
 
-- (NSURL *)getFreeBusyURLForUID:(NSString *)_uid;
+- (NSURL *) getFreeBusyURLForUID: (NSString *) uid;
 
 - (NSUserDefaults *) getUserDefaultsForUID: (NSString *) uid;
 - (NSUserDefaults *) getUserSettingsForUID: (NSString *) uid;
 
-- (BOOL)isUserAllowedToChangeSOGoInternetAccess:(NSString *)_uid;
+- (BOOL) isUserAllowedToChangeSOGoInternetAccess: (NSString *) uid;
 
-- (BOOL)isInternetAutoresponderEnabledForUser:(NSString *)_uid;
-- (BOOL)isIntranetAutoresponderEnabledForUser:(NSString *)_uid;
+- (BOOL) isInternetAutoresponderEnabledForUser: (NSString *) uid;
+- (BOOL) isIntranetAutoresponderEnabledForUser: (NSString *) uid;
 
 @end
 

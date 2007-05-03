@@ -1,5 +1,9 @@
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserManager.m ([AgenorUserManager
+	-getSystemEMailForUID:uid]): new method that returns the email
+	formed with the user's uid and the default mail domain.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -rolesOfUser:login]): removed method that
 	was previously commented out.
