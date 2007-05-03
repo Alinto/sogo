@@ -1,7 +1,12 @@
 # GNUstep makefile
 
+XMLLINT = $(shell which xmllint)
+ifeq ($(XMLLIST),)
+  XMLLINT = /bin/true
+endif
+
 validate-wox:
-	xmllint --noout *.wox
+	$(XMLLINT) --noout *.wox
 
 all :: validate-wox
 
