@@ -1,7 +1,7 @@
 # GNUstep makefile
 
 XMLLINT = $(shell which xmllint)
-ifeq ($(XMLLIST),)
+ifeq ($(XMLLINT),)
   XMLLINT = /bin/true
 endif
 
