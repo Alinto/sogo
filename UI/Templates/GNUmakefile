@@ -1,14 +1,20 @@
 # GNUstep makefile
 
-XMLLINT = $(shell which xmllint)
-ifeq ($(XMLLINT),)
-  XMLLINT = /bin/true
+XMLLINT = xmllint
+XMLLINT-BIN = $(shell which $(XMLLINT))
+ifeq ($(XMLLINT-BIN),)
+all ::
+	@echo Utility \"$(XMLLINT)\" not found. Skipping validation.
+else
+all :: validate-wox
 endif
 
-validate-wox:
-	$(XMLLINT) --noout *.wox
+WOXS = $(shell find . -name '*.wox' -type f)
 
-all :: validate-wox
+validate-wox:
+	for wox in $(WOXS); \
+	  do $(XMLLINT-BIN) --noout $$wox || exit 1; \
+	done;
 
 install :: all
 
