@@ -1,5 +1,8 @@
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -systemEmail]): new method
+	forwared to [AgenorUserManager getSystemEmailForUID:].
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-toolbar]): method replacing the one with the same name in the
 	task and appointment editor classes. This method makes also use of
