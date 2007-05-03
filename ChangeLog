@@ -1,5 +1,9 @@
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -rolesOfUser:login]): removed method that
+	was previously commented out.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -systemEmail]): new method
 	forwared to [AgenorUserManager getSystemEmailForUID:].
 

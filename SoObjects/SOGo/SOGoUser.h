@@ -46,7 +46,7 @@
 {
   NSString *cn;
   NSString *email;
-  NSString *systemEmail;
+  NSString *systemEMail;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
   NSTimeZone *userTimeZone;
@@ -58,7 +58,7 @@
 /* properties */
 
 - (NSString *) email;
-- (NSString *) systemEmail;
+- (NSString *) systemEMail;
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
 

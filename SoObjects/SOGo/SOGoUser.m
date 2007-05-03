@@ -111,15 +111,15 @@ static NSTimeZone *serverTimeZone = nil;
   return email;
 }
 
-- (NSString *) systemEmail
+- (NSString *) systemEMail
 {
-  if (!systemEmail)
+  if (!systemEMail)
     {
-      systemEmail = [[self userManager] getSystemEmailForUID: [self login]];
-      [systemEmail retain];
+      systemEMail = [[self userManager] getSystemEmailForUID: [self login]];
+      [systemEMail retain];
     }
 
-  return systemEmail;
+  return systemEMail;
 }
 
 - (NSString *) cn
