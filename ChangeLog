@@ -1,3 +1,8 @@
+2007-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -currentUserIsOwner]):
+	new method with an explicit name.
+
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m

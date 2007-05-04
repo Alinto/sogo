@@ -177,6 +177,18 @@
   return [self jsCloseWithRefreshMethod: nil];
 }
 
+- (BOOL) currentUserIsOwner
+{
+  SOGoObject *clientObject;
+  NSString *currentUserLogin, *ownerLogin;
+
+  clientObject = [self clientObject];
+  ownerLogin = [clientObject ownerInContext: context];
+  currentUserLogin = [[context activeUser] login];
+
+  return [ownerLogin isEqualToString: currentUserLogin];
+}
+
 // - (id <WOActionResults>) addUserInAcls
 // {
 //   SOGoObject *clientObject;
