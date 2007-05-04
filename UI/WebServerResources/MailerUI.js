@@ -193,14 +193,14 @@ function openMessageWindowsForSelection(action) {
     win = openMessageWindow(window.messageId,
                             window.messageURL + "/" + action /* url */);
   else {
-  var messageList = $("messageList");
-  var rows  = messageList.getSelectedRowsId();
-  var idset = "";
-  for (var i = 0; i < rows.length; i++)
-    win = openMessageWindow(rows[i].substr(4)        /* msguid */,
-			    ApplicationBaseURL + currentMailbox
-                            + "/" + rows[i].substr(4)
-                            + "/" + action /* url */);
+     var messageList = $("messageList");
+     var rows  = messageList.getSelectedRowsId();
+     var idset = "";
+     for (var i = 0; i < rows.length; i++)
+	win = openMessageWindow(rows[i].substr(4)        /* msguid */,
+				ApplicationBaseURL + currentMailbox
+				+ "/" + rows[i].substr(4)
+				+ "/" + action /* url */);
   }
 
   return false;
@@ -699,12 +699,19 @@ function deleteSelectedMails() {
 
 /* message menu entries */
 function onMenuOpenMessage(event) {
-  var node = getParentMenu(event.target).menuTarget.parentNode;
-  var msgId = node.getAttribute('id').substr(4);
+   return openMessageWindowsForSelection('popupview');
+}
 
-  return openMessageWindow(msgId,
-                           ApplicationBaseURL + currentMailbox
-                           + "/" + msgId + "/view");
+function onMenuReplyToSender(event) {
+   return openMessageWindowsForSelection('reply');
+}
+
+function onMenuReplyToAll(event) {
+   return openMessageWindowsForSelection('replyall');
+}
+
+function onMenuForwardMessage(event) {
+   return openMessageWindowsForSelection('forward');
 }
 
 /* contacts */
