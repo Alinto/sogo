@@ -37,10 +37,10 @@ SPAN.caption
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
   background-color: #d4d0c8;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-border-right-colors: #000 #9c9a94 transparent; }
 
 DIV#buttons
 { visibility: visible;

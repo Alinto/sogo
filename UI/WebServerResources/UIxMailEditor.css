@@ -81,8 +81,8 @@ div#compose_attachments_list
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-top-colors: #9c9a94 #000 transparent;
+  -moz-border-left-colors: #9c9a94 #000 transparent;
 }
 
 TEXTAREA

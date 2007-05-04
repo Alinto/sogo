@@ -95,8 +95,8 @@ table.titletable td.titlecell SELECT
   border-left: 1px solid #fff;
   border-right: 2px solid #222;
   border-bottom: 2px solid #222;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
   background: #DCDAD5;
 }
 
@@ -141,8 +141,8 @@ UL#contactFolders
   border-left: 2px solid #222;
   border-right: 1px solid #fff;
   border-bottom: 1px solid #fff;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-top-colors: #9c9a94 #000;
+  -moz-border-left-colors: #9c9a94 #000;
   overflow: auto; }
 
 UL#contactFolders LI.denied
@@ -324,7 +324,7 @@ DIV.contactSelection
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px;
-  -moz-border-top-colors: -moz-buttonhoverface;
+  -moz-border-top-colors: #efebe7;
 }
 
 DIV.contactSelection > DIV.calendar

@@ -172,8 +172,8 @@ SELECT
   border-top: 2px solid #222;
   border-left: 2px solid #222;
   vertical-align: middle;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent;
+  -moz-border-top-colors: #9c9a94 #000 transparent;
+  -moz-border-left-colors: #9c9a94 #000 transparent;
   margin: 2px;
   padding-right: 1px; }
 
@@ -201,8 +201,8 @@ TEXTAREA, INPUT.textField
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow transparent;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow transparent; }
+  -moz-border-top-colors: #9c9a94 #000 transparent;
+  -moz-border-left-colors: #9c9a94 #000 transparent; }
 
 INPUT.textField
 { line-height: 2em;
@@ -226,8 +226,8 @@ SPAN.toolbarSeparator
   float: left;
   height: 3.8em;
   vertical-align: middle;
-  border-right : 1px solid ThreeDHighlight;
-  border-left : 1px solid ThreeDShadow;
+  border-right : 1px solid #fff;
+  border-left : 1px solid #9c9a94;
   margin: 0px .25em;
   margin-top: 0.125em;
   width: 0px;
@@ -353,8 +353,8 @@ DIV#logConsole
   border-left: 2px solid #fff;
   border-right: 2px solid #999;
   border-bottom: 2px solid #999;
-  -moz-border-top-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-left-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-top-colors: #000 #9c9a94 transparent;
+  -moz-border-left-colors: #000 #9c9a94 transparent;
   font-family: monospace;
   font-weight: bold;
   background-color: #000;
@@ -384,8 +384,8 @@ TD.tbtv_navcell
   border-left: 1px solid #fff;
   border-right: 2px solid #222;
   border-bottom: 2px solid #222;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent; }
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-border-right-colors: #000 #9c9a94 transparent; }
 
 TD.tbtv_headercell:active
 { background-color: #DCDAD5;
@@ -491,10 +491,10 @@ DIV.javascriptMessagePseudoWindow
   border-left: 2px solid #fff;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
   padding: 1em;
   margin: 0px auto;
   -moz-opacity: 1.0;
@@ -512,16 +512,16 @@ DIV.noJavascriptErrorMessage A
 
 A.button:hover
 { color: inherit;
-  background: -moz-buttonhoverface; }
+  background: #efebe7; }
 
 INPUT.button:active,
 A.button:active
 { color: -moz-buttonhovertext;
   background-color: #c4c2bd;
-  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow; }
+  -moz-border-bottom-colors: #efebe7 #fff;
+  -moz-border-right-colors: #efebe7 #fff;
+  -moz-border-top-colors: #9c9a94 #000;
+  -moz-border-left-colors: #9c9a94 #000; }
 
 INPUT.button,
 A.button,
@@ -533,10 +533,10 @@ A[class~="_disabled"].button:active
   border-left: 2px solid #fff;
   border-bottom: 2px solid #888;
   border-right: 2px solid #888;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
   text-decoration: none;
   color: inherit; }
 
@@ -580,10 +580,10 @@ DIV.tabsContainer
   border-left: 2px solid #fff;
   border-right: 2px solid #888;
   border-bottom: 2px solid #888;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-bottom-colors: ThreeDDarkShadow ThreeDShadow transparent; }
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent; }
 
 DIV.tabsContainer > UL
 { cursor: default;
@@ -604,16 +604,16 @@ DIV.tabsContainer > UL LI
   border-bottom: 0px solid #fff;
   border-right: 2px solid #888;
   padding-bottom: 1px;
-  -moz-border-top-colors: -moz-buttonhoverface ThreeDHighlight;
-  -moz-border-right-colors: ThreeDDarkShadow ThreeDShadow transparent;
-  -moz-border-bottom-colors: -moz-buttonhoverface ThreeDHighlight;
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
+  -moz-border-bottom-colors: #efebe7 #fff;
   color: #000; }
 
 DIV.tabsContainer > UL LI.first,
 DIV.tabsContainer > UL LI.active
 { border-left: 2px solid #fff;
   margin-left: -2px;
-  -moz-border-left-colors: -moz-buttonhoverface ThreeDHighlight; }
+  -moz-border-left-colors: #efebe7 #fff; }
 
 DIV.tabsContainer > UL LI.active
 { z-index: 5;
