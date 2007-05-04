@@ -956,6 +956,20 @@ function getUsersRightsWindowWidth() {
    return usersRightsWindowWidth;
 }
 
+function getTopWindow() {
+   var topWindow = null;
+   var currentWindow = window;
+   while (!topWindow) {
+      if (currentWindow.document.body.hasClassName("popup")
+	  && currentWindow.opener)
+	 currentWindow = currentWindow.opener;
+      else
+	 topWindow = currentWindow;
+   }
+
+   return topWindow;
+}
+
 function onTabClick(event) {
   var node = event.target;
 

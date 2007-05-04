@@ -51,16 +51,16 @@
 
     <div class="menu" id="calendarsMenu">
       <ul>
-        <li id="newCalendarMenuEntry"><var:string label:value="New Calendar..."/></li>
-        <li id="deleteCalendarMenuEntry"><var:string label:value="Delete Calendar"/></li>
+        <li class="disabled" id="newCalendarMenuEntry"><var:string label:value="New Calendar..."/></li>
+        <li class="disabled" id="deleteCalendarMenuEntry"><var:string label:value="Delete Calendar"/></li>
         <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
         <li class="separator"></li>
-        <li id="exportCalendarMenuEntry"><var:string label:value="Export Calendar..."/></li>
-        <li id="publishCalendarMenuEntry"><var:string label:value="Publish Calendar..."/></li>
+        <li class="disabled" id="exportCalendarMenuEntry"><var:string label:value="Export Calendar..."/></li>
+        <li class="disabled" id="publishCalendarMenuEntry"><var:string label:value="Publish Calendar..."/></li>
         <li class="separator"></li>
-        <li id="publishCalendarMenuEntry"><var:string label:value="Reload Remote Calendars"/></li>
+        <li class="disabled" id="publishCalendarMenuEntry"><var:string label:value="Reload Remote Calendars"/></li>
         <li class="separator"></li>
-        <li id="calendarPropertiesMenuEntry"><var:string label:value="Properties"/></li>
+        <li class="disabled" id="calendarPropertiesMenuEntry"><var:string label:value="Properties"/></li>
       </ul>
     </div>
 

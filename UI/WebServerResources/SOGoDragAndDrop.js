@@ -23,33 +23,18 @@ var SOGODragAndDropSourceInterface = {
     }
   },
   dragGestureMouseUpHandler: function (event) {
-//     log("mouseup");
     document._currentMouseGestureObject._removeGestureHandlers();
   },
   dragGestureMouseMoveHandler: function (event) {
-//     log("source mouse move (target: " + event.target + ")");
     var deltaX = event.clientX - document._dragGestureStartPoint[0];
     var deltaY = event.clientY - document._dragGestureStartPoint[1];
     if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) > 10) {
-//       log("event: " + event);
-//       event.stopPropagation();
-//       event.preventDefault();
       event.returnValue = true;
       event.cancelBubble = true;
       var object = document._currentMouseGestureObject;
       var point = document._dragGestureStartPoint;
       document.DNDManager.startDragging(object, point);
       document._currentMouseGestureObject._removeGestureHandlers();
-//       var mouseup = document.createEvent("MouseEvent");
-//       mouseup.initEvent("mouseup", true, true);
-//       event.target.dispatchEvent(mouseup);
-//       var dragStart = document.createEvent("MouseEvents");
-//       dragStart.initMouseEvent("draggesture-hack", true, true, window,
-//                                event.detail, event.screenX, event.screenY,
-//                                event.clientX, event.clientY, event.ctrlKey,
-//                                event.altKey, event.shiftKey, event.metaKey,
-//                                event.button, null);
-//       this.dispatchEvent(dragStart);
     }
   }
 }
@@ -94,10 +79,8 @@ document.DNDManager = {
     return destination;
   },
   startDragging: function (object, point) {
-//     log("source gesture intercepted (source: " + object + ")");
     var source = document.DNDManager._lookupSource (object);
     if (source) {
-//       log("source known");
       document.DNDManager.currentDndOperation = new document.DNDOperation(source, point);
       window.addEventListener("mouseup",
                               document.DNDManager.destinationDrop, false);
@@ -113,7 +96,6 @@ document.DNDManager = {
     var operation = document.DNDManager.currentDndOperation;
     var destination = document.DNDManager._lookupDestination (event.target);
     if (operation && destination && destination.dndAcceptType) {
-//       log("enter: " + event.target);
       operation.type = null;
       var i = 0;
       while (operation.type == null
@@ -133,21 +115,14 @@ document.DNDManager = {
     var operation = document.DNDManager.currentDndOperation;
     if (operation
         && operation.destination == event.target) {
-//       log("exit: " + event.target);
       if (operation.destination.dndExit)
         event.target.dndExit();
       operation.setDestination(null);
     }
   },
   destinationOver: function (event) {
-//     log("over: " + event.target);
-//     var operation = document.DNDManager.currentDndOperation;
-//     if (operation
-//         && operation.destination == event.target)
-//       log("over: " + event.target);
   },
   destinationDrop: function (event) {
-//     log ("drop...");
     var operation = document.DNDManager.currentDndOperation;
     if (operation) {
       window.removeEventListener("mouseup",
@@ -159,20 +134,14 @@ document.DNDManager = {
       window.removeEventListener("mouseout",
                                  document.DNDManager.destinationExit, false);
       if (operation.destination == event.target) {
-//         log("drag / drop: " + operation.source + " to " + operation.destination);
         if (operation.destination.dndExit) {
-//           log ("destination.dndExit...");
           operation.destination.dndExit();
         }
         if (operation.destination.dndDrop) {
-//           log ("destination.dndDrop...");
           var data = null;
-//           log ("optype: " + operation.type);
           if (operation.source.dndDataForType)
             data = operation.source.dndDataForType(operation.type);
-//           log ("data: " + data);
           var result = operation.destination.dndDrop(data);
-//           log ("result: " + result);
           if (operation.ghost) {
             if (result)
               operation.bustGhost();
@@ -244,6 +213,8 @@ document.DNDOperation.prototype.chaseGhost = function() {
   document.removeEventListener("mousemove", this.moveGhost, false);
   this.ghost.bustStep = 25;
   this.ghost.chaseStep = 25;
+  this.ghost.style.overflow = "hidden;"
+  this.ghost.style.whiteSpace = "nowrap;";
   this.ghost.chaseDeltaX = ((this.ghost.cascadeLeftOffset() - this.startPoint[0])
                            / this.ghost.chaseStep);
   this.ghost.chaseDeltaY = ((this.ghost.cascadeTopOffset() - this.startPoint[1])
@@ -270,6 +241,8 @@ document.DNDOperation.prototype._chaseGhost = function() {
 document.DNDOperation.prototype._fadeGhost = function() {
   if (this.ghost.bustStep) {
     this.ghost.style.MozOpacity = (0.1 * this.ghost.bustStep);
+    this.ghost.style.width = (this.ghost.offsetWidth * .7) + "px;";
+    this.ghost.style.height = (this.ghost.offsetHeight * .7) + "px;";
     this.ghost.bustStep--;
     setTimeout("document._dyingOperation._fadeGhost();", 50);
   }

@@ -10,14 +10,11 @@ HTMLElement.prototype.childNodesWithTag = function(tagName) {
   var tagName = tagName.toUpperCase();
 
   for (var i = 0; i < this.childNodes.length; i++) {
-//     log("(" + tagName + ") childNodes " + i + " = " + this.childNodes[i]);
     if (typeof(this.childNodes[i]) == "object"
         && this.childNodes[i].tagName
         && this.childNodes[i].tagName.toUpperCase() == tagName)
       matchingNodes.push(this.childNodes[i]);
   }
-
-//   log ("matching: " + matchingNodes.length);
 
   return matchingNodes;
 }
@@ -163,14 +160,10 @@ HTMLElement.prototype.onContextMenu = function(event) {
   popup.style.top = menuTop + "px;";
   popup.style.left = menuLeft + "px;";
   popup.style.visibility = "visible;";
-//   setupMenuTarget(popup, event.target);
 
   bodyOnClick = "" + document.body.getAttribute("onclick");
   document.body.setAttribute("onclick", "onBodyClick(event);");
   document.currentPopupMenu = popup;
-
-//   event.cancelBubble = true;
-//   event.returnValue = false;
 }
 
 HTMLElement.prototype.attachMenu = function(menuName) {

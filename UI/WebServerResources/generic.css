@@ -316,6 +316,9 @@ SPAN.toolbarButton:active
   width: auto;
   white-space: nowrap; }
 
+.menu LI.disabled
+{ color: #999; }
+
 .menu LI IMG
 { margin-left: -.8em;
   padding-right: .2em;
@@ -339,6 +342,9 @@ SPAN.toolbarButton:active
 
 .menu LI.submenu
 { background-image: url('submenu.gif'); }
+
+.menu LI[class~="disabled"].submenu
+{ background-image: url('submenu-disabled.gif') !important; }
 
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('submenu-active.gif') !important; }
@@ -529,6 +535,7 @@ A[class~="_disabled"].button:hover,
 A[class~="_disabled"].button:active
 { cursor: default;
   padding: 1px .5em;
+  background-color: #d4d0c8;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
   border-bottom: 2px solid #888;

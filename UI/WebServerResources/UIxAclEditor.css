@@ -1,23 +1,39 @@
 /* test */
 
 DIV.acls
-{ padding: 1em; }
+{ position: absolute;
+  top: 4em;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: 0px;
+  border: 0px;
+  margin: 0px; }
 
 DIV.acls LABEL
 { white-space: nowrap;
   width: 100%; }
 
-DIV.acls UL
-{ height: 100%;
-  width: 100%; }
+DIV#userSelectorHeader
+{ margin: 1em; }
 
 DIV#userRoles
-{ height: 8em;
-  padding-bottom: 2em; }
+{ position: absolute;
+  padding: 0px;
+  margin: 0px;
+  left: 1em;
+  top: 5em;
+  right: 1em;
+  bottom: 0px; }
 
 UL#userList
-{ cursor: default;
-  margin: .25em;
+{ position: absolute;
+  top: 1.5em;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  cursor: default;
   padding: 0px;
   white-space: nowrap;
   overflow: auto;
@@ -34,12 +50,3 @@ UL#userList
 UL#userList > LI._selected
 { background: #4b6983 !important;
   color: #fff !important; }
-
-SELECT#userRoleDropDown
-{ visibility: hidden;
-  margin-top: 1em;
-  margin-left: 2em; }
-
-SPAN.legend
-{ margin-left: 1em;
-  font-size: smaller; }

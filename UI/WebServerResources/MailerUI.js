@@ -376,10 +376,16 @@ function onMailboxTreeItemClick(event) {
   event.preventDefault();
 }
 
-function refreshMailbox() {
-  openMailbox(currentMailbox, true);
+function _refreshWindowMailbox() {
+   openMailbox(currentMailbox, true);
+}
 
-  return false;
+function refreshMailbox() {
+   var topWindow = getTopWindow();
+   if (topWindow)
+      topWindow._refreshWindowMailbox();
+   
+   return false;
 }
 
 function openMailbox(mailbox, reload) {

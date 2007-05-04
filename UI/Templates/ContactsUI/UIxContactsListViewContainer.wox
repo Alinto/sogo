@@ -16,10 +16,10 @@
 	<li><var:string label:value="Modify" /></li>
 	<li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
 	<li class="separator"></li>
-	<li><var:string label:value="New Card" /></li>
-	<li><var:string label:value="New List" /></li>
+	<li class="disabled"><var:string label:value="New Card" /></li>
+	<li class="disabled"><var:string label:value="New List" /></li>
 	<li class="separator"></li>
-	<li><var:string label:value="Delete" /></li>
+	<li class="disabled"><var:string label:value="Delete" /></li>
       </ul>
     </div>
 
@@ -28,7 +28,7 @@
 	<li id="modifyContactMenuEntry" onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
 	<li class="separator"></li>
 	<li id="writeToContactMenuEntry" onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
-	<li id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
+	<li class="disabled" id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
 	<li class="separator"></li>
 	<li id="deleteContactMenuEntry" onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
       </ul>
