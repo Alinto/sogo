@@ -127,7 +127,6 @@ function initializeDocumentHref() {
 
 function initializePrivacyMenu() {
    var privacy = $("privacy").value.toUpperCase();
-   log("privacy: " + privacy);
    if (privacy.length > 0) {
       var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
       var menuEntries = privacyMenu.childNodesWithTag("li");

@@ -371,7 +371,6 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
     if (!keepCurrentDay)
       currentDay = day;
 
-    log (backtrace());
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
 //       log ("restoring cached selector for month: " + month);
