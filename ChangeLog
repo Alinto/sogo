@@ -1,5 +1,8 @@
 2007-05-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPEntry.[hm]: renamed to
+	SOGOContactLDIFEntry.
+
 	* SoObjects/Contacts/NGLdapEntry+Contact.[hm]: removed class
 	module, obsoleted by code in SOGo/LDAPSource.[hm].
 

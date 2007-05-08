@@ -27,24 +27,19 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
 
-#import <NGLdap/NGLdapEntry.h>
-#import <NGLdap/NGLdapAttribute.h>
-
-#import "NGLdapEntry+Contact.h"
-
 #import "SOGoContactLDAPEntry.h"
 
 @implementation SOGoContactLDAPEntry
 
-+ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) aName
-                                  withLDAPEntry: (NGLdapEntry *) anEntry
-                                    inContainer: (id) aContainer
++ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) newName
+                                  withLDAPEntry: (NGLdapEntry *) newEntry
+                                    inContainer: (id) newContainer
 {
   SOGoContactLDAPEntry *entry;
 
-  entry = [[self alloc] initWithName: aName
-                        withLDAPEntry: anEntry
-                        inContainer: aContainer];
+  entry = [[self alloc] initWithName: newName
+                        withLDAPEntry: newEntry
+                        inContainer: newContainer];
   [entry autorelease];
 
   return entry;
@@ -66,31 +61,31 @@
   NSLog (@"dumping finished..");
 }
 
-- (id) initWithName: (NSString *) aName
-      withLDAPEntry: (NGLdapEntry *) anEntry
-        inContainer: (id) aContainer
+- (id) initWithName: (NSString *) newName
+      withLDAPEntry: (NGLdapEntry *) newEntry
+        inContainer: (id) newContainer
 {
-  if ((self = [super initWithName: aName inContainer: aContainer]))
-    {
-      vcard = nil;
-      [self setLDAPEntry: anEntry];
-    }
+  self = [self init];
+  ASSIGN (name, newName);
+  ASSIGN (container, newContainer);
+  ASSIGN (ldapEntry, newEntry);
+  vcard = nil;
 
-  [self dumpEntry: anEntry];
+//   [self dumpEntry: anEntry];
 
   return self;
 }
 
-- (void) dealloc
+- (NSString *) nameInContainer
 {
-  if (vcard)
-    [vcard release];
-  [super dealloc];
+  return name;
 }
 
-- (void) setLDAPEntry: (NGLdapEntry *) anEntry;
+- (void) dealloc
 {
-  ldapEntry = anEntry;
+  [vcard release];
+  [ldapEntry release];
+  [super dealloc];
 }
 
 - (NSString *) contentAsString

@@ -30,20 +30,20 @@
 @class SOGoContactLDAPFolder;
 @class NGLdapEntry;
 
-@interface SOGoContactLDAPEntry : SOGoObject <SOGoContactObject>
+@interface SOGoContactLDAPEntry : NSObject <SOGoContactObject>
 {
+  NSString *name;
   NGLdapEntry *ldapEntry;
   NGVCard *vcard;
+  id container;
 }
 
-+ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) aName
-                                  withLDAPEntry: (NGLdapEntry *) anEntry
-                                    inContainer: (id) aContainer;
-- (id) initWithName: (NSString *) aName
-      withLDAPEntry: (NGLdapEntry *) anEntry
-        inContainer: (id) aContainer;
-
-- (void) setLDAPEntry: (NGLdapEntry *) anEntry;
++ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) newName
+                                  withLDAPEntry: (NGLdapEntry *) newEntry
+                                    inContainer: (id) newContainer;
+- (id) initWithName: (NSString *) newName
+      withLDAPEntry: (NGLdapEntry *) newEntry
+        inContainer: (id) newContainer;
 
 @end
 
