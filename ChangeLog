@@ -1,3 +1,8 @@
+2007-05-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/NGLdapEntry+Contact.[hm]: removed class
+	module, obsoleted by code in SOGo/LDAPSource.[hm].
+
 2007-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxAclEditor.m ([UIxAclEditor -currentUserIsOwner]):
