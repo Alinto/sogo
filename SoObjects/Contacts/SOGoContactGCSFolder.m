@@ -47,24 +47,21 @@
   return folder;
 }
 
-- (id <SOGoContactFolder>) initWithName: (NSString *) aName
-                         andDisplayName: (NSString *) aDisplayName
-                            inContainer: (SOGoObject *) aContainer
+- (void) dealloc
 {
-  if ((self = [self initWithName: aName
-                    inContainer: aContainer]))
-    [self setDisplayName: aDisplayName];
-
-  return self;
+  [displayName release];
+  [super dealloc];
 }
 
-- (void) setDisplayName: (NSString *) aDisplayName
+- (id <SOGoContactFolder>) initWithName: (NSString *) newName
+                         andDisplayName: (NSString *) newDisplayName
+                            inContainer: (SOGoObject *) newContainer
 {
-  if (displayName)
-    [displayName release];
-  displayName = aDisplayName;
-  if (displayName)
-    [displayName retain];
+  if ((self = [self initWithName: newName
+                    inContainer: newContainer]))
+    ASSIGN (displayName, newDisplayName);
+  
+  return self;
 }
 
 - (NSString *) displayName
@@ -156,7 +153,7 @@
   qualifier = [self _qualifierForFilter: filter];
   records = [[self ocsFolder] fetchFields: fields
 			      matchingQualifier: qualifier];
-  if (records)
+  if ([records count] > 1)
     {
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey

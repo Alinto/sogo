@@ -22,10 +22,12 @@
 #ifndef __Contacts_SOGoContactGCSFolder_H__
 #define __Contacts_SOGoContactGCSFolder_H__
 
-#import <SOGo/SOGoFolder.h>
+#import <SoObjects/SOGo/SOGoFolder.h>
+
 #import "SOGoContactFolder.h"
 
-@class NSString, NSArray;
+@class NSArray;
+@class NSString;
 
 @interface SOGoContactGCSFolder : SOGoFolder <SOGoContactFolder>
 {
