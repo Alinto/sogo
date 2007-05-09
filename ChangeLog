@@ -1,5 +1,12 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.[hm]: new class module implementing
+	the concept of "ldap source", to be used by all the classes
+	needing access to LDAP-provided information: addressbooks and the
+	user manager. Most the method thereing are transcriptions of
+	methods previously found in SOGoContactLDAPFolder. It also contain
+	utility methods for user matching and authentification.
+
 	* SoObjects/Appointments/iCalEntityObject+Agenor.[hm]: removed
 	module, rendered useless by code refactoring.
 
