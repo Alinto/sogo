@@ -45,30 +45,35 @@
 @interface SOGoUser : SoUser
 {
   NSString *cn;
-  NSString *email;
-  NSString *systemEMail;
+  NSArray *allEmails;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
   NSTimeZone *userTimeZone;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) login
-		    andRoles: (NSArray *) roles;
+		       roles: (NSArray *) roles;
 
 /* properties */
 
-- (NSString *) email;
-- (NSString *) systemEMail;
+- (NSString *) primaryEmail;
+- (NSString *) systemEmail;
+- (NSArray *) allEmails;
+
+- (BOOL) hasEmail: (NSString *) email;
+
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
 
 /* shares and identities */
 
 - (NSString *) primaryIMAP4AccountString;
-- (NSString *) primaryMailServer;
-- (NSArray *) additionalIMAP4AccountStrings;
-- (NSArray *) additionalEMailAddresses;
-- (NSDictionary *) additionalIMAP4AccountsAndEMails;
+
+// - (NSString *) primaryIMAP4AccountString;
+// - (NSString *) primaryMailServer;
+// - (NSArray *) additionalIMAP4AccountStrings;
+// - (NSArray *) additionalEMailAddresses;
+// - (NSDictionary *) additionalIMAP4AccountsAndEMails;
 
 /* defaults */
 
@@ -81,7 +86,7 @@
 /* folders */
 
 - (id) homeFolderInContext: (id) _ctx;
-- (id) schedulingCalendarInContext: (id) _ctx;
+// - (id) schedulingCalendarInContext: (id) _ctx;
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context;

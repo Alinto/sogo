@@ -27,12 +27,15 @@
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSNull+misc.h>
 
-#import "AgenorUserManager.h"
+#import "AgenorUserDefaults.h"
+#import "LDAPUserManager.h"
 #import "SOGoContentObject.h"
 #import "SOGoUser.h"
 #import "SOGoPermissions.h"
 
 static NSTimeZone *serverTimeZone = nil;
+static NSString *fallbackIMAP4Server = nil;
+static NSURL *AgenorProfileURL = nil;
 
 @interface NSObject (SOGoRoles)
 
@@ -45,20 +48,29 @@ static NSTimeZone *serverTimeZone = nil;
 + (void) initialize
 {
   NSString *tzName;
+  NSUserDefaults *ud;
+  NSString *profileURL;
 
+  ud = [NSUserDefaults standardUserDefaults];
   if (!serverTimeZone)
     {
-      tzName = [[NSUserDefaults standardUserDefaults]
-		 stringForKey: @"SOGoServerTimeZone"];
+      tzName = [ud stringForKey: @"SOGoServerTimeZone"];
       if (!tzName)
         tzName = @"Canada/Eastern";
       serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
       [serverTimeZone retain];
     }
+  if (!AgenorProfileURL)
+    {
+      profileURL = [ud stringForKey: @"AgenorProfileURL"];
+      AgenorProfileURL = [[NSURL alloc] initWithString: profileURL];
+    }
+  if (!fallbackIMAP4Server)
+    ASSIGN (fallbackIMAP4Server, [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) login
-		    andRoles: (NSArray *) roles
+		       roles: (NSArray *) roles
 {
   SOGoUser *user;
 
@@ -74,6 +86,27 @@ static NSTimeZone *serverTimeZone = nil;
     {
       userDefaults = nil;
       userSettings = nil;
+      allEmails = nil;
+    }
+
+  return self;
+}
+
+- (id) initWithLogin: (NSString *) newLogin
+	       roles: (NSArray *) newRoles
+{
+  LDAPUserManager *um;
+  NSDictionary *user;
+
+  if ([newLogin isEqualToString: @"anonymous"]
+      || [newLogin isEqualToString: @"freebusy"])
+    self = [super initWithLogin: newLogin roles: newRoles];
+  else
+    {
+      um = [LDAPUserManager sharedUserManager];
+      user = [um contactInfosForUserWithUIDorEmail: newLogin];
+      self = [super initWithLogin: [user objectForKey: @"c_uid"]
+		    roles: newRoles];
     }
 
   return self;
@@ -83,84 +116,115 @@ static NSTimeZone *serverTimeZone = nil;
 {
   [userDefaults release];
   [userSettings release];
-  [cn    release];
-  [email release];
   [super dealloc];
 }
 
-/* internals */
-
-- (AgenorUserManager *) userManager
+- (id) _fetchFieldForUser: (NSString *) field
 {
-  static AgenorUserManager *um = nil;
-  if (um == nil) um = [[AgenorUserManager sharedUserManager] retain];
+  NSDictionary *contactInfos;
+  LDAPUserManager *um;
 
-  return um;
+  um = [LDAPUserManager sharedUserManager];
+  contactInfos = [um contactInfosForUserWithUIDorEmail: login];
+
+  return [contactInfos objectForKey: field];
+}
+
+- (void) _fetchAllEmails
+{
+  allEmails = [self _fetchFieldForUser: @"emails"];
+  [allEmails retain];
+}
+
+- (void) _fetchCN
+{
+  cn = [self _fetchFieldForUser: @"cn"];
+  [cn retain];
 }
 
 /* properties */
 
-- (NSString *) email
+- (NSString *) primaryEmail
 {
-  if (!email)
-    {
-      email = [[self userManager] getEmailForUID: [self login]];
-      [email retain];
-    }
+  if (!allEmails)
+    [self _fetchAllEmails];
 
-  return email;
+  return [allEmails objectAtIndex: 0];
 }
 
-- (NSString *) systemEMail
+- (NSString *) systemEmail
 {
-  if (!systemEMail)
-    {
-      systemEMail = [[self userManager] getSystemEMailForUID: [self login]];
-      [systemEMail retain];
-    }
+  if (!allEmails)
+    [self _fetchAllEmails];
 
-  return systemEMail;
+  return [allEmails lastObject];
+}
+
+- (NSArray *) allEmails
+{
+  if (!allEmails)
+    [self _fetchAllEmails];
+
+  return allEmails;  
+}
+
+- (BOOL) hasEmail: (NSString *) email
+{
+  BOOL hasEmail;
+  NSString *currentEmail, *cmpEmail;
+  NSEnumerator *emails;
+
+  hasEmail = NO;
+  if (!allEmails)
+    [self _fetchAllEmails];
+  cmpEmail = [email lowercaseString];
+  emails = [allEmails objectEnumerator];
+  currentEmail = [emails nextObject];
+  while (currentEmail && !hasEmail)
+    if ([[currentEmail lowercaseString] isEqualToString: cmpEmail])
+      hasEmail = YES;
+    else
+      currentEmail = [emails nextObject];
+
+  return hasEmail;
 }
 
 - (NSString *) cn
 {
-  if (cn == nil)
-    {
-      cn = [[self userManager] getCNForUID: [self login]];
-      [cn retain];
-    }
+  if (!cn)
+    [self _fetchCN];
 
   return cn;
 }
 
 - (NSString *) primaryIMAP4AccountString
 {
-  return [[self userManager] getIMAPAccountStringForUID: [self login]];
+  return [NSString stringWithFormat: @"%@@%@", login, fallbackIMAP4Server];
 }
 
-- (NSString *) primaryMailServer
-{
-  return [[self userManager] getServerForUID: [self login]];
-}
+// - (NSString *) primaryMailServer
+// {
+//   return [[self userManager] getServerForUID: [self login]];
+// }
 
-- (NSArray *) additionalIMAP4AccountStrings
-{
-  return [[self userManager]getSharedMailboxAccountStringsForUID: [self login]];
-}
+// - (NSArray *) additionalIMAP4AccountStrings
+// {
+//   return [[self userManager]getSharedMailboxAccountStringsForUID: [self login]];
+// }
 
-- (NSArray *) additionalEMailAddresses
-{
-  return [[self userManager] getSharedMailboxEMailsForUID: [self login]];
-}
+// - (NSArray *) additionalEMailAddresses
+// {
+//   return [[self userManager] getSharedMailboxEMailsForUID: [self login]];
+// }
 
-- (NSDictionary *) additionalIMAP4AccountsAndEMails
-{
-  return [[self userManager] getSharedMailboxesAndEMailsForUID: [self login]];
-}
+// - (NSDictionary *) additionalIMAP4AccountsAndEMails
+// {
+//   return [[self userManager] getSharedMailboxesAndEMailsForUID: [self login]];
+// }
 
 - (NSURL *) freeBusyURL
 {
-  return [[self userManager] getFreeBusyURLForUID: [self login]];
+  return nil;
 }
 
 /* defaults */
@@ -168,10 +232,9 @@ static NSTimeZone *serverTimeZone = nil;
 - (NSUserDefaults *) userDefaults
 {
   if (!userDefaults)
-    {
-      userDefaults = [[self userManager] getUserDefaultsForUID: [self login]];
-      [userDefaults retain];
-    }
+    userDefaults = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
+					       uid: login
+					       fieldName: @"defaults"];
 
   return userDefaults;
 }
@@ -179,10 +242,9 @@ static NSTimeZone *serverTimeZone = nil;
 - (NSUserDefaults *) userSettings
 {
   if (!userSettings)
-    {
-      userSettings = [[self userManager] getUserSettingsForUID: [self login]];
-      [userSettings retain];
-    }
+    userSettings = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
+					       uid: login
+					       fieldName: @"settings"];
 
   return userSettings;
 }
@@ -234,27 +296,27 @@ static NSTimeZone *serverTimeZone = nil;
   return folder;
 }
 
-- (id) schedulingCalendarInContext: (id) _ctx
-{
-  /* Note: watch out for cyclic references */
-  id folder;
+// - (id) schedulingCalendarInContext: (id) _ctx
+// {
+//   /* Note: watch out for cyclic references */
+//   id folder;
 
-  folder = [(WOContext *)_ctx objectForKey:@"ActiveUserCalendar"];
-  if (folder != nil)
-    return [folder isNotNull] ? folder : nil;
+//   folder = [(WOContext *)_ctx objectForKey:@"ActiveUserCalendar"];
+//   if (folder != nil)
+//     return [folder isNotNull] ? folder : nil;
 
-  folder = [self homeFolderInContext:_ctx];
-  if ([folder isKindOfClass:[NSException class]])
-    return folder;
+//   folder = [self homeFolderInContext:_ctx];
+//   if ([folder isKindOfClass:[NSException class]])
+//     return folder;
   
-  folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
-  if ([folder isKindOfClass:[NSException class]])
-    return folder;
+//   folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
+//   if ([folder isKindOfClass:[NSException class]])
+//     return folder;
   
-  [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
-                forKey:@"ActiveUserCalendar"];
-  return folder;
-}
+//   [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
+//                 forKey:@"ActiveUserCalendar"];
+//   return folder;
+// }
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context

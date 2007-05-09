@@ -1,5 +1,12 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -primaryEmail]): new name
+	for "mail" method.
+	([SOGoUser -systemEmail]): returns the email formed from the
+	username and the default mail domain.
+	([SOGoUser -hasEmail:email]): test whether the user has the
+	specified email, in a case-insensitive way.
+
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
 	-LDAPCheckLogin:_loginpassword:_pwd]): use the user manager to
 	check login information.
