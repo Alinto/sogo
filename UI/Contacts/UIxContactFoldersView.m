@@ -30,6 +30,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
 
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
@@ -93,28 +94,45 @@
   return [self _selectActionForApplication: @"mailer-contacts"];
 }
 
-- (NSArray *) _searchResults: (NSString *) contact
-	     ldapFoldersOnly: (BOOL) ldapFoldersOnly
+- (void) _fillResults: (NSMutableDictionary *) results
+	     inFolder: (id <SOGoContactFolder>) folder
+	 withSearchOn: (NSString *) contact
 {
-  NSMutableArray *results;
+  NSEnumerator *folderResults;
+  NSDictionary *currentContact;
+  NSString *uid;
+
+  folderResults = [[folder lookupContactsWithFilter: contact
+			   sortBy: @"cn"
+			   ordering: NSOrderedAscending] objectEnumerator];
+  currentContact = [folderResults nextObject];
+  while (currentContact)
+    {
+      uid = [currentContact objectForKey: @"c_uid"];
+      if (uid && ![results objectForKey: uid])
+	[results setObject: currentContact
+		 forKey: uid];
+      currentContact = [folderResults nextObject];
+    }
+}
+
+- (NSDictionary *) _searchResults: (NSString *) contact
+		  ldapFoldersOnly: (BOOL) ldapOnly
+{
+  NSMutableDictionary *results;
   SOGoContactFolders *topFolder;
   NSEnumerator *sogoContactFolders;
   id <SOGoContactFolder> currentFolder;
 
-  results = [NSMutableArray new];
-  [results autorelease];
-
+  results = [NSMutableDictionary dictionary];
   topFolder = [self clientObject];
   sogoContactFolders = [[topFolder contactFolders] objectEnumerator];
   currentFolder = [sogoContactFolders nextObject];
   while (currentFolder)
     {
-      if (!ldapFoldersOnly
-	  || [currentFolder isKindOfClass: [SOGoContactLDAPFolder class]])
-	[results addObjectsFromArray: [currentFolder
-					lookupContactsWithFilter: contact
-					sortBy: @"cn"
-					ordering: NSOrderedAscending]];
+      if (!ldapOnly || [currentFolder isKindOfClass: [SOGoContactLDAPFolder class]])
+	[self _fillResults: results inFolder: currentFolder
+	      withSearchOn: contact];
       currentFolder = [sogoContactFolders nextObject];
     }
   [topFolder release];
@@ -140,44 +158,34 @@
   return email;
 }
 
-- (NSDictionary *) _nextResultWithUid: (NSEnumerator *) results
-{
-  NSDictionary *result, *possibleResult;
-
-  result = nil;
-  possibleResult = [results nextObject];
-  while (possibleResult && !result)
-    if ([[possibleResult objectForKey: @"c_uid"] length])
-      result = possibleResult;
-    else
-      possibleResult = [results nextObject];
-
-  return result;
-}
-
-- (WOResponse *) _responseForResults: (NSArray *) results
+- (WOResponse *) _responseForResults: (NSDictionary *) results
 {
   WOResponse *response;
-  NSString *email, *responseString, *uid;
+  NSEnumerator *uids;
+  NSString *responseString, *uid, *cn, *mail;
   NSDictionary *result;
 
   response = [context response];
 
   if ([results count])
     {
-      result = [self _nextResultWithUid: [results objectEnumerator]];
-      if (!result)
-        result = [results objectAtIndex: 0];
-      email = [self _emailForResult: result];
-      uid = [result objectForKey: @"c_uid"];
-      if ([uid length] == 0)
-        uid = @"";
-      responseString = [NSString stringWithFormat: @"%@:%@",
-                                 uid, email];
-      [response setStatus: 200];
-      [response setHeader: @"text/plain; charset=iso-8859-1"
-                forKey: @"Content-Type"];
-      [response appendContentString: responseString];
+      uids = [[results allKeys] objectEnumerator];
+      uid = [uids nextObject];
+      while (uid)
+	{
+	  result = [results objectForKey: uid];
+	  cn = [result objectForKey: @"displayName"];
+	  if (![cn length])
+	    cn = [result objectForKey: @"cn"];
+	  mail = [result objectForKey: @"mail"];
+	  responseString = [NSString stringWithFormat: @"%@:%@:%@",
+				     uid, cn, mail];
+	  [response setStatus: 200];
+	  [response setHeader: @"text/plain; charset=iso-8859-1"
+		    forKey: @"Content-Type"];
+	  [response appendContentString: responseString];
+	  uid = [uids nextObject];
+	}
     }
   else
     [response setStatus: 404];
@@ -302,8 +310,8 @@
   WOResponse *response;
   NSString *uid, *foldersString;
   NSMutableString *responseString;
-  NSDictionary *result;
-  NSEnumerator *resultsEnum;
+  NSDictionary *contact;
+  NSEnumerator *contacts;
   NSArray *folders;
 
   response = [context response];
@@ -311,21 +319,26 @@
   if ([results count])
     {
       [response setStatus: 200];
-      [response setHeader: @"text/plain; charset=iso-8859-1"
+      [response setHeader: @"text/plain; charset=utf-8"
                 forKey: @"Content-Type"];
 
       responseString = [NSMutableString new];
-      resultsEnum = [results objectEnumerator];
-      result = [resultsEnum nextObject];
-      while (result)
+      contacts = [results objectEnumerator];
+      contact = [contacts nextObject];
+      while (contact)
 	{
-	  uid = [result objectForKey: @"c_uid"];
-	  folders = [self _foldersForUID: uid ofType: folderType];
-	  foldersString
-	    = [self _foldersStringForFolders: [folders objectEnumerator]];
-	  [responseString appendFormat: @"%@:%@%@\n",
-			  uid, [self _emailForResult: result], foldersString];
-	  result = [resultsEnum nextObject];
+	  uid = [contact objectForKey: @"c_uid"];
+	  if ([uid length] > 0)
+	    {
+	      folders = [self _foldersForUID: uid ofType: folderType];
+	      foldersString
+		= [self _foldersStringForFolders: [folders objectEnumerator]];
+	      [responseString appendFormat: @"%@:%@:%@%@\n", uid,
+			      [contact objectForKey: @"cn"],
+			      [contact objectForKey: @"c_email"],
+			      foldersString];
+	    }
+	  contact = [contacts nextObject];
 	}
       [response appendContentString: responseString];
       [responseString release];
@@ -340,17 +353,16 @@
 {
   NSString *contact, *folderType;
   id <WOActionResults> result;
-  BOOL ldapOnly;
+  LDAPUserManager *um;
 
+  um = [LDAPUserManager sharedUserManager];
   contact = [self queryParameterForKey: @"search"];
   if ([contact length] > 0)
     {
-      ldapOnly = [[self queryParameterForKey: @"ldap-only"] boolValue];
       folderType = [self queryParameterForKey: @"type"];
-      result = [self _foldersResponseForResults:
-		       [self _searchResults: contact
-			     ldapFoldersOnly: ldapOnly]
-		     withType: folderType];
+      result
+	= [self _foldersResponseForResults: [um fetchContactsMatching: contact]
+		withType: folderType];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400

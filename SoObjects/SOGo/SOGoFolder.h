@@ -24,7 +24,11 @@
 
 #import "SOGoObject.h"
 
-@class NSString, NSArray, NSDictionary;
+@class NSArray;
+@class NSDictionary;
+@class NSMutableDictionary;
+@class NSString;
+
 @class GCSFolder;
 
 /*
@@ -36,10 +40,6 @@
   Important: folders should NOT retain the context! Otherwise you might get
              cyclic references.
 */
-
-@class NSString;
-@class GCSFolder;
-@class NSMutableDictionary;
 
 @interface SOGoFolder : SOGoObject
 {

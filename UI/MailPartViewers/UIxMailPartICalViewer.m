@@ -26,7 +26,7 @@
 */
 
 #import <SOGoUI/SOGoDateFormatter.h>
-#import <SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
@@ -189,8 +189,15 @@
 
 - (id)calendarFolder {
   /* return scheduling calendar of currently logged-in user */
-  return [[[self context] activeUser] schedulingCalendarInContext:
-					[self context]];
+  SOGoUser *user;
+  id folder;
+
+  user = [context activeUser];
+  folder = [[user homeFolderInContext: context] lookupName: @"Calendar"
+						inContext: context
+						acquire: NO];
+
+  return folder;
 }
 
 - (id)storedEventObject {
@@ -238,7 +245,7 @@
 /* organizer tracking */
 
 - (NSString *)loggedInUserEMail {
-  return [[[self context] activeUser] email];
+  return [[[self context] activeUser] primaryEmail];
 }
 
 - (iCalEvent *)authorativeEvent {

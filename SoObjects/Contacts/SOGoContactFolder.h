@@ -51,14 +51,12 @@
                          andDisplayName: (NSString *) aDisplayName
                             inContainer: (SOGoObject *) aContainer;
 
+- (NSString *) nameInContainer;
+- (NSString *) displayName;
 
-- (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId;
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering;
-
-- (void) setDisplayName: (NSString *) aDisplayName;
-- (NSString *) displayName;
 
 @end
 

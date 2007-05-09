@@ -39,7 +39,6 @@
 #import "SOGoUserFolder.h"
 
 #import "SOGoDAVRendererTypes.h"
-#import "AgenorUserManager.h"
 
 #import "SOGoObject.h"
 

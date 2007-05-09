@@ -40,7 +40,6 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 
-#import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGoUI/SOGoDateFormatter.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
@@ -48,7 +47,7 @@
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
-#import "UIxComponent+Agenor.h"
+#import "UIxComponent+Scheduler.h"
 
 #import "UIxComponentEditor.h"
 
@@ -653,8 +652,7 @@
 
 - (BOOL) isMyComponent
 {
-  // TODO: this should check a set of emails against the SoUser
-  return ([[organizer rfc822Email] isEqualToString: [self emailForUser]]);
+  return ([[context activeUser] hasEmail: [organizer rfc822Email]]);
 }
 
 - (BOOL) canEditComponent
@@ -794,6 +792,7 @@
 - (void) _handleOrganizer
 {
   NSString *organizerEmail;
+  SOGoUser *activeUser;
 
   organizerEmail = [[component organizer] email];
   if ([organizerEmail length] == 0)
@@ -801,8 +800,9 @@
       if ([[component attendees] count] > 0)
 	{
 	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-	  [organizer setCn: [self cnForUser]];
-	  [organizer setEmail: [self emailForUser]];
+	  activeUser = [context activeUser];
+	  [organizer setCn: [activeUser cn]];
+	  [organizer setEmail: [activeUser primaryEmail]];
 	  [component setOrganizer: organizer];
 	}
     }

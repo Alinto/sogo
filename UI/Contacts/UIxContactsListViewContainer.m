@@ -27,7 +27,6 @@
 #import <NGObjWeb/SoObjects.h>
 #import <NGExtensions/NSObject+Values.h>
 
-#import <SoObjects/SOGo/AgenorUserManager.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 
@@ -128,20 +127,16 @@
 
 - (NSString *) currentContactFolderName
 {
-  return [self labelForKey: [currentFolder displayName]];
+  return [currentFolder displayName];
 }
 
 - (NSArray *) additionalFolders
 {
-  AgenorUserManager *um;
   NSUserDefaults *ud;
-  NSString *login;
 
   if (!additionalFolders)
     {
-      um = [AgenorUserManager sharedUserManager];
-      login = [[context activeUser] login];
-      ud = [um getUserSettingsForUID: login];
+      ud = [[context activeUser] userSettings];
       additionalFolders
 	= [[ud objectForKey: @"Contacts"] objectForKey: @"SubscribedFolders"];
       [additionalFolders retain];

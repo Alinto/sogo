@@ -19,14 +19,18 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGExtensions/NSNull+misc.h>
+
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
-#import <NGObjWeb/SoObject.h>
-
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
-#import "common.h"
 
 #import "UIxContactEditor.h"
 
@@ -536,7 +540,8 @@
 
 - (id) writeAction
 {
-  NSString *email, *url;
+  NSString *email, *cn, *url;
+  NSMutableString *address;
 
   card = [[self clientObject] vCard];
   [self initSnapshot];
@@ -546,7 +551,16 @@
     email = [snapshot objectForKey: @"workMail"];
 
   if (email)
-    url = [NSString stringWithFormat: @"Mail/compose?mailto=%@", email];
+    {
+      address = [NSMutableString string];
+      cn = [card fn];
+      if ([cn length] > 0)
+	[address appendFormat: @"%@ <%@>", cn, email];
+      else
+	[address appendString: email];
+	
+      url = [NSString stringWithFormat: @"Mail/compose?mailto=%@", address];
+    }
   else
     url = @"Mail/compose";
 

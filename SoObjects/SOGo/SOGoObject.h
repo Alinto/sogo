@@ -34,10 +34,20 @@
   lookup.
 */
 
-@class NSString, NSArray, NSMutableString, NSException, NSTimeZone;
-@class GCSFolderManager, GCSFolder;
-@class SOGoUserFolder, SOGoGroupsFolder;
+#import <NGObjWeb/SoObject.h>
+
+@class NSString;
+@class NSArray;
+@class NSMutableString;
+@class NSException;
+@class NSTimeZone;
+
 @class WOContext;
+@class GCSFolderManager;
+@class GCSFolder;
+
+@class SOGoUserFolder;
+@class SOGoGroupsFolder;
 @class SOGoDAVSet;
 
 #define $(class) NSClassFromString(class)
