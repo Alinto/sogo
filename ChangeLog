@@ -1,5 +1,8 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEntityObject+Agenor.[hm]: removed
+	module, rendered useless by code refactoring.
+
 	* SoObjects/SOGo/AgenorUserManager.[hm]: removed module, replaced
 	with the freshly written "LDAPUserManager".
 
