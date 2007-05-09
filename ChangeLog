@@ -1,5 +1,10 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -fromEMails]):
+	rewrote this method to request all the available email identities
+	for the current user. Also, the from field also contains the full
+	name of the user, not just his/her email address.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -iCalPersonWithUID:uid]): new method taken
 	from the previous module iCalEntityObject+Agenor.

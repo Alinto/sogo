@@ -19,6 +19,28 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/WORequest.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+#import <NGObjWeb/SoSubContext.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSException+misc.h>
+
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailAccounts.h>
+#import <SoObjects/Mailer/SOGoMailIdentity.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/WOContext+Agenor.h>
 #import <SOGoUI/UIxComponent.h>
 
 /*
@@ -37,7 +59,7 @@
   NSArray  *bcc;
   NSString *subject;
   NSString *text;
-  NSArray  *fromEMails;
+  NSMutableArray  *fromEMails;
   NSString *from;
   SOGoMailFolder *sentFolder;
 
@@ -47,17 +69,6 @@
 }
 
 @end
-
-#import <SoObjects/Mailer/SOGoDraftObject.h>
-#import <SoObjects/Mailer/SOGoMailFolder.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoMailAccounts.h>
-#import <SoObjects/Mailer/SOGoMailIdentity.h>
-#import <SoObjects/SOGo/WOContext+Agenor.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
-#import <NGObjWeb/SoSubContext.h>
-#import "common.h"
 
 @implementation UIxMailEditor
 
@@ -97,29 +108,29 @@ static NSArray      *infoKeys            = nil;
 }
 
 - (void)dealloc {
-  [self->sentFolder release];
-  [self->fromEMails release];
-  [self->from    release];
-  [self->text    release];
-  [self->subject release];
-  [self->to      release];
-  [self->cc      release];
-  [self->bcc     release];
+  [sentFolder release];
+  [fromEMails release];
+  [from    release];
+  [text    release];
+  [subject release];
+  [to      release];
+  [cc      release];
+  [bcc     release];
   
-  [self->attachmentName  release];
-  [self->attachmentNames release];
+  [attachmentName  release];
+  [attachmentNames release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setFrom:(NSString *)_value {
-  ASSIGNCOPY(self->from, _value);
+  ASSIGNCOPY(from, _value);
 }
 - (NSString *)from {
-  if (![self->from isNotEmpty])
-    return [[[self context] activeUser] email];
-  return self->from;
+  if (![from isNotEmpty])
+    return [[[self context] activeUser] primaryEmail];
+  return from;
 }
 
 - (void)setReplyTo:(NSString *)_ignore {
@@ -130,38 +141,38 @@ static NSArray      *infoKeys            = nil;
 }
 
 - (void)setSubject:(NSString *)_value {
-  ASSIGNCOPY(self->subject, _value);
+  ASSIGNCOPY(subject, _value);
 }
 - (NSString *)subject {
-  return self->subject ? self->subject : @"";
+  return subject ? subject : @"";
 }
 
 - (void)setText:(NSString *)_value {
-  ASSIGNCOPY(self->text, _value);
+  ASSIGNCOPY(text, _value);
 }
 - (NSString *)text {
-  return [self->text isNotNull] ? self->text : @"";
+  return [text isNotNull] ? text : @"";
 }
 
 - (void)setTo:(NSArray *)_value {
-  ASSIGNCOPY(self->to, _value);
+  ASSIGNCOPY(to, _value);
 }
 - (NSArray *)to {
-  return [self->to isNotNull] ? self->to : [NSArray array];
+  return [to isNotNull] ? to : [NSArray array];
 }
 
 - (void)setCc:(NSArray *)_value {
-  ASSIGNCOPY(self->cc, _value);
+  ASSIGNCOPY(cc, _value);
 }
 - (NSArray *)cc {
-  return [self->cc isNotNull] ? self->cc : [NSArray array];
+  return [cc isNotNull] ? cc : [NSArray array];
 }
 
 - (void)setBcc:(NSArray *)_value {
-  ASSIGNCOPY(self->bcc, _value);
+  ASSIGNCOPY(bcc, _value);
 }
 - (NSArray *)bcc {
-  return [self->bcc isNotNull] ? self->bcc : [NSArray array];
+  return [bcc isNotNull] ? bcc : [NSArray array];
 }
 
 - (BOOL)hasOneOrMoreRecipients {
@@ -172,40 +183,41 @@ static NSArray      *infoKeys            = nil;
 }
 
 - (void)setAttachmentName:(NSString *)_attachmentName {
-  ASSIGN(self->attachmentName, _attachmentName);
+  ASSIGN(attachmentName, _attachmentName);
 }
 - (NSString *)attachmentName {
-  return self->attachmentName;
+  return attachmentName;
 }
 
 /* from addresses */
 
-- (NSArray *)fromEMails {
-  NSString *primary, *uid;
-  NSArray  *shares;
+- (NSArray *) fromEMails
+{
+  NSEnumerator *emails;
+  SOGoUser *activeUser;
+  NSString *cn, *fullMail, *email;
   
-  if (self->fromEMails != nil) 
-    return self->fromEMails;
-  
-  uid     = [[self user] login];
-  primary = [[[self context] activeUser] email];
-  if (![[self context] isAccessFromIntranet]) {
-    self->fromEMails = [[NSArray alloc] initWithObjects:&primary count:1];
-    return self->fromEMails;
-  }
-  
-  shares = 
-    [[[self context] activeUser] valueForKey:@"additionalEMailAddresses"];
-  if ([shares count] == 0)
-    self->fromEMails = [[NSArray alloc] initWithObjects:&primary count:1];
-  else {
-    id tmp;
+  if (!fromEMails)
+    { 
+      fromEMails = [NSMutableArray new];
+      activeUser = [context activeUser];
+      cn = [activeUser cn];
+      if ([cn length] == 0)
+	cn = nil;
+      emails = [[activeUser allEmails] objectEnumerator];
+      email = [emails nextObject];
+      while (email)
+	{
+	  if (cn)
+	    fullMail = [NSString stringWithFormat: @"%@ <%@>", cn, email];
+	  else
+	    fullMail = email;
+	  [fromEMails addObject: fullMail];
+	  email = [emails nextObject];
+	}
+    }
 
-    tmp = [[NSArray alloc] initWithObjects:&primary count:1];
-    self->fromEMails = [[tmp arrayByAddingObjectsFromArray:shares] copy];
-    [tmp release]; tmp = nil;
-  }
-  return self->fromEMails;
+  return fromEMails;
 }
 
 /* title */
@@ -262,15 +274,15 @@ static NSArray      *infoKeys            = nil;
   SOGoMailAccount *account;
   SOGoMailFolder  *folder;
   
-  if (self->sentFolder != nil)
-    return [self->sentFolder isNotNull] ? self->sentFolder : nil;;
+  if (sentFolder != nil)
+    return [sentFolder isNotNull] ? sentFolder : nil;;
   
   account = [[self clientObject] mailAccountFolder];
   if ([account isKindOfClass:[NSException class]]) return account;
   
   folder = [account sentFolderInContext:[self context]];
   if ([folder isKindOfClass:[NSException class]]) return folder;
-  return ((self->sentFolder = [folder retain]));
+  return ((sentFolder = [folder retain]));
 }
 
 - (void)_presetFromBasedOnAccountsQueryParameter {
@@ -284,7 +296,7 @@ static NSArray      *infoKeys            = nil;
   if (useLocationBasedSentFolder) /* from will be based on location */
     return;
 
-  if ([self->from isNotEmpty]) /* a from is already set */
+  if ([from isNotEmpty]) /* a from is already set */
     return;
 
   accountID = [[[self context] request] formValueForKey:@"account"];
@@ -341,8 +353,8 @@ static NSArray      *infoKeys            = nil;
   NSArray      *sentFolderPath;
   NSException  *error = nil;
   
-  if (self->sentFolder != nil)
-    return [self->sentFolder isNotNull] ? self->sentFolder : nil;;
+  if (sentFolder != nil)
+    return [sentFolder isNotNull] ? sentFolder : nil;;
   
   identity = [self selectedMailIdentity];
   if ([identity isKindOfClass:[NSException class]]) return identity;
@@ -365,7 +377,7 @@ static NSArray      *infoKeys            = nil;
   
   ctx = [[SoSubContext alloc] initWithParentContext:[self context]];
   
-  self->sentFolder = [[accounts traversePathArray:sentFolderPath
+  sentFolder = [[accounts traversePathArray:sentFolderPath
 				inContext:ctx error:&error
 				acquire:NO] retain];
   [ctx release]; ctx = nil;
@@ -377,9 +389,9 @@ static NSArray      *infoKeys            = nil;
   
 #if 0
   [self logWithFormat:@"Sent-Folder: %@", sentFolderName];
-  [self logWithFormat:@"  object:    %@", self->sentFolder];
+  [self logWithFormat:@"  object:    %@", sentFolder];
 #endif
-  return self->sentFolder;
+  return sentFolder;
 }
 
 - (NSException *)storeMailInSentFolder:(NSString *)_path {
@@ -433,13 +445,13 @@ static NSArray      *infoKeys            = nil;
 - (NSArray *)attachmentNames {
   NSArray *a;
   
-  if (self->attachmentNames != nil)
-    return self->attachmentNames;
+  if (attachmentNames != nil)
+    return attachmentNames;
   
   a = [[self clientObject] fetchAttachmentNames];
   a = [a sortedArrayUsingSelector:@selector(compare:)];
-  self->attachmentNames = [a copy];
-  return self->attachmentNames;
+  attachmentNames = [a copy];
+  return attachmentNames;
 }
 - (BOOL)hasAttachments {
   return [[self attachmentNames] count] > 0 ? YES : NO;
