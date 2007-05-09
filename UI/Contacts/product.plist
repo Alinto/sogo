@@ -63,6 +63,8 @@
         };
      };
 
+/* both following class should be "reparented" so as to only have
+   SOGoContactFolder here... */
      SOGoContactGCSFolder = {
         slots = {
            toolbar = {
@@ -111,21 +113,21 @@
         };
         methods = {
            view = {
-              protectedBy = "View";
+	      protectedBy = "<public>";
               pageName    = "UIxContactsListView";
            };
            new = {
-              protectedBy = "View";
+	      protectedBy = "<public>";
               pageName    = "UIxContactEditor";
               actionName  = "new";
            };
            mailer-contacts = {
-              protectedBy = "View";
+	      protectedBy = "<public>";
               pageName    = "UIxContactsListView";
               actionName = "mailerContacts";
            };
 	   canAccessContent = {
-	      protectedBy = "View";
+	      protectedBy = "<public>";
               pageName    = "UIxContactsListView";
 	      actionName = "canAccessContent";
 	   };
@@ -160,10 +162,10 @@
         };
      };
 
-     SOGoContactLDAPEntry = {
+     SOGoContactLDIFEntry = {
         methods = {
            view = {
-              protectedBy = "View";
+	      protectedBy = "<public>";
               pageName    = "UIxContactView";
            };
            delete = {

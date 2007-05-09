@@ -18,25 +18,26 @@
     };
 
     SOGoContactGCSFolder = {
-      superclass    = "SOGoFolder";
+      superclass = "SOGoFolder";
     };
 
     SOGoContactGCSEntry = {
-      superclass    = "SOGoContentObject";
+      superclass = "SOGoContentObject";
       defaultRoles = {
         "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
       };
     };
 
     SOGoContactLDAPFolder = {
-      superclass    = "SOGoFolder";
+      superclass = "SOGoFolder";
+      defaultAccess = "allow";
+      protectedBy = "<public>";
     };
 
-    SOGoContactLDAPEntry = {
+    SOGoContactLDIFEntry = {
       superclass    = "SOGoContentObject";
-      defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
-      };
+      defaultAccess = "allow";
+      protectedBy = "<public>";
     };
   };
 }
