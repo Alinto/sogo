@@ -16,7 +16,7 @@ validate-wox:
 	  do $(XMLLINT-BIN) --noout $$wox || exit 1; \
 	done;
 
-install :: all
+install ::
 
 clean ::
 
