@@ -1,3 +1,8 @@
+2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserManager.[hm]: removed module, replaced
+	with the freshly written "LDAPUserManager".
+
 2007-05-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDAPEntry.[hm]: renamed to
