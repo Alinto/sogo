@@ -18,7 +18,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDateSelector.m		\
 	UIxCalUserRightsEditor.m	\
 					\
-	UIxComponent+Agenor.m		\
+	UIxComponent+Scheduler.m	\
 	UIxCalView.m			\
 	UIxCalAptListView.m		\
 	UIxCalTasksListView.m		\

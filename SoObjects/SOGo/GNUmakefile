@@ -8,10 +8,10 @@ include $(GNUSTEP_MAKEFILES)/common.make
 LIBRARY_NAME = libSOGo
 
 TOOL_NAME = \
-	agenor_email2uid	\
-	agenor_shares4uid	\
-	agenor_emails4uid	\
-	agenor_defaults
+# 	agenor_email2uid	\
+# 	agenor_shares4uid	\
+# 	agenor_emails4uid	\
+# 	agenor_defaults
 
 libSOGo_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
@@ -28,7 +28,8 @@ libSOGo_HEADER_FILES = \
 	SOGoGroupFolder.h		\
 	SOGoCustomGroupFolder.h		\
 	\
-	AgenorUserManager.h		\
+	LDAPUserManager.h		\
+	LDAPSource.h			\
 	SOGoPermissions.h		\
 	SOGoLRUCache.h			\
 	NSArray+Utilities.h		\
@@ -53,7 +54,8 @@ libSOGo_OBJC_FILES = \
 	\
 	SOGoPermissions.m		\
 	SOGoLRUCache.m			\
-	AgenorUserManager.m		\
+	LDAPUserManager.m		\
+	LDAPSource.m			\
 	NSObject+AptComparison.m	\
 	WOContext+Agenor.m		\
 	SOGoDAVRendererTypes.m		\

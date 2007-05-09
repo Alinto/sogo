@@ -12,10 +12,8 @@ Contacts_OBJC_FILES =			\
 	SOGoContactFolders.m		\
 	SOGoContactGCSEntry.m		\
 	SOGoContactGCSFolder.m		\
-	SOGoContactLDAPEntry.m		\
+	SOGoContactLDIFEntry.m		\
 	SOGoContactLDAPFolder.m		\
-					\
-	NGLdapEntry+Contact.m		\
 
 Contacts_RESOURCE_FILES +=		\
 	Version				\
