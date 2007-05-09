@@ -21,25 +21,19 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
-
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/SoUser.h>
+#import <EOControl/EOSortOrdering.h>
 
-#import <NGLdap/NGLdapAttribute.h>
-#import <NGLdap/NGLdapConnection.h>
-#import <NGLdap/NGLdapEntry.h>
-
-#import "common.h"
-
-#import "NGLdapEntry+Contact.h"
-
-#import "SOGoContactLDAPEntry.h"
+#import <SoObjects/SOGo/LDAPSource.h>
+#import "SOGoContactLDIFEntry.h"
 #import "SOGoContactLDAPFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
@@ -75,44 +69,42 @@
 {
   if ((self = [super init]))
     {
-      connection = nil;
-      contactIdentifier = nil;
-      userIdentifier = nil;
-      rootDN = nil;
+      name = nil;
+      displayName = nil;
+      container = nil;
       entries = nil;
+      ldapSource = nil;
     }
 
   return self;
 }
 
-- (id <SOGoContactFolder>) initWithName: (NSString *) aName
-                         andDisplayName: (NSString *) aDisplayName
-                            inContainer: (SOGoObject *) aContainer
+- (id <SOGoContactFolder>) initWithName: (NSString *) newName
+                         andDisplayName: (NSString *) newDisplayName
+                            inContainer: (SOGoObject *) newContainer
 {
-  if ((self = [self initWithName: aName
-                    inContainer: aContainer]))
-    [self setDisplayName: aDisplayName];
-  
+  self = [self init];
+
+  ASSIGN (name, newName);
+  ASSIGN (displayName, newDisplayName);
+  ASSIGN (container, newContainer);
+
   return self;
 }
 
 - (void) dealloc
 {
-  [connection release];
-  [contactIdentifier release];
-  [userIdentifier release];
-  [rootDN release];
+  [name release];
+  [displayName release];
+  [container release];
   [entries release];
+  [ldapSource release];
   [super dealloc];
 }
 
-- (void) setDisplayName: (NSString *) aDisplayName
+- (void) setLDAPSource: (LDAPSource *) newLDAPSource
 {
-  if (displayName)
-    [displayName release];
-  displayName = aDisplayName;
-  if (displayName)
-    [displayName retain];
+  ASSIGN (ldapSource, newLDAPSource);
 }
 
 - (NSString *) displayName
@@ -120,178 +112,30 @@
   return displayName;
 }
 
-- (void) LDAPSetHostname: (NSString *) aHostname
-                 setPort: (int) aPort
-               setBindDN: (NSString *) aBindDN
-               setBindPW: (NSString *) aBindPW
-    setContactIdentifier: (NSString *) aCI
-       setUserIdentifier: (NSString *) aUI
-               setRootDN: (NSString *) aRootDN;
+- (NSString *) nameInContainer
 {
-  connection = [[NGLdapConnection alloc] initWithHostName: aHostname
-                                         port: aPort];
-  [connection bindWithMethod: nil
-              binddn: aBindDN
-              credentials: aBindPW];
-
-  if (rootDN)
-    [rootDN release];
-  rootDN = [aRootDN copy];
-  if (contactIdentifier)
-    [contactIdentifier release];
-  contactIdentifier = [aCI copy];
-  if (userIdentifier)
-    [userIdentifier release];
-  userIdentifier = [aUI copy];
+  return name;
 }
 
-- (NGLdapConnection *) LDAPconnection
-{
-  return connection;
-}
-
-- (NGLdapAttribute *) _attrWithName: (NSString *) aName
-{
-  return [[[NGLdapAttribute alloc] initWithAttributeName: aName] autorelease];
-}
-
-- (NSArray *) _searchAttributes
-{
-  return [NSArray arrayWithObjects:
-                    contactIdentifier,
-                  userIdentifier,
-                  @"title",
-                  @"company",
-                  @"o",
-                  @"displayName",
-                  @"modifytimestamp",
-                  @"mozillaHomeState",
-                  @"mozillaHomeUrl",
-                  @"homeurl",
-                  @"st",
-                  @"region",
-                  @"mozillaCustom2",
-                  @"custom2",
-                  @"mozillaHomeCountryName",
-                  @"description",
-                  @"notes",
-                  @"department",
-                  @"departmentnumber",
-                  @"ou",
-                  @"orgunit",
-                  @"mobile",
-                  @"cellphone",
-                  @"carphone",
-                  @"mozillaCustom1",
-                  @"custom1",
-                  @"mozillaNickname",
-                  @"xmozillanickname",
-                  @"mozillaWorkUrl",
-                  @"workurl",
-                  @"fax",
-                  @"facsimileTelephoneNumber",
-                  @"telephoneNumber",
-                  @"mozillaHomeStreet",
-                  @"mozillaSecondEmail",
-                  @"xmozillasecondemail",
-                  @"mozillaCustom4",
-                  @"custom4",
-                  @"nsAIMid",
-                  @"nscpaimscreenname",
-                  @"street",
-                  @"streetAddress",
-                  @"postOfficeBox",
-                  @"homePhone",
-                  @"cn",
-                  @"commonname",
-                  @"givenName",
-                  @"mozillaHomePostalCode",
-                  @"mozillaHomeLocalityName",
-                  @"mozillaWorkStreet2",
-                  @"mozillaUseHtmlMail",
-                  @"xmozillausehtmlmail",
-                  @"mozillaHomeStreet2",
-                  @"postalCode",
-                  @"zip",
-                  @"c",
-                  @"countryname",
-                  @"pager",
-                  @"pagerphone",
-                  @"mail",
-                  @"sn",
-                  @"surname",
-                  @"mozillaCustom3",
-                  @"custom3",
-                  @"l",
-                  @"locality",
-                  @"birthyear",
-                  @"serialNumber",
-                  @"calFBURL",
-                  nil];
-}
-
-- (void) _loadEntries: (NSString *) entryId
-{
-  NSEnumerator *contacts;
-  NGLdapEntry *entry;
-  NSString *key;
-
-  if (!entries)
-    entries = [NSMutableDictionary new];
-
-  if (entryId)
-    {
-      if (![entries objectForKey: entryId])
-        {
-          entry
-            = [connection entryAtDN:
-                            [NSString stringWithFormat: @"%@=%@,%@",
-                                      contactIdentifier, entryId, rootDN]
-                          attributes: [self _searchAttributes]];
-          if (entry)
-            [entries setObject: entry forKey: entryId];
-        }
-    }
-  else
-    {
-      contacts = [connection deepSearchAtBaseDN: rootDN
-                             qualifier: nil
-                             attributes: [self _searchAttributes]];
-      if (contacts)
-        {
-          entry = [contacts nextObject];
-          while (entry)
-            {
-              key = [[entry attributeWithName: contactIdentifier]
-                      stringValueAtIndex: 0];
-              if (key && ![entries objectForKey: key])
-                [entries setObject: entry forKey: key];
-              entry = [contacts nextObject];
-            }
-        }
-    }
-}
-
-- (id) lookupName: (NSString *) name
+- (id) lookupName: (NSString *) objectName
         inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
 {
   id obj;
-  NGLdapEntry *entry;
+  NSDictionary *ldifEntry;
 
 //   NSLog (@"looking up name '%@'...", name);
 
   /* first check attributes directly bound to the application */
-  obj = [super lookupName: name inContext: lookupContext acquire: NO];
+  obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
   if (!obj)
     {
-      [self _loadEntries: name];
-      entry = [entries objectForKey: name];
-      obj = ((entry)
-             ? [SOGoContactLDAPEntry contactEntryWithName: name
-                                     withLDAPEntry: entry
-                                     inContainer: self]
-             : [NSException exceptionWithHTTPStatus: 404]);
+      ldifEntry = [ldapSource lookupContactEntry: objectName];
+      obj = ((ldifEntry)
+	     ? [SOGoContactLDIFEntry contactEntryWithName: name
+				     withLDIFEntry: ldifEntry
+				     inContainer: self]
+	     : [NSException exceptionWithHTTPStatus: 404]);
     }
 
   return obj;
@@ -299,83 +143,21 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  [self _loadEntries: nil];
-
-  return [entries allKeys];
-}
-
-- (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId
-{
-  NGLdapEntry *entry;
-
-  [self _loadEntries: recordId];
-
-  entry = [entries objectForKey: recordId];
-  return ((entry)
-          ? [SOGoContactLDAPEntry contactEntryWithName: recordId
-                                  withLDAPEntry: entry
-                                  inContainer: self]
-          : nil);
-}
-
-- (EOQualifier *) _qualifierForFilter: (NSString *) filter
-{
-  NSString *qs;
-  EOQualifier *qualifier;
-
-  if (filter && [filter length] > 0)
-    {
-      if ([filter isEqualToString: @"."])
-        qs = @"(cn='*')";
-      else
-        qs = [NSString stringWithFormat:
-                         @"(cn='%@*')"
-                       @"OR (sn='%@*')"
-                       @"OR (displayName='%@*')"
-                       @"OR (mail='%@*')"
-                       @"OR (telephoneNumber='*%@*')",
-                       filter, filter, filter, filter, filter];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-    }
-  else
-    qualifier = nil;
-
-  return qualifier;
+  return [ldapSource allEntryIDs];
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
 {
-  NSMutableArray *records;
-  NSArray *result;
-  NGLdapEntry *entry;
-  NSEnumerator *contacts;
+  NSArray *records, *result;
   EOSortOrdering *ordering;
 
   result = nil;
 
   if (filter && [filter length] > 0)
     {
-      NSLog (@"%@: fetching records matching '%@', sorted by '%@'"
-             @" in order %d",
-             self, filter, sortKey, sortOrdering);
-
-      records = [NSMutableArray new];
-      [records autorelease];
-
-      contacts = [connection deepSearchAtBaseDN: rootDN
-                             qualifier: [self _qualifierForFilter: filter]
-                             attributes: folderListingFields];
-      entry = [contacts nextObject];
-      while (entry)
-        {
-          [records addObject: [entry asDictionaryWithAttributeNames: nil
-                                     withUID: userIdentifier
-                                     andCName: contactIdentifier]];
-          entry = [contacts nextObject];
-        }
-
+      records = [ldapSource fetchContactsMatching: filter];
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey
                           selector: ((sortOrdering == NSOrderedDescending)

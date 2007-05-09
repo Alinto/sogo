@@ -1,5 +1,11 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	+contactFolderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	no longer manage LDAP connections. The requests are forwarded to
+	the relevant LDAPSource instead.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-appendSystemSources]): pass LDAPSource objects to
 	SOGoContactLDAPFolder instances.

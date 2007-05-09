@@ -23,34 +23,25 @@
 #ifndef SOGOCONTACTLDAPFOLDER_H
 #define SOGOCONTACTLDAPFOLDER_H
 
-#import <SOGo/SOGoObject.h>
 #import "SOGoContactFolder.h"
 
-@class NSString, NSArray;
-@class NGLdapConnection;
+@class NSMutableDictionary;
+
+@class LDAPSource;
 
 @interface SOGoContactLDAPFolder : SOGoObject <SOGoContactFolder>
 {
-  NGLdapConnection *connection;
-  NSString *contactIdentifier;
-  NSString *userIdentifier;
-  NSString *rootDN;
+  NSString *name;
   NSString *displayName;
+  id container;
+  LDAPSource *ldapSource;
   NSMutableDictionary *entries;
 }
 
-- (NGLdapConnection *) LDAPconnection;
-
-- (void) setDisplayName: (NSString *) aDisplayName;
-- (NSString *) displayName;
-
-- (void) LDAPSetHostname: (NSString *) aHostname
-                 setPort: (int) aPort
-               setBindDN: (NSString *) aBindDN
-               setBindPW: (NSString *) aBindPW
-    setContactIdentifier: (NSString *) aCI
-       setUserIdentifier: (NSString *) aUI
-               setRootDN: (NSString *) aRootDN;
+- (id <SOGoContactFolder>) initWithName: (NSString *) newName
+                         andDisplayName: (NSString *) newDisplayName
+                            inContainer: (SOGoObject *) newContainer;
+- (void) setLDAPSource: (LDAPSource *) newLdapSource;
 
 @end
 
