@@ -316,7 +316,7 @@ static BOOL sendEMailNotifications = NO;
 
   uid = [[LDAPUserManager sharedUserManager] getUIDForEmail: email];
 
-  return [[SOGoUser userWithLogin: uid andRoles: nil] timeZone];
+  return [[SOGoUser userWithLogin: uid roles: nil] timeZone];
 }
 
 - (void) sendEMailUsingTemplateNamed: (NSString *) _pageName

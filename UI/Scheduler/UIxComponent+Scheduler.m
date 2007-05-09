@@ -19,9 +19,11 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+
 #import <SoObjects/Appointments/SOGoCalendarComponent.h>
-#import <SoObjects/SOGo/WOContext+Agenor.h>
-#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxComponent+Scheduler.h"
 

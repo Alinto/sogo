@@ -81,23 +81,23 @@
 {
   NSString *info;
 
-  info = [ldifEntry valueForKey: @"telephoneNumber"];
+  info = [ldifEntry objectForKey: @"telephoneNumber"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"work", @"voice", @"pref", nil]];
-  info = [ldifEntry valueForKey: @"homePhone"];
+  info = [ldifEntry objectForKey: @"homePhone"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"home", @"voice", nil]];
-  info = [ldifEntry valueForKey: @"fax"];
+  info = [ldifEntry objectForKey: @"fax"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"work", @"fax", nil]];
-  info = [ldifEntry valueForKey: @"pager"];
+  info = [ldifEntry objectForKey: @"pager"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"pager", nil]];
-  info = [ldifEntry valueForKey: @"mobile"];
+  info = [ldifEntry objectForKey: @"mobile"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"cell", @"voice", nil]];
@@ -121,37 +121,37 @@
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];
-      info = [ldifEntry valueForKey: @"displayName"];
+      info = [ldifEntry objectForKey: @"displayName"];
       if (!(info && [info length] > 0))
-        info = [ldifEntry valueForKey: @"cn"];
+        info = [ldifEntry objectForKey: @"cn"];
       [vcard setFn: info];
-      surname = [ldifEntry valueForKey: @"sn"];
+      surname = [ldifEntry objectForKey: @"sn"];
       if (!surname)
-        surname = [ldifEntry valueForKey: @"surname"];
+        surname = [ldifEntry objectForKey: @"surname"];
       [vcard setNWithFamily: surname
-             given: [ldifEntry valueForKey: @"givenName"]
+             given: [ldifEntry objectForKey: @"givenName"]
              additional: nil
              prefixes: nil
              suffixes: nil];
-      info = [ldifEntry valueForKey: @"title"];
+      info = [ldifEntry objectForKey: @"title"];
       if (info)
         [vcard setTitle: info];
-      info = [ldifEntry valueForKey: @"mozillaNickname"];
+      info = [ldifEntry objectForKey: @"mozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldifEntry valueForKey: @"xmozillaNickname"];
+      info = [ldifEntry objectForKey: @"xmozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldifEntry valueForKey: @"notes"];
+      info = [ldifEntry objectForKey: @"notes"];
       if (info)
         [vcard setNote: info];
-      info = [ldifEntry valueForKey: @"mail"];
+      info = [ldifEntry objectForKey: @"mail"];
       if (info)
         [vcard addEmail: info
                types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
       [self _setPhonesOfVCard: vcard];
-      streetAddress = [ldifEntry valueForKey: @"streetAddress"];
-      location = [ldifEntry valueForKey: @"l"];
+      streetAddress = [ldifEntry objectForKey: @"streetAddress"];
+      location = [ldifEntry objectForKey: @"l"];
       element = [CardElement elementWithTag: @"adr"
                              attributes: nil values: nil];
       [element setValue: 0 ofAttribute: @"type" to: @"work"];
@@ -161,7 +161,7 @@
         [element setValue: 3 to: location];
       if (streetAddress || location)
         [vcard addChild: element];
-      info = [ldifEntry valueForKey: @"calFBURL"];
+      info = [ldifEntry objectForKey: @"calFBURL"];
       if (info)
         [vcard addChildWithTag: @"FBURL"
                types: nil
@@ -173,7 +173,7 @@
 
 - (NSString *) davEntityTag
 {
-  return [ldifEntry valueForKey: @"modifyTimeStamp"];
+  return [ldifEntry objectForKey: @"modifyTimeStamp"];
 }
 
 - (NSString *) davContentType

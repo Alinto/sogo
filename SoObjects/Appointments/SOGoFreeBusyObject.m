@@ -22,6 +22,7 @@
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalFreeBusy.h>
+#import <NGCards/iCalPerson.h>
 
 #import "common.h"
 
@@ -131,7 +132,6 @@
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
-  LDAPUserManager *um;
   NSString *uid;
   NSEnumerator *events;
   iCalCalendar *calendar;
