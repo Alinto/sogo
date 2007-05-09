@@ -773,6 +773,25 @@ static NSString    *fromInternetSuffixPattern = nil;
   return ma;
 }
 
+- (NSString *) _rawSender
+{
+  NSString *startEmail, *rawSender;
+  NSRange delimiter;
+
+  startEmail = [self sender];
+  delimiter = [startEmail rangeOfString: @"<"];
+  if (delimiter.location == NSNotFound)
+    rawSender = startEmail;
+  else
+    {
+      rawSender = [startEmail substringFromIndex: NSMaxRange (delimiter)];
+      delimiter = [rawSender rangeOfString: @">"];
+      rawSender = [rawSender substringToIndex: delimiter.location];
+    }
+
+  return rawSender;
+}
+
 - (NSException *)sendMimeMessageAtPath:(NSString *)_path {
   static NGSendMail *mailer = nil;
   NSArray  *recipients;
@@ -781,7 +800,7 @@ static NSString    *fromInternetSuffixPattern = nil;
   /* validate */
   
   recipients = [self allRecipients];
-  from       = [self sender];
+  from       = [self _rawSender];
   if ([recipients count] == 0) {
     return [NSException exceptionWithHTTPStatus:500 /* server error */
 			reason:@"draft has no recipients set!"];
