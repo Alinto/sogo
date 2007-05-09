@@ -25,16 +25,18 @@
 
 #import <NGObjWeb/WODirectAction.h>
 
-@class SOGoFolder;
 @class NSString;
 @class NSUserDefaults;
 @class NSMutableString;
 @class NSMutableDictionary;
 
+@class LDAPUserManager;
+@class SOGoFolder;
+
 @interface UIxFolderActions : WODirectAction
 {
   SOGoFolder *clientObject;
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   NSUserDefaults *ud;
   NSString *owner;
   NSString *login;

@@ -25,7 +25,7 @@
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
-#import <SOGo/AgenorUserManager.h>
+#import <SOGo/LDAPUserManager.h>
 #import <NGMime/NGMime.h>
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
@@ -66,7 +66,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 /* iCal handling */
 
 - (NSArray *)attendeeUIDsFromTask:(iCalToDo *)_task {
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   NSMutableArray    *uids;
   NSArray  *attendees;
   unsigned i, count;
@@ -80,7 +80,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   count = [attendees count];
   uids = [NSMutableArray arrayWithCapacity:count + 1];
   
-  um = [AgenorUserManager sharedUserManager];
+  um = [LDAPUserManager sharedUserManager];
   
   /* add organizer */
   
@@ -221,7 +221,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - delete in removed folders
      - send iMIP mail for all folders not found
   */
-//   AgenorUserManager *um;
+//   LDAPUserManager *um;
 //   iCalCalendar *calendar;
 //   iCalToDo *oldApt, *newApt;
 // //   iCalToDoChanges  *changes;
@@ -239,7 +239,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 // 			reason:@"got no iCalendar content to store!"];
 //   }
 
-//   um = [AgenorUserManager sharedUserManager];
+//   um = [LDAPUserManager sharedUserManager];
 
 //   /* handle old content */
   

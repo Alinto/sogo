@@ -23,7 +23,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
-#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 
 #import "UIxUserRightsEditor.h"
 
@@ -54,9 +54,9 @@
 
 - (NSString *) userDisplayName
 {
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   
-  um = [AgenorUserManager sharedUserManager];
+  um = [LDAPUserManager sharedUserManager];
 
   return [NSString stringWithFormat: @"%@ <%@>",
 		   [um getCNForUID: uid],
@@ -67,7 +67,7 @@
 {
   BOOL response;
   NSString *newUID, *email;
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   SOGoObject *clientObject;
 
   response = NO;
@@ -75,7 +75,7 @@
   newUID = [[context request] formValueForKey: @"uid"];
   if ([newUID length] > 0)
     {
-      um = [AgenorUserManager sharedUserManager];
+      um = [LDAPUserManager sharedUserManager];
       email = [um getEmailForUID: newUID];
       if ([email length] > 0)
 	{

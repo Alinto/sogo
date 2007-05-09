@@ -40,13 +40,13 @@
 
 /* accessors */
 
-- (NSString *)iCalString;
+- (NSString *) iCalString;
 
-- (NSString *)contentAsStringFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
+				to: (NSCalendarDate *) _endDate;
 
-- (NSArray *)fetchFreeBusyInfosFrom:(NSCalendarDate *)_startDate
-  to:(NSCalendarDate *)_endDate;
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
+				  to: (NSCalendarDate *) _endDate;
 
 @end
 

@@ -26,7 +26,7 @@
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGCards/iCalPerson.h>
-#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
@@ -67,13 +67,12 @@
 
 - (NSString *) _displayNameForUID: (NSString *) uid
 {
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   
-  um = [AgenorUserManager sharedUserManager];
+  um = [LDAPUserManager sharedUserManager];
 
   return [NSString stringWithFormat: @"%@ <%@>",
-		   [um getCNForUID: uid],
-		   [um getEmailForUID: uid]];
+		   [um getCNForUID: uid], [um getEmailForUID: uid]];
 }
 
 - (NSString *) ownerName

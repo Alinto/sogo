@@ -22,9 +22,10 @@
 #import "UIxAppointmentView.h"
 #import <NGCards/NGCards.h>
 #import <SOGo/WOContext+Agenor.h>
+#import <SOGo/SOGoUser.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <SOGoUI/SOGoDateFormatter.h>
-#import "UIxComponent+Agenor.h"
+#import "UIxComponent+Scheduler.h"
 #import "common.h"
 
 @interface UIxAppointmentView (PrivateAPI)
@@ -62,7 +63,7 @@
 - (BOOL)isAttendeeActiveUser {
   NSString *email, *attEmail;
 
-  email    = [[[self context] activeUser] email];
+  email    = [[[self context] activeUser] primaryEmail];
   attendee = [self attendee];
   attEmail = [attendee rfc822Email];
 
@@ -219,7 +220,7 @@
   NSString   *email;
   iCalPerson *organizer;
 
-  email     = [[[self context] activeUser] email];
+  email     = [[[self context] activeUser] primaryEmail];
   organizer = [[self appointment] organizer];
   if (!organizer) return YES; // assume this is correct to do, right?
   return [[organizer rfc822Email] isEqualToString:email];
@@ -237,7 +238,7 @@
     return YES;
 
   /* can access it if I'm invited :-) */
-  email     = [[[self context] activeUser] email];
+  email     = [[[self context] activeUser] primaryEmail];
   partMails = [[[self appointment] participants] valueForKey:@"rfc822Email"];
   return [partMails containsObject:email];
 }

@@ -25,7 +25,7 @@
 
 #import "common.h"
 
-#import <SOGo/AgenorUserManager.h>
+#import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 
 #import "SOGoFreeBusyObject.h"
@@ -110,11 +110,28 @@
   return fbType;    
 }
 
+- (iCalPerson *) iCalPersonWithUID: (NSString *) uid
+{
+  iCalPerson *person;
+  LDAPUserManager *um;
+  NSDictionary *contactInfos;
+
+  um = [LDAPUserManager sharedUserManager];
+  contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
+
+  person = [iCalPerson new];
+  [person autorelease];
+  [person setCn: [contactInfos objectForKey: @"cn"]];
+  [person setEmail: [contactInfos objectForKey: @"c_email"]];
+
+  return person;
+}
+
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   NSString *uid;
   NSEnumerator *events;
   iCalCalendar *calendar;
@@ -122,7 +139,6 @@
   NSDictionary *info;
   iCalFreeBusyType type;
 
-  um  = [AgenorUserManager sharedUserManager];
   uid = [[self container] login];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
@@ -130,7 +146,7 @@
   [calendar setVersion: @"2.0"];
 
   freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
-  [freebusy addToAttendees: [um iCalPersonWithUid: uid]];
+  [freebusy addToAttendees: [self iCalPersonWithUid: uid]];
   [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
   [freebusy setStartDate: _startDate];
   [freebusy setEndDate: _endDate];
@@ -138,7 +154,7 @@
   /* ORGANIZER - strictly required but missing for now */
 
   /* ATTENDEE */
-//   person = [um iCalPersonWithUid: uid];
+//   person = [self iCalPersonWithUid: uid];
 //   [person setTag: @"ATTENDEE"];
 //   [ms appendString: [person versitString]];
 

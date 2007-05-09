@@ -28,7 +28,6 @@
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SoObjects/SOGo/AgenorUserManager.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>

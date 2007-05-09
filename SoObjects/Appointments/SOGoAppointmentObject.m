@@ -26,11 +26,9 @@
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SOGo/AgenorUserManager.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoPermissions.h>
-
-#import "iCalEntityObject+Agenor.h"
+#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "common.h"
 
@@ -46,7 +44,7 @@
 /* iCal handling */
 - (NSArray *) attendeeUIDsFromAppointment: (iCalEvent *) _apt
 {
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   NSMutableArray *uids;
   NSArray *attendees;
   unsigned i, count;
@@ -60,13 +58,13 @@
   count = [attendees count];
   uids = [NSMutableArray arrayWithCapacity:count + 1];
   
-  um = [AgenorUserManager sharedUserManager];
+  um = [LDAPUserManager sharedUserManager];
   
   /* add organizer */
   
   email = [[_apt organizer] rfc822Email];
   if ([email isNotNull]) {
-    uid = [um getUIDForEmail:email];
+    uid = [um getUIDForEmail: email];
     if ([uid isNotNull]) {
       [uids addObject:uid];
     }
@@ -201,7 +199,7 @@
      - delete in removed folders
      - send iMIP mail for all folders not found
   */
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   iCalEvent *oldApt, *newApt;
   iCalEventChanges *changes;
   iCalPerson *organizer;
@@ -217,7 +215,7 @@
     return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
 			reason: @"got no iCalendar content to store!"];
 
-  um = [AgenorUserManager sharedUserManager];
+  um = [LDAPUserManager sharedUserManager];
 
   /* handle old content */
   
@@ -247,12 +245,10 @@
   /* diff */
   
   changes = [iCalEventChanges changesFromEvent: oldApt toEvent: newApt];
-  uids = [um getUIDsForICalPersons: [changes deletedAttendees]
-             applyStrictMapping: NO];
+  uids = [self getUIDsForICalPersons: [changes deletedAttendees]];
   removedUIDs = [NSMutableArray arrayWithArray: uids];
 
-  uids = [um getUIDsForICalPersons: [newApt attendees]
-             applyStrictMapping: NO];
+  uids = [self getUIDsForICalPersons: [newApt attendees]];
   storeUIDs = [NSMutableArray arrayWithArray: uids];
   props = [changes updatedProperties];
 
@@ -263,7 +259,7 @@
   /* preserve organizer */
 
   organizer = [newApt organizer];
-  uid = [um getUIDForICalPerson: organizer];
+  uid = [self getUIDForICalPerson: organizer];
   if (!uid)
     uid = [self ownerInContext: nil];
   if (uid) {
@@ -275,7 +271,7 @@
   /* organizer might have changed completely */
 
   if (oldApt && ([props containsObject: @"organizer"])) {
-    uid = [um getUIDForICalPerson:[oldApt organizer]];
+    uid = [self getUIDForICalPerson:[oldApt organizer]];
     if (uid) {
       if (![storeUIDs containsObject:uid]) {
         if (![removedUIDs containsObject:uid]) {
@@ -435,6 +431,7 @@
   NSString *newContentString, *oldContentString;
   iCalCalendar *eventCalendar;
   iCalEvent *event;
+  iCalPerson *organizer;
   NSArray *organizers;
 
   oldContentString = [self contentAsString];
@@ -449,7 +446,8 @@
         newContentString = contentString;
       else
         {
-          [event setOrganizerWithUid: [[self container] ownerInContext: nil]];
+	  organizer = [self iCalPersonWithUID: [self ownerInContext: context]];
+          [event setOrganizer: organizer];
           newContentString = [eventCalendar versitString];
         }
     }

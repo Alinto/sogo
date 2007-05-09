@@ -9,7 +9,7 @@
 #import <NGCards/NGCards.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
-#import "UIxComponent+Agenor.h"
+#import "UIxComponent+Scheduler.h"
 
 #import "SoObjects/Appointments/SOGoAppointmentFolder.h"
 #import <SOGo/NSArray+Utilities.h>
@@ -113,7 +113,7 @@ static BOOL shouldDisplayWeekend = NO;
   {
     count = [_apts count];
     filtered = [[[NSMutableArray alloc] initWithCapacity: count] autorelease];
-    email = [self emailForUser];
+    email = [[context activeUser] primaryEmail];
 
     for (i = 0; i < count; i++)
       {

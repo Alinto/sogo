@@ -30,7 +30,7 @@
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
-#import <SOGo/AgenorUserManager.h>
+#import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -741,7 +741,7 @@ static NSNumber   *sharedYes = nil;
     privacySqlString = @"and (isopaque = 1)";
   else
     {
-      email = [activeUser email];
+      email = [activeUser primaryEmail];
       
       privacySqlString
         = [NSString stringWithFormat:
@@ -1092,7 +1092,7 @@ static NSNumber   *sharedYes = nil;
 {
   /* Note: can return NSNull objects in the array! */
   NSMutableArray    *uids;
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   unsigned          i, count;
   
   if (_persons == nil)
@@ -1100,7 +1100,7 @@ static NSNumber   *sharedYes = nil;
 
   count = [_persons count];
   uids  = [NSMutableArray arrayWithCapacity:count + 1];
-  um    = [AgenorUserManager sharedUserManager];
+  um    = [LDAPUserManager sharedUserManager];
   
   for (i = 0; i < count; i++) {
     iCalPerson *person;

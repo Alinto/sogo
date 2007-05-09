@@ -25,7 +25,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
-#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 
 #import "UIxObjectActions.h"
@@ -38,7 +38,7 @@
   WORequest *request;
   NSString *uid, *email;
   unsigned int code;
-  AgenorUserManager *um;
+  LDAPUserManager *um;
   SOGoObject *clientObject;
 
   code = 403;
@@ -46,7 +46,7 @@
   uid = [request formValueForKey: @"uid"];
   if ([uid length] > 0)
     {
-      um = [AgenorUserManager sharedUserManager];
+      um = [LDAPUserManager sharedUserManager];
       email = [um getEmailForUID: uid];
       if ([email length] > 0)
         {

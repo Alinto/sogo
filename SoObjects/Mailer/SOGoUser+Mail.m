@@ -60,8 +60,8 @@
   account = [self valueForKey:@"primaryIMAP4AccountString"];
   
   identity = [[[SOGoMailIdentity alloc] init] autorelease];
-  [identity setName:[self cn]];
-  [identity setEmail:[self email]];
+  [identity setName: [self cn]];
+  [identity setEmail: [self primaryEmail]];
   [identity setSentFolderName:[self agenorSentFolderForAccount:account]];
   return identity;
 }

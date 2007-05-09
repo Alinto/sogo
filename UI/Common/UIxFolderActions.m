@@ -31,10 +31,10 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoSecurityManager.h>
 
-#import <SOGo/AgenorUserManager.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxFolderActions.h"
 
@@ -46,8 +46,10 @@
 - (void) _setupContext
 {
   NSString *clientClass;
+  SOGoUser *activeUser;
 
-  login = [[context activeUser] login];
+  activeUser = [context activeUser];
+  login = [activeUser login];
   clientObject = [self clientObject];
   owner = [clientObject ownerInContext: nil];
 
@@ -59,8 +61,8 @@
   else
     baseFolder = nil;
 
-  um = [AgenorUserManager sharedUserManager];
-  ud = [um getUserSettingsForUID: login];
+  um = [LDAPUserManager sharedUserManager];
+  ud = [activeUser userSettings];
   moduleSettings = [ud objectForKey: baseFolder];
   if (!moduleSettings)
     {
@@ -119,7 +121,8 @@
 
   [self _setupContext];
   email = [NSString stringWithFormat: @"%@ <%@>",
-		    [um getCNForUID: owner], [um getEmailForUID: owner]];
+		    [um getCNForUID: owner],
+		    [um getEmailForUID: owner]];
   if ([baseFolder isEqualToString: @"Contacts"])
     folderName = [NSString stringWithFormat: @"%@ (%@)",
 			   [clientObject nameInContainer], email];

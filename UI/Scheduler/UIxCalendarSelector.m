@@ -28,7 +28,6 @@
 #import <NGExtensions/NGExtensions.h>
 #import <NGCards/iCalPerson.h>
 
-#import <SOGo/AgenorUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGoUI/UIxComponent.h>
 #import <Appointments/SOGoAppointmentFolder.h>
