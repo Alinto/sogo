@@ -30,10 +30,6 @@
 
 - (NSArray *) getICalPersonsFromValue: (NSString *) selectorValue;
 
-/* email, cn */
-- (NSString *) emailForUser;
-- (NSString *) cnForUser;
-
 @end
 
 #endif	/* __UIxComponent_Agenor_H_ */

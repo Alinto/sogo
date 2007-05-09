@@ -19,11 +19,11 @@
   02111-1307, USA.
 */
 
-#include "UIxComponent+Agenor.h"
-#include <SOGo/AgenorUserManager.h>
-#include <SOGo/WOContext+Agenor.h>
-#include <SOGo/SOGoUser.h>
-#include "common.h"
+#import <SoObjects/Appointments/SOGoCalendarComponent.h>
+#import <SoObjects/SOGo/WOContext+Agenor.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+
+#import "UIxComponent+Scheduler.h"
 
 @implementation UIxComponent(Agenor)
 
@@ -32,9 +32,9 @@
   NSMutableArray *persons;
   NSEnumerator *uids;
   NSString *uid;
-  AgenorUserManager *um;
+  SOGoCalendarComponent *component;
 
-  um = [AgenorUserManager sharedUserManager];
+  component = [self clientObject];
 
   persons = [NSMutableArray new];
   [persons autorelease];
@@ -46,22 +46,12 @@
       uid = [uids nextObject];
       while (uid)
         {
-          [persons addObject: [um iCalPersonWithUid: uid]];
+          [persons addObject: [component iCalPersonWithUID: uid]];
           uid = [uids nextObject];
         }
     }
 
   return persons;
-}
-
-- (NSString *) emailForUser
-{
-  return [[context activeUser] email];
-}
-
-- (NSString *) cnForUser
-{
-  return [[context activeUser] cn];
 }
 
 @end /* UIxComponent(Agenor) */
