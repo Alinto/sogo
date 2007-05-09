@@ -1,5 +1,9 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m: extract the raw email
+	address of the "from" field before sending the message. Otherwise,
+	sending the mail won't work.
+
 	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -fromEMails]):
 	rewrote this method to request all the available email identities
 	for the current user. Also, the from field also contains the full
