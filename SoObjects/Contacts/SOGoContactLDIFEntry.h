@@ -34,7 +34,6 @@
   NSString *name;
   NSDictionary *ldifEntry;
   NGVCard *vcard;
-  id container;
 }
 
 + (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
