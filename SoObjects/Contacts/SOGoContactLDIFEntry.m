@@ -1,4 +1,4 @@
-/* SOGoContactLDAPEntry.m - this file is part of SOGo
+/* SOGoContactLDIFEntry.m - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -27,48 +27,32 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
 
-#import "SOGoContactLDAPEntry.h"
+#import "SOGoContactLDIFEntry.h"
 
-@implementation SOGoContactLDAPEntry
+@implementation SOGoContactLDIFEntry
 
-+ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) newName
-                                  withLDAPEntry: (NGLdapEntry *) newEntry
++ (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
+                                  withLDIFEntry: (NSDictionary *) newEntry
                                     inContainer: (id) newContainer
 {
-  SOGoContactLDAPEntry *entry;
+  SOGoContactLDIFEntry *entry;
 
   entry = [[self alloc] initWithName: newName
-                        withLDAPEntry: newEntry
+                        withLDIFEntry: newEntry
                         inContainer: newContainer];
   [entry autorelease];
 
   return entry;
 }
 
-- (void) dumpEntry: (NGLdapEntry *) anEntry
-{
-  NSArray *keys;
-  unsigned int count, max;
-
-  keys = [anEntry attributeNames];
-  max = [keys count];
-
-  NSLog (@"dumping entry...");
-  for (count = 0; count < max; count++)
-    NSLog (@"%d: %@ = '%@'", count,
-           [keys objectAtIndex: count],
-           [anEntry singleAttributeWithName: [keys objectAtIndex: count]]);
-  NSLog (@"dumping finished..");
-}
-
 - (id) initWithName: (NSString *) newName
-      withLDAPEntry: (NGLdapEntry *) newEntry
+      withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer
 {
   self = [self init];
   ASSIGN (name, newName);
   ASSIGN (container, newContainer);
-  ASSIGN (ldapEntry, newEntry);
+  ASSIGN (ldifEntry, newEntry);
   vcard = nil;
 
 //   [self dumpEntry: anEntry];
@@ -84,7 +68,7 @@
 - (void) dealloc
 {
   [vcard release];
-  [ldapEntry release];
+  [ldifEntry release];
   [super dealloc];
 }
 
@@ -97,23 +81,23 @@
 {
   NSString *info;
 
-  info = [ldapEntry singleAttributeWithName: @"telephoneNumber"];
+  info = [ldifEntry valueForKey: @"telephoneNumber"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"work", @"voice", @"pref", nil]];
-  info = [ldapEntry singleAttributeWithName: @"homePhone"];
+  info = [ldifEntry valueForKey: @"homePhone"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"home", @"voice", nil]];
-  info = [ldapEntry singleAttributeWithName: @"fax"];
+  info = [ldifEntry valueForKey: @"fax"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"work", @"fax", nil]];
-  info = [ldapEntry singleAttributeWithName: @"pager"];
+  info = [ldifEntry valueForKey: @"pager"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"pager", nil]];
-  info = [ldapEntry singleAttributeWithName: @"mobile"];
+  info = [ldifEntry valueForKey: @"mobile"];
   if (info)
     [vCard addTel: info
            types: [NSArray arrayWithObjects: @"cell", @"voice", nil]];
@@ -137,37 +121,37 @@
       [vcard setVClass: @"PUBLIC"];
       [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
       [vcard setProfile: @"vCard"];
-      info = [ldapEntry singleAttributeWithName: @"displayName"];
+      info = [ldifEntry valueForKey: @"displayName"];
       if (!(info && [info length] > 0))
-        info = [ldapEntry singleAttributeWithName: @"cn"];
+        info = [ldifEntry valueForKey: @"cn"];
       [vcard setFn: info];
-      surname = [ldapEntry singleAttributeWithName: @"sn"];
+      surname = [ldifEntry valueForKey: @"sn"];
       if (!surname)
-        surname = [ldapEntry singleAttributeWithName: @"surname"];
+        surname = [ldifEntry valueForKey: @"surname"];
       [vcard setNWithFamily: surname
-             given: [ldapEntry singleAttributeWithName: @"givenName"]
+             given: [ldifEntry valueForKey: @"givenName"]
              additional: nil
              prefixes: nil
              suffixes: nil];
-      info = [ldapEntry singleAttributeWithName: @"title"];
+      info = [ldifEntry valueForKey: @"title"];
       if (info)
         [vcard setTitle: info];
-      info = [ldapEntry singleAttributeWithName: @"mozillaNickname"];
+      info = [ldifEntry valueForKey: @"mozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldapEntry singleAttributeWithName: @"xmozillaNickname"];
+      info = [ldifEntry valueForKey: @"xmozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldapEntry singleAttributeWithName: @"notes"];
+      info = [ldifEntry valueForKey: @"notes"];
       if (info)
         [vcard setNote: info];
-      info = [ldapEntry singleAttributeWithName: @"mail"];
+      info = [ldifEntry valueForKey: @"mail"];
       if (info)
         [vcard addEmail: info
                types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
       [self _setPhonesOfVCard: vcard];
-      streetAddress = [ldapEntry singleAttributeWithName: @"streetAddress"];
-      location = [ldapEntry singleAttributeWithName: @"l"];
+      streetAddress = [ldifEntry valueForKey: @"streetAddress"];
+      location = [ldifEntry valueForKey: @"l"];
       element = [CardElement elementWithTag: @"adr"
                              attributes: nil values: nil];
       [element setValue: 0 ofAttribute: @"type" to: @"work"];
@@ -177,7 +161,7 @@
         [element setValue: 3 to: location];
       if (streetAddress || location)
         [vcard addChild: element];
-      info = [ldapEntry singleAttributeWithName: @"calFBURL"];
+      info = [ldifEntry valueForKey: @"calFBURL"];
       if (info)
         [vcard addChildWithTag: @"FBURL"
                types: nil
@@ -189,8 +173,7 @@
 
 - (NSString *) davEntityTag
 {
-  return [[ldapEntry attributeWithName: @"modifyTimeStamp"]
-           stringValueAtIndex: 0];
+  return [ldifEntry valueForKey: @"modifyTimeStamp"];
 }
 
 - (NSString *) davContentType

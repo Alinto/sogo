@@ -1,4 +1,4 @@
-/* SOGoContactLDAPEntry.h - this file is part of SOGo
+/* SOGoContactLDIFEntry.h - this file is part of SOGo
  * Copyright (C) 2006 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
@@ -19,32 +19,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOCONTACTLDAPENTRY_H
-#define SOGOCONTACTLDAPENTRY_H
+#ifndef SOGOCONTACTLDIFENTRY_H
+#define SOGOCONTACTLDIFENTRY_H
 
 #import <SOGo/SOGoObject.h>
 
 #import "SOGoContactObject.h"
 
+@class NSDictionary;
 @class NSString;
-@class SOGoContactLDAPFolder;
-@class NGLdapEntry;
 
-@interface SOGoContactLDAPEntry : NSObject <SOGoContactObject>
+@interface SOGoContactLDIFEntry : SOGoObject <SOGoContactObject>
 {
   NSString *name;
-  NGLdapEntry *ldapEntry;
+  NSDictionary *ldifEntry;
   NGVCard *vcard;
   id container;
 }
 
-+ (SOGoContactLDAPEntry *) contactEntryWithName: (NSString *) newName
-                                  withLDAPEntry: (NGLdapEntry *) newEntry
++ (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
+                                  withLDIFEntry: (NSDictionary *) newEntry
                                     inContainer: (id) newContainer;
 - (id) initWithName: (NSString *) newName
-      withLDAPEntry: (NGLdapEntry *) newEntry
+      withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer;
 
 @end
 
-#endif /* SOGOCONTACTLDAPENTRY_H */
+#endif /* SOGOCONTACTLDIFENTRY_H */

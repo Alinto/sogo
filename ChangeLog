@@ -1,5 +1,11 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDIFEntry.[hm]: new class module
+	replacing the SOGoContactLDAPEntry module. It was renamed as such
+	because it now receives a dictionary instead of an NGLdapEntry.
+	It thus can now handle data from any source of LDIF data, not
+	only coming from LDAP.
+
 	* SoObjects/SOGo/LDAPUserManager.[hm]: new class module
 	implementing most of what used to be the AgenorUserManager class.
 	The difference is that users are cached in the forme of
