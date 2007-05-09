@@ -1,5 +1,11 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPUserManager.[hm]: new class module
+	implementing most of what used to be the AgenorUserManager class.
+	The difference is that users are cached in the forme of
+	dictionaries and many sources are used. Also, it can be used to
+	search LDAP contacts.
+
 	* SoObjects/SOGo/LDAPSource.[hm]: new class module implementing
 	the concept of "ldap source", to be used by all the classes
 	needing access to LDAP-provided information: addressbooks and the
