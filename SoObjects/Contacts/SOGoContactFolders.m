@@ -31,9 +31,11 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoUser.h>
 
 #import <GDLContentStore/GCSFolderManager.h>
@@ -41,9 +43,8 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
-
-#import "common.h"
 
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactLDAPFolder.h"
@@ -71,7 +72,7 @@
   [super dealloc];
 }
 
-- (void) appendPersonalSourcesInContext: (WOContext *) context;
+- (void) appendPersonalSources
 {
   SOGoContactGCSFolder *ab;
   GCSChannelManager *cm;
@@ -87,11 +88,11 @@
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if (fc)
     {
-      sql
-        = [NSString stringWithFormat: @"SELECT c_path4, c_foldername FROM %@"
-                    @" WHERE c_path2 = '%@' AND c_folder_type = 'Contact'",
-                    [folderLocation gcsTableName],
-                    [self ownerInContext: nil]];
+      sql = [NSString
+	      stringWithFormat: (@"SELECT c_path4, c_foldername FROM %@"
+				 @" WHERE c_path2 = '%@'"
+				 @" AND c_folder_type = 'Contact'"),
+	      [folderLocation gcsTableName], [self ownerInContext: context]];
       [fc evaluateExpressionX: sql];
       attrs = [fc describeResults: NO];
       row = [fc fetchAttributes: attrs withZone: NULL];
@@ -112,6 +113,28 @@
     }
 }
 
+- (void) appendSystemSources
+{
+  LDAPUserManager *um;
+  NSEnumerator *sourceIDs;
+  NSString *currentSourceID, *displayName;
+  SOGoContactLDAPFolder *currentFolder;
+
+  um = [LDAPUserManager sharedUserManager];
+  sourceIDs = [[um addressBookSourceIDs] objectEnumerator]; 
+  currentSourceID = [sourceIDs nextObject];
+  while (currentSourceID)
+    {
+      displayName = [um displayNameForSourceWithID: currentSourceID];
+      currentFolder = [SOGoContactLDAPFolder contactFolderWithName: currentSourceID
+					     andDisplayName: displayName
+					     inContainer: self];
+      [currentFolder setLDAPSource: [um sourceWithID: currentSourceID]];
+      [contactFolders setObject: currentFolder forKey: currentSourceID];
+      currentSourceID = [sourceIDs nextObject];
+    }
+}
+
 - (WOResponse *) newFolderWithName: (NSString *) name
 {
   SOGoContactGCSFolder *newFolder;
@@ -119,7 +142,7 @@
 
   newFolder = [SOGoContactGCSFolder contactFolderWithName: name
                                     andDisplayName: name
-                                    inContainer: [self clientObject]];
+                                    inContainer: self];
   if ([newFolder isKindOfClass: [NSException class]])
     response = (WOResponse *) newFolder;
   else
@@ -140,42 +163,13 @@
   return response;
 }
 
-- (void) appendSystemSourcesInContext: (WOContext *) context;
-{
-  NSUserDefaults *ud;
-  NSEnumerator *ldapABs;
-  NSDictionary *udAB;
-  SOGoContactLDAPFolder *ab;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  ldapABs = [[ud objectForKey: @"SOGoLDAPAddressBooks"] objectEnumerator];
-  udAB = [ldapABs nextObject];
-  while (udAB)
-    {
-      ab = [SOGoContactLDAPFolder contactFolderWithName:
-                                    [udAB objectForKey: @"id"]
-                                  andDisplayName:
-                                    [udAB objectForKey: @"displayName"]
-                                  inContainer: self];
-      [ab LDAPSetHostname: [udAB objectForKey: @"hostname"]
-          setPort: [[udAB objectForKey: @"port"] intValue]
-          setBindDN: [udAB objectForKey: @"bindDN"]
-          setBindPW: [udAB objectForKey: @"bindPW"]
-          setContactIdentifier: [udAB objectForKey: @"idField"]
-          setUserIdentifier: [udAB objectForKey: @"userIdField"]
-          setRootDN: [udAB objectForKey: @"rootDN"]];
-      [contactFolders setObject: ab forKey: [udAB objectForKey: @"id"]];
-      udAB = [ldapABs nextObject];
-    }
-}
-
 - (void) initContactSources
 {
   if (!contactFolders)
     {
       contactFolders = [NSMutableDictionary new];
-      [self appendPersonalSourcesInContext: context];
-      [self appendSystemSourcesInContext: context];
+      [self appendPersonalSources];
+      [self appendSystemSources];
     }
 }
 
@@ -184,7 +178,6 @@
           acquire: (BOOL) acquire
 {
   id obj;
-  id folder;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: name inContext: lookupContext acquire: NO];
@@ -193,10 +186,9 @@
       if (!contactFolders)
         [self initContactSources];
 
-      folder = [contactFolders objectForKey: name];
-      obj = ((folder)
-             ? folder
-             : [NSException exceptionWithHTTPStatus: 404]);
+      obj = [contactFolders objectForKey: name];
+      if (!obj)
+	obj = [NSException exceptionWithHTTPStatus: 404];
     }
 
   return obj;

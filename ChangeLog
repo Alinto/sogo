@@ -1,5 +1,9 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendSystemSources]): pass LDAPSource objects to
+	SOGoContactLDAPFolder instances.
+
 	* SoObjects/Mailer/SOGoDraftObject.m: extract the raw email
 	address of the "from" field before sending the message. Otherwise,
 	sending the mail won't work.
