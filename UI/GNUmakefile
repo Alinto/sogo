@@ -11,8 +11,6 @@ SUBPROJECTS += \
 	Contacts	\
 	MailerUI	\
 	MailPartViewers	\
-
-SUBPROJECTS += \
 	Templates
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
