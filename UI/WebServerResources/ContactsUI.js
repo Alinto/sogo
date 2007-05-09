@@ -186,7 +186,7 @@ function contactLoadCallback(http) {
     div.innerHTML = content;
   }
   else
-    log ("ajax fuckage 2");
+    log ("ajax fuckage 2: " + http.status);
 }
 
 var rowSelectionCount = 0;
