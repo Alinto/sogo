@@ -71,13 +71,14 @@ function updateResults(http) {
       else
         searchField.uid = null;
       searchField.hasfreebusy = false;
+      var completeEmail = text[1] + " <" + text[2] + ">";
       if (text[1].substring(0, searchField.value.length).toUpperCase()
           == searchField.value.toUpperCase())
-        searchField.value = text[1];
+        searchField.value = completeEmail;
       else {
-        searchField.value += ' >> ' + text[1];
+        searchField.value += ' >> ' + completeEmail;
       }
-      searchField.confirmedValue = text[1];
+      searchField.confirmedValue = completeEmail;
       if (searchField.focussed) {
         var end = searchField.value.length;
         searchField.setSelectionRange(start, end);
@@ -87,6 +88,20 @@ function updateResults(http) {
     }
     running = false;
     document.contactLookupAjaxRequest = null;
+  }
+}
+
+function UIDLookupCallback(http) {
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      var searchField = http.callbackData;
+      var start = searchField.value.length;
+      var text = http.responseText.split(":");
+      if (text[0].length > 0)
+        searchField.uid = text[0];
+      else
+        searchField.uid = null;
+    }
   }
 }
 
@@ -323,11 +338,9 @@ function onEditorOkClick(event) {
    var table = $("freeBusy");
    var inputs = table.getElementsByTagName("input");
    for (var i = 0; i < inputs.length - 2; i++) {
-     var name = inputs[i].uid;
-     if (!(name && name.length > 0)) {
-       name = extractEmailName(inputs[i].value);
-       log ("name: " + name);
-     }
+     var name = extractEmailName(inputs[i].value);
+     if (!(name && name.length > 0))
+       name = inputs[i].uid;
      var email = extractEmailAddress(inputs[i].value);
      var pos = attendeesEmails.indexOf(email);
      if (pos == -1)
@@ -481,6 +494,8 @@ function prepareAttendees() {
       attendeesNames = parent$("attendeesNames").value.split(",");
       attendeesEmails = parent$("attendeesEmails").value.split(",");
 
+      var baseUrl = UserFolderURL + "Contacts/contactSearch?search=";
+
       var body = $("freeBusy").tBodies[0];
       for (var i = 0; i < attendeesNames.length; i++) {
 	 var tr = body.insertRow(i);
@@ -492,9 +507,11 @@ function prepareAttendees() {
 	    value += attendeesNames[i] + " ";
 	 value += "<" + attendeesEmails[i] + ">";
 	 input.value = value;
-	 input.setAttribute("uid", attendeesNames[i]);
 	 input.addClassName("textField");
 	 input.setAttribute("modified", "0");
+	 triggerAjaxRequest(baseUrl + attendeesEmails[i],
+			    UIDLookupCallback, input);
+	 input.setAttribute("uid", attendeesNames[i]);
 	 tr.appendChild(td)
 	 td.appendChild(input)
       }
