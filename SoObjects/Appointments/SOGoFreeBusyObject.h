@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoFreeBusyObject.h 675 2005-07-06 20:56:09Z znek $
+// $Id: SOGoFreeBusyObject.h 1052 2007-05-09 19:35:09Z wolfgang $
 
 
 #ifndef	__Appointments_SOGoFreeBusyObject_H_

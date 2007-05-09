@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxComponent+Agenor.h 1031 2007-03-07 22:52:32Z wolfgang $
+// $Id: UIxComponent+Scheduler.h 1052 2007-05-09 19:35:09Z wolfgang $
 
 
 #ifndef	__UIxComponent_Agenor_H_
