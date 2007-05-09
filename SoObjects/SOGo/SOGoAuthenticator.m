@@ -22,9 +22,11 @@
 #import <NGLdap/NGLdapConnection.h>
 #import "SOGoPermissions.h"
 
-#include "SOGoAuthenticator.h"
-#include "SOGoUser.h"
-#include "common.h"
+#import "LDAPUserManager.h"
+
+#import "SOGoAuthenticator.h"
+#import "SOGoUser.h"
+#import "common.h"
 
 @implementation SOGoAuthenticator
 
@@ -50,9 +52,9 @@ static SOGoAuthenticator *auth = nil;
       authMethod = [[ud stringForKey:@"AuthentificationMethod"] retain];
       if ([authMethod isEqualToString: @"LDAP"])
 	{
-	  LDAPBaseDN = [[ud stringForKey:@"LDAPRootDN"] retain];
-	  LDAPHost = [[ud stringForKey:@"LDAPHost"] retain];
-	  LDAPPort = [ud integerForKey:@"LDAPPort"];
+// 	  LDAPBaseDN = [[ud stringForKey:@"LDAPRootDN"] retain];
+// 	  LDAPHost = [[ud stringForKey:@"LDAPHost"] retain];
+// 	  LDAPPort = [ud integerForKey:@"LDAPPort"];
 	}
     }
 
@@ -87,11 +89,11 @@ static SOGoAuthenticator *auth = nil;
 - (BOOL) LDAPCheckLogin: (NSString *) _login
 	       password: (NSString *) _pwd
 {
-  return [NGLdapConnection checkPassword: _pwd
-			   ofLogin: _login
-			   atBaseDN: LDAPBaseDN
-			   onHost: LDAPHost
-			   port: LDAPPort];
+  LDAPUserManager *um;
+
+  um = [LDAPUserManager sharedUserManager];
+
+  return [um checkLogin: _login andPassword: _pwd];
 }
 
 /* create SOGoUser */
@@ -105,7 +107,7 @@ static SOGoAuthenticator *auth = nil;
 
   if (!anonymous)
     anonymous
-      = [[SOGoUser alloc] initWithLogin:@"anonymous"
+      = [[SOGoUser alloc] initWithLogin: @"anonymous"
 			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
   if (!freebusy)
     freebusy
@@ -124,9 +126,8 @@ static SOGoAuthenticator *auth = nil;
             user = anonymous;
         }
       else
-        user = [[[SOGoUser alloc] initWithLogin: login
-                                  roles: [self rolesForLogin: login]]
-                 autorelease];
+        user = [SOGoUser userWithLogin: login
+			 roles: [self rolesForLogin: login]];
     }
   else
     user = nil;

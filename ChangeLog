@@ -1,5 +1,9 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-LDAPCheckLogin:_loginpassword:_pwd]): use the user manager to
+	check login information.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	+contactFolderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
