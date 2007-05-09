@@ -239,13 +239,11 @@ A.toolbarButton
 
 SPAN.toolbarButton, SPAN.disabledToolbarButton
 { cursor: default;
-  display: block;
+  display: inline;
   float: left;
-  height: 80%;
   text-align: center;
   -moz-box-align: center;
   -moz-box-pack: center;
-  margin: 0px;
   border-left: 1px solid transparent;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -278,8 +276,7 @@ SPAN.toolbarButton:active
   margin: auto; }
 
 .toolbarButton .buttonLabel
-{ width: 100%;
-  margin: auto; }
+{ margin: auto; }
 
 /* popups */
 .menu

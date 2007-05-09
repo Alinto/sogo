@@ -411,7 +411,7 @@ function onRowClick(event) {
     var parentNode = node.parentNode;
     if (parentNode instanceof HTMLTableSectionElement)
       parentNode = parentNode.parentNode;
-    var onSelectionChangeEvent = document.createEvent("Event");
+    var onSelectionChangeEvent = document.createEvent("UIEvents");
     onSelectionChangeEvent.initEvent("selectionchange", true, true);
     parentNode.dispatchEvent(onSelectionChangeEvent);
   }
@@ -509,7 +509,7 @@ function hideMenu(event, menuNode) {
     menuNode.parentMenu = null;
   }
 
-  var onhideEvent = document.createEvent("Event");
+  var onhideEvent = document.createEvent("UIEvents");
   onhideEvent.initEvent("hideMenu", false, true);
   menuNode.dispatchEvent(onhideEvent);
 }
@@ -893,18 +893,18 @@ function initTabs() {
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i] instanceof HTMLLIElement) {
         if (!firstTab) {
-          firstTab = nodes[i];
+          firstTab = i;
         }
         nodes[i].addEventListener("mousedown", onTabMouseDown, true);
         nodes[i].addEventListener("click", onTabClick, true);
       }
     }
 
-    firstTab.addClassName("first");
-    firstTab.addClassName("active");
-    container.activeTab = firstTab;
+    nodes[firstTab].addClassName("first");
+    nodes[firstTab].addClassName("active");
+    container.activeTab = nodes[firstTab];
 
-    var target = $(firstTab.getAttribute("target"));
+    var target = $(nodes[firstTab].getAttribute("target"));
     target.addClassName("active");
   }
 }
@@ -1065,22 +1065,20 @@ function indexColor(number) {
   return color;
 }
 
-var onLoadHandler = {
-  handleEvent: function (event) {
-    queryParameters = parseQueryParameters('' + window.location);
-    if (!document.body.hasClassName("popup")) {
-      initLogConsole();
-      initializeMenus();
-      initCriteria();
-    }
-    initTabs();
-    configureDragHandles();
-    configureSortableTableHeaders();
-    configureLinkBanner();
-    var progressImage = $("progressIndicator");
-    if (progressImage)
-      progressImage.parentNode.removeChild(progressImage);
+var onLoadHandler = function (event) {
+  queryParameters = parseQueryParameters('' + window.location);
+  if (!document.body.hasClassName("popup")) {
+    initLogConsole();
+    initializeMenus();
+    initCriteria();
   }
+  initTabs();
+  configureDragHandles();
+  configureSortableTableHeaders();
+  configureLinkBanner();
+  var progressImage = $("progressIndicator");
+  if (progressImage)
+    progressImage.parentNode.removeChild(progressImage);
 }
 
 function configureSortableTableHeaders() {
@@ -1114,7 +1112,11 @@ function configureLinkBanner() {
   }
 }
 
-window.addEventListener("load", onLoadHandler, false);
+if (window.addEventListener) {
+  window.addEventListener('load', onLoadHandler, false);
+} else if (document.addEventListener) {
+  document.addEventListener('load', onLoadHandler, false);
+}
 
 /* stubs */
 function configureDragHandles() {

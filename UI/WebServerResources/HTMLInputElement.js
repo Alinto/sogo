@@ -1,7 +1,7 @@
 HTMLInputElement.prototype._replicate = function() {
   if (this.replica) {
     this.replica.value = this.value;
-    var onReplicaChangeEvent = document.createEvent("Event");
+    var onReplicaChangeEvent = document.createEvent("UIEvents");
     onReplicaChangeEvent.initEvent("change", true, true);
     this.replica.dispatchEvent(onReplicaChangeEvent);
   }
@@ -56,7 +56,7 @@ HTMLInputElement.prototype.valueAsShortDateString = function() {
 HTMLSelectElement.prototype._replicate = function() {
   if (this.replica) {
     this.replica.value = this.value;
-    var onReplicaChangeEvent = document.createEvent("Event");
+    var onReplicaChangeEvent = document.createEvent("UIEvents");
     onReplicaChangeEvent.initEvent("change", true, true);
     this.replica.dispatchEvent(onReplicaChangeEvent);
   }

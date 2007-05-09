@@ -1,3 +1,51 @@
+if (navigator.vendor == "Apple Computer, Inc." || navigator.vendor == "KDE") { // WebCore/KHTML  
+  /*
+    Crossbrowser HTMLElement Prototyping
+    Copyright (C) 2005  Jason Davis, http://www.browserland.org
+    Additional thanks to Brothercake, http://www.brothercake.com
+    
+    This code is licensed under the LGPL:
+    http://www.gnu.org/licenses/lgpl.html
+  */
+
+  (function(c) {
+    for (var i in c)
+      window["HTML" + i + "Element"] = document.createElement(c[ i ]).constructor;
+  })({
+		Html: "html", Head: "head", Link: "link", Title: "title", Meta: "meta",
+			Base: "base", IsIndex: "isindex", Style: "style", Body: "body", Form: "form",
+			Select: "select", OptGroup: "optgroup", Option: "option", Input: "input",
+			TextArea: "textarea", Button: "button", Label: "label", FieldSet: "fieldset",
+			Legend: "legend", UList: "ul", OList: "ol", DList: "dl", Directory: "dir",
+			Menu: "menu", LI: "li", Div: "div", Paragraph: "p", Heading: "h1", Quote: "q",
+			Pre: "pre", BR: "br", BaseFont: "basefont", Font: "font", HR: "hr", Mod: "ins",
+			Anchor: "a", Image: "img", Object: "object", Param: "param", Applet: "applet",
+			Map: "map", Area: "area", Script: "script", Table: "table", TableCaption: "caption",
+			TableCol: "col", TableSection: "tbody", TableRow: "tr", TableCell: "td",
+			FrameSet: "frameset", Frame: "frame", IFrame: "iframe"
+			});
+  
+  function HTMLElement() {}
+  //HTMLElement.prototype     = HTMLHtmlElement.__proto__.__proto__;	
+  var HTMLDocument          = document.constructor;
+  var HTMLCollection        = document.links.constructor;
+  var HTMLOptionsCollection = document.createElement("select").options.constructor;
+  var Text                  = document.createTextNode("").constructor;
+  //var Node                  = Text;
+  
+  // More efficient for Safari 2
+  function Document() {} 
+  function Event() {} 
+  function HTMLCollection() {} 
+  function HTMLElement() {} 
+  function Node() {} 
+  Document.prototype = window["[[DOMDocument]]"]; 
+  Event.prototype = window["[[DOMEvent]]"]; 
+  HTMLCollection.prototype = window["[[HTMLCollection.prototype]]"]; 
+  HTMLElement.prototype = window["[[DOMElement.prototype]]"]; 
+  Node.prototype = window["[[DOMNode.prototype]]"]; 
+}
+
 /* custom extensions to the DOM api */
 HTMLElement.prototype.addInterface = function(objectInterface) {
   Object.extend(this, objectInterface);
