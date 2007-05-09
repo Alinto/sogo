@@ -33,7 +33,6 @@
 {
   NSString *name;
   NSString *displayName;
-  id container;
   LDAPSource *ldapSource;
   NSMutableDictionary *entries;
 }
