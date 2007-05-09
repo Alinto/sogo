@@ -126,7 +126,7 @@
   if ((prio = [appointment valueForKey:@"priority"])) {
     [ms appendFormat:@" apt_prio%@", prio];
   }
-  email = [[[self context] activeUser] email];
+  email = [[context activeUser] primaryEmail];
   s = [appointment valueForKey:@"orgmail"];
   if ([s isNotNull])
     {
