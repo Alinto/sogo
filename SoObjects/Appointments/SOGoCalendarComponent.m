@@ -29,7 +29,7 @@
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
 
-#import <SoObjects/SOGo/AgenorUserManager.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
@@ -126,7 +126,7 @@ static BOOL sendEMailNotifications = NO;
           tmpCalendar = [iCalCalendar parseSingleFromSource: tmpContent];
           tmpComponent = (iCalRepeatableEntityObject *)
 	    [tmpCalendar firstChildWithTag: [self componentTag]];
-	  email = [[context activeUser] email];
+	  email = [[context activeUser] primaryEmail];
 	  if (!([tmpComponent isOrganizer: email]
 		|| [tmpComponent isParticipant: email]))
 	    {
@@ -251,7 +251,7 @@ static BOOL sendEMailNotifications = NO;
       baseURL = @"http://localhost/";
       [self warnWithFormat:@"Unable to create baseURL from context!"];
     }
-  uid = [[AgenorUserManager sharedUserManager]
+  uid = [[LDAPUserManager sharedUserManager]
           getUIDForEmail: [_person rfc822Email]];
 
   return ((uid)
@@ -272,7 +272,7 @@ static BOOL sendEMailNotifications = NO;
   component = [self component: NO];
   if (component)
     {
-      myEMail = [[context activeUser] email];
+      myEMail = [[context activeUser] primaryEmail];
       p = [component findParticipantWithEmail: myEMail];
       if (p)
         {
@@ -314,7 +314,7 @@ static BOOL sendEMailNotifications = NO;
 {
   NSString *uid;
 
-  uid = [[AgenorUserManager sharedUserManager] getUIDForEmail: email];
+  uid = [[LDAPUserManager sharedUserManager] getUIDForEmail: email];
 
   return [[SOGoUser userWithLogin: uid andRoles: nil] timeZone];
 }
@@ -452,11 +452,7 @@ static BOOL sendEMailNotifications = NO;
   component = [self component: NO];
   organizerEmail = [[component organizer] rfc822Email];
   if (component && [organizerEmail length] > 0)
-    isOrganizerOrOwner
-      = (([organizerEmail caseInsensitiveCompare: [user email]]
-	  == NSOrderedSame)
-	 || ([organizerEmail caseInsensitiveCompare: [user systemEMail]]
-	     == NSOrderedSame));
+    isOrganizerOrOwner = [user hasEmail: organizerEmail];
   else
     isOrganizerOrOwner
       = [[container ownerInContext: context] isEqualToString: [user login]];
@@ -468,29 +464,71 @@ static BOOL sendEMailNotifications = NO;
 {
   iCalPerson *participant, *currentParticipant;
   iCalEntityObject *component;
-  NSString *email, *systemEmail, *currentEmail;
   NSEnumerator *participants;
 
   participant = nil;
   component = [self component: NO];
   if (component)
     {
-      email = [[user email] lowercaseString];
-      systemEmail = [[user systemEMail] lowercaseString];
       participants = [[component participants] objectEnumerator];
       currentParticipant = [participants nextObject];
       while (currentParticipant && !participant)
-	{
-	  currentEmail = [[currentParticipant rfc822Email] lowercaseString];
-	  if ([currentEmail isEqualToString: email]
-	      || [currentEmail isEqualToString: systemEmail])
-	    participant = currentParticipant;
-	  else
-	    currentParticipant = [participants nextObject];
-	}
+	if ([user hasEmail: [currentParticipant rfc822Email]])
+	  participant = currentParticipant;
+	else
+	  currentParticipant = [participants nextObject];
     }
 
   return participant;
+}
+
+- (iCalPerson *) iCalPersonWithUID: (NSString *) uid
+{
+  iCalPerson *person;
+  LDAPUserManager *um;
+  NSDictionary *contactInfos;
+
+  um = [LDAPUserManager sharedUserManager];
+  contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
+
+  person = [iCalPerson new];
+  [person autorelease];
+  [person setCn: [contactInfos objectForKey: @"cn"]];
+  [person setEmail: [contactInfos objectForKey: @"c_email"]];
+
+  return person;
+}
+
+- (NSString *) getUIDForICalPerson: (iCalPerson *) person
+{
+  LDAPUserManager *um;
+
+  um = [LDAPUserManager sharedUserManager];
+
+  return [um getUIDForEmail: [person rfc822Email]];
+}
+
+- (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons
+{
+  iCalPerson *currentPerson;
+  NSEnumerator *persons;
+  NSMutableArray *uids;
+  NSString *email;
+  LDAPUserManager *um;
+
+  uids = [NSMutableArray array];
+
+  um = [LDAPUserManager sharedUserManager];
+  persons = [iCalPersons objectEnumerator];
+  currentPerson = [persons nextObject];
+  while (currentPerson)
+    {
+      email = [currentPerson rfc822Email];
+      [uids addObject: [um getUIDForEmail: email]];
+      currentPerson = [persons nextObject];
+    }
+
+  return uids;
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -504,7 +542,7 @@ static BOOL sendEMailNotifications = NO;
   component = [self component: NO];
   if (component)
     {
-      email = [[AgenorUserManager sharedUserManager] getEmailForUID: uid];
+      email = [[LDAPUserManager sharedUserManager] getEmailForUID: uid];
       if ([component isOrganizer: email])
 	[roles addObject: SOGoCalendarRole_Organizer];
       if ([component isParticipant: email])

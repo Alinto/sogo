@@ -1,5 +1,12 @@
 2007-05-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -iCalPersonWithUID:uid]): new method taken
+	from the previous module iCalEntityObject+Agenor.
+	([SOGoCalendarComponent -getUIDForICalPerson:person]): idem.
+	([SOGoCalendarComponent -getUIDsForICalPersons:iCalPersons]):
+	idem.
+
 	* SoObjects/Contacts/SOGoContactLDIFEntry.[hm]: new class module
 	replacing the SOGoContactLDAPEntry module. It was renamed as such
 	because it now receives a dictionary instead of an NGLdapEntry.

@@ -63,6 +63,10 @@
 - (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
 - (iCalPerson *) participant: (SOGoUser *) user;
 
+- (iCalPerson *) iCalPersonWithUID: (NSString *) uid;
+- (NSString *) getUIDForICalPerson: (iCalPerson *) person;
+- (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons;
+
 @end
 
 #endif /* SOGOCALENDARCOMPONENT_H */
