@@ -22,6 +22,7 @@
 #import "UIxTaskView.h"
 #import <NGCards/NGCards.h>
 #import <SOGo/WOContext+Agenor.h>
+#import <SOGo/SOGoUser.h>
 #import <Appointments/SOGoTaskObject.h>
 #import <SOGoUI/SOGoDateFormatter.h>
 #import "UIxComponent+Scheduler.h"

@@ -146,7 +146,7 @@
   [calendar setVersion: @"2.0"];
 
   freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
-  [freebusy addToAttendees: [self iCalPersonWithUid: uid]];
+  [freebusy addToAttendees: [self iCalPersonWithUID: uid]];
   [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
   [freebusy setStartDate: _startDate];
   [freebusy setEndDate: _endDate];
