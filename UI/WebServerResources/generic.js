@@ -582,7 +582,7 @@ function log(message) {
   }
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole)
-    logConsole.innerHTML += message + '<br />' + "\n";
+    logConsole.innerHTML += message.replace("<", "&lt;") + '<br />' + "\n";
 }
 
 function backtrace() {

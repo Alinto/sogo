@@ -97,10 +97,12 @@ function UIDLookupCallback(http) {
       var searchField = http.callbackData;
       var start = searchField.value.length;
       var text = http.responseText.split(":");
-      if (text[0].length > 0)
-        searchField.uid = text[0];
+      if (text[0].length > 0) {
+	 searchField.uid = text[0];
+	 displayFreeBusyForNode(searchField);
+      }
       else
-        searchField.uid = null;
+	 searchField.uid = null
     }
   }
 }
@@ -212,33 +214,38 @@ function checkAttendee() {
 }
 
 function displayFreeBusyForNode(node) {
-  var nodes = node.parentNode.parentNode.cells;
-  if (node.uid) {
-    for (var i = 1; i < nodes.length; i++) {
-      nodes[i].removeClassName("noFreeBusy");
-      nodes[i].innerHTML = ('<span class="freeBusyZoneElement"></span>'
-                            + '<span class="freeBusyZoneElement"></span>'
-                            + '<span class="freeBusyZoneElement"></span>'
-                            + '<span class="freeBusyZoneElement"></span>');
-    }
-    if (document.contactFreeBusyAjaxRequest) {
-      document.contactFreeBusyAjaxRequest.aborted = true;
-      document.contactFreeBusyAjaxRequest.abort();
-    }
-    var sd = $('startTime_date').valueAsShortDateString();
-    var ed = $('endTime_date').valueAsShortDateString();
-    var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
-                   + "sday=" + sd + "&eday=" + ed + "&additional=" + additionalDays );
-    document.contactFreeBusyAjaxRequest
-      = triggerAjaxRequest(urlstr,
-                           updateFreeBusyData,
-                           node);
-  } else {
-    for (var i = 1; i < nodes.length; i++) {
-      nodes[i].addClassName("noFreeBusy");
-      nodes[i].innerHTML = '';
-    }
-  }
+   if (document.contactFreeBusyAjaxRequest)
+      awaitingFreeBusyRequests.push(node);
+   else {
+      var nodes = node.parentNode.parentNode.cells;
+      if (node.uid) {
+	 for (var i = 1; i < nodes.length; i++) {
+	    nodes[i].removeClassName("noFreeBusy");
+	    nodes[i].innerHTML = ('<span class="freeBusyZoneElement"></span>'
+				  + '<span class="freeBusyZoneElement"></span>'
+				  + '<span class="freeBusyZoneElement"></span>'
+				  + '<span class="freeBusyZoneElement"></span>');
+	 }
+	 if (document.contactFreeBusyAjaxRequest) {
+	    document.contactFreeBusyAjaxRequest.aborted = true;
+	    document.contactFreeBusyAjaxRequest.abort();
+	 }
+	 var sd = $('startTime_date').valueAsShortDateString();
+	 var ed = $('endTime_date').valueAsShortDateString();
+	 var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
+			+ "sday=" + sd + "&eday=" + ed + "&additional=" +
+			additionalDays );
+	 document.contactFreeBusyAjaxRequest
+	    = triggerAjaxRequest(urlstr,
+				 updateFreeBusyData,
+				 node);
+      } else {
+	 for (var i = 1; i < nodes.length; i++) {
+	    nodes[i].addClassName("noFreeBusy");
+	    nodes[i].innerHTML = '';
+	 }
+      }
+   }
 }
 
 function setSlot(tds, nbr, status) {
@@ -280,7 +287,6 @@ function updateFreeBusyData(http) {
 function resetAttendeesValue() {
   var table = $("freeBusy");
   var inputs = table.getElementsByTagName("input");
-  var uids = new Array();
   for (var i = 0; i < inputs.length - 2; i++) {
     var currentInput = inputs[i];
     var uid = currentInput.getAttribute("uid");
@@ -288,7 +294,6 @@ function resetAttendeesValue() {
       currentInput.uid = uid;
       currentInput.setAttribute("uid", null);
     }
-    uids.push(currentInput.uid);
     currentInput.setAttribute("autocomplete", "off");
     currentInput.addEventListener("keydown", onContactKeydown, false);
     currentInput.addEventListener("blur", checkAttendee, false);
@@ -304,11 +309,8 @@ function resetAllFreeBusys() {
   for (var i = 0; i < inputs.length - 2; i++) {
     var currentInput = inputs[i];
     currentInput.hasfreebusy = false;
-//     log ("input: " + currentInput.uid);
-    awaitingFreeBusyRequests.push(currentInput);
+    displayFreeBusyForNode(inputs[i]);
   }
-  if (awaitingFreeBusyRequests.length > 0)
-    displayFreeBusyForNode(awaitingFreeBusyRequests.shift());
 }
 
 function initializeWindowButtons() {
@@ -478,14 +480,10 @@ function prepareTableRows() {
 
    var rows = $("freeBusy").tBodies[0].rows;
    var days = startDate.daysUpTo(endDate);
-   for (var i = 0; i < days.length; i++) {
-      for (var rowNbr = 0; rowNbr < rows.length; rowNbr++) {
-	 for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++) {
-	    var cell = document.createElement("td");
-	    rows[rowNbr].appendChild(cell);
-	 }
-      }
-   }
+   for (var i = 0; i < days.length; i++)
+      for (var rowNbr = 0; rowNbr < rows.length; rowNbr++)
+	 for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++)
+	    rows[rowNbr].appendChild(document.createElement("td"));
 }
 
 function prepareAttendees() {
@@ -493,8 +491,6 @@ function prepareAttendees() {
    if (value.length > 0) {
       attendeesNames = parent$("attendeesNames").value.split(",");
       attendeesEmails = parent$("attendeesEmails").value.split(",");
-
-      var baseUrl = UserFolderURL + "Contacts/contactSearch?search=";
 
       var body = $("freeBusy").tBodies[0];
       for (var i = 0; i < attendeesNames.length; i++) {
@@ -509,17 +505,23 @@ function prepareAttendees() {
 	 input.value = value;
 	 input.addClassName("textField");
 	 input.setAttribute("modified", "0");
-	 triggerAjaxRequest(baseUrl + attendeesEmails[i],
-			    UIDLookupCallback, input);
-	 input.setAttribute("uid", attendeesNames[i]);
-	 tr.appendChild(td)
-	 td.appendChild(input)
+	 tr.appendChild(td);
+	 td.appendChild(input);
+	 displayFreeBusyForNode(input);
       }
    }
    else {
       attendeesNames = new Array();
       attendeesEmails = new Array();
    }
+}
+
+function initializeFreebusys() {
+   var inputs = $("freeBusy").getElementsByTagName("input");
+   var baseUrl = UserFolderURL + "Contacts/contactSearch?search=";
+   for (var i = 0; i < attendeesEmails.length; i++)
+      triggerAjaxRequest(baseUrl + attendeesEmails[i],
+			 UIDLookupCallback, inputs[i]);
 }
 
 function onFreeBusyLoadHandler() {
@@ -530,7 +532,7 @@ function onFreeBusyLoadHandler() {
    prepareTableRows();
    redisplayFreeBusyZone();
    resetAttendeesValue();
-   resetAllFreeBusys();
+   initializeFreebusys();
 }
 
 window.addEventListener("load", onFreeBusyLoadHandler, false);
