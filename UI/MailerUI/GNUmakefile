@@ -35,7 +35,6 @@ MailerUI_OBJC_FILES += \
 	UIxMailReplyAction.m		\
 	UIxMailForwardAction.m		\
 	UIxMailToSelection.m		\
-	UIxMailAddressbook.m		\
 	UIxMailWindowCloser.m		\
 	\
 	UIxFilterList.m			\

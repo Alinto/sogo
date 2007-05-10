@@ -263,15 +263,6 @@
           protectedBy = "View";
           pageName    = "UIxMailAccountView";
         };
-        addressbook = {
-          protectedBy = "View";
-          pageName    = "UIxMailAddressbook";
-        };
-        anais = {
-          protectedBy = "View";
-          pageName    = "UIxMailAddressbook";
-          actionName  = "anais";
-        };
         compose = {
           protectedBy = "View";
           actionClass = "UIxMailEditorAction";
@@ -368,15 +359,6 @@
           protectedBy = "View";
           pageName    = "UIxMailEditor";
           actionName  = "send";
-        };
-        addressbook = {
-          protectedBy = "View";
-          pageName    = "UIxMailAddressbook";
-        };
-        anais = {
-          protectedBy = "View";
-          pageName    = "UIxMailAddressbook";
-          actionName  = "anais";
         };
       };
     };
