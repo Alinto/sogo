@@ -109,6 +109,7 @@ static NSString *uidColumnName = @"uid";
   NSString *sql;
   NSArray *attrs;
   BOOL rc;
+  id column;
 
   rc = NO;
   
@@ -142,8 +143,12 @@ static NSString *uidColumnName = @"uid";
 	  [channel cancelFetch];
   
 	  /* remember values */
-	  oldValues = [[row objectForKey: fieldName] propertyList];
-	  [values setDictionary: oldValues];
+	  column = [row objectForKey: fieldName];
+	  if ([column isNotNull])
+	    {
+	      oldValues = [column propertyList];
+	      [values setDictionary: oldValues];
+	    }
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;
