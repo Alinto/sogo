@@ -1,5 +1,8 @@
 2007-05-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	-contactInfosForUserWithUIDorEmail:uid]): check that uid is not empty.
+
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
 	-checkLogin:loginToCheckandPassword:passwordToCheck]): check that
 	loginToCheck is not empty.
