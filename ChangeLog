@@ -2,6 +2,8 @@
 
 	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
 	-contactInfosForUserWithUIDorEmail:uid]): check that uid is not empty.
+	([LDAPUserManager -_fillContactMailRecords:contact]): if the
+	system email is already present, remove it before adding it.
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
 	-checkLogin:loginToCheckandPassword:passwordToCheck]): check that

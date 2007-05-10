@@ -265,12 +265,14 @@ static NSString *defaultMailDomain = nil;
 - (void) _fillContactMailRecords: (NSMutableDictionary *) contact
 {
   NSMutableArray *emails;
-  NSString *uid;
+  NSString *uid, *systemEmail;
 
   emails = [contact objectForKey: @"emails"];
   uid = [contact objectForKey: @"c_uid"];
-  [emails addObject:
-	    [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain]];
+  systemEmail = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
+  if ([emails containsObject: systemEmail])
+    [emails removeObject: systemEmail];
+  [emails addObject: systemEmail];
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 
