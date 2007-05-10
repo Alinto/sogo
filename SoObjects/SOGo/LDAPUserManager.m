@@ -179,6 +179,7 @@ static NSString *defaultMailDomain = nil;
 {
   NSDictionary *contactInfos;
 
+//   NSLog (@"getCNForUID: %@", uid);
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
 
   return [contactInfos objectForKey: @"cn"];
@@ -188,6 +189,7 @@ static NSString *defaultMailDomain = nil;
 {
   NSDictionary *contactInfos;
 
+//   NSLog (@"getEmailForUID: %@", uid);
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
 
   return [contactInfos objectForKey: @"c_email"];
@@ -197,6 +199,7 @@ static NSString *defaultMailDomain = nil;
 {
   NSDictionary *contactInfos;
 
+//   NSLog (@"getUIDForEmail: %@", email);
   contactInfos = [self contactInfosForUserWithUIDorEmail: email];
 
   return [contactInfos objectForKey: @"c_uid"];
@@ -342,29 +345,39 @@ static NSString *defaultMailDomain = nil;
   NSDate *cleanupDate;
   BOOL newUser;
 
-  contactInfos = [NSMutableDictionary dictionary];
-  currentUser = [users objectForKey: uid];
-  if (!([currentUser objectForKey: @"emails"]
-	&& [currentUser objectForKey: @"cn"]))
+  if ([uid length] > 0)
     {
-      if (!currentUser)
+      contactInfos = [NSMutableDictionary dictionary];
+      currentUser = [users objectForKey: uid];
+      if (!([currentUser objectForKey: @"emails"]
+	    && [currentUser objectForKey: @"cn"]))
 	{
-	  newUser = YES;
-	  currentUser = [NSMutableDictionary dictionary];
+	  if (!currentUser)
+	    {
+	      newUser = YES;
+	      currentUser = [NSMutableDictionary dictionary];
+	    }
+	  else
+	    newUser = NO;
+	  [self _fillContactInfosForUser: currentUser
+		withUIDorEmail: uid];
+	  if (newUser)
+	    {
+	      if ([[currentUser objectForKey: @"c_uid"] length] > 0)
+		[self _retainUser: currentUser];
+	      else
+		currentUser = nil;
+	    }
 	}
-      else
-	newUser = NO;
-      [self _fillContactInfosForUser: currentUser
-	    withUIDorEmail: uid];
-      if (newUser)
-	[self _retainUser: currentUser];
-    }
 
-  if (cleanupInterval)
-    {
-      cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
-      [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
+      if (cleanupInterval && currentUser)
+	{
+	  cleanupDate = [[NSDate date] addTimeInterval: cleanupInterval];
+	  [currentUser setObject: cleanupDate forKey: @"cleanupDate"];
+	}
     }
+  else
+    currentUser = nil;
 
   return currentUser;
 }
@@ -438,7 +451,6 @@ static NSString *defaultMailDomain = nil;
   LDAPSource *currentSource;
 
   contacts = [NSMutableArray array];
-
   ldapSources = [sources objectEnumerator];
   currentSource = [ldapSources nextObject];
   while (currentSource)

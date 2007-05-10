@@ -215,18 +215,23 @@ static NSArray *commonSearchFields;
   NSString *userDN;
   NGLdapConnection *bindConnection;
 
-  bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
-					     port: port];
-  userDN = [NSString stringWithFormat: @"%@=%@,%@",
-		     IDField, loginToCheck, baseDN];
-  NS_DURING
-    didBind = [bindConnection bindWithMethod: @"simple" binddn: userDN
-			      credentials: passwordToCheck];
-  NS_HANDLER
-    didBind = NO;
-  NS_ENDHANDLER
+  if ([loginToCheck length] > 0)
+    {
+      bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
+						 port: port];
+      userDN = [NSString stringWithFormat: @"%@=%@,%@",
+			 IDField, loginToCheck, baseDN];
+      NS_DURING
+	didBind = [bindConnection bindWithMethod: @"simple" binddn: userDN
+				  credentials: passwordToCheck];
+      NS_HANDLER
+	didBind = NO;
+      NS_ENDHANDLER
 
-  [bindConnection release];
+      [bindConnection release];
+    }
+  else
+    didBind = NO;
 
   return didBind;
 }
@@ -237,7 +242,7 @@ static NSArray *commonSearchFields;
   NSString *qs;
   EOQualifier *qualifier;
 
-  if (filter && [filter length] > 0)
+  if ([filter length] > 0)
     {
       if ([filter isEqualToString: @"."])
         qs = @"(cn='*')";
@@ -355,19 +360,22 @@ static NSArray *commonSearchFields;
 
   contacts = [NSMutableArray array];
 
-  if (!ldapConnection)
-    [self _initLDAPConnection];
-  entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			    qualifier: [self _qualifierForFilter: match]
-			    attributes: [self _searchAttributes]];
-  if (entries)
+  if ([match length] > 0)
     {
-      currentEntry = [entries nextObject];
-      while (currentEntry)
+      if (!ldapConnection)
+	[self _initLDAPConnection];
+      entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				qualifier: [self _qualifierForFilter: match]
+				attributes: [self _searchAttributes]];
+      if (entries)
 	{
-	  [contacts addObject:
-		      [self _convertLDAPEntryToContact: currentEntry]];
 	  currentEntry = [entries nextObject];
+	  while (currentEntry)
+	    {
+	      [contacts addObject:
+			  [self _convertLDAPEntryToContact: currentEntry]];
+	      currentEntry = [entries nextObject];
+	    }
 	}
     }
 
@@ -379,16 +387,19 @@ static NSArray *commonSearchFields;
   NSDictionary *contactEntry;
   NGLdapEntry *ldapEntry;
 
-  if (!ldapConnection)
-    [self _initLDAPConnection];
-  ldapEntry
-    = [ldapConnection entryAtDN: [NSString stringWithFormat: @"%@=%@,%@",
-					   IDField, entryID, baseDN]
-		      attributes: [self _searchAttributes]];
-  if (ldapEntry)
-    contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
-  else
-    contactEntry = nil;
+  contactEntry = nil;
+
+  if ([entryID length] > 0)
+    {
+      if (!ldapConnection)
+	[self _initLDAPConnection];
+      ldapEntry
+	= [ldapConnection entryAtDN: [NSString stringWithFormat: @"%@=%@,%@",
+					       IDField, entryID, baseDN]
+			  attributes: [self _searchAttributes]];
+      if (ldapEntry)
+	contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
+    }
 
   return contactEntry;
 }
@@ -400,17 +411,20 @@ static NSArray *commonSearchFields;
   NSEnumerator *entries;
   EOQualifier *qualifier;
 
-  if (!ldapConnection)
-    [self _initLDAPConnection];
-  qualifier = [self _qualifierForUIDFilter: uid];
-  entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			     qualifier: qualifier
-			    attributes: [self _searchAttributes]];
-  ldapEntry = [entries nextObject];
-  if (ldapEntry)
-    contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
-  else
-    contactEntry = nil;
+  contactEntry = nil;
+
+  if ([uid length] > 0)
+    {
+      if (!ldapConnection)
+	[self _initLDAPConnection];
+      qualifier = [self _qualifierForUIDFilter: uid];
+      entries = [ldapConnection deepSearchAtBaseDN: baseDN
+				qualifier: qualifier
+				attributes: [self _searchAttributes]];
+      ldapEntry = [entries nextObject];
+      if (ldapEntry)
+	contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
+    }
 
   return contactEntry;
 }
