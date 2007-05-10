@@ -1,5 +1,15 @@
 2007-05-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-checkLogin:loginToCheckandPassword:passwordToCheck]): if a
+	"bindFields" value is present in the user defaults, use the
+	specified fields to find the dn of the user to bind.
+	([LDAPSource -allEntryIDs]) 
+	([LDAPSource -fetchContactsMatching:match]) 
+	([LDAPSource -lookupContactEntry:entryID]) 
+	([LDAPSource -lookupContactEntryWithUIDorEmail:uid]):
+	bind and unbind the connection on each request.
+
 	* UI/MailerUI/UIxMailAddressbook.m: removed obsolete module.
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
