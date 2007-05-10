@@ -116,30 +116,6 @@
     }
 }
 
-- (NSDictionary *) _searchResults: (NSString *) contact
-		  ldapFoldersOnly: (BOOL) ldapOnly
-{
-  NSMutableDictionary *results;
-  SOGoContactFolders *topFolder;
-  NSEnumerator *sogoContactFolders;
-  id <SOGoContactFolder> currentFolder;
-
-  results = [NSMutableDictionary dictionary];
-  topFolder = [self clientObject];
-  sogoContactFolders = [[topFolder contactFolders] objectEnumerator];
-  currentFolder = [sogoContactFolders nextObject];
-  while (currentFolder)
-    {
-      if (!ldapOnly || [currentFolder isKindOfClass: [SOGoContactLDAPFolder class]])
-	[self _fillResults: results inFolder: currentFolder
-	      withSearchOn: contact];
-      currentFolder = [sogoContactFolders nextObject];
-    }
-  [topFolder release];
-
-  return results;
-}
-
 - (NSString *) _emailForResult: (NSDictionary *) result
 {
   NSMutableString *email;
@@ -158,33 +134,30 @@
   return email;
 }
 
-- (WOResponse *) _responseForResults: (NSDictionary *) results
+- (WOResponse *) _responseForResults: (NSArray *) results
 {
   WOResponse *response;
-  NSEnumerator *uids;
-  NSString *responseString, *uid, *cn, *mail;
-  NSDictionary *result;
+  NSEnumerator *contacts;
+  NSString *responseString;
+  NSDictionary *contact;
 
   response = [context response];
 
-  if ([results count])
+  if ([results count] > 0)
     {
-      uids = [[results allKeys] objectEnumerator];
-      uid = [uids nextObject];
-      while (uid)
+      contacts = [results objectEnumerator];
+      contact = [contacts nextObject];
+      while (contact)
 	{
-	  result = [results objectForKey: uid];
-	  cn = [result objectForKey: @"displayName"];
-	  if (![cn length])
-	    cn = [result objectForKey: @"cn"];
-	  mail = [result objectForKey: @"mail"];
 	  responseString = [NSString stringWithFormat: @"%@:%@:%@",
-				     uid, cn, mail];
+				     [contact objectForKey: @"c_uid"],
+				     [contact objectForKey: @"cn"],
+				     [contact objectForKey: @"c_email"]];
 	  [response setStatus: 200];
 	  [response setHeader: @"text/plain; charset=iso-8859-1"
 		    forKey: @"Content-Type"];
 	  [response appendContentString: responseString];
-	  uid = [uids nextObject];
+	  contact = [contacts nextObject];
 	}
     }
   else
@@ -197,14 +170,15 @@
 {
   NSString *contact;
   id <WOActionResults> result;
-  BOOL ldapFoldersOnly;
-
+  LDAPUserManager *um;
+  
   contact = [self queryParameterForKey: @"search"];
-  ldapFoldersOnly = [[self queryParameterForKey: @"ldap-only"] boolValue];
   if ([contact length] > 0)
-    result
-      = [self _responseForResults: [self _searchResults: contact
-					 ldapFoldersOnly: ldapFoldersOnly]];
+    {
+      um = [LDAPUserManager sharedUserManager];
+      result
+	= [self _responseForResults: [um fetchContactsMatching: contact]];
+    }
   else
     result = [NSException exceptionWithHTTPStatus: 400
                           reason: @"missing 'search' parameter"];
@@ -328,16 +302,13 @@
       while (contact)
 	{
 	  uid = [contact objectForKey: @"c_uid"];
-	  if ([uid length] > 0)
-	    {
-	      folders = [self _foldersForUID: uid ofType: folderType];
-	      foldersString
-		= [self _foldersStringForFolders: [folders objectEnumerator]];
-	      [responseString appendFormat: @"%@:%@:%@%@\n", uid,
-			      [contact objectForKey: @"cn"],
-			      [contact objectForKey: @"c_email"],
-			      foldersString];
-	    }
+	  folders = [self _foldersForUID: uid ofType: folderType];
+	  foldersString
+	    = [self _foldersStringForFolders: [folders objectEnumerator]];
+	  [responseString appendFormat: @"%@:%@:%@%@\n", uid,
+			  [contact objectForKey: @"cn"],
+			  [contact objectForKey: @"c_email"],
+			  foldersString];
 	  contact = [contacts nextObject];
 	}
       [response appendContentString: responseString];

@@ -1,5 +1,11 @@
 2007-05-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): simplified method to use the facilities
+	provided by the LDAPUserManager. No longer takes care of the
+	"ldap-only" url parameter since all requests are handled by the
+	usermanager now.
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): check that the value returned is not null
 	before interpreting it.
