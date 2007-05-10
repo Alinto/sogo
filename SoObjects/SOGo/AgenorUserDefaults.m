@@ -104,12 +104,11 @@ static NSString *uidColumnName = @"uid";
 {
   GCSChannelManager *cm;
   EOAdaptorChannel *channel;
-  NSDictionary *row, *oldValues;
+  NSDictionary *row;
   NSException *ex;
-  NSString *sql;
+  NSString *sql, *value;
   NSArray *attrs;
   BOOL rc;
-  id column;
 
   rc = NO;
   
@@ -143,12 +142,9 @@ static NSString *uidColumnName = @"uid";
 	  [channel cancelFetch];
   
 	  /* remember values */
-	  column = [row objectForKey: fieldName];
-	  if ([column isNotNull])
-	    {
-	      oldValues = [column propertyList];
-	      [values setDictionary: oldValues];
-	    }
+	  value = [row objectForKey: fieldName];
+	  if ([value isNotNull])
+	    [values setDictionary: [value propertyList]];
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;

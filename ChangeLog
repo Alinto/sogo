@@ -1,5 +1,9 @@
 2007-05-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): check that the value returned is not null
+	before interpreting it.
+
 	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
 	-contactInfosForUserWithUIDorEmail:uid]): check that uid is not empty.
 	([LDAPUserManager -_fillContactMailRecords:contact]): if the
