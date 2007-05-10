@@ -40,6 +40,7 @@
   NSString *IDField; /* the first part of a user DN */
   NSString *CNField;
   NSString *UIDField;
+  NSString *bindFields;
 
   NGLdapConnection *ldapConnection;
   NSMutableArray *searchAttributes;
@@ -56,7 +57,8 @@
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
-       andUIDField: (NSString *) newUIDField;
+	  UIDField: (NSString *) newUIDField
+     andBindFields: (NSString *) newBindFields;
 
 - (BOOL) checkLogin: (NSString *) login
 	andPassword: (NSString *) password;
