@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
