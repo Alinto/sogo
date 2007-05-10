@@ -372,7 +372,8 @@ function onMailboxTreeItemClick(event) {
   this.select();
   topNode.selectedEntry = this;
 
-  openMailbox(mailbox);
+  if (this.parentNode.getAttribute("datatype") != "account")
+     openMailbox(mailbox);
   event.preventDefault();
 }
 
