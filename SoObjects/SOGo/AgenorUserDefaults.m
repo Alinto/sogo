@@ -109,6 +109,9 @@ static NSString *uidColumnName = @"uid";
   NSString *sql, *value;
   NSArray *attrs;
   BOOL rc;
+#if LIB_FOUNDATION_LIBRARY
+  NSData *plistData;
+#endif
 
   rc = NO;
   
@@ -144,7 +147,17 @@ static NSString *uidColumnName = @"uid";
 	  /* remember values */
 	  value = [row objectForKey: fieldName];
 	  if ([value isNotNull])
-	    [values setDictionary: [value propertyList]];
+	    {
+#if LIB_FOUNDATION_LIBRARY
+	      plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
+	      [values setDictionary: [NSDeserializer
+				       deserializePropertyListFromData: plistData
+				       mutableContainers: YES]];
+
+#else
+	      [values setDictionary: [value propertyList]];
+#endif
+	    }
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;

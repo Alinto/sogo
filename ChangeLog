@@ -1,5 +1,12 @@
 2007-05-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): when building with libFoundation, don't
+	use the "propertyList" method from NSString. Rather, we convert
+	the string to an NSData instance and passit as parameter to
+	NSDeserializer. This way, we obtain a mutable dictionary rather
+	than an immutable one.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -bodyPartForText]) 
 	([SOGoDraftObject -mimeMessageForContentWithHeaderMap:]): use the
 	constant string "contentTypeValue".
