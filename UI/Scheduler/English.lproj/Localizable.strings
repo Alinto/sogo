@@ -138,6 +138,7 @@
 "Appointment proposal" = "Appointment Proposal";
 "Appointment on" = "Appointment on";
 "Start:" = "Start:";
+"End:" = "End:";
 "Due Date:" = "Due Date:";
 "Title:" = "Title:";
 "Calendar:" = "Calendar:";
@@ -158,8 +159,6 @@
 "Organizer:" = "Organizer:";
 "Description:" = "Description:";
 "Document:" = "Document:";
-"Start:" = "Start:";
-"End:" = "End:";
 "Category:" = "Category:";
 "Repeat:" = "Repeat:";
 "Reminder:" = "Reminder:";

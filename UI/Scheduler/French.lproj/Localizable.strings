@@ -136,6 +136,7 @@
 "Appointment proposal" = "Proposition de rendez-vous";
 "Appointment on" = "Rendez-vous le";
 "Start:" = "Début :";
+"End:" = "Fin :";
 "Due Date:" = "Échéance :";
 "Title:" = "Titre :";
 "Calendar:" = "Agenda :";
@@ -156,8 +157,6 @@
 "Organizer:" = "Organisateur :";
 "Description:" = "Description :";
 "Document:" = "Document :";
-"Start:" = "Début :";
-"End:" = "Fin :";
 "Category:" = "Catégorie :";
 "Repeat:" = "Répéter :";
 "Reminder:" = "Rappel :";
