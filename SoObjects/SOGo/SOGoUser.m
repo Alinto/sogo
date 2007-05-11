@@ -69,12 +69,12 @@ static NSURL *AgenorProfileURL = nil;
     ASSIGN (fallbackIMAP4Server, [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
 }
 
-+ (SOGoUser *) userWithLogin: (NSString *) login
-		       roles: (NSArray *) roles
++ (SOGoUser *) userWithLogin: (NSString *) newLogin
+		       roles: (NSArray *) newRoles
 {
   SOGoUser *user;
 
-  user = [[self alloc] initWithLogin: login roles: roles];
+  user = [[self alloc] initWithLogin: newLogin roles: newRoles];
   [user autorelease];
 
   return user;
