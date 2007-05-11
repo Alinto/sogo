@@ -129,7 +129,7 @@
   else
     folderName = email;
 
-  folderDict = [NSMutableDictionary new];
+  folderDict = [NSMutableDictionary dictionary];
   [folderDict setObject: folderName forKey: @"displayName"];
   [folderDict setObject: [NSNumber numberWithBool: NO] forKey: @"active"];
 

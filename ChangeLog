@@ -1,5 +1,9 @@
 2007-05-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions
+	-subscribeAction]): folderDict was not autoreleased, resulting in
+	a leak...
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): when building with libFoundation, don't
 	use the "propertyList" method from NSString. Rather, we convert
