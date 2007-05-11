@@ -1,5 +1,9 @@
 2007-05-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions
+	-removeUserFromAclsAction]): implemented this method which was
+	missing and is required to remove users from ACLs.
+
 	* UI/Common/UIxFolderActions.m ([UIxFolderActions
 	-subscribeAction]): folderDict was not autoreleased, resulting in
 	a leak...

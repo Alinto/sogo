@@ -50,11 +50,29 @@ function onUserAdd(event) {
    event.preventDefault();
 }
 
+function removeUserCallback(http) {
+   var node = http.callbackData;
+
+  if (http.readyState == 4
+      && http.status == 204)
+     node.parentNode.removeChild(node);
+  else
+     log("error deleting user: " + node.getAttribute("id"));
+}
+
 function onUserRemove(event) {
    var userList = $("userList");
    var nodes = userList.getSelectedRows();
-   for (var i = 0; i < nodes.length; i++)
-      userList.removeChild(nodes[i]);
+
+   var url = window.location.href;
+   var elements = url.split("/");
+   elements[elements.length-1] = "removeUserFromAcls?uid=";
+   var baseURL = elements.join("/");
+
+   for (var i = 0; i < nodes.length; i++) {
+      var userId = nodes[i].getAttribute("id");
+      triggerAjaxRequest(baseURL + userId, removeUserCallback, nodes[i]);
+   }
    event.preventDefault();
 }
 

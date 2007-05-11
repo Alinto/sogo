@@ -37,6 +37,11 @@
                actionClass = "UIxObjectActions";
                actionName  = "addUserInAcls";
             };
+            removeUserFromAcls = { 
+               protectedBy = "SaveAcls";
+               actionClass = "UIxObjectActions";
+               actionName  = "removeUserFromAcls";
+            };
 	    acls = {
 	       protectedBy = "ReadAcls";
 	       pageName    = "UIxAclEditor";

@@ -36,7 +36,7 @@
 {
   WOResponse *response;
   WORequest *request;
-  NSString *uid, *email;
+  NSString *uid;
   unsigned int code;
   LDAPUserManager *um;
   SOGoObject *clientObject;
@@ -47,12 +47,38 @@
   if ([uid length] > 0)
     {
       um = [LDAPUserManager sharedUserManager];
-      email = [um getEmailForUID: uid];
-      if ([email length] > 0)
+      if ([um contactInfosForUserWithUIDorEmail: uid])
         {
           clientObject = [self clientObject];
           [clientObject setRoles: [clientObject defaultAclRoles]
                         forUser: uid];
+          code = 204;
+        }
+    }
+
+  response = [context response];
+  [response setStatus: code];
+
+  return response;
+}
+
+- (WOResponse *) removeUserFromAclsAction
+{
+  WOResponse *response;
+  WORequest *request;
+  NSString *uid;
+  unsigned int code;
+  LDAPUserManager *um;
+
+  code = 403;
+  request = [context request];
+  uid = [request formValueForKey: @"uid"];
+  if ([uid length] > 0)
+    {
+      um = [LDAPUserManager sharedUserManager];
+      if ([um contactInfosForUserWithUIDorEmail: uid])
+	{
+	  [[self clientObject] removeAclsForUsers: [NSArray arrayWithObject: uid]];
           code = 204;
         }
     }
