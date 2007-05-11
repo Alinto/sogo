@@ -58,7 +58,7 @@ function onMenuSetClassification(event) {
    this.addClassName("_chosen");
    this.parentNode.chosenNode = this;
 
-   log("classification: " + classification);
+//    log("classification: " + classification);
    var privacyInput = document.getElementById("privacy");
    privacyInput.value = classification;
 }
