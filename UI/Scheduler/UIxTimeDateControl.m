@@ -99,7 +99,6 @@
 }
 
 - (void)setHour:(id)_hour {
-  NSLog (@"---------------- setHour:");
   ASSIGN(hour, _hour);
 }
 
@@ -140,7 +139,6 @@
 
 - (void) setDayStartHour: (unsigned int) aStartHour
 {
-  NSLog (@"******************** setDayStartHour...");
   startHour = aStartHour;
 }
 

@@ -230,7 +230,6 @@
 
 - (BOOL) statusPercentDisabled
 {
-  NSLog (@"status: '%@'", status);
   return ([status length] == 0
 	  || [status isEqualToString: @"CANCELLED"]);
 }
