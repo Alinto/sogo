@@ -35,15 +35,17 @@
 #include <NGExtensions/NSFileManager+Extensions.h>
 #include "common.h"
 
+static NSString *contentTypeValue = @"text/plain; charset=iso-8859-1";
+
 @interface NSString (NGMimeHelpers)
 
-- (NSString *) asQPSubjectString;
+- (NSString *) asQPSubjectString: (NSString *) encoding;
 
 @end
 
 @implementation NSString (NGMimeHelpers)
 
-- (NSString *) asQPSubjectString
+- (NSString *) asQPSubjectString: (NSString *) encoding;
 {
   NSString *qpString;
   unsigned char *data, *dest;
@@ -57,7 +59,7 @@
   dest = calloc(dataLen * 3, sizeof (unsigned char*));
   NGEncodeQuotedPrintableMime (data, dataLen, dest, destLen);
 
-  qpString = [NSString stringWithFormat: @"=?utf-8?Q?%s?=", dest];
+  qpString = [NSString stringWithFormat: @"=?%@?Q?%s?=", encoding, dest];
 
   free (data);
   free (dest);
@@ -107,9 +109,9 @@ static NSString    *fromInternetSuffixPattern = nil;
 }
 
 - (void)dealloc {
-  [self->envelope release];
-  [self->info release];
-  [self->path release];
+  [envelope release];
+  [info release];
+  [path release];
   [super dealloc];
 }
 
@@ -128,12 +130,12 @@ static NSString    *fromInternetSuffixPattern = nil;
 /* draft object functionality */
 
 - (NSString *)draftFolderPath {
-  if (self->path != nil)
-    return self->path;
+  if (path != nil)
+    return path;
   
-  self->path = [[[self userSpoolFolderPath] stringByAppendingPathComponent:
+  path = [[[self userSpoolFolderPath] stringByAppendingPathComponent:
 					      [self nameInContainer]] copy];
-  return self->path;
+  return path;
 }
 - (BOOL)_ensureDraftFolderPath {
   NSFileManager *fm;
@@ -173,15 +175,15 @@ static NSString    *fromInternetSuffixPattern = nil;
   }
   
   /* reset info cache */
-  [self->info release]; self->info = nil;
+  [info release]; info = nil;
   
   return nil /* everything is excellent */;
 }
 - (NSDictionary *)fetchInfo {
   NSString *p;
 
-  if (self->info != nil)
-    return self->info;
+  if (info != nil)
+    return info;
   
   p = [self infoPath];
   if (![[self spoolFileManager] fileExistsAtPath:p]) {
@@ -189,11 +191,11 @@ static NSString    *fromInternetSuffixPattern = nil;
     return nil;
   }
   
-  self->info = [[NSDictionary alloc] initWithContentsOfFile:p];
-  if (self->info == nil)
+  info = [[NSDictionary alloc] initWithContentsOfFile:p];
+  if (info == nil)
     [self errorWithFormat:@"draft info dictionary broken at path: %@", p];
   
-  return self->info;
+  return info;
 }
 
 /* accessors */
@@ -328,8 +330,9 @@ static NSString    *fromInternetSuffixPattern = nil;
   // TODO: set charset in header!
   [map setObject:@"text/plain" forKey:@"content-type"];
   if ((body = [lInfo objectForKey:@"text"]) != nil) {
-    if ([body isKindOfClass:[NSString class]]) {
-      [map setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
+    if ([body isKindOfClass: [NSString class]]) {
+      [map setObject: contentTypeValue
+	   forKey: @"content-type"];
 //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
     }
   }
@@ -369,7 +372,8 @@ static NSString    *fromInternetSuffixPattern = nil;
 	body = [body stringByAppendingString:fromInternetSuffix];
       
       /* Note: just 'utf8' is displayed wrong in Mail.app */
-      [map setObject:@"text/plain; charset=utf-8" forKey:@"content-type"];
+      [map setObject: contentTypeValue
+	   forKey: @"content-type"];
 //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
     }
     else if ([body isKindOfClass:[NSData class]] && addSuffix) {
@@ -655,7 +659,9 @@ static NSString    *fromInternetSuffixPattern = nil;
   /* add subject */
   
   if ([(s = [lInfo objectForKey:@"subject"]) length] > 0)
-    [map setObject: [s asQPSubjectString] forKey:@"subject"];
+    [map setObject: [s asQPSubjectString: @"iso-8859-1"]
+	 forKey:@"subject"];
+//     [map setObject: [s asQPSubjectString: @"utf-8"] forKey:@"subject"];
   
   /* add standard headers */
 
@@ -786,7 +792,8 @@ static NSString    *fromInternetSuffixPattern = nil;
     {
       rawSender = [startEmail substringFromIndex: NSMaxRange (delimiter)];
       delimiter = [rawSender rangeOfString: @">"];
-      rawSender = [rawSender substringToIndex: delimiter.location];
+      if (delimiter.location != NSNotFound)
+	rawSender = [rawSender substringToIndex: delimiter.location];
     }
 
   return rawSender;
@@ -1004,8 +1011,8 @@ static NSString    *fromInternetSuffixPattern = nil;
   NSDictionary *lInfo;
   id from, replyTo;
   
-  if (self->envelope != nil)
-    return self->envelope;
+  if (envelope != nil)
+    return envelope;
   if ((lInfo = [self fetchInfo]) == nil)
     return nil;
   
@@ -1017,14 +1024,14 @@ static NSString    *fromInternetSuffixPattern = nil;
       replyTo = [NSArray arrayWithObjects:&replyTo count:1];
   }
   
-  self->envelope = 
+  envelope = 
     [[NGImap4Envelope alloc] initWithMessageID:[self nameInContainer]
 			     subject:[lInfo objectForKey:@"subject"]
 			     from:from replyTo:replyTo
 			     to:[lInfo objectForKey:@"to"]
 			     cc:[lInfo objectForKey:@"cc"]
 			     bcc:[lInfo objectForKey:@"bcc"]];
-  return self->envelope;
+  return envelope;
 }
 
 /* debugging */

@@ -1,3 +1,11 @@
+2007-05-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -bodyPartForText]) 
+	([SOGoDraftObject -mimeMessageForContentWithHeaderMap:]): use the
+	constant string "contentTypeValue".
+	contentTypeValue is now set back to iso-8859-1 since NGMime
+	converts extracts the data in that encoding.
+
 2007-05-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
