@@ -19,6 +19,11 @@
   02111-1307, USA.
 */
 
+#if LIB_FOUNDATION_LIBRARY
+#error SOGo won't work properly with libFoundation. Please use gnustep-base \
+       instead.
+#endif
+
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
