@@ -144,26 +144,29 @@ function extractEmailAddress(mailTo) {
 function extractEmailName(mailTo) {
   var emailName = "";
 
-  var emailNamere = /(.+)\ </;
-  if (emailNamere.test(mailTo)) {
-    emailNamere.exec(mailTo);
-    emailName = RegExp.$1;
-  }
+   var tmpMailTo = mailTo.replace("&lt;", "<");
+   tmpMailTo = tmpMailTo.replace("&gt;", ">");
 
-  return emailName;
+   var emailNamere = /([ 	]+)?(.+)\ </;
+   if (emailNamere.test(tmpMailTo)) {
+      emailNamere.exec(tmpMailTo);
+      emailName = RegExp.$2;
+   }
+   
+   return emailName;
 }
 
 function sanitizeMailTo(dirtyMailTo) {
-  var emailName = extractEmailName(dirtyMailTo);
-  var email = "" + extractEmailAddress(dirtyMailTo);
+   var emailName = extractEmailName(dirtyMailTo);
+   var email = "" + extractEmailAddress(dirtyMailTo);
+   
+   var mailto = "";
+   if (emailName && emailName.length > 0)
+      mailto = emailName + ' <' + email + '>';
+   else
+      mailto = email;
 
-  var mailto = "";
-  if (emailName && emailName.length > 0)
-    mailto = emailName + ' <' + email + '>';
-  else
-    mailto = email;
-
-  return mailto;
+   return mailto;
 }
 
 function openUserFolderSelector(callback, type) {
@@ -189,12 +192,11 @@ function openMailComposeWindow(url) {
   return w;
 }
 
-function openMailTo(senderMailto) {
-  var mailto = sanitizeMailTo(senderMailto);
-
-  if (mailto.length > 0)
-    openMailComposeWindow(ApplicationBaseURL
-                          + "/../Mail/compose?mailto=" + mailto);
+function openMailTo(senderMailTo) {
+   var mailto = sanitizeMailTo(senderMailTo);
+   if (mailto.length > 0)
+      openMailComposeWindow(ApplicationBaseURL
+			    + "/../Mail/compose?mailto=" + mailto);
 
   return false; /* stop following the link */
 }
