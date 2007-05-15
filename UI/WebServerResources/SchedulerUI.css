@@ -138,8 +138,7 @@ DIV#rightPanel
   margin: 0px;
   margin-left: 5px;
   padding: 0px;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 DIV#appointmentsListView
 { 
@@ -148,9 +147,7 @@ DIV#appointmentsListView
   background: #fff;
   height: 15.5em;
   margin: 0.5em 0px 0px 0px;
-  min-width: 600px;
-  width: 100%;
-}
+  min-width: 600px; }
 
 DIV#calendarView
 { 
@@ -295,11 +292,16 @@ DIV#calendarView A
   border: 1px solid #deebf7; }
 
 TABLE#appointmentsList
-{ display: table;
-  width: 100%; }
+{ ddisplay: table; }
 
-TABLE#appointmentsList td.tbtv_headercell
- { width: 25%; }
+TABLE#appointmentsList td.tbtv_subject_headercell
+ { width: 35%; }
+
+TABLE#appointmentsList td.headerDateTime
+{ width: 17em; }
+
+TABLE#appointmentsList td.headerLocation
+{ width: 20%; }
 
 #dateSelector TD._selected,
 UL > LI._selected,
