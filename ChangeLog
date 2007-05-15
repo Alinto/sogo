@@ -1,5 +1,10 @@
 2007-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString:encoding]): simplified method.
+	The headers indicates "utf-8" again thank to our fix in
+	sope-mime.
+
 	* SoObjects/SOGo/SOGoObject.m: fail to build if libFoundation is
 	being used.
 

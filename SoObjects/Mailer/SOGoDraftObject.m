@@ -35,7 +35,7 @@
 #include <NGExtensions/NSFileManager+Extensions.h>
 #include "common.h"
 
-static NSString *contentTypeValue = @"text/plain; charset=iso-8859-1";
+static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 
 @interface NSString (NGMimeHelpers)
 
@@ -48,23 +48,16 @@ static NSString *contentTypeValue = @"text/plain; charset=iso-8859-1";
 - (NSString *) asQPSubjectString: (NSString *) encoding;
 {
   NSString *qpString;
-  unsigned char *data, *dest;
-  unsigned int dataLen, destLen;
+  NSData *subjectData, *destSubjectData;
 
-  dataLen = [self length];
-  data = calloc(dataLen, sizeof (unsigned char*));
-  [self getCString: (char *) data];
+  subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
+  destSubjectData = [subjectData dataByEncodingQuotedPrintable];
 
-  destLen = dataLen * 3;
-  dest = calloc(dataLen * 3, sizeof (unsigned char*));
-  NGEncodeQuotedPrintableMime (data, dataLen, dest, destLen);
+  qpString = [[NSString alloc] initWithData: destSubjectData
+			       encoding: NSASCIIStringEncoding];
+  [qpString autorelease];
 
-  qpString = [NSString stringWithFormat: @"=?%@?Q?%s?=", encoding, dest];
-
-  free (data);
-  free (dest);
-
-  return qpString;
+  return [NSString stringWithFormat: @"=?%@?Q?%@?=", encoding, qpString];
 }
 
 @end
@@ -659,7 +652,7 @@ static NSString    *fromInternetSuffixPattern = nil;
   /* add subject */
   
   if ([(s = [lInfo objectForKey:@"subject"]) length] > 0)
-    [map setObject: [s asQPSubjectString: @"iso-8859-1"]
+    [map setObject: [s asQPSubjectString: @"utf-8"]
 	 forKey:@"subject"];
 //     [map setObject: [s asQPSubjectString: @"utf-8"] forKey:@"subject"];
   
