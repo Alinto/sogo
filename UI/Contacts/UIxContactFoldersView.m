@@ -154,8 +154,8 @@
 				     [contact objectForKey: @"cn"],
 				     [contact objectForKey: @"c_email"]];
 	  [response setStatus: 200];
-	  [response setHeader: @"text/plain; charset=iso-8859-1"
-		    forKey: @"Content-Type"];
+// 	  [response setHeader: @"text/plain; charset=iso-8859-1"
+// 		    forKey: @"Content-Type"];
 	  [response appendContentString: responseString];
 	  contact = [contacts nextObject];
 	}
