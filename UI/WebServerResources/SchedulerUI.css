@@ -40,6 +40,9 @@ DIV#tasksListView LABEL
 DIV#calendarSelectorView
 { top: 0px; }
 
+DIV#calendarSelectorView
+{ overflow: hidden; }
+
 DIV#calendarsList
 { height: 100%;
   padding: 0px;
@@ -58,7 +61,6 @@ UL#tasksList, UL#calendarList
 { cursor: default;
   margin: .25em;
   padding: 0px;
-  overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
   border-bottom: 1px solid #fff;
@@ -142,12 +144,12 @@ DIV#rightPanel
 DIV#appointmentsListView
 { 
   position: absolute;
+  display: block;
   background: #fff;
   height: 15.5em;
-  top: 2.5em;
-  left: 0px;
+  margin: 0.5em 0px 0px 0px;
+  min-width: 600px;
   width: 100%;
-  overflow: auto;
 }
 
 DIV#calendarView
@@ -158,7 +160,6 @@ DIV#calendarView
   margin-top: 5px;
   bottom: 0px;
   width: 100%;
-  overflow: hidden;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
 }
@@ -294,7 +295,11 @@ DIV#calendarView A
   border: 1px solid #deebf7; }
 
 TABLE#appointmentsList
-{ width: 100%; }
+{ display: table;
+  width: 100%; }
+
+TABLE#appointmentsList td.tbtv_headercell
+ { width: 25%; }
 
 #dateSelector TD._selected,
 UL > LI._selected,
