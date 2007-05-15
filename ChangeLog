@@ -1,5 +1,9 @@
 2007-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m
+	([UIxMailPartTextViewer -flatContentAsString]): use the new
+	"stringByDetectingURLs" method to offer clickable urls.
+
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
 	-stringByDetectingURLs]): this new method replaces passive URLS
 	with active ones for HTML resolution of the text.

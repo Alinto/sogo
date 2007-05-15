@@ -28,6 +28,8 @@
   TODO: add contained link detection.
 */
 
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
 #import "common.h"
 
 #import "UIxMailPartTextViewer.h"
@@ -36,14 +38,18 @@
 
 - (NSString *) flatContentAsString
 {
-  NSString *content;
+  NSMutableString *content;
+  NSString *superContent, *urlText, *newUrlText;
+  NSRange httpRange, rest, currentURL;
+  unsigned int length;
 
-  content = [[super flatContentAsString] stringByEscapingHTMLString];
-  content = [content stringByReplacingString: @"\r\n"
-                     withString: @"<br />"];
+  content = [NSMutableString string];
+  superContent = [[super flatContentAsString] stringByEscapingHTMLString];
+  [content appendString: [superContent stringByDetectingURLs]];
+  [content replaceString: @"\r\n" withString: @"<br />"];
+  [content replaceString: @"\n" withString: @"<br />"];
 
-  return [content stringByReplacingString: @"\n"
-                  withString: @"<br />"];
+  return content;
 }
 
 @end /* UIxMailPartTextViewer */

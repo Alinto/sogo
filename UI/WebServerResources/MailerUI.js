@@ -607,12 +607,12 @@ function onMessageSelectionChange() {
 }
 
 function loadMessage(idx) {
-  var cachedMessage = getCachedMessage(idx);
-
   if (document.messageAjaxRequest) {
     document.messageAjaxRequest.aborted = true;
     document.messageAjaxRequest.abort();
   }
+
+  var cachedMessage = getCachedMessage(idx);
 
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + currentMailbox + "/"
@@ -625,7 +625,19 @@ function loadMessage(idx) {
     div.innerHTML = cachedMessage['text'];
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
+    configureLinksInMessageDIV(div);
   }
+}
+
+function configureLinksInMessageDIV(div) {
+   var anchors = div.getElementsByTagName('a');
+   for (var i = 0; i < anchors.length; i++)
+      anchors[i].addEventListener("click", onMessageAnchorClick, false);
+}
+
+function onMessageAnchorClick (event) {
+   window.open(this.href);
+   event.preventDefault();
 }
 
 function messageCallback(http) {
@@ -635,7 +647,8 @@ function messageCallback(http) {
       && http.status == 200) {
     document.messageAjaxRequest = null;
     div.innerHTML = http.responseText;
-    
+    configureLinksInMessageDIV(div);
+
     if (http.callbackData) {
       var cachedMessage = new Array();
       cachedMessage['idx'] = currentMailbox + '/' + http.callbackData;
