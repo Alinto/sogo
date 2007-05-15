@@ -40,6 +40,9 @@ DIV#tasksListView LABEL
 DIV#calendarSelectorView
 { top: 0px; }
 
+DIV#calendarSelectorView
+{ overflow: hidden; }
+
 DIV#calendarsList
 { height: 100%;
   padding: 0px;
@@ -58,7 +61,6 @@ UL#tasksList, UL#calendarList
 { cursor: default;
   margin: .25em;
   padding: 0px;
-  overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
   border-bottom: 1px solid #fff;
@@ -136,19 +138,16 @@ DIV#rightPanel
   margin: 0px;
   margin-left: 5px;
   padding: 0px;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 DIV#appointmentsListView
 { 
   position: absolute;
+  display: block;
   background: #fff;
   height: 15.5em;
-  top: 2.5em;
-  left: 0px;
-  width: 100%;
-  overflow: auto;
-}
+  margin: 0.5em 0px 0px 0px;
+  min-width: 600px; }
 
 DIV#calendarView
 { 
@@ -158,7 +157,6 @@ DIV#calendarView
   margin-top: 5px;
   bottom: 0px;
   width: 100%;
-  overflow: hidden;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
 }
@@ -294,7 +292,16 @@ DIV#calendarView A
   border: 1px solid #deebf7; }
 
 TABLE#appointmentsList
-{ width: 100%; }
+{ ddisplay: table; }
+
+TABLE#appointmentsList td.tbtv_subject_headercell
+ { width: 35%; }
+
+TABLE#appointmentsList td.headerDateTime
+{ width: 17em; }
+
+TABLE#appointmentsList td.headerLocation
+{ width: 20%; }
 
 #dateSelector TD._selected,
 UL > LI._selected,
