@@ -21,10 +21,14 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSEnumerator.h>
 
 #import "NSString+Utilities.h"
 #import "NSDictionary+URL.h"
+
+static NSMutableCharacterSet *urlNonEndingChars = nil;
+static NSMutableCharacterSet *urlAfterEndingChars = nil;
 
 @implementation NSString (SOGoURLExtension)
 
@@ -101,7 +105,71 @@
   return newName;
 }
 
-#ifndef GNUSTEP_BASE_LIBRARY
+- (NSRange) _rangeOfURLInRange: (NSRange) refRange
+{
+  int start, length;
+  NSRange endRange;
+
+  if (!urlNonEndingChars)
+    {
+      urlNonEndingChars = [NSMutableCharacterSet new];
+      [urlNonEndingChars addCharactersInString: @",.:;\t \r\n"];
+    }
+  if (!urlAfterEndingChars)
+    {
+      urlAfterEndingChars = [NSMutableCharacterSet new];
+      [urlAfterEndingChars addCharactersInString: @"\t \r\n"];
+    }
+
+  start = refRange.location;
+  while (start > -1
+	 && [self characterAtIndex: start] != ' ')
+    start--;
+  start++;
+  length = [self length] - start;
+  endRange = NSMakeRange (start, length);
+  endRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
+		      options: NSLiteralSearch range: endRange];
+  if (endRange.location != NSNotFound)
+    length = endRange.location;
+  length -= start;
+  while
+    ([urlNonEndingChars characterIsMember:
+			  [self characterAtIndex: (start + length - 1)]])
+    length--;
+
+  return NSMakeRange (start, length);
+}
+
+- (NSString *) stringByDetectingURLs
+{
+  NSMutableString *selfCopy;
+  NSRange httpRange, currentURL, rest;
+  NSString *urlText, *newUrlText;
+  unsigned int length;
+
+  selfCopy = [NSMutableString stringWithString: self];
+
+  httpRange = [selfCopy rangeOfString: @"://"];
+  while (httpRange.location != NSNotFound)
+    {
+      currentURL = [selfCopy _rangeOfURLInRange: httpRange];
+      urlText = [selfCopy substringFromRange: currentURL];
+      newUrlText = [NSString stringWithFormat: @"<a href=\"%@\">%@</a>",
+			     urlText, urlText];
+      [selfCopy replaceCharactersInRange: currentURL
+		withString: newUrlText];
+      length = [selfCopy length];
+      rest.location = currentURL.location + [newUrlText length];
+      rest.length = length - rest.location;
+      httpRange = [selfCopy rangeOfString: @"://"
+			    options: 0 range: rest];
+    }
+
+  return selfCopy;
+}
+
+#if LIB_FOUNDATION_LIBRARY
 - (BOOL) boolValue
 {
   return !([self isEqualToString: @"0"]
