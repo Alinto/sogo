@@ -1,5 +1,10 @@
 2007-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -fetchContentObjectNames]): override
+	method to return the events in the range of 2 weeks ago up to 4
+	weeks from "now".
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m
 	([UIxMailPartTextViewer -flatContentAsString]): use the new
 	"stringByDetectingURLs" method to offer clickable urls.

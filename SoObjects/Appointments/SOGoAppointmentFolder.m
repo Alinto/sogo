@@ -1257,6 +1257,33 @@ static NSNumber   *sharedYes = nil;
   return calendarFolders;
 }
 
+- (NSArray *) fetchContentObjectNames
+{
+  NSMutableArray *objectNames;
+  NSArray *records;
+  NSCalendarDate *today, *startDate, *endDate;
+
+#warning this should be user-configurable
+  objectNames = [NSMutableArray array];
+  today = [[NSCalendarDate calendarDate] beginOfDay];
+  [today setTimeZone: timeZone];
+
+  startDate = [today dateByAddingYears: 0 months: 0 days: -14
+                     hours: 0 minutes: 0 seconds: 0];
+  endDate = [startDate dateByAddingYears: 0 months: 1 days: 0
+                       hours: 0 minutes: 0 seconds: 0];
+  records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
+		  from: startDate to: endDate
+		  component: @"vevent"];
+  [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
+  records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
+		  from: startDate to: endDate
+		  component: @"vtodo"];
+  [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
+
+  return objectNames;
+}
+
 /* folder type */
 
 - (NSString *) folderType
