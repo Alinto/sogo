@@ -218,6 +218,8 @@ DIV#toolbar
   white-space: nowrap;
   overflow: auto; }
 
+BODY.popup { min-width: 400px; }
+
 BODY.popup DIV#toolbar
 { border-top: 0px; }
 
@@ -432,7 +434,7 @@ TR.tableview TD
   padding-right: .3em; }
 
 TR.tableview TD.headerDateTime
-{ width: 14em; }
+{ width: 18em; }
 
 TR.tableview TD.headerLocation
 { width: 10em; }

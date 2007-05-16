@@ -31,8 +31,7 @@ DIV#rightPanel
 }
 
 DIV#contactsListContent
-{ 
-  position: absolute;
+{ position: absolute;
   background: #fff;
   width: 100%;
   height: 16em;
@@ -190,7 +189,12 @@ TABLE#contactsList
 }
 
 TABLE#contactsList TD
-{ white-space: nowrap; }
+{ white-space: nowrap;
+  width: 20%; }
+
+TABLE#contactsList TD.headerName,
+TABLE#contactsList TD.headerEmail
+{ width: 30%; }
 
 TABLE#contactsList TD IMG
 {

@@ -141,12 +141,15 @@ DIV#rightPanel
   overflow: hidden; }
 
 DIV#appointmentsListView
-{ 
+{ display: block;
   position: absolute;
-  display: block;
   background: #fff;
+  top: 2.5em;
+  left: 0px;
+  right: 0px;
+  overflow: auto;
+  overflow-x: hidden;
   height: 15.5em;
-  margin: 0.5em 0px 0px 0px;
   min-width: 600px; }
 
 DIV#calendarView
@@ -292,13 +295,13 @@ DIV#calendarView A
   border: 1px solid #deebf7; }
 
 TABLE#appointmentsList
-{ ddisplay: table; }
+{ display: block;
+  position: relative;
+  height: 100%;
+  width: 100%; }
 
 TABLE#appointmentsList td.tbtv_subject_headercell
  { width: 35%; }
-
-TABLE#appointmentsList td.headerDateTime
-{ width: 17em; }
 
 TABLE#appointmentsList td.headerLocation
 { width: 20%; }
