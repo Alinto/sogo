@@ -635,7 +635,18 @@ function configureLinksInMessage() {
 					     parentDiv)[0];
    var anchors = div.getElementsByTagName('a');
    for (var i = 0; i < anchors.length; i++)
-      anchors[i].addEventListener("click", onMessageAnchorClick, false);
+      if (anchors[i].href.substring(0,7) == "mailto:") {
+	 anchors[i].addEventListener("click", onEmailAddressClick, false);
+	 anchors[i].addEventListener("contextmenu", onEmailAddressClick,
+				     false);
+      }
+      else
+	 anchors[i].addEventListener("click", onMessageAnchorClick, false);
+}
+
+function onEmailAddressClick(event) {
+   onMenuClick(event, 'addressMenu');
+   event.preventDefault();
 }
 
 function onMessageAnchorClick (event) {
