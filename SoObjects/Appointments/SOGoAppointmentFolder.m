@@ -1268,9 +1268,9 @@ static NSNumber   *sharedYes = nil;
   today = [[NSCalendarDate calendarDate] beginOfDay];
   [today setTimeZone: timeZone];
 
-  startDate = [today dateByAddingYears: 0 months: 0 days: -14
+  startDate = [today dateByAddingYears: 0 months: 0 days: -1
                      hours: 0 minutes: 0 seconds: 0];
-  endDate = [startDate dateByAddingYears: 0 months: 1 days: 0
+  endDate = [startDate dateByAddingYears: 0 months: 0 days: 2
                        hours: 0 minutes: 0 seconds: 0];
   records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
 		  from: startDate to: endDate
