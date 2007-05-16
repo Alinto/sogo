@@ -134,8 +134,9 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
     length = endRange.location;
   length -= start;
   while
-    ([urlNonEndingChars characterIsMember:
-			  [self characterAtIndex: (start + length - 1)]])
+    (length > 0
+     && [urlNonEndingChars characterIsMember:
+			     [self characterAtIndex: (start + length - 1)]])
     length--;
 
   return NSMakeRange (start, length);
