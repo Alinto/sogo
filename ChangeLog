@@ -6,6 +6,8 @@
 	is not found since the range has not changed either. Finally, the
 	first character before the url might also be a tab or a cr, so we
 	match it against the "urlAfterEndingChars" custom NSCharacterSet.
+	([NSString -stringByDetectingURLs]): modified to handle email
+	addresses and add a correct "mailto:" link.
 
 2007-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

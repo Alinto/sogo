@@ -113,12 +113,12 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @"&=,.:;\t \r\n"];
+      [urlNonEndingChars addCharactersInString: @">&=,.:;\t \r\n"];
     }
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"&;<\t \r\n"];
     }
 
   start = refRange.location;
@@ -142,30 +142,44 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   return NSMakeRange (start, length);
 }
 
-- (NSString *) stringByDetectingURLs
+- (void) _handleURLs: (NSMutableString *) selfCopy
+	 textToMatch: (NSString *) match
+	      prefix: (NSString *) prefix
 {
-  NSMutableString *selfCopy;
   NSRange httpRange, currentURL, rest;
   NSString *urlText, *newUrlText;
-  unsigned int length;
+  unsigned int length, matchLength;
 
-  selfCopy = [NSMutableString stringWithString: self];
-
-  httpRange = [selfCopy rangeOfString: @"://"];
+  matchLength = [match length];
+  httpRange = [selfCopy rangeOfString: match];
   while (httpRange.location != NSNotFound)
     {
       currentURL = [selfCopy _rangeOfURLInRange: httpRange];
       urlText = [selfCopy substringFromRange: currentURL];
-      newUrlText = [NSString stringWithFormat: @"<a href=\"%@\">%@</a>",
-			     urlText, urlText];
-      [selfCopy replaceCharactersInRange: currentURL
-		withString: newUrlText];
+      if ([urlText length] > matchLength)
+	{
+	  newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
+				 prefix, urlText, urlText];
+	  [selfCopy replaceCharactersInRange: currentURL
+		    withString: newUrlText];
+	  rest.location = currentURL.location + [newUrlText length];
+	}
+      else
+	rest.location = currentURL.location + currentURL.length;
       length = [selfCopy length];
-      rest.location = currentURL.location + [newUrlText length];
       rest.length = length - rest.location;
-      httpRange = [selfCopy rangeOfString: @"://"
+      httpRange = [selfCopy rangeOfString: match
 			    options: 0 range: rest];
     }
+}
+
+- (NSString *) stringByDetectingURLs
+{
+  NSMutableString *selfCopy;
+
+  selfCopy = [NSMutableString stringWithString: self];
+  [self _handleURLs: selfCopy textToMatch: @"://" prefix: @""];
+  [self _handleURLs: selfCopy textToMatch: @"@" prefix: @"mailto:"];
 
   return selfCopy;
 }
