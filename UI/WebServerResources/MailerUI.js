@@ -741,21 +741,22 @@ function onMenuForwardMessage(event) {
 function newContactFromEmail(sender) {
   var mailto = sender.parentNode.parentNode.menuTarget.innerHTML;
 
-  var emailre
-    = /([a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])/g;
-  emailre.exec(mailto);
-  email = RegExp.$1;
+//   var emailre
+//     = /([a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])/g;
+//   emailre.exec(mailto);
+//   email = RegExp.$1;
 
-  var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
-  var c_name = '';
-  if (namere.test(mailto)) {
-    namere.exec(mailto);
-    c_name += RegExp.$1;
-  }
+//   var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
+//   var c_name = '';
+//   if (namere.test(mailto)) {
+//     namere.exec(mailto);
+//     c_name += RegExp.$1;
+//   }
 
+  var email = extractEmailAddress(mailto);
+  var c_name = extractEmailName(mailto);
   if (email.length > 0)
     {
-      emailre.exec("");
       var url = UserFolderURL + "Contacts/new?contactEmail=" + email;
       if (c_name)
         url += "&contactFN=" + c_name;
