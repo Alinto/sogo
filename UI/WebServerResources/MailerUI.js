@@ -625,11 +625,14 @@ function loadMessage(idx) {
     div.innerHTML = cachedMessage['text'];
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
-    configureLinksInMessageDIV(div);
+    configureLinksInMessage();
   }
 }
 
-function configureLinksInMessageDIV(div) {
+function configureLinksInMessage() {
+   var parentDiv = $('messageContent');
+   var div = document.getElementsByClassName('mailer_mailcontent',
+					     parentDiv)[0];
    var anchors = div.getElementsByTagName('a');
    for (var i = 0; i < anchors.length; i++)
       anchors[i].addEventListener("click", onMessageAnchorClick, false);
@@ -647,7 +650,7 @@ function messageCallback(http) {
       && http.status == 200) {
     document.messageAjaxRequest = null;
     div.innerHTML = http.responseText;
-    configureLinksInMessageDIV(div);
+    configureLinksInMessage();
 
     if (http.callbackData) {
       var cachedMessage = new Array();
