@@ -37,6 +37,7 @@ DIV#contactsListContent
   height: 16em;
   top: 2.5em;
   overflow: auto;
+  overflow-x: hidden;
   left: 0px;
 }
 
