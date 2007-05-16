@@ -1,3 +1,12 @@
+2007-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-_rangeOfURLInRange:refRange]): urls cannot end with "&" nor "=".
+	There is no need to subscract the start from the length if a space
+	is not found since the range has not changed either. Finally, the
+	first character before the url might also be a tab or a cr, so we
+	match it against the "urlAfterEndingChars" custom NSCharacterSet.
+
 2007-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

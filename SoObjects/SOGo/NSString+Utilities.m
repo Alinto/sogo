@@ -108,12 +108,12 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
 - (NSRange) _rangeOfURLInRange: (NSRange) refRange
 {
   int start, length;
-  NSRange endRange;
+  NSRange workRange;
 
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @",.:;\t \r\n"];
+      [urlNonEndingChars addCharactersInString: @"&=,.:;\t \r\n"];
     }
   if (!urlAfterEndingChars)
     {
@@ -123,16 +123,16 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
 
   start = refRange.location;
   while (start > -1
-	 && [self characterAtIndex: start] != ' ')
+	 && ![urlAfterEndingChars characterIsMember:
+				    [self characterAtIndex: start]])
     start--;
   start++;
   length = [self length] - start;
-  endRange = NSMakeRange (start, length);
-  endRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
-		      options: NSLiteralSearch range: endRange];
-  if (endRange.location != NSNotFound)
-    length = endRange.location;
-  length -= start;
+  workRange = NSMakeRange (start, length);
+  workRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
+		    options: NSLiteralSearch range: workRange];
+  if (workRange.location != NSNotFound)
+    length = workRange.location - start;
   while
     (length > 0
      && [urlNonEndingChars characterIsMember:
