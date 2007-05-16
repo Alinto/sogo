@@ -75,21 +75,21 @@
                                   to: (NSCalendarDate *) _endDate
 {
   id calFolder;
-  SoSecurityManager *sm;
+//   SoSecurityManager *sm;
   NSArray *infos;
 
   calFolder = [container lookupName: @"Calendar" inContext: nil acquire: NO];
-  sm = [SoSecurityManager sharedSecurityManager];
-  if (![sm validatePermission: SOGoPerm_FreeBusyLookup
-           onObject: calFolder
-           inContext: context])
+//   sm = [SoSecurityManager sharedSecurityManager];
+//   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
+//            onObject: calFolder
+//            inContext: context])
     infos = [calFolder fetchFreeBusyInfosFrom: _startDate
                        to: _endDate];
-  else
-    {
-      infos = [NSArray new];
-      [infos autorelease];
-    }
+//   else
+//     {
+//       infos = [NSArray new];
+//       [infos autorelease];
+//     }
 
   return infos;
 }

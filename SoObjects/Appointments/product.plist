@@ -46,11 +46,7 @@
     };
     SOGoFreeBusyObject = {
       superclass    = "SOGoContentObject";
-      protectedBy = "View";
-      defaultRoles = {
-        "View" = ( "Authenticated", "FreeBusy" );
-        "WebDAV Access" = ( "Authenticated", "FreeBusy" );
-      };
+      protectedBy = "<public>";
     };
   };
 }
