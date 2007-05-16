@@ -475,6 +475,7 @@ TABLE#messageList
   top: 2em;
   bottom: 0px;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 TABLE#messageList TBODY
@@ -489,8 +490,11 @@ TABLE#messageList TBODY
 
 TABLE#messageList TD
 { 
-  height: 1.2em;
+  height: 1.2em;  
 }
+
+TABLE#messageList TD.tbtv_subject_headercell
+{ width: 30%; }
 
 TABLE#messageList TR._selected TD
 { 
