@@ -630,10 +630,11 @@ function loadMessage(idx) {
 }
 
 function configureLinksInMessage() {
-   var parentDiv = $('messageContent');
-   var div = document.getElementsByClassName('mailer_mailcontent',
-					     parentDiv)[0];
-   var anchors = div.getElementsByTagName('a');
+   var messageDiv = $('messageContent');
+   var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
+							messageDiv)[0];
+   mailContentDiv.addEventListener("contextmenu", onMessageContentMenu, false);
+   var anchors = messageDiv.getElementsByTagName('a');
    for (var i = 0; i < anchors.length; i++)
       if (anchors[i].href.substring(0,7) == "mailto:") {
 	 anchors[i].addEventListener("click", onEmailAddressClick, false);
@@ -643,6 +644,11 @@ function configureLinksInMessage() {
       else
 	 anchors[i].addEventListener("click", onMessageAnchorClick, false);
 }
+
+function onMessageContentMenu(event) {
+   onMenuClick(event, 'messageContentMenu');
+   event.preventDefault();
+};
 
 function onEmailAddressClick(event) {
    onMenuClick(event, 'addressMenu');

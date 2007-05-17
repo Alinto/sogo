@@ -18,7 +18,7 @@
         <td class="mailer_fieldvalue">
           <var:foreach list="clientObject.fromEnvelopeAddresses"
             item="currentAddress">
-            <a var:href="currentAddressLink" onclick="return onMenuClick(event, 'addressMenu');" oncontextmenu="onMenuClick(event, 'addressMenu');">
+            <a var:href="currentAddressLink">
               <var:string value="currentAddress"
                 formatter="context.mailEnvelopeFullAddressFormatter" /></a>
           </var:foreach>
@@ -41,10 +41,7 @@
         <td class="mailer_fieldvalue">
           <var:foreach list="clientObject.toEnvelopeAddresses"
             item="currentAddress"
-            ><a var:href="currentAddressLink"
-              onmousedown="return false;"
-              onclick="return onMenuClick(event, 'addressMenu');"
-              oncontextmenu="onMenuClick(event, 'addressMenu');">
+            ><a var:href="currentAddressLink">
               <var:string value="currentAddress"
                 formatter="context.mailEnvelopeFullAddressFormatter"
                 /></a>
@@ -58,10 +55,7 @@
             <var:foreach list="clientObject.ccEnvelopeAddresses" 
               item="currentAddress">
               <a var:href="currentAddressLink"
-                onclick="return onMenuClick(event, 'addressMenu');"
-                oncontextmenu="onMenuClick(event, 'addressMenu');"
-                onmousedown="return false;"
-                ><var:string value="currentAddress"
+		><var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter"
                   /></a>
               <!-- TODO: better to use li+CSS -->
@@ -71,8 +65,7 @@
       </var:if>
     </table>
 
-    <div class="mailer_mailcontent"
-      oncontextmenu="onMenuClick(event, 'messageContentMenu');">
+    <div class="mailer_mailcontent">
       <var:component value="contentViewerComponent"
         bodyInfo="clientObject.bodyStructure" />
     </div>
