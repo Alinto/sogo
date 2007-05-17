@@ -1,5 +1,10 @@
 2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]):
+	ignore the "AuthorizedSubscriber" role and add the "None" role
+	when no other role is found.
+
 	* UI/Common/UIxAclEditor.m: added a button for the new default
 	user roles feature.
 
