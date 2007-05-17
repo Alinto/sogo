@@ -941,7 +941,7 @@ function openExternalLink(anchor) {
 
 function openAclWindow(url) {
   var w = window.open(url, "aclWindow",
-                      "width=300,height=300,resizable=1,scrollbars=1,toolbar=0,"
+                      "width=420,height=300,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0"
                       + ",copyhistory=0");
   w.opener = window;
