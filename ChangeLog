@@ -1,5 +1,8 @@
 2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m: defined a new constant
+	"SOGoDefaultUserID".
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]):
 	ignore the "AuthorizedSubscriber" role and add the "None" role

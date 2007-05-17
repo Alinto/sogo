@@ -52,6 +52,8 @@
 
 #define $(class) NSClassFromString(class)
 
+extern NSString *SOGoDefaultUserID;
+
 @interface SOGoObject : NSObject
 {
   WOContext *context;
