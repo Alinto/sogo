@@ -1,5 +1,8 @@
 2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxAclEditor.m: added a button for the new default
+	user roles feature.
+
 	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor
 	-_initRights]): don't take the "None" role into account when
 	initializing the list of current roles.
