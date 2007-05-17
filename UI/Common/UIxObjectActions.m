@@ -27,6 +27,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxObjectActions.h"
 
@@ -49,9 +50,9 @@
       um = [LDAPUserManager sharedUserManager];
       if ([um contactInfosForUserWithUIDorEmail: uid])
         {
-          clientObject = [self clientObject];
-          [clientObject setRoles: [clientObject defaultAclRoles]
-                        forUser: uid];
+	  clientObject = [self clientObject];
+	  [clientObject setRoles: [clientObject aclsForUser: uid]
+			forUser: uid];
           code = 204;
         }
     }
@@ -78,7 +79,8 @@
       um = [LDAPUserManager sharedUserManager];
       if ([um contactInfosForUserWithUIDorEmail: uid])
 	{
-	  [[self clientObject] removeAclsForUsers: [NSArray arrayWithObject: uid]];
+	  [[self clientObject] removeAclsForUsers:
+				 [NSArray arrayWithObject: uid]];
           code = 204;
         }
     }

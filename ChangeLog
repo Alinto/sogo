@@ -1,5 +1,11 @@
 2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions
+	-addUserInAclsAction]): save the previous roles of the user
+	(unlikely) or the default roles, or None instead of saving the
+	roles that should appear the first time in the role editor when no
+	default has been set...
+
 	* SoObjects/SOGo/SOGoObject.m: defined a new constant
 	"SOGoDefaultUserID".
 
