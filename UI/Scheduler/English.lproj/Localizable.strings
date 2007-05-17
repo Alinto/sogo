@@ -82,6 +82,7 @@
 "Forbidden" = "Forbidden";
 
 /* acls */
+"Default Roles" = "Default Roles";
 "User rights for:" = "User rights for:";
 "label_Public" = "Public";
 "label_Private" = "Private";

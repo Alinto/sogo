@@ -3,6 +3,7 @@
 /* toolbars */
 "Save" = "Save";
 "Close" = "Close";
+"Edit User Rights" = "Edit User Rights";
 
 "Home" = "Home";
 "Calendar" = "Calendar";
@@ -20,5 +21,7 @@
 "noJavascriptRetry" = "Retry";
 
 "Publish the Free/Busy information" = "Publish the Free/Busy information";
+
+"Default Roles" = "Default Roles";
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
