@@ -1,6 +1,7 @@
 /* test */
 
 var contactSelectorAction = 'acls-contacts';
+var defaultUserID = '';
 
 function addUser(userName, userID) {
    if (!$(userID)) {
@@ -17,13 +18,17 @@ function addUser(userName, userID) {
 function addUserCallback(http) {
 }
 
+function setEventsOnUserNode(node) {
+   Event.observe(node, "mousedown", listRowMouseDownHandler);
+   Event.observe(node, "dblclick", onOpenUserRights);
+   Event.observe(node, "click", onRowClick);
+}
+
 function nodeForUser(userName, userId) {
    var node = document.createElement("li");
    node.setAttribute("id", userId);
    node.setAttribute("class", "");
-   node.addEventListener("mousedown", listRowMouseDownHandler, true);
-   node.addEventListener("dblclick", onOpenUserRights, false);
-   node.addEventListener("click", onRowClick, true);
+   setEventsOnUserNode(node);
 
    var image = document.createElement("img");
    image.setAttribute("src", ResourcesURL + "/abcard.gif");
@@ -82,22 +87,29 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 	   refreshCallbackData["folder"]);
 }
 
+function openRightsForUserID(userID) {
+   var url = window.location.href;
+   var elements = url.split("/");
+   elements[elements.length-1] = "userRights?uid=" + userID;
+
+   window.open(elements.join("/"), "",
+	       "width=" + this.userRightsWidth
+	       + ",height=" + this.userRightsHeight
+	       + ",resizable=0,scrollbars=0,toolbar=0,"
+	       + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+}
+
 function openRightsForUser(button) {
   var nodes = $("userList").getSelectedRows();
-  if (nodes.length > 0) {
-    var url = window.location.href;
-    var elements = url.split("/");
-    elements[elements.length-1] = ("userRights?uid="
-                                   + nodes[0].getAttribute("id"));
-
-    window.open(elements.join("/"), "",
-		"width=" + this.userRightsWidth
-		+ ",height=" + this.userRightsHeight
-		+ ",resizable=0,scrollbars=0,toolbar=0,"
-		+ "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-  }
+  if (nodes.length > 0)
+     openRightsForUserID(nodes[0].getAttribute("id"));
 
   return false;
+}
+
+function openRightsForDefaultUser(event) {
+   openRightsForUserID(defaultUserID);
+   event.preventDefault();
 }
 
 function onOpenUserRights(event) {
@@ -106,20 +118,19 @@ function onOpenUserRights(event) {
 }
 
 function onAclLoadHandler() {
-  var ul = $("userList");
-  var lis = ul.childNodesWithTag("li");
-  for (var i = 0; i < lis.length; i++) {
-     lis[i].addEventListener("mousedown", listRowMouseDownHandler, false);
-     lis[i].addEventListener("dblclick", onOpenUserRights, false);
-     lis[i].addEventListener("click", onRowClick, false);
-  }
+   defaultUserID = $("defaultUserID").value;
+   Event.observe($("defaultRolesBtn"), "click", openRightsForDefaultUser);
+   var ul = $("userList");
+   var lis = ul.childNodesWithTag("li");
+   for (var i = 0; i < lis.length; i++)
+      setEventsOnUserNode(lis[i]);
 
-  var buttons = $("userSelectorButtons").childNodesWithTag("a");
-  buttons[0].addEventListener("click", onUserAdd, false);
-  buttons[1].addEventListener("click", onUserRemove, false);
+   var buttons = $("userSelectorButtons").childNodesWithTag("a");
+   Event.observe(buttons[0], "click", onUserAdd);
+   Event.observe(buttons[1], "click", onUserRemove);
 
-  this.userRightsHeight = window.opener.getUsersRightsWindowHeight();
-  this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
+   this.userRightsHeight = window.opener.getUsersRightsWindowHeight();
+   this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
 }
 
-window.addEventListener("load", onAclLoadHandler, false);
+Event.observe(window, "load", onAclLoadHandler);

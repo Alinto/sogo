@@ -84,6 +84,11 @@
   return [self _displayNameForUID: ownerLogin];
 }
 
+- (NSString *) defaultUserID
+{
+  return SOGoDefaultUserID;
+}
+
 - (void) _prepareUsers
 {
   NSEnumerator *aclsEnum;
@@ -98,6 +103,7 @@
     {
       currentUID = [currentAcl objectForKey: @"c_uid"];
       if (!([currentUID isEqualToString: ownerLogin]
+	    || [currentUID isEqualToString: SOGoDefaultUserID]
 	    || [users containsObject: currentUID]))
 	  [users addObject: currentUID];
       currentAcl = [aclsEnum nextObject];
