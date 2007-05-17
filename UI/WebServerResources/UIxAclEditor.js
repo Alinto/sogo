@@ -22,6 +22,7 @@ function nodeForUser(userName, userId) {
    node.setAttribute("id", userId);
    node.setAttribute("class", "");
    node.addEventListener("mousedown", listRowMouseDownHandler, true);
+   node.addEventListener("dblclick", onOpenUserRights, false);
    node.addEventListener("click", onRowClick, true);
 
    var image = document.createElement("img");
