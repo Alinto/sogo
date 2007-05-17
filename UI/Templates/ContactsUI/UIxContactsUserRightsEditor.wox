@@ -13,8 +13,13 @@
   <form id="userRightsForm" const:href="saveUserRights">
     <input type="hidden" name="uid" var:value="uid"/>
     <div class="title">
-      <label><var:string label:value="User rights for:"/><br/>
-	<span class="value"><var:string value="userDisplayName"/></span></label>
+      <var:if condition="userIsDefaultUser">
+	<label><span class="value"><var:string label:value="Default Roles"
+	      /></span></label>
+      </var:if><var:if condition="userIsDefaultUser" const:negate="YES">
+	<label><var:string label:value="User rights for:"/><br/>
+	  <span class="value"><var:string value="userDisplayName"
+	      /></span></label></var:if>
     </div>
     <div class="calendarUserRights">
       <label><input type="checkbox" class="checkBox"

@@ -1,3 +1,29 @@
+2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions
+	-addUserInAclsAction]): save the previous roles of the user
+	(unlikely) or the default roles, or None instead of saving the
+	roles that should appear the first time in the role editor when no
+	default has been set...
+
+	* SoObjects/SOGo/SOGoObject.m: defined a new constant
+	"SOGoDefaultUserID".
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-setRoles:rolesforUser:uidforObjectAtPath:objectPathArray]):
+	ignore the "AuthorizedSubscriber" role and add the "None" role
+	when no other role is found.
+
+	* UI/Common/UIxAclEditor.m: added a button for the new default
+	user roles feature.
+
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor
+	-_initRights]): don't take the "None" role into account when
+	initializing the list of current roles.
+
+	* SoObjects/SOGo/SOGoPermissions.m: added a new void role
+	"SOGoRole_None".
+
 2007-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString

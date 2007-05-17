@@ -17,12 +17,17 @@ DIV.acls LABEL
 DIV#userSelectorHeader
 { margin: 1em; }
 
+INPUT#defaultRolesBtn
+{ position: absolute;
+  top: 5em;
+  left: 1em; }
+
 DIV#userRoles
 { position: absolute;
   padding: 0px;
   margin: 0px;
   left: 1em;
-  top: 5em;
+  top: 7em;
   right: 1em;
   bottom: 0px; }
 
