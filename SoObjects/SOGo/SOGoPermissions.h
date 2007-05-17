@@ -32,6 +32,7 @@ extern NSString *SOGoRole_ObjectEraser;
 extern NSString *SOGoRole_ObjectViewer;
 extern NSString *SOGoRole_ObjectEditor;
 extern NSString *SOGoRole_AuthorizedSubscriber;
+extern NSString *SOGoRole_None;
 
 extern NSString *SOGoRole_FreeBusy;
 extern NSString *SOGoRole_FreeBusyLookup;

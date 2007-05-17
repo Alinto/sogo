@@ -1,3 +1,8 @@
+2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoPermissions.m: added a new void role
+	"SOGoRole_None".
+
 2007-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
