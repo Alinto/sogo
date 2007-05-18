@@ -1,5 +1,7 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderACLEditor.m: removed obsolete module.
+
 	* UI/WebServerResources/MailerUI.js: replaced all invocations of
 	addEventListener to the use of prototype's Event object. Also,
 	configured all menus programmatically following descriptions lists
