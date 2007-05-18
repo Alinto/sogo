@@ -1,3 +1,10 @@
+2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js: replaced all invocations of
+	addEventListener to the use of prototype's Event object. Also,
+	configured all menus programmatically following descriptions lists
+	containing their callbacks, or nulls, submenus id or separators.
+
 2007-05-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxObjectActions.m ([UIxObjectActions
