@@ -28,6 +28,7 @@ var logWindow = null;
 var queryParameters;
 
 var activeAjaxRequests = 0;
+var menus = new Array();
 
 // logArea = null;
 var allDocumentElements = null;
@@ -423,47 +424,37 @@ function onRowClick(event) {
 var bodyOnClick = "";
 // var acceptClick = false;
 
-function onMenuClick(event, menuId) {
-  var node = event.target;
+function popupMenu(event, menuId, target) {
+   document.menuTarget = target;
 
-  if (document.currentPopupMenu)
-    hideMenu(event, document.currentPopupMenu);
+   if (document.currentPopupMenu)
+      hideMenu(event, document.currentPopupMenu);
 
-  var popup = document.getElementById(menuId);
+   var popup = document.getElementById(menuId);
 
-  var menuTop = event.pageY;
-  var menuLeft = event.pageX;
-  var heightDiff = (window.innerHeight
-		    - (menuTop + popup.offsetHeight));
-  if (heightDiff < 0)
-    menuTop += heightDiff;
+   var menuTop = event.pageY;
+   var menuLeft = event.pageX;
+   var heightDiff = (window.innerHeight
+		     - (menuTop + popup.offsetHeight));
+   if (heightDiff < 0)
+      menuTop += heightDiff;
+  
+   var leftDiff = (window.innerWidth
+		   - (menuLeft + popup.offsetWidth));
+   if (leftDiff < 0)
+      menuLeft -= popup.offsetWidth;
 
-  var leftDiff = (window.innerWidth
-		  - (menuLeft + popup.offsetWidth));
-  if (leftDiff < 0)
-    menuLeft -= popup.offsetWidth;
+   popup.style.top = menuTop + "px;";
+   popup.style.left = menuLeft + "px;";
+   popup.style.visibility = "visible;";
 
-  popup.style.top = menuTop + "px;";
-  popup.style.left = menuLeft + "px;";
-  popup.style.visibility = "visible;";
-  setupMenuTarget(popup, node);
+   bodyOnClick = "" + document.body.getAttribute("onclick");
+   document.body.setAttribute("onclick", "onBodyClick(event);");
+   document.currentPopupMenu = popup;
 
-  bodyOnClick = "" + document.body.getAttribute("onclick");
-  document.body.setAttribute("onclick", "onBodyClick(event);");
-  document.currentPopupMenu = popup;
-
-  event.cancelBubble = true;
-  event.returnValue = false;
-
-  return false;
-}
-
-function setupMenuTarget(menu, target) {
-  menu.menuTarget = target;
-  var menus = document.getElementsByClassName("menu", menu);
-  for (var i = 0; i < menus.length; i++) {
-    menus[i].menuTarget = target;
-  }
+   event.cancelBubble = true;
+   event.returnValue = false;
+   event.preventDefault();
 }
 
 function getParentMenu(node) {
@@ -484,11 +475,11 @@ function getParentMenu(node) {
 }
 
 function onBodyClick(event) {
-  document.currentPopupMenu.menuTarget = null;
-  hideMenu(event, document.currentPopupMenu);
-  document.body.setAttribute("onclick", bodyOnClick);
-
-  return false;
+   document.body.menuTarget = null;
+   hideMenu(event, document.currentPopupMenu);
+   document.body.setAttribute("onclick", bodyOnClick);
+   
+   return false;
 }
 
 function hideMenu(event, menuNode) {
@@ -515,7 +506,7 @@ function hideMenu(event, menuNode) {
   menuNode.dispatchEvent(onhideEvent);
 }
 
-function onMenuEntryClick(event, menuId) {
+function onMenuEntryClick(event) {
   var node = event.target;
 
   id = getParentMenu(node).menuTarget;
@@ -610,10 +601,9 @@ function backtrace() {
 }
 
 function dropDownSubmenu(event) {
-  var node = event.target;
-  var submenu = node.getAttribute("submenu");
-  if (submenu && submenu != "") {
-    var submenuNode = document.getElementById(submenu);
+  var node = this;
+  if (this.submenu && this.submenu != "") {
+    var submenuNode = document.getElementById(this.submenu);
     var parentNode = getParentMenu(node);
     if (parentNode.submenu)
       hideMenu(event, parentNode.submenu);
@@ -633,7 +623,7 @@ function dropDownSubmenu(event) {
     if (window.innerWidth
         < (menuLeft + submenuNode.offsetWidth
            + parentNode.cascadeLeftOffset()))
-	menuLeft = -submenuNode.offsetWidth + 3;
+	menuLeft = - submenuNode.offsetWidth + 3;
     
     parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
     node.setAttribute('class', 'submenu-selected');
@@ -915,24 +905,37 @@ function initTabs() {
   }
 }
 
-function initMenusNamed(menuDivNames) {
-  for (var i = 0; i < menuDivNames.length; i++) {
-    var menuDIV = $(menuDivNames[i]);
-    if (menuDIV)
-      initMenu(menuDIV);
-    else
-      log("menu named '" + menuDivNames[i] + "' not found");
-  }
+function initMenus() {
+   for (var i = 0; i < menus["menuIds"].length; i++) {
+      var menuId = menus["menuIds"][i];
+      var callbacks = menus[menuId];
+      var menuDIV = $(menuId);
+      initMenu(menuDIV, callbacks);
+   }
 }
 
-function initMenu(menu) {
-  menuDIV = $(menu);
-  var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
-  for (var j = 0; j < lis.length; j++)
-    Event.observe(lis[j], "mousedown", listRowMouseDownHandler, false);
-  var subMenus = menuDIV.childNodesWithTag("div");
-  for (var i = 0; i < subMenus.length; i++)
-    initMenu(subMenus[i]);
+function initMenu(menuDIV, callbacks) {
+   var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
+   for (var j = 0; j < lis.length; j++) {
+      var node = lis[j];
+      Event.observe(node, "mousedown", listRowMouseDownHandler, false);
+      var callback = callbacks[j];
+      if (callback) {
+	 if (typeof(callback) == "string") {
+	    if (callback == "-")
+	       node.addClassName("separator");
+	    else {
+	       node.submenu = callback;
+	       node.addClassName("submenu");
+	       Event.observe(node, "mouseover", dropDownSubmenu);
+	    }
+	 }
+	 else
+	    Event.observe(node, "mouseup", callback);
+      }
+      else
+	 node.addClassName("disabled");
+   }
 }
 
 function onTabMouseDown(event) {
@@ -1110,12 +1113,11 @@ function configureLinkBanner() {
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
     for (var i = 0; i < 2; i++) {
-      anchors[i].addEventListener("mousedown", listRowMouseDownHandler,
-                                  false);
-      anchors[i].addEventListener("click", onLinkBannerClick, false);
+       Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
+       Event.observe(anchors[i], "click", onLinkBannerClick);
     }
     if (anchors.length > 3)
-      anchors[3].addEventListener("click", toggleLogConsole, true);
+       Event.observe(anchors[3], "click", toggleLogConsole);
   }
 }
 
