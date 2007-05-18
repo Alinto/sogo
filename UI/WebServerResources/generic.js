@@ -574,7 +574,7 @@ function log(message) {
   }
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole)
-    logConsole.innerHTML += message.replace("<", "&lt;") + '<br />' + "\n";
+    logConsole.innerHTML += message.replace("<", "&lt;", "g") + '<br />' + "\n";
 }
 
 function backtrace() {
