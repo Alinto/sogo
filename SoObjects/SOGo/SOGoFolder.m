@@ -31,8 +31,6 @@
 #import <unistd.h>
 #import <stdlib.h>
 
-static NSString *defaultUser = @"<default>";
-
 @implementation SOGoFolder
 
 + (int) version
@@ -341,8 +339,9 @@ static NSString *defaultUser = @"<default>";
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
-  if (!([acls count] || [uid isEqualToString: defaultUser]))
-    acls = [self aclsForUser: defaultUser forObjectAtPath: objectPathArray];
+  if (!([acls count] || [uid isEqualToString: SOGoDefaultUserID]))
+    acls = [self aclsForUser: SOGoDefaultUserID
+		 forObjectAtPath: objectPathArray];
 
   return acls;
 }
@@ -369,19 +368,14 @@ static NSString *defaultUser = @"<default>";
     }
 }
 
-- (void) setRoles: (NSArray *) roles
-          forUser: (NSString *) uid
-  forObjectAtPath: (NSArray *) objectPathArray
+- (void) _commitRoles: (NSArray *) roles
+	       forUID: (NSString *) uid
+	    forObject: (NSString *) objectPath
 {
   EOAdaptorChannel *channel;
   GCSFolder *folder;
   NSEnumerator *userRoles;
-  NSString *SQL, *currentRole, *objectPath;
-
-  [self removeAclsForUsers: [NSArray arrayWithObject: uid]
-        forObjectAtPath: objectPathArray];
-  objectPath = [objectPathArray componentsJoinedByString: @"/"];
-  [self _cacheRoles: roles forUser: uid forObjectAtPath: objectPath];
+  NSString *SQL, *currentRole;
 
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
@@ -389,19 +383,38 @@ static NSString *defaultUser = @"<default>";
   currentRole = [userRoles nextObject];
   while (currentRole)
     {
-      if (![currentRole isEqualToString: SOGoRole_AuthorizedSubscriber])
-	{
-	  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-			  @" (c_object, c_uid, c_role)"
-			  @" VALUES ('/%@', '%@', '%@')",
-			  [folder aclTableName],
-			  objectPath, uid, currentRole];
-	  [channel evaluateExpressionX: SQL];
-	}
+      SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+		      @" (c_object, c_uid, c_role)"
+		      @" VALUES ('/%@', '%@', '%@')",
+		      [folder aclTableName],
+		      objectPath, uid, currentRole];
+      [channel evaluateExpressionX: SQL];
       currentRole = [userRoles nextObject];
     }
 
   [folder releaseChannel: channel];
+}
+
+- (void) setRoles: (NSArray *) roles
+          forUser: (NSString *) uid
+  forObjectAtPath: (NSArray *) objectPathArray
+{
+  NSString *objectPath;
+  NSMutableArray *newRoles;
+
+  [self removeAclsForUsers: [NSArray arrayWithObject: uid]
+        forObjectAtPath: objectPathArray];
+
+  newRoles = [NSMutableArray arrayWithArray: roles];
+  [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
+  [newRoles removeObject: SOGoRole_None];
+  objectPath = [objectPathArray componentsJoinedByString: @"/"];
+  [self _cacheRoles: newRoles forUser: uid
+	forObjectAtPath: objectPath];
+  if (![newRoles count])
+    [newRoles addObject: SOGoRole_None];
+
+  [self _commitRoles: newRoles forUID: uid forObject: objectPath];
 }
 
 /* acls */

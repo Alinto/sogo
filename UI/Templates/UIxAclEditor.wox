@@ -14,12 +14,16 @@
   <form id="aclForm" const:href="saveAcls">
     <div class="acls">
       <div id="userSelectorHeader">
+	<input type="hidden" name="defaultUserID" id="defaultUserID"
+	  var:value="defaultUserID"/>
 	<input type="hidden" name="action" value="saveAcls"/>
 	<input type="hidden" id="userUIDS" name="userUIDS"
 	  var:value="userUIDS"/>
 	<label><var:string label:value="Owner:"/><br/>
 	  <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
       </div>
+      <input id="defaultRolesBtn" type="button"
+	class="button" label:value="Default Roles"/>
       <div class="userSelector" id="userRoles">
 	<var:if condition="currentUserIsOwner">
 	  <span id="userSelectorButtons">

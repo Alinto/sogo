@@ -28,6 +28,7 @@ NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
 NSString *SOGoRole_ObjectViewer = @"ObjectViewer";
 NSString *SOGoRole_ObjectEditor = @"ObjectEditor";
 NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
+NSString *SOGoRole_None = @"None";
 
 NSString *SOGoRole_FreeBusy = @"FreeBusy"; /* for the "freebusy" special user
                                             */

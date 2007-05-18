@@ -20,8 +20,8 @@
 */
 
 #if LIB_FOUNDATION_LIBRARY
-#error SOGo won't work properly with libFoundation. Please use gnustep-base \
-       instead.
+#error SOGo will not work properly with libFoundation. \
+       Please use gnustep-base instead.
 #endif
 
 #import <NGObjWeb/WEClientCapabilities.h>
@@ -46,6 +46,8 @@
 #import "SOGoDAVRendererTypes.h"
 
 #import "SOGoObject.h"
+
+NSString *SOGoDefaultUserID = @"<default>";
 
 @interface SOGoObject(Content)
 - (NSString *)contentAsString;

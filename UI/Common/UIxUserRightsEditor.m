@@ -24,6 +24,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxUserRightsEditor.h"
 
@@ -52,10 +53,15 @@
   return uid;
 }
 
+- (BOOL) userIsDefaultUser
+{
+  return [uid isEqualToString: SOGoDefaultUserID];
+}
+
 - (NSString *) userDisplayName
 {
   LDAPUserManager *um;
-  
+
   um = [LDAPUserManager sharedUserManager];
 
   return [NSString stringWithFormat: @"%@ <%@>",
@@ -66,9 +72,10 @@
 - (BOOL) _initRights
 {
   BOOL response;
-  NSString *newUID, *email;
+  NSString *newUID;
   LDAPUserManager *um;
   SOGoObject *clientObject;
+  unsigned int count;
 
   response = NO;
 
@@ -76,15 +83,17 @@
   if ([newUID length] > 0)
     {
       um = [LDAPUserManager sharedUserManager];
-      email = [um getEmailForUID: newUID];
-      if ([email length] > 0)
+      if ([newUID isEqualToString: SOGoDefaultUserID]
+	  || [[um getEmailForUID: newUID] length] > 0)
 	{
 	  ASSIGN (uid, newUID);
 	  clientObject = [self clientObject];
 	  [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
-	  if (![userRights count])
-	    [userRights addObjectsFromArray: [clientObject defaultAclRoles]];
-	  
+	  count = [userRights count];
+	  if (!count || (count == 1 && [[userRights objectAtIndex: 0]
+					 isEqualToString: SOGoRole_None]))
+	    [userRights setArray: [clientObject defaultAclRoles]];
+
 	  response = YES;
 	}
     }
@@ -118,8 +127,7 @@
   else
     {
       [self updateRights];
-      [[self clientObject] setRoles: userRights
-			   forUser: uid];
+      [[self clientObject] setRoles: userRights forUser: uid];
       response = [self jsCloseWithRefreshMethod: nil];
     }
 
