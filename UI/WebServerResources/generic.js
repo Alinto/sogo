@@ -20,8 +20,6 @@
 */
 /* some generic JavaScript code for SOGo */
 
-// TODO: replace things with Prototype where applicable
-
 /* generic stuff */
 
 var logConsole;
@@ -411,7 +409,8 @@ function onRowClick(event) {
 
   if (startSelection != node.parentNode.getSelectedNodes()) {
     var parentNode = node.parentNode;
-    if (parentNode instanceof HTMLTableSectionElement)
+    log("onRowClick " + parentNode.tagName);
+    if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
     var onSelectionChangeEvent = document.createEvent("UIEvents");
     onSelectionChangeEvent.initEvent("selectionchange", true, true);
@@ -543,10 +542,10 @@ function parseQueryParameters(url) {
 function initLogConsole() {
   var logConsole = $("logConsole");
   if (logConsole) {
-    logConsole.addEventListener("dblclick", onLogDblClick, false);
+    Event.observe(logConsole, "dblclick", onLogDblClick, false);
     logConsole.innerHTML = "";
     node = document.getElementsByTagName('body')[0];
-    node.addEventListener("keydown", onBodyKeyDown, true);
+    Event.observe(node, "keydown", onBodyKeyDown, true);
   }
 }
 
@@ -567,9 +566,9 @@ function toggleLogConsole(event) {
   var logConsole = $("logConsole");
   var display = '' + logConsole.style.display;
   if (display.length == 0) {
-    logConsole.style.display = 'block;';
+    logConsole.setStyle({ display: 'block' });
   } else {
-    logConsole.style.display = '';
+    logConsole.setStyle({ display: '' });
   }
   event.cancelBubble = true;
   event.returnValue = false;
@@ -767,7 +766,12 @@ function initCriteria() {
  
   var searchOptions = $("searchOptions");
   if (searchOptions) {
-    firstOption = searchOptions.childNodes[1];
+    var firstOption;
+    $A(searchOptions.childNodes).each(function (item) {
+      if (item.tagName == 'LI') {
+	firstOption = item;
+      }
+    });
     searchCriteria.value = firstOption.getAttribute('id');
     searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
     if (searchValue.value == '') {
@@ -893,12 +897,12 @@ function initTabs() {
 
     var firstTab;
     for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i] instanceof HTMLLIElement) {
-        if (!firstTab) {
+      if (nodes[i].tagName == 'LI') {
+	if (!firstTab) {
           firstTab = i;
         }
-        nodes[i].addEventListener("mousedown", onTabMouseDown, true);
-        nodes[i].addEventListener("click", onTabClick, true);
+        Event.observe(nodes[i], "mousedown", onTabMouseDown, true);
+	Event.observe(nodes[i], "click", onTabClick, true);
       }
     }
 
@@ -921,10 +925,11 @@ function initMenusNamed(menuDivNames) {
   }
 }
 
-function initMenu(menuDIV) {
-  var lis = menuDIV.childNodesWithTag("ul")[0].childNodesWithTag("li");
+function initMenu(menu) {
+  menuDIV = $(menu);
+  var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
   for (var j = 0; j < lis.length; j++)
-    lis[j].addEventListener("mousedown", listRowMouseDownHandler, false);
+    Event.observe(lis[j], "mousedown", listRowMouseDownHandler, false);
   var subMenus = menuDIV.childNodesWithTag("div");
   for (var i = 0; i < subMenus.length; i++)
     initMenu(subMenus[i]);
@@ -1069,7 +1074,7 @@ function indexColor(number) {
 
 var onLoadHandler = function (event) {
   queryParameters = parseQueryParameters('' + window.location);
-  if (!document.body.hasClassName("popup")) {
+  if (!$(document.body).hasClassName("popup")) {
     initLogConsole();
     initializeMenus();
     initCriteria();
@@ -1090,7 +1095,7 @@ function configureSortableTableHeaders() {
     if (!anchor.link) {
       anchor.link = anchor.getAttribute("href");
       anchor.href = "#";
-      anchor.addEventListener("click", onHeaderClick, true);
+      Event.observe(anchor, "click", onHeaderClick, true);
     }
   }
 }
@@ -1114,11 +1119,7 @@ function configureLinkBanner() {
   }
 }
 
-if (window.addEventListener) {
-  window.addEventListener('load', onLoadHandler, false);
-} else if (document.addEventListener) {
-  document.addEventListener('load', onLoadHandler, false);
-}
+Event.observe(window, "load", onLoadHandler, false);
 
 /* stubs */
 function configureDragHandles() {
