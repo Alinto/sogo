@@ -1,75 +1,61 @@
-HTMLInputElement.prototype._replicate = function() {
-  if (this.replica) {
-    this.replica.value = this.value;
+Form.Element.Methods._replicate =  function(element) {
+  element = $(element);
+  if (element.replica) {
+    element.replica.value = $F(element);
     var onReplicaChangeEvent = document.createEvent("UIEvents");
     onReplicaChangeEvent.initEvent("change", true, true);
-    this.replica.dispatchEvent(onReplicaChangeEvent);
+    element.replica.dispatchEvent(onReplicaChangeEvent);
   }
 }
 
-HTMLInputElement.prototype.assignReplica = function(otherInput) {
-  if (!this._onChangeBound) {
-    this.addEventListener("change", this._replicate, false);
-    this._onChangeBound = true;
+Form.Element.Methods.assignReplica = function(element, otherInput) {
+  element = $(element);
+  if (!element._onChangeBound) {
+    element.addEventListener("change", element._replicate, false);
+    element._onChangeBound = true;
   }
-  this.replica = otherInput;
+  element.replica = otherInput;
 }
 
-HTMLInputElement.prototype.valueAsDate = function () {
-  return this.value.asDate();
+Form.Element.Methods.valueAsDate = function(element) {
+  return $F(element).asDate();
 }
 
-HTMLInputElement.prototype.setValueAsDate = function(dateValue) {
-  if (!this.dateSeparator)
-    this._detectDateSeparator();
-  this.value = dateValue.stringWithSeparator(this.dateSeparator);
+Form.Element.Methods.setValueAsDate = function(element, dateValue) {
+  element = $(element);
+  if (!element.dateSeparator)
+    element._detectDateSeparator();
+  element.value = dateValue.stringWithSeparator(element.dateSeparator);
 }
 
-HTMLInputElement.prototype.updateShadowValue = function () {
-  this.setAttribute("shadow-value", this.value);
+Form.Element.Methods.updateShadowValue = function(element) {
+  element = $(element);
+  element.setAttribute("shadow-value", $F(element));
 }
 
-HTMLInputElement.prototype._detectDateSeparator = function() {
-  var date = this.value.split("/");
+Form.Element.Methods._detectDateSeparator = function(element) {
+  element = $(element);
+  var date = $F(element).split("/");
   if (date.length == 3)
-    this.dateSeparator = "/";
+    element.dateSeparator = "/";
   else
-    this.dateSeparator = "-";
+    element.dateSeparator = "-";
 }
 
-HTMLInputElement.prototype.valueAsShortDateString = function() {
+Form.Element.Methods.valueAsShortDateString = function(element) {
+  element = $(element);
   var dateStr = '';
-
-  if (!this.dateSeparator)
-    this._detectDateSeparator();
-
-  var date = this.value.split(this.dateSeparator);
-  if (this.dateSeparator == '/')
+  
+  if (!element.dateSeparator)
+    element._detectDateSeparator();
+  
+  var date = $F(element).split(element.dateSeparator);
+  if (element.dateSeparator == '/')
     dateStr += date[2] + date[1] + date[0];
   else
     dateStr += date[0] + date[1] + date[2];
-
+  
   return dateStr;
 }
 
-/* "select" is part of the inputs so it's included here */
-HTMLSelectElement.prototype._replicate = function() {
-  if (this.replica) {
-    this.replica.value = this.value;
-    var onReplicaChangeEvent = document.createEvent("UIEvents");
-    onReplicaChangeEvent.initEvent("change", true, true);
-    this.replica.dispatchEvent(onReplicaChangeEvent);
-  }
-}
-
-HTMLSelectElement.prototype.assignReplica = function(otherSelect) {
-  if (!this._onChangeBound) {
-    this.addEventListener("change", this._replicate, false);
-    this._onChangeBound = true;
-  }
-  this.replica = otherSelect;
-}
-
-HTMLSelectElement.prototype.updateShadowValue = function () {
-  this.setAttribute("shadow-value", this.value);
-}
+Element.addMethods();

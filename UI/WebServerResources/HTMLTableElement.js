@@ -1,28 +1,41 @@
-HTMLTableElement.prototype.getSelectedRows = function() {
-  var tbody = (this.getElementsByTagName('tbody'))[0];
+Element.addMethods({
 
-  return tbody.getSelectedNodes();
-}
+  getSelectedRows:  function(element) {
+    element = $(element);
+    if (element.tagName == 'TABLE') {
+      var tbody = (element.getElementsByTagName('tbody'))[0];
+      
+      return tbody.getSelectedNodes();
+    }
+    else if (element.tagName == 'UL') {
+      return element.getSelectedNodes();
+    }
+  },
 
-HTMLTableElement.prototype.getSelectedRowsId = function() {
-  var tbody = (this.getElementsByTagName('tbody'))[0];
+  getSelectedRowsId:  function(element) {
+    element = $(element);
+    if (element.tagName == 'TABLE') {
+      var tbody = (element.getElementsByTagName('tbody'))[0];
+      
+      return tbody.getSelectedNodesId();
+    }
+    else if (element.tagName == 'UL') {
+      return element.getSelectedNodesId();
+    }
+  },
 
-  return tbody.getSelectedNodesId();
-}
-
-HTMLTableElement.prototype.selectRowsMatchingClass = function(className) {
-  var tbody = (this.getElementsByTagName('tbody'))[0];
-  var nodes = tbody.childNodes;
-  for (var i = 0; i < nodes.length; i++) {
-    var node = nodes.item(i);
-    if (node instanceof HTMLElement
-        && node.hasClassName(className))
-      node.select();
+  selectRowsMatchingClass:  function(element, className) {
+    element = $(element);
+    if (element.tagName == 'TABLE') {
+      var tbody = (element.getElementsByTagName('tbody'))[0];
+      var nodes = tbody.childNodes;
+      for (var i = 0; i < nodes.length; i++) {
+	var node = nodes.item(i);
+	if (node instanceof HTMLElement
+	    && node.hasClassName(className))
+	  node.select();
+      }
+    }
   }
-}
 
-HTMLTableElement.prototype.deselectAll = function() {
-  var nodes = this.getSelectedRows();
-  for (var i = 0; i < nodes.length; i++)
-    nodes[i].deselect();
-}
+}); // Element.addMethods
