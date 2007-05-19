@@ -266,16 +266,18 @@
 
 /* acls as a container */
 
-- (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
+- (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;
 {
   EOQualifier *qualifier;
   NSString *qs;
+  NSArray *records;
 
   qs = [NSString stringWithFormat: @"c_object = '/%@'",
 		 [objectPathArray componentsJoinedByString: @"/"]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+  records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 
-  return [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
+  return [records valueForKey: @"c_uid"];
 }
 
 - (NSArray *) _fetchAclsForUser: (NSString *) uid
@@ -424,9 +426,9 @@
   return nil;
 }
 
-- (NSArray *) acls
+- (NSArray *) aclUsers
 {
-  return [self aclsForObjectAtPath: [self pathArrayToSoObject]];
+  return [self aclUsersForObjectAtPath: [self pathArrayToSoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -447,6 +449,11 @@
 {
   return [self removeAclsForUsers: users
                forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return YES;
 }
 
 /* WebDAV */

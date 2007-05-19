@@ -1,5 +1,10 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-aclUsersForObjectAtPath:objectPathArray]): new method that being
+	forwarded the calles to aclUsers for the GCS-based subclasses of
+	SOGoObject.
+
 	* SoObjects/Mailer/SOGoMailFolder.m: removed all the previous
 	methods that would have been used to support IMAP acls. Replaced
 	them with the new protocol for them that has been implemented in
