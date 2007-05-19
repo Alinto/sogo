@@ -1,0 +1,73 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  xmlns:rsrc="OGo:url"
+  className="UIxPageFrame"
+  title="title"
+  const:toolbar="none"
+  const:popup="YES">
+  <form id="userRightsForm" const:href="saveUserRights">
+    <input type="hidden" name="uid" var:value="uid"/>
+    <div class="title">
+      <var:if condition="userIsDefaultUser">
+	<label><span class="value"><var:string label:value="Default Roles"
+	      /></span></label>
+      </var:if><var:if condition="userIsDefaultUser" const:negate="YES">
+	<label><var:string label:value="User rights for:"/><br/>
+	  <span class="value"><var:string value="userDisplayName"
+	      /></span></label></var:if>
+    </div>
+    <div class="calendarUserRights">
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectReader"
+	  var:checked="userCanReadMails"/><var:string
+	  label:value="This person can read mails from this folder."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="MailWriter"
+	  var:checked="userCanWriterMails"/><var:string
+	  label:value="This person can modify the flags of the mails in this folder."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectCreator"
+	  var:checked="userCanInsertMails"/><var:string
+	  label:value="This person can insert, copy and move mails into this folder."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="MailSeenKeeper"
+	  var:checked="userCanMarkMailsRead"/><var:string
+	  label:value="This person can mark mails read and unread."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectEraser"
+	  var:checked="userCanEraseMails"/><var:string
+	  label:value="This person can delete mails from this folder."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="FolderCreator"
+	  var:checked="userCanCreateSubfolders"/><var:string
+	  label:value="This person can create subfolders."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="MailPoster"
+	  var:checked="userCanPostMails"/><var:string
+	  label:value="This person can post mails."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="Administrator"
+	  var:checked="userIsAdministrator"/><var:string
+	  label:value="This person can modify the acl of this folder."/></label>
+      <br/>
+    </div>
+    <div class="buttons">
+      <input const:name="updateButton" id="updateButton"
+	class="button" type="submit" label:value="Update"/>
+      <input const:name="cancelButton" id="cancelButton"
+	class="button" type="button" label:value="Cancel"/>
+    </div>
+  </form>
+</var:component>

@@ -22,8 +22,9 @@
 	<label><var:string label:value="Owner:"/><br/>
 	  <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
       </div>
-      <input id="defaultRolesBtn" type="button"
-	class="button" label:value="Default Roles"/>
+      <var:if condition="clientObject.hasSupportForDefaultRoles"
+	><input id="defaultRolesBtn" type="button"
+	  class="button" label:value="Default Roles"/></var:if>
       <div class="userSelector" id="userRoles">
 	<var:if condition="currentUserIsOwner">
 	  <span id="userSelectorButtons">
