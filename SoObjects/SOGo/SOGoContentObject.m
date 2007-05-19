@@ -218,9 +218,9 @@
     : 0 /* 0 means 'do not check' */;
   
   /* attempt a save */
-  
-  if ((error = [self saveContentString:[rq contentAsString]
-		     baseVersion:baseVersion]) != nil)
+
+  if ((error = [self saveContentString: [rq contentAsString]
+		     baseVersion: baseVersion]) != nil)
     return error;
   
   /* setup response */
@@ -303,9 +303,9 @@
 
 /* acls */
 
-- (NSArray *) acls
+- (NSArray *) aclUsers
 {
-  return [container aclsForObjectAtPath: [self pathArrayToSoObject]];
+  return [container aclUsersForObjectAtPath: [self pathArrayToSoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -341,6 +341,11 @@
 {
   return [container removeAclsForUsers: users
                     forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return YES;
 }
 
 /* message type */

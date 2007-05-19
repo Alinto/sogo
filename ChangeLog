@@ -1,5 +1,8 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-hasSupportForDefaultRoles]): override method by returning "YES".
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSMutableArray
 	-addObjectUniquely:object]): new method with an explicit name.
 
