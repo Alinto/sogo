@@ -354,23 +354,23 @@ static BOOL kontactGroupDAV = YES;
 
 - (SOGoDAVSet *) davAcl
 {
-  NSArray *role;
-  NSEnumerator *acls;
+  NSArray *roles;
+  NSEnumerator *uids;
   NSMutableDictionary *aclsDictionary;
-  NSDictionary *currentAcl;
+  NSString *currentUID;
   SoClassSecurityInfo *sInfo;
 
-  acls = [[self acls] objectEnumerator];
   aclsDictionary = [NSMutableDictionary dictionary];
+  uids = [[self aclUsers] objectEnumerator];
   sInfo = [[self class] soClassSecurityInfo];
 
-  currentAcl = [acls nextObject];
-  while (currentAcl)
+  currentUID = [uids nextObject];
+  while (currentUID)
     {
-      role = [NSArray arrayWithObject: [currentAcl objectForKey: @"role"]];
-      [aclsDictionary setObject: [sInfo DAVPermissionsForRoles: role]
-                      forKey: [currentAcl objectForKey: @"uid"]];
-      currentAcl = [acls nextObject];
+      roles = [self aclsForUser: currentUID];
+      [aclsDictionary setObject: [sInfo DAVPermissionsForRoles: roles]
+                      forKey: currentUID];
+      currentUID = [uids nextObject];
     }
   [self _appendRolesForPseudoPrincipals: aclsDictionary
         withClassSecurityInfo: sInfo];
@@ -707,7 +707,7 @@ static BOOL kontactGroupDAV = YES;
 
 /* acls */
 
-- (NSArray *) acls
+- (NSArray *) aclUsers
 {
   [self subclassResponsibility: _cmd];
 
@@ -737,6 +737,11 @@ static BOOL kontactGroupDAV = YES;
 - (void) removeAclsForUsers: (NSArray *) users
 {
   [self subclassResponsibility: _cmd];
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return NO;
 }
 
 /* description */

@@ -101,11 +101,12 @@ extern NSString *SOGoDefaultUserID;
 /* acls */
 
 - (NSArray *) defaultAclRoles;
-- (NSArray *) acls;
+- (NSArray *) aclUsers;
 - (NSArray *) aclsForUser: (NSString *) uid;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid;
 - (void) removeAclsForUsers: (NSArray *) users;
+- (BOOL) hasSupportForDefaultRoles;
 
 /* description */
 
