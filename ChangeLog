@@ -1,5 +1,9 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoPermissions.[hm]: added the
+	SOGoRole_ObjectReader, SOGoRole_Folder*, and SOGoMailRole_*
+	symbols.
+
 	* UI/MailerUI/UIxMailUserRightsEditor.[hm]: new class module that
 	provides a view to the IMAP acls.
 
