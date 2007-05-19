@@ -1,5 +1,10 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m: removed all the previous
+	methods that would have been used to support IMAP acls. Replaced
+	them with the new protocol for them that has been implemented in
+	SOGo during the last few weeks.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-hasSupportForDefaultRoles]): override method by returning "YES".
 
