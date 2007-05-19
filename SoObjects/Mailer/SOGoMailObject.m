@@ -640,7 +640,9 @@ static BOOL debugSoParts       = NO;
 /* permissions */
 
 - (BOOL)isDeletionAllowed {
-  return [[self container] isDeleteAndExpungeAllowed];
+#warning b0000ooo
+  return YES;
+//   return [[self container] isDeleteAndExpungeAllowed];
 }
 
 /* name lookup */
