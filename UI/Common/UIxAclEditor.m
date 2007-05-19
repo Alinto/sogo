@@ -29,6 +29,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 
 #import "UIxAclEditor.h"
 
@@ -38,7 +39,7 @@
 {
   if ((self = [super init]))
     {
-      acls = nil;
+      aclUsers = nil;
       prepared = NO;
       publishInFreeBusy = NO;
       users = [NSMutableArray new];
@@ -59,10 +60,10 @@
 
 - (NSArray *) aclsForObject
 {
-  if (!acls)
-    acls = [[self clientObject] acls];
+  if (!aclUsers)
+    aclUsers = [[self clientObject] aclUsers];
 
-  return acls;
+  return aclUsers;
 }
 
 - (NSString *) _displayNameForUID: (NSString *) uid
@@ -92,24 +93,20 @@
 - (void) _prepareUsers
 {
   NSEnumerator *aclsEnum;
-  NSDictionary *currentAcl;
   NSString *currentUID, *ownerLogin;
 
   ownerLogin = [[self clientObject] ownerInContext: context];
 
   aclsEnum = [[self aclsForObject] objectEnumerator];
-  currentAcl = [aclsEnum nextObject];
-  while (currentAcl)
+  currentUID = [aclsEnum nextObject];
+  while (currentUID)
     {
-      currentUID = [currentAcl objectForKey: @"c_uid"];
       if (!([currentUID isEqualToString: ownerLogin]
-	    || [currentUID isEqualToString: SOGoDefaultUserID]
-	    || [users containsObject: currentUID]))
-	  [users addObject: currentUID];
-      currentAcl = [aclsEnum nextObject];
-
-      prepared = YES;
+	    || [currentUID isEqualToString: SOGoDefaultUserID]))
+	[users addObjectUniquely: currentUID];
+      currentUID = [aclsEnum nextObject];
     }
+  prepared = YES;
 }
 
 - (NSArray *) usersForObject

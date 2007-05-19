@@ -119,7 +119,9 @@ function onOpenUserRights(event) {
 
 function onAclLoadHandler() {
    defaultUserID = $("defaultUserID").value;
-   Event.observe($("defaultRolesBtn"), "click", openRightsForDefaultUser);
+   var defaultRolesBtn = $("defaultRolesBtn");
+   if (defaultRolesBtn)
+      Event.observe(defaultRolesBtn, "click", openRightsForDefaultUser);
    var ul = $("userList");
    var lis = ul.childNodesWithTag("li");
    for (var i = 0; i < lis.length; i++)
