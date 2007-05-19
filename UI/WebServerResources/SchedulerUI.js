@@ -980,19 +980,19 @@ function browseURL(anchor, event) {
 }
 
 function initializeMenus() {
-  var menus = new Array("monthListMenu", "yearListMenu",
-                        "appointmentsListMenu", "calendarsMenu", "searchMenu");
-  initMenusNamed(menus);
+//   var menus = new Array("monthListMenu", "yearListMenu",
+//                         "appointmentsListMenu", "calendarsMenu", "searchMenu");
+//   initMenusNamed(menus);
 
-  $("calendarSelector").attachMenu("calendarsMenu");
+//   $("calendarSelector").attachMenu("calendarsMenu");
 
-  var accessRightsMenuEntry = $("accessRightsMenuEntry");
-  accessRightsMenuEntry.addEventListener("mouseup",
-                                         onAccessRightsMenuEntryMouseUp,
-                                         false);
+//   var accessRightsMenuEntry = $("accessRightsMenuEntry");
+//   accessRightsMenuEntry.addEventListener("mouseup",
+//                                          onMenuSharing,
+//                                          false);
 }
 
-function onAccessRightsMenuEntryMouseUp(event) {
+function onMenuSharing(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
   var folderID = selected.getAttribute("id");

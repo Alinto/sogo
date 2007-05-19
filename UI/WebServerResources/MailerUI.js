@@ -4,6 +4,10 @@ var currentMessages = new Array();
 var maxCachedMessages = 20;
 var cachedMessages = new Array();
 var currentMailbox = '';
+
+var usersRightsWindowHeight = 250;
+var usersRightsWindowWidth = 502;
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
@@ -111,6 +115,14 @@ function openAddressbook(sender) {
    w.focus();
 
    return false;
+}
+
+function onMenuSharing(event) {
+   var folderID = document.menuTarget.getAttribute("dataname");
+   var urlstr = URLForFolderID(folderID) + "/acls";
+   event.preventDefault();
+
+   openAclWindow(urlstr);
 }
 
 /* mail list DOM changes */
@@ -1059,13 +1071,13 @@ function initializeMenus() {
 				"messageContentMenu", "label-menu",
 				"mark-menu");
    menus["accountIconMenu"] = new Array(null, null, null, null, null, null,
-					null, null, null, null);
+					null, null, null, onMenuSharing);
    menus["inboxIconMenu"] = new Array(null, null, null, "-", null, null,
-				      null, "-", null, null);
+				      null, "-", null, onMenuSharing);
    menus["trashIconMenu"] = new Array(null, null, null, "-", null, null, null,
-				      null, "-", null, null);
+				      null, "-", null, onMenuSharing);
    menus["mailboxIconMenu"] = new Array(null, null, null, "-", null, null,
-					null, null, null, "-", null, null);
+					null, null, null, "-", null, onMenuSharing);
    menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
    menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",
 					onMenuReplyToSender,

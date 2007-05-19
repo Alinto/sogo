@@ -611,21 +611,21 @@ function configureContactFolders() {
   }
 }
 
-function onAccessRightsMenuEntryMouseUp(event) {
-  var folders = $("contactFolders");
-  var selected = folders.getSelectedNodes()[0];
-  var title = this.innerHTML;
-  var url = URLForFolderID(selected.getAttribute("id"))
+function onMenuSharing(event) {
+   var folders = $("contactFolders");
+   var selected = folders.getSelectedNodes()[0];
+   var title = this.innerHTML;
+   var url = URLForFolderID(selected.getAttribute("id"));
 
-  openAclWindow(url + "/acls", title);
+   openAclWindow(url + "/acls", title);
 }
 
 function initializeMenus() {
-  var menus = new Array("contactFoldersMenu", "contactMenu", "searchMenu");
-  initMenusNamed(menus);
+//   var menus = new Array("contactFoldersMenu", "contactMenu", "searchMenu");
+//   initMenusNamed(menus);
 
-  var menuEntry = $("accessRightsMenuEntry");
-  menuEntry.addEventListener("mouseup", onAccessRightsMenuEntryMouseUp, false);
+//   var menuEntry = $("accessRightsMenuEntry");
+//   menuEntry.addEventListener("mouseup", onMenuSharing, false);
 }
 
 function configureSearchField() {
