@@ -39,4 +39,10 @@
 
 @end
 
+@interface NSMutableArray (SOGoArrayUtilities)
+
+- (void) addObjectUniquely: (id) object;
+
+@end
+
 #endif /* NSARRAY_UTILITIES_H */

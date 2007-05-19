@@ -1,5 +1,8 @@
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSMutableArray
+	-addObjectUniquely:object]): new method with an explicit name.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -aclUsers]): renamed
 	"acl" to "aclUsers". Now designed to return only the uid of the
 	users involved in an ACL.
