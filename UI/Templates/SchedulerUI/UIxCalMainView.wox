@@ -53,7 +53,7 @@
       <ul>
         <li class="disabled" id="newCalendarMenuEntry"><var:string label:value="New Calendar..."/></li>
         <li class="disabled" id="deleteCalendarMenuEntry"><var:string label:value="Delete Calendar"/></li>
-        <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
+        <li id="accessRightsMenuEntry"><var:string label:value="Sharing..." /></li>
         <li class="separator"></li>
         <li class="disabled" id="exportCalendarMenuEntry"><var:string label:value="Export Calendar..."/></li>
         <li class="disabled" id="publishCalendarMenuEntry"><var:string label:value="Publish Calendar..."/></li>

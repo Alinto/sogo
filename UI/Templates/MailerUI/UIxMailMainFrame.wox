@@ -30,7 +30,7 @@
         <li><var:string label:value="Compact This Folder" /></li>
         <li><!-- separator --></li>
         <li><var:string label:value="Search Messages..." /></li>
-        <li><var:string label:value="Properties..." /></li>
+        <li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
       
@@ -46,7 +46,7 @@
         <li><var:string label:value="Empty Trash" /></li>
         <li><!-- separator --></li>
         <li><var:string label:value="Search Messages..." /></li>
-        <li><var:string label:value="Properties..." /></li>
+        <li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
 
@@ -63,7 +63,7 @@
         <li><var:string label:value="Delete Folder" /></li>
         <li><!-- separator --></li>
         <li><var:string label:value="Search Messages..." /></li>
-	<li><var:string label:value="Properties..." /></li>
+	<li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
     

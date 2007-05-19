@@ -14,7 +14,7 @@
     <div class="menu" id="contactFoldersMenu">
       <ul>
 	<li><var:string label:value="Modify" /></li>
-	<li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
+	<li id="accessRightsMenuEntry"><var:string label:value="Sharing..." /></li>
 	<li class="separator"></li>
 	<li class="disabled"><var:string label:value="New Card" /></li>
 	<li class="disabled"><var:string label:value="New List" /></li>
