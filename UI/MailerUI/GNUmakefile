@@ -39,7 +39,7 @@ MailerUI_OBJC_FILES += \
 	\
 	UIxFilterList.m			\
 	\
-	UIxMailFolderACLEditor.m
+	UIxMailUserRightsEditor.m
 # 	UIxSieveEditor.m
 
 MailerUI_RESOURCE_FILES += \
