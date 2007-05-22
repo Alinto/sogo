@@ -1077,7 +1077,8 @@ function initializeMenus() {
    menus["trashIconMenu"] = new Array(null, null, null, "-", null, null, null,
 				      null, "-", null, onMenuSharing);
    menus["mailboxIconMenu"] = new Array(null, null, null, "-", null, null,
-					null, null, null, "-", null, onMenuSharing);
+					null, null, null, "-", null,
+					onMenuSharing);
    menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
    menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",
 					onMenuReplyToSender,

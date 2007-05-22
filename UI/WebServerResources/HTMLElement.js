@@ -216,7 +216,7 @@ HTMLElement.prototype.onContextMenu = function(event) {
 
 HTMLElement.prototype.attachMenu = function(menuName) {
   this.sogoContextMenu = $(menuName);
-  this.addEventListener("contextmenu", this.onContextMenu, true);
+  Event.observe(this, "contextmenu", this.onContextMenu);
 }
 
 HTMLElement.prototype.select = function() {

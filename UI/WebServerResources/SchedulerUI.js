@@ -23,28 +23,36 @@ var usersRightsWindowHeight = 250;
 var usersRightsWindowWidth = 502;
 
 function newEvent(sender, type) {
-  var day = sender.getAttribute("day");
-  if (!day)
-    day = currentDay;
+   var day = sender.getAttribute("day");
+   if (!day)
+      day = currentDay;
 
-  var user = UserLogin;
-  if (sender.parentNode.getAttribute("id") != "toolbar"
-      && currentView == "multicolumndayview" && type == "event")
-     user = sender.parentNode.parentNode.getAttribute("user");
+   var user = UserLogin;
+   if (sender.parentNode.getAttribute("id") != "toolbar"
+       && currentView == "multicolumndayview" && type == "event")
+      user = sender.parentNode.parentNode.getAttribute("user");
 
-  var hour = sender.getAttribute("hour");
-  var urlstr = UserFolderURL + "../" + user + "/Calendar/new" + type;
-  var params = new Array();
-  if (day)
-    params.push("day=" + day);
-  if (hour)
-    params.push("hm=" + hour);
-  if (params.length > 0)
-    urlstr += "?" + params.join("&");
+   var hour = sender.getAttribute("hour");
+   var urlstr = UserFolderURL + "../" + user + "/Calendar/new" + type;
+   var params = new Array();
+   if (day)
+      params.push("day=" + day);
+   if (hour)
+      params.push("hm=" + hour);
+   if (params.length > 0)
+      urlstr += "?" + params.join("&");
+   
+   window.open(urlstr, "", "width=490,height=470,resizable=0");
+   
+   return false; /* stop following the link */
+}
 
-  window.open(urlstr, "", "width=490,height=470,resizable=0");
+function onMenuNewEventClick(event) {
+   newEvent(this, "event");
+}
 
-  return false; /* stop following the link */
+function onMenuNewTaskClick(event) {
+   newEvent(this, "task");
 }
 
 function _editEventId(id, owner) {
@@ -552,7 +560,7 @@ function onAppointmentContextMenu(event, element) {
   var menu = $("appointmentsListMenu");
 
   menu.addEventListener("hideMenu", onAppointmentContextMenuHide, false);
-  onMenuClick(event, "appointmentsListMenu");
+  popupMenu(event, "appointmentsListMenu", element);
 
   var topNode = $("appointmentsList");
   var selectedNodes = topNode.getSelectedRows();
@@ -717,22 +725,20 @@ function popupMonthMenu(event, menuId) {
   }
 }
 
-function onMonthMenuItemClick(node) {
-  var month = '' + node.getAttribute("month");
+function onMonthMenuItemClick(event) {
+  var month = '' + this.getAttribute("month");
   var year = '' + $("yearLabel").innerHTML;
-  
-  changeDateSelectorDisplay(year+month+"01", true);
 
-  return false;
+  changeDateSelectorDisplay(year + month + "01", true);
+
+//   event.cancelBubble();
 }
 
-function onYearMenuItemClick(node) {
+function onYearMenuItemClick(event) {
   var month = '' + $("monthLabel").getAttribute("month");;
-  var year = '' + node.innerHTML;
+  var year = '' + this.innerHTML;
 
-  changeDateSelectorDisplay(year+month+"01", true);
-
-  return false;
+  changeDateSelectorDisplay(year + month + "01", true);
 }
 
 function onSearchFormSubmit() {
@@ -980,25 +986,45 @@ function browseURL(anchor, event) {
 }
 
 function initializeMenus() {
-//   var menus = new Array("monthListMenu", "yearListMenu",
-//                         "appointmentsListMenu", "calendarsMenu", "searchMenu");
-//   initMenusNamed(menus);
+   menus["menuIds"] = new Array("monthListMenu", "yearListMenu",
+				"appointmentsListMenu",
+ 				"calendarsMenu",
+ 				"searchMenu");
+   var dateMenu = new Array();
+   for (var i = 0; i < 12; i++)
+      dateMenu.push(onMonthMenuItemClick);
+   menus["monthListMenu"] = dateMenu;
 
-//   $("calendarSelector").attachMenu("calendarsMenu");
+   dateMenu = new Array();
+   for (var i = 0; i < 11; i++)
+      dateMenu.push(onYearMenuItemClick);
+   menus["yearListMenu"] = dateMenu;
 
-//   var accessRightsMenuEntry = $("accessRightsMenuEntry");
-//   accessRightsMenuEntry.addEventListener("mouseup",
-//                                          onMenuSharing,
-//                                          false);
+   menus["appointmentsListMenu"] = new Array(onMenuNewEventClick, "-",
+					     onMenuNewTaskClick,
+					     editEvent, deleteEvent, "-",
+					     onSelectAll, "-",
+					     null, null);
+   menus["calendarsMenu"] = new Array(null, null, null, "-", null, null, "-",
+				      null, "-", onMenuSharing);
+   menus["searchMenu"] = new Array(setSearchCriteria);
+
+   initMenus();
+
+   $("calendarSelector").attachMenu("calendarsMenu");
 }
 
 function onMenuSharing(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
-  var folderID = selected.getAttribute("id");
-  var urlstr = URLForFolderID(folderID) + "/acls";
+  /* FIXME: activation of the context menu should preferable select the entry
+	       above which the event has occured */
+  if (selected) {
+     var folderID = selected.getAttribute("id");
+     var urlstr = URLForFolderID(folderID) + "/acls";
 
-  openAclWindow(urlstr);
+     openAclWindow(urlstr);
+  }
 }
 
 function configureDragHandles() {
