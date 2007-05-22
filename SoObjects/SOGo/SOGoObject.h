@@ -52,8 +52,6 @@
 
 #define $(class) NSClassFromString(class)
 
-extern NSString *SOGoDefaultUserID;
-
 @interface SOGoObject : NSObject
 {
   WOContext *context;
@@ -106,6 +104,7 @@ extern NSString *SOGoDefaultUserID;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid;
 - (void) removeAclsForUsers: (NSArray *) users;
+- (NSString *) defaultUserID;
 - (BOOL) hasSupportForDefaultRoles;
 
 /* description */

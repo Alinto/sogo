@@ -1,5 +1,9 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultUserID]): new
+	mandatory method for subclasses. Removed the SOGoDefaultUserID
+	global var.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -defaultUserID]):
 	overriden method to return @"<default>".
 

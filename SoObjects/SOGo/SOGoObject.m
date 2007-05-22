@@ -47,8 +47,6 @@
 
 #import "SOGoObject.h"
 
-NSString *SOGoDefaultUserID = @"<default>";
-
 @interface SOGoObject(Content)
 - (NSString *)contentAsString;
 @end
@@ -737,6 +735,13 @@ static BOOL kontactGroupDAV = YES;
 - (void) removeAclsForUsers: (NSArray *) users
 {
   [self subclassResponsibility: _cmd];
+}
+
+- (NSString *) defaultUserID
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 - (BOOL) hasSupportForDefaultRoles
