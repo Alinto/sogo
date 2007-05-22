@@ -60,9 +60,9 @@ static BOOL useAltNamespace = NO;
 }
 
 - (void)dealloc {
-  [self->selectInfo release];
-  [self->filenames  release];
-  [self->folderType release];
+  [selectInfo release];
+  [filenames  release];
+  [folderType release];
   [super dealloc];
 }
 
@@ -82,15 +82,15 @@ static BOOL useAltNamespace = NO;
   NSArray  *uids;
   unsigned count;
   
-  if (self->filenames != nil)
-    return [self->filenames isNotNull] ? self->filenames : nil;
+  if (filenames != nil)
+    return [filenames isNotNull] ? filenames : nil;
 
   uids = [self fetchUIDsMatchingQualifier:nil sortOrdering:@"DATE"];
   if ([uids isKindOfClass:[NSException class]])
     return nil;
   
   if ((count = [uids count]) == 0) {
-    self->filenames = [[NSArray alloc] init];
+    filenames = [[NSArray alloc] init];
   }
   else {
     NSMutableArray *keys;
@@ -104,10 +104,10 @@ static BOOL useAltNamespace = NO;
       k = [k stringByAppendingString:@".mail"];
       [keys addObject:k];
     }
-    self->filenames = [keys copy];
+    filenames = [keys copy];
     [keys release];
   }
-  return self->filenames;
+  return filenames;
 }
 
 - (EODataSource *)contentDataSourceInContext:(id)_ctx {
@@ -124,14 +124,14 @@ static BOOL useAltNamespace = NO;
   /* returns nil if fetch was successful */
   id info;
   
-  if (self->selectInfo != nil)
+  if (selectInfo != nil)
     return nil; /* select info exists, => no error */
   
   info = [[self imap4Connection] infoForMailboxAtURL:[self imap4URL]];
   if ([info isKindOfClass:[NSException class]])
     return info;
   
-  self->selectInfo = [info retain];
+  selectInfo = [info retain];
   return nil; /* no error */
 }
 
@@ -302,22 +302,22 @@ static BOOL useAltNamespace = NO;
   SOGoMailAccount *account;
   NSString *n;
 
-  if (self->folderType != nil)
-    return self->folderType;
+  if (folderType != nil)
+    return folderType;
   
   account = [self mailAccountFolder];
   n       = [self nameInContainer];
   
   if ([n isEqualToString:[account trashFolderNameInContext:nil]])
-    self->folderType = @"IPF.Trash";
+    folderType = @"IPF.Trash";
   else if ([n isEqualToString:[account inboxFolderNameInContext:nil]])
-    self->folderType = @"IPF.Inbox";
+    folderType = @"IPF.Inbox";
   else if ([n isEqualToString:[account sentFolderNameInContext:nil]])
-    self->folderType = @"IPF.Sent";
+    folderType = @"IPF.Sent";
   else
-    self->folderType = @"IPF.Folder";
+    folderType = @"IPF.Folder";
   
-  return self->folderType;
+  return folderType;
 }
 
 /* acls */
