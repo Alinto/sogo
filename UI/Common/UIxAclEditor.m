@@ -87,7 +87,10 @@
 
 - (NSString *) defaultUserID
 {
-  return SOGoDefaultUserID;
+  if (!defaultUserID)
+    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
+  return defaultUserID;
 }
 
 - (void) _prepareUsers
@@ -96,16 +99,19 @@
   NSString *currentUID, *ownerLogin;
 
   ownerLogin = [[self clientObject] ownerInContext: context];
+  if (!defaultUserID)
+    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
   aclsEnum = [[self aclsForObject] objectEnumerator];
   currentUID = [aclsEnum nextObject];
   while (currentUID)
     {
       if (!([currentUID isEqualToString: ownerLogin]
-	    || [currentUID isEqualToString: SOGoDefaultUserID]))
+	    || [currentUID isEqualToString: defaultUserID]))
 	[users addObjectUniquely: currentUID];
       currentUID = [aclsEnum nextObject];
     }
+
   prepared = YES;
 }
 

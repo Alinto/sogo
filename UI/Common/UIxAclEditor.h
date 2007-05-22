@@ -33,6 +33,7 @@
   NSArray *savedUIDs;
   NSMutableArray *users;
   NSString *currentUser;
+  NSString *defaultUserID;
 }
 
 - (NSArray *) aclsForObject;

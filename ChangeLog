@@ -1,5 +1,9 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -defaultUserID]) 
+	([UIxAclEditor -_prepareUsers]): take the new SOGoObject's
+	"defaultUserID" method into account.
+
 	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -userIsDefaultUser]) 
 	([UIxUserRightsEditor -_initRights]): take the new SOGoObject's
 	"defaultUserID" method into account.
