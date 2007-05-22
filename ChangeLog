@@ -1,5 +1,8 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultAclRoles]):
+	removed method.
+
 	* SoObjects/SOGo/SOGoPermissions.m: added the new role
 	"SOGoMailRole_MessageEraser".
 

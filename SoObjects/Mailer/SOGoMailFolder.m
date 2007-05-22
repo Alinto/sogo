@@ -39,6 +39,8 @@
 #import "SOGoMailFolderDataSource.h"
 #import "SOGoMailFolder.h"
 
+static NSString *defaultUserID =  @"anyone";
+
 @implementation SOGoMailFolder
 
 static BOOL useAltNamespace = NO;
@@ -428,16 +430,14 @@ static BOOL useAltNamespace = NO;
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSDictionary *imapAcls;
+  NSArray *userAcls;
 
   imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+  userAcls = [imapAcls objectForKey: uid];
+  if (!([userAcls count] || [uid isEqualToString: defaultUserID]))
+    userAcls = [imapAcls objectForKey: defaultUserID];
 
-  return [self _imapAclsToSOGoAcls: [imapAcls objectForKey: uid]];
-}
-
-- (NSArray *) defaultAclRoles
-{
-  return [NSArray arrayWithObjects: SOGoRole_ObjectViewer,
-		  SOGoRole_ObjectReader, SOGoMailRole_SeenKeeper, nil];
+  return [self _imapAclsToSOGoAcls: userAcls];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
@@ -471,7 +471,7 @@ static BOOL useAltNamespace = NO;
 
 - (NSString *) defaultUserID
 {
-  return @"anyone";
+  return defaultUserID;
 }
 
 - (BOOL) hasSupportForDefaultRoles

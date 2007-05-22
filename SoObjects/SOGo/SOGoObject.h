@@ -98,7 +98,6 @@
 
 /* acls */
 
-- (NSArray *) defaultAclRoles;
 - (NSArray *) aclUsers;
 - (NSArray *) aclsForUser: (NSString *) uid;
 - (void) setRoles: (NSArray *) roles

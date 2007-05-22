@@ -422,12 +422,6 @@ static NSString *defaultUserID = @"<default>";
 }
 
 /* acls */
-- (NSArray *) defaultAclRoles
-{
-#warning this should be changed to something useful
-  return nil;
-}
-
 - (NSArray *) aclUsers
 {
   return [self aclUsersForObjectAtPath: [self pathArrayToSoObject]];

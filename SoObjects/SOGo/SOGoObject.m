@@ -719,13 +719,6 @@ static BOOL kontactGroupDAV = YES;
   return nil;
 }
 
-- (NSArray *) defaultAclRoles
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {

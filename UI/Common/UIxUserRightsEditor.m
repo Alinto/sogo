@@ -80,7 +80,6 @@
   NSString *newUID;
   LDAPUserManager *um;
   SOGoObject *clientObject;
-  unsigned int count;
 
   response = NO;
 
@@ -97,10 +96,6 @@
 	  ASSIGN (uid, newUID);
 	  clientObject = [self clientObject];
 	  [userRights addObjectsFromArray: [clientObject aclsForUser: uid]];
-	  count = [userRights count];
-	  if (!count || (count == 1 && [[userRights objectAtIndex: 0]
-					 isEqualToString: SOGoRole_None]))
-	    [userRights setArray: [clientObject defaultAclRoles]];
 
 	  response = YES;
 	}
