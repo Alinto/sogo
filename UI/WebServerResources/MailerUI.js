@@ -5,8 +5,8 @@ var maxCachedMessages = 20;
 var cachedMessages = new Array();
 var currentMailbox = '';
 
-var usersRightsWindowHeight = 250;
-var usersRightsWindowWidth = 502;
+var usersRightsWindowHeight = 320;
+var usersRightsWindowWidth = 400;
 
 /* mail list */
 
