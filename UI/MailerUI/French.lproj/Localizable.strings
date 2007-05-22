@@ -49,6 +49,9 @@
 "Expunge this folder" = "Compacter ce dossier";
 "Modify the acl of this folder" = "Administrer les droits sur ce dossier";
 
+"Update" = "Mettre à jour";
+"Cancel" = "Annuler";
+
 /* Mail edition */
 
 "From"          = "De";
