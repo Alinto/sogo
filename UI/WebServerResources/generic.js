@@ -909,7 +909,8 @@ function initMenus() {
       var menuId = menus["menuIds"][i];
       var callbacks = menus[menuId];
       var menuDIV = $(menuId);
-      initMenu(menuDIV, callbacks);
+      if (menuDIV)
+	 initMenu(menuDIV, callbacks);
    }
 }
 

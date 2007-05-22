@@ -1010,8 +1010,9 @@ function initializeMenus() {
    menus["searchMenu"] = new Array(setSearchCriteria);
 
    initMenus();
-
-   $("calendarSelector").attachMenu("calendarsMenu");
+   var selector = $("calendarSelector");
+   if (selector)
+      selector.attachMenu("calendarsMenu");
 }
 
 function onMenuSharing(event) {
