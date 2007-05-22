@@ -332,7 +332,7 @@ static BOOL useAltNamespace = NO;
       switch ([imapAcls characterAtIndex: count])
 	{
 	case 'l':
-	  [SOGoAcls addObjectUniquely: SOGoRole_FolderViewer];
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectViewer];
 	  break;
 	case 'r':
 	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectReader];
@@ -353,20 +353,12 @@ static BOOL useAltNamespace = NO;
 	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
 	  break;
 	case 'x':
-	  [SOGoAcls addObjectUniquely: SOGoRole_FolderEraser];
-	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
 	  break;
 	case 't':
-	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_MessageEraser];
 	  break;
 	case 'e':
-	  [SOGoAcls addObjectUniquely: SOGoMailRole_Expunger];
-	  break;
-	case 'c':
-	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
-	  break;
-	case 'd':
-	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
 	  [SOGoAcls addObjectUniquely: SOGoMailRole_Expunger];
 	  break;
 	case 'a':
@@ -378,6 +370,52 @@ static BOOL useAltNamespace = NO;
   return SOGoAcls;
 }
 
+- (NSString *) _sogoAclsToImapAcls: (NSArray *) sogoAcls
+{
+  NSMutableString *imapAcls;
+  NSEnumerator *acls;
+  NSString *currentAcl;
+  char character;
+
+  imapAcls = [NSMutableString string];
+  acls = [sogoAcls objectEnumerator];
+  currentAcl = [acls nextObject];
+  while (currentAcl)
+    {
+      if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
+	character = 'l';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectReader])
+	character = 'r';
+      else if ([currentAcl isEqualToString: SOGoMailRole_SeenKeeper])
+	character = 's';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Writer])
+	character = 'w';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectCreator])
+	character = 'i';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Poster])
+	character = 'p';
+      else if ([currentAcl isEqualToString: SOGoRole_FolderCreator])
+	character = 'k';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectEraser])
+	character = 'x';
+      else if ([currentAcl isEqualToString: SOGoMailRole_MessageEraser])
+	character = 't';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Expunger])
+	character = 'e';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Administrator])
+	character = 'a';
+      else
+	character = 0;
+
+      if (character)
+	[imapAcls appendFormat: @"%c", character];
+
+      currentAcl = [acls nextObject];
+    }
+
+  return imapAcls;
+}
+
 - (NSArray *) aclUsers
 {
   NSDictionary *imapAcls;
@@ -387,10 +425,58 @@ static BOOL useAltNamespace = NO;
   return [imapAcls allKeys];
 }
 
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  NSDictionary *imapAcls;
+
+  imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+
+  return [self _imapAclsToSOGoAcls: [imapAcls objectForKey: uid]];
+}
+
 - (NSArray *) defaultAclRoles
 {
-  return [NSArray arrayWithObjects: SOGoRole_FolderViewer,
-		  SOGoRole_FolderReader, SOGoMailRole_SeenKeeper, nil];
+  return [NSArray arrayWithObjects: SOGoRole_ObjectViewer,
+		  SOGoRole_ObjectReader, SOGoMailRole_SeenKeeper, nil];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+{
+  NSEnumerator *uids;
+  NSString *currentUID;
+  NSString *folderName;
+  NGImap4Client *client;
+
+  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  client = [imap4 client];
+
+  uids = [users objectEnumerator];
+  currentUID = [uids nextObject];
+  while (currentUID)
+    {
+      [client deleteACL: folderName uid: currentUID];
+      currentUID = [uids nextObject];
+    }
+}
+
+- (void) setRoles: (NSArray *) roles
+	  forUser: (NSString *) uid
+{
+  NSString *acls, *folderName;
+
+  acls = [self _sogoAclsToImapAcls: roles];
+  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  [[imap4 client] setACL: folderName rights: acls uid: uid];
+}
+
+- (NSString *) defaultUserID
+{
+  return @"anyone";
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return YES;
 }
 
 @end /* SOGoMailFolder */
