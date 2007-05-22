@@ -639,10 +639,15 @@ static BOOL debugSoParts       = NO;
 
 /* permissions */
 
-- (BOOL)isDeletionAllowed {
-#warning b0000ooo
-  return YES;
-//   return [[self container] isDeleteAndExpungeAllowed];
+- (BOOL) isDeletionAllowed
+{
+  NSArray *parentAcls;
+  NSString *login;
+
+  login = [[context activeUser] login];
+  parentAcl = [[self container] aclsForUser: login];
+
+  return [parentAcl containsObject: SOGoMailRole_MessageEraser];
 }
 
 /* name lookup */

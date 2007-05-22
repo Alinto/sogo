@@ -1,5 +1,8 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-isDeletionAllowed]): completed method with the new imap acl api.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultAclRoles]):
 	removed method.
 
