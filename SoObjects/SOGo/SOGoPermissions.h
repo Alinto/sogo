@@ -32,9 +32,8 @@ extern NSString *SOGoRole_ObjectReader;
 extern NSString *SOGoRole_ObjectEraser;
 extern NSString *SOGoRole_ObjectViewer;
 extern NSString *SOGoRole_ObjectEditor;
+
 extern NSString *SOGoRole_FolderCreator;
-extern NSString *SOGoRole_FolderEraser;
-extern NSString *SOGoRole_FolderViewer;
 extern NSString *SOGoRole_FolderReader;
 extern NSString *SOGoRole_AuthorizedSubscriber;
 extern NSString *SOGoRole_None;
@@ -47,6 +46,7 @@ extern NSString *SOGoMailRole_Poster;
 extern NSString *SOGoMailRole_Expunger;
 extern NSString *SOGoMailRole_Creator;
 extern NSString *SOGoMailRole_Administrator;
+extern NSString *SOGoMailRole_MessageEraser;
 
 extern NSString *SOGoCalendarRole_Organizer;
 extern NSString *SOGoCalendarRole_Participant;

@@ -28,7 +28,7 @@ NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
 NSString *SOGoRole_ObjectViewer = @"ObjectViewer";
 NSString *SOGoRole_ObjectReader = @"ObjectReader";
 NSString *SOGoRole_ObjectEditor = @"ObjectEditor";
-NSString *SOGoRole_FolderCreator = @"FolderCreate";
+NSString *SOGoRole_FolderCreator = @"FolderCreator";
 NSString *SOGoRole_FolderEraser = @"FolderEraser";
 NSString *SOGoRole_FolderViewer = @"FolderViewer";
 NSString *SOGoRole_FolderReader = @"FolderReader";
@@ -65,11 +65,12 @@ NSString *SOGoCalendarRole_ComponentDAndTViewer = @"ComponentDAndTViewer";
 NSString *SOGoCalendarRole_ComponentModifier = @"ComponentModifier";
 NSString *SOGoCalendarRole_ComponentResponder = @"ComponentResponder";
 
-NSString *SOGoMailRole_SeenKeeper = @"SeenKeeper";
-NSString *SOGoMailRole_Writer = @"Writer";
-NSString *SOGoMailRole_Poster = @"Poster";
-NSString *SOGoMailRole_Expunger = @"Expunger";
-NSString *SOGoMailRole_Administrator = @"Administrator";
+NSString *SOGoMailRole_SeenKeeper = @"MailSeenKeeper";
+NSString *SOGoMailRole_Writer = @"MailWriter";
+NSString *SOGoMailRole_Poster = @"MailPoster";
+NSString *SOGoMailRole_Expunger = @"MailExpunger";
+NSString *SOGoMailRole_Administrator = @"MailAdministrator";
+NSString *SOGoMailRole_MessageEraser = @"MailMessageEraser";
 
 /* permissions */
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
