@@ -14,12 +14,13 @@
     <div class="menu" id="contactFoldersMenu">
       <ul>
 	<li><var:string label:value="Modify" /></li>
-	<li><var:string label:value="Sharing..." /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="New Card" /></li>
 	<li><var:string label:value="New List" /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="Delete" /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
 

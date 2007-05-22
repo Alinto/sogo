@@ -1005,7 +1005,7 @@ function initializeMenus() {
 					     editEvent, deleteEvent, "-",
 					     onSelectAll, "-",
 					     null, null);
-   menus["calendarsMenu"] = new Array(null, null, null, "-", null, null, "-",
+   menus["calendarsMenu"] = new Array(null, null, "-", null, null, "-",
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
 

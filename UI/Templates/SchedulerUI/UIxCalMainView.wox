@@ -47,14 +47,13 @@
       <ul>
         <li><var:string label:value="New Calendar..."/></li>
         <li><var:string label:value="Delete Calendar"/></li>
-        <li><var:string label:value="Sharing..." /></li>
         <li><!-- separator --></li>
         <li><var:string label:value="Export Calendar..."/></li>
         <li><var:string label:value="Publish Calendar..."/></li>
         <li><!-- separator --></li>
         <li><var:string label:value="Reload Remote Calendars"/></li>
         <li><!-- separator --></li>
-        <li><var:string label:value="Properties"/></li>
+        <li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
 

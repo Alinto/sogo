@@ -1076,11 +1076,11 @@ function indexColor(number) {
 
 var onLoadHandler = function (event) {
   queryParameters = parseQueryParameters('' + window.location);
-  if (!$(document.body).hasClassName("popup")) {
+  if (!document.body.hasClassName("popup")) {
     initLogConsole();
-    initializeMenus();
     initCriteria();
   }
+  initializeMenus();
   initTabs();
   configureDragHandles();
   configureSortableTableHeaders();

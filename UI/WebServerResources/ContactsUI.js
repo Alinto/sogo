@@ -615,8 +615,9 @@ function onMenuSharing(event) {
 function initializeMenus() {
    menus["menuIds"] = new Array("contactFoldersMenu", "contactMenu",
 				"searchMenu");
-   menus["contactFoldersMenu"] = new Array(null, onMenuSharing, "-", null,
-					   null, "-", null);
+   menus["contactFoldersMenu"] = new Array(null, "-", null,
+					   null, "-", null, "-",
+					   onMenuSharing);
    menus["contactMenu"] = new Array(onMenuEditContact, "-",
 				    onMenuWriteToContact, null, "-",
 				    onMenuDeleteContact);
