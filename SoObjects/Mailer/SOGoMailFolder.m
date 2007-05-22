@@ -430,11 +430,11 @@ static BOOL useAltNamespace = NO;
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSDictionary *imapAcls;
-  NSArray *userAcls;
+  NSString *userAcls;
 
   imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
   userAcls = [imapAcls objectForKey: uid];
-  if (!([userAcls count] || [uid isEqualToString: defaultUserID]))
+  if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
     userAcls = [imapAcls objectForKey: defaultUserID];
 
   return [self _imapAclsToSOGoAcls: userAcls];

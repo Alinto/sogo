@@ -47,6 +47,7 @@
 {
   [uid release];
   [userRights release];
+  [defaultUserID release];
   [super dealloc];
 }
 

@@ -44,6 +44,7 @@
       publishInFreeBusy = NO;
       users = [NSMutableArray new];
       currentUser = nil;
+      defaultUserID = nil;
       savedUIDs = nil;
     }
 
@@ -55,6 +56,7 @@
   [savedUIDs release];
   [users release];
   [currentUser release];
+  [defaultUserID release];
   [super dealloc];
 }
 
