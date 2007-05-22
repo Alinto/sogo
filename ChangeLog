@@ -1,5 +1,9 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailUserRightsEditor.m: added all the missing
+	methods to support the IMAP acls mentionned in the RFC 4314,
+	removed the ones specific to Cyrus.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultUserID]): new
 	mandatory method for subclasses. Removed the SOGoDefaultUserID
 	global var.

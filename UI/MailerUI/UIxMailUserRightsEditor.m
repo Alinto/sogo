@@ -29,6 +29,19 @@
 
 @implementation UIxMailUserRightsEditor
 
+- (void) setUserCanSeeFolder: (BOOL) userCanSeeFolder
+{
+  if (userCanSeeFolder)
+    [self appendRight: SOGoRole_ObjectViewer];
+  else
+    [self removeRight: SOGoRole_ObjectViewer];
+}
+
+- (BOOL) userCanSeeFolder
+{
+  return [userRights containsObject: SOGoRole_ObjectViewer];
+}
+
 - (void) setUserCanReadMails: (BOOL) userCanReadMails
 {
   if (userCanReadMails)
@@ -40,6 +53,19 @@
 - (BOOL) userCanReadMails
 {
   return [userRights containsObject: SOGoRole_ObjectReader];
+}
+
+- (void) setUserCanMarkMailsRead: (BOOL) userCanMarkMailsRead
+{
+  if (userCanMarkMailsRead)
+    [self appendRight: SOGoMailRole_SeenKeeper];
+  else
+    [self removeRight: SOGoMailRole_SeenKeeper];
+}
+
+- (BOOL) userCanMarkMailsRead
+{
+  return [userRights containsObject: SOGoMailRole_SeenKeeper];
 }
 
 - (void) setUserCanWriteMails: (BOOL) userCanWriteMails
@@ -68,30 +94,17 @@
   return [userRights containsObject: SOGoRole_ObjectCreator];
 }
 
-- (void) setUserCanMarkMailsRead: (BOOL) userCanMarkMailsRead
+- (void) setUserCanPostMails: (BOOL) userCanPostMails
 {
-  if (userCanMarkMailsRead)
-    [self appendRight: SOGoMailRole_SeenKeeper];
+  if (userCanPostMails)
+    [self appendRight: SOGoMailRole_Poster];
   else
-    [self removeRight: SOGoMailRole_SeenKeeper];
+    [self removeRight: SOGoMailRole_Poster];
 }
 
-- (BOOL) userCanMarkMailsRead
+- (BOOL) userCanPostMails
 {
-  return [userRights containsObject: SOGoMailRole_SeenKeeper];
-}
-
-- (void) setUserCanEraseMails: (BOOL) userCanEraseMails
-{
-  if (userCanEraseMails)
-    [self appendRight: SOGoRole_ObjectEraser];
-  else
-    [self removeRight: SOGoRole_ObjectEraser];
-}
-
-- (BOOL) userCanEraseMails
-{
-  return [userRights containsObject: SOGoRole_ObjectEraser];
+  return [userRights containsObject: SOGoMailRole_Poster];
 }
 
 - (void) setUserCanCreateSubfolders: (BOOL) userCanCreateSubfolders
@@ -107,17 +120,43 @@
   return [userRights containsObject: SOGoRole_FolderCreator];
 }
 
-- (void) setUserCanPostMails: (BOOL) userCanPostMails
+- (void) setUserCanRemoveFolder: (BOOL) userCanRemoveFolder
 {
-  if (userCanPostMails)
-    [self appendRight: SOGoMailRole_Poster];
+  if (userCanRemoveFolder)
+    [self appendRight: SOGoRole_ObjectEraser];
   else
-    [self removeRight: SOGoMailRole_Poster];
+    [self removeRight: SOGoRole_ObjectEraser];
 }
 
-- (BOOL) userCanPostMails
+- (BOOL) userCanRemoveFolder
 {
-  return [userRights containsObject: SOGoMailRole_Poster];
+  return [userRights containsObject: SOGoRole_ObjectEraser];
+}
+
+- (void) setUserCanEraseMails: (BOOL) userCanEraseMails
+{
+  if (userCanEraseMails)
+    [self appendRight: SOGoMailRole_MessageEraser];
+  else
+    [self removeRight: SOGoMailRole_MessageEraser];
+}
+
+- (BOOL) userCanEraseMails
+{
+  return [userRights containsObject: SOGoMailRole_MessageEraser];
+}
+
+- (void) setUserCanExpungeFolder: (BOOL) userCanExpungeFolder
+{
+  if (userCanExpungeFolder)
+    [self appendRight: SOGoMailRole_Expunger];
+  else
+    [self removeRight: SOGoMailRole_Expunger];
+}
+
+- (BOOL) userCanExpungeFolder
+{
+  return [userRights containsObject: SOGoMailRole_Expunger];
 }
 
 - (void) setUserIsAdministrator: (BOOL) userIsAdministrator
@@ -139,25 +178,61 @@
 
   request = [context request];
 
-  if ([[request formValueForKey: @"ObjectCreator"] length] > 0)
-    [self appendRight: SOGoRole_ObjectCreator];
-  else
-    [self removeRight: SOGoRole_ObjectCreator];
-
-  if ([[request formValueForKey: @"ObjectEditor"] length] > 0)
-    [self appendRight: SOGoRole_ObjectEditor];
-  else
-    [self removeRight: SOGoRole_ObjectEditor];
-
-  if ([[request formValueForKey: @"ObjectViewer"] length] > 0)
+  if ([[request formValueForKey: SOGoRole_ObjectViewer] length] > 0)
     [self appendRight: SOGoRole_ObjectViewer];
   else
     [self removeRight: SOGoRole_ObjectViewer];
 
-  if ([[request formValueForKey: @"ObjectEraser"] length] > 0)
+  if ([[request formValueForKey: SOGoRole_ObjectReader] length] > 0)
+    [self appendRight: SOGoRole_ObjectReader];
+  else
+    [self removeRight: SOGoRole_ObjectReader];
+
+  if ([[request formValueForKey: SOGoMailRole_SeenKeeper] length] > 0)
+    [self appendRight: SOGoMailRole_SeenKeeper];
+  else
+    [self removeRight: SOGoMailRole_SeenKeeper];
+
+  if ([[request formValueForKey: SOGoMailRole_Writer] length] > 0)
+    [self appendRight: SOGoMailRole_Writer];
+  else
+    [self removeRight: SOGoMailRole_Writer];
+
+  if ([[request formValueForKey: SOGoRole_ObjectCreator] length] > 0)
+    [self appendRight: SOGoRole_ObjectCreator];
+  else
+    [self removeRight: SOGoRole_ObjectCreator];
+
+  if ([[request formValueForKey: SOGoMailRole_Poster] length] > 0)
+    [self appendRight: SOGoMailRole_Poster];
+  else
+    [self removeRight: SOGoMailRole_Poster];
+
+  if ([[request formValueForKey: SOGoRole_FolderCreator] length] > 0)
+    [self appendRight: SOGoRole_FolderCreator];
+  else
+    [self removeRight: SOGoRole_FolderCreator];
+
+  if ([[request formValueForKey: SOGoRole_ObjectEraser] length] > 0)
     [self appendRight: SOGoRole_ObjectEraser];
   else
     [self removeRight: SOGoRole_ObjectEraser];
+
+  if ([[request formValueForKey: SOGoMailRole_MessageEraser] length] > 0)
+    [self appendRight: SOGoMailRole_MessageEraser];
+  else
+    [self removeRight: SOGoMailRole_MessageEraser];
+
+  if ([[request formValueForKey: SOGoMailRole_Expunger] length] > 0)
+    [self appendRight: SOGoMailRole_Expunger];
+  else
+    [self removeRight: SOGoMailRole_Expunger];
+
+  if ([[request formValueForKey: SOGoMailRole_Administrator] length] > 0)
+    [self appendRight: SOGoMailRole_Administrator];
+  else
+    [self removeRight: SOGoMailRole_Administrator];
 }
 
 @end
+ 

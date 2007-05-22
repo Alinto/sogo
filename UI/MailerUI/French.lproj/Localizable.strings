@@ -34,6 +34,21 @@
 "Account: " = "Compte : ";
 "Shared Account: " = "Compte Partagé ";
 
+/* acls */
+"Default Roles" = "Rôles par défaut";
+
+"List and see this folder" = "Lister et voir ce dossier";
+"Read mails from this folder" = "Lire les messages de ce dossier";
+"Mark mails read and unread" = "Marquer les messages comme lus ou non-lus";
+"Modify the flags of the mails in this folder" = "Modifier les indicateurs sur les messages";
+"Insert, copy and move mails into this folder" = "Insérer, copier et déplacer des messages dans ce dossier";
+"Post mails" = "Poster des messages";
+"Add subfolders to this folder" = "Ajouter des sous-dossiers à ce dossier";
+"Remove this folder" = "Effacer ce dossier";
+"Erase mails from this folder" = "Effacer des messages de ce dossier";
+"Expunge this folder" = "Compacter ce dossier";
+"Modify the acl of this folder" = "Administrer les droits sur ce dossier";
+
 /* Mail edition */
 
 "From"          = "De";
