@@ -31,6 +31,8 @@
 #import <unistd.h>
 #import <stdlib.h>
 
+static NSString *defaultUserID = @"<default>";
+
 @implementation SOGoFolder
 
 + (int) version
@@ -341,8 +343,8 @@
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
-  if (!([acls count] || [uid isEqualToString: SOGoDefaultUserID]))
-    acls = [self aclsForUser: SOGoDefaultUserID
+  if (!([acls count] || [uid isEqualToString: defaultUserID]))
+    acls = [self aclsForUser: defaultUserID
 		 forObjectAtPath: objectPathArray];
 
   return acls;
@@ -449,6 +451,11 @@
 {
   return [self removeAclsForUsers: users
                forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (NSString *) defaultUserID
+{
+  return defaultUserID;
 }
 
 - (BOOL) hasSupportForDefaultRoles

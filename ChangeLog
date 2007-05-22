@@ -1,5 +1,11 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -defaultUserID]):
+	overriden method to return @"<default>".
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-defaultUserID]): overriden method to return @"<default>".
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-aclsForUser:uid]): overriden method.
 	([SOGoMailFolder -removeAclsForUsers:users]): overriden method.

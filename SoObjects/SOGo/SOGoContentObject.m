@@ -343,6 +343,11 @@
                     forObjectAtPath: [self pathArrayToSoObject]];
 }
 
+- (NSString *) defaultUserID
+{
+  return @"<default>";
+}
+
 - (BOOL) hasSupportForDefaultRoles
 {
   return YES;
