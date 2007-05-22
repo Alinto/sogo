@@ -34,6 +34,7 @@
 {
   NSMutableArray *userRights;
   NSString *uid;
+  NSString *defaultUserID;
 }
 
 - (NSString *) userDisplayName;

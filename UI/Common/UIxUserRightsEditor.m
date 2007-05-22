@@ -25,6 +25,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoObject.h>
 
 #import "UIxUserRightsEditor.h"
 
@@ -36,6 +37,7 @@
     {
       uid = nil;
       userRights = [NSMutableArray new];
+      defaultUserID = nil;
     }
 
   return self;
@@ -55,7 +57,10 @@
 
 - (BOOL) userIsDefaultUser
 {
-  return [uid isEqualToString: SOGoDefaultUserID];
+  if (!defaultUserID)
+    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
+  return [uid isEqualToString: defaultUserID];
 }
 
 - (NSString *) userDisplayName
@@ -82,8 +87,11 @@
   newUID = [[context request] formValueForKey: @"uid"];
   if ([newUID length] > 0)
     {
+      if (!defaultUserID)
+	ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
       um = [LDAPUserManager sharedUserManager];
-      if ([newUID isEqualToString: SOGoDefaultUserID]
+      if ([newUID isEqualToString: defaultUserID]
 	  || [[um getEmailForUID: newUID] length] > 0)
 	{
 	  ASSIGN (uid, newUID);

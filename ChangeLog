@@ -1,5 +1,9 @@
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -userIsDefaultUser]) 
+	([UIxUserRightsEditor -_initRights]): take the new SOGoObject's
+	"defaultUserID" method into account.
+
 	* UI/MailerUI/UIxMailUserRightsEditor.m: added all the missing
 	methods to support the IMAP acls mentionned in the RFC 4314,
 	removed the ones specific to Cyrus.
