@@ -218,8 +218,6 @@ DIV#toolbar
   white-space: nowrap;
   overflow: auto; }
 
-BODY.popup { min-width: 400px; }
-
 BODY.popup DIV#toolbar
 { border-top: 0px; }
 
