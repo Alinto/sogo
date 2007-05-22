@@ -14,23 +14,23 @@
     <div class="menu" id="contactFoldersMenu">
       <ul>
 	<li><var:string label:value="Modify" /></li>
-	<li id="accessRightsMenuEntry"><var:string label:value="Sharing..." /></li>
-	<li class="separator"></li>
-	<li class="disabled"><var:string label:value="New Card" /></li>
-	<li class="disabled"><var:string label:value="New List" /></li>
-	<li class="separator"></li>
-	<li class="disabled"><var:string label:value="Delete" /></li>
+	<li><var:string label:value="Sharing..." /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="New Card" /></li>
+	<li><var:string label:value="New List" /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="Delete" /></li>
       </ul>
     </div>
 
     <div class="menu" id="contactMenu">
       <ul>
-	<li id="modifyContactMenuEntry" onmouseup="return onMenuEditContact(event, this);"><var:string label:value="Modify" /></li>
-	<li class="separator"></li>
-	<li id="writeToContactMenuEntry" onmouseup="return onMenuWriteToContact(event, this);"><var:string label:value="Write" /></li>
-	<li class="disabled" id="imContactMenuEntry"><var:string label:value="Instant Message" /></li>
-	<li class="separator"></li>
-	<li id="deleteContactMenuEntry" onmouseup="return onMenuDeleteContact(event, this);"><var:string label:value="Delete" /></li>
+	<li><var:string label:value="Modify" /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="Write" /></li>
+	<li><var:string label:value="Instant Message" /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="Delete" /></li>
       </ul>
     </div>
 

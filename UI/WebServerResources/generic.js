@@ -684,10 +684,9 @@ function popupSearchMenu(event) {
 function setSearchCriteria(event) {
   searchValue = $("searchValue");
   searchCriteria = $("searchCriteria");
-  
-  var node = event.target;
-  searchValue.setAttribute("ghost-phrase", node.innerHTML);
-  searchCriteria = node.getAttribute('id');
+
+  searchValue.setAttribute("ghost-phrase", this.innerHTML);
+//   searchCriteria = this.getAttribute('id');
 }
 
 function checkSearchValue(event) {
