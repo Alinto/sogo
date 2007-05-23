@@ -1,3 +1,10 @@
+2007-05-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -getUIDsForICalPersons:iCalPersons]): add
+	the uid to the list only when the user email is recognized by the
+	user manager.
+
 2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
