@@ -1,5 +1,7 @@
 2007-05-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailSplashView.m: removed.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -getUIDsForICalPersons:iCalPersons]): add
 	the uid to the list only when the user email is recognized by the

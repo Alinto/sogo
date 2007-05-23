@@ -260,24 +260,16 @@
         };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailAccountView";
-        };
-        getMail = {
-          protectedBy = "View";
-          pageName    = "UIxMailAccountView";
-        };
         compose = {
           protectedBy = "View";
           actionClass = "UIxMailEditorAction";
           actionName  = "compose";
         };
-        createFolder = {
-          protectedBy = "View";
-          pageName    = "UIxMailAccountView";
-          actionName  = "createFolder";
-        };
+	mailboxes = {
+	   protectedBy = "View";
+	   pageName = "UIxMailAccountView";
+	   actionName = "listMailboxes";
+	};
       };
     };
 
