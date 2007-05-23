@@ -21,7 +21,6 @@ MailerUI_OBJC_FILES += \
 	UIxMailTreeBlock.m		\
 	UIxMailTreeBlockJS.m		\
 	UIxMailFolderMenu.m		\
-	UIxMailSplashView.m		\
 	\
 	UIxMailListView.m		\
 	UIxMailView.m			\
