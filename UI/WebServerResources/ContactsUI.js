@@ -90,7 +90,7 @@ function contactsListCallback(http) {
 
 function onContactFoldersContextMenu(event) {
   var menu = $("contactFoldersMenu");
-  menu.addEventListener("hideMenu", onContactFoldersContextMenuHide, false);
+  Event.observe(menu, "hideMenu", onContactFoldersContextMenuHide, false);
   onMenuClick(event, "contactFoldersMenu");
 
   var topNode = $("contactFolders");
@@ -104,7 +104,7 @@ function onContactFoldersContextMenu(event) {
 
 function onContactContextMenu(event, element) {
   var menu = $("contactMenu");
-  menu.addEventListener("hideMenu", onContactContextMenuHide, false);
+  Event.observe(menu, "hideMenu", onContactContextMenuHide, false);
   onMenuClick(event, "contactMenu");
 
   var topNode = $("contactsList");
@@ -448,9 +448,7 @@ function appendAddressBook(name, folder) {
    var li = document.createElement("li");
    li.setAttribute("id", folder);
    li.appendChild(document.createTextNode(name));
-   li.addEventListener("mousedown", listRowMouseDownHandler, false);
-   li.addEventListener("click", onRowClick, false);
-   li.addEventListener("contextmenu", onContactFoldersContextMenu, false);
+   setEventsOnContactFolder(li);
    $("contactFolders").appendChild(li);
 }
 
@@ -586,29 +584,32 @@ function deniedFoldersLookupCallback(http) {
 function configureAbToolbar() {
   var toolbar = $("abToolbar");
   var links = toolbar.childNodesWithTag("a");
-  links[0].addEventListener("click", onAddressBookNew, false);
-  links[1].addEventListener("click", onAddressBookAdd, false);
-  links[2].addEventListener("click", onAddressBookRemove, false);
+  Event.observe(links[0], "click", onAddressBookNew, false);
+  Event.observe(links[1], "click", onAddressBookAdd, false);
+  Event.observe(links[2], "click", onAddressBookRemove, false);
 }
 
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
   if (contactFolders) {
-    contactFolders.addEventListener("selectionchange",
-                                    onFolderSelectionChange, false);
+    Event.observe(contactFolders, "selectionchange", onFolderSelectionChange, false);
     var lis = contactFolders.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++) {
-      lis[i].addEventListener("mousedown", listRowMouseDownHandler, false);
-      lis[i].addEventListener("click", onRowClick, false);
-      lis[i].addEventListener("contextmenu", onContactFoldersContextMenu, false);
+      setEventsOnContactFolder(lis[i]);
     }
 
     lookupDeniedFolders();
-    contactFolders.style.visibility = "visible;";
-
+    contactFolders.setStyle({ visibility: 'visible' });
+    
     var personalFolder = $("/personal");
     personalFolder.select();
   }
+}
+
+function setEventsOnContactFolder(node) {
+  Event.observe(node, "mousedown", listRowMouseDownHandler, false);
+  Event.observe(node, "click", onRowClick, false);
+  Event.observe(node, "contextmenu", onContactFoldersContextMenu, false);
 }
 
 function onAccessRightsMenuEntryMouseUp(event) {
@@ -625,17 +626,17 @@ function initializeMenus() {
   initMenusNamed(menus);
 
   var menuEntry = $("accessRightsMenuEntry");
-  menuEntry.addEventListener("mouseup", onAccessRightsMenuEntryMouseUp, false);
+  Event.observe(menuEntry, "mouseup", onAccessRightsMenuEntryMouseUp, false);
 }
 
 function configureSearchField() {
    var searchValue = $("searchValue");
 
-   searchValue.addEventListener("mousedown", onSearchMouseDown, false);
-   searchValue.addEventListener("click", popupSearchMenu, false);
-   searchValue.addEventListener("blur", onSearchBlur, false);
-   searchValue.addEventListener("focus", onSearchFocus, false);
-   searchValue.addEventListener("keydown", onSearchKeyDown, false);
+   Event.observe(searchValue, "mousedown", onSearchMouseDown.bindAsEventListener(searchValue), false);
+   Event.observe(searchValue, "click", popupSearchMenu.bindAsEventListener(searchValue), false);
+   Event.observe(searchValue, "blur", onSearchBlur.bindAsEventListener(searchValue), false);
+   Event.observe(searchValue, "focus", onSearchFocus.bindAsEventListener(searchValue), false);
+   Event.observe(searchValue, "keydown", onSearchKeyDown.bindAsEventListener(searchValue), false);
 }
 
 function configureSelectionButtons() {
@@ -643,8 +644,7 @@ function configureSelectionButtons() {
    if (container) {
       var buttons = container.childNodesWithTag("input");
       for (var i = 0; i < buttons.length; i++)
-	 buttons[i].addEventListener("click", onConfirmContactSelection,
-				     false);
+	Event.observe(buttons[i], "click", onConfirmContactSelection.bindAsEventListener(buttons[i]), false);
    }
 }
 
@@ -661,4 +661,5 @@ var initContacts = {
   }
 }
 
-window.addEventListener("load", initContacts, false);
+//window.addEventListener("load", initContacts, false);
+Event.observe(window, "load", initContacts, false);
