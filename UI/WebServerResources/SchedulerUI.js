@@ -306,8 +306,7 @@ function appointmentsListCallback(http) {
     sortKey = params["sort"];
     sortOrder = params["desc"];
     var list = $("appointmentsList");
-    list.addEventListener("selectionchange",
-                          onAppointmentsSelectionChange, true);
+    Event.observe(list, "selectionchange", onAppointmentsSelectionChange.bindAsEventListener(list), true);
     configureSortableTableHeaders();
   }
   else
@@ -324,8 +323,7 @@ function tasksListCallback(http) {
     var scroll = list.scrollTop;
     div.innerHTML = http.responseText;
     list = $("tasksList");
-    list.addEventListener("selectionchange",
-                          onTasksSelectionChange, true);
+    Event.observe(list, "selectionchange", onTasksSelectionChange.bindAsEventListener(list), true);
     list.scrollTop = scroll;
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
@@ -500,24 +498,23 @@ function calendarDisplayCallback(http) {
     }
     var appointments = document.getElementsByClassName("appointment", contentView);
     for (var i = 0; i < appointments.length; i++) {
-      appointments[i].addEventListener("mousedown", listRowMouseDownHandler, true);
-      appointments[i].addEventListener("click", onCalendarSelectAppointment, false);
-      appointments[i].addEventListener("dblclick", displayAppointment, true);
+      Event.observe(appointments[i], "mousedown",  listRowMouseDownHandler);
+      Event.observe(appointments[i], "click",  onCalendarSelectAppointment);
+      Event.observe(appointments[i], "dblclick",  displayAppointment);
     }
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
-        days[i].addEventListener("click", onCalendarSelectDay, true);
-        days[i].addEventListener("dblclick", onClickableCellsDblClick, false);
+        Event.observe(days[i], "click",  onCalendarSelectDay);
+        Event.observe(days[i], "dblclick",  onClickableCellsDblClick);
       }
     else
       for (var i = 0; i < days.length; i++) {
-        days[i].addEventListener("click", onCalendarSelectDay, false);
+        Event.observe(days[i], "click",  onCalendarSelectDay);
         var clickableCells = document.getElementsByClassName("clickableHourCell",
                                                              days[i]);
         for (var j = 0; j < clickableCells.length; j++)
-          clickableCells[j].addEventListener("dblclick",
-                                             onClickableCellsDblClick, false);
+          Event.observe(clickableCells[j], "dblclick", onClickableCellsDblClick);
       }
 //     log("cbtest1");
   }
@@ -551,7 +548,7 @@ function onAppointmentContextMenu(event, element) {
 
   var menu = $("appointmentsListMenu");
 
-  menu.addEventListener("hideMenu", onAppointmentContextMenuHide, false);
+  Event.observe(menu, "hideMenu",  onAppointmentContextMenuHide);
   onMenuClick(event, "appointmentsListMenu");
 
   var topNode = $("appointmentsList");
@@ -982,14 +979,11 @@ function browseURL(anchor, event) {
 function initializeMenus() {
   var menus = new Array("monthListMenu", "yearListMenu",
                         "appointmentsListMenu", "calendarsMenu", "searchMenu");
-  initMenusNamed(menus);
 
   $("calendarSelector").attachMenu("calendarsMenu");
 
   var accessRightsMenuEntry = $("accessRightsMenuEntry");
-  accessRightsMenuEntry.addEventListener("mouseup",
-                                         onAccessRightsMenuEntryMouseUp,
-                                         false);
+  Event.observe(accessRightsMenuEntry, "mouseup", onAccessRightsMenuEntryMouseUp);
 }
 
 function onAccessRightsMenuEntryMouseUp(event) {
@@ -1025,15 +1019,15 @@ function initCalendarSelector() {
   var list = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
-    input.addEventListener("change", updateCalendarStatus, false);
-    list[i].addEventListener("mousedown", listRowMouseDownHandler, false);
-    list[i].addEventListener("click", onRowClick, false);
+    Event.observe(input, "change",  updateCalendarStatus);
+    Event.observe(list[i], "mousedown",  listRowMouseDownHandler);
+    Event.observe(list[i], "click",  onRowClick);
 //     list[i].addEventListener("contextmenu", onContactFoldersContextMenu, false);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
-  links[0].addEventListener("click", onCalendarAdd, false);
-  links[1].addEventListener("click", onCalendarRemove, false);
+  Event.observe(links[0], "click",  onCalendarAdd);
+  Event.observe(links[1], "click",  onCalendarRemove);
 }
 
 function onCalendarAdd(event) {
@@ -1049,12 +1043,12 @@ function appendCalendar(folderName, folder) {
    log ("color: " + color);
    var li = document.createElement("li");
    li.setAttribute("id", folder);
-   li.addEventListener("mousedown", listRowMouseDownHandler, false);
-   li.addEventListener("click", onRowClick, false);
+   Event.observe(li, "mousedown",  listRowMouseDownHandler);
+   Event.observe(li, "click",  onRowClick);
    var checkBox = document.createElement("input");
    checkBox.addClassName("checkBox");
    checkBox.type = "checkbox";
-   checkBox.addEventListener("change", updateCalendarStatus, false);
+   Event.observe(checkBox, "change",  updateCalendarStatus);
    li.appendChild(checkBox);
    li.appendChild(document.createTextNode(" "));
    var colorBox = document.createElement("div");
@@ -1109,11 +1103,11 @@ function onCalendarRemove(event) {
 function configureSearchField() {
    var searchValue = $("searchValue");
 
-   searchValue.addEventListener("mousedown", onSearchMouseDown, false);
-   searchValue.addEventListener("click", popupSearchMenu, false);
-   searchValue.addEventListener("blur", onSearchBlur, false);
-   searchValue.addEventListener("focus", onSearchFocus, false);
-   searchValue.addEventListener("keydown", onSearchKeyDown, false);
+   Event.observe(searchValue, "mousedown",  onSearchMouseDown);
+   Event.observe(searchValue, "click",  popupSearchMenu);
+   Event.observe(searchValue, "blur",  onSearchBlur);
+   Event.observe(searchValue, "focus",  onSearchFocus);
+   Event.observe(searchValue, "keydown",  onSearchKeyDown);
 }
 
 function initCalendars() {
@@ -1123,4 +1117,4 @@ function initCalendars() {
    }
 }
 
-window.addEventListener("load", initCalendars, false);
+Event.observe(window, "load", initCalendars);
