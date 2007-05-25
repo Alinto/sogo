@@ -15,8 +15,8 @@ var SOGoDragHandlesInterface = {
   stopHandleDraggingBinded: null,
   moveBinded: null,
   bind: function () {
-    this.startHandleDraggingBinded = this.startHandleDragging.bindAsEventListener(this);
-    Event.observe(this, "mousedown", this.startHandleDraggingBinded, false);
+    this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
+    Event.observe(this, "mousedown", this.startHandleDraggingBound, false);
     this.onmousedown = function() { return false }
   },
   _determineType: function () {
@@ -49,10 +49,10 @@ var SOGoDragHandlesInterface = {
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.style.cursor = "n-resize";
       }
-      this.stopHandleDraggingBinded = this.stopHandleDragging.bindAsEventListener(this);
-      Event.observe(document.body, "mouseup", this.stopHandleDraggingBinded, true);
-      this.moveBinded = this.move.bindAsEventListener(this);
-      Event.observe(document.body, "mousemove", this.moveBinded, true);
+      this.stopHandleDraggingBound = this.stopHandleDragging.bindAsEventListener(this);
+      Event.observe(document.body, "mouseup", this.stopHandleDraggingBound, true);
+      this.moveBound = this.move.bindAsEventListener(this);
+      Event.observe(document.body, "mousemove", this.moveBound, true);
       this.move(event);
       event.cancelBubble = true;
     }
@@ -74,8 +74,8 @@ var SOGoDragHandlesInterface = {
       this.upperBlock.style.height = (this.origUpper + deltaY - delta) + 'px';
     }
  
-    Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBinded, true);
-    Event.stopObserving(document.body, "mousemove", this.moveBinded, true);
+    Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
+    Event.stopObserving(document.body, "mousemove", this.moveBound, true);
     
     document.body.setAttribute('style', '');
     

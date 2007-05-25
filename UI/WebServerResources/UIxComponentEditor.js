@@ -25,14 +25,14 @@ function onPopupUrlWindow(event) {
       if (documentHref.childNodes.length > 0) {
 	 documentHref.childNodes[0].nodeValue = newUrl;
 	 if (newUrl.length > 0)
-	    documentLabel.style.display = "block;";
+	    documentLabel.setStyle({ display: "block" });
 	 else
-	    documentLabel.style.display = "none;";
+	    documentLabel.setStyle({ display: "none" });
       }
       else {
 	 documentHref.appendChild(document.createTextNode(newUrl)); 
 	 if (newUrl.length > 0)
-	    documentLabel.style.display = "block;";
+	    documentLabel.setStyle({ display: "block" });
       }
       urlInput.value = newUrl;
    }
@@ -88,10 +88,10 @@ function refreshAttendees() {
 
    if (attendeesNames.value.length > 0) {
       attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
-      attendeesLabel.style.display = "block;";
+      attendeesLabel.setStyle({ display: "block" });
    }
    else
-      attendeesLabel.style.display = "none;";
+      attendeesLabel.setStyle({ display: "none" });
 }
 
 function initializeAttendeesHref() {
@@ -101,10 +101,9 @@ function initializeAttendeesHref() {
 
    attendeesHref.addEventListener("click", onPopupAttendeesWindow, false);
    if (attendeesNames.value.length > 0) {
-      attendeesHref.style.textDecoration = "underline;";
-      attendeesHref.style.color = "#00f;";
+      attendeesHref.setStyle({ textDecoration: "underline", color: "#00f" });
       attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
-      attendeesLabel.style.display = "block;";
+      attendeesLabel.setStyle({ display: "block" });
    }
 }
 
@@ -114,11 +113,10 @@ function initializeDocumentHref() {
    var documentUrl = $("url");
 
    documentHref.addEventListener("click", onPopupDocumentWindow, false);
-   documentHref.style.textDecoration = "underline;";
-   documentHref.style.color = "#00f;";
+   documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
    if (documentUrl.value.length > 0) {
       documentHref.appendChild(document.createTextNode(documentUrl.value));
-      documentLabel.style.display = "block;";
+      documentLabel.setStyle({ display: "block" });
    }
 
    var changeUrlButton = $("changeUrlButton");
