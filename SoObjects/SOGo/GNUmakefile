@@ -32,11 +32,14 @@ libSOGo_HEADER_FILES = \
 	LDAPSource.h			\
 	SOGoPermissions.h		\
 	SOGoLRUCache.h			\
-	NSArray+Utilities.h		\
 	NSObject+AptComparison.h	\
 	WOContext+Agenor.h		\
 	SOGoDAVRendererTypes.h		\
-	NSString+Utilities.h			\
+	NSArray+Utilities.h		\
+	NSDictionary+URL.h		\
+	NSDictionary+Utilities.h	\
+	NSObject+Utilities.h		\
+	NSString+Utilities.h		\
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
 	\
@@ -62,6 +65,8 @@ libSOGo_OBJC_FILES = \
 	AgenorUserDefaults.m		\
 	NSArray+Utilities.m		\
 	NSDictionary+URL.m		\
+	NSDictionary+Utilities.m	\
+	NSObject+Utilities.m		\
 	NSString+Utilities.m		\
 	NSCalendarDate+SOGo.m		\
 	\
