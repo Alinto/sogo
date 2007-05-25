@@ -1,6 +1,5 @@
 Element.addMethods({
-
-  getSelectedRows:  function(element) {
+  getSelectedRows: function(element) {
     element = $(element);
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
@@ -12,7 +11,7 @@ Element.addMethods({
     }
   },
 
-  getSelectedRowsId:  function(element) {
+  getSelectedRowsId: function(element) {
     element = $(element);
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
@@ -24,7 +23,7 @@ Element.addMethods({
     }
   },
 
-  selectRowsMatchingClass:  function(element, className) {
+  selectRowsMatchingClass: function(element, className) {
     element = $(element);
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
@@ -37,5 +36,4 @@ Element.addMethods({
       }
     }
   }
-
 }); // Element.addMethods

@@ -449,6 +449,10 @@ table.linked_attachment_meta
   font-style: italic;
 }
 
+DIV[datatype~="additional"] > A.node > SPAN.nodeName
+{ color: #777;
+  font-style: italic; }
+
 /* drag-n-drop */
 IMG.dragMessage
 {

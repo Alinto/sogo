@@ -621,36 +621,37 @@ function backtrace() {
 }
 
 function dropDownSubmenu(event) {
-  var node = this;
-  if (this.submenu && this.submenu != "") {
-    var submenuNode = document.getElementById(this.submenu);
-    var parentNode = getParentMenu(node);
-    if (parentNode.submenu)
-      hideMenu(event, parentNode.submenu);
-    submenuNode.parentMenuItem = node;
-    submenuNode.parentMenu = parentNode;
-    parentNode.submenuItem = node;
-    parentNode.submenu = submenuNode;
-    
-    var menuTop = (node.offsetTop - 2);
-    
-    var heightDiff = (window.innerHeight
-                      - (menuTop + submenuNode.offsetHeight));
-    if (heightDiff < 0)
-      menuTop += heightDiff;
-    
-    var menuLeft = parentNode.offsetWidth - 3;
-    if (window.innerWidth
-        < (menuLeft + submenuNode.offsetWidth
-           + parentNode.cascadeLeftOffset()))
-	menuLeft = - submenuNode.offsetWidth + 3;
-    
-    parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
-    node.setAttribute('class', 'submenu-selected');
-    submenuNode.setStyle({ top: menuTop + "px",
-			   left: menuLeft + "px",
-                           visibility: "visible" });
-  }
+   var node = this;
+   if (this.submenu && this.submenu != "") {
+      log ("submenu: " + this.submenu);
+      var submenuNode = $(this.submenu);
+      var parentNode = getParentMenu(node);
+      if (parentNode.submenu)
+	 hideMenu(event, parentNode.submenu);
+      submenuNode.parentMenuItem = node;
+      submenuNode.parentMenu = parentNode;
+      parentNode.submenuItem = node;
+      parentNode.submenu = submenuNode;
+      
+      var menuTop = (node.offsetTop - 2);
+      
+      var heightDiff = (window.innerHeight
+			- (menuTop + submenuNode.offsetHeight));
+      if (heightDiff < 0)
+	 menuTop += heightDiff;
+      
+      var menuLeft = parentNode.offsetWidth - 3;
+      if (window.innerWidth
+	  < (menuLeft + submenuNode.offsetWidth
+	     + parentNode.cascadeLeftOffset()))
+	 menuLeft = - submenuNode.offsetWidth + 3;
+      
+      parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
+      node.setAttribute('class', 'submenu-selected');
+      submenuNode.setStyle({ top: menuTop + "px",
+				     left: menuLeft + "px",
+				     visibility: "visible" });
+   }
 }
 
 function checkDropDown(event) {
@@ -957,7 +958,8 @@ function initMenu(menuDIV, callbacks) {
 	    }
 	 }
 	 else
-	    Event.observe(node, "mouseup", callback);
+	    Event.observe(node, "mouseup",
+			  $(callback).bindAsEventListener(node));
       }
       else
 	 node.addClassName("disabled");
