@@ -183,8 +183,6 @@ static BOOL debugOn = YES;
   return NO;
 }
 
-/* acls */
-#warning one day there will be code here to support IMAP acls
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   return nil;
