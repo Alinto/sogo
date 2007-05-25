@@ -258,12 +258,13 @@ function checkAjaxRequestsState() {
       document.busyAnim = anim;
       anim.id = "progressIndicator";
       anim.src = ResourcesURL + "/busy.gif";
-      anim.style.visibility = "hidden;";
+      anim.setStyle({ visibility: "hidden" });
       toolbar.appendChild(anim);
-      anim.style.visibility = "visible;";
+      anim.setStyle({ visibility: "visible" });
     }
     else if (activeAjaxRequests == 0
-	     && document.busyAnim) {
+	     && document.busyAnim
+	     && document.busyAnim.parentNode) {
       document.busyAnim.parentNode.removeChild(document.busyAnim);
       document.busyAnim = null;
     }
@@ -410,12 +411,19 @@ function onRowClick(event) {
 
   if (startSelection != node.parentNode.getSelectedNodes()) {
     var parentNode = node.parentNode;
-    log("onRowClick " + parentNode.tagName);
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
-    var onSelectionChangeEvent = document.createEvent("UIEvents");
-    onSelectionChangeEvent.initEvent("selectionchange", true, true);
-    parentNode.dispatchEvent(onSelectionChangeEvent);
+    log("onRowClick: parentNode = " + parentNode.tagName);
+    if (document.createEvent) {
+      var onSelectionChangeEvent = document.createEvent("UIEvents");
+      onSelectionChangeEvent.initEvent("selectionchange", true, true);
+      parentNode.dispatchEvent(onSelectionChangeEvent);
+    }
+    else if (document.createEventObject) {
+      // TODO: add support for IE
+      //parentNode.fireEvent("change");
+      //parentNode is UL or TABLE
+    }
   }
 }
 
@@ -444,9 +452,9 @@ function popupMenu(event, menuId, target) {
    if (leftDiff < 0)
       menuLeft -= popup.offsetWidth;
 
-   popup.style.top = menuTop + "px;";
-   popup.style.left = menuLeft + "px;";
-   popup.style.visibility = "visible;";
+   popup.setStyle({ top: menuTop + "px",
+		    left: menuLeft + "px",
+		    visibility: "visible" });
 
    bodyOnClick = "" + document.body.getAttribute("onclick");
    document.body.setAttribute("onclick", "onBodyClick(event);");
@@ -491,7 +499,8 @@ function hideMenu(event, menuNode) {
     menuNode.submenu = null;
   }
 
-  menuNode.style.visibility = "hidden";
+  //menuNode.setStyle({ visibility: "hidden" });
+  $(menuNode).hide();
   if (menuNode.parentMenuItem) {
     menuNode.parentMenuItem.setAttribute('class', 'submenu');
     menuNode.parentMenuItem = null;
@@ -501,9 +510,14 @@ function hideMenu(event, menuNode) {
     menuNode.parentMenu = null;
   }
 
-  var onhideEvent = document.createEvent("UIEvents");
-  onhideEvent.initEvent("hideMenu", false, true);
-  menuNode.dispatchEvent(onhideEvent);
+  if (document.initEvent) {
+    var onhideEvent = document.createEvent("UIEvents");
+    onhideEvent.initEvent("hideMenu", false, true);
+    menuNode.dispatchEvent(onhideEvent);
+  }
+  else if (document.createEventObject) {
+    // TODO: add support for IE
+  }
 }
 
 function onMenuEntryClick(event) {
@@ -627,9 +641,9 @@ function dropDownSubmenu(event) {
     
     parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
     node.setAttribute('class', 'submenu-selected');
-    submenuNode.style.top = menuTop + "px;";
-    submenuNode.style.left = menuLeft + "px;";
-    submenuNode.style.visibility = "visible;";
+    submenuNode.setStyle({ top: menuTop + "px",
+			   left: menuLeft + "px",
+                           visibility: "visible" });
   }
 }
 
@@ -671,9 +685,9 @@ function popupSearchMenu(event) {
       hideMenu(event, document.currentPopupMenu);
 
     var popup = document.getElementById(menuId);
-    popup.style.top = node.offsetHeight + "px";
-    popup.style.left = (node.offsetLeft + 3) + "px";
-    popup.style.visibility = "visible";
+    popup.setStyle({ top: node.offsetHeight + "px",
+		     left: (node.offsetLeft + 3) + "px",
+			    visibility: "visible" });
   
     bodyOnClick = "" + document.body.getAttribute("onclick");
     document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
@@ -723,7 +737,7 @@ function onSearchFocus() {
     this.select();
   }
 
-  this.style.color = "#000";
+  this.setStyle({ color: "#000" });
 }
 
 function onSearchBlur(event) {
@@ -731,14 +745,14 @@ function onSearchBlur(event) {
 //   log ("search blur: '" + this.value + "'");
   if (!this.value) {
     this.setAttribute("modified", "");
-    this.style.color = "#aaa";
+    this.setStyle({ color: "#aaa" });
     this.value = ghostPhrase;
   } else if (this.value == ghostPhrase) {
     this.setAttribute("modified", "");
-    this.style.color = "#aaa";
+    this.setStyle({ color: "#aaa" });
   } else {
     this.setAttribute("modified", "yes");
-    this.style.color = "#000";
+    this.setStyle({ color: "#000" });
   }
 }
 
@@ -767,7 +781,7 @@ function initCriteria() {
     if (searchValue.value == '') {
       searchValue.value = firstOption.innerHTML;
       searchValue.setAttribute("modified", "");
-      searchValue.style.color = "#aaa";
+      searchValue.setStyle({ color: "#aaa" });
     }
   }
 }
@@ -789,9 +803,9 @@ function popupToolbarMenu(event, menuId) {
       
       var popup = document.getElementById(menuId);
       var top = node.offsetTop + node.offsetHeight - 2;
-      popup.style.top = top + "px";
-      popup.style.left = node.cascadeLeftOffset() + "px";
-      popup.style.visibility = "visible";
+      popup.setStyle({ top: top + "px",
+		       left: node.cascadeLeftOffset() + "px",
+		       visibility: "visible" });
       
       bodyOnClick = "" + document.body.getAttribute("onclick");
       document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
@@ -883,15 +897,21 @@ function initTabs() {
   var containers = document.getElementsByClassName("tabsContainer");
   for (var x = 0; x < containers.length; x++) {
     var container = containers[x];
-    var nodes = container.childNodes[1].childNodes;
-
-    var firstTab;
+    var firstTab = null;
+    for (var i = 0; i < container.childNodes.length; i++) {
+      if (container.childNodes[i].tagName == 'UL') {
+	if (!firstTab)
+	  firstTab = i;
+      }
+    }
+    var nodes = container.childNodes[firstTab].childNodes;
+    
+    firstTab = null;
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].tagName == 'LI') {
-	if (!firstTab) {
+	if (!firstTab)
           firstTab = i;
-        }
-        Event.observe(nodes[i], "mousedown", onTabMouseDown, true);
+	Event.observe(nodes[i], "mousedown", onTabMouseDown, true);
 	Event.observe(nodes[i], "click", onTabClick, true);
       }
     }
