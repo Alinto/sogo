@@ -17,10 +17,10 @@ MailerUI_OBJC_FILES += \
 	WOContext+UIxMailer.m		\
 	\
 	UIxMailMainFrame.m		\
-	UIxMailTree.m			\
-	UIxMailTreeBlock.m		\
-	UIxMailTreeBlockJS.m		\
-	UIxMailFolderMenu.m		\
+# 	UIxMailTree.m			\
+# 	UIxMailTreeBlock.m		\
+# 	UIxMailTreeBlockJS.m		\
+# 	UIxMailFolderMenu.m		\
 	\
 	UIxMailListView.m		\
 	UIxMailView.m			\
@@ -28,6 +28,7 @@ MailerUI_OBJC_FILES += \
 	UIxMailMoveToPopUp.m		\
 	UIxMailFilterPanel.m		\
 	\
+	UIxMailAccountActions.m		\
 	UIxMailEditor.m			\
 	UIxMailEditorAttach.m		\
 	UIxMailEditorAction.m		\
