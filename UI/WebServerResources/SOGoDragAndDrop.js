@@ -159,7 +159,7 @@ document.DNDManager = {
       document.DNDManager.currentDndOperation = null;
     }
   },
-  currentDndOperation: null,
+  currentDndOperation: null
 }
 
 /* DNDOperation */
