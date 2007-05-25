@@ -68,6 +68,8 @@ function dTree(objName) {
   this.selectedNode = null;
   this.selectedFound = false;
   this.completed = false;
+
+  return this;
 };
 
 // Adds a new node to the node array
