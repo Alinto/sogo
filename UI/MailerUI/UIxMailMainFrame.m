@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#import <Mailer/SOGoMailObject.h>
-#import <SOGo/NSString+Utilities.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailAccounts.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
 #import "UIxMailMainFrame.h"
 
@@ -48,6 +50,14 @@ static NSString *treeRootClassName = nil;
 }
 
 /* accessors */
+- (NSString *) mailAccounts
+{
+  SOGoMailAccounts *co;
+
+  co = [self clientObject];
+
+  return [[co fetchAllIdentities] jsonRepresentation];
+}
 
 - (NSString *)treeRootClassName {
   return treeRootClassName;
@@ -186,25 +196,25 @@ static NSString *treeRootClassName = nil;
 }
 
 /* FIXME: migrated methods which might not work yet... */
-#warning check this
-- (NSString *) mailFolderName
-{
-  NSMutableArray *mailboxes;
-  SOGoMailObject *currentObject;
+// #warning check this
+// - (NSString *) mailFolderName
+// {
+//   NSMutableArray *mailboxes;
+//   SOGoMailObject *currentObject;
 
-  mailboxes = [NSMutableArray new];
-  [mailboxes autorelease];
+//   mailboxes = [NSMutableArray new];
+//   [mailboxes autorelease];
 
-  currentObject = [self clientObject];
-  while (![currentObject isKindOfClass: [SOGoMailAccounts class]])
-    {
-      [mailboxes insertObject: [currentObject nameInContainer] atIndex: 0];
-      currentObject = [currentObject container];
-    }
+//   currentObject = [self clientObject];
+//   while (![currentObject isKindOfClass: [SOGoMailAccounts class]])
+//     {
+//       [mailboxes insertObject: [currentObject nameInContainer] atIndex: 0];
+//       currentObject = [currentObject container];
+//     }
 
-  return [NSString stringWithFormat: @"/%@",
-                   [mailboxes componentsJoinedByString: @"/"]];
-}
+//   return [NSString stringWithFormat: @"/%@",
+//                    [mailboxes componentsJoinedByString: @"/"]];
+// }
 
 - (id) composeAction
 {

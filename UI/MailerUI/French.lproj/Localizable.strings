@@ -100,16 +100,16 @@
 
 /* Tree */
 
-"SentFolderName"   = "Éléments envoyés";
+"SentFolderName"   = "Envoyés";
 "TrashFolderName"  = "Corbeille";
-"InboxFolderName"  = "Boite de réception";
+"InboxFolderName"  = "Courrier entrant";
 "DraftsFolderName" = "Brouillons";
 "SieveFolderName"  = "Filtres";
 "Folders"          = "Dossiers"; 
 
 /* MailMoveToPopUp */
 
-"MoveTo"        = "Déplacer vers";
+"MoveTo" = "Déplacer vers";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Ajouter au carnet d'adresses";

@@ -267,7 +267,7 @@
         };
 	mailboxes = {
 	   protectedBy = "View";
-	   pageName = "UIxMailAccountView";
+	   actionClass = "UIxMailAccountActions";
 	   actionName = "listMailboxes";
 	};
       };

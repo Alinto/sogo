@@ -1,5 +1,14 @@
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderMenu.[hm]: removed module, obsoleted by
+	new javascript code and the new UIxMailAccountActions class.
+
+	* UI/MailerUI/UIxMailTree.[hm]: removed module, obsoleted by new
+	javascript code and the new UIxMailAccountActions class.
+
+	* UI/MailerUI/UIxMailTreeBlock.[hm]: removed module, obsoleted by
+	new javascript code and the new UIxMailAccountActions class.
+
 	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
 	-listMailboxesAction]): new method that returns a json-formatted
 	tree of all the mailboxes available to the current user.

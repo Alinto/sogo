@@ -2,12 +2,17 @@
   <var:component xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
+    xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
     popup="isPopup"
     >
+    <script type="text/javascript" rsrc:src="dtree.js"><!-- space --></script>
+    <script type="text/javascript" rsrc:src="MailerUI+dTree.js"><!-- space --></script>
+    <script type="text/javascript">
+      var mailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>'.evalJSON(true);
+    </script>
     <div class="menu" id="accountIconMenu">
       <ul>
         <li><var:string label:value="Subscribe..." /></li>
@@ -127,13 +132,6 @@
       </ul>
     </div>
 
-    <var:component
-      className="UIxMailFolderMenu"
-      const:menuId="mailboxes-menu"
-      const:parentMenu="0"
-      rootClassName="treeRootClassName" 
-      const:treeFolderAction="view" />
-
     <div class="menu" id="mark-menu">
       <ul id="">
         <li><var:string label:value="As Read" /></li>
@@ -151,12 +149,9 @@
 
     <div id="leftPanel">
       <div class="titlediv"><var:string label:value="Folders" /></div>
-      <var:component className="UIxMailTree" 
-        rootClassName="treeRootClassName" 
-        const:treeFolderAction="view" 
-        />
+      <div id="folderTreeContent"><!-- space --></div>
     </div>
-      
+
     <div class="dragHandle" id="verticalDragHandle"><!-- space --></div>
 
     <div id="rightPanel">
@@ -165,9 +160,6 @@
         <div id="mailboxContent"><!-- space --></div>
         <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
         <div id="messageContent"><!-- space --></div>
-      <script type="text/javascript">
-        initMailboxSelection('<var:string value="mailFolderName" />');
-      </script>
     </div>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
