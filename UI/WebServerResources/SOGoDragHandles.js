@@ -11,8 +11,12 @@ var SOGoDragHandlesInterface = {
   rightBlock: null,
   upperBlock: null,
   lowerBlock: null,
+  startHandleDraggingBinded: null,
+  stopHandleDraggingBinded: null,
+  moveBinded: null,
   bind: function () {
-    this.addEventListener("mousedown", this.startHandleDragging, false);
+    this.startHandleDraggingBinded = this.startHandleDragging.bindAsEventListener(this);
+    Event.observe(this, "mousedown", this.startHandleDraggingBinded, false);
     this.onmousedown = function() { return false }
   },
   _determineType: function () {
@@ -45,28 +49,15 @@ var SOGoDragHandlesInterface = {
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.style.cursor = "n-resize";
       }
-      document._currentDragHandle = this;
-      if (document.addEventListener) {
-	document.addEventListener("mouseup", this.documentStopHandleDragging, true);
-	document.addEventListener("mousemove", this.documentMove, true);
-      } else if (window.addEventListener) {
-	window.addEventListener("mouseup", this.documentStopHandleDragging, true);
-	window.addEventListener("mousemove", this.documentMove, true);
-      }
+      this.stopHandleDraggingBinded = this.stopHandleDragging.bindAsEventListener(this);
+      Event.observe(document.body, "mouseup", this.stopHandleDraggingBinded, true);
+      this.moveBinded = this.move.bindAsEventListener(this);
+      Event.observe(document.body, "mousemove", this.moveBinded, true);
       this.move(event);
       event.cancelBubble = true;
     }
 
     return false;
-  },
-  documentStopHandleDragging: function (event) {
-    var handle = document._currentDragHandle;
-    return handle.stopHandleDragging(event);
-  },
-  documentMove: function (event) {
-    var handle = document._currentDragHandle;
-    if (!handle) return false;
-    return handle.move(event);
   },
   stopHandleDragging: function (event) {
     if (!this.dhType)
@@ -83,17 +74,12 @@ var SOGoDragHandlesInterface = {
       this.upperBlock.style.height = (this.origUpper + deltaY - delta) + 'px';
     }
  
-    if (window.addEventListener) {
-      window.removeEventListener("mouseup", this.documentStopHandleDragging, true);
-      window.removeEventListener("mousemove", this.documentMove, true);      
-    } else if (document.addEventListener) {
-      document.removeEventListener("mouseup", this.documentStopHandleDragging, true);
-      document.removeEventListener("mousemove", this.documentMove, true);
-    }
+    Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBinded, true);
+    Event.stopObserving(document.body, "mousemove", this.moveBinded, true);
+    
     document.body.setAttribute('style', '');
-
+    
     this.move(event);
-    document._currentDragHandle = null;
     event.cancelBubble = true;
 
     return false;
@@ -150,4 +136,3 @@ var SOGoDragHandlesInterface = {
   }
 
 };
-
