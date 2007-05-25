@@ -69,6 +69,10 @@
 - (SOGoMailFolder *)sentFolderInContext:(id)_ctx;
 - (SOGoMailFolder *)trashFolderInContext:(id)_ctx;
 
+/* user defaults */
+- (NSString *) sharedFolderName;
+- (NSString *) otherUsersFolderName;
+
 @end
 
 #endif /* __Mailer_SOGoMailAccount_H__ */

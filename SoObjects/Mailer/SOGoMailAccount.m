@@ -418,4 +418,14 @@ static BOOL     useAltNamespace       = NO;
   return [self shortTitle];
 }
 
+- (NSString *) sharedFolderName
+{
+  return sharedFolderName;
+}
+
+- (NSString *) otherUsersFolderName
+{
+  return otherUsersFolderName;
+}
+
 @end /* SOGoMailAccount */

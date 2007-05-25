@@ -1,5 +1,9 @@
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-sharedFolderName]): new method.
+	([SOGoMailAccount -otherUsersFolderName]): new method.
+
 	* UI/MailerUI/UIxMailFolderMenu.[hm]: removed module, obsoleted by
 	new javascript code and the new UIxMailAccountActions class.
 
