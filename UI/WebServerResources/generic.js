@@ -573,8 +573,14 @@ function log(message) {
       logWindow = logWindow.opener;
   }
   var logConsole = logWindow.document.getElementById("logConsole");
-  if (logConsole)
-    logConsole.innerHTML += message.replace("<", "&lt;", "g") + '<br />' + "\n";
+  if (logConsole) {
+     var logMessage = message.replace("<", "&lt;", "g");
+     logMessage = logMessage.replace("\r\n", "<br />\n", "g");
+     logMessage = logMessage.replace("\n", "<br />\n", "g");
+     logMessage = logMessage.replace(" ", "&nbsp;", "g");
+     logMessage += '<br />' + "\n";
+     logConsole.innerHTML += logMessage;
+  }
 }
 
 function backtrace() {
