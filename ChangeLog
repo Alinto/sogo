@@ -1,5 +1,12 @@
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-listMailboxesAction]): new method that returns a json-formatted
+	tree of all the mailboxes available to the current user.
+
+	* UI/MailerUI/UIxMailAccountActions.[hm]: new module implementing
+	web actions related to the handling of mail accounts.
+
 	* SoObjects/SOGo/NSDictionary+Utilities.[hm]: new extension
 	module.
 
