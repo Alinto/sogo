@@ -80,18 +80,13 @@ static NSString *AgenorShareLoginMarker  = @".-.";
     : [account arrayByAddingObjectsFromArray:shares];
 }
 
-- (NSArray *)fetchIdentitiesWithOnlyEmitterAccess:(BOOL)_flag {
-  WOContext *ctx;
-  
-  if ([self isInternetRequest]) { /* only show primary mailbox in Internet */
-    // just return the primary identity
-    id identity;
-    
-    identity = [[context activeUser] primaryMailIdentity];
-    return [identity isNotNull] ? [NSArray arrayWithObject:identity] : nil;
-  }
-  
-  return [[ctx activeUser] fetchAllMailIdentitiesWithOnlyEmitterAccess:_flag];
+- (NSArray *) fetchIdentitiesWithOnlyEmitterAccess: (BOOL) _flag
+{
+  NSString *accountString;
+
+  accountString = [[context activeUser] primaryIMAP4AccountString];
+
+  return [NSArray arrayWithObject: accountString];
 }
 
 - (NSArray *)fetchAllIdentities {

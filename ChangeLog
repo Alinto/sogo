@@ -1,5 +1,10 @@
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccounts.m
+	([SOGoMailAccounts -fetchIdentitiesWithOnlyEmitterAccess:_flag])
+	there is no longer any concept of Intranet or Internet connection
+	handling.
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-sharedFolderName]): new method.
 	([SOGoMailAccount -otherUsersFolderName]): new method.
