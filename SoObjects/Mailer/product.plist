@@ -41,13 +41,13 @@
     SOGoMailFolder = {
       superclass    = "SOGoMailBaseObject";
       defaultRoles = {
-        "View"          = ( "Owner", "AuthorizedSubscriber" );
-        "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+        "View" = ( "Owner", "ObjectViewer" );
+        "Access Contents Information" = ( "Owner", "ObjectReader" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
-        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
-        "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
-        "SaveAcls" = ( "Owner" );
+        "WebDAV Access" = ( "Owner", "ObjectViewer" );
+        "ReadAcls" = ( "Owner", "ObjectViewer" );
+        "SaveAcls" = ( "Owner", "MailAdministrator" );
       };
     };
     SOGoSharedInboxFolder = {

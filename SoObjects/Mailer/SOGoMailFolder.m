@@ -420,24 +420,71 @@ static BOOL useAltNamespace = NO;
 
 - (NSArray *) aclUsers
 {
+  NSArray *users;
   NSDictionary *imapAcls;
 
   imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+  if ([imapAcls isKindOfClass: [NSDictionary class]])
+    users = [imapAcls allKeys];
+  else
+    users = nil;
 
-  return [imapAcls allKeys];
+  return users;
+}
+
+- (NSMutableArray *) _sharesACLs
+{
+  NSMutableArray *acls;
+  SOGoMailAccount *mailAccount;
+  NSString *path, *sharedPath, *othersPath;
+  NSArray *names;
+  unsigned int count;
+
+  acls = [NSMutableArray array];
+
+  mailAccount = [self mailAccountFolder];
+  sharedPath = [NSString stringWithFormat: @"/%@",
+			 [mailAccount sharedFolderName]];
+  othersPath = [NSString stringWithFormat: @"/%@",
+			 [mailAccount otherUsersFolderName]];
+  path = [[self imap4URL] path];
+  names = [path componentsSeparatedByString: @"/"];
+  count = [names count];
+
+  if ([path hasPrefix: sharedPath])
+    {
+      if (count == 2)
+	[acls addObject: SOGoRole_ObjectViewer];
+    }
+  else if ([path hasPrefix: othersPath])
+    {
+      if (count == 2 || count == 3)
+	[acls addObject: SOGoRole_ObjectViewer];
+    }
+  else
+    [acls addObject: SoRole_Owner];
+
+  return acls;
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSDictionary *imapAcls;
+  NSMutableArray *acls;
   NSString *userAcls;
 
+  acls = [self _sharesACLs];
   imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
-  userAcls = [imapAcls objectForKey: uid];
-  if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
-    userAcls = [imapAcls objectForKey: defaultUserID];
+  if ([imapAcls isKindOfClass: [NSDictionary class]])
+    {
+      userAcls = [imapAcls objectForKey: uid];
+      if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
+	userAcls = [imapAcls objectForKey: defaultUserID];
+      if ([userAcls length])
+	[acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
+    }
 
-  return [self _imapAclsToSOGoAcls: userAcls];
+  return acls;
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
@@ -472,6 +519,35 @@ static BOOL useAltNamespace = NO;
 - (NSString *) defaultUserID
 {
   return defaultUserID;
+}
+
+- (NSString *) ownerInContext: (WOContext *) localContext
+{
+  SOGoMailAccount *mailAccount;
+  NSString *path, *sharedPath, *othersPath, *owner;
+  NSArray *names;
+
+  mailAccount = [self mailAccountFolder];
+  sharedPath = [NSString stringWithFormat: @"/%@",
+			 [mailAccount sharedFolderName]];
+  othersPath = [NSString stringWithFormat: @"/%@",
+			 [mailAccount otherUsersFolderName]];
+  path = [[self imap4URL] path];
+
+  if (sharedPath && [path hasPrefix: sharedPath])
+    owner = @"anyone";
+  else if (othersPath && [path hasPrefix: othersPath])
+    {
+      names = [path componentsSeparatedByString: @"/"];
+      if ([names count] > 2)
+	owner = [names objectAtIndex: 2];
+      else
+	owner = @"anyone";
+    }
+  else
+    owner = [super ownerInContext: localContext];
+
+  return owner;
 }
 
 - (BOOL) hasSupportForDefaultRoles

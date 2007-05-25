@@ -1,5 +1,15 @@
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-ownerInContext:localContext]): overriden method because we are an
+	IMAP4 client and we need a bit more intelligence to deduce the
+	owner of the current folder.
+	([SOGoMailFolder -aclsForUser:uid]): aclForMailboxAtURL might
+	return an NSException so we need to be careful here to avoid a
+	crash.
+	([SOGoMailFolder -aclUsers]): aclForMailboxAtURL might return an
+	NSException so we need to be careful here to avoid a crash.
+
 	* SoObjects/Mailer/SOGoMailAccounts.m
 	([SOGoMailAccounts -fetchIdentitiesWithOnlyEmitterAccess:_flag])
 	there is no longer any concept of Intranet or Internet connection
