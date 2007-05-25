@@ -40,6 +40,8 @@
 
 - (NSString *) stringByDetectingURLs;
 
+- (NSString *) jsonRepresentation;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif

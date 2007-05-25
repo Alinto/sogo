@@ -58,6 +58,29 @@
                                  withObject: object2];
 }
 
+- (NSString *) jsonRepresentation
+{
+  id currentElement;
+  NSMutableArray *jsonElements;
+  NSEnumerator *elements;
+  NSString *representation;
+
+  jsonElements = [NSMutableArray new];
+
+  elements = [self objectEnumerator];
+  currentElement = [elements nextObject];
+  while (currentElement)
+    {
+      [jsonElements addObject: [currentElement jsonRepresentation]];
+      currentElement = [elements nextObject];
+    }
+  representation = [NSString stringWithFormat: @"[%@]",
+			     [jsonElements componentsJoinedByString: @", "]];
+  [jsonElements release];
+
+  return representation;
+}
+
 @end
 
 @implementation NSMutableArray (SOGoArrayUtilities)

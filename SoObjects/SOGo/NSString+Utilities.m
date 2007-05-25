@@ -184,6 +184,23 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   return selfCopy;
 }
 
+- (NSString *) jsonRepresentation
+{
+  NSMutableString *representation;
+
+  representation = [NSMutableString stringWithString: self];
+  [representation replaceString: @"\\" withString: @"\\\\"];
+  [representation replaceString: @"\"" withString: @"\\\""];
+  [representation replaceString: @"/" withString: @"\\/"];
+  [representation replaceString: @"\b" withString: @"\\b"];
+  [representation replaceString: @"\f" withString: @"\\f"];
+  [representation replaceString: @"\n" withString: @"\\n"];
+  [representation replaceString: @"\r" withString: @"\\r"];
+  [representation replaceString: @"\t" withString: @"\\t"];
+
+  return [NSString stringWithFormat: @"\"%@\"", representation];
+}
+
 #if LIB_FOUNDATION_LIBRARY
 - (BOOL) boolValue
 {

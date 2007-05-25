@@ -1,6 +1,6 @@
-/* NSArray+Utilities.h - this file is part of SOGo
+/* NSDictionary+Utilities.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,31 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NSARRAY_UTILITIES_H
-#define NSARRAY_UTILITIES_H
+#ifndef NSDICTIONARY_UTILITIES_H
+#define NSDICTIONARY_UTILITIES_H
 
-#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 
 @class NSString;
 
-@interface NSArray (SOGoArrayUtilities)
+@interface NSDictionary (SOGoDictionaryUtilities)
 
 - (NSString *) jsonRepresentation;
 
-- (NSArray *) stringsWithFormat: (NSString *) format;
-
-#ifdef GNUSTEP_BASE_LIBRARY
-- (void) makeObjectsPerform: (SEL) selector
-                 withObject: (id) object1
-                 withObject: (id) object2;
-#endif
-
 @end
 
-@interface NSMutableArray (SOGoArrayUtilities)
-
-- (void) addObjectUniquely: (id) object;
-
-@end
-
-#endif /* NSARRAY_UTILITIES_H */
+#endif /* NSDICTIONARY_UTILITIES_H */
