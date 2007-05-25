@@ -7,9 +7,8 @@
     >
     <div class="menu" id="searchMenu">
       <ul id="searchOptions">
-        <li id="name_or_address"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Name or Email"/></li>
+        <li id="name_or_address"><var:string
+	    label:value="Name or Email"/></li>
       </ul>
     </div>
 

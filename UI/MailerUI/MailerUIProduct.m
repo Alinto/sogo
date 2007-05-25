@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: MailerUIProduct.m 603 2005-02-22 23:12:45Z helge $
 
 #import <Foundation/NSObject.h>
 
@@ -27,8 +26,6 @@
 }
 
 @end
-
-#include "common.h"
 
 @implementation MailerUIProduct
 @end /* MailerUIProduct */

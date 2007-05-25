@@ -119,15 +119,20 @@ function onOpenUserRights(event) {
 
 function onAclLoadHandler() {
    defaultUserID = $("defaultUserID").value;
-   Event.observe($("defaultRolesBtn"), "click", openRightsForDefaultUser);
+   var defaultRolesBtn = $("defaultRolesBtn");
+   if (defaultRolesBtn)
+      Event.observe(defaultRolesBtn, "click", openRightsForDefaultUser);
    var ul = $("userList");
    var lis = ul.childNodesWithTag("li");
    for (var i = 0; i < lis.length; i++)
       setEventsOnUserNode(lis[i]);
 
-   var buttons = $("userSelectorButtons").childNodesWithTag("a");
-   Event.observe(buttons[0], "click", onUserAdd);
-   Event.observe(buttons[1], "click", onUserRemove);
+   var buttonArea = $("userSelectorButtons");
+   if (buttonArea) {
+      var buttons = buttonArea.childNodesWithTag("a");
+      Event.observe(buttons[0], "click", onUserAdd);
+      Event.observe(buttons[1], "click", onUserRemove);
+   }
 
    this.userRightsHeight = window.opener.getUsersRightsWindowHeight();
    this.userRightsWidth = window.opener.getUsersRightsWindowWidth();

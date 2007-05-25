@@ -1,4 +1,85 @@
+2007-05-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailSplashView.m: removed.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -getUIDsForICalPersons:iCalPersons]): add
+	the uid to the list only when the user email is recognized by the
+	user manager.
+
+2007-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-isDeletionAllowed]): completed method with the new imap acl api.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultAclRoles]):
+	removed method.
+
+	* SoObjects/SOGo/SOGoPermissions.m: added the new role
+	"SOGoMailRole_MessageEraser".
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -defaultUserID]) 
+	([UIxAclEditor -_prepareUsers]): take the new SOGoObject's
+	"defaultUserID" method into account.
+
+	* UI/Common/UIxUserRightsEditor.m ([UIxUserRightsEditor -userIsDefaultUser]) 
+	([UIxUserRightsEditor -_initRights]): take the new SOGoObject's
+	"defaultUserID" method into account.
+
+	* UI/MailerUI/UIxMailUserRightsEditor.m: added all the missing
+	methods to support the IMAP acls mentionned in the RFC 4314,
+	removed the ones specific to Cyrus.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -defaultUserID]): new
+	mandatory method for subclasses. Removed the SOGoDefaultUserID
+	global var.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -defaultUserID]):
+	overriden method to return @"<default>".
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-defaultUserID]): overriden method to return @"<default>".
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-aclsForUser:uid]): overriden method.
+	([SOGoMailFolder -removeAclsForUsers:users]): overriden method.
+	([SOGoMailFolder -setRoles:rolesforUser:uid]): overriden method.
+	([SOGoMailFolder -defaultUserID]): overriden method.
+	([SOGoMailFolder -hasSupportForDefaultRoles]): overriden method.
+
 2007-05-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-aclUsersForObjectAtPath:objectPathArray]): new method that being
+	forwarded the calles to aclUsers for the GCS-based subclasses of
+	SOGoObject.
+
+	* SoObjects/Mailer/SOGoMailFolder.m: removed all the previous
+	methods that would have been used to support IMAP acls. Replaced
+	them with the new protocol for them that has been implemented in
+	SOGo during the last few weeks.
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-hasSupportForDefaultRoles]): override method by returning "YES".
+
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSMutableArray
+	-addObjectUniquely:object]): new method with an explicit name.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -aclUsers]): renamed
+	"acl" to "aclUsers". Now designed to return only the uid of the
+	users involved in an ACL.
+	([SOGoObject -hasSupportForDefaultRoles]): new method returning
+	"NO" by default. To indicate to the acl editor that we don't want
+	to handle a default user.
+
+	* SoObjects/SOGo/SOGoPermissions.[hm]: added the
+	SOGoRole_ObjectReader, SOGoRole_Folder*, and SOGoMailRole_*
+	symbols.
+
+	* UI/MailerUI/UIxMailUserRightsEditor.[hm]: new class module that
+	provides a view to the IMAP acls.
+
+	* UI/MailerUI/UIxMailFolderACLEditor.m: removed obsolete module.
 
 	* UI/WebServerResources/MailerUI.js: replaced all invocations of
 	addEventListener to the use of prototype's Event object. Also,

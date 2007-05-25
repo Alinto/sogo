@@ -59,3 +59,14 @@
 }
 
 @end
+
+@implementation NSMutableArray (SOGoArrayUtilities)
+
+- (void) addObjectUniquely: (id) object
+{
+  if (![self containsObject: object])
+    [self addObject: object];
+}
+
+@end
+

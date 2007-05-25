@@ -19,13 +19,27 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailFolder.h"
-#include "SOGoMailObject.h"
-#include "SOGoMailAccount.h"
-#include "SOGoMailManager.h"
-#include <NGImap4/NGImap4MailboxInfo.h>
-#include "SOGoMailFolderDataSource.h"
-#include "common.h"
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSURL+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4MailboxInfo.h>
+#import <NGImap4/NGImap4Client.h>
+
+#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
+
+#import "SOGoMailObject.h"
+#import "SOGoMailAccount.h"
+#import "SOGoMailManager.h"
+#import "SOGoMailFolderDataSource.h"
+#import "SOGoMailFolder.h"
+
+static NSString *defaultUserID =  @"anyone";
 
 @implementation SOGoMailFolder
 
@@ -46,9 +60,9 @@ static BOOL useAltNamespace = NO;
 }
 
 - (void)dealloc {
-  [self->selectInfo release];
-  [self->filenames  release];
-  [self->folderType release];
+  [selectInfo release];
+  [filenames  release];
+  [folderType release];
   [super dealloc];
 }
 
@@ -68,15 +82,15 @@ static BOOL useAltNamespace = NO;
   NSArray  *uids;
   unsigned count;
   
-  if (self->filenames != nil)
-    return [self->filenames isNotNull] ? self->filenames : nil;
+  if (filenames != nil)
+    return [filenames isNotNull] ? filenames : nil;
 
   uids = [self fetchUIDsMatchingQualifier:nil sortOrdering:@"DATE"];
   if ([uids isKindOfClass:[NSException class]])
     return nil;
   
   if ((count = [uids count]) == 0) {
-    self->filenames = [[NSArray alloc] init];
+    filenames = [[NSArray alloc] init];
   }
   else {
     NSMutableArray *keys;
@@ -90,10 +104,10 @@ static BOOL useAltNamespace = NO;
       k = [k stringByAppendingString:@".mail"];
       [keys addObject:k];
     }
-    self->filenames = [keys copy];
+    filenames = [keys copy];
     [keys release];
   }
-  return self->filenames;
+  return filenames;
 }
 
 - (EODataSource *)contentDataSourceInContext:(id)_ctx {
@@ -110,96 +124,15 @@ static BOOL useAltNamespace = NO;
   /* returns nil if fetch was successful */
   id info;
   
-  if (self->selectInfo != nil)
+  if (selectInfo != nil)
     return nil; /* select info exists, => no error */
   
   info = [[self imap4Connection] infoForMailboxAtURL:[self imap4URL]];
   if ([info isKindOfClass:[NSException class]])
     return info;
   
-  self->selectInfo = [info retain];
+  selectInfo = [info retain];
   return nil; /* no error */
-}
-
-/* permissions */
-
-- (void)_loadACLPermissionFlags {
-  NSString *rights;
-  unsigned i, len;
-  
-  if (self->somfFlags.didCheckMyRights)
-    return;
-
-  rights = [[self imap4Connection] myRightsForMailboxAtURL:[self imap4URL]];
-  if ([rights isKindOfClass:[NSException class]]) {
-    [self logWithFormat:@"ERROR: could not retrieve ACL: %@", rights];
-    return;
-  }
-  
-  // [self logWithFormat:@"GOT PERM: %@", rights];
-  
-  self->somfFlags.didCheckMyRights = 1;
-  
-  /* reset flags */
-  self->somfFlags.isDeleteAndExpungeAllowed = 0;
-  self->somfFlags.isReadAllowed   = 0;
-  self->somfFlags.isWriteAllowed  = 0;
-  self->somfFlags.isInsertAllowed = 0;
-  self->somfFlags.isPostAllowed   = 0;
-  self->somfFlags.isCreateAllowed = 0;
-  self->somfFlags.hasAdminAccess  = 0;
-  
-  for (i = 0, len = [rights length]; i < len; i++) {
-    switch ([rights characterAtIndex:i]) {
-    case 'd': self->somfFlags.isDeleteAndExpungeAllowed = 1; break;
-    case 'r': self->somfFlags.isReadAllowed   = 1; break;
-    case 'w': self->somfFlags.isWriteAllowed  = 1; break;
-    case 'i': self->somfFlags.isInsertAllowed = 1; break;
-    case 'p': self->somfFlags.isPostAllowed   = 1; break;
-    case 'c': self->somfFlags.isCreateAllowed = 1; break;
-    case 'a': self->somfFlags.hasAdminAccess  = 1; break;
-    }
-  }
-}
-
-- (BOOL)isDeleteAndExpungeAllowed {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isDeleteAndExpungeAllowed ? YES : NO;
-}
-- (BOOL)isReadAllowed {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isReadAllowed ? YES : NO;
-}
-- (BOOL)isWriteAllowed {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isWriteAllowed ? YES : NO;
-}
-- (BOOL)isInsertAllowed {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isInsertAllowed ? YES : NO;
-}
-- (BOOL)isPostAllowed {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isPostAllowed ? YES : NO;
-}
-
-- (BOOL)isCreateAllowedInACL {
-  /* we call this directly from UIxMailAccountView */
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.isCreateAllowed ? YES : NO;
-}
-- (BOOL)isCreateAllowed {
-  if (useAltNamespace) {
-    /* with altnamespace, Cyrus doesn't allow mailboxes under INBOX */
-    if ([[self outlookFolderClass] isEqualToString:@"IPF.Inbox"])
-      return NO;
-  }
-  return [self isCreateAllowedInACL];
-}
-
-- (BOOL)hasAdminAccess {
-  [self _loadACLPermissionFlags];
-  return self->somfFlags.hasAdminAccess ? YES : NO;
 }
 
 /* messages */
@@ -369,22 +302,181 @@ static BOOL useAltNamespace = NO;
   SOGoMailAccount *account;
   NSString *n;
 
-  if (self->folderType != nil)
-    return self->folderType;
+  if (folderType != nil)
+    return folderType;
   
   account = [self mailAccountFolder];
   n       = [self nameInContainer];
   
   if ([n isEqualToString:[account trashFolderNameInContext:nil]])
-    self->folderType = @"IPF.Trash";
+    folderType = @"IPF.Trash";
   else if ([n isEqualToString:[account inboxFolderNameInContext:nil]])
-    self->folderType = @"IPF.Inbox";
+    folderType = @"IPF.Inbox";
   else if ([n isEqualToString:[account sentFolderNameInContext:nil]])
-    self->folderType = @"IPF.Sent";
+    folderType = @"IPF.Sent";
   else
-    self->folderType = @"IPF.Folder";
+    folderType = @"IPF.Folder";
   
-  return self->folderType;
+  return folderType;
+}
+
+/* acls */
+
+- (NSArray *) _imapAclsToSOGoAcls: (NSString *) imapAcls
+{
+  unsigned int count, max;
+  NSMutableArray *SOGoAcls;
+
+  SOGoAcls = [NSMutableArray array];
+  max = [imapAcls length];
+  for (count = 0; count < max; count++)
+    {
+      switch ([imapAcls characterAtIndex: count])
+	{
+	case 'l':
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectViewer];
+	  break;
+	case 'r':
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectReader];
+	  break;
+	case 's':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_SeenKeeper];
+	  break;
+	case 'w':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_Writer];
+	  break;
+	case 'i':
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectCreator];
+	  break;
+	case 'p':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_Poster];
+	  break;
+	case 'k':
+	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
+	  break;
+	case 'x':
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
+	  break;
+	case 't':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_MessageEraser];
+	  break;
+	case 'e':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_Expunger];
+	  break;
+	case 'a':
+	  [SOGoAcls addObjectUniquely: SOGoMailRole_Administrator];
+	  break;
+	}
+    }
+
+  return SOGoAcls;
+}
+
+- (NSString *) _sogoAclsToImapAcls: (NSArray *) sogoAcls
+{
+  NSMutableString *imapAcls;
+  NSEnumerator *acls;
+  NSString *currentAcl;
+  char character;
+
+  imapAcls = [NSMutableString string];
+  acls = [sogoAcls objectEnumerator];
+  currentAcl = [acls nextObject];
+  while (currentAcl)
+    {
+      if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
+	character = 'l';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectReader])
+	character = 'r';
+      else if ([currentAcl isEqualToString: SOGoMailRole_SeenKeeper])
+	character = 's';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Writer])
+	character = 'w';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectCreator])
+	character = 'i';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Poster])
+	character = 'p';
+      else if ([currentAcl isEqualToString: SOGoRole_FolderCreator])
+	character = 'k';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectEraser])
+	character = 'x';
+      else if ([currentAcl isEqualToString: SOGoMailRole_MessageEraser])
+	character = 't';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Expunger])
+	character = 'e';
+      else if ([currentAcl isEqualToString: SOGoMailRole_Administrator])
+	character = 'a';
+      else
+	character = 0;
+
+      if (character)
+	[imapAcls appendFormat: @"%c", character];
+
+      currentAcl = [acls nextObject];
+    }
+
+  return imapAcls;
+}
+
+- (NSArray *) aclUsers
+{
+  NSDictionary *imapAcls;
+
+  imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+
+  return [imapAcls allKeys];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  NSDictionary *imapAcls;
+  NSString *userAcls;
+
+  imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+  userAcls = [imapAcls objectForKey: uid];
+  if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
+    userAcls = [imapAcls objectForKey: defaultUserID];
+
+  return [self _imapAclsToSOGoAcls: userAcls];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+{
+  NSEnumerator *uids;
+  NSString *currentUID;
+  NSString *folderName;
+  NGImap4Client *client;
+
+  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  client = [imap4 client];
+
+  uids = [users objectEnumerator];
+  currentUID = [uids nextObject];
+  while (currentUID)
+    {
+      [client deleteACL: folderName uid: currentUID];
+      currentUID = [uids nextObject];
+    }
+}
+
+- (void) setRoles: (NSArray *) roles
+	  forUser: (NSString *) uid
+{
+  NSString *acls, *folderName;
+
+  acls = [self _sogoAclsToImapAcls: roles];
+  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  [[imap4 client] setACL: folderName rights: acls uid: uid];
+}
+
+- (NSString *) defaultUserID
+{
+  return defaultUserID;
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return YES;
 }
 
 @end /* SOGoMailFolder */

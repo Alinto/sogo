@@ -29,10 +29,11 @@
 {
   BOOL prepared;
   BOOL publishInFreeBusy;
-  NSArray *acls;
+  NSArray *aclUsers;
   NSArray *savedUIDs;
   NSMutableArray *users;
   NSString *currentUser;
+  NSString *defaultUserID;
 }
 
 - (NSArray *) aclsForObject;

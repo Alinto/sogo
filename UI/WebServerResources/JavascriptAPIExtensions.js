@@ -2,6 +2,15 @@ String.prototype.trim = function() {
   return this.replace(/(^\s+|\s+$)/g, '');
 }
 
+String.prototype.repeat = function(count) {
+   var newString = "";
+   for (var i = 0; i < count; i++) {
+      newString += this;
+   }
+
+   return newString;
+}
+
 String.prototype.capitalize = function() {
   return this.replace(/\w+/g,
                       function(a) {

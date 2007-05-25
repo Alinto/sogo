@@ -41,17 +41,6 @@
   NSArray            *filenames;
   NSString           *folderType;
   NGImap4MailboxInfo *selectInfo;
-  struct {
-    int didCheckMyRights:1;
-    int isDeleteAndExpungeAllowed:1;
-    int isReadAllowed:1;
-    int isWriteAllowed:1;
-    int isInsertAllowed:1;
-    int isPostAllowed:1;
-    int isCreateAllowed:1;
-    int hasAdminAccess:1;
-    int reserved:24;
-  } somfFlags;
 }
 
 /* messages */
@@ -62,16 +51,6 @@
 - (NSException *)postData:(NSData *)_data flags:(id)_flags;
 
 - (NSException *)expunge;
-
-/* permissions */
-
-- (BOOL)isDeleteAndExpungeAllowed;
-- (BOOL)isReadAllowed;
-- (BOOL)isWriteAllowed;
-- (BOOL)isInsertAllowed;
-- (BOOL)isPostAllowed;
-- (BOOL)isCreateAllowed;
-- (BOOL)hasAdminAccess;
 
 /* flags */
 

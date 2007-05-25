@@ -26,7 +26,12 @@
 NSString *SOGoRole_ObjectCreator = @"ObjectCreator";
 NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
 NSString *SOGoRole_ObjectViewer = @"ObjectViewer";
+NSString *SOGoRole_ObjectReader = @"ObjectReader";
 NSString *SOGoRole_ObjectEditor = @"ObjectEditor";
+NSString *SOGoRole_FolderCreator = @"FolderCreator";
+NSString *SOGoRole_FolderEraser = @"FolderEraser";
+NSString *SOGoRole_FolderViewer = @"FolderViewer";
+NSString *SOGoRole_FolderReader = @"FolderReader";
 NSString *SOGoRole_AuthorizedSubscriber = @"AuthorizedSubscriber";
 NSString *SOGoRole_None = @"None";
 
@@ -60,6 +65,13 @@ NSString *SOGoCalendarRole_ComponentDAndTViewer = @"ComponentDAndTViewer";
 NSString *SOGoCalendarRole_ComponentModifier = @"ComponentModifier";
 NSString *SOGoCalendarRole_ComponentResponder = @"ComponentResponder";
 
+NSString *SOGoMailRole_SeenKeeper = @"MailSeenKeeper";
+NSString *SOGoMailRole_Writer = @"MailWriter";
+NSString *SOGoMailRole_Poster = @"MailPoster";
+NSString *SOGoMailRole_Expunger = @"MailExpunger";
+NSString *SOGoMailRole_Administrator = @"MailAdministrator";
+NSString *SOGoMailRole_MessageEraser = @"MailMessageEraser";
+
 /* permissions */
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
@@ -83,3 +95,4 @@ NSString *SOGoCalendarPerm_ViewAllComponent = @"ViewAllComponent";
 NSString *SOGoCalendarPerm_ViewDAndT = @"ViewDAndT";
 NSString *SOGoCalendarPerm_ModifyComponent = @"ModifyComponent";
 NSString *SOGoCalendarPerm_RespondToComponent = @"RespondToComponent";
+

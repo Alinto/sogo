@@ -14,10 +14,7 @@
     <div class="menu" id="monthListMenu">
       <ul>
         <var:foreach list="monthMenuItems" item="monthMenuItem"
-          ><li
-            onmousedown="return false;"
-            onclick="return onMonthMenuItemClick(this);"
-            var:month="monthMenuItem"
+          ><li var:month="monthMenuItem"
             ><var:string value="monthMenuItemLabel" /></li>
         </var:foreach
           ></ul>
@@ -26,41 +23,37 @@
     <div class="menu" id="yearListMenu">
       <ul>
         <var:foreach list="yearMenuItems" item="yearMenuItem"
-          ><li
-            onmousedown="return false;"
-            onclick="return onYearMenuItemClick(this);"
-            ><var:string value="yearMenuItem" /></li>
+          ><li><var:string value="yearMenuItem" /></li>
         </var:foreach
         ></ul>
     </div>
 
     <div class="menu" id="appointmentsListMenu">
       <ul>
-        <li onmouseup="newEvent(this, 'event');"><var:string label:value="New Event..."/></li>
-        <li class="separator"></li>
-        <li onmouseup="newEvent(this, 'task');"><var:string label:value="New Task..."/></li>
-        <li onmouseup="editEvent();"><var:string label:value="Edit Selected Event..."/></li>
-        <li onmouseup="deleteEvent();"><var:string label:value="Delete Selected Event"/></li>
-        <li class="separator"></li>
-        <li onmouseup="onSelectAll();"><var:string label:value="Select All"/></li>
-        <li class="separator"></li>
-        <li onmouseup="onToggleWorkweekDaysOnly();"><var:string label:value="Workweek days only" /></li>
-        <li onmouseup="onToggleTasksInView();"><var:string label:value="Tasks in View"/></li>
+        <li><var:string label:value="New Event..."/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="New Task..."/></li>
+        <li><var:string label:value="Edit Selected Event..."/></li>
+        <li><var:string label:value="Delete Selected Event"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Select All"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Workweek days only"/></li>
+        <li><var:string label:value="Tasks in View"/></li>
       </ul>
     </div>
 
     <div class="menu" id="calendarsMenu">
       <ul>
-        <li class="disabled" id="newCalendarMenuEntry"><var:string label:value="New Calendar..."/></li>
-        <li class="disabled" id="deleteCalendarMenuEntry"><var:string label:value="Delete Calendar"/></li>
-        <li id="accessRightsMenuEntry"><var:string label:value="Access Rights..." /></li>
-        <li class="separator"></li>
-        <li class="disabled" id="exportCalendarMenuEntry"><var:string label:value="Export Calendar..."/></li>
-        <li class="disabled" id="publishCalendarMenuEntry"><var:string label:value="Publish Calendar..."/></li>
-        <li class="separator"></li>
-        <li class="disabled" id="publishCalendarMenuEntry"><var:string label:value="Reload Remote Calendars"/></li>
-        <li class="separator"></li>
-        <li class="disabled" id="calendarPropertiesMenuEntry"><var:string label:value="Properties"/></li>
+        <li><var:string label:value="New Calendar..."/></li>
+        <li><var:string label:value="Delete Calendar"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Export Calendar..."/></li>
+        <li><var:string label:value="Publish Calendar..."/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Reload Remote Calendars"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Sharing..." /></li>
       </ul>
     </div>
 

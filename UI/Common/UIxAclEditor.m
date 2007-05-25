@@ -29,6 +29,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 
 #import "UIxAclEditor.h"
 
@@ -38,11 +39,12 @@
 {
   if ((self = [super init]))
     {
-      acls = nil;
+      aclUsers = nil;
       prepared = NO;
       publishInFreeBusy = NO;
       users = [NSMutableArray new];
       currentUser = nil;
+      defaultUserID = nil;
       savedUIDs = nil;
     }
 
@@ -54,15 +56,16 @@
   [savedUIDs release];
   [users release];
   [currentUser release];
+  [defaultUserID release];
   [super dealloc];
 }
 
 - (NSArray *) aclsForObject
 {
-  if (!acls)
-    acls = [[self clientObject] acls];
+  if (!aclUsers)
+    aclUsers = [[self clientObject] aclUsers];
 
-  return acls;
+  return aclUsers;
 }
 
 - (NSString *) _displayNameForUID: (NSString *) uid
@@ -86,30 +89,32 @@
 
 - (NSString *) defaultUserID
 {
-  return SOGoDefaultUserID;
+  if (!defaultUserID)
+    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+
+  return defaultUserID;
 }
 
 - (void) _prepareUsers
 {
   NSEnumerator *aclsEnum;
-  NSDictionary *currentAcl;
   NSString *currentUID, *ownerLogin;
 
   ownerLogin = [[self clientObject] ownerInContext: context];
+  if (!defaultUserID)
+    ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
 
   aclsEnum = [[self aclsForObject] objectEnumerator];
-  currentAcl = [aclsEnum nextObject];
-  while (currentAcl)
+  currentUID = [aclsEnum nextObject];
+  while (currentUID)
     {
-      currentUID = [currentAcl objectForKey: @"c_uid"];
       if (!([currentUID isEqualToString: ownerLogin]
-	    || [currentUID isEqualToString: SOGoDefaultUserID]
-	    || [users containsObject: currentUID]))
-	  [users addObject: currentUID];
-      currentAcl = [aclsEnum nextObject];
-
-      prepared = YES;
+	    || [currentUID isEqualToString: defaultUserID]))
+	[users addObjectUniquely: currentUID];
+      currentUID = [aclsEnum nextObject];
     }
+
+  prepared = YES;
 }
 
 - (NSArray *) usersForObject

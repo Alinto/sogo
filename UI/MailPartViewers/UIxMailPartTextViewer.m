@@ -39,9 +39,7 @@
 - (NSString *) flatContentAsString
 {
   NSMutableString *content;
-  NSString *superContent, *urlText, *newUrlText;
-  NSRange httpRange, rest, currentURL;
-  unsigned int length;
+  NSString *superContent;
 
   content = [NSMutableString string];
   superContent = [[super flatContentAsString] stringByEscapingHTMLString];

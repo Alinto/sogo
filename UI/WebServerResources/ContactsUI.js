@@ -91,7 +91,7 @@ function contactsListCallback(http) {
 function onContactFoldersContextMenu(event) {
   var menu = $("contactFoldersMenu");
   Event.observe(menu, "hideMenu", onContactFoldersContextMenuHide, false);
-  onMenuClick(event, "contactFoldersMenu");
+  popupMenu(event, "contactFoldersMenu", this);
 
   var topNode = $("contactFolders");
   var selectedNodes = topNode.getSelectedRows();
@@ -105,7 +105,7 @@ function onContactFoldersContextMenu(event) {
 function onContactContextMenu(event, element) {
   var menu = $("contactMenu");
   Event.observe(menu, "hideMenu", onContactContextMenuHide, false);
-  onMenuClick(event, "contactMenu");
+  popupMenu(event, "contactMenu", element);
 
   var topNode = $("contactsList");
   var selectedNodes = topNode.getSelectedRows();
@@ -235,31 +235,23 @@ function onContactRowDblClick(event, node) {
   return false;
 }
 
-function onMenuEditContact(event, node) {
-  var node = getParentMenu(node).menuTarget.parentNode;
-  var contactId = node.getAttribute('id');
+function onMenuEditContact(event) {
+  var contactId = document.menuTarget.getAttribute('id');
 
   openContactWindow(null,
                     URLForFolderID(currentContactFolder)
                     + "/" + contactId + "/edit");
-
-  return false;
 }
 
-function onMenuWriteToContact(event, node) {
-  var node = getParentMenu(node).menuTarget.parentNode;
-  var contactId = node.getAttribute('id');
+function onMenuWriteToContact(event) {
+   var contactId = document.menuTarget.getAttribute('id');
 
-  openMailComposeWindow(ApplicationBaseURL + currentContactFolder
-                        + "/" + contactId + "/write");
-
-  return false;
+   openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+			 + "/" + contactId + "/write");
 }
 
-function onMenuDeleteContact(event, node) {
-  uixDeleteSelectedContacts(node);
-
-  return false;
+function onMenuDeleteContact(event) {
+  uixDeleteSelectedContacts(this);
 }
 
 function onToolbarEditSelectedContacts(event) {
@@ -594,9 +586,8 @@ function configureContactFolders() {
   if (contactFolders) {
     Event.observe(contactFolders, "selectionchange", onFolderSelectionChange, false);
     var lis = contactFolders.childNodesWithTag("li");
-    for (var i = 0; i < lis.length; i++) {
+    for (var i = 0; i < lis.length; i++)
       setEventsOnContactFolder(lis[i]);
-    }
 
     lookupDeniedFolders();
     contactFolders.setStyle({ visibility: 'visible' });
@@ -612,21 +603,27 @@ function setEventsOnContactFolder(node) {
   Event.observe(node, "contextmenu", onContactFoldersContextMenu, false);
 }
 
-function onAccessRightsMenuEntryMouseUp(event) {
-  var folders = $("contactFolders");
-  var selected = folders.getSelectedNodes()[0];
-  var title = this.innerHTML;
-  var url = URLForFolderID(selected.getAttribute("id"))
+function onMenuSharing(event) {
+   var folders = $("contactFolders");
+   var selected = folders.getSelectedNodes()[0];
+   var title = this.innerHTML;
+   var url = URLForFolderID(selected.getAttribute("id"));
 
-  openAclWindow(url + "/acls", title);
+   openAclWindow(url + "/acls", title);
 }
 
 function initializeMenus() {
-  var menus = new Array("contactFoldersMenu", "contactMenu", "searchMenu");
-  initMenusNamed(menus);
+   menus["menuIds"] = new Array("contactFoldersMenu", "contactMenu",
+				"searchMenu");
+   menus["contactFoldersMenu"] = new Array(null, "-", null,
+					   null, "-", null, "-",
+					   onMenuSharing);
+   menus["contactMenu"] = new Array(onMenuEditContact, "-",
+				    onMenuWriteToContact, null, "-",
+				    onMenuDeleteContact);
+   menus["searchMenu"] = new Array(setSearchCriteria);
 
-  var menuEntry = $("accessRightsMenuEntry");
-  Event.observe(menuEntry, "mouseup", onAccessRightsMenuEntryMouseUp, false);
+   initMenus();
 }
 
 function configureSearchField() {

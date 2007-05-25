@@ -573,8 +573,14 @@ function log(message) {
       logWindow = logWindow.opener;
   }
   var logConsole = logWindow.document.getElementById("logConsole");
-  if (logConsole)
-    logConsole.innerHTML += message.replace("<", "&lt;", "g") + '<br />' + "\n";
+  if (logConsole) {
+     var logMessage = message.replace("<", "&lt;", "g");
+     logMessage = logMessage.replace("\r\n", "<br />\n", "g");
+     logMessage = logMessage.replace("\n", "<br />\n", "g");
+     logMessage = logMessage.replace(" ", "&nbsp;", "g");
+     logMessage += '<br />' + "\n";
+     logConsole.innerHTML += logMessage;
+  }
 }
 
 function backtrace() {
@@ -684,10 +690,9 @@ function popupSearchMenu(event) {
 function setSearchCriteria(event) {
   searchValue = $("searchValue");
   searchCriteria = $("searchCriteria");
-  
-  var node = event.target;
-  searchValue.setAttribute("ghost-phrase", node.innerHTML);
-  searchCriteria = node.getAttribute('id');
+
+  searchValue.setAttribute("ghost-phrase", this.innerHTML);
+//   searchCriteria = this.getAttribute('id');
 }
 
 function checkSearchValue(event) {
@@ -910,7 +915,8 @@ function initMenus() {
       var menuId = menus["menuIds"][i];
       var callbacks = menus[menuId];
       var menuDIV = $(menuId);
-      initMenu(menuDIV, callbacks);
+      if (menuDIV)
+	 initMenu(menuDIV, callbacks);
    }
 }
 
@@ -1077,11 +1083,11 @@ function indexColor(number) {
 
 var onLoadHandler = function (event) {
   queryParameters = parseQueryParameters('' + window.location);
-  if (!$(document.body).hasClassName("popup")) {
+  if (!document.body.hasClassName("popup")) {
     initLogConsole();
-    initializeMenus();
     initCriteria();
   }
+  initializeMenus();
   initTabs();
   configureDragHandles();
   configureSortableTableHeaders();

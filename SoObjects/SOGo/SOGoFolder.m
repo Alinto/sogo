@@ -31,6 +31,8 @@
 #import <unistd.h>
 #import <stdlib.h>
 
+static NSString *defaultUserID = @"<default>";
+
 @implementation SOGoFolder
 
 + (int) version
@@ -266,16 +268,18 @@
 
 /* acls as a container */
 
-- (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
+- (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;
 {
   EOQualifier *qualifier;
   NSString *qs;
+  NSArray *records;
 
   qs = [NSString stringWithFormat: @"c_object = '/%@'",
 		 [objectPathArray componentsJoinedByString: @"/"]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+  records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
 
-  return [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
+  return [records valueForKey: @"c_uid"];
 }
 
 - (NSArray *) _fetchAclsForUser: (NSString *) uid
@@ -339,8 +343,8 @@
       [self _cacheRoles: acls forUser: uid forObjectAtPath: objectPath];
     }
 
-  if (!([acls count] || [uid isEqualToString: SOGoDefaultUserID]))
-    acls = [self aclsForUser: SOGoDefaultUserID
+  if (!([acls count] || [uid isEqualToString: defaultUserID]))
+    acls = [self aclsForUser: defaultUserID
 		 forObjectAtPath: objectPathArray];
 
   return acls;
@@ -418,15 +422,9 @@
 }
 
 /* acls */
-- (NSArray *) defaultAclRoles
+- (NSArray *) aclUsers
 {
-#warning this should be changed to something useful
-  return nil;
-}
-
-- (NSArray *) acls
-{
-  return [self aclsForObjectAtPath: [self pathArrayToSoObject]];
+  return [self aclUsersForObjectAtPath: [self pathArrayToSoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -447,6 +445,16 @@
 {
   return [self removeAclsForUsers: users
                forObjectAtPath: [self pathArrayToSoObject]];
+}
+
+- (NSString *) defaultUserID
+{
+  return defaultUserID;
+}
+
+- (BOOL) hasSupportForDefaultRoles
+{
+  return YES;
 }
 
 /* WebDAV */

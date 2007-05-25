@@ -35,6 +35,24 @@
 "Account: " = "Account: ";
 "Shared Account: " = "Shared Account: ";
 
+/* acls */
+"Default Roles" = "Default Roles";
+
+"List and see this folder" = "List and see this folder";
+"Read mails from this folder" = "Read mails from this folder";
+"Mark mails read and unread" = "Mark mails read and unread";
+"Modify the flags of the mails in this folder" = "Modify the flags of the mails in this folder";
+"Insert, copy and move mails into this folder" = "Insert, copy and move mails into this folder";
+"Post mails" = "Post mails";
+"Add subfolders to this folder" = "Add subfolders to this folder";
+"Remove this folder" = "Remove this folder";
+"Erase mails from this folder" = "Erase mails from this folder";
+"Expunge this folder" = "Expunge this folder";
+"Modify the acl of this folder" = "Modify the acl of this folder";
+
+"Update" = "Update";
+"Cancel" = "Cancel";
+
 /* Mail edition */
 
 "From"          = "From";

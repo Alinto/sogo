@@ -72,7 +72,7 @@
 - (NSException *) delete;
 
 /* acls as a container */
-- (NSArray *) aclsForObjectAtPath: (NSArray *) objectPathArray;
+- (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;
 - (NSArray *) aclsForUser: (NSString *) uid
           forObjectAtPath: (NSArray *) objectPathArray;
 - (void) setRoles: (NSArray *) roles

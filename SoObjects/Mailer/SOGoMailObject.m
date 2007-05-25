@@ -19,15 +19,35 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailObject.h"
-#include "SOGoMailFolder.h"
-#include "SOGoMailAccount.h"
-#include "SOGoMailManager.h"
-#include "SOGoMailBodyPart.h"
-#include <NGImap4/NGImap4Envelope.h>
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include <NGMail/NGMimeMessageParser.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGExtensions/NSString+Encoding.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Envelope.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMimeMessageParser.h>
+
+#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import "SOGoMailFolder.h"
+#import "SOGoMailAccount.h"
+#import "SOGoMailManager.h"
+#import "SOGoMailBodyPart.h"
+
+#import "SOGoMailObject.h"
 
 @implementation SOGoMailObject
 
@@ -639,8 +659,15 @@ static BOOL debugSoParts       = NO;
 
 /* permissions */
 
-- (BOOL)isDeletionAllowed {
-  return [[self container] isDeleteAndExpungeAllowed];
+- (BOOL) isDeletionAllowed
+{
+  NSArray *parentAcl;
+  NSString *login;
+
+  login = [[context activeUser] login];
+  parentAcl = [[self container] aclsForUser: login];
+
+  return [parentAcl containsObject: SOGoMailRole_MessageEraser];
 }
 
 /* name lookup */
