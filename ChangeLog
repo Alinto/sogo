@@ -1,3 +1,16 @@
+2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-createFolderAction]): new method implementing subfolder creation.
+	([UIxMailFolderActions -renameFolderAction]): new method
+	implementing subfolder renaming (basic implementation to be
+	finalized later).
+	([UIxMailFolderActions -deleteFolderAction]): new method
+	implementing folder deletion.
+
+	* UI/MailerUI/UIxMailFolderActions.[hm]: new module implementing
+	web actions related to the handling of imap folder.
+
 2007-05-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
