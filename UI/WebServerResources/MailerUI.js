@@ -1233,7 +1233,7 @@ function buildMailboxes(accountName, encoded) {
 }
 
 function onMenuCreateFolder(event) {
-   var name = window.prompt(labels["Name :"], "");
+   var name = window.prompt(labels["Name :"].decodeEntities(), "");
    if (name && name.length > 0) {
       var folderID = document.menuTarget.getAttribute("dataname");
       var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
@@ -1242,7 +1242,8 @@ function onMenuCreateFolder(event) {
 }
 
 function onMenuRenameFolder(event) {
-   var name = window.prompt(labels["Enter the new name of your folder :"],
+   var name = window.prompt(labels["Enter the new name of your folder :"]
+			    .decodeEntities(),
 			    "");
    if (name && name.length > 0) {
       var folderID = document.menuTarget.getAttribute("dataname");
@@ -1252,7 +1253,7 @@ function onMenuRenameFolder(event) {
 }
 
 function onMenuDeleteFolder(event) {
-   var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"]);
+   var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"].decodeEntities());
    if (answer) {
       var folderID = document.menuTarget.getAttribute("dataname");
       var urlstr = URLForFolderID(folderID) + "/deleteFolder";
@@ -1262,11 +1263,10 @@ function onMenuDeleteFolder(event) {
 
 function folderOperationCallback(http) {
    if (http.readyState == 4
-       && http.status == 204) {
+       && http.status == 204)
       initMailboxTree();
-   }
    else
-      window.alert(labels["Operation failed"]);
+      window.alert(labels["Operation failed"].decodeEntities());
 }
 
 function initializeMenus() {
