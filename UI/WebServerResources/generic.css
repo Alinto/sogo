@@ -293,8 +293,7 @@ SPAN.toolbarButton:active
   border-bottom: 1px solid #424142; }
 
 .menu UL
-{ 
-  cursor: default;
+{ cursor: default;
   list-style-type: none;
   list-style-image: none;
   margin: 0px;

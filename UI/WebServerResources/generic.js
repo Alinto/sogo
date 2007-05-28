@@ -929,12 +929,13 @@ function initTabs() {
 }
 
 function initMenus() {
-   for (var i = 0; i < menus["menuIds"].length; i++) {
-      var menuId = menus["menuIds"][i];
-      var callbacks = menus[menuId];
-      var menuDIV = $(menuId);
-      if (menuDIV)
-	 initMenu(menuDIV, callbacks);
+   var menus = getMenus();
+   if (menus) {
+      for (var menuID in menus) {
+	 var menuDIV = $(menuID);
+	 if (menuDIV)
+	    initMenu(menuDIV, menus[menuID]);
+      }
    }
 }
 
@@ -1106,7 +1107,7 @@ function onLoadHandler(event) {
 	initLogConsole();
 	initCriteria();
     }
-    initializeMenus();
+    initMenus();
     initTabs();
     configureDragHandles();
     configureSortableTableHeaders();
@@ -1157,7 +1158,7 @@ addEvent(window, 'DOMContentLoaded', onLoadHandler);
 function configureDragHandles() {
 }
 
-function initializeMenus() {
+function getMenus() {
 }
 
 function onHeaderClick(event) {

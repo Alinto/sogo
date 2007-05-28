@@ -1275,12 +1275,8 @@ function folderOperationCallback(http) {
       window.alert(labels["Operation failed"].decodeEntities());
 }
 
-function initializeMenus() {
-   menus["menuIds"] = new Array("accountIconMenu", "inboxIconMenu",
-				"trashIconMenu", "mailboxIconMenu",
-				"addressMenu", "messageListMenu",
-				"messageContentMenu", "label-menu",
-				"mark-menu");
+function getMenus() {
+   var menus = {}
    menus["accountIconMenu"] = new Array(null, null, onMenuCreateFolder, null,
 					null, null);
    menus["inboxIconMenu"] = new Array(null, null, null, "-", null,
@@ -1317,7 +1313,8 @@ function initializeMenus() {
 				   null);
    menus["mark-menu"] = new Array(null, null, null, null, "-", null, "-",
 				  null, null, null);
-   initMenus();
+
+   return menus;
 }
 
 Event.observe(window, "load", initMailer);

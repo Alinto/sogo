@@ -982,11 +982,9 @@ function browseURL(anchor, event) {
   return false;
 }
 
-function initializeMenus() {
-   menus["menuIds"] = new Array("monthListMenu", "yearListMenu",
-				"appointmentsListMenu",
- 				"calendarsMenu",
- 				"searchMenu");
+function getMenus() {
+   var menus = {};
+
    var dateMenu = new Array();
    for (var i = 0; i < 12; i++)
       dateMenu.push(onMonthMenuItemClick);
@@ -1006,10 +1004,7 @@ function initializeMenus() {
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
 
-   initMenus();
-   var selector = $("calendarSelector");
-   if (selector)
-      selector.attachMenu("calendarsMenu");
+   return menus;
 }
 
 function onMenuSharing(event) {
@@ -1143,6 +1138,9 @@ function initCalendars() {
    if (!document.body.hasClassName("popup")) {
       initCalendarSelector();
       configureSearchField();
+      var selector = $("calendarSelector");
+      if (selector)
+	 selector.attachMenu("calendarsMenu");
    }
 }
 

@@ -612,9 +612,8 @@ function onMenuSharing(event) {
    openAclWindow(url + "/acls", title);
 }
 
-function initializeMenus() {
-   menus["menuIds"] = new Array("contactFoldersMenu", "contactMenu",
-				"searchMenu");
+function getMenus() {
+   var menus = {};
    menus["contactFoldersMenu"] = new Array(null, "-", null,
 					   null, "-", null, "-",
 					   onMenuSharing);
@@ -623,7 +622,7 @@ function initializeMenus() {
 				    onMenuDeleteContact);
    menus["searchMenu"] = new Array(setSearchCriteria);
 
-   initMenus();
+   return menus;
 }
 
 function configureSearchField() {
