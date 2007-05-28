@@ -1102,7 +1102,7 @@ function indexColor(number) {
 
 function onLoadHandler(event) {
     queryParameters = parseQueryParameters('' + window.location);
-    if (!document.body.hasClassName("popup")) {
+    if (!$(document.body).hasClassName("popup")) {
 	initLogConsole();
 	initCriteria();
     }
@@ -1151,7 +1151,7 @@ function configureLinkBanner() {
   }
 }
 
-Event.observe(window, "load", onLoadHandler, false);
+addEvent(window, 'DOMContentLoaded', onLoadHandler);
 
 /* stubs */
 function configureDragHandles() {

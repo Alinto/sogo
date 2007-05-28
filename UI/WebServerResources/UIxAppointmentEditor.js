@@ -248,7 +248,7 @@ this.onAdjustEndTime = function(event) {
 this.initTimeWidgets = function (widgets) {
   this.timeWidgets = widgets;
 
-  widgets['start']['date'].addEventListener("change", this.onAdjustEndTime, false);
-  widgets['start']['hour'].addEventListener("change", this.onAdjustEndTime, false);
-  widgets['start']['minute'].addEventListener("change", this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['date'], "change", this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['hour'], "change", this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['minute'], "change", this.onAdjustEndTime, false);
 }

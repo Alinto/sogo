@@ -1052,7 +1052,6 @@ function initCalendarSelector() {
     Event.observe(input, "change",  updateCalendarStatus);
     Event.observe(list[i], "mousedown",  listRowMouseDownHandler);
     Event.observe(list[i], "click",  onRowClick);
-//     list[i].addEventListener("contextmenu", onContactFoldersContextMenu, false);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -1147,4 +1146,4 @@ function initCalendars() {
    }
 }
 
-Event.observe(window, "load", initCalendars);
+addEvent(window, 'DOMContentLoaded', initCalendars);

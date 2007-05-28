@@ -22,7 +22,7 @@ function onContactKeydown(event) {
     while (!(row instanceof HTMLTableRowElement))
       row = row.nextSibling;
     this.blur();
-    var input = row.cells[0].childNodesWithTag("input")[0];
+    var input = $(row.cells[0]).childNodesWithTag("input")[0];
     if (input.readOnly)
       newAttendee(null);
     else {
@@ -111,7 +111,7 @@ function resetFreeBusyZone() {
   var table = $("freeBusy");
   var row = table.tHead.rows[2];
   for (var i = 1; i < row.cells.length; i++) {
-    var nodes = row.cells[i].childNodesWithTag("span");
+    var nodes = $(row.cells[i]).childNodesWithTag("span");
     for (var j = 0; j < nodes.length; j++)
       nodes[j].removeClassName("busy");
   }
@@ -165,7 +165,7 @@ function redisplayFreeBusyZone() {
   var currentCellNbr = stHour - 7;
   var currentCell = row.cells[currentCellNbr];
   var currentSpanNbr = stMinute;
-  var spans = currentCell.childNodesWithTag("span");
+  var spans = $(currentCell).childNodesWithTag("span");
   resetFreeBusyZone();
   while (deltaSpans > 0) {
     var currentSpan = spans[currentSpanNbr];
@@ -175,7 +175,7 @@ function redisplayFreeBusyZone() {
       currentSpanNbr = 0;
       currentCellNbr++;
       currentCell = row.cells[currentCellNbr];
-      spans = currentCell.childNodesWithTag("span");
+      spans = $(currentCell).childNodesWithTag("span");
     }
     deltaSpans--;
   }
@@ -185,15 +185,16 @@ function newAttendee(event) {
   var table = $("freeBusy");
   var tbody = table.tBodies[0];
   var model = tbody.rows[tbody.rows.length - 1];
-  var newAttendeeRow = tbody.rows[tbody.rows.length - 2]
+  var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
   var newRow = model.cloneNode(true);
-  var input = newRow.cells[0].childNodesWithTag("input")[0];
-  input.setAttribute("autocomplete", "off");
   newRow.setAttribute("class", "");
   tbody.insertBefore(newRow, newAttendeeRow);
+  //table.tBodies[0].appendChild(newRow);
+  var input = $(newRow.cells[0]).childNodesWithTag("input")[0];
+  input.setAttribute("autocomplete", "off");
   input.serial = "pouet";
-  input.addEventListener("blur", checkAttendee, false);
-  input.addEventListener("keydown", onContactKeydown, false);
+  Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
+  Event.observe(input, "keydown", onContactKeydown.bindAsEventListener(input));
   input.focus();
   input.focussed = true;
 }
@@ -259,7 +260,7 @@ function setSlot(tds, nbr, status) {
   if (tdnbr > 7 && tdnbr < 19) {
     var i = (days * 11 + tdnbr - 7);
     var td = tds[i];
-    var spans = td.childNodesWithTag("span");
+    var spans = $(td).childNodesWithTag("span");
     if (status == '2')
       spans[spannbr].addClassName("maybe-busy");
     else
@@ -295,11 +296,11 @@ function resetAttendeesValue() {
       currentInput.setAttribute("uid", null);
     }
     currentInput.setAttribute("autocomplete", "off");
-    currentInput.addEventListener("keydown", onContactKeydown, false);
-    currentInput.addEventListener("blur", checkAttendee, false);
+    Event.observe(currentInput, "keydown", onContactKeydown.bindAsEventListener(currentInput), false);
+    Event.observe(currentInput, "blur", checkAttendee.bindAsEventListener(currentInput), false);
   }
   inputs[inputs.length - 2].setAttribute("autocomplete", "off");
-  inputs[inputs.length - 2].addEventListener("click", newAttendee, false);
+  Event.observe(inputs[inputs.length - 2], "click", newAttendee, false);
 }
 
 function resetAllFreeBusys() {
@@ -317,18 +318,18 @@ function initializeWindowButtons() {
    var okButton = $("okButton");
    var cancelButton = $("cancelButton");
 
-   okButton.addEventListener("click", onEditorOkClick, false);
-   cancelButton.addEventListener("click", onEditorCancelClick, false);
+   Event.observe(okButton, "click", onEditorOkClick, false);
+   Event.observe(cancelButton, "click", onEditorCancelClick, false);
 
    var buttons = $("freeBusyViewButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
+     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
    buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
+     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
    buttons = $("freeBusyButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-      buttons[i].addEventListener("click", listRowMouseDownHandler, false);
+     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
 }
 
 function onEditorOkClick(event) {
@@ -398,14 +399,13 @@ function initializeTimeWidgets() {
    synchronizeWithParent("startTime", "startTime");
    synchronizeWithParent("endTime", "endTime");
 
-   $("startTime_date").addEventListener("change", onTimeDateWidgetChange, false);
-   $("startTime_time_hour").addEventListener("change", onTimeWidgetChange, false);
-   $("startTime_time_minute").addEventListener("change", onTimeWidgetChange,
-					       false);
+   Event.observe($("startTime_date"), "change", onTimeDateWidgetChange, false);
+   Event.observe($("startTime_time_hour"), "change", onTimeWidgetChange, false);
+   Event.observe($("startTime_time_minute"), "change", onTimeWidgetChange, false);
 
-   $("endTime_date").addEventListener("change", onTimeDateWidgetChange, false);
-   $("endTime_time_hour").addEventListener("change", onTimeWidgetChange, false);
-   $("endTime_time_minute").addEventListener("change", onTimeWidgetChange, false);
+   Event.observe($("endTime_date"), "change", onTimeDateWidgetChange, false);
+   Event.observe($("endTime_time_hour"), "change", onTimeWidgetChange, false);
+   Event.observe($("endTime_time_minute"), "change", onTimeWidgetChange, false);
 }
 
 function onTimeWidgetChange() {
@@ -462,7 +462,7 @@ function prepareTableHeaders() {
 	 var header3 = document.createElement("th");
 	 for (var span = 0; span < 4; span++) {
 	    var spanElement = document.createElement("span");
-	    spanElement.addClassName("freeBusyZoneElement");
+	    $(spanElement).addClassName("freeBusyZoneElement");
 	    header3.appendChild(spanElement);
 	 }
 	 rows[2].appendChild(header3);

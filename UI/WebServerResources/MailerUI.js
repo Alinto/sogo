@@ -1078,8 +1078,8 @@ function updateMailboxTreeInPage() {
    var tree = $("mailboxTree");
    var nodes = document.getElementsByClassName("node", tree);
    for (i = 0; i < nodes.length; i++) {
-      Event.observe(nodes[i], "click", onMailboxTreeItemClick);
-      Event.observe(nodes[i], "contextmenu", onFolderMenuClick);
+      Event.observe(nodes[i], "click", onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
+      Event.observe(nodes[i], "contextmenu", onFolderMenuClick.bindAsEventListener(nodes[i]));
       if (!inboxFound
 	  && nodes[i].parentNode.getAttribute("datatype") == "inbox") {
 	 openInbox(nodes[i]);

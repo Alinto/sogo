@@ -1,6 +1,6 @@
 var contactSelectorAction = 'calendars-contacts';
 
-window.addEventListener("load", onTaskEditorLoad, false);
+addEvent(window, 'DOMContentLoaded', onTaskEditorLoad);
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
@@ -249,9 +249,9 @@ this.onAdjustDueTime = function(event) {
 this.initTimeWidgets = function (widgets) {
   this.timeWidgets = widgets;
 
-  widgets['start']['date'].addEventListener("change", this.onAdjustDueTime, false);
-  widgets['start']['hour'].addEventListener("change", this.onAdjustDueTime, false);
-  widgets['start']['minute'].addEventListener("change", this.onAdjustDueTime, false);
+  Event.observe(widgets['start']['date'], "change", this.onAdjustDueTime, false);
+  Event.observe(widgets['start']['hour'], "change", this.onAdjustDueTime, false);
+  Event.observe(widgets['start']['minute'], "change", this.onAdjustDueTime, false);
 }
 
 function onStatusListChange(event) {
@@ -288,7 +288,7 @@ function onStatusListChange(event) {
 
 function initializeStatusLine() {
    var statusList = $("statusList");
-   statusList.addEventListener("mouseup", onStatusListChange, false);
+   Event.observe(statusList, "mouseup", onStatusListChange, false);
 }
 
 function onTaskEditorLoad() {
