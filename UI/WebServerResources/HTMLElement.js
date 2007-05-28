@@ -177,7 +177,7 @@ Element.addMethods({
     element.removeClassName('_selected');
   },
 
-  deselectAll: function (element) {
+  deselectAll: function(element) {
     element = $(element);
     for (var i = 0; i < element.childNodes.length; i++) {
       var node = element.childNodes.item(i);
