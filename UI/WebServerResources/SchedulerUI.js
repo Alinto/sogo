@@ -230,7 +230,7 @@ function displayAppointment(event) {
   _editEventId(this.getAttribute("aptCName"),
                this.getAttribute("owner"));
 
-  event.preventDefault();
+  preventDefault(event);
   event.stopPropagation();
   event.cancelBubble = true;
   event.returnValue = false;
@@ -628,7 +628,7 @@ function onHeaderClick(event) {
 //   log("onHeaderClick: " + this.link);
   _loadAppointmentHref(this.link);
 
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function refreshAppointments() {
@@ -657,7 +657,8 @@ function onListFilterChange() {
 }
 
 function onAppointmentClick(event) {
-  var node = event.target.getParentWithTagName("tr");
+  var target = getTarget(event);
+  var node = target.getParentWithTagName("tr");
   var day = node.getAttribute("day");
   var hour = node.getAttribute("hour");
 
@@ -858,7 +859,7 @@ function updateCalendarStatus(event) {
 
   var nodes = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
-    var input = nodes[i].childNodesWithTag("input")[0];
+    var input = $(nodes[i]).childNodesWithTag("input")[0];
     if (input.checked) {
        var folderId = nodes[i].getAttribute("id");
        var elems = folderId.split(":");
@@ -921,10 +922,10 @@ function calendarEntryCallback(http) {
       input.disabled = disabled;
       if (disabled) {
 	 input.checked = false;
-	 entry.addClassName("denied");
+	 $(entry).addClassName("denied");
       }
       else
-	 entry.removeClassName("denied");
+	 $(entry).removeClassName("denied");
    }
 }
 
@@ -1044,9 +1045,9 @@ function initCalendarSelector() {
   var list = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
-    Event.observe(input, "change",  updateCalendarStatus);
-    Event.observe(list[i], "mousedown",  listRowMouseDownHandler);
-    Event.observe(list[i], "click",  onRowClick);
+    Event.observe(input, "change", updateCalendarStatus.bindAsEventListener(input));
+    Event.observe(list[i], "mousedown", listRowMouseDownHandler);
+    Event.observe(list[i], "click", onRowClick);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -1057,7 +1058,7 @@ function initCalendarSelector() {
 function onCalendarAdd(event) {
    openUserFolderSelector(onFolderSubscribeCB, "calendar");
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function appendCalendar(folderName, folder) {
@@ -1079,8 +1080,8 @@ function appendCalendar(folderName, folder) {
    colorBox.appendChild(document.createTextNode("OO"));
    colorBox.addClassName("colorBox");
    if (color) {
-      colorBox.style.color = color + ";";
-      colorBox.style.backgroundColor = color + ";";
+     colorBox.setStyle({ color: color,
+			 backgroundColor: color });
    }
    li.appendChild(colorBox);
    li.appendChild(document.createTextNode(" " + folderName));
@@ -1121,7 +1122,7 @@ function onCalendarRemove(event) {
      }
   }
 
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function configureSearchField() {
@@ -1144,4 +1145,4 @@ function initCalendars() {
    }
 }
 
-addEvent(window, 'DOMContentLoaded', initCalendars);
+addEvent(window, 'load', initCalendars);
