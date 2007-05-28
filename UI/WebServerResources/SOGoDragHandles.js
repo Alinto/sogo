@@ -17,7 +17,6 @@ var SOGoDragHandlesInterface = {
   bind: function () {
     this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
     Event.observe(this, "mousedown", this.startHandleDraggingBound, false);
-    this.onmousedown = function() { return false }
   },
   _determineType: function () {
     if (this.leftBlock && this.rightBlock)

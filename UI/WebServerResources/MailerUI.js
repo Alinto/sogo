@@ -493,7 +493,7 @@ function messageListCallback(http) {
       configureSortableTableHeaders();
    }
    else
-      log("ajax fuckage");
+      log("problem during ajax request");
 }
 
 function onMessageContextMenu(event) {
@@ -705,7 +705,7 @@ function messageCallback(http) {
       }
    }
    else
-      log ("ajax fuckage");
+      log("problem during ajax request");
 }
 
 function processMailboxMenuAction(mailbox) {
@@ -847,7 +847,7 @@ function onHeaderClick(event) {
 }
 
 function onSearchFormSubmit() {
-   log ("search not implemented");
+   log("search not implemented");
 
    return false;
 }
@@ -984,7 +984,7 @@ function configureDragHandles() {
 
 /* dnd */
 function initDnd() {
-   //   log ("MailerUI initDnd");
+   //   log("MailerUI initDnd");
 
    var tree = $("mailboxTree");
    if (tree) {
@@ -1186,6 +1186,7 @@ function onLoadMailboxesCallback(http) {
 	 updateMailboxTreeInPage();
 	 updateMailboxMenus();
       }
+  }
 
 //       var tree = $("mailboxTree");
 //       var treeNodes = document.getElementsByClassName("dTreeNode", tree);
@@ -1194,7 +1195,7 @@ function onLoadMailboxesCallback(http) {
 // 	     && treeNodes[i].getAttribute("dataname") != currentMailbox)
 // 	 i++;
 //       if (i < treeNodes.length) {
-// 	 //     log ("found mailbox");
+// 	 //     log("found mailbox");
 // 	 var links = document.getElementsByClassName("node", treeNodes[i]);
 // 	 if (tree.selectedEntry)
 // 	    tree.selectedEntry.deselect();
@@ -1202,7 +1203,6 @@ function onLoadMailboxesCallback(http) {
 // 	 tree.selectedEntry = links[0];
 // 	 expandUpperTree(links[0]);
 //       }
-   }
 }
 
 function buildMailboxes(accountName, encoded) {
@@ -1232,20 +1232,61 @@ function buildMailboxes(accountName, encoded) {
    return account;
 }
 
+function onMenuCreateFolder(event) {
+   var name = window.prompt(labels["Name :"], "");
+   if (name && name.length > 0) {
+      var folderID = document.menuTarget.getAttribute("dataname");
+      var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
+      triggerAjaxRequest(urlstr, folderOperationCallback);
+   }
+}
+
+function onMenuRenameFolder(event) {
+   var name = window.prompt(labels["Enter the new name of your folder :"],
+			    "");
+   if (name && name.length > 0) {
+      var folderID = document.menuTarget.getAttribute("dataname");
+      var urlstr = URLForFolderID(folderID) + "/renameFolder?name=" + name;
+      triggerAjaxRequest(urlstr, folderOperationCallback);
+   }
+}
+
+function onMenuDeleteFolder(event) {
+   var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"]);
+   if (answer) {
+      var folderID = document.menuTarget.getAttribute("dataname");
+      var urlstr = URLForFolderID(folderID) + "/deleteFolder";
+      triggerAjaxRequest(urlstr, folderOperationCallback);
+   }
+}
+
+function folderOperationCallback(http) {
+   if (http.readyState == 4
+       && http.status == 204) {
+      initMailboxTree();
+   }
+   else
+      window.alert(labels["Operation failed"]);
+}
+
 function initializeMenus() {
    menus["menuIds"] = new Array("accountIconMenu", "inboxIconMenu",
 				"trashIconMenu", "mailboxIconMenu",
 				"addressMenu", "messageListMenu",
 				"messageContentMenu", "label-menu",
 				"mark-menu");
-   menus["accountIconMenu"] = new Array(null, null, null, null, null, null,
-					null, null, null, onMenuSharing);
-   menus["inboxIconMenu"] = new Array(null, null, null, "-", null, null,
+   menus["accountIconMenu"] = new Array(null, null, onMenuCreateFolder, null,
+					null, null);
+   menus["inboxIconMenu"] = new Array(null, null, null, "-", null,
+				      onMenuCreateFolder, null, "-", null,
+				      onMenuSharing);
+   menus["trashIconMenu"] = new Array(null, null, null, "-", null,
+				      onMenuCreateFolder, null,
 				      null, "-", null, onMenuSharing);
-   menus["trashIconMenu"] = new Array(null, null, null, "-", null, null, null,
-				      null, "-", null, onMenuSharing);
-   menus["mailboxIconMenu"] = new Array(null, null, null, "-", null, null,
-					null, null, null, "-", null,
+   menus["mailboxIconMenu"] = new Array(null, null, null, "-", null,
+					onMenuCreateFolder,
+					onMenuRenameFolder,
+					null, onMenuDeleteFolder, "-", null,
 					onMenuSharing);
    menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
    menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",

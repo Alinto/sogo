@@ -209,14 +209,13 @@ HTMLElement.prototype.onContextMenu = function(event) {
   popup.style.left = menuLeft + "px;";
   popup.style.visibility = "visible;";
 
-  bodyOnClick = "" + document.body.getAttribute("onclick");
-  document.body.setAttribute("onclick", "onBodyClick(event);");
   document.currentPopupMenu = popup;
+  Event.observe(document.body, "click", onBodyClickMenuHandler);
 }
 
 HTMLElement.prototype.attachMenu = function(menuName) {
   this.sogoContextMenu = $(menuName);
-  Event.observe(this, "contextmenu", this.onContextMenu);
+  Event.observe(this, "contextmenu", this.onContextMenu.bindAsEventListener(this));
 }
 
 HTMLElement.prototype.select = function() {

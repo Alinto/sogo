@@ -28,7 +28,7 @@
               /></var:if>
         </head>
 
-        <body oncontextmenu="return false;" var:class="bodyClasses">
+        <body var:class="bodyClasses">
           <script type="text/javascript">
             var UserFolderURL = '<var:string value="userFolderPath" />';
             var ApplicationBaseURL = '<var:string value="applicationPath" />';

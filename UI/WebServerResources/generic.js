@@ -429,17 +429,15 @@ function onRowClick(event) {
 
 /* popup menus */
 
-var bodyOnClick = "";
 // var acceptClick = false;
 
 function popupMenu(event, menuId, target) {
    document.menuTarget = target;
 
    if (document.currentPopupMenu)
-      hideMenu(event, document.currentPopupMenu);
+       hideMenu(event, document.currentPopupMenu);
 
-   var popup = document.getElementById(menuId);
-
+   var popup = $(menuId);
    var menuTop = event.pageY;
    var menuLeft = event.pageX;
    var heightDiff = (window.innerHeight
@@ -456,12 +454,9 @@ function popupMenu(event, menuId, target) {
 		    left: menuLeft + "px",
 		    visibility: "visible" });
 
-   bodyOnClick = "" + document.body.getAttribute("onclick");
-   document.body.setAttribute("onclick", "onBodyClick(event);");
    document.currentPopupMenu = popup;
+   Event.observe(document.body, "click", onBodyClickMenuHandler);
 
-   event.cancelBubble = true;
-   event.returnValue = false;
    event.preventDefault();
 }
 
@@ -482,12 +477,12 @@ function getParentMenu(node) {
   return menuNode;
 }
 
-function onBodyClick(event) {
+function onBodyClickMenuHandler(event) {
    document.body.menuTarget = null;
    hideMenu(event, document.currentPopupMenu);
-   document.body.setAttribute("onclick", bodyOnClick);
-   
-   return false;
+   Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
+
+   event.preventDefault();
 }
 
 function hideMenu(event, menuNode) {
@@ -499,8 +494,8 @@ function hideMenu(event, menuNode) {
     menuNode.submenu = null;
   }
 
-  //menuNode.setStyle({ visibility: "hidden" });
-  $(menuNode).hide();
+  menuNode.setStyle({ visibility: "hidden" });
+  //   menuNode.hide();
   if (menuNode.parentMenuItem) {
     menuNode.parentMenuItem.setAttribute('class', 'submenu');
     menuNode.parentMenuItem = null;
@@ -545,21 +540,20 @@ function parseQueryParameters(url) {
 }
 
 function initLogConsole() {
-  var logConsole = $("logConsole");
-  if (logConsole) {
-    Event.observe(logConsole, "dblclick", onLogDblClick, false);
-    logConsole.innerHTML = "";
-    node = document.getElementsByTagName('body')[0];
-    Event.observe(node, "keydown", onBodyKeyDown, true);
-  }
+    var logConsole = $("logConsole");
+    if (logConsole) {
+	logConsole.highlighted = false;
+	Event.observe(logConsole, "dblclick", onLogDblClick, false);
+	logConsole.innerHTML = "";
+	Event.observe(window, "keydown", onBodyKeyDown);
+    }
 }
 
 function onBodyKeyDown(event) {
-  if (event.keyCode == 27) {
-    toggleLogConsole();
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
+    if (event.keyCode == 27) {
+	toggleLogConsole();
+	event.preventDefault();
+    }
 }
 
 function onLogDblClick(event) {
@@ -575,9 +569,8 @@ function toggleLogConsole(event) {
   } else {
     logConsole.setStyle({ display: '' });
   }
-  event.cancelBubble = true;
-  event.returnValue = false;
-  event.preventDefault();
+  if (event)
+      event.preventDefault();
 }
 
 function log(message) {
@@ -588,18 +581,21 @@ function log(message) {
   }
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole) {
-     var logMessage = message.replace("<", "&lt;", "g");
-     logMessage = logMessage.replace("\r\n", "<br />\n", "g");
-     logMessage = logMessage.replace("\n", "<br />\n", "g");
-     logMessage = logMessage.replace(" ", "&nbsp;", "g");
-     logMessage += '<br />' + "\n";
-     logConsole.innerHTML += logMessage;
+      logConsole.highlighted = !logConsole.highlighted;
+      var logMessage = message.replace("<", "&lt;", "g");
+      logMessage = logMessage.replace(" ", "&nbsp;", "g");
+      logMessage = logMessage.replace("\r\n", "<br />\n", "g");
+      logMessage = logMessage.replace("\n", "<br />\n", "g");
+      logMessage += '<br />' + "\n";
+      if (logConsole.highlighted)
+	  logMessage = '<div class="highlighted">' + logMessage + '</div>';
+      logConsole.innerHTML += logMessage;
   }
 }
 
 function backtrace() {
    var func = backtrace.caller;
-   var str = "backtrace:<br/>";
+   var str = "backtrace:\n";
 
    while (func)
    {
@@ -612,7 +608,7 @@ function backtrace() {
       else
          str += "[anonymous]\n";
 
-      str += "<br/>";
+      str += "\n";
       func = func.caller;
    }
    str += "--\n";
@@ -696,9 +692,8 @@ function popupSearchMenu(event) {
 		     left: (node.offsetLeft + 3) + "px",
 			    visibility: "visible" });
   
-    bodyOnClick = "" + document.body.getAttribute("onclick");
-    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
     document.currentPopupMenu = popup;
+    Event.observe(document.body, "click", onBodyClickMenuHandler);
   }
 }
 
@@ -812,10 +807,9 @@ function popupToolbarMenu(event, menuId) {
       popup.setStyle({ top: top + "px",
 		       left: node.cascadeLeftOffset() + "px",
 		       visibility: "visible" });
-      
-      bodyOnClick = "" + document.body.getAttribute("onclick");
-      document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
+
       document.currentPopupMenu = popup;
+      Event.observe(document.body, "click", onBodyClickMenuHandler);
    }
 }
 
@@ -914,12 +908,15 @@ function initTabs() {
     
     firstTab = null;
     for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i].tagName == 'LI') {
-	if (!firstTab)
-          firstTab = i;
-	Event.observe(nodes[i], "mousedown", onTabMouseDown, true);
-	Event.observe(nodes[i], "click", onTabClick, true);
-      }
+	var currentNode = nodes[i];
+	if (currentNode.tagName == 'LI') {
+	    if (!firstTab)
+		firstTab = i;
+	    Event.observe(currentNode, "mousedown",
+			  onTabMouseDown.bindAsEventListener(currentNode));
+	    Event.observe(currentNode, "click",
+			  onTabClick.bindAsEventListener(currentNode));
+	}
     }
 
     nodes[firstTab].addClassName("first");
@@ -942,7 +939,7 @@ function initMenus() {
 }
 
 function initMenu(menuDIV, callbacks) {
-   var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
+   var lis = menuDIV.childNodesWithTag("ul")[0].childNodesWithTag("li");
    for (var j = 0; j < lis.length; j++) {
       var node = lis[j];
       Event.observe(node, "mousedown", listRowMouseDownHandler, false);
@@ -1103,20 +1100,25 @@ function indexColor(number) {
   return color;
 }
 
-var onLoadHandler = function (event) {
-  queryParameters = parseQueryParameters('' + window.location);
-  if (!document.body.hasClassName("popup")) {
-    initLogConsole();
-    initCriteria();
-  }
-  initializeMenus();
-  initTabs();
-  configureDragHandles();
-  configureSortableTableHeaders();
-  configureLinkBanner();
-  var progressImage = $("progressIndicator");
-  if (progressImage)
-    progressImage.parentNode.removeChild(progressImage);
+function onLoadHandler(event) {
+    queryParameters = parseQueryParameters('' + window.location);
+    if (!document.body.hasClassName("popup")) {
+	initLogConsole();
+	initCriteria();
+    }
+    initializeMenus();
+    initTabs();
+    configureDragHandles();
+    configureSortableTableHeaders();
+    configureLinkBanner();
+    var progressImage = $("progressIndicator");
+    if (progressImage)
+	progressImage.parentNode.removeChild(progressImage);
+    Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+}
+
+function onBodyClickContextMenu(event) {
+    event.preventDefault();
 }
 
 function configureSortableTableHeaders() {
@@ -1159,9 +1161,9 @@ function initializeMenus() {
 }
 
 function onHeaderClick(event) {
-  window.alert("generic headerClick");
+    window.alert("generic headerClick");
 }
 
 function parent$(element) {
-   return window.opener.document.getElementById(element);
+   return this.opener.document.getElementById(element);
 }

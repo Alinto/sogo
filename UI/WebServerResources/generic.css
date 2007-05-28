@@ -367,6 +367,9 @@ DIV#logConsole
   right: 0px;
   height: 15em; }
 
+DIV#logConsole > DIV.highlighted
+{ background-color: #333; }
+
 /* content lists */
 td.tbtv_actcell
 { border-width: 1px;
