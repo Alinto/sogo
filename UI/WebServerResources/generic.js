@@ -239,6 +239,7 @@ function triggerAjaxRequest(url, callback, userdata) {
           checkAjaxRequestsState();
           log("AJAX Request, Caught Exception: " + e.name);
           log(e.message);
+	  log(backtrace());
         }
       };
     http.url = url;
@@ -255,6 +256,7 @@ function checkAjaxRequestsState() {
     if (activeAjaxRequests > 0
         && !document.busyAnim) {
       var anim = document.createElement("img");
+      anim = $(anim);
       document.busyAnim = anim;
       anim.id = "progressIndicator";
       anim.src = ResourcesURL + "/busy.gif";
@@ -269,6 +271,21 @@ function checkAjaxRequestsState() {
       document.busyAnim = null;
     }
   }
+}
+
+function getTarget(event) {
+  event = event || window.event;
+  if (event.target)
+    return event.target; // W3C DOM
+  else
+    return event.srcElement; // IE
+}
+
+function preventDefault(event) {
+  if (event.preventDefault)
+    event.preventDefault(); // W3C DOM
+  else
+    event.returnValue = false; // IE
 }
 
 function resetSelection(win) {
@@ -390,7 +407,7 @@ function acceptMultiSelect(node) {
 }
 
 function onRowClick(event) {
-  var node = event.target;
+  var node = getTarget(event);
 
   if (node.tagName == 'TD')
     node = node.parentNode;
@@ -457,7 +474,7 @@ function popupMenu(event, menuId, target) {
    document.currentPopupMenu = popup;
    Event.observe(document.body, "click", onBodyClickMenuHandler);
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function getParentMenu(node) {
@@ -482,7 +499,7 @@ function onBodyClickMenuHandler(event) {
    hideMenu(event, document.currentPopupMenu);
    Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function hideMenu(event, menuNode) {
@@ -552,7 +569,7 @@ function initLogConsole() {
 function onBodyKeyDown(event) {
     if (event.keyCode == 27) {
 	toggleLogConsole();
-	event.preventDefault();
+	preventDefault(event);
     }
 }
 
@@ -570,7 +587,7 @@ function toggleLogConsole(event) {
     logConsole.setStyle({ display: '' });
   }
   if (event)
-      event.preventDefault();
+      preventDefault(event);
 }
 
 function log(message) {
@@ -889,7 +906,8 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 }
 
 function listRowMouseDownHandler(event) {
-  event.preventDefault();
+  preventDefault(event);
+  return false;
 }
 
 /* tabs */
@@ -940,7 +958,7 @@ function initMenus() {
 }
 
 function initMenu(menuDIV, callbacks) {
-   var lis = menuDIV.childNodesWithTag("ul")[0].childNodesWithTag("li");
+   var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
    for (var j = 0; j < lis.length; j++) {
       var node = lis[j];
       Event.observe(node, "mousedown", listRowMouseDownHandler, false);
@@ -966,7 +984,7 @@ function initMenu(menuDIV, callbacks) {
 
 function onTabMouseDown(event) {
   event.cancelBubble = true;
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function openExternalLink(anchor) {
@@ -1007,7 +1025,7 @@ function getTopWindow() {
 }
 
 function onTabClick(event) {
-  var node = event.target;
+  var node = getTarget(event);
 
   var target = node.getAttribute("target");
 
@@ -1119,17 +1137,17 @@ function onLoadHandler(event) {
 }
 
 function onBodyClickContextMenu(event) {
-    event.preventDefault();
+  preventDefault(event);
 }
 
 function configureSortableTableHeaders() {
   var headers = document.getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
-    var anchor = headers[i].childNodesWithTag("a")[0];
+    var anchor = $(headers[i]).childNodesWithTag("a")[0];
     if (!anchor.link) {
       anchor.link = anchor.getAttribute("href");
       anchor.href = "#";
-      Event.observe(anchor, "click", onHeaderClick, true);
+      Event.observe(anchor, "click", onHeaderClick.bindAsEventListener(anchor), true);
     }
   }
 }
@@ -1152,7 +1170,7 @@ function configureLinkBanner() {
   }
 }
 
-addEvent(window, 'DOMContentLoaded', onLoadHandler);
+addEvent(window, 'load', onLoadHandler);
 
 /* stubs */
 function configureDragHandles() {
