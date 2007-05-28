@@ -513,7 +513,7 @@ static BOOL sendEMailNotifications = NO;
   iCalPerson *currentPerson;
   NSEnumerator *persons;
   NSMutableArray *uids;
-  NSString *email, *uid;
+  NSString *uid;
   LDAPUserManager *um;
 
   uids = [NSMutableArray array];
