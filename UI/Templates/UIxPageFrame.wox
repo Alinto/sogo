@@ -36,6 +36,8 @@
             var UserLogin = '<var:string value="shortUserNameForDisplay" />';
           </script>
 
+	  <script type="text/javascript" rsrc:src="_IEtoW3C.js"><!-- space required --></script>
+          <script type="text/javascript" rsrc:src="events.js"><!-- space required --></script>
           <script type="text/javascript" rsrc:src="prototype.js"><!-- space required --></script>
           <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space required --></script>
           <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space required --></script>
