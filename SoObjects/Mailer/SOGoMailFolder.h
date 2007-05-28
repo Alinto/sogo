@@ -60,6 +60,9 @@
 
 - (NSString *)outlookFolderClass;
 
+- (NSArray *) subfolders;
+- (NSArray *) subfoldersURL;
+
 @end
 
 #endif /* __Mailer_SOGoMailFolder_H__ */

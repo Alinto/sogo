@@ -1,5 +1,12 @@
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-toManyRelationshipKeys]): invoke [self subfolders].
+	([SOGoMailFolder -subfolders]): new method containing what used to
+	be in toManyRelationshipKeys.
+	([SOGoMailFolder -subfoldersURL]): same as above but returns imap
+	urls.
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-allFolderPaths]): renamed version of "allFolderPathes", sorted by
 	named and at the beginning of which we put the predefined folders.

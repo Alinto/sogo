@@ -45,11 +45,13 @@ static NSString *defaultUserID =  @"anyone";
 
 static BOOL useAltNamespace = NO;
 
-+ (int)version {
++ (int) version
+{
   return [super version] + 0 /* v1 */;
 }
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
   NSAssert2([super version] == 1,
@@ -59,7 +61,8 @@ static BOOL useAltNamespace = NO;
   useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [selectInfo release];
   [filenames  release];
   [folderType release];
@@ -68,17 +71,52 @@ static BOOL useAltNamespace = NO;
 
 /* IMAP4 */
 
-- (NSString *)relativeImap4Name {
+- (NSString *) relativeImap4Name
+{
   return [self nameInContainer];
 }
 
 /* listing the available folders */
 
-- (NSArray *)toManyRelationshipKeys {
-  return [[self imap4Connection] subfoldersForURL:[self imap4URL]];
+- (NSArray *) toManyRelationshipKeys
+{
+  return [self subfolders];
 }
 
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *) subfolders
+{
+  return [[self imap4Connection] subfoldersForURL: [self imap4URL]];
+}
+
+- (NSArray *) subfoldersURL
+{
+  NSURL *selfURL, *currentURL;
+  NSMutableArray *subfoldersURL;
+  NSEnumerator *subfolders;
+  NSString *selfPath, *currentFolder;
+
+  subfoldersURL = [NSMutableArray array];
+  selfURL = [self imap4URL];
+  selfPath = [selfURL path];
+  subfolders = [[self subfolders] objectEnumerator];
+  currentFolder = [subfolders nextObject];
+  while (currentFolder)
+    {
+      currentURL = [[NSURL alloc]
+		     initWithScheme: [selfURL scheme]
+		     host: [selfURL host]
+		     path: [selfPath stringByAppendingPathComponent:
+				       currentFolder]];
+      [currentURL autorelease];
+      [subfoldersURL addObject: currentURL];
+      currentFolder = [subfolders nextObject];
+    }
+
+  return subfoldersURL;
+}
+
+- (NSArray *) toOneRelationshipKeys
+{
   NSArray  *uids;
   unsigned count;
   
@@ -110,7 +148,8 @@ static BOOL useAltNamespace = NO;
   return filenames;
 }
 
-- (EODataSource *)contentDataSourceInContext:(id)_ctx {
+- (EODataSource *) contentDataSourceInContext: (id) _ctx
+{
   SOGoMailFolderDataSource *ds;
   
   ds = [[SOGoMailFolderDataSource alloc] initWithImap4URL:[self imap4URL]
@@ -120,7 +159,8 @@ static BOOL useAltNamespace = NO;
 
 /* mailbox raw ops */
 
-- (NSException *)primaryFetchMailboxInfo {
+- (NSException *) primaryFetchMailboxInfo
+{
   /* returns nil if fetch was successful */
   id info;
   
@@ -137,36 +177,46 @@ static BOOL useAltNamespace = NO;
 
 /* messages */
 
-- (NSArray *)fetchUIDsMatchingQualifier:(id)_q sortOrdering:(id)_so {
+- (NSArray *) fetchUIDsMatchingQualifier: (id) _q
+			    sortOrdering: (id) _so
+{
   /* seems to return an NSArray of NSNumber's */
   return [[self imap4Connection] fetchUIDsInURL:[self imap4URL]
 				 qualifier:_q sortOrdering:_so];
 }
 
-- (NSArray *)fetchUIDs:(NSArray *)_uids parts:(NSArray *)_parts {
+- (NSArray *) fetchUIDs: (NSArray *) _uids
+		  parts: (NSArray *) _parts
+{
   return [[self imap4Connection] fetchUIDs:_uids inURL:[self imap4URL]
 				 parts:_parts];
 }
 
-- (NSException *)postData:(NSData *)_data flags:(id)_flags {
+- (NSException *) postData: (NSData *) _data
+		     flags: (id) _flags
+{
   return [[self imap4Connection] postData:_data flags:_flags
 				 toFolderURL:[self imap4URL]];
 }
 
-- (NSException *)expunge {
-  return [[self imap4Connection] expungeAtURL:[self imap4URL]];
+- (NSException *) expunge
+{
+  return [[self imap4Connection] expungeAtURL: [self imap4URL]];
 }
 
 /* flags */
 
-- (NSException *)addFlagsToAllMessages:(id)_f {
+- (NSException *) addFlagsToAllMessages: (id) _f
+{
   return [[self imap4Connection] addFlags:_f 
-				 toAllMessagesInURL:[self imap4URL]];
+				 toAllMessagesInURL: [self imap4URL]];
 }
 
 /* name lookup */
 
-- (BOOL)isMessageKey:(NSString *)_key inContext:(id)_ctx {
+- (BOOL) isMessageKey: (NSString *) _key
+	    inContext: (id) _ctx
+{
   /*
     Every key starting with a digit is consider an IMAP4 message key. This is
     not entirely correct since folders could also start with a number.
@@ -185,7 +235,9 @@ static BOOL useAltNamespace = NO;
   return NO;
 }
 
-- (id)lookupImap4Folder:(NSString *)_key inContext:(id)_ctx {
+- (id) lookupImap4Folder: (NSString *) _key
+	       inContext: (id) _ctx
+{
   // TODO: we might want to check for existence prior controller creation
   NSURL *sf;
 
@@ -210,13 +262,18 @@ static BOOL useAltNamespace = NO;
 				  inContainer:self] autorelease];
 }
 
-- (id)lookupImap4Message:(NSString *)_key inContext:(id)_ctx {
+- (id) lookupImap4Message: (NSString *) _key
+		inContext: (id) _ctx
+{
   // TODO: we might want to check for existence prior controller creation
   return [[[SOGoMailObject alloc] initWithName:_key 
 				  inContainer:self] autorelease];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_acquire {
+- (id) lookupName: (NSString *) _key
+	inContext: (id)_ctx
+	  acquire: (BOOL) _acquire
+{
   id obj;
   
   if ([self isMessageKey:_key inContext:_ctx]) {
@@ -244,21 +301,26 @@ static BOOL useAltNamespace = NO;
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection
+{
   return YES;
 }
 
-- (NSException *)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
+- (NSException *) davCreateCollection: (NSString *) _name
+			    inContext: (id) _ctx
+{
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
 }
 
-- (NSException *)delete {
+- (NSException *) delete
+{
   /* Note: overrides SOGoObject -delete */
   return [[self imap4Connection] deleteMailboxAtURL:[self imap4URL]];
 }
 
-- (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+- (NSException *) davMoveToTargetObject: (id) _target
+				newName: (NSString *) _name
+			      inContext: (id)_ctx
 {
   NSURL *destImapURL;
   
@@ -286,8 +348,10 @@ static BOOL useAltNamespace = NO;
   return [[self imap4Connection] moveMailboxAtURL:[self imap4URL] 
 				 toURL:destImapURL];
 }
-- (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+
+- (NSException *) davCopyToTargetObject: (id) _target
+				newName: (NSString *) _name
+			      inContext: (id) _ctx
 {
   [self logWithFormat:@"TODO: should copy collection as '%@' to: %@",
 	_name, _target];
@@ -297,7 +361,8 @@ static BOOL useAltNamespace = NO;
 
 /* folder type */
 
-- (NSString *)outlookFolderClass {
+- (NSString *) outlookFolderClass
+{
   // TODO: detect Trash/Sent/Drafts folders
   SOGoMailAccount *account;
   NSString *n;
