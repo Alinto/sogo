@@ -113,3 +113,11 @@
 "error_missingsubject"      = "Missing Subject";
 "error_missingrecipients"   = "Missing Recipients";
 "error_validationfailed"    = "Validation failed";
+
+/* Folder operations */
+"Name :" = "Name :";
+"Enter the new name of your folder :"
+ = "Enter the new name of your folder :";
+"Do you really want to move this folder into the trash ?"
+ = "Do you really want to move this folder into the trash ?";
+"Operation failed" = "Operation failed";

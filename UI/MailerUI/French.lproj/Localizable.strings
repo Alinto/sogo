@@ -162,3 +162,11 @@
 "As Junk" = "Comme indésirable";
 "As Not Junk" = "Comme acceptable";
 "Run Junk Mail Controls" = "Lancer le contrôle des indésirables";
+
+/* Folder operations */
+"Name :" = "Nom:";
+"Enter the new name of your folder :"
+ = "Entrez le nouveau nom de votre dossier:";
+"Do you really want to move this folder into the trash ?"
+ = "Voulez-vous vraiment déplacer le dossier sélectionné dans la corbeille?";
+"Operation failed" = "L'opération a échoué.";
