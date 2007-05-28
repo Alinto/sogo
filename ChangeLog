@@ -1,5 +1,8 @@
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-renameFolderAction]): implemented method.
+
 	* UI/MailerUI/UIxMailListView.m ([-createFolderAction]): removed
 	method, replaced with a similar method in the new
 	UIxMailFolderAction class module.

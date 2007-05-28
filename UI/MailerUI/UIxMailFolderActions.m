@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
@@ -68,6 +69,27 @@
   return response;  
 }
 
+- (NSURL *) _urlOfFolder: (NSURL *) srcURL
+	       renamedTo: (NSString *) folderName
+{
+  NSString *path;
+  NSMutableArray *pathArray;
+  NSURL *destURL;
+
+  path = [srcURL path];
+  pathArray = [NSMutableArray arrayWithArray:
+				[path componentsSeparatedByString: @"/"]];
+  [pathArray replaceObjectAtIndex: [pathArray count] - 1
+	     withObject: folderName];
+  
+  destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
+			   host: [srcURL host]
+			   path: [pathArray componentsJoinedByString: @"/"]];
+  [destURL autorelease];
+
+  return destURL;
+}
+
 - (WOResponse *) renameFolderAction
 {
   SOGoMailFolder *co;
@@ -75,6 +97,7 @@
   NGImap4Connection *connection;
   NSException *error;
   NSString *folderName;
+  NSURL *srcURL, *destURL;
 
   co = [self clientObject];
   response = [context response];
@@ -82,15 +105,18 @@
   folderName = [[context request] formValueForKey: @"name"];
   if ([folderName length] > 0)
     {
-//       connection = [co imap4Connection];
-//       error = [connection createMailbox: folderName atURL: [co imap4URL]];
-//       if (error)
-// 	{
+      srcURL = [co imap4URL];
+      destURL = [self _urlOfFolder: srcURL renamedTo: folderName];
+      connection = [co imap4Connection];
+      error = [connection moveMailboxAtURL: srcURL
+			  toURL: destURL];
+      if (error)
+	{
 	  [response setStatus: 403];
 	  [response appendContentString: @"Unable to rename folder."];
-// 	}
-//       else
-// 	[response setStatus: 204];
+	}
+      else
+	[response setStatus: 204];
     }
   else
     {
