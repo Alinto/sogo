@@ -1261,6 +1261,12 @@ function onMenuDeleteFolder(event) {
    }
 }
 
+function onMenuEmptyTrash(event) {
+   var folderID = document.menuTarget.getAttribute("dataname");
+   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
+   triggerAjaxRequest(urlstr, folderOperationCallback);
+}
+
 function folderOperationCallback(http) {
    if (http.readyState == 4
        && http.status == 204)
@@ -1282,7 +1288,8 @@ function initializeMenus() {
 				      onMenuSharing);
    menus["trashIconMenu"] = new Array(null, null, null, "-", null,
 				      onMenuCreateFolder, null,
-				      null, "-", null, onMenuSharing);
+				      onMenuEmptyTrash, "-", null,
+				      onMenuSharing);
    menus["mailboxIconMenu"] = new Array(null, null, null, "-", null,
 					onMenuCreateFolder,
 					onMenuRenameFolder,

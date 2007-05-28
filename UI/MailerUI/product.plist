@@ -164,8 +164,8 @@
       methods = {
         emptyTrash = {
           protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "emptyTrash";
+          actionClass = "UIxMailFolderActions";
+          actionName = "emptyTrash";
         };
       };
     };

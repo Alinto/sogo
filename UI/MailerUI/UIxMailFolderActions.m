@@ -31,6 +31,8 @@
 #import <NGImap4/NGImap4Connection.h>
 
 #import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoTrashFolder.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
 
 #import "UIxMailFolderActions.h"
 
@@ -73,18 +75,14 @@
 	       renamedTo: (NSString *) folderName
 {
   NSString *path;
-  NSMutableArray *pathArray;
   NSURL *destURL;
 
-  path = [srcURL path];
-  pathArray = [NSMutableArray arrayWithArray:
-				[path componentsSeparatedByString: @"/"]];
-  [pathArray replaceObjectAtIndex: [pathArray count] - 1
-	     withObject: folderName];
-  
+  path = [[srcURL path] stringByDeletingLastPathComponent];
+
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
 			   host: [srcURL host]
-			   path: [pathArray componentsJoinedByString: @"/"]];
+			   path: [NSString stringWithFormat: @"%@%@",
+					   path, folderName]];
   [destURL autorelease];
 
   return destURL;
@@ -127,26 +125,89 @@
   return response;  
 }
 
+- (NSURL *) _trashedURLOfFolder: (NSURL *) srcURL
+			 withCO: (SOGoMailFolder *) co
+{
+  NSURL *destURL;
+  NSString *trashFolderName, *folderName;
+
+  folderName = [[srcURL path] lastPathComponent];
+  trashFolderName
+    = [[co mailAccountFolder] trashFolderNameInContext: context];
+
+  destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
+			   host: [srcURL host]
+			   path: [NSString stringWithFormat: @"/%@/%@",
+					   trashFolderName, folderName]];
+  [destURL autorelease];
+
+  return destURL;
+}
+
 - (WOResponse *) deleteFolderAction
 {
   SOGoMailFolder *co;
   WOResponse *response;
   NGImap4Connection *connection;
   NSException *error;
+  NSURL *srcURL, *destURL;
 
   co = [self clientObject];
   response = [context response];
   connection = [co imap4Connection];
-  error = [connection deleteMailboxAtURL: [co imap4URL]];
+  srcURL = [co imap4URL];
+  destURL = [self _trashedURLOfFolder: srcURL
+		  withCO: co];
+  connection = [co imap4Connection];
+  error = [connection moveMailboxAtURL: srcURL
+		      toURL: destURL];
   if (error)
     {
       [response setStatus: 403];
-      [response appendContentString: @"Unable to delete folder."];
+      [response appendContentString: @"Unable to move folder."];
     }
   else
     [response setStatus: 204];
 
-  return response;  
+  return response;
+}
+
+- (WOResponse *) emptyTrashAction 
+{
+  NSException *error;
+  SOGoTrashFolder *co;
+  NSEnumerator *subfolders;
+  WOResponse *response;
+  NGImap4Connection *connection;
+  NSURL *currentURL;
+
+  co = [self clientObject];
+  response = [context response];
+
+  error = [co addFlagsToAllMessages: @"deleted"];
+  if (!error)
+    error = [co expunge];
+  if (!error)
+    {
+      [co flushMailCaches];
+      connection = [co imap4Connection];
+      subfolders = [[co subfoldersURL] objectEnumerator];
+      currentURL = [subfolders nextObject];
+      while (currentURL)
+	{
+	  [connection deleteMailboxAtURL: currentURL];
+	  currentURL = [subfolders nextObject];
+	}
+    }
+  if (error)
+    {
+      [response setStatus: 403];
+      [response appendContentString: @"Unable to empty the trash folder."];
+    }
+  else
+    [response setStatus: 204];
+
+  return response;
 }
 
 @end

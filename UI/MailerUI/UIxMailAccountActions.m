@@ -87,30 +87,17 @@
 
 - (WOResponse *) listMailboxesAction
 {
-  SOGoMailAccount *clientObject;
-  NSArray *rawFolders, *folders, *mainFolders;
-  NSMutableArray *newFolders;
+  SOGoMailAccount *co;
+  NSArray *rawFolders, *folders;
   WOResponse *response;
 
-  clientObject = [self clientObject];
-  rawFolders = [[clientObject imap4Connection]
-		 allFoldersForURL: [clientObject imap4URL]];
+  co = [self clientObject];
+  draftFolderName = [co draftsFolderNameInContext: context];
+  sentFolderName = [co sentFolderNameInContext: context];
+  trashFolderName = [co trashFolderNameInContext: context];
 
-  draftFolderName = [clientObject draftsFolderNameInContext: context];
-  sentFolderName = [clientObject sentFolderNameInContext: context];
-  trashFolderName = [clientObject trashFolderNameInContext: context];
-  sharedFolderName = [clientObject sharedFolderName];
-  otherUsersFolderName = [clientObject otherUsersFolderName];
-  mainFolders = [NSArray arrayWithObjects: @"INBOX", draftFolderName,
-			 sentFolderName, trashFolderName, nil];
-
-  newFolders = [NSMutableArray arrayWithArray: rawFolders];
-  [newFolders removeObjectsInArray: mainFolders];
-  [newFolders sortUsingSelector: @selector (caseInsensitiveCompare:)];
-  [newFolders replaceObjectsInRange: NSMakeRange (0, 0)
-	      withObjectsFromArray: mainFolders];
-
-  folders = [self _jsonFolders: [newFolders objectEnumerator]];
+  rawFolders = [co allFolderPaths];
+  folders = [self _jsonFolders: [rawFolders objectEnumerator]];
 
   response = [context response];
   [response appendContentString: [folders jsonRepresentation]];

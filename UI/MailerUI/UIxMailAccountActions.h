@@ -32,8 +32,6 @@
   NSString *draftFolderName;
   NSString *sentFolderName;
   NSString *trashFolderName;
-  NSString *sharedFolderName;
-  NSString *otherUsersFolderName;
 }
 
 - (WOResponse *) listMailboxesAction;

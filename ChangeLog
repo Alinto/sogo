@@ -1,7 +1,17 @@
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-emptyTrashAction]): new method inspired by a similar one from
+	UIxMailListView, to which we added the ability to remove
+	subfolders.
+
+	* UI/MailerUI/UIxMailListView.m ([-emptyTrashAction]): removed
+	method. Replaced with a similar one in UIxMailFolderActions.
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-renameFolderAction]): implemented method.
+	([UIxMailFolderActions -deleteFolderAction]): no longer delete the
+	specified folder. Instead, we put it in the trash folder.
 
 	* UI/MailerUI/UIxMailListView.m ([-createFolderAction]): removed
 	method, replaced with a similar method in the new

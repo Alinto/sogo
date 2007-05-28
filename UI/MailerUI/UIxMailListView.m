@@ -539,46 +539,6 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
-- (id) emptyTrashAction 
-{
-  // TODO: we might want to flush the caches?
-  NSException *error;
-  id client;
-  
-  if ((client = [self clientObject]) == nil) {
-    error = [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			 reason:@"did not find mail folder"];
-    return [self redirectToViewWithError:error];
-  }
-
-  if (![client isKindOfClass:NSClassFromString(@"SOGoTrashFolder")]) {
-    /* would be better to move the method to an own class, but well .. */
-    error = [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-			 reason:@"method cannot be invoked on "
-                                @"the specified object"];
-    return [self redirectToViewWithError:error];
-  }
-  
-  /* mark all as deleted */
-
-  [self logWithFormat:@"TODO: must mark all as deleted for empty-trash"];
-  
-  error = [[self clientObject] addFlagsToAllMessages:@"deleted"];
-  if (error != nil)
-    // TODO: improve error
-    return [self redirectToViewWithError:error];
-  
-  /* expunge */
-  
-  if ((error = [[self clientObject] expunge]) != nil)
-    // TODO: improve error
-    return [self redirectToViewWithError:error];
-  
-  if ([client respondsToSelector:@selector(flushMailCaches)])
-    [client flushMailCaches];
-  return [self redirectToLocation:@"view"];
-}
-
 @end
 
 /* UIxMailListView */
