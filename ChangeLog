@@ -1,5 +1,9 @@
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-allFolderPaths]): renamed version of "allFolderPathes", sorted by
+	named and at the beginning of which we put the predefined folders.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-emptyTrashAction]): new method inspired by a similar one from
 	UIxMailListView, to which we added the ability to remove

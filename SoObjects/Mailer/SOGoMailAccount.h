@@ -45,7 +45,7 @@
 
 /* folder pathes */
 
-- (NSArray *)allFolderPathes;
+- (NSArray *)allFolderPaths;
 - (NSArray *)additionalRootFolderNames; /* stuff like filters and drafts */
 
 /* shared accounts */

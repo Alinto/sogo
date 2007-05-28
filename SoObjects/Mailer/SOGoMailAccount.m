@@ -134,12 +134,23 @@ static BOOL     useAltNamespace       = NO;
   return self;
 }
 
-- (NSArray *)allFolderPathes {
-  NSArray *pathes;
-  
-  pathes = [[self imap4Connection] allFoldersForURL:[self imap4URL] ];
-  pathes = [pathes sortedArrayUsingSelector:@selector(compare:)];
-  return pathes;
+- (NSArray *) allFolderPaths
+{
+  NSMutableArray *newFolders;
+  NSArray *rawFolders, *mainFolders;
+
+  rawFolders = [[self imap4Connection]
+		 allFoldersForURL: [self imap4URL]];
+
+  mainFolders = [NSArray arrayWithObjects: inboxFolderName, draftsFolderName,
+			 sentFolder, trashFolder, nil];
+  newFolders = [NSMutableArray arrayWithArray: rawFolders];
+  [newFolders removeObjectsInArray: mainFolders];
+  [newFolders sortUsingSelector: @selector (caseInsensitiveCompare:)];
+  [newFolders replaceObjectsInRange: NSMakeRange (0, 0)
+	      withObjectsFromArray: mainFolders];
+
+  return newFolders;
 }
 
 /* IMAP4 */
