@@ -1,5 +1,10 @@
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([-createFolderAction]): removed
+	method, replaced with a similar method in the new
+	UIxMailFolderAction class module.
+	([-deleteFolderAction]): idem.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-createFolderAction]): new method implementing subfolder creation.
 	([UIxMailFolderActions -renameFolderAction]): new method

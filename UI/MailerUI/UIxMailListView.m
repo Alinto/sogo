@@ -579,57 +579,6 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
-/* folder operations */
-
-- (id) createFolderAction 
-{
-  NSException *error;
-  NSString    *folderName;
-  id client;
-  
-  folderName = [[[self context] request] formValueForKey:@"name"];
-  if ([folderName length] == 0) {
-    error = [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-			 reason:@"missing 'name' query parameter!"];
-    return [self redirectToViewWithError:error];
-  }
-  
-  if ((client = [self clientObject]) == nil) {
-    error = [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			 reason:@"did not find mail folder"];
-    return [self redirectToViewWithError:error];
-  }
-  
-  if ((error = [[self clientObject] davCreateCollection:folderName
-				    inContext:[self context]]) != nil) {
-    return [self redirectToViewWithError:error];
-  }
-  
-  return [self redirectToLocation:[folderName stringByAppendingString:@"/"]];
-}
-
-- (id) deleteFolderAction 
-{
-  NSException *error;
-  NSString *url;
-  id client;
-  
-  if ((client = [self clientObject]) == nil) {
-    error = [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			 reason:@"did not find mail folder"];
-    return [self redirectToViewWithError:error];
-  }
-  
-  /* jump to parent folder afterwards */
-  url = [[client container] baseURLInContext:[self context]];
-  if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
-  
-  if ((error = [[self clientObject] delete]) != nil)
-    return [self redirectToViewWithError:error];
-  
-  return [self redirectToLocation:url];
-}
-
 @end
 
 /* UIxMailListView */
