@@ -123,13 +123,18 @@
         };
         createFolder = {
           protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "createFolder";
+          actionClass = "UIxMailFolderActions";
+          actionName = "createFolder";
+        };
+        renameFolder = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "renameFolder";
         };
         deleteFolder = {
           protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "deleteFolder";
+          actionClass = "UIxMailFolderActions";
+          actionName = "deleteFolder";
         };
         compose = {
           protectedBy = "View";

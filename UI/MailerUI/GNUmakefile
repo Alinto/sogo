@@ -25,6 +25,7 @@ MailerUI_OBJC_FILES += \
 	UIxMailFilterPanel.m		\
 	\
 	UIxMailAccountActions.m		\
+	UIxMailFolderActions.m		\
 	UIxMailEditor.m			\
 	UIxMailEditorAttach.m		\
 	UIxMailEditorAction.m		\
