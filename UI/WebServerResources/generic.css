@@ -313,7 +313,8 @@ SPAN.toolbarButton:active
   width: auto;
   white-space: nowrap; }
 
-.menu LI.disabled
+.menu LI.disabled,
+.menu LI.disabled:hover
 { color: #999; }
 
 .menu LI IMG
