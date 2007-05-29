@@ -72,8 +72,7 @@ Element.addMethods({
     
     var i = 0;
     
-    while (currentElement
-	   && currentElement instanceof HTMLElement) {
+    while (currentElement && currentElement.tagName) {
       offset += currentElement.offsetTop;
       currentElement = currentElement.parentNode;
       i++;
