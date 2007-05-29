@@ -27,7 +27,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGImap4/NGImap4Connection.h>
-#import <NGImap4/NGImap4MailboxInfo.h>
 #import <NGImap4/NGImap4Client.h>
 
 #import <SoObjects/SOGo/SOGoPermissions.h>
@@ -63,7 +62,6 @@ static BOOL useAltNamespace = NO;
 
 - (void) dealloc
 {
-  [selectInfo release];
   [filenames  release];
   [folderType release];
   [super dealloc];
