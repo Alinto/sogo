@@ -690,7 +690,7 @@ function checkDropDown(event) {
 
 /* search field */
 function popupSearchMenu(event) {
-  var node = event.target;
+  var node = getTarget(event);
 
   var menuId = this.getAttribute("menuid");
   relX = event.pageX - node.cascadeLeftOffset();

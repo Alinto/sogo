@@ -1128,11 +1128,11 @@ function onCalendarRemove(event) {
 function configureSearchField() {
    var searchValue = $("searchValue");
 
-   Event.observe(searchValue, "mousedown",  onSearchMouseDown);
-   Event.observe(searchValue, "click",  popupSearchMenu);
-   Event.observe(searchValue, "blur",  onSearchBlur);
-   Event.observe(searchValue, "focus",  onSearchFocus);
-   Event.observe(searchValue, "keydown",  onSearchKeyDown);
+   Event.observe(searchValue, "mousedown",  onSearchMouseDown.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "click",  popupSearchMenu.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "blur",  onSearchBlur.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "focus",  onSearchFocus.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "keydown",  onSearchKeyDown.bindAsEventListener(searchValue));
 }
 
 function initCalendars() {
