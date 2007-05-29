@@ -469,7 +469,7 @@ function scrollDayView(hour) {
     rowNumber = 8;
 
   var daysView = $("daysView");
-  var hours = daysView.childNodesWithTag("div")[0].childNodesWithTag("div");
+  var hours = $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
   if (hours.length > 0)
     daysView.parentNode.scrollTop = hours[rowNumber + 1].offsetTop;
 }
@@ -484,7 +484,7 @@ function onClickableCellsDblClick(event) {
 function calendarDisplayCallback(http) {
   var div = $("calendarView");
 
-//   log ("calendardisplaycallback: " + div);
+  //log ("calendarDisplayCallback: " + div);
   if (http.readyState == 4
       && http.status == 200) {
     document.dayDisplayAjaxRequest = null;
@@ -501,28 +501,27 @@ function calendarDisplayCallback(http) {
       contentView = $("calendarContent");
     else {
       scrollDayView(hour);
-//       log("cbtest1");
       contentView = $("daysView");
     }
     var appointments = document.getElementsByClassName("appointment", contentView);
     for (var i = 0; i < appointments.length; i++) {
       Event.observe(appointments[i], "mousedown",  listRowMouseDownHandler);
-      Event.observe(appointments[i], "click",  onCalendarSelectAppointment);
-      Event.observe(appointments[i], "dblclick",  displayAppointment);
+      Event.observe(appointments[i], "click",  onCalendarSelectAppointment.bindAsEventListener(appointments[i]));
+      Event.observe(appointments[i], "dblclick", displayAppointment.bindAsEventListener(appointments[i]));
     }
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
-        Event.observe(days[i], "click",  onCalendarSelectDay);
-        Event.observe(days[i], "dblclick",  onClickableCellsDblClick);
+        Event.observe(days[i], "click",  onCalendarSelectDay.bindAsEventListener(days[i]));
+        Event.observe(days[i], "dblclick",  onClickableCellsDblClick.bindAsEventListener(days[i]));
       }
     else
       for (var i = 0; i < days.length; i++) {
-        Event.observe(days[i], "click",  onCalendarSelectDay);
+        Event.observe(days[i], "click",  onCalendarSelectDay.bindAsEventListener(days[i]));
         var clickableCells = document.getElementsByClassName("clickableHourCell",
                                                              days[i]);
         for (var j = 0; j < clickableCells.length; j++)
-          Event.observe(clickableCells[j], "dblclick", onClickableCellsDblClick);
+          Event.observe(clickableCells[j], "dblclick", onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
       }
 //     log("cbtest1");
   }
