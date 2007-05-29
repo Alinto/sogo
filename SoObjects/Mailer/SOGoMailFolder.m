@@ -157,24 +157,6 @@ static BOOL useAltNamespace = NO;
   return [ds autorelease];
 }
 
-/* mailbox raw ops */
-
-- (NSException *) primaryFetchMailboxInfo
-{
-  /* returns nil if fetch was successful */
-  id info;
-  
-  if (selectInfo != nil)
-    return nil; /* select info exists, => no error */
-  
-  info = [[self imap4Connection] infoForMailboxAtURL:[self imap4URL]];
-  if ([info isKindOfClass:[NSException class]])
-    return info;
-  
-  selectInfo = [info retain];
-  return nil; /* no error */
-}
-
 /* messages */
 
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
@@ -613,11 +595,6 @@ static BOOL useAltNamespace = NO;
     owner = [super ownerInContext: localContext];
 
   return owner;
-}
-
-- (BOOL) hasSupportForDefaultRoles
-{
-  return YES;
 }
 
 @end /* SOGoMailFolder */

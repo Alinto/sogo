@@ -1,3 +1,8 @@
+2007-05-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-primaryFetchMailboxInfo]): useless method. Removed.
+
 2007-05-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
