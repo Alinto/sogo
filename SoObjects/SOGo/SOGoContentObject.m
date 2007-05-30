@@ -348,11 +348,6 @@
   return @"<default>";
 }
 
-- (BOOL) hasSupportForDefaultRoles
-{
-  return YES;
-}
-
 /* message type */
 
 - (NSString *) outlookMessageClass
