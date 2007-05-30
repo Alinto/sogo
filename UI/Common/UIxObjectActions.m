@@ -53,6 +53,7 @@
 	  clientObject = [self clientObject];
 	  [clientObject setRoles: [clientObject aclsForUser: uid]
 			forUser: uid];
+	  [clientObject sendACLAdditionAdvisoryToUser: uid];
           code = 204;
         }
     }
@@ -70,6 +71,7 @@
   NSString *uid;
   unsigned int code;
   LDAPUserManager *um;
+  SOGoObject *co;
 
   code = 403;
   request = [context request];
@@ -79,8 +81,9 @@
       um = [LDAPUserManager sharedUserManager];
       if ([um contactInfosForUserWithUIDorEmail: uid])
 	{
-	  [[self clientObject] removeAclsForUsers:
-				 [NSArray arrayWithObject: uid]];
+	  co = [self clientObject];
+	  [co removeAclsForUsers: [NSArray arrayWithObject: uid]];
+	  [co sendACLRemovalAdvisoryToUser: uid];
           code = 204;
         }
     }

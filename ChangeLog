@@ -1,5 +1,10 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions
+	-addUserInAclsAction]): send an acl addition mail.
+	([UIxObjectActions -removeUserFromAclsAction]): send an acl
+	removal mail.
+
 	* UI/Common/UIxFolderActions.m ([UIxFolderActions
 	-_realActionWithFolderName:folderDict]): handle the possible
 	presence of the "mail-invitation" url parameter. If present, the
