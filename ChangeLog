@@ -1,3 +1,9 @@
+2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([-stringByDetectingURLs]):
+	store ranges in an array to prevent them from intersecting with
+	each other during the passes.
+
 2007-05-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
