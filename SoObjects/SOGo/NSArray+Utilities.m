@@ -91,5 +91,34 @@
     [self addObject: object];
 }
 
+- (void) addRange: (NSRange) newRange
+{
+  [self addObject: NSStringFromRange (newRange)];
+}
+
+- (BOOL) hasRangeIntersection: (NSRange) testRange
+{
+  NSEnumerator *ranges;
+  NSString *currentRangeString;
+  NSRange currentRange;
+  BOOL response;
+
+  response = NO;
+
+  ranges = [self objectEnumerator];
+  currentRangeString = [ranges nextObject];
+  while (!response && currentRangeString)
+    {
+      currentRange = NSRangeFromString (currentRangeString);
+      if (NSLocationInRange (testRange.location, currentRange)
+	  || NSLocationInRange (NSMaxRange (testRange), currentRange))
+	response = YES;
+      else
+	currentRangeString = [ranges nextObject];
+    }
+
+  return response;
+}
+
 @end
 

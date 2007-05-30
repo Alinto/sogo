@@ -1,5 +1,11 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSMutableArray
+	-addRange:newRange]): new method that store a string
+	representation of the NSRange passed as parameter.
+	([NSMutableArray -hasRangeIntersection:testRange]): tests whether
+	any range contained in self intersect with the one passed as parameter.
+
 	* SoObjects/SOGo/NSString+Utilities.m ([-stringByDetectingURLs]):
 	store ranges in an array to prevent them from intersecting with
 	each other during the passes.
