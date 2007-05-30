@@ -43,6 +43,7 @@
   NSString *baseFolder;
   NSMutableString *subscriptionPointer;
   NSMutableDictionary *moduleSettings;
+  BOOL isMailInvitation;
 }
 
 - (WOResponse *) subscribeAction;

@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -45,7 +46,7 @@
 
 - (void) _setupContext
 {
-  NSString *clientClass;
+  NSString *clientClass, *mailInvitationParam;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
@@ -76,12 +77,17 @@
   if ([baseFolder isEqualToString: @"Contacts"])
     [subscriptionPointer appendFormat: @"/%@",
 			 [clientObject nameInContainer]];
+
+  mailInvitationParam
+    = [[context request] formValueForKey: @"mail-invitation"];
+  isMailInvitation = [mailInvitationParam boolValue];
 }
 
 - (WOResponse *) _realActionWithFolderName: (NSDictionary *) folderDict
 {
   WOResponse *response;
   NSMutableDictionary *folderSubscription;
+  NSString *mailInvitationURL;
 
   response = [context response];
   if ([owner isEqualToString: login])
@@ -107,7 +113,18 @@
 	[folderSubscription removeObjectForKey: subscriptionPointer];
 
       [ud synchronize];
-      [response setStatus: 204];
+
+      if (isMailInvitation)
+	{
+	  mailInvitationURL
+	    = [[clientObject soURLToBaseContainerForCurrentUser]
+		absoluteString];
+	  [response setStatus: 302];
+	  [response setHeader: mailInvitationURL
+		    forKey: @"location"];
+	}
+      else
+	[response setStatus: 204];
     }
 
   return response;

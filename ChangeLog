@@ -1,5 +1,10 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions
+	-_realActionWithFolderName:folderDict]): handle the possible
+	presence of the "mail-invitation" url parameter. If present, the
+	user will be redirected to the relevant folder.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -fullEmail]): new proxy method.
 	([SOGoUser -language]): new method that returns the user's
 	preferred language, or the system's if none has been set yet.
