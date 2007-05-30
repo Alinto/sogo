@@ -1,5 +1,9 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -subscribeAction]) 
+	([UIxMailFolderActions -unsubscribeAction]): new stub methods that
+	do nothing yet since imap folder subscription is not handled yet.
+
 	* SoObjects/SOGo/SOGoContentObject.m
 	([-hasSupportForDefaultRoles]): removed method.
 

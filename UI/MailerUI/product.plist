@@ -1,444 +1,454 @@
 { /* -*-javascript-*- */
-  requires = ( MAIN, MainUI, CommonUI, Mailer ); /* , Sieve */
+requires = ( MAIN, MainUI, CommonUI, Mailer ); /* , Sieve */
 
-  publicResources = (
-    "uix.css",
-    "mailer.css",
-    "mailer.js",
-    "generic.js",
-    "searchfield.js",
-    "UIxAppointmentEditor.js",
-    "UIxContactEditor.js",
-    "UIxMailToSelection.js",
+   publicResources = (
+      "uix.css",
+      "mailer.css",
+      "mailer.js",
+      "generic.js",
+      "searchfield.js",
+      "UIxAppointmentEditor.js",
+      "UIxContactEditor.js",
+      "UIxMailToSelection.js",
 
-    "lori_32x32.png",
+      "lori_32x32.png",
 
-    "tbtv_account_17x17.gif",
-    "tbtv_drafts_17x17.gif",
-    "tbtv_inbox_17x17.gif",
-    "tbtv_junction2_17x17.gif",
-    "tbtv_junction_17x17.gif",
-    "tbtv_leaf_corner_17x17.gif",
-    "tbtv_line_17x17.gif",
-    "tbtv_minus_17x17.gif",
-    "tbtv_plus_17x17.gif",
-    "tbtv_corner_17x17.gif",
-    "tbtv_corner_minus_17x17.gif",
-    "tbtv_corner_plus_17x17.gif",
-    "tbtv_sent_17x17.gif",
-    "tbtv_trash_17x17.gif",
+      "tbtv_account_17x17.gif",
+      "tbtv_drafts_17x17.gif",
+      "tbtv_inbox_17x17.gif",
+      "tbtv_junction2_17x17.gif",
+      "tbtv_junction_17x17.gif",
+      "tbtv_leaf_corner_17x17.gif",
+      "tbtv_line_17x17.gif",
+      "tbtv_minus_17x17.gif",
+      "tbtv_plus_17x17.gif",
+      "tbtv_corner_17x17.gif",
+      "tbtv_corner_minus_17x17.gif",
+      "tbtv_corner_plus_17x17.gif",
+      "tbtv_sent_17x17.gif",
+      "tbtv_trash_17x17.gif",
 
-    "tbtb_addressbook.png",
-    "tbtb_compose.png",
-    "tbtb_delete.png",
-    "tbtb_deletedoc.png",
-    "tbtb_filetofolder.png",
-    "tbtb_forward.png",
-    "tbtb_getmail.png",
-    "tbtb_next.png",
-    "tbtb_previous.png",
-    "tbtb_print.png",
-    "tbtb_reply.png",
-    "tbtb_replyall.png",
-    "tbtb_search.png",
-    "tbtb_trash.png",
+      "tbtb_addressbook.png",
+      "tbtb_compose.png",
+      "tbtb_delete.png",
+      "tbtb_deletedoc.png",
+      "tbtb_filetofolder.png",
+      "tbtb_forward.png",
+      "tbtb_getmail.png",
+      "tbtb_next.png",
+      "tbtb_previous.png",
+      "tbtb_print.png",
+      "tbtb_reply.png",
+      "tbtb_replyall.png",
+      "tbtb_search.png",
+      "tbtb_trash.png",
 
-    "tbtb_compose_addressbook_30x30.png",
-    "tbtb_compose_attach_30x30.png",
-    "tbtb_compose_clip_30x30.png",
-    "tbtb_compose_cut_30x30.png",
-    "tbtb_compose_dup_30x30.png",
-    "tbtb_compose_file_30x30.png",
-    "tbtb_compose_lock_30x30.png",
-    "tbtb_compose_quote_30x30.png",
-    "tbtb_compose_send_30x30.png",
-    "tbtb_compose_spell_30x30.png",
+      "tbtb_compose_addressbook_30x30.png",
+      "tbtb_compose_attach_30x30.png",
+      "tbtb_compose_clip_30x30.png",
+      "tbtb_compose_cut_30x30.png",
+      "tbtb_compose_dup_30x30.png",
+      "tbtb_compose_file_30x30.png",
+      "tbtb_compose_lock_30x30.png",
+      "tbtb_compose_quote_30x30.png",
+      "tbtb_compose_send_30x30.png",
+      "tbtb_compose_spell_30x30.png",
 
-    "message-mail.png",
-    "message-mail-read.png",
+      "message-mail.png",
+      "message-mail-read.png",
 
-    "icon_mark_flagged.gif",
-    "icon_mark_read.gif",
-    "icon_mark_unflagged.gif",
-    "icon_mark_unread.gif",
-    "icon_read.gif",
-    "icon_unread.gif",
+      "icon_mark_flagged.gif",
+      "icon_mark_read.gif",
+      "icon_mark_unflagged.gif",
+      "icon_mark_unread.gif",
+      "icon_read.gif",
+      "icon_unread.gif",
 
-    "title_attachment_14x14.png",
-    "title_config.png",
-    "title_junk.png",
-    "title_read_14x14.png",
-    "title_thread.png",
-    "title_sortdown_12x12.png",
-    "title_sortup_12x12.png",
-  );
+      "title_attachment_14x14.png",
+      "title_config.png",
+      "title_junk.png",
+      "title_read_14x14.png",
+      "title_thread.png",
+      "title_sortdown_12x12.png",
+      "title_sortup_12x12.png",
+      );
 
-  factories = {
-  };
+factories = {
+};
 
-  categories = {
-    SOGoMailFolder = {
+categories = {
+   SOGoMailFolder = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = "SOGoMailObject.toolbar";
+	 };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        ajax = {
-          protectedBy = "View";
-          pageName    = "UIxMailAjaxRequest";
-        };
-        index = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        GET = { /* hack to make it work as the default method */
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        markMessageUnread = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "markMessageUnread";
-        };
-        markMessageRead = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "markMessageRead";
-        };
-        getMail = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "getMail";
-        };
-        expunge = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-          actionName  = "expunge";
-        };
-        createFolder = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName = "createFolder";
-        };
-        renameFolder = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName = "renameFolder";
-        };
-        deleteFolder = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName = "deleteFolder";
-        };
-        compose = {
-          protectedBy = "View";
-          actionClass = "UIxMailEditorAction";
-          actionName  = "compose";
-        };
-	userRights = {
-	   protectedBy = "ReadAcls";
-	   pageName    = "UIxMailUserRightsEditor";
-	};
-	saveUserRights = {
-	   protectedBy = "SaveAcls";
-	   pageName    = "UIxMailUserRightsEditor";
-	   actionName  = "saveUserRights";
-	};
+	 subscribe = {
+	    protectedBy = "<public>";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "subscribe";
+	 };
+	 unsubscribe = {
+	    protectedBy = "<public>";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "unsubscribe";
+	 };
+	 view = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	 };
+	 ajax = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailAjaxRequest";
+	 };
+	 index = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	 };
+	 GET = { /* hack to make it work as the default method */
+		 protectedBy = "View";
+		 pageName    = "UIxMailListView";
+	 };
+	 markMessageUnread = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	    actionName  = "markMessageUnread";
+	 };
+	 markMessageRead = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	    actionName  = "markMessageRead";
+	 };
+	 getMail = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	    actionName  = "getMail";
+	 };
+	 expunge = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	    actionName  = "expunge";
+	 };
+	 createFolder = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "createFolder";
+	 };
+	 renameFolder = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "renameFolder";
+	 };
+	 deleteFolder = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "deleteFolder";
+	 };
+	 compose = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailEditorAction";
+	    actionName  = "compose";
+	 };
+	 userRights = {
+	    protectedBy = "ReadAcls";
+	    pageName    = "UIxMailUserRightsEditor";
+	 };
+	 saveUserRights = {
+	    protectedBy = "SaveAcls";
+	    pageName    = "UIxMailUserRightsEditor";
+	    actionName  = "saveUserRights";
+	 };
       };
-    };
+   };
 
-    SOGoTrashFolder = {
+   SOGoTrashFolder = {
       /* just a new toolbar, other things come from SOGoMailFolder */
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = "SOGoMailObject.toolbar";
+	 };
       };
       methods = {
-        emptyTrash = {
-          protectedBy = "View";
-          actionClass = "UIxMailFolderActions";
-          actionName = "emptyTrash";
-        };
+	 emptyTrash = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "emptyTrash";
+	 };
       };
-    };
+   };
 
-    SOGoMailObject = {
+   SOGoMailObject = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = "SOGoMailObject.toolbar";
+	 };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailView";
-        };
-        popupview = {
-          protectedBy = "View";
-          pageName    = "UIxMailPopupView";
-        };
-        move = {
-          protectedBy = "View";
-          pageName    = "UIxMailView";
-          actionName  = "move";
-        };
-        delete = {
-          protectedBy = "View";
-          pageName    = "UIxMailView";
-          actionName  = "delete";
-        };
-        trash = {
-          protectedBy = "View";
-          pageName    = "UIxMailView";
-          actionName  = "trash";
-        };
-        junk = {
-          protectedBy = "View";
-          pageName    = "UIxMailView";
-          actionName  = "junk";
-        };
-        edit = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-        };
-        compose = {
-          protectedBy = "View";
-          actionClass = "UIxMailEditorAction";
-          actionName  = "compose";
-        };
-        reply = {
-          protectedBy = "View";
-          actionClass = "UIxMailReplyAction";
-          actionName  = "reply";
-        };
-        replyall = {
-          protectedBy = "View";
-          actionClass = "UIxMailReplyAction";
-          actionName  = "replyall";
-        };
-        forward = {
-          protectedBy = "View";
-          actionClass = "UIxMailForwardAction";
-          actionName  = "forward";
-        };
+	 view = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailView";
+	 };
+	 popupview = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailPopupView";
+	 };
+	 move = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailView";
+	    actionName  = "move";
+	 };
+	 delete = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailView";
+	    actionName  = "delete";
+	 };
+	 trash = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailView";
+	    actionName  = "trash";
+	 };
+	 junk = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailView";
+	    actionName  = "junk";
+	 };
+	 edit = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditor";
+	 };
+	 compose = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailEditorAction";
+	    actionName  = "compose";
+	 };
+	 reply = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailReplyAction";
+	    actionName  = "reply";
+	 };
+	 replyall = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailReplyAction";
+	    actionName  = "replyall";
+	 };
+	 forward = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailForwardAction";
+	    actionName  = "forward";
+	 };
       };
-    };
+   };
 
-    SOGoMailAccounts = {
+   SOGoMailAccounts = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = "SOGoMailObject.toolbar";
+	 };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailMainFrame";
-        };
-        compose = {
-          protectedBy = "View";
-          pageName    = "UIxMailMainFrame";
-          actionName  = "compose";
-        };
-        getMail = {
-          protectedBy = "View";
-          pageName    = "UIxMailAccountsView";
-        };
+	 view = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailMainFrame";
+	 };
+	 compose = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailMainFrame";
+	    actionName  = "compose";
+	 };
+	 getMail = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailAccountsView";
+	 };
       };
-    };
+   };
 
-    SOGoMailAccount = {
+   SOGoMailAccount = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = "SOGoMailObject.toolbar";
+	 };
       };
       methods = {
-        compose = {
-          protectedBy = "View";
-          actionClass = "UIxMailEditorAction";
-          actionName  = "compose";
-        };
-	mailboxes = {
-	   protectedBy = "View";
-	   actionClass = "UIxMailAccountActions";
-	   actionName = "listMailboxes";
-	};
+	 compose = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailEditorAction";
+	    actionName  = "compose";
+	 };
+	 mailboxes = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailAccountActions";
+	    actionName = "listMailboxes";
+	 };
       };
-    };
+   };
 
-    SOGoDraftsFolder = {
+   SOGoDraftsFolder = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = ( /* the toolbar groups */
-            ( /* first group */
-              { link  = "getMail";
-		image = "tb-mail-getmail-flat-24x24.png";
-                cssClass = "tbicon_getmail"; label = "Get Mail"; },
-              {
-	       link     = "#"; // "compose"; // target = "_blank";
-	       isSafe = NO;
-               onclick  = "return openMessageWindow(null, 'compose');";
-	       image = "tb-mail-write-flat-24x24.png";
-	       cssClass = "tbicon_compose"; label = "Write"; },
-            )
-          );
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = ( /* the toolbar groups */
+		      ( /* first group */
+			 { link  = "getMail";
+			   image = "tb-mail-getmail-flat-24x24.png";
+			   cssClass = "tbicon_getmail"; label = "Get Mail"; },
+			 {
+			    link     = "#"; // "compose"; // target = "_blank";
+			    isSafe = NO;
+			    onclick  = "return openMessageWindow(null, 'compose');";
+			    image = "tb-mail-write-flat-24x24.png";
+			    cssClass = "tbicon_compose"; label = "Write"; },
+			)
+	       );
+	 };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        getMail = {
-          protectedBy = "View";
-          pageName    = "UIxMailListView";
-        };
-        compose = {
-          protectedBy = "View";
-          actionClass = "UIxMailEditorAction";
-          actionName  = "compose";
-        };
+	 view = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	 };
+	 getMail = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailListView";
+	 };
+	 compose = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailEditorAction";
+	    actionName  = "compose";
+	 };
       };
-    };
+   };
 
-    SOGoDraftObject = {
+   SOGoDraftObject = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value       = "SOGoDraftObject.toolbar";
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value       = "SOGoDraftObject.toolbar";
+	 };
       };
       methods = {
-        view = { /* somewhat hackish */
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-        };
-        edit = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-          actionName  = "edit";
-        };
-        save = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-          actionName  = "save";
-        };
-        delete = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-          actionName  = "delete";
-        };
+	 view = { /* somewhat hackish */
+		  protectedBy = "View";
+		  pageName    = "UIxMailEditor";
+	 };
+	 edit = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditor";
+	    actionName  = "edit";
+	 };
+	 save = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditor";
+	    actionName  = "save";
+	 };
+	 delete = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditor";
+	    actionName  = "delete";
+	 };
 
-        viewAttachments = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditorAttach";
-          actionName  = "viewAttachments";
-        };
-        attach = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditorAttach";
-          actionName  = "attach";
-        };
-        deleteAttachment = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditorAttach";
-          actionName  = "deleteAttachment";
-        };
-        send = {
-          protectedBy = "View";
-          pageName    = "UIxMailEditor";
-          actionName  = "send";
-        };
+	 viewAttachments = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditorAttach";
+	    actionName  = "viewAttachments";
+	 };
+	 attach = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditorAttach";
+	    actionName  = "attach";
+	 };
+	 deleteAttachment = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditorAttach";
+	    actionName  = "deleteAttachment";
+	 };
+	 send = {
+	    protectedBy = "View";
+	    pageName    = "UIxMailEditor";
+	    actionName  = "send";
+	 };
       };
-    };
+   };
 
-    /* Sieve */
+   /* Sieve */
 
-/*    SOGoSieveScriptsFolder = {
+   /*    SOGoSieveScriptsFolder = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = (
-            (
-              {
-	       link  = "getMail";
-	       image = "tb-mail-getmail-flat-24x24.png";
-	       cssClass = "tbicon_getmail"; label = "Get Mail";
-              },
-              {
-	       link     = "#"; // "compose"; // target = "_blank";
-	       onclick  = "clickedNewFilter(this); return false";
-	       image = "tb-mail-write-flat-24x24.png";
-	       cssClass = "tbicon_compose"; label = "New Filter";
-              },
-            ),
-            (
-              { link = "#";
-                cssClass = "tbicon_delete"; label = "Delete"; },
-            ),
-          );
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = (
+	       (
+	       {
+		  link  = "getMail";
+		  image = "tb-mail-getmail-flat-24x24.png";
+		  cssClass = "tbicon_getmail"; label = "Get Mail";
+	       },
+		  {
+		     link     = "#"; // "compose"; // target = "_blank";
+		     onclick  = "clickedNewFilter(this); return false";
+		     image = "tb-mail-write-flat-24x24.png";
+		     cssClass = "tbicon_compose"; label = "New Filter";
+		  },
+	       ),
+	       (
+	       { link = "#";
+	       cssClass = "tbicon_delete"; label = "Delete"; },
+	       ),
+	       );
+	 };
       };
       methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxFilterList";
-        };
-        create = {
-          protectedBy = "View";
-          pageName    = "UIxFilterList";
-          actionName  = "create";
-        };
+	 view = {
+	    protectedBy = "View";
+	    pageName    = "UIxFilterList";
+	 };
+	 create = {
+	    protectedBy = "View";
+	    pageName    = "UIxFilterList";
+	    actionName  = "create";
+	 };
       };
-    };
+   };
 
-    SOGoSieveScriptObject = {
+   SOGoSieveScriptObject = {
       slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = (
-            ( { link  = "#";
-                onclick  = "clickedEditorSave(this);return false;";
-		image = "tb-mail-file-flat-24x24.png";
-		cssClass = "tbicon_save"; label = "Save"; },
-              { link = "#";
-                onclick  = "clickedEditorDelete(this);return false;";
-		image = "tb-mail-delete-flat-24x24.png";
-                cssClass = "tbicon_delete"; label = "Delete"; },
-            )
-          );
-        };
+	 toolbar = {
+	    protectedBy = "View";
+	    value = (
+	       ( { link  = "#";
+	       onclick  = "clickedEditorSave(this);return false;";
+	       image = "tb-mail-file-flat-24x24.png";
+	       cssClass = "tbicon_save"; label = "Save"; },
+		  { link = "#";
+		    onclick  = "clickedEditorDelete(this);return false;";
+		    image = "tb-mail-delete-flat-24x24.png";
+		    cssClass = "tbicon_delete"; label = "Delete"; },
+		 )
+	       );
+	 };
       };
       methods = {
-        edit = {
-          protectedBy = "View";
-          pageName    = "UIxSieveEditor";
-          actionName  = "edit";
-        };
-        save = {
-          protectedBy = "View";
-          pageName    = "UIxSieveEditor";
-          actionName  = "save";
-        };
-        delete = {
-          protectedBy = "View";
-          pageName    = "UIxSieveEditor";
-          actionName  = "delete";
-        };
+	 edit = {
+	    protectedBy = "View";
+	    pageName    = "UIxSieveEditor";
+	    actionName  = "edit";
+	 };
+	 save = {
+	    protectedBy = "View";
+	    pageName    = "UIxSieveEditor";
+	    actionName  = "save";
+	 };
+	 delete = {
+	    protectedBy = "View";
+	    pageName    = "UIxSieveEditor";
+	    actionName  = "delete";
+	 };
       };
-    }; */
-  };
+   }; */
+};
 }

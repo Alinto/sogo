@@ -210,4 +210,43 @@
   return response;
 }
 
+#warning here should be done what should be done: IMAP subscription
+- (WOResponse *) _subscriptionStubAction
+{
+  NSString *mailInvitationParam, *mailInvitationURL;
+  WOResponse *response;
+  SOGoMailFolder *clientObject;
+
+  response = [context response];
+  mailInvitationParam
+    = [[context request] formValueForKey: @"mail-invitation"];
+  if ([mailInvitationParam boolValue])
+    {
+      clientObject = [self clientObject];
+      mailInvitationURL
+	= [[clientObject soURLToBaseContainerForCurrentUser]
+	    absoluteString];
+      [response setStatus: 302];
+      [response setHeader: mailInvitationURL
+		forKey: @"location"];
+    }
+  else
+    {
+      [response setStatus: 403];
+      [response appendContentString: @"How did you end up here?"];
+    }
+
+  return response;
+}
+
+- (WOResponse *) subscribeAction
+{
+  return [self _subscriptionStubAction];
+}
+
+- (WOResponse *) unsubscribeAction
+{
+  return [self _subscriptionStubAction];
+}
+
 @end
