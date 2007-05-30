@@ -1,5 +1,9 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent +initialize]): the default language for
+	mail templates is now set to English.
+
 	* UI/SOGoUI/SOGoACLFrenchRemovalAdvisory.[hm]: new subclass of
 	SOGoACLAdvisory implementing the french template for user removal
 	from acls.

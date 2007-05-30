@@ -57,7 +57,7 @@ static BOOL sendEMailNotifications = NO;
       mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
                                       retain];
       if (!mailTemplateDefaultLanguage)
-        mailTemplateDefaultLanguage = @"French";
+        mailTemplateDefaultLanguage = @"English";
 
       sendEMailNotifications
         = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
@@ -377,6 +377,8 @@ static BOOL sendEMailNotifications = NO;
           else
             recipient = email;
 
+#warning this could be optimized in a class hierarchy common with the \
+          SOGoObject's acl notification mechanism
           /* create page name */
           // TODO: select user's default language?
           pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
