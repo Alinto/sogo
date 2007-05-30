@@ -195,6 +195,17 @@ static NSString *defaultMailDomain = nil;
   return [contactInfos objectForKey: @"c_email"];
 }
 
+- (NSString *) getFullEmailForUID: (NSString *) uid
+{
+  NSDictionary *contactInfos;
+
+  contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
+
+  return [NSString stringWithFormat: @"%@ <%@>",
+		   [contactInfos objectForKey: @"cn"],
+		   [contactInfos objectForKey: @"c_email"]];
+}
+
 - (NSString *) getUIDForEmail: (NSString *) email
 {
   NSDictionary *contactInfos;
