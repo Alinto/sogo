@@ -1,5 +1,20 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davURL]): new method
+	that returns the full dav url to self.
+	([SOGoObject -soURL]): same as above but for the so url (Web UI).
+	([SOGoObject -soURLToBaseContainerForUser:uid]): new method that
+	returns the full so url to the base of the SOGo module to which
+	self belongs, and for the specified user.
+	([SOGoObject -soURLToBaseContainerForCurrentUser]): same as above
+	but for the current user.
+	([SOGoObject -httpURLForAdvisoryToUser:uid]): new protocol method
+	required by the acl advisory templates and which returns a link
+	the target user can click to activate its new subscription.
+	([SOGoObject -resourceURLForAdvisoryToUser:uid]): same as above
+	but for inclusion of the application/x-sogo-notification part,
+	which will be handled by the Lightning enhancer plugin.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -subscribeAction]) 
 	([UIxMailFolderActions -unsubscribeAction]): new stub methods that
 	do nothing yet since imap folder subscription is not handled yet.

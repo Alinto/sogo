@@ -41,6 +41,7 @@
 @class NSMutableString;
 @class NSException;
 @class NSTimeZone;
+@class NSURL;
 
 @class WOContext;
 @class GCSFolderManager;
@@ -68,6 +69,11 @@
 
 - (NSString *) nameInContainer;
 - (id) container;
+
+- (NSURL *) davURL;
+- (NSURL *) soURL;
+- (NSURL *) soURLToBaseContainerForUser: (NSString *) uid;
+- (NSURL *) soURLToBaseContainerForCurrentUser;
 
 /* ownership */
 
@@ -104,7 +110,12 @@
           forUser: (NSString *) uid;
 - (void) removeAclsForUsers: (NSArray *) users;
 - (NSString *) defaultUserID;
-- (BOOL) hasSupportForDefaultRoles;
+
+- (void) sendACLAdditionAdvisoryToUser: (NSString *) uid;
+- (void) sendACLRemovalAdvisoryToUser: (NSString *) uid;
+
+- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
+- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
 
 /* description */
 

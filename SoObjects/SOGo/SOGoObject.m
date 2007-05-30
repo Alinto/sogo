@@ -24,19 +24,24 @@
        Please use gnustep-base instead.
 #endif
 
-#import <NGObjWeb/WEClientCapabilities.h>
+#import <Foundation/NSClassDescription.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WEClientCapabilities.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WORequest+So.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/NSDictionary+NGCards.h>
-#import <GDLContentStore/GCSFolder.h>
-
-#import "common.h"
-
-#import "NSArray+Utilities.h"
-#import "NSString+Utilities.h"
+#import <UI/SOGoUI/SOGoACLAdvisory.h>
 
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
@@ -44,6 +49,9 @@
 #import "SOGoUserFolder.h"
 
 #import "SOGoDAVRendererTypes.h"
+
+#import "NSArray+Utilities.h"
+#import "NSString+Utilities.h"
 
 #import "SOGoObject.h"
 
@@ -737,9 +745,118 @@ static BOOL kontactGroupDAV = YES;
   return nil;
 }
 
-- (BOOL) hasSupportForDefaultRoles
+- (void) sendACLAdvisoryTemplate: (NSString *) template
+			  toUser: (NSString *) uid
 {
-  return NO;
+  NSString *language, *pageName;
+  SOGoUser *user;
+  SOGoACLAdvisory *page;
+  WOApplication *app;
+
+  user = [SOGoUser userWithLogin: uid roles: nil];
+  language = [user language];
+  pageName = [NSString stringWithFormat: @"SOGoACL%@%@Advisory",
+		       language, template];
+
+  app = [WOApplication application];
+  page = [app pageWithName: pageName inContext: context];
+  [page setACLObject: self];
+  [page setRecipientUID: uid];
+  [page send];
+}
+
+- (void) sendACLAdditionAdvisoryToUser: (NSString *) uid
+{
+  return [self sendACLAdvisoryTemplate: @"Addition"
+	       toUser: uid];
+}
+
+- (void) sendACLRemovalAdvisoryToUser: (NSString *) uid
+{
+  return [self sendACLAdvisoryTemplate: @"Removal"
+	       toUser: uid];
+}
+
+- (NSURL *) _urlPreferringParticle: (NSString *) expected
+		       overThisOne: (NSString *) possible
+{
+  NSURL *serverURL, *davURL;
+  NSMutableArray *path;
+  NSString *baseURL, *urlMethod;
+
+  serverURL = [context serverURL];
+  baseURL = [self baseURLInContext: context];
+  path = [NSMutableArray arrayWithArray: [baseURL componentsSeparatedByString:
+						    @"/"]];
+  urlMethod = [path objectAtIndex: 2];
+  if (![urlMethod isEqualToString: expected])
+    {
+      if ([urlMethod isEqualToString: possible])
+	[path replaceObjectAtIndex: 2 withObject: expected];
+      else
+	[path insertObject: expected atIndex: 2];
+    }
+
+  davURL = [[NSURL alloc] initWithScheme: [serverURL scheme]
+			  host: [serverURL host]
+			  path: [path componentsJoinedByString: @"/"]];
+  [davURL autorelease];
+
+  return davURL;
+}
+
+- (NSURL *) davURL
+{
+  return [self _urlPreferringParticle: @"dav" overThisOne: @"so"];
+}
+
+- (NSURL *) soURL
+{
+  return [self _urlPreferringParticle: @"so" overThisOne: @"dav"];
+}
+
+- (NSURL *) soURLToBaseContainerForUser: (NSString *) uid
+{
+  NSURL *soURL, *baseSoURL;
+  NSArray *basePath;
+  NSMutableArray *newPath;
+
+  soURL = [self soURL];
+  basePath = [[soURL path] componentsSeparatedByString: @"/"];
+  newPath
+    = [NSMutableArray arrayWithArray:
+			[basePath subarrayWithRange: NSMakeRange (0, 5)]];
+  [newPath replaceObjectAtIndex: 3 withObject: uid];
+
+  baseSoURL = [[NSURL alloc] initWithScheme: [soURL scheme]
+			     host: [soURL host]
+			     path: [newPath componentsJoinedByString: @"/"]];
+  [baseSoURL autorelease];
+
+  return baseSoURL;
+}
+
+- (NSURL *) soURLToBaseContainerForCurrentUser
+{
+  NSString *currentLogin;
+
+  currentLogin = [[context activeUser] login];
+
+  return [self soURLToBaseContainerForUser: currentLogin];
+}
+
+- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 /* description */
