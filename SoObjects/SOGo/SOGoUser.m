@@ -35,6 +35,7 @@
 
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
+static NSString *defaultLanguage = nil;
 static NSURL *AgenorProfileURL = nil;
 
 @interface NSObject (SOGoRoles)
@@ -66,7 +67,14 @@ static NSURL *AgenorProfileURL = nil;
       AgenorProfileURL = [[NSURL alloc] initWithString: profileURL];
     }
   if (!fallbackIMAP4Server)
-    ASSIGN (fallbackIMAP4Server, [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
+    ASSIGN (fallbackIMAP4Server,
+	    [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
+  if (!defaultLanguage)
+    {
+      ASSIGN (defaultLanguage, [ud stringForKey: @"SOGoDefaultLanguage"]);
+      if (!defaultLanguage)
+	ASSIGN (defaultLanguage, @"English");
+    }
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
@@ -87,6 +95,7 @@ static NSURL *AgenorProfileURL = nil;
       userDefaults = nil;
       userSettings = nil;
       allEmails = nil;
+      language = nil;
     }
 
   return self;
@@ -116,6 +125,8 @@ static NSURL *AgenorProfileURL = nil;
 {
   [userDefaults release];
   [userSettings release];
+  [allEmails release];
+  [language release];
   [super dealloc];
 }
 
@@ -143,6 +154,11 @@ static NSURL *AgenorProfileURL = nil;
 }
 
 /* properties */
+
+- (NSString *) fullEmail
+{
+  return [[LDAPUserManager sharedUserManager] getFullEmailForUID: login];
+}
 
 - (NSString *) primaryEmail
 {
@@ -247,6 +263,19 @@ static NSURL *AgenorProfileURL = nil;
 					       fieldName: @"settings"];
 
   return userSettings;
+}
+
+- (NSString *) language
+{
+  if (!language)
+    {
+      language = [[self userDefaults] stringForKey: @"Language"];
+      if (!language)
+	language = defaultLanguage;
+      [language retain];
+    }
+
+  return language;
 }
 
 - (NSTimeZone *) timeZone

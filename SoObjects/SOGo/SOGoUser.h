@@ -45,6 +45,7 @@
 @interface SOGoUser : SoUser
 {
   NSString *cn;
+  NSString *language;
   NSArray *allEmails;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
@@ -55,6 +56,8 @@
 		       roles: (NSArray *) roles;
 
 /* properties */
+
+- (NSString *) fullEmail;
 
 - (NSString *) primaryEmail;
 - (NSString *) systemEmail;
@@ -80,6 +83,7 @@
 - (NSUserDefaults *) userDefaults;
 - (NSUserDefaults *) userSettings;
 
+- (NSString *) language;
 - (NSTimeZone *) timeZone;
 - (NSTimeZone *) serverTimeZone;
 
