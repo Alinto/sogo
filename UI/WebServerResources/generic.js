@@ -1180,7 +1180,7 @@ function getMenus() {
 }
 
 function onHeaderClick(event) {
-    window.alert("generic headerClick");
+   window.alert("generic headerClick");
 }
 
 function parent$(element) {
