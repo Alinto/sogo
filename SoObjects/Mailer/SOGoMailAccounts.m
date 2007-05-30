@@ -180,11 +180,13 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection
+{
   return YES;
 }
 
 /* acls */
+
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   return nil;
