@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName"/> vous a enlevé
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName"/> vous a enlevé de sa liste de permission pour son dossier '<var:string value="resourceName"/>'.
+Vous pouvez vous désinscrire directement en cliquant sur le lien suivant:
+    <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
+
+Autrement, il vous sera toujours possible de vous désinscrire plus tard via l'interface web de SOGo.
+</var:if>
+
+</container>

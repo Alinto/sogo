@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName"/> has added you
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName"/> has added you to the access list for his '<var:string value="resourceName"/>' folder.
+You can subscribe directly to that folder by following this link:
+    <var:string value="httpAdvisoryURL"/>subscribe?mail-invitation=YES
+
+Otherwise, you will be able to subscribe later from the SOGo web interface.
+</var:if>
+
+</container>

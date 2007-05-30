@@ -1,5 +1,21 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/SOGoACLFrenchRemovalAdvisory.[hm]: new subclass of
+	SOGoACLAdvisory implementing the french template for user removal
+	from acls.
+
+	* UI/SOGoUI/SOGoACLFrenchAdditionAdvisory.[hm]: new subclass of
+	SOGoACLAdvisory implementing the french template for user
+	additions to acls.
+
+	* UI/SOGoUI/SOGoACLEnglishRemovalAdvisory.[hm]: new subclass of
+	SOGoACLAdvisory implementing the english template for user removal
+	from acls.
+
+	* UI/SOGoUI/SOGoACLEnglishAdditionAdvisory.[hm]: new subclass of
+	SOGoACLAdvisory implementing the english template for user
+	additions to acls.
+
 	* UI/SOGoUI/SOGoACLAdvisory.[hm]: new class module implemented the
 	supercall of all the acl advistory templates. The model is based
 	on SOGoAptMailNotification except that the template encapsulates

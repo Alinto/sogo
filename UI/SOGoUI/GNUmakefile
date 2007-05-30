@@ -29,6 +29,12 @@ libSOGoUI_OBJC_FILES +=		\
 	SOGoAptFormatter.m	\
 	SOGoJSStringFormatter.m \
 	WOContext+UIx.m		\
+	\
+	SOGoACLAdvisory.m	\
+	SOGoACLFrenchAdditionAdvisory.m		\
+	SOGoACLFrenchRemovalAdvisory.m		\
+	SOGoACLEnglishAdditionAdvisory.m	\
+	SOGoACLEnglishRemovalAdvisory.m
 
 # make
 
