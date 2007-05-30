@@ -40,7 +40,6 @@
 {
   NSArray            *filenames;
   NSString           *folderType;
-  NGImap4MailboxInfo *selectInfo;
 }
 
 /* messages */

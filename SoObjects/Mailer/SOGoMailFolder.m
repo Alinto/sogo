@@ -25,11 +25,13 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 
 #import "SOGoMailObject.h"
@@ -340,6 +342,10 @@ static BOOL useAltNamespace = NO;
 }
 
 /* folder type */
+- (NSString *) folderType
+{
+  return @"Mail";
+}
 
 - (NSString *) outlookFolderClass
 {
@@ -468,7 +474,7 @@ static BOOL useAltNamespace = NO;
   NSArray *users;
   NSDictionary *imapAcls;
 
-  imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+  imapAcls = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
   if ([imapAcls isKindOfClass: [NSDictionary class]])
     users = [imapAcls allKeys];
   else
@@ -481,31 +487,21 @@ static BOOL useAltNamespace = NO;
 {
   NSMutableArray *acls;
   SOGoMailAccount *mailAccount;
-  NSString *path, *sharedPath, *othersPath;
+  NSString *path;
   NSArray *names;
   unsigned int count;
 
   acls = [NSMutableArray array];
 
   mailAccount = [self mailAccountFolder];
-  sharedPath = [NSString stringWithFormat: @"/%@",
-			 [mailAccount sharedFolderName]];
-  othersPath = [NSString stringWithFormat: @"/%@",
-			 [mailAccount otherUsersFolderName]];
-  path = [[self imap4URL] path];
+  path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
   names = [path componentsSeparatedByString: @"/"];
   count = [names count];
 
-  if ([path hasPrefix: sharedPath])
-    {
-      if (count == 2)
-	[acls addObject: SOGoRole_ObjectViewer];
-    }
-  else if ([path hasPrefix: othersPath])
-    {
-      if (count == 2 || count == 3)
-	[acls addObject: SOGoRole_ObjectViewer];
-    }
+  if ([path hasPrefix: [mailAccount sharedFolderName]])
+    [acls addObject: SOGoRole_ObjectViewer];
+  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
+    [acls addObject: SOGoRole_ObjectViewer];
   else
     [acls addObject: SoRole_Owner];
 
@@ -519,7 +515,7 @@ static BOOL useAltNamespace = NO;
   NSString *userAcls;
 
   acls = [self _sharesACLs];
-  imapAcls = [imap4 aclForMailboxAtURL: [self imap4URL]];
+  imapAcls = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
   if ([imapAcls isKindOfClass: [NSDictionary class]])
     {
       userAcls = [imapAcls objectForKey: uid];
@@ -539,7 +535,7 @@ static BOOL useAltNamespace = NO;
   NSString *folderName;
   NGImap4Client *client;
 
-  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
   client = [imap4 client];
 
   uids = [users objectEnumerator];
@@ -557,7 +553,7 @@ static BOOL useAltNamespace = NO;
   NSString *acls, *folderName;
 
   acls = [self _sogoAclsToImapAcls: roles];
-  folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+  folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
   [[imap4 client] setACL: folderName rights: acls uid: uid];
 }
 
@@ -569,23 +565,19 @@ static BOOL useAltNamespace = NO;
 - (NSString *) ownerInContext: (WOContext *) localContext
 {
   SOGoMailAccount *mailAccount;
-  NSString *path, *sharedPath, *othersPath, *owner;
+  NSString *path, *owner;
   NSArray *names;
 
   mailAccount = [self mailAccountFolder];
-  sharedPath = [NSString stringWithFormat: @"/%@",
-			 [mailAccount sharedFolderName]];
-  othersPath = [NSString stringWithFormat: @"/%@",
-			 [mailAccount otherUsersFolderName]];
-  path = [[self imap4URL] path];
+  path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
 
-  if (sharedPath && [path hasPrefix: sharedPath])
+  if ([path hasPrefix: [mailAccount sharedFolderName]])
     owner = @"anyone";
-  else if (othersPath && [path hasPrefix: othersPath])
+  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
     {
       names = [path componentsSeparatedByString: @"/"];
-      if ([names count] > 2)
-	owner = [names objectAtIndex: 2];
+      if ([names count] > 1)
+	owner = [names objectAtIndex: 1];
       else
 	owner = @"anyone";
     }
@@ -593,6 +585,54 @@ static BOOL useAltNamespace = NO;
     owner = [super ownerInContext: localContext];
 
   return owner;
+}
+
+- (NSString *) otherUsersPathToFolder
+{
+  NSString *userPath, *selfPath, *otherUsers, *sharedFolders;
+  SOGoMailAccount *account;
+
+  account = [self mailAccountFolder];
+  otherUsers = [account otherUsersFolderName];
+  sharedFolders = [account sharedFolderName];
+
+  selfPath = [[self imap4URL] path];
+  if ([selfPath hasPrefix: [NSString stringWithFormat: @"/%@", otherUsers]]
+      || [selfPath hasPrefix:
+		     [NSString stringWithFormat: @"/%@", sharedFolders]])
+    userPath = selfPath;
+  else
+    userPath = [NSString stringWithFormat: @"/%@/%@%@",
+			 [otherUsers stringByEscapingURL],
+			 [self ownerInContext: context],
+			 selfPath];
+
+  return userPath;
+}
+
+- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
+{
+  SOGoUser *user;
+
+  user = [SOGoUser userWithLogin: uid roles: nil];
+
+  return [NSString stringWithFormat: @"%@/%@%@",
+		   [self soURLToBaseContainerForUser: uid],
+		   [user primaryIMAP4AccountString],
+		   [self otherUsersPathToFolder]];
+}
+
+- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
+{
+  NSURL *selfURL, *userURL;
+
+  selfURL = [self imap4URL];
+  userURL = [[NSURL alloc] initWithScheme: [selfURL scheme]
+			   host: [selfURL host]
+			   path: [self otherUsersPathToFolder]];
+  [userURL autorelease];
+
+  return [userURL absoluteString];
 }
 
 @end /* SOGoMailFolder */

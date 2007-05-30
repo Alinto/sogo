@@ -452,9 +452,14 @@ static NSString *defaultUserID = @"<default>";
   return defaultUserID;
 }
 
-- (BOOL) hasSupportForDefaultRoles
+- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
 {
-  return YES;
+  return [[self soURL] absoluteString];
+}
+
+- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid
+{
+  return [[self davURL] absoluteString];
 }
 
 /* WebDAV */
