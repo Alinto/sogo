@@ -1,5 +1,11 @@
 2007-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/SOGoACLAdvisory.[hm]: new class module implemented the
+	supercall of all the acl advistory templates. The model is based
+	on SOGoAptMailNotification except that the template encapsulates
+	the message to be sent. Later, we might create a superclass common
+	to all template-based emails.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSMutableArray
 	-addRange:newRange]): new method that store a string
 	representation of the NSRange passed as parameter.
