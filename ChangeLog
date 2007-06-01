@@ -1,5 +1,9 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
+	-vCard]): directly use the "content" ivar since it is initialized
+	during object creation.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -init]): no longer handle the
 	nameInContainer no the container ivars. They were removed because

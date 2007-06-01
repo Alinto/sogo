@@ -40,8 +40,7 @@
 
 - (void) dealloc
 {
-  if (card)
-    [card release];
+  [card release];
   [super dealloc];
 }
 
@@ -49,13 +48,10 @@
 
 - (NGVCard *) vCard
 {
-  NSString *contentStr;
-
   if (!card)
     {
-      contentStr = [self contentAsString];
-      if ([[contentStr uppercaseString] hasPrefix:@"BEGIN:VCARD"])
-        card = [NGVCard parseSingleFromSource: contentStr];
+      if ([[content uppercaseString] hasPrefix: @"BEGIN:VCARD"])
+        card = [NGVCard parseSingleFromSource: content];
       else
         card = [NGVCard cardWithUid: [self nameInContainer]];
       [card retain];
