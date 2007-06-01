@@ -655,10 +655,13 @@ static BOOL debugSoParts       = NO;
 
 /* flags */
 
-- (NSException *)addFlags:(id)_flags {
+- (NSException *) addFlags: (id) _flags
+{
   return [[self imap4Connection] addFlags:_flags toURL:[self imap4URL]];
 }
-- (NSException *)removeFlags:(id)_flags {
+
+- (NSException *) removeFlags: (id) _flags
+{
   return [[self imap4Connection] removeFlags:_flags toURL:[self imap4URL]];
 }
 
@@ -672,7 +675,7 @@ static BOOL debugSoParts       = NO;
   login = [[context activeUser] login];
   parentAcl = [[self container] aclsForUser: login];
 
-  return [parentAcl containsObject: SOGoMailRole_MessageEraser];
+  return [parentAcl containsObject: SOGoRole_ObjectEraser];
 }
 
 /* name lookup */
