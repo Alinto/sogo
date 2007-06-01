@@ -237,6 +237,11 @@ static NSString *defaultUserID = @"<default>";
   return rType;
 }
 
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
+}
+
 - (NSArray *) toOneRelationshipKeys {
   /* toOneRelationshipKeys are the 'files' contained in a folder */
   NSMutableArray *ma;

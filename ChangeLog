@@ -1,5 +1,8 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -davContentType]):
+	declare "httpd/unix-directory".
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): declare
 	"UTC" as fallback timezone instead of "Canada/Eastern".
 	([-hasEmail:email]): make use of the new NSArray's
