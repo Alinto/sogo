@@ -34,18 +34,20 @@
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/NSString+NGCards.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
+#import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WORequest.h>
 
-#import <SOGo/SOGoUser.h>
-#import <SOGoUI/SOGoDateFormatter.h>
+#import <UI/SOGoUI/SOGoDateFormatter.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxComponent+Scheduler.h"
 
@@ -845,38 +847,41 @@
 
 - (NSString *) toolbar
 {
-  SOGoUser *currentUser;
   SOGoCalendarComponent *clientObject;
   NSString *toolbarFilename;
-  iCalPerson *person;
   iCalPersonPartStat participationStatus;
+  SoSecurityManager *sm;
+  NSString *owner;
 
+  sm = [SoSecurityManager sharedSecurityManager];
   clientObject = [self clientObject];
-  currentUser = [[self context] activeUser];
-  if ([clientObject isOrganizerOrOwner: currentUser])
+
+  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+	   onObject: clientObject
+	   inContext: context])
     {
       if ([[clientObject componentTag] isEqualToString: @"vevent"])
 	toolbarFilename = @"SOGoAppointmentObject.toolbar";
       else
 	toolbarFilename = @"SOGoTaskObject.toolbar";
     }
-  else
+  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+		onObject: clientObject
+		inContext: context])
     {
       /* Lightning does not manage participation status within tasks */
-      person = [clientObject participant: currentUser];
-      if (person)
-        {
-          participationStatus = [person participationStatus];
-          if (participationStatus == iCalPersonPartStatAccepted)
-            toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
-          else if (participationStatus == iCalPersonPartStatDeclined)
-            toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
-          else
-            toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-        }
+      owner = [clientObject ownerInContext: context];
+      participationStatus
+	= [[clientObject findParticipantWithUID: owner] participationStatus];
+      if (participationStatus == iCalPersonPartStatAccepted)
+	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
+      else if (participationStatus == iCalPersonPartStatDeclined)
+	toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
       else
-        toolbarFilename = @"SOGoComponentClose.toolbar";
+	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
     }
+  else
+    toolbarFilename = @"SOGoComponentClose.toolbar";
 
   return toolbarFilename;
 }

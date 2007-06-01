@@ -1,5 +1,10 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-toolbar]): determine the toolbar filename based on the
+	permissions declared by the securitymanager. The role mechanism
+	has been adjusted on a lowerlevel so we can simplify the code.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-initWithName:newNameinContainer:newContainer]): read the content
 	directly from here. That way we can determine whether the object
