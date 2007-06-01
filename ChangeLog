@@ -1,5 +1,13 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-initWithName:newNameinContainer:newContainer]): read the content
+	directly from here. That way we can determine whether the object
+	is being created.
+	([SOGoContentObject -aclsForUser:uid]): if the object is new and
+	the ObjectCreator role is enabled, we also grant the ObjectEditor
+	role to the current user.
+
 	* UI/Common/UIxFolderActions.m ([-canAccessContentAction]):
 	changed the method paradigm to only return HTTP code 204. Not test
 	is done whatsoever since the security manager does it for us.

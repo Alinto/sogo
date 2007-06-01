@@ -35,7 +35,22 @@
 
 // TODO: check superclass version
 
-- (void)dealloc {
+- (id) initWithName: (NSString *) newName
+	inContainer: (id) newContainer
+{
+  if ((self = [super initWithName: newName inContainer: newContainer]))
+    {
+      ocsPath = nil;
+      content = [[self ocsFolder] fetchContentWithName: newName];
+      [content retain];
+      isNew = (!content);
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
   [content release];
   [ocsPath release];
   [super dealloc];
@@ -43,51 +58,60 @@
 
 /* notifications */
 
-- (void)sleep {
+- (void) sleep
+{
   [content release]; content = nil;
   [super sleep];
 }
 
 /* accessors */
 
-- (BOOL)isFolderish {
+- (BOOL) isFolderish
+{
   return NO;
 }
 
-- (void)setOCSPath:(NSString *)_path {
-  if ([ocsPath isEqualToString:_path])
-    return;
+- (void) setOCSPath: (NSString *) newOCSPath
+{
+  if (![ocsPath isEqualToString: newOCSPath])
+    {
+      if (ocsPath)
+	[self warnWithFormat:@"GCS path is already set! '%@'", newOCSPath];
   
-  if (ocsPath)
-    [self warnWithFormat:@"GCS path is already set! '%@'", _path];
-  
-  ASSIGNCOPY(ocsPath, _path);
+      ASSIGNCOPY (ocsPath, newOCSPath);
+    }
 }
 
 - (NSString *) ocsPath
 {
-  NSString *p;
-    
+  NSMutableString *newOCSPath;
+
   if (!ocsPath)
     {
-      p = [self ocsPathOfContainer];
-      if (p)
+      newOCSPath = [NSMutableString new];
+      [newOCSPath appendString: [self ocsPathOfContainer]];
+      if ([newOCSPath length] > 0)
 	{
-	  if (![p hasSuffix:@"/"])
-	    p = [p stringByAppendingString: @"/"];
-	  ocsPath = [p stringByAppendingString: [self nameInContainer]];
-	  [ocsPath retain];
+	  if (![newOCSPath hasSuffix:@"/"])
+	    [newOCSPath appendString: @"/"];
+	  [newOCSPath appendString: nameInContainer];
+	  ocsPath = newOCSPath;
 	}
     }
 
   return ocsPath;
 }
 
-- (NSString *)ocsPathOfContainer {
-  if (![[self container] respondsToSelector:@selector(ocsPath)])
-    return nil;
+- (NSString *) ocsPathOfContainer
+{
+  NSString *ocsPathOfContainer;
 
-  return [[self container] ocsPath];
+  if ([container respondsToSelector: @selector (ocsPath)])
+    ocsPathOfContainer = [container ocsPath];
+  else
+    ocsPathOfContainer = nil;
+
+  return ocsPath;
 }
 
 - (GCSFolder *) ocsFolder
@@ -97,42 +121,48 @@
 
 /* content */
 
+- (BOOL) isNew
+{
+  return isNew;
+}
+
 - (NSString *) contentAsString
 {
-  if (!content)
-    {
-      content = [[self ocsFolder] fetchContentWithName: nameInContainer];
-      [content retain];
-    }
-
   return content;
 }
 
-- (NSException *) saveContentString: (NSString *) _str
-                        baseVersion: (unsigned int) _baseVersion
+- (NSException *) saveContentString: (NSString *) newContent
+                        baseVersion: (unsigned int) newBaseVersion
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
   GCSFolder   *folder;
   NSException *ex;
-  
-  if ((folder = [self ocsFolder]) == nil) {
+
+  ex = nil;
+
+  ASSIGN (content, newContent);
+  folder = [container ocsFolder];
+  if (folder)
+    {
+      ex = [folder writeContent: newContent
+		   toName: nameInContainer
+		   baseVersion: newBaseVersion];
+      if (ex)
+	[self errorWithFormat:@"write failed: %@", ex];
+    }
+  else
     [self errorWithFormat:@"Did not find folder of content object."];
-    return nil;
-  }
   
-  ex = [folder writeContent:_str toName:[self nameInContainer]
-	       baseVersion:_baseVersion];
-  if (ex != nil) {
-    [self errorWithFormat:@"write failed: %@", ex];
-    return ex;
-  }
-  return nil;
-}
-- (NSException *)saveContentString:(NSString *)_str {
-  return [self saveContentString:_str baseVersion:0 /* don't check */];
+  return ex;
 }
 
-- (NSException *)delete {
+- (NSException *) saveContentString: (NSString *) newContent
+{
+  return [self saveContentString: newContent baseVersion: 0];
+}
+
+- (NSException *) delete
+{
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
   GCSFolder   *folder;
   NSException *ex;
@@ -153,7 +183,8 @@
 
 /* actions */
 
-- (id)PUTAction:(WOContext *)_ctx {
+- (id) PUTAction: (WOContext *) _ctx
+{
   WORequest    *rq;
   NSException  *error;
   unsigned int baseVersion;
@@ -226,7 +257,7 @@
   /* setup response */
   
   // TODO: this should be automatic in the SoDispatcher if we return nil?
-  [[_ctx response] setStatus:201 /* Created */];
+  [[_ctx response] setStatus: 201 /* Created */];
   
   if ((etag = [self davEntityTag]) != nil)
     [[_ctx response] setHeader:etag forKey:@"etag"];
@@ -321,9 +352,13 @@
   if ([containerAcls count] > 0)
     {
       if ([containerAcls containsObject: SOGoRole_ObjectCreator])
-	[acls addObject: SOGoRole_ObjectCreator];
-      if ([containerAcls containsObject: SOGoRole_ObjectEraser])
-	[acls addObject: SOGoRole_ObjectEraser];
+	{
+	  [acls addObject: SOGoRole_ObjectCreator];
+	  if (isNew)
+	    [acls addObject: SOGoRole_ObjectEditor];
+	}
+      if ([containerAcls containsObject: SOGoRole_ObjectReader])
+	[acls addObject: SOGoRole_ObjectViewer];
     }
 
   return acls;

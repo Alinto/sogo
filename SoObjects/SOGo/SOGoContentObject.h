@@ -33,6 +33,7 @@
 {
   NSString *ocsPath;
   NSString *content;
+  BOOL isNew;
 }
 
 /* accessors */
@@ -47,6 +48,7 @@
 
 /* content */
 
+- (BOOL) isNew;
 - (NSString *) contentAsString;
 - (NSException *) saveContentString: (NSString *) _str
                         baseVersion: (unsigned int) _baseVersion;
