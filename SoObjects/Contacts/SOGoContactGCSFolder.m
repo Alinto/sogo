@@ -60,7 +60,7 @@
   if ((self = [self initWithName: newName
                     inContainer: newContainer]))
     ASSIGN (displayName, newDisplayName);
-  
+
   return self;
 }
 
@@ -146,8 +146,8 @@
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-  NSLog (@"fetching records matching '%@', sorted by '%@' in order %d",
-         filter, sortKey, sortOrdering);
+//   NSLog (@"fetching records matching '%@', sorted by '%@' in order %d",
+//          filter, sortKey, sortOrdering);
 
   fields = folderListingFields;
   qualifier = [self _qualifierForFilter: filter];
@@ -210,7 +210,8 @@
   return @"Contact";
 }
 
-- (NSString *)outlookFolderClass {
+- (NSString *) outlookFolderClass
+{
   return @"IPF.Contact";
 }
 
