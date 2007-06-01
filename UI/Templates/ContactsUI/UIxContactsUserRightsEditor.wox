@@ -35,7 +35,12 @@
       <label><input type="checkbox" class="checkBox"
 	  const:name="ObjectViewer"
 	  var:checked="userCanViewObjects"/><var:string
-	  label:value="This person can view the cards of this addressbook."/></label>
+	  label:value="This person can list the content of this addressbook."/></label>
+      <br/>
+      <label><input type="checkbox" class="checkBox"
+	  const:name="ObjectReader"
+	  var:checked="userCanReadObjects"/><var:string
+	  label:value="This person can read the cards of this addressbook."/></label>
       <br/>
       <label><input type="checkbox" class="checkBox"
 	  const:name="ObjectEraser"
