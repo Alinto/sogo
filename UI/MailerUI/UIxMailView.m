@@ -97,37 +97,6 @@ static NSString *mailETag = nil;
                    [self objectTitle]];
 }
 
-/* expunge / delete setup and permissions */
-
-- (BOOL) isTrashingAllowed
-{
-  id trash;
-  
-  trash = [[[self clientObject] mailAccountFolder] 
-            trashFolderInContext:context];
-  if ([trash isKindOfClass:[NSException class]])
-    return NO;
-
-  return [trash isWriteAllowed];
-}
-
-- (BOOL) showMarkDeletedButton
-{
-  // TODO: we might also want to add a default to always show delete
-  if (![[self clientObject] isDeletionAllowed])
-    return NO;
-  
-  return [self isTrashingAllowed] ? NO : YES;
-}
-
-- (BOOL) showTrashButton
-{
-  if (![[self clientObject] isDeletionAllowed])
-    return NO;
-  
-  return [self isTrashingAllowed];
-}
-
 /* links (DUP to UIxMailPartViewer!) */
 
 - (NSString *)linkToEnvelopeAddress:(NGImap4EnvelopeAddress *)_address {
@@ -162,7 +131,8 @@ static NSString *mailETag = nil;
 
 /* actions */
 
-- (id)defaultAction {
+- (id) defaultAction
+{
   /* check etag to see whether we really must rerender */
   if (mailETag != nil ) {
     /*

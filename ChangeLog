@@ -1,5 +1,10 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m ([-isTrashingAllowed]): removed
+	useless method.
+	([-showMarkDeletedButton]): removed useless method.
+	([-showTrashButton]): removed useless method.
+
 	* SoObjects/Appointments/iCalEntityObject+SOGo.m
 	([iCalEntityObject -userIsParticipant:user]): new proxy method
 	that invoked isParticipant on self for each possible email
