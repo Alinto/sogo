@@ -374,12 +374,14 @@
   return list;
 }
 
-- (BOOL) isOrganizer: (id)_email
+- (BOOL) isOrganizer: (id) _email
 {
-  _email = [_email lowercaseString];
+  NSString *organizerMail;
 
-  return [[[[self organizer] rfc822Email] lowercaseString]
-           isEqualToString:_email];
+  organizerMail = [[self organizer] rfc822Email];
+
+  return [[organizerMail lowercaseString]
+           isEqualToString: [_email lowercaseString]];
 }
 
 - (BOOL) isParticipant: (id) _email
