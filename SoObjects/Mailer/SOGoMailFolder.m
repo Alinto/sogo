@@ -444,10 +444,10 @@ static BOOL useAltNamespace = NO;
 	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
 	  break;
 	case 'x':
-	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
+	  [SOGoAcls addObjectUniquely: SOGoRole_FolderEraser];
 	  break;
 	case 't':
-	  [SOGoAcls addObjectUniquely: SOGoMailRole_MessageEraser];
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
 	  break;
 	case 'e':
 	  [SOGoAcls addObjectUniquely: SOGoMailRole_Expunger];
@@ -487,9 +487,9 @@ static BOOL useAltNamespace = NO;
 	character = 'p';
       else if ([currentAcl isEqualToString: SOGoRole_FolderCreator])
 	character = 'k';
-      else if ([currentAcl isEqualToString: SOGoRole_ObjectEraser])
+      else if ([currentAcl isEqualToString: SOGoRole_FolderEraser])
 	character = 'x';
-      else if ([currentAcl isEqualToString: SOGoMailRole_MessageEraser])
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectEraser])
 	character = 't';
       else if ([currentAcl isEqualToString: SOGoMailRole_Expunger])
 	character = 'e';
