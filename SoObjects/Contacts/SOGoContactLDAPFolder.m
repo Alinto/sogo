@@ -31,6 +31,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/SoUser.h>
 #import <EOControl/EOSortOrdering.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/LDAPSource.h>
 #import "SOGoContactLDIFEntry.h"
