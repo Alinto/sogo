@@ -172,9 +172,25 @@
   return result;
 }
 
-- (NSString *) groupDavResourceType
+- (NSArray *) davResourceType
 {
-  return @"vcard-collection";
+  NSArray *rType, *groupDavCollection;
+
+  groupDavCollection = [NSArray arrayWithObjects: @"vcard-collection",
+				XMLNS_GROUPDAV, nil];
+  rType = [NSArray arrayWithObjects: @"collection", groupDavCollection, nil];
+
+  return rType;
+}
+
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
+}
+
+- (BOOL) davIsCollection
+{
+  return YES;
 }
 
 /* acls */
