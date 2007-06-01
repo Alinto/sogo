@@ -393,34 +393,40 @@ static BOOL kontactGroupDAV = YES;
   return YES;
 }
 
-- (id)initWithName:(NSString *)_name inContainer:(id)_container {
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      context = nil;
+      nameInContainer = nil;
+      container = nil;
+      owner = nil;
+    }
+
+  return self;
+}
+
+- (id) initWithName: (NSString *) _name
+	inContainer: (id) _container
+{
   if ((self = [self init]))
     {
       context = [[WOApplication application] context];
       [context retain];
       nameInContainer = [_name copy];
-      container = 
-	[self doesRetainContainer] ? [_container retain] : _container;
-      customOwner = nil;
+      container = _container;
+      if ([self doesRetainContainer])
+	[_container retain];
+      ASSIGN (owner, [_container ownerInContext: context]);
     }
 
   return self;
 }
 
-- (id) init
+- (void) dealloc
 {
-  if ((self = [super init]))
-    {
-      nameInContainer = nil;
-      container = nil;
-    }
-
-  return self;
-}
-
-- (void)dealloc {
   [context release];
-  [customOwner release];
+  [owner release];
   if ([self doesRetainContainer])
     [container release];
   [nameInContainer release];
@@ -440,18 +446,18 @@ static BOOL kontactGroupDAV = YES;
 
 - (void) setOwner: (NSString *) newOwner
 {
-  ASSIGN (customOwner, newOwner);
+  ASSIGN (owner, newOwner);
 }
 
-- (NSString *)ownerInContext:(id)_ctx {
-  return ((customOwner)
-          ? customOwner
-          : [[self container] ownerInContext:_ctx]);
+- (NSString *) ownerInContext: (id) localContext
+{
+  return owner;
 }
 
 /* hierarchy */
 
-- (NSArray *)fetchSubfolders {
+- (NSArray *) fetchSubfolders
+{
   NSMutableArray *ma;
   NSArray  *names;
   unsigned i, count;
@@ -485,11 +491,13 @@ static BOOL kontactGroupDAV = YES;
   
   return [container lookupUserFolder];
 }
+
 - (SOGoGroupsFolder *)lookupGroupsFolder {
   return [[self lookupUserFolder] lookupGroupsFolder];
 }
 
-- (void)sleep {
+- (void) sleep
+{
   if ([self doesRetainContainer])
     [container release];
   container = nil;
@@ -497,26 +505,30 @@ static BOOL kontactGroupDAV = YES;
 
 /* operations */
 
-- (NSException *)delete {
-  return [NSException exceptionWithHTTPStatus:501 /* not implemented */
-		      reason:@"delete not yet implemented, sorry ..."];
+- (NSException *) delete
+{
+  return [NSException exceptionWithHTTPStatus: 501 /* not implemented */
+		      reason: @"delete not yet implemented, sorry ..."];
 }
 
 /* KVC hacks */
 
-- (id)valueForUndefinedKey:(NSString *)_key {
+- (id) valueForUndefinedKey: (NSString *) _key
+{
   return nil;
 }
 
 /* WebDAV */
 
-- (NSString *)davDisplayName {
+- (NSString *) davDisplayName
+{
   return [self nameInContainer];
 }
 
 /* actions */
 
-- (id)DELETEAction:(id)_ctx {
+- (id) DELETEAction: (id) _ctx
+{
   NSException *error;
 
   if ((error = [self delete]) != nil)
@@ -526,44 +538,64 @@ static BOOL kontactGroupDAV = YES;
   return [NSNumber numberWithBool:YES]; /* delete worked out ... */
 }
 
-- (id)GETAction:(id)_ctx {
+- (NSString *) davContentType
+{
+  return @"text/plain";
+}
+
+- (WOResponse *) _webDAVResponse: (WOContext *) localContext
+{
+  WOResponse *response;
+  NSString *contentType;
+  id etag;
+
+  response = [localContext response];
+  contentType = [NSString stringWithFormat: @"%@; charset=utf8",
+			  [self davContentType]];
+  [response setHeader: contentType forKey: @"content-type"];
+  [response appendContentString: [self contentAsString]];
+  etag = [self davEntityTag];
+  if (etag)
+    [response setHeader: etag forKey: @"etag"];
+
+  return response;
+}
+
+- (id) GETAction: (id) localContext
+{
   // TODO: I guess this should really be done by SOPE (redirect to
   //       default method)
-  WORequest  *rq;
-  WOResponse *r;
+  WORequest *request;
   NSString *uri;
-  
-  r  = [(WOContext *)_ctx response];
-  rq = [(WOContext *)_ctx request];
-  
-  if ([rq isSoWebDAVRequest]) {
-    if ([self respondsToSelector:@selector(contentAsString)]) {
-      NSException *error;
-      id etag;
-      
-      if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
-	return error;
-      
-      [r appendContentString:[self contentAsString]];
-      
-      if ((etag = [self davEntityTag]) != nil)
-	[r setHeader:etag forKey:@"etag"];
+  NSException *error;
+  id value;
 
-      return r;
+  request = [localContext request];  
+  if ([request isSoWebDAVRequest])
+    {
+      if ([self respondsToSelector: @selector (contentAsString)])
+	{
+	  error = [self matchesRequestConditionInContext: localContext];
+	  if (error)
+	    value = error;
+	  else
+	    value = [self _webDAVResponse: localContext];
+	}
+      else
+	value = [NSException exceptionWithHTTPStatus: 501 /* not implemented */
+			     reason: @"no WebDAV GET support?!"];
     }
-    
-    return [NSException exceptionWithHTTPStatus:501 /* not implemented */
-			reason:@"no WebDAV GET support?!"];
-  }
-  
-  uri = [rq uri];
-  [r setStatus:302 /* moved */];
-  [r setHeader: [uri composeURLWithAction: @"view"
-                     parameters: [rq formValues]
-                     andHash: NO]
-     forKey:@"location"];
+  else
+    {
+      value = [localContext response];
+      uri = [[request uri] composeURLWithAction: @"view"
+			   parameters: [request formValues]
+			   andHash: NO];
+      [value setStatus: 302 /* moved */];
+      [value setHeader: uri forKey: @"location"];
+    }
 
-  return r;
+  return value;
 }
 
 /* etag support */

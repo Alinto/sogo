@@ -58,7 +58,7 @@
   WOContext *context;
   NSString *nameInContainer;
   id       container;
-  NSString *customOwner;
+  NSString *owner;
 }
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;
