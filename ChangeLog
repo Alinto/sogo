@@ -1,5 +1,10 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -aclsForUser:uid]): if
+	the user has the "ObjectReader" role on the parent container, then
+	he is granted the "ObjectViewer" role on this object. Same for
+	"ObjectEraser", although this might change later.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-toolbar]): determine the toolbar filename based on the
 	permissions declared by the securitymanager. The role mechanism

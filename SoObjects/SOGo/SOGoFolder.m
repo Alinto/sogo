@@ -434,8 +434,27 @@ static NSString *defaultUserID = @"<default>";
 
 - (NSArray *) aclsForUser: (NSString *) uid
 {
-  return [self aclsForUser: uid
-               forObjectAtPath: [self pathArrayToSoObject]];
+  NSMutableArray *acls;
+  NSArray *ownAcls, *containerAcls;
+
+  acls = [NSMutableArray array];
+  ownAcls = [self aclsForUser: uid
+		  forObjectAtPath: [self pathArrayToSoObject]];
+  [acls addObjectsFromArray: ownAcls];
+  if ([container respondsToSelector: @selector (aclsForUser:)])
+    {
+      containerAcls = [container aclsForUser: uid];
+      if ([containerAcls count] > 0)
+	{
+	  if ([containerAcls containsObject: SOGoRole_ObjectReader])
+	    [acls addObject: SOGoRole_ObjectViewer];
+#warning this should be checked
+	  if ([containerAcls containsObject: SOGoRole_ObjectEraser])
+	    [acls addObject: SOGoRole_ObjectEraser];
+	}
+    }
+
+  return acls;
 }
 
 - (void) setRoles: (NSArray *) roles
