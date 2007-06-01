@@ -151,10 +151,10 @@ Element.addMethods({
 		    - (menuLeft + popup.offsetWidth));
     if (leftDiff < 0)
       menuLeft -= popup.offsetWidth;
-    
-    popup.style.top = menuTop + "px;";
-    popup.style.left = menuLeft + "px;";
-    popup.style.visibility = "visible;";
+
+    popup.setStyle( { top: menuTop + "px",
+		      left: menuLeft + "px",
+		      visibility: "visible" } );
     
     document.currentPopupMenu = popup;
     Event.observe(document.body, "click", onBodyClickMenuHandler);

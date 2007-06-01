@@ -253,7 +253,9 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
   color: -moz-DialogText; }
 
 SPAN.disabledToolbarButton
-{ -moz-opacity: 0.4; }
+{ -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: alpha(opacity=40); }
 
 SPAN.toolbarButton:hover
 { color: -moz-buttonhovertext;
@@ -352,6 +354,8 @@ DIV#logConsole
   display: none;
   z-index: 1000;
   -moz-opacity: 0.7;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
   border-right: 2px solid #999;
@@ -483,6 +487,8 @@ DIV.javascriptPopupBackground
 { position: absolute;
   background-color: #999;
   -moz-opacity: 0.6; 
+  opacity: 0.6;
+  filter: alpha(opacity=60);
   z-index: 2;
   top: 0px;
   left: 0px;
@@ -504,6 +510,8 @@ DIV.javascriptMessagePseudoWindow
   padding: 1em;
   margin: 0px auto;
   -moz-opacity: 1.0;
+  opacity: 1.0;
+  filter: alpha(opacity=100);
   color: #000;
   background-color: #dedede; }
 

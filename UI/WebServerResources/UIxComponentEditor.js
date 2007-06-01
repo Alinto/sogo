@@ -156,4 +156,4 @@ function onComponentEditorLoad(event) {
       menuItems[i].addEventListener("mouseup", onMenuSetClassification, false);
 }
 
-window.addEventListener("load", onComponentEditorLoad, false);
+addEvent(window, 'load', onComponentEditorLoad);
