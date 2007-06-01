@@ -72,6 +72,12 @@
     SOGoRootPage = {
     };
     SOGoUserFolder = {
+      methods = {
+        view = { 
+          protectedBy = "<public>";
+          pageName = "SOGoUserHomePage"; 
+        };
+      };
     };
     SOGoGroupsFolder = {
       methods = {

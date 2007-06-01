@@ -77,7 +77,6 @@
 {
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          @"read", SoPerm_AccessContentsInformation,
-                         @"read", SoPerm_AccessContentsInformation,
                        @"bind", SoPerm_AddDocumentsImagesAndFiles,
                        @"unbind", SoPerm_DeleteObjects,
                        @"write-acl", SoPerm_ChangePermissions,
@@ -418,7 +417,9 @@ static BOOL kontactGroupDAV = YES;
       container = _container;
       if ([self doesRetainContainer])
 	[_container retain];
-      ASSIGN (owner, [_container ownerInContext: context]);
+      owner = [self ownerInContext: context];
+      if (owner)
+	[owner retain];
     }
 
   return self;
@@ -455,6 +456,9 @@ static BOOL kontactGroupDAV = YES;
 
 - (NSString *) ownerInContext: (id) localContext
 {
+  if (!owner)
+    owner = [container ownerInContext: context];
+
   return owner;
 }
 

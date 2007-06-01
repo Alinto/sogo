@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoContentObject.h 1050 2007-04-27 22:15:40Z wolfgang $
+// $Id: SOGoContentObject.h 1073 2007-06-01 21:05:56Z wolfgang $
 
 #ifndef __SOGo_SOGoContentObject_H__
 #define __SOGo_SOGoContentObject_H__
