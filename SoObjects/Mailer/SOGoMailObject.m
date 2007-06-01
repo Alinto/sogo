@@ -407,6 +407,11 @@ static BOOL debugSoParts       = NO;
   return [[content copy] autorelease];
 }
 
+- (NSString *) davContentType
+{
+  return @"message/rfc822";
+}
+
 - (NSString *)contentAsString {
   NSString *s;
   NSData *content;

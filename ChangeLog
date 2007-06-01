@@ -1,5 +1,8 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-davContentType]): declare "message/rfc822" as content type.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -_privacySqlString]): "owner" is now an
 	ivar in SOGoObject.
