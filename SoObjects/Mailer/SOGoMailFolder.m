@@ -62,6 +62,39 @@ static BOOL useAltNamespace = NO;
   useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
 }
 
+- (void) _adjustOwner
+{
+  SOGoMailAccount *mailAccount;
+  NSString *path;
+  NSArray *names;
+
+  mailAccount = [self mailAccountFolder];
+  path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
+
+  if ([path hasPrefix: [mailAccount sharedFolderName]])
+    owner = @"anyone";
+  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
+    {
+      names = [path componentsSeparatedByString: @"/"];
+      if ([names count] > 1)
+	owner = [names objectAtIndex: 1];
+      else
+	owner = @"anyone";
+    }
+}
+
+- (id) initWithName: (NSString *) newName
+	inContainer: (id) newContainer
+{
+  if ((self = [super initWithName: newName
+		     inContainer: newContainer]))
+    {
+      [self _adjustOwner];
+    }
+
+  return self;
+}
+
 - (void) dealloc
 {
   [filenames  release];
@@ -113,6 +146,11 @@ static BOOL useAltNamespace = NO;
     }
 
   return subfoldersURL;
+}
+
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
 }
 
 - (NSArray *) toOneRelationshipKeys
@@ -562,31 +600,6 @@ static BOOL useAltNamespace = NO;
   return defaultUserID;
 }
 
-- (NSString *) ownerInContext: (WOContext *) localContext
-{
-  SOGoMailAccount *mailAccount;
-  NSString *path, *owner;
-  NSArray *names;
-
-  mailAccount = [self mailAccountFolder];
-  path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
-
-  if ([path hasPrefix: [mailAccount sharedFolderName]])
-    owner = @"anyone";
-  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
-    {
-      names = [path componentsSeparatedByString: @"/"];
-      if ([names count] > 1)
-	owner = [names objectAtIndex: 1];
-      else
-	owner = @"anyone";
-    }
-  else
-    owner = [super ownerInContext: localContext];
-
-  return owner;
-}
-
 - (NSString *) otherUsersPathToFolder
 {
   NSString *userPath, *selfPath, *otherUsers, *sharedFolders;
@@ -604,8 +617,7 @@ static BOOL useAltNamespace = NO;
   else
     userPath = [NSString stringWithFormat: @"/%@/%@%@",
 			 [otherUsers stringByEscapingURL],
-			 [self ownerInContext: context],
-			 selfPath];
+			 owner, selfPath];
 
   return userPath;
 }

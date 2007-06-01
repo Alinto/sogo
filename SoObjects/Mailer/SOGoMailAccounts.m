@@ -185,6 +185,11 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return YES;
 }
 
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
+}
+
 /* acls */
 
 - (NSArray *) aclsForUser: (NSString *) uid

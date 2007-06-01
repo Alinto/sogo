@@ -387,15 +387,24 @@ static BOOL     useAltNamespace       = NO;
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
+}
+
+- (BOOL) davIsCollection
+{
   return YES;
 }
 
-- (NSException *)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
+- (NSException *) davCreateCollection: (NSString *) _name
+			    inContext: (id) _ctx
+{
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
 }
 
-- (NSString *)shortTitle {
+- (NSString *) shortTitle
+{
   NSString *s, *login, *host;
   NSRange r;
 
@@ -425,7 +434,8 @@ static BOOL     useAltNamespace       = NO;
   return [NSString stringWithFormat:@"%@@%@", login, host];
 }
 
-- (NSString *)davDisplayName {
+- (NSString *) davDisplayName
+{
   return [self shortTitle];
 }
 

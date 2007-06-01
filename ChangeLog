@@ -1,5 +1,15 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-initWithName:newNameinContainer:newContainer]): new overriden
+	method setting the custom owner directly.
+
+	* SoObjects/Mailer/SOGoMailAccounts.m ([SOGoMailAccounts
+	-davContentType]): same as below.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-davContentType]): same as below.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -davContentType]):
 	declare "httpd/unix-directory".
 
