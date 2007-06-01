@@ -3,7 +3,7 @@
 var cachedContacts = new Array();
 var currentContactFolder = '/personal';
 
-var usersRightsWindowHeight = 180;
+var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
 
 function openContactWindow(sender, url) {
@@ -561,10 +561,7 @@ function lookupDeniedFolders() {
 
 function deniedFoldersLookupCallback(http) {
    if (http.readyState == 4) { 
-      var denied = true;
-
-      if (http.status == 200)
-         denied = (http.responseText == "0");
+      var denied = (http.status != 204)
       var entry = $(http.callbackData);
       if (denied)
 	 entry.addClassName("denied");

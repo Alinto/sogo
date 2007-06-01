@@ -911,20 +911,13 @@ function calendarStatusCallback(http) {
 }
 
 function calendarEntryCallback(http) {
-   var disabled = true;
-
-   if (http.readyState == 4) {
-      if (http.status == 200)
-	 disabled = (http.responseText == "0");
+   if (http.readyState == 4) { 
+      var denied = (http.status != 204)
       var entry = $(http.callbackData);
-      var input = entry.childNodesWithTag("input")[0];
-      input.disabled = disabled;
-      if (disabled) {
-	 input.checked = false;
-	 $(entry).addClassName("denied");
-      }
+      if (denied)
+	 entry.addClassName("denied");
       else
-	 $(entry).removeClassName("denied");
+	 entry.removeClassName("denied");
    }
 }
 

@@ -1,7 +1,7 @@
 DIV.title
 { color: #000;
   vertical-align: bottom;
-  padding-top: 15px;
+  padding-top: 8px;
   padding-left: 1em;
   height: 33px;
   background-color: #fff;
@@ -9,7 +9,7 @@ DIV.title
 
 DIV.title SPAN.value
 { margin-left: 1em;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold; }
 
 DIV.calendarUserRights

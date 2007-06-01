@@ -556,6 +556,24 @@ A[class~="_disabled"].button:active
 { color: #999;
   background: inherit; }
 
+LI.denied
+{ background-color: #fefefe;
+  font-style: italic;
+  color: #f33; }
+
+LI._selected,
+TR._selected > TD,
+TD._selected
+{ 
+  background-color: #4b6983;
+  color: #fff;
+}
+
+LI[class~="_selected"].denied
+{ 
+  background-color: #f33;
+}
+
 /* folder tree (js) )*/
 DIV.dTreeNode A SPAN.nodeName
 {

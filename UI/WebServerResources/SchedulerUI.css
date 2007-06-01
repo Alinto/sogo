@@ -81,11 +81,6 @@ UL#calendarList
 UL#calendarList LI
 { white-space: nowrap; }
 
-UL#calendarList LI.denied
-{ background-color: #fefefe;
-  font-style: italic;
-  color: #f33; }
-
 UL#tasksList
 { position: absolute;
   width: 100%;
@@ -302,14 +297,6 @@ TABLE#appointmentsList
 TABLE#appointmentsList td.tbtv_subject_headercell,
 TABLE#appointmentsList td.headerLocation
 { width: 35%; }
-
-#dateSelector TD._selected,
-UL > LI._selected,
-TABLE#appointmentsList TR._selected TD
-{ 
-  background: #4b6983 !important;
-  color: #fff !important;
-}
 
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,

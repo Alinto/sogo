@@ -145,23 +145,12 @@ UL#contactFolders
   -moz-border-left-colors: #9c9a94 #000;
   overflow: auto; }
 
-UL#contactFolders LI.denied
-{ background: #fefefe;
-  font-style: italic;
-  color: #f33; }
-
 DIV#contactFoldersList LI
 {
   padding: .2em 1em;
   margin: 0px;
   width: auto;
   white-space: nowrap;
-}
-
-DIV#contactFoldersList LI._selected
-{ 
-  background: #4b6983;
-  color: #fff;
 }
 
 .treecell
@@ -202,12 +191,6 @@ TABLE#contactsList TD IMG
   vertical-align: middle;
   margin-left: 1em;
   margin-right: .2em;
-}
-
-TABLE#contactsList TR._selected TD
-{ 
-  background: #4b6983;
-  color: #fff;
 }
 
 TABLE#contactsList TR._deleted TD
