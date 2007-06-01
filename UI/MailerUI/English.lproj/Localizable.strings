@@ -37,6 +37,7 @@
 
 /* acls */
 "Default Roles" = "Default Roles";
+"User rights for:" = "User rights for:";
 
 "List and see this folder" = "List and see this folder";
 "Read mails from this folder" = "Read mails from this folder";

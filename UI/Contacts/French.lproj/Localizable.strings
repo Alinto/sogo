@@ -122,7 +122,10 @@
 = "Cette personne peut ajouter des fiches à ce carnet d'adresses.";
 "This person can edit the cards of this addressbook."
 = "Cette personne peut éditer des fiches de ce carnet d'adresses.";
-"This person can view the cards of this addressbook."
-= "Cette personne peut visionner des fiches de ce carnet d'adresses.";
+"This person can list the content of this addressbook."
+= "Cette personne peut lister le contenu de ce carnet d'adresses.";
+"This person can read the cards of this addressbook."
+= "Cette personne peut visionner les fiches de ce carnet d'adresses.";
 "This person can erase cards from this addressbook."
 = "Cette personne peut effacer des fiches de ce carnet d'adresses.";
+

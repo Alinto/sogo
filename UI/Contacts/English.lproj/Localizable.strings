@@ -109,7 +109,9 @@
 = "This person can add cards to this addressbook.";
 "This person can edit the cards of this addressbook."
 = "This person can edit the cards of this addressbook.";
-"This person can view the cards of this addressbook."
-= "This person can view the cards of this addressbook.";
+"This person can list the content of this addressbook."
+= "This person can list the content of this addressbook.";
+"This person can read the cards of this addressbook."
+= "This person can read the cards of this addressbook.";
 "This person can erase cards from this addressbook."
 = "This person can erase cards from this addressbook.";
