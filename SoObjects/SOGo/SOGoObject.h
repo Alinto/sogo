@@ -57,7 +57,7 @@
 {
   WOContext *context;
   NSString *nameInContainer;
-  id       container;
+  id container;
   NSString *owner;
 }
 

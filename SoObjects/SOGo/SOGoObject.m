@@ -40,6 +40,7 @@
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGCards/NSDictionary+NGCards.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
@@ -76,7 +77,7 @@
 {
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          @"read", SoPerm_AccessContentsInformation,
-                       @"read", SoPerm_View, 
+                         @"read", SoPerm_AccessContentsInformation,
                        @"bind", SoPerm_AddDocumentsImagesAndFiles,
                        @"unbind", SoPerm_DeleteObjects,
                        @"write-acl", SoPerm_ChangePermissions,
@@ -435,10 +436,13 @@ static BOOL kontactGroupDAV = YES;
 
 /* accessors */
 
-- (NSString *)nameInContainer {
+- (NSString *) nameInContainer
+{
   return nameInContainer;
 }
-- (id)container {
+
+- (id) container
+{
   return container;
 }
 
@@ -812,12 +816,12 @@ static BOOL kontactGroupDAV = YES;
 - (NSURL *) _urlPreferringParticle: (NSString *) expected
 		       overThisOne: (NSString *) possible
 {
-  NSURL *serverURL, *davURL;
+  NSURL *serverURL, *url;
   NSMutableArray *path;
   NSString *baseURL, *urlMethod;
 
   serverURL = [context serverURL];
-  baseURL = [self baseURLInContext: context];
+  baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
   path = [NSMutableArray arrayWithArray: [baseURL componentsSeparatedByString:
 						    @"/"]];
   urlMethod = [path objectAtIndex: 2];
@@ -829,12 +833,12 @@ static BOOL kontactGroupDAV = YES;
 	[path insertObject: expected atIndex: 2];
     }
 
-  davURL = [[NSURL alloc] initWithScheme: [serverURL scheme]
-			  host: [serverURL host]
-			  path: [path componentsJoinedByString: @"/"]];
-  [davURL autorelease];
+  url = [[NSURL alloc] initWithScheme: [serverURL scheme]
+		       host: [serverURL host]
+		       path: [path componentsJoinedByString: @"/"]];
+  [url autorelease];
 
-  return davURL;
+  return url;
 }
 
 - (NSURL *) davURL
