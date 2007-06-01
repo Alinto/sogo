@@ -590,13 +590,13 @@
     objectId = nil;
 
   if ([objectId length] == 0)
-    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
+    return [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
                         reason: @"could not create a unique ID"];
 
   nextMethod = [NSString stringWithFormat: @"../%@/%@", 
 			 objectId, [self editActionName]];
-  uri = [self _completeURIForMethod:nextMethod];
-  return [self redirectToLocation:uri];
+  uri = [self _completeURIForMethod: nextMethod];
+  return [self redirectToLocation: uri];
 }
 
 @end /* UIxContactEditor */
