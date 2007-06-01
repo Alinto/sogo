@@ -31,7 +31,6 @@
 
 @interface SOGoContactLDAPFolder : SOGoObject <SOGoContactFolder>
 {
-  NSString *name;
   NSString *displayName;
   LDAPSource *ldapSource;
   NSMutableDictionary *entries;

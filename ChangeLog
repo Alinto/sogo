@@ -1,5 +1,14 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -init]): no longer handle the
+	nameInContainer no the container ivars. They were removed because
+	this class is a descendant of SOGoObject which already has them.
+	([SOGoContactLDAPFolder -davDisplayName]): new overriden method
+	returning "displayName".
+	([SOGoContactLDAPFolder -isFolderish]): new overriden method
+	returning "YES".
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -isOrganizerOrOwner:user]): commented out.
 	([SOGoCalendarComponent -findParticipant:user]): new name for

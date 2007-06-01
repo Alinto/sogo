@@ -70,9 +70,7 @@
 {
   if ((self = [super init]))
     {
-      name = nil;
       displayName = nil;
-      container = nil;
       entries = nil;
       ldapSource = nil;
     }
@@ -84,20 +82,18 @@
                          andDisplayName: (NSString *) newDisplayName
                             inContainer: (SOGoObject *) newContainer
 {
-  self = [self init];
-
-  ASSIGN (name, newName);
-  ASSIGN (displayName, newDisplayName);
-  ASSIGN (container, newContainer);
+  if ((self = [self initWithName: newName
+		    inContainer: newContainer]))
+    {
+      ASSIGN (displayName, newDisplayName);
+    }
 
   return self;
 }
 
 - (void) dealloc
 {
-  [name release];
   [displayName release];
-  [container release];
   [entries release];
   [ldapSource release];
   [super dealloc];
@@ -111,11 +107,6 @@
 - (NSString *) displayName
 {
   return displayName;
-}
-
-- (NSString *) nameInContainer
-{
-  return name;
 }
 
 - (id) lookupName: (NSString *) objectName
@@ -133,7 +124,7 @@
     {
       ldifEntry = [ldapSource lookupContactEntry: objectName];
       obj = ((ldifEntry)
-	     ? [SOGoContactLDIFEntry contactEntryWithName: name
+	     ? [SOGoContactLDIFEntry contactEntryWithName: objectName
 				     withLDIFEntry: ldifEntry
 				     inContainer: self]
 	     : [NSException exceptionWithHTTPStatus: 404]);
@@ -190,6 +181,16 @@
 }
 
 - (BOOL) davIsCollection
+{
+  return YES;
+}
+
+- (NSString *) davDisplayName
+{
+  return displayName;
+}
+
+- (BOOL) isFolderish
 {
   return YES;
 }
