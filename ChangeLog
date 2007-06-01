@@ -1,5 +1,10 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject
+	-saveContentString:contentStringbaseVersion:baseVersion]): remove
+	method since an event may not have an organizer.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-GETAction:localContext]): clarified method. Added support for
 	content-type (thanks to Helge Hess).

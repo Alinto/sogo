@@ -410,7 +410,7 @@
 
   /* perform */
 
-  return [self deleteInUIDs:removedUIDs];
+  return [self deleteInUIDs: removedUIDs];
 }
 
 - (NSException *) saveContentString: (NSString *) _iCalString
@@ -423,37 +423,6 @@
 - (NSString *) outlookMessageClass
 {
   return @"IPM.Appointment";
-}
-
-- (NSException *) saveContentString: (NSString *) contentString
-                        baseVersion: (unsigned int) baseVersion
-{
-  NSString *newContentString, *oldContentString;
-  iCalCalendar *eventCalendar;
-  iCalEvent *event;
-  iCalPerson *organizer;
-  NSArray *organizers;
-
-  oldContentString = [self contentAsString];
-  if (oldContentString)
-    newContentString = contentString;
-  else
-    {
-      eventCalendar = [iCalCalendar parseSingleFromSource: contentString];
-      event = (iCalEvent *) [eventCalendar firstChildWithTag: [self componentTag]];
-      organizers = [event childrenWithTag: @"organizer"];
-      if ([organizers count])
-        newContentString = contentString;
-      else
-        {
-	  organizer = [self iCalPersonWithUID: [self ownerInContext: context]];
-          [event setOrganizer: organizer];
-          newContentString = [eventCalendar versitString];
-        }
-    }
-
-  return [super saveContentString: newContentString
-                baseVersion: baseVersion];
 }
 
 @end /* SOGoAppointmentObject */
