@@ -37,6 +37,7 @@
 #import "common.h"
 
 #import "SOGoAptMailNotification.h"
+#import "iCalEntityObject+SOGo.h"
 #import "SOGoCalendarComponent.h"
 
 static NSString *mailTemplateDefaultLanguage = nil;
@@ -111,40 +112,33 @@ static BOOL sendEMailNotifications = NO;
 
 - (NSString *) contentAsString
 {
-  NSString *tmpContent, *email, *uid, *role;
+  NSString *uid;
   iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
+  NSArray *roles;
 
   if (!calContent)
     {
-      tmpContent = [super contentAsString];
-      calContent = tmpContent;
       uid = [[context activeUser] login];
-      if (![[self ownerInContext: context] isEqualToString: uid]
-	  && [tmpContent length] > 0)
-        {
-          tmpCalendar = [iCalCalendar parseSingleFromSource: tmpContent];
-          tmpComponent = (iCalRepeatableEntityObject *)
+      roles = [self aclsForUser: uid];
+      if ([roles containsObject: SOGoCalendarRole_Organizer]
+	  || [roles containsObject: SOGoCalendarRole_Participant]
+	  || [roles containsObject: SOGoCalendarRole_ComponentViewer])
+	{
+	  calContent = content;
+	  [calContent retain];
+	}
+      else if ([roles containsObject: SOGoCalendarRole_ComponentDAndTViewer])
+	{
+	  tmpCalendar = [[self calendar: NO] copy];
+	  tmpComponent = (iCalRepeatableEntityObject *)
 	    [tmpCalendar firstChildWithTag: [self componentTag]];
-	  email = [[context activeUser] primaryEmail];
-	  if (!([tmpComponent isOrganizer: email]
-		|| [tmpComponent isParticipant: email]))
-	    {
-	      role = [container roleForComponentsWithAccessClass: [tmpComponent symbolicAccessClass]
-				forUser: uid];
-	      if ([role length] > 0)
-		{
-		  if ([role isEqualToString: SOGoCalendarPerm_ViewDAndT])
-		    {
-		      //             content = tmpContent;
-		      [self _filterComponent: tmpComponent];
-		      calContent = [tmpCalendar versitString];
-		    }
-		}
-	      else
-		calContent = nil;
-            }
-        }
+	  [self _filterComponent: tmpComponent];
+	  calContent = [tmpCalendar versitString];
+	  [tmpCalendar release];
+	}
+      else
+	calContent = nil;
 
       [calContent retain];
     }
@@ -175,7 +169,7 @@ static BOOL sendEMailNotifications = NO;
 
   if (!calendar)
     {
-      iCalString = [self contentAsString];
+      iCalString = [super contentAsString];
       if ([iCalString length] > 0)
         calendar = [iCalCalendar parseSingleFromSource: iCalString];
       else
@@ -262,7 +256,7 @@ static BOOL sendEMailNotifications = NO;
 - (NSException *) changeParticipationStatus: (NSString *) _status
 {
   iCalRepeatableEntityObject *component;
-  iCalPerson *p;
+  iCalPerson *person;
   NSString *newContent;
   NSException *ex;
   NSString *myEMail;
@@ -273,15 +267,15 @@ static BOOL sendEMailNotifications = NO;
   if (component)
     {
       myEMail = [[context activeUser] primaryEmail];
-      p = [component findParticipantWithEmail: myEMail];
-      if (p)
+      person = [self findParticipantWithUID: owner];
+      if (person)
         {
 	  // TODO: send iMIP reply mails?
-          [p setPartStat: _status];
+          [person setPartStat: _status];
           newContent = [[component parent] versitString];
           if (newContent)
             {
-              ex = [self saveContentString:newContent];
+              ex = [self saveContentString: newContent];
               if (ex)
                 // TODO: why is the exception wrapped?
                 /* Server Error */
@@ -445,24 +439,33 @@ static BOOL sendEMailNotifications = NO;
     }
 }
 
-- (BOOL) isOrganizerOrOwner: (SOGoUser *) user
+// - (BOOL) isOrganizerOrOwner: (SOGoUser *) user
+// {
+//   BOOL isOrganizerOrOwner;
+//   iCalRepeatableEntityObject *component;
+//   NSString *organizerEmail;
+
+//   component = [self component: NO];
+//   organizerEmail = [[component organizer] rfc822Email];
+//   if (component && [organizerEmail length] > 0)
+//     isOrganizerOrOwner = [user hasEmail: organizerEmail];
+//   else
+//     isOrganizerOrOwner
+//       = [[container ownerInContext: context] isEqualToString: [user login]];
+
+//   return isOrganizerOrOwner;
+// }
+
+- (iCalPerson *) findParticipantWithUID: (NSString *) uid
 {
-  BOOL isOrganizerOrOwner;
-  iCalRepeatableEntityObject *component;
-  NSString *organizerEmail;
+  SOGoUser *user;
 
-  component = [self component: NO];
-  organizerEmail = [[component organizer] rfc822Email];
-  if (component && [organizerEmail length] > 0)
-    isOrganizerOrOwner = [user hasEmail: organizerEmail];
-  else
-    isOrganizerOrOwner
-      = [[container ownerInContext: context] isEqualToString: [user login]];
+  user = [SOGoUser userWithLogin: uid roles: nil];
 
-  return isOrganizerOrOwner;
+  return [self findParticipant: user];
 }
 
-- (iCalPerson *) participant: (SOGoUser *) user
+- (iCalPerson *) findParticipant: (SOGoUser *) user
 {
   iCalPerson *participant, *currentParticipant;
   iCalEntityObject *component;
@@ -534,34 +537,85 @@ static BOOL sendEMailNotifications = NO;
   return uids;
 }
 
+- (NSString *) _roleOfOwner: (iCalRepeatableEntityObject *) component
+{
+  NSString *role;
+  iCalPerson *organizer;
+  SOGoUser *ownerUser;
+
+  if (component)
+    {
+      organizer = [component organizer];
+      if ([[organizer rfc822Email] length] > 0)
+	{
+	  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+	  if ([component userIsOrganizer: ownerUser])
+	    role = SOGoCalendarRole_Organizer;
+	  else if ([component userIsParticipant: ownerUser])
+	    role = SOGoCalendarRole_Participant;
+	  else
+	    role = SOGoRole_None;
+	}
+      else
+	role = SOGoCalendarRole_Organizer;
+    }
+  else
+    role = SOGoCalendarRole_Organizer;
+  
+  return role;
+}
+
+- (NSString *) _compiledRoleForOwner: (NSString *) ownerRole
+			     andUser: (NSString *) userRole
+{
+  NSString *role;
+
+  if ([userRole isEqualToString: SOGoCalendarRole_ComponentModifier]
+      || ([userRole isEqualToString: SOGoCalendarRole_ComponentResponder]
+	  && [ownerRole isEqualToString: SOGoCalendarRole_Participant]))
+    role = ownerRole;
+  else
+    role = SOGoRole_None;
+
+  return role;
+}
+
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSMutableArray *roles;
   NSArray *superAcls;
   iCalRepeatableEntityObject *component;
-  NSString *email, *accessRole;
+  NSString *accessRole, *ownerRole;
 
   roles = [NSMutableArray array];
-  component = [self component: NO];
-  if (component)
-    {
-      email = [[LDAPUserManager sharedUserManager] getEmailForUID: uid];
-      if ([component isOrganizer: email])
-	[roles addObject: SOGoCalendarRole_Organizer];
-      if ([component isParticipant: email])
-	[roles addObject: SOGoCalendarRole_Participant];
-      accessRole = [container roleForComponentsWithAccessClass:
-				[component symbolicAccessClass]
-			      forUser: uid];
-      if ([accessRole length] > 0)
-	[roles addObject: accessRole];
-    }
-
   superAcls = [super aclsForUser: uid];
   if ([superAcls count] > 0)
     [roles addObjectsFromArray: superAcls];
-  if ([roles containsObject: SOGoRole_ObjectCreator])
-    [roles addObject: SOGoCalendarRole_ComponentModifier];
+
+  component = [self component: NO];
+  ownerRole = [self _roleOfOwner: component];
+  if ([owner isEqualToString: uid])
+    [roles addObject: ownerRole];
+  else
+    {
+      if (component)
+	{
+	  accessRole = [container roleForComponentsWithAccessClass:
+				    [component symbolicAccessClass]
+				  forUser: uid];
+	  if ([accessRole length] > 0)
+	    {
+	      [roles addObject: accessRole];
+	      [roles addObject: [self _compiledRoleForOwner: ownerRole
+				      andUser: accessRole]];
+	    }
+	}
+      else if ([roles containsObject: SOGoRole_ObjectCreator])
+	[roles addObject: SOGoCalendarRole_Organizer];
+    }
+
+  NSLog (@"all roles: %@" , roles);
+//     }
 
   return roles;
 }

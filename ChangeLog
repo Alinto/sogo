@@ -1,5 +1,18 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -isOrganizerOrOwner:user]): commented out.
+	([SOGoCalendarComponent -findParticipant:user]): new name for
+	method "participant:".
+	([SOGoCalendarComponent -findParticipantWithUID:uid]): same as
+	findparticipant but taking a uid string as parameter.
+	([SOGoCalendarComponent -contentAsString]): don't regenerate the
+	iCalendar automatically. Instead, this is done only when the user
+	is a "date and time viewer".
+	([SOGoCalendarComponent -aclsForUser:uid]): take delegation roles
+	(modifier and responder) into account by compiling them with the
+	owner's roles.
+
 	* SoObjects/Contacts/SOGoContactFolder.h: removed
 	"nameInContainer" from the list of required methods.
 

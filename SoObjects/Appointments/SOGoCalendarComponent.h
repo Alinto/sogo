@@ -60,8 +60,10 @@
                         andNewObject: (iCalRepeatableEntityObject *) _newObject
                          toAttendees: (NSArray *) _attendees;
 
-- (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
-- (iCalPerson *) participant: (SOGoUser *) user;
+// - (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
+
+- (iCalPerson *) findParticipant: (SOGoUser *) user;
+- (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid;
 - (NSString *) getUIDForICalPerson: (iCalPerson *) person;
