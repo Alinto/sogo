@@ -123,27 +123,27 @@
 - (void) setUserCanRemoveFolder: (BOOL) userCanRemoveFolder
 {
   if (userCanRemoveFolder)
-    [self appendRight: SOGoRole_ObjectEraser];
+    [self appendRight: SOGoRole_FolderEraser];
   else
-    [self removeRight: SOGoRole_ObjectEraser];
+    [self removeRight: SOGoRole_FolderEraser];
 }
 
 - (BOOL) userCanRemoveFolder
 {
-  return [userRights containsObject: SOGoRole_ObjectEraser];
+  return [userRights containsObject: SOGoRole_FolderEraser];
 }
 
 - (void) setUserCanEraseMails: (BOOL) userCanEraseMails
 {
   if (userCanEraseMails)
-    [self appendRight: SOGoMailRole_MessageEraser];
+    [self appendRight: SOGoRole_ObjectEraser];
   else
-    [self removeRight: SOGoMailRole_MessageEraser];
+    [self removeRight: SOGoRole_ObjectEraser];
 }
 
 - (BOOL) userCanEraseMails
 {
-  return [userRights containsObject: SOGoMailRole_MessageEraser];
+  return [userRights containsObject: SOGoRole_ObjectEraser];
 }
 
 - (void) setUserCanExpungeFolder: (BOOL) userCanExpungeFolder
@@ -213,15 +213,15 @@
   else
     [self removeRight: SOGoRole_FolderCreator];
 
+  if ([[request formValueForKey: SOGoRole_FolderEraser] length] > 0)
+    [self appendRight: SOGoRole_FolderEraser];
+  else
+    [self removeRight: SOGoRole_FolderEraser];
+
   if ([[request formValueForKey: SOGoRole_ObjectEraser] length] > 0)
     [self appendRight: SOGoRole_ObjectEraser];
   else
     [self removeRight: SOGoRole_ObjectEraser];
-
-  if ([[request formValueForKey: SOGoMailRole_MessageEraser] length] > 0)
-    [self appendRight: SOGoMailRole_MessageEraser];
-  else
-    [self removeRight: SOGoMailRole_MessageEraser];
 
   if ([[request formValueForKey: SOGoMailRole_Expunger] length] > 0)
     [self appendRight: SOGoMailRole_Expunger];
