@@ -1,5 +1,9 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsUserRightsEditor.m
+	([UIxContactsUserRightsEditor
+	-setUserCanReadObjects:userCanReadObjects]): new method.
+
 	* SoObjects/SOGo/SOGoPermissions.m: added roles "FolderViewer" and
 	"FolderEraser" and special permission "Access Object". Removed
 	role "SOGoMailRole_MessageEraser" since "SOGoRole_ObjectEraser"
