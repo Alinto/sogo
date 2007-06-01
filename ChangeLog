@@ -1,5 +1,8 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-davContentType]): same as below.
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-initWithName:newNameinContainer:newContainer]): new overriden
 	method setting the custom owner directly.

@@ -244,6 +244,11 @@
   return YES;
 }
 
+- (NSString *) davContentType
+{
+  return @"httpd/unix-directory";
+}
+
 - (void) setBaseOCSPath: (NSString *) newOCSPath
 {
   if (OCSPath)
