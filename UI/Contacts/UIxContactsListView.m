@@ -175,23 +175,4 @@
   return YES;
 }
 
-- (WOResponse *) canAccessContentAction
-{
-  WOResponse *response;
-  NSString *clientClass;
-
-  clientClass = NSStringFromClass([[self clientObject] class]);
-
-  response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/plain; charset=\"ascii\""
-            forKey: @"content-type"];
-  [response
-    appendContentString:
-      ([clientClass isEqualToString: @"SOGoContactLDAPFolder"])
-    ? @"1" : @"0"];
-
-  return response;
-}
-
 @end /* UIxContactsListView */
