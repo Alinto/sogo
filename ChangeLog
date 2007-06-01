@@ -1,5 +1,8 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-davContentType]): returns "text/calendar".
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -davResourceType]): declare the correct
 	groupdav resource-type.

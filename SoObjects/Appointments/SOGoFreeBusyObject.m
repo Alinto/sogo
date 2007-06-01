@@ -194,4 +194,9 @@
   return r;
 }
 
+- (NSString *) davContentType
+{
+  return @"text/calendar";
+}
+
 @end
