@@ -1,5 +1,14 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	([iCalEntityObject -userIsParticipant:user]): new proxy method
+	that invoked isParticipant on self for each possible email
+	addresses of the user passed as parameter.
+	([iCalEntityObject -userIsOrganizer:user]): same as above.
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.[hm]: new class
+	extension module.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject
 	-saveContentString:contentStringbaseVersion:baseVersion]): remove
