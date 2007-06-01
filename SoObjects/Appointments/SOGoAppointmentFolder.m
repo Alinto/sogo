@@ -728,12 +728,11 @@ static NSNumber   *sharedYes = nil;
 
 - (NSString *) _privacySqlString
 {
-  NSString *privacySqlString, *owner, *login, *email;
+  NSString *privacySqlString, *login, *email;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
   login = [activeUser login];
-  owner = [self ownerInContext: context];
 
   if ([login isEqualToString: owner])
     privacySqlString = @"";
@@ -793,7 +792,7 @@ static NSNumber   *sharedYes = nil;
   EOQualifier *qualifier;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
-  NSString *sql, *dateSqlString, *componentSqlString, *privacySqlString; /* , *owner; */
+  NSString *sql, *dateSqlString, *componentSqlString, *privacySqlString;
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -862,7 +861,6 @@ static NSNumber   *sharedYes = nil;
       if (!ma)
         ma = [NSMutableArray arrayWithCapacity: [records count]];
 
-//       owner = [self ownerInContext: nil];
       [ma addObjectsFromArray: records];
     }
   else if (!ma)
@@ -971,8 +969,8 @@ static NSNumber   *sharedYes = nil;
     return nil;
   
   url = [self baseURLInContext:_ctx];
-  if (![url hasSuffix:@"/"])
-    url = [url stringByAppendingString:@"/"];
+  if (![url hasSuffix: @"/"])
+    url = [url stringByAppendingString: @"/"];
   
   // TODO: this should run a query to determine the uid!
   return [url stringByAppendingString:_uid];
@@ -990,7 +988,7 @@ static NSNumber   *sharedYes = nil;
 
   if (![_uid isNotNull])
     return nil;
-  
+
   /* create subcontext, so that we don't destroy our environment */
   
   if ((ctx = [context createSubContext]) == nil) {
@@ -1007,7 +1005,7 @@ static NSNumber   *sharedYes = nil;
   result = [[ctx application] traversePathArray:path inContext:ctx
 			      error:&error acquire:NO];
   if (error != nil) {
-    [self errorWithFormat:@"folder lookup failed (uid=%@): %@",
+    [self errorWithFormat: @"folder lookup failed (uid=%@): %@",
             _uid, error];
     return nil;
   }
@@ -1257,32 +1255,32 @@ static NSNumber   *sharedYes = nil;
   return calendarFolders;
 }
 
-- (NSArray *) fetchContentObjectNames
-{
-  NSMutableArray *objectNames;
-  NSArray *records;
-  NSCalendarDate *today, *startDate, *endDate;
+// - (NSArray *) fetchContentObjectNames
+// {
+//   NSMutableArray *objectNames;
+//   NSArray *records;
+//   NSCalendarDate *today, *startDate, *endDate;
 
-#warning this should be user-configurable
-  objectNames = [NSMutableArray array];
-  today = [[NSCalendarDate calendarDate] beginOfDay];
-  [today setTimeZone: timeZone];
+// #warning this should be user-configurable
+//   objectNames = [NSMutableArray array];
+//   today = [[NSCalendarDate calendarDate] beginOfDay];
+//   [today setTimeZone: timeZone];
 
-  startDate = [today dateByAddingYears: 0 months: 0 days: -1
-                     hours: 0 minutes: 0 seconds: 0];
-  endDate = [startDate dateByAddingYears: 0 months: 0 days: 2
-                       hours: 0 minutes: 0 seconds: 0];
-  records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
-		  from: startDate to: endDate
-		  component: @"vevent"];
-  [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
-  records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
-		  from: startDate to: endDate
-		  component: @"vtodo"];
-  [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
+//   startDate = [today dateByAddingYears: 0 months: 0 days: -1
+//                      hours: 0 minutes: 0 seconds: 0];
+//   endDate = [startDate dateByAddingYears: 0 months: 0 days: 2
+//                        hours: 0 minutes: 0 seconds: 0];
+//   records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
+// 		  from: startDate to: endDate
+// 		  component: @"vevent"];
+//   [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
+//   records = [self fetchFields: [NSArray arrayWithObject: @"c_name"]
+// 		  from: startDate to: endDate
+// 		  component: @"vtodo"];
+//   [objectNames addObjectsFromArray: [records valueForKey: @"c_name"]];
 
-  return objectNames;
-}
+//   return objectNames;
+// }
 
 /* folder type */
 

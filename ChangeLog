@@ -1,5 +1,13 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -_privacySqlString]): "owner" is now an
+	ivar in SOGoObject.
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]): same as above.
+	([-fetchContentObjectNames]): commented out method since it was
+	usefull only for testing Funambol.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
 	-containsCaseInsensitiveString:match]): an enhanced version of
 	containsObject:.
