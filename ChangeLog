@@ -1,5 +1,9 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxFolderActions.m ([-canAccessContentAction]):
+	changed the method paradigm to only return HTTP code 204. Not test
+	is done whatsoever since the security manager does it for us.
+
 	* UI/Contacts/UIxContactsListView.m ([-canAccessContentAction]):
 	removed method because the same exists in UIxFolderActions.m
 

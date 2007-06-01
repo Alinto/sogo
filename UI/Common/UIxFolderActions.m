@@ -163,19 +163,9 @@
 - (WOResponse *) canAccessContentAction
 {
   WOResponse *response;
-  SoSecurityManager *securityManager;
-  BOOL result;
-
-  securityManager = [SoSecurityManager sharedSecurityManager];
-  result = (![securityManager validatePermission: SoPerm_AccessContentsInformation
-			      onObject: [self clientObject]
-			      inContext: context]);
 
   response = [context response];
-  [response setStatus: 200];
-  [response setHeader: @"text/plain; charset=\"ascii\""
-            forKey: @"content-type"];
-  [response appendContentString: (result) ? @"1" : @"0"];
+  [response setStatus: 204];
 
   return response;
 }
