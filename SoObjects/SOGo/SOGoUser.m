@@ -30,8 +30,10 @@
 #import "AgenorUserDefaults.h"
 #import "LDAPUserManager.h"
 #import "SOGoContentObject.h"
-#import "SOGoUser.h"
 #import "SOGoPermissions.h"
+#import "NSArray+Utilities.h"
+
+#import "SOGoUser.h"
 
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
@@ -57,7 +59,7 @@ static NSURL *AgenorProfileURL = nil;
     {
       tzName = [ud stringForKey: @"SOGoServerTimeZone"];
       if (!tzName)
-        tzName = @"Canada/Eastern";
+        tzName = @"UTC";
       serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
       [serverTimeZone retain];
     }
@@ -186,23 +188,10 @@ static NSURL *AgenorProfileURL = nil;
 
 - (BOOL) hasEmail: (NSString *) email
 {
-  BOOL hasEmail;
-  NSString *currentEmail, *cmpEmail;
-  NSEnumerator *emails;
-
-  hasEmail = NO;
   if (!allEmails)
     [self _fetchAllEmails];
-  cmpEmail = [email lowercaseString];
-  emails = [allEmails objectEnumerator];
-  currentEmail = [emails nextObject];
-  while (currentEmail && !hasEmail)
-    if ([[currentEmail lowercaseString] isEqualToString: cmpEmail])
-      hasEmail = YES;
-    else
-      currentEmail = [emails nextObject];
-
-  return hasEmail;
+  
+  return [allEmails containsCaseInsensitiveString: email];
 }
 
 - (NSString *) cn
