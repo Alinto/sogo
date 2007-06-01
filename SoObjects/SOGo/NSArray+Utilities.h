@@ -33,6 +33,8 @@
 
 - (NSArray *) stringsWithFormat: (NSString *) format;
 
+- (BOOL) containsCaseInsensitiveString: (NSString *) match;
+
 #ifdef GNUSTEP_BASE_LIBRARY
 - (void) makeObjectsPerform: (SEL) selector
                  withObject: (id) object1

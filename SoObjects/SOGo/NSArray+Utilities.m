@@ -81,6 +81,26 @@
   return representation;
 }
 
+- (BOOL) containsCaseInsensitiveString: (NSString *) match
+{
+  BOOL response;
+  NSString *currentString, *cmpObject;
+  NSEnumerator *objects;
+
+  response = NO;
+
+  cmpObject = [match lowercaseString];
+  objects = [self objectEnumerator];
+  currentString = [objects nextObject];
+  while (currentString && !response)
+    if ([[currentString lowercaseString] isEqualToString: cmpObject])
+      response = YES;
+    else
+      currentString = [objects nextObject];
+
+  return response;
+}
+
 @end
 
 @implementation NSMutableArray (SOGoArrayUtilities)

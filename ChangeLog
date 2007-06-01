@@ -1,5 +1,9 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-containsCaseInsensitiveString:match]): an enhanced version of
+	containsObject:.
+
 	* UI/MailerUI/UIxMailView.m ([-isTrashingAllowed]): removed
 	useless method.
 	([-showMarkDeletedButton]): removed useless method.
