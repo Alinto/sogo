@@ -1,5 +1,8 @@
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolder.h: removed
+	"nameInContainer" from the list of required methods.
+
 	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
 	-davContentType]): returns "text/calendar".
 

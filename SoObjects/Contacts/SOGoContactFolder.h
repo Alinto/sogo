@@ -51,7 +51,6 @@
                          andDisplayName: (NSString *) aDisplayName
                             inContainer: (SOGoObject *) aContainer;
 
-- (NSString *) nameInContainer;
 - (NSString *) displayName;
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
