@@ -15,19 +15,43 @@
         "View" = ( "Authenticated", "FreeBusy" );
       };
     };
-    SOGoFolder = {
-      superclass = "SOGoObject";
+    SOGoObject = {
       protectedBy = "<public>";
       defaultAccess = "allow";
       defaultRoles = {
-        "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
-        "View" = ( "Owner", "AuthorizedSubscriber" );
-        "Access Contents Information" = ( "Owner", "ObjectViewer", "AuthorizedSubscriber" );
+	"View" = ( "Owner", "ObjectViewer" );
 	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
-        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
+	"Access Contents Information" = ( "Owner", "ObjectReader" );
+        "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
+	"Add Folders" = ( "Owner", "FolderCreator" );
         "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
         "SaveAcls" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
+      };
+    };
+    SOGoContentObject = {
+      superclass = "SOGoObject";
+      protectedBy = "Access Object";
+      defaultRoles = {
+	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
+      };
+    };
+    SOGoFolder = {
+      superclass = "SOGoObject";
+      protectedBy = "Access Object";
+      defaultRoles = {
+	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
+        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
+	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
+	"Access Contents Information" = ( "Owner", "ObjectViewer" );
+      };
+    };
+    SOGoUserFolder = {
+      superclass = "SOGoFolder";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+	"Access Contents Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
       };
     };
   };
@@ -48,12 +72,6 @@
     SOGoRootPage = {
     };
     SOGoUserFolder = {
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "SOGoUserHomePage";
-        };
-      };
     };
     SOGoGroupsFolder = {
       methods = {

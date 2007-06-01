@@ -24,18 +24,20 @@
 	"ViewDAndTOfConfidentialRecords" = ( "Owner", "ConfidentialDAndTViewer" );
 	"ModifyConfidentialRecords" = ( "Owner", "ConfidentialModifier" );
 	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
+	"Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
       };
     };
     SOGoGroupAppointmentFolder = {
       superclass    = "SOGoAppointmentFolder";
     };
     SOGoCalendarComponent = {
-      superclass    = "SOGoContentObject";
+      superclass = "SOGoContentObject";
       defaultRoles = {
-	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentViewer", "ComponentModifier" );
+	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
 	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
-	"ModifyComponent" = ( "Owner", "ComponentModifier" );
-	"RespondToComponent" = ( "Participant", "ComponentResponder" );
+	"ModifyComponent" = ( "Owner", "Organizer" );
+	"RespondToComponent" = ( "Participant" );
+	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
     };
     SOGoAppointmentObject = {

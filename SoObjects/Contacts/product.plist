@@ -10,34 +10,33 @@
   classes = {
     SOGoContactFolders = {
       superclass  = "SOGoFolder";
-      protectedBy = "<public>";
-      defaultAccess = "allow";
+      protectedBy = "Access Contents Information";
       defaultRoles = {
-        "View" = ( "Owner" );
+	"Access Contents Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
       };
     };
-
     SOGoContactGCSFolder = {
       superclass = "SOGoFolder";
     };
-
     SOGoContactGCSEntry = {
       superclass = "SOGoContentObject";
-      defaultRoles = {
-        "View" = ( "Owner", "Delegate", "Organizer", "Authenticated" );
-      };
     };
-
     SOGoContactLDAPFolder = {
       superclass = "SOGoFolder";
-      defaultAccess = "allow";
-      protectedBy = "<public>";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+	"Access Contents Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
+      };
     };
-
     SOGoContactLDIFEntry = {
-      superclass    = "SOGoContentObject";
-      defaultAccess = "allow";
-      protectedBy = "<public>";
+      superclass = "SOGoContentObject";
+      protectedBy = "Access Content Information";
+      defaultRoles = {
+	"Access Content Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
+      };
     };
   };
 }

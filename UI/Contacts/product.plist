@@ -128,7 +128,7 @@
            };
 	   canAccessContent = {
 	      protectedBy = "<public>";
-              pageName    = "UIxContactsListView";
+	      actionClass = "UIxFolderActions";
 	      actionName = "canAccessContent";
 	   };
         };
