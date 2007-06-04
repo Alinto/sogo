@@ -463,8 +463,8 @@ function openMailbox(mailbox, reload) {
    //   triggerAjaxRequest(mailbox, 'toolbar', toolbarCallback);
 }
 
-function openMailboxAtIndex(element) {
-   var idx = element.getAttribute("idx");
+function openMailboxAtIndex(event) {
+   var idx = this.getAttribute("idx");
    var url = ApplicationBaseURL + currentMailbox + "/view?noframe=1&idx=" + idx;
 
    if (document.messageListAjaxRequest) {
@@ -474,7 +474,7 @@ function openMailboxAtIndex(element) {
    document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback);
 
-   return false;
+   event.preventDefault();
 }
 
 function messageListCallback(http) {
@@ -939,9 +939,16 @@ function configureMessageListEvents() {
       var rows = messageList.tBodies[0].rows;
       var start = 0;
       if (rows.length > 1) {
-	 while (rows[start].cells[0].hasClassName("tbtv_headercell")
-		|| rows[start].cells[0].hasClassName("tbtv_navcell"))
+	 if (rows[start].cells[0].hasClassName("tbtv_headercell"))
 	    start++;
+	 if (rows[start].cells[0].hasClassName("tbtv_navcell")) {
+	    log("start:" + start);
+	    var anchors = $(rows[start].cells[0]).childNodesWithTag("a");
+	    log("nr anchors: " + anchors.length);
+	    for (var i = 0; i < anchors.length; i++)
+	       Event.observe(anchors[i], "click", openMailboxAtIndex);
+	    start++;
+	 }
 	 for (var i = start; i < rows.length; i++) {
 	    Event.observe(rows[i], "mousedown", onRowClick);
 	    Event.observe(rows[i], "contextmenu", onMessageContextMenu);

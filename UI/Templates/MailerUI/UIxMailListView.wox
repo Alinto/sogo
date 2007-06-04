@@ -53,10 +53,8 @@
           ><td colspan="6" class="tbtv_navcell"
             ><var:if condition="hasPrevious">
               <a href="#"
-                onclick="openMailboxAtIndex(this);"
                 idx="1"><var:string label:value="first"/></a> |
               <a href="#"
-                onclick="openMailboxAtIndex(this);"
                 var:idx="prevFirstMessageNumber"
                 ><var:string label:value="previous"/></a> |
             </var:if>
@@ -67,7 +65,6 @@
             <var:string value="sortedUIDs.count" />
             <var:if condition="hasNext"
               >| <a href="#"
-                onclick="openMailboxAtIndex(this);"
                 var:idx="nextFirstMessageNumber"
                 ><var:string label:value="next" /></a>
             </var:if
