@@ -33,7 +33,7 @@
       superclass = "SOGoObject";
       protectedBy = "Access Object";
       defaultRoles = {
-	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
+	"Access Object" = ( "Owner", "ObjectViewer" );
       };
     };
     SOGoFolder = {
@@ -41,8 +41,8 @@
       protectedBy = "Access Object";
       defaultRoles = {
 	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
-        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
-	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
+        "WebDAV Access" = ( "Owner", "ObjectViewer" );
+	"Access Object" = ( "Owner", "ObjectViewer" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
       };
     };

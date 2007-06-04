@@ -89,22 +89,26 @@
           acquire: (BOOL) _flag
 {
   id obj;
+  BOOL isPut;
 
+  isPut = NO;
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
       if ([[[_ctx request] method] isEqualToString: @"PUT"])
-        {
-          obj = [[SOGoContactGCSEntry alloc] initWithName: _key
-                                             inContainer: self];
-          [obj autorelease];
-        }
+	{
+	  if ([_key isEqualToString: @"PUT"])
+	    isPut = YES;
+	  else
+	    obj = [SOGoContactGCSEntry objectWithName: _key
+				       inContainer: self];
+	}
       else
         obj = [self lookupContactWithId: _key];
     }
-  if (!obj)
-    obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+//   if (!(obj || isPut))
+//     obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
 
 // #if 0
 //     if ([[self ocsFolder] versionOfContentWithName:_key])

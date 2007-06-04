@@ -183,6 +183,22 @@
 
 /* actions */
 
+// - (id) lookupName:
+// {
+//   SoSelectorInvocation *invocation;
+//   NSString *name;
+
+//   name = [NSString stringWithFormat: @"%@:", [_key davMethodToObjC]];
+
+//   invocation = [[SoSelectorInvocation alloc]
+//                  initWithSelectorNamed: name
+//                  addContextParameter: YES];
+//   [invocation autorelease];
+
+//   return invocation;
+
+// }
+
 - (id) PUTAction: (WOContext *) _ctx
 {
   WORequest    *rq;

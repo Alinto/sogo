@@ -24,6 +24,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import "SOGoPermissions.h"
 #import "SOGoFolder.h"
@@ -228,7 +229,7 @@ static NSString *defaultUserID = @"<default>";
   if ([self respondsToSelector: @selector (groupDavResourceType)])
     {
       groupDavCollection = [NSArray arrayWithObjects: [self groupDavResourceType],
-                                    @"http://groupdav.org/", @"G", nil];
+                                    XMLNS_GROUPDAV, nil];
       rType = [NSArray arrayWithObjects: @"collection", groupDavCollection, nil];
     }
   else
