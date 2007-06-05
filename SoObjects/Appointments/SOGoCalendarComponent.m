@@ -613,8 +613,6 @@ static BOOL sendEMailNotifications = NO;
       else if ([roles containsObject: SOGoRole_ObjectCreator])
 	[roles addObject: SOGoCalendarRole_Organizer];
     }
-
-  NSLog (@"all roles: %@" , roles);
 //     }
 
   return roles;
