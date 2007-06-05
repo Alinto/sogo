@@ -832,6 +832,7 @@ static BOOL kontactGroupDAV = YES;
     {
       [path removeObjectAtIndex: 1];
       [path removeObjectAtIndex: 0];
+      [path replaceObjectAtIndex: 0 withObject: @""];
     }
   urlMethod = [path objectAtIndex: 2];
   if (![urlMethod isEqualToString: expected])
