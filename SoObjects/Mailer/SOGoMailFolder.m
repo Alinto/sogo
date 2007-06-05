@@ -532,14 +532,14 @@ static BOOL useAltNamespace = NO;
   SOGoMailAccount *mailAccount;
   NSString *path, *folder;
 //   NSArray *names;
-  unsigned int count;
+//   unsigned int count;
 
   acls = [NSMutableArray array];
 
   mailAccount = [self mailAccountFolder];
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
 //   names = [path componentsSeparatedByString: @"/"];
-  count = [names count];
+//   count = [names count];
 
   folder = [mailAccount sharedFolderName];
   if (folder && [path hasPrefix: folder])
