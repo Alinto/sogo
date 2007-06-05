@@ -1,5 +1,10 @@
 2007-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-_urlPreferringParticle:expectedoverThisOne:possible]): remove the
+	first 3 elements of the path array if the url returned by
+	baseURLInContext: returns a hostname.
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-_adjustOwner]): sharedFolderName and otherUsersFolderName may be
 	nil, in which case a crash happens when calling hasPrefix:.

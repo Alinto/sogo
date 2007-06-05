@@ -828,6 +828,12 @@ static BOOL kontactGroupDAV = YES;
   baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
   path = [NSMutableArray arrayWithArray: [baseURL componentsSeparatedByString:
 						    @"/"]];
+  if ([baseURL hasPrefix: @"http"])
+    {
+      [path removeObjectAtIndex: 2];
+      [path removeObjectAtIndex: 1];
+      [path removeObjectAtIndex: 0];
+    }
   urlMethod = [path objectAtIndex: 2];
   if (![urlMethod isEqualToString: expected])
     {
