@@ -25,6 +25,7 @@
 	"ModifyConfidentialRecords" = ( "Owner", "ConfidentialModifier" );
 	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
 	"Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );
+	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
       };
     };
     SOGoGroupAppointmentFolder = {
