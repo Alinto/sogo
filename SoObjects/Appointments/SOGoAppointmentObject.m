@@ -373,8 +373,7 @@
      - send iMIP mail for all folders not found
   */
   iCalEvent *apt;
-  NSArray *removedUIDs;
-  NSMutableArray *attendees;
+  NSMutableArray *attendees, *removedUIDs;
 
   /* load existing content */
 
@@ -386,7 +385,10 @@
 //     // TODO
 //   }
   
-  removedUIDs = [self attendeeUIDsFromAppointment:apt];
+  removedUIDs = [NSMutableArray arrayWithArray:
+				  [self attendeeUIDsFromAppointment: apt]];
+  if (![removedUIDs containsObject: owner])
+    [removedUIDs addObject: owner];
 
   if ([self sendEMailNotifications])
     {

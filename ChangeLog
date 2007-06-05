@@ -1,5 +1,10 @@
 2007-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m: the owner of the
+	object must be present in the list of UIDs we delete the object
+	from. Otherwise Calendar objects having no organizer and no
+	attendees will remain in their owner's Calendar.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-_urlPreferringParticle:expectedoverThisOne:possible]): remove the
 	first 3 elements of the path array if the url returned by
