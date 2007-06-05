@@ -172,22 +172,21 @@ function closeInvitationWindow() {
 }
 
 function modifyEventCallback(http) {
-  if (http.readyState == 4) {
-    if (http.status == 200) {
-      log("closing window...?");
-      if (queryParameters["mail-invitation"] == "yes")
-        closeInvitationWindow();
-      else {
-        window.opener.setTimeout("refreshAppointmentsAndDisplay();", 100);
-        window.setTimeout("window.close();", 100);
+   if (http.readyState == 4) {
+      if (http.status == 200) {
+	 if (queryParameters["mail-invitation"].toLowerCase() == "yes")
+	    closeInvitationWindow();
+	 else {
+	    window.opener.setTimeout("refreshAppointmentsAndDisplay();", 100);
+	    window.setTimeout("window.close();", 100);
+	 }
       }
-    }
-    else {
-      log("showing alert...");
-      window.alert(labels["eventPartStatModificationError"]);
-    }
-    document.modifyEventAjaxRequest = null;
-  }
+      else {
+	 log("showing alert...");
+	 window.alert(labels["eventPartStatModificationError"]);
+      }
+      document.modifyEventAjaxRequest = null;
+   }
 }
 
 function deleteEventCallback(http) {

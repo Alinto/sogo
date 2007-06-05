@@ -485,7 +485,7 @@ INPUT#searchValue
 
 DIV.javascriptPopupBackground
 { position: absolute;
-  background-color: #999;
+  background-color: #d4d0c8;
   -moz-opacity: 0.6; 
   opacity: 0.6;
   filter: alpha(opacity=60);
@@ -513,7 +513,7 @@ DIV.javascriptMessagePseudoWindow
   opacity: 1.0;
   filter: alpha(opacity=100);
   color: #000;
-  background-color: #dedede; }
+  background-color: #d4d0c8; }
 
 DIV.noJavascriptErrorMessage
 { top: 10em;
@@ -523,10 +523,6 @@ DIV.noJavascriptErrorMessage
 DIV.noJavascriptErrorMessage A
 { float: right;
   margin: 0px auto; }
-
-A.button:hover
-{ color: inherit;
-  background: #efebe7; }
 
 INPUT.button:active,
 A.button:active
@@ -539,7 +535,6 @@ A.button:active
 
 INPUT.button,
 A.button,
-A[class~="_disabled"].button:hover,
 A[class~="_disabled"].button:active
 { cursor: default;
   padding: 1px .5em;
@@ -559,7 +554,6 @@ A.button IMG
 { vertical-align: middle; }
 
 A[class~="_disabled"].button,
-A[class~="_disabled"].button:hover,
 A[class~="_disabled"].button:active
 { color: #999;
   background: inherit; }

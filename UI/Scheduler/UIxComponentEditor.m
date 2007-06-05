@@ -849,6 +849,7 @@
 {
   SOGoCalendarComponent *clientObject;
   NSString *toolbarFilename;
+  iCalPerson *participant;
   iCalPersonPartStat participationStatus;
   SoSecurityManager *sm;
   NSString *owner;
@@ -856,29 +857,31 @@
   sm = [SoSecurityManager sharedSecurityManager];
   clientObject = [self clientObject];
 
-  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-	   onObject: clientObject
-	   inContext: context])
+  owner = [clientObject ownerInContext: context];
+  participant = [clientObject findParticipantWithUID: owner];
+
+  if (participant
+      && ![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+	      onObject: clientObject
+	      inContext: context])
     {
-      if ([[clientObject componentTag] isEqualToString: @"vevent"])
-	toolbarFilename = @"SOGoAppointmentObject.toolbar";
-      else
-	toolbarFilename = @"SOGoTaskObject.toolbar";
-    }
-  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
-		onObject: clientObject
-		inContext: context])
-    {
+      participationStatus = [participant participationStatus];
       /* Lightning does not manage participation status within tasks */
-      owner = [clientObject ownerInContext: context];
-      participationStatus
-	= [[clientObject findParticipantWithUID: owner] participationStatus];
       if (participationStatus == iCalPersonPartStatAccepted)
 	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
       else if (participationStatus == iCalPersonPartStatDeclined)
 	toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
       else
 	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+    }
+  else if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+		onObject: clientObject
+		inContext: context])
+    {
+      if ([[clientObject componentTag] isEqualToString: @"vevent"])
+	toolbarFilename = @"SOGoAppointmentObject.toolbar";
+      else
+	toolbarFilename = @"SOGoTaskObject.toolbar";
     }
   else
     toolbarFilename = @"SOGoComponentClose.toolbar";
