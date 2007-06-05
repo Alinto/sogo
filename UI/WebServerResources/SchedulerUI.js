@@ -162,7 +162,7 @@ function closeInvitationWindow() {
   var closeDiv = document.createElement("div");
   closeDiv.addClassName("javascriptPopupBackground");
   var closePseudoWin = document.createElement("div");
-  closePseudoWin.addClassName("javascriptMessagePseudoWindow");
+  closePseudoWin.addClassName("javascriptMessagePseudoTopWindow");
   closePseudoWin.style.top = "0px;";
   closePseudoWin.style.left = "0px;";
   closePseudoWin.style.right = "0px;";
