@@ -65,21 +65,26 @@ static BOOL useAltNamespace = NO;
 - (void) _adjustOwner
 {
   SOGoMailAccount *mailAccount;
-  NSString *path;
+  NSString *path, *folder;
   NSArray *names;
 
   mailAccount = [self mailAccountFolder];
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
 
-  if ([path hasPrefix: [mailAccount sharedFolderName]])
-    owner = @"anyone";
-  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
+  folder = [mailAccount sharedFolderName];
+  if (folder && [path hasPrefix: folder])
+    [self setOwner: @"anyone"];
+  else
     {
-      names = [path componentsSeparatedByString: @"/"];
-      if ([names count] > 1)
-	owner = [names objectAtIndex: 1];
-      else
-	owner = @"anyone";
+      folder = [mailAccount otherUsersFolderName];
+      if (folder && [path hasPrefix: folder])
+	{
+	  names = [path componentsSeparatedByString: @"/"];
+	  if ([names count] > 1)
+	    [self setOwner: [names objectAtIndex: 1]];
+	  else
+	    [self setOwner: @"anyone"];
+	}
     }
 }
 
@@ -525,23 +530,28 @@ static BOOL useAltNamespace = NO;
 {
   NSMutableArray *acls;
   SOGoMailAccount *mailAccount;
-  NSString *path;
-  NSArray *names;
+  NSString *path, *folder;
+//   NSArray *names;
   unsigned int count;
 
   acls = [NSMutableArray array];
 
   mailAccount = [self mailAccountFolder];
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
-  names = [path componentsSeparatedByString: @"/"];
+//   names = [path componentsSeparatedByString: @"/"];
   count = [names count];
 
-  if ([path hasPrefix: [mailAccount sharedFolderName]])
-    [acls addObject: SOGoRole_ObjectViewer];
-  else if ([path hasPrefix: [mailAccount otherUsersFolderName]])
+  folder = [mailAccount sharedFolderName];
+  if (folder && [path hasPrefix: folder])
     [acls addObject: SOGoRole_ObjectViewer];
   else
-    [acls addObject: SoRole_Owner];
+    {
+      folder = [mailAccount otherUsersFolderName];
+      if (folder && [path hasPrefix: folder])
+	[acls addObject: SOGoRole_ObjectViewer];
+      else
+	[acls addObject: SoRole_Owner];
+    }
 
   return acls;
 }
@@ -610,14 +620,22 @@ static BOOL useAltNamespace = NO;
   sharedFolders = [account sharedFolderName];
 
   selfPath = [[self imap4URL] path];
-  if ([selfPath hasPrefix: [NSString stringWithFormat: @"/%@", otherUsers]]
-      || [selfPath hasPrefix:
-		     [NSString stringWithFormat: @"/%@", sharedFolders]])
+  if ((otherUsers
+       && [selfPath hasPrefix:
+		      [NSString stringWithFormat: @"/%@", otherUsers]])
+      || (sharedFolders
+	  && [selfPath hasPrefix:
+			 [NSString stringWithFormat: @"/%@", sharedFolders]]))
     userPath = selfPath;
   else
-    userPath = [NSString stringWithFormat: @"/%@/%@%@",
-			 [otherUsers stringByEscapingURL],
-			 owner, selfPath];
+    {
+      if (otherUsers)
+	userPath = [NSString stringWithFormat: @"/%@/%@%@",
+			     [otherUsers stringByEscapingURL],
+			     owner, selfPath];
+      else
+	userPath = nil;
+    }
 
   return userPath;
 }
@@ -625,13 +643,19 @@ static BOOL useAltNamespace = NO;
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
 {
   SOGoUser *user;
+  NSString *otherUsersPath, *url;
 
   user = [SOGoUser userWithLogin: uid roles: nil];
+  otherUsersPath = [self otherUsersPathToFolder];
+  if (otherUsersPath)
+    url = [NSString stringWithFormat: @"%@/%@%@",
+		    [self soURLToBaseContainerForUser: uid],
+		    [user primaryIMAP4AccountString],
+		    otherUsersPath];
+  else
+    url = nil;
 
-  return [NSString stringWithFormat: @"%@/%@%@",
-		   [self soURLToBaseContainerForUser: uid],
-		   [user primaryIMAP4AccountString],
-		   [self otherUsersPathToFolder]];
+  return url;
 }
 
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;

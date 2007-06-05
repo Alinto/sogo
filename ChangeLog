@@ -1,3 +1,14 @@
+2007-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-_adjustOwner]): sharedFolderName and otherUsersFolderName may be
+	nil, in which case a crash happens when calling hasPrefix:.
+	([SOGoMailFolder -_sharesACLs]): same as above.
+	([SOGoMailFolder -otherUsersPathToFolder]): same as above. If
+	otherUsersFolderName is nil, we return nil.
+	([SOGoMailFolder -httpURLForAdvisoryToUser:uid]): if we receive
+	nil from [self otherUsersPathToFolder], we return nil too.
+
 2007-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
