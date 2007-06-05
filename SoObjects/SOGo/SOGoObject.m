@@ -830,7 +830,6 @@ static BOOL kontactGroupDAV = YES;
 						    @"/"]];
   if ([baseURL hasPrefix: @"http"])
     {
-      [path removeObjectAtIndex: 2];
       [path removeObjectAtIndex: 1];
       [path removeObjectAtIndex: 0];
     }
