@@ -86,6 +86,7 @@
 {
   NSMutableString *url;
 
+#warning the url returned by SOGoMail may be empty, we need to handle that
   url
     = [NSMutableString stringWithString:
 			 [aclObject httpURLForAdvisoryToUser: recipientUID]];
