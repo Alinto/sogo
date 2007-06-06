@@ -40,6 +40,8 @@ libSOGo_HEADER_FILES = \
 	NSDictionary+Utilities.h	\
 	NSObject+Utilities.h		\
 	NSString+Utilities.h		\
+	NSNumber+Utilities.h		\
+	NSNull+Utilities.h		\
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
 	\
@@ -68,6 +70,8 @@ libSOGo_OBJC_FILES = \
 	NSDictionary+Utilities.m	\
 	NSObject+Utilities.m		\
 	NSString+Utilities.m		\
+	NSNumber+Utilities.m		\
+	NSNull+Utilities.m		\
 	NSCalendarDate+SOGo.m		\
 	\
 	SOGoAuthenticator.m		\
