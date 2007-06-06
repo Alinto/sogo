@@ -1,3 +1,11 @@
+2007-06-06  Francis Lachapelle <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/NSNumber+Utilities.m: initial import.
+	* SoObjects/SOGo/NSNull+Utilities.m: initial import.
+	* UI/Scheduler/UIxCalTasksListView.m ([WOResponse -tasksListAction]): 
+	new method that returns a json-formatted array of the visible tasks
+	for the current user.
+
 2007-06-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m: the owner of the
