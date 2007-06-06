@@ -26,6 +26,7 @@
 #import "UIxCalView.h"
 
 @class NSDictionary;
+@class NSMutableDictionary;
 
 @interface UIxCalTasksListView : UIxCalView
 {
@@ -40,6 +41,7 @@
 
 - (void) setCurrentTask: (NSDictionary *) task;
 - (NSDictionary *) currentTask;
+- (WOResponse *) tasksListAction;
 
 @end
 
