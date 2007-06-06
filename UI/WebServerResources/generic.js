@@ -213,16 +213,31 @@ function createHTTPClient() {
   return null;
 }
 
+function appendDifferentiator(url) {
+  var url_nocache = url;
+  var position = url.indexOf('?', 0);
+  if (position < 0)
+    url_nocache += '?';
+  else
+    url_nocache += '&';
+  url_nocache += 'differentiator=' + Math.floor(Math.random()*50000);
+
+  return url_nocache;
+}
+
 function triggerAjaxRequest(url, callback, userdata) {
   var http = createHTTPClient();
 
   activeAjaxRequests += 1;
   document.animTimer = setTimeout("checkAjaxRequestsState();", 200);
+  //url = appendDifferentiator(url);
 
   if (http) {
+    http.open("POST", url, true);
+    http.url = url;
     http.onreadystatechange
       = function() {
-//         log ("state changed (" + http.readyState + "): " + url);
+        //log ("state changed (" + http.readyState + "): " + url);
         try {
           if (http.readyState == 4
               && activeAjaxRequests > 0) {
@@ -242,9 +257,10 @@ function triggerAjaxRequest(url, callback, userdata) {
 	  log(backtrace());
         }
       };
-    http.url = url;
-    http.open("GET", url, true);
-    http.send("");
+    http.send(null);
+  }
+  else {
+    log("triggerAjaxRequest: error creating HTTP Client!");
   }
 
   return http;
@@ -284,8 +300,8 @@ function getTarget(event) {
 function preventDefault(event) {
   if (event.preventDefault)
     event.preventDefault(); // W3C DOM
-  else
-    event.returnValue = false; // IE
+
+  event.returnValue = false; // IE
 }
 
 function resetSelection(win) {
@@ -389,7 +405,7 @@ function deselectAll(parent) {
   for (var i = 0; i < parent.childNodes.length; i++) {
     var node = parent.childNodes.item(i);
     if (node.nodeType == 1)
-      node.deselect();
+      $(node).deselect();
   }
 }
 
@@ -412,7 +428,7 @@ function onRowClick(event) {
   if (node.tagName == 'TD')
     node = node.parentNode;
 
-  var startSelection = node.parentNode.getSelectedNodes();
+  var startSelection = $(node.parentNode).getSelectedNodes();
   if (event.shiftKey == 1
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
@@ -430,18 +446,23 @@ function onRowClick(event) {
     var parentNode = node.parentNode;
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
-    log("onRowClick: parentNode = " + parentNode.tagName);
+    // log("onRowClick: parentNode = " + parentNode.tagName);
+    // parentNode is UL or TABLE
     if (document.createEvent) {
-      var onSelectionChangeEvent = document.createEvent("UIEvents");
-      onSelectionChangeEvent.initEvent("selectionchange", true, true);
+      var onSelectionChangeEvent;
+      if (navigator.vendor == "Apple Computer, Inc.")
+	onSelectionChangeEvent = document.createEvent("UIEvents");
+      else
+	onSelectionChangeEvent = document.createEvent("Events");
+      onSelectionChangeEvent.initEvent("mousedown", true, true);
       parentNode.dispatchEvent(onSelectionChangeEvent);
     }
     else if (document.createEventObject) {
-      // TODO: add support for IE
-      //parentNode.fireEvent("change");
-      //parentNode is UL or TABLE
+      parentNode.fireEvent("onmousedown");
     }
   }
+
+  return true;
 }
 
 /* popup menus */
@@ -807,7 +828,7 @@ function initCriteria() {
 /* toolbar buttons */
 function popupToolbarMenu(event, menuId) {
    var toolbar = $("toolbar");
-   var node = event.target;
+   var node = getTarget(event);
    if (node.tagName != 'A')
       node = node.getParentWithTagName("a");
    node = node.childNodesWithTag("span")[0];
@@ -907,7 +928,6 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 
 function listRowMouseDownHandler(event) {
   preventDefault(event);
-  return false;
 }
 
 /* tabs */
