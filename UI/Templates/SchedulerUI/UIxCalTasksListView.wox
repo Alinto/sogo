@@ -13,20 +13,6 @@
         /><var:string label:value="Show completed tasks"
         /></label>
     <ul id="tasksList" multiselect="yes">
-      <var:foreach list="fetchCoreTasksInfos" item="currentTask"
-        ><var:if condition="shouldDisplayCurrentTask"
-          ><li var:id="currentTask.c_name"
-            var:owner="currentTask.owner"
-            var:class="currentStatusClass"
-            onmousedown="return false;"
-            onclick="return onRowClick(event);"
-            ondblclick="return editDoubleClickedEvent(this);"
-            ><input class="checkBox"
-              var:checked="isCurrentTaskCompleted"
-              type="checkbox"
-              onchange="return updateTaskStatus(this);"
-              /><var:string value="currentTask.title" const:escapeHTML="NO"
-                /></li></var:if>
-      </var:foreach>
     </ul>
+    <var:string value="fetchCoreTasksInfos.jsonRepresentation"/>
   </container>
