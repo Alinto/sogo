@@ -1,6 +1,6 @@
 function onPopupAttendeesWindow(event) {
    if (event)
-      event.preventDefault();
+      preventDefault(event);
    window.open(ApplicationBaseURL + "editAttendees", null, 
                "width=803,height=573");
 
@@ -15,7 +15,7 @@ function onSelectPrivacy(event) {
 
 function onPopupUrlWindow(event) {
    if (event)
-      event.preventDefault();
+      preventDefault(event);
 
    var urlInput = document.getElementById("url");
    var newUrl = window.prompt(labels["Target:"].decodeEntities(), urlInput.value);
@@ -99,7 +99,7 @@ function initializeAttendeesHref() {
    var attendeesLabel = $("attendeesLabel");
    var attendeesNames = $("attendeesNames");
 
-   attendeesHref.addEventListener("click", onPopupAttendeesWindow, false);
+   Event.observe(attendeesHref, "click", onPopupAttendeesWindow, false);
    if (attendeesNames.value.length > 0) {
       attendeesHref.setStyle({ textDecoration: "underline", color: "#00f" });
       attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
@@ -112,7 +112,7 @@ function initializeDocumentHref() {
    var documentLabel = $("documentLabel");
    var documentUrl = $("url");
 
-   documentHref.addEventListener("click", onPopupDocumentWindow, false);
+   Event.observe(documentHref, "click", onPopupDocumentWindow, false);
    documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
    if (documentUrl.value.length > 0) {
       documentHref.appendChild(document.createTextNode(documentUrl.value));
@@ -120,7 +120,7 @@ function initializeDocumentHref() {
    }
 
    var changeUrlButton = $("changeUrlButton");
-   changeUrlButton.addEventListener("click", onPopupUrlWindow, false);
+   Event.observe(changeUrlButton, "click", onPopupUrlWindow, false);
 }
 
 function initializePrivacyMenu() {
@@ -146,14 +146,19 @@ function onComponentEditorLoad(event) {
    initializeDocumentHref();
    initializePrivacyMenu();
    var list = $("calendarList");
-   list.addEventListener("change", onChangeCalendar, false);
-   var onSelectionChangeEvent = document.createEvent("Event");
-   onSelectionChangeEvent.initEvent("change", false, false);
-   list.dispatchEvent(onSelectionChangeEvent);
+   Event.observe(list, "change", onChangeCalendar.bindAsEventListener(list), false);
+   if (document.createEvent) {
+     var onSelectionChangeEvent = document.createEvent("Event");
+     onSelectionChangeEvent.initEvent("change", false, false);
+     list.dispatchEvent(onSelectionChangeEvent);
+   }
+   else {
+     list.fireEvent("onchange"); // IE
+   }
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
    for (var i = 0; i < menuItems.length; i++)
-      menuItems[i].addEventListener("mouseup", onMenuSetClassification, false);
+      Event.observe(menuItems[i], "mouseup", onMenuSetClassification.bindAsEventListener(menuItems[i]), false);
 }
 
 addEvent(window, 'load', onComponentEditorLoad);
