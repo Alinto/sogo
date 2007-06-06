@@ -62,8 +62,8 @@ function _editEventId(id, owner) {
   urlBase += "Calendar/"
 
   var urlstr = urlBase + id + "/edit";
-
-  var win = window.open(urlstr, "SOGo_edit_" + id,
+  var targetname = "SOGo_edit_" + id;
+  var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
   win.focus();
 }
@@ -208,12 +208,12 @@ function deleteEventCallback(http) {
     }
   }
   else
-    log ("ajax fuckage");
+    log ("deleteEventCallback Ajax error");
 }
 
-function editDoubleClickedEvent(node) {
-  _editEventId(node.getAttribute("id"),
-               node.getAttribute("owner"));
+function editDoubleClickedEvent() {
+  _editEventId(this.getAttribute("id"),
+               this.getAttribute("owner"));
   
   return false;
 }
@@ -299,7 +299,7 @@ function dateSelectorCallback(http) {
     cachedDateSelectors[http.callbackData] = content;
   }
   else
-    log ("ajax fuckage");
+    log ("dateSelectorCallback Ajax error");
 }
 
 function appointmentsListCallback(http) {
@@ -313,11 +313,11 @@ function appointmentsListCallback(http) {
     sortKey = params["sort"];
     sortOrder = params["desc"];
     var list = $("appointmentsList");
-    Event.observe(list, "selectionchange", onAppointmentsSelectionChange.bindAsEventListener(list), true);
+    Event.observe(list, "mousedown", onAppointmentsSelectionChange.bindAsEventListener(list), true);
     configureSortableTableHeaders();
   }
   else
-    log ("ajax fuckage");
+    log ("appointmentsListCallback Ajax error");
 }
 
 function tasksListCallback(http) {
@@ -327,19 +327,51 @@ function tasksListCallback(http) {
       && http.status == 200) {
     document.tasksListAjaxRequest = null;
     var list = $("tasksList");
+    var newList = document.createElement("ul");
+    newList.setAttribute("multiselect", "yes");
+    newList.setAttribute("id", "tasksList");
     var scroll = list.scrollTop;
-    div.innerHTML = http.responseText;
-    list = $("tasksList");
-    Event.observe(list, "selectionchange", onTasksSelectionChange.bindAsEventListener(list), true);
-    list.scrollTop = scroll;
+
+    var data = http.responseText.evalJSON(true);
+
+    for (var i = 0; i < data.length; i++) {
+      //log(i + " = " + data[i][3]);
+      var listItem = document.createElement("li");
+      newList.appendChild(listItem);
+      Event.observe(listItem, "mousedown", listRowMouseDownHandler);
+      Event.observe(listItem, "click", onRowClick);
+      Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
+      listItem.setAttribute("id", data[i][0]);
+      listItem.setAttribute("owner", data[i][1]);
+      $(listItem).addClassName(data[i][4]);
+      var input = document.createElement("input");
+      input.setAttribute("type", "checkbox");
+      listItem.appendChild(input);
+      Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
+      input.setAttribute("value", "1");
+      if (data[i][2] == 1)
+	input.setAttribute("checked", "checked");
+      $(input).addClassName("checkBox");
+      listItem.appendChild(document.createTextNode(data[i][3]));
+    }
+
+    Event.observe(newList, "mousedown", onTasksSelectionChange.bindAsEventListener(newList), true);
+    newList.scrollTop = scroll;
+
+    list.parentNode.replaceChild(newList, list);
+
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
-      for (var i = 0; i < selectedNodesId.length; i++)
+      for (var i = 0; i < selectedNodesId.length; i++) {
+	log(selectedNodesId[i] + " (" + i + ") is selected");
         $(selectedNodesId[i]).select();
+      }
     }
+    else
+      log ("tasksListCallback: no data");
   }
   else
-    log ("ajax fuckage");
+    log ("tasksListCallback Ajax error");
 }
 
 function restoreCurrentDaySelection(div) {
@@ -483,7 +515,6 @@ function onClickableCellsDblClick(event) {
 function calendarDisplayCallback(http) {
   var div = $("calendarView");
 
-  //log ("calendarDisplayCallback: " + div);
   if (http.readyState == 4
       && http.status == 200) {
     document.dayDisplayAjaxRequest = null;
@@ -522,10 +553,9 @@ function calendarDisplayCallback(http) {
         for (var j = 0; j < clickableCells.length; j++)
           Event.observe(clickableCells[j], "dblclick", onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
       }
-//     log("cbtest1");
   }
   else
-    log ("ajax fuckage");
+    log ("calendarDisplayCallback Ajax error (" + http.readyState + "/" + http.status + ")");
 }
 
 function assignCalendar(name) {
@@ -619,7 +649,7 @@ function _loadTasksHref(href) {
   document.tasksListAjaxRequest
     = triggerAjaxRequest(url, tasksListCallback, selectedIds);
 
-  return false;
+  return true;
 }
 
 function onHeaderClick(event) {
@@ -726,8 +756,6 @@ function onMonthMenuItemClick(event) {
   var year = '' + $("yearLabel").innerHTML;
 
   changeDateSelectorDisplay(year + month + "01", true);
-
-//   event.cancelBubble();
 }
 
 function onYearMenuItemClick(event) {
@@ -827,22 +855,24 @@ function onShowCompletedTasks(node) {
   return refreshTasks();
 }
 
-function updateTaskStatus(node) {
-  var taskId = node.parentNode.getAttribute("id");
-  var taskOwner = node.parentNode.getAttribute("owner");
-  var newStatus = (node.checked ? 1 : 0);
-//   log ("update task status: " + taskId);
-
+function updateTaskStatus(event) {
+  var taskId = this.parentNode.getAttribute("id");
+  var taskOwner = this.parentNode.getAttribute("owner");
+  var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
-
-  url = (UserFolderURL + "../" + taskOwner + "/Calendar/"
-         + taskId + "/changeStatus?status=" + newStatus);
+  
+  log ("update task status: " + taskId);
+  event.cancelBubble = true;
+  
+  url = appendDifferentiator((UserFolderURL + "../" + taskOwner 
+			      + "/Calendar/" + taskId
+			      + "/changeStatus?status=" + newStatus));
 
   if (http) {
 //     log ("url: " + url);
     // TODO: add parameter to signal that we are only interested in OK
+    http.open("POST", url, false /* not async */);
     http.url = url;
-    http.open("GET", url, false /* not async */);
     http.send("");
     if (http.status == 200)
       refreshTasks();
@@ -881,7 +911,8 @@ function updateCalendarStatus(event) {
      if (this.checked)
 	urlstr += "/activateFolder";
      else
-	urlstr += "/deactivateFolder";
+       urlstr += "/deactivateFolder";
+     //log("updateCalendarStatus: ajax request = " + urlstr + " folderID = " + folderID);
      triggerAjaxRequest(urlstr, calendarStatusCallback, folderID);
   }
   else {
@@ -896,7 +927,7 @@ function updateCalendarStatus(event) {
 
 function calendarStatusCallback(http) {
    if (http.readyState == 4) {
-      if (http.status == 204) {
+      if (http.status == 204) { // No content
          refreshAppointments();
          refreshTasks();
          changeCalendarDisplay();
@@ -1036,7 +1067,7 @@ function initCalendarSelector() {
   var list = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
-    Event.observe(input, "change", updateCalendarStatus.bindAsEventListener(input));
+    Event.observe(input, "click", updateCalendarStatus.bindAsEventListener(input)); // not registered in IE?
     Event.observe(list[i], "mousedown", listRowMouseDownHandler);
     Event.observe(list[i], "click", onRowClick);
   }
@@ -1057,27 +1088,31 @@ function appendCalendar(folderName, folder) {
    var lis = calendarList.childNodesWithTag("li");
    var color = indexColor(lis.length);
    log ("color: " + color);
+
    var li = document.createElement("li");
+   calendarList.appendChild(li);
+
+   var checkBox = document.createElement("input");
+   li.appendChild(checkBox);
+   li.appendChild(document.createTextNode(" "));
+
+   var colorBox = document.createElement("div");
+   li.appendChild(colorBox);
+   li.appendChild(document.createTextNode(" " + folderName));
+   colorBox.appendChild(document.createTextNode("OO"));
+
    li.setAttribute("id", folder);
    Event.observe(li, "mousedown",  listRowMouseDownHandler);
    Event.observe(li, "click",  onRowClick);
-   var checkBox = document.createElement("input");
    checkBox.addClassName("checkBox");
    checkBox.type = "checkbox";
-   Event.observe(checkBox, "change",  updateCalendarStatus);
-   li.appendChild(checkBox);
-   li.appendChild(document.createTextNode(" "));
-   var colorBox = document.createElement("div");
-   colorBox.appendChild(document.createTextNode("OO"));
+   Event.observe(checkBox, "click",  updateCalendarStatus.bindAsEventListener(checkBox));
+
    colorBox.addClassName("colorBox");
    if (color) {
      colorBox.setStyle({ color: color,
 			 backgroundColor: color });
    }
-   li.appendChild(colorBox);
-   li.appendChild(document.createTextNode(" " + folderName));
-
-   calendarList.appendChild(li);
 
    var contactId = folder.split(":")[0];
    var styles = document.getElementsByTagName("style");
