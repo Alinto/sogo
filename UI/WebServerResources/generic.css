@@ -671,8 +671,7 @@ DIV.tabsContainer > DIV[class~="active"].tab
 { display: block !important; }
 
 INPUT.checkBox
-{ border: 2px solid #000;
-  vertical-align: middle;
+{ vertical-align: middle;
   -moz-border-top-colors: #000 #fff;
   -moz-border-left-colors: #000 #fff; 
   -moz-border-bottom-colors: #000 #fff;
