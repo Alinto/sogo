@@ -66,17 +66,17 @@
   return nil;
 }
 
-- (NSString *) currentStatusClass
+- (NSString *) getStatusClassForTask: (NSDictionary *) task
 {
   NSCalendarDate *taskDate, *now;
   NSString *statusClass, *allClasses;
   NSNumber *taskDueStamp;
 
-  if ([[currentTask objectForKey: @"status"] intValue] == 1)
+  if ([[task objectForKey: @"status"] intValue] == 1)
     statusClass = @"completed";
   else
     {
-      taskDueStamp = [currentTask objectForKey: @"enddate"];
+      taskDueStamp = [task objectForKey: @"enddate"];
       if ([taskDueStamp intValue])
         {
           now = [NSCalendarDate calendarDate];
@@ -98,9 +98,50 @@
 
   allClasses = [NSString stringWithFormat: @"%@ ownerIs%@",
                          statusClass,
-                         [currentTask objectForKey: @"owner"]];
+                         [task objectForKey: @"owner"]];
 
   return allClasses;
+}
+
+- (WOResponse *) tasksListAction
+{
+  WOResponse *response;
+  NSDictionary *tasks;
+  NSMutableArray *filteredTasks;
+  BOOL showCompleted;
+  unsigned i, count;
+
+  response = [context response];
+  filteredTasks = [NSMutableArray new];
+  [filteredTasks autorelease];
+  tasks = [self _fetchCoreInfosForComponent: @"vtodo"];
+  showCompleted = [[self queryParameterForKey: @"show-completed"] intValue];
+  
+  count = [tasks count];
+  for (i = 0; i < count; i++) {
+    NSDictionary *task;
+    NSArray *filteredTask;
+
+    task = [tasks objectAtIndex: i];
+    
+    if ([[task objectForKey: @"status"] intValue] != 1 
+	|| showCompleted)
+      {
+	filteredTask = [NSArray arrayWithObjects:
+				  [task objectForKey: @"c_name"],
+				[task objectForKey: @"owner"],
+				[task objectForKey: @"status"],
+				[task objectForKey: @"title"],
+				[self getStatusClassForTask: task],
+				nil];
+      [filteredTasks addObject: filteredTask];
+    }
+  }
+  
+  [response setStatus: 200];
+  [response appendContentString: [filteredTasks jsonRepresentation]];
+
+  return response;
 }
 
 - (BOOL) shouldDisplayCurrentTask
