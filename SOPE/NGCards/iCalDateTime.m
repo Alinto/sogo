@@ -109,9 +109,9 @@
           tmpTime = [dateTime copy];
           [tmpTime setTimeZone: utcTZ];
 	  if (forAllDayEntity)
-	    fmtTimeString = [tmpTime iCalFormattedDateTimeString];
-	  else
 	    fmtTimeString = [tmpTime iCalFormattedDateString];
+	  else
+	    fmtTimeString = [tmpTime iCalFormattedDateTimeString];
 	  timeString = [NSString stringWithFormat: @"%@Z", fmtTimeString];
           [tmpTime release];
         }

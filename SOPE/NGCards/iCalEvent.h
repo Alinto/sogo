@@ -43,6 +43,9 @@
 
 /* accessors */
 
+- (void) setAllDayWithStartDate: (NSCalendarDate *) newStartDate
+		       duration: (unsigned int) days;
+
 - (void) setEndDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) endDate;
 - (BOOL) hasEndDate;

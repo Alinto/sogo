@@ -1,5 +1,10 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalDateTime.m ([iCalDateTime
+	-_setDateTime:dateTimeforAllDayEntity:forAllDayEntity]):
+	inverted the all day logic because all day dates where generated
+	for regular dates and the other way around...
+
 	* iCalEvent.m ([iCalEvent
 	-setAllDayWithStartDate:newStartDateduration:days]): new method
 	that sets the start and end dates in an all day fashion.
