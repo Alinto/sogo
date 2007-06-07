@@ -20,14 +20,14 @@ SchedulerUI_OBJC_FILES =		\
 					\
 	UIxComponent+Scheduler.m	\
 	UIxCalView.m			\
-	UIxCalAptListView.m		\
-	UIxCalTasksListView.m		\
 	UIxCalDayView.m			\
 	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
 	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
+					\
+	UIxCalListingActions.m		\
 					\
 	UIxAttendeesEditor.m		\
 	UIxComponentEditor.m		\

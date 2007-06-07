@@ -74,10 +74,10 @@ function editEvent() {
 
     for (var i = 0; i < nodes.length; i++)
       _editEventId(nodes[i].getAttribute("id"),
-                   nodes[i].getAttribute("owner"));
+                   nodes[i].owner);
   } else if (selectedCalendarCell) {
       _editEventId(selectedCalendarCell.getAttribute("aptCName"),
-                   selectedCalendarCell.getAttribute("owner"));
+                   selectedCalendarCell.owner);
   }
 
   return false; /* stop following the link */
@@ -102,7 +102,7 @@ function deleteEvent() {
       if (listOfSelection == $("tasksList"))
         label = labels["taskDeleteConfirmation"].decodeEntities();
       else
-        label = labels["appointmentDeleteConfirmation"].decodeEntities();
+        label = labels["eventDeleteConfirmation"].decodeEntities();
       
       if (confirm(label)) {
         if (document.deleteEventAjaxRequest) {
@@ -113,7 +113,7 @@ function deleteEvent() {
         var owners = new Array();
 
         for (var i = 0; i < nodes.length; i++) {
-          var owner = nodes[i].getAttribute("owner");
+          var owner = nodes[i].owner;
           if (!sortedNodes[owner]) {
               sortedNodes[owner] = new Array();
               owners.push(owner);
@@ -129,14 +129,14 @@ function deleteEvent() {
     }
   }
   else if (selectedCalendarCell) {
-     var label = labels["appointmentDeleteConfirmation"].decodeEntities();
+     var label = labels["eventDeleteConfirmation"].decodeEntities();
      if (confirm(label)) {
         if (document.deleteEventAjaxRequest) {
            document.deleteEventAjaxRequest.aborted = true;
            document.deleteEventAjaxRequest.abort();
         }
         eventsToDelete.push([selectedCalendarCell.getAttribute("aptCName")]);
-        ownersOfEventsToDelete.push(selectedCalendarCell.getAttribute("owner"));
+        ownersOfEventsToDelete.push(selectedCalendarCell.owner);
         _batchDeleteEvents();
      }
   }
@@ -177,7 +177,7 @@ function modifyEventCallback(http) {
 	 if (queryParameters["mail-invitation"].toLowerCase() == "yes")
 	    closeInvitationWindow();
 	 else {
-	    window.opener.setTimeout("refreshAppointmentsAndDisplay();", 100);
+	    window.opener.setTimeout("refreshEventsAndDisplay();", 100);
 	    window.setTimeout("window.close();", 100);
 	 }
       }
@@ -202,7 +202,7 @@ function deleteEventCallback(http) {
       _batchDeleteEvents();
     else {
       document.deleteEventAjaxRequest = null;
-      refreshAppointments();
+      refreshEvents();
       refreshTasks();
       changeCalendarDisplay();
     }
@@ -213,21 +213,21 @@ function deleteEventCallback(http) {
 
 function editDoubleClickedEvent() {
   _editEventId(this.getAttribute("id"),
-               this.getAttribute("owner"));
+               this.owner);
   
   return false;
 }
 
 function onSelectAll() {
-  var list = $("appointmentsList");
-  list.selectRowsMatchingClass("appointmentRow");
+  var list = $("eventsList");
+  list.selectRowsMatchingClass("eventRow");
 
   return false;
 }
 
-function displayAppointment(event) {
+function displayEvent(event) {
   _editEventId(this.getAttribute("aptCName"),
-               this.getAttribute("owner"));
+               this.owner);
 
   preventDefault(event);
   event.stopPropagation();
@@ -253,7 +253,7 @@ function onDaySelect(node) {
 
   changeCalendarDisplay( { "day": day } );
   if (needRefresh)
-    refreshAppointments();
+    refreshEvents();
 
   return false;
 }
@@ -302,22 +302,62 @@ function dateSelectorCallback(http) {
     log ("dateSelectorCallback Ajax error");
 }
 
-function appointmentsListCallback(http) {
-  var div = $("appointmentsListView");
+function eventsListCallback(http) {
+  var div = $("eventsListView");
 
   if (http.readyState == 4
       && http.status == 200) {
-    document.appointmentsListAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    document.eventsListAjaxRequest = null;
+    var table = $("eventsList").tBodies[0];
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
-    var list = $("appointmentsList");
-    Event.observe(list, "mousedown", onAppointmentsSelectionChange.bindAsEventListener(list), true);
     configureSortableTableHeaders();
+
+    var data = http.responseText.evalJSON(true);
+    for (var i = 0; i < data.length; i++) {
+      var row = document.createElement("tr");
+      table.appendChild(row);
+      $(row).addClassName("eventRow");
+      row.setAttribute("id", data[i][0]);
+      row.owner = data[i][1];
+
+      var startDate = new Date();
+      startDate.setTime(data[i][4] * 1000);
+      row.day = startDate.getDayString();
+      row.hour = startDate.getHourString();
+      Event.observe(row, "click", onEventClick.bindAsEventListener(row));
+      Event.observe(row, "dblclick", editDoubleClickedEvent.bindAsEventListener(row));
+      Event.observe(row, "contextmenu",
+		    onEventContextMenu.bindAsEventListener(row));
+
+      var td = document.createElement("td");
+      row.appendChild(td);
+      Event.observe(td, "mousedown",
+		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      td.appendChild(document.createTextNode(data[i][3]));
+
+      td = document.createElement("td");
+      row.appendChild(td);
+      Event.observe(td, "mousedown",
+		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      td.appendChild(document.createTextNode(data[i][4]));
+
+      td = document.createElement("td");
+      row.appendChild(td);
+      Event.observe(td, "mousedown",
+		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      td.appendChild(document.createTextNode(data[i][5]));
+      
+      td = document.createElement("td");
+      row.appendChild(td);
+      Event.observe(td, "mousedown",
+		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      td.appendChild(document.createTextNode(data[i][6]));
+    }
   }
   else
-    log ("appointmentsListCallback Ajax error");
+    log ("eventsListCallback Ajax error");
 }
 
 function tasksListCallback(http) {
@@ -327,23 +367,20 @@ function tasksListCallback(http) {
       && http.status == 200) {
     document.tasksListAjaxRequest = null;
     var list = $("tasksList");
-    var newList = document.createElement("ul");
-    newList.setAttribute("multiselect", "yes");
-    newList.setAttribute("id", "tasksList");
-    var scroll = list.scrollTop;
-
     var data = http.responseText.evalJSON(true);
 
     for (var i = 0; i < data.length; i++) {
       //log(i + " = " + data[i][3]);
       var listItem = document.createElement("li");
-      newList.appendChild(listItem);
+      list.appendChild(listItem);
       //Event.observe(listItem, "mousedown", listRowMouseDownHandler); // causes problem with Safari
       Event.observe(listItem, "click", onRowClick);
       Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
       listItem.setAttribute("id", data[i][0]);
-      listItem.setAttribute("owner", data[i][1]);
-      $(listItem).addClassName(data[i][4]);
+      $(listItem).addClassName(data[i][5]);
+      var owner = data[i][1];
+      listItem.owner = owner;
+      $(listItem).addClassName("ownerIs" + owner);
       var input = document.createElement("input");
       input.setAttribute("type", "checkbox");
       listItem.appendChild(input);
@@ -355,10 +392,7 @@ function tasksListCallback(http) {
       listItem.appendChild(document.createTextNode(data[i][3]));
     }
 
-    Event.observe(newList, "mousedown", onTasksSelectionChange.bindAsEventListener(newList), true);
-    newList.scrollTop = scroll;
-
-    list.parentNode.replaceChild(newList, list);
+    list.scrollTop = list.previousScroll;
 
     if (http.callbackData) {
       var selectedNodesId = http.callbackData;
@@ -533,11 +567,11 @@ function calendarDisplayCallback(http) {
       scrollDayView(hour);
       contentView = $("daysView");
     }
-    var appointments = document.getElementsByClassName("appointment", contentView);
-    for (var i = 0; i < appointments.length; i++) {
-      Event.observe(appointments[i], "mousedown",  listRowMouseDownHandler);
-      Event.observe(appointments[i], "click",  onCalendarSelectAppointment.bindAsEventListener(appointments[i]));
-      Event.observe(appointments[i], "dblclick", displayAppointment.bindAsEventListener(appointments[i]));
+    var events = document.getElementsByClassName("event", contentView);
+    for (var i = 0; i < events.length; i++) {
+      Event.observe(events[i], "mousedown",  listRowMouseDownHandler);
+      Event.observe(events[i], "click",  onCalendarSelectEvent.bindAsEventListener(events[i]));
+      Event.observe(events[i], "dblclick", displayEvent.bindAsEventListener(events[i]));
     }
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
@@ -578,27 +612,27 @@ function popupCalendar(node) {
    return false;
 }
 
-function onAppointmentContextMenu(event, element) {
-  var topNode = $("appointmentsList");
+function onEventContextMenu(event) {
+  var topNode = $("eventsList");
 //   log(topNode);
 
-  var menu = $("appointmentsListMenu");
+  var menu = $("eventsListMenu");
 
-  Event.observe(menu, "hideMenu",  onAppointmentContextMenuHide);
-  popupMenu(event, "appointmentsListMenu", element);
+  Event.observe(menu, "hideMenu",  onEventContextMenuHide);
+  popupMenu(event, "eventsListMenu", this);
 
-  var topNode = $("appointmentsList");
+  var topNode = $("eventsList");
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
     selectedNodes[i].deselect();
 
-  topNode.menuSelectedEntry = element;
-  element.select();
+  topNode.menuSelectedEntry = this;
+  this.select();
 }
 
-function onAppointmentContextMenuHide(event) {
-  var topNode = $("appointmentsList");
+function onEventContextMenuHide(event) {
+  var topNode = $("eventsList");
 
   if (topNode.menuSelectedEntry) {
     topNode.menuSelectedEntry.deselect();
@@ -614,7 +648,7 @@ function onAppointmentContextMenuHide(event) {
   }
 }
 
-function onAppointmentsSelectionChange() {
+function onEventsSelectionChange() {
   listOfSelection = this;
   this.removeClassName("_unfocused");
   $("tasksList").addClassName("_unfocused");
@@ -623,17 +657,21 @@ function onAppointmentsSelectionChange() {
 function onTasksSelectionChange() {
   listOfSelection = this;
   this.removeClassName("_unfocused");
-  $("appointmentsList").addClassName("_unfocused");
+  $("eventsList").addClassName("_unfocused");
 }
 
-function _loadAppointmentHref(href) {
-  if (document.appointmentsListAjaxRequest) {
-    document.appointmentsListAjaxRequest.aborted = true;
-    document.appointmentsListAjaxRequest.abort();
+function _loadEventHref(href) {
+  if (document.eventsListAjaxRequest) {
+    document.eventsListAjaxRequest.aborted = true;
+    document.eventsListAjaxRequest.abort();
   }
   var url = ApplicationBaseURL + href;
-  document.appointmentsListAjaxRequest
-    = triggerAjaxRequest(url, appointmentsListCallback, href);
+  document.eventsListAjaxRequest
+    = triggerAjaxRequest(url, eventsListCallback, href);
+
+  var table = $("eventsList").tBodies[0];
+  while (table.rows.length > 1)
+     table.removeChild(table.rows[1]);
 
   return false;
 }
@@ -645,33 +683,42 @@ function _loadTasksHref(href) {
   }
   url = ApplicationBaseURL + href;
 
-  var selectedIds = $("tasksList").getSelectedNodesId();
+  var tasksList = $("tasksList");
+  var selectedIds;
+  if (tasksList)
+     selectedIds = tasksList.getSelectedNodesId();
+  else
+     selectedIds = null;
   document.tasksListAjaxRequest
     = triggerAjaxRequest(url, tasksListCallback, selectedIds);
+
+  tasksList.previousScroll = tasksList.scrollTop;
+  while (tasksList.childNodes.length)
+     tasksList.removeChild(tasksList.childNodes[0]);
 
   return true;
 }
 
 function onHeaderClick(event) {
 //   log("onHeaderClick: " + this.link);
-  _loadAppointmentHref(this.link);
+  _loadEventHref(this.link);
 
   preventDefault(event);
 }
 
-function refreshAppointments() {
-  return _loadAppointmentHref("aptlist?desc=" + sortOrder
-                              + "&sort=" + sortKey
-                              + "&day=" + currentDay
-                              + "&filterpopup=" + listFilter);
+function refreshEvents() {
+   return _loadEventHref("eventslist?desc=" + sortOrder
+			 + "&sort=" + sortKey
+			 + "&day=" + currentDay
+			 + "&filterpopup=" + listFilter);
 }
 
 function refreshTasks() {
   return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks);
 }
 
-function refreshAppointmentsAndDisplay() {
-  refreshAppointments();
+function refreshEventsAndDisplay() {
+  refreshEvents();
   changeCalendarDisplay();
 }
 
@@ -681,10 +728,10 @@ function onListFilterChange() {
   listFilter = node.value;
 //   log ("listFilter = " + listFilter);
 
-  return refreshAppointments();
+  return refreshEvents();
 }
 
-function onAppointmentClick(event) {
+function onEventClick(event) {
   var target = getTarget(event);
   var node = target.getParentWithTagName("tr");
   var day = node.getAttribute("day");
@@ -771,8 +818,8 @@ function onSearchFormSubmit() {
   return false;
 }
 
-function onCalendarSelectAppointment() {
-  var list = $("appointmentsList");
+function onCalendarSelectEvent() {
+  var list = $("eventsList");
   list.deselectAll();
 
   var aptCName = this.getAttribute("aptCName");
@@ -809,7 +856,7 @@ function onCalendarSelectDay(event) {
   }
 
   if (needRefresh)
-    refreshAppointments();
+    refreshEvents();
 }
 
 function changeWeekCalendarDisplayOfSelectedDay(node) {
@@ -849,15 +896,15 @@ function changeMonthCalendarDisplayOfSelectedDay(node) {
    node.addClassName("selectedDay");
 }
 
-function onShowCompletedTasks(node) {
-  showCompletedTasks = (node.checked ? 1 : 0);
+function onShowCompletedTasks(event) {
+   showCompletedTasks = (this.checked ? 1 : 0);
 
-  return refreshTasks();
+   return refreshTasks();
 }
 
 function updateTaskStatus(event) {
   var taskId = this.parentNode.getAttribute("id");
-  var taskOwner = this.parentNode.getAttribute("owner");
+  var taskOwner = this.parentNode.owner;
   var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
   
@@ -917,7 +964,7 @@ function updateCalendarStatus(event) {
   }
   else {
      updateCalendarsList();
-     refreshAppointments();
+     refreshEvents();
      refreshTasks();
      changeCalendarDisplay();
   }
@@ -930,7 +977,7 @@ function calendarStatusCallback(http) {
     if (http.status == 204 ||
 	(isSafari() && typeof(http.status) == 'undefined') ||
 	http.status == 1223) {
-         refreshAppointments();
+         refreshEvents();
          refreshTasks();
          changeCalendarDispla4y();
       }
@@ -1022,7 +1069,7 @@ function getMenus() {
       dateMenu.push(onYearMenuItemClick);
    menus["yearListMenu"] = dateMenu;
 
-   menus["appointmentsListMenu"] = new Array(onMenuNewEventClick, "-",
+   menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
 					     onMenuNewTaskClick,
 					     editEvent, deleteEvent, "-",
 					     onSelectAll, "-",
@@ -1058,7 +1105,7 @@ function configureDragHandles() {
   handle = $("rightDragHandle");
   if (handle) {
     handle.addInterface(SOGoDragHandlesInterface);
-    handle.upperBlock=$("appointmentsListView");
+    handle.upperBlock=$("eventsListView");
     handle.lowerBlock=$("calendarView");
   }
 }
@@ -1166,10 +1213,30 @@ function configureSearchField() {
    Event.observe(searchValue, "keydown",  onSearchKeyDown.bindAsEventListener(searchValue));
 }
 
+function configureLists() {
+   var list = $("tasksList");
+   list.multiselect = true;
+   Event.observe(list, "mousedown",
+		 onTasksSelectionChange.bindAsEventListener(list));
+
+   var input = $("showHideCompletedTasks");
+   Event.observe(input, "change",
+		 onShowCompletedTasks.bindAsEventListener(input));
+
+   list = $("eventsList");
+   list.multiselect = true;
+   Event.observe(list, "mousedown",
+		 onEventsSelectionChange.bindAsEventListener(list));
+   var div = list.parentNode;
+   Event.observe(div, "contextmenu",
+		 onEventContextMenu.bindAsEventListener(div));
+}
+
 function initCalendars() {
    if (!document.body.hasClassName("popup")) {
       initCalendarSelector();
       configureSearchField();
+      configureLists();
       var selector = $("calendarSelector");
       if (selector)
 	 selector.attachMenu("calendarsMenu");

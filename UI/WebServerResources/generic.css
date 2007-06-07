@@ -387,6 +387,7 @@ td.tbtv_actcell
   padding-left: 4px;
   padding-right: 4px; }
 
+TD.headerCell,
 TD.tbtv_headercell,
 TD.tbtv_navcell
 { background-color: #d4d0c8; 
@@ -397,12 +398,14 @@ TD.tbtv_navcell
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
   -moz-border-right-colors: #000 #9c9a94 transparent; }
 
+TD.headerCell:active,
 TD.tbtv_headercell:active
 { background-color: #DCDAD5;
   border: 1px solid #9c9a94;
   -moz-border-bottom-colors: #9c9a94;
   -moz-border-right-colors: #9c9a94; }
 
+TD.headerCell SPAN,
 td.tbtv_headercell SPAN
 { float: left;
   width: 100%; }
@@ -422,6 +425,7 @@ td.tbtv_headercell a:hover
   /* background-color: #C4C0B8; */
 }
 
+TD.headerCell IMG.tbtv_sortcell,
 td.tbtv_headercell img.tbtv_sortcell
 { float: right;
   text-align: right;
