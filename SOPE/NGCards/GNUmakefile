@@ -14,7 +14,6 @@ endif
 
 FHS_HEADER_DIRS = NGCards
 
-libNGCards_PCH_FILE = common.h
 libNGCards_HEADER_FILES_DIR         = .
 libNGCards_HEADER_FILES_INSTALL_DIR = /NGCards
 libNGCards_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
@@ -29,7 +28,6 @@ libNGCards_HEADER_FILES =  		\
 	\
 	CardElement.h			\
 	CardGroup.h			\
-	CardGroup+iCal.h		\
 	CardVersitRenderer.h		\
 	\
 	NGCards.h			\
@@ -77,7 +75,6 @@ libNGCards_OBJC_FILES =    		\
 	\
 	CardElement.m			\
 	CardGroup.m			\
-	CardGroup+iCal.m		\
 	CardVersitRenderer.m		\
 	\
 	iCalAlarm.m			\
