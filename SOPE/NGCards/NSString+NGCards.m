@@ -214,9 +214,11 @@ static NSString *commaSeparator = nil;
   NSRange cursor;
   NSCalendarDate *date;
   NSTimeZone *utc;
+  unsigned int length;
   int year, month, day, hour, minute, second;
 
-  if ([self length] > 14)
+  length = [self length];
+  if (length > 7)
     {
       cursor = NSMakeRange(0, 4);
       year = [[self substringWithRange: cursor] intValue];
@@ -226,12 +228,21 @@ static NSString *commaSeparator = nil;
       cursor.location += cursor.length;
       day = [[self substringWithRange: cursor] intValue];
 
-      cursor.location += cursor.length + 1;
-      hour = [[self substringWithRange: cursor] intValue];
-      cursor.location += cursor.length;
-      minute = [[self substringWithRange: cursor] intValue];
-      cursor.location += cursor.length;
-      second = [[self substringWithRange: cursor] intValue];
+      if (length > 14)
+	{
+	  cursor.location += cursor.length + 1;
+	  hour = [[self substringWithRange: cursor] intValue];
+	  cursor.location += cursor.length;
+	  minute = [[self substringWithRange: cursor] intValue];
+	  cursor.location += cursor.length;
+	  second = [[self substringWithRange: cursor] intValue];
+	}
+      else
+	{
+	  hour = 0;
+	  minute = 0;
+	  second = 0;
+	}
 
       utc = [NSTimeZone timeZoneWithAbbreviation: @"GMT"];
       date = [NSCalendarDate dateWithYear: year month: month 
@@ -243,6 +254,19 @@ static NSString *commaSeparator = nil;
     date = nil;
 
   return date;
+}
+
+- (BOOL) isAllDayDate
+{
+  unsigned int length;
+  unichar lastZ;
+
+  length = [self length];
+  lastZ = [self characterAtIndex: length - 1];
+
+  return (length == 8
+	  || (length == 9
+	      && (lastZ == 'Z' || lastZ == 'z')));
 }
 
 - (NSArray *) commaSeparatedValues

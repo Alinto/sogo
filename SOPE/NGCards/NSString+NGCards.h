@@ -37,6 +37,7 @@
 
 - (NSTimeInterval) durationAsTimeInterval;
 - (NSCalendarDate *) asCalendarDate;
+- (BOOL) isAllDayDate;
 
 - (NSArray *) commaSeparatedValues;
 

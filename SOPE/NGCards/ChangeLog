@@ -1,5 +1,9 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* NSString+NGCards.m ([NSString -isAllDayDate]): new method that
+	determines whether the date represented in "self" is an all day
+	date (date only) or not (date + time).
+
 	* CardElement.h: moved IS_EQUAL macro from removed module
 	"common.h".
 
