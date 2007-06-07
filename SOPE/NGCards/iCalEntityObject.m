@@ -19,14 +19,17 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
+
 #import "NSCalendarDate+NGCards.h"
-#import "CardGroup+iCal.h"
 
 #import "iCalAlarm.h"
 #import "iCalDateTime.h"
 #import "iCalEntityObject.h"
 #import "iCalPerson.h"
-#import "common.h"
 
 @interface iCalEntityObject (PrivateAPI)
 - (NSArray *)_filteredAttendeesThinkingOfPersons:(BOOL)_persons;
@@ -206,44 +209,52 @@
   [self setSequence: [NSNumber numberWithInt: seq]];
 }
 
-- (void) setCreated: (NSCalendarDate *) _value
+- (void) setCreated: (NSCalendarDate *) newCreated
 {
-  [self setDate: _value forDateTimeValue: @"created"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"created"]
+		    setDateTime: newCreated];
 }
 
 - (NSCalendarDate *) created
 {
-  return [self dateForDateTimeValue: @"created"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"created"]
+			   dateTime];
 }
 
-- (void) setLastModified: (NSCalendarDate *) _value
+- (void) setLastModified: (NSCalendarDate *) newLastModified
 {
-  [self setDate: _value forDateTimeValue: @"last-modified"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"last-modified"]
+		    setDateTime: newLastModified];
 }
 
 - (NSCalendarDate *) lastModified
 {
-  return [self dateForDateTimeValue: @"last-modified"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"last-modified"]
+			   dateTime];
 }
 
-- (void) setTimeStampAsDate: (NSCalendarDate *) _value
+- (void) setTimeStampAsDate: (NSCalendarDate *) newTimeStamp
 {
-  [self setDate: _value forDateTimeValue: @"dtstamp"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtstamp"]
+		    setDateTime: newTimeStamp];
 }
 
 - (NSCalendarDate *) timeStampAsDate
 {
-  return [self dateForDateTimeValue: @"dtstamp"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstamp"]
+			   dateTime];
 }
 
-- (void) setStartDate: (NSCalendarDate *) _value
+- (void) setStartDate: (NSCalendarDate *) newStartDate
 {
-  [self setDate: _value forDateTimeValue: @"dtstart"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+		    setDateTime: newStartDate];
 }
 
 - (NSCalendarDate *) startDate
 {
-  return [self dateForDateTimeValue: @"dtstart"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+			   dateTime];
 }
 
 - (BOOL) hasStartDate

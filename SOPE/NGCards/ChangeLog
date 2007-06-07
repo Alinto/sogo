@@ -1,5 +1,13 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEntityObject.m ([iCalEntityObject -setCreated:newCreated]) 
+	([iCalEntityObject -created], [-setLastModified:_value]) 
+	([iCalEntityObject -lastModified]) 
+	([iCalEntityObject -setTimeStampAsDate:newTimeStamp]) 
+	([iCalEntityObject -timeStampAsDate], [-setStartDate:_value]) 
+	([iCalEntityObject -startDate]): no longer use the methods
+	provided by the removed module CardGroup+iCal.
+
 	* iCalDateTime.m ([iCalDateTime -setDate:dateTime]): take the date
 	passed as parameter as an all day date.
 	([iCalDateTime -isAllDay]): new method determining whether the

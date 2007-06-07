@@ -75,7 +75,7 @@ typedef enum
 - (void) setTimeStampAsDate: (NSCalendarDate *)_date;
 - (NSCalendarDate *) timeStampAsDate;
 
-- (void) setStartDate: (NSCalendarDate *) _date;
+- (void) setStartDate: (NSCalendarDate *) newStartDate;
 - (NSCalendarDate *) startDate;
 - (BOOL) hasStartDate;
 
