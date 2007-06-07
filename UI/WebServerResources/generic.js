@@ -417,9 +417,17 @@ function isNodeSelected(node) {
 }
 
 function acceptMultiSelect(node) {
-  var accept = ('' + node.getAttribute('multiselect')).toLowerCase();
+   var response = false;
+   var attribute = node.getAttribute('multiselect');
+   if (attribute) {
+      log("node '" + node.getAttribute("id")
+	  + "' is still using old-stylemultiselect!");
+      response = (attribute.toLowerCase() == 'yes');
+   }
+   else
+      response = node.multiselect;
 
-  return (accept == 'yes');
+   return response;
 }
 
 function onRowClick(event) {
@@ -1163,12 +1171,8 @@ function onBodyClickContextMenu(event) {
 function configureSortableTableHeaders() {
   var headers = document.getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
-    var anchor = $(headers[i]).childNodesWithTag("a")[0];
-    if (!anchor.link) {
-      anchor.link = anchor.getAttribute("href");
-      anchor.href = "#";
-      Event.observe(anchor, "click", onHeaderClick.bindAsEventListener(anchor), true);
-    }
+     var header = headers[i];
+     Event.observe(header, "click", onHeaderClick.bindAsEventListener(header));
   }
 }
 
