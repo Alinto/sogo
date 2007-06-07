@@ -1,3 +1,10 @@
+2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): take the new ivar
+	"isAllDay" into account and compute the amount of days to pass to
+	the iCalEvent.
+
 2007-06-06  Francis Lachapelle <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/NSNumber+Utilities.m: initial import.

@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <math.h>
+
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -46,6 +48,7 @@
       aptEndDate = nil;
       item = nil;
       event = nil;
+      isAllDay = NO;
     }
 
   return self;
@@ -66,11 +69,12 @@
 /* icalendar values */
 - (BOOL) isAllDay
 {
-  return NO;
+  return isAllDay;
 }
 
 - (void) setIsAllDay: (BOOL) newIsAllDay
 {
+  isAllDay = newIsAllDay;
 }
 
 - (void) setAptStartDate: (NSCalendarDate *) newAptStartDate
@@ -263,6 +267,7 @@
   ASSIGN (aptStartDate, startDate);
   ASSIGN (aptEndDate, endDate);
 
+
   /* here comes the code for initializing repeat, reminder and isAllDay... */
 
   return self;
@@ -313,14 +318,25 @@
                      inContext: (WOContext *) _ctx
 {
   SOGoAppointmentObject *clientObject;
+  int nbrDays;
 
   clientObject = [self clientObject];
   event = (iCalEvent *) [clientObject component: YES];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
-  [event setStartDate: aptStartDate];
-  [event setEndDate: aptEndDate];
+  if (isAllDay)
+    {
+      nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
+		 / 86400) + 1;
+      [event setAllDayWithStartDate: aptStartDate
+	     duration: nbrDays];
+    }
+  else
+    {
+      [event setStartDate: aptStartDate];
+      [event setEndDate: aptEndDate];
+    }
   if ([clientObject isNew])
     [event setTransparency: @"OPAQUE"];
 }
