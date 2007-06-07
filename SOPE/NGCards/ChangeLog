@@ -1,3 +1,7 @@
+2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup+iCal.[hm]: removed category module.
+
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCard.m ([NGVCard -n]): simplified method by returning the
