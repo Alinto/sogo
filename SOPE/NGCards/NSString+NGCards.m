@@ -258,15 +258,7 @@ static NSString *commaSeparator = nil;
 
 - (BOOL) isAllDayDate
 {
-  unsigned int length;
-  unichar lastZ;
-
-  length = [self length];
-  lastZ = [self characterAtIndex: length - 1];
-
-  return (length == 8
-	  || (length == 9
-	      && (lastZ == 'Z' || lastZ == 'z')));
+  return ([self length] == 8);
 }
 
 - (NSArray *) commaSeparatedValues
