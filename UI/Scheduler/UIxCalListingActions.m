@@ -65,6 +65,76 @@
   [super dealloc];
 }
 
+- (void) _setupDatesWithPopup: (NSString *) popupValue
+		    andUserTZ: (NSTimeZone *) userTZ
+{
+  NSCalendarDate *newDate;
+  NSString *param;
+
+  if ([popupValue isEqualToString: @"view_today"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [newDate beginOfDay];
+      endDate = [newDate endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_all"])
+    {
+      startDate = nil;
+      endDate = nil;
+    }
+  else if ([popupValue isEqualToString: @"view_next7"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [newDate beginOfDay];
+      endDate = [[startDate dateByAddingYears: 0 months: 0 days: 6] endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_next14"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [newDate beginOfDay];
+      endDate = [[startDate dateByAddingYears: 0 months: 0 days: 13] endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_next31"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [newDate beginOfDay];
+      endDate = [[startDate dateByAddingYears: 0 months: 0 days: 30] endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_thismonth"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [[newDate firstDayOfMonth] beginOfDay];
+      endDate = [[newDate lastDayOfMonth] endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_future"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [newDate beginOfDay];
+      endDate = [NSCalendarDate distantFuture];
+    }
+  else if ([popupValue isEqualToString: @"view_selectedday"])
+    {
+      param = [request formValueForKey: @"day"];
+      if ([param length] > 0)
+	startDate = [[NSCalendarDate dateFromShortDateString: param
+				     andShortTimeString: nil
+				     inTimeZone: userTZ] beginOfDay];
+      else
+	{
+	  newDate = [NSCalendarDate calendarDate];
+	  [newDate setTimeZone: userTZ];
+	  startDate = [newDate beginOfDay];
+	}
+      endDate = [startDate endOfDay];
+    }
+}
+
 - (void) _setupContext
 {
   SOGoUser *user;
@@ -76,21 +146,27 @@
   userTZ = [user timeZone];
 
   request = [context request];
-  param = [request formValueForKey: @"sd"];
+  param = [request formValueForKey: @"filterpopup"];
   if ([param length] > 0)
-    startDate = [[NSCalendarDate dateFromShortDateString: param
-				 andShortTimeString: nil
-				 inTimeZone: userTZ] beginOfDay];
+    [self _setupDatesWithPopup: param andUserTZ: userTZ];
   else
-    startDate = nil;
-
-  param = [request formValueForKey: @"sd"];
-  if ([param length] > 0)
-    endDate = [[NSCalendarDate dateFromShortDateString: param
-			       andShortTimeString: nil
-			       inTimeZone: userTZ] endOfDay];
-  else
-    endDate = nil;
+    {
+      param = [request formValueForKey: @"sd"];
+      if ([param length] > 0)
+	startDate = [[NSCalendarDate dateFromShortDateString: param
+				     andShortTimeString: nil
+				     inTimeZone: userTZ] beginOfDay];
+      else
+	startDate = nil;
+      
+      param = [request formValueForKey: @"sd"];
+      if ([param length] > 0)
+	endDate = [[NSCalendarDate dateFromShortDateString: param
+				   andShortTimeString: nil
+				   inTimeZone: userTZ] endOfDay];
+      else
+	endDate = nil;
+    }
 }
 
 - (void) _updatePrivacyInComponent: (NSMutableDictionary *) component
@@ -222,7 +298,7 @@
   [self _setupContext];
 
   fields = [NSArray arrayWithObjects: @"c_name", @"owner", @"status",
-		    @"startdate", @"enddate", @"location", nil];
+		    @"title", @"startdate", @"enddate", @"location", nil];
   events = [self _fetchFields: fields forComponentOfType: @"vevent"];
 
   return [self _responseWithData: events];
