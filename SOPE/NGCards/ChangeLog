@@ -1,5 +1,10 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalDateTime.m ([iCalDateTime -setDate:dateTime]): take the date
+	passed as parameter as an all day date.
+	([iCalDateTime -isAllDay]): new method determining whether the
+	current value is an all day value.
+
 	* NSString+NGCards.m ([NSString -isAllDayDate]): new method that
 	determines whether the date represented in "self" is an all day
 	date (date only) or not (date + time).

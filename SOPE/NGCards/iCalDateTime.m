@@ -89,11 +89,12 @@
 
 /* TODO: should implement the case where the TZ would be implicitly local
    (no TZID and no UTC) */
-- (void) setDateTime: (NSCalendarDate *) dateTime
+- (void) _setDateTime: (NSCalendarDate *) dateTime
+      forAllDayEntity: (BOOL) forAllDayEntity
 {
   NSCalendarDate *tmpTime;
   NSTimeZone *utcTZ;
-  NSString *timeString;
+  NSString *timeString, *fmtTimeString;
   iCalTimeZone *tz;
 
   if (dateTime)
@@ -107,8 +108,11 @@
 
           tmpTime = [dateTime copy];
           [tmpTime setTimeZone: utcTZ];
-          timeString = [NSString stringWithFormat: @"%@Z",
-                                 [tmpTime iCalFormattedDateTimeString]];
+	  if (forAllDayEntity)
+	    fmtTimeString = [tmpTime iCalFormattedDateTimeString];
+	  else
+	    fmtTimeString = [tmpTime iCalFormattedDateString];
+	  timeString = [NSString stringWithFormat: @"%@Z", fmtTimeString];
           [tmpTime release];
         }
     }
@@ -116,6 +120,16 @@
     timeString = @"";
 
   [self setValue: 0 to: timeString];
+}
+
+- (void) setDateTime: (NSCalendarDate *) dateTime
+{
+  [self _setDateTime: dateTime forAllDayEntity: NO];
+}
+
+- (void) setDate: (NSCalendarDate *) dateTime
+{
+  [self _setDateTime: dateTime forAllDayEntity: YES];
 }
 
 - (NSCalendarDate *) dateTime
@@ -150,6 +164,11 @@
     }
 
   return dateTime;
+}
+
+- (BOOL) isAllDay
+{
+  return [[self value: 0] isAllDayDate];
 }
 
 @end

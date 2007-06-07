@@ -33,8 +33,11 @@
 - (void) setTimeZone: (iCalTimeZone *) iTZ;
 - (iCalTimeZone *) timeZone;
 
+- (void) setDate: (NSCalendarDate *) date;
 - (void) setDateTime: (NSCalendarDate *) dateTime;
 - (NSCalendarDate *) dateTime;
+
+- (BOOL) isAllDay;
 
 @end
 
