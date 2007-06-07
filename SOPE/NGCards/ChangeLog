@@ -1,5 +1,8 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* CardElement.h: moved IS_EQUAL macro from removed module
+	"common.h".
+
 	* CardGroup+iCal.[hm]: removed category module.
 
 2007-04-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>

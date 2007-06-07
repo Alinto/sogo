@@ -106,4 +106,22 @@
 
 @end
 
+#define IS_EQUAL(a,b,sel) \
+  _iCalSafeCompareObjects (a, b, @selector(sel))
+
+static __inline__ BOOL _iCalSafeCompareObjects(id a, id b, SEL comparator)
+{
+  id va = a;
+  id vb = b;
+  BOOL (*compm)(id, SEL, id);
+
+  if((!va && vb) || (va && !vb))
+    return NO;
+  else if(va == vb)
+    return YES;
+  compm = (BOOL (*)( id, SEL, id)) [va methodForSelector: comparator];
+
+  return compm(va, comparator, vb);
+}
+
 #endif /* CARDELEMENT_H */
