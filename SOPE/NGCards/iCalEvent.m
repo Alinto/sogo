@@ -57,7 +57,7 @@
 		    setDate: newStartDate];
   endDate = [newStartDate dateByAddingYears: 0 months: 0 days: days];
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
-		    setDate: newStartDate];
+		    setDate: endDate];
 }
 
 - (void) setEndDate: (NSCalendarDate *) newEndDate

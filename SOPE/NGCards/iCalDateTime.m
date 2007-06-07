@@ -94,7 +94,7 @@
 {
   NSCalendarDate *tmpTime;
   NSTimeZone *utcTZ;
-  NSString *timeString, *fmtTimeString;
+  NSString *timeString;
   iCalTimeZone *tz;
 
   if (dateTime)
