@@ -289,6 +289,13 @@ function checkAjaxRequestsState() {
   }
 }
 
+function isSafari() {
+  //var agt = navigator.userAgent.toLowerCase();
+  //var is_safari = ((agt.indexOf('safari')!=-1)&&(agt.indexOf('mac')!=-1))?true:false;
+
+  return (navigator.vendor == "Apple Computer, Inc.");
+}
+
 function getTarget(event) {
   event = event || window.event;
   if (event.target)
@@ -450,7 +457,7 @@ function onRowClick(event) {
     // parentNode is UL or TABLE
     if (document.createEvent) {
       var onSelectionChangeEvent;
-      if (navigator.vendor == "Apple Computer, Inc.")
+      if (isSafari())
 	onSelectionChangeEvent = document.createEvent("UIEvents");
       else
 	onSelectionChangeEvent = document.createEvent("Events");

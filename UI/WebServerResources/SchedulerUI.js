@@ -338,7 +338,7 @@ function tasksListCallback(http) {
       //log(i + " = " + data[i][3]);
       var listItem = document.createElement("li");
       newList.appendChild(listItem);
-      Event.observe(listItem, "mousedown", listRowMouseDownHandler);
+      //Event.observe(listItem, "mousedown", listRowMouseDownHandler); // causes problem with Safari
       Event.observe(listItem, "click", onRowClick);
       Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
       listItem.setAttribute("id", data[i][0]);
@@ -861,12 +861,12 @@ function updateTaskStatus(event) {
   var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
   
-  log ("update task status: " + taskId);
+  log("update task status: " + taskId + " to " + this.checked);
   event.cancelBubble = true;
   
-  url = appendDifferentiator((UserFolderURL + "../" + taskOwner 
-			      + "/Calendar/" + taskId
-			      + "/changeStatus?status=" + newStatus));
+  url = (UserFolderURL + "../" + taskOwner 
+	 + "/Calendar/" + taskId
+	 + "/changeStatus?status=" + newStatus);
 
   if (http) {
 //     log ("url: " + url);
@@ -909,10 +909,10 @@ function updateCalendarStatus(event) {
      var folderID = this.parentNode.getAttribute("id");
      var urlstr = URLForFolderID(folderID);
      if (this.checked)
-	urlstr += "/activateFolder";
+       urlstr += "/activateFolder";
      else
        urlstr += "/deactivateFolder";
-     //log("updateCalendarStatus: ajax request = " + urlstr + " folderID = " + folderID);
+     //log("updateCalendarStatus: ajax request = " + urlstr + ", folderID = " + folderID);
      triggerAjaxRequest(urlstr, calendarStatusCallback, folderID);
   }
   else {
@@ -926,18 +926,22 @@ function updateCalendarStatus(event) {
 }
 
 function calendarStatusCallback(http) {
-   if (http.readyState == 4) {
-      if (http.status == 204) { // No content
+  if (http.readyState == 4) {
+    if (http.status == 204 ||
+	(isSafari() && typeof(http.status) == 'undefined') ||
+	http.status == 1223) {
          refreshAppointments();
          refreshTasks();
-         changeCalendarDisplay();
+         changeCalendarDispla4y();
       }
       else {
-         var folder = $(http.callbackData);
-         var input = folder.childNodesWithTag("input")[0];
-         input.checked = (!input.checked);
+	var folder = $(http.callbackData);
+        var input = folder.childNodesWithTag("input")[0];
+	input.checked = (!input.checked);
       }
    }
+   else
+     log("calendarStatusCallback Ajax error");
 }
 
 function calendarEntryCallback(http) {
@@ -1068,7 +1072,7 @@ function initCalendarSelector() {
   for (var i = 0; i < list.length; i++) {
     var input = list[i].childNodesWithTag("input")[0];
     Event.observe(input, "click", updateCalendarStatus.bindAsEventListener(input)); // not registered in IE?
-    Event.observe(list[i], "mousedown", listRowMouseDownHandler);
+    //Event.observe(list[i], "mousedown", listRowMouseDownHandler, true); // problem with Safari
     Event.observe(list[i], "click", onRowClick);
   }
 
@@ -1094,6 +1098,7 @@ function appendCalendar(folderName, folder) {
 
    var checkBox = document.createElement("input");
    li.appendChild(checkBox);
+   
    li.appendChild(document.createTextNode(" "));
 
    var colorBox = document.createElement("div");
@@ -1107,7 +1112,7 @@ function appendCalendar(folderName, folder) {
    checkBox.addClassName("checkBox");
    checkBox.type = "checkbox";
    Event.observe(checkBox, "click",  updateCalendarStatus.bindAsEventListener(checkBox));
-
+   
    colorBox.addClassName("colorBox");
    if (color) {
      colorBox.setStyle({ color: color,
