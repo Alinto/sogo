@@ -28,7 +28,7 @@
         ></ul>
     </div>
 
-    <div class="menu" id="appointmentsListMenu">
+    <div class="menu" id="eventsListMenu">
       <ul>
         <li><var:string label:value="New Event..."/></li>
         <li><!-- separator --></li>
@@ -74,19 +74,28 @@
 	    var:calendarFolders="calendarFolders" /></div>
       </div>
 
-      <div id="tasksListView"
-        ><var:component className="UIxCalTasksListView"
-          /></div>
+      <div id="tasksListView">
+	<label><input id="showHideCompletedTasks"
+	    type="checkbox" class="checkBox"
+	    /><var:string label:value="Show completed tasks"/></label>
+	<ul id="tasksList"><!-- space --></ul>
+      </div>
     </div>
 
     <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
 
     <div id="rightPanel">
       <var:component className="UIxCalFilterPanel" />
-      <div id="appointmentsListView"
-        oncontextmenu="return onAppointmentContextMenu(event, this);"
-        ><var:component className="UIxCalAptListView"
-          /></div>
+      <div id="eventsListView">
+	<table id="eventsList">
+	  <tr>
+	    <td class="headerCell"><span class="sortableTableHeader"><var:string label:value="Title"/></span></td>
+	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="Start"/></span></td>
+	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="End"/></span></td>
+	    <td class="headerCell"><span class="sortableTableHeader"><var:string label:value="Location"/></span></td>
+	  </tr>
+	</table>
+      </div>
       <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
       <div id="calendarView"><!-- space --></div>
     </div>
