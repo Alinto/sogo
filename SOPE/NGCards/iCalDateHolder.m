@@ -19,9 +19,17 @@
   02111-1307, USA.
 */
 
-#include "iCalDateHolder.h"
-#include "iCalObject.h"
-#include "common.h"
+#import <Foundation/NSDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "iCalDateHolder.h"
+#import "iCalObject.h"
 
 @interface NSTimeZone(iCalTimeZone)
 

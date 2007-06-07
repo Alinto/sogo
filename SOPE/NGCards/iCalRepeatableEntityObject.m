@@ -23,7 +23,6 @@
 #include <NGExtensions/NGCalendarDateRange.h>
 #include "iCalRecurrenceRule.h"
 #include "iCalRecurrenceCalculator.h"
-#include "common.h"
 
 @implementation iCalRepeatableEntityObject
 

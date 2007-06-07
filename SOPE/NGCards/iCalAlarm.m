@@ -19,12 +19,13 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSString.h>
+
 #import "iCalAttachment.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalTrigger.h"
 
 #import "iCalAlarm.h"
-#import "common.h"
 
 @implementation iCalAlarm
 

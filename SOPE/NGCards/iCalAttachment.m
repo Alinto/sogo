@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSString.h>
 #import "iCalAttachment.h"
-#import "common.h"
 
 @implementation iCalAttachment
 

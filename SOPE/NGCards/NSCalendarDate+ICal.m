@@ -19,9 +19,13 @@
   02111-1307, USA.
 */
 
-#include "NSCalendarDate+ICal.h"
-#include "iCalDateHolder.h"
-#include "common.h"
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
+
+#import <NGExtensions/NSCalendarDate+misc.h>
+
+#import "NSCalendarDate+ICal.h"
+#import "iCalDateHolder.h"
 
 static NSTimeZone *gmt = nil;
 static inline void _setupGMT(void) {

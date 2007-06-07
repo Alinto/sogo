@@ -19,11 +19,11 @@
  02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 
-#include "iCalEventChanges.h"
-#include "iCalEvent.h"
-#include "iCalPerson.h"
-#include "common.h"
+#import "iCalEventChanges.h"
+#import "iCalEvent.h"
+#import "iCalPerson.h"
 
 @interface iCalEventChanges (PrivateAPI)
 - (void)_trackAttendeeChanges:(iCalEvent *)_from :(iCalEvent *)_to;

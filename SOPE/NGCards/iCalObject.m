@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#include "iCalObject.h"
-#include "common.h"
+#import <Foundation/NSString.h>
+
+#import "iCalObject.h"
 
 @implementation iCalObject
 

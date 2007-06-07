@@ -19,11 +19,25 @@
   02111-1307, USA.
 */
 
-#include "iCalDataSource.h"
-#include "iCalObject.h"
-#include "iCalCalendar.h"
-#include <SaxObjC/SaxObjC.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSURL.h>
+
+#import <EOControl/EOClassDescription.h>
+#import <EOControl/EOFetchSpecification.h>
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
+#import <NGExtensions/EODataSource+NGExtensions.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <SaxObjC/SaxObjectDecoder.h>
+#import <SaxObjC/SaxXMLReaderFactory.h>
+
+#import "iCalObject.h"
+#import "iCalCalendar.h"
+
+#import "iCalDataSource.h"
 
 @interface NSObject(suppressCapitalizedKeyWarning)
 + (void)suppressCapitalizedKeyWarning;

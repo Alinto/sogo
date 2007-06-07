@@ -19,11 +19,16 @@
   02111-1307, USA.
 */
 
-#include "iCalRecurrenceCalculator.h"
-#include <NGExtensions/NGCalendarDateRange.h>
-#include "iCalRecurrenceRule.h"
-#include "NSCalendarDate+ICal.h"
-#include "common.h"
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "iCalRecurrenceRule.h"
+#import "NSCalendarDate+ICal.h"
+
+
+#import "iCalRecurrenceCalculator.h"
 
 /* class cluster */
 

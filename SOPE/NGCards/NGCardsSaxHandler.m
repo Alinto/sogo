@@ -19,9 +19,10 @@
   02111-1307, USA.
 */
 
-#import "NGCardsSaxHandler.h"
-#import "common.h"
 #import <string.h>
+#import <Foundation/NSArray.h>
+
+#import "NGCardsSaxHandler.h"
 
 #import "CardGroup.h"
 

@@ -19,16 +19,17 @@
   02111-1307, USA.
 */
 
-#include "iCalRecurrenceCalculator.h"
+#import <NGExtensions/NSCalendarDate+misc.h>
+
+#import "iCalRecurrenceCalculator.h"
 
 @interface iCalMonthlyRecurrenceCalculator : iCalRecurrenceCalculator
 @end
 
-#include <NGExtensions/NGCalendarDateRange.h>
-#include "iCalRecurrenceRule.h"
-#include "NSCalendarDate+ICal.h"
-#include "common.h"
-#include <string.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+#import "iCalRecurrenceRule.h"
+#import "NSCalendarDate+ICal.h"
+#import <string.h>
 
 @interface iCalRecurrenceCalculator(PrivateAPI)
 - (NSCalendarDate *)lastInstanceStartDate;
