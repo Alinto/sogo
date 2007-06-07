@@ -19,10 +19,10 @@
   02111-1307, USA.
 */
 
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "NSCalendarDate+NGCards.h"
-#import "CardGroup+iCal.h"
 #import "NSString+NGCards.h"
 
 #import "iCalEventChanges.h"
@@ -48,15 +48,28 @@
 }
 
 /* accessors */
-
-- (void) setEndDate: (NSCalendarDate *)_date
+- (void) setAllDayWithStartDate: (NSCalendarDate *) newStartDate
+		       duration: (unsigned int) days
 {
-  [self setDate: _date forDateTimeValue: @"dtend"];
+  NSCalendarDate *endDate;
+
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+		    setDate: newStartDate];
+  endDate = [newStartDate dateByAddingYears: 0 months: 0 days: days];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+		    setDate: newStartDate];
+}
+
+- (void) setEndDate: (NSCalendarDate *) newEndDate
+{
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+		    setDateTime: newEndDate];
 }
 
 - (NSCalendarDate *) endDate
 {
-  return [self dateForDateTimeValue: @"dtend"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+			   dateTime];
 }
 
 - (BOOL) hasEndDate
@@ -132,31 +145,9 @@
   return (![s isEqualToString: @"TRANSPARENT"]);
 }
 
-/* TODO: FIX THIS!
-   The problem is, that startDate/endDate are inappropriately modelled here.
-   We'd need to have a special iCalDate in order to fix all the mess.
-   For the time being, we chose allday to mean 00:00 - 23:59 in startDate's
-   timezone.
-*/
 - (BOOL) isAllDay
 {
-  NSCalendarDate *ed, *startDate;
-  BOOL allDay;
-
-  if ([self hasEndDate])
-    {
-      ed = [self endDate];
-      startDate = [self startDate];
-      [ed setTimeZone: [startDate timeZone]];
-      allDay = (([startDate hourOfDay] ==  0)
-                && ([startDate minuteOfHour] ==  0)
-                && ([ed hourOfDay] == 23)
-                && ([ed minuteOfHour] == 59));
-    }
-  else
-    allDay = NO;
-
-  return allDay;
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] isAllDay];
 }
 
 - (BOOL) isWithinCalendarDateRange: (NGCalendarDateRange *) _range

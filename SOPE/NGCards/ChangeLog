@@ -1,5 +1,13 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEvent.m ([iCalEvent
+	-setAllDayWithStartDate:newStartDateduration:days]): new method
+	that sets the start and end dates in an all day fashion.
+	([iCalEvent -setEndDate:newEndDate]): no longer use the methods
+	provided by the removed module CardGroup+iCal.
+	([-isAllDay]): reimplemented method by testing if the start day
+	component is an all day date.
+
 	* iCalEntityObject.m ([iCalEntityObject -setCreated:newCreated]) 
 	([iCalEntityObject -created], [-setLastModified:_value]) 
 	([iCalEntityObject -lastModified]) 
