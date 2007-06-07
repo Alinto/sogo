@@ -23,7 +23,6 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
-#import "CardGroup+iCal.h"
 #import "iCalDateTime.h"
 #import "NSCalendarDate+NGCards.h"
 
@@ -46,14 +45,16 @@
 }
 
 /* accessors */
-- (void) setEndDate: (NSCalendarDate *)_date
+- (void) setEndDate: (NSCalendarDate *) newEndDate
 {
-  [self setDate: _date forDateTimeValue: @"dtend"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+		    setDateTime: newEndDate];
 }
 
 - (NSCalendarDate *) endDate
 {
-  return [self dateForDateTimeValue: @"dtend"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+			   dateTime];
 }
 
 - (BOOL) hasEndDate

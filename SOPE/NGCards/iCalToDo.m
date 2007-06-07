@@ -22,7 +22,6 @@
 #import <Foundation/NSString.h>
 
 #import "NSCalendarDate+NGCards.h"
-#import "CardGroup+iCal.h"
 
 #import "iCalDateTime.h"
 #import "iCalToDo.h"
@@ -57,27 +56,29 @@
   return [[self uniqueChildWithTag: @"percent-complete"] value: 0];
 }
 
-- (void) setDue: (NSCalendarDate *) _date
+- (void) setDue: (NSCalendarDate *) newDueDate
 {
-  [self setDate: _date
-        forDateTimeValue: @"due"];
+  [(iCalDateTime *) [self uniqueChildWithTag: @"due"]
+		    setDate: newDueDate];
 }
 
 - (NSCalendarDate *) due
 {
-  return [self dateForDateTimeValue: @"due"];
-//   return [[self uniqueChildWithTag: @"percent-complete"] asCalendarDate];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"due"]
+			   dateTime];
 }
 
-- (void) setCompleted: (NSCalendarDate *) _date
+- (void) setCompleted: (NSCalendarDate *) newCompletedDate
 {
+  [(iCalDateTime *) [self uniqueChildWithTag: @"completed"]
+		    setDate: newCompletedDate];
   [self setStatus: @"COMPLETED"];
-  [self setDate: _date forDateTimeValue: @"completed"];
 }
 
 - (NSCalendarDate *) completed
 {
-  return [self dateForDateTimeValue: @"completed"];
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"completed"]
+			   dateTime];
 }
 
 /* ical typing */

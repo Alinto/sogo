@@ -26,7 +26,6 @@
 
 #import "iCalDateTime.h"
 #import "iCalRecurrenceRule.h"
-#import "CardGroup+iCal.h"
 
 #import "iCalTimeZonePeriod.h"
 
