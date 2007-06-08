@@ -50,7 +50,7 @@ DIV#mailboxContent
   width: 100%;
   height: 18em;
   left: 0px;
-  top: .5em;
+  top: 2.5em;
   right: 0px; }
 
 DIV#messageContent
@@ -476,7 +476,7 @@ TABLE#messageList
   width: 100%;
   left: 0px;
   right: 0px;
-  top: 2em;
+  top: 0px;
   bottom: 0px;
   overflow: auto;
   overflow-x: hidden;
@@ -498,7 +498,13 @@ TABLE#messageList TD
 }
 
 TABLE#messageList TD.tbtv_subject_headercell
-{ width: 30%; }
+{ width: 40%; }
+
+TABLE#messageList TD.tbtv_from_headercell
+{ width: 35%; }
+
+TABLE#messageList TD.tbtv_date_headercell
+{ width: 25%; }
 
 TABLE#messageList TR._selected TD
 { 
