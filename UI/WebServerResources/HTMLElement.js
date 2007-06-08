@@ -23,21 +23,6 @@ Element.addMethods({
     return matchingNodes;
   },
 
-  removeClassName: function(element, className) {
-    element = $(element);
-    var classStr = '' + element.readAttribute('class');
-
-    position = classStr.indexOf(className, 0);
-    while (position > -1) {
-      classStr1 = classStr.substring(0, position); 
-      classStr2 = classStr.substring(position + 10, classStr.length);
-      classStr = classStr1 + classStr2;
-      position = classStr.indexOf(className, 0);
-    }
-    
-    element.setAttribute('class', classStr);
-  },
-
   getParentWithTagName: function(element, tagName) {
     element = $(element);
     var currentElement = element;
@@ -126,8 +111,8 @@ Element.addMethods({
     for (var i = 0; i < element.childNodes.length; i++) {
       node = element.childNodes.item(i);
       if (node.nodeType == 1
-	  && isNodeSelected(node))
-	selArray.push(node.getAttribute("id"));
+	  && isNodeSelected(node)) {
+	selArray.push(node.getAttribute("id")); }
     }
 
     return selArray;
@@ -181,7 +166,7 @@ Element.addMethods({
     for (var i = 0; i < element.childNodes.length; i++) {
       var node = element.childNodes.item(i);
       if (node.nodeType == 1)
-	node.deselect();
+	$(node).deselect();
     }
   }
 
