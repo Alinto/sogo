@@ -42,8 +42,7 @@
         <var:popup list="filters" 
           item="filter" string="filterLabel" value="filter"
           selection="selectedFilter"
-          const:name="filterpopup" 
-          const:onchange="document.pageform.submit()" />
+          const:name="filterpopup" />
       </var:if>
     </div>
   </container>
