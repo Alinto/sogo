@@ -417,10 +417,7 @@ function deselectAll(parent) {
 }
 
 function isNodeSelected(node) {
-  var classStr = '' + node.getAttribute('class');
-  var position = classStr.indexOf('_selected', 0);
-
-  return (position > -1);
+  return $(node).hasClassName('_selected');
 }
 
 function acceptMultiSelect(node) {
@@ -442,26 +439,25 @@ function onRowClick(event) {
 
   if (node.tagName == 'TD')
     node = node.parentNode;
-
   var startSelection = $(node.parentNode).getSelectedNodes();
   if (event.shiftKey == 1
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
     if (isNodeSelected(node) == true) {
-      node.deselect();
+      $(node).deselect();
     } else {
-      node.select();
+      $(node).select();
     }
   } else {
-    deselectAll(node.parentNode);
-    node.select();
+    $(node.parentNode).deselectAll();
+    $(node).select();
   }
 
   if (startSelection != node.parentNode.getSelectedNodes()) {
     var parentNode = node.parentNode;
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
-    // log("onRowClick: parentNode = " + parentNode.tagName);
+    //log("onRowClick: parentNode = " + parentNode.tagName);
     // parentNode is UL or TABLE
     if (document.createEvent) {
       var onSelectionChangeEvent;
@@ -966,9 +962,10 @@ function initTabs() {
 	    if (!firstTab)
 		firstTab = i;
 	    Event.observe(currentNode, "mousedown",
-			  onTabMouseDown.bindAsEventListener(currentNode));
+	    		  onTabMouseDown.bindAsEventListener(currentNode));
 	    Event.observe(currentNode, "click",
 			  onTabClick.bindAsEventListener(currentNode));
+	    //$(currentNode.getAttribute("target")).hide();
 	}
     }
 
@@ -978,6 +975,7 @@ function initTabs() {
 
     var target = $(nodes[firstTab].getAttribute("target"));
     target.addClassName("active");
+    //target.show();
   }
 }
 
@@ -1060,7 +1058,7 @@ function getTopWindow() {
 }
 
 function onTabClick(event) {
-  var node = getTarget(event);
+  var node = getTarget(event); // LI element
 
   var target = node.getAttribute("target");
 
@@ -1070,10 +1068,24 @@ function onTabClick(event) {
   var oldContent = $(oldTarget);
 
   oldContent.removeClassName("active");
-  container.activeTab.removeClassName("active");
+  container.activeTab.removeClassName("active"); // previous LI
   container.activeTab = node;
-  container.activeTab.addClassName("active");
+  container.activeTab.addClassName("active"); // current LI
   content.addClassName("active");
+  
+  // Prototype alternative
+
+  //oldContent.removeClassName("active");
+  //container.activeTab.removeClassName("active"); // previous LI
+  //container.activeTab = node;
+  //container.activeTab.addClassName("active"); // current LI
+
+  //container.activeTab.hide();
+  //oldContent.hide();
+  //content.show();
+
+  //container.activeTab = node;
+  //container.activeTab.show();
 
   return false;
 }

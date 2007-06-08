@@ -498,7 +498,13 @@ TABLE#messageList TD
 }
 
 TABLE#messageList TD.tbtv_subject_headercell
-{ width: 30%; }
+{ width: 40%; }
+
+TABLE#messageList TD.tbtv_from_headercell
+{ width: 35%; }
+
+TABLE#messageList TD.tbtv_date_headercell
+{ width: 25%; }
 
 TABLE#messageList TR._selected TD
 { 
