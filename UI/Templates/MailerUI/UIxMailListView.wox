@@ -20,7 +20,7 @@
             const:href="view"
             var:queryDictionary="context.request.formValues"
             /></td
-          ><td class="tbtv_headercell"
+          ><td class="tbtv_headercell tbtv_from_headercell"
           ><var:if condition="showToAddress" const:negate="YES"
             ><var:component className="UIxSortableTableHeader"
               label:label="From"
@@ -39,7 +39,7 @@
           ><td class="tbtv_headercell messageFlagColumn"
           ><img rsrc:src="title_read_14x14.png" width="14" height="14"
             /></td
-          ><td class="tbtv_headercell"
+          ><td class="tbtv_headercell tbtv_date_headercell"
           ><var:component className="UIxSortableTableHeader"
             label:label="Date"
             const:sortKey="date"
