@@ -4,7 +4,7 @@ Element.addMethods({
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
       
-      return tbody.getSelectedNodes();
+      return $(tbody).getSelectedNodes();
     }
     else if (element.tagName == 'UL') {
       return element.getSelectedNodes();
@@ -16,7 +16,7 @@ Element.addMethods({
     if (element.tagName == 'TABLE') {
       var tbody = (element.getElementsByTagName('tbody'))[0];
       
-      return tbody.getSelectedNodesId();
+      return $(tbody).getSelectedNodesId();
     }
     else if (element.tagName == 'UL') {
       return element.getSelectedNodesId();
@@ -30,8 +30,7 @@ Element.addMethods({
       var nodes = tbody.childNodes;
       for (var i = 0; i < nodes.length; i++) {
 	var node = nodes.item(i);
-	if (node instanceof HTMLElement
-	    && node.hasClassName(className))
+	if (node.tagName && node.hasClassName(className))
 	  node.select();
       }
     }
