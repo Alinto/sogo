@@ -240,7 +240,7 @@ function onDaySelect(node) {
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
 
-  var td = node.getParentWithTagName("td");
+  var td = $(node).getParentWithTagName("td");
   var table = td.getParentWithTagName("table");
 
 //   log ("table.selected: " + table.selected);
@@ -333,26 +333,22 @@ function eventsListCallback(http) {
 
       var td = document.createElement("td");
       row.appendChild(td);
-      Event.observe(td, "mousedown",
-		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
       td.appendChild(document.createTextNode(data[i][3]));
 
       td = document.createElement("td");
       row.appendChild(td);
-      Event.observe(td, "mousedown",
-		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
       td.appendChild(document.createTextNode(data[i][4]));
 
       td = document.createElement("td");
       row.appendChild(td);
-      Event.observe(td, "mousedown",
-		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
       td.appendChild(document.createTextNode(data[i][5]));
       
       td = document.createElement("td");
       row.appendChild(td);
-      Event.observe(td, "mousedown",
-		    listRowMouseDownHandler.bindAsEventListener(td), true);
+      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
       td.appendChild(document.createTextNode(data[i][6]));
     }
   }
@@ -1220,7 +1216,7 @@ function configureLists() {
 		 onTasksSelectionChange.bindAsEventListener(list));
 
    var input = $("showHideCompletedTasks");
-   Event.observe(input, "change",
+   Event.observe(input, "click",
 		 onShowCompletedTasks.bindAsEventListener(input));
 
    list = $("eventsList");
