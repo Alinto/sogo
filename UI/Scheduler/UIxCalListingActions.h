@@ -1,4 +1,4 @@
-/* UIxCalTasksListView.h - this file is part of SOGo
+/* UIxCalListingActions.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -20,29 +20,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCALTASKSLISTVIEW_H
-#define UIXCALTASKSLISTVIEW_H
+#ifndef UIXCALLISTINGACTIONVIEW_H
+#define UIXCALLISTINGACTIONVIEW_H
 
-#import "UIxCalView.h"
 
-@class NSDictionary;
+#import <NGObjWeb/WODirectAction.h>
+
+@class NSCalendarDate;
 @class NSMutableDictionary;
+@class NSString;
+@class NSTimeZone;
 
-@interface UIxCalTasksListView : UIxCalView
+@class WOResponse;
+@class WORequest;
+
+@interface UIxCalListingActions : WODirectAction
 {
+  NSMutableDictionary *componentsData;
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
-
-  BOOL knowsToShow;
-  BOOL showCompleted;
-
-  NSDictionary *currentTask;
+  NSString *userLogin;
+  WORequest *request;
 }
 
-- (void) setCurrentTask: (NSDictionary *) task;
-- (NSDictionary *) currentTask;
+- (WOResponse *) eventsListAction;
 - (WOResponse *) tasksListAction;
 
 @end
 
-#endif /* UIXCALTASKSLIST_H */
+#endif /* UIXCALLISTINGACTION_H */

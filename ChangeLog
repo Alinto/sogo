@@ -1,5 +1,13 @@
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-_setupContext]): take the range of dates specified by the popup
+	into account.
+
+	* UI/Scheduler/UIxCalListingActions.[hm]: new subclass of
+	WODirectAction that returns WOResponse objects with the events or
+	todos satisfying the parameters passed in the url.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-takeValuesFromRequest:_rqinContext:_ctx]): take the new ivar
 	"isAllDay" into account and compute the amount of days to pass to

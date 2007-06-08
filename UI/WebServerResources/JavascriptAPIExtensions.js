@@ -77,6 +77,28 @@ Date.prototype.daysUpTo = function(otherDate) {
   return days;
 }
 
+Date.prototype.getDayString = function() {
+   var newString = this.getYear() + 1900;
+   var month = '' + (this.getMonth() + 1);
+   if (month.length == 1)
+     month = '0' + month;
+   newString += month;
+   var day = '' + this.getDate();
+   if (day.length == 1)
+     day = '0' + day;
+   newString += day;
+
+   return newString;
+}
+
+Date.prototype.getHourString = function() {
+   var newString = this.getHours() + '00';
+   if (newString.length == 3)
+     newString = '0' + newString;
+
+   return newString;
+}
+
 Date.prototype.stringWithSeparator = function(separator) {
   var month = '' + (this.getMonth() + 1);
   var day = '' + this.getDate();
