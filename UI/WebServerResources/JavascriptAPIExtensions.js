@@ -33,7 +33,15 @@ String.prototype.asDate = function () {
     newDate = new Date(date[2], date[1] - 1, date[0]);
   else {
     date = this.split("-");
-    newDate = new Date(date[0], date[1] - 1, date[2]);
+    if (date.length == 3)
+       newDate = new Date(date[0], date[1] - 1, date[2]);
+    else {
+       if (this.length == 8) {
+ 	  newDate = new Date(this.substring(0, 4),
+			     this.substring(4, 6) - 1,
+			     this.substring(6, 8));
+       }
+    }
   }
 
   return newDate;  
@@ -99,6 +107,19 @@ Date.prototype.getHourString = function() {
    return newString;
 }
 
+Date.prototype.getDisplayHoursString = function() {
+   var hoursString = this.getHours();
+   if (hoursString.length == 1)
+     hoursString = '0' + hoursString;
+
+   var minutesString = this.getMinutes();
+   if (minutesString.length == 1)
+     minutesString = '0' + minutesString;
+
+
+   return hoursString + ":" + minutesString;
+}
+
 Date.prototype.stringWithSeparator = function(separator) {
   var month = '' + (this.getMonth() + 1);
   var day = '' + this.getDate();
@@ -117,4 +138,20 @@ Date.prototype.stringWithSeparator = function(separator) {
 
 Date.prototype.sogoFreeBusyStringWithSeparator = function(separator) {
   return this.sogoDayName() + ", " + this.stringWithSeparator(separator);
+}
+
+Date.prototype.addDays = function(nbrDays) {
+   var milliSeconds = this.getTime();
+   milliSeconds += 86400000 * nbrDays;
+   this.setTime(milliSeconds);
+}
+
+Date.prototype.earlierDate = function(otherDate) {
+   return ((this.getTime() < otherDate.getTime())
+	   ? this : otherDate);
+}
+
+Date.prototype.laterDate = function(otherDate) {
+   return ((this.getTime() < otherDate.getTime())
+	   ? otherDate : this);
 }
