@@ -64,39 +64,6 @@
   [super dealloc];
 }
 
-- (void) _addEventToSortedEvents: (NSDictionary *) newEvent
-{
-  NSMutableArray *eventArray;
-  NSString *dayId;
-
-  dayId = [[newEvent objectForKey: @"startDate"] shortDateString];
-  eventArray = [sortedAppointments objectForKey: dayId];
-  if (!eventArray)
-    {
-      eventArray = [NSMutableArray new];
-      [eventArray autorelease];
-      [sortedAppointments setObject: eventArray forKey: dayId];
-    }
-  [eventArray addObject: newEvent];
-}
-
-- (id <WOActionResults>) defaultAction
-{
-  NSEnumerator *events;
-  NSDictionary *currentEvent;
-
-  events = [[self fetchCoreAppointmentsInfos] objectEnumerator];
-  currentEvent = [events nextObject];
-  while (currentEvent)
-    {
-      [self _addEventToSortedEvents: currentEvent];
-      currentEvent = [events nextObject];
-//       NSLog (@"event:\n'%@'", currentEvent);
-    }
-
-  return self;
-}
-
 - (NSArray *) headerDaysToDisplay
 {
   NSMutableArray *headerDaysToDisplay;

@@ -40,9 +40,6 @@
   NSString *currentTableHour;
   NSMutableArray *daysToDisplay;
   NSMutableArray *hoursToDisplay;
-  NSArray *allAppointments;
-
-  NSDictionary *currentAppointment;
 
   NSString *cssClass;
   NSString *cssId;
@@ -64,9 +61,6 @@
 - (NSArray *) daysToDisplay;
 - (void) setCurrentTableDay: (NSCalendarDate *) aTableDay;
 - (NSCalendarDate *) currentTableDay;
-
-- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment;
-- (NSDictionary *) currentAppointment;
 
 @end
 

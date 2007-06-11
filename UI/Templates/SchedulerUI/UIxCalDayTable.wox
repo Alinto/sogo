@@ -1,73 +1,89 @@
 <?xml version="1.0" standalone="yes"?>
-  <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
-    <div id="daysView" var:class="daysViewClasses">
-      <div class="hours">
-        <var:foreach list="hoursToDisplay" item="currentTableHour"
-          ><div class="hour"><var:string value="currentTableHour" />:00</div
-            ></var:foreach>
-      </div>
-
-      <div class="hourLines">
-        <div class="hourLine hourLine0"><!-- space --></div
-          ><div class="hourLine hourLine1"><!-- space --></div
-          ><div class="hourLine hourLine2"><!-- space --></div
-          ><div class="hourLine hourLine3"><!-- space --></div
-          ><div class="hourLine hourLine4"><!-- space --></div
-          ><div class="hourLine hourLine5"><!-- space --></div
-          ><div class="hourLine hourLine6"><!-- space --></div
-          ><div class="hourLine hourLine7"><!-- space --></div
-          ><div class="hourLine hourLine8"><!-- space --></div
-          ><div class="hourLine hourLine9"><!-- space --></div
-          ><div class="hourLine hourLine10"><!-- space --></div
-          ><div class="hourLine hourLine11"><!-- space --></div
-          ><div class="hourLine hourLine12"><!-- space --></div
-          ><div class="hourLine hourLine13"><!-- space --></div
-          ><div class="hourLine hourLine14"><!-- space --></div
-          ><div class="hourLine hourLine15"><!-- space --></div
-          ><div class="hourLine hourLine16"><!-- space --></div
-          ><div class="hourLine hourLine17"><!-- space --></div
-          ><div class="hourLine hourLine18"><!-- space --></div
-          ><div class="hourLine hourLine19"><!-- space --></div
-          ><div class="hourLine hourLine20"><!-- space --></div
-          ><div class="hourLine hourLine21"><!-- space --></div
-          ><div class="hourLine hourLine22"><!-- space --></div
-          ><div class="hourLine hourLine23"><!-- space --></div>
-      </div>
-
-      <div class="days">
-        <var:foreach list="daysToDisplay" item="currentTableDay"
-          ><div var:class="dayClasses"
-            var:day="currentTableDay.shortDateString"
-            ><div class="header"><var:string value="labelForDay"
-		const:escapeHTML="NO"/></div>
-            <div class="appointments">
-            <var:foreach list="hoursToDisplay" item="currentTableHour"
-              ><div var:class="clickableHourCellClass"
-                var:day="currentTableDay.shortDateString"
-                var:hour="currentAppointmentHour">
-              </div></var:foreach>
-            <var:foreach list="appointmentsForCurrentDay" item="currentAppointment"
-              ><var:component className="UIxCalInlineAptView"
-                dayStartHour="dayStartHour"
-                dayEndHour="dayEndHour"
-                appointment="currentAppointment"
-                formatter="aptFormatter"
-                tooltipFormatter="aptTooltipFormatter"
-                url="appointmentViewURL"
-                const:style="dayoverview"
-                queryDictionary="currentDateQueryParameters"
-                referenceDate="selectedDate"
-                canAccess="canAccessApt"
-                /></var:foreach
-              >
-            </div>
-          </div>
-        </var:foreach>
-      </div>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  <div id="calendarHeader" var:class="daysViewClasses">
+    <div class="dayLabels"
+      ><var:foreach list="daysToDisplay" item="currentTableDay"
+	><div var:class="dayClasses"
+	  ><var:string value="labelForDate"/><br
+	    /><span class="dayOfWeek"><var:string value="labelForDay"/></span
+	    ></div
+	  ></var:foreach>
     </div>
-  </container>
+    <div class="days"
+      ><var:foreach list="daysToDisplay" item="currentTableDay"
+	><div var:class="dayClasses"><!-- space --></div
+	  ></var:foreach
+	></div>
+  </div>
+
+  <div id="daysView" var:class="daysViewClasses">
+    <div class="hours">
+      <var:foreach list="hoursToDisplay" item="currentTableHour"
+	><div class="hour"><var:string value="currentTableHour" />:00</div
+	  ></var:foreach>
+    </div>
+
+    <div class="hourLines">
+      <div class="hourLine hourLine0"><!-- space --></div
+	><div class="hourLine hourLine1"><!-- space --></div
+	><div class="hourLine hourLine2"><!-- space --></div
+	><div class="hourLine hourLine3"><!-- space --></div
+	><div class="hourLine hourLine4"><!-- space --></div
+	><div class="hourLine hourLine5"><!-- space --></div
+	><div class="hourLine hourLine6"><!-- space --></div
+	><div class="hourLine hourLine7"><!-- space --></div
+	><div class="hourLine hourLine8"><!-- space --></div
+	><div class="hourLine hourLine9"><!-- space --></div
+	><div class="hourLine hourLine10"><!-- space --></div
+	><div class="hourLine hourLine11"><!-- space --></div
+	><div class="hourLine hourLine12"><!-- space --></div
+	><div class="hourLine hourLine13"><!-- space --></div
+	><div class="hourLine hourLine14"><!-- space --></div
+	><div class="hourLine hourLine15"><!-- space --></div
+	><div class="hourLine hourLine16"><!-- space --></div
+	><div class="hourLine hourLine17"><!-- space --></div
+	><div class="hourLine hourLine18"><!-- space --></div
+	><div class="hourLine hourLine19"><!-- space --></div
+	><div class="hourLine hourLine20"><!-- space --></div
+	><div class="hourLine hourLine21"><!-- space --></div
+	><div class="hourLine hourLine22"><!-- space --></div
+	><div class="hourLine hourLine23"><!-- space --></div>
+    </div>
+
+    <div class="days">
+      <var:foreach list="daysToDisplay" item="currentTableDay"
+	><div var:class="dayClasses"
+	  var:day="currentTableDay.shortDateString"
+	  >
+	  <div class="appointments">
+	    <var:foreach list="hoursToDisplay" item="currentTableHour"
+	      ><div var:class="clickableHourCellClass"
+		var:day="currentTableDay.shortDateString"
+		var:hour="currentAppointmentHour">
+	      </div></var:foreach>
+	    <!--            <var:foreach list="appointmentsForCurrentDay" item="currentAppointment"
+	    ><var:component className="UIxCalInlineAptView"
+	    dayStartHour="dayStartHour"
+	    dayEndHour="dayEndHour"
+	    appointment="currentAppointment"
+	    formatter="aptFormatter"
+	    tooltipFormatter="aptTooltipFormatter"
+	    url="appointmentViewURL"
+	    const:style="dayoverview"
+	    queryDictionary="currentDateQueryParameters"
+	    referenceDate="selectedDate"
+	    canAccess="canAccessApt"
+	    /></var:foreach
+	    > -->
+	  </div>
+	</div>
+      </var:foreach>
+    </div>
+  </div>
+</container>

@@ -181,7 +181,7 @@ function endDayAsShortString() {
   return $('endTime_date').valueAsShortDateString();
 }
 
-this._getDate = function(which) {
+function _getDate(which) {
   var date = window.timeWidgets[which]['date'].valueAsDate();
   date.setHours( window.timeWidgets[which]['hour'].value );
   date.setMinutes( window.timeWidgets[which]['minute'].value );
@@ -189,7 +189,7 @@ this._getDate = function(which) {
   return date;
 }
 
-this._getShadowDate = function(which) {
+function _getShadowDate(which) {
   var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
   var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
   date.setHours(intValue);
@@ -200,23 +200,23 @@ this._getShadowDate = function(which) {
   return date;
 }
 
-this.getStartDate = function() {
+function getStartDate() {
   return this._getDate('start');
 }
 
-this.getEndDate = function() {
+function getEndDate() {
   return this._getDate('end');
 }
 
-this.getShadowStartDate = function() {
+function getShadowStartDate() {
   return this._getShadowDate('start');
 }
 
-this.getShadowEndDate = function() {
+function getShadowEndDate() {
   return this._getShadowDate('end');
 }
 
-this._setDate = function(which, newDate) {
+function _setDate(which, newDate) {
   window.timeWidgets[which]['date'].setValueAsDate(newDate);
   window.timeWidgets[which]['hour'].value = newDate.getHours();
   var minutes = newDate.getMinutes();
@@ -225,16 +225,16 @@ this._setDate = function(which, newDate) {
   window.timeWidgets[which]['minute'].value = minutes;
 }
 
-this.setStartDate = function(newStartDate) {
+function setStartDate(newStartDate) {
   this._setDate('start', newStartDate);
 }
 
-this.setEndDate = function(newEndDate) {
+function setEndDate(newEndDate) {
 //   window.alert(newEndDate);
   this._setDate('end', newEndDate);
 }
 
-this.onAdjustEndTime = function(event) {
+function onAdjustEndTime(event) {
   var dateDelta = (window.getStartDate().valueOf()
                    - window.getShadowStartDate().valueOf());
 //   window.alert(window.getEndDate().valueOf() + '  ' + dateDelta);
@@ -245,10 +245,39 @@ this.onAdjustEndTime = function(event) {
   window.timeWidgets['start']['minute'].updateShadowValue();
 }
 
-this.initTimeWidgets = function (widgets) {
+function onAllDayChanged(event) {
+   for (var type in window.timeWidgets) {
+      window.timeWidgets[type]['hour'].disabled = this.checked;
+      window.timeWidgets[type]['minute'].disabled = this.checked;
+   }
+}
+
+function initTimeWidgets(widgets) {
   this.timeWidgets = widgets;
 
   Event.observe(widgets['start']['date'], "change", this.onAdjustEndTime, false);
   Event.observe(widgets['start']['hour'], "change", this.onAdjustEndTime, false);
   Event.observe(widgets['start']['minute'], "change", this.onAdjustEndTime, false);
+
+  var allDayLabel = $("allDay");
+  var input = $(allDayLabel).childNodesWithTag("input")[0];
+  Event.observe(input, "change", onAllDayChanged.bindAsEventListener(input));
+  if (input.checked) {
+     for (var type in widgets) {
+	widgets[type]['hour'].disabled = true;
+	widgets[type]['minute'].disabled = true;
+     }
+  }
 }
+
+function onAppointmentEditorLoad() {
+   var widgets = {'start': {'date': $("startTime_date"),
+			    'hour': $("startTime_time_hour"),
+			    'minute': $("startTime_time_minute")},
+		  'end': {'date': $("endTime_date"),
+			  'hour': $("endTime_time_hour"),
+			  'minute': $("endTime_time_minute")}};
+   initTimeWidgets(widgets);
+}
+
+addEvent(window, 'load', onAppointmentEditorLoad);

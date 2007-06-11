@@ -541,7 +541,7 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSDictionary *)locale {
   /* we need no fallback here, as locale is guaranteed to be set by sogod */
-  return [[self context] valueForKey:@"locale"];
+  return [context valueForKey: @"locale"];
 }
 
 - (WOResourceManager *) pageResourceManager

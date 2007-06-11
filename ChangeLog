@@ -1,3 +1,24 @@
+2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalMonthView.m: no longer retrieve appointments.
+
+	* UI/Scheduler/UIxCalView.m ([-fetchCoreAppointmentsInfos]):
+	removed method.
+	([-fetchCoreTasksInfos]): removed method.
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-init]): initialize an instance of SOGoDateFormatter.
+	([UIxCalListingActions -eventsListAction]): the display start and
+	end dates are added to the listing for each event.
+
+	* UI/Scheduler/UIxCalDayTable.m: no longer retrieve appointments.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-isAllDay]): returns YES if the "hm" url parameter is set to
+	"allday".
+	([UIxAppointmentEditor -defaultAction]): if isAllDay, the enddate
+	is displayed one day earlier.
+
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
