@@ -9,7 +9,6 @@
       var currentIndex = <var:string value="currentIndex" />;
     </script>
     <script type="text/javascript" rsrc:src="UIxMailToSelection.js"> <!-- Space! --></script>
-    <script type="text/javascript" rsrc:src="layout2or3_xlib.js"> <!-- Space! --></script>
     
     <div id="addressList"
       ><var:foreach list="addressLists" item="addressList"
@@ -38,9 +37,12 @@
       </var:foreach>
       <div class="addressListElement" id="lastRow">
         <span class="headerField">
-          <select disabled="1">
-            <option value="to"><var:string label:value="to" />:</option>
-          </select>
+        <var:popup name="currentPopUpId"
+              const:disabled="1"
+              list="headers"
+              item="item"
+              label:string="$item"
+              />
         </span>
         <span class="headerInput">
           <input onfocus="fancyAddRow(true,'');"
@@ -53,7 +55,6 @@
     <a href="#" onclick="checkAddresses();">check addresses</a>
   </var:if>-->
     </div>
-    <span id="addr_addresses" style="display: none; visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address" /></var:foreach></var:foreach>
-    </span>
+    <span id="addr_addresses" style="display: none; visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address"><!-- Space! --></span></var:foreach></var:foreach></span>
   </container>
 
