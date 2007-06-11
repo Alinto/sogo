@@ -334,15 +334,15 @@ DIV#messageContent div.mailer_mailcontent
 td.mailer_fieldname
 {
   white-space: nowrap;
-  padding-left: 1em;
+  padding: 0 1em;
   text-align: right;
   font-weight: bold;
   vertical-align: top;
+  width: 6em;
 }
 
 td.mailer_fieldvalue
 {
-  width: 95%;
 }
 
 td.mailer_subjectfieldvalue
