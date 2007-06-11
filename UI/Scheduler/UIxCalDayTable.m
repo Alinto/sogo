@@ -41,7 +41,7 @@
 {
   if ((self = [super init]))
     {
-      allAppointments = nil;
+//       allAppointments = nil;
       daysToDisplay = nil;
       hoursToDisplay = nil;
       numberOfDays = 1;
@@ -57,12 +57,10 @@
 
 - (void) dealloc
 {
-  if (allAppointments)
-    [allAppointments release];
-  if (daysToDisplay)
-    [daysToDisplay release];
-  if (hoursToDisplay)
-    [hoursToDisplay release];
+//   if (allAppointments)
+//     [allAppointments release];
+  [daysToDisplay release];
+  [hoursToDisplay release];
   [dateFormatter release];
   [super dealloc];
 }
@@ -90,11 +88,8 @@
 - (void) setNumberOfDays: (NSString *) aNumber
 {
   numberOfDays = [aNumber intValue];
-  if (daysToDisplay)
-    {
-      [daysToDisplay release];
-      daysToDisplay = nil;
-    }
+  [daysToDisplay release];
+  daysToDisplay = nil;
 }
 
 - (NSString *) numberOfDays
@@ -105,11 +100,8 @@
 - (void) setStartDate: (NSCalendarDate *) aStartDate
 {
   startDate = aStartDate;
-  if (daysToDisplay)
-    {
-      [daysToDisplay release];
-      daysToDisplay = nil;
-    }
+  [daysToDisplay release];
+  daysToDisplay = nil;
 }
 
 - (NSCalendarDate *) startDate
@@ -169,6 +161,7 @@
         [daysToDisplay addObject: [currentDate dateByAddingYears: 0
                                                months: 0
                                                days: count]];
+
     }
 
   return daysToDisplay;
@@ -201,94 +194,97 @@
 
 - (NSString *) labelForDay
 {
-  return [NSString stringWithFormat: @"%@<br />%@",
-                   [dateFormatter shortDayOfWeek: [currentTableDay dayOfWeek]],
-                   [dateFormatter stringForObjectValue: currentTableDay]];
+  return [dateFormatter shortDayOfWeek: [currentTableDay dayOfWeek]];
 }
 
-- (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment
-                               forStart: (NSCalendarDate *) start
-                                 andEnd: (NSCalendarDate *) end
+- (NSString *) labelForDate
 {
-  NSMutableDictionary *newMutableAppointment;
-  NSDictionary *newAppointment;
-  BOOL startIsEarlier, endIsLater;
+  return [dateFormatter stringForObjectValue: currentTableDay];
+}
 
-  startIsEarlier
-    = ([[anAppointment objectForKey: @"startDate"] laterDate: start] == start);
-  endIsLater
-    = ([[anAppointment objectForKey: @"endDate"] earlierDate: end] == end);
+// - (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment
+//                                forStart: (NSCalendarDate *) start
+//                                  andEnd: (NSCalendarDate *) end
+// {
+//   NSMutableDictionary *newMutableAppointment;
+//   NSDictionary *newAppointment;
+//   BOOL startIsEarlier, endIsLater;
 
-  if (startIsEarlier || endIsLater)
-    {
-      newMutableAppointment
-        = [NSMutableDictionary dictionaryWithDictionary: anAppointment];
+//   startIsEarlier
+//     = ([[anAppointment objectForKey: @"startDate"] laterDate: start] == start);
+//   endIsLater
+//     = ([[anAppointment objectForKey: @"endDate"] earlierDate: end] == end);
+
+//   if (startIsEarlier || endIsLater)
+//     {
+//       newMutableAppointment
+//         = [NSMutableDictionary dictionaryWithDictionary: anAppointment];
       
-      if (startIsEarlier)
-        [newMutableAppointment setObject: start
-                               forKey: @"startDate"];
-      if (endIsLater)
-        [newMutableAppointment setObject: end
-                               forKey: @"endDate"];
+//       if (startIsEarlier)
+//         [newMutableAppointment setObject: start
+//                                forKey: @"startDate"];
+//       if (endIsLater)
+//         [newMutableAppointment setObject: end
+//                                forKey: @"endDate"];
 
-      newAppointment = newMutableAppointment;
-    }
-  else
-    newAppointment = anAppointment;
+//       newAppointment = newMutableAppointment;
+//     }
+//   else
+//     newAppointment = anAppointment;
 
-  return newAppointment;
-}
+//   return newAppointment;
+// }
 
-- (NSArray *) appointmentsForCurrentDay
-{
-  NSMutableArray *filteredAppointments;
-  NSEnumerator *aptsEnumerator;
-  NSDictionary *currentDayAppointment;
-  NSCalendarDate *start, *end;
-  int endHour;
+// - (NSArray *) appointmentsForCurrentDay
+// {
+//   NSMutableArray *filteredAppointments;
+//   NSEnumerator *aptsEnumerator;
+//   NSDictionary *currentDayAppointment;
+//   NSCalendarDate *start, *end;
+//   int endHour;
 
-  if (!allAppointments)
-    {
-      allAppointments = [self fetchCoreAppointmentsInfos];
-      [allAppointments retain];
-    }
+//   if (!allAppointments)
+//     {
+//       allAppointments = [self fetchCoreAppointmentsInfos];
+//       [allAppointments retain];
+//     }
 
-  filteredAppointments = [NSMutableArray new];
-  [filteredAppointments autorelease];
+//   filteredAppointments = [NSMutableArray new];
+//   [filteredAppointments autorelease];
 
-  start = [currentTableDay hour: [self dayStartHour] minute: 0];
-  endHour = [self dayEndHour];
-  if (endHour < 24)
-    end = [currentTableDay hour: [self dayEndHour] minute: 59];
-  else
-    end = [[currentTableDay tomorrow] hour: 0 minute: 0];
+//   start = [currentTableDay hour: [self dayStartHour] minute: 0];
+//   endHour = [self dayEndHour];
+//   if (endHour < 24)
+//     end = [currentTableDay hour: [self dayEndHour] minute: 59];
+//   else
+//     end = [[currentTableDay tomorrow] hour: 0 minute: 0];
 
-  aptsEnumerator = [allAppointments objectEnumerator];
-  currentDayAppointment = [aptsEnumerator nextObject];
-  while (currentDayAppointment)
-    {
-      if (([end laterDate: [currentDayAppointment
-                             valueForKey: @"startDate"]] == end)
-          && ([start earlierDate: [currentDayAppointment
-                                    valueForKey: @"endDate"]] == start))
-        [filteredAppointments
-          addObject: [self _adjustedAppointment: currentDayAppointment
-                           forStart: start andEnd: end]];
-      currentDayAppointment = [aptsEnumerator nextObject];
-    }
+//   aptsEnumerator = [allAppointments objectEnumerator];
+//   currentDayAppointment = [aptsEnumerator nextObject];
+//   while (currentDayAppointment)
+//     {
+//       if (([end laterDate: [currentDayAppointment
+//                              valueForKey: @"startDate"]] == end)
+//           && ([start earlierDate: [currentDayAppointment
+//                                     valueForKey: @"endDate"]] == start))
+//         [filteredAppointments
+//           addObject: [self _adjustedAppointment: currentDayAppointment
+//                            forStart: start andEnd: end]];
+//       currentDayAppointment = [aptsEnumerator nextObject];
+//     }
 
-  return filteredAppointments;
-}
+//   return filteredAppointments;
+// }
 
-- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment
-{
-  currentAppointment = newCurrentAppointment;
-}
+// - (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment
+// {
+//   currentAppointment = newCurrentAppointment;
+// }
 
-- (NSDictionary *) currentAppointment
-{
-  return currentAppointment;
-}
+// - (NSDictionary *) currentAppointment
+// {
+//   return currentAppointment;
+// }
 
 - (NSString *) appointmentsClasses
 {

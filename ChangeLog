@@ -1,5 +1,7 @@
 2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalDayTable.m: no longer retrieve appointments.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-isAllDay]): returns YES if the "hm" url parameter is set to
 	"allday".
