@@ -1,49 +1,49 @@
 <?xml version="1.0" standalone="yes"?>
-  <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
-    <a href="#"
-      class="leftNavigationArrow"
-      var:date="prevDayQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-lft-sharp.gif"/></a>
-    <span class="daysHeader">
-      <span class="day2"><a href="#"
-          var:date="dayBeforePrevDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="dayBeforeYesterdayName"
-            /></a></span
-        ><span class="day1"><a href="#"
-          var:date="prevDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="yesterdayName"
-            /></a></span
-        ><span class="day0"><var:string value="currentDayName" /></span
-        ><span class="day1"><a href="#"
-          var:date="nextDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="tomorrowName"
-            /></a></span
-        ><span class="day2"><a href="#"
-          var:date="dayAfterNextDayQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="dayAfterTomorrowName"
-            /></a></span
-        ></span>
-    <a href="#"
-      class="rightNavigationArrow"
-      var:date="nextDayQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-rit-sharp.gif"/></a>
-
-    <div id="calendarContent">
-      <var:component
-        className="UIxCalDayTable"
-        startDate="startDate"
-        const:CSSClass="dayOverview"
-        const:numberOfDays="1" />
-    </div>
-  </container>
+<!DOCTYPE container>
+<container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  <a href="#"
+    class="leftNavigationArrow"
+    var:date="prevDayQueryParameters.day"
+    onclick="return onCalendarGotoDay(this);"
+    ><img rsrc:src="arrow-lft-sharp.gif"/></a>
+  <span class="daysHeader">
+    <span class="day2"><a href="#"
+	var:date="dayBeforePrevDayQueryParameters.day"
+	onclick="return onCalendarGotoDay(this);"
+	><var:string value="dayBeforeYesterdayName"
+	  /></a></span
+      ><span class="day1"><a href="#"
+	var:date="prevDayQueryParameters.day"
+	onclick="return onCalendarGotoDay(this);"
+	><var:string value="yesterdayName"
+	  /></a></span
+      ><span class="day0"><var:string value="currentDayName" /></span
+      ><span class="day1"><a href="#"
+	var:date="nextDayQueryParameters.day"
+	onclick="return onCalendarGotoDay(this);"
+	><var:string value="tomorrowName"
+	  /></a></span
+      ><span class="day2"><a href="#"
+	var:date="dayAfterNextDayQueryParameters.day"
+	onclick="return onCalendarGotoDay(this);"
+	><var:string value="dayAfterTomorrowName"
+	  /></a></span
+      ></span>
+  <a href="#"
+    class="rightNavigationArrow"
+    var:date="nextDayQueryParameters.day"
+    onclick="return onCalendarGotoDay(this);"
+    ><img rsrc:src="arrow-rit-sharp.gif"/></a>
+  <div id="calendarContent">
+    <var:component
+      className="UIxCalDayTable"
+      startDate="startDate"
+      const:CSSClass="dayOverview"
+      const:numberOfDays="1" />
+  </div>
+</container>

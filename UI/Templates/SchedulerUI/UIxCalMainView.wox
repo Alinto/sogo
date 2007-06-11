@@ -89,10 +89,10 @@
       <div id="eventsListView">
 	<table id="eventsList">
 	  <tr>
-	    <td class="headerCell"><span class="sortableTableHeader"><var:string label:value="Title"/></span></td>
+	    <td class="headerCell headerTitle"><span class="sortableTableHeader"><var:string label:value="Title"/></span></td>
 	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="Start"/></span></td>
 	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="End"/></span></td>
-	    <td class="headerCell"><span class="sortableTableHeader"><var:string label:value="Location"/></span></td>
+	    <td class="headerCell headerLocation"><span class="sortableTableHeader"><var:string label:value="Location"/></span></td>
 	  </tr>
 	</table>
       </div>

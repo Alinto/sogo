@@ -46,25 +46,25 @@
         ><div var:class="headerDayCellClasses"
           ><var:string value="labelForCurrentDayToDisplay"
             /></div></var:foreach>
-      <div class="days"
+      <div class="days" const:id="monthDaysView"
         ><var:foreach list="daysToDisplay" item="currentTableColumn">
           <var:foreach list="currentTableColumn" item="currentTableDay">
             <div var:class="dayCellClasses"
               var:day="currentTableDay.shortDateString">
               <div class="dayHeader"><var:string value="dayHeaderNumber"/></div>
-              <var:foreach
-                list="aptsForCurrentDate"
-              item="appointment">
-                <var:component className="UIxCalInlineMonthAptView"
-                  appointment="appointment"
-                  formatter="monthAptFormatter"
-                  tooltipFormatter="aptTooltipFormatter"
-                  url="appointmentViewURL"
-                  const:style="dayoverview"
-                queryDictionary="currentDayQueryParameters"
-                  referenceDate="currentTableDay"
-                  canAccess="canAccessApt"
-                  /></var:foreach>
+              <!-- var:foreach
+	      list="aptsForCurrentDate"
+              item="appointment"
+	      var:component className="UIxCalInlineMonthAptView"
+	      appointment="appointment"
+	      formatter="monthAptFormatter"
+	      tooltipFormatter="aptTooltipFormatter"
+	      url="appointmentViewURL"
+	      const:style="dayoverview"
+	      queryDictionary="currentDayQueryParameters"
+	      referenceDate="currentTableDay"
+	      canAccess="canAccessApt"
+	      var:foreach -->
             </div>
           </var:foreach>
         </var:foreach>
