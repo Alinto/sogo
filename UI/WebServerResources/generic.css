@@ -56,10 +56,12 @@ LABEL
 TABLE
 { display: block;
   table-layout: fixed;
-  border-spacing: 0px;
-  padding: 0px;
-  margin: 0px;
-  border: 0px; }
+  border-spacing: 0px; }
+
+TABLE TD
+{ white-space: nowrap;
+  padding-left: .25em;
+  padding-right: .25em; }
 
 a:link
 { color: #0033CC; }
@@ -442,11 +444,15 @@ TR.tableview TD
   padding-left: .3em;
   padding-right: .3em; }
 
-TR.tableview TD.headerDateTime
-{ width: 18em; }
+TD.headerDateTime
+{ width: 30em;
+  min-width: 30em; }
 
-TR.tableview TD.headerLocation
-{ width: 10em; }
+TD.headerTitle
+{ width: 30%; }
+
+TD.headerLocation
+{ min-width: 20em; }
 
 td img.tbtv_sortcell
 { float: right;

@@ -124,8 +124,7 @@ UL#tasksList LI[class~="_selected"].duelater
 }
 
 DIV#rightPanel
-{
-  position: absolute;
+{ position: absolute;
   top: 5.5em;
   left: 18.5em;
   right: 0px;
@@ -135,69 +134,56 @@ DIV#rightPanel
   padding: 0px;
   overflow: hidden; }
 
-DIV#appointmentsListView
+DIV#eventsListView
 { display: block;
+  cursor: default;
   position: absolute;
   background: #fff;
   top: 2.5em;
   left: 0px;
   right: 0px;
-  overflow: auto;
-  overflow-x: hidden;
   height: 15.5em;
-  min-width: 600px; }
+  overflow: auto; }
 
 DIV#calendarView
-{ 
-  position: absolute;
+{ position: absolute;
   background: #fff;
   top: 18em;
   margin-top: 5px;
   bottom: 0px;
   width: 100%;
   border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-}
+  border-left: 1px solid #aaa; }
 
 DIV#calendarView A
-{ 
-  text-decoration: none;
+{ text-decoration: none;
   font: inherit;
-  color: inherit;
-}
+  color: inherit; }
 
 #verticalDragHandle
-{
-  cursor: e-resize;
+{ cursor: e-resize;
   top: 7.5em;
   left: 18.5em;
   width: 5px;
-  bottom: 0px;
-}
+  bottom: 0px; }
 
 #rightDragHandle
-{
-  cursor: n-resize;
+{ cursor: n-resize;
   top: 18em;
   left: 0px;
   right: 0px;
-  height: 5px;
-}
+  height: 5px; }
 
 #filterPanel
-{
-  padding-right: .5em;
-}
+{ padding-right: .5em; }
 
 #dateSelector
-{
-  margin: 0px auto;
+{ margin: 0px auto;
   background: #fff;
   border-top: 1px solid #fff; 
   border-left: 1px solid #fff;
   border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
-}
+  border-bottom: 1px solid #aaa; }
 
 #dateSelector > .header
 { background: #efefef;
@@ -255,13 +241,11 @@ DIV#calendarView A
   width: 100%; }
 
 #dateSelector TABLE TABLE TD
-{ 
-  cursor: pointer;
+{ cursor: pointer;
   margin: 0px;
   padding: 0px;
   width: 100%;
-  border: 1px solid #fff;
-}
+  border: 1px solid #fff; }
 
 #dateSelector TABLE TABLE TD:hover
 { color: #f00;
@@ -289,18 +273,18 @@ DIV#calendarView A
 { background: #ddd;
   border: 1px solid #deebf7; }
 
-TABLE#appointmentsList
+TABLE#eventsList
 { display: block;
   position: relative;
   width: 100%; }
 
-TABLE#appointmentsList td.tbtv_subject_headercell,
-TABLE#appointmentsList td.headerLocation
+TABLE#eventsList td.tbtv_subject_headercell,
+TABLE#eventsList td.headerLocation
 { width: 35%; }
 
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
-TABLE._unfocused#appointmentsList TR._selected TD
+TABLE._unfocused#eventsList TR._selected TD
 { 
   background: #d4d0c8 !important;;
   color: #fff !important;;
@@ -394,47 +378,95 @@ SPAN.day0, SPAN.week0, SPAN.month0
   background: #ddd; }
 
 A.leftNavigationArrow
-{
-  position: absolute;
+{ position: absolute;
   display: block;
   top: .5em;
-  left: .5em;
-}
+  left: .5em; }
 
 A.rightNavigationArrow
-{
-  position: absolute;
+{ position: absolute;
   display: block;
   top: .5em;
-  right: .5em;
-}
+  right: .5em; }
 
-DIV#calendarContent
+DIV#calendarHeader,
+DIV#daysView
 { position: absolute;
-  top: 3.5em;
-  padding: 0px;
-  margin: 0px;
-  bottom: 0px;
+  border: 0px;
   left: 0px;
   right: 0px;
-  overflow: auto;
+  padding: 0px;
+  margin: 0px; }
+
+DIV#daysView
+{ top: 11em;
+  bottom: 0px;
+  border: 0px;
+  margin: 0px;
+  margin-left: 1px;
+  border-top: 2px solid #397d94;
+  overflow: auto; }
+
+DIV#calendarHeader
+{ top: 3.5em;
+  height: 7.5em; }
+
+DIV#calendarHeader DIV.dayLabels,
+DIV#calendarHeader DIV.days
+{ position: absolute;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  border-left: 1px solid #397d94;
+  border-top: 1px solid #397d94;
+  left: 5em;
+  margin-left: 0px;
+  margin-right: 18px;
+  right: 0px; }
+
+DIV#calendarHeader DIV.dayLabels
+{ bottom: 4em;
+  height: 3em; }
+
+DIV#calendarHeader DIV.dayLabels DIV.day
+{ text-align: center;
+  font-weight: bold;
+  color: #77a;
+  background: #e7efef; }
+
+DIV#calendarHeader SPAN.dayOfWeek
+{ font-size: medium; }
+
+DIV#calendarHeader DIV.dayLabels
+{ cursor: default; }
+
+DIV#calendarHeader DIV.days
+{ cursor: pointer;
+  bottom: 0px;
+  height: 4em; }
+
+DIV#calendarHeader DIV.day
+{ height: 100%;
+  margin: 0px;
+  padding: 0px;
+  margin-right: 1px; }
+
+/* DIV#daysView
 /*   background-position: top center;
   background-repeat: no-repeat;
   background-image: url("/SOGo.woa/WebServerResources/background.jpg");
- */}
+ } */
 
 .menu LI.currentMonth,
 .menu LI.currentYear
-{
-  border-top: 1px solid #aaa;
+{ border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   background: #ccc;
-  color: #222;
-}
+  color: #222; }
 
-DIV.appointmentView
+DIV.eventView
 { display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -442,18 +474,13 @@ DIV.appointmentView
 
 /* new draggable presentation */
 
-DIV.daysView
-{ position: relative;
-  margin: 1em;
-  height: 100em;
-  border-bottom: 1px solid #397d94; }
-
-DIV.daysView DIV.days
+DIV#daysView DIV.days
 { position: absolute;
   top: 0px;
+  border: 0px;
   bottom: 0px;
   left: 5em;
-  right: 0px; }
+  right: 3px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #397d94; }
@@ -461,7 +488,7 @@ DIV.multicolumnDayView DIV.lastDayUser
 DIV.monthView
 { position: absolute;
   left: .5em;
-  top: .5em;
+  top: 4em;
   right: 1em;
   bottom: 1em;
   border: 0px;
@@ -478,6 +505,7 @@ DIV.monthView > DIV.days > DIV
 
 DIV.monthView > DIV.headerDay
 { text-align: center;
+  cursor: default;
   padding-top: .5em;
   border-left: 2px solid #397d94 !important;
   border-top: 2px solid #397d94 !important;
@@ -487,26 +515,27 @@ DIV.monthView > DIV.headerDay
   font-weight: bold;
   background: #e7efef; }
 
-DIV.monthView DIV.dayOfToday
-{ border: 0px solid #397d94;
-  background-color: #deebf7; }
+DIV.dayOfToday
+{ background-color: #deebf7; }
 
-DIV.monthView DIV.weekEndDay
+DIV.weekEndDay
 { background-color: #fffbe7; }
 
-DIV.monthView DIV.dayOfAnotherMonth
+DIV.dayOfAnotherMonth
 { background-color: #e7efef; }
 
-DIV.monthView DIV.selectedDay
+DIV.selectedDay
 { background-color: #ffe79c; }
 
 DIV.monthView DIV.dayHeader
 { margin-left: 1em;
+  cursor: pointer;
   color: #397d94;
   font-weight: bold; }
 
 DIV.monthView DIV.days
 { top: 2em;
+  cursor: pointer;
   bottom: 0px;
   left: 0px;
   right: 0px; }
@@ -583,36 +612,35 @@ DIV.monthView DIV.week5
 DIV.monthView DIV.week6
 { top: 90%; }
 
-DIV.daysView DIV.day
+DIV#calendarHeader DIV.day,
+DIV#daysView DIV.day
 { position: absolute;
   border-left: 1px solid #397d94;
-  left: 0px;
-  top: 0px;
-  bottom: 0px; }
+  margin: 0px;
+  padding: 0px;
+  top: 0px; }
 
-DIV.daysView > DIV.days > DIV.day > DIV.header
-{ height: 3.5em;
+DIV#calendarHeader DIV.day1
+{ border-left: 0px; }
+
+/* DIV#daysView > DIV.days > DIV.day > DIV.header
+{ position: fixed;
+  top: ;
+  height: 3.5em;
   padding-top: .5em;
   border: 0px;
   border-top: 1px solid #397d94;
   font-weight: bold;
   text-align: center;
   background: #e7efef;
-  color: #397d94; }
-
-DIV.daysView > DIV.days > DIV.dayOfToday
-{ background-color: #deebf7; }
-
-DIV.daysView > DIV.days > DIV.weekEndDay
-{ background-color: #fffbe7; }
-
-DIV.daysView > DIV.days > DIV.selectedDay
-{ background-color: #ffe79c; }
+  color: #397d94; } */
 
 DIV.daysViewFor1Days DIV.day
-{ width: 100%;
-  border-right: 1px solid #397d94;
-  left: 0px; }
+{ border-right: 1px solid #397d94;
+  width: 100%; }
+
+/* DIV#daysView DIV.day
+{ margin-right: 3px; } */
 
 DIV.monthView DIV.headerDay,
 DIV.monthView DIV.day,
@@ -651,158 +679,160 @@ DIV.daysViewFor7Days DIV.day0
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
 
-DIV.daysView > DIV.hours
+DIV#daysView > DIV.hours
 { position: absolute;
   border: 0px;
   left: 0px;
-  top: 4em;
+  top: 0px;
   width: 4.5em;
   height: 95.5em;
   font-weight: bold;
-  color: #77a;
   margin: 0px;
   padding-top: .5em;
   padding-right: .5em;
   border-left: 1px solid #397d94;
+  color: #77a;
   background: #e7efef;
   text-align: right; }
 
-DIV.daysView > DIV.hours > DIV.hour
+DIV#daysView > DIV.hours > DIV.hour
 { height: 4em; }
 
-DIV.daysView > DIV.hourLines > DIV.hourLine
+DIV#daysView > DIV.hourLines > DIV.hourLine
 { position: absolute;
   z-index: 1;
   height: 1px;
   left: 0px;
   right: 0px;
-  border-top: 1px solid #397d94; }
+  padding-left: 1em;
+  margin-right: 2px;
+  border-bottom: 1px solid #397d94; }
 
 DIV.clickableHourCell
-{ width: 100%;
+{ cursor: pointer;
+  width: 100%;
   height: 4em; }
 
 DIV.clickableHourCell0
 { top: 0px; }
 
 DIV.clickableHourCell1,
-DIV.daysView > DIV.hourLines > DIV.hourLine0
+DIV#daysView > DIV.hourLines > DIV.hourLine0
 { top: 4em; }
 
 DIV.clickableHourCell2,
-DIV.daysView > DIV.hourLines > DIV.hourLine1
+DIV#daysView > DIV.hourLines > DIV.hourLine1
 { top: 8em; }
 
 DIV.clickableHourCell3,
-DIV.daysView > DIV.hourLines > DIV.hourLine2
+DIV#daysView > DIV.hourLines > DIV.hourLine2
 { top: 12em; }
 
-DIV.clickableHourCell3,
-DIV.daysView > DIV.hourLines > DIV.hourLine3
+DIV.clickableHourCell4,
+DIV#daysView > DIV.hourLines > DIV.hourLine3
 { top: 16em; }
 
 DIV.clickableHourCell5,
-DIV.daysView > DIV.hourLines > DIV.hourLine4
+DIV#daysView > DIV.hourLines > DIV.hourLine4
 { top: 20em; }
 
-DIV.clickableHourCell4,
-DIV.daysView > DIV.hourLines > DIV.hourLine5
+DIV.clickableHourCell6,
+DIV#daysView > DIV.hourLines > DIV.hourLine5
 { top: 24em; }
 
-DIV.clickableHourCell5,
-DIV.daysView > DIV.hourLines > DIV.hourLine6
+DIV.clickableHourCell7,
+DIV#daysView > DIV.hourLines > DIV.hourLine6
 { top: 28em; }
 
-DIV.clickableHourCell6,
-DIV.daysView > DIV.hourLines > DIV.hourLine7
+DIV.clickableHourCell8,
+DIV#daysView > DIV.hourLines > DIV.hourLine7
 { top: 32em; }
 
-DIV.clickableHourCell7,
-DIV.daysView > DIV.hourLines > DIV.hourLine8
+DIV.clickableHourCell9,
+DIV#daysView > DIV.hourLines > DIV.hourLine8
 { top: 36em; }
 
-DIV.clickableHourCell8,
-DIV.daysView > DIV.hourLines > DIV.hourLine9
+DIV.clickableHourCell10,
+DIV#daysView > DIV.hourLines > DIV.hourLine9
 { top: 40em; }
 
-DIV.clickableHourCell9,
-DIV.daysView > DIV.hourLines > DIV.hourLine10
+DIV.clickableHourCell11,
+DIV#daysView > DIV.hourLines > DIV.hourLine10
 { top: 44em; }
 
-DIV.clickableHourCell10,
-DIV.daysView > DIV.hourLines > DIV.hourLine11
+DIV.clickableHourCell12,
+DIV#daysView > DIV.hourLines > DIV.hourLine11
 { top: 48em; }
 
-DIV.clickableHourCell11,
-DIV.daysView > DIV.hourLines > DIV.hourLine12
+DIV.clickableHourCell13,
+DIV#daysView > DIV.hourLines > DIV.hourLine12
 { top: 52em; }
 
-DIV.clickableHourCell12,
-DIV.daysView > DIV.hourLines > DIV.hourLine13
+DIV.clickableHourCell14,
+DIV#daysView > DIV.hourLines > DIV.hourLine13
 { top: 56em; }
 
-DIV.clickableHourCell13,
-DIV.daysView > DIV.hourLines > DIV.hourLine14
+DIV.clickableHourCell15,
+DIV#daysView > DIV.hourLines > DIV.hourLine14
 { top: 60em; }
 
-DIV.clickableHourCell14,
-DIV.daysView > DIV.hourLines > DIV.hourLine15
+DIV.clickableHourCell16,
+DIV#daysView > DIV.hourLines > DIV.hourLine15
 { top: 64em; }
 
-DIV.clickableHourCell15,
-DIV.daysView > DIV.hourLines > DIV.hourLine16
+DIV.clickableHourCell17,
+DIV#daysView > DIV.hourLines > DIV.hourLine16
 { top: 68em; }
 
-DIV.clickableHourCell16,
-DIV.daysView > DIV.hourLines > DIV.hourLine17
+DIV.clickableHourCell18,
+DIV#daysView > DIV.hourLines > DIV.hourLine17
 { top: 72em; }
 
-DIV.clickableHourCell17,
-DIV.daysView > DIV.hourLines > DIV.hourLine18
+DIV.clickableHourCell19,
+DIV#daysView > DIV.hourLines > DIV.hourLine18
 { top: 76em; }
 
-DIV.clickableHourCell18,
-DIV.daysView > DIV.hourLines > DIV.hourLine19
+DIV.clickableHourCell20,
+DIV#daysView > DIV.hourLines > DIV.hourLine19
 { top: 80em; }
 
-DIV.clickableHourCell19,
-DIV.daysView > DIV.hourLines > DIV.hourLine20
+DIV.clickableHourCell21,
+DIV#daysView > DIV.hourLines > DIV.hourLine20
 { top: 84em; }
 
-DIV.clickableHourCell20,
-DIV.daysView > DIV.hourLines > DIV.hourLine21
+DIV.clickableHourCell22,
+DIV#daysView > DIV.hourLines > DIV.hourLine21
 { top: 88em; }
 
-DIV.clickableHourCell21,
-DIV.daysView > DIV.hourLines > DIV.hourLine22
+DIV.clickableHourCell23,
+DIV#daysView > DIV.hourLines > DIV.hourLine22
 { top: 92em; }
 
-DIV.clickableHourCell22,
-DIV.daysView > DIV.hourLines > DIV.hourLine23
+DIV#daysView > DIV.hourLines > DIV.hourLine23
 { top: 96em; }
 
-DIV.daysView DIV.appointments
+DIV#daysView DIV.events
 { position: absolute;
   z-index: 2;
-  border-top: 1px solid #397d94;
+  border: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
-  top: 4em; }
+  top: 0px; }
 
-DIV.appointments > DIV.appointment
+DIV.events > DIV.event
 { cursor: default;
   position: absolute;
   left: 0px;
   right: 1px;
   padding: 1px; }
 
-DIV[class~="appointment"]._selected > DIV.appointmentInside
+DIV[class~="event"]._selected > DIV.eventInside
 { -moz-opacity: 0.7;
   opacity: 0.7;
   filter: alpha(opacity=70); }
 
-DIV.appointment > DIV.appointmentInside
+DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
   top: 1px;
@@ -846,7 +876,7 @@ DIV.shadow4
   right: 3px;
   top: 3px;
   bottom: 4px;
-  moz-opacity: 0.4;
+  -moz-opacity: 0.4;
   opacity: 0.4;
   filter: alpha(opacity=40); }
 
@@ -862,7 +892,7 @@ DIV.gradient > IMG
 { height: 100%;
   width: 100%; }
 
-DIV.monthView DIV.appointment
+DIV.monthView DIV.event
 { position: relative;
   cursor: default;
   white-space: nowrap;
@@ -871,587 +901,587 @@ DIV.monthView DIV.appointment
   padding: 1px;
   height: 2em; }
 
-DIV.appointment DIV.text
+DIV.event DIV.text
 { font-size: 92%; }
 
-DIV.daysView DIV[class~="appointment"].starts0
+DIV#daysView DIV[class~="event"].starts0
 { top: 0.000000%; }
 
-DIV.daysView DIV[class~="appointment"].starts1
+DIV#daysView DIV[class~="event"].starts1
 { top: 1.041667%; }
 
-DIV.daysView DIV[class~="appointment"].starts2
+DIV#daysView DIV[class~="event"].starts2
 { top: 2.083333%; }
 
-DIV.daysView DIV[class~="appointment"].starts3
+DIV#daysView DIV[class~="event"].starts3
 { top: 3.125000%; }
 
-DIV.daysView DIV[class~="appointment"].starts4
+DIV#daysView DIV[class~="event"].starts4
 { top: 4.166667%; }
 
-DIV.daysView DIV[class~="appointment"].starts5
+DIV#daysView DIV[class~="event"].starts5
 { top: 5.208333%; }
 
-DIV.daysView DIV[class~="appointment"].starts6
+DIV#daysView DIV[class~="event"].starts6
 { top: 6.250000%; }
 
-DIV.daysView DIV[class~="appointment"].starts7
+DIV#daysView DIV[class~="event"].starts7
 { top: 7.291667%; }
 
-DIV.daysView DIV[class~="appointment"].starts8
+DIV#daysView DIV[class~="event"].starts8
 { top: 8.333333%; }
 
-DIV.daysView DIV[class~="appointment"].starts9
+DIV#daysView DIV[class~="event"].starts9
 { top: 9.375000%; }
 
-DIV.daysView DIV[class~="appointment"].starts10
+DIV#daysView DIV[class~="event"].starts10
 { top: 10.416667%; }
 
-DIV.daysView DIV[class~="appointment"].starts11
+DIV#daysView DIV[class~="event"].starts11
 { top: 11.458333%; }
 
-DIV.daysView DIV[class~="appointment"].starts12
+DIV#daysView DIV[class~="event"].starts12
 { top: 12.500000%; }
 
-DIV.daysView DIV[class~="appointment"].starts13
+DIV#daysView DIV[class~="event"].starts13
 { top: 13.541667%; }
 
-DIV.daysView DIV[class~="appointment"].starts14
+DIV#daysView DIV[class~="event"].starts14
 { top: 14.583333%; }
 
-DIV.daysView DIV[class~="appointment"].starts15
+DIV#daysView DIV[class~="event"].starts15
 { top: 15.625000%; }
 
-DIV.daysView DIV[class~="appointment"].starts16
+DIV#daysView DIV[class~="event"].starts16
 { top: 16.666667%; }
 
-DIV.daysView DIV[class~="appointment"].starts17
+DIV#daysView DIV[class~="event"].starts17
 { top: 17.708333%; }
 
-DIV.daysView DIV[class~="appointment"].starts18
+DIV#daysView DIV[class~="event"].starts18
 { top: 18.750000%; }
 
-DIV.daysView DIV[class~="appointment"].starts19
+DIV#daysView DIV[class~="event"].starts19
 { top: 19.791667%; }
 
-DIV.daysView DIV[class~="appointment"].starts20
+DIV#daysView DIV[class~="event"].starts20
 { top: 20.833333%; }
 
-DIV.daysView DIV[class~="appointment"].starts21
+DIV#daysView DIV[class~="event"].starts21
 { top: 21.875000%; }
 
-DIV.daysView DIV[class~="appointment"].starts22
+DIV#daysView DIV[class~="event"].starts22
 { top: 22.916667%; }
 
-DIV.daysView DIV[class~="appointment"].starts23
+DIV#daysView DIV[class~="event"].starts23
 { top: 23.958333%; }
 
-DIV.daysView DIV[class~="appointment"].starts24
+DIV#daysView DIV[class~="event"].starts24
 { top: 25.000000%; }
 
-DIV.daysView DIV[class~="appointment"].starts25
+DIV#daysView DIV[class~="event"].starts25
 { top: 26.041667%; }
 
-DIV.daysView DIV[class~="appointment"].starts26
+DIV#daysView DIV[class~="event"].starts26
 { top: 27.083333%; }
 
-DIV.daysView DIV[class~="appointment"].starts27
+DIV#daysView DIV[class~="event"].starts27
 { top: 28.125000%; }
 
-DIV.daysView DIV[class~="appointment"].starts28
+DIV#daysView DIV[class~="event"].starts28
 { top: 29.166667%; }
 
-DIV.daysView DIV[class~="appointment"].starts29
+DIV#daysView DIV[class~="event"].starts29
 { top: 30.208333%; }
 
-DIV.daysView DIV[class~="appointment"].starts30
+DIV#daysView DIV[class~="event"].starts30
 { top: 31.250000%; }
 
-DIV.daysView DIV[class~="appointment"].starts31
+DIV#daysView DIV[class~="event"].starts31
 { top: 32.291667%; }
 
-DIV.daysView DIV[class~="appointment"].starts32
+DIV#daysView DIV[class~="event"].starts32
 { top: 33.333333%; }
 
-DIV.daysView DIV[class~="appointment"].starts33
+DIV#daysView DIV[class~="event"].starts33
 { top: 34.375000%; }
 
-DIV.daysView DIV[class~="appointment"].starts34
+DIV#daysView DIV[class~="event"].starts34
 { top: 35.416667%; }
 
-DIV.daysView DIV[class~="appointment"].starts35
+DIV#daysView DIV[class~="event"].starts35
 { top: 36.458333%; }
 
-DIV.daysView DIV[class~="appointment"].starts36
+DIV#daysView DIV[class~="event"].starts36
 { top: 37.500000%; }
 
-DIV.daysView DIV[class~="appointment"].starts37
+DIV#daysView DIV[class~="event"].starts37
 { top: 38.541667%; }
 
-DIV.daysView DIV[class~="appointment"].starts38
+DIV#daysView DIV[class~="event"].starts38
 { top: 39.583333%; }
 
-DIV.daysView DIV[class~="appointment"].starts39
+DIV#daysView DIV[class~="event"].starts39
 { top: 40.625000%; }
 
-DIV.daysView DIV[class~="appointment"].starts40
+DIV#daysView DIV[class~="event"].starts40
 { top: 41.666667%; }
 
-DIV.daysView DIV[class~="appointment"].starts41
+DIV#daysView DIV[class~="event"].starts41
 { top: 42.708333%; }
 
-DIV.daysView DIV[class~="appointment"].starts42
+DIV#daysView DIV[class~="event"].starts42
 { top: 43.750000%; }
 
-DIV.daysView DIV[class~="appointment"].starts43
+DIV#daysView DIV[class~="event"].starts43
 { top: 44.791667%; }
 
-DIV.daysView DIV[class~="appointment"].starts44
+DIV#daysView DIV[class~="event"].starts44
 { top: 45.833333%; }
 
-DIV.daysView DIV[class~="appointment"].starts45
+DIV#daysView DIV[class~="event"].starts45
 { top: 46.875000%; }
 
-DIV.daysView DIV[class~="appointment"].starts46
+DIV#daysView DIV[class~="event"].starts46
 { top: 47.916667%; }
 
-DIV.daysView DIV[class~="appointment"].starts47
+DIV#daysView DIV[class~="event"].starts47
 { top: 48.958333%; }
 
-DIV.daysView DIV[class~="appointment"].starts48
+DIV#daysView DIV[class~="event"].starts48
 { top: 50.000000%; }
 
-DIV.daysView DIV[class~="appointment"].starts49
+DIV#daysView DIV[class~="event"].starts49
 { top: 51.041667%; }
 
-DIV.daysView DIV[class~="appointment"].starts50
+DIV#daysView DIV[class~="event"].starts50
 { top: 52.083333%; }
 
-DIV.daysView DIV[class~="appointment"].starts51
+DIV#daysView DIV[class~="event"].starts51
 { top: 53.125000%; }
 
-DIV.daysView DIV[class~="appointment"].starts52
+DIV#daysView DIV[class~="event"].starts52
 { top: 54.166667%; }
 
-DIV.daysView DIV[class~="appointment"].starts53
+DIV#daysView DIV[class~="event"].starts53
 { top: 55.208333%; }
 
-DIV.daysView DIV[class~="appointment"].starts54
+DIV#daysView DIV[class~="event"].starts54
 { top: 56.250000%; }
 
-DIV.daysView DIV[class~="appointment"].starts55
+DIV#daysView DIV[class~="event"].starts55
 { top: 57.291667%; }
 
-DIV.daysView DIV[class~="appointment"].starts56
+DIV#daysView DIV[class~="event"].starts56
 { top: 58.333333%; }
 
-DIV.daysView DIV[class~="appointment"].starts57
+DIV#daysView DIV[class~="event"].starts57
 { top: 59.375000%; }
 
-DIV.daysView DIV[class~="appointment"].starts58
+DIV#daysView DIV[class~="event"].starts58
 { top: 60.416667%; }
 
-DIV.daysView DIV[class~="appointment"].starts59
+DIV#daysView DIV[class~="event"].starts59
 { top: 61.458333%; }
 
-DIV.daysView DIV[class~="appointment"].starts60
+DIV#daysView DIV[class~="event"].starts60
 { top: 62.500000%; }
 
-DIV.daysView DIV[class~="appointment"].starts61
+DIV#daysView DIV[class~="event"].starts61
 { top: 63.541667%; }
 
-DIV.daysView DIV[class~="appointment"].starts62
+DIV#daysView DIV[class~="event"].starts62
 { top: 64.583333%; }
 
-DIV.daysView DIV[class~="appointment"].starts63
+DIV#daysView DIV[class~="event"].starts63
 { top: 65.625000%; }
 
-DIV.daysView DIV[class~="appointment"].starts64
+DIV#daysView DIV[class~="event"].starts64
 { top: 66.666667%; }
 
-DIV.daysView DIV[class~="appointment"].starts65
+DIV#daysView DIV[class~="event"].starts65
 { top: 67.708333%; }
 
-DIV.daysView DIV[class~="appointment"].starts66
+DIV#daysView DIV[class~="event"].starts66
 { top: 68.750000%; }
 
-DIV.daysView DIV[class~="appointment"].starts67
+DIV#daysView DIV[class~="event"].starts67
 { top: 69.791667%; }
 
-DIV.daysView DIV[class~="appointment"].starts68
+DIV#daysView DIV[class~="event"].starts68
 { top: 70.833333%; }
 
-DIV.daysView DIV[class~="appointment"].starts69
+DIV#daysView DIV[class~="event"].starts69
 { top: 71.875000%; }
 
-DIV.daysView DIV[class~="appointment"].starts70
+DIV#daysView DIV[class~="event"].starts70
 { top: 72.916667%; }
 
-DIV.daysView DIV[class~="appointment"].starts71
+DIV#daysView DIV[class~="event"].starts71
 { top: 73.958333%; }
 
-DIV.daysView DIV[class~="appointment"].starts72
+DIV#daysView DIV[class~="event"].starts72
 { top: 75.000000%; }
 
-DIV.daysView DIV[class~="appointment"].starts73
+DIV#daysView DIV[class~="event"].starts73
 { top: 76.041667%; }
 
-DIV.daysView DIV[class~="appointment"].starts74
+DIV#daysView DIV[class~="event"].starts74
 { top: 77.083333%; }
 
-DIV.daysView DIV[class~="appointment"].starts75
+DIV#daysView DIV[class~="event"].starts75
 { top: 78.125000%; }
 
-DIV.daysView DIV[class~="appointment"].starts76
+DIV#daysView DIV[class~="event"].starts76
 { top: 79.166667%; }
 
-DIV.daysView DIV[class~="appointment"].starts77
+DIV#daysView DIV[class~="event"].starts77
 { top: 80.208333%; }
 
-DIV.daysView DIV[class~="appointment"].starts78
+DIV#daysView DIV[class~="event"].starts78
 { top: 81.250000%; }
 
-DIV.daysView DIV[class~="appointment"].starts79
+DIV#daysView DIV[class~="event"].starts79
 { top: 82.291667%; }
 
-DIV.daysView DIV[class~="appointment"].starts80
+DIV#daysView DIV[class~="event"].starts80
 { top: 83.333333%; }
 
-DIV.daysView DIV[class~="appointment"].starts81
+DIV#daysView DIV[class~="event"].starts81
 { top: 84.375000%; }
 
-DIV.daysView DIV[class~="appointment"].starts82
+DIV#daysView DIV[class~="event"].starts82
 { top: 85.416667%; }
 
-DIV.daysView DIV[class~="appointment"].starts83
+DIV#daysView DIV[class~="event"].starts83
 { top: 86.458333%; }
 
-DIV.daysView DIV[class~="appointment"].starts84
+DIV#daysView DIV[class~="event"].starts84
 { top: 87.500000%; }
 
-DIV.daysView DIV[class~="appointment"].starts85
+DIV#daysView DIV[class~="event"].starts85
 { top: 88.541667%; }
 
-DIV.daysView DIV[class~="appointment"].starts86
+DIV#daysView DIV[class~="event"].starts86
 { top: 89.583333%; }
 
-DIV.daysView DIV[class~="appointment"].starts87
+DIV#daysView DIV[class~="event"].starts87
 { top: 90.625000%; }
 
-DIV.daysView DIV[class~="appointment"].starts88
+DIV#daysView DIV[class~="event"].starts88
 { top: 91.666667%; }
 
-DIV.daysView DIV[class~="appointment"].starts89
+DIV#daysView DIV[class~="event"].starts89
 { top: 92.708333%; }
 
-DIV.daysView DIV[class~="appointment"].starts90
+DIV#daysView DIV[class~="event"].starts90
 { top: 93.750000%; }
 
-DIV.daysView DIV[class~="appointment"].starts91
+DIV#daysView DIV[class~="event"].starts91
 { top: 94.791667%; }
 
-DIV.daysView DIV[class~="appointment"].starts92
+DIV#daysView DIV[class~="event"].starts92
 { top: 95.833333%; }
 
-DIV.daysView DIV[class~="appointment"].starts93
+DIV#daysView DIV[class~="event"].starts93
 { top: 96.875000%; }
 
-DIV.daysView DIV[class~="appointment"].starts94
+DIV#daysView DIV[class~="event"].starts94
 { top: 97.916667%; }
 
-DIV.daysView DIV[class~="appointment"].starts95
+DIV#daysView DIV[class~="event"].starts95
 { top: 98.958333%; }
 
-DIV.daysView DIV[class~="appointment"].starts96
+DIV#daysView DIV[class~="event"].starts96
 { top: 100.000000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts0
+DIV#daysView DIV[class~="event"].lasts0
 { height: 0px; }
 
-DIV.daysView DIV[class~="appointment"].lasts1
+DIV#daysView DIV[class~="event"].lasts1
 { height: 1.041667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts2
+DIV#daysView DIV[class~="event"].lasts2
 { height: 2.083333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts3
+DIV#daysView DIV[class~="event"].lasts3
 { height: 3.125000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts4
+DIV#daysView DIV[class~="event"].lasts4
 { height: 4.166667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts5
+DIV#daysView DIV[class~="event"].lasts5
 { height: 5.208333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts6
+DIV#daysView DIV[class~="event"].lasts6
 { height: 6.250000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts7
+DIV#daysView DIV[class~="event"].lasts7
 { height: 7.291667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts8
+DIV#daysView DIV[class~="event"].lasts8
 { height: 8.333333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts9
+DIV#daysView DIV[class~="event"].lasts9
 { height: 9.375000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts10
+DIV#daysView DIV[class~="event"].lasts10
 { height: 10.416667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts11
+DIV#daysView DIV[class~="event"].lasts11
 { height: 11.458333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts12
+DIV#daysView DIV[class~="event"].lasts12
 { height: 12.500000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts13
+DIV#daysView DIV[class~="event"].lasts13
 { height: 13.541667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts14
+DIV#daysView DIV[class~="event"].lasts14
 { height: 14.583333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts15
+DIV#daysView DIV[class~="event"].lasts15
 { height: 15.625000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts16
+DIV#daysView DIV[class~="event"].lasts16
 { height: 16.666667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts17
+DIV#daysView DIV[class~="event"].lasts17
 { height: 17.708333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts18
+DIV#daysView DIV[class~="event"].lasts18
 { height: 18.750000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts19
+DIV#daysView DIV[class~="event"].lasts19
 { height: 19.791667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts20
+DIV#daysView DIV[class~="event"].lasts20
 { height: 20.833333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts21
+DIV#daysView DIV[class~="event"].lasts21
 { height: 21.875000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts22
+DIV#daysView DIV[class~="event"].lasts22
 { height: 22.916667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts23
+DIV#daysView DIV[class~="event"].lasts23
 { height: 23.958333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts24
+DIV#daysView DIV[class~="event"].lasts24
 { height: 25.000000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts25
+DIV#daysView DIV[class~="event"].lasts25
 { height: 26.041667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts26
+DIV#daysView DIV[class~="event"].lasts26
 { height: 27.083333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts27
+DIV#daysView DIV[class~="event"].lasts27
 { height: 28.125000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts28
+DIV#daysView DIV[class~="event"].lasts28
 { height: 29.166667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts29
+DIV#daysView DIV[class~="event"].lasts29
 { height: 30.208333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts30
+DIV#daysView DIV[class~="event"].lasts30
 { height: 31.250000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts31
+DIV#daysView DIV[class~="event"].lasts31
 { height: 32.291667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts32
+DIV#daysView DIV[class~="event"].lasts32
 { height: 33.333333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts33
+DIV#daysView DIV[class~="event"].lasts33
 { height: 34.375000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts34
+DIV#daysView DIV[class~="event"].lasts34
 { height: 35.416667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts35
+DIV#daysView DIV[class~="event"].lasts35
 { height: 36.458333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts36
+DIV#daysView DIV[class~="event"].lasts36
 { height: 37.500000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts37
+DIV#daysView DIV[class~="event"].lasts37
 { height: 38.541667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts38
+DIV#daysView DIV[class~="event"].lasts38
 { height: 39.583333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts39
+DIV#daysView DIV[class~="event"].lasts39
 { height: 40.625000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts40
+DIV#daysView DIV[class~="event"].lasts40
 { height: 41.666667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts41
+DIV#daysView DIV[class~="event"].lasts41
 { height: 42.708333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts42
+DIV#daysView DIV[class~="event"].lasts42
 { height: 43.750000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts43
+DIV#daysView DIV[class~="event"].lasts43
 { height: 44.791667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts44
+DIV#daysView DIV[class~="event"].lasts44
 { height: 45.833333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts45
+DIV#daysView DIV[class~="event"].lasts45
 { height: 46.875000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts46
+DIV#daysView DIV[class~="event"].lasts46
 { height: 47.916667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts47
+DIV#daysView DIV[class~="event"].lasts47
 { height: 48.958333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts48
+DIV#daysView DIV[class~="event"].lasts48
 { height: 50.000000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts49
+DIV#daysView DIV[class~="event"].lasts49
 { height: 51.041667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts50
+DIV#daysView DIV[class~="event"].lasts50
 { height: 52.083333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts51
+DIV#daysView DIV[class~="event"].lasts51
 { height: 53.125000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts52
+DIV#daysView DIV[class~="event"].lasts52
 { height: 54.166667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts53
+DIV#daysView DIV[class~="event"].lasts53
 { height: 55.208333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts54
+DIV#daysView DIV[class~="event"].lasts54
 { height: 56.250000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts55
+DIV#daysView DIV[class~="event"].lasts55
 { height: 57.291667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts56
+DIV#daysView DIV[class~="event"].lasts56
 { height: 58.333333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts57
+DIV#daysView DIV[class~="event"].lasts57
 { height: 59.375000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts58
+DIV#daysView DIV[class~="event"].lasts58
 { height: 60.416667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts59
+DIV#daysView DIV[class~="event"].lasts59
 { height: 61.458333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts60
+DIV#daysView DIV[class~="event"].lasts60
 { height: 62.500000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts61
+DIV#daysView DIV[class~="event"].lasts61
 { height: 63.541667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts62
+DIV#daysView DIV[class~="event"].lasts62
 { height: 64.583333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts63
+DIV#daysView DIV[class~="event"].lasts63
 { height: 65.625000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts64
+DIV#daysView DIV[class~="event"].lasts64
 { height: 66.666667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts65
+DIV#daysView DIV[class~="event"].lasts65
 { height: 67.708333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts66
+DIV#daysView DIV[class~="event"].lasts66
 { height: 68.750000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts67
+DIV#daysView DIV[class~="event"].lasts67
 { height: 69.791667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts68
+DIV#daysView DIV[class~="event"].lasts68
 { height: 70.833333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts69
+DIV#daysView DIV[class~="event"].lasts69
 { height: 71.875000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts70
+DIV#daysView DIV[class~="event"].lasts70
 { height: 72.916667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts71
+DIV#daysView DIV[class~="event"].lasts71
 { height: 73.958333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts72
+DIV#daysView DIV[class~="event"].lasts72
 { height: 75.000000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts73
+DIV#daysView DIV[class~="event"].lasts73
 { height: 76.041667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts74
+DIV#daysView DIV[class~="event"].lasts74
 { height: 77.083333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts75
+DIV#daysView DIV[class~="event"].lasts75
 { height: 78.125000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts76
+DIV#daysView DIV[class~="event"].lasts76
 { height: 79.166667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts77
+DIV#daysView DIV[class~="event"].lasts77
 { height: 80.208333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts78
+DIV#daysView DIV[class~="event"].lasts78
 { height: 81.250000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts79
+DIV#daysView DIV[class~="event"].lasts79
 { height: 82.291667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts80
+DIV#daysView DIV[class~="event"].lasts80
 { height: 83.333333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts81
+DIV#daysView DIV[class~="event"].lasts81
 { height: 84.375000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts82
+DIV#daysView DIV[class~="event"].lasts82
 { height: 85.416667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts83
+DIV#daysView DIV[class~="event"].lasts83
 { height: 86.458333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts84
+DIV#daysView DIV[class~="event"].lasts84
 { height: 87.500000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts85
+DIV#daysView DIV[class~="event"].lasts85
 { height: 88.541667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts86
+DIV#daysView DIV[class~="event"].lasts86
 { height: 89.583333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts87
+DIV#daysView DIV[class~="event"].lasts87
 { height: 90.625000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts88
+DIV#daysView DIV[class~="event"].lasts88
 { height: 91.666667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts89
+DIV#daysView DIV[class~="event"].lasts89
 { height: 92.708333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts90
+DIV#daysView DIV[class~="event"].lasts90
 { height: 93.750000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts91
+DIV#daysView DIV[class~="event"].lasts91
 { height: 94.791667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts92
+DIV#daysView DIV[class~="event"].lasts92
 { height: 95.833333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts93
+DIV#daysView DIV[class~="event"].lasts93
 { height: 96.875000%; }
 
-DIV.daysView DIV[class~="appointment"].lasts94
+DIV#daysView DIV[class~="event"].lasts94
 { height: 97.916667%; }
 
-DIV.daysView DIV[class~="appointment"].lasts95
+DIV#daysView DIV[class~="event"].lasts95
 { height: 98.958333%; }
 
-DIV.daysView DIV[class~="appointment"].lasts96
+DIV#daysView DIV[class~="event"].lasts96
 { height: 100.000000%; }
