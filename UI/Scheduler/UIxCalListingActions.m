@@ -38,27 +38,33 @@
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
+#import "../SOGoUI/SOGoDateFormatter.h"
+
 #import "UIxCalListingActions.h"
 
 @implementation UIxCalListingActions
 
 - (id) init
 {
+  NSDictionary *locale;
+
   if ((self = [super init]))
     {
       componentsData = [NSMutableDictionary new];
       startDate = nil;
       endDate = nil;
       request = nil;
-//       knowsToShow = NO;
-//       showCompleted = NO;
-    }
+      locale = [[self context] valueForKey: @"locale"];
+      dateFormatter = [[SOGoDateFormatter alloc] initWithLocale: locale];
+      [dateFormatter setFullWeekdayNameAndDetails];
+  }
 
   return self;
 }
 
 - (void) dealloc
 {
+  [dateFormatter release];
   [componentsData release];
   [startDate release];
   [endDate release];
@@ -159,7 +165,7 @@
       else
 	startDate = nil;
       
-      param = [request formValueForKey: @"sd"];
+      param = [request formValueForKey: @"ed"];
       if ([param length] > 0)
 	endDate = [[NSCalendarDate dateFromShortDateString: param
 				   andShortTimeString: nil
@@ -292,16 +298,42 @@
 
 - (WOResponse *) eventsListAction
 {
-  NSArray *fields;
-  NSArray *events;
+  NSArray *fields, *oldEvent;
+  NSEnumerator *events;
+  NSString *date;
+  NSMutableArray *newEvents, *newEvent;
+  unsigned int interval;
 
   [self _setupContext];
 
+  newEvents = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", @"owner", @"status",
-		    @"title", @"startdate", @"enddate", @"location", nil];
-  events = [self _fetchFields: fields forComponentOfType: @"vevent"];
+		    @"title", @"startdate", @"enddate", @"location",
+		    @"isallday", nil];
+  events = [[self _fetchFields: fields
+		  forComponentOfType: @"vevent"] objectEnumerator];
+  oldEvent = [events nextObject];
+  while (oldEvent)
+    {
+      newEvent = [NSMutableArray arrayWithArray: oldEvent];
+      interval = [[oldEvent objectAtIndex: 4] intValue];
+      date
+	= [dateFormatter stringForObjectValue:
+			   [NSCalendarDate dateWithTimeIntervalSince1970: interval]];
+      [newEvent addObject: date];
+      interval = [[oldEvent objectAtIndex: 5] intValue];
+      if ([[oldEvent objectAtIndex: 7] boolValue])
+	interval -= 86400;
+      date
+	= [dateFormatter stringForObjectValue:
+			   [NSCalendarDate dateWithTimeIntervalSince1970: interval]];
+      [newEvent addObject: date];
+      [newEvents addObject: newEvent];
 
-  return [self _responseWithData: events];
+      oldEvent = [events nextObject];
+    }
+
+  return [self _responseWithData: newEvents];
 }
 
 - (NSString *) _getStatusClassForStatusCode: (int) statusCode

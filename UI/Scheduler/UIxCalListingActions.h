@@ -31,6 +31,8 @@
 @class NSString;
 @class NSTimeZone;
 
+@class SOGoDateFormatter;
+
 @class WOResponse;
 @class WORequest;
 
@@ -41,6 +43,7 @@
   NSCalendarDate *endDate;
   NSString *userLogin;
   WORequest *request;
+  SOGoDateFormatter *dateFormatter;
 }
 
 - (WOResponse *) eventsListAction;
