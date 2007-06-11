@@ -214,7 +214,6 @@ DIV#toolbar
   border-bottom: 1px solid #848284;
   margin: 0px;
   padding: 0px;
-  background-color: #d4d0c8;
   white-space: nowrap;
   overflow: auto; }
 
@@ -670,6 +669,9 @@ DIV.tabsContainer > DIV.tab
   right: .5em;
   bottom: .5em;
   display: none; }
+
+DIV.tabsContainer DIV.active
+{ display: block; }
 
 DIV.tabsContainer > DIV[class~="active"].tab
 { display: block !important; }
