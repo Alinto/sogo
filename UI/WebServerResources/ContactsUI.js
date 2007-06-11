@@ -433,15 +433,15 @@ function onAddressBookNew(event) {
     document.newAbAjaxRequest
        = triggerAjaxRequest(url, newAbCallback, name);
   }
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function appendAddressBook(name, folder) {
    var li = document.createElement("li");
+   $("contactFolders").appendChild(li);
    li.setAttribute("id", folder);
    li.appendChild(document.createTextNode(name));
    setEventsOnContactFolder(li);
-   $("contactFolders").appendChild(li);
 }
 
 function newAbCallback(http) {
@@ -581,7 +581,7 @@ function configureAbToolbar() {
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
   if (contactFolders) {
-    Event.observe(contactFolders, "selectionchange", onFolderSelectionChange, false);
+    Event.observe(contactFolders, "mousedown", onFolderSelectionChange, false);
     var lis = contactFolders.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++)
       setEventsOnContactFolder(lis[i]);
@@ -597,7 +597,7 @@ function configureContactFolders() {
 function setEventsOnContactFolder(node) {
   Event.observe(node, "mousedown", listRowMouseDownHandler, false);
   Event.observe(node, "click", onRowClick, false);
-  Event.observe(node, "contextmenu", onContactFoldersContextMenu, false);
+  Event.observe(node, "contextmenu", onContactFoldersContextMenu.bindAsEventListener(node), false);
 }
 
 function onMenuSharing(event) {
