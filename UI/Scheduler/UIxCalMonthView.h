@@ -46,8 +46,6 @@
   NSArray *currentTableColumn;
 }
 
-- (id <WOActionResults>) defaultAction;
-
 - (NSDictionary *) monthBeforePrevMonthQueryParameters;
 - (NSDictionary *) prevMonthQueryParameters;
 - (NSDictionary *) nextMonthQueryParameters;

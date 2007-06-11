@@ -41,7 +41,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
-	UIxCalInlineAptView.m		\
 	UIxCalInlineMonthAptView.m	\
 	UIxCalParticipationStatusView.m	\
 	UIxCalMonthOverview.m

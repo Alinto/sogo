@@ -44,20 +44,20 @@
 
 @implementation UIxCalListingActions
 
-- (id) init
+- (id) initWithRequest: (WORequest *) newRequest
 {
   NSDictionary *locale;
 
-  if ((self = [super init]))
+  if ((self = [super initWithRequest: newRequest]))
     {
       componentsData = [NSMutableDictionary new];
       startDate = nil;
       endDate = nil;
-      request = nil;
+      ASSIGN (request, newRequest);
       locale = [[self context] valueForKey: @"locale"];
       dateFormatter = [[SOGoDateFormatter alloc] initWithLocale: locale];
       [dateFormatter setFullWeekdayNameAndDetails];
-  }
+    }
 
   return self;
 }
@@ -65,6 +65,7 @@
 - (void) dealloc
 {
   [dateFormatter release];
+  [request release];
   [componentsData release];
   [startDate release];
   [endDate release];
@@ -151,7 +152,6 @@
   userLogin = [user login];
   userTZ = [user timeZone];
 
-  request = [context request];
   param = [request formValueForKey: @"filterpopup"];
   if ([param length] > 0)
     [self _setupDatesWithPopup: param andUserTZ: userTZ];
