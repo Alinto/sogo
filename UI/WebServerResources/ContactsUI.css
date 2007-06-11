@@ -97,7 +97,7 @@ table.titletable td.titlecell SELECT
   border-bottom: 2px solid #222;
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
   -moz-border-right-colors: #000 #9c9a94 transparent;
-  background: #DCDAD5;
+  background-color: #DCDAD5;
 }
 
 .whitesec_title
@@ -117,9 +117,8 @@ DIV#contactFoldersList
   padding: 0px;
   overflow: hidden; }
 
-DIV#contactFoldersList > DIV.toolbar
+DIV#contactFoldersList DIV.toolbar
 { width: 100%;
-  background: #f00;
   padding: 0px;
   margin: 0px;
   border-top: 1px solid #aaa;
@@ -318,7 +317,9 @@ DIV.contactSelection > DIV.calendar
 { text-align: center; }
 
 DIV.contactSelection INPUT.button
-{ margin-top: .25em; }
+{ font-size: 8pt;
+  margin-top: .25em;
+  padding: 0px; }
 
 DIV.contactSelection SPAN#selectionLabel
 { float: left; }
