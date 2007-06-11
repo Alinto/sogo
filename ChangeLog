@@ -1,5 +1,9 @@
 2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalView.m ([-fetchCoreAppointmentsInfos]):
+	removed method.
+	([-fetchCoreTasksInfos]): removed method.
+
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-init]): initialize an instance of SOGoDateFormatter.
 	([UIxCalListingActions -eventsListAction]): the display start and

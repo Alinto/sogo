@@ -98,8 +98,6 @@
 
 - (NSCalendarDate *) startDate;
 - (NSCalendarDate *) endDate;
-- (NSArray *) fetchCoreAppointmentsInfos;
-- (NSArray *) fetchCoreTasksInfos;
 
 /* date selection */
 
