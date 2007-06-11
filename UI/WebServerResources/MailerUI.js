@@ -418,7 +418,7 @@ function refreshMailbox() {
    return false;
 }
 
-function openMailbox(mailbox, reload) { log("openMailbox");
+function openMailbox(mailbox, reload) {
    if (mailbox != currentMailbox || reload) {
       currentMailbox = mailbox;
       var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
@@ -432,7 +432,7 @@ function openMailbox(mailbox, reload) { log("openMailbox");
 	 if (document.messageAjaxRequest) {
 	    document.messageAjaxRequest.aborted = true;
 	    document.messageAjaxRequest.abort();
-	 } log("messageCallback: " + url);
+	 }
 	 document.messageAjaxRequest
 	    = triggerAjaxRequest(url, messageCallback);
 	 mailboxContent.innerHTML = '';
@@ -447,7 +447,7 @@ function openMailbox(mailbox, reload) { log("openMailbox");
 	 if (currentMessages[mailbox]) {
 	    loadMessage(currentMessages[mailbox]);
 	    url += '&pageforuid=' + currentMessages[mailbox];
-	 } log("messageListCallback: " + url);
+	 }
 	 document.messageListAjaxRequest
 	    = triggerAjaxRequest(url, messageListCallback,
 				 currentMessages[mailbox]);
@@ -943,9 +943,7 @@ function configureMessageListEvents() {
 	 if ($(rows[start].cells[0]).hasClassName("tbtv_headercell"))
 	    start++;
 	 if ($(rows[start].cells[0]).hasClassName("tbtv_navcell")) {
-	    log("start:" + start);
 	    var anchors = $(rows[start].cells[0]).childNodesWithTag("a");
-	    log("nr anchors: " + anchors.length);
 	    for (var i = 0; i < anchors.length; i++)
 	       Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
 	    start++;
