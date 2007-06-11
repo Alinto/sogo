@@ -1,3 +1,11 @@
+2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-isAllDay]): returns YES if the "hm" url parameter is set to
+	"allday".
+	([UIxAppointmentEditor -defaultAction]): if isAllDay, the enddate
+	is displayed one day earlier.
+
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

@@ -69,7 +69,12 @@
 /* icalendar values */
 - (BOOL) isAllDay
 {
-  return isAllDay;
+  NSString *hm;
+
+  hm = [self queryParameterForKey: @"hm"];
+
+  return (isAllDay
+	  || (hm && [hm isEqualToString: @"allday"]));
 }
 
 - (void) setIsAllDay: (BOOL) newIsAllDay
@@ -249,7 +254,11 @@
   if (event)
     {
       startDate = [event startDate];
-      endDate = [event endDate];
+      isAllDay = [event isAllDay];
+      if (isAllDay)
+	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
+      else
+	endDate = [event endDate];
     }
   else
     {
@@ -304,7 +313,7 @@
   iCalString = [[clientObject calendar: NO] versitString];
   [clientObject saveContentString: iCalString];
 
-  return [self jsCloseWithRefreshMethod: @"refreshAppointmentsAndDisplay()"];
+  return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
