@@ -1191,7 +1191,10 @@ function configureSortableTableHeaders() {
   var headers = document.getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
      var header = headers[i];
-     Event.observe(header, "click", onHeaderClick.bindAsEventListener(header));
+     var anchor = $(header).childNodesWithTag("a")[0];
+     if (anchor)
+	Event.observe(anchor, "click",
+		      onHeaderClick.bindAsEventListener(anchor));
   }
 }
 
