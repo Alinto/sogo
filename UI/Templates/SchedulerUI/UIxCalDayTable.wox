@@ -17,7 +17,9 @@
     </div>
     <div class="days"
       ><var:foreach list="daysToDisplay" item="currentTableDay"
-	><div var:class="dayClasses"><!-- space --></div
+	><div var:class="dayClasses"
+	  var:day="currentTableDay.shortDateString"
+	  ><!-- space --></div
 	  ></var:foreach
 	></div>
   </div>
@@ -27,6 +29,36 @@
       <var:foreach list="hoursToDisplay" item="currentTableHour"
 	><div class="hour"><var:string value="currentTableHour" />:00</div
 	  ></var:foreach>
+    </div>
+
+    <div class="days">
+      <var:foreach list="daysToDisplay" item="currentTableDay"
+	><div var:class="dayClasses"
+	  var:day="currentTableDay.shortDateString"
+	  >
+	  <div class="events">
+	    <var:foreach list="hoursToDisplay" item="currentTableHour"
+	      ><div var:class="clickableHourCellClass"
+		var:day="currentTableDay.shortDateString"
+		var:hour="currentAppointmentHour">
+	      </div></var:foreach>
+	    <!--            <var:foreach list="appointmentsForCurrentDay" item="currentAppointment"
+	    ><var:component className="UIxCalInlineAptView"
+	    dayStartHour="dayStartHour"
+	    dayEndHour="dayEndHour"
+	    appointment="currentAppointment"
+	    formatter="aptFormatter"
+	    tooltipFormatter="aptTooltipFormatter"
+	    url="appointmentViewURL"
+	    const:style="dayoverview"
+	    queryDictionary="currentDateQueryParameters"
+	    referenceDate="selectedDate"
+	    canAccess="canAccessApt"
+	    /></var:foreach
+	    > -->
+	  </div>
+	</div>
+      </var:foreach>
     </div>
 
     <div class="hourLines">
@@ -54,36 +86,6 @@
 	><div class="hourLine hourLine21"><!-- space --></div
 	><div class="hourLine hourLine22"><!-- space --></div
 	><div class="hourLine hourLine23"><!-- space --></div>
-    </div>
-
-    <div class="days">
-      <var:foreach list="daysToDisplay" item="currentTableDay"
-	><div var:class="dayClasses"
-	  var:day="currentTableDay.shortDateString"
-	  >
-	  <div class="appointments">
-	    <var:foreach list="hoursToDisplay" item="currentTableHour"
-	      ><div var:class="clickableHourCellClass"
-		var:day="currentTableDay.shortDateString"
-		var:hour="currentAppointmentHour">
-	      </div></var:foreach>
-	    <!--            <var:foreach list="appointmentsForCurrentDay" item="currentAppointment"
-	    ><var:component className="UIxCalInlineAptView"
-	    dayStartHour="dayStartHour"
-	    dayEndHour="dayEndHour"
-	    appointment="currentAppointment"
-	    formatter="aptFormatter"
-	    tooltipFormatter="aptTooltipFormatter"
-	    url="appointmentViewURL"
-	    const:style="dayoverview"
-	    queryDictionary="currentDateQueryParameters"
-	    referenceDate="selectedDate"
-	    canAccess="canAccessApt"
-	    /></var:foreach
-	    > -->
-	  </div>
-	</div>
-      </var:foreach>
     </div>
   </div>
 </container>
