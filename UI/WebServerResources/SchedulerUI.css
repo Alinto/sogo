@@ -1,32 +1,26 @@
 
 DIV#leftPanel
-{ 
-  position: absolute;
+{ position: absolute;
   top: 5.5em;
   left: 0px;
   width: 19.25em;
   bottom: 0px;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 DIV#schedulerTabs
-{
-  position: absolute;
+{ position: absolute;
   top: 0.5em;
   left: .2em;
   right: .2em;
-  height: 14em;
-}
+  height: 14em; }
 
 DIV#tasksListView
-{
-  position: absolute;
+{ position: absolute;
   top: 17em;
   bottom: 0px;
   left: .2em;
   right: .7em;
-  padding: 0px;
-}
+  padding: 0px; }
 
 DIV#tasksListView H2
 { font-size: 10pt;
@@ -67,7 +61,7 @@ UL#tasksList, UL#calendarList
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  background: #fff;
+  background-color: #fff;
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   list-style-type: none;
@@ -106,22 +100,16 @@ UL#tasksList LI.duelater
 { color: #999; }
 
 UL#tasksList LI[class~="_selected"].overdue
-{ 
-  color: #fff !important;
-  background-color: #f00 !important;
-}
+{ color: #fff !important;
+  background-color: #f00 !important; }
 
 UL#tasksList LI[class~="_selected"].duetoday
-{ 
-  color: #fff !important;
-  background-color: #00f !important;
-}
+{ color: #fff !important;
+  background-color: #00f !important; }
 
 UL#tasksList LI[class~="_selected"].duelater
-{ 
-  color: #fff !important;
-  background-color: #999 !important;
-}
+{ color: #fff !important;
+  background-color: #999 !important; }
 
 DIV#rightPanel
 { position: absolute;
@@ -138,7 +126,7 @@ DIV#eventsListView
 { display: block;
   cursor: default;
   position: absolute;
-  background: #fff;
+  background-color: #fff;
   top: 2.5em;
   left: 0px;
   right: 0px;
@@ -148,7 +136,7 @@ DIV#eventsListView
 
 DIV#calendarView
 { position: absolute;
-  background: #fff;
+  background-color: #fff;
   top: 18em;
   margin-top: 5px;
   bottom: 0px;
@@ -183,14 +171,14 @@ DIV#dateSelectorView
 
 #dateSelector
 { margin: 0px auto;
-  background: #fff;
+  background-color: #fff;
   border-top: 1px solid #fff; 
   border-left: 1px solid #fff;
   border-right: 1px solid #aaa;
   border-bottom: 1px solid #aaa; }
 
 #dateSelector > .header
-{ background: #efefef;
+{ background-color: #efefef;
   width: 100%;
   white-space: nowrap;
   vertical-align: middle;
@@ -200,20 +188,14 @@ DIV#dateSelectorView
   border: 0px; }
 
 #dateSelector > .header A
-{
-  width: 1em;
-  padding: .4em .2em;
-}
+{ width: 1em;
+  padding: .4em .2em; }
 
 #dateSelector > .header #leftArrow
-{
-  float: left;
-}
+{ float: left; }
 
 #dateSelector > .header #rightArrow
-{
-  float: right;
-}
+{ float: right; }
 
 #dateSelector > .header SPAN
 { cursor: default;
@@ -265,7 +247,7 @@ TABLE#dateSelectorTable
 { color: #dedfde; }
 
 #dateSelector .dayOfToday
-{ background: #deebf7;
+{ background-color: #deebf7;
   border: 1px solid #deebf7; }
 
 #dateSelector TD SPAN
@@ -280,7 +262,7 @@ TABLE#dateSelectorTable
   text-decoration: none; }
 
 #dateSelector TD:active
-{ background: #ddd;
+{ background-color: #ddd;
   border: 1px solid #deebf7; }
 
 TABLE#eventsList
@@ -296,7 +278,7 @@ TABLE#eventsList td.headerLocation
 UL._unfocused > LI._selected,
 TABLE._unfocused#eventsList TR._selected TD
 { 
-  background: #d4d0c8 !important;;
+  background-color: #d4d0c8 !important;;
   color: #fff !important;;
 }
 
@@ -309,14 +291,14 @@ SPAN.weeksHeader,
 SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
-  background: #d4d0c8;
+  background-color: #d4d0c8;
   overflow: hidden;
   width: 100%;
   margin: 0px;
   height: 3em;
   padding: 2px 1.5em;
-  border: 0px;
-  border-bottom: 1px solid #ccc; }
+/* HERE  border: 0px;
+ */  border-bottom: 1px solid #ccc; }
 
 SPAN.daysHeader SPAN,
 SPAN.weeksHeader SPAN,
@@ -385,7 +367,7 @@ SPAN.day0, SPAN.week0, SPAN.month0
   border-left: 1px solid #828482 !important;
   border-bottom: 1px solid #fff !important;
   border-right: 1px solid #fff !important;
-  background: #ddd; }
+  background-color: #ddd; }
 
 A.leftNavigationArrow
 { position: absolute;
@@ -402,7 +384,6 @@ A.rightNavigationArrow
 DIV#calendarHeader,
 DIV#daysView
 { position: absolute;
-  border: 0px;
   left: 0px;
   right: 0px;
   padding: 0px;
@@ -411,14 +392,15 @@ DIV#daysView
 DIV#daysView
 { top: 11em;
   bottom: 0px;
-  border: 0px;
-  margin: 0px;
   margin-left: 1px;
+  border-left: 1px solid #397d94;
+  border-bottom: 1px solid #397d94;
   border-top: 2px solid #397d94;
   overflow: auto; }
 
 DIV#calendarHeader
 { top: 3.5em;
+  border: 0px;
   height: 7.5em; }
 
 DIV#calendarHeader DIV.dayLabels,
@@ -426,13 +408,14 @@ DIV#calendarHeader DIV.days
 { position: absolute;
   margin: 0px;
   padding: 0px;
-  border: 0px;
-  border-left: 1px solid #397d94;
+/* HERE  border: 0px; */
+  border-right: 1px solid #397d94;
   border-top: 1px solid #397d94;
   left: 5em;
-  margin-left: 0px;
-  margin-right: 18px;
-  right: 0px; }
+  margin-left: 1px;
+  margin-right: 16px;
+  right: 0px;
+  overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
 { bottom: 4em;
@@ -442,7 +425,7 @@ DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
   font-weight: bold;
   color: #77a;
-  background: #e7efef; }
+  background-color: #e7efef; }
 
 DIV#calendarHeader SPAN.dayOfWeek
 { font-size: medium; }
@@ -461,6 +444,10 @@ DIV#calendarHeader DIV.day
   padding: 0px;
   margin-right: 1px; }
 
+DIV#calendarHeader DIV.days DIV.day
+{ overflow: hidden;
+  overflow-y: auto; }
+
 /* DIV#daysView
 /*   background-position: top center;
   background-repeat: no-repeat;
@@ -473,7 +460,7 @@ DIV#calendarHeader DIV.day
   border-left: 1px solid #aaa;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
-  background: #ccc;
+  background-color: #ccc;
   color: #222; }
 
 DIV.eventView
@@ -486,11 +473,11 @@ DIV.eventView
 
 DIV#daysView DIV.days
 { position: absolute;
+  margin: 0px;
+  height: 96em;
   top: 0px;
-  border: 0px;
-  bottom: 0px;
   left: 5em;
-  right: 3px; }
+  right: 2px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
 { border-right: 1px solid #397d94; }
@@ -501,7 +488,7 @@ DIV.monthView
   top: 4em;
   right: 1em;
   bottom: 1em;
-  border: 0px;
+/*  border: 0px; HERE */
   margin: 0px;
   padding: 0px;
   min-width: 20em;
@@ -523,7 +510,7 @@ DIV.monthView > DIV.headerDay
   color: #397d94;
   height: 1.5em;
   font-weight: bold;
-  background: #e7efef; }
+  background-color: #e7efef; }
 
 DIV.dayOfToday
 { background-color: #deebf7; }
@@ -630,8 +617,9 @@ DIV#daysView DIV.day
   padding: 0px;
   top: 0px; }
 
-DIV#calendarHeader DIV.day1
+/* DIV#calendarHeader DIV.day1
 { border-left: 0px; }
+ */
 
 /* DIV#daysView > DIV.days > DIV.day > DIV.header
 { position: fixed;
@@ -642,7 +630,7 @@ DIV#calendarHeader DIV.day1
   border-top: 1px solid #397d94;
   font-weight: bold;
   text-align: center;
-  background: #e7efef;
+  background-color: #e7efef;
   color: #397d94; } */
 
 DIV.daysViewFor1Days DIV.day
@@ -691,7 +679,6 @@ DIV.daysViewFor7Days DIV.day0
 
 DIV#daysView > DIV.hours
 { position: absolute;
-  border: 0px;
   left: 0px;
   top: 0px;
   width: 4.5em;
@@ -700,9 +687,8 @@ DIV#daysView > DIV.hours
   margin: 0px;
   padding-top: .5em;
   padding-right: .5em;
-  border-left: 1px solid #397d94;
   color: #77a;
-  background: #e7efef;
+  background-color: #e7efef;
   text-align: right; }
 
 DIV#daysView > DIV.hours > DIV.hour
@@ -710,7 +696,6 @@ DIV#daysView > DIV.hours > DIV.hour
 
 DIV#daysView > DIV.hourLines > DIV.hourLine
 { position: absolute;
-  z-index: 1;
   height: 1px;
   left: 0px;
   right: 0px;
@@ -822,9 +807,7 @@ DIV#daysView > DIV.hourLines > DIV.hourLine23
 { top: 96em; }
 
 DIV#daysView DIV.events
-{ position: absolute;
-  z-index: 2;
-  border: 0px;
+{ z-index: 2;
   left: 0px;
   right: 0px;
   bottom: 0px;
@@ -832,6 +815,7 @@ DIV#daysView DIV.events
 
 DIV.events > DIV.event
 { cursor: default;
+  z-index: 1;
   position: absolute;
   left: 0px;
   right: 1px;
@@ -902,6 +886,7 @@ DIV.gradient > IMG
 { height: 100%;
   width: 100%; }
 
+DIV#calendarHeader DIV.event,
 DIV.monthView DIV.event
 { position: relative;
   cursor: default;
