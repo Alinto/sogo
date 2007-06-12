@@ -1,3 +1,10 @@
+2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromEvent:_event]): reduce the seconds/70 of
+	the end date of all day events of 1 so that they stay on their
+	real last day.
+
 2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m: no longer retrieve appointments.
