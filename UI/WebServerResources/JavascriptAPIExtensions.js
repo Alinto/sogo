@@ -165,3 +165,19 @@ Date.prototype.laterDate = function(otherDate) {
    return ((this.getTime() < workDate.getTime())
 	   ? otherDate : this);
 }
+
+Date.prototype.beginOfWeek = function() {
+   var beginNumber;
+   if (weekStartIsMonday)
+     beginNumber = 1;
+   else
+     beginNumber = 0;
+
+   var dayNumber = this.getDay();
+
+   var beginOfWeek = new Date();
+   beginOfWeek.setTime(this.getTime());
+   beginOfWeek.addDays(beginNumber - dayNumber);
+
+   return beginOfWeek;
+}

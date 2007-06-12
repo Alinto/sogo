@@ -536,16 +536,26 @@ function onClickableCellsDblClick(event) {
 }
 
 function refreshCalendarEvents() {
-   var sd = currentDay;
-   if (!sd) {
-      var todayDate = new Date();
-      sd = todayDate.getDayString();
-   }
+   var todayDate = new Date();
+   var sd;
    var ed;
-   if (currentView == "dayview")
+   if (currentView == "dayview") {
+      if (currentDay)
+	 sd = currentDay;
+      else
+	 sd = todayDate.getDayString();
       ed = sd;
+   }
    else if (currentView == "weekview") {
-      var endDate = sd.asDate();
+      var startDate;
+      if (currentDay)
+	 startDate = currentDay.asDate();
+      else
+	 startDate = todayDate;
+      startDate = startDate.beginOfWeek();
+      sd = startDate.getDayString();
+      var endDate = new Date();
+      endDate.setTime(startDate.getTime());
       endDate.addDays(6);
       ed = endDate.getDayString();
    }
@@ -637,6 +647,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 else
 	    ends = 96;
 	 lasts = ends - starts;
+	 if (!lasts)
+	    lasts = 1;
 
 	 var parentDiv;
 	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,

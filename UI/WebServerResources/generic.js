@@ -30,6 +30,8 @@ var queryParameters;
 var activeAjaxRequests = 0;
 var menus = new Array();
 
+var weekStartIsMonday = true;
+
 // logArea = null;
 var allDocumentElements = null;
 
