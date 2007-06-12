@@ -120,7 +120,7 @@ function deleteEvent() {
               sortedNodes[owner] = new Array();
               owners.push(owner);
           }
-          sortedNodes[owner].push(nodes[i].getAttribute("id"));
+          sortedNodes[owner].push(nodes[i].cname);
         }
         for (var i = 0; i < owners.length; i++) {
           ownersOfEventsToDelete.push(owners[i]);
@@ -612,7 +612,7 @@ function drawCalendarEvent(eventData, sd, ed) {
    var title = null;
    var startHour = null;
    var endHour = null;
-   for (var i = 0; i < days.length; i++)
+   for (var i = 0; i < days.length; i++) {
       if (days[i].earlierDate(viewStartDate) == viewStartDate
 	  && days[i].laterDate(viewEndDate) == viewEndDate) {
 	 var starts;
@@ -637,31 +637,55 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 else
 	    ends = 96;
 	 lasts = ends - starts;
-	 
+
 	 var parentDiv;
+	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
+				    null, null, title);
+	 var dayString = days[i].getDayString();
 	 if (currentView == "monthview") {
-	    var eventDiv = newCalendarDIV(eventData[0], eventData[1], starts, lasts,
-					  null, null, title);
-	    
-	    var dayString = days[i].getDayString();
 	    var dayDivs = $("monthDaysView").childNodesWithTag("div");
-	    var j = 0;
+	    var j = 0; 
 	    while (!parentDiv && j < dayDivs.length) {
 	       if (dayDivs[j].getAttribute("day") == dayString)
 		  parentDiv = dayDivs[j];
 	       else
 		  j++;
 	    }
-	    parentDiv.appendChild(eventDiv);
 	 }
 	 else {
-	    
+	    if (eventData[7] == 0) {
+	       var daysView = $("daysView");
+	       var eventsDiv = $(daysView).childNodesWithTag("div")[1];
+	       var dayDivs = $(eventsDiv).childNodesWithTag("div");
+	       var j = 0; 
+	       while (!parentDiv && j < dayDivs.length) {
+		  if (dayDivs[j].getAttribute("day") == dayString)
+		     parentDiv = dayDivs[j].childNodesWithTag("div")[0];
+		  else
+		     j++;
+	       }
+	    }
+	    else {
+	       var header = $("calendarHeader");
+	       var daysDiv = $(header).childNodesWithTag("div")[1];
+	       var dayDivs = $(daysDiv).childNodesWithTag("div");
+	       var j = 0; 
+	       while (!parentDiv && j < dayDivs.length) {
+		  if (dayDivs[j].getAttribute("day") == dayString)
+		     parentDiv = dayDivs[j];
+		  else
+		     j++;
+	       }
+	    }
 	 }
+	 if (parentDiv)
+	    parentDiv.appendChild(eventDiv);
       }
+   }
 }
 
-function newCalendarDIV(cname, owner, starts, lasts,
-			startHour, endHour, title) {
+function newEventDIV(cname, owner, starts, lasts,
+		     startHour, endHour, title) {
    var eventDiv = document.createElement("div");
    eventDiv.cname = cname;
    eventDiv.owner = owner;
