@@ -838,13 +838,14 @@ function onHeaderClick(event) {
       document.messageListAjaxRequest.aborted = true;
       document.messageListAjaxRequest.abort();
    }
-   url = ApplicationBaseURL + currentMailbox + "/" + this.link;
-   if (!this.link.match(/noframe=/))
+   var link = this.getAttribute('href');
+   url = ApplicationBaseURL + currentMailbox + "/" + link;
+   if (!link.match(/noframe=/))
       url += "&noframe=1";
    document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback);
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onSearchFormSubmit() {
