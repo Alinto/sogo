@@ -168,16 +168,45 @@ Date.prototype.laterDate = function(otherDate) {
 
 Date.prototype.beginOfWeek = function() {
    var beginNumber;
-   if (weekStartIsMonday)
+   var dayNumber = this.getDay();
+   if (weekStartIsMonday) {
      beginNumber = 1;
+     if (dayNumber == 0)
+	dayNumber = 7;
+   }
    else
      beginNumber = 0;
-
-   var dayNumber = this.getDay();
 
    var beginOfWeek = new Date();
    beginOfWeek.setTime(this.getTime());
    beginOfWeek.addDays(beginNumber - dayNumber);
+   beginOfWeek.setHours(0);
+   beginOfWeek.setMinutes(0);
+   beginOfWeek.setSeconds(0);
+   beginOfWeek.setMilliseconds(0);
 
    return beginOfWeek;
+}
+
+Date.prototype.endOfWeek = function() {
+   var beginNumber;
+   var dayNumber = this.getDay();
+   if (weekStartIsMonday) {
+      beginNumber = 1;
+      if (dayNumber == 0)
+	 dayNumber = 7;
+   }
+   else
+      beginNumber = 0;
+
+   var endOfWeek = new Date();
+   endOfWeek.setTime(this.getTime());
+   endOfWeek.addDays(6 + beginNumber - dayNumber);
+
+   endOfWeek.setHours(23);
+   endOfWeek.setMinutes(59);
+   endOfWeek.setSeconds(59);
+   endOfWeek.setMilliseconds(999);
+
+   return endOfWeek;
 }
