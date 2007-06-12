@@ -46,7 +46,8 @@ DIV#rightPanel
 }
 
 DIV#mailboxContent
-{ position: absolute;
+{ background-color: #fff;
+  position: absolute;
   width: 100%;
   height: 18em;
   left: 0px;
@@ -471,8 +472,8 @@ TABLE#addr_table
 TABLE#messageList
 { display: block;
   position: absolute;
-  background: #fff;
-  color: #000;  
+  background-color: #fff;
+  color: #000;
   width: 100%;
   left: 0px;
   right: 0px;
