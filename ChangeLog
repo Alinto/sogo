@@ -1,3 +1,18 @@
+2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/SOGoDateFormatter.m ([SOGoDateFormatter
+	-stringForSecondsSinceThe70s:seconds]): new utility method.
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): no longer reduce the end day of one day for
+	all day events since everything has been fixed in
+	OCSiCalFieldExtractor.
+
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromEvent:_event]): reduce the seconds/70 of
+	the end date of all day events of 1 so that they stay on their
+	real last day.
+
 2007-06-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m: no longer retrieve appointments.

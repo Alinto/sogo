@@ -38,13 +38,13 @@
 {
   if ((self = [super init]))
     {
-      allAppointments = nil;
+//       allAppointments = nil;
       subscriptionUsers = nil;
       hoursToDisplay = nil;
       currentTableUser = nil;
       currentTableHour = nil;
-      dateFormatter = [[SOGoDateFormatter alloc]
-                        initWithLocale: [self locale]];
+//       dateFormatter = [[SOGoDateFormatter alloc]
+//                         initWithLocale: [self locale]];
     }
 
   return self;
@@ -52,13 +52,10 @@
 
 - (void) dealloc
 {
-  if (allAppointments)
-    [allAppointments release];
-  if (subscriptionUsers)
-    [subscriptionUsers release];
-  if (hoursToDisplay)
-    [hoursToDisplay release];
-  [dateFormatter release];
+//   [allAppointments release];
+  [subscriptionUsers release];
+  [hoursToDisplay release];
+//   [dateFormatter release];
   [super dealloc];
 }
 
@@ -189,69 +186,69 @@
 
 /* fetching */
 
-- (NSCalendarDate *) startDate
-{
-  return [[self selectedDate] beginOfDay];
-}
+// - (NSCalendarDate *) startDate
+// {
+//   return [[self selectedDate] beginOfDay];
+// }
 
-- (NSCalendarDate *) endDate
-{
-  return [[self selectedDate] endOfDay];
-}
+// - (NSCalendarDate *) endDate
+// {
+//   return [[self selectedDate] endOfDay];
+// }
 
-- (NSArray *) appointmentsForCurrentUser
-{
-  NSMutableArray *filteredAppointments;
-  NSEnumerator *aptsEnumerator;
-  NSDictionary *userAppointment;
-  NSCalendarDate *start, *end;
-  int endHour;
+// - (NSArray *) appointmentsForCurrentUser
+// {
+//   NSMutableArray *filteredAppointments;
+//   NSEnumerator *aptsEnumerator;
+//   NSDictionary *userAppointment;
+//   NSCalendarDate *start, *end;
+//   int endHour;
 
-  if (!allAppointments)
-    {
-      allAppointments = [self fetchCoreAppointmentsInfos];
-      [allAppointments retain];
-    }
+//   if (!allAppointments)
+//     {
+//       allAppointments = [self fetchCoreAppointmentsInfos];
+//       [allAppointments retain];
+//     }
 
-  start = [[self selectedDate] hour: [self dayStartHour] minute: 0];
-  endHour = [self dayEndHour];
-  if (endHour < 24)
-    end = [[self selectedDate] hour: [self dayEndHour] minute: 59];
-  else
-    end = [[[self selectedDate] tomorrow] hour: 0 minute: 0];
+//   start = [[self selectedDate] hour: [self dayStartHour] minute: 0];
+//   endHour = [self dayEndHour];
+//   if (endHour < 24)
+//     end = [[self selectedDate] hour: [self dayEndHour] minute: 59];
+//   else
+//     end = [[[self selectedDate] tomorrow] hour: 0 minute: 0];
 
-  filteredAppointments = [NSMutableArray new];
-  [filteredAppointments autorelease];
+//   filteredAppointments = [NSMutableArray new];
+//   [filteredAppointments autorelease];
 
-  aptsEnumerator = [allAppointments objectEnumerator];
-  userAppointment = [aptsEnumerator nextObject];
-  while (userAppointment)
-    {
-      if ([[userAppointment objectForKey: @"owner"]
-            isEqualToString: currentTableUser])
-        [filteredAppointments
-          addObject: [self _adjustedAppointment: userAppointment
-                           forStart: start andEnd: end]];
-      userAppointment = [aptsEnumerator nextObject];
-    }
+//   aptsEnumerator = [allAppointments objectEnumerator];
+//   userAppointment = [aptsEnumerator nextObject];
+//   while (userAppointment)
+//     {
+//       if ([[userAppointment objectForKey: @"owner"]
+//             isEqualToString: currentTableUser])
+//         [filteredAppointments
+//           addObject: [self _adjustedAppointment: userAppointment
+//                            forStart: start andEnd: end]];
+//       userAppointment = [aptsEnumerator nextObject];
+//     }
 
-  return filteredAppointments;
-}
+//   return filteredAppointments;
+// }
 
-- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment
-{
-  currentAppointment = newCurrentAppointment;
-}
+// - (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment
+// {
+//   currentAppointment = newCurrentAppointment;
+// }
 
-- (NSDictionary *) currentAppointment
-{
-  return currentAppointment;
-}
+// - (NSDictionary *) currentAppointment
+// {
+//   return currentAppointment;
+// }
 
-- (NSString *) appointmentsClasses
-{
-  return @"appointments appointmentsFor1Days";
-}
+// - (NSString *) appointmentsClasses
+// {
+//   return @"appointments appointmentsFor1Days";
+// }
 
 - (NSString *) currentUserClasses
 {

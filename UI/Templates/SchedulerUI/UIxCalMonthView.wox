@@ -55,7 +55,7 @@
               <!-- var:foreach
 	      list="aptsForCurrentDate"
               item="appointment"
-	      var:component className="UIxCalInlineMonthAptView"
+	      var:component className="UIxCalInlineMdsadsadsaonthAptView"
 	      appointment="appointment"
 	      formatter="monthAptFormatter"
 	      tooltipFormatter="aptTooltipFormatter"
@@ -92,7 +92,7 @@
   </td>
     <td class="day" width="90%">
     <var:foreach list="allDayApts" item="appointment">
-    <var:component className="UIxCalInlineAptView"
+    <var:component className="UIxCaaaaalInlineAptView"
     appointment="appointment"
     formatter="aptFormatter"
     tooltipFormatter="aptTooltipFormatter"
@@ -118,7 +118,7 @@
     ><br /><var:foreach
     list="aptsForCurrentDate"
     item="appointment"
-    ><var:component className="UIxCalInlineAptView"
+    ><var:component className="UIxCalInlineAptxxxxView"
     appointment="appointment"
     formatter="monthAptFormatter"
     tooltipFormatter="aptTooltipFormatter"

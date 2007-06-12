@@ -85,7 +85,7 @@ function contactsListCallback(http) {
     configureSortableTableHeaders();
   }
   else
-    log ("ajax fuckage 1");
+    log ("ajax problem 1");
 }
 
 function onContactFoldersContextMenu(event) {
@@ -186,7 +186,7 @@ function contactLoadCallback(http) {
     div.innerHTML = content;
   }
   else
-    log ("ajax fuckage 2: " + http.status);
+    log ("ajax problem 2: " + http.status);
 }
 
 var rowSelectionCount = 0;
@@ -336,11 +336,13 @@ function onHeaderClick(event) {
     document.contactsListAjaxRequest.aborted = true;
     document.contactsListAjaxRequest.abort();
   }
-  url = URLForFolderID(currentContactFolder) + "/" + this.link;
-  if (!this.link.match(/noframe=/))
-    url += "&noframe=1";
+  url = URLForFolderID(currentContactFolder);
+// //   log("url: " + url);
+//   var url = "" + this.href;
+  if (url.indexOf("noframe=", 0) == -1)
+     url += "&noframe=1";
   document.contactsListAjaxRequest
-    = triggerAjaxRequest(url, contactsListCallback);
+     = triggerAjaxRequest(url, contactsListCallback);
 
   event.preventDefault();
 }
@@ -451,7 +453,7 @@ function newAbCallback(http) {
      appendAddressBook(name, "/" + name);
   }
   else
-    log ("ajax fuckage 4:" + http.status);
+    log ("ajax problem 4:" + http.status);
 }
 
 function newUserFolderCallback(folderData) {
@@ -531,7 +533,7 @@ function deletePersonalAddressBookCallback(http) {
      document.deletePersonalABAjaxRequest = null;
   }
   else
-     log ("ajax fuckage");
+     log ("ajax problem");
 }
 
 function configureDragHandles() {

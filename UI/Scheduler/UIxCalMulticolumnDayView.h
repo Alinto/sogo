@@ -31,10 +31,10 @@
   NSString *currentTableHour;
   NSMutableArray *subscriptionUsers;
   NSMutableArray *hoursToDisplay;
-  NSArray *allAppointments;
+//   NSArray *allAppointments;
 
   NSString *currentTableUser;
-  NSDictionary *currentAppointment;
+//   NSDictionary *currentAppointment;
 
   NSString *cssClass;
   NSString *cssId;
@@ -50,8 +50,8 @@
 - (void) setCurrentTableUser: (NSString *) aTableDay;
 - (NSString *) currentTableUser;
 
-- (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment;
-- (NSDictionary *) currentAppointment;
+// - (void) setCurrentAppointment: (NSDictionary *) newCurrentAppointment;
+// - (NSDictionary *) currentAppointment;
 
 @end
 
