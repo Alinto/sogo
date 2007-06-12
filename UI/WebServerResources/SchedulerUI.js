@@ -228,12 +228,12 @@ function onSelectAll() {
 }
 
 function onDaySelect(node) {
-  var day = node.day;
+  var day = node.getAttribute('day');
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
 
   var td = $(node).getParentWithTagName("td");
-  var table = td.getParentWithTagName("table");
+  var table = $(td).getParentWithTagName("table");
 
 //   log ("table.selected: " + table.selected);
 
@@ -523,7 +523,7 @@ function scrollDayView(hour) {
 
   var daysView = $("daysView");
   var hours =
-     $(daysView.childNodesWithTag("div"))[0].childNodesWithTag("div");
+     $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
   if (hours.length > 0)
     daysView.scrollTop = hours[rowNumber].offsetTop;
 }

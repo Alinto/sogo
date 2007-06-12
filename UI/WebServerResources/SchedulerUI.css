@@ -178,6 +178,9 @@ DIV#calendarView A
 #filterPanel
 { padding-right: .5em; }
 
+DIV#dateSelectorView
+{ overflow: hidden; }
+
 #dateSelector
 { margin: 0px auto;
   background: #fff;
@@ -229,6 +232,9 @@ DIV#calendarView A
 #dateSelector .dayOfWeek
 { color: #00f; }
 
+TABLE#dateSelectorTable
+{ padding: 2px; }
+
 #dateSelector TABLE#dateSelectorTable TD
 { width: 14%; }
 
@@ -252,6 +258,9 @@ DIV#calendarView A
 { color: #f00;
   border: 1px solid #deebf7; }
 
+#dateSelector TABLE TABLE TD:hover A
+{ color: #f00; }
+
 #dateSelector .inactiveDay
 { color: #dedfde; }
 
@@ -266,7 +275,7 @@ DIV#calendarView A
   display: block; }
 
 #dateSelector TD SPAN A
-{ color: inherit;
+{ color: #000;
   background: inherit;
   text-decoration: none; }
 
