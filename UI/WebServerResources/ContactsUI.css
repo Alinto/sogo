@@ -125,8 +125,7 @@ DIV#contactFoldersList DIV.toolbar
   border-left: 1px solid #aaa; }
 
 UL#contactFolders
-{ visibility: hidden;
-  list-style-type: none;
+{ list-style-type: none;
   list-style-image: none;
   clear: both;
   cursor: default;

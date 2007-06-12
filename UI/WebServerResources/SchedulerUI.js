@@ -1151,21 +1151,19 @@ function updateCalendarStatus(event) {
 
 function calendarStatusCallback(http) {
   if (http.readyState == 4) {
-    if (http.status == 204 ||
-	(isSafari() && typeof(http.status) == 'undefined') ||
-	http.status == 1223) {
+    if (isHttpStatus204(http.status)) {
          refreshEvents();
          refreshTasks();
          changeCalendarDisplay();
       }
       else {
-	var folder = $(http.callbackData);
-        var input = folder.childNodesWithTag("input")[0];
-	input.checked = (!input.checked);
+	 var folder = $(http.callbackData);
+         var input = folder.childNodesWithTag("input")[0];
+	 input.checked = (!input.checked);
       }
    }
    else
-     log("calendarStatusCallback Ajax error");
+      log("calendarStatusCallback Ajax error");
 }
 
 function calendarEntryCallback(http) {

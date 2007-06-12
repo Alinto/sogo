@@ -296,6 +296,12 @@ function isSafari() {
   return (navigator.vendor == "Apple Computer, Inc.");
 }
 
+function isHttpStatus204(status) {
+  return (status == 204 ||                                  // Firefox
+	  (isSafari() && typeof(status) == 'undefined') ||  // Safari
+          status == 1223);                                  // IE
+}
+
 function getTarget(event) {
   event = event || window.event;
   if (event.target)
@@ -453,7 +459,7 @@ function onRowClick(event) {
     $(node).select();
   }
 
-  if (startSelection != node.parentNode.getSelectedNodes()) {
+  if (startSelection != $(node.parentNode).getSelectedNodes()) {
     var parentNode = node.parentNode;
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;

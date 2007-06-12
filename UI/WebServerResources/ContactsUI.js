@@ -555,13 +555,14 @@ function lookupDeniedFolders() {
   for (var i = 0; i < list.length; i++) {
      var folderID = list[i].getAttribute("id");
      var url = URLForFolderID(folderID) + "/canAccessContent";
+     
      triggerAjaxRequest(url, deniedFoldersLookupCallback, folderID);
   }
 }
 
 function deniedFoldersLookupCallback(http) {
-   if (http.readyState == 4) { 
-      var denied = (http.status != 204)
+   if (http.readyState == 4) {
+      var denied = ! isHttpStatus204(http.status);
       var entry = $(http.callbackData);
       if (denied)
 	 entry.addClassName("denied");
@@ -588,8 +589,7 @@ function configureContactFolders() {
       setEventsOnContactFolder(lis[i]);
 
     lookupDeniedFolders();
-    contactFolders.setStyle({ visibility: 'visible' });
-    
+
     var personalFolder = $("/personal");
     personalFolder.select();
   }
@@ -642,18 +642,15 @@ function configureSelectionButtons() {
    }
 }
 
-var initContacts = {
-  handleEvent: function (event) {
-    if (!document.body.hasClassName("popup")) {
-      configureAbToolbar();
-      configureSearchField();
-    }
-    else
-      configureSelectionButtons();
-    configureContactFolders();
+function initContacts(event) {
+   if (!document.body.hasClassName("popup")) {
+     configureAbToolbar();
+     configureSearchField();
+   }
+   else
+     configureSelectionButtons();
+   configureContactFolders();
 //     initDnd();
-  }
 }
 
-//window.addEventListener("load", initContacts, false);
-Event.observe(window, "load", initContacts, false);
+addEvent(window, 'load', initContacts);
