@@ -663,7 +663,7 @@ function configureLinksInMessage() {
    var messageDiv = $('messageContent');
    var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
 							messageDiv)[0];
-   Event.observe(mailContentDiv, "contextmenu", onMessageContentMenu);
+   Event.observe(mailContentDiv, "contextmenu", onMessageContentMenu.bindAsEventListener(mailContentDiv));
    var anchors = messageDiv.getElementsByTagName('a');
    for (var i = 0; i < anchors.length; i++)
       if (anchors[i].href.substring(0,7) == "mailto:") {
@@ -706,7 +706,7 @@ function messageCallback(http) {
       }
    }
    else
-      log("messageCallback: problem during ajax request");
+      log("messageCallback: problem during ajax request: " + http.status);
 }
 
 function processMailboxMenuAction(mailbox) {
