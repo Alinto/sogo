@@ -71,7 +71,6 @@ static BOOL sendEMailNotifications = NO;
     {
       calendar = nil;
       calContent = nil;
-      isNew = NO;
     }
 
   return self;
@@ -183,7 +182,6 @@ static BOOL sendEMailNotifications = NO;
               newComponent = [[calendar classForTag: componentTag]
                                groupWithTag: componentTag];
               [calendar addChild: newComponent];
-	      isNew = YES;
             }
         }
       if (calendar)
@@ -198,11 +196,6 @@ static BOOL sendEMailNotifications = NO;
   return
     (iCalRepeatableEntityObject *) [[self calendar: create]
 				     firstChildWithTag: [self componentTag]];
-}
-
-- (BOOL) isNew
-{
-  return isNew;
 }
 
 /* raw saving */

@@ -38,13 +38,11 @@
 {
   iCalCalendar *calendar;
   NSString *calContent;
-  BOOL isNew;
 }
 
 - (NSString *) componentTag;
 - (iCalCalendar *) calendar: (BOOL) create;
 - (iCalRepeatableEntityObject *) component: (BOOL) create;
-- (BOOL) isNew;
 
 - (NSException *) primarySaveContentString: (NSString *) _iCalString;
 - (NSException *) primaryDelete;

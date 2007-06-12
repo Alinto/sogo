@@ -1,5 +1,9 @@
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -init]): "isNew" is no longer defined
+	here, but rather in its parent class.
+
 	* UI/SOGoUI/SOGoDateFormatter.m ([SOGoDateFormatter
 	-stringForSecondsSinceThe70s:seconds]): new utility method.
 
