@@ -122,7 +122,7 @@ function openAddressbook(sender) {
 function onMenuSharing(event) {
    var folderID = document.menuTarget.getAttribute("dataname");
    var urlstr = URLForFolderID(folderID) + "/acls";
-   event.preventDefault();
+   preventDefault(event);
 
    openAclWindow(urlstr);
 }
@@ -372,7 +372,7 @@ function moveMessages(rowIds, folder) {
 
 function onMenuDeleteMessage(event) {
    uixDeleteSelectedMessages();
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onMailboxTreeItemClick(event) {
@@ -395,7 +395,7 @@ function onMailboxTreeItemClick(event) {
    else
       openMailbox(mailbox);
    
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onMailboxMenuMove() {
@@ -555,7 +555,7 @@ function onFolderMenuClick(event) {
    topNode.menuSelectedEntry = this;
    this.select();
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onFolderMenuHide(event) {
