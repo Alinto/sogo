@@ -1,5 +1,10 @@
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): no longer reduce the end day of one day for
+	all day events since everything has been fixed in
+	OCSiCalFieldExtractor.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromEvent:_event]): reduce the seconds/70 of
 	the end date of all day events of 1 so that they stay on their

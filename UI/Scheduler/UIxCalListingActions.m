@@ -317,16 +317,10 @@
     {
       newEvent = [NSMutableArray arrayWithArray: oldEvent];
       interval = [[oldEvent objectAtIndex: 4] intValue];
-      date
-	= [dateFormatter stringForObjectValue:
-			   [NSCalendarDate dateWithTimeIntervalSince1970: interval]];
+      date = [dateFormatter stringForSecondsSinceThe70s: interval];
       [newEvent addObject: date];
       interval = [[oldEvent objectAtIndex: 5] intValue];
-      if ([[oldEvent objectAtIndex: 7] boolValue])
-	interval -= 86400;
-      date
-	= [dateFormatter stringForObjectValue:
-			   [NSCalendarDate dateWithTimeIntervalSince1970: interval]];
+      date = [dateFormatter stringForSecondsSinceThe70s: interval];
       [newEvent addObject: date];
       [newEvents addObject: newEvent];
 
