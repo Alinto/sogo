@@ -216,7 +216,7 @@ function deleteEventCallback(http) {
 function editDoubleClickedEvent(event) {
   _editEventId(this.cname, this.owner);
 
-  event.preventDefault();
+  preventDefault(event);
   event.cancelBubble = true;
 }
 
@@ -370,6 +370,7 @@ function tasksListCallback(http) {
       var owner = data[i][1];
       listItem.owner = owner;
       $(listItem).addClassName("ownerIs" + owner);
+      listItem.cname = data[i][0];
       var input = document.createElement("input");
       input.setAttribute("type", "checkbox");
       listItem.appendChild(input);
