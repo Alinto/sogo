@@ -680,12 +680,15 @@ static BOOL debugSoParts       = NO;
 
 /* name lookup */
 
-- (id)lookupImap4BodyPartKey:(NSString *)_key inContext:(id)_ctx {
+- (id) lookupImap4BodyPartKey: (NSString *) _key
+		    inContext: (id) _ctx
+{
   // TODO: we might want to check for existence prior controller creation
   Class clazz;
   
   clazz = [SOGoMailBodyPart bodyPartClassForKey:_key inContext:_ctx];
-  return [[[clazz alloc] initWithName:_key inContainer:self] autorelease];
+
+  return [clazz objectWithName:_key inContainer: self];
 }
 
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
@@ -1062,6 +1065,11 @@ static BOOL debugSoParts       = NO;
   }
   
   return @"IPM.Message"; /* email, default class */
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return [container aclsForUser: uid];
 }
 
 /* debugging */

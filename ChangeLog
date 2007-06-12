@@ -1,5 +1,10 @@
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-aclsForUser:uid]): implemented method by forwarding the request
+	to the container. This fixes a bug where users could no longer
+	read emails from shared folders.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -init]): "isNew" is no longer defined
 	here, but rather in its parent class.
