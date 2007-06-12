@@ -78,8 +78,8 @@ function editEvent() {
       _editEventId(nodes[i].getAttribute("id"),
                    nodes[i].owner);
   } else if (selectedCalendarCell) {
-      _editEventId(selectedCalendarCell.getAttribute("aptCName"),
-                   selectedCalendarCell.owner);
+      _editEventId(selectedCalendarCell[0].cname,
+                   selectedCalendarCell[0].owner);
   }
 
   return false; /* stop following the link */
@@ -137,8 +137,8 @@ function deleteEvent() {
            document.deleteEventAjaxRequest.aborted = true;
            document.deleteEventAjaxRequest.abort();
         }
-        eventsToDelete.push([selectedCalendarCell.getAttribute("aptCName")]);
-        ownersOfEventsToDelete.push(selectedCalendarCell.owner);
+        eventsToDelete.push([selectedCalendarCell[0].cname]);
+        ownersOfEventsToDelete.push(selectedCalendarCell[0].owner);
         _batchDeleteEvents();
      }
   }
@@ -616,6 +616,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 //    log("viewS: " + viewStartDate);
    var startHour = null;
    var endHour = null;
+
+   var siblings = new Array();
    for (var i = 0; i < days.length; i++)
       if (days[i].earlierDate(viewStartDate) == viewStartDate
 	  && days[i].laterDate(viewEndDate) == viewEndDate) {
@@ -647,6 +649,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 
 	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
 				    null, null, title);
+	 siblings.push(eventDiv);
+	 eventDiv.siblings = siblings;
 	 var dayString = days[i].getDayString();
 // 	 log("day: " + dayString);
 	 var parentDiv = null;
@@ -1023,9 +1027,12 @@ function onCalendarSelectEvent() {
   list.deselectAll();
 
   if (selectedCalendarCell)
-    selectedCalendarCell.deselect();
-  this.select();
-  selectedCalendarCell = this;
+     for (var i = 0; i < selectedCalendarCell.length; i++)
+	selectedCalendarCell[i].deselect();
+
+  for (var i = 0; i < this.siblings.length; i++)
+     this.siblings[i].select();
+  selectedCalendarCell = this.siblings;
   var row = $(this.cname);
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
