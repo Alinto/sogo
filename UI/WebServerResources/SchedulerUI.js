@@ -560,27 +560,19 @@ function refreshCalendarEvents() {
       ed = endDate.getDayString();
    }
    else {
-      var monthDate = sd.asDate();
-      monthDate.setDate(1);
-
-      var workDate = new Date();
-      workDate.setTime(monthDate.getTime());
-      var day = workDate.getDay();
-      if (day > 0)
-	 workDate.addDays(1 - day);
+      var monthDate;
+      if (currentDay)
+	 monthDate = currentDay.asDate();
       else
-	 workDate.addDays(-6);
+	 monthDate = todayDate;
+      monthDate.setDate(1);
+      sd = monthDate.beginOfWeek().getDayString();
 
-      sd = workDate.getDayString();
-
-      workDate.setTime(monthDate.getTime());
-      workDate.setMonth(workDate.getMonth() + 1);
-      workDate.addDays(-1);
-
-      var day = workDate.getDay();
-      if (day > 0)
-	 workDate.addDays(7 - day);
-      ed = workDate.getDayString();
+      var lastMonthDate = new Date();
+      lastMonthDate.setTime(monthDate.getTime());
+      lastMonthDate.setMonth(monthDate.getMonth() + 1);
+      lastMonthDate.addDays(-1);
+      ed = lastMonthDate.endOfWeek().getDayString();
    }
    if (document.refreshCalendarEventsAjaxRequest) {
       document.refreshCalendarEventsAjaxRequest.aborted = true;
@@ -619,18 +611,21 @@ function drawCalendarEvent(eventData, sd, ed) {
 
    var divs = new Array();
 
-   var title = null;
+   var title = eventData[3];
+//    log("title: " + title); 
+//    log("viewS: " + viewStartDate);
    var startHour = null;
    var endHour = null;
-   for (var i = 0; i < days.length; i++) {
+   for (var i = 0; i < days.length; i++)
       if (days[i].earlierDate(viewStartDate) == viewStartDate
 	  && days[i].laterDate(viewEndDate) == viewEndDate) {
 	 var starts;
+
+// 	 log("day: " + days[i]);
 	 if (i == 0) {
 	    var quarters = (startDate.getHours() * 4
 			    + Math.floor(startDate.getMinutes() / 15));
 	    starts = quarters;
-	    title = eventData[3];
 	    startHour = startDate.getDisplayHoursString();
 	    endHour = endDate.getDisplayHoursString();
 	 }
@@ -650,10 +645,11 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 if (!lasts)
 	    lasts = 1;
 
-	 var parentDiv;
 	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
 				    null, null, title);
 	 var dayString = days[i].getDayString();
+// 	 log("day: " + dayString);
+	 var parentDiv = null;
 	 if (currentView == "monthview") {
 	    var dayDivs = $("monthDaysView").childNodesWithTag("div");
 	    var j = 0; 
@@ -693,7 +689,6 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 if (parentDiv)
 	    parentDiv.appendChild(eventDiv);
       }
-   }
 }
 
 function newEventDIV(cname, owner, starts, lasts,
