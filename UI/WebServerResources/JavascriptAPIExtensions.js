@@ -72,6 +72,7 @@ Date.prototype.sogoDayName = function() {
 
 Date.prototype.daysUpTo = function(otherDate) {
   var days = new Array();
+
   var day1 = this.getTime();
   var day2 = otherDate.getTime();
 
@@ -147,11 +148,20 @@ Date.prototype.addDays = function(nbrDays) {
 }
 
 Date.prototype.earlierDate = function(otherDate) {
-   return ((this.getTime() < otherDate.getTime())
+   var workDate = new Date();
+   workDate.setTime(otherDate.getTime());
+   workDate.setHours(0);
+   return ((this.getTime() < workDate.getTime())
 	   ? this : otherDate);
 }
 
 Date.prototype.laterDate = function(otherDate) {
-   return ((this.getTime() < otherDate.getTime())
+   var workDate = new Date();
+   workDate.setTime(otherDate.getTime());
+   workDate.setHours(23);
+   workDate.setMinutes(59);
+   workDate.setSeconds(59);
+   workDate.setMilliseconds(999);
+   return ((this.getTime() < workDate.getTime())
 	   ? otherDate : this);
 }
