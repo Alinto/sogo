@@ -581,7 +581,8 @@ function configureAbToolbar() {
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
   if (contactFolders) {
-    Event.observe(contactFolders, "mousedown", onFolderSelectionChange, false);
+    Event.observe(contactFolders, "mousedown", listRowMouseDownHandler);
+    Event.observe(contactFolders, "click", onFolderSelectionChange);
     var lis = contactFolders.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++)
       setEventsOnContactFolder(lis[i]);
