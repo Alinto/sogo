@@ -360,7 +360,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Workweek days only" = "Semaine de travail seulement";
 "Tasks in View" = "Afficher les tâches";
 
-"appointmentDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
+"eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
 "taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
 
 /* Legend */

@@ -362,7 +362,7 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Workweek days only" = "Workweek days only";
 "Tasks in View" = "Tasks in View";
 
-"appointmentDeleteConfirmation" = "Erasing this event will be permanent.\\nWould you like to continue?";
+"eventDeleteConfirmation" = "Erasing this event will be permanent.\\nWould you like to continue?";
 "taskDeleteConfirmation" = "Erasing this task will be permanent.\\nWould you like to continue?";
 
 /* Legend */
