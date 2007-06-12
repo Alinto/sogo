@@ -41,6 +41,7 @@
 - (void)setFullWeekdayNameAndDetails;
 
 - (NSString *)stringForObjectValue:(id)_obj;
+- (NSString *) stringForSecondsSinceThe70s: (unsigned int) seconds;
 
 - (NSString *)shortDayOfWeek:(int)_day;
 - (NSString *)fullDayOfWeek:(int)_day;

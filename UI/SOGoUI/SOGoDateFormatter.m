@@ -58,9 +58,16 @@
 
 /* operation */
 
-- (NSString *)stringForObjectValue:(id)_obj {
+- (NSString *) stringForObjectValue: (id) _obj
+{
   return [self performSelector:self->formatAction
 	       withObject:_obj];
+}
+
+- (NSString *) stringForSecondsSinceThe70s: (unsigned int) seconds
+{
+  return [self stringForObjectValue:
+		 [NSCalendarDate dateWithTimeIntervalSince1970: seconds]];
 }
 
 /* Helpers */

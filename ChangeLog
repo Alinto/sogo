@@ -1,5 +1,8 @@
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/SOGoDateFormatter.m ([SOGoDateFormatter
+	-stringForSecondsSinceThe70s:seconds]): new utility method.
+
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-eventsListAction]): no longer reduce the end day of one day for
 	all day events since everything has been fixed in
