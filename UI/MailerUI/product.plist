@@ -285,6 +285,11 @@ categories = {
 	    actionClass = "UIxMailAccountActions";
 	    actionName = "listMailboxes";
 	 };
+	 createFolder = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "createFolder";
+	 };
       };
    };
 
