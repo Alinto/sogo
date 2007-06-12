@@ -354,9 +354,6 @@ DIV#logConsole
   overflow: auto;
   display: none;
   z-index: 1000;
-  -moz-opacity: 0.7;
-  opacity: 0.7;
-  filter: alpha(opacity=70);
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
   border-right: 2px solid #999;
@@ -364,17 +361,19 @@ DIV#logConsole
   -moz-border-top-colors: #000 #9c9a94 transparent;
   -moz-border-left-colors: #000 #9c9a94 transparent;
   font-family: monospace;
-  font-weight: bold;
-  background-color: #000;
-  color: #ddd;
+  font-size: 12pt;
+  padding: .25em;
+  background-color: #fff;
+  overflow-y: scroll;
+  color: #222;
   top: 1em;
   left: 0px;
   right: 0px;
   height: 15em; }
 
-DIV#logConsole > DIV.highlighted
-{ background-color: #333; }
-
+/* DIV#logConsole > DIV.highlighted
+{ background-color: #ddf; }
+ */
 /* content lists */
 td.tbtv_actcell
 { border-width: 1px;
