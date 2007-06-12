@@ -283,16 +283,14 @@ static BOOL useAltNamespace = NO;
   
   /* create object */
   
-  return [[[SOGoMailFolder alloc] initWithName:_key 
-				  inContainer:self] autorelease];
+  return [SOGoMailFolder objectWithName: _key inContainer: self];
 }
 
 - (id) lookupImap4Message: (NSString *) _key
 		inContext: (id) _ctx
 {
   // TODO: we might want to check for existence prior controller creation
-  return [[[SOGoMailObject alloc] initWithName:_key 
-				  inContainer:self] autorelease];
+  return [SOGoMailObject objectWithName: _key inContainer: self];
 }
 
 - (id) lookupName: (NSString *) _key
