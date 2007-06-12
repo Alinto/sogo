@@ -4,7 +4,7 @@ DIV#leftPanel
   position: absolute;
   top: 5.5em;
   left: 0px;
-  width: 18.5em;
+  width: 19.25em;
   bottom: 0px;
   overflow: hidden;
 }
@@ -15,13 +15,13 @@ DIV#schedulerTabs
   top: 0.5em;
   left: .2em;
   right: .2em;
-  height: 17em;
+  height: 14em;
 }
 
 DIV#tasksListView
 {
   position: absolute;
-  top: 20em;
+  top: 17em;
   bottom: 0px;
   left: .2em;
   right: .7em;
@@ -84,7 +84,7 @@ UL#calendarList LI
 UL#tasksList
 { position: absolute;
   width: 100%;
-  top: 3em;
+  top: 2em;
   left: .25em;
   right: .25em;
   bottom: .25em; }
@@ -126,7 +126,7 @@ UL#tasksList LI[class~="_selected"].duelater
 DIV#rightPanel
 { position: absolute;
   top: 5.5em;
-  left: 18.5em;
+  left: 19.25em;
   right: 0px;
   bottom: 0px;
   margin: 0px;
@@ -143,7 +143,8 @@ DIV#eventsListView
   left: 0px;
   right: 0px;
   height: 15.5em;
-  overflow: auto; }
+  overflow: hidden;
+  overflow-y: auto; }
 
 DIV#calendarView
 { position: absolute;
@@ -163,7 +164,7 @@ DIV#calendarView A
 #verticalDragHandle
 { cursor: e-resize;
   top: 7.5em;
-  left: 18.5em;
+  left: 19.25em;
   width: 5px;
   bottom: 0px; }
 
