@@ -1212,7 +1212,7 @@ function calendarStatusCallback(http) {
 
 function calendarEntryCallback(http) {
    if (http.readyState == 4) { 
-      var denied = (http.status != 204)
+      var denied = !isHttpStatus204(http.status);
       var entry = $(http.callbackData);
       if (denied)
 	 entry.addClassName("denied");
