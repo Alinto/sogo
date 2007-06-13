@@ -1,3 +1,10 @@
+2007-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]):
+	no longer sort elements from here.
+
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject

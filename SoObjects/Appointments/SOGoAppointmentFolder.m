@@ -869,12 +869,6 @@ static NSNumber   *sharedYes = nil;
       return nil;
     }
 
-  /* NOTE: why do we sort here?
-     This probably belongs to UI but cannot be achieved as fast there as
-     we can do it here because we're operating on a mutable array -
-     having the apts sorted is never a bad idea, though
-  */
-  [ma sortUsingSelector: @selector (compareAptsAscending:)];
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
 
