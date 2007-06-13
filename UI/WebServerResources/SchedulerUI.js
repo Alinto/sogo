@@ -319,8 +319,10 @@ function eventsListCallback(http) {
       startDate.setTime(data[i][4] * 1000);
       row.day = startDate.getDayString();
       row.hour = startDate.getHourString();
-      Event.observe(row, "click", onEventClick.bindAsEventListener(row));
-      Event.observe(row, "dblclick", editDoubleClickedEvent.bindAsEventListener(row));
+      Event.observe(row, "click",
+		    onEventClick.bindAsEventListener(row));
+      Event.observe(row, "dblclick",
+		    editDoubleClickedEvent.bindAsEventListener(row));
       Event.observe(row, "contextmenu",
 		    onEventContextMenu.bindAsEventListener(row));
 
@@ -760,6 +762,7 @@ function calendarDisplayCallback(http) {
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
       currentDay = http.callbackData["day"];
+
     var hour = null;
     if (http.callbackData["hour"])
       hour = http.callbackData["hour"];
@@ -942,10 +945,8 @@ function onListFilterChange() {
 }
 
 function onEventClick(event) {
-  var target = getTarget(event);
-  var node = target.getParentWithTagName("tr");
-  var day = node.day;
-  var hour = node.hour;
+  var day = this.day;
+  var hour = this.hour;
 
   changeCalendarDisplay( { "day": day, "hour": hour} );
   changeDateSelectorDisplay(day);
