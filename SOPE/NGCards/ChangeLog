@@ -1,3 +1,13 @@
+2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDateTime.m ([iCalDateTime
+	-_setDateTime:dateTimeforAllDayEntity:forAllDayEntity]): take the
+	forAllDayEntity parameter into account when the date entity has a
+	timezone.
+
+	* iCalTimeZone.m ([iCalTimeZone -dateStringForDate:date]): new
+	method that returns dates formatted for all day events.
+
 2007-06-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m ([iCalDateTime

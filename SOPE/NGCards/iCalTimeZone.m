@@ -100,7 +100,7 @@
   return period;
 }
 
-- (NSString *) dateTimeStringForDate: (NSCalendarDate *) date
+- (NSCalendarDate *) _computedDateTimeForDate: (NSCalendarDate *) date
 {
   NSCalendarDate *tmpDate;
   NSTimeZone *utc;
@@ -109,12 +109,22 @@
   tmpDate = [date copy];
   [tmpDate autorelease];
   [tmpDate setTimeZone: utc];
-  tmpDate
-    = [tmpDate addYear: 0 month: 0 day: 0
-               hour: 0 minute: 0
-               second: [[self periodForDate: date] secondsOffsetFromGMT]];
 
-  return [tmpDate iCalFormattedDateTimeString];
+  return [tmpDate addYear: 0 month: 0 day: 0
+		  hour: 0 minute: 0
+		  second: [[self periodForDate: date] secondsOffsetFromGMT]];
+}
+
+- (NSString *) dateTimeStringForDate: (NSCalendarDate *) date
+{
+  return [[self _computedDateTimeForDate: date]
+	   iCalFormattedDateTimeString];
+}
+
+- (NSString *) dateStringForDate: (NSCalendarDate *) date
+{
+  return [[self _computedDateTimeForDate: date]
+	   iCalFormattedDateString];
 }
 
 - (NSCalendarDate *) dateForDateTimeString: (NSString *) string

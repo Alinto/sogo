@@ -101,7 +101,12 @@
     {
       tz = [self timeZone];
       if (tz)
-        timeString = [tz dateTimeStringForDate: dateTime];
+	{
+	  if (forAllDayEntity)
+	    timeString = [tz dateStringForDate: dateTime];
+	  else
+	    timeString = [tz dateTimeStringForDate: dateTime];
+	}
       else
         {
           utcTZ = [NSTimeZone timeZoneWithName: @"GMT"];

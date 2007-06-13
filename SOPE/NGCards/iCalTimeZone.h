@@ -32,6 +32,7 @@
 
 - (NSString *) tzId;
 - (NSString *) dateTimeStringForDate: (NSCalendarDate *) date;
+- (NSString *) dateStringForDate: (NSCalendarDate *) date;
 - (NSCalendarDate *) dateForDateTimeString: (NSString *) string;
 
 @end
