@@ -32,7 +32,6 @@ libSOGo_HEADER_FILES = \
 	LDAPSource.h			\
 	SOGoPermissions.h		\
 	SOGoLRUCache.h			\
-	NSObject+AptComparison.h	\
 	WOContext+Agenor.h		\
 	SOGoDAVRendererTypes.h		\
 	NSArray+Utilities.h		\
@@ -61,7 +60,6 @@ libSOGo_OBJC_FILES = \
 	SOGoLRUCache.m			\
 	LDAPUserManager.m		\
 	LDAPSource.m			\
-	NSObject+AptComparison.m	\
 	WOContext+Agenor.m		\
 	SOGoDAVRendererTypes.m		\
 	AgenorUserDefaults.m		\

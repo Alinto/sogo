@@ -1,5 +1,8 @@
 2007-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSObject+AptComparison.[hm]: removed category
+	module, replaced with NSArray+Scheduler in UI/SchedulerUI/.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatecomponent:_component]):
