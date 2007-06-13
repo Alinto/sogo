@@ -49,7 +49,19 @@
 
 - (NSComparisonResult) compareEventsAscending: (NSArray *) otherEvent
 {
-  return [[self objectAtIndex: 4] compare: [otherEvent objectAtIndex: 4]];
+  NSComparisonResult result;
+  unsigned int selfTime, otherTime;
+
+  selfTime = [[self objectAtIndex: 4] intValue];
+  otherTime = [[otherEvent objectAtIndex: 4] intValue];
+  if (selfTime > otherTime)
+    result = NSOrderedDescending;
+  else if (selfTime < otherTime)
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedSame;
+
+  return result;
 }
 
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask

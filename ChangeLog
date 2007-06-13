@@ -1,5 +1,10 @@
 2007-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/NSArray+Scheduler.m ([NSArray
+	-compareEventsAscending:otherEvent]): no longer use compare: on
+	the time objects since one of them could be an NSNull, which
+	crashes when comparing with anything.
+
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-eventsListAction]): sort events from here.
 	([UIxCalListingActions -tasksListAction]): sort tasks from here.
