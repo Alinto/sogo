@@ -117,7 +117,6 @@ Date.prototype.getDisplayHoursString = function() {
    if (minutesString.length == 1)
      minutesString = '0' + minutesString;
 
-
    return hoursString + ":" + minutesString;
 }
 
