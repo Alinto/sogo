@@ -21,7 +21,7 @@ DIV#tasksListView
   left: .2em;
   right: .7em;
   padding: 0px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 DIV#tasksListView H2
@@ -57,9 +57,6 @@ UL#tasksList, UL#calendarList
 { cursor: default;
   margin: .25em;
   padding: 0px;
-  overflow: auto;
-  overflow-y: auto;
-  overflow-x: hidden;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
@@ -68,7 +65,9 @@ UL#tasksList, UL#calendarList
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   list-style-type: none;
-  list-style-image: none; }
+  list-style-image: none;
+  overflow-y: auto;
+  overflow-x: hidden; }
 
 UL#calendarList
 { clear: both;
