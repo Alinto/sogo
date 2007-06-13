@@ -611,7 +611,13 @@ function drawCalendarEvent(eventData, sd, ed) {
 
    var divs = new Array();
 
-   var title = eventData[3];
+   var title;
+   if (currentView == "monthview"
+       && (eventData[7] == 0))
+      title = startDate.getDisplayHoursString() + " " + eventData[3];
+   else
+      title = eventData[3];
+
 //    log("title: " + title); 
 //    log("viewS: " + viewStartDate);
    var startHour = null;
@@ -1419,11 +1425,16 @@ function onCalendarRemove(event) {
 function configureSearchField() {
    var searchValue = $("searchValue");
 
-   Event.observe(searchValue, "mousedown",  onSearchMouseDown.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "click",  popupSearchMenu.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "blur",  onSearchBlur.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "focus",  onSearchFocus.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "keydown",  onSearchKeyDown.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "mousedown",
+		 onSearchMouseDown.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "click",
+		 popupSearchMenu.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "blur",
+		 onSearchBlur.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "focus",
+		 onSearchFocus.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "keydown",
+		 onSearchKeyDown.bindAsEventListener(searchValue));
 }
 
 function configureLists() {
