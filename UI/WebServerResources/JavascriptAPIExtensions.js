@@ -109,7 +109,7 @@ Date.prototype.getHourString = function() {
 }
 
 Date.prototype.getDisplayHoursString = function() {
-   var hoursString = this.getHours();
+   var hoursString = "" + this.getHours();
    if (hoursString.length == 1)
      hoursString = '0' + hoursString;
 
