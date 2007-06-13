@@ -113,7 +113,7 @@ Date.prototype.getDisplayHoursString = function() {
    if (hoursString.length == 1)
      hoursString = '0' + hoursString;
 
-   var minutesString = this.getMinutes();
+   var minutesString = "" + this.getMinutes();
    if (minutesString.length == 1)
      minutesString = '0' + minutesString;
 
