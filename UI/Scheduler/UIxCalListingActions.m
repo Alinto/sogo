@@ -39,6 +39,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
 #import "../SOGoUI/SOGoDateFormatter.h"
+#import "NSArray+Scheduler.h"
 
 #import "UIxCalListingActions.h"
 
@@ -326,6 +327,7 @@
 
       oldEvent = [events nextObject];
     }
+  [newEvents sortUsingSelector: @selector (compareEventsAscending:)];
 
   return [self _responseWithData: newEvents];
 }
@@ -398,6 +400,7 @@
 	}
       task = [tasks nextObject];
     }
+  [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
 
   return [self _responseWithData: filteredTasks];
 }

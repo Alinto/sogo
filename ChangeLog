@@ -1,5 +1,9 @@
 2007-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): sort events from here.
+	([UIxCalListingActions -tasksListAction]): sort tasks from here.
+
 	* SoObjects/SOGo/NSObject+AptComparison.[hm]: removed category
 	module, replaced with NSArray+Scheduler in UI/SchedulerUI/.
 
