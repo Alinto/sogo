@@ -52,10 +52,10 @@
                             endOfDay];
 }
 
-- (NSArray *) appointments
-{
-  return [self fetchCoreAppointmentsInfos];
-}
+// - (NSArray *) appointments
+// {
+//   return [self fetchCoreAppointmentsInfos];
+// }
 
 /* URLs */
 
