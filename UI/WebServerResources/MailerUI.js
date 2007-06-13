@@ -937,36 +937,33 @@ var messageListData = function(type) {
 function configureMessageListEvents() {
    var messageList = $("messageList");
    if (messageList) {
-      Event.observe(messageList, "mousedown", onMessageSelectionChange.bindAsEventListener(messageList));
-      var rows = messageList.tBodies[0].rows;
-      var start = 0;
-      if (rows.length > 1) {
-	 if ($(rows[start].cells[0]).hasClassName("tbtv_headercell"))
-	    start++;
-	 if ($(rows[start].cells[0]).hasClassName("tbtv_navcell")) {
-	    var anchors = $(rows[start].cells[0]).childNodesWithTag("a");
-	    for (var i = 0; i < anchors.length; i++)
-	       Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
-	    start++;
-	 }
-	 for (var i = start; i < rows.length; i++) {
-	    Event.observe(rows[i], "mousedown", onRowClick);
-	    Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
-	    
-	    rows[i].dndTypes = function() { return new Array("mailRow"); };
-	    rows[i].dndGhost = messageListGhost;
-	    rows[i].dndDataForType = messageListData;
-	    document.DNDManager.registerSource(rows[i]);
-	    
-	    for (var j = 0; j < rows[i].cells.length; j++) {
-	       var cell = rows[i].cells[j];
-	       Event.observe(cell, "mousedown", listRowMouseDownHandler);
-	       if (j == 2 || j == 3 || j == 5)
-		  Event.observe(cell, "dblclick", onMessageDoubleClick.bindAsEventListener(cell));
-	       else if (j == 4) {
-		  var img = cell.childNodesWithTag("img")[0];
-		  Event.observe(img, "click", mailListMarkMessage);
-	       }
+      Event.observe(messageList, "mousedown",
+		    onMessageSelectionChange.bindAsEventListener(messageList));
+      var cell = messageList.tHead.rows[1].cells[0];
+      if ($(cell).hasClassName("tbtv_navcell")) {
+	 var anchors = $(cell).childNodesWithTag("a");
+	 for (var i = 0; i < anchors.length; i++)
+	    Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
+      }
+
+      rows = messageList.tBodies[0].rows;
+      for (var i = 0; i < rows.length; i++) {
+	 Event.observe(rows[i], "mousedown", onRowClick);
+	 Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
+	 
+	 rows[i].dndTypes = function() { return new Array("mailRow"); };
+	 rows[i].dndGhost = messageListGhost;
+	 rows[i].dndDataForType = messageListData;
+	 document.DNDManager.registerSource(rows[i]);
+	 
+	 for (var j = 0; j < rows[i].cells.length; j++) {
+	    var cell = rows[i].cells[j];
+	    Event.observe(cell, "mousedown", listRowMouseDownHandler);
+	    if (j == 2 || j == 3 || j == 5)
+	       Event.observe(cell, "dblclick", onMessageDoubleClick.bindAsEventListener(cell));
+	    else if (j == 4) {
+	       var img = cell.childNodesWithTag("img")[0];
+	       Event.observe(img, "click", mailListMarkMessage);
 	    }
 	 }
       }

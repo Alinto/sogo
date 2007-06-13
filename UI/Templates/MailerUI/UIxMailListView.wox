@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-    <tbody>
+    <thead>
       <tr class="tableview"
         ><td class="tbtv_headercell messageFlagColumn"
           ><var:entity const:name="nbsp" /></td
@@ -48,33 +48,35 @@
             const:isDefault="YES"
             /></td
           ></tr>
-      <var:if condition="showsAllMessages" const:negate="YES"
-        ><tr class="tableview"
-          ><td colspan="6" class="tbtv_navcell"
-            ><var:if condition="hasPrevious">
-              <a href="#"
-                idx="1"><var:string label:value="first"/></a> |
-              <a href="#"
-                var:idx="prevFirstMessageNumber"
-                ><var:string label:value="previous"/></a> |
-            </var:if>
-            <var:string value="firstMessageNumber" />
-            <var:string label:value="msgnumber_to" />
-            <var:string value="lastMessageNumber" />
-            <var:string label:value="msgnumber_of" />
-            <var:string value="sortedUIDs.count" />
+      <tr class="tableview"
+	><td colspan="6" class="tbtv_navcell"
+	  ><var:if condition="hasPrevious">
+	    <a href="#"
+	      idx="1"><var:string label:value="first"/></a> |
+	    <a href="#"
+	      var:idx="prevFirstMessageNumber"
+	      ><var:string label:value="previous"/></a> |
+	  </var:if>
+	  <var:string value="firstMessageNumber" />
+	  <var:string label:value="msgnumber_to" />
+	  <var:string value="lastMessageNumber" />
+	  <var:string label:value="msgnumber_of" />
+	  <var:string value="sortedUIDs.count" />
             <var:if condition="hasNext"
-              >| <a href="#"
-                var:idx="nextFirstMessageNumber"
-                ><var:string label:value="next" /></a>
-            </var:if
-              ></td
-            ></tr
-          ></var:if>
+	    >| <a href="#"
+	      var:idx="nextFirstMessageNumber"
+	      ><var:string label:value="next" /></a>
+	  </var:if
+	    ></td
+	  ></tr
+          >
+    </thead>
+    <tbody>
       <var:foreach list="messages" item="message"
-        ><tr class="tableview" var:id="msgRowID"
-          ><td></td
-            ><td><var:if condition="hasMessageAttachment"
+        ><tr var:class="messageRowStyleClass" var:id="msgRowID"
+          ><td class="messageFlagColumn"><var:entity name="nbsp"/></td
+            ><td class="messageFlagColumn"
+	    ><var:if condition="hasMessageAttachment"
               ><img rsrc:src="title_attachment_14x14.png"
                 /></var:if
               ></td
@@ -86,8 +88,7 @@
               formatter="context.mailSubjectFormatter"
               /></td
 
-            ><td
-            var:class="messageCellStyleClass"
+            ><td class="messageAddressColumn"
             ><var:if condition="showToAddress" const:negate="YES"
               ><var:string value="message.envelope.from"
                 formatter="context.mailEnvelopeAddressFormatter"
@@ -98,7 +99,7 @@
                 /></var:if
               ></td
             
-            ><td var:class="messageCellStyleClass"
+            ><td class="messageFlagColumn"
             ><var:if condition="isMessageRead"
               ><img rsrc:src="icon_read.gif"
                 class="mailerReadIcon"
@@ -117,7 +118,7 @@
                 /></var:if
               ></td
             
-            ><td var:class="messageCellStyleClass"
+            ><td class="messageDateColumn"
             ><span class="mailer_datefield"
               ><var:string value="message.envelope.date" 
                 formatter="context.mailDateFormatter"

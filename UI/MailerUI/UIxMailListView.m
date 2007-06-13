@@ -128,7 +128,7 @@ static int attachmentFlagSize = 8096;
   return [[[self message] valueForKey:@"uid"] stringValue];
 }
 
-- (NSString *) messageCellStyleClass 
+- (NSString *) messageRowStyleClass 
 {
   return [self isMessageDeleted]
     ? @"mailer_listcell_deleted"
@@ -137,11 +137,9 @@ static int attachmentFlagSize = 8096;
 
 - (NSString *) messageSubjectCellStyleClass 
 {
-  return [NSString stringWithFormat: @"%@ %@",
-		   [self messageCellStyleClass],
-		   ([self isMessageRead]
-		    ? @"mailer_readmailsubject"
-		    : @"mailer_unreadmailsubject")];
+  return ([self isMessageRead]
+	  ? @"mailer_readmailsubject"
+	  : @"mailer_unreadmailsubject");
 }
 
 - (BOOL) hasMessageAttachment 
