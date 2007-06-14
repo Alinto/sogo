@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#warning importing common is baaad
+
 #import <Foundation/Foundation.h>
 #import <Foundation/NSObjCRuntime.h>
 

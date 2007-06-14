@@ -20,6 +20,8 @@
 */
 // $Id: common.h 96 2004-06-30 08:35:34Z helge $
 
+#warning importing common is baaad
+
 #import <Foundation/Foundation.h>
 
 #if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY

@@ -38,16 +38,11 @@
 
 @interface SOGoAuthenticator : SoHTTPAuthenticator
 {
-  NSUserDefaults *ud;
   NSString *authMethod;
-  NSString *LDAPBaseDN;
-  NSString *LDAPHost;
   int LDAPPort;
 }
 
 + (id) sharedSOGoAuthenticator;
-
-- (BOOL) LDAPCheckLogin: (NSString *) _login password: (NSString *) _pwd;
 
 - (SOGoUser *) userInContext: (WOContext *) _ctx;
 

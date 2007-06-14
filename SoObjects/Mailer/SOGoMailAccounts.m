@@ -23,7 +23,6 @@
 #include "SOGoUser+Mail.h"
 #include "common.h"
 #include <NGObjWeb/SoObject+SoDAV.h>
-#include <SOGo/WOContext+Agenor.h>
 
 @implementation SOGoMailAccounts
 

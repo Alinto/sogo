@@ -19,21 +19,38 @@
   02111-1307, USA.
 */
 
-#include "SOGoDraftObject.h"
-#include <SoObjects/SOGo/WOContext+Agenor.h>
-#include <SoObjects/SOGo/NSCalendarDate+SOGo.h>
-#include <NGMail/NGMimeMessage.h>
-#include <NGMail/NGMimeMessageGenerator.h>
-#include <NGMail/NGSendMail.h>
-#include <NGMime/NGMimeBodyPart.h>
-#include <NGMime/NGMimeFileData.h>
-#include <NGMime/NGMimeMultipartBody.h>
-#include <NGMime/NGMimeType.h>
-#include <NGMime/NGMimeHeaderFieldGenerator.h>
-#include <NGImap4/NGImap4Envelope.h>
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include <NGExtensions/NSFileManager+Extensions.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest+So.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSFileManager+Extensions.h>
+#import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGImap4/NGImap4Envelope.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+#import <NGMail/NGSendMail.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeFileData.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeHeaderFieldGenerator.h>
+
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+
+#import "SOGoDraftObject.h"
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 
@@ -70,7 +87,6 @@ static NSString    *userAgent      = @"SOGoMail 1.0";
 static BOOL        draftDeleteDisabled = NO; // for debugging
 static BOOL        debugOn = NO;
 static BOOL        showTextAttachmentsInline  = NO;
-static NSString    *fromInternetSuffixPattern = nil;
 
 + (int)version {
   return [super version] + 0 /* v1 */;
@@ -88,14 +104,6 @@ static NSString    *fromInternetSuffixPattern = nil;
   
   if ((draftDeleteDisabled = [ud boolForKey:@"SOGoNoDraftDeleteAfterSend"]))
     NSLog(@"WARNING: draft delete is disabled! (SOGoNoDraftDeleteAfterSend)");
-  
-  fromInternetSuffixPattern = [ud stringForKey:@"SOGoInternetMailSuffix"];
-  if ([fromInternetSuffixPattern length] == 0)
-    NSLog(@"Note: no 'SOGoInternetMailSuffix' is configured.");
-  else {
-    fromInternetSuffixPattern =
-      [@"\n" stringByAppendingString:fromInternetSuffixPattern];
-  }
   
   TextPlainType  = [[NGMimeType mimeType:@"text"      subType:@"plain"]  copy];
   MultiMixedType = [[NGMimeType mimeType:@"multipart" subType:@"mixed"]  copy];
@@ -341,49 +349,31 @@ static NSString    *fromInternetSuffixPattern = nil;
 {
   NSDictionary  *lInfo;
   NGMimeMessage *message;  
-  NSString *fromInternetSuffix;
   BOOL     addSuffix;
   id       body;
 
   if ((lInfo = [self fetchInfo]) == nil)
     return nil;
   
-  addSuffix = [context isAccessFromIntranet] ? NO : YES;
-  if (addSuffix) {
-    fromInternetSuffix = 
-      [fromInternetSuffixPattern stringByReplacingVariablesWithBindings:
-				   [context request]
-				 stringForUnknownBindings:@""];
-    
-    addSuffix = [fromInternetSuffix length] > 0 ? YES : NO;
-  }
-  
-  [map setObject:@"text/plain" forKey:@"content-type"];
+  [map setObject: @"text/plain" forKey: @"content-type"];
   if ((body = [lInfo objectForKey:@"text"]) != nil) {
-    if ([body isKindOfClass:[NSString class]]) {
-      if (addSuffix)
-	body = [body stringByAppendingString:fromInternetSuffix];
-      
+    if ([body isKindOfClass:[NSString class]])
       /* Note: just 'utf8' is displayed wrong in Mail.app */
       [map setObject: contentTypeValue
 	   forKey: @"content-type"];
 //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
-    }
     else if ([body isKindOfClass:[NSData class]] && addSuffix) {
       body = [[body mutableCopy] autorelease];
-      [(NSMutableData *)body
-                        appendData: [fromInternetSuffix dataUsingEncoding:NSUTF8StringEncoding]];
     }
     else if (addSuffix) {
       [self warnWithFormat:@"Note: cannot add Internet marker to body: %@",
 	      NSStringFromClass([body class])];
     }
   }
-  else if (addSuffix)
-    body = fromInternetSuffix;
   
   message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
   [message setBody:body];
+
   return message;
 }
 
@@ -934,7 +924,8 @@ static NSString    *fromInternetSuffixPattern = nil;
   return [NSNumber numberWithBool:YES]; /* delete worked out ... */
 }
 
-- (id)GETAction:(id)_ctx {
+- (id) GETAction: (id) _ctx
+{
   /* 
      Override, because SOGoObject's GETAction uses the less efficient
      -contentAsString method.

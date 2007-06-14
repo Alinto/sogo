@@ -40,7 +40,6 @@
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/Mailer/SOGoMailIdentity.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/WOContext+Agenor.h>
 #import <SOGoUI/UIxComponent.h>
 
 /*
@@ -224,19 +223,6 @@ static NSArray      *infoKeys            = nil;
 
 - (NSString *)panelTitle {
   return [self labelForKey:@"Compose Mail"];
-}
-
-/* detect webmail being accessed from the outside */
-
-- (BOOL)isInternetRequest {
-  // DEPRECATED
-  return [[self context] isAccessFromIntranet] ? NO : YES;
-}
-
-- (BOOL)showInternetMarker {
-  if (!showInternetMarker)
-    return NO;
-  return [[self context] isAccessFromIntranet] ? NO : YES;
 }
 
 /* info loading */
@@ -507,7 +493,6 @@ static NSArray      *infoKeys            = nil;
 {
   NSException  *error;
   NSString     *mailPath;
-  NSDictionary *h;
   id <WOActionResults> result;
 
   // TODO: need to validate whether we have a To etc
@@ -529,12 +514,10 @@ static NSArray      *infoKeys            = nil;
   
   /* setup some extra headers if required */
   
-  h = [[self context] isAccessFromIntranet] ? nil : internetMailHeaders;
-  
   /* save mail to file (so that we can upload the mail to Cyrus) */
   // TODO: all this could be handled by the SOGoDraftObject?
   
-  mailPath = [[self clientObject] saveMimeMessageToTemporaryFileWithHeaders:h];
+  mailPath = [[self clientObject] saveMimeMessageToTemporaryFileWithHeaders: internetMailHeaders];
 
   /* then, send mail */
   

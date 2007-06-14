@@ -31,7 +31,6 @@ libSOGo_HEADER_FILES = \
 	LDAPUserManager.h		\
 	LDAPSource.h			\
 	SOGoPermissions.h		\
-	SOGoLRUCache.h			\
 	WOContext+Agenor.h		\
 	SOGoDAVRendererTypes.h		\
 	NSArray+Utilities.h		\
@@ -57,7 +56,6 @@ libSOGo_OBJC_FILES = \
 	SOGoCustomGroupFolder.m		\
 	\
 	SOGoPermissions.m		\
-	SOGoLRUCache.m			\
 	LDAPUserManager.m		\
 	LDAPSource.m			\
 	WOContext+Agenor.m		\

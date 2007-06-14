@@ -30,32 +30,25 @@
 
 @implementation SOGoAuthenticator
 
-static SOGoAuthenticator *auth = nil;
-
 + (id) sharedSOGoAuthenticator
 {
-  if (auth == nil)
-    auth = [[self alloc] init];
+  static SOGoAuthenticator *auth = nil;
+ 
+  if (!auth)
+    auth = [self new];
+  
   return auth;
 }
 
 - (id) init
 {
+  NSUserDefaults *ud;
+
   if ((self = [super init]))
     {
       ud = [NSUserDefaults standardUserDefaults];
 
-      LDAPBaseDN = nil;
-      LDAPHost = nil;
-      LDAPPort = -1;
-
       authMethod = [[ud stringForKey:@"AuthentificationMethod"] retain];
-      if ([authMethod isEqualToString: @"LDAP"])
-	{
-// 	  LDAPBaseDN = [[ud stringForKey:@"LDAPRootDN"] retain];
-// 	  LDAPHost = [[ud stringForKey:@"LDAPHost"] retain];
-// 	  LDAPPort = [ud integerForKey:@"LDAPPort"];
-	}
     }
 
   return self;
@@ -63,10 +56,6 @@ static SOGoAuthenticator *auth = nil;
 
 - (void) dealloc
 {
-  if (LDAPBaseDN)
-    [LDAPBaseDN release];
-  if (LDAPHost)
-    [LDAPHost release];
   [authMethod release];
   [super dealloc];
 }
@@ -75,25 +64,19 @@ static SOGoAuthenticator *auth = nil;
 	   password: (NSString *) _pwd
 {
   BOOL accept;
+  LDAPUserManager *um;
 
   if ([authMethod isEqualToString: @"LDAP"])
-    accept = [self LDAPCheckLogin: _login password: _pwd];
+    {
+      um = [LDAPUserManager sharedUserManager];
+      accept = [um checkLogin: _login andPassword: _pwd];
+    }
   else
     accept = ([_login length] > 0);
 
-  return (([_login isEqualToString: @"freebusy"]
-           && [_pwd isEqualToString: @"freebusy"])
-          || accept);
-}
-
-- (BOOL) LDAPCheckLogin: (NSString *) _login
-	       password: (NSString *) _pwd
-{
-  LDAPUserManager *um;
-
-  um = [LDAPUserManager sharedUserManager];
-
-  return [um checkLogin: _login andPassword: _pwd];
+  return (accept
+	  || ([_login isEqualToString: @"freebusy"]
+	      && [_pwd isEqualToString: @"freebusy"]));
 }
 
 /* create SOGoUser */

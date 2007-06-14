@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#import "WOContext+Agenor.h"
 #import "common.h"
+
 #import "SOGoUser.h"
 
 #import "Appointments/SOGoAppointmentFolder.h"
