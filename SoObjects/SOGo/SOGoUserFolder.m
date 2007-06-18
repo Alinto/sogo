@@ -19,15 +19,19 @@
   02111-1307, USA.
 */
 
-#import "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
-#import "SOGoUser.h"
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSObject+Logs.h>
 
-#import "Appointments/SOGoAppointmentFolder.h"
-#import "Appointments/SOGoFreeBusyObject.h"
-#import "Contacts/SOGoContactFolders.h"
-#import "Mailer/SOGoMailAccounts.h"
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoFreeBusyObject.h>
+#import <Contacts/SOGoContactFolders.h>
+#import <Mailer/SOGoMailAccounts.h>
+
 #import "SOGoPermissions.h"
+#import "SOGoUser.h"
 
 #import "SOGoUserFolder.h"
 
