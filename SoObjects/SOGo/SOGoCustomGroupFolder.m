@@ -18,10 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoCustomGroupFolder.m 115 2004-06-30 11:57:37Z helge $
 
-#include "SOGoCustomGroupFolder.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoCustomGroupFolder.h"
 
 @implementation SOGoCustomGroupFolder
 

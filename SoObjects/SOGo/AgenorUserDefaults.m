@@ -19,7 +19,13 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSPropertyList.h>
+#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
