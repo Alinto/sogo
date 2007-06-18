@@ -19,7 +19,18 @@
   02111-1307, USA.
 */
 
+#import <unistd.h>
+#import <stdlib.h>
+
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSURL.h>
+
 #import <NGObjWeb/SoObject.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
@@ -27,10 +38,8 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import "SOGoPermissions.h"
+
 #import "SOGoFolder.h"
-#import "common.h"
-#import <unistd.h>
-#import <stdlib.h>
 
 static NSString *defaultUserID = @"<default>";
 

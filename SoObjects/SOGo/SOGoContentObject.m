@@ -19,9 +19,16 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import "common.h"
 #import "SOGoFolder.h"
 #import "SOGoUser.h"
 #import "SOGoPermissions.h"

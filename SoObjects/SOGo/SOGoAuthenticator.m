@@ -19,14 +19,19 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGLdap/NGLdapConnection.h>
-#import "SOGoPermissions.h"
 
 #import "LDAPUserManager.h"
+#import "SOGoPermissions.h"
+#import "SOGoUser.h"
 
 #import "SOGoAuthenticator.h"
-#import "SOGoUser.h"
-#import "common.h"
 
 @implementation SOGoAuthenticator
 
@@ -79,6 +84,23 @@
 	      && [_pwd isEqualToString: @"freebusy"]));
 }
 
+- (NSString *) _passwordInContext: (WOContext *) context
+{
+  NSString  *auth, *password;
+  NSArray   *creds;
+
+  password = nil;
+  auth = [[context request] headerForKey:@"authorization"];
+  if (auth)
+    {
+      creds = [self parseCredentials: auth];
+      if ([creds count] > 1)
+	password = [creds objectAtIndex: 1];
+    }
+  
+  return password;
+}
+
 /* create SOGoUser */
 
 - (SOGoUser *) userInContext: (WOContext *)_ctx
@@ -109,8 +131,11 @@
             user = anonymous;
         }
       else
-        user = [SOGoUser userWithLogin: login
-			 roles: [self rolesForLogin: login]];
+	{
+	  user = [SOGoUser userWithLogin: login
+			   roles: [self rolesForLogin: login]];
+	  [user setCurrentPassword: [self _passwordInContext: _ctx]];
+	}
     }
   else
     user = nil;

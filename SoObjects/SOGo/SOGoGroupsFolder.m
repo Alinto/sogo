@@ -18,28 +18,31 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoGroupsFolder.m 115 2004-06-30 11:57:37Z helge $
 
-#include "SOGoGroupsFolder.h"
-#include "common.h"
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoGroupsFolder.h"
 
 @implementation SOGoGroupsFolder
 
-- (void)dealloc {
-  [super dealloc];
-}
+// - (void)dealloc {
+//   [super dealloc];
+// }
 
 /* accessors */
 
 /* SOPE */
 
-- (BOOL)isFolderish {
+- (BOOL) isFolderish
+{
   return YES;
 }
 
 /* looking up shared objects */
 
-- (SOGoGroupsFolder *)lookupGroupsFolder {
+- (SOGoGroupsFolder *) lookupGroupsFolder
+{
   return self;
 }
 
@@ -47,33 +50,42 @@
 
 /* name lookup */
 
-- (id)customGroup:(NSString *)_key inContext:(id)_ctx {
+- (id) customGroup: (NSString *) _key
+	 inContext: (id) _ctx
+{
   static Class groupClass = Nil;
   id group;
-  
-  if (groupClass == Nil)
+
+  if (!groupClass)
     groupClass = NSClassFromString(@"SOGoCustomGroupFolder");
-  if (groupClass == Nil) {
-    [self logWithFormat:@"ERROR: missing SOGoCustomGroupFolder class!"];
-    return nil;
-  }
-  
-  group = [[groupClass alloc] initWithName:_key inContainer:self];
-  return [group autorelease];
+  if (!groupClass)
+    {
+      [self logWithFormat:@"ERROR: missing SOGoCustomGroupFolder class!"];
+      group = nil;
+    }
+  else
+    group = [groupClass objectWithName: _key inContainer: self];
+
+  return group;
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
-  
-  if ([_key hasPrefix:@"_custom_"])
-    return [self customGroup:_key inContext:_ctx];
-  
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+  obj = [super lookupName: _key inContext: _ctx acquire: NO];
+  if (!obj)
+    {
+      if ([_key hasPrefix: @"_custom_"])
+	obj = [self customGroup: _key inContext: _ctx];
+      else
+	obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+    }
+
+  return obj;
 }
 
 @end /* SOGoGroupsFolder */
