@@ -18,29 +18,40 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SOGoGroupFolder.m 115 2004-06-30 11:57:37Z helge $
 
-#include "SOGoGroupFolder.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NGLogger.h>
+#import <NGExtensions/NGLoggerManager.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
+
+#import "SOGoGroupFolder.h"
 
 @implementation SOGoGroupFolder
 
 static NGLogger *logger = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   NGLoggerManager *lm;
-  static BOOL     didInit = NO;
-  
-  if (didInit) return;
-  didInit = YES;
-  
-  lm     = [NGLoggerManager defaultLoggerManager];
-  logger = [lm loggerForDefaultKey:@"SOGoGroupFolderDebugEnabled"];
+
+  if (!logger)
+    {
+      lm = [NGLoggerManager defaultLoggerManager];
+      logger = [lm loggerForDefaultKey:@"SOGoGroupFolderDebugEnabled"];
+    }
 }
 
-- (void)dealloc {
-  [self->uidToFolder release];
-  [self->folders     release];
+- (void) dealloc
+{
+  [uidToFolder release];
+  [folders     release];
   [super dealloc];
 }
 
@@ -97,7 +108,7 @@ static NGLogger *logger = nil;
   NSArray  *luids;
   unsigned i, count;
   
-  if (self->uidToFolder != nil)
+  if (uidToFolder != nil)
     return;
   if ((luids = [self uids]) == nil)
     return;
@@ -122,13 +133,13 @@ static NGLogger *logger = nil;
   }
   
   /* fix results */
-  self->uidToFolder = [md copy];
-  self->folders     = [[NSArray alloc] initWithArray:ma];
+  uidToFolder = [md copy];
+  folders     = [[NSArray alloc] initWithArray:ma];
 }
 
 - (NSArray *)memberFolders {
   [self _setupFolders];
-  return self->folders;
+  return folders;
 }
 
 - (id)folderForUID:(NSString *)_uid {
@@ -137,27 +148,34 @@ static NGLogger *logger = nil;
   if ([_uid length] == 0)
     return nil;
   
-  return [self->uidToFolder objectForKey:_uid];
+  return [uidToFolder objectForKey:_uid];
 }
 
-- (void)resetFolderCaches {
-  [self->uidToFolder release]; self->uidToFolder = nil;
-  [self->folders     release]; self->folders     = nil;
+- (void) resetFolderCaches
+{
+  [uidToFolder release];
+  uidToFolder = nil;
+  [folders release];
+  folders     = nil;
 }
-- (void)sleep {
+
+- (void) sleep
+{
   [self resetFolderCaches];
   [super sleep];
 }
 
 /* SOPE */
 
-- (BOOL)isFolderish {
+- (BOOL) isFolderish
+{
   return YES;
 }
 
 /* looking up shared objects */
 
-- (SOGoGroupsFolder *)lookupGroupsFolder {
+- (SOGoGroupsFolder *) lookupGroupsFolder
+{
   return [[self container] lookupGroupsFolder];
 }
 
@@ -165,7 +183,9 @@ static NGLogger *logger = nil;
 
 /* name lookup */
 
-- (id)groupCalendar:(NSString *)_key inContext:(id)_ctx {
+- (id) groupCalendar: (NSString *) _key
+	   inContext: (id) _ctx
+{
   static Class calClass = Nil;
   id calendar;
   
@@ -184,7 +204,10 @@ static NGLogger *logger = nil;
   return [calendar autorelease];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
