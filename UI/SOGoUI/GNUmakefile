@@ -16,7 +16,6 @@ libSOGoUI_HEADER_FILES +=	\
 	\
 	UIxJSClose.h		\
 	UIxComponent.h		\
-	SOGoDateFormatter.h	\
 	SOGoAptFormatter.h	\
 	SOGoJSStringFormatter.h	\
 	WOContext+UIx.h		\
@@ -25,7 +24,6 @@ libSOGoUI_OBJC_FILES +=		\
 	\
 	UIxJSClose.m		\
 	UIxComponent.m		\
-	SOGoDateFormatter.m	\
 	SOGoAptFormatter.m	\
 	SOGoJSStringFormatter.m \
 	WOContext+UIx.m		\
