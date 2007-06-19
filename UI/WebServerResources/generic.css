@@ -614,8 +614,7 @@ DIV.dTreeNode SPAN._dragOver
 
 /* tabs */
 DIV.tabsContainer
-{ 
-  position: relative;
+{ position: relative;
   color: #000;
   background-color: #d4d0c8;
   margin-top: 1.5em;
