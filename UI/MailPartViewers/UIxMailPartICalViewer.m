@@ -119,10 +119,10 @@
 
 - (SOGoDateFormatter *)dateFormatter {
   if (self->dateFormatter == nil) {
-    self->dateFormatter =
-      [[SOGoDateFormatter alloc] initWithLocale:[self locale]];
-    [self->dateFormatter setFullWeekdayNameAndDetails];
+    dateFormatter = [[context activeUser] dateFormatter];
+    [dateFormatter retain];
   }
+
   return self->dateFormatter;
 }
 
