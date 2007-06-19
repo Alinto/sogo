@@ -32,6 +32,8 @@
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 
+#import "NSObject+Utilities.h"
+
 #import "AgenorUserDefaults.h"
 
 @implementation AgenorUserDefaults
@@ -323,6 +325,13 @@ static NSString *uidColumnName = @"uid";
 - (BOOL) fetchProfile
 {
   return (values || [self primaryFetchProfile]);
+}
+
+- (NSString *) jsonRepresentation
+{
+  [self fetchProfile];
+
+  return [values jsonRepresentation];
 }
 
 /* value access */

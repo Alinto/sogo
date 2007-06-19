@@ -78,6 +78,8 @@
 - (void) setFloat: (float) value forKey: (NSString *) key;
 - (void) setInteger: (int) value forKey: (NSString *) key;
 
+- (NSString *) jsonRepresentation;
+
 /* saving changes */
 
 - (BOOL) synchronize;

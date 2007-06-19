@@ -1,5 +1,8 @@
 2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-jsonRepresentation]): new method with an explicit name.
+
 	* UI/PreferencesUI/product.plist: new bundle that provides a web
 	ui for handling user defaults.
 
