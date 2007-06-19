@@ -30,8 +30,8 @@ libSOGo_HEADER_FILES = \
 	\
 	LDAPUserManager.h		\
 	LDAPSource.h			\
+	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
-	WOContext+Agenor.h		\
 	SOGoDAVRendererTypes.h		\
 	NSArray+Utilities.h		\
 	NSDictionary+URL.h		\
@@ -55,10 +55,10 @@ libSOGo_OBJC_FILES = \
 	SOGoGroupFolder.m		\
 	SOGoCustomGroupFolder.m		\
 	\
+	SOGoDateFormatter.m		\
 	SOGoPermissions.m		\
 	LDAPUserManager.m		\
 	LDAPSource.m			\
-	WOContext+Agenor.m		\
 	SOGoDAVRendererTypes.m		\
 	AgenorUserDefaults.m		\
 	NSArray+Utilities.m		\
