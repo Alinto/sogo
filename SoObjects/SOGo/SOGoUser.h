@@ -22,7 +22,7 @@
 #ifndef __SOGoUser_H__
 #define __SOGoUser_H__
 
-#include <NGObjWeb/SoUser.h>
+#import <NGObjWeb/SoUser.h>
 
 /*
   SOGoUser
@@ -41,19 +41,29 @@
 @class NSUserDefaults;
 @class NSTimeZone;
 @class WOContext;
+@class SOGoDateFormatter;
+
+extern NSString *SOGoWeekStartHideWeekNumbers;
+extern NSString *SOGoWeekStartJanuary1;
+extern NSString *SOGoWeekStartFirst4DayWeek;
+extern NSString *SOGoWeekStartFirstFullWeek;
 
 @interface SOGoUser : SoUser
 {
+  NSString *currentPassword;
   NSString *cn;
   NSString *language;
   NSArray *allEmails;
   NSUserDefaults *userDefaults;
   NSUserDefaults *userSettings;
   NSTimeZone *userTimeZone;
+  SOGoDateFormatter *dateFormatter;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) login
 		       roles: (NSArray *) roles;
+- (void) setCurrentPassword: (NSString *) newPassword;
+- (NSString *) currentPassword;
 
 /* properties */
 
@@ -67,6 +77,8 @@
 
 - (NSString *) cn;
 - (NSURL *) freeBusyURL;
+
+- (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context;
 
 /* shares and identities */
 

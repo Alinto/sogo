@@ -29,7 +29,8 @@
 
 #import "AgenorUserDefaults.h"
 #import "LDAPUserManager.h"
-#import "SOGoContentObject.h"
+#import "SOGoDateFormatter.h"
+#import "SOGoObject.h"
 #import "SOGoPermissions.h"
 #import "NSArray+Utilities.h"
 
@@ -39,6 +40,11 @@ static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static NSString *defaultLanguage = nil;
 static NSURL *AgenorProfileURL = nil;
+
+NSString *SOGoWeekStartHideWeekNumbers = @"HideWeekNumbers";
+NSString *SOGoWeekStartJanuary1 = @"January1";
+NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
+NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 @interface NSObject (SOGoRoles)
 
@@ -98,6 +104,8 @@ static NSURL *AgenorProfileURL = nil;
       userSettings = nil;
       allEmails = nil;
       language = nil;
+      currentPassword = nil;
+      dateFormatter = nil;
     }
 
   return self;
@@ -125,11 +133,23 @@ static NSURL *AgenorProfileURL = nil;
 
 - (void) dealloc
 {
+  [currentPassword release];
   [userDefaults release];
   [userSettings release];
   [allEmails release];
   [language release];
+  [dateFormatter release];
   [super dealloc];
+}
+
+- (void) setCurrentPassword: (NSString *) newPassword
+{
+  ASSIGN (currentPassword, newPassword);
+}
+
+- (NSString *) currentPassword
+{
+  return currentPassword;
 }
 
 - (id) _fetchFieldForUser: (NSString *) field
@@ -232,6 +252,30 @@ static NSURL *AgenorProfileURL = nil;
   return nil;
 }
 
+- (SOGoDateFormatter *) dateFormatterInContext: (WOContext *) context
+{
+  NSString *format;
+  NSUserDefaults *ud;
+
+  if (!dateFormatter)
+    {
+      dateFormatter = [SOGoDateFormatter new];
+      [dateFormatter setLocale: [context valueForKey: @"locale"]];
+      ud = [self userDefaults];
+      format = [ud stringForKey: @"ShortDateFormat"];
+      if (format)
+	[dateFormatter setShortDateFormat: format];
+      format = [ud stringForKey: @"LongDateFormat"];
+      if (format)
+	[dateFormatter setLongDateFormat: format];
+      format = [ud stringForKey: @"TimeFormat"];
+      if (format)
+	[dateFormatter setTimeFormat: format];
+    }
+
+  return dateFormatter;
+}
+
 /* defaults */
 
 - (NSUserDefaults *) userDefaults
@@ -309,8 +353,10 @@ static NSURL *AgenorProfileURL = nil;
   if ([folder isKindOfClass:[NSException class]])
     return folder;
   
-  [(WOContext *)_ctx setObject:folder ? folder : [NSNull null] 
-                forKey: @"ActiveUserHomeFolder"];
+  [(WOContext *)_ctx setObject: ((folder)
+				 ? folder
+				 : [NSNull null])
+		forKey: @"ActiveUserHomeFolder"];
   return folder;
 }
 

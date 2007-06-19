@@ -1,5 +1,11 @@
 2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-setCurrentPassword:newPassword]): new stub method.
+	([SOGoUser -dateFormatterInContext:context]): new method that
+	returns an instance of SOGoDateFormatter configured based on the
+	user defaults.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame
 	-relativePreferencesPath]): new method.
 
