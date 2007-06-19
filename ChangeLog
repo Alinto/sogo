@@ -1,5 +1,7 @@
 2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentView.[hm]: removed unused module.
+
 	* SoObjects/SOGo/WOContext+Agenor.[hm]: removed unused module.
 
 2007-06-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
