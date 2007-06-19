@@ -1,0 +1,36 @@
+{ /* -*-javascript-*- */
+  requires = ( MAIN, MainUI, CommonUI );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+     SOGoUserFolder = {
+	slots = {
+	   toolbar = {
+	      protectedBy = "View";
+	      value = "UIxPreferences.toolbar";
+	   };
+	};
+	methods = {
+	   preferences = {
+	      protectedBy = "View";
+	      pageName = "UIxPreferences";
+	   };
+	   jsonDefaults = {
+	      protectedBy = "View";
+	      actionClass = "UIxJSONPreferences";
+	      actionName = "jsonDefaults";
+	   };
+	   jsonSettings = {
+	      protectedBy = "View";
+	      actionClass = "UIxJSONPreferences";
+	      actionName = "jsonSettings";
+	   };
+	};
+     };
+  };
+}

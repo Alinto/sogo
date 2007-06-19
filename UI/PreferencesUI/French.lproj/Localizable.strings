@@ -1,0 +1,70 @@
+/* toolbar */
+"Save and Close" = "Enregistrer et fermer";
+"Close" = "Fermer";
+
+/* tabs */
+"Out of Office" = "Absence du bureau";
+"Date and Time" = "Date et heure";
+"Calendar Options" = "Calendrier";
+"Password" = "Mot de passe";
+
+/* ooo */
+"I'm currently in the office" = "Je suis présent";
+"I'm currently out of the office" = "Je suis absent";
+"AutoReply only once to each sender with the following text :"
+= "Répondre automatiquement avec le texte suivant, une seule fois par expéditeur :";
+
+/* d & t */
+"Current Time Zone :" = "Fuseau horaire en cours :";
+"Short Date Format :" = "Style de date courte :";
+"Long Date Format :" = "Style de date longue :";
+"Time Format :" = "Style de l'heure :";
+
+"shortDateFmt_0" = "%d/%m/%Y";
+"shortDateFmt_1" = "%d/%m/%y";
+"shortDateFmt_2" = "%d.%m.%y";
+"shortDateFmt_3" = "%d-%m-%y";
+"shortDateFmt_4" = "%Y-%m-%d";
+"shortDateFmt_5" = "";
+
+"longDateFmt_0" = "%A %e %B %Y";
+"longDateFmt_1" = "%e %b. %Y";
+"longDateFmt_2" = "%e %B %Y";
+"longDateFmt_3" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
+
+/* calendar */
+"Week begins on :" = "Premier jour de la semaine :";
+"Day start time :" = "Début de la journée :";
+"Day end time :" = "Fin de la journée :";
+"First week of year :" = "Première semaine de l'année :";
+"Enable reminders for Calendar items" = "Activer les rappels pour les éléments du calendrier";
+"Play a sound when a reminder comes due" = "Émettre un signal sonore à l'échéance du rappel";
+"Default reminder :" = "Rappel par défaut :";
+
+"firstWeekOfYear_HideWeekNumbers" = "Ne pas afficher le numéro des semaines";
+"firstWeekOfYear_January1" = "Commence le 1er janvier";
+"firstWeekOfYear_First4DayWeek" = "Première semaine de 4 jours";
+"firstWeekOfYear_FirstFullWeek" = "Première semaine entière";
+
+"reminderTime_0000" = "0 minutes";
+"reminderTime_0005" = "5 minutes";
+"reminderTime_0010" = "10 minutes";
+"reminderTime_0015" = "15 minutes";
+"reminderTime_0030" = "30 minutes";
+"reminderTime_0100" = "1 heure";
+"reminderTime_0200" = "2 heures";
+"reminderTime_0400" = "2 heures";
+"reminderTime_0800" = "2 heures";
+"reminderTime_1200" = "1/2 journée";
+"reminderTime_2400" = "1 journée";
+"reminderTime_4800" = "2 journées";
+
+/* password */
+"New password:" = "Nouveau mot de passe :";
+"Confirmation:" = "Confirmation :";
+"Change" = "Changer";

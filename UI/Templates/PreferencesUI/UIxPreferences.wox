@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="title"
+  const:popup="YES"
+  >
+  <form id="mainForm" var:href="ownPath">
+    <div class="tabsContainer" id="preferencesTabs">
+      <ul>
+	<li target="outOfOfficeView"><var:string
+	    label:value="Out of Office"/></li>
+	<li target="dateTimeView"><var:string
+	    label:value="Date and Time"/></li>
+	<li target="calendarOptionsView"><var:string
+	    label:value="Calendar Options"/></li>
+	<li target="passwordView"><var:string label:value="Password"/></li>
+      </ul>
+      <div id="outOfOfficeView" class="tab">
+	<label><input
+	    const:name="inTheOffice" type="radio" const:value="YES"
+	    var:selection="inTheOffice"/>
+	  <var:string label:value="I'm currently in the office"/></label><br/>
+	<label><input
+	    const:name="inTheOffice" type="radio" const:value="NO"
+	    var:selection="inTheOffice"/>
+	  <var:string label:value="I'm currently out of the office"/></label><br/>
+	<br/>
+	<div id="outOfOfficeMessage">
+	  <label><var:string label:value="AutoReply only once to each sender with the following text :"/><br/>
+	    <textarea const:name="autoReplyText" var:value="autoReplyText"/>
+	  </label>
+	</div>
+      </div>
+      <div id="dateTimeView" class="tab">
+	<label><var:string label:value="Current Time Zone :"/>
+	    <var:popup list="timeZonesList" item="item"
+	      string="item" selection="userTimeZone" /></label><br/>
+	<br/>
+	<div id="dateTimeFormat">
+	  <label><var:string label:value="Short Date Format :"/>
+	    <var:popup list="shortDateFormatsList" item="item"
+	      string="itemShortDateFormatText" selection="userShortDateFormat"
+	      /></label><br/>
+	  <label><var:string label:value="Long Date Format :"/>
+	    <var:popup list="longDateFormatsList" item="item"
+	      string="itemLongDateFormatText" selection="userLongDateFormat"
+	      /></label><br/>
+	  <label><var:string label:value="Time Format :"/>
+	    <var:popup list="timeFormatsList" item="item"
+	      string="itemTimeFormatText" selection="userTimeFormat"
+	      /></label>
+	</div>
+      </div>
+      <div id="calendarOptionsView" class="tab">
+	<label><var:string label:value="Week begins on :"/>
+	  <var:popup list="daysList" item="item"
+	    string="itemWeekStartDay" selection="userWeekStartDay"
+	    /></label><br/>
+	<label><var:string label:value="Day start time :"/>
+	  <var:popup list="hoursList" item="item"
+	    string="item" selection="userDayStartTime"
+	    /></label>
+	<label><var:string label:value="Day end time :"/>
+	  <var:popup list="hoursList" item="item"
+	    string="item" selection="userDayEndTime"
+	    /></label><br/>
+	<label><var:string label:value="First week of year :"/>
+	  <var:popup list="firstWeekList" item="item"
+	  string="itemFirstWeekText" selection="userFirstWeek"
+	    /></label><br/>
+	<br/>
+	<label><input class="checkBox"
+	    type="checkbox" var:selection="reminderEnabled"
+	    var:checked="reminderEnabled"/><var:string
+	    label:value="Enable reminders for Calendar items"/></label><br/>
+	<label><input class="checkBox"
+	    type="checkbox" var:selection="remindWithASound"
+	    var:checked="remindWithASound"/><var:string
+	    label:value="Play a sound when a reminder comes due"/></label><br/>
+	<label><var:string label:value="Default reminder :"/>
+	  <var:popup list="reminderTimesList" item="item"
+	    string="itemReminderTimeText" selection="userReminderTime"/></label>
+      </div>
+      <div id="passwordView" class="tab">
+	<label><var:string label:value="New password:"
+	    /><input type="text" class="textField"
+	    const:enabled="disabled"
+	    var:value="newPassword"/></label><br/>
+	<label><var:string label:value="Confirmation:"
+	    /><input type="text" class="textField"
+	    const:enabled="disabled"
+	    var:value="newPasswordConfirmation"/></label><br/>
+	<input type="button" class="button"
+	  id="changePasswordBtn" label:value="Change"/>
+      </div>
+    </div>
+  </form>
+</var:component>

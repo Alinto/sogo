@@ -1,0 +1,73 @@
+/* toolbar */
+"Save and Close" = "Save and Close";
+"Close" = "Close";
+
+/* tabs */
+"Out of Office" = "Out of Office";
+"Date and Time" = "Date and Time";
+"Calendar Options" = "Calendar Options";
+"Password" = "Password";
+
+/* ooo */
+"I'm currently in the office" = "I'm currently in the office";
+"I'm currently out of the office" = "I'm currently out of the office";
+"AutoReply only once to each sender with the following text :"
+= "AutoReply only once to each sender with the following text :";
+
+/* d & t */
+"Current Time Zone :" = "Current Time Zone :";
+"Short Date Format :" = "Short Date Format :";
+"Long Date Format :" = "Long Date Format :";
+"Time Format :" = "Time Format :";
+
+"shortDateFmt_0" = "%m/%e/%Y";
+"shortDateFmt_1" = "%m/%e/%y";
+"shortDateFmt_2" = "%m/%d/%Y";
+"shortDateFmt_3" = "%m/%d/%y";
+"shortDateFmt_4" = "%y/%m/%d";
+"shortDateFmt_5" = "%Y-%m-%d";
+"shortDateFmt_6" = "%d-%b-%y";
+"shortDateFmt_7" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Week begins on :";
+"Day start time :" = "Day start time :";
+"Day end time :" = "Day end time :";
+"First week of year :" = "First week of year :";
+"Enable reminders for Calendar items" = "Enable reminders for Calendar items";
+"Play a sound when a reminder comes due"
+= "Play a sound when a reminder comes due";
+"Default reminder :" = "Default reminder :";
+
+"firstWeekOfYear_HideWeekNumbers" = "Do not display week numbers";
+"firstWeekOfYear_January1" = "Starts on january 1";
+"firstWeekOfYear_First4DayWeek" = "First 4-day week";
+"firstWeekOfYear_FirstFullWeek" = "First full week";
+
+"reminderTime_0000" = "0 minutes";
+"reminderTime_0005" = "5 minutes";
+"reminderTime_0010" = "10 minutes";
+"reminderTime_0015" = "15 minutes";
+"reminderTime_0030" = "30 minutes";
+"reminderTime_0100" = "1 hour";
+"reminderTime_0200" = "2 hours";
+"reminderTime_0400" = "2 hours";
+"reminderTime_0800" = "2 hours";
+"reminderTime_1200" = "1/2 day";
+"reminderTime_2400" = "1 day";
+"reminderTime_4800" = "2 days";
+
+/* password */
+"New password:" = "New password:";
+"Confirmation:" = "Confirmation:";
+"Change" = "Change";
