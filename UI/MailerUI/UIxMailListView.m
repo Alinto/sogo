@@ -26,15 +26,24 @@
   object.
 */
 
-#define messagesPerPage 50
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSString+misc.h>
 
-#include "common.h"
-#include <SoObjects/Mailer/SOGoMailFolder.h>
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <NGObjWeb/SoObject+SoDAV.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxMailListView.h"
 
+#define messagesPerPage 50
 static int attachmentFlagSize = 8096;
 
 @implementation UIxMailListView
@@ -45,6 +54,8 @@ static int attachmentFlagSize = 8096;
   [self->sortedUIDs release];
   [self->messages   release];
   [self->message    release];
+  [dateFormatter release];
+  [userTimeZone release];
   [super dealloc];
 }
 
@@ -69,6 +80,16 @@ static int attachmentFlagSize = 8096;
 - (id) message 
 {
   return self->message;
+}
+
+- (NSString *) messageDate
+{
+  NSCalendarDate *messageDate;
+
+  messageDate = [[message objectForKey: @"envelope"] date];
+  [messageDate setTimeZone: userTimeZone];
+
+  return [dateFormatter formattedDateAndTime: messageDate];
 }
 
 - (void) setQualifier: (EOQualifier *) _msg 
@@ -309,10 +330,17 @@ static int attachmentFlagSize = 8096;
   NSArray  *msgs;
   NSRange  r;
   unsigned len;
+  SOGoUser *user;
   
   if (self->messages != nil)
     return self->messages;
-  
+
+  user = [context activeUser];
+  if (!dateFormatter)
+    dateFormatter = [user dateFormatterInContext: context];
+  if (!userTimeZone)
+    ASSIGN (userTimeZone, [user timeZone]);
+
   r    = [self fetchBlock];
   uids = [self sortedUIDs];
   if ((len = [uids count]) > r.length)

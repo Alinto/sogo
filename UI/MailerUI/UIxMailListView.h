@@ -22,9 +22,10 @@
 #ifndef UIXMAILLISTVIEW_H
 #define UIXMAILLISTVIEW_H
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
 @class EOQualifier;
+@class SOGoDateFormatter;
 
 @interface UIxMailListView : UIxComponent
 {
@@ -33,6 +34,8 @@
   unsigned    firstMessageNumber;
   id          message;
   EOQualifier *qualifier;
+  SOGoDateFormatter *dateFormatter;
+  NSTimeZone *userTimeZone;
 }
 
 - (NSString *)defaultSortKey;
