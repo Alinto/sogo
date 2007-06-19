@@ -131,6 +131,11 @@
   return [self relativePathToUserFolderSubPath: @"Mail/"];
 }
 
+- (NSString *) relativePreferencesPath
+{
+  return [self relativePathToUserFolderSubPath: @"preferences"];
+}
+
 - (NSString *) logoffPath
 {
   return [self relativePathToUserFolderSubPath: @"logoff"];
