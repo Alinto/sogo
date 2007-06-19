@@ -28,12 +28,6 @@
 
 static NSString *AgenorShareLoginMarker  = @".-.";
 
-/* detect webmail being accessed from the outside */
-
-- (BOOL)isInternetRequest {
-  return ([context isAccessFromIntranet] ? NO : YES);
-}
-
 /* listing the available mailboxes */
 
 - (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
@@ -69,9 +63,6 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   
   account = [user primaryIMAP4AccountString];
   if ([account isNotNull]) account = [NSArray arrayWithObject:account];
-  
-  if ([self isInternetRequest]) /* only show primary mailbox in Internet */
-    return account;
   
   shares  = [user valueForKey:@"additionalIMAP4AccountStrings"];
   return ([shares count] == 0)
@@ -155,18 +146,9 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   }
   
   if ([self isValidMailAccountName:_key]) {
-    /* forbid shares for requests coming from the Internet */
     BOOL isSharedKey;
     
     isSharedKey = [_key rangeOfString:AgenorShareLoginMarker].length > 0;
-    
-    if ([self isInternetRequest]) {
-      if (isSharedKey) {
-	return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
-			    reason:
-			      @"Access to shares forbidden from the Internet"];
-      }
-    }
     
     return isSharedKey
       ? [self sharedMailAccountWithName:_key inContext:_ctx]
