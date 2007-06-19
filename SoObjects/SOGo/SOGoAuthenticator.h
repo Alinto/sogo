@@ -39,7 +39,6 @@
 @interface SOGoAuthenticator : SoHTTPAuthenticator
 {
   NSString *authMethod;
-  int LDAPPort;
 }
 
 + (id) sharedSOGoAuthenticator;
