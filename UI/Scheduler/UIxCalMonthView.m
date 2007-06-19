@@ -36,13 +36,20 @@
 
 - (id) init
 {
+  NSDictionary *locale;
+
   if ((self = [super init]))
     {
-      monthAptFormatter
-        = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
-      [monthAptFormatter setShortMonthTitleOnly];
-      dateFormatter = [[SOGoDateFormatter alloc]
-                        initWithLocale: [self locale]];
+//       monthAptFormatter
+//         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
+//       [monthAptFormatter setShortMonthTitleOnly];
+//       dateFormatter = [[SOGoDateFormatter alloc]
+//                         initWithLocale: [self locale]];
+      locale = [context valueForKey: @"locale"];
+      dayNames = [locale objectForKey: NSWeekDayNameArray];
+      [dayNames retain];
+      monthNames = [locale objectForKey: NSMonthNameArray];
+      [monthNames retain];
       sortedAppointments = [NSMutableDictionary new];
       daysToDisplay = nil;
     }
@@ -50,16 +57,18 @@
   return self;
 }
 
-- (SOGoAptFormatter *) monthAptFormatter
-{
-  return monthAptFormatter;
-}
+// - (SOGoAptFormatter *) monthAptFormatter
+// {
+//   return monthAptFormatter;
+// }
 
 - (void) dealloc
 {
+  [monthNames release];
+  [dayNames release];
   [daysToDisplay release];
-  [monthAptFormatter release];
-  [dateFormatter release];
+//   [monthAptFormatter release];
+//   [dateFormatter release];
   [sortedAppointments release];
   [super dealloc];
 }
@@ -111,7 +120,7 @@
 
 - (NSString *) labelForCurrentDayToDisplay
 {
-  return [dateFormatter fullDayOfWeek: [currentTableDay dayOfWeek]];
+  return [dayNames objectAtIndex: [currentTableDay dayOfWeek]];
 }
 
 - (NSDictionary *) _dateQueryParametersWithOffset: (int) monthsOffset
@@ -211,7 +220,7 @@
       || [currentTableDay isDateOnSameDay: lastDayOfMonth])
     {
       monthOfYear
-        = [dateFormatter shortMonthOfYear: [currentTableDay monthOfYear]];
+        = [monthNames objectAtIndex: [currentTableDay monthOfYear]];
       label = [NSString stringWithFormat: @"%d %@", dayOfMonth, monthOfYear];
     }
   else

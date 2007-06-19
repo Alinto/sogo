@@ -44,6 +44,9 @@
   NSArray *daysToDisplay;
   NSCalendarDate *currentTableDay;
   NSArray *currentTableColumn;
+
+  NSArray *dayNames;
+  NSArray *monthNames;
 }
 
 - (NSDictionary *) monthBeforePrevMonthQueryParameters;
