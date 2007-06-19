@@ -25,11 +25,13 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
-
-#import <EOControl/EOQualifier.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
-#import <SOGoUI/SOGoDateFormatter.h>
+#import <EOControl/EOQualifier.h>
+
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxCalDayTable.h"
 
@@ -41,15 +43,15 @@
 {
   if ((self = [super init]))
     {
-//       allAppointments = nil;
       daysToDisplay = nil;
       hoursToDisplay = nil;
       numberOfDays = 1;
       startDate = nil;
       currentTableDay = nil;
       currentTableHour = nil;
-      dateFormatter = [[SOGoDateFormatter alloc]
-                        initWithLocale: [self locale]];
+      weekDays = [[context valueForKey: @"locale"] objectForKey: NSShortWeekDayNameArray];
+      [weekDays retain];
+      dateFormatter = [[context activeUser] dateFormatterInContext: context];
     }
 
   return self;
@@ -59,30 +61,10 @@
 {
 //   if (allAppointments)
 //     [allAppointments release];
+  [weekDays release];
   [daysToDisplay release];
   [hoursToDisplay release];
-  [dateFormatter release];
   [super dealloc];
-}
-
-- (void) setCSSClass: (NSString *) aCssClass
-{
-  cssClass = aCssClass;
-}
-
-- (NSString *) cssClass
-{
-  return cssClass;
-}
-
-- (void) setCSSId: (NSString *) aCssId
-{
-  cssId = aCssId;
-}
-
-- (NSString *) cssId
-{
-  return cssId;
 }
 
 - (void) setNumberOfDays: (NSString *) aNumber
@@ -194,12 +176,12 @@
 
 - (NSString *) labelForDay
 {
-  return [dateFormatter shortDayOfWeek: [currentTableDay dayOfWeek]];
+  return [weekDays objectAtIndex: [currentTableDay dayOfWeek]];
 }
 
 - (NSString *) labelForDate
 {
-  return [dateFormatter stringForObjectValue: currentTableDay];
+  return [dateFormatter shortFormattedDate: currentTableDay];
 }
 
 // - (NSDictionary *) _adjustedAppointment: (NSDictionary *) anAppointment

@@ -33,23 +33,15 @@
 
 @interface UIxCalDayTable : UIxCalView
 {
-  SOGoDateFormatter *dateFormatter;
   int numberOfDays;
   NSCalendarDate *startDate;
   NSCalendarDate *currentTableDay;
   NSString *currentTableHour;
   NSMutableArray *daysToDisplay;
   NSMutableArray *hoursToDisplay;
-
-  NSString *cssClass;
-  NSString *cssId;
+  NSArray *weekDays;
+  SOGoDateFormatter *dateFormatter;
 }
-
-- (void) setCSSClass: (NSString *) aCssClass;
-- (NSString *) cssClass;
-
-- (void) setCSSId: (NSString *) aCssId;
-- (NSString *) cssId;
 
 - (void) setNumberOfDays: (NSString *) aNumber;
 - (NSString *) numberOfDays;

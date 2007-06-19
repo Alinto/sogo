@@ -130,15 +130,6 @@
 	   };
 	};
 	methods = {
-	   view = { 
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxAppointmentView"; 
-	   };
-	   delete = { 
-	      protectedBy = "Delete Objects";
-	      pageName    = "UIxAppointmentView"; 
-	      actionName  = "delete";
-	   };
 	   edit = {
 	      protectedBy = "ViewAllComponent";
 	      pageName    = "UIxAppointmentEditor"; 
@@ -178,15 +169,11 @@
 	   };
 	};
 	methods = {
-	   view = { 
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxTaskView"; 
-	   };
-	   delete = { 
-	      protectedBy = "Delete Objects";
-	      pageName    = "UIxTaskView"; 
-	      actionName  = "delete";
-	   };
+// 	   delete = { 
+// 	      protectedBy = "Delete Objects";
+// 	      pageName    = "UIxTaskView"; 
+// 	      actionName  = "delete";
+// 	   };
 	   edit = { 
 	      protectedBy = "ViewAllComponent";
 	      pageName    = "UIxTaskEditor"; 

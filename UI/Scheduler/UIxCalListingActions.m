@@ -33,12 +33,12 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
-#import "../SOGoUI/SOGoDateFormatter.h"
 #import "NSArray+Scheduler.h"
 
 #import "UIxCalListingActions.h"
@@ -47,7 +47,7 @@
 
 - (id) initWithRequest: (WORequest *) newRequest
 {
-  NSDictionary *locale;
+  SOGoUser *user;
 
   if ((self = [super initWithRequest: newRequest]))
     {
@@ -55,9 +55,9 @@
       startDate = nil;
       endDate = nil;
       ASSIGN (request, newRequest);
-      locale = [[self context] valueForKey: @"locale"];
-      dateFormatter = [[SOGoDateFormatter alloc] initWithLocale: locale];
-      [dateFormatter setFullWeekdayNameAndDetails];
+      user = [[self context] activeUser];
+      dateFormatter = [user dateFormatterInContext: context];
+      ASSIGN (userTimeZone, [user timeZone]);
     }
 
   return self;
@@ -70,6 +70,7 @@
   [componentsData release];
   [startDate release];
   [endDate release];
+  [userTimeZone release];
   [super dealloc];
 }
 
@@ -297,13 +298,29 @@
   return response;
 }
 
+- (NSString *) _formattedDateForSeconds: (unsigned int) seconds
+			      forAllDay: (BOOL) forAllDay
+{
+  NSCalendarDate *date;
+  NSString *formattedDate;
+
+  date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+  [date setTimeZone: userTimeZone];
+  if (forAllDay)
+    formattedDate = [dateFormatter formattedDate: date];
+  else
+    formattedDate = [dateFormatter formattedDateAndTime: date];
+
+  return formattedDate;    
+}
+
 - (WOResponse *) eventsListAction
 {
   NSArray *fields, *oldEvent;
   NSEnumerator *events;
-  NSString *date;
   NSMutableArray *newEvents, *newEvent;
   unsigned int interval;
+  BOOL isAllDay;
 
   [self _setupContext];
 
@@ -317,12 +334,13 @@
   while (oldEvent)
     {
       newEvent = [NSMutableArray arrayWithArray: oldEvent];
+      isAllDay = [[oldEvent objectAtIndex: 7] boolValue];
       interval = [[oldEvent objectAtIndex: 4] intValue];
-      date = [dateFormatter stringForSecondsSinceThe70s: interval];
-      [newEvent addObject: date];
+      [newEvent addObject: [self _formattedDateForSeconds: interval
+				 forAllDay: isAllDay]];
       interval = [[oldEvent objectAtIndex: 5] intValue];
-      date = [dateFormatter stringForSecondsSinceThe70s: interval];
-      [newEvent addObject: date];
+      [newEvent addObject: [self _formattedDateForSeconds: interval
+				 forAllDay: isAllDay]];
       [newEvents addObject: newEvent];
 
       oldEvent = [events nextObject];

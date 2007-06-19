@@ -44,6 +44,7 @@
   NSString *userLogin;
   WORequest *request;
   SOGoDateFormatter *dateFormatter;
+  NSTimeZone *userTimeZone;
 }
 
 - (WOResponse *) eventsListAction;
