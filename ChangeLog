@@ -1,5 +1,10 @@
 2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDateFormatter.m: rewrote class to accept
+	different configurable formats (long and short date + time).
+
+	* SoObjects/SOGo/SOGoDateFormatter.[hm]: moved from UI/SOGoUI/.
+
 	* SoObjects/Mailer/SOGoMailAccounts.m ([SOGoMailAccounts
 	-isInternetRequest]): removed method.
 
