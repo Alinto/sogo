@@ -41,7 +41,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <UI/SOGoUI/SOGoDateFormatter.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
@@ -589,17 +588,6 @@
 }
 
 /* helpers */
-- (NSFormatter *) titleDateFormatter
-{
-  SOGoDateFormatter *fmt;
-  
-  fmt = [[SOGoDateFormatter alloc] initWithLocale: [self locale]];
-  [fmt autorelease];
-  [fmt setFullWeekdayNameAndDetails];
-
-  return fmt;
-}
-
 - (NSString *) completeURIForMethod: (NSString *) _method
 {
   NSString *uri;

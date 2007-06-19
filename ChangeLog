@@ -1,5 +1,8 @@
 2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([-titleDateFormatter]):
+	removed useless method.
+
 	* SoObjects/SOGo/SOGoDateFormatter.m: rewrote class to accept
 	different configurable formats (long and short date + time).
 

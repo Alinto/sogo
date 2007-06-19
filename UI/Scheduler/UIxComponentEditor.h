@@ -28,7 +28,6 @@
 @class NSArray;
 @class NSCalendarDate;
 @class NSDictionary;
-@class NSFormatter;
 @class NSString;
 
 @class iCalPerson;
@@ -132,7 +131,6 @@
 - (BOOL) canEditComponent;
 
 /* helpers */
-- (NSFormatter *) titleDateFormatter;
 - (NSString *) completeURIForMethod: (NSString *) _method;
 - (BOOL) isWriteableClientObject;
 - (NSException *) validateObjectForStatusChange;
