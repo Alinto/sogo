@@ -1,102 +1,103 @@
 <?xml version="1.0" standalone="yes"?>
-  <var:component xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    title="title"
-    >
-    <div class="preload" style="visibility: hidden;">
-      <img rsrc:src="event-gradient.png"/>
-    </div>
-    <div class="menu" id="monthListMenu">
-      <ul>
-        <var:foreach list="monthMenuItems" item="monthMenuItem"
-          ><li var:month="monthMenuItem"
-            ><var:string value="monthMenuItemLabel" /></li>
-        </var:foreach
-          ></ul>
-    </div>
-    
-    <div class="menu" id="yearListMenu">
-      <ul>
-        <var:foreach list="yearMenuItems" item="yearMenuItem"
-          ><li><var:string value="yearMenuItem" /></li>
-        </var:foreach
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="title"
+  >
+  <div class="preload" style="visibility: hidden;">
+    <img rsrc:src="event-gradient.png"/>
+  </div>
+  <div class="menu" id="monthListMenu">
+    <ul>
+      <var:foreach list="monthMenuItems" item="monthMenuItem"
+	><li var:month="monthMenuItem"
+	  ><var:string value="monthMenuItemLabel" /></li>
+      </var:foreach
+	></ul>
+  </div>
+  
+  <div class="menu" id="yearListMenu">
+    <ul>
+      <var:foreach list="yearMenuItems" item="yearMenuItem"
+	><li><var:string value="yearMenuItem" /></li>
+      </var:foreach
         ></ul>
-    </div>
+  </div>
 
-    <div class="menu" id="eventsListMenu">
+  <div class="menu" id="eventsListMenu">
+    <ul>
+      <li><var:string label:value="New Event..."/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="New Task..."/></li>
+      <li><var:string label:value="Edit Selected Event..."/></li>
+      <li><var:string label:value="Delete Selected Event"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Select All"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Workweek days only"/></li>
+      <li><var:string label:value="Tasks in View"/></li>
+    </ul>
+  </div>
+
+  <div class="menu" id="calendarsMenu">
+    <ul>
+      <li><var:string label:value="New Calendar..."/></li>
+      <li><var:string label:value="Delete Calendar"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Export Calendar..."/></li>
+      <li><var:string label:value="Publish Calendar..."/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Reload Remote Calendars"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Sharing..." /></li>
+    </ul>
+  </div>
+
+  <div id="leftPanel">
+    <div class="tabsContainer" id="schedulerTabs">
       <ul>
-        <li><var:string label:value="New Event..."/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="New Task..."/></li>
-        <li><var:string label:value="Edit Selected Event..."/></li>
-        <li><var:string label:value="Delete Selected Event"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Select All"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Workweek days only"/></li>
-        <li><var:string label:value="Tasks in View"/></li>
+	<li target="dateSelectorView"><var:string label:value="Date" /></li>
+	<li target="calendarSelectorView"><var:string label:value="Calendars" /></li>
       </ul>
+
+      <div id="dateSelectorView"
+	class="tab"
+	><var:component className="UIxCalDateSelector"
+	  selectedDate="thisMonth"
+	  /></div>
+      <div id="calendarSelectorView" class="tab"
+	><var:component className="UIxCalendarSelector"
+	  var:calendarFolders="calendarFolders" /></div>
     </div>
 
-    <div class="menu" id="calendarsMenu">
-      <ul>
-        <li><var:string label:value="New Calendar..."/></li>
-        <li><var:string label:value="Delete Calendar"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Export Calendar..."/></li>
-        <li><var:string label:value="Publish Calendar..."/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Reload Remote Calendars"/></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Sharing..." /></li>
-      </ul>
+    <div id="tasksListView">
+      <label><input id="showHideCompletedTasks"
+	  type="checkbox" class="checkBox"
+	  /><var:string label:value="Show completed tasks"/></label>
+      <ul id="tasksList"><!-- space --></ul>
     </div>
+  </div>
 
-    <div id="leftPanel">
-      <div class="tabsContainer" id="schedulerTabs">
-        <ul>
-          <li target="dateSelectorView"><var:string label:value="Date" /></li>
-          <li target="calendarSelectorView"><var:string label:value="Calendars" /></li>
-        </ul>
+  <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
 
-        <div id="dateSelectorView"
-          class="tab"
-          ><var:component className="UIxCalDateSelector"
-            selectedDate="thisMonth"
-            /></div>
-        <div id="calendarSelectorView" class="tab"
-          ><var:component className="UIxCalendarSelector"
-	    var:calendarFolders="calendarFolders" /></div>
-      </div>
-
-      <div id="tasksListView">
-	<label><input id="showHideCompletedTasks"
-	    type="checkbox" class="checkBox"
-	    /><var:string label:value="Show completed tasks"/></label>
-	<ul id="tasksList"><!-- space --></ul>
-      </div>
+  <div id="rightPanel">
+    <var:component className="UIxCalFilterPanel" />
+    <div id="eventsListView">
+      <table id="eventsList">
+	<tr>
+	  <td class="headerCell headerTitle"><span class="sortableTableHeader"><var:string label:value="Title"/></span></td>
+	  <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="Start"/></span></td>
+	  <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="End"/></span></td>
+	  <td class="headerCell headerLocation"><span class="sortableTableHeader"><var:string label:value="Location"/></span></td>
+	</tr>
+      </table>
     </div>
-
-    <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
-
-    <div id="rightPanel">
-      <var:component className="UIxCalFilterPanel" />
-      <div id="eventsListView">
-	<table id="eventsList">
-	  <tr>
-	    <td class="headerCell headerTitle"><span class="sortableTableHeader"><var:string label:value="Title"/></span></td>
-	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="Start"/></span></td>
-	    <td class="headerCell headerDateTime"><span class="sortableTableHeader"><var:string label:value="End"/></span></td>
-	    <td class="headerCell headerLocation"><span class="sortableTableHeader"><var:string label:value="Location"/></span></td>
-	  </tr>
-	</table>
-      </div>
-      <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
-      <div id="calendarView"><!-- space --></div>
-    </div>
-  </var:component>
+    <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
+    <div id="calendarView"><!-- space --></div>
+  </div>
+</var:component>

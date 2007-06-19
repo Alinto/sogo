@@ -68,7 +68,9 @@
 	    <a var:href="relativeContactsPath"
 	      ><var:string label:value="Address Book" /></a> |
 	    <a var:href="relativeMailPath"
-	      ><var:string label:value="Mail" /></a>
+	      ><var:string label:value="Mail" /></a> |
+	    <a var:href="relativePreferencesPath"
+	      ><var:string label:value="Preferences" /></a>
 	    <!--              | <a var:href="logoffPath"
 	    ><var:string label:value="Logoff" /></a> -->
 	    <var:if condition="context.isUIxDebugEnabled"

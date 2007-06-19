@@ -120,8 +120,7 @@
             
             ><td class="messageDateColumn"
             ><span class="mailer_datefield"
-              ><var:string value="message.envelope.date" 
-                formatter="context.mailDateFormatter"
+              ><var:string value="messageDate" 
                 /></span
               ><entity name="nbsp"
               /></td
