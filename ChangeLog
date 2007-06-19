@@ -1,3 +1,7 @@
+2007-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/WOContext+Agenor.[hm]: removed unused module.
+
 2007-06-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoLRUCache.m: removed unused module.
