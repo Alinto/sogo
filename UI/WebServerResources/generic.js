@@ -1211,6 +1211,16 @@ function onLinkBannerClick() {
   checkAjaxRequestsState();
 }
 
+function onPreferencesClick(event) {
+   var urlstr = UserFolderURL + "preferences";
+   var w = window.open(urlstr, "User Preferences",
+		       "width=430,height=250,resizable=0,scrollbars=0");
+   w.opener = window;
+   w.focus();
+
+   event.preventDefault();
+}
+
 function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
@@ -1219,8 +1229,10 @@ function configureLinkBanner() {
        Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
        Event.observe(anchors[i], "click", onLinkBannerClick);
     }
-    if (anchors.length > 3)
-       Event.observe(anchors[3], "click", toggleLogConsole);
+    Event.observe(anchors[3], "mousedown", listRowMouseDownHandler);
+    Event.observe(anchors[3], "click", onPreferencesClick);
+    if (anchors.length > 4)
+       Event.observe(anchors[4], "click", toggleLogConsole);
   }
 }
 

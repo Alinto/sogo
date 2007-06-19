@@ -500,15 +500,18 @@ TABLE#messageList TD.messageFlagColumn
 TABLE#messageList TD.tbtv_subject_headercell,
 TABLE#messageList td.mailer_unreadmailsubject,
 TABLE#messageList td.mailer_readmailsubject
-{ width: 40%; }
+{ width: 40%;
+  min-width: 40%; }
 
 TABLE#messageList TD.tbtv_from_headercell,
 TABLE#messageList TD.messageAddressColumn
-{ width: 35%; }
+{ width: 35%;
+  overflow: hidden; }
 
 TABLE#messageList TD.tbtv_date_headercell,
 TABLE#messageList TD.messageDateColumn
-{ width: 25%; }
+{ width: 25%;
+  overflow: hidden; }
 
 TABLE#messageList TR._selected TD
 { 

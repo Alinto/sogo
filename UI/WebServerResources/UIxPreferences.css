@@ -1,0 +1,34 @@
+DIV#preferencesTabs
+{ position: absolute;
+  top: 5em;
+  left: .5em;
+  right: .5em;
+  bottom: .5em; }
+
+DIV#dateTimeFormat,
+DIV#passwordView
+{ text-align: right; }
+
+DIV#outOfOfficeView
+{ padding-top: 2em;
+  padding-left: 2em;
+  padding-right: 5em; }
+
+DIV#outOfOfficeView LABEL
+{ text-align: left;
+  margin-left: 0px;
+  white-space: normal; }
+
+DIV#outOfOfficeView TEXTAREA
+{ width: 30em;
+  margin: 0px;
+  height: 4em; }
+
+DIV#dateTimeView
+{ padding-top: 3em;
+  padding-left: 1em;
+  padding-right: 2em; }
+
+DIV#passwordView
+{ padding-top: 3em;
+  padding-right: 10em; }
