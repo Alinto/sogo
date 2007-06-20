@@ -119,7 +119,7 @@
 
 - (SOGoDateFormatter *)dateFormatter {
   if (self->dateFormatter == nil) {
-    dateFormatter = [[context activeUser] dateFormatter];
+    dateFormatter = [[context activeUser] dateFormatterInContext: context];
     [dateFormatter retain];
   }
 
