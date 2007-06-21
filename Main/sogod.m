@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <unistd.h>
+
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSTimeZone.h>
 
@@ -31,21 +33,33 @@ main (int argc, char **argv, char **env)
   NSString *tzName;
   NSUserDefaults *ud;
   NSAutoreleasePool *pool;
+  int rc;
 
   pool = [NSAutoreleasePool new];
+
+  if (getuid() > 0)
+    {
+      rc = 0;
 #if LIB_FOUNDATION_LIBRARY
-  [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
+      [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 #endif
-  [NGBundleManager defaultBundleManager];
+      [NGBundleManager defaultBundleManager];
 
-  ud = [NSUserDefaults standardUserDefaults];
-  tzName = [ud stringForKey: @"SOGoServerTimeZone"];
-  if (!tzName)
-    tzName = @"Canada/Eastern";
-  [NSTimeZone setDefaultTimeZone: [NSTimeZone timeZoneWithName: tzName]];
+      ud = [NSUserDefaults standardUserDefaults];
+      tzName = [ud stringForKey: @"SOGoServerTimeZone"];
+      if (!tzName)
+	tzName = @"Canada/Eastern";
+      [NSTimeZone setDefaultTimeZone: [NSTimeZone timeZoneWithName: tzName]];
 
-  WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
+      WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
+    }
+  else
+    {
+      NSLog (@"Don't run SOGo as root!");
+      rc = -1;
+    }
 
   [pool release];
-  return 0;
+
+  return rc;
 }
