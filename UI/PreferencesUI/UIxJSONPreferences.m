@@ -24,12 +24,26 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WODirectAction.h>
+#import <NGObjWeb/WOResponse.h>
 
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxJSONPreferences.h"
 
 @implementation UIxJSONPreferences
+
+- (WOResponse *) _makeResponse: (NSString *) jsonText
+{
+  WOResponse *response;
+
+  response = [context response];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"content-type"];
+  [response appendContentString: jsonText];
+
+  return response;
+}
 
 - (WOResponse *) jsonDefaultsAction
 {
@@ -37,7 +51,7 @@
 
   defaults = [[context activeUser] userDefaults];
 
-  return [defaults jsonRepresentation];
+  return [self _makeResponse: [defaults jsonRepresentation]];
 }
 
 - (WOResponse *) jsonSettingsAction
@@ -46,7 +60,7 @@
 
   settings = [[context activeUser] userSettings];
 
-  return [settings jsonRepresentation];
+  return [self _makeResponse: [settings jsonRepresentation]];
 }
 
 @end

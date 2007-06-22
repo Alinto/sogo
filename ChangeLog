@@ -1,5 +1,10 @@
 2007-06-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxJSONPreferences.m ([UIxJSONPreferences
+	-jsonDefaultsAction]): bug fix: returns a WOResponse instance with
+	the string instead of the string itself.
+	([UIxJSONPreferences -jsonSettingsAction]): same as above.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): new module
 	bool var "acceptAnyUser" that is set when the AuthenticationMethod
 	user default is nil.
