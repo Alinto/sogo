@@ -47,13 +47,11 @@
 
 - (id) init
 {
-  NSUserDefaults *ud;
-
   if ((self = [super init]))
     {
-      ud = [NSUserDefaults standardUserDefaults];
-
-      authMethod = [[ud stringForKey:@"AuthentificationMethod"] retain];
+      authMethod = [[NSUserDefaults standardUserDefaults]
+		     stringForKey: @"AuthentificationMethod"];
+      [authMethod retain];
     }
 
   return self;
@@ -90,7 +88,7 @@
   NSArray   *creds;
 
   password = nil;
-  auth = [[context request] headerForKey:@"authorization"];
+  auth = [[context request] headerForKey: @"authorization"];
   if (auth)
     {
       creds = [self parseCredentials: auth];
