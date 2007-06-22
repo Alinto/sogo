@@ -7,6 +7,7 @@
 "Calendar" = "Agenda";
 "Address Book"	= "Carnet d'adresses";
 "Mail" = "Courrier";
+"Preferences" = "Préférences";
 "Logoff" = "Quitter";
 "Right Administration" = "Partage";
 "Log Console (dev.)" = "Journal (dév.)";
