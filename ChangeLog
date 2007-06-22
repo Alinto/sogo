@@ -1,3 +1,11 @@
+2007-06-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): new module
+	bool var "acceptAnyUser" that is set when the AuthenticationMethod
+	user default is nil.
+	([SOGoUser -initWithLogin:newLoginroles:newRoles]):
+	unconditionnally returns an instance whenever acceptAnyUser is set.
+
 2007-06-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/sogod.m (main): prevent SOGo from running as root.

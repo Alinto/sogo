@@ -40,6 +40,7 @@ static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static NSString *defaultLanguage = nil;
 static NSURL *AgenorProfileURL = nil;
+static BOOL acceptAnyUser = NO;
 
 NSString *SOGoWeekStartHideWeekNumbers = @"HideWeekNumbers";
 NSString *SOGoWeekStartJanuary1 = @"January1";
@@ -83,6 +84,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       if (!defaultLanguage)
 	ASSIGN (defaultLanguage, @"English");
     }
+
+  acceptAnyUser = (![ud stringForKey: @"AuthentificationMethod"]);
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
@@ -115,17 +118,22 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 	       roles: (NSArray *) newRoles
 {
   LDAPUserManager *um;
-  NSDictionary *user;
+  NSString *realUID;
 
   if ([newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     self = [super initWithLogin: newLogin roles: newRoles];
   else
     {
-      um = [LDAPUserManager sharedUserManager];
-      user = [um contactInfosForUserWithUIDorEmail: newLogin];
-      self = [super initWithLogin: [user objectForKey: @"c_uid"]
-		    roles: newRoles];
+      if (acceptAnyUser)
+	realUID = newLogin;
+      else
+	{
+	  um = [LDAPUserManager sharedUserManager];
+	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+		   objectForKey: @"c_uid"];
+	}
+      self = [super initWithLogin: realUID roles: newRoles];
     }
 
   return self;
