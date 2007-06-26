@@ -77,9 +77,9 @@
   else
     accept = ([_login length] > 0);
 
-  return (accept
-	  || ([_login isEqualToString: @"freebusy"]
-	      && [_pwd isEqualToString: @"freebusy"]));
+  return accept;
+// 	  || ([_login isEqualToString: @"freebusy"]
+// 	      && [_pwd isEqualToString: @"freebusy"]));
 }
 
 - (NSString *) _passwordInContext: (WOContext *) context
@@ -103,7 +103,7 @@
 
 - (SOGoUser *) userInContext: (WOContext *)_ctx
 {
-  static SOGoUser *anonymous = nil, *freebusy;
+  static SOGoUser *anonymous = nil;
   SOGoUser *user;
   NSArray *traversalPath;
   NSString *login;
@@ -112,10 +112,10 @@
     anonymous
       = [[SOGoUser alloc] initWithLogin: @"anonymous"
 			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-  if (!freebusy)
-    freebusy
-      = [[SOGoUser alloc] initWithLogin: @"freebusy"
-                          roles: [NSArray arrayWithObject: SOGoRole_FreeBusy]];
+//   if (!freebusy)
+//     freebusy
+//       = [[SOGoUser alloc] initWithLogin: @"freebusy"
+//                           roles: [NSArray arrayWithObject: SOGoRole_FreeBusy]];
 
   login = [self checkCredentialsInContext:_ctx];
   if (login)
@@ -123,10 +123,10 @@
       if ([login isEqualToString: @"anonymous"])
         {
           traversalPath = [_ctx objectForKey: @"SoRequestTraversalPath"];
-          if ([[traversalPath lastObject] isEqualToString: @"freebusy.ifb"])
-            user = freebusy;
-          else
-            user = anonymous;
+//           if ([[traversalPath lastObject] isEqualToString: @"freebusy.ifb"])
+//             user = freebusy;
+//           else
+	  user = anonymous;
         }
       else
 	{

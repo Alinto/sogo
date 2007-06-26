@@ -11,7 +11,7 @@
     SOGoAppointmentFolder = {
       superclass = "SOGoFolder";
       defaultRoles = {
-        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );
+/*        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );  */
 	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
 	"ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
 	"ModifyPublicRecords" = ( "Owner", "PublicModifier" );
@@ -29,7 +29,7 @@
       };
     };
     SOGoGroupAppointmentFolder = {
-      superclass    = "SOGoAppointmentFolder";
+      superclass = "SOGoAppointmentFolder";
     };
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
@@ -42,14 +42,18 @@
       };
     };
     SOGoAppointmentObject = {
-      superclass    = "SOGoCalendarComponent";
+      superclass = "SOGoCalendarComponent";
     };
     SOGoTaskObject = {
       superclass    = "SOGoCalendarComponent";
     };
     SOGoFreeBusyObject = {
-      superclass    = "SOGoContentObject";
-      protectedBy = "<public>";
+      superclass = "SOGoContentObject";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+	"Access Contents Information" = ( "Owner", "Authenticated" );
+        "WebDAV Access" = ( "Owner", "Authenticated" );
+      };
     };
   };
 }

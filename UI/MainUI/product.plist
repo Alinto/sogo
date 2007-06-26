@@ -12,7 +12,7 @@
       superclass  = "SoComponent";
       protectedBy = "View";
       defaultRoles = {
-        "View" = ( "Authenticated", "FreeBusy" );
+        "View" = ( "Authenticated" );
       };
     };
     SOGoObject = {
