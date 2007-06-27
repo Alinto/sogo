@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#warning importing common is baaaad
 #import <Foundation/Foundation.h>
 
 #if LIB_FOUNDATION_LIBRARY
