@@ -625,16 +625,6 @@ function getMenus() {
    return menus;
 }
 
-function configureSearchField() {
-   var searchValue = $("searchValue");
-
-   Event.observe(searchValue, "mousedown", onSearchMouseDown.bindAsEventListener(searchValue), false);
-   Event.observe(searchValue, "click", popupSearchMenu.bindAsEventListener(searchValue), false);
-   Event.observe(searchValue, "blur", onSearchBlur.bindAsEventListener(searchValue), false);
-   Event.observe(searchValue, "focus", onSearchFocus.bindAsEventListener(searchValue), false);
-   Event.observe(searchValue, "keydown", onSearchKeyDown.bindAsEventListener(searchValue), false);
-}
-
 function configureSelectionButtons() {
    var container = $("contactSelectionButtons");
    if (container) {
@@ -647,7 +637,6 @@ function configureSelectionButtons() {
 function initContacts(event) {
    if (!document.body.hasClassName("popup")) {
      configureAbToolbar();
-     configureSearchField();
    }
    else
      configureSelectionButtons();
