@@ -81,7 +81,11 @@
 
 /* MailListView */
 
-"Subject or Sender contains" = "Subject or Sender contains";
+"Sender" = "Sender";
+"Subject or Sender" = "Subject or Sender";
+"To or Cc" = "To or Cc";
+"Entire Message" = "Entire Message";
+
 "Date"          = "Date";
 "View"          = "View";
 "All"           = "All";

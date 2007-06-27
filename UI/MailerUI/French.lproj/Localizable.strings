@@ -83,7 +83,11 @@
 
 "View:"         = "Voir :";
 
-"Subject or Sender contains" = "Sujet ou Expéditeur contient ";
+"Sender" = "Expéditeur";
+"Subject or Sender" = "Sujet ou expéditeur";
+"To or Cc" = "Pour ou Copie à";
+"Entire Message" = "Message Complet";
+
 "Date"          = "Date";
 "All"           = "Tous";
 "Unread"        = "Non lus";
