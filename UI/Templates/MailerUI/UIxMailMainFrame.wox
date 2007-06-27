@@ -156,10 +156,9 @@
 
     <div id="rightPanel">
       <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
-      
-        <div id="mailboxContent"><!-- space --></div>
-        <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
-        <div id="messageContent"><!-- space --></div>
+      <div id="mailboxContent"><!-- space --></div>
+      <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
+      <div id="messageContent"><!-- space --></div>
     </div>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
