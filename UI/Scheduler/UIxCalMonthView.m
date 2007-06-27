@@ -28,7 +28,7 @@
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
-#import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 
 #import "UIxCalMonthView.h"
 

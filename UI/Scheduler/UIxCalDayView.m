@@ -31,7 +31,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
-#import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 
 #import "UIxCalDayView.h"
 

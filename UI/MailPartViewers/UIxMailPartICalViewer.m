@@ -25,7 +25,7 @@
   Show plain/calendar mail parts.
 */
 
-#import <SOGoUI/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
