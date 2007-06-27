@@ -7,27 +7,16 @@
     >
     <div class="menu" id="searchMenu">
       <ul id="searchOptions">
-        <li id="subject"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Subject"/></li>
-        <li id="sender"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Sender"/></li>
-        <li id="subject_or_sender"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Subject or Sender"/></li>
-        <li id="to_or_cc"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="To or Cc"/></li>
-        <li id="entire_message"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Entire Message"/></li>
-        <li id="find_in_message"
-          onmousedown="return false;"
-          onmouseup="setSearchCriteria(event);"><var:string label:value="Find In Message"/></li>
+        <li id="subject"><var:string label:value="Subject"/></li>
+        <li id="sender"><var:string label:value="Sender"/></li>
+        <li id="subject_or_sender"><var:string
+	    label:value="Subject or Sender"/></li>
+        <li id="to_or_cc"><var:string label:value="To or Cc"/></li>
+        <li id="entire_message"><var:string
+	    label:value="Entire Message"/></li>
       </ul>
     </div>
-    
+
     <div id="filterPanel">
       <var:if condition="hideFrame" const:negate="YES"
         ><span class="searchBox" style="float: right">
@@ -38,11 +27,11 @@
 	    menuid="searchMenu" />
         </span>
 
-        <var:string label:value="View:" />
+<!--        <var:string label:value="View:" />
         <var:popup list="filters" 
           item="filter" string="filterLabel" value="filter"
           selection="selectedFilter"
-          const:name="filterpopup" />
+          const:name="filterpopup" /> -->
       </var:if>
     </div>
   </container>

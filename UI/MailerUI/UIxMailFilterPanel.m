@@ -34,16 +34,16 @@
 
 @implementation UIxMailFilterPanel
 
-static NSArray      *filters           = nil;
-static NSDictionary *filterToQualifier = nil;
+static NSArray *filters = nil;
+// static NSDictionary *filterToQualifier = nil;
 
 + (void)initialize {
   // TODO: also available: answered, draft [custom: NotJunk and Junk]
   // Note: we currently cannot use: "flags != 'deleted'"
   static NSString *quals[] = {
-    @"all",     nil,
-    @"read",    @"flags = 'seen'   AND NOT (flags = 'deleted')",
-    @"unread",  @"flags = 'unseen' AND NOT (flags = 'deleted')",
+    @"all", nil,
+    @"read", @"flags = 'seen' AND NOT (flags = 'deleted')",
+    @"unread", @"flags = 'unseen' AND NOT (flags = 'deleted')",
     @"deleted", @"flags = 'deleted'",
     @"flagged", @"flags = 'flagged'",
     nil, nil
@@ -63,7 +63,7 @@ static NSDictionary *filterToQualifier = nil;
     }
   }
   
-  filterToQualifier = [md copy];
+//   filterToQualifier = [md copy];
   filters           = [ma copy];
   [md release]; md = nil;
   [ma release]; ma = nil;
@@ -80,106 +80,110 @@ static NSDictionary *filterToQualifier = nil;
   return self;
 }
 
-- (void)dealloc {
-  [self->searchCriteria release];
-  [self->searchText release];
+- (void) dealloc
+{
+  [searchCriteria release];
+  [searchText release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setSearchText: (NSString *)_txt
+- (void) setSearchText: (NSString *) _txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGN (searchText, _txt);
 }
 
-- (void)setSearchCriteria: (NSString *)_txt
+- (void) setSearchCriteria: (NSString *) _txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGN (searchText, _txt);
 }
 
-- (NSString *)searchText
+- (NSString *) searchText
 {
-  if (self->searchText == nil)
+  if (!searchText)
     {
-      self->searchText = 
-	[[[[self context] request] formValueForKey:@"search"] copy];
+      searchText = [[context request] formValueForKey: @"value"];
+      [searchText retain];
     }
-  return self->searchText;
+
+  return searchText;
 }
 
-- (NSString *)searchCriteria
+- (NSString *) searchCriteria
 {
-  if (self->searchCriteria == nil)
+  if (!searchCriteria)
     {
-      self->searchCriteria = 
-	[[[[self context] request] formValueForKey:@"criteria"] copy];
+      searchCriteria = [[context request] formValueForKey: @"criteria"];
+      [searchCriteria retain];
     }
-  return self->searchCriteria;
+
+  return searchCriteria;
 }
 
 /* filters */
 
-- (NSArray *)filters
+- (NSArray *) filters
 {
   return filters;
 }
 
 /* qualifiers */
 
-- (EOQualifier *) searchTextQualifier
-{
-  EOQualifier *q;
-  NSString *s;
+// - (EOQualifier *) searchTextQualifier
+// {
+//   EOQualifier *q;
+//   NSString *s;
   
-  s = [self searchText];
-  if ([s length] == 0)
-    return nil;
+//   s = [self searchText];
+//   if ([s length] == 0)
+//     return nil;
   
-  q = [EOQualifier qualifierWithQualifierFormat:
-		     @"(subject doesContain: %@) OR "
-		     @"(from doesContain: %@)",
-		     s, s];
-  return q;
-}
+//   q = [EOQualifier qualifierWithQualifierFormat:
+// 		     @"(subject doesContain: %@) OR "
+// 		     @"(from doesContain: %@)",
+// 		     s, s];
+//   return q;
+// }
 
-- (NSString *)filterLabel
-{
-#if 1
-  return [[[self context] page] labelForKey:[self valueForKey:@"filter"]];
-#else
-  return [self valueForKey:@"filter"];
-#endif
-}
+// - (NSString *) filterLabel
+// {
+// #if 1
+//   return [[context page] labelForKey:[self valueForKey:@"filter"]];
+// #else
+//   return [self valueForKey:@"filter"];
+// #endif
+// }
 
-- (NSString *)selectedFilter
-{
-  return  [[[self context] request] formValueForKey:@"filterpopup"];
-}
+// - (NSString *) selectedFilter
+// {
+//   return  [[context request] formValueForKey: @"filterpopup"];
+// }
 
-- (EOQualifier *)filterQualifier
-{
-  NSString *selectedFilter;
+// - (EOQualifier *) filterQualifier
+// {
+//   NSString *selectedFilter;
   
-  selectedFilter = [self selectedFilter];
+//   selectedFilter = [self selectedFilter];
   
-  return [selectedFilter length] > 0
-    ? [filterToQualifier objectForKey:selectedFilter] : nil;
-}
+//   return [selectedFilter length] > 0
+//     ? [filterToQualifier objectForKey:selectedFilter] : nil;
+// }
 
-- (EOQualifier *) qualifier
-{
-  EOQualifier *sq, *fq;
-  NSArray *qa;
+// - (EOQualifier *) qualifier
+// {
+//   EOQualifier *sq, *fq;
+//   NSArray *qa;
   
-  sq = [self searchTextQualifier];
-  fq = [self filterQualifier];
+//   sq = [self searchTextQualifier];
+//   fq = [self filterQualifier];
   
-  if (fq == nil) return sq;
-  if (sq == nil) return fq;
+//   if (fq == nil) return sq;
+//   if (sq == nil) return fq;
   
-  qa = [NSArray arrayWithObjects:fq, sq, nil];
-  return [[[EOAndQualifier alloc] initWithQualifierArray:qa] autorelease];
-}
+//   qa = [NSArray arrayWithObjects:fq, sq, nil];
+
+//   return [[[EOAndQualifier alloc] initWithQualifierArray:qa] autorelease];
+// }
 
 @end /* UIxMailFilterPanel */
