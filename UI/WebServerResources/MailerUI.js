@@ -384,6 +384,10 @@ function onMailboxTreeItemClick(event) {
    this.select();
    topNode.selectedEntry = this;
 
+   search = {};
+   $("searchValue").value = "";
+   initCriteria();
+
    var datatype = this.parentNode.getAttribute("datatype");
    if (datatype == "account" || datatype == "additional") {
       currentMailbox = mailbox;
@@ -426,7 +430,8 @@ function openMailbox(mailbox, reload) {
       var rightDragHandle = $("rightDragHandle");
       var messageContent = $("messageContent");
       messageContent.innerHTML = '';
-      if (mailbox.lastIndexOf("/") == 0) {
+/*      if (mailbox.lastIndexOf("/") == 0) {
+	 log ("mailbox.lastIndexOf...");
 	 var url = (ApplicationBaseURL + currentMailbox + "/"
 		    + "/view?noframe=1");
 	 if (document.messageAjaxRequest) {
@@ -439,7 +444,7 @@ function openMailbox(mailbox, reload) {
 	 mailboxContent.style.visibility = "hidden;";
 	 rightDragHandle.style.visibility = "hidden;";
 	 messageContent.style.top = "0px;";
-      } else {
+      } else { */
 	 if (document.messageListAjaxRequest) {
 	    document.messageListAjaxRequest.aborted = true;
 	    document.messageListAjaxRequest.abort();
@@ -448,6 +453,10 @@ function openMailbox(mailbox, reload) {
 	    loadMessage(currentMessages[mailbox]);
 	    url += '&pageforuid=' + currentMessages[mailbox];
 	 }
+	 var searchValue = search["value"];
+	 if (searchValue && searchValue.length > 0)
+	    url += ("&search=" + search["criteria"]
+		    + "&value=" + searchValue);
 	 document.messageListAjaxRequest
 	    = triggerAjaxRequest(url, messageListCallback,
 				 currentMessages[mailbox]);
@@ -458,7 +467,7 @@ function openMailbox(mailbox, reload) {
 					    + rightDragHandle.offsetHeight
 					    + 'px') });
 	 }
-      }
+//      }
    }
    //   triggerAjaxRequest(mailbox, 'toolbar', toolbarCallback);
 }
@@ -466,6 +475,10 @@ function openMailbox(mailbox, reload) {
 function openMailboxAtIndex(event) {
    var idx = this.getAttribute("idx");
    var url = ApplicationBaseURL + currentMailbox + "/view?noframe=1&idx=" + idx;
+   var searchValue = search["value"];
+   if (searchValue && searchValue.length > 0)
+      url += ("&search=" + search["criteria"]
+	      + "&value=" + searchValue);
 
    if (document.messageListAjaxRequest) {
       document.messageListAjaxRequest.aborted = true;
@@ -848,10 +861,14 @@ function onHeaderClick(event) {
    preventDefault(event);
 }
 
-function onSearchFormSubmit() {
-   log("search not implemented");
+function onSearchFormSubmit(event) {
+   var searchValue = $("searchValue");
+   var searchCriteria = $("searchCriteria");
 
-   return false;
+   search["criteria"] = searchCriteria.value;
+   search["value"] = searchValue.value;
+
+   openMailbox(currentMailbox, true);
 }
 
 function pouetpouet(event) {
@@ -1026,19 +1043,8 @@ function openInbox(node) {
    mailboxTree.o(1);
 }
 
-function configureSearchField() {
-   var searchValue = $("searchValue");
-
-   Event.observe(searchValue, "mousedown", onSearchMouseDown.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "click", popupSearchMenu.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "blur", onSearchBlur.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "focus", onSearchFocus.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "keydown", onSearchKeyDown.bindAsEventListener(searchValue));
-}
-
 function initMailer(event) {
    if (!document.body.hasClassName("popup")) {
-      configureSearchField();
       configureMessageListEvents();
       initDnd();
       currentMailbox = "/" + accounts[0] + "/INBOX";
@@ -1319,6 +1325,9 @@ function getMenus() {
 				   null);
    menus["mark-menu"] = new Array(null, null, null, null, "-", null, "-",
 				  null, null, null);
+   menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria,
+				   setSearchCriteria, setSearchCriteria,
+				   setSearchCriteria);
 
    return menus;
 }
