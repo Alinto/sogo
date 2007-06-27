@@ -4,6 +4,7 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \
+	SOGoUI		\
 	Common		\
 	Contacts	\
 	MailerUI	\
@@ -11,7 +12,6 @@ SUBPROJECTS += \
 	MainUI		\
 	PreferencesUI	\
 	Scheduler	\
-	SOGoUI		\
 	Templates
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
