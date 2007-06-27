@@ -29,11 +29,15 @@ var queryParameters;
 
 var activeAjaxRequests = 0;
 var menus = new Array();
+var search = {};
 
 var weekStartIsMonday = true;
 
 // logArea = null;
 var allDocumentElements = null;
+
+var userDefaults = null;
+var userSettings = null;
 
 /* a W3C compliant document.all */
 function getAllScopeElements(scope) {
@@ -97,6 +101,26 @@ function getElementsByClassName2(_tag, _class, _scope) {
   } else {
     return elements;
   }
+}
+
+function createElement(tagName, id, classes, attributes, htmlAttributes,
+		       parentNode) {
+   var newElement = $(document.createElement(tagName));
+   if (id)
+      newElement.setAttribute("id", id);
+   if (classes)
+      for (var i = 0; i < classes.length; i++)
+	 newElement.addClassName(classes[i]);
+   if (attributes)
+      for (var i in attributes)
+	 newElement[i] = attributes[i];
+   if (htmlAttributes)
+      for (var i in htmlAttributes)
+	 newElement.setAttribute(i, attributes[i]);
+   if (parentNode)
+      parentNode.appendChild(newElement);
+
+   return $(newElement);
 }
 
 function ml_stripActionInURL(url) {
@@ -206,7 +230,7 @@ function createHTTPClient() {
   // http://developer.apple.com/internet/webcontent/xmlhttpreq.html
   if (typeof XMLHttpRequest != "undefined")
     return new XMLHttpRequest();
-  
+
   try { return new ActiveXObject("Msxml2.XMLHTTP"); } 
   catch (e) { }
   try { return new ActiveXObject("Microsoft.XMLHTTP"); } 
@@ -730,11 +754,9 @@ function checkDropDown(event) {
 
 /* search field */
 function popupSearchMenu(event) {
-  var node = getTarget(event);
-
   var menuId = this.getAttribute("menuid");
-  relX = event.pageX - node.cascadeLeftOffset();
-  relY = event.pageY - node.cascadeTopOffset();
+  relX = event.pageX - $(this).cascadeLeftOffset();
+  relY = event.pageY - $(this).cascadeTopOffset();
 
   if (event.button == 0
       && relX < 24) {
@@ -744,9 +766,9 @@ function popupSearchMenu(event) {
     if (document.currentPopupMenu)
       hideMenu(event, document.currentPopupMenu);
 
-    var popup = document.getElementById(menuId);
-    popup.setStyle({ top: node.offsetHeight + "px",
-		     left: (node.offsetLeft + 3) + "px",
+    var popup = $(menuId);
+    popup.setStyle({ top: this.offsetHeight + "px",
+		     left: (this.offsetLeft + 3) + "px",
 			    visibility: "visible" });
   
     document.currentPopupMenu = popup;
@@ -759,7 +781,7 @@ function setSearchCriteria(event) {
   searchCriteria = $("searchCriteria");
 
   searchValue.setAttribute("ghost-phrase", this.innerHTML);
-//   searchCriteria = this.getAttribute('id');
+  searchCriteria.value = this.getAttribute('id');
 }
 
 function checkSearchValue(event) {
@@ -773,6 +795,21 @@ function checkSearchValue(event) {
 
 function onSearchChange() {
   log ("onSearchChange()...");
+}
+
+function configureSearchField() {
+   var searchValue = $("searchValue");
+
+   Event.observe(searchValue, "mousedown",
+		 onSearchMouseDown.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "click",
+		 popupSearchMenu.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "blur",
+		 onSearchBlur.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "focus",
+		 onSearchFocus.bindAsEventListener(searchValue));
+   Event.observe(searchValue, "keydown",
+		 onSearchKeyDown.bindAsEventListener(searchValue));
 }
 
 function onSearchMouseDown(event) {
@@ -824,20 +861,14 @@ function onSearchKeyDown(event) {
 function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
-  var firstOption;
  
-  var searchOptions = $("searchOptions");
-  if (searchOptions) {
-    var firstOption;
-    $A(searchOptions.childNodes).each(function (item) {
-      if (item.tagName == 'LI') {
-	firstOption = item;
-      }
-    });
-    searchCriteria.value = firstOption.getAttribute('id');
-    searchValue.setAttribute('ghost-phrase', firstOption.innerHTML);
+  var searchOptions = $("searchOptions").childNodesWithTag("li");
+  if (searchOptions.length > 0) {
+    var firstChild = searchOptions[0];
+    searchCriteria.value = $(firstChild).getAttribute('id');
+    searchValue.setAttribute('ghost-phrase', firstChild.innerHTML);
     if (searchValue.value == '') {
-      searchValue.value = firstOption.innerHTML;
+      searchValue.value = firstChild.innerHTML;
       searchValue.setAttribute("modified", "");
       searchValue.setStyle({ color: "#aaa" });
     }
@@ -1174,36 +1205,53 @@ function indexColor(number) {
   return color;
 }
 
+function loadPreferences() {
+   var url = UserFolderURL + "jsonDefaults";
+   var http = createHTTPClient();
+   http.open("GET", url, false);
+   http.send("");
+   if (http.status == 200)
+      userDefaults = http.responseText.evalJSON(true);
+
+   url = UserFolderURL + "jsonSettings";
+   http.open("GET", url, false);
+   http.send("");
+   if (http.status == 200)
+      userSettings = http.responseText.evalJSON(true);
+}
+
 function onLoadHandler(event) {
-    queryParameters = parseQueryParameters('' + window.location);
-    if (!$(document.body).hasClassName("popup")) {
-	initLogConsole();
-	initCriteria();
-    }
-    initMenus();
-    initTabs();
-    configureDragHandles();
-    configureSortableTableHeaders();
-    configureLinkBanner();
-    var progressImage = $("progressIndicator");
-    if (progressImage)
-	progressImage.parentNode.removeChild(progressImage);
-    Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+   loadPreferences();
+   queryParameters = parseQueryParameters('' + window.location);
+   if (!$(document.body).hasClassName("popup")) {
+      initLogConsole();
+      initCriteria();
+      configureSearchField();
+   }
+   initMenus();
+   initTabs();
+   configureDragHandles();
+   configureSortableTableHeaders();
+   configureLinkBanner();
+   var progressImage = $("progressIndicator");
+   if (progressImage)
+      progressImage.parentNode.removeChild(progressImage);
+   Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
 }
 
 function onBodyClickContextMenu(event) {
-  preventDefault(event);
+   preventDefault(event);
 }
 
 function configureSortableTableHeaders() {
-  var headers = document.getElementsByClassName("sortableTableHeader");
-  for (var i = 0; i < headers.length; i++) {
-     var header = headers[i];
-     var anchor = $(header).childNodesWithTag("a")[0];
-     if (anchor)
-	Event.observe(anchor, "click",
-		      onHeaderClick.bindAsEventListener(anchor));
-  }
+   var headers = document.getElementsByClassName("sortableTableHeader");
+   for (var i = 0; i < headers.length; i++) {
+      var header = headers[i];
+      var anchor = $(header).childNodesWithTag("a")[0];
+      if (anchor)
+	 Event.observe(anchor, "click",
+		       onHeaderClick.bindAsEventListener(anchor));
+   }
 }
 
 function onLinkBannerClick() {
