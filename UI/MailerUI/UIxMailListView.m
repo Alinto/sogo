@@ -36,6 +36,8 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
@@ -48,38 +50,42 @@ static int attachmentFlagSize = 8096;
 
 @implementation UIxMailListView
 
+- (id) init
+{
+  SOGoUser *user;
+
+  if ((self = [super init]))
+    {
+      qualifier = nil;
+      user = [context activeUser];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
+      ASSIGN (userTimeZone, [user timeZone]);
+    }
+
+  return self;
+}
+
 - (void) dealloc 
 {
-  [self->qualifier  release];
-  [self->sortedUIDs release];
-  [self->messages   release];
-  [self->message    release];
+  [qualifier release];
+  [sortedUIDs release];
+  [messages release];
+  [message release];
   [dateFormatter release];
   [userTimeZone release];
   [super dealloc];
 }
 
-/* notifications */
-
-- (void) sleep 
-{
-  [self->qualifier  release]; self->qualifier  = nil;
-  [self->sortedUIDs release]; self->sortedUIDs = nil;
-  [self->messages   release]; self->messages   = nil;
-  [self->message    release]; self->message    = nil;
-  [super sleep];
-}
-
 /* accessors */
 
-- (void)setMessage:(id)_msg
+- (void) setMessage: (id) _msg
 {
-  ASSIGN(self->message, _msg);
+  ASSIGN(message, _msg);
 }
 
 - (id) message 
 {
-  return self->message;
+  return message;
 }
 
 - (NSString *) messageDate
@@ -90,16 +96,6 @@ static int attachmentFlagSize = 8096;
   [messageDate setTimeZone: userTimeZone];
 
   return [dateFormatter formattedDateAndTime: messageDate];
-}
-
-- (void) setQualifier: (EOQualifier *) _msg 
-{
-  ASSIGN(self->qualifier, _msg);
-}
-
-- (EOQualifier *) qualifier 
-{
-  return self->qualifier;
 }
 
 - (BOOL) showToAddress 
@@ -227,9 +223,9 @@ static int attachmentFlagSize = 8096;
 
 - (NSRange) fetchRange 
 {
-  if (self->firstMessageNumber == 0)
+  if (firstMessageNumber == 0)
     return NSMakeRange(0, messagesPerPage);
-  return NSMakeRange(self->firstMessageNumber - 1, messagesPerPage);
+  return NSMakeRange(firstMessageNumber - 1, messagesPerPage);
 }
 
 - (NSArray *) sortedUIDs 
@@ -237,17 +233,17 @@ static int attachmentFlagSize = 8096;
   if (!sortedUIDs)
     {
       sortedUIDs 
-        = [[self clientObject] fetchUIDsMatchingQualifier: [self qualifier]
-                               sortOrdering: [self imap4SortOrdering]];
+        = [[self clientObject] fetchUIDsMatchingQualifier: qualifier
+			sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
 
-  return self->sortedUIDs;
+  return sortedUIDs;
 }
 
 - (unsigned int) totalMessageCount 
 {
-  return [self->sortedUIDs count];
+  return [sortedUIDs count];
 }
 
 - (BOOL) showsAllMessages 
@@ -330,16 +326,9 @@ static int attachmentFlagSize = 8096;
   NSArray  *msgs;
   NSRange  r;
   unsigned len;
-  SOGoUser *user;
   
-  if (self->messages != nil)
-    return self->messages;
-
-  user = [context activeUser];
-  if (!dateFormatter)
-    dateFormatter = [user dateFormatterInContext: context];
-  if (!userTimeZone)
-    ASSIGN (userTimeZone, [user timeZone]);
+  if (messages != nil)
+    return messages;
 
   r    = [self fetchBlock];
   uids = [self sortedUIDs];
@@ -347,9 +336,10 @@ static int attachmentFlagSize = 8096;
     /* only need to restrict if we have a lot */
     uids = [uids subarrayWithRange:r];
   
-  msgs = [[self clientObject] fetchUIDs:uids parts:[self fetchKeys]];
-  self->messages = [[msgs valueForKey:@"fetch"] retain];
-  return self->messages;
+  msgs = [[self clientObject] fetchUIDs:uids parts: [self fetchKeys]];
+  messages = [[msgs valueForKey:@"fetch"] retain];
+
+  return messages;
 }
 
 /* URL processing */
@@ -473,17 +463,57 @@ static int attachmentFlagSize = 8096;
   return firstMessage;
 }
 
+- (void) _setQualifierForCriteria: (NSString *) criteria
+			 andValue: (NSString *) value
+{
+  [qualifier release];
+
+  if ([criteria isEqualToString: @"subject"])
+    qualifier = [EOQualifier qualifierWithQualifierFormat:
+			       @"(subject doesContain: %@)",
+			     value];
+  else if ([criteria isEqualToString: @"sender"])
+    qualifier = [EOQualifier qualifierWithQualifierFormat:
+			     @"(from doesContain: %@)",
+			     value];
+  else if ([criteria isEqualToString: @"subject_or_sender"])
+    qualifier = [EOQualifier qualifierWithQualifierFormat:
+			       @"(subject doesContain: %@) OR "
+			     @"(from doesContain: %@)",
+			     value, value];
+  else if ([criteria isEqualToString: @"to_or_cc"])
+    qualifier = [EOQualifier qualifierWithQualifierFormat:
+			       @"(to doesContain: %@) OR "
+			     @"(cc doesContain: %@)",
+			     value, value];
+  else if ([criteria isEqualToString: @"entire_message"])
+    qualifier = [EOQualifier qualifierWithQualifierFormat:
+			     @"(message doesContain: %@)",
+			     value];
+  else
+    qualifier = nil;
+
+  [qualifier retain];
+}
+
 - (id) defaultAction 
 {
   WORequest *request;
-  NSString *specificMessage;
+  NSString *specificMessage, *searchCriteria, *searchValue;
 
   request = [[self context] request];
 
   [[self clientObject] flushMailCaches];
 
   specificMessage = [request formValueForKey: @"pageforuid"];
-  self->firstMessageNumber
+  searchCriteria = [request formValueForKey: @"search"];
+  searchValue = [request formValueForKey: @"value"];
+  if ([searchCriteria length] > 0
+      && [searchValue length] > 0)
+    [self _setQualifierForCriteria: searchCriteria
+	  andValue: searchValue];
+
+  firstMessageNumber
     = ((specificMessage)
        ? [self firstMessageOfPageFor: [specificMessage intValue]]
        : [[request formValueForKey:@"idx"] intValue]);
@@ -550,19 +580,24 @@ static int attachmentFlagSize = 8096;
 {
   // TODO: we might want to flush the caches?
   NSException *error;
-  id client;
+  id clientObject;
+
+  clientObject = [self clientObject];
+  if (clientObject)
+    {
+      error = [clientObject expunge];
+      if (!error)
+	{
+	  if ([clientObject respondsToSelector: @selector(flushMailCaches)])
+	    [clientObject flushMailCaches];
+	  return [self redirectToLocation:@"view"];
+	}
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus:404 /* Not Found */
+			 reason: @"did not find mail folder"];
   
-  if ((client = [self clientObject]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"did not find mail folder"];
-  }
-  
-  if ((error = [[self clientObject] expunge]) != nil)
-    return error;
-  
-  if ([client respondsToSelector:@selector(flushMailCaches)])
-    [client flushMailCaches];
-  return [self redirectToLocation:@"view"];
+  return error;
 }
 
 @end

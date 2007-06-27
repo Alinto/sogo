@@ -1,3 +1,12 @@
+2007-06-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sleep]):
+	removed method.
+	([-setQualifier:_msg], [-qualifier]): removed methods.
+	([UIxMailListView -defaultAction]): added code to handle the
+	search criteria and value passed as url parameters. Also, we now
+	handle the same search criterias as Thunderbird/Icedove.
+
 2007-06-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxJSONPreferences.m ([UIxJSONPreferences
