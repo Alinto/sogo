@@ -129,9 +129,8 @@ static BOOL uixDebugEnabled = NO;
 
 - (void) dealloc
 {
-  [self->queryParameters release];
-  if (_selectedDate)
-    [_selectedDate release];
+  [queryParameters release];
+  [_selectedDate release];
   [super dealloc];
 }
 
@@ -161,7 +160,7 @@ static BOOL uixDebugEnabled = NO;
           value = [[part substringFromIndex:(r.location + r.length)] 
                     stringByUnescapingURL];
         }
-      [self->queryParameters setObject:value forKey:key];
+      [queryParameters setObject:value forKey:key];
       part = [e nextObject];
     }
 }
@@ -195,10 +194,10 @@ static BOOL uixDebugEnabled = NO;
   NSRange   r;
   NSString *qs;
   
-  if (self->queryParameters)
-    return self->queryParameters;
+  if (queryParameters)
+    return queryParameters;
 
-  self->queryParameters = [[NSMutableDictionary alloc] initWithCapacity:8];
+  queryParameters = [[NSMutableDictionary alloc] initWithCapacity:8];
 
   req = [[self context] request];
   uri = [req uri];
@@ -212,7 +211,7 @@ static BOOL uixDebugEnabled = NO;
   /* add form values */
   [self addKeepAliveFormValuesToQueryParameters];
 
-  return self->queryParameters;
+  return queryParameters;
 }
 
 - (NSDictionary *) queryParameters
