@@ -406,8 +406,7 @@ TD.tbtv_headercell:active
   border-top: 1px solid #9c9a94;
   border-left: 1px solid #9c9a94;
   border-right: 2px solid #9c9a94;
-  border-bottom: 1px solid #9c9a94;
-  -moz-border-colors: #9c9a94 #000; }
+  border-bottom: 1px solid #9c9a94; }
 
 TD.headerCell SPAN,
 td.tbtv_headercell SPAN

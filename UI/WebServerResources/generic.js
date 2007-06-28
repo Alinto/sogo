@@ -863,6 +863,16 @@ function onSearchKeyDown(event) {
   this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
+function onSearchFormSubmit(event) {
+   var searchValue = $("searchValue");
+   var searchCriteria = $("searchCriteria");
+
+   search["criteria"] = searchCriteria.value;
+   search["value"] = searchValue.value;
+
+   refreshCurrentFolder();
+}
+
 function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
@@ -1291,7 +1301,14 @@ function configureLinkBanner() {
 
 addEvent(window, 'load', onLoadHandler);
 
+function parent$(element) {
+   return this.opener.document.getElementById(element);
+}
+
 /* stubs */
+function refreshCurrentFolder() {
+}
+
 function configureDragHandles() {
 }
 
@@ -1300,8 +1317,4 @@ function getMenus() {
 
 function onHeaderClick(event) {
    window.alert("generic headerClick");
-}
-
-function parent$(element) {
-   return this.opener.document.getElementById(element);
 }
