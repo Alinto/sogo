@@ -1,5 +1,13 @@
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-contactInfos]): use the "asc" url parameter instead of "desc" to
+	determine the ordering.
+	([-sortOrdering]): removed method.
+	([UIxContactsListView -init]): removed the "searchText" ivar.
+	(general): the template no longer use the UIxSortableTableHeader
+	components.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-defaultSortKey]): default sort following the messages arrival
 	instead of their date.
