@@ -1,7 +1,7 @@
 /* JavaScript for SOGoContacts */
 
 var cachedContacts = new Array();
-var currentContactFolder = '/personal';
+var currentContactFolder = null;
 
 var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
@@ -30,8 +30,22 @@ function validateEditorInput(sender) {
   return true;
 }
 
-function openContactsFolder(contactsFolder, params) {
-  if (contactsFolder != currentContactFolder || params) {
+function openContactsFolder(contactsFolder, reload, idx) {
+  if (contactsFolder != currentContactFolder || reload) {
+     currentContactFolder = contactsFolder;
+     var url = URLForFolderID(currentContactFolder) +
+	"/view?noframe=1";
+
+     var searchValue = search["value"];
+     if (searchValue && searchValue.length > 0)
+	url += ("&search=" + search["criteria"]
+		+ "&value=" + searchValue);
+     var sortAttribute = sorting["attribute"];
+     if (sortAttribute && sortAttribute.length > 0)
+	url += ("&sort=" + sorting["attribute"]
+		+ "&asc=" + sorting["ascending"]);
+
+     var selection;
      if (contactsFolder == currentContactFolder) {
         var contactsList = $("contactsList");
         if (contactsList)
@@ -40,21 +54,14 @@ function openContactsFolder(contactsFolder, params) {
            window.alert("no contactsList");
      }
      else
-      selection = null;
+	selection = null;
 
-    currentContactFolder = contactsFolder;
-    var url = URLForFolderID(currentContactFolder) +
-       "/view?noframe=1&sort=cn&desc=0";
-    if (params)
-      url += '&' + params;
-
-    var selection;
-    if (document.contactsListAjaxRequest) {
-      document.contactsListAjaxRequest.aborted = true;
-      document.contactsListAjaxRequest.abort();
-    }
-    document.contactsListAjaxRequest
-      = triggerAjaxRequest(url, contactsListCallback, selection);
+     if (document.contactsListAjaxRequest) {
+	document.contactsListAjaxRequest.aborted = true;
+	document.contactsListAjaxRequest.abort();
+     }
+     document.contactsListAjaxRequest
+	= triggerAjaxRequest(url, contactsListCallback, selection);
   }
 }
 
@@ -70,6 +77,15 @@ function openContactsFolderAtIndex(element) {
     = triggerAjaxRequest(url, contactsListCallback);
 }
 
+function configureContactsListHeaders(cells) {
+   for (var i = 0; i < cells.length; i++) {
+      var currentCell = $(cells[i]);
+      Event.observe(currentCell, "click",
+		    onHeaderClick.bindAsEventListener(currentCell));
+      Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
+   }
+}
+
 function contactsListCallback(http) {
   var div = $("contactsListContent");
 
@@ -77,12 +93,44 @@ function contactsListCallback(http) {
       && http.status == 200) {
     document.contactsListAjaxRequest = null;
     div.innerHTML = http.responseText;
+
+    var table = $("contactsList");
+    if (table)
+       configureContactsListHeaders(table.tBodies[0].rows[0].cells);
+
+    if (sorting["attribute"] && sorting["attribute"].length > 0) {
+       var sortHeader;
+       if (sorting["attribute"] == "cn")
+	  sortHeader = $("nameHeader");
+       else if (sorting["attribute"] == "mail")
+	  sortHeader = $("mailHeader");
+       else if (sorting["attribute"] == "screenname")
+	  sortHeader = $("screenNameHeader");
+       else if (sorting["attribute"] == "o")
+	  sortHeader = $("orgHeader");
+       else if (sorting["attribute"] == "telephonenumber")
+	  sortHeader = $("phoneHeader");
+       else
+	  sortHeader = null;
+       
+       if (sortHeader) {
+	  var sortImage = createElement("img", "messageSortImage", "sortImage");
+	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+	  if (sorting["ascending"])
+	     sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+	  else
+	     sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+       }
+    }
+
     var selected = http.callbackData;
     if (selected) {
-        for (var i = 0; i < selected.length; i++)
-          $(selected[i]).select();
+       for (var i = 0; i < selected.length; i++) {
+	  var row = $(selected[i]);
+	  if (row)
+	     row.select();
+       }
     }
-    configureSortableTableHeaders();
   }
   else
     log ("ajax problem 1");
@@ -332,19 +380,31 @@ function newEmailTo(sender) {
 }
 
 function onHeaderClick(event) {
-  if (document.contactsListAjaxRequest) {
-    document.contactsListAjaxRequest.aborted = true;
-    document.contactsListAjaxRequest.abort();
-  }
-  url = URLForFolderID(currentContactFolder);
-// //   log("url: " + url);
-//   var url = "" + this.href;
-  if (url.indexOf("noframe=", 0) == -1)
-     url += "&noframe=1";
-  document.contactsListAjaxRequest
-     = triggerAjaxRequest(url, contactsListCallback);
+   var headerId = this.getAttribute("id");
+   var newSortAttribute;
+   if (headerId == "nameHeader")
+      newSortAttribute = "cn";
+   else if (headerId == "mailHeader")
+      newSortAttribute = "mail";
+   else if (headerId == "screenNameHeader")
+      newSortAttribute = "screenname";
+   else if (headerId == "orgHeader")
+      newSortAttribute = "o";
+   else if (headerId == "phoneHeader")
+      newSortAttribute = "telephonenumber";
 
-  event.preventDefault();
+   log("header: " + headerId);
+
+   if (sorting["attribute"] == newSortAttribute)
+      sorting["ascending"] = !sorting["ascending"];
+   else {
+      sorting["attribute"] = newSortAttribute;
+      sorting["ascending"] = true;
+   }
+
+   refreshCurrentFolder();
+
+   preventDefault(event);
 }
 
 function registerDraggableMessageNodes() {
@@ -367,17 +427,17 @@ function onFolderSelectionChange() {
       var div = $("contactsListContent");
       div.innerHTML = "";
    }
-   else
-      openContactsFolder(nodes[0].getAttribute("id"), null);
+   else {
+      search = {};
+      sorting = {};
+      $("searchValue").value = "";
+      initCriteria();
+      openContactsFolder(nodes[0].getAttribute("id"));
+   }
 }
 
-function onSearchFormSubmit() {
-  var searchValue = $("searchValue");
-
-  openContactsFolder(currentContactFolder,
-		     "search=" + searchValue.value);
-
-  return false;
+function refreshCurrentFolder() {
+   openContactsFolder(currentContactFolder, true);
 }
 
 function onConfirmContactSelection(event) {
@@ -409,7 +469,7 @@ function onConfirmContactSelection(event) {
        && selectorList.value != initialValues)
       selector.changeNotification("addition");
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onContactMailTo(node) {
@@ -417,11 +477,11 @@ function onContactMailTo(node) {
 }
 
 function refreshContacts(contactId) {
-  openContactsFolder(currentContactFolder, "reload=true");
-  cachedContacts[currentContactFolder + "/" + contactId] = null;
-  loadContact(contactId);
+   refreshCurrentFolder();
+   cachedContacts[currentContactFolder + "/" + contactId] = null;
+   loadContact(contactId);
 
-  return false;
+   return false;
 }
 
 function onAddressBookNew(event) {
@@ -465,7 +525,7 @@ function newUserFolderCallback(folderData) {
 function onAddressBookAdd(event) {
    openUserFolderSelector(newUserFolderCallback, "contact");
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onFolderUnsubscribeCB(folderId) {
@@ -494,7 +554,7 @@ function onAddressBookRemove(event) {
      }
   }
 
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function deletePersonalAddressBook(folderId) {
@@ -594,13 +654,15 @@ function configureContactFolders() {
 
     var personalFolder = $("/personal");
     personalFolder.select();
+    openContactsFolder("/personal");
   }
 }
 
 function setEventsOnContactFolder(node) {
-  Event.observe(node, "mousedown", listRowMouseDownHandler, false);
-  Event.observe(node, "click", onRowClick, false);
-  Event.observe(node, "contextmenu", onContactFoldersContextMenu.bindAsEventListener(node), false);
+   Event.observe(node, "mousedown", listRowMouseDownHandler, false);
+   Event.observe(node, "click", onRowClick, false);
+   Event.observe(node, "contextmenu",
+		 onContactFoldersContextMenu.bindAsEventListener(node), false);
 }
 
 function onMenuSharing(event) {
@@ -630,7 +692,8 @@ function configureSelectionButtons() {
    if (container) {
       var buttons = container.childNodesWithTag("input");
       for (var i = 0; i < buttons.length; i++)
-	Event.observe(buttons[i], "click", onConfirmContactSelection.bindAsEventListener(buttons[i]), false);
+	Event.observe(buttons[i], "click",
+		      onConfirmContactSelection.bindAsEventListener(buttons[i]));
    }
 }
 

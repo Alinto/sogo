@@ -179,8 +179,8 @@ TABLE#contactsList TD
 { white-space: nowrap;
   width: 20%; }
 
-TABLE#contactsList TD.headerName,
-TABLE#contactsList TD.headerEmail
+TD#nameHeader,
+TD#mailHeader
 { width: 30%; }
 
 TABLE#contactsList TD IMG

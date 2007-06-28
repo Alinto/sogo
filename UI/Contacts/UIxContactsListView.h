@@ -31,7 +31,6 @@
 
 @interface UIxContactsListView : UIxComponent
 {
-  NSString *searchText;
   NSDictionary *currentContact;
   NSString *selectorComponentClass;
 }
