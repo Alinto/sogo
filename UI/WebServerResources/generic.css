@@ -390,7 +390,8 @@ td.tbtv_actcell
 TD.headerCell,
 TD.tbtv_headercell,
 TD.tbtv_navcell
-{ background-color: #d4d0c8; 
+{ vertical-align: middle;
+  background-color: #d4d0c8; 
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
   border-right: 2px solid #222;
@@ -400,10 +401,13 @@ TD.tbtv_navcell
 
 TD.headerCell:active,
 TD.tbtv_headercell:active
-{ background-color: #DCDAD5;
-  border: 1px solid #9c9a94;
-  -moz-border-bottom-colors: #9c9a94;
-  -moz-border-right-colors: #9c9a94; }
+{ background-color: #dcdad5;
+  padding-top: 2px;
+  border-top: 1px solid #9c9a94;
+  border-left: 1px solid #9c9a94;
+  border-right: 2px solid #9c9a94;
+  border-bottom: 1px solid #9c9a94;
+  -moz-border-colors: #9c9a94 #000; }
 
 TD.headerCell SPAN,
 td.tbtv_headercell SPAN
@@ -425,6 +429,7 @@ td.tbtv_headercell a:hover
   /* background-color: #C4C0B8; */
 }
 
+IMG.sortImage,
 TD.headerCell IMG.tbtv_sortcell,
 td.tbtv_headercell img.tbtv_sortcell
 { float: right;

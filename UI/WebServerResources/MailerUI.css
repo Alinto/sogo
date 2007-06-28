@@ -494,21 +494,25 @@ TABLE#messageList THEAD
 TABLE#messageList TD
 { height: 1.2em; }
 
+TD#messageFlagHeader,
 TABLE#messageList TD.messageFlagColumn
 { width: 1em;
   text-align: center; }
 
+TD#subjectHeader,
 TABLE#messageList TD.tbtv_subject_headercell,
 TABLE#messageList td.mailer_unreadmailsubject,
 TABLE#messageList td.mailer_readmailsubject
 { width: 40%;
   min-width: 40%; }
 
+TD#fromHeader,
 TABLE#messageList TD.tbtv_from_headercell,
 TABLE#messageList TD.messageAddressColumn
 { width: 35%;
   overflow: hidden; }
 
+TD#dateHeader,
 TABLE#messageList TD.tbtv_date_headercell,
 TABLE#messageList TD.messageDateColumn
 { width: 25%;

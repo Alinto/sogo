@@ -175,7 +175,7 @@ static int attachmentFlagSize = 8096;
   /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
   static NSArray *keys = nil;
   if (keys == nil) {
-    keys = [[NSArray alloc] initWithObjects:
+    keys = [[NSArray alloc] initWithObjects: @"UID",
 			      @"FLAGS", @"ENVELOPE", @"RFC822.SIZE", nil];
   }
   return keys;
@@ -183,39 +183,29 @@ static int attachmentFlagSize = 8096;
 
 - (NSString *) defaultSortKey 
 {
-  return @"DATE";
+  return @"ARRIVAL";
 }
 
 - (NSString *) imap4SortKey 
 {
   NSString *sort;
   
-  sort = [[[self context] request] formValueForKey:@"sort"];
+  sort = [[context request] formValueForKey: @"sort"];
 
-  if ([sort length] == 0)
+  if (![sort length])
     sort = [self defaultSortKey];
 
   return [sort uppercaseString];
 }
 
-- (BOOL) isSortedDescending
-{
-  NSString *desc;
-
-  desc = [[[self context] request] formValueForKey:@"desc"];
-
-  return ((desc)
-          ? [desc boolValue]
-          : YES);
-}
-
 - (NSString *) imap4SortOrdering 
 {
-  NSString *sort;
+  NSString *sort, *ascending;
 
   sort = [self imap4SortKey];
 
-  if ([self isSortedDescending])
+  ascending = [[context request] formValueForKey: @"asc"];
+  if (![ascending boolValue])
     sort = [@"REVERSE " stringByAppendingString: sort];
 
   return sort;
@@ -232,9 +222,9 @@ static int attachmentFlagSize = 8096;
 {
   if (!sortedUIDs)
     {
-      sortedUIDs 
+      sortedUIDs
         = [[self clientObject] fetchUIDsMatchingQualifier: qualifier
-			sortOrdering: [self imap4SortOrdering]];
+			       sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
 
@@ -336,8 +326,8 @@ static int attachmentFlagSize = 8096;
     /* only need to restrict if we have a lot */
     uids = [uids subarrayWithRange:r];
   
-  msgs = [[self clientObject] fetchUIDs:uids parts: [self fetchKeys]];
-  messages = [[msgs valueForKey:@"fetch"] retain];
+  msgs = [[self clientObject] fetchUIDs: uids parts: [self fetchKeys]];
+  messages = [[msgs valueForKey: @"fetch"] retain];
 
   return messages;
 }
@@ -422,25 +412,26 @@ static int attachmentFlagSize = 8096;
 {
   NSString *uid;
   
-  if ((uid = [[[self context] request] formValueForKey:@"uid"]) == nil)
+  if ((uid = [[context request] formValueForKey: @"uid"]) == nil)
     return nil;
 
-  return [[self clientObject] lookupName:uid inContext:[self context]
-			      acquire:NO];
+  return [[self clientObject] lookupName: uid
+			      inContext: context
+			      acquire: NO];
 }
 
 /* actions */
 
 - (BOOL) isJavaScriptRequest 
 {
-  return [[[[self context] request] formValueForKey:@"jsonly"] boolValue];
+  return [[[context request] formValueForKey:@"jsonly"] boolValue];
 }
 
 - (id) javaScriptOK 
 {
   WOResponse *r;
 
-  r = [[self context] response];
+  r = [context response];
   [r setStatus:200 /* OK */];
   return r;
 }
@@ -501,7 +492,7 @@ static int attachmentFlagSize = 8096;
   WORequest *request;
   NSString *specificMessage, *searchCriteria, *searchValue;
 
-  request = [[self context] request];
+  request = [context request];
 
   [[self clientObject] flushMailCaches];
 

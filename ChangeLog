@@ -1,3 +1,14 @@
+2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-defaultSortKey]): default sort following the messages arrival
+	instead of their date.
+	([-isSortedDescending]): removed method.
+	([-imap4SortOrdering]): use the "asc" url parameter instead of
+	"desc" to determine the ordering.
+	(general): the template no longer use the UIxSortableTableHeader
+	components.
+
 2007-06-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sleep]):

@@ -30,6 +30,7 @@ var queryParameters;
 var activeAjaxRequests = 0;
 var menus = new Array();
 var search = {};
+var sorting = {};
 
 var weekStartIsMonday = true;
 
@@ -108,9 +109,13 @@ function createElement(tagName, id, classes, attributes, htmlAttributes,
    var newElement = $(document.createElement(tagName));
    if (id)
       newElement.setAttribute("id", id);
-   if (classes)
-      for (var i = 0; i < classes.length; i++)
-	 newElement.addClassName(classes[i]);
+   if (classes) {
+      if (typeof(classes) == "string")
+	 newElement.addClassName(classes);
+      else
+	 for (var i = 0; i < classes.length; i++)
+	    newElement.addClassName(classes[i]);
+   }
    if (attributes)
       for (var i in attributes)
 	 newElement[i] = attributes[i];
@@ -977,7 +982,7 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 }
 
 function listRowMouseDownHandler(event) {
-  preventDefault(event);
+   preventDefault(event);
 }
 
 /* tabs */
@@ -1266,7 +1271,7 @@ function onPreferencesClick(event) {
    w.opener = window;
    w.focus();
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function configureLinkBanner() {

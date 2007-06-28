@@ -38,11 +38,9 @@
   NSTimeZone *userTimeZone;
 }
 
-- (NSString *)defaultSortKey;
-- (NSString *)imap4SortKey;
-- (NSString *)imap4SortOrdering;
-
-- (BOOL)isSortedDescending;
+- (NSString *) defaultSortKey;
+- (NSString *) imap4SortKey;
+- (NSString *) imap4SortOrdering;
 
 @end
 

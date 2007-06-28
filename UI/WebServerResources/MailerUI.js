@@ -386,6 +386,7 @@ function onMailboxTreeItemClick(event) {
    topNode.selectedEntry = this;
 
    search = {};
+   sorting = {};
    $("searchValue").value = "";
    initCriteria();
 
@@ -423,7 +424,7 @@ function refreshMailbox() {
    return false;
 }
 
-function openMailbox(mailbox, reload) {
+function openMailbox(mailbox, reload, idx) {
    if (mailbox != currentMailbox || reload) {
       currentMailbox = mailbox;
       var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
@@ -458,6 +459,12 @@ function openMailbox(mailbox, reload) {
 	 if (searchValue && searchValue.length > 0)
 	    url += ("&search=" + search["criteria"]
 		    + "&value=" + searchValue);
+	 var sortAttribute = sorting["attribute"];
+	 if (sortAttribute && sortAttribute.length > 0)
+	    url += ("&sort=" + sorting["attribute"]
+		    + "&asc=" + sorting["ascending"]);
+	 if (idx)
+	    url += "&idx=" + idx;
 	 document.messageListAjaxRequest
 	    = triggerAjaxRequest(url, messageListCallback,
 				 currentMessages[mailbox]);
@@ -474,19 +481,7 @@ function openMailbox(mailbox, reload) {
 }
 
 function openMailboxAtIndex(event) {
-   var idx = this.getAttribute("idx");
-   var url = ApplicationBaseURL + currentMailbox + "/view?noframe=1&idx=" + idx;
-   var searchValue = search["value"];
-   if (searchValue && searchValue.length > 0)
-      url += ("&search=" + search["criteria"]
-	      + "&value=" + searchValue);
-
-   if (document.messageListAjaxRequest) {
-      document.messageListAjaxRequest.aborted = true;
-      document.messageListAjaxRequest.abort();
-   }
-   document.messageListAjaxRequest
-      = triggerAjaxRequest(url, messageListCallback);
+   openMailbox(currentMailbox, true, this.getAttribute("idx"));
 
    preventDefault(event);
 }
@@ -505,7 +500,26 @@ function messageListCallback(http) {
 	    row.select();
       }
       configureMessageListEvents();
-      configureSortableTableHeaders();
+      if (sorting["attribute"] && sorting["attribute"].length > 0) {
+	 var sortHeader;
+	 if (sorting["attribute"] == "subject")
+	    sortHeader = $("subjectHeader");
+	 else if (sorting["attribute"] == "from")
+	    sortHeader = $("fromHeader");
+	 else if (sorting["attribute"] == "date")
+	    sortHeader = $("dateHeader");
+	 else
+	    sortHeader = null;
+
+	 if (sortHeader) {
+	    var sortImage = createElement("img", "messageSortImage", "sortImage");
+	    sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+	    if (sorting["ascending"])
+	       sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+	    else
+	       sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+	 }
+      }
    }
    else
       log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ")");
@@ -849,18 +863,25 @@ function expandUpperTree(node) {
 }
 
 function onHeaderClick(event) {
-   if (document.messageListAjaxRequest) {
-      document.messageListAjaxRequest.aborted = true;
-      document.messageListAjaxRequest.abort();
-   }
-   var link = this.getAttribute("href");
-   url = ApplicationBaseURL + currentMailbox + "/" + link;
-   if (link.indexOf("noframe=") < 0)
-      url += "&noframe=1";
+   var headerId = this.getAttribute("id");
+   var newSortAttribute;
+   if (headerId == "subjectHeader")
+      newSortAttribute = "subject";
+   else if (headerId == "fromHeader")
+      newSortAttribute = "from";
+   else if (headerId == "dateHeader")
+      newSortAttribute = "date";
+   else
+      newSortAttribute = "arrival";
 
-   log ("link: " + link);
-   document.messageListAjaxRequest
-      = triggerAjaxRequest(url, messageListCallback);
+   if (sorting["attribute"] == newSortAttribute)
+      sorting["ascending"] = !sorting["ascending"];
+   else {
+      sorting["attribute"] = newSortAttribute;
+      sorting["ascending"] = true;
+   }
+
+   openMailbox(currentMailbox, true);
 
    preventDefault(event);
 }
@@ -955,11 +976,24 @@ var messageListData = function(type) {
    return msgIds;
 }
 
+/* a model for a futur refactoring of the sortable table headers mechanism */
+
+function configureMessageListHeaders(cells) {
+   for (var i = 0; i < cells.length; i++) {
+      var currentCell = $(cells[i]);
+      Event.observe(currentCell, "click",
+		    onHeaderClick.bindAsEventListener(currentCell));
+      Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
+   }
+}
+
 function configureMessageListEvents() {
    var messageList = $("messageList");
    if (messageList) {
       Event.observe(messageList, "mousedown",
 		    onMessageSelectionChange.bindAsEventListener(messageList));
+
+      configureMessageListHeaders(messageList.tHead.rows[0].cells);
       var cell = messageList.tHead.rows[1].cells[0];
       if ($(cell).hasClassName("tbtv_navcell")) {
 	 var anchors = $(cell).childNodesWithTag("a");
@@ -976,7 +1010,7 @@ function configureMessageListEvents() {
 	 rows[i].dndGhost = messageListGhost;
 	 rows[i].dndDataForType = messageListData;
 	 document.DNDManager.registerSource(rows[i]);
-	 
+
 	 for (var j = 0; j < rows[i].cells.length; j++) {
 	    var cell = rows[i].cells[j];
 	    Event.observe(cell, "mousedown", listRowMouseDownHandler);
