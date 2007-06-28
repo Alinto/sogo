@@ -23,8 +23,6 @@ CommonUI_OBJC_FILES +=		\
 	UIxTabItem.m		\
 	UIxUserRightsEditor.m	\
 	\
-	UIxSortableTableHeader.m \
-	\
 	UIxToolbar.m
 
 CommonUI_RESOURCE_FILES += \

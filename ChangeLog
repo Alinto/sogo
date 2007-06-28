@@ -1,5 +1,8 @@
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxSortableTableHeader.m: removed useless class
+	module.
+
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
 	-contactInfos]): use the "asc" url parameter instead of "desc" to
 	determine the ordering.
