@@ -1,5 +1,7 @@
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxSortButton.m: removed useless class module.
+
 	* UI/Common/UIxSortableTableHeader.m: removed useless class
 	module.
 

@@ -12,7 +12,6 @@ CommonUI_OBJC_FILES +=		\
 	CommonUIProduct.m	\
 	UIxPageFrame.m		\
 	UIxPrintPageFrame.m	\
-	UIxSortButton.m		\
 	UIxAppNavView.m		\
 	\
 	UIxAclEditor.m  \
