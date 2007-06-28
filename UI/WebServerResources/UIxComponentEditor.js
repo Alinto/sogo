@@ -43,7 +43,7 @@ function onPopupUrlWindow(event) {
 function onPopupDocumentWindow(event) {
    var documentUrl = $("url");
 
-   event.preventDefault();
+   preventDefault(event);
    window.open(documentUrl.value, "SOGo_Document");
 
    return false;

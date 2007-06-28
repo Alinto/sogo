@@ -15,7 +15,7 @@ var attendeesEmails;
 
 function onContactKeydown(event) {
   if (event.keyCode == 9) {
-    event.preventDefault();
+    preventDefault(event);
     if (this.confirmedValue)
       this.value = this.confirmedValue;
     var row = this.parentNode.parentNode.nextSibling;
@@ -333,7 +333,7 @@ function initializeWindowButtons() {
 }
 
 function onEditorOkClick(event) {
-   event.preventDefault();
+   preventDefault(event);
 
    attendeesNames = new Array();
    attendeesEmails = new Array();
@@ -363,7 +363,7 @@ function onEditorOkClick(event) {
 }
 
 function onEditorCancelClick(event) {
-   event.preventDefault();
+   preventDefault(event);
    window.close();
 }
 

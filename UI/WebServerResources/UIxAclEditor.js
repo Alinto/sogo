@@ -53,7 +53,7 @@ function saveAcls() {
 function onUserAdd(event) {
    openUserFolderSelector(null, "user");
 
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function removeUserCallback(http) {
@@ -79,7 +79,7 @@ function onUserRemove(event) {
       var userId = nodes[i].getAttribute("id");
       triggerAjaxRequest(baseURL + userId, removeUserCallback, nodes[i]);
    }
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function subscribeToFolder(refreshCallback, refreshCallbackData) {
@@ -109,12 +109,12 @@ function openRightsForUser(button) {
 
 function openRightsForDefaultUser(event) {
    openRightsForUserID(defaultUserID);
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onOpenUserRights(event) {
    openRightsForUser();
-   event.preventDefault();
+   preventDefault(event);
 }
 
 function onAclLoadHandler() {

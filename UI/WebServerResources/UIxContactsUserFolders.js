@@ -78,7 +78,7 @@ function buildTree(response) {
 }
 
 function onFolderTreeItemClick(event) {
-   event.preventDefault();
+   preventDefault(event);
 
    var topNode = $("d");
    if (topNode.selectedEntry)
