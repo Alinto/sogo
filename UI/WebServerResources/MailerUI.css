@@ -470,7 +470,8 @@ TABLE#addr_table
 }
 
 TABLE#messageList
-{ display: block;
+{ cursor: default;
+  display: block;
   position: absolute;
   background-color: #fff;
   color: #000;

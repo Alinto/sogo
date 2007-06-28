@@ -342,7 +342,8 @@ function moveMessages(rowIds, folder) {
       /* send AJAX request (synchronously) */
 	  
       var messageId = currentMailbox + "/" + rowIds[i];
-      url = ApplicationBaseURL + messageId + "/move?jsonly=1&tofolder=" + folder;
+      url = (ApplicationBaseURL + messageId
+	     + "/move?jsonly=1&tofolder=" + folder);
       http = createHTTPClient();
       http.open("GET", url, false /* not async */);
       http.send("");
@@ -499,8 +500,9 @@ function messageListCallback(http) {
       div.innerHTML = http.responseText;
       var selected = http.callbackData;
       if (selected) {
-	 var row = $('row_' + selected);
-	 row.select();
+	 var row = $("row_" + selected);
+	 if (row)
+	    row.select();
       }
       configureMessageListEvents();
       configureSortableTableHeaders();
@@ -851,10 +853,12 @@ function onHeaderClick(event) {
       document.messageListAjaxRequest.aborted = true;
       document.messageListAjaxRequest.abort();
    }
-   var link = this.getAttribute('href');
+   var link = this.getAttribute("href");
    url = ApplicationBaseURL + currentMailbox + "/" + link;
-   if (!link.match(/noframe=/))
+   if (link.indexOf("noframe=") < 0)
       url += "&noframe=1";
+
+   log ("link: " + link);
    document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback);
 
