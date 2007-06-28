@@ -412,14 +412,10 @@ function onMailboxMenuCopy() {
    window.alert("unimplemented");
 }
 
-function _refreshWindowMailbox() {
-   openMailbox(currentMailbox, true);
-}
-
 function refreshMailbox() {
    var topWindow = getTopWindow();
    if (topWindow)
-      topWindow._refreshWindowMailbox();
+      topWindow.refreshCurrentFolder();
 
    return false;
 }
@@ -427,57 +423,45 @@ function refreshMailbox() {
 function openMailbox(mailbox, reload, idx) {
    if (mailbox != currentMailbox || reload) {
       currentMailbox = mailbox;
-      var url = ApplicationBaseURL + mailbox + "/view?noframe=1&desc=1";
-      var mailboxContent = $("mailboxContent");
-      var rightDragHandle = $("rightDragHandle");
+      var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
       var messageContent = $("messageContent");
       messageContent.innerHTML = '';
-/*      if (mailbox.lastIndexOf("/") == 0) {
-	 log ("mailbox.lastIndexOf...");
-	 var url = (ApplicationBaseURL + currentMailbox + "/"
-		    + "/view?noframe=1");
-	 if (document.messageAjaxRequest) {
-	    document.messageAjaxRequest.aborted = true;
-	    document.messageAjaxRequest.abort();
-	 }
-	 document.messageAjaxRequest
-	    = triggerAjaxRequest(url, messageCallback);
-	 mailboxContent.innerHTML = '';
-	 mailboxContent.style.visibility = "hidden;";
-	 rightDragHandle.style.visibility = "hidden;";
-	 messageContent.style.top = "0px;";
-      } else { */
-	 if (document.messageListAjaxRequest) {
-	    document.messageListAjaxRequest.aborted = true;
-	    document.messageListAjaxRequest.abort();
-	 }
-	 if (currentMessages[mailbox]) {
-	    loadMessage(currentMessages[mailbox]);
-	    url += '&pageforuid=' + currentMessages[mailbox];
-	 }
-	 var searchValue = search["value"];
-	 if (searchValue && searchValue.length > 0)
-	    url += ("&search=" + search["criteria"]
-		    + "&value=" + searchValue);
-	 var sortAttribute = sorting["attribute"];
-	 if (sortAttribute && sortAttribute.length > 0)
-	    url += ("&sort=" + sorting["attribute"]
-		    + "&asc=" + sorting["ascending"]);
-	 if (idx)
-	    url += "&idx=" + idx;
-	 document.messageListAjaxRequest
-	    = triggerAjaxRequest(url, messageListCallback,
-				 currentMessages[mailbox]);
-	 if (mailboxContent.getStyle('visibility') == "hidden") {
-	    mailboxContent.setStyle({ visibility: "visible" });
-	    rightDragHandle.setStyle({ visibility: "visible" });
-	    messageContent.setStyle({ top: (rightDragHandle.offsetTop
-					    + rightDragHandle.offsetHeight
-					    + 'px') });
-	 }
-//      }
+
+      if (currentMessages[mailbox]) {
+	 loadMessage(currentMessages[mailbox]);
+	 url += '&pageforuid=' + currentMessages[mailbox];
+      }
+
+      var searchValue = search["value"];
+      if (searchValue && searchValue.length > 0)
+	 url += ("&search=" + search["criteria"]
+		 + "&value=" + searchValue);
+      var sortAttribute = sorting["attribute"];
+      if (sortAttribute && sortAttribute.length > 0)
+	 url += ("&sort=" + sorting["attribute"]
+		 + "&asc=" + sorting["ascending"]);
+      if (idx)
+	 url += "&idx=" + idx;
+
+      if (document.messageListAjaxRequest) {
+	 document.messageListAjaxRequest.aborted = true;
+	 document.messageListAjaxRequest.abort();
+      }
+
+      var mailboxContent = $("mailboxContent");
+      if (mailboxContent.getStyle('visibility') == "hidden") {
+	 mailboxContent.setStyle({ visibility: "visible" });
+	 var rightDragHandle = $("rightDragHandle");
+	 rightDragHandle.setStyle({ visibility: "visible" });
+	 messageContent.setStyle({ top: (rightDragHandle.offsetTop
+					 + rightDragHandle.offsetHeight
+					 + 'px') });
+      }
+
+      document.messageListAjaxRequest
+	 = triggerAjaxRequest(url, messageListCallback,
+			      currentMessages[mailbox]);
    }
-   //   triggerAjaxRequest(mailbox, 'toolbar', toolbarCallback);
 }
 
 function openMailboxAtIndex(event) {
@@ -881,18 +865,12 @@ function onHeaderClick(event) {
       sorting["ascending"] = true;
    }
 
-   openMailbox(currentMailbox, true);
+   refreshCurrentFolder();
 
    preventDefault(event);
 }
 
-function onSearchFormSubmit(event) {
-   var searchValue = $("searchValue");
-   var searchCriteria = $("searchCriteria");
-
-   search["criteria"] = searchCriteria.value;
-   search["value"] = searchValue.value;
-
+function refreshCurrentFolder() {
    openMailbox(currentMailbox, true);
 }
 
