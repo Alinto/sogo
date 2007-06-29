@@ -68,6 +68,8 @@
 
 - (NSString *) outlookFolderClass;
 
+- (BOOL) folderIsMandatory;
+
 - (BOOL) create;
 - (NSException *) delete;
 
