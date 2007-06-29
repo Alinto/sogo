@@ -7,7 +7,7 @@ ADDITIONAL_CPPFLAGS += \
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I../SoObjects/	\
-	-I../..
+	-I..
 
 ADDITIONAL_LIB_DIRS += \
 	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ \
