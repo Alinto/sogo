@@ -1,5 +1,8 @@
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-folderIsMandatory]): returns NO unconditionnally.
+
 	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
 	-appendPersonalSources]): add the "personal" folder to the list of
 	user folders even if it doesn't exist, so that it is created when

@@ -86,12 +86,17 @@
 
 - (NSString *) ocsPath
 {
-  return [@"/Users/" stringByAppendingString: [self login]];
+  return [NSString stringWithFormat: @"/Users/%@", nameInContainer];
 }
 
 - (NSString *) ocsUserPath
 {
   return [self ocsPath];
+}
+
+- (BOOL) folderIsMandatory
+{
+  return NO;
 }
 
 - (NSString *) ocsPrivateCalendarPath
@@ -163,13 +168,11 @@
   obj = [super lookupName: _key inContext: _ctx acquire: NO];
   if (!obj)
     {
-      if ([_key hasPrefix: @"Calendar"])
-        {
-          obj = [self privateCalendar: @"Calendar" inContext: _ctx];
-          if (![_key isEqualToString: @"Calendar"])
-            obj = [obj lookupName: [_key pathExtension] 
-                       inContext: _ctx acquire: NO];
-        }
+      if ([_key isEqualToString: @"Calendar"])
+	obj = [self privateCalendar: @"Calendar" inContext: _ctx];
+//           if (![_key isEqualToString: @"Calendar"])
+//             obj = [obj lookupName: [_key pathExtension] 
+//                        inContext: _ctx acquire: NO];
       else if ([_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
 //       else if ([_key isEqualToString: @"Groups"])
