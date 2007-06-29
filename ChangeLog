@@ -1,5 +1,8 @@
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject -date]):
+	applies the user timezone to the date object before returning it.
+
 	* UI/Common/UIxSortButton.m: removed useless class module.
 
 	* UI/Common/UIxSortableTableHeader.m: removed useless class

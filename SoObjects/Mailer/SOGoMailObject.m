@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
@@ -251,12 +252,24 @@ static BOOL debugSoParts       = NO;
 - (NGImap4Envelope *)envelope {
   return [[self fetchCoreInfos] valueForKey:@"envelope"];
 }
-- (NSString *)subject {
+
+- (NSString *) subject
+{
   return [[self envelope] subject];
 }
-- (NSCalendarDate *)date {
-  return [[self envelope] date];
+
+- (NSCalendarDate *) date
+{
+  NSTimeZone *userTZ;
+  NSCalendarDate *date;
+
+  userTZ = [[context activeUser] timeZone];
+  date = [[self envelope] date];
+  [date setTimeZone: userTZ];
+
+  return date;
 }
+
 - (NSArray *)fromEnvelopeAddresses {
   return [[self envelope] from];
 }
