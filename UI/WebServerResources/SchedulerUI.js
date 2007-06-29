@@ -10,7 +10,7 @@ var selectedCalendarCell;
 var showCompletedTasks = 0;
 
 var currentDay = '';
-var currentView = "dayview";
+var currentView = "weekview";
 
 var cachedDateSelectors = new Array();
 
