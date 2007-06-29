@@ -25,7 +25,7 @@
         </td>
       </tr>
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname" ><var:string label:value="Date"/>:</td>
+        <td class="mailer_fieldname"><var:string label:value="Date"/>:</td>
         <td class="mailer_fieldvalue">
           <var:string value="clientObject.date" 
             formatter="context.mailDateFormatter"/>
