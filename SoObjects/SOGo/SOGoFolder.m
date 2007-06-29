@@ -130,7 +130,7 @@ static NSString *defaultUserID = @"<default>";
   if (!folderManager)
     {
       folderManager = [GCSFolderManager defaultFolderManager];
-      [folderManager setFolderNamePrefix: @"SOGo_"];
+      [folderManager setFolderNamePrefix: @"SOGo"];
     }
 
   return folderManager;
@@ -138,7 +138,14 @@ static NSString *defaultUserID = @"<default>";
 
 - (GCSFolder *) ocsFolderForPath: (NSString *) _path
 {
-  return [[self folderManager] folderAtPath:_path];
+  return [[self folderManager] folderAtPath: _path];
+}
+
+- (BOOL) folderIsMandatory
+{
+  [self subclassResponsibility: _cmd];
+
+  return NO;
 }
 
 - (GCSFolder *) ocsFolder
@@ -146,7 +153,14 @@ static NSString *defaultUserID = @"<default>";
   GCSFolder *folder;
 
   if (!ocsFolder)
-    ocsFolder = [[self ocsFolderForPath:[self ocsPath]] retain];
+    {
+      ocsFolder = [self ocsFolderForPath: [self ocsPath]];
+      if (!ocsFolder
+	  && [self folderIsMandatory]
+	  && [self create])
+	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
+      [ocsFolder retain];
+    }
 
   if ([ocsFolder isNotNull])
     folder = ocsFolder;
@@ -176,18 +190,20 @@ static NSString *defaultUserID = @"<default>";
   return [[self folderManager] deleteFolderAtPath: ocsPath];
 }
 
-- (NSArray *)fetchContentObjectNames {
+- (NSArray *) fetchContentObjectNames
+{
   NSArray *fields, *records;
   
-  fields = [NSArray arrayWithObject:@"c_name"];
+  fields = [NSArray arrayWithObject: @"c_name"];
   records = [[self ocsFolder] fetchFields:fields matchingQualifier:nil];
-  if (![records isNotNull]) {
-    [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
-    return nil;
-  }
-  if ([records isKindOfClass:[NSException class]])
+  if (![records isNotNull])
+    {
+      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+      return nil;
+    }
+  if ([records isKindOfClass: [NSException class]])
     return records;
-  return [records valueForKey:@"c_name"];
+  return [records valueForKey: @"c_name"];
 }
 
 - (BOOL) nameExistsInFolder: (NSString *) objectName
@@ -207,14 +223,16 @@ static NSString *defaultUserID = @"<default>";
           && [records count] > 0);
 }
 
-- (NSDictionary *)fetchContentStringsAndNamesOfAllObjects {
+- (NSDictionary *) fetchContentStringsAndNamesOfAllObjects
+{
   NSDictionary *files;
   
   files = [[self ocsFolder] fetchContentsOfAllFiles];
-  if (![files isNotNull]) {
-    [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
-    return nil;
-  }
+  if (![files isNotNull])
+    {
+      [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
+      return nil;
+    }
   if ([files isKindOfClass:[NSException class]])
     return files;
   return files;
@@ -222,7 +240,8 @@ static NSString *defaultUserID = @"<default>";
 
 /* reflection */
 
-- (NSString *)defaultFilenameExtension {
+- (NSString *) defaultFilenameExtension
+{
   /* 
      Override to add an extension to a filename
      
@@ -252,7 +271,8 @@ static NSString *defaultUserID = @"<default>";
   return @"httpd/unix-directory";
 }
 
-- (NSArray *) toOneRelationshipKeys {
+- (NSArray *) toOneRelationshipKeys
+{
   /* toOneRelationshipKeys are the 'files' contained in a folder */
   NSMutableArray *ma;
   NSArray  *names;

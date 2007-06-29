@@ -1,5 +1,11 @@
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): new
+	method that create the folder if considered mandatory.
+	([SOGoFolder -folderIsMandatory]): new method that determines
+	whether the folder should be created automatically or not. To be
+	overriden by subclasses.
+
 	* Main/SOGo.m ([SOGo -run]): override method and create the
 	missing system tables if needed.
 
