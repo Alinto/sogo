@@ -1,5 +1,9 @@
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -folderIsMandatory]): returns YES since
+	users must have one Calendar folder (one and only one).
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): new
 	method that create the folder if considered mandatory.
 	([SOGoFolder -folderIsMandatory]): new method that determines

@@ -111,6 +111,11 @@ static NSNumber   *sharedYes = nil;
   return logger;
 }
 
+- (BOOL) folderIsMandatory
+{
+  return YES;
+}
+
 /* selection */
 
 - (NSArray *) calendarUIDs 
@@ -745,12 +750,12 @@ static NSNumber   *sharedYes = nil;
       privacySqlString
         = [NSString stringWithFormat:
                       @"(%@(orgmail = '%@')"
-                      @" or ((partmails caseInsensitiveLike '%@%%'"
-                      @" or partmails caseInsensitiveLike '%%\\n%@%%')))",
+		    @" or ((partmails caseInsensitiveLike '%@%%'"
+		    @" or partmails caseInsensitiveLike '%%\n%@%%')))",
 		    [self _privacyClassificationStringsForUID: login],
 		    email, email, email];
     }
-
+  
   return privacySqlString;
 }
 
