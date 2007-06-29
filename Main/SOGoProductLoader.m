@@ -19,8 +19,16 @@
   02111-1307, USA.
 */
 
-#include "SOGoProductLoader.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSProcessInfo.h>
+
+#import <NGObjWeb/SoProductRegistry.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoProductLoader.h"
 
 @implementation SOGoProductLoader
 
