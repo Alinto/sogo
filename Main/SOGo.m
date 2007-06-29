@@ -169,8 +169,6 @@ static BOOL debugObjectAllocation = NO;
 		 [NSString stringWithContentsOfFile: descFile]])
 	[self logWithFormat: @"table '%@' successfully created!", tableName];
     }
-  else
-    NSLog (@"YES");
 
   [cm releaseChannel: tc];
 
