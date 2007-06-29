@@ -1,5 +1,10 @@
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-generateSQLForInsert]): initialize error to nil before the
+	serialization. Otherwise the method can get confused if it ever is
+	initialized to something else.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-folderIsMandatory]): returns NO unconditionnally.
 

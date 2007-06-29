@@ -193,18 +193,23 @@ static NSString *uidColumnName = @"uid";
 				     @"     VALUES ('%@', '%@')"),
 		  [[self tableURL] gcsTableName], uidColumnName, fieldName,
 		  [self uid],
-		  [serializedDefaults stringByReplacingString:@"'" withString:@"''"]];
+		  [serializedDefaults stringByReplacingString: @"'"
+				      withString:@"''"]];
 #else
   NSData *serializedDefaultsData;
   NSString *error;
 
+  error = nil;
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
 
   if (error)
-    sql = nil;
+    {
+      sql = nil;
+      [error release];
+    }
   else
     {
       serializedDefaults = [[NSString alloc] initWithData: serializedDefaultsData
@@ -242,11 +247,11 @@ static NSString *uidColumnName = @"uid";
   NSData *serializedDefaultsData;
   NSString *error;
 
+  error = nil;
   serializedDefaultsData
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
-  error = nil;
   if (error)
     {
       sql = nil;
@@ -262,7 +267,8 @@ static NSString *uidColumnName = @"uid";
 					 @"   WHERE %@ = '%@'"),
 		      [[self tableURL] gcsTableName],
 		      fieldName,
-		      [serializedDefaults stringByReplacingString:@"'" withString:@"''"],
+		      [serializedDefaults stringByReplacingString: @"'"
+					  withString: @"''"],
 		      uidColumnName, [self uid]];
       [serializedDefaults release];
     }
@@ -393,7 +399,7 @@ static NSString *uidColumnName = @"uid";
   /* ensure fetched data (more or less guaranteed by modified!=0) */
   if (![self fetchProfile])
     return NO;
-  
+
   /* store */
   if (![self primaryStoreProfile])
     {
