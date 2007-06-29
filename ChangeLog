@@ -1,3 +1,8 @@
+2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m ([SOGo -run]): override method and create the
+	missing system tables if needed.
+
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/WOContext+UIxMailer.m ([WOContext

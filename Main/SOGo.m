@@ -19,11 +19,37 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/SoApplication.h>
+#import <Foundation/NSDebug.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSRunLoop.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLContentStore/GCSChannelManager.h>
+
+#import <NGObjWeb/SoApplication.h>
+#import <NGObjWeb/SoClassSecurityInfo.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+
+#import <NGExtensions/NGBundleManager.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSProcessInfo+misc.h>
+
+#import <WEExtensions/WEResourceManager.h>
+
+#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoUserFolder.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
+
+#import "SOGoProductLoader.h"
 
 @interface SOGo : SoApplication
 {
-    NSMutableDictionary *localeLUT;
+  NSMutableDictionary *localeLUT;
 }
 
 - (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
@@ -31,17 +57,11 @@
 
 @end
 
-#include "SOGoProductLoader.h"
-#include <WEExtensions/WEResourceManager.h>
-#include <SOGo/SOGoAuthenticator.h>
-#include <SOGo/SOGoUserFolder.h>
-#include <SOGo/SOGoPermissions.h>
-#include "common.h"
-
 @implementation SOGo
 
 static unsigned int vMemSizeLimit = 0;
 static BOOL doCrashOnSessionCreate = NO;
+static BOOL hasCheckedTables = NO;
 
 #ifdef GNUSTEP_BASE_LIBRARY
 static BOOL debugObjectAllocation = NO;
@@ -123,6 +143,83 @@ static BOOL debugObjectAllocation = NO;
   [super dealloc];
 }
 
+- (void) _checkTableWithCM: (GCSChannelManager *) cm
+		  tableURL: (NSString *) url
+		   andType: (NSString *) tableType
+{
+  NSString *tableName, *descFile;
+  EOAdaptorChannel *tc;
+  NGBundleManager *bm;
+  NSBundle *bundle;
+  unsigned int length;
+
+  bm = [NGBundleManager defaultBundleManager];
+  
+  tc = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
+
+  tableName = [url lastPathComponent];
+  if ([tc evaluateExpressionX:
+	    [NSString stringWithFormat: @"SELECT count(*) FROM %@", tableName]])
+    {
+      bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
+      length = [tableType length] - 3;
+      descFile = [bundle pathForResource: [tableType substringToIndex: length]
+			 ofType: @"sql"];
+      if (![tc evaluateExpressionX:
+		 [NSString stringWithContentsOfFile: descFile]])
+	[self logWithFormat: @"table '%@' successfully created!", tableName];
+    }
+  else
+    NSLog (@"YES");
+
+  [cm releaseChannel: tc];
+
+//   [self terminate];
+//   NSLog (@"not yet");
+}
+
+- (BOOL) _checkMandatoryTables
+{
+  GCSChannelManager *cm;
+  NSString *urlStrings[] = {@"AgenorProfileURL", @"OCSFolderInfoURL", nil};
+  NSString **urlString;
+  NSString *value;
+  NSUserDefaults *ud;
+  BOOL ok;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  ok = YES;
+  cm = [GCSChannelManager defaultChannelManager];
+
+  urlString = urlStrings;
+  while (ok && *urlString)
+    {
+      value = [ud stringForKey: *urlString];
+      if (value)
+	{
+	  [self _checkTableWithCM: cm tableURL: value andType: *urlString];
+	  urlString++;
+	}
+      else
+	{
+	  NSLog (@"No value specified for '%@'", *urlString);
+	  ok = NO;
+	}
+    }
+
+  return ok;
+}
+
+- (void) run
+{
+  if (!hasCheckedTables)
+    {
+      hasCheckedTables = YES;
+      [self _checkMandatoryTables];
+    }
+  [super run];
+}
+
 /* authenticator */
 
 - (id) authenticatorInContext: (id) _ctx
@@ -145,8 +242,8 @@ static BOOL debugObjectAllocation = NO;
 }
 
 - (id)lookupUser:(NSString *)_key inContext:(id)_ctx {
-  return [[[$(@"SOGoUserFolder") alloc] 
-	    initWithName:_key inContainer:self] autorelease];
+  return [$(@"SOGoUserFolder") objectWithName:_key
+	   inContainer: self];
 }
 
 - (void) _setupLocaleInContext: (WOContext *) _ctx
