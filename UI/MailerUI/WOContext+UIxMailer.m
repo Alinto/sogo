@@ -19,47 +19,37 @@
   02111-1307, USA.
 */
 
-#include "WOContext+UIxMailer.h"
-#include "UIxMailFormatter.h"
-#include "common.h"
 
-#include <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+
+#import "UIxMailFormatter.h"
+#import "common.h"
+
+#import "WOContext+UIxMailer.h"
 
 @implementation WOContext(UIxMailer)
 
 // TODO: make configurable
 // TODO: cache!
 
-- (NSFormatter *)mailSubjectFormatter {
+- (NSFormatter *) mailSubjectFormatter
+{
   return [[[UIxSubjectFormatter alloc] init] autorelease];
 }
 
-- (NSFormatter *)mailDateFormatter
+- (NSFormatter *) mailDateFormatter
 {
-  NSTimeZone *userTZ;
-  NSString *userTZString;
-  id userPrefs;
-  static id dateFormatter = nil;
-
-  if (!dateFormatter)
-    {
-      dateFormatter = [UIxMailDateFormatter new];
-      userPrefs = [[self activeUser] userDefaults];
-      userTZString = [userPrefs stringForKey: @"timezonename"];
-      if ([userTZString length] > 0)
-	{
-	  userTZ = [NSTimeZone timeZoneWithName: userTZString];
-	  [dateFormatter setTimeZone: userTZ];
-	}
-    }
-
-  return dateFormatter;
+  return [[self activeUser] dateFormatterInContext: self];
 }
 
-- (NSFormatter *)mailEnvelopeAddressFormatter {
+- (NSFormatter *) mailEnvelopeAddressFormatter
+{
   return [[[UIxEnvelopeAddressFormatter alloc] init] autorelease];
 }
-- (NSFormatter *)mailEnvelopeFullAddressFormatter {
+
+- (NSFormatter *) mailEnvelopeFullAddressFormatter
+{
   return [[[UIxEnvelopeAddressFormatter alloc] 
 	    initWithMaxLength:256 generateFullEMail:YES] autorelease];
 }

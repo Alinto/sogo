@@ -1,5 +1,8 @@
 2007-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/WOContext+UIxMailer.m ([WOContext
+	-mailDateFormatter]): returns the user's date formatter.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject -date]):
 	applies the user timezone to the date object before returning it.
 
