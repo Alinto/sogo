@@ -1,5 +1,14 @@
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.m ([SOGoContactFolders
+	-appendPersonalSources]): add the "personal" folder to the list of
+	user folders even if it doesn't exist, so that it is created when
+	the user accesses it.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-folderIsMandatory]): returns YES if nameInContainer is set to
+	"personal", which is the default address book.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -folderIsMandatory]): returns YES since
 	users must have one Calendar folder (one and only one).

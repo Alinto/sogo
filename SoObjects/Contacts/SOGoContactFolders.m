@@ -72,15 +72,52 @@
   [super dealloc];
 }
 
+- (void) _fetchPersonalFolders: (NSString *) sql
+		   withChannel: (EOAdaptorChannel *) fc
+{
+  NSArray *attrs;
+  NSDictionary *row;
+  SOGoContactGCSFolder *ab;
+  BOOL hasPersonal;
+  NSString *key, *path;
+
+  hasPersonal = NO;
+  [fc evaluateExpressionX: sql];
+  attrs = [fc describeResults: NO];
+  row = [fc fetchAttributes: attrs withZone: NULL];
+  while (row)
+    {
+      ab = [SOGoContactGCSFolder
+	     contactFolderWithName: [row objectForKey: @"c_path4"]
+	     andDisplayName: [row objectForKey: @"c_foldername"]
+	     inContainer: self];
+      key = [row objectForKey: @"c_path4"];
+      hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
+      [ab setOCSPath: [NSString stringWithFormat: @"%@/%@",
+				OCSPath, key]];
+      [contactFolders setObject: ab forKey: key];
+      row = [fc fetchAttributes: attrs withZone: NULL];
+    }
+
+  if (!hasPersonal)
+    {
+      ab = [SOGoContactGCSFolder contactFolderWithName: @"personal"
+				 andDisplayName: @"Contacts"
+				 inContainer: self];
+      path = [NSString stringWithFormat:
+			 @"/Users/%@/Contacts/personal",
+		       [self ownerInContext: context]];
+      [ab setOCSPath: path];
+      [contactFolders setObject: ab forKey: @"personal"];
+    }
+}
+
 - (void) appendPersonalSources
 {
-  SOGoContactGCSFolder *ab;
   GCSChannelManager *cm;
   EOAdaptorChannel *fc;
   NSURL *folderLocation;
   NSString *sql;
-  NSArray *attrs;
-  NSDictionary *row;
 
   cm = [GCSChannelManager defaultChannelManager];
   folderLocation
@@ -93,20 +130,7 @@
 				 @" WHERE c_path2 = '%@'"
 				 @" AND c_folder_type = 'Contact'"),
 	      [folderLocation gcsTableName], [self ownerInContext: context]];
-      [fc evaluateExpressionX: sql];
-      attrs = [fc describeResults: NO];
-      row = [fc fetchAttributes: attrs withZone: NULL];
-      while (row)
-        {
-          ab = [SOGoContactGCSFolder contactFolderWithName: [row objectForKey: @"c_path4"]
-                                     andDisplayName: [row objectForKey: @"c_foldername"]
-                                     inContainer: self];
-          [ab setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                                    OCSPath, [row objectForKey: @"c_path4"]]];
-          [contactFolders setObject: ab forKey: [row objectForKey: @"c_path4"]];
-          row = [fc fetchAttributes: attrs withZone: NULL];
-        }
-
+      [self _fetchPersonalFolders: sql withChannel: fc];
       [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
 //                  uidColumnName, [self uid]];
