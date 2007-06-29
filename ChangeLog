@@ -3,6 +3,9 @@
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -folderIsMandatory]): returns YES since
 	users must have one Calendar folder (one and only one).
+	([SOGoAppointmentFolder -_privacySqlString]): unescape the
+	escaping '\' so make the carriage return a real one. This way,
+	PgSQL 8 won't complain about escaping the string.
 
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): new
 	method that create the folder if considered mandatory.
