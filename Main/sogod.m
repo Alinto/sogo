@@ -21,11 +21,12 @@
 
 #import <unistd.h>
 
-#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUserDefaults.h>
 
-#import <NGObjWeb/NGObjWeb.h>
-#import "common.h"
+#import <NGObjWeb/SoApplication.h>
 
 int
 main (int argc, char **argv, char **env)
@@ -37,27 +38,24 @@ main (int argc, char **argv, char **env)
 
   pool = [NSAutoreleasePool new];
 
+  rc = -1;
+
   if (getuid() > 0)
     {
-      rc = 0;
 #if LIB_FOUNDATION_LIBRARY
       [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
 #endif
-      [NGBundleManager defaultBundleManager];
-
       ud = [NSUserDefaults standardUserDefaults];
+      rc = 0;
       tzName = [ud stringForKey: @"SOGoServerTimeZone"];
       if (!tzName)
-	tzName = @"Canada/Eastern";
-      [NSTimeZone setDefaultTimeZone: [NSTimeZone timeZoneWithName: tzName]];
-
+	tzName = @"UTC";
+      [NSTimeZone setDefaultTimeZone:
+		    [NSTimeZone timeZoneWithName: tzName]];
       WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
     }
   else
-    {
-      NSLog (@"Don't run SOGo as root!");
-      rc = -1;
-    }
+    NSLog (@"Don't run SOGo as root!");
 
   [pool release];
 
