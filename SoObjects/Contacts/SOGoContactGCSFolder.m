@@ -64,6 +64,11 @@
   return self;
 }
 
+- (BOOL) folderIsMandatory
+{
+  return [nameInContainer isEqualToString: @"personal"];
+}
+
 - (NSString *) displayName
 {
   return displayName;
