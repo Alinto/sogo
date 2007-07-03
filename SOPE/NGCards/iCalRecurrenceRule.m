@@ -71,7 +71,13 @@
 
 + (id) recurrenceRuleWithICalRepresentation: (NSString *) _iCalRep
 {
-  return [self simpleElementWithTag: @"rrule" value: _iCalRep];
+  iCalRecurrenceRule *rule;
+
+  rule = [self elementWithTag: @"rrule"];
+  if ([_iCalRep length] > 0)
+    [rule addValues: [_iCalRep componentsSeparatedByString: @";"]];
+
+  return rule;
 }
 
 - (id) init
@@ -289,7 +295,7 @@
   return mask;
 }
 
-#warning this is fucked up
+#warning this is bad
 - (int) byDayOccurence1
 {
   return 0;
@@ -329,11 +335,12 @@
       if (c1 == 'u' || c1 == 'U') return iCalWeekDaySunday;
     }
   }
-  
-  // TODO: do not raise but rather return an error value?
-  [NSException raise:NSGenericException
-	       format:@"Incorrect weekDay '%@' specified!", _day];
-  return iCalWeekDayMonday; /* keep compiler happy */
+
+  return -1;
+//   // TODO: do not raise but rather return an error value?
+//   [NSException raise:NSGenericException
+// 	       format:@"Incorrect weekDay '%@' specified!", _day];
+//   return iCalWeekDayMonday; /* keep compiler happy */
 }
 
 - (NSString *) iCalRepresentationForWeekDay: (iCalWeekDay) _weekDay

@@ -1,5 +1,10 @@
 2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule
+	+recurrenceRuleWithICalRepresentation:_iCalRep]): the
+	representation is generally a series of values separated by a ";".
+	Therefore we need to split those values and feed them one by one.
+
 	* CardElement.m ([CardElement -versitString]): remove the ending
 	"\r\n".
 
