@@ -1,5 +1,9 @@
 2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/iCalRepeatableEntityObject+OCS.m
+	([iCalRepeatableEntityObject -cycleInfo]): no longer take the
+	leading tagname into account when serializing the element values.
+
 	* Main/SOGoProductLoader.m: only load bundle directories ending
 	with the "SOGo" extension.
 

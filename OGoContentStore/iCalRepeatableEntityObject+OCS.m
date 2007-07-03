@@ -25,65 +25,59 @@
 
 @implementation iCalRepeatableEntityObject (OCS)
 
-- (NSString *)cycleInfo {
+- (NSArray *) _indexedRules: (NSArray *) rules
+{
+  NSMutableArray *ma;
+  unsigned int i, count;
+  NSString *valuesString;
+
+  ma = nil;
+  count = [rules count];
+  if (count > 0)
+    {
+      ma = [NSMutableArray arrayWithCapacity:count];
+      for (i = 0; i < count; i++)
+	{
+	  iCalRecurrenceRule *rule;
+	  
+	  rule = [rules objectAtIndex:i];
+#warning we could return an NSArray instead and feed it as such to the iCalRecurrenceRule in SOGoAppointmentFolder...
+	  valuesString = [[rule values] componentsJoinedByString: @";"];
+	  [ma addObject: valuesString];
+	}
+    }
+
+  return ma;
+}
+
+- (NSString *) cycleInfo
+{
+  NSArray *rules;
+  NSString *value;
   NSMutableDictionary *cycleInfo;
-  NSMutableArray      *ma;
-  NSArray             *a;
-  unsigned            count;
 
-  if (![self isRecurrent])
-    return nil;
+  if ([self isRecurrent])
+    {
+      cycleInfo = [NSMutableDictionary dictionaryWithCapacity: 3];
 
-  cycleInfo = [NSMutableDictionary dictionaryWithCapacity:3];
-
-  /* rules */
-  a     = [self recurrenceRules];
-  count = [a count];
-  if (count > 0) {
-    unsigned i;
-
-    ma = [NSMutableArray arrayWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      iCalRecurrenceRule *rule;
+      /* rules */
+      rules = [self _indexedRules: [self recurrenceRules]];
+      if (rules)
+	[cycleInfo setObject: rules forKey: @"rules"];
       
-      rule = [a objectAtIndex:i];
-      [ma addObject: [rule versitString]];
-    }
-    [cycleInfo setObject:ma forKey:@"rules"];
-  }
-
-  /* exception rules */
-  a     = [self exceptionRules];
-  count = [a count];
-  if (count > 0) {
-    unsigned i;
-    
-    ma = [NSMutableArray arrayWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      iCalRecurrenceRule *rule;
+      rules = [self _indexedRules: [self exceptionRules]];
+      if (rules)
+	[cycleInfo setObject: rules forKey: @"exRules"];
       
-      rule = [a objectAtIndex:i];
-      [ma addObject: [rule versitString]];
-    }
-    [cycleInfo setObject:ma forKey:@"exRules"];
-  }
-  
-  /* exception dates */
-  a     = [self exceptionDates];
-  count = [a count];
-  if (count > 0) {
-    unsigned i;
-    
-    ma = [NSMutableArray arrayWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      NSCalendarDate *date;
-      
-      date = [a objectAtIndex:i];
-      [ma addObject:[date icalString]];
-    }
-    [cycleInfo setObject:ma forKey:@"exDates"];
-  }
+      rules = [self _indexedRules: [self exceptionDates]];
+      if (rules)
+	[cycleInfo setObject: rules forKey: @"exDates"];
 
-  return [cycleInfo description];
+      value = [cycleInfo description];
+    }
+  else
+    value = nil;
+
+  return value;
 }
 @end
