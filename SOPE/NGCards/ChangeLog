@@ -4,6 +4,9 @@
 	+recurrenceRuleWithICalRepresentation:_iCalRep]): the
 	representation is generally a series of values separated by a ";".
 	Therefore we need to split those values and feed them one by one.
+	([iCalRecurrenceRule -weekDayFromICalRepresentation:_day]): return
+	-1 instead of raising an exception if the week day could not be
+	recognized.
 
 	* CardElement.m ([CardElement -versitString]): remove the ending
 	"\r\n".
