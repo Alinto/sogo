@@ -25,7 +25,7 @@
       allowsNull = YES;
     },
     {
-      columnName = cylceenddate;
+      columnName = cycleenddate;
       sqlType    = "INT";
       allowsNull = YES;
     },
