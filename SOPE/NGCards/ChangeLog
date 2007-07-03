@@ -1,3 +1,8 @@
+2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardElement.m ([CardElement -versitString]): remove the ending
+	"\r\n".
+
 2007-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m ([iCalDateTime

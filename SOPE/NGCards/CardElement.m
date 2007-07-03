@@ -424,7 +424,9 @@
   string = [renderer render: self];
   [renderer release];
 
-  return string;
+  return (([string length] > 1)
+	  ? [string substringToIndex: [string length] - 2]
+	  : @"");
 }
 
 - (CardElement *) elementWithClass: (Class) elementClass
