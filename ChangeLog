@@ -1,5 +1,8 @@
 2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGoProductLoader.m: only load bundle directories ending
+	with the "SOGo" extension.
+
 	* Main/SOGo.m ([SOGo
 	-_checkTableWithCM:cmtableURL:urlandType:tableType]): empty the
 	result set if the query has caused no exception. Otherwise we get

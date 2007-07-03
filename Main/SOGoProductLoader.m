@@ -146,35 +146,40 @@
 - (void)loadProducts {
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
-  NSEnumerator  *pathes;
-  NSString      *lpath;
-  
+  NSEnumerator *pathes;
+  NSString *lpath, *bpath, *extension;
+  NSEnumerator *productNames;
+  NSString *productName;
+
   registry = [SoProductRegistry sharedProductRegistry];
   fm       = [NSFileManager defaultManager];
  
   pathes = [[self productSearchPathes] objectEnumerator];
-  while ((lpath = [pathes nextObject]) != nil) {
-    NSEnumerator *productNames;
-    NSString *productName;
+  lpath = [pathes nextObject];
+  while (lpath)
+    {
+      [self logWithFormat:@"scanning SOGo products in: %@", lpath];
 
-    [self logWithFormat:@"scanning SOGo products in: %@", lpath];
+      productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
 
-    productNames = [[fm directoryContentsAtPath:lpath] objectEnumerator];
-    
-    while ((productName = [productNames nextObject]) != nil) {
-      NSString *bpath;
+      productName = [productNames nextObject];
+      while (productName)
+	{
+	  extension = [productName pathExtension];
+	  if ([extension length] > 0
+	      && [extension isEqualToString: @"SOGo"])
+	    {
+	      bpath = [lpath stringByAppendingPathComponent: productName];
+	      [self logWithFormat:@"  register SOGo product: %@",
+		    productName];
+	      [registry registerProductAtPath: bpath];
+	    }
+	  productName = [productNames nextObject];
+	}
 
-      if ([[productName pathExtension] length] == 0)
-	/* filter out directories without extensions */
-	continue;
-      
-      bpath = [lpath stringByAppendingPathComponent:productName];
-      [self logWithFormat:@"  register SOGo product: %@", 
-              [bpath lastPathComponent]];
-      [registry registerProductAtPath:bpath];
+      lpath = [pathes nextObject];
     }
-  }
-  
+
   if (![registry loadAllProducts])
     [self warnWithFormat:@"could not load all products !"];
 }
