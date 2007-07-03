@@ -1,3 +1,10 @@
+2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m ([SOGo
+	-_checkTableWithCM:cmtableURL:urlandType:tableType]): empty the
+	result set if the query has caused no exception. Otherwise we get
+	an "evaluation is in progress exception".
+
 2007-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
