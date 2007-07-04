@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: iCalRepeatableEntityObject+OCS.m 617 2005-03-01 17:08:11Z znek $
 
 #include "iCalRepeatableEntityObject+OCS.h"
 #include "common.h"
