@@ -435,9 +435,8 @@ static BOOL debugSoParts       = NO;
   if ([content isKindOfClass:[NSException class]])
     return (id)content;
   
-#warning the encoding here might be wrong...
-  s = [[NSString alloc] initWithData: content 
-			encoding: NSUTF8StringEncoding];
+  s = [[NSString alloc] initWithData: content
+			encoding: NSISOLatin1StringEncoding];
   if (s == nil) {
     [self logWithFormat:
 	    @"ERROR: could not convert data of length %d to string", 
