@@ -41,7 +41,7 @@
  
   if (!auth)
     auth = [self new];
-  
+
   return auth;
 }
 
@@ -112,10 +112,6 @@
     anonymous
       = [[SOGoUser alloc] initWithLogin: @"anonymous"
 			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
-//   if (!freebusy)
-//     freebusy
-//       = [[SOGoUser alloc] initWithLogin: @"freebusy"
-//                           roles: [NSArray arrayWithObject: SOGoRole_FreeBusy]];
 
   login = [self checkCredentialsInContext:_ctx];
   if (login)
@@ -123,9 +119,6 @@
       if ([login isEqualToString: @"anonymous"])
         {
           traversalPath = [_ctx objectForKey: @"SoRequestTraversalPath"];
-//           if ([[traversalPath lastObject] isEqualToString: @"freebusy.ifb"])
-//             user = freebusy;
-//           else
 	  user = anonymous;
         }
       else
