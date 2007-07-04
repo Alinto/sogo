@@ -192,6 +192,11 @@ categories = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailView";
 	 };
+	 viewsource = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailSourceView";
+	    actionName = "viewSource";
+	 };
 	 popupview = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailPopupView";

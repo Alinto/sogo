@@ -90,7 +90,7 @@ function clickedEditorAttach(sender) {
 	       "width=320,height=320,resizable=1,scrollbars=1,toolbar=0," +
 	       "location=0,directories=0,status=0,menubar=0,copyhistory=0");
    return false; /* stop following the link */
-		     }
+}
 
 function clickedEditorSave(sender) {
    document.pageform.action = "save";
@@ -208,7 +208,7 @@ function openMessageWindowsForSelection(action) {
 			      window.messageURL + "/" + action /* url */);
    else {
       var messageList = $("messageList");
-      var rows  = messageList.getSelectedRowsId();
+      var rows = messageList.getSelectedRowsId();
       var idset = "";
       for (var i = 0; i < rows.length; i++)
 	 win = openMessageWindow(rows[i].substr(4)        /* msguid */,
@@ -676,15 +676,19 @@ function configureLinksInMessage() {
    var messageDiv = $('messageContent');
    var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
 							messageDiv)[0];
-   Event.observe(mailContentDiv, "contextmenu", onMessageContentMenu.bindAsEventListener(mailContentDiv));
+   Event.observe(mailContentDiv, "contextmenu",
+		 onMessageContentMenu.bindAsEventListener(mailContentDiv));
    var anchors = messageDiv.getElementsByTagName('a');
    for (var i = 0; i < anchors.length; i++)
       if (anchors[i].href.substring(0,7) == "mailto:") {
-	 Event.observe(anchors[i], "click", onEmailAddressClick.bindAsEventListener(anchors[i]));
-	 Event.observe(anchors[i], "contextmenu", onEmailAddressClick.bindAsEventListener(anchors[i]));
+	 Event.observe(anchors[i], "click",
+		       onEmailAddressClick.bindAsEventListener(anchors[i]));
+	 Event.observe(anchors[i], "contextmenu",
+		       onEmailAddressClick.bindAsEventListener(anchors[i]));
       }
       else
-	 Event.observe(anchors[i], "click", onMessageAnchorClick);
+	 Event.observe(anchors[i], "click",
+		       onMessageAnchorClick);
 }
 
 function onMessageContentMenu(event) {
@@ -792,6 +796,19 @@ function onMenuReplyToAll(event) {
 
 function onMenuForwardMessage(event) {
    return openMessageWindowsForSelection('forward');
+}
+
+function onMenuViewMessageSource(event) {
+   var messageList = $("messageList");
+   var rows = messageList.getSelectedRowsId();
+
+   if (rows.length > 0) {
+      var url = (ApplicationBaseURL + currentMailbox + "/"
+		 + rows[0].substr(4) + "/viewsource");
+      window.open(url);
+   }
+
+   preventDefault(event);
 }
 
 /* contacts */
@@ -1326,7 +1343,8 @@ function getMenus() {
 					onMenuForwardMessage, null,
 					"-", "moveMailboxMenu",
 					"copyMailboxMenu", "label-menu",
-					"mark-menu", "-", null, null,
+					"mark-menu", "-", null,
+					onMenuViewMessageSource, null,
 					null, onMenuDeleteMessage);
    menus["messageContentMenu"] = new Array(onMenuReplyToSender,
 					   onMenuReplyToAll,
@@ -1335,7 +1353,8 @@ function getMenus() {
 					   "copyMailboxMenu",
 					   "-", "label-menu", "mark-menu",
 					   "-",
-					   null, null, null,
+					   null, onMenuViewMessageSource,
+					   null, null,
 					   onMenuDeleteMessage);
    menus["label-menu"] = new Array(null, "-", null , null, null, null , null,
 				   null);

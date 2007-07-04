@@ -1,5 +1,8 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailSourceView.[hm]: new class module designed to
+	return the message source code in plain text.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-contentAsString]): returns the message encoded in UTF8.
 
