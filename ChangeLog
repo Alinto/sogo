@@ -1,5 +1,10 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -contentAsString]): we return the content
+	based on the permissions returned by the security manager instead
+	of by looking at the user roles.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -calendarFolders]): read the calendar
 	folders of the user to whom this folder belongs instead of the

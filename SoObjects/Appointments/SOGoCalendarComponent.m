@@ -111,23 +111,38 @@ static BOOL sendEMailNotifications = NO;
 
 - (NSString *) contentAsString
 {
-  NSString *uid;
   iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
-  NSArray *roles;
+//   NSArray *roles;
+//   NSString *uid;
+  SoSecurityManager *sm;
 
   if (!calContent)
     {
-      uid = [[context activeUser] login];
-      roles = [self aclsForUser: uid];
-      if ([roles containsObject: SOGoCalendarRole_Organizer]
-	  || [roles containsObject: SOGoCalendarRole_Participant]
-	  || [roles containsObject: SOGoCalendarRole_ComponentViewer])
-	{
-	  calContent = content;
-	  [calContent retain];
-	}
-      else if ([roles containsObject: SOGoCalendarRole_ComponentDAndTViewer])
+//       uid = [[context activeUser] login];
+//       roles = [self aclsForUser: uid];
+//       if ([roles containsObject: SOGoCalendarRole_Organizer]
+// 	  || [roles containsObject: SOGoCalendarRole_Participant]
+// 	  || [roles containsObject: SOGoCalendarRole_ComponentViewer])
+// 	calContent = content;
+//       else if ([roles containsObject: SOGoCalendarRole_ComponentDAndTViewer])
+// 	{
+// 	  tmpCalendar = [[self calendar: NO] copy];
+// 	  tmpComponent = (iCalRepeatableEntityObject *)
+// 	    [tmpCalendar firstChildWithTag: [self componentTag]];
+// 	  [self _filterComponent: tmpComponent];
+// 	  calContent = [tmpCalendar versitString];
+// 	  [tmpCalendar release];
+// 	}
+//       else
+// 	calContent = nil;
+
+      sm = [SoSecurityManager sharedSecurityManager];
+      if (![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
+	       onObject: self inContext: context])
+	calContent = content;
+      else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
+		    onObject: self inContext: context])
 	{
 	  tmpCalendar = [[self calendar: NO] copy];
 	  tmpComponent = (iCalRepeatableEntityObject *)
@@ -606,7 +621,6 @@ static BOOL sendEMailNotifications = NO;
       else if ([roles containsObject: SOGoRole_ObjectCreator])
 	[roles addObject: SOGoCalendarRole_Organizer];
     }
-//     }
 
   return roles;
 }
