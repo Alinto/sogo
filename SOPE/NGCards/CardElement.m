@@ -424,9 +424,10 @@
   string = [renderer render: self];
   [renderer release];
 
-  return (([string length] > 1)
-	  ? [string substringToIndex: [string length] - 2]
-	  : @"");
+  if ([string hasSuffix: @"\r\n"])
+    string = [string substringToIndex: [string length] - 2];
+
+  return string;
 }
 
 - (CardElement *) elementWithClass: (Class) elementClass
