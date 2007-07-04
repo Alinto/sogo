@@ -28,6 +28,7 @@
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
@@ -38,6 +39,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import "SOGoPermissions.h"
+#import "SOGoUser.h"
 
 #import "SOGoFolder.h"
 
@@ -151,11 +153,14 @@ static NSString *defaultUserID = @"<default>";
 - (GCSFolder *) ocsFolder
 {
   GCSFolder *folder;
+  NSString *userLogin;
 
   if (!ocsFolder)
     {
       ocsFolder = [self ocsFolderForPath: [self ocsPath]];
+      userLogin = [[context activeUser] login];
       if (!ocsFolder
+	  && [userLogin isEqualToString: [self ownerInContext: context]]
 	  && [self folderIsMandatory]
 	  && [self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];

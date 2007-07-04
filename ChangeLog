@@ -1,5 +1,9 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): create
+	the folder only if the current user is the owner of the future
+	folder.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -contentAsString]): we return the content
 	based on the permissions returned by the security manager instead
