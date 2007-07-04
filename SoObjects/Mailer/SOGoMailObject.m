@@ -425,7 +425,8 @@ static BOOL debugSoParts       = NO;
   return @"message/rfc822";
 }
 
-- (NSString *)contentAsString {
+- (NSString *) contentAsString
+{
   NSString *s;
   NSData *content;
   
@@ -434,8 +435,9 @@ static BOOL debugSoParts       = NO;
   if ([content isKindOfClass:[NSException class]])
     return (id)content;
   
-  s = [[NSString alloc] initWithData:content 
-			encoding:NSISOLatin1StringEncoding];
+#warning the encoding here might be wrong...
+  s = [[NSString alloc] initWithData: content 
+			encoding: NSUTF8StringEncoding];
   if (s == nil) {
     [self logWithFormat:
 	    @"ERROR: could not convert data of length %d to string", 

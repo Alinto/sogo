@@ -1,3 +1,8 @@
+2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-contentAsString]): returns the message encoded in UTF8.
+
 2007-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OGoContentStore/iCalRepeatableEntityObject+OCS.m
