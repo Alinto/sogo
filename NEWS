@@ -2,3 +2,5 @@
 ----------------
 - added the ability to specify a super user through the SOGoSuperUsername user default;
 - added the ability to view the message source;
+- no longer autocreate folders if we are not their owners;
+- made compatible with PostgreSQL 8.2;
