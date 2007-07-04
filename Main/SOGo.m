@@ -43,6 +43,7 @@
 
 #import <SoObjects/SOGo/SOGoAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "SOGoProductLoader.h"
@@ -241,9 +242,20 @@ static BOOL debugObjectAllocation = NO;
   return YES;
 }
 
-- (id)lookupUser:(NSString *)_key inContext:(id)_ctx {
-  return [$(@"SOGoUserFolder") objectWithName:_key
-	   inContainer: self];
+- (id) lookupUser: (NSString *) _key
+	inContext: (id)_ctx
+{
+  SOGoUser *user;
+  id userFolder;
+
+  user = [SOGoUser userWithLogin: _key roles: nil];
+  if (user)
+    userFolder = [$(@"SOGoUserFolder") objectWithName: _key
+		   inContainer: self];
+  else
+    userFolder = nil;
+
+  return userFolder;
 }
 
 - (void) _setupLocaleInContext: (WOContext *) _ctx
@@ -289,7 +301,7 @@ static BOOL debugObjectAllocation = NO;
 
   if ([self isUserName:_key inContext:_ctx])
     return [self lookupUser:_key inContext:_ctx];
-  
+
   return nil;
 }
 

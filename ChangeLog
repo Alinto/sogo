@@ -1,5 +1,9 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m ([SOGo -lookupUser:_keyinContext:]): check if the
+	user exists before creating the SOGoUserFolder instance. If not,
+	returns nil.
+
 	* UI/MailerUI/UIxMailSourceView.[hm]: new class module designed to
 	return the message source code in plain text.
 
