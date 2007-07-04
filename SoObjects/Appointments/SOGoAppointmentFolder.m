@@ -1229,20 +1229,21 @@ static NSNumber   *sharedYes = nil;
 {
   NSMutableDictionary *userCalendar, *calendarDict;
   NSMutableArray *calendarFolders;
-  SOGoUser *activeUser;
+  SOGoUser *calendarUser;
   BOOL firstActive;
 
   calendarFolders = [NSMutableArray new];
   [calendarFolders autorelease];
 
-  activeUser = [context activeUser];
+  calendarUser = [SOGoUser userWithLogin: [self ownerInContext: context]
+			   roles: nil];
   userCalendar = [NSMutableDictionary new];
   [userCalendar autorelease];
   [userCalendar setObject: @"/" forKey: @"folder"];
   [userCalendar setObject: @"Calendar" forKey: @"displayName"];
   [calendarFolders addObject: userCalendar];
 
-  calendarDict = [[activeUser userSettings] objectForKey: @"Calendar"];
+  calendarDict = [[calendarUser userSettings] objectForKey: @"Calendar"];
   firstActive = [[calendarDict objectForKey: @"activateUserFolder"] boolValue];
   firstActive = ([self _appendSubscribedFolders:
 			 [calendarDict objectForKey: @"SubscribedFolders"]

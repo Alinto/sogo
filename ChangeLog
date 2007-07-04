@@ -1,5 +1,12 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -calendarFolders]): read the calendar
+	folders of the user to whom this folder belongs instead of the
+	active user. This way, a delegate user will be able to have the
+	same view that the original user has if he connects from his user
+	directory.
+
 	* Main/SOGo.m ([SOGo -lookupUser:_keyinContext:]): check if the
 	user exists before creating the SOGoUserFolder instance. If not,
 	returns nil.
