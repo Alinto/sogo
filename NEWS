@@ -1,0 +1,4 @@
+0.9.0 (200707XX)
+----------------
+- added the ability to specify a super user through the SOGoSuperUsername user default;
+- added the ability to view the message source;
