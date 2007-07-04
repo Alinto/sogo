@@ -1,5 +1,12 @@
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): read the
+	SOGoSuperUsername user defaults.
+	([SOGoUser -initWithLogin:newLoginroles:newRoles]): simplified
+	method.
+	([SOGoUser -rolesForObject:objectinContext:context]): if the
+	current user is the superuser, grant him/her the "owner" role.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): create
 	the folder only if the current user is the owner of the future
 	folder.

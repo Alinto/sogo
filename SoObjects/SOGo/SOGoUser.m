@@ -39,6 +39,7 @@
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static NSString *defaultLanguage = nil;
+static NSString *superUsername = nil;
 static NSURL *AgenorProfileURL = nil;
 static BOOL acceptAnyUser = NO;
 
@@ -57,7 +58,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 + (void) initialize
 {
-  NSString *tzName;
+  NSString *tzName, *nsUsername;
   NSUserDefaults *ud;
   NSString *profileURL;
 
@@ -83,6 +84,12 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       ASSIGN (defaultLanguage, [ud stringForKey: @"SOGoDefaultLanguage"]);
       if (!defaultLanguage)
 	ASSIGN (defaultLanguage, @"English");
+    }
+  if (!superUsername)
+    {
+      nsUsername = [ud stringForKey: @"SOGoSuperUsername"];
+      if ([nsUsername length] > 0)
+	ASSIGN (superUsername, nsUsername);
     }
 
   acceptAnyUser = (![ud stringForKey: @"AuthentificationMethod"]);
@@ -120,21 +127,17 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   LDAPUserManager *um;
   NSString *realUID;
 
-  if ([newLogin isEqualToString: @"anonymous"]
+  if (acceptAnyUser
+      || [newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
-    self = [super initWithLogin: newLogin roles: newRoles];
+    realUID = newLogin;
   else
     {
-      if (acceptAnyUser)
-	realUID = newLogin;
-      else
-	{
-	  um = [LDAPUserManager sharedUserManager];
-	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
-		   objectForKey: @"c_uid"];
-	}
-      self = [super initWithLogin: realUID roles: newRoles];
+      um = [LDAPUserManager sharedUserManager];
+      realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+		  objectForKey: @"c_uid"];
     }
+  self = [super initWithLogin: realUID roles: newRoles];
 
   return self;
 }
@@ -289,9 +292,10 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSUserDefaults *) userDefaults
 {
   if (!userDefaults)
-    userDefaults = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
-					       uid: login
-					       fieldName: @"defaults"];
+    userDefaults
+      = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
+				    uid: login
+				    fieldName: @"defaults"];
 
   return userDefaults;
 }
@@ -299,9 +303,10 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSUserDefaults *) userSettings
 {
   if (!userSettings)
-    userSettings = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
-					       uid: login
-					       fieldName: @"settings"];
+    userSettings
+      = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
+				    uid: login
+				    fieldName: @"settings"];
 
   return userSettings;
 }
@@ -356,8 +361,9 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if (folder != nil)
     return [folder isNotNull] ? folder : nil;
   
-  folder = [[WOApplication application] lookupName:[self login]
-					inContext:_ctx acquire:NO];
+  folder = [[WOApplication application] lookupName: [self login]
+					inContext: _ctx
+					acquire: NO];
   if ([folder isKindOfClass:[NSException class]])
     return folder;
   
@@ -403,7 +409,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if (sogoRoles)
     [rolesForObject addObjectsFromArray: sogoRoles];
 
-  if ([[object ownerInContext: context] isEqualToString: [self login]])
+  if ((superUsername && [login isEqualToString: superUsername])
+      || [[object ownerInContext: context] isEqualToString: login])
     [rolesForObject addObject: SoRole_Owner];
   if ([object isKindOfClass: [SOGoObject class]])
     {
