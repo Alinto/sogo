@@ -123,7 +123,7 @@ Element.addMethods({
     var popup = element.sogoContextMenu;
 
     if (document.currentPopupMenu)
-      hideMenu(event, document.currentPopupMenu);
+      hideMenu(document.currentPopupMenu);
     
     var menuTop = event.pageY;
     var menuLeft = event.pageX;

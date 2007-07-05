@@ -285,10 +285,11 @@ function setDateSelectorContent(content) {
 function dateSelectorCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
-    document.dateSelectorAjaxRequest = null;
-    var content = http.responseText;
-    setDateSelectorContent(content);
-    cachedDateSelectors[http.callbackData] = content;
+     document.dateSelectorAjaxRequest = null;
+     var content = http.responseText;
+     setDateSelectorContent(content);
+     cachedDateSelectors[http.callbackData] = content;
+     initDateSelectorEvents();
   }
   else
     log ("dateSelectorCallback Ajax error");
@@ -955,15 +956,15 @@ function onEventClick(event) {
 }
 
 function selectMonthInMenu(menu, month) {
-  var entries = menu.childNodes[1].childNodesWithTag("LI");
-  for (i = 0; i < entries.length; i++) {
-    var entry = entries[i];
-    var entryMonth = entry.getAttribute("month");
-    if (entryMonth == month)
-      entry.addClassName("currentMonth");
-    else
-      entry.removeClassName("currentMonth");
-  }
+   var entries = menu.childNodes[1].childNodesWithTag("LI");
+   for (i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      var entryMonth = entry.getAttribute("month");
+      if (entryMonth == month)
+	 entry.addClassName("currentMonth");
+      else
+	 entry.removeClassName("currentMonth");
+   }
 }
 
 function selectYearInMenu(menu, month) {
@@ -980,32 +981,22 @@ function selectYearInMenu(menu, month) {
   }
 }
 
-function popupMonthMenu(event, menuId) {
-  var node = event.target;
-
+function popupMonthMenu(event) {
   if (event.button == 0) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-
-    if (document.currentPopupMenu)
-      hideMenu(event, document.currentPopupMenu);
+    var id = this.getAttribute("id");
+    if (id == "monthLabel")
+       menuId = "monthListMenu";
+    else
+       menuId = "yearListMenu";
 
     var popup = $(menuId);
-    var id = node.getAttribute("id");
     if (id == "monthLabel")
-      selectMonthInMenu(popup, node.getAttribute("month"));
+      selectMonthInMenu(popup, this.getAttribute("month"));
     else
-      selectYearInMenu(popup, node.innerHTML);
+      selectYearInMenu(popup, this.innerHTML);
 
-    var diff = (popup.offsetWidth - node.offsetWidth) /2;
-
-    popup.style.top = (node.offsetTop + 95) + "px";
-    popup.style.left = (node.offsetLeft - diff) + "px";
-    popup.style.visibility = "visible";
-
-    bodyOnClick = "" + document.body.getAttribute("onclick");
-    document.body.setAttribute("onclick", "onBodyClick('" + menuId + "');");
-    document.currentPopupMenu = popup;
+    popupToolbarMenu(this, menuId);
+    Event.stop(event);
   }
 }
 
@@ -1290,10 +1281,10 @@ function getMenus() {
    menus["yearListMenu"] = dateMenu;
 
    menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
-					     onMenuNewTaskClick,
-					     editEvent, deleteEvent, "-",
-					     onSelectAll, "-",
-					     null, null);
+				       onMenuNewTaskClick,
+				       editEvent, deleteEvent, "-",
+				       onSelectAll, "-",
+				       null, null);
    menus["calendarsMenu"] = new Array(null, null, "-", null, null, "-",
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
@@ -1457,8 +1448,25 @@ function configureLists() {
 		 onEventContextMenu.bindAsEventListener(div));
 }
 
+function initDateSelectorEvents() {
+   var arrow = $("rightArrow");
+   Event.observe(arrow, "click",
+		 onDateSelectorGotoMonth.bindAsEventListener(arrow));
+   arrow = $("leftArrow");
+   Event.observe(arrow, "click",
+		 onDateSelectorGotoMonth.bindAsEventListener(arrow));
+   
+   var menuButton = $("monthLabel");
+   Event.observe(menuButton, "click",
+		 popupMonthMenu.bindAsEventListener(menuButton));
+   menuButton = $("yearLabel");
+   Event.observe(menuButton, "click",
+		 popupMonthMenu.bindAsEventListener(menuButton));
+}
+
 function initCalendars() {
    if (!document.body.hasClassName("popup")) {
+      initDateSelectorEvents();
       initCalendarSelector();
       configureSearchField();
       configureLists();

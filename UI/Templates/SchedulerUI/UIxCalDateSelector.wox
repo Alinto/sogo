@@ -6,27 +6,14 @@
     xmlns:label="OGo:label"
     id="dateSelector">
     <div class="header">
-      <a href="#"
-        id="rightArrow"
-        var:date="nextMonthAsString"
-        onclick="return onDateSelectorGotoMonth(this);"
+      <a href="#" id="rightArrow" var:date="nextMonthAsString"
         ><img id="next" rsrc:src="arrow-rit-sharp.gif"
           /></a>
-      <a href="#"
-        id="leftArrow"
-        var:date="prevMonthAsString"
-        onclick="return onDateSelectorGotoMonth(this);"
+      <a href="#" id="leftArrow" var:date="prevMonthAsString"
         ><img id="previous" rsrc:src="arrow-lft-sharp.gif" />
-      </a><span id="monthLabel"
-        onmousedown="return false;"
-        var:month="headerMonthValue"
-        onclick="popupMonthMenu(event, 'monthListMenu');"
-        ><var:string value="headerMonthString"
-          /></span><span id="yearLabel"
-        onmousedown="return false;"
-        onclick="popupMonthMenu(event, 'yearListMenu');"
-        ><var:string value="headerYearString"
-          /></span>
+      </a><span id="monthLabel" var:month="headerMonthValue"
+	><var:string value="headerMonthString" /></span
+	><span id="yearLabel"><var:string value="headerYearString" /></span>
     </div>
 
     <var:month-overview

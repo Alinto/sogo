@@ -8,9 +8,16 @@ function onPopupAttendeesWindow(event) {
 }
 
 function onSelectPrivacy(event) {
-   popupToolbarMenu(event, "privacy-menu");
+   if (event.button == 0) {
+      var node = event.target;
+      if (node.tagName != 'A')
+	 node = node.getParentWithTagName("a");
+      node = node.childNodesWithTag("span")[0];
 
-   return false;
+      popupToolbarMenu(node, "privacy-menu");
+      Event.stop(event);
+//       preventDefault(event);
+   }
 }
 
 function onPopupUrlWindow(event) {
@@ -146,7 +153,9 @@ function onComponentEditorLoad(event) {
    initializeDocumentHref();
    initializePrivacyMenu();
    var list = $("calendarList");
-   Event.observe(list, "change", onChangeCalendar.bindAsEventListener(list), false);
+   Event.observe(list, "change",
+		 onChangeCalendar.bindAsEventListener(list),
+		 false);
    if (document.createEvent) {
      var onSelectionChangeEvent = document.createEvent("Event");
      onSelectionChangeEvent.initEvent("change", false, false);
@@ -158,7 +167,9 @@ function onComponentEditorLoad(event) {
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
    for (var i = 0; i < menuItems.length; i++)
-      Event.observe(menuItems[i], "mouseup", onMenuSetClassification.bindAsEventListener(menuItems[i]), false);
+      Event.observe(menuItems[i], "mouseup",
+		    onMenuSetClassification.bindAsEventListener(menuItems[i]),
+		    false);
 }
 
 addEvent(window, 'load', onComponentEditorLoad);

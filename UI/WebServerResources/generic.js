@@ -521,7 +521,7 @@ function popupMenu(event, menuId, target) {
    document.menuTarget = target;
 
    if (document.currentPopupMenu)
-       hideMenu(event, document.currentPopupMenu);
+      hideMenu(document.currentPopupMenu);
 
    var popup = $(menuId);
    var menuTop = event.pageY;
@@ -565,18 +565,17 @@ function getParentMenu(node) {
 
 function onBodyClickMenuHandler(event) {
    document.body.menuTarget = null;
-   hideMenu(event, document.currentPopupMenu);
+   hideMenu(document.currentPopupMenu);
    Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
    preventDefault(event);
 }
 
-function hideMenu(event, menuNode) {
+function hideMenu(menuNode) {
   var onHide;
 
-//   log('hiding menu "' + menuNode.getAttribute('id') + '"');
   if (menuNode.submenu) {
-    hideMenu(event, menuNode.submenu);
+    hideMenu(menuNode.submenu);
     menuNode.submenu = null;
   }
 
@@ -709,7 +708,7 @@ function dropDownSubmenu(event) {
       var submenuNode = $(this.submenu);
       var parentNode = getParentMenu(node);
       if (parentNode.submenu)
-	 hideMenu(event, parentNode.submenu);
+	 hideMenu(parentNode.submenu);
       submenuNode.parentMenuItem = node;
       submenuNode.parentMenu = parentNode;
       parentNode.submenuItem = node;
@@ -749,7 +748,7 @@ function checkDropDown(event) {
         && menuX < itemX + submenuItem.offsetWidth
         && (menuY < itemY
             || menuY > (itemY + submenuItem.offsetHeight))) {
-      hideMenu(event, parentMenu.submenu);
+      hideMenu(parentMenu.submenu);
       parentMenu.submenu = null;
       parentMenu.submenuItem = null;
       parentMenu.setAttribute('onmousemove', null);
@@ -769,7 +768,7 @@ function popupSearchMenu(event) {
     event.returnValue = false;
 
     if (document.currentPopupMenu)
-      hideMenu(event, document.currentPopupMenu);
+      hideMenu(document.currentPopupMenu);
 
     var popup = $(menuId);
     popup.setStyle({ top: this.offsetHeight + "px",
@@ -891,29 +890,18 @@ function initCriteria() {
 }
 
 /* toolbar buttons */
-function popupToolbarMenu(event, menuId) {
-   var toolbar = $("toolbar");
-   var node = getTarget(event);
-   if (node.tagName != 'A')
-      node = node.getParentWithTagName("a");
-   node = node.childNodesWithTag("span")[0];
+function popupToolbarMenu(node, menuId) {
+   if (document.currentPopupMenu)
+      hideMenu(document.currentPopupMenu);
 
-   if (event.button == 0) {
-      event.cancelBubble = true;
-      event.returnValue = false;
-      
-      if (document.currentPopupMenu)
-	 hideMenu(event, document.currentPopupMenu);
-      
-      var popup = document.getElementById(menuId);
-      var top = node.offsetTop + node.offsetHeight - 2;
-      popup.setStyle({ top: top + "px",
-		       left: node.cascadeLeftOffset() + "px",
-		       visibility: "visible" });
+   var popup = $(menuId);
+   var top = node.top + node.offsetHeight - 2;
+   popup.setStyle({ top: top + "px",
+		    left: node.cascadeLeftOffset() + "px",
+		    visibility: "visible" });
 
-      document.currentPopupMenu = popup;
-      Event.observe(document.body, "click", onBodyClickMenuHandler);
-   }
+   document.currentPopupMenu = popup;
+   Event.observe(document.body, "click", onBodyClickMenuHandler);
 }
 
 /* contact selector */

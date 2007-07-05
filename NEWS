@@ -4,3 +4,4 @@
 - added the ability to view the message source;
 - no longer autocreate folders if we are not their owners;
 - made compatible with PostgreSQL 8.2;
+- the months and years menus of the date selector would no longer appear;
