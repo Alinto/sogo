@@ -250,21 +250,21 @@ function onDaySelect(node) {
   return false;
 }
 
-function onDateSelectorGotoMonth(node) {
-  var day = node.getAttribute("date");
+function onDateSelectorGotoMonth(event) {
+   var day = this.getAttribute("date");
 
-  changeDateSelectorDisplay(day, true);
+   changeDateSelectorDisplay(day, true);
 
-  return false;
+   Event.stop(event);
 }
 
 function onCalendarGotoDay(node) {
-  var day = node.getAttribute("date");
-
-  changeDateSelectorDisplay(day);
-  changeCalendarDisplay( { "day": day } );
-
-  return false;
+   var day = node.getAttribute("date");
+   
+   changeDateSelectorDisplay(day);
+   changeCalendarDisplay( { "day": day } );
+  
+   return false;
 }
 
 function gotoToday() {
@@ -280,6 +280,8 @@ function setDateSelectorContent(content) {
   div.innerHTML = content;
   if (currentDay.length > 0)
     restoreCurrentDaySelection(div);
+
+  initDateSelectorEvents();
 }
 
 function dateSelectorCallback(http) {
@@ -289,7 +291,6 @@ function dateSelectorCallback(http) {
      var content = http.responseText;
      setDateSelectorContent(content);
      cachedDateSelectors[http.callbackData] = content;
-     initDateSelectorEvents();
   }
   else
     log ("dateSelectorCallback Ajax error");
