@@ -69,7 +69,8 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
       hostR = [self rangeOfString: @"://"];
       locationR = [[self substringFromIndex: (hostR.location + hostR.length)]
                     rangeOfString: @"/"];
-      newURL = [self substringFromIndex: (hostR.location + hostR.length + locationR.location)];
+      newURL = [self substringFromIndex: (hostR.location + hostR.length
+					  + locationR.location)];
     }
 
   return newURL;
