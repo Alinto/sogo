@@ -1,5 +1,8 @@
 2007-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-passwordInContext:context]): made method public.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
 	-extractQuickFieldsFromTodo:_task]): set "isallday" and "isopaque"
 	to false to avoid a null violation.

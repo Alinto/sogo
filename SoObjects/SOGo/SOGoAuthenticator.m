@@ -82,7 +82,7 @@
 // 	      && [_pwd isEqualToString: @"freebusy"]));
 }
 
-- (NSString *) _passwordInContext: (WOContext *) context
+- (NSString *) passwordInContext: (WOContext *) context
 {
   NSString  *auth, *password;
   NSArray   *creds;
@@ -95,7 +95,7 @@
       if ([creds count] > 1)
 	password = [creds objectAtIndex: 1];
     }
-  
+
   return password;
 }
 
@@ -125,7 +125,7 @@
 	{
 	  user = [SOGoUser userWithLogin: login
 			   roles: [self rolesForLogin: login]];
-	  [user setCurrentPassword: [self _passwordInContext: _ctx]];
+	  [user setCurrentPassword: [self passwordInContext: _ctx]];
 	}
     }
   else
