@@ -46,19 +46,10 @@ static NSString *defaultUserID =  @"anyone";
 
 static BOOL useAltNamespace = NO;
 
-+ (int) version
-{
-  return [super version] + 0 /* v1 */;
-}
-
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
   useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
 }
 
@@ -111,7 +102,7 @@ static BOOL useAltNamespace = NO;
 
 - (NSString *) relativeImap4Name
 {
-  return [self nameInContainer];
+  return nameInContainer;
 }
 
 /* listing the available folders */
@@ -398,8 +389,8 @@ static BOOL useAltNamespace = NO;
     return folderType;
   
   account = [self mailAccountFolder];
-  n       = [self nameInContainer];
-  
+  n = nameInContainer;
+
   if ([n isEqualToString:[account trashFolderNameInContext:nil]])
     folderType = @"IPF.Trash";
   else if ([n isEqualToString:[account inboxFolderNameInContext:nil]])
