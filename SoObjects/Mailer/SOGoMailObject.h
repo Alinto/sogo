@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailObject_H__
 #define __Mailer_SOGoMailObject_H__
 
-#include <SoObjects/Mailer/SOGoMailBaseObject.h>
+#import <SoObjects/Mailer/SOGoMailBaseObject.h>
 
 /*
   SOGoMailObject

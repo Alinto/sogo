@@ -139,24 +139,23 @@ static BOOL debugOn = YES;
   return url;
 }
 
+- (NSMutableString *) imap4URLString
+{
+  NSMutableString *urlString;
+
+  urlString = [container imap4URLString];
+  [urlString appendFormat: @"%@/", [nameInContainer stringByEscapingURL]];
+
+  return urlString;
+}
+
 - (NSURL *) imap4URL
 {
-  NSString *thisName, *urlFormat, *urlString;
-  
+  /* this could probably be handled better from NSURL but it's buggy in
+     GNUstep */
   if (!imap4URL)
     {
-      /* this could probably be handled better from NSURL but it's buggy in
-	 GNUstep */
-      urlString = [[container imap4URL] absoluteString];
-      thisName = [[self relativeImap4Name] stringByEscapingURL];
-      if ([urlString hasSuffix: @"/"])
-	urlFormat = @"%@%@";
-      else
-	urlFormat = @"%@/%@";
-      imap4URL = [[NSURL alloc]
-		   initWithString: [NSString stringWithFormat: urlFormat,
-					     urlString,
-					     thisName]];
+      imap4URL = [[NSURL alloc] initWithString: [self imap4URLString]];
     }
 
   return imap4URL;

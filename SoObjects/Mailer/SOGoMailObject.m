@@ -36,6 +36,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+Encoding.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
@@ -100,16 +101,27 @@ static BOOL debugSoParts       = NO;
 }
 
 - (void)dealloc {
-  [self->headers    release];
-  [self->headerPart release];
-  [self->coreInfos  release];
+  [headers    release];
+  [headerPart release];
+  [coreInfos  release];
   [super dealloc];
 }
 
 /* IMAP4 */
 
-- (NSString *)relativeImap4Name {
-  return [[self nameInContainer] stringByDeletingPathExtension];
+- (NSString *) relativeImap4Name
+{
+  return [nameInContainer stringByDeletingPathExtension];
+}
+
+- (NSMutableString *) imap4URLString
+{
+  NSMutableString *urlString;
+
+  urlString = [container imap4URLString];
+  [urlString appendFormat: @"%@", [nameInContainer stringByEscapingURL]];
+
+  return urlString;
 }
 
 /* hierarchy */
@@ -200,8 +212,8 @@ static BOOL debugSoParts       = NO;
   static NSArray *existsKey = nil;
   id msgs;
   
-  if (self->coreInfos != nil) /* if we have coreinfos, we can use them */
-    return [self->coreInfos isNotNull];
+  if (coreInfos != nil) /* if we have coreinfos, we can use them */
+    return [coreInfos isNotNull];
   
   /* otherwise fetch something really simple */
   
@@ -216,8 +228,8 @@ static BOOL debugSoParts       = NO;
 - (id)fetchCoreInfos {
   id msgs;
   
-  if (self->coreInfos != nil)
-    return [self->coreInfos isNotNull] ? self->coreInfos : nil;
+  if (coreInfos != nil)
+    return [coreInfos isNotNull] ? coreInfos : nil;
   
 #if 0 // TODO: old code, why was it using clientObject??
   msgs = [[self clientObject] fetchParts:coreInfoKeys]; // returns dict
@@ -229,8 +241,8 @@ static BOOL debugSoParts       = NO;
   if ([msgs count] == 0)
     return nil;
   
-  self->coreInfos = [[msgs objectAtIndex:0] retain];
-  return self->coreInfos;
+  coreInfos = [[msgs objectAtIndex:0] retain];
+  return coreInfos;
 }
 
 - (id)bodyStructure {
@@ -284,27 +296,30 @@ static BOOL debugSoParts       = NO;
   NGMimeMessageParser *parser;
   NSData *data;
   
-  if (self->headerPart != nil)
-    return [self->headerPart isNotNull] ? self->headerPart : nil;
+  if (headerPart != nil)
+    return [headerPart isNotNull] ? headerPart : nil;
   
   if ([(data = [self mailHeaderData]) length] == 0)
     return nil;
   
   // TODO: do we need to set some delegate method which stops parsing the body?
   parser = [[NGMimeMessageParser alloc] init];
-  self->headerPart = [[parser parsePartFromData:data] retain];
+  headerPart = [[parser parsePartFromData:data] retain];
   [parser release]; parser = nil;
 
-  if (self->headerPart == nil) {
-    self->headerPart = [[NSNull null] retain];
+  if (headerPart == nil) {
+    headerPart = [[NSNull null] retain];
     return nil;
   }
-  return self->headerPart;
+  return headerPart;
 }
-- (NSDictionary *)mailHeaders {
-  if (self->headers == nil)
-    self->headers = [[[self mailHeaderPart] headers] copy];
-  return self->headers;
+
+- (NSDictionary *) mailHeaders
+{
+  if (!headers)
+    headers = [[[self mailHeaderPart] headers] copy];
+
+  return headers;
 }
 
 - (id)lookupInfoForBodyPart:(id)_path {

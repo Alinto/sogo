@@ -260,10 +260,12 @@ static BOOL useAltNamespace = NO;
   /* check whether URL exists */
   
   sf = [self imap4URL];
-  sf = [NSURL URLWithString:[[sf path] stringByAppendingPathComponent:_key]
-	      relativeToURL:sf];
+  sf = [NSURL URLWithString: _key relativeToURL: sf];
+
+// -  sf = [NSURL URLWithString:[[sf path] stringByAppendingPathComponent:_key]
+// -	      relativeToURL:sf];
   
-  if (![[self imap4Connection] doesMailboxExistAtURL:sf]) {
+  if (![[self imap4Connection] doesMailboxExistAtURL: sf]) {
     /* 
        We may not return 404, confuses path traversal - but we still do in the
        calling method. Probably the traversal process should be fixed to
@@ -351,9 +353,11 @@ static BOOL useAltNamespace = NO;
   /* build IMAP4 URL for target */
   
   destImapURL = [_target imap4URL];
-  destImapURL = [NSURL URLWithString:[[destImapURL path] 
-				       stringByAppendingPathComponent:_name]
-		       relativeToURL:destImapURL];
+// -  destImapURL = [NSURL URLWithString:[[destImapURL path] 
+// -				       stringByAppendingPathComponent:_name]
+// -		       relativeToURL:destImapURL];
+  destImapURL = [NSURL URLWithString: _name
+		       relativeToURL: destImapURL];
   
   [self logWithFormat:@"TODO: should move collection as '%@' to: %@",
 	[[self imap4URL] absoluteString], 

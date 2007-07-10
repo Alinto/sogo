@@ -175,49 +175,29 @@ static BOOL     useAltNamespace       = NO;
   return [creds objectAtIndex:0]; /* the user */
 }
 
-- (NSString *)imap4URLString {
-  /* private, overridden by SOGoSharedMailAccount */
-  NSString *s;
-  NSRange  r;
-  
-  s = [self nameInContainer];
-  r = [s rangeOfString:@"@"];
-  if (r.length == 0) {
-    NSString *u;
-    
-    u = [self imap4LoginFromHTTP];
-    if ([u length] == 0) {
-      [self errorWithFormat:@"missing login in account folder name: %@", s];
-      return nil;
-    }
-    s = [[u stringByAppendingString:@"@"] stringByAppendingString:s];
-  }
-  if ([s hasSuffix:@":80"]) { // HACK
-    [self logWithFormat:@"WARNING: incorrect value for IMAP4 URL: '%@'", s];
-    s = [s substringToIndex:([s length] - 3)];
-  }
-  
-  s = [([self useSSL] ? @"imaps://" : @"imap://") stringByAppendingString:s];
-  s = [s stringByAppendingString:@"/"];
-  return s;
-}
-
-- (NSURL *) imap4URL
+- (NSMutableString *) imap4URLString
 {
-  /* imap://agenortest@mail.opengroupware.org/ */
-  NSString *s;
- 
-  if (!imap4URL)
-    {
-      s = [self imap4URLString];
-      if (s)
-	imap4URL = [[NSURL alloc] initWithString: s];
-    }
- 
-  return imap4URL;
+  /* private, overridden by SOGoSharedMailAccount */
+  NSMutableString *urlString;
+  NSString *host;
+
+  urlString = [NSMutableString string];
+
+  if ([self useSSL])
+    [urlString appendString: @"imaps://"];
+  else
+    [urlString appendString: @"imap://"];
+
+  host = [self nameInContainer];
+  if (![host rangeOfString: @"@"].length)
+    [urlString appendFormat: @"%@@", [self imap4LoginFromHTTP]];
+  [urlString appendFormat: @"%@/", host];
+
+  return urlString;
 }
 
-- (NSString *)imap4Login {
+- (NSString *) imap4Login
+{
   return [[self imap4URL] user];
 }
 
