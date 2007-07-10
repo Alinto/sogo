@@ -202,18 +202,19 @@ static BOOL     useAltNamespace       = NO;
   return s;
 }
 
-- (NSURL *)imap4URL {
+- (NSURL *) imap4URL
+{
   /* imap://agenortest@mail.opengroupware.org/ */
   NSString *s;
-  
-  if (self->imap4URL != nil)
-    return self->imap4URL;
-
-  if ((s = [self imap4URLString]) == nil)
-    return nil;
-  
-  self->imap4URL = [[NSURL alloc] initWithString:s];
-  return self->imap4URL;
+ 
+  if (!imap4URL)
+    {
+      s = [self imap4URLString];
+      if (s)
+	imap4URL = [[NSURL alloc] initWithString: s];
+    }
+ 
+  return imap4URL;
 }
 
 - (NSString *)imap4Login {
@@ -323,22 +324,22 @@ static BOOL     useAltNamespace       = NO;
   // TODO: use some profile to determine real location, use a -traverse lookup
   SOGoMailFolder *folder;
   
-  if (self->inboxFolder != nil)
-    return self->inboxFolder;
+  if (inboxFolder != nil)
+    return inboxFolder;
   
   folder = [self lookupName:[self inboxFolderNameInContext:_ctx]
 		 inContext:_ctx acquire:NO];
   if ([folder isKindOfClass:[NSException class]]) return folder;
   
-  return ((self->inboxFolder = [folder retain]));
+  return ((inboxFolder = [folder retain]));
 }
 
 - (SOGoMailFolder *)sentFolderInContext:(id)_ctx {
   // TODO: use some profile to determine real location, use a -traverse lookup
   SOGoMailFolder *folder;
   
-  if (self->sentFolder != nil)
-    return self->sentFolder;
+  if (sentFolder != nil)
+    return sentFolder;
   
   folder = useAltNamespace ? (id)self : [self inboxFolderInContext:_ctx];
   if ([folder isKindOfClass:[NSException class]]) return folder;
@@ -352,15 +353,15 @@ static BOOL     useAltNamespace       = NO;
 			reason:@"did not find Sent folder!"];
   }
   
-  return ((self->sentFolder = [folder retain]));
+  return ((sentFolder = [folder retain]));
 }
 
 - (SOGoMailFolder *)trashFolderInContext:(id)_ctx {
   // TODO: use some profile to determine real location
   SOGoMailFolder *folder;
   
-  if (self->trashFolder != nil)
-    return self->trashFolder;
+  if (trashFolder != nil)
+    return trashFolder;
   
   folder = useAltNamespace ? (id)self : [self inboxFolderInContext:_ctx];
   if ([folder isKindOfClass:[NSException class]]) return folder;
@@ -374,7 +375,7 @@ static BOOL     useAltNamespace       = NO;
 			reason:@"did not find Trash folder!"];
   }
   
-  return ((self->trashFolder = [folder retain]));
+  return ((trashFolder = [folder retain]));
 }
 
 /* WebDAV */
