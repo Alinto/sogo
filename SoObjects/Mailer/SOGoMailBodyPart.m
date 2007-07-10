@@ -29,16 +29,9 @@
 static NSString *mailETag = nil;
 static BOOL debugOn = NO;
 
-+ (int)version {
-  return [super version] + 0 /* v1 */;
-}
-
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
   
   if (![[ud objectForKey:@"SOGoMailDisableETag"] boolValue]) {
     mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",

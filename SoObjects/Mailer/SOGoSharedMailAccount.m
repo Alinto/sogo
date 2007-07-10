@@ -35,17 +35,10 @@
 
 static NSString *otherUsersFolderName = @""; // TODO: add English default
 
-+ (int)version {
-  return [super version] + 0 /* v1 */;
-}
-
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
   otherUsersFolderName = [ud stringForKey:@"SOGoOtherUsersFolderName"];
   NSLog(@"Note: using other-users-folders name: '%@'", otherUsersFolderName);
 }

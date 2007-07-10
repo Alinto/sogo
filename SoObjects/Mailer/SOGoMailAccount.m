@@ -37,18 +37,10 @@ static NSString *sharedFolderName     = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
 static BOOL     useAltNamespace       = NO;
 
-+ (int)version {
-  return [super version] + 0 /* v1 */;
-}
-
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *cfgDraftsFolderName;
 
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
   useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
   
   sharedFolderName     = [ud stringForKey:@"SOGoSharedFolderName"];
