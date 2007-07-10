@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#include "iCalRepeatableEntityObject+OCS.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+
+#import "iCalRepeatableEntityObject+OCS.h"
 
 @implementation iCalRepeatableEntityObject (OCS)
 

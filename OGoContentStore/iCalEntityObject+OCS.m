@@ -19,8 +19,7 @@
  02111-1307, USA.
 */
 
-#include "iCalEntityObject+OCS.h"
-#include "common.h"
+#import "iCalEntityObject+OCS.h"
 
 @implementation iCalEntityObject (OCS)
 

@@ -20,18 +20,21 @@
 */
 
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSObject.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSString.h>
 
-@class NSArray;
+#import <NGExtensions/NSProcessInfo+misc.h>
+
+#import <GDLContentStore/GCSFieldExtractor.h>
 
 @interface TestQuickExtract : NSObject
 
 - (int)runWithArguments:(NSArray *)_args;
 
 @end
-
-#include <GDLContentStore/GCSFieldExtractor.h>
-#include "common.h"
 
 @implementation TestQuickExtract
 
