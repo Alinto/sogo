@@ -29,3 +29,5 @@
 #include <NGExtensions/NGExtensions.h>
 #include <NGObjWeb/NGObjWeb.h>
 #include <NGObjWeb/SoObjects.h>
+
+#warning importing common.h is baaad

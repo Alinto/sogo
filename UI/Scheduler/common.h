@@ -32,3 +32,5 @@
 #import <NGExtensions/NGExtensions.h>
 #import <NGObjWeb/NGObjWeb.h>
 #import <NGObjWeb/SoObjects.h>
+
+#warning importing common.h is baaad

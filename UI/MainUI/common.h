@@ -32,3 +32,5 @@
 #include <NGObjWeb/SoObjects.h>
 
 #include <GDLAccess/GDLAccess.h>
+
+#warning importing common.h is baaad

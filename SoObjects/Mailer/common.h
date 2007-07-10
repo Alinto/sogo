@@ -36,3 +36,5 @@
 #include <NGObjWeb/SoObject+SoDAV.h>
 
 #include <NGImap4/NGImap4Connection.h>
+
+#warning importing common.h is baaad

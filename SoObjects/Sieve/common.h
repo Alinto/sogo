@@ -32,3 +32,5 @@
 #include <NGObjWeb/SoObjects.h>
 
 #include <NGImap4/NGImap4Client.h>
+
+#warning importing common.h is baaad

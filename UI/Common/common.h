@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+#warning importing common.h is baaad
+
 #if LIB_FOUNDATION_LIBRARY
 #  include <Foundation/exceptions/GeneralExceptions.h>
 #elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY

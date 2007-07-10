@@ -25,6 +25,8 @@
 
 #include <NGExtensions/NGExtensions.h>
 
+#warning importing common.h is baaad
+
 #if NeXT_RUNTIME || APPLE_RUNTIME
 #  define objc_free(__mem__)    free(__mem__)
 #  define objc_malloc(__size__) malloc(__size__)
