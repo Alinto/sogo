@@ -1,7 +1,16 @@
 0.9.0 (200707XX)
 ----------------
-- added the ability to specify a super user through the SOGoSuperUsername user default;
+- added the ability to specify a super user through the SOGoSuperUsername user
+  default; 
 - added the ability to view the message source;
 - no longer autocreate folders if we are not their owners;
 - made compatible with PostgreSQL 8.2;
 - the months and years menus of the date selector would no longer appear;
+- fixed a bug which would produce task SQL records which would violate
+  non-null constraints on the quick calendar tables;
+- it was impossible to reset the start and the due date in the task editor
+  whenever they were set once;
+
+Local variables:
+mode: text
+End:
