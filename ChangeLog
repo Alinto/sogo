@@ -1,5 +1,10 @@
 2007-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-imap4URL]): rewrote method to support accented mailbox names.
+	([SOGoMailBaseObject imap4Password]): rewrote to simply use
+	SOGoAuthenticator's passwordInContext:.
+
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
 	-takeValuesFromRequest:_rqinContext:_ctx]): explicitly set the
 	start and due dates to nil if hasStartDate and hasDueDate are

@@ -19,125 +19,159 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailBaseObject.h"
-#include "SOGoMailManager.h"
-#include "common.h"
-#include <NGObjWeb/SoObject+SoDAV.h>
-#include <NGObjWeb/SoHTTPAuthenticator.h>
-#include <NGExtensions/NSURL+misc.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/SoHTTPAuthenticator.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+#import <NGExtensions/NSURL+misc.h>
+
+#import <SoObjects/SOGo/SOGoAuthenticator.h>
+
+#import "SOGoMailManager.h"
+
+#import "SOGoMailBaseObject.h"
 
 @implementation SOGoMailBaseObject
-
-+ (int)version {
-  return [super version] + 1 /* v1 */;
-}
-+ (void)initialize {
-  NSAssert2([super version] == 0,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-}
 
 #if 0
 static BOOL debugOn = YES;
 #endif
 
-- (id)initWithImap4URL:(NSURL *)_url inContainer:(id)_container {
+- (id) initWithImap4URL: (NSURL *) _url
+	    inContainer: (id) _container
+{
   NSString *n;
   
   n = [[_url path] lastPathComponent];
-  if ((self = [self initWithName:n inContainer:_container])) {
-    self->imap4URL = [_url retain];
-  }
+  if ((self = [self initWithName: n inContainer:_container]))
+    {
+      imap4URL = [_url retain];
+    }
+
   return self;
 }
 
-- (void)dealloc {
-  [self->imap4URL release];
+- (void) dealloc
+{
+  [imap4URL release];
   [super dealloc];
 }
 
 /* hierarchy */
 
-- (SOGoMailAccount *)mailAccountFolder {
-  if (![[self container] respondsToSelector:_cmd]) {
-    [self warnWithFormat:@"weird container of mailfolder: %@",
-            [self container]];
-    return nil;
-  }
+- (SOGoMailAccount *) mailAccountFolder
+{
+  SOGoMailAccount *folder;
+
+  if ([container respondsToSelector:_cmd])
+    folder = [container mailAccountFolder];
+  else
+    {
+      [self warnWithFormat: @"weird container of mailfolder: %@",
+	    container];
+      folder = nil;
+    }
   
-  return [[self container] mailAccountFolder];
+  return folder;
 }
 
-- (SOGoMailAccounts *)mailAccountsFolder {
+- (SOGoMailAccounts *) mailAccountsFolder
+{
   id o;
-  
-  for (o = [self container]; [o isNotNull]; o = [o container]) {
-    if ([o isKindOfClass:NSClassFromString(@"SOGoMailAccounts")])
-      return o;;
-  }
-  return nil;
+  SOGoMailAccounts *folder;
+  Class folderClass;
+
+  folder = nil;
+
+  folderClass = NSClassFromString (@"SOGoMailAccounts");
+  o = container;
+  while (!folder && [o isNotNull])
+    if ([o isKindOfClass: folderClass])
+      folder = o;
+    else
+      o = [o container];
+
+  return o;
 }
 
 /* IMAP4 */
 
-- (NGImap4ConnectionManager *)mailManager {
+- (NGImap4ConnectionManager *) mailManager
+{
   return [NGImap4ConnectionManager defaultConnectionManager];
 }
-- (NGImap4Connection *)imap4Connection {
-  if (self->imap4 == nil) {
-    self->imap4 = [[[self mailManager] connectionForURL:[self imap4URL] 
-				       password:[self imap4Password]] retain];
-    if (self->imap4 == nil) {
-      [self errorWithFormat:@"Could not connect IMAP4."];
-      self->imap4 = [[NSNull null] retain];
+
+- (NGImap4Connection *) imap4Connection
+{
+  if (!imap4)
+    {
+      imap4 = [[self mailManager] connectionForURL: [self imap4URL] 
+				  password: [self imap4Password]];
+      if (imap4)
+	[imap4 retain];
+      else
+	[self errorWithFormat:@"Could not connect IMAP4."];
     }
-  }
-  return [self->imap4 isNotNull] ? self->imap4 : nil;
+
+  return imap4;
 }
 
-- (NSString *)relativeImap4Name {
-  [self warnWithFormat:@"subclass should override %@", 
-	  NSStringFromSelector(_cmd)];
+- (NSString *) relativeImap4Name
+{
+  [self subclassResponsibility: _cmd];
+
   return nil;
 }
-- (NSURL *)baseImap4URL {
-  if (![[self container] respondsToSelector:@selector(imap4URL)]) {
-    [self warnWithFormat:@"container does not implement -imap4URL!"];
-    return nil;
-  }
+
+- (NSURL *) baseImap4URL
+{
+  NSURL *url;
+
+  if ([container respondsToSelector:@selector(imap4URL)])
+    url = [container imap4URL];
+  else
+    {
+      [self warnWithFormat:@"container does not implement -imap4URL!"];
+      url = nil;
+    }
   
-  return [[self container] imap4URL];
-}
-- (NSURL *)imap4URL {
-  NSString *sn;
-  NSURL    *base;
-  
-  if (self->imap4URL != nil) 
-    return self->imap4URL;
-  
-  if ((sn = [self relativeImap4Name]) == nil)
-    return nil;
-  
-  if (![[self container] respondsToSelector:_cmd]) {
-    [self warnWithFormat:@"container does not implement -imap4URL!"];
-    return nil;
-  }
-  
-  if ((base = [self baseImap4URL]) == nil)
-    return nil;
-  
-  sn = [[base path] stringByAppendingPathComponent:sn];
-  self->imap4URL = [[NSURL alloc] initWithString:sn relativeToURL:base];
-  return self->imap4URL;
+  return url;
 }
 
-- (NSString *)imap4Login {
-  if (![[self container] respondsToSelector:_cmd])
+- (NSURL *) imap4URL
+{
+  NSString *thisName, *urlFormat, *urlString;
+  
+  if (!imap4URL)
+    {
+      /* this could probably be handled better from NSURL but it's buggy in
+	 GNUstep */
+      urlString = [[container imap4URL] absoluteString];
+      thisName = [[self relativeImap4Name] stringByEscapingURL];
+      if ([urlString hasSuffix: @"/"])
+	urlFormat = @"%@%@";
+      else
+	urlFormat = @"%@/%@";
+      imap4URL = [[NSURL alloc]
+		   initWithString: [NSString stringWithFormat: urlFormat,
+					     urlString,
+					     thisName]];
+    }
+
+  return imap4URL;
+}
+
+- (NSString *) imap4Login
+{
+  if (![container respondsToSelector:_cmd])
     return nil;
   
-  return [[self container] imap4Login];
+  return [container imap4Login];
 }
-- (NSString *)imap4Password {
+
+- (NSString *) imap4Password
+{
   /*
     Extract password from basic authentication.
     
@@ -145,22 +179,8 @@ static BOOL debugOn = YES;
     a) move the primary code to SOGoMailAccount
     b) cache the password
   */
-  WORequest *rq;
-  NSString  *auth;
-  NSArray   *creds;
-  
-  rq = [context request];
-  if ((auth = [rq headerForKey:@"authorization"]) == nil) {
-    /* no basic auth */
-    return nil;
-  }
-  
-  creds = [SoHTTPAuthenticator parseCredentials:auth];
-  if ([creds count] < 2)
-    /* somehow invalid */
-    return nil;
-  
-  return [creds objectAtIndex:1]; /* the password */
+
+  return [[self authenticatorInContext: context] passwordInContext: context];
 }
 
 - (void)flushMailCaches {
