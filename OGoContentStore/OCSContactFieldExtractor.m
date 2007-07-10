@@ -19,9 +19,12 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <GDLContentStore/GCSFieldExtractor.h>
 #import <NGCards/NGVCard.h>
-#import "common.h"
 
 @interface OCSContactFieldExtractor : GCSFieldExtractor
 @end
