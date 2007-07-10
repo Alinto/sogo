@@ -19,11 +19,18 @@
   02111-1307, USA.
 */
 
-#include "OCSiCalFieldExtractor.h"
-#include "common.h"
-#include <NGCards/NGCards.h>
-#include "iCalEntityObject+OCS.h"
-#include "iCalRepeatableEntityObject+OCS.h"
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "iCalEntityObject+OCS.h"
+#import "iCalRepeatableEntityObject+OCS.h"
+
+#import "OCSiCalFieldExtractor.h"
 
 @implementation OCSiCalFieldExtractor
 
@@ -250,6 +257,11 @@ static NSNumber *distantFutureNumber = nil;
   [row setObject:[NSNumber numberWithInt:[_task priorityNumber]]
        forKey: @"priority"];
 
+  [row setObject: [NSNumber numberWithBool: NO]
+       forKey: @"isallday"];
+  [row setObject: [NSNumber numberWithBool: NO]
+       forKey: @"isopaque"];
+
   if ([title isNotNull]) [row setObject: title forKey: @"title"];
   if ([location isNotNull]) [row setObject: location forKey: @"location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"sequence"];
@@ -342,14 +354,12 @@ static NSNumber *distantFutureNumber = nil;
 }
 
 - (NSMutableDictionary *)extractQuickFieldsFromContent:(NSString *)_content {
-  NSAutoreleasePool *pool;
   NSDictionary *fields;
   id cal;
  
   if ([_content length] == 0)
     return nil;
 
-  pool = [[NSAutoreleasePool alloc] init];
   cal = [iCalCalendar parseSingleFromSource: _content];
  
   fields = nil;
@@ -370,8 +380,6 @@ static NSNumber *distantFutureNumber = nil;
   else
     [self logWithFormat: @"ERROR: parsing source didn't return anything"];
 
-  [pool release];
- 
   return [fields autorelease];
 }
 

@@ -1,3 +1,9 @@
+2007-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromTodo:_task]): set "isallday" and "isopaque"
+	to false to avoid a null violation.
+
 2007-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
