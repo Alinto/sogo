@@ -1,7 +1,5 @@
 var contactSelectorAction = 'calendars-contacts';
 
-addEvent(window, 'DOMContentLoaded', onTaskEditorLoad);
-
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
   //   cuicui = 'year';
@@ -294,3 +292,5 @@ function initializeStatusLine() {
 function onTaskEditorLoad() {
    initializeStatusLine();
 }
+
+addEvent(window, 'load', onTaskEditorLoad);
