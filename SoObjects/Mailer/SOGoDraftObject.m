@@ -88,16 +88,8 @@ static BOOL        draftDeleteDisabled = NO; // for debugging
 static BOOL        debugOn = NO;
 static BOOL        showTextAttachmentsInline  = NO;
 
-+ (int)version {
-  return [super version] + 0 /* v1 */;
-}
-
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
   
   /* Note: be aware of the charset issues before enabling this! */
   showTextAttachmentsInline = [ud boolForKey:@"SOGoShowTextAttachmentsInline"];

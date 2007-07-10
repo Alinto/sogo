@@ -24,16 +24,6 @@
 
 @implementation SOGoSharedInboxFolder
 
-+ (int)version {
-  return [super version] + 0 /* v1 */;
-}
-
-+ (void)initialize {
-  NSAssert2([super version] == 1,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-}
-
 /* listing available folders */
 
 - (NSArray *)toManyRelationshipKeys {
