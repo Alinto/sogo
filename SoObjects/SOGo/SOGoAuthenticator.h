@@ -44,6 +44,7 @@
 + (id) sharedSOGoAuthenticator;
 
 - (SOGoUser *) userInContext: (WOContext *) _ctx;
+- (NSString *) passwordInContext: (WOContext *) context;
 
 @end
 
