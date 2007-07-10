@@ -373,8 +373,14 @@
 
   if (hasStartDate)
     [todo setStartDate: taskStartDate];
+  else
+    [todo setStartDate: nil];
+
   if (hasDueDate)
     [todo setDue: taskDueDate];
+  else
+    [todo setDue: nil];
+
   if ([status isEqualToString: @"COMPLETED"])
     [todo setCompleted: statusDate];
   else

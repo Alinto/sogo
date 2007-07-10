@@ -1,5 +1,10 @@
 2007-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): explicitly set the
+	start and due dates to nil if hasStartDate and hasDueDate are
+	false.
+
 	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
 	-passwordInContext:context]): made method public.
 
