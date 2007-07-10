@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: Product.m 274 2004-08-26 13:10:49Z znek $
 
 #import <Foundation/NSObject.h>
 
