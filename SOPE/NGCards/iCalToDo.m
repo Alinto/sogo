@@ -59,7 +59,7 @@
 - (void) setDue: (NSCalendarDate *) newDueDate
 {
   [(iCalDateTime *) [self uniqueChildWithTag: @"due"]
-		    setDate: newDueDate];
+		    setDateTime: newDueDate];
 }
 
 - (NSCalendarDate *) due
