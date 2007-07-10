@@ -10,6 +10,7 @@
   non-null constraints on the quick calendar tables;
 - it was impossible to reset the start and the due date in the task editor
   whenever they were set once;
+- imap folders with non-ascii characters are now correctly accessed;
 
 Local variables:
 mode: text
