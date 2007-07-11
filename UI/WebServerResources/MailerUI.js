@@ -461,6 +461,10 @@ function openMailbox(mailbox, reload, idx) {
       document.messageListAjaxRequest
 	 = triggerAjaxRequest(url, messageListCallback,
 			      currentMessages[mailbox]);
+
+      var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
+      document.quotasAjaxRequest
+	 = triggerAjaxRequest(quotasUrl, quotasCallback);
    }
 }
 
@@ -507,6 +511,30 @@ function messageListCallback(http) {
    }
    else
       log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ")");
+}
+
+function quotasCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    var hasQuotas = false;
+
+    var quotas = http.responseText.evalJSON(true);
+    for (var i in quotas) {
+      hasQuotas = true;
+      break;
+    }
+
+    if (hasQuotas) {
+      var treePath = currentMailbox.split("/");
+      var mbQuotas = quotas["/" + treePath[2]];
+      var used = mbQuotas["usedSpace"];
+      var max = mbQuotas["maxQuota"];
+      var percents = (Math.round(used * 10000 / max) / 100);
+      var format = labels["quotasFormat"].decodeEntities();
+      var text = format.formatted(used, max, percents);
+      window.status = text;
+    }
+  }
 }
 
 function onMessageContextMenu(event) {
@@ -815,18 +843,6 @@ function onMenuViewMessageSource(event) {
 function newContactFromEmail(event) {
    var mailto = document.menuTarget.innerHTML;
 
-   //   var emailre
-	   //     = /([a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])/g;
-   //   emailre.exec(mailto);
-   //   email = RegExp.$1;
-
-   //   var namere = /(\w[\w\ _-]+)\ (&lt;|<)/;
-   //   var c_name = '';
-   //   if (namere.test(mailto)) {
-      //     namere.exec(mailto);
-      //     c_name += RegExp.$1;
-      //   }
-
    var email = extractEmailAddress(mailto);
    var c_name = extractEmailName(mailto);
    if (email.length > 0)
@@ -841,7 +857,7 @@ function newContactFromEmail(event) {
    }
 
    return false; /* stop following the link */
-		     }
+}
 
 function newEmailTo(sender) {
    return openMailTo(document.menuTarget.innerHTML);

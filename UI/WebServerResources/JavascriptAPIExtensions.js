@@ -2,6 +2,15 @@ String.prototype.trim = function() {
   return this.replace(/(^\s+|\s+$)/g, '');
 }
 
+String.prototype.formatted = function() {
+  var newString = this;
+
+  for (var i = 0; i < arguments.length; i++)
+    newString = newString.replace("%{" + i + "}", arguments[i], "g");
+
+  return newString;
+}
+
 String.prototype.repeat = function(count) {
    var newString = "";
    for (var i = 0; i < count; i++) {

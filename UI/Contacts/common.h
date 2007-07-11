@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: common.h 269 2004-08-25 16:06:10Z znek $
+// $Id: common.h 1101 2007-07-10 19:27:48Z wolfgang $
 
 #import <Foundation/Foundation.h>
 

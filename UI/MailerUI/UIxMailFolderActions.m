@@ -29,10 +29,12 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoTrashFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 
 #import "UIxMailFolderActions.h"
 
@@ -247,6 +249,31 @@
 - (WOResponse *) unsubscribeAction
 {
   return [self _subscriptionStubAction];
+}
+
+- (WOResponse *) quotasAction
+{
+  SOGoMailFolder *folder;
+  NSURL *folderURL;
+  id infos;
+  WOResponse *response;
+  NGImap4Client *client;
+  NSString *responseString;
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=UTF-8"
+	    forKey: @"content-type"];
+
+  folder = [self clientObject];
+  folderURL = [folder imap4URL];
+  
+  client = [[folder imap4Connection] client];
+  infos = [client getQuotaRoot: [folder nameInContainer]];
+  responseString = [[infos objectForKey: @"quotas"] jsonRepresentation];
+  [response appendContentString: responseString];
+
+  return response;
 }
 
 @end

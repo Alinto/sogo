@@ -176,3 +176,5 @@
 "Do you really want to move this folder into the trash ?"
  = "Voulez-vous vraiment déplacer le dossier sélectionné dans la corbeille?";
 "Operation failed" = "L'opération a échoué.";
+
+"quotasFormat" = "Quotas: %{0} Ko utilisés sur %{1}; %{2}%";

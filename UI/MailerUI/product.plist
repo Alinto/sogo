@@ -95,6 +95,11 @@ categories = {
 	    actionClass = "UIxMailFolderActions";
 	    actionName = "unsubscribe";
 	 };
+	 quotas = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "quotas";
+	 };
 	 view = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailListView";
