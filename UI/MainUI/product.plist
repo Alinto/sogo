@@ -41,7 +41,7 @@
       protectedBy = "Access Object";
       defaultRoles = {
 	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
-        "WebDAV Access" = ( "Owner", "ObjectViewer" );
+        "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
 	"Access Object" = ( "Owner", "ObjectViewer" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
       };
