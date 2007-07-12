@@ -1,8 +1,9 @@
-// $Id: UIxCalMonthView.m 191 2004-08-12 16:28:32Z helge $
+#import <Foundation/NSCalendarDate.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 
-#include <SOGo/NSCalendarDate+SOGo.h>
-#include "UIxCalMonthViewOld.h"
-#include "common.h"
+#import <SOGo/NSCalendarDate+SOGo.h>
+
+#import "UIxCalMonthViewOld.h"
 
 @implementation UIxCalMonthViewOld
 

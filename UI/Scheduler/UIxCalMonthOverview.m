@@ -1,8 +1,10 @@
-// $Id: UIxCalMonthOverview.m 885 2005-07-21 16:41:34Z znek $
 
-#include "UIxCalMonthOverview.h"
-#include "common.h"
-#include <SOGoUI/SOGoAptFormatter.h>
+#import <Foundation/NSCalendarDate.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+
+#import <SOGoUI/SOGoAptFormatter.h>
+
+#import "UIxCalMonthOverview.h"
 
 @implementation UIxCalMonthOverview
 
@@ -96,8 +98,8 @@
 /* appointments */
 
 
-- (NSArray *)appointments {
-  return [self fetchCoreAppointmentsInfos];
-}
+// - (NSArray *)appointments {
+//   return [self fetchCoreAppointmentsInfos];
+// }
 
 @end /* UIxCalMonthOverview */
