@@ -261,9 +261,11 @@ static NSString *defaultUserID = @"<default>";
 
   if ([self respondsToSelector: @selector (groupDavResourceType)])
     {
-      groupDavCollection = [NSArray arrayWithObjects: [self groupDavResourceType],
-                                    XMLNS_GROUPDAV, nil];
-      rType = [NSArray arrayWithObjects: @"collection", groupDavCollection, nil];
+      groupDavCollection
+	= [NSArray arrayWithObjects: [self groupDavResourceType],
+		   XMLNS_GROUPDAV, nil];
+      rType = [NSArray arrayWithObjects: @"collection", groupDavCollection,
+		       nil];
     }
   else
     rType = [NSArray arrayWithObject: @"collection"];
@@ -296,8 +298,8 @@ static NSString *defaultUserID = @"<default>";
           name = [names objectAtIndex: i];
           r = [name rangeOfString: @"."];
           if (r.length == 0)
-            name = [[name stringByAppendingString:@"."] stringByAppendingString: ext];
-          [ma addObject:name];
+	    name = [NSMutableString stringWithFormat: @"%@.%@", name, ext];
+          [ma addObject: name];
         }
 
       names = ma;
@@ -530,19 +532,24 @@ static NSString *defaultUserID = @"<default>";
 
 /* folder type */
 
-- (NSString *)outlookFolderClass {
+- (NSString *) outlookFolderClass
+{
+  [self subclassResponsibility: _cmd];
+
   return nil;
 }
 
 /* description */
 
-- (void)appendAttributesToDescription:(NSMutableString *)_ms {
+- (void) appendAttributesToDescription: (NSMutableString *) _ms
+{
   [super appendAttributesToDescription:_ms];
   
   [_ms appendFormat:@" ocs=%@", [self ocsPath]];
 }
 
-- (NSString *)loggingPrefix {
+- (NSString *) loggingPrefix
+{
   return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
 		   self, NSStringFromClass([self class]),
 		   [self nameInContainer]];
