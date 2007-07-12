@@ -153,16 +153,16 @@ function onComponentEditorLoad(event) {
    initializeDocumentHref();
    initializePrivacyMenu();
    var list = $("calendarList");
-   Event.observe(list, "change",
+   Event.observe(list, "mousedown",
 		 onChangeCalendar.bindAsEventListener(list),
 		 false);
    if (document.createEvent) {
      var onSelectionChangeEvent = document.createEvent("Event");
-     onSelectionChangeEvent.initEvent("change", false, false);
+     onSelectionChangeEvent.initEvent("mousedown", false, false);
      list.dispatchEvent(onSelectionChangeEvent);
    }
    else {
-     list.fireEvent("onchange"); // IE
+     list.fireEvent("onmousedown"); // IE
    }
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
