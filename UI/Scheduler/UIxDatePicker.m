@@ -19,7 +19,13 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/WOComponent.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSCalendarDate.h>
+
+#import <NGObjWeb/WOComponent.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 @class NSString;
 
@@ -33,13 +39,11 @@
   BOOL isDisabled;
 }
 
-- (NSString *)dateID;
-- (NSString *)dateFormat;
-- (NSString *)jsDateFormat;
-- (BOOL)useISOFormats;
+- (NSString *) dateID;
+- (NSString *) dateFormat;
+- (NSString *) jsDateFormat;
+- (BOOL) useISOFormats;
 @end
-
-#include "common.h"
 
 @implementation UIxDatePicker
 

@@ -18,17 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SchedulerUIProduct.m 904 2005-07-22 15:00:36Z helge $
 
 #import <Foundation/NSObject.h>
 
 @interface SchedulerUIProduct : NSObject
-{
-}
-
 @end
-
-#include "common.h"
 
 @implementation SchedulerUIProduct
 @end /* SchedulerUIProduct */

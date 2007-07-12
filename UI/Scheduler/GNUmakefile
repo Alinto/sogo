@@ -25,7 +25,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\
 	UIxCalMonthView.m		\
-	UIxCalMonthViewOld.m		\
 	UIxAptTableView.m		\
 					\
 	UIxCalListingActions.m		\
@@ -40,8 +39,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
-	UIxCalParticipationStatusView.m	\
-	UIxCalMonthOverview.m
+	UIxCalParticipationStatusView.m
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\
