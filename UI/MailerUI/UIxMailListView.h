@@ -29,10 +29,10 @@
 
 @interface UIxMailListView : UIxComponent
 {
-  NSArray     *sortedUIDs; /* we always need to retrieve all anyway! */
-  NSArray     *messages;
-  unsigned    firstMessageNumber;
-  id          message;
+  NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
+  NSArray *messages;
+  unsigned firstMessageNumber;
+  id message;
   EOQualifier *qualifier;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
