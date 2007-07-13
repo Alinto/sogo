@@ -92,7 +92,7 @@ static int attachmentFlagSize = 8096;
 {
   NSCalendarDate *messageDate;
 
-  messageDate = [[message objectForKey: @"envelope"] date];
+  messageDate = [[message valueForKey: @"envelope"] date];
   [messageDate setTimeZone: userTimeZone];
 
   return [dateFormatter formattedDateAndTime: messageDate];
