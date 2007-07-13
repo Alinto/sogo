@@ -157,8 +157,12 @@ function onComponentEditorLoad(event) {
 		 onChangeCalendar.bindAsEventListener(list),
 		 false);
    if (document.createEvent) {
-     var onSelectionChangeEvent = document.createEvent("Event");
-     onSelectionChangeEvent.initEvent("mousedown", false, false);
+     var onSelectionChangeEvent;
+      if (isSafari())
+	onSelectionChangeEvent = document.createEvent("UIEvents");
+      else
+	onSelectionChangeEvent = document.createEvent("Events");
+      onSelectionChangeEvent.initEvent("mousedown", false, false);
      list.dispatchEvent(onSelectionChangeEvent);
    }
    else {
