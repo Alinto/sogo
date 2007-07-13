@@ -18,9 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxCalDateLabel.m 619 2005-03-02 15:16:32Z znek $
 
-#include <SOGoUI/UIxComponent.h>
+#import <Foundation/NSCalendarDate.h>
+
+#import <NGCards/NSCalendarDate+ICal.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+
+#import <SOGoUI/UIxComponent.h>
 
 @interface UIxCalDateLabel : UIxComponent
 {
@@ -35,9 +39,6 @@
 - (NSString *)yearLabel;
 
 @end
-
-#include "common.h"
-#include <NGCards/NGCards.h>
 
 @implementation UIxCalDateLabel
 

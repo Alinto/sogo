@@ -54,7 +54,7 @@
 
 /* appointments */
 
-- (NSArray *)appointments;
+// - (NSArray *)appointments;
     
 @end
 

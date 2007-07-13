@@ -348,8 +348,8 @@ categories = {
       };
       methods = {
 	 view = { /* somewhat hackish */
-		  protectedBy = "View";
-		  pageName    = "UIxMailEditor";
+            protectedBy = "View";
+	    pageName    = "UIxMailView";
 	 };
 	 edit = {
 	    protectedBy = "View";

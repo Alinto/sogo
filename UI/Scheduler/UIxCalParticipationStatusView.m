@@ -18,9 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxCalParticipationStatusView.m 759 2005-07-14 16:26:32Z znek $
 
-#include <NGObjWeb/NGObjWeb.h>
+#import <NGCards/iCalPerson.h>
+#import <NGObjWeb/WOComponent.h>
 
 @interface UIxCalParticipationStatusView : WOComponent
 {
@@ -30,9 +30,6 @@
 - (NSString *)participationStatus;
 
 @end
-
-#include <NGCards/NGCards.h> /* for iCalPersonPartStat */
-#include "common.h"
 
 @implementation UIxCalParticipationStatusView
 

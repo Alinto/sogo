@@ -13,6 +13,7 @@
   whenever they were set once;
 - imap folders with non-ascii characters are now correctly accessed;
 - display the quotas of the selected mailbox on servers that support quotas;
+- a bug in the folder acl description was preventing from accessing resources in dav;
 
 Local variables:
 mode: text

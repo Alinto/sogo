@@ -1,20 +1,23 @@
-// $Id: UIxCalView.m 1080 2007-06-12 22:15:47Z wolfgang $
 
-#import "common.h"
 //#import <OGoContentStore/OCSFolder.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGCards/NGCards.h>
 
-#import <SOGoUI/SOGoAptFormatter.h>
-#import "UIxComponent+Scheduler.h"
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoObject.h>
 
-#import "SoObjects/Appointments/SOGoAppointmentFolder.h"
-#import <SOGo/NSArray+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoObject.h>
+#import <SOGoUI/SOGoAptFormatter.h>
+
+#import "UIxComponent+Scheduler.h"
 
 #import "UIxCalView.h"
 

@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxAptTableView.m 59 2004-06-22 13:40:19Z znek $
 
-#include <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoComponent.h>
 
 @class NSArray, NSCalendarDate;
 
@@ -36,8 +35,6 @@
 - (id)appointment;
 
 @end
-
-#include "common.h"
 
 @implementation UIxAptTableView
 

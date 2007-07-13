@@ -20,7 +20,17 @@
 */
 // $Id: UIxTaskEditor.m 181 2004-08-11 15:13:25Z helge $
 
-#include <SOGoUI/UIxComponent.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSValue.h>
+
+#import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGCards/iCalPerson.h>
+
+#import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoFreeBusyObject.h>
+#import <SOGoUI/UIxComponent.h>
 
 @interface UIxTaskProposal : UIxComponent
 {
@@ -53,12 +63,6 @@
 
 - (void)setICalPersons:(NSArray *)_ps asQueryParameter:(NSString *)_qp;
 @end
-
-#include <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#include <SoObjects/Appointments/SOGoFreeBusyObject.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-#include <NGCards/NGCards.h>
-#include "common.h"
 
 @implementation UIxTaskProposal
 
