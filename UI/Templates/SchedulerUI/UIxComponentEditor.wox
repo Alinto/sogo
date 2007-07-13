@@ -52,7 +52,7 @@
       <var:component-content />
       <hr />
       <label id="commentArea"><var:string label:value="Description:"
-	  /><textarea name="comment" var:value="comment" /></label>
+	  /><textarea rows="20" name="comment" var:value="comment" /></label>
       <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
 	  /><span class="content"
 	  ><a href="#" id="documentHref"><!-- space --></a
