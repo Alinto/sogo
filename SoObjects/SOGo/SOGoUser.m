@@ -92,7 +92,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 	ASSIGN (superUsername, nsUsername);
     }
 
-  acceptAnyUser = (![ud stringForKey: @"AuthentificationMethod"]);
+  acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
+		     isEqualToString: @"bypass"]);
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin

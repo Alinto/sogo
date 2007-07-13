@@ -50,7 +50,7 @@
   if ((self = [super init]))
     {
       authMethod = [[NSUserDefaults standardUserDefaults]
-		     stringForKey: @"AuthentificationMethod"];
+		     stringForKey: @"SOGoAuthentificationMethod"];
       [authMethod retain];
     }
 
@@ -75,7 +75,8 @@
       accept = [um checkLogin: _login andPassword: _pwd];
     }
   else
-    accept = ([_login length] > 0);
+    accept = ([authMethod isEqualToString: @"bypass"]
+	      && [_login length] > 0);
 
   return accept;
 // 	  || ([_login isEqualToString: @"freebusy"]

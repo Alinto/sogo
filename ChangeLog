@@ -1,3 +1,16 @@
+2007-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): set
+	acceptAnyUser to YES only when the SOGoAuthentificationMethod user
+	default is set to "bypass".
+
+	* SoObjects/SOGo/SOGoAuthenticator.m ([SOGoAuthenticator
+	-checkLogin:_loginpassword:_pwd]): accepts unverified connections
+	when authMethod is set to "bypass" from now on. This would avoid a
+	security concern with a default installation of SOGo.
+	AuthentificationMethod is now prefixed with "SOGo" for better
+	clarity.
+
 2007-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
