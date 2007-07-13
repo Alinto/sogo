@@ -1,5 +1,5 @@
-0.9.0 (200707XX)
-----------------
+0.9.0-20070713
+--------------
 - added the ability to specify a super user through the SOGoSuperUsername user
   default; 
 - added the ability to view the message source;
@@ -9,11 +9,15 @@
 - fixed a bug which would produce task SQL records which would violate
   non-null constraints on the quick calendar tables;
 - the tasks due date was wrongly set because of a change in the API;
-- it was impossible to reset the start and the due date in the task editor
-  whenever they were set once;
+- it was impossible to empty the start and the due date in the task editor
+  from the moment they were set;
 - imap folders with non-ascii characters are now correctly accessed;
 - display the quotas of the selected mailbox on servers that support quotas;
-- a bug in the folder acl description was preventing from accessing resources in dav;
+- a bug in the folder acl description was preventing from accessing resources
+  in dav;
+- AuthentificationMethod was renamed to SOGoAuthentificationMethod;
+- SOGoAuthentificationMethod needs to be explicitly set to "bypass" to prevent
+  login verification;
 
 Local variables:
 mode: text
