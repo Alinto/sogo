@@ -1,0 +1,51 @@
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+DAEMON=/usr/sbin/sogod
+NAME=sogo
+DESC="Scalable OpenGroupware.Org"
+
+PIDFILE=/var/run/sogo/sogod.pid
+
+SOGO_ARGS=""
+
+if [ -f /etc/sysconfig/sogo ]; then
+    . /etc/sysconfig/sogo
+fi
+
+. /etc/init.d/functions
+
+test -x $DAEMON || exit 0
+
+#set -e
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	daemon $DAEMON
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	killall sogod-0.9 2> /dev/null
+	rm -f $PIDFILE
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	echo -n "Restarting $DESC: "
+	killall sogod-0.9 2> /dev/null
+	rm -f $PIDFILE
+	sleep 1
+	daemon $DAEMON
+	echo "$NAME."
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
+
