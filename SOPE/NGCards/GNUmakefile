@@ -35,7 +35,7 @@ libNGCards_HEADER_FILES =  		\
 	iCalAttachment.h		\
 	iCalCalendar.h			\
 	iCalDataSource.h		\
-	iCalDateTime.m			\
+	iCalDateTime.h			\
 	iCalEntityObject.h		\
 	iCalEvent.h			\
 	iCalEventChanges.h		\
