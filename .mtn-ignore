@@ -1,6 +1,6 @@
 shared_debug_obj
 obj
 imgs-.*
-.*\.d
-.*\.SOGo
-.*\.sax
+.*\.d$
+.*\.SOGo$
+.*\.sax$
