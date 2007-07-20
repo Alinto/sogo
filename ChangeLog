@@ -1,5 +1,8 @@
 2007-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-contactInfos]): cache the results to avoid multiple invocations.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -toOneRelationshipKeys]): check whether we
 	really should return something or if we fake to return nil...

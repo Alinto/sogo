@@ -26,8 +26,6 @@
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 
-#import "common.h"
-
 #import "UIxContactsListView.h"
 
 @implementation UIxContactsListView
@@ -37,9 +35,16 @@
   if ((self = [super init]))
     {
       selectorComponentClass = nil;
+      contactInfos = nil;
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [contactInfos release];
+  [super dealloc];
 }
 
 /* accessors */
@@ -118,21 +123,27 @@
   NSString *ascending, *searchText, *valueText;
   NSComparisonResult ordering;
 
-  folder = [self clientObject];
+  if (!contactInfos)
+    {
+      folder = [self clientObject];
 
-  ascending = [self queryParameterForKey: @"asc"];
-  ordering = ((![ascending length] || [ascending boolValue])
-	      ? NSOrderedAscending : NSOrderedDescending);
+      ascending = [self queryParameterForKey: @"asc"];
+      ordering = ((![ascending length] || [ascending boolValue])
+		  ? NSOrderedAscending : NSOrderedDescending);
 
-  searchText = [self queryParameterForKey: @"search"];
-  if ([searchText length] > 0)
-    valueText = [self queryParameterForKey: @"value"];
-  else
-    valueText = nil;
+      searchText = [self queryParameterForKey: @"search"];
+      if ([searchText length] > 0)
+	valueText = [self queryParameterForKey: @"value"];
+      else
+	valueText = nil;
 
-  return [folder lookupContactsWithFilter: valueText
-                 sortBy: [self sortKey]
-                 ordering: ordering];
+      ASSIGN (contactInfos,
+	      [folder lookupContactsWithFilter: valueText
+		      sortBy: [self sortKey]
+		      ordering: ordering]);
+    }
+
+  return contactInfos;
 }
 
 /* actions */
