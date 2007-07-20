@@ -33,6 +33,7 @@
 {
   NSDictionary *currentContact;
   NSString *selectorComponentClass;
+  NSArray *contactInfos;
 }
 
 @end
