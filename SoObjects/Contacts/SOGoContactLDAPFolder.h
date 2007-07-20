@@ -34,6 +34,7 @@
   NSString *displayName;
   LDAPSource *ldapSource;
   NSMutableDictionary *entries;
+  BOOL ignoreSoObjectHunger;
 }
 
 - (id <SOGoContactFolder>) initWithName: (NSString *) newName
