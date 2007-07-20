@@ -133,7 +133,7 @@ function contactsListCallback(http) {
     }
   }
   else
-    log ("ajax problem 1");
+    log ("ajax problem 1: status = " + http.status);
 }
 
 function onContactFoldersContextMenu(event) {
@@ -593,7 +593,7 @@ function deletePersonalAddressBookCallback(http) {
      document.deletePersonalABAjaxRequest = null;
   }
   else
-     log ("ajax problem");
+     log ("ajax problem 5: " + http.status);
 }
 
 function configureDragHandles() {
