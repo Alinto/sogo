@@ -26,16 +26,17 @@
 
 @implementation NSMutableArray (iCalPersonConvenience)
 
-- (void)removePerson: (iCalPerson *)_person {
+- (void) removePerson: (iCalPerson *) _person
+{
   int i;
-  
-  for (i = [self count] - 1; i >= 0; i--) {
-    iCalPerson *p;
+  iCalPerson *p;
     
-    p = [self objectAtIndex:i];
-    if ([p hasSameEmailAddress:_person])
-      [self removeObjectAtIndex:i];
-  }
+  for (i = [self count] - 1; i >= 0; i--)
+    {
+      p = [self objectAtIndex: i];
+      if ([p hasSameEmailAddress: _person])
+	[self removeObjectAtIndex: i];
+    }
 }
 
 @end
