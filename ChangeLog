@@ -1,3 +1,9 @@
+2007-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -toOneRelationshipKeys]): check whether we
+	really should return something or if we fake to return nil...
+
 2007-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): set
