@@ -4,6 +4,8 @@
   application settings: "Calendars", "Contacts" or "Mail";
 - added the ability to show or hide the password change dialog from the
   application settings;
+- put a work-around in the LDAP directory code to avoid fetching all the
+  entries whenever a specific one is being requested;
 
 0.9.0-20070713
 --------------
