@@ -1,5 +1,11 @@
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder -davNamespaces]): added new overriden
+	method that declares the DAV namespace related to CardDAV.
+	([SOGoContactGCSFolder -davComplianceClassesInContext:]): new
+	method that declares the "access-control" and "addressbook-access"
+	classes to the list.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([-lookupActionForCalDAVMethod:]): removed method.
 	([SOGoAppointmentFolder -davNamespaces]): added new overriden

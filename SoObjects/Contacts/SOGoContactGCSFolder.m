@@ -19,9 +19,16 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
-
-#import "common.h"
 
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSFolder.h"
@@ -178,6 +185,28 @@
 
   //[self debugWithFormat:@"fetched %i records.", [records count]];
   return records;
+}
+
+- (NSArray *) davNamespaces
+{
+  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
+}
+
+- (NSArray *) davComplianceClassesInContext: (id)_ctx
+{
+  NSMutableArray *classes;
+  NSArray *primaryClasses;
+
+  classes = [NSMutableArray new];
+  [classes autorelease];
+
+  primaryClasses = [super davComplianceClassesInContext: _ctx];
+  if (primaryClasses)
+    [classes addObjectsFromArray: primaryClasses];
+  [classes addObject: @"access-control"];
+  [classes addObject: @"addressbook-access"];
+
+  return classes;
 }
 
 - (NSString *) groupDavResourceType
