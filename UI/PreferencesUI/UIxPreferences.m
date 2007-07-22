@@ -40,7 +40,18 @@
    workweek = from -> to
    identities */
 
+static BOOL shouldDisplayPasswordChange = NO;
+
 @implementation UIxPreferences
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  shouldDisplayPasswordChange
+    = [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
+}
 
 - (id) init
 {
@@ -424,6 +435,11 @@
                            inContext: (WOContext*) context
 {
   return [[request method] isEqualToString: @"POST"];
+}
+
+- (BOOL) shouldDisplayPasswordChange
+{
+  return shouldDisplayPasswordChange;
 }
 
 @end

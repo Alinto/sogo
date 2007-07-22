@@ -2,6 +2,8 @@
 --------------
 - added the ability to choose the default module from the
   application settings: "Calendars", "Contacts" or "Mail";
+- added the ability to show or hide the password change dialog from the
+  application settings;
 
 0.9.0-20070713
 --------------

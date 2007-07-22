@@ -1,5 +1,11 @@
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	+initialize]): scan the value of SOGoUIxUserCanChangePassword.
+	Default is "no".
+	([UIxPreferences -shouldDisplayPasswordChange]): new template
+	method that returns the value of SOGoUIxUserCanChangePassword.
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]):
 	scan the value of SOGoUIxDefaultModule. If not set, the default
 	module defaults to "Calendar".

@@ -19,7 +19,9 @@
 	    label:value="Date and Time"/></li>
 	<li target="calendarOptionsView"><var:string
 	    label:value="Calendar Options"/></li>
-	<li target="passwordView"><var:string label:value="Password"/></li>
+	<var:if condition="shouldDisplayPasswordChange">
+	  <li target="passwordView"><var:string label:value="Password"/></li>
+	</var:if>
       </ul>
       <div id="outOfOfficeView" class="tab">
 	<label><input
@@ -87,18 +89,20 @@
 	  <var:popup list="reminderTimesList" item="item"
 	    string="itemReminderTimeText" selection="userReminderTime"/></label>
       </div>
-      <div id="passwordView" class="tab">
-	<label><var:string label:value="New password:"
-	    /><input type="text" class="textField"
-	    const:enabled="disabled"
-	    var:value="newPassword"/></label><br/>
-	<label><var:string label:value="Confirmation:"
-	    /><input type="text" class="textField"
-	    const:enabled="disabled"
-	    var:value="newPasswordConfirmation"/></label><br/>
-	<input type="button" class="button"
-	  id="changePasswordBtn" label:value="Change"/>
-      </div>
+      <var:if condition="shouldDisplayPasswordChange">
+	<div id="passwordView" class="tab">
+	  <label><var:string label:value="New password:"
+	      /><input type="text" class="textField"
+	      const:enabled="disabled"
+	      var:value="newPassword"/></label><br/>
+	  <label><var:string label:value="Confirmation:"
+	      /><input type="text" class="textField"
+	      const:enabled="disabled"
+	      var:value="newPasswordConfirmation"/></label><br/>
+	  <input type="button" class="button"
+	    id="changePasswordBtn" label:value="Change"/>
+	</div>
+      </var:if>
     </div>
   </form>
 </var:component>
