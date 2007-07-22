@@ -21,7 +21,6 @@
 
 #import <GDLContentStore/GCSFolder.h>
 #import <NGCards/NGCards.h>
-#import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGExtensions/NGCalendarDateRange.h>
@@ -32,7 +31,6 @@
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
-#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 
 #import "common.h"
@@ -133,21 +131,6 @@ static NSNumber   *sharedYes = nil;
 - (BOOL) isValidAppointmentName: (NSString *)_key
 {
   return ([_key length] != 0);
-}
-
-- (id) lookupActionForCalDAVMethod: (NSString *)_key
-{
-  SoSelectorInvocation *invocation;
-  NSString *name;
-
-  name = [NSString stringWithFormat: @"%@:", [_key davMethodToObjC]];
-
-  invocation = [[SoSelectorInvocation alloc]
-                 initWithSelectorNamed: name
-                 addContextParameter: YES];
-  [invocation autorelease];
-
-  return invocation;
 }
 
 - (void) appendObject: (NSDictionary *) object
@@ -280,6 +263,11 @@ static NSNumber   *sharedYes = nil;
     }
 }
 
+- (NSArray *) davNamespaces
+{
+  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:caldav"];
+}
+
 - (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;
@@ -376,10 +364,7 @@ static NSNumber   *sharedYes = nil;
       obj = [super lookupName:_key inContext:_ctx acquire:NO];
       if (!obj)
         {
-          if ([_key hasPrefix: @"{urn:ietf:params:xml:ns:caldav}"])
-            obj
-              = [self lookupActionForCalDAVMethod: [_key substringFromIndex: 31]];
-          else if ([self isValidAppointmentName:_key])
+	  if ([self isValidAppointmentName:_key])
             {
               url = [[[_ctx request] uri] urlWithoutParameters];
               if ([url hasSuffix: @"AsTask"])

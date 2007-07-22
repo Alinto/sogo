@@ -1,5 +1,10 @@
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([-lookupActionForCalDAVMethod:]): removed method.
+	([SOGoAppointmentFolder -davNamespaces]): added new overriden
+	method that declares the DAV namespace related to CalDAV.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -davNamespaces]): new
 	optional method for subclasses which handle specific extensions to
 	the DAV protocol: CardDAV or CalDAV.
