@@ -1,3 +1,11 @@
+2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]):
+	scan the value of SOGoUIxDefaultModule. If not set, the default
+	module defaults to "Calendar".
+	([SOGoUserHomePage -defaultAction]): redirect the user to the
+	value of "SOGoUIxDefaultModule".
+
 2007-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView

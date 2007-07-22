@@ -1,3 +1,8 @@
+0.9.0-20070xxx
+--------------
+- added the ability to choose the default module from the
+  application settings: "Calendars", "Contacts" or "Mail";
+
 0.9.0-20070713
 --------------
 - added the ability to specify a super user through the SOGoSuperUsername user

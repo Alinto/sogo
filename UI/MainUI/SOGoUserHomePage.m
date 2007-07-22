@@ -23,15 +23,20 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
+
+static NSString *defaultModule;
 
 @interface SOGoUserHomePage : UIxComponent
 
@@ -39,14 +44,43 @@
 
 @implementation SOGoUserHomePage
 
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
+  if (defaultModule)
+    {
+      if (defaultModule)
+	{
+	  if (!([defaultModule isEqualToString: @"Calendar"]
+		|| [defaultModule isEqualToString: @"Contacts"]
+		|| [defaultModule isEqualToString: @"Mail"]))
+	    {
+	      [self logWithFormat: @"default module '%@' not accepted (must be"
+		    @"'Calendar', 'Contacts' or Mail)", defaultModule];
+	      defaultModule = @"Calendar";
+	    }
+	}
+      else
+	defaultModule = @"Calendar";
+
+      [self logWithFormat: @"default module set to '%@'", defaultModule];
+      [defaultModule retain];
+    }
+}
+
 - (id <WOActionResults>) defaultAction
 {
-  NSString *baseURL, *url;
+  SOGoUserFolder *co;
+  NSURL *moduleURL;
 
-  baseURL = [[context request] uri];
-  url = [baseURL stringByAppendingString:@"/../Calendar"];
+  co = [self clientObject];
+  moduleURL = [NSURL URLWithString: defaultModule
+		     relativeToURL: [co soURL]];
 
-  return [self redirectToLocation: url];
+  return [self redirectToLocation: [moduleURL absoluteString]];
 }
 
 - (void) _fillFreeBusyItems: (NSMutableArray *) items
