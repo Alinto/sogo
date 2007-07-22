@@ -73,6 +73,9 @@
 - (BOOL) create;
 - (NSException *) delete;
 
+/* dav */
+- (NSArray *) davNamespaces;
+
 /* acls as a container */
 - (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;
 - (NSArray *) aclsForUser: (NSString *) uid

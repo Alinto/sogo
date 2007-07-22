@@ -28,6 +28,8 @@
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -37,6 +39,8 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
 #import <SaxObjC/XMLNamespaces.h>
+
+#import "NSString+Utilities.h"
 
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
@@ -523,7 +527,47 @@ static NSString *defaultUserID = @"<default>";
   return [[self davURL] absoluteString];
 }
 
+- (id) lookupName: (NSString *) lookupName
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  NSArray *davNamespaces;
+  NSDictionary *davInvocation;
+  NSString *objcMethod;
+
+  obj = [super lookupName: lookupName inContext: localContext
+	       acquire: acquire];
+  if (!obj)
+    {
+      davNamespaces = [self davNamespaces];
+      if ([davNamespaces count] > 0)
+	{
+	  davInvocation = [lookupName asDavInvocation];
+	  if (davInvocation
+	      && [davNamespaces
+		   containsObject: [davInvocation objectForKey: @"ns"]])
+	    {
+	      objcMethod = [[davInvocation objectForKey: @"method"]
+			     davMethodToObjC];
+	      obj = [[SoSelectorInvocation alloc]
+		      initWithSelectorNamed:
+			[NSString stringWithFormat: @"%@:", objcMethod]
+		      addContextParameter: YES];
+	      [obj autorelease];
+	    }
+	}
+    }
+
+  return obj;
+}
+
 /* WebDAV */
+
+- (NSArray *) davNamespaces
+{
+  return nil;
+}
 
 - (BOOL) davIsCollection
 {

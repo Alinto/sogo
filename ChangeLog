@@ -1,5 +1,13 @@
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -davNamespaces]): new
+	optional method for subclasses which handle specific extensions to
+	the DAV protocol: CardDAV or CalDAV.
+	([SOGoFolder
+	-lookupName:lookupNameinContext:localContextacquire:acquire]):
+	new overriden method that handles dav invocations for extensions
+	to DAV by returning an appropriate SoSelectorInvocation.
+
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
 	-asDavInvocation]): new method returning a dictionary with a "ns"
 	key representing the dav namespace and a "method" key representing
