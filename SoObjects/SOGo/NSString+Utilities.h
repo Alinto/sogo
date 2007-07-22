@@ -37,6 +37,7 @@
 - (NSString *) urlWithoutParameters;
 
 - (NSString *) davMethodToObjC;
+- (NSDictionary *) asDavInvocation;
 
 - (NSString *) stringByDetectingURLs;
 

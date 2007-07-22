@@ -1,5 +1,10 @@
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-asDavInvocation]): new method returning a dictionary with a "ns"
+	key representing the dav namespace and a "method" key representing
+	the dav method name of the request.
+
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
 	+initialize]): scan the value of SOGoUIxUserCanChangePassword.
 	Default is "no".

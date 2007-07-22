@@ -108,6 +108,35 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   return newName;
 }
 
+- (NSDictionary *) asDavInvocation
+{
+  NSMutableDictionary *davInvocation;
+  NSRange nsEnclosing, methodEnclosing;
+  unsigned int length;
+
+  davInvocation = nil;
+  if ([self hasPrefix: @"{"])
+    {
+      nsEnclosing = [self rangeOfString: @"}"];
+      length = [self length];
+      if (nsEnclosing.length > 0
+	  && nsEnclosing.location < (length - 1))
+	{
+	  methodEnclosing = NSMakeRange(nsEnclosing.location + 1,
+					length - nsEnclosing.location - 1);
+	  nsEnclosing.length = nsEnclosing.location - 1;
+	  nsEnclosing.location = 1;
+	  davInvocation = [NSMutableDictionary dictionaryWithCapacity: 2];
+	  [davInvocation setObject: [self substringWithRange: nsEnclosing]
+			 forKey: @"ns"];
+	  [davInvocation setObject: [self substringWithRange: methodEnclosing]
+			 forKey: @"method"];
+	}
+    }
+
+  return davInvocation;
+}
+
 - (NSRange) _rangeOfURLInRange: (NSRange) refRange
 {
   int start, length;
