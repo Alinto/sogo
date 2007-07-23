@@ -21,6 +21,7 @@
 
 #import <string.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
 #import "NGCardsSaxHandler.h"
 
@@ -44,10 +45,9 @@
 - (void) dealloc
 {
   if (content)
-    free(content);
+    free (content);
   [cards release];
-  if (currentGroup)
-    [currentGroup release];
+  [currentGroup release];
   [super dealloc];
 }
 
@@ -64,7 +64,7 @@
 {
   if (content)
     {
-      free(content);
+      free (content);
       content = NULL;
     }
 
@@ -227,7 +227,7 @@
 - (void) startCollectingContent
 {
   if (content) {
-    free(content);
+    free (content);
     content = NULL;
   }
   vcs.collectContent = 1;

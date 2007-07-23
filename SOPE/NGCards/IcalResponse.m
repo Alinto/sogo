@@ -19,8 +19,7 @@
   02111-1307, USA.
 */
 
-#include "IcalResponse.h"
-#import <Foundation/Foundation.h>
+#import "IcalResponse.h"
 
 @implementation IcalResponse
 

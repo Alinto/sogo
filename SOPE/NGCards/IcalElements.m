@@ -19,7 +19,14 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/WODynamicElement.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WODynamicElement.h>
+#import <NGObjWeb/WOResponse.h>
 
 @interface IcalComponent : WODynamicElement
 {

@@ -19,10 +19,16 @@
   02111-1307, USA.
 */
 
-#include "iCalRepeatableEntityObject.h"
-#include <NGExtensions/NGCalendarDateRange.h>
-#include "iCalRecurrenceRule.h"
-#include "iCalRecurrenceCalculator.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NGCalendarDateRange.h>
+
+#import "iCalRecurrenceRule.h"
+#import "iCalRecurrenceCalculator.h"
+#import "iCalRepeatableEntityObject.h"
 
 @implementation iCalRepeatableEntityObject
 
