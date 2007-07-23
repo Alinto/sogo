@@ -20,6 +20,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
 #import "iCalEventChanges.h"
 #import "iCalEvent.h"
