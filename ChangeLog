@@ -1,3 +1,11 @@
+2007-07-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource +initialize]): query
+	the values for SOGoLDAPQueryLimit and SOGoLDAPQueryTimeout from
+	the application settings. If set, both limit will influence the
+	maximum size of the resultsets and the time taken to solve them.
+	([LDAPSource -_initLDAPConnection]): initialize the limits.
+
 2007-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder -davNamespaces]): added new overriden

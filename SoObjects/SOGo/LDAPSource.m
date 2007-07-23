@@ -32,13 +32,21 @@
 #import "LDAPSource.h"
 
 static NSArray *commonSearchFields;
+static int timeLimit;
+static int sizeLimit;
 
 @implementation LDAPSource
 
 + (void) initialize
 {
+  NSUserDefaults *ud;
+
   if (!commonSearchFields)
     {
+      ud = [NSUserDefaults standardUserDefaults];
+      sizeLimit = [ud integerForKey: @"SOGoLDAPQueryLimit"];
+      timeLimit = [ud integerForKey: @"SOGoLDAPQueryTimeout"];
+
       commonSearchFields = [NSArray arrayWithObjects:
 				      @"title",
 				    @"company",
@@ -211,6 +219,10 @@ static NSArray *commonSearchFields;
   [ldapConnection bindWithMethod: @"simple"
 		  binddn: bindDN
 		  credentials: password];
+  if (sizeLimit > 0)
+    [ldapConnection setQuerySizeLimit: sizeLimit];
+  if (timeLimit > 0)
+    [ldapConnection setQueryTimeLimit: timeLimit];
 }
 
 /* user management */
@@ -264,6 +276,8 @@ static NSArray *commonSearchFields;
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
+      if (timeLimit > 0)
+	[ldapConnection setQueryTimeLimit: timeLimit];
       if (bindFields)
 	userDN = [self _fetchUserDNForLogin: loginToCheck];
       else
