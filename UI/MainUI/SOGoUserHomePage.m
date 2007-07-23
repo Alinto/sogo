@@ -36,7 +36,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
-static NSString *defaultModule;
+static NSString *defaultModule = nil;
 
 @interface SOGoUserHomePage : UIxComponent
 
@@ -48,10 +48,10 @@ static NSString *defaultModule;
 {
   NSUserDefaults *ud;
 
-  ud = [NSUserDefaults standardUserDefaults];
-  defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
-  if (defaultModule)
+  if (!defaultModule)
     {
+      ud = [NSUserDefaults standardUserDefaults];
+      defaultModule = [ud stringForKey: @"SOGoUIxDefaultModule"];
       if (defaultModule)
 	{
 	  if (!([defaultModule isEqualToString: @"Calendar"]
@@ -62,10 +62,11 @@ static NSString *defaultModule;
 		    @"'Calendar', 'Contacts' or Mail)", defaultModule];
 	      defaultModule = @"Calendar";
 	    }
+	  else
+	    defaultModule = @"Calendar";
 	}
       else
 	defaultModule = @"Calendar";
-
       [self logWithFormat: @"default module set to '%@'", defaultModule];
       [defaultModule retain];
     }

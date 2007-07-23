@@ -40,6 +40,7 @@
    workweek = from -> to
    identities */
 
+static BOOL defaultsRead = NO;
 static BOOL shouldDisplayPasswordChange = NO;
 
 @implementation UIxPreferences
@@ -48,9 +49,13 @@ static BOOL shouldDisplayPasswordChange = NO;
 {
   NSUserDefaults *ud;
 
-  ud = [NSUserDefaults standardUserDefaults];
-  shouldDisplayPasswordChange
-    = [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
+  if (!defaultsRead)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      shouldDisplayPasswordChange
+	= [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
+      defaultsRead = YES;
+    }
 }
 
 - (id) init
