@@ -23,7 +23,7 @@
 #ifndef	__NGiCal_iCalEventChanges_H_
 #define	__NGiCal_iCalEventChanges_H_
 
-#include <Foundation/NSObject.h>
+#import <Foundation/NSObject.h>
 
 @class iCalEvent, NSArray, NSMutableArray;
 
