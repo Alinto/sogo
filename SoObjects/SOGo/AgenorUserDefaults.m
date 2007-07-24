@@ -38,7 +38,7 @@
 
 @implementation AgenorUserDefaults
 
-static NSString *uidColumnName = @"uid";
+static NSString *uidColumnName = @"c_uid";
 
 - (id) initWithTableURL: (NSURL *) tableURL
 		    uid: (NSString *) userID

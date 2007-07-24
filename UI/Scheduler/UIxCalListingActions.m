@@ -188,8 +188,8 @@
 		       forUser: userLogin];
   if ([roleString isEqualToString: @"ComponentDAndTViewer"])
     {
-      [component setObject: @"" forKey: @"title"];
-      [component setObject: @"" forKey: @"location"];
+      [component setObject: @"" forKey: @"c_title"];
+      [component setObject: @"" forKey: @"c_location"];
     }
 }
 
@@ -265,14 +265,14 @@
       newInfo = [currentInfos nextObject];
       while (newInfo)
 	{
-	  uid = [newInfo objectForKey: @"uid"];
+	  uid = [newInfo objectForKey: @"c_uid"];
 	  currentInfo = [infos objectForKey: uid];
 	  if (!currentInfo
 	      || [owner isEqualToString: userLogin])
 	    {
 	      [self _updatePrivacyInComponent: newInfo
 		    fromFolder: currentFolder];
-	      [newInfo setObject: owner forKey: @"owner"];
+	      [newInfo setObject: owner forKey: @"c_owner"];
 	      [infos setObject: [newInfo objectsForKeys: fields
 					 notFoundMarker: marker]
 		     forKey: uid];
@@ -325,9 +325,9 @@
   [self _setupContext];
 
   newEvents = [NSMutableArray array];
-  fields = [NSArray arrayWithObjects: @"c_name", @"owner", @"status",
-		    @"title", @"startdate", @"enddate", @"location",
-		    @"isallday", nil];
+  fields = [NSArray arrayWithObjects: @"c_name", @"c_owner", @"c_status",
+		    @"c_title", @"c_startdate", @"c_enddate", @"c_location",
+		    @"c_isallday", nil];
   events = [[self _fetchFields: fields
 		  forComponentOfType: @"vevent"] objectEnumerator];
   oldEvent = [events nextObject];
@@ -396,8 +396,8 @@
 
   [self _setupContext];
 
-  fields = [NSArray arrayWithObjects: @"c_name", @"owner", @"status",
-		    @"title", @"enddate", nil];
+  fields = [NSArray arrayWithObjects: @"c_name", @"c_owner", @"c_status",
+		    @"c_title", @"c_enddate", nil];
 
   tasks = [[self _fetchFields: fields
 		 forComponentOfType: @"vtodo"] objectEnumerator];

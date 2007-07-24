@@ -143,7 +143,7 @@ static NSNumber   *sharedYes = nil;
 
   c_name = [object objectForKey: @"c_name"];
 
-  if ([[object objectForKey: @"component"] isEqualToString: @"vevent"])
+  if ([[object objectForKey: @"c_component"] isEqualToString: @"vevent"])
     componentClass = [SOGoAppointmentObject class];
   else
     componentClass = [SOGoTaskObject class];
@@ -497,12 +497,12 @@ static NSNumber   *sharedYes = nil;
   Class objectClass;
 
   qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", c_name];
-  records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"component"]
+  records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"c_component"]
                               matchingQualifier: qualifier];
 
   if ([records count])
     {
-      component = [[records objectAtIndex:0] valueForKey: @"component"];
+      component = [[records objectAtIndex:0] valueForKey: @"c_component"];
       if ([component isEqualToString: @"vevent"])
         objectClass = [SOGoAppointmentObject class];
       else if ([component isEqualToString: @"vtodo"])
@@ -526,7 +526,7 @@ static NSNumber   *sharedYes = nil;
   
   md = [[_record mutableCopy] autorelease];
  
-  if ((tmp = [_record objectForKey:@"startdate"])) {
+  if ((tmp = [_record objectForKey:@"c_startdate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
     [tmp setTimeZone: timeZone];
@@ -536,7 +536,7 @@ static NSNumber   *sharedYes = nil;
   else
     [self logWithFormat:@"missing 'startdate' in record?"];
 
-  if ((tmp = [_record objectForKey:@"enddate"])) {
+  if ((tmp = [_record objectForKey:@"c_enddate"])) {
     tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
           (NSTimeInterval)[tmp unsignedIntValue]];
     [tmp setTimeZone: timeZone];
@@ -605,23 +605,23 @@ static NSNumber   *sharedYes = nil;
   NSArray             *rules, *exRules, *exDates, *ranges;
   unsigned            i, count;
 
-  cycleinfo  = [[_row objectForKey:@"cycleinfo"] propertyList];
+  cycleinfo  = [[_row objectForKey:@"c_cycleinfo"] propertyList];
   if (cycleinfo == nil) {
     [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
     return;
   }
 
   row = [self fixupRecord:_row fetchRange: _r];
-  [row removeObjectForKey:@"cycleinfo"];
-  [row setObject:sharedYes forKey:@"isRecurrentEvent"];
+  [row removeObjectForKey: @"c_cycleinfo"];
+  [row setObject: sharedYes forKey:@"isRecurrentEvent"];
 
-  startDate = [row objectForKey:@"startDate"];
-  endDate   = [row objectForKey:@"endDate"];
+  startDate = [row objectForKey:@"c_startDate"];
+  endDate   = [row objectForKey:@"c_endDate"];
   fir       = [NGCalendarDateRange calendarDateRangeWithStartDate:startDate
                                    endDate:endDate];
-  rules     = [cycleinfo objectForKey:@"rules"];
-  exRules   = [cycleinfo objectForKey:@"exRules"];
-  exDates   = [cycleinfo objectForKey:@"exDates"];
+  rules     = [cycleinfo objectForKey:@"c_rules"];
+  exRules   = [cycleinfo objectForKey:@"c_exRules"];
+  exDates   = [cycleinfo objectForKey:@"c_exDates"];
 
   ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange:_r
                                      firstInstanceCalendarDateRange:fir
@@ -673,8 +673,8 @@ static NSNumber   *sharedYes = nil;
         components = [NSArray arrayWithObject: _component];
 
       sqlString
-        = [NSString stringWithFormat: @" AND (component = '%@')",
-                    [components componentsJoinedByString: @"' OR component = '"]];
+        = [NSString stringWithFormat: @" AND (c_component = '%@')",
+                    [components componentsJoinedByString: @"' OR c_component = '"]];
     }
   else
     sqlString = @"";
@@ -691,7 +691,7 @@ static NSNumber   *sharedYes = nil;
   end = (unsigned int) [_endDate timeIntervalSince1970];
 
   return [NSString stringWithFormat:
-                     @" AND (startdate <= %u) AND (enddate >= %u)",
+                     @" AND (c_startdate <= %u) AND (c_enddate >= %u)",
                    end, start];
 }
 
@@ -809,14 +809,14 @@ static NSNumber   *sharedYes = nil;
   /* prepare mandatory fields */
 
   fields = [NSMutableArray arrayWithArray: _fields];
-  [fields addObject: @"uid"];
-  [fields addObject: @"startdate"];
-  [fields addObject: @"enddate"];
+  [fields addObject: @"c_uid"];
+  [fields addObject: @"c_startdate"];
+  [fields addObject: @"c_enddate"];
 
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
 
-  sql = [NSString stringWithFormat: @"(iscycle = 0)%@%@%@",
+  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@",
                   dateSqlString, componentSqlString, privacySqlString];
 
   /* fetch non-recurrent apts first */
@@ -834,11 +834,11 @@ static NSNumber   *sharedYes = nil;
     }
 
   /* fetch recurrent apts now */
-  sql = [NSString stringWithFormat: @"(iscycle = 1)%@%@%@",
+  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@",
                   dateSqlString, componentSqlString, privacySqlString];
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  [fields addObject: @"cycleinfo"];
+  [fields addObject: @"c_cycleinfo"];
 
   records = [_folder fetchFields: fields matchingQualifier: qualifier];
   if (records)
@@ -895,8 +895,8 @@ static NSNumber   *sharedYes = nil;
   static NSArray *infos = nil; // TODO: move to a plist file
   
   if (!infos)
-    infos = [[NSArray alloc] initWithObjects: @"partmails", @"partstates",
-                             @"isopaque", @"status", nil];
+    infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
+                             @"c_isopaque", @"c_status", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate
                component: @"vevent"];
@@ -910,12 +910,13 @@ static NSNumber   *sharedYes = nil;
 
   if (!infos)
     infos = [[NSArray alloc] initWithObjects:
-                               @"c_name", @"component",
-                             @"title", @"location", @"orgmail",
-                             @"status", @"classification",
-                             @"isallday", @"isopaque",
-                             @"participants", @"partmails",
-                             @"partstates", @"sequence", @"priority", nil];
+                               @"c_name", @"c_component",
+                             @"c_title", @"c_location", @"c_orgmail",
+                             @"c_status", @"c_classification",
+                             @"c_isallday", @"c_isopaque",
+                             @"c_participants", @"c_partmails",
+                             @"c_partstates", @"c_sequence", @"c_priority",
+			     nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate
                component: _component];

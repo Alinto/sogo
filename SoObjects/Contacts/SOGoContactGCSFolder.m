@@ -33,9 +33,9 @@
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSFolder.h"
 
-#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
-                                     @"givenname", @"screenname", \
-				     @"o", @"mail", @"telephonenumber", \
+#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"c_cn", \
+                                     @"c_givenname", @"c_screenname", \
+				     @"c_o", @"c_mail", @"c_telephonenumber", \
                                      nil]
 
 @implementation SOGoContactGCSFolder
@@ -141,10 +141,10 @@
   if (filter && [filter length] > 0)
     {
       qs = [NSString stringWithFormat:
-                       @"(sn isCaseInsensitiveLike: '%@%%') OR "
-                     @"(givenname isCaseInsensitiveLike: '%@%%') OR "
-                     @"(mail isCaseInsensitiveLike: '%@%%') OR "
-                     @"(telephonenumber isCaseInsensitiveLike: '%%%@%%')",
+                       @"(c_sn isCaseInsensitiveLike: '%@%%') OR "
+                     @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "
+                     @"(c_mail isCaseInsensitiveLike: '%@%%') OR "
+                     @"(c_telephonenumber isCaseInsensitiveLike: '%%%@%%')",
                      filter, filter, filter, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }

@@ -1,3 +1,14 @@
+2007-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m,
+	UI/Contacts/UIxContactsListView.m, SoObjects/SOGo/SOGoUser.m,
+	SoObjects/SOGo/AgenorUserDefaults.m,
+	SoObjects/Contacts/SOGoContactGCSFolder.m,
+	SoObjects/Appointments/SOGoAppointmentFolder.m,
+	OGoContentStore/OCSiCalFieldExtractor.m,
+	OGoContentStore/OCSContactFieldExtractor.m: prefixed all quick
+	table fields with "c_".
+
 2007-07-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource +initialize]): query

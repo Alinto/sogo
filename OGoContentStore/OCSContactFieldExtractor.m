@@ -43,38 +43,38 @@
 
   value = [vCard fn];
   if (value)
-    [fields setObject: value forKey: @"cn"];
+    [fields setObject: value forKey: @"c_cn"];
   values = [vCard n];
   if (values)
     {
       max = [values count];
       if (max > 0)
         {
-          [fields setObject: [values objectAtIndex: 0] forKey: @"sn"];
+          [fields setObject: [values objectAtIndex: 0] forKey: @"c_sn"];
           if (max > 1)
             [fields setObject: [values objectAtIndex: 1]
-                    forKey: @"givenName"];
+                    forKey: @"c_givenName"];
         }
     }
   value = [vCard preferredTel];
   if (value)
-    [fields setObject: value forKey: @"telephoneNumber"];
+    [fields setObject: value forKey: @"c_telephoneNumber"];
   value = [vCard preferredEMail];
   if (value)
-    [fields setObject: value forKey: @"mail"];
+    [fields setObject: value forKey: @"c_mail"];
   values = [vCard org];
   max = [values count];
   if (max > 0)
     {
-      [fields setObject: [values objectAtIndex: 0] forKey: @"o"];
+      [fields setObject: [values objectAtIndex: 0] forKey: @"c_o"];
       if (max > 1)
-	[fields setObject: [values objectAtIndex: 1] forKey: @"ou"];
+	[fields setObject: [values objectAtIndex: 1] forKey: @"c_ou"];
     }
   adr = [vCard preferredAdr];
   if (adr)
-    [fields setObject: [adr value: 3] forKey: @"l"];
+    [fields setObject: [adr value: 3] forKey: @"c_l"];
   value = [[vCard uniqueChildWithTag: @"X-AIM"] value: 0];
-  [fields setObject: value forKey: @"screenname"];
+  [fields setObject: value forKey: @"c_screenname"];
 
   return fields;
 }

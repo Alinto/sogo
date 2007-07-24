@@ -296,7 +296,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     userDefaults
       = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
 				    uid: login
-				    fieldName: @"defaults"];
+				    fieldName: @"c_defaults"];
 
   return userDefaults;
 }
@@ -307,7 +307,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     userSettings
       = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
 				    uid: login
-				    fieldName: @"settings"];
+				    fieldName: @"c_settings"];
 
   return userSettings;
 }

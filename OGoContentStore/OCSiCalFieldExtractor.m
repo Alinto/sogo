@@ -105,30 +105,30 @@ static NSNumber *distantFutureNumber = nil;
 
   row = [NSMutableDictionary dictionaryWithCapacity:8];
 
-  [row setObject: @"vevent" forKey: @"component"];
+  [row setObject: @"vevent" forKey: @"c_component"];
  
   if ([uid isNotNull]) 
-    [row setObject:uid forKey: @"uid"];
+    [row setObject:uid forKey: @"c_uid"];
   else
     [self logWithFormat: @"WARNING: could not extract a uid from event!"];
 
 
   [row setObject: [NSNumber numberWithBool: isAllDay]
-       forKey: @"isallday"];
+       forKey: @"c_isallday"];
   [row setObject: [NSNumber numberWithBool: [_event isRecurrent]]
-       forKey: @"iscycle"];
+       forKey: @"c_iscycle"];
   [row setObject: [NSNumber numberWithBool: [_event isOpaque]]
-       forKey: @"isopaque"];
+       forKey: @"c_isopaque"];
   [row setObject: [NSNumber numberWithInt: [_event priorityNumber]]
-       forKey: @"priority"];
+       forKey: @"c_priority"];
 
-  if ([title isNotNull]) [row setObject: title forKey: @"title"];
-  if ([location isNotNull]) [row setObject: location forKey: @"location"];
-  if ([sequence isNotNull]) [row setObject: sequence forKey: @"sequence"];
+  if ([title isNotNull]) [row setObject: title forKey: @"c_title"];
+  if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
+  if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
 
   if ([startDate isNotNull])
     [row setObject: [self numberForDate: startDate]
-	 forKey: @"startdate"];
+	 forKey: @"c_startdate"];
   if ([endDate isNotNull])
     {
       if (endDate == distantFuture)
@@ -143,7 +143,7 @@ static NSNumber *distantFutureNumber = nil;
 	    = [NSNumber numberWithUnsignedInt:
 			  [endDate timeIntervalSince1970] - i];
 	}
-      [row setObject: dateNumber forKey: @"enddate"];
+      [row setObject: dateNumber forKey: @"c_enddate"];
     }
 
   if ([_event isRecurrent]) {
@@ -155,14 +155,14 @@ static NSNumber *distantFutureNumber = nil;
 	 more complex - thus we set it to a "reasonable" distant future */
       date = distantFuture;
     }
-    [row setObject:[self numberForDate:date] forKey: @"cycleenddate"];
-    [row setObject:[_event cycleInfo] forKey: @"cycleinfo"];
+    [row setObject:[self numberForDate:date] forKey: @"c_cycleenddate"];
+    [row setObject:[_event cycleInfo] forKey: @"c_cycleinfo"];
   }
 
   if ([participants length] > 0)
-    [row setObject: participants forKey: @"participants"];
+    [row setObject: participants forKey: @"c_participants"];
   if ([partmails length] > 0)
-    [row setObject: partmails forKey: @"partmails"];
+    [row setObject: partmails forKey: @"c_partmails"];
 
   if ([status isNotNull]) {
     int code = 1;
@@ -171,15 +171,15 @@ static NSNumber *distantFutureNumber = nil;
       code = 2;
     else if ([status isEqualToString: @"CANCELLED"])
       code = 0;
-    [row setObject:[NSNumber numberWithInt:code] forKey: @"status"];
+    [row setObject:[NSNumber numberWithInt:code] forKey: @"c_status"];
   }
   else {
     /* confirmed by default */
-    [row setObject: [NSNumber numberWithInt:1] forKey: @"status"];
+    [row setObject: [NSNumber numberWithInt:1] forKey: @"c_status"];
   }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
-       forKey: @"classification"];
+       forKey: @"c_classification"];
 
   organizer = [_event organizer];
   if (organizer) {
@@ -187,7 +187,7 @@ static NSNumber *distantFutureNumber = nil;
  
     email = [organizer valueForKey: @"rfc822Email"];
     if (email)
-      [row setObject:email forKey: @"orgmail"];
+      [row setObject:email forKey: @"c_orgmail"];
   }
  
   /* construct partstates */
@@ -203,7 +203,7 @@ static NSNumber *distantFutureNumber = nil;
       [partstates appendString: @"\n"];
     [partstates appendFormat: @"%d", stat];
   }
-  [row setObject:partstates forKey: @"partstates"];
+  [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
   return row;
 }
@@ -245,43 +245,43 @@ static NSNumber *distantFutureNumber = nil;
 
   row = [NSMutableDictionary dictionaryWithCapacity:8];
 
-  [row setObject: @"vtodo" forKey: @"component"];
+  [row setObject: @"vtodo" forKey: @"c_component"];
 
   if ([uid isNotNull]) 
-    [row setObject:uid forKey: @"uid"];
+    [row setObject:uid forKey: @"c_uid"];
   else
     [self logWithFormat: @"WARNING: could not extract a uid from event!"];
 
   [row setObject:[NSNumber numberWithBool:[_task isRecurrent]]
-       forKey: @"iscycle"];
+       forKey: @"c_iscycle"];
   [row setObject:[NSNumber numberWithInt:[_task priorityNumber]]
-       forKey: @"priority"];
+       forKey: @"c_priority"];
 
   [row setObject: [NSNumber numberWithBool: NO]
-       forKey: @"isallday"];
+       forKey: @"c_isallday"];
   [row setObject: [NSNumber numberWithBool: NO]
-       forKey: @"isopaque"];
+       forKey: @"c_isopaque"];
 
-  if ([title isNotNull]) [row setObject: title forKey: @"title"];
-  if ([location isNotNull]) [row setObject: location forKey: @"location"];
-  if ([sequence isNotNull]) [row setObject: sequence forKey: @"sequence"];
+  if ([title isNotNull]) [row setObject: title forKey: @"c_title"];
+  if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
+  if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
  
   if ([startDate isNotNull])
     date = [self numberForDate: startDate];
   else
     date = [NSNull null];
-  [row setObject: date forKey: @"startdate"];
+  [row setObject: date forKey: @"c_startdate"];
 
   if ([dueDate isNotNull]) 
     date = [self numberForDate: dueDate];
   else
     date = [NSNull null];
-  [row setObject: date forKey: @"enddate"];
+  [row setObject: date forKey: @"c_enddate"];
 
   if ([participants length] > 0)
-    [row setObject:participants forKey: @"participants"];
+    [row setObject:participants forKey: @"c_participants"];
   if ([partmails length] > 0)
-    [row setObject:partmails forKey: @"partmails"];
+    [row setObject:partmails forKey: @"c_partmails"];
 
   if ([status isNotNull]) {
     code = 0; /* NEEDS-ACTION */
@@ -291,15 +291,15 @@ static NSNumber *distantFutureNumber = nil;
       code = 2;
     else if ([status isEqualToString: @"CANCELLED"])
       code = 3;
-    [row setObject: [NSNumber numberWithInt: code] forKey: @"status"];
+    [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
   }
   else {
     /* confirmed by default */
-    [row setObject:[NSNumber numberWithInt:1] forKey: @"status"];
+    [row setObject:[NSNumber numberWithInt:1] forKey: @"c_status"];
   }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
-       forKey: @"classification"];
+       forKey: @"c_classification"];
 
   organizer = [_task organizer];
   if (organizer) {
@@ -307,7 +307,7 @@ static NSNumber *distantFutureNumber = nil;
  
     email = [organizer valueForKey: @"rfc822Email"];
     if (email)
-      [row setObject:email forKey: @"orgmail"];
+      [row setObject:email forKey: @"c_orgmail"];
   }
  
   /* construct partstates */
@@ -323,7 +323,7 @@ static NSNumber *distantFutureNumber = nil;
       [partstates appendString: @"\n"];
     [partstates appendFormat: @"%d", stat];
   }
-  [row setObject:partstates forKey: @"partstates"];
+  [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
   return row;
 }

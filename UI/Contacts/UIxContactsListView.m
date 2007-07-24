@@ -101,7 +101,7 @@
 
   displayName = [currentContact objectForKey: @"displayName"];
   if (!(displayName && [displayName length] > 0))
-    displayName = [currentContact objectForKey: @"cn"];
+    displayName = [currentContact objectForKey: @"c_cn"];
 
   return displayName;
 }
