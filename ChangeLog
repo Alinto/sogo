@@ -1,5 +1,9 @@
 2007-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([-displayName]): removed
+	method.
+	([UIxContactsListView -defaultSortKey]): changed to "displayName".
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):

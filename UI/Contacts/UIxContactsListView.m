@@ -92,18 +92,7 @@
 
 - (NSString *) defaultSortKey
 {
-  return @"fn";
-}
-
-- (NSString *) displayName
-{
-  NSString *displayName;
-
-  displayName = [currentContact objectForKey: @"displayName"];
-  if (!(displayName && [displayName length] > 0))
-    displayName = [currentContact objectForKey: @"c_cn"];
-
-  return displayName;
+  return @"displayName";
 }
 
 - (NSString *) sortKey
@@ -137,10 +126,11 @@
       else
 	valueText = nil;
 
-      ASSIGN (contactInfos,
-	      [folder lookupContactsWithFilter: valueText
-		      sortBy: [self sortKey]
-		      ordering: ordering]);
+      [contactInfos release];
+      contactInfos = [folder lookupContactsWithFilter: valueText
+			     sortBy: [self sortKey]
+			     ordering: ordering];
+      [contactInfos retain];
     }
 
   return contactInfos;

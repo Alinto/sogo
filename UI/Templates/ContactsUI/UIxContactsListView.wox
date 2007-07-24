@@ -35,11 +35,11 @@
             ondblclick="return onContactRowDblClick(event, this);"
             oncontextmenu="return onContactContextMenu(event, this);">
             <td><img rsrc:src="abcard.gif"
-		/><var:string value="displayName" const:escapeHTML="YES" /></td>
+		/><var:string value="currentContact.displayName" const:escapeHTML="YES" /></td>
             <td><var:string value="currentContact.mail"/></td>
-            <td><var:string value="currentContact.screenname"/></td>
-            <td><var:string value="currentContact.o"/></td>
-            <td><var:string value="currentContact.telephonenumber"/></td>
+            <td><var:string value="currentContact.screenName"/></td>
+            <td><var:string value="currentContact.org"/></td>
+            <td><var:string value="currentContact.phone"/></td>
           </tr>
         </var:foreach>
       </tbody>
