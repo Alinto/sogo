@@ -10,97 +10,97 @@
       allowsNull = NO;
     },
     {
-      columnName = uid;
+      columnName = c_uid;
       sqlType    = "VARCHAR(256)";
       allowsNull = NO;
     },
     {
-      columnName = startdate;
+      columnName = c_startdate;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = enddate;
+      columnName = c_enddate;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = cycleenddate;
+      columnName = c_cycleenddate;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = title;
+      columnName = c_title;
       sqlType    = "VARCHAR(1000)";
       allowsNull = NO;
     },
     {
-      columnName = participants;
+      columnName = c_participants;
       sqlType    = "VARCHAR(1000000)";
       allowsNull = YES;
     },
     {
-      columnName = isallday;
+      columnName = c_isallday;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = iscycle;
+      columnName = c_iscycle;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = cycleinfo;
+      columnName = c_cycleinfo;
       sqlType    = "VARCHAR(1000)";
       allowsNull = YES;
     },
     {
-      columnName = classification;
+      columnName = c_classification;
       sqlType    = "INT";
       allowsNull = NO;
     },
     {
-      columnName = isopaque;
+      columnName = c_isopaque;
       sqlType    = "INT";
       allowsNull = NO;
     },
     {
-      columnName = status;
+      columnName = c_status;
       sqlType    = "INT";
       allowsNull = NO;
     },
     {
-      columnName = priority;
+      columnName = c_priority;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = location;
+      columnName = c_location;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = orgmail;
+      columnName = c_orgmail;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = partmails;
+      columnName = c_partmails;
       sqlType    = "VARCHAR(100000)";
       allowsNull = YES;
     },
     {
-      columnName = partstates;
+      columnName = c_partstates;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = sequence;
+      columnName = c_sequence;
       sqlType    = "INT";
       allowsNull = YES;
     },
     {
-      columnName = component;
+      columnName = c_component;
       sqlType    = "VARCHAR(10)";
       allowsNull = NO;
     },

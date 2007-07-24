@@ -10,47 +10,47 @@
       allowsNull = NO;
     },
     {
-      columnName = givenname;
+      columnName = c_givenname;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = cn;
+      columnName = c_cn;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = sn;
+      columnName = c_sn;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = screenname;
+      columnName = c_screenname;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = l;
+      columnName = c_l;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = mail;
+      columnName = c_mail;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = o;
+      columnName = c_o;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = ou;
+      columnName = c_ou;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
     {
-      columnName = telephoneNumber;
+      columnName = c_telephoneNumber;
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
