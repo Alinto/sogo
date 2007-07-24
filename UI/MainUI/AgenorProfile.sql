@@ -4,7 +4,7 @@
 --
 
 CREATE TABLE SOGo_user_profile (
-  uid      VARCHAR(255) NOT NULL PRIMARY KEY,
-  defaults TEXT,
-  settings TEXT
+  c_uid      VARCHAR(255) NOT NULL PRIMARY KEY,
+  c_defaults TEXT,
+  c_settings TEXT
 );
