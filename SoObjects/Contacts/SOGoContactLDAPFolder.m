@@ -37,17 +37,6 @@
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactLDAPFolder.h"
 
-#define folderListingFields [NSArray arrayWithObjects: @"c_name", @"cn", \
-                                     @"displayName",                     \
-                                     @"streetAddress",                   \
-                                     @"o", \
-                                     @"sn", @"givenname", @"l",          \
-                                     @"mail", @"telephonenumber",        \
-                                     @"mailNickname",                    \
-                                     @"sAMAccountName",                  \
-                                     @"uid",                  \
-                                     nil]
-
 @class WOContext;
 
 @implementation SOGoContactLDAPFolder
