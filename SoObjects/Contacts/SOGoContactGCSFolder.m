@@ -154,11 +154,66 @@
   return qualifier;
 }
 
+- (NSArray *) _flattenedRecords: (NSArray *) records
+{
+  NSMutableArray *newRecords;
+  NSEnumerator *oldRecords;
+  NSDictionary *oldRecord;
+  NSMutableDictionary *newRecord;
+  NSString *data;
+  
+  newRecords = [NSMutableArray arrayWithCapacity: [records count]];
+
+  oldRecords = [records objectEnumerator];
+  oldRecord = [oldRecords nextObject];
+  while (oldRecord)
+    {
+      newRecord = [NSMutableDictionary new];
+      [newRecord autorelease];
+
+      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
+		 forKey: @"c_uid"];
+      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
+		 forKey: @"c_name"];
+
+      data = [oldRecord objectForKey: @"c_cn"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data
+		 forKey: @"displayName"];
+
+      data = [oldRecord objectForKey: @"c_mail"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data forKey: @"mail"];
+
+      data = [oldRecord objectForKey: @"c_screenname"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data forKey: @"screenName"];
+
+      data = [oldRecord objectForKey: @"c_o"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data forKey: @"org"];
+
+      data = [oldRecord objectForKey: @"c_telephonenumber"];
+      if (![data length])
+	data = @"";
+      [newRecord setObject: data forKey: @"phone"];
+
+      [newRecords addObject: newRecord];
+      oldRecord = [oldRecords nextObject];
+    }
+
+  return newRecords;
+}
+
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
 {
-  NSArray *fields, *records;
+  NSArray *fields, *dbRecords, *records;
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
@@ -167,10 +222,11 @@
 
   fields = folderListingFields;
   qualifier = [self _qualifierForFilter: filter];
-  records = [[self ocsFolder] fetchFields: fields
-			      matchingQualifier: qualifier];
-  if ([records count] > 1)
+  dbRecords = [[self ocsFolder] fetchFields: fields
+				matchingQualifier: qualifier];
+  if ([dbRecords count] > 1)
     {
+      records = [self _flattenedRecords: dbRecords];
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey
                           selector: ((sortOrdering == NSOrderedDescending)
@@ -181,7 +237,9 @@
                      [NSArray arrayWithObject: ordering]];
     }
   else
-    [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
+    records = nil;
+//   else
+//     [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
 
   //[self debugWithFormat:@"fetched %i records.", [records count]];
   return records;
