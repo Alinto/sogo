@@ -1,5 +1,10 @@
 2007-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	translate the returned records to a normalized form.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
 	translate the returned records to a normalized form.
