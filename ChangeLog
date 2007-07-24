@@ -1,5 +1,9 @@
 2007-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	translate the returned records to a normalized form.
+
 	* UI/Scheduler/UIxCalListingActions.m,
 	UI/Contacts/UIxContactsListView.m, SoObjects/SOGo/SOGoUser.m,
 	SoObjects/SOGo/AgenorUserDefaults.m,

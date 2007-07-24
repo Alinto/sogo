@@ -137,6 +137,68 @@
   return keys;
 }
 
+- (NSArray *) _flattenedRecords: (NSArray *) records
+{
+  NSMutableArray *newRecords;
+  NSEnumerator *oldRecords;
+  NSDictionary *oldRecord;
+  NSMutableDictionary *newRecord;
+  NSString *data;
+  
+  newRecords = [[NSMutableArray alloc] initWithCapacity: [records count]];
+  [newRecords autorelease];
+
+  oldRecords = [records objectEnumerator];
+  oldRecord = [oldRecords nextObject];
+  while (oldRecord)
+    {
+      newRecord = [NSMutableDictionary new];
+      [newRecord autorelease];
+
+      [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
+		 forKey: @"c_uid"];
+      [newRecord setObject: [oldRecord objectForKey: @"c_name"]
+		 forKey: @"c_name"];
+
+      data = [oldRecord objectForKey: @"displayName"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data
+		 forKey: @"displayName"];
+
+      data = [oldRecord objectForKey: @"mail"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data forKey: @"mail"];
+
+      data = [oldRecord objectForKey: @"nsAIMid"];
+      if (![data length])
+	data = [oldRecord objectForKey: @"nscpaimscreenname"];
+      if (![data length])
+	data = @"";
+      [newRecord setObject: data forKey: @"screenName"];
+
+      data = [oldRecord objectForKey: @"o"];
+      if (!data)
+	data = @"";
+      [newRecord setObject: data forKey: @"org"];
+
+      data = [oldRecord objectForKey: @"telephoneNumber"];
+      if (![data length])
+	data = [oldRecord objectForKey: @"cellphone"];
+      if (![data length])
+	data = [oldRecord objectForKey: @"homePhone"];
+      if (![data length])
+	data = @"";
+      [newRecord setObject: data forKey: @"phone"];
+
+      [newRecords addObject: newRecord];
+      oldRecord = [oldRecords nextObject];
+    }
+
+  return newRecords;
+}
+
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
@@ -148,7 +210,8 @@
 
   if (filter && [filter length] > 0)
     {
-      records = [ldapSource fetchContactsMatching: filter];
+      records = [self _flattenedRecords:
+			[ldapSource fetchContactsMatching: filter]];
       ordering
         = [EOSortOrdering sortOrderingWithKey: sortKey
                           selector: ((sortOrdering == NSOrderedDescending)
@@ -159,7 +222,6 @@
                      [NSArray arrayWithObject: ordering]];
     }
 
-  //[self debugWithFormat:@"fetched %i records.", [records count]];
   return result;
 }
 
