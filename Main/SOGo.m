@@ -174,9 +174,6 @@ static BOOL debugObjectAllocation = NO;
     [tc cancelFetch];
 
   [cm releaseChannel: tc];
-
-//   [self terminate];
-//   NSLog (@"not yet");
 }
 
 - (BOOL) _checkMandatoryTables
