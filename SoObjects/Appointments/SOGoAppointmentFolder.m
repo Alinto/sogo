@@ -31,6 +31,7 @@
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 
 #import "common.h"
@@ -139,23 +140,23 @@ static NSNumber   *sharedYes = nil;
 {
   SOGoCalendarComponent *component;
   Class componentClass;
-  NSString *c_name, *etagLine, *calString;
+  NSString *name, *etagLine, *calString;
 
-  c_name = [object objectForKey: @"c_name"];
+  name = [object objectForKey: @"c_name"];
 
   if ([[object objectForKey: @"c_component"] isEqualToString: @"vevent"])
     componentClass = [SOGoAppointmentObject class];
   else
     componentClass = [SOGoTaskObject class];
 
-  component = [componentClass objectWithName: c_name inContainer: self];
+  component = [componentClass objectWithName: name inContainer: self];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];
   [r appendContentString: baseURL];
   if (![baseURL hasSuffix: @"/"])
     [r appendContentString: @"/"];
-  [r appendContentString: c_name];
+  [r appendContentString: name];
   [r appendContentString: @"</D:href>\r\n"];
 
   [r appendContentString: @"    <D:propstat>\r\n"];
@@ -448,7 +449,7 @@ static NSNumber   *sharedYes = nil;
   if (nameFields == nil)
     nameFields = [[NSArray alloc] initWithObjects: @"c_name", nil];
   
-  qualifier = [EOQualifier qualifierWithQualifierFormat:@"uid = %@", _u];
+  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_uid = %@", _u];
   records   = [_f fetchFields: nameFields matchingQualifier: qualifier];
   
   if ([records count] == 1)
@@ -489,14 +490,14 @@ static NSNumber   *sharedYes = nil;
   return rname;
 }
 
-- (Class) objectClassForResourceNamed: (NSString *) c_name
+- (Class) objectClassForResourceNamed: (NSString *) name
 {
   EOQualifier *qualifier;
   NSArray *records;
   NSString *component;
   Class objectClass;
 
-  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", c_name];
+  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", name];
   records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"c_component"]
                               matchingQualifier: qualifier];
 
@@ -615,13 +616,13 @@ static NSNumber   *sharedYes = nil;
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey:@"isRecurrentEvent"];
 
-  startDate = [row objectForKey:@"c_startDate"];
-  endDate   = [row objectForKey:@"c_endDate"];
+  startDate = [row objectForKey:@"startDate"];
+  endDate   = [row objectForKey:@"endDate"];
   fir       = [NGCalendarDateRange calendarDateRangeWithStartDate:startDate
                                    endDate:endDate];
-  rules     = [cycleinfo objectForKey:@"c_rules"];
-  exRules   = [cycleinfo objectForKey:@"c_exRules"];
-  exDates   = [cycleinfo objectForKey:@"c_exDates"];
+  rules     = [cycleinfo objectForKey:@"rules"];
+  exRules   = [cycleinfo objectForKey:@"exRules"];
+  exDates   = [cycleinfo objectForKey:@"exDates"];
 
   ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange:_r
                                      firstInstanceCalendarDateRange:fir
@@ -709,7 +710,7 @@ static NSNumber   *sharedYes = nil;
       currentRole = [self roleForComponentsWithAccessClass: classes[counter]
 			  forUser: uid];
       if ([currentRole length] > 0)
-	[classificationString appendFormat: @"classification = %d or ",
+	[classificationString appendFormat: @"c_classification = %d or ",
 			      classes[counter]];
     }
 
@@ -727,16 +728,16 @@ static NSNumber   *sharedYes = nil;
   if ([login isEqualToString: owner])
     privacySqlString = @"";
   else if ([login isEqualToString: @"freebusy"])
-    privacySqlString = @"and (isopaque = 1)";
+    privacySqlString = @"and (c_isopaque = 1)";
   else
     {
       email = [activeUser primaryEmail];
       
       privacySqlString
         = [NSString stringWithFormat:
-                      @"(%@(orgmail = '%@')"
-		    @" or ((partmails caseInsensitiveLike '%@%%'"
-		    @" or partmails caseInsensitiveLike '%%\n%@%%')))",
+                      @"(%@(c_orgmail = '%@')"
+		    @" or ((c_partmails caseInsensitiveLike '%@%%'"
+		    @" or c_partmails caseInsensitiveLike '%%\n%@%%')))",
 		    [self _privacyClassificationStringsForUID: login],
 		    email, email, email];
     }
@@ -990,7 +991,7 @@ static NSNumber   *sharedYes = nil;
   result = [[ctx application] traversePathArray:path inContext:ctx
 			      error:&error acquire:NO];
   if (error != nil) {
-    [self errorWithFormat: @"folder lookup failed (uid=%@): %@",
+    [self errorWithFormat: @"folder lookup failed (c_uid=%@): %@",
             _uid, error];
     return nil;
   }
