@@ -1,5 +1,9 @@
 2007-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -saveAction]): added
+	code to save the attached filenames with the filename returned by
+	the web server as well as their mime types.
+
 	* UI/MailPartViewers/UIxMailPartMessageViewer.m ([UIxMailPartMessageViewer -fromAddresses])
 	([UIxMailPartMessageViewer -toAddresses])
 	([UIxMailPartMessageViewer -ccAddresses]): new methods returning

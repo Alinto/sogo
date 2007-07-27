@@ -2,7 +2,7 @@
   ( /* first group */
     { link  = "#";
       isSafe = NO;
-      onclick  = "clickedEditorSend(this);return false;";
+      onclick  = "return clickedEditorSend(this);";
       image = "tb-compose-send-flat-24x24.png";
       cssClass = "tbicon_send";
       label = "Send"; },
@@ -13,13 +13,13 @@
       label = "Contacts"; },
     { link  = "#";
       isSafe = NO;
-      onclick  = "clickedEditorAttach(this)";
+      onclick  = "return clickedEditorAttach(this)";
       image = "tb-compose-attach-flat-24x24.png";
       cssClass = "tbicon_attach";
       label = "Attach"; },
     { link  = "#";
       isSafe = NO;
-      onclick  = "clickedEditorSave(this);return false;";
+      onclick  = "return clickedEditorSave(this);";
       image = "tb-mail-file-flat-24x24.png";
       cssClass = "tbicon_save";
       label = "Save"; },

@@ -25,14 +25,17 @@
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WORequest.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
 #import <NGObjWeb/SoSubContext.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSException+misc.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeHeaderFields.h>
+#import <NGMime/NGMimeMultipartBody.h>
 
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoMailFolder.h>
@@ -77,12 +80,13 @@ static BOOL         useLocationBasedSentFolder = NO;
 static NSDictionary *internetMailHeaders = nil;
 static NSArray      *infoKeys            = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   infoKeys = [[NSArray alloc] initWithObjects:
 				@"subject", @"text", @"to", @"cc", @"bcc", 
-			        @"from", @"replyTo",
+			      @"from", @"replyTo",
 			      nil];
   
   keepMailTmpFile = [ud boolForKey:@"SOGoMailEditorKeepTmpFile"];
@@ -95,18 +99,18 @@ static NSArray      *infoKeys            = nil;
   /* Internet mail settings */
   
   showInternetMarker = [ud boolForKey:@"SOGoShowInternetMarker"];
-  if (!showInternetMarker) {
+  if (!showInternetMarker)
     NSLog(@"Note: visual Internet marker on mail editor disabled "
 	  @"(SOGoShowInternetMarker)");
-  }
   
   internetMailHeaders = 
     [[ud dictionaryForKey:@"SOGoInternetMailHeaders"] copy];
-  NSLog(@"Note: specified %d headers for mails send via the Internet.", 
+  NSLog (@"Note: specified %d headers for mails send via the Internet.", 
 	[internetMailHeaders count]);
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [sentFolder release];
   [fromEMails release];
   [from    release];
@@ -123,68 +127,94 @@ static NSArray      *infoKeys            = nil;
 
 /* accessors */
 
-- (void)setFrom:(NSString *)_value {
+- (void) setFrom: (NSString *) _value
+{
   ASSIGNCOPY(from, _value);
 }
-- (NSString *)from {
+
+- (NSString *) from
+{
   if (![from isNotEmpty])
     return [[[self context] activeUser] primaryEmail];
+
   return from;
 }
 
-- (void)setReplyTo:(NSString *)_ignore {
+- (void) setReplyTo: (NSString *) _ignore
+{
 }
-- (NSString *)replyTo {
+
+- (NSString *) replyTo
+{
   /* we are here for future extensibility */
   return @"";
 }
 
-- (void)setSubject:(NSString *)_value {
+- (void) setSubject: (NSString *) _value
+{
   ASSIGNCOPY(subject, _value);
 }
-- (NSString *)subject {
+
+- (NSString *) subject
+{
   return subject ? subject : @"";
 }
 
-- (void)setText:(NSString *)_value {
+- (void) setText: (NSString *) _value
+{
   ASSIGNCOPY(text, _value);
 }
-- (NSString *)text {
+
+- (NSString *) text
+{
   return [text isNotNull] ? text : @"";
 }
 
-- (void)setTo:(NSArray *)_value {
+- (void) setTo: (NSArray *)_value
+{
   ASSIGNCOPY(to, _value);
 }
-- (NSArray *)to {
+
+- (NSArray *) to
+{
   return [to isNotNull] ? to : [NSArray array];
 }
 
-- (void)setCc:(NSArray *)_value {
+- (void) setCc: (NSArray *) _value
+{
   ASSIGNCOPY(cc, _value);
 }
-- (NSArray *)cc {
+
+- (NSArray *) cc
+{
   return [cc isNotNull] ? cc : [NSArray array];
 }
 
-- (void)setBcc:(NSArray *)_value {
+- (void) setBcc: (NSArray *) _value
+{
   ASSIGNCOPY(bcc, _value);
 }
-- (NSArray *)bcc {
+
+- (NSArray *) bcc
+{
   return [bcc isNotNull] ? bcc : [NSArray array];
 }
 
-- (BOOL)hasOneOrMoreRecipients {
+- (BOOL) hasOneOrMoreRecipients
+{
   if ([[self to]  count] > 0) return YES;
   if ([[self cc]  count] > 0) return YES;
   if ([[self bcc] count] > 0) return YES;
   return NO;
 }
 
-- (void)setAttachmentName:(NSString *)_attachmentName {
+- (void) setAttachmentName: (NSString *) _attachmentName
+{
   ASSIGN(attachmentName, _attachmentName);
 }
-- (NSString *)attachmentName {
+
+- (NSString *) attachmentName
+{
   return attachmentName;
 }
 
@@ -403,23 +433,96 @@ static NSArray      *infoKeys            = nil;
 
 /* actions */
 
-- (BOOL)_saveFormInfo {
-  NSDictionary *info;
-  
-  if ((info = [self storeInfo]) != nil) {
-    NSException *error;
-    
-    if ((error = [[self clientObject] storeInfo:info]) != nil) {
-      [self errorWithFormat:@"failed to store draft: %@", error];
-      // TODO: improve error handling
-      return NO;
+- (NSDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
+{
+  NSMutableDictionary *filenames;
+  NSDictionary *attachment;
+  NSArray *parts;
+  unsigned int count, max;
+  NGMimeBodyPart *part;
+  NGMimeContentDispositionHeaderField *header;
+  NSString *mimeType;
+
+  parts = [httpBody parts];
+  max = [parts count];
+  filenames = [NSMutableDictionary dictionaryWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      part = [parts objectAtIndex: count];
+      header = [part headerForKey: @"content-disposition"];
+      mimeType = [[part headerForKey: @"content-type"] stringValue];
+      attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+				   [header filename], @"filename",
+				 mimeType, @"mime-type", nil];
+      [filenames setObject: attachment
+		 forKey: [header name]];
     }
-  }
+
+  return filenames;
+}
+
+- (BOOL) _saveAttachments
+{
+  WORequest *request;
+  NSEnumerator *allKeys;
+  NSString *key;
+  BOOL success;
+  NSDictionary *filenames;
+  id httpBody;
+  SOGoDraftObject *co;
+
+  success = YES;
+  request = [context request];
+
+  httpBody = [[request httpRequest] body];
+  filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
+
+  co = [self clientObject];
+  allKeys = [[request formValueKeys] objectEnumerator];
+  key = [allKeys nextObject];
+  while (key && success)
+    {
+      if ([key hasPrefix: @"attachment"])
+	success
+	  = (![co saveAttachment: (NSData *) [request formValueForKey: key]
+		  withMetadata: [filenames objectForKey: key]]);
+      key = [allKeys nextObject];
+    }
+
+  return success;
+}
+
+- (BOOL) _saveFormInfo
+{
+  NSDictionary *info;
+  NSException *error;
+  BOOL success;
+
+  success = YES;
+
+  if ([self _saveAttachments])
+    {
+      info = [self storeInfo];
+      if (info)
+	{
+	  error = [[self clientObject] storeInfo:info];
+	  if (error)
+	    {
+	      [self errorWithFormat:@"failed to store draft: %@", error];
+	      // TODO: improve error handling
+	      success = NO;
+	    }
+	}
+    }
+  else
+    success = NO;
   
   // TODO: wrap content
   
-  return YES;
+  return success;
 }
+
 - (id)failedToSaveFormResponse {
   // TODO: improve error handling
   return [NSException exceptionWithHTTPStatus:500 /* server error */
@@ -443,23 +546,8 @@ static NSArray      *infoKeys            = nil;
   return [[self attachmentNames] count] > 0 ? YES : NO;
 }
 
-- (NSString *)initialLeftsideStyle {
-  if ([self hasAttachments])
-    return @"width: 67%";
-  return @"width: 100%";
-}
-
-- (NSString *)initialRightsideStyle {
-  if ([self hasAttachments])
-    return @"display: block";
-  return @"display: none";
-}
-
-- (id)defaultAction {
-  return [self redirectToLocation:@"edit"];
-}
-
-- (id)editAction {
+- (id) defaultAction
+{
 #if 0
   [self logWithFormat:@"edit action, load content from: %@",
 	  [self clientObject]];

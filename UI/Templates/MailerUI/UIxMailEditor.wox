@@ -9,16 +9,27 @@
     className="UIxPageFrame"
     title="panelTitle"
     const:popup="YES">
-    <form name="pageform">
+    <div class="menu" id="attachmentsMenu">
+      <ul>
+        <li><var:string label:value="Open"/></li>
+        <li><var:string label:value="Delete" /></li>
+        <li><var:string label:value="Select All" /></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Attach File(s)..." /></li>
+        <li><var:string label:value="Attach Web Page..." /></li>
+      </ul>
+    </div>
+
+    <form name="pageform" enctype="multipart/form-data">
       <div id="headerArea">
         <div id="attachmentsArea">
           <var:string label:value="Attachments:" />
-          <div id="compose_attachments_list"
-            onclick="clickedEditorAttach(this);"
-            ><var:foreach list="attachmentNames" item="attachmentName">
-            <var:string value="attachmentName" /><br />
-            </var:foreach>
-          </div>
+          <ul id="attachments">
+            <var:foreach list="attachmentNames" item="attachmentName"
+	      ><img rsrc:img="attachment.gif"
+		/><var:string value="attachmentName"
+		/></var:foreach>
+	  </ul>
         </div>
         <span class="headerField"><var:string label:value="From" />:</span>
         <var:popup const:name="from"
