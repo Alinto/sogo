@@ -1,5 +1,9 @@
 2007-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailForwardAction.m ([UIxMailForwardAction
+	-forwardAction]): adapted to the new saveAttachment:withMetadata:
+	method (see below).
+
 	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -saveAction]): added
 	code to save the attached filenames with the filename returned by
 	the web server as well as their mime types.

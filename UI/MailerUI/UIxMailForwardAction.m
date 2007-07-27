@@ -93,11 +93,17 @@
 		       nil];
   if ((error = [newDraft storeInfo:info]) != nil)
     return error;
-  
+
   /* attach message */
   
   // TODO: use subject for filename?
-  error = [newDraft saveAttachment:content withName:@"forward.mail"];
+//   error = [newDraft saveAttachment:content withName:@"forward.mail"];
+  attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+			       @"forward.mail", @"filename",
+			     @"message/rfc822", @"mime-type",
+			     nil];
+  error = [newDraft saveAttachment: content
+		    withMetadata: attachment];
   if (error != nil)
     return error;
   
