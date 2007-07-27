@@ -657,8 +657,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 if (!lasts)
 	    lasts = 1;
 
-	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
-				    null, null, title);
+ 	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
+ 				    null, null, title);
 	 siblings.push(eventDiv);
 	 eventDiv.siblings = siblings;
 	 var dayString = days[i].getDayString();

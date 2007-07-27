@@ -51,62 +51,6 @@ function clearSearch(sender) {
    return true;
 }
 
-/* mail editor */
-
-function validateEditorInput(sender) {
-   var errortext = "";
-   var field;
-   
-   field = document.pageform.subject;
-   if (field.value == "")
-      errortext = errortext + labels.error_missingsubject + "\n";
-
-   if (!UIxRecipientSelectorHasRecipients())
-      errortext = errortext + labels.error_missingrecipients + "\n";
-   
-   if (errortext.length > 0) {
-      alert(labels.error_validationfailed.decodeEntities() + ":\n"
-	    + errortext.decodeEntities());
-      return false;
-   }
-   return true;
-}
-
-function clickedEditorSend(sender) {
-   if (!validateEditorInput(sender))
-      return false;
-
-   document.pageform.action = "send";
-   document.pageform.submit();
-   // if everything is ok, close the window
-		       return true;
-}
-
-function clickedEditorAttach(sender) {
-   var urlstr;
-   
-   urlstr = "viewAttachments";
-   window.open(urlstr, "SOGo_attach",
-	       "width=320,height=320,resizable=1,scrollbars=1,toolbar=0," +
-	       "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-   return false; /* stop following the link */
-}
-
-function clickedEditorSave(sender) {
-   document.pageform.action = "save";
-   document.pageform.submit();
-   refreshOpener();
-   return true;
-}
-
-function clickedEditorDelete(sender) {
-   document.pageform.action = "delete";
-   document.pageform.submit();
-   refreshOpener();
-   window.close();
-   return true;
-}
-
 function openAddressbook(sender) {
    var urlstr;
    
@@ -833,7 +777,9 @@ function onMenuViewMessageSource(event) {
    if (rows.length > 0) {
       var url = (ApplicationBaseURL + currentMailbox + "/"
 		 + rows[0].substr(4) + "/viewsource");
-      window.open(url);
+      window.open(url, "",
+		  "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+		  + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
    }
 
    preventDefault(event);

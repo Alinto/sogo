@@ -174,7 +174,7 @@ DIV#folderTreeContent
   padding-left: 6px;
 }
 
-table.titletable
+TABLE.titletable
 {
   height: 24px;
   vertical-align: middle;
@@ -182,7 +182,7 @@ table.titletable
   padding-left: 6px;
 }
 
-table.titletable td.titlecell SELECT
+TABLE.titletable td.titlecell SELECT
 { 
   display: -moz-popup;
   border-top: 1px solid #fff;
@@ -268,7 +268,7 @@ IMG.mailerReadIcon
  */
 }
 
-div.mailer_readicon
+DIV.mailer_readicon
 {
   /* TODO: use Thunderbird icon */
   background-image: url(icon_read.gif);
@@ -276,7 +276,7 @@ div.mailer_readicon
   background-position: 0px 4px;
 }
 
-div.mailer_readicon a
+DIV.mailer_readicon a
 {
   width: 17px;
   height: 17px;
@@ -284,7 +284,7 @@ div.mailer_readicon a
   display: block;
 }
 
-div.mailerUnreadIcon
+DIV.mailerUnreadIcon
 {
   /* TODO: use Thunderbird icon */
   background-image: url(icon_unread.gif);
@@ -292,7 +292,7 @@ div.mailerUnreadIcon
   background-position: 0px 4px;
 }
 
-div.mailer_unreadicon a
+DIV.mailer_unreadicon a
 {
   width: 17px;
   height: 17px;
@@ -302,34 +302,28 @@ div.mailer_unreadicon a
 
 /* fields (key/value UI), eg used in mail viewer */
 
-table.mailer_fieldtable
+TABLE.mailer_fieldtable
 {
   top: 0px;
   left: 0px;
   padding-top: .5em;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 6.5em;
+  height: 7.5em;
   border-bottom: 1px solid #808080;
   background: #d4d0c8;
 }
 
-div.mailer_mailcontent
+DIV.mailer_mailcontent
 {
   background-color: #fff;
   position: absolute;
   padding: .5em;
-  margin-top: .5em;
-  top: 10em;
+  top: 7.5em;
   overflow: auto;
   left: 0px;
   right: 0px;
   bottom: 0px;
-}
-
-DIV#messageContent div.mailer_mailcontent
-{
-  top: 6em;
 }
 
 td.mailer_fieldname
@@ -419,24 +413,13 @@ td.attachment_uplabel
 
 /* attachment link viewer */
 
-div.linked_attachment_frame
-{
-  background-color: #dcdad5;
-  padding: 4px;
-}
+DIV.linked_attachment_frame
+{ border: 0px; }
 
-div.linked_attachment_body
-{
-  padding: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-top-color: white;
-  border-left-color: white;
-  border-bottom-color: #808080;
-  border-right-color: #808080;
-}
+DIV.linked_attachment_body
+{ border: 0px; }
 
-div.linked_attachment_meta
+DIV.linked_attachment_meta
 {
   color: #444444;
   font-style: italic;
@@ -444,10 +427,25 @@ div.linked_attachment_meta
   padding: 2px;
 }
 
-table.linked_attachment_meta
+TABLE.linked_attachment_meta
 {
   color: #444444;
   font-style: italic;
+}
+
+DIV.bodyFields
+{ 
+  background: #efefef;
+  font-family: serif;
+  margin: 0.5em;
+}
+
+DIV.bodyFields SPAN.fieldName
+{ font-weight: bold; }
+
+DIV.bodyAdditionalFields
+{ 
+  background: #d4d0c8;
 }
 
 DIV[datatype~="additional"] > A.node > SPAN.nodeName
