@@ -19,14 +19,19 @@
   02111-1307, USA.
 */
 
-#include "UIxMailEditorAction.h"
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSNull+misc.h>
+
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+
+#import "UIxMailEditorAction.h"
 
 @interface UIxMailForwardAction : UIxMailEditorAction
 @end
 
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <SoObjects/Mailer/SOGoDraftObject.h>
-#include "common.h"
 
 @implementation UIxMailForwardAction
 
@@ -65,7 +70,7 @@
 - (id)forwardAction {
   NSException  *error;
   NSData       *content;
-  NSDictionary *info;
+  NSDictionary *info, *attachment;
   id result;
 
   /* fetch message */
@@ -86,13 +91,13 @@
 			 [self forwardSubject:[[self clientObject] subject]],
 		         @"subject",
 		       nil];
-  if ((error = [self->newDraft storeInfo:info]) != nil)
+  if ((error = [newDraft storeInfo:info]) != nil)
     return error;
   
   /* attach message */
   
   // TODO: use subject for filename?
-  error = [self->newDraft saveAttachment:content withName:@"forward.mail"];
+  error = [newDraft saveAttachment:content withName:@"forward.mail"];
   if (error != nil)
     return error;
   
