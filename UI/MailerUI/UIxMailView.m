@@ -20,9 +20,21 @@
 */
 
 #import <Foundation/NSException.h>
+#import <Foundation/NSUserDefaults.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSException+misc.h>
+#import <NGExtensions/NSString+misc.h>
+#import <NGImap4/NGImap4Envelope.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SOGoUI/UIxComponent.h>
+#import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
 
-#include <SOGoUI/UIxComponent.h>
+#import "WOContext+UIxMailer.h"
 
 @interface UIxMailView : UIxComponent
 {
@@ -32,15 +44,6 @@
 - (BOOL)isDeletableClientObject;
 
 @end
-
-#include <UI/MailPartViewers/UIxMailRenderingContext.h> // cyclic
-#include "WOContext+UIxMailer.h"
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <SoObjects/Mailer/SOGoMailAccount.h>
-#include <SoObjects/Mailer/SOGoMailFolder.h>
-#include <NGImap4/NGImap4Envelope.h>
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include "common.h"
 
 @implementation UIxMailView
 

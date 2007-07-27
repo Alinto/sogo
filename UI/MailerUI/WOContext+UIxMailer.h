@@ -22,7 +22,7 @@
 #ifndef __Mailer_WOContext_UIxMailer_H__
 #define __Mailer_WOContext_UIxMailer_H__
 
-#include <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext.h>
 
 /*
   WOContext(UIxMailer)

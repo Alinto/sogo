@@ -19,10 +19,11 @@
   02111-1307, USA.
 */
 
-#include "UIxMailFormatter.h"
-#include "common.h"
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGMail/NGMimeMessageParser.h>
 
-#include <NGMail/NGMimeMessageParser.h>
+#import "UIxMailFormatter.h"
 
 @implementation UIxSubjectFormatter
 

@@ -20,11 +20,11 @@
 */
 
 
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxMailFormatter.h"
-#import "common.h"
 
 #import "WOContext+UIxMailer.h"
 

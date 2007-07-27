@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/NGObjWeb.h>
+#import <NGObjWeb/WOComponent.h>
 
 @interface UIxMailWindowCloser : WOComponent
 {
@@ -28,15 +28,13 @@
 
 @end
 
-#include "common.h"
-
 @implementation UIxMailWindowCloser
 
 - (void)setRefreshOpener:(BOOL)_flag {
-  self->refreshOpener = _flag;
+  refreshOpener = _flag;
 }
 - (BOOL)refreshOpener {
-  return self->refreshOpener;
+  return refreshOpener;
 }
 
 - (NSString *)refreshOpenerScript {

@@ -19,15 +19,18 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSUserDefaults.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/SoComponent.h>
+#import <NGExtensions/NSString+misc.h>
+
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SOGoUI/UIxComponent.h>
-#import "UIxMailMainFrame.h"
 
-#import "common.h"
-#import <NGObjWeb/SoComponent.h>
+#import "UIxMailMainFrame.h"
 
 @implementation UIxMailMainFrame
 

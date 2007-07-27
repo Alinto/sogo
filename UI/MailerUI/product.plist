@@ -354,7 +354,6 @@ categories = {
 	 edit = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailEditor";
-	    actionName  = "edit";
 	 };
 	 save = {
 	    protectedBy = "View";

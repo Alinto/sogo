@@ -19,7 +19,10 @@
  02111-1307, USA.
  */
 
-#include <NGObjWeb/WOComponent.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <EOControl/EOQualifier.h>
+#import <NGObjWeb/WOComponent.h>
 
 @interface UIxMailFilterPanel : WOComponent
 {
@@ -28,9 +31,6 @@
 }
 
 @end
-
-#include <SOGoUI/UIxComponent.h>
-#include "common.h"
 
 @implementation UIxMailFilterPanel
 
