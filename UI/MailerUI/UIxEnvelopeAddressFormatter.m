@@ -19,9 +19,14 @@
   02111-1307, USA.
 */
 
-#include "UIxMailFormatter.h"
-#include <NGImap4/NGImap4EnvelopeAddress.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+
+#import "UIxMailFormatter.h"
 
 @implementation UIxEnvelopeAddressFormatter
 

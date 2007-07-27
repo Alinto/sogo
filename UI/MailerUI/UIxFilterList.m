@@ -19,7 +19,11 @@
   02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
+#import <Foundation/NSCalendarDate.h>
+#import <NGObjWeb/SoObject.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SOGoUI/UIxComponent.h>
 
 /*
   UIxFilterList
@@ -35,10 +39,6 @@
 }
 
 @end
-
-#include "common.h"
-#include <SoObjects/Mailer/SOGoMailFolder.h>
-#include <SoObjects/Mailer/SOGoMailObject.h>
 
 @implementation UIxFilterList
 

@@ -19,15 +19,22 @@
   02111-1307, USA.
 */
 
-#import "UIxMailEditorAction.h"
+#import <Foundation/NSDictionary.h>
 
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSException+misc.h>
+
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
-#import "common.h"
 
-#import <SOGo/NSString+Utilities.h>
+#import "UIxMailEditorAction.h"
 
 @implementation UIxMailEditorAction
 

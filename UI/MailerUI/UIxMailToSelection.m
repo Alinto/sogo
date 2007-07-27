@@ -19,7 +19,12 @@
  02111-1307, USA.
 */
 
-#include <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
+
+#import <SOGoUI/UIxComponent.h>
 
 /*
   UIxMailToSelection
@@ -65,9 +70,6 @@
 - (NSString *)getIndexFromIdentifier:(NSString *)_identifier;
 
 @end
-
-#include "common.h"
-#include <NGMail/NGMail.h>
 
 @implementation UIxMailToSelection
 

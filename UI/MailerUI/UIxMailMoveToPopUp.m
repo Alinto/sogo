@@ -19,7 +19,7 @@
  02111-1307, USA.
  */
 
-#include <NGObjWeb/WOComponent.h>
+#import <NGObjWeb/WOComponent.h>
 
 @class NSString, NSMutableArray, NSDictionary;
 
@@ -39,8 +39,6 @@
   withPrefix:(NSString *)_pathPrefix;
 
 @end
-
-#include "common.h"
 
 @implementation UIxMailMoveToPopUp
 
