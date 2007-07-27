@@ -1,5 +1,15 @@
 2007-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-saveAttachment:_attachwithMetadata:metadata]): new method
+	replacing -saveAttachment:withName: and which takes a dictionary
+	as parameter with the filename and the mime type of the
+	attachment.
+	The mimetype is then saved in a hidden text file.
+	([SOGoDraftObject -contentTypeForAttachmentWithName:]): if exists,
+	take the mime type from the hidden text file related to the
+	attachment.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ()
 	([SOGoContactGCSFolder
 	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):

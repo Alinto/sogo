@@ -55,7 +55,8 @@
 
 - (NSArray *)fetchAttachmentNames;
 - (BOOL)isValidAttachmentName:(NSString *)_name;
-- (NSException *)saveAttachment:(NSData *)_attach withName:(NSString *)_name;
+- (NSException *) saveAttachment: (NSData *)_attach
+		    withMetadata: (NSDictionary *) metadata;
 - (NSException *)deleteAttachmentWithName:(NSString *)_name;
 
 /* NGMime representations */

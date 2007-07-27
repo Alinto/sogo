@@ -257,8 +257,10 @@ static BOOL        showTextAttachmentsInline  = NO;
 		      reason:@"Invalid attachment name!"];
 }
 
-- (NSException *)saveAttachment:(NSData *)_attach withName:(NSString *)_name {
-  NSString *p;
+- (NSException *) saveAttachment: (NSData *) _attach
+		    withMetadata: (NSDictionary *) metadata
+{
+  NSString *p, *name, *mimeType;
   
   if (![_attach isNotNull]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
@@ -269,14 +271,29 @@ static BOOL        showTextAttachmentsInline  = NO;
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
 			reason:@"Could not create folder for draft!"];
   }
-  if (![self isValidAttachmentName:_name])
-    return [self invalidAttachmentNameError:_name];
+  name = [metadata objectForKey: @"filename"];
+  if (![self isValidAttachmentName: name])
+    return [self invalidAttachmentNameError: name];
   
-  p = [self pathToAttachmentWithName:_name];
-  if (![_attach writeToFile:p atomically:YES]) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			reason:@"Could not write attachment to draft!"];
-  }
+  p = [self pathToAttachmentWithName: name];
+  if (![_attach writeToFile: p atomically: YES])
+    {
+      return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+			  reason:@"Could not write attachment to draft!"];
+    }
+
+  mimeType = [metadata objectForKey: @"mime-type"];
+  if ([mimeType length] > 0)
+    {
+      p = [self pathToAttachmentWithName:
+		  [NSString stringWithFormat: @".%@.mime", name]];
+      if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding]
+	     writeToFile: p atomically: YES])
+	{
+	  return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+			      reason:@"Could not write attachment to draft!"];
+	}
+    }
   
   return nil; /* everything OK */
 }
@@ -383,14 +400,28 @@ static BOOL        showTextAttachmentsInline  = NO;
 }
 
 - (NSString *)contentTypeForAttachmentWithName:(NSString *)_name {
-  NSString *s;
+  NSString *s, *p;
+  NSData *mimeData;
   
-  s = [self mimeTypeForExtension:[_name pathExtension]];
-  if ([_name length] > 0)
-    s = [s stringByAppendingFormat:@"; name=\"%@\"", _name];
+  p = [self pathToAttachmentWithName:
+	      [NSString stringWithFormat: @".%@.mime", _name]];
+  mimeData = [NSData dataWithContentsOfFile: p];
+  if (mimeData)
+    {
+      s = [[NSString alloc] initWithData: mimeData
+			    encoding: NSUTF8StringEncoding];
+      [s autorelease];
+    }
+  else
+    {
+      s = [self mimeTypeForExtension:[_name pathExtension]];
+      if ([_name length] > 0)
+	s = [s stringByAppendingFormat:@"; name=\"%@\"", _name];
+    }
 
   return s;
 }
+
 - (NSString *)contentDispositionForAttachmentWithName:(NSString *)_name {
   NSString *type;
   NSString *cdtype;
