@@ -1,3 +1,10 @@
+2007-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ()
+	([SOGoContactGCSFolder
+	-lookupContactsWithFilter:filtersortBy:sortKeyordering:sortOrdering]):
+	return records if the db records are > 0 and not just > 1...
+
 2007-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m ([-displayName]): removed

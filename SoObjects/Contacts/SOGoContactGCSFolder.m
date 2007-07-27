@@ -224,7 +224,7 @@
   qualifier = [self _qualifierForFilter: filter];
   dbRecords = [[self ocsFolder] fetchFields: fields
 				matchingQualifier: qualifier];
-  if ([dbRecords count] > 1)
+  if ([dbRecords count] > 0)
     {
       records = [self _flattenedRecords: dbRecords];
       ordering
