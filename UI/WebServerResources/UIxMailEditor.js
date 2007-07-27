@@ -148,8 +148,6 @@ function clickedEditorSend(sender) {
    document.pageform.action = "send";
    document.pageform.submit();
 
-   window.alert("cocou");
-
    return false;
 }
 
