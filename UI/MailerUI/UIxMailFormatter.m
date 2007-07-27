@@ -19,8 +19,13 @@
   02111-1307, USA.
 */
 
-#include "UIxMailFormatter.h"
-#include "common.h"
+#import <Foundation/NSCalendarDate.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <Foundation/NSTimeZone.h>
+
+#import "UIxMailFormatter.h"
 
 static Class StrClass     = Nil;
 static Class CalDateClass = Nil;
