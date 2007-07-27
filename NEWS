@@ -6,6 +6,8 @@
   application settings;
 - put a work-around in the LDAP directory code to avoid fetching all the
   entries whenever a specific one is being requested;
+- added support for limiting LDAP queries with the SOGoLDAPQueryLimit and
+  the SOGoLDAPSizeLimit settings;
 
 0.9.0-20070713
 --------------
