@@ -121,7 +121,7 @@ function createElement(tagName, id, classes, attributes, htmlAttributes,
 	 newElement[i] = attributes[i];
    if (htmlAttributes)
       for (var i in htmlAttributes)
-	 newElement.setAttribute(i, attributes[i]);
+	 newElement.setAttribute(i, htmlAttributes[i]);
    if (parentNode)
       parentNode.appendChild(newElement);
 
