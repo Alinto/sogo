@@ -269,13 +269,16 @@ static NSArray      *infoKeys            = nil;
 
 /* requests */
 
-- (BOOL)shouldTakeValuesFromRequest:(WORequest *)_rq inContext:(WOContext*)_c{
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
+			   inContext: (WOContext*) _c
+{
   return YES;
 }
 
 /* IMAP4 store */
 
-- (NSException *)patchFlagsInStore {
+- (NSException *) patchFlagsInStore
+{
   /*
     Flags we should set:
       if the draft is a reply   => [message markAnswered]
@@ -286,7 +289,8 @@ static NSArray      *infoKeys            = nil;
   return nil;
 }
 
-- (id)lookupSentFolderUsingAccount {
+- (id) lookupSentFolderUsingAccount
+{
   SOGoMailAccount *account;
   SOGoMailFolder  *folder;
   
@@ -301,7 +305,8 @@ static NSArray      *infoKeys            = nil;
   return ((sentFolder = [folder retain]));
 }
 
-- (void)_presetFromBasedOnAccountsQueryParameter {
+- (void) _presetFromBasedOnAccountsQueryParameter
+{
   /* preset the from field to the primary identity of the given account */
   /* Note: The compose action sets the 'accounts' query parameter */
   NSString         *accountID;
@@ -337,7 +342,8 @@ static NSArray      *infoKeys            = nil;
   [self setFrom: [identity email]];
 }
 
-- (SOGoMailIdentity *)selectedMailIdentity {
+- (SOGoMailIdentity *) selectedMailIdentity
+{
   SOGoMailAccounts *accounts;
   NSEnumerator     *e;
   SOGoMailIdentity *identity;
@@ -360,7 +366,8 @@ static NSArray      *infoKeys            = nil;
   return nil;
 }
 
-- (id)lookupSentFolderUsingFrom {
+- (id) lookupSentFolderUsingFrom
+{
   // TODO: if we have the identity we could also support BCC
   SOGoMailAccounts *accounts;
   SOGoMailIdentity *identity;
@@ -410,7 +417,8 @@ static NSArray      *infoKeys            = nil;
   return sentFolder;
 }
 
-- (NSException *)storeMailInSentFolder:(NSString *)_path {
+- (NSException *) storeMailInSentFolder: (NSString *) _path
+{
   SOGoMailFolder *folder;
   NSData *data;
   id result;
@@ -523,7 +531,8 @@ static NSArray      *infoKeys            = nil;
   return success;
 }
 
-- (id)failedToSaveFormResponse {
+- (id) failedToSaveFormResponse
+{
   // TODO: improve error handling
   return [NSException exceptionWithHTTPStatus:500 /* server error */
 		      reason:@"failed to store draft object on server!"];
@@ -531,7 +540,8 @@ static NSArray      *infoKeys            = nil;
 
 /* attachment helper */
 
-- (NSArray *)attachmentNames {
+- (NSArray *) attachmentNames
+{
   NSArray *a;
   
   if (attachmentNames != nil)
@@ -542,7 +552,9 @@ static NSArray      *infoKeys            = nil;
   attachmentNames = [a copy];
   return attachmentNames;
 }
-- (BOOL)hasAttachments {
+
+- (BOOL) hasAttachments
+{
   return [[self attachmentNames] count] > 0 ? YES : NO;
 }
 
@@ -558,11 +570,13 @@ static NSArray      *infoKeys            = nil;
   return self;
 }
 
-- (id)saveAction {
+- (id) saveAction
+{
   return [self _saveFormInfo] ? self : [self failedToSaveFormResponse];
 }
 
-- (NSException *)validateForSend {
+- (NSException *) validateForSend
+{
   // TODO: localize errors
   
   if (![self hasOneOrMoreRecipients]) {
@@ -646,7 +660,8 @@ static NSArray      *infoKeys            = nil;
   return result;
 }
 
-- (id)deleteAction {
+- (id) deleteAction
+{
   NSException *error;
   id page;
   
