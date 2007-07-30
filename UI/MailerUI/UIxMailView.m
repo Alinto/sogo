@@ -102,33 +102,39 @@ static NSString *mailETag = nil;
 
 /* links (DUP to UIxMailPartViewer!) */
 
-- (NSString *)linkToEnvelopeAddress:(NGImap4EnvelopeAddress *)_address {
+- (NSString *) linkToEnvelopeAddress: (NGImap4EnvelopeAddress *) _address
+{
   // TODO: make some web-link, eg open a new compose panel?
-  return [@"mailto:" stringByAppendingString:[_address baseEMail]];
+  return [NSString stringWithFormat: @"mailto: %@", [_address baseEMail]];
 }
 
-- (NSString *)currentAddressLink {
+- (NSString *) currentAddressLink
+{
   return [self linkToEnvelopeAddress:[self currentAddress]];
 }
 
 /* fetching */
 
-- (id)message {
+- (id) message
+{
   return [[self clientObject] fetchCoreInfos];
 }
 
-- (BOOL)hasCC {
+- (BOOL) hasCC
+{
   return [[[self clientObject] ccEnvelopeAddresses] count] > 0 ? YES : NO;
 }
 
 /* viewers */
 
-- (id)contentViewerComponent {
+- (id) contentViewerComponent
+{
   // TODO: I would prefer to flatten the body structure prior rendering,
   //       using some delegate to decide which parts to select for alternative.
   id info;
   
   info = [[self clientObject] bodyStructure];
+
   return [[context mailRenderingContext] viewerForBodyInfo:info];
 }
 
@@ -171,21 +177,27 @@ static NSString *mailETag = nil;
   return self;
 }
 
-- (BOOL)isDeletableClientObject {
-  return [[self clientObject] respondsToSelector:@selector(delete)];
+- (BOOL) isDeletableClientObject
+{
+  return [[self clientObject] respondsToSelector: @selector (delete)];
 }
-- (BOOL)isInlineViewer {
+
+- (BOOL) isInlineViewer
+{
   return NO;
 }
 
-- (id)redirectToParentFolder {
+- (id) redirectToParentFolder
+{
   id url;
   
-  url = [[[self clientObject] container] baseURLInContext:context];
-  return [self redirectToLocation:url];
+  url = [[[self clientObject] container] baseURLInContext: context];
+
+  return [self redirectToLocation: url];
 }
 
-- (id)deleteAction {
+- (id) deleteAction
+{
   NSException *ex;
   
   if (![self isDeletableClientObject]) {
@@ -220,7 +232,8 @@ static NSString *mailETag = nil;
   return [self redirectToParentFolder];
 }
 
-- (id)trashAction {
+- (id) trashAction
+{
   NSException *ex;
   
   if ([self isInvokedBySafeMethod]) {
@@ -298,18 +311,21 @@ static NSString *mailETag = nil;
 
 /* generating response */
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+- (void) appendToResponse: (WOResponse *) _response
+		inContext: (WOContext *) _ctx
+{
   UIxMailRenderingContext *mctx;
 
   if (mailETag != nil)
     [[_ctx response] setHeader:mailETag forKey:@"etag"];
 
-  mctx = [[NSClassFromString(@"UIxMailRenderingContext")
-			    alloc] initWithViewer:self context:_ctx];
-  [_ctx pushMailRenderingContext:mctx];
+  mctx = [[UIxMailRenderingContext alloc] initWithViewer: self
+					  context: _ctx];
+
+  [_ctx pushMailRenderingContext: mctx];
   [mctx release];
-  
-  [super appendToResponse:_response inContext:_ctx];
+
+  [super appendToResponse: _response inContext: _ctx];
   
   [[_ctx popMailRenderingContext] reset];
 }
