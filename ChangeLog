@@ -1,5 +1,8 @@
 2007-07-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +initialize]): no
+	longer declare security info from here.
+
 	* SoObjects/Mailer/SOGoMailFolder.m
 	([-isMessageKey:_keyinContext:_ctx]): removed useless method.
 	([SOGoMailFolder -lookupName:_keyinContext:acquire:_acquire]):
