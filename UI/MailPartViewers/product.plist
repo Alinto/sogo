@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, MailerUI );
+  requires = ( MAIN );
 
   publicResources = (
   );

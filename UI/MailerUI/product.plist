@@ -1,5 +1,5 @@
 { /* -*-javascript-*- */
-requires = ( MAIN, MainUI, CommonUI, Mailer ); /* , Sieve */
+requires = ( MAIN, MainUI, CommonUI, Mailer, MailPartViewers ); /* , Sieve */
 
    publicResources = (
       "uix.css",
