@@ -21,19 +21,26 @@
 
 #import <Foundation/NSDictionary.h>
 
-#import "UIxMailPartViewer.h"
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
+#import <NGExtensions/NSString+Encoding.h>
+#import <NGExtensions/NSString+misc.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
+#import "UI/MailerUI/WOContext+UIxMailer.h"
 #import "UIxMailRenderingContext.h"
 #import "UIxMailSizeFormatter.h"
-#import "../MailerUI/WOContext+UIxMailer.h"
-#import <NGExtensions/NSString+Encoding.h>
-#import "common.h"
+
+#import "UIxMailPartViewer.h"
 
 @implementation UIxMailPartViewer
 
 - (void)dealloc {
-  [self->flatContent release];
-  [self->bodyInfo    release];
-  [self->partPath    release];
+  [flatContent release];
+  [bodyInfo    release];
+  [partPath    release];
   [super dealloc];
 }
 
@@ -41,7 +48,7 @@
 
 - (void)resetPathCaches {
   /* this is called when -setPartPath: is called */
-  [self->flatContent release]; self->flatContent = nil;
+  [flatContent release]; flatContent = nil;
 }
 - (void)resetBodyInfoCaches {
 }
@@ -51,39 +58,39 @@
 - (void)sleep {
   [self resetPathCaches];
   [self resetBodyInfoCaches];
-  [self->partPath release]; self->partPath = nil;
-  [self->bodyInfo release]; self->bodyInfo = nil;
+  [partPath release]; partPath = nil;
+  [bodyInfo release]; bodyInfo = nil;
   [super sleep];
 }
 
 /* accessors */
 
 - (void)setPartPath:(NSArray *)_path {
-  if ([_path isEqual:self->partPath])
+  if ([_path isEqual:partPath])
     return;
   
-  ASSIGN(self->partPath, _path);
+  ASSIGN(partPath, _path);
   [self resetPathCaches];
 }
 - (NSArray *)partPath {
-  return self->partPath;
+  return partPath;
 }
 
 - (void)setBodyInfo:(id)_info {
-  ASSIGN(self->bodyInfo, _info);
+  ASSIGN(bodyInfo, _info);
 }
 - (id)bodyInfo {
-  return self->bodyInfo;
+  return bodyInfo;
 }
 
 - (NSData *)flatContent {
-  if (self->flatContent != nil)
-    return [self->flatContent isNotNull] ? self->flatContent : nil;
+  if (flatContent != nil)
+    return [flatContent isNotNull] ? flatContent : nil;
   
-  self->flatContent = 
-    [[[[self context] mailRenderingContext] flatContentForPartPath:
+  flatContent = 
+    [[[context mailRenderingContext] flatContentForPartPath:
 					      [self partPath]] retain];
-  return self->flatContent;
+  return flatContent;
 }
 
 - (NSData *)decodedFlatContent {
@@ -237,7 +244,7 @@
 
   /* path to mail controller object */
   
-  url = [[self clientObject] baseURLInContext:[self context]];
+  url = [[self clientObject] baseURLInContext:context];
   if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
   
   /* mail relative path to body-part */

@@ -19,7 +19,9 @@
   02111-1307, USA.
 */
 
-#include "UIxKolabPartViewer.h"
+#import <DOM/DOMProtocols.h>
+
+#import "UIxKolabPartViewer.h"
 
 /*
   UIxKolabPartContactViewer
@@ -29,8 +31,6 @@
 
 @interface UIxKolabPartContactViewer : UIxKolabPartViewer
 @end
-
-#include "common.h"
 
 @implementation UIxKolabPartContactViewer
 

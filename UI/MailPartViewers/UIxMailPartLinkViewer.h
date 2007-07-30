@@ -22,7 +22,7 @@
 #ifndef __Mailer_UIxMailPartLinkViewer_H__
 #define __Mailer_UIxMailPartLinkViewer_H__
 
-#include "UIxMailPartViewer.h"
+#import "UIxMailPartViewer.h"
 
 /*
   UIxMailPartLinkViewer

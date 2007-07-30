@@ -19,7 +19,11 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartViewer.h"
+#import <UI/MailerUI/WOContext+UIxMailer.h>
+
+#import "UIxMailRenderingContext.h"
+
+#import "UIxMailPartViewer.h"
 
 @interface UIxMailPartMixedViewer : UIxMailPartViewer
 {
@@ -28,10 +32,6 @@
 }
 
 @end
-
-#include "UIxMailRenderingContext.h"
-#include <UI/MailerUI/WOContext+UIxMailer.h>
-#include "common.h"
 
 @implementation UIxMailPartMixedViewer
 

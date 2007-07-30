@@ -19,15 +19,13 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartViewer.h"
+#import "UIxMailPartViewer.h"
 
 @interface UIxMailPartImageViewer : UIxMailPartViewer
 {
 }
 
 @end
-
-#include "common.h"
 
 @implementation UIxMailPartImageViewer
 

@@ -22,7 +22,7 @@
 #ifndef __Mailer_UIxKolabPartViewer_H__
 #define __Mailer_UIxKolabPartViewer_H__
 
-#include "UIxMailPartViewer.h"
+#import "UIxMailPartViewer.h"
 
 /*
   UIxKolabPartContactViewer
@@ -30,17 +30,18 @@
   Superclass for viewers which show the application/x-vnd.* XML documents.
 */
 
-#include <DOM/DOMProtocols.h>
+@protocol NSObject;
+@protocol DOMDocument;
 
 @interface UIxKolabPartViewer : UIxMailPartViewer
 {
-  id<NSObject,DOMDocument> domDocument;
+  id <NSObject,DOMDocument> domDocument;
   id item;
 }
 
 /* getting a DOM representation */
 
-- (id<DOMDocument>)domDocument;
+- (id <DOMDocument>) domDocument;
 
 @end
 

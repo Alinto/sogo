@@ -19,7 +19,14 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartViewer.h"
+#import <Foundation/NSNull.h>
+
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <UI/MailerUI/WOContext+UIxMailer.h>
+
+#import "UIxMailPartViewer.h"
+#import "UIxMailRenderingContext.h"
 
 /*
   UIxMailPartAlternativeViewer
@@ -39,10 +46,6 @@
 }
 
 @end
-
-#include "UIxMailRenderingContext.h"
-#include <UI/MailerUI/WOContext+UIxMailer.h>
-#include "common.h"
 
 @implementation UIxMailPartAlternativeViewer
 

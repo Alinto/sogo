@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "UIxKolabPartViewer.h"
+#import "UIxKolabPartViewer.h"
 
 /*
   UIxKolabPartTaskViewer
@@ -29,8 +29,6 @@
 
 @interface UIxKolabPartTaskViewer : UIxKolabPartViewer
 @end
-
-#include "common.h"
 
 @implementation UIxKolabPartTaskViewer
 @end /* UIxKolabPartTaskViewer */

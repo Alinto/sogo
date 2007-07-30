@@ -25,14 +25,22 @@
   Show plain/calendar mail parts.
 */
 
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalDateTime.h>
+
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
-#import <NGCards/NGCards.h>
-#import <NGImap4/NGImap4EnvelopeAddress.h>
-#import "common.h"
 
 #import "UIxMailPartICalViewer.h"
 

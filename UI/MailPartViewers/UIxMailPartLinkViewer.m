@@ -19,8 +19,7 @@
   02111-1307, USA.
 */
 
-#include "UIxMailPartLinkViewer.h"
-#include "common.h"
+#import "UIxMailPartLinkViewer.h"
 
 @implementation UIxMailPartLinkViewer
 

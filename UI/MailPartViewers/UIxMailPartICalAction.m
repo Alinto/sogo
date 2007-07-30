@@ -19,12 +19,15 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/WODirectAction.h>
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WODirectAction.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSString+misc.h>
 
 @interface UIxMailPartICalAction : WODirectAction
 @end
-
-#include "common.h"
 
 @implementation UIxMailPartICalAction
 
