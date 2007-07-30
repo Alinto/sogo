@@ -33,6 +33,8 @@ static NSArray  *rootFolderNames      = nil;
 static NSString *inboxFolderName      = @"INBOX";
 static NSString *draftsFolderName     = @"Drafts";
 static NSString *sieveFolderName      = @"Filters";
+static NSString *sentFolderName = nil;
+static NSString *trashFolderName = nil;
 static NSString *sharedFolderName     = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
 static BOOL     useAltNamespace       = NO;
@@ -43,9 +45,23 @@ static BOOL     useAltNamespace       = NO;
 
   useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
   
-  sharedFolderName     = [ud stringForKey:@"SOGoSharedFolderName"];
+  sharedFolderName = [ud stringForKey:@"SOGoSharedFolderName"];
   otherUsersFolderName = [ud stringForKey:@"SOGoOtherUsersFolderName"];
   cfgDraftsFolderName = [ud stringForKey:@"SOGoDraftsFolderName"];
+  if (!sentFolderName)
+    {
+      sentFolderName = [ud stringForKey: @"SOGoSentFolderName"];
+      if (!sentFolderName)
+	sentFolderName = @"Sent";
+      [sentFolderName retain];
+    }
+  if (!trashFolderName)
+    {
+      trashFolderName = [ud stringForKey: @"SOGoTrashFolderName"];
+      if (!trashFolderName)
+	trashFolderName = @"Trash";
+      [trashFolderName retain];
+    }
   if ([cfgDraftsFolderName length] > 0)
     {
       ASSIGN (draftsFolderName, cfgDraftsFolderName);
@@ -267,100 +283,99 @@ static BOOL     useAltNamespace       = NO;
 
 /* special folders */
 
-- (NSString *)inboxFolderNameInContext:(id)_ctx {
+- (NSString *) inboxFolderNameInContext: (id)_ctx
+{
   return inboxFolderName; /* cannot be changed in Cyrus ? */
 }
-- (NSString *)draftsFolderNameInContext:(id)_ctx {
+
+- (NSString *) draftsFolderNameInContext: (id) _ctx
+{
   return draftsFolderName; /* SOGo managed folder */
 }
-- (NSString *)sieveFolderNameInContext:(id)_ctx {
+
+- (NSString *) sieveFolderNameInContext: (id) _ctx
+{
   return sieveFolderName;  /* SOGo managed folder */
 }
-- (NSString *)sentFolderNameInContext:(id)_ctx {
-  /* OGo issue #1225 */
-  static NSString *s = nil;
-  
-  if (s == nil) {
-    NSUserDefaults *ud;
-    
-    ud = [NSUserDefaults standardUserDefaults];
-    s = [[ud stringForKey:@"SOGoSentFolderName"] copy];
-    if ([s length] == 0) s = @"Sent";
-    [self logWithFormat:@"Note: using SOGoSentFolderName: '%@'", s];
-  }
-  return s;
-}
-- (NSString *)trashFolderNameInContext:(id)_ctx {
-  /* OGo issue #1225 */
-  static NSString *s = nil;
-  
-  if (s == nil) {
-    NSUserDefaults *ud;
-    
-    ud = [NSUserDefaults standardUserDefaults];
-    s = [[ud stringForKey:@"SOGoTrashFolderName"] copy];
-    if ([s length] == 0) s = @"Trash";
-    NSLog(@"Note: using SOGoTrashFolderName: '%@'", s);
-  }
-  return s;
+
+- (NSString *) sentFolderNameInContext:(id)_ctx
+{
+  return sentFolderName;
 }
 
-- (SOGoMailFolder *)inboxFolderInContext:(id)_ctx {
+- (NSString *) trashFolderNameInContext:(id)_ctx
+{
+  return trashFolderName;
+}
+
+- (SOGoMailFolder *) inboxFolderInContext: (id) _ctx
+{
+  NSString *folderName;
+
   // TODO: use some profile to determine real location, use a -traverse lookup
-  SOGoMailFolder *folder;
-  
-  if (inboxFolder != nil)
-    return inboxFolder;
-  
-  folder = [self lookupName:[self inboxFolderNameInContext:_ctx]
-		 inContext:_ctx acquire:NO];
-  if ([folder isKindOfClass:[NSException class]]) return folder;
-  
-  return ((inboxFolder = [folder retain]));
+  if (!inboxFolder)
+    {
+      folderName = [NSString stringWithFormat: @"folder%@",
+			     [self inboxFolderNameInContext: _ctx]];
+      inboxFolder = [self lookupName: folderName inContext: _ctx acquire: NO];
+      [inboxFolder retain];
+    }
+
+  return inboxFolder;
 }
 
-- (SOGoMailFolder *)sentFolderInContext:(id)_ctx {
+- (SOGoMailFolder *) sentFolderInContext: (id) _ctx
+{
+  NSString *folderName;
+  SOGoMailFolder *lookupFolder;
   // TODO: use some profile to determine real location, use a -traverse lookup
-  SOGoMailFolder *folder;
-  
-  if (sentFolder != nil)
-    return sentFolder;
-  
-  folder = useAltNamespace ? (id)self : [self inboxFolderInContext:_ctx];
-  if ([folder isKindOfClass:[NSException class]]) return folder;
-  
-  folder = [folder lookupName:[self sentFolderNameInContext:_ctx]
-		   inContext:_ctx acquire:NO];
-  if ([folder isKindOfClass:[NSException class]]) return folder;
-  
-  if (![folder isNotNull]) {
-    return [NSException exceptionWithHTTPStatus:404 /* not found */
-			reason:@"did not find Sent folder!"];
-  }
-  
-  return ((sentFolder = [folder retain]));
+
+  if (!sentFolder)
+    {
+      lookupFolder = (useAltNamespace
+		      ? (id) self
+		      : [self inboxFolderInContext:_ctx]);
+      if (![lookupFolder isKindOfClass: [NSException class]])
+	{
+	  folderName = [NSString stringWithFormat: @"folder%@",
+				 [self sentFolderNameInContext:_ctx]];
+	  sentFolder = [lookupFolder lookupName: folderName
+				     inContext: _ctx acquire: NO];
+	}
+      if (![sentFolder isNotNull])
+	sentFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+				  reason: @"did not find Sent folder!"];
+      [sentFolder retain];
+    }
+
+  return sentFolder;
 }
 
-- (SOGoMailFolder *)trashFolderInContext:(id)_ctx {
-  // TODO: use some profile to determine real location
-  SOGoMailFolder *folder;
-  
-  if (trashFolder != nil)
-    return trashFolder;
-  
-  folder = useAltNamespace ? (id)self : [self inboxFolderInContext:_ctx];
-  if ([folder isKindOfClass:[NSException class]]) return folder;
-  
-  folder = [folder lookupName:[self trashFolderNameInContext:_ctx]
-		   inContext:_ctx acquire:NO];
-  if ([folder isKindOfClass:[NSException class]]) return folder;
-  
-  if (![folder isNotNull]) {
-    return [NSException exceptionWithHTTPStatus:404 /* not found */
-			reason:@"did not find Trash folder!"];
-  }
-  
-  return ((trashFolder = [folder retain]));
+- (SOGoMailFolder *) trashFolderInContext: (id) _ctx
+{
+  NSString *folderName;
+  SOGoMailFolder *lookupFolder;
+  // TODO: use some profile to determine real location, use a -traverse lookup
+
+  if (!trashFolder)
+    {
+      lookupFolder = (useAltNamespace
+		      ? (id) self
+		      : [self inboxFolderInContext:_ctx]);
+      if (![lookupFolder isKindOfClass: [NSException class]])
+	{
+	  folderName = [NSString stringWithFormat: @"folder%@",
+				 [self trashFolderNameInContext:_ctx]];
+	  trashFolder = [lookupFolder lookupName: folderName
+				      inContext: _ctx acquire: NO];
+	}
+      if (![trashFolder isNotNull])
+	trashFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+				  reason: @"did not find Trash folder!"];
+      [trashFolder retain];
+    }
+
+  return trashFolder;
 }
 
 /* WebDAV */

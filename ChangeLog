@@ -1,5 +1,9 @@
 2007-07-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderInContext:_ctx])
+	([-sentFolderInContext:], [-trashFolderInContext:]): folder keys
+	all starts with "folder".
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +initialize]): no
 	longer declare security info from here.
 
