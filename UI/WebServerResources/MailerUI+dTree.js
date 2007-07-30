@@ -26,10 +26,11 @@ var MailerUIdTreeExtension = {
       var thisCounter = this.elementCounter;
       var fullName = "";
       var currentFolder = folder;
-      while (currentFolder) {
-	 fullName = "/" + currentFolder.name + fullName;
+      while (currentFolder.parentFolder) {
+	 fullName = "/folder" + currentFolder.name + fullName;
 	 currentFolder = currentFolder.parentFolder;
       }
+      fullName = "/" + currentFolder.name + fullName;
       this._addFolderNode(parent, folder.name, fullName, folder.type);
       for (var i = 0; i < folder.children.length; i++)
       this._addFolder(thisCounter, folder.children[i]);

@@ -151,34 +151,26 @@ static BOOL useAltNamespace = NO;
 
 - (NSArray *) toOneRelationshipKeys
 {
-  NSArray  *uids;
-  unsigned count;
-  
-  if (filenames != nil)
-    return [filenames isNotNull] ? filenames : nil;
+  NSArray *uids;
+  unsigned int count, max;
+  NSString *filename;
 
-  uids = [self fetchUIDsMatchingQualifier:nil sortOrdering:@"DATE"];
-  if ([uids isKindOfClass:[NSException class]])
-    return nil;
-  
-  if ((count = [uids count]) == 0) {
-    filenames = [[NSArray alloc] init];
-  }
-  else {
-    NSMutableArray *keys;
-    unsigned i;
-    
-    keys = [[NSMutableArray alloc] initWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      NSString *k;
-      
-      k = [[uids objectAtIndex:i] stringValue];
-      k = [k stringByAppendingString:@".mail"];
-      [keys addObject:k];
+  if (!filenames)
+    {
+      filenames = [NSMutableArray new];
+      uids = [self fetchUIDsMatchingQualifier: nil sortOrdering: @"DATE"];
+      if (![uids isKindOfClass: [NSException class]])
+	{
+	  max = [uids count];
+	  for (count = 0; count < max; count++)
+	    {
+	      filename = [NSString stringWithFormat: @"%@.mail",
+				   [uids objectAtIndex: count]];
+	      [filenames addObject: filename];
+	    }
+	}
     }
-    filenames = [keys copy];
-    [keys release];
-  }
+
   return filenames;
 }
 
@@ -230,27 +222,6 @@ static BOOL useAltNamespace = NO;
 
 /* name lookup */
 
-- (BOOL) isMessageKey: (NSString *) _key
-	    inContext: (id) _ctx
-{
-  /*
-    Every key starting with a digit is consider an IMAP4 message key. This is
-    not entirely correct since folders could also start with a number.
-    
-    If we want to support folders beginning with numbers, we would need to
-    scan the folder list for the _key, which would make everything quite a bit
-    slower.
-    TODO: support this mode using a default.
-  */
-  if ([_key length] == 0)
-    return NO;
-  
-  if (isdigit([_key characterAtIndex:0]))
-    return YES;
-  
-  return NO;
-}
-
 - (id) lookupImap4Folder: (NSString *) _key
 	       inContext: (id) _ctx
 {
@@ -291,28 +262,22 @@ static BOOL useAltNamespace = NO;
 	  acquire: (BOOL) _acquire
 {
   id obj;
-  
-  if ([self isMessageKey:_key inContext:_ctx]) {
-    /* 
-       We assume here that _key is a number and methods are not and this is
-       moved above the super lookup since the super checks the
-       -toOneRelationshipKeys which in turn loads the message ids.
-    */
-    return [self lookupImap4Message:_key inContext:_ctx];
-  }
 
-  obj = [self lookupImap4Folder:_key  inContext:_ctx];
-  if (obj != nil)
-    return obj;
-  
-  /* check attributes directly bound to the app */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
-  
-  /* return 404 to stop acquisition */
-  return _acquire
-    ? [NSException exceptionWithHTTPStatus:404 /* Not Found */]
-    : nil; /* hack to work with WebDAV move */
+  if ([_key hasPrefix: @"folder"])
+    obj = [self lookupImap4Folder: [_key substringFromIndex: 6]
+		inContext: _ctx];
+  else
+    {
+      if (isdigit ([_key characterAtIndex: 0]))
+	obj = [self lookupImap4Message: _key inContext: _ctx];
+      else
+	obj = [super lookupName: _key inContext: _ctx acquire: NO];
+    }
+
+  if (!obj && _acquire)
+    obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
+
+  return obj;
 }
 
 /* WebDAV */

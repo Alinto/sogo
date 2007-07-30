@@ -8,6 +8,7 @@
   entries whenever a specific one is being requested;
 - added support for limiting LDAP queries with the SOGoLDAPQueryLimit and
   the SOGoLDAPSizeLimit settings;
+- fixed a bug where folders starting with digits would not be displayed;
 
 0.9.0-20070713
 --------------

@@ -33,13 +33,13 @@
   The SOGoMailFolder maps to an IMAP4 folder from NGImap4.
 */
 
-@class NSData, NSArray, NSException;
+@class NSData, NSArray, NSException, NSMutableArray;
 @class NGImap4MailboxInfo;
 
 @interface SOGoMailFolder : SOGoMailBaseObject
 {
-  NSArray            *filenames;
-  NSString           *folderType;
+  NSMutableArray *filenames;
+  NSString *folderType;
 }
 
 /* messages */

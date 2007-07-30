@@ -235,29 +235,34 @@ static BOOL     useAltNamespace       = NO;
 	       inContext:_ctx];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id)_ctx
+	  acquire: (BOOL) _flag
+{
+  NSString *folderName;
   id obj;
-  
-  /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]) != nil)
-    return obj;
-  
+
+  if ([_key hasPrefix: @"folder"])
+    {
+      folderName = [_key substringFromIndex: 6];
+      
   // TODO: those should be product.plist bindings? (can't be class bindings
   //       though because they are 'per-account')
-  if ([_key isEqualToString: draftsFolderName]) {
-    if ((obj = [self lookupDraftsFolder:_key inContext:_ctx]) != nil)
-      return obj;
-  }
-  if ([_key isEqualToString: sieveFolderName]) {
-    if ((obj = [self lookupFiltersFolder:_key inContext:_ctx]) != nil)
-      return obj;
-  }
-  
-  if ((obj = [self lookupImap4Folder:_key inContext:_ctx]) != nil)
-    return obj;
+      if ([folderName isEqualToString: draftsFolderName])
+	obj = [self lookupDraftsFolder: folderName inContext: _ctx];
+      else if ([folderName isEqualToString: sieveFolderName])
+	obj = [self lookupFiltersFolder: folderName inContext: _ctx];
+      else
+	obj = [self lookupImap4Folder: folderName inContext: _ctx];
+    }
+  else
+    obj = [super lookupName: _key inContext: _ctx acquire: NO];
   
   /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+  if (!obj)
+    obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
+
+  return obj;
 }
 
 /* special folders */
