@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#include "UIxMailSizeFormatter.h"
-#include "common.h"
+#import <Foundation/NSValue.h>
+
+#import "UIxMailSizeFormatter.h"
 
 @implementation UIxMailSizeFormatter
 

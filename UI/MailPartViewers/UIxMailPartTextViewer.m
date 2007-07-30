@@ -28,9 +28,9 @@
   TODO: add contained link detection.
 */
 
-#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <NGExtensions/NSString+misc.h>
 
-#import "common.h"
+#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "UIxMailPartTextViewer.h"
 

@@ -22,12 +22,7 @@
 #import <Foundation/NSObject.h>
 
 @interface MailPartViewersProduct : NSObject
-{
-}
-
 @end
-
-#include "common.h"
 
 @implementation MailPartViewersProduct
 @end /* MailPartViewersProduct */
