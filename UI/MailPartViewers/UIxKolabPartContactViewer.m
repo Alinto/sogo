@@ -19,6 +19,9 @@
   02111-1307, USA.
 */
 
+@class NSString;
+#import <Foundation/NSObject.h>
+
 #import <DOM/DOMProtocols.h>
 
 #import "UIxKolabPartViewer.h"
