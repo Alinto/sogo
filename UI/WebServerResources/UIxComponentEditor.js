@@ -8,12 +8,11 @@ function onPopupAttendeesWindow(event) {
 }
 
 function onSelectPrivacy(event) {
-   if (event.button == 0) {
-      var node = event.target;
+   if (event.button == 0 || (isSafari() && event.button == 1)) {
+      var node = getTarget(event);
       if (node.tagName != 'A')
-	 node = node.getParentWithTagName("a");
-      node = node.childNodesWithTag("span")[0];
-
+	node = $(node).getParentWithTagName("a");
+      node = $(node).childNodesWithTag("span")[0];
       popupToolbarMenu(node, "privacy-menu");
       Event.stop(event);
 //       preventDefault(event);

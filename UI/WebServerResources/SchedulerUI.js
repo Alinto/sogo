@@ -403,7 +403,7 @@ function tasksListCallback(http) {
 }
 
 function restoreCurrentDaySelection(div) {
-  var elements = div.getElementsByTagName("a");
+  var elements = $(div).getElementsByTagName("a");
   var day = null;
   var i = 9;
   while (!day && i < elements.length)
@@ -417,10 +417,10 @@ function restoreCurrentDaySelection(div) {
       for (i = 0; i < elements.length; i++) {
         day = elements[i].day;
         if (day && day == currentDay) {
-          var td = elements[i].getParentWithTagName("td");
+          var td = $(elements[i]).getParentWithTagName("td");
           if (document.selectedDate)
             document.selectedDate.deselect();
-          td.select();
+          $(td).select();
           document.selectedDate = td;
         }
       }

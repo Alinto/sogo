@@ -27,3 +27,9 @@
 "Default Roles" = "Rôles par défaut";
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
+
+/* generic.js */
+"Unable to subscribe to that folder!" = "Impossible de s'abonner à ce dossier.";
+"You cannot subscribe to a folder that you own!" = "Impossible de vous abonner à un dossier qui vous appartient.";
+"Unable to unsubscribe from that folder!" = "Impossible de se désabonner de ce dossier.";
+"You cannot unsubscribe from a folder that you own!" = "Impossible de vous désabonner d'un dossier qui vous appartient.";

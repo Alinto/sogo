@@ -83,8 +83,13 @@ function onUserRemove(event) {
 }
 
 function subscribeToFolder(refreshCallback, refreshCallbackData) {
-   addUser(refreshCallbackData["folderName"],
-	   refreshCallbackData["folder"]);
+   if (UserLogin != refreshCallbackData["folder"]) {
+      addUser(refreshCallbackData["folderName"],
+	      refreshCallbackData["folder"]);
+   }
+   else
+      refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
+		   .decodeEntities());
 }
 
 function openRightsForUserID(userID) {

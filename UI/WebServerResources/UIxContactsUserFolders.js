@@ -3,7 +3,7 @@ function onSearchFormSubmit() {
 
   var url = (ApplicationBaseURL
 	     + "/foldersSearch?ldap-only=YES&search=" + searchValue.value
-	     + "&type=" + window.userFolderType);
+	     + "&type=" + window.opener.userFolderType);
   if (document.userFoldersRequest) {
      document.userFoldersRequest.aborted = true;
      document.userFoldersRequest.abort();
@@ -18,7 +18,7 @@ function addLineToTree(tree, parent, line) {
    var offset = 0;
 
    var nodes = line.split(";");
-   if (window.userFolderType == "user"
+   if (window.opener.userFolderType == "user"
        || nodes.length > 1) {
       var parentNode = nodes[0];
       var userInfos = parentNode.split(":");
@@ -41,7 +41,7 @@ function addLineToTree(tree, parent, line) {
       offset = nodes.length - 1;
    }
    else
-      window.alert("nope:" + window.userFolderType);
+      window.alert("nope:" + window.opener.userFolderType);
 
    return offset;
 }
@@ -95,19 +95,18 @@ function userFoldersCallback(http) {
 	 div.innerHTML = buildTree(http.responseText);
 	 var nodes = document.getElementsByClassName("node", $("d"));
 	 for (i = 0; i < nodes.length; i++)
-	    nodes[i].addEventListener("click",
-				      onFolderTreeItemClick, false);
+	   Event.observe(nodes[i], "click", onFolderTreeItemClick.bindAsEventListener(nodes[i]));
       }
    }
 }
 
 function onConfirmFolderSelection(event) {
-   var topNode = $("d");
-   if (topNode.selectedEntry) {
+  var topNode = $("d");
+  if (topNode.selectedEntry) {
       var node = topNode.selectedEntry.parentNode;
       var folder = node.getAttribute("dataname");
       var folderName;
-      if (window.userFolderType == "user") {
+      if (window.opener.userFolderType == "user") {
 	 var spans = document.getElementsByClassName("nodeName",
 						     topNode.selectedEntry);
 	 var email = spans[0].innerHTML;
@@ -125,14 +124,14 @@ function onConfirmFolderSelection(event) {
 	 email = email.replace("&gt;", ">");
 	 folderName = spans1[0].innerHTML + ' (' + email + ')';
       }
-      var data = { folderName: folderName, folder: folder };
-      window.opener.subscribeToFolder(window.userFolderCallback, data);
+      var data = { folderName: folderName, folder: folder, window: window };
+      window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
    }
 }
 
 function initUserFoldersWindow() {
    configureSearchField();
-   $("addButton").addEventListener("click", onConfirmFolderSelection, false);
+   Event.observe($("addButton"), "click",  onConfirmFolderSelection);
 }
 
-window.addEventListener("load", initUserFoldersWindow, false);
+addEvent(window, 'load', initUserFoldersWindow);

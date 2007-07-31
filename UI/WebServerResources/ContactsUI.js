@@ -31,8 +31,9 @@ function validateEditorInput(sender) {
 }
 
 function openContactsFolder(contactsFolder, reload, idx) {
-  if (contactsFolder != currentContactFolder || reload) {
-     currentContactFolder = contactsFolder;
+  if ((currentContactFolder && contactsFolder != currentContactFolder)
+      || reload) {
+     currentContactFolder = contactsFolder; log("openContactsFolder " + contactsFolder);
      var url = URLForFolderID(currentContactFolder) +
 	"/view?noframe=1";
 
@@ -436,7 +437,7 @@ function onFolderSelectionChange() {
    }
 }
 
-function refreshCurrentFolder() {
+function refreshCurrentFolder() { log("refreshCurrentFolder");
    openContactsFolder(currentContactFolder, true);
 }
 

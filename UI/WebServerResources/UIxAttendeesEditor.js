@@ -19,7 +19,7 @@ function onContactKeydown(event) {
     if (this.confirmedValue)
       this.value = this.confirmedValue;
     var row = this.parentNode.parentNode.nextSibling;
-    while (!(row instanceof HTMLTableRowElement))
+    while (row && row.tagName != 'TR')
       row = row.nextSibling;
     this.blur();
     var input = $(row.cells[0]).childNodesWithTag("input")[0];
@@ -203,7 +203,7 @@ function checkAttendee() {
   this.focussed = false;
   var th = this.parentNode.parentNode;
   var tbody = th.parentNode;
-  if (this.value.trim().length == 0)
+  if (tbody && this.value.trim().length == 0)
     tbody.removeChild(th);
   else if (!this.hasfreebusy) {
     if (this.confirmedValue)
@@ -535,4 +535,4 @@ function onFreeBusyLoadHandler() {
    initializeFreebusys();
 }
 
-window.addEventListener("load", onFreeBusyLoadHandler, false);
+addEvent(window, 'load', onFreeBusyLoadHandler);

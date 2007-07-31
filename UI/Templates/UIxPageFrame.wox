@@ -57,6 +57,8 @@
 	<var:js-stringtable
 	  var:framework="productFrameworkName"
 	  const:identifier="labels" />
+	<var:js-stringtable
+	  const:identifier="clabels" />
 
 	<var:if condition="isPopup" const:negate="YES"
 	  ><var:if condition="context.isUIxDebugEnabled"

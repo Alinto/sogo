@@ -201,14 +201,14 @@ function sanitizeMailTo(dirtyMailTo) {
 
 function openUserFolderSelector(callback, type) {
    var urlstr = ApplicationBaseURL;
-   if (urlstr[urlstr.length-1] != '/')
+   if (! urlstr.endsWith('/'))
       urlstr += '/';
    urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
-   var w = window.open(urlstr, "User Selector",
+   var w = window.open(urlstr, "_blank",
 		       "width=322,height=250,resizable=1,scrollbars=0");
    w.opener = window;
-   w.userFolderCallback = callback;
-   w.userFolderType = type;
+   window.userFolderCallback = callback;
+   window.userFolderType = type;
    w.focus();
 }
 
@@ -862,7 +862,7 @@ function onSearchKeyDown(event) {
   this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
-function onSearchFormSubmit(event) {
+function onSearchFormSubmit(event) { log("generic.onSearchFormSubmit")
    var searchValue = $("searchValue");
    var searchCriteria = $("searchCriteria");
 
@@ -895,9 +895,9 @@ function popupToolbarMenu(node, menuId) {
       hideMenu(document.currentPopupMenu);
 
    var popup = $(menuId);
-   var top = node.top + node.offsetHeight - 2;
+   var top = ($(node).getStyle('top') || 0) + node.offsetHeight - 2;
    popup.setStyle({ top: top + "px",
-		    left: node.cascadeLeftOffset() + "px",
+	            left: $(node).cascadeLeftOffset() + "px",
 		    visibility: "visible" });
 
    document.currentPopupMenu = popup;
@@ -913,11 +913,11 @@ function folderSubscriptionCallback(http) {
 	    http.callbackData["method"](http.callbackData["data"]);
       }
       else
-	 window.alert(labels["Unable to subscribe to that folder!"].decodeEntities());
+	 window.alert(clabels["Unable to subscribe to that folder!"].decodeEntities());
       document.subscriptionAjaxRequest = null;
    }
    else
-      log ("ajax fuckage");
+      log ("folderSubscriptionCallback Ajax error");
 }
 
 function subscribeToFolder(refreshCallback, refreshCallbackData) {
@@ -937,7 +937,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 							    rfCbData);
    }
    else
-      window.alert(labels["You cannot subscribe to a folder that you own!"]
+      refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
 		   .decodeEntities());
 }
 
@@ -948,7 +948,7 @@ function folderUnsubscriptionCallback(http) {
 	    http.callbackData["method"](http.callbackData["data"]);
       }
       else
-	 window.alert(labels["Unable to unsubscribe from that folder!"].decodeEntities());
+	 window.alert(clabels["Unable to unsubscribe from that folder!"].decodeEntities());
       document.unsubscriptionAjaxRequest = null;
    }
 }
@@ -975,7 +975,7 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 				 rfCbData);
       }
       else
-	 window.alert(labels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
+	 window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
    }
 }
 

@@ -40,13 +40,13 @@ Element.addMethods({
   cascadeLeftOffset: function(element) {
     element = $(element);
     var currentElement = element;
-    
+
     var offset = 0;
     while (currentElement) {
       offset += currentElement.offsetLeft;
-      currentElement = currentElement.getParentWithTagName("div");
+      currentElement = $(currentElement).getParentWithTagName("div");
     }
-    
+
     return offset;
   },
 

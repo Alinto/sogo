@@ -21,7 +21,7 @@
 
 #include "UIxMailRenderingContext.h"
 #include <SoObjects/Mailer/SOGoMailObject.h>
-#include "common.h"
+#include <Foundation/NSString.h>
 
 @implementation UIxMailRenderingContext
 
