@@ -1,3 +1,16 @@
+2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderNameInContext:])
+	([SOGoMailAccount -draftsFolderNameInContext:_ctx])
+	([SOGoMailAccount -sieveFolderNameInContext:_ctx])
+	([SOGoMailAccount -sentFolderNameInContext:])
+	([SOGoMailAccount -trashFolderNameInContext:]): prefix the folder
+	names with "folder".
+	([SOGoMailAccount -inboxFolderInContext:_ctx])
+	([SOGoMailAccount -sentFolderInContext:_ctx])
+	([SOGoMailAccount -trashFolderInContext:_ctx]): no longer prefix
+	the folder names with "folder" since they are prefixed earlier.
+
 2007-07-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderInContext:_ctx])

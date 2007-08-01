@@ -19,13 +19,25 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailAccount.h"
-#include "SOGoMailFolder.h"
-#include "SOGoMailManager.h"
-#include "SOGoDraftsFolder.h"
-#include "SOGoUser+Mail.h"
-#include <NGObjWeb/SoHTTPAuthenticator.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoHTTPAuthenticator.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGImap4/NGImap4Connection.h>
+
+#import "SOGoMailFolder.h"
+#import "SOGoMailManager.h"
+#import "SOGoDraftsFolder.h"
+#import "SOGoUser+Mail.h"
+
+#import "SOGoMailAccount.h"
 
 @implementation SOGoMailAccount
 
@@ -236,7 +248,7 @@ static BOOL     useAltNamespace       = NO;
 - (id)lookupImap4Folder:(NSString *)_key inContext:(id)_cx {
   NSString *s;
 
-  s = [_key isEqualToString:[self trashFolderNameInContext:_cx]]
+  s = [_key isEqualToString: [self trashFolderNameInContext:_cx]]
     ? @"SOGoTrashFolder" : @"SOGoMailFolder";
   
   return [self lookupFolder:_key ofClassNamed:s inContext:_cx];
@@ -255,21 +267,18 @@ static BOOL     useAltNamespace       = NO;
 	inContext: (id)_ctx
 	  acquire: (BOOL) _flag
 {
-  NSString *folderName;
   id obj;
 
   if ([_key hasPrefix: @"folder"])
     {
-      folderName = [_key substringFromIndex: 6];
-      
   // TODO: those should be product.plist bindings? (can't be class bindings
   //       though because they are 'per-account')
-      if ([folderName isEqualToString: draftsFolderName])
-	obj = [self lookupDraftsFolder: folderName inContext: _ctx];
-      else if ([folderName isEqualToString: sieveFolderName])
-	obj = [self lookupFiltersFolder: folderName inContext: _ctx];
+      if ([_key isEqualToString: [self draftsFolderNameInContext: _ctx]])
+	obj = [self lookupDraftsFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: [self sieveFolderNameInContext: _ctx]])
+	obj = [self lookupFiltersFolder: _key inContext: _ctx];
       else
-	obj = [self lookupImap4Folder: folderName inContext: _ctx];
+	obj = [self lookupImap4Folder: _key inContext: _ctx];
     }
   else
     obj = [super lookupName: _key inContext: _ctx acquire: NO];
@@ -285,39 +294,38 @@ static BOOL     useAltNamespace       = NO;
 
 - (NSString *) inboxFolderNameInContext: (id)_ctx
 {
-  return inboxFolderName; /* cannot be changed in Cyrus ? */
+  /* cannot be changed in Cyrus ? */
+  return [NSString stringWithFormat: @"folder%@", inboxFolderName];
 }
 
 - (NSString *) draftsFolderNameInContext: (id) _ctx
 {
-  return draftsFolderName; /* SOGo managed folder */
+  /* SOGo managed folder */
+  return [NSString stringWithFormat: @"folder%@", draftsFolderName];
 }
 
 - (NSString *) sieveFolderNameInContext: (id) _ctx
 {
-  return sieveFolderName;  /* SOGo managed folder */
+  return [NSString stringWithFormat: @"folder%@", sieveFolderName];
 }
 
-- (NSString *) sentFolderNameInContext:(id)_ctx
+- (NSString *) sentFolderNameInContext: (id)_ctx
 {
-  return sentFolderName;
+  return [NSString stringWithFormat: @"folder%@", sentFolderName];
 }
 
-- (NSString *) trashFolderNameInContext:(id)_ctx
+- (NSString *) trashFolderNameInContext: (id)_ctx
 {
-  return trashFolderName;
+  return [NSString stringWithFormat: @"folder%@", trashFolderName];
 }
 
 - (SOGoMailFolder *) inboxFolderInContext: (id) _ctx
 {
-  NSString *folderName;
-
   // TODO: use some profile to determine real location, use a -traverse lookup
   if (!inboxFolder)
     {
-      folderName = [NSString stringWithFormat: @"folder%@",
-			     [self inboxFolderNameInContext: _ctx]];
-      inboxFolder = [self lookupName: folderName inContext: _ctx acquire: NO];
+      inboxFolder = [self lookupName: [self inboxFolderNameInContext: _ctx]
+			  inContext: _ctx acquire: NO];
       [inboxFolder retain];
     }
 
@@ -326,7 +334,6 @@ static BOOL     useAltNamespace       = NO;
 
 - (SOGoMailFolder *) sentFolderInContext: (id) _ctx
 {
-  NSString *folderName;
   SOGoMailFolder *lookupFolder;
   // TODO: use some profile to determine real location, use a -traverse lookup
 
@@ -336,12 +343,8 @@ static BOOL     useAltNamespace       = NO;
 		      ? (id) self
 		      : [self inboxFolderInContext:_ctx]);
       if (![lookupFolder isKindOfClass: [NSException class]])
-	{
-	  folderName = [NSString stringWithFormat: @"folder%@",
-				 [self sentFolderNameInContext:_ctx]];
-	  sentFolder = [lookupFolder lookupName: folderName
-				     inContext: _ctx acquire: NO];
-	}
+	sentFolder = [lookupFolder lookupName: [self sentFolderNameInContext:_ctx]
+				   inContext: _ctx acquire: NO];
       if (![sentFolder isNotNull])
 	sentFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
 				  reason: @"did not find Sent folder!"];
@@ -353,7 +356,6 @@ static BOOL     useAltNamespace       = NO;
 
 - (SOGoMailFolder *) trashFolderInContext: (id) _ctx
 {
-  NSString *folderName;
   SOGoMailFolder *lookupFolder;
   // TODO: use some profile to determine real location, use a -traverse lookup
 
@@ -363,12 +365,8 @@ static BOOL     useAltNamespace       = NO;
 		      ? (id) self
 		      : [self inboxFolderInContext:_ctx]);
       if (![lookupFolder isKindOfClass: [NSException class]])
-	{
-	  folderName = [NSString stringWithFormat: @"folder%@",
-				 [self trashFolderNameInContext:_ctx]];
-	  trashFolder = [lookupFolder lookupName: folderName
-				      inContext: _ctx acquire: NO];
-	}
+	trashFolder = [lookupFolder lookupName: [self trashFolderNameInContext: _ctx]
+ 				    inContext: _ctx acquire: NO];
       if (![trashFolder isNotNull])
 	trashFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
 				  reason: @"did not find Trash folder!"];
