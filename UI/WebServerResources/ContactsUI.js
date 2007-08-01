@@ -31,7 +31,7 @@ function validateEditorInput(sender) {
 }
 
 function openContactsFolder(contactsFolder, reload, idx) {
-  if ((currentContactFolder && contactsFolder != currentContactFolder)
+  if ((contactsFolder && contactsFolder != currentContactFolder)
       || reload) {
      currentContactFolder = contactsFolder; log("openContactsFolder " + contactsFolder);
      var url = URLForFolderID(currentContactFolder) +
