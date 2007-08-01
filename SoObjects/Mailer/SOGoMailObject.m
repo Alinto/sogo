@@ -74,7 +74,7 @@ static BOOL debugSoParts       = NO;
   /* Note: "BODY" actually returns the structure! */
   if (fetchHeader) {
     coreInfoKeys = [[NSArray alloc] initWithObjects:
-				      @"FLAGS", @"ENVELOPE", @"BODY",
+				      @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
 				      @"RFC822.SIZE",
 				      @"RFC822.HEADER",
 				      // not yet supported: @"INTERNALDATE",
@@ -82,7 +82,7 @@ static BOOL debugSoParts       = NO;
   }
   else {
     coreInfoKeys = [[NSArray alloc] initWithObjects:
-				      @"FLAGS", @"ENVELOPE", @"BODY",
+				      @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
 				      @"RFC822.SIZE",
 				      // not yet supported: @"INTERNALDATE",
 				    nil];
@@ -117,9 +117,11 @@ static BOOL debugSoParts       = NO;
 - (NSMutableString *) imap4URLString
 {
   NSMutableString *urlString;
+  NSString *imap4Name;
 
   urlString = [container imap4URLString];
-  [urlString appendFormat: @"%@", [nameInContainer stringByEscapingURL]];
+  imap4Name = [[self relativeImap4Name] stringByEscapingURL];
+  [urlString appendFormat: @"%@", imap4Name];
 
   return urlString;
 }
@@ -203,7 +205,7 @@ static BOOL debugSoParts       = NO;
   /*
     Called by -fetchPlainTextParts:
   */
-  return [[self imap4Connection] fetchURL:[self imap4URL] parts:_parts];
+  return [[self imap4Connection] fetchURL: [self imap4URL] parts:_parts];
 }
 
 /* core infos */
@@ -679,12 +681,12 @@ static BOOL debugSoParts       = NO;
 
 - (NSException *) addFlags: (id) _flags
 {
-  return [[self imap4Connection] addFlags:_flags toURL:[self imap4URL]];
+  return [[self imap4Connection] addFlags:_flags toURL: [self imap4URL]];
 }
 
 - (NSException *) removeFlags: (id) _flags
 {
-  return [[self imap4Connection] removeFlags:_flags toURL:[self imap4URL]];
+  return [[self imap4Connection] removeFlags:_flags toURL: [self imap4URL]];
 }
 
 /* permissions */

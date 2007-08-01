@@ -1,5 +1,8 @@
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	+initialize]): we now fetch the "BODYSTRUCTURE" key instead of "BODY".
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderNameInContext:])
 	([SOGoMailAccount -draftsFolderNameInContext:_ctx])
 	([SOGoMailAccount -sieveFolderNameInContext:_ctx])
