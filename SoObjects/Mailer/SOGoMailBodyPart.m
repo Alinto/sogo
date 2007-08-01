@@ -19,10 +19,25 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailBodyPart.h"
-#include "SOGoMailObject.h"
-#include "SOGoMailManager.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGImap4/NGImap4Connection.h>
+
+#import "SOGoMailObject.h"
+#import "SOGoMailManager.h"
+
+#import "SOGoMailBodyPart.h"
 
 @implementation SOGoMailBodyPart
 

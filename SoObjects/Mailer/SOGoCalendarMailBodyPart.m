@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <Mailer/SOGoMailBodyPart.h>
+#import "SOGoMailBodyPart.h"
 
 /*
   SOGoCalendarMailBodyPart
@@ -31,12 +31,7 @@
 */
 
 @interface SOGoCalendarMailBodyPart : SOGoMailBodyPart
-{
-}
-
 @end
-
-#include "common.h"
 
 @implementation SOGoCalendarMailBodyPart
 

@@ -19,8 +19,7 @@
   02111-1307, USA.
 */
 
-#include "SOGoSharedInboxFolder.h"
-#include "common.h"
+#import "SOGoSharedInboxFolder.h"
 
 @implementation SOGoSharedInboxFolder
 

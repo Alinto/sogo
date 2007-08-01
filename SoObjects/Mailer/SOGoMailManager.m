@@ -19,10 +19,14 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailManager.h"
-#include <NGImap4/NGImap4Connection.h>
-#include <NGImap4/NGImap4ConnectionManager.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4ConnectionManager.h>
+
+#import "SOGoMailManager.h"
 
 /*
   Could check read-write state:

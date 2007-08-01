@@ -19,101 +19,104 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailIdentity.h"
-#include "common.h"
+#import <Foundation/NSString.h>
+
+#import <NGExtensions/NSNull+misc.h>
+
+#import "SOGoMailIdentity.h"
 
 @implementation SOGoMailIdentity
 
 - (void)dealloc {
-  [self->name                release];
-  [self->email               release];
-  [self->replyTo             release];
-  [self->organization        release];
-  [self->signature           release];
-  [self->vCard               release];
-  [self->sentFolderName      release];
-  [self->sentBCC             release];
-  [self->draftsFolderName    release];
-  [self->templatesFolderName release];
+  [name                release];
+  [email               release];
+  [replyTo             release];
+  [organization        release];
+  [signature           release];
+  [vCard               release];
+  [sentFolderName      release];
+  [sentBCC             release];
+  [draftsFolderName    release];
+  [templatesFolderName release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setName:(NSString *)_value {
-  ASSIGNCOPY(self->name, _value);
+  ASSIGNCOPY(name, _value);
 }
 - (NSString *)name {
-  return self->name;
+  return name;
 }
 
 - (void)setEmail:(NSString *)_value {
-  ASSIGNCOPY(self->email, _value);
+  ASSIGNCOPY(email, _value);
 }
 - (NSString *)email {
-  return self->email;
+  return email;
 }
 
 - (void)setReplyTo:(NSString *)_value {
-  ASSIGNCOPY(self->replyTo, _value);
+  ASSIGNCOPY(replyTo, _value);
 }
 - (NSString *)replyTo {
-  return self->replyTo;
+  return replyTo;
 }
 
 - (void)setOrganization:(NSString *)_value {
-  ASSIGNCOPY(self->organization, _value);
+  ASSIGNCOPY(organization, _value);
 }
 - (NSString *)organization {
-  return self->organization;
+  return organization;
 }
 
 - (void)setSignature:(NSString *)_value {
-  ASSIGNCOPY(self->signature, _value);
+  ASSIGNCOPY(signature, _value);
 }
 - (NSString *)signature {
-  return self->signature;
+  return signature;
 }
 - (BOOL)hasSignature {
   return [[self signature] isNotEmpty];
 }
 
 - (void)setVCard:(NSString *)_value {
-  ASSIGNCOPY(self->vCard, _value);
+  ASSIGNCOPY(vCard, _value);
 }
 - (NSString *)vCard {
-  return self->vCard;
+  return vCard;
 }
 - (BOOL)hasVCard {
   return [[self vCard] isNotEmpty];
 }
 
 - (void)setSentFolderName:(NSString *)_value {
-  ASSIGNCOPY(self->sentFolderName, _value);
+  ASSIGNCOPY(sentFolderName, _value);
 }
 - (NSString *)sentFolderName {
-  return self->sentFolderName;
+  return sentFolderName;
 }
 
 - (void)setSentBCC:(NSString *)_value {
-  ASSIGNCOPY(self->sentBCC, _value);
+  ASSIGNCOPY(sentBCC, _value);
 }
 - (NSString *)sentBCC {
-  return self->sentBCC;
+  return sentBCC;
 }
 
 - (void)setDraftsFolderName:(NSString *)_value {
-  ASSIGNCOPY(self->draftsFolderName, _value);
+  ASSIGNCOPY(draftsFolderName, _value);
 }
 - (NSString *)draftsFolderName {
-  return self->draftsFolderName;
+  return draftsFolderName;
 }
 
 - (void)setTemplatesFolderName:(NSString *)_value {
-  ASSIGNCOPY(self->templatesFolderName, _value);
+  ASSIGNCOPY(templatesFolderName, _value);
 }
 - (NSString *)templatesFolderName {
-  return self->templatesFolderName;
+  return templatesFolderName;
 }
 
 /* description */
@@ -124,14 +127,14 @@
   ms = [NSMutableString stringWithCapacity:128];
   [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
   
-  if (self->name  != nil) [ms appendFormat:@" name='%@'",  self->name];
-  if (self->email != nil) [ms appendFormat:@" email='%@'", self->email];
+  if (name  != nil) [ms appendFormat:@" name='%@'",  name];
+  if (email != nil) [ms appendFormat:@" email='%@'", email];
   
-  if (self->sentFolderName != nil) 
-    [ms appendFormat:@" sent='%@'", self->sentFolderName];
+  if (sentFolderName != nil) 
+    [ms appendFormat:@" sent='%@'", sentFolderName];
   
-  if ([self->sentBCC length] > 0) [ms appendString:@" sent-bcc"];
-  if ([self->vCard length]   > 0) [ms appendString:@" vcard"];
+  if ([sentBCC length] > 0) [ms appendString:@" sent-bcc"];
+  if ([vCard length]   > 0) [ms appendString:@" vcard"];
   
   [ms appendString:@">"];
   return ms;

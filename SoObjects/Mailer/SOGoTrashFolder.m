@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#include "SOGoTrashFolder.h"
-#include "common.h"
+#import <Foundation/NSString.h>
+
+#import "SOGoTrashFolder.h"
 
 @implementation SOGoTrashFolder
 

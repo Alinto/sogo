@@ -19,11 +19,21 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailFolderDataSource.h"
-#include "SOGoMailManager.h"
-#include <NGObjWeb/EOFetchSpecification+SoDAV.h>
-#include <NGImap4/NGImap4Envelope.h>
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/EOFetchSpecification+SoDAV.h>
+#import <NGExtensions/EODataSource+NGExtensions.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
+#import <NGImap4/NGImap4Envelope.h>
+
+#import "SOGoMailManager.h"
+
+#import "SOGoMailFolderDataSource.h"
 
 @implementation SOGoMailFolderDataSource
 

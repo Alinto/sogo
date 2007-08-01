@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoSharedInboxFolder_H__
 #define __Mailer_SOGoSharedInboxFolder_H__
 
-#include <SoObjects/Mailer/SOGoMailFolder.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
 
 /*
   SOGoSharedInboxFolder

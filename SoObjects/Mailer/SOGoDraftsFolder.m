@@ -19,35 +19,51 @@
   02111-1307, USA.
 */
 
-#include "SOGoDraftsFolder.h"
-#include "SOGoDraftObject.h"
-#include <SOGo/SOGoUserFolder.h>
-#include <NGExtensions/NSFileManager+Extensions.h>
-#include "common.h"
-#include <unistd.h>
+#import <unistd.h>
+
+#import <Foundation/NSArray.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSFileManager+Extensions.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <SoObjects/SOGo/SOGoUserFolder.h>
+#import "SOGoDraftObject.h"
+
+#import "SOGoDraftsFolder.h"
 
 @implementation SOGoDraftsFolder
 
 static NSString *spoolFolder = nil;
 
-+ (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
++ (void) initialize
+{
+  NSUserDefaults *ud;;
 
-  spoolFolder = [[ud stringForKey:@"SOGoMailSpoolPath"] copy];
-  if ([spoolFolder length] < 3)
-    spoolFolder = @"/tmp/";
-  
-  NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
+  if (!spoolFolder)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      spoolFolder = [[ud stringForKey:@"SOGoMailSpoolPath"] copy];
+      if ([spoolFolder length] < 3)
+	spoolFolder = @"/tmp/";
+
+      NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
+    }
 }
 
 /* new objects */
 
-- (NSString *)makeNewObjectNameInContext:(id)_ctx {
+- (NSString *) makeNewObjectNameInContext: (id) _ctx
+{
   static int counter = 1; // THREAD
+
   return [NSString stringWithFormat:@"draft_%08d_%08x", getpid(), counter++];
 }
 
-- (NSString *)newObjectBaseURLInContext:(id)_ctx {
+- (NSString *) newObjectBaseURLInContext: (id) _ctx
+{
   NSString *s, *n;
   
   n = [self makeNewObjectNameInContext:_ctx];
@@ -59,29 +75,36 @@ static NSString *spoolFolder = nil;
   return [s stringByAppendingString:n];
 }
 
-- (id)newObjectInContext:(id)_ctx {
+- (id) newObjectInContext: (id) _ctx
+{
   return [self lookupName:[self makeNewObjectNameInContext:_ctx]
 	       inContext:_ctx acquire:NO];
 }
 
 /* draft folder functionality */
 
-- (NSFileManager *)spoolFileManager {
+- (NSFileManager *) spoolFileManager
+{
   return [NSFileManager defaultManager];
 }
 
-- (NSString *)spoolFolderPath {
+- (NSString *) spoolFolderPath
+{
   return spoolFolder;
 }
-- (NSString *)userSpoolFolderPath {
+
+- (NSString *) userSpoolFolderPath
+{
   NSString *p, *n;
   
   p = [self spoolFolderPath];
   n = [[self lookupUserFolder] nameInContainer];
+
   return [p stringByAppendingPathComponent:n];
 }
 
-- (BOOL)_ensureUserSpoolFolderPath {
+- (BOOL) _ensureUserSpoolFolderPath
+{
   NSFileManager *fm;
   
   if ((fm = [self spoolFileManager]) == nil) {
@@ -92,7 +115,8 @@ static NSString *spoolFolder = nil;
 	     attributes:nil];
 }
 
-- (NSArray *)fetchMailNames {
+- (NSArray *) fetchMailNames
+{
   NSString *p;
   
   if ((p = [self userSpoolFolderPath]) == nil)
@@ -103,7 +127,9 @@ static NSString *spoolFolder = nil;
 
 /* folder methods (used by template) */
 
-- (NSArray *)fetchUIDsMatchingQualifier:(id)_q sortOrdering:(id)_so {
+- (NSArray *) fetchUIDsMatchingQualifier: (id) _q
+			    sortOrdering: (id) _so
+{
   // TODO: retrieve contained objects
   NSArray *allUids;
   
@@ -117,7 +143,7 @@ static NSString *spoolFolder = nil;
   // TODO: should sort uids (q=%@,so=%@): %@", _q, _so, allUids];
   return allUids;
 }
-- (NSArray *)fetchUIDs:(NSArray *)_uids parts:(NSArray *)_parts {
+- (NSArray *)fetchUIDs: (NSArray *)_uids parts: (NSArray *)_parts {
   /* FLAGS, ENVELOPE, RFC822.SIZE */
   NSMutableArray  *drafts;
   unsigned i, count;
@@ -146,13 +172,18 @@ static NSString *spoolFolder = nil;
 
 /* name lookup */
 
-- (id)lookupDraftMessage:(NSString *)_key inContext:(id)_ctx {
+- (id) lookupDraftMessage: (NSString *) _key
+		inContext: (id) _ctx
+{
   // TODO: we might want to check for existence prior controller creation
   return [[[SOGoDraftObject alloc] initWithName:_key 
 				   inContainer:self] autorelease];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
@@ -168,17 +199,20 @@ static NSString *spoolFolder = nil;
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection
+{
   return YES;
 }
 
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *) toOneRelationshipKeys
+{
   return [self fetchMailNames];
 }
 
 /* folder type */
 
-- (NSString *)outlookFolderClass {
+- (NSString *) outlookFolderClass
+{
   return @"IPF.Drafts";
 }
 

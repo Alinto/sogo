@@ -19,10 +19,16 @@
   02111-1307, USA.
 */
 
-#include "SOGoMailAccounts.h"
-#include "SOGoUser+Mail.h"
-#include "common.h"
-#include <NGObjWeb/SoObject+SoDAV.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoUser+Mail.h"
+
+#import "SOGoMailAccounts.h"
 
 @implementation SOGoMailAccounts
 
@@ -38,7 +44,7 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 - (NSArray *)toManyRelationshipKeys {
   SOGoUser *user;
   id        account;
-  NSArray   *shares;
+//   NSArray   *shares;
   NSString *userLogin;
   
   /*
@@ -63,11 +69,12 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   
   account = [user primaryIMAP4AccountString];
   if ([account isNotNull]) account = [NSArray arrayWithObject:account];
-  
-  shares  = [user valueForKey:@"additionalIMAP4AccountStrings"];
-  return ([shares count] == 0)
-    ? account
-    : [account arrayByAddingObjectsFromArray:shares];
+
+  return account;
+//   shares  = [user valueForKey:@"additionalIMAP4AccountStrings"]
+//   return ([shares count] == 0)
+//     ? account
+//     : [account arrayByAddingObjectsFromArray:shares];
 }
 
 - (NSArray *) fetchIdentitiesWithOnlyEmitterAccess: (BOOL) _flag

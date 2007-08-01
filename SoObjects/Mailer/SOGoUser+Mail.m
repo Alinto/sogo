@@ -19,9 +19,16 @@
   02111-1307, USA.
 */
 
-#include "SOGoUser+Mail.h"
-#include "SOGoMailIdentity.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSKeyValueCoding.h>
+
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoMailIdentity.h"
+
+#import "SOGoUser+Mail.h"
 
 @implementation SOGoUser(Mail)
 

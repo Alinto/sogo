@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoTrashFolder_H__
 #define __Mailer_SOGoTrashFolder_H__
 
-#include <SoObjects/Mailer/SOGoMailFolder.h>
+#import "SOGoMailFolder.h"
 
 @interface SOGoTrashFolder : SOGoMailFolder
 @end

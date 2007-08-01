@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <Mailer/SOGoMailBodyPart.h>
+#import "SOGoMailBodyPart.h"
 
 /*
   SOGoImageMailBodyPart
@@ -35,8 +35,6 @@
 }
 
 @end
-
-#include "common.h"
 
 @implementation SOGoImageMailBodyPart
 
