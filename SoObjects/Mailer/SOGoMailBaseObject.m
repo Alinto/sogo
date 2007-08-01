@@ -142,9 +142,11 @@ static BOOL debugOn = YES;
 - (NSMutableString *) imap4URLString
 {
   NSMutableString *urlString;
+  NSString *imap4Name;
 
   urlString = [container imap4URLString];
-  [urlString appendFormat: @"%@/", [nameInContainer stringByEscapingURL]];
+  imap4Name = [[self relativeImap4Name] stringByEscapingURL];
+  [urlString appendFormat: @"%@/", imap4Name];
 
   return urlString;
 }
@@ -154,9 +156,7 @@ static BOOL debugOn = YES;
   /* this could probably be handled better from NSURL but it's buggy in
      GNUstep */
   if (!imap4URL)
-    {
-      imap4URL = [[NSURL alloc] initWithString: [self imap4URLString]];
-    }
+    imap4URL = [[NSURL alloc] initWithString: [self imap4URLString]];
 
   return imap4URL;
 }

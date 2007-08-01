@@ -1,5 +1,10 @@
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-imap4URLString]): invoke -relativeImap4Name instead of
+	"nameInContainer" since the former will return the fixed IMAP4
+	foldername and the latter the SoObject name.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	+initialize]): we now fetch the "BODYSTRUCTURE" key instead of "BODY".
 
