@@ -1,5 +1,13 @@
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-content]): new method returning the decoded content of the
+	corresponding attachment as an NSData instance.
+	([UIxMailPartViewer -filename]): if the "filename" parameter of
+	the metadata parameterList is empty, try to find out the filename
+	from the "disposition" metadata returned with the BODYSTRUCTURE
+	imap4 tag.
+
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
 	-composeAction]): prefix the INBOX folder with "folder".
 

@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -27,7 +28,9 @@
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSString+misc.h>
+
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
 #import "UI/MailerUI/WOContext+UIxMailer.h"
 #import "UIxMailRenderingContext.h"
@@ -37,68 +40,83 @@
 
 @implementation UIxMailPartViewer
 
-- (void)dealloc {
+- (void) dealloc
+{
   [flatContent release];
-  [bodyInfo    release];
-  [partPath    release];
+  [bodyInfo release];
+  [partPath release];
   [super dealloc];
 }
 
 /* caches */
 
-- (void)resetPathCaches {
+- (void) resetPathCaches
+{
   /* this is called when -setPartPath: is called */
   [flatContent release]; flatContent = nil;
 }
-- (void)resetBodyInfoCaches {
+
+- (void) resetBodyInfoCaches
+{
 }
 
 /* notifications */
 
-- (void)sleep {
+- (void) sleep
+{
   [self resetPathCaches];
   [self resetBodyInfoCaches];
-  [partPath release]; partPath = nil;
-  [bodyInfo release]; bodyInfo = nil;
+  [partPath release];
+  [bodyInfo release];
+  partPath = nil;
+  bodyInfo = nil;
   [super sleep];
 }
 
 /* accessors */
 
-- (void)setPartPath:(NSArray *)_path {
-  if ([_path isEqual:partPath])
+- (void) setPartPath: (NSArray *) _path
+{
+  if ([_path isEqual: partPath])
     return;
-  
+
   ASSIGN(partPath, _path);
+
   [self resetPathCaches];
 }
-- (NSArray *)partPath {
+
+- (NSArray *) partPath
+{
   return partPath;
 }
 
-- (void)setBodyInfo:(id)_info {
+- (void) setBodyInfo: (id) _info
+{
   ASSIGN(bodyInfo, _info);
 }
-- (id)bodyInfo {
+
+- (id) bodyInfo
+{
   return bodyInfo;
 }
 
-- (NSData *)flatContent {
+- (NSData *) flatContent
+{
   if (flatContent != nil)
     return [flatContent isNotNull] ? flatContent : nil;
   
   flatContent = 
     [[[context mailRenderingContext] flatContentForPartPath:
-					      [self partPath]] retain];
+					      partPath] retain];
   return flatContent;
 }
 
-- (NSData *)decodedFlatContent {
+- (NSData *) decodedFlatContent
+{
   NSString *enc;
   
-  enc = [[(NSDictionary *)[self bodyInfo] 
-			  objectForKey:@"encoding"] lowercaseString];
-  
+  enc = [[bodyInfo objectForKey:@"encoding"] lowercaseString];
+
   if ([enc isEqualToString:@"7bit"])
     return [self flatContent];
   
@@ -112,64 +130,100 @@
     return [[self flatContent] dataByDecodingQuotedPrintable];
   
   [self errorWithFormat:@"unsupported MIME encoding: %@", enc];
+
   return [self flatContent];
 }
 
-- (NSStringEncoding)fallbackStringEncoding {
+- (NSData *) content
+{
+  NSData *content;
+  NSEnumerator *parts;
+  id currentObject;
+  NSString *currentPart;
+
+  content = nil;
+
+  currentObject = [self clientObject];
+  parts = [partPath objectEnumerator];
+  currentPart = [parts nextObject];
+  while (currentPart)
+    {
+      currentObject = [currentObject lookupName: currentPart
+				     inContext: context
+				     acquire: NO];
+      currentPart = [parts nextObject];
+    }
+
+  content = [currentObject fetchBLOB];
+
+  return content;
+}
+
+- (NSStringEncoding) fallbackStringEncoding
+{
   return 0;
 }
+
 - (NSString *)flatContentAsString {
   /* Note: we even have the line count in the body-info! */
   NSString *charset;
   NSString *s;
   NSData   *content;
-  
-  if ((content = [self decodedFlatContent]) == nil) {
-    [self errorWithFormat:@"got no text content: %@", 
-	    [[self partPath] componentsJoinedByString:@"."]];
-    return nil;
-  }
-  
-  charset = [(NSDictionary *)
-	      [(NSDictionary *)[self bodyInfo] objectForKey:@"parameterList"]
-              objectForKey:@"charset"];
-  charset = [charset lowercaseString];
 
-  // TODO: properly decode charset, might need to handle encoding?
+  content = [self decodedFlatContent];
+  if (content)
+    {
+      charset = [[bodyInfo objectForKey:@"parameterList"]
+		  objectForKey: @"charset"];
+
+      // TODO: properly decode charset, might need to handle encoding?
   
-  if ([charset length] > 0) {
-    s = [NSString stringWithData: content usingEncodingNamed: charset];
-  }
-  else {
-    s = [[NSString alloc] initWithData: content encoding: NSUTF8StringEncoding];
-    s = [s autorelease];
-  }
-  
-  if (s == nil) {
-    /* 
-       Note: this can happend with iCalendar invitations sent by Outlook 2002.
-             It will mark the content as UTF-8 but actually deliver it as
+      if ([charset length] > 0)
+	s = [NSString stringWithData: content
+		      usingEncodingNamed: [charset lowercaseString]];
+      else
+	{
+	  s = [[NSString alloc] initWithData: content
+				encoding: NSUTF8StringEncoding];
+	  [s autorelease];
+	}
+
+      if (!s)
+	{
+	  /* 
+	     Note: this can happend with iCalendar invitations sent by Outlook 2002.
+	     It will mark the content as UTF-8 but actually deliver it as
 	     Latin-1 (or Windows encoding?).
-    */
-    [self errorWithFormat:@"could not convert content to text, charset: '%@'",
-            charset];
-    if ([self fallbackStringEncoding] > 0) {
-      s = [[NSString alloc] initWithData:content 
-			    encoding:[self fallbackStringEncoding]];
-      s = [s autorelease];
-      
-      if (s == nil) {
-	[self errorWithFormat:
-		@"  an attempt to use fallback encoding failed to."];
-      }
+	  */
+	  [self errorWithFormat:@"could not convert content to text, charset: '%@'",
+		charset];
+	  if ([self fallbackStringEncoding] > 0)
+	    {
+	      s = [[NSString alloc] initWithData:content 
+				    encoding: [self fallbackStringEncoding]];
+	      if (s)
+		[s autorelease];
+	      else
+		[self errorWithFormat:
+			@"an attempt to use fallback encoding failed to."];
+	    }
+	}
     }
-  }
+  else
+    {
+      [self errorWithFormat:@"got no text content: %@", 
+	    [partPath componentsJoinedByString:@"."]];
+      s = nil;
+    }
+
   return s;
 }
 
 /* path extension */
 
-- (NSString *)pathExtensionForType:(NSString *)_mt subtype:(NSString *)_st {
+- (NSString *) pathExtensionForType: (NSString *) _mt
+			    subtype: (NSString *) _st
+{
   // TODO: support /etc/mime.types
   
   if (![_mt isNotNull] || ![_st isNotNull])
@@ -199,78 +253,88 @@
   return nil;
 }
 
-- (NSString *)preferredPathExtension {
-  return [self pathExtensionForType:[[self bodyInfo] valueForKey:@"type"]
-	       subtype:[[self bodyInfo] valueForKey:@"subtype"]];
+- (NSString *) preferredPathExtension
+{
+  return [self pathExtensionForType: [bodyInfo valueForKey:@"type"]
+	       subtype: [bodyInfo valueForKey:@"subtype"]];
 }
 
-- (NSString *)filename {
-  id tmp;
-  
-  tmp = [[self bodyInfo] valueForKey:@"parameterList"];
-  if (![tmp isNotNull])
-    return nil;
-  
-  tmp = [tmp valueForKey:@"name"];
-  if (![tmp isNotNull])
-    return nil;
-  if ([tmp length] == 0)
-    return nil;
-  
-  return tmp;
+- (NSString *) filename
+{
+  NSDictionary *parameters;
+  NSString *filename;
+
+  filename = nil;
+  parameters = [bodyInfo valueForKey: @"parameterList"];
+  if (parameters)
+    filename = [parameters valueForKey: @"name"];
+
+  if (!filename)
+    {
+      parameters = [[bodyInfo valueForKey: @"disposition"]
+		     valueForKey: @"parameterList"];
+      filename = [parameters valueForKey: @"filename"];
+    }
+
+  return filename;
 }
 
-- (NSString *)filenameForDisplay {
+- (NSString *) filenameForDisplay
+{
   NSString *s;
   
   if ((s = [self filename]) != nil)
     return s;
   
-  s = [[self partPath] componentsJoinedByString:@"-"];
+  s = [partPath componentsJoinedByString:@"-"];
   return ([s length] > 0)
     ? [@"untitled-" stringByAppendingString:s]
     : @"untitled";
 }
 
-- (NSFormatter *)sizeFormatter {
+- (NSFormatter *) sizeFormatter
+{
   return [UIxMailSizeFormatter sharedMailSizeFormatter];
 }
 
 /* URL generation */
 
-- (NSString *)pathToAttachmentObject {
+- (NSString *) pathToAttachmentObject
+{
   /* this points to the SoObject representing the part, no modifications */
   NSString *url, *n, *pext;
 
   /* path to mail controller object */
   
   url = [[self clientObject] baseURLInContext:context];
-  if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+  if (![url hasSuffix: @"/"])
+    url = [url stringByAppendingString: @"/"];
   
   /* mail relative path to body-part */
   
-  if ([(n = [[self partPath] componentsJoinedByString:@"/"]) isNotNull]) {
-    /* eg this was nil for a draft containing an HTML message */
+  /* eg this was nil for a draft containing an HTML message */
+  if ([(n = [partPath componentsJoinedByString:@"/"]) isNotNull])
     url = [url stringByAppendingString:n];
-  }
   
   /* we currently NEED the extension for SoObject lookup (should be fixed) */
   
   pext = [self preferredPathExtension];
-  if ([pext isNotNull] && [pext length] > 0) {
-    /* attach extension */
-    if ([url hasSuffix:@"/"]) {
-      /* this happens if the part is the root-content of the mail */
-      url = [url substringToIndex:([url length] - 1)];
+  if ([pext isNotNull] && [pext length] > 0)
+    {
+      /* attach extension */
+      if ([url hasSuffix:@"/"]) {
+	/* this happens if the part is the root-content of the mail */
+	url = [url substringToIndex:([url length] - 1)];
+      }
+      url = [url stringByAppendingString:@"."];
+      url = [url stringByAppendingString:pext];
     }
-    url = [url stringByAppendingString:@"."];
-    url = [url stringByAppendingString:pext];
-  }
   
   return url;
 }
 
-- (NSString *)pathToAttachment {
+- (NSString *) pathToAttachment
+{
   /* this generates a more beautiful 'download' URL for a part */
   NSString *url, *fn;
 
@@ -288,15 +352,17 @@
      SOGoMailBodyPart.
   */
   
-  if (fn != nil) {
-    if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
-    if (isdigit([fn characterAtIndex:0]))
-      url = [url stringByAppendingString:@"fn-"];
-    url = [url stringByAppendingString:[fn stringByEscapingURL]];
+  if (fn)
+    {
+      if (![url hasSuffix: @"/"])
+	url = [url stringByAppendingString: @"/"];
+      if (isdigit([fn characterAtIndex:0]))
+	url = [url stringByAppendingString: @"fn-"];
+      url = [url stringByAppendingString: [fn stringByEscapingURL]];
     
     // TODO: should we check for a proper extension?
-  }
-  
+    }
+
   return url;
 }
 
