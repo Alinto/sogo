@@ -1,0 +1,58 @@
+{
+  blobTablePattern  = "SOGo_$folderId$_blob";
+  quickTablePattern = "SOGo_$folderId$_quick";
+  extractorClassName= "OCSContactFieldExtractor";
+
+  fields = (
+    {
+      columnName = c_name;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_givenname;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_cn;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_sn;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_screenname;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_l;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_mail;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_o;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_ou;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_telephoneNumber;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+  );
+}

@@ -22,7 +22,9 @@ libOGoContentStore_OBJC_FILES +=		\
 
 libOGoContentStore_TYPEMODELS += \
 	appointment.ocs	\
-	contact.ocs
+	contact.ocs \
+	appointment-oracle.ocs \
+	contact-oracle.ocs
 
 test_quick_extract_OBJC_FILES += \
 	test_quick_extract.m

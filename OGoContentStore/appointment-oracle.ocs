@@ -1,0 +1,108 @@
+{
+  blobTablePattern = "SOGo_$folderId$_blob";
+  quickTablePattern = "SOGo_$folderId$_quick";
+  extractorClassName = "OCSiCalFieldExtractor";
+
+  fields = (
+    {
+      columnName = c_name;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_uid;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_startdate;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_enddate;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_cycleenddate;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_title;
+      sqlType    = "VARCHAR2(1000)";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_participants;
+      sqlType    = "CLOB";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_isallday;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_iscycle;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_cycleinfo;
+      sqlType    = "VARCHAR2(1000)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_classification;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_isopaque;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_status;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+    },
+    {
+      columnName = c_priority;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_location;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_orgmail;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_partmails;
+      sqlType    = "CLOB";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_partstates;
+      sqlType    = "VARCHAR2(256)";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_sequence;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+    },
+    {
+      columnName = c_component;
+      sqlType    = "VARCHAR2(10)";
+      allowsNull = NO;
+    },
+  );
+}
