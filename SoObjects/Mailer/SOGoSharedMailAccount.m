@@ -19,8 +19,13 @@
   02111-1307, USA.
 */
 
-#include "SOGoSharedMailAccount.h"
-#include "common.h"
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGImap4/NGImap4Connection.h>
+
+#import "SOGoSharedMailAccount.h"
 
 @interface SOGoMailAccount(UsedPrivates)
 

@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailBodyPart_H__
 #define __Mailer_SOGoMailBodyPart_H__
 
-#include <Mailer/SOGoMailBaseObject.h>
+#import <Mailer/SOGoMailBaseObject.h>
 
 /*
   SOGoMailBodyPart
@@ -45,21 +45,23 @@
 
 /* hierarchy */
 
-- (SOGoMailObject *)mailObject;
+- (SOGoMailObject *) mailObject;
 
 /* IMAP4 */
 
-- (NSString *)bodyPartName;
-- (NSArray *)bodyPartPath;
-- (NSString *)bodyPartIdentifier;
+- (NSString *) bodyPartName;
+- (NSArray *) bodyPartPath;
+- (NSString *) bodyPartIdentifier;
 
 /* part info */
 
-- (id)partInfo;
+- (id) partInfo;
+- (NSData *) fetchBLOB;
 
 /* factory */
 
-+ (Class)bodyPartClassForKey:(NSString *)_key inContext:(id)_ctx;
++ (Class) bodyPartClassForKey: (NSString *) _key
+		    inContext: (id) _ctx;
 
 @end
 
