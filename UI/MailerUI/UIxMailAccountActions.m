@@ -92,9 +92,12 @@
   WOResponse *response;
 
   co = [self clientObject];
-  draftFolderName = [co draftsFolderNameInContext: context];
-  sentFolderName = [co sentFolderNameInContext: context];
-  trashFolderName = [co trashFolderNameInContext: context];
+  draftFolderName = [[co draftsFolderNameInContext: context]
+		      substringFromIndex: 6];
+  sentFolderName = [[co sentFolderNameInContext: context]
+		     substringFromIndex: 6];
+  trashFolderName = [[co trashFolderNameInContext: context]
+		      substringFromIndex: 6];
 
   rawFolders = [co allFolderPaths];
   folders = [self _jsonFolders: [rawFolders objectEnumerator]];
