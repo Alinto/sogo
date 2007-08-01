@@ -24,14 +24,19 @@
 
 #import <Foundation/NSObject.h>
 
+#include <NGObjWeb/WOContext.h>
+
+
 /*
   UIxMailRenderingContext
   
   The rendering context is used to track nesting of mail part viewers.
 */
 
-@class NSData, NSArray, NSDictionary;
-@class WOContext, WOComponent;
+@class NSArray;
+@class NSData;
+@class NSDictionary;
+@class WOComponent;
 
 @interface UIxMailRenderingContext : NSObject
 {
@@ -47,31 +52,29 @@
   WOComponent  *htmlViewer;
 }
 
-- (id)initWithViewer:(WOComponent *)_viewer context:(WOContext *)_ctx;
+- (id) initWithViewer: (WOComponent *) _viewer
+	      context: (WOContext *) _ctx;
 
 /* state */
 
-- (void)reset;
+- (void) reset;
 
 /* fetching */
 
-- (NSDictionary *)flatContents;
-- (NSData *)flatContentForPartPath:(NSArray *)_partPath;
+- (NSDictionary *) flatContents;
+- (NSData *) flatContentForPartPath: (NSArray *) _partPath;
 
 /* viewer components */
 
-- (WOComponent *)viewerForBodyInfo:(id)_info;
+- (WOComponent *) viewerForBodyInfo: (id)_info;
 
 @end
 
-
-#include <NGObjWeb/WOContext.h>
-
 @interface WOContext(UIxMailPart)
 
-- (void)pushMailRenderingContext:(UIxMailRenderingContext *)_mctx;
-- (UIxMailRenderingContext *)popMailRenderingContext;
-- (UIxMailRenderingContext *)mailRenderingContext;
+- (void) pushMailRenderingContext: (UIxMailRenderingContext *) _mctx;
+- (UIxMailRenderingContext *) popMailRenderingContext;
+- (UIxMailRenderingContext *) mailRenderingContext;
 
 @end
 

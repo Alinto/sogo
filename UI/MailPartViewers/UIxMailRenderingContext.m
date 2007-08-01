@@ -19,176 +19,236 @@
   02111-1307, USA.
 */
 
-#include "UIxMailRenderingContext.h"
-#include <SoObjects/Mailer/SOGoMailObject.h>
-#include <Foundation/NSString.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/WOComponent.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
+
+#import <SoObjects/Mailer/SOGoMailObject.h>
+
+#import "UIxMailRenderingContext.h"
 
 @implementation UIxMailRenderingContext
 
 static BOOL showNamedTextAttachmentsInline = NO;
 
-- (id)initWithViewer:(WOComponent *)_viewer context:(WOContext *)_ctx {
-  if ((self = [super init])) {
-    self->viewer  = _viewer;
-    self->context = _ctx;
-  }
+- (id) initWithViewer: (WOComponent *) _viewer
+	      context: (WOContext *) _ctx
+{
+  if ((self = [super init]))
+    {
+      viewer  = _viewer;
+      context = _ctx;
+    }
+
   return self;
 }
-- (id)init {
-  return [self initWithViewer:nil context:nil];
+
+- (id) init
+{
+  return [self initWithViewer: nil context: nil];
 }
 
-- (void)dealloc {
-  [self->iCalViewer    release];
-  [self->htmlViewer    release];
-  [self->textViewer    release];
-  [self->imageViewer   release];
-  [self->linkViewer    release];
-  [self->messageViewer release];
+- (void) dealloc
+{
+  [flatContents release];
+  [iCalViewer release];
+  [htmlViewer release];
+  [textViewer release];
+  [imageViewer release];
+  [linkViewer release];
+  [messageViewer release];
   [super dealloc];
 }
 
-/* resetting state */
+- (void) reset
+{
+  [flatContents release];
+  [iCalViewer release];
+  [htmlViewer release];
+  [textViewer release];
+  [imageViewer release];
+  [linkViewer release];
+  [messageViewer release];
 
-- (void)reset {
-  [self->flatContents  release]; self->flatContents  = nil;
-  [self->textViewer    release]; self->textViewer    = nil;
-  [self->htmlViewer    release]; self->htmlViewer    = nil;
-  [self->imageViewer   release]; self->imageViewer   = nil;
-  [self->linkViewer    release]; self->linkViewer    = nil;
-  [self->messageViewer release]; self->messageViewer = nil;
-  [self->iCalViewer    release]; self->iCalViewer    = nil;
+  flatContents = nil;
+  iCalViewer = nil;
+  textViewer = nil;
+  imageViewer = nil;
+  htmlViewer = nil;
+  linkViewer = nil;
+  messageViewer = nil;
 }
 
 /* fetching */
 
-- (NSDictionary *)flatContents {
-  if (self->flatContents != nil)
-    return [self->flatContents isNotNull] ? self->flatContents : nil;
-  
-  self->flatContents =
-    [[[self->viewer clientObject] fetchPlainTextParts] retain];
-  [self debugWithFormat:@"CON: %@", self->flatContents];
-  return self->flatContents;
+- (NSDictionary *) flatContents
+{
+  if (!flatContents)
+    {
+      flatContents = [[viewer clientObject] fetchPlainTextParts];
+      [flatContents retain];
+//       [self debugWithFormat:@"CON: %@", flatContents];
+    }
+
+  return flatContents;
 }
 
-- (NSData *)flatContentForPartPath:(NSArray *)_partPath {
+- (NSData *) flatContentForPartPath: (NSArray *) _partPath
+{
   NSString *pid;
   
   pid = _partPath ? [_partPath componentsJoinedByString:@"."] : @"";
+
   return [[self flatContents] objectForKey:pid];
 }
 
 /* viewer components */
 
-- (WOComponent *)mixedViewer {
+- (WOComponent *) mixedViewer
+{
   /* Note: we cannot cache the multipart viewers, because it can be nested */
-  return [self->viewer pageWithName:@"UIxMailPartMixedViewer"];
+  return [viewer pageWithName: @"UIxMailPartMixedViewer"];
 }
 
-- (WOComponent *)signedViewer {
+- (WOComponent *) signedViewer
+{
   /* Note: we cannot cache the multipart viewers, because it can be nested */
   // TODO: temporary workaround (treat it like a plain mixed part)
+
   return [self mixedViewer];
 }
 
-- (WOComponent *)alternativeViewer {
+- (WOComponent *) alternativeViewer
+{
   /* Note: we cannot cache the multipart viewers, because it can be nested */
-  return [self->viewer pageWithName:@"UIxMailPartAlternativeViewer"];
+  return [viewer pageWithName: @"UIxMailPartAlternativeViewer"];
 }
 
-- (WOComponent *)textViewer {
-  if (self->textViewer == nil) {
-    self->textViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartTextViewer"] retain];
-  }
-  return self->textViewer;
+- (WOComponent *) textViewer
+{
+  if (!textViewer)
+    {
+      textViewer = [viewer pageWithName: @"UIxMailPartTextViewer"];
+      [textViewer retain];
+    }
+
+  return textViewer;
 }
 
-- (WOComponent *)imageViewer {
-  if (self->imageViewer == nil) {
-    self->imageViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartImageViewer"] retain];
-  }
-  return self->imageViewer;
+- (WOComponent *) imageViewer
+{
+  if (!imageViewer)
+    {
+      imageViewer = [viewer pageWithName: @"UIxMailPartImageViewer"];
+      [imageViewer retain];
+    }
+
+  return imageViewer;
 }
 
-- (WOComponent *)linkViewer {
-  if (self->linkViewer == nil) {
-    self->linkViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartLinkViewer"] retain];
-  }
-  return self->linkViewer;
+- (WOComponent *) linkViewer
+{
+  if (!linkViewer)
+    {
+      linkViewer = [viewer pageWithName: @"UIxMailPartLinkViewer"];
+      [linkViewer retain];
+    }
+
+  return linkViewer;
 }
 
-- (WOComponent *)htmlViewer {
-  if (self->htmlViewer == nil) {
-    self->htmlViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartHTMLViewer"] retain];
-  }
-  return self->htmlViewer;
+- (WOComponent *) htmlViewer
+{
+  if (!htmlViewer)
+    {
+      htmlViewer = [viewer pageWithName: @"UIxMailPartHTMLViewer"];
+      [htmlViewer retain];
+    }
+
+  return htmlViewer;
 }
 
-- (WOComponent *)messageViewer {
-  if (self->messageViewer == nil) {
-    self->messageViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartMessageViewer"] retain];
-  }
-  return self->messageViewer;
+- (WOComponent *) messageViewer
+{
+  if (!messageViewer)
+    {
+      messageViewer = [viewer pageWithName: @"UIxMailPartMessageViewer"];
+      [messageViewer retain];
+    }
+
+  return messageViewer;
 }
 
-- (WOComponent *)iCalViewer {
-  if (self->iCalViewer == nil) {
-    self->iCalViewer = 
-      [[self->viewer pageWithName:@"UIxMailPartICalViewer"] retain];
-  }
-  return self->iCalViewer;
+- (WOComponent *) iCalViewer
+{
+  if (!iCalViewer)
+    {
+      iCalViewer = [viewer pageWithName: @"UIxMailPartICalViewer"];
+      [iCalViewer retain];
+    }
+
+  return iCalViewer;
 }
 
 /* Kolab viewers */
 
-- (WOComponent *)kolabContactViewer {
-  return [self->viewer pageWithName:@"UIxKolabPartContactViewer"];
-}
-- (WOComponent *)kolabEventViewer {
-  return [self->viewer pageWithName:@"UIxKolabPartEventViewer"];
-}
-- (WOComponent *)kolabTodoViewer {
-  return [self->viewer pageWithName:@"UIxKolabPartTodoViewer"];
+- (WOComponent *) kolabContactViewer
+{
+  return [viewer pageWithName: @"UIxKolabPartContactViewer"];
 }
 
-- (WOComponent *)kolabNoteViewer {
+- (WOComponent *) kolabEventViewer
+{
+  return [viewer pageWithName: @"UIxKolabPartEventViewer"];
+}
+
+- (WOComponent *) kolabTodoViewer
+{
+  return [viewer pageWithName: @"UIxKolabPartTodoViewer"];
+}
+
+- (WOComponent *) kolabNoteViewer
+{
   return [self textViewer]; // TODO
 }
-- (WOComponent *)kolabJournalViewer {
+
+- (WOComponent *) kolabJournalViewer
+{
   return [self textViewer]; // TODO
 }
-- (WOComponent *)kolabDistributionListViewer {
+
+- (WOComponent *) kolabDistributionListViewer
+{
   return [self textViewer]; // TODO
 }
 
 /* main viewer selection */
 
-- (WOComponent *)viewerForBodyInfo:(id)_info {
+- (WOComponent *) viewerForBodyInfo: (id) _info
+{
   NSString *mt, *st;
 
-  mt = [[_info valueForKey:@"type"]    lowercaseString];
+  mt = [[_info valueForKey:@"type"] lowercaseString];
   st = [[_info valueForKey:@"subtype"] lowercaseString];
-  
-  if ([mt isEqualToString:@"multipart"]) {
-    if ([st isEqualToString:@"mixed"])
-      return [self mixedViewer];
-    else if ([st isEqualToString:@"signed"])
-      return [self signedViewer];
-    else if ([st isEqualToString:@"alternative"]
+
+  if ([mt isEqualToString:@"multipart"])
+    {
+      if ([st isEqualToString:@"mixed"])
+	return [self mixedViewer];
+      else if ([st isEqualToString:@"signed"])
+	return [self signedViewer];
+      else if ([st isEqualToString:@"alternative"]
              || [st isEqualToString:@"related"])
       return [self alternativeViewer];
     
     if ([st isEqualToString:@"report"])
       /* this is used by mail-delivery reports */
       return [self mixedViewer];
-  }
-  else if ([mt isEqualToString:@"text"]) {
+    }
+  else if ([mt isEqualToString:@"text"])
+    {
     /* 
        Note: in the _info dictionary we do not get the content-disposition
              information (inline vs attachment). Our hack is to check for the
@@ -236,37 +296,40 @@ static BOOL showNamedTextAttachmentsInline = NO;
     return [self linkViewer];
   }
 
-  if ([mt isEqualToString:@"application"]) {
-    // octet-stream (generate download link?, autodetect type?)
+  if ([mt isEqualToString:@"application"])
+    {
+      // octet-stream (generate download link?, autodetect type?)
     
-    if ([st hasPrefix:@"x-vnd.kolab."]) {
-      if ([st isEqualToString:@"x-vnd.kolab.contact"])
-	return [self kolabContactViewer];
-      if ([st isEqualToString:@"x-vnd.kolab.event"])
-	return [self kolabEventViewer];
-      if ([st isEqualToString:@"x-vnd.kolab.task"])
-	return [self kolabTodoViewer];
-      if ([st isEqualToString:@"x-vnd.kolab.note"])
-	return [self kolabNoteViewer];
-      if ([st isEqualToString:@"x-vnd.kolab.journal"])
-	return [self kolabJournalViewer];
-      if ([st isEqualToString:@"x-vnd.kolab.contact.distlist"])
-	return [self kolabDistributionListViewer];
+    if ([st hasPrefix:@"x-vnd.kolab."])
+      {
+	if ([st isEqualToString:@"x-vnd.kolab.contact"])
+	  return [self kolabContactViewer];
+	if ([st isEqualToString:@"x-vnd.kolab.event"])
+	  return [self kolabEventViewer];
+	if ([st isEqualToString:@"x-vnd.kolab.task"])
+	  return [self kolabTodoViewer];
+	if ([st isEqualToString:@"x-vnd.kolab.note"])
+	  return [self kolabNoteViewer];
+	if ([st isEqualToString:@"x-vnd.kolab.journal"])
+	  return [self kolabJournalViewer];
+	if ([st isEqualToString:@"x-vnd.kolab.contact.distlist"])
+	  return [self kolabDistributionListViewer];
       
-      [self errorWithFormat:@"found no viewer for Kolab type: %@/%@", mt, st];
-      return [self linkViewer];
-    }
+	[self errorWithFormat:@"found no viewer for Kolab type: %@/%@", mt, st];
+	return [self linkViewer];
+      }
     
 #if 0 /* the link viewer looks better than plain text ;-) */
     if ([st isEqualToString:@"pgp-signature"]) // TODO: real PGP viewer
       return [self textViewer];
 #endif
-  }
+    }
 
   // TODO: always fallback to octet viewer?!
 #if 1
   [self errorWithFormat:@"found no viewer for MIME type: %@/%@", mt, st];
 #endif
+
   return [self linkViewer];
 }
 
