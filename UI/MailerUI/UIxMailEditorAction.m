@@ -63,8 +63,8 @@
   accountFolder = [[self clientObject] mailAccountFolder];
 
   return [accountFolder
-           lookupName: [accountFolder draftsFolderNameInContext: context]
-           inContext: context acquire: NO];
+	   lookupName: [accountFolder draftsFolderNameInContext: context]
+	   inContext: context acquire: NO];
 }
 
 /* errors */
