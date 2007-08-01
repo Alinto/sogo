@@ -102,7 +102,7 @@ static BOOL useAltNamespace = NO;
 
 - (NSString *) relativeImap4Name
 {
-  return nameInContainer;
+  return [nameInContainer substringFromIndex: 6];
 }
 
 /* listing the available folders */

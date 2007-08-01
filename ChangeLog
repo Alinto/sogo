@@ -1,5 +1,10 @@
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailBaseObject
+	-relativeImap4Name]): return nameInContainer stripped from its
+	first 6 characters since all folder names are prefixed with
+	"folder".
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
 	-imap4URLString]): invoke -relativeImap4Name instead of
 	"nameInContainer" since the former will return the fixed IMAP4
