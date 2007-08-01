@@ -1042,7 +1042,7 @@ function initMailer(event) {
   if (!document.body.hasClassName("popup")) {
     configureMessageListEvents();
     initDnd();
-    currentMailbox = "/" + accounts[0] + "/INBOX";
+    currentMailbox = "/" + accounts[0] + "/folderINBOX";
     initMailboxTree();
   }
 }

@@ -236,7 +236,7 @@ static NSString *treeRootClassName = nil;
       if (parameter)
         [urlParams setObject: parameter
                    forKey: @"mailto"];
-      inbox = [NSString stringWithFormat: @"%@/INBOX",
+      inbox = [NSString stringWithFormat: @"%@/folderINBOX",
                         [c objectAtIndex: 0]];
       url = [inbox composeURLWithAction: @"compose"
                    parameters: urlParams

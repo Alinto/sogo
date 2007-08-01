@@ -1,5 +1,8 @@
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-composeAction]): prefix the INBOX folder with "folder".
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailBaseObject
 	-relativeImap4Name]): return nameInContainer stripped from its
 	first 6 characters since all folder names are prefixed with
