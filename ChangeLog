@@ -1,3 +1,8 @@
+2007-08-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView _responseForResults:]):
+	has to return only one element.
+
 2007-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer

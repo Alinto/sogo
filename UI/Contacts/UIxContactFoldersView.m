@@ -147,7 +147,7 @@
     {
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
-      while (contact)
+      if (contact)
 	{
 	  responseString = [NSString stringWithFormat: @"%@:%@:%@",
 				     [contact objectForKey: @"c_uid"],
@@ -157,7 +157,7 @@
 // 	  [response setHeader: @"text/plain; charset=iso-8859-1"
 // 		    forKey: @"Content-Type"];
 	  [response appendContentString: responseString];
-	  contact = [contacts nextObject];
+//	  contact = [contacts nextObject];
 	}
     }
   else
