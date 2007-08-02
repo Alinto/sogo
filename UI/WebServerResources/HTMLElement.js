@@ -168,6 +168,35 @@ Element.addMethods({
       if (node.nodeType == 1)
 	$(node).deselect();
     }
-  }
+  },
+
+  setCaretTo: function(element, pos) { 
+    element = $(element);
+    if (element.selectionStart) { // For Mozilla and Safari
+      element.focus(); 
+      element.setSelectionRange(pos, pos); 
+    }
+    else if (element.createTextRange) {       // For IE
+      var range = element.createTextRange(); 
+      range.move("character", pos); 
+      range.select();
+    } 
+  },
+
+  selectText: function(element, start, end) {
+    element = $(element);
+    if (element.setSelectionRange) {     // For Mozilla and Safari
+      element.setSelectionRange(start, end);
+    }
+    else if (element.createTextRange) {  // For IE
+      var textRange = element.createTextRange();
+      textRange.moveStart("character", start);
+      textRange.moveEnd("character", end-element.value.length);
+      textRange.select();
+    }
+    else {
+      element.select();
+    }
+ }
 
 });

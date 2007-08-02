@@ -28,7 +28,8 @@ TABLE#freeBusy TH
 
 TABLE#freeBusy TH.attendees,
 TABLE#freeBusy TD.attendees
-{ position: absolute;
+{ /*position: absolute;*/
+  position: fixed;
   padding: 0px .5em;
   margin: 0px;
   width: 11em;
