@@ -26,6 +26,7 @@
 	string="itemZoomText" selection="zoom"/>
       <a href="#" class="button _disabled"><var:string label:value="+" /></a>
     </div>
+    <div/>
     <div id="freeBusyView">
       <table id="freeBusy"
 	xmlns="http://www.w3.org/1999/xhtml"

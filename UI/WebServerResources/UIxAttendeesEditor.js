@@ -14,7 +14,11 @@ var attendeesNames;
 var attendeesEmails;
 
 function onContactKeydown(event) {
-  if (event.keyCode == 9) {
+  if (event.ctrlKey || event.metaKey) {
+    this.focussed = true;
+    return;
+  }
+  if (event.keyCode == 9) { // Tab
     preventDefault(event);
     if (this.confirmedValue)
       this.value = this.confirmedValue;
@@ -26,14 +30,14 @@ function onContactKeydown(event) {
     if (input.readOnly)
       newAttendee(null);
     else {
-      input.focus();
-      input.select();
       input.focussed = true;
+      input.activate();
     }
   }
   else if (!running) {
-    if (event.keyCode == 8
-        || event.keyCode == 32
+    if (event.keyCode == 0
+	|| event.keyCode == 8 // Backspace
+        || event.keyCode == 32  // Space
         || event.keyCode > 47) {
       running = true;
       requestField = this;
@@ -41,8 +45,8 @@ function onContactKeydown(event) {
       setTimeout("triggerRequest()", delay);
     }
     else if (this.confirmedValue) {
-      if (event.keyCode == 13) {
-        this.setSelectionRange(this.value.length, this.value.length);
+      if (event.keyCode == 13) { // Enter
+	$(this).setCaretTo(this.value.length);
       }
     }
   }
@@ -54,7 +58,8 @@ function triggerRequest() {
     document.contactLookupAjaxRequest.abort();
   }
   var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-                 + requestField.value );
+                 + escape(requestField.value) );
+  //log (urlstr);
   document.contactLookupAjaxRequest = triggerAjaxRequest(urlstr,
                                                          updateResults,
                                                          requestField);
@@ -81,7 +86,7 @@ function updateResults(http) {
       searchField.confirmedValue = completeEmail;
       if (searchField.focussed) {
         var end = searchField.value.length;
-        searchField.setSelectionRange(start, end);
+	$(searchField).selectText(start, end);
       }
       else
         searchField.value = text[1];
@@ -182,24 +187,25 @@ function redisplayFreeBusyZone() {
 }
 
 function newAttendee(event) {
-  var table = $("freeBusy");
-  var tbody = table.tBodies[0];
-  var model = tbody.rows[tbody.rows.length - 1];
-  var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
-  var newRow = model.cloneNode(true);
-  newRow.setAttribute("class", "");
-  tbody.insertBefore(newRow, newAttendeeRow);
-  //table.tBodies[0].appendChild(newRow);
-  var input = $(newRow.cells[0]).childNodesWithTag("input")[0];
-  input.setAttribute("autocomplete", "off");
-  input.serial = "pouet";
-  Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
-  Event.observe(input, "keydown", onContactKeydown.bindAsEventListener(input));
-  input.focus();
-  input.focussed = true;
+   var table = $("freeBusy");
+   var tbody = table.tBodies[0];
+   var model = tbody.rows[tbody.rows.length - 1];
+   var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
+   var newRow = model.cloneNode(true);
+   tbody.insertBefore(newRow, newAttendeeRow);
+  
+   $(newRow).className = "";
+  
+   var input = $(newRow.cells[0]).childNodesWithTag("input")[0];
+   input.setAttribute("autocomplete", "off");
+   Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
+   Event.observe(input, "keydown", onContactKeydown.bindAsEventListener(input));
+
+   input.focussed = true;
+   input.activate();
 }
 
-function checkAttendee() {
+function checkAttendee() { log ("checkAttendee (loosing focus)");
   this.focussed = false;
   var th = this.parentNode.parentNode;
   var tbody = th.parentNode;
@@ -221,7 +227,7 @@ function displayFreeBusyForNode(node) {
       var nodes = node.parentNode.parentNode.cells;
       if (node.uid) {
 	 for (var i = 1; i < nodes.length; i++) {
-	    nodes[i].removeClassName("noFreeBusy");
+	    $(nodes[i]).removeClassName("noFreeBusy");
 	    nodes[i].innerHTML = ('<span class="freeBusyZoneElement"></span>'
 				  + '<span class="freeBusyZoneElement"></span>'
 				  + '<span class="freeBusyZoneElement"></span>'
@@ -242,7 +248,7 @@ function displayFreeBusyForNode(node) {
 				 node);
       } else {
 	 for (var i = 1; i < nodes.length; i++) {
-	    nodes[i].addClassName("noFreeBusy");
+	    $(nodes[i]).addClassName("noFreeBusy");
 	    nodes[i].innerHTML = '';
 	 }
       }
@@ -296,11 +302,11 @@ function resetAttendeesValue() {
       currentInput.setAttribute("uid", null);
     }
     currentInput.setAttribute("autocomplete", "off");
-    Event.observe(currentInput, "keydown", onContactKeydown.bindAsEventListener(currentInput), false);
-    Event.observe(currentInput, "blur", checkAttendee.bindAsEventListener(currentInput), false);
+    //Event.observe(currentInput, "keydown", onContactKeydown.bindAsEventListener(currentInput));
+    //Event.observe(currentInput, "blur", checkAttendee.bindAsEventListener(currentInput));
   }
   inputs[inputs.length - 2].setAttribute("autocomplete", "off");
-  Event.observe(inputs[inputs.length - 2], "click", newAttendee, false);
+  Event.observe(inputs[inputs.length - 2], "click", newAttendee);
 }
 
 function resetAllFreeBusys() {

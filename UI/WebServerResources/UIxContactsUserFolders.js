@@ -2,7 +2,7 @@ function onSearchFormSubmit() {
   var searchValue = $("searchValue");
 
   var url = (ApplicationBaseURL
-	     + "/foldersSearch?ldap-only=YES&search=" + searchValue.value
+	     + "/foldersSearch?ldap-only=YES&search=" + escape(searchValue.value)
 	     + "&type=" + window.opener.userFolderType);
   if (document.userFoldersRequest) {
      document.userFoldersRequest.aborted = true;
