@@ -37,7 +37,6 @@
 #import "SOGoMailObject.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
-#import "SOGoMailFolderDataSource.h"
 #import "SOGoMailFolder.h"
 
 static NSString *defaultUserID =  @"anyone";
@@ -172,15 +171,6 @@ static BOOL useAltNamespace = NO;
     }
 
   return filenames;
-}
-
-- (EODataSource *) contentDataSourceInContext: (id) _ctx
-{
-  SOGoMailFolderDataSource *ds;
-  
-  ds = [[SOGoMailFolderDataSource alloc] initWithImap4URL:[self imap4URL]
-					 imap4Password:[self imap4Password]];
-  return [ds autorelease];
 }
 
 /* messages */

@@ -18,7 +18,6 @@ Mailer_OBJC_FILES += \
 	SOGoMailFolder.m		\
 	SOGoSharedInboxFolder.m		\
 	SOGoMailObject.m		\
-	SOGoMailFolderDataSource.m	\
 	SOGoTrashFolder.m		\
 	\
 	SOGoMailBodyPart.m		\
