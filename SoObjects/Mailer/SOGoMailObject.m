@@ -65,7 +65,7 @@ static BOOL debugSoParts       = NO;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-  if ((fetchHeader = ([ud boolForKey:@"SOGoDoNotFetchMailHeader"] ? NO : YES)))
+  if ((fetchHeader = ([ud boolForKey: @"SOGoDoNotFetchMailHeader"] ? NO : YES)))
     NSLog(@"Note: fetching full mail header.");
   else
     NSLog(@"Note: not fetching full mail header: 'SOGoDoNotFetchMailHeader'");
@@ -88,8 +88,8 @@ static BOOL debugSoParts       = NO;
 				    nil];
   }
 
-  if (![[ud objectForKey:@"SOGoMailDisableETag"] boolValue]) {
-    mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
+  if (![[ud objectForKey: @"SOGoMailDisableETag"] boolValue]) {
+    mailETag = [[NSString alloc] initWithFormat: @"\"imap4url_%d_%d_%03d\"",
 				 UIX_MAILER_MAJOR_VERSION,
 				 UIX_MAILER_MINOR_VERSION,
 				 UIX_MAILER_SUBMINOR_VERSION];
@@ -140,18 +140,18 @@ static BOOL debugSoParts       = NO;
   if (_partInfo == nil)
     return nil;
   
-  mt = [_partInfo valueForKey:@"type"];
-  st = [[_partInfo valueForKey:@"subtype"] lowercaseString];
-  if ([mt isEqualToString:@"text"]) {
-    if ([st isEqualToString:@"plain"])    return @".txt";
-    if ([st isEqualToString:@"html"])     return @".html";
-    if ([st isEqualToString:@"calendar"]) return @".ics";
-    if ([st isEqualToString:@"x-vcard"])  return @".vcf";
+  mt = [_partInfo valueForKey: @"type"];
+  st = [[_partInfo valueForKey: @"subtype"] lowercaseString];
+  if ([mt isEqualToString: @"text"]) {
+    if ([st isEqualToString: @"plain"])    return @".txt";
+    if ([st isEqualToString: @"html"])     return @".html";
+    if ([st isEqualToString: @"calendar"]) return @".ics";
+    if ([st isEqualToString: @"x-vcard"])  return @".vcf";
   }
-  else if ([mt isEqualToString:@"image"])
+  else if ([mt isEqualToString: @"image"])
     return [@"." stringByAppendingString:st];
-  else if ([mt isEqualToString:@"application"]) {
-    if ([st isEqualToString:@"pgp-signature"])
+  else if ([mt isEqualToString: @"application"]) {
+    if ([st isEqualToString: @"pgp-signature"])
       return @".asc";
   }
   
@@ -164,7 +164,7 @@ static BOOL debugSoParts       = NO;
   NSArray *parts;
   unsigned i, count;
   
-  parts = [[self bodyStructure] valueForKey:@"parts"];
+  parts = [[self bodyStructure] valueForKey: @"parts"];
   if (![parts isNotNull]) 
     return nil;
   if ((count = [parts count]) == 0)
@@ -176,7 +176,7 @@ static BOOL debugSoParts       = NO;
     BOOL hasParts;
     
     part     = [parts objectAtIndex:i];
-    hasParts = [part valueForKey:@"parts"] != nil ? YES:NO;
+    hasParts = [part valueForKey: @"parts"] != nil ? YES:NO;
     if ((hasParts && !_withParts) || (_withParts && !hasParts))
       continue;
 
@@ -184,7 +184,7 @@ static BOOL debugSoParts       = NO;
       ma = [NSMutableArray arrayWithCapacity:count - i];
     
     ext = [self keyExtensionForPart:part];
-    key = [[NSString alloc] initWithFormat:@"%d%@", i + 1, ext?ext:@""];
+    key = [[NSString alloc] initWithFormat: @"%d%@", i + 1, ext?ext: @""];
     [ma addObject:key];
     [key release];
   }
@@ -220,10 +220,10 @@ static BOOL debugSoParts       = NO;
   /* otherwise fetch something really simple */
   
   if (existsKey == nil) /* we use size, other suggestions? */
-    existsKey = [[NSArray alloc] initWithObjects:@"RFC822.SIZE", nil];
+    existsKey = [[NSArray alloc] initWithObjects: @"RFC822.SIZE", nil];
   
   msgs = [self fetchParts:existsKey]; // returns dict
-  msgs = [msgs valueForKey:@"fetch"];
+  msgs = [msgs valueForKey: @"fetch"];
   return [msgs count] > 0 ? YES : NO;
 }
 
@@ -238,8 +238,8 @@ static BOOL debugSoParts       = NO;
 #else
   msgs = [self fetchParts:coreInfoKeys]; // returns dict
 #endif
-  if (heavyDebug) [self logWithFormat:@"M: %@", msgs];
-  msgs = [msgs valueForKey:@"fetch"];
+  if (heavyDebug) [self logWithFormat: @"M: %@", msgs];
+  msgs = [msgs valueForKey: @"fetch"];
   if ([msgs count] == 0)
     return nil;
   
@@ -250,14 +250,14 @@ static BOOL debugSoParts       = NO;
 - (id)bodyStructure {
   id body;
 
-  body = [[self fetchCoreInfos] valueForKey:@"bodystructure"];
+  body = [[self fetchCoreInfos] valueForKey: @"body"];
   if (debugBodyStructure)
-    [self logWithFormat:@"BODY: %@", body];
+    [self logWithFormat: @"BODY: %@", body];
   return body;
 }
 
 - (NGImap4Envelope *)envelope {
-  return [[self fetchCoreInfos] valueForKey:@"envelope"];
+  return [[self fetchCoreInfos] valueForKey: @"envelope"];
 }
 
 - (NSString *) subject
@@ -288,7 +288,7 @@ static BOOL debugSoParts       = NO;
 }
 
 - (NSData *)mailHeaderData {
-  return [[self fetchCoreInfos] valueForKey:@"header"];
+  return [[self fetchCoreInfos] valueForKey: @"header"];
 }
 - (BOOL)hasMailHeaderInCoreInfos {
   return [[self mailHeaderData] length] > 0 ? YES : NO;
@@ -333,7 +333,7 @@ static BOOL debugSoParts       = NO;
     return nil;
   
   if ((info = [self bodyStructure]) == nil) {
-    [self errorWithFormat:@"got no body part structure!"];
+    [self errorWithFormat: @"got no body part structure!"];
     return nil;
   }
 
@@ -343,7 +343,7 @@ static BOOL debugSoParts       = NO;
     if ([_path length] == 0)
       return info;
     
-    _path = [_path componentsSeparatedByString:@"."];
+    _path = [_path componentsSeparatedByString: @"."];
   }
   
   /* 
@@ -360,19 +360,19 @@ static BOOL debugSoParts       = NO;
     NSArray  *parts;
     NSString *mt;
     
-    [self debugWithFormat:@"check PATH: %@", p];
+    [self debugWithFormat: @"check PATH: %@", p];
     idx = [p intValue] - 1;
 
-    parts = [info valueForKey:@"parts"];
-    mt = [[info valueForKey:@"type"] lowercaseString];
-    if ([mt isEqualToString:@"message"]) {
+    parts = [info valueForKey: @"parts"];
+    mt = [[info valueForKey: @"type"] lowercaseString];
+    if ([mt isEqualToString: @"message"]) {
       /* we have special behaviour for message types */
       id body;
       
-      if ((body = [info valueForKey:@"body"]) != nil) {
-	mt = [body valueForKey:@"type"];
-	if ([mt isEqualToString:@"multipart"])
-	  parts = [body valueForKey:@"parts"];
+      if ((body = [info valueForKey: @"body"]) != nil) {
+	mt = [body valueForKey: @"type"];
+	if ([mt isEqualToString: @"multipart"])
+	  parts = [body valueForKey: @"parts"];
 	else
 	  parts = [NSArray arrayWithObject:body];
       }
@@ -395,7 +395,7 @@ static BOOL debugSoParts       = NO;
   NSData *content;
   id     result, fullResult;
   
-  fullResult = [self fetchParts:[NSArray arrayWithObject:@"RFC822"]];
+  fullResult = [self fetchParts:[NSArray arrayWithObject: @"RFC822"]];
   if (fullResult == nil)
     return nil;
   
@@ -404,13 +404,13 @@ static BOOL debugSoParts       = NO;
   
   /* extract fetch result */
   
-  result = [fullResult valueForKey:@"fetch"];
+  result = [fullResult valueForKey: @"fetch"];
   if (![result isKindOfClass:[NSArray class]]) {
     [self logWithFormat:
 	    @"ERROR: unexpected IMAP4 result (missing 'fetch'): %@", 
 	    fullResult];
     return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"unexpected IMAP4 result"];
+			reason: @"unexpected IMAP4 result"];
   }
   if ([result count] == 0)
     return nil;
@@ -419,12 +419,12 @@ static BOOL debugSoParts       = NO;
   
   /* extract message */
   
-  if ((content = [result valueForKey:@"message"]) == nil) {
+  if ((content = [result valueForKey: @"message"]) == nil) {
     [self logWithFormat:
 	    @"ERROR: unexpected IMAP4 result (missing 'message'): %@", 
 	    result];
     return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"unexpected IMAP4 result"];
+			reason: @"unexpected IMAP4 result"];
   }
   
   return [[content copy] autorelease];
@@ -466,13 +466,13 @@ static BOOL debugSoParts       = NO;
   _type    = [_type    lowercaseString];
   _subtype = [_subtype lowercaseString];
   
-  return (([_type isEqualToString:@"text"]
-           && ([_subtype isEqualToString:@"plain"]
-               || [_subtype isEqualToString:@"html"]
-               || [_subtype isEqualToString:@"calendar"]))
-          || ([_type isEqualToString:@"application"]
-              && ([_subtype isEqualToString:@"pgp-signature"]
-                  || [_subtype hasPrefix:@"x-vnd.kolab."])));
+  return (([_type isEqualToString: @"text"]
+           && ([_subtype isEqualToString: @"plain"]
+               || [_subtype isEqualToString: @"html"]
+               || [_subtype isEqualToString: @"calendar"]))
+          || ([_type isEqualToString: @"application"]
+              && ([_subtype isEqualToString: @"pgp-signature"]
+                  || [_subtype hasPrefix: @"x-vnd.kolab."])));
 }
 
 - (void)addRequiredKeysOfStructure:(id)_info path:(NSString *)_p
@@ -492,13 +492,13 @@ static BOOL debugSoParts       = NO;
   id body;
   
   /* Note: if the part itself doesn't qualify, we still check subparts */
-  fetchPart = [self shouldFetchPartOfType:[_info valueForKey:@"type"]
-		    subtype:[_info valueForKey:@"subtype"]];
+  fetchPart = [self shouldFetchPartOfType:[_info valueForKey: @"type"]
+		    subtype:[_info valueForKey: @"subtype"]];
   if (fetchPart) {
     NSString *k;
     
     if ([_p length] > 0) {
-      k = [[@"body[" stringByAppendingString:_p] stringByAppendingString:@"]"];
+      k = [[@"body[" stringByAppendingString:_p] stringByAppendingString: @"]"];
     }
     else {
       /*
@@ -516,14 +516,14 @@ static BOOL debugSoParts       = NO;
   
   /* recurse */
   
-  parts = [(NSDictionary *)_info objectForKey:@"parts"];
+  parts = [(NSDictionary *)_info objectForKey: @"parts"];
   for (i = 0, count = [parts count]; i < count; i++) {
     NSString *sp;
     id childInfo;
     
     sp = ([_p length] > 0)
-      ? [_p stringByAppendingFormat:@".%d", i + 1]
-      : [NSString stringWithFormat:@"%d", i + 1];
+      ? [_p stringByAppendingFormat: @".%d", i + 1]
+      : [NSString stringWithFormat: @"%d", i + 1];
     
     childInfo = [parts objectAtIndex:i];
     
@@ -533,14 +533,14 @@ static BOOL debugSoParts       = NO;
   
   /* check body */
   
-  if ((body = [(NSDictionary *)_info objectForKey:@"body"]) != nil) {
+  if ((body = [(NSDictionary *)_info objectForKey: @"body"]) != nil) {
     NSString *sp;
 
-    sp = [[body valueForKey:@"type"] lowercaseString];
-    if ([sp isEqualToString:@"multipart"])
+    sp = [[body valueForKey: @"type"] lowercaseString];
+    if ([sp isEqualToString: @"multipart"])
       sp = _p;
     else
-      sp = [_p length] > 0 ? [_p stringByAppendingString:@".1"] : @"1";
+      sp = [_p length] > 0 ? [_p stringByAppendingString: @".1"] : @"1";
     [self addRequiredKeysOfStructure:body path:sp toArray:_keys
 	  recurse:YES];
   }
@@ -555,7 +555,7 @@ static BOOL debugSoParts       = NO;
   
   ma = [NSMutableArray arrayWithCapacity:4];
   [self addRequiredKeysOfStructure:[[self clientObject] bodyStructure]
-	path:@"" toArray:ma recurse:YES];
+	path: @"" toArray:ma recurse:YES];
   return ma;
 }
 
@@ -565,13 +565,13 @@ static BOOL debugSoParts       = NO;
   unsigned i, count;
   id result;
   
-  [self debugWithFormat:@"fetch keys: %@", _fetchKeys];
+  [self debugWithFormat: @"fetch keys: %@", _fetchKeys];
   
   result = [self fetchParts:_fetchKeys];
-  result = [result valueForKey:@"RawResponse"]; // hackish
+  result = [result valueForKey: @"RawResponse"]; // hackish
   
   // Note: -valueForKey: doesn't work!
-  result = [(NSDictionary *)result objectForKey:@"fetch"]; 
+  result = [(NSDictionary *)result objectForKey: @"fetch"]; 
   
   count        = [_fetchKeys count];
   flatContents = [NSMutableDictionary dictionaryWithCapacity:count];
@@ -581,20 +581,20 @@ static BOOL debugSoParts       = NO;
     
     key  = [_fetchKeys objectAtIndex:i];
     data = [(NSDictionary *)[(NSDictionary *)result objectForKey:key] 
-			    objectForKey:@"data"];
+			    objectForKey: @"data"];
     
     if (![data isNotNull]) {
-      [self errorWithFormat:@"got no data for key: %@", key];
+      [self errorWithFormat: @"got no data for key: %@", key];
       continue;
     }
     
-    if ([key isEqualToString:@"body[text]"])
+    if ([key isEqualToString: @"body[text]"])
       key = @""; // see key collector for explanation (TODO: where?)
-    else if ([key hasPrefix:@"body["]) {
+    else if ([key hasPrefix: @"body["]) {
       NSRange r;
       
       key = [key substringFromIndex:5];
-      r   = [key rangeOfString:@"]"];
+      r   = [key rangeOfString: @"]"];
       if (r.length > 0)
 	key = [key substringToIndex:r.location];
     }
@@ -619,7 +619,7 @@ static BOOL debugSoParts       = NO;
 
   s = nil;
 
-  encoding = [[_info objectForKey:@"encoding"] lowercaseString];
+  encoding = [[_info objectForKey: @"encoding"] lowercaseString];
 
   if ([encoding isEqualToString: @"7bit"]
       || [encoding isEqualToString: @"8bit"])
@@ -629,7 +629,7 @@ static BOOL debugSoParts       = NO;
   else if ([encoding isEqualToString: @"quoted-printable"])
     mailData = [_data dataByDecodingQuotedPrintable];
   
-  charset = [[_info valueForKey:@"parameterList"] valueForKey: @"charset"];
+  charset = [[_info valueForKey: @"parameterList"] valueForKey: @"charset"];
   if (![charset length])
     {
       s = [[NSString alloc] initWithData:mailData encoding:NSUTF8StringEncoding];
@@ -727,14 +727,14 @@ static BOOL debugSoParts       = NO;
   if ([self isBodyPartKey:_key inContext:_ctx]) {
     if ((obj = [self lookupImap4BodyPartKey:_key inContext:_ctx]) != nil) {
       if (debugSoParts) 
-	[self logWithFormat:@"mail looked up part %@: %@", _key, obj];
+	[self logWithFormat: @"mail looked up part %@: %@", _key, obj];
       return obj;
     }
   }
   
   /* return 404 to stop acquisition */
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-		      reason:@"Did not find mail method or part-reference!"];
+		      reason: @"Did not find mail method or part-reference!"];
 }
 
 /* WebDAV */
@@ -745,7 +745,7 @@ static BOOL debugSoParts       = NO;
 }
 
 - (id)davContentLength {
-  return [[self fetchCoreInfos] valueForKey:@"size"];
+  return [[self fetchCoreInfos] valueForKey: @"size"];
 }
 
 - (NSDate *)davCreationDate {
@@ -759,10 +759,10 @@ static BOOL debugSoParts       = NO;
 - (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
   inContext:(id)_ctx
 {
-  [self logWithFormat:@"TODO: should move mail as '%@' to: %@",
+  [self logWithFormat: @"TODO: should move mail as '%@' to: %@",
 	_name, _target];
   return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
-		      reason:@"not implemented"];
+		      reason: @"not implemented"];
 }
 
 - (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
@@ -799,7 +799,7 @@ static BOOL debugSoParts       = NO;
     /* check whether the mail still exists */
     if (![self doesMailExist]) {
       return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			  reason:@"mail was deleted"];
+			  reason: @"mail was deleted"];
     }
     return error; /* return 304 or 416 */
   }
@@ -809,11 +809,11 @@ static BOOL debugSoParts       = NO;
     return content;
   if (content == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"did not find IMAP4 message"];
+			reason: @"did not find IMAP4 message"];
   }
   
   r = [(WOContext *)_ctx response];
-  [r setHeader:@"message/rfc822" forKey:@"content-type"];
+  [r setHeader: @"message/rfc822" forKey: @"content-type"];
   [r setContent:content];
   return r;
 }
@@ -840,14 +840,14 @@ static BOOL debugSoParts       = NO;
     return (NSException *)trashFolder;
   if (![trashFolder isNotNull]) {
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			reason:@"Did not find Trash folder!"];
+			reason: @"Did not find Trash folder!"];
   }
   [trashFolder flushMailCaches];
 
   /* a) copy */
   
   error = [self davCopyToTargetObject:trashFolder
-		newName:@"fakeNewUnusedByIMAP4" /* autoassigned */
+		newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
 		inContext:_ctx];
   if (error != nil) return error;
   
@@ -912,7 +912,7 @@ static BOOL debugSoParts       = NO;
   /* a) copy */
   
   error = [self davCopyToTargetObject: destFolder
-		newName:@"fakeNewUnusedByIMAP4" /* autoassigned */
+		newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
 		inContext:_ctx];
   if (error != nil) return error;
 
@@ -965,7 +965,7 @@ static BOOL debugSoParts       = NO;
   NSDictionary *h;
   
   if ((h = [self mailHeaders]) != nil)
-    return [[h objectForKey:@"x-kolab-type"] isNotEmpty];
+    return [[h objectForKey: @"x-kolab-type"] isNotEmpty];
   
   // TODO: we could check the body structure?
   
@@ -978,7 +978,7 @@ static BOOL debugSoParts       = NO;
   if ((h = [self mailHeaders]) == nil)
     return NO;
   
-  return [[h objectForKey:@"list-id"] isNotEmpty];
+  return [[h objectForKey: @"list-id"] isNotEmpty];
 }
 
 - (BOOL)isVirusScanned {
@@ -987,8 +987,8 @@ static BOOL debugSoParts       = NO;
   if ((h = [self mailHeaders]) == nil)
     return NO;
   
-  if (![[h objectForKey:@"x-virus-status"]  isNotEmpty]) return NO;
-  if (![[h objectForKey:@"x-virus-scanned"] isNotEmpty]) return NO;
+  if (![[h objectForKey: @"x-virus-status"]  isNotEmpty]) return NO;
+  if (![[h objectForKey: @"x-virus-scanned"] isNotEmpty]) return NO;
   return YES;
 }
 
@@ -1018,9 +1018,9 @@ static BOOL debugSoParts       = NO;
     return nil;
   
   /* check for commas in string values */
-  r = [_value rangeOfString:@","];
+  r = [_value rangeOfString: @","];
   if (r.length > 0) {
-    return [self scanListHeaderValue:[_value componentsSeparatedByString:@","]
+    return [self scanListHeaderValue:[_value componentsSeparatedByString: @","]
 		 forFieldWithPrefix:_prefix];
   }
 
@@ -1030,7 +1030,7 @@ static BOOL debugSoParts       = NO;
   
   /* unquote */
   if ([_value characterAtIndex:0] == '<') {
-    r = [_value rangeOfString:@">"];
+    r = [_value rangeOfString: @">"];
     _value = (r.length == 0)
       ? [_value substringFromIndex:1]
       : [_value substringWithRange:NSMakeRange(1, r.location - 2)];
@@ -1041,18 +1041,18 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *)mailingListArchiveURL {
   return [self scanListHeaderValue:
-		 [[self mailHeaders] objectForKey:@"list-archive"]
-	       forFieldWithPrefix:@"<http://"];
+		 [[self mailHeaders] objectForKey: @"list-archive"]
+	       forFieldWithPrefix: @"<http://"];
 }
 - (NSString *)mailingListSubscribeURL {
   return [self scanListHeaderValue:
-		 [[self mailHeaders] objectForKey:@"list-subscribe"]
-	       forFieldWithPrefix:@"<http://"];
+		 [[self mailHeaders] objectForKey: @"list-subscribe"]
+	       forFieldWithPrefix: @"<http://"];
 }
 - (NSString *)mailingListUnsubscribeURL {
   return [self scanListHeaderValue:
-		 [[self mailHeaders] objectForKey:@"list-unsubscribe"]
-	       forFieldWithPrefix:@"<http://"];
+		 [[self mailHeaders] objectForKey: @"list-unsubscribe"]
+	       forFieldWithPrefix: @"<http://"];
 }
 
 /* etag support */
@@ -1075,16 +1075,16 @@ static BOOL debugSoParts       = NO;
 - (NSString *)outlookMessageClass {
   NSString *type;
   
-  if ((type = [[self mailHeaders] objectForKey:@"x-kolab-type"]) != nil) {
-    if ([type isEqualToString:@"application/x-vnd.kolab.contact"])
+  if ((type = [[self mailHeaders] objectForKey: @"x-kolab-type"]) != nil) {
+    if ([type isEqualToString: @"application/x-vnd.kolab.contact"])
       return @"IPM.Contact";
-    if ([type isEqualToString:@"application/x-vnd.kolab.task"])
+    if ([type isEqualToString: @"application/x-vnd.kolab.task"])
       return @"IPM.Task";
-    if ([type isEqualToString:@"application/x-vnd.kolab.event"])
+    if ([type isEqualToString: @"application/x-vnd.kolab.event"])
       return @"IPM.Appointment";
-    if ([type isEqualToString:@"application/x-vnd.kolab.note"])
+    if ([type isEqualToString: @"application/x-vnd.kolab.note"])
       return @"IPM.Note";
-    if ([type isEqualToString:@"application/x-vnd.kolab.journal"])
+    if ([type isEqualToString: @"application/x-vnd.kolab.journal"])
       return @"IPM.Journal";
   }
   
