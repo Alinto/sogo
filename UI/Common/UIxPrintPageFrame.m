@@ -19,31 +19,35 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoComponent.h>
+
+@class NSString;
 
 @interface UIxPrintPageFrame : SoComponent
 {
-    NSString *title;
+  NSString *title;
 }
 
 @end
 
-#include "common.h"
-
 @implementation UIxPrintPageFrame
 
-- (void)dealloc {
-  [self->title release];
+- (void) dealloc
+{
+  [title release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setTitle:(NSString *)_value {
-  ASSIGNCOPY(self->title, _value);
+- (void)setTitle: (NSString *) _value
+{
+  ASSIGNCOPY (title, _value);
 }
-- (NSString *)title {
-  return self->title;
+
+- (NSString *) title
+{
+  return title;
 }
 
 @end /* UIxPrintPageFrame */

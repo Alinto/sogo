@@ -20,43 +20,41 @@
 */
 // $Id: UIxAppNavView.m 281 2004-08-27 03:51:08Z helge $
 
-#include <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <SOGoUI/UIxComponent.h>
 
 @interface UIxAppNavView : UIxComponent
 {
-    id element;
-    id lastElement;
+  id element;
+  id lastElement;
 }
 
 @end
 
-#include <NGObjWeb/NGObjWeb.h>
-#include <NGObjWeb/SoObject+SoDAV.h>
-#include <NGObjWeb/WOContext+SoObjects.h>
-#include "common.h"
-
 @implementation UIxAppNavView
 
 - (void)dealloc {
-  [self->element     release];
-  [self->lastElement release];
+  [element     release];
+  [lastElement release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setElement:(id)_element {
-  ASSIGN(self->element, _element);
+  ASSIGN(element, _element);
 }
 - (id)element {
-  return self->element;
+  return element;
 }
 
 - (void)setLastElement:(id)_element {
-  ASSIGN(self->lastElement, _element);
+  ASSIGN(lastElement, _element);
 }
 - (id)lastElement {
-  return self->lastElement;
+  return lastElement;
 }
 
 /* navigation */

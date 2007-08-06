@@ -18,22 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: common.h,v 1.1 2003/11/24 01:24:40 helge Exp $
 
-#import <Foundation/Foundation.h>
-
-#warning importing common.h is baaad
-
-#if LIB_FOUNDATION_LIBRARY
-#  include <Foundation/exceptions/GeneralExceptions.h>
-#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-#  include <NGExtensions/NGObjectMacros.h>
-#  include <NGExtensions/NSString+Ext.h>
-#endif
-
-#include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/NGObjWeb.h>
-#include <NGObjWeb/SoObjects.h>
+#import <NGObjWeb/WOAssociation.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WODynamicElement.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResourceManager.h>
+#import <NGObjWeb/WOSession.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 @interface WOContext(WOExtensionsPrivate)
 - (void)addActiveFormElement:(WOElement *)_element;
