@@ -21,8 +21,7 @@
 // $Id: SOGoJSStringFormatter.m 415 2004-10-20 15:47:45Z znek $
 
 
-#include "SOGoJSStringFormatter.h"
-#include "common.h"
+#import "SOGoJSStringFormatter.h"
 
 @implementation SOGoJSStringFormatter
 

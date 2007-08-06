@@ -19,8 +19,11 @@
   02111-1307, USA.
 */
 
-#include "SOGoAptFormatter.h"
-#include "common.h"
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
+
+#import "SOGoAptFormatter.h"
 
 @interface SOGoAptFormatter(PrivateAPI)
 - (NSString *)titleForApt:(id)_apt :(NSCalendarDate *)_refDate;

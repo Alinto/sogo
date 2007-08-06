@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#include "WOContext+UIx.h"
-#include "common.h"
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
+
+#import "WOContext+UIx.h"
 
 @implementation WOContext (UIx)
 
