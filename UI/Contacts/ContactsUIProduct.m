@@ -23,12 +23,7 @@
 #import <Foundation/NSObject.h>
 
 @interface ContactsUIProduct : NSObject
-{
-}
-
 @end
-
-#include "common.h"
 
 @implementation ContactsUIProduct
 @end /* ContactsUIProduct */

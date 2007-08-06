@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxContactView.m 1040 2007-04-02 21:29:40Z wolfgang $
 
-#import <Contacts/SOGoContactObject.h>
-
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
 
-#import "common.h"
+#import <SoObjects/Contacts/SOGoContactObject.h>
 
 #import "UIxContactView.h"
 

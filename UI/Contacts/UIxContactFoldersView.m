@@ -24,21 +24,22 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
-#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
 #import <SoObjects/Contacts/SOGoContactLDAPFolder.h>
-
-#import "common.h"
 
 #import "UIxContactFoldersView.h"
 

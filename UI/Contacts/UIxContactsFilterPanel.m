@@ -19,7 +19,7 @@
  02111-1307, USA.
  */
 
-#include <SOGoUI/UIxComponent.h>
+#import <SOGoUI/UIxComponent.h>
 
 @interface UIxContactsFilterPanel : UIxComponent
 {
@@ -28,9 +28,6 @@
 }
 
 @end
-
-#include <SOGoUI/UIxComponent.h>
-#include "common.h"
 
 @implementation UIxContactsFilterPanel
 
@@ -62,8 +59,8 @@ static NSArray      *filters           = nil;
 
 - (void) dealloc
 {
-  [self->searchCriteria release];
-  [self->searchText release];
+  [searchCriteria release];
+  [searchText release];
   [super dealloc];
 }
 
@@ -71,12 +68,12 @@ static NSArray      *filters           = nil;
 
 - (void) setSearchText: (NSString *)_txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGNCOPY(searchText, _txt);
 }
 
 - (void) setSearchCriteria: (NSString *)_txt
 {
-  ASSIGNCOPY(self->searchText, _txt);
+  ASSIGNCOPY(searchText, _txt);
 }
 
 - (NSString *) searchText
@@ -107,7 +104,7 @@ static NSArray      *filters           = nil;
 - (NSString *) filterLabel
 {
 #if 1
-  return [[[self context] page] labelForKey: [self valueForKey:@"filter"]];
+  return [[[self context] page] labelForKey: @"filter"];
 #else
   return [self valueForKey: @"filter"];
 #endif
