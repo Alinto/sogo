@@ -250,7 +250,7 @@ static BOOL debugSoParts       = NO;
 - (id)bodyStructure {
   id body;
 
-  body = [[self fetchCoreInfos] valueForKey:@"body"];
+  body = [[self fetchCoreInfos] valueForKey:@"bodystructure"];
   if (debugBodyStructure)
     [self logWithFormat:@"BODY: %@", body];
   return body;
