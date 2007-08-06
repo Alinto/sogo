@@ -19,7 +19,19 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/SoComponent.h>
+#import <Foundation/NSUserDefaults.h>
+
+#import <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+#import <SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoUser.h>
 
 @interface SOGoRootPage : SoComponent
 {
@@ -27,9 +39,6 @@
 }
 
 @end
-
-#include <SOGo/SOGoAuthenticator.h>
-#include "common.h"
 
 @implementation SOGoRootPage
 

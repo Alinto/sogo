@@ -19,12 +19,10 @@
   02111-1307, USA.
 */
 
-#include <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoComponent.h>
 
 @interface SOGoGroupPage : SoComponent
 @end
-
-#include "common.h"
 
 @implementation SOGoGroupPage
 

@@ -20,15 +20,13 @@
 */
 // $Id: SOGoGroupsPage.m 106 2004-06-30 09:44:35Z helge $
 
-#include <NGObjWeb/SoComponent.h>
+#import <NGObjWeb/SoComponent.h>
 
 @interface SOGoGroupsPage : SoComponent
 {
 }
 
 @end
-
-#include "common.h"
 
 @implementation SOGoGroupsPage
 
