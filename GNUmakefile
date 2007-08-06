@@ -9,6 +9,6 @@ SUBPROJECTS = \
 	SoObjects	\
 	Main		\
 	UI		\
-	Protocols	\
+# 	Protocols	\
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
