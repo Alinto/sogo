@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: UIxAppNavView.m 281 2004-08-27 03:51:08Z helge $
 
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
