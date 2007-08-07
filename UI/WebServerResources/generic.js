@@ -145,7 +145,7 @@ function URLForFolderID(folderID) {
    var url;
    if (folderInfos.length > 1) {
       url = UserFolderURL + "../" + folderInfos[0];
-      if (folderInfos[1][0] != '/')
+      if (!folderInfos[1].startsWith('/'))
         url += '/';
       url += folderInfos[1];
    }
@@ -908,7 +908,7 @@ function popupToolbarMenu(node, menuId) {
 
 function folderSubscriptionCallback(http) {
    if (http.readyState == 4) {
-      if (http.status == 204) {
+      if (isHttpStatus204(http.status)) {
 	 if (http.callbackData)
 	    http.callbackData["method"](http.callbackData["data"]);
       }
@@ -943,7 +943,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 
 function folderUnsubscriptionCallback(http) {
    if (http.readyState == 4) {
-      if (http.status == 204) {
+      if (isHttpStatus204(http.status)) {
 	 if (http.callbackData)
 	    http.callbackData["method"](http.callbackData["data"]);
       }

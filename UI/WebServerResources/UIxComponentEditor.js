@@ -133,7 +133,7 @@ function initializePrivacyMenu() {
    var privacy = $("privacy").value.toUpperCase();
    if (privacy.length > 0) {
       var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
-      var menuEntries = privacyMenu.childNodesWithTag("li");
+      var menuEntries = $(privacyMenu).childNodesWithTag("li");
       var chosenNode;
       if (privacy == "CONFIDENTIAL")
 	 chosenNode = menuEntries[1];
@@ -142,7 +142,7 @@ function initializePrivacyMenu() {
       else
 	 chosenNode = menuEntries[0];
       privacyMenu.chosenNode = chosenNode;
-      chosenNode.addClassName("_chosen");
+      $(chosenNode).addClassName("_chosen");
    }
 }
 

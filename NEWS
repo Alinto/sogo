@@ -9,6 +9,7 @@
 - added support for limiting LDAP queries with the SOGoLDAPQueryLimit and
   the SOGoLDAPSizeLimit settings;
 - fixed a bug where folders starting with digits would not be displayed;
+- improved IE7 and Safari support: priority menus, attendees selector.
 
 0.9.0-20070713
 --------------

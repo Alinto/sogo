@@ -205,7 +205,7 @@ function newAttendee(event) {
    input.activate();
 }
 
-function checkAttendee() { log ("checkAttendee (loosing focus)");
+function checkAttendee() {
   this.focussed = false;
   var th = this.parentNode.parentNode;
   var tbody = th.parentNode;

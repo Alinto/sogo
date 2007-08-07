@@ -701,7 +701,7 @@ function drawCalendarEvent(eventData, sd, ed) {
 	    }
 	 }
 	 if (parentDiv)
-	    parentDiv.appendChild(eventDiv);
+ 	    parentDiv.appendChild(eventDiv);
       }
 }
 
@@ -710,34 +710,34 @@ function newEventDIV(cname, owner, starts, lasts,
    var eventDiv = document.createElement("div");
    eventDiv.cname = cname;
    eventDiv.owner = owner;
-   eventDiv.addClassName("event");
-   eventDiv.addClassName("starts" + starts);
-   eventDiv.addClassName("lasts" + lasts);
+   $(eventDiv).addClassName("event");
+   $(eventDiv).addClassName("starts" + starts);
+   $(eventDiv).addClassName("lasts" + lasts);
    for (var i = 1; i < 5; i++) {
       var shadowDiv = document.createElement("div");
       eventDiv.appendChild(shadowDiv);
-      shadowDiv.addClassName("shadow");
-      shadowDiv.addClassName("shadow" + i);
+      $(shadowDiv).addClassName("shadow");
+      $(shadowDiv).addClassName("shadow" + i);
    }
    var innerDiv = document.createElement("div");
    eventDiv.appendChild(innerDiv);
-   innerDiv.addClassName("eventInside");
-   innerDiv.addClassName("ownerIs" + owner);
+   $(innerDiv).addClassName("eventInside");
+   $(innerDiv).addClassName("ownerIs" + owner);
 
    var gradientDiv = document.createElement("div");
    innerDiv.appendChild(gradientDiv);
-   gradientDiv.addClassName("gradient");
+   $(gradientDiv).addClassName("gradient");
    var gradientImg = document.createElement("img");
    gradientDiv.appendChild(gradientImg);
    gradientImg.src = ResourcesURL + "/event-gradient.png";
 
    var textDiv = document.createElement("div");
    innerDiv.appendChild(textDiv);
-   textDiv.addClassName("text");
+   $(textDiv).addClassName("text");
    if (startHour) {
       var headerSpan = document.createElement("span");
       textDiv.appendChild(headerSpan);
-      headerSpan.addClassName("eventHeader");
+      $(headerSpan).addClassName("eventHeader");
       headerSpan.appendChild(document.createTextNode(startHour + " - "
 						     + endHour));
       textDiv.appendChild(document.createElement("br"));
@@ -1089,7 +1089,7 @@ function findMonthCalendarSelectedCell(daysContainer) {
 
    while (!found && i < daysContainer.childNodes.length) {
       var currentNode = daysContainer.childNodes[i];
-      if (currentNode instanceof HTMLDivElement
+      if (currentNode.tagName == 'DIV'
           && currentNode.hasClassName("selectedDay")) {
          daysContainer.selectedCell = currentNode;
          found = true;
@@ -1122,7 +1122,9 @@ function updateTaskStatus(event) {
   var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
   
-//   log("update task status: " + taskId + " to " + this.checked);
+  if (isSafari())
+    newStatus = (newStatus ? 0 : 1);
+  //log("update task status: " + taskId + " to " + this.checked);
   event.cancelBubble = true;
   
   url = (UserFolderURL + "../" + taskOwner 
@@ -1350,12 +1352,13 @@ function appendCalendar(folderName, folder) {
    var calendarList = $("calendarList");
    var lis = calendarList.childNodesWithTag("li");
    var color = indexColor(lis.length);
-   log ("color: " + color);
+   //log ("color: " + color);
 
    var li = document.createElement("li");
    calendarList.appendChild(li);
 
    var checkBox = document.createElement("input");
+   checkBox.setAttribute("type", "checkbox");
    li.appendChild(checkBox);
    
    li.appendChild(document.createTextNode(" "));
@@ -1368,26 +1371,35 @@ function appendCalendar(folderName, folder) {
    li.setAttribute("id", folder);
    Event.observe(li, "mousedown",  listRowMouseDownHandler);
    Event.observe(li, "click",  onRowClick);
-   checkBox.addClassName("checkBox");
-   checkBox.type = "checkbox";
+   $(checkBox).addClassName("checkBox");
+
    Event.observe(checkBox, "click",  updateCalendarStatus.bindAsEventListener(checkBox));
-   
-   colorBox.addClassName("colorBox");
+
+   $(colorBox).addClassName("colorBox");
    if (color) {
-     colorBox.setStyle({ color: color,
-			 backgroundColor: color });
+      $(colorBox).setStyle({ color: color,
+	                     backgroundColor: color });
    }
 
    var contactId = folder.split(":")[0];
-   var styles = document.getElementsByTagName("style");
-
    var url = URLForFolderID(folder) + "/canAccessContent";
    triggerAjaxRequest(url, calendarEntryCallback, folder);
 
-   styles[0].innerHTML += ('.ownerIs' + contactId + ' {'
+   if (!document.styleSheets) return;
+   var theRules = new Array();
+   var lastSheet = document.styleSheets[document.styleSheets.length - 1];
+   if (lastSheet.insertRule) { // Mozilla
+      lastSheet.insertRule('.ownerIs' + contactId + ' {'
 			   + ' background-color: '
 			   + color
-			   + ' !important; }');
+			   + ' !important; }', 0);
+   }
+   else { // IE
+      lastSheet.addRule('.ownerIs' + contactId,
+			' background-color: '
+			+ color
+			+ ' !important; }');
+   }
 }
 
 function onFolderSubscribeCB(folderData) {

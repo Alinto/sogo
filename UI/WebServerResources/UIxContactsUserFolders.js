@@ -89,20 +89,23 @@ function onFolderTreeItemClick(event) {
 function userFoldersCallback(http) {
    if (http.readyState == 4) {
       document.userFoldersRequest = null;
+      var div = $("folders");
       if (http.status == 200) {
-	 var div = $("folders");
 	 var response = http.responseText;
 	 div.innerHTML = buildTree(http.responseText);
 	 var nodes = document.getElementsByClassName("node", $("d"));
 	 for (i = 0; i < nodes.length; i++)
 	   Event.observe(nodes[i], "click", onFolderTreeItemClick.bindAsEventListener(nodes[i]));
       }
+      else if (http.status == 404) {
+	 div.innerHTML = "";
+      }
    }
 }
 
 function onConfirmFolderSelection(event) {
   var topNode = $("d");
-  if (topNode.selectedEntry) {
+  if (topNode && topNode.selectedEntry) {
       var node = topNode.selectedEntry.parentNode;
       var folder = node.getAttribute("dataname");
       var folderName;
