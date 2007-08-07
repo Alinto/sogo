@@ -119,21 +119,26 @@
   NSString *frequency;
   iCalRecurrenceFrequency freq;
 
-  frequency = [value uppercaseString];
-  if ([frequency isEqualToString:@"WEEKLY"])
-    freq = iCalRecurrenceFrequenceWeekly;
-  else if ([frequency isEqualToString:@"MONTHLY"])
-    freq = iCalRecurrenceFrequenceMonthly;
-  else if ([frequency isEqualToString:@"DAILY"])
-    freq = iCalRecurrenceFrequenceDaily;
-  else if ([frequency isEqualToString:@"YEARLY"])
-    freq = iCalRecurrenceFrequenceYearly;
-  else if ([frequency isEqualToString:@"HOURLY"])
-    freq = iCalRecurrenceFrequenceHourly;
-  else if ([frequency isEqualToString:@"MINUTELY"])
-    freq = iCalRecurrenceFrequenceMinutely;
-  else if ([frequency isEqualToString:@"SECONDLY"])
-    freq = iCalRecurrenceFrequenceSecondly;
+  if ([value length] > 0)
+    {
+      frequency = [value uppercaseString];
+      if ([frequency isEqualToString:@"WEEKLY"])
+	freq = iCalRecurrenceFrequenceWeekly;
+      else if ([frequency isEqualToString:@"MONTHLY"])
+	freq = iCalRecurrenceFrequenceMonthly;
+      else if ([frequency isEqualToString:@"DAILY"])
+	freq = iCalRecurrenceFrequenceDaily;
+      else if ([frequency isEqualToString:@"YEARLY"])
+	freq = iCalRecurrenceFrequenceYearly;
+      else if ([frequency isEqualToString:@"HOURLY"])
+	freq = iCalRecurrenceFrequenceHourly;
+      else if ([frequency isEqualToString:@"MINUTELY"])
+	freq = iCalRecurrenceFrequenceMinutely;
+      else if ([frequency isEqualToString:@"SECONDLY"])
+	freq = iCalRecurrenceFrequenceSecondly;
+      else
+	freq = NSNotFound;
+    }
   else
     freq = NSNotFound;
 
@@ -279,17 +284,21 @@
 {
   NSArray *days;
   unsigned int mask, count, max;
-  NSString *day;
+  NSString *day, *value;
 
   mask = 0;
 
-  days = [[self namedValue: @"byday"] componentsSeparatedByString: @","];
-  max = [days count];
-  for (count = 0; count < max; count++)
+  value = [self namedValue: @"byday"];
+  if ([value length] > 0)
     {
-      day = [days objectAtIndex: count];
-      day = [day substringFromIndex: [day length] - 2];
-      mask |= [self weekDayFromICalRepresentation: day];
+      days = [value componentsSeparatedByString: @","];
+      max = [days count];
+      for (count = 0; count < max; count++)
+	{
+	  day = [days objectAtIndex: count];
+	  day = [day substringFromIndex: [day length] - 2];
+	  mask |= [self weekDayFromICalRepresentation: day];
+	}
     }
 
   return mask;

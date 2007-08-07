@@ -1,3 +1,11 @@
+2007-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule
+	-valueForFrequency:value]): returns NSNotFound whenever the
+	frequency text has a length of 0.
+	([iCalRecurrenceRule -byDayMask]): return an empty mask whenever
+	the "byday" value has a length of 0.
+
 2007-02-12  Helge Hess  <helge.hess@opengroupware.org>
  
 	* iCalMonthlyRecurrenceCalculator.m: fixed byday calculation for days
