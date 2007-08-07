@@ -30,7 +30,6 @@
 #import <NGMail/NGMail.h>
 #import <NGMail/NGSendMail.h>
 #import "SOGoAptMailNotification.h"
-#import "common.h"
 
 #import "NSArray+Appointments.h"
 

@@ -19,10 +19,16 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSTimeZone.h>
+
+#import <NGObjWeb/WOActionResults.h>
+#import <NGObjWeb/WOMessage.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEntityObject.h>
 
 #import "SOGoAptMailNotification.h"
-#import "common.h"
 
 @interface SOGoAptMailNotification (PrivateAPI)
 - (BOOL)isSubject;

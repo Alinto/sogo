@@ -19,11 +19,19 @@
   02111-1307, USA.
 */
 
-#import <NGCards/iCalEntityObject.h>
-#import <SOGo/SOGoGroupFolder.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSException.h>
 
-#include "SOGoGroupAppointmentFolder.h"
-#include "common.h"
+#import <NGObjWeb/SoSecurityManager.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGCards/iCalEntityObject.h>
+
+#import <SOGo/SOGoGroupFolder.h>
+#import <SOGo/SOGoPermissions.h>
+
+#import "SOGoGroupAppointmentFolder.h"
 
 @implementation SOGoGroupAppointmentFolder
 

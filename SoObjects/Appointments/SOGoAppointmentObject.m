@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "SOGoAppointmentObject.h"
-
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
@@ -30,9 +31,8 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
-#import "common.h"
-
 #import "NSArray+Appointments.h"
+#import "SOGoAppointmentObject.h"
 
 @implementation SOGoAppointmentObject
 

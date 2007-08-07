@@ -19,11 +19,28 @@
   02111-1307, USA.
 */
 
-#import <GDLContentStore/GCSFolder.h>
-#import <NGCards/NGCards.h>
-#import <NGObjWeb/WOContext.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NGLoggerManager.h>
+#import <NGExtensions/NSString+misc.h>
+#import <GDLContentStore/GCSFolder.h>
+#import <DOM/DOMProtocols.h>
+#import <EOControl/EOQualifier.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGCards/NSString+NGCards.h>
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -33,8 +50,6 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
-
-#import "common.h"
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoTaskObject.h"

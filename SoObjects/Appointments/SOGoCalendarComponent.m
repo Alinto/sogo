@@ -22,6 +22,10 @@
 
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
@@ -33,8 +37,6 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-
-#import "common.h"
 
 #import "SOGoAptMailNotification.h"
 #import "iCalEntityObject+SOGo.h"

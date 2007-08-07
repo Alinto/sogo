@@ -19,13 +19,20 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalPerson.h>
 
-#import "common.h"
-
 #import <SOGo/LDAPUserManager.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoPermissions.h>
 
 #import "SOGoFreeBusyObject.h"
