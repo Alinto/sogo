@@ -40,8 +40,8 @@ function addLineToTree(tree, parent, line) {
       }
       offset = nodes.length - 1;
    }
-   else
-      window.alert("nope:" + window.opener.userFolderType);
+//    else
+//       window.alert("nope:" + window.opener.userFolderType);
 
    return offset;
 }
