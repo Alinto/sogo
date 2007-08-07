@@ -217,27 +217,28 @@ static BOOL useAltNamespace = NO;
 {
   // TODO: we might want to check for existence prior controller creation
   NSURL *sf;
+  SOGoMailFolder *newFolder;
 
   /* check whether URL exists */
   
   sf = [self imap4URL];
-  sf = [NSURL URLWithString: _key relativeToURL: sf];
+  sf = [NSURL URLWithString: [_key substringFromIndex: 6]
+	      relativeToURL: sf];
 
 // -  sf = [NSURL URLWithString:[[sf path] stringByAppendingPathComponent:_key]
 // -	      relativeToURL:sf];
+
+  if ([[self imap4Connection] doesMailboxExistAtURL: sf])
+    newFolder = [SOGoMailFolder objectWithName: _key inContainer: self];
+  else
+    newFolder = nil;
+  /* 
+     We may not return 404, confuses path traversal - but we still do in the
+     calling method. Probably the traversal process should be fixed to
+     support 404 exceptions (as stop traversal _and_ acquisition).
+  */
   
-  if (![[self imap4Connection] doesMailboxExistAtURL: sf]) {
-    /* 
-       We may not return 404, confuses path traversal - but we still do in the
-       calling method. Probably the traversal process should be fixed to
-       support 404 exceptions (as stop traversal _and_ acquisition).
-    */
-    return nil;
-  }
-  
-  /* create object */
-  
-  return [SOGoMailFolder objectWithName: _key inContainer: self];
+  return newFolder;
 }
 
 - (id) lookupImap4Message: (NSString *) _key
@@ -254,8 +255,7 @@ static BOOL useAltNamespace = NO;
   id obj;
 
   if ([_key hasPrefix: @"folder"])
-    obj = [self lookupImap4Folder: [_key substringFromIndex: 6]
-		inContext: _ctx];
+    obj = [self lookupImap4Folder: _key inContext: _ctx];
   else
     {
       if (isdigit ([_key characterAtIndex: 0]))
