@@ -1,5 +1,11 @@
 2007-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]):
+	set the mail date to the current date string returned by our
+	rfc822DateString extension method.
+
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
 	-_gcsFoldersFromFolder:): ignore the personal folders who are
 	returned but don't really exist.

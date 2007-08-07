@@ -34,6 +34,7 @@
 #import <NGMail/NGSendMail.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
@@ -337,7 +338,7 @@ static BOOL sendEMailNotifications = NO;
   iCalPerson *attendee;
   NSString *recipient;
   SOGoAptMailNotification *p;
-  NSString *subject, *text, *header;
+  NSString *mailDate, *subject, *text, *header;
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
   NGMimeBodyPart *bodyPart;
@@ -408,7 +409,8 @@ static BOOL sendEMailNotifications = NO;
           [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
           [headerMap setObject: sender forKey: @"From"];
           [headerMap setObject: recipient forKey: @"To"];
-          [headerMap setObject: [NSCalendarDate date] forKey: @"date"];
+	  mailDate = [[NSCalendarDate date] rfc822DateString];
+          [headerMap setObject: mailDate forKey: @"date"];
           [headerMap setObject: subject forKey: @"Subject"];
           msg = [NGMimeMessage messageWithHeader: headerMap];
 
