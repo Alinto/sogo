@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2004-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
   
   This file is part of SOPE.
   
@@ -246,20 +247,21 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
   unsigned       monthIdxInRange, numberOfMonthsInRange, interval;
   int            diff;
   NGMonthSet byMonthList = { // TODO: fill from rrule, this is the default
+    /* enable all months of the year */
     YES, YES, YES, YES, YES, YES, 
     YES, YES, YES, YES, YES, YES
   };
-  NSArray *byMonthDay = nil; // array of ints (-31..-1 and 1..31)
+  NSArray       *byMonthDay; // array of ints (-31..-1 and 1..31)
   NGMonthDaySet byMonthDaySet;
   
   eventStartDate  = [self->firstRange startDate];
   eventDayOfMonth = [eventStartDate dayOfMonth];
-  timeZone   = [eventStartDate timeZone];
-  rStart     = [_r startDate];
-  rEnd       = [_r endDate];
-  interval   = [self->rrule repeatInterval];
-  until      = [self lastInstanceStartDate]; // TODO: maybe replace
-  byMonthDay = [self->rrule byMonthDay];
+  timeZone        = [eventStartDate timeZone];
+  rStart          = [_r startDate];
+  rEnd            = [_r endDate];
+  interval        = [self->rrule repeatInterval];
+  until           = [self lastInstanceStartDate]; // TODO: maybe replace
+  byMonthDay      = [self->rrule byMonthDay];
   
 
   /* check whether the range to be processed is beyond the 'until' date */
@@ -274,8 +276,12 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
   
   /* precalculate month days (same for all instances) */
 
-  if (byMonthDay != nil)
+  if (byMonthDay != nil) {
+#if HEAVY_DEBUG
+    NSLog(@"byMonthDay: %@", byMonthDay);
+#endif
     NGMonthDaySet_fillWithByMonthDay(&byMonthDaySet, byMonthDay);
+  }
   
   
   // TODO: I think the 'diff' is to skip recurrence which are before the
@@ -317,6 +323,10 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
       - check whether the month is in the BYMONTH list
     */
     
+    /*
+      Note: the function below adds exactly a month, eg:
+            2007-01-30 + 1month => 2007-02-*28*!!
+    */
     cursor = [eventStartDate dateByAddingYears:0
                              months:(diff + monthIdxInRange)
                              days:0];
@@ -362,19 +372,71 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
     
     // TODO: add processing of byhour/byminute/bysecond etc
     
+    /* 
+       Next step is to create NSCalendarDate instances from our 'monthDays'
+       set. We walk over each day of the 'monthDays' set. If its flag isn't
+       set, we continue.
+       If its set, we add the date to the instance.
+       
+       The 'cursor' is the *startdate* of the event (not necessarily a
+       component of the sequence!) plus the currently processed month.
+       Eg:
+         startdate: 2007-01-30
+	 cursor[1]: 2007-01-30
+	 cursor[2]: 2007-02-28 <== Note: we have February!
+    */
+    
     for (dom = 1, doCont = YES; dom <= numDaysInMonth && doCont; dom++) {
       NSCalendarDate *start;
       
       if (!monthDays[dom])
 	continue;
-      
-      if (eventDayOfMonth == dom)
+
+      // TODO: what is this good for?
+      /*
+	Here we need to correct the date. Remember that the startdate given in
+	the event is not necessarily a date of the sequence!
+
+	The 'numDaysInMonth' localvar contains the number of days in the
+	current month (eg 31 for Januar, 28 for most February's, etc)
+	
+	Eg: MONTHLY;BYDAY=-1WE (last wednesday, every month)
+	
+	  cursor:  2007-01-30 (eventDayOfMonth = 30)
+	  =>start: 2007-01-31 (dom = 31)
+	  cursor:  2007-02-28 (eventDayOfMonth = 30)
+	  =>start: 2007-02-28 (dom = 28)
+	
+	Note: in case the cursor already had an event-day overflow, that is the
+	      'eventDayOfMonth' is bigger than the 'numDaysInMonth', the cursor
+	      will already be corrected!
+	      Eg:
+	        start was:      2007-01-30
+		cursor will be: 2007-02-28
+      */
+      if (eventDayOfMonth == dom) {
 	start = cursor;
-      else {
-	start = [cursor dateByAddingYears:0 months:0
-			days:(dom - eventDayOfMonth)];
       }
-      
+      else {
+	int maxDay = 
+	  eventDayOfMonth > numDaysInMonth ? numDaysInMonth : eventDayOfMonth;
+	
+	start = [cursor dateByAddingYears:0 months:0 days:(dom - maxDay)];
+      }
+
+      /*
+	Setup for 2007-02-28, MONTHLY;BYDAY=-1WE.
+	  dom:             28
+	  eventDayOfMonth: 31
+	  cursor:          2007-02-28
+	  start:           2007-02-25 <== WRONG
+      */
+
+#if HEAVY_DEBUG
+      NSLog(@"DOM %i EDOM %i NUMDAYS %i START: %@ CURSOR: %@", 
+	    dom, eventDayOfMonth, numDaysInMonth,
+	    start, cursor);
+#endif
       doCont = [self _addInstanceWithStartDate:start
 		     limitDate:until
 		     limitRange:_r
