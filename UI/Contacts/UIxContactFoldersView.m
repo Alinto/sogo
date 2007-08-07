@@ -205,15 +205,18 @@
       if ([currentContactFolder
 	    isKindOfClass: [SOGoContactGCSFolder class]])
 	{
-	  folderName = [NSString stringWithFormat: @"/Contacts/%@",
-				 [currentContactFolder nameInContainer]];
-	  currentDictionary = [NSMutableDictionary new];
-	  [currentDictionary autorelease];
 	  displayName = [[currentContactFolder ocsFolder] folderName];
-	  [currentDictionary setObject: displayName forKey: @"displayName"];
-	  [currentDictionary setObject: folderName forKey: @"name"];
-	  [currentDictionary setObject: @"contact" forKey: @"type"];
-	  [gcsFolders addObject: currentDictionary];
+	  if (displayName)
+	    {
+	      folderName = [NSString stringWithFormat: @"/Contacts/%@",
+				     [currentContactFolder nameInContainer]];
+	      currentDictionary
+		= [NSMutableDictionary dictionaryWithCapacity: 3];
+	      [currentDictionary setObject: displayName forKey: @"displayName"];
+	      [currentDictionary setObject: folderName forKey: @"name"];
+	      [currentDictionary setObject: @"contact" forKey: @"type"];
+	      [gcsFolders addObject: currentDictionary];
+	    }
 	}
       currentContactFolder = [contactSubfolders nextObject];
     }

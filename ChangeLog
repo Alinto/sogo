@@ -1,3 +1,9 @@
+2007-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-_gcsFoldersFromFolder:): ignore the personal folders who are
+	returned but don't really exist.
+
 2007-08-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView _responseForResults:]):
