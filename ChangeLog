@@ -1,3 +1,8 @@
+2007-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m ([SOGo +initialize]): show the build date and
+	hostname at startup.
+
 2007-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m

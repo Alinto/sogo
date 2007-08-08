@@ -46,6 +46,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
+#import "build.h"
 #import "SOGoProductLoader.h"
 
 @interface SOGo : SoApplication
@@ -74,6 +75,8 @@ static BOOL debugObjectAllocation = NO;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
   id tmp;
+
+  NSLog (@"starting SOGo (build %@)", SOGoBuildDate);
   
   doCrashOnSessionCreate = [ud boolForKey:@"SOGoCrashOnSessionCreate"];
 #ifdef GNUSTEP_BASE_LIBRARY

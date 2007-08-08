@@ -1,5 +1,6 @@
 # compile settings
 
+BUILD_DATE = $(shell echo $$USER@$$HOSTNAME; date +"%Y%m%d%H%M")
 ADDITIONAL_CPPFLAGS += \
         -DSOGO_MAJOR_VERSION=$(MAJOR_VERSION) \
         -DSOGO_MINOR_VERSION=$(MINOR_VERSION) \
@@ -7,7 +8,7 @@ ADDITIONAL_CPPFLAGS += \
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I../SoObjects/	\
-	-I..
+	-I.. -DSOGO_BUILD_DATE="@\"$(BUILD_DATE)\""
 
 ADDITIONAL_LIB_DIRS += \
 	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ \

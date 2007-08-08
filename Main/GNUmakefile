@@ -9,11 +9,14 @@ SOGOD     = sogod-$(MAJOR_VERSION).$(MINOR_VERSION)
 TOOL_NAME = $(SOGOD)
 
 # daemon tool
+all::
+	$(RM) obj/build.*
 
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
 	SOGo.m			\
 	SOGoProductLoader.m	\
+	build.m
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
