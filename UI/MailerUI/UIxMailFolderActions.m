@@ -131,16 +131,15 @@
 			 withCO: (SOGoMailFolder *) co
 {
   NSURL *destURL;
-  NSString *trashFolderName, *folderName;
+  NSString *trashFolderName, *folderName, *path;
 
   folderName = [[srcURL path] lastPathComponent];
   trashFolderName
     = [[co mailAccountFolder] trashFolderNameInContext: context];
-
+  path = [NSString stringWithFormat: @"/%@/%@",
+		   [trashFolderName substringFromIndex: 6], folderName];
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
-			   host: [srcURL host]
-			   path: [NSString stringWithFormat: @"/%@/%@",
-					   trashFolderName, folderName]];
+			   host: [srcURL host] path: path];
   [destURL autorelease];
 
   return destURL;

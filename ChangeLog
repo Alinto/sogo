@@ -1,5 +1,8 @@
 2007-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-deleteFolderAction]): fixed the url of the destination folder.
+
 	* Main/SOGo.m ([SOGo +initialize]): show the build date and
 	hostname at startup.
 
