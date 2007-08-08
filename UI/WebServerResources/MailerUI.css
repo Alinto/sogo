@@ -182,7 +182,7 @@ TABLE.titletable
   padding-left: 6px;
 }
 
-TABLE.titletable td.titlecell SELECT
+TABLE.titletable TD.titlecell SELECT
 { 
   display: -moz-popup;
   border-top: 1px solid #fff;
@@ -222,7 +222,7 @@ span.mailer_datefield
   white-space: nowrap;
 }
 
-td.mailer_readmailsubject
+TD.mailer_readmailsubject
 {
   background-image: url(message-mail-read.png) !important;
   background-repeat: no-repeat !important;
@@ -230,7 +230,7 @@ td.mailer_readmailsubject
   padding-left: 20px !important;
 }
 
-td.mailer_unreadmailsubject
+TD.mailer_unreadmailsubject
 {
   background-image: url(message-mail.png) !important;
   background-repeat: no-repeat !important;
@@ -239,13 +239,13 @@ td.mailer_unreadmailsubject
   font-weight: bold !important;
 }
 
-td.mailer_readmailsubject a
+TD.mailer_readmailsubject a
 {
   color: black;
   text-decoration: none;
 }
 
-td.mailer_unreadmailsubject a
+TD.mailer_unreadmailsubject a
 {
   color: black;
   text-decoration: none;
@@ -326,7 +326,7 @@ DIV.mailer_mailcontent
   bottom: 0px;
 }
 
-td.mailer_fieldname
+TD.mailer_fieldname
 {
   white-space: nowrap;
   padding: 0 1em;
@@ -336,16 +336,17 @@ td.mailer_fieldname
   width: 6em;
 }
 
-td.mailer_fieldvalue
+TD.mailer_fieldvalue
 {
+  vertical-align: top;
 }
 
-td.mailer_subjectfieldvalue
+TD.mailer_subjectfieldvalue
 {
   font-weight: bold;
 }
 
-td.mailer_fieldvalue a
+TD.mailer_fieldvalue a
 {
   text-decoration: underline;
   vertical-align: top;
@@ -405,7 +406,7 @@ div#attachment_upload
   padding: 4px;
 }
 
-td.attachment_uplabel
+TD.attachment_uplabel
 {
   width: 15%;
   text-align: left;
@@ -499,8 +500,8 @@ TABLE#messageList TD.messageFlagColumn
 
 TD#subjectHeader,
 TABLE#messageList TD.tbtv_subject_headercell,
-TABLE#messageList td.mailer_unreadmailsubject,
-TABLE#messageList td.mailer_readmailsubject
+TABLE#messageList TD.mailer_unreadmailsubject,
+TABLE#messageList TD.mailer_readmailsubject
 { width: 40%;
   min-width: 40%; }
 
@@ -544,4 +545,50 @@ DIV#rightDragHandle
   left: 0px;
   right: 0px;
   height: 5px;
+}
+
+@media print
+{
+  DIV#leftPanel,
+  DIV#verticalDragHandle,
+  DIV#filterPanel,
+  DIV#mailboxContent,
+  DIV.dragHandle
+  { display: none; }
+
+  DIV#rightPanel
+  { position: static;
+    overflow: visible;
+    margin: 0px; }
+
+  DIV#messageContent
+  { position: static;
+    border: 0px;
+    margin: 0px;
+    overflow: visible; }
+
+  TABLE.mailer_fieldtable
+  { border: 0px;
+    font-family: serif;
+    height: auto;
+    overflow: visible; }
+
+  TD.mailer_fieldname
+  { text-align: left;
+    width: auto; }
+
+  TD.mailer_fieldvalue
+  { white-space: normal; }
+
+  TD.mailer_fieldvalue A
+  { text-decoration: none;
+    white-space: nowrap;
+    color: #000; }
+
+  A:visited
+  { color: #00f; }
+
+  DIV.mailer_mailcontent
+  { position: static;
+    overflow: visible; }
 }

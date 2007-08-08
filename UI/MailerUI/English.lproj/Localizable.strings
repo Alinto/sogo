@@ -128,3 +128,6 @@
 "Operation failed" = "Operation failed";
 
 "quotasFormat" = "Quotas: %{0} used on %{1} Kb; %{2}%";
+
+"Please select a message to print." = "Please select a message to print.";
+"Please select only one message to print." = "Please select only one message to print.";

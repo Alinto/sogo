@@ -53,6 +53,7 @@
   ),
   (
    { link = "#";
+     onclick = "return onPrintCurrentMessage(event);";
      cssClass = "tbicon_print";
      image = "tb-mail-print-flat-24x24.png";
      label = "Print"; },
