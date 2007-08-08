@@ -264,4 +264,4 @@ function onSelectAllAttachments() {
     nodes[i].select();
 }
 
-window.addEventListener("load", initMailEditor, false);
+addEvent(window, 'load', initMailEditor);

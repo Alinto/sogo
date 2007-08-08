@@ -105,10 +105,10 @@ function fancyAddRow(shouldEdit, text) {
 
   // select popup
   var rowNodes = row.childNodesWithTag("span");
-  select = rowNodes[0].childNodesWithTag("select")[0];
+  select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
 //   select.value = row.childNodesWithTag("span")[0].childNodesWithTag("select")[0].value;
-  input = rowNodes[1].childNodesWithTag("input")[0];
+  input = $(rowNodes[1]).childNodesWithTag("input")[0];
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
   input.value = text;

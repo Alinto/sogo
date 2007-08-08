@@ -125,8 +125,8 @@ Element.addMethods({
     if (document.currentPopupMenu)
       hideMenu(document.currentPopupMenu);
     
-    var menuTop = event.pageY;
-    var menuLeft = event.pageX;
+    var menuTop = Event.pointerY(event);
+    var menuLeft = Event.pointerX(event);
     var heightDiff = (window.innerHeight
 		      - (menuTop + popup.offsetHeight));
     if (heightDiff < 0)
