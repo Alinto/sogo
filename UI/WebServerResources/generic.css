@@ -690,3 +690,19 @@ INPUT.checkBox
   -moz-border-left-colors: #000 #fff; 
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
+
+@media print
+{
+  BODY
+  { position: static;
+    font-size: 25%;
+    height: auto;
+    overflow: visible; }
+
+  DIV#logConsole,
+  DIV#linkBanner,
+  DIV#toolbar,
+  DIV.menu,
+  DIV.tabsContainer
+  { display: none; }
+}

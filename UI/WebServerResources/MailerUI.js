@@ -320,6 +320,20 @@ function onMenuDeleteMessage(event) {
   preventDefault(event);
 }
 
+function onPrintCurrentMessage(event) {
+  var rowIds = $("messageList").getSelectedRowsId();
+  if (rowIds.length == 0) {
+    window.alert(labels["Please select a message to print."].decodeEntities());
+  }
+  else if (rowIds.length > 1) {
+    window.alert(labels["Please select only one message to print."].decodeEntities());
+  }
+  else
+    window.print();
+
+  preventDefault(event);
+}
+
 function onMailboxTreeItemClick(event) {
   var topNode = $("mailboxTree");
   var mailbox = this.parentNode.getAttribute("dataname");
