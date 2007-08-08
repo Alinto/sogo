@@ -10,7 +10,7 @@ TOOL_NAME = $(SOGOD)
 
 # daemon tool
 all::
-	$(RM) obj/build.*
+	@touch build.m
 
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
