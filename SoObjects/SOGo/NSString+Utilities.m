@@ -249,6 +249,25 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   return [NSString stringWithFormat: @"\"%@\"", representation];
 }
 
+- (NSString *) pureEMailAddress
+{
+  NSString *pureAddress;
+  NSRange delimiter;
+
+  delimiter = [self rangeOfString: @"<"];
+  if (delimiter.location == NSNotFound)
+    pureAddress = self;
+  else
+    {
+      pureAddress = [self substringFromIndex: NSMaxRange (delimiter)];
+      delimiter = [pureAddress rangeOfString: @">"];
+      if (delimiter.location != NSNotFound)
+	pureAddress = [pureAddress substringToIndex: delimiter.location];
+    }
+
+  return pureAddress;
+}
+
 #if LIB_FOUNDATION_LIBRARY
 - (BOOL) boolValue
 {

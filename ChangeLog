@@ -1,5 +1,10 @@
 2007-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-pureEMailAddress]): new utility method inspired by the
+	"_rawSender" private method in SOGoDraftObject, which it now
+	replaces.
+
 	* SoObjects/SOGo/SOGoMailer.m: new abstraction class module that
 	provides a common API for sending emails, no matter what the
 	transport is.

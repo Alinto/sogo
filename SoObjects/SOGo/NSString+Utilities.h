@@ -43,6 +43,9 @@
 
 - (NSString *) jsonRepresentation;
 
+/* bare email addresses */
+- (NSString *) pureEMailAddress;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif
