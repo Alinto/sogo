@@ -1,5 +1,8 @@
 2007-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-listMailboxesAction]): declare the output as text/plain in UTF-8.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-deleteFolderAction]): fixed the url of the destination folder.
 
