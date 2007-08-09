@@ -1,3 +1,9 @@
+2007-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoMailer.m: new abstraction class module that
+	provides a common API for sending emails, no matter what the
+	transport is.
+
 2007-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
