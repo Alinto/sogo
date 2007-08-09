@@ -59,6 +59,10 @@
 
 - (NGImap4Connection *)imap4Connection;
 - (NGImap4ConnectionManager *)mailManager;
+
+- (NSString *) relativeImap4Name;
+- (NSMutableString *) imap4URLString;
+
 - (NSURL *)imap4URL;
 - (NSString *)imap4Login;
 - (NSString *)imap4Password;
