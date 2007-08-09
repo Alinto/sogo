@@ -41,7 +41,6 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
-#import <NGMail/NGSendMail.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -49,6 +48,7 @@
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
 
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/SOGoMailer.h>
 
 #import "SOGoDraftObject.h"
 
@@ -785,60 +785,8 @@ static BOOL        showTextAttachmentsInline  = NO;
   return ma;
 }
 
-- (NSString *) _rawSender
+- (NSException *) sendMail
 {
-  NSString *startEmail, *rawSender;
-  NSRange delimiter;
-
-  startEmail = [self sender];
-  delimiter = [startEmail rangeOfString: @"<"];
-  if (delimiter.location == NSNotFound)
-    rawSender = startEmail;
-  else
-    {
-      rawSender = [startEmail substringFromIndex: NSMaxRange (delimiter)];
-      delimiter = [rawSender rangeOfString: @">"];
-      if (delimiter.location != NSNotFound)
-	rawSender = [rawSender substringToIndex: delimiter.location];
-    }
-
-  return rawSender;
-}
-
-- (NSException *)sendMimeMessageAtPath:(NSString *)_path {
-  static NGSendMail *mailer = nil;
-  NSArray  *recipients;
-  NSString *from;
-  
-  /* validate */
-  
-  recipients = [self allRecipients];
-  from       = [self _rawSender];
-  if ([recipients count] == 0) {
-    return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"draft has no recipients set!"];
-  }
-  if ([from length] == 0) {
-    return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"draft has no sender (from) set!"];
-  }
-  
-  /* setup mailer object */
-  
-  if (mailer == nil)
-    mailer = [[NGSendMail sharedSendMail] retain];
-  if (![mailer isSendMailAvailable]) {
-    [self errorWithFormat:@"missing sendmail binary!"];
-    return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"did not find sendmail binary!"];
-  }
-  
-  /* send mail */
-  
-  return [mailer sendMailAtPath:_path toRecipients:recipients sender:from];
-}
-
-- (NSException *)sendMail {
   NSException *error;
   NSString    *tmpPath;
   
@@ -851,8 +799,10 @@ static BOOL        showTextAttachmentsInline  = NO;
   }
   
   /* send mail */
-  error = [self sendMimeMessageAtPath:tmpPath];
-  
+  error = [[SOGoMailer sharedMailer] sendMailAtPath: tmpPath
+				     toRecipients: [self allRecipients]
+				     sender: [self sender]];
+
   /* delete temporary file */
   [self deleteTemporaryMessageFile:tmpPath];
 

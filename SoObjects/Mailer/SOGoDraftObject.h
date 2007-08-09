@@ -48,34 +48,33 @@
 
 /* contents */
 
-- (NSDictionary *)fetchInfo;
-- (NSException *)storeInfo:(NSDictionary *)_info;
+- (NSDictionary *) fetchInfo;
+- (NSException *) storeInfo: (NSDictionary *) _info;
 
 /* attachments */
 
-- (NSArray *)fetchAttachmentNames;
-- (BOOL)isValidAttachmentName:(NSString *)_name;
-- (NSException *) saveAttachment: (NSData *)_attach
+- (NSArray *) fetchAttachmentNames;
+- (BOOL) isValidAttachmentName: (NSString *) _name;
+- (NSException *) saveAttachment: (NSData *) _attach
 		    withMetadata: (NSDictionary *) metadata;
-- (NSException *)deleteAttachmentWithName:(NSString *)_name;
+- (NSException *) deleteAttachmentWithName: (NSString *) _name;
 
 /* NGMime representations */
 
-- (NGMimeMessage *)mimeMessage;
+- (NGMimeMessage *) mimeMessage;
 
-- (NSString *)saveMimeMessageToTemporaryFile;
-- (NSString *)saveMimeMessageToTemporaryFileWithHeaders:(NSDictionary *)_addh;
-- (NSException *)sendMimeMessageAtPath:(NSString *)_path;
+- (NSString *) saveMimeMessageToTemporaryFile;
+- (NSString *) saveMimeMessageToTemporaryFileWithHeaders:(NSDictionary *)_addh;
 
-- (NSException *)sendMail;
+- (NSException *) sendMail;
 
 /* operations */
 
-- (NSException *)delete;
+- (NSException *) delete;
 
 /* fake being a SOGoMailObject */
 
-- (id)fetchParts:(NSArray *)_parts;
+- (id) fetchParts: (NSArray *) _parts;
 
 @end
 
