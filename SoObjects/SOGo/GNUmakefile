@@ -44,6 +44,7 @@ libSOGo_HEADER_FILES = \
 	NSCalendarDate+SOGo.h		\
 	\
 	SOGoAuthenticator.h		\
+	SOGoMailer.h			\
 	SOGoUser.h			\
 
 libSOGo_OBJC_FILES = \
@@ -71,6 +72,7 @@ libSOGo_OBJC_FILES = \
 	NSCalendarDate+SOGo.m		\
 	\
 	SOGoAuthenticator.m		\
+	SOGoMailer.m			\
 	SOGoUser.m			\
 
 # tools
