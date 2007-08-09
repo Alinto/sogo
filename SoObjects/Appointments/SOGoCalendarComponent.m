@@ -21,20 +21,24 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGHashMap.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
-#import <NGMime/NGMime.h>
-#import <NGMail/NGMail.h>
-#import <NGMail/NGSendMail.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMail/NGMimeMessage.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
@@ -332,7 +336,6 @@ static BOOL sendEMailNotifications = NO;
   NSString *pageName;
   iCalPerson *organizer;
   NSString *cn, *email, *sender, *iCalString;
-  NGSendMail *sendmail;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
@@ -360,9 +363,6 @@ static BOOL sendEMailNotifications = NO;
       /* generate iCalString once */
       iCalString = [[_newObject parent] versitString];
   
-      /* get sendmail object */
-      sendmail = [NGSendMail sharedSendMail];
-
       /* get WOApplication instance */
       app = [WOApplication application];
 
@@ -444,9 +444,10 @@ static BOOL sendEMailNotifications = NO;
           [body release];
 
           /* send the damn thing */
-          [sendmail sendMimePart: msg
-                    toRecipients: [NSArray arrayWithObject: email]
-                    sender: [organizer rfc822Email]];
+          [[SOGoMailer sharedMailer]
+	    sendMimePart: msg
+	    toRecipients: [NSArray arrayWithObject: email]
+	    sender: [organizer rfc822Email]];
         }
     }
 }

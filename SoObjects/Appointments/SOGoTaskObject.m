@@ -19,19 +19,23 @@
   02111-1307, USA.
 */
 
-#import "SOGoTaskObject.h"
+#import <Foundation/NSException.h>
+#import <Foundation/NSUserDefaults.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
 #import <SOGo/LDAPUserManager.h>
-#import <NGMime/NGMime.h>
-#import <NGMail/NGMail.h>
-#import <NGMail/NGSendMail.h>
-#import "SOGoAptMailNotification.h"
+
+#import <SoObjects/SOGo/SOGoMailer.h>
 
 #import "NSArray+Appointments.h"
+#import "SOGoAptMailNotification.h"
+
+#import "SOGoTaskObject.h"
 
 @interface SOGoTaskObject (PrivateAPI)
 

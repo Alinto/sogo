@@ -23,10 +23,10 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGSendMail.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 
+#import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
@@ -195,9 +195,9 @@
   [message setBody: body];
   [body release];
 
-  [[NGSendMail sharedSendMail] sendMimePart: message
-			       toRecipients: [NSArray arrayWithObject: recipient]
-			       sender: [activeUser primaryEmail]];
+  [[SOGoMailer sharedMailer] sendMimePart: message
+			     toRecipients: [NSArray arrayWithObject: recipient]
+			     sender: [activeUser primaryEmail]];
 }
 
 @end
