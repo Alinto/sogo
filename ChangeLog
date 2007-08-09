@@ -1,5 +1,10 @@
 2007-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-quotasAction]): invoke "relativeImap4Name" instead of
+	"nameInContainer" since the latter also returns the "folder"
+	prefix.
+
 	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
 	-listMailboxesAction]): declare the output as text/plain in UTF-8.
 

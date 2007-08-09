@@ -268,7 +268,7 @@
   folderURL = [folder imap4URL];
   
   client = [[folder imap4Connection] client];
-  infos = [client getQuotaRoot: [folder nameInContainer]];
+  infos = [client getQuotaRoot: [folder relativeImap4Name]];
   responseString = [[infos objectForKey: @"quotas"] jsonRepresentation];
   [response appendContentString: responseString];
 
