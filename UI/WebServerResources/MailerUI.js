@@ -1330,7 +1330,7 @@ function getMenus() {
 					  "-", "label-menu", "mark-menu",
 					  "-",
 					  null, onMenuViewMessageSource,
-					  null, null,
+					  null, onPrintCurrentMessage,
 					  onMenuDeleteMessage);
   menus["label-menu"] = new Array(null, "-", null , null, null, null , null,
 				  null);
