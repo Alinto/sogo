@@ -151,15 +151,18 @@ static BOOL debugObjectAllocation = NO;
 		  tableURL: (NSString *) url
 		   andType: (NSString *) tableType
 {
-  NSString *tableName, *descFile;
+  NSString *tableName, *descFile, *tableFile, *fileSuffix;
   EOAdaptorChannel *tc;
   NGBundleManager *bm;
   NSBundle *bundle;
   unsigned int length;
+  NSURL *channelURL;
 
   bm = [NGBundleManager defaultBundleManager];
-  
-  tc = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
+
+  channelURL = [NSURL URLWithString: url];
+  fileSuffix = [channelURL scheme];
+  tc = [cm acquireOpenChannelForURL: channelURL];
 
   tableName = [url lastPathComponent];
   if ([tc evaluateExpressionX:
@@ -167,8 +170,13 @@ static BOOL debugObjectAllocation = NO;
     {
       bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
       length = [tableType length] - 3;
-      descFile = [bundle pathForResource: [tableType substringToIndex: length]
+      tableFile = [tableType substringToIndex: length];
+      descFile
+	= [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
+					     tableFile, fileSuffix]
 			 ofType: @"sql"];
+      if (!descFile)
+	descFile = [bundle pathForResource: tableFile ofType: @"sql"];
       if (![tc evaluateExpressionX:
 		 [NSString stringWithContentsOfFile: descFile]])
 	[self logWithFormat: @"table '%@' successfully created!", tableName];

@@ -18,8 +18,10 @@ MainUI_OBJC_FILES += \
 MainUI_RESOURCE_FILES += 	\
 	Version			\
 	product.plist		\
+	AgenorProfile.sql \
+	AgenorProfile-oracle.sql \
 	OCSFolderInfo.sql \
-	AgenorProfile.sql
+	OCSFolderInfo-oracle.sql \
 
 MainUI_LOCALIZED_RESOURCE_FILES += \
 	Locale Localizable.strings
