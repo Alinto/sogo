@@ -524,8 +524,8 @@ function popupMenu(event, menuId, target) {
       hideMenu(document.currentPopupMenu);
 
    var popup = $(menuId);
-   var menuTop = event.pageY;
-   var menuLeft = event.pageX;
+   var menuTop =  Event.pointerY(event);
+   var menuLeft = Event.pointerX(event);
    var heightDiff = (window.innerHeight
 		     - (menuTop + popup.offsetHeight));
    if (heightDiff < 0)
@@ -541,6 +541,7 @@ function popupMenu(event, menuId, target) {
 		    visibility: "visible" });
 
    document.currentPopupMenu = popup;
+
    Event.observe(document.body, "click", onBodyClickMenuHandler);
 
    preventDefault(event);
@@ -571,7 +572,7 @@ function onBodyClickMenuHandler(event) {
    preventDefault(event);
 }
 
-function hideMenu(menuNode) {
+function hideMenu(menuNode) { //log ("hideMenu");
   var onHide;
 
   if (menuNode.submenu) {
@@ -590,13 +591,17 @@ function hideMenu(menuNode) {
     menuNode.parentMenu = null;
   }
 
-  if (document.initEvent) {
-    var onhideEvent = document.createEvent("UIEvents");
-    onhideEvent.initEvent("hideMenu", false, true);
+  if (document.createEvent) {
+    var onhideEvent;
+    if (isSafari())
+      onhideEvent = document.createEvent("UIEvents");
+    else // Mozilla
+      onhideEvent = document.createEvent("Events");
+    onhideEvent.initEvent("mousedown", false, true);
     menuNode.dispatchEvent(onhideEvent);
   }
-  else if (document.createEventObject) {
-    // TODO: add support for IE
+  else if (document.createEventObject) { // IE
+    menuNode.fireEvent("onmousedown");
   }
 }
 
@@ -759,8 +764,10 @@ function checkDropDown(event) {
 /* search field */
 function popupSearchMenu(event) {
   var menuId = this.getAttribute("menuid");
-  relX = event.pageX - $(this).cascadeLeftOffset();
-  relY = event.pageY - $(this).cascadeTopOffset();
+  var offset = Position.cumulativeOffset(this);
+
+  relX = Event.pointerX(event) - offset[0];
+  relY = Event.pointerY(event) - offset[1];
 
   if (event.button == 0
       && relX < 24) {
@@ -771,8 +778,9 @@ function popupSearchMenu(event) {
       hideMenu(document.currentPopupMenu);
 
     var popup = $(menuId);
+    offset = Position.positionedOffset(this);
     popup.setStyle({ top: this.offsetHeight + "px",
-		     left: (this.offsetLeft + 3) + "px",
+	            left: (offset[0] + 3) + "px",
 			    visibility: "visible" });
   
     document.currentPopupMenu = popup;
@@ -781,8 +789,8 @@ function popupSearchMenu(event) {
 }
 
 function setSearchCriteria(event) {
-  searchValue = $("searchValue");
-  searchCriteria = $("searchCriteria");
+  var searchValue = $("searchValue");
+  var searchCriteria = $("searchCriteria");
 
   searchValue.setAttribute("ghost-phrase", this.innerHTML);
   searchCriteria.value = this.getAttribute('id');
@@ -804,6 +812,8 @@ function onSearchChange() {
 function configureSearchField() {
    var searchValue = $("searchValue");
 
+   if (!searchValue) return;
+
    Event.observe(searchValue, "mousedown",
 		 onSearchMouseDown.bindAsEventListener(searchValue));
    Event.observe(searchValue, "click",
@@ -818,8 +828,8 @@ function configureSearchField() {
 
 function onSearchMouseDown(event) {
    var superNode = this.parentNode.parentNode.parentNode;
-   relX = (event.pageX - superNode.offsetLeft - this.offsetLeft);
-   relY = (event.pageY - superNode.offsetTop - this.offsetTop);
+   relX = (Event.pointerX(event) - superNode.offsetLeft - this.offsetLeft);
+   relY = (Event.pointerY(event) - superNode.offsetTop - this.offsetTop);
 
    if (relY < 24) {
       event.cancelBubble = true;
@@ -840,12 +850,13 @@ function onSearchFocus() {
 }
 
 function onSearchBlur(event) {
-  var ghostPhrase = this.getAttribute("ghost-phrase");
-//   log ("search blur: '" + this.value + "'");
-  if (!this.value) {
+   var ghostPhrase = this.getAttribute("ghost-phrase");
+   //log ("search blur: '" + this.value + "'");
+   if (!this.value) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
     this.value = ghostPhrase;
+    refreshCurrentFolder();
   } else if (this.value == ghostPhrase) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
@@ -862,9 +873,12 @@ function onSearchKeyDown(event) {
   this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
-function onSearchFormSubmit(event) { log("generic.onSearchFormSubmit")
+function onSearchFormSubmit(event) {
    var searchValue = $("searchValue");
    var searchCriteria = $("searchCriteria");
+   var ghostPhrase = searchValue.getAttribute('ghost-phrase');
+
+   if (searchValue.value == ghostPhrase) return;
 
    search["criteria"] = searchCriteria.value;
    search["value"] = searchValue.value;
@@ -876,6 +890,8 @@ function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
  
+  if (!searchValue) return;
+
   var searchOptions = $("searchOptions").childNodesWithTag("li");
   if (searchOptions.length > 0) {
     var firstChild = searchOptions[0];
@@ -1035,7 +1051,7 @@ function initMenus() {
 function initMenu(menuDIV, callbacks) {
    var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
    for (var j = 0; j < lis.length; j++) {
-      var node = lis[j];
+      var node = $(lis[j]);
       Event.observe(node, "mousedown", listRowMouseDownHandler, false);
       var callback = callbacks[j];
       if (callback) {
@@ -1228,9 +1244,9 @@ function onLoadHandler(event) {
    queryParameters = parseQueryParameters('' + window.location);
    if (!$(document.body).hasClassName("popup")) {
       initLogConsole();
-      initCriteria();
-      configureSearchField();
    }
+   initCriteria();
+   configureSearchField();
    initMenus();
    initTabs();
    configureDragHandles();

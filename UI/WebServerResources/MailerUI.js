@@ -31,7 +31,7 @@ function openMessageWindow(msguid, url) {
 }
 
 function onMessageDoubleClick(event) {
-  resetSelection(window);
+  //resetSelection(window);
   var msguid = this.parentNode.id.substr(4);
    
   return openMessageWindow(msguid,
@@ -43,12 +43,6 @@ function toggleMailSelect(sender) {
   var row;
   row = $(sender.name);
   row.className = sender.checked ? "tableview_selected" : "tableview";
-}
-
-function clearSearch(sender) {
-  var searchField = window.$("search");
-  if (searchField) searchField.value="";
-  return true;
 }
 
 function openAddressbook(sender) {
@@ -393,7 +387,7 @@ function openMailbox(mailbox, reload, idx) {
     var searchValue = search["value"];
     if (searchValue && searchValue.length > 0)
       url += ("&search=" + search["criteria"]
-	      + "&value=" + searchValue);
+	      + "&value=" + escape(searchValue));
     var sortAttribute = sorting["attribute"];
     if (sortAttribute && sortAttribute.length > 0)
       url += ("&sort=" + sorting["attribute"]

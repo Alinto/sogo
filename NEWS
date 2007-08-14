@@ -9,7 +9,8 @@
 - added support for limiting LDAP queries with the SOGoLDAPQueryLimit and
   the SOGoLDAPSizeLimit settings;
 - fixed a bug where folders starting with digits would not be displayed;
-- improved IE7 and Safari support: priority menus, attendees selector;
+- improved IE7 and Safari support: priority menus, attendees selector,
+  search fields, textarea sizes;
 - added the ability to print messages from the mailer toolbar;
 - added the ability to use and configure SMTP as the email transport instead
   of sendmail;

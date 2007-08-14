@@ -33,14 +33,14 @@ function validateEditorInput(sender) {
 function openContactsFolder(contactsFolder, reload, idx) {
   if ((contactsFolder && contactsFolder != currentContactFolder)
       || reload) {
-     currentContactFolder = contactsFolder; log("openContactsFolder " + contactsFolder);
+     currentContactFolder = contactsFolder;
      var url = URLForFolderID(currentContactFolder) +
 	"/view?noframe=1";
 
      var searchValue = search["value"];
      if (searchValue && searchValue.length > 0)
 	url += ("&search=" + search["criteria"]
-		+ "&value=" + searchValue);
+		+ "&value=" + escape(searchValue));
      var sortAttribute = sorting["attribute"];
      if (sortAttribute && sortAttribute.length > 0)
 	url += ("&sort=" + sorting["attribute"]
@@ -139,43 +139,46 @@ function contactsListCallback(http) {
 
 function onContactFoldersContextMenu(event) {
   var menu = $("contactFoldersMenu");
-  Event.observe(menu, "hideMenu", onContactFoldersContextMenuHide, false);
+  //Event.observe(menu, "hideMenu", onContactFoldersContextMenuHide, false);
+  Event.observe(menu, "mousedown", onContactFoldersContextMenuHide, false);
   popupMenu(event, "contactFoldersMenu", this);
 
   var topNode = $("contactFolders");
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    selectedNodes[i].deselect();
+    $(selectedNodes[i]).deselect();
   topNode.menuSelectedEntry = this;
-  this.select();
+  $(this).select();
 }
 
 function onContactContextMenu(event, element) {
   var menu = $("contactMenu");
-  Event.observe(menu, "hideMenu", onContactContextMenuHide, false);
+  //Event.observe(menu, "hideMenu", onContactContextMenuHide, false);
+  Event.observe(menu, "mousedown", onContactContextMenuHide, false);
+  //document.documentElement.onclick = onContactContextMenuHide;
   popupMenu(event, "contactMenu", element);
 
   var topNode = $("contactsList");
   var selectedNodes = topNode.getSelectedRows();
   topNode.menuSelectedRows = selectedNodes;
   for (var i = 0; i < selectedNodes.length; i++)
-    selectedNodes[i].deselect();
+    $(selectedNodes[i]).deselect();
   topNode.menuSelectedEntry = element;
-  element.select();
+  $(element).select();
 }
 
 function onContactContextMenuHide(event) {
   var topNode = $("contactsList");
 
   if (topNode.menuSelectedEntry) {
-    topNode.menuSelectedEntry.deselect();
+    $(topNode.menuSelectedEntry).deselect();
     topNode.menuSelectedEntry = null;
   }
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      nodes[i].select();
+      $(nodes[i]).select();
     topNode.menuSelectedRows = null;
   }
 }
@@ -437,7 +440,7 @@ function onFolderSelectionChange() {
    }
 }
 
-function refreshCurrentFolder() { log("refreshCurrentFolder");
+function refreshCurrentFolder() {
    openContactsFolder(currentContactFolder, true);
 }
 

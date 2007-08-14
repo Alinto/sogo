@@ -114,4 +114,5 @@ DIV.pageContent TEXTAREA
   left: 0em;
   right: 0em;
   bottom: 0em;
-  top: 17em; }
+  top: 17em;
+  width: 100%; }

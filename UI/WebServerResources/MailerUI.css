@@ -307,9 +307,9 @@ TABLE.mailer_fieldtable
   top: 0px;
   left: 0px;
   padding-top: .5em;
+  padding-bottom: .5em;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 7.5em;
   border-bottom: 1px solid #808080;
   background: #d4d0c8;
 }

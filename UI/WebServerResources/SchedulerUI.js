@@ -1427,21 +1427,6 @@ function onCalendarRemove(event) {
   preventDefault(event);
 }
 
-function configureSearchField() {
-   var searchValue = $("searchValue");
-
-   Event.observe(searchValue, "mousedown",
-		 onSearchMouseDown.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "click",
-		 popupSearchMenu.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "blur",
-		 onSearchBlur.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "focus",
-		 onSearchFocus.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "keydown",
-		 onSearchKeyDown.bindAsEventListener(searchValue));
-}
-
 function configureLists() {
    var list = $("tasksList");
    list.multiselect = true;

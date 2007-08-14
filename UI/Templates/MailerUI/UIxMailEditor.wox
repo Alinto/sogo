@@ -52,7 +52,7 @@
               /></span></div>
       </div>
     <!-- separator line -->
-      <textarea name="text" var:value="text" />
+      <textarea name="text" rows="30" var:value="text" />
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
     </form>
   </var:component>

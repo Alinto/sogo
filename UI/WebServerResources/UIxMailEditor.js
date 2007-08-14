@@ -30,9 +30,8 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
     var stop = false;
     var counter = 0;
     var currentRow = $('row_' + counter);
-    while (currentRow
-           && !stop) {
-      var currentValue = currentRow.childNodesWithTag("span")[1].childNodesWithTag("input")[0].value;
+    while (currentRow && !stop) {
+      var currentValue = $(currentRow.childNodesWithTag("span")[1]).childNodesWithTag("input")[0].value;
       if (currentValue == neededOptionValue) {
         stop = true;
         insertContact($("addr_" + counter), contactName, contactEmail);
@@ -231,9 +230,12 @@ function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
   var elements = list.childNodesWithTag("li");
-  for (var i = 0; i < elements.length; i++)
+  for (var i = 0; i < elements.length; i++) {
     Event.observe(elements[i], "click",
 		  onRowClick.bindAsEventListener(elements[i]));
+  }
+  onWindowResize(null);
+  Event.observe(window, "resize", onWindowResize);
 }
 
 function getMenus() {
@@ -262,6 +264,16 @@ function onSelectAllAttachments() {
   var nodes = list.childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++)
     nodes[i].select();
+}
+
+function onWindowResize(event) {
+  var textarea = document.pageform.text;
+  var windowheight = (typeof self.innerHeight == "number" ? self.innerHeight : document.body.clientHeight);
+  var textareaoffset = textarea.offsetTop;
+  var rowheight = (Element.getHeight(textarea) / textarea.rows);
+
+  textarea.rows = Math.round((windowheight - textareaoffset) / rowheight);
+  log ("onWindowResize new number of rows = " + textarea.rows);
 }
 
 addEvent(window, 'load', initMailEditor);
