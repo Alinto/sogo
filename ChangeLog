@@ -1,8 +1,14 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-isInDraftsFolder]): returns NO.
+	([-preferredIdentity]): removed method, replaced with -[SOGoUser
+	primaryIdentity].
+	([SOGoMailAccount -draftsFolderInContext:_ctx]): new method.
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
 	-isInDraftsFolder]): new method that detects if self is contained
-	by the drafts folder.
+	by the drafts folder by calling itself on the container object.
 
 	* SoObjects/Mailer/SOGoMailAccounts.m ([-fetchAllIdentities]):
 	removed method.

@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailAccount_H__
 #define __Mailer_SOGoMailAccount_H__
 
-#include <SoObjects/Mailer/SOGoMailBaseObject.h>
+#import <SoObjects/Mailer/SOGoMailBaseObject.h>
 
 /*
   SOGoMailAccount
@@ -33,41 +33,42 @@
   password, etc)
 */
 
-@class NSString, NSArray;
-@class SOGoMailFolder, SOGoMailIdentity;
+@class NSArray;
+@class NSString;
+@class SOGoDraftsFolder;
+@class SOGoMailFolder;
 
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
   SOGoMailFolder *inboxFolder;
+  SOGoDraftsFolder *draftsFolder;
   SOGoMailFolder *sentFolder;
   SOGoMailFolder *trashFolder;
 }
 
 /* folder pathes */
 
-- (NSArray *)allFolderPaths;
-- (NSArray *)additionalRootFolderNames; /* stuff like filters and drafts */
+- (NSArray *) allFolderPaths;
+- (NSArray *) additionalRootFolderNames; /* stuff like filters and drafts */
+- (BOOL) isInDraftsFolder;
 
 /* shared accounts */
 
-- (BOOL)isSharedAccount;
-- (NSString *)sharedAccountName;
-
-/* identity */
-
-- (SOGoMailIdentity *)preferredIdentity;
+- (BOOL) isSharedAccount;
+- (NSString *) sharedAccountName;
 
 /* special folders */
 
-- (NSString *)inboxFolderNameInContext:(id)_ctx;
-- (NSString *)draftsFolderNameInContext:(id)_ctx;
-- (NSString *)sieveFolderNameInContext:(id)_ctx;
-- (NSString *)sentFolderNameInContext:(id)_ctx;
-- (NSString *)trashFolderNameInContext:(id)_ctx;
+- (NSString *) inboxFolderNameInContext: (id)_ctx;
+- (NSString *) draftsFolderNameInContext: (id)_ctx;
+- (NSString *) sieveFolderNameInContext: (id)_ctx;
+- (NSString *) sentFolderNameInContext: (id)_ctx;
+- (NSString *) trashFolderNameInContext: (id)_ctx;
 
-- (SOGoMailFolder *)inboxFolderInContext:(id)_ctx;
-- (SOGoMailFolder *)sentFolderInContext:(id)_ctx;
-- (SOGoMailFolder *)trashFolderInContext:(id)_ctx;
+- (SOGoMailFolder *) inboxFolderInContext: (id)_ctx;
+- (SOGoDraftsFolder *) draftsFolderInContext: (id)_ctx;
+- (SOGoMailFolder *) sentFolderInContext: (id)_ctx;
+- (SOGoMailFolder *) trashFolderInContext: (id)_ctx;
 
 /* user defaults */
 - (NSString *) sharedFolderName;
