@@ -1,58 +1,59 @@
 <?xml version='1.0' standalone='yes'?>
-  <var:component
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:uix="OGo:uix"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label"
-    className="UIxPageFrame"
-    title="panelTitle"
-    const:popup="YES">
-    <div class="menu" id="attachmentsMenu">
-      <ul>
-        <li><var:string label:value="Open"/></li>
-        <li><var:string label:value="Delete" /></li>
-        <li><var:string label:value="Select All" /></li>
-        <li><!-- separator --></li>
-        <li><var:string label:value="Attach File(s)..." /></li>
-        <li><var:string label:value="Attach Web Page..." /></li>
-      </ul>
-    </div>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  title="panelTitle"
+  const:popup="YES">
+  <div class="menu" id="attachmentsMenu">
+    <ul>
+      <li><var:string label:value="Open"/></li>
+      <li><var:string label:value="Delete" /></li>
+      <li><var:string label:value="Select All" /></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Attach File(s)..." /></li>
+      <li><var:string label:value="Attach Web Page..." /></li>
+    </ul>
+  </div>
 
-    <form name="pageform" enctype="multipart/form-data">
-      <div id="headerArea">
-        <div id="attachmentsArea">
-          <var:string label:value="Attachments:" />
-          <ul id="attachments">
-            <var:foreach list="attachmentNames" item="attachmentName"
-	      ><img rsrc:img="attachment.gif"
-		/><var:string value="attachmentName"
-		/></var:foreach>
-	  </ul>
-        </div>
-        <span class="headerField"><var:string label:value="From" />:</span>
-        <var:popup const:name="from"
-          list="fromEMails"
-          item="item"
-          selection="from"
-          /><br />
-        <div>
-          <var:component className="UIxMailToSelection"
-            to="to" cc="cc" bcc="bcc" />
-        </div>
-        <div class="addressListElement" id="subjectRow"
-          ><span class="headerField"><var:string label:value="Subject"
-              />:</span
-            ><span class="headerInput"
-            ><input name="subject"
-              type="text"
-              class="textField"
-              var:value="subject"
-              /></span></div>
+  <form name="pageform" enctype="multipart/form-data">
+    <div id="headerArea">
+      <div id="attachmentsArea">
+	<var:string label:value="Attachments:" />
+	<ul id="attachments">
+	  <var:foreach list="attachmentNames" item="attachmentName"
+	    ><img rsrc:img="attachment.gif"
+	      /><var:string value="attachmentName"
+	      /></var:foreach>
+	</ul>
       </div>
+      <span class="headerField"><var:string label:value="From" />:</span>
+      <var:popup const:name="from"
+	list="fromEMails"
+	item="item"
+	selection="from"
+	/><br />
+      <div>
+	<var:component className="UIxMailToSelection"
+	  to="to" cc="cc" bcc="bcc" />
+      </div>
+      <div class="addressListElement" id="subjectRow"
+	><span class="headerField"><var:string label:value="Subject"
+	    />:</span
+	  ><span class="headerInput"
+	  ><input name="subject"
+	    type="text"
+	    class="textField"
+	    var:value="subject"
+	    /></span></div>
+    </div>
     <!-- separator line -->
-      <textarea name="text" rows="30" var:value="text" />
+    <textarea name="text" rows="30" var:value="text" />
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
-    </form>
-  </var:component>
+  </form>
+</var:component>
