@@ -95,6 +95,11 @@ static BOOL debugOn = YES;
   return o;
 }
 
+- (BOOL) isInDraftsFolder
+{
+  return [container isInDraftsFolder];
+}
+
 /* IMAP4 */
 
 - (NGImap4ConnectionManager *) mailManager

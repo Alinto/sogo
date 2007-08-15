@@ -48,30 +48,32 @@
   NGImap4Connection *imap4;
 }
 
-- (id)initWithImap4URL:(NSURL *)_url inContainer:(id)_container;
+- (id) initWithImap4URL: (NSURL *) _url
+	    inContainer: (id) _container;
 
 /* hierarchy */
 
-- (SOGoMailAccount *)mailAccountFolder;
-- (SOGoMailAccounts *)mailAccountsFolder;
+- (SOGoMailAccount *) mailAccountFolder;
+- (SOGoMailAccounts *) mailAccountsFolder;
+- (BOOL) isInDraftsFolder;
 
 /* IMAP4 */
 
-- (NGImap4Connection *)imap4Connection;
-- (NGImap4ConnectionManager *)mailManager;
+- (NGImap4Connection *) imap4Connection;
+- (NGImap4ConnectionManager *) mailManager;
 
 - (NSString *) relativeImap4Name;
 - (NSMutableString *) imap4URLString;
 
-- (NSURL *)imap4URL;
-- (NSString *)imap4Login;
-- (NSString *)imap4Password;
+- (NSURL *) imap4URL;
+- (NSString *) imap4Login;
+- (NSString *) imap4Password;
 
-- (void)flushMailCaches;
+- (void) flushMailCaches;
 
 /* IMAP4 names */
 
-- (BOOL)isBodyPartKey:(NSString *)_key inContext:(id)_ctx;
+- (BOOL) isBodyPartKey: (NSString *) _key inContext: (id) _ctx;
 
 @end
 

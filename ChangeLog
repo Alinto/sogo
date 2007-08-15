@@ -1,5 +1,9 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-isInDraftsFolder]): new method that detects if self is contained
+	by the drafts folder.
+
 	* SoObjects/Mailer/SOGoMailAccounts.m ([-fetchAllIdentities]):
 	removed method.
 	([-fetchIdentitiesWithEmitterPermissions]): removed method.
