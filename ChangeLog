@@ -1,5 +1,19 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([-fullEmail]): removed method.
+	([-primaryEmail]): removed method.
+	([SOGoUser -primaryIMAP4AccountString]): removed method.
+	([SOGoUser -mailAccounts]): new method that returns an array
+	containing description dictionaries for all the user mail
+	accounts. Each account also contain the user's identities for that
+	account.
+	([SOGoUser -allIdentities]): new utility method that returns all
+	the user identities on all accounts.
+	([SOGoUser -primaryIdentity]): new method return the first
+	identity of the first account.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -httpURLForAdvisoryToUser:uid]): 
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-isInDraftsFolder]): returns NO.
 	([-preferredIdentity]): removed method, replaced with -[SOGoUser
