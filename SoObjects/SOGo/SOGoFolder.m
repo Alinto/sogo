@@ -23,8 +23,10 @@
 #import <stdlib.h>
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/SoObject.h>
@@ -134,10 +136,7 @@ static NSString *defaultUserID = @"<default>";
   static GCSFolderManager *folderManager = nil;
 
   if (!folderManager)
-    {
-      folderManager = [GCSFolderManager defaultFolderManager];
-      [folderManager setFolderNamePrefix: @"SOGo"];
-    }
+    folderManager = [GCSFolderManager defaultFolderManager];
 
   return folderManager;
 }
