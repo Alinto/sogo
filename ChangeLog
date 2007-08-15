@@ -1,5 +1,8 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoUser+Mail.[hm]: removed useless class
+	extension module.
+
 	* SoObjects/Mailer/SOGoMailIdentity.[hm]: removed useless class
 	module.
 
