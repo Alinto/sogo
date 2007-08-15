@@ -22,7 +22,9 @@ CommonUI_OBJC_FILES +=		\
 	UIxTabItem.m		\
 	UIxUserRightsEditor.m	\
 	\
-	UIxToolbar.m
+	UIxToolbar.m		\
+	\
+	WODirectAction+SOGo.m \
 
 CommonUI_RESOURCE_FILES += \
 	Version			\
