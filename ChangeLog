@@ -1,5 +1,14 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-keysWithFormat:format]): method that forward the method of the
+	same name to each member of the array, considering they all are
+	instances of NSDictionary.
+	([NSArray -objectsForKey:key]): same principle as above.
+	([NSArray -flattenedArray]): new method that transforms an array
+	of arrays into a single array containing all the elements of the
+	subarrays.
+
 	* SoObjects/SOGo/NSDictionary+Utilities.m ([NSDictionary
 	-keysWithFormat:keyFormat]): new method inspired by the python
 	string formatting system and which replaces occurences of "%{key}"
