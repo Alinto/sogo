@@ -5,6 +5,10 @@
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
+    <var:if var:condition="mailIsDraft"
+      ><input const:name="editDraftButton" const:id="editDraftButton"
+	type="button" class="button" label:value="Edit Draft..."
+	/></var:if>
     <table class="mailer_fieldtable">
       <tr class="mailer_fieldrow">
         <td class="mailer_fieldname" ><var:string label:value="Subject"/>:</td>

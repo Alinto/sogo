@@ -6,6 +6,7 @@ var currentMessages = new Array();
 var maxCachedMessages = 20;
 var cachedMessages = new Array();
 var currentMailbox = null;
+var currentMailboxType = "";
 
 var usersRightsWindowHeight = 320;
 var usersRightsWindowWidth = 400;
@@ -31,12 +32,14 @@ function openMessageWindow(msguid, url) {
 }
 
 function onMessageDoubleClick(event) {
-  //resetSelection(window);
-  var msguid = this.parentNode.id.substr(4);
-   
-  return openMessageWindow(msguid,
-			   ApplicationBaseURL + currentMailbox + "/"
-			   + msguid + "/popupview");
+  var action;
+
+  if (currentMailboxType == "draft")
+    action = "edit";
+  else
+    action = "popupview";
+
+  return openMessageWindowsForSelection(action, true);
 }
 
 function toggleMailSelect(sender) {
@@ -140,19 +143,26 @@ function reopenToRemoveLocationBar() {
 
 /* mail list reply */
 
-function openMessageWindowsForSelection(action) {
+function openMessageWindowsForSelection(action, firstOnly) {
   if (document.body.hasClassName("popup"))
     win = openMessageWindow(window.messageId,
-			    window.messageURL + "/" + action /* url */);
+			    window.messageURL + "/" + action);
   else {
     var messageList = $("messageList");
     var rows = messageList.getSelectedRowsId();
-    var idset = "";
-    for (var i = 0; i < rows.length; i++)
-      win = openMessageWindow(rows[i].substr(4)        /* msguid */,
-			      ApplicationBaseURL + currentMailbox
-			      + "/" + rows[i].substr(4)
-			      + "/" + action /* url */);
+    if (rows.length > 0) {
+      if (firstOnly)
+	openMessageWindow(rows[0].substr(4),
+			  ApplicationBaseURL + currentMailbox
+			  + "/" + rows[0].substr(4)
+			  + "/" + action);
+      else
+	for (var i = 0; i < rows.length; i++)
+	  openMessageWindow(rows[i].substr(4),
+			    ApplicationBaseURL + currentMailbox
+			    + "/" + rows[i].substr(4)
+			    + "/" + action);
+    }
   }
 
   return false;
@@ -342,13 +352,13 @@ function onMailboxTreeItemClick(event) {
   $("searchValue").value = "";
   initCriteria();
 
-  var datatype = this.parentNode.getAttribute("datatype");
-  if (datatype == "account" || datatype == "additional") {
+  currentMailboxType = this.parentNode.getAttribute("datatype");
+  if (currentMailboxType == "account" || currentMailboxType == "additional") {
     currentMailbox = mailbox;
     $("messageContent").innerHTML = "";
     var body = $("messageList").tBodies[0];
-    for (var i = body.rows.length - 1; i > 0; i--)
-      body.deleteRow(i);
+    for (var i = body.rows.length; i > 0; i--)
+      body.deleteRow(i-1);
   }
   else
     openMailbox(mailbox);
@@ -370,6 +380,22 @@ function refreshMailbox() {
     topWindow.refreshCurrentFolder();
 
   return false;
+}
+
+function onComposeMessage() {
+  var topWindow = getTopWindow();
+  if (topWindow)
+    topWindow.composeNewMessage();
+
+  return false;
+}
+
+function composeNewMessage() {
+  var account = currentMailbox.split("/")[1];
+  var url = ApplicationBaseURL + "/" + account + "/compose";
+  window.open(url, null,
+	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+	      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 }
 
 function openMailbox(mailbox, reload, idx) {
@@ -669,10 +695,18 @@ function configureLinksInMessage() {
     else
       Event.observe(anchors[i], "click",
 		    onMessageAnchorClick);
+
+  var editDraftButton = $("editDraftButton");
+  if (editDraftButton)
+    Event.observe(editDraftButton, "click", onMessageEditDraft);
 }
 
 function onMessageContentMenu(event) {
   popupMenu(event, 'messageContentMenu', this);
+}
+
+function onMessageEditDraft(event) {
+  return openMessageWindowsForSelection("edit", true);
 }
 
 function onEmailAddressClick(event) {

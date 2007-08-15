@@ -301,6 +301,12 @@ DIV.mailer_unreadicon a
 }
 
 /* fields (key/value UI), eg used in mail viewer */
+INPUT#editDraftButton
+{
+  position: absolute;
+  top: 2.5em;
+  right: 1em;
+}
 
 TABLE.mailer_fieldtable
 {
