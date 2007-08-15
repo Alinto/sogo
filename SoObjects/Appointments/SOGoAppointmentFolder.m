@@ -746,7 +746,8 @@ static NSNumber   *sharedYes = nil;
     privacySqlString = @"and (c_isopaque = 1)";
   else
     {
-      email = [activeUser primaryEmail];
+#warning we do not manage all the user's possible emails
+      email = [[activeUser primaryIdentity] objectForKey: @"email"];
       
       privacySqlString
         = [NSString stringWithFormat:
