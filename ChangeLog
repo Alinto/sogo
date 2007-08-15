@@ -1,5 +1,9 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailView.m ([UIxMailView -mailIsDraft]): new
+	method that returns whether the current mail is store in the
+	drafts folder hierarchy.
+
 	* SoObjects/SOGo/SOGoUser.m ([-fullEmail]): removed method.
 	([-primaryEmail]): removed method.
 	([SOGoUser -primaryIMAP4AccountString]): removed method.
