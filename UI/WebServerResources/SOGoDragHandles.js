@@ -1,4 +1,6 @@
 var SOGoDragHandlesInterface = {
+  LEFTMARGIN: 180,
+  TOPMARGIN: 120,
   dhType: null,
   origX: -1,
   origLeft: -1,
@@ -11,9 +13,9 @@ var SOGoDragHandlesInterface = {
   rightBlock: null,
   upperBlock: null,
   lowerBlock: null,
-  startHandleDraggingBinded: null,
-  stopHandleDraggingBinded: null,
-  moveBinded: null,
+  startHandleDraggingBound: null,
+  stopHandleDraggingBound: null,
+  moveBound: null,
   bind: function () {
     this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
     Event.observe(this, "mousedown", this.startHandleDraggingBound, false);
@@ -27,24 +29,20 @@ var SOGoDragHandlesInterface = {
   startHandleDragging: function (event) {
     if (!this.dhType)
       this._determineType();
-    var targ;
-    if (!event)
-      var event = window.event;
-    if (event.target)
-      targ = event.target
-    else if (event.srcElement)
-      targ = event.srcElement
+    var targ = getTarget(event);
     if (targ.nodeType == 1) {
       if (this.dhType == 'horizontal') {
         this.origX = this.offsetLeft;
         this.origLeft = this.leftBlock.offsetWidth;
-        delta = 0;
+	delta = 0;
         this.origRight = this.rightBlock.offsetLeft - 5;
         document.body.setStyle({ cursor: "e-resize" });
       } else if (this.dhType == 'vertical') {
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
-        delta = event.clientY - this.offsetTop - 5;
+	var pointY = Event.pointerY(event);
+	if (pointY <= this.TOPMARGIN) delta = this.TOPMARGIN;
+        else delta = pointY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.setStyle({ cursor: "n-resize" });
       }
@@ -62,51 +60,54 @@ var SOGoDragHandlesInterface = {
     if (!this.dhType)
       this._determineType();
     if (this.dhType == 'horizontal') {
-      var deltaX
-        = Math.floor(event.clientX - this.origX - (this.offsetWidth / 2));
-      this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
-      this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
+      var pointerX = Event.pointerX(event);
+      if (pointerX <= this.LEFTMARGIN) {
+	this.rightBlock.setStyle({ left: (this.LEFTMARGIN) + 'px' });
+	this.leftBlock.setStyle({ width: (this.LEFTMARGIN) + 'px' });
+      }
+      else {
+	var deltaX = Math.floor(pointerX - this.origX - (this.offsetWidth / 2));
+	this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
+	this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
+      }
     } else if (this.dhType == 'vertical') {
-      var deltaY
-        = Math.floor(event.clientY - this.origY - (this.offsetHeight / 2));
-      this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
-      this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
+      var pointerY = Event.pointerY(event);
+      if (pointerY <= this.TOPMARGIN) {
+	this.lowerBlock.setStyle({ top: (this.TOPMARGIN - delta) + 'px' });
+	this.upperBlock.setStyle({ height: (this.TOPMARGIN - delta) + 'px' });
+      }
+      else {
+        var deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
+	this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
+	this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
+      }
     }
- 
     Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
     Event.stopObserving(document.body, "mousemove", this.moveBound, true);
     
     document.body.setAttribute('style', '');
     
-    this.move(event);
-    event.cancelBubble = true;
-
-    return false;
+    Event.stop(event);
   },
   move: function (event) {
     if (!this.dhType)
       this._determineType();
     if (this.dhType == 'horizontal') {
+      var hX =  Event.pointerX(event);
       var width = this.offsetWidth;
-      var hX = event.clientX;
-      if (hX > -1) {
-        var newLeft = Math.floor(hX - (width / 2));
-        this.setStyle({ left: newLeft + 'px' });
-        event.cancelBubble = true;
-      
-        return false;
-      }
+      if (hX < this.LEFTMARGIN)
+	hX = this.LEFTMARGIN + Math.floor(width / 2);
+      var newLeft = Math.floor(hX - (width / 2));
+      this.setStyle({ left: newLeft + 'px' });
     } else if (this.dhType == 'vertical') {
       var height = this.offsetHeight;
-      var hY = event.clientY;
-      if (hY > -1) {
-        var newTop = Math.floor(hY - (height / 2))  - delta;
-        this.setStyle({ top: newTop + 'px' });
-        event.cancelBubble = true;
-
-        return false;
-      }
+      var hY = Event.pointerY(event);
+      if (hY < this.TOPMARGIN)
+	hY = this.TOPMARGIN + Math.floor(height / 2);
+      var newTop = Math.floor(hY - (height / 2))  - delta;
+      this.setStyle({ top: newTop + 'px' });
     }
+    Event.stop(event);
   },
   doubleClick: function (event) {
     if (!this.dhType)
