@@ -1,5 +1,8 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailIdentity.[hm]: removed useless class
+	module.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
 	-keysWithFormat:format]): method that forward the method of the
 	same name to each member of the array, considering they all are
