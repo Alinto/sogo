@@ -30,6 +30,7 @@
 @interface NSDictionary (SOGoDictionaryUtilities)
 
 - (NSString *) jsonRepresentation;
+- (NSString *) keysWithFormat: (NSString *) keyFormat;
 
 @end
 

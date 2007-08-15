@@ -1,3 +1,10 @@
+2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSDictionary+Utilities.m ([NSDictionary
+	-keysWithFormat:keyFormat]): new method inspired by the python
+	string formatting system and which replaces occurences of "%{key}"
+	by the corresponding keys.
+
 2007-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -run]): check for channel-type specific

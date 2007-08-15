@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import "NSArray+Utilities.h"
 #import "NSObject+Utilities.h"
 #import "NSDictionary+Utilities.h"
 
@@ -50,6 +51,29 @@
   [values release];
 
   return representation;
+}
+
+- (NSString *) keysWithFormat: (NSString *) keyFormat
+{
+  NSArray *keys, *allKeys;
+  unsigned int count, max;
+  NSMutableString *keysWithFormat;
+  id value;
+
+  keysWithFormat = [NSMutableString stringWithString: keyFormat];
+
+  allKeys = [self allKeys];
+  keys = [allKeys stringsWithFormat: @"%{%@}"];
+
+  max = [allKeys count];
+  for (count = 0; count < max; count++)
+    {
+      value = [self objectForKey: [allKeys objectAtIndex: count]];
+      [keysWithFormat replaceString: [keys objectAtIndex: count]
+		      withString: [value description]];
+    }
+
+  return keysWithFormat;
 }
 
 @end
