@@ -1,5 +1,12 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccounts.m ([-fetchAllIdentities]):
+	removed method.
+	([-fetchIdentitiesWithEmitterPermissions]): removed method.
+	([SOGoMailAccounts -toManyRelationshipKeys]): rewrote method to
+	return the name of the mail accounts now available with the
+	-[SOGoUser mailAccounts] method.
+
 	* SoObjects/Mailer/SOGoUser+Mail.[hm]: removed useless class
 	extension module.
 
