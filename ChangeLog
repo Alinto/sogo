@@ -1,5 +1,26 @@
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-mailAccounts]): rewrote method to return the name of the mail
+	accounts now available with the -[SOGoUser mailAccounts] method.
+	([UIxMailMainFrame -showLinkBanner]): removed method.
+	([UIxMailMainFrame -bannerToolbarStyle]): removed method.
+	([UIxMailMainFrame -bannerConsumeStyle]): removed method.
+	([UIxMailMainFrame -rootURL]): removed method.
+	([UIxMailMainFrame -userRootURL]): removed method.
+	([UIxMailMainFrame -calendarRootURL]): removed method.
+	([UIxMailMainFrame -contactsRootURL]): removed method.
+	([UIxMailMainFrame -hasErrorText])
+	([UIxMailMainFrame -errorText])
+	([UIxMailMainFrame -errorAlertJavaScript]): removed methods.
+	([-composeAction]): removed method. Now provided by
+	UIxMailAccountActions.
+	([UIxMailMainFrame -setHideFolderTree:_flag]): removed method.
+	([UIxMailMainFrame -hideFolderTree]): removed method.
+	([UIxMailMainFrame -treeRootClassName]): removed method.
+	([UIxMailMainFrame +initialize]): removed method.
+	SOGoMailTreeRootClass userdefaults will no longer have any effect.
+
 	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
 	-redirectToLocation:newLocation]): new method that implements the
 	same functionality as WOComponent.

@@ -1,4 +1,4 @@
-/* UIxMailMainFrame.h - this file is part of $PROJECT_NAME_HERE$
+/* UIxMailMainFrame.h - this file is part of SOGo
  *
  * Copyright (C) 2006 Inverse groupe conseil
  *
@@ -23,21 +23,9 @@
 #ifndef UIXMAILMAINFRAME_H
 #define UIXMAILMAINFRAME_H
 
-#import "../Common/UIxPageFrame.h"
+#import "../Common/UIxComponent.h"
 
-@interface UIxMailMainFrame : UIxPageFrame
-{
-  NSString *rootURL;
-  NSString *userRootURL;
-  struct {
-    int hideFolderTree:1;
-    int reserved:31;
-  } mmfFlags;
-}
-
-- (NSString *)rootURL;
-- (NSString *)userRootURL;
-- (NSString *)calendarRootURL;
+@interface UIxMailMainFrame : UIxComponent
 
 @end
 
