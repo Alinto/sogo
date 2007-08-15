@@ -69,6 +69,8 @@
 "cc"            = "Cc";
 "bcc"           = "Cci";
 
+"Edit Draft..." = "Modifier le brouillon...";
+
 "This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
 
 /* Popup "show" */
