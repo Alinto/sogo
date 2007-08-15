@@ -10,8 +10,8 @@
     { link     = "#";
       isSafe   = NO;
       image = "tb-mail-write-flat-24x24.png";
-      onclick  = "return openMessageWindow(null, 'compose');";
-      cssClass = "tbicon_compose"; label = "Write";    },
+      onclick  = "return onComposeMessage();";
+      cssClass = "tbicon_compose"; label = "Write"; },
     { link  = "#"; target = "addressbook";
       onclick  = "openAddressbook(this);return false;";
       image = "tb-mail-addressbook-flat-24x24.png";
