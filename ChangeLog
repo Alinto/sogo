@@ -1,3 +1,17 @@
+2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m: new extension module
+	containing a rewrite of the mail action methods found in
+	UI/Mailer/, that needed to be put in the SOGoMailObject class.
+	([SOGoMailObject -subjectForReply]): new method that returns a
+	subject suitable for replies.
+	([SOGoMailObject -contentForReply]): new method that returns the
+	textual content of an email, quoted for replying.
+	([SOGoMailObject -filenameForForward]): new method that returns
+	the name of the filename that should contain the forwarded
+	message, based on its subject.
+	([SOGoMailObject -subjectForForward]): explicit.
+
 2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
