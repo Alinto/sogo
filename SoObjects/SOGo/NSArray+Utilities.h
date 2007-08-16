@@ -32,6 +32,9 @@
 - (NSString *) jsonRepresentation;
 
 - (NSArray *) stringsWithFormat: (NSString *) format;
+- (NSArray *) keysWithFormat: (NSString *) format;
+- (NSArray *) objectsForKey: (NSString *) key;
+- (NSArray *) flattenedArray;
 
 - (BOOL) containsCaseInsensitiveString: (NSString *) match;
 

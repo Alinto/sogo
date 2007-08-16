@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailAccounts_H__
 #define __Mailer_SOGoMailAccounts_H__
 
-#include <SOGo/SOGoObject.h>
+#import <SOGo/SOGoObject.h>
 
 /*
   SOGoMailAccounts
@@ -40,11 +40,6 @@
 @class NSArray;
 
 @interface SOGoMailAccounts : SOGoObject
-{
-}
-
-- (NSArray *)fetchAllIdentities;
-- (NSArray *)fetchIdentitiesWithEmitterPermissions;
 
 @end
 

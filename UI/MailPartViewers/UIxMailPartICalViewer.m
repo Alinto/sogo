@@ -252,8 +252,13 @@
 
 /* organizer tracking */
 
-- (NSString *)loggedInUserEMail {
-  return [[[self context] activeUser] primaryEmail];
+- (NSString *) loggedInUserEMail
+{
+  NSDictionary *identity;
+
+  identity = [[context activeUser] primaryIdentity];
+
+  return [identity objectForKey: @"email"];
 }
 
 - (iCalEvent *)authorativeEvent {

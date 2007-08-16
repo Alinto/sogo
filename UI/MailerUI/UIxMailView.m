@@ -187,6 +187,11 @@ static NSString *mailETag = nil;
   return NO;
 }
 
+- (BOOL) mailIsDraft
+{
+  return [[self clientObject] isInDraftsFolder];
+}
+
 - (id) redirectToParentFolder
 {
   id url;

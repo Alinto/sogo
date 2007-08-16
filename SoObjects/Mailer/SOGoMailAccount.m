@@ -35,23 +35,23 @@
 #import "SOGoMailFolder.h"
 #import "SOGoMailManager.h"
 #import "SOGoDraftsFolder.h"
-#import "SOGoUser+Mail.h"
 
 #import "SOGoMailAccount.h"
 
 @implementation SOGoMailAccount
 
-static NSArray  *rootFolderNames      = nil;
-static NSString *inboxFolderName      = @"INBOX";
-static NSString *draftsFolderName     = @"Drafts";
-static NSString *sieveFolderName      = @"Filters";
+static NSArray *rootFolderNames = nil;
+static NSString *inboxFolderName = @"INBOX";
+static NSString *draftsFolderName = @"Drafts";
+static NSString *sieveFolderName = @"Filters";
 static NSString *sentFolderName = nil;
 static NSString *trashFolderName = nil;
-static NSString *sharedFolderName     = @""; // TODO: add English default
+static NSString *sharedFolderName = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
-static BOOL     useAltNamespace       = NO;
+static BOOL useAltNamespace = NO;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *cfgDraftsFolderName;
 
@@ -82,22 +82,43 @@ static BOOL     useAltNamespace       = NO;
 
   NSLog(@"Note: using shared-folders name:      '%@'", sharedFolderName);
   NSLog(@"Note: using other-users-folders name: '%@'", otherUsersFolderName);
-  if ([ud boolForKey:@"SOGoEnableSieveFolder"]) {
+  if ([ud boolForKey: @"SOGoEnableSieveFolder"])
     rootFolderNames = [[NSArray alloc] initWithObjects:
 				        draftsFolderName, 
 				        sieveFolderName, 
 				      nil];
-  }
-  else {
+  else
     rootFolderNames = [[NSArray alloc] initWithObjects:
 				        draftsFolderName, 
 				      nil];
-  }
+}
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      inboxFolder = nil;
+      draftsFolder = nil;
+      sentFolder = nil;
+      trashFolder = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [inboxFolder release];
+  [draftsFolder release];
+  [sentFolder release];
+  [trashFolder release];
+  [super dealloc];  
 }
 
 /* shared accounts */
 
-- (BOOL)isSharedAccount {
+- (BOOL) isSharedAccount
+{
   NSString *s;
   NSRange  r;
   
@@ -110,14 +131,21 @@ static BOOL     useAltNamespace       = NO;
   return [s rangeOfString:@".-."].length > 0 ? YES : NO;
 }
 
-- (NSString *)sharedAccountName {
+- (NSString *) sharedAccountName
+{
   return nil;
 }
 
 /* listing the available folders */
 
-- (NSArray *)additionalRootFolderNames {
+- (NSArray *) additionalRootFolderNames
+{
   return rootFolderNames;
+}
+
+- (BOOL) isInDraftsFolder
+{
+  return NO;
 }
 
 - (NSArray *) toManyRelationshipKeys
@@ -125,8 +153,7 @@ static BOOL     useAltNamespace       = NO;
   NSMutableArray *folders;
   NSArray *imapFolders, *additionalFolders;
 
-  folders = [NSMutableArray new];
-  [folders autorelease];
+  folders = [NSMutableArray array];
 
   imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
   additionalFolders = [self additionalRootFolderNames];
@@ -141,16 +168,10 @@ static BOOL     useAltNamespace       = NO;
   return folders;
 }
 
-/* identity */
-
-- (SOGoMailIdentity *)preferredIdentity {
-  return [[context activeUser] primaryMailIdentityForAccount:
-				 [self nameInContainer]];
-}
-
 /* hierarchy */
 
-- (SOGoMailAccount *)mailAccountFolder {
+- (SOGoMailAccount *) mailAccountFolder
+{
   return self;
 }
 
@@ -175,11 +196,13 @@ static BOOL     useAltNamespace       = NO;
 
 /* IMAP4 */
 
-- (BOOL)useSSL {
+- (BOOL) useSSL
+{
   return NO;
 }
 
-- (NSString *)imap4LoginFromHTTP {
+- (NSString *) imap4LoginFromHTTP
+{
   WORequest *rq;
   NSString  *s;
   NSArray   *creds;
@@ -231,21 +254,29 @@ static BOOL     useAltNamespace       = NO;
 
 /* name lookup */
 
-- (id)lookupFolder:(NSString *)_key ofClassNamed:(NSString *)_cn
-  inContext:(id)_cx
+- (id) lookupFolder: (NSString *) _key
+       ofClassNamed: (NSString *) _cn
+	  inContext: (id) _cx
 {
   Class clazz;
+  SOGoMailFolder *folder;
 
-  if ((clazz = NSClassFromString(_cn)) == Nil) {
-    [self logWithFormat:@"ERROR: did not find class '%@' for key: '%@'", 
+  if ((clazz = NSClassFromString(_cn)) == Nil)
+    {
+      [self logWithFormat:@"ERROR: did not find class '%@' for key: '%@'", 
 	    _cn, _key];
-    return [NSException exceptionWithHTTPStatus:500 /* server error */
-			reason:@"did not find mail folder class!"];
-  }
-  return [[[clazz alloc] initWithName:_key inContainer:self] autorelease];
+      return [NSException exceptionWithHTTPStatus:500 /* server error */
+			  reason:@"did not find mail folder class!"];
+    }
+
+  folder = [clazz objectWithName: _key inContainer: self];
+
+  return folder;
 }
 
-- (id)lookupImap4Folder:(NSString *)_key inContext:(id)_cx {
+- (id) lookupImap4Folder: (NSString *) _key
+	       inContext: (id) _cx
+{
   NSString *s;
 
   s = [_key isEqualToString: [self trashFolderNameInContext:_cx]]
@@ -254,11 +285,15 @@ static BOOL     useAltNamespace       = NO;
   return [self lookupFolder:_key ofClassNamed:s inContext:_cx];
 }
 
-- (id)lookupDraftsFolder:(NSString *)_key inContext:(id)_ctx {
-  return [self lookupFolder:_key ofClassNamed:@"SOGoDraftsFolder" 
-	       inContext:_ctx];
+- (id) lookupDraftsFolder: (NSString *) _key
+		inContext: (id) _ctx
+{
+  return [self lookupFolder: _key ofClassNamed: @"SOGoDraftsFolder" 
+	       inContext: _ctx];
 }
-- (id)lookupFiltersFolder:(NSString *)_key inContext:(id)_ctx {
+
+- (id) lookupFiltersFolder: (NSString *) _key inContext: (id) _ctx
+{
   return [self lookupFolder:_key ofClassNamed:@"SOGoSieveScriptsFolder" 
 	       inContext:_ctx];
 }
@@ -330,6 +365,29 @@ static BOOL     useAltNamespace       = NO;
     }
 
   return inboxFolder;
+}
+
+- (SOGoDraftsFolder *) draftsFolderInContext: (id) _ctx
+{
+  SOGoMailFolder *lookupFolder;
+  // TODO: use some profile to determine real location, use a -traverse lookup
+
+  if (!draftsFolder)
+    {
+      lookupFolder = (useAltNamespace
+		      ? (id) self
+		      : [self inboxFolderInContext:_ctx]);
+      if (![lookupFolder isKindOfClass: [NSException class]])
+	draftsFolder
+	  = [lookupFolder lookupName: [self draftsFolderNameInContext:_ctx]
+			  inContext: _ctx acquire: NO];
+      if (![draftsFolder isNotNull])
+	draftsFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+				    reason: @"did not find Drafts folder!"];
+      [draftsFolder retain];
+    }
+
+  return draftsFolder;
 }
 
 - (SOGoMailFolder *) sentFolderInContext: (id) _ctx

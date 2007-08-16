@@ -100,23 +100,20 @@ static BOOL shouldDisplayWeekend = NO;
 - (NSArray *) filterAppointments:(NSArray *) _apts
 {
   NSMutableArray *filtered;
-  unsigned i, count;
-  NSString *email;
-  NSDictionary *info;
-  NSArray *partmails;
-  unsigned p, pCount;
+  unsigned i, count, p, pCount;
+  NSString *email, *partmailsString, *state, *pEmail;
+  NSDictionary *info, *primaryIdentity;
+  NSArray *partmails, *partstates;
   BOOL shouldAdd;
-  NSString *partmailsString;
-  NSArray  *partstates;
-  NSString *state;
-  NSString *pEmail;
 
   if ([self shouldDisplayRejectedAppointments])
     return _apts;
   {
     count = [_apts count];
     filtered = [[[NSMutableArray alloc] initWithCapacity: count] autorelease];
-    email = [[context activeUser] primaryEmail];
+
+    primaryIdentity = [[context activeUser] primaryIdentity];
+    email = [primaryIdentity objectForKey: @"email"];
 
     for (i = 0; i < count; i++)
       {

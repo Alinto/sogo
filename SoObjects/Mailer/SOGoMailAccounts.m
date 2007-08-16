@@ -26,7 +26,8 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoUser+Mail.h"
+#import "../SOGo/NSArray+Utilities.h"
+#import "../SOGo/SOGoUser.h"
 
 #import "SOGoMailAccounts.h"
 
@@ -38,72 +39,28 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 
 - (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
 {
-  return [[[self container] nameInContainer] isEqualToString: userLogin];
+  return [[container nameInContainer] isEqualToString: userLogin];
 }
 
-- (NSArray *)toManyRelationshipKeys {
-  SOGoUser *user;
-  id        account;
-//   NSArray   *shares;
-  NSString *userLogin;
-  
-  /*
-    Note: this is not strictly correct. The accounts being retrieved should be
-          the accounts based on the container object of this folder. Given
-	  sufficient rights (eg delegation rights!), this would allow you to
-	  browse the hierarchies of other users.
-	  
-	  But then, the home-folder would need to know about mail
-          functionality which isn't perfect either.
-	  => TODO
-  */
-  user = [context activeUser];
-  userLogin = [user login];
-  
-  /* for now: return nothing if the home-folder does not belong to the login */
-  if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
-    [self warnWithFormat:@"User %@ tried to access mail hierarchy of %@",
-	  [user login], [[self container] nameInContainer]];
-    return nil;
-  }
-  
-  account = [user primaryIMAP4AccountString];
-  if ([account isNotNull]) account = [NSArray arrayWithObject:account];
-
-  return account;
-//   shares  = [user valueForKey:@"additionalIMAP4AccountStrings"]
-//   return ([shares count] == 0)
-//     ? account
-//     : [account arrayByAddingObjectsFromArray:shares];
-}
-
-- (NSArray *) fetchIdentitiesWithOnlyEmitterAccess: (BOOL) _flag
+- (NSArray *) toManyRelationshipKeys
 {
-  NSString *accountString;
+  NSArray *accounts;
 
-  accountString = [[context activeUser] primaryIMAP4AccountString];
+  accounts = [[context activeUser] mailAccounts];
 
-  return [NSArray arrayWithObject: accountString];
-}
-
-- (NSArray *)fetchAllIdentities {
-  return [self fetchIdentitiesWithOnlyEmitterAccess:NO];
-}
-
-- (NSArray *)fetchIdentitiesWithEmitterPermissions {
-  return [self fetchIdentitiesWithOnlyEmitterAccess:YES];
+  return [accounts objectsForKey: @"name"];
 }
 
 /* name lookup */
 
-- (BOOL)isValidMailAccountName:(NSString *)_key {
-  if ([_key length] == 0)
-    return NO;
-  
-  return YES;
+- (BOOL) isValidMailAccountName: (NSString *) _key
+{
+  return ([_key length] > 0);
 }
 
-- (id)mailAccountWithName:(NSString *)_key inContext:(id)_ctx {
+- (id) mailAccountWithName: (NSString *) _key
+		 inContext: (id) _ctx
+{
   static Class ctClass = Nil;
   id ct;
   
@@ -118,22 +75,22 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return [ct autorelease];
 }
 
-- (id)sharedMailAccountWithName:(NSString *)_key inContext:(id)_ctx {
+- (id) sharedMailAccountWithName: (NSString *) _key
+		       inContext: (id) _ctx
+{
   static Class ctClass = Nil;
-  id ct;
-  
+
   if (ctClass == Nil)
-    ctClass = NSClassFromString(@"SOGoSharedMailAccount");
-  if (ctClass == Nil) {
+    ctClass = NSClassFromString (@"SOGoSharedMailAccount");
+  if (ctClass == Nil)
     [self errorWithFormat:@"missing SOGoSharedMailAccount class!"];
-    return nil;
-  }
   
-  ct = [[ctClass alloc] initWithName:_key inContainer:self];
-  return [ct autorelease];
+  return [ctClass objectWithName: _key inContainer: self];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
 {
   id obj;
   NSString *userLogin;
@@ -145,8 +102,8 @@ static NSString *AgenorShareLoginMarker  = @".-.";
     return obj;
   
   if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
-    [self warnWithFormat:@"User %@ tried to access mail hierarchy of %@",
-	  userLogin, [[self container] nameInContainer]];
+    [self warnWithFormat:@ "User %@ tried to access mail hierarchy of %@",
+	  userLogin, [container nameInContainer]];
     
     return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
 			reason:@"Tried to access the mail of another user"];

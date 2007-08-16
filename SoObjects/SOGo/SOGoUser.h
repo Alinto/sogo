@@ -58,6 +58,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
   NSUserDefaults *userSettings;
   NSTimeZone *userTimeZone;
   SOGoDateFormatter *dateFormatter;
+  NSMutableArray *mailAccounts;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) login
@@ -67,11 +68,11 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 /* properties */
 
-- (NSString *) fullEmail;
+// - (NSString *) fullEmail;
 
-- (NSString *) primaryEmail;
-- (NSString *) systemEmail;
-- (NSArray *) allEmails;
+// - (NSString *) primaryEmail;
+// - (NSString *) systemEmail;
+// - (NSArray *) allEmails;
 
 - (BOOL) hasEmail: (NSString *) email;
 
@@ -82,7 +83,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 /* shares and identities */
 
-- (NSString *) primaryIMAP4AccountString;
+// - (NSString *) primaryIMAP4AccountString;
 
 // - (NSString *) primaryIMAP4AccountString;
 // - (NSString *) primaryMailServer;
@@ -98,6 +99,10 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) language;
 - (NSTimeZone *) timeZone;
 - (NSTimeZone *) serverTimeZone;
+
+- (NSArray *) mailAccounts;
+- (NSArray *) allIdentities;
+- (NSDictionary *) primaryIdentity;
 
 /* folders */
 

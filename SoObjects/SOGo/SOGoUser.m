@@ -23,6 +23,7 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -189,17 +190,25 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 /* properties */
 
-- (NSString *) fullEmail
-{
-  return [[LDAPUserManager sharedUserManager] getFullEmailForUID: login];
-}
+// - (NSString *) fullEmail
+// {
+//   return [[LDAPUserManager sharedUserManager] getFullEmailForUID: login];
+// }
 
-- (NSString *) primaryEmail
+// - (NSString *) primaryEmail
+// {
+//   if (!allEmails)
+//     [self _fetchAllEmails];
+
+//   return [allEmails objectAtIndex: 0];
+// }
+
+- (NSArray *) allEmails
 {
   if (!allEmails)
     [self _fetchAllEmails];
 
-  return [allEmails objectAtIndex: 0];
+  return allEmails;  
 }
 
 - (NSString *) systemEmail
@@ -208,14 +217,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     [self _fetchAllEmails];
 
   return [allEmails lastObject];
-}
-
-- (NSArray *) allEmails
-{
-  if (!allEmails)
-    [self _fetchAllEmails];
-
-  return allEmails;  
 }
 
 - (BOOL) hasEmail: (NSString *) email
@@ -232,11 +233,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     [self _fetchCN];
 
   return cn;
-}
-
-- (NSString *) primaryIMAP4AccountString
-{
-  return [NSString stringWithFormat: @"%@@%@", login, fallbackIMAP4Server];
 }
 
 // - (NSString *) primaryMailServer
@@ -345,6 +341,115 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSTimeZone *) serverTimeZone
 {
   return serverTimeZone;
+}
+
+/* mail */
+- (NSArray *) mailAccounts
+{
+#warning should be implemented with the user defaults interfaces
+  NSMutableDictionary *mailAccount, *identity;
+  NSMutableArray *identities;
+  NSString *name, *fullName;
+
+  if (!mailAccounts)
+    {
+      mailAccount = [NSMutableDictionary dictionary];
+      name = [NSString stringWithFormat: @"%@@%@", login, fallbackIMAP4Server];
+      [mailAccount setObject: login forKey: @"userName"];
+      [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
+      [mailAccount setObject: name forKey: @"name"];
+
+      identity = [NSMutableDictionary dictionary];
+      fullName = [self cn];
+      if (![fullName length])
+	fullName = login;
+      [identity setObject: fullName forKey: @"fullName"];
+      [identity setObject: [self systemEmail] forKey: @"email"];
+      [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+
+      identities = [NSMutableArray array];
+      [identities addObject: identity];
+      [mailAccount setObject: identities forKey: @"identities"];
+
+      mailAccounts = [NSMutableArray new];
+      [mailAccounts addObject: mailAccount];
+    }
+
+  return mailAccounts;
+}
+
+/*
+@interface SOGoMailIdentity : NSObject
+{
+  NSString *name;
+  NSString *email;
+  NSString *replyTo;
+  NSString *organization;
+  NSString *signature;
+  NSString *vCard;
+  NSString *sentFolderName;
+  NSString *sentBCC;
+  NSString *draftsFolderName;
+  NSString *templatesFolderName;
+  struct
+  {
+    int composeHTML:1;
+    int reserved:31;
+  } idFlags;
+}
+
+- (void) setName: (NSString *) _value;
+- (NSString *) name;
+
+- (void) setEmail: (NSString *) _value;
+- (NSString *) email;
+
+- (void) setReplyTo: (NSString *) _value;
+- (NSString *) replyTo;
+
+- (void) setOrganization: (NSString *) _value;
+- (NSString *) organization;
+
+- (void) setSignature: (NSString *) _value;
+- (NSString *) signature;
+- (BOOL) hasSignature;
+
+- (void) setVCard: (NSString *) _value;
+- (NSString *) vCard;
+- (BOOL) hasVCard;
+
+- (void) setSentFolderName: (NSString *) _value;
+- (NSString *) sentFolderName;
+
+- (void) setSentBCC: (NSString *) _value;
+- (NSString *) sentBCC;
+
+- (void) setDraftsFolderName: (NSString *) _value;
+- (NSString *) draftsFolderName;
+
+- (void) setTemplatesFolderName: (NSString *) _value;
+- (NSString *) templatesFolderName;
+
+@end */
+
+- (NSArray *) allIdentities
+{
+  NSArray *identities;
+
+  [self mailAccounts];
+  identities = [mailAccounts objectsForKey: @"identities"];
+
+  return [identities flattenedArray];
+}
+
+- (NSDictionary *) primaryIdentity
+{
+  NSDictionary *defaultAccount;
+
+  [self mailAccounts];
+  defaultAccount = [mailAccounts objectAtIndex: 0];
+
+  return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
 }
 
 /* folders */

@@ -1,3 +1,101 @@
+2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m: new extension module
+	containing a rewrite of the mail action methods found in
+	UI/Mailer/, that needed to be put in the SOGoMailObject class.
+	([SOGoMailObject -subjectForReply]): new method that returns a
+	subject suitable for replies.
+	([SOGoMailObject -contentForReply]): new method that returns the
+	textual content of an email, quoted for replying.
+	([SOGoMailObject -filenameForForward]): new method that returns
+	the name of the filename that should contain the forwarded
+	message, based on its subject.
+	([SOGoMailObject -subjectForForward]): explicit.
+
+2007-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-mailAccounts]): rewrote method to return the name of the mail
+	accounts now available with the -[SOGoUser mailAccounts] method.
+	([UIxMailMainFrame -showLinkBanner]): removed method.
+	([UIxMailMainFrame -bannerToolbarStyle]): removed method.
+	([UIxMailMainFrame -bannerConsumeStyle]): removed method.
+	([UIxMailMainFrame -rootURL]): removed method.
+	([UIxMailMainFrame -userRootURL]): removed method.
+	([UIxMailMainFrame -calendarRootURL]): removed method.
+	([UIxMailMainFrame -contactsRootURL]): removed method.
+	([UIxMailMainFrame -hasErrorText])
+	([UIxMailMainFrame -errorText])
+	([UIxMailMainFrame -errorAlertJavaScript]): removed methods.
+	([-composeAction]): removed method. Now provided by
+	UIxMailAccountActions.
+	([UIxMailMainFrame -setHideFolderTree:_flag]): removed method.
+	([UIxMailMainFrame -hideFolderTree]): removed method.
+	([UIxMailMainFrame -treeRootClassName]): removed method.
+	([UIxMailMainFrame +initialize]): removed method.
+	SOGoMailTreeRootClass userdefaults will no longer have any effect.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-redirectToLocation:newLocation]): new method that implements the
+	same functionality as WOComponent.
+
+	* UI/Common/WODirectAction+SOGo.[hm]: new class extension module.
+
+	* UI/MailerUI/UIxMailView.m ([UIxMailView -mailIsDraft]): new
+	method that returns whether the current mail is store in the
+	drafts folder hierarchy.
+
+	* SoObjects/SOGo/SOGoUser.m ([-fullEmail]): removed method.
+	([-primaryEmail]): removed method.
+	([SOGoUser -primaryIMAP4AccountString]): removed method.
+	([SOGoUser -mailAccounts]): new method that returns an array
+	containing description dictionaries for all the user mail
+	accounts. Each account also contain the user's identities for that
+	account.
+	([SOGoUser -allIdentities]): new utility method that returns all
+	the user identities on all accounts.
+	([SOGoUser -primaryIdentity]): new method return the first
+	identity of the first account.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -httpURLForAdvisoryToUser:uid]): 
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-isInDraftsFolder]): returns NO.
+	([-preferredIdentity]): removed method, replaced with -[SOGoUser
+	primaryIdentity].
+	([SOGoMailAccount -draftsFolderInContext:_ctx]): new method.
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-isInDraftsFolder]): new method that detects if self is contained
+	by the drafts folder by calling itself on the container object.
+
+	* SoObjects/Mailer/SOGoMailAccounts.m ([-fetchAllIdentities]):
+	removed method.
+	([-fetchIdentitiesWithEmitterPermissions]): removed method.
+	([SOGoMailAccounts -toManyRelationshipKeys]): rewrote method to
+	return the name of the mail accounts now available with the
+	-[SOGoUser mailAccounts] method.
+
+	* SoObjects/Mailer/SOGoUser+Mail.[hm]: removed useless class
+	extension module.
+
+	* SoObjects/Mailer/SOGoMailIdentity.[hm]: removed useless class
+	module.
+
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-keysWithFormat:format]): method that forward the method of the
+	same name to each member of the array, considering they all are
+	instances of NSDictionary.
+	([NSArray -objectsForKey:key]): same principle as above.
+	([NSArray -flattenedArray]): new method that transforms an array
+	of arrays into a single array containing all the elements of the
+	subarrays.
+
+	* SoObjects/SOGo/NSDictionary+Utilities.m ([NSDictionary
+	-keysWithFormat:keyFormat]): new method inspired by the python
+	string formatting system and which replaces occurences of "%{key}"
+	by the corresponding keys.
+
 2007-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -run]): check for channel-type specific

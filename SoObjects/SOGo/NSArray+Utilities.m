@@ -33,6 +33,7 @@
   id currentObject;
 
   formattedStrings = [NSMutableArray arrayWithCapacity: [self count]];
+
   objects = [self objectEnumerator];
   currentObject = [objects nextObject];
   while (currentObject)
@@ -43,6 +44,61 @@
     }
 
   return formattedStrings;
+}
+
+- (NSArray *) keysWithFormat: (NSString *) format
+{
+  NSMutableArray *formattedStrings;
+  NSEnumerator *objects;
+  id currentObject;
+
+  formattedStrings = [NSMutableArray arrayWithCapacity: [self count]];
+
+  objects = [self objectEnumerator];
+  currentObject = [objects nextObject];
+  while (currentObject)
+    {
+      [formattedStrings addObject: [currentObject keysWithFormat: format]];
+      currentObject = [objects nextObject];
+    }
+
+  return formattedStrings;
+}
+
+- (NSArray *) objectsForKey: (NSString *) key
+{
+  NSMutableArray *objectsForKey;
+  unsigned int count, max;
+  id value;
+
+  max = [self count];
+  objectsForKey = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      value = [[self objectAtIndex: count] objectForKey: key];
+      [objectsForKey addObject: value];
+    }
+
+  return objectsForKey;
+}
+
+- (NSArray *) flattenedArray
+{
+  NSMutableArray *flattenedArray;
+  NSEnumerator *objects;
+  id currentObject;
+
+  flattenedArray = [NSMutableArray array];
+  objects = [self objectEnumerator];
+  currentObject = [objects nextObject];
+  while (currentObject)
+    {
+      [flattenedArray addObjectsFromArray: currentObject];
+      currentObject = [objects nextObject];
+    }
+
+  return flattenedArray;
 }
 
 - (void) makeObjectsPerform: (SEL) selector

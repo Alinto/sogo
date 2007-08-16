@@ -783,6 +783,7 @@
 {
   NSString *organizerEmail;
   SOGoUser *activeUser;
+  NSDictionary *primaryIdentity;
 
   organizerEmail = [[component organizer] email];
   if ([organizerEmail length] == 0)
@@ -791,8 +792,9 @@
 	{
 	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
 	  activeUser = [context activeUser];
+	  primaryIdentity = [activeUser primaryIdentity];
 	  [organizer setCn: [activeUser cn]];
-	  [organizer setEmail: [activeUser primaryEmail]];
+	  [organizer setEmail: [primaryIdentity objectForKey: @"email"]];
 	  [component setOrganizer: organizer];
 	}
     }

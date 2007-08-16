@@ -1,6 +1,6 @@
-/* UIxMailMainFrame.h - this file is part of SOGo
+/* SOGoMailObject+Draft.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,13 +20,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXMAILMAINFRAME_H
-#define UIXMAILMAINFRAME_H
+#ifndef SOGOMAILOBJECT_DRAFT_H
+#define SOGOMAILOBJECT_DRAFT_H
 
-#import "../Common/UIxComponent.h"
+#import "SOGoMailObject.h"
 
-@interface UIxMailMainFrame : UIxComponent
+@interface SOGoMailObject (SOGoDraftObjectExtensions)
+
+- (NSString *) subjectForReply;
+- (NSString *) contentForReply;
+
+- (NSString *) subjectForForward;
+- (NSString *) filenameForForward;
 
 @end
 
-#endif /* UIXMAILMAINFRAME_H */
+#endif /* SOGOMAILOBJECT_DRAFT_H */

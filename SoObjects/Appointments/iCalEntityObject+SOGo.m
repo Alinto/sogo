@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "iCalEntityObject+SOGo.h"
@@ -32,12 +33,14 @@
 - (BOOL) userIsParticipant: (SOGoUser *) user
 {
   NSEnumerator *emails;
+  NSArray *identities;
   NSString *currentEmail;
   BOOL response;
 
   response = NO;
 
-  emails = [[user allEmails] objectEnumerator];
+  identities = [user allIdentities];
+  emails = [[identities objectsForKey: @"email"] objectEnumerator];
   currentEmail = [emails nextObject];
   while (!response && currentEmail)
     if ([self isParticipant: currentEmail])
@@ -51,12 +54,14 @@
 - (BOOL) userIsOrganizer: (SOGoUser *) user
 {
   NSEnumerator *emails;
+  NSArray *identities;
   NSString *currentEmail;
   BOOL response;
 
   response = NO;
 
-  emails = [[user allEmails] objectEnumerator];
+  identities = [user allIdentities];
+  emails = [[identities objectsForKey: @"email"] objectEnumerator];
   currentEmail = [emails nextObject];
   while (!response && currentEmail)
     if ([self isOrganizer: currentEmail])

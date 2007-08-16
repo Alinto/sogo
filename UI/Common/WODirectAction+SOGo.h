@@ -1,6 +1,6 @@
-/* UIxMailMainFrame.h - this file is part of SOGo
+/* WODirectAction+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,13 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXMAILMAINFRAME_H
-#define UIXMAILMAINFRAME_H
+#ifndef WODIRECTACTION_SOGO_H
+#define WODIRECTACTION_SOGO_H
 
-#import "../Common/UIxComponent.h"
+#import <NGObjWeb/WODirectAction.h>
 
-@interface UIxMailMainFrame : UIxComponent
+@class NSString;
+@class WOResponse;
+
+@interface WODirectAction (SOGoExtension)
+
+- (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
 @end
 
-#endif /* UIXMAILMAINFRAME_H */
+#endif /* WODIRECTACTION_SOGO_H */

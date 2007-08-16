@@ -176,13 +176,21 @@
   NGMimeMessage *message;
   NGMimeMultipartBody *body;
   SOGoUser *activeUser;
+  NSDictionary *identity;
+  NSString *from, *fullMail;
 
   activeUser = [context activeUser];
-  recipient = [[LDAPUserManager sharedUserManager] getFullEmailForUID: recipientUID];
+  identity = [activeUser primaryIdentity];
+  from = [identity objectForKey: @"email"];
+  fullMail = [NSString stringWithFormat: @"%@ <%@>",
+		       [identity objectForKey: @"fullName"], from];
+
+  recipient = [[LDAPUserManager sharedUserManager]
+		getFullEmailForUID: recipientUID];
 
   headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
   [headerMap setObject: @"multipart/alternative" forKey: @"content-type"];
-  [headerMap setObject: [activeUser fullEmail] forKey: @"From"];
+  [headerMap setObject: fullMail forKey: @"From"];
   [headerMap setObject: recipient forKey: @"To"];
   date = [[NSCalendarDate date] rfc822DateString];
   [headerMap setObject: date forKey: @"Date"];
@@ -197,7 +205,7 @@
 
   [[SOGoMailer sharedMailer] sendMimePart: message
 			     toRecipients: [NSArray arrayWithObject: recipient]
-			     sender: [activeUser primaryEmail]];
+			     sender: from];
 }
 
 @end

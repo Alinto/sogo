@@ -26,54 +26,27 @@
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/SOGo/NSObject+Utilities.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SOGoUI/UIxComponent.h>
 
 #import "UIxMailMainFrame.h"
 
 @implementation UIxMailMainFrame
 
-static NSString *treeRootClassName = nil;
-
-+ (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  treeRootClassName = [[ud stringForKey:@"SOGoMailTreeRootClass"] copy];
-  if (treeRootClassName)
-    NSLog(@"Note: use class '%@' as root for mail tree.", treeRootClassName);
-  else
-    treeRootClassName = @"SOGoMailAccounts";
-}
-
-- (void)dealloc {
-  [self->rootURL     release];
-  [self->userRootURL release];
-  [super dealloc];
-}
-
 /* accessors */
 - (NSString *) mailAccounts
 {
-  SOGoMailAccounts *co;
+  NSArray *accounts, *accountNames;
 
-  co = [self clientObject];
+  accounts = [[context activeUser] mailAccounts];
+  accountNames = [accounts objectsForKey: @"name"];
 
-  return [[co fetchAllIdentities] jsonRepresentation];
+  return [accountNames jsonRepresentation];
 }
 
-- (NSString *)treeRootClassName {
-  return treeRootClassName;
-}
-
-- (void)setHideFolderTree:(BOOL)_flag {
-   self->mmfFlags.hideFolderTree = _flag ? 1 : 0;
-}
-- (BOOL)hideFolderTree {
-  return self->mmfFlags.hideFolderTree ? YES : NO;
-}
-
-- (NSString *) pageFormURL {
+- (NSString *) pageFormURL
+{
   NSString *u;
   NSRange  r;
   
@@ -115,138 +88,6 @@ static NSString *treeRootClassName = nil;
     return u;
   }
   return [u hasSuffix:@"/"] ? @"view" : @"#";
-}
-
-- (BOOL)showLinkBanner {
-  return YES;
-}
-
-- (NSString *)bannerToolbarStyle {
-  return nil;
-}
-
-- (NSString *)bannerConsumeStyle {
-  return nil;
-}
-
-/* URL generation */
-// TODO: I think all this should be done by the clientObject?!
-// TODO: is the stuff below necessary at all in the mailer frame?
-
-- (NSString *)rootURL {
-  WOContext *ctx;
-  NSArray   *traversalObjects;
-
-  if (self->rootURL != nil)
-    return self->rootURL;
-
-  ctx = [self context];
-  traversalObjects = [ctx objectTraversalStack];
-  self->rootURL = [[[traversalObjects objectAtIndex:0]
-                                      rootURLInContext:ctx]
-                                      copy];
-  return self->rootURL;
-}
-
-- (NSString *)userRootURL {
-  WOContext *ctx;
-  NSArray   *traversalObjects;
-
-  if (self->userRootURL)
-    return self->userRootURL;
-
-  ctx = [self context];
-  traversalObjects = [ctx objectTraversalStack];
-  self->userRootURL = [[[[traversalObjects objectAtIndex:1]
-                                           baseURLInContext:ctx]
-                                           stringByAppendingString:@"/"]
-                                           retain];
-  return self->userRootURL;
-}
-
-- (NSString *)calendarRootURL {
-  return [[self userRootURL] stringByAppendingString:@"Calendar/"];
-}
-
-- (NSString *)contactsRootURL {
-  return [[self userRootURL] stringByAppendingString:@"Contacts/"];
-}
-
-/* error handling */
-
-- (BOOL)hasErrorText {
-  return [[[[self context] request] formValueForKey:@"error"] length] > 0
-    ? YES : NO;
-}
-- (NSString *)errorText {
-  return [[[self context] request] formValueForKey:@"error"];
-}
-
-- (NSString *)errorAlertJavaScript {
-  NSString *errorText;
-  
-  if ([(errorText = [self errorText]) length] == 0)
-    return nil;
-  
-  // TODO: proper JavaScript escaping
-  errorText = [errorText stringByEscapingHTMLString];
-  errorText = [errorText stringByReplacingString:@"\"" withString:@"'"];
-  
-  return [NSString stringWithFormat:
-		     @"<script language=\"JavaScript\">"
-		     @"alert(\"%@\");"
-		     @"</script>", errorText];
-}
-
-/* FIXME: migrated methods which might not work yet... */
-// #warning check this
-// - (NSString *) mailFolderName
-// {
-//   NSMutableArray *mailboxes;
-//   SOGoMailObject *currentObject;
-
-//   mailboxes = [NSMutableArray new];
-//   [mailboxes autorelease];
-
-//   currentObject = [self clientObject];
-//   while (![currentObject isKindOfClass: [SOGoMailAccounts class]])
-//     {
-//       [mailboxes insertObject: [currentObject nameInContainer] atIndex: 0];
-//       currentObject = [currentObject container];
-//     }
-
-//   return [NSString stringWithFormat: @"/%@",
-//                    [mailboxes componentsJoinedByString: @"/"]];
-// }
-
-- (id) composeAction
-{
-  NSArray *c;
-  NSString *inbox, *url, *parameter;
-  NSMutableDictionary *urlParams;
-  id actionResult;
-
-  c = [[self clientObject] toManyRelationshipKeys];
-  if ([c count] > 0)
-    {
-      urlParams = [NSMutableDictionary new];
-      [urlParams autorelease];
-
-      parameter = [self queryParameterForKey: @"mailto"];
-      if (parameter)
-        [urlParams setObject: parameter
-                   forKey: @"mailto"];
-      inbox = [NSString stringWithFormat: @"%@/folderINBOX",
-                        [c objectAtIndex: 0]];
-      url = [inbox composeURLWithAction: @"compose"
-                   parameters: urlParams
-                   andHash: NO];
-      actionResult = [self redirectToLocation: url];
-    }
-  else
-    actionResult = self;
-
-  return actionResult;
 }
 
 @end /* UIxMailMainFrame */

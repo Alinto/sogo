@@ -274,14 +274,12 @@ static BOOL sendEMailNotifications = NO;
   iCalPerson *person;
   NSString *newContent;
   NSException *ex;
-  NSString *myEMail;
   
   ex = nil;
 
   component = [self component: NO];
   if (component)
     {
-      myEMail = [[context activeUser] primaryEmail];
       person = [self findParticipantWithUID: owner];
       if (person)
         {

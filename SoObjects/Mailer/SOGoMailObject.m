@@ -134,7 +134,8 @@ static BOOL debugSoParts       = NO;
 
 /* part hierarchy */
 
-- (NSString *)keyExtensionForPart:(id)_partInfo {
+- (NSString *) keyExtensionForPart: (id) _partInfo
+{
   NSString *mt, *st;
   
   if (_partInfo == nil)
@@ -200,7 +201,8 @@ static BOOL debugSoParts       = NO;
 
 /* message */
 
-- (id)fetchParts:(NSArray *)_parts {
+- (id) fetchParts: (NSArray *) _parts
+{
   // TODO: explain what it does
   /*
     Called by -fetchPlainTextParts:
