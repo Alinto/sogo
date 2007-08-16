@@ -40,7 +40,7 @@ SPAN.headerInput INPUT
 
 DIV#subjectRow INPUT
 { background-image: none;
-  width: 38em;
+  width: 100%;
   padding-left: .5em; }
 
 div#compose_internetmarker
