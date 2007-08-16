@@ -210,18 +210,16 @@ function createAttachment(node, list) {
 }
 
 function clickedEditorSave(sender) {
-   document.pageform.action = "save";
-   document.pageform.submit();
-   refreshOpener();
+  document.pageform.action = "save";
+  document.pageform.submit();
 
   return false;
 }
 
 function clickedEditorDelete(sender) {
-   document.pageform.action = "delete";
-   document.pageform.submit();
-   refreshOpener();
-   window.close();
+  document.pageform.action = "delete";
+  document.pageform.submit();
+  window.close();
 
   return false;
 }

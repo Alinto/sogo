@@ -1310,10 +1310,18 @@ function onMenuDeleteFolder(event) {
   }
 }
 
+function onMenuExpungeFolder(event) {
+  var folderID = document.menuTarget.getAttribute("dataname");
+  var urlstr = URLForFolderID(folderID) + "/expunge";
+
+  triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
+}
+
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-  triggerAjaxRequest(urlstr, folderOperationCallback);
+
+  triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
 }
 
 function folderOperationCallback(http) {
@@ -1324,21 +1332,34 @@ function folderOperationCallback(http) {
     window.alert(labels["Operation failed"].decodeEntities());
 }
 
+function folderRefreshCallback(http) {
+  if (http.readyState == 4
+      && http.status == 204) {
+    var oldMailbox = http.callbackData;
+    if (oldMailbox == currentMailbox)
+      refreshCurrentFolder();
+  }
+  else
+    window.alert(labels["Operation failed"].decodeEntities());
+}
+
 function getMenus() {
   var menus = {}
   menus["accountIconMenu"] = new Array(null, null, onMenuCreateFolder, null,
 				       null, null);
   menus["inboxIconMenu"] = new Array(null, null, null, "-", null,
-				     onMenuCreateFolder, null, "-", null,
+				     onMenuCreateFolder, onMenuExpungeFolder,
+				     "-", null,
 				     onMenuSharing);
   menus["trashIconMenu"] = new Array(null, null, null, "-", null,
-				     onMenuCreateFolder, null,
+				     onMenuCreateFolder, onMenuExpungeFolder,
 				     onMenuEmptyTrash, "-", null,
 				     onMenuSharing);
   menus["mailboxIconMenu"] = new Array(null, null, null, "-", null,
 				       onMenuCreateFolder,
 				       onMenuRenameFolder,
-				       null, onMenuDeleteFolder, "-", null,
+				       onMenuExpungeFolder,
+				       onMenuDeleteFolder, "-", null,
 				       onMenuSharing);
   menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
   menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",
