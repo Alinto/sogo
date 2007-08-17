@@ -37,10 +37,12 @@
 
 + (id) sharedMailer;
 
+- (NSException *) sendMailData: (NSData *) data
+		  toRecipients: (NSArray *) recipients
+			sender: (NSString *) sender;
 - (NSException *) sendMailAtPath: (NSString *) filename
 		    toRecipients: (NSArray *) recipients
 			  sender: (NSString *) sender;
-
 - (NSException *) sendMimePart: (id <NGMimePart>) part
 		  toRecipients: (NSArray *) recipients
 			sender: (NSString *) sender;
