@@ -27,16 +27,17 @@ MailerUI_OBJC_FILES += \
 	\
 	UIxMailAccountActions.m		\
 	UIxMailFolderActions.m		\
+	UIxMailActions.m		\
 	UIxMailEditor.m			\
-	UIxMailEditorAction.m		\
-	UIxMailReplyAction.m		\
-	UIxMailForwardAction.m		\
 	UIxMailToSelection.m		\
 	UIxMailWindowCloser.m		\
 	\
+	UIxMailUserRightsEditor.m	\
+#	UIxMailEditorAction.m		\
+#	UIxMailReplyAction.m		\
+#	UIxMailForwardAction.m		\
 # 	UIxFilterList.m			\
 # 	\
-	UIxMailUserRightsEditor.m
 # 	UIxSieveEditor.m
 
 MailerUI_RESOURCE_FILES += \

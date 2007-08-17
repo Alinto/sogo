@@ -133,8 +133,8 @@ categories = {
 	 };
 	 expunge = {
 	    protectedBy = "View";
-	    pageName    = "UIxMailListView";
-	    actionName  = "expunge";
+	    actionClass = "UIxMailFolderActions";
+	    actionName = "emptyTrash";
 	 };
 	 createFolder = {
 	    protectedBy = "View";
@@ -150,11 +150,6 @@ categories = {
 	    protectedBy = "View";
 	    actionClass = "UIxMailFolderActions";
 	    actionName = "deleteFolder";
-	 };
-	 compose = {
-	    protectedBy = "View";
-	    actionClass = "UIxMailEditorAction";
-	    actionName  = "compose";
 	 };
 	 userRights = {
 	    protectedBy = "ReadAcls";
@@ -228,26 +223,22 @@ categories = {
 	 };
 	 edit = {
 	    protectedBy = "View";
-	    pageName    = "UIxMailEditor";
-	 };
-	 compose = {
-	    protectedBy = "View";
-	    actionClass = "UIxMailEditorAction";
-	    actionName  = "compose";
+	    actionClass = "UIxMailActions";
+	    actionName = "edit";
 	 };
 	 reply = {
 	    protectedBy = "View";
-	    actionClass = "UIxMailReplyAction";
+	    actionClass = "UIxMailActions";
 	    actionName  = "reply";
 	 };
 	 replyall = {
 	    protectedBy = "View";
-	    actionClass = "UIxMailReplyAction";
-	    actionName  = "replyall";
+	    actionClass = "UIxMailActions";
+	    actionName  = "replyToAll";
 	 };
 	 forward = {
 	    protectedBy = "View";
-	    actionClass = "UIxMailForwardAction";
+	    actionClass = "UIxMailActions";
 	    actionName  = "forward";
 	 };
       };
@@ -264,11 +255,6 @@ categories = {
 	 view = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailMainFrame";
-	 };
-	 compose = {
-	    protectedBy = "View";
-	    pageName    = "UIxMailMainFrame";
-	    actionName  = "compose";
 	 };
 	 getMail = {
 	    protectedBy = "View";
@@ -287,7 +273,7 @@ categories = {
       methods = {
 	 compose = {
 	    protectedBy = "View";
-	    actionClass = "UIxMailEditorAction";
+	    actionClass = "UIxMailAccountActions";
 	    actionName  = "compose";
 	 };
 	 mailboxes = {
@@ -331,11 +317,6 @@ categories = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailListView";
 	 };
-	 compose = {
-	    protectedBy = "View";
-	    actionClass = "UIxMailEditorAction";
-	    actionName  = "compose";
-	 };
       };
    };
 
@@ -347,10 +328,6 @@ categories = {
 	 };
       };
       methods = {
-	 view = { /* somewhat hackish */
-            protectedBy = "View";
-	    pageName    = "UIxMailView";
-	 };
 	 edit = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailEditor";
@@ -359,27 +336,6 @@ categories = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailEditor";
 	    actionName  = "save";
-	 };
-	 delete = {
-	    protectedBy = "View";
-	    pageName    = "UIxMailEditor";
-	    actionName  = "delete";
-	 };
-
-	 viewAttachments = {
-	    protectedBy = "View";
-	    pageName    = "UIxMailEditorAttach";
-	    actionName  = "viewAttachments";
-	 };
-	 attach = {
-	    protectedBy = "View";
-	    pageName    = "UIxMailEditorAttach";
-	    actionName  = "attach";
-	 };
-	 deleteAttachment = {
-	    protectedBy = "View";
-	    pageName    = "UIxMailEditorAttach";
-	    actionName  = "deleteAttachment";
 	 };
 	 send = {
 	    protectedBy = "View";
