@@ -1,219 +1,115 @@
-/*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+/* SOGoDraftsFolder.m - this file is part of SOGo
+ *
+ * Copyright (C) 2007 Inverse groupe conseil
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
-
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
-#import <unistd.h>
-
-#import <Foundation/NSArray.h>
+#import <Foundation/NSDate.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
-#import <NGObjWeb/NSException+HTTP.h>
-#import <NGExtensions/NSFileManager+Extensions.h>
-#import <NGExtensions/NSNull+misc.h>
-#import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
-#import <SoObjects/SOGo/SOGoUserFolder.h>
 #import "SOGoDraftObject.h"
 
 #import "SOGoDraftsFolder.h"
 
-@implementation SOGoDraftsFolder
-
 static NSString *spoolFolder = nil;
+
+static NSTimeInterval lastNew = 0;
+static unsigned int newCount;
+
+@implementation SOGoDraftsFolder
 
 + (void) initialize
 {
-  NSUserDefaults *ud;;
+  NSUserDefaults *ud;
 
   if (!spoolFolder)
     {
       ud = [NSUserDefaults standardUserDefaults];
-      spoolFolder = [[ud stringForKey:@"SOGoMailSpoolPath"] copy];
-      if ([spoolFolder length] < 3)
+      spoolFolder = [ud stringForKey:@"SOGoMailSpoolPath"];
+      if (![spoolFolder length])
 	spoolFolder = @"/tmp/";
+      [spoolFolder retain];
 
       NSLog(@"Note: using SOGo mail spool folder: %@", spoolFolder);
     }
 }
 
-/* new objects */
-
-- (NSString *) makeNewObjectNameInContext: (id) _ctx
+- (NSString *) generateNameForNewDraft
 {
-  static int counter = 1; // THREAD
+  NSString *newName, *login;
+  unsigned int currentTime;
 
-  return [NSString stringWithFormat:@"draft_%08d_%08x", getpid(), counter++];
+  currentTime = [[NSDate date] timeIntervalSince1970];
+  if (currentTime == lastNew)
+    newCount++;
+  else
+    {
+      lastNew = currentTime;
+      newCount = 1;
+    }
+
+  login = [[context activeUser] login];
+  newName = [NSString stringWithFormat: @"newDraft%u-%u",
+		      currentTime, newCount];
+
+  return newName;
 }
 
-- (NSString *) newObjectBaseURLInContext: (id) _ctx
+- (SOGoDraftObject *) newDraft
 {
-  NSString *s, *n;
-  
-  n = [self makeNewObjectNameInContext:_ctx];
-  if (![n isNotNull]) return nil;
-  
-  s = [self baseURLInContext:_ctx];
-  if (![s isNotNull]) return nil;
-  if (![s hasSuffix:@"/"]) s = [s stringByAppendingString:@"/"];
-  return [s stringByAppendingString:n];
+  return [SOGoDraftObject objectWithName: [self generateNameForNewDraft]
+			  inContainer: self];
 }
 
-- (id) newObjectInContext: (id) _ctx
+- (id) lookupName: (NSString *) name
+	inContext: (WOContext *) localContext
+	  acquire: (BOOL) acquire
 {
-  return [self lookupName:[self makeNewObjectNameInContext:_ctx]
-	       inContext:_ctx acquire:NO];
+  id object;
+
+  if ([name hasPrefix: @"newDraft"])
+    object = [SOGoDraftObject objectWithName: name inContainer: self];
+  else
+    object = [super lookupName: name
+		    inContext: localContext
+		    acquire: acquire];
+
+  return object;
 }
 
-/* draft folder functionality */
-
-- (NSFileManager *) spoolFileManager
-{
-  return [NSFileManager defaultManager];
-}
-
-- (NSString *) spoolFolderPath
-{
-  return spoolFolder;
-}
-
-- (NSString *) userSpoolFolderPath
-{
-  NSString *p, *n;
-  
-  p = [self spoolFolderPath];
-  n = [[self lookupUserFolder] nameInContainer];
-
-  return [p stringByAppendingPathComponent:n];
-}
-
-- (BOOL) _ensureUserSpoolFolderPath
-{
-  NSFileManager *fm;
-  
-  if ((fm = [self spoolFileManager]) == nil) {
-    [self errorWithFormat:@"missing spool file manager!"];
-    return NO;
-  }
-  return [fm createDirectoriesAtPath:[self userSpoolFolderPath]
-	     attributes:nil];
-}
-
-- (NSArray *) fetchMailNames
-{
-  NSString *p;
-  
-  if ((p = [self userSpoolFolderPath]) == nil)
-    return nil;
-  
-  return [[self spoolFileManager] directoryContentsAtPath:p];
-}
-
-/* folder methods (used by template) */
-
-- (NSArray *) fetchUIDsMatchingQualifier: (id) _q
-			    sortOrdering: (id) _so
-{
-  // TODO: retrieve contained objects
-  NSArray *allUids;
-  
-  allUids = [self fetchMailNames];
-  if (![allUids isNotNull]) {
-    [self logWithFormat:@"Note: no uids in drafts folder: %@",
-	    [self userSpoolFolderPath]];
-    return [NSArray array];
-  }
-  
-  // TODO: should sort uids (q=%@,so=%@): %@", _q, _so, allUids];
-  return allUids;
-}
-- (NSArray *)fetchUIDs: (NSArray *)_uids parts: (NSArray *)_parts {
-  /* FLAGS, ENVELOPE, RFC822.SIZE */
-  NSMutableArray  *drafts;
-  unsigned i, count;
-  
-  if (_uids == nil)
-    return nil;
-  if ((count = [_uids count]) == 0)
-    return [NSArray array];
-  
-  drafts = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    SOGoDraftObject *draft;
-    id parts;
-    
-    draft = [self lookupName:[_uids objectAtIndex:i] inContext:nil acquire:NO];
-    if (![draft isNotNull] || [draft isKindOfClass:[NSException class]])
-      continue;
-    
-    parts = [draft fetchParts:_parts];
-    if ([parts isNotNull])
-      [drafts addObject:parts];
-  }
-  
-  return drafts;
-}
-
-/* name lookup */
-
-- (id) lookupDraftMessage: (NSString *) _key
-		inContext: (id) _ctx
-{
-  // TODO: we might want to check for existence prior controller creation
-  return [[[SOGoDraftObject alloc] initWithName:_key 
-				   inContainer:self] autorelease];
-}
-
-- (id) lookupName: (NSString *) _key
-	inContext: (id) _ctx
-	  acquire: (BOOL) _flag
-{
-  id obj;
-  
-  /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]) != nil)
-    return obj;
-  
-  if ((obj = [self lookupDraftMessage:_key inContext:_ctx]) != nil)
-    return obj;
-  
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
-}
-
-/* WebDAV */
-
-- (BOOL) davIsCollection
+- (BOOL) isInDraftsFolder
 {
   return YES;
 }
 
-- (NSArray *) toOneRelationshipKeys
+- (NSString *) userSpoolFolderPath
 {
-  return [self fetchMailNames];
+  NSString *login;
+
+  login = [[context activeUser] login];
+
+  return [NSString stringWithFormat: @"%@/%@",
+		   spoolFolder, login];
 }
 
-/* folder type */
-
-- (NSString *) outlookFolderClass
-{
-  return @"IPF.Drafts";
-}
-
-@end /* SOGoDraftsFolder */
+@end

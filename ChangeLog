@@ -1,5 +1,17 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftsFolder.m ([SOGoDraftsFolder
+	-newDraft]): new method that returns a new SOGoDraftObject
+	instance with a unique filename based on the current timestamp and
+	the "newDraft" prefix.
+	([SOGoDraftsFolder
+	-lookupName:nameinContext:localContextacquire:acquire]): overriden
+	method by detecting local drafts with their "newDraft" prefix.
+	([SOGoDraftsFolder -isInDraftsFolder]): returns YES.
+
+	* SoObjects/Mailer/SOGoDraftsFolder.[hm]: rewrote class module
+	from scratch by making it a subclass of SOGoMailFolder.
+
 	* UI/MailerUI/UIxMailReplyAction.m: removed obsolete class
 	module.
 
