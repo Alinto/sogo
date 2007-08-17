@@ -1,5 +1,37 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -init]):
+	new method, initializing the new ivars: IMAP4ID, headers, text,
+	sourceURL and sourceFlag.
+	([-spoolFileManager], [SOGoDraftObject -userSpoolFolderPath])
+	([-_ensureUserSpoolFolderPath])
+	([-saveMimeMessageToTemporaryFileWithHeaders:])
+	([SOGoDraftObject -mimeMessageWithHeaders:_headers])
+	([-deleteTemporaryMessageFile:], [-delete], [-content])
+	([-GETAction:_ctx], [-DELETEAction:_ctx], [-fetchParts:])
+	([-uid], [-flags], [-size], [-envelope]): removed methods.
+	([SOGoDraftObject -storeInfo]): rewrote method to take the new
+	ivars into account.
+	([SOGoDraftObject -setSourceURL:newSourceURL])
+	([SOGoDraftObject -setSourceFlag:newSourceFlag]): new accessor
+	methods to store the url of the original message between accesses
+	so that, depending on the action taken (forward or reply), the
+	correct flag can be given.
+	([SOGoDraftObject -setIMAP4ID:]): new accessor method that sets
+	the imap4 id that is returned for the message whenever it is saved
+	into the drafts folder.
+	([SOGoDraftObject -save]): new method that takes in charge the
+	saving of the message in the IMAP drafts folder.
+	([SOGoDraftObject -fetchMailForReplying:sourceMailtoAll:toAll]):
+	new method that fills the original data of the new message with
+	the reply content of the original message.
+	([SOGoDraftObject -fetchMailForForwarding:sourceMail]): same as
+	above for message forwarding.
+	([-spoolFileManager]): removed useless method (only returned the
+	default filemanager...)
+	([SOGoDraftObject -mimeMessageAsData]): new method that returns
+	the resulting message as an NSData chunk.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m: new extension module
 	containing a rewrite of the mail action methods found in
 	UI/Mailer/, that needed to be put in the SOGoMailObject class.

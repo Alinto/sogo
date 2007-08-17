@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoDraftObject_H__
 #define __Mailer_SOGoDraftObject_H__
 
-#include <Mailer/SOGoMailBaseObject.h>
+#import "SOGoMailBaseObject.h"
 
 /*
   SOGoDraftsFolder
@@ -36,20 +36,48 @@
   TODO: store-info should be an own object, not NSDictionary.
 */
 
-@class NSString, NSArray, NSDictionary, NSData, NSException;
-@class NGMimeMessage, NGImap4Envelope;
+@class NSArray;
+@class NSData;
+@class NSDictionary;
+@class NSException;
+@class NGImap4Envelope;
+@class NGMimeMessage;
+@class NSMutableDictionary;
+@class NSString;
+
+@class SOGoMailObject;
 
 @interface SOGoDraftObject : SOGoMailBaseObject
 {
-  NSString        *path;
-  NSDictionary    *info; /* stores the envelope information */
+  NSString *path;
   NGImap4Envelope *envelope;
+  int IMAP4ID;
+  NSMutableDictionary *headers;
+  NSString *text;
+  NSString *sourceURL;
+  NSString *sourceFlag;
 }
 
 /* contents */
+- (void) fetchInfo;
+- (NSException *) storeInfo;
 
-- (NSDictionary *) fetchInfo;
-- (NSException *) storeInfo: (NSDictionary *) _info;
+- (void) fetchMailForEditing: (SOGoMailObject *) sourceMail;
+- (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
+			toAll: (BOOL) toAll;
+- (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail;
+
+- (void) setHeaders: (NSDictionary *) newHeaders;
+- (NSDictionary *) headers;
+- (void) setText: (NSString *) newText;
+- (NSString *) text;
+
+/* for replies and forwards */
+- (void) setSourceURL: (NSString *) newSurceURL;
+- (void) setSourceFlag: (NSString *) newSourceFlag;
+
+- (void) setIMAP4ID: (int) newIMAPID;
+- (int) IMAP4ID;
 
 /* attachments */
 
@@ -62,19 +90,16 @@
 /* NGMime representations */
 
 - (NGMimeMessage *) mimeMessage;
-
-- (NSString *) saveMimeMessageToTemporaryFile;
-- (NSString *) saveMimeMessageToTemporaryFileWithHeaders:(NSDictionary *)_addh;
-
-- (NSException *) sendMail;
+- (NSData *) mimeMessageAsData;
 
 /* operations */
 
-- (NSException *) delete;
+- (NSException *) sendMail;
+- (NSException *) save;
 
-/* fake being a SOGoMailObject */
+// /* fake being a SOGoMailObject */
 
-- (id) fetchParts: (NSArray *) _parts;
+// - (id) fetchParts: (NSArray *) _parts;
 
 @end
 
