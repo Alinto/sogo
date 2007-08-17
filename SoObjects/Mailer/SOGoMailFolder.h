@@ -40,6 +40,7 @@
 {
   NSMutableArray *filenames;
   NSString *folderType;
+  NSDictionary *mailboxACL;
 }
 
 /* messages */

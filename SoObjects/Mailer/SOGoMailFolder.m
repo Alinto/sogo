@@ -85,6 +85,7 @@ static BOOL useAltNamespace = NO;
 		     inContainer: newContainer]))
     {
       [self _adjustOwner];
+      mailboxACL = nil;
     }
 
   return self;
@@ -94,6 +95,7 @@ static BOOL useAltNamespace = NO;
 {
   [filenames  release];
   [folderType release];
+  [mailboxACL release];
   [super dealloc];
 }
 
@@ -102,6 +104,17 @@ static BOOL useAltNamespace = NO;
 - (NSString *) relativeImap4Name
 {
   return [nameInContainer substringFromIndex: 6];
+}
+
+
+- (NSMutableString *) imap4URLString
+{
+  NSMutableString *urlString;
+
+  urlString = [super imap4URLString];
+  [urlString appendString: @"/"];
+
+  return urlString;
 }
 
 /* listing the available folders */
@@ -179,22 +192,22 @@ static BOOL useAltNamespace = NO;
 			    sortOrdering: (id) _so
 {
   /* seems to return an NSArray of NSNumber's */
-  return [[self imap4Connection] fetchUIDsInURL:[self imap4URL]
-				 qualifier:_q sortOrdering:_so];
+  return [[self imap4Connection] fetchUIDsInURL: [self imap4URL]
+				 qualifier: _q sortOrdering: _so];
 }
 
 - (NSArray *) fetchUIDs: (NSArray *) _uids
 		  parts: (NSArray *) _parts
 {
-  return [[self imap4Connection] fetchUIDs:_uids inURL:[self imap4URL]
-				 parts:_parts];
+  return [[self imap4Connection] fetchUIDs: _uids inURL: [self imap4URL]
+				 parts: _parts];
 }
 
 - (NSException *) postData: (NSData *) _data
 		     flags: (id) _flags
 {
-  return [[self imap4Connection] postData:_data flags:_flags
-				 toFolderURL:[self imap4URL]];
+  return [[self imap4Connection] postData: _data flags: _flags
+				 toFolderURL: [self imap4URL]];
 }
 
 - (NSException *) expunge
@@ -460,14 +473,22 @@ static BOOL useAltNamespace = NO;
   return imapAcls;
 }
 
+- (void) _readMailboxACL
+{
+  mailboxACL
+    = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
+  [mailboxACL retain];
+}
+
 - (NSArray *) aclUsers
 {
   NSArray *users;
-  NSDictionary *imapAcls;
 
-  imapAcls = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
-  if ([imapAcls isKindOfClass: [NSDictionary class]])
-    users = [imapAcls allKeys];
+  if (!mailboxACL)
+    [self _readMailboxACL];
+
+  if ([mailboxACL isKindOfClass: [NSDictionary class]])
+    users = [mailboxACL allKeys];
   else
     users = nil;
 
@@ -506,17 +527,19 @@ static BOOL useAltNamespace = NO;
 
 - (NSArray *) aclsForUser: (NSString *) uid
 {
-  NSDictionary *imapAcls;
   NSMutableArray *acls;
   NSString *userAcls;
 
   acls = [self _sharesACLs];
-  imapAcls = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
-  if ([imapAcls isKindOfClass: [NSDictionary class]])
+
+  if (!mailboxACL)
+    [self _readMailboxACL];
+
+  if ([mailboxACL isKindOfClass: [NSDictionary class]])
     {
-      userAcls = [imapAcls objectForKey: uid];
+      userAcls = [mailboxACL objectForKey: uid];
       if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
-	userAcls = [imapAcls objectForKey: defaultUserID];
+	userAcls = [mailboxACL objectForKey: defaultUserID];
       if ([userAcls length])
 	[acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
     }
@@ -541,6 +564,8 @@ static BOOL useAltNamespace = NO;
       [client deleteACL: folderName uid: currentUID];
       currentUID = [uids nextObject];
     }
+  [mailboxACL release];
+  mailboxACL = nil;
 }
 
 - (void) setRoles: (NSArray *) roles
@@ -551,6 +576,9 @@ static BOOL useAltNamespace = NO;
   acls = [self _sogoAclsToImapAcls: roles];
   folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
   [[imap4 client] setACL: folderName rights: acls uid: uid];
+
+  [mailboxACL release];
+  mailboxACL = nil;
 }
 
 - (NSString *) defaultUserID
@@ -592,14 +620,20 @@ static BOOL useAltNamespace = NO;
 {
   SOGoUser *user;
   NSString *otherUsersPath, *url;
+  SOGoMailAccount *thisAccount;
+  NSDictionary *mailAccount;
 
   user = [SOGoUser userWithLogin: uid roles: nil];
   otherUsersPath = [self otherUsersPathToFolder];
   if (otherUsersPath)
-    url = [NSString stringWithFormat: @"%@/%@%@",
-		    [self soURLToBaseContainerForUser: uid],
-		    [user primaryIMAP4AccountString],
-		    otherUsersPath];
+    {
+      thisAccount = [self mailAccountFolder];
+      mailAccount = [[user mailAccounts] objectAtIndex: 0];
+      url = [NSString stringWithFormat: @"%@/%@%@",
+		      [self soURLToBaseContainerForUser: uid],
+		      [mailAccount objectForKey: @"name"],
+		      otherUsersPath];
+    }
   else
     url = nil;
 

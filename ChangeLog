@@ -1,5 +1,13 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -aclUsers]):
+	cache the mailbox acl.
+	([SOGoMailFolder -aclsForUser:uid]): cache the mailbox acl.
+	([SOGoMailFolder -setRoles:rolesforUser:uid]): reset the mailbox
+	acl cache.
+	([SOGoMailFolder -httpURLForAdvisoryToUser:uid]): modified to use
+	the new method of determining the users mail accounts.
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m ([-imap4URLString]): no
 	longer adds a "/" at the end of the string (the default for
 	folders), therefore this will be overriden in SOGoMailFolder
