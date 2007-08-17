@@ -100,7 +100,8 @@ static BOOL debugSoParts       = NO;
     NSLog(@"Note(SOGoMailObject): etag caching disabled!");
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
   [headers    release];
   [headerPart release];
   [coreInfos  release];
@@ -112,18 +113,6 @@ static BOOL debugSoParts       = NO;
 - (NSString *) relativeImap4Name
 {
   return [nameInContainer stringByDeletingPathExtension];
-}
-
-- (NSMutableString *) imap4URLString
-{
-  NSMutableString *urlString;
-  NSString *imap4Name;
-
-  urlString = [container imap4URLString];
-  imap4Name = [[self relativeImap4Name] stringByEscapingURL];
-  [urlString appendFormat: @"%@", imap4Name];
-
-  return urlString;
 }
 
 /* hierarchy */
@@ -229,7 +218,8 @@ static BOOL debugSoParts       = NO;
   return [msgs count] > 0 ? YES : NO;
 }
 
-- (id)fetchCoreInfos {
+- (id) fetchCoreInfos
+{
   id msgs;
   
   if (coreInfos != nil)
@@ -246,19 +236,23 @@ static BOOL debugSoParts       = NO;
     return nil;
   
   coreInfos = [[msgs objectAtIndex:0] retain];
+
   return coreInfos;
 }
 
-- (id)bodyStructure {
+- (id) bodyStructure
+{
   id body;
 
   body = [[self fetchCoreInfos] valueForKey: @"body"];
   if (debugBodyStructure)
     [self logWithFormat: @"BODY: %@", body];
+
   return body;
 }
 
-- (NGImap4Envelope *)envelope {
+- (NGImap4Envelope *) envelope
+{
   return [[self fetchCoreInfos] valueForKey: @"envelope"];
 }
 
@@ -460,7 +454,9 @@ static BOOL debugSoParts       = NO;
 
 /* bulk fetching of plain/text content */
 
-- (BOOL)shouldFetchPartOfType:(NSString *)_type subtype:(NSString *)_subtype {
+- (BOOL) shouldFetchPartOfType: (NSString *) _type
+		       subtype: (NSString *) _subtype
+{
   /*
     This method decides which parts are 'prefetched' for display. Those are
     usually text parts (the set is currently hardcoded in this method ...).
@@ -477,9 +473,10 @@ static BOOL debugSoParts       = NO;
                   || [_subtype hasPrefix: @"x-vnd.kolab."])));
 }
 
-- (void)addRequiredKeysOfStructure:(id)_info path:(NSString *)_p
-  toArray:(NSMutableArray *)_keys
-  recurse:(BOOL)_recurse
+- (void) addRequiredKeysOfStructure: (id) _info
+			       path: (NSString *) _p
+			    toArray: (NSMutableArray *) _keys
+			    recurse: (BOOL) _recurse
 {
   /* 
      This is used to collect the set of IMAP4 fetch-keys required to fetch
@@ -488,67 +485,70 @@ static BOOL debugSoParts       = NO;
      
      The method calls itself recursively to walk the body structure.
   */
-  NSArray  *parts;
+  NSArray *parts;
   unsigned i, count;
   BOOL fetchPart;
+  NSString *k;
   id body;
-  
-  /* Note: if the part itself doesn't qualify, we still check subparts */
-  fetchPart = [self shouldFetchPartOfType:[_info valueForKey: @"type"]
-		    subtype:[_info valueForKey: @"subtype"]];
-  if (fetchPart) {
-    NSString *k;
+  NSString *sp;
+  id childInfo;
     
-    if ([_p length] > 0) {
-      k = [[@"body[" stringByAppendingString:_p] stringByAppendingString: @"]"];
-    }
-    else {
-      /*
-	for some reason we need to add ".TEXT" for plain text stuff on root
-	entities?
-	TODO: check with HTML
-      */
-      k = @"body[text]";
-    }
-    [_keys addObject:k];
-  }
-  
-  if (!_recurse)
-    return;
-  
-  /* recurse */
-  
-  parts = [(NSDictionary *)_info objectForKey: @"parts"];
-  for (i = 0, count = [parts count]; i < count; i++) {
-    NSString *sp;
-    id childInfo;
-    
-    sp = ([_p length] > 0)
-      ? [_p stringByAppendingFormat: @".%d", i + 1]
-      : [NSString stringWithFormat: @"%d", i + 1];
-    
-    childInfo = [parts objectAtIndex:i];
-    
-    [self addRequiredKeysOfStructure:childInfo path:sp toArray:_keys
-	  recurse:YES];
-  }
-  
-  /* check body */
-  
-  if ((body = [(NSDictionary *)_info objectForKey: @"body"]) != nil) {
-    NSString *sp;
 
-    sp = [[body valueForKey: @"type"] lowercaseString];
-    if ([sp isEqualToString: @"multipart"])
-      sp = _p;
-    else
-      sp = [_p length] > 0 ? [_p stringByAppendingString: @".1"] : @"1";
-    [self addRequiredKeysOfStructure:body path:sp toArray:_keys
-	  recurse:YES];
-  }
+  /* Note: if the part itself doesn't qualify, we still check subparts */
+  fetchPart = [self shouldFetchPartOfType: [_info valueForKey: @"type"]
+		    subtype: [_info valueForKey: @"subtype"]];
+  if (fetchPart)
+    {
+      if ([_p length] > 0)
+	k = [NSString stringWithFormat: @"body[%@]", _p];
+      else
+	{
+	  /*
+	    for some reason we need to add ".TEXT" for plain text stuff on root
+	    entities?
+	    TODO: check with HTML
+	  */
+	  k = @"body[text]";
+	}
+      [_keys addObject: k];
+    }
+
+  if (_recurse)
+    {
+      /* recurse */
+      parts = [(NSDictionary *)_info objectForKey: @"parts"];
+      count = [parts count];
+      for (i = 0; i < count; i++)
+	{
+	  sp = (([_p length] > 0)
+		? [_p stringByAppendingFormat: @".%d", i + 1]
+		: [NSString stringWithFormat: @"%d", i + 1]);
+    
+	  childInfo = [parts objectAtIndex: i];
+	
+	  [self addRequiredKeysOfStructure: childInfo
+		path: sp toArray: _keys
+		recurse: YES];
+	}
+      
+      /* check body */
+      body = [(NSDictionary *)_info objectForKey: @"body"];
+      if (body)
+	{
+	  sp = [[body valueForKey: @"type"] lowercaseString];
+	  if ([sp isEqualToString: @"multipart"])
+	    sp = _p;
+	  else
+	    sp = [_p length] > 0 ? [_p stringByAppendingString: @".1"] : @"1";
+	  [self addRequiredKeysOfStructure: body
+		path: sp toArray: _keys
+		recurse: YES];
+	}
+    }
 }
 
-- (NSArray *)plainTextContentFetchKeys {
+- (NSArray *) plainTextContentFetchKeys
+{
   /*
     The name is not 100% correct. The method returns all body structure fetch
     keys which are marked by the -shouldFetchPartOfType:subtype: method.
@@ -556,8 +556,8 @@ static BOOL debugSoParts       = NO;
   NSMutableArray *ma;
   
   ma = [NSMutableArray arrayWithCapacity:4];
-  [self addRequiredKeysOfStructure:[[self clientObject] bodyStructure]
-	path: @"" toArray:ma recurse:YES];
+  [self addRequiredKeysOfStructure: [[self clientObject] bodyStructure]
+	path: @"" toArray: ma recurse: YES];
   return ma;
 }
 
@@ -855,7 +855,7 @@ static BOOL debugSoParts       = NO;
   
   /* b) mark deleted */
   
-  error = [[self imap4Connection] markURLDeleted:[self imap4URL]];
+  error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
   if (error != nil) return error;
   
   /* c) expunge */

@@ -1,5 +1,8 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-imap4URLString]): removed overriden method (see below).
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder -aclUsers]):
 	cache the mailbox acl.
 	([SOGoMailFolder -aclsForUser:uid]): cache the mailbox acl.
