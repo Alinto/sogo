@@ -18,6 +18,7 @@ Mailer_OBJC_FILES += \
 	SOGoMailFolder.m		\
 	SOGoSharedInboxFolder.m		\
 	SOGoMailObject.m		\
+	SOGoMailObject+Draft.m		\
 	SOGoTrashFolder.m		\
 	\
 	SOGoMailBodyPart.m		\
@@ -28,9 +29,6 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoDraftsFolder.m		\
 	SOGoDraftObject.m		\
-	\
-	SOGoMailIdentity.m		\
-	SOGoUser+Mail.m			\
 
 Mailer_RESOURCE_FILES += \
 	Version		\
