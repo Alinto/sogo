@@ -1,5 +1,9 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-composeAction]): new method replacing the one previously in
+	UIxMailMainFrame.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-imap4URLString]): removed overriden method (see below).
 

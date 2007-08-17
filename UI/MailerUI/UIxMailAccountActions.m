@@ -25,10 +25,16 @@
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoDraftObject.h>
+#import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
+#import "../Common/WODirectAction+SOGo.h"
 
 #import "UIxMailAccountActions.h"
 
@@ -109,6 +115,34 @@
   [response appendContentString: [folders jsonRepresentation]];
 
   return response;
+}
+
+/* compose */
+
+- (WOResponse *) composeAction
+{
+  SOGoDraftsFolder *drafts;
+  SOGoDraftObject *newDraftMessage;
+  NSString *urlBase, *url;
+  NSString *mailTo;
+
+  drafts = [[self clientObject] draftsFolderInContext: context];
+  newDraftMessage = [drafts newDraft];
+
+  mailTo = [[self request] formValueForKey: @"mailto"];
+  if ([mailTo length] > 0)
+    {
+      [newDraftMessage setHeaders: [NSDictionary dictionaryWithObject: mailTo
+						 forKey: @"to"]];
+      [newDraftMessage storeInfo];
+    }
+
+  urlBase = [newDraftMessage baseURLInContext: context];
+  url = [urlBase composeURLWithAction: @"edit"
+		 parameters: nil
+		 andHash: NO];
+
+  return [self redirectToLocation: url];  
 }
 
 @end
