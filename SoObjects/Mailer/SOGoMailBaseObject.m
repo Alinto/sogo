@@ -151,7 +151,7 @@ static BOOL debugOn = YES;
 
   urlString = [container imap4URLString];
   imap4Name = [[self relativeImap4Name] stringByEscapingURL];
-  [urlString appendFormat: @"%@/", imap4Name];
+  [urlString appendFormat: @"%@", imap4Name];
 
   return urlString;
 }

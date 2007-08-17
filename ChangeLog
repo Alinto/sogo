@@ -1,5 +1,10 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([-imap4URLString]): no
+	longer adds a "/" at the end of the string (the default for
+	folders), therefore this will be overriden in SOGoMailFolder
+	rather than in SOGoMailObject.
+
 	* UI/MailerUI/UIxMailListView.m ([-expungeAction]): removed
 	method, moved into the new UIxMailActions module class.
 
