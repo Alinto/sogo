@@ -1,5 +1,8 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([-expungeAction]): removed
+	method, moved into the new UIxMailActions module class.
+
 	* SoObjects/Mailer/SOGoDraftsFolder.m ([SOGoDraftsFolder
 	-newDraft]): new method that returns a new SOGoDraftObject
 	instance with a unique filename based on the current timestamp and

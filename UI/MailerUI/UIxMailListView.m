@@ -567,30 +567,6 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
-- (id) expungeAction 
-{
-  // TODO: we might want to flush the caches?
-  NSException *error;
-  id clientObject;
-
-  clientObject = [self clientObject];
-  if (clientObject)
-    {
-      error = [clientObject expunge];
-      if (!error)
-	{
-	  if ([clientObject respondsToSelector: @selector(flushMailCaches)])
-	    [clientObject flushMailCaches];
-	  return [self redirectToLocation:@"view"];
-	}
-    }
-  else
-    error = [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			 reason: @"did not find mail folder"];
-  
-  return error;
-}
-
 @end
 
 /* UIxMailListView */
