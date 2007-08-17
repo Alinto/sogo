@@ -58,7 +58,7 @@
       error = [connection createMailbox: folderName atURL: [co imap4URL]];
       if (error)
 	{
-	  [response setStatus: 403];
+	  [response setStatus: 500];
 	  [response appendContentString: @"Unable to create folder."];
 	}
       else
@@ -66,7 +66,7 @@
     }
   else
     {
-      [response setStatus: 403];
+      [response setStatus: 500];
       [response appendContentString: @"Missing 'name' parameter."];
     }
 
@@ -112,7 +112,7 @@
 			  toURL: destURL];
       if (error)
 	{
-	  [response setStatus: 403];
+	  [response setStatus: 500];
 	  [response appendContentString: @"Unable to rename folder."];
 	}
       else
@@ -120,7 +120,7 @@
     }
   else
     {
-      [response setStatus: 403];
+      [response setStatus: 500];
       [response appendContentString: @"Missing 'name' parameter."];
     }
 
@@ -164,11 +164,35 @@
 		      toURL: destURL];
   if (error)
     {
-      [response setStatus: 403];
+      [response setStatus: 500];
       [response appendContentString: @"Unable to move folder."];
     }
   else
     [response setStatus: 204];
+
+  return response;
+}
+
+- (WOResponse *) expungeAction 
+{
+  NSException *error;
+  SOGoTrashFolder *co;
+  WOResponse *response;
+
+  co = [self clientObject];
+  response = [context response];
+
+  error = [co expunge];
+  if (error)
+    {
+      [response setStatus: 500];
+      [response appendContentString: @"Unable to expunge folder."];
+    }
+  else
+    {
+      [co flushMailCaches];
+      [response setStatus: 204];
+    }
 
   return response;
 }
@@ -202,7 +226,7 @@
     }
   if (error)
     {
-      [response setStatus: 403];
+      [response setStatus: 500];
       [response appendContentString: @"Unable to empty the trash folder."];
     }
   else
@@ -233,7 +257,7 @@
     }
   else
     {
-      [response setStatus: 403];
+      [response setStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
 

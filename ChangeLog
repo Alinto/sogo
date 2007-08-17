@@ -1,5 +1,16 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-expungeAction]): new method replacing the one previously found in
+	UIxMailListView.
+	([UIxMailFolderActions -createFolderAction])
+	([UIxMailFolderActions -renameFolderAction])
+	([UIxMailFolderActions -deleteFolderAction])
+	([UIxMailFolderActions -emptyTrashAction])
+	([UIxMailFolderActions -subscribeAction])
+	([UIxMailFolderActions -unsubscribeAction]): error situations
+	should have http return code 500 instead of 403.
+
 	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
 	-composeAction]): new method replacing the one previously in
 	UIxMailMainFrame.
