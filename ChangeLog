@@ -1,5 +1,14 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailReplyAction.m: removed obsolete class
+	module.
+
+	* UI/MailerUI/UIxMailForwardAction.m: removed obsolete class
+	module.
+
+	* UI/MailerUI/UIxMailEditorAction.[hm]: removed obsolete class
+	module.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject -init]):
 	new method, initializing the new ivars: IMAP4ID, headers, text,
 	sourceURL and sourceFlag.
