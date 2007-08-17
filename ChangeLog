@@ -1,5 +1,20 @@
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([-patchFlagsInStore]): removed
+	useless stub method, of which the intention was implemented in
+	SOGoDraftObject.
+	([-lookupSentFolderUsingAccount]): removed obsolete method.
+	([-selectedMailIdentity]): removed obsolete method.
+	([-lookupSentFolderUsingFrom]): removed obsolete method.
+	([-storeMailInSentFolder:_path]): removed obsolete method, of
+	which the mechanism has been put in -[SOGoDraftObject sendMail]
+	method.
+	([UIxMailEditor -_saveFormInfo], [UIxMailEditor -defaultAction])
+	([UIxMailEditor -saveAction], [UIxMailEditor -sendAction]):
+	adapted algorithms to the new SOGoDraftObject methods.
+	([-deleteAction]): removed method since local draft objects cannot
+	be removed by the user.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-expungeAction]): new method replacing the one previously found in
 	UIxMailListView.
