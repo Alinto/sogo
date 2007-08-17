@@ -23,7 +23,7 @@
 #ifndef UIXMAILMAINFRAME_H
 #define UIXMAILMAINFRAME_H
 
-#import "../Common/UIxComponent.h"
+#import "../SOGoUI/UIxComponent.h"
 
 @interface UIxMailMainFrame : UIxComponent
 
