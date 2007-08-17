@@ -1,6 +1,6 @@
 var SOGoDragHandlesInterface = {
-  LEFTMARGIN: 180,
-  TOPMARGIN: 120,
+  leftMargin: 180,
+  topMargin: 120,
   dhType: null,
   origX: -1,
   origLeft: -1,
@@ -41,7 +41,7 @@ var SOGoDragHandlesInterface = {
         this.origY = this.offsetTop;
         this.origUpper = this.upperBlock.offsetHeight;
 	var pointY = Event.pointerY(event);
-	if (pointY <= this.TOPMARGIN) delta = this.TOPMARGIN;
+	if (pointY <= this.topMargin) delta = this.topMargin;
         else delta = pointY - this.offsetTop - 5;
         this.origLower = this.lowerBlock.offsetTop - 5;
         document.body.setStyle({ cursor: "n-resize" });
@@ -61,9 +61,9 @@ var SOGoDragHandlesInterface = {
       this._determineType();
     if (this.dhType == 'horizontal') {
       var pointerX = Event.pointerX(event);
-      if (pointerX <= this.LEFTMARGIN) {
-	this.rightBlock.setStyle({ left: (this.LEFTMARGIN) + 'px' });
-	this.leftBlock.setStyle({ width: (this.LEFTMARGIN) + 'px' });
+      if (pointerX <= this.leftMargin) {
+	this.rightBlock.setStyle({ left: (this.leftMargin) + 'px' });
+	this.leftBlock.setStyle({ width: (this.leftMargin) + 'px' });
       }
       else {
 	var deltaX = Math.floor(pointerX - this.origX - (this.offsetWidth / 2));
@@ -72,9 +72,9 @@ var SOGoDragHandlesInterface = {
       }
     } else if (this.dhType == 'vertical') {
       var pointerY = Event.pointerY(event);
-      if (pointerY <= this.TOPMARGIN) {
-	this.lowerBlock.setStyle({ top: (this.TOPMARGIN - delta) + 'px' });
-	this.upperBlock.setStyle({ height: (this.TOPMARGIN - delta) + 'px' });
+      if (pointerY <= this.topMargin) {
+	this.lowerBlock.setStyle({ top: (this.topMargin - delta) + 'px' });
+	this.upperBlock.setStyle({ height: (this.topMargin - delta) + 'px' });
       }
       else {
         var deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
@@ -95,15 +95,15 @@ var SOGoDragHandlesInterface = {
     if (this.dhType == 'horizontal') {
       var hX =  Event.pointerX(event);
       var width = this.offsetWidth;
-      if (hX < this.LEFTMARGIN)
-	hX = this.LEFTMARGIN + Math.floor(width / 2);
+      if (hX < this.leftMargin)
+	hX = this.leftMargin + Math.floor(width / 2);
       var newLeft = Math.floor(hX - (width / 2));
       this.setStyle({ left: newLeft + 'px' });
     } else if (this.dhType == 'vertical') {
       var height = this.offsetHeight;
       var hY = Event.pointerY(event);
-      if (hY < this.TOPMARGIN)
-	hY = this.TOPMARGIN + Math.floor(height / 2);
+      if (hY < this.topMargin)
+	hY = this.topMargin + Math.floor(height / 2);
       var newTop = Math.floor(hY - (height / 2))  - delta;
       this.setStyle({ top: newTop + 'px' });
     }

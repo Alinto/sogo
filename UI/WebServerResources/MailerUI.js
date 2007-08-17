@@ -1028,6 +1028,7 @@ function configureDragHandles() {
   var handle = $("verticalDragHandle");
   if (handle) {
     handle.addInterface(SOGoDragHandlesInterface);
+    handle.leftMargin = 1;
     handle.leftBlock=$("leftPanel");
     handle.rightBlock=$("rightPanel");
   }
