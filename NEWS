@@ -14,6 +14,8 @@
 - added the ability to print messages from the mailer toolbar;
 - added the ability to use and configure SMTP as the email transport instead
   of sendmail;
+- rewrote the handling of draft objects to comply better with the behaviour of
+  Thunderbird;
 
 0.9.0-20070713
 --------------
