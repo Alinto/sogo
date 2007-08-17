@@ -28,12 +28,15 @@
 @class WOResponse;
 
 @interface UIxMailFolderActions : WODirectAction
-{
-}
 
 - (WOResponse *) createFolderAction;
 - (WOResponse *) renameFolderAction;
 - (WOResponse *) deleteFolderAction;
+- (WOResponse *) expungeAction;
+- (WOResponse *) emptyTrashAction;
+- (WOResponse *) subscribeAction;
+- (WOResponse *) unsubscribeAction;
+- (WOResponse *) quotasAction;
 
 @end
 
