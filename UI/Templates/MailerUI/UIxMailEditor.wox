@@ -21,15 +21,15 @@
     </ul>
   </div>
 
-  <form name="pageform" enctype="multipart/form-data">
+  <form name="pageform" enctype="multipart/form-data" accept-charset="UTF-8">
     <div id="headerArea">
       <div id="attachmentsArea">
 	<var:string label:value="Attachments:" />
 	<ul id="attachments">
 	  <var:foreach list="attachmentNames" item="attachmentName"
-	    ><img rsrc:img="attachment.gif"
-	      /><var:string value="attachmentName"
-	      /></var:foreach>
+	    ><li><img rsrc:src="attachment.gif"
+		/><var:string value="attachmentName"
+		/></li></var:foreach>
 	</ul>
       </div>
       <span class="headerField"><var:string label:value="From" />:</span>
