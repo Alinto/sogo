@@ -1,3 +1,16 @@
+2007-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString:encoding]): do not change the string if the
+	encoded string has the same length (which means it is already
+	7bit-safe).
+	([SOGoDraftObject -fetchMailForEditing:sourceMail]): new method
+	that retrieve a draft along with its attachments for editing.
+	([SOGoDraftObject -mimeHeaderMapWithHeaders:_headers]): no longer
+	choke if the "to" header field is empty.
+	([SOGoDraftObject -delete]): new method to delete the draft folder
+	whenever operations are done.
+
 2007-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailEditor.m ([-patchFlagsInStore]): removed

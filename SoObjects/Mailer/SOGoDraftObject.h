@@ -94,6 +94,7 @@
 
 /* operations */
 
+- (NSException *) delete;
 - (NSException *) sendMail;
 - (NSException *) save;
 

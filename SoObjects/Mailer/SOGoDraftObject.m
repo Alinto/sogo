@@ -51,6 +51,7 @@
 #import <NGMime/NGMimeType.h>
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import "SOGoMailAccount.h"
@@ -74,7 +75,7 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 
 - (NSString *) asQPSubjectString: (NSString *) encoding;
 {
-  NSString *qpString;
+  NSString *qpString, *subjectString;
   NSData *subjectData, *destSubjectData;
 
   subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
@@ -83,8 +84,13 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
   qpString = [[NSString alloc] initWithData: destSubjectData
 			       encoding: NSASCIIStringEncoding];
   [qpString autorelease];
+  if ([qpString length] > [self length])
+    subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
+			      encoding, qpString];
+  else
+    subjectString = self;
 
-  return [NSString stringWithFormat: @"=?%@?Q?%@?=", encoding, qpString];
+  return subjectString;
 }
 
 @end
@@ -365,11 +371,6 @@ static BOOL        showTextAttachmentsInline  = NO;
   return error;
 }
 
-- (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
-{
-#warning unimplemented
-}
-
 - (void) _addEMailsOfAddresses: (NSArray *) _addrs
 		       toArray: (NSMutableArray *) _ma
 {
@@ -422,6 +423,75 @@ static BOOL        showTextAttachmentsInline  = NO;
     
       [_info setObject: to forKey: @"cc"];
     }
+}
+
+- (void) _fetchAttachments: (NSArray *) parts
+                  fromMail: (SOGoMailObject *) sourceMail
+{
+  unsigned int count, max;
+  NSDictionary *currentPart, *attachment, *body;
+  NSArray *paths, *result;
+
+  max = [parts count];
+  if (max > 0)
+    {
+      paths = [parts keysWithFormat: @"BODY[%{path}]"];
+      result = [[sourceMail fetchParts: paths] objectForKey: @"fetch"];
+      for (count = 0; count < max; count++)
+	{
+	  currentPart = [parts objectAtIndex: count];
+	  body = [[result objectAtIndex: count] objectForKey: @"body"];
+	  attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+				       [currentPart objectForKey: @"filename"],
+				     @"filename",
+				     [currentPart objectForKey: @"mimetype"],
+				     @"mime-type",
+				     nil];
+	  [self saveAttachment: [body objectForKey: @"data"]
+		withMetadata: attachment];
+	}
+    }
+}
+
+- (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
+{
+  NSString *subject;
+  NSMutableDictionary *info;
+  NSMutableArray *addresses;
+  NGImap4Envelope *sourceEnvelope;
+
+  [sourceMail fetchCoreInfos];
+
+  [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys]
+	fromMail: sourceMail];
+  info = [NSMutableDictionary dictionaryWithCapacity: 16];
+  subject = [sourceMail subject];
+  if ([subject length] > 0)
+    [info setObject: subject forKey: @"subject"];
+
+  sourceEnvelope = [sourceMail envelope];
+  addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
+  [info setObject: addresses forKey: @"to"];
+  addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope cc] toArray: addresses];
+  if ([addresses count] > 0)
+    [info setObject: addresses forKey: @"cc"];
+  addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope bcc] toArray: addresses];
+  if ([addresses count] > 0)
+    [info setObject: addresses forKey: @"bcc"];
+  addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope replyTo] toArray: addresses];
+  if ([addresses count] > 0)
+    [info setObject: addresses forKey: @"replyTo"];
+  [self setHeaders: info];
+
+  [self setText: [sourceMail contentForEditing]];
+  [self setSourceURL: [sourceMail imap4URLString]];
+  IMAP4ID = [[sourceMail nameInContainer] intValue];
+
+  [self storeInfo];
 }
 
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
@@ -726,9 +796,9 @@ static BOOL        showTextAttachmentsInline  = NO;
     cdtype = @"attachment";
   
   cd = [cdtype stringByAppendingString: @"; filename=\""];
-  cd = [cd stringByAppendingString:_name];
+  cd = [cd stringByAppendingString: _name];
   cd = [cd stringByAppendingString: @"\""];
-  
+
   // TODO: add size parameter (useful addition, RFC 2183)
   return cd;
 }
@@ -923,21 +993,16 @@ static BOOL        showTextAttachmentsInline  = NO;
   
   /* add recipients */
   
-  if ((emails = [headers objectForKey: @"to"]) != nil) {
-    if ([emails count] == 0) {
-      [self errorWithFormat: @"missing 'to' recipient in email!"];
-      return nil;
-    }
+  if ((emails = [headers objectForKey: @"to"]) != nil)
     [map setObjects: emails forKey: @"to"];
-  }
   if ((emails = [headers objectForKey: @"cc"]) != nil)
     [map setObjects:emails forKey: @"cc"];
   if ((emails = [headers objectForKey: @"bcc"]) != nil)
     [map setObjects:emails forKey: @"bcc"];
-  
+
   /* add senders */
   
-  from    = [headers objectForKey: @"from"];
+  from = [headers objectForKey: @"from"];
   replyTo = [headers objectForKey: @"replyTo"];
   
   if (![self isEmptyValue:from]) {
@@ -1079,9 +1144,26 @@ static BOOL        showTextAttachmentsInline  = NO;
 		  sourceIMAP4URL = [NSURL URLWithString: sourceURL];
 		  [imap4 addFlags: sourceFlag toURL: sourceIMAP4URL];
 		}
+	      if (!draftDeleteDisabled)
+		error = [self delete];
 	    }
 	}
     }
+
+  return error;
+}
+
+- (NSException *) delete
+{
+  NSException *error;
+
+  if ([[NSFileManager defaultManager]
+	removeFileAtPath: [self draftFolderPath]
+	handler: nil])
+    error = nil;
+  else
+    error = [NSException exceptionWithHTTPStatus: 500 /* server error */
+			 reason: @"could not delete draft"];
 
   return error;
 }
