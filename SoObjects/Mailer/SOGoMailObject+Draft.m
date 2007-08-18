@@ -62,8 +62,8 @@
   return newSubject;
 }
 
-- (NSString *) contentForReplyOnParts: (NSDictionary *) _prts
-                                 keys: (NSArray *) _k
+- (NSString *) contentForEditingOnParts: (NSDictionary *) _prts
+				   keys: (NSArray *) _k
 {
   static NSString *textPartSeparator = @"\n---\n";
   NSMutableString *ms;
@@ -92,7 +92,7 @@
 	{
 	  if (count > 0)
 	    [ms appendString: textPartSeparator];
-	  [ms appendString: [v stringByApplyingMailQuoting]];
+	  [ms appendString: v];
 	}
       else
 	[self logWithFormat:@"Note: cannot show part %@", k];
@@ -103,14 +103,14 @@
 
 #warning this method should be fixed to return the first available text/plain \
          part, and otherwise the first text/html part converted to text
-- (NSString *) contentForReply
+- (NSString *) contentForEditing
 {
   NSArray *keys;
   NSDictionary *parts;
   NSMutableArray *topLevelKeys = nil;
   unsigned int count, max;
   NSRange r;
-  NSString *contentForReply;
+  NSString *contentForEditing;
 
 //   SOGoMailObject *co;
 
@@ -147,13 +147,18 @@
 	}
 
       parts = [self fetchPlainTextStrings: keys];
-      contentForReply = [self contentForReplyOnParts: parts
-			      keys: keys];
+      contentForEditing = [self contentForEditingOnParts: parts
+				keys: keys];
     }
   else
-    contentForReply = nil;
+    contentForEditing = nil;
 
-  return contentForReply;
+  return contentForEditing;
+}
+
+- (NSString *) contentForReply
+{
+  return [[self contentForEditing] stringByApplyingMailQuoting];
 }
 
 - (NSString *) filenameForForward
@@ -200,6 +205,74 @@
     newSubject = subject;
 
   return newSubject;
+}
+
+- (void) _fetchFileAttachmentKey: (NSDictionary *) part
+		       intoArray: (NSMutableArray *) keys
+		        withPath: (NSString *) path
+{
+  NSDictionary *parameters, *currentFile;
+  NSString *filename, *mimeType;
+
+  parameters = [[part objectForKey: @"disposition"]
+		 objectForKey: @"parameterList"];
+  if (parameters)
+    {
+      filename = [parameters objectForKey: @"filename"];
+      mimeType = [NSString stringWithFormat: @"%@/%@",
+			   [part objectForKey: @"type"],
+			   [part objectForKey: @"subtype"]];
+      currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
+				    filename, @"filename",
+				  [mimeType lowercaseString], @"mimetype",
+				  path, @"path", nil];
+      [keys addObject: currentFile];
+    }
+}
+
+- (void) _fetchFileAttachmentKeysInPart: (NSDictionary *) part
+                              intoArray: (NSMutableArray *) keys
+			       withPath: (NSString *) path
+{
+  NSEnumerator *subparts;
+  NSString *type;
+  unsigned int count;
+  NSDictionary *currentPart;
+  NSString *newPath;
+
+  type = [[part objectForKey: @"type"] lowercaseString];
+  if ([type isEqualToString: @"multipart"])
+    {
+      subparts = [[part objectForKey: @"parts"] objectEnumerator];
+      currentPart = [subparts nextObject];
+      count = 1;
+      while (currentPart)
+	{
+	  if (path)
+	    newPath = [NSString stringWithFormat: @"%@.%d", path, count];
+	  else
+	    newPath = [NSString stringWithFormat: @"%d", count];
+	  [self _fetchFileAttachmentKeysInPart: currentPart
+		intoArray: keys
+		withPath: newPath];
+	  currentPart = [subparts nextObject];
+	  count++;
+	}
+    }
+  else
+    [self _fetchFileAttachmentKey: part intoArray: keys withPath: path];
+}
+
+#warning we might need to handle parts with a "name" attribute
+- (NSArray *) fetchFileAttachmentKeys
+{
+  NSMutableArray *keys;
+
+  keys = [NSMutableArray array];
+  [self _fetchFileAttachmentKeysInPart: [self bodyStructure]
+	intoArray: keys withPath: nil];
+
+  return keys;
 }
 
 @end

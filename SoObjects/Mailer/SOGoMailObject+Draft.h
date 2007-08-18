@@ -27,6 +27,9 @@
 
 @interface SOGoMailObject (SOGoDraftObjectExtensions)
 
+- (NSString *) contentForEditing;
+- (NSArray *) fetchFileAttachmentKeys;
+
 - (NSString *) subjectForReply;
 - (NSString *) contentForReply;
 

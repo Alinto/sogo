@@ -1,5 +1,12 @@
 2007-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-contentForEditing]): new method that retrieve the editable mail
+	content.
+	([SOGoMailObject -fetchFileAttachmentKeys]): new method that
+	returns the body keys for attached files (parts with a "filename"
+	attribute).
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
 	-asQPSubjectString:encoding]): do not change the string if the
 	encoded string has the same length (which means it is already
