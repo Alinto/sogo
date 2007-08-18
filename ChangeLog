@@ -1,5 +1,12 @@
 2007-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -deleteAction]):
+	new category method to reponds to the "delete" web command on
+	drafts.
+	([UIxMailActions -deleteAttachmentAction]): new category method to
+	reponds to the "deleteAttachment" web command on drafts, taking
+	the "filename" url parameter into account.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForEditing]): new method that retrieve the editable mail
 	content.

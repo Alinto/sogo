@@ -22,6 +22,9 @@
 
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -102,6 +105,48 @@
 			  [newMail baseURLInContext: context]];
 
   return [self redirectToLocation: newLocation];
+}
+
+/* SOGoDraftObject */
+- (id) deleteAction
+{
+  SOGoDraftObject *draft;
+  NSException *error;
+  id response;
+
+  draft = [self clientObject];
+  error = [draft delete];
+  if (error)
+    response = error;
+  else
+    {
+      response = [context response];
+      [response setStatus: 204];
+    }
+
+  return response;
+}
+
+- (WOResponse *) deleteAttachmentAction
+{
+  WOResponse *response;
+  NSString *filename;
+
+  response = [context response];
+
+  filename = [[context request] formValueForKey: @"filename"];
+  if ([filename length] > 0)
+    {
+      [[self clientObject] deleteAttachmentWithName: filename];
+      [response setStatus: 204];
+    }
+  else
+    {
+      [response setStatus: 500];
+      [response appendContentString: @"How did you end up here?"];
+    }
+
+  return response;
 }
 
 @end

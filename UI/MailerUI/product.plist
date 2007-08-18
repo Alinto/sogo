@@ -342,6 +342,16 @@ categories = {
 	    pageName    = "UIxMailEditor";
 	    actionName  = "send";
 	 };
+	 delete = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailActions";
+	    actionName = "delete";
+	 };
+	 deleteAttachment = {
+	    protectedBy = "View";
+	    actionClass = "UIxMailActions";
+	    actionName = "deleteAttachment";
+	 };
       };
    };
 
