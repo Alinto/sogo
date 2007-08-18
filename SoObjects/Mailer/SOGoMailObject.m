@@ -221,21 +221,17 @@ static BOOL debugSoParts       = NO;
 - (id) fetchCoreInfos
 {
   id msgs;
-  
-  if (coreInfos != nil)
-    return [coreInfos isNotNull] ? coreInfos : nil;
-  
-#if 0 // TODO: old code, why was it using clientObject??
-  msgs = [[self clientObject] fetchParts:coreInfoKeys]; // returns dict
-#else
-  msgs = [self fetchParts:coreInfoKeys]; // returns dict
-#endif
-  if (heavyDebug) [self logWithFormat: @"M: %@", msgs];
-  msgs = [msgs valueForKey: @"fetch"];
-  if ([msgs count] == 0)
-    return nil;
-  
-  coreInfos = [[msgs objectAtIndex:0] retain];
+
+  if (!coreInfos)
+    {  
+      msgs = [self fetchParts:coreInfoKeys]; // returns dict
+      if (heavyDebug)
+	[self logWithFormat: @"M: %@", msgs];
+      msgs = [msgs valueForKey: @"fetch"];
+      if ([msgs count] > 0)
+	coreInfos = [msgs objectAtIndex: 0];
+      [coreInfos retain];
+    }
 
   return coreInfos;
 }
@@ -273,24 +269,33 @@ static BOOL debugSoParts       = NO;
   return date;
 }
 
-- (NSArray *)fromEnvelopeAddresses {
+- (NSArray *) fromEnvelopeAddresses
+{
   return [[self envelope] from];
 }
-- (NSArray *)toEnvelopeAddresses {
+
+- (NSArray *) toEnvelopeAddresses
+{
   return [[self envelope] to];
 }
-- (NSArray *)ccEnvelopeAddresses {
+
+- (NSArray *) ccEnvelopeAddresses
+{
   return [[self envelope] cc];
 }
 
-- (NSData *)mailHeaderData {
+- (NSData *) mailHeaderData
+{
   return [[self fetchCoreInfos] valueForKey: @"header"];
 }
-- (BOOL)hasMailHeaderInCoreInfos {
+
+- (BOOL) hasMailHeaderInCoreInfos
+{
   return [[self mailHeaderData] length] > 0 ? YES : NO;
 }
 
-- (id)mailHeaderPart {
+- (id) mailHeaderPart
+{
   NGMimeMessageParser *parser;
   NSData *data;
   
@@ -493,7 +498,6 @@ static BOOL debugSoParts       = NO;
   NSString *sp;
   id childInfo;
     
-
   /* Note: if the part itself doesn't qualify, we still check subparts */
   fetchPart = [self shouldFetchPartOfType: [_info valueForKey: @"type"]
 		    subtype: [_info valueForKey: @"subtype"]];
@@ -556,12 +560,14 @@ static BOOL debugSoParts       = NO;
   NSMutableArray *ma;
   
   ma = [NSMutableArray arrayWithCapacity:4];
-  [self addRequiredKeysOfStructure: [[self clientObject] bodyStructure]
+  [self addRequiredKeysOfStructure: [self bodyStructure]
 	path: @"" toArray: ma recurse: YES];
+
   return ma;
 }
 
-- (NSDictionary *)fetchPlainTextParts:(NSArray *)_fetchKeys {
+- (NSDictionary *) fetchPlainTextParts: (NSArray *) _fetchKeys
+{
   // TODO: is the name correct or does it also fetch other parts?
   NSMutableDictionary *flatContents;
   unsigned i, count;
