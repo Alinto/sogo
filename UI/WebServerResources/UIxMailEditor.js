@@ -144,6 +144,7 @@ function clickedEditorSend(sender) {
    if (!validateEditorInput(sender))
       return false;
 
+   window.shouldPreserve = true;
    document.pageform.action = "send";
    document.pageform.submit();
 
@@ -152,7 +153,6 @@ function clickedEditorSend(sender) {
 
 function clickedEditorAttach(sender) {
   var area = $("attachmentsArea");
-
   area.setStyle({ display: "block" });
   
   var inputs = area.getElementsByTagName("input");
@@ -210,16 +210,9 @@ function createAttachment(node, list) {
 }
 
 function clickedEditorSave(sender) {
+  window.shouldPreserve = true;
   document.pageform.action = "save";
   document.pageform.submit();
-
-  return false;
-}
-
-function clickedEditorDelete(sender) {
-  document.pageform.action = "delete";
-  document.pageform.submit();
-  window.close();
 
   return false;
 }
@@ -232,8 +225,14 @@ function initMailEditor() {
     Event.observe(elements[i], "click",
 		  onRowClick.bindAsEventListener(elements[i]));
   }
+
+  var listContent = $("attachments").childNodesWithTag("li");
+  if (listContent.length > 0)
+    $("attachmentsArea").setStyle({ display: "block" });
+
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);
+  Event.observe(window, "beforeunload", onMailEditorClose);
 }
 
 function getMenus() {
@@ -252,8 +251,31 @@ function onRemoveAttachments() {
       input.parentNode.removeChild(input);
       list.removeChild(nodes[i]);
     }
+    else {
+      var filename = "";
+      var childNodes = nodes[i].childNodes;
+      for (var j = 0; j < childNodes.length; j++) {
+	if (childNodes[j].nodeType == 3)
+	  filename += childNodes[j].nodeValue;
+      }
+      var url = "" + window.location;
+      var parts = url.split("/");
+      parts[parts.length-1] = "deleteAttachment?filename=" + encodeURIComponent(filename);
+      url = parts.join("/");
+      triggerAjaxRequest(url, attachmentDeleteCallback,
+			 nodes[i]);
+    }
+  }
+}
+
+function attachmentDeleteCallback(http) {
+  if (http.readyState == 4) {
+    if (http.status == 204) {
+      var node = http.callbackData;
+      node.parentNode.removeChild(node);
+    }
     else
-      window.alert("Server attachments not handled");
+      log("attachmentDeleteCallback: an error occured: " + http.responseText);
   }
 }
 
@@ -272,6 +294,21 @@ function onWindowResize(event) {
 
   textarea.rows = Math.round((windowheight - textareaoffset) / rowheight);
   log ("onWindowResize new number of rows = " + textarea.rows);
+}
+
+function onMailEditorClose(event) {
+  if (window.shouldPreserve)
+    window.shouldPreserve = false;
+  else {
+    var url = "" + window.location;
+    var parts = url.split("/");
+    parts[parts.length-1] = "delete";
+    url = parts.join("/");
+
+    http = createHTTPClient();
+    http.open("POST", url, false /* not async */);
+    http.send("");
+  }
 }
 
 addEvent(window, 'load', initMailEditor);

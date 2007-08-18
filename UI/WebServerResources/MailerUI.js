@@ -252,7 +252,7 @@ function uixDeleteSelectedMessages(sender) {
     var messageId = currentMailbox + "/" + rowId;
     url = ApplicationBaseURL + messageId + "/trash?jsonly=1";
     http = createHTTPClient();
-    http.open("GET", url, false /* not async */);
+    http.open("POST", url, false /* not async */);
     http.send("");
     if (http.status != 200) { /* request failed */
       failCount++;
@@ -404,10 +404,14 @@ function openMailbox(mailbox, reload, idx) {
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
     var messageContent = $("messageContent");
     messageContent.innerHTML = '';
-      
-    if (currentMessages[mailbox]) {
-      loadMessage(currentMessages[mailbox]);
-      url += '&pageforuid=' + currentMessages[mailbox];
+
+    var currentMessage;
+    if (!idx) {
+      currentMessage = currentMessages[mailbox];
+      if (currentMessage) {
+	loadMessage(currentMessage);
+	url += '&pageforuid=' + currentMessage;
+      }
     }
 
     var searchValue = search["value"];
@@ -438,7 +442,7 @@ function openMailbox(mailbox, reload, idx) {
 
     document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback,
-			   currentMessages[mailbox]);
+			   currentMessage);
 
     var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
     document.quotasAjaxRequest
