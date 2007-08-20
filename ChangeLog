@@ -1,5 +1,9 @@
 2007-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-pathToAttachmentObject]): we no longer need the filename
+	extension for SoLookup...
+
 	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
 	-lookupName:_keyinContext:_ctxacquire:_flag]): do not require the
 	filename to have an extension, and thus accept any filename.

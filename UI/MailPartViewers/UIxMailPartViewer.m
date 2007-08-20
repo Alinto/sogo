@@ -316,52 +316,35 @@
   if ([(n = [partPath componentsJoinedByString:@"/"]) isNotNull])
     url = [url stringByAppendingString:n];
   
-  /* we currently NEED the extension for SoObject lookup (should be fixed) */
-  
-  pext = [self preferredPathExtension];
-  if ([pext isNotNull] && [pext length] > 0)
-    {
-      /* attach extension */
-      if ([url hasSuffix:@"/"]) {
-	/* this happens if the part is the root-content of the mail */
-	url = [url substringToIndex:([url length] - 1)];
-      }
-      url = [url stringByAppendingString:@"."];
-      url = [url stringByAppendingString:pext];
-    }
-  
   return url;
 }
 
 - (NSString *) pathToAttachment
 {
   /* this generates a more beautiful 'download' URL for a part */
-  NSString *url, *fn;
+  NSString *fn;
+  NSMutableString *url;
 
-  fn   = [self filename];
-  
-  if (![fn isNotNull] || ([fn length] == 0))
-    fn = nil;
-
-  /* get basic URL */
-
-  url = [self pathToAttachmentObject];
-  
-  /* 
-     If we have an attachment name, we attach it, this is properly handled by
-     SOGoMailBodyPart.
-  */
-  
-  if (fn)
+  fn = [self filename];
+  if ([fn length] > 0)
     {
+      /* get basic URL */
+      url = [NSMutableString stringWithString: [self pathToAttachmentObject]];
+  
+      /* 
+	 If we have an attachment name, we attach it, this is properly handled by
+	 SOGoMailBodyPart.
+      */
+  
       if (![url hasSuffix: @"/"])
-	url = [url stringByAppendingString: @"/"];
-      if (isdigit([fn characterAtIndex:0]))
-	url = [url stringByAppendingString: @"fn-"];
-      url = [url stringByAppendingString: [fn stringByEscapingURL]];
-    
-    // TODO: should we check for a proper extension?
+	[url appendString: @"/"];
+      if (isdigit([url characterAtIndex: 0]))
+	[url appendString: @"fn-"];
+      [url appendString: [fn stringByEscapingURL]];
+      // TODO: should we check for a proper extension?
     }
+  else
+    url = nil;
 
   return url;
 }
