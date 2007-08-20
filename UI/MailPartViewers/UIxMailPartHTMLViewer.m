@@ -32,7 +32,11 @@
 
 #import "UIxMailPartHTMLViewer.h"
 
+#if 0
 #define showWhoWeAre() NSLog(@"invoked '%@'", NSStringFromSelector(_cmd))
+#else
+#define showWhoWeAre()
+#endif
 
 @interface _UIxHTMLMailContentHandler : NSObject <SaxContentHandler, SaxLexicalHandler>
 {
@@ -95,6 +99,8 @@
 /* SaxContentHandler */
 - (void) startDocument
 {
+  showWhoWeAre();
+
   if (crumb)
     [crumb release];
   if (result)
@@ -116,6 +122,8 @@
 {
   unsigned int count, max;
 
+
+  showWhoWeAre();
   max = [crumb count];
   if (max > 0)
     for (count = max - 1; count > -1; count--)
@@ -191,6 +199,7 @@
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
+  showWhoWeAre();
   if (inStyle || inScript)
     ;
   else if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
@@ -240,6 +249,8 @@
           namespace: (NSString *) _ns
             rawName: (NSString *) _rawName
 {
+  showWhoWeAre();
+
   if (inStyle)
     {
      if ([_localName caseInsensitiveCompare: @"style"] == NSOrderedSame)
@@ -264,6 +275,7 @@
 {
   NSString *tmpString;
 
+  showWhoWeAre();
   if (!inScript)
     {
       if (inStyle)
@@ -302,6 +314,7 @@
 - (void) comment: (unichar *) _chars
           length: (int) _len
 {
+  showWhoWeAre();
   if (inStyle)
     [self _appendStyle: _chars length: _len];
 }
@@ -383,7 +396,6 @@
   bodyId = [part objectForKey: @"bodyId"];
   if ([bodyId length] > 0)
     {
-      NSLog(@"%@", part);
       if ([bodyId hasPrefix: @"<"])
         bodyId = [bodyId substringFromIndex: 1];
       if ([bodyId hasSuffix: @">"])
@@ -431,26 +443,25 @@
 {
   id <NSObject, SaxXMLReader> parser;
   _UIxHTMLMailContentHandler *handler;
-  NSString *preparsedContent, *content, *css;
+  NSString *css;
+  NSMutableString *content;
+  NSData *preparsedContent;
 
-  preparsedContent = [super flatContentAsString];
+  content = [NSMutableString string];
+
+  preparsedContent = [super decodedFlatContent];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [self _attachmentIds]];
   [parser setContentHandler: handler];
-  [parser setProperty: @"http://xml.org/sax/properties/lexical-handler"
-          to: handler];
   [parser parseFromSource: preparsedContent];
 
   css = [handler css];
   if ([css length])
-    content
-      = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>%@",
-                  css, [handler result]];
-  else
-    content = [handler result];
+    [content appendFormat: @"<style type=\"text/css\">%@</style>", css];
+  [content appendString: [handler result]];
   [handler release];
 
   return content;
