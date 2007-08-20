@@ -21,6 +21,7 @@
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
@@ -57,6 +58,15 @@
 - (NSDictionary *) currentContact
 {
   return currentContact;
+}
+
+- (NSString *) currentCName
+{
+  NSString *cName;
+
+  cName = [currentContact objectForKey: @"c_name"];
+
+  return [cName stringByEscapingURL];
 }
 
 - (id <WOActionResults>) mailerContactsAction

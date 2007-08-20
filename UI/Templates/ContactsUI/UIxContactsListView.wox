@@ -28,7 +28,7 @@
 
         <var:foreach list="contactInfos" item="currentContact">
           <tr class="tableview"
-            var:id="currentContact.c_name"
+            var:id="currentCName"
             var:contactname="currentContact.displayName"
             var:contactid="currentContact.c_uid"
             onclick="return onContactRowClick(event, this);"
