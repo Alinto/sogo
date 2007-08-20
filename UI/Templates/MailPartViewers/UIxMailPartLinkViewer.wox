@@ -2,6 +2,7 @@
 <!DOCTYPE div>
 <div xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:label="OGo:label"
   class="linked_attachment_frame"
   >
