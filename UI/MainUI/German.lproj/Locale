@@ -1,0 +1,35 @@
+/* German */
+{
+  NSLanguageName = "German";
+  NSFormalName = "Deutsch";
+  NSLocaleCode = "de"; /* ISO 639-1 */
+  NSLanguageCode = "deu"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSCurrencySymbol = " €";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = (letzte, letzte, letzte, letzte);
+  NSHourNameDesignations = ((0, Mitternacht), (12, Mittag), (10, Morgen), (14, Nachmittag), (19, Abend));
+  NSInternationalCurrencyString = EUR; /* ISO 4217 */
+  NSLaterTimeDesignations = ("nächste", "nächste", "nächste", "nächste");
+  NSMonthNameArray = (Januar, Februar, "März", April, Mai, Juni, Juli, August, September, Oktober, November, Dezember);
+  NSNextDayDesignations = (morgen);
+  NSNextNextDayDesignations = ("übermorgen");
+  NSPriorDayDesignations = (gestern);
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Jan, Feb, "Mär", Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = (Son, Mon, Die, Mit, Don, Fre, Sam);
+  NSThisDayDesignations = ("heute");
+  NSThousandsSeparator = " "; /* space */
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S"; /* no space before and after colons*/
+  NSWeekDayNameArray = (Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag);
+  NSYearMonthWeekDesignations = (Jahr, Monat, Woche);
+  NSAMPMDesignation = (AM, PM);
+  NSPositiveCurrencyFormatString = "9,999.00$";
+  NSNegativeCurrencyFormatString = "-9,999.00$";
+}

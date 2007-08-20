@@ -1,0 +1,12 @@
+/* this file is in UTF-8 format! */
+
+"Homepage" = "Startseite";
+
+"Internet access authorized and" = "Internetzugang ist erlaubt und ";
+"Internet access unauthorized and" = "Internetzugang ist nicht erlaubt und "; 
+"internetAccessState_0" = "GESCHLOSSEN";
+"internetAccessState_1" = "OFFEN";
+
+"Automatic vacation messages activation" = "Activation du message de réponse automatique ";
+"Internet" = "Internet";
+"Intranet" = "Intranet";

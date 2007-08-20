@@ -1,0 +1,396 @@
+/* this file is in UTF-8 format! */
+
+/* Day */
+
+"Sunday" = "Sonntag";
+"Monday" = "Montag";
+"Tuesday" = "Dienstag";
+"Wednesday" = "Mittwoch";
+"Thursday" = "Donnerstag";
+"Friday" = "Freitag";
+"Saturday" = "Samstag";
+
+"a2_Sunday" = "So";
+"a2_Monday" = "Mo";
+"a2_Tuesday" = "Di";
+"a2_Wednesday" = "Mi";
+"a2_Thursday" = "Do";
+"a2_Friday" = "Fr";
+"a2_Saturday" = "Sa";
+
+"dayLabelFormat" = "%d/%m/%Y";
+"today" = "Heute";
+
+/* Week */
+
+"Week" = "Woche";
+"this week" = "diese Woche";
+
+"Week %d" = "Woche %d";
+
+/* Month */
+
+"this month" = "dieser Monat";
+
+"January" = "Januar";
+"February" = "Februar";
+"March" = "März";
+"April" = "April";
+"May" = "Mai";
+"June" = "Juni";
+"July" = "Juli";
+"August" = "August";
+"September" = "September";
+"October" = "Oktober";
+"November" = "November";
+"December" = "Dezember";
+
+"a3_January" = "Jan";
+"a3_February" = "Feb";
+"a3_March" = "Mar";
+"a3_April" = "Apr";
+"a3_May" = "Mai";
+"a3_June" = "Jun";
+"a3_July" = "Jul";
+"a3_August" = "Aug";
+"a3_September" = "Sep";
+"a3_October" = "Okt";
+"a3_November" = "Nov";
+"a3_December" = "Dez";
+
+/* Year */
+
+"this year" = "dieses Jahr";
+
+
+/* Menu */
+
+"Calendars" = "Kalenderliste";
+"Calendar" = "Kalender";
+"Contacts" = "Kontakte";
+
+"New Calendar..." = "Neuer Kalender...";
+"Delete Calendar" = "Kalender löschen";
+"Sharing..." = "Partage...";
+"Export Calendar..." = "Kalender exportieren...";
+"Publish Calendar..." = "Kalender publizieren...";
+"Reload Remote Calendars" = "Externe Kalender neu laden";
+"Properties" = "Einstellungen";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Accès non autorisée";
+
+/* acls */
+"Default Roles" = "Rôles par défaut";
+"User rights for:" = "Autorisations pour :";
+"label_Public" = "Öffentlich";
+"label_Private" = "Privat";
+"label_Confidential" = "Vertraulich";
+"View All" = "Voir tout";
+"View the Date & Time" = "Voir la date & l'heure";
+"Modify" = "Modifier";
+"Respond To" = "Répondre";
+"None" = "Aucun";
+"This person can create objects in my calendar."
+= "Cette personne peut ajouter des objets à mon agenda.";
+"This person can erase objects from my calendar."
+= "Cette personne peut effacer des objets de mon agenda.";
+
+/* Button Titles */
+
+"Add..." = "Ajouter...";
+"Remove" = "Enlever";
+
+"new" = "Nouveau";
+"printview" = "Version imprimable";
+"edit" = "Bearbeiten";
+"delete" = "Löschen";
+"proposal" = "Recherche de plages horaires";
+"Save and Close" = "Speichern und schließen";
+"Close" = "Schließen";
+"Invite Attendees" = "Participants";
+"Documents" = "Dokumente";
+"Update" = "Mettre à jour";
+"Cancel" = "Abbrechen";
+"show_rejected_apts" = "Afficher les rendez-vous refusés";
+"hide_rejected_apts" = "Cacher les rendez-vous refusés";
+
+/* Schedule */
+"Schedule" = "Suivi de rendez-vous";
+"No appointments found" = "Aucun rendez-vous";
+"Meetings proposed by you" = "Rendez-vous que vous proposez";
+"Meetings proposed to you" = "Rendez-vous qui vous sont proposés";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Action";
+"accept" = "Accepter";
+"decline" = "Refuser";
+"more attendees" = "Autres participants";
+"Hide already accepted and rejected appointments" = "Cacher les invitations refusées";
+"Show already accepted and rejected appointments" = "Montrer aussi les invitations refusées";
+
+/* Appointments */
+
+"Appointment viewer" = "Visualisation de rendez-vous";
+"Appointment editor" = "Edition de rendez-vous";
+"Appointment proposal" = "Proposition de rendez-vous";
+"Appointment on" = "Termin am";
+"Start:" = "Beginn:";
+"End:" = "Ende:";
+"Due Date:" = "Fälligkeitsdatum:";
+"Title:" = "Titel:";
+"Calendar:" = "Kalender:";
+"Name" = "Name";
+"Email" = "E-Mail";
+"Status:" = "Fortschritt :";
+"% complete" = "% fertig";
+"Location:" = "Ort:";
+"Priority:" = "Priorität";
+"Privacy" = "Datenschutz";
+"Cycle" = "Wiederholen";
+"Cycle End" = "s'arreter";
+"Categories" = "Kategorie";
+"Classification" = "Classification";
+"Duration" = "Dauer";
+"Attendees:" = "Teilnehmer:";
+"Resources" = "Ressources";
+"Organizer:" = "Organisateur :";
+"Description:" = "Beschreibung:";
+"Document:" = "Dokument:";
+"Category:" = "Kategorie:";
+"Repeat:" = "Wiederholen:";
+"Reminder:" = "Alarm:";
+
+"Target:" = "Destination :";
+
+"attributes" = "Attributs";
+"attendees" = "Teilnehmer";
+/* checkbox title */
+"is private" = "Privater Termin";
+/* classification */
+"Public" = "Öffentlich";
+"Private" = "Privat";
+/* text used in overviews and tooltips */
+"empty title" = "kein Titel";
+"private appointment" = "Privater Termin";
+
+"Change..." = "Bearbeiten...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Benötigt Eingriff";
+"partStat_ACCEPTED" = "Akzeptiert";
+"partStat_DECLINED" = "Abgelehnt";
+"partStat_TENTATIVE" = "Vorläufig";
+"partStat_DELEGATED" = "Delegué";
+"partStat_OTHER" = "???";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Einer order mehrere Konflikte wurden gefunden";
+"Invalid iCal data!" = "Ungültig iCal-Daten...";
+"Could not create iCal data!" = "iCal-Daten konnten nicht erstellt werden...";
+
+/* Searching */
+
+"view_all" = "Alle Termine";
+"view_today" = "Heutige Termine";
+"view_next7" = "Termine in den nächsten 7 Tagen";
+"view_next14" = "Termine in den nächsten 14 Tagen";
+"view_next31" = "Termine in den nächsten 31 Tagen";
+"view_thismonth" = "Termie in diesem Kalendermonat";
+"view_future" = "Alle zukünftigen Termine";
+"view_selectedday" = "Momentan gewählter Tag";
+
+"View:" = "Voir :";
+"Title or Description" = "Titel oder Beschreibung";
+
+"Search" = "Suchen";
+"Search attendees"	="Teilnehmer suchen";
+"Search resources"	="Recherche de ressources";
+"Search appointments" = "Termine suchen";
+"Search in Anais" = "Suche über Anaïs";
+
+"All day Event" = "Gantägig";
+"check for conflicts" = "Auf Konflikte überprüfen";
+
+"Browse URL" = "Gehe zu URL";
+
+/* calendar modes */
+
+"Overview" = "Vue synthétique";
+"Chart" = "Vue avec repères horaires";
+"List" = "Vue multi-agenda";
+"Columns" = "Vue avec repères mensuels";
+
+/* Priorities */
+
+"prio_0" = "Nicht angegeben";
+"prio_1" = "Hoch";
+"prio_2" = "Hoch";
+"prio_3" = "Hoch";
+"prio_4" = "Hoch";
+"prio_5" = "Mittel";
+"prio_6" = "Niedrig";
+"prio_7" = "Niedrig";
+"prio_8" = "Niedrig";
+"prio_9" = "Niedrig";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Öffentlicher Termin";
+"CONFIDENTIAL_vevent" = "Vertraulicher Termin";
+"PRIVATE_vevent" = "Privater Termin";
+"PUBLIC_vtodo" = "Öffentliche Aufgabe";
+"CONFIDENTIAL_vtodo" = "Vertrauliche Aufgabe";
+"PRIVATE_vtodo" = "Private Aufgabe";
+
+/* status type */
+"status_" = "Nicht angegeben";
+"status_NOT-SPECIFIED" = "Nicht angegeben";
+"status_TENTATIVE" = "Vorläufig";
+"status_CONFIRMED" = "Bestätigt";
+"status_CANCELLED" = "Abgebrochen";
+"status_NEEDS-ACTION" = "Benötigt Eingriff";
+"status_IN-PROCESS" = "In Arbeit";
+"status_COMPLETED" = "Abgeschlossen am";
+
+/* Cycles */
+
+"cycle_once" = "wiederholt sich nicht";
+"cycle_daily" = "täglich";
+"cycle_weekly" = "wöchentlich";
+"cycle_2weeks" = "zweiwöchentlich";
+"cycle_4weeks" = "vierwöchentlich";
+"cycle_monthly" = "monatlich";
+"cycle_weekday" = "À chaque même jour de la semaine";
+"cycle_yearly" = "jährlich";
+
+"cycle_end_never" = "Unendlich oft wiederholen";
+"cycle_end_until" = "Wiederholen bis :";
+
+/* Appointment categories */
+
+"category_NONE" = "Keine";
+"category_ANNIVERSARY" = "Anniversaire";
+"category_BIRTHDAY" = "Anniversaire (de nais.)";
+"category_BUSINESS" = "Business";
+"category_CALLS" = "Appels"; 
+"category_CLIENTS" = "Clients";
+"category_COMPETITION" = "Compétition";
+"category_CUSTOMER" = "Client";
+"category_FAVORITES" = "Favoris";
+"category_FOLLOW UP" = "Suivi";
+"category_GIFTS" = "Cadeaux";
+"category_HOLIDAYS" = "Vacances";
+"category_IDEAS" = "Idées";
+"category_ISSUES" = "Problèmes";
+"category_MISCELLANEOUS" = "Divers";
+"category_PERSONAL" = "Personnel";
+"category_PROJECTS" = "Projets";
+"category_PUBLIC HOLIDAY" = "Public Holiday";
+"category_STATUS" = "Statut";
+"category_SUPPLIERS" = "Fournisseurs";
+"category_TRAVEL" = "Voyage";
+"category_VACATION" = "Absence";
+
+"repeat_NEVER" = "Ne se répète pas";
+"repeat_DAILY" = "täglich";
+"repeat_WEEKLY" = "wöchentlich";
+"repeat_BI-WEEKLY" = "zweiwöchentlich";
+"repeat_EVERY WEEKDAY" = "les jours ouvrables";
+"repeat_MONTHLY" = "monatlich";
+"repeat_YEARLY" = "jährlich";
+"repeat_CUSTOM" = "Personnaliser...";
+
+"reminder_NONE" = "Keiner";
+"reminder_5_MINUTES_BEFORE" = "5 Minuten vor";
+"reminder_10_MINUTES_BEFORE" = "10 Minuten vor";
+"reminder_15_MINUTES_BEFORE" = "15 Minuten vor";
+"reminder_30_MINUTES_BEFORE" = "30 Minuten vor";
+"reminder_45_MINUTES_BEFORE" = "45 Minuten vor";
+"reminder_1_HOUR_BEFORE" = "1 Stunde vor";
+"reminder_2_HOURS_BEFORE" = "2 Stunden vor";
+"reminder_5_HOURS_BEFORE" = "5 Stunden vor";
+"reminder_15_HOURS_BEFORE" = "15 Stunden vor";
+"reminder_1_DAY_BEFORE" = "1 Tag vor";
+"reminder_2_DAYS_BEFORE" = "2 Tage vor";
+"reminder_1_WEEK_BEFORE" = "1 Woche vor";
+"reminder_CUSTOM" = "Benutzerdefiniert...";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* validation errors */
+
+validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";
+validate_invalid_startdate = "Ungültiges Startdatum !";
+validate_invalid_enddate   = "Ungültiges Enddatum !";
+validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
+
+"Tasks" = "Aufgaben";
+"Show completed tasks" = "Abgeschlossene Aufgaben anzeigen";
+
+/* tabs */
+"Task" = "Aufgabe";
+"Event" = "Termin";
+"Recurrence" = "Wiederholen";
+
+/* toolbar */
+"New Event" = "Neuer Termin";
+"New Task" = "Neue Aufgabe";
+"Edit" = "Bearbeiten";
+"Delete" = "Löschen";
+"Go to Today" = "Zu Heute wechseln";
+"Day View" = "Tagesansicht";
+"Week View" = "Wochenansicht";
+"Month View" = "Monatsansicht";
+
+"eventPartStatModificationError" = "Votre état de participation à l'événement n'a pas pu être modifié.";
+
+/* menu */
+"New Event..." = "Neuer Termin...";
+"New Task..." = "Neue Aufgabe...";
+"Edit Selected Event..." = "Markierten Termin bearbeiten...";
+"Delete Selected Event" = "Markierten Termin löschen";
+"Select All" = "Tout sélectionner";
+"Workweek days only" = "Semaine de travail seulement";
+"Tasks in View" = "Afficher les tâches";
+
+"eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
+"taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
+
+/* Legend */
+"Required participant" = "Participant obligatoire";
+"Optional participant" = "Participant facultatif";
+"Chair" = "Stuhl";
+
+"Needs action" = "Benötigt Eingriff";
+"Accepted" = "Akzeptiert";
+"Declined" = "Abgelehnt";
+"Tentative" = "Vorläufig";
+
+"Free" = "Frei";
+"Busy" = "Beschäftigt";
+"Maybe busy" = "Vielleicht beschãftigt";
+"No free-busy information" = "Keine free-busy Information";
+
+/* FreeBusy panel buttons */
+"Suggest time slot:" = "Zeitzone :";
+"Previous slot" = "Précédent";
+"Next slot" = "Prochain";
+"Previous hour" = "Heure précédente";
+"Next hour" = "Prochaine heure";
+
+/* apt list */
+"Title" = "Titel";
+"Start" = "Beginn";
+"End" = "Ende";
+"Location" = "Ort";
+"(Private Event)" = "(Privater Termin)";
+
+"closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
+"Multicolumn Day View" = "Multicolonne";

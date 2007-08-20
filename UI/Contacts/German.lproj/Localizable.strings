@@ -1,0 +1,130 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Kontakt";
+"Address" = "Adresse";
+"Other" = "Sonstiges";
+
+"Name"              = "Name";
+"Internet"          = "Internet";
+"Phones"            = "Telefon";
+"Home" = "Privat";
+"Work" = "Dienstlich";
+
+"Address Books"      = "Adressbücher";
+"Addresses"         = "Adresses";
+"Update" = "Mettre à jour";
+"Cancel"            = "Abbrechen";
+"Common"            = "Name";
+"Contact editor"    = "Éditer le contact";
+"Contact viewer"    = "Visualiser le contact";
+"Email"             = "E-Mail";
+"Screen Name"	    = "Messenger-Name";
+"Extended"          = "Informations complémentaires";
+"Fax"               = "Fax";
+"Firstname"         = "Vorname";
+"HomePhone"         = "Privat";
+"Lastname"          = "Name";
+"Location"          = "Lieux";
+"MobilePhone"       = "Mobil";
+"OfficePhone"       = "Dienstlich";
+"Organization"      = "Organisation";
+"Work Phone" = "Dienstlich";
+"Phone"             = "Telefon";
+"Postal"            = "Professionnelle";
+"Save"              = "Speichern";
+"URL"               = "Webseite";
+"Unit"              = "Abteilung";
+"delete"            = "Löschen";
+"edit"              = "Éditer";
+"invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
+"new"               = "Neu";
+
+"htmlMailFormat_UNKNOWN" = "Unbekannt";
+"htmlMailFormat_FALSE" = "Reintext";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Name oder E-Mail";
+"Personal Addressbook" = "Adresses personnelles";
+"Search in Addressbook" = "Carnet d'adresses...";
+
+"New Card" = "Neue Karte";
+"New List" = "Neue Liste";
+"Modify" = "Eigenschaften";
+"Sharing..." = "Partage...";
+"Write" = "Verfassen"
+"Delete" = "Löschen";
+"Instant Message" = "Messenger";
+"Add..." = "Ajouter...";
+"Remove" = "Enlever";
+
+"Preferred" = "Préféré";
+"Card for %@" = "%@";
+"Display:" = "Anzeigename:";
+"Display Name:" = "Anzeigename:";
+"Email:" = "E-Mail:";
+"Additional Email:" = "Zusätzliche E-Mail:";
+
+"Phone Number:" = "Telefon:";
+"Prefers to receive messages formatted as:" = "Bevorzugt folgendes Nachrichten-Format:";
+"Screen Name:" = "Messenger-Name:";
+
+"First:" = "Vorname:";
+"Last:" = "Name:";
+"Nickname:" = "Spitzname:";
+
+"Telephone" = "Telefon";
+"Work:" = "Dienstlich:";
+"Home:" = "Privat:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobil:";
+"Pager:" = "Pager:";
+
+"Title:" = "Titel:";
+"Department:" = "Abteilung:";
+"Organization:" = "Organisation:";
+"Address:" = "Adresse:";
+"City:" = "Stadt:";
+"State_Province:" = "Bundesland:";
+"ZIP_Postal Code:" = "PLZ:";
+"Country:" = "Land:";
+"Web Page:" = "Webseite:";
+
+"Other Infos" = "Andere";
+
+"Note:" = "Notizen:";
+"Timezone:" = "Zeitzone:";
+"Birthday:" = "Geburtsdatum:";
+"Freebusy URL:" = "Free/Busy URL:";
+
+"Add as..." = "Ajouter...";
+"Recipient" = "Destinataire";
+"Carbon Copy" = "Copie carbone";
+"Blind Carbon Copy" = "C. carbone cachée";
+
+"New Addressbook..." = "Neues Adressbuch...";
+"Subscribe to an Addressbook..." = "S'inscrire à un carnet d'adresses...";
+"Remove the selected Addressbook" = "Adressbuch löschen";
+
+"Name of the Address Book" = "Adressbuch-Name";
+"Are you sure you want to delete the selected address book?"
+= "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
+
+"You cannot subscribe to a folder that you own!"
+= "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
+"Unable to subscribe to that folder!"
+= "Impossible de vous inscrire à ce dossier!";
+
+"Default Roles" = "Rôles par défaut";
+"User rights for:" = "Autorisations pour :";
+
+"This person can add cards to this addressbook."
+= "Cette personne peut ajouter des fiches à ce carnet d'adresses.";
+"This person can edit the cards of this addressbook."
+= "Cette personne peut éditer des fiches de ce carnet d'adresses.";
+"This person can list the content of this addressbook."
+= "Cette personne peut lister le contenu de ce carnet d'adresses.";
+"This person can read the cards of this addressbook."
+= "Cette personne peut visionner les fiches de ce carnet d'adresses.";
+"This person can erase cards from this addressbook."
+= "Cette personne peut effacer des fiches de ce carnet d'adresses.";
+
