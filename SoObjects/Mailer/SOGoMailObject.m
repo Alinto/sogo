@@ -224,7 +224,7 @@ static BOOL debugSoParts       = NO;
 
   if (!coreInfos)
     {  
-      msgs = [self fetchParts:coreInfoKeys]; // returns dict
+      msgs = [self fetchParts: coreInfoKeys]; // returns dict
       if (heavyDebug)
 	[self logWithFormat: @"M: %@", msgs];
       msgs = [msgs valueForKey: @"fetch"];
