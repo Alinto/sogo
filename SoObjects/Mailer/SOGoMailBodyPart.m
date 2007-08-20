@@ -131,39 +131,36 @@ static BOOL debugOn = NO;
 
 /* name lookup */
 
-- (id)lookupImap4BodyPartKey:(NSString *)_key inContext:(id)_ctx {
+- (id) lookupImap4BodyPartKey: (NSString *) _key
+		    inContext: (id) _ctx
+{
   // TODO: we might want to check for existence prior controller creation
   Class clazz;
   
   clazz = [SOGoMailBodyPart bodyPartClassForKey:_key inContext:_ctx];
-  return [[[clazz alloc] initWithName:_key inContainer:self] autorelease];
+
+  return [clazz objectWithName: _key inContainer: self];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]) != nil)
-    return obj;
-  
-  /* lookup body part */
-  
-  if ([self isBodyPartKey:_key inContext:_ctx]) {
-    if ((obj = [self lookupImap4BodyPartKey:_key inContext:_ctx]) != nil)
-      return obj;
-  }
-  
-  /* 
-     Treat other keys which have a path-extension as 'virtual' noops to allow
-     addition of path names to the attachment path, eg:
-       http://.../login@server/INBOX/1/2/3/MyDocument.pdf
-  */
-  if ([[_key pathExtension] length] > 0)
-    return self;
-  
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-		      reason:@"Did not find a subpart for the given name!"];
+  obj = [super lookupName:_key inContext:_ctx acquire:NO];
+  if (!obj)
+    {
+      /* lookup body part */
+      if ([self isBodyPartKey:_key inContext:_ctx])
+	obj = [self lookupImap4BodyPartKey:_key inContext:_ctx];
+      /* should check whether such a filename exist in the attached names */
+      if (!obj)
+	obj = self;
+    }
+
+  return obj;      
 }
 
 /* fetch */
