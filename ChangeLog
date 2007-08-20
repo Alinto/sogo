@@ -1,3 +1,10 @@
+2007-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([UIxMailPartHTMLViewer -flatContentAsString]): pass the NSData
+	instance of [self decodedFlatContent] instead of the buggy
+	NSString from [super flatContentAsString] to the parser.
+
 2007-08-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -deleteAction]):
