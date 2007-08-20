@@ -1,5 +1,9 @@
 2007-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactsListView.m ([UIxContactsListView
+	-currentCName]): new method that returns the c_name of the
+	contact, correctly escaped to be passed by url afterwards.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	([UIxMailPartHTMLViewer -flatContentAsString]): pass the NSData
 	instance of [self decodedFlatContent] instead of the buggy
