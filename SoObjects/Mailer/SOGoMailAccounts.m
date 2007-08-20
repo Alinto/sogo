@@ -55,7 +55,11 @@ static NSString *AgenorShareLoginMarker  = @".-.";
 
 - (BOOL) isValidMailAccountName: (NSString *) _key
 {
-  return ([_key length] > 0);
+  NSArray *accounts;
+
+  accounts = [[context activeUser] mailAccounts];
+
+  return [[accounts objectsForKey: @"name"] containsObject: _key];
 }
 
 - (id) mailAccountWithName: (NSString *) _key
