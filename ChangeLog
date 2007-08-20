@@ -1,5 +1,10 @@
 2007-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-_flattenedRecords:records]): when the c_cn field is empty,
+	returns set a formatted string with the concatenation of
+	c_givenname and c_sn as the displayName.
+
 	* SoObjects/Mailer/SOGoMailAccounts.m ([SOGoMailAccounts
 	-isValidMailAccountName:_key]): prevent unknown accounts from
 	being accessed.

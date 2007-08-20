@@ -30,11 +30,12 @@
 #import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
 
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"c_cn", \
-                                     @"c_givenname", @"c_screenname", \
+                                     @"c_givenname", @"c_sn", @"c_screenname", \
 				     @"c_o", @"c_mail", @"c_telephonenumber", \
                                      nil]
 
@@ -177,8 +178,8 @@
 		 forKey: @"c_name"];
 
       data = [oldRecord objectForKey: @"c_cn"];
-      if (!data)
-	data = @"";
+      if (![data length])
+	data = [oldRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
       [newRecord setObject: data
 		 forKey: @"displayName"];
 
