@@ -313,8 +313,8 @@ function eventsListCallback(http) {
       var row = document.createElement("tr");
       table.appendChild(row);
       $(row).addClassName("eventRow");
-      row.setAttribute("id", data[i][0]);
-      row.cname = data[i][0];
+      row.setAttribute("id", escape(data[i][0]));
+      row.cname = escape(data[i][0]);
       row.owner = data[i][1];
 
       var startDate = new Date();
