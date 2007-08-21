@@ -6,11 +6,6 @@ var currentContactFolder = null;
 var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
 
-function openContactWindow(sender, url) {
-  var msgWin = window.open(url, null, "width=450,height=600,resizable=0");
-  msgWin.focus();
-}
-
 function validateEditorInput(sender) {
   var errortext = "";
   var field;
@@ -280,9 +275,8 @@ function onContactRowClick(event, node) {
 function onContactRowDblClick(event, node) {
   var contactId = node.getAttribute('id');
 
-  openContactWindow(null,
-                    URLForFolderID(currentContactFolder)
-                    + "/" + contactId + "/edit");
+  openContactWindow(URLForFolderID(currentContactFolder)
+                    + "/" + contactId + "/edit", contactId);
 
   return false;
 }
@@ -290,9 +284,8 @@ function onContactRowDblClick(event, node) {
 function onMenuEditContact(event) {
   var contactId = document.menuTarget.getAttribute('id');
 
-  openContactWindow(null,
-                    URLForFolderID(currentContactFolder)
-                    + "/" + contactId + "/edit");
+  openContactWindow(URLForFolderID(currentContactFolder)
+                    + "/" + contactId + "/edit", contactId);
 }
 
 function onMenuWriteToContact(event) {
@@ -311,9 +304,8 @@ function onToolbarEditSelectedContacts(event) {
   var rows = contactsList.getSelectedRowsId();
 
   for (var i = 0; i < rows.length; i++) {
-    openContactWindow(null,
-		      URLForFolderID(currentContactFolder)
-                      + "/" + rows[i] + "/edit");
+    openContactWindow(URLForFolderID(currentContactFolder)
+                      + "/" + rows[i] + "/edit", rows[i]);
   }
 
   return false;
@@ -372,13 +364,7 @@ function newEmailTo(sender) {
   var mailto = sanitizeMailTo(sender.parentNode.parentNode.menuTarget.innerHTML);
 
   if (mailto.length > 0)
-    {
-      w = window.open("compose?mailto=" + mailto,
-		      "SOGo_compose",
-		      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0," +
-		      "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-      w.focus();
-    }
+    openMailComposeWindow("compose?mailto=" + mailto);
 
   return false; /* stop following the link */
 }
@@ -411,13 +397,8 @@ function onHeaderClick(event) {
    preventDefault(event);
 }
 
-function registerDraggableMessageNodes() {
-  log ("can we drag...");
-}
-
 function newContact(sender) {
-  openContactWindow(sender,
-                    URLForFolderID(currentContactFolder) + "/new");
+  openContactWindow(URLForFolderID(currentContactFolder) + "/new");
 
   return false; /* stop following the link */
 }

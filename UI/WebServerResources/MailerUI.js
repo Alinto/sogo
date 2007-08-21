@@ -19,9 +19,7 @@ function openMessageWindow(msguid, url) {
     wId += "SOGo_msg_" + msguid;
     markMailReadInWindow(window, msguid);
   }
-  var msgWin = window.open(url, wId,
-			   "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-			   + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  var msgWin = openMailComposeWindow(url, wId);
   if (msguid) {
     msgWin.messageId = msguid;
     msgWin.messageURL = ApplicationBaseURL + currentMailbox + "/" + msguid;
@@ -120,25 +118,6 @@ function markMailInWindow(win, msguid, markread) {
 function markMailReadInWindow(win, msguid) {
   /* this is called by UIxMailView with window.opener */
   return markMailInWindow(win, msguid, true);
-}
-
-/* main window */
-
-function reopenToRemoveLocationBar() {
-  // we cannot really use this, see below at the close comment
-  if (window.locationbar && window.locationbar.visible) {
-    newwin = window.open(window.location.href, "SOGo",
-			 "width=800,height=600,resizable=1,scrollbars=1," +
-			 "toolbar=0,location=0,directories=0,status=0," + 
-			 "menubar=0,copyhistory=0");
-    if (newwin) {
-      window.close(); // this does only work for windows opened by scripts!
-      newwin.focus();
-      return true;
-    }
-    return false;
-  }
-  return true;
 }
 
 /* mail list reply */
@@ -393,9 +372,7 @@ function onComposeMessage() {
 function composeNewMessage() {
   var account = currentMailbox.split("/")[1];
   var url = ApplicationBaseURL + "/" + account + "/compose";
-  window.open(url, null,
-	      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-	      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+  openMailComposeWindow(url);
 }
 
 function openMailbox(mailbox, reload, idx) {
@@ -823,9 +800,7 @@ function onMenuViewMessageSource(event) {
   if (rows.length > 0) {
     var url = (ApplicationBaseURL + currentMailbox + "/"
 	       + rows[0].substr(4) + "/viewsource");
-    window.open(url, "",
-		"width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-		+ "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+    openMailComposeWindow(url);
   }
 
   preventDefault(event);
@@ -842,10 +817,7 @@ function newContactFromEmail(event) {
       var url = UserFolderURL + "Contacts/new?contactEmail=" + email;
       if (c_name)
 	url += "&contactFN=" + c_name;
-      w = window.open(url, null,
-                      "width=546,height=490,resizable=1,scrollbars=1,toolbar=0,"
-                      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
-      w.focus();
+      openContactWindow(url);
     }
 
   return false; /* stop following the link */
