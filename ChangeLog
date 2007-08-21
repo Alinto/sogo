@@ -1,5 +1,11 @@
 2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoElements/SOGoIEConditional.m: new extension module class
+	to handle "<var:if-ie>" template tags.
+
+	* UI/SOGoElements: new extension bundle containing sogo-specific
+	dynamic elements.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-takeValuesFromRequest:_rqinContext:_ctx]): save the category
 	selected in the dialog.

@@ -5,6 +5,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \
 	SOGoUI		\
+	SOGoElements	\
 	Common		\
 	Contacts	\
 	MailerUI	\

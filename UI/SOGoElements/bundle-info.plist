@@ -1,0 +1,23 @@
+{
+  requires = {
+    bundleManagerVersion = 1;
+    
+    classes = (
+      { name = NSObject; }
+    );
+  };
+
+  provides = {
+    WOxElemBuilder = (
+      { name = "SOGoElementsBuilder"; },
+    );
+    
+    WODynamicElements = (
+      { name = "SOGoIEConditional"; },
+    );
+    
+    classes = (
+      { name = "SOGoElementsBuilder"; },
+    );
+  };
+}
