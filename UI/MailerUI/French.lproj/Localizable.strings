@@ -14,6 +14,11 @@
 "Stop"        = "Stop";
 "Write"       = "Écrire";
 
+"Send" = "Envoyer";
+"Contacts" = "Contacts";
+"Attach" = "Joindre";
+"Save" = "Enregistrer";
+
 /* Main Frame  */
 
 "Home"                 = "Accueil"; 
@@ -61,13 +66,13 @@
 
 "Attachments:" = "Pièces jointes :";
 
-"To"            = "À";
-"Cc"            = "Cc";
-"Bcc"           = "Cci";
+"To"            = "Pour";
+"Cc"            = "Copie à";
+"Bcc"           = "Copie cachée à";
 
-"to"            = "À";
-"cc"            = "Cc";
-"bcc"           = "Cci";
+"to"            = "Pour";
+"cc"            = "Copie à";
+"bcc"           = "Copie cachée à";
 
 "Edit Draft..." = "Modifier le brouillon...";
 

@@ -14,6 +14,11 @@
 "Stop"        = "Stop";
 "Write"       = "Write";
 
+"Send" = "Send";
+"Contacts" = "Contacts";
+"Attach" = "Attach";
+"Save" = "Save";
+
 /* Main Frame  */
 
 "Home"                 = "Home"; 
