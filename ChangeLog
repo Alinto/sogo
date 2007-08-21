@@ -1,5 +1,11 @@
 2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): save the category
+	selected in the dialog.
+	([UIxComponentEditor -setComponent:newComponent]): retrieve the
+	first category, if ever, of the calendar entity.
+
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
 	-composeAction]): restored method since it is needed by the
 	address book.

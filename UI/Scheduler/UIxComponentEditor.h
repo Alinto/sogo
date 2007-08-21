@@ -51,6 +51,7 @@
   NSString *priority;
   NSString *privacy;
   NSString *status;
+  NSString *category;
   NSArray *categories;
   NSDictionary *cycle;
   NSString *cycleEnd;

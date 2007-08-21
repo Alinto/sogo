@@ -121,6 +121,19 @@
   [emails release];
 }
 
+- (void) _loadCategories
+{
+  NSString *compCategories, *simpleCategory;
+
+  compCategories = [component categories];
+  if ([compCategories length] > 0)
+    {
+      simpleCategory = [[compCategories componentsSeparatedByString: @","]
+			 objectAtIndex: 0];
+      ASSIGN (category, [simpleCategory uppercaseString]);
+    }
+}
+
 /* warning: we use this method which will be triggered by the template system
    when the page is instantiated, but we should find another and cleaner way of
    doing this... for example, when the clientObject is set */
@@ -145,6 +158,7 @@
       ASSIGN (status, [component status]);
       ASSIGN (categories, [[component categories] commaSeparatedValues]);
       ASSIGN (organizer, [component organizer]);
+      [self _loadCategories];
       [self _loadAttendees];
     }
 //   /* cycles */
@@ -298,6 +312,16 @@
 - (NSArray *) categories
 {
   return categories;
+}
+
+- (void) setCategory: (NSArray *) newCategory
+{
+  ASSIGN (category, newCategory);
+}
+
+- (NSString *) category
+{
+  return category;
 }
 
 - (NSString *) itemCategoryText
@@ -822,6 +846,7 @@
   [component setComment: comment];
   [component setUrl: url];
   [component setAccessClass: privacy];
+  [component setCategories: [category capitalizedString]];
   [self _handleAttendeesEdition];
   [self _handleOrganizer];
   clientObject = [self clientObject];

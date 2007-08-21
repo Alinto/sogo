@@ -212,8 +212,20 @@ function openUserFolderSelector(callback, type) {
    w.focus();
 }
 
-function openMailComposeWindow(url) {
-  var w = window.open(url, null,
+function openContactWindow(url, wId) {
+  if (!wId)
+    wId = "" + (new Date().getTime());
+  var w = window.open(url, wId,
+		      "width=450,height=600,resizable=0");
+  w.focus();
+
+  return w;
+}
+
+function openMailComposeWindow(url, wId) {
+  if (!wId)
+    wId = "" + (new Date().getTime());
+  var w = window.open(url, wId,
                       "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0"
                       + ",copyhistory=0");
