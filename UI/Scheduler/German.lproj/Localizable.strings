@@ -110,7 +110,7 @@
 "proposal" = "Recherche de plages horaires";
 "Save and Close" = "Speichern und schließen";
 "Close" = "Schließen";
-"Invite Attendees" = "Participants";
+"Invite Attendees" = "Teilnehmer";
 "Documents" = "Dokumente";
 "Update" = "Mettre à jour";
 "Cancel" = "Abbrechen";
@@ -203,7 +203,7 @@
 "view_future" = "Alle zukünftigen Termine";
 "view_selectedday" = "Momentan gewählter Tag";
 
-"View:" = "Voir :";
+"View:" = "Anzeigen:";
 "Title or Description" = "Titel oder Beschreibung";
 
 "Search" = "Suchen";
@@ -212,7 +212,7 @@
 "Search appointments" = "Termine suchen";
 "Search in Anais" = "Suche über Anaïs";
 
-"All day Event" = "Gantägig";
+"All day Event" = "Ganztägig";
 "check for conflicts" = "Auf Konflikte überprüfen";
 
 "Browse URL" = "Gehe zu URL";
@@ -294,14 +294,14 @@
 "category_TRAVEL" = "Voyage";
 "category_VACATION" = "Absence";
 
-"repeat_NEVER" = "Ne se répète pas";
+"repeat_NEVER" = "wiederholt sich nicht";
 "repeat_DAILY" = "täglich";
 "repeat_WEEKLY" = "wöchentlich";
 "repeat_BI-WEEKLY" = "zweiwöchentlich";
-"repeat_EVERY WEEKDAY" = "les jours ouvrables";
+"repeat_EVERY WEEKDAY" = "an Werktagen";
 "repeat_MONTHLY" = "monatlich";
 "repeat_YEARLY" = "jährlich";
-"repeat_CUSTOM" = "Personnaliser...";
+"repeat_CUSTOM" = "benutzerdefiniert...";
 
 "reminder_NONE" = "Keiner";
 "reminder_5_MINUTES_BEFORE" = "5 Minuten vor";
@@ -380,10 +380,10 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 
 /* FreeBusy panel buttons */
 "Suggest time slot:" = "Zeitzone :";
-"Previous slot" = "Précédent";
-"Next slot" = "Prochain";
-"Previous hour" = "Heure précédente";
-"Next hour" = "Prochaine heure";
+"Previous slot" = "Vorherige";
+"Next slot" = "Nächste";
+"Previous hour" = "Vorherige Stunde";
+"Next hour" = "Nächste Stunde";
 
 /* apt list */
 "Title" = "Titel";
