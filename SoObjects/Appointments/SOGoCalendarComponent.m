@@ -241,7 +241,7 @@ static BOOL sendEMailNotifications = NO;
 
 - (NSException *) delete
 {
-  return [self deleteWithBaseSequence:0];
+  return [self deleteWithBaseSequence: 0];
 }
 
 /* EMail Notifications */
