@@ -123,15 +123,17 @@
 {
   SOGoDraftsFolder *drafts;
   SOGoDraftObject *newDraftMessage;
-  NSString *urlBase, *url;
-  NSString *mailTo;
+  NSString *urlBase, *url, *value;
+  NSArray *mailTo;
+  
 
   drafts = [[self clientObject] draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
 
-  mailTo = [[self request] formValueForKey: @"mailto"];
-  if ([mailTo length] > 0)
+  value = [[self request] formValueForKey: @"mailto"];
+  if ([value length] > 0)
     {
+      mailTo = [NSArray arrayWithObject: value];
       [newDraftMessage setHeaders: [NSDictionary dictionaryWithObject: mailTo
 						 forKey: @"to"]];
       [newDraftMessage storeInfo];

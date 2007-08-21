@@ -1,5 +1,9 @@
 2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-composeAction]): the address fields should be arrays and not
+	simple strings.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -buildDate]): new method
 	that returns the build date of SOGo in the template.
 
