@@ -8,8 +8,8 @@
     <script type="text/javascript">
       var currentIndex = <var:string value="currentIndex" />;
     </script>
-    <script type="text/javascript" rsrc:src="UIxMailToSelection.js"> <!-- Space! --></script>
-    
+    <script type="text/javascript" rsrc:src="UIxMailToSelection.js"><!-- space --></script>
+
     <div id="addressList"
       ><var:foreach list="addressLists" item="addressList"
         ><var:foreach list="addressList" item="address">
