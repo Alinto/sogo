@@ -1,18 +1,18 @@
 /* toolbar */
-"Save and Close" = "Enregistrer et fermer";
-"Close" = "Fermer";
+"Save and Close" = "Speichern und Schließen";
+"Close" = "Schließen";
 
 /* tabs */
-"Out of Office" = "Absence du bureau";
-"Date and Time" = "Date et heure";
-"Calendar Options" = "Calendrier";
-"Password" = "Mot de passe";
+"Out of Office" = "Abwesenheit";
+"Date and Time" = "Datum und Zeit";
+"Calendar Options" = "Kalender";
+"Password" = "Passwort";
 
 /* ooo */
-"I'm currently in the office" = "Je suis présent";
-"I'm currently out of the office" = "Je suis absent";
+"I'm currently in the office" = "Ich bin zurzeit im Hause";
+"I'm currently out of the office" = "Ich bin zurzeit nicht im Hause";
 "AutoReply only once to each sender with the following text :"
-= "Répondre automatiquement avec le texte suivant, une seule fois par expéditeur :";
+= "Folgende Antwort wird automatisch einmal an jeden Absender gesendet:";
 
 /* d & t */
 "Current Time Zone :" = "Aktuelle Zeitzone:";
@@ -38,18 +38,18 @@
 "timeFmt_3" = "";
 
 /* calendar */
-"Week begins on :" = "Premier jour de la semaine :";
-"Day start time :" = "Début de la journée :";
-"Day end time :" = "Fin de la journée :";
-"First week of year :" = "Première semaine de l'année :";
-"Enable reminders for Calendar items" = "Activer les rappels pour les éléments du calendrier";
-"Play a sound when a reminder comes due" = "Émettre un signal sonore à l'échéance du rappel";
-"Default reminder :" = "Rappel par défaut :";
+"Week begins on :" = "Erster Wochentag:";
+"Day start time :" = "Tagesanfang:";
+"Day end time :" = "Tagesende:";
+"First week of year :" = "Erste Woche des Jahres:";
+"Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
+"Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
+"Default reminder :" = "Voreingestellte Terminerinnerung:";
 
-"firstWeekOfYear_HideWeekNumbers" = "Ne pas afficher le numéro des semaines";
-"firstWeekOfYear_January1" = "Commence le 1er janvier";
-"firstWeekOfYear_First4DayWeek" = "Première semaine de 4 jours";
-"firstWeekOfYear_FirstFullWeek" = "Première semaine entière";
+"firstWeekOfYear_HideWeekNumbers" = "Keine Wochennummern anzeigen";
+"firstWeekOfYear_January1" = "Beginnt am 1.Januar";
+"firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
+"firstWeekOfYear_FirstFullWeek" = "Erste ganze Woche";
 
 "reminderTime_0000" = "0 Minuten";
 "reminderTime_0005" = "5 Minuten";
