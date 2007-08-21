@@ -28,6 +28,9 @@
 	<var:if condition="hasPageSpecificCSS"
 	  ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
 	    /></var:if>
+	<var:if-ie
+	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"
+	    /></var:if-ie>
       </head>
 
       <body var:class="bodyClasses">

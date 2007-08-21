@@ -255,8 +255,7 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
 
 SPAN.disabledToolbarButton
 { -moz-opacity: 0.4;
-  opacity: 0.4;
-  filter: alpha(opacity=40); }
+  opacity: 0.4; }
 
 SPAN.toolbarButton:hover
 { color: -moz-buttonhovertext;
@@ -500,7 +499,6 @@ DIV.javascriptPopupBackground
   background-color: #999;
   -moz-opacity: 0.6; 
   opacity: 0.6;
-  filter: alpha(opacity=60);
   z-index: 2;
   top: 0px;
   left: 0px;
@@ -513,14 +511,13 @@ DIV.javascriptMessagePseudoTopWindow
 { position: absolute;
   z-index: 2;
   border-bottom: 2px solid #888;
-  -moz-border-bottom-colors: #000 #9c9a94 transparent;
   padding: 1em;
   margin: 0px auto;
-  -moz-opacity: 1.0;
-  opacity: 1.0;
-  filter: alpha(opacity=100);
   color: #000;
-  background-color: #d4d0c8; }
+  background-color: #d4d0c8;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+  -moz-opacity: 1.0;
+  opacity: 1.0; }
 
 DIV.javascriptMessagePseudoTopWindow
 { border-top: 0px;
@@ -695,7 +692,7 @@ INPUT.checkBox
 {
   BODY
   { position: static;
-    font-size: 25%;
+    font-size: 10pt;
     height: auto;
     overflow: visible; }
 
