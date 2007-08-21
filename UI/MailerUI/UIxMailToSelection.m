@@ -57,17 +57,17 @@
   int     currentIndex;
 }
 
-- (void)setTo:(NSArray *)_to;
-- (NSArray *)to;
-- (void)setCc:(NSArray *)_cc;
-- (NSArray *)cc;
-- (void)setBcc:(NSArray *)_bcc;
-- (NSArray *)bcc;
+- (void) setTo: (NSArray *) _to;
+- (NSArray *) to;
+- (void) setCc: (NSArray *) _cc;
+- (NSArray *) cc;
+- (void) setBcc: (NSArray *) _bcc;
+- (NSArray *) bcc;
 
-- (NSArray *)properlySplitAddresses:(NSArray *)_addresses;
+- (NSArray *) properlySplitAddresses: (NSArray *) _addresses;
 
-- (void)getAddressesFromFormValues:(NSDictionary *)_dict;
-- (NSString *)getIndexFromIdentifier:(NSString *)_identifier;
+- (void) getAddressesFromFormValues: (NSDictionary *) _dict;
+- (NSString *) getIndexFromIdentifier: (NSString *) _identifier;
 
 @end
 
@@ -75,157 +75,179 @@
 
 static NSArray *headers = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   static BOOL didInit = NO;
-  if (didInit)
-    return;
-  
-  didInit = YES;
-  headers = [[NSArray alloc] initWithObjects:@"to", @"cc", @"bcc", nil];
+  if (!didInit)
+    {
+      didInit = YES;
+      headers = [[NSArray alloc] initWithObjects: @"to", @"cc", @"bcc", nil];
+    }
 }
 
-- (id)init {
-  self = [super init];
-  if(self) {
-    self->currentIndex = 0;
-  }
+- (id) init
+{
+  if ((self = [super init]))
+    currentIndex = 0;
+
   return self;
 }
 
-- (void)dealloc {
-  [self->to          release];
-  [self->cc          release];
-  [self->bcc         release];
-  [self->item        release];
-  [self->address     release];
-  [self->addressList release];
+- (void) dealloc
+{
+  [to          release];
+  [cc          release];
+  [bcc         release];
+  [item        release];
+  [address     release];
+  [addressList release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setTo:(NSArray *)_to
+- (void) setTo: (NSArray *) _to
 {
-  _to = [self properlySplitAddresses:_to];
-  ASSIGNCOPY(self->to, _to);
+  ASSIGN (to, [self properlySplitAddresses: _to]);
 }
 
 - (NSArray *) to
 {
   NSString *mailto;
  
-  mailto = [self queryParameterForKey:@"mailto"];
+  mailto = [self queryParameterForKey: @"mailto"];
   if ([mailto length] > 0 && ![to count])
     {
       to = [NSArray arrayWithObject: mailto];
       [to retain];
     }
 
-  return self->to;
+  return to;
 }
 
-- (void)setCc:(NSArray *)_cc {
-  _cc = [self properlySplitAddresses:_cc];
-  ASSIGNCOPY(self->cc, _cc);
+- (void) setCc: (NSArray *) _cc
+{
+  ASSIGN (cc, [self properlySplitAddresses: _cc]);
 }
 
-- (NSArray *)cc {
-  return self->cc;
+- (NSArray *) cc
+{
+  return cc;
 }
 
-- (void)setBcc:(NSArray *)_bcc {
-  _bcc = [self properlySplitAddresses:_bcc];
-  ASSIGNCOPY(self->bcc, _bcc);
-}
-- (NSArray *)bcc {
-  return self->bcc;
+- (void) setBcc: (NSArray *) _bcc
+{
+  ASSIGN (bcc, [self properlySplitAddresses: _bcc]);
 }
 
-- (void)setAddressList:(NSArray *)_addressList {
-  ASSIGN(self->addressList, _addressList);
-}
-- (NSArray *)addressList {
-  return self->addressList;
+- (NSArray *) bcc
+{
+  return bcc;
 }
 
-- (void)setAddress:(id)_address {
-  ASSIGN(self->address, _address);
-}
-- (id)address {
-  return self->address;
+- (void) setAddressList: (NSArray *) _addressList
+{
+  ASSIGN (addressList, _addressList);
 }
 
-- (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
-}
-- (id)item {
-  return self->item;
+- (NSArray *) addressList
+{
+  return addressList;
 }
 
-- (NSArray *)addressLists {
+- (void) setAddress: (id) _address
+{
+  ASSIGN (address, _address);
+}
+
+- (id) address
+{
+  return address;
+}
+
+- (void) setItem: (id) _item
+{
+  ASSIGN (item, _item);
+}
+
+- (id) item
+{
+  return item;
+}
+
+- (NSArray *) addressLists
+{
   NSMutableArray *ma;
   
   ma = [NSMutableArray arrayWithCapacity:3];
-  if ([self->to  isNotNull]) [ma addObject:self->to];
-  if ([self->cc  isNotNull]) [ma addObject:self->cc];
-  if ([self->bcc isNotNull]) [ma addObject:self->bcc];
-  
+  if ([to isNotNull])
+    [ma addObject: to];
+  if ([cc isNotNull])
+    [ma addObject: cc];
+  if ([bcc isNotNull])
+    [ma addObject: bcc];
+
   /* ensure that at least one object is available */
-  if ([ma count] == 0) {
-    NSArray *tmp = [NSArray arrayWithObject:@""];
-    ASSIGNCOPY(self->to, tmp);
-    [ma addObject:self->to];
-  }
+  if ([ma count] == 0)
+    {
+      NSArray *tmp = [NSArray arrayWithObject:@""];
+      ASSIGN (to, tmp);
+      [ma addObject:to];
+    }
+
   return ma;
 }
 
-- (NSArray *)headers {
+- (NSArray *) headers
+{
   return headers;
 }
 
-- (NSString *)currentHeader {
-  if(self->addressList == self->to)
+- (NSString *) currentHeader
+{
+  if (addressList == to)
     return @"to";
-  else if(self->addressList == self->cc)
+  else if (addressList == cc)
     return @"cc";
+
   return @"bcc";
 }
 
 /* identifiers */
 
-- (NSString *)currentRowId {
-  char buf[16];
-  sprintf(buf, "row_%d", self->currentIndex);
-  return [NSString stringWithCString:buf];
+- (NSString *) currentRowId
+{
+  return [NSString stringWithFormat: @"row_%d", currentIndex];
 }
 
-- (NSString *)currentPopUpId {
-  char buf[16];
-  sprintf(buf, "popup_%d", self->currentIndex);
-  return [NSString stringWithCString:buf];
+- (NSString *) currentPopUpId
+{
+  return [NSString stringWithFormat: @"popup_%d", currentIndex];
 }
 
-- (NSString *)currentAddressId {
-  char buf[16];
-  sprintf(buf, "addr_%d", self->currentIndex);
-  return [NSString stringWithCString:buf];
+- (NSString *) currentAddressId
+{
+  return [NSString stringWithFormat: @"addr_%d", currentIndex];
 }
 
-- (NSString *)nextId {
-  self->currentIndex++;
+- (NSString *) nextId
+{
+  currentIndex++;
+
   return @"";
 }
 
 /* address handling */
 
-- (NSArray *)properlySplitAddresses:(NSArray *)_addresses {
+- (NSArray *) properlySplitAddresses: (NSArray *) _addresses
+{
   NSString            *addrs;
   NGMailAddressParser *parser;
   NSArray             *result;
   NSMutableArray      *ma;
   unsigned            i, count;
 
-  if(!_addresses || [_addresses count] == 0)
+  if (!_addresses || [_addresses count] == 0)
     return nil;
 
   /* create one huge string, then split it using the parser */
@@ -263,7 +285,8 @@ static NSArray *headers = nil;
 
 /* handling requests */
 
-- (void)getAddressesFromFormValues:(NSDictionary *)_dict {
+- (void) getAddressesFromFormValues: (NSDictionary *) _dict
+{
   NSMutableArray *rawTo, *rawCc, *rawBcc;
   NSArray *keys;
   unsigned i, count;
@@ -274,39 +297,45 @@ static NSArray *headers = nil;
   
   keys  = [_dict allKeys];
   count = [keys count];
-  for (i = 0; i < count; i++) {
-    NSString *key;
+  for (i = 0; i < count; i++)
+    {
+      NSString *key;
     
-    key = [keys objectAtIndex:i];
-    if([key hasPrefix:@"addr_"]) {
-      NSString *idx, *addr, *popupKey, *popupValue;
-      
-      addr = [[_dict objectForKey:key] lastObject];
-      idx  = [self getIndexFromIdentifier:key];
-      popupKey = [NSString stringWithFormat:@"popup_%@", idx];
-      popupValue = [[_dict objectForKey:popupKey] lastObject];
-      if([popupValue isEqualToString:@"0"])
-        [rawTo addObject:addr];
-      else if([popupValue isEqualToString:@"1"])
-        [rawCc addObject:addr];
-      else
-        [rawBcc addObject:addr];
+      key = [keys objectAtIndex:i];
+      if ([key hasPrefix:@"addr_"])
+	{
+	  NSString *idx, *addr, *popupKey, *popupValue;
+	  
+	  addr = [[_dict objectForKey:key] lastObject];
+	  idx  = [self getIndexFromIdentifier:key];
+	  popupKey = [NSString stringWithFormat:@"popup_%@", idx];
+	  popupValue = [[_dict objectForKey:popupKey] lastObject];
+	  if([popupValue isEqualToString:@"0"])
+	    [rawTo addObject:addr];
+	  else if([popupValue isEqualToString:@"1"])
+	    [rawCc addObject:addr];
+	  else
+	    [rawBcc addObject:addr];
+	}
     }
-  }
   
-  [self setTo:rawTo];
-  [self setCc:rawCc];
-  [self setBcc:rawBcc];
+  [self setTo: rawTo];
+  [self setCc: rawCc];
+  [self setBcc: rawBcc];
 }
 
-- (NSString *)getIndexFromIdentifier:(NSString *)_identifier {
+- (NSString *) getIndexFromIdentifier: (NSString *) _identifier
+{
   NSRange r;
   
-  r = [_identifier rangeOfString:@"_"];
-  return [_identifier substringFromIndex:NSMaxRange(r)];
+  r = [_identifier rangeOfString: @"_"];
+
+  return [_identifier substringFromIndex: NSMaxRange(r)];
 }
 
-- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+- (void) takeValuesFromRequest: (WORequest *) _rq
+		     inContext: (WOContext *) _ctx
+{
   /* OK, we have a special form value processor */
   NSDictionary *d;
 
@@ -319,17 +348,20 @@ static NSArray *headers = nil;
         __PRETTY_FUNCTION__,
         d);
 #endif
-  [self getAddressesFromFormValues:d];
+  [self getAddressesFromFormValues: d];
 }
 
-- (int)addressCount {
-  return [self->to count] + [self->cc count] + [self->bcc count];
+- (int) addressCount
+{
+  return [to count] + [cc count] + [bcc count];
 }
 
-- (int)currentIndex {
+- (int) currentIndex
+{
   int count;
 
   count = [self addressCount];
+
   return count > 0 ? count - 1 : 0;
 }
 
