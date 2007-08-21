@@ -256,9 +256,10 @@ categories = {
 	    protectedBy = "View";
 	    pageName    = "UIxMailMainFrame";
 	 };
-	 getMail = {
+	 compose = {
 	    protectedBy = "View";
-	    pageName    = "UIxMailAccountsView";
+	    pageName    = "UIxMailMainFrame";
+	    actionName = "compose";
 	 };
       };
    };

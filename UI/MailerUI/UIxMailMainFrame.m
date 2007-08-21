@@ -26,6 +26,7 @@
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
+#import <SoObjects/SOGo/NSDictionary+URL.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SOGoUI/UIxComponent.h>
@@ -88,6 +89,25 @@
     return u;
   }
   return [u hasSuffix:@"/"] ? @"view" : @"#";
+}
+
+- (id <WOActionResults>) composeAction
+{
+  NSArray *accounts;
+  NSString *firstAccount, *newLocation;
+  SOGoMailAccounts *co;
+  NSDictionary *formValues;
+
+  co = [self clientObject];
+  accounts = [[context activeUser] mailAccounts];
+  firstAccount = [[accounts objectsForKey: @"name"] objectAtIndex: 0];
+  formValues = [[context request] formValues];
+  newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
+			  [co baseURLInContext: context],
+			  firstAccount,
+			  [formValues asURLParameters]];
+
+  return [self redirectToLocation: newLocation];
 }
 
 @end /* UIxMailMainFrame */

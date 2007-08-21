@@ -1,5 +1,9 @@
 2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-composeAction]): restored method since it is needed by the
+	address book.
+
 	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
 	-composeAction]): the address fields should be arrays and not
 	simple strings.
