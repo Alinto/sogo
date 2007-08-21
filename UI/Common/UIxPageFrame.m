@@ -26,6 +26,8 @@
 #import <SOGoUI/UIxComponent.h>
 #import <SOGo/SOGoUser.h>
 
+#import <Main/build.h>
+
 #import "UIxPageFrame.h"
 
 @implementation UIxPageFrame
@@ -72,6 +74,11 @@
 - (id) item
 {
   return item;
+}
+
+- (NSString *) buildDate
+{
+  return SOGoBuildDate;
 }
 
 - (NSString *) ownerInContext

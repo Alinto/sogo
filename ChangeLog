@@ -1,3 +1,8 @@
+2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -buildDate]): new method
+	that returns the build date of SOGo in the template.
+
 2007-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
