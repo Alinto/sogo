@@ -1,4 +1,4 @@
-/* build.h - this file is part of $PROJECT_NAME_HERE$
+/* build.h - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
