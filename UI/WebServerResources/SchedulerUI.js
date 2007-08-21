@@ -374,7 +374,7 @@ function tasksListCallback(http) {
       var owner = data[i][1];
       listItem.owner = owner;
       $(listItem).addClassName("ownerIs" + owner);
-      listItem.cname = data[i][0];
+      listItem.cname = escape(data[i][0]);
       var input = document.createElement("input");
       input.setAttribute("type", "checkbox");
       listItem.appendChild(input);
@@ -708,7 +708,7 @@ function drawCalendarEvent(eventData, sd, ed) {
 function newEventDIV(cname, owner, starts, lasts,
 		     startHour, endHour, title) {
    var eventDiv = document.createElement("div");
-   eventDiv.cname = cname;
+   eventDiv.cname = escape(cname);
    eventDiv.owner = owner;
    $(eventDiv).addClassName("event");
    $(eventDiv).addClassName("starts" + starts);
