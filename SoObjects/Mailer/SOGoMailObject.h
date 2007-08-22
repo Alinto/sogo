@@ -63,6 +63,8 @@
 - (NSArray *)toEnvelopeAddresses;
 - (NSArray *)ccEnvelopeAddresses;
 
+- (NSDictionary *) mailHeaders;
+
 - (id)bodyStructure;
 - (id)lookupInfoForBodyPart:(id)_path;
 

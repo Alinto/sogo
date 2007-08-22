@@ -325,7 +325,8 @@ static BOOL debugSoParts       = NO;
   return headers;
 }
 
-- (id)lookupInfoForBodyPart:(id)_path {
+- (id) lookupInfoForBodyPart: (id) _path
+{
   NSEnumerator *pe;
   NSString *p;
   id info;
@@ -392,7 +393,8 @@ static BOOL debugSoParts       = NO;
 
 /* content */
 
-- (NSData *)content {
+- (NSData *) content
+{
   NSData *content;
   id     result, fullResult;
   
@@ -611,13 +613,15 @@ static BOOL debugSoParts       = NO;
   return flatContents;
 }
 
-- (NSDictionary *)fetchPlainTextParts {
+- (NSDictionary *) fetchPlainTextParts
+{
   return [self fetchPlainTextParts:[self plainTextContentFetchKeys]];
 }
 
 /* convert parts to strings */
 
-- (NSString *)stringForData:(NSData *)_data partInfo:(NSDictionary *)_info
+- (NSString *) stringForData: (NSData *) _data
+		    partInfo: (NSDictionary *) _info
 {
   NSString *charset, *encoding, *s;
   NSData *mailData;
@@ -650,7 +654,8 @@ static BOOL debugSoParts       = NO;
   return s;
 }
 
-- (NSDictionary *)stringifyTextParts:(NSDictionary *)_datas {
+- (NSDictionary *) stringifyTextParts: (NSDictionary *) _datas
+{
   NSMutableDictionary *md;
   NSEnumerator *keys;
   NSString     *key;
@@ -667,7 +672,9 @@ static BOOL debugSoParts       = NO;
   }
   return md;
 }
-- (NSDictionary *)fetchPlainTextStrings:(NSArray *)_fetchKeys {
+
+- (NSDictionary *) fetchPlainTextStrings: (NSArray *) _fetchKeys
+{
   /*
     The fetched parts are NSData objects, this method converts them into
     NSString objects based on the information inside the bodystructure.
@@ -723,7 +730,10 @@ static BOOL debugSoParts       = NO;
   return [clazz objectWithName:_key inContainer: self];
 }
 
-- (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id) lookupName: (NSString *) _key
+	inContext: (id) _ctx
+	  acquire: (BOOL) _flag
+{
   id obj;
   
   /* first check attributes directly bound to the application */
@@ -747,34 +757,41 @@ static BOOL debugSoParts       = NO;
 
 /* WebDAV */
 
-- (BOOL)davIsCollection {
+- (BOOL) davIsCollection
+{
   /* while a mail has child objects, it should appear as a file in WebDAV */
   return NO;
 }
 
-- (id)davContentLength {
+- (id) davContentLength
+{
   return [[self fetchCoreInfos] valueForKey: @"size"];
 }
 
-- (NSDate *)davCreationDate {
+- (NSDate *) davCreationDate
+{
   // TODO: use INTERNALDATE once NGImap4 supports that
   return nil;
 }
-- (NSDate *)davLastModified {
+
+- (NSDate *) davLastModified
+{
   return [self davCreationDate];
 }
 
-- (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+- (NSException *) davMoveToTargetObject: (id) _target
+				newName: (NSString *) _name
+			      inContext: (id)_ctx
 {
   [self logWithFormat: @"TODO: should move mail as '%@' to: %@",
 	_name, _target];
-  return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
+  return [NSException exceptionWithHTTPStatus: 501 /* Not Implemented */
 		      reason: @"not implemented"];
 }
 
-- (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
-  inContext:(id)_ctx
+- (NSException *) davCopyToTargetObject: (id) _target
+				newName: (NSString *) _name
+			      inContext: (id)_ctx
 {
   /* 
      Note: this is special because we create SOGoMailObject's even if they do
@@ -798,7 +815,8 @@ static BOOL debugSoParts       = NO;
 
 /* actions */
 
-- (id)GETAction:(id)_ctx {
+- (id) GETAction: (id) _ctx
+{
   NSException *error;
   WOResponse  *r;
   NSData      *content;
@@ -828,7 +846,8 @@ static BOOL debugSoParts       = NO;
 
 /* operations */
 
-- (NSException *)trashInContext:(id)_ctx {
+- (NSException *) trashInContext: (id) _ctx
+{
   /*
     Trashing is three actions:
     a) copy to trash folder
@@ -938,7 +957,8 @@ static BOOL debugSoParts       = NO;
   return nil;
 }
 
-- (NSException *)delete {
+- (NSException *) delete
+{
   /* 
      Note: delete is different to DELETEAction: for mails! The 'delete' runs
            either flags a message as deleted or moves it to the Trash while
@@ -953,7 +973,9 @@ static BOOL debugSoParts       = NO;
   error = [[self imap4Connection] markURLDeleted:[self imap4URL]];
   return error;
 }
-- (id)DELETEAction:(id)_ctx {
+
+- (id) DELETEAction: (id) _ctx
+{
   NSException *error;
   
   // TODO: ensure safe HTTP method
@@ -969,7 +991,8 @@ static BOOL debugSoParts       = NO;
 
 /* some mail classification */
 
-- (BOOL)isKolabObject {
+- (BOOL) isKolabObject
+{
   NSDictionary *h;
   
   if ((h = [self mailHeaders]) != nil)
@@ -980,7 +1003,8 @@ static BOOL debugSoParts       = NO;
   return NO;
 }
 
-- (BOOL)isMailingListMail {
+- (BOOL) isMailingListMail
+{
   NSDictionary *h;
   
   if ((h = [self mailHeaders]) == nil)
@@ -989,7 +1013,8 @@ static BOOL debugSoParts       = NO;
   return [[h objectForKey: @"list-id"] isNotEmpty];
 }
 
-- (BOOL)isVirusScanned {
+- (BOOL) isVirusScanned
+{
   NSDictionary *h;
   
   if ((h = [self mailHeaders]) == nil)
@@ -1000,8 +1025,8 @@ static BOOL debugSoParts       = NO;
   return YES;
 }
 
-- (NSString *)scanListHeaderValue:(id)_value
-  forFieldWithPrefix:(NSString *)_prefix
+- (NSString *) scanListHeaderValue: (id) _value
+		forFieldWithPrefix: (NSString *) _prefix
 {
   /* Note: not very tolerant on embedded commands and <> */
   // TODO: does not really belong here, should be a header-field-parser
@@ -1047,17 +1072,22 @@ static BOOL debugSoParts       = NO;
   return _value;
 }
 
-- (NSString *)mailingListArchiveURL {
+- (NSString *) mailingListArchiveURL
+{
   return [self scanListHeaderValue:
 		 [[self mailHeaders] objectForKey: @"list-archive"]
 	       forFieldWithPrefix: @"<http://"];
 }
-- (NSString *)mailingListSubscribeURL {
+
+- (NSString *) mailingListSubscribeURL
+{
   return [self scanListHeaderValue:
 		 [[self mailHeaders] objectForKey: @"list-subscribe"]
 	       forFieldWithPrefix: @"<http://"];
 }
-- (NSString *)mailingListUnsubscribeURL {
+
+- (NSString *) mailingListUnsubscribeURL
+{
   return [self scanListHeaderValue:
 		 [[self mailHeaders] objectForKey: @"list-unsubscribe"]
 	       forFieldWithPrefix: @"<http://"];
@@ -1065,7 +1095,8 @@ static BOOL debugSoParts       = NO;
 
 /* etag support */
 
-- (id)davEntityTag {
+- (id) davEntityTag
+{
   /*
     Note: There is one thing which *can* change for an existing message,
           those are the IMAP4 flags (and annotations, which we do not use).
@@ -1074,13 +1105,16 @@ static BOOL debugSoParts       = NO;
   */
   return mailETag;
 }
-- (int)zlGenerationCount {
+
+- (int) zlGenerationCount
+{
   return 0; /* mails never change */
 }
 
 /* Outlook mail tagging */
 
-- (NSString *)outlookMessageClass {
+- (NSString *) outlookMessageClass
+{
   NSString *type;
   
   if ((type = [[self mailHeaders] objectForKey: @"x-kolab-type"]) != nil) {
@@ -1106,7 +1140,8 @@ static BOOL debugSoParts       = NO;
 
 /* debugging */
 
-- (BOOL)isDebuggingEnabled {
+- (BOOL) isDebuggingEnabled
+{
   return debugOn;
 }
 
