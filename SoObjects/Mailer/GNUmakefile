@@ -2,7 +2,7 @@
 
 include ../common.make
 
-BUNDLE_NAME = Mailer
+WOBUNDLE_NAME = Mailer
 
 Mailer_PRINCIPAL_CLASS = SOGoMailerProduct
 
@@ -29,12 +29,20 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoDraftsFolder.m		\
 	SOGoDraftObject.m		\
+	\
+	SOGoMailForward.m		\
+	SOGoMailEnglishForward.m	\
+	SOGoMailFrenchForward.m
 
 Mailer_RESOURCE_FILES += \
 	Version		\
 	product.plist	\
 
+Mailer_RESOURCE_FILES += \
+	SOGoMailEnglishForward.wo \
+	SOGoMailFrenchForward.wo
+
 -include GNUmakefile.preamble
-include $(GNUSTEP_MAKEFILES)/bundle.make
+include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
 include ../../fhsbundle.make
