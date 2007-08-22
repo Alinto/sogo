@@ -22,9 +22,14 @@
 
 #import <Foundation/NSArray.h>
 
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
+
+#import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
 
 #define maxFilenameLength 64
@@ -205,6 +210,22 @@
     newSubject = subject;
 
   return newSubject;
+}
+
+- (NSString *) contentForInlineForward
+{
+  SOGoUser *currentUser;
+  NSString *pageName;
+  SOGoMailForward *page;
+
+  currentUser = [context activeUser];
+  pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
+		       [currentUser language]];
+  page = [[WOApplication application] pageWithName: pageName
+				      inContext: context];
+  [page setForwardedMail: self];
+
+  return [[page generateResponse] contentAsString];
 }
 
 - (void) _fetchFileAttachmentKey: (NSDictionary *) part

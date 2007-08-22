@@ -35,6 +35,7 @@
 
 - (NSString *) subjectForForward;
 - (NSString *) filenameForForward;
+- (NSString *) contentForInlineForward;
 
 @end
 

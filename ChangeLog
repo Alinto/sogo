@@ -1,5 +1,10 @@
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-contentForInlineForward]): new method that returns the content of
+	the message for inline forwarding based on the SOGoMailForward
+	templates.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-fetchMailForForwarding:sourceMail]): check the user preference
 	for message forwarding and compose inline forwarded messages if required.
