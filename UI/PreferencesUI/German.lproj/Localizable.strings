@@ -6,6 +6,7 @@
 "Out of Office" = "Abwesenheit";
 "Date and Time" = "Datum und Zeit";
 "Calendar Options" = "Kalender";
+"Mail Options" = "Mail Options";
 "Password" = "Passwort";
 
 /* ooo */
@@ -63,6 +64,11 @@
 "reminderTime_1200" = "1/2 Tag";
 "reminderTime_2400" = "1 Tag";
 "reminderTime_4800" = "2 Tage";
+
+/* Mailer */
+"Forward messages:" = "Forward messages:";
+"messageforward_inline" = "Inline";
+"messageforward_attached" = "As Attachment";
 
 /* password */
 "New password:" = "Neues Passwort:";
