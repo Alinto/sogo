@@ -29,7 +29,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGBase64Coding.h>
@@ -54,6 +54,7 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import "SOGoMailAccount.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailObject.h"
@@ -517,6 +518,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail
 {
   NSDictionary *info, *attachment;
+  SOGoUser *currentUser;
 
   [sourceMail fetchCoreInfos];
 
@@ -527,15 +529,20 @@ static BOOL        showTextAttachmentsInline  = NO;
   [self setSourceFlag: @"$Forwarded"];
 
   /* attach message */
-  
+  currentUser = [context activeUser];
+  if ([[currentUser messageForwarding] isEqualToString: @"inline"])
+    [self setText: [sourceMail contentForInlineForward]];
+  else
+    {
   // TODO: use subject for filename?
 //   error = [newDraft saveAttachment:content withName:@"forward.mail"];
-  attachment = [NSDictionary dictionaryWithObjectsAndKeys:
-			       [sourceMail filenameForForward], @"filename",
-			     @"message/rfc822", @"mime-type",
-			     nil];
-  [self saveAttachment: [sourceMail content]
-	withMetadata: attachment];
+      attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+				   [sourceMail filenameForForward], @"filename",
+				 @"message/rfc822", @"mime-type",
+				 nil];
+      [self saveAttachment: [sourceMail content]
+	    withMetadata: attachment];
+    }
   [self storeInfo];
 }
 
