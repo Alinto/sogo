@@ -419,6 +419,28 @@ static BOOL shouldDisplayPasswordChange = NO;
   [userDefaults setObject: newTime forKey: @"ReminderTime"];
 }
 
+/* Mailer */
+- (NSArray *) messageForwardingList
+{
+  return [NSArray arrayWithObjects: @"inline", @"attached", nil];
+}
+
+- (NSString *) itemMessageForwardingText
+{
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"messageforward_%@", item]];
+}
+
+- (NSString *) userMessageForwarding
+{
+  return [user messageForwarding];
+}
+
+- (void) setUserMessageForwarding: (NSString *) newMessageForwarding
+{
+  [userDefaults setObject: newMessageForwarding forKey: @"MessageForwarding"];
+}
+
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;

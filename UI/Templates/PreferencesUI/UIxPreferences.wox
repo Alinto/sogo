@@ -19,6 +19,8 @@
 	    label:value="Date and Time"/></li>
 	<li target="calendarOptionsView"><var:string
 	    label:value="Calendar Options"/></li>
+	<li target="mailOptionsView"><var:string
+	    label:value="Mail Options"/></li>
 	<var:if condition="shouldDisplayPasswordChange">
 	  <li target="passwordView"><var:string label:value="Password"/></li>
 	</var:if>
@@ -88,6 +90,11 @@
 	<label><var:string label:value="Default reminder :"/>
 	  <var:popup list="reminderTimesList" item="item"
 	    string="itemReminderTimeText" selection="userReminderTime"/></label>
+      </div>
+      <div id="mailOptionsView" class="tab">
+	<label><var:string label:value="Forward messages:"/>
+	  <var:popup list="messageForwardingList" item="item"
+	    string="itemMessageForwardingText" selection="userMessageForwarding"/></label><br/>
       </div>
       <var:if condition="shouldDisplayPasswordChange">
 	<div id="passwordView" class="tab">

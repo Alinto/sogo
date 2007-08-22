@@ -1,5 +1,12 @@
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -messageForwardingList])
+	([UIxPreferences -itemMessageForwardingText])
+	([UIxPreferences -userMessageForwarding])
+	([UIxPreferences -setUserMessageForwarding:newMessageForwarding]):
+	new template methods for manage the user preference regarding
+	message forwarding.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): change the
 	algorithm to return, in order, the user's defined language or the
 	first browser language or, finally, the default language.
