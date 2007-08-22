@@ -1,7 +1,8 @@
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -messageForwardingList])
-	([UIxPreferences -itemMessageForwardingText])
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-messageForwardingList])
+	([UIxPreferences -itemMessageForwardingText])D
 	([UIxPreferences -userMessageForwarding])
 	([UIxPreferences -setUserMessageForwarding:newMessageForwarding]):
 	new template methods for manage the user preference regarding
