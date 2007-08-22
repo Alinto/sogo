@@ -47,7 +47,6 @@
 #import "iCalEntityObject+SOGo.h"
 #import "SOGoCalendarComponent.h"
 
-static NSString *mailTemplateDefaultLanguage = nil;
 static BOOL sendEMailNotifications = NO;
 
 @implementation SOGoCalendarComponent
@@ -62,11 +61,6 @@ static BOOL sendEMailNotifications = NO;
       didInit = YES;
   
       ud = [NSUserDefaults standardUserDefaults];
-      mailTemplateDefaultLanguage = [[ud stringForKey:@"SOGoDefaultLanguage"]
-                                      retain];
-      if (!mailTemplateDefaultLanguage)
-        mailTemplateDefaultLanguage = @"English";
-
       sendEMailNotifications
         = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
     }
@@ -337,7 +331,7 @@ static BOOL sendEMailNotifications = NO;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
-  NSString *recipient;
+  NSString *recipient, *language;
   SOGoAptMailNotification *p;
   NSString *mailDate, *subject, *text, *header;
   NGMutableHashMap *headerMap;
@@ -380,12 +374,13 @@ static BOOL sendEMailNotifications = NO;
           else
             recipient = email;
 
+	  language = [[context activeUser] language];
 #warning this could be optimized in a class hierarchy common with the \
           SOGoObject's acl notification mechanism
           /* create page name */
           // TODO: select user's default language?
           pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
-                               mailTemplateDefaultLanguage,
+                               language,
                                _pageName];
           /* construct message content */
           p = [app pageWithName: pageName inContext: context];
