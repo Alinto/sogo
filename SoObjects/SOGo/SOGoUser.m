@@ -25,6 +25,8 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSNull+misc.h>
 
@@ -310,10 +312,20 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) language
 {
+  NSArray *bLanguages;
+  WOContext *context;
+
   if (!language)
     {
       language = [[self userDefaults] stringForKey: @"Language"];
-      if (!language)
+      if (![language length])
+	{
+	  context = [[WOApplication application] context];
+	  bLanguages = [[context request] browserLanguages];
+	  if ([bLanguages count] > 0)
+	    language = [bLanguages objectAtIndex: 0];
+	}
+      if (![language length])
 	language = defaultLanguage;
       [language retain];
     }
@@ -450,6 +462,18 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   defaultAccount = [mailAccounts objectAtIndex: 0];
 
   return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
+}
+
+- (NSString *) messageForwarding
+{
+  NSString *messageForwarding;
+
+  messageForwarding
+    = [[self userDefaults] stringForKey: @"MessageForwarding"];
+  if (![messageForwarding length])
+    messageForwarding = @"attached";
+
+  return messageForwarding;
 }
 
 /* folders */

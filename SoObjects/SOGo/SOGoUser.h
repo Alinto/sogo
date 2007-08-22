@@ -103,6 +103,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSArray *) mailAccounts;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
+- (NSString *) messageForwarding;
 
 /* folders */
 

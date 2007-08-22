@@ -1,5 +1,12 @@
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -language]): change the
+	algorithm to return, in order, the user's defined language or the
+	first browser language or, finally, the default language.
+	([SOGoUser -messageForwarding]): new method that returns the user
+	preference for message forwarding: "inline" or "attached",
+	defaulting to "attached".
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForInlineForward]): new method that returns the content of
 	the message for inline forwarding based on the SOGoMailForward
