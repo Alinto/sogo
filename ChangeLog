@@ -1,3 +1,14 @@
+2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailEnglishForward.m: new module containing
+	a subclass of SOGoMailForward for English locale.
+
+	* SoObjects/Mailer/SOGoMailFrenchForward.m: new module containing
+	a subclass of SOGoMailForward for French locale.
+
+	* SoObjects/Mailer/SOGoMailForward.[hm]: new module class that
+	helps build template for inline forwarded messages.
+
 2007-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/SOGoElements/SOGoIEConditional.m: new extension module class
