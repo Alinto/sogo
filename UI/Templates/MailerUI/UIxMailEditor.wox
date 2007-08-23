@@ -21,7 +21,7 @@
     </ul>
   </div>
 
-  <form name="pageform" enctype="multipart/form-data" accept-charset="UTF-8">
+  <form const:href="send" name="pageform" enctype="multipart/form-data">
     <div id="headerArea">
       <div id="attachmentsArea">
 	<var:string label:value="Attachments:" />
