@@ -174,21 +174,22 @@ function closeInvitationWindow() {
 }
 
 function modifyEventCallback(http) {
-   if (http.readyState == 4) {
-      if (http.status == 200) {
-	 if (queryParameters["mail-invitation"].toLowerCase() == "yes")
-	    closeInvitationWindow();
-	 else {
-	    window.opener.setTimeout("refreshEventsAndDisplay();", 100);
-	    window.setTimeout("window.close();", 100);
-	 }
-      }
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      var mailInvitation = queryParameters["mail-invitation"];
+      if (mailInvitation && mailInvitation.toLowerCase() == "yes")
+	closeInvitationWindow();
       else {
-// 	 log("showing alert...");
-	 window.alert(labels["eventPartStatModificationError"]);
+	window.opener.setTimeout("refreshEventsAndDisplay();", 100);
+	window.setTimeout("window.close();", 100);
       }
-      document.modifyEventAjaxRequest = null;
-   }
+    }
+    else {
+// 	 log("showing alert...");
+      window.alert(labels["eventPartStatModificationError"]);
+    }
+    document.modifyEventAjaxRequest = null;
+  }
 }
 
 function deleteEventCallback(http) {
