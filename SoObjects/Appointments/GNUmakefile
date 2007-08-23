@@ -32,13 +32,17 @@ Appointments_RESOURCE_FILES +=		\
 
 Appointments_COMPONENTS +=	\
 	SOGoAptMailEnglishInvitation.wo	\
-	SOGoAptMailFrenchInvitation.wo	\
 	SOGoAptMailEnglishUpdate.wo	\
-	SOGoAptMailFrenchUpdate.wo	\
 	SOGoAptMailEnglishRemoval.wo	\
-	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
+	SOGoAptMailFrenchInvitation.wo	\
+	SOGoAptMailFrenchUpdate.wo	\
+	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailFrenchDeletion.wo	\
+	SOGoAptMailGermanInvitation.wo	\
+	SOGoAptMailGermanUpdate.wo	\
+	SOGoAptMailGermanRemoval.wo	\
+	SOGoAptMailGermanDeletion.wo	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
