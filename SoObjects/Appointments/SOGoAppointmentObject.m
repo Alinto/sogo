@@ -106,7 +106,9 @@
 
 /* store in all the other folders */
 
-- (NSException *)saveContentString:(NSString *)_iCal inUIDs:(NSArray *)_uids {
+- (NSException *) saveContentString: (NSString *) _iCal
+			     inUIDs: (NSArray *) _uids
+{
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
