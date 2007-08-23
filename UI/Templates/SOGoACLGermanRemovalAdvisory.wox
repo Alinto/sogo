@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    Zugangserlaubniss von <var:string value="currentUserName"/> gelöscht
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order '<var:string value="resourceName"/>'.
+Sie können sich sofort an folgender URL von diesem Order des-abonnieren:
+    <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
+
+Sich können sich auch später immer noch durch die SOGo Webseiten des-abonnieren.</var:if>
+
+</container>
