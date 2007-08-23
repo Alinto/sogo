@@ -150,3 +150,12 @@
 }
 
 @end
+
+@implementation SOGoMailEnglishForward
+@end
+
+@implementation SOGoMailFrenchForward
+@end
+
+@implementation SOGoMailGermanForward
+@end

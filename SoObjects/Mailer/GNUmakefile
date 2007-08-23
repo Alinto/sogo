@@ -30,9 +30,7 @@ Mailer_OBJC_FILES += \
 	SOGoDraftsFolder.m		\
 	SOGoDraftObject.m		\
 	\
-	SOGoMailForward.m		\
-	SOGoMailEnglishForward.m	\
-	SOGoMailFrenchForward.m
+	SOGoMailForward.m
 
 Mailer_RESOURCE_FILES += \
 	Version		\
@@ -40,7 +38,8 @@ Mailer_RESOURCE_FILES += \
 
 Mailer_RESOURCE_FILES += \
 	SOGoMailEnglishForward.wo \
-	SOGoMailFrenchForward.wo
+	SOGoMailFrenchForward.wo \
+	SOGoMailGermanForward.wo
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

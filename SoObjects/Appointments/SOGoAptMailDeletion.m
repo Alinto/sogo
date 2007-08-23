@@ -22,17 +22,19 @@
 #include "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailEnglishDeletion : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailEnglishDeletion
 @end
 
 @interface SOGoAptMailFrenchDeletion : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailFrenchDeletion
+@end
+
+@interface SOGoAptMailGermanDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailGermanDeletion
 @end

@@ -38,4 +38,13 @@
 
 @end
 
+@interface SOGoMailEnglishForward : SOGoMailForward
+@end
+
+@interface SOGoMailFrenchForward : SOGoMailForward
+@end
+
+@interface SOGoMailGermanForward : SOGoMailForward
+@end
+
 #endif /* SOGOMAILFORWARD_H */

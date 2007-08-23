@@ -209,3 +209,21 @@
 }
 
 @end
+
+@implementation SOGoACLEnglishAdditionAdvisory
+@end
+
+@implementation SOGoACLEnglishRemovalAdvisory
+@end
+
+@implementation SOGoACLFrenchAdditionAdvisory
+@end
+
+@implementation SOGoACLFrenchRemovalAdvisory
+@end
+
+@implementation SOGoACLGermanAdditionAdvisory
+@end
+
+@implementation SOGoACLGermanRemovalAdvisory
+@end

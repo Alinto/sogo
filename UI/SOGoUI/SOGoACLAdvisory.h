@@ -47,4 +47,22 @@
 
 @end
 
+@interface SOGoACLEnglishAdditionAdvisory : SOGoACLAdvisory
+@end
+
+@interface SOGoACLEnglishRemovalAdvisory : SOGoACLAdvisory
+@end
+
+@interface SOGoACLFrenchAdditionAdvisory : SOGoACLAdvisory
+@end
+
+@interface SOGoACLFrenchRemovalAdvisory : SOGoACLAdvisory
+@end
+
+@interface SOGoACLGermanAdditionAdvisory : SOGoACLAdvisory
+@end
+
+@interface SOGoACLGermanRemovalAdvisory : SOGoACLAdvisory
+@end
+
 #endif /* SOGOACLADVISORY_H */

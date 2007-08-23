@@ -19,20 +19,22 @@
   02111-1307, USA.
 */
 
-#include "SOGoAptMailNotification.h"
+#import "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailEnglishRemoval : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailEnglishRemoval
 @end
 
 @interface SOGoAptMailFrenchRemoval : SOGoAptMailNotification
-{
-}
 @end
 
 @implementation SOGoAptMailFrenchRemoval
+@end
+
+@interface SOGoAptMailGermanRemoval : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailGermanRemoval
 @end
