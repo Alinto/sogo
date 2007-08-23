@@ -28,6 +28,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEntityObject.h>
 
+#import <SoObjects/SOGo/NSString+Utilities.h>
+
 #import "SOGoAptMailNotification.h"
 
 @interface SOGoAptMailNotification (PrivateAPI)
@@ -141,7 +143,8 @@ static NSTimeZone     *EST = nil;
                           [self name]];
     subject = @"ERROR: missing subject!";
   }
-  return subject;
+
+  return [subject asQPSubjectString: @"utf-8"];
 }
 
 - (NSString *)getBody {

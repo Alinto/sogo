@@ -1,5 +1,9 @@
 2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailNotification.m
+	([SOGoAptMailNotification -getSubject]): returns the subject an a
+	quoted-printable encoded string, if needed.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
 	-asQPSubjectString:encoding]): moved method into
 	NSString+Utilities.m.
