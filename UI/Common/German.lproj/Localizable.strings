@@ -19,17 +19,19 @@
 "noJavascriptError" = "SOGo requiert l'utilisation de Javascript. Veuillez vous assurer que cette option est disponible et activée dans votre fureteur.";
 "noJavascriptRetry" = "Réessayer";
 
-"Owner:" = "Propriétaire :";
+"Add..." = "Hinzufügen...";
+"Remove" = "Löschen";
+"Owner:" = "Besitzer:";
 "Associated Users:" = "Utilisateurs associés :";
 "(Unchecked = assistant, checked = delegate)" = "(Coché = assistant, décoché = délégué)";
 "Publish the Free/Busy information" = "Publier l'occupation du temps";
 
-"Default Roles" = "Rôles par défaut";
+"Default Roles" = "Standard-Rollen";
 
-"Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
+"Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 
 /* generic.js */
-"Unable to subscribe to that folder!" = "Impossible de s'abonner à ce dossier.";
-"You cannot subscribe to a folder that you own!" = "Impossible de vous abonner à un dossier qui vous appartient.";
-"Unable to unsubscribe from that folder!" = "Impossible de se désabonner de ce dossier.";
-"You cannot unsubscribe from a folder that you own!" = "Impossible de vous désabonner d'un dossier qui vous appartient.";
+"Unable to subscribe to that folder!" = "Unmöglich sich an diesem Ordner zu abonnieren.";
+"You cannot subscribe to a folder that you own!" = "Unmöglich sich an einem Ordner zu abonnieren, der Ihnen selbst gehört.";
+"Unable to unsubscribe from that folder!" = "Unmöglich sich von diesem Ordner zu des-abonnieren.";
+"You cannot unsubscribe from a folder that you own!" = "Unmöglich sich von einem Ordner zu des-abonnieren, der Ihnen selbst gehört.";

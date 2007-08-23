@@ -71,7 +71,7 @@
 
 "New Calendar..." = "Neuer Kalender...";
 "Delete Calendar" = "Kalender löschen";
-"Sharing..." = "Partage...";
+"Sharing..." = "Benutzerrechte...";
 "Export Calendar..." = "Kalender exportieren...";
 "Publish Calendar..." = "Kalender publizieren...";
 "Reload Remote Calendars" = "Externe Kalender neu laden";
@@ -83,27 +83,27 @@
 "Forbidden" = "Accès non autorisée";
 
 /* acls */
-"Default Roles" = "Rôles par défaut";
-"User rights for:" = "Autorisations pour :";
+"Default Roles" = "Standard-Rollen";
+"User rights for:" = "Benutzerrechte für:";
 "label_Public" = "Öffentlich";
 "label_Private" = "Privat";
 "label_Confidential" = "Vertraulich";
-"View All" = "Voir tout";
-"View the Date & Time" = "Voir la date & l'heure";
-"Modify" = "Modifier";
-"Respond To" = "Répondre";
-"None" = "Aucun";
+"View All" = "Alles sehen";
+"View the Date & Time" = "Datum & Uhrzeit sehen";
+"Modify" = "Ändern";
+"Respond To" = "Antworten";
+"None" = "Keine";
 "This person can create objects in my calendar."
-= "Cette personne peut ajouter des objets à mon agenda.";
+= "Diese Person kann Termine in meinem Kalender hinzufügen.";
 "This person can erase objects from my calendar."
-= "Cette personne peut effacer des objets de mon agenda.";
+= "Diese Person kann Termine in meinem Kalender löschen.";
 
 /* Button Titles */
 
-"Add..." = "Ajouter...";
-"Remove" = "Enlever";
+"Add..." = "Hinzufügen...";
+"Remove" = "Löschen";
 
-"new" = "Nouveau";
+"new" = "Neu";
 "printview" = "Version imprimable";
 "edit" = "Bearbeiten";
 "delete" = "Löschen";
@@ -112,7 +112,7 @@
 "Close" = "Schließen";
 "Invite Attendees" = "Teilnehmer";
 "Documents" = "Dokumente";
-"Update" = "Mettre à jour";
+"Update" = "Speichern";
 "Cancel" = "Abbrechen";
 "show_rejected_apts" = "Afficher les rendez-vous refusés";
 "hide_rejected_apts" = "Cacher les rendez-vous refusés";

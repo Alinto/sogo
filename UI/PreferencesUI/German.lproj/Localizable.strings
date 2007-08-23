@@ -45,7 +45,7 @@
 "First week of year :" = "Erste Woche des Jahres:";
 "Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
 "Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
-"Default reminder :" = "Voreingestellte Terminerinnerung:";
+"Default reminder :" = "Standard Terminerinnerung:";
 
 "firstWeekOfYear_HideWeekNumbers" = "Keine Wochennummern anzeigen";
 "firstWeekOfYear_January1" = "Beginnt am 1.Januar";
