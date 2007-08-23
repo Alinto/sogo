@@ -199,7 +199,7 @@ static BOOL uixDebugEnabled = NO;
 
   queryParameters = [[NSMutableDictionary alloc] initWithCapacity:8];
 
-  req = [[self context] request];
+  req = [context request];
   uri = [req uri];
   r   = [uri rangeOfString:@"?" options:NSBackwardsSearch];
   if (r.length > 0)
@@ -246,7 +246,7 @@ static BOOL uixDebugEnabled = NO;
   qp = [self queryParameters];
   if ([qp count] > 0)
     {
-      ctx = [self context];
+      ctx = context;
       qps = [ctx queryPathSeparator];
       [ctx setQueryPathSeparator: @"&"];
       qs = [ctx queryStringFromDictionary: qp];
@@ -264,7 +264,7 @@ static BOOL uixDebugEnabled = NO;
   NSString *uri;
   NSRange  r;
     
-  uri = [[[self context] request] uri];
+  uri = [[context request] uri];
     
   /* first: cut off query parameters */
     
@@ -293,7 +293,7 @@ static BOOL uixDebugEnabled = NO;
   SOGoObject *currentObject;
   BOOL found;
 
-  ctx = [self context];
+  ctx = context;
   objects = [[ctx objectTraversalStack] objectEnumerator];
   currentObject = [objects nextObject];
   found = NO;
@@ -331,7 +331,7 @@ static BOOL uixDebugEnabled = NO;
         currentClient = parent;
     }
 
-  ctx = [self context];
+  ctx = context;
 
   return [[currentClient baseURLInContext:ctx] hostlessURL];
 }
@@ -351,7 +351,7 @@ static BOOL uixDebugEnabled = NO;
   NSString *uri;
   NSRange  r;
   
-  uri = [[[self context] request] uri];
+  uri = [[context request] uri];
   
   /* first: cut off query parameters */
   
@@ -422,7 +422,7 @@ static BOOL uixDebugEnabled = NO;
 {
   WOContext *ctx;
   
-  ctx = [self context];
+  ctx = context;
 
   return [[[self clientObject] authenticatorInContext: ctx] userInContext: ctx];
 }
@@ -463,7 +463,7 @@ static BOOL uixDebugEnabled = NO;
   
   /* lookup languages */
     
-  languages = [[self context] resourceLookupLanguages];
+  languages = [context resourceLookupLanguages];
     
   /* find resource manager */
     
@@ -530,7 +530,7 @@ static BOOL uixDebugEnabled = NO;
   // TODO: move to WORequest?
   NSString *m;
   
-  m = [[[self context] request] method];
+  m = [[context request] method];
   if ([m isEqualToString:@"GET"])  return YES;
   if ([m isEqualToString:@"HEAD"]) return YES;
   return NO;
@@ -547,7 +547,7 @@ static BOOL uixDebugEnabled = NO;
 {
   WOResourceManager *rm;
   
-  if ((rm = [[[self context] page] resourceManager]) == nil)
+  if ((rm = [[context page] resourceManager]) == nil)
     rm = [[WOApplication application] resourceManager];
 
   return rm;
@@ -570,12 +570,12 @@ static BOOL uixDebugEnabled = NO;
       if (!url)
         {
           rm = [self pageResourceManager];
-          page = [[self context] page];
+          page = [context page];
           pageBundle = [NSBundle bundleForClass: [page class]];
           url = [rm urlForResourceNamed: filename
                     inFramework: [pageBundle bundlePath]
                     languages: nil
-                    request: [[self context] request]];
+                    request: [context request]];
           if (!url)
             url = @"";
           else
