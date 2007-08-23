@@ -48,21 +48,21 @@
 - (id) newApt;
 - (void) setNewApt: (iCalEntityObject *) _newApt;
 
-- (NSString *)homePageURL;
-- (void)setHomePageURL: (NSString *)_homePageURL;
+- (NSString *) homePageURL;
+- (void) setHomePageURL: (NSString *) _homePageURL;
 
-- (NSTimeZone *)viewTZ;
-- (void)setViewTZ:(NSTimeZone *)_viewTZ;
+- (NSTimeZone *) viewTZ;
+- (void) setViewTZ: (NSTimeZone *) _viewTZ;
 
 /* Helpers */
 
-- (NSCalendarDate *)oldStartDate;
-- (NSCalendarDate *)newStartDate;
+- (NSCalendarDate *) oldStartDate;
+- (NSCalendarDate *) newStartDate;
 
 /* Content Generation */
 
-- (NSString *)getSubject;
-- (NSString *)getBody;
+- (NSString *) getSubject;
+- (NSString *) getBody;
   
 @end
 
