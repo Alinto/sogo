@@ -46,6 +46,8 @@
 /* bare email addresses */
 - (NSString *) pureEMailAddress;
 
+- (NSString *) asQPSubjectString: (NSString *) encoding;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif

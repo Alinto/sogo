@@ -268,6 +268,26 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   return pureAddress;
 }
 
+- (NSString *) asQPSubjectString: (NSString *) encoding
+{
+  NSString *qpString, *subjectString;
+  NSData *subjectData, *destSubjectData;
+
+  subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
+  destSubjectData = [subjectData dataByEncodingQuotedPrintable];
+
+  qpString = [[NSString alloc] initWithData: destSubjectData
+			       encoding: NSASCIIStringEncoding];
+  [qpString autorelease];
+  if ([qpString length] > [self length])
+    subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
+			      encoding, qpString];
+  else
+    subjectString = self;
+
+  return subjectString;
+}
+
 #if LIB_FOUNDATION_LIBRARY
 - (BOOL) boolValue
 {

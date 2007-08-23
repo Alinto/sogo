@@ -53,6 +53,7 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import "SOGoMailAccount.h"
@@ -65,36 +66,6 @@
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
 				 @"from", @"replyTo", nil};
-
-@interface NSString (NGMimeHelpers)
-
-- (NSString *) asQPSubjectString: (NSString *) encoding;
-
-@end
-
-@implementation NSString (NGMimeHelpers)
-
-- (NSString *) asQPSubjectString: (NSString *) encoding;
-{
-  NSString *qpString, *subjectString;
-  NSData *subjectData, *destSubjectData;
-
-  subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  destSubjectData = [subjectData dataByEncodingQuotedPrintable];
-
-  qpString = [[NSString alloc] initWithData: destSubjectData
-			       encoding: NSASCIIStringEncoding];
-  [qpString autorelease];
-  if ([qpString length] > [self length])
-    subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
-			      encoding, qpString];
-  else
-    subjectString = self;
-
-  return subjectString;
-}
-
-@end
 
 @implementation SOGoDraftObject
 
