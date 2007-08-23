@@ -1,5 +1,11 @@
 2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-shouldTakeValuesFromRequest:requestinContext:context]):
+	redesigned method since any method called can be received from a
+	POST or a GET. Instead we check the method call itself and we
+	accept only if it has the "save" prefix.
+
 	* SoObjects/Appointments/SOGoAptMailNotification.m
 	([SOGoAptMailNotification -getSubject]): returns the subject an a
 	quoted-printable encoded string, if needed.
