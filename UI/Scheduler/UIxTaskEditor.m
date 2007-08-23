@@ -357,8 +357,12 @@
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
+  NSString *actionName;
+
+  actionName = [[request requestHandlerPath] lastPathComponent];
+
   return ([[self clientObject] isKindOfClass: [SOGoTaskObject class]]
-	  && [[request method] isEqualToString: @"POST"]);
+	  && [actionName hasPrefix: @"save"]);
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq

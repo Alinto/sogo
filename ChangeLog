@@ -1,5 +1,9 @@
 2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-shouldTakeValuesFromRequest:requestinContext:context]): same as
+	below.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-shouldTakeValuesFromRequest:requestinContext:context]):
 	redesigned method since any method called can be received from a
