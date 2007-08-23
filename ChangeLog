@@ -1,3 +1,9 @@
+2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString:encoding]): moved method into
+	NSString+Utilities.m.
+
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
