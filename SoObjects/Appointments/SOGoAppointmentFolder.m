@@ -1029,7 +1029,7 @@ static NSNumber   *sharedYes = nil;
   calendarFolder = [SOGoAppointmentFolder objectWithName: @"Calendar"
                                           inContainer: userFolder];
   [calendarFolder
-    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar", uid]];
+    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar/personal", uid]];
   [calendarFolder setOwner: uid];
 
   return calendarFolder;
@@ -1303,9 +1303,11 @@ static NSNumber   *sharedYes = nil;
   NSMutableArray *newPath;
 
   newPath = [NSMutableArray arrayWithArray: objectPath];
-  if ([newPath count] > 2
-      && ![[newPath objectAtIndex: 2] isEqualToString: @"personal"])
-    [newPath insertObject: @"personal" atIndex: 2];
+  if ([newPath count] > 2)
+    {
+      if (![[newPath objectAtIndex: 2] isEqualToString: @"personal"])
+	[newPath insertObject: @"personal" atIndex: 2];
+    }
   else
     [newPath addObject: @"personal"];
 

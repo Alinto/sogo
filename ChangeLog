@@ -1,5 +1,9 @@
 2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFolderForUID:uid]): add
+	"personal" to the ocs path of the appointment folder.
+
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
 	-flatContentAsString]): use latin1 when the encoding is not
 	specified, and to reencode data chunk which were not correctly
