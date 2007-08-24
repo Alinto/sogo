@@ -122,9 +122,9 @@ DIV#rightPanel
   padding: 0px;
   overflow: hidden; }
 
+/* top list */
 DIV#eventsListView
-{ display: block;
-  cursor: default;
+{ cursor: default;
   position: absolute;
   background-color: #fff;
   top: 2.5em;

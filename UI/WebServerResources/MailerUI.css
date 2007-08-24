@@ -45,14 +45,17 @@ DIV#rightPanel
   overflow: hidden;
 }
 
+/* top list */
 DIV#mailboxContent
-{ background-color: #fff;
+{ cursor: default;
   position: absolute;
-  width: 100%;
-  height: 15.5em;
-  left: 0px;
+  background-color: #fff;
   top: 2.5em;
-  right: 0px; }
+  left: 0px;
+  right: 0px;
+  height: 15.5em;
+  overflow: hidden;
+  overflow-y: auto; }
 
 DIV#messageContent
 { position: absolute;
@@ -474,26 +477,9 @@ TABLE#addr_table
 }
 
 TABLE#messageList
-{ cursor: default;
-  display: block;
-  position: absolute;
-  background-color: #fff;
-  color: #000;
-  width: 100%;
-  left: 0px;
-  right: 0px;
-  top: 3.25em;
-  bottom: 1px;
-  overflow: auto;
-  overflow-x: hidden; }
-
-TABLE#messageList THEAD
-{ position: fixed;
-  margin-top: 1px;
-  top: 7.5em;
-  right: 0px;
-  left: 15.5em;
-  height: 2em; }
+{ display: block;
+  position: relative;
+  width: 100%; }
 
 TABLE#messageList TD
 { height: 1.2em; }

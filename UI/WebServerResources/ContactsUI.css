@@ -30,16 +30,17 @@ DIV#rightPanel
   overflow: hidden;
 }
 
+/* top list */
 DIV#contactsListContent
-{ position: absolute;
-  background: #fff;
-  width: 100%;
-  height: 16em;
+{ cursor: default;
+  position: absolute;
+  background-color: #fff;
   top: 2.5em;
-  overflow: auto;
-  overflow-x: hidden;
   left: 0px;
-}
+  right: 0px;
+  height: 16em;
+  overflow: hidden;
+  overflow-y: auto; }
 
 .aptview_text
 {
@@ -167,13 +168,9 @@ DIV#folderTreeContent TABLE TD
   padding: 0px; }
 
 TABLE#contactsList
-{ 
-  display: block;
+{ display: block;
   position: relative;
-  color: #000;  
-  background: #fff;
-  width: 100%;
-}
+  width: 100%; }
 
 TABLE#contactsList TD
 { white-space: nowrap;
