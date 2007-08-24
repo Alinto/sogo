@@ -225,42 +225,6 @@ static BOOL useAltNamespace = NO;
 
 /* name lookup */
 
-- (id) lookupImap4Folder: (NSString *) _key
-	       inContext: (id) _ctx
-{
-  // TODO: we might want to check for existence prior controller creation
-  NSURL *sf;
-  SOGoMailFolder *newFolder;
-
-  /* check whether URL exists */
-  
-  sf = [self imap4URL];
-  sf = [NSURL URLWithString: [_key substringFromIndex: 6]
-	      relativeToURL: sf];
-
-// -  sf = [NSURL URLWithString:[[sf path] stringByAppendingPathComponent:_key]
-// -	      relativeToURL:sf];
-
-  if ([[self imap4Connection] doesMailboxExistAtURL: sf])
-    newFolder = [SOGoMailFolder objectWithName: _key inContainer: self];
-  else
-    newFolder = nil;
-  /* 
-     We may not return 404, confuses path traversal - but we still do in the
-     calling method. Probably the traversal process should be fixed to
-     support 404 exceptions (as stop traversal _and_ acquisition).
-  */
-  
-  return newFolder;
-}
-
-- (id) lookupImap4Message: (NSString *) _key
-		inContext: (id) _ctx
-{
-  // TODO: we might want to check for existence prior controller creation
-  return [SOGoMailObject objectWithName: _key inContainer: self];
-}
-
 - (id) lookupName: (NSString *) _key
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
@@ -268,13 +232,18 @@ static BOOL useAltNamespace = NO;
   id obj;
 
   if ([_key hasPrefix: @"folder"])
-    obj = [self lookupImap4Folder: _key inContext: _ctx];
+    obj = [SOGoMailFolder objectWithName: _key inContainer: self];
   else
     {
-      if (isdigit ([_key characterAtIndex: 0]))
-	obj = [self lookupImap4Message: _key inContext: _ctx];
+      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+	{
+	  if (isdigit ([_key characterAtIndex: 0]))
+	    obj = [SOGoMailObject objectWithName: _key inContainer: self];
+	  else
+	    obj = [super lookupName: _key inContext: _ctx acquire: NO];
+	}
       else
-	obj = [super lookupName: _key inContext: _ctx acquire: NO];
+	obj = nil;
     }
 
   if (!obj && _acquire)

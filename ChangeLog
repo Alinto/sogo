@@ -1,3 +1,12 @@
+2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-lookupName:_keyinContext:acquire:_acquire]): moved the lookup
+	methods back here. Moved the folder existence check here, and do
+	it on self only when the lookup happens for a non-folder object.
+	This permits to accept entries for folders with parents who
+	don't really exist.
+
 2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
