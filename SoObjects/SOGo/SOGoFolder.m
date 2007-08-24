@@ -42,6 +42,7 @@
 #import <GDLContentStore/GCSFolderType.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 
 #import "SOGoPermissions.h"
@@ -211,7 +212,7 @@ static NSString *defaultUserID = @"<default>";
     }
   if ([records isKindOfClass: [NSException class]])
     return records;
-  return [records valueForKey: @"c_name"];
+  return [records objectsForKey: @"c_name"];
 }
 
 - (BOOL) nameExistsInFolder: (NSString *) objectName
