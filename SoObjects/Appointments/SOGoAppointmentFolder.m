@@ -1297,4 +1297,47 @@ static NSNumber   *sharedYes = nil;
   return @"IPF.Appointment";
 }
 
+/* hack until we permit more than 1 cal per user */
+- (NSArray *) _fixedPath: (NSArray *) objectPath
+{
+  NSMutableArray *newPath;
+
+  newPath = [NSMutableArray arrayWithArray: objectPath];
+  if ([newPath count] > 2
+      && ![[newPath objectAtIndex: 2] isEqualToString: @"personal"])
+    [newPath insertObject: @"personal" atIndex: 2];
+  else
+    [newPath addObject: @"personal"];
+
+  return newPath;
+}
+
+- (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray
+{
+  return [super aclUsersForObjectAtPath: [self _fixedPath: objectPathArray]];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+          forObjectAtPath: (NSArray *) objectPathArray
+{
+  return [super aclsForUser: uid
+		forObjectAtPath: [self _fixedPath: objectPathArray]];
+}
+
+- (void) setRoles: (NSArray *) roles
+          forUser: (NSString *) uid
+  forObjectAtPath: (NSArray *) objectPathArray
+{
+  [super setRoles: roles
+	 forUser: uid
+	 forObjectAtPath: [self _fixedPath: objectPathArray]];
+}
+
+- (void) removeAclsForUsers: (NSArray *) users
+            forObjectAtPath: (NSArray *) objectPathArray
+{
+  [super removeAclsForUsers: users
+	 forObjectAtPath: [self _fixedPath: objectPathArray]];
+}
+
 @end /* SOGoAppointmentFolder */

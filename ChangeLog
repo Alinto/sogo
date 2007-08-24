@@ -1,5 +1,16 @@
 2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -aclUsersForObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder -aclsForUser:uidforObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder -setRoles:rolesforUser:uidforObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder
+	-removeAclsForUsers:usersforObjectAtPath:objectPathArray]):
+	override those methods to use the "personal" additional directory.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([-ocsPrivateCalendarPath]):
+	append "/personal" to the calendar path to simulate a single
+	calendar in a choice of many.
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-lookupName:_keyinContext:acquire:_acquire]): moved the lookup
 	methods back here. Moved the folder existence check here, and do
