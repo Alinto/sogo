@@ -22,7 +22,6 @@
   </div>
 
   <form const:href="send" name="pageform" enctype="multipart/form-data">
-    <div id="headerArea">
       <div id="attachmentsArea">
 	<var:string label:value="Attachments:" />
 	<ul id="attachments">
@@ -32,6 +31,7 @@
 		/></li></var:foreach>
 	</ul>
       </div>
+    <div id="headerArea">
       <span class="headerField"><var:string label:value="From" />:</span>
       <var:popup const:name="from"
 	list="fromEMails"

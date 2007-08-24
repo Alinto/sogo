@@ -27,20 +27,22 @@ DIV.addressListElement
 
 SPAN.headerField
 { line-height: 1.8em;
-  width: 5em;
+  width: 7em;
   text-align: right; }
 
 SPAN.headerInput INPUT
-{ width: 100%;
+{ width: 50%;
   padding-left: 24px;
   background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
   background-repeat: no-repeat;
-  background-position: 2px center;
-  margin-right: -12em; }
+  background-position: 2px center; }
+
+DIV#subjectRow
+{ margin-left: 9em; }
 
 DIV#subjectRow INPUT
 { background-image: none;
-  width: 100%;
+  width: 50%;
   padding-left: .5em; }
 
 div#compose_internetmarker
