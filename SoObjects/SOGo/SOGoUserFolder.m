@@ -101,7 +101,7 @@
 
 - (NSString *) ocsPrivateCalendarPath
 {
-  return [[self ocsUserPath] stringByAppendingString:@"/Calendar"];
+  return [[self ocsUserPath] stringByAppendingString:@"/Calendar/personal"];
 }
 
 - (NSString *) ocsPrivateContactsPath
