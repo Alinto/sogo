@@ -1,5 +1,10 @@
 2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-flatContentAsString]): use latin1 when the encoding is not
+	specified, and to reencode data chunk which were not correctly
+	decoded with the original charset.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -aclUsersForObjectAtPath:objectPathArray])
 	([SOGoAppointmentFolder -aclsForUser:uidforObjectAtPath:objectPathArray])
 	([SOGoAppointmentFolder -setRoles:rolesforUser:uidforObjectAtPath:objectPathArray])

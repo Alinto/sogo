@@ -164,7 +164,8 @@
   return 0;
 }
 
-- (NSString *)flatContentAsString {
+- (NSString *) flatContentAsString
+{
   /* Note: we even have the line count in the body-info! */
   NSString *charset;
   NSString *s;
@@ -175,17 +176,26 @@
     {
       charset = [[bodyInfo objectForKey:@"parameterList"]
 		  objectForKey: @"charset"];
-
-      // TODO: properly decode charset, might need to handle encoding?
-  
-      if ([charset length] > 0)
-	s = [NSString stringWithData: content
-		      usingEncodingNamed: [charset lowercaseString]];
-      else
+      charset = [charset lowercaseString];
+      if (![charset length]
+	  || [charset isEqualToString: @"us-ascii"])
 	{
 	  s = [[NSString alloc] initWithData: content
-				encoding: NSUTF8StringEncoding];
+				encoding: NSISOLatin1StringEncoding];
 	  [s autorelease];
+	}
+      else
+	{
+	  s = [NSString stringWithData: content
+			usingEncodingNamed: charset];
+	  if (![s length])
+	    {
+	      /* latin 1 is used as a 8bit fallback charset... but does this
+		 encoding accept any byte from 0 to 255? */
+	      s = [[NSString alloc] initWithData: content
+				    encoding: NSISOLatin1StringEncoding];
+	      [s autorelease];
+	    }
 	}
 
       if (!s)
@@ -302,7 +312,7 @@
 - (NSString *) pathToAttachmentObject
 {
   /* this points to the SoObject representing the part, no modifications */
-  NSString *url, *n, *pext;
+  NSString *url, *n;
 
   /* path to mail controller object */
   
