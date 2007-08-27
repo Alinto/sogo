@@ -60,7 +60,7 @@
 
 /* state */
 
-- (void)resetExceptResult
+- (void) resetExceptResult
 {
   if (content)
     {
@@ -130,7 +130,7 @@
   }
 }
 
-- (void)endValueTag
+- (void) endValueTag
 {
   [types removeAllObjects];
   [args  removeAllObjects];
@@ -151,14 +151,14 @@
   currentGroup = nil;
 }
 
-- (void)startVCardSet
+- (void) startVCardSet
 {
   currentCardGroup = nil;
   currentGroup = nil;
   vcs.isInVCardSet = 1;
 }
 
-- (void)endVCardSet
+- (void) endVCardSet
 {
   vcs.isInVCardSet = 0;
 }
