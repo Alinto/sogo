@@ -1,4 +1,4 @@
-0.9.0-20070xxx
+0.9.0-20070824
 --------------
 - added the ability to choose the default module from the
   application settings: "Calendars", "Contacts" or "Mail";
