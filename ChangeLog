@@ -1,3 +1,13 @@
+2007-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m: add the "c_" prefix to the quick
+	table field names that are queried.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-iCalStringForFreeBusyInfos:_infosfrom:_startDateto:_endDate]):
+	add the "c_" prefix to the quick table field names that are
+	queried.
+
 2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

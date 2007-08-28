@@ -97,9 +97,9 @@ static NSString *defaultModule = nil;
   record = [records nextObject];
   while (record)
     {
-      status = [record objectForKey: @"status"];
+      status = [record objectForKey: @"c_status"];
  
-      value = [[record objectForKey: @"startdate"] intValue];
+      value = [[record objectForKey: @"c_startdate"] intValue];
       currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
       if ([currentDate earlierDate: startDate] == currentDate)
         startInterval = 0;
@@ -107,7 +107,7 @@ static NSString *defaultModule = nil;
         startInterval
           = ([currentDate timeIntervalSinceDate: startDate] / 900);
 
-      value = [[record objectForKey: @"enddate"] intValue];
+      value = [[record objectForKey: @"c_enddate"] intValue];
       currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
       if ([currentDate earlierDate: endDate] == endDate)
         endInterval = [items count] - 1;

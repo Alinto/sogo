@@ -169,9 +169,9 @@
   info = [events nextObject];
   while (info)
     {
-      if ([[info objectForKey: @"isopaque"] boolValue])
+      if ([[info objectForKey: @"c_isopaque"] boolValue])
         {
-          type = [self _fbTypeForEventStatus: [info objectForKey: @"status"]];
+          type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
           [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
                     to: [info objectForKey: @"endDate"]
                     type: type];
