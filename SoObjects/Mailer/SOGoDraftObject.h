@@ -53,6 +53,7 @@
   NGImap4Envelope *envelope;
   int IMAP4ID;
   NSMutableDictionary *headers;
+  NSString *inReplyTo;
   NSString *text;
   NSString *sourceURL;
   NSString *sourceFlag;

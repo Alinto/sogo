@@ -1,5 +1,8 @@
 2007-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m: added support for the
+	"In-Reply-To" header field when replying.
+
 	* UI/MainUI/SOGoUserHomePage.m: add the "c_" prefix to the quick
 	table field names that are queried.
 

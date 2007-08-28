@@ -65,7 +65,8 @@
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
-				 @"from", @"replyTo", nil};
+				 @"from", @"replyTo",
+				 nil};
 
 @implementation SOGoDraftObject
 
@@ -99,6 +100,7 @@ static BOOL        showTextAttachmentsInline  = NO;
       text = @"";
       sourceURL = nil;
       sourceFlag = nil;
+      inReplyTo = nil;
     }
 
   return self;
@@ -112,6 +114,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   [path release];
   [sourceURL release];
   [sourceFlag release];
+  [inReplyTo release];
   [super dealloc];
 }
 
@@ -161,7 +164,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   id headerValue;
   unsigned int count;
 
-  for (count = 0; count < 6; count++)
+  for (count = 0; count < 7; count++)
     {
       headerValue = [newHeaders objectForKey: headerKeys[count]];
       if (headerValue)
@@ -187,6 +190,11 @@ static BOOL        showTextAttachmentsInline  = NO;
   return text;
 }
 
+- (void) setInReplyTo: (NSString *) newInReplyTo
+{
+  ASSIGN (inReplyTo, newInReplyTo);
+}
+
 - (void) setSourceURL: (NSString *) newSourceURL
 {
   ASSIGN (sourceURL, newSourceURL);
@@ -208,6 +216,8 @@ static BOOL        showTextAttachmentsInline  = NO;
       [infos setObject: headers forKey: @"headers"];
       if (text)
 	[infos setObject: text forKey: @"text"];
+      if (inReplyTo)
+	[infos setObject: inReplyTo forKey: @"inReplyTo"];
       if (IMAP4ID > -1)
 	[infos setObject: [NSNumber numberWithInt: IMAP4ID]
 	       forKey: @"IMAP4ID"];
@@ -262,6 +272,10 @@ static BOOL        showTextAttachmentsInline  = NO;
   value = [infoDict objectForKey: @"sourceFlag"];
   if (value)
     [self setSourceFlag: value];
+
+  value = [infoDict objectForKey: @"inReplyTo"];
+  if (value)
+    [self setInReplyTo: value];
 }
 
 - (NSString *) relativeImap4Name
@@ -469,15 +483,21 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
-  NSString *contentForReply;
+  NSString *contentForReply, *msgID;
   NSMutableDictionary *info;
+  NGImap4Envelope *sourceEnvelope;
 
   [sourceMail fetchCoreInfos];
 
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   [info setObject: [sourceMail subjectForReply] forKey: @"subject"];
+
+  sourceEnvelope = [sourceMail envelope];
   [self _fillInReplyAddresses: info replyToAll: toAll
-	envelope: [sourceMail envelope]];
+	envelope: sourceEnvelope];
+  msgID = [sourceEnvelope messageID];
+  if ([msgID length] > 0)
+    [self setInReplyTo: msgID];
   contentForReply = [sourceMail contentForReply];
   [self setText: contentForReply];
   [self setHeaders: info];
@@ -1000,7 +1020,9 @@ static BOOL        showTextAttachmentsInline  = NO;
     [map setObjects:[map objectsForKey: @"from"] forKey: @"reply-to"];
   
   /* add subject */
-  
+  if (inReplyTo)
+    [map setObject: inReplyTo forKey: @"in-reply-to"];
+
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
     [map setObject: [s asQPSubjectString: @"utf-8"]
 	 forKey: @"subject"];

@@ -73,7 +73,6 @@
 
 @implementation UIxMailEditor
 
-static BOOL keepMailTmpFile = NO;
 static BOOL showInternetMarker = NO;
 static BOOL useLocationBasedSentFolder = NO;
 static NSDictionary *internetMailHeaders = nil;
@@ -85,12 +84,8 @@ static NSArray *infoKeys = nil;
   
   infoKeys = [[NSArray alloc] initWithObjects:
 				@"subject", @"to", @"cc", @"bcc", 
-			      @"from", @"replyTo",
+			      @"from", @"replyTo", @"inReplyTo",
 			      nil];
-  
-  keepMailTmpFile = [ud boolForKey:@"SOGoMailEditorKeepTmpFile"];
-  if (keepMailTmpFile)
-    NSLog(@"WARNING: keeping mail files.");
   
   useLocationBasedSentFolder =
     [ud boolForKey:@"SOGoUseLocationBasedSentFolder"];
