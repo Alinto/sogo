@@ -272,6 +272,8 @@ static int sizeLimit;
   NSString *userDN;
   NGLdapConnection *bindConnection;
 
+  didBind = NO;
+
   if ([loginToCheck length] > 0)
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
@@ -290,13 +292,10 @@ static int sizeLimit;
 				      binddn: userDN
 				      credentials: passwordToCheck];
 	  NS_HANDLER
-	    didBind = NO;
 	  NS_ENDHANDLER
 	}
       [bindConnection release];
     }
-  else
-    didBind = NO;
 
   return didBind;
 }

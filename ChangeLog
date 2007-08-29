@@ -1,3 +1,10 @@
+2007-08-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-checkLogin:loginToCheckandPassword:passwordToCheck]): initialize
+	didBind to NO to make sure no false authentication is returned if
+	the bind operation is not executed.
+
 2007-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m: added support for the
