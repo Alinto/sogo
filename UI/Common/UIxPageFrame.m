@@ -171,7 +171,7 @@
   WOComponent *page;
   NSString *pageJSFilename;
   
-  page     = [[self context] page];
+  page     = [context page];
   pageJSFilename = [NSString stringWithFormat: @"%@.js",
 			     NSStringFromClass([page class])];
 
@@ -183,7 +183,7 @@
   WOComponent *page;
   NSString *fwJSFilename;
 
-  page = [[self context] page];
+  page = [context page];
   fwJSFilename = [NSString stringWithFormat: @"%@.js",
 			   [page frameworkName]];
   
@@ -194,7 +194,7 @@
 {
   WOComponent *page;
 
-  page = [[self context] page];
+  page = [context page];
 
   return [NSString stringWithFormat: @"%@.SOGo", [page frameworkName]];
 }
@@ -214,7 +214,7 @@
   WOComponent *page;
   NSString *pageJSFilename;
 
-  page = [[self context] page];
+  page = [context page];
   pageJSFilename = [NSString stringWithFormat: @"%@.css",
 			     NSStringFromClass([page class])];
 
@@ -226,7 +226,7 @@
   WOComponent *page;
   NSString *fwJSFilename;
 
-  page = [[self context] page];
+  page = [context page];
   fwJSFilename = [NSString stringWithFormat: @"%@.css",
 			   [page frameworkName]];
   
@@ -235,7 +235,7 @@
 
 - (NSString *) thisPageURL
 {
-  return [[[self context] page] uri];
+  return [[context page] uri];
 }
 
 - (BOOL) hasPageSpecificCSS
