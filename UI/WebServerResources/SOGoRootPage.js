@@ -9,7 +9,8 @@ function onLoginClick(event) {
   startAnimation($("loginButton"), $("submit"));
 
   var loginString = $("userName").value + ":" + $("password").value;
-  document.cookie = "0xHIGHFLYxSOGo-0.9 = basic" + loginString.base64encode();
+  document.cookie = ("0xHIGHFLYxSOGo-0.9 = basic" + loginString.base64encode()
+		     + "; path=/");
 }
 
 addEvent(window, 'load', initLogin);
