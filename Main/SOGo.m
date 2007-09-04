@@ -41,10 +41,11 @@
 
 #import <WEExtensions/WEResourceManager.h>
 
-#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoDAVAuthenticator.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 
 #import "build.h"
 #import "SOGoProductLoader.h"
@@ -233,7 +234,16 @@ static BOOL debugObjectAllocation = NO;
 
 - (id) authenticatorInContext: (id) _ctx
 {
-  return [$(@"SOGoAuthenticator") sharedSOGoAuthenticator];
+  id authenticator;
+  NSString *key;
+
+  key = [[_ctx request] requestHandlerKey];
+  if ([key isEqualToString: @"dav"])
+    authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+  else
+    authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+
+  return authenticator;
 }
 
 /* name lookup */

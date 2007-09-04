@@ -1,5 +1,12 @@
 2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m ([SOGo -authenticatorInContext:_ctx]): choose the
+	authenticator based on the request handler key. "dav" returns the
+	SOGoDAVAuthenticator, anything else returns the Web authenticator.
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m: renamed module from
+	"SOGoAuthenticator".
+
 	* SoObjects/SOGo/SOGoWebAuthenticator.m: new class module
 	implementing a subclass of SoCookieAuthenticator, designed for
 	web-based cookie authentication of users.m
