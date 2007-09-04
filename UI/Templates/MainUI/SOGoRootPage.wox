@@ -1,24 +1,81 @@
-<?xml version='1.0' standalone='yes'?>
-<html
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
->
-  <head>
-    <title>Scalable OGo Homepage</title>
-  </head>
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  ><var:string var:value="doctype" const:escapeHTML="NO" />
+  <html>
+    <head>
+      <title>
+	<var:string value="title"/>
+      </title>
+      <meta name="hideFrame" var:content="hideFrame" />
+      <meta name="description" content="SOGo Web Interface" />
+      <meta name="author" content="SKYRIX Software AG/Inverse groupe conseil" />
+      <meta name="robots" content="stop" />
+      <meta name="build" var:content="buildDate" />
+      <link href="mailto:support@inverse.ca" rev="made" />
+      <link rel="shortcut icon" rsrc:href="lori_16x16.ico" type="image/x-icon" />
+      <link type="text/css" rel="stylesheet" rsrc:href="generic.css" />
+      <link type="text/css" rel="stylesheet" rsrc:href="dtree.css" />
+      <var:if-ie
+	><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"
+	  /></var:if-ie>
+      <link type="text/css" rel="stylesheet" rsrc:href="SOGoRootPage.css" />
+    </head>
 
-  <body>
-    <h3>Scalable OGo Homepage</h3>
+    <body class="loginPage">
+      <script type="text/javascript">
+	var ResourcesURL = '/SOGo.woa/WebServerResources';
+      </script>
 
-    <form href="connect">
-      Login:
-      <input name="userName" type="text" var:value="userName" />
-      <input name="submit" type="submit" value="connect" />
-    </form>
-	<!--
-	<hr />
-	Current locale: <pre><var:string value="context.locale" /></pre>
-	-->
-  </body>
-</html>
+      <script type="text/javascript" rsrc:src="_IEtoW3C.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="events.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="prototype.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="HTMLUListElement.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="generic.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space required --></script>
+      <script type="text/javascript" rsrc:src="SOGoRootPage.js"><!-- space required --></script>
+      <!-- var:js-stringtable
+	var:framework="productFrameworkName"
+	const:identifier="labels" -->
+      <!-- var:js-stringtable
+	const:identifier="clabels" -->
+      <div class="pageContent">
+	<form href="view">
+	  <div id="loginScreen">
+	    <img rsrc:src="lori-login.jpg"/><br/><br/>
+	    <label><var:string label:value="Login:"/><br/>
+	      <input class="textField" id="userName" name="userName"
+		type="text" var:value="userName" /></label><br/>
+	    <label><var:string label:value="Password:"/><br/>
+	      <input class="textField" id="password"
+		name="password" type="password" var:value="password" /><br/></label>
+	    <div id="loginButton">
+	      <input class="button" id="submit" name="submit" type="submit" label:value="Connect" />
+	    </div>
+	  </div>
+	</form>
+      </div>
+      <noscript>
+	<div class="javascriptPopupBackground">
+	</div>
+	<div class="javascriptMessagePseudoWindow noJavascriptErrorMessage">
+	  <var:string label:value="noJavascriptError"
+	    /><br /><br
+	    /><a class="button" var:href="page.context.uri"
+	    ><var:string label:value="noJavascriptRetry"
+	      /></a>
+	</div>
+      </noscript>
+    </body>
+  </html>
+</container>

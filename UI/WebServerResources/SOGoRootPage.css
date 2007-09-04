@@ -1,0 +1,36 @@
+BODY
+{ background-color: #999; }
+
+DIV#loginScreen
+{
+  background-color: #d4d0c8;
+  margin: 0px auto;
+  margin-top: 5em;
+  padding: 10px;
+  border: 2px solid transparent;
+  width: 158px;
+  height: 250px;
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+}
+
+DIV#loginScreen IMG
+{ border: 1px solid #999; }
+
+DIV#loginScreen INPUT
+{ width: 100%; }
+
+DIV#loginButton
+{ text-align: right; }
+
+DIV#loginButton INPUT
+{ width: auto;
+  margin-top: 5px; }
+
+DIV#loginButton IMG#progressIndicator
+{ float: left;
+  border: 0px none;
+  margin-top: 5px;
+  margin-left: 5px; }

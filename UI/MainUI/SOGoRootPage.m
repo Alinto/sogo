@@ -19,87 +19,58 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSUserDefaults.h>
-
-#import <NGObjWeb/SoComponent.h>
-#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
-#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <SOGo/SOGoAuthenticator.h>
-#import <SOGo/SOGoUser.h>
+#import <NGExtensions/NSObject+Logs.h>
 
-@interface SOGoRootPage : SoComponent
-{
-  NSString *userName;
-}
+#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
-@end
+#import "SOGoRootPage.h"
 
 @implementation SOGoRootPage
 
-static BOOL doNotRedirect = NO;
-
-+ (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  if ((doNotRedirect = [ud boolForKey:@"SOGoDoNotRedirectRootPage"]))
-    NSLog(@"SOGoRootPage: home-page redirect is disabled.");
-}
-
-- (void)dealloc {
-  [self->userName release];
+- (void) dealloc
+{
+  [userName release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setUserName:(NSString *)_value {
-  ASSIGNCOPY(self->userName, _value);
+- (void) setUserName: (NSString *) _value
+{
+  ASSIGNCOPY (userName, _value);
 }
-- (NSString *)userName {
-  return self->userName;
+
+- (NSString *) userName
+{
+  return userName;
 }
 
 /* actions */
 
-- (id)connectAction {
-  NSString *url;
-  
-  [self takeFormValuesForKeys:@"userName", nil];
-  
-  if ([[self userName] length] == 0)
-    return nil;
-  
-  url = [@"/" stringByAppendingString:[[self userName] stringByEscapingURL]];
-  if (![url hasSuffix:@"/"])
-    url = [url stringByAppendingString:@"/"];
-  
-  url = [[self context] urlWithRequestHandlerKey:@"so" 
-			path:url queryString:nil];
-  return [self redirectToLocation:url];
-}
-
-- (id<WOActionResults>)defaultAction {
+- (id <WOActionResults>) defaultAction
+{
   WOResponse *r;
   NSString *login, *rhk;
-  id auth, user;
-  id home, base;
+  SOGoAuthenticator *auth;
+  SOGoUser *user;
+  SOGoUserFolder *home;
+  WOApplication *base;
 
-  if (doNotRedirect)
-    return self;
-  
   /* 
      Note: ctx.activeUser is NOT set here. Don't know why, so we retrieve
            the user from the authenticator.
   */
   
-  auth  = [[self clientObject] authenticatorInContext:[self context]];
-  user  = [auth userInContext:[self context]];
+  auth = [[self clientObject] authenticatorInContext: context];
+  user = [auth userInContext: context];
   login = [user login];
   
   if ([login isEqualToString:@"anonymous"]) {
@@ -108,11 +79,11 @@ static BOOL doNotRedirect = NO;
   }
 
   /* check base */
-  
+
   base = [self application];
-  rhk = [[[self context] request] requestHandlerKey];
+  rhk = [[context request] requestHandlerKey];
   if (([rhk length] == 0) || ([base requestHandlerForKey:rhk] == nil)) {
-    base = [base lookupName:@"so" inContext:[self context] acquire:NO];
+    base = [base lookupName: @"so" inContext: context acquire: NO];
     
     if (![base isNotNull] || [base isKindOfClass:[NSException class]]) {
       /* use root page if home could not be found */
@@ -123,7 +94,7 @@ static BOOL doNotRedirect = NO;
   
   /* lookup home-page */
 
-  home = [base lookupName:login inContext:[self context] acquire:NO];
+  home = [base lookupName: login inContext: context acquire: NO];
   if (![home isNotNull] || [home isKindOfClass:[NSException class]]) {
     /* use root page if home could not be found */
     return self;
@@ -131,33 +102,40 @@ static BOOL doNotRedirect = NO;
   
   /* redirect to home-page */
   
-  r = [[self context] response];
-  [r setStatus:302 /* moved */];
-  [r setHeader:[home baseURLInContext:[self context]] forKey:@"location"];
+  r = [context response];
+  [r setStatus: 302 /* moved */];
+  [r setHeader: [home baseURLInContext: context]
+     forKey: @"location"];
+
   return r;
 }
 
 /* response generation */
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+- (void) appendToResponse: (WOResponse *) response
+		inContext: (WOContext *) ctx
+{
   NSString *rhk;
 
   // TODO: we might also want to look into the HTTP basic-auth to redirect to
   //       the login URL!
   
-  rhk = [[_ctx request] requestHandlerKey];
-  if ([rhk length]==0 || [[self application] requestHandlerForKey:rhk]==nil) {
-    /* a small hack to redirect to a valid URL */
-    NSString *url;
+  rhk = [[ctx request] requestHandlerKey];
+  if ([rhk length] == 0
+      || [[self application] requestHandlerForKey: rhk] == nil)
+    {
+      /* a small hack to redirect to a valid URL */
+      NSString *url;
     
-    url = [_ctx urlWithRequestHandlerKey:@"so" path:@"/" queryString:nil];
-    [_response setStatus:302 /* moved */];
-    [_response setHeader:url forKey:@"location"];
-    [self logWithFormat:@"URL: %@", url];
-    return;
-  }
-  
-  [super appendToResponse:_response inContext:_ctx];
+      url = [ctx urlWithRequestHandlerKey: @"so" path: @"/" queryString: nil];
+      [response setStatus: 302 /* moved */];
+      [response setHeader: url forKey: @"location"];
+      [self logWithFormat: @"URL: %@", url];
+      return;
+    }
+
+  [response setHeader: @"text/html" forKey: @"content-type"];
+  [super appendToResponse: response inContext: ctx];
 }
 
 @end /* SOGoRootPage */
