@@ -1314,14 +1314,14 @@ function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
-    for (var i = 0; i < 2; i++) {
+    for (var i = 1; i < 3; i++) {
        Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
        Event.observe(anchors[i], "click", onLinkBannerClick);
     }
-    Event.observe(anchors[3], "mousedown", listRowMouseDownHandler);
-    Event.observe(anchors[3], "click", onPreferencesClick);
-    if (anchors.length > 4)
-       Event.observe(anchors[4], "click", toggleLogConsole);
+    Event.observe(anchors[4], "mousedown", listRowMouseDownHandler);
+    Event.observe(anchors[4], "click", onPreferencesClick);
+    if (anchors.length > 5)
+       Event.observe(anchors[5], "click", toggleLogConsole);
   }
 }
 
