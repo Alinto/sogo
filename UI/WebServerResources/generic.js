@@ -309,19 +309,27 @@ function triggerAjaxRequest(url, callback, userdata) {
   return http;
 }
 
+function startAnimation(parent, nextNode) {
+  var anim = document.createElement("img");
+  anim = $(anim);
+  anim.id = "progressIndicator";
+  anim.src = ResourcesURL + "/busy.gif";
+  anim.setStyle({ visibility: "hidden" });
+  if (nextNode)
+    parent.insertBefore(anim, nextNode);
+  else
+    parent.appendChild(anim);
+  anim.setStyle({ visibility: "visible" });
+
+  return anim;
+}
+
 function checkAjaxRequestsState() {
   var toolbar = document.getElementById("toolbar");
   if (toolbar) {
     if (activeAjaxRequests > 0
         && !document.busyAnim) {
-      var anim = document.createElement("img");
-      anim = $(anim);
-      document.busyAnim = anim;
-      anim.id = "progressIndicator";
-      anim.src = ResourcesURL + "/busy.gif";
-      anim.setStyle({ visibility: "hidden" });
-      toolbar.appendChild(anim);
-      anim.setStyle({ visibility: "visible" });
+      document.busyAnim = startAnimation(toolbar);
     }
     else if (activeAjaxRequests == 0
 	     && document.busyAnim
@@ -1252,7 +1260,9 @@ function loadPreferences() {
 }
 
 function onLoadHandler(event) {
-   loadPreferences();
+   if (!document.body.hasClassName("loginPage")) {
+     loadPreferences();
+   }
    queryParameters = parseQueryParameters('' + window.location);
    if (!$(document.body).hasClassName("popup")) {
       initLogConsole();

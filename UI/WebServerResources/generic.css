@@ -155,6 +155,12 @@ DIV.linkbanner A
 DIV.linkbanner A:hover
 { color: #dd5; }
 
+DIV.linkbanner A#logoff
+{ float: right;
+  margin: 0px;
+  padding: 0px;
+  padding-right: .5em; }
+
 .linkbannerlinks
 { vertical-align: bottom;
   text-align: left; }
