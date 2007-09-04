@@ -26,14 +26,16 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
 static NSString *defaultModule = nil;
@@ -194,6 +196,29 @@ static NSString *defaultModule = nil;
 //   [response setHeader: @"text/plain; charset=iso-8859-1"
 //             forKey: @"Content-Type"];
   [response appendContentString: [self _freeBusyAsText]];
+
+  return response;
+}
+
+- (id <WOActionResults>) logoffAction
+{
+  WOResponse *response;
+  NSEnumerator *cookies;
+  WOCookie *cookie;
+  SOGoAuthenticator *auth;
+  id container;
+
+  container = [[self clientObject] container];
+
+  response = [context response];
+  [response setStatus: 302];
+  [response setHeader: [container baseURLInContext: context]
+	    forKey: @"location"];
+  cookies = [[response cookies] objectEnumerator];
+  auth = [[self clientObject] authenticatorInContext: context];
+  cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
+		     value: @"logoff"];
+  [response addCookie: cookie];
 
   return response;
 }

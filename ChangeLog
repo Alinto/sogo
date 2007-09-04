@@ -1,3 +1,8 @@
+2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	new method that resets the authentification cookie.
+
 2007-08-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
