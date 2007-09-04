@@ -30,6 +30,7 @@
     <body class="loginPage">
       <script type="text/javascript">
 	var ResourcesURL = '/SOGo.woa/WebServerResources';
+        var ApplicationBaseURL = '<var:string value="applicationPath" />';
       </script>
 
       <script type="text/javascript" rsrc:src="_IEtoW3C.js"><!-- space required --></script>
