@@ -218,6 +218,7 @@ static NSString *defaultModule = nil;
   auth = [[self clientObject] authenticatorInContext: context];
   cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 		     value: @"logoff"];
+  [cookie setPath: @"/"];
   [response addCookie: cookie];
 
   return response;

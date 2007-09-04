@@ -1,5 +1,8 @@
 2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	set the cookie path to "/".
+
 	* Main/SOGo.m ([SOGo -authenticatorInContext:_ctx]): choose the
 	authenticator based on the request handler key. "dav" returns the
 	SOGoDAVAuthenticator, anything else returns the Web authenticator.
