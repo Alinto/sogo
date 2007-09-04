@@ -1,5 +1,9 @@
 2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoWebAuthenticator.m: new class module
+	implementing a subclass of SoCookieAuthenticator, designed for
+	web-based cookie authentication of users.m
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
 	new method that resets the authentification cookie.
 
