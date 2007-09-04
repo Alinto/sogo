@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN );
+  requires = ( MAIN, CommonUI );
 
   publicResources = (
   );
@@ -59,13 +59,18 @@
   categories = {
     SOGo = { // TODO: move decls to class
       methods = {
-        index = { 
+        view = { 
           protectedBy = "View";
-          pageName    = "SOGoRootPage"; 
+          pageName = "SOGoRootPage"; 
+        };
+	connect = {
+          protectedBy = "View";
+          pageName = "SOGoRootPage"; 
+	  actionName = "connect";
         };
         GET = { // more or less a hack, see README of dbd
           protectedBy = "View";
-          pageName    = "SOGoRootPage"; 
+          pageName = "SOGoRootPage"; 
         };
       };
     };
@@ -77,13 +82,18 @@
           protectedBy = "<public>";
           pageName = "SOGoUserHomePage"; 
         };
+	logoff = {
+          protectedBy = "<public>";
+          pageName = "SOGoUserHomePage";
+	  actionName = "logoff";
+	};
       };
     };
     SOGoGroupsFolder = {
       methods = {
         index = { 
           protectedBy = "View";
-          pageName    = "SOGoGroupsPage"; 
+          pageName = "SOGoGroupsPage"; 
         };
       };
     };
@@ -91,7 +101,7 @@
       methods = {
         index = { 
           protectedBy = "View";
-          pageName    = "SOGoGroupPage"; 
+          pageName = "SOGoGroupPage"; 
         };
       };
     };
