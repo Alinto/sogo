@@ -19,13 +19,15 @@
   02111-1307, USA.
 */
 
-#ifndef __Main_SOGoAuthenticator_H__
-#define __Main_SOGoAuthenticator_H__
+#ifndef __Main_SOGoDAVAuthenticator_H__
+#define __Main_SOGoDAVAuthenticator_H__
 
-#include <NGObjWeb/SoHTTPAuthenticator.h>
+#import <NGObjWeb/SoHTTPAuthenticator.h>
+
+#import "SOGoAuthenticator.h"
 
 /*
-  SOGoAuthenticator
+  SOGoDAVAuthenticator
   
   This just overrides the login/pwd check method and always returns YES since
   the password is already checked in Apache.
@@ -36,16 +38,16 @@
 
 @class SOGoUser;
 
-@interface SOGoAuthenticator : SoHTTPAuthenticator
+@interface SOGoDAVAuthenticator : SoHTTPAuthenticator <SOGoAuthenticator>
 {
   NSString *authMethod;
 }
 
-+ (id) sharedSOGoAuthenticator;
++ (id) sharedSOGoDAVAuthenticator;
 
 - (SOGoUser *) userInContext: (WOContext *) _ctx;
 - (NSString *) passwordInContext: (WOContext *) context;
 
 @end
 
-#endif /* __Main_SOGoAuthenticator_H__ */
+#endif /* __Main_SOGoDAVAuthenticator_H__ */

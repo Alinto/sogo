@@ -31,13 +31,13 @@
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
-#import "SOGoAuthenticator.h"
+#import "SOGoDAVAuthenticator.h"
 
-@implementation SOGoAuthenticator
+@implementation SOGoDAVAuthenticator
 
-+ (id) sharedSOGoAuthenticator
++ (id) sharedSOGoDAVAuthenticator
 {
-  static SOGoAuthenticator *auth = nil;
+  static SOGoDAVAuthenticator *auth = nil;
  
   if (!auth)
     auth = [self new];
@@ -164,4 +164,4 @@
 //   return rc;
 // }
 
-@end /* SOGoAuthenticator */
+@end /* SOGoDAVAuthenticator */
