@@ -28,7 +28,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "SOGoRootPage.h"
@@ -59,7 +59,7 @@
 {
   WOResponse *r;
   NSString *login, *rhk;
-  SOGoAuthenticator *auth;
+  SOGoWebAuthenticator *auth;
   SOGoUser *user;
   SOGoUserFolder *home;
   WOApplication *base;
@@ -72,7 +72,7 @@
   auth = [[self clientObject] authenticatorInContext: context];
   user = [auth userInContext: context];
   login = [user login];
-  
+
   if ([login isEqualToString:@"anonymous"]) {
     /* use root page for unauthenticated users */
     return self;

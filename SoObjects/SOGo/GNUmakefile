@@ -43,7 +43,8 @@ libSOGo_HEADER_FILES = \
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
 	\
-	SOGoAuthenticator.h		\
+	SOGoDAVAuthenticator.h		\
+	SOGoWebAuthenticator.h		\
 	SOGoMailer.h			\
 	SOGoUser.h			\
 
@@ -71,7 +72,8 @@ libSOGo_OBJC_FILES = \
 	NSNull+Utilities.m		\
 	NSCalendarDate+SOGo.m		\
 	\
-	SOGoAuthenticator.m		\
+	SOGoDAVAuthenticator.m		\
+	SOGoWebAuthenticator.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
 

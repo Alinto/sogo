@@ -46,7 +46,7 @@
 
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
-#import "SOGoAuthenticator.h"
+#import "SOGoDAVAuthenticator.h"
 #import "SOGoUserFolder.h"
 
 #import "SOGoDAVRendererTypes.h"
@@ -268,13 +268,13 @@ static BOOL kontactGroupDAV = YES;
 
 - (SOGoDAVSet *) davCurrentUserPrivilegeSet
 {
-  SOGoAuthenticator *sAuth;
+  SOGoDAVAuthenticator *sAuth;
   SoUser *user;
   NSArray *roles;
   SoClassSecurityInfo *sInfo;
   NSArray *davPermissions;
 
-  sAuth = [SOGoAuthenticator sharedSOGoAuthenticator];
+  sAuth = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
   user = [sAuth userInContext: context];
   roles = [user rolesForObject: self inContext: context];
   sInfo = [[self class] soClassSecurityInfo];

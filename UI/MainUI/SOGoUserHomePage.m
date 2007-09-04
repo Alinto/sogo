@@ -33,7 +33,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
-#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
@@ -205,7 +205,7 @@ static NSString *defaultModule = nil;
   WOResponse *response;
   NSEnumerator *cookies;
   WOCookie *cookie;
-  SOGoAuthenticator *auth;
+  SOGoWebAuthenticator *auth;
   id container;
 
   container = [[self clientObject] container];
