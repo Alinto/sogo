@@ -232,12 +232,12 @@ static BOOL debugObjectAllocation = NO;
 
 /* authenticator */
 
-- (id) authenticatorInContext: (id) _ctx
+- (id) authenticatorInContext: (WOContext *) context
 {
   id authenticator;
   NSString *key;
 
-  key = [[_ctx request] requestHandlerKey];
+  key = [[context request] requestHandlerKey];
   if ([key isEqualToString: @"dav"])
     authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
   else
