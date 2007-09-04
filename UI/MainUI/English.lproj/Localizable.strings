@@ -2,11 +2,5 @@
 
 "Homepage" = "Homepage";
 
-"Internet access unauthorized and" = "Internet access unauthorized and";
-"Internet access authorized and"   = "Internet access authorized and";
-"internetAccessState_0" = "CLOSED";
-"internetAccessState_1" = "OPEN";
-
-"Automatic vacation messages activation" = "Automatic vacation messages activation";
-"Internet" = "Internet";
-"Intranet" = "Intranet";
+"Login:" = "Login:";
+"Password:" = "Password:";

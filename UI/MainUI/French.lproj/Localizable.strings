@@ -2,11 +2,5 @@
 
 "Homepage" = "Accueil";
 
-"Internet access authorized and" = "L'accès depuis internet est autorisé et ";
-"Internet access unauthorized and" = "L'accès depuis internet est interdit et "; 
-"internetAccessState_0" = "FERMÉ";
-"internetAccessState_1" = "OUVERT";
-
-"Automatic vacation messages activation" = "Activation du message de réponse automatique ";
-"Internet" = "Internet";
-"Intranet" = "Intranet";
+"Login:" = "Nom d'utilisateur :";
+"Password:" = "Mot de passe :";
