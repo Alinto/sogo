@@ -24,6 +24,8 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <NGExtensions/NGQuotedPrintableCoding.h>
+
 #import "NSArray+Utilities.h"
 #import "NSDictionary+URL.h"
 
