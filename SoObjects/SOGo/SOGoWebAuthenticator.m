@@ -121,37 +121,8 @@
   id page;
 
   page = [[WOApplication application] pageWithName: @"SOGoRootPage"
-				      inContext: context];
+				      forRequest: [context request]];
   [page appendToResponse: response inContext: context];
 }
-
-// - (BOOL) renderException: (NSException *) exception
-//                inContext: (WOContext *) context
-// {
-//   id renderedException;
-//   WOComponent *tmpComponent;
-//   WOResponse *response;
-//   BOOL rc;
-
-//   rc = [super renderException: exception inContext: context];
-//   if (!rc)
-//     {
-//       tmpComponent = [WOComponent new];
-//       renderedException = [tmpComponent pageWithName: @"UIxException"];
-//       if (renderedException)
-//         {
-//           rc = YES;
-//           response = [context response];
-//           [response setHeader: @"text/html" forKey: @"content-type"];
-//           [renderedException setClientObject: exception];
-//           [context setPage: renderedException];
-//           [renderedException appendToResponse: response
-//                              inContext: context];
-//         }
-//       [tmpComponent release];
-//     }
-
-//   return rc;
-// }
 
 @end /* SOGoWebAuthenticator */
