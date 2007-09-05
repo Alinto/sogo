@@ -152,13 +152,19 @@ colorForNumber (unsigned int number)
 - (NSString *) currentCalendarLogin
 {
   NSArray *parts;
+  NSMutableString *login;
 
+  login = [NSMutableString string];
   parts = [[currentCalendarFolder objectForKey: @"folder"]
 	    componentsSeparatedByString: @":"];
+  [login appendString: (([parts count] > 1)
+			? [parts objectAtIndex: 0]
+			: [[context activeUser] login])];
+  [login replaceString: @"." withString: @"_"];
+  [login replaceString: @"#" withString: @"_"];
+  [login replaceString: @"@" withString: @"_"];
 
-  return (([parts count] > 1)
-	  ? [parts objectAtIndex: 0]
-	  : [[context activeUser] login]);
+  return login;
 }
 
 - (NSString *) currentCalendarStyle

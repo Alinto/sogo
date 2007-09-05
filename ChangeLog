@@ -1,5 +1,8 @@
 2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-currentCalendarLogin]): replace css-unsafe characters with _.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent
 	-shortUserNameForDisplay]): simplified method.
 	([-user]): removed method since [context activeUser] is as useful.
