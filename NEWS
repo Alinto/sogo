@@ -1,5 +1,6 @@
 0.9.0-200709XX
 --------------
+- implemented cookie-based identification in the web interface;
 - fixed a bug where a false positive happening whenever a wrong user login was
   given during an indirect bind;
 
