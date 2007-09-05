@@ -3,6 +3,9 @@ function initLogin() {
   var userName = $("userName");
   userName.focus();
   Event.observe(submit, "click", onLoginClick);
+
+  var image = $("preparedAnimation");
+  image.parentNode.removeChild(image);
 }
 
 function onLoginClick(event) {

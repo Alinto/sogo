@@ -1,6 +1,12 @@
 BODY
 { background-color: #999; }
 
+IMG#preparedAnimation
+{ 
+  width: 0px;
+  height: 0px;
+}
+
 DIV#loginScreen
 {
   background-color: #d4d0c8;
@@ -9,7 +15,7 @@ DIV#loginScreen
   padding: 10px;
   border: 2px solid transparent;
   width: 158px;
-  height: 250px;
+  height: 253px;
   -moz-border-top-colors: #efebe7 #fff;
   -moz-border-left-colors: #efebe7 #fff;
   -moz-border-right-colors: #000 #9c9a94 transparent;
@@ -19,8 +25,8 @@ DIV#loginScreen
 DIV#loginScreen IMG
 { border: 1px solid #999; }
 
-DIV#loginScreen INPUT
-{ width: 100%; }
+DIV#loginScreen INPUT.textField
+{ width: 148px; }
 
 DIV#loginButton
 { text-align: right; }
