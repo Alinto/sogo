@@ -374,7 +374,7 @@ function tasksListCallback(http) {
       $(listItem).addClassName(data[i][5]);
       var owner = data[i][1];
       listItem.owner = owner;
-      $(listItem).addClassName("ownerIs" + owner);
+      $(listItem).addClassName("ownerIs" + owner.cssSafeString());
       listItem.cname = escape(data[i][0]);
       var input = document.createElement("input");
       input.setAttribute("type", "checkbox");
@@ -723,7 +723,7 @@ function newEventDIV(cname, owner, starts, lasts,
    var innerDiv = document.createElement("div");
    eventDiv.appendChild(innerDiv);
    $(innerDiv).addClassName("eventInside");
-   $(innerDiv).addClassName("ownerIs" + owner);
+   $(innerDiv).addClassName("ownerIs" + owner.cssSafeString());
 
    var gradientDiv = document.createElement("div");
    innerDiv.appendChild(gradientDiv);
@@ -1390,16 +1390,16 @@ function appendCalendar(folderName, folder) {
    var theRules = new Array();
    var lastSheet = document.styleSheets[document.styleSheets.length - 1];
    if (lastSheet.insertRule) { // Mozilla
-      lastSheet.insertRule('.ownerIs' + contactId + ' {'
+     lastSheet.insertRule('.ownerIs' + contactId.cssSafeString() + ' {'
 			   + ' background-color: '
 			   + color
 			   + ' !important; }', 0);
    }
    else { // IE
-      lastSheet.addRule('.ownerIs' + contactId,
-			' background-color: '
-			+ color
-			+ ' !important; }');
+     lastSheet.addRule('.ownerIs' + contactId.cssSafeString(),
+		       ' background-color: '
+		       + color
+		       + ' !important; }');
    }
 }
 

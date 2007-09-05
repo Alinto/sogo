@@ -343,3 +343,11 @@ String.prototype._base64_utf8_decode = function() {
  
   return string;
 };
+
+String.prototype.cssSafeString = function() {
+  var newString = this.replace("#", "_", "g");
+  newString = newString.replace(".", "_", "g");
+  newString = newString.replace("@", "_", "g");
+
+  return newString;
+}
