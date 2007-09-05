@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
+#import <NGObjWeb/SoDefaultRenderer.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -118,11 +119,12 @@
 		    withReason: (NSString *) reason
 		     inContext: (WOContext *) context
 {
-  id page;
+  WOComponent *page;
 
   page = [[WOApplication application] pageWithName: @"SOGoRootPage"
 				      forRequest: [context request]];
-  [page appendToResponse: response inContext: context];
+  [[SoDefaultRenderer sharedRenderer] renderObject: page
+				      inContext: context];
 }
 
 @end /* SOGoWebAuthenticator */

@@ -1,5 +1,9 @@
 2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
+	-setupAuthFailResponse:responsewithReason:reasoninContext:context]):
+	render the login page through the SoDefaultRenderer.
+
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage
 	-isPublicInContext:localContext]): new overriden method that
 	returns YES.
