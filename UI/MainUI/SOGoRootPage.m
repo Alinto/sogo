@@ -138,4 +138,9 @@
   [super appendToResponse: response inContext: ctx];
 }
 
+- (BOOL) isPublicInContext: (WOContext *) localContext
+{
+  return YES;
+}
+
 @end /* SOGoRootPage */

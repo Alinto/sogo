@@ -1,5 +1,9 @@
 2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage
+	-isPublicInContext:localContext]): new overriden method that
+	returns YES.
+
 	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
 	-currentCalendarLogin]): replace css-unsafe characters with _.
 
