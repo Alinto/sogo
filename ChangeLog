@@ -1,3 +1,9 @@
+2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent
+	-shortUserNameForDisplay]): simplified method.
+	([-user]): removed method since [context activeUser] is as useful.
+
 2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):

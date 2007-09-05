@@ -75,7 +75,6 @@
 - (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName;
 
 /* SoUser */
-- (SoUser *)user;
 - (NSString *)shortUserNameForDisplay;
 
 /* labels */

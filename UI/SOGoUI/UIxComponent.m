@@ -418,35 +418,9 @@ static BOOL uixDebugEnabled = NO;
 
 /* SoUser */
 
-- (SoUser *) user
-{
-  WOContext *ctx;
-  
-  ctx = context;
-
-  return [[[self clientObject] authenticatorInContext: ctx] userInContext: ctx];
-}
-
 - (NSString *) shortUserNameForDisplay
 {
-  // TODO: better use a SoUser formatter?
-  // TODO: who calls that?
-  NSString *s;
-  NSRange  r;
-  
-  // TODO: USE USER MANAGER INSTEAD!
-  
-  s = [[self user] login];
-  if ([s length] < 10)
-    return s;
-    
-  // TODO: algorithm might be inappropriate, depends on the actual UID
-    
-  r = [s rangeOfString:@"."];
-  if (r.length == 0)
-    return s;
-    
-  return [s substringToIndex:r.location];
+  return [[context activeUser] login];
 }
 
 /* labels */
