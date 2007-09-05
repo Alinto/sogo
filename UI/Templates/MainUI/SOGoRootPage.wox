@@ -10,7 +10,7 @@
   <html>
     <head>
       <title>
-	<var:string value="title"/>
+	<var:string label:value="title"/>
       </title>
       <meta name="hideFrame" var:content="hideFrame" />
       <meta name="description" content="SOGo Web Interface" />
@@ -28,6 +28,8 @@
     </head>
 
     <body class="loginPage">
+      <img id="preparedAnimation" rsrc:src="busy.gif"/>
+
       <script type="text/javascript">
 	var ResourcesURL = '/SOGo.woa/WebServerResources';
         var ApplicationBaseURL = '<var:string value="applicationPath" />';
@@ -45,6 +47,7 @@
       <script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space required --></script>
       <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space required --></script>
       <script type="text/javascript" rsrc:src="SOGoRootPage.js"><!-- space required --></script>
+
       <!-- var:js-stringtable
 	var:framework="productFrameworkName"
 	const:identifier="labels" -->
