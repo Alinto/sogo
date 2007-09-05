@@ -1,6 +1,8 @@
 /* this file is in UTF-8 format! */
 
-"Homepage" = "Startseite";
+"title" = "SOGo";
 
-"Login:" = "Login:";
-"Password:" = "Password:";
+"Login:" = "Benutzername:";
+"Password:" = "Passwort:";
+
+"Connect" = "Verbinden";
