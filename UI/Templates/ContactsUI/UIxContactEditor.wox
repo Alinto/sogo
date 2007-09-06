@@ -75,6 +75,15 @@
               </td>
             </tr>
             <tr>
+              <td>
+                <label><var:string label:value="Screen Name:"
+		    />
+                  <input type="text" class="textField" name="screenName"
+                    id="screenName" var:value="snapshot.screenName" />
+                </label>
+              </td>
+            </tr> 
+            <tr>
               <td id="htmlMailFormat">
                 <label><var:string
 		    label:value="Prefers to receive messages formatted as:" />
@@ -86,16 +95,7 @@
                 </label>
               </td>
             </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Screen Name:"
-		    />
-                  <input type="text" class="textField" name="screenName"
-                    id="screenName" var:value="snapshot.screenName" />
-                </label>
-              </td>
-            </tr>
-          </table>
+	  </table>
 	  <span class="caption"><var:string label:value="Phones" /></span>
           <table>
             <tr>
