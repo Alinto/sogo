@@ -23,6 +23,7 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -36,6 +37,21 @@
 #import "SOGoUserFolder.h"
 
 @implementation SOGoUserFolder
+
++ (void) initialize
+{
+  SoClassSecurityInfo *sInfo;
+  NSArray *basicRoles;
+
+  sInfo = [self soClassSecurityInfo];
+  [sInfo declareObjectProtected: SoPerm_View];
+
+  basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
+
+  /* require Authenticated role for View and WebDAV */
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
+}
 
 /* accessors */
 

@@ -1,5 +1,9 @@
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder +initialize]):
+	moved the requirement of authentication from the SOGo application
+	class to here.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -saveContentString:_iCalbaseSequence:_v]):
 	check whether the new appointment object is still relevant before
