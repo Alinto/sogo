@@ -104,7 +104,7 @@ static BOOL debugObjectAllocation = NO;
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
   /* require View permission to access the root (bound to authenticated ...) */
-  [sInfo declareObjectProtected: SoPerm_View];
+//   [sInfo declareObjectProtected: SoPerm_View];
 
   /* to allow public access to all contained objects (subkeys) */
   [sInfo setDefaultAccess: @"allow"];
