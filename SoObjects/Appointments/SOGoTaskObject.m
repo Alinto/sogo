@@ -376,15 +376,15 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 //   attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
 //   [attendees removePerson: organizer];
 //   if ([attendees count]) {
-//     iCalToDo *canceledApt;
+//     iCalToDo *cancelledApt;
     
-//     canceledApt = [newApt copy];
-//     [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
+//     cancelledApt = [newApt copy];
+//     [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
 //           [self sendEMailUsingTemplateNamed: @"Removal"
 //                 forOldObject: nil
-//                 andNewObject: canceledApt
+//                 andNewObject: cancelledApt
 //                 toAttendees: attendees];
-//     [canceledApt release];
+//     [cancelledApt release];
 //   }
 // }
 
@@ -428,7 +428,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
       attendees = [NSMutableArray arrayWithArray:[task attendees]];
       [attendees removePerson:[task organizer]];
   
-      /* flag task as being canceled */
+      /* flag task as being cancelled */
       [(iCalCalendar *) [task parent] setMethod: @"cancel"];
       [task increaseSequence];
 

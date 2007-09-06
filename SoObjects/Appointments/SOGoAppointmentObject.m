@@ -357,15 +357,15 @@
       [attendees removePerson: organizer];
       if ([attendees count])
         {
-          iCalEvent *canceledApt;
+          iCalEvent *cancelledApt;
     
-          canceledApt = [newApt copy];
-          [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
+          cancelledApt = [newApt copy];
+          [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
           [self sendEMailUsingTemplateNamed: @"Removal"
                 forOldObject: nil
-                andNewObject: canceledApt
+                andNewObject: cancelledApt
                 toAttendees: attendees];
-          [canceledApt release];
+          [cancelledApt release];
         }
     }
 
@@ -411,7 +411,7 @@
       attendees = [NSMutableArray arrayWithArray:[apt attendees]];
       [attendees removePerson:[apt organizer]];
   
-      /* flag appointment as being canceled */
+      /* flag appointment as being cancelled */
       [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
       [apt increaseSequence];
 
