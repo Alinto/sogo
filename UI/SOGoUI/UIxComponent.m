@@ -312,28 +312,31 @@ static BOOL uixDebugEnabled = NO;
   SOGoObject *currentClient, *parent;
   BOOL found;
   Class objectClass, groupFolderClass, userFolderClass;
-  WOContext *ctx;
-
-  groupFolderClass = [SOGoCustomGroupFolder class];
-  userFolderClass = [SOGoUserFolder class];
 
   currentClient = [self clientObject];
-  objectClass = [currentClient class];
-  found = (objectClass == groupFolderClass || objectClass == userFolderClass);
-  while (!found && currentClient)
+  if (currentClient
+      && [currentClient isKindOfClass: [SOGoObject class]])
     {
-      parent = [currentClient container];
-      objectClass = [parent class];
-      if (objectClass == groupFolderClass
-          || objectClass == userFolderClass)
-        found = YES;
-      else
-        currentClient = parent;
+      groupFolderClass = [SOGoCustomGroupFolder class];
+      userFolderClass = [SOGoUserFolder class];
+
+      objectClass = [currentClient class];
+      found = (objectClass == groupFolderClass || objectClass == userFolderClass);
+      while (!found && currentClient)
+	{
+	  parent = [currentClient container];
+	  objectClass = [parent class];
+	  if (objectClass == groupFolderClass
+	      || objectClass == userFolderClass)
+	    found = YES;
+	  else
+	    currentClient = parent;
+	}
     }
+  else
+    currentClient = [WOApplication application];
 
-  ctx = context;
-
-  return [[currentClient baseURLInContext:ctx] hostlessURL];
+  return [[currentClient baseURLInContext: context] hostlessURL];
 }
 
 - (NSString *) resourcesPath

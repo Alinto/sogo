@@ -1,5 +1,9 @@
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -applicationPath]):
+	returns the path to the application if the clientObject is not a
+	SOGoObject.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder +initialize]):
 	moved the requirement of authentication from the SOGo application
 	class to here.
