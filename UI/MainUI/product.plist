@@ -10,7 +10,7 @@
   classes = {
     SOGoRootPage = {
       superclass  = "SoComponent";
-      protectedBy = "View";
+      protectedBy = "<public>";
       defaultRoles = {
         "View" = ( "Authenticated" );
       };
@@ -60,16 +60,16 @@
     SOGo = { // TODO: move decls to class
       methods = {
         view = { 
-          protectedBy = "View";
+          protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
 	connect = {
-          protectedBy = "View";
-          pageName = "SOGoRootPage"; 
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
 	  actionName = "connect";
         };
         GET = { // more or less a hack, see README of dbd
-          protectedBy = "View";
+          protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
       };
