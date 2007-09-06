@@ -21,14 +21,17 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/SoDefaultRenderer.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGLdap/NGLdapConnection.h>
 
 #import <UI/MainUI/SOGoRootPage.h>
@@ -115,16 +118,47 @@
   return [SOGoUser userWithLogin: login roles: roles];
 }
 
+- (WOResponse *) preprocessCredentialsInContext: (WOContext *) context
+{
+  /*
+    This is called by SoObjectRequestHandler prior doing any significant
+    processing to allow the authenticator to reject invalid requests.
+  */
+  WOResponse *response;
+  NSString *auth;
+  
+  auth = [[context request]
+	   cookieValueForKey: [self cookieNameInContext:context]];
+  if ([auth isEqualToString: @"discard"])
+    {
+      [context setObject: [NSArray arrayWithObject: SoRole_Anonymous]
+	       forKey: @"SoAuthenticatedRoles"];
+      response = nil;
+    }
+  else
+    response = [super preprocessCredentialsInContext: context];
+
+  return response;
+}
+
 - (void) setupAuthFailResponse: (WOResponse *) response
 		    withReason: (NSString *) reason
 		     inContext: (WOContext *) context
 {
   WOComponent *page;
+  WOCookie *authCookie;
+  NSCalendarDate *date;
 
   page = [[WOApplication application] pageWithName: @"SOGoRootPage"
 				      forRequest: [context request]];
   [[SoDefaultRenderer sharedRenderer] renderObject: page
 				      inContext: context];
+  authCookie = [WOCookie cookieWithName: [self cookieNameInContext: context]
+                         value: @"discard"];
+  [authCookie setPath: @"/"];
+  date = [NSCalendarDate calendarDate];
+  [authCookie setExpires: [date yesterday]];
+  [response addCookie: authCookie];
 }
 
 @end /* SOGoWebAuthenticator */

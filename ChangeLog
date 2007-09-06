@@ -1,5 +1,12 @@
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
+	-preprocessCredentialsInContext:context]): consider the user
+	anonymous if the cookie value is "discard".
+	([SOGoWebAuthenticator
+	-setupAuthFailResponse:responsewithReason:reasoninContext:context]):
+	set the expiration date of the cookie to yesterday.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -applicationPath]):
 	returns the path to the application if the clientObject is not a
 	SOGoObject.
