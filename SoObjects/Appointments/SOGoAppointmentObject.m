@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -181,6 +183,14 @@
 }
 
 /* "iCal multifolder saves" */
+- (BOOL) _aptIsStillRelevant: (iCalEvent *) appointment
+{
+  NSCalendarDate *now;
+
+  now = [NSCalendarDate calendarDate];
+
+  return ([[appointment endDate] earlierDate: now] == now);
+}
 
 - (NSException *) saveContentString: (NSString *) _iCal
                        baseSequence: (int) _v
@@ -321,9 +331,11 @@
   if (delError   != nil) return delError;
 
   /* email notifications */
-  if ([self sendEMailNotifications])
+  if ([self sendEMailNotifications]
+      && [self _aptIsStillRelevant: newApt])
     {
-      attendees = [NSMutableArray arrayWithArray: [changes insertedAttendees]];
+      attendees
+	= [NSMutableArray arrayWithArray: [changes insertedAttendees]];
       [attendees removePerson: organizer];
       [self sendEMailUsingTemplateNamed: @"Invitation"
             forOldObject: nil
@@ -340,7 +352,8 @@
               toAttendees: attendees];
       }
 
-      attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
+      attendees
+	= [NSMutableArray arrayWithArray: [changes deletedAttendees]];
       [attendees removePerson: organizer];
       if ([attendees count])
         {

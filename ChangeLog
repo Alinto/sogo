@@ -1,3 +1,10 @@
+2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveContentString:_iCalbaseSequence:_v]):
+	check whether the new appointment object is still relevant before
+	sending a notification.
+
 2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
