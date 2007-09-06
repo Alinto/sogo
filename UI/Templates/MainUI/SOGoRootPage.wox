@@ -28,8 +28,6 @@
     </head>
 
     <body class="loginPage">
-      <img id="preparedAnimation" rsrc:src="busy.gif"/>
-
       <script type="text/javascript">
 	var ResourcesURL = '/SOGo.woa/WebServerResources';
         var ApplicationBaseURL = '<var:string value="applicationPath" />';
@@ -54,7 +52,7 @@
       <!-- var:js-stringtable
 	const:identifier="clabels" -->
       <div class="pageContent">
-	<form href="view">
+	<form id="connectForm" var:href="connectURL">
 	  <div id="loginScreen">
 	    <img rsrc:src="lori-login.jpg"/><br/><br/>
 	    <label><var:string label:value="Login:"/><br/>
@@ -69,6 +67,7 @@
 	  </div>
 	</form>
       </div>
+      <img id="preparedAnimation" rsrc:src="busy.gif"/>
       <noscript>
 	<div class="javascriptPopupBackground">
 	</div>
