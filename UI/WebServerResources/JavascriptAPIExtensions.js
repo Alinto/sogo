@@ -235,7 +235,7 @@ String.prototype.base64encode = function () {
   var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
   var i = 0;
  
-  var input = this._base64_utf8_encode();
+  var input = this.utf8encode();
 
   while (i < input.length) {
     chr1 = input.charCodeAt(i++);
@@ -289,10 +289,10 @@ String.prototype.base64decode = function() {
     }
   }
 
-  return output._base64_utf8_decode();
+  return output.utf8decode();
 };
 
-String.prototype._base64_utf8_encode = function() {
+String.prototype.utf8encode = function() {
   var string = this.replace(/\r\n/g,"\n");
   var utftext = "";
  
@@ -316,7 +316,7 @@ String.prototype._base64_utf8_encode = function() {
   return utftext;
 };
 
-String.prototype._base64_utf8_decode = function() {
+String.prototype.utf8decode = function() {
   var string = "";
   var i = 0;
   var c = c1 = c2 = 0;
