@@ -96,15 +96,15 @@ function contactsListCallback(http) {
 
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
        var sortHeader;
-       if (sorting["attribute"] == "cn")
+       if (sorting["attribute"] == "displayName")
 	  sortHeader = $("nameHeader");
        else if (sorting["attribute"] == "mail")
 	  sortHeader = $("mailHeader");
-       else if (sorting["attribute"] == "screenname")
+       else if (sorting["attribute"] == "screenName")
 	  sortHeader = $("screenNameHeader");
-       else if (sorting["attribute"] == "o")
+       else if (sorting["attribute"] == "org")
 	  sortHeader = $("orgHeader");
-       else if (sorting["attribute"] == "telephonenumber")
+       else if (sorting["attribute"] == "phone")
 	  sortHeader = $("phoneHeader");
        else
 	  sortHeader = null;
@@ -373,17 +373,15 @@ function onHeaderClick(event) {
    var headerId = this.getAttribute("id");
    var newSortAttribute;
    if (headerId == "nameHeader")
-      newSortAttribute = "cn";
+      newSortAttribute = "displayName";
    else if (headerId == "mailHeader")
       newSortAttribute = "mail";
    else if (headerId == "screenNameHeader")
-      newSortAttribute = "screenname";
+      newSortAttribute = "screenName";
    else if (headerId == "orgHeader")
-      newSortAttribute = "o";
+      newSortAttribute = "org";
    else if (headerId == "phoneHeader")
-      newSortAttribute = "telephonenumber";
-
-   log("header: " + headerId);
+      newSortAttribute = "phone";
 
    if (sorting["attribute"] == newSortAttribute)
       sorting["ascending"] = !sorting["ascending"];
