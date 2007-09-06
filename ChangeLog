@@ -1,5 +1,13 @@
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoRootPage.m ([-defaultAction]): commented out.
+	([-appendToResponse:responseinContext:ctx]): commented out.
+	([SOGoRootPage -connectURL]): new accessor that returns the full
+	url the the "connect" method.
+	([-connectAction]): rewrote method to return a properly formatted
+	auth. cookie based on the username and password passed as
+	parameter.
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
 	set the value of the cookie to "discard" and set its expiration
 	date to yesterday.
