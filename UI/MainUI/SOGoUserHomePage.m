@@ -203,10 +203,10 @@ static NSString *defaultModule = nil;
 - (id <WOActionResults>) logoffAction
 {
   WOResponse *response;
-  NSEnumerator *cookies;
   WOCookie *cookie;
   SOGoWebAuthenticator *auth;
   id container;
+  NSCalendarDate *date;
 
   container = [[self clientObject] container];
 
@@ -214,11 +214,12 @@ static NSString *defaultModule = nil;
   [response setStatus: 302];
   [response setHeader: [container baseURLInContext: context]
 	    forKey: @"location"];
-  cookies = [[response cookies] objectEnumerator];
   auth = [[self clientObject] authenticatorInContext: context];
   cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
-		     value: @"logoff"];
+		     value: @"discard"];
   [cookie setPath: @"/"];
+  date = [NSCalendarDate calendarDate];
+  [cookie setExpires: [date yesterday]];
   [response addCookie: cookie];
 
   return response;

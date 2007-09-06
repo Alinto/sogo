@@ -1,5 +1,9 @@
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	set the value of the cookie to "discard" and set its expiration
+	date to yesterday.
+
 	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
 	-preprocessCredentialsInContext:context]): consider the user
 	anonymous if the cookie value is "discard".
