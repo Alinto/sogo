@@ -23,9 +23,9 @@
 #ifndef SOGOROOTPAGE_H
 #define SOGOROOTPAGE_H
 
-#import <UI/Common/UIxPageFrame.h>
+#import <UI/SOGoUI/UIxComponent.h>
 
-@interface SOGoRootPage : UIxPageFrame
+@interface SOGoRootPage : UIxComponent
 {
   NSString *userName;
 }

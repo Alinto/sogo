@@ -1260,9 +1260,8 @@ function loadPreferences() {
 }
 
 function onLoadHandler(event) {
-   if (!document.body.hasClassName("loginPage")) {
+   if (UserLogin)
      loadPreferences();
-   }
    queryParameters = parseQueryParameters('' + window.location);
    if (!$(document.body).hasClassName("popup")) {
       initLogConsole();

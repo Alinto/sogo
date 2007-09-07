@@ -1,3 +1,8 @@
+2007-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.[hm]: made a subclass of UIxComponent
+	instead of UIxPageFrame.
+
 2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m ([-defaultAction]): commented out.
