@@ -1089,6 +1089,7 @@ function initMailboxTree() {
   mailboxTree.add(0, -1, '');
 
   mailboxTree.pendingRequests = mailAccounts.length;
+  activeAjaxRequests += mailAccounts.length;
   for (var i = 0; i < mailAccounts.length; i++) {
     var url = ApplicationBaseURL + "/" + mailAccounts[i] + "/mailboxes";
     triggerAjaxRequest(url, onLoadMailboxesCallback, mailAccounts[i]);
@@ -1203,14 +1204,17 @@ function updateMailboxMenus() {
 function onLoadMailboxesCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
+    checkAjaxRequestsState();
     var newAccount = buildMailboxes(http.callbackData,
 				    http.responseText);
     accounts[http.callbackData] = newAccount;
     mailboxTree.addMailAccount(newAccount);
     mailboxTree.pendingRequests--;
+    activeAjaxRequests--;
     if (!mailboxTree.pendingRequests) {
       updateMailboxTreeInPage();
       updateMailboxMenus();
+      checkAjaxRequestsState();
     }
   }
 
