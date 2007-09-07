@@ -1260,23 +1260,23 @@ function loadPreferences() {
 }
 
 function onLoadHandler(event) {
-   if (UserLogin)
-     loadPreferences();
-   queryParameters = parseQueryParameters('' + window.location);
-   if (!$(document.body).hasClassName("popup")) {
-      initLogConsole();
-   }
-   initCriteria();
-   configureSearchField();
-   initMenus();
-   initTabs();
-   configureDragHandles();
-   configureSortableTableHeaders();
-   configureLinkBanner();
-   var progressImage = $("progressIndicator");
-   if (progressImage)
-      progressImage.parentNode.removeChild(progressImage);
-   Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+  if (typeof UserLogin != "undefined")
+    loadPreferences();
+  queryParameters = parseQueryParameters('' + window.location);
+  if (!$(document.body).hasClassName("popup")) {
+    initLogConsole();
+  }
+  initCriteria();
+  configureSearchField();
+  initMenus();
+  initTabs();
+  configureDragHandles();
+  configureSortableTableHeaders();
+  configureLinkBanner();
+  var progressImage = $("progressIndicator");
+  if (progressImage)
+    progressImage.parentNode.removeChild(progressImage);
+  Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
 }
 
 function onBodyClickContextMenu(event) {
