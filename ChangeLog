@@ -1,5 +1,15 @@
 2007-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([_UIxHTMLMailContentHandler
+	-endElement:_localNamenamespace:_nsrawName:_rawName]): remove HTML
+	comments from the CSS code, do not add the CSS code to the body
+	content and remove references of body from the CSS declarations.
+	([UIxMailPartHTMLViewer -cssContent]): new accessor method.
+	([UIxMailPartHTMLViewer -flatContentAsString]): separated code
+	common with cssContent in a different method and invoke it only
+	once.
+
 	* UI/MainUI/SOGoRootPage.[hm]: made a subclass of UIxComponent
 	instead of UIxPageFrame.
 

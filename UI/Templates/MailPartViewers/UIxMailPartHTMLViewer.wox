@@ -1,9 +1,12 @@
 <?xml version="1.0" standalone="yes"?>
-<div
+<!DOCTYPE container>
+<container
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  class="mailer_htmlcontent SOGoHTMLMail-CSS-Delimiter"
-><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
+  xmlns:label="OGo:label">
+  <var:string value="cssContent" const:escapeHTML="NO" />
+  <div class="SOGoHTMLMail-CSS-Delimiter mailer_htmlcontent"
+    ><var:string value="flatContentAsString" const:escapeHTML="NO" /></div>
+</container>

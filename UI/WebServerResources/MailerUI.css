@@ -367,7 +367,8 @@ img.mailer_imagecontent
 }
 
 DIV.mailer_plaincontent
-{ 
+{
+  position: relative;
   font-family: monospace, fixed;
   white-space: normal;
   font-size: inherit;
@@ -386,7 +387,7 @@ DIV.mailer_plaincontent P
 DIV.mailer_htmlcontent P
 { 
   white-space: normal;
-  font-family: serif;
+  font-family: sans-serif;
   font-size: inherit;
   margin: 0px;
   padding: 0px;
