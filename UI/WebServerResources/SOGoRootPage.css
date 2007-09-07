@@ -23,7 +23,9 @@ DIV#loginScreen
 }
 
 DIV#loginScreen IMG
-{ border: 1px solid #999; }
+{ border: 1px solid #999;
+  height: 141px;
+  width: 155px; }
 
 DIV#loginScreen INPUT.textField
 { width: 148px; }
@@ -37,6 +39,8 @@ DIV#loginButton INPUT
 
 DIV#loginButton IMG#progressIndicator
 { float: left;
+  width: 16px;
+  height: 16px;
   border: 0px none;
   margin-top: 5px;
   margin-left: 5px; }
