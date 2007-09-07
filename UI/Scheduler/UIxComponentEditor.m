@@ -104,7 +104,6 @@
   currentAttendee = [attendees nextObject];
   while (currentAttendee)
     {
-      NSLog (@"currentCN: %@", [currentAttendee cn]);
       [names appendFormat: @"%@,", [currentAttendee cn]];
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
       currentAttendee = [attendees nextObject];
