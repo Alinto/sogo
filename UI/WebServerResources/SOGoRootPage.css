@@ -14,8 +14,8 @@ DIV#loginScreen
   margin-top: 5em;
   padding: 10px;
   border: 2px solid transparent;
-  width: 158px;
-  height: 253px;
+  width: 197px;
+  height: 300px;
   -moz-border-top-colors: #efebe7 #fff;
   -moz-border-left-colors: #efebe7 #fff;
   -moz-border-right-colors: #000 #9c9a94 transparent;
@@ -23,12 +23,14 @@ DIV#loginScreen
 }
 
 DIV#loginScreen IMG
-{ border: 1px solid #999;
-  height: 141px;
-  width: 155px; }
+{ border: 0px;
+  margin: 0px;
+  padding: 0px;
+  height: 192px;
+  width: 192px; }
 
 DIV#loginScreen INPUT.textField
-{ width: 148px; }
+{ width: 187px; }
 
 DIV#loginButton
 { text-align: right; }
