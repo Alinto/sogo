@@ -35,13 +35,13 @@
 
       <body var:class="bodyClasses">
 	<script type="text/javascript">
-	  var UserFolderURL = '<var:string value="userFolderPath" />';
 	  var ApplicationBaseURL = '<var:string value="applicationPath" />';
 	  var ResourcesURL = '/SOGo.woa/WebServerResources';
-	  var UserLogin = '<var:string value="shortUserNameForDisplay" />';
+	  <var:if condition="shortUserNameForDisplay" const:value="anonymous"
+	    const:negate="YES"
+	    >var UserFolderURL = '<var:string value="userFolderPath" />';
+	  var UserLogin = '<var:string value="shortUserNameForDisplay" />';</var:if>
 	</script>
-
-	<script type="text/javascript" rsrc:src="_IEtoW3C.js"><!-- space required --></script>
 	<script type="text/javascript" rsrc:src="events.js"><!-- space required --></script>
 	<script type="text/javascript" rsrc:src="prototype.js"><!-- space required --></script>
 	<script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space required --></script>
@@ -52,43 +52,42 @@
 	<script type="text/javascript" rsrc:src="generic.js"><!-- space required --></script>
 	<script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space required --></script>
 	<script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space required --></script>
-	<var:if condition="hasProductSpecificJavaScript"
-	  ><script type="text/javascript" var:src="productJavaScriptURL"><!-- space required --></script
-	    ></var:if>
-	<var:if condition="hasPageSpecificJavaScript"
-	  ><script type="text/javascript" var:src="pageJavaScriptURL"> <!-- space required --></script
-	    ></var:if>
+	<var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
+	    var:src="productJavaScriptURL"><!-- space required --></script></var:if>
+	<var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
+	    var:src="pageJavaScriptURL"><!-- space required --></script></var:if>
 	<var:js-stringtable
 	  var:framework="productFrameworkName"
 	  const:identifier="labels" />
 	<var:js-stringtable
 	  const:identifier="clabels" />
 
-	<var:if condition="isPopup" const:negate="YES"
-	  ><var:if condition="context.isUIxDebugEnabled"
-	    ><div id="logConsole"><!-- space --></div></var:if>
-
-	  <div id="linkBanner" class="linkbanner">
-	    <a id="logoff" var:href="logoffPath"
-	      ><var:string label:value="Logoff" /></a>
-	    <a var:href="relativeCalendarPath"
-	      ><var:string label:value="Calendar" /></a> |
-	    <a var:href="relativeContactsPath"
-	      ><var:string label:value="Address Book" /></a> |
-	    <a var:href="relativeMailPath"
-	      ><var:string label:value="Mail" /></a> |
-	    <a var:href="relativePreferencesPath"
-	      ><var:string label:value="Preferences" /></a>
-	    <var:if condition="context.isUIxDebugEnabled"
-	      >| <a href="#"><var:string
-		  label:value="Log Console (dev.)" /></a
-		></var:if>
-	  </div>
-	</var:if
-	  
-	  ><var:component className="UIxToolbar" var:toolbar="toolbar"
-	  />
-
+	<var:if condition="shortUserNameForDisplay" const:value="anonymous"
+	  const:negate="YES"
+	  ><var:if condition="isPopup" const:negate="YES"
+	    ><var:if condition="context.isUIxDebugEnabled"
+	      ><div id="logConsole"><!-- space --></div></var:if>
+	    <div id="linkBanner" class="linkbanner">
+	      <a id="logoff" var:href="logoffPath"
+		><var:string label:value="Logoff" /></a>
+	      <a var:href="relativeCalendarPath"
+		><var:string label:value="Calendar" /></a> |
+	      <a var:href="relativeContactsPath"
+		><var:string label:value="Address Book" /></a> |
+	      <a var:href="relativeMailPath"
+		><var:string label:value="Mail" /></a> |
+	      <a var:href="relativePreferencesPath"
+		><var:string label:value="Preferences" /></a>
+	      <var:if condition="context.isUIxDebugEnabled"
+		>| <a href="#"><var:string
+		    label:value="Log Console (dev.)" /></a
+		  ></var:if>
+	    </div>
+	  </var:if
+	    ><var:component className="UIxToolbar" var:toolbar="toolbar"
+	    />
+	</var:if>
+	
 	<div class="pageContent"
 	  ><var:component-content
 	    /></div>
