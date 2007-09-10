@@ -140,6 +140,7 @@ static int attachmentFlagSize = 8096;
   flags = [[self message] valueForKey:@"flags"];
   return [flags containsObject:@"seen"];
 }
+
 - (NSString *) messageUidString 
 {
   return [[[self message] valueForKey:@"uid"] stringValue];
@@ -465,22 +466,20 @@ static int attachmentFlagSize = 8096;
 			     value];
   else if ([criteria isEqualToString: @"sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			     @"(from doesContain: %@)",
-			     value];
+			       @"(sender doesContain: %@)", value];
   else if ([criteria isEqualToString: @"subject_or_sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(subject doesContain: %@) OR "
-			     @"(from doesContain: %@)",
+			       @"((sender doesContain: %@)"
+			     @" OR (from doesContain: %@))",
 			     value, value];
   else if ([criteria isEqualToString: @"to_or_cc"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(to doesContain: %@) OR "
-			     @"(cc doesContain: %@)",
+			       @"((to doesContain: %@)"
+			     @" OR (cc doesContain: %@))",
 			     value, value];
   else if ([criteria isEqualToString: @"entire_message"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			     @"(message doesContain: %@)",
-			     value];
+			       @"(body doesContain: %@)", value];
   else
     qualifier = nil;
 
@@ -499,8 +498,7 @@ static int attachmentFlagSize = 8096;
   specificMessage = [request formValueForKey: @"pageforuid"];
   searchCriteria = [request formValueForKey: @"search"];
   searchValue = [request formValueForKey: @"value"];
-  if ([searchCriteria length] > 0
-      && [searchValue length] > 0)
+  if ([searchValue length])
     [self _setQualifierForCriteria: searchCriteria
 	  andValue: searchValue];
 
