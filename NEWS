@@ -3,6 +3,7 @@
 - implemented cookie-based identification in the web interface;
 - fixed a bug where a false positive happening whenever a wrong user login was
   given during an indirect bind;
+- deleting a message no longer expunges its parent folder;
 
 0.9.0-20070824
 --------------
