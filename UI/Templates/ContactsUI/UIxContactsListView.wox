@@ -33,6 +33,8 @@
             var:contactid="currentContact.c_uid"
             onclick="return onContactRowClick(event, this);"
             ondblclick="return onContactRowDblClick(event, this);"
+            onmousedown="return false;"
+            onselectstart="return false;"
             oncontextmenu="return onContactContextMenu(event, this);">
             <td><img rsrc:src="abcard.gif"
 		/><var:string value="currentContact.displayName" const:escapeHTML="YES" /></td>
