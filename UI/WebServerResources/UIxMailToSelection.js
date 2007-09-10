@@ -121,15 +121,15 @@ function fancyAddRow(shouldEdit, text) {
     input.select();
     input.setAttribute('autocomplete', 'on');
   }
-//   this.adjustInlineAttachmentListHeight(this);
 }
 
 function addressFieldGotFocus(sender) {
   var idx;
   
   idx = this.getIndexFromIdentifier(sender.id);
-  if ((lastIndex == idx) || (idx == 0)) return;
+  if (lastIndex == idx) return;
   this.removeLastEditedRowIfEmpty();
+  onWindowResize(null);
 
   return false;
 }
@@ -156,7 +156,6 @@ function removeLastEditedRowIfEmpty() {
   addressList = $("addressList");
   senderRow = $("row_" + idx);
   addressList.removeChild(senderRow);
-  this.adjustInlineAttachmentListHeight(this);
 }
 
 function findAddressWithIndex(idx) {
@@ -223,22 +222,6 @@ function UIxRecipientSelectorHasRecipients() {
   if (count > 0)
     return true;
   return false;
-}
-
-function adjustInlineAttachmentListHeight(sender) {
-  var e;
-  
-  e = $('attachmentsArea');
-  if (e.style.display != 'none') {
-    /* need to lower left size first, because left auto-adjusts to right! */
-    xHeight('compose_attachments_list', 10);
-
-    var leftHeight, rightHeaderHeight;
-    leftHeight        = xHeight('compose_leftside');
-    rightHeaderHeight = xHeight('compose_attachments_header');
-    xHeight('compose_attachments_list',
-            (leftHeight - rightHeaderHeight) - 16);
-  }
 }
 
 /* addressbook helpers */

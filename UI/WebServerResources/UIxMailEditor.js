@@ -153,8 +153,12 @@ function clickedEditorSend(sender) {
 
 function clickedEditorAttach(sender) {
   var area = $("attachmentsArea");
-  area.setStyle({ display: "block" });
-  
+
+  if (!area.style.display) {
+    area.setStyle({ display: "block" });
+    onWindowResize(null);
+  }  
+
   var inputs = area.getElementsByTagName("input");
   var attachmentName = "attachment" + inputs.length;
   var newAttachment = createElement("input", attachmentName,
@@ -289,11 +293,40 @@ function onSelectAllAttachments() {
 function onWindowResize(event) {
   var textarea = document.pageform.text;
   var windowheight = (typeof self.innerHeight == "number" ? self.innerHeight : document.body.clientHeight);
-  var textareaoffset = textarea.offsetTop;
   var rowheight = (Element.getHeight(textarea) / textarea.rows);
+  var headerarea = $("headerArea");
 
+  // Set textarea position
+  textarea.setStyle({ 'top': (headerarea.getHeight() + headerarea.offsetTop) + 'px' });
+
+  var textareaoffset = textarea.offsetTop;
+
+  // Resize the textarea (message content)
   textarea.rows = Math.round((windowheight - textareaoffset) / rowheight);
-  log ("onWindowResize new number of rows = " + textarea.rows);
+  
+  var attachmentsarea = $("attachmentsArea");
+  var attachmentswidth = 0;
+  if (attachmentsarea.style.display)
+    attachmentswidth = attachmentsarea.getWidth();
+  var windowwidth = (typeof self.innerWidth == "number" ? self.innerWidth : document.body.clientWidth);
+  var subjectfield = $(document).getElementsByClassName('headerField', $('subjectRow'))[0];
+  var subjectinput = $(document).getElementsByClassName('textField', $('subjectRow'))[0];
+
+  // Resize subject field
+  subjectinput.setStyle({ width: (windowwidth
+				  - $(subjectfield).getWidth()
+				  - attachmentswidth
+				  - 4 - 30
+				  ) + 'px' });
+
+  // Resize address fields
+  var addresslist = $('addressList');
+  var firstselect = document.getElementsByClassName('headerField', addresslist)[0];
+  var inputwidth = windowwidth - $(firstselect).getWidth() - attachmentswidth - 24 - 30;
+  var addresses = document.getElementsByClassName('textField', addresslist);
+  for (var i = 0; i < addresses.length; i++) {
+    addresses[i].setStyle({ width: inputwidth + 'px' });
+  }
 }
 
 function onMailEditorClose(event) {

@@ -1,49 +1,41 @@
 /* CSS for compose panel */
 
-div#compose_panel div table {
-  padding: 2px;
-}
+div#compose_panel div table
+{ padding: 2px; }
 
 TABLE#compose_table, TABLE#compose_table DIV
-{ 
-  width: 100%;
-}
+{ width: 100%; }
 
 TABLE#compose_label
-{
-  text-align: right;
-}
+{ text-align: right; }
 
 DIV#addressList
-{ height: 8em;
-  margin-bottom: .25em;
+{ clear: left;
+  height: 8em;
+  overflow: auto;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-DIV.addressListElement
-{ margin: 0px;
-  padding: 0px; }
-
 SPAN.headerField
 { line-height: 1.8em;
-  width: 7em;
-  text-align: right; }
+  float: left;
+  clear: left;
+  text-align: right;
+  min-width: 7em;
+  padding-left: 0.5em; }
 
 SPAN.headerInput INPUT
-{ width: 50%;
-  padding-left: 24px;
+{ padding-left: 24px; /* offset text input */
+  padding-right: 4px;
   background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
   background-repeat: no-repeat;
   background-position: 2px center; }
 
-DIV#subjectRow
-{ margin-left: 9em; }
-
 DIV#subjectRow INPUT
 { background-image: none;
-  width: 50%;
-  padding-left: .5em; }
+  padding-left: 4px; /* offset text input */
+  padding-right: 4px; }
 
 div#compose_internetmarker
 { padding:          8px;
@@ -54,8 +46,7 @@ div#compose_internetmarker
   border-style:     solid; }
 
 div#headerArea
-{ border-top: 1px solid #fff;
-  border-bottom: 1px solid #848284; }
+{ border-top: 1px solid #fff; }
 
 div#attachmentsArea
 { display: none;
@@ -66,6 +57,17 @@ div#attachmentsArea
   padding-right: 1em;
   padding-left: 5px;
   border-left: 1px solid #888; }
+
+hr
+{ background-color: #848284;
+  border: 0;
+  clear: both;
+  color: #848284;
+  float: left;
+  height: 1px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%; }
 
 input.currentAttachment
 { position: absolute;
@@ -90,8 +92,7 @@ UL#attachments
 { cursor: default;
   margin: 0px;
   padding: 0px;
-  width: 100%;
-  height: 10em;
+  height: 9em;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
@@ -116,5 +117,5 @@ DIV.pageContent TEXTAREA
   left: 0em;
   right: 0em;
   bottom: 0em;
-  top: 17em;
+  top: 13em;
   width: 100%; }

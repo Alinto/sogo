@@ -51,8 +51,8 @@
 	    class="textField"
 	    var:value="subject"
 	    /></span></div>
+    <!-- separator line --><hr/>
     </div>
-    <!-- separator line -->
     <textarea name="text" rows="30" var:value="text" />
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
   </form>

@@ -364,8 +364,8 @@ function getTarget(event) {
 function preventDefault(event) {
   if (event.preventDefault)
     event.preventDefault(); // W3C DOM
-
-  event.returnValue = false; // IE
+  else
+    event.returnValue = false; // IE
 }
 
 function resetSelection(win) {
@@ -692,6 +692,10 @@ function log(message) {
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole) {
       logConsole.highlighted = !logConsole.highlighted;
+      if (message == '\c') {
+	logConsole.innerHTML = "";
+	return;
+      }
       var logMessage = message.replace("<", "&lt;", "g");
       logMessage = logMessage.replace(" ", "&nbsp;", "g");
       logMessage = logMessage.replace("\r\n", "<br />\n", "g");
@@ -1301,7 +1305,7 @@ function onLinkBannerClick() {
 
 function onPreferencesClick(event) {
    var urlstr = UserFolderURL + "preferences";
-   var w = window.open(urlstr, "User Preferences",
+   var w = window.open(urlstr, "_blank",
 		       "width=430,height=250,resizable=0,scrollbars=0");
    w.opener = window;
    w.focus();

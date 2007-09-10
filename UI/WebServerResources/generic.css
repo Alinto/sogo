@@ -200,6 +200,7 @@ TEXTAREA
 
 DIV, TEXTAREA, INPUT, SELECT
 { font-family: inherit;
+  font-size: 8pt;
   font-size: inherit; }
 
 TEXTAREA, INPUT.textField
@@ -213,8 +214,7 @@ TEXTAREA, INPUT.textField
   -moz-border-left-colors: #9c9a94 #000 transparent; }
 
 INPUT.textField
-{ line-height: 2em;
-  vertical-align: middle; }
+{ vertical-align: middle; }
 
 DIV#toolbar
 { left: 0px;
@@ -366,7 +366,7 @@ DIV#logConsole
   -moz-border-top-colors: #000 #9c9a94 transparent;
   -moz-border-left-colors: #000 #9c9a94 transparent;
   font-family: monospace;
-  font-size: 12pt;
+  font-size: 9pt;
   padding: .25em;
   background-color: #fff;
   overflow-y: scroll;
