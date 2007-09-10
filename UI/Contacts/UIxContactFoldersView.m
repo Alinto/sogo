@@ -139,25 +139,29 @@
 {
   WOResponse *response;
   NSEnumerator *contacts;
-  NSString *responseString;
+  NSString *responseString, *email;
   NSDictionary *contact;
 
   response = [context response];
 
   if ([results count] > 0)
     {
+      [response setStatus: 200];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
       if (contact)
 	{
-	  responseString = [NSString stringWithFormat: @"%@:%@:%@",
-				     [contact objectForKey: @"c_uid"],
-				     [contact objectForKey: @"cn"],
-				     [contact objectForKey: @"c_email"]];
-	  [response setStatus: 200];
+	  email = [contact objectForKey: @"c_email"];
+	  if ([email length])
+	    {
+	      responseString = [NSString stringWithFormat: @"%@:%@:%@",
+					 [contact objectForKey: @"c_uid"],
+					 [contact objectForKey: @"cn"],
+					 email];
 // 	  [response setHeader: @"text/plain; charset=iso-8859-1"
 // 		    forKey: @"Content-Type"];
-	  [response appendContentString: responseString];
+	      [response appendContentString: responseString];
+	    }
 //	  contact = [contacts nextObject];
 	}
     }

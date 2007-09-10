@@ -1,5 +1,9 @@
 2007-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): only return the records which have an
+	email set.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-trashInContext:_ctx]): no longer expunge the mailbox after
 	marking a message deleted.
