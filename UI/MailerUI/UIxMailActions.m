@@ -25,6 +25,8 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/NSException+HTTP.h>
+
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -35,27 +37,6 @@
 #import "UIxMailActions.h"
 
 @implementation UIxMailActions
-
-- (WOResponse *) editAction
-{
-  SOGoMailAccount *account;
-  SOGoMailObject *co;
-  SOGoDraftsFolder *folder;
-  SOGoDraftObject *newMail;
-  NSString *newLocation;
-
-  co = [self clientObject];
-  account = [co mailAccountFolder];
-  folder = [account draftsFolderInContext: context];
-  newMail = [folder newDraft];
-  [newMail fetchMailForEditing: co];
-  [newMail storeInfo];
-
-  newLocation = [NSString stringWithFormat: @"%@/edit",
-			  [newMail baseURLInContext: context]];
-
-  return [self redirectToLocation: newLocation];
-}
 
 - (WOResponse *) replyToAll: (BOOL) toAll
 {
@@ -107,7 +88,65 @@
   return [self redirectToLocation: newLocation];
 }
 
+- (id) trashAction
+{
+  id response;
+
+  response = [[self clientObject] trashInContext: context];
+  if (!response)
+    {
+      response = [context response];
+      [response setStatus: 204];
+    }
+
+  return response;
+}
+
+- (id) moveAction
+{
+  NSString *destinationFolder;
+  id response;
+
+  destinationFolder = [[context request] formValueForKey: @"tofolder"];
+  if ([destinationFolder length] > 0)
+    {
+      response = [[self clientObject] moveToFolderNamed: destinationFolder
+				      inContext: context];
+      if (!response)
+        {
+	  response = [context response];
+	  [response setStatus: 204];
+        }
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+			    reason: @"No destination folder given"];
+
+  return response;
+}
+
 /* SOGoDraftObject */
+- (WOResponse *) editAction
+{
+  SOGoMailAccount *account;
+  SOGoMailObject *co;
+  SOGoDraftsFolder *folder;
+  SOGoDraftObject *newMail;
+  NSString *newLocation;
+
+  co = [self clientObject];
+  account = [co mailAccountFolder];
+  folder = [account draftsFolderInContext: context];
+  newMail = [folder newDraft];
+  [newMail fetchMailForEditing: co];
+  [newMail storeInfo];
+
+  newLocation = [NSString stringWithFormat: @"%@/edit",
+			  [newMail baseURLInContext: context]];
+
+  return [self redirectToLocation: newLocation];
+}
+
 - (id) deleteAction
 {
   SOGoDraftObject *draft;
