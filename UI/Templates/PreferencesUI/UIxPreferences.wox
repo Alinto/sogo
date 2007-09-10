@@ -13,10 +13,8 @@
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
-	<li target="outOfOfficeView"><var:string
-	    label:value="Out of Office"/></li>
-	<li target="dateTimeView"><var:string
-	    label:value="Date and Time"/></li>
+	<li target="generalView"><var:string
+	    label:value="General"/></li>
 	<li target="calendarOptionsView"><var:string
 	    label:value="Calendar Options"/></li>
 	<li target="mailOptionsView"><var:string
@@ -25,23 +23,7 @@
 	  <li target="passwordView"><var:string label:value="Password"/></li>
 	</var:if>
       </ul>
-      <div id="outOfOfficeView" class="tab">
-	<label><input
-	    const:name="inTheOffice" type="radio" const:value="YES"
-	    var:selection="inTheOffice"/>
-	  <var:string label:value="I'm currently in the office"/></label><br/>
-	<label><input
-	    const:name="inTheOffice" type="radio" const:value="NO"
-	    var:selection="inTheOffice"/>
-	  <var:string label:value="I'm currently out of the office"/></label><br/>
-	<br/>
-	<div id="outOfOfficeMessage">
-	  <label><var:string label:value="AutoReply only once to each sender with the following text :"/><br/>
-	    <textarea const:name="autoReplyText" var:value="autoReplyText"/>
-	  </label>
-	</div>
-      </div>
-      <div id="dateTimeView" class="tab">
+      <div id="generalView" class="tab">
 	<label><var:string label:value="Current Time Zone :"/>
 	    <var:popup list="timeZonesList" item="item"
 	      string="item" selection="userTimeZone" /></label><br/>
@@ -95,6 +77,20 @@
 	<label><var:string label:value="Forward messages:"/>
 	  <var:popup list="messageForwardingList" item="item"
 	    string="itemMessageForwardingText" selection="userMessageForwarding"/></label><br/>
+	<label><input
+	    const:name="inTheOffice" type="radio" const:value="YES"
+	    var:selection="inTheOffice"/>
+	  <var:string label:value="I'm currently in the office"/></label><br/>
+	<label><input
+	    const:name="inTheOffice" type="radio" const:value="NO"
+	    var:selection="inTheOffice"/>
+	  <var:string label:value="I'm currently out of the office"/></label><br/>
+	<br/>
+	<div id="outOfOfficeMessage">
+	  <label><var:string label:value="AutoReply only once to each sender with the following text :"/><br/>
+	    <textarea const:name="autoReplyText" var:value="autoReplyText"/>
+	  </label>
+	</div>
       </div>
       <var:if condition="shouldDisplayPasswordChange">
 	<div id="passwordView" class="tab">
