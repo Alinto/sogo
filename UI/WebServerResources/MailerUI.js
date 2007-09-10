@@ -1301,8 +1301,16 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-
   triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
+
+  if (folderID == currentMailbox) {
+    var div = $('messageContent');
+    for (var i = div.childNodes.length - 1; i > -1; i--)
+      div.removeChild(div.childNodes[i]);
+  }
+  var msgID = currentMessages[folderID];
+  if (msgID)
+    deleteCachedMessage(folderID + "/" + msgID);
 }
 
 function folderOperationCallback(http) {
