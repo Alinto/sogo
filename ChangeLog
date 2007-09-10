@@ -1,3 +1,15 @@
+2007-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-trashInContext:_ctx]): no longer expunge the mailbox after
+	marking a message deleted.
+	([SOGoMailObject -moveToFolderNamed:folderNameinContext:]): same
+	as above.
+
+	* UI/MailerUI/UIxMailView.m ([-deleteAction]): removed method.
+	([-trashAction]): moved method into UIxMailActions.
+	([-moveAction]): moved method into UIxMailActions.
+
 2007-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m

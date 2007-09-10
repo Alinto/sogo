@@ -883,10 +883,6 @@ static BOOL debugSoParts       = NO;
   error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
   if (error != nil) return error;
   
-  /* c) expunge */
-
-  error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
-  if (error != nil) return error; // TODO: unflag as deleted?
   [self flushMailCaches];
   
   return nil;
@@ -895,15 +891,6 @@ static BOOL debugSoParts       = NO;
 - (NSException *) moveToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx
 {
-  /*
-    Trashing is three actions:
-    a) copy to trash folder
-    b) mark mail as deleted
-    c) expunge folder
-    
-    In case b) or c) fails, we can't do anything because IMAP4 doesn't tell us
-    the ID used in the trash folder.
-  */
   SOGoMailAccounts *destFolder;
   NSEnumerator *folders;
   NSString *currentFolderName, *reason;
@@ -947,11 +934,7 @@ static BOOL debugSoParts       = NO;
   
   error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
   if (error != nil) return error;
-  
-  /* c) expunge */
 
-  error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
-  if (error != nil) return error; // TODO: unflag as deleted?
   [self flushMailCaches];
   
   return nil;

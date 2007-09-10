@@ -153,7 +153,7 @@ function mailListMarkMessage(event) {
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK
-    http.open("POST", url + "&jsonly=1", false /* not async */);
+    http.open("POST", url, false /* not async */);
     http.send("");
     if (http.status != 200) {
       // TODO: refresh page?
@@ -229,11 +229,11 @@ function uixDeleteSelectedMessages(sender) {
     /* send AJAX request (synchronously) */
 
     var messageId = currentMailbox + "/" + rowId;
-    url = ApplicationBaseURL + messageId + "/trash?jsonly=1";
+    url = ApplicationBaseURL + messageId + "/trash";
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
     http.send("");
-    if (http.status != 200) { /* request failed */
+    if (!isHttpStatus204(http.status)) { /* request failed */
       failCount++;
       http = null;
       continue;
@@ -270,7 +270,7 @@ function moveMessages(rowIds, folder) {
 	  
     var messageId = currentMailbox + "/" + rowIds[i];
     url = (ApplicationBaseURL + messageId
-	   + "/move?jsonly=1&tofolder=" + folder);
+	   + "/move?tofolder=" + folder);
     http = createHTTPClient();
     http.open("GET", url, false /* not async */);
     http.send("");
@@ -1301,8 +1301,16 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-
   triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
+
+  if (folderID == currentMailbox) {
+    var div = $('messageContent');
+    for (var i = div.childNodes.length - 1; i > -1; i--)
+      div.removeChild(div.childNodes[i]);
+  }
+  var msgID = currentMessages[folderID];
+  if (msgID)
+    deleteCachedMessage(folderID + "/" + msgID);
 }
 
 function folderOperationCallback(http) {
