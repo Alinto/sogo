@@ -420,34 +420,37 @@ static NSString *defaultMailDomain = nil;
   while (userEntry)
     {
       uid = [userEntry objectForKey: @"c_uid"];
-      returnContact = [compactContacts objectForKey: uid];
-      if (!returnContact)
+      if ([uid length])
 	{
-	  returnContact = [NSMutableDictionary dictionary];
-	  [returnContact setObject: uid forKey: @"c_uid"];
-	  [compactContacts setObject: returnContact forKey: uid];
+	  returnContact = [compactContacts objectForKey: uid];
+	  if (!returnContact)
+	    {
+	      returnContact = [NSMutableDictionary dictionary];
+	      [returnContact setObject: uid forKey: @"c_uid"];
+	      [compactContacts setObject: returnContact forKey: uid];
+	    }
+	  if (![[returnContact objectForKey: @"c_name"] length])
+	    [returnContact setObject: [userEntry objectForKey: @"c_name"]
+			   forKey: @"c_name"];
+	  if (![[returnContact objectForKey: @"cn"] length])
+	    [returnContact setObject: [userEntry objectForKey: @"c_cn"]
+			   forKey: @"cn"];
+	  emails = [returnContact objectForKey: @"emails"];
+	  if (!emails)
+	    {
+	      emails = [NSMutableArray array];
+	      [returnContact setObject: emails forKey: @"emails"];
+	    }
+	  email = [userEntry objectForKey: @"mail"];
+	  if (email && ![emails containsObject: email])
+	    [emails addObject: email];
+	  email = [userEntry objectForKey: @"mozillaSecondEmail"];
+	  if (email && ![emails containsObject: email])
+	    [emails addObject: email];
+	  email = [userEntry objectForKey: @"xmozillasecondemail"];
+	  if (email && ![emails containsObject: email])
+	    [emails addObject: email];
 	}
-      if (![[returnContact objectForKey: @"c_name"] length])
-	[returnContact setObject: [userEntry objectForKey: @"c_name"]
-		       forKey: @"c_name"];
-      if (![[returnContact objectForKey: @"cn"] length])
-	[returnContact setObject: [userEntry objectForKey: @"c_cn"]
-		       forKey: @"cn"];
-      emails = [returnContact objectForKey: @"emails"];
-      if (!emails)
-	{
-	  emails = [NSMutableArray array];
-	  [returnContact setObject: emails forKey: @"emails"];
-	}
-      email = [userEntry objectForKey: @"mail"];
-      if (email && ![emails containsObject: email])
-	[emails addObject: email];
-      email = [userEntry objectForKey: @"mozillaSecondEmail"];
-      if (email && ![emails containsObject: email])
-	[emails addObject: email];
-      email = [userEntry objectForKey: @"xmozillasecondemail"];
-      if (email && ![emails containsObject: email])
-	[emails addObject: email];
 
       userEntry = [contacts nextObject];
     }
