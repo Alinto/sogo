@@ -27,12 +27,12 @@ function onLoginClick(event) {
     triggerAjaxRequest(url, onLoginCallback);
   }
 
-  event.preventDefault();
+  preventDefault(event);
 }
 
 function onLoginCallback(http) {
   if (http.readyState == 4) {
-    if (http.status == 204) {
+    if (isHttpStatus204(http.status)) {
       window.location.href = ApplicationBaseURL + $("userName").value;
     }
   }
