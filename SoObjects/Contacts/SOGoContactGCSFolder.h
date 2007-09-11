@@ -30,9 +30,6 @@
 @class NSString;
 
 @interface SOGoContactGCSFolder : SOGoFolder <SOGoContactFolder>
-{
-  NSString *displayName;
-}
 
 @end
 
