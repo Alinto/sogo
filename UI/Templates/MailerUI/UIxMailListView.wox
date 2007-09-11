@@ -63,7 +63,6 @@
 	  var:class="messageSubjectCellStyleClass"
 	  var:id="msgDivID"
 	  ><var:string value="message.envelope.subject"
-	    formatter="context.mailSubjectFormatter"
 	    /></td
 
 	  ><td class="messageAddressColumn"
