@@ -69,7 +69,7 @@
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
-  response = [context response];
+  response = [self responseWith204];
   cookieString = [NSString stringWithFormat: @"%@:%@",
 			   [self queryParameterForKey: @"userName"],
 			   [self queryParameterForKey: @"password"]];
@@ -78,7 +78,6 @@
   authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 			 value: cookieValue];
   [authCookie setPath: @"/"];
-  [response setStatus: 204];
   [response addCookie: authCookie];
 
   return response;
