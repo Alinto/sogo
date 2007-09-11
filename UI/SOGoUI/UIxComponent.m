@@ -400,7 +400,7 @@ static BOOL uixDebugEnabled = NO;
   userTimeZone = [[context activeUser] timeZone];
   [_date setTimeZone: userTimeZone];
 
-  return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
+  return [_date descriptionWithCalendarFormat: @"%Y%m%d"];
 }
 
 - (BOOL) hideFrame
@@ -567,6 +567,16 @@ static BOOL uixDebugEnabled = NO;
     url = @"";
 
   return url;
+}
+
+- (WOResponse *) responseWith204
+{
+  WOResponse *response;
+
+  response = [context response];
+  [response setStatus: 204];
+
+  return response;
 }
 
 /* debugging */

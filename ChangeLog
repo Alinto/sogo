@@ -1,5 +1,9 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWith204]): new
+	method that returns a WOResponse initialized with the 204 status
+	code.
+	
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sortedUIDs]):
 	always use a "not deleted" search qualifier along with the user
 	qualifier (if present).

@@ -68,25 +68,25 @@
 /* date selection */
 - (NSCalendarDate *) selectedDate;
 
-- (NSString *)dateStringForDate:(NSCalendarDate *)_date;
+- (NSString *) dateStringForDate: (NSCalendarDate *)_date;
 
 - (BOOL) hideFrame;
 
 - (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName;
 
 /* SoUser */
-- (NSString *)shortUserNameForDisplay;
+- (NSString *) shortUserNameForDisplay;
 
 /* labels */
-- (NSString *)labelForKey:(NSString *)_key;
+- (NSString *) labelForKey:(NSString *)_key;
 
-- (NSString *)localizedNameForDayOfWeek:(unsigned)_dayOfWeek;
-- (NSString *)localizedAbbreviatedNameForDayOfWeek:(unsigned)_dayOfWeek;
-- (NSString *)localizedNameForMonthOfYear:(unsigned)_monthOfYear;
-- (NSString *)localizedAbbreviatedNameForMonthOfYear:(unsigned)_monthOfYear;
+- (NSString *) localizedNameForDayOfWeek:(unsigned)_dayOfWeek;
+- (NSString *) localizedAbbreviatedNameForDayOfWeek:(unsigned)_dayOfWeek;
+- (NSString *) localizedNameForMonthOfYear:(unsigned)_monthOfYear;
+- (NSString *) localizedAbbreviatedNameForMonthOfYear:(unsigned)_monthOfYear;
 
 /* HTTP method safety */
-- (BOOL)isInvokedBySafeMethod;
+- (BOOL) isInvokedBySafeMethod;
     
 /* locale */
 - (NSDictionary *)locale;
@@ -94,6 +94,8 @@
 /* cached resource filenames */
 - (WOResourceManager *) pageResourceManager;
 - (NSString *) urlForResourceFilename: (NSString *) filename;
+
+- (WOResponse *) responseWith204;
 
 /* Debugging */
 - (BOOL)isUIxDebugEnabled;
