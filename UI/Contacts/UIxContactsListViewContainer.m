@@ -29,6 +29,7 @@
 
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
+#import <SoObjects/Contacts/SOGoContactFolders.h>
 
 #import "UIxContactsListViewContainer.h"
 
@@ -115,7 +116,7 @@
 
   folderContainer = [[self clientObject] container];
 
-  return [folderContainer contactFolders];
+  return [folderContainer subFolders];
 }
 
 - (NSString *) currentContactFolderId

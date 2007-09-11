@@ -52,8 +52,7 @@
   WORequest *request;
 
   folders = [self clientObject];
-  action = [NSString stringWithFormat: @"../%@/%@",
-                     [folders defaultSourceName],
+  action = [NSString stringWithFormat: @"../personal/%@",
                      actionName];
 
   request = [[self context] request];
@@ -82,7 +81,11 @@
 
   name = [self queryParameterForKey: @"name"];
   if ([name length] > 0)
-    response = [[self clientObject] newFolderWithName: name];
+    {
+      response = [[self clientObject] newFolderWithName: name];
+      if (!response)
+	response = [self responseWith204];
+    }
   else
     response = [NSException exceptionWithHTTPStatus: 400
                             reason: @"The name is missing"];
@@ -111,8 +114,7 @@
     {
       uid = [currentContact objectForKey: @"c_uid"];
       if (uid && ![results objectForKey: uid])
-	[results setObject: currentContact
-		 forKey: uid];
+	[results setObject: currentContact forKey: uid];
       currentContact = [folderResults nextObject];
     }
 }
@@ -202,7 +204,7 @@
   gcsFolders = [NSMutableArray new];
   [gcsFolders autorelease];
 
-  contactSubfolders = [[contactFolders contactFolders] objectEnumerator];
+  contactSubfolders = [[contactFolders subFolders] objectEnumerator];
   currentContactFolder = [contactSubfolders nextObject];
   while (currentContactFolder)
     {
