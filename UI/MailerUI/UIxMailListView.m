@@ -221,10 +221,24 @@ static int attachmentFlagSize = 8096;
 
 - (NSArray *) sortedUIDs 
 {
+  EOQualifier *fetchQualifier, *notDeleted;
   if (!sortedUIDs)
     {
+      notDeleted = [EOQualifier qualifierWithQualifierFormat:
+				  @"(not (flags = %@))",
+				@"deleted"];
+      if (qualifier)
+	{
+	  fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers:
+						     notDeleted, qualifier,
+						   nil];
+	  [fetchQualifier autorelease];
+	}
+      else
+	fetchQualifier = notDeleted;
+
       sortedUIDs
-        = [[self clientObject] fetchUIDsMatchingQualifier: qualifier
+        = [[self clientObject] fetchUIDsMatchingQualifier: fetchQualifier
 			       sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
@@ -407,35 +421,7 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:url];
 }
 
-/* active message */
-
-- (SOGoMailObject *) lookupActiveMessage 
-{
-  NSString *uid;
-  
-  if ((uid = [[context request] formValueForKey: @"uid"]) == nil)
-    return nil;
-
-  return [[self clientObject] lookupName: uid
-			      inContext: context
-			      acquire: NO];
-}
-
 /* actions */
-
-- (BOOL) isJavaScriptRequest 
-{
-  return [[[context request] formValueForKey:@"jsonly"] boolValue];
-}
-
-- (id) javaScriptOK 
-{
-  WOResponse *r;
-
-  r = [context response];
-  [r setStatus:200 /* OK */];
-  return r;
-}
 
 - (int) firstMessageOfPageFor: (int) messageNbr
 {
@@ -462,8 +448,7 @@ static int attachmentFlagSize = 8096;
 
   if ([criteria isEqualToString: @"subject"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(subject doesContain: %@)",
-			     value];
+			       @"(subject doesContain: %@)", value];
   else if ([criteria isEqualToString: @"sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
 			       @"(sender doesContain: %@)", value];
@@ -508,39 +493,6 @@ static int attachmentFlagSize = 8096;
        : [[request formValueForKey:@"idx"] intValue]);
 
   return self;
-}
-
-- (id) viewAction 
-{
-  return [self defaultAction];
-}
-
-- (id) markMessageUnreadAction 
-{
-  NSException *error;
-  
-  if ((error = [[self lookupActiveMessage] removeFlags:@"seen"]) != nil)
-    // TODO: improve error handling
-    return error;
-
-  if ([self isJavaScriptRequest])
-    return [self javaScriptOK];
-  
-  return [self redirectToLocation:@"view"];
-}
-
-- (id) markMessageReadAction 
-{
-  NSException *error;
-  
-  if ((error = [[self lookupActiveMessage] addFlags:@"seen"]) != nil)
-    // TODO: improve error handling
-    return error;
-  
-  if ([self isJavaScriptRequest])
-    return [self javaScriptOK];
-  
-  return [self redirectToLocation:@"view"];
 }
 
 - (id) getMailAction 

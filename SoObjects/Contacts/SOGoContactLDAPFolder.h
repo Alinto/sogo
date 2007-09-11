@@ -37,9 +37,12 @@
   BOOL ignoreSoObjectHunger;
 }
 
-- (id <SOGoContactFolder>) initWithName: (NSString *) newName
-                         andDisplayName: (NSString *) newDisplayName
-                            inContainer: (SOGoObject *) newContainer;
++ (id) folderWithName: (NSString *) aName
+       andDisplayName: (NSString *) aDisplayName
+	  inContainer: (id) aContainer;
+- (id) initWithName: (NSString *) newName
+     andDisplayName: (NSString *) newDisplayName
+	inContainer: (id) newContainer;
 - (void) setLDAPSource: (LDAPSource *) newLdapSource;
 
 @end

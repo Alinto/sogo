@@ -21,8 +21,9 @@ FHS_HEADER_DIRS = SOGo
 
 libSOGo_HEADER_FILES = \
 	SOGoObject.h			\
-	SOGoFolder.h			\
 	SOGoContentObject.h		\
+	SOGoFolder.h			\
+	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
 	SOGoGroupsFolder.h		\
 	SOGoGroupFolder.h		\
@@ -50,8 +51,9 @@ libSOGo_HEADER_FILES = \
 
 libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
-	SOGoFolder.m			\
 	SOGoContentObject.m		\
+	SOGoFolder.m			\
+	SOGoParentFolder.m		\
 	SOGoUserFolder.m		\
 	SOGoGroupsFolder.m		\
 	SOGoGroupFolder.m		\

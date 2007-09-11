@@ -28,15 +28,30 @@
 
 @implementation WODirectAction (SOGoExtension)
 
-- (WOResponse *) redirectToLocation: (NSString *) newLocation
+- (WOResponse *) responseWithStatus: (unsigned int) status
 {
   WOResponse *response;
 
   response = [context response];
-  [response setStatus: 302 /* moved */];
+  [response setStatus: status];
+
+  return response;
+}
+
+- (WOResponse *) responseWith204
+{
+  return [self responseWithStatus: 204];
+}
+
+- (WOResponse *) redirectToLocation: (NSString *) newLocation
+{
+  WOResponse *response;
+
+  response = [self responseWithStatus: 302];
   [response setHeader: newLocation forKey: @"location"];
 
   return response;
 }
+
 
 @end

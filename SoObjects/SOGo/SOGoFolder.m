@@ -29,6 +29,7 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/SoSelectorInvocation.h>
@@ -85,18 +86,45 @@ static NSString *defaultUserID = @"<default>";
     }
   sequence++;
   f = [[NSDate date] timeIntervalSince1970];
+
   return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
-		   pid, *(int *)&f, sequence++, random];
+		   pid, (int) f, sequence++, random];
+}
+
++ (id) folderWithName: (NSString *) aName
+       andDisplayName: (NSString *) aDisplayName
+	  inContainer: (id) aContainer
+{
+  id newFolder;
+
+  newFolder = [[self alloc] initWithName: aName
+			    andDisplayName: aDisplayName
+			    inContainer: aContainer];
+  [newFolder autorelease];
+
+  return newFolder;
 }
 
 - (id) init
 {
   if ((self = [super init]))
     {
+      displayName = nil;
       ocsPath = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
     }
+
+  return self;
+}
+
+- (id) initWithName: (NSString *) aName
+     andDisplayName: (NSString *) aDisplayName
+	inContainer: (id) aContainer
+{
+  if ((self = [self initWithName: aName
+                    inContainer: aContainer]))
+    ASSIGN (displayName, aDisplayName);
 
   return self;
 }
@@ -106,6 +134,7 @@ static NSString *defaultUserID = @"<default>";
   [ocsFolder release];
   [ocsPath release];
   [aclCache release];
+  [displayName release];
   [super dealloc];
 }
 
@@ -154,6 +183,11 @@ static NSString *defaultUserID = @"<default>";
   return NO;
 }
 
+- (NSString *) displayName
+{
+  return displayName;
+}
+
 - (GCSFolder *) ocsFolder
 {
   GCSFolder *folder;
@@ -196,7 +230,15 @@ static NSString *defaultUserID = @"<default>";
 
 - (NSException *) delete
 {
-  return [[self folderManager] deleteFolderAtPath: ocsPath];
+  NSException *error;
+
+  if ([nameInContainer isEqualToString: @"personal"])
+    error = [NSException exceptionWithHTTPStatus: 403
+			 reason: @"the 'personal' folder cannot be deleted"];
+  else
+    error = [[self folderManager] deleteFolderAtPath: ocsPath];
+
+  return error;
 }
 
 - (NSArray *) fetchContentObjectNames

@@ -142,37 +142,42 @@ static NSString *mailETag = nil;
 
 - (id) defaultAction
 {
+  WOResponse *response;
+  NSString *s;
+
   /* check etag to see whether we really must rerender */
-  if (mailETag != nil ) {
-    /*
-      Note: There is one thing which *can* change for an existing message,
-            those are the IMAP4 flags (and annotations, which we do not use).
-	    Since we don't render the flags, it should be OK, if this changes
-	    we must embed the flagging into the etag.
-    */
-    NSString *s;
-    
-    if ((s = [[context request] headerForKey:@"if-none-match"])) {
-      if ([s rangeOfString:mailETag].length > 0) { /* not perfectly correct */
-	/* client already has the proper entity */
-	// [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
-	
-	if (![[self clientObject] doesMailExist]) {
-	  return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			      reason:@"message got deleted"];
+  if (mailETag)
+    {
+      /*
+	Note: There is one thing which *can* change for an existing message,
+	those are the IMAP4 flags (and annotations, which we do not use).
+	Since we don't render the flags, it should be OK, if this changes
+	we must embed the flagging into the etag.
+      */
+      s = [[context request] headerForKey: @"if-none-match"];
+      if (s)
+	{
+	  if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
+	    { 
+	      /* client already has the proper entity */
+	      // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
+	      
+	      if (![[self clientObject] doesMailExist]) {
+		return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+				    reason:@"message got deleted"];
+	      }
+
+	      response = [context response];
+	      [response setStatus: 304 /* Not Modified */];
+
+	      return response;
+	    }
 	}
-	
-	[[context response] setStatus:304 /* Not Modified */];
-	return [context response];
-      }
     }
-  }
   
-  if ([self message] == nil) {
-    // TODO: redirect to proper error
+  if (![self message]) // TODO: redirect to proper error
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find specified message!"];
-  }
   
   return self;
 }

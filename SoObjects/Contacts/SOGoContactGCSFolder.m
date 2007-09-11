@@ -41,45 +41,9 @@
 
 @implementation SOGoContactGCSFolder
 
-+ (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
-                                  andDisplayName: (NSString *) aDisplayName
-                                     inContainer: (SOGoObject *) aContainer
-{
-  SOGoContactGCSFolder *folder;
-
-  folder = [[self alloc] initWithName: aName
-                         andDisplayName: aDisplayName
-                         inContainer: aContainer];
-  [folder autorelease];
-
-  return folder;
-}
-
-- (void) dealloc
-{
-  [displayName release];
-  [super dealloc];
-}
-
-- (id <SOGoContactFolder>) initWithName: (NSString *) newName
-                         andDisplayName: (NSString *) newDisplayName
-                            inContainer: (SOGoObject *) newContainer
-{
-  if ((self = [self initWithName: newName
-                    inContainer: newContainer]))
-    ASSIGN (displayName, newDisplayName);
-
-  return self;
-}
-
 - (BOOL) folderIsMandatory
 {
   return [nameInContainer isEqualToString: @"personal"];
-}
-
-- (NSString *) displayName
-{
-  return displayName;
 }
 
 /* name lookup */
@@ -105,7 +69,6 @@
   BOOL isPut;
 
   isPut = NO;
-  /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
@@ -271,14 +234,6 @@
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";
-}
-
-- (NSException *) delete
-{
-  return (([nameInContainer isEqualToString: @"personal"])
-	  ? [NSException exceptionWithHTTPStatus: 403
-			 reason: @"the 'personal' folder cannot be deleted"]
-	  : [super delete]);
 }
 
 // /* GET */

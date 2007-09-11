@@ -37,6 +37,8 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
+#import "WODirectAction+SOGo.h"
+
 #import "UIxFolderActions.h"
 
 @implementation UIxFolderActions
@@ -89,10 +91,9 @@
   NSMutableDictionary *folderSubscription;
   NSString *mailInvitationURL;
 
-  response = [context response];
   if ([owner isEqualToString: login])
     {
-      [response setStatus: 403];
+      response = [self responseWithStatus: 403];
       [response appendContentString:
 		 @"You cannot (un)subscribe to a folder that you own!"];
     }
@@ -119,12 +120,12 @@
 	  mailInvitationURL
 	    = [[clientObject soURLToBaseContainerForCurrentUser]
 		absoluteString];
-	  [response setStatus: 302];
+	  response = [self responseWithStatus: 302];
 	  [response setHeader: mailInvitationURL
 		    forKey: @"location"];
 	}
       else
-	[response setStatus: 204];
+	response = [self responseWith204];
     }
 
   return response;
@@ -162,22 +163,14 @@
 
 - (WOResponse *) canAccessContentAction
 {
-  WOResponse *response;
-
-  response = [context response];
-  [response setStatus: 204];
-
-  return response;
+  return [self responseWith204];
 }
 
 - (WOResponse *) _realFolderActivation: (BOOL) makeActive
 {
-  WOResponse *response;
   NSMutableDictionary *folderSubscription, *folderDict;
   NSNumber *active;
   
-  response = [context response];
-
   [self _setupContext];
   active = [NSNumber numberWithBool: makeActive];
   if ([owner isEqualToString: login])
@@ -196,9 +189,8 @@
     }
 
   [ud synchronize];
-  [response setStatus: 204];
 
-  return response;
+  return [self responseWith204];
 }
 
 - (WOResponse *) activateFolderAction

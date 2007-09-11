@@ -404,10 +404,7 @@ static NSArray *infoKeys = nil;
     {
       result = [[self clientObject] save];
       if (!result)
-	{
-	  result = [context response];
-	  [result setStatus: 204];
-	}
+	result = [self responseWith204];
     }
   else
     result = [self failedToSaveFormResponse];

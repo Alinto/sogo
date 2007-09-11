@@ -1,3 +1,60 @@
+2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	new method.
+	([SOGoFolder -displayName]): new method.
+	([SOGoFolder -delete]): accept to proceed only if nameInContainer
+	!= "personal".
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	renamed from "contactFolderWithName..." for compatibility with SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	+contactFolderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	removed method, reimplemented in SOGoFolder.
+	([SOGoContactGCSFolder -displayName]): removed method,
+	reimplemented in SOGoFolder.
+	([-delete]): removed method, modified in SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactFolders.[hm]: modified class to be
+	a subclass of SOGoParentFolder.
+
+	* SoObjects/SOGo/SOGoParentFolder.[hm]: new class module derived
+	from SOGoContactFolders and modified to be more content-independent.
+
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -markMessageUnreadAction])
+	([UIxMailActions -markMessageReadAction]): new methods moved from
+	UIxMailListView and adapted to invoke the client object directly,
+	since the previous versions had to to a lookup from the parent
+	SOGoMailFolder.
+
+	* UI/MailerUI/UIxMailListView.m ([-markMessageUnreadAction]): move
+	method into UIxMailActions.
+	([-markMessageReadAction]): same as above.
+	([-viewAction]): removed useless method.
+	([-javaScriptOK]): removed useless method.
+	([-isJavaScriptRequest]): removed useless method.
+	([-lookupActiveMessage]): removed useless method.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWithStatus:status]): new method that returns a WOResponse
+	initialized with the specified status code.
+	([WODirectAction -responseWith204]): new method that invokes the
+	above one with "204" as parameter.
+	([WODirectAction -redirectToLocation:newLocation]): rewrote method
+	to make use of -responseWithStatus:.
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWith204]): new
+	method that returns a WOResponse initialized with the 204 status
+	code.
+	
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sortedUIDs]):
+	always use a "not deleted" search qualifier along with the user
+	qualifier (if present).
+
 2007-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView

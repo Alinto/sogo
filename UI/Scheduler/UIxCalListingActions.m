@@ -39,6 +39,8 @@
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
+#import <UI/Common/WODirectAction+SOGo.h>
+
 #import "NSArray+Scheduler.h"
 
 #import "UIxCalListingActions.h"
@@ -289,10 +291,9 @@
 {
   WOResponse *response;
 
-  response = [context response];
+  response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
-  [response setStatus: 200];
   [response appendContentString: [data jsonRepresentation]];
 
   return response;

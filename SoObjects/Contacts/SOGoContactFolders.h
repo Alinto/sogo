@@ -1,6 +1,6 @@
 /* SOGoContactFolders.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006, 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,25 +23,9 @@
 #ifndef SOGOCONTACTFOLDERS_H
 #define SOGOCONTACTFOLDERS_H
 
-#import <SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoParentFolder.h>
 
-@class NSMutableDictionary;
-@class NSString;
-@class WOResponse;
-
-@interface SOGoContactFolders : SOGoObject
-{
-  NSMutableDictionary *contactFolders;
-  NSString *OCSPath;
-}
-
-- (NSString *) defaultSourceName;
-
-- (void) setBaseOCSPath: (NSString *) newOCSPath;
-
-- (NSArray *) contactFolders;
-
-- (WOResponse *) newFolderWithName: (NSString *) name;
+@interface SOGoContactFolders : SOGoParentFolder
 
 @end
 

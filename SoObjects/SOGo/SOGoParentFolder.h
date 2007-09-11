@@ -1,6 +1,6 @@
-/* WODirectAction+SOGo.h - this file is part of SOGo
+/* SOGoParentFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2006, 2007 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,20 +20,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef WODIRECTACTION_SOGO_H
-#define WODIRECTACTION_SOGO_H
+#ifndef SOGOPARENTFOLDERS_H
+#define SOGOPARENTFOLDERS_H
 
-#import <NGObjWeb/WODirectAction.h>
+#import "SOGoObject.h"
 
+@class NSMutableDictionary;
 @class NSString;
 @class WOResponse;
 
-@interface WODirectAction (SOGoExtension)
+@interface SOGoParentFolder : SOGoObject
+{
+  NSMutableDictionary *subFolders;
+  NSString *OCSPath;
+  Class subFolderClass;
+}
 
-- (WOResponse *) responseWithStatus: (unsigned int) status;
-- (WOResponse *) responseWith204;
-- (WOResponse *) redirectToLocation: (NSString *) newLocation;
++ (NSString *) gcsFolderType;
++ (Class) subFolderClass;
+
+- (void) setBaseOCSPath: (NSString *) newOCSPath;
+
+- (NSArray *) subFolders;
+
+- (NSException *) newFolderWithName: (NSString *) name;
 
 @end
 
-#endif /* WODIRECTACTION_SOGO_H */
+#endif /* SOGOPARENTFOLDERS_H */
