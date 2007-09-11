@@ -1,5 +1,8 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.[hm]: new class module derived
+	from SOGoContactFolders and modified to be more content-independent.
+
 	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -markMessageUnreadAction])
 	([UIxMailActions -markMessageReadAction]): new methods moved from
 	UIxMailListView and adapted to invoke the client object directly,
