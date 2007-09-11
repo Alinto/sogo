@@ -41,11 +41,11 @@
 
 @implementation SOGoContactLDAPFolder
 
-+ (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
-                                  andDisplayName: (NSString *) aDisplayName
-                                     inContainer: (SOGoObject *) aContainer
++ (id) folderWithName: (NSString *) aName
+       andDisplayName: (NSString *) aDisplayName
+	  inContainer: (id) aContainer
 {
-  SOGoContactLDAPFolder *folder;
+  id folder;
 
   folder = [[self alloc] initWithName: aName
                          andDisplayName: aDisplayName
@@ -68,9 +68,9 @@
   return self;
 }
 
-- (id <SOGoContactFolder>) initWithName: (NSString *) newName
-                         andDisplayName: (NSString *) newDisplayName
-                            inContainer: (SOGoObject *) newContainer
+- (id) initWithName: (NSString *) newName
+     andDisplayName: (NSString *) newDisplayName
+	inContainer: (id) newContainer
 {
   if ((self = [self initWithName: newName
 		    inContainer: newContainer]))

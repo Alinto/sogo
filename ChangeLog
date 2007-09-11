@@ -1,5 +1,10 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	renamed from "contactFolderWithName..." for compatibility with SOGoFolder.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	+contactFolderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
 	removed method, reimplemented in SOGoFolder.
