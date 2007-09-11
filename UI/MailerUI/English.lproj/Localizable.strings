@@ -23,7 +23,7 @@
 
 "Home"                 = "Home"; 
 "Calendar"             = "Calendar";
-"Addressbook"          = "Addressbook";
+"Addressbook"          = "Address Book";
 "Mail"                 = "Mail";
 "Right Administration" = "Right Administration";
 
@@ -71,7 +71,7 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "Addressbook";
+"Addressbook"   = "Address Book";
 "Anais"         = "Anais";
 
 "Edit Draft..." = "Edit Draft...";

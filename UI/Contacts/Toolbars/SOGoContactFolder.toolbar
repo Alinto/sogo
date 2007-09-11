@@ -4,26 +4,31 @@
      jsLink="js_card";
      label="New Card";
      image="new-card.png";
-     onclick = "newContact(this); return false;"; },
+     onclick = "newContact(this); return false;";
+     tooltip = "Create a new address book card"; },
    { link = "new_list";
      enabled = "NO";
      label="New List";
-     image="new-list.png"; }
+     image="new-list.png";
+     tooltip = "Create a new list"; }
   ),
   (
    { link = "edit";
      label = "Modify";
      onclick = "return onToolbarEditSelectedContacts(this);";
-     image = "properties.png"; },
+     image = "properties.png";
+     tooltip = "Edit the selected card"; },
    { link = "write";
      label="Write";
      onclick = "return onToolbarWriteToSelectedContacts(this);";
-     image="write.png"; }
+     image="write.png";
+     tooltip = "Send a mail message"; }
   ),
   (
    { link = "delete";
      label="Delete";
      onclick = "return uixDeleteSelectedContacts(this);";
-     image="delete.png"; }
+     image="delete.png";
+     tooltip = "Delete selected card or address book"; }
   )
 )
