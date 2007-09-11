@@ -221,10 +221,24 @@ static int attachmentFlagSize = 8096;
 
 - (NSArray *) sortedUIDs 
 {
+  EOQualifier *fetchQualifier, *notDeleted;
   if (!sortedUIDs)
     {
+      notDeleted = [EOQualifier qualifierWithQualifierFormat:
+				  @"(not (flags = %@))",
+				@"deleted"];
+      if (qualifier)
+	{
+	  fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers:
+						     notDeleted, qualifier,
+						   nil];
+	  [fetchQualifier autorelease];
+	}
+      else
+	fetchQualifier = notDeleted;
+
       sortedUIDs
-        = [[self clientObject] fetchUIDsMatchingQualifier: qualifier
+        = [[self clientObject] fetchUIDsMatchingQualifier: fetchQualifier
 			       sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
@@ -462,8 +476,7 @@ static int attachmentFlagSize = 8096;
 
   if ([criteria isEqualToString: @"subject"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(subject doesContain: %@)",
-			     value];
+			       @"(subject doesContain: %@)", value];
   else if ([criteria isEqualToString: @"sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
 			       @"(sender doesContain: %@)", value];

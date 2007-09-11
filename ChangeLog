@@ -1,3 +1,9 @@
+2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sortedUIDs]):
+	always use a "not deleted" search qualifier along with the user
+	qualifier (if present).
+
 2007-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
