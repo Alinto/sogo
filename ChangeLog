@@ -1,5 +1,12 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	new method.
+	([SOGoFolder -displayName]): new method.
+	([SOGoFolder -delete]): accept to proceed only if nameInContainer
+	!= "personal".
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):

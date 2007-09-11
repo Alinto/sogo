@@ -43,7 +43,8 @@
 
 @interface SOGoFolder : SOGoObject
 {
-  NSString  *ocsPath;
+  NSString *displayName;
+  NSString *ocsPath;
   GCSFolder *ocsFolder;
   NSMutableDictionary *aclCache;
 }
@@ -51,6 +52,15 @@
 + (NSString *) globallyUniqueObjectId;
 
 /* accessors */
+
++ (id) folderWithName: (NSString *) aName
+       andDisplayName: (NSString *) aDisplayName
+	  inContainer: (id) aContainer;
+- (id) initWithName: (NSString *) aName
+     andDisplayName: (NSString *) aDisplayName
+	inContainer: (id) aContainer;
+
+- (NSString *) displayName;
 
 - (void) setOCSPath: (NSString *)_Path;
 - (NSString *) ocsPath;
