@@ -1,5 +1,8 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactFolders.[hm]: modified class to be
+	a subclass of SOGoParentFolder.
+
 	* SoObjects/SOGo/SOGoParentFolder.[hm]: new class module derived
 	from SOGoContactFolders and modified to be more content-independent.
 
