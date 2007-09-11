@@ -149,7 +149,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
 
 function mailListMarkMessage(event) {
   var http = createHTTPClient();
-  var url = ApplicationBaseURL + currentMailbox + "/" + action + "?uid=" + msguid;
+  var url = ApplicationBaseURL + currentMailbox + "/" + msguid + "/" + action;
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK

@@ -1,5 +1,19 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -markMessageUnreadAction])
+	([UIxMailActions -markMessageReadAction]): new methods moved from
+	UIxMailListView and adapted to invoke the client object directly,
+	since the previous versions had to to a lookup from the parent
+	SOGoMailFolder.
+
+	* UI/MailerUI/UIxMailListView.m ([-markMessageUnreadAction]): move
+	method into UIxMailActions.
+	([-markMessageReadAction]): same as above.
+	([-viewAction]): removed useless method.
+	([-javaScriptOK]): removed useless method.
+	([-isJavaScriptRequest]): removed useless method.
+	([-lookupActiveMessage]): removed useless method.
+
 	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
 	-responseWithStatus:status]): new method that returns a WOResponse
 	initialized with the specified status code.

@@ -115,16 +115,6 @@
 	  protectedBy = "View";
 	  pageName    = "UIxMailListView";
 	};
-	markMessageUnread = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailListView";
-	  actionName  = "markMessageUnread";
-	};
-	markMessageRead = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailListView";
-	  actionName  = "markMessageRead";
-	};
 	getMail = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailListView";
@@ -234,6 +224,16 @@
 	  protectedBy = "View";
 	  actionClass = "UIxMailActions";
 	  actionName  = "forward";
+	};
+	markMessageUnread = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "markMessageUnread";
+	};
+	markMessageRead = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "markMessageRead";
 	};
       };
     };

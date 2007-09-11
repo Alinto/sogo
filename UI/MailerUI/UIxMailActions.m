@@ -94,10 +94,7 @@
 
   response = [[self clientObject] trashInContext: context];
   if (!response)
-    {
-      response = [context response];
-      [response setStatus: 204];
-    }
+    response = [self responseWith204];
 
   return response;
 }
@@ -113,14 +110,35 @@
       response = [[self clientObject] moveToFolderNamed: destinationFolder
 				      inContext: context];
       if (!response)
-        {
-	  response = [context response];
-	  [response setStatus: 204];
-        }
+	response = [self responseWith204];
     }
   else
     response = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
 			    reason: @"No destination folder given"];
+
+  return response;
+}
+
+/* active message */
+
+- (id) markMessageUnreadAction 
+{
+  id response;
+
+  response = [[self clientObject] removeFlags: @"seen"];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (id) markMessageReadAction 
+{
+  id response;
+
+  response = [[self clientObject] addFlags: @"seen"];
+  if (!response)
+    response = [self responseWith204];
 
   return response;
 }
@@ -158,10 +176,7 @@
   if (error)
     response = error;
   else
-    {
-      response = [context response];
-      [response setStatus: 204];
-    }
+    response = [self responseWith204];
 
   return response;
 }
@@ -171,17 +186,15 @@
   WOResponse *response;
   NSString *filename;
 
-  response = [context response];
-
   filename = [[context request] formValueForKey: @"filename"];
   if ([filename length] > 0)
     {
+      response = [self responseWith204];
       [[self clientObject] deleteAttachmentWithName: filename];
-      [response setStatus: 204];
     }
   else
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
 
