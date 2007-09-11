@@ -1,5 +1,13 @@
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWithStatus:status]): new method that returns a WOResponse
+	initialized with the specified status code.
+	([WODirectAction -responseWith204]): new method that invokes the
+	above one with "204" as parameter.
+	([WODirectAction -redirectToLocation:newLocation]): rewrote method
+	to make use of -responseWithStatus:.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWith204]): new
 	method that returns a WOResponse initialized with the 204 status
 	code.
