@@ -451,10 +451,10 @@ static int attachmentFlagSize = 8096;
 			       @"(subject doesContain: %@)", value];
   else if ([criteria isEqualToString: @"sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(sender doesContain: %@)", value];
+			       @"(from doesContain: %@)", value];
   else if ([criteria isEqualToString: @"subject_or_sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"((sender doesContain: %@)"
+			       @"((subject doesContain: %@)"
 			     @" OR (from doesContain: %@))",
 			     value, value];
   else if ([criteria isEqualToString: @"to_or_cc"])
@@ -491,7 +491,6 @@ static int attachmentFlagSize = 8096;
     = ((specificMessage)
        ? [self firstMessageOfPageFor: [specificMessage intValue]]
        : [[request formValueForKey:@"idx"] intValue]);
-
   return self;
 }
 
