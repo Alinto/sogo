@@ -1,3 +1,11 @@
+2007-09-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -defaultAction]): test
+	whether the user is logged in and if so, redirect to his/her
+	homepage.
+	([SOGoRootPage -appendToResponse:inContext:]): removed useless
+	method.
+
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
