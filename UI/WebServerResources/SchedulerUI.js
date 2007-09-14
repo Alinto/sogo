@@ -196,25 +196,26 @@ function modifyEventCallback(http) {
 }
 
 function deleteEventCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
-    var nodes = http.callbackData;
-    for (var i = 0; i < nodes.length; i++) {
-      var node = $(nodes[i]);
-      if (node)
-        node.parentNode.removeChild(node);
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var nodes = http.callbackData;
+      for (var i = 0; i < nodes.length; i++) {
+	var node = $(nodes[i]);
+	if (node)
+	  node.parentNode.removeChild(node);
+      }
+      if (eventsToDelete.length)
+	_batchDeleteEvents();
+      else {
+	document.deleteEventAjaxRequest = null;
+	refreshEvents();
+	refreshTasks();
+	changeCalendarDisplay();
+      }
     }
-    if (eventsToDelete.length)
-      _batchDeleteEvents();
-    else {
-      document.deleteEventAjaxRequest = null;
-      refreshEvents();
-      refreshTasks();
-      changeCalendarDisplay();
-    }
+    else
+      log ("deleteEventCallback Ajax error");
   }
-  else
-    log ("deleteEventCallback Ajax error");
 }
 
 function editDoubleClickedEvent(event) {
