@@ -1,5 +1,8 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m ([-batchDeleteAction]): moved
+	method into UIxFolderActions.
+
 	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
 	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): fetch the
 	freebusy info from the "personal" calendar.

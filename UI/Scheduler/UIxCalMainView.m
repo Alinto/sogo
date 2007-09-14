@@ -109,19 +109,4 @@ static NSMutableArray *yearMenuItems = nil;
   return yearMenuItem;
 }
 
-- (id) batchDeleteAction
-{
-  NSArray *ids;
-  SOGoAppointmentFolder *clientObject;
-
-  ids = [[self queryParameterForKey: @"ids"] componentsSeparatedByString: @"/"];
-  if (ids)
-    {
-      clientObject = [self clientObject];
-      [clientObject deleteEntriesWithIds: ids];
-    }
-
-  return self;
-}
-
 @end

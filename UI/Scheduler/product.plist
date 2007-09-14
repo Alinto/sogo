@@ -112,21 +112,10 @@
 	      pageName    = "UIxTaskEditor"; 
 	      actionName  = "new";
 	   };
-	   batchDelete = {
-	      protectedBy = "Delete Objects";
-	      pageName    = "UIxCalMainView";
-	      actionName  = "batchDelete";
-	   };
-
 	   show = { 
 	      protectedBy = "View";
 	      pageName    = "UIxCalView"; 
 	      actionName  = "redirectForUIDs";
-	   };
-	   batchDelete = {
-	      protectedBy = "Delete Objects";
-	      pageName    = "UIxCalMainView";
-	      actionName  = "batchDelete";
 	   };
 	   userRights = {
 	      protectedBy = "ReadAcls";
