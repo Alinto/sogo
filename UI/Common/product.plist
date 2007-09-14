@@ -108,6 +108,11 @@
 	  actionClass = "UIxFolderActions";
 	  actionName  = "renameFolder";
 	};
+	batchDelete = {
+	  protectedBy = "Delete Objects";
+	  actionClass = "UIxFolderActions";
+	  actionName  = "batchDelete";
+	};
       };
     };
   };
