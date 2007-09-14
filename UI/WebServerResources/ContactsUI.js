@@ -2,6 +2,7 @@
 
 var cachedContacts = new Array();
 var currentContactFolder = null;
+var savedColumnsWidth = null;
 
 var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
@@ -78,7 +79,7 @@ function configureContactsListHeaders(cells) {
       var currentCell = $(cells[i]);
       Event.observe(currentCell, "click",
 		    onHeaderClick.bindAsEventListener(currentCell));
-      Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
+      //Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
    }
 }
 
@@ -88,11 +89,17 @@ function contactsListCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     document.contactsListAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    div.update(http.responseText);
 
     var table = $("contactsList");
-    if (table)
+    if (table) {
+       TableKit.Resizable.init(table);
+       if (savedColumnsWidth != null) {
+	 // Restore columns width
+	 table.setColumnsWidth(savedColumnsWidth);
+       }
        configureContactsListHeaders(table.tBodies[0].rows[0].cells);
+    }
 
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
        var sortHeader;
@@ -147,11 +154,10 @@ function onContactFoldersContextMenu(event) {
   $(this).select();
 }
 
-function onContactContextMenu(event, element) {
+function onContactContextMenu(event, element) { log ("onContactContextMenu");
   var menu = $("contactMenu");
-  //Event.observe(menu, "hideMenu", onContactContextMenuHide, false);
+
   Event.observe(menu, "mousedown", onContactContextMenuHide, false);
-  //document.documentElement.onclick = onContactContextMenuHide;
   popupMenu(event, "contactMenu", element);
 
   var topNode = $("contactsList");
@@ -290,9 +296,19 @@ function onMenuEditContact(event) {
 
 function onMenuWriteToContact(event) {
    var contactId = document.menuTarget.getAttribute('id');
+   var contactRow = $(contactId);
+   var emailCell = contactRow.down('td', 1);
+
+   if (!emailCell.firstChild) { // .nodeValue is the contact email address
+     window.alert(labels["The selected contact has no email address."].decodeEntities());
+     return false;
+   }
 
    openMailComposeWindow(ApplicationBaseURL + currentContactFolder
 			 + "/" + contactId + "/write");
+
+   if (document.body.hasClassName("popup"))
+     window.close();
 }
 
 function onMenuDeleteContact(event) {
@@ -314,10 +330,22 @@ function onToolbarEditSelectedContacts(event) {
 function onToolbarWriteToSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
+  var rowsWithEmail = 0;
 
-  for (var i = 0; i < rows.length; i++)
-    openMailComposeWindow(ApplicationBaseURL + currentContactFolder
-                          + "/" + rows[i] + "/write");
+  for (var i = 0; i < rows.length; i++) {
+    var emailCell = $(rows[i]).down('td', 1);
+    if (emailCell.firstChild) { // .nodeValue is the contact email address
+      rowsWithEmail++;
+      openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+			    + "/" + rows[i] + "/write");
+    }
+  }
+  
+  if (rowsWithEmail == 0) {
+    window.alert(labels["The selected contact has no email address."].decodeEntities());
+  }
+  else if (document.body.hasClassName("popup"))
+    window.close();
 
   return false;
 }
@@ -390,6 +418,7 @@ function onHeaderClick(event) {
       sorting["ascending"] = true;
    }
 
+   savedColumnsWidth = this.up('table').getColumnsWidth();
    refreshCurrentFolder();
 
    preventDefault(event);

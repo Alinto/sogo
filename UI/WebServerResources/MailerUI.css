@@ -14,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with OGo; see the file COPYING.  If not, write toge the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -312,8 +312,7 @@ INPUT#editDraftButton
 }
 
 TABLE.mailer_fieldtable
-{
-  top: 0px;
+{ top: 0px;
   left: 0px;
   padding-top: .5em;
   padding-bottom: .5em;
@@ -321,7 +320,7 @@ TABLE.mailer_fieldtable
   overflow-x: hidden;
   border-bottom: 1px solid #808080;
   background: #d4d0c8;
-}
+  width: 100%; }
 
 DIV.mailer_mailcontent
 {
@@ -478,9 +477,7 @@ TABLE#addr_table
 }
 
 TABLE#messageList
-{ display: block;
-  position: relative;
-  width: 100%; }
+{ /*width: 100%;*/ }
 
 TABLE#messageList TD
 { height: 1.2em; }
@@ -494,19 +491,20 @@ TD#subjectHeader,
 TABLE#messageList TD.tbtv_subject_headercell,
 TABLE#messageList TD.mailer_unreadmailsubject,
 TABLE#messageList TD.mailer_readmailsubject
-{ width: 40%;
+{ /*width: 40%;*/
   min-width: 40%; }
 
 TD#fromHeader,
 TABLE#messageList TD.tbtv_from_headercell,
 TABLE#messageList TD.messageAddressColumn
-{ width: 35%;
+{ /*width: 35%;*/
+  min-width: 35%;
   overflow: hidden; }
 
 TD#dateHeader,
 TABLE#messageList TD.tbtv_date_headercell,
 TABLE#messageList TD.messageDateColumn
-{ width: 25%;
+{ /*width: 25%;*/
   overflow: hidden; }
 
 TABLE#messageList TR._selected TD
@@ -519,6 +517,18 @@ TABLE#messageList TR._deleted TD
 { 
   text-decoration: line-through;
 }
+
+TABLE#messageList TD.resize-handle-active
+{ cursor: e-resize; }
+
+DIV.resize-handle
+{ cursor: e-resize;
+  width: 2px;
+  border-right: 1px solid #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 2em; }
 
 /* drag handles */
 DIV#verticalDragHandle

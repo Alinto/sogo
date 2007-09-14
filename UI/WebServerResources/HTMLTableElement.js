@@ -34,5 +34,28 @@ Element.addMethods({
 	  node.select();
       }
     }
+  },
+
+  getColumnsWidth: function(element) {
+    element = $(element);
+    var widths = new Array();
+    if (element.tagName == 'TABLE') {
+      var cells = TableKit.getHeaderCells(element);
+      for (var i = 0; i < cells.length; i++) {
+	widths[i] = $(cells[i]).getWidth();
+      }
+    }
+    return widths;
+  },
+
+  setColumnsWidth: function(element, widths) {
+    element = $(element);
+    if (element.tagName == 'TABLE') {
+      for (var i = 0; i < widths.length; i++) {
+	TableKit.Resizable.resize(element, i, widths[i]);
+      }
+    }
   }
+
+
 }); // Element.addMethods

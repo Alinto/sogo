@@ -222,7 +222,7 @@ function openContactWindow(url, wId) {
   return w;
 }
 
-function openMailComposeWindow(url, wId) {
+function openMailComposeWindow(url, wId) { log (url);
   if (!wId)
     wId = "" + (new Date().getTime());
   var w = window.open(url, wId,
@@ -592,7 +592,7 @@ function onBodyClickMenuHandler(event) {
    preventDefault(event);
 }
 
-function hideMenu(menuNode) { //log ("hideMenu");
+function hideMenu(menuNode) {
   var onHide;
 
   if (menuNode.submenu) {
@@ -605,17 +605,17 @@ function hideMenu(menuNode) { //log ("hideMenu");
   if (menuNode.parentMenuItem) {
     menuNode.parentMenuItem.setAttribute('class', 'submenu');
     menuNode.parentMenuItem = null;
-    menuNode.parentMenu.setAttribute('onmousemove', null);
+    Event.stopObserving(menuNode, 'mousemove', checkDropDown);
     menuNode.parentMenu.submenuItem = null;
     menuNode.parentMenu.submenu = null;
     menuNode.parentMenu = null;
   }
 
-  if (document.createEvent) {
+  if (document.createEvent) { // Safari & Mozilla
     var onhideEvent;
     if (isSafari())
       onhideEvent = document.createEvent("UIEvents");
-    else // Mozilla
+    else
       onhideEvent = document.createEvent("Events");
     onhideEvent.initEvent("mousedown", false, true);
     menuNode.dispatchEvent(onhideEvent);
@@ -629,7 +629,6 @@ function onMenuEntryClick(event) {
   var node = event.target;
 
   id = getParentMenu(node).menuTarget;
-//   log("clicked " + id + "/" + id.tagName);
 
   return false;
 }
@@ -756,7 +755,7 @@ function dropDownSubmenu(event) {
 	     + parentNode.cascadeLeftOffset()))
 	 menuLeft = - submenuNode.offsetWidth + 3;
       
-      parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
+      Event.observe(parentNode, "mousemove", checkDropDown);
       node.setAttribute('class', 'submenu-selected');
       submenuNode.setStyle({ top: menuTop + "px",
 				     left: menuLeft + "px",
@@ -780,7 +779,7 @@ function checkDropDown(event) {
       hideMenu(parentMenu.submenu);
       parentMenu.submenu = null;
       parentMenu.submenuItem = null;
-      parentMenu.setAttribute('onmousemove', null);
+      Event.stopObserving(parentMenu, 'mousemove', checkDropDown);
     }
   }
 }
@@ -818,6 +817,11 @@ function setSearchCriteria(event) {
 
   searchValue.setAttribute("ghost-phrase", this.innerHTML);
   searchCriteria.value = this.getAttribute('id');
+  
+  if (this.parentNode.chosenNode)
+    this.parentNode.chosenNode.removeClassName("_chosen");
+  this.addClassName("_chosen");
+  this.parentNode.chosenNode = this;
 }
 
 function checkSearchValue(event) {
@@ -835,6 +839,7 @@ function onSearchChange() {
 
 function configureSearchField() {
    var searchValue = $("searchValue");
+   var searchOptions = $("searchOptions");
 
    if (!searchValue) return;
 
@@ -848,6 +853,13 @@ function configureSearchField() {
 		 onSearchFocus.bindAsEventListener(searchValue));
    Event.observe(searchValue, "keydown",
 		 onSearchKeyDown.bindAsEventListener(searchValue));
+
+   if (!searchOptions) return;
+   
+   // Set the checkmark to the first option
+   var firstOption = searchOptions.down('li');
+   firstOption.addClassName("_chosen");
+   searchOptions.chosenNode = firstOption;
 }
 
 function onSearchMouseDown(event) {
@@ -875,7 +887,7 @@ function onSearchFocus() {
 
 function onSearchBlur(event) {
    var ghostPhrase = this.getAttribute("ghost-phrase");
-   //log ("search blur: '" + this.value + "'");
+
    if (!this.value) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
@@ -901,7 +913,7 @@ function onSearchFormSubmit(event) {
    var searchValue = $("searchValue");
    var searchCriteria = $("searchCriteria");
    var ghostPhrase = searchValue.getAttribute('ghost-phrase');
-
+   
    if (searchValue.value == ghostPhrase) return;
 
    search["criteria"] = searchCriteria.value;

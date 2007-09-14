@@ -170,7 +170,7 @@ function onComponentEditorLoad(event) {
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
    for (var i = 0; i < menuItems.length; i++)
-      Event.observe(menuItems[i], "mouseup",
+      Event.observe(menuItems[i], "mousedown",
 		    onMenuSetClassification.bindAsEventListener(menuItems[i]),
 		    false);
 }

@@ -54,13 +54,11 @@ LABEL
   margin-left: .5em; }
 
 TABLE
-{ display: block;
-  table-layout: fixed;
+{ table-layout: fixed;
   border-spacing: 0px; }
 
 TABLE TD
-{ white-space: nowrap;
-  padding-left: .25em;
+{ padding-left: .25em;
   padding-right: .25em; }
 
 a:link
@@ -94,7 +92,7 @@ div#header
 { margin-left: 5px;
   margin-right: 5px;
   padding: 0;
-  border-bottom: 1px solid #000000; }
+  border-bottom: 1px solid #000; }
 
 div#header img.headerlogo
 { float: right; 
@@ -354,6 +352,19 @@ SPAN.toolbarButton:active
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('submenu-active.gif') !important; }
 
+/* live search popup menu */
+UL#searchOptions LI
+{ list-style-position: inside;
+  list-style-image: url("menu-nocheck.gif");
+  padding: 1px 3px;
+  margin: px; }
+
+UL#searchOptions LI._chosen
+{ list-style-image: url("menu-check.gif"); }
+
+UL#searchOptions LI._chosen:hover
+{ list-style-image: url("menu-check-hover.gif"); }
+
 DIV#logConsole
 { position: absolute;
   overflow: auto;
@@ -415,15 +426,13 @@ TD.tbtv_headercell:active
 
 TD.headerCell SPAN,
 td.tbtv_headercell SPAN
-{ float: left;
-  width: 100%; }
+{ float: left; }
 
 td.tbtv_headercell a
 { cursor: default;
   margin: 0px auto;
   display: block;
-  color: black;
-  width: 100%; }
+  color: black; }
 
 td.tbtv_headercell a:hover
 { margin: 0px auto;
@@ -452,8 +461,7 @@ TR.tableview TD
   padding-right: .3em; }
 
 TD.headerDateTime
-{ width: 30em;
-  min-width: 30em; }
+{ min-width: 30em; }
 
 TD.headerTitle
 { width: 30%; }
@@ -471,8 +479,7 @@ td img.tbtv_sortcell
 
 TD.subjectCell,
 td.tbtv_subject_headercell
-{ overflow: hidden;
-  width: auto; }
+{ overflow: hidden; }
 
 /* drag handles */
 DIV.dragHandle

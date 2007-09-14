@@ -5,6 +5,9 @@
   given during an indirect bind;
 - deleting a message no longer expunges its parent folder;
 - fixed search in message content;
+- added tooltips for toolbar buttons (English and French);
+- added checkmarks in live search options popup menus;
+- initial support for resizable columns in tables;
 - countless bugfixes;
 
 0.9.0-20070824
