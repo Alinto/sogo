@@ -19,6 +19,23 @@
 "Attach" = "Attach";
 "Save" = "Save";
 
+/* Tooltips */
+
+"Send this message now" = "Send this message now";
+"Select a recipient from an Address Book" = "Select a recipient from an Address Book";
+"Include an attachment" = "Include an attachment";
+"Save this message" = "Save this message";
+"Get new messages" = "Get new messages";
+"Create a new message" = "Create a new message";
+"Go to address book" = "Go to address book";
+"Reply to the message" = "Reply to the message";
+"Reply to sender and all recipients" = "Reply to sender and all recipients";
+"Forward selected message" = "Forward selected message";
+"Delete selected message or folder" = "Delete selected message or folder";
+"Mark the selected messages as junk" = "Mark the selected messages as junk";
+"Print this message" = "Print this message";
+"Stop the current transfer" = "Stop the current transfer";
+
 /* Main Frame  */
 
 "Home"                 = "Home"; 

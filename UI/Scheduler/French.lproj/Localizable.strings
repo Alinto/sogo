@@ -1,5 +1,16 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Créer un nouvel événement";
+"Create a new task" = "Créer une nouvelle tâche";
+"Edit this event or task" = "Modifier l'événement ou la tâche sélectionnée";
+"Delete this event or task" = "Supprimer l'événement ou la tâche sélectionnée";
+"Go to today" = "Aller à la journée d'aujourd'hui";
+"Switch to day view" = "Passer à la vue par jour";
+"Switch to week view" = "Passer à la vue par semaine";
+"Switch to month view" = "Passer à la vue par mois";
+
 /* Day */
 
 "Sunday" = "Dimanche";

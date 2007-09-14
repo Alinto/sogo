@@ -19,6 +19,23 @@
 "Attach" = "Joindre";
 "Save" = "Enregistrer";
 
+/* Tooltips */
+
+"Send this message now" = "Envoyer le message maintenant";
+"Select a recipient from an Address Book" = "Sélectionner un destinataire du carnet d'adresses";
+"Include an attachment" = "Inclure une pièce jointe";
+"Save this message" = "Enregistrer ce message";
+"Get new messages" = "Relever les nouveaux messages";
+"Create a new message" = "Créer un nouveau message";
+"Go to address book" = "Ouvrir le carnet d'adresses";
+"Reply to the message" = "Répondre au message";
+"Reply to sender and all recipients" = "Répondre à l'expéditeur et à tous les destinataires";
+"Forward selected message" = "Transférer le message sélectionné";
+"Delete selected message or folder" = "Supprimer le message ou le dossier sélectionné";
+"Mark the selected messages as junk" = "Marquer les messages sélectionnés comme indésirables";
+"Print this message" = "Imprimer ce message";
+"Stop the current transfer" = "Arrêter le transfert courant";
+
 /* Main Frame  */
 
 "Home"                 = "Accueil"; 

@@ -32,6 +32,14 @@
 "invalidemailwarn" = "invalidemailwarn";
 "new" = "new";
 
+/* Tooltips */
+
+"Create a new address book card" = "Create a new address book card";
+"Create a new list" = "Create a new list";
+"Edit the selected card" = "Edit the selected card";
+"Send a mail message" = "Send a mail message";
+"Delete selected card or address book" = "Delete selected card or address book";
+
 "htmlMailFormat_UNKNOWN" = "Unknown";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
@@ -115,3 +123,6 @@
 = "This person can read the cards of this addressbook.";
 "This person can erase cards from this addressbook."
 = "This person can erase cards from this addressbook.";
+
+"The selected contact has no email address."
+= "The selected contact has no email address.";

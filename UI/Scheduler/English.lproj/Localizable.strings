@@ -1,5 +1,16 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Create a new event";
+"Create a new task" = "Create a new task";
+"Edit this event or task" = "Edit this event or task";
+"Delete this event or task" = "Delete this event or task";
+"Go to today" = "Go to today";
+"Switch to day view" = "Switch to day view";
+"Switch to week view" = "Switch to week view";
+"Switch to month view" = "Switch to month view";
+
 /* Day */
 
 "Sunday" = "Sunday";
