@@ -611,9 +611,17 @@ function drawCalendarEvent(eventData, sd, ed) {
    var viewEndDate = ed.asDate();
 
    var startDate = new Date();
-   startDate.setTime(eventData[4] * 1000 + (1000 * UTCOffset));
    var endDate = new Date();
-   endDate.setTime(eventData[5] * 1000 + (1000 * UTCOffset));
+   if (eventData[7] == 0) {
+     startDate.setTime(eventData[4] * 1000 + (1000 * UTCOffset));
+     endDate.setTime(eventData[5] * 1000 + (1000 * UTCOffset));
+   }
+   else {
+     startDate.setTime(eventData[4] * 1000);
+     endDate.setTime(eventData[5] * 1000);
+   }
+
+//    log ("s: " + startDate+ "; e: " + endDate);
 
    var days = startDate.daysUpTo(endDate);
 
