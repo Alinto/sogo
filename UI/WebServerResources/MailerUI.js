@@ -207,7 +207,7 @@ function ctxFolderAdd(sender) {
 }
 
 function ctxFolderDelete(sender) {
-  if (!confirm("Delete current folder?").decodeEntities())
+  if (!confirm("Delete current folder?"))
     return false;
    
   // TODO: should use a form-POST or AJAX
@@ -306,10 +306,10 @@ function onMenuDeleteMessage(event) {
 function onPrintCurrentMessage(event) {
   var rowIds = $("messageList").getSelectedRowsId();
   if (rowIds.length == 0) {
-    window.alert(labels["Please select a message to print."].decodeEntities());
+    window.alert(labels["Please select a message to print."]);
   }
   else if (rowIds.length > 1) {
-    window.alert(labels["Please select only one message to print."].decodeEntities());
+    window.alert(labels["Please select only one message to print."]);
   }
   else
     window.print();
@@ -489,7 +489,7 @@ function quotasCallback(http) {
       var used = mbQuotas["usedSpace"];
       var max = mbQuotas["maxQuota"];
       var percents = (Math.round(used * 10000 / max) / 100);
-      var format = labels["quotasFormat"].decodeEntities();
+      var format = labels["quotasFormat"];
       var text = format.formatted(used, max, percents);
       window.status = text;
     }
@@ -1263,7 +1263,7 @@ function buildMailboxes(accountName, encoded) {
 }
 
 function onMenuCreateFolder(event) {
-  var name = window.prompt(labels["Name :"].decodeEntities(), "");
+  var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
@@ -1273,7 +1273,7 @@ function onMenuCreateFolder(event) {
 
 function onMenuRenameFolder(event) {
   var name = window.prompt(labels["Enter the new name of your folder :"]
-			   .decodeEntities(),
+			   ,
 			   "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
@@ -1283,7 +1283,7 @@ function onMenuRenameFolder(event) {
 }
 
 function onMenuDeleteFolder(event) {
-  var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"].decodeEntities());
+  var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"]);
   if (answer) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/deleteFolder";
@@ -1318,7 +1318,7 @@ function folderOperationCallback(http) {
       && http.status == 204)
     initMailboxTree();
   else
-    window.alert(labels["Operation failed"].decodeEntities());
+    window.alert(labels["Operation failed"]);
 }
 
 function folderRefreshCallback(http) {
@@ -1329,7 +1329,7 @@ function folderRefreshCallback(http) {
       refreshCurrentFolder();
   }
   else
-    window.alert(labels["Operation failed"].decodeEntities());
+    window.alert(labels["Operation failed"]);
 }
 
 function getMenus() {

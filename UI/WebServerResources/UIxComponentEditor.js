@@ -24,7 +24,7 @@ function onPopupUrlWindow(event) {
       preventDefault(event);
 
    var urlInput = document.getElementById("url");
-   var newUrl = window.prompt(labels["Target:"].decodeEntities(), urlInput.value);
+   var newUrl = window.prompt(labels["Target:"], urlInput.value);
    if (newUrl != null) {
       var documentHref = $("documentHref");
       var documentLabel = $("documentLabel");
