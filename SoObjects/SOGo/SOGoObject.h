@@ -61,6 +61,9 @@
   id container;
 }
 
++ (NSString *) globallyUniqueObjectId;
+- (NSString *) globallyUniqueObjectId;
+
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;
 
 - (id) initWithName: (NSString *) _name inContainer:(id)_container;
@@ -70,10 +73,14 @@
 - (NSString *) nameInContainer;
 - (id) container;
 
+- (NSArray *) pathArrayToSOGoObject;
+
 - (NSURL *) davURL;
 - (NSURL *) soURL;
 - (NSURL *) soURLToBaseContainerForUser: (NSString *) uid;
 - (NSURL *) soURLToBaseContainerForCurrentUser;
+
+- (NSString *) labelForKey: (NSString *) key;
 
 /* ownership */
 
@@ -100,7 +107,7 @@
 
 /* etag support */
 
-- (NSException *)matchesRequestConditionInContext:(id)_ctx;
+- (NSException *) matchesRequestConditionInContext:(id)_ctx;
 
 /* acls */
 
