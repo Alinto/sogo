@@ -219,4 +219,27 @@
   return response;
 }
 
+- (id) batchDeleteAction
+{
+  WOResponse *response;
+  NSString *idsParam;
+  NSArray *ids;
+
+  idsParam = [[context request] formValueForKey: @"ids"];
+  ids = [idsParam componentsSeparatedByString: @"/"];
+  if ([ids count])
+    {
+      clientObject = [self clientObject];
+      [clientObject deleteEntriesWithIds: ids];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response appendContentString: @"At least 1 id required."];
+    }
+  
+  return response;
+}
+
 @end
