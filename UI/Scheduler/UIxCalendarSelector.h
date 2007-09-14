@@ -23,29 +23,23 @@
 #ifndef UIXCALENDARSELECTOR_H
 #define UIXCALENDARSELECTOR_H
 
+#import <UI/SOGoUI/UIxComponent.h>
+
 @class NSArray;
 @class NSMutableArray;
 @class NSDictionary;
-@class NSMutableDictionary;
 @class NSString;
-@class iCalPerson;
 
 @interface UIxCalendarSelector : UIxComponent
 {
-  NSMutableDictionary *colors;
-
-  NSDictionary *currentCalendarFolder;
-  NSString *currentCalendarLogin;
+  NSMutableArray *calendars;
+  NSDictionary *currentCalendar;
 }
 
-- (NSArray *) calendarFolders;
+- (NSArray *) calendars;
 
-- (void) setCurrentCalendarFolder: (NSDictionary *) newCurrentCalendarFolder;
-- (NSDictionary *) currentCalendarFolder;
-
-- (NSString *) currentCalendarSpanBG;
-- (NSString *) currentCalendarLogin;
-- (NSString *) currentCalendarStyle;
+- (void) setCurrentCalendar: (NSDictionary *) newCalendar;
+- (NSDictionary *) currentCalendar;
 
 @end
 

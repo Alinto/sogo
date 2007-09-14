@@ -21,6 +21,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
@@ -40,11 +41,6 @@
                                      nil]
 
 @implementation SOGoContactGCSFolder
-
-- (BOOL) folderIsMandatory
-{
-  return [nameInContainer isEqualToString: @"personal"];
-}
 
 /* name lookup */
 

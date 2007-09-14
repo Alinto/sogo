@@ -27,25 +27,11 @@
    TaskItems                IPF.Task
    JournalItems             IPF.Journal     */
 
-// #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSEnumerator.h>
 
-// #import <NGObjWeb/NSException+HTTP.h>
-// #import <NGObjWeb/WOApplication.h>
-// #import <NGObjWeb/WOContext.h>
-// #import <NGObjWeb/WOContext+SoObjects.h>
-// #import <NGObjWeb/WOResponse.h>
-// #import <NGObjWeb/SoUser.h>
-
-// #import <GDLContentStore/GCSFolderManager.h>
-// #import <GDLContentStore/GCSChannelManager.h>
-// #import <GDLAccess/EOAdaptorChannel.h>
-// #import <GDLContentStore/NSURL+GCS.h>
-
 #import <SoObjects/SOGo/LDAPUserManager.h>
-// #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactLDAPFolder.h"
@@ -83,6 +69,11 @@
       [subFolders setObject: currentFolder forKey: currentSourceID];
       currentSourceID = [sourceIDs nextObject];
     }
+}
+
+- (NSString *) defaultFolderName
+{
+  return @"Personal Address Book";
 }
 
 @end

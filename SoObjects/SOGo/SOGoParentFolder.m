@@ -22,14 +22,17 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 
 #import "SOGoFolder.h"
+#import "SOGoUser.h"
 
 #import "SOGoParentFolder.h"
 
@@ -73,6 +76,11 @@
   ASSIGN (OCSPath, newOCSPath);
 }
 
+- (NSString *) defaultFolderName
+{
+  return @"Personal";
+}
+
 - (void) _fetchPersonalFolders: (NSString *) sql
 		   withChannel: (EOAdaptorChannel *) fc
 {
@@ -80,7 +88,7 @@
   NSDictionary *row;
   SOGoFolder *folder;
   BOOL hasPersonal;
-  NSString *key, *path;
+  NSString *key, *path, *personalName;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
@@ -92,8 +100,7 @@
   while (row)
     {
       folder
-	= [subFolderClass folderWithName: [row objectForKey: @"c_path4"]
-			  andDisplayName: [row objectForKey: @"c_foldername"]
+	= [subFolderClass objectWithName: [row objectForKey: @"c_path4"]
 			  inContainer: self];
       key = [row objectForKey: @"c_path4"];
       hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
@@ -105,9 +112,9 @@
 
   if (!hasPersonal)
     {
-      folder = [subFolderClass folderWithName: @"personal"
-			       andDisplayName: @"personal"
-			       inContainer: self];
+      folder = [subFolderClass objectWithName: @"personal" inContainer: self];
+      personalName = [self labelForKey: [self defaultFolderName]];
+      [folder setDisplayName: personalName];
       path = [NSString stringWithFormat: @"/Users/%@/%@/personal",
 		       [self ownerInContext: context],
 		       nameInContainer];
@@ -132,7 +139,7 @@
       gcsFolderType = [[self class] gcsFolderType];
       
       sql
-	= [NSString stringWithFormat: (@"SELECT c_path4, c_foldername FROM %@"
+	= [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
 				       @" WHERE c_path2 = '%@'"
 				       @" AND c_folder_type = '%@'"),
 		    [folderLocation gcsTableName],
@@ -149,25 +156,58 @@
 {
 }
 
-- (NSException *) newFolderWithName: (NSString *) name
+- (void) appendSubscribedSources
 {
+  NSArray *subscribedReferences;
+  NSUserDefaults *settings;
+  NSEnumerator *allKeys;
+  NSString *currentKey;
+  SOGoFolder *subscribedFolder;
+
+  settings = [[context activeUser] userSettings];
+  subscribedReferences = [[settings objectForKey: nameInContainer]
+			   objectForKey: @"SubscribedFolders"];
+  if ([subscribedReferences isKindOfClass: [NSArray class]])
+    {
+      allKeys = [subscribedReferences objectEnumerator];
+      currentKey = [allKeys nextObject];
+      while (currentKey)
+	{
+	  subscribedFolder
+	    = [subFolderClass folderWithSubscriptionReference: currentKey
+			      inContainer: self];
+	  [subFolders setObject: subscribedFolder
+		      forKey: [subscribedFolder nameInContainer]];
+	  currentKey = [allKeys nextObject];
+	}
+    }
+}
+
+- (NSException *) newFolderWithName: (NSString *) name
+		    nameInContainer: (NSString **) newNameInContainer
+{
+  NSString *newFolderID;
   SOGoFolder *newFolder;
   NSException *error;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
-  newFolder = [subFolderClass folderWithName: name
-			      andDisplayName: name
-			      inContainer: self];
+  *newNameInContainer = nil;
+  newFolderID = [self globallyUniqueObjectId];
+  newFolder = [subFolderClass objectWithName: newFolderID inContainer: self];
   if ([newFolder isKindOfClass: [NSException class]])
     error = (NSException *) newFolder;
   else
     {
+      [newFolder setDisplayName: name];
       [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                                       OCSPath, name]];
+                                       OCSPath, newFolderID]];
       if ([newFolder create])
-	error = nil;
+	{
+	  error = nil;
+	  *newNameInContainer = newFolderID;
+	}
       else
         error = [NSException exceptionWithHTTPStatus: 400
 			     reason: @"The new folder could not be created"];
@@ -178,11 +218,16 @@
 
 - (void) initSubFolders
 {
+  NSString *login;
+
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
       [self appendPersonalSources];
       [self appendSystemSources];
+      login = [[context activeUser] login];
+      if ([login isEqualToString: owner])
+	[self appendSubscribedSources];
     }
 }
 

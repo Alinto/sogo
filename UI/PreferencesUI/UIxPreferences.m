@@ -125,7 +125,8 @@ static BOOL shouldDisplayPasswordChange = NO;
 
 - (NSArray *) timeZonesList
 {
-  return [NSTimeZone knownTimeZoneNames];
+  return [[NSTimeZone knownTimeZoneNames]
+	   sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
 
 - (NSString *) userTimeZone

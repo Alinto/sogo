@@ -18,8 +18,8 @@ function validateEditorInput(sender) {
     errortext = errortext + labels.error_missingrecipients + "\n";
   
   if (errortext.length > 0) {
-    alert(labels.error_validationfailed.decodeEntities() + ":\n"
-          + errortext.decodeEntities());
+    alert(labels.error_validationfailed + ":\n"
+          + errortext);
     return false;
   }
   return true;
@@ -468,28 +468,24 @@ function refreshContacts(contactId) {
 }
 
 function onAddressBookNew(event) {
-  var name = window.prompt(labels["Name of the Address Book"].decodeEntities());
-  if (name) {
-    if (document.newAbAjaxRequest) {
-      document.newAbAjaxRequest.aborted = true;
-      document.newAbAjaxRequest.abort();
-    }
-    var url = ApplicationBaseURL + "/newAb?name=" + name;
-    document.newAbAjaxRequest
-       = triggerAjaxRequest(url, newAbCallback, name);
-  }
+  createFolder(window.prompt(labels["Name of the Address Book"]),
+	       appendAddressBook);
   preventDefault(event);
 }
 
 function appendAddressBook(name, folder) {
-   var li = document.createElement("li");
-   $("contactFolders").appendChild(li);
-   li.setAttribute("id", folder);
-   li.appendChild(document.createTextNode(name));
-   setEventsOnContactFolder(li);
+  if (folder)
+    folder = accessToSubscribedFolder(folder);
+  else
+    folder = "/" + name;
+  var li = document.createElement("li");
+  $("contactFolders").appendChild(li);
+  li.setAttribute("id", folder);
+  li.appendChild(document.createTextNode(name));
+  setEventsOnContactFolder(li);
 }
 
-function newAbCallback(http) {
+function newFolderCallback(http) {
   if (http.readyState == 4
       && http.status == 201) {
      var name = http.callbackData;
@@ -523,60 +519,60 @@ function onAddressBookRemove(event) {
   var selector = $("contactFolders");
   var nodes = selector.getSelectedNodes();
   if (nodes.length > 0) { 
-     nodes[0].deselect();
-     var folderId = nodes[0].getAttribute("id");
-     var folderIdElements = folderId.split(":");
-     if (folderIdElements.length > 1)
-	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
-     else {
-	var abId = folderIdElements[0].substr(1);
-	deletePersonalAddressBook(abId);
-	var personal = $("/personal");
-	personal.select();
-	onFolderSelectionChange();
-     }
+    nodes[0].deselect();
+    var folderId = nodes[0].getAttribute("id");
+    var folderIdElements = folderId.split("_");
+    if (folderIdElements.length > 1)
+      unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+    else {
+      var abId = folderIdElements[0].substr(1);
+      deletePersonalAddressBook(abId);
+      var personal = $("/personal");
+      personal.select();
+      onFolderSelectionChange();
+    }
   }
 
   preventDefault(event);
 }
 
 function deletePersonalAddressBook(folderId) {
-   var label
-      = labels["Are you sure you want to delete the selected address book?"];
-   if (window.confirm(label.decodeEntities())) {
-      if (document.deletePersonalABAjaxRequest) {
-	 document.deletePersonalABAjaxRequest.aborted = true;
-	 document.deletePersonalABAjaxRequest.abort();
-      }
-      var url = ApplicationBaseURL + "/" + folderId + "/delete";
-      document.deletePersonalABAjaxRequest
-	 = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-			      folderId);
-   }
+  var label
+    = labels["Are you sure you want to delete the selected address book?"];
+  if (window.confirm(label)) {
+    if (document.deletePersonalABAjaxRequest) {
+      document.deletePersonalABAjaxRequest.aborted = true;
+      document.deletePersonalABAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";
+    document.deletePersonalABAjaxRequest
+      = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
+			   folderId);
+  }
 }
 
 function deletePersonalAddressBookCallback(http) {
   if (http.readyState == 4) {
-     if (http.status == 200) {
-	var ul = $("contactFolders");
+    if (isHttpStatus204(http.status)) {
+      var ul = $("contactFolders");
 	
-	var children = ul.childNodesWithTag("li");
-	var i = 0;
-	var done = false;
-	while (!done && i < children.length) {
-	   var currentFolderId = children[i].getAttribute("id").substr(1);
-	   if (currentFolderId == http.callbackData) {
-	      ul.removeChild(children[i]);
-	      done = true;
-	   }
-	   else
-	      i++;
+      var children = ul.childNodesWithTag("li");
+      var i = 0;
+      var done = false;
+      while (!done && i < children.length) {
+	var currentFolderId = children[i].getAttribute("id").substr(1);
+	if (currentFolderId == http.callbackData) {
+	  ul.removeChild(children[i]);
+	  done = true;
 	}
-     }
-     document.deletePersonalABAjaxRequest = null;
+	else
+	  i++;
+      }
+    }
+    document.deletePersonalABAjaxRequest = null;
   }
   else
-     log ("ajax problem 5: " + http.status);
+    log ("ajax problem 5: " + http.status);
 }
 
 function configureDragHandles() {
@@ -648,6 +644,34 @@ function setEventsOnContactFolder(node) {
 		 onContactFoldersContextMenu.bindAsEventListener(node), false);
 }
 
+function onMenuModify(event) {
+  var folders = $("contactFolders");
+  var selected = folders.getSelectedNodes()[0];
+
+  if (UserLogin == selected.getAttribute("owner")) {
+    var currentName = selected.innerHTML;
+    var newName = window.prompt(labels["Address Book Name"],
+				currentName);
+    if (newName && newName.length > 0
+	&& newName != currentName) {
+      var url = (URLForFolderID(selected.getAttribute("id"))
+		 + "/renameFolder?name=" + escape(newName.utf8encode()));
+      triggerAjaxRequest(url, folderRenameCallback,
+			 {node: selected, name: newName});
+    }
+  } else
+    window.alert(clabels["Unable to rename that folder!"]);
+}
+
+function folderRenameCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var dict = http.callbackData;
+      dict["node"].innerHTML = dict["name"];
+    }
+  }
+}
+
 function onMenuSharing(event) {
    var folders = $("contactFolders");
    var selected = folders.getSelectedNodes()[0];
@@ -659,7 +683,7 @@ function onMenuSharing(event) {
 
 function getMenus() {
    var menus = {};
-   menus["contactFoldersMenu"] = new Array(null, "-", null,
+   menus["contactFoldersMenu"] = new Array(onMenuModify, "-", null,
 					   null, "-", null, "-",
 					   onMenuSharing);
    menus["contactMenu"] = new Array(onMenuEditContact, "-",

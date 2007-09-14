@@ -28,11 +28,11 @@
   };
 
   categories = {
-     SOGoAppointmentFolder = {
+     SOGoAppointmentFolders = {
 	slots = {
 	   toolbar = {
 	      protectedBy = "View";
-	      value = "SOGoAppointmentFolder.toolbar";
+	      value = "SOGoAppointmentFolders.toolbar";
 	   };
 	};
 	methods = {
@@ -70,16 +70,6 @@
 	      protectedBy = "View";
 	      pageName    = "UIxCalMonthView"; 
 	   };
-	   newevent = {
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "new";
-	   };
-	   newtask = { 
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "new";
-	   };
 	   show = { 
 	      protectedBy = "View";
 	      pageName    = "UIxCalView"; 
@@ -94,15 +84,45 @@
 	      pageName    = "UIxAppointmentProposal"; 
 	      actionName  = "proposalSearch";
 	   };
+	   userRights = {
+	      protectedBy = "ReadAcls";
+	      pageName    = "UIxCalUserRightsEditor";
+	   };
+	   saveUserRights = {
+	      protectedBy = "SaveAcls";
+	      pageName    = "UIxCalUserRightsEditor";
+	      actionName  = "saveUserRights";
+	   };
+	};
+     };
+
+     SOGoAppointmentFolder = {
+	methods = {
+	   newevent = {
+	      protectedBy = "Add Documents, Images, and Files";
+	      pageName    = "UIxAppointmentEditor"; 
+	      actionName  = "new";
+	   };
+	   newtask = { 
+	      protectedBy = "Add Documents, Images, and Files";
+	      pageName    = "UIxTaskEditor"; 
+	      actionName  = "new";
+	   };
 	   batchDelete = {
 	      protectedBy = "Delete Objects";
 	      pageName    = "UIxCalMainView";
 	      actionName  = "batchDelete";
 	   };
-	   updateCalendars = {
+
+	   show = { 
 	      protectedBy = "View";
+	      pageName    = "UIxCalView"; 
+	      actionName  = "redirectForUIDs";
+	   };
+	   batchDelete = {
+	      protectedBy = "Delete Objects";
 	      pageName    = "UIxCalMainView";
-	      actionName  = "updateCalendars";
+	      actionName  = "batchDelete";
 	   };
 	   editAttendees = {
 	      protectedBy = "View";
@@ -119,6 +139,7 @@
 	   };
 	};
      };
+
      SOGoCalendarComponent = {
      };
 
@@ -157,6 +178,10 @@
 	      protectedBy = "RespondToComponent";
 	      pageName    = "UIxAppointmentEditor"; 
 	      actionName  = "decline";
+	   };
+	   editAttendees = {
+	      protectedBy = "View";
+	      pageName    = "UIxAttendeesEditor";
 	   };
 	};
      };

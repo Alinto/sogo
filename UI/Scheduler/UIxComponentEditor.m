@@ -42,6 +42,7 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -331,19 +332,20 @@
 
 - (NSArray *) calendarList
 {
-  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolder *calendar, *currentCalendar;
+  SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
-  NSDictionary *currentCalendar;
 
   if (!calendarList)
     {
       calendarList = [NSMutableArray new];
-      folder = [[self clientObject] container];
-      allCalendars = [[folder calendarFolders] objectEnumerator];
+      calendar = [[self clientObject] container];
+      calendarParent = [calendar container];
+      allCalendars = [[calendarParent subFolders] objectEnumerator];
       currentCalendar = [allCalendars nextObject];
       while (currentCalendar)
 	{
-	  if ([[currentCalendar objectForKey: @"active"] boolValue])
+	  if ([currentCalendar isActive])
 	    [calendarList addObject: currentCalendar];
 	  currentCalendar = [allCalendars nextObject];
 	}

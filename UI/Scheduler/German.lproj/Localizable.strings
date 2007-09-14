@@ -100,8 +100,11 @@
 
 /* Button Titles */
 
-"Add..." = "Hinzufügen...";
-"Remove" = "Löschen";
+"New Calendar..." = "New Calendar...";
+"Subscribe to a Calendar..." = "Subscribe to a Calendar...";
+"Remove the selected Calendar" = "Remove the selected Calendar";
+
+"Name of the Calendar" = "Name of the Calendar";
 
 "new" = "Neu";
 "printview" = "Version imprimable";

@@ -73,7 +73,7 @@
   cookieString = [NSString stringWithFormat: @"%@:%@",
 			   [self queryParameterForKey: @"userName"],
 			   [self queryParameterForKey: @"password"]];
-  cookieValue = [NSString stringWithFormat: @"basic%@",
+  cookieValue = [NSString stringWithFormat: @"basic %@",
 			  [cookieString stringByEncodingBase64]];
   authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 			 value: cookieValue];

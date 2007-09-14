@@ -34,6 +34,7 @@
 
 #import "NSArray+Appointments.h"
 #import "SOGoAptMailNotification.h"
+#import "SOGoAppointmentFolder.h"
 
 #import "SOGoTaskObject.h"
 
@@ -118,17 +119,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return uids;
 }
 
-/* folder management */
-
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
-  // TODO: what does this do? lookup the home of the organizer?
-  return [[self container] lookupHomeFolderForUID:_uid inContext:_ctx];
-}
-
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
-  return [[self container] lookupCalendarFoldersForUIDs:_uids inContext:_ctx];
-}
-
 /* store in all the other folders */
 
 - (NSException *)saveContentString:(NSString *)_iCal inUIDs:(NSArray *)_uids {
@@ -136,7 +126,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   id           folder;
   NSException  *allErrors = nil;
 
-  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
+  e = [[container lookupCalendarFoldersForUIDs: _uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
@@ -175,7 +165,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   id           folder;
   NSException  *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
+  e = [[container lookupCalendarFoldersForUIDs: _uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;

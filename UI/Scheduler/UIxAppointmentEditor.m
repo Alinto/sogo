@@ -286,14 +286,14 @@
 {
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
-  Class clientKlazz;
+  SOGoAppointmentFolder *co;
 
-  clientKlazz = [[self clientObject] class];
-  objectId = [clientKlazz globallyUniqueObjectId];
+  co = [self clientObject];
+  objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/Calendar/%@/editAsAppointment",
-                         [self userFolderPath], objectId];
+      method = [NSString stringWithFormat:@"%@/%@/editAsAppointment",
+                         [co soURL], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }

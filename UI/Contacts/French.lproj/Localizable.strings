@@ -110,6 +110,8 @@
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
 
+"Address Book Name" = "Nom du carnet d'adresses";
+
 "You cannot subscribe to a folder that you own!"
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
 "Unable to subscribe to that folder!"

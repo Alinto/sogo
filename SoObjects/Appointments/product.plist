@@ -9,6 +9,9 @@
   
   classes = {
     SOGoAppointmentFolder = {
+      superclass = "SOGoParentFolder";
+    };
+    SOGoAppointmentFolder = {
       superclass = "SOGoFolder";
       defaultRoles = {
 /*        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );  */
