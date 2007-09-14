@@ -1,5 +1,9 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): fetch the
+	freebusy info from the "personal" calendar.
+
 	* UI/Common/UIxParentFolderActions.m ([UIxParentFolderActions
 	-createFolderAction]): new standardized method for requesting
 	folder creations among gcs-based modules.
