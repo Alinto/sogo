@@ -1,5 +1,11 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxParentFolderActions.m ([UIxParentFolderActions
+	-createFolderAction]): new standardized method for requesting
+	folder creations among gcs-based modules.
+
+	* UI/Common/UIxParentFolderActions.[hm]: new action class module.
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m: new class
 	module, equivalent to the SOGoParentFolder's child
 	SOGoContactFolders, but for calendars.
