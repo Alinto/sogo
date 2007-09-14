@@ -1,5 +1,9 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m: new class
+	module, equivalent to the SOGoParentFolder's child
+	SOGoContactFolders, but for calendars.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]): new
 	method that returns translated strings for controller bundles
 	(same as what UIxComponent does for view bundles).
