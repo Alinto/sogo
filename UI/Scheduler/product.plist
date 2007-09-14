@@ -93,6 +93,10 @@
 	      pageName    = "UIxCalUserRightsEditor";
 	      actionName  = "saveUserRights";
 	   };
+	   editAttendees = {
+	      protectedBy = "View";
+	      pageName    = "UIxAttendeesEditor";
+	   };
 	};
      };
 
@@ -123,10 +127,6 @@
 	      protectedBy = "Delete Objects";
 	      pageName    = "UIxCalMainView";
 	      actionName  = "batchDelete";
-	   };
-	   editAttendees = {
-	      protectedBy = "View";
-	      pageName    = "UIxAttendeesEditor";
 	   };
 	   userRights = {
 	      protectedBy = "ReadAcls";
@@ -178,10 +178,6 @@
 	      protectedBy = "RespondToComponent";
 	      pageName    = "UIxAppointmentEditor"; 
 	      actionName  = "decline";
-	   };
-	   editAttendees = {
-	      protectedBy = "View";
-	      pageName    = "UIxAttendeesEditor";
 	   };
 	};
      };
