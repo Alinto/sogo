@@ -366,6 +366,9 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
 "taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
 
+"Are you sure you want to delete the selected calendar?"
+= "Are you sure you want to delete the selected calendar?";
+
 /* Legend */
 "Required participant" = "Participant obligatoire";
 "Optional participant" = "Participant facultatif";
