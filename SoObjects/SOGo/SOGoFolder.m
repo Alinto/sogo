@@ -45,6 +45,7 @@
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 
+#import "SOGoContentObject.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
@@ -336,6 +337,22 @@ static NSString *defaultUserID = @"<default>";
   return (records
           && ![records isKindOfClass:[NSException class]]
           && [records count] > 0);
+}
+
+- (void) deleteEntriesWithIds: (NSArray *) ids
+{
+  unsigned int count, max;
+  NSString *currentID;
+  SOGoContentObject *deleteObject;
+
+  max = [ids count];
+  for (count = 0; count < max; count++)
+    {
+      currentID = [ids objectAtIndex: count];
+      deleteObject = [self lookupName: currentID
+			   inContext: context acquire: NO];
+      [deleteObject delete];
+    }
 }
 
 - (NSDictionary *) fetchContentStringsAndNamesOfAllObjects

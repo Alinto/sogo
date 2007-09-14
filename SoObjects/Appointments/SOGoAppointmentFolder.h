@@ -84,8 +84,6 @@
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate;
 
-- (void) deleteEntriesWithIds: (NSArray *) ids;
-
 /* URL generation */
 
 - (NSString *) baseURLForAptWithUID: (NSString *) _uid

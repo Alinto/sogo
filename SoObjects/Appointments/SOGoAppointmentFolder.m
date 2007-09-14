@@ -933,26 +933,6 @@ static NSNumber   *sharedYes = nil;
                component: _component];
 }
 
-- (void) deleteEntriesWithIds: (NSArray *) ids
-{
-  Class objectClass;
-  unsigned int count, max;
-  NSString *currentId;
-  id deleteObject;
-
-  max = [ids count];
-  for (count = 0; count < max; count++)
-    {
-      currentId = [ids objectAtIndex: count];
-      objectClass
-        = [self objectClassForResourceNamed: currentId];
-      deleteObject = [objectClass objectWithName: currentId
-                                  inContainer: self];
-      [deleteObject delete];
-      [deleteObject primaryDelete];
-    }
-}
-
 /* URL generation */
 
 - (NSString *) baseURLForAptWithUID: (NSString *)_uid

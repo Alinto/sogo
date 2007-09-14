@@ -66,6 +66,8 @@
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
 
+- (void) deleteEntriesWithIds: (NSArray *) ids;
+
 - (NSArray *) fetchContentObjectNames;
 - (NSDictionary *) fetchContentStringsAndNamesOfAllObjects;
 

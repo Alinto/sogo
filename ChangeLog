@@ -1,5 +1,8 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([-deleteEntriesWithIds:ids]): moved method into SOGoFolder.
+
 	* UI/Scheduler/UIxCalMainView.m ([-batchDeleteAction]): moved
 	method into UIxFolderActions.
 
