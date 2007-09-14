@@ -106,7 +106,7 @@ colorForNumber (unsigned int number)
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *calendar;
   unsigned int count, max;
-  NSString *folderId, *folderName;
+  NSString *folderName;
   NSNumber *isActive;
 
   if (!calendars)
