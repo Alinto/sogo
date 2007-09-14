@@ -50,6 +50,7 @@
 - (void) _setupContext
 {
   NSString *clientClass, *mailInvitationParam;
+  NSArray *realFolderPath;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
@@ -75,9 +76,11 @@
     }
   [ud setObject: moduleSettings forKey: baseFolder];
 
+  realFolderPath = [[clientObject nameInContainer]
+		     componentsSeparatedByString: @"_"];
   subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
 				  owner, baseFolder,
-				  [clientObject nameInContainer]];
+				  [realFolderPath objectAtIndex: 1]];
 
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
