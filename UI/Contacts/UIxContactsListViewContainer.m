@@ -41,18 +41,10 @@
 {
   if ((self = [super init]))
     {
-      foldersPrefix = nil;
       selectorComponentClass = nil;
-      additionalFolders = nil;
     }
 
   return self;
-}
-
-- (void) dealloc
-{
-  [additionalFolders release];
-  [super dealloc];
 }
 
 - (void) setSelectorComponentClass: (NSString *) aComponentClass
@@ -86,30 +78,6 @@
   currentFolder = folder;
 }
 
-- (NSString *) foldersPrefix
-{
-  NSMutableArray *folders;
-  SOGoObject *currentObject;
-
-  if (!foldersPrefix)
-    {
-      folders = [NSMutableArray new];
-      [folders autorelease];
-
-      currentObject = [[self clientObject] container];
-      while (![currentObject isKindOfClass: [SOGoContactFolders class]])
-        {
-          [folders insertObject: [currentObject nameInContainer] atIndex: 0];
-          currentObject = [currentObject container];
-        }
-
-      foldersPrefix = [folders componentsJoinedByString: @"/"];
-      [foldersPrefix retain];
-    }
-
-  return foldersPrefix;
-}
-
 - (NSArray *) contactFolders
 {
   SOGoContactFolders *folderContainer;
@@ -121,8 +89,7 @@
 
 - (NSString *) currentContactFolderId
 {
-  return [NSString stringWithFormat: @"%@/%@",
-                   [self foldersPrefix],
+  return [NSString stringWithFormat: @"/%@",
                    [currentFolder nameInContainer]];
 }
 
@@ -131,35 +98,9 @@
   return [currentFolder displayName];
 }
 
-- (NSArray *) additionalFolders
+- (NSString *) currentContactFolderOwner
 {
-  NSUserDefaults *ud;
-
-  if (!additionalFolders)
-    {
-      ud = [[context activeUser] userSettings];
-      additionalFolders
-	= [[ud objectForKey: @"Contacts"] objectForKey: @"SubscribedFolders"];
-      [additionalFolders retain];
-    }
-
-  return [additionalFolders allKeys];
-}
-
-- (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder
-{
-  currentAdditionalFolder = newCurrentAdditionalFolder;
-}
-
-- (NSString *) currentAdditionalFolder
-{
-  return currentAdditionalFolder;
-}
-
-- (NSString *) currentAdditionalFolderName
-{
-  return [[additionalFolders objectForKey: currentAdditionalFolder]
-	   objectForKey: @"displayName"];
+  return [currentFolder ownerInContext: context];
 }
 
 - (BOOL) hasContactSelectionButtons

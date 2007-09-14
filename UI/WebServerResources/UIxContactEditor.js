@@ -84,13 +84,13 @@ function validateContactEditor() {
   if (e.value.length == 0)
     return true;
   if (uixEmailRegex.test(e.value) != true)
-    return confirm(labels.invalidemailwarn.decodeEntities());
+    return confirm(labels.invalidemailwarn);
 
   e = $('homeMail');
   if (e.value.length == 0)
     return true;
   if (uixEmailRegex.test(e.value) != true)
-    return confirm(labels.invalidemailwarn.decodeEntities());
+    return confirm(labels.invalidemailwarn);
 
   return true;
 }

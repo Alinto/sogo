@@ -17,11 +17,6 @@
               pageName    = "UIxContactFoldersView";
               actionName  = "new";
            };
-           newAb = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "newAb";
-           };
            mailer-contacts = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
@@ -87,11 +82,6 @@
               pageName    = "UIxContactsListView";
               actionName  = "mailerContacts";
            };
-	   delete = {
-              protectedBy = "SaveAcls"; /* a hack to force "owner" */
-              pageName    = "UIxContactsListView";
-              actionName  = "delete";
-	   };
 	   userRights = {
 	      protectedBy = "ReadAcls";
 	      pageName    = "UIxContactsUserRightsEditor";

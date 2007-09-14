@@ -4,6 +4,8 @@
 - fixed a bug where a false positive happening whenever a wrong user login was
   given during an indirect bind;
 - deleting a message no longer expunges its parent folder;
+- implemented support for multiple calendars;
+- it is not possible to rename folders;
 - fixed search in message content;
 - added tooltips for toolbar buttons (English and French);
 - added checkmarks in live search options popup menus;

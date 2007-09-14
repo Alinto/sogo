@@ -133,8 +133,7 @@ function validateEditorInput(sender) {
       errortext = errortext + labels.error_missingrecipients + "\n";
    
    if (errortext.length > 0) {
-      alert(labels.error_validationfailed.decodeEntities() + ":\n"
-	    + errortext.decodeEntities());
+      alert(labels.error_validationfailed + ":\n" + errortext);
       return false;
    }
    return true;

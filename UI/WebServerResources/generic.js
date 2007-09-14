@@ -983,6 +983,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 	 document.subscriptionAjaxRequest.aborted = true;
 	 document.subscriptionAjaxRequest.abort();
       }
+
       var rfCbData = { method: refreshCallback, data: refreshCallbackData };
       document.subscriptionAjaxRequest = triggerAjaxRequest(url,
 							    folderSubscriptionCallback,
@@ -1006,29 +1007,42 @@ function folderUnsubscriptionCallback(http) {
 }
 
 function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
-   if (document.body.hasClassName("popup")) {
-      window.opener.unsubscribeFromFolder(folder, refreshCallback,
-					  refreshCallbackData);
-   }
-   else {
-      var folderData = folder.split(":");
-      var username = folderData[0];
-      var folderPath = folderData[1];
-      if (username != UserLogin) {
-	 var url = (UserFolderURL + "../" + username
-		    + "/" + folderPath + "/unsubscribe");
-	 if (document.unsubscriptionAjaxRequest) {
-	    document.unsubscriptionAjaxRequest.aborted = true;
-	    document.unsubscriptionAjaxRequest.abort();
-	 }
-	 var rfCbData = { method: refreshCallback, data: refreshCallbackData };
-	 document.unsubscriptionAjaxRequest
-	    = triggerAjaxRequest(url, folderUnsubscriptionCallback,
-				 rfCbData);
+  if (document.body.hasClassName("popup")) {
+    window.opener.unsubscribeFromFolder(folder, refreshCallback,
+					refreshCallbackData);
+  }
+  else {
+    var folderData = folder.split("+");
+    var username = folderData[0];
+    var folderPath = folderData[1];
+    if (username != UserLogin) {
+      var url = (ApplicationBaseURL + folder + "/unsubscribe");
+      if (document.unsubscriptionAjaxRequest) {
+	document.unsubscriptionAjaxRequest.aborted = true;
+	document.unsubscriptionAjaxRequest.abort();
       }
-      else
-	 window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
-   }
+      var rfCbData = { method: refreshCallback, data: refreshCallbackData };
+      document.unsubscriptionAjaxRequest
+	= triggerAjaxRequest(url, folderUnsubscriptionCallback,
+			     rfCbData);
+    }
+    else
+      window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
+  }
+}
+
+function accessToSubscribedFolder(serverFolder) {
+  var folder;
+
+  var parts = serverFolder.split(":");
+  if (parts.length > 1) {
+    var paths = parts[1].split("/");
+    folder = "/" + parts[0] + "_" + paths[2];
+  }
+  else
+    folder = serverFolder;
+  
+  return folder;
 }
 
 function listRowMouseDownHandler(event) {
@@ -1289,10 +1303,23 @@ function onLoadHandler(event) {
   configureDragHandles();
   configureSortableTableHeaders();
   configureLinkBanner();
+  translateLabels();
   var progressImage = $("progressIndicator");
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
   Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+}
+
+function translateLabels() {
+  if (typeof labels != "undefined") {
+    for (var key in labels)
+      labels[key] = labels[key].decodeEntities();
+  }
+
+  if (typeof clabels != "undefined") {
+    for (var key in clabels)
+      clabels[key] = clabels[key].decodeEntities();
+  }
 }
 
 function onBodyClickContextMenu(event) {
@@ -1337,6 +1364,38 @@ function configureLinkBanner() {
     Event.observe(anchors[4], "click", onPreferencesClick);
     if (anchors.length > 5)
        Event.observe(anchors[5], "click", toggleLogConsole);
+  }
+}
+
+/* folder creation */
+function createFolder(name, okCB, notOkCB) {
+  if (name) {
+    if (document.newFolderAjaxRequest) {
+      document.newFolderAjaxRequest.aborted = true;
+      document.newFolderAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + "/createFolder?name=" + name;
+    document.newFolderAjaxRequest
+       = triggerAjaxRequest(url, createFolderCallback,
+			    {name: name,
+			     okCB: okCB,
+			     notOkCB: notOkCB});
+  }
+}
+
+function createFolderCallback(http) {
+  if (http.readyState == 4) {
+    var data = http.callbackData;
+    if (http.status == 201) {
+      if (data.okCB)
+	data.okCB(data.name, "/" + http.responseText);
+    }
+    else {
+      if (data.notOkCB)
+	data.notOkCB(name);
+      else
+	log("ajax problem:" + http.status);
+    }
   }
 }
 

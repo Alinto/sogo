@@ -29,6 +29,8 @@
 
 @interface NSDictionary (SOGoDictionaryUtilities)
 
++ (NSDictionary *) dictionaryFromStringsFile: (NSString *) file;
+
 - (NSString *) jsonRepresentation;
 - (NSString *) keysWithFormat: (NSString *) keyFormat;
 

@@ -48,7 +48,7 @@ SchedulerUI_RESOURCE_FILES += \
 	product.plist	
 
 SchedulerUI_RESOURCE_FILES += \
-	Toolbars/SOGoAppointmentFolder.toolbar \
+	Toolbars/SOGoAppointmentFolders.toolbar \
 	Toolbars/SOGoAppointmentObject.toolbar \
 	Toolbars/SOGoAppointmentObjectAccept.toolbar \
 	Toolbars/SOGoAppointmentObjectDecline.toolbar \

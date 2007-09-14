@@ -1,3 +1,22 @@
+2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]): new
+	method that returns translated strings for controller bundles
+	(same as what UIxComponent does for view bundles).
+	([SOGoObject -pathArrayToSOGoObject]): new method that returns
+	the real path to a subscribed folder (if subscribed).
+	([SOGoObject +globallyUniqueObjectId]): move method from SOGoFolder.
+	([SOGoObject -globallyUniqueObjectId]): new instance method
+	calling its class equivalent.
+
+2007-09-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -defaultAction]): test
+	whether the user is logged in and if so, redirect to his/her
+	homepage.
+	([SOGoRootPage -appendToResponse:inContext:]): removed useless
+	method.
+
 2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder

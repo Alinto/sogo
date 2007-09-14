@@ -9,12 +9,7 @@
   
   classes = {
     SOGoContactFolders = {
-      superclass  = "SOGoFolder";
-      protectedBy = "Access Contents Information";
-      defaultRoles = {
-	"Access Contents Information" = ( "Authenticated" );
-        "WebDAV Access" = ( "Authenticated" );
-      };
+      superclass = "SOGoParentFolder";
     };
     SOGoContactGCSFolder = {
       superclass = "SOGoFolder";

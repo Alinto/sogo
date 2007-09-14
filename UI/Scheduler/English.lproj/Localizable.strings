@@ -110,8 +110,11 @@
 
 /* Button Titles */
 
-"Add..." = "Add...";
-"Remove" = "Remove";
+"New Calendar..." = "New Calendar...";
+"Subscribe to a Calendar..." = "Subscribe to a Calendar...";
+"Remove the selected Calendar" = "Remove the selected Calendar";
+
+"Name of the Calendar" = "Name of the Calendar";
 
 "new" = "New";
 "printview" = "Print View";

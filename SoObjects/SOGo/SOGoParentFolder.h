@@ -43,7 +43,8 @@
 
 - (NSArray *) subFolders;
 
-- (NSException *) newFolderWithName: (NSString *) name;
+- (NSException *) newFolderWithName: (NSString *) name
+		    nameInContainer: (NSString **) newNameInContainer;
 
 @end
 

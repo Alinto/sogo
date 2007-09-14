@@ -105,6 +105,8 @@
 "Are you sure you want to delete the selected address book?"
 = "Are you sure you want to delete the selected address book?";
 
+"Address Book Name" = "Address Book Name";
+
 "You cannot subscribe to a folder that you own!"
 = "You cannot subscribe to a folder that you own!";
 "Unable to subscribe to that folder!"

@@ -25,6 +25,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -38,6 +39,7 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -214,36 +216,6 @@
   return aptFolder;
 }
 
-- (NSArray *) _activeCalendarFolders
-{
-  NSMutableArray *activeFolders;
-  NSEnumerator *folders;
-  NSDictionary *currentFolderDict;
-  SOGoAppointmentFolder *currentFolder, *clientObject;
-
-  activeFolders = [NSMutableArray new];
-  [activeFolders autorelease];
-
-  clientObject = [self clientObject];
-
-  folders = [[clientObject calendarFolders] objectEnumerator];
-  currentFolderDict = [folders nextObject];
-  while (currentFolderDict)
-    {
-      if ([[currentFolderDict objectForKey: @"active"] boolValue])
-	{
-	  currentFolder
-	    = [self _aptFolder: [currentFolderDict objectForKey: @"folder"]
-		    withClientObject: clientObject];
-	  [activeFolders addObject: currentFolder];
-	}
-
-      currentFolderDict = [folders nextObject];
-    }
-
-  return activeFolders;
-}
-
 - (NSArray *) _fetchFields: (NSArray *) fields
 	forComponentOfType: (NSString *) component
 {
@@ -252,34 +224,42 @@
   NSMutableDictionary *infos, *currentInfo, *newInfo;
   NSString *owner, *uid;
   NSNull *marker;
+  SOGoAppointmentFolders *clientObject;
 
   marker = [NSNull null];
 
   infos = [NSMutableDictionary dictionary];
-  folders = [[self _activeCalendarFolders] objectEnumerator];
+  clientObject = [self clientObject];
+
+  folders = [[clientObject subFolders] objectEnumerator];
   currentFolder = [folders nextObject];
   while (currentFolder)
     {
-      owner = [currentFolder ownerInContext: context];
-      currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
-				     to: endDate
-				     component: component] objectEnumerator];
-      newInfo = [currentInfos nextObject];
-      while (newInfo)
+      if ([currentFolder isActive])
 	{
-	  uid = [newInfo objectForKey: @"c_uid"];
-	  currentInfo = [infos objectForKey: uid];
-	  if (!currentInfo
-	      || [owner isEqualToString: userLogin])
-	    {
-	      [self _updatePrivacyInComponent: newInfo
-		    fromFolder: currentFolder];
-	      [newInfo setObject: owner forKey: @"c_owner"];
-	      [infos setObject: [newInfo objectsForKeys: fields
-					 notFoundMarker: marker]
-		     forKey: uid];
-	    }
+	  owner = [currentFolder ownerInContext: context];
+	  currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
+					 to: endDate
+					 component: component] objectEnumerator];
 	  newInfo = [currentInfos nextObject];
+	  while (newInfo)
+	    {
+	      uid = [newInfo objectForKey: @"c_uid"];
+	      currentInfo = [infos objectForKey: uid];
+	      if (!currentInfo
+		  || [owner isEqualToString: userLogin])
+		{
+		  [self _updatePrivacyInComponent: newInfo
+			fromFolder: currentFolder];
+		  [newInfo setObject: [currentFolder nameInContainer]
+			   forKey: @"c_folder"];
+		  // 	      [newInfo setObject: owner forKey: @"c_owner"];
+		  [infos setObject: [newInfo objectsForKeys: fields
+					     notFoundMarker: marker]
+			 forKey: uid];
+		}
+	      newInfo = [currentInfos nextObject];
+	    }
 	}
       currentFolder = [folders nextObject];
     }
@@ -326,7 +306,7 @@
   [self _setupContext];
 
   newEvents = [NSMutableArray array];
-  fields = [NSArray arrayWithObjects: @"c_name", @"c_owner", @"c_status",
+  fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
 		    @"c_title", @"c_startdate", @"c_enddate", @"c_location",
 		    @"c_isallday", nil];
   events = [[self _fetchFields: fields
@@ -397,7 +377,7 @@
 
   [self _setupContext];
 
-  fields = [NSArray arrayWithObjects: @"c_name", @"c_owner", @"c_status",
+  fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
 		    @"c_title", @"c_enddate", nil];
 
   tasks = [[self _fetchFields: fields

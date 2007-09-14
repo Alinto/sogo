@@ -111,8 +111,11 @@
 
 /* Button Titles */
 
-"Add..." = "Ajouter...";
-"Remove" = "Enlever";
+"New Calendar..." = "Nouvel agenda...";
+"Subscribe to a Calendar..." = "S'inscrire à un agenda...";
+"Remove the selected Calendar" = "Enlever l'agenda sélectionné";
+
+"Name of the Calendar" = "Nom de l'agenda";
 
 "new" = "Nouveau";
 "printview" = "Version imprimable";

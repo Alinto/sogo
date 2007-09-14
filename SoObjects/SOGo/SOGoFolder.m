@@ -19,9 +19,6 @@
   02111-1307, USA.
 */
 
-#import <unistd.h>
-#import <stdlib.h>
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
@@ -38,9 +35,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
+#import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 #import "NSArray+Utilities.h"
@@ -67,40 +66,29 @@ static NSString *defaultUserID = @"<default>";
             NSStringFromClass([self superclass]), [super version]);
 }
 
-+ (NSString *) globallyUniqueObjectId
-{
-  /*
-    4C08AE1A-A808-11D8-AC5A-000393BBAFF6
-    SOGo-Web-28273-18283-288182
-    printf( "%x", *(int *) &f);
-  */
-  static int pid = 0;
-  static int sequence = 0;
-  static float rndm = 0;
-  float f;
-
-  if (pid == 0)
-    { /* break if we fork ;-) */
-      pid = getpid();
-      rndm = random();
-    }
-  sequence++;
-  f = [[NSDate date] timeIntervalSince1970];
-
-  return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
-		   pid, (int) f, sequence++, random];
-}
-
-+ (id) folderWithName: (NSString *) aName
-       andDisplayName: (NSString *) aDisplayName
-	  inContainer: (id) aContainer
++ (id) folderWithSubscriptionReference: (NSString *) reference
+			   inContainer: (id) aContainer
 {
   id newFolder;
+  NSArray *elements, *pathElements;
+  NSString *ocsPath, *objectPath, *owner, *ocsName, *folderName;
 
-  newFolder = [[self alloc] initWithName: aName
-			    andDisplayName: aDisplayName
+  elements = [reference componentsSeparatedByString: @":"];
+  owner = [elements objectAtIndex: 0];
+  objectPath = [elements objectAtIndex: 1];
+  pathElements = [objectPath componentsSeparatedByString: @"/"];
+  if ([pathElements count] > 1)
+    ocsName = [pathElements objectAtIndex: 1];
+  else
+    ocsName = @"personal";
+
+  ocsPath = [NSString stringWithFormat: @"/Users/%@/%@/%@",
+		      owner, [pathElements objectAtIndex: 0], ocsName];
+  folderName = [NSString stringWithFormat: @"%@_%@", owner, ocsName];
+  newFolder = [[self alloc] initWithName: folderName
 			    inContainer: aContainer];
-  [newFolder autorelease];
+  [newFolder setOCSPath: ocsPath];
+  [newFolder setOwner: owner];
 
   return newFolder;
 }
@@ -114,17 +102,6 @@ static NSString *defaultUserID = @"<default>";
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
     }
-
-  return self;
-}
-
-- (id) initWithName: (NSString *) aName
-     andDisplayName: (NSString *) aDisplayName
-	inContainer: (id) aContainer
-{
-  if ((self = [self initWithName: aName
-                    inContainer: aContainer]))
-    ASSIGN (displayName, aDisplayName);
 
   return self;
 }
@@ -147,13 +124,12 @@ static NSString *defaultUserID = @"<default>";
 
 - (void) setOCSPath: (NSString *) _path
 {
-  if ([ocsPath isEqualToString:_path])
-    return;
-  
-  if (ocsPath)
-    [self warnWithFormat:@"GCS path is already set! '%@'", _path];
-  
-  ASSIGNCOPY(ocsPath, _path);
+  if (![ocsPath isEqualToString:_path])
+    {
+      if (ocsPath)
+	[self warnWithFormat: @"GCS path is already set! '%@'", _path];
+      ASSIGN (ocsPath, _path);
+    }
 }
 
 - (NSString *) ocsPath
@@ -178,14 +154,73 @@ static NSString *defaultUserID = @"<default>";
 
 - (BOOL) folderIsMandatory
 {
-  [self subclassResponsibility: _cmd];
+  return [nameInContainer isEqualToString: @"personal"];
+}
 
-  return NO;
+- (void) _setDisplayNameFromRow: (NSDictionary *) row
+{
+  NSString *currentLogin, *ownerLogin;
+  NSDictionary *ownerIdentity;
+
+  displayName
+    = [NSMutableString stringWithString: [row objectForKey: @"c_foldername"]];
+  currentLogin = [[context activeUser] login];
+  ownerLogin = [self ownerInContext: context];
+  if (![currentLogin isEqualToString: ownerLogin])
+    {
+      ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
+			primaryIdentity];
+      [displayName appendFormat: @" (%@ <%@>)",
+		   [ownerIdentity objectForKey: @"fullName"],
+		   [ownerIdentity objectForKey: @"email"]];
+    }
+}
+
+- (void) _fetchDisplayName
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql;
+  NSArray *attrs;
+  NSDictionary *row;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation
+    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if (fc)
+    {
+      sql
+	= [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
+				       @" WHERE c_path = '%@'"),
+		    [folderLocation gcsTableName], ocsPath];
+      [fc evaluateExpressionX: sql];
+      attrs = [fc describeResults: NO];
+      row = [fc fetchAttributes: attrs withZone: NULL];
+      if (row)
+	[self _setDisplayNameFromRow: row];
+      [fc cancelFetch];
+      [cm releaseChannel: fc];
+    }
+}
+
+- (void) setDisplayName: (NSString *) newDisplayName
+{
+  ASSIGN (displayName, newDisplayName);
 }
 
 - (NSString *) displayName
 {
+  if (!displayName)
+    [self _fetchDisplayName];
+
   return displayName;
+}
+
+- (NSString *) davDisplayName
+{
+  return [self displayName];
 }
 
 - (GCSFolder *) ocsFolder
@@ -222,7 +257,9 @@ static NSString *defaultUserID = @"<default>";
 {
   NSException *result;
 
+//   [self dieHard];
   result = [[self folderManager] createFolderOfType: [self folderType]
+				 withName: displayName
                                  atPath: ocsPath];
 
   return (result == nil);
@@ -234,11 +271,38 @@ static NSString *defaultUserID = @"<default>";
 
   if ([nameInContainer isEqualToString: @"personal"])
     error = [NSException exceptionWithHTTPStatus: 403
-			 reason: @"the 'personal' folder cannot be deleted"];
+			 reason: @"folder 'personal' cannot be deleted"];
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
   return error;
+}
+
+- (void) renameTo: (NSString *) newName
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql;
+
+  [displayName release];
+  displayName = nil;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation
+    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if (fc)
+    {
+      sql
+	= [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
+				       @" WHERE c_path = '%@'"),
+		    [folderLocation gcsTableName], newName, ocsPath];
+      [fc evaluateExpressionX: sql];
+      [cm releaseChannel: fc];
+//       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
+//                  uidColumnName, [self uid]];
+    }
 }
 
 - (NSArray *) fetchContentObjectNames
@@ -512,7 +576,7 @@ static NSString *defaultUserID = @"<default>";
 /* acls */
 - (NSArray *) aclUsers
 {
-  return [self aclUsersForObjectAtPath: [self pathArrayToSoObject]];
+  return [self aclUsersForObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -522,7 +586,7 @@ static NSString *defaultUserID = @"<default>";
 
   acls = [NSMutableArray array];
   ownAcls = [self aclsForUser: uid
-		  forObjectAtPath: [self pathArrayToSoObject]];
+		  forObjectAtPath: [self pathArrayToSOGoObject]];
   [acls addObjectsFromArray: ownAcls];
   if ([container respondsToSelector: @selector (aclsForUser:)])
     {
@@ -545,13 +609,13 @@ static NSString *defaultUserID = @"<default>";
 {
   return [self setRoles: roles
                forUser: uid
-               forObjectAtPath: [self pathArrayToSoObject]];
+               forObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
 {
   return [self removeAclsForUsers: users
-               forObjectAtPath: [self pathArrayToSoObject]];
+               forObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (NSString *) defaultUserID

@@ -53,6 +53,8 @@
   NSMutableDictionary *uidToFilename;
 }
 
+- (BOOL) isActive;
+
 /* selection */
 
 - (NSArray *) calendarUIDs;
@@ -112,8 +114,6 @@
 /* bulk fetches */
 
 - (NSArray *) fetchAllSOGoAppointments;
-
-- (NSArray *) calendarFolders;
 
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid;

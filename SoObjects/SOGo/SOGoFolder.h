@@ -43,23 +43,18 @@
 
 @interface SOGoFolder : SOGoObject
 {
-  NSString *displayName;
+  NSMutableString *displayName;
   NSString *ocsPath;
   GCSFolder *ocsFolder;
   NSMutableDictionary *aclCache;
 }
 
-+ (NSString *) globallyUniqueObjectId;
++ (id) folderWithSubscriptionReference: (NSString *) reference
+			   inContainer: (id) aContainer;
 
 /* accessors */
 
-+ (id) folderWithName: (NSString *) aName
-       andDisplayName: (NSString *) aDisplayName
-	  inContainer: (id) aContainer;
-- (id) initWithName: (NSString *) aName
-     andDisplayName: (NSString *) aDisplayName
-	inContainer: (id) aContainer;
-
+- (void) setDisplayName: (NSString *) newDisplayName;
 - (NSString *) displayName;
 
 - (void) setOCSPath: (NSString *)_Path;
@@ -79,10 +74,11 @@
 - (NSString *) outlookFolderClass;
 
 - (BOOL) folderIsMandatory;
+- (NSString *) folderType;
 
 - (BOOL) create;
 - (NSException *) delete;
-
+- (void) renameTo: (NSString *) newName;
 /* dav */
 - (NSArray *) davNamespaces;
 

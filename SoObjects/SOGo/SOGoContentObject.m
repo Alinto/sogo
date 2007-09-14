@@ -231,7 +231,7 @@
   needsLocation = NO;
   tmp = [[self nameInContainer] stringByDeletingPathExtension];
   if ([tmp isEqualToString:@"new"]) {
-    tmp = [[[self container] class] globallyUniqueObjectId];
+    tmp = [self globallyUniqueObjectId];
     needsLocation = YES;
     
     [self debugWithFormat:
@@ -359,7 +359,7 @@
 
 - (NSArray *) aclUsers
 {
-  return [container aclUsersForObjectAtPath: [self pathArrayToSoObject]];
+  return [container aclUsersForObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -369,7 +369,7 @@
 
   acls = [NSMutableArray array];
   ownAcls = [container aclsForUser: uid
-		       forObjectAtPath: [self pathArrayToSoObject]];
+		       forObjectAtPath: [self pathArrayToSOGoObject]];
   [acls addObjectsFromArray: ownAcls];
   containerAcls = [container aclsForUser: uid];
   if ([containerAcls count] > 0)

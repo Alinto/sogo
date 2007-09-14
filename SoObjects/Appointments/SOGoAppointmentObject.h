@@ -46,13 +46,6 @@
 
 @interface SOGoAppointmentObject : SOGoCalendarComponent
 
-/* folder management */
-
-- (id) lookupHomeFolderForUID: (NSString *) _uid
-		    inContext: (id) _ctx;
-- (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
-                                 inContext: (id) _ctx;
-
 /* "iCal multifolder saves" */
 
 - (NSException *) saveContentString: (NSString *) _iCal

@@ -24,6 +24,9 @@
        Please use gnustep-base instead.
 #endif
 
+#import <unistd.h>
+
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSClassDescription.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
@@ -35,6 +38,7 @@
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResourceManager.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WORequest+So.h>
@@ -52,6 +56,7 @@
 #import "SOGoDAVRendererTypes.h"
 
 #import "NSArray+Utilities.h"
+#import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 
 #import "SOGoObject.h"
@@ -177,6 +182,35 @@ static BOOL kontactGroupDAV = YES;
 //                               asDefaultForPermission: SoPerm_View];
 //   [[self soClassSecurityInfo] declareRole: SoRole_Owner
 //                               asDefaultForPermission: SoPerm_WebDAVAccess];
+}
+
++ (NSString *) globallyUniqueObjectId
+{
+  /*
+    4C08AE1A-A808-11D8-AC5A-000393BBAFF6
+    SOGo-Web-28273-18283-288182
+    printf( "%x", *(int *) &f);
+  */
+  static int pid = 0;
+  static int sequence = 0;
+  static float rndm = 0;
+  float f;
+
+  if (pid == 0)
+    { /* break if we fork ;-) */
+      pid = getpid();
+      rndm = random();
+    }
+  sequence++;
+  f = [[NSDate date] timeIntervalSince1970];
+
+  return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
+		   pid, (int) f, sequence++, random];
+}
+
+- (NSString *) globallyUniqueObjectId
+{
+  return [[self class] globallyUniqueObjectId];
 }
 
 + (void) _fillDictionary: (NSMutableDictionary *) dictionary
@@ -447,6 +481,30 @@ static BOOL kontactGroupDAV = YES;
   return container;
 }
 
+- (NSArray *) pathArrayToSOGoObject
+{
+  NSMutableArray *realPathArray;
+  NSString *objectName;
+  NSArray *objectDescription;
+
+  realPathArray
+    = [NSMutableArray arrayWithArray: [self pathArrayToSoObject]];
+  if ([realPathArray count] > 2)
+    {
+      objectName = [realPathArray objectAtIndex: 2];
+      objectDescription = [objectName componentsSeparatedByString: @"_"];
+      if ([objectDescription count] > 1)
+	{
+	  [realPathArray replaceObjectAtIndex: 0
+			 withObject: [objectDescription objectAtIndex: 0]];
+	  [realPathArray replaceObjectAtIndex: 2
+			 withObject: [objectDescription objectAtIndex: 1]];
+	}
+    }
+
+  return realPathArray;
+}
+
 /* ownership */
 
 - (void) setOwner: (NSString *) newOwner
@@ -493,14 +551,16 @@ static BOOL kontactGroupDAV = YES;
 
 /* looking up shared objects */
 
-- (SOGoUserFolder *)lookupUserFolder {
+- (SOGoUserFolder *) lookupUserFolder
+{
   if (![container respondsToSelector:_cmd])
     return nil;
   
   return [container lookupUserFolder];
 }
 
-- (SOGoGroupsFolder *)lookupGroupsFolder {
+- (SOGoGroupsFolder *) lookupGroupsFolder
+{
   return [[self lookupUserFolder] lookupGroupsFolder];
 }
 
@@ -903,6 +963,34 @@ static BOOL kontactGroupDAV = YES;
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (NSString *) labelForKey: (NSString *) key
+{
+  NSString *userLanguage, *label;
+  NSArray *paths;
+  NSBundle *bundle;
+  NSDictionary *strings;
+
+  bundle = [NSBundle bundleForClass: [self class]];
+  if (!bundle)
+    bundle = [NSBundle mainBundle];
+
+  userLanguage = [[context activeUser] language];
+  paths = [bundle pathsForResourcesOfType: @"strings"
+		  inDirectory: [NSString stringWithFormat: @"%@.lproj", userLanguage]
+		  forLocalization: userLanguage];
+  if ([paths count] > 0)
+    {
+      strings = [NSDictionary dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+      label = [strings objectForKey: key];
+      if (!label)
+	label = key;
+    }
+  else
+    label = key;
+  
+  return label;
 }
 
 /* description */

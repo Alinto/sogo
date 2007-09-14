@@ -33,8 +33,9 @@
 #import <NGObjWeb/SoSecurityManager.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "WODirectAction+SOGo.h"
@@ -74,21 +75,19 @@
     }
   [ud setObject: moduleSettings forKey: baseFolder];
 
-  subscriptionPointer = [NSMutableString stringWithFormat: @"%@:%@",
-					 owner, baseFolder];
-  if ([baseFolder isEqualToString: @"Contacts"])
-    [subscriptionPointer appendFormat: @"/%@",
-			 [clientObject nameInContainer]];
+  subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
+				  owner, baseFolder,
+				  [clientObject nameInContainer]];
 
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
   isMailInvitation = [mailInvitationParam boolValue];
 }
 
-- (WOResponse *) _realActionWithFolderName: (NSDictionary *) folderDict
+- (WOResponse *) _realSubscribe: (BOOL) reallyDo
 {
   WOResponse *response;
-  NSMutableDictionary *folderSubscription;
+  NSMutableArray *folderSubscription;
   NSString *mailInvitationURL;
 
   if ([owner isEqualToString: login])
@@ -101,17 +100,17 @@
     {
       folderSubscription
 	= [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (!folderSubscription)
+      if (!(folderSubscription
+	    && [folderSubscription isKindOfClass: [NSMutableArray class]]))
 	{
-	  folderSubscription = [NSMutableDictionary dictionary];
+	  folderSubscription = [NSMutableArray array];
 	  [moduleSettings setObject: folderSubscription
 			  forKey: @"SubscribedFolders"];
 	}
-      if (folderDict)
-	[folderSubscription setObject: folderDict
-			    forKey: subscriptionPointer];
+      if (reallyDo)
+	[folderSubscription addObjectUniquely: subscriptionPointer];
       else
-	[folderSubscription removeObjectForKey: subscriptionPointer];
+	[folderSubscription removeObject: subscriptionPointer];
 
       [ud synchronize];
 
@@ -133,32 +132,16 @@
 
 - (WOResponse *) subscribeAction
 {
-  NSString *email;
-  NSMutableDictionary *folderDict;
-  NSString *folderName;
-
   [self _setupContext];
-  email = [NSString stringWithFormat: @"%@ <%@>",
-		    [um getCNForUID: owner],
-		    [um getEmailForUID: owner]];
-  if ([baseFolder isEqualToString: @"Contacts"])
-    folderName = [NSString stringWithFormat: @"%@ (%@)",
-			   [clientObject nameInContainer], email];
-  else
-    folderName = email;
 
-  folderDict = [NSMutableDictionary dictionary];
-  [folderDict setObject: folderName forKey: @"displayName"];
-  [folderDict setObject: [NSNumber numberWithBool: NO] forKey: @"active"];
-
-  return [self _realActionWithFolderName: folderDict];
+  return [self _realSubscribe: YES];
 }
 
 - (WOResponse *) unsubscribeAction
 {
   [self _setupContext];
 
-  return [self _realActionWithFolderName: nil];
+  return [self _realSubscribe: NO];
 }
 
 - (WOResponse *) canAccessContentAction
@@ -168,25 +151,23 @@
 
 - (WOResponse *) _realFolderActivation: (BOOL) makeActive
 {
-  NSMutableDictionary *folderSubscription, *folderDict;
-  NSNumber *active;
-  
+  NSMutableArray *folderSubscription;
+  NSString *folderName;
+
   [self _setupContext];
-  active = [NSNumber numberWithBool: makeActive];
-  if ([owner isEqualToString: login])
-    [moduleSettings setObject: active forKey: @"activateUserFolder"];
-  else
+  folderSubscription
+    = [moduleSettings objectForKey: @"ActiveFolders"];
+  if (!folderSubscription)
     {
-      folderSubscription
-	= [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (folderSubscription)
-	{
-          folderDict = [folderSubscription objectForKey: subscriptionPointer];
-          if (folderDict)
-            [folderDict setObject: active
-                        forKey: @"active"];
-	}
+      folderSubscription = [NSMutableArray array];
+      [moduleSettings setObject: folderSubscription forKey: @"ActiveFolders"];
     }
+
+  folderName = [clientObject nameInContainer];
+  if (makeActive)
+    [folderSubscription addObjectUniquely: folderName];
+  else
+    [folderSubscription removeObject: folderName];
 
   [ud synchronize];
 
@@ -201,6 +182,38 @@
 - (WOResponse *) deactivateFolderAction
 {
   return [self _realFolderActivation: NO];
+}
+
+- (WOResponse *) deleteFolderAction
+{
+  WOResponse *response;
+
+  response = (WOResponse *) [[self clientObject] delete];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) renameFolderAction
+{
+  WOResponse *response;
+  NSString *folderName;
+
+  folderName = [[context request] formValueForKey: @"name"];
+  if ([folderName length] > 0)
+    {
+      clientObject = [self clientObject];
+      [clientObject renameTo: folderName];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response appendContentString: @"Missing 'name' parameter."];
+    }
+
+  return response;
 }
 
 @end

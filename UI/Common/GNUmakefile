@@ -17,6 +17,7 @@ CommonUI_OBJC_FILES +=		\
 	UIxAclEditor.m  \
 	UIxObjectActions.m	\
 	UIxFolderActions.m	\
+	UIxParentFolderActions.m \
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\

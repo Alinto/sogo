@@ -46,6 +46,14 @@
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
       };
     };
+    SOGoParentFolder = {
+      superclass = "SOGoObject";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+	"Access Contents Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
+      };
+    };
     SOGoUserFolder = {
       superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";

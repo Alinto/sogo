@@ -62,13 +62,10 @@
 	<ul id="contactFolders">
 	  <var:foreach list="contactFolders" item="currentFolder"
 	    ><li var:id="currentContactFolderId"
-              ><var:string value="currentContactFolderName" /></li
+	      var:owner="currentContactFolderOwner"
+	      ><var:string value="currentContactFolderName" /></li
 	      ></var:foreach
-	    ><var:foreach list="additionalFolders"
-	    item="currentAdditionalFolder"
-	    ><li var:id="currentAdditionalFolder" class="denied"
-	      ><var:string value="currentAdditionalFolderName" /></li
-	      ></var:foreach>
+	    >
 	</ul>
 
 	<var:if condition="hasContactSelectionButtons">

@@ -257,6 +257,11 @@
 }
 
 /* acls */
+- (NSString *) ownerInContext: (WOContext *) noContext
+{
+  return @"nobody";
+}
+
 /* TODO: this might change one day when we support LDAP acls */
 - (NSArray *) aclsForUser: (NSString *) uid
 {

@@ -41,7 +41,7 @@
   NSString *owner;
   NSString *login;
   NSString *baseFolder;
-  NSMutableString *subscriptionPointer;
+  NSString *subscriptionPointer;
   NSMutableDictionary *moduleSettings;
   BOOL isMailInvitation;
 }

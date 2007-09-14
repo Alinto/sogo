@@ -33,3 +33,4 @@
 "You cannot subscribe to a folder that you own!" = "Impossible de vous abonner à un dossier qui vous appartient.";
 "Unable to unsubscribe from that folder!" = "Impossible de se désabonner de ce dossier.";
 "You cannot unsubscribe from a folder that you own!" = "Impossible de vous désabonner d'un dossier qui vous appartient.";
+"Unable to rename that folder!" = "Impossible de renommer ce dossier.";

@@ -73,7 +73,7 @@
   cookieString = [NSString stringWithFormat: @"%@:%@",
 			   [self queryParameterForKey: @"userName"],
 			   [self queryParameterForKey: @"password"]];
-  cookieValue = [NSString stringWithFormat: @"basic%@",
+  cookieValue = [NSString stringWithFormat: @"basic %@",
 			  [cookieString stringByEncodingBase64]];
   authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 			 value: cookieValue];
@@ -83,88 +83,24 @@
   return response;
 }
 
-// - (id <WOActionResults>) defaultAction
-// {
-//   WOResponse *r;
-//   NSString *login, *rhk;
-//   SOGoWebAuthenticator *auth;
-//   SOGoUser *user;
-//   SOGoUserFolder *home;
-//   WOApplication *base;
+- (id <WOActionResults>) defaultAction
+{
+  id <WOActionResults> response;
+  NSString *login, *oldLocation;
 
-//   /* 
-//      Note: ctx.activeUser is NOT set here. Don't know why, so we retrieve
-//            the user from the authenticator.
-//   */
-  
-//   auth = [[self clientObject] authenticatorInContext: context];
-//   user = [auth userInContext: context];
-//   login = [user login];
+  login = [[context activeUser] login];
+  if ([login isEqualToString: @"anonymous"])
+    response = self;
+  else
+    {
+      oldLocation = [[self clientObject] baseURLInContext: context];
+      response
+	= [self redirectToLocation: [NSString stringWithFormat: @"%@/%@",
+					      oldLocation, login]];
+    }
 
-//   if ([login isEqualToString:@"anonymous"]) {
-//     /* use root page for unauthenticated users */
-//     return self;
-//   }
-
-//   /* check base */
-
-//   base = [self application];
-//   rhk = [[context request] requestHandlerKey];
-//   if (([rhk length] == 0) || ([base requestHandlerForKey:rhk] == nil)) {
-//     base = [base lookupName: @"so" inContext: context acquire: NO];
-    
-//     if (![base isNotNull] || [base isKindOfClass:[NSException class]]) {
-//       /* use root page if home could not be found */
-//       [self errorWithFormat:@"Did not find 'so' request handler!"];
-//       return self;
-//     }
-//   }
-  
-//   /* lookup home-page */
-
-//   home = [base lookupName: login inContext: context acquire: NO];
-//   if (![home isNotNull] || [home isKindOfClass:[NSException class]]) {
-//     /* use root page if home could not be found */
-//     return self;
-//   }
-  
-//   /* redirect to home-page */
-  
-//   r = [context response];
-//   [r setStatus: 302 /* moved */];
-//   [r setHeader: [home baseURLInContext: context]
-//      forKey: @"location"];
-
-//   return r;
-// }
-
-/* response generation */
-
-// - (void) appendToResponse: (WOResponse *) response
-// 		inContext: (WOContext *) ctx
-// {
-//   NSString *rhk;
-
-//   // TODO: we might also want to look into the HTTP basic-auth to redirect to
-//   //       the login URL!
-  
-//   rhk = [[ctx request] requestHandlerKey];
-//   if ([rhk length] == 0
-//       || [[self application] requestHandlerForKey: rhk] == nil)
-//     {
-//       /* a small hack to redirect to a valid URL */
-//       NSString *url;
-    
-//       url = [ctx urlWithRequestHandlerKey: @"so" path: @"/" queryString: nil];
-//       [response setStatus: 302 /* moved */];
-//       [response setHeader: url forKey: @"location"];
-//       [self logWithFormat: @"URL: %@", url];
-//       return;
-//     }
-
-//   [response setHeader: @"text/html" forKey: @"content-type"];
-//   [super appendToResponse: response inContext: ctx];
-// }
+  return response;
+}
 
 - (BOOL) isPublicInContext: (WOContext *) localContext
 {

@@ -34,6 +34,8 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "NSArray+Appointments.h"
+#import "SOGoAppointmentFolder.h"
+
 #import "SOGoAppointmentObject.h"
 
 @implementation SOGoAppointmentObject
@@ -96,16 +98,6 @@
   return uids;
 }
 
-/* folder management */
-
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
-  // TODO: what does this do? lookup the home of the organizer?
-  return [[self container] lookupHomeFolderForUID:_uid inContext:_ctx];
-}
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
-  return [[self container] lookupCalendarFoldersForUIDs:_uids inContext:_ctx];
-}
-
 /* store in all the other folders */
 
 - (NSException *) saveContentString: (NSString *) _iCal
@@ -115,8 +107,8 @@
   id folder;
   NSException *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
-	     objectEnumerator];
+  e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
+	objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
     SOGoAppointmentObject *apt;
@@ -160,8 +152,8 @@
   id folder;
   NSException *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
-	     objectEnumerator];
+  e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
+	objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;
     SOGoAppointmentObject *apt;
