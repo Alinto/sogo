@@ -1,7 +1,7 @@
 function onPopupAttendeesWindow(event) {
    if (event)
       preventDefault(event);
-   window.open(ApplicationBaseURL + "editAttendees", null, 
+   window.open(ApplicationBaseURL + "/editAttendees", null, 
                "width=803,height=573");
 
    return false;
