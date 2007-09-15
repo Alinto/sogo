@@ -1299,7 +1299,9 @@ function getMenus() {
 				       editEvent, deleteEvent, "-",
 				       onSelectAll, "-",
 				       null, null);
-   menus["calendarsMenu"] = new Array(onCalendarNew, onCalendarRemove,
+   menus["calendarsMenu"] = new Array(onMenuModify,
+				      "-",
+				      onCalendarNew, onCalendarRemove,
 				      "-", null, null, "-",
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
@@ -1353,6 +1355,35 @@ function initCalendarSelector() {
   Event.observe(links[0], "click",  onCalendarNew);
   Event.observe(links[1], "click",  onCalendarAdd);
   Event.observe(links[2], "click",  onCalendarRemove);
+}
+
+function onMenuModify(event) {
+  var folders = $("calendarList");
+  var selected = folders.getSelectedNodes()[0];
+
+  if (UserLogin == selected.getAttribute("owner")) {
+    var node = selected.childNodes[4];
+    var currentName = node.nodeValue.trim();
+    var newName = window.prompt(labels["Address Book Name"],
+				currentName);
+    if (newName && newName.length > 0
+	&& newName != currentName) {
+      var url = (URLForFolderID(selected.getAttribute("id"))
+		 + "/renameFolder?name=" + escape(newName.utf8encode()));
+      triggerAjaxRequest(url, folderRenameCallback,
+			 {node: node, name: " " + newName});
+    }
+  } else
+    window.alert(clabels["Unable to rename that folder!"]);
+}
+
+function folderRenameCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var dict = http.callbackData;
+      dict["node"].nodeValue = dict["name"];
+    }
+  }
 }
 
 function onCalendarNew(event) {

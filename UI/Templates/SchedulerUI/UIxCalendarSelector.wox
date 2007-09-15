@@ -29,7 +29,8 @@
     </span>
     <ul id="calendarList" multiselect="yes">
       <var:foreach list="calendars" item="currentCalendar"
-	><li class="denied" var:id="currentCalendar.id">
+	><li class="denied" var:id="currentCalendar.id"
+	  var:owner="currentCalendar.owner">
 	  <input type="checkbox" class="checkBox"
 	    const:disabled="disabled"
 	    var:checked="currentCalendar.active" />

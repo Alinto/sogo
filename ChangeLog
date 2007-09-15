@@ -1,5 +1,8 @@
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-calendars]): also returns the owner of the listed folders.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([-deleteEntriesWithIds:ids]): moved method into SOGoFolder.
 

@@ -129,6 +129,8 @@ colorForNumber (unsigned int number)
 		    forKey: @"color"];
 	  isActive = [NSNumber numberWithBool: [folder isActive]];
 	  [calendar setObject: isActive forKey: @"active"];
+	  [calendar setObject: [folder ownerInContext: context]
+		    forKey: @"owner"];
 	  [calendars addObject: calendar];
 	}
     }
