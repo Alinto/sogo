@@ -507,11 +507,15 @@ function appendAddressBook(name, folder) {
     folder = accessToSubscribedFolder(folder);
   else
     folder = "/" + name;
-  var li = document.createElement("li");
-  $("contactFolders").appendChild(li);
-  li.setAttribute("id", folder);
-  li.appendChild(document.createTextNode(name));
-  setEventsOnContactFolder(li);
+  if ($(folder))
+    window.alert(clabels["You have already subscribed to that folder!"]);
+  else {
+    var li = document.createElement("li");
+    $("contactFolders").appendChild(li);
+    li.setAttribute("id", folder);
+    li.appendChild(document.createTextNode(name));
+    setEventsOnContactFolder(li);
+  }
 }
 
 function newFolderCallback(http) {

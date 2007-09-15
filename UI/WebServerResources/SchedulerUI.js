@@ -1374,55 +1374,58 @@ function appendCalendar(folderName, folder) {
 
 //   log ("append: " + folderName + "; folder: " + folder);
 
-  var calendarList = $("calendarList");
-  var lis = calendarList.childNodesWithTag("li");
-  var color = indexColor(lis.length + 100);
-  //log ("color: " + color);
+  if ($(folder))
+    window.alert(clabels["You have already subscribed to that folder!"]);
+  else {
+    var calendarList = $("calendarList");
+    var lis = calendarList.childNodesWithTag("li");
+    var color = indexColor(lis.length + 100);
+    //log ("color: " + color);
 
-  var li = document.createElement("li");
-  calendarList.appendChild(li);
+    var li = document.createElement("li");
+    calendarList.appendChild(li);
 
-  var checkBox = document.createElement("input");
-  checkBox.setAttribute("type", "checkbox");
-  li.appendChild(checkBox);
-   
-  li.appendChild(document.createTextNode(" "));
+    var checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    li.appendChild(checkBox);
+    li.appendChild(document.createTextNode(" "));
 
-  var colorBox = document.createElement("div");
-  li.appendChild(colorBox);
-  li.appendChild(document.createTextNode(" " + folderName));
-  colorBox.appendChild(document.createTextNode("OO"));
+    var colorBox = document.createElement("div");
+    li.appendChild(colorBox);
+    li.appendChild(document.createTextNode(" " + folderName));
+    colorBox.appendChild(document.createTextNode("OO"));
 
-  li.setAttribute("id", folder);
-  Event.observe(li, "mousedown",  listRowMouseDownHandler);
-  Event.observe(li, "click",  onRowClick);
-  $(checkBox).addClassName("checkBox");
+    li.setAttribute("id", folder);
+    Event.observe(li, "mousedown",  listRowMouseDownHandler);
+    Event.observe(li, "click",  onRowClick);
+    $(checkBox).addClassName("checkBox");
 
-  Event.observe(checkBox, "click",
-		updateCalendarStatus.bindAsEventListener(checkBox));
+    Event.observe(checkBox, "click",
+		  updateCalendarStatus.bindAsEventListener(checkBox));
 
-  $(colorBox).addClassName("colorBox");
-  if (color)
-    $(colorBox).setStyle({color: color,
-	                  backgroundColor: color});
+    $(colorBox).addClassName("colorBox");
+    if (color)
+      $(colorBox).setStyle({color: color,
+			    backgroundColor: color});
 
-  var url = URLForFolderID(folder) + "/canAccessContent";
-  triggerAjaxRequest(url, calendarEntryCallback, folder);
-
-  if (!document.styleSheets) return;
-  var theRules = new Array();
-  var lastSheet = document.styleSheets[document.styleSheets.length - 1];
-  if (lastSheet.insertRule) { // Mozilla
-    lastSheet.insertRule('.calendarFolder' + folder.substr(1) + ' {'
-			 + ' background-color: '
-			 + color
-			 + ' !important; }', 0);
-  }
-  else { // IE
-    lastSheet.addRule('.calendarFolder' + folder.substr(1),
-		      ' background-color: '
-		      + color
-		      + ' !important; }');
+    var url = URLForFolderID(folder) + "/canAccessContent";
+    triggerAjaxRequest(url, calendarEntryCallback, folder);
+    
+    if (!document.styleSheets) return;
+    var theRules = new Array();
+    var lastSheet = document.styleSheets[document.styleSheets.length - 1];
+    if (lastSheet.insertRule) { // Mozilla
+      lastSheet.insertRule('.calendarFolder' + folder.substr(1) + ' {'
+			   + ' background-color: '
+			   + color
+			   + ' !important; }', 0);
+    }
+    else { // IE
+      lastSheet.addRule('.calendarFolder' + folder.substr(1),
+			' background-color: '
+			+ color
+			+ ' !important; }');
+    }
   }
 }
 
