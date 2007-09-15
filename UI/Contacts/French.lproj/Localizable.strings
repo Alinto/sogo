@@ -140,4 +140,5 @@
 = "Cette personne peut effacer des fiches de ce carnet d'adresses.";
 
 "The selected contact has no email address."
-= "Cette personne n'a pas d'adresse courriel."
+= "Cette personne n'a pas d'adresse courriel.";
+
