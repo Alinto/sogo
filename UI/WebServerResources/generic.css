@@ -357,7 +357,7 @@ UL#searchOptions LI
 { list-style-position: inside;
   list-style-image: url("menu-nocheck.gif");
   padding: 1px 3px;
-  margin: px; }
+  margin: 0px; }
 
 UL#searchOptions LI._chosen
 { list-style-image: url("menu-check.gif"); }
