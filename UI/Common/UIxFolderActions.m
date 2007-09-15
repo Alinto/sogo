@@ -49,7 +49,7 @@
 
 - (void) _setupContext
 {
-  NSString *clientClass, *mailInvitationParam;
+  NSString *folder, *mailInvitationParam;
   NSArray *realFolderPath;
   SOGoUser *activeUser;
 
@@ -58,13 +58,7 @@
   clientObject = [self clientObject];
   owner = [clientObject ownerInContext: nil];
 
-  clientClass = NSStringFromClass([clientObject class]);
-  if ([clientClass isEqualToString: @"SOGoContactGCSFolder"])
-    baseFolder = @"Contacts";
-  else if ([clientClass isEqualToString: @"SOGoAppointmentFolder"])
-    baseFolder = @"Calendar";
-  else
-    baseFolder = nil;
+  baseFolder = [[clientObject container] nameInContainer];
 
   um = [LDAPUserManager sharedUserManager];
   ud = [activeUser userSettings];
@@ -78,9 +72,12 @@
 
   realFolderPath = [[clientObject nameInContainer]
 		     componentsSeparatedByString: @"_"];
+  if ([realFolderPath count] > 1)
+    folder = [realFolderPath objectAtIndex: 1];
+  else
+    folder = [realFolderPath objectAtIndex: 0];
   subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
-				  owner, baseFolder,
-				  [realFolderPath objectAtIndex: 1]];
+				  owner, baseFolder, folder];
 
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
