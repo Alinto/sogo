@@ -129,3 +129,6 @@
 = "Diese Person kann Karten dieses Adressbuches anzeigen.";
 "This person can erase cards from this addressbook."
 = "Diese Person kann Karten aus diesem Adressbuch löschen";
+
+"The selected contact has no email address."
+= "The selected contact has no email address.";
