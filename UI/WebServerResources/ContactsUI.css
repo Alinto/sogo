@@ -173,7 +173,7 @@ TABLE#contactsList
   width: 100%; }
 
 TABLE#contactsList TD
-{ white-space: wrap;
+{ white-space: normal; /* pre, normal, nowrap */
   /*width: 20%;*/ }
 
 TD#nameHeader,
