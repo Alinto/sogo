@@ -1,5 +1,10 @@
 2007-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -compare:otherFolder]):
+	new method for sorting folders. The folders are compared based on
+	their ownership, whether they are a main folder and finally
+	depending on their display name.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-pathArrayToSOGoObject]): do not reorder the paths if the third
 	element is an instance of NSNull.
