@@ -175,6 +175,7 @@ static NSString *defaultUserID = @"<default>";
 		   [ownerIdentity objectForKey: @"fullName"],
 		   [ownerIdentity objectForKey: @"email"]];
     }
+  [displayName retain];
 }
 
 - (void) _fetchDisplayName
