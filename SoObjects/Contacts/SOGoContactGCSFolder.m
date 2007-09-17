@@ -251,6 +251,20 @@
 //   return r;
 // }
 
+/* sorting */
+- (NSComparisonResult) compare: (id) otherFolder
+{
+  NSComparisonResult comparison;
+
+  if ([NSStringFromClass([otherFolder class])
+			isEqualToString: @"SOGoContactLDAPFolder"])
+    comparison = NSOrderedAscending;
+  else
+    comparison = [super compare: otherFolder];
+
+  return comparison;
+}
+
 /* folder type */
 
 - (NSString *) folderType

@@ -256,6 +256,22 @@
   return YES;
 }
 
+/* sorting */
+- (NSComparisonResult) compare: (id) otherFolder
+{
+  NSComparisonResult comparison;
+
+  if ([NSStringFromClass([otherFolder class])
+			isEqualToString: @"SOGoContactGCSFolder"])
+    comparison = NSOrderedDescending;
+  else
+    comparison
+      = [[self displayName]
+	  localizedCaseInsensitiveCompare: [otherFolder displayName]];
+
+  return comparison;
+}
+
 /* acls */
 - (NSString *) ownerInContext: (WOContext *) noContext
 {

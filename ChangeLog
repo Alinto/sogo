@@ -1,5 +1,15 @@
 2007-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-compare:otherFolder]): new overriden method that compares two
+	contact foldes based on their class and then transfer the control
+	to the super method in SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -compare:otherFolder]): new method that
+	compare two contact folders based on their class and then their
+	display name.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -compare:otherFolder]):
 	new method for sorting folders. The folders are compared based on
 	their ownership, whether they are a main folder and finally
