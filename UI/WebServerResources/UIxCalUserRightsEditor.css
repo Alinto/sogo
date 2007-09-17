@@ -17,15 +17,10 @@ DIV.calendarUserRights
 
 DIV.calendarUserRights > TABLE
 { background-color: #fff;
-  width: 45em;
+  width: 480px;
   color: #999;
   border-collapse: collapse;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent; }
+  border: 1px solid #222; }
 
 DIV.calendarUserRights > TABLE TR.permissions TH
 { color: #00f;
@@ -33,11 +28,10 @@ DIV.calendarUserRights > TABLE TR.permissions TH
  */  border-bottom: 1px solid #999; }
 
 DIV.calendarUserRights > TABLE TH
-{ width: 15em; }
+{ width: 70px; }
 
 DIV.calendarUserRights > TABLE TD.eventType
-{ width: 5em;
-  text-align: right;
+{ text-align: right;
   border-right: 1px solid #999; }
 
 DIV.calendarUserRights > TABLE TD
