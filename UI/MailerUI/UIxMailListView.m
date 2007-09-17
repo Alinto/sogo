@@ -98,6 +98,24 @@ static int attachmentFlagSize = 8096;
   return [dateFormatter formattedDateAndTime: messageDate];
 }
 
+- (NSString *) messageSubject
+{
+  NSString *subject;
+  id envSubject;
+
+  envSubject = [[message valueForKey: @"envelope"] subject];
+  if ([envSubject isKindOfClass: [NSData class]])
+    {
+      subject = [[NSString alloc] initWithData: envSubject
+				  encoding: NSUTF8StringEncoding];
+      [subject autorelease];
+    }
+  else
+    subject = envSubject;
+
+  return subject;
+}
+
 - (BOOL) showToAddress 
 {
   NSString *ftype;

@@ -62,7 +62,7 @@
 	  ><td
 	  var:class="messageSubjectCellStyleClass"
 	  var:id="msgDivID"
-	  ><var:string value="message.envelope.subject"
+	  ><var:string value="messageSubject"
 	    /></td
 
 	  ><td class="messageAddressColumn"

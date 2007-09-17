@@ -1,5 +1,9 @@
 2007-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-messageSubject]): new accessor method to work-around a problem
+	within SOPE where a subject could be returned as an NSData.
+
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
 	-appendPersonalSources]): make sure the value of the "c_path4" of
 	the returned rows are not NSNull, otherwise, discard them.
