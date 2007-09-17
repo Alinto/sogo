@@ -492,13 +492,16 @@ static BOOL kontactGroupDAV = YES;
   if ([realPathArray count] > 2)
     {
       objectName = [realPathArray objectAtIndex: 2];
-      objectDescription = [objectName componentsSeparatedByString: @"_"];
-      if ([objectDescription count] > 1)
+      if ([objectName isKindOfClass: [NSString class]])
 	{
-	  [realPathArray replaceObjectAtIndex: 0
-			 withObject: [objectDescription objectAtIndex: 0]];
-	  [realPathArray replaceObjectAtIndex: 2
-			 withObject: [objectDescription objectAtIndex: 1]];
+	  objectDescription = [objectName componentsSeparatedByString: @"_"];
+	  if ([objectDescription count] > 1)
+	    {
+	      [realPathArray replaceObjectAtIndex: 0
+			     withObject: [objectDescription objectAtIndex: 0]];
+	      [realPathArray replaceObjectAtIndex: 2
+			     withObject: [objectDescription objectAtIndex: 1]];
+	    }
 	}
     }
 
