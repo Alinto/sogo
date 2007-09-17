@@ -221,6 +221,11 @@ static NSString *defaultModule = nil;
   date = [NSCalendarDate calendarDate];
   [cookie setExpires: [date yesterday]];
   [response addCookie: cookie];
+  
+  [response setHeader: date forKey: @"Last-Modified"];
+  [response setHeader: @"no-store, no-cache, must-revalidate, max-age=0" forKey: @"Cache-Control"];
+  [response setHeader: @"post-check=0, pre-check=0" forKey: @"Cache-Control"];
+  [response setHeader: @"no-cache" forKey: @"Pragma"];
 
   return response;
 }
