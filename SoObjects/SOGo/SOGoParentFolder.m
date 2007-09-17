@@ -263,7 +263,8 @@
   if (!subFolders)
     [self initSubFolders];
 
-  return [subFolders allValues];
+  return [[subFolders allValues]
+	   sortedArrayUsingSelector: @selector (compare:)];
 }
 
 /* acls */

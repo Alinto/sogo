@@ -1,3 +1,9 @@
+2007-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-subFolders]): returns a sorted array using the "compare:"
+	selector.
+
 2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
