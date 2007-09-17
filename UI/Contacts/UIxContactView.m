@@ -282,7 +282,7 @@
     {
       url = [[elements objectAtIndex: 0] value: 0];
       data = [NSString stringWithFormat:
-                         @"<a href=\"%@\">%@</a>",
+                         @"<a href=\"%@\" target=\"_blank\">%@</a>",
                        url, url];
     }
   else
