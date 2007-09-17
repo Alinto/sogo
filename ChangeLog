@@ -1,5 +1,9 @@
 2007-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -calendarFolder]): returns the "personal"
+	entry of the Calendars parent folder.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-messageSubject]): new accessor method to work-around a problem
 	within SOPE where a subject could be returned as an NSData.
