@@ -268,9 +268,9 @@ function setSlot(tds, nbr, status) {
     var td = tds[i];
     var spans = $(td).childNodesWithTag("span");
     if (status == '2')
-      spans[spannbr].addClassName("maybe-busy");
+      $(spans[spannbr]).addClassName("maybe-busy");
     else
-      spans[spannbr].addClassName("busy");
+      $(spans[spannbr]).addClassName("busy");
   }
 }
 
@@ -282,7 +282,7 @@ function updateFreeBusyData(http) {
       var tds = node.parentNode.parentNode.cells;
       for (var i = 0; i < slots.length; i++) {
         if (slots[i] != '0')
-          setSlot(tds, i, slots[i]);
+	  setSlot(tds, i, slots[i]);
       }
     }
     document.contactFreeBusyAjaxRequest = null;
@@ -502,14 +502,14 @@ function prepareAttendees() {
       for (var i = 0; i < attendeesNames.length; i++) {
 	 var tr = body.insertRow(i);
 	 var td = document.createElement("td");
-	 td.addClassName("attendees");
+	 $(td).addClassName("attendees");
 	 var input = document.createElement("input");
 	 var value = "";
 	 if (attendeesNames[i].length > 0)
 	    value += attendeesNames[i] + " ";
 	 value += "<" + attendeesEmails[i] + ">";
 	 input.value = value;
-	 input.addClassName("textField");
+	 $(input).addClassName("textField");
 	 input.setAttribute("modified", "0");
 	 tr.appendChild(td);
 	 td.appendChild(input);
