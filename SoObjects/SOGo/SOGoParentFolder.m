@@ -99,14 +99,15 @@
   row = [fc fetchAttributes: attrs withZone: NULL];
   while (row)
     {
-      folder
-	= [subFolderClass objectWithName: [row objectForKey: @"c_path4"]
-			  inContainer: self];
       key = [row objectForKey: @"c_path4"];
-      hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
-      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-				    OCSPath, key]];
-      [subFolders setObject: folder forKey: key];
+      if ([key isKindOfClass: [NSString class]])
+	{
+	  folder = [subFolderClass objectWithName: key inContainer: self];
+	  hasPersonal = (hasPersonal || [key isEqualToString: @"personal"]);
+	  [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
+					OCSPath, key]];
+	  [subFolders setObject: folder forKey: key];
+	}
       row = [fc fetchAttributes: attrs withZone: NULL];
     }
 

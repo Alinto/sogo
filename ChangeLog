@@ -1,3 +1,9 @@
+2007-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendPersonalSources]): make sure the value of the "c_path4" of
+	the returned rows are not NSNull, otherwise, discard them.
+
 2007-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
