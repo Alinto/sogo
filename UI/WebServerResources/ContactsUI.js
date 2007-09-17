@@ -614,6 +614,7 @@ function configureDragHandles() {
     handle.addInterface(SOGoDragHandlesInterface);
     handle.leftBlock=$("contactFoldersList");
     handle.rightBlock=$("rightPanel");
+    handle.leftMargin = 100;
   }
 
   handle = $("rightDragHandle");

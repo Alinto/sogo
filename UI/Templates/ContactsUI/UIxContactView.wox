@@ -20,7 +20,6 @@
           /><var:string value="primaryEmail" escapeHTML="NO"
           /><var:string value="secondaryEmail" escapeHTML="NO"
           /><var:string value="screenName" escapeHTML="NO"
-          /><var:string value="preferredTel" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
           /></div
         
