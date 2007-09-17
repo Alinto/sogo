@@ -125,11 +125,11 @@ Date.prototype.getHourString = function() {
 }
 
 Date.prototype.getDisplayHoursString = function() {
-   var hoursString = "" + this.getHours();
+   var hoursString = "" + this.getUTCHours();
    if (hoursString.length == 1)
      hoursString = '0' + hoursString;
 
-   var minutesString = "" + this.getMinutes();
+   var minutesString = "" + this.getUTCMinutes();
    if (minutesString.length == 1)
      minutesString = '0' + minutesString;
 
