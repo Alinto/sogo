@@ -33,8 +33,9 @@
 	    /></var:if-ie>
       </head>
 
-      <body var:class="bodyClasses">
-	<script type="text/javascript">
+      <body var:class="bodyClasses"
+      ><var:if condition="isCompatibleBrowser"
+       ><script type="text/javascript">
 	  var ApplicationBaseURL = '<var:string value="applicationPath" />';
 	  var ResourcesURL = '/SOGo.woa/WebServerResources';
 	  <var:if condition="shortUserNameForDisplay" const:value="anonymous"
@@ -92,6 +93,23 @@
 	<div class="pageContent"
 	  ><var:component-content
 	    /></div>
+        </var:if>
+        <var:if condition="isCompatibleBrowser" const:negate="YES">
+    <div id="loginScreen">
+      <img id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
+      <p>SOGo requires a modern browser to work properly. We suggest to use the latest version of Firefox.</p>
+      <p class="browser"><a href="http://www.getfirefox.com/"><img rsrc:src="browser_firefox.gif"/>Download Firefox</a></p>
+    <var:if condition="isIE7Compatible">
+      <p>Alternatively, you can also use the following compatible browsers:</p>
+      <p class="browser"><a href="http://www.microsoft.com/ie/download/"><img rsrc:src="browser_ie.gif"/>Download Internet Explorer 7</a></p>
+      <p class="browser"><a href="http://www.apple.com/safari/download/"><img rsrc:src="browser_safari.gif"/>Download Safari 3</a></p>
+    </var:if>
+    <var:if condition="isMac">
+      <p>Alternatively, you can also use Safari.</p>
+      <p><a href="http://www.apple.com/safari/download/"><img rsrc:src="browser_safari.gif"/>Download Safari 3</a></p>
+    </var:if>
+    </div>
+  </var:if>
 	<noscript>
 	  <div class="javascriptPopupBackground">
 	  </div>

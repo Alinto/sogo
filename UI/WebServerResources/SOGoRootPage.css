@@ -22,7 +22,7 @@ DIV#loginScreen
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
 }
 
-DIV#loginScreen IMG
+IMG#splash
 { border: 0px;
   margin: 0px;
   padding: 0px;
@@ -46,3 +46,15 @@ DIV#loginButton IMG#progressIndicator
   border: 0px none;
   margin-top: 5px;
   margin-left: 5px; }
+
+P.browser
+{ background-color: #fff;
+  border-top: 1px solid #888;
+  border-left: 1px solid #888;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee; 
+  line-height: 32px; }
+
+P.browser img
+{ padding: 2px;
+  vertical-align: middle; }
