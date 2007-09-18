@@ -33,8 +33,7 @@ DIV#leftPanel
 }
 
 DIV#rightPanel
-{ 
-  position: absolute;
+{ position: absolute;
   top: 5.5em;
   left: 15em;
   right: 0px;
@@ -42,8 +41,7 @@ DIV#rightPanel
   margin: 0px;
   margin-left: 5px;
   padding: 0px;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 /* top list */
 DIV#mailboxContent
@@ -54,8 +52,8 @@ DIV#mailboxContent
   left: 0px;
   right: 0px;
   height: 15.5em;
-  overflow: hidden;
-  overflow-y: auto; }
+  overflow: scroll;
+  overflow-x: hidden; }
 
 DIV#messageContent
 { position: absolute;

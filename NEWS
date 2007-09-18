@@ -10,6 +10,7 @@
 - added tooltips for toolbar buttons (English and French);
 - added checkmarks in live search options popup menus;
 - initial support for resizable columns in tables;
+- improved IE7 and Safari support: attendees selector;
 - countless bugfixes;
 
 0.9.0-20070824
