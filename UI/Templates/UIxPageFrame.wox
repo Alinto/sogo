@@ -105,7 +105,7 @@
       <p class="browser"><a href="http://www.apple.com/safari/download/"><img rsrc:src="browser_safari.gif"/><var:string label:value="Download"/> Safari 3</a></p>
     </var:if>
     <var:if condition="isMac">
-      <p><var:string value:label="alternativeBrowserSafari"/></p>
+      <p><var:string label:value="alternativeBrowserSafari"/></p>
       <p class="browser"><a href="http://www.apple.com/safari/download/"><img rsrc:src="browser_safari.gif"/><var:string label:value="Download"/> Safari 3</a></p>
     </var:if>
     </div>
