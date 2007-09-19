@@ -358,7 +358,7 @@
 {
   NSArray *calendars;
 
-  calendars = [[self calendarList] valueForKey: @"folder"];
+  calendars = [[self calendarList] valueForKey: @"nameInContainer"];
 
   return [calendars componentsJoinedByString: @","];
 }

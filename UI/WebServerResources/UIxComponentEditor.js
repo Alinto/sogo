@@ -74,13 +74,7 @@ function onChangeCalendar(event) {
    var form = document.forms["editform"];
    var urlElems = form.getAttribute("action").split("/");
    var choice = calendars[this.value];
-   var ownerLogin;
-   if (choice.indexOf(":") > -1)
-      ownerLogin = choice.split(":")[0];
-   else
-      ownerLogin = UserLogin;
-   urlElems[urlElems.length-4] = ownerLogin;
-
+   urlElems[urlElems.length-3] = choice;
    form.setAttribute("action", urlElems.join("/"));
 }
 
