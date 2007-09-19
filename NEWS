@@ -9,6 +9,7 @@
 - fixed search in message content;
 - added tooltips for toolbar buttons (English and French);
 - added checkmarks in live search options popup menus;
+- added browser detection with recommanded alternatives;
 - initial support for resizable columns in tables;
 - improved IE7 and Safari support: attendees selector;
 - countless bugfixes;

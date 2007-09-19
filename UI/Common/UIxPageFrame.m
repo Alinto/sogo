@@ -267,7 +267,7 @@
   cc = [[context request] clientCapabilities];
 
   //NSLog(@"Browser = %@", [cc description]);
-  //NSLog(@"User agent = %@", [cc userAgent]);
+  NSLog(@"User agent = %@", [cc userAgent]);
   //NSLog(@"Browser major version = %i", [cc majorVersion]);
 
   return ( 
