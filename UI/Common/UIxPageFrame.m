@@ -258,4 +258,44 @@
   return toolbar;
 }
 
+/* browser/os identification */
+
+- (BOOL) isCompatibleBrowser
+{
+  WEClientCapabilities *cc;
+
+  cc = [[context request] clientCapabilities];
+
+  //NSLog(@"Browser = %@", [cc description]);
+  NSLog(@"User agent = %@", [cc userAgent]);
+  //NSLog(@"Browser major version = %i", [cc majorVersion]);
+
+  return ( 
+	  ([[cc userAgentType] isEqualToString: @"IE"] && [cc majorVersion] >= 7) ||
+	  ([[cc userAgentType] isEqualToString: @"Mozilla"] && [cc majorVersion] >= 5) ||
+	  ([[cc userAgentType] isEqualToString: @"Safari"] && [cc majorVersion] >= 4)
+	   );
+}
+
+- (BOOL) isIE7Compatible
+{
+  WEClientCapabilities *cc;
+
+  cc = [[context request] clientCapabilities];
+  
+  return ([cc isWindowsBrowser] &&
+	  ([[cc userAgent] rangeOfString: @"NT 5.1"].location != NSNotFound ||
+	   [[cc userAgent] rangeOfString: @"NT 6"].location != NSNotFound));
+}
+
+- (BOOL) isMac
+{
+  WEClientCapabilities *cc;
+
+  cc = [[context request] clientCapabilities];
+
+  return [cc isMacBrowser];
+}
+
+
 @end /* UIxPageFrame */

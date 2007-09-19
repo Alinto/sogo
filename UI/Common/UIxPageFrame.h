@@ -23,6 +23,7 @@
 #define UIXPAGEFRAME_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/WEClientCapabilities.h>
 
 @interface WOComponent (PopupExtension)
 
@@ -55,6 +56,10 @@
 
 - (void) setToolbar: (NSString *) newToolbar;
 - (NSString *) toolbar;
+
+- (BOOL) isBrowserCompatible;
+- (BOOL) isIE7Compatible;
+- (BOOL) isMac;
 
 @end
 

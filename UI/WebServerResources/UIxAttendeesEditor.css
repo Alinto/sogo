@@ -20,6 +20,13 @@ DIV#freeBusyView
   -moz-border-top-colors: #9c9a94 #000;
   -moz-border-left-colors: #9c9a94 #000; }
 
+TABLE#freeBusy
+{ border-collapse: collapse;
+  table-layout: auto; }
+
+TABLE#freeBusy THEAD TH
+{ white-space: nowrap; }
+
 TABLE#freeBusy TD,
 TABLE#freeBusy TH
 { padding: 0px;
@@ -56,14 +63,14 @@ TABLE#freeBusy TR.freeBusyHeader2 TH,
 TABLE#freeBusy TR.freeBusyHeader3 TH
 { text-align: left;
   color: #777;
-  background: #fff;
-  border-collapse: collapse; }
+  background: #fff; }
 
 TABLE#freeBusy TR.freeBusyHeader2 TH
-{ width: 6em; }
+{ padding-right: 2em; }
 
 TABLE#freeBusy TR.freeBusyHeader3 TH
-{ border-bottom: 1px solid #cecbff; }
+{ border-left: 1px solid #fff;
+  border-bottom: 1px solid #cecbff; }
 
 TABLE#freeBusy TR.attendeeModel
 { display: none; }
@@ -84,6 +91,7 @@ TABLE#freeBusy TD.noFreeBusy
 SPAN.freeBusyZoneElement
 { display: block;
   float: left;
+  clear: right;
   width: 25%;
   margin: 0px;
   padding: 0px;
