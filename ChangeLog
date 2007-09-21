@@ -1,3 +1,9 @@
+2007-09-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m 
+	([UIxComponent -shortUserNameForDisplay]): returns the string
+	"wrongusernamepassword" when authentication failed.
+
 2007-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m

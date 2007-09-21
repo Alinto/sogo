@@ -6,3 +6,5 @@
 "Password:" = "Mot de passe :";
 
 "Connect" = "Connexion";
+
+"Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";

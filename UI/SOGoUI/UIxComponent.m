@@ -423,6 +423,9 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSString *) shortUserNameForDisplay
 {
+  if ([context activeUser] == nil)
+    return @"wrongusernamepassword";
+
   return [[context activeUser] login];
 }
 

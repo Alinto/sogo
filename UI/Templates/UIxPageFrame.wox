@@ -63,10 +63,11 @@
 	  const:identifier="labels" />
 	<var:js-stringtable
 	  const:identifier="clabels" />
-
 	<var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	  const:negate="YES"
-	  ><var:if condition="isPopup" const:negate="YES"
+	  ><var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
+	  const:negate="YES"
+          ><var:if condition="isPopup" const:negate="YES"
 	    ><var:if condition="context.isUIxDebugEnabled"
 	      ><div id="logConsole"><!-- space --></div></var:if>
 	    <div id="linkBanner" class="linkbanner">
@@ -88,7 +89,7 @@
 	  </var:if
 	    ><var:component className="UIxToolbar" var:toolbar="toolbar"
 	    />
-	</var:if>
+	</var:if></var:if>
 	
 	<div class="pageContent"
 	  ><var:component-content

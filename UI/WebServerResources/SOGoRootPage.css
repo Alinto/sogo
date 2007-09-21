@@ -46,6 +46,10 @@ DIV#loginButton IMG#progressIndicator
   margin-top: 5px;
   margin-left: 5px; }
 
+P.error
+{ color: #f00;
+  text-align: center; }
+
 P.browser
 { background-color: #fff;
   border-top: 1px solid #888;
