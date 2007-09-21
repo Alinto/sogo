@@ -6,4 +6,4 @@ function initACLButtons() {
    $("cancelButton").addEventListener("click", onCancelClick, false);
 }
 
-window.addEventListener("load", initACLButtons, false);
+addEvent(window, "load", initACLButtons);
