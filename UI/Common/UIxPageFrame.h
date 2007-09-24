@@ -57,7 +57,7 @@
 - (void) setToolbar: (NSString *) newToolbar;
 - (NSString *) toolbar;
 
-- (BOOL) isBrowserCompatible;
+- (BOOL) isCompatibleBrowser;
 - (BOOL) isIE7Compatible;
 - (BOOL) isMac;
 
