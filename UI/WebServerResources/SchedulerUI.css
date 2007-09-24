@@ -69,7 +69,8 @@ UL#tasksList, UL#calendarList
   overflow-x: hidden; }
 
 UL#calendarList
-{ clear: both;
+{ clear: left;
+  width: 100%;
   height: 10.5em;
   margin: 0px; }
 
@@ -266,13 +267,19 @@ TABLE#dateSelectorTable
   border: 1px solid #deebf7; }
 
 TABLE#eventsList
-{ display: block;
-  position: relative;
-  width: 100%; }
+{ width: 100%; }
 
-TABLE#eventsList td.headerTitle,
-TABLE#eventsList td.headerLocation
-{ width: 35%; }
+TABLE#eventsList TD.headerTitle,
+TABLE#eventsList TD.headerDateTime
+{ width: 30%; }
+
+TABLE#eventsList TD,
+TABLE#eventsList TH
+{ overflow: hidden;
+  white-space: nowrap; } /* pre, normal, nowrap */
+
+TABLE#eventsList TH
+{ white-space: pre; }
 
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,

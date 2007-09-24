@@ -39,7 +39,7 @@ DIV#contactsListContent
   left: 0px;
   right: 0px;
   height: 16em;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden; }
 
 .aptview_text
@@ -169,17 +169,15 @@ DIV#folderTreeContent TABLE TD
   padding: 0px; }
 
 TABLE#contactsList
-{ display: block;
-  position: relative;
-  width: 100%; }
+{ width: 100%; }
 
-TABLE#contactsList TD
-{ white-space: normal; /* pre, normal, nowrap */
-  /*width: 20%;*/ }
+TABLE#contactsList TD,
+TABLE#contactsList TH
+{ overflow: hidden;
+  white-space: nowrap; } /* pre, normal, nowrap */
 
-TD#nameHeader,
-TD#mailHeader
-{ /*width: 30%;*/ }
+TABLE#contactsList TH
+{ white-space: pre; }
 
 TABLE#contactsList TD IMG
 {
@@ -246,18 +244,6 @@ DIV.contactColumn H4
 
 INPUT#searchValue:focus
 { color: #000; }
-
-TABLE#contactsList TD.resize-handle-active
-{ cursor: e-resize; }
-
-DIV.resize-handle
-{ cursor: e-resize;
-  width: 2px;
-  border-right: 1px solid #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-height: 2em; }
 
 /* drag handles */
 DIV#dragHandle

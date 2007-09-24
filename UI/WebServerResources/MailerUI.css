@@ -52,7 +52,7 @@ DIV#mailboxContent
   left: 0px;
   right: 0px;
   height: 15.5em;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden; }
 
 DIV#messageContent
@@ -475,10 +475,16 @@ TABLE#addr_table
 }
 
 TABLE#messageList
-{ /*width: 100%;*/ }
+{ width: 100%; }
 
-TABLE#messageList TD
-{ height: 1.2em; }
+TABLE#messageList TD,
+TABLE#messageList TH
+{ height: 1.2em;
+  overflow: hidden;
+  white-space: nowrap; }
+
+TABLE#messageList TH
+{ white-space: pre; }
 
 TD#messageFlagHeader,
 TABLE#messageList TD.messageFlagColumn
@@ -500,8 +506,7 @@ TABLE#messageList TD.messageAddressColumn
   overflow: hidden; }
 
 TD#dateHeader,
-TABLE#messageList TD.tbtv_date_headercell,
-TABLE#messageList TD.messageDateColumn
+TABLE#messageList TD.tbtv_date_headercell
 { /*width: 25%;*/
   overflow: hidden; }
 
@@ -515,18 +520,6 @@ TABLE#messageList TR._deleted TD
 { 
   text-decoration: line-through;
 }
-
-TABLE#messageList TD.resize-handle-active
-{ cursor: e-resize; }
-
-DIV.resize-handle
-{ cursor: e-resize;
-  width: 2px;
-  border-right: 1px solid #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-height: 2em; }
 
 /* drag handles */
 DIV#verticalDragHandle

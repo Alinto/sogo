@@ -535,6 +535,16 @@ TableKit.Resizable = {
 			Event.observe(c, 'mouseout', TableKit.Resizable.killDetect);
 		});
 	},
+	reload : function(table) {
+		table = $(table);
+		var cells = TableKit.getHeaderCells(table);
+		cells.each(function(c){
+			c = $(c);
+			Event.stopObserving(c, 'mouseover', TableKit.Resizable.initDetect);
+			Event.stopObserving(c, 'mouseout', TableKit.Resizable.killDetect);
+		});
+		TableKit.Resizable.init(table);
+	},
 	resize : function(table, index, w) {
 		var cell;
 		if(typeof index === 'number') {

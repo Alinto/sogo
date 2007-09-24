@@ -8,22 +8,22 @@
   xmlns:label="OGo:label">
   <thead>
     <tr class="tableview"
-      ><td class="tbtv_headercell messageFlagColumn"
+      ><td class="tbtv_headercell messageFlagColumn sortableTableHeader"
 	><var:entity const:name="nbsp" /></td
-	><td class="tbtv_headercell messageFlagColumn">
+	><td class="tbtv_headercell messageFlagColumn sortableTableHeader">
 	<img rsrc:src="title_attachment_14x14.png" width="14"
 	  height="14"/></td
-	><td class="tbtv_headercell" id="subjectHeader"
+	><td class="tbtv_headercell sortableTableHeader" id="subjectHeader"
 	><var:string label:value="Subject"/></td
-	><td class="tbtv_headercell" id="fromHeader"
+	><td class="tbtv_headercell sortableTableHeader" id="fromHeader"
 	><var:if condition="showToAddress" const:negate="YES"
 	  ><var:string label:value="From"/></var:if
 	  ><var:if condition="showToAddress"
 	  ><var:string label:value="To"/></var:if
 	  ></td
-	><td class="tbtv_headercell" id="messageFlagHeader"
+	><td class="tbtv_headercell sortableTableHeader" id="messageFlagHeader"
 	><img rsrc:src="title_read_14x14.png"/></td
-	><td class="tbtv_headercell" id="dateHeader"
+	><td class="tbtv_headercell sortableTableHeader" id="dateHeader"
 	><var:string label:value="Date"/></td
 	></tr>
     <tr class="tableview"

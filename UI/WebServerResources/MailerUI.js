@@ -342,7 +342,7 @@ function onMailboxTreeItemClick(event) {
   else
     openMailbox(mailbox);
    
-  preventDefault(event);
+  Event.stop(event);
 }
 
 function onMailboxMenuMove() {
@@ -415,7 +415,6 @@ function openMailbox(mailbox, reload, idx) {
 				      + rightDragHandle.offsetHeight
 				      + 'px') });
     }
-
     document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback,
 			   currentMessage);
@@ -429,18 +428,34 @@ function openMailbox(mailbox, reload, idx) {
 function openMailboxAtIndex(event) {
   openMailbox(currentMailbox, true, this.getAttribute("idx"));
 
-  preventDefault(event);
+  Event.stop(event);
 }
 
 function messageListCallback(http) {
-  var div = $('mailboxContent');
-   
+  var table = $('messageList');
+  
   if (http.readyState == 4
       && http.status == 200) {
     document.messageListAjaxRequest = null;    
-    div.update(http.responseText);
 
-    TableKit.Resizable.init($('messageList'));
+    if (table) {
+      // Update table
+      var thead = table.tHead;
+      var tbody = table.tBodies[0];
+      var tmp = document.createElement('div');
+      $(tmp).update(http.responseText);
+      thead.rows[1].parentNode.replaceChild(tmp.firstChild.tHead.rows[1], thead.rows[1]);
+      table.replaceChild(tmp.firstChild.tBodies[0], tbody);
+    }
+    else {
+      // Add table
+      var div = $('mailboxContent');
+      div.update(http.responseText);
+      table = $('messageList');
+      configureMessageListEvents(table);
+      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+    }
+    configureMessageListBodyEvents(table);
 
     var selected = http.callbackData;
     if (selected) {
@@ -448,20 +463,16 @@ function messageListCallback(http) {
       if (row)
 	row.select();
     }
-    configureMessageListEvents();
     
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
-      var sortHeader;
-      if (sorting["attribute"] == "subject")
-	sortHeader = $("subjectHeader");
-      else if (sorting["attribute"] == "from")
-	sortHeader = $("fromHeader");
-      else if (sorting["attribute"] == "date")
-	sortHeader = $("dateHeader");
-      else
-	sortHeader = null;
-
+      var sortHeader = $(sorting["attribute"] + "Header");
+      
       if (sortHeader) {
+	var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	$(sortImages).each(function(item) {
+	    item.remove();
+	  });
+
 	var sortImage = createElement("img", "messageSortImage", "sortImage");
 	sortHeader.insertBefore(sortImage, sortHeader.firstChild);
 	if (sorting["ascending"])
@@ -626,7 +637,7 @@ function storeCachedMessage(cachedMessage) {
   cachedMessages[oldest] = cachedMessage;
 }
 
-function onMessageSelectionChange() {
+function onMessageSelectionChange() { log ("onMessageSelectionChange");
   var rows = this.getSelectedRowsId();
 
   if (rows.length == 1) {
@@ -857,7 +868,7 @@ function onHeaderClick(event) {
     newSortAttribute = "date";
   else
     newSortAttribute = "arrival";
-
+  log ("new sort attribute = " + newSortAttribute);
   if (sorting["attribute"] == newSortAttribute)
     sorting["ascending"] = !sorting["ascending"];
   else {
@@ -866,7 +877,7 @@ function onHeaderClick(event) {
   }
 
   refreshCurrentFolder();
-
+  
   Event.stop(event);
 }
 
@@ -956,35 +967,33 @@ var messageListData = function(type) {
 
 /* a model for a futur refactoring of the sortable table headers mechanism */
 
-function configureMessageListHeaders(cells) {
-  for (var i = 0; i < cells.length; i++) {
-    var currentCell = $(cells[i]);
-    Event.observe(currentCell, "click",
-    		  onHeaderClick.bindAsEventListener(currentCell));
-    //Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
+
+function configureMessageListEvents(table) {
+  if (table) {
+    // Each body row can load a message
+    Event.observe(table, "mousedown",
+    		  onMessageSelectionChange.bindAsEventListener(table));
+    
+    // Sortable columns
+    configureSortableTableHeaders(table);
   }
 }
 
-function configureMessageListEvents() {
-  var messageList = $("messageList");
-  if (messageList) {
-    Event.observe(messageList, "mousedown",
-    		  onMessageSelectionChange.bindAsEventListener(messageList));
-
-    configureMessageListHeaders(messageList.tHead.rows[0].cells);
-
-    var cell = messageList.tHead.rows[1].cells[0];
+function configureMessageListBodyEvents(table) {
+  if (table) {
+    // Page navigation
+    var cell = table.tHead.rows[1].cells[0];
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
 	Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
-    rows = messageList.tBodies[0].rows;
+    rows = table.tBodies[0].rows;
     for (var i = 0; i < rows.length; i++) {
       Event.observe(rows[i], "mousedown", onRowClick);
       Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
-	 
+      
       rows[i].dndTypes = function() { return new Array("mailRow"); };
       rows[i].dndGhost = messageListGhost;
       rows[i].dndDataForType = messageListData;

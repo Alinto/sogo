@@ -307,16 +307,15 @@ function eventsListCallback(http) {
      var div = $("eventsListView");
 
     document.eventsListAjaxRequest = null;
-    var table = $("eventsList").tBodies[0];
+    var table = $("eventsList");
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
-    configureSortableTableHeaders();
 
     var data = http.responseText.evalJSON(true);
     for (var i = 0; i < data.length; i++) {
       var row = document.createElement("tr");
-      table.appendChild(row);
+      table.tBodies[0].appendChild(row);
       $(row).addClassName("eventRow");
       row.setAttribute("id", escape(data[i][0]));
       row.cname = escape(data[i][0]);
@@ -771,7 +770,7 @@ function calendarDisplayCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     document.dayDisplayAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    div.update(http.responseText);
     if (http.callbackData["view"])
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
@@ -927,8 +926,8 @@ function _loadTasksHref(href) {
 }
 
 function onHeaderClick(event) {
-//   log("onHeaderClick: " + this.link);
-  _loadEventHref(this.link);
+  //log("onHeaderClick: " + this.link);
+  //_loadEventHref(this.link);
 
   preventDefault(event);
 }
@@ -1544,6 +1543,8 @@ function configureLists() {
 
    list = $("eventsList");
    list.multiselect = true;
+   //configureSortableTableHeaders(list);
+   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
    Event.observe(list, "mousedown",
 		 onEventsSelectionChange.bindAsEventListener(list));
    var div = list.parentNode;

@@ -2,7 +2,6 @@
 
 var cachedContacts = new Array();
 var currentContactFolder = null;
-var savedColumnsWidth = null;
 
 var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
@@ -56,7 +55,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
      if (document.contactsListAjaxRequest) {
 	document.contactsListAjaxRequest.aborted = true;
 	document.contactsListAjaxRequest.abort();
-     }
+     } log (url);
      document.contactsListAjaxRequest
 	= triggerAjaxRequest(url, contactsListCallback, selection);
   }
@@ -74,33 +73,30 @@ function openContactsFolderAtIndex(element) {
     = triggerAjaxRequest(url, contactsListCallback);
 }
 
-function configureContactsListHeaders(cells) {
-   for (var i = 0; i < cells.length; i++) {
-      var currentCell = $(cells[i]);
-      Event.observe(currentCell, "click",
-		    onHeaderClick.bindAsEventListener(currentCell));
-      //Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
-   }
-}
-
 function contactsListCallback(http) {
-  var div = $("contactsListContent");
-
   if (http.readyState == 4
       && http.status == 200) {
     document.contactsListAjaxRequest = null;
-    div.update(http.responseText);
 
     var table = $("contactsList");
     if (table) {
-       TableKit.Resizable.init(table);
-       if (savedColumnsWidth != null) {
-	 // Restore columns width
-	 table.setColumnsWidth(savedColumnsWidth);
-       }
-       configureContactsListHeaders(table.tBodies[0].rows[0].cells);
+      // Update table
+      var data = http.responseText;
+      var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
+      var tbody = table.tBodies[0]; 
+      var tmp = document.createElement('div');
+      $(tmp).update(html);
+      table.replaceChild(tmp.firstChild.tBodies[0], tbody);
     }
-
+    else {
+      // Add table (doesn't happen .. yet)
+      var div = $("contactsListContent");
+      div.update(http.responseText);
+      table = $("contactsList");
+      configureSortableTableHeaders(table);
+      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+    }
+    
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
        var sortHeader;
        if (sorting["attribute"] == "displayName")
@@ -117,6 +113,11 @@ function contactsListCallback(http) {
 	  sortHeader = null;
        
        if (sortHeader) {
+	  var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	  $(sortImages).each(function(item) {
+	      item.remove();
+	    });
+
 	  var sortImage = createElement("img", "messageSortImage", "sortImage");
 	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
 	  if (sorting["ascending"])
@@ -418,10 +419,9 @@ function onHeaderClick(event) {
       sorting["ascending"] = true;
    }
 
-   savedColumnsWidth = this.up('table').getColumnsWidth();
    refreshCurrentFolder();
 
-   preventDefault(event);
+   Event.stop(event);
 }
 
 function newContact(sender) {
@@ -437,7 +437,7 @@ function onFolderSelectionChange() {
   
    if (nodes[0].hasClassName("denied")) {
       var div = $("contactsListContent");
-      div.innerHTML = "";
+      div.update();
    }
    else {
       search = {};
@@ -746,6 +746,13 @@ function initContacts(event) {
      configureSelectionButtons();
    configureContactFolders();
 //     initDnd();
+
+   var table = $("contactsList");
+   if (table) {
+     // Initialize contacts table
+     configureSortableTableHeaders(table);
+     TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+   }
 }
 
 addEvent(window, 'load', initContacts);

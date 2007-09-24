@@ -222,7 +222,7 @@ function openContactWindow(url, wId) {
   return w;
 }
 
-function openMailComposeWindow(url, wId) { log (url);
+function openMailComposeWindow(url, wId) {
   if (!wId)
     wId = "" + (new Date().getTime());
   var w = window.open(url, wId,
@@ -1046,7 +1046,8 @@ function accessToSubscribedFolder(serverFolder) {
 }
 
 function listRowMouseDownHandler(event) {
-   preventDefault(event);
+  preventDefault(event);
+  //Event.stop(event); 
 }
 
 /* tabs */
@@ -1301,7 +1302,6 @@ function onLoadHandler(event) {
   initMenus();
   initTabs();
   configureDragHandles();
-  configureSortableTableHeaders();
   configureLinkBanner();
   translateLabels();
   var progressImage = $("progressIndicator");
@@ -1326,14 +1326,11 @@ function onBodyClickContextMenu(event) {
    preventDefault(event);
 }
 
-function configureSortableTableHeaders() {
-   var headers = document.getElementsByClassName("sortableTableHeader");
+function configureSortableTableHeaders(table) {
+   var headers = $(table).getElementsByClassName("sortableTableHeader");
    for (var i = 0; i < headers.length; i++) {
       var header = headers[i];
-      var anchor = $(header).childNodesWithTag("a")[0];
-      if (anchor)
-	 Event.observe(anchor, "click",
-		       onHeaderClick.bindAsEventListener(anchor));
+      Event.observe(header, "click", onHeaderClick.bindAsEventListener(header))
    }
 }
 

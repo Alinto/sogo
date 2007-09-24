@@ -701,6 +701,20 @@ INPUT.checkBox
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
 
+/* tablekit resizable columns */
+
+TABLE TD.resize-handle-active
+{ cursor: e-resize; }
+
+DIV.resize-handle
+{ cursor: e-resize;
+  width: 2px;
+  border-right: 1px solid #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 2em; }
+
 @media print
 {
   BODY
