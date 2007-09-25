@@ -10,7 +10,7 @@
 "Address Book"	= "Address Book";
 "Mail" = "Mail";
 "Preferences" = "Preferences";
-"Logoff" = "Logoff";
+"Sign Out" = "Sign Out";
 "Right Administration" = "Right Administration";
 "Log Console (dev.)" = "Log Console (dev.)";
 
@@ -27,7 +27,7 @@
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 
-"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Link to download the most current version of this browser is provided bellow:";
+"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
 "alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
 "alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
 "Download" = "Download";
