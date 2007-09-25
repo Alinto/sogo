@@ -64,8 +64,6 @@ static NSString *defaultModule = nil;
 		    @"'Calendar', 'Contacts' or Mail)", defaultModule];
 	      defaultModule = @"Calendar";
 	    }
-	  else
-	    defaultModule = @"Calendar";
 	}
       else
 	defaultModule = @"Calendar";
