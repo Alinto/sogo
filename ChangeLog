@@ -1,3 +1,12 @@
+2007-09-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m 
+	([SOGoAptMailNotification -appointmentURL]): set personal as the
+	default calendar where to add the event.
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]): 
+	activate the SOGoUIxDefaultModule user defaults.
+
 2007-09-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/SOGoUI/UIxComponent.m 
