@@ -55,7 +55,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
      if (document.contactsListAjaxRequest) {
 	document.contactsListAjaxRequest.aborted = true;
 	document.contactsListAjaxRequest.abort();
-     } log (url);
+     }
      document.contactsListAjaxRequest
 	= triggerAjaxRequest(url, contactsListCallback, selection);
   }
@@ -630,7 +630,6 @@ function lookupDeniedFolders() {
   for (var i = 0; i < list.length; i++) {
      var folderID = list[i].getAttribute("id");
      var url = URLForFolderID(folderID) + "/canAccessContent";
-     
      triggerAjaxRequest(url, deniedFoldersLookupCallback, folderID);
   }
 }
