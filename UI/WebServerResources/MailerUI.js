@@ -637,7 +637,7 @@ function storeCachedMessage(cachedMessage) {
   cachedMessages[oldest] = cachedMessage;
 }
 
-function onMessageSelectionChange() { log ("onMessageSelectionChange");
+function onMessageSelectionChange() {
   var rows = this.getSelectedRowsId();
 
   if (rows.length == 1) {
@@ -868,14 +868,13 @@ function onHeaderClick(event) {
     newSortAttribute = "date";
   else
     newSortAttribute = "arrival";
-  log ("new sort attribute = " + newSortAttribute);
+
   if (sorting["attribute"] == newSortAttribute)
     sorting["ascending"] = !sorting["ascending"];
   else {
     sorting["attribute"] = newSortAttribute;
     sorting["ascending"] = true;
   }
-
   refreshCurrentFolder();
   
   Event.stop(event);
@@ -883,10 +882,6 @@ function onHeaderClick(event) {
 
 function refreshCurrentFolder() {
   openMailbox(currentMailbox, true);
-}
-
-function pouetpouet(event) {
-  window.alert("pouet pouet");
 }
 
 var mailboxSpanAcceptType = function(type) {
@@ -1312,12 +1307,13 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-  triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
+  triggerAjaxRequest(urlstr, folderOperationCallback, folderID);
 
   if (folderID == currentMailbox) {
     var div = $('messageContent');
     for (var i = div.childNodes.length - 1; i > -1; i--)
       div.removeChild(div.childNodes[i]);
+    refreshCurrentFolder();
   }
   var msgID = currentMessages[folderID];
   if (msgID)
@@ -1326,7 +1322,7 @@ function onMenuEmptyTrash(event) {
 
 function folderOperationCallback(http) {
   if (http.readyState == 4
-      && http.status == 204)
+      && isHttpStatus204(http.status))
     initMailboxTree();
   else
     window.alert(labels["Operation failed"]);
@@ -1334,7 +1330,7 @@ function folderOperationCallback(http) {
 
 function folderRefreshCallback(http) {
   if (http.readyState == 4
-      && http.status == 204) {
+      && isHttpStatus204(http.status)) {
     var oldMailbox = http.callbackData;
     if (oldMailbox == currentMailbox)
       refreshCurrentFolder();

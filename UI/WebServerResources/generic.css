@@ -415,8 +415,7 @@ TD.tbtv_navcell
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
   -moz-border-right-colors: #000 #9c9a94 transparent; }
 
-TD.headerCell:active,
-TD.tbtv_headercell:active
+TD.sortableTableHeader:active
 { background-color: #dcdad5;
   padding-top: 2px;
   border-top: 1px solid #9c9a94;
