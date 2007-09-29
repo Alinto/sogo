@@ -108,7 +108,8 @@ UL#tasksList LI[class~="_selected"].duetoday
 { color: #fff !important;
   background-color: #00f !important; }
 
-UL#tasksList LI[class~="_selected"].duelater
+UL#tasksList LI[class~="_selected"].duelater,
+UL#tasksList LI[class~="_selected"].completed
 { color: #fff !important;
   background-color: #999 !important; }
 
