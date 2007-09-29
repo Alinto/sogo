@@ -310,7 +310,10 @@ function triggerAjaxRequest(url, callback, userdata) {
 }
 
 function startAnimation(parent, nextNode) {
-  var anim = document.createElement("img");
+  var anim = $("progressIndicator");
+  if (anim) return anim;
+  
+  anim = document.createElement("img");
   anim = $(anim);
   anim.id = "progressIndicator";
   anim.src = ResourcesURL + "/busy.gif";
@@ -511,11 +514,10 @@ function onRowClick(event) {
   }
 
   if (startSelection != $(node.parentNode).getSelectedNodes()) {
+    // Selection has changed; fire mousedown event
     var parentNode = node.parentNode;
     if (parentNode.tagName == 'TBODY')
       parentNode = parentNode.parentNode;
-    //log("onRowClick: parentNode = " + parentNode.tagName);
-    // parentNode is UL or TABLE
     if (document.createEvent) {
       var onSelectionChangeEvent;
       if (isSafari())

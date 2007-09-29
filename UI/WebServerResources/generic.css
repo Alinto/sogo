@@ -424,16 +424,16 @@ TD.sortableTableHeader:active
   border-bottom: 1px solid #9c9a94; }
 
 TD.headerCell SPAN,
-td.tbtv_headercell SPAN
+TD.tbtv_headercell SPAN
 { float: left; }
 
-td.tbtv_headercell a
+TD.tbtv_headercell A
 { cursor: default;
   margin: 0px auto;
   display: block;
   color: black; }
 
-td.tbtv_headercell a:hover
+TD.tbtv_headercell A:hover
 { margin: 0px auto;
   display: block;
   color: black;
@@ -443,7 +443,7 @@ td.tbtv_headercell a:hover
 
 IMG.sortImage,
 TD.headerCell IMG.tbtv_sortcell,
-td.tbtv_headercell img.tbtv_sortcell
+TD.tbtv_headercell IMG.tbtv_sortcell
 { float: right;
   text-align: right;
   border: 0px;
@@ -566,7 +566,7 @@ INPUT.button,
 A.button,
 A[class~="_disabled"].button:active
 { cursor: default;
-  padding: 1px .5em;
+  padding: 1px 0.5em;
   background-color: #d4d0c8;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
