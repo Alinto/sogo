@@ -578,7 +578,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 
 - (BOOL) isValidAttachmentName: (NSString *) _name
 {
-  static NSString *sescape[] = { @"/", @"..", @"~", @"\"", @"'", @" ", nil };
+  static NSString *sescape[] = { @"/", @"..", @"~", @"\"", @"'", nil };
   unsigned i;
   NSRange  r;
 
@@ -611,7 +611,8 @@ static BOOL        showTextAttachmentsInline  = NO;
 		    withMetadata: (NSDictionary *) metadata
 {
   NSString *p, *name, *mimeType;
-  
+  NSRange r;
+
   if (![_attach isNotNull]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
 			reason: @"Missing attachment content!"];
@@ -621,7 +622,13 @@ static BOOL        showTextAttachmentsInline  = NO;
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
 			reason: @"Could not create folder for draft!"];
   }
+
   name = [metadata objectForKey: @"filename"];
+  r = [name rangeOfString: @"\\"
+	    options: NSBackwardsSearch];
+  if (r.length > 0)
+    name = [name substringFromIndex: r.location + 1];
+
   if (![self isValidAttachmentName: name])
     return [self invalidAttachmentNameError: name];
   

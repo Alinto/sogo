@@ -1,3 +1,13 @@
+2007-09-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m 
+	([SOGoDraftObject -isValidAttachmentName:_name]): removed
+	constraint on space in file name.
+	([SOGoDraftObject -saveAttachment:_attachwithMetadata:metadata]):
+	now removes from file name all characters preceding a backslash.
+	This happens with IE7 because the complete attachment file path
+	is sent.
+
 2007-09-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAptMailNotification.m 

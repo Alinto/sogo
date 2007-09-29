@@ -11,7 +11,7 @@
 - added checkmarks in live search options popup menus;
 - added browser detection with recommanded alternatives;
 - support for resizable columns in tables;
-- improved IE7 and Safari support: attendees selector;
+- improved IE7 and Safari support: attendees selector, email file attachments;
 - countless bugfixes;
 
 0.9.0-20070824
