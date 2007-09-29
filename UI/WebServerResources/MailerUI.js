@@ -637,7 +637,7 @@ function storeCachedMessage(cachedMessage) {
   cachedMessages[oldest] = cachedMessage;
 }
 
-function onMessageSelectionChange() {
+function onMessageSelectionChange() { log("onMessageSelectionChange");
   var rows = this.getSelectedRowsId();
 
   if (rows.length == 1) {
@@ -965,10 +965,10 @@ var messageListData = function(type) {
 
 function configureMessageListEvents(table) {
   if (table) {
+    table.multiselect = true;
     // Each body row can load a message
     Event.observe(table, "mousedown",
-    		  onMessageSelectionChange.bindAsEventListener(table));
-    
+    		  onMessageSelectionChange.bindAsEventListener(table));    
     // Sortable columns
     configureSortableTableHeaders(table);
   }

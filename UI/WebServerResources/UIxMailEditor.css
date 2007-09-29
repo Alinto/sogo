@@ -75,7 +75,8 @@ input.currentAttachment
   right: 1em; }
 
 input.attachment
-{ display: none; }
+{ position: absolute;
+  left: -1000px; }
 
 div#compose_attachments_list
 { background-color: #ffffff;

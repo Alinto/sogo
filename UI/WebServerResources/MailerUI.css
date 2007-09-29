@@ -488,7 +488,7 @@ TABLE#messageList TH
 
 TD#messageFlagHeader,
 TABLE#messageList TD.messageFlagColumn
-{ width: 1em;
+{ width: 22px;
   text-align: center; }
 
 TD#subjectHeader,
