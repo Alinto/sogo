@@ -17,28 +17,31 @@ DIV.acls LABEL
 DIV#userSelectorHeader
 { margin: 1em; }
 
+DIV#userSelector SPAN
+{ display: block; }
+
 INPUT#defaultRolesBtn
-{ position: absolute;
-  top: 5em;
+{ no_position: absolute;
+  margin-left: 1em;
+  margin-top: 1em;
   left: 1em; }
 
 DIV#userRoles
 { position: absolute;
-  padding: 0px;
-  margin: 0px;
   left: 1em;
-  top: 7em;
+  top: 8em;
   right: 1em;
   bottom: 0px; }
 
 UL#userList
 { position: absolute;
-  top: 1.5em;
+  top: 2.5em;
   bottom: 0px;
   left: 0px;
   right: 0px;
   width: 100%;
   cursor: default;
+  margin: 0px;
   padding: 0px;
   white-space: nowrap;
   overflow: auto;

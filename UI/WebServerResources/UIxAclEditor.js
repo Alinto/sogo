@@ -142,4 +142,4 @@ function onAclLoadHandler() {
    this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
 }
 
-Event.observe(window, "load", onAclLoadHandler);
+addEvent(window, 'load', onAclLoadHandler);
