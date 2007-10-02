@@ -1,0 +1,329 @@
+2007-08-29  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* EOQualifier+GCS.m: rewrote comparison code, now uses UPPER instead of
+	  the PostgreSQL specific ILIKE. Fixes OGo bug #1906 (v4.7.49)
+
+2007-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSFolderManager.m: added 'some' rollback after an error (v4.7.48)
+
+2007-07-20  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolderManager.m: fixed a bug in last check, DROP TABLE is allowed
+	  to fail in the given context (bug #1883) (v4.7.47)
+
+2007-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSFolderManager.m: added some error checking, plenty of open ends
+	  pending (eg folder creation not wrapped in a transaction) (v4.7.46)
+	
+2007-06-29  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolderManager.m: fixed folder creation to populate empty path
+	  fields with NULLs (OGo bug #1883) (v4.7.45)
+
+2007-04-25  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolder.[hm]: added methods to delete ACL records (OGo bug #1866)
+	  (v4.7.44)
+
+2007-04-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSChannelManager.m: improved error log (v4.7.43)
+
+2007-04-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed a few GNUstep compilation warnings (v4.7.42)
+
+2007-03-21  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolder.[hm], GCSFolderManager.[hm]: added ability to create and
+	  delete GCS folders programmatically (OGo bug #1850) (v4.7.41)
+
+2007-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSFolder.m: fixed a gnustep-base compilation warning (v4.7.40)
+
+2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* use -errorWithFormat:, fixed a few logging crashes (incomplete format
+	  strings) (v4.5.39)
+
+2007-02-08  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolder.m: added a gnustep-base hack to properly format bool
+	  numbers for SQL. Base returns YES or NO in -stringValue while
+	  libFoundation/NGExt returns 0 or 1 (v4.5.39)
+
+2007-01-15  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* GCSFolder.[hm], GCSFolderManager.m: added support for content table
+	  ACLs (v4.5.38)
+
+2006-08-31  Wolfgang Sourdeau  <WSourdeau@Inverse.CA>
+
+	* EOQualifier+GCS.m: added support for OR qualifiers and for case
+	  insensitive-like qualifiers on PostgreSQL (v4.5.37)
+
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* use %p for pointer formats, fixed gcc 4.1 warnings (v4.5.36)
+
+2005-08-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile, GNUmakefile.preamble: added OSX framework compilation
+	  (v4.5.35)
+
+2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
+
+	* GNUmakefile.preamble: added OpenBSD linking flags (v4.5.34)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSFolder.h: added -versionOfContentWithName: method to header file
+	  (v4.5.33)
+
+	* GCSFolder.m: return a proper exception if the extractor was unable to
+	  create a quickrow for a given content object (v4.5.32)
+
+	* GCSFolder.m: added -writeContent:toName:baseVersion: to support
+	  consistent update operations (eg using etags), properly increase
+	  content object version on update operations (v4.5.31)
+	  
+	* GCSFolderManager.m, GCSFolder.m: changed not to use EOF
+	  attribute-name 'beautification', eg 'c_name' will stay 'c_name' 
+	  instead of being transformed into 'cName' (v4.5.30)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GCSFolderManager.m: added automatic discovery of folder types by
+	  scanning for .ocs files (v4.5.29)
+
+2005-04-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.0 warnings (v4.5.28)
+
+2005-03-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS support (v4.5.27)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved OGoContentStore as GDLContentStore into sope-gdl1, removed 
+	  dependencies on NGiCal and removed some SOGo specific things
+	  (v4.5.26)
+
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* appointment.ocs: added missing 'partstates' field (v0.9.25)
+
+2005-03-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.24
+
+	* ocs_gensql.m: started tool to create SQL CREATE from ocs model file
+
+	* OCSFolderType.m: small change to the factory API, changed to use
+	  NGResourceLocator
+
+2005-03-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolderManager.m: fixed a bug in subfolder listing (v0.9.23)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.22
+
+	* appointment.ocs: added 'cycleenddate' and 'cycleinfo' to address
+	  previous performance issues
+
+	* OCSiCalFieldExtractor.m: set 'cycleenddate' and 'cycleinfo' for
+	  recurrent events. Reverted setting of 'enddate' to the previous
+	  behaviour since 'cycleenddate' is dedicated to the task now
+	
+	* iCalRepeatableEntityObject+OCS.[hm]: new category used by the
+	  OCSiCalFieldExtractor to extract cycleInfo in an appropriate format
+
+	* sql/generate-folderinfo-sql-for-users.sh,
+	  sql/foldertablecreate-helge-privcal.psql,
+	  sql/foldertablecreate-helge-privcal.sqlite,
+	  sql/generate-folderinfo-sql-for-users-sqlite.sh: adjusted to new
+	  schema
+
+2005-03-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolder.m: added support for storing content and quick info in
+	  the same table (untested) (v0.9.21)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.20
+
+	* OCSFolderManager.m: removed quoting of SQL table and column names
+	  (breaks with SQLite and isn't necessary for PG), fixed URL pooling
+	  for SQLite
+
+	* NSURL+OCS.m: use tablename for last path component
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSiCalFieldExtractor.m: uses new iCalEvent API to determine correct
+	  'enddate' for recurrent events. This is an optimization which can
+	  save quite some time for complex rules. (v0.9.19)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.18
+
+	* OCSiCalFieldExtractor.m: extract participants' state
+
+	* sql/generate-folderinfo-sql-for-user.sh, sql/appointment-create.psql,
+	  sql/foldertablecreate-helge-privcal.psql: updated with new schema.
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSiCalFieldExtractor.m: partmails + cn's are concatenated by '\n'
+	  now - this directly eliminates any ambiguities. Also, instead of
+	  using 'email' for partmails and orgmail, the extractor uses the
+	  'rfc822Email' value which strips away any preceeding 'mailto:'
+	  prefix, compacting the representation and speeding up comparison.
+	  Also, "iscycle", "isallday" and "isopaque" are now provided by
+	  NGiCal and thus always extracted (v0.9.17)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sql/generate-folderinfo-sql-for-user.sh: fixed critical error in
+	  Contacts folder_info, type was 'Appointment' but MUST be 'Contact'
+	  (v0.9.16)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sql: updated all generation scripts to the latest version (v0.9.15)
+
+2004-12-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* appointment.ocs: added "ispublic", "isopaque", "status" and
+	  "orgmail".
+
+	* OCSiCalFieldExtractor.m: updated to extract new fields (see above)
+
+	* sql: updated generate-folderinfo-sql-for-users.sh
+
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolder.m: added new method -fetchContentsOfAllFiles method which
+	  fetches the contents of all files stored in the folder (required for
+	  iCal generation, such bulk fetches should be avoided if possible!)
+	  (v0.9.13)
+
+2004-10-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSStringFormatter.[hm]: minor cleanup (v0.9.12)
+
+	* v0.9.11
+
+	* OCSStringFormatter.[hm]: new class to format strings according to
+	  Database requirements (escaping etc.).
+
+	* OCSFolder.m: uses new OCSStringFormatter now.
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.10)
+
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.9
+
+	* fixed some gcc warnings
+
+	* GNUmakefile.preamble: added pathes to compile against an FHS SOPE
+
+	* OCSiCalFieldExtractor.m: fixed type of sequence iCalEvent field
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: install type models into $(GNUSTEP_USER_ROOT) (v0.9.8)
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.7
+	
+	* OCSChannelManager.m: use PostgreSQL as adaptor, not PostgreSQL72
+	
+	* OCSFolder.m: added support for doing folder sorting in SQL
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.6
+
+	* added OCSContactFieldExtractor
+	
+	* sql: added sample contact folder create scripts
+	
+	* OCSFolderType.m: read extractor class name from type model
+
+	* OCSFolderManager.m: added contact type model per default (v0.9.5)
+
+2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+	
+	* GNUmakefile: automatically install OCSTypeModels (v0.9.4)
+	
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+	
+	* OCSFolder.m: added content deletion (v0.9.3)
+	
+	* OCSFolder.m: added sanity check to store method (v0.9.2)
+	
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v0.9.1
+	
+	* OCSiCalFieldExtractor.m: extract new quick fields: location, 
+	  partmails, sequence (does not yet handle allday and cycle due to
+	  NGiCal restrictions)
+	
+	* appointment.ocs, sql/foldertablecreate-helge-privcal.psql, 
+	  sql/testapt-agenor-helge-privcal.psql, sql/appointment-create.psql:
+	  added quick fields: isallday, iscycle, location, partmails, sequence
+	
+	* started ocs_recreatequick tool intended for recreating a quick table
+	  based on the content table of a folder
+	
+2004-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: fixed a bug in the channel GC which resulted
+	  in an exception during the GC NSTimer
+
+2004-07-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* improved error handling in various files
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: added garbage collector for channel pools
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: implemented pooling
+
+	* OCSFolder.m: added quick fetches
+
+	* GNUmakefile.preamble: fix link path
+
+	* GNUmakefile (libOGoContentStore_HEADER_FILES_INSTALL_DIR): install
+	  headers in OGoContentStore
+
+	* GNUmakefile.preamble (ocs_ls_TOOL_LIBS): added static dependencies
+	  for OSX
+
+2004-06-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ocs_cat.m, ocs_ls.m, ocs_mkdir.m: fixed for gnustep compile.
+
+2004-06-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog
+
