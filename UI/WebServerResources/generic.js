@@ -32,6 +32,8 @@ var menus = new Array();
 var search = {};
 var sorting = {};
 
+var lastClickedRow = null;
+
 var weekStartIsMonday = true;
 
 // logArea = null;
@@ -343,6 +345,10 @@ function checkAjaxRequestsState() {
   }
 }
 
+function isSafari3() {
+  return (navigator.appVersion.indexOf("Version") > -1);
+}
+
 function isSafari() {
   //var agt = navigator.userAgent.toLowerCase();
   //var is_safari = ((agt.indexOf('safari')!=-1)&&(agt.indexOf('mac')!=-1))?true:false;
@@ -483,7 +489,7 @@ function isNodeSelected(node) {
 function acceptMultiSelect(node) {
    var response = false;
    var attribute = node.getAttribute('multiselect');
-   if (attribute) {
+   if (attribute && attribute.length > 0) {
       log("node '" + node.getAttribute("id")
 	  + "' is still using old-stylemultiselect!");
       response = (attribute.toLowerCase() == 'yes');
@@ -496,42 +502,63 @@ function acceptMultiSelect(node) {
 
 function onRowClick(event) {
   var node = getTarget(event);
+  var rowIndex = null;
 
-  if (node.tagName == 'TD')
-    node = node.parentNode;
-  var startSelection = $(node.parentNode).getSelectedNodes();
-  if (event.shiftKey == 1
+  if (node.tagName == 'TD') {
+    node = node.parentNode; // select TR
+    rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  
+  }
+  else if (node.tagName == 'LI') {
+    // Find index of clicked row
+    var list = node.parentNode;
+    var items = list.childNodesWithTag("li");
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] == node) {
+	rowIndex = i;
+	break;
+      }
+    }
+  }
+
+  var initialSelection = $(node.parentNode).getSelectedNodes();
+  if ((event.shiftKey == 1 || event.ctrlKey == 1)
+      && lastClickedRow
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
-    if (isNodeSelected(node) == true) {
+    if (event.shiftKey)
+      $(node.parentNode).selectRange(lastClickedRow, rowIndex);
+    else if (isNodeSelected(node) == true) {
       $(node).deselect();
     } else {
       $(node).select();
     }
+    // At this point, should empty content of 3-pane view
   } else {
+    // Single line selection
     $(node.parentNode).deselectAll();
     $(node).select();
-  }
-
-  if (startSelection != $(node.parentNode).getSelectedNodes()) {
-    // Selection has changed; fire mousedown event
-    var parentNode = node.parentNode;
-    if (parentNode.tagName == 'TBODY')
-      parentNode = parentNode.parentNode;
-    if (document.createEvent) {
-      var onSelectionChangeEvent;
-      if (isSafari())
-	onSelectionChangeEvent = document.createEvent("UIEvents");
-      else
-	onSelectionChangeEvent = document.createEvent("Events");
-      onSelectionChangeEvent.initEvent("mousedown", true, true);
-      parentNode.dispatchEvent(onSelectionChangeEvent);
+  
+    if (initialSelection != $(node.parentNode).getSelectedNodes()) {
+      // Selection has changed; fire mousedown event
+      var parentNode = node.parentNode;
+      if (parentNode.tagName == 'TBODY')
+	parentNode = parentNode.parentNode;
+      if (document.createEvent) {
+	var onSelectionChangeEvent;
+	if (isSafari())
+	  onSelectionChangeEvent = document.createEvent("UIEvents");
+	else
+	  onSelectionChangeEvent = document.createEvent("Events");
+	onSelectionChangeEvent.initEvent("mousedown", true, true);
+	parentNode.dispatchEvent(onSelectionChangeEvent);
+      }
+      else if (document.createEventObject) {
+	parentNode.fireEvent("onmousedown");
+      }
     }
-    else if (document.createEventObject) {
-      parentNode.fireEvent("onmousedown");
-    }
   }
-
+  lastClickedRow = rowIndex;
+  
   return true;
 }
 

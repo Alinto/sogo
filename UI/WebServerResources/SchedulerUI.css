@@ -61,6 +61,7 @@ UL#tasksList, UL#calendarList
   border-top: 2px solid #222;
   border-left: 2px solid #222;
   background-color: #fff;
+  -khtml-user-select: none;
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   list-style-type: none;

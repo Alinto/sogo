@@ -94,12 +94,15 @@
     <var:component className="UIxCalFilterPanel" />
     <div id="eventsListView">
       <table id="eventsList">
-	<tr>
-	  <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-	  <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
-	  <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
-	  <td class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-	</tr>
+        <thead>
+	  <tr>
+	    <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+	    <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
+	    <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
+	    <td class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+	  </tr>
+        </thead>
+        <tbody></tbody>
       </table>
     </div>
     <div id="rightDragHandle" class="dragHandle"><!-- space --></div>

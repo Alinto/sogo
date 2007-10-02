@@ -274,6 +274,7 @@
 	  ([[cc userAgentType] isEqualToString: @"IE"] && [cc majorVersion] >= 7) ||
 	  ([[cc userAgentType] isEqualToString: @"Mozilla"] && [cc majorVersion] >= 5) ||
 	  ([[cc userAgentType] isEqualToString: @"Safari"] && [cc majorVersion] >= 4)
+	  //	  ([[cc userAgentType] isEqualToString: @"Konqueror"])
 	   );
 }
 

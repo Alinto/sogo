@@ -22,7 +22,7 @@ function addLineToTree(tree, parent, line) {
        || nodes.length > 1) {
       var parentNode = nodes[0];
       var userInfos = parentNode.split(":");
-      var email = userInfos[1] + " &lt;" + userInfos[2] + ">";
+      var email = userInfos[1] + " &lt;" + userInfos[2] + "&gt;";
       tree.add(parent, 0, email, 0, '#', userInfos[0], 'person',
 	       '', '',
 	       ResourcesURL + '/abcard.gif',
@@ -35,7 +35,11 @@ function addLineToTree(tree, parent, line) {
 	 else
 	    icon += 'calendar-folder-16x16.png';
 	 var folderId = userInfos[0] + ":" + folderInfos[1];
-	 tree.add(parent + i, parent, folderInfos[0], 0, '#', folderId,
+	 var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
+	 var pos = name.indexOf(' (')
+	 if (pos !== -1)
+	   name = name.substring(0, pos); // strip the part with fullname and email
+	 tree.add(parent + i, parent, name, 0, '#', folderId,
 		  folderInfos[2] + '-folder', '', '', icon, icon);
       }
       offset = nodes.length - 1;

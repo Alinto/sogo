@@ -381,7 +381,8 @@ function openMailbox(mailbox, reload, idx) {
     var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
     var messageContent = $("messageContent");
     messageContent.update();
-   
+    lastClickedRow = null; // from generic.js
+
     var currentMessage;
     if (!idx) {
       currentMessage = currentMessages[mailbox];
@@ -637,7 +638,7 @@ function storeCachedMessage(cachedMessage) {
   cachedMessages[oldest] = cachedMessage;
 }
 
-function onMessageSelectionChange() { log("onMessageSelectionChange");
+function onMessageSelectionChange() {
   var rows = this.getSelectedRowsId();
 
   if (rows.length == 1) {
@@ -987,6 +988,7 @@ function configureMessageListBodyEvents(table) {
     rows = table.tBodies[0].rows;
     for (var i = 0; i < rows.length; i++) {
       Event.observe(rows[i], "mousedown", onRowClick);
+      Event.observe(rows[i], "selectstart", listRowMouseDownHandler);
       Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
       
       rows[i].dndTypes = function() { return new Array("mailRow"); };

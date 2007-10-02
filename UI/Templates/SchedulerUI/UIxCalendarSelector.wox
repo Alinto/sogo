@@ -27,7 +27,7 @@
 	    label:title="Remove the selected Calendar"
 	    /></span></a>
     </span>
-    <ul id="calendarList" multiselect="yes">
+    <ul id="calendarList">
       <var:foreach list="calendars" item="currentCalendar"
 	><li class="denied" var:id="currentCalendar.id"
 	  var:owner="currentCalendar.owner">
