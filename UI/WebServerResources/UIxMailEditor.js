@@ -214,6 +214,7 @@ function clickedEditorSave(sender) {
   document.pageform.action = "save";
   document.pageform.submit();
 
+  refreshMailbox();
   return false;
 }
 
