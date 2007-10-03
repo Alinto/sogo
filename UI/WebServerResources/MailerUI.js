@@ -463,6 +463,8 @@ function messageListCallback(http) {
       var row = $("row_" + selected);
       if (row)
 	row.select();
+      else
+	$("messageContent").update();
     }
     
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
