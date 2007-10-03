@@ -35,16 +35,21 @@
 	    var:idx="prevFirstMessageNumber"
 	    ><var:string label:value="previous"/></a> |
 	</var:if>
-	<var:string value="firstMessageNumber" />
-	<var:string label:value="msgnumber_to" />
-	<var:string value="lastMessageNumber" />
-	<var:string label:value="msgnumber_of" />
-	<var:string value="sortedUIDs.count" />
-	<var:if condition="hasNext"
-	  >| <a href="#"
-	    var:idx="nextFirstMessageNumber"
-	    ><var:string label:value="next" /></a>
-	</var:if
+        <var:if condition="lastMessageNumber" const:negate="YES">
+          0 <var:string label:value="message"/>
+        </var:if>
+        <var:if condition="lastMessageNumber" const:negate="0">
+	  <var:string value="firstMessageNumber" />
+	  <var:string label:value="msgnumber_to" />
+	  <var:string value="lastMessageNumber" />
+	  <var:string label:value="msgnumber_of" />
+	  <var:string value="sortedUIDs.count" />
+	  <var:if condition="hasNext"
+	    >| <a href="#"
+	      var:idx="nextFirstMessageNumber"
+	      ><var:string label:value="next" /></a>
+	  </var:if>
+        </var:if
 	  ></td
 	></tr
       >

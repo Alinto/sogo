@@ -335,9 +335,13 @@ function onMailboxTreeItemClick(event) {
   if (currentMailboxType == "account" || currentMailboxType == "additional") {
     currentMailbox = mailbox;
     $("messageContent").update();
-    var body = $("messageList").tBodies[0];
+    var table = $("messageList");
+    var head = table.tHead;
+    var body = table.tBodies[0];
     for (var i = body.rows.length; i > 0; i--)
       body.deleteRow(i-1);
+    if (head.rows[1])
+      head.rows[1].firstChild.update();
   }
   else
     openMailbox(mailbox);
@@ -378,7 +382,7 @@ function composeNewMessage() {
 function openMailbox(mailbox, reload, idx) {
   if (mailbox != currentMailbox || reload) {
     currentMailbox = mailbox;
-    var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
+    var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
     var messageContent = $("messageContent");
     messageContent.update();
     lastClickedRow = null; // from generic.js
@@ -485,8 +489,11 @@ function messageListCallback(http) {
       }
     }
   }
-  else
-    log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ")");
+  else {
+    var data = http.responseText;
+    var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+    log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ", response = " + msg + ")");
+  }
 }
 
 function quotasCallback(http) {
