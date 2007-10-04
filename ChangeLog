@@ -1,3 +1,8 @@
+2007-10-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Main/SOGo.m ([SOGo -isUserName:_keyinContext:_ctx]): removed
+	the constraint that a username can't start with a digit.
+
 2007-10-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Moved SOPE/sope-gdl1/GDLContentStore from the default trunk

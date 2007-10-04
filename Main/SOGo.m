@@ -254,9 +254,6 @@ static BOOL debugObjectAllocation = NO;
   if ([_key length] < 1)
     return NO;
   
-  if (isdigit([_key characterAtIndex:0]))
-    return NO;
-
   return YES;
 }
 

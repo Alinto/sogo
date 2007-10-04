@@ -3,6 +3,7 @@
 - implemented cookie-based identification in the web interface;
 - fixed a bug where a false positive happening whenever a wrong user login was
   given during an indirect bind;
+- remove the constraint that a username can't begin with a digit;
 - deleting a message no longer expunges its parent folder;
 - implemented support for multiple calendars;
 - it is now possible to rename folders;
