@@ -442,7 +442,7 @@ static NSArray *infoKeys = nil;
 	{
 	  result = [[self clientObject] sendMail];
 	  if (!result)
-	    result = [self jsCloseWithRefreshMethod: nil];
+	    result = [self jsCloseWithRefreshMethod: @"refreshFolderByType(\"sent\")"];
 	}
       else
 	result = [self failedToSaveFormResponse];

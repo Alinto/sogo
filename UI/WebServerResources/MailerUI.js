@@ -894,6 +894,11 @@ function refreshCurrentFolder() {
   openMailbox(currentMailbox, true);
 }
 
+function refreshFolderByType(type) {
+  if (currentMailboxType == type)
+    refreshCurrentFolder();
+}
+
 var mailboxSpanAcceptType = function(type) {
   return (type == "mailRow");
 }
