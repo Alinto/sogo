@@ -410,5 +410,5 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Location" = "Location";
 "(Private Event)" = "(Private Event)";
 
-"closeThisWindowMessage" = "Thank you! You may now close this window.";
+"closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
 "Multicolumn Day View" = "Multicolumn Day View";

@@ -165,15 +165,21 @@ function modifyEvent(sender, modification) {
 
 function closeInvitationWindow() {
   var closeDiv = document.createElement("div");
+  document.body.appendChild(closeDiv);
   closeDiv.addClassName("javascriptPopupBackground");
+
   var closePseudoWin = document.createElement("div");
+  document.body.appendChild(closePseudoWin);
   closePseudoWin.addClassName("javascriptMessagePseudoTopWindow");
   closePseudoWin.style.top = "0px;";
   closePseudoWin.style.left = "0px;";
   closePseudoWin.style.right = "0px;";
   closePseudoWin.appendChild(document.createTextNode(labels["closeThisWindowMessage"]));
-  document.body.appendChild(closeDiv);
-  document.body.appendChild(closePseudoWin);
+
+  var calLink = document.createElement("a");
+  closePseudoWin.appendChild(calLink);
+  calLink.href = ApplicationBaseURL;
+  calLink.appendChild(document.createTextNode(labels["Calendar"].toLowerCase()));
 }
 
 function modifyEventCallback(http) {
@@ -958,7 +964,7 @@ function onListFilterChange() {
   return refreshEvents();
 }
 
-function onEventClick(event) {
+function onEventClick(event) { log ("onEventClick");
   var day = this.day;
   var hour = this.hour;
 
@@ -1035,7 +1041,7 @@ function onSearchFormSubmit() {
 
 function onCalendarSelectEvent() {
   var list = $("eventsList");
-  list.deselectAll();
+  list.tBodies[0].deselectAll();
 
   if (selectedCalendarCell)
      for (var i = 0; i < selectedCalendarCell.length; i++)

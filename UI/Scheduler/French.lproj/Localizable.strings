@@ -409,5 +409,5 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Location" = "Lieu";
 "(Private Event)" = "(Événement privé)";
 
-"closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre.";
+"closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre ou consulter votre ";
 "Multicolumn Day View" = "Multicolonne";
