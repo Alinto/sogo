@@ -1,3 +1,14 @@
+2007-10-05  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js
+	We check if at least one message is selected
+	before performing a Reply/Reply All/Forward
+	
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	and others - implemented support for recurring
+	events (with some known limitations right now,
+	all soon to be fixed).
+	
 2007-10-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -isUserName:_keyinContext:_ctx]): removed

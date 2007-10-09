@@ -186,5 +186,6 @@
 
 "quotasFormat" = "Quota: %{0} von %{1} KB verwendet; %{2}%";
 
+"Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";

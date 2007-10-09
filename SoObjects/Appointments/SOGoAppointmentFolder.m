@@ -568,13 +568,16 @@ static NSNumber   *sharedYes = nil;
   
   md = [[_record mutableCopy] autorelease];
   
-  /* cycle is in _r */
+  /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
+     the reccurence since we use those when displaying events in SOGo Web */
   tmp = [_r startDate];
   [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"startDate"];
+  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_startdate"];
   tmp = [_r endDate];
   [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"endDate"];
+  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_enddate"];
   
   return md;
 }
@@ -633,20 +636,24 @@ static NSNumber   *sharedYes = nil;
   rules     = [cycleinfo objectForKey:@"rules"];
   exRules   = [cycleinfo objectForKey:@"exRules"];
   exDates   = [cycleinfo objectForKey:@"exDates"];
-
+  
   ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange:_r
                                      firstInstanceCalendarDateRange:fir
                                      recurrenceRules:rules
                                      exceptionRules:exRules
                                      exceptionDates:exDates];
   count = [ranges count];
+
   for (i = 0; i < count; i++) {
     NGCalendarDateRange *rRange;
     id fixedRow;
     
     rRange   = [ranges objectAtIndex:i];
     fixedRow = [self fixupCycleRecord:row cycleRange:rRange];
-    if (fixedRow != nil) [_ma addObject:fixedRow];
+    if (fixedRow != nil)
+      {
+	[_ma addObject:fixedRow];
+      }
   }
 }
 
@@ -845,21 +852,20 @@ static NSNumber   *sharedYes = nil;
       ma = [NSMutableArray arrayWithArray: records];
     }
 
-  /* fetch recurrent apts now */
-  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@",
-                  dateSqlString, componentSqlString, privacySqlString];
+  /* fetch recurrent apts now. we do NOT consider the date range when doing that
+     as the c_startdate/c_enddate of a recurring event is always set to the first
+     recurrence - others are generated on the fly */
+  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@", componentSqlString, privacySqlString];
+
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  [fields addObject: @"c_cycleinfo"];
-
   records = [_folder fetchFields: fields matchingQualifier: qualifier];
+
   if (records)
     {
-      if (logger)
-        [self debugWithFormat: @"fetched %i cyclic records: %@",
-              [records count], records];
-      if (r)
+      if (r) {
         records = [self fixupCyclicRecords: records fetchRange: r];
+      }
       if (!ma)
         ma = [NSMutableArray arrayWithCapacity: [records count]];
 

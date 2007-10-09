@@ -221,50 +221,42 @@
 {
   NSEnumerator *folders, *currentInfos;
   SOGoAppointmentFolder *currentFolder;
-  NSMutableDictionary *infos, *currentInfo, *newInfo;
-  NSString *owner, *uid;
+  NSMutableDictionary *newInfo;
+  NSMutableArray *infos;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
 
   marker = [NSNull null];
 
-  infos = [NSMutableDictionary dictionary];
-  clientObject = [self clientObject];
+   clientObject = [self clientObject];
 
   folders = [[clientObject subFolders] objectEnumerator];
   currentFolder = [folders nextObject];
+
+  infos = [NSMutableArray array];
   while (currentFolder)
     {
       if ([currentFolder isActive])
 	{
-	  owner = [currentFolder ownerInContext: context];
 	  currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
 					 to: endDate
 					 component: component] objectEnumerator];
-	  newInfo = [currentInfos nextObject];
-	  while (newInfo)
+
+	  while ((newInfo = [currentInfos nextObject]))
 	    {
-	      uid = [newInfo objectForKey: @"c_uid"];
-	      currentInfo = [infos objectForKey: uid];
-	      if (!currentInfo
-		  || [owner isEqualToString: userLogin])
-		{
-		  [self _updatePrivacyInComponent: newInfo
-			fromFolder: currentFolder];
-		  [newInfo setObject: [currentFolder nameInContainer]
-			   forKey: @"c_folder"];
-		  // 	      [newInfo setObject: owner forKey: @"c_owner"];
-		  [infos setObject: [newInfo objectsForKeys: fields
-					     notFoundMarker: marker]
-			 forKey: uid];
-		}
-	      newInfo = [currentInfos nextObject];
+	      [self _updatePrivacyInComponent: newInfo
+		    fromFolder: currentFolder];
+	      [newInfo setObject: [currentFolder nameInContainer]
+		       forKey: @"c_folder"];
+	      
+	      [infos addObject: [newInfo objectsForKeys: fields
+					 notFoundMarker: marker]];
 	    }
 	}
       currentFolder = [folders nextObject];
     }
 
-  return [infos allValues];
+  return infos;
 }
 
 - (WOResponse *) _responseWithData: (NSArray *) data
