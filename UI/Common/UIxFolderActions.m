@@ -31,6 +31,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/SoClassSecurityInfo.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -146,7 +147,34 @@
 
 - (WOResponse *) canAccessContentAction
 {
-  return [self responseWith204];
+#warning IMPROVEMENTS REQUIRED!
+  NSArray *acls;
+//  NSEnumerator *userAcls;
+//  NSString *currentAcl;
+
+  [self _setupContext];
+  
+//  NSLog(@"canAccessContentAction %@, owner %@", subscriptionPointer, owner);
+
+  if ([login isEqualToString: owner] || [owner isEqualToString: @"nobody"]) {
+    return [self responseWith204];
+  }
+  else {
+    acls = [clientObject aclsForUser: login];
+//    userAcls = [acls objectEnumerator];
+//    currentAcl = [userAcls nextObject];
+//    while (currentAcl) {
+//      NSLog(@"ACL login %@, owner %@, folder %@: %@",
+//	    login, owner, baseFolder, currentAcl);
+//      currentAcl = [userAcls nextObject];
+//    }
+    if (([[clientObject folderType] isEqualToString: @"Contact"]     && [acls containsObject: SOGoRole_ObjectReader]) ||
+	([[clientObject folderType] isEqualToString: @"Appointment"] && [acls containsObject: SOGoRole_AuthorizedSubscriber])) {
+      return [self responseWith204];
+    }
+  }
+  
+  return [self responseWithStatus: 403];
 }
 
 - (WOResponse *) _realFolderActivation: (BOOL) makeActive

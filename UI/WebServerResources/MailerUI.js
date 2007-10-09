@@ -141,6 +141,8 @@ function openMessageWindowsForSelection(action, firstOnly) {
 			    ApplicationBaseURL + currentMailbox
 			    + "/" + rows[i].substr(4)
 			    + "/" + action);
+    } else {
+      window.alert(labels["Please select a message."]);
     }
   }
 
@@ -232,6 +234,7 @@ function uixDeleteSelectedMessages(sender) {
     url = ApplicationBaseURL + messageId + "/trash";
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
+    http.url = url;
     http.send("");
     if (!isHttpStatus204(http.status)) { /* request failed */
       failCount++;
@@ -246,9 +249,8 @@ function uixDeleteSelectedMessages(sender) {
       }
     }
     http = null;
-
+    
     /* remove from page */
-
     /* line-through would be nicer, but hiding is OK too */
     var row = $(rowIds[i]);
     row.parentNode.removeChild(row);

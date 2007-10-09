@@ -46,8 +46,8 @@ function openContactsFolder(contactsFolder, reload, idx) {
         var contactsList = $("contactsList");
         if (contactsList)
            selection = contactsList.getSelectedRowsId();
-        else
-           window.alert("no contactsList");
+//        else
+//           window.alert("no contactsList");
      }
      else
 	selection = null;
