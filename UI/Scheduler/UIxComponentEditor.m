@@ -365,7 +365,11 @@
 
 - (NSString *) componentCalendar
 {
-  return @"/";
+  SOGoAppointmentFolder *calendar;
+
+  calendar = [[self clientObject] container];
+  
+  return calendar;
 }
 
 /* priorities */
