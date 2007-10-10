@@ -221,6 +221,7 @@ static NSNumber   *sharedYes = nil;
   return filterData;
 }
 
+#warning filters is leaked here
 - (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
 {
   NSEnumerator *children;
@@ -258,6 +259,7 @@ static NSNumber   *sharedYes = nil;
   max = [filters count];
   for (count = 0; count < max; count++)
     {
+#warning huh? why not objectAtIndex: count?
       currentFilter = [filters objectAtIndex: 0];
       apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
@@ -932,7 +934,7 @@ static NSNumber   *sharedYes = nil;
                              @"c_status", @"c_classification",
                              @"c_isallday", @"c_isopaque",
                              @"c_participants", @"c_partmails",
-                             @"c_partstates", @"c_sequence", @"c_priority",
+                             @"c_partstates", @"c_sequence", @"c_priority", @"c_cycleinfo",
 			     nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate

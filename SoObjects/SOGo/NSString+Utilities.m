@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006  Inverse group conseil
+ * Copyright (C) 2006  Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -155,7 +155,7 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"[]\t \r\n"];
     }
 
   start = refRange.location;
@@ -165,7 +165,7 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
     start--;
   start++;
   length = [self length] - start;
-  workRange = NSMakeRange (start, length);
+  workRange = NSMakeRange(start, length);
   workRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
 		    options: NSLiteralSearch range: workRange];
   if (workRange.location != NSNotFound)
@@ -193,13 +193,15 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   while (httpRange.location != NSNotFound)
     {
       if ([ranges hasRangeIntersection: httpRange])
-	rest.location = NSMaxRange (httpRange);
+	rest.location = NSMaxRange(httpRange);
       else
 	{
 	  currentURL = [selfCopy _rangeOfURLInRange: httpRange];
 	  urlText = [selfCopy substringFromRange: currentURL];
 	  if ([urlText length] > matchLength)
 	    {
+	      if ([urlText hasPrefix: prefix]) prefix = @"";
+
 	      newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
 				     prefix, urlText, urlText];
 	      [selfCopy replaceCharactersInRange: currentURL
@@ -208,8 +210,9 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
 		= NSMakeRange (currentURL.location, [newUrlText length]);
 	      [ranges addRange: currentURL];
 	    }
-	  rest.location = NSMaxRange (currentURL);
+	  rest.location = NSMaxRange(currentURL);
 	}
+
       length = [selfCopy length];
       rest.length = length - rest.location;
       httpRange = [selfCopy rangeOfString: match

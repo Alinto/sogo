@@ -75,6 +75,9 @@ static NSString *defaultMailDomain = nil;
   value = [udSource objectForKey: @"displayName"];
   if (value)
     [metadata setObject: value forKey: @"displayName"];
+  value = [udSource objectForKey: @"MailFieldNames"];
+  if (value)
+    [metadata setObject: value forKey: @"MailFieldNames"];
   [sourcesMetadata setObject: metadata forKey: sourceID];
 }
 
@@ -149,6 +152,11 @@ static NSString *defaultMailDomain = nil;
     }
 
   return sourceIDs;
+}
+
+- (NSDictionary *) metadataForSourceID: (NSString *) sourceID
+{
+  return [sourcesMetadata objectForKey: sourceID];
 }
 
 - (NSArray *) authenticationSourceIDs
@@ -295,7 +303,8 @@ static NSString *defaultMailDomain = nil;
   NSEnumerator *ldapSources;
   LDAPSource *currentSource;
   NSString *cn, *email, *c_uid;
-
+  NSArray *attrs;
+  
   emails = [NSMutableArray array];
   cn = nil;
   c_uid = nil;
@@ -311,15 +320,18 @@ static NSString *defaultMailDomain = nil;
 	    cn = [userEntry objectForKey: @"c_cn"];
 	  if (!c_uid)
 	    c_uid = [userEntry objectForKey: @"c_uid"];
-	  email = [userEntry objectForKey: @"mail"];
-	  if (email && ![emails containsObject: email])
-	    [emails addObject: email];
-	  email = [userEntry objectForKey: @"mozillaSecondEmail"];
-	  if (email && ![emails containsObject: email])
-	    [emails addObject: email];
-	  email = [userEntry objectForKey: @"xmozillasecondemail"];
-	  if (email && ![emails containsObject: email])
-	    [emails addObject: email];
+
+	  if ((attrs = [[sourcesMetadata objectForKey: [currentSource sourceID]] objectForKey: @"MailFieldNames"]))
+	    {
+	      int i;
+
+	      for (i = 0; i < [attrs count]; i++)
+		{
+		  email = [userEntry objectForKey: [attrs objectAtIndex: i]];
+		  if (email && ![emails containsObject: email])
+		    [emails addObject: email];
+		}
+	    }
 	}
       currentSource = [ldapSources nextObject];
     }
@@ -332,7 +344,13 @@ static NSString *defaultMailDomain = nil;
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];
   [currentUser setObject: c_uid forKey: @"c_uid"];
-  [self _fillContactMailRecords: currentUser];
+
+  // If our LDAP queries gave us nothing, we add at least one default
+  // email address based on the default domain.
+  if ([emails count] == 0)
+    {
+      [self _fillContactMailRecords: currentUser];
+    }
 }
 
 - (void) _retainUser: (NSDictionary *) newUser

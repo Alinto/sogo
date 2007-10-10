@@ -1,3 +1,17 @@
+2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	Implemented event/task priority support.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	Added CardDAV support. 
+
+	* SoObjects/SOGo/LDAPUserManager.m and SOGoUser.m
+	Implemented From: based on LDAP results based on
+	the MailFieldNames attribute (an array) specified
+	in every LDAP-based authentication sources.
+
+
 2007-10-05  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js

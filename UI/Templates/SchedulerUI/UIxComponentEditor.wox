@@ -50,6 +50,11 @@
             string="item.displayName"
 	    selection="componentCalendar"
 	    /></span></span>
+      <span class="checkBoxList"><var:string label:value="Priority:" />
+         <span class="content"><var:popup list="priorities" item="item"
+            label:noSelectionString="prio_0"
+            string="itemPriorityText" selection="priority"/>
+      </span></span>
       <label id="attendeesLabel" style="display: none;"><var:string label:value="Attendees:"
 	  /><span class="content"
 	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>

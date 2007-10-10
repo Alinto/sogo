@@ -31,6 +31,7 @@
 
 @interface LDAPSource : NSObject
 {
+  NSString *sourceID;
   NSString *bindDN;
   NSString *hostname;
   unsigned int port;
@@ -67,6 +68,7 @@
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
 - (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
+- (NSString *) sourceID;
 
 @end
 

@@ -373,14 +373,15 @@
 - (NSArray *) priorities
 {
   /* 0 == undefined
-     5 == normal
+     9 == low
+     5 == medium
      1 == high
   */
   static NSArray *priorities = nil;
 
   if (!priorities)
     {
-      priorities = [NSArray arrayWithObjects: @"0", @"5", @"1", nil];
+      priorities = [NSArray arrayWithObjects: @"9", @"5", @"1", nil];
       [priorities retain];
     }
 
@@ -856,8 +857,8 @@
       [component setUid: [clientObject nameInContainer]];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
-      [component setPriority: @"0"];
     }
+  [component setPriority: priority];
   [component setLastModified: now];
 }
 

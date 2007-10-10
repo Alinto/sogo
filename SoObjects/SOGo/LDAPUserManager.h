@@ -44,6 +44,7 @@
 + (id) sharedUserManager;
 
 - (NSArray *) sourceIDs;
+- (NSDictionary *) metadataForSourceID: (NSString *) sourceID;
 - (NSArray *) authenticationSourceIDs;
 - (NSArray *) addressBookSourceIDs;
 
