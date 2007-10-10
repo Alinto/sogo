@@ -367,7 +367,7 @@ DIV.mailer_plaincontent
 {
   position: relative;
   font-family: monospace, fixed;
-  white-space: normal;
+  white-space: pre;
   font-size: inherit;
   margin: 0px;
   padding: 0px;

@@ -11,6 +11,12 @@
 	the MailFieldNames attribute (an array) specified
 	in every LDAP-based authentication sources.
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m and
+	  UI/WebServerResources/MailerUI.css
+	We avoid replacing "\r\n" and "\n" with <br /> and
+	rather use CSS capabilities for proper formatting.
+	This is _WAY_ faster on very large mails.
+ 
 
 2007-10-05  Ludovic Marcotte  <ludovic@inverse.ca>
 
