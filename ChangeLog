@@ -17,6 +17,11 @@
 	rather use CSS capabilities for proper formatting.
 	This is _WAY_ faster on very large mails.
  
+2007-10-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	([UIxComponentEditor -componentCalendar]): returns the calendar
+	object of the current event.
 
 2007-10-05  Ludovic Marcotte  <ludovic@inverse.ca>
 
