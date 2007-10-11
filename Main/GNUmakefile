@@ -5,6 +5,9 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
 
+ADDITIONAL_INCLUDE_DIRS += -I../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../SOPE/sope-gdl1/GDLContentStore/obj/
+
 SOGOD     = sogod-$(MAJOR_VERSION).$(MINOR_VERSION)
 TOOL_NAME = $(SOGOD)
 

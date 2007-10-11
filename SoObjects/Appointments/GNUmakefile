@@ -47,6 +47,9 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailGermanRemoval.wo	\
 	SOGoAptMailGermanDeletion.wo	\
 
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
+
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble

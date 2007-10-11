@@ -87,6 +87,8 @@ agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m
 agenor_defaults_OBJC_FILES   += agenor_defaults.m
 
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include ../common.make
