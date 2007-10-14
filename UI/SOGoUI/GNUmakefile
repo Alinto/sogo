@@ -27,8 +27,8 @@ libSOGoUI_OBJC_FILES +=		\
 	SOGoAptFormatter.m	\
 	SOGoJSStringFormatter.m \
 	WOContext+UIx.m		\
-	\
-	SOGoACLAdvisory.m
+	SOGoACLAdvisory.m \
+	SOGoFolderAdvisory.m
 
 # make
 

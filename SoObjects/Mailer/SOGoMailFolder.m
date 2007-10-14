@@ -585,7 +585,7 @@ static BOOL useAltNamespace = NO;
   return userPath;
 }
 
-- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
+- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
 {
   SOGoUser *user;
   NSString *otherUsersPath, *url;
@@ -609,7 +609,7 @@ static BOOL useAltNamespace = NO;
   return url;
 }
 
-- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
+- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid
 {
   NSURL *selfURL, *userURL;
 

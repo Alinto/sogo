@@ -1,8 +1,8 @@
-/* SOGoACLAdvisory.m - this file is part of SOGo
+/* SOGoFolderAdvisory.m - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +32,16 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
-#import "SOGoACLAdvisory.h"
+#import "SOGoFolderAdvisory.h"
 
-@implementation SOGoACLAdvisory
+@implementation SOGoFolderAdvisory
 
 - (id) init
 {
   if ((self = [super init]))
     {
-      aclObject = nil;
       recipientUID = nil;
-
+      folderObject = nil;
       isSubject = NO;
       isBody = NO;
     }
@@ -53,13 +52,13 @@
 - (void) dealloc
 {
   [recipientUID release];
-  [aclObject release];
+  [folderObject release];
   [super dealloc];
 }
 
-- (void) setACLObject: (SOGoObject *) newACLObject
+- (void) setFolderObject: (SOGoFolder *) theFolder
 {
-  ASSIGN (aclObject, newACLObject);
+  ASSIGN(folderObject, theFolder);
 }
 
 - (void) setRecipientUID: (NSString *) newRecipientUID
@@ -77,28 +76,22 @@
   return isBody;
 }
 
-- (NSString *) currentUserName
+- (NSString *) displayName
 {
-  return [[context activeUser] cn];
+  return [folderObject displayName];
 }
 
-- (NSString *) httpAdvisoryURL
+- (NSString *) httpFolderURL
 {
   NSMutableString *url;
 
 #warning the url returned by SOGoMail may be empty, we need to handle that
-  url
-    = [NSMutableString stringWithString:
-			 [aclObject httpURLForAdvisoryToUser: recipientUID]];
+  url = [NSMutableString stringWithString: [[folderObject soURL] absoluteString]];
+
   if (![url hasSuffix: @"/"])
     [url appendString: @"/"];
 
   return url;
-}
-
-- (NSString *) resourceName
-{
-  return [aclObject nameInContainer];
 }
 
 - (NSString *) subject
@@ -123,7 +116,7 @@
   return [body stringByTrimmingSpaces];
 }
 
-- (NSString *) aclMethod
+- (NSString *) folderMethod
 {
   [self subclassResponsibility: _cmd];
   
@@ -157,13 +150,12 @@
   [headerMap setObject: [NSString stringWithFormat:
 				    @"%@; method=%@; type=%@; charset=%@",
 				  @"application/x-sogo-notification",
-				  [self aclMethod], [aclObject folderType],
+				  [self folderMethod], [folderObject folderType],
 				  @"utf-8"]
 	     forKey: @"content-type"];
 
   part = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-  body = [[aclObject resourceURLForAdvisoryToUser: recipientUID]
-	   dataUsingEncoding: NSUTF8StringEncoding];
+  body = [[self httpFolderURL] dataUsingEncoding: NSUTF8StringEncoding];
   [part setBody: body];
 
   return part;
@@ -210,26 +202,26 @@
 
 @end
 
-@implementation SOGoACLEnglishAdditionAdvisory
-- (NSString *) aclMethod { return @"add"; }
+@implementation SOGoFolderEnglishAdditionAdvisory
+- (NSString *) folderMethod { return @"add"; }
 @end
 
-@implementation SOGoACLEnglishRemovalAdvisory
-- (NSString *) aclMethod { return @"remove"; }
+@implementation SOGoFolderEnglishRemovalAdvisory
+- (NSString *) folderMethod { return @"remove"; }
 @end
 
-@implementation SOGoACLFrenchAdditionAdvisory
-- (NSString *) aclMethod { return @"add"; }
+@implementation SOGoFolderFrenchAdditionAdvisory
+- (NSString *) folderMethod { return @"add"; }
 @end
 
-@implementation SOGoACLFrenchRemovalAdvisory
-- (NSString *) aclMethod { return @"remove"; }
+@implementation SOGoFolderFrenchRemovalAdvisory
+- (NSString *) folderMethod { return @"remove"; }
 @end
 
-@implementation SOGoACLGermanAdditionAdvisory
-- (NSString *) aclMethod { return @"add"; }
+@implementation SOGoFolderGermanAdditionAdvisory
+- (NSString *) folderMethod { return @"add"; }
 @end
 
-@implementation SOGoACLGermanRemovalAdvisory
-- (NSString *) aclMethod { return @"remove"; }
+@implementation SOGoFolderGermanRemovalAdvisory
+- (NSString *) folderMethod { return @"remove"; }
 @end

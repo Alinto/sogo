@@ -1,5 +1,14 @@
 2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
 
+	* We now send advisory emails when folders
+	  are created / deleted.
+
+	* Fixed the sending of advisory emails upon
+	  ACL changes on folders.
+
+
+2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
+
 	* UI/Scheduler/UIxComponentEditor.m
 	Implemented event/task priority support.
 
