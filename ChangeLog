@@ -1,3 +1,8 @@
+2007-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): create
+	the folder even if the current user is not its owner.
+
 2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* We now send advisory emails when folders

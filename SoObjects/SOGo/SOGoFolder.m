@@ -237,7 +237,7 @@ static NSString *defaultUserID = @"<default>";
       ocsFolder = [self ocsFolderForPath: [self ocsPath]];
       userLogin = [[context activeUser] login];
       if (!ocsFolder
-	  && [userLogin isEqualToString: [self ownerInContext: context]]
+/*	  && [userLogin isEqualToString: [self ownerInContext: context]] */
 	  && [self folderIsMandatory]
 	  && [self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
