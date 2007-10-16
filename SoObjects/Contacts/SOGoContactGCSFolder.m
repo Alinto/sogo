@@ -25,8 +25,10 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
@@ -103,7 +105,6 @@
 
   if (filter && [filter length] > 0)
     {
-#warning why we do not use %%%@%% everywhere?
       qs = [NSString stringWithFormat:
                        @"(c_sn isCaseInsensitiveLike: '%@%%') OR "
                      @"(c_givenname isCaseInsensitiveLike: '%@%%') OR "
@@ -195,7 +196,6 @@
   NSMutableDictionary *filterData;
   id <DOMNode> parentNode;
   id <DOMNodeList> ranges;
-  NSString *componentName;
 
   parentNode = [filterElement parentNode];
 
@@ -244,34 +244,6 @@
   return filters;
 }
 
-- (void) _appendComponentsMatchingFilters: (NSArray *) filters
-                               toResponse: (WOResponse *) response
-{
-  unsigned int count, max;
-  NSDictionary *currentFilter, *contact;
-  NSEnumerator *contacts;
-  NSString *baseURL;
-
-  baseURL = [self baseURLInContext: context];
-
-  max = [filters count];
-  for (count = 0; count < max; count++)
-    {
-      currentFilter = [filters objectAtIndex: count];
-      contacts = [[self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-			sortBy: @"c_givenname"
-			ordering: NSOrderedDescending]
-		   objectEnumerator];
-      
-      while ((contact = [contacts nextObject]))
-      {
-          [self appendObject: contact
-                withBaseURL: baseURL
-                toREPORTResponse: response];
-        }
-    }
-}
-
 - (void) appendObject: (NSDictionary *) object
           withBaseURL: (NSString *) baseURL
      toREPORTResponse: (WOResponse *) r
@@ -306,6 +278,34 @@
   [r appendContentString: contactString];
   [r appendContentString: @"</C:addressbook-data>\r\n"];
   [r appendContentString: @"  </D:response>\r\n"];
+}
+
+- (void) _appendComponentsMatchingFilters: (NSArray *) filters
+                               toResponse: (WOResponse *) response
+{
+  unsigned int count, max;
+  NSDictionary *currentFilter, *contact;
+  NSEnumerator *contacts;
+  NSString *baseURL;
+
+  baseURL = [self baseURLInContext: context];
+
+  max = [filters count];
+  for (count = 0; count < max; count++)
+    {
+      currentFilter = [filters objectAtIndex: count];
+      contacts = [[self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+			sortBy: @"c_givenname"
+			ordering: NSOrderedDescending]
+		   objectEnumerator];
+      
+      while ((contact = [contacts nextObject]))
+      {
+          [self appendObject: contact
+                withBaseURL: baseURL
+                toREPORTResponse: response];
+        }
+    }
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
