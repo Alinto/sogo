@@ -43,6 +43,7 @@
 - (NSString *) currentUser;
 
 - (NSString *) ownerName;
+- (BOOL) hasOwner;
 
 @end
 
