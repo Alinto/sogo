@@ -1,5 +1,9 @@
 2007-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-initWithName:newNameinContainer:newContainer]): the owner of a
+	shared folder is set to "nobody" by default.
+
 	* UI/Common/UIxAclEditor.m ([UIxAclEditor -hasOwner]): new method
 	that returns whether the object has an owner or not.
 

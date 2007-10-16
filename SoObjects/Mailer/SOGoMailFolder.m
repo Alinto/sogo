@@ -63,7 +63,7 @@ static BOOL useAltNamespace = NO;
 
   folder = [mailAccount sharedFolderName];
   if (folder && [path hasPrefix: folder])
-    [self setOwner: @"anyone"];
+    [self setOwner: @"nobody"];
   else
     {
       folder = [mailAccount otherUsersFolderName];
@@ -73,7 +73,7 @@ static BOOL useAltNamespace = NO;
 	  if ([names count] > 1)
 	    [self setOwner: [names objectAtIndex: 1]];
 	  else
-	    [self setOwner: @"anyone"];
+	    [self setOwner: @"nobody"];
 	}
     }
 }
