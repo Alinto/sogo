@@ -41,3 +41,5 @@
 "Unable to rename that folder!" = "Impossible de renommer ce dossier.";
 "You have already subscribed to that folder!"
      	= "Vous êtes déja abonné à ce dossier.";
+"The user rights cannot be edited for this object!"
+        = "Les droits sur cet objet ne peuvent pas être édités.";

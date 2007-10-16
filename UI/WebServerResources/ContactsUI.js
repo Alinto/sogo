@@ -708,10 +708,16 @@ function folderRenameCallback(http) {
 function onMenuSharing(event) {
    var folders = $("contactFolders");
    var selected = folders.getSelectedNodes()[0];
-   var title = this.innerHTML;
-   var url = URLForFolderID(selected.getAttribute("id"));
+   var owner = selected.getAttribute("owner");
+   if (owner == "nobody")
+     window.alert(clabels["The user rights cannot be"
+			  + " edited for this object!"]);
+   else {
+     var title = this.innerHTML;
+     var url = URLForFolderID(selected.getAttribute("id"));
 
-   openAclWindow(url + "/acls", title);
+     openAclWindow(url + "/acls", title);
+   }
 }
 
 function getMenus() {

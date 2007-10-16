@@ -44,3 +44,5 @@
 "Unable to rename that folder!" = "Unable to rename that folder!";
 "You have already subscribed to that folder!"
      	= "You have already subscribed to that folder!";
+"The user rights cannot be edited for this object!"
+        = "The user rights cannot be edited for this object!";

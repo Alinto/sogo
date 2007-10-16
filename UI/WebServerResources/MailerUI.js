@@ -60,10 +60,14 @@ function openAddressbook(sender) {
 
 function onMenuSharing(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
-  var urlstr = URLForFolderID(folderID) + "/acls";
-  preventDefault(event);
-
-  openAclWindow(urlstr);
+  var type = document.menuTarget.getAttribute("datatype");
+  if (type == "additional")
+    window.alert(clabels["The user rights cannot be"
+			 + " edited for this object!"]);
+  else {
+    var urlstr = URLForFolderID(folderID) + "/acls";
+    openAclWindow(urlstr);
+  }
 }
 
 /* mail list DOM changes */
