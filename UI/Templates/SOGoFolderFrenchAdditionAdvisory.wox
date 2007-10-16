@@ -7,16 +7,15 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
 
-<var:if condition="isSubject">
+  <var:if condition="isSubject">
     <var:string value="displayName"/> a été créé
-</var:if>
+  </var:if>
 
-<var:if condition="isBody">
+  <var:if condition="isBody">
 Le dossier <var:string value="displayName"/> a été créé.
 
-Vous pouvez accèder à distance à ce dossier avec le lien suivant:
+Vous pouvez accéder à distance à ce dossier avec le lien suivant:
 
-<var:string value="httpFolderURL"/>
-</var:if>
-
+    <var:string value="httpFolderURL"/>
+  </var:if>
 </container>
