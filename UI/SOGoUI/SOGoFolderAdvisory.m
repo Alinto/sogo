@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSURL.h>
+
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGMail/NGMimeMessage.h>
@@ -31,6 +33,7 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "SOGoFolderAdvisory.h"
 
@@ -83,10 +86,12 @@
 
 - (NSString *) httpFolderURL
 {
+  NSString *absoluteString;
   NSMutableString *url;
 
 #warning the url returned by SOGoMail may be empty, we need to handle that
-  url = [NSMutableString stringWithString: [[folderObject soURL] absoluteString]];
+  absoluteString = [[folderObject soURL] absoluteString];
+  url = [NSMutableString stringWithString: absoluteString];
 
   if (![url hasSuffix: @"/"])
     [url appendString: @"/"];
@@ -102,7 +107,7 @@
   subject = [[self generateResponse] contentAsString];
   isSubject = NO;
 
-  return [subject stringByTrimmingSpaces];
+  return [[subject stringByTrimmingSpaces] asQPSubjectString: @"utf-8"];
 }
 
 - (NSString *) body
