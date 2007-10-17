@@ -32,6 +32,8 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
+
 #import "SOGoMailFolder.h"
 #import "SOGoMailManager.h"
 #import "SOGoDraftsFolder.h"
@@ -333,10 +335,32 @@ static BOOL useAltNamespace = NO;
   return [NSString stringWithFormat: @"folder%@", inboxFolderName];
 }
 
+- (NSString *) _userFolderNameWithPurpose: (NSString *) purpose
+{
+  NSUserDefaults *ud;
+  NSMutableDictionary *mailSettings;
+  NSString *folderName;
+
+  folderName = nil;
+  ud = [[context activeUser] userSettings];
+  mailSettings = [ud objectForKey: @"Mail"];
+  if (mailSettings)
+    folderName
+      = [mailSettings objectForKey: [NSString stringWithFormat: @"%@Folder",
+					      purpose]];
+
+  return folderName;
+}
+
 - (NSString *) draftsFolderNameInContext: (id) _ctx
 {
-  /* SOGo managed folder */
-  return [NSString stringWithFormat: @"folder%@", draftsFolderName];
+  NSString *folderName;
+
+  folderName = [self _userFolderNameWithPurpose: @"Drafts"];
+  if (!folderName)
+    folderName = draftsFolderName;
+
+  return [NSString stringWithFormat: @"folder%@", folderName];
 }
 
 - (NSString *) sieveFolderNameInContext: (id) _ctx
@@ -346,12 +370,24 @@ static BOOL useAltNamespace = NO;
 
 - (NSString *) sentFolderNameInContext: (id)_ctx
 {
-  return [NSString stringWithFormat: @"folder%@", sentFolderName];
+  NSString *folderName;
+
+  folderName = [self _userFolderNameWithPurpose: @"Sent"];
+  if (!folderName)
+    folderName = sentFolderName;
+
+  return [NSString stringWithFormat: @"folder%@", folderName];
 }
 
 - (NSString *) trashFolderNameInContext: (id)_ctx
 {
-  return [NSString stringWithFormat: @"folder%@", trashFolderName];
+  NSString *folderName;
+
+  folderName = [self _userFolderNameWithPurpose: @"Trash"];
+  if (!folderName)
+    folderName = trashFolderName;
+
+  return [NSString stringWithFormat: @"folder%@", folderName];
 }
 
 - (SOGoMailFolder *) inboxFolderInContext: (id) _ctx

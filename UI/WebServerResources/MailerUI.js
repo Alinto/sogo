@@ -196,31 +196,6 @@ function ml_lowlight(sender) {
 }
 
 
-/* folder operations */
-
-function ctxFolderAdd(sender) {
-  var folderName;
-   
-  folderName = prompt("Foldername: ");
-  if (folderName == undefined)
-    return false;
-  if (folderName == "")
-    return false;
-   
-  // TODO: should use a form-POST or AJAX
-  window.location.href = "createFolder?name=" + escape(folderName);
-  return false;
-}
-
-function ctxFolderDelete(sender) {
-  if (!confirm("Delete current folder?"))
-    return false;
-   
-  // TODO: should use a form-POST or AJAX
-  window.location.href = "deleteFolder";
-  return false;
-}
-
 /* bulk delete of messages */
 
 function uixDeleteSelectedMessages(sender) {
@@ -1135,8 +1110,10 @@ function updateMailboxTreeInPage() {
   var tree = $("mailboxTree");
   var nodes = document.getElementsByClassName("node", tree);
   for (i = 0; i < nodes.length; i++) {
-    Event.observe(nodes[i], "click", onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
-    Event.observe(nodes[i], "contextmenu", onFolderMenuClick.bindAsEventListener(nodes[i]));
+    Event.observe(nodes[i], "click",
+		  onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
+    Event.observe(nodes[i], "contextmenu",
+		  onFolderMenuClick.bindAsEventListener(nodes[i]));
     if (!inboxFound
 	&& nodes[i].parentNode.getAttribute("datatype") == "inbox") {
       openInbox(nodes[i]);
@@ -1164,6 +1141,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   menuDIV.setAttribute("id", prefix + "Submenu");
   var menu = document.createElement("ul");
   menuDIV.appendChild(menu);
+  document.body.appendChild(menuDIV);
 
   var callbacks = new Array();
   if (mailbox.type != "account") {
@@ -1183,11 +1161,8 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     menu.appendChild(newNode);
     if (child.children.length > 0) {
       var newPrefix = prefix + submenuCount;
-      var newSubmenu = generateMenuForMailbox(child,
-					      newPrefix,
-					      callback);
-      document.body.appendChild(newSubmenu);
-      callbacks.push(newPrefix + "Submenu");
+      var newSubmenuId = generateMenuForMailbox(child, newPrefix, callback);
+      callbacks.push(newSubmenuId);
       submenuCount++;
     }
     else {
@@ -1197,7 +1172,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   }
   initMenu(menuDIV, callbacks);
 
-  return menuDIV;
+  return menuDIV.getAttribute("id");
 }
 
 function updateMailboxMenus() {
@@ -1224,10 +1199,9 @@ function updateMailboxMenus() {
       var menuEntry = mailboxMenuNode("account", mailAccounts[i]);
       menu.appendChild(menuEntry);
       var mailbox = accounts[mailAccounts[i]];
-      var newSubmenu = generateMenuForMailbox(mailbox,
+      var newSubmenuId = generateMenuForMailbox(mailbox,
 					      key, mailboxActions[key]);
-      document.body.appendChild(newSubmenu);
-      submenuIds.push(newSubmenu.getAttribute("id"));
+      submenuIds.push(newSubmenuId);
     }
     initMenu(menuDIV, submenuIds);
   }
@@ -1346,6 +1320,34 @@ function onMenuEmptyTrash(event) {
     deleteCachedMessage(folderID + "/" + msgID);
 }
 
+function _onMenuChangeToXXXFolder(event, folder) {
+  var type = document.menuTarget.getAttribute("datatype");
+  if (type == "additional")
+    window.alert(labels["You need to choose a non-virtual folder!"]);
+  else {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var number = folderID.split("/").length;
+    if (number > 3)
+      window.alert(labels["You need to choose a root subfolder!"]);
+    else {
+      var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
+      triggerAjaxRequest(urlstr, folderOperationCallback);
+    }
+  }
+}
+
+function onMenuChangeToDraftsFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Drafts");
+}
+
+function onMenuChangeToSentFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Sent");
+}
+
+function onMenuChangeToTrashFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Trash");
+}
+
 function folderOperationCallback(http) {
   if (http.readyState == 4
       && isHttpStatus204(http.status))
@@ -1381,7 +1383,9 @@ function getMenus() {
 				       onMenuCreateFolder,
 				       onMenuRenameFolder,
 				       onMenuExpungeFolder,
-				       onMenuDeleteFolder, "-", null,
+				       onMenuDeleteFolder,
+				       "folderTypeMenu",
+				       "-", null,
 				       onMenuSharing);
   menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
   menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",
@@ -1403,6 +1407,10 @@ function getMenus() {
 					  null, onMenuViewMessageSource,
 					  null, onPrintCurrentMessage,
 					  onMenuDeleteMessage);
+  menus["folderTypeMenu"] = new Array(onMenuChangeToSentFolder,
+				      onMenuChangeToDraftsFolder,
+				      onMenuChangeToTrashFolder);
+  
   menus["label-menu"] = new Array(null, "-", null , null, null, null , null,
 				  null);
   menus["mark-menu"] = new Array(null, null, null, null, "-", null, "-",

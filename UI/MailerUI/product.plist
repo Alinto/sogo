@@ -140,6 +140,21 @@
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "deleteFolder";
 	};
+	setAsDraftsFolder = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "setAsDraftsFolder";
+	};
+	setAsSentFolder = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "setAsSentFolder";
+	};
+	setAsTrashFolder = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailFolderActions";
+	  actionName = "setAsTrashFolder";
+	};
 	userRights = {
 	  protectedBy = "ReadAcls";
 	  pageName    = "UIxMailUserRightsEditor";

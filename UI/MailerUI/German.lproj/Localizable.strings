@@ -140,7 +140,13 @@
 "New Subfolder..." = "Neuer Unterordner...";
 "Rename Folder..." = "Umbenennen...";
 "Delete Folder" = "Löschen";
+"Use This Folder For" = "Use This Folder For";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
+
+/* Use This Folder menu */
+"Sent Messages" = "Sent Messages";
+"Drafts" = "Drafts";
+"Deleted Messages" = "Deleted Messages";
 
 /* Message list popup menu */
 "Open Message In New Window" = "In neuem Fenster õffnen";
@@ -189,3 +195,6 @@
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
+
+"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+"You need to choose a root subfolder!" = "You need to choose a root subfolder!";

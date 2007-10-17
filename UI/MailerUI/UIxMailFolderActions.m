@@ -24,8 +24,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGImap4/NGImap4Connection.h>
@@ -35,6 +37,7 @@
 #import <SoObjects/Mailer/SOGoTrashFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -170,6 +173,55 @@
     response = [self responseWith204];
 
   return response;
+}
+
+- (WOResponse *) _setFolderPurpose: (NSString *) purpose
+{
+  SOGoMailFolder *co;
+  WOResponse *response;
+  NSUserDefaults *ud;
+  NSMutableDictionary *mailSettings;
+
+  co = [self clientObject];
+  if ([NSStringFromClass ([co class]) isEqualToString: @"SOGoMailFolder"])
+    {
+      ud = [[context activeUser] userSettings];
+      mailSettings = [ud objectForKey: @"Mail"];
+      if (!mailSettings)
+	{
+	  mailSettings = [NSMutableDictionary new];
+	  [mailSettings autorelease];
+	}
+      [ud setObject: mailSettings forKey: @"Mail"];
+      [mailSettings setObject: [co relativeImap4Name]
+		    forKey: [NSString stringWithFormat: @"%@Folder",
+				      purpose]];
+      [ud synchronize];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response
+	appendContentString: @"Unable to change the purpose of this folder."];
+    }
+
+  return response;
+}
+
+- (WOResponse *) setAsDraftsFolderAction
+{
+  return [self _setFolderPurpose: @"Drafts"];
+}
+
+- (WOResponse *) setAsSentFolderAction
+{
+  return [self _setFolderPurpose: @"Sent"];
+}
+
+- (WOResponse *) setAsTrashFolderAction
+{
+  return [self _setFolderPurpose: @"Trash"];
 }
 
 - (WOResponse *) expungeAction 

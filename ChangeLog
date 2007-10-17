@@ -1,5 +1,16 @@
 2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -draftsFolderNameInContext:_ctx])
+	([SOGoMailAccount -sentFolderNameInContext:])
+	([SOGoMailAccount -trashFolderNameInContext:]): modified to take
+	the user settings into account.
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -setAsDraftsFolderAction])
+	([UIxMailFolderActions -setAsSentFolderAction])
+	([UIxMailFolderActions -setAsTrashFolderAction]): new web methods
+	that change the purpose of the active folder to "Sent", "Drafts"
+	or "Trash".
+
 	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -subject]): 
 	returns the subject as quoted-printable.
 
