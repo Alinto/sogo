@@ -624,9 +624,6 @@ function onBodyClickMenuHandler(event) {
 function hideMenu(menuNode) {
   var onHide;
 
-//   log ("hideMenu called");
-//   log(backtrace());
-
   if (menuNode.submenu) {
     hideMenu(menuNode.submenu);
     menuNode.submenu = null;
@@ -779,16 +776,14 @@ function popupSubmenu(event) {
 		     + this.offsetTop);
       var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
       if (window.innerWidth
-	  < (menuLeft + submenuNode.offsetWidth
-	     + parentNode.cascadeLeftOffset()))
-	menuLeft = - submenuNode.offsetWidth + 3;
+	  < (menuLeft + submenuNode.offsetWidth))
+	menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
 
       Event.observe(this, "mousemove", onMouseEnteredSubmenu);
       Event.observe(submenuNode, "mousemove", onMouseEnteredSubmenu);
       Event.observe(this, "mouseout", onMouseLeftSubmenu);
       Event.observe(submenuNode, "mouseout", onMouseLeftSubmenu);
       this.setAttribute('class', 'submenu-selected');
-
       submenuNode.setStyle({ top: menuTop + "px",
 			     left: menuLeft + "px",
 			     visibility: "visible" });
@@ -807,17 +802,16 @@ function onMouseLeftSubmenu(event) {
     if (menuNode.menuTimeout)
       window.clearTimeout(menuNode.menuTimeout);
     menuNode.menuTimeout = setTimeout('onMenuTimeout("'
-				      + menuNode.getAttribute("id")
-				      + '");', 100);
+				      + this.submenu
+				      + '");', 50);
   }
 }
 
 function onMenuTimeout(menuNodeId) {
   var menuNode = $(menuNodeId);
   menuNode.menuTimeout = null;
-//   log ("onMenuTimeout... menu: " + menuNode.mouseInside
-//        + "; item: " + menuNode.parentMenuItem.mouseInside);
-  if (!(menuNode.mouseInside || menuNode.parentMenuItem.mouseInside))
+  if (!(menuNode.mouseInside
+	|| (menuNode.parentMenuItem && menuNode.parentMenuItem.mouseInside)))
     hideMenu(menuNode);
 }
 
