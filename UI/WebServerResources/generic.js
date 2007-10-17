@@ -774,6 +774,9 @@ function popupSubmenu(event) {
 
       var menuTop = (parentNode.offsetTop - 2
 		     + this.offsetTop);
+      if (window.innerHeight
+	  < (menuTop + submenuNode.offsetHeight))
+	menuTop = window.innerHeight - submenuNode.offsetHeight - 3;
       var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
       if (window.innerWidth
 	  < (menuLeft + submenuNode.offsetWidth))
