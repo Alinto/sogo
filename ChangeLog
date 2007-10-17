@@ -36,7 +36,6 @@
 	* Fixed the sending of advisory emails upon
 	  ACL changes on folders.
 
-
 2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m
