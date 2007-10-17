@@ -20,8 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#warning WE LEAK IVARS LIKE CRAZY HERE
-
 #include <math.h>
 
 #import <NGObjWeb/SoObject.h>
@@ -60,7 +58,10 @@
 
 - (void) dealloc
 {
-  RELEASE(repeat);
+  [item release];
+  [repeat release];
+  [aptStartDate release];
+  [aptEndDate release];
   [super dealloc];
 }
 
@@ -142,14 +143,12 @@
   else
     text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
 
-  NSLog(@"itemRepeatText: %@", text);
-
   return text;
 }
 
 - (void) setItem: (NSString *) newItem
 {
-  item = newItem;
+  ASSIGN (item, newItem);
 }
 
 - (NSString *) item
@@ -196,6 +195,15 @@
 //   return reminder;
 // }
 
+- (NSString *) reminder
+{
+  return @"";
+}
+
+- (void) setReminder: (NSString *) newReminder
+{
+}
+
 - (NSString *) itemReminderText
 {
   NSString *text;
@@ -215,16 +223,7 @@
 
 - (void) setRepeat: (NSString *) newRepeat
 {
-  ASSIGN(repeat, newRepeat);
-}
-
-- (NSString *) reminder
-{
-  return @"";
-}
-
-- (void) setReminder: (NSString *) newReminder
-{
+  ASSIGN (repeat, newRepeat);
 }
 
 /* actions */
@@ -262,6 +261,7 @@
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
   unsigned int minutes;
+  iCalRecurrenceRule *rule;
 
   event = (iCalEvent *) [[self clientObject] component: NO];
   if (event)
@@ -292,29 +292,37 @@
   // We initialize our repeat ivars
   if ([event hasRecurrenceRules])
     {
-      iCalRecurrenceRule *rule;
-      
       repeat = @"CUSTOM";
 
       rule = [[event recurrenceRules] lastObject];
 
       if ([rule frequency] == iCalRecurrenceFrequenceWeekly)
 	{
-	  if ([rule repeatInterval] == 1) repeat = @"WEEKLY";
-	  else if ([rule repeatInterval] == 2) repeat = @"BI-WEEKLY";
+	  if ([rule repeatInterval] == 1)
+	    repeat = @"WEEKLY";
+	  else if ([rule repeatInterval] == 2)
+	    repeat = @"BI-WEEKLY";
 	}
       else if ([rule frequency] == iCalRecurrenceFrequenceDaily)
 	{
-	  if ([rule byDayMask] == (iCalWeekDayMonday|iCalWeekDayTuesday|iCalWeekDayWednesday|iCalWeekDayThursday|iCalWeekDayFriday)) repeat = @"EVERY WEEKDAY";
-	  else if (![rule byDayMask]) repeat = @"DAILY";
+	  if ([rule byDayMask] == (iCalWeekDayMonday
+				   | iCalWeekDayTuesday
+				   | iCalWeekDayWednesday
+				   | iCalWeekDayThursday
+				   | iCalWeekDayFriday))
+	    repeat = @"EVERY WEEKDAY";
+	  else if (![rule byDayMask])
+	    repeat = @"DAILY";
 	}
-      else if ([rule frequency] == iCalRecurrenceFrequenceMonthly && [rule repeatInterval] == 1) repeat = @"MONTHLY";
-      else if ([rule frequency] == iCalRecurrenceFrequenceYearly && [rule repeatInterval] == 1) repeat = @"YEARLY";
+      else if ([rule frequency] == iCalRecurrenceFrequenceMonthly
+	       && [rule repeatInterval] == 1)
+	repeat = @"MONTHLY";
+      else if ([rule frequency] == iCalRecurrenceFrequenceYearly
+	       && [rule repeatInterval] == 1)
+	repeat = @"YEARLY";
     }
   else
-    {
-      DESTROY(repeat);
-    }
+    DESTROY(repeat);
 
   return self;
 }
@@ -373,6 +381,7 @@
 {
   SOGoAppointmentObject *clientObject;
   int nbrDays;
+  iCalRecurrenceRule *rule;
 
   clientObject = [self clientObject];
   event = (iCalEvent *) [clientObject component: YES];
@@ -396,15 +405,13 @@
 
   // We remove any repeat rules
   if (!repeat && [event hasRecurrenceRules])
+    [event removeAllRecurrenceRules];
+  else if (!([repeat caseInsensitiveCompare: @"-"] == NSOrderedSame
+	     || [repeat caseInsensitiveCompare: @"CUSTOM"] == NSOrderedSame))
     {
-      [event removeAllRecurrenceRules];
-    }
-  else if (!([repeat caseInsensitiveCompare: @"-"] == NSOrderedSame || [repeat caseInsensitiveCompare: @"CUSTOM"] == NSOrderedSame))
-    {
-      iCalRecurrenceRule *rule;
+      rule = [iCalRecurrenceRule new];
 
-      rule = [[iCalRecurrenceRule alloc] init];
-
+      [rule setInterval: @"1"];
       if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
 	{
 	  [rule setFrequency: iCalRecurrenceFrequenceWeekly];
@@ -412,17 +419,18 @@
 	}
       else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
 	{
-	  [rule setByDayMask: (iCalWeekDayMonday|iCalWeekDayTuesday|iCalWeekDayWednesday|iCalWeekDayThursday|iCalWeekDayFriday)];
+	  [rule setByDayMask: (iCalWeekDayMonday
+			       |iCalWeekDayTuesday
+			       |iCalWeekDayWednesday
+			       |iCalWeekDayThursday
+			       |iCalWeekDayFriday)];
 	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
-	  [rule setInterval: @"1"];
 	}
       else
-	{
-	  [rule setFrequency: (iCalRecurrenceFrequency)[rule valueForFrequency: repeat]];
-	  [rule setInterval: @"1"];
-	}
+	[rule setFrequency:
+		(iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
       [event setRecurrenceRules: [NSArray arrayWithObject: rule]];
-      RELEASE(rule);
+      [rule release];
     }
 }
 

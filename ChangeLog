@@ -1,3 +1,8 @@
+2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-dealloc]): release item, aptStartDate and aptEndDate.
+
 2007-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
