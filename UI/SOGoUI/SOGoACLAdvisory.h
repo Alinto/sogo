@@ -47,22 +47,34 @@
 
 @end
 
-@interface SOGoACLEnglishAdditionAdvisory : SOGoACLAdvisory
+@interface SOGoACLAdditionAdvisory : SOGoACLAdvisory
+
+- (NSString *) aclMethod;
+
 @end
 
-@interface SOGoACLEnglishRemovalAdvisory : SOGoACLAdvisory
+@interface SOGoACLRemovalAdvisory : SOGoACLAdvisory
+
+- (NSString *) aclMethod;
+
 @end
 
-@interface SOGoACLFrenchAdditionAdvisory : SOGoACLAdvisory
+@interface SOGoACLEnglishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLFrenchRemovalAdvisory : SOGoACLAdvisory
+@interface SOGoACLFrenchAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLGermanAdditionAdvisory : SOGoACLAdvisory
+@interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLGermanRemovalAdvisory : SOGoACLAdvisory
+@interface SOGoACLEnglishRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLFrenchRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLGermanRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 #endif /* SOGOACLADVISORY_H */

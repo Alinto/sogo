@@ -1,5 +1,16 @@
 2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -subject]): 
+	returns the subject as quoted-printable.
+
+	* UI/SOGoUI/SOGoACLAdvisory.[hm]: added to intermediary classes:
+	SOGoACLAdditionAdvisory and SOGoACLRemovalAdvisory implementing
+	the "aclMethod" method for the subsequent language-dependent
+	subclasses.
+
+	* UI/SOGoUI/SOGoFolderAdvisory.m ([SOGoFolderAdvisory -subject]):
+	returns the subject as quoted-printable.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-dealloc]): release item, aptStartDate and aptEndDate.
 
