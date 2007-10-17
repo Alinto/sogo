@@ -573,7 +573,7 @@ function popupMenu(event, menuId, target) {
       hideMenu(document.currentPopupMenu);
 
    var popup = $(menuId);
-   var menuTop =  Event.pointerY(event);
+   var menuTop = Event.pointerY(event);
    var menuLeft = Event.pointerX(event);
    var heightDiff = (window.innerHeight
 		     - (menuTop + popup.offsetHeight));
@@ -624,6 +624,9 @@ function onBodyClickMenuHandler(event) {
 function hideMenu(menuNode) {
   var onHide;
 
+//   log ("hideMenu called");
+//   log(backtrace());
+
   if (menuNode.submenu) {
     hideMenu(menuNode.submenu);
     menuNode.submenu = null;
@@ -632,9 +635,12 @@ function hideMenu(menuNode) {
   menuNode.setStyle({ visibility: "hidden" });
   //   menuNode.hide();
   if (menuNode.parentMenuItem) {
+    Event.stopObserving(menuNode.parentMenuItem, "mousemove", onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode, "mousemove", onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode.parentMenuItem, "mouseout", onMouseLeftSubmenu);
+    Event.stopObserving(menuNode, "mouseout", onMouseLeftSubmenu);
     menuNode.parentMenuItem.setAttribute('class', 'submenu');
     menuNode.parentMenuItem = null;
-    Event.stopObserving(menuNode, 'mousemove', checkDropDown);
     menuNode.parentMenu.submenuItem = null;
     menuNode.parentMenu.submenu = null;
     menuNode.parentMenu = null;
@@ -758,59 +764,61 @@ function backtrace() {
    return str;
 }
 
-function dropDownSubmenu(event) {
-   var node = this;
+function popupSubmenu(event) {
    if (this.submenu && this.submenu != "") {
-      log ("submenu: " + this.submenu);
       var submenuNode = $(this.submenu);
-      var parentNode = getParentMenu(node);
+      var parentNode = getParentMenu(this);
       if (parentNode.submenu)
 	 hideMenu(parentNode.submenu);
-      submenuNode.parentMenuItem = node;
+      submenuNode.parentMenuItem = this;
       submenuNode.parentMenu = parentNode;
-      parentNode.submenuItem = node;
+      parentNode.submenuItem = this;
       parentNode.submenu = submenuNode;
-      
-      var menuTop = (node.offsetTop - 2);
-      
-      var heightDiff = (window.innerHeight
-			- (menuTop + submenuNode.offsetHeight));
-      if (heightDiff < 0)
-	 menuTop += heightDiff;
-      
-      var menuLeft = parentNode.offsetWidth - 3;
+
+      var menuTop = (parentNode.offsetTop - 2
+		     + this.offsetTop);
+      var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
       if (window.innerWidth
 	  < (menuLeft + submenuNode.offsetWidth
 	     + parentNode.cascadeLeftOffset()))
-	 menuLeft = - submenuNode.offsetWidth + 3;
-      
-      Event.observe(parentNode, "mousemove", checkDropDown);
-      node.setAttribute('class', 'submenu-selected');
+	menuLeft = - submenuNode.offsetWidth + 3;
+
+      Event.observe(this, "mousemove", onMouseEnteredSubmenu);
+      Event.observe(submenuNode, "mousemove", onMouseEnteredSubmenu);
+      Event.observe(this, "mouseout", onMouseLeftSubmenu);
+      Event.observe(submenuNode, "mouseout", onMouseLeftSubmenu);
+      this.setAttribute('class', 'submenu-selected');
+
       submenuNode.setStyle({ top: menuTop + "px",
-				     left: menuLeft + "px",
-				     visibility: "visible" });
+			     left: menuLeft + "px",
+			     visibility: "visible" });
+      preventDefault(event);
    }
 }
 
-function checkDropDown(event) {
-  var parentMenu = getParentMenu(event.target);
-  var submenuItem = parentMenu.submenuItem;
-  if (submenuItem) {
-    var menuX = event.clientX - parentMenu.cascadeLeftOffset();
-    var menuY = event.clientY - parentMenu.cascadeTopOffset();
-    var itemX = submenuItem.offsetLeft;
-    var itemY = submenuItem.offsetTop - 75;
+function onMouseEnteredSubmenu(event) {
+  this.mouseInside = true;
+}
 
-    if (menuX >= itemX
-        && menuX < itemX + submenuItem.offsetWidth
-        && (menuY < itemY
-            || menuY > (itemY + submenuItem.offsetHeight))) {
-      hideMenu(parentMenu.submenu);
-      parentMenu.submenu = null;
-      parentMenu.submenuItem = null;
-      Event.stopObserving(parentMenu, 'mousemove', checkDropDown);
-    }
+function onMouseLeftSubmenu(event) {
+  this.mouseInside = false;
+  if (this instanceof HTMLLIElement) {
+    var menuNode = $(this.submenu);
+    if (menuNode.menuTimeout)
+      window.clearTimeout(menuNode.menuTimeout);
+    menuNode.menuTimeout = setTimeout('onMenuTimeout("'
+				      + menuNode.getAttribute("id")
+				      + '");', 100);
   }
+}
+
+function onMenuTimeout(menuNodeId) {
+  var menuNode = $(menuNodeId);
+  menuNode.menuTimeout = null;
+//   log ("onMenuTimeout... menu: " + menuNode.mouseInside
+//        + "; item: " + menuNode.parentMenuItem.mouseInside);
+  if (!(menuNode.mouseInside || menuNode.parentMenuItem.mouseInside))
+    hideMenu(menuNode);
 }
 
 /* search field */
@@ -1141,7 +1149,7 @@ function initMenu(menuDIV, callbacks) {
 	    else {
 	       node.submenu = callback;
 	       node.addClassName("submenu");
-	       Event.observe(node, "mouseover", dropDownSubmenu);
+	       Event.observe(node, "mouseover", popupSubmenu);
 	    }
 	 }
 	 else
