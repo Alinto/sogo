@@ -1,6 +1,7 @@
 0.9.0-200710XX
 --------------
 - the user can now configure his folders as drafts, trash or sent folder;
+- added the ability the move and copy message across mail folders;
 
 0.9.0-200709XX
 --------------

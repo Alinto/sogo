@@ -181,6 +181,8 @@
 "Print..." = "Imprimer...";
 "Delete Message" = "Supprimer le message";
 
+"This Folder" = "Ce dossier-ci";
+
 /* Label popup menu */
 "None" = "Aucune";
 "Important" = "Important";
@@ -215,3 +217,8 @@
 
 "You need to choose a non-virtual folder!" = "Vous devez choisir un dossier non-virtuel.";
 "You need to choose a root subfolder!" = "Vous devez choisir un sous-dossier de la racine.";
+
+"Moving a message into its own folder is impossible!"
+= "Le déplacement d'un message dans son propre dossier est impossible.";
+"Copying a message into its own folder is impossible!"
+= "La copie d'un message dans son propre dossier est impossible.";

@@ -11,6 +11,8 @@ var currentMailboxType = "";
 var usersRightsWindowHeight = 320;
 var usersRightsWindowWidth = 400;
 
+var pageContent;
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
@@ -330,12 +332,34 @@ function onMailboxTreeItemClick(event) {
   Event.stop(event);
 }
 
-function onMailboxMenuMove() {
-  window.alert("unimplemented");
+function _onMailboxMenuAction(menuEntry, error, actionName) {
+  var targetMailbox = menuEntry.mailbox.fullName();
+
+  if (targetMailbox == currentMailbox)
+    window.alert(labels[error]);
+  else {
+    var message;
+    if (document.menuTarget instanceof HTMLDivElement)
+      message = currentMessages[currentMailbox];
+    else
+      message = document.menuTarget.getAttribute("id").substr(4);
+
+    var urlstr = (URLForFolderID(currentMailbox) + "/" + message
+		  + "/" + actionName + "?folder=" + targetMailbox);
+    triggerAjaxRequest(urlstr, folderRefreshCallback, currentMailbox);
+  }
 }
 
-function onMailboxMenuCopy() {
-  window.alert("unimplemented");
+function onMailboxMenuMove(event) {
+  _onMailboxMenuAction(this,
+		       "Moving a message into its own folder is impossible!",
+		       "move");
+}
+
+function onMailboxMenuCopy(event) {
+  _onMailboxMenuAction(this,
+		       "Copying a message into its own folder is impossible!",
+		       "copy");
 }
 
 function refreshMailbox() {
@@ -1141,13 +1165,13 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   menuDIV.setAttribute("id", prefix + "Submenu");
   var menu = document.createElement("ul");
   menuDIV.appendChild(menu);
-  document.body.appendChild(menuDIV);
+  pageContent.appendChild(menuDIV);
 
   var callbacks = new Array();
   if (mailbox.type != "account") {
     var newNode = document.createElement("li");
     newNode.mailbox = mailbox;
-    newNode.appendChild(document.createTextNode("coucou"));
+    newNode.appendChild(document.createTextNode(labels["This Folder"]));
     menu.appendChild(newNode);
     menu.appendChild(document.createElement("li"));
     callbacks.push(callback);
@@ -1186,14 +1210,15 @@ function updateMailboxMenus() {
       menuDIV.parentNode.removeChild(menuDIV);
 
     menuDIV = document.createElement("div");
-    document.body.appendChild(menuDIV);
+    pageContent = $("pageContent");
+    pageContent.appendChild(menuDIV);
 
     var menu = document.createElement("ul");
     menuDIV.appendChild(menu);
 
     $(menuDIV).addClassName("menu");
     menuDIV.setAttribute("id", menuId);
-      
+
     var submenuIds = new Array();
     for (var i = 0; i < mailAccounts.length; i++) {
       var menuEntry = mailboxMenuNode("account", mailAccounts[i]);
@@ -1439,6 +1464,18 @@ Mailbox.prototype.dump = function(indent) {
   for (var i = 0; i < this.children.length; i++) {
     this.children[i].dump(indent + 2);
   }
+}
+
+Mailbox.prototype.fullName = function() {
+  var fullName = "";
+
+  var currentFolder = this;
+  while (currentFolder.parentFolder) {
+    fullName = "/folder" + currentFolder.name + fullName;
+    currentFolder = currentFolder.parentFolder;
+  }
+
+  return "/" + currentFolder.name + fullName;
 }
 
 Mailbox.prototype.findMailboxByName = function(name) {

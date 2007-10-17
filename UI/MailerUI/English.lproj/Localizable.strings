@@ -180,6 +180,8 @@
 "Print..." = "Print...";
 "Delete Message" = "Delete Message";
 
+"This Folder" = "This Folder";
+
 /* Label popup menu */
 "None" = "None";
 "Important" = "Important";
@@ -214,3 +216,8 @@
 
 "You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
 "You need to choose a root subfolder!" = "You need to choose a root subfolder!";
+
+"Moving a message into its own folder is impossible!"
+= "Moving a message into its own folder is impossible!";
+"Copying a message into its own folder is impossible!"
+= "Copying a message into its own folder is impossible!";

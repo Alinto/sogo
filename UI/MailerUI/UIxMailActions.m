@@ -104,10 +104,30 @@
   NSString *destinationFolder;
   id response;
 
-  destinationFolder = [[context request] formValueForKey: @"tofolder"];
+  destinationFolder = [[context request] formValueForKey: @"folder"];
   if ([destinationFolder length] > 0)
     {
       response = [[self clientObject] moveToFolderNamed: destinationFolder
+				      inContext: context];
+      if (!response)
+	response = [self responseWith204];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+			    reason: @"No destination folder given"];
+
+  return response;
+}
+
+- (id) copyAction
+{
+  NSString *destinationFolder;
+  id response;
+
+  destinationFolder = [[context request] formValueForKey: @"folder"];
+  if ([destinationFolder length] > 0)
+    {
+      response = [[self clientObject] copyToFolderNamed: destinationFolder
 				      inContext: context];
       if (!response)
 	response = [self responseWith204];

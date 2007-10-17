@@ -210,6 +210,11 @@
 	  actionClass = "UIxMailActions";
 	  actionName  = "move";
 	};
+	copy = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "copy";
+	};
 	trash = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailActions";

@@ -89,6 +89,8 @@
 
 - (BOOL)isDeletionAllowed;
 - (NSException *) trashInContext:(id)_ctx;
+- (NSException *) copyToFolderNamed: (NSString *) folderName
+                          inContext: (id)_ctx;
 - (NSException *) moveToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx;
 

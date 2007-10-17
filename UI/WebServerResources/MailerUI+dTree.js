@@ -24,14 +24,7 @@ var MailerUIdTreeExtension = {
    },
    _addFolder: function (parent, folder) {
       var thisCounter = this.elementCounter;
-      var fullName = "";
-      var currentFolder = folder;
-      while (currentFolder.parentFolder) {
-	 fullName = "/folder" + currentFolder.name + fullName;
-	 currentFolder = currentFolder.parentFolder;
-      }
-      fullName = "/" + currentFolder.name + fullName;
-      this._addFolderNode(parent, folder.name, fullName, folder.type);
+      this._addFolderNode(parent, folder.name, folder.fullName(), folder.type);
       for (var i = 0; i < folder.children.length; i++)
       this._addFolder(thisCounter, folder.children[i]);
    },
