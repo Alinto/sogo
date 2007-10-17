@@ -113,7 +113,7 @@ UL#attachments LI
 UL#attachments LI IMG
 { vertical-align: bottom; }
 
-DIV.pageContent TEXTAREA
+#pageContent TEXTAREA
 { position: absolute;
   left: 0em;
   right: 0em;

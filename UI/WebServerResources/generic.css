@@ -33,7 +33,7 @@ IMG#progressIndicator
   margin-top: 1.5em;
   margin-right: 1em; }
 
-DIV.pageContent
+DIV#pageContent
 { /* position: absolute;
   background-color: #ffa;
   top: 3em;
