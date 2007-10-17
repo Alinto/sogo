@@ -443,6 +443,7 @@ function openMailboxAtIndex(event) {
 }
 
 function messageListCallback(http) {
+  var div = $('mailboxContent');
   var table = $('messageList');
   
   if (http.readyState == 4
@@ -460,7 +461,6 @@ function messageListCallback(http) {
     }
     else {
       // Add table
-      var div = $('mailboxContent');
       div.update(http.responseText);
       table = $('messageList');
       configureMessageListEvents(table);
@@ -471,11 +471,15 @@ function messageListCallback(http) {
     var selected = http.callbackData;
     if (selected) {
       var row = $("row_" + selected);
-      if (row)
+      if (row) {
 	row.select();
+	div.scrollTop = row.rowIndex * row.getHeight(); // scroll to selected message
+      }
       else
 	$("messageContent").update();
     }
+    else
+      div.scrollTop = 0;
     
     if (sorting["attribute"] && sorting["attribute"].length > 0) {
       var sortHeader = $(sorting["attribute"] + "Header");
