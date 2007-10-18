@@ -57,6 +57,27 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 @end
 
+@implementation SoUser (SOGoExtension)
+
+- (NSString *) language
+{
+  NSArray *bLanguages;
+  WOContext *context;
+  NSString *language;
+
+  context = [[WOApplication application] context];
+  bLanguages = [[context request] browserLanguages];
+  if ([bLanguages count] > 0)
+    language = [bLanguages objectAtIndex: 0];
+
+  if (![language length])
+    language = defaultLanguage;
+
+  return language;
+}
+
+@end
+
 @implementation SOGoUser
 
 + (void) initialize

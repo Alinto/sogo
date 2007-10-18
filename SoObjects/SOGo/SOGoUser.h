@@ -48,6 +48,12 @@ extern NSString *SOGoWeekStartJanuary1;
 extern NSString *SOGoWeekStartFirst4DayWeek;
 extern NSString *SOGoWeekStartFirstFullWeek;
 
+@interface SoUser (SOGoExtension)
+
+- (NSString *) language;
+
+@end
+
 @interface SOGoUser : SoUser
 {
   NSString *currentPassword;
