@@ -54,7 +54,7 @@ function openAddressbook(sender) {
   urlstr = ApplicationBaseURL + "/../Contacts/?popup=YES";
   var w = window.open(urlstr, "Addressbook",
 		      "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
-		      + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
+		      + "location=no,directories=0,status=0,menubar=0,copyhistory=0");
   w.focus();
 
   return false;
@@ -339,7 +339,7 @@ function _onMailboxMenuAction(menuEntry, error, actionName) {
     window.alert(labels[error]);
   else {
     var message;
-    if (document.menuTarget instanceof HTMLDivElement)
+    if (document.menuTarget.tagName == "DIV")
       message = currentMessages[currentMailbox];
     else
       message = document.menuTarget.getAttribute("id").substr(4);

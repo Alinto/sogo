@@ -990,7 +990,7 @@ function selectYearInMenu(menu, month) {
   var entries = menu.childNodes[1].childNodes;
   for (i = 0; i < entries.length; i++) {
     var entry = entries[i];
-    if (entry instanceof HTMLLIElement) {
+    if (entry.tagName == "LI") {
       var entryMonth = entry.innerHTML;
       if (entryMonth == month)
         entry.addClassName("currentMonth");
