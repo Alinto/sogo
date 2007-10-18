@@ -99,8 +99,8 @@ function showCoords(node) {
   node = $("givenName");
   window.alert("x: " + node.cascadeLeftOffset()
                + ";y: " + node.cascadeTopOffset()
-               + ";width: " + window.innerWidth
-               + ";height: " + window.innerHeight);
+               + ";width: " + window.width()
+               + ";height: " + window.height());
 }
 
 function onFnKeyDown() {

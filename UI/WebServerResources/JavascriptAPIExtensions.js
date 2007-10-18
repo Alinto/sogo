@@ -351,3 +351,21 @@ String.prototype.cssSafeString = function() {
 
   return newString;
 }
+
+window.width = function() {
+  if (window.innerWidth)
+    return window.innerWidth;
+  else if (document.body && document.body.offsetWidth)
+    return document.body.offsetWidth;
+  else
+    return 0;
+}
+
+window.height = function() {
+  if (window.innerHeight)
+    return window.innerHeight;
+  else if (document.body && document.body.offsetHeight)
+    return document.body.offsetHeight;
+  else
+    return 0;
+}

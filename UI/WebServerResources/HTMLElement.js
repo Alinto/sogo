@@ -127,12 +127,12 @@ Element.addMethods({
     
     var menuTop = Event.pointerY(event);
     var menuLeft = Event.pointerX(event);
-    var heightDiff = (window.innerHeight
+    var heightDiff = (window.height()
 		      - (menuTop + popup.offsetHeight));
     if (heightDiff < 0)
       menuTop += heightDiff;
     
-    var leftDiff = (window.innerWidth
+    var leftDiff = (window.width()
 		    - (menuLeft + popup.offsetWidth));
     if (leftDiff < 0)
       menuLeft -= popup.offsetWidth;
@@ -148,7 +148,8 @@ Element.addMethods({
   attachMenu: function(element, menuName) {
     element = $(element);
     element.sogoContextMenu = $(menuName);
-    Event.observe(element, "contextmenu", element.onContextMenu.bindAsEventListener(element));
+    Event.observe(element, "contextmenu",
+		  element.onContextMenu.bindAsEventListener(element));
   },
 
   select: function(element) {

@@ -305,12 +305,11 @@ function onWindowResize(event) {
   var attachmentswidth = 0;
   if (attachmentsarea.style.display)
     attachmentswidth = attachmentsarea.getWidth();
-  var windowwidth = (typeof self.innerWidth == "number" ? self.innerWidth : document.body.clientWidth);
   var subjectfield = $(document).getElementsByClassName('headerField', $('subjectRow'))[0];
   var subjectinput = $(document).getElementsByClassName('textField', $('subjectRow'))[0];
 
   // Resize subject field
-  subjectinput.setStyle({ width: (windowwidth
+  subjectinput.setStyle({ width: (window.width()
 				  - $(subjectfield).getWidth()
 				  - attachmentswidth
 				  - 4 - 30
@@ -319,7 +318,7 @@ function onWindowResize(event) {
   // Resize address fields
   var addresslist = $('addressList');
   var firstselect = document.getElementsByClassName('headerField', addresslist)[0];
-  var inputwidth = windowwidth - $(firstselect).getWidth() - attachmentswidth - 24 - 30;
+  var inputwidth = $(this).width - $(firstselect).getWidth() - attachmentswidth - 24 - 30;
   var addresses = document.getElementsByClassName('textField', addresslist);
   for (var i = 0; i < addresses.length; i++) {
     addresses[i].setStyle({ width: inputwidth + 'px' });
