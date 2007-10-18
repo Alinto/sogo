@@ -108,26 +108,26 @@ function getElementsByClassName2(_tag, _class, _scope) {
 
 function createElement(tagName, id, classes, attributes, htmlAttributes,
 		       parentNode) {
-   var newElement = $(document.createElement(tagName));
-   if (id)
-      newElement.setAttribute("id", id);
-   if (classes) {
-      if (typeof(classes) == "string")
-	 newElement.addClassName(classes);
-      else
-	 for (var i = 0; i < classes.length; i++)
-	    newElement.addClassName(classes[i]);
-   }
-   if (attributes)
-      for (var i in attributes)
-	 newElement[i] = attributes[i];
-   if (htmlAttributes)
-      for (var i in htmlAttributes)
-	 newElement.setAttribute(i, htmlAttributes[i]);
-   if (parentNode)
-      parentNode.appendChild(newElement);
+  var newElement = $(document.createElement(tagName));
+  if (id)
+    newElement.setAttribute("id", id);
+  if (classes) {
+    if (typeof(classes) == "string")
+      newElement.addClassName(classes);
+    else
+      for (var i = 0; i < classes.length; i++)
+	newElement.addClassName(classes[i]);
+  }
+  if (attributes)
+    for (var i in attributes)
+      newElement[i] = attributes[i];
+  if (htmlAttributes)
+    for (var i in htmlAttributes)
+      newElement.setAttribute(i, htmlAttributes[i]);
+  if (parentNode)
+    parentNode.appendChild(newElement);
 
-   return $(newElement);
+  return $(newElement);
 }
 
 function ml_stripActionInURL(url) {
@@ -143,21 +143,21 @@ function ml_stripActionInURL(url) {
 }
 
 function URLForFolderID(folderID) {
-   var folderInfos = folderID.split(":");
-   var url;
-   if (folderInfos.length > 1) {
-      url = UserFolderURL + "../" + folderInfos[0];
-      if (!folderInfos[1].startsWith('/'))
-        url += '/';
-      url += folderInfos[1];
-   }
-   else
-      url = ApplicationBaseURL + folderInfos[0];
+  var folderInfos = folderID.split(":");
+  var url;
+  if (folderInfos.length > 1) {
+    url = UserFolderURL + "../" + folderInfos[0];
+    if (!folderInfos[1].startsWith('/'))
+      url += '/';
+    url += folderInfos[1];
+  }
+  else
+    url = ApplicationBaseURL + folderInfos[0];
    
-   if (url[url.length-1] == '/')
-      url = url.substr(0, url.length-1);
+  if (url[url.length-1] == '/')
+    url = url.substr(0, url.length-1);
 
-   return url;
+  return url;
 }
 
 function extractEmailAddress(mailTo) {
@@ -176,49 +176,49 @@ function extractEmailAddress(mailTo) {
 function extractEmailName(mailTo) {
   var emailName = "";
 
-   var tmpMailTo = mailTo.replace("&lt;", "<");
-   tmpMailTo = tmpMailTo.replace("&gt;", ">");
+  var tmpMailTo = mailTo.replace("&lt;", "<");
+  tmpMailTo = tmpMailTo.replace("&gt;", ">");
 
-   var emailNamere = /([ 	]+)?(.+)\ </;
-   if (emailNamere.test(tmpMailTo)) {
-      emailNamere.exec(tmpMailTo);
-      emailName = RegExp.$2;
-   }
+  var emailNamere = /([ 	]+)?(.+)\ </;
+  if (emailNamere.test(tmpMailTo)) {
+    emailNamere.exec(tmpMailTo);
+    emailName = RegExp.$2;
+  }
    
-   return emailName;
+  return emailName;
 }
 
 function sanitizeMailTo(dirtyMailTo) {
-   var emailName = extractEmailName(dirtyMailTo);
-   var email = "" + extractEmailAddress(dirtyMailTo);
+  var emailName = extractEmailName(dirtyMailTo);
+  var email = "" + extractEmailAddress(dirtyMailTo);
    
-   var mailto = "";
-   if (emailName && emailName.length > 0)
-      mailto = emailName + ' <' + email + '>';
-   else
-      mailto = email;
+  var mailto = "";
+  if (emailName && emailName.length > 0)
+    mailto = emailName + ' <' + email + '>';
+  else
+    mailto = email;
 
-   return mailto;
+  return mailto;
 }
 
 function openUserFolderSelector(callback, type) {
-   var urlstr = ApplicationBaseURL;
-   if (! urlstr.endsWith('/'))
-      urlstr += '/';
-   urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
-   var w = window.open(urlstr, "_blank",
-		       "width=322,height=250,resizable=1,scrollbars=0");
-   w.opener = window;
-   window.userFolderCallback = callback;
-   window.userFolderType = type;
-   w.focus();
+  var urlstr = ApplicationBaseURL;
+  if (! urlstr.endsWith('/'))
+    urlstr += '/';
+  urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
+  var w = window.open(urlstr, "_blank",
+		      "width=322,height=250,resizable=1,scrollbars=0,location=0");
+  w.opener = window;
+  window.userFolderCallback = callback;
+  window.userFolderType = type;
+  w.focus();
 }
 
 function openContactWindow(url, wId) {
   if (!wId)
     wId = "" + (new Date().getTime());
   var w = window.open(url, wId,
-		      "width=450,height=600,resizable=0");
+		      "width=450,height=600,resizable=0,location=0");
   w.focus();
 
   return w;
@@ -237,10 +237,10 @@ function openMailComposeWindow(url, wId) {
 }
 
 function openMailTo(senderMailTo) {
-   var mailto = sanitizeMailTo(senderMailTo);
-   if (mailto.length > 0)
-      openMailComposeWindow(ApplicationBaseURL
-			    + "/../Mail/compose?mailto=" + mailto);
+  var mailto = sanitizeMailTo(senderMailTo);
+  if (mailto.length > 0)
+    openMailComposeWindow(ApplicationBaseURL
+			  + "/../Mail/compose?mailto=" + mailto);
 
   return false; /* stop following the link */
 }
@@ -282,26 +282,26 @@ function triggerAjaxRequest(url, callback, userdata) {
     http.url = url;
     http.onreadystatechange
       = function() {
-        //log ("state changed (" + http.readyState + "): " + url);
-        try {
-          if (http.readyState == 4
-              && activeAjaxRequests > 0) {
-                if (!http.aborted) {
-                  http.callbackData = userdata;
-                  callback(http);
-                }
-                activeAjaxRequests -= 1;
-                checkAjaxRequestsState();
-              }
-        }
-        catch( e ) {
-          activeAjaxRequests -= 1;
-          checkAjaxRequestsState();
-          log("AJAX Request, Caught Exception: " + e.name);
-          log(e.message);
-	  log(backtrace());
-        }
-      };
+      //log ("state changed (" + http.readyState + "): " + url);
+      try {
+	if (http.readyState == 4
+	    && activeAjaxRequests > 0) {
+	  if (!http.aborted) {
+	    http.callbackData = userdata;
+	    callback(http);
+	  }
+	  activeAjaxRequests -= 1;
+	  checkAjaxRequestsState();
+	}
+      }
+      catch( e ) {
+	activeAjaxRequests -= 1;
+	checkAjaxRequestsState();
+	log("AJAX Request, Caught Exception: " + e.name);
+	log(e.message);
+	log(backtrace());
+      }
+    };
     http.send(null);
   }
   else {
@@ -396,7 +396,7 @@ function refreshOpener() {
 
 function parseQueryString() {
   var queryArray, queryDict
-  var key, value, s, idx;
+    var key, value, s, idx;
   queryDict.length = 0;
   
   queryDict  = new Array();
@@ -487,17 +487,17 @@ function isNodeSelected(node) {
 }
 
 function acceptMultiSelect(node) {
-   var response = false;
-   var attribute = node.getAttribute('multiselect');
-   if (attribute && attribute.length > 0) {
-      log("node '" + node.getAttribute("id")
-	  + "' is still using old-stylemultiselect!");
-      response = (attribute.toLowerCase() == 'yes');
-   }
-   else
-      response = node.multiselect;
+  var response = false;
+  var attribute = node.getAttribute('multiselect');
+  if (attribute && attribute.length > 0) {
+    log("node '" + node.getAttribute("id")
+	+ "' is still using old-stylemultiselect!");
+    response = (attribute.toLowerCase() == 'yes');
+  }
+  else
+    response = node.multiselect;
 
-   return response;
+  return response;
 }
 
 function onRowClick(event) {
@@ -567,33 +567,33 @@ function onRowClick(event) {
 // var acceptClick = false;
 
 function popupMenu(event, menuId, target) {
-   document.menuTarget = target;
+  document.menuTarget = target;
 
-   if (document.currentPopupMenu)
-      hideMenu(document.currentPopupMenu);
+  if (document.currentPopupMenu)
+    hideMenu(document.currentPopupMenu);
 
-   var popup = $(menuId);
-   var menuTop = Event.pointerY(event);
-   var menuLeft = Event.pointerX(event);
-   var heightDiff = (window.innerHeight
-		     - (menuTop + popup.offsetHeight));
-   if (heightDiff < 0)
-      menuTop += heightDiff;
+  var popup = $(menuId);
+  var menuTop = Event.pointerY(event);
+  var menuLeft = Event.pointerX(event);
+  var heightDiff = (window.height()
+		    - (menuTop + popup.offsetHeight));
+  if (heightDiff < 0)
+    menuTop += heightDiff;
   
-   var leftDiff = (window.innerWidth
-		   - (menuLeft + popup.offsetWidth));
-   if (leftDiff < 0)
-      menuLeft -= popup.offsetWidth;
+  var leftDiff = (window.width()
+		  - (menuLeft + popup.offsetWidth));
+  if (leftDiff < 0)
+    menuLeft -= popup.offsetWidth;
 
-   popup.setStyle({ top: menuTop + "px",
-		    left: menuLeft + "px",
-		    visibility: "visible" });
+  popup.setStyle({ top: menuTop + "px",
+	left: menuLeft + "px",
+	visibility: "visible" });
 
-   document.currentPopupMenu = popup;
+  document.currentPopupMenu = popup;
 
-   Event.observe(document.body, "click", onBodyClickMenuHandler);
+  Event.observe(document.body, "click", onBodyClickMenuHandler);
 
-   preventDefault(event);
+  preventDefault(event);
 }
 
 function getParentMenu(node) {
@@ -614,11 +614,11 @@ function getParentMenu(node) {
 }
 
 function onBodyClickMenuHandler(event) {
-   document.body.menuTarget = null;
-   hideMenu(document.currentPopupMenu);
-   Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
+  document.body.menuTarget = null;
+  hideMenu(document.currentPopupMenu);
+  Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
-   preventDefault(event);
+  preventDefault(event);
 }
 
 function hideMenu(menuNode) {
@@ -632,11 +632,15 @@ function hideMenu(menuNode) {
   menuNode.setStyle({ visibility: "hidden" });
   //   menuNode.hide();
   if (menuNode.parentMenuItem) {
-    Event.stopObserving(menuNode.parentMenuItem, "mousemove", onMouseEnteredSubmenu);
-    Event.stopObserving(menuNode, "mousemove", onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode.parentMenuItem, "mouseover",
+			onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode, "mouseover", onMouseEnteredSubmenu);
     Event.stopObserving(menuNode.parentMenuItem, "mouseout", onMouseLeftSubmenu);
     Event.stopObserving(menuNode, "mouseout", onMouseLeftSubmenu);
-    menuNode.parentMenuItem.setAttribute('class', 'submenu');
+    Event.stopObserving(menuNode.parentMenu, "mouseover",
+			onMouseEnteredParentMenu);
+    $(menuNode.parentMenuItem).removeClassName("submenu-selected");
+    menuNode.parentMenuItem.mouseInside = false;
     menuNode.parentMenuItem = null;
     menuNode.parentMenu.submenuItem = null;
     menuNode.parentMenu.submenu = null;
@@ -681,20 +685,20 @@ function parseQueryParameters(url) {
 }
 
 function initLogConsole() {
-    var logConsole = $("logConsole");
-    if (logConsole) {
-	logConsole.highlighted = false;
-	Event.observe(logConsole, "dblclick", onLogDblClick, false);
-	logConsole.innerHTML = "";
-	Event.observe(window, "keydown", onBodyKeyDown);
-    }
+  var logConsole = $("logConsole");
+  if (logConsole) {
+    logConsole.highlighted = false;
+    Event.observe(logConsole, "dblclick", onLogDblClick, false);
+    logConsole.innerHTML = "";
+    Event.observe(window, "keydown", onBodyKeyDown);
+  }
 }
 
 function onBodyKeyDown(event) {
-    if (event.keyCode == 27) {
-	toggleLogConsole();
-	preventDefault(event);
-    }
+  if (event.keyCode == 27) {
+    toggleLogConsole();
+    preventDefault(event);
+  }
 }
 
 function onLogDblClick(event) {
@@ -711,7 +715,7 @@ function toggleLogConsole(event) {
     logConsole.setStyle({ display: '' });
   }
   if (event)
-      preventDefault(event);
+    preventDefault(event);
 }
 
 function log(message) {
@@ -722,100 +726,95 @@ function log(message) {
   }
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole) {
-      logConsole.highlighted = !logConsole.highlighted;
-      if (message == '\c') {
-	logConsole.innerHTML = "";
-	return;
-      }
-      var logMessage = message.replace("<", "&lt;", "g");
-      logMessage = logMessage.replace(" ", "&nbsp;", "g");
-      logMessage = logMessage.replace("\r\n", "<br />\n", "g");
-      logMessage = logMessage.replace("\n", "<br />\n", "g");
-      logMessage += '<br />' + "\n";
-      if (logConsole.highlighted)
-	  logMessage = '<div class="highlighted">' + logMessage + '</div>';
-      logConsole.innerHTML += logMessage;
+    logConsole.highlighted = !logConsole.highlighted;
+    if (message == '\c') {
+      logConsole.innerHTML = "";
+      return;
+    }
+    var logMessage = message.replace("<", "&lt;", "g");
+    logMessage = logMessage.replace(" ", "&nbsp;", "g");
+    logMessage = logMessage.replace("\r\n", "<br />\n", "g");
+    logMessage = logMessage.replace("\n", "<br />\n", "g");
+    logMessage += '<br />' + "\n";
+    if (logConsole.highlighted)
+      logMessage = '<div class="highlighted">' + logMessage + '</div>';
+    logConsole.innerHTML += logMessage;
   }
 }
 
 function backtrace() {
-   var func = backtrace.caller;
-   var str = "backtrace:\n";
+  var func = backtrace.caller;
+  var str = "backtrace:\n";
 
-   while (func)
-   {
+  while (func)
+    {
       if (func.name)
-      {
-         str += "  " + func.name;
-         if (this)
+	{
+	  str += "  " + func.name;
+	  if (this)
             str += " (" + this + ")";
-      }
+	}
       else
-         str += "[anonymous]\n";
+	str += "[anonymous]\n";
 
       str += "\n";
       func = func.caller;
-   }
-   str += "--\n";
+    }
+  str += "--\n";
 
-   return str;
+  return str;
 }
 
 function popupSubmenu(event) {
-   if (this.submenu && this.submenu != "") {
-      var submenuNode = $(this.submenu);
-      var parentNode = getParentMenu(this);
-      if (parentNode.submenu)
-	 hideMenu(parentNode.submenu);
-      submenuNode.parentMenuItem = this;
-      submenuNode.parentMenu = parentNode;
-      parentNode.submenuItem = this;
-      parentNode.submenu = submenuNode;
+  if (this.submenu && this.submenu != "") {
+    var submenuNode = $(this.submenu);
+    var parentNode = getParentMenu(this);
+    if (parentNode.submenu)
+      hideMenu(parentNode.submenu);
+    submenuNode.parentMenuItem = this;
+    submenuNode.parentMenu = parentNode;
+    parentNode.submenuItem = this;
+    parentNode.submenu = submenuNode;
 
-      var menuTop = (parentNode.offsetTop - 2
-		     + this.offsetTop);
-      if (window.innerHeight
-	  < (menuTop + submenuNode.offsetHeight))
-	menuTop = window.innerHeight - submenuNode.offsetHeight - 3;
-      var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
-      if (window.innerWidth
-	  < (menuLeft + submenuNode.offsetWidth))
-	menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
+    var menuTop = (parentNode.offsetTop - 2
+		   + this.offsetTop);
+    if (window.height()
+	< (menuTop + submenuNode.offsetHeight))
+      menuTop = window.height() - submenuNode.offsetHeight - 3;
+    var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
+    if (window.width()
+	< (menuLeft + submenuNode.offsetWidth))
+      menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
 
-      Event.observe(this, "mousemove", onMouseEnteredSubmenu);
-      Event.observe(submenuNode, "mousemove", onMouseEnteredSubmenu);
-      Event.observe(this, "mouseout", onMouseLeftSubmenu);
-      Event.observe(submenuNode, "mouseout", onMouseLeftSubmenu);
-      this.setAttribute('class', 'submenu-selected');
-      submenuNode.setStyle({ top: menuTop + "px",
-			     left: menuLeft + "px",
-			     visibility: "visible" });
-      preventDefault(event);
-   }
-}
-
-function onMouseEnteredSubmenu(event) {
-  this.mouseInside = true;
-}
-
-function onMouseLeftSubmenu(event) {
-  this.mouseInside = false;
-  if (this instanceof HTMLLIElement) {
-    var menuNode = $(this.submenu);
-    if (menuNode.menuTimeout)
-      window.clearTimeout(menuNode.menuTimeout);
-    menuNode.menuTimeout = setTimeout('onMenuTimeout("'
-				      + this.submenu
-				      + '");', 50);
+    this.mouseInside = true;
+    Event.observe(this, "mouseover",
+		  onMouseEnteredSubmenu.bindAsEventListener(this));
+    Event.observe(submenuNode, "mouseover",
+		  onMouseEnteredSubmenu.bindAsEventListener(submenuNode));
+    Event.observe(this, "mouseout", onMouseLeftSubmenu.bindAsEventListener(this));
+    Event.observe(submenuNode, "mouseout",
+		  onMouseLeftSubmenu.bindAsEventListener(submenuNode));
+    Event.observe(parentNode, "mouseover",
+		  onMouseEnteredParentMenu.bindAsEventListener(parentNode));
+    $(this).addClassName("submenu-selected");
+    submenuNode.setStyle({ top: menuTop + "px",
+	  left: menuLeft + "px",
+	  visibility: "visible" });
+    preventDefault(event);
   }
 }
 
-function onMenuTimeout(menuNodeId) {
-  var menuNode = $(menuNodeId);
-  menuNode.menuTimeout = null;
-  if (!(menuNode.mouseInside
-	|| (menuNode.parentMenuItem && menuNode.parentMenuItem.mouseInside)))
-    hideMenu(menuNode);
+function onMouseEnteredParentMenu(event) {
+  if (this.submenuItem && !this.submenuItem.mouseInside)
+    hideMenu(this.submenu);
+}
+
+function onMouseEnteredSubmenu(event) {
+  $(this).mouseInside = true;
+}
+
+function onMouseLeftSubmenu(event) {
+  $(this).mouseInside = false;
 }
 
 /* search field */
@@ -837,8 +836,8 @@ function popupSearchMenu(event) {
     var popup = $(menuId);
     offset = Position.positionedOffset(this);
     popup.setStyle({ top: this.offsetHeight + "px",
-	            left: (offset[0] + 3) + "px",
-			    visibility: "visible" });
+	  left: (offset[0] + 3) + "px",
+	  visibility: "visible" });
   
     document.currentPopupMenu = popup;
     Event.observe(document.body, "click", onBodyClickMenuHandler);
@@ -872,39 +871,39 @@ function onSearchChange() {
 }
 
 function configureSearchField() {
-   var searchValue = $("searchValue");
-   var searchOptions = $("searchOptions");
+  var searchValue = $("searchValue");
+  var searchOptions = $("searchOptions");
 
-   if (!searchValue) return;
+  if (!searchValue) return;
 
-   Event.observe(searchValue, "mousedown",
-		 onSearchMouseDown.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "click",
-		 popupSearchMenu.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "blur",
-		 onSearchBlur.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "focus",
-		 onSearchFocus.bindAsEventListener(searchValue));
-   Event.observe(searchValue, "keydown",
-		 onSearchKeyDown.bindAsEventListener(searchValue));
+  Event.observe(searchValue, "mousedown",
+		onSearchMouseDown.bindAsEventListener(searchValue));
+  Event.observe(searchValue, "click",
+		popupSearchMenu.bindAsEventListener(searchValue));
+  Event.observe(searchValue, "blur",
+		onSearchBlur.bindAsEventListener(searchValue));
+  Event.observe(searchValue, "focus",
+		onSearchFocus.bindAsEventListener(searchValue));
+  Event.observe(searchValue, "keydown",
+		onSearchKeyDown.bindAsEventListener(searchValue));
 
-   if (!searchOptions) return;
+  if (!searchOptions) return;
    
-   // Set the checkmark to the first option
-   var firstOption = searchOptions.down('li');
-   firstOption.addClassName("_chosen");
-   searchOptions.chosenNode = firstOption;
+  // Set the checkmark to the first option
+  var firstOption = searchOptions.down('li');
+  firstOption.addClassName("_chosen");
+  searchOptions.chosenNode = firstOption;
 }
 
 function onSearchMouseDown(event) {
-   var superNode = this.parentNode.parentNode.parentNode;
-   relX = (Event.pointerX(event) - superNode.offsetLeft - this.offsetLeft);
-   relY = (Event.pointerY(event) - superNode.offsetTop - this.offsetTop);
+  var superNode = this.parentNode.parentNode.parentNode;
+  relX = (Event.pointerX(event) - superNode.offsetLeft - this.offsetLeft);
+  relY = (Event.pointerY(event) - superNode.offsetTop - this.offsetTop);
 
-   if (relY < 24) {
-      event.cancelBubble = true;
-      event.returnValue = false;
-   }
+  if (relY < 24) {
+    event.cancelBubble = true;
+    event.returnValue = false;
+  }
 }
 
 function onSearchFocus() {
@@ -920,9 +919,9 @@ function onSearchFocus() {
 }
 
 function onSearchBlur(event) {
-   var ghostPhrase = this.getAttribute("ghost-phrase");
+  var ghostPhrase = this.getAttribute("ghost-phrase");
 
-   if (!this.value) {
+  if (!this.value) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
     this.value = ghostPhrase;
@@ -944,16 +943,16 @@ function onSearchKeyDown(event) {
 }
 
 function onSearchFormSubmit(event) {
-   var searchValue = $("searchValue");
-   var searchCriteria = $("searchCriteria");
-   var ghostPhrase = searchValue.getAttribute('ghost-phrase');
+  var searchValue = $("searchValue");
+  var searchCriteria = $("searchCriteria");
+  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
    
-   if (searchValue.value == ghostPhrase) return;
+  if (searchValue.value == ghostPhrase) return;
 
-   search["criteria"] = searchCriteria.value;
-   search["value"] = searchValue.value;
+  search["criteria"] = searchCriteria.value;
+  search["value"] = searchValue.value;
 
-   refreshCurrentFolder();
+  refreshCurrentFolder();
 }
 
 function initCriteria() {
@@ -977,67 +976,67 @@ function initCriteria() {
 
 /* toolbar buttons */
 function popupToolbarMenu(node, menuId) {
-   if (document.currentPopupMenu)
-      hideMenu(document.currentPopupMenu);
+  if (document.currentPopupMenu)
+    hideMenu(document.currentPopupMenu);
 
-   var popup = $(menuId);
-   var top = ($(node).getStyle('top') || 0) + node.offsetHeight - 2;
-   popup.setStyle({ top: top + "px",
-	            left: $(node).cascadeLeftOffset() + "px",
-		    visibility: "visible" });
+  var popup = $(menuId);
+  var top = ($(node).getStyle('top') || 0) + node.offsetHeight - 2;
+  popup.setStyle({ top: top + "px",
+	left: $(node).cascadeLeftOffset() + "px",
+	visibility: "visible" });
 
-   document.currentPopupMenu = popup;
-   Event.observe(document.body, "click", onBodyClickMenuHandler);
+  document.currentPopupMenu = popup;
+  Event.observe(document.body, "click", onBodyClickMenuHandler);
 }
 
 /* contact selector */
 
 function folderSubscriptionCallback(http) {
-   if (http.readyState == 4) {
-      if (isHttpStatus204(http.status)) {
-	 if (http.callbackData)
-	    http.callbackData["method"](http.callbackData["data"]);
-      }
-      else
-	 window.alert(clabels["Unable to subscribe to that folder!"]);
-      document.subscriptionAjaxRequest = null;
-   }
-   else
-      log ("folderSubscriptionCallback Ajax error");
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      if (http.callbackData)
+	http.callbackData["method"](http.callbackData["data"]);
+    }
+    else
+      window.alert(clabels["Unable to subscribe to that folder!"]);
+    document.subscriptionAjaxRequest = null;
+  }
+  else
+    log ("folderSubscriptionCallback Ajax error");
 }
 
 function subscribeToFolder(refreshCallback, refreshCallbackData) {
-   var folderData = refreshCallbackData["folder"].split(":");
-   var username = folderData[0];
-   var folderPath = folderData[1];
-   if (username != UserLogin) {
-      var url = (UserFolderURL + "../" + username
-                 + folderPath + "/subscribe");
-      if (document.subscriptionAjaxRequest) {
-	 document.subscriptionAjaxRequest.aborted = true;
-	 document.subscriptionAjaxRequest.abort();
-      }
+  var folderData = refreshCallbackData["folder"].split(":");
+  var username = folderData[0];
+  var folderPath = folderData[1];
+  if (username != UserLogin) {
+    var url = (UserFolderURL + "../" + username
+	       + folderPath + "/subscribe");
+    if (document.subscriptionAjaxRequest) {
+      document.subscriptionAjaxRequest.aborted = true;
+      document.subscriptionAjaxRequest.abort();
+    }
 
-      var rfCbData = { method: refreshCallback, data: refreshCallbackData };
-      document.subscriptionAjaxRequest = triggerAjaxRequest(url,
-							    folderSubscriptionCallback,
-							    rfCbData);
-   }
-   else
-      refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
-		   );
+    var rfCbData = { method: refreshCallback, data: refreshCallbackData };
+    document.subscriptionAjaxRequest = triggerAjaxRequest(url,
+							  folderSubscriptionCallback,
+							  rfCbData);
+  }
+  else
+    refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
+					);
 }
 
 function folderUnsubscriptionCallback(http) {
-   if (http.readyState == 4) {
-      if (isHttpStatus204(http.status)) {
-	 if (http.callbackData)
-	    http.callbackData["method"](http.callbackData["data"]);
-      }
-      else
-	 window.alert(clabels["Unable to unsubscribe from that folder!"]);
-      document.unsubscriptionAjaxRequest = null;
-   }
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      if (http.callbackData)
+	http.callbackData["method"](http.callbackData["data"]);
+    }
+    else
+      window.alert(clabels["Unable to unsubscribe from that folder!"]);
+    document.unsubscriptionAjaxRequest = null;
+  }
 }
 
 function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
@@ -1100,16 +1099,16 @@ function initTabs() {
     
     firstTab = null;
     for (var i = 0; i < nodes.length; i++) {
-	var currentNode = nodes[i];
-	if (currentNode.tagName == 'LI') {
-	    if (!firstTab)
-		firstTab = i;
-	    Event.observe(currentNode, "mousedown",
-	    		  onTabMouseDown.bindAsEventListener(currentNode));
-	    Event.observe(currentNode, "click",
-			  onTabClick.bindAsEventListener(currentNode));
-	    //$(currentNode.getAttribute("target")).hide();
-	}
+      var currentNode = nodes[i];
+      if (currentNode.tagName == 'LI') {
+	if (!firstTab)
+	  firstTab = i;
+	Event.observe(currentNode, "mousedown",
+		      onTabMouseDown.bindAsEventListener(currentNode));
+	Event.observe(currentNode, "click",
+		      onTabClick.bindAsEventListener(currentNode));
+	//$(currentNode.getAttribute("target")).hide();
+      }
     }
 
     nodes[firstTab].addClassName("first");
@@ -1123,39 +1122,42 @@ function initTabs() {
 }
 
 function initMenus() {
-   var menus = getMenus();
-   if (menus) {
-      for (var menuID in menus) {
-	 var menuDIV = $(menuID);
-	 if (menuDIV)
-	    initMenu(menuDIV, menus[menuID]);
-      }
-   }
+  var menus = getMenus();
+  if (menus) {
+    for (var menuID in menus) {
+      var menuDIV = $(menuID);
+      if (menuDIV)
+	initMenu(menuDIV, menus[menuID]);
+    }
+  }
 }
 
 function initMenu(menuDIV, callbacks) {
-   var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
-   for (var j = 0; j < lis.length; j++) {
-      var node = $(lis[j]);
-      Event.observe(node, "mousedown", listRowMouseDownHandler, false);
-      var callback = callbacks[j];
-      if (callback) {
-	 if (typeof(callback) == "string") {
-	    if (callback == "-")
-	       node.addClassName("separator");
-	    else {
-	       node.submenu = callback;
-	       node.addClassName("submenu");
-	       Event.observe(node, "mouseover", popupSubmenu);
-	    }
-	 }
-	 else
-	    Event.observe(node, "mouseup",
-			  $(callback).bindAsEventListener(node));
+  var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
+  for (var j = 0; j < lis.length; j++) {
+    var node = $(lis[j]);
+    Event.observe(node, "mousedown",
+		  listRowMouseDownHandler.bindAsEventListener(node),
+		  false);
+    var callback = callbacks[j];
+    if (callback) {
+      if (typeof(callback) == "string") {
+	if (callback == "-")
+	  node.addClassName("separator");
+	else {
+	  node.submenu = callback;
+	  node.addClassName("submenu");
+	  Event.observe(node, "mouseover",
+			popupSubmenu.bindAsEventListener(node));
+	}
       }
       else
-	 node.addClassName("disabled");
-   }
+	Event.observe(node, "mouseup",
+		      $(callback).bindAsEventListener(node));
+    }
+    else
+      node.addClassName("disabled");
+  }
 }
 
 function onTabMouseDown(event) {
@@ -1179,25 +1181,25 @@ function openAclWindow(url) {
 }
 
 function getUsersRightsWindowHeight() {
-   return usersRightsWindowHeight;
+  return usersRightsWindowHeight;
 }
 
 function getUsersRightsWindowWidth() {
-   return usersRightsWindowWidth;
+  return usersRightsWindowWidth;
 }
 
 function getTopWindow() {
-   var topWindow = null;
-   var currentWindow = window;
-   while (!topWindow) {
-      if (currentWindow.document.body.hasClassName("popup")
-	  && currentWindow.opener)
-	 currentWindow = currentWindow.opener;
-      else
-	 topWindow = currentWindow;
-   }
+  var topWindow = null;
+  var currentWindow = window;
+  while (!topWindow) {
+    if (currentWindow.document.body.hasClassName("popup")
+	&& currentWindow.opener)
+      currentWindow = currentWindow.opener;
+    else
+      topWindow = currentWindow;
+  }
 
-   return topWindow;
+  return topWindow;
 }
 
 function onTabClick(event) {
@@ -1292,12 +1294,12 @@ function indexColor(number) {
     var currentValue = number;
     var index = 0;
     while (currentValue) {
-       if (currentValue & 1)
-          colorTable[index]++;
-       if (index == 3)
-	  index = 0;
-       currentValue >>= 1;
-       index++;
+      if (currentValue & 1)
+	colorTable[index]++;
+      if (index == 3)
+	index = 0;
+      currentValue >>= 1;
+      index++;
     }
     
     color = ("#"
@@ -1310,18 +1312,18 @@ function indexColor(number) {
 }
 
 function loadPreferences() {
-   var url = UserFolderURL + "jsonDefaults";
-   var http = createHTTPClient();
-   http.open("GET", url, false);
-   http.send("");
-   if (http.status == 200)
-      userDefaults = http.responseText.evalJSON(true);
+  var url = UserFolderURL + "jsonDefaults";
+  var http = createHTTPClient();
+  http.open("GET", url, false);
+  http.send("");
+  if (http.status == 200)
+    userDefaults = http.responseText.evalJSON(true);
 
-   url = UserFolderURL + "jsonSettings";
-   http.open("GET", url, false);
-   http.send("");
-   if (http.status == 200)
-      userSettings = http.responseText.evalJSON(true);
+  url = UserFolderURL + "jsonSettings";
+  http.open("GET", url, false);
+  http.send("");
+  if (http.status == 200)
+    userSettings = http.responseText.evalJSON(true);
 }
 
 function onLoadHandler(event) {
@@ -1344,15 +1346,15 @@ function onLoadHandler(event) {
 }
 
 function onBodyClickContextMenu(event) {
-   preventDefault(event);
+  preventDefault(event);
 }
 
 function configureSortableTableHeaders(table) {
-   var headers = $(table).getElementsByClassName("sortableTableHeader");
-   for (var i = 0; i < headers.length; i++) {
-      var header = headers[i];
-      Event.observe(header, "click", onHeaderClick.bindAsEventListener(header))
-   }
+  var headers = $(table).getElementsByClassName("sortableTableHeader");
+  for (var i = 0; i < headers.length; i++) {
+    var header = headers[i];
+    Event.observe(header, "click", onHeaderClick.bindAsEventListener(header))
+      }
 }
 
 function onLinkBannerClick() {
@@ -1361,13 +1363,13 @@ function onLinkBannerClick() {
 }
 
 function onPreferencesClick(event) {
-   var urlstr = UserFolderURL + "preferences";
-   var w = window.open(urlstr, "_blank",
-		       "width=430,height=250,resizable=0,scrollbars=0");
-   w.opener = window;
-   w.focus();
+  var urlstr = UserFolderURL + "preferences";
+  var w = window.open(urlstr, "_blank",
+		      "width=430,height=250,resizable=0,scrollbars=0,location=0");
+  w.opener = window;
+  w.focus();
 
-   preventDefault(event);
+  preventDefault(event);
 }
 
 function configureLinkBanner() {
@@ -1375,13 +1377,13 @@ function configureLinkBanner() {
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
     for (var i = 1; i < 3; i++) {
-       Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
-       Event.observe(anchors[i], "click", onLinkBannerClick);
+      Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
+      Event.observe(anchors[i], "click", onLinkBannerClick);
     }
     Event.observe(anchors[4], "mousedown", listRowMouseDownHandler);
     Event.observe(anchors[4], "click", onPreferencesClick);
     if (anchors.length > 5)
-       Event.observe(anchors[5], "click", toggleLogConsole);
+      Event.observe(anchors[5], "click", toggleLogConsole);
   }
 }
 
@@ -1394,10 +1396,10 @@ function createFolder(name, okCB, notOkCB) {
     }
     var url = ApplicationBaseURL + "/createFolder?name=" + name;
     document.newFolderAjaxRequest
-       = triggerAjaxRequest(url, createFolderCallback,
-			    {name: name,
-			     okCB: okCB,
-			     notOkCB: notOkCB});
+      = triggerAjaxRequest(url, createFolderCallback,
+			   {name: name,
+			    okCB: okCB,
+			    notOkCB: notOkCB});
   }
 }
 
@@ -1420,7 +1422,7 @@ function createFolderCallback(http) {
 addEvent(window, 'load', onLoadHandler);
 
 function parent$(element) {
-   return this.opener.document.getElementById(element);
+  return this.opener.document.getElementById(element);
 }
 
 /* stubs */
@@ -1434,5 +1436,5 @@ function getMenus() {
 }
 
 function onHeaderClick(event) {
-   window.alert("generic headerClick");
+  window.alert("generic headerClick");
 }
