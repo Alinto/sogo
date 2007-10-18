@@ -25,6 +25,9 @@
 #import <SOGoUI/UIxComponent.h>
 #import <NGObjWeb/WEClientCapabilities.h>
 
+@class NSString;
+@class NSMutableArray;
+
 @interface WOComponent (PopupExtension)
 
 - (BOOL) isPopup;
@@ -37,6 +40,7 @@
   NSString *toolbar;
   id item;
   BOOL isPopup;
+  NSMutableArray *additionalJSFiles;
 }
 
 - (NSString *) commonLocalizableStrings;
@@ -46,6 +50,8 @@
 - (NSString *) productJavaScriptURL;
 - (BOOL) hasPageSpecificJavaScript;
 - (BOOL) hasProductSpecificJavaScript;
+
+- (NSArray *) additionalJSFiles;
 
 - (NSString *) pageCSSURL;
 - (NSString *) productCSSURL;

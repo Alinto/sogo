@@ -38,7 +38,10 @@
 {
   if ((self = [super init]))
     {
+      item = nil;
+      title = nil;
       toolbar = nil;
+      additionalJSFiles = nil;
     }
 
   return self;
@@ -48,8 +51,8 @@
 {
   [item release];
   [title release];
-  if (toolbar)
-    [toolbar release];
+  [toolbar release];
+  [additionalJSFiles release];
   [super dealloc];
 }
 
@@ -57,7 +60,7 @@
 
 - (void) setTitle: (NSString *) _value
 {
-  ASSIGNCOPY(title, _value);
+  ASSIGN (title, _value);
 }
 
 - (NSString *) title
@@ -70,7 +73,7 @@
 
 - (void) setItem: (id) _item
 {
-  ASSIGN(item, _item);
+  ASSIGN (item, _item);
 }
 
 - (id) item
@@ -170,8 +173,8 @@
 
 - (NSString *) _stringsForFramework: (NSString *) framework
 {
-  NSDictionary *table;
   NSString *language, *frameworkName;
+  id table;
 
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
@@ -180,10 +183,9 @@
     = [[self resourceManager] stringTableWithName: @"Localizable"
 			      inFramework: frameworkName
 			      languages: [NSArray arrayWithObject: language]];
-  /* table is not really an NSDict44ionary but a hackish variation thereof */
-  table = [NSDictionary dictionaryWithDictionary: table];
 
-  return [table jsonRepresentation];
+  /* table is not really an NSDictionary but a hackish variation thereof */
+  return [[NSDictionary dictionaryWithDictionary: table] jsonRepresentation];
 }
 
 - (NSString *) commonLocalizableStrings
@@ -234,6 +236,28 @@
 - (BOOL) hasProductSpecificJavaScript
 {
   return ([[self productJavaScriptURL] length] > 0);
+}
+
+- (void) setJsFiles: (NSString *) newJSFiles
+{
+  NSEnumerator *jsFiles;
+  NSString *currentFile, *filename;
+
+  [additionalJSFiles release];
+  additionalJSFiles = [NSMutableArray new];
+
+  jsFiles = [[newJSFiles componentsSeparatedByString: @","] objectEnumerator];
+  while ((currentFile = [jsFiles nextObject]))
+    {
+      filename = [self urlForResourceFilename:
+			 [currentFile stringByTrimmingSpaces]];
+      [additionalJSFiles addObject: filename];
+    }
+}
+
+- (NSArray *) additionalJSFiles
+{
+  return additionalJSFiles;
 }
 
 - (NSString *) pageCSSURL

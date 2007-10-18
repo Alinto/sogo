@@ -5,6 +5,12 @@
 	product-specific translation dictionary as a JSON hash.
 	([UIxPageFrame -commonLocalizableStrings]): same as above but for
 	the "Common" framework.
+	([UIxPageFrame -setJsFiles:newJSFiles]): new setter that enables
+	the requestor components to require additional Javascript files.
+	This is useful now that all the scripts are loaded at the end of
+	the HTML code.
+	([UIxPageFrame -additionalJSFiles]): new getter related to the
+	above.
 
 2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
