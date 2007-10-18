@@ -1154,7 +1154,10 @@ function mailboxMenuNode(type, name) {
   var image = document.createElement("img");
   image.src = ResourcesURL + "/" + icon;
   newNode.appendChild(image);
-  newNode.appendChild(document.createTextNode(" " + name));
+  var displayName = MailerUIdTreeExtension.folderNames[type];
+  if (!displayName)
+    displayName = name;
+  newNode.appendChild(document.createTextNode(" " + displayName));
 
   return newNode;
 }
