@@ -92,6 +92,23 @@
 // 	      && [_pwd isEqualToString: @"freebusy"]));
 }
 
+- (SOGoUser *) userInContext: (WOContext *)_ctx
+{
+  static SOGoUser *anonymous = nil;
+  SOGoUser *user;
+
+  if (!anonymous)
+    anonymous
+      = [[SOGoUser alloc] initWithLogin: @"anonymous"
+			  roles: [NSArray arrayWithObject: SoRole_Anonymous]];
+
+  user = (SOGoUser *) [super userInContext: _ctx];
+  if (!user)
+    user = anonymous;
+
+  return user;
+}
+
 - (NSString *) passwordInContext: (WOContext *) context
 {
   NSArray *creds;

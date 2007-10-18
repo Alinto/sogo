@@ -1,5 +1,9 @@
 2007-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
+	-userInContext:]): override the super method by returning
+	anonymous if the super returns nil.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame
 	-productLocalizableStrings]): new method that returns the
 	product-specific translation dictionary as a JSON hash.
