@@ -301,7 +301,7 @@ function onMenuWriteToContact(event) {
    var emailCell = contactRow.down('td', 1);
 
    if (!emailCell.firstChild) { // .nodeValue is the contact email address
-     window.alert(labels["The selected contact has no email address."].decodeEntities());
+     window.alert(labels["The selected contact has no email address."]);
      return false;
    }
 
@@ -343,7 +343,7 @@ function onToolbarWriteToSelectedContacts(event) {
   }
   
   if (rowsWithEmail == 0) {
-    window.alert(labels["The selected contact has no email address."].decodeEntities());
+    window.alert(labels["The selected contact has no email address."]);
   }
   else if (document.body.hasClassName("popup"))
     window.close();

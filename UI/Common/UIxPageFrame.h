@@ -39,6 +39,9 @@
   BOOL isPopup;
 }
 
+- (NSString *) commonLocalizableStrings;
+- (NSString *) productLocalizableStrings;
+
 - (NSString *) pageJavaScriptURL;
 - (NSString *) productJavaScriptURL;
 - (BOOL) hasPageSpecificJavaScript;
@@ -48,8 +51,6 @@
 - (NSString *) productCSSURL;
 - (BOOL) hasPageSpecificCSS;
 - (BOOL) hasProductSpecificCSS;
-
-- (NSString *) productFrameworkName;
 
 - (void) setPopup: (BOOL) popup;
 - (BOOL) isPopup;

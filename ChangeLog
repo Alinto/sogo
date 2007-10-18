@@ -1,3 +1,11 @@
+2007-10-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame
+	-productLocalizableStrings]): new method that returns the
+	product-specific translation dictionary as a JSON hash.
+	([UIxPageFrame -commonLocalizableStrings]): same as above but for
+	the "Common" framework.
+
 2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -copyAction]):

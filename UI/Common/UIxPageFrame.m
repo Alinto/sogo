@@ -23,8 +23,10 @@
 #import <NGObjWeb/SoComponent.h>
 #import <NGObjWeb/WOComponent.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+
 #import <SOGoUI/UIxComponent.h>
-#import <SOGo/SOGoUser.h>
 
 #import <Main/build.h>
 
@@ -166,6 +168,40 @@
 
 /* page based JavaScript */
 
+- (NSString *) _stringsForFramework: (NSString *) framework
+{
+  NSDictionary *table;
+  NSString *language, *frameworkName;
+
+  frameworkName = [NSString stringWithFormat: @"%@.SOGo",
+			    (framework ? framework : [self frameworkName])];
+  language = [[context activeUser] language];
+  table
+    = [[self resourceManager] stringTableWithName: @"Localizable"
+			      inFramework: frameworkName
+			      languages: [NSArray arrayWithObject: language]];
+  /* table is not really an NSDict44ionary but a hackish variation thereof */
+  table = [NSDictionary dictionaryWithDictionary: table];
+
+  return [table jsonRepresentation];
+}
+
+- (NSString *) commonLocalizableStrings
+{
+  return [NSString stringWithFormat: @"var clabels = %@;",
+		   [self _stringsForFramework: nil]];
+}
+
+- (NSString *) productLocalizableStrings
+{
+  NSString *frameworkName;
+
+  frameworkName = [[context page] frameworkName];
+
+  return [NSString stringWithFormat: @"var labels = %@;",
+		   [self _stringsForFramework: frameworkName]];
+}
+
 - (NSString *) pageJavaScriptURL
 {
   WOComponent *page;
@@ -188,15 +224,6 @@
 			   [page frameworkName]];
   
   return [self urlForResourceFilename: fwJSFilename];
-}
-
-- (NSString *) productFrameworkName
-{
-  WOComponent *page;
-
-  page = [context page];
-
-  return [NSString stringWithFormat: @"%@.SOGo", [page frameworkName]];
 }
 
 - (BOOL) hasPageSpecificJavaScript
@@ -299,6 +326,5 @@
 
   return [cc isMacBrowser];
 }
-
 
 @end /* UIxPageFrame */

@@ -999,7 +999,7 @@ function folderSubscriptionCallback(http) {
 	    http.callbackData["method"](http.callbackData["data"]);
       }
       else
-	 window.alert(clabels["Unable to subscribe to that folder!"].decodeEntities());
+	 window.alert(clabels["Unable to subscribe to that folder!"]);
       document.subscriptionAjaxRequest = null;
    }
    else
@@ -1025,7 +1025,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
    }
    else
       refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
-		   .decodeEntities());
+		   );
 }
 
 function folderUnsubscriptionCallback(http) {
@@ -1035,7 +1035,7 @@ function folderUnsubscriptionCallback(http) {
 	    http.callbackData["method"](http.callbackData["data"]);
       }
       else
-	 window.alert(clabels["Unable to unsubscribe from that folder!"].decodeEntities());
+	 window.alert(clabels["Unable to unsubscribe from that folder!"]);
       document.unsubscriptionAjaxRequest = null;
    }
 }
@@ -1061,7 +1061,7 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 			     rfCbData);
     }
     else
-      window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
+      window.alert(clabels["You cannot unsubscribe from a folder that you own!"]);
   }
 }
 
@@ -1337,23 +1337,10 @@ function onLoadHandler(event) {
   initTabs();
   configureDragHandles();
   configureLinkBanner();
-  translateLabels();
   var progressImage = $("progressIndicator");
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
   Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
-}
-
-function translateLabels() {
-  if (typeof labels != "undefined") {
-    for (var key in labels)
-      labels[key] = labels[key].decodeEntities();
-  }
-
-  if (typeof clabels != "undefined") {
-    for (var key in clabels)
-      clabels[key] = clabels[key].decodeEntities();
-  }
 }
 
 function onBodyClickContextMenu(event) {
