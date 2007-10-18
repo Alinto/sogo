@@ -7,11 +7,9 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  >
-  <script type="text/javascript" rsrc:src="dtree.js"><!-- space --></script>
-  <script type="text/javascript" rsrc:src="MailerUI+dTree.js"><!-- space --></script>
+  const:jsFiles="dtree.js,MailerUI+dTree.js">
   <script type="text/javascript">
-    var mailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>'.evalJSON(true);
+    var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
   </script>
   <div class="menu" id="accountIconMenu">
     <ul>

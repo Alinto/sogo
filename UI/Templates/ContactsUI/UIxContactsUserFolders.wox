@@ -10,11 +10,10 @@
   className="UIxPageFrame"
   title="name"
   const:toolbar="none"
-  const:popup="YES">
-  <script type="text/javascript" rsrc:src="dtree.js"><!-- space --></script>
+  const:popup="YES"
+  const:jsFiles="dtree.js">
   <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-  <div id="folders">
-  </div>
+  <div id="folders"><!-- space --></div>
   <div id="buttons">
     <input type="submit" id="addButton" class="button" label:value="Add..."/>
   </div>

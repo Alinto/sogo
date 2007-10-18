@@ -7,8 +7,7 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxPageFrame"
-  title="title"
-  >
+  title="title">
   <script type="text/javascript">
     var UTCOffset = <var:string value="userUTCOffset"/>;
   </script>

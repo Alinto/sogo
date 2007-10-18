@@ -348,8 +348,4 @@
           onclick="window.close(); return false;" />
       </div>
     </form>
-
-    <script type="text/javascript">
-      initEditorForm();
-    </script>
   </var:component>

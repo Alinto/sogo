@@ -1,6 +1,9 @@
 /* JavaScript for SOGoMail */
 var accounts = {};
 var mailboxTree;
+var mailAccounts;
+if (typeof textMailAccounts != 'undefined')
+  mailAccounts = textMailAccounts.evalJSON(true);
 
 var currentMessages = new Array();
 var maxCachedMessages = 20;

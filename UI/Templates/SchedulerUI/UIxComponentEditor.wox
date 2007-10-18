@@ -10,9 +10,8 @@
   className="UIxPageFrame"
   const:popup="YES"
   title="name"
-  var:toolbar="toolbar">
-  <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
-  <script type="text/javascript" rsrc:src="UIxComponentEditor.js"><!-- space --></script>
+  var:toolbar="toolbar"
+  const:jsFiles="skycalendar.js,UIxComponentEditor.js">
 
   <script type="text/javascript">
     var activeCalendar = '<var:string value="clientObject.container.nameInContainer"/>';

@@ -35,33 +35,7 @@
 
       <body var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
-	  ><script type="text/javascript">
-	    var ApplicationBaseURL = '<var:string value="applicationPath" />';
-	    var ResourcesURL = '/SOGo.woa/WebServerResources';
-	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
-	      const:negate="YES"
-	      >var UserFolderURL = '<var:string value="userFolderPath" />';
-	      var UserLogin = '<var:string value="shortUserNameForDisplay" />';</var:if>
-	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
-	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
-	  </script>
-	  <script type="text/javascript" rsrc:src="events.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="HTMLUListElement.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="generic.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space required --></script>
-	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space required --></script>
-
-	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
-	      var:src="productJavaScriptURL"><!-- space required --></script></var:if>
-	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
-	      var:src="pageJavaScriptURL"><!-- space required --></script></var:if>
+	  >
 	  <var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	    const:negate="YES"
 	    ><var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
@@ -91,6 +65,36 @@
 	    </var:if></var:if>
 	  
 	  <div id="pageContent"><var:component-content/></div>
+
+	  <script type="text/javascript">
+	    var ApplicationBaseURL = '<var:string value="applicationPath" />';
+	    var ResourcesURL = '/SOGo.woa/WebServerResources';
+	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
+	      const:negate="YES"
+	      >var UserFolderURL = '<var:string value="userFolderPath" />';
+	      var UserLogin = '<var:string value="shortUserNameForDisplay" />';</var:if>
+	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
+	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
+	  </script>
+	  <script type="text/javascript" rsrc:src="events.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="HTMLUListElement.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>
+	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
+	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
+	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
+	      var:src="pageJavaScriptURL"><!-- space --></script></var:if>
+	  <var:foreach list="additionalJSFiles" item="item"
+	    ><script type="text/javascript" var:src="item"><!-- space --></script>
+	  </var:foreach>
         </var:if>
         <var:if condition="isCompatibleBrowser" const:negate="YES">
 	  <div id="loginScreen">

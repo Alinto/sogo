@@ -9,7 +9,8 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="panelTitle"
-  const:popup="YES">
+  const:popup="YES"
+  const:jsFiles="UIxMailToSelection.js">
   <div class="menu" id="attachmentsMenu">
     <ul>
       <li><var:string label:value="Open"/></li>

@@ -9,8 +9,8 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   const:toolbar="none"
-  const:popup="YES">
-  <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
+  const:popup="YES"
+  const:jsFiles="skycalendar.js">
   <div id="attendeesView">
     <div id="freeBusyViewButtons">
       <var:string label:value="Suggest time slot:"/>

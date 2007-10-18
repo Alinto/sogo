@@ -133,3 +133,5 @@ function initEditorForm() {
   $("sn").onkeyup = onFnNewValue;
   $("givenName").onkeyup = onFnNewValue;
 }
+
+addEvent(window, 'load', initEditorForm);
