@@ -31,27 +31,17 @@
 
 @interface UIxContactsListViewContainer : UIxComponent
 {
-  NSString *foldersPrefix;
   NSString *selectorComponentClass;
-  NSString *currentAdditionalFolder;
-  NSDictionary *additionalFolders;
   id currentFolder;
 }
 
 - (void) setCurrentFolder: (id) folder;
 
-- (NSString *) foldersPrefix;
-
 - (NSArray *) contactFolders;
 
 - (NSString *) currentContactFolderId;
+- (NSString *) currentContactFolderOwner;
 - (NSString *) currentContactFolderName;
-
-- (NSArray *) additionalFolders;
-
-- (void) setCurrentAdditionalFolder: (NSString *) newCurrentAdditionalFolder;
-- (NSString *) currentAdditionalFolder;
-- (NSString *) currentAdditionalFolderName;
 
 @end
 

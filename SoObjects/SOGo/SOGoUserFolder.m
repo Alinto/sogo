@@ -23,9 +23,10 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoFreeBusyObject.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
@@ -36,6 +37,21 @@
 #import "SOGoUserFolder.h"
 
 @implementation SOGoUserFolder
+
++ (void) initialize
+{
+  SoClassSecurityInfo *sInfo;
+  NSArray *basicRoles;
+
+  sInfo = [self soClassSecurityInfo];
+  [sInfo declareObjectProtected: SoPerm_View];
+
+  basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
+
+  /* require Authenticated role for View and WebDAV */
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
+  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
+}
 
 /* accessors */
 
@@ -118,15 +134,15 @@
 //           : [super permissionForKey: key]);
 // }
 
-- (SOGoAppointmentFolder *) privateCalendar: (NSString *) _key
-                                  inContext: (WOContext *) _ctx
+- (SOGoAppointmentFolders *) privateCalendars: (NSString *) _key
+				    inContext: (WOContext *) _ctx
 {
-  SOGoAppointmentFolder *calendar;
+  SOGoAppointmentFolders *calendars;
   
-  calendar = [$(@"SOGoAppointmentFolder") objectWithName: _key inContainer: self];
-  [calendar setOCSPath: [self ocsPrivateCalendarPath]];
+  calendars = [$(@"SOGoAppointmentFolders") objectWithName: _key inContainer: self];
+  [calendars setBaseOCSPath: [self ocsPrivateCalendarPath]];
 
-  return calendar;
+  return calendars;
 }
 
 - (SOGoContactFolders *) privateContacts: (NSString *) _key
@@ -169,7 +185,7 @@
   if (!obj)
     {
       if ([_key isEqualToString: @"Calendar"])
-	obj = [self privateCalendar: @"Calendar" inContext: _ctx];
+	obj = [self privateCalendars: @"Calendar" inContext: _ctx];
 //           if (![_key isEqualToString: @"Calendar"])
 //             obj = [obj lookupName: [_key pathExtension] 
 //                        inContext: _ctx acquire: NO];

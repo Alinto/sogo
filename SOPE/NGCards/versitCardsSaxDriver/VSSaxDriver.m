@@ -471,20 +471,17 @@ static VSStringFormatter *stringFormatter = nil;
                    withAttrs: (SaxAttributes *) _attrs 
                   andContent: (NSString *) _content 
 {
-  /*
-    This is called for all non-BEGIN|END types.
-  */
+  VSSaxTag *a;
+  NSString *testContent;
 
-//   _content = [stringFormatter stringByUnescapingRFC2445Text: _content];
+  /* This is called for all non-BEGIN|END types. */
+  testContent = [[_content unescapedFromCard] stringByReplacingString: @";"
+					      withString: @""];
 
-  /* check whether type should be reported as an attribute in XML */
-  
-  [self _beginTag: _tagName group: _group withAttrs: _attrs];
-  
-  if ([_content length] > 0)
+  if ([[testContent stringByTrimmingSpaces] length] > 0)
     {
-      VSSaxTag *a;
-      
+      [self _beginTag: _tagName group: _group withAttrs: _attrs];
+  
       a = [(VSSaxTag *)[VSSaxTag alloc]
                        initWithContentString: [_content unescapedFromCard]];
       if (a)
@@ -492,9 +489,9 @@ static VSStringFormatter *stringFormatter = nil;
           [elementList addObject: a];
           [a release];
         }
-    }
 
-  [self _endTag: _tagName];
+      [self _endTag: _tagName];
+    }
 }
 
 /* report events for collected elements */

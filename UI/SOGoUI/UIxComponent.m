@@ -199,7 +199,7 @@ static BOOL uixDebugEnabled = NO;
 
   queryParameters = [[NSMutableDictionary alloc] initWithCapacity:8];
 
-  req = [[self context] request];
+  req = [context request];
   uri = [req uri];
   r   = [uri rangeOfString:@"?" options:NSBackwardsSearch];
   if (r.length > 0)
@@ -246,7 +246,7 @@ static BOOL uixDebugEnabled = NO;
   qp = [self queryParameters];
   if ([qp count] > 0)
     {
-      ctx = [self context];
+      ctx = context;
       qps = [ctx queryPathSeparator];
       [ctx setQueryPathSeparator: @"&"];
       qs = [ctx queryStringFromDictionary: qp];
@@ -264,7 +264,7 @@ static BOOL uixDebugEnabled = NO;
   NSString *uri;
   NSRange  r;
     
-  uri = [[[self context] request] uri];
+  uri = [[context request] uri];
     
   /* first: cut off query parameters */
     
@@ -293,7 +293,7 @@ static BOOL uixDebugEnabled = NO;
   SOGoObject *currentObject;
   BOOL found;
 
-  ctx = [self context];
+  ctx = context;
   objects = [[ctx objectTraversalStack] objectEnumerator];
   currentObject = [objects nextObject];
   found = NO;
@@ -312,28 +312,31 @@ static BOOL uixDebugEnabled = NO;
   SOGoObject *currentClient, *parent;
   BOOL found;
   Class objectClass, groupFolderClass, userFolderClass;
-  WOContext *ctx;
-
-  groupFolderClass = [SOGoCustomGroupFolder class];
-  userFolderClass = [SOGoUserFolder class];
 
   currentClient = [self clientObject];
-  objectClass = [currentClient class];
-  found = (objectClass == groupFolderClass || objectClass == userFolderClass);
-  while (!found && currentClient)
+  if (currentClient
+      && [currentClient isKindOfClass: [SOGoObject class]])
     {
-      parent = [currentClient container];
-      objectClass = [parent class];
-      if (objectClass == groupFolderClass
-          || objectClass == userFolderClass)
-        found = YES;
-      else
-        currentClient = parent;
+      groupFolderClass = [SOGoCustomGroupFolder class];
+      userFolderClass = [SOGoUserFolder class];
+
+      objectClass = [currentClient class];
+      found = (objectClass == groupFolderClass || objectClass == userFolderClass);
+      while (!found && currentClient)
+	{
+	  parent = [currentClient container];
+	  objectClass = [parent class];
+	  if (objectClass == groupFolderClass
+	      || objectClass == userFolderClass)
+	    found = YES;
+	  else
+	    currentClient = parent;
+	}
     }
+  else
+    currentClient = [WOApplication application];
 
-  ctx = [self context];
-
-  return [[currentClient baseURLInContext:ctx] hostlessURL];
+  return [[currentClient baseURLInContext: context] hostlessURL];
 }
 
 - (NSString *) resourcesPath
@@ -351,7 +354,7 @@ static BOOL uixDebugEnabled = NO;
   NSString *uri;
   NSRange  r;
   
-  uri = [[[self context] request] uri];
+  uri = [[context request] uri];
   
   /* first: cut off query parameters */
   
@@ -397,7 +400,7 @@ static BOOL uixDebugEnabled = NO;
   userTimeZone = [[context activeUser] timeZone];
   [_date setTimeZone: userTimeZone];
 
-  return [_date descriptionWithCalendarFormat:@"%Y%m%d"];
+  return [_date descriptionWithCalendarFormat: @"%Y%m%d"];
 }
 
 - (BOOL) hideFrame
@@ -418,35 +421,12 @@ static BOOL uixDebugEnabled = NO;
 
 /* SoUser */
 
-- (SoUser *) user
-{
-  WOContext *ctx;
-  
-  ctx = [self context];
-
-  return [[[self clientObject] authenticatorInContext: ctx] userInContext: ctx];
-}
-
 - (NSString *) shortUserNameForDisplay
 {
-  // TODO: better use a SoUser formatter?
-  // TODO: who calls that?
-  NSString *s;
-  NSRange  r;
-  
-  // TODO: USE USER MANAGER INSTEAD!
-  
-  s = [[self user] login];
-  if ([s length] < 10)
-    return s;
-    
-  // TODO: algorithm might be inappropriate, depends on the actual UID
-    
-  r = [s rangeOfString:@"."];
-  if (r.length == 0)
-    return s;
-    
-  return [s substringToIndex:r.location];
+  if ([context activeUser] == nil)
+    return @"wrongusernamepassword";
+
+  return [[context activeUser] login];
 }
 
 /* labels */
@@ -463,7 +443,7 @@ static BOOL uixDebugEnabled = NO;
   
   /* lookup languages */
     
-  languages = [[self context] resourceLookupLanguages];
+  languages = [context resourceLookupLanguages];
     
   /* find resource manager */
     
@@ -530,7 +510,7 @@ static BOOL uixDebugEnabled = NO;
   // TODO: move to WORequest?
   NSString *m;
   
-  m = [[[self context] request] method];
+  m = [[context request] method];
   if ([m isEqualToString:@"GET"])  return YES;
   if ([m isEqualToString:@"HEAD"]) return YES;
   return NO;
@@ -547,7 +527,7 @@ static BOOL uixDebugEnabled = NO;
 {
   WOResourceManager *rm;
   
-  if ((rm = [[[self context] page] resourceManager]) == nil)
+  if ((rm = [[context page] resourceManager]) == nil)
     rm = [[WOApplication application] resourceManager];
 
   return rm;
@@ -570,12 +550,12 @@ static BOOL uixDebugEnabled = NO;
       if (!url)
         {
           rm = [self pageResourceManager];
-          page = [[self context] page];
+          page = [context page];
           pageBundle = [NSBundle bundleForClass: [page class]];
           url = [rm urlForResourceNamed: filename
                     inFramework: [pageBundle bundlePath]
                     languages: nil
-                    request: [[self context] request]];
+                    request: [context request]];
           if (!url)
             url = @"";
           else
@@ -590,6 +570,16 @@ static BOOL uixDebugEnabled = NO;
     url = @"";
 
   return url;
+}
+
+- (WOResponse *) responseWith204
+{
+  WOResponse *response;
+
+  response = [context response];
+  [response setStatus: 204];
+
+  return response;
 }
 
 /* debugging */

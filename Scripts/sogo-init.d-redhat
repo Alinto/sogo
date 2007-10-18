@@ -1,4 +1,10 @@
 #!/bin/bash
+# chkconfig:	- 85 15
+# description:	SOGo is a groupware server
+# processname:  sogod-0.9
+# config:	/etc/sysconfig/sogo
+# config:	/etc/httpd/conf.d/SOGo.conf
+# pidfile:	/var/run/sogo/sogod.pid
 
 # SOGo init script for RedHat
 #
@@ -22,18 +28,17 @@
 # Boston, MA 02111-1307, USA.
 
 # sogod		Scalable OpenGroupware.org (Inverse edition)
-#
-# chkconfig:	- 85 15
-# description:	SOGo is a groupware server
-# processname:  sogod-0.9
-# config:	/etc/sysconfig/sogo
-# config:	/etc/httpd/conf.d/SOGo.conf
-# pidfile:	/var/run/sogo/sogod.pid
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 . /etc/rc.d/init.d/functions
 
+if [ -z "$GNUSTEP_SYSTEM_ROOT" ]
+then
+  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+fi
+
+REAL_DAEMON=$GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9
 DAEMON=/usr/sbin/sogod
 NAME=sogo
 DESC="Scalable OpenGroupware.Org (Inverse edition)"
@@ -52,26 +57,24 @@ test -x $DAEMON || exit 0
 
 case "$1" in
   start)
-	echo -n $"Starting $DESC: " / 
+	echo -n $"Starting $DESC: "
 	daemon --user sogo --pidfile $PIDFILE $DAEMON
 	echo "$NAME."
 	;;
   stop)
 	echo -n $"Stopping $DESC: "
-	killproc --pidfile $PIDFILE $DAEMON
-	rm -f $PIDFILE
+	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
 	echo "$NAME."
 	;;
   restart|force-reload)
 	echo -n $"Restarting $DESC: "
-	killproc --pidfile $PIDFILE $DAEMON
-	rm -f $PIDFILE
+	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
 	sleep 1
 	daemon --user sogo --pidfile $PIDFILE $DAEMON
 	echo "$NAME."
 	;;
   status)
-  	status $DAEMON
+  	status $REAL_DAEMON
 	;;
   *)
 	N=/etc/init.d/$NAME

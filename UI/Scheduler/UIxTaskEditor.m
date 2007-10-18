@@ -324,14 +324,14 @@
 {
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
-  Class clientKlazz;
+  SOGoAppointmentFolder *co;
 
-  clientKlazz = [[self clientObject] class];
-  objectId = [clientKlazz globallyUniqueObjectId];
+  co = [self clientObject];
+  objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/Calendar/%@/editAsTask",
-                         [self userFolderPath], objectId];
+      method = [NSString stringWithFormat:@"%@/%@/editAsTask",
+                         [co soURL], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }
@@ -357,8 +357,12 @@
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
+  NSString *actionName;
+
+  actionName = [[request requestHandlerPath] lastPathComponent];
+
   return ([[self clientObject] isKindOfClass: [SOGoTaskObject class]]
-	  && [[request method] isEqualToString: @"POST"]);
+	  && [actionName hasPrefix: @"save"]);
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq

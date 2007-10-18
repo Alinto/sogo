@@ -26,14 +26,16 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoFreeBusyObject.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
 static NSString *defaultModule = nil;
@@ -62,8 +64,6 @@ static NSString *defaultModule = nil;
 		    @"'Calendar', 'Contacts' or Mail)", defaultModule];
 	      defaultModule = @"Calendar";
 	    }
-	  else
-	    defaultModule = @"Calendar";
 	}
       else
 	defaultModule = @"Calendar";
@@ -97,9 +97,9 @@ static NSString *defaultModule = nil;
   record = [records nextObject];
   while (record)
     {
-      status = [record objectForKey: @"status"];
+      status = [record objectForKey: @"c_status"];
  
-      value = [[record objectForKey: @"startdate"] intValue];
+      value = [[record objectForKey: @"c_startdate"] intValue];
       currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
       if ([currentDate earlierDate: startDate] == currentDate)
         startInterval = 0;
@@ -107,7 +107,7 @@ static NSString *defaultModule = nil;
         startInterval
           = ([currentDate timeIntervalSinceDate: startDate] / 900);
 
-      value = [[record objectForKey: @"enddate"] intValue];
+      value = [[record objectForKey: @"c_enddate"] intValue];
       currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
       if ([currentDate earlierDate: endDate] == endDate)
         endInterval = [items count] - 1;
@@ -194,6 +194,36 @@ static NSString *defaultModule = nil;
 //   [response setHeader: @"text/plain; charset=iso-8859-1"
 //             forKey: @"Content-Type"];
   [response appendContentString: [self _freeBusyAsText]];
+
+  return response;
+}
+
+- (id <WOActionResults>) logoffAction
+{
+  WOResponse *response;
+  WOCookie *cookie;
+  SOGoWebAuthenticator *auth;
+  id container;
+  NSCalendarDate *date;
+
+  container = [[self clientObject] container];
+
+  response = [context response];
+  [response setStatus: 302];
+  [response setHeader: [container baseURLInContext: context]
+	    forKey: @"location"];
+  auth = [[self clientObject] authenticatorInContext: context];
+  cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
+		     value: @"discard"];
+  [cookie setPath: @"/"];
+  date = [NSCalendarDate calendarDate];
+  [cookie setExpires: [date yesterday]];
+  [response addCookie: cookie];
+  
+  [response setHeader: date forKey: @"Last-Modified"];
+  [response setHeader: @"no-store, no-cache, must-revalidate, max-age=0" forKey: @"Cache-Control"];
+  [response setHeader: @"post-check=0, pre-check=0" forKey: @"Cache-Control"];
+  [response setHeader: @"no-cache" forKey: @"Pragma"];
 
   return response;
 }

@@ -35,4 +35,5 @@ Element.addMethods({
       }
     }
   }
+
 }); // Element.addMethods

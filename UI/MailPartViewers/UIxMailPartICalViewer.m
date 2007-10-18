@@ -195,7 +195,8 @@
 
 /* calendar folder support */
 
-- (id)calendarFolder {
+- (id) calendarFolder
+{
   /* return scheduling calendar of currently logged-in user */
   SOGoUser *user;
   id folder;
@@ -205,7 +206,7 @@
 						inContext: context
 						acquire: NO];
 
-  return folder;
+  return [folder lookupName: @"personal" inContext: context acquire: NO];
 }
 
 - (id)storedEventObject {

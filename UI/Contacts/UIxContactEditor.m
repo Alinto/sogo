@@ -584,8 +584,8 @@
   id <SOGoContactFolder> co;
 
   co = [self clientObject];
-  if ([[co class] respondsToSelector: @selector (globallyUniqueObjectId)])
-    objectId = [[[self clientObject] class] globallyUniqueObjectId];
+  if ([co respondsToSelector: @selector (globallyUniqueObjectId)])
+    objectId = [co globallyUniqueObjectId];
   else
     objectId = nil;
 

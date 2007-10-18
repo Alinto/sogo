@@ -39,6 +39,14 @@
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Nouveau";
 
+/* Tooltips */
+
+"Create a new address book card" = "Créer une nouvelle fiche";
+"Create a new list" = "Créer une nouvelle liste de diffusion";
+"Edit the selected card" = "Modifier la fiche sélectionnée";
+"Send a mail message" = "Rédiger un courrier à la sélection";
+"Delete selected card or address book" = "Supprimer la fiche sélectionnée";
+
 "htmlMailFormat_UNKNOWN" = "Inconnu";
 "htmlMailFormat_FALSE" = "Texte simple (sans HTML)";
 "htmlMailFormat_TRUE" = "HTML";
@@ -110,6 +118,8 @@
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
 
+"Address Book Name" = "Nom du carnet d'adresses";
+
 "You cannot subscribe to a folder that you own!"
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
 "Unable to subscribe to that folder!"
@@ -128,4 +138,7 @@
 = "Cette personne peut visionner les fiches de ce carnet d'adresses.";
 "This person can erase cards from this addressbook."
 = "Cette personne peut effacer des fiches de ce carnet d'adresses.";
+
+"The selected contact has no email address."
+= "Cette personne n'a pas d'adresse courriel.";
 

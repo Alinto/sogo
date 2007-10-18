@@ -73,7 +73,6 @@
 
 @implementation UIxMailEditor
 
-static BOOL keepMailTmpFile = NO;
 static BOOL showInternetMarker = NO;
 static BOOL useLocationBasedSentFolder = NO;
 static NSDictionary *internetMailHeaders = nil;
@@ -85,12 +84,8 @@ static NSArray *infoKeys = nil;
   
   infoKeys = [[NSArray alloc] initWithObjects:
 				@"subject", @"to", @"cc", @"bcc", 
-			      @"from", @"replyTo",
+			      @"from", @"replyTo", @"inReplyTo",
 			      nil];
-  
-  keepMailTmpFile = [ud boolForKey:@"SOGoMailEditorKeepTmpFile"];
-  if (keepMailTmpFile)
-    NSLog(@"WARNING: keeping mail files.");
   
   useLocationBasedSentFolder =
     [ud boolForKey:@"SOGoUseLocationBasedSentFolder"];
@@ -409,10 +404,7 @@ static NSArray *infoKeys = nil;
     {
       result = [[self clientObject] save];
       if (!result)
-	{
-	  result = [context response];
-	  [result setStatus: 204];
-	}
+	result = [self responseWith204];
     }
   else
     result = [self failedToSaveFormResponse];
@@ -450,7 +442,7 @@ static NSArray *infoKeys = nil;
 	{
 	  result = [[self clientObject] sendMail];
 	  if (!result)
-	    result = [self jsCloseWithRefreshMethod: nil];
+	    result = [self jsCloseWithRefreshMethod: @"refreshFolderByType(\"sent\")"];
 	}
       else
 	result = [self failedToSaveFormResponse];

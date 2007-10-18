@@ -6,7 +6,9 @@ WOBUNDLE_NAME = Appointments
 
 Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 
-# Appointments_LANGUAGES = English French
+Appointments_LANGUAGES = English French German
+
+Appointments_LOCALIZED_RESOURCE_FILES=Localizable.strings
 
 Appointments_OBJC_FILES = \
 	Product.m			\
@@ -17,6 +19,7 @@ Appointments_OBJC_FILES = \
 	SOGoAppointmentObject.m		\
 	SOGoTaskObject.m		\
 	SOGoAppointmentFolder.m		\
+	SOGoAppointmentFolders.m	\
 	SOGoGroupAppointmentFolder.m	\
 	SOGoFreeBusyObject.m		\
 	\
@@ -32,13 +35,20 @@ Appointments_RESOURCE_FILES +=		\
 
 Appointments_COMPONENTS +=	\
 	SOGoAptMailEnglishInvitation.wo	\
-	SOGoAptMailFrenchInvitation.wo	\
 	SOGoAptMailEnglishUpdate.wo	\
-	SOGoAptMailFrenchUpdate.wo	\
 	SOGoAptMailEnglishRemoval.wo	\
-	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
+	SOGoAptMailFrenchInvitation.wo	\
+	SOGoAptMailFrenchUpdate.wo	\
+	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailFrenchDeletion.wo	\
+	SOGoAptMailGermanInvitation.wo	\
+	SOGoAptMailGermanUpdate.wo	\
+	SOGoAptMailGermanRemoval.wo	\
+	SOGoAptMailGermanDeletion.wo	\
+
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

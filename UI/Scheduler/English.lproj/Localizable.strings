@@ -1,5 +1,16 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Create a new event";
+"Create a new task" = "Create a new task";
+"Edit this event or task" = "Edit this event or task";
+"Delete this event or task" = "Delete this event or task";
+"Go to today" = "Go to today";
+"Switch to day view" = "Switch to day view";
+"Switch to week view" = "Switch to week view";
+"Switch to month view" = "Switch to month view";
+
 /* Day */
 
 "Sunday" = "Sunday";
@@ -99,8 +110,11 @@
 
 /* Button Titles */
 
-"Add..." = "Add...";
-"Remove" = "Remove";
+"New Calendar..." = "New Calendar...";
+"Subscribe to a Calendar..." = "Subscribe to a Calendar...";
+"Remove the selected Calendar" = "Remove the selected Calendar";
+
+"Name of the Calendar" = "Name of the Calendar";
 
 "new" = "New";
 "printview" = "Print View";
@@ -365,6 +379,9 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "eventDeleteConfirmation" = "Erasing this event will be permanent.\\nWould you like to continue?";
 "taskDeleteConfirmation" = "Erasing this task will be permanent.\\nWould you like to continue?";
 
+"Are you sure you want to delete the selected calendar?"
+= "Are you sure you want to delete the selected calendar?";
+
 /* Legend */
 "Required participant" = "Required participant";
 "Optional participant" = "Optional participant";
@@ -393,5 +410,5 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Location" = "Location";
 "(Private Event)" = "(Private Event)";
 
-"closeThisWindowMessage" = "Thank you! You may now close this window.";
+"closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
 "Multicolumn Day View" = "Multicolumn Day View";

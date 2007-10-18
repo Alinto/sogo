@@ -1,12 +1,10 @@
 /* this file is in UTF-8 format! */
 
-"Homepage" = "Accueil";
+"title" = "SOGo";
 
-"Internet access authorized and" = "L'accès depuis internet est autorisé et ";
-"Internet access unauthorized and" = "L'accès depuis internet est interdit et "; 
-"internetAccessState_0" = "FERMÉ";
-"internetAccessState_1" = "OUVERT";
+"Login:" = "Nom d'utilisateur :";
+"Password:" = "Mot de passe :";
 
-"Automatic vacation messages activation" = "Activation du message de réponse automatique ";
-"Internet" = "Internet";
-"Intranet" = "Intranet";
+"Connect" = "Connexion";
+
+"Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";

@@ -29,6 +29,7 @@
 
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRecurrenceRule.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
@@ -48,10 +49,20 @@
       aptEndDate = nil;
       item = nil;
       event = nil;
+      repeat = nil;
       isAllDay = NO;
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [item release];
+  [repeat release];
+  [aptStartDate release];
+  [aptEndDate release];
+  [super dealloc];
 }
 
 /* template values */
@@ -137,7 +148,7 @@
 
 - (void) setItem: (NSString *) newItem
 {
-  item = newItem;
+  ASSIGN (item, newItem);
 }
 
 - (NSString *) item
@@ -184,6 +195,15 @@
 //   return reminder;
 // }
 
+- (NSString *) reminder
+{
+  return @"";
+}
+
+- (void) setReminder: (NSString *) newReminder
+{
+}
+
 - (NSString *) itemReminderText
 {
   NSString *text;
@@ -198,20 +218,12 @@
 
 - (NSString *) repeat
 {
-  return @"";
+  return repeat;
 }
 
 - (void) setRepeat: (NSString *) newRepeat
 {
-}
-
-- (NSString *) reminder
-{
-  return @"";
-}
-
-- (void) setReminder: (NSString *) newReminder
-{
+  ASSIGN (repeat, newRepeat);
 }
 
 /* actions */
@@ -249,6 +261,7 @@
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
   unsigned int minutes;
+  iCalRecurrenceRule *rule;
 
   event = (iCalEvent *) [[self clientObject] component: NO];
   if (event)
@@ -276,8 +289,40 @@
   ASSIGN (aptStartDate, startDate);
   ASSIGN (aptEndDate, endDate);
 
+  // We initialize our repeat ivars
+  if ([event hasRecurrenceRules])
+    {
+      repeat = @"CUSTOM";
 
-  /* here comes the code for initializing repeat, reminder and isAllDay... */
+      rule = [[event recurrenceRules] lastObject];
+
+      if ([rule frequency] == iCalRecurrenceFrequenceWeekly)
+	{
+	  if ([rule repeatInterval] == 1)
+	    repeat = @"WEEKLY";
+	  else if ([rule repeatInterval] == 2)
+	    repeat = @"BI-WEEKLY";
+	}
+      else if ([rule frequency] == iCalRecurrenceFrequenceDaily)
+	{
+	  if ([rule byDayMask] == (iCalWeekDayMonday
+				   | iCalWeekDayTuesday
+				   | iCalWeekDayWednesday
+				   | iCalWeekDayThursday
+				   | iCalWeekDayFriday))
+	    repeat = @"EVERY WEEKDAY";
+	  else if (![rule byDayMask])
+	    repeat = @"DAILY";
+	}
+      else if ([rule frequency] == iCalRecurrenceFrequenceMonthly
+	       && [rule repeatInterval] == 1)
+	repeat = @"MONTHLY";
+      else if ([rule frequency] == iCalRecurrenceFrequenceYearly
+	       && [rule repeatInterval] == 1)
+	repeat = @"YEARLY";
+    }
+  else
+    DESTROY(repeat);
 
   return self;
 }
@@ -286,14 +331,14 @@
 {
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
-  Class clientKlazz;
+  SOGoAppointmentFolder *co;
 
-  clientKlazz = [[self clientObject] class];
-  objectId = [clientKlazz globallyUniqueObjectId];
+  co = [self clientObject];
+  objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/Calendar/%@/editAsAppointment",
-                         [self userFolderPath], objectId];
+      method = [NSString stringWithFormat:@"%@/%@/editAsAppointment",
+                         [co soURL], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }
@@ -310,7 +355,11 @@
   NSString *iCalString;
 
   clientObject = [self clientObject];
+  NSLog(@"saveAction, clientObject = %@", clientObject);
+
   iCalString = [[clientObject calendar: NO] versitString];
+
+  NSLog(@"saveAction, iCalString = %@", iCalString);
   [clientObject saveContentString: iCalString];
 
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
@@ -319,8 +368,12 @@
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
+  NSString *actionName;
+
+  actionName = [[request requestHandlerPath] lastPathComponent];
+
   return ([[self clientObject] isKindOfClass: [SOGoAppointmentObject class]]
-	  && [[request method] isEqualToString: @"POST"]);
+	  && [actionName hasPrefix: @"save"]);
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
@@ -328,6 +381,7 @@
 {
   SOGoAppointmentObject *clientObject;
   int nbrDays;
+  iCalRecurrenceRule *rule;
 
   clientObject = [self clientObject];
   event = (iCalEvent *) [clientObject component: YES];
@@ -348,6 +402,36 @@
     }
   if ([clientObject isNew])
     [event setTransparency: @"OPAQUE"];
+
+  // We remove any repeat rules
+  if (!repeat && [event hasRecurrenceRules])
+    [event removeAllRecurrenceRules];
+  else if (!([repeat caseInsensitiveCompare: @"-"] == NSOrderedSame
+	     || [repeat caseInsensitiveCompare: @"CUSTOM"] == NSOrderedSame))
+    {
+      rule = [iCalRecurrenceRule new];
+
+      [rule setInterval: @"1"];
+      if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
+	{
+	  [rule setFrequency: iCalRecurrenceFrequenceWeekly];
+	  [rule setInterval: @"2"];
+	}
+      else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
+	{
+	  [rule setByDayMask: (iCalWeekDayMonday
+			       |iCalWeekDayTuesday
+			       |iCalWeekDayWednesday
+			       |iCalWeekDayThursday
+			       |iCalWeekDayFriday)];
+	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
+	}
+      else
+	[rule setFrequency:
+		(iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
+      [event setRecurrenceRules: [NSArray arrayWithObject: rule]];
+      [rule release];
+    }
 }
 
 // TODO: add tentatively

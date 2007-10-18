@@ -17,7 +17,7 @@ var cachedDateSelectors = new Array();
 var contactSelectorAction = 'calendars-contacts';
 
 var eventsToDelete = new Array();
-var ownersOfEventsToDelete = new Array();
+var calendarsOfEventsToDelete = new Array();
 
 var usersRightsWindowHeight = 250;
 var usersRightsWindowWidth = 502;
@@ -27,15 +27,11 @@ function newEvent(sender, type) {
    if (!day)
       day = currentDay;
 
-   var user = UserLogin;
-   if (sender.parentNode.getAttribute("id") != "toolbar"
-       && currentView == "multicolumndayview" && type == "event")
-      user = sender.parentNode.parentNode.getAttribute("user");
-
    var hour = sender.hour;
    if (!hour)
       hour = sender.getAttribute("hour");
-   var urlstr = UserFolderURL + "../" + user + "/Calendar/new" + type;
+   var folderID = getSelectedFolder();
+   var urlstr = ApplicationBaseURL + folderID + "/new" + type;
    var params = new Array();
    if (day)
       params.push("day=" + day);
@@ -49,6 +45,18 @@ function newEvent(sender, type) {
    return false; /* stop following the link */
 }
 
+function getSelectedFolder() {
+  var folder;
+
+  var nodes = $("calendarList").getSelectedRows();
+  if (nodes.length > 0)
+    folder = nodes[0].getAttribute("id");
+  else
+    folder = "/personal";
+
+  return folder;
+}
+
 function onMenuNewEventClick(event) {
    newEvent(this, "event");
 }
@@ -57,13 +65,8 @@ function onMenuNewTaskClick(event) {
    newEvent(this, "task");
 }
 
-function _editEventId(id, owner) {
-  var urlBase;
-  if (owner)
-    urlBase = UserFolderURL + "../" + owner + "/";
-  urlBase += "Calendar/"
-
-  var urlstr = urlBase + id + "/edit";
+function _editEventId(id, calendar) {
+  var urlstr = ApplicationBaseURL + "/" + calendar + "/" + id + "/edit";
   var targetname = "SOGo_edit_" + id;
   var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
@@ -76,10 +79,10 @@ function editEvent() {
 
     for (var i = 0; i < nodes.length; i++)
       _editEventId(nodes[i].getAttribute("id"),
-                   nodes[i].owner);
+                   nodes[i].calendar);
   } else if (selectedCalendarCell) {
       _editEventId(selectedCalendarCell[0].cname,
-                   selectedCalendarCell[0].owner);
+                   selectedCalendarCell[0].calendar);
   }
 
   return false; /* stop following the link */
@@ -87,9 +90,9 @@ function editEvent() {
 
 function _batchDeleteEvents() {
   var events = eventsToDelete.shift();
-  var owner = ownersOfEventsToDelete.shift();
-  var urlstr = (UserFolderURL + "../" + owner + "/Calendar/batchDelete?ids="
-                + events.join('/'));
+  var calendar = calendarsOfEventsToDelete.shift();
+  var urlstr = (ApplicationBaseURL + "/" + calendar
+		+ "/batchDelete?ids=" + events.join('/'));
   document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                        deleteEventCallback,
                                                        events);
@@ -102,9 +105,9 @@ function deleteEvent() {
     if (nodes.length > 0) {
       var label = "";
       if (listOfSelection == $("tasksList"))
-        label = labels["taskDeleteConfirmation"].decodeEntities();
+        label = labels["taskDeleteConfirmation"];
       else
-        label = labels["eventDeleteConfirmation"].decodeEntities();
+        label = labels["eventDeleteConfirmation"];
       
       if (confirm(label)) {
         if (document.deleteEventAjaxRequest) {
@@ -112,33 +115,33 @@ function deleteEvent() {
           document.deleteEventAjaxRequest.abort();
         }
         var sortedNodes = new Array();
-        var owners = new Array();
+        var calendars = new Array();
 
         for (var i = 0; i < nodes.length; i++) {
-          var owner = nodes[i].owner;
-          if (!sortedNodes[owner]) {
-              sortedNodes[owner] = new Array();
-              owners.push(owner);
+          var calendar = nodes[i].calendar;
+          if (!sortedNodes[calendar]) {
+	    sortedNodes[calendar] = new Array();
+	    calendars.push(calendar);
           }
-          sortedNodes[owner].push(nodes[i].cname);
+          sortedNodes[calendar].push(nodes[i].cname);
         }
-        for (var i = 0; i < owners.length; i++) {
-          ownersOfEventsToDelete.push(owners[i]);
-          eventsToDelete.push(sortedNodes[owners[i]]);
+        for (var i = 0; i < calendars.length; i++) {
+          calendarsOfEventsToDelete.push(calendars[i]);
+          eventsToDelete.push(sortedNodes[calendars[i]]);
         }
         _batchDeleteEvents();
       }
     }
   }
   else if (selectedCalendarCell) {
-     var label = labels["eventDeleteConfirmation"].decodeEntities();
+     var label = labels["eventDeleteConfirmation"];
      if (confirm(label)) {
         if (document.deleteEventAjaxRequest) {
            document.deleteEventAjaxRequest.aborted = true;
            document.deleteEventAjaxRequest.abort();
         }
         eventsToDelete.push([selectedCalendarCell[0].cname]);
-        ownersOfEventsToDelete.push(selectedCalendarCell[0].owner);
+        calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
         _batchDeleteEvents();
      }
   }
@@ -162,59 +165,67 @@ function modifyEvent(sender, modification) {
 
 function closeInvitationWindow() {
   var closeDiv = document.createElement("div");
+  document.body.appendChild(closeDiv);
   closeDiv.addClassName("javascriptPopupBackground");
+
   var closePseudoWin = document.createElement("div");
+  document.body.appendChild(closePseudoWin);
   closePseudoWin.addClassName("javascriptMessagePseudoTopWindow");
   closePseudoWin.style.top = "0px;";
   closePseudoWin.style.left = "0px;";
   closePseudoWin.style.right = "0px;";
-  closePseudoWin.appendChild(document.createTextNode(labels["closeThisWindowMessage"].decodeEntities()));
-  document.body.appendChild(closeDiv);
-  document.body.appendChild(closePseudoWin);
+  closePseudoWin.appendChild(document.createTextNode(labels["closeThisWindowMessage"]));
+
+  var calLink = document.createElement("a");
+  closePseudoWin.appendChild(calLink);
+  calLink.href = ApplicationBaseURL;
+  calLink.appendChild(document.createTextNode(labels["Calendar"].toLowerCase()));
 }
 
 function modifyEventCallback(http) {
-   if (http.readyState == 4) {
-      if (http.status == 200) {
-	 if (queryParameters["mail-invitation"].toLowerCase() == "yes")
-	    closeInvitationWindow();
-	 else {
-	    window.opener.setTimeout("refreshEventsAndDisplay();", 100);
-	    window.setTimeout("window.close();", 100);
-	 }
-      }
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      var mailInvitation = queryParameters["mail-invitation"];
+      if (mailInvitation && mailInvitation.toLowerCase() == "yes")
+	closeInvitationWindow();
       else {
-// 	 log("showing alert...");
-	 window.alert(labels["eventPartStatModificationError"]);
+	window.opener.setTimeout("refreshEventsAndDisplay();", 100);
+	window.setTimeout("window.close();", 100);
       }
-      document.modifyEventAjaxRequest = null;
-   }
+    }
+    else {
+// 	 log("showing alert...");
+      window.alert(labels["eventPartStatModificationError"]);
+    }
+    document.modifyEventAjaxRequest = null;
+  }
 }
 
 function deleteEventCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
-    var nodes = http.callbackData;
-    for (var i = 0; i < nodes.length; i++) {
-      var node = $(nodes[i]);
-      if (node)
-        node.parentNode.removeChild(node);
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var nodes = http.callbackData;
+      for (var i = 0; i < nodes.length; i++) {
+	var node = $(nodes[i]);
+	if (node)
+	  node.parentNode.removeChild(node);
+      }
+      if (eventsToDelete.length)
+	_batchDeleteEvents();
+      else {
+	document.deleteEventAjaxRequest = null;
+	refreshEvents();
+	refreshTasks();
+	changeCalendarDisplay();
+      }
     }
-    if (eventsToDelete.length)
-      _batchDeleteEvents();
-    else {
-      document.deleteEventAjaxRequest = null;
-      refreshEvents();
-      refreshTasks();
-      changeCalendarDisplay();
-    }
+    else
+      log ("deleteEventCallback Ajax error");
   }
-  else
-    log ("deleteEventCallback Ajax error");
 }
 
 function editDoubleClickedEvent(event) {
-  _editEventId(this.cname, this.owner);
+  _editEventId(this.cname, this.calendar);
 
   preventDefault(event);
   event.cancelBubble = true;
@@ -302,20 +313,20 @@ function eventsListCallback(http) {
      var div = $("eventsListView");
 
     document.eventsListAjaxRequest = null;
-    var table = $("eventsList").tBodies[0];
+    var table = $("eventsList");
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
-    configureSortableTableHeaders();
+    lastClickedRow = null; // from generic.js
 
     var data = http.responseText.evalJSON(true);
     for (var i = 0; i < data.length; i++) {
       var row = document.createElement("tr");
-      table.appendChild(row);
+      table.tBodies[0].appendChild(row);
       $(row).addClassName("eventRow");
       row.setAttribute("id", escape(data[i][0]));
       row.cname = escape(data[i][0]);
-      row.owner = data[i][1];
+      row.calendar = data[i][1];
 
       var startDate = new Date();
       startDate.setTime(data[i][4] * 1000);
@@ -366,14 +377,13 @@ function tasksListCallback(http) {
       //log(i + " = " + data[i][3]);
       var listItem = document.createElement("li");
       list.appendChild(listItem);
-      Event.observe(listItem, "mousedown", listRowMouseDownHandler); // causes problem with Safari
+      Event.observe(listItem, "mousedown", listRowMouseDownHandler);
       Event.observe(listItem, "click", onRowClick);
       Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
       listItem.setAttribute("id", data[i][0]);
       $(listItem).addClassName(data[i][5]);
-      var owner = data[i][1];
-      listItem.owner = owner;
-      $(listItem).addClassName("ownerIs" + owner);
+      listItem.calendar = data[i][1];
+      $(listItem).addClassName("calendarFolder" + data[i][1]);
       listItem.cname = escape(data[i][0]);
       var input = document.createElement("input");
       input.setAttribute("type", "checkbox");
@@ -428,7 +438,7 @@ function restoreCurrentDaySelection(div) {
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
-  var url = ApplicationBaseURL + "dateselector";
+  var url = ApplicationBaseURL + "/dateselector";
   if (day)
     url += "?day=" + day;
 
@@ -456,7 +466,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 }
 
 function changeCalendarDisplay(time, newView) {
-  var url = ApplicationBaseURL + ((newView) ? newView : currentView);
+  var url = ApplicationBaseURL + "/" + ((newView) ? newView : currentView);
 
   selectedCalendarCell = null;
 
@@ -582,7 +592,7 @@ function refreshCalendarEvents() {
       document.refreshCalendarEventsAjaxRequest.aborted = true;
       document.refreshCalendarEventsAjaxRequest.abort();
    }
-   var url = ApplicationBaseURL + "eventslist?sd=" + sd + "&ed=" + ed;
+   var url = ApplicationBaseURL + "/eventslist?sd=" + sd + "&ed=" + ed;
    document.refreshCalendarEventsAjaxRequest
       = triggerAjaxRequest(url, refreshCalendarEventsCallback,
 	                   {"startDate": sd, "endDate": ed});
@@ -607,9 +617,17 @@ function drawCalendarEvent(eventData, sd, ed) {
    var viewEndDate = ed.asDate();
 
    var startDate = new Date();
-   startDate.setTime(eventData[4] * 1000);
    var endDate = new Date();
-   endDate.setTime(eventData[5] * 1000);
+   if (eventData[7] == 0) {
+     startDate.setTime(eventData[4] * 1000 + (1000 * UTCOffset));
+     endDate.setTime(eventData[5] * 1000 + (1000 * UTCOffset));
+   }
+   else {
+     startDate.setTime(eventData[4] * 1000);
+     endDate.setTime(eventData[5] * 1000);
+   }
+
+//    log ("s: " + startDate+ "; e: " + endDate);
 
    var days = startDate.daysUpTo(endDate);
 
@@ -635,8 +653,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 
 // 	 log("day: " + days[i]);
 	 if (i == 0) {
-	    var quarters = (startDate.getHours() * 4
-			    + Math.floor(startDate.getMinutes() / 15));
+	    var quarters = (startDate.getUTCHours() * 4
+			    + Math.floor(startDate.getUTCMinutes() / 15));
 	    starts = quarters;
 	    startHour = startDate.getDisplayHoursString();
 	    endHour = endDate.getDisplayHoursString();
@@ -647,8 +665,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 var ends;
 	 var lasts;
 	 if (i == days.length - 1) {
-	    var quarters = (endDate.getHours() * 4
-			    + Math.ceil(endDate.getMinutes() / 15));
+	    var quarters = (endDate.getUTCHours() * 4
+			    + Math.ceil(endDate.getUTCMinutes() / 15));
 	    ends = quarters;
 	 }
 	 else
@@ -705,11 +723,11 @@ function drawCalendarEvent(eventData, sd, ed) {
       }
 }
 
-function newEventDIV(cname, owner, starts, lasts,
+function newEventDIV(cname, calendar, starts, lasts,
 		     startHour, endHour, title) {
    var eventDiv = document.createElement("div");
    eventDiv.cname = escape(cname);
-   eventDiv.owner = owner;
+   eventDiv.calendar = calendar;
    $(eventDiv).addClassName("event");
    $(eventDiv).addClassName("starts" + starts);
    $(eventDiv).addClassName("lasts" + lasts);
@@ -722,7 +740,7 @@ function newEventDIV(cname, owner, starts, lasts,
    var innerDiv = document.createElement("div");
    eventDiv.appendChild(innerDiv);
    $(innerDiv).addClassName("eventInside");
-   $(innerDiv).addClassName("ownerIs" + owner);
+   $(innerDiv).addClassName("calendarFolder" + calendar);
 
    var gradientDiv = document.createElement("div");
    innerDiv.appendChild(gradientDiv);
@@ -759,7 +777,7 @@ function calendarDisplayCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     document.dayDisplayAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    div.update(http.responseText);
     if (http.callbackData["view"])
       currentView = http.callbackData["view"];
     if (http.callbackData["day"])
@@ -880,13 +898,13 @@ function _loadEventHref(href) {
     document.eventsListAjaxRequest.aborted = true;
     document.eventsListAjaxRequest.abort();
   }
-  var url = ApplicationBaseURL + href;
+  var url = ApplicationBaseURL + "/" + href;
   document.eventsListAjaxRequest
     = triggerAjaxRequest(url, eventsListCallback, href);
 
   var table = $("eventsList").tBodies[0];
-  while (table.rows.length > 1)
-     table.removeChild(table.rows[1]);
+  while (table.rows.length > 0)
+     table.removeChild(table.rows[0]);
 
   return false;
 }
@@ -896,7 +914,7 @@ function _loadTasksHref(href) {
     document.tasksListAjaxRequest.aborted = true;
     document.tasksListAjaxRequest.abort();
   }
-  url = ApplicationBaseURL + href;
+  url = ApplicationBaseURL + "/" + href;
 
   var tasksList = $("tasksList");
   var selectedIds;
@@ -915,8 +933,8 @@ function _loadTasksHref(href) {
 }
 
 function onHeaderClick(event) {
-//   log("onHeaderClick: " + this.link);
-  _loadEventHref(this.link);
+  //log("onHeaderClick: " + this.link);
+  //_loadEventHref(this.link);
 
   preventDefault(event);
 }
@@ -946,7 +964,7 @@ function onListFilterChange() {
   return refreshEvents();
 }
 
-function onEventClick(event) {
+function onEventClick(event) { log ("onEventClick");
   var day = this.day;
   var hour = this.hour;
 
@@ -1023,7 +1041,7 @@ function onSearchFormSubmit() {
 
 function onCalendarSelectEvent() {
   var list = $("eventsList");
-  list.deselectAll();
+  list.tBodies[0].deselectAll();
 
   if (selectedCalendarCell)
      for (var i = 0; i < selectedCalendarCell.length; i++)
@@ -1118,21 +1136,17 @@ function onShowCompletedTasks(event) {
 
 function updateTaskStatus(event) {
   var taskId = this.parentNode.getAttribute("id");
-  var taskOwner = this.parentNode.owner;
   var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
-  
-  if (isSafari())
+
+  if (isSafari() && !isSafari3()) {
     newStatus = (newStatus ? 0 : 1);
-  //log("update task status: " + taskId + " to " + this.checked);
-  event.cancelBubble = true;
+  }
   
-  url = (UserFolderURL + "../" + taskOwner 
-	 + "/Calendar/" + taskId
-	 + "/changeStatus?status=" + newStatus);
+  url = (ApplicationBaseURL + "/" + this.parentNode.calendar
+	 + "/" + taskId + "/changeStatus?status=" + newStatus);
 
   if (http) {
-//     log ("url: " + url);
     // TODO: add parameter to signal that we are only interested in OK
     http.open("POST", url, false /* not async */);
     http.url = url;
@@ -1147,6 +1161,12 @@ function updateTaskStatus(event) {
 
 function updateCalendarStatus(event) {
   var list = new Array();
+  var newStatus = (this.checked ? 1 : 0);
+  
+  if (isSafari() && !isSafari3()) {
+    newStatus = (newStatus ? 0 : 1);
+    this.checked = newStatus;
+  }
 
   var nodes = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++) {
@@ -1161,17 +1181,18 @@ function updateCalendarStatus(event) {
     }
   }
 
-  if (!list.length) {
-     list.push(UserLogin);
-     nodes[0].childNodesWithTag("input")[0].checked = true;
-  }
+//   if (!list.length) {
+//      list.push(UserLogin);
+//      nodes[0].childNodesWithTag("input")[0].checked = true;
+//   }
+
 //   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
 // 			+ list.join(",") + "/Calendar/");
 
   if (event) {
      var folderID = this.parentNode.getAttribute("id");
      var urlstr = URLForFolderID(folderID);
-     if (this.checked)
+     if (newStatus)
        urlstr += "/activateFolder";
      else
        urlstr += "/deactivateFolder";
@@ -1191,22 +1212,22 @@ function updateCalendarStatus(event) {
 function calendarStatusCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
-         refreshEvents();
-         refreshTasks();
-         changeCalendarDisplay();
-      }
-      else {
-	 var folder = $(http.callbackData);
-         var input = folder.childNodesWithTag("input")[0];
-	 input.checked = (!input.checked);
-      }
-   }
-   else
-      log("calendarStatusCallback Ajax error");
+      refreshEvents();
+      refreshTasks();
+      changeCalendarDisplay();
+    }
+    else {
+      var folder = $(http.callbackData);
+      var input = folder.childNodesWithTag("input")[0];
+      input.checked = (!input.checked);
+    }
+  }
+  else
+    log("calendarStatusCallback Ajax error");
 }
 
 function calendarEntryCallback(http) {
-   if (http.readyState == 4) { 
+   if (http.readyState == 4) {
       var denied = !isHttpStatus204(http.status);
       var entry = $(http.callbackData);
       if (denied)
@@ -1288,7 +1309,10 @@ function getMenus() {
 				       editEvent, deleteEvent, "-",
 				       onSelectAll, "-",
 				       null, null);
-   menus["calendarsMenu"] = new Array(null, null, "-", null, null, "-",
+   menus["calendarsMenu"] = new Array(onMenuModify,
+				      "-",
+				      onCalendarNew, onCalendarRemove,
+				      "-", null, null, "-",
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
 
@@ -1329,88 +1353,139 @@ function initCalendarSelector() {
   updateCalendarStatus();
   selector.changeNotification = updateCalendarsList;
 
-  var list = $("calendarList").childNodesWithTag("li");
-  for (var i = 0; i < list.length; i++) {
-    var input = list[i].childNodesWithTag("input")[0];
-    Event.observe(input, "click", updateCalendarStatus.bindAsEventListener(input)); // not registered in IE?
-    //Event.observe(list[i], "mousedown", listRowMouseDownHandler, true); // problem with Safari
-    Event.observe(list[i], "click", onRowClick);
+  var list = $("calendarList");
+  list.multiselect = true;
+  var items = list.childNodesWithTag("li");
+  for (var i = 0; i < items.length; i++) {
+    var input = items[i].childNodesWithTag("input")[0];
+    Event.observe(input, "click", updateCalendarStatus.bindAsEventListener(input));
+    Event.observe(items[i], "mousedown", listRowMouseDownHandler);
+    Event.observe(items[i], "selectstart", listRowMouseDownHandler);
+    Event.observe(items[i], "click", onRowClick);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
-  Event.observe(links[0], "click",  onCalendarAdd);
-  Event.observe(links[1], "click",  onCalendarRemove);
+  Event.observe(links[0], "click",  onCalendarNew);
+  Event.observe(links[1], "click",  onCalendarAdd);
+  Event.observe(links[2], "click",  onCalendarRemove);
+}
+
+function onMenuModify(event) {
+  var folders = $("calendarList");
+  var selected = folders.getSelectedNodes()[0];
+
+  if (UserLogin == selected.getAttribute("owner")) {
+    var node = selected.childNodes[4];
+    var currentName = node.nodeValue.trim();
+    var newName = window.prompt(labels["Address Book Name"],
+				currentName);
+    if (newName && newName.length > 0
+	&& newName != currentName) {
+      var url = (URLForFolderID(selected.getAttribute("id"))
+		 + "/renameFolder?name=" + escape(newName.utf8encode()));
+      triggerAjaxRequest(url, folderRenameCallback,
+			 {node: node, name: " " + newName});
+    }
+  } else
+    window.alert(clabels["Unable to rename that folder!"]);
+}
+
+function folderRenameCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var dict = http.callbackData;
+      dict["node"].nodeValue = dict["name"];
+    }
+  }
+}
+
+function onCalendarNew(event) {
+  createFolder(window.prompt(labels["Name of the Calendar"]),
+	       appendCalendar);
+  preventDefault(event);
 }
 
 function onCalendarAdd(event) {
-   openUserFolderSelector(onFolderSubscribeCB, "calendar");
-
-   preventDefault(event);
+  openUserFolderSelector(onFolderSubscribeCB, "calendar");
+  preventDefault(event);
 }
 
 function appendCalendar(folderName, folder) {
-   var calendarList = $("calendarList");
-   var lis = calendarList.childNodesWithTag("li");
-   var color = indexColor(lis.length);
-   //log ("color: " + color);
+  if (folder)
+    folder = accessToSubscribedFolder(folder);
+  else
+    folder = "/" + folderName;
 
-   var li = document.createElement("li");
-   calendarList.appendChild(li);
+//   log ("append: " + folderName + "; folder: " + folder);
 
-   var checkBox = document.createElement("input");
-   checkBox.setAttribute("type", "checkbox");
-   li.appendChild(checkBox);
-   
-   li.appendChild(document.createTextNode(" "));
+  if ($(folder))
+    window.alert(clabels["You have already subscribed to that folder!"]);
+  else {
+    var calendarList = $("calendarList");
+    var lis = calendarList.childNodesWithTag("li");
+    var color = indexColor(lis.length + 100);
+    //log ("color: " + color);
 
-   var colorBox = document.createElement("div");
-   li.appendChild(colorBox);
-   li.appendChild(document.createTextNode(" " + folderName));
-   colorBox.appendChild(document.createTextNode("OO"));
+    var li = document.createElement("li");
+    calendarList.appendChild(li);
+    li.setAttribute("id", folder);
 
-   li.setAttribute("id", folder);
-   Event.observe(li, "mousedown",  listRowMouseDownHandler);
-   Event.observe(li, "click",  onRowClick);
-   $(checkBox).addClassName("checkBox");
+    var checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    li.appendChild(checkBox);
+    li.appendChild(document.createTextNode(" "));
+    $(checkBox).addClassName("checkBox");
 
-   Event.observe(checkBox, "click",  updateCalendarStatus.bindAsEventListener(checkBox));
+    var colorBox = document.createElement("div");
+    li.appendChild(colorBox);
+    li.appendChild(document.createTextNode(" " + folderName));
+    colorBox.appendChild(document.createTextNode("OO"));
 
-   $(colorBox).addClassName("colorBox");
-   if (color) {
-      $(colorBox).setStyle({ color: color,
-	                     backgroundColor: color });
-   }
+    $(colorBox).addClassName("colorBox");
+    if (color)
+      $(colorBox).setStyle({color: color,
+			    backgroundColor: color});
 
-   var contactId = folder.split(":")[0];
-   var url = URLForFolderID(folder) + "/canAccessContent";
-   triggerAjaxRequest(url, calendarEntryCallback, folder);
+    // Register events (doesn't work with Safari)
+    Event.observe(li, "mousedown",  listRowMouseDownHandler);
+    Event.observe(li, "selectstart", listRowMouseDownHandler);
+    Event.observe(li, "click",  onRowClick);
+    Event.observe(checkBox, "click",
+		  updateCalendarStatus.bindAsEventListener(checkBox));
 
-   if (!document.styleSheets) return;
-   var theRules = new Array();
-   var lastSheet = document.styleSheets[document.styleSheets.length - 1];
-   if (lastSheet.insertRule) { // Mozilla
-      lastSheet.insertRule('.ownerIs' + contactId + ' {'
+    var url = URLForFolderID(folder) + "/canAccessContent";
+    triggerAjaxRequest(url, calendarEntryCallback, folder);
+    
+    if (!document.styleSheets) return;
+    var theRules = new Array();
+    var lastSheet = document.styleSheets[document.styleSheets.length - 1];
+    if (lastSheet.insertRule) { // Mozilla
+      lastSheet.insertRule('.calendarFolder' + folder.substr(1) + ' {'
 			   + ' background-color: '
 			   + color
 			   + ' !important; }', 0);
-   }
-   else { // IE
-      lastSheet.addRule('.ownerIs' + contactId,
+    }
+    else { // IE
+      lastSheet.addRule('.calendarFolder' + folder.substr(1),
 			' background-color: '
 			+ color
 			+ ' !important; }');
-   }
+    }
+  }
 }
 
 function onFolderSubscribeCB(folderData) {
-   var folder = $(folderData["folder"]);
+  var folder = $(folderData["folder"]);
    if (!folder)
-      appendCalendar(folderData["folderName"], folderData["folder"]);
+     appendCalendar(folderData["folderName"], folderData["folder"]);
 }
 
 function onFolderUnsubscribeCB(folderId) {
-   var node = $(folderId);
-   node.parentNode.removeChild(node);
+  var node = $(folderId);
+  node.parentNode.removeChild(node);
+  refreshEvents();
+  refreshTasks();
+  changeCalendarDisplay();
 }
 
 function onCalendarRemove(event) {
@@ -1418,13 +1493,57 @@ function onCalendarRemove(event) {
   if (nodes.length > 0) { 
      nodes[0].deselect();
      var folderId = nodes[0].getAttribute("id");
-     var folderIdElements = folderId.split(":");
+     var folderIdElements = folderId.split("_");
      if (folderIdElements.length > 1) {
-	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+       unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+     }
+     else {
+       var calId = folderIdElements[0].substr(1);
+       deletePersonalCalendar(calId);
      }
   }
 
   preventDefault(event);
+}
+
+function deletePersonalCalendar(folderId) {
+  var label
+    = labels["Are you sure you want to delete the selected calendar?"];
+  if (window.confirm(label)) {
+    if (document.deletePersonalCalendarAjaxRequest) {
+      document.deletePersonalCalendarAjaxRequest.aborted = true;
+      document.deletePersonalCalendarAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";
+    document.deletePersonalCalendarAjaxRequest
+      = triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
+  }
+}
+
+function deletePersonalCalendarCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var ul = $("calendarList");
+      var children = ul.childNodesWithTag("li");
+      var i = 0;
+      var done = false;
+      while (!done && i < children.length) {
+	var currentFolderId = children[i].getAttribute("id").substr(1);
+	if (currentFolderId == http.callbackData) {
+	  ul.removeChild(children[i]);
+	  done = true;
+	}
+	else
+	  i++;
+      }
+      refreshEvents();
+      refreshTasks();
+      changeCalendarDisplay();
+    }
+    document.deletePersonalCalendarAjaxRequest = null;
+  }
+  else
+    log ("ajax problem 5: " + http.status);
 }
 
 function configureLists() {
@@ -1439,6 +1558,8 @@ function configureLists() {
 
    list = $("eventsList");
    list.multiselect = true;
+   //configureSortableTableHeaders(list);
+   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
    Event.observe(list, "mousedown",
 		 onEventsSelectionChange.bindAsEventListener(list));
    var div = list.parentNode;

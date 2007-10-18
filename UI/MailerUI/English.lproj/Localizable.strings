@@ -19,11 +19,28 @@
 "Attach" = "Attach";
 "Save" = "Save";
 
+/* Tooltips */
+
+"Send this message now" = "Send this message now";
+"Select a recipient from an Address Book" = "Select a recipient from an Address Book";
+"Include an attachment" = "Include an attachment";
+"Save this message" = "Save this message";
+"Get new messages" = "Get new messages";
+"Create a new message" = "Create a new message";
+"Go to address book" = "Go to address book";
+"Reply to the message" = "Reply to the message";
+"Reply to sender and all recipients" = "Reply to sender and all recipients";
+"Forward selected message" = "Forward selected message";
+"Delete selected message or folder" = "Delete selected message or folder";
+"Mark the selected messages as junk" = "Mark the selected messages as junk";
+"Print this message" = "Print this message";
+"Stop the current transfer" = "Stop the current transfer";
+
 /* Main Frame  */
 
 "Home"                 = "Home"; 
 "Calendar"             = "Calendar";
-"Addressbook"          = "Addressbook";
+"Addressbook"          = "Address Book";
 "Mail"                 = "Mail";
 "Right Administration" = "Right Administration";
 
@@ -71,7 +88,7 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "Addressbook";
+"Addressbook"   = "Address Book";
 "Anais"         = "Anais";
 
 "Edit Draft..." = "Edit Draft...";
@@ -122,9 +139,66 @@
 
 "MoveTo"        = "Move &hellip;";
 
-"error_missingsubject"      = "Missing Subject";
-"error_missingrecipients"   = "Missing Recipients";
-"error_validationfailed"    = "Validation failed";
+/* Address Popup menu */
+"Add to Address Book..." = "Add to Address Book...";
+"Compose Mail To" = "Compose Mail To";
+"Create Filter From Message..." = "Create Filter From Message...";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Open in New Mail Window";
+"Copy Folder Location" = "Copy Folder Location";
+"Subscribe..." = "Subscribe...";
+"Mark Folder Read..." = "Mark Folder Read...";
+"New Folder..." = "New Folder...";
+"Compact This Folder" = "Compact This Folder";
+"Search Messages..." = "Search Messages...";
+"Sharing..." = "Sharing...";
+"New Subfolder..." = "New Subfolder...";
+"Rename Folder..." = "Rename Folder...";
+"Delete Folder" = "Delete Folder";
+"Use This Folder For" = "Use This Folder For";
+"Get Messages for Account" = "Get Messages for Account";
+
+/* Use This Folder menu */
+"Sent Messages" = "Sent Messages";
+"Drafts" = "Drafts";
+"Deleted Messages" = "Deleted Messages";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Open Message In New Window";
+"Reply to Sender Only" = "Reply to Sender Only";
+"Reply to All" = "Reply to All";
+"Forward" = "Forward";
+"Edit As New..." = "Edit As New...";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Label" = "Label";
+"Mark" = "Mark";
+"Save As..." = "Save As...";
+"Print Preview" = "Print Preview";
+"View Message Source" = "View Message Source";
+"Print..." = "Print...";
+"Delete Message" = "Delete Message";
+
+"This Folder" = "This Folder";
+
+/* Label popup menu */
+"None" = "None";
+"Important" = "Important";
+"Work" = "Work";
+"Personal" = "Personal";
+"To Do" = "To Do";
+"Later" = "Later";
+
+/* Mark popup menu */
+"As Read" = "As Read";
+"Thread As Read" = "Thread As Read";
+"As Read By Date..." = "As Read By Date...";
+"All Read" = "All Read";
+"Flag" = "Flag";
+"As Junk" = "As Junk";
+"As Not Junk" = "As Not Junk";
+"Run Junk Mail Controls" = "Run Junk Mail Controls";
 
 /* Folder operations */
 "Name :" = "Name :";
@@ -136,5 +210,14 @@
 
 "quotasFormat" = "Quotas: %{0} used on %{1} Kb; %{2}%";
 
+"Please select a message." = "Please select a message.";
 "Please select a message to print." = "Please select a message to print.";
 "Please select only one message to print." = "Please select only one message to print.";
+
+"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+"You need to choose a root subfolder!" = "You need to choose a root subfolder!";
+
+"Moving a message into its own folder is impossible!"
+= "Moving a message into its own folder is impossible!";
+"Copying a message into its own folder is impossible!"
+= "Copying a message into its own folder is impossible!";

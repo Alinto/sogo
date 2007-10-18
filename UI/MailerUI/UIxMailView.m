@@ -142,37 +142,42 @@ static NSString *mailETag = nil;
 
 - (id) defaultAction
 {
+  WOResponse *response;
+  NSString *s;
+
   /* check etag to see whether we really must rerender */
-  if (mailETag != nil ) {
-    /*
-      Note: There is one thing which *can* change for an existing message,
-            those are the IMAP4 flags (and annotations, which we do not use).
-	    Since we don't render the flags, it should be OK, if this changes
-	    we must embed the flagging into the etag.
-    */
-    NSString *s;
-    
-    if ((s = [[context request] headerForKey:@"if-none-match"])) {
-      if ([s rangeOfString:mailETag].length > 0) { /* not perfectly correct */
-	/* client already has the proper entity */
-	// [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
-	
-	if (![[self clientObject] doesMailExist]) {
-	  return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			      reason:@"message got deleted"];
+  if (mailETag)
+    {
+      /*
+	Note: There is one thing which *can* change for an existing message,
+	those are the IMAP4 flags (and annotations, which we do not use).
+	Since we don't render the flags, it should be OK, if this changes
+	we must embed the flagging into the etag.
+      */
+      s = [[context request] headerForKey: @"if-none-match"];
+      if (s)
+	{
+	  if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
+	    { 
+	      /* client already has the proper entity */
+	      // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
+	      
+	      if (![[self clientObject] doesMailExist]) {
+		return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+				    reason:@"message got deleted"];
+	      }
+
+	      response = [context response];
+	      [response setStatus: 304 /* Not Modified */];
+
+	      return response;
+	    }
 	}
-	
-	[[context response] setStatus:304 /* Not Modified */];
-	return [context response];
-      }
     }
-  }
   
-  if ([self message] == nil) {
-    // TODO: redirect to proper error
+  if (![self message]) // TODO: redirect to proper error
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find specified message!"];
-  }
   
   return self;
 }
@@ -199,119 +204,6 @@ static NSString *mailETag = nil;
   url = [[[self clientObject] container] baseURLInContext: context];
 
   return [self redirectToLocation: url];
-}
-
-- (id) deleteAction
-{
-  NSException *ex;
-  
-  if (![self isDeletableClientObject]) {
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:@"method cannot be invoked on "
-                               @"the specified object"];
-  }
-  
-  if ([self isInvokedBySafeMethod]) {
-    // TODO: fix UI to use POST for unsafe actions
-    [self logWithFormat:@"WARNING: method is invoked using safe HTTP method!"];
-  }
-  
-  if ((ex = [[self clientObject] delete]) != nil) {
-    id url;
-    
-    url = [[ex reason] stringByEscapingURL];
-    url = [@"view?error=" stringByAppendingString:url];
-    return [self redirectToLocation:url];
-    //return ex;
-  }
-  
-  if (![self isInlineViewer]) {
-    // if everything is ok, close the window (send a JS closing the Window)
-    id page;
-    
-    page = [self pageWithName:@"UIxMailWindowCloser"];
-    [page takeValue:@"YES" forKey:@"refreshOpener"];
-    return page;
-  }
-  
-  return [self redirectToParentFolder];
-}
-
-- (id) trashAction
-{
-  NSException *ex;
-  
-  if ([self isInvokedBySafeMethod]) {
-    // TODO: fix UI to use POST for unsafe actions
-    [self logWithFormat:@"WARNING: method is invoked using safe HTTP method!"];
-  }
-  
-  if ((ex = [[self clientObject] trashInContext:context]) != nil) {
-    id url;
-    
-    if ([[[context request] formValueForKey:@"jsonly"] boolValue])
-      /* called using XMLHttpRequest */
-      return ex;
-    
-    url = [[ex reason] stringByEscapingURL];
-    url = [@"view?error=" stringByAppendingString:url];
-    return [self redirectToLocation:url];
-  }
-
-  if ([[[context request] formValueForKey:@"jsonly"] boolValue]) {
-    /* called using XMLHttpRequest */
-    [[context response] setStatus:200 /* OK */];
-    return [context response];
-  }
-  
-  if (![self isInlineViewer]) {
-    // if everything is ok, close the window (send a JS closing the Window)
-    id page;
-    
-    page = [self pageWithName:@"UIxMailWindowCloser"];
-    [page takeValue:@"YES" forKey:@"refreshOpener"];
-    return page;
-  }
-  
-  return [self redirectToParentFolder];
-}
-
-- (id <WOActionResults>) moveAction
-{
-  id <WOActionResults> result;
-  NSString *destinationFolder;
-  id url;
-
-  if ([self isInvokedBySafeMethod]) {
-    // TODO: fix UI to use POST for unsafe actions
-    [self logWithFormat:@"WARNING: method is invoked using safe HTTP method!"];
-  }
-
-  destinationFolder = [self queryParameterForKey: @"tofolder"];
-  if ([destinationFolder length] > 0)
-    {
-      result = [[self clientObject] moveToFolderNamed: destinationFolder
-                                    inContext: context];
-      if (result)
-        {
-          if (![[[context request] formValueForKey:@"jsonly"] boolValue])
-            {
-              url = [NSString stringWithFormat: @"view?error=%@",
-                              [[result reason] stringByEscapingURL]];
-              result = [self redirectToLocation: url];
-            }
-        }
-      else
-        {
-          result = [context response];
-          [result setStatus: 200];
-        }
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus:500 /* Server Error */
-                          reason: @"No destination folder given"];
-
-  return result;
 }
 
 /* generating response */

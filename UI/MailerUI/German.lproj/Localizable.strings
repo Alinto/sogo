@@ -14,10 +14,10 @@
 "Stop"        = "Stopp";
 "Write"       = "Verfassen";
 
-"Send" = "Senden"
-"Contacts" = "Kontakte"
+"Send" = "Senden";
+"Contacts" = "Kontakte";
 "Attach" = "Anhang";
-"Save" = "Speichern"
+"Save" = "Speichern";
 
 /* Main Frame  */
 
@@ -35,27 +35,27 @@
 "Read messages"       = "Lire les messages";
 "Write a new message" = "Eine neue Nachricht schreiben";
 
-"Share: " = "Partage : ";
+"Share: " = "Benutzerrechte: ";
 "Account: " = "Konto: ";
 "Shared Account: " = "Compte Partagé ";
 
 /* acls */
-"Default Roles" = "Rôles par défaut";
-"User rights for:" = "Autorisations pour:";
+"Default Roles" = "Standard-Rollen";
+"User rights for:" = "Benutzerrechte für:";
 
-"List and see this folder" = "Lister et voir ce dossier";
-"Read mails from this folder" = "Lire les messages de ce dossier";
-"Mark mails read and unread" = "Marquer les messages comme lus ou non-lus";
-"Modify the flags of the mails in this folder" = "Modifier les indicateurs sur les messages";
-"Insert, copy and move mails into this folder" = "Insérer, copier et déplacer des messages dans ce dossier";
-"Post mails" = "Poster des messages";
-"Add subfolders to this folder" = "Ajouter des sous-dossiers à ce dossier";
-"Remove this folder" = "Effacer ce dossier";
-"Erase mails from this folder" = "Effacer des messages de ce dossier";
-"Expunge this folder" = "Compacter ce dossier";
-"Modify the acl of this folder" = "Administrer les droits sur ce dossier";
+"List and see this folder" = "Diesen Ordner sehen";
+"Read mails from this folder" = "E-Mails in diesem Ordner lesen";
+"Mark mails read and unread" = "E-Mails in diesem Ordner als (un)gelesen markieren";
+"Modify the flags of the mails in this folder" = "Schlagwörter in diesem Ordner verändern";
+"Insert, copy and move mails into this folder" = "E-Mails in diesem Ordner hinzufügen, kopieren und verschieben";
+"Post mails" = "E-Mails versenden";
+"Add subfolders to this folder" = "Neue Unterordner anlegen";
+"Remove this folder" = "Diesen Ordner löschen";
+"Erase mails from this folder" = "E-Mails in diesem Ordner löschen";
+"Expunge this folder" = "Diesen Ordner komprimieren";
+"Modify the acl of this folder" = "Benutzerrechte dieses Ordners verändern";
 
-"Update" = "Mettre à jour";
+"Update" = "Speichern";
 "Cancel" = "Abbrechen";
 
 /* Mail edition */
@@ -136,11 +136,17 @@
 "New Folder..." = "Neuer Ordner...";
 "Compact This Folder" = "Komprimieren";
 "Search Messages..." = "Suchen...";
-"Sharing..." = "Partage...";
+"Sharing..." = "Benutzerrechte...";
 "New Subfolder..." = "Neuer Unterordner...";
 "Rename Folder..." = "Umbenennen...";
 "Delete Folder" = "Löschen";
+"Use This Folder For" = "Use This Folder For";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
+
+/* Use This Folder menu */
+"Sent Messages" = "Sent Messages";
+"Drafts" = "Drafts";
+"Deleted Messages" = "Deleted Messages";
 
 /* Message list popup menu */
 "Open Message In New Window" = "In neuem Fenster õffnen";
@@ -157,6 +163,8 @@
 "View Message Source" = "Nachrichten-Quelltext";
 "Print..." = "Drucken...";
 "Delete Message" = "Lõschen";
+
+"This Folder" = "This Folder";
 
 /* Label popup menu */
 "None" = "Aucune";
@@ -186,5 +194,14 @@
 
 "quotasFormat" = "Quota: %{0} von %{1} KB verwendet; %{2}%";
 
+"Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
+
+"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+"You need to choose a root subfolder!" = "You need to choose a root subfolder!";
+
+"Moving a message into its own folder is impossible!"
+= "Moving a message into its own folder is impossible!";
+"Copying a message into its own folder is impossible!"
+= "Copying a message into its own folder is impossible!";

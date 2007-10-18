@@ -30,6 +30,7 @@
 #import <NGLdap/NGLdapEntry.h>
 
 #import "LDAPSource.h"
+#import "LDAPUserManager.h"
 
 static NSArray *commonSearchFields;
 static int timeLimit;
@@ -114,8 +115,9 @@ static int sizeLimit;
 				    @"locality",
 				    @"birthyear",
 				    @"serialNumber",
-				    @"calFBURL",
+				    @"calFBURL", @"proxyAddresses",
 				    nil];
+	
       [commonSearchFields retain];
     }
 }
@@ -138,6 +140,7 @@ static int sizeLimit;
       hostname = nil;
       port = 389;
       password = nil;
+      sourceID = nil;
 
       baseDN = nil;
       IDField = @"cn"; /* the first part of a user DN */
@@ -163,12 +166,15 @@ static int sizeLimit;
   [UIDField release];
   [bindFields release];
   [ldapConnection release];
+  [sourceID release];
   [super dealloc];
 }
 
 - (id) initFromUDSource: (NSDictionary *) udSource
 {
   self = [self init];
+
+  ASSIGN(sourceID, [udSource objectForKey: @"id"]);
 
   [self setBindDN: [udSource objectForKey: @"bindDN"]
 	hostname: [udSource objectForKey: @"hostname"]
@@ -272,6 +278,8 @@ static int sizeLimit;
   NSString *userDN;
   NGLdapConnection *bindConnection;
 
+  didBind = NO;
+
   if ([loginToCheck length] > 0)
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
@@ -290,13 +298,10 @@ static int sizeLimit;
 				      binddn: userDN
 				      credentials: passwordToCheck];
 	  NS_HANDLER
-	    didBind = NO;
 	  NS_ENDHANDLER
 	}
       [bindConnection release];
     }
-  else
-    didBind = NO;
 
   return didBind;
 }
@@ -341,6 +346,8 @@ static int sizeLimit;
 
 - (NSArray *) _searchAttributes
 {
+  NSArray *attrs;
+
   if (!searchAttributes)
     {
       searchAttributes = [NSMutableArray new];
@@ -349,6 +356,12 @@ static int sizeLimit;
       if (UIDField)
 	[searchAttributes addObject: UIDField];
       [searchAttributes addObjectsFromArray: commonSearchFields];
+    }
+
+  // We also include our MailFieldNames in the search
+  if ((attrs = [[[LDAPUserManager sharedUserManager] metadataForSourceID: sourceID] objectForKey: @"MailFieldNames"]))
+    {
+      [searchAttributes addObjectsFromArray: attrs];
     }
 
   return searchAttributes;
@@ -492,6 +505,11 @@ static int sizeLimit;
     }
 
   return contactEntry;
+}
+
+- (NSString *) sourceID
+{
+  return sourceID;
 }
 
 @end

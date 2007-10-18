@@ -34,6 +34,7 @@
 
 #import "NSArray+Appointments.h"
 #import "SOGoAptMailNotification.h"
+#import "SOGoAppointmentFolder.h"
 
 #import "SOGoTaskObject.h"
 
@@ -118,17 +119,6 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   return uids;
 }
 
-/* folder management */
-
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
-  // TODO: what does this do? lookup the home of the organizer?
-  return [[self container] lookupHomeFolderForUID:_uid inContext:_ctx];
-}
-
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
-  return [[self container] lookupCalendarFoldersForUIDs:_uids inContext:_ctx];
-}
-
 /* store in all the other folders */
 
 - (NSException *)saveContentString:(NSString *)_iCal inUIDs:(NSArray *)_uids {
@@ -136,7 +126,7 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   id           folder;
   NSException  *allErrors = nil;
 
-  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
+  e = [[container lookupCalendarFoldersForUIDs: _uids inContext: context]
 	     objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
@@ -170,38 +160,38 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
   }
   return allErrors;
 }
-- (NSException *)deleteInUIDs:(NSArray *)_uids {
-  NSEnumerator *e;
-  id           folder;
-  NSException  *allErrors = nil;
+// - (NSException *)deleteInUIDs:(NSArray *)_uids {
+//   NSEnumerator *e;
+//   id           folder;
+//   NSException  *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs: _uids inContext: context]
-	     objectEnumerator];
-  while ((folder = [e nextObject])) {
-    NSException           *error;
-    SOGoTaskObject *task;
+//   e = [[container lookupCalendarFoldersForUIDs: _uids inContext: context]
+// 	     objectEnumerator];
+//   while ((folder = [e nextObject])) {
+//     NSException           *error;
+//     SOGoTaskObject *task;
     
-    task = [folder lookupName: [self nameInContainer]
-		   inContext: context
-                   acquire: NO];
-    if (![task isNotNull]) {
-      [self logWithFormat:@"Note: did not find '%@' in folder: %@",
-	      [self nameInContainer], folder];
-      continue;
-    }
-    if ([task isKindOfClass: [NSException class]]) {
-      [self logWithFormat:@"Exception: %@", [(NSException *) task reason]];
-      continue;
-    }
+//     task = [folder lookupName: [self nameInContainer]
+// 		   inContext: context
+//                    acquire: NO];
+//     if (![task isNotNull]) {
+//       [self logWithFormat:@"Note: did not find '%@' in folder: %@",
+// 	      [self nameInContainer], folder];
+//       continue;
+//     }
+//     if ([task isKindOfClass: [NSException class]]) {
+//       [self logWithFormat:@"Exception: %@", [(NSException *) task reason]];
+//       continue;
+//     }
     
-    if ((error = [task primaryDelete]) != nil) {
-      [self logWithFormat:@"Note: failed to delete in folder: %@", folder];
-      // TODO: make compound
-      allErrors = error;
-    }
-  }
-  return allErrors;
-}
+//     if ((error = [task primaryDelete]) != nil) {
+//       [self logWithFormat:@"Note: failed to delete in folder: %@", folder];
+//       // TODO: make compound
+//       allErrors = error;
+//     }
+//   }
+//   return allErrors;
+// }
 
 /* "iCal multifolder saves" */
 
@@ -376,15 +366,15 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
 //   attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
 //   [attendees removePerson: organizer];
 //   if ([attendees count]) {
-//     iCalToDo *canceledApt;
+//     iCalToDo *cancelledApt;
     
-//     canceledApt = [newApt copy];
-//     [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
+//     cancelledApt = [newApt copy];
+//     [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
 //           [self sendEMailUsingTemplateNamed: @"Removal"
 //                 forOldObject: nil
-//                 andNewObject: canceledApt
+//                 andNewObject: cancelledApt
 //                 toAttendees: attendees];
-//     [canceledApt release];
+//     [cancelledApt release];
 //   }
 // }
 
@@ -406,45 +396,48 @@ static NSString                  *mailTemplateDefaultLanguage = nil;
      - delete in removed folders
      - send iMIP mail for all folders not found
   */
-  iCalToDo *task;
-  NSArray         *removedUIDs;
-  NSMutableArray  *attendees;
+//   iCalToDo *task;
+//   NSArray         *removedUIDs;
+//   NSMutableArray  *attendees;
 
-  /* load existing content */
+  [self primaryDelete];
+
+  return nil;
+//   /* load existing content */
   
-  task = (iCalToDo *) [self component: NO];
+//   task = (iCalToDo *) [self component: NO];
   
-  /* compare sequence if requested */
+//   /* compare sequence if requested */
 
-  if (_v != 0) {
-    // TODO
-  }
+//   if (_v != 0) {
+//     // TODO
+//   }
   
-  removedUIDs = [self attendeeUIDsFromTask:task];
+//   removedUIDs = [self attendeeUIDsFromTask:task];
 
-  if ([self sendEMailNotifications])
-    {
-      /* send notification email to attendees excluding organizer */
-      attendees = [NSMutableArray arrayWithArray:[task attendees]];
-      [attendees removePerson:[task organizer]];
+//   if ([self sendEMailNotifications])
+//     {
+//       /* send notification email to attendees excluding organizer */
+//       attendees = [NSMutableArray arrayWithArray:[task attendees]];
+//       [attendees removePerson:[task organizer]];
   
-      /* flag task as being canceled */
-      [(iCalCalendar *) [task parent] setMethod: @"cancel"];
-      [task increaseSequence];
+//       /* flag task as being cancelled */
+//       [(iCalCalendar *) [task parent] setMethod: @"cancel"];
+//       [task increaseSequence];
 
-      /* remove all attendees to signal complete removal */
-      [task removeAllAttendees];
+//       /* remove all attendees to signal complete removal */
+//       [task removeAllAttendees];
 
-      /* send notification email */
-      [self sendEMailUsingTemplateNamed: @"Deletion"
-            forOldObject: nil
-            andNewObject: task
-            toAttendees: attendees];
-    }
+//       /* send notification email */
+//       [self sendEMailUsingTemplateNamed: @"Deletion"
+//             forOldObject: nil
+//             andNewObject: task
+//             toAttendees: attendees];
+//     }
 
-  /* perform */
+//   /* perform */
   
-  return [self deleteInUIDs:removedUIDs];
+//   return [self deleteInUIDs:removedUIDs];
 }
 
 - (NSException *)saveContentString:(NSString *)_iCalString {

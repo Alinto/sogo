@@ -262,10 +262,9 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
   interval        = [self->rrule repeatInterval];
   until           = [self lastInstanceStartDate]; // TODO: maybe replace
   byMonthDay      = [self->rrule byMonthDay];
-  
 
-  /* check whether the range to be processed is beyond the 'until' date */
-  
+
+  /* check whether the range to be processed is beyond the 'until' date */  
   if (until != nil) {
     if ([until compare:rStart] == NSOrderedAscending) /* until before start */
       return nil;
@@ -314,7 +313,7 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
       continue;
     
     /* first check whether we are in the interval */
-    
+
     if ((monthIdxInRecurrence % interval) != 0)
       continue;
 

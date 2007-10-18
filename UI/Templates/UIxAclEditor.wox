@@ -19,8 +19,10 @@
 	<input type="hidden" name="action" value="saveAcls"/>
 	<input type="hidden" id="userUIDS" name="userUIDS"
 	  var:value="userUIDS"/>
-	<label><var:string label:value="Owner:"/><br/>
-	  <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
+	<var:if condition="hasOwner">
+	  <label><var:string label:value="Owner:"/><br/>
+	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
+	</var:if>
       </div>
       <input id="defaultRolesBtn" type="button"
 	class="button" label:value="Default Roles"/>

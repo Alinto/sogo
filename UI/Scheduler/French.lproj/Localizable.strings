@@ -1,5 +1,16 @@
 /* this file is in UTF-8 format! */
 
+/* Tooltips */
+
+"Create a new event" = "Créer un nouvel événement";
+"Create a new task" = "Créer une nouvelle tâche";
+"Edit this event or task" = "Modifier l'événement ou la tâche sélectionnée";
+"Delete this event or task" = "Supprimer l'événement ou la tâche sélectionnée";
+"Go to today" = "Aller à la journée d'aujourd'hui";
+"Switch to day view" = "Passer à la vue par jour";
+"Switch to week view" = "Passer à la vue par semaine";
+"Switch to month view" = "Passer à la vue par mois";
+
 /* Day */
 
 "Sunday" = "Dimanche";
@@ -100,8 +111,11 @@
 
 /* Button Titles */
 
-"Add..." = "Ajouter...";
-"Remove" = "Enlever";
+"New Calendar..." = "Nouvel agenda...";
+"Subscribe to a Calendar..." = "S'inscrire à un agenda...";
+"Remove the selected Calendar" = "Enlever l'agenda sélectionné";
+
+"Name of the Calendar" = "Nom de l'agenda";
 
 "new" = "Nouveau";
 "printview" = "Version imprimable";
@@ -363,6 +377,9 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
 "taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
 
+"Are you sure you want to delete the selected calendar?"
+= "Voulez-vous vraiment supprimer l'agenda sélectionné ?";
+
 /* Legend */
 "Required participant" = "Participant obligatoire";
 "Optional participant" = "Participant facultatif";
@@ -392,5 +409,5 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Location" = "Lieu";
 "(Private Event)" = "(Événement privé)";
 
-"closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre.";
+"closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre ou consulter votre ";
 "Multicolumn Day View" = "Multicolonne";

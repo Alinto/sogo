@@ -1,24 +1,28 @@
-<?xml version='1.0' standalone='yes'?>
-<html
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE var:component>
+<var:component
+  className="UIxPageFrame"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
->
-  <head>
-    <title>Scalable OGo Homepage</title>
-  </head>
-
-  <body>
-    <h3>Scalable OGo Homepage</h3>
-
-    <form href="connect">
-      Login:
-      <input name="userName" type="text" var:value="userName" />
-      <input name="submit" type="submit" value="connect" />
-    </form>
-	<!--
-	<hr />
-	Current locale: <pre><var:string value="context.locale" /></pre>
-	-->
-  </body>
-</html>
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  ><var:string var:value="doctype" const:escapeHTML="NO"/>
+  <form id="connectForm" var:href="connectURL">
+    <div id="loginScreen">
+      <img id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
+      <var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
+      ><p class="error"><var:string label:value="Wrong username or password."/></p>
+      </var:if><label><var:string label:value="Login:"/><br/>
+	<input class="textField" id="userName" name="userName"
+	  type="text" var:value="userName" /></label><br/>
+      <label><var:string label:value="Password:"/><br/>
+	<input class="textField" id="password"
+	  name="password" type="password" var:value="password" /><br/></label>
+      <div id="loginButton">
+	<input class="button" id="submit" name="submit" type="submit" label:value="Connect" />
+      </div>
+    </div>
+  </form
+  ><img id="preparedAnimation" rsrc:src="busy.gif"/>
+</var:component>

@@ -5,23 +5,27 @@
       onclick  = "return clickedEditorSend(this);";
       image = "tb-compose-send-flat-24x24.png";
       cssClass = "tbicon_send";
-      label = "Send"; },
+      label = "Send";
+      tooltip = "Send this message now"; },
     { link  = "#";
       onclick  = "return onContactAdd(null);";
       image = "tb-compose-contacts-flat-24x24.png";
       cssClass = "tbicon_addressbook";
-      label = "Contacts"; },
+      label = "Contacts";
+      tooltip = "Select a recipient from an Address Book"; },
     { link  = "#";
       isSafe = NO;
       onclick  = "return clickedEditorAttach(this)";
       image = "tb-compose-attach-flat-24x24.png";
       cssClass = "tbicon_attach";
-      label = "Attach"; },
+      label = "Attach";
+      tooltip = "Include an attachment"; },
     { link  = "#";
       isSafe = NO;
       onclick  = "return clickedEditorSave(this);";
       image = "tb-mail-file-flat-24x24.png";
       cssClass = "tbicon_save";
-      label = "Save"; },
+      label = "Save";
+      tooltip = "Save this message"; },
   )
 )

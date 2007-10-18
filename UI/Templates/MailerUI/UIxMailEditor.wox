@@ -21,8 +21,7 @@
     </ul>
   </div>
 
-  <form name="pageform" enctype="multipart/form-data" accept-charset="UTF-8">
-    <div id="headerArea">
+  <form const:href="send" name="pageform" enctype="multipart/form-data">
       <div id="attachmentsArea">
 	<var:string label:value="Attachments:" />
 	<ul id="attachments">
@@ -32,6 +31,7 @@
 		/></li></var:foreach>
 	</ul>
       </div>
+    <div id="headerArea">
       <span class="headerField"><var:string label:value="From" />:</span>
       <var:popup const:name="from"
 	list="fromEMails"
@@ -51,8 +51,8 @@
 	    class="textField"
 	    var:value="subject"
 	    /></span></div>
+    <!-- separator line --><hr/>
     </div>
-    <!-- separator line -->
     <textarea name="text" rows="30" var:value="text" />
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
   </form>

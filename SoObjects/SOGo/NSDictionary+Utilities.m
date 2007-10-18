@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 
 #import "NSArray+Utilities.h"
@@ -28,6 +29,25 @@
 #import "NSDictionary+Utilities.h"
 
 @implementation NSDictionary (SOGoDictionaryUtilities)
+
++ (NSDictionary *) dictionaryFromStringsFile: (NSString *) file
+{
+  NSString *serialized;
+  NSMutableData *content;
+  NSDictionary *newDictionary;
+
+  content = [NSMutableData new];
+  [content appendBytes: "{" length: 1];
+  [content appendData: [NSData dataWithContentsOfFile: file]];
+  [content appendBytes: "}" length: 1];
+  serialized = [[NSString alloc] initWithData: content
+				 encoding: NSUTF8StringEncoding];
+  [content release];
+  newDictionary = [serialized propertyList];
+  [serialized release];
+
+  return newDictionary;
+}
 
 - (NSString *) jsonRepresentation
 {

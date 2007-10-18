@@ -81,25 +81,6 @@
   return selectorComponentClass;
 }
 
-- (id <WOActionResults>) deleteAction
-{
-  id <WOActionResults> result;
-  NSException <WOActionResults> *ex;
-  WOResponse *response;
-
-  ex = [[self clientObject] delete];
-  if (ex)
-    result = ex;
-  else
-    {
-      response = [context response];
-      [response setStatus: 200];
-      result = response;
-    }
-
-  return result;
-}
-
 - (NSString *) defaultSortKey
 {
   return @"displayName";

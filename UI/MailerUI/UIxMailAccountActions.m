@@ -108,8 +108,7 @@
   rawFolders = [co allFolderPaths];
   folders = [self _jsonFolders: [rawFolders objectEnumerator]];
 
-  response = [context response];
-  [response setStatus: 200];
+  response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
   [response appendContentString: [folders jsonRepresentation]];

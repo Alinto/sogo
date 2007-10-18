@@ -5,29 +5,19 @@ DIV#preferencesTabs
   right: .5em;
   bottom: .5em; }
 
-DIV#dateTimeFormat,
-DIV#passwordView
-{ text-align: right; }
-
-DIV#outOfOfficeView
+DIV#general
 { padding-top: 2em;
   padding-left: 2em;
   padding-right: 5em; }
 
-DIV#outOfOfficeView LABEL
+DIV#general LABEL
 { text-align: left;
   margin-left: 0px;
   white-space: normal; }
 
-DIV#outOfOfficeView TEXTAREA
-{ width: 30em;
-  margin: 0px;
+DIV#mailOptionsView TEXTAREA
+{ width: 420px;
   height: 4em; }
-
-DIV#dateTimeView
-{ padding-top: 3em;
-  padding-left: 1em;
-  padding-right: 2em; }
 
 DIV#passwordView
 { padding-top: 3em;

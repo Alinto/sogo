@@ -88,8 +88,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 	      refreshCallbackData["folder"]);
    }
    else
-      refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
-		   .decodeEntities());
+      refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
 }
 
 function openRightsForUserID(userID) {
@@ -143,4 +142,4 @@ function onAclLoadHandler() {
    this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
 }
 
-Event.observe(window, "load", onAclLoadHandler);
+addEvent(window, 'load', onAclLoadHandler);

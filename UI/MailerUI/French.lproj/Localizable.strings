@@ -19,6 +19,23 @@
 "Attach" = "Joindre";
 "Save" = "Enregistrer";
 
+/* Tooltips */
+
+"Send this message now" = "Envoyer le message maintenant";
+"Select a recipient from an Address Book" = "Sélectionner un destinataire du carnet d'adresses";
+"Include an attachment" = "Inclure une pièce jointe";
+"Save this message" = "Enregistrer ce message";
+"Get new messages" = "Relever les nouveaux messages";
+"Create a new message" = "Créer un nouveau message";
+"Go to address book" = "Ouvrir le carnet d'adresses";
+"Reply to the message" = "Répondre au message";
+"Reply to sender and all recipients" = "Répondre à l'expéditeur et à tous les destinataires";
+"Forward selected message" = "Transférer le message sélectionné";
+"Delete selected message or folder" = "Supprimer le message ou le dossier sélectionné";
+"Mark the selected messages as junk" = "Marquer les messages sélectionnés comme indésirables";
+"Print this message" = "Imprimer ce message";
+"Stop the current transfer" = "Arrêter le transfert courant";
+
 /* Main Frame  */
 
 "Home"                 = "Accueil"; 
@@ -140,7 +157,13 @@
 "New Subfolder..." = "Nouveau sous-dossier...";
 "Rename Folder..." = "Renommer le dossier...";
 "Delete Folder" = "Supprimer le dossier...";
+"Use This Folder For" = "Utiliser ce dossier pour";
 "Get Messages for Account" = "Relever les messages de ce compte";
+
+/* Use This Folder menu */
+"Sent Messages" = "les message envoyés";
+"Drafts" = "les brouillons";
+"Deleted Messages" = "les message effacés";
 
 /* Message list popup menu */
 "Open Message In New Window" = "Ouvrir dans une nouvelle fenétre";
@@ -157,6 +180,8 @@
 "View Message Source" = "Voir le code source";
 "Print..." = "Imprimer...";
 "Delete Message" = "Supprimer le message";
+
+"This Folder" = "Ce dossier-ci";
 
 /* Label popup menu */
 "None" = "Aucune";
@@ -186,5 +211,14 @@
 
 "quotasFormat" = "Quotas: %{0} Ko utilisés sur %{1}; %{2}%";
 
+"Please select a message." = "Veuillez sélectionner un message.";
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";
 "Please select only one message to print." = "Veuillez ne sélectionner qu'un seul message à imprimer.";
+
+"You need to choose a non-virtual folder!" = "Vous devez choisir un dossier non-virtuel.";
+"You need to choose a root subfolder!" = "Vous devez choisir un sous-dossier de la racine.";
+
+"Moving a message into its own folder is impossible!"
+= "Le déplacement d'un message dans son propre dossier est impossible.";
+"Copying a message into its own folder is impossible!"
+= "La copie d'un message dans son propre dossier est impossible.";

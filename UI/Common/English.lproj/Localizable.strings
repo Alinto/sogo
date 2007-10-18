@@ -10,7 +10,7 @@
 "Address Book"	= "Address Book";
 "Mail" = "Mail";
 "Preferences" = "Preferences";
-"Logoff" = "Logoff";
+"Sign Out" = "Sign Out";
 "Right Administration" = "Right Administration";
 "Log Console (dev.)" = "Log Console (dev.)";
 
@@ -27,8 +27,22 @@
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 
+"browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link bellow to download the most current version of this browser.";
+"alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
+"alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
+"Download" = "Download";
+
 /* generic.js */
-"Unable to subscribe to that folder!" = "Unable to subscribe to that folder!";
-"You cannot subscribe to a folder that you own!" = "You cannot subscribe to a folder that you own!";
-"Unable to unsubscribe from that folder!" = "Unable to unsubscribe from that folder!";
-"You cannot unsubscribe from a folder that you own!" = "You cannot unsubscribe from a folder that you own!";
+"Unable to subscribe to that folder!"
+	= "Unable to subscribe to that folder!";
+"You cannot subscribe to a folder that you own!"
+      	= "You cannot subscribe to a folder that you own!";
+"Unable to unsubscribe from that folder!"
+	= "Unable to unsubscribe from that folder!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "You cannot unsubscribe from a folder that you own!";
+"Unable to rename that folder!" = "Unable to rename that folder!";
+"You have already subscribed to that folder!"
+     	= "You have already subscribed to that folder!";
+"The user rights cannot be edited for this object!"
+        = "The user rights cannot be edited for this object!";

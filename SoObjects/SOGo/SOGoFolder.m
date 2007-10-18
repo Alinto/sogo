@@ -19,9 +19,6 @@
   02111-1307, USA.
 */
 
-#import <unistd.h>
-#import <stdlib.h>
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
@@ -29,21 +26,28 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderType.h>
+#import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
+#import <UI/SOGoUI/SOGoFolderAdvisory.h>
 
+#import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 
+#import "SOGoContentObject.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
@@ -65,33 +69,38 @@ static NSString *defaultUserID = @"<default>";
             NSStringFromClass([self superclass]), [super version]);
 }
 
-+ (NSString *) globallyUniqueObjectId
++ (id) folderWithSubscriptionReference: (NSString *) reference
+			   inContainer: (id) aContainer
 {
-  /*
-    4C08AE1A-A808-11D8-AC5A-000393BBAFF6
-    SOGo-Web-28273-18283-288182
-    printf( "%x", *(int *) &f);
-  */
-  static int pid = 0;
-  static int sequence = 0;
-  static float rndm = 0;
-  float f;
+  id newFolder;
+  NSArray *elements, *pathElements;
+  NSString *ocsPath, *objectPath, *owner, *ocsName, *folderName;
 
-  if (pid == 0)
-    { /* break if we fork ;-) */
-      pid = getpid();
-      rndm = random();
-    }
-  sequence++;
-  f = [[NSDate date] timeIntervalSince1970];
-  return [NSString stringWithFormat:@"%0X-%0X-%0X-%0X",
-		   pid, *(int *)&f, sequence++, random];
+  elements = [reference componentsSeparatedByString: @":"];
+  owner = [elements objectAtIndex: 0];
+  objectPath = [elements objectAtIndex: 1];
+  pathElements = [objectPath componentsSeparatedByString: @"/"];
+  if ([pathElements count] > 1)
+    ocsName = [pathElements objectAtIndex: 1];
+  else
+    ocsName = @"personal";
+
+  ocsPath = [NSString stringWithFormat: @"/Users/%@/%@/%@",
+		      owner, [pathElements objectAtIndex: 0], ocsName];
+  folderName = [NSString stringWithFormat: @"%@_%@", owner, ocsName];
+  newFolder = [[self alloc] initWithName: folderName
+			    inContainer: aContainer];
+  [newFolder setOCSPath: ocsPath];
+  [newFolder setOwner: owner];
+
+  return newFolder;
 }
 
 - (id) init
 {
   if ((self = [super init]))
     {
+      displayName = nil;
       ocsPath = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
@@ -105,6 +114,7 @@ static NSString *defaultUserID = @"<default>";
   [ocsFolder release];
   [ocsPath release];
   [aclCache release];
+  [displayName release];
   [super dealloc];
 }
 
@@ -117,13 +127,12 @@ static NSString *defaultUserID = @"<default>";
 
 - (void) setOCSPath: (NSString *) _path
 {
-  if ([ocsPath isEqualToString:_path])
-    return;
-  
-  if (ocsPath)
-    [self warnWithFormat:@"GCS path is already set! '%@'", _path];
-  
-  ASSIGNCOPY(ocsPath, _path);
+  if (![ocsPath isEqualToString:_path])
+    {
+      if (ocsPath)
+	[self warnWithFormat: @"GCS path is already set! '%@'", _path];
+      ASSIGN (ocsPath, _path);
+    }
 }
 
 - (NSString *) ocsPath
@@ -148,9 +157,74 @@ static NSString *defaultUserID = @"<default>";
 
 - (BOOL) folderIsMandatory
 {
-  [self subclassResponsibility: _cmd];
+  return [nameInContainer isEqualToString: @"personal"];
+}
 
-  return NO;
+- (void) _setDisplayNameFromRow: (NSDictionary *) row
+{
+  NSString *currentLogin, *ownerLogin;
+  NSDictionary *ownerIdentity;
+
+  displayName
+    = [NSMutableString stringWithString: [row objectForKey: @"c_foldername"]];
+  currentLogin = [[context activeUser] login];
+  ownerLogin = [self ownerInContext: context];
+  if (![currentLogin isEqualToString: ownerLogin])
+    {
+      ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
+			primaryIdentity];
+      [displayName appendFormat: @" (%@ <%@>)",
+		   [ownerIdentity objectForKey: @"fullName"],
+		   [ownerIdentity objectForKey: @"email"]];
+    }
+  [displayName retain];
+}
+
+- (void) _fetchDisplayName
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql;
+  NSArray *attrs;
+  NSDictionary *row;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation
+    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if (fc)
+    {
+      sql
+	= [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
+				       @" WHERE c_path = '%@'"),
+		    [folderLocation gcsTableName], ocsPath];
+      [fc evaluateExpressionX: sql];
+      attrs = [fc describeResults: NO];
+      row = [fc fetchAttributes: attrs withZone: NULL];
+      if (row)
+	[self _setDisplayNameFromRow: row];
+      [fc cancelFetch];
+      [cm releaseChannel: fc];
+    }
+}
+
+- (void) setDisplayName: (NSString *) newDisplayName
+{
+  ASSIGN (displayName, newDisplayName);
+}
+
+- (NSString *) displayName
+{
+  if (!displayName)
+    [self _fetchDisplayName];
+
+  return displayName;
+}
+
+- (NSString *) davDisplayName
+{
+  return [self displayName];
 }
 
 - (GCSFolder *) ocsFolder
@@ -163,7 +237,7 @@ static NSString *defaultUserID = @"<default>";
       ocsFolder = [self ocsFolderForPath: [self ocsPath]];
       userLogin = [[context activeUser] login];
       if (!ocsFolder
-	  && [userLogin isEqualToString: [self ownerInContext: context]]
+/*	  && [userLogin isEqualToString: [self ownerInContext: context]] */
 	  && [self folderIsMandatory]
 	  && [self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
@@ -183,19 +257,81 @@ static NSString *defaultUserID = @"<default>";
   return @"";
 }
 
+- (void) sendFolderAdvisoryTemplate: (NSString *) template
+{
+  NSString *language, *pageName;
+  SOGoUser *user;
+  SOGoFolderAdvisory *page;
+  WOApplication *app;
+
+  user = [SOGoUser userWithLogin: [[context activeUser] login] roles: nil];
+  language = [user language];
+  pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
+		       language, template];
+
+  app = [WOApplication application];
+  page = [app pageWithName: pageName inContext: context];
+  [page setFolderObject: self];
+  [page setRecipientUID: [[context activeUser] login]];
+  [page send];
+}
+
 - (BOOL) create
 {
   NSException *result;
 
   result = [[self folderManager] createFolderOfType: [self folderType]
+				 withName: displayName
                                  atPath: ocsPath];
+
+  if (!result) [self sendFolderAdvisoryTemplate: @"Addition"];
 
   return (result == nil);
 }
 
 - (NSException *) delete
 {
-  return [[self folderManager] deleteFolderAtPath: ocsPath];
+  NSException *error;
+
+  // We just fetch our displayName since our table will use it!
+  [self displayName];
+  
+  if ([nameInContainer isEqualToString: @"personal"])
+    error = [NSException exceptionWithHTTPStatus: 403
+			 reason: @"folder 'personal' cannot be deleted"];
+  else
+    error = [[self folderManager] deleteFolderAtPath: ocsPath];
+
+  if (!error) [self sendFolderAdvisoryTemplate: @"Removal"];
+
+  return error;
+}
+
+- (void) renameTo: (NSString *) newName
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql;
+
+  [displayName release];
+  displayName = nil;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation
+    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if (fc)
+    {
+      sql
+	= [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
+				       @" WHERE c_path = '%@'"),
+		    [folderLocation gcsTableName], newName, ocsPath];
+      [fc evaluateExpressionX: sql];
+      [cm releaseChannel: fc];
+//       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
+//                  uidColumnName, [self uid]];
+    }
 }
 
 - (NSArray *) fetchContentObjectNames
@@ -211,7 +347,7 @@ static NSString *defaultUserID = @"<default>";
     }
   if ([records isKindOfClass: [NSException class]])
     return records;
-  return [records valueForKey: @"c_name"];
+  return [records objectsForKey: @"c_name"];
 }
 
 - (BOOL) nameExistsInFolder: (NSString *) objectName
@@ -229,6 +365,22 @@ static NSString *defaultUserID = @"<default>";
   return (records
           && ![records isKindOfClass:[NSException class]]
           && [records count] > 0);
+}
+
+- (void) deleteEntriesWithIds: (NSArray *) ids
+{
+  unsigned int count, max;
+  NSString *currentID;
+  SOGoContentObject *deleteObject;
+
+  max = [ids count];
+  for (count = 0; count < max; count++)
+    {
+      currentID = [ids objectAtIndex: count];
+      deleteObject = [self lookupName: currentID
+			   inContext: context acquire: NO];
+      [deleteObject delete];
+    }
 }
 
 - (NSDictionary *) fetchContentStringsAndNamesOfAllObjects
@@ -469,7 +621,7 @@ static NSString *defaultUserID = @"<default>";
 /* acls */
 - (NSArray *) aclUsers
 {
-  return [self aclUsersForObjectAtPath: [self pathArrayToSoObject]];
+  return [self aclUsersForObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -479,7 +631,7 @@ static NSString *defaultUserID = @"<default>";
 
   acls = [NSMutableArray array];
   ownAcls = [self aclsForUser: uid
-		  forObjectAtPath: [self pathArrayToSoObject]];
+		  forObjectAtPath: [self pathArrayToSOGoObject]];
   [acls addObjectsFromArray: ownAcls];
   if ([container respondsToSelector: @selector (aclsForUser:)])
     {
@@ -502,13 +654,13 @@ static NSString *defaultUserID = @"<default>";
 {
   return [self setRoles: roles
                forUser: uid
-               forObjectAtPath: [self pathArrayToSoObject]];
+               forObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
 {
   return [self removeAclsForUsers: users
-               forObjectAtPath: [self pathArrayToSoObject]];
+               forObjectAtPath: [self pathArrayToSOGoObject]];
 }
 
 - (NSString *) defaultUserID
@@ -559,6 +711,77 @@ static NSString *defaultUserID = @"<default>";
     }
 
   return obj;
+}
+
+- (NSComparisonResult) _compareByOrigin: (SOGoFolder *) otherFolder
+{
+  NSArray *thisElements, *otherElements;
+  unsigned thisCount, otherCount;
+  NSComparisonResult comparison;
+
+  thisElements = [nameInContainer componentsSeparatedByString: @"_"];
+  otherElements = [[otherFolder nameInContainer]
+		    componentsSeparatedByString: @"_"];
+  thisCount = [thisElements count];
+  otherCount = [otherElements count];
+  if (thisCount == otherCount)
+    {
+      if (thisCount == 1)
+	comparison = NSOrderedSame;
+      else
+	comparison = [[thisElements objectAtIndex: 0]
+		       compare: [otherElements objectAtIndex: 0]];
+    }
+  else
+    {
+      if (thisCount > otherCount)
+	comparison = NSOrderedDescending;
+      else
+	comparison = NSOrderedAscending;
+    }
+
+  return comparison;
+}
+
+- (NSComparisonResult) _compareByNameInContainer: (SOGoFolder *) otherFolder
+{
+  NSString *otherName;
+  NSComparisonResult comparison;
+
+  otherName = [otherFolder nameInContainer];
+  if ([nameInContainer hasSuffix: @"personal"])
+    {
+      if ([otherName hasSuffix: @"personal"])
+	comparison = [nameInContainer compare: otherName];
+      else
+	comparison = NSOrderedAscending;
+    }
+  else
+    {
+      if ([otherName hasSuffix: @"personal"])
+	comparison = NSOrderedDescending;
+      else
+	comparison = NSOrderedSame;
+    }
+
+  return comparison;
+}
+
+- (NSComparisonResult) compare: (SOGoFolder *) otherFolder
+{
+  NSComparisonResult comparison;
+
+  comparison = [self _compareByOrigin: otherFolder];
+  if (comparison == NSOrderedSame)
+    {
+      comparison = [self _compareByNameInContainer: otherFolder];
+      if (comparison == NSOrderedSame)
+	comparison
+	  = [[self displayName]
+	      localizedCaseInsensitiveCompare: [otherFolder displayName]];
+    }
+
+  return comparison;
 }
 
 /* WebDAV */

@@ -883,31 +883,17 @@ static BOOL debugSoParts       = NO;
   error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
   if (error != nil) return error;
   
-  /* c) expunge */
-
-  error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
-  if (error != nil) return error; // TODO: unflag as deleted?
   [self flushMailCaches];
   
   return nil;
 }
 
-- (NSException *) moveToFolderNamed: (NSString *) folderName
+- (NSException *) copyToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx
 {
-  /*
-    Trashing is three actions:
-    a) copy to trash folder
-    b) mark mail as deleted
-    c) expunge folder
-    
-    In case b) or c) fails, we can't do anything because IMAP4 doesn't tell us
-    the ID used in the trash folder.
-  */
   SOGoMailAccounts *destFolder;
   NSEnumerator *folders;
   NSString *currentFolderName, *reason;
-  NSException    *error;
 
   // TODO: check for safe HTTP method
 
@@ -937,22 +923,27 @@ static BOOL debugSoParts       = NO;
   [destFolder flushMailCaches];
 
   /* a) copy */
-  
-  error = [self davCopyToTargetObject: destFolder
-		newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
-		inContext:_ctx];
-  if (error != nil) return error;
 
-  /* b) mark deleted */
-  
-  error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
-  if (error != nil) return error;
-  
-  /* c) expunge */
+  return [self davCopyToTargetObject: destFolder
+	       newName: @"fakeNewUnusedByIMAP4" /* autoassigned */
+	       inContext:_ctx];
+}
 
-  error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
-  if (error != nil) return error; // TODO: unflag as deleted?
-  [self flushMailCaches];
+- (NSException *) moveToFolderNamed: (NSString *) folderName
+                          inContext: (id)_ctx
+{
+  NSException    *error;
+
+  if (![self copyToFolderNamed: folderName
+	     inContext: _ctx])
+    {
+      /* b) mark deleted */
+  
+      error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
+      if (error != nil) return error;
+
+      [self flushMailCaches];
+    }
   
   return nil;
 }

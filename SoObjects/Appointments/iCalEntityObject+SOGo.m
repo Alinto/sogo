@@ -23,6 +23,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <NGCards/iCalPerson.h>
+
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -32,44 +34,31 @@
 
 - (BOOL) userIsParticipant: (SOGoUser *) user
 {
-  NSEnumerator *emails;
-  NSArray *identities;
-  NSString *currentEmail;
-  BOOL response;
+  NSEnumerator *participants;
+  iCalPerson *currentParticipant;
+  BOOL isParticipant;
 
-  response = NO;
+  isParticipant = NO;
 
-  identities = [user allIdentities];
-  emails = [[identities objectsForKey: @"email"] objectEnumerator];
-  currentEmail = [emails nextObject];
-  while (!response && currentEmail)
-    if ([self isParticipant: currentEmail])
-      response = YES;
+  participants = [[self participants] objectEnumerator];
+  currentParticipant = [participants nextObject];
+  while (!isParticipant
+	 && currentParticipant)
+    if ([user hasEmail: [currentParticipant rfc822Email]])
+      isParticipant = YES;
     else
-      currentEmail = [emails nextObject];
+      currentParticipant = [participants nextObject];
 
-  return response;
+  return isParticipant;
 }
 
 - (BOOL) userIsOrganizer: (SOGoUser *) user
 {
-  NSEnumerator *emails;
-  NSArray *identities;
-  NSString *currentEmail;
-  BOOL response;
+  NSString *orgMail;
 
-  response = NO;
+  orgMail = [[self organizer] rfc822Email];
 
-  identities = [user allIdentities];
-  emails = [[identities objectsForKey: @"email"] objectEnumerator];
-  currentEmail = [emails nextObject];
-  while (!response && currentEmail)
-    if ([self isOrganizer: currentEmail])
-      response = YES;
-    else
-      currentEmail = [emails nextObject];
-
-  return response;
+  return [user hasEmail: orgMail];
 }
 
 @end

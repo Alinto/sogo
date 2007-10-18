@@ -14,15 +14,15 @@
               var:href="buttonInfo.link"
               var:target="buttonInfo.target"
               var:onclick="buttonInfo.onclick"
-              var:title="buttonInfo.tooltip"
+              var:title="buttonTooltip"
               ><span class="toolbarButton"
                 ><img class="buttonImage"
                   var:src="buttonImage"
-                  var:alt="buttonInfo.image"
+                  var:alt="buttonTooltip"
                   /><var:if condition="hasMenu"
                   ><img class="buttonMenuArrow"
                     rsrc:src="arrow-dwn-sharp.gif"
-                    var:alt="buttonInfo.image"
+                    var:alt="buttonTooltip"
                     /></var:if
                   ><br
                   /><span class="buttonLabel"
@@ -37,7 +37,7 @@
             ><span class="disabledToolbarButton"
               ><img class="buttonImage"
                 var:src="buttonImage"
-                var:alt="buttonInfo.image"
+                var:alt="buttonTooltip"
                 /><br
                 /><span class="buttonLabel"
                 ><var:string

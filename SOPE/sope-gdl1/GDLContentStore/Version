@@ -1,0 +1,14 @@
+# Version file
+
+MAJOR_VERSION:=4
+MINOR_VERSION:=7
+SUBMINOR_VERSION:=49
+
+# v4.5.29 requires libNGExtensions v4.5.161
+# v4.5.26 does not require libNGiCal anymore
+# v0.9.19 requires libNGiCal       v4.5.40
+# v0.9.18 requires libNGiCal       v4.5.38
+# v0.9.17 requires libNGiCal       v4.5.37
+# v0.9.11 requires libFoundation   v1.0.63
+# v0.9.11 requires libNGExtensions v4.3.125
+# v0.9.7  requires libGDLAccess    v1.1.35

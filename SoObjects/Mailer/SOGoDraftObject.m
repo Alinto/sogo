@@ -53,6 +53,7 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import "SOGoMailAccount.h"
@@ -64,37 +65,8 @@
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
-				 @"from", @"replyTo", nil};
-
-@interface NSString (NGMimeHelpers)
-
-- (NSString *) asQPSubjectString: (NSString *) encoding;
-
-@end
-
-@implementation NSString (NGMimeHelpers)
-
-- (NSString *) asQPSubjectString: (NSString *) encoding;
-{
-  NSString *qpString, *subjectString;
-  NSData *subjectData, *destSubjectData;
-
-  subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  destSubjectData = [subjectData dataByEncodingQuotedPrintable];
-
-  qpString = [[NSString alloc] initWithData: destSubjectData
-			       encoding: NSASCIIStringEncoding];
-  [qpString autorelease];
-  if ([qpString length] > [self length])
-    subjectString = [NSString stringWithFormat: @"=?%@?Q?%@?=",
-			      encoding, qpString];
-  else
-    subjectString = self;
-
-  return subjectString;
-}
-
-@end
+				 @"from", @"replyTo",
+				 nil};
 
 @implementation SOGoDraftObject
 
@@ -128,6 +100,7 @@ static BOOL        showTextAttachmentsInline  = NO;
       text = @"";
       sourceURL = nil;
       sourceFlag = nil;
+      inReplyTo = nil;
     }
 
   return self;
@@ -141,6 +114,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   [path release];
   [sourceURL release];
   [sourceFlag release];
+  [inReplyTo release];
   [super dealloc];
 }
 
@@ -190,7 +164,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   id headerValue;
   unsigned int count;
 
-  for (count = 0; count < 6; count++)
+  for (count = 0; count < 7; count++)
     {
       headerValue = [newHeaders objectForKey: headerKeys[count]];
       if (headerValue)
@@ -216,6 +190,11 @@ static BOOL        showTextAttachmentsInline  = NO;
   return text;
 }
 
+- (void) setInReplyTo: (NSString *) newInReplyTo
+{
+  ASSIGN (inReplyTo, newInReplyTo);
+}
+
 - (void) setSourceURL: (NSString *) newSourceURL
 {
   ASSIGN (sourceURL, newSourceURL);
@@ -237,6 +216,8 @@ static BOOL        showTextAttachmentsInline  = NO;
       [infos setObject: headers forKey: @"headers"];
       if (text)
 	[infos setObject: text forKey: @"text"];
+      if (inReplyTo)
+	[infos setObject: inReplyTo forKey: @"inReplyTo"];
       if (IMAP4ID > -1)
 	[infos setObject: [NSNumber numberWithInt: IMAP4ID]
 	       forKey: @"IMAP4ID"];
@@ -291,6 +272,10 @@ static BOOL        showTextAttachmentsInline  = NO;
   value = [infoDict objectForKey: @"sourceFlag"];
   if (value)
     [self setSourceFlag: value];
+
+  value = [infoDict objectForKey: @"inReplyTo"];
+  if (value)
+    [self setInReplyTo: value];
 }
 
 - (NSString *) relativeImap4Name
@@ -498,15 +483,21 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
-  NSString *contentForReply;
+  NSString *contentForReply, *msgID;
   NSMutableDictionary *info;
+  NGImap4Envelope *sourceEnvelope;
 
   [sourceMail fetchCoreInfos];
 
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   [info setObject: [sourceMail subjectForReply] forKey: @"subject"];
+
+  sourceEnvelope = [sourceMail envelope];
   [self _fillInReplyAddresses: info replyToAll: toAll
-	envelope: [sourceMail envelope]];
+	envelope: sourceEnvelope];
+  msgID = [sourceEnvelope messageID];
+  if ([msgID length] > 0)
+    [self setInReplyTo: msgID];
   contentForReply = [sourceMail contentForReply];
   [self setText: contentForReply];
   [self setHeaders: info];
@@ -587,7 +578,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 
 - (BOOL) isValidAttachmentName: (NSString *) _name
 {
-  static NSString *sescape[] = { @"/", @"..", @"~", @"\"", @"'", @" ", nil };
+  static NSString *sescape[] = { @"/", @"..", @"~", @"\"", @"'", nil };
   unsigned i;
   NSRange  r;
 
@@ -620,7 +611,8 @@ static BOOL        showTextAttachmentsInline  = NO;
 		    withMetadata: (NSDictionary *) metadata
 {
   NSString *p, *name, *mimeType;
-  
+  NSRange r;
+
   if (![_attach isNotNull]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
 			reason: @"Missing attachment content!"];
@@ -630,7 +622,13 @@ static BOOL        showTextAttachmentsInline  = NO;
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
 			reason: @"Could not create folder for draft!"];
   }
+
   name = [metadata objectForKey: @"filename"];
+  r = [name rangeOfString: @"\\"
+	    options: NSBackwardsSearch];
+  if (r.length > 0)
+    name = [name substringFromIndex: r.location + 1];
+
   if (![self isValidAttachmentName: name])
     return [self invalidAttachmentNameError: name];
   
@@ -1029,7 +1027,9 @@ static BOOL        showTextAttachmentsInline  = NO;
     [map setObjects:[map objectsForKey: @"from"] forKey: @"reply-to"];
   
   /* add subject */
-  
+  if (inReplyTo)
+    [map setObject: inReplyTo forKey: @"in-reply-to"];
+
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
     [map setObject: [s asQPSubjectString: @"utf-8"]
 	 forKey: @"subject"];

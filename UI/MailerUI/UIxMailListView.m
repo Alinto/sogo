@@ -98,6 +98,24 @@ static int attachmentFlagSize = 8096;
   return [dateFormatter formattedDateAndTime: messageDate];
 }
 
+- (NSString *) messageSubject
+{
+  NSString *subject;
+  id envSubject;
+
+  envSubject = [[message valueForKey: @"envelope"] subject];
+  if ([envSubject isKindOfClass: [NSData class]])
+    {
+      subject = [[NSString alloc] initWithData: envSubject
+				  encoding: NSUTF8StringEncoding];
+      [subject autorelease];
+    }
+  else
+    subject = envSubject;
+
+  return subject;
+}
+
 - (BOOL) showToAddress 
 {
   NSString *ftype;
@@ -140,6 +158,7 @@ static int attachmentFlagSize = 8096;
   flags = [[self message] valueForKey:@"flags"];
   return [flags containsObject:@"seen"];
 }
+
 - (NSString *) messageUidString 
 {
   return [[[self message] valueForKey:@"uid"] stringValue];
@@ -220,10 +239,24 @@ static int attachmentFlagSize = 8096;
 
 - (NSArray *) sortedUIDs 
 {
+  EOQualifier *fetchQualifier, *notDeleted;
   if (!sortedUIDs)
     {
+      notDeleted = [EOQualifier qualifierWithQualifierFormat:
+				  @"(not (flags = %@))",
+				@"deleted"];
+      if (qualifier)
+	{
+	  fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers:
+						     notDeleted, qualifier,
+						   nil];
+	  [fetchQualifier autorelease];
+	}
+      else
+	fetchQualifier = notDeleted;
+
       sortedUIDs
-        = [[self clientObject] fetchUIDsMatchingQualifier: qualifier
+        = [[self clientObject] fetchUIDsMatchingQualifier: fetchQualifier
 			       sortOrdering: [self imap4SortOrdering]];
       [sortedUIDs retain];
     }
@@ -406,35 +439,7 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:url];
 }
 
-/* active message */
-
-- (SOGoMailObject *) lookupActiveMessage 
-{
-  NSString *uid;
-  
-  if ((uid = [[context request] formValueForKey: @"uid"]) == nil)
-    return nil;
-
-  return [[self clientObject] lookupName: uid
-			      inContext: context
-			      acquire: NO];
-}
-
 /* actions */
-
-- (BOOL) isJavaScriptRequest 
-{
-  return [[[context request] formValueForKey:@"jsonly"] boolValue];
-}
-
-- (id) javaScriptOK 
-{
-  WOResponse *r;
-
-  r = [context response];
-  [r setStatus:200 /* OK */];
-  return r;
-}
 
 - (int) firstMessageOfPageFor: (int) messageNbr
 {
@@ -461,26 +466,23 @@ static int attachmentFlagSize = 8096;
 
   if ([criteria isEqualToString: @"subject"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(subject doesContain: %@)",
-			     value];
+			       @"(subject doesContain: %@)", value];
   else if ([criteria isEqualToString: @"sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			     @"(from doesContain: %@)",
-			     value];
+			       @"(from doesContain: %@)", value];
   else if ([criteria isEqualToString: @"subject_or_sender"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(subject doesContain: %@) OR "
-			     @"(from doesContain: %@)",
+			       @"((subject doesContain: %@)"
+			     @" OR (from doesContain: %@))",
 			     value, value];
   else if ([criteria isEqualToString: @"to_or_cc"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			       @"(to doesContain: %@) OR "
-			     @"(cc doesContain: %@)",
+			       @"((to doesContain: %@)"
+			     @" OR (cc doesContain: %@))",
 			     value, value];
   else if ([criteria isEqualToString: @"entire_message"])
     qualifier = [EOQualifier qualifierWithQualifierFormat:
-			     @"(message doesContain: %@)",
-			     value];
+			       @"(body doesContain: %@)", value];
   else
     qualifier = nil;
 
@@ -499,8 +501,7 @@ static int attachmentFlagSize = 8096;
   specificMessage = [request formValueForKey: @"pageforuid"];
   searchCriteria = [request formValueForKey: @"search"];
   searchValue = [request formValueForKey: @"value"];
-  if ([searchCriteria length] > 0
-      && [searchValue length] > 0)
+  if ([searchValue length])
     [self _setQualifierForCriteria: searchCriteria
 	  andValue: searchValue];
 
@@ -508,41 +509,7 @@ static int attachmentFlagSize = 8096;
     = ((specificMessage)
        ? [self firstMessageOfPageFor: [specificMessage intValue]]
        : [[request formValueForKey:@"idx"] intValue]);
-
   return self;
-}
-
-- (id) viewAction 
-{
-  return [self defaultAction];
-}
-
-- (id) markMessageUnreadAction 
-{
-  NSException *error;
-  
-  if ((error = [[self lookupActiveMessage] removeFlags:@"seen"]) != nil)
-    // TODO: improve error handling
-    return error;
-
-  if ([self isJavaScriptRequest])
-    return [self javaScriptOK];
-  
-  return [self redirectToLocation:@"view"];
-}
-
-- (id) markMessageReadAction 
-{
-  NSException *error;
-  
-  if ((error = [[self lookupActiveMessage] addFlags:@"seen"]) != nil)
-    // TODO: improve error handling
-    return error;
-  
-  if ([self isJavaScriptRequest])
-    return [self javaScriptOK];
-  
-  return [self redirectToLocation:@"view"];
 }
 
 - (id) getMailAction 

@@ -11,6 +11,8 @@ var currentMailboxType = "";
 var usersRightsWindowHeight = 320;
 var usersRightsWindowWidth = 400;
 
+var pageContent;
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
@@ -60,10 +62,14 @@ function openAddressbook(sender) {
 
 function onMenuSharing(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
-  var urlstr = URLForFolderID(folderID) + "/acls";
-  preventDefault(event);
-
-  openAclWindow(urlstr);
+  var type = document.menuTarget.getAttribute("datatype");
+  if (type == "additional")
+    window.alert(clabels["The user rights cannot be"
+			 + " edited for this object!"]);
+  else {
+    var urlstr = URLForFolderID(folderID) + "/acls";
+    openAclWindow(urlstr);
+  }
 }
 
 /* mail list DOM changes */
@@ -141,6 +147,8 @@ function openMessageWindowsForSelection(action, firstOnly) {
 			    ApplicationBaseURL + currentMailbox
 			    + "/" + rows[i].substr(4)
 			    + "/" + action);
+    } else {
+      window.alert(labels["Please select a message."]);
     }
   }
 
@@ -149,11 +157,11 @@ function openMessageWindowsForSelection(action, firstOnly) {
 
 function mailListMarkMessage(event) {
   var http = createHTTPClient();
-  var url = ApplicationBaseURL + currentMailbox + "/" + action + "?uid=" + msguid;
+  var url = ApplicationBaseURL + currentMailbox + "/" + msguid + "/" + action;
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK
-    http.open("POST", url + "&jsonly=1", false /* not async */);
+    http.open("POST", url, false /* not async */);
     http.send("");
     if (http.status != 200) {
       // TODO: refresh page?
@@ -190,31 +198,6 @@ function ml_lowlight(sender) {
 }
 
 
-/* folder operations */
-
-function ctxFolderAdd(sender) {
-  var folderName;
-   
-  folderName = prompt("Foldername: ");
-  if (folderName == undefined)
-    return false;
-  if (folderName == "")
-    return false;
-   
-  // TODO: should use a form-POST or AJAX
-  window.location.href = "createFolder?name=" + escape(folderName);
-  return false;
-}
-
-function ctxFolderDelete(sender) {
-  if (!confirm("Delete current folder?").decodeEntities())
-    return false;
-   
-  // TODO: should use a form-POST or AJAX
-  window.location.href = "deleteFolder";
-  return false;
-}
-
 /* bulk delete of messages */
 
 function uixDeleteSelectedMessages(sender) {
@@ -229,11 +212,12 @@ function uixDeleteSelectedMessages(sender) {
     /* send AJAX request (synchronously) */
 
     var messageId = currentMailbox + "/" + rowId;
-    url = ApplicationBaseURL + messageId + "/trash?jsonly=1";
+    url = ApplicationBaseURL + messageId + "/trash";
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
+    http.url = url;
     http.send("");
-    if (http.status != 200) { /* request failed */
+    if (!isHttpStatus204(http.status)) { /* request failed */
       failCount++;
       http = null;
       continue;
@@ -241,14 +225,13 @@ function uixDeleteSelectedMessages(sender) {
       deleteCachedMessage(messageId);
       if (currentMessages[currentMailbox] == rowId) {
 	var div = $('messageContent');
-	div.innerHTML = "";
+	div.update();
 	currentMessages[currentMailbox] = null;
       }
     }
     http = null;
-
+    
     /* remove from page */
-
     /* line-through would be nicer, but hiding is OK too */
     var row = $(rowIds[i]);
     row.parentNode.removeChild(row);
@@ -270,7 +253,7 @@ function moveMessages(rowIds, folder) {
 	  
     var messageId = currentMailbox + "/" + rowIds[i];
     url = (ApplicationBaseURL + messageId
-	   + "/move?jsonly=1&tofolder=" + folder);
+	   + "/move?tofolder=" + folder);
     http = createHTTPClient();
     http.open("GET", url, false /* not async */);
     http.send("");
@@ -280,7 +263,7 @@ function moveMessages(rowIds, folder) {
       deleteCachedMessage(messageId);
       if (currentMessages[currentMailbox] == rowIds[i]) {
 	var div = $('messageContent');
-	div.innerHTML = "";
+	div.update();
 	currentMessages[currentMailbox] = null;
       }
     }
@@ -306,10 +289,10 @@ function onMenuDeleteMessage(event) {
 function onPrintCurrentMessage(event) {
   var rowIds = $("messageList").getSelectedRowsId();
   if (rowIds.length == 0) {
-    window.alert(labels["Please select a message to print."].decodeEntities());
+    window.alert(labels["Please select a message to print."]);
   }
   else if (rowIds.length > 1) {
-    window.alert(labels["Please select only one message to print."].decodeEntities());
+    window.alert(labels["Please select only one message to print."]);
   }
   else
     window.print();
@@ -334,23 +317,49 @@ function onMailboxTreeItemClick(event) {
   currentMailboxType = this.parentNode.getAttribute("datatype");
   if (currentMailboxType == "account" || currentMailboxType == "additional") {
     currentMailbox = mailbox;
-    $("messageContent").innerHTML = "";
-    var body = $("messageList").tBodies[0];
+    $("messageContent").update();
+    var table = $("messageList");
+    var head = table.tHead;
+    var body = table.tBodies[0];
     for (var i = body.rows.length; i > 0; i--)
       body.deleteRow(i-1);
+    if (head.rows[1])
+      head.rows[1].firstChild.update();
   }
   else
     openMailbox(mailbox);
    
-  preventDefault(event);
+  Event.stop(event);
 }
 
-function onMailboxMenuMove() {
-  window.alert("unimplemented");
+function _onMailboxMenuAction(menuEntry, error, actionName) {
+  var targetMailbox = menuEntry.mailbox.fullName();
+
+  if (targetMailbox == currentMailbox)
+    window.alert(labels[error]);
+  else {
+    var message;
+    if (document.menuTarget instanceof HTMLDivElement)
+      message = currentMessages[currentMailbox];
+    else
+      message = document.menuTarget.getAttribute("id").substr(4);
+
+    var urlstr = (URLForFolderID(currentMailbox) + "/" + message
+		  + "/" + actionName + "?folder=" + targetMailbox);
+    triggerAjaxRequest(urlstr, folderRefreshCallback, currentMailbox);
+  }
 }
 
-function onMailboxMenuCopy() {
-  window.alert("unimplemented");
+function onMailboxMenuMove(event) {
+  _onMailboxMenuAction(this,
+		       "Moving a message into its own folder is impossible!",
+		       "move");
+}
+
+function onMailboxMenuCopy(event) {
+  _onMailboxMenuAction(this,
+		       "Copying a message into its own folder is impossible!",
+		       "copy");
 }
 
 function refreshMailbox() {
@@ -378,9 +387,10 @@ function composeNewMessage() {
 function openMailbox(mailbox, reload, idx) {
   if (mailbox != currentMailbox || reload) {
     currentMailbox = mailbox;
-    var url = ApplicationBaseURL + mailbox + "/view?noframe=1";
+    var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
     var messageContent = $("messageContent");
-    messageContent.innerHTML = '';
+    messageContent.update();
+    lastClickedRow = null; // from generic.js
 
     var currentMessage;
     if (!idx) {
@@ -401,7 +411,6 @@ function openMailbox(mailbox, reload, idx) {
 	      + "&asc=" + sorting["ascending"]);
     if (idx)
       url += "&idx=" + idx;
-
     if (document.messageListAjaxRequest) {
       document.messageListAjaxRequest.aborted = true;
       document.messageListAjaxRequest.abort();
@@ -416,7 +425,6 @@ function openMailbox(mailbox, reload, idx) {
 				      + rightDragHandle.offsetHeight
 				      + 'px') });
     }
-
     document.messageListAjaxRequest
       = triggerAjaxRequest(url, messageListCallback,
 			   currentMessage);
@@ -430,35 +438,57 @@ function openMailbox(mailbox, reload, idx) {
 function openMailboxAtIndex(event) {
   openMailbox(currentMailbox, true, this.getAttribute("idx"));
 
-  preventDefault(event);
+  Event.stop(event);
 }
 
 function messageListCallback(http) {
   var div = $('mailboxContent');
-   
+  var table = $('messageList');
+  
   if (http.readyState == 4
       && http.status == 200) {
-    document.messageListAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    document.messageListAjaxRequest = null;    
+
+    if (table) {
+      // Update table
+      var thead = table.tHead;
+      var tbody = table.tBodies[0];
+      var tmp = document.createElement('div');
+      $(tmp).update(http.responseText);
+      thead.rows[1].parentNode.replaceChild(tmp.firstChild.tHead.rows[1], thead.rows[1]);
+      table.replaceChild(tmp.firstChild.tBodies[0], tbody);
+    }
+    else {
+      // Add table
+      div.update(http.responseText);
+      table = $('messageList');
+      configureMessageListEvents(table);
+      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+    }
+    configureMessageListBodyEvents(table);
+
     var selected = http.callbackData;
     if (selected) {
       var row = $("row_" + selected);
-      if (row)
+      if (row) {
 	row.select();
-    }
-    configureMessageListEvents();
-    if (sorting["attribute"] && sorting["attribute"].length > 0) {
-      var sortHeader;
-      if (sorting["attribute"] == "subject")
-	sortHeader = $("subjectHeader");
-      else if (sorting["attribute"] == "from")
-	sortHeader = $("fromHeader");
-      else if (sorting["attribute"] == "date")
-	sortHeader = $("dateHeader");
+	div.scrollTop = row.rowIndex * row.getHeight(); // scroll to selected message
+      }
       else
-	sortHeader = null;
-
+	$("messageContent").update();
+    }
+    else
+      div.scrollTop = 0;
+    
+    if (sorting["attribute"] && sorting["attribute"].length > 0) {
+      var sortHeader = $(sorting["attribute"] + "Header");
+      
       if (sortHeader) {
+	var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	$(sortImages).each(function(item) {
+	    item.remove();
+	  });
+
 	var sortImage = createElement("img", "messageSortImage", "sortImage");
 	sortHeader.insertBefore(sortImage, sortHeader.firstChild);
 	if (sorting["ascending"])
@@ -468,8 +498,11 @@ function messageListCallback(http) {
       }
     }
   }
-  else
-    log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ")");
+  else {
+    var data = http.responseText;
+    var msg = data.replace(/^(.*\n)*.*<p>((.*\n)*.*)<\/p>(.*\n)*.*$/, "$2");
+    log("messageListCallback: problem during ajax request (readyState = " + http.readyState + ", status = " + http.status + ", response = " + msg + ")");
+  }
 }
 
 function quotasCallback(http) {
@@ -489,7 +522,7 @@ function quotasCallback(http) {
       var used = mbQuotas["usedSpace"];
       var max = mbQuotas["maxQuota"];
       var percents = (Math.round(used * 10000 / max) / 100);
-      var format = labels["quotasFormat"].decodeEntities();
+      var format = labels["quotasFormat"];
       var text = format.formatted(used, max, percents);
       window.status = text;
     }
@@ -652,7 +685,7 @@ function loadMessage(idx) {
     markMailInWindow(window, idx, true);
   } else {
     var div = $('messageContent');
-    div.innerHTML = cachedMessage['text'];
+    div.update(cachedMessage['text']);
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
     configureLinksInMessage();
@@ -705,7 +738,7 @@ function messageCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     document.messageAjaxRequest = null;
-    div.innerHTML = http.responseText;
+    div.update(http.responseText);
     configureLinksInMessage();
       
     if (http.callbackData) {
@@ -861,18 +894,18 @@ function onHeaderClick(event) {
     sorting["attribute"] = newSortAttribute;
     sorting["ascending"] = true;
   }
-
   refreshCurrentFolder();
-
-  preventDefault(event);
+  
+  Event.stop(event);
 }
 
 function refreshCurrentFolder() {
   openMailbox(currentMailbox, true);
 }
 
-function pouetpouet(event) {
-  window.alert("pouet pouet");
+function refreshFolderByType(type) {
+  if (currentMailboxType == type)
+    refreshCurrentFolder();
 }
 
 var mailboxSpanAcceptType = function(type) {
@@ -953,34 +986,34 @@ var messageListData = function(type) {
 
 /* a model for a futur refactoring of the sortable table headers mechanism */
 
-function configureMessageListHeaders(cells) {
-  for (var i = 0; i < cells.length; i++) {
-    var currentCell = $(cells[i]);
-    Event.observe(currentCell, "click",
-		  onHeaderClick.bindAsEventListener(currentCell));
-    Event.observe(currentCell, "mousedown", listRowMouseDownHandler);
+
+function configureMessageListEvents(table) {
+  if (table) {
+    table.multiselect = true;
+    // Each body row can load a message
+    Event.observe(table, "mousedown",
+    		  onMessageSelectionChange.bindAsEventListener(table));    
+    // Sortable columns
+    configureSortableTableHeaders(table);
   }
 }
 
-function configureMessageListEvents() {
-  var messageList = $("messageList");
-  if (messageList) {
-    Event.observe(messageList, "mousedown",
-		  onMessageSelectionChange.bindAsEventListener(messageList));
-
-    configureMessageListHeaders(messageList.tHead.rows[0].cells);
-    var cell = messageList.tHead.rows[1].cells[0];
+function configureMessageListBodyEvents(table) {
+  if (table) {
+    // Page navigation
+    var cell = table.tHead.rows[1].cells[0];
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
 	Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
-    rows = messageList.tBodies[0].rows;
+    rows = table.tBodies[0].rows;
     for (var i = 0; i < rows.length; i++) {
       Event.observe(rows[i], "mousedown", onRowClick);
+      Event.observe(rows[i], "selectstart", listRowMouseDownHandler);
       Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
-	 
+      
       rows[i].dndTypes = function() { return new Array("mailRow"); };
       rows[i].dndGhost = messageListGhost;
       rows[i].dndDataForType = messageListData;
@@ -1059,9 +1092,7 @@ function openInbox(node) {
 
 function initMailer(event) {
   if (!document.body.hasClassName("popup")) {
-    configureMessageListEvents();
     initDnd();
-    currentMailbox = "/" + accounts[0] + "/folderINBOX";
     initMailboxTree();
   }
 }
@@ -1089,6 +1120,7 @@ function initMailboxTree() {
   mailboxTree.add(0, -1, '');
 
   mailboxTree.pendingRequests = mailAccounts.length;
+  activeAjaxRequests += mailAccounts.length;
   for (var i = 0; i < mailAccounts.length; i++) {
     var url = ApplicationBaseURL + "/" + mailAccounts[i] + "/mailboxes";
     triggerAjaxRequest(url, onLoadMailboxesCallback, mailAccounts[i]);
@@ -1096,14 +1128,16 @@ function initMailboxTree() {
 }
 
 function updateMailboxTreeInPage() {
-  $("folderTreeContent").innerHTML = mailboxTree;
+  $("folderTreeContent").update(mailboxTree);
 
   var inboxFound = false;
   var tree = $("mailboxTree");
   var nodes = document.getElementsByClassName("node", tree);
   for (i = 0; i < nodes.length; i++) {
-    Event.observe(nodes[i], "click", onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
-    Event.observe(nodes[i], "contextmenu", onFolderMenuClick.bindAsEventListener(nodes[i]));
+    Event.observe(nodes[i], "click",
+		  onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
+    Event.observe(nodes[i], "contextmenu",
+		  onFolderMenuClick.bindAsEventListener(nodes[i]));
     if (!inboxFound
 	&& nodes[i].parentNode.getAttribute("datatype") == "inbox") {
       openInbox(nodes[i]);
@@ -1131,12 +1165,13 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   menuDIV.setAttribute("id", prefix + "Submenu");
   var menu = document.createElement("ul");
   menuDIV.appendChild(menu);
+  pageContent.appendChild(menuDIV);
 
   var callbacks = new Array();
   if (mailbox.type != "account") {
     var newNode = document.createElement("li");
     newNode.mailbox = mailbox;
-    newNode.appendChild(document.createTextNode("coucou"));
+    newNode.appendChild(document.createTextNode(labels["This Folder"]));
     menu.appendChild(newNode);
     menu.appendChild(document.createElement("li"));
     callbacks.push(callback);
@@ -1150,11 +1185,8 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     menu.appendChild(newNode);
     if (child.children.length > 0) {
       var newPrefix = prefix + submenuCount;
-      var newSubmenu = generateMenuForMailbox(child,
-					      newPrefix,
-					      callback);
-      document.body.appendChild(newSubmenu);
-      callbacks.push(newPrefix + "Submenu");
+      var newSubmenuId = generateMenuForMailbox(child, newPrefix, callback);
+      callbacks.push(newSubmenuId);
       submenuCount++;
     }
     else {
@@ -1164,7 +1196,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
   }
   initMenu(menuDIV, callbacks);
 
-  return menuDIV;
+  return menuDIV.getAttribute("id");
 }
 
 function updateMailboxMenus() {
@@ -1178,23 +1210,23 @@ function updateMailboxMenus() {
       menuDIV.parentNode.removeChild(menuDIV);
 
     menuDIV = document.createElement("div");
-    document.body.appendChild(menuDIV);
+    pageContent = $("pageContent");
+    pageContent.appendChild(menuDIV);
 
     var menu = document.createElement("ul");
     menuDIV.appendChild(menu);
 
     $(menuDIV).addClassName("menu");
     menuDIV.setAttribute("id", menuId);
-      
+
     var submenuIds = new Array();
     for (var i = 0; i < mailAccounts.length; i++) {
       var menuEntry = mailboxMenuNode("account", mailAccounts[i]);
       menu.appendChild(menuEntry);
       var mailbox = accounts[mailAccounts[i]];
-      var newSubmenu = generateMenuForMailbox(mailbox,
+      var newSubmenuId = generateMenuForMailbox(mailbox,
 					      key, mailboxActions[key]);
-      document.body.appendChild(newSubmenu);
-      submenuIds.push(newSubmenu.getAttribute("id"));
+      submenuIds.push(newSubmenuId);
     }
     initMenu(menuDIV, submenuIds);
   }
@@ -1203,14 +1235,17 @@ function updateMailboxMenus() {
 function onLoadMailboxesCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
+    checkAjaxRequestsState();
     var newAccount = buildMailboxes(http.callbackData,
 				    http.responseText);
     accounts[http.callbackData] = newAccount;
     mailboxTree.addMailAccount(newAccount);
     mailboxTree.pendingRequests--;
+    activeAjaxRequests--;
     if (!mailboxTree.pendingRequests) {
       updateMailboxTreeInPage();
       updateMailboxMenus();
+      checkAjaxRequestsState();
     }
   }
 
@@ -1259,7 +1294,7 @@ function buildMailboxes(accountName, encoded) {
 }
 
 function onMenuCreateFolder(event) {
-  var name = window.prompt(labels["Name :"].decodeEntities(), "");
+  var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
@@ -1269,7 +1304,7 @@ function onMenuCreateFolder(event) {
 
 function onMenuRenameFolder(event) {
   var name = window.prompt(labels["Enter the new name of your folder :"]
-			   .decodeEntities(),
+			   ,
 			   "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
@@ -1279,7 +1314,7 @@ function onMenuRenameFolder(event) {
 }
 
 function onMenuDeleteFolder(event) {
-  var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"].decodeEntities());
+  var answer = window.confirm(labels["Do you really want to move this folder into the trash ?"]);
   if (answer) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/deleteFolder";
@@ -1297,27 +1332,64 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
+  triggerAjaxRequest(urlstr, folderOperationCallback, folderID);
 
-  triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
+  if (folderID == currentMailbox) {
+    var div = $('messageContent');
+    for (var i = div.childNodes.length - 1; i > -1; i--)
+      div.removeChild(div.childNodes[i]);
+    refreshCurrentFolder();
+  }
+  var msgID = currentMessages[folderID];
+  if (msgID)
+    deleteCachedMessage(folderID + "/" + msgID);
+}
+
+function _onMenuChangeToXXXFolder(event, folder) {
+  var type = document.menuTarget.getAttribute("datatype");
+  if (type == "additional")
+    window.alert(labels["You need to choose a non-virtual folder!"]);
+  else {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var number = folderID.split("/").length;
+    if (number > 3)
+      window.alert(labels["You need to choose a root subfolder!"]);
+    else {
+      var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
+      triggerAjaxRequest(urlstr, folderOperationCallback);
+    }
+  }
+}
+
+function onMenuChangeToDraftsFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Drafts");
+}
+
+function onMenuChangeToSentFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Sent");
+}
+
+function onMenuChangeToTrashFolder(event) {
+  return _onMenuChangeToXXXFolder(event, "Trash");
 }
 
 function folderOperationCallback(http) {
   if (http.readyState == 4
-      && http.status == 204)
+      && isHttpStatus204(http.status))
     initMailboxTree();
   else
-    window.alert(labels["Operation failed"].decodeEntities());
+    window.alert(labels["Operation failed"]);
 }
 
 function folderRefreshCallback(http) {
   if (http.readyState == 4
-      && http.status == 204) {
+      && isHttpStatus204(http.status)) {
     var oldMailbox = http.callbackData;
     if (oldMailbox == currentMailbox)
       refreshCurrentFolder();
   }
   else
-    window.alert(labels["Operation failed"].decodeEntities());
+    window.alert(labels["Operation failed"]);
 }
 
 function getMenus() {
@@ -1336,7 +1408,9 @@ function getMenus() {
 				       onMenuCreateFolder,
 				       onMenuRenameFolder,
 				       onMenuExpungeFolder,
-				       onMenuDeleteFolder, "-", null,
+				       onMenuDeleteFolder,
+				       "folderTypeMenu",
+				       "-", null,
 				       onMenuSharing);
   menus["addressMenu"] = new Array(newContactFromEmail, newEmailTo, null);
   menus["messageListMenu"] = new Array(onMenuOpenMessage, "-",
@@ -1358,6 +1432,10 @@ function getMenus() {
 					  null, onMenuViewMessageSource,
 					  null, onPrintCurrentMessage,
 					  onMenuDeleteMessage);
+  menus["folderTypeMenu"] = new Array(onMenuChangeToSentFolder,
+				      onMenuChangeToDraftsFolder,
+				      onMenuChangeToTrashFolder);
+  
   menus["label-menu"] = new Array(null, "-", null , null, null, null , null,
 				  null);
   menus["mark-menu"] = new Array(null, null, null, null, "-", null, "-",
@@ -1386,6 +1464,18 @@ Mailbox.prototype.dump = function(indent) {
   for (var i = 0; i < this.children.length; i++) {
     this.children[i].dump(indent + 2);
   }
+}
+
+Mailbox.prototype.fullName = function() {
+  var fullName = "";
+
+  var currentFolder = this;
+  while (currentFolder.parentFolder) {
+    fullName = "/folder" + currentFolder.name + fullName;
+    currentFolder = currentFolder.parentFolder;
+  }
+
+  return "/" + currentFolder.name + fullName;
 }
 
 Mailbox.prototype.findMailboxByName = function(name) {

@@ -1,3 +1,9 @@
+2007-08-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSSaxDriver.m ([VSSaxDriver
+	-parseFromSource:_sourcesystemId:_sysId]): report only tags for
+	which the content is not empty.
+
 2007-05-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSSaxDriver.m ([VSSaxDriver +initialize]): removed the space

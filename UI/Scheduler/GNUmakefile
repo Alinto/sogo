@@ -48,7 +48,7 @@ SchedulerUI_RESOURCE_FILES += \
 	product.plist	
 
 SchedulerUI_RESOURCE_FILES += \
-	Toolbars/SOGoAppointmentFolder.toolbar \
+	Toolbars/SOGoAppointmentFolders.toolbar \
 	Toolbars/SOGoAppointmentObject.toolbar \
 	Toolbars/SOGoAppointmentObjectAccept.toolbar \
 	Toolbars/SOGoAppointmentObjectDecline.toolbar \
@@ -65,6 +65,9 @@ SchedulerUI_RESOURCE_FILES +=		\
 	cycles.plist			\
 
 # make
+
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

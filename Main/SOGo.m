@@ -41,10 +41,11 @@
 
 #import <WEExtensions/WEResourceManager.h>
 
-#import <SoObjects/SOGo/SOGoAuthenticator.h>
+#import <SoObjects/SOGo/SOGoDAVAuthenticator.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 
 #import "build.h"
 #import "SOGoProductLoader.h"
@@ -103,7 +104,7 @@ static BOOL debugObjectAllocation = NO;
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
   /* require View permission to access the root (bound to authenticated ...) */
-  [sInfo declareObjectProtected: SoPerm_View];
+//   [sInfo declareObjectProtected: SoPerm_View];
 
   /* to allow public access to all contained objects (subkeys) */
   [sInfo setDefaultAccess: @"allow"];
@@ -231,9 +232,18 @@ static BOOL debugObjectAllocation = NO;
 
 /* authenticator */
 
-- (id) authenticatorInContext: (id) _ctx
+- (id) authenticatorInContext: (WOContext *) context
 {
-  return [$(@"SOGoAuthenticator") sharedSOGoAuthenticator];
+  id authenticator;
+  NSString *key;
+
+  key = [[context request] requestHandlerKey];
+  if ([key isEqualToString: @"dav"])
+    authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+  else
+    authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+
+  return authenticator;
 }
 
 /* name lookup */
@@ -244,9 +254,6 @@ static BOOL debugObjectAllocation = NO;
   if ([_key length] < 1)
     return NO;
   
-  if (isdigit([_key characterAtIndex:0]))
-    return NO;
-
   return YES;
 }
 

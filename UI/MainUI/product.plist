@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN );
+  requires = ( MAIN, CommonUI );
 
   publicResources = (
   );
@@ -10,7 +10,7 @@
   classes = {
     SOGoRootPage = {
       superclass  = "SoComponent";
-      protectedBy = "View";
+      protectedBy = "<public>";
       defaultRoles = {
         "View" = ( "Authenticated" );
       };
@@ -46,6 +46,14 @@
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
       };
     };
+    SOGoParentFolder = {
+      superclass = "SOGoObject";
+      protectedBy = "Access Contents Information";
+      defaultRoles = {
+	"Access Contents Information" = ( "Authenticated" );
+        "WebDAV Access" = ( "Authenticated" );
+      };
+    };
     SOGoUserFolder = {
       superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";
@@ -59,13 +67,18 @@
   categories = {
     SOGo = { // TODO: move decls to class
       methods = {
-        index = { 
-          protectedBy = "View";
-          pageName    = "SOGoRootPage"; 
+        view = { 
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage"; 
+        };
+	connect = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+	  actionName = "connect";
         };
         GET = { // more or less a hack, see README of dbd
-          protectedBy = "View";
-          pageName    = "SOGoRootPage"; 
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage"; 
         };
       };
     };
@@ -77,13 +90,18 @@
           protectedBy = "<public>";
           pageName = "SOGoUserHomePage"; 
         };
+	logoff = {
+          protectedBy = "<public>";
+          pageName = "SOGoUserHomePage";
+	  actionName = "logoff";
+	};
       };
     };
     SOGoGroupsFolder = {
       methods = {
         index = { 
           protectedBy = "View";
-          pageName    = "SOGoGroupsPage"; 
+          pageName = "SOGoGroupsPage"; 
         };
       };
     };
@@ -91,7 +109,7 @@
       methods = {
         index = { 
           protectedBy = "View";
-          pageName    = "SOGoGroupPage"; 
+          pageName = "SOGoGroupPage"; 
         };
       };
     };

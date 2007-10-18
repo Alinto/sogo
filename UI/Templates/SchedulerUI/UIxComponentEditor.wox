@@ -14,6 +14,11 @@
   <script type="text/javascript" rsrc:src="skycalendar.js"><!-- space --></script>
   <script type="text/javascript" rsrc:src="UIxComponentEditor.js"><!-- space --></script>
 
+  <script type="text/javascript">
+    var activeCalendar = '<var:string value="clientObject.container.nameInContainer"/>';
+    var activeComponent = '<var:string value="clientObject.nameInContainer"/>';
+  </script>
+
   <div class="menu" id="privacy-menu">
     <ul id="itemPrivacyList">
       <var:foreach list="privacyClasses" item="item">
@@ -45,6 +50,11 @@
             string="item.displayName"
 	    selection="componentCalendar"
 	    /></span></span>
+      <span class="checkBoxList"><var:string label:value="Priority:" />
+         <span class="content"><var:popup list="priorities" item="item"
+            label:noSelectionString="prio_0"
+            string="itemPriorityText" selection="priority"/>
+      </span></span>
       <label id="attendeesLabel" style="display: none;"><var:string label:value="Attendees:"
 	  /><span class="content"
 	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>

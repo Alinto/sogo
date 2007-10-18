@@ -1,8 +1,19 @@
 #!/bin/sh
 
 PIDFILE=/var/run/sogo/sogod.pid
+PROGRAM=sogod-0.9
+oldpid=`pgrep -u $USER sogod-0.9`
+
+if [ -n "$oldpid" ]
+then
+  echo SOGo already launched.
+  exit 1
+fi
 
 . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 
-echo $$ > $PIDFILE
-exec $GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9 >& /var/log/sogo/sogod.log
+$GNUSTEP_SYSTEM_ROOT/Tools/$PROGRAM >& /var/log/sogo/sogod.log &
+
+newpid=`pgrep -u $USER $PROGRAM | awk '{ print $1 }'`
+echo $newpid > $PIDFILE
+

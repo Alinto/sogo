@@ -6,16 +6,21 @@
       cssClass = "tbicon_getmail";
       label = "Get Mail";
       onclick = "return refreshMailbox(this);";
-    },
+      tooltip = "Get new messages"; },
     { link     = "#";
       isSafe   = NO;
       image = "tb-mail-write-flat-24x24.png";
       onclick  = "return onComposeMessage();";
-      cssClass = "tbicon_compose"; label = "Write"; },
-    { link  = "#"; target = "addressbook";
+      cssClass = "tbicon_compose";
+      label = "Write";
+      tooltip = "Create a new message"; },
+    { link  = "#";
+      target = "addressbook";
       onclick  = "openAddressbook(this);return false;";
       image = "tb-mail-addressbook-flat-24x24.png";
-      cssClass = "tbicon_addressbook"; label = "Addressbook"; },
+      cssClass = "tbicon_addressbook";
+      label = "Addressbook";
+      tooltip = "Go to address book"; },
   ),
 
   ( // second group
@@ -23,19 +28,23 @@
       onclick = "return openMessageWindowsForSelection('reply');";
       isSafe   = NO;
       image = "tb-mail-reply-flat-24x24.png";
-      cssClass = "tbicon_reply";    label = "Reply";     },
-
+      cssClass = "tbicon_reply";
+      label = "Reply";
+      tooltip = "Reply to the message"; },
     { link = "replyall";
       onclick = "return openMessageWindowsForSelection('replyall');";
       isSafe   = NO;
       image = "tb-mail-replyall-flat-24x24.png";
-      cssClass = "tbicon_replyall"; label = "Reply All"; },
-
+      cssClass = "tbicon_replyall";
+      label = "Reply All";
+      tooltip = "Reply to sender and all recipients"; },
     { link = "forward";
       onclick = "return openMessageWindowsForSelection('forward');";
       isSafe   = NO;
       image = "tb-mail-forward-flat-24x24.png";
-      cssClass = "tbicon_forward";  label = "Forward";   },
+      cssClass = "tbicon_forward";
+      label = "Forward";
+      tooltip = "Forward selected message"; },
   ),
 
   ( // third group
@@ -44,22 +53,27 @@
       onclick = "onMenuDeleteMessage(event);";
 //       enabled  = showMarkDeletedButton;
       image = "tb-mail-delete-flat-24x24.png";
-      cssClass = "tbicon_delete"; label = "Delete"; },
+      cssClass = "tbicon_delete";
+      label = "Delete";
+      tooltip = "Delete selected message or folder"; },
     { link = "#";
       isSafe = NO;
       image = "tb-mail-junk-flat-24x24.png";
-      cssClass = "tbicon_junk";   label = "Junk";
-    },
+      cssClass = "tbicon_junk";
+      label = "Junk";
+      tooltip = "Mark the selected messages as junk"; },
   ),
   (
    { link = "#";
      onclick = "return onPrintCurrentMessage(event);";
      cssClass = "tbicon_print";
      image = "tb-mail-print-flat-24x24.png";
-     label = "Print"; },
+     label = "Print"; 
+     tooltip = "Print this message"; },
    { link = "#";
      image = "tb-mail-stop-flat-24x24.png";
      cssClass = "tbicon_stop";
-     label = "Stop";  },
+     label = "Stop";
+     tooltip = "Stop the current transfer"; },
   ),
 )

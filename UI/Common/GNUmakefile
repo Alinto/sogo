@@ -17,6 +17,7 @@ CommonUI_OBJC_FILES +=		\
 	UIxAclEditor.m  \
 	UIxObjectActions.m	\
 	UIxFolderActions.m	\
+	UIxParentFolderActions.m \
 	UIxElemBuilder.m	\
 	UIxTabView.m		\
 	UIxTabItem.m		\
@@ -37,6 +38,9 @@ CommonUI_LOCALIZED_RESOURCE_FILES +=	\
 	Localizable.strings		\
 
 # make
+
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

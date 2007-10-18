@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -32,6 +34,8 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "NSArray+Appointments.h"
+#import "SOGoAppointmentFolder.h"
+
 #import "SOGoAppointmentObject.h"
 
 @implementation SOGoAppointmentObject
@@ -94,25 +98,17 @@
   return uids;
 }
 
-/* folder management */
-
-- (id)lookupHomeFolderForUID:(NSString *)_uid inContext:(id)_ctx {
-  // TODO: what does this do? lookup the home of the organizer?
-  return [[self container] lookupHomeFolderForUID:_uid inContext:_ctx];
-}
-- (NSArray *)lookupCalendarFoldersForUIDs:(NSArray *)_uids inContext:(id)_ctx {
-  return [[self container] lookupCalendarFoldersForUIDs:_uids inContext:_ctx];
-}
-
 /* store in all the other folders */
 
-- (NSException *)saveContentString:(NSString *)_iCal inUIDs:(NSArray *)_uids {
+- (NSException *) saveContentString: (NSString *) _iCal
+			     inUIDs: (NSArray *) _uids
+{
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
-	     objectEnumerator];
+  e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
+	objectEnumerator];
   while ((folder = [e nextObject]) != nil) {
     NSException           *error;
     SOGoAppointmentObject *apt;
@@ -156,8 +152,8 @@
   id folder;
   NSException *allErrors = nil;
   
-  e = [[self lookupCalendarFoldersForUIDs:_uids inContext: context]
-	     objectEnumerator];
+  e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
+	objectEnumerator];
   while ((folder = [e nextObject])) {
     NSException           *error;
     SOGoAppointmentObject *apt;
@@ -179,6 +175,14 @@
 }
 
 /* "iCal multifolder saves" */
+- (BOOL) _aptIsStillRelevant: (iCalEvent *) appointment
+{
+  NSCalendarDate *now;
+
+  now = [NSCalendarDate calendarDate];
+
+  return ([[appointment endDate] earlierDate: now] == now);
+}
 
 - (NSException *) saveContentString: (NSString *) _iCal
                        baseSequence: (int) _v
@@ -319,9 +323,11 @@
   if (delError   != nil) return delError;
 
   /* email notifications */
-  if ([self sendEMailNotifications])
+  if ([self sendEMailNotifications]
+      && [self _aptIsStillRelevant: newApt])
     {
-      attendees = [NSMutableArray arrayWithArray: [changes insertedAttendees]];
+      attendees
+	= [NSMutableArray arrayWithArray: [changes insertedAttendees]];
       [attendees removePerson: organizer];
       [self sendEMailUsingTemplateNamed: @"Invitation"
             forOldObject: nil
@@ -338,19 +344,20 @@
               toAttendees: attendees];
       }
 
-      attendees = [NSMutableArray arrayWithArray:[changes deletedAttendees]];
+      attendees
+	= [NSMutableArray arrayWithArray: [changes deletedAttendees]];
       [attendees removePerson: organizer];
       if ([attendees count])
         {
-          iCalEvent *canceledApt;
+          iCalEvent *cancelledApt;
     
-          canceledApt = [newApt copy];
-          [(iCalCalendar *) [canceledApt parent] setMethod: @"cancel"];
+          cancelledApt = [newApt copy];
+          [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
           [self sendEMailUsingTemplateNamed: @"Removal"
                 forOldObject: nil
-                andNewObject: canceledApt
+                andNewObject: cancelledApt
                 toAttendees: attendees];
-          [canceledApt release];
+          [cancelledApt release];
         }
     }
 
@@ -396,7 +403,7 @@
       attendees = [NSMutableArray arrayWithArray:[apt attendees]];
       [attendees removePerson:[apt organizer]];
   
-      /* flag appointment as being canceled */
+      /* flag appointment as being cancelled */
       [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
       [apt increaseSequence];
 

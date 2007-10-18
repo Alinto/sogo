@@ -31,6 +31,7 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import "SOGoACLAdvisory.h"
 
@@ -109,7 +110,7 @@
   subject = [[self generateResponse] contentAsString];
   isSubject = NO;
 
-  return [subject stringByTrimmingSpaces];
+  return [[subject stringByTrimmingSpaces] asQPSubjectString: @"utf-8"];
 }
 
 - (NSString *) body
@@ -126,7 +127,7 @@
 - (NSString *) aclMethod
 {
   [self subclassResponsibility: _cmd];
-
+  
   return nil;
 }
 
@@ -208,4 +209,34 @@
 			     sender: from];
 }
 
+@end
+
+@implementation SOGoACLAdditionAdvisory
+
+- (NSString *) aclMethod { return @"add"; }
+
+@end
+
+@implementation SOGoACLRemovalAdvisory
+
+- (NSString *) aclMethod { return @"remove"; }
+
+@end
+
+@implementation SOGoACLEnglishAdditionAdvisory
+@end
+
+@implementation SOGoACLFrenchAdditionAdvisory
+@end
+
+@implementation SOGoACLGermanAdditionAdvisory
+@end
+
+@implementation SOGoACLEnglishRemovalAdvisory
+@end
+
+@implementation SOGoACLFrenchRemovalAdvisory
+@end
+
+@implementation SOGoACLGermanRemovalAdvisory
 @end

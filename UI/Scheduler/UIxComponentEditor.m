@@ -42,6 +42,7 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -104,7 +105,6 @@
   currentAttendee = [attendees nextObject];
   while (currentAttendee)
     {
-      NSLog (@"currentCN: %@", [currentAttendee cn]);
       [names appendFormat: @"%@,", [currentAttendee cn]];
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
       currentAttendee = [attendees nextObject];
@@ -332,19 +332,20 @@
 
 - (NSArray *) calendarList
 {
-  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolder *calendar, *currentCalendar;
+  SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
-  NSDictionary *currentCalendar;
 
   if (!calendarList)
     {
       calendarList = [NSMutableArray new];
-      folder = [[self clientObject] container];
-      allCalendars = [[folder calendarFolders] objectEnumerator];
+      calendar = [[self clientObject] container];
+      calendarParent = [calendar container];
+      allCalendars = [[calendarParent subFolders] objectEnumerator];
       currentCalendar = [allCalendars nextObject];
       while (currentCalendar)
 	{
-	  if ([[currentCalendar objectForKey: @"active"] boolValue])
+	  if ([currentCalendar isActive])
 	    [calendarList addObject: currentCalendar];
 	  currentCalendar = [allCalendars nextObject];
 	}
@@ -357,14 +358,18 @@
 {
   NSArray *calendars;
 
-  calendars = [[self calendarList] valueForKey: @"folder"];
+  calendars = [[self calendarList] valueForKey: @"nameInContainer"];
 
   return [calendars componentsJoinedByString: @","];
 }
 
 - (NSString *) componentCalendar
 {
-  return @"/";
+  SOGoAppointmentFolder *calendar;
+
+  calendar = [[self clientObject] container];
+  
+  return calendar;
 }
 
 /* priorities */
@@ -372,14 +377,15 @@
 - (NSArray *) priorities
 {
   /* 0 == undefined
-     5 == normal
+     9 == low
+     5 == medium
      1 == high
   */
   static NSArray *priorities = nil;
 
   if (!priorities)
     {
-      priorities = [NSArray arrayWithObjects: @"0", @"5", @"1", nil];
+      priorities = [NSArray arrayWithObjects: @"9", @"5", @"1", nil];
       [priorities retain];
     }
 
@@ -855,8 +861,8 @@
       [component setUid: [clientObject nameInContainer]];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
-      [component setPriority: @"0"];
     }
+  [component setPriority: priority];
   [component setLastModified: now];
 }
 

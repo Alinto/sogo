@@ -9,7 +9,6 @@ function onContactAdd() {
     urlstr += '/';
   urlstr += ("../../" + UserLogin + "/Contacts/"
              + contactSelectorAction + selectorURL);
-//   log (urlstr);
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
   w.selector = selector;
@@ -133,8 +132,7 @@ function validateEditorInput(sender) {
       errortext = errortext + labels.error_missingrecipients + "\n";
    
    if (errortext.length > 0) {
-      alert(labels.error_validationfailed.decodeEntities() + ":\n"
-	    + errortext.decodeEntities());
+      alert(labels.error_validationfailed + ":\n" + errortext);
       return false;
    }
    return true;
@@ -153,9 +151,20 @@ function clickedEditorSend(sender) {
 
 function clickedEditorAttach(sender) {
   var area = $("attachmentsArea");
-  area.setStyle({ display: "block" });
-  
+
+  if (!area.style.display) {
+    area.setStyle({ display: "block" });
+    onWindowResize(null);
+  }  
+
   var inputs = area.getElementsByTagName("input");
+
+  // Verify if there's already a visible file input field
+  for (var i = 0; i < inputs.length; i++)
+    if ($(inputs[i]).hasClassName("currentAttachment"))
+      return false;
+  
+  // Add new file input field
   var attachmentName = "attachment" + inputs.length;
   var newAttachment = createElement("input", attachmentName,
 				    "currentAttachment", null,
@@ -169,16 +178,7 @@ function clickedEditorAttach(sender) {
 }
 
 function onAddAttachment() {
-  var area = $("attachmentsArea");
-  var inputs = area.getElementsByTagName("input");
-  var attachmentName = "attachment" + inputs.length;
-  var newAttachment = createElement("input", attachmentName,
-				    "currentAttachment", null,
-				    { type: "file",
-				      name: attachmentName },
-				    area);
-  Event.observe(newAttachment, "change",
-		onAttachmentChange.bindAsEventListener(newAttachment));
+  return clickedEditorAttach(null);
 }
 
 function onAttachmentChange(event) {
@@ -214,6 +214,7 @@ function clickedEditorSave(sender) {
   document.pageform.action = "save";
   document.pageform.submit();
 
+  refreshMailbox();
   return false;
 }
 
@@ -289,11 +290,40 @@ function onSelectAllAttachments() {
 function onWindowResize(event) {
   var textarea = document.pageform.text;
   var windowheight = (typeof self.innerHeight == "number" ? self.innerHeight : document.body.clientHeight);
-  var textareaoffset = textarea.offsetTop;
   var rowheight = (Element.getHeight(textarea) / textarea.rows);
+  var headerarea = $("headerArea");
 
+  // Set textarea position
+  textarea.setStyle({ 'top': (headerarea.getHeight() + headerarea.offsetTop) + 'px' });
+
+  var textareaoffset = textarea.offsetTop;
+
+  // Resize the textarea (message content)
   textarea.rows = Math.round((windowheight - textareaoffset) / rowheight);
-  log ("onWindowResize new number of rows = " + textarea.rows);
+  
+  var attachmentsarea = $("attachmentsArea");
+  var attachmentswidth = 0;
+  if (attachmentsarea.style.display)
+    attachmentswidth = attachmentsarea.getWidth();
+  var windowwidth = (typeof self.innerWidth == "number" ? self.innerWidth : document.body.clientWidth);
+  var subjectfield = $(document).getElementsByClassName('headerField', $('subjectRow'))[0];
+  var subjectinput = $(document).getElementsByClassName('textField', $('subjectRow'))[0];
+
+  // Resize subject field
+  subjectinput.setStyle({ width: (windowwidth
+				  - $(subjectfield).getWidth()
+				  - attachmentswidth
+				  - 4 - 30
+				  ) + 'px' });
+
+  // Resize address fields
+  var addresslist = $('addressList');
+  var firstselect = document.getElementsByClassName('headerField', addresslist)[0];
+  var inputwidth = windowwidth - $(firstselect).getWidth() - attachmentswidth - 24 - 30;
+  var addresses = document.getElementsByClassName('textField', addresslist);
+  for (var i = 0; i < addresses.length; i++) {
+    addresses[i].setStyle({ width: inputwidth + 'px' });
+  }
 }
 
 function onMailEditorClose(event) {
@@ -304,11 +334,12 @@ function onMailEditorClose(event) {
     var parts = url.split("/");
     parts[parts.length-1] = "delete";
     url = parts.join("/");
-
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
     http.send("");
   }
+  
+  Event.stopObserving(window, "beforeunload", onMailEditorClose);
 }
 
 addEvent(window, 'load', initMailEditor);

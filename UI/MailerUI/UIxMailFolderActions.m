@@ -24,8 +24,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGImap4/NGImap4Connection.h>
@@ -35,6 +37,9 @@
 #import <SoObjects/Mailer/SOGoTrashFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+
+#import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxMailFolderActions.h"
 
@@ -49,7 +54,6 @@
   NSString *folderName;
 
   co = [self clientObject];
-  response = [context response];
 
   folderName = [[context request] formValueForKey: @"name"];
   if ([folderName length] > 0)
@@ -58,15 +62,15 @@
       error = [connection createMailbox: folderName atURL: [co imap4URL]];
       if (error)
 	{
-	  [response setStatus: 500];
+	  response = [self responseWithStatus: 500];
 	  [response appendContentString: @"Unable to create folder."];
 	}
       else
-	[response setStatus: 204];
+	response = [self responseWith204];
     }
   else
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"Missing 'name' parameter."];
     }
 
@@ -100,7 +104,6 @@
   NSURL *srcURL, *destURL;
 
   co = [self clientObject];
-  response = [context response];
 
   folderName = [[context request] formValueForKey: @"name"];
   if ([folderName length] > 0)
@@ -112,15 +115,15 @@
 			  toURL: destURL];
       if (error)
 	{
-	  [response setStatus: 500];
+	  response = [self responseWithStatus: 500];
 	  [response appendContentString: @"Unable to rename folder."];
 	}
       else
-	[response setStatus: 204];
+	response = [self responseWith204];
     }
   else
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"Missing 'name' parameter."];
     }
 
@@ -154,7 +157,6 @@
   NSURL *srcURL, *destURL;
 
   co = [self clientObject];
-  response = [context response];
   connection = [co imap4Connection];
   srcURL = [co imap4URL];
   destURL = [self _trashedURLOfFolder: srcURL
@@ -164,13 +166,62 @@
 		      toURL: destURL];
   if (error)
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"Unable to move folder."];
     }
   else
-    [response setStatus: 204];
+    response = [self responseWith204];
 
   return response;
+}
+
+- (WOResponse *) _setFolderPurpose: (NSString *) purpose
+{
+  SOGoMailFolder *co;
+  WOResponse *response;
+  NSUserDefaults *ud;
+  NSMutableDictionary *mailSettings;
+
+  co = [self clientObject];
+  if ([NSStringFromClass ([co class]) isEqualToString: @"SOGoMailFolder"])
+    {
+      ud = [[context activeUser] userSettings];
+      mailSettings = [ud objectForKey: @"Mail"];
+      if (!mailSettings)
+	{
+	  mailSettings = [NSMutableDictionary new];
+	  [mailSettings autorelease];
+	}
+      [ud setObject: mailSettings forKey: @"Mail"];
+      [mailSettings setObject: [co relativeImap4Name]
+		    forKey: [NSString stringWithFormat: @"%@Folder",
+				      purpose]];
+      [ud synchronize];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response
+	appendContentString: @"Unable to change the purpose of this folder."];
+    }
+
+  return response;
+}
+
+- (WOResponse *) setAsDraftsFolderAction
+{
+  return [self _setFolderPurpose: @"Drafts"];
+}
+
+- (WOResponse *) setAsSentFolderAction
+{
+  return [self _setFolderPurpose: @"Sent"];
+}
+
+- (WOResponse *) setAsTrashFolderAction
+{
+  return [self _setFolderPurpose: @"Trash"];
 }
 
 - (WOResponse *) expungeAction 
@@ -180,18 +231,17 @@
   WOResponse *response;
 
   co = [self clientObject];
-  response = [context response];
 
   error = [co expunge];
   if (error)
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"Unable to expunge folder."];
     }
   else
     {
       [co flushMailCaches];
-      [response setStatus: 204];
+      response = [self responseWith204];
     }
 
   return response;
@@ -207,7 +257,6 @@
   NSURL *currentURL;
 
   co = [self clientObject];
-  response = [context response];
 
   error = [co addFlagsToAllMessages: @"deleted"];
   if (!error)
@@ -226,11 +275,11 @@
     }
   if (error)
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"Unable to empty the trash folder."];
     }
   else
-    [response setStatus: 204];
+    response = [self responseWith204];
 
   return response;
 }
@@ -242,7 +291,6 @@
   WOResponse *response;
   SOGoMailFolder *clientObject;
 
-  response = [context response];
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
   if ([mailInvitationParam boolValue])
@@ -257,7 +305,7 @@
     }
   else
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
 
@@ -283,8 +331,7 @@
   NGImap4Client *client;
   NSString *responseString;
 
-  response = [context response];
-  [response setStatus: 200];
+  response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=UTF-8"
 	    forKey: @"content-type"];
 

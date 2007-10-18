@@ -12,7 +12,7 @@
 
 "Address Books"      = "Adressbücher";
 "Addresses"         = "Adresses";
-"Update" = "Mettre à jour";
+"Update" = "Speichern";
 "Cancel"            = "Abbrechen";
 "Common"            = "Name";
 "Contact editor"    = "Éditer le contact";
@@ -50,12 +50,12 @@
 "New Card" = "Neue Karte";
 "New List" = "Neue Liste";
 "Modify" = "Eigenschaften";
-"Sharing..." = "Partage...";
+"Sharing..." = "Benutzerrechte...";
 "Write" = "Verfassen";
 "Delete" = "Löschen";
 "Instant Message" = "Messenger";
-"Add..." = "Ajouter...";
-"Remove" = "Enlever";
+"Add..." = "Hinzufügen...";
+"Remove" = "Löschen";
 
 "Preferred" = "Préféré";
 "Card for %@" = "%@";
@@ -102,29 +102,33 @@
 "Blind Carbon Copy" = "C. carbone cachée";
 
 "New Addressbook..." = "Neues Adressbuch...";
-"Subscribe to an Addressbook..." = "S'inscrire à un carnet d'adresses...";
+"Subscribe to an Addressbook..." = "Abonnieren...";
 "Remove the selected Addressbook" = "Adressbuch löschen";
 
 "Name of the Address Book" = "Adressbuch-Name";
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
 
+"Address Book Name" = "Address Book Name";
+
 "You cannot subscribe to a folder that you own!"
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier!";
 
-"Default Roles" = "Rôles par défaut";
-"User rights for:" = "Autorisations pour :";
+"Default Roles" = "Standard-Rollen";
+"User rights for:" = "Benutzerrechte für:";
 
 "This person can add cards to this addressbook."
-= "Cette personne peut ajouter des fiches à ce carnet d'adresses.";
+= "Diese Person kann neue Karten zu diesem Adressbuch hinzufügen.";
 "This person can edit the cards of this addressbook."
-= "Cette personne peut éditer des fiches de ce carnet d'adresses.";
+= "Diese Person kann in diesem Adressbuch bestehende Karten verändern.";
 "This person can list the content of this addressbook."
-= "Cette personne peut lister le contenu de ce carnet d'adresses.";
+= "Diese Person kann die Liste der Karten dieses Adressbuches anzeigen.";
 "This person can read the cards of this addressbook."
-= "Cette personne peut visionner les fiches de ce carnet d'adresses.";
+= "Diese Person kann Karten dieses Adressbuches anzeigen.";
 "This person can erase cards from this addressbook."
-= "Cette personne peut effacer des fiches de ce carnet d'adresses.";
+= "Diese Person kann Karten aus diesem Adressbuch löschen";
 
+"The selected contact has no email address."
+= "The selected contact has no email address.";

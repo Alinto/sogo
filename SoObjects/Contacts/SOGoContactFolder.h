@@ -43,16 +43,6 @@
 
 @protocol SOGoContactFolder <NSObject>
 
-+ (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
-                                  andDisplayName: (NSString *) aDisplayName
-                                     inContainer: (SOGoObject *) aContainer;
-
-- (id <SOGoContactFolder>) initWithName: (NSString *) aName
-                         andDisplayName: (NSString *) aDisplayName
-                            inContainer: (SOGoObject *) aContainer;
-
-- (NSString *) displayName;
-
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering;

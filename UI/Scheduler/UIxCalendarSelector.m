@@ -22,34 +22,30 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
-#import <NGExtensions/NGExtensions.h>
-#import <NGCards/iCalPerson.h>
-
-#import <SOGo/SOGoUser.h>
-#import <SOGoUI/UIxComponent.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "UIxCalendarSelector.h"
 
-static inline char
-darkenedColor (const char value)
-{
-  char newValue;
+// static inline char
+// darkenedColor (const char value)
+// {
+//   char newValue;
 
-  if (value >= '0' && value <= '9')
-    newValue = ((value - '0') / 2) + '0';
-  else if (value >= 'a' && value <= 'f')
-    newValue = ((value + 10 - 'a') / 2) + '0';
-  else if (value >= 'A' && value <= 'F')
-    newValue = ((value + 10 - 'A') / 2) + '0';
-  else
-    newValue = value;
+//   if (value >= '0' && value <= '9')
+//     newValue = ((value - '0') / 2) + '0';
+//   else if (value >= 'a' && value <= 'f')
+//     newValue = ((value + 10 - 'a') / 2) + '0';
+//   else if (value >= 'A' && value <= 'F')
+//     newValue = ((value + 10 - 'A') / 2) + '0';
+//   else
+//     newValue = value;
 
-  return newValue;
-}
+//   return newValue;
+// }
 
 static inline NSString *
 colorForNumber (unsigned int number)
@@ -90,8 +86,8 @@ colorForNumber (unsigned int number)
 {
   if ((self = [super init]))
     {
-      colors = nil;
-      currentCalendarFolder = nil;
+      calendars = nil;
+      currentCalendar = nil;
     }
 
   return self;
@@ -99,76 +95,63 @@ colorForNumber (unsigned int number)
 
 - (void) dealloc
 {
-  [currentCalendarFolder release];
-  [colors release];
+  [calendars release];
+  [currentCalendar release];
   [super dealloc];
 }
 
-- (NSArray *) calendarFolders
+- (NSArray *) calendars
 {
-  NSArray *calendarFolders;
-  NSEnumerator *newFolders;
-  NSDictionary *currentFolder;
-  unsigned int count;
+  NSArray *folders;
+  SOGoAppointmentFolder *folder;
+  NSMutableDictionary *calendar;
+  unsigned int count, max;
+  NSString *folderName;
+  NSNumber *isActive;
 
-  calendarFolders = [[self clientObject] calendarFolders];
-  if (!colors)
+  if (!calendars)
     {
-      colors = [NSMutableDictionary new];
-      count = 0;
-      newFolders = [calendarFolders objectEnumerator];
-      currentFolder = [newFolders nextObject];
-      while (currentFolder)
+      folders = [[self clientObject] subFolders];
+      max = [folders count];
+      calendars = [[NSMutableArray alloc] initWithCapacity: max];
+      for (count = 0; count < max; count++)
 	{
-	  [colors setObject: colorForNumber (count)
-		  forKey: [currentFolder objectForKey: @"folder"]];
-	  count++;
-	  currentFolder = [newFolders nextObject];
+	  folder = [folders objectAtIndex: count];
+	  calendar = [NSMutableDictionary dictionary];
+	  folderName = [folder nameInContainer];
+	  [calendar setObject:
+		      [NSString stringWithFormat: @"/%@", folderName]
+		    forKey: @"id"];
+	  [calendar setObject: [folder displayName]
+		    forKey: @"displayName"];
+	  [calendar setObject: folderName forKey: @"folder"];
+	  [calendar setObject: colorForNumber (count)
+		    forKey: @"color"];
+	  isActive = [NSNumber numberWithBool: [folder isActive]];
+	  [calendar setObject: isActive forKey: @"active"];
+	  [calendar setObject: [folder ownerInContext: context]
+		    forKey: @"owner"];
+	  [calendars addObject: calendar];
 	}
     }
 
-  return calendarFolders;
+  return calendars;
 }
 
-- (void) setCurrentCalendarFolder: (NSDictionary *) newCurrentCalendarFolder
+- (void) setCurrentCalendar: (NSDictionary *) newCalendar
 {
-  ASSIGN (currentCalendarFolder, newCurrentCalendarFolder);
+  ASSIGN (currentCalendar, newCalendar);
 }
 
-- (NSDictionary *) currentCalendarFolder
+- (NSDictionary *) currentCalendar
 {
-  return currentCalendarFolder;
-}
-
-- (NSString *) currentCalendarSpanBG
-{
-  NSString *colorKey;
-
-  colorKey = [currentCalendarFolder objectForKey: @"folder"];
-
-  return [colors objectForKey: colorKey];
-}
-
-- (NSString *) currentCalendarLogin
-{
-  NSArray *parts;
-
-  parts = [[currentCalendarFolder objectForKey: @"folder"]
-	    componentsSeparatedByString: @":"];
-
-  return (([parts count] > 1)
-	  ? [parts objectAtIndex: 0]
-	  : [[context activeUser] login]);
+  return currentCalendar;
 }
 
 - (NSString *) currentCalendarStyle
 {
-  NSString *color;
-
-  color = [self currentCalendarSpanBG];
-
-  return [NSString stringWithFormat: @"color: %@; background-color: %@;",
-		   color, color];
+  return [currentCalendar
+	   keysWithFormat: @"color: %{color}; background-color: %{color};"];
 }
 
 @end /* UIxCalendarSelector */

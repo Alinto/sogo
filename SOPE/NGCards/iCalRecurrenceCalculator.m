@@ -100,9 +100,10 @@ static Class yearlyCalcClass  = Nil;
     rule = [_rRules objectAtIndex:i];
     if (![rule isKindOfClass:iCalRecurrenceRuleClass])
       rule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation:rule];
-  
+        
     calc = [self recurrenceCalculatorForRecurrenceRule:rule
                  withFirstInstanceCalendarDateRange:_fir];
+
     rs   = [calc recurrenceRangesWithinCalendarDateRange:_r];
     [ranges addObjectsFromArray:rs];
   }
@@ -158,6 +159,7 @@ static Class yearlyCalcClass  = Nil;
     unsigned            k;
 
     exDate = [exDates objectAtIndex:i];
+    
     for (k = 0; k < rCount; k++) {
       unsigned rIdx;
       

@@ -35,6 +35,7 @@
   NSCalendarDate *aptStartDate;
   NSCalendarDate *aptEndDate;
   NSString *item;
+  NSString *repeat;
 }
 
 /* template values */

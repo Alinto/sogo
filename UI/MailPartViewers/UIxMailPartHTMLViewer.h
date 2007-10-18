@@ -26,6 +26,9 @@
 #import "UIxMailPartViewer.h"
 
 @interface UIxMailPartHTMLViewer : UIxMailPartViewer
+{
+  id handler;
+}
 
 - (NSString *) flatContentAsString;
 

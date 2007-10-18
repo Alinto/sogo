@@ -1,7 +1,7 @@
 function onPopupAttendeesWindow(event) {
    if (event)
       preventDefault(event);
-   window.open(ApplicationBaseURL + "editAttendees", null, 
+   window.open(ApplicationBaseURL + "/editAttendees", null, 
                "width=803,height=573");
 
    return false;
@@ -24,7 +24,7 @@ function onPopupUrlWindow(event) {
       preventDefault(event);
 
    var urlInput = document.getElementById("url");
-   var newUrl = window.prompt(labels["Target:"].decodeEntities(), urlInput.value);
+   var newUrl = window.prompt(labels["Target:"], urlInput.value);
    if (newUrl != null) {
       var documentHref = $("documentHref");
       var documentLabel = $("documentLabel");
@@ -74,13 +74,7 @@ function onChangeCalendar(event) {
    var form = document.forms["editform"];
    var urlElems = form.getAttribute("action").split("/");
    var choice = calendars[this.value];
-   var ownerLogin;
-   if (choice.indexOf(":") > -1)
-      ownerLogin = choice.split(":")[0];
-   else
-      ownerLogin = UserLogin;
-   urlElems[urlElems.length-4] = ownerLogin;
-
+   urlElems[urlElems.length-3] = choice;
    form.setAttribute("action", urlElems.join("/"));
 }
 
@@ -170,7 +164,7 @@ function onComponentEditorLoad(event) {
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
    for (var i = 0; i < menuItems.length; i++)
-      Event.observe(menuItems[i], "mouseup",
+      Event.observe(menuItems[i], "mousedown",
 		    onMenuSetClassification.bindAsEventListener(menuItems[i]),
 		    false);
 }

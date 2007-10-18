@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+  <var:if condition="isSubject">
+    <var:string value="displayName"/> a été créé
+  </var:if>
+
+  <var:if condition="isBody">
+Le dossier <var:string value="displayName"/> a été créé.
+
+Vous pouvez accéder à distance à ce dossier avec le lien suivant:
+
+    <var:string value="httpFolderURL"/>
+  </var:if>
+</container>

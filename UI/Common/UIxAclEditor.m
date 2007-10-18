@@ -87,6 +87,15 @@
   return [self _displayNameForUID: ownerLogin];
 }
 
+- (BOOL) hasOwner
+{
+  NSString *ownerLogin;
+
+  ownerLogin = [[self clientObject] ownerInContext: context];
+
+  return (![ownerLogin isEqualToString: @"nobody"]);
+}
+
 - (NSString *) defaultUserID
 {
   if (!defaultUserID)

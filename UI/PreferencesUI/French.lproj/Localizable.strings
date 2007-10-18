@@ -3,8 +3,7 @@
 "Close" = "Fermer";
 
 /* tabs */
-"Out of Office" = "Absence du bureau";
-"Date and Time" = "Date et heure";
+"General" = "Général";
 "Calendar Options" = "Calendrier";
 "Mail Options" = "Courrier";
 "Password" = "Mot de passe";

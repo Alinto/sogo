@@ -33,7 +33,7 @@ IMG#progressIndicator
   margin-top: 1.5em;
   margin-right: 1em; }
 
-DIV.pageContent
+DIV#pageContent
 { /* position: absolute;
   background-color: #ffa;
   top: 3em;
@@ -54,13 +54,11 @@ LABEL
   margin-left: .5em; }
 
 TABLE
-{ display: block;
-  table-layout: fixed;
+{ table-layout: fixed;
   border-spacing: 0px; }
 
 TABLE TD
-{ white-space: nowrap;
-  padding-left: .25em;
+{ padding-left: .25em;
   padding-right: .25em; }
 
 a:link
@@ -94,7 +92,7 @@ div#header
 { margin-left: 5px;
   margin-right: 5px;
   padding: 0;
-  border-bottom: 1px solid #000000; }
+  border-bottom: 1px solid #000; }
 
 div#header img.headerlogo
 { float: right; 
@@ -155,6 +153,12 @@ DIV.linkbanner A
 DIV.linkbanner A:hover
 { color: #dd5; }
 
+DIV.linkbanner A#logoff
+{ float: right;
+  margin: 0px;
+  padding: 0px;
+  padding-right: .5em; }
+
 .linkbannerlinks
 { vertical-align: bottom;
   text-align: left; }
@@ -194,6 +198,7 @@ TEXTAREA
 
 DIV, TEXTAREA, INPUT, SELECT
 { font-family: inherit;
+  font-size: 8pt;
   font-size: inherit; }
 
 TEXTAREA, INPUT.textField
@@ -207,8 +212,7 @@ TEXTAREA, INPUT.textField
   -moz-border-left-colors: #9c9a94 #000 transparent; }
 
 INPUT.textField
-{ line-height: 2em;
-  vertical-align: middle; }
+{ vertical-align: middle; }
 
 DIV#toolbar
 { left: 0px;
@@ -348,6 +352,19 @@ SPAN.toolbarButton:active
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('submenu-active.gif') !important; }
 
+/* live search popup menu */
+UL#searchOptions LI
+{ list-style-position: inside;
+  list-style-image: url("menu-nocheck.gif");
+  padding: 1px 3px;
+  margin: 0px; }
+
+UL#searchOptions LI._chosen
+{ list-style-image: url("menu-check.gif"); }
+
+UL#searchOptions LI._chosen:hover
+{ list-style-image: url("menu-check-hover.gif"); }
+
 DIV#logConsole
 { position: absolute;
   overflow: auto;
@@ -360,7 +377,7 @@ DIV#logConsole
   -moz-border-top-colors: #000 #9c9a94 transparent;
   -moz-border-left-colors: #000 #9c9a94 transparent;
   font-family: monospace;
-  font-size: 12pt;
+  font-size: 9pt;
   padding: .25em;
   background-color: #fff;
   overflow-y: scroll;
@@ -398,8 +415,7 @@ TD.tbtv_navcell
   -moz-border-bottom-colors: #000 #9c9a94 transparent;
   -moz-border-right-colors: #000 #9c9a94 transparent; }
 
-TD.headerCell:active,
-TD.tbtv_headercell:active
+TD.sortableTableHeader:active
 { background-color: #dcdad5;
   padding-top: 2px;
   border-top: 1px solid #9c9a94;
@@ -408,18 +424,16 @@ TD.tbtv_headercell:active
   border-bottom: 1px solid #9c9a94; }
 
 TD.headerCell SPAN,
-td.tbtv_headercell SPAN
-{ float: left;
-  width: 100%; }
+TD.tbtv_headercell SPAN
+{ float: left; }
 
-td.tbtv_headercell a
+TD.tbtv_headercell A
 { cursor: default;
   margin: 0px auto;
   display: block;
-  color: black;
-  width: 100%; }
+  color: black; }
 
-td.tbtv_headercell a:hover
+TD.tbtv_headercell A:hover
 { margin: 0px auto;
   display: block;
   color: black;
@@ -429,7 +443,7 @@ td.tbtv_headercell a:hover
 
 IMG.sortImage,
 TD.headerCell IMG.tbtv_sortcell,
-td.tbtv_headercell img.tbtv_sortcell
+TD.tbtv_headercell IMG.tbtv_sortcell
 { float: right;
   text-align: right;
   border: 0px;
@@ -446,8 +460,7 @@ TR.tableview TD
   padding-right: .3em; }
 
 TD.headerDateTime
-{ width: 30em;
-  min-width: 30em; }
+{ min-width: 30em; }
 
 TD.headerTitle
 { width: 30%; }
@@ -465,8 +478,7 @@ td img.tbtv_sortcell
 
 TD.subjectCell,
 td.tbtv_subject_headercell
-{ overflow: hidden;
-  width: auto; }
+{ overflow: hidden; }
 
 /* drag handles */
 DIV.dragHandle
@@ -554,7 +566,7 @@ INPUT.button,
 A.button,
 A[class~="_disabled"].button:active
 { cursor: default;
-  padding: 1px .5em;
+  padding: 1px 0.5em;
   background-color: #d4d0c8;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
@@ -687,6 +699,20 @@ INPUT.checkBox
   -moz-border-left-colors: #000 #fff; 
   -moz-border-bottom-colors: #000 #fff;
   -moz-border-right-colors: #000 #fff; }
+
+/* tablekit resizable columns */
+
+TABLE TD.resize-handle-active
+{ cursor: e-resize; }
+
+DIV.resize-handle
+{ cursor: e-resize;
+  width: 2px;
+  border-right: 1px solid #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 2em; }
 
 @media print
 {

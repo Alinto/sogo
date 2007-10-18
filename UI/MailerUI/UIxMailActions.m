@@ -25,6 +25,8 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/NSException+HTTP.h>
+
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
@@ -35,27 +37,6 @@
 #import "UIxMailActions.h"
 
 @implementation UIxMailActions
-
-- (WOResponse *) editAction
-{
-  SOGoMailAccount *account;
-  SOGoMailObject *co;
-  SOGoDraftsFolder *folder;
-  SOGoDraftObject *newMail;
-  NSString *newLocation;
-
-  co = [self clientObject];
-  account = [co mailAccountFolder];
-  folder = [account draftsFolderInContext: context];
-  newMail = [folder newDraft];
-  [newMail fetchMailForEditing: co];
-  [newMail storeInfo];
-
-  newLocation = [NSString stringWithFormat: @"%@/edit",
-			  [newMail baseURLInContext: context]];
-
-  return [self redirectToLocation: newLocation];
-}
 
 - (WOResponse *) replyToAll: (BOOL) toAll
 {
@@ -107,7 +88,103 @@
   return [self redirectToLocation: newLocation];
 }
 
+- (id) trashAction
+{
+  id response;
+
+  response = [[self clientObject] trashInContext: context];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (id) moveAction
+{
+  NSString *destinationFolder;
+  id response;
+
+  destinationFolder = [[context request] formValueForKey: @"folder"];
+  if ([destinationFolder length] > 0)
+    {
+      response = [[self clientObject] moveToFolderNamed: destinationFolder
+				      inContext: context];
+      if (!response)
+	response = [self responseWith204];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+			    reason: @"No destination folder given"];
+
+  return response;
+}
+
+- (id) copyAction
+{
+  NSString *destinationFolder;
+  id response;
+
+  destinationFolder = [[context request] formValueForKey: @"folder"];
+  if ([destinationFolder length] > 0)
+    {
+      response = [[self clientObject] copyToFolderNamed: destinationFolder
+				      inContext: context];
+      if (!response)
+	response = [self responseWith204];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+			    reason: @"No destination folder given"];
+
+  return response;
+}
+
+/* active message */
+
+- (id) markMessageUnreadAction 
+{
+  id response;
+
+  response = [[self clientObject] removeFlags: @"seen"];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (id) markMessageReadAction 
+{
+  id response;
+
+  response = [[self clientObject] addFlags: @"seen"];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
 /* SOGoDraftObject */
+- (WOResponse *) editAction
+{
+  SOGoMailAccount *account;
+  SOGoMailObject *co;
+  SOGoDraftsFolder *folder;
+  SOGoDraftObject *newMail;
+  NSString *newLocation;
+
+  co = [self clientObject];
+  account = [co mailAccountFolder];
+  folder = [account draftsFolderInContext: context];
+  newMail = [folder newDraft];
+  [newMail fetchMailForEditing: co];
+  [newMail storeInfo];
+
+  newLocation = [NSString stringWithFormat: @"%@/edit",
+			  [newMail baseURLInContext: context]];
+
+  return [self redirectToLocation: newLocation];
+}
+
 - (id) deleteAction
 {
   SOGoDraftObject *draft;
@@ -119,10 +196,7 @@
   if (error)
     response = error;
   else
-    {
-      response = [context response];
-      [response setStatus: 204];
-    }
+    response = [self responseWith204];
 
   return response;
 }
@@ -132,17 +206,15 @@
   WOResponse *response;
   NSString *filename;
 
-  response = [context response];
-
   filename = [[context request] formValueForKey: @"filename"];
   if ([filename length] > 0)
     {
+      response = [self responseWith204];
       [[self clientObject] deleteAttachmentWithName: filename];
-      [response setStatus: 204];
     }
   else
     {
-      [response setStatus: 500];
+      response = [self responseWithStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
 

@@ -1,4 +1,27 @@
-0.9.0-20070xxx
+0.9.0-200710XX
+--------------
+- the user can now configure his folders as drafts, trash or sent folder;
+- added the ability the move and copy message across mail folders;
+
+0.9.0-200709XX
+--------------
+- implemented cookie-based identification in the web interface;
+- fixed a bug where a false positive happening whenever a wrong user login was
+  given during an indirect bind;
+- remove the constraint that a username can't begin with a digit;
+- deleting a message no longer expunges its parent folder;
+- implemented support for multiple calendars;
+- it is now possible to rename folders;
+- fixed search in message content;
+- added tooltips for toolbar buttons (English and French);
+- added checkmarks in live search options popup menus;
+- added browser detection with recommanded alternatives;
+- support for resizable columns in tables;
+- improved support for multiple selection in tables and lists;
+- improved IE7 and Safari support: attendees selector, email file attachments;
+- countless bugfixes;
+
+0.9.0-20070824
 --------------
 - added the ability to choose the default module from the
   application settings: "Calendars", "Contacts" or "Mail";

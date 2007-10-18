@@ -567,7 +567,7 @@ static BOOL sendEMailNotifications = NO;
     }
   else
     role = SOGoCalendarRole_Organizer;
-  
+
   return role;
 }
 

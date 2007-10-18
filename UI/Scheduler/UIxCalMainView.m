@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
@@ -40,6 +41,15 @@ static NSMutableArray *monthMenuItems = nil;
 static NSMutableArray *yearMenuItems = nil;
 
 @implementation UIxCalMainView
+
+- (NSString *) userUTCOffset
+{
+  NSTimeZone *userTZ;
+
+  userTZ = [[context activeUser] timeZone];
+
+  return [NSString stringWithFormat: @"%d", [userTZ secondsFromGMT]];
+}
 
 - (NSArray *) monthMenuItems
 {
@@ -97,21 +107,6 @@ static NSMutableArray *yearMenuItems = nil;
 - (NSNumber *) yearMenuItem
 {
   return yearMenuItem;
-}
-
-- (id) batchDeleteAction
-{
-  NSArray *ids;
-  SOGoAppointmentFolder *clientObject;
-
-  ids = [[self queryParameterForKey: @"ids"] componentsSeparatedByString: @"/"];
-  if (ids)
-    {
-      clientObject = [self clientObject];
-      [clientObject deleteEntriesWithIds: ids];
-    }
-
-  return self;
 }
 
 @end

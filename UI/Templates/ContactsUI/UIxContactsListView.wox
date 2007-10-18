@@ -10,22 +10,23 @@
     selectorComponentClass="selectorComponentClass"
     title="name">
     <table id="contactsList" multiselect="yes">
-      <tbody>
+      <thead>
         <tr class="tableview">
           <!-- localize -->
-          <td class="tbtv_headercell" id="nameHeader"
+          <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
 	    ><var:string label:value="Name"
 	      /></td
-	    ><td class="tbtv_headercell" id="mailHeader"
+	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
 	    ><var:string label:value="Email"/></td
-	    ><td class="tbtv_headercell" id="screenNameHeader"
+	    ><td class="tbtv_headercell sortableTableHeader" id="screenNameHeader"
 	    ><var:string label:value="Screen Name" /></td
-	    ><td class="tbtv_headercell" id="orgHeader"
+	    ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
 	    ><var:string label:value="Organization" /></td
-	    ><td class="tbtv_headercell" id="phoneHeader"
+	    ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
 	    ><var:string label:value="Work Phone" /></td
 	    ></tr>
-
+      </thead>
+      <tbody>
         <var:foreach list="contactInfos" item="currentContact">
           <tr class="tableview"
             var:id="currentCName"
@@ -33,6 +34,8 @@
             var:contactid="currentContact.c_uid"
             onclick="return onContactRowClick(event, this);"
             ondblclick="return onContactRowDblClick(event, this);"
+            onmousedown="return false;"
+            onselectstart="return false;"
             oncontextmenu="return onContactContextMenu(event, this);">
             <td><img rsrc:src="abcard.gif"
 		/><var:string value="currentContact.displayName" const:escapeHTML="YES" /></td>

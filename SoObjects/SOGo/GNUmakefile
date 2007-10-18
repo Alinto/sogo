@@ -21,8 +21,9 @@ FHS_HEADER_DIRS = SOGo
 
 libSOGo_HEADER_FILES = \
 	SOGoObject.h			\
-	SOGoFolder.h			\
 	SOGoContentObject.h		\
+	SOGoFolder.h			\
+	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
 	SOGoGroupsFolder.h		\
 	SOGoGroupFolder.h		\
@@ -43,14 +44,16 @@ libSOGo_HEADER_FILES = \
 	NSDictionary+URL.h		\
 	NSCalendarDate+SOGo.h		\
 	\
-	SOGoAuthenticator.h		\
+	SOGoDAVAuthenticator.h		\
+	SOGoWebAuthenticator.h		\
 	SOGoMailer.h			\
 	SOGoUser.h			\
 
 libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
-	SOGoFolder.m			\
 	SOGoContentObject.m		\
+	SOGoFolder.m			\
+	SOGoParentFolder.m		\
 	SOGoUserFolder.m		\
 	SOGoGroupsFolder.m		\
 	SOGoGroupFolder.m		\
@@ -71,7 +74,8 @@ libSOGo_OBJC_FILES = \
 	NSNull+Utilities.m		\
 	NSCalendarDate+SOGo.m		\
 	\
-	SOGoAuthenticator.m		\
+	SOGoDAVAuthenticator.m		\
+	SOGoWebAuthenticator.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
 
@@ -83,6 +87,8 @@ agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m
 agenor_defaults_OBJC_FILES   += agenor_defaults.m
 
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include ../common.make

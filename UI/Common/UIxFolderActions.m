@@ -31,11 +31,15 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/SoClassSecurityInfo.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+
+#import "WODirectAction+SOGo.h"
 
 #import "UIxFolderActions.h"
 
@@ -46,7 +50,8 @@
 
 - (void) _setupContext
 {
-  NSString *clientClass, *mailInvitationParam;
+  NSString *folder, *mailInvitationParam;
+  NSArray *realFolderPath;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
@@ -54,13 +59,7 @@
   clientObject = [self clientObject];
   owner = [clientObject ownerInContext: nil];
 
-  clientClass = NSStringFromClass([clientObject class]);
-  if ([clientClass isEqualToString: @"SOGoContactGCSFolder"])
-    baseFolder = @"Contacts";
-  else if ([clientClass isEqualToString: @"SOGoAppointmentFolder"])
-    baseFolder = @"Calendar";
-  else
-    baseFolder = nil;
+  baseFolder = [[clientObject container] nameInContainer];
 
   um = [LDAPUserManager sharedUserManager];
   ud = [activeUser userSettings];
@@ -72,27 +71,29 @@
     }
   [ud setObject: moduleSettings forKey: baseFolder];
 
-  subscriptionPointer = [NSMutableString stringWithFormat: @"%@:%@",
-					 owner, baseFolder];
-  if ([baseFolder isEqualToString: @"Contacts"])
-    [subscriptionPointer appendFormat: @"/%@",
-			 [clientObject nameInContainer]];
+  realFolderPath = [[clientObject nameInContainer]
+		     componentsSeparatedByString: @"_"];
+  if ([realFolderPath count] > 1)
+    folder = [realFolderPath objectAtIndex: 1];
+  else
+    folder = [realFolderPath objectAtIndex: 0];
+  subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
+				  owner, baseFolder, folder];
 
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
   isMailInvitation = [mailInvitationParam boolValue];
 }
 
-- (WOResponse *) _realActionWithFolderName: (NSDictionary *) folderDict
+- (WOResponse *) _realSubscribe: (BOOL) reallyDo
 {
   WOResponse *response;
-  NSMutableDictionary *folderSubscription;
+  NSMutableArray *folderSubscription;
   NSString *mailInvitationURL;
 
-  response = [context response];
   if ([owner isEqualToString: login])
     {
-      [response setStatus: 403];
+      response = [self responseWithStatus: 403];
       [response appendContentString:
 		 @"You cannot (un)subscribe to a folder that you own!"];
     }
@@ -100,17 +101,17 @@
     {
       folderSubscription
 	= [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (!folderSubscription)
+      if (!(folderSubscription
+	    && [folderSubscription isKindOfClass: [NSMutableArray class]]))
 	{
-	  folderSubscription = [NSMutableDictionary dictionary];
+	  folderSubscription = [NSMutableArray array];
 	  [moduleSettings setObject: folderSubscription
 			  forKey: @"SubscribedFolders"];
 	}
-      if (folderDict)
-	[folderSubscription setObject: folderDict
-			    forKey: subscriptionPointer];
+      if (reallyDo)
+	[folderSubscription addObjectUniquely: subscriptionPointer];
       else
-	[folderSubscription removeObjectForKey: subscriptionPointer];
+	[folderSubscription removeObject: subscriptionPointer];
 
       [ud synchronize];
 
@@ -119,12 +120,12 @@
 	  mailInvitationURL
 	    = [[clientObject soURLToBaseContainerForCurrentUser]
 		absoluteString];
-	  [response setStatus: 302];
+	  response = [self responseWithStatus: 302];
 	  [response setHeader: mailInvitationURL
 		    forKey: @"location"];
 	}
       else
-	[response setStatus: 204];
+	response = [self responseWith204];
     }
 
   return response;
@@ -132,73 +133,73 @@
 
 - (WOResponse *) subscribeAction
 {
-  NSString *email;
-  NSMutableDictionary *folderDict;
-  NSString *folderName;
-
   [self _setupContext];
-  email = [NSString stringWithFormat: @"%@ <%@>",
-		    [um getCNForUID: owner],
-		    [um getEmailForUID: owner]];
-  if ([baseFolder isEqualToString: @"Contacts"])
-    folderName = [NSString stringWithFormat: @"%@ (%@)",
-			   [clientObject nameInContainer], email];
-  else
-    folderName = email;
 
-  folderDict = [NSMutableDictionary dictionary];
-  [folderDict setObject: folderName forKey: @"displayName"];
-  [folderDict setObject: [NSNumber numberWithBool: NO] forKey: @"active"];
-
-  return [self _realActionWithFolderName: folderDict];
+  return [self _realSubscribe: YES];
 }
 
 - (WOResponse *) unsubscribeAction
 {
   [self _setupContext];
 
-  return [self _realActionWithFolderName: nil];
+  return [self _realSubscribe: NO];
 }
 
 - (WOResponse *) canAccessContentAction
 {
-  WOResponse *response;
+#warning IMPROVEMENTS REQUIRED!
+  NSArray *acls;
+//  NSEnumerator *userAcls;
+//  NSString *currentAcl;
 
-  response = [context response];
-  [response setStatus: 204];
+  [self _setupContext];
+  
+//  NSLog(@"canAccessContentAction %@, owner %@", subscriptionPointer, owner);
 
-  return response;
+  if ([login isEqualToString: owner] || [owner isEqualToString: @"nobody"]) {
+    return [self responseWith204];
+  }
+  else {
+    acls = [clientObject aclsForUser: login];
+//    userAcls = [acls objectEnumerator];
+//    currentAcl = [userAcls nextObject];
+//    while (currentAcl) {
+//      NSLog(@"ACL login %@, owner %@, folder %@: %@",
+//	    login, owner, baseFolder, currentAcl);
+//      currentAcl = [userAcls nextObject];
+//    }
+    if (([[clientObject folderType] isEqualToString: @"Contact"]     && [acls containsObject: SOGoRole_ObjectReader]) ||
+	([[clientObject folderType] isEqualToString: @"Appointment"] && [acls containsObject: SOGoRole_AuthorizedSubscriber])) {
+      return [self responseWith204];
+    }
+  }
+  
+  return [self responseWithStatus: 403];
 }
 
 - (WOResponse *) _realFolderActivation: (BOOL) makeActive
 {
-  WOResponse *response;
-  NSMutableDictionary *folderSubscription, *folderDict;
-  NSNumber *active;
-  
-  response = [context response];
+  NSMutableArray *folderSubscription;
+  NSString *folderName;
 
   [self _setupContext];
-  active = [NSNumber numberWithBool: makeActive];
-  if ([owner isEqualToString: login])
-    [moduleSettings setObject: active forKey: @"activateUserFolder"];
-  else
+  folderSubscription
+    = [moduleSettings objectForKey: @"ActiveFolders"];
+  if (!folderSubscription)
     {
-      folderSubscription
-	= [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (folderSubscription)
-	{
-          folderDict = [folderSubscription objectForKey: subscriptionPointer];
-          if (folderDict)
-            [folderDict setObject: active
-                        forKey: @"active"];
-	}
+      folderSubscription = [NSMutableArray array];
+      [moduleSettings setObject: folderSubscription forKey: @"ActiveFolders"];
     }
 
-  [ud synchronize];
-  [response setStatus: 204];
+  folderName = [clientObject nameInContainer];
+  if (makeActive)
+    [folderSubscription addObjectUniquely: folderName];
+  else
+    [folderSubscription removeObject: folderName];
 
-  return response;
+  [ud synchronize];
+
+  return [self responseWith204];
 }
 
 - (WOResponse *) activateFolderAction
@@ -209,6 +210,61 @@
 - (WOResponse *) deactivateFolderAction
 {
   return [self _realFolderActivation: NO];
+}
+
+- (WOResponse *) deleteFolderAction
+{
+  WOResponse *response;
+
+  response = (WOResponse *) [[self clientObject] delete];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) renameFolderAction
+{
+  WOResponse *response;
+  NSString *folderName;
+
+  folderName = [[context request] formValueForKey: @"name"];
+  if ([folderName length] > 0)
+    {
+      clientObject = [self clientObject];
+      [clientObject renameTo: folderName];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response appendContentString: @"Missing 'name' parameter."];
+    }
+
+  return response;
+}
+
+- (id) batchDeleteAction
+{
+  WOResponse *response;
+  NSString *idsParam;
+  NSArray *ids;
+
+  idsParam = [[context request] formValueForKey: @"ids"];
+  ids = [idsParam componentsSeparatedByString: @"/"];
+  if ([ids count])
+    {
+      clientObject = [self clientObject];
+      [clientObject deleteEntriesWithIds: ids];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [self responseWithStatus: 500];
+      [response appendContentString: @"At least 1 id required."];
+    }
+  
+  return response;
 }
 
 @end

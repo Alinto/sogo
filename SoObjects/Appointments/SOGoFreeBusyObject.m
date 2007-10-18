@@ -35,6 +35,8 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoPermissions.h>
 
+#import "SOGoAppointmentFolder.h"
+
 #import "SOGoFreeBusyObject.h"
 
 @interface SOGoFreeBusyObject (PrivateAPI)
@@ -80,17 +82,18 @@
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate
 {
-  id calFolder;
+  SOGoAppointmentFolder *calFolder;
 //   SoSecurityManager *sm;
   NSArray *infos;
 
-  calFolder = [container lookupName: @"Calendar" inContext: nil acquire: NO];
+  calFolder = [[container lookupName: @"Calendar" inContext: nil acquire: NO]
+		lookupName: @"personal" inContext: nil acquire: NO];
 //   sm = [SoSecurityManager sharedSecurityManager];
 //   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
 //            onObject: calFolder
 //            inContext: context])
-    infos = [calFolder fetchFreeBusyInfosFrom: _startDate
-                       to: _endDate];
+  infos = [calFolder fetchFreeBusyInfosFrom: _startDate
+		     to: _endDate];
 //   else
 //     {
 //       infos = [NSArray new];
@@ -169,9 +172,9 @@
   info = [events nextObject];
   while (info)
     {
-      if ([[info objectForKey: @"isopaque"] boolValue])
+      if ([[info objectForKey: @"c_isopaque"] boolValue])
         {
-          type = [self _fbTypeForEventStatus: [info objectForKey: @"status"]];
+          type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
           [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
                     to: [info objectForKey: @"endDate"]
                     type: type];

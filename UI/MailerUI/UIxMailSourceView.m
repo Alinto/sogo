@@ -25,6 +25,8 @@
 #import <Foundation/NSString.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 
+#import <UI/Common/WODirectAction+SOGo.h>
+
 #import "UIxMailSourceView.h"
 
 @implementation UIxMailSourceView
@@ -36,8 +38,7 @@
 
   source = [[self clientObject] contentAsString];
 
-  response = [context response];
-  [response setStatus: 200];
+  response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
   [response appendContentString: source];

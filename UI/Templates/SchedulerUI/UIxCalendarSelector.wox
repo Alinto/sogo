@@ -7,30 +7,35 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
   <style type="text/css">
-    <var:foreach list="calendarFolders" item="currentCalendarFolder">
-.ownerIs<var:string value="currentCalendarLogin" />
-{ background-color: <var:string value="currentCalendarSpanBG" /> !important; }
+    <var:foreach list="calendars" item="currentCalendar">
+.calendarFolder<var:string value="currentCalendar.folder" />
+{ background-color: <var:string value="currentCalendar.color" /> !important; }
     </var:foreach>
   </style>
   <div id="calendarSelector">
     <span id="calendarSelectorButtons">
       <a href="#" class="toolbarButton"
 	><span class="toolbarButton"><img rsrc:src="add-calendar.png"
-	    label:title="Add..."
+	    label:title="New Calendar..."
+	    /></span></a>
+      <a href="#" class="toolbarButton"
+	><span class="toolbarButton"><img rsrc:src="add-user-calendar.png"
+	    label:title="Subscribe to a Calendar..."
 	    /></span></a>
       <a href="#" class="toolbarButton"
 	><span class="toolbarButton"><img rsrc:src="remove-calendar.png"
-	    label:title="Remove"
+	    label:title="Remove the selected Calendar"
 	    /></span></a>
     </span>
-    <ul id="calendarList" multiselect="yes">
-      <var:foreach list="calendarFolders" item="currentCalendarFolder"
-	><li class="denied" var:id="currentCalendarFolder.folder">
+    <ul id="calendarList">
+      <var:foreach list="calendars" item="currentCalendar"
+	><li class="denied" var:id="currentCalendar.id"
+	  var:owner="currentCalendar.owner">
 	  <input type="checkbox" class="checkBox"
 	    const:disabled="disabled"
-	    var:checked="currentCalendarFolder.active" />
+	    var:checked="currentCalendar.active" />
 	  <div class="colorBox" var:style="currentCalendarStyle">OO</div>
-	  <var:string value="currentCalendarFolder.displayName"
+	  <var:string value="currentCalendar.displayName"
 	    /></li>
       </var:foreach>
     </ul>

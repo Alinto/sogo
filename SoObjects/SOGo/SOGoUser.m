@@ -365,22 +365,31 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
   if (!mailAccounts)
     {
+      NSArray *mails;
+      int i;
+
       mailAccount = [NSMutableDictionary dictionary];
       name = [NSString stringWithFormat: @"%@@%@", login, fallbackIMAP4Server];
       [mailAccount setObject: login forKey: @"userName"];
       [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
       [mailAccount setObject: name forKey: @"name"];
 
-      identity = [NSMutableDictionary dictionary];
-      fullName = [self cn];
-      if (![fullName length])
-	fullName = login;
-      [identity setObject: fullName forKey: @"fullName"];
-      [identity setObject: [self systemEmail] forKey: @"email"];
-      [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
-
       identities = [NSMutableArray array];
-      [identities addObject: identity];
+      mails = [self allEmails];
+
+      for (i = 0; i < [mails count]; i++)
+	{
+	  identity = [NSMutableDictionary dictionary];
+	  fullName = [self cn];
+	  if (![fullName length])
+	    fullName = login;
+	  [identity setObject: fullName forKey: @"fullName"];
+	  [identity setObject: [mails objectAtIndex: i] forKey: @"email"];
+	  
+	  if (i == 0) [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+	  [identities addObject: identity];
+	}
+	
       [mailAccount setObject: identities forKey: @"identities"];
 
       mailAccounts = [NSMutableArray new];
@@ -499,7 +508,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   
   [(WOContext *)_ctx setObject: ((folder)
 				 ? folder
-				 : [NSNull null])
+				 : (id)[NSNull null])
 		forKey: @"ActiveUserHomeFolder"];
   return folder;
 }

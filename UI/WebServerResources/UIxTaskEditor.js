@@ -24,7 +24,7 @@ function validateDate(date, label) {
 
   dateValue = date.calendar.prs_date(date.value);
   if (date.value.length != 10 || !dateValue) {
-    alert(label.decodeEntities());
+    alert(label);
     result = false;
   } else
     result = dateValue;
@@ -37,7 +37,7 @@ function validateTaskEditor() {
 
   e = document.getElementById('summary');
   if (e.value.length == 0
-      && !confirm(labels.validate_notitle.decodeEntities()))
+      && !confirm(labels.validate_notitle))
     return false;
 
   e = document.getElementById('startTime_date');
@@ -58,7 +58,7 @@ function validateTaskEditor() {
     tmpdate = uixEarlierDate(startdate, enddate);
     if (tmpdate == enddate) {
       //     window.alert(cuicui);
-      alert(labels.validate_endbeforestart.decodeEntities());
+      alert(labels.validate_endbeforestart);
       return false;
     }
     else if (tmpdate == null /* means: same date */) {
@@ -69,14 +69,14 @@ function validateTaskEditor() {
       end = parseInt(document.forms[0]['dueTime_time_hour'].value);
       
       if (start > end) {
-        alert(labels.validate_endbeforestart.decodeEntities());
+        alert(labels.validate_endbeforestart);
         return false;
       }
       else if (start == end) {
         start = parseInt(document.forms[0]['startTime_time_minute'].value);
         end = parseInt(document.forms[0]['dueTime_time_minute'].value);
         if (start > end) {
-          alert(labels.validate_endbeforestart.decodeEntities());
+          alert(labels.validate_endbeforestart);
           return false;
         }
       }

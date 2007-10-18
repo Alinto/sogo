@@ -214,6 +214,15 @@
   return image;
 }
 
+- (NSString *) buttonTooltip
+{
+  NSString          *key;
+  
+  key = [[self buttonInfo] valueForKey: @"tooltip"];
+
+  return [self labelForKey: key];
+}
+
 /* enable/disable buttons */
 
 - (BOOL)isButtonEnabled {

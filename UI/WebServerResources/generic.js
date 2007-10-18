@@ -32,6 +32,8 @@ var menus = new Array();
 var search = {};
 var sorting = {};
 
+var lastClickedRow = null;
+
 var weekStartIsMonday = true;
 
 // logArea = null;
@@ -309,19 +311,30 @@ function triggerAjaxRequest(url, callback, userdata) {
   return http;
 }
 
+function startAnimation(parent, nextNode) {
+  var anim = $("progressIndicator");
+  if (anim) return anim;
+  
+  anim = document.createElement("img");
+  anim = $(anim);
+  anim.id = "progressIndicator";
+  anim.src = ResourcesURL + "/busy.gif";
+  anim.setStyle({ visibility: "hidden" });
+  if (nextNode)
+    parent.insertBefore(anim, nextNode);
+  else
+    parent.appendChild(anim);
+  anim.setStyle({ visibility: "visible" });
+
+  return anim;
+}
+
 function checkAjaxRequestsState() {
   var toolbar = document.getElementById("toolbar");
   if (toolbar) {
     if (activeAjaxRequests > 0
         && !document.busyAnim) {
-      var anim = document.createElement("img");
-      anim = $(anim);
-      document.busyAnim = anim;
-      anim.id = "progressIndicator";
-      anim.src = ResourcesURL + "/busy.gif";
-      anim.setStyle({ visibility: "hidden" });
-      toolbar.appendChild(anim);
-      anim.setStyle({ visibility: "visible" });
+      document.busyAnim = startAnimation(toolbar);
     }
     else if (activeAjaxRequests == 0
 	     && document.busyAnim
@@ -330,6 +343,10 @@ function checkAjaxRequestsState() {
       document.busyAnim = null;
     }
   }
+}
+
+function isSafari3() {
+  return (navigator.appVersion.indexOf("Version") > -1);
 }
 
 function isSafari() {
@@ -356,8 +373,8 @@ function getTarget(event) {
 function preventDefault(event) {
   if (event.preventDefault)
     event.preventDefault(); // W3C DOM
-
-  event.returnValue = false; // IE
+  else
+    event.returnValue = false; // IE
 }
 
 function resetSelection(win) {
@@ -472,7 +489,7 @@ function isNodeSelected(node) {
 function acceptMultiSelect(node) {
    var response = false;
    var attribute = node.getAttribute('multiselect');
-   if (attribute) {
+   if (attribute && attribute.length > 0) {
       log("node '" + node.getAttribute("id")
 	  + "' is still using old-stylemultiselect!");
       response = (attribute.toLowerCase() == 'yes');
@@ -485,43 +502,63 @@ function acceptMultiSelect(node) {
 
 function onRowClick(event) {
   var node = getTarget(event);
+  var rowIndex = null;
 
-  if (node.tagName == 'TD')
-    node = node.parentNode;
-  var startSelection = $(node.parentNode).getSelectedNodes();
-  if (event.shiftKey == 1
+  if (node.tagName == 'TD') {
+    node = node.parentNode; // select TR
+    rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  
+  }
+  else if (node.tagName == 'LI') {
+    // Find index of clicked row
+    var list = node.parentNode;
+    var items = list.childNodesWithTag("li");
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] == node) {
+	rowIndex = i;
+	break;
+      }
+    }
+  }
+
+  var initialSelection = $(node.parentNode).getSelectedNodes();
+  if ((event.shiftKey == 1 || event.ctrlKey == 1)
+      && lastClickedRow
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
-    if (isNodeSelected(node) == true) {
+    if (event.shiftKey)
+      $(node.parentNode).selectRange(lastClickedRow, rowIndex);
+    else if (isNodeSelected(node) == true) {
       $(node).deselect();
     } else {
       $(node).select();
     }
+    // At this point, should empty content of 3-pane view
   } else {
+    // Single line selection
     $(node.parentNode).deselectAll();
     $(node).select();
-  }
-
-  if (startSelection != $(node.parentNode).getSelectedNodes()) {
-    var parentNode = node.parentNode;
-    if (parentNode.tagName == 'TBODY')
-      parentNode = parentNode.parentNode;
-    //log("onRowClick: parentNode = " + parentNode.tagName);
-    // parentNode is UL or TABLE
-    if (document.createEvent) {
-      var onSelectionChangeEvent;
-      if (isSafari())
-	onSelectionChangeEvent = document.createEvent("UIEvents");
-      else
-	onSelectionChangeEvent = document.createEvent("Events");
-      onSelectionChangeEvent.initEvent("mousedown", true, true);
-      parentNode.dispatchEvent(onSelectionChangeEvent);
+  
+    if (initialSelection != $(node.parentNode).getSelectedNodes()) {
+      // Selection has changed; fire mousedown event
+      var parentNode = node.parentNode;
+      if (parentNode.tagName == 'TBODY')
+	parentNode = parentNode.parentNode;
+      if (document.createEvent) {
+	var onSelectionChangeEvent;
+	if (isSafari())
+	  onSelectionChangeEvent = document.createEvent("UIEvents");
+	else
+	  onSelectionChangeEvent = document.createEvent("Events");
+	onSelectionChangeEvent.initEvent("mousedown", true, true);
+	parentNode.dispatchEvent(onSelectionChangeEvent);
+      }
+      else if (document.createEventObject) {
+	parentNode.fireEvent("onmousedown");
+      }
     }
-    else if (document.createEventObject) {
-      parentNode.fireEvent("onmousedown");
-    }
   }
-
+  lastClickedRow = rowIndex;
+  
   return true;
 }
 
@@ -536,7 +573,7 @@ function popupMenu(event, menuId, target) {
       hideMenu(document.currentPopupMenu);
 
    var popup = $(menuId);
-   var menuTop =  Event.pointerY(event);
+   var menuTop = Event.pointerY(event);
    var menuLeft = Event.pointerX(event);
    var heightDiff = (window.innerHeight
 		     - (menuTop + popup.offsetHeight));
@@ -584,7 +621,7 @@ function onBodyClickMenuHandler(event) {
    preventDefault(event);
 }
 
-function hideMenu(menuNode) { //log ("hideMenu");
+function hideMenu(menuNode) {
   var onHide;
 
   if (menuNode.submenu) {
@@ -595,19 +632,22 @@ function hideMenu(menuNode) { //log ("hideMenu");
   menuNode.setStyle({ visibility: "hidden" });
   //   menuNode.hide();
   if (menuNode.parentMenuItem) {
+    Event.stopObserving(menuNode.parentMenuItem, "mousemove", onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode, "mousemove", onMouseEnteredSubmenu);
+    Event.stopObserving(menuNode.parentMenuItem, "mouseout", onMouseLeftSubmenu);
+    Event.stopObserving(menuNode, "mouseout", onMouseLeftSubmenu);
     menuNode.parentMenuItem.setAttribute('class', 'submenu');
     menuNode.parentMenuItem = null;
-    menuNode.parentMenu.setAttribute('onmousemove', null);
     menuNode.parentMenu.submenuItem = null;
     menuNode.parentMenu.submenu = null;
     menuNode.parentMenu = null;
   }
 
-  if (document.createEvent) {
+  if (document.createEvent) { // Safari & Mozilla
     var onhideEvent;
     if (isSafari())
       onhideEvent = document.createEvent("UIEvents");
-    else // Mozilla
+    else
       onhideEvent = document.createEvent("Events");
     onhideEvent.initEvent("mousedown", false, true);
     menuNode.dispatchEvent(onhideEvent);
@@ -621,7 +661,6 @@ function onMenuEntryClick(event) {
   var node = event.target;
 
   id = getParentMenu(node).menuTarget;
-//   log("clicked " + id + "/" + id.tagName);
 
   return false;
 }
@@ -684,6 +723,10 @@ function log(message) {
   var logConsole = logWindow.document.getElementById("logConsole");
   if (logConsole) {
       logConsole.highlighted = !logConsole.highlighted;
+      if (message == '\c') {
+	logConsole.innerHTML = "";
+	return;
+      }
       var logMessage = message.replace("<", "&lt;", "g");
       logMessage = logMessage.replace(" ", "&nbsp;", "g");
       logMessage = logMessage.replace("\r\n", "<br />\n", "g");
@@ -718,59 +761,61 @@ function backtrace() {
    return str;
 }
 
-function dropDownSubmenu(event) {
-   var node = this;
+function popupSubmenu(event) {
    if (this.submenu && this.submenu != "") {
-      log ("submenu: " + this.submenu);
       var submenuNode = $(this.submenu);
-      var parentNode = getParentMenu(node);
+      var parentNode = getParentMenu(this);
       if (parentNode.submenu)
 	 hideMenu(parentNode.submenu);
-      submenuNode.parentMenuItem = node;
+      submenuNode.parentMenuItem = this;
       submenuNode.parentMenu = parentNode;
-      parentNode.submenuItem = node;
+      parentNode.submenuItem = this;
       parentNode.submenu = submenuNode;
-      
-      var menuTop = (node.offsetTop - 2);
-      
-      var heightDiff = (window.innerHeight
-			- (menuTop + submenuNode.offsetHeight));
-      if (heightDiff < 0)
-	 menuTop += heightDiff;
-      
-      var menuLeft = parentNode.offsetWidth - 3;
+
+      var menuTop = (parentNode.offsetTop - 2
+		     + this.offsetTop);
+      if (window.innerHeight
+	  < (menuTop + submenuNode.offsetHeight))
+	menuTop = window.innerHeight - submenuNode.offsetHeight - 3;
+      var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
       if (window.innerWidth
-	  < (menuLeft + submenuNode.offsetWidth
-	     + parentNode.cascadeLeftOffset()))
-	 menuLeft = - submenuNode.offsetWidth + 3;
-      
-      parentNode.setAttribute('onmousemove', 'checkDropDown(event);');
-      node.setAttribute('class', 'submenu-selected');
+	  < (menuLeft + submenuNode.offsetWidth))
+	menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
+
+      Event.observe(this, "mousemove", onMouseEnteredSubmenu);
+      Event.observe(submenuNode, "mousemove", onMouseEnteredSubmenu);
+      Event.observe(this, "mouseout", onMouseLeftSubmenu);
+      Event.observe(submenuNode, "mouseout", onMouseLeftSubmenu);
+      this.setAttribute('class', 'submenu-selected');
       submenuNode.setStyle({ top: menuTop + "px",
-				     left: menuLeft + "px",
-				     visibility: "visible" });
+			     left: menuLeft + "px",
+			     visibility: "visible" });
+      preventDefault(event);
    }
 }
 
-function checkDropDown(event) {
-  var parentMenu = getParentMenu(event.target);
-  var submenuItem = parentMenu.submenuItem;
-  if (submenuItem) {
-    var menuX = event.clientX - parentMenu.cascadeLeftOffset();
-    var menuY = event.clientY - parentMenu.cascadeTopOffset();
-    var itemX = submenuItem.offsetLeft;
-    var itemY = submenuItem.offsetTop - 75;
+function onMouseEnteredSubmenu(event) {
+  this.mouseInside = true;
+}
 
-    if (menuX >= itemX
-        && menuX < itemX + submenuItem.offsetWidth
-        && (menuY < itemY
-            || menuY > (itemY + submenuItem.offsetHeight))) {
-      hideMenu(parentMenu.submenu);
-      parentMenu.submenu = null;
-      parentMenu.submenuItem = null;
-      parentMenu.setAttribute('onmousemove', null);
-    }
+function onMouseLeftSubmenu(event) {
+  this.mouseInside = false;
+  if (this instanceof HTMLLIElement) {
+    var menuNode = $(this.submenu);
+    if (menuNode.menuTimeout)
+      window.clearTimeout(menuNode.menuTimeout);
+    menuNode.menuTimeout = setTimeout('onMenuTimeout("'
+				      + this.submenu
+				      + '");', 50);
   }
+}
+
+function onMenuTimeout(menuNodeId) {
+  var menuNode = $(menuNodeId);
+  menuNode.menuTimeout = null;
+  if (!(menuNode.mouseInside
+	|| (menuNode.parentMenuItem && menuNode.parentMenuItem.mouseInside)))
+    hideMenu(menuNode);
 }
 
 /* search field */
@@ -806,6 +851,11 @@ function setSearchCriteria(event) {
 
   searchValue.setAttribute("ghost-phrase", this.innerHTML);
   searchCriteria.value = this.getAttribute('id');
+  
+  if (this.parentNode.chosenNode)
+    this.parentNode.chosenNode.removeClassName("_chosen");
+  this.addClassName("_chosen");
+  this.parentNode.chosenNode = this;
 }
 
 function checkSearchValue(event) {
@@ -823,6 +873,7 @@ function onSearchChange() {
 
 function configureSearchField() {
    var searchValue = $("searchValue");
+   var searchOptions = $("searchOptions");
 
    if (!searchValue) return;
 
@@ -836,6 +887,13 @@ function configureSearchField() {
 		 onSearchFocus.bindAsEventListener(searchValue));
    Event.observe(searchValue, "keydown",
 		 onSearchKeyDown.bindAsEventListener(searchValue));
+
+   if (!searchOptions) return;
+   
+   // Set the checkmark to the first option
+   var firstOption = searchOptions.down('li');
+   firstOption.addClassName("_chosen");
+   searchOptions.chosenNode = firstOption;
 }
 
 function onSearchMouseDown(event) {
@@ -863,7 +921,7 @@ function onSearchFocus() {
 
 function onSearchBlur(event) {
    var ghostPhrase = this.getAttribute("ghost-phrase");
-   //log ("search blur: '" + this.value + "'");
+
    if (!this.value) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
@@ -889,7 +947,7 @@ function onSearchFormSubmit(event) {
    var searchValue = $("searchValue");
    var searchCriteria = $("searchCriteria");
    var ghostPhrase = searchValue.getAttribute('ghost-phrase');
-
+   
    if (searchValue.value == ghostPhrase) return;
 
    search["criteria"] = searchCriteria.value;
@@ -959,6 +1017,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 	 document.subscriptionAjaxRequest.aborted = true;
 	 document.subscriptionAjaxRequest.abort();
       }
+
       var rfCbData = { method: refreshCallback, data: refreshCallbackData };
       document.subscriptionAjaxRequest = triggerAjaxRequest(url,
 							    folderSubscriptionCallback,
@@ -982,33 +1041,47 @@ function folderUnsubscriptionCallback(http) {
 }
 
 function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
-   if (document.body.hasClassName("popup")) {
-      window.opener.unsubscribeFromFolder(folder, refreshCallback,
-					  refreshCallbackData);
-   }
-   else {
-      var folderData = folder.split(":");
-      var username = folderData[0];
-      var folderPath = folderData[1];
-      if (username != UserLogin) {
-	 var url = (UserFolderURL + "../" + username
-		    + "/" + folderPath + "/unsubscribe");
-	 if (document.unsubscriptionAjaxRequest) {
-	    document.unsubscriptionAjaxRequest.aborted = true;
-	    document.unsubscriptionAjaxRequest.abort();
-	 }
-	 var rfCbData = { method: refreshCallback, data: refreshCallbackData };
-	 document.unsubscriptionAjaxRequest
-	    = triggerAjaxRequest(url, folderUnsubscriptionCallback,
-				 rfCbData);
+  if (document.body.hasClassName("popup")) {
+    window.opener.unsubscribeFromFolder(folder, refreshCallback,
+					refreshCallbackData);
+  }
+  else {
+    var folderData = folder.split("+");
+    var username = folderData[0];
+    var folderPath = folderData[1];
+    if (username != UserLogin) {
+      var url = (ApplicationBaseURL + folder + "/unsubscribe");
+      if (document.unsubscriptionAjaxRequest) {
+	document.unsubscriptionAjaxRequest.aborted = true;
+	document.unsubscriptionAjaxRequest.abort();
       }
-      else
-	 window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
-   }
+      var rfCbData = { method: refreshCallback, data: refreshCallbackData };
+      document.unsubscriptionAjaxRequest
+	= triggerAjaxRequest(url, folderUnsubscriptionCallback,
+			     rfCbData);
+    }
+    else
+      window.alert(clabels["You cannot unsubscribe from a folder that you own!"].decodeEntities());
+  }
+}
+
+function accessToSubscribedFolder(serverFolder) {
+  var folder;
+
+  var parts = serverFolder.split(":");
+  if (parts.length > 1) {
+    var paths = parts[1].split("/");
+    folder = "/" + parts[0] + "_" + paths[2];
+  }
+  else
+    folder = serverFolder;
+  
+  return folder;
 }
 
 function listRowMouseDownHandler(event) {
-   preventDefault(event);
+  preventDefault(event);
+  //Event.stop(event); 
 }
 
 /* tabs */
@@ -1073,7 +1146,7 @@ function initMenu(menuDIV, callbacks) {
 	    else {
 	       node.submenu = callback;
 	       node.addClassName("submenu");
-	       Event.observe(node, "mouseover", dropDownSubmenu);
+	       Event.observe(node, "mouseover", popupSubmenu);
 	    }
 	 }
 	 else
@@ -1252,36 +1325,46 @@ function loadPreferences() {
 }
 
 function onLoadHandler(event) {
-   loadPreferences();
-   queryParameters = parseQueryParameters('' + window.location);
-   if (!$(document.body).hasClassName("popup")) {
-      initLogConsole();
-   }
-   initCriteria();
-   configureSearchField();
-   initMenus();
-   initTabs();
-   configureDragHandles();
-   configureSortableTableHeaders();
-   configureLinkBanner();
-   var progressImage = $("progressIndicator");
-   if (progressImage)
-      progressImage.parentNode.removeChild(progressImage);
-   Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+  if (typeof UserLogin != "undefined")
+    loadPreferences();
+  queryParameters = parseQueryParameters('' + window.location);
+  if (!$(document.body).hasClassName("popup")) {
+    initLogConsole();
+  }
+  initCriteria();
+  configureSearchField();
+  initMenus();
+  initTabs();
+  configureDragHandles();
+  configureLinkBanner();
+  translateLabels();
+  var progressImage = $("progressIndicator");
+  if (progressImage)
+    progressImage.parentNode.removeChild(progressImage);
+  Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+}
+
+function translateLabels() {
+  if (typeof labels != "undefined") {
+    for (var key in labels)
+      labels[key] = labels[key].decodeEntities();
+  }
+
+  if (typeof clabels != "undefined") {
+    for (var key in clabels)
+      clabels[key] = clabels[key].decodeEntities();
+  }
 }
 
 function onBodyClickContextMenu(event) {
    preventDefault(event);
 }
 
-function configureSortableTableHeaders() {
-   var headers = document.getElementsByClassName("sortableTableHeader");
+function configureSortableTableHeaders(table) {
+   var headers = $(table).getElementsByClassName("sortableTableHeader");
    for (var i = 0; i < headers.length; i++) {
       var header = headers[i];
-      var anchor = $(header).childNodesWithTag("a")[0];
-      if (anchor)
-	 Event.observe(anchor, "click",
-		       onHeaderClick.bindAsEventListener(anchor));
+      Event.observe(header, "click", onHeaderClick.bindAsEventListener(header))
    }
 }
 
@@ -1292,7 +1375,7 @@ function onLinkBannerClick() {
 
 function onPreferencesClick(event) {
    var urlstr = UserFolderURL + "preferences";
-   var w = window.open(urlstr, "User Preferences",
+   var w = window.open(urlstr, "_blank",
 		       "width=430,height=250,resizable=0,scrollbars=0");
    w.opener = window;
    w.focus();
@@ -1304,14 +1387,46 @@ function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
-    for (var i = 0; i < 2; i++) {
+    for (var i = 1; i < 3; i++) {
        Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
        Event.observe(anchors[i], "click", onLinkBannerClick);
     }
-    Event.observe(anchors[3], "mousedown", listRowMouseDownHandler);
-    Event.observe(anchors[3], "click", onPreferencesClick);
-    if (anchors.length > 4)
-       Event.observe(anchors[4], "click", toggleLogConsole);
+    Event.observe(anchors[4], "mousedown", listRowMouseDownHandler);
+    Event.observe(anchors[4], "click", onPreferencesClick);
+    if (anchors.length > 5)
+       Event.observe(anchors[5], "click", toggleLogConsole);
+  }
+}
+
+/* folder creation */
+function createFolder(name, okCB, notOkCB) {
+  if (name) {
+    if (document.newFolderAjaxRequest) {
+      document.newFolderAjaxRequest.aborted = true;
+      document.newFolderAjaxRequest.abort();
+    }
+    var url = ApplicationBaseURL + "/createFolder?name=" + name;
+    document.newFolderAjaxRequest
+       = triggerAjaxRequest(url, createFolderCallback,
+			    {name: name,
+			     okCB: okCB,
+			     notOkCB: notOkCB});
+  }
+}
+
+function createFolderCallback(http) {
+  if (http.readyState == 4) {
+    var data = http.callbackData;
+    if (http.status == 201) {
+      if (data.okCB)
+	data.okCB(data.name, "/" + http.responseText);
+    }
+    else {
+      if (data.notOkCB)
+	data.notOkCB(name);
+      else
+	log("ajax problem:" + http.status);
+    }
   }
 }
 

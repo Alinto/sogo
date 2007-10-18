@@ -20,7 +20,6 @@
 */
 
 #import <NGObjWeb/SoObject+SoDAV.h>
-#import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>

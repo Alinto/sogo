@@ -1,0 +1,78 @@
+# compilation settings
+
+SOPE_ROOT=../..
+
+ADDITIONAL_CPPFLAGS += -Wall
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I..
+
+
+# dependencies
+
+libGDLContentStore_LIBRARIES_DEPEND_UPON += \
+	-lGDLAccess			\
+	-lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+
+GDLContentStore_LIBRARIES_DEPEND_UPON += \
+	-framework GDLAccess	\
+	-framework NGExtensions	-framework EOControl \
+	-framework DOM -framework SaxObjC
+
+ifneq ($(frameworks),yes)
+GCS_TOOL_LIBS += \
+	-lGDLContentStore -lGDLAccess	\
+	-lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+else
+GCS_TOOL_LIBS += \
+	-framework GDLContentStore -framework GDLAccess	\
+	-framework NGExtensions -framework EOControl	\
+	-framework DOM -framework SaxObjC
+endif
+
+gcs_ls_TOOL_LIBS            += $(GCS_TOOL_LIBS)
+gcs_mkdir_TOOL_LIBS         += $(GCS_TOOL_LIBS)
+gcs_cat_TOOL_LIBS           += $(GCS_TOOL_LIBS)
+gcs_recreatequick_TOOL_LIBS += $(GCS_TOOL_LIBS)
+gcs_gensql_TOOL_LIBS        += $(GCS_TOOL_LIBS)
+
+gcs_ls_PCH_FILE            += common.h
+gcs_mkdir_PCH_FILE         += common.h
+gcs_cat_PCH_FILE           += common.h
+gcs_recreatequick_PCH_FILE += common.h
+gcs_gensql_PCH_FILE        += common.h
+
+
+# library/framework search pathes
+
+DEP_DIRS = \
+	.		\
+	../GDLAccess	\
+	$(SOPE_ROOT)/sope-core/NGExtensions	\
+	$(SOPE_ROOT)/sope-core/EOControl	\
+	$(SOPE_ROOT)/sope-xml/DOM		\
+	$(SOPE_ROOT)/sope-xml/SaxObjC
+
+ifneq ($(frameworks),yes)
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),\
+	  -L$(GNUSTEP_BUILD_DIR)/$(dir)/$(GNUSTEP_OBJ_DIR_NAME))
+else
+ADDITIONAL_LIB_DIRS += \
+	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+endif
+
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
+
+
+# platform specific settings
+
+ifeq ($(FOUNDATION_LIB),apple)
+libGDLContentStore_PREBIND_ADDR="0xC7700000"
+libGDLContentStore_LDFLAGS += -seg1addr $(libGDLContentStore_PREBIND_ADDR)
+endif
+
+ifeq ($(findstring openbsd3, $(GNUSTEP_HOST_OS)), openbsd3)
+GCS_TOOL_LIBS += -liconv
+endif

@@ -1,0 +1,63 @@
+BODY
+{ background-color: #999; }
+
+IMG#preparedAnimation
+{ 
+  width: 0px;
+  height: 0px;
+}
+
+DIV#loginScreen
+{
+  background-color: #d4d0c8;
+  margin: 0px auto;
+  margin-top: 5em;
+  padding: 5px;
+  border: 2px solid transparent;
+  width: 200px;
+  -moz-border-top-colors: #efebe7 #fff;
+  -moz-border-left-colors: #efebe7 #fff;
+  -moz-border-right-colors: #000 #9c9a94 transparent;
+  -moz-border-bottom-colors: #000 #9c9a94 transparent;
+}
+
+IMG#splash
+{ border: 0px;
+  margin: 0px;
+  padding: 0px;
+  height: 200px;
+  width: 200px; }
+
+DIV#loginScreen INPUT.textField
+{ width: 187px; }
+
+DIV#loginButton
+{ text-align: right; }
+
+DIV#loginButton INPUT
+{ width: auto;
+  margin-top: 5px; }
+
+DIV#loginButton IMG#progressIndicator
+{ float: left;
+  width: 16px;
+  height: 16px;
+  border: 0px none;
+  margin-top: 5px;
+  margin-left: 5px; }
+
+P.error
+{ color: #f00;
+  text-align: center; }
+
+P.browser
+{ background-color: #fff;
+  border-top: 1px solid #888;
+  border-left: 1px solid #888;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee; 
+  line-height: 32px; }
+
+P.browser img
+{ padding: 2px;
+  vertical-align: middle; }

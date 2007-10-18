@@ -18,7 +18,7 @@
             <var:popup name="currentPopUpId"
               list="headers"
               item="item"
-              label:string="$item"
+              label:displayString="$item"
               selection="currentHeader"
               />
             </span>
@@ -41,7 +41,7 @@
               const:disabled="1"
               list="headers"
               item="item"
-              label:string="$item"
+              label:displayString="$item"
               />
         </span>
         <span class="headerInput">

@@ -72,12 +72,9 @@
 
 - (void) dealloc
 {
-  if (crumb)
-    [crumb release];
-  if (result)
-    [result release];
-  if (css)
-    [css release];
+  [crumb release];
+  [result release];
+  [css release];
   [super dealloc];
 }
 
@@ -88,12 +85,12 @@
 
 - (NSString *) css
 {
-  return [[css copy] autorelease];
+  return css;
 }
 
 - (NSString *) result
 {
-  return [[result copy] autorelease];
+  return result;
 }
 
 /* SaxContentHandler */
@@ -101,16 +98,14 @@
 {
   showWhoWeAre();
 
-  if (crumb)
-    [crumb release];
-  if (result)
-    [result release];
-  if (css)
-    [css release];
+  [crumb release];
+  [css release];
+  [result release];
 
   result = [NSMutableString new];
   css = [NSMutableString new];
   crumb = [NSMutableArray new];
+
   inBody = NO;
   inStyle = NO;
   inScript = NO;
@@ -245,6 +240,15 @@
     }
 }
 
+- (void) _finishCSS
+{
+  [css replaceString: @".SOGoHTMLMail-CSS-Delimiter body"
+       withString: @".SOGoHTMLMail-CSS-Delimiter"];
+  [css replaceString: @";" withString: @" !important;"];
+  [css replaceString: @"<!--" withString: @""];
+  [css replaceString: @"-->" withString: @""];
+}
+
 - (void) endElement: (NSString *) _localName
           namespace: (NSString *) _ns
             rawName: (NSString *) _rawName
@@ -264,7 +268,11 @@
   else if (inBody)
     {
       if ([_localName caseInsensitiveCompare: @"body"] == NSOrderedSame)
-        inBody = NO;
+	{
+	  inBody = NO;
+	  if (css)
+	    [self _finishCSS];
+	}
       else
         [result appendFormat: @"</%@>", _localName];
     }
@@ -280,7 +288,7 @@
     {
       if (inStyle)
         [self _appendStyle: _chars length: _len];
-      if (inBody)
+      else if (inBody)
         {
           tmpString = [NSString stringWithCharacters: _chars length: _len];
           [result appendString: [tmpString stringByEscapingHTMLString]];
@@ -386,6 +394,22 @@
 
 @implementation UIxMailPartHTMLViewer
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      handler = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [handler release];
+  [super dealloc];
+}
+
 - (void) _convertReferencesForPart: (NSDictionary *) part
                          withCount: (unsigned int) count
                         andBaseURL: (NSString *) url
@@ -439,15 +463,10 @@
   return attachmentIds;
 }
 
-- (NSString *) flatContentAsString
+- (void) _parseContent
 {
   id <NSObject, SaxXMLReader> parser;
-  _UIxHTMLMailContentHandler *handler;
-  NSString *css;
-  NSMutableString *content;
   NSData *preparsedContent;
-
-  content = [NSMutableString string];
 
   preparsedContent = [super decodedFlatContent];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
@@ -457,14 +476,31 @@
   [handler setAttachmentIds: [self _attachmentIds]];
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
+}
+
+- (NSString *) cssContent
+{
+  NSString *cssContent, *css;
+
+  if (!handler)
+    [self _parseContent];
 
   css = [handler css];
   if ([css length])
-    [content appendFormat: @"<style type=\"text/css\">%@</style>", css];
-  [content appendString: [handler result]];
-  [handler release];
+    cssContent = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
+			   [handler css]];
+  else
+    cssContent = @"";
 
-  return content;
+  return cssContent;
+}
+
+- (NSString *) flatContentAsString
+{
+  if (!handler)
+    [self _parseContent];
+
+  return [handler result];
 }
 
 @end

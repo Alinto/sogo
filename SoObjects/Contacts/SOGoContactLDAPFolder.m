@@ -41,11 +41,11 @@
 
 @implementation SOGoContactLDAPFolder
 
-+ (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
-                                  andDisplayName: (NSString *) aDisplayName
-                                     inContainer: (SOGoObject *) aContainer
++ (id) folderWithName: (NSString *) aName
+       andDisplayName: (NSString *) aDisplayName
+	  inContainer: (id) aContainer
 {
-  SOGoContactLDAPFolder *folder;
+  id folder;
 
   folder = [[self alloc] initWithName: aName
                          andDisplayName: aDisplayName
@@ -68,9 +68,9 @@
   return self;
 }
 
-- (id <SOGoContactFolder>) initWithName: (NSString *) newName
-                         andDisplayName: (NSString *) newDisplayName
-                            inContainer: (SOGoObject *) newContainer
+- (id) initWithName: (NSString *) newName
+     andDisplayName: (NSString *) newDisplayName
+	inContainer: (id) newContainer
 {
   if ((self = [self initWithName: newName
 		    inContainer: newContainer]))
@@ -256,7 +256,28 @@
   return YES;
 }
 
+/* sorting */
+- (NSComparisonResult) compare: (id) otherFolder
+{
+  NSComparisonResult comparison;
+
+  if ([NSStringFromClass([otherFolder class])
+			isEqualToString: @"SOGoContactGCSFolder"])
+    comparison = NSOrderedDescending;
+  else
+    comparison
+      = [[self displayName]
+	  localizedCaseInsensitiveCompare: [otherFolder displayName]];
+
+  return comparison;
+}
+
 /* acls */
+- (NSString *) ownerInContext: (WOContext *) noContext
+{
+  return @"nobody";
+}
+
 /* TODO: this might change one day when we support LDAP acls */
 - (NSArray *) aclsForUser: (NSString *) uid
 {

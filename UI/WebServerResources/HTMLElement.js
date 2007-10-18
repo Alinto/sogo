@@ -156,6 +156,31 @@ Element.addMethods({
     element.addClassName('_selected');
   },
 
+  selectRange: function(element, startIndex, endIndex) {
+    element = $(element);
+    var s;
+    var e;
+    var rows;
+
+    if (startIndex > endIndex) {
+      s = endIndex;
+      e = startIndex;
+    }
+    else {
+      s = startIndex;
+      e = endIndex;
+    }
+    if (element.tagName == 'UL')
+      rows = element.getElementsByTagName('LI');
+    else
+      rows = element.getElementsByTagName('TR');
+    while (s <= e) {
+      if (rows[s].nodeType == 1)
+	$(rows[s]).select();
+      s++;
+    }
+  },
+
   deselect: function(element) {
     element = $(element);
     element.removeClassName('_selected');

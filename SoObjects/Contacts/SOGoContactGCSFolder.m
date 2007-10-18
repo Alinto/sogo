@@ -21,14 +21,20 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
+#import <DOM/DOMProtocols.h>
+#import <SaxObjC/SaxObjC.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import "SOGoContactGCSEntry.h"
@@ -40,47 +46,6 @@
                                      nil]
 
 @implementation SOGoContactGCSFolder
-
-+ (id <SOGoContactFolder>) contactFolderWithName: (NSString *) aName
-                                  andDisplayName: (NSString *) aDisplayName
-                                     inContainer: (SOGoObject *) aContainer
-{
-  SOGoContactGCSFolder *folder;
-
-  folder = [[self alloc] initWithName: aName
-                         andDisplayName: aDisplayName
-                         inContainer: aContainer];
-  [folder autorelease];
-
-  return folder;
-}
-
-- (void) dealloc
-{
-  [displayName release];
-  [super dealloc];
-}
-
-- (id <SOGoContactFolder>) initWithName: (NSString *) newName
-                         andDisplayName: (NSString *) newDisplayName
-                            inContainer: (SOGoObject *) newContainer
-{
-  if ((self = [self initWithName: newName
-                    inContainer: newContainer]))
-    ASSIGN (displayName, newDisplayName);
-
-  return self;
-}
-
-- (BOOL) folderIsMandatory
-{
-  return [nameInContainer isEqualToString: @"personal"];
-}
-
-- (NSString *) displayName
-{
-  return displayName;
-}
 
 /* name lookup */
 
@@ -105,7 +70,6 @@
   BOOL isPut;
 
   isPut = NO;
-  /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
@@ -210,6 +174,140 @@
   return newRecords;
 }
 
+- (BOOL) _isValidFilter: (NSString *) theString
+{
+  if ([theString caseInsensitiveCompare: @"sn"] == NSOrderedSame)
+    return YES;
+
+  if ([theString caseInsensitiveCompare: @"givenname"] == NSOrderedSame)
+    return YES;
+
+  if ([theString caseInsensitiveCompare: @"mail"] == NSOrderedSame)
+    return YES;
+
+  if ([theString caseInsensitiveCompare: @"telephonenumber"] == NSOrderedSame)
+    return YES;
+
+  return NO;
+}
+
+- (NSDictionary *) _parseContactFilter: (id <DOMElement>) filterElement
+{
+  NSMutableDictionary *filterData;
+  id <DOMNode> parentNode;
+  id <DOMNodeList> ranges;
+
+  parentNode = [filterElement parentNode];
+
+  if ([[parentNode tagName] isEqualToString: @"filter"] &&
+      [self _isValidFilter: [filterElement attribute: @"name"]])
+    {
+      ranges = [filterElement getElementsByTagName: @"text-match"];
+     
+      if ([ranges count] && [[[ranges objectAtIndex: 0] childNodes] count])
+	{
+	  filterData = [NSMutableDictionary new];
+	  [filterData autorelease];
+	  [filterData setObject: [[[[ranges objectAtIndex: 0] childNodes] lastObject] data]
+		      forKey: [filterElement attribute: @"name"]];
+	}
+    }
+  else
+    filterData = nil;
+
+  return filterData;
+}
+
+#warning filters is leaked here
+- (NSArray *) _parseContactFilters: (id <DOMElement>) parentNode
+{
+  NSEnumerator *children;
+  id<DOMElement> node;
+  NSMutableArray *filters;
+  NSDictionary *filter;
+
+  filters = [NSMutableArray new];
+
+  children = [[parentNode getElementsByTagName: @"prop-filter"]
+	       objectEnumerator];
+
+  node = [children nextObject];
+
+  while (node)
+    {
+      filter = [self _parseContactFilter: node];
+      if (filter)
+        [filters addObject: filter];
+      node = [children nextObject];
+    }
+
+  return filters;
+}
+
+- (void) appendObject: (NSDictionary *) object
+          withBaseURL: (NSString *) baseURL
+     toREPORTResponse: (WOResponse *) r
+{
+  SOGoContactGCSEntry *component;
+  Class componentClass;
+  NSString *name, *etagLine, *contactString;
+
+  name = [object objectForKey: @"c_name"];
+  componentClass = [SOGoContactGCSEntry class];
+
+  component = [componentClass objectWithName: name inContainer: self];
+
+  [r appendContentString: @"  <D:response>\r\n"];
+  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: baseURL];
+  if (![baseURL hasSuffix: @"/"])
+    [r appendContentString: @"/"];
+  [r appendContentString: name];
+  [r appendContentString: @"</D:href>\r\n"];
+
+  [r appendContentString: @"    <D:propstat>\r\n"];
+  [r appendContentString: @"      <D:prop>\r\n"];
+  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
+                       [component davEntityTag]];
+  [r appendContentString: etagLine];
+  [r appendContentString: @"      </D:prop>\r\n"];
+  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
+  [r appendContentString: @"    </D:propstat>\r\n"];
+  [r appendContentString: @"    <C:addressbook-data>"];
+  contactString = [[component contentAsString] stringByEscapingXMLString];
+  [r appendContentString: contactString];
+  [r appendContentString: @"</C:addressbook-data>\r\n"];
+  [r appendContentString: @"  </D:response>\r\n"];
+}
+
+- (void) _appendComponentsMatchingFilters: (NSArray *) filters
+                               toResponse: (WOResponse *) response
+{
+  unsigned int count, max;
+  NSDictionary *currentFilter, *contact;
+  NSEnumerator *contacts;
+  NSString *baseURL;
+
+  baseURL = [self baseURLInContext: context];
+
+  max = [filters count];
+  for (count = 0; count < max; count++)
+    {
+      currentFilter = [filters objectAtIndex: count];
+      contacts = [[self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+			sortBy: @"c_givenname"
+			ordering: NSOrderedDescending]
+		   objectEnumerator];
+      
+      while ((contact = [contacts nextObject]))
+      {
+          [self appendObject: contact
+                withBaseURL: baseURL
+                toREPORTResponse: response];
+        }
+    }
+}
+
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
@@ -218,13 +316,11 @@
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-//   NSLog (@"fetching records matching '%@', sorted by '%@' in order %d",
-//          filter, sortKey, sortOrdering);
-
   fields = folderListingFields;
   qualifier = [self _qualifierForFilter: filter];
   dbRecords = [[self ocsFolder] fetchFields: fields
 				matchingQualifier: qualifier];
+
   if ([dbRecords count] > 0)
     {
       records = [self _flattenedRecords: dbRecords];
@@ -242,13 +338,39 @@
 //   else
 //     [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
 
-  //[self debugWithFormat:@"fetched %i records.", [records count]];
+  [self debugWithFormat:@"fetched %i records.", [records count]];
   return records;
 }
 
 - (NSArray *) davNamespaces
 {
   return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
+}
+
+- (id) davAddressbookQuery: (id) queryContext
+{
+  WOResponse *r;
+  NSArray *filters;
+  id <DOMDocument> document;
+
+  r = [context response];
+  [r setStatus: 207];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
+     @" xmlns:C=\"urn:ietf:params:xml:ns:carddav\">\r\n"];
+
+  document = [[context request] contentAsDOMDocument];
+  filters = [self _parseContactFilters: [document documentElement]];
+
+  [self _appendComponentsMatchingFilters: filters
+        toResponse: r];
+  [r appendContentString:@"</D:multistatus>\r\n"];
+
+  return r;
 }
 
 - (NSArray *) davComplianceClassesInContext: (id)_ctx
@@ -273,14 +395,6 @@
   return @"vcard-collection";
 }
 
-- (NSException *) delete
-{
-  return (([nameInContainer isEqualToString: @"personal"])
-	  ? [NSException exceptionWithHTTPStatus: 403
-			 reason: @"the 'personal' folder cannot be deleted"]
-	  : [super delete]);
-}
-
 // /* GET */
 
 // - (id) GETAction: (id)_ctx
@@ -299,6 +413,20 @@
 //   [r setHeader:uri forKey:@"location"];
 //   return r;
 // }
+
+/* sorting */
+- (NSComparisonResult) compare: (id) otherFolder
+{
+  NSComparisonResult comparison;
+
+  if ([NSStringFromClass([otherFolder class])
+			isEqualToString: @"SOGoContactLDAPFolder"])
+    comparison = NSOrderedAscending;
+  else
+    comparison = [super compare: otherFolder];
+
+  return comparison;
+}
 
 /* folder type */
 

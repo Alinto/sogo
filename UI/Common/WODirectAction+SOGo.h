@@ -30,6 +30,8 @@
 
 @interface WODirectAction (SOGoExtension)
 
+- (WOResponse *) responseWithStatus: (unsigned int) status;
+- (WOResponse *) responseWith204;
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
 @end

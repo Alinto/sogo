@@ -52,9 +52,7 @@
   WORequest *request;
 
   folders = [self clientObject];
-  action = [NSString stringWithFormat: @"../%@/%@",
-                     [folders defaultSourceName],
-                     actionName];
+  action = [NSString stringWithFormat: @"../personal/%@", actionName];
 
   request = [[self context] request];
 
@@ -73,21 +71,6 @@
 - (id) newAction
 {
   return [self _selectActionForApplication: @"new"];
-}
-
-- (id <WOActionResults>) newAbAction
-{
-  id <WOActionResults> response;
-  NSString *name;
-
-  name = [self queryParameterForKey: @"name"];
-  if ([name length] > 0)
-    response = [[self clientObject] newFolderWithName: name];
-  else
-    response = [NSException exceptionWithHTTPStatus: 400
-                            reason: @"The name is missing"];
-  
-  return response;
 }
 
 - (id) selectForMailerAction
@@ -111,8 +94,7 @@
     {
       uid = [currentContact objectForKey: @"c_uid"];
       if (uid && ![results objectForKey: uid])
-	[results setObject: currentContact
-		 forKey: uid];
+	[results setObject: currentContact forKey: uid];
       currentContact = [folderResults nextObject];
     }
 }
@@ -139,25 +121,29 @@
 {
   WOResponse *response;
   NSEnumerator *contacts;
-  NSString *responseString;
+  NSString *responseString, *email;
   NSDictionary *contact;
 
   response = [context response];
 
   if ([results count] > 0)
     {
+      [response setStatus: 200];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
       if (contact)
 	{
-	  responseString = [NSString stringWithFormat: @"%@:%@:%@",
-				     [contact objectForKey: @"c_uid"],
-				     [contact objectForKey: @"cn"],
-				     [contact objectForKey: @"c_email"]];
-	  [response setStatus: 200];
+	  email = [contact objectForKey: @"c_email"];
+	  if ([email length])
+	    {
+	      responseString = [NSString stringWithFormat: @"%@:%@:%@",
+					 [contact objectForKey: @"c_uid"],
+					 [contact objectForKey: @"cn"],
+					 email];
 // 	  [response setHeader: @"text/plain; charset=iso-8859-1"
 // 		    forKey: @"Content-Type"];
-	  [response appendContentString: responseString];
+	      [response appendContentString: responseString];
+	    }
 //	  contact = [contacts nextObject];
 	}
     }
@@ -187,50 +173,55 @@
   return result;
 }
 
-- (NSArray *) _gcsFoldersFromFolder: (SOGoContactFolders *) contactFolders
+- (NSArray *) _subFoldersFromFolder: (SOGoParentFolder *) parentFolder
 {
-  NSMutableArray *gcsFolders;
-  NSEnumerator *contactSubfolders;
-  SOGoContactGCSFolder *currentContactFolder;
-  NSString *folderName, *displayName;
+  NSMutableArray *folders;
+  NSEnumerator *subfolders;
+  SOGoFolder *currentFolder;
+  NSString *folderName;
   NSMutableDictionary *currentDictionary;
+  SoSecurityManager *securityManager;
 
-  gcsFolders = [NSMutableArray new];
-  [gcsFolders autorelease];
+  securityManager = [SoSecurityManager sharedSecurityManager];
+   
+//   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+//                             onObject: contactFolder
+//                             inContext: context] == nil)
 
-  contactSubfolders = [[contactFolders contactFolders] objectEnumerator];
-  currentContactFolder = [contactSubfolders nextObject];
-  while (currentContactFolder)
+  folders = [NSMutableArray new];
+  [folders autorelease];
+
+  subfolders = [[parentFolder subFolders] objectEnumerator];
+  currentFolder = [subfolders nextObject];
+  while (currentFolder)
     {
-      if ([currentContactFolder
-	    isKindOfClass: [SOGoContactGCSFolder class]])
+      if (![securityManager validatePermission: SOGoPerm_AccessObject
+			    onObject: currentFolder inContext: context])
 	{
-	  displayName = [[currentContactFolder ocsFolder] folderName];
-	  if (displayName)
-	    {
-	      folderName = [NSString stringWithFormat: @"/Contacts/%@",
-				     [currentContactFolder nameInContainer]];
-	      currentDictionary
-		= [NSMutableDictionary dictionaryWithCapacity: 3];
-	      [currentDictionary setObject: displayName forKey: @"displayName"];
-	      [currentDictionary setObject: folderName forKey: @"name"];
-	      [currentDictionary setObject: @"contact" forKey: @"type"];
-	      [gcsFolders addObject: currentDictionary];
-	    }
+	  folderName = [NSString stringWithFormat: @"/%@/%@",
+				 [parentFolder nameInContainer],
+				 [currentFolder nameInContainer]];
+	  currentDictionary
+	    = [NSMutableDictionary dictionaryWithCapacity: 3];
+	  [currentDictionary setObject: [currentFolder displayName]
+			 forKey: @"displayName"];
+	  [currentDictionary setObject: folderName forKey: @"name"];
+	  [currentDictionary setObject: [currentFolder folderType]
+			     forKey: @"type"];
+	  [folders addObject: currentDictionary];
 	}
-      currentContactFolder = [contactSubfolders nextObject];
+      currentFolder = [subfolders nextObject];
     }
 
-  return gcsFolders;
+  return folders;
 }
 
 - (NSArray *) _foldersForUID: (NSString *) uid
 		      ofType: (NSString *) folderType
 {
   NSObject *topFolder, *userFolder;
-  SOGoContactFolders *contactFolders;
+  SOGoParentFolder *parentFolder;
   NSMutableArray *folders;
-  NSMutableDictionary *currentDictionary;
 
   folders = [NSMutableArray new];
   [folders autorelease];
@@ -239,23 +230,19 @@
   userFolder = [topFolder lookupName: uid inContext: context acquire: NO];
 
   /* FIXME: should be moved in the SOGo* classes. Maybe by having a SOGoFolderManager. */
-#warning this might need adjustments whenever we permit multiple calendar folders per-user
   if ([folderType length] == 0 || [folderType isEqualToString: @"calendar"])
     {
-      currentDictionary = [NSMutableDictionary new];
-      [currentDictionary autorelease];
-      [currentDictionary setObject: [self labelForKey: @"Calendar"]
-			 forKey: @"displayName"];
-      [currentDictionary setObject: @"/Calendar" forKey: @"name"];
-      [currentDictionary setObject: @"calendar" forKey: @"type"];
-      [folders addObject: currentDictionary];
+      parentFolder = [userFolder lookupName: @"Calendar"
+				 inContext: context acquire: NO];
+      [folders
+	addObjectsFromArray: [self _subFoldersFromFolder: parentFolder]];
     }
   if ([folderType length] == 0 || [folderType isEqualToString: @"contact"])
     {
-      contactFolders = [userFolder lookupName: @"Contacts"
-				   inContext: context acquire: NO];
+      parentFolder = [userFolder lookupName: @"Contacts"
+				 inContext: context acquire: NO];
       [folders
-	addObjectsFromArray: [self _gcsFoldersFromFolder: contactFolders]];
+	addObjectsFromArray: [self _subFoldersFromFolder: parentFolder]];
     }
 
   return folders;
@@ -346,31 +333,30 @@
   return result;
 }
 
-- (SOGoContactGCSFolder *) contactFolderForUID: (NSString *) uid
-{
-  SOGoFolder *upperContainer;
-  SOGoUserFolder *userFolder;
-  SOGoContactFolders *contactFolders;
-  SOGoContactGCSFolder *contactFolder;
-  SoSecurityManager *securityManager;
+// - (SOGoContactGCSFolder *) contactFolderForUID: (NSString *) uid
+// {
+//   SOGoFolder *upperContainer;
+//   SOGoUserFolder *userFolder;
+//   SOGoContactFolders *contactFolders;
+//   SOGoContactGCSFolder *contactFolder;
+//   SoSecurityManager *securityManager;
 
-  upperContainer = [[[self clientObject] container] container];
-  userFolder = [SOGoUserFolder objectWithName: uid
-                               inContainer: upperContainer];
-  contactFolders = [SOGoContactFolders objectWithName: @"Contacts"
-                                       inContainer: userFolder];
-  contactFolder = [SOGoContactGCSFolder objectWithName: @"personal"
-                                        inContainer: contactFolders];
-  [contactFolder
-    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Contacts/personal", uid]];
-  [contactFolder setOwner: uid];
+//   upperContainer = [[[self clientObject] container] container];
+//   userFolder = [SOGoUserFolder objectWithName: uid
+//                                inContainer: upperContainer];
+//   contactFolders = [SOGoUserFolder lookupName: @"Contacts"
+// 				   inContext: context
+// 				   acquire: NO];
+//   contactFolder = [contactFolders lookupName: @"personal"
+// 				  inContext: context
+// 				  acquire: NO];
 
-  securityManager = [SoSecurityManager sharedSecurityManager];
+//   securityManager = [SoSecurityManager sharedSecurityManager];
 
-  return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-                            onObject: contactFolder
-                            inContext: context] == nil)
-          ? contactFolder : nil);
-}
+//   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+//                             onObject: contactFolder
+//                             inContext: context] == nil)
+//           ? contactFolder : nil);
+// }
 
 @end

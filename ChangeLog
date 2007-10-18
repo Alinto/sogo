@@ -1,7 +1,446 @@
+2007-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -copyAction]):
+	implemented new web method.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-copyToFolderNamed:folderNameinContext:]): new method with the
+	code cut/pasted from -moveToFolderNamed:inContext:.
+	([SOGoMailObject -moveToFolderNamed:folderNameinContext:]):
+	modified to use the code from -copyToFolderNamed:inContext:, which
+	is common between the two actions.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -draftsFolderNameInContext:_ctx])
+	([SOGoMailAccount -sentFolderNameInContext:])
+	([SOGoMailAccount -trashFolderNameInContext:]): modified to take
+	the user settings into account.
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions -setAsDraftsFolderAction])
+	([UIxMailFolderActions -setAsSentFolderAction])
+	([UIxMailFolderActions -setAsTrashFolderAction]): new web methods
+	that change the purpose of the active folder to "Sent", "Drafts"
+	or "Trash".
+
+	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -subject]): 
+	returns the subject as quoted-printable.
+
+	* UI/SOGoUI/SOGoACLAdvisory.[hm]: added two intermediary classes:
+	SOGoACLAdditionAdvisory and SOGoACLRemovalAdvisory implementing
+	the "aclMethod" method for the subsequent language-dependent
+	subclasses.
+
+	* UI/SOGoUI/SOGoFolderAdvisory.m ([SOGoFolderAdvisory -subject]):
+	returns the subject as quoted-printable.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-dealloc]): release item, aptStartDate and aptEndDate.
+
+2007-10-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-initWithName:newNameinContainer:newContainer]): the owner of a
+	shared folder is set to "nobody" by default.
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -hasOwner]): new method
+	that returns whether the object has an owner or not.
+
+2007-10-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -ocsFolder]): create
+	the folder even if the current user is not its owner.
+
+2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* We now send advisory emails when folders
+	  are created / deleted.
+
+	* Fixed the sending of advisory emails upon
+	  ACL changes on folders.
+
+2007-10-10  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	Implemented event/task priority support.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	Added CardDAV support. 
+
+	* SoObjects/SOGo/LDAPUserManager.m and SOGoUser.m
+	Implemented From: based on LDAP results based on
+	the MailFieldNames attribute (an array) specified
+	in every LDAP-based authentication sources.
+
+	* UI/MailPartViewers/UIxMailPartTextViewer.m and
+	  UI/WebServerResources/MailerUI.css
+	We avoid replacing "\r\n" and "\n" with <br /> and
+	rather use CSS capabilities for proper formatting.
+	This is _WAY_ faster on very large mails.
+ 
+2007-10-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	([UIxComponentEditor -componentCalendar]): returns the calendar
+	object of the current event.
+
+2007-10-05  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js
+	We check if at least one message is selected
+	before performing a Reply/Reply All/Forward
+	
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	and others - implemented support for recurring
+	events (with some known limitations right now,
+	all soon to be fixed).
+	
+2007-10-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Main/SOGo.m ([SOGo -isUserName:_keyinContext:_ctx]): removed
+	the constraint that a username can't start with a digit.
+
+2007-10-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Moved SOPE/sope-gdl1/GDLContentStore from the default trunk
+	repository to Inverse's branch.
+
+2007-09-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m 
+	([SOGoDraftObject -isValidAttachmentName:_name]): removed
+	constraint on space in file name.
+	([SOGoDraftObject -saveAttachment:_attachwithMetadata:metadata]):
+	now removes from file name all characters preceding a backslash.
+	This happens with IE7 because the complete attachment file path
+	is sent.
+
+2007-09-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m 
+	([SOGoAptMailNotification -appointmentURL]): set personal as the
+	default calendar where to add the event.
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage +initialize]): 
+	activate the SOGoUIxDefaultModule user defaults.
+
+2007-09-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m 
+	([UIxComponent -shortUserNameForDisplay]): returns the string
+	"wrongusernamepassword" when authentication failed.
+
+2007-09-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -calendarFolder]): returns the "personal"
+	entry of the Calendars parent folder.
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-messageSubject]): new accessor method to work-around a problem
+	within SOPE where a subject could be returned as an NSData.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendPersonalSources]): make sure the value of the "c_path4" of
+	the returned rows are not NSNull, otherwise, discard them.
+
+2007-09-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-compare:otherFolder]): new overriden method that compares two
+	contact foldes based on their class and then transfer the control
+	to the super method in SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -compare:otherFolder]): new method that
+	compare two contact folders based on their class and then their
+	display name.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -compare:otherFolder]):
+	new method for sorting folders. The folders are compared based on
+	their ownership, whether they are a main folder and finally
+	depending on their display name.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-pathArrayToSOGoObject]): do not reorder the paths if the third
+	element is an instance of NSNull.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-subFolders]): returns a sorted array using the "compare:"
+	selector.
+
+2007-09-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-calendars]): also returns the owner of the listed folders.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([-deleteEntriesWithIds:ids]): moved method into SOGoFolder.
+
+	* UI/Scheduler/UIxCalMainView.m ([-batchDeleteAction]): moved
+	method into UIxFolderActions.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): fetch the
+	freebusy info from the "personal" calendar.
+
+	* UI/Common/UIxParentFolderActions.m ([UIxParentFolderActions
+	-createFolderAction]): new standardized method for requesting
+	folder creations among gcs-based modules.
+
+	* UI/Common/UIxParentFolderActions.[hm]: new action class module.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m: new class
+	module, equivalent to the SOGoParentFolder's child
+	SOGoContactFolders, but for calendars.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]): new
+	method that returns translated strings for controller bundles
+	(same as what UIxComponent does for view bundles).
+	([SOGoObject -pathArrayToSOGoObject]): new method that returns
+	the real path to a subscribed folder (if subscribed).
+	([SOGoObject +globallyUniqueObjectId]): move method from SOGoFolder.
+	([SOGoObject -globallyUniqueObjectId]): new instance method
+	calling its class equivalent.
+
+2007-09-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -defaultAction]): test
+	whether the user is logged in and if so, redirect to his/her
+	homepage.
+	([SOGoRootPage -appendToResponse:inContext:]): removed useless
+	method.
+
+2007-09-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	new method.
+	([SOGoFolder -displayName]): new method.
+	([SOGoFolder -delete]): accept to proceed only if nameInContainer
+	!= "personal".
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	+folderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	renamed from "contactFolderWithName..." for compatibility with SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	+contactFolderWithName:aNameandDisplayName:aDisplayNameinContainer:aContainer]):
+	removed method, reimplemented in SOGoFolder.
+	([SOGoContactGCSFolder -displayName]): removed method,
+	reimplemented in SOGoFolder.
+	([-delete]): removed method, modified in SOGoFolder.
+
+	* SoObjects/Contacts/SOGoContactFolders.[hm]: modified class to be
+	a subclass of SOGoParentFolder.
+
+	* SoObjects/SOGo/SOGoParentFolder.[hm]: new class module derived
+	from SOGoContactFolders and modified to be more content-independent.
+
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions -markMessageUnreadAction])
+	([UIxMailActions -markMessageReadAction]): new methods moved from
+	UIxMailListView and adapted to invoke the client object directly,
+	since the previous versions had to to a lookup from the parent
+	SOGoMailFolder.
+
+	* UI/MailerUI/UIxMailListView.m ([-markMessageUnreadAction]): move
+	method into UIxMailActions.
+	([-markMessageReadAction]): same as above.
+	([-viewAction]): removed useless method.
+	([-javaScriptOK]): removed useless method.
+	([-isJavaScriptRequest]): removed useless method.
+	([-lookupActiveMessage]): removed useless method.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWithStatus:status]): new method that returns a WOResponse
+	initialized with the specified status code.
+	([WODirectAction -responseWith204]): new method that invokes the
+	above one with "204" as parameter.
+	([WODirectAction -redirectToLocation:newLocation]): rewrote method
+	to make use of -responseWithStatus:.
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWith204]): new
+	method that returns a WOResponse initialized with the 204 status
+	code.
+	
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -sortedUIDs]):
+	always use a "not deleted" search qualifier along with the user
+	qualifier (if present).
+
+2007-09-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([UIxContactFoldersView
+	-contactSearchAction]): only return the records which have an
+	email set.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-trashInContext:_ctx]): no longer expunge the mailbox after
+	marking a message deleted.
+	([SOGoMailObject -moveToFolderNamed:folderNameinContext:]): same
+	as above.
+
+	* UI/MailerUI/UIxMailView.m ([-deleteAction]): removed method.
+	([-trashAction]): moved method into UIxMailActions.
+	([-moveAction]): moved method into UIxMailActions.
+
+2007-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([_UIxHTMLMailContentHandler
+	-endElement:_localNamenamespace:_nsrawName:_rawName]): remove HTML
+	comments from the CSS code, do not add the CSS code to the body
+	content and remove references of body from the CSS declarations.
+	([UIxMailPartHTMLViewer -cssContent]): new accessor method.
+	([UIxMailPartHTMLViewer -flatContentAsString]): separated code
+	common with cssContent in a different method and invoke it only
+	once.
+
+	* UI/MainUI/SOGoRootPage.[hm]: made a subclass of UIxComponent
+	instead of UIxPageFrame.
+
+2007-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([-defaultAction]): commented out.
+	([-appendToResponse:responseinContext:ctx]): commented out.
+	([SOGoRootPage -connectURL]): new accessor that returns the full
+	url the the "connect" method.
+	([-connectAction]): rewrote method to return a properly formatted
+	auth. cookie based on the username and password passed as
+	parameter.
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	set the value of the cookie to "discard" and set its expiration
+	date to yesterday.
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
+	-preprocessCredentialsInContext:context]): consider the user
+	anonymous if the cookie value is "discard".
+	([SOGoWebAuthenticator
+	-setupAuthFailResponse:responsewithReason:reasoninContext:context]):
+	set the expiration date of the cookie to yesterday.
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -applicationPath]):
+	returns the path to the application if the clientObject is not a
+	SOGoObject.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder +initialize]):
+	moved the requirement of authentication from the SOGo application
+	class to here.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveContentString:_iCalbaseSequence:_v]):
+	check whether the new appointment object is still relevant before
+	sending a notification.
+
+2007-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator
+	-setupAuthFailResponse:responsewithReason:reasoninContext:context]):
+	render the login page through the SoDefaultRenderer.
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage
+	-isPublicInContext:localContext]): new overriden method that
+	returns YES.
+
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-currentCalendarLogin]): replace css-unsafe characters with _.
+
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent
+	-shortUserNameForDisplay]): simplified method.
+	([-user]): removed method since [context activeUser] is as useful.
+
+2007-09-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	set the cookie path to "/".
+
+	* Main/SOGo.m ([SOGo -authenticatorInContext:_ctx]): choose the
+	authenticator based on the request handler key. "dav" returns the
+	SOGoDAVAuthenticator, anything else returns the Web authenticator.
+
+	* SoObjects/SOGo/SOGoDAVAuthenticator.m: renamed module from
+	"SOGoAuthenticator".
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m: new class module
+	implementing a subclass of SoCookieAuthenticator, designed for
+	web-based cookie authentication of users.m
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage -logoffAction]):
+	new method that resets the authentification cookie.
+
+2007-08-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-checkLogin:loginToCheckandPassword:passwordToCheck]): initialize
+	didBind to NO to make sure no false authentication is returned if
+	the bind operation is not executed.
+
+2007-08-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m: added support for the
+	"In-Reply-To" header field when replying.
+
+	* UI/MainUI/SOGoUserHomePage.m: add the "c_" prefix to the quick
+	table field names that are queried.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-iCalStringForFreeBusyInfos:_infosfrom:_startDateto:_endDate]):
+	add the "c_" prefix to the quick table field names that are
+	queried.
+
+2007-08-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFolderForUID:uid]): add
+	"personal" to the ocs path of the appointment folder.
+
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-flatContentAsString]): use latin1 when the encoding is not
+	specified, and to reencode data chunk which were not correctly
+	decoded with the original charset.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -aclUsersForObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder -aclsForUser:uidforObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder -setRoles:rolesforUser:uidforObjectAtPath:objectPathArray])
+	([SOGoAppointmentFolder
+	-removeAclsForUsers:usersforObjectAtPath:objectPathArray]):
+	override those methods to use the "personal" additional directory.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([-ocsPrivateCalendarPath]):
+	append "/personal" to the calendar path to simulate a single
+	calendar in a choice of many.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-lookupName:_keyinContext:acquire:_acquire]): moved the lookup
+	methods back here. Moved the folder existence check here, and do
+	it on self only when the lookup happens for a non-folder object.
+	This permits to accept entries for folders with parents who
+	don't really exist.
+
+2007-08-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor
+	-shouldTakeValuesFromRequest:requestinContext:context]): same as
+	below.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-shouldTakeValuesFromRequest:requestinContext:context]):
+	redesigned method since any method called can be received from a
+	POST or a GET. Instead we check the method call itself and we
+	accept only if it has the "save" prefix.
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m
+	([SOGoAptMailNotification -getSubject]): returns the subject an a
+	quoted-printable encoded string, if needed.
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([NSString
+	-asQPSubjectString:encoding]): moved method into
+	NSString+Utilities.m.
+
 2007-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -messageForwardingList])
-	([UIxPreferences -itemMessageForwardingText])
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-messageForwardingList])
+	([UIxPreferences -itemMessageForwardingText])D
 	([UIxPreferences -userMessageForwarding])
 	([UIxPreferences -setUserMessageForwarding:newMessageForwarding]):
 	new template methods for manage the user preference regarding
@@ -3289,7 +3728,7 @@
 2006-09-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m: added many wrapper methods to
-	display blocks of data à la Thunderbird Addressbook. If data is
+	display blocks of data Ã  la Thunderbird Addressbook. If data is
 	available, those wrappers (around the NGVCard methods) will
 	enclose the results in a proper HTML output with the correct label
 	(if present), otherwise it will return an empty string.

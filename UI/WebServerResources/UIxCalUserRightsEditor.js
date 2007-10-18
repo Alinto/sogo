@@ -3,7 +3,7 @@ function onCancelClick(event) {
 }
 
 function initACLButtons() {
-   $("cancelButton").addEventListener("click", onCancelClick, false);
+  Event.observe($("cancelButton"), "click", onCancelClick);
 }
 
-window.addEventListener("load", initACLButtons, false);
+addEvent(window, "load", initACLButtons);
