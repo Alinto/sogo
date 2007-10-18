@@ -89,7 +89,7 @@
   NSString *login, *oldLocation;
 
   login = [[context activeUser] login];
-  if ([login isEqualToString: @"anonymous"])
+  if (!login || [login isEqualToString: @"anonymous"])
     response = self;
   else
     {
