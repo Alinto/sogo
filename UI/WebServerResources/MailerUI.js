@@ -1020,7 +1020,7 @@ function configureMessageListBodyEvents(table) {
       rows[i].dndTypes = function() { return new Array("mailRow"); };
       rows[i].dndGhost = messageListGhost;
       rows[i].dndDataForType = messageListData;
-      document.DNDManager.registerSource(rows[i]);
+//       document.DNDManager.registerSource(rows[i]);
 
       for (var j = 0; j < rows[i].cells.length; j++) {
 	var cell = rows[i].cells[j];
@@ -1095,7 +1095,7 @@ function openInbox(node) {
 
 function initMailer(event) {
   if (!document.body.hasClassName("popup")) {
-    initDnd();
+//     initDnd();
     initMailboxTree();
   }
 }
