@@ -642,7 +642,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     }
 
   return [NSString stringWithFormat: @"%@%u",
-		   newUID, [now timeIntervalSince1970]];
+		   newUID, (unsigned int) [now timeIntervalSince1970]];
 }
 
 - (NSException *)createFolderOfType:(NSString *)_type
