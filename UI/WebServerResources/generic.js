@@ -776,11 +776,12 @@ function popupSubmenu(event) {
     parentNode.submenuItem = this;
     parentNode.submenu = submenuNode;
 
-    var menuTop = (parentNode.offsetTop - 2
+    var menuTop = (parentNode.offsetTop - 1
 		   + this.offsetTop);
     if (window.height()
-	< (menuTop + submenuNode.offsetHeight))
-      menuTop = window.height() - submenuNode.offsetHeight - 3;
+	< (menuTop + submenuNode.offsetHeight)
+	&& submenuNode.offsetHeight < window.height())
+      menuTop -= submenuNode.offsetHeight - this.offsetHeight - 4;
     var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
     if (window.width()
 	< (menuLeft + submenuNode.offsetWidth))
@@ -798,8 +799,8 @@ function popupSubmenu(event) {
 		  onMouseEnteredParentMenu.bindAsEventListener(parentNode));
     $(this).addClassName("submenu-selected");
     submenuNode.setStyle({ top: menuTop + "px",
-	  left: menuLeft + "px",
-	  visibility: "visible" });
+	                   left: menuLeft + "px",
+	                   visibility: "visible" });
     preventDefault(event);
   }
 }
