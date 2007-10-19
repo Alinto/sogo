@@ -1,37 +1,37 @@
 /*
- Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2005 SKYRIX Software AG
  
- This file is part of OpenGroupware.org.
+  This file is part of OpenGroupware.org.
  
- OGo is free software; you can redistribute it and/or modify it under
- the terms of the GNU Lesser General Public License as published by the
- Free Software Foundation; either version 2, or (at your option) any
- later version.
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
  
- OGo is distributed in the hope that it will be useful, but WITHOUT ANY
- WARRANTY; without even the implied warranty of MERCHANTABILITY or
- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
- License for more details.
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
  
- You should have received a copy of the GNU Lesser General Public
- License along with OGo; see the file COPYING.  If not, write to the
- Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
- 02111-1307, USA.
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
 */
 
 var contactSelectorAction = 'calendars-contacts';
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
-//   cuicui = 'year';
+  //   cuicui = 'year';
   if (date1.getYear()  < date2.getYear()) return date1;
   if (date1.getYear()  > date2.getYear()) return date2;
   // same year
-//   cuicui += '/month';
+  //   cuicui += '/month';
   if (date1.getMonth() < date2.getMonth()) return date1;
   if (date1.getMonth() > date2.getMonth()) return date2;
-//   // same month
-//   cuicui += '/date';
+  //   // same month
+  //   cuicui += '/date';
   if (date1.getDate() < date2.getDate()) return date1;
   if (date1.getDate() > date2.getDate()) return date2;
   // same day
@@ -68,10 +68,10 @@ function validateAptEditor() {
     alert(labels.validate_invalid_enddate);
     return false;
   }
-//   cuicui = '';
+  //   cuicui = '';
   tmpdate = uixEarlierDate(startdate, enddate);
   if (tmpdate == enddate) {
-//     window.alert(cuicui);
+    //     window.alert(cuicui);
     alert(labels.validate_endbeforestart);
     return false;
   }
@@ -195,7 +195,7 @@ function _getShadowDate(which) {
   date.setHours(intValue);
   intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
   date.setMinutes(intValue);
-//   window.alert("shadow: " + date);
+  //   window.alert("shadow: " + date);
 
   return date;
 }
@@ -230,14 +230,14 @@ function setStartDate(newStartDate) {
 }
 
 function setEndDate(newEndDate) {
-//   window.alert(newEndDate);
+  //   window.alert(newEndDate);
   this._setDate('end', newEndDate);
 }
 
 function onAdjustEndTime(event) {
   var dateDelta = (window.getStartDate().valueOf()
                    - window.getShadowStartDate().valueOf());
-//   window.alert(window.getEndDate().valueOf() + '  ' + dateDelta);
+  //   window.alert(window.getEndDate().valueOf() + '  ' + dateDelta);
   var newEndDate = new Date(window.getEndDate().valueOf() + dateDelta);
   window.setEndDate(newEndDate);
   window.timeWidgets['start']['date'].updateShadowValue();
@@ -246,38 +246,44 @@ function onAdjustEndTime(event) {
 }
 
 function onAllDayChanged(event) {
-   for (var type in window.timeWidgets) {
-      window.timeWidgets[type]['hour'].disabled = this.checked;
-      window.timeWidgets[type]['minute'].disabled = this.checked;
-   }
+  for (var type in window.timeWidgets) {
+    window.timeWidgets[type]['hour'].disabled = this.checked;
+    window.timeWidgets[type]['minute'].disabled = this.checked;
+  }
 }
 
 function initTimeWidgets(widgets) {
   this.timeWidgets = widgets;
 
-  Event.observe(widgets['start']['date'], "change", this.onAdjustEndTime, false);
-  Event.observe(widgets['start']['hour'], "change", this.onAdjustEndTime, false);
-  Event.observe(widgets['start']['minute'], "change", this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['date'], "change",
+		this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['hour'], "change",
+		this.onAdjustEndTime, false);
+  Event.observe(widgets['start']['minute'], "change",
+		this.onAdjustEndTime, false);
 
   var allDayLabel = $("allDay");
   var input = $(allDayLabel).childNodesWithTag("input")[0];
   Event.observe(input, "change", onAllDayChanged.bindAsEventListener(input));
   if (input.checked) {
-     for (var type in widgets) {
-	widgets[type]['hour'].disabled = true;
-	widgets[type]['minute'].disabled = true;
-     }
+    for (var type in widgets) {
+      widgets[type]['hour'].disabled = true;
+      widgets[type]['minute'].disabled = true;
+    }
   }
 }
 
 function onAppointmentEditorLoad() {
-   var widgets = {'start': {'date': $("startTime_date"),
-			    'hour': $("startTime_time_hour"),
-			    'minute': $("startTime_time_minute")},
-		  'end': {'date': $("endTime_date"),
-			  'hour': $("endTime_time_hour"),
-			  'minute': $("endTime_time_minute")}};
-   initTimeWidgets(widgets);
+  assignCalendar('startTime_date');
+  assignCalendar('endTime_date');
+
+  var widgets = {'start': {'date': $("startTime_date"),
+			   'hour': $("startTime_time_hour"),
+			   'minute': $("startTime_time_minute")},
+		 'end': {'date': $("endTime_date"),
+			 'hour': $("endTime_time_hour"),
+			 'minute': $("endTime_time_minute")}};
+  initTimeWidgets(widgets);
 }
 
 addEvent(window, 'load', onAppointmentEditorLoad);

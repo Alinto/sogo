@@ -6,12 +6,12 @@ function uixEarlierDate(date1, date2) {
   if (date1 && date2) {
     if (date1.getYear()  < date2.getYear()) return date1;
     if (date1.getYear()  > date2.getYear()) return date2;
-  // same year
-  //   cuicui += '/month';
+    // same year
+    //   cuicui += '/month';
     if (date1.getMonth() < date2.getMonth()) return date1;
     if (date1.getMonth() > date2.getMonth()) return date2;
-  //   // same month
-  //   cuicui += '/date';
+    //   // same month
+    //   cuicui += '/date';
     if (date1.getDate() < date2.getDate()) return date1;
     if (date1.getDate() > date2.getDate()) return date2;
   }
@@ -187,110 +187,114 @@ this._getDate = function(which) {
   return date;
 }
 
-this._getShadowDate = function(which) {
-  var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
-  var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
-  date.setHours(intValue);
-  intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
-  date.setMinutes(intValue);
-//   window.alert("shadow: " + date);
+  this._getShadowDate = function(which) {
+    var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
+    var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
+    date.setHours(intValue);
+    intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
+    date.setMinutes(intValue);
+    //   window.alert("shadow: " + date);
 
-  return date;
-}
-
-this.getStartDate = function() {
-  return this._getDate('start');
-}
-
-this.getDueDate = function() {
-  return this._getDate('due');
-}
-
-this.getShadowStartDate = function() {
-  return this._getShadowDate('start');
-}
-
-this.getShadowDueDate = function() {
-  return this._getShadowDate('due');
-}
-
-this._setDate = function(which, newDate) {
-  window.timeWidgets[which]['date'].setValueAsDate(newDate);
-  window.timeWidgets[which]['hour'].value = newDate.getHours();
-  var minutes = newDate.getMinutes();
-  if (minutes % 15)
-    minutes += (15 - minutes % 15);
-  window.timeWidgets[which]['minute'].value = minutes;
-}
-
-this.setStartDate = function(newStartDate) {
-  this._setDate('start', newStartDate);
-}
-
-this.setDueDate = function(newDueDate) {
-//   window.alert(newDueDate);
-  this._setDate('due', newDueDate);
-}
-
-this.onAdjustDueTime = function(event) {
-  if (!window.timeWidgets['due']['date'].disabled) {
-    var dateDelta = (window.getStartDate().valueOf()
-                     - window.getShadowStartDate().valueOf());
-    var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
-    window.setDueDate(newDueDate);
+    return date;
   }
-  window.timeWidgets['start']['date'].updateShadowValue();
-  window.timeWidgets['start']['hour'].updateShadowValue();
-  window.timeWidgets['start']['minute'].updateShadowValue();
-}
 
-this.initTimeWidgets = function (widgets) {
-  this.timeWidgets = widgets;
+    this.getStartDate = function() {
+      return this._getDate('start');
+    }
 
-  Event.observe(widgets['start']['date'], "change", this.onAdjustDueTime, false);
-  Event.observe(widgets['start']['hour'], "change", this.onAdjustDueTime, false);
-  Event.observe(widgets['start']['minute'], "change", this.onAdjustDueTime, false);
-}
+      this.getDueDate = function() {
+	return this._getDate('due');
+      }
 
-function onStatusListChange(event) {
-   var value = $("statusList").value;
-   var statusTimeDate = $("statusTime_date");
-   var statusPercent = $("statusPercent");
+	this.getShadowStartDate = function() {
+	  return this._getShadowDate('start');
+	}
 
-   if (value == "WONoSelectionString") {
-      statusTimeDate.disabled = true;
-      statusPercent.disabled = true;
-      statusPercent.value = "";
-   }
-   else if (value == "0") {
-      statusTimeDate.disabled = true;
-      statusPercent.disabled = false;
-   }
-   else if (value == "1") {
-      statusTimeDate.disabled = true;
-      statusPercent.disabled = false;
-   }
-   else if (value == "2") {
-      statusTimeDate.disabled = false;
-      statusPercent.disabled = false;
-      statusPercent.value = "100";
-   }
-   else if (value == "3") {
-      statusTimeDate.disabled = true;
-      statusPercent.disabled = true;
-   }
-   else {
-      statusTimeDate.disabled = true;
-   }
-}
+	  this.getShadowDueDate = function() {
+	    return this._getShadowDate('due');
+	  }
+
+	    this._setDate = function(which, newDate) {
+	      window.timeWidgets[which]['date'].setValueAsDate(newDate);
+	      window.timeWidgets[which]['hour'].value = newDate.getHours();
+	      var minutes = newDate.getMinutes();
+	      if (minutes % 15)
+		minutes += (15 - minutes % 15);
+	      window.timeWidgets[which]['minute'].value = minutes;
+	    }
+
+	      this.setStartDate = function(newStartDate) {
+		this._setDate('start', newStartDate);
+	      }
+
+		this.setDueDate = function(newDueDate) {
+		  //   window.alert(newDueDate);
+		  this._setDate('due', newDueDate);
+		}
+
+		  this.onAdjustDueTime = function(event) {
+		    if (!window.timeWidgets['due']['date'].disabled) {
+		      var dateDelta = (window.getStartDate().valueOf()
+				       - window.getShadowStartDate().valueOf());
+		      var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
+		      window.setDueDate(newDueDate);
+		    }
+		    window.timeWidgets['start']['date'].updateShadowValue();
+		    window.timeWidgets['start']['hour'].updateShadowValue();
+		    window.timeWidgets['start']['minute'].updateShadowValue();
+		  }
+
+		    this.initTimeWidgets = function (widgets) {
+		      this.timeWidgets = widgets;
+
+		      Event.observe(widgets['start']['date'], "change", this.onAdjustDueTime, false);
+		      Event.observe(widgets['start']['hour'], "change", this.onAdjustDueTime, false);
+		      Event.observe(widgets['start']['minute'], "change", this.onAdjustDueTime, false);
+		    }
+
+		      function onStatusListChange(event) {
+			var value = $("statusList").value;
+			var statusTimeDate = $("statusTime_date");
+			var statusPercent = $("statusPercent");
+
+			if (value == "WONoSelectionString") {
+			  statusTimeDate.disabled = true;
+			  statusPercent.disabled = true;
+			  statusPercent.value = "";
+			}
+			else if (value == "0") {
+			  statusTimeDate.disabled = true;
+			  statusPercent.disabled = false;
+			}
+			else if (value == "1") {
+			  statusTimeDate.disabled = true;
+			  statusPercent.disabled = false;
+			}
+			else if (value == "2") {
+			  statusTimeDate.disabled = false;
+			  statusPercent.disabled = false;
+			  statusPercent.value = "100";
+			}
+			else if (value == "3") {
+			  statusTimeDate.disabled = true;
+			  statusPercent.disabled = true;
+			}
+			else {
+			  statusTimeDate.disabled = true;
+			}
+		      }
 
 function initializeStatusLine() {
-   var statusList = $("statusList");
-   Event.observe(statusList, "mouseup", onStatusListChange, false);
+  var statusList = $("statusList");
+  Event.observe(statusList, "mouseup", onStatusListChange, false);
 }
 
 function onTaskEditorLoad() {
-   initializeStatusLine();
+  assignCalendar('startTime_date');
+  assignCalendar('dueTime_date');
+  assignCalendar('statusTime_date');
+
+  initializeStatusLine();
 }
 
 addEvent(window, 'load', onTaskEditorLoad);

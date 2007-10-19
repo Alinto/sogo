@@ -826,15 +826,15 @@ function calendarDisplayCallback(http) {
 }
 
 function assignCalendar(name) {
-   if (typeof(skycalendar) != "undefined") {
-      var node = $(name);
+  if (typeof(skycalendar) != "undefined") {
+    var node = $(name);
       
-      node.calendar = new skycalendar(node);
-      node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
-      var dateFormat = node.getAttribute("dateFormat");
-      if (dateFormat)
-	 node.calendar.setDateFormat(dateFormat);
-   }
+    node.calendar = new skycalendar(node);
+    node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
+    var dateFormat = node.getAttribute("dateFormat");
+    if (dateFormat)
+      node.calendar.setDateFormat(dateFormat);
+  }
 }
 
 function popupCalendar(node) {

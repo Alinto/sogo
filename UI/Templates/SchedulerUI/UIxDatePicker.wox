@@ -22,7 +22,4 @@
         var:alt="label"
         /></a
       >
-    <script type="text/javascript">
-      assignCalendar('<var:string value="dateID" />');
-    </script>
   </span>
