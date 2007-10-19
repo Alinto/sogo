@@ -43,7 +43,8 @@ main (int argc, char **argv, char **env)
   if (getuid() > 0)
     {
 #if LIB_FOUNDATION_LIBRARY
-      [NSProcessInfo initializeWithArguments: argv count: argc environment: env];
+      [NSProcessInfo initializeWithArguments: argv
+		     count: argc environment: env];
 #endif
       ud = [NSUserDefaults standardUserDefaults];
       rc = 0;
