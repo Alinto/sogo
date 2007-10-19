@@ -42,7 +42,7 @@
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
 static NSString *defaultLanguage = nil;
-static NSString *superUsername = nil;
+static NSArray *superUsernames = nil;
 static NSURL *AgenorProfileURL = nil;
 static BOOL acceptAnyUser = NO;
 
@@ -82,7 +82,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 + (void) initialize
 {
-  NSString *tzName, *nsUsername;
+  NSString *tzName;
   NSUserDefaults *ud;
   NSString *profileURL;
 
@@ -109,11 +109,9 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       if (!defaultLanguage)
 	ASSIGN (defaultLanguage, @"English");
     }
-  if (!superUsername)
+  if (!superUsernames)
     {
-      nsUsername = [ud stringForKey: @"SOGoSuperUsername"];
-      if ([nsUsername length] > 0)
-	ASSIGN (superUsername, nsUsername);
+      superUsernames = [ud arrayForKey: @"SOGoSuperUsernames"];
     }
 
   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
@@ -569,7 +567,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if (sogoRoles)
     [rolesForObject addObjectsFromArray: sogoRoles];
 
-  if ((superUsername && [login isEqualToString: superUsername])
+  if ((superUsernames && [superUsernames containsObject: login])
       || [[object ownerInContext: context] isEqualToString: login])
     [rolesForObject addObject: SoRole_Owner];
   if ([object isKindOfClass: [SOGoObject class]])
