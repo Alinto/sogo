@@ -1,0 +1,510 @@
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.h
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(révision 1545)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(copie de travail)
+@@ -28,6 +28,7 @@
+ #define ___PostgreSQL72_Channel_H___
+ 
+ #include <GDLAccess/EOAdaptorChannel.h>
++#include <GDLContentStore/EOAdaptorChannel+GCS.h>
+ #include <libpq-fe.h>
+ 
+ @class NSArray, NSString, NSMutableDictionary;
+@@ -40,7 +41,7 @@
+   int        modification;
+ } PostgreSQL72FieldInfo;
+ 
+-@interface PostgreSQL72Channel : EOAdaptorChannel
++@interface PostgreSQL72Channel : EOAdaptorChannel <GCSEOAdaptorChannel>
+ {
+   // connection is valid after an openChannel call
+   PGConnection *connection;
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1545)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/ChangeLog
+===================================================================
+--- sope-gdl1/Oracle8/ChangeLog	(révision 1545)
++++ sope-gdl1/Oracle8/ChangeLog	(copie de travail)
+@@ -1,3 +1,10 @@
++2007-10-19      Ludovic Marcotte <ludovic@inverse.ca>
++
++ 	* We call OCITerminate() in OracleAdaptorChannel:
++	  -closeChannel:       
++	* Some formatting cleanups.
++
++
+ 2007-10-05	Ludovic Marcotte <ludovic@inverse.ca>
+ 
+ 	* Fixed otest wrt bundle name.
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1545)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -112,7 +112,7 @@
+   // Oracle's doc says: "If you call OCIStmtFetch2() with the nrows parameter set to 0, this cancels the cursor."
+   if (OCIStmtFetch2(_current_stm, _oci_err, (ub4)0, (ub4)OCI_FETCH_NEXT, (sb4)0, (ub4)OCI_DEFAULT))
+     {
+-      NSLog( @"Fetch cancellation failed");
++      NSLog(@"Fetch cancellation failed");
+     }
+   
+   [self _cleanup];
+@@ -131,8 +131,13 @@
+       // We logoff from the database.
+       if (OCILogoff(_oci_ctx, _oci_err))
+ 	{
+-	  NSLog( @"FAILED: OCILogoff()");
++	  NSLog(@"FAILED: OCILogoff()");
+ 	}
++
++      if (OCITerminate(OCI_DEFAULT))
++	{
++	  NSLog(@"FAILED: OCITerminate()");
++	}
+     }
+ }
+ 
+@@ -369,19 +374,19 @@
+                     (dvoid * (*)(dvoid *, dvoid *, size_t))0,
+                     (void (*)(dvoid *, dvoid *)) 0 ))
+     {
+-      NSLog( @"FAILED: OCIInitialize()");
++      NSLog(@"FAILED: OCIInitialize()");
+       return NO;
+     }
+   
+   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
+     {
+-      NSLog( @"FAILED: OCIEnvInit()");
++      NSLog(@"FAILED: OCIEnvInit()");
+       return NO;
+     }
+   
+   if (OCIHandleAlloc((dvoid *)_oci_env, (dvoid *)&_oci_err, (ub4)OCI_HTYPE_ERROR, (size_t)0, (dvoid **)0))
+     {
+-      NSLog( @"FAILED: OCIHandleAlloc() on errhp");
++      NSLog(@"FAILED: OCIHandleAlloc() on errhp");
+       return NO;
+     }
+   
+@@ -398,7 +403,7 @@
+   if (OCILogon(_oci_env, _oci_err, &_oci_ctx, (const OraText*)username, strlen(username),
+ 	       (const OraText*)password, strlen(password), (const OraText*)database, strlen(database)))
+     {
+-      NSLog( @"FAILED: OCILogon(). username = %s  password = %s"
++      NSLog(@"FAILED: OCILogon(). username = %s  password = %s"
+ 	    @"  database = %s", username, password, database);
+       return NO;
+     }
+Index: sope-mime/NGImap4/NGImap4Connection.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1545)
++++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
+@@ -381,7 +381,7 @@
+   
+   if (debugCache) [self logWithFormat:@"  no folders cached yet .."];
+   
+-  result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"*")
++  result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"")
+ 			  pattern:@"*"];
+   if (![[result valueForKey:@"result"] boolValue]) {
+     [self errorWithFormat:@"Could not list mailbox hierarchy!"];
+Index: sope-mime/NGImap4/NGImap4ResponseParser.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1545)
++++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
+@@ -84,6 +84,8 @@
+ static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
+ 					 BOOL isBodyStructure);
+ 
++static NSArray *_parseLanguages();
++
+ static NSString *_parseBodyString(NGImap4ResponseParser *self,
+                                   BOOL _convertString);
+ static NSString *_parseBodyDecodeString(NGImap4ResponseParser *self,
+@@ -1627,6 +1629,29 @@
+   return _parseBodyDecodeString(self, _convertString, NO /* no decode */);
+ }
+ 
++static NSArray *_parseLanguages(NGImap4ResponseParser *self) {
++  NSMutableArray *languages;
++  NSString *language;
++
++  languages = [NSMutableArray array];
++  if (_la(self, 0) == '(') {
++    while (_la(self, 0) != ')') {
++      _consume(self,1);
++      language = _parseBodyString(self, YES);
++      if ([language length])
++	[languages addObject: language];
++    }
++    _consume(self,1);
++  }
++  else {
++    language = _parseBodyString(self, YES);
++    if ([language length])
++      [languages addObject: language];
++  }
++
++  return languages;
++}
++
+ static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
+ {
+   NSMutableDictionary *list;
+@@ -1734,10 +1759,11 @@
+ 		      *encoding, *bodysize;
+   NSDictionary        *parameterList;
+   NSMutableDictionary *dict;
++  NSArray	      *languages;
+ 
+   type = [_parseBodyString(self, YES) lowercaseString];
+   _consumeIfMatch(self, ' ');
+-  subtype = _parseBodyString(self, YES);
++  subtype = [_parseBodyString(self, YES) lowercaseString];
+   _consumeIfMatch(self, ' ');
+   parameterList = _parseBodyParameterList(self);
+   _consumeIfMatch(self, ' ');
+@@ -1762,7 +1788,8 @@
+     _consumeIfMatch(self, ' ');
+     [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
+   }
+-  else if ([type isEqualToString:@"message"]) {
++  else if ([type isEqualToString:@"message"]
++	   && [subtype isEqualToString:@"rfc822"]) {
+     if (_la(self, 0) != ')') {
+       _consumeIfMatch(self, ' ');
+       _consumeIfMatch(self, '(');
+@@ -1805,14 +1832,9 @@
+ 	      forKey: @"disposition"];
+ 	if (_la(self, 0) != ')') {
+ 	  _consume(self,1);
+-	  if (_la(self, 0) == '(') {
+-	    [dict setObject: _parseBodyParameterList(self)
+-		  forKey: @"language"];
+-	  }
+-	  else {
+-	    [dict setObject: _parseBodyString(self, YES)
+-		  forKey: @"language"];
+-	  }
++	  languages = _parseLanguages(self);
++	  if ([languages count])
++	    [dict setObject: languages forKey: @"languages"];
+ 	  if (_la(self, 0) != ')') {
+ 	    _consume(self,1);
+ 	    [dict setObject: _parseBodyString(self, YES)
+@@ -1829,6 +1851,7 @@
+ static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
+ 					 BOOL isBodyStructure) {
+   NSMutableArray *parts;
++  NSArray	 *languages;
+   NSString       *kind;
+   NSMutableDictionary *dict;
+ 
+@@ -1854,14 +1877,9 @@
+ 	      forKey: @"disposition"];
+ 	if (_la(self, 0) != ')') {
+ 	  _consume(self,1);
+-	  if (_la(self, 0) == '(') {
+-	    [dict setObject: _parseBodyParameterList(self)
+-		  forKey: @"language"];
+-	  }
+-	  else {
+-	    [dict setObject: _parseBodyString(self, YES)
+-		  forKey: @"language"];
+-	  }
++	  languages = _parseLanguages(self);
++	  if ([languages count])
++	    [dict setObject: languages forKey: @"languages"];
+ 	  if (_la(self, 0) != ')') {
+ 	    _consume(self,1);
+ 	    [dict setObject: _parseBodyString(self, YES)
+Index: sope-mime/NGMime/NGMimeBodyPart.m
+===================================================================
+--- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1545)
++++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
+@@ -31,18 +31,6 @@
+   return 2;
+ }
+ 
+-static NGMimeType *defaultType = nil;
+-
+-+ (void)initialize {
+-  static BOOL isInitialized = NO;
+-  if (!isInitialized) {
+-    isInitialized = YES;
+-    
+-    defaultType =
+-      [[NGMimeType mimeType:@"text/plain; charset=us-ascii"] retain];
+-  }
+-}
+-  
+ + (id)bodyPartWithHeader:(NGHashMap *)_header {
+   return [[[self alloc] initWithHeader:_header] autorelease];
+ }
+@@ -156,13 +144,12 @@
+   if (!Fields)
+     Fields = (NGMimeHeaderNames *)[NGMimePartParser headerFieldNames];
+   
+-  
+   type = [self->header objectForKey:Fields->contentType];
+   
+   if (![type isKindOfClass:[NGMimeType class]])
+     type = [NGMimeType mimeType:[type stringValue]];
+   
+-  return (type != nil ? type : (id)defaultType);
++  return type;
+ }
+ 
+ - (NSString *)contentId {
+Index: sope-mime/NGMime/NGMimeBodyParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1545)
++++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
+@@ -67,7 +67,10 @@
+   if (_data == nil) return nil;
+   
+   ctype = [_part contentType];
+-  
++  if (!ctype
++      && [_d respondsToSelector: @selector(parser:contentTypeOfPart:)])
++    ctype = [_d parser: self contentTypeOfPart: _part];
++
+   if (![ctype isKindOfClass:[NGMimeType class]])
+     ctype = [NGMimeType mimeType:[ctype stringValue]];
+   
+Index: sope-mime/NGMime/NGMimePartParser.h
+===================================================================
+--- sope-mime/NGMime/NGMimePartParser.h	(révision 1545)
++++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
+@@ -117,6 +117,7 @@
+     BOOL parserParseRawBodyDataOfPart:1;
+     BOOL parserBodyParserForPart:1;
+     BOOL parserDecodeBodyOfPart:1;
++    BOOL parserContentTypeOfPart:1;
+   } delegateRespondsTo;
+ 
+   
+@@ -275,6 +276,9 @@
+ - (id<NGMimeBodyParser>)parser:(NGMimePartParser *)_parser
+   bodyParserForPart:(id<NGMimePart>)_part;
+ 
++- (NGMimeType *)parser:(id)_parser
++  contentTypeOfPart:(id<NGMimePart>)_part;
++
+ @end /* NSObject(NGMimePartParserDelegate) */
+ 
+ @interface NSObject(NGMimePartParser)
+Index: sope-mime/NGMime/NGMimePartParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimePartParser.m	(révision 1545)
++++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
+@@ -1091,7 +1091,10 @@
+   id<NGMimeBodyParser> bodyParser   = nil;
+   
+   ctype = [_p contentType];
+-  
++  if (!ctype
++      && self->delegateRespondsTo.parserContentTypeOfPart)
++    ctype = [self->delegate parser: self contentTypeOfPart: _p];
++
+   contentType = ([ctype isKindOfClass:[NGMimeType class]])
+     ? ctype
+     : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
+===================================================================
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1545)
++++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
+@@ -23,14 +23,20 @@
+ 
+ # install makefiles
+ 
+-after-install ::
++after-install :: $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make
++
++ifneq ($(GNUSTEP_MAKE_VERSION),1.3.0)
++after-install :: $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/woapp.make $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
++endif
++
++$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make: ngobjweb.make
+ 	$(MKDIRS) $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/
+ 	$(INSTALL_DATA) ngobjweb.make $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make
+ 
+-ifneq ($(GNUSTEP_MAKE_VERSION),1.3.0)
+-after-install ::
++$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/woapp.make: woapp-gs.make
+ 	$(INSTALL_DATA) woapp-gs.make    \
+ 		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/woapp.make
++
++$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make: wobundle-gs.make
+ 	$(INSTALL_DATA) wobundle-gs.make \
+ 		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
+-endif
+Index: sope-appserver/NGObjWeb/WOContext.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOContext.m	(révision 1545)
++++ sope-appserver/NGObjWeb/WOContext.m	(copie de travail)
+@@ -64,11 +64,13 @@
+ static BOOL     testNSURLs           = NO;
+ static BOOL     newCURLStyle         = NO;
+ static NSString *WOApplicationSuffix = nil;
++static NSURL    *redirectURL         = nil;
+ 
+ + (void)initialize {
+   static BOOL    didInit = NO;
+   NSUserDefaults *ud;
+   NSString       *cn;
++  NSString       *url;
+ 
+   if (didInit) return;
+ 
+@@ -91,6 +93,9 @@
+   debugCursor         = [ud boolForKey:@"WODebugCursor"] ? 1 : 0;
+   debugComponentAwake = [ud boolForKey:@"WODebugComponentAwake"];
+   WOApplicationSuffix = [[ud stringForKey:@"WOApplicationSuffix"] copy];
++  url                 = [ud stringForKey:@"WOApplicationRedirectURL"];
++  if (url != nil)
++    redirectURL       = [NSURL URLWithString: url];
+ }
+ 
+ + (id)contextWithRequest:(WORequest *)_r {
+@@ -503,6 +508,11 @@
+     return nil;
+   }
+   
++  if (redirectURL) {
++    // Use URL from user defaults (WOApplicationRedirectURL)
++    return redirectURL;
++  }
++  
+   if ((serverURL = [rq headerForKey:@"x-webobjects-server-url"]) == nil) {
+     if ((host = [rq headerForKey:@"host"]))
+       serverURL = [@"http://" stringByAppendingString:host];
+Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1545)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
+@@ -216,6 +216,12 @@
+       assocCount++;
+     }
+   }
++  if (count > 0) {
++    if ((self->isAbsolute = OWGetProperty(_config, @"absolute"))) {
++      count--;
++      assocCount++;
++    }
++  }
+   
+   self->rest = _config;
+   
+Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1545)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
+@@ -40,6 +40,7 @@
+   WOAssociation *string;
+   WOAssociation *target;
+   WOAssociation *disabled;
++  WOAssociation *isAbsolute;
+   WOElement     *template;
+   
+   /* new in WO4: */
+@@ -359,6 +360,7 @@
+ {
+   if ((self = [super initWithName:_name hyperlinkInfo:_info template:_t])) {
+     self->href = _info->href;
++    self->isAbsolute = _info->isAbsolute;
+   }
+   return self;
+ }
+@@ -374,6 +376,9 @@
+   // TODO: we need a binding to disable rewriting!
+   NSRange  r;
+   
++  if ([[self->isAbsolute valueInContext:_ctx] boolValue] == YES)
++    return NO;
++
+   r = [_s rangeOfString:@":"];
+   if (r.length == 0) 
+     return YES;
+Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1545)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
+@@ -41,7 +41,8 @@
+   WOAssociation *pageName;
+   WOAssociation *actionClass;
+   WOAssociation *directActionName;
+-  
++  WOAssociation *isAbsolute;
++
+   BOOL          sidInUrl;
+ 
+   /* 'ivar' associations */
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1545)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
+@@ -31,6 +31,7 @@
+ #include <NGObjWeb/WOCookie.h>
+ #include <NGExtensions/NSData+gzip.h>
+ #include <NGHttp/NGHttp.h>
++#include <NGMime/NGMimeType.h>
+ #include "common.h"
+ 
+ #include <string.h>
+@@ -1016,6 +1017,12 @@
+ - (void)parser:(NGMimePartParser *)_parser didParseHeader:(NGHashMap *)_header {
+ }
+ 
++- (NGMimeType *)parser:(id)_parser
++  contentTypeOfPart:(id<NGMimePart>)_part
++{
++  return [NGMimeType mimeType: @"text/plain; charset=utf-8"];
++}
++
+ @end /* WOHttpAdaptor */
+ 
+ @implementation WOCoreApplication(SimpleParserSelection)
