@@ -1,3 +1,9 @@
+2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-aclsForUser:uid]): object inherits the 'SOGoRole_ObjectEditor'
+	role from its parent folder.
+
 2007-10-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m 

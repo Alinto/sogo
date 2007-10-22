@@ -382,6 +382,8 @@
 	}
       if ([containerAcls containsObject: SOGoRole_ObjectReader])
 	[acls addObject: SOGoRole_ObjectViewer];
+      if ([containerAcls containsObject: SOGoRole_ObjectEditor])
+	[acls addObject: SOGoRole_ObjectEditor];
     }
 
   return acls;
