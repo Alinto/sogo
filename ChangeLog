@@ -1,5 +1,8 @@
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
+	-davEntityTag]): modified to return the "hash" of the vCard string.
+
 	* UI/MailerUI/UIxMailActions.m ([UIxMailActions
 	-removeAllLabelsAction]): new method that removes all label flags
 	from the associated message.

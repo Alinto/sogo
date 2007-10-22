@@ -173,7 +173,12 @@
 
 - (NSString *) davEntityTag
 {
-  return [ldifEntry objectForKey: @"modifyTimeStamp"];
+  unsigned int hash;
+//   return [ldifEntry objectForKey: @"modifyTimeStamp"];
+
+  hash = [[self contentAsString] hash];
+
+  return [NSString stringWithFormat: @"hash%u", hash];
 }
 
 - (NSString *) davContentType
