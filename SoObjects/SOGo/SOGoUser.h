@@ -67,6 +67,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
   NSMutableArray *mailAccounts;
 }
 
++ (NSString *) language;
+
 + (SOGoUser *) userWithLogin: (NSString *) login
 		       roles: (NSArray *) roles;
 - (void) setCurrentPassword: (NSString *) newPassword;

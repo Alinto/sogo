@@ -61,19 +61,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) language
 {
-  NSArray *bLanguages;
-  WOContext *context;
-  NSString *language;
-
-  context = [[WOApplication application] context];
-  bLanguages = [[context request] browserLanguages];
-  if ([bLanguages count] > 0)
-    language = [bLanguages objectAtIndex: 0];
-
-  if (![language length])
-    language = defaultLanguage;
-
-  return language;
+  return [SOGoUser language];
 }
 
 @end
@@ -116,6 +104,23 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
 		     isEqualToString: @"bypass"]);
+}
+
++ (NSString *) language
+{
+  NSArray *bLanguages;
+  WOContext *context;
+  NSString *language;
+
+  context = [[WOApplication application] context];
+  bLanguages = [[context request] browserLanguages];
+  if ([bLanguages count] > 0)
+    language = [bLanguages objectAtIndex: 0];
+
+  if (![language length])
+    language = defaultLanguage;
+
+  return language;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
@@ -338,14 +343,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     {
       language = [[self userDefaults] stringForKey: @"Language"];
       if (![language length])
-	{
-	  context = [[WOApplication application] context];
-	  bLanguages = [[context request] browserLanguages];
-	  if ([bLanguages count] > 0)
-	    language = [bLanguages objectAtIndex: 0];
-	}
-      if (![language length])
-	language = defaultLanguage;
+	language = [SOGoUser language];
       [language retain];
     }
 

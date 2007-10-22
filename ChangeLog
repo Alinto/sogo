@@ -1,5 +1,11 @@
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +language]): new method
+	that returns any generically-found language.
+	([SoUser -language]): modified to call the above.
+	([SOGoUser -language]): modified to call the above if the user
+	language has a null length.
+
 	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
 	-davEntityTag]): modified to return the "hash" of the vCard string.
 
