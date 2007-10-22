@@ -585,9 +585,11 @@ function popupMenu(event, menuId, target) {
   if (leftDiff < 0)
     menuLeft -= popup.offsetWidth;
 
+  if (popup.prepareVisibility)
+    popup.prepareVisibility();
   popup.setStyle({ top: menuTop + "px",
-	left: menuLeft + "px",
-	visibility: "visible" });
+	           left: menuLeft + "px",
+	           visibility: "visible" });
 
   document.currentPopupMenu = popup;
 
@@ -614,7 +616,7 @@ function getParentMenu(node) {
 }
 
 function onBodyClickMenuHandler(event) {
-  document.body.menuTarget = null;
+  document.menuTarget = null;
   hideMenu(document.currentPopupMenu);
   Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
@@ -775,6 +777,9 @@ function popupSubmenu(event) {
     submenuNode.parentMenu = parentNode;
     parentNode.submenuItem = this;
     parentNode.submenu = submenuNode;
+
+    if (submenuNode.prepareVisibility)
+      submenuNode.prepareVisibility();
 
     var menuTop = (parentNode.offsetTop - 1
 		   + this.offsetTop);

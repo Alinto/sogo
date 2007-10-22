@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -217,6 +218,113 @@
       response = [self responseWithStatus: 500];
       [response appendContentString: @"How did you end up here?"];
     }
+
+  return response;
+}
+
+- (WOResponse *) _addLabel: (unsigned int) number
+{
+  WOResponse *response;
+  SOGoMailObject *co;
+  NSException *error;
+  NSArray *flags;
+
+  co = [self clientObject];
+  flags = [NSArray arrayWithObject:
+		     [NSString stringWithFormat: @"$Label%u", number]];
+  error = [co addFlags: flags];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) _removeLabel: (unsigned int) number
+{
+  WOResponse *response;
+  SOGoMailObject *co;
+  NSException *error;
+  NSArray *flags;
+
+  co = [self clientObject];
+  flags = [NSArray arrayWithObject:
+		     [NSString stringWithFormat: @"$Label%u", number]];
+  error = [co removeFlags: flags];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) addLabel1Action
+{
+  return [self _addLabel: 1];
+}
+
+- (WOResponse *) addLabel2Action
+{
+  return [self _addLabel: 2];
+}
+
+- (WOResponse *) addLabel3Action
+{
+  return [self _addLabel: 3];
+}
+
+- (WOResponse *) addLabel4Action
+{
+  return [self _addLabel: 4];
+}
+
+- (WOResponse *) addLabel5Action
+{
+  return [self _addLabel: 5];
+}
+
+- (WOResponse *) removeLabel1Action
+{
+  return [self _removeLabel: 1];
+}
+
+- (WOResponse *) removeLabel2Action
+{
+  return [self _removeLabel: 2];
+}
+
+- (WOResponse *) removeLabel3Action
+{
+  return [self _removeLabel: 3];
+}
+
+- (WOResponse *) removeLabel4Action
+{
+  return [self _removeLabel: 4];
+}
+
+- (WOResponse *) removeLabel5Action
+{
+  return [self _removeLabel: 5];
+}
+
+- (WOResponse *) removeAllLabelsAction
+{
+  WOResponse *response;
+  SOGoMailObject *co;
+  NSException *error;
+  NSArray *flags;
+
+  co = [self clientObject];
+  flags = [NSArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
+		   @"$Label4", @"$Label5", nil];
+  error = [co removeFlags: flags];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    response = [self responseWith204];
 
   return response;
 }

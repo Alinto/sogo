@@ -534,6 +534,23 @@ static int attachmentFlagSize = 8096;
   return [self redirectToLocation:@"view"];
 }
 
+- (NSString *) msgLabels
+{
+  NSMutableArray *labels;
+  NSEnumerator *flags;
+  NSString *currentFlag;
+
+  labels = [NSMutableArray new];
+  [labels autorelease];
+
+  flags = [[message objectForKey: @"flags"] objectEnumerator];
+  while ((currentFlag = [flags nextObject]))
+    if ([currentFlag hasPrefix: @"$label"])
+      [labels addObject: [currentFlag substringFromIndex: 1]];
+
+  return [labels componentsJoinedByString: @" "];
+}
+
 @end
 
 /* UIxMailListView */

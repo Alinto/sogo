@@ -1,5 +1,24 @@
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailActions.m ([UIxMailActions
+	-removeAllLabelsAction]): new method that removes all label flags
+	from the associated message.
+	([UIxMailActions -addLabel1Action]
+	[UIxMailActions -addLabel2Action]
+	[UIxMailActions -addLabel3Action
+	[UIxMailActions -addLabel4Action]
+	[UIxMailActions -addLabel5Action]): new methods that adds label
+	flags to the associated message.
+	([UIxMailActions -removeLabel1Action]
+	[UIxMailActions -removeLabel2Action]
+	[UIxMailActions -removeLabel3Action
+	[UIxMailActions -removeLabel4Action]
+	[UIxMailActions -removeLabel5Action]): new methods that removes
+	label flags from the associated message.
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView -msgLabels]):
+	new accessor that returns the labels associated with the message.
+
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
 	-allFolderPaths]): new method that returns all the paths of all
 	the subfolders of the folder object.

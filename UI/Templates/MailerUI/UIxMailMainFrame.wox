@@ -130,14 +130,14 @@
   </div>
 
   <div class="menu" id="label-menu">
-    <ul id="">
+    <ul id="" class="choiceMenu">
       <li><var:string label:value="None" /></li>
       <li><!-- separator --></li>
-      <li><var:string label:value="Important" /></li>
-      <li><var:string label:value="Work" /></li>
-      <li><var:string label:value="Personal" /></li>
-      <li><var:string label:value="To Do" /></li>
-      <li><var:string label:value="Later" /></li>
+      <li class="label1"><var:string label:value="Important" /></li>
+      <li class="label2"><var:string label:value="Work" /></li>
+      <li class="label3"><var:string label:value="Personal" /></li>
+      <li class="label4"><var:string label:value="To Do" /></li>
+      <li class="label5"><var:string label:value="Later" /></li>
     </ul>
   </div>
 

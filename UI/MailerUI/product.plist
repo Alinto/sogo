@@ -255,6 +255,61 @@
 	  actionClass = "UIxMailActions";
 	  actionName  = "markMessageRead";
 	};
+	addLabel1 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "addLabel1";
+	};
+	addLabel2 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "addLabel2";
+	};
+	addLabel3 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "addLabel3";
+	};
+	addLabel4 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "addLabel4";
+	};
+	addLabel5 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "addLabel5";
+	};
+	removeLabel1 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeLabel1";
+	};
+	removeLabel2 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeLabel2";
+	};
+	removeLabel3 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeLabel3";
+	};
+	removeLabel4 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeLabel4";
+	};
+	removeLabel5 = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeLabel5";
+	};
+	removeAllLabels = {
+	  protectedBy = "View";
+	  actionClass = "UIxMailActions";
+	  actionName  = "removeAllLabels";
+	};
       };
     };
 

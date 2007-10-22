@@ -2,9 +2,7 @@
 --------------
 - the user can now configure his folders as drafts, trash or sent folder;
 - added the ability the move and copy message across mail folders;
-
-0.9.0-200709XX
---------------
+- added the ability to label messages;
 - implemented cookie-based identification in the web interface;
 - fixed a bug where a false positive happening whenever a wrong user login was
   given during an indirect bind;

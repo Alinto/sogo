@@ -988,8 +988,6 @@ var messageListData = function(type) {
 }
 
 /* a model for a futur refactoring of the sortable table headers mechanism */
-
-
 function configureMessageListEvents(table) {
   if (table) {
     table.multiselect = true;
@@ -1379,6 +1377,50 @@ function onMenuChangeToTrashFolder(event) {
   return _onMenuChangeToXXXFolder(event, "Trash");
 }
 
+function onMenuLabelNone() {
+  var rowId = document.menuTarget.getAttribute("id").substr(4);
+  var messageId = currentMailbox + "/" + rowId;
+  var urlstr = ApplicationBaseURL + messageId + "/removeAllLabels";
+  triggerAjaxRequest(urlstr, messageFlagCallback,
+		     { mailbox: currentMailbox, msg: rowId, label: null } );
+}
+
+function _onMenuLabelFlagX(flag) {
+  var flags = document.menuTarget.getAttribute("labels").split(" ");
+
+  var rowId = document.menuTarget.getAttribute("id").substr(4);
+  var messageId = currentMailbox + "/" + rowId;
+
+  var operation = "add";
+  if (flags.indexOf("label" + flag) > -1)
+    operation = "remove";
+  var urlstr = (ApplicationBaseURL + messageId
+		+ "/" + operation + "Label" + flag);
+  triggerAjaxRequest(urlstr, messageFlagCallback,
+		     { mailbox: currentMailbox, msg: rowId,
+		       label: operation + flag } );
+}
+
+function onMenuLabelFlag1() {
+  _onMenuLabelFlagX(1);
+}
+
+function onMenuLabelFlag2() {
+  _onMenuLabelFlagX(2);
+}
+
+function onMenuLabelFlag3() {
+  _onMenuLabelFlagX(3);
+}
+
+function onMenuLabelFlag4() {
+  _onMenuLabelFlagX(4);
+}
+
+function onMenuLabelFlag5() {
+  _onMenuLabelFlagX(5);
+}
+
 function folderOperationCallback(http) {
   if (http.readyState == 4
       && isHttpStatus204(http.status))
@@ -1396,6 +1438,65 @@ function folderRefreshCallback(http) {
   }
   else
     window.alert(labels["Operation failed"]);
+}
+
+function messageFlagCallback(http) {
+  if (http.readyState == 4
+      && isHttpStatus204(http.status)) {
+    var data = http.callbackData;
+    if (data["mailbox"] == currentMailbox) {
+      var row = $("row_" + data["msg"]);
+      var operation = data["label"];
+      if (operation) {
+	var labels = row.getAttribute("labels");
+	var flags;
+	if (labels.length > 0)
+	  flags = labels.split(" ");
+	else
+	  flags = new Array();
+	if (operation.substr(0, 3) == "add")
+	  flags.push("label" + operation.substr(3));
+	else {
+	  var flag = "label" + operation.substr(6);
+	  var idx = flags.indexOf(flag);
+	  flags.splice(idx, 1);
+	}
+	row.setAttribute("labels", flags.join(" "));
+      }
+      else
+	row.setAttribute("labels", "");
+    }
+  }
+}
+
+function onLabelMenuPrepareVisibility() {
+  var messageList = $("messageList");
+  var rows = messageList.getSelectedRows();
+
+  var flags = {};
+  for (var i = 1; i < 6; i++)
+    flags["label" + i] = true;
+  for (var i = 0; i < rows.length; i++) {
+    var rowFlags = rows[i].getAttribute("labels").split(" ");
+    for (var flag in flags)
+      if (flags[flag] && rowFlags.indexOf(flag) == -1)
+	flags[flag] = false;
+  }
+
+  var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li")
+  var isFlagged = false;
+  for (var i = 1; i < 6; i++) {
+    if (flags["label" + i]) {
+      isFlagged = true;
+      lis[1 + i].addClassName("_chosen");
+    }
+    else
+      lis[1 + i].removeClassName("_chosen");
+  }
+  if (isFlagged)
+    lis[0].removeClassName("_chosen");
+  else
+    lis[0].addClassName("_chosen");
 }
 
 function getMenus() {
@@ -1441,14 +1542,16 @@ function getMenus() {
   menus["folderTypeMenu"] = new Array(onMenuChangeToSentFolder,
 				      onMenuChangeToDraftsFolder,
 				      onMenuChangeToTrashFolder);
-  
-  menus["label-menu"] = new Array(null, "-", null , null, null, null , null,
-				  null);
+
+  menus["label-menu"] = new Array(onMenuLabelNone, "-", onMenuLabelFlag1,
+				  onMenuLabelFlag2, onMenuLabelFlag3,
+				  onMenuLabelFlag4, onMenuLabelFlag5);
   menus["mark-menu"] = new Array(null, null, null, null, "-", null, "-",
 				 null, null, null);
   menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria,
 				  setSearchCriteria, setSearchCriteria,
 				  setSearchCriteria);
+  $("label-menu").prepareVisibility = onLabelMenuPrepareVisibility;
 
   return menus;
 }

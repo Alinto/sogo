@@ -90,6 +90,21 @@ DIV#folderTreeContent
   bottom: 0px;
   overflow: auto; }
 
+#label-menu LI.label1
+{ color: #f00; }
+
+#label-menu LI.label2
+{ color: #ff9a00; }
+
+#label-menu LI.label3
+{ color: #009a00; }
+
+#label-menu LI.label4
+{ color: #3130ff; }
+
+#label-menu LI.label5
+{ color: #9c309c; }
+
 .aptview_title
 {
   color: #000000;
@@ -518,7 +533,7 @@ TABLE#messageList TD.tbtv_date_headercell
 
 TABLE#messageList TR._selected TD
 { 
-  background: #4b6983;
+  background-color: #4b6983;
   color: #fff;
 }
 
@@ -526,6 +541,41 @@ TABLE#messageList TR._deleted TD
 { 
   text-decoration: line-through;
 }
+
+TABLE#messageList TR[labels~="label5"] TD
+{ color: #9c309c; }
+
+TABLE#messageList TR[labels~="label5"]._selected TD
+{ color: #fff;
+  background-color: #9c309c; }
+
+TABLE#messageList TR[labels~="label4"] TD
+{ color: #3130ff; }
+
+TABLE#messageList TR[labels~="label4"]._selected TD
+{ color: #fff;
+  background-color: #3130ff; }
+
+TABLE#messageList TR[labels~="label3"] TD
+{ color: #009a00; }
+
+TABLE#messageList TR[labels~="label3"]._selected TD
+{ color: #fff;
+  background-color: #009a00; }
+
+TABLE#messageList TR[labels~="label2"] TD
+{ color: #ff9a00; }
+
+TABLE#messageList TR[labels~="label2"]._selected TD
+{ color: #fff;
+  background-color: #ff9a00; }
+
+TABLE#messageList TR[labels~="label1"] TD
+{ color: #f00; }
+
+TABLE#messageList TR[labels~="label1"]._selected TD
+{ color: #fff;
+  background-color: #f00; }
 
 /* drag handles */
 DIV#verticalDragHandle

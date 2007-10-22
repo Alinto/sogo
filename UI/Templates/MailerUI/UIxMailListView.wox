@@ -56,14 +56,13 @@
   </thead>
   <tbody>
     <var:foreach list="messages" item="message"
-      ><tr var:class="messageRowStyleClass" var:id="msgRowID"
+      ><tr var:class="messageRowStyleClass" var:id="msgRowID" var:labels="msgLabels"
 	><td class="messageFlagColumn"><var:entity name="nbsp"/></td
 	  ><td class="messageFlagColumn"
 	  ><var:if condition="hasMessageAttachment"
 	    ><img rsrc:src="title_attachment_14x14.png"
 	      /></var:if
 	    ></td
-	  
 	  ><td
 	  var:class="messageSubjectCellStyleClass"
 	  var:id="msgDivID"
