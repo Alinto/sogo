@@ -205,3 +205,8 @@
 = "Moving a message into its own folder is impossible!";
 "Copying a message into its own folder is impossible!"
 = "Copying a message into its own folder is impossible!";
+
+/* Message editing */
+"error_validationfailed" = "Validation failed";
+"error_missingsubject" = "Subject is missing";
+"error_missingrecipients" = "No recipients specified";

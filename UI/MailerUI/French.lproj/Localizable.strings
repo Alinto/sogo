@@ -222,3 +222,8 @@
 = "Le déplacement d'un message dans son propre dossier est impossible.";
 "Copying a message into its own folder is impossible!"
 = "La copie d'un message dans son propre dossier est impossible.";
+
+/* Message editing */
+"error_validationfailed" = "Message invalide";
+"error_missingsubject" = "- le sujet est manquant";
+"error_missingrecipients" = "- aucun destinataire spécifié";
