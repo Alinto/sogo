@@ -106,6 +106,16 @@ static BOOL useAltNamespace = NO;
   return [nameInContainer substringFromIndex: 6];
 }
 
+- (NSString *) absoluteImap4Name
+{
+  NSString *name;
+
+  name = [[self imap4URL] path];
+  if (![name hasSuffix: @"/"])
+    name = [name stringByAppendingString: @"/"];
+
+  return name;
+}
 
 - (NSMutableString *) imap4URLString
 {
@@ -129,25 +139,45 @@ static BOOL useAltNamespace = NO;
   return [[self imap4Connection] subfoldersForURL: [self imap4URL]];
 }
 
-- (NSArray *) subfoldersURL
+- (NSArray *) allFolderPaths
+{
+  NSMutableArray *deepSubfolders;
+  NSEnumerator *folderNames;
+  NSArray *result;
+  NSString *currentFolderName, *prefix;
+
+  deepSubfolders = [NSMutableArray new];
+  [deepSubfolders autorelease];
+
+  prefix = [self absoluteImap4Name];
+
+  result = [[self mailAccountFolder] allFolderPaths];
+  folderNames = [result objectEnumerator];
+  while ((currentFolderName = [folderNames nextObject]))
+    if ([currentFolderName hasPrefix: prefix])
+      [deepSubfolders addObject: currentFolderName];
+  [deepSubfolders sortUsingSelector: @selector (compare:)];
+
+  return deepSubfolders;
+}
+
+- (NSArray *) allFolderURLs
 {
   NSURL *selfURL, *currentURL;
   NSMutableArray *subfoldersURL;
   NSEnumerator *subfolders;
-  NSString *selfPath, *currentFolder;
+  NSString *currentFolder;
 
   subfoldersURL = [NSMutableArray array];
   selfURL = [self imap4URL];
-  selfPath = [selfURL path];
-  subfolders = [[self subfolders] objectEnumerator];
+  subfolders = [[self allFolderPaths] objectEnumerator];
   currentFolder = [subfolders nextObject];
   while (currentFolder)
     {
       currentURL = [[NSURL alloc]
 		     initWithScheme: [selfURL scheme]
 		     host: [selfURL host]
-		     path: [selfPath stringByAppendingPathComponent:
-				       currentFolder]];
+		     path: currentFolder];
       [currentURL autorelease];
       [subfoldersURL addObject: currentURL];
       currentFolder = [subfolders nextObject];

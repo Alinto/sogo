@@ -265,7 +265,7 @@
     {
       [co flushMailCaches];
       connection = [co imap4Connection];
-      subfolders = [[co subfoldersURL] objectEnumerator];
+      subfolders = [[co allFolderURLs] objectEnumerator];
       currentURL = [subfolders nextObject];
       while (currentURL)
 	{
