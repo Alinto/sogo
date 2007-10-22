@@ -285,6 +285,7 @@ SPAN.toolbarButton:active
 { margin: auto; }
 
 /* popups */
+
 .menu
 { visibility: hidden;
   position: absolute;
@@ -327,6 +328,20 @@ SPAN.toolbarButton:active
   padding-right: .2em;
   vertical-align: middle; }
 
+/* popup menu with check marks */
+UL.choiceMenu LI
+{ list-style-position: inside;
+  list-style-image: url("menu-nocheck.gif");
+  padding: 3px 3px;
+  margin: 0px;
+  padding-right: 10px; }
+
+UL.choiceMenu LI._chosen
+{ list-style-image: url("menu-check.gif"); }
+
+UL.choiceMenu LI._chosen:hover
+{ list-style-image: url("menu-check-hover.gif"); }
+
 .menu LI:hover, .menu LI.submenu-selected
 { background-color: #4b6983;
   color: #fff; }
@@ -351,19 +366,6 @@ SPAN.toolbarButton:active
 
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('submenu-active.gif') !important; }
-
-/* live search popup menu */
-UL#searchOptions LI
-{ list-style-position: inside;
-  list-style-image: url("menu-nocheck.gif");
-  padding: 1px 3px;
-  margin: 0px; }
-
-UL#searchOptions LI._chosen
-{ list-style-image: url("menu-check.gif"); }
-
-UL#searchOptions LI._chosen:hover
-{ list-style-image: url("menu-check-hover.gif"); }
 
 DIV#logConsole
 { position: absolute;

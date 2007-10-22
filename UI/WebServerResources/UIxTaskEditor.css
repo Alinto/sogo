@@ -13,16 +13,6 @@ DIV.appointmentRightLabel
 { display: inline;
   vertical-align: middle; }
 
-#privacy-menu LI
-{ list-style-position: inside;
-  list-style-image: url("menu-nocheck.gif"); }
-
-#privacy-menu LI._chosen
-{ list-style-image: url("menu-check.gif"); }
-
-#privacy-menu LI._chosen:hover
-{ list-style-image: url("menu-check-hover.gif"); }
-
 LABEL, SPAN.checkBoxList
 { display: block;
   position: relative;
