@@ -6,7 +6,7 @@
     xmlns:label="OGo:label"
     >
     <div class="menu" id="searchMenu">
-      <ul id="searchOptions">
+      <ul id="searchOptions" class="choiceMenu">
         <li id="name_or_address"><var:string
 	    label:value="Name or Email"/></li>
       </ul>
