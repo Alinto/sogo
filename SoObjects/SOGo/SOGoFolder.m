@@ -259,22 +259,23 @@ static NSString *defaultUserID = @"<default>";
 
 - (void) sendFolderAdvisoryTemplate: (NSString *) template
 {
-  NSString *language, *pageName;
+  NSString *pageName;
   SOGoUser *user;
   SOGoFolderAdvisory *page;
-  WOApplication *app;
 
-  user = [SOGoUser userWithLogin: [[context activeUser] login] roles: nil];
-  language = [user language];
+  user = [context activeUser];
   pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
-		       language, template];
+		       [user language], template];
 
-  app = [WOApplication application];
-  page = [app pageWithName: pageName inContext: context];
+  page = [[WOApplication application] pageWithName: pageName
+				      inContext: context];
   [page setFolderObject: self];
-  [page setRecipientUID: [[context activeUser] login]];
+  [page setRecipientUID: [user login]];
   [page send];
 }
+
+
+//   if (!result) [self sendFolderAdvisoryTemplate: @"Addition"];
 
 - (BOOL) create
 {
@@ -283,8 +284,6 @@ static NSString *defaultUserID = @"<default>";
   result = [[self folderManager] createFolderOfType: [self folderType]
 				 withName: displayName
                                  atPath: ocsPath];
-
-  if (!result) [self sendFolderAdvisoryTemplate: @"Addition"];
 
   return (result == nil);
 }
@@ -302,10 +301,10 @@ static NSString *defaultUserID = @"<default>";
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
-  if (!error) [self sendFolderAdvisoryTemplate: @"Removal"];
-
   return error;
 }
+
+//   if (!error) [self sendFolderAdvisoryTemplate: @"Removal"];
 
 - (void) renameTo: (NSString *) newName
 {
