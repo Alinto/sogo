@@ -126,15 +126,16 @@ function validateEditorInput(sender) {
    
    field = document.pageform.subject;
    if (field.value == "")
-      errortext = errortext + labels.error_missingsubject + "\n";
+      errortext = errortext + labels["error_missingsubject"] + "\n";
 
    if (!UIxRecipientSelectorHasRecipients())
-      errortext = errortext + labels.error_missingrecipients + "\n";
+      errortext = errortext + labels["error_missingrecipients"] + "\n";
    
    if (errortext.length > 0) {
-      alert(labels.error_validationfailed + ":\n" + errortext);
+      alert(labels["error_validationfailed"] + ":\n" + errortext);
       return false;
    }
+
    return true;
 }
 
@@ -337,7 +338,7 @@ function onMailEditorClose(event) {
     http.open("POST", url, false /* not async */);
     http.send("");
   }
-  
+
   Event.stopObserving(window, "beforeunload", onMailEditorClose);
 }
 
