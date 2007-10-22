@@ -43,25 +43,29 @@
   NSDictionary *mailboxACL;
 }
 
+- (NSString *) absoluteImap4Name;
+
 /* messages */
 
-- (NSArray *)fetchUIDsMatchingQualifier:(id)_q sortOrdering:(id)_so;
-- (NSArray *)fetchUIDs:(NSArray *)_uids parts:(NSArray *)_parts;
+- (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
+- (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
 
-- (NSException *)postData:(NSData *)_data flags:(id)_flags;
+- (NSException *) postData: (NSData *) _data flags: (id) _flags;
 
-- (NSException *)expunge;
+- (NSException *) expunge;
 
 /* flags */
 
-- (NSException *)addFlagsToAllMessages:(id)_f;
+- (NSException *) addFlagsToAllMessages: (id) _f;
 
 /* folder type */
 
-- (NSString *)outlookFolderClass;
+- (NSString *) outlookFolderClass;
 
 - (NSArray *) subfolders;
-- (NSArray *) subfoldersURL;
+
+- (NSArray *) allFolderPaths;
+- (NSArray *) allFolderURLs;
 
 @end
 

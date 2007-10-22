@@ -1,5 +1,11 @@
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-allFolderPaths]): new method that returns all the paths of all
+	the subfolders of the folder object.
+	([SOGoMailFolder -allFolderURLs]): new method replacing
+	subfoldersURL.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-aclsForUser:uid]): object inherits the 'SOGoRole_ObjectEditor'
 	role from its parent folder.
