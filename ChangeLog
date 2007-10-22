@@ -1,5 +1,9 @@
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -commonLocalizableStrings])
+	([UIxPageFrame -productLocalizableStrings]): invoke the new
+	+[SOGoUser language] method if the user is nil.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +language]): new method
 	that returns any generically-found language.
 	([SoUser -language]): modified to call the above.

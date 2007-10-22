@@ -179,6 +179,9 @@
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
   language = [[context activeUser] language];
+  if (!language)
+    language = [SOGoUser language];
+
   table
     = [[self resourceManager] stringTableWithName: @"Localizable"
 			      inFramework: frameworkName
