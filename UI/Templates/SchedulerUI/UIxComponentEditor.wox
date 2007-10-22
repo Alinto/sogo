@@ -19,7 +19,7 @@
   </script>
 
   <div class="menu" id="privacy-menu">
-    <ul id="itemPrivacyList">
+    <ul id="itemPrivacyList" class="choiceMenu">
       <var:foreach list="privacyClasses" item="item">
 	<li var:classification="item"><var:string
 	    var:value="itemPrivacyText" /></li>
