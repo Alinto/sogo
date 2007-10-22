@@ -185,6 +185,7 @@ static BOOL useAltNamespace = NO;
   rawFolders = [[self imap4Connection]
 		 allFoldersForURL: [self imap4URL]];
 
+#warning FIXME: the folder names should be prefixed
   mainFolders = [NSArray arrayWithObjects: inboxFolderName, draftsFolderName,
 			 sentFolder, trashFolder, nil];
   newFolders = [NSMutableArray arrayWithArray: rawFolders];
