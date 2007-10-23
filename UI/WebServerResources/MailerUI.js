@@ -1551,7 +1551,9 @@ function getMenus() {
   menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria,
 				  setSearchCriteria, setSearchCriteria,
 				  setSearchCriteria);
-  $("label-menu").prepareVisibility = onLabelMenuPrepareVisibility;
+  var labelMenu = $("label-menu");
+  if (labelMenu)
+    labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
 
   return menus;
 }
