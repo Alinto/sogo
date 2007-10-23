@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
 #import "NSArray+Utilities.h"
@@ -38,8 +39,11 @@
   currentObject = [objects nextObject];
   while (currentObject)
     {
-      [formattedStrings
-        addObject: [NSString stringWithFormat: format, currentObject]];
+      if ([currentObject isKindOfClass: [NSNull class]])
+	[formattedStrings addObject: @""];
+      else
+	[formattedStrings
+	  addObject: [NSString stringWithFormat: format, currentObject]];
       currentObject = [objects nextObject];
     }
 

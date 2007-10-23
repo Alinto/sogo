@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
 #import "NSArray+Utilities.h"
@@ -89,8 +90,12 @@
   for (count = 0; count < max; count++)
     {
       value = [self objectForKey: [allKeys objectAtIndex: count]];
-      [keysWithFormat replaceString: [keys objectAtIndex: count]
-		      withString: [value description]];
+      if ([value isKindOfClass: [NSNull class]])
+	[keysWithFormat replaceString: [keys objectAtIndex: count]
+			withString: @""];
+      else
+	[keysWithFormat replaceString: [keys objectAtIndex: count]
+			withString: [value description]];
     }
 
   return keysWithFormat;

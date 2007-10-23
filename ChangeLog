@@ -1,5 +1,13 @@
 2007-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m
+	([NSArray -stringsWithFormat:format]): replace instances of NSNull
+	with empty strings.
+
+	* SoObjects/SOGo/NSDictionary+Utilities.m ([NSDictionary
+	-keysWithFormat:keyFormat]): replace instances of NSNull with
+	empty strings.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m: if "displayName" is
 	empty, use "c_cn" instead.
 
