@@ -1377,7 +1377,7 @@ function onMenuModify(event) {
   if (UserLogin == selected.getAttribute("owner")) {
     var node = selected.childNodes[4];
     var currentName = node.nodeValue.trim();
-    var newName = window.prompt(labels["Address Book Name"],
+    var newName = window.prompt(labels["Name of the Calendar"],
 				currentName);
     if (newName && newName.length > 0
 	&& newName != currentName) {
