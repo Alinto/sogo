@@ -369,7 +369,7 @@
 
   calendar = [[self clientObject] container];
   
-  return calendar;
+  return [calendar nameInContainer];
 }
 
 /* priorities */
