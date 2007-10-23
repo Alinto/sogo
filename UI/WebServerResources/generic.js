@@ -27,7 +27,6 @@ var logWindow = null;
 
 var queryParameters;
 
-var activeAjaxRequests = 0;
 var menus = new Array();
 var search = {};
 var sorting = {};
@@ -41,6 +40,10 @@ var allDocumentElements = null;
 
 var userDefaults = null;
 var userSettings = null;
+
+// Ajax requests counts
+var activeAjaxRequests = 0;
+var removeFolderRequestCount = 0;
 
 /* a W3C compliant document.all */
 function getAllScopeElements(scope) {
@@ -1029,19 +1032,18 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 							  rfCbData);
   }
   else
-    refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]
-					);
+    refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
 }
 
 function folderUnsubscriptionCallback(http) {
   if (http.readyState == 4) {
+    removeFolderRequestCount--;
     if (isHttpStatus204(http.status)) {
       if (http.callbackData)
 	http.callbackData["method"](http.callbackData["data"]);
     }
     else
       window.alert(clabels["Unable to unsubscribe from that folder!"]);
-    document.unsubscriptionAjaxRequest = null;
   }
 }
 
@@ -1051,19 +1053,16 @@ function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
 					refreshCallbackData);
   }
   else {
-    var folderData = folder.split("+");
+    var folderData = folder.split("_");
     var username = folderData[0];
     var folderPath = folderData[1];
+    if (username.startsWith('/'))
+      username = username.substring(1);
     if (username != UserLogin) {
       var url = (ApplicationBaseURL + folder + "/unsubscribe");
-      if (document.unsubscriptionAjaxRequest) {
-	document.unsubscriptionAjaxRequest.aborted = true;
-	document.unsubscriptionAjaxRequest.abort();
-      }
+      removeFolderRequestCount++;
       var rfCbData = { method: refreshCallback, data: refreshCallbackData };
-      document.unsubscriptionAjaxRequest
-	= triggerAjaxRequest(url, folderUnsubscriptionCallback,
-			     rfCbData);
+      triggerAjaxRequest(url, folderUnsubscriptionCallback, rfCbData);
     }
     else
       window.alert(clabels["You cannot unsubscribe from a folder that you own!"]);
@@ -1082,6 +1081,17 @@ function accessToSubscribedFolder(serverFolder) {
     folder = serverFolder;
   
   return folder;
+}
+
+function getSubscribedFolderOwner(serverFolder) {
+  var owner;
+  
+  var parts = serverFolder.split(":");
+  if (parts.length > 1) {
+    owner = parts[0];
+  }
+  
+  return owner;
 }
 
 function listRowMouseDownHandler(event) {
@@ -1414,7 +1424,7 @@ function createFolderCallback(http) {
     var data = http.callbackData;
     if (http.status == 201) {
       if (data.okCB)
-	data.okCB(data.name, "/" + http.responseText);
+	data.okCB(data.name, "/" + http.responseText, UserLogin);
     }
     else {
       if (data.notOkCB)

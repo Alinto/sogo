@@ -1410,15 +1410,22 @@ function onCalendarAdd(event) {
   preventDefault(event);
 }
 
-function appendCalendar(folderName, folder) {
-  if (folder)
-    folder = accessToSubscribedFolder(folder);
+function appendCalendar(folderName, folderPath) {
+  var owner;
+
+  if (folderPath) {
+    owner = getSubscribedFolderOwner(folderPath);
+    folderPath = accessToSubscribedFolder(folderPath);
+  }
   else
-    folder = "/" + folderName;
+    folderPath = "/" + folderName;
 
-//   log ("append: " + folderName + "; folder: " + folder);
+  if (!owner)
+    owner = UserLogin;
 
-  if ($(folder))
+  //log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
+
+  if ($(folderPath))
     window.alert(clabels["You have already subscribed to that folder!"]);
   else {
     var calendarList = $("calendarList");
@@ -1427,8 +1434,34 @@ function appendCalendar(folderName, folder) {
     //log ("color: " + color);
 
     var li = document.createElement("li");
-    calendarList.appendChild(li);
-    li.setAttribute("id", folder);
+    
+    // Add the calendar to the proper place
+    for (var i = 0; i < lis.length; i++) {
+      var currentFolderName = lis[i].lastChild.nodeValue.strip();
+      if (lis[i].readAttribute('owner') != owner)
+	continue;
+      if (currentFolderName > folderName)
+	break;
+    }
+    if (i != lis.length) { // User is subscribed to other calendars of the same owner
+      calendarList.insertBefore(li, lis[i]);
+    }
+    else {
+      for (var i = 0; i < lis.length; i++) {
+	if (lis[i].readAttribute('owner') == UserLogin)
+	  continue;
+	if (lis[i].readAttribute('owner') > owner) {
+	  calendarList.insertBefore(li, lis[i]);
+	  break;
+	}
+      }
+      if (i == lis.length) {
+	calendarList.appendChild(li);
+      }
+    }
+
+    li.setAttribute("id", folderPath);
+    li.setAttribute("owner", owner);
 
     var checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
@@ -1453,20 +1486,21 @@ function appendCalendar(folderName, folder) {
     Event.observe(checkBox, "click",
 		  updateCalendarStatus.bindAsEventListener(checkBox));
 
-    var url = URLForFolderID(folder) + "/canAccessContent";
-    triggerAjaxRequest(url, calendarEntryCallback, folder);
+    var url = URLForFolderID(folderPath) + "/canAccessContent";
+    triggerAjaxRequest(url, calendarEntryCallback, folderPath);
     
+    // Update CSS for events color
     if (!document.styleSheets) return;
     var theRules = new Array();
     var lastSheet = document.styleSheets[document.styleSheets.length - 1];
     if (lastSheet.insertRule) { // Mozilla
-      lastSheet.insertRule('.calendarFolder' + folder.substr(1) + ' {'
+      lastSheet.insertRule('.calendarFolder' + folderPath.substr(1) + ' {'
 			   + ' background-color: '
 			   + color
 			   + ' !important; }', 0);
     }
     else { // IE
-      lastSheet.addRule('.calendarFolder' + folder.substr(1),
+      lastSheet.addRule('.calendarFolder' + folderPath.substr(1),
 			' background-color: '
 			+ color
 			+ ' !important; }');
@@ -1483,26 +1517,30 @@ function onFolderSubscribeCB(folderData) {
 function onFolderUnsubscribeCB(folderId) {
   var node = $(folderId);
   node.parentNode.removeChild(node);
-  refreshEvents();
-  refreshTasks();
-  changeCalendarDisplay();
+  if (removeFolderRequestCount == 0) {
+    refreshEvents();
+    refreshTasks();
+    changeCalendarDisplay();
+  }
 }
 
 function onCalendarRemove(event) {
-  var nodes = $("calendarList").getSelectedNodes();
-  if (nodes.length > 0) { 
-     nodes[0].deselect();
-     var folderId = nodes[0].getAttribute("id");
-     var folderIdElements = folderId.split("_");
-     if (folderIdElements.length > 1) {
-       unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
-     }
-     else {
-       var calId = folderIdElements[0].substr(1);
-       deletePersonalCalendar(calId);
-     }
+  if (removeFolderRequestCount == 0) {
+    var nodes = $("calendarList").getSelectedNodes();
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].deselect();
+      var folderId = nodes[i].getAttribute("id");
+      var folderIdElements = folderId.split("_");
+      if (folderIdElements.length > 1) {
+	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+      }
+      else {
+	var calId = folderIdElements[0].substr(1);
+	deletePersonalCalendar(calId);
+      }
+    }
   }
-
+  
   preventDefault(event);
 }
 
@@ -1510,13 +1548,9 @@ function deletePersonalCalendar(folderId) {
   var label
     = labels["Are you sure you want to delete the selected calendar?"];
   if (window.confirm(label)) {
-    if (document.deletePersonalCalendarAjaxRequest) {
-      document.deletePersonalCalendarAjaxRequest.aborted = true;
-      document.deletePersonalCalendarAjaxRequest.abort();
-    }
+    removeFolderRequestCount++;
     var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";
-    document.deletePersonalCalendarAjaxRequest
-      = triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
+    triggerAjaxRequest(url, deletePersonalCalendarCallback, folderId);
   }
 }
 
@@ -1536,11 +1570,13 @@ function deletePersonalCalendarCallback(http) {
 	else
 	  i++;
       }
-      refreshEvents();
-      refreshTasks();
-      changeCalendarDisplay();
+      removeFolderRequestCount--;
+      if (removeFolderRequestCount == 0) {
+	refreshEvents();
+	refreshTasks();
+	changeCalendarDisplay();
+      }
     }
-    document.deletePersonalCalendarAjaxRequest = null;
   }
   else
     log ("ajax problem 5: " + http.status);
