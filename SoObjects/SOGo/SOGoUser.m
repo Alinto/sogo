@@ -336,9 +336,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) language
 {
-  NSArray *bLanguages;
-  WOContext *context;
-
   if (!language)
     {
       language = [[self userDefaults] stringForKey: @"Language"];
