@@ -115,7 +115,66 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSString *_parseBodyString(NGImap4ResponseParser *self,
                                    BOOL _convertString);
  static NSString *_parseBodyDecodeString(NGImap4ResponseParser *self,
-@@ -1627,6 +1629,29 @@
+@@ -111,6 +113,7 @@
+ static NSNumber *_parseUnsigned(NGImap4ResponseParser *self);
+ static NSString *_parseUntil(NGImap4ResponseParser *self, char _c);
+ static NSString *_parseUntil2(NGImap4ResponseParser *self, char _c1, char _c2);
++static BOOL _endsWithCQuote(NSString *_string);
+ 
+ static __inline__ NSException *_consumeIfMatch
+   (NGImap4ResponseParser *self, unsigned char _m);
+@@ -649,12 +652,31 @@
+ }
+ 
+ - (NSString *)_parseQuotedString {
++  NSMutableString *quotedString;
++  NSString *tmpString;
++  BOOL stop;
++
+   /* parse a quoted string, eg '"' */
+   if (_la(self, 0) == '"') {
+     _consume(self, 1);
+-    return _parseUntil(self, '"');
++    quotedString = [NSMutableString string];
++    stop = NO;
++    while (!stop) {
++      tmpString = _parseUntil(self, '"');
++      [quotedString appendString: tmpString];
++      if(_endsWithCQuote(tmpString)) {
++	[quotedString deleteSuffix: @"\\"];
++	[quotedString appendString: @"\""];
++      }
++      else {
++	stop = YES;
++      }
++    }
+   }
+-  return nil;
++  else {
++    quotedString = nil;
++  }
++  return quotedString;
+ }
+ - (void)_consumeOptionalSpace {
+   if (_la(self, 0) == ' ') _consume(self, 1);
+@@ -1185,7 +1207,7 @@
+   route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+   mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+   host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+-  
++
+   if (_la(self, 0) != ')') {
+     [self logWithFormat:@"WARNING: IMAP4 envelope "
+ 	    @"address not properly closed (c0=%c,c1=%c): %@",
+@@ -1197,6 +1219,7 @@
+   address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
+ 					    sourceRoute:route mailbox:mailbox
+ 					    host:host];
++
+   return address;
+ }
+ 
+@@ -1627,6 +1650,29 @@
    return _parseBodyDecodeString(self, _convertString, NO /* no decode */);
  }
  
@@ -145,7 +204,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1734,10 +1759,11 @@
+@@ -1734,10 +1780,11 @@
  		      *encoding, *bodysize;
    NSDictionary        *parameterList;
    NSMutableDictionary *dict;
@@ -158,7 +217,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,7 +1788,8 @@
+@@ -1762,7 +1809,8 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -168,7 +227,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      if (_la(self, 0) != ')') {
        _consumeIfMatch(self, ' ');
        _consumeIfMatch(self, '(');
-@@ -1805,14 +1832,9 @@
+@@ -1805,14 +1853,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -186,7 +245,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +1851,7 @@
+@@ -1829,6 +1872,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -194,7 +253,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +1877,9 @@
+@@ -1854,14 +1898,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -212,6 +271,28 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
+@@ -2170,6 +2209,21 @@
+   }
+ }
+ 
++static BOOL _endsWithCQuote(NSString *_string){
++  unsigned int quoteSlashes;
++  int pos;
++
++  quoteSlashes = 0;
++  pos = [_string length] - 1;
++  while (pos > -1
++	 && [_string characterAtIndex: pos] == '\\') {
++    quoteSlashes++;
++    pos--;
++  }
++
++  return ((quoteSlashes % 2) == 1);
++}
++
+ - (NSException *)exceptionForFailedMatch:(unsigned char)_match
+   got:(unsigned char)_avail
+ {
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1546)
