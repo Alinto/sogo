@@ -162,9 +162,10 @@
 
       data = [oldRecord objectForKey: @"displayName"];
       if (!data)
+	data = [oldRecord objectForKey: @"c_cn"];
+      if (!data)
 	data = @"";
-      [newRecord setObject: data
-		 forKey: @"displayName"];
+      [newRecord setObject: data forKey: @"displayName"];
 
       data = [oldRecord objectForKey: @"mail"];
       if (!data)

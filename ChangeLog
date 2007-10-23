@@ -1,5 +1,8 @@
 2007-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m: if "displayName" is
+	empty, use "c_cn" instead.
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderInContext:_ctx])
 	([SOGoMailAccount -draftsFolderInContext:_ctx])
 	([SOGoMailAccount -sentFolderInContext:_ctx]): no longer make use
