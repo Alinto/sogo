@@ -50,15 +50,12 @@ static NSString *sentFolderName = nil;
 static NSString *trashFolderName = nil;
 static NSString *sharedFolderName = @""; // TODO: add English default
 static NSString *otherUsersFolderName = @""; // TODO: add English default
-static BOOL useAltNamespace = NO;
 
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *cfgDraftsFolderName;
 
-  useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
-  
   sharedFolderName = [ud stringForKey:@"SOGoSharedFolderName"];
   otherUsersFolderName = [ud stringForKey:@"SOGoOtherUsersFolderName"];
   cfgDraftsFolderName = [ud stringForKey:@"SOGoDraftsFolderName"];
@@ -406,21 +403,16 @@ static BOOL useAltNamespace = NO;
 
 - (SOGoDraftsFolder *) draftsFolderInContext: (id) _ctx
 {
-  SOGoMailFolder *lookupFolder;
   // TODO: use some profile to determine real location, use a -traverse lookup
 
   if (!draftsFolder)
     {
-      lookupFolder = (useAltNamespace
-		      ? (id) self
-		      : [self inboxFolderInContext:_ctx]);
-      if (![lookupFolder isKindOfClass: [NSException class]])
-	draftsFolder
-	  = [lookupFolder lookupName: [self draftsFolderNameInContext:_ctx]
-			  inContext: _ctx acquire: NO];
-      if (![draftsFolder isNotNull])
-	draftsFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-				    reason: @"did not find Drafts folder!"];
+      draftsFolder
+	= [self lookupName: [self draftsFolderNameInContext:_ctx]
+		inContext: _ctx acquire: NO];
+//       if (![draftsFolder isNotNull])
+// 	draftsFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+// 				    reason: @"did not find Drafts folder!"];
       [draftsFolder retain];
     }
 
@@ -429,20 +421,15 @@ static BOOL useAltNamespace = NO;
 
 - (SOGoMailFolder *) sentFolderInContext: (id) _ctx
 {
-  SOGoMailFolder *lookupFolder;
   // TODO: use some profile to determine real location, use a -traverse lookup
 
   if (!sentFolder)
     {
-      lookupFolder = (useAltNamespace
-		      ? (id) self
-		      : [self inboxFolderInContext:_ctx]);
-      if (![lookupFolder isKindOfClass: [NSException class]])
-	sentFolder = [lookupFolder lookupName: [self sentFolderNameInContext:_ctx]
-				   inContext: _ctx acquire: NO];
-      if (![sentFolder isNotNull])
-	sentFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-				  reason: @"did not find Sent folder!"];
+      sentFolder = [self lookupName: [self sentFolderNameInContext:_ctx]
+			 inContext: _ctx acquire: NO];
+//       if (![sentFolder isNotNull])
+// 	sentFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+// 				  reason: @"did not find Sent folder!"];
       [sentFolder retain];
     }
 
@@ -451,20 +438,13 @@ static BOOL useAltNamespace = NO;
 
 - (SOGoMailFolder *) trashFolderInContext: (id) _ctx
 {
-  SOGoMailFolder *lookupFolder;
-  // TODO: use some profile to determine real location, use a -traverse lookup
-
   if (!trashFolder)
     {
-      lookupFolder = (useAltNamespace
-		      ? (id) self
-		      : [self inboxFolderInContext:_ctx]);
-      if (![lookupFolder isKindOfClass: [NSException class]])
-	trashFolder = [lookupFolder lookupName: [self trashFolderNameInContext: _ctx]
- 				    inContext: _ctx acquire: NO];
-      if (![trashFolder isNotNull])
-	trashFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-				  reason: @"did not find Trash folder!"];
+      trashFolder = [self lookupName: [self trashFolderNameInContext: _ctx]
+			  inContext: _ctx acquire: NO];
+//       if (![trashFolder isNotNull])
+// 	trashFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
+// 				  reason: @"did not find Trash folder!"];
       [trashFolder retain];
     }
 

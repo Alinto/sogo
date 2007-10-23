@@ -43,15 +43,6 @@ static NSString *defaultUserID =  @"anyone";
 
 @implementation SOGoMailFolder
 
-static BOOL useAltNamespace = NO;
-
-+ (void) initialize
-{
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-
-  useAltNamespace = [ud boolForKey:@"SOGoSpecialFoldersInRoot"];
-}
-
 - (void) _adjustOwner
 {
   SOGoMailAccount *mailAccount;

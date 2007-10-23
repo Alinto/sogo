@@ -1,3 +1,12 @@
+2007-10-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount -inboxFolderInContext:_ctx])
+	([SOGoMailAccount -draftsFolderInContext:_ctx])
+	([SOGoMailAccount -sentFolderInContext:_ctx]): no longer make use
+	of the "SOGoSpecialFoldersInRoot" user defaults. The folders will
+	no always be specified from the root instead of sometimes from the
+	INBOX.
+
 2007-10-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -commonLocalizableStrings])
