@@ -624,7 +624,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   unsigned int count, max, done;
   NSMutableString *newUID;
 
-  newUID = [NSMutableString string];
+  newUID = [NSMutableString stringWithString: @"sogo"];
   now = [NSDate date];
 
   max = [_uid length];
