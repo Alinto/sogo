@@ -10,6 +10,8 @@
     <var:foreach list="calendars" item="currentCalendar">
 .calendarFolder<var:string value="currentCalendar.folder" />
 { background-color: <var:string value="currentCalendar.color" /> !important; }
+div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
+{ color: <var:string value="currentCalendar.color" /> !important; }
     </var:foreach>
   </style>
   <div id="calendarSelector">
@@ -34,7 +36,7 @@
 	  <input type="checkbox" class="checkBox"
 	    const:disabled="disabled"
 	    var:checked="currentCalendar.active" />
-	  <div class="colorBox" var:style="currentCalendarStyle">OO</div>
+	  <div var:class="currentCalendarClass">OO</div>
 	  <var:string value="currentCalendar.displayName"
 	    /></li>
       </var:foreach>

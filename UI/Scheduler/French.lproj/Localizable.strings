@@ -377,8 +377,8 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
 "taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
 
-"Are you sure you want to delete the selected calendar?"
-= "Voulez-vous vraiment supprimer l'agenda sélectionné ?";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Voulez-vous vraiment supprimer l'agenda «%{0}»?";
 
 /* Legend */
 "Required participant" = "Participant obligatoire";

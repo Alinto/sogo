@@ -148,6 +148,12 @@ colorForNumber (unsigned int number)
   return currentCalendar;
 }
 
+- (NSString *) currentCalendarClass
+{
+  return [currentCalendar
+	   keysWithFormat: @"colorBox calendarFolder%{folder}"];
+}
+
 - (NSString *) currentCalendarStyle
 {
   return [currentCalendar

@@ -1041,7 +1041,7 @@ function onSearchFormSubmit() {
 
 function onCalendarSelectEvent() {
   var list = $("eventsList");
-  list.tBodies[0].deselectAll();
+  $(list.tBodies[0]).deselectAll();
 
   if (selectedCalendarCell)
      for (var i = 0; i < selectedCalendarCell.length; i++)
@@ -1436,30 +1436,24 @@ function appendCalendar(folderName, folderPath) {
     var li = document.createElement("li");
     
     // Add the calendar to the proper place
-    for (var i = 0; i < lis.length; i++) {
+    var previousOwner = null;
+    for (var i = 1; i < lis.length; i++) {
       var currentFolderName = lis[i].lastChild.nodeValue.strip();
-      if (lis[i].readAttribute('owner') != owner)
-	continue;
-      if (currentFolderName > folderName)
+      var currentOwner = lis[i].readAttribute('owner');
+      if (currentOwner == owner) {
+	previousOwner = currentOwner;
+	if (currentFolderName > folderName)
+	  break;
+      }
+      else if (previousOwner || 
+	       (currentOwner != UserLogin && currentOwner > owner))
 	break;
     }
-    if (i != lis.length) { // User is subscribed to other calendars of the same owner
+    if (i != lis.length) // User is subscribed to other calendars of the same owner
       calendarList.insertBefore(li, lis[i]);
-    }
-    else {
-      for (var i = 0; i < lis.length; i++) {
-	if (lis[i].readAttribute('owner') == UserLogin)
-	  continue;
-	if (lis[i].readAttribute('owner') > owner) {
-	  calendarList.insertBefore(li, lis[i]);
-	  break;
-	}
-      }
-      if (i == lis.length) {
-	calendarList.appendChild(li);
-      }
-    }
-
+    else 
+      calendarList.appendChild(li);
+    
     li.setAttribute("id", folderPath);
     li.setAttribute("owner", owner);
 
@@ -1475,9 +1469,7 @@ function appendCalendar(folderName, folderPath) {
     colorBox.appendChild(document.createTextNode("OO"));
 
     $(colorBox).addClassName("colorBox");
-    if (color)
-      $(colorBox).setStyle({color: color,
-			    backgroundColor: color});
+    $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
 
     // Register events (doesn't work with Safari)
     Event.observe(li, "mousedown",  listRowMouseDownHandler);
@@ -1498,10 +1490,18 @@ function appendCalendar(folderName, folderPath) {
 			   + ' background-color: '
 			   + color
 			   + ' !important; }', 0);
+      lastSheet.insertRule('div.colorBox.calendarFolder' + folderPath.substr(1) + ' {'
+			   + ' color: '
+			   + color
+			   + ' !important; }', 0);
     }
     else { // IE
       lastSheet.addRule('.calendarFolder' + folderPath.substr(1),
 			' background-color: '
+			+ color
+			+ ' !important; }');
+      lastSheet.addRule('div.colorBox.calendarFolder' + folderPath.substr(1),
+			' color: '
 			+ color
 			+ ' !important; }');
     }
@@ -1534,19 +1534,18 @@ function onCalendarRemove(event) {
       if (folderIdElements.length > 1) {
 	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
       }
-      else {
-	var calId = folderIdElements[0].substr(1);
-	deletePersonalCalendar(calId);
-      }
+      else
+	deletePersonalCalendar(folderIdElements[0]);
     }
   }
   
   preventDefault(event);
 }
 
-function deletePersonalCalendar(folderId) {
+function deletePersonalCalendar(folderElement) {
+  var folderId = folderElement.substr(1);
   var label
-    = labels["Are you sure you want to delete the selected calendar?"];
+    = labels["Are you sure you want to delete the calendar \"%{0}\"?"].formatted($(folderElement).lastChild.nodeValue.strip());
   if (window.confirm(label)) {
     removeFolderRequestCount++;
     var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";

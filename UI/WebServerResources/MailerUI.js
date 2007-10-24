@@ -16,6 +16,8 @@ var usersRightsWindowWidth = 400;
 
 var pageContent;
 
+var deleteMessageRequestCount = 0;
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
@@ -203,47 +205,45 @@ function ml_lowlight(sender) {
 
 /* bulk delete of messages */
 
-function uixDeleteSelectedMessages(sender) {
-  var failCount = 0;
-   
+function deleteSelectedMessages(sender) {
   var messageList = $("messageList");
   var rowIds = messageList.getSelectedRowsId();
 
   for (var i = 0; i < rowIds.length; i++) {
     var url, http;
     var rowId = rowIds[i].substr(4);
-    /* send AJAX request (synchronously) */
-
     var messageId = currentMailbox + "/" + rowId;
     url = ApplicationBaseURL + messageId + "/trash";
-    http = createHTTPClient();
-    http.open("POST", url, false /* not async */);
-    http.url = url;
-    http.send("");
-    if (!isHttpStatus204(http.status)) { /* request failed */
-      failCount++;
-      http = null;
-      continue;
-    } else {
-      deleteCachedMessage(messageId);
-      if (currentMessages[currentMailbox] == rowId) {
-	var div = $('messageContent');
-	div.update();
-	currentMessages[currentMailbox] = null;
-      }
-    }
-    http = null;
-    
-    /* remove from page */
-    /* line-through would be nicer, but hiding is OK too */
-    var row = $(rowIds[i]);
-    row.parentNode.removeChild(row);
+    deleteMessageRequestCount++;
+    var data = { "id": rowId, "mailbox": currentMailbox, "messageId": messageId };
+    triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
   }
 
-  if (failCount > 0)
-    alert("Could not delete " + failCount + " messages!");
-   
   return false;
+}
+
+function deleteSelectedMessagesCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var data = http.callbackData;
+      deleteCachedMessage(data["messageId"]);
+      if (currentMailbox == data["mailbox"]) {
+	
+	var div = $('messageContent');
+	if (currentMessages[currentMailbox] == data["id"]) {
+	  div.update();
+	  currentMessages[currentMailbox] = null;	
+	}
+
+	var row = $("row_" + data["id"]);
+	row.parentNode.removeChild(row);
+
+	deleteMessageRequestCount--;
+      }
+    }
+  }
+  else
+    log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
 }
 
 function moveMessages(rowIds, folder) {
@@ -285,7 +285,7 @@ function moveMessages(rowIds, folder) {
 }
 
 function onMenuDeleteMessage(event) {
-  uixDeleteSelectedMessages();
+  deleteSelectedMessages();
   preventDefault(event);
 }
 
