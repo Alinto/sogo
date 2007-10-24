@@ -36,8 +36,8 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
 	  <input type="checkbox" class="checkBox"
 	    const:disabled="disabled"
 	    var:checked="currentCalendar.active" />
-	  <div var:class="currentCalendarClass">OO</div>
-	  <var:string value="currentCalendar.displayName"
+	  <div var:class="currentCalendarClass">OO</div
+	  ><var:string value="currentCalendar.displayName"
 	    /></li>
       </var:foreach>
     </ul>

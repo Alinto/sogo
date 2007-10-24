@@ -48,6 +48,7 @@ DIV.colorBox
   border: 1px solid #333;
   font-weight: normal; 
   margin: 0px;
+  margin-right: 3px;
   font-size: 80%;
   width: 1em;
   height: .75em; }

@@ -1465,7 +1465,7 @@ function appendCalendar(folderName, folderPath) {
 
     var colorBox = document.createElement("div");
     li.appendChild(colorBox);
-    li.appendChild(document.createTextNode(" " + folderName));
+    li.appendChild(document.createTextNode(folderName));
     colorBox.appendChild(document.createTextNode("OO"));
 
     $(colorBox).addClassName("colorBox");
