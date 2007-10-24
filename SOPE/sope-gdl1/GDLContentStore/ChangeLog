@@ -1,3 +1,9 @@
+2007-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolderManager.m ([GCSFolderManager -baseTableNameWithUID:]):
+	prefix the table names with "sogo" to avoid problems with
+	digits-only identifiers.
+
 2007-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderManager.m ([GCSFolderManager -baseTableNameWithUID:]):
