@@ -619,7 +619,6 @@ function getParentMenu(node) {
 }
 
 function onBodyClickMenuHandler(event) {
-  document.menuTarget = null;
   hideMenu(document.currentPopupMenu);
   Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
