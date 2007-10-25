@@ -16,7 +16,7 @@ function onContactAdd() {
   w.focus();
 
   return false;
- }
+}
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   if (!mailIsRecipient(contactEmail)) {
@@ -121,37 +121,41 @@ function updateInlineAttachmentList(sender, attachments) {
 /* mail editor */
 
 function validateEditorInput(sender) {
-   var errortext = "";
-   var field;
+  var errortext = "";
+  var field;
    
-   field = document.pageform.subject;
-   if (field.value == "")
-      errortext = errortext + labels["error_missingsubject"] + "\n";
+  field = document.pageform.subject;
+  if (field.value == "")
+    errortext = errortext + labels["error_missingsubject"] + "\n";
 
-   if (!UIxRecipientSelectorHasRecipients())
-      errortext = errortext + labels["error_missingrecipients"] + "\n";
+  if (!UIxRecipientSelectorHasRecipients())
+    errortext = errortext + labels["error_missingrecipients"] + "\n";
    
-   if (errortext.length > 0) {
-      alert(labels["error_validationfailed"] + ":\n" + errortext);
-      return false;
-   }
+  if (errortext.length > 0) {
+    alert(labels["error_validationfailed"] + ":\n" + errortext);
+    return false;
+  }
 
-   return true;
+  return true;
 }
 
 function clickedEditorSend(sender) {
-   if (!validateEditorInput(sender))
-      return false;
+  if (!validateEditorInput(sender))
+    return false;
 
-   var input = currentAttachmentInput();
-   if (input)
-     input.parentNode.removeChild(input);
+  var input = currentAttachmentInput();
+  if (input)
+    input.parentNode.removeChild(input);
+
+  var toolbar = document.getElementById("toolbar");
+  if (!document.busyAnim)
+    document.busyAnim = startAnimation(toolbar);
    
-   window.shouldPreserve = true;
-   document.pageform.action = "send";
-   document.pageform.submit();
+  window.shouldPreserve = true;
+  document.pageform.action = "send";
+  document.pageform.submit();
 
-   return false;
+  return false;
 }
 
 function currentAttachmentInput() {
@@ -183,7 +187,7 @@ function clickedEditorAttach(sender) {
 				      "currentAttachment", null,
 				      { type: "file",
 					name: attachmentName },
-					area);
+				      area);
     Event.observe(newAttachment, "change",
 		  onAttachmentChange.bindAsEventListener(newAttachment));
   }
@@ -227,6 +231,11 @@ function clickedEditorSave(sender) {
   var input = currentAttachmentInput();
   if (input)
     input.parentNode.removeChild(input);
+
+  var toolbar = document.getElementById("toolbar");
+  if (!document.busyAnim)
+    document.busyAnim = startAnimation(toolbar);
+
   window.shouldPreserve = true;
   document.pageform.action = "save";
   document.pageform.submit();
