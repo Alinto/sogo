@@ -240,19 +240,48 @@ span.mailer_datefield
 
 TD.mailer_readmailsubject
 {
-  background-image: url(message-mail-read.png) !important;
-  background-repeat: no-repeat !important;
-  background-position: 0px 0px !important;
   padding-left: 20px !important;
 }
 
 TD.mailer_unreadmailsubject
 {
-  background-image: url(message-mail.png) !important;
+  background-image: url(icon-new.png) !important;
   background-repeat: no-repeat !important;
   background-position: 0px 0px !important;
   padding-left: 20px !important;
   font-weight: bold !important;
+}
+
+TD.mailer_repliedmailsubject
+{
+  background-image: url(icon-replied.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
+}
+
+TD.mailer_forwardedmailsubject
+{
+  background-image: url(icon-forwarded.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
+}
+
+TD.mailer_forwardedrepliedmailsubject
+{
+  background-image: url(icon-forwarded-replied.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
+}
+
+TD.mailer_deletedmailsubject
+{
+  background-image: url(icon-deleted.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0px 0px !important;
+  padding-left: 20px !important;
 }
 
 TD.mailer_readmailsubject a
