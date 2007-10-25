@@ -1,5 +1,8 @@
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-fetchFileAttachmentKeys]): fetch the attachment encoding as well.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-stringForData:_datapartInfo:_info]): simplified by invoking
 	-bodyDataFromEncoding: from our new NSData category methods.
