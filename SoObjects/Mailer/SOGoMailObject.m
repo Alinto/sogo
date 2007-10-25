@@ -31,10 +31,8 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
@@ -44,6 +42,8 @@
 
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+
+#import "NSData+Mail.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"
@@ -619,37 +619,29 @@ static BOOL debugSoParts       = NO;
 }
 
 /* convert parts to strings */
-
 - (NSString *) stringForData: (NSData *) _data
 		    partInfo: (NSDictionary *) _info
 {
-  NSString *charset, *encoding, *s;
+  NSString *charset, *s;
   NSData *mailData;
   
-  if (![_data isNotNull])
-    return nil;
-
-  s = nil;
-
-  encoding = [[_info objectForKey: @"encoding"] lowercaseString];
-
-  if ([encoding isEqualToString: @"7bit"]
-      || [encoding isEqualToString: @"8bit"])
-    mailData = _data;
-  else if ([encoding isEqualToString: @"base64"])
-    mailData = [_data dataByDecodingBase64];
-  else if ([encoding isEqualToString: @"quoted-printable"])
-    mailData = [_data dataByDecodingQuotedPrintable];
-  
-  charset = [[_info valueForKey: @"parameterList"] valueForKey: @"charset"];
-  if (![charset length])
+  if ([_data isNotNull])
     {
-      s = [[NSString alloc] initWithData:mailData encoding:NSUTF8StringEncoding];
-      [s autorelease];
+      mailData
+	= [_data bodyDataFromEncoding: [_info objectForKey: @"encoding"]];
+
+      charset = [[_info valueForKey: @"parameterList"] valueForKey: @"charset"];
+      if (![charset length])
+	{
+	  s = [[NSString alloc] initWithData: mailData encoding: NSUTF8StringEncoding];
+	  [s autorelease];
+	}
+      else
+	s = [NSString stringWithData: mailData
+		      usingEncodingNamed: charset];
     }
   else
-    s = [NSString stringWithData: mailData
-                  usingEncodingNamed: charset];
+    s = nil;
 
   return s;
 }

@@ -1,5 +1,9 @@
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-stringForData:_datapartInfo:_info]): simplified by invoking
+	-bodyDataFromEncoding: from our new NSData category methods.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-fetchMailForEditing:sourceMail]): work-around a bug in SOPE-mime
 	where only the body part of the first of the keys fetched was
