@@ -30,7 +30,9 @@ Mailer_OBJC_FILES += \
 	SOGoDraftsFolder.m		\
 	SOGoDraftObject.m		\
 	\
-	SOGoMailForward.m
+	SOGoMailForward.m		\
+	\
+	NSData+Mail.m
 
 Mailer_RESOURCE_FILES += \
 	Version		\
