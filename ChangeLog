@@ -1,5 +1,10 @@
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/NSData+Mail.m ([NSData
+	-bodyDataFromEncoding:encoding]): new utility method that decodes
+	the NSData instance properly depending on the encoding string
+	passed as parameter.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-fetchFileAttachmentKeys]): fetch the attachment encoding as well.
 
