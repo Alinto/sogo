@@ -143,6 +143,10 @@ function clickedEditorSend(sender) {
    if (!validateEditorInput(sender))
       return false;
 
+   var input = currentAttachmentInput();
+   if (input)
+     input.parentNode.removeChild(input);
+   
    window.shouldPreserve = true;
    document.pageform.action = "send";
    document.pageform.submit();
@@ -150,30 +154,39 @@ function clickedEditorSend(sender) {
    return false;
 }
 
-function clickedEditorAttach(sender) {
-  var area = $("attachmentsArea");
+function currentAttachmentInput() {
+  var input = null;
 
-  if (!area.style.display) {
-    area.setStyle({ display: "block" });
-    onWindowResize(null);
-  }  
-
-  var inputs = area.getElementsByTagName("input");
-
-  // Verify if there's already a visible file input field
-  for (var i = 0; i < inputs.length; i++)
+  var inputs = $("attachmentsArea").getElementsByTagName("input");
+  var i = 0;
+  while (!input && i < inputs.length)
     if ($(inputs[i]).hasClassName("currentAttachment"))
-      return false;
-  
-  // Add new file input field
-  var attachmentName = "attachment" + inputs.length;
-  var newAttachment = createElement("input", attachmentName,
-				    "currentAttachment", null,
-				    { type: "file",
-				      name: attachmentName },
-				    area);
-  Event.observe(newAttachment, "change",
-		onAttachmentChange.bindAsEventListener(newAttachment));
+      input = inputs[i];
+    else
+      i++;
+
+  return input;
+}
+
+function clickedEditorAttach(sender) {
+  var input = currentAttachmentInput();
+  if (!input) {
+    var area = $("attachmentsArea");
+
+    if (!area.style.display) {
+      area.setStyle({ display: "block" });
+      onWindowResize(null);
+    }
+    var inputs = area.getElementsByTagName("input");
+    var attachmentName = "attachment" + inputs.length;
+    var newAttachment = createElement("input", attachmentName,
+				      "currentAttachment", null,
+				      { type: "file",
+					name: attachmentName },
+					area);
+    Event.observe(newAttachment, "change",
+		  onAttachmentChange.bindAsEventListener(newAttachment));
+  }
 
   return false;
 }
@@ -211,6 +224,9 @@ function createAttachment(node, list) {
 }
 
 function clickedEditorSave(sender) {
+  var input = currentAttachmentInput();
+  if (input)
+    input.parentNode.removeChild(input);
   window.shouldPreserve = true;
   document.pageform.action = "save";
   document.pageform.submit();
