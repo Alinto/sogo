@@ -1,5 +1,9 @@
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-messageSubjectCellStyleClass]): added support for replied,
+	forwarded, forwarded and replied mails.
+
 	* SoObjects/Mailer/NSData+Mail.m ([NSData
 	-bodyDataFromEncoding:encoding]): new utility method that decodes
 	the NSData instance properly depending on the encoding string

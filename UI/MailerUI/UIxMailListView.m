@@ -173,9 +173,32 @@ static int attachmentFlagSize = 8096;
 
 - (NSString *) messageSubjectCellStyleClass 
 {
-  return ([self isMessageRead]
-	  ? @"mailer_readmailsubject"
-	  : @"mailer_unreadmailsubject");
+  NSArray *flags;
+  NSString *cellClass;
+
+  flags = [[self message] valueForKey:@"flags"];
+
+  if ([flags containsObject: @"seen"])
+    {
+      if ([flags containsObject: @"answered"])
+	{
+	  if ([flags containsObject: @"$forwarded"])
+	    cellClass = @"mailer_forwardedrepliedmailsubject";
+	  else
+	    cellClass = @"mailer_repliedmailsubject";
+	}
+      else if ([flags containsObject: @"$forwarded"])
+	cellClass = @"mailer_forwardedmailsubject";
+      else
+	cellClass = @"mailer_readmailsubject";
+    }
+  else
+    cellClass = @"mailer_unreadmailsubject";
+
+  return cellClass;
+//   return ([self isMessageRead]
+// 	  ? @"mailer_readmailsubject"
+// 	  : @"mailer_unreadmailsubject");
 }
 
 - (BOOL) hasMessageAttachment 
