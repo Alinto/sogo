@@ -1,5 +1,11 @@
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-fetchMailForEditing:sourceMail]): work-around a bug in SOPE-mime
+	where only the body part of the first of the keys fetched was
+	returned. Also decodes the body parts properly following their
+	encoding.
+
 	* SoObjects/Mailer/NSData+Mail.[hm]: new extension module that
 	extends the NSData class with utility methods useful for handling
 	mail.
