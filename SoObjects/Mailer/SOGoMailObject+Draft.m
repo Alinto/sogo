@@ -232,20 +232,22 @@
 		       intoArray: (NSMutableArray *) keys
 		        withPath: (NSString *) path
 {
-  NSDictionary *parameters, *currentFile;
+  NSDictionary *disposition, *currentFile;
   NSString *filename, *mimeType;
 
-  parameters = [[part objectForKey: @"disposition"]
-		 objectForKey: @"parameterList"];
-  if (parameters)
+  disposition = [part objectForKey: @"disposition"];
+  filename = [[disposition objectForKey: @"parameterList"]
+	       objectForKey: @"filename"];
+  if (filename)
     {
-      filename = [parameters objectForKey: @"filename"];
       mimeType = [NSString stringWithFormat: @"%@/%@",
 			   [part objectForKey: @"type"],
 			   [part objectForKey: @"subtype"]];
       currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
 				    filename, @"filename",
 				  [mimeType lowercaseString], @"mimetype",
+				  [part
+				    objectForKey: @"encoding"], @"encoding",
 				  path, @"path", nil];
       [keys addObject: currentFile];
     }

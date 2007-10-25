@@ -280,13 +280,14 @@ static NSArray *infoKeys = nil;
   for (count = 0; count < max; count++)
     {
       part = [parts objectAtIndex: count];
-      header = (NGMimeContentDispositionHeaderField *) [part headerForKey: @"content-disposition"];
-      mimeType = [(NGMimeType *) [part headerForKey: @"content-type"] stringValue];
+      header = (NGMimeContentDispositionHeaderField *)
+	[part headerForKey: @"content-disposition"];
+      mimeType = [(NGMimeType *)
+		   [part headerForKey: @"content-type"] stringValue];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [header filename], @"filename",
-				 mimeType, @"mime-type", nil];
-      [filenames setObject: attachment
-		 forKey: [header name]];
+				 mimeType, @"mimetype", nil];
+      [filenames setObject: attachment forKey: [header name]];
     }
 
   return filenames;

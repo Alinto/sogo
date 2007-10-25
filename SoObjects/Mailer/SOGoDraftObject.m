@@ -56,6 +56,8 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+
+#import "NSData+Mail.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailObject.h"
@@ -411,30 +413,49 @@ static BOOL        showTextAttachmentsInline  = NO;
     }
 }
 
+- (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths
+		       fromResponseFetch: (NSDictionary *) fetch;
+{
+  NSEnumerator *attachmentKeys;
+  NSMutableArray *bodies;
+  NSString *currentKey;
+  NSDictionary *body;
+
+  bodies = [NSMutableArray array];
+
+  attachmentKeys = [paths objectEnumerator];
+  while ((currentKey = [attachmentKeys nextObject]))
+    {
+      body = [fetch objectForKey: [currentKey lowercaseString]];
+      [bodies addObject: [body objectForKey: @"data"]];
+    }
+
+  return bodies;
+}
+
 - (void) _fetchAttachments: (NSArray *) parts
                   fromMail: (SOGoMailObject *) sourceMail
 {
   unsigned int count, max;
-  NSDictionary *currentPart, *attachment, *body;
-  NSArray *paths, *result;
+  NSArray *paths, *bodies;
+  NSData *body;
+  NSDictionary *currentInfo;
+  NGHashMap *response;
 
   max = [parts count];
   if (max > 0)
     {
       paths = [parts keysWithFormat: @"BODY[%{path}]"];
-      result = [[sourceMail fetchParts: paths] objectForKey: @"fetch"];
+      response = [[sourceMail fetchParts: paths] objectForKey: @"RawResponse"];
+      bodies = [self _attachmentBodiesFromPaths: paths
+		     fromResponseFetch: [response objectForKey: @"fetch"]];
       for (count = 0; count < max; count++)
 	{
-	  currentPart = [parts objectAtIndex: count];
-	  body = [[result objectAtIndex: count] objectForKey: @"body"];
-	  attachment = [NSDictionary dictionaryWithObjectsAndKeys:
-				       [currentPart objectForKey: @"filename"],
-				     @"filename",
-				     [currentPart objectForKey: @"mimetype"],
-				     @"mime-type",
-				     nil];
-	  [self saveAttachment: [body objectForKey: @"data"]
-		withMetadata: attachment];
+	  currentInfo = [parts objectAtIndex: count];
+	  body = [[bodies objectAtIndex: count]
+		   bodyDataFromEncoding: [currentInfo
+					   objectForKey: @"encoding"]];
+	  [self saveAttachment: body withMetadata: currentInfo];
 	}
     }
 }
@@ -529,7 +550,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 //   error = [newDraft saveAttachment:content withName:@"forward.mail"];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [sourceMail filenameForForward], @"filename",
-				 @"message/rfc822", @"mime-type",
+				 @"message/rfc822", @"mimetype",
 				 nil];
       [self saveAttachment: [sourceMail content]
 	    withMetadata: attachment];
@@ -639,7 +660,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 			  reason: @"Could not write attachment to draft!"];
     }
 
-  mimeType = [metadata objectForKey: @"mime-type"];
+  mimeType = [metadata objectForKey: @"mimetype"];
   if ([mimeType length] > 0)
     {
       p = [self pathToAttachmentWithName:

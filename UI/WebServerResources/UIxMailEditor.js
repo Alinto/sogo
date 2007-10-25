@@ -16,7 +16,7 @@ function onContactAdd() {
   w.focus();
 
   return false;
- }
+}
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   if (!mailIsRecipient(contactEmail)) {
@@ -121,59 +121,76 @@ function updateInlineAttachmentList(sender, attachments) {
 /* mail editor */
 
 function validateEditorInput(sender) {
-   var errortext = "";
-   var field;
+  var errortext = "";
+  var field;
    
-   field = document.pageform.subject;
-   if (field.value == "")
-      errortext = errortext + labels["error_missingsubject"] + "\n";
+  field = document.pageform.subject;
+  if (field.value == "")
+    errortext = errortext + labels["error_missingsubject"] + "\n";
 
-   if (!UIxRecipientSelectorHasRecipients())
-      errortext = errortext + labels["error_missingrecipients"] + "\n";
+  if (!UIxRecipientSelectorHasRecipients())
+    errortext = errortext + labels["error_missingrecipients"] + "\n";
    
-   if (errortext.length > 0) {
-      alert(labels["error_validationfailed"] + ":\n" + errortext);
-      return false;
-   }
+  if (errortext.length > 0) {
+    alert(labels["error_validationfailed"] + ":\n" + errortext);
+    return false;
+  }
 
-   return true;
+  return true;
 }
 
 function clickedEditorSend(sender) {
-   if (!validateEditorInput(sender))
-      return false;
+  if (!validateEditorInput(sender))
+    return false;
 
-   window.shouldPreserve = true;
-   document.pageform.action = "send";
-   document.pageform.submit();
+  var input = currentAttachmentInput();
+  if (input)
+    input.parentNode.removeChild(input);
 
-   return false;
+  var toolbar = document.getElementById("toolbar");
+  if (!document.busyAnim)
+    document.busyAnim = startAnimation(toolbar);
+   
+  window.shouldPreserve = true;
+  document.pageform.action = "send";
+  document.pageform.submit();
+
+  return false;
+}
+
+function currentAttachmentInput() {
+  var input = null;
+
+  var inputs = $("attachmentsArea").getElementsByTagName("input");
+  var i = 0;
+  while (!input && i < inputs.length)
+    if ($(inputs[i]).hasClassName("currentAttachment"))
+      input = inputs[i];
+    else
+      i++;
+
+  return input;
 }
 
 function clickedEditorAttach(sender) {
-  var area = $("attachmentsArea");
+  var input = currentAttachmentInput();
+  if (!input) {
+    var area = $("attachmentsArea");
 
-  if (!area.style.display) {
-    area.setStyle({ display: "block" });
-    onWindowResize(null);
-  }  
-
-  var inputs = area.getElementsByTagName("input");
-
-  // Verify if there's already a visible file input field
-  for (var i = 0; i < inputs.length; i++)
-    if ($(inputs[i]).hasClassName("currentAttachment"))
-      return false;
-  
-  // Add new file input field
-  var attachmentName = "attachment" + inputs.length;
-  var newAttachment = createElement("input", attachmentName,
-				    "currentAttachment", null,
-				    { type: "file",
-				      name: attachmentName },
-				    area);
-  Event.observe(newAttachment, "change",
-		onAttachmentChange.bindAsEventListener(newAttachment));
+    if (!area.style.display) {
+      area.setStyle({ display: "block" });
+      onWindowResize(null);
+    }
+    var inputs = area.getElementsByTagName("input");
+    var attachmentName = "attachment" + inputs.length;
+    var newAttachment = createElement("input", attachmentName,
+				      "currentAttachment", null,
+				      { type: "file",
+					name: attachmentName },
+				      area);
+    Event.observe(newAttachment, "change",
+		  onAttachmentChange.bindAsEventListener(newAttachment));
+  }
 
   return false;
 }
@@ -211,6 +228,14 @@ function createAttachment(node, list) {
 }
 
 function clickedEditorSave(sender) {
+  var input = currentAttachmentInput();
+  if (input)
+    input.parentNode.removeChild(input);
+
+  var toolbar = document.getElementById("toolbar");
+  if (!document.busyAnim)
+    document.busyAnim = startAnimation(toolbar);
+
   window.shouldPreserve = true;
   document.pageform.action = "save";
   document.pageform.submit();
