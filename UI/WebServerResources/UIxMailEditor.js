@@ -272,7 +272,7 @@ function onRemoveAttachments() {
 
 function attachmentDeleteCallback(http) {
   if (http.readyState == 4) {
-    if (http.status == 204) {
+    if (isHttpStatus204(http.status)) {
       var node = http.callbackData;
       node.parentNode.removeChild(node);
     }

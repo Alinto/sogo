@@ -68,6 +68,7 @@ function openAddressbook(sender) {
 function onMenuSharing(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var type = document.menuTarget.getAttribute("datatype");
+
   if (type == "additional")
     window.alert(clabels["The user rights cannot be"
 			 + " edited for this object!"]);
@@ -475,6 +476,7 @@ function messageListCallback(http) {
       var row = $("row_" + selected);
       if (row) {
 	row.select();
+	lastClickedRow = row.rowIndex - $(row).up('table').down('thead').getElementsByTagName('tr').length;  
 	div.scrollTop = row.rowIndex * row.getHeight(); // scroll to selected message
       }
       else
@@ -1297,11 +1299,11 @@ function buildMailboxes(accountName, encoded) {
   return account;
 }
 
-function onMenuCreateFolder(event) {
+function onMenuCreateFolder(event) { log ("onMenuCreateFolder " + document.menuTarget);
   var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
-    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
+    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name; log ("create " + urlstr);
     triggerAjaxRequest(urlstr, folderOperationCallback);
   }
 }
@@ -1329,7 +1331,6 @@ function onMenuDeleteFolder(event) {
 function onMenuExpungeFolder(event) {
   var folderID = document.menuTarget.getAttribute("dataname");
   var urlstr = URLForFolderID(folderID) + "/expunge";
-
   triggerAjaxRequest(urlstr, folderRefreshCallback, folderID);
 }
 

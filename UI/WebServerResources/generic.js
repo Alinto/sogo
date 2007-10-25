@@ -623,7 +623,8 @@ function onBodyClickMenuHandler(event) {
   hideMenu(document.currentPopupMenu);
   Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
 
-  preventDefault(event);
+  if (event)
+    preventDefault(event);
 }
 
 function hideMenu(menuNode) {
@@ -1167,9 +1168,12 @@ function initMenu(menuDIV, callbacks) {
 			popupSubmenu.bindAsEventListener(node));
 	}
       }
-      else
+      else {
 	Event.observe(node, "mouseup",
+		      onBodyClickMenuHandler);
+	Event.observe(node, "click",
 		      $(callback).bindAsEventListener(node));
+      }
     }
     else
       node.addClassName("disabled");
