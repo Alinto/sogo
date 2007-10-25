@@ -694,6 +694,7 @@ function loadMessage(idx) {
     cachedMessage['time'] = (new Date()).getTime();
     document.messageAjaxRequest = null;
     configureLinksInMessage();
+    resizeMailContent();
   }
 }
 
@@ -718,6 +719,13 @@ function configureLinksInMessage() {
   var editDraftButton = $("editDraftButton");
   if (editDraftButton)
     Event.observe(editDraftButton, "click", onMessageEditDraft);
+}
+
+function resizeMailContent() {
+  var headerTable = document.getElementsByClassName('mailer_fieldtable')[0];
+  var contentDiv = document.getElementsByClassName('mailer_mailcontent')[0];
+  
+  contentDiv.setStyle({ 'top': (Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
 }
 
 function onMessageContentMenu(event) {
@@ -745,7 +753,8 @@ function messageCallback(http) {
     document.messageAjaxRequest = null;
     div.update(http.responseText);
     configureLinksInMessage();
-      
+    resizeMailContent();
+    
     if (http.callbackData) {
       var cachedMessage = new Array();
       cachedMessage['idx'] = currentMailbox + '/' + http.callbackData;

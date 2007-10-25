@@ -336,16 +336,14 @@ TABLE.mailer_fieldtable
   width: 100%; }
 
 DIV.mailer_mailcontent
-{
-  background-color: #fff;
-  position: absolute;
+{ background-color: #fff;
   padding: .5em;
+  position: absolute;
   top: 7.5em;
-  overflow: auto;
   left: 0px;
   right: 0px;
   bottom: 0px;
-}
+  overflow: auto; }
 
 TD.mailer_fieldname
 {
@@ -379,7 +377,7 @@ img.mailer_imagecontent
 }
 
 DIV.mailer_plaincontent
-{
+{ 
   position: relative;
   font-family: monospace, fixed;
   white-space: pre;
