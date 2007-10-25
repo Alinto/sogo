@@ -1,68 +1,3 @@
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.h
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(révision 1546)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(copie de travail)
-@@ -28,6 +28,7 @@
- #define ___PostgreSQL72_Channel_H___
- 
- #include <GDLAccess/EOAdaptorChannel.h>
-+#include <GDLContentStore/EOAdaptorChannel+GCS.h>
- #include <libpq-fe.h>
- 
- @class NSArray, NSString, NSMutableDictionary;
-@@ -40,7 +41,7 @@
-   int        modification;
- } PostgreSQL72FieldInfo;
- 
--@interface PostgreSQL72Channel : EOAdaptorChannel
-+@interface PostgreSQL72Channel : EOAdaptorChannel <GCSEOAdaptorChannel>
- {
-   // connection is valid after an openChannel call
-   PGConnection *connection;
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1546)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(révision 1546)
@@ -385,6 +320,71 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.h
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(révision 1546)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(copie de travail)
+@@ -28,6 +28,7 @@
+ #define ___PostgreSQL72_Channel_H___
+ 
+ #include <GDLAccess/EOAdaptorChannel.h>
++#include <GDLContentStore/EOAdaptorChannel+GCS.h>
+ #include <libpq-fe.h>
+ 
+ @class NSArray, NSString, NSMutableDictionary;
+@@ -40,7 +41,7 @@
+   int        modification;
+ } PostgreSQL72FieldInfo;
+ 
+-@interface PostgreSQL72Channel : EOAdaptorChannel
++@interface PostgreSQL72Channel : EOAdaptorChannel <GCSEOAdaptorChannel>
+ {
+   // connection is valid after an openChannel call
+   PGConnection *connection;
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1546)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1546)
@@ -515,6 +515,157 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    BOOL          sidInUrl;
  
    /* 'ivar' associations */
+Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1546)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
+@@ -39,22 +39,34 @@
+ static int debugLookup  = -1;
+ static int debugBaseURL = -1;
+ static int useRelativeURLs = -1;
++static int redirectInitted = -1;
++static NSURL *redirectURL = nil;
++
+ static void _initialize(void) {
++  NSString *url;
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++
+   if (debugLookup == -1) {
+-    debugLookup = [[NSUserDefaults standardUserDefaults]
+-		                   boolForKey:@"SoDebugKeyLookup"] ? 1 : 0;
++    debugLookup = [ud boolForKey:@"SoDebugKeyLookup"] ? 1 : 0;
+     NSLog(@"Note(SoObject): SoDebugKeyLookup is enabled!");
+   }
+   if (debugBaseURL == -1) {
+-    debugBaseURL = [[NSUserDefaults standardUserDefaults]
+-		                     boolForKey:@"SoDebugBaseURL"] ? 1 : 0;
++    debugBaseURL = [ud boolForKey:@"SoDebugBaseURL"] ? 1 : 0;
+     NSLog(@"Note(SoObject): SoDebugBaseURL is enabled!");
+   }
+   if (useRelativeURLs == -1) {
+-    useRelativeURLs = [[NSUserDefaults standardUserDefaults]
+-		                       boolForKey:@"WOUseRelativeURLs"] ?1:0;
++    useRelativeURLs = [ud boolForKey:@"WOUseRelativeURLs"] ?1:0;
+     NSLog(@"Note(SoObject): relative base URLs are enabled.");
+   }
++  if (redirectInitted == -1) {
++    url = [ud stringForKey:@"WOApplicationRedirectURL"];
++    if ([url length]) {
++      redirectURL = [[NSURL alloc] initWithString: url];
++    }
++    redirectInitted = 1;
++  }
+ }
+ 
+ /* classes */
+@@ -318,56 +330,61 @@
+   
+   rq = [_ctx request];
+   ms = [[NSMutableString alloc] initWithCapacity:128];
++
++  if (redirectURL) {
++    [ms appendString: [redirectURL absoluteString]];
++  }
++  else {  
++    if (!useRelativeURLs) {
++      port = [[rq headerForKey:@"x-webobjects-server-port"] intValue];
+   
+-  if (!useRelativeURLs) {
+-    port = [[rq headerForKey:@"x-webobjects-server-port"] intValue];
+-  
+-    /* this is actually a bug in Apache */
+-    if (port == 0) {
+-      static BOOL didWarn = NO;
+-      if (!didWarn) {
+-	[self warnWithFormat:@"(%s:%i): got an empty port from Apache!",
+-              __PRETTY_FUNCTION__, __LINE__];
+-	didWarn = YES;
++      /* this is actually a bug in Apache */
++      if (port == 0) {
++	static BOOL didWarn = NO;
++	if (!didWarn) {
++	  [self warnWithFormat:@"(%s:%i): got an empty port from Apache!",
++		__PRETTY_FUNCTION__, __LINE__];
++	  didWarn = YES;
++	}
++	port = 80;
+       }
+-      port = 80;
+-    }
+   
+-    if ((tmp = [rq headerForKey:@"host"]) != nil) { 
+-      /* check whether we have a host header with port */
+-      if ([tmp rangeOfString:@":"].length == 0)
+-	tmp = nil;
+-    }
+-    if (tmp != nil) { /* we have a host header with port */
+-      isHTTPS = 
+-	[[rq headerForKey:@"x-webobjects-server-url"] hasPrefix:@"https"];
+-      [ms appendString:isHTTPS ? @"https://" : @"http://"]; 
+-      [ms appendString:tmp];
+-    }
+-    else if ((tmp = [rq headerForKey:@"x-webobjects-server-url"]) != nil) {
+-      /* sometimes the URL is just wrong! (suggests port 80) */
+-      if ([tmp hasSuffix:@":0"] && [tmp length] > 2) { // TODO: bad bad bad
+-	[self warnWithFormat:@"%s: got incorrect URL from Apache: '%@'",
+-	      __PRETTY_FUNCTION__, tmp];
+-	tmp = [tmp substringToIndex:([tmp length] - 2)];
++      if ((tmp = [rq headerForKey:@"host"]) != nil) { 
++	/* check whether we have a host header with port */
++	if ([tmp rangeOfString:@":"].length == 0)
++	  tmp = nil;
+       }
+-      else if ([tmp hasSuffix:@":443"] && [tmp hasPrefix:@"http://"]) {
+-	/* see OGo bug #1435, Debian Apache hack */
+-	[self warnWithFormat:@"%s: got 'http' protocol but 443 port, "
+-	      @"assuming Debian/Apache bug (OGo #1435): '%@'",
+-	      __PRETTY_FUNCTION__, tmp];
+-	tmp = [tmp substringWithRange:NSMakeRange(4, [tmp length] - 4 - 4)];
+-	tmp = [@"https" stringByAppendingString:tmp];
++      if (tmp != nil) { /* we have a host header with port */
++	isHTTPS = 
++	  [[rq headerForKey:@"x-webobjects-server-url"] hasPrefix:@"https"];
++	[ms appendString:isHTTPS ? @"https://" : @"http://"]; 
++	[ms appendString:tmp];
+       }
+-      [ms appendString:tmp];
+-    }
+-    else {
+-      // TODO: isHTTPS always no in this case?
+-      [ms appendString:isHTTPS ? @"https://" : @"http://"]; 
++      else if ((tmp = [rq headerForKey:@"x-webobjects-server-url"]) != nil) {
++	/* sometimes the URL is just wrong! (suggests port 80) */
++	if ([tmp hasSuffix:@":0"] && [tmp length] > 2) { // TODO: bad bad bad
++	  [self warnWithFormat:@"%s: got incorrect URL from Apache: '%@'",
++		__PRETTY_FUNCTION__, tmp];
++	  tmp = [tmp substringToIndex:([tmp length] - 2)];
++	}
++	else if ([tmp hasSuffix:@":443"] && [tmp hasPrefix:@"http://"]) {
++	  /* see OGo bug #1435, Debian Apache hack */
++	  [self warnWithFormat:@"%s: got 'http' protocol but 443 port, "
++		@"assuming Debian/Apache bug (OGo #1435): '%@'",
++		__PRETTY_FUNCTION__, tmp];
++	  tmp = [tmp substringWithRange:NSMakeRange(4, [tmp length] - 4 - 4)];
++	  tmp = [@"https" stringByAppendingString:tmp];
++	}
++	[ms appendString:tmp];
++      }
++      else {
++	// TODO: isHTTPS always no in this case?
++	[ms appendString:isHTTPS ? @"https://" : @"http://"]; 
+   
+-      [ms appendString:[rq headerForKey:@"x-webobjects-server-name"]];
+-      if ((isHTTPS ? (port != 443) : (port != 80)) && port != 0)
+-	[ms appendFormat:@":%i", port];
++	[ms appendString:[rq headerForKey:@"x-webobjects-server-name"]];
++	if ((isHTTPS ? (port != 443) : (port != 80)) && port != 0)
++	  [ms appendFormat:@":%i", port];
++      }
+     }
+   }
+   
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1546)
