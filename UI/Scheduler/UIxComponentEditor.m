@@ -363,13 +363,13 @@
   return [calendars componentsJoinedByString: @","];
 }
 
-- (NSString *) componentCalendar
+- (SOGoAppointmentFolder *) componentCalendar
 {
   SOGoAppointmentFolder *calendar;
 
   calendar = [[self clientObject] container];
   
-  return [calendar nameInContainer];
+  return calendar;
 }
 
 /* priorities */
