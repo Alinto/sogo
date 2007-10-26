@@ -400,6 +400,9 @@ TD.mailer_fieldvalue a
   vertical-align: top;
 }
 
+TR.deleted TD
+{ text-decoration: line-through; }
+
 img.mailer_imagecontent
 {
   border: 0px;

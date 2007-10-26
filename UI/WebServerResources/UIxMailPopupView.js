@@ -4,4 +4,9 @@ function onPrintCurrentMessage(event) {
   preventDefault(event);
 }
 
-addEvent(window, 'load', resizeMailContent);
+function initPopupMailer(event) {
+  configureLinksInMessage();
+  resizeMailContent();
+}
+
+addEvent(window, 'load', initPopupMailer);
