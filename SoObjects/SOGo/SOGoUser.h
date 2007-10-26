@@ -112,6 +112,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
 - (NSString *) messageForwarding;
+- (NSString *) messageCheck;
 
 /* folders */
 

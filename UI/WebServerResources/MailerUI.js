@@ -18,6 +18,8 @@ var pageContent;
 
 var deleteMessageRequestCount = 0;
 
+var messageCheckTimer;
+
 /* mail list */
 
 function openMessageWindow(msguid, url) {
@@ -1106,7 +1108,28 @@ function initMailer(event) {
   if (!document.body.hasClassName("popup")) {
 //     initDnd();
     initMailboxTree();
+    initMessageCheckTimer();
   }
+}
+
+function initMessageCheckTimer() {
+  var messageCheck = userDefaults["MessageCheck"];
+  if (messageCheck && messageCheck != "manually") {
+    var interval;
+    if (messageCheck == "once_per_hour")
+      interval = 3600;
+    else if (messageCheck == "every_minute")
+      interval = 60;
+    else {
+      interval = parseInt(messageCheck.substr(6)) * 60;
+    }
+    messageCheckTimer = window.setInterval(onMessageCheckCallback,
+					   interval * 1000);
+  }
+}
+
+function onMessageCheckCallback(event) {
+  refreshMailbox();
 }
 
 function initMailboxTree() {

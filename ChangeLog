@@ -1,5 +1,15 @@
 2007-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -messageCheckList])
+	([UIxPreferences -itemMessageCheckText])
+	([UIxPreferences -userMessageCheck])
+	([UIxPreferences -setUserMessageCheck:newMessageCheck]): new
+	methods for handling the retrieval of new messages automatically.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -messageCheck]): new method
+	that returns the interval of time between automatic message
+	retrievals.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-defaultAction]): now expunges the last folder marked for expunge.
 
