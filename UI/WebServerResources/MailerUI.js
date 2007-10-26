@@ -716,11 +716,12 @@ function configureLinksInMessage() {
     }
     else
       Event.observe(anchors[i], "click",
-		    onMessageAnchorClick);
+		    onMessageAnchorClick.bindAsEventListener(anchors[i]));
 
   var editDraftButton = $("editDraftButton");
   if (editDraftButton)
-    Event.observe(editDraftButton, "click", onMessageEditDraft);
+    Event.observe(editDraftButton, "click",
+		  onMessageEditDraft.bindAsEventListener(editDraftButton));
 }
 
 function resizeMailContent() {
@@ -742,7 +743,7 @@ function onEmailAddressClick(event) {
   popupMenu(event, 'addressMenu', this);
 }
 
-function onMessageAnchorClick (event) {
+function onMessageAnchorClick(event) {
   window.open(this.href);
   preventDefault(event);
 }
