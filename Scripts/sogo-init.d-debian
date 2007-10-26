@@ -1,10 +1,11 @@
-#! /bin/sh
+#! /bin/bash
 
 # SOGo init script for Debian GNU/Linux
 #
 # Copyright (C) 2007 Inverse groupe conseil
 #
 # Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#         Ludovic Marcotte <ludovic@inverse.ca>
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,47 +22,63 @@
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+PREFORK=3
+SOGO_ARGS=""
+
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 DAEMON=/usr/sbin/sogod-0.9
 NAME=sogo
 DESC="Scalable OpenGroupware.Org"
 
-PIDFILE=/var/run/sogo/sogod.pid
-
-SOGO_ARGS=""
+PIDFILE=/var/run/sogo/sogod.
 
 if [ -f /etc/default/sogo ]; then
     . /etc/default/sogo
 fi
 
-test -x $DAEMON || exit 0
+if [ ! -x $DAEMON ]; then
+ echo "$DAEMON is not executable."
+ exit 1
+fi
 
-#set -e
+if [ `/usr/bin/stat /var/run/sogo -c %U` != "sogo" ]; then
+ echo "/var/run/sogo is not owned by the sogo user."
+ exit 1
+fi
+
+if [ `/usr/bin/stat /var/spool/sogo -c %U` != "sogo" ]; then
+ echo "/var/spool/sogo is not owned by the sogo user."
+ exit 1
+fi
+
+if [ `/usr/bin/stat /var/log/sogo -c %U` != "sogo" ]; then
+ echo "/var/log/sogo is not owned by the sogo user."
+ exit 1
+fi
 
 case "$1" in
   start)
 	echo -n "Starting $DESC: "
-	start-stop-daemon -c sogo --pidfile $PIDFILE \
-		-b --start --quiet --exec $DAEMON
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	  start-stop-daemon -c sogo --pidfile $PIDFILE$a \
+	      -b --start --quiet --exec $DAEMON $a
+	done
 	echo "$NAME."
 	;;
   stop)
 	echo -n "Stopping $DESC: "
-	sogopid=$(cat $PIDFILE)
-	kill ${sogopid} 2> /dev/null
-	rm -f $PIDFILE
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	  sogopid=$(cat $PIDFILE$a)
+	  kill ${sogopid} 2> /dev/null
+	  rm -f $PIDFILE$a
+	done
 	echo "$NAME."
 	;;
   restart|force-reload)
-	echo -n "Restarting $DESC: "
-	sogopid=$(cat $PIDFILE)
-	kill ${sogopid} 2> /dev/null
-	rm -f $PIDFILE
-	sleep 1
-	start-stop-daemon -c sogo --pidfile $PIDFILE \
-		-b --start --quiet --exec $DAEMON
-	echo "$NAME."
+	$0 stop && sleep 2 && $0 start
 	;;
   *)
 	N=/etc/init.d/$NAME

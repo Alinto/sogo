@@ -29,6 +29,9 @@
 
 # sogod		Scalable OpenGroupware.org (Inverse edition)
 
+PREFORK=3
+SOGO_ARGS=""
+
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 . /etc/rc.d/init.d/functions
@@ -43,34 +46,50 @@ DAEMON=/usr/sbin/sogod
 NAME=sogo
 DESC="Scalable OpenGroupware.Org (Inverse edition)"
 
-PIDFILE=/var/run/sogo/sogod.pid
-
-SOGO_ARGS=""
+PIDFILE=/var/run/sogo/sogod.
 
 if [ -f /etc/sysconfig/sogo ]; then
     . /etc/sysconfig/sogo
 fi
 
-test -x $DAEMON || exit 0
+if [ ! -x $DAEMON ]; then
+ echo "$DAEMON is not executable."
+ exit 1
+fi
+
+if [ `/usr/bin/stat /var/run/sogo -c %U` != "sogo" ]; then
+ echo "/var/run/sogo is not owned by the sogo user."
+ exit 1
+fi
+
+if [ `/usr/bin/stat /var/spool/sogo -c %U` != "sogo" ]; then
+ echo "/var/spool/sogo is not owned by the sogo user."
+ exit 1
+fi
+
+if [ `/usr/bin/stat /var/log/sogo -c %U` != "sogo" ]; then
+ echo "/var/log/sogo is not owned by the sogo user."
+ exit 1
+fi
 
 #set -e
 
 case "$1" in
   start)
 	echo -n $"Starting $DESC: "
-	daemon --user sogo --pidfile $PIDFILE $DAEMON
+	daemon su - sogo -c $DAEMON
+#	daemon --user sogo --pidfile $PIDFILE $DAEMON
 	echo "$NAME."
 	;;
   stop)
 	echo -n $"Stopping $DESC: "
-	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
+	killproc `basename $REAL_DAEMON` && rm -f $PIDFILE
+#	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
 	echo "$NAME."
 	;;
   restart|force-reload)
 	echo -n $"Restarting $DESC: "
-	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
-	sleep 1
-	daemon --user sogo --pidfile $PIDFILE $DAEMON
+	$0 stop && sleep 2 && $0 start
 	echo "$NAME."
 	;;
   status)
@@ -84,4 +103,3 @@ case "$1" in
 esac
 
 exit 0
-

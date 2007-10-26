@@ -21,9 +21,19 @@
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-PIDFILE=/var/run/sogo/sogod.pid
+PIDFILE=/var/run/sogo/sogod.$1
 
 . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
 
 echo $$ > $PIDFILE
-exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 >& /var/log/sogo/sogod.log
+
+startport=`defaults read sogod-0.9 WOPort`
+if [ "$?" == "0" ]
+then
+  startport=`echo $startport | awk '{print $3}'`
+else
+  startport=20000
+fi
+
+let "port=$startport + $1 - 1"
+exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 -WOPort $PORT >& /var/log/sogo/sogod-$PORT.log
