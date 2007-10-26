@@ -24,6 +24,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/WOCookie.h>
@@ -213,15 +214,19 @@ static NSString *defaultModule = nil;
   [response setHeader: [container baseURLInContext: context]
 	    forKey: @"location"];
   auth = [[self clientObject] authenticatorInContext: context];
+
+  date = [NSCalendarDate calendarDate];
+  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+
   cookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
 		     value: @"discard"];
   [cookie setPath: @"/"];
-  date = [NSCalendarDate calendarDate];
   [cookie setExpires: [date yesterday]];
   [response addCookie: cookie];
-  
-  [response setHeader: date forKey: @"Last-Modified"];
-  [response setHeader: @"no-store, no-cache, must-revalidate, max-age=0" forKey: @"Cache-Control"];
+
+  [response setHeader: [date rfc822DateString] forKey: @"Last-Modified"];
+  [response setHeader: @"no-store, no-cache, must-revalidate, max-age=0"
+	    forKey: @"Cache-Control"];
   [response setHeader: @"post-check=0, pre-check=0" forKey: @"Cache-Control"];
   [response setHeader: @"no-cache" forKey: @"Pragma"];
 
