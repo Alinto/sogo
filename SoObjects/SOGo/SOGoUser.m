@@ -499,6 +499,18 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return messageForwarding;
 }
 
+- (NSString *) messageCheck
+{
+  NSString *messageCheck;
+
+  messageCheck
+    = [[self userDefaults] stringForKey: @"MessageCheck"];
+  if (![messageCheck length])
+    messageCheck = @"manually";
+
+  return messageCheck;
+}
+
 /* folders */
 
 // TODO: those methods should check whether the traversal stack in the context

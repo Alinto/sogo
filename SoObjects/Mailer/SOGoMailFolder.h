@@ -52,6 +52,9 @@
 
 - (NSException *) postData: (NSData *) _data flags: (id) _flags;
 
+- (void) markForExpunge;
+- (void) expungeLastMarkedFolder;
+
 - (NSException *) expunge;
 
 /* flags */

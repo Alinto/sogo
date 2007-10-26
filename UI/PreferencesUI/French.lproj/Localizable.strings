@@ -65,6 +65,16 @@
 "reminderTime_4800" = "2 journées";
 
 /* Mailer */
+"Check for new mail:" = "Vérifier l'arrivée de messages:";
+"messagecheck_manually" = "Manuellement";
+"messagecheck_every_minute" = "Chaque minute";
+"messagecheck_every_2_minutes" = "Toutes les 2 minutes";
+"messagecheck_every_5_minutes" = "Toutes les 5 minutes";
+"messagecheck_every_10_minutes" = "Toutes les 10 minutes";
+"messagecheck_every_20_minutes" = "Toutes les 20 minutes";
+"messagecheck_every_30_minutes" = "Toutes les 30 minutes";
+"messagecheck_once_per_hour" = "Une fois par heure";
+
 "Forward messages:" = "Transérer les messages :";
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";

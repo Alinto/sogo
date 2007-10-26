@@ -874,7 +874,9 @@ static BOOL debugSoParts       = NO;
   
   error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
   if (error != nil) return error;
-  
+
+  [container markForExpunge];
+
   [self flushMailCaches];
   
   return nil;

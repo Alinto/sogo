@@ -421,6 +421,30 @@ static BOOL shouldDisplayPasswordChange = NO;
 }
 
 /* Mailer */
+- (NSArray *) messageCheckList
+{
+  return [NSArray arrayWithObjects: @"manually", @"every_minute",
+		  @"every_2_minutes", @"every_5_minutes", @"every_10_minutes",
+		  @"every_20_minutes", @"every_30_minutes", @"once_per_hour",
+		  nil];
+}
+
+- (NSString *) itemMessageCheckText
+{
+  return [self labelForKey:
+		 [NSString stringWithFormat: @"messagecheck_%@", item]];
+}
+
+- (NSString *) userMessageCheck
+{
+  return [user messageCheck];
+}
+
+- (void) setUserMessageCheck: (NSString *) newMessageCheck
+{
+  [userDefaults setObject: newMessageCheck forKey: @"MessageCheck"];
+}
+
 - (NSArray *) messageForwardingList
 {
   return [NSArray arrayWithObjects: @"inline", @"attached", nil];
