@@ -34,16 +34,7 @@ IMG#progressIndicator
   margin-right: 1em; }
 
 DIV#pageContent
-{ /* position: absolute;
-  background-color: #ffa;
-  top: 3em;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  margin: 0px;
-  padding: 0px;
-  border: 0px;
-   */clear: both; }
+{ clear: both; }
 
 A
 { text-decoration: none;

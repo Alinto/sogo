@@ -1,5 +1,6 @@
 BODY
-{ background-color: #999; }
+{ background-color: #999;
+  text-align: center; }
 
 IMG#preparedAnimation
 { 
@@ -14,6 +15,7 @@ DIV#loginScreen
   margin-top: 5em;
   padding: 5px;
   border: 2px solid transparent;
+  text-align: left;
   width: 200px;
   -moz-border-top-colors: #efebe7 #fff;
   -moz-border-left-colors: #efebe7 #fff;
