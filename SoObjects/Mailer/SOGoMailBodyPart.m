@@ -258,7 +258,7 @@ static BOOL debugOn = NO;
   NSException *error;
   WOResponse *r;
   NSData     *data;
-  NSString   *etag;
+  NSString   *etag, *mimeType;
   
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil) {
     // TODO: currently we fetch the body structure to get here - check this!
@@ -283,14 +283,19 @@ static BOOL debugOn = NO;
   
   // TODO: wrong, could be encoded
   r = [(WOContext *)_ctx response];
-  [r setHeader:[self davContentType] forKey:@"content-type"];
-  [r setHeader:[NSString stringWithFormat:@"%d", [data length]]
-     forKey:@"content-length"];
-  
+  mimeType = [self davContentType];
+  if ([mimeType isEqualToString: @"application/x-xpinstall"])
+    mimeType = @"application/octet-stream";
+
+  [r setHeader: mimeType forKey:@"content-type"];
+  [r setHeader: [NSString stringWithFormat:@"%d", [data length]]
+     forKey: @"content-length"];
+
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
 
   [r setContent:data];
+
   return r;
 }
 

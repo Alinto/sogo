@@ -1,5 +1,10 @@
 2007-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-GETAction:]): use the "application/octet-stream" mime type for
+	elements of type "application/x-xpinstall" to avoid confusing
+	Firefox.
+
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -messageCheckList])
 	([UIxPreferences -itemMessageCheckText])
 	([UIxPreferences -userMessageCheck])
