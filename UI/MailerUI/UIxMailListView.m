@@ -516,10 +516,13 @@ static int attachmentFlagSize = 8096;
 {
   WORequest *request;
   NSString *specificMessage, *searchCriteria, *searchValue;
+  SOGoUserFolder *co;
 
   request = [context request];
 
-  [[self clientObject] flushMailCaches];
+  co = [self clientObject];
+  [co flushMailCaches];
+  [co expungeLastMarkedFolder];
 
   specificMessage = [request formValueForKey: @"pageforuid"];
   searchCriteria = [request formValueForKey: @"search"];
@@ -532,6 +535,7 @@ static int attachmentFlagSize = 8096;
     = ((specificMessage)
        ? [self firstMessageOfPageFor: [specificMessage intValue]]
        : [[request formValueForKey:@"idx"] intValue]);
+
   return self;
 }
 

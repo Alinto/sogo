@@ -1,3 +1,19 @@
+2007-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-defaultAction]): now expunges the last folder marked for expunge.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-trashInContext:_ctx]): now marks the container folder for
+	expunge.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-markForExpunge]): new method that marks the folder for the next
+	automatic expunge operation in the user settings.
+	([SOGoMailFolder -expungeLastMarkedFolder]): new methods that
+	takes the last folder marked for expunge, expunges it and removes
+	it from the user settings, if it exists.
+
 2007-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView

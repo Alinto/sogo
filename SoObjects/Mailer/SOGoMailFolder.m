@@ -19,9 +19,12 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -234,6 +237,47 @@ static NSString *defaultUserID =  @"anyone";
 - (NSException *) expunge
 {
   return [[self imap4Connection] expungeAtURL: [self imap4URL]];
+}
+
+- (void) markForExpunge
+{
+  NSUserDefaults *ud;
+  NSMutableDictionary *mailSettings;
+
+  ud = [[context activeUser] userSettings];
+  mailSettings = [ud objectForKey: @"Mail"];
+  if (!mailSettings)
+    {
+      mailSettings = [NSMutableDictionary dictionaryWithCapacity: 1];
+      [ud setObject: mailSettings forKey: @"Mail"];
+    }
+
+  [mailSettings setObject: [self imap4URLString] forKey: @"folderForExpunge"];
+  [ud synchronize];
+}
+
+- (void) expungeLastMarkedFolder
+{
+  NSUserDefaults *ud;
+  NSMutableDictionary *mailSettings;
+  NSString *expungeURL;
+  NSURL *folderURL;
+
+  ud = [[context activeUser] userSettings];
+  mailSettings = [ud objectForKey: @"Mail"];
+  if (mailSettings)
+    {
+      expungeURL = [mailSettings objectForKey: @"folderForExpunge"];
+      if (expungeURL)
+	{
+	  folderURL = [NSURL URLWithString: expungeURL];
+	  if (![[self imap4Connection] expungeAtURL: folderURL])
+	    {
+	      [mailSettings removeObjectForKey: @"folderForExpunge"];
+	      [ud synchronize];
+	    }
+	}
+    }
 }
 
 /* flags */
