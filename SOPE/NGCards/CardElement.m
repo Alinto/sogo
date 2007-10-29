@@ -25,6 +25,10 @@
 #import <Foundation/NSRange.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
+
 #import "NSArray+NGCards.h"
 #import "NSDictionary+NGCards.h"
 #import "CardVersitRenderer.h"
@@ -245,12 +249,30 @@
 
 - (NSString *) value: (unsigned int) anInt
 {
-  NSString *value;
+  NSString *realValue, *value, *encoding;
 
   if ([values count] <= anInt)
     value = @"";
   else
-    value = [values objectAtIndex: anInt];
+    {
+      realValue = [values objectAtIndex: anInt];
+      encoding = [[self value: 0 ofAttribute: @"encoding"] lowercaseString];
+      if ([encoding length])
+	{
+	  if ([encoding isEqualToString: @"quoted-printable"])
+	    value = [realValue stringByDecodingQuotedPrintable];
+	  else if ([encoding isEqualToString: @"base64"])
+	    value = [realValue stringByDecodingBase64];
+	  else
+	    {
+	      value = realValue;
+	      if (![encoding isEqualToString: @"8bit"])
+		[self logWithFormat: @"unknown encoding '%@'", encoding];
+	    }
+	}
+      else
+	value = realValue;
+    }
 
   return value;
 }
