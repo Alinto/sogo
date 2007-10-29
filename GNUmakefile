@@ -5,7 +5,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS = \
 	SOPE/NGCards \
-	SOPE/sope-gdl1/GDLContentStore \
+	SOPE/GDLContentStore \
 	OGoContentStore	\
 	SoObjects	\
 	Main		\
