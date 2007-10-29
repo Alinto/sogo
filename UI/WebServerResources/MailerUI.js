@@ -944,16 +944,16 @@ var mailboxSpanDrop = function(data) {
   }
   else
     success = false;
-  
+
   return success;
 }
-    
+
 var plusSignEnter = function() {
   var nodeNr = parseInt(this.id.substr(2));
   if (!mailboxTree.aNodes[nodeNr]._io)
     this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
 }
-      
+
 var plusSignExit = function() {
   if (this.plusSignTimer) {
     clearTimeout(this.plusSignTimer);

@@ -103,6 +103,7 @@
 "first"         = "Erste";
 "previous"      = "Vorherige";
 "next"          = "Nächste";
+"last"          = "Letzter";
 
 "Mark Unread" = "Als ungelesen markieren"; 
 "Mark Read"   = "Als gelesen markieren";

@@ -263,6 +263,7 @@ static int attachmentFlagSize = 8096;
 - (NSArray *) sortedUIDs 
 {
   EOQualifier *fetchQualifier, *notDeleted;
+
   if (!sortedUIDs)
     {
       notDeleted = [EOQualifier qualifierWithQualifierFormat:
@@ -352,6 +353,21 @@ static int attachmentFlagSize = 8096;
 - (unsigned int) nextFirstMessageNumber 
 {
   return [self firstMessageNumber] + [self fetchRange].length;
+}
+
+- (unsigned int) lastFirstMessageNumber 
+{
+  unsigned int max, modulo;
+
+  if (!sortedUIDs)
+    [self sortedUIDs];
+
+  max = [sortedUIDs count];
+  modulo = (max % messagesPerPage);
+  if (modulo == 0)
+    modulo = messagesPerPage;
+
+  return (max + 1 - modulo);
 }
 
 - (unsigned int) prevFirstMessageNumber 

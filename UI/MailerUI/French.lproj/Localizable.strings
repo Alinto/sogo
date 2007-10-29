@@ -118,8 +118,9 @@
 "messages"      = "message(s)";
 
 "first"         = "Premier";
-"previous"      = "précédent";
-"next"          = "suivant";
+"previous"      = "Précédent";
+"next"          = "Suivant";
+"last"          = "Dernier";
 
 "Mark Unread" = "Marquer comme non lu"; 
 "Mark Read"   = "Marquer comme lu";

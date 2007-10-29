@@ -116,9 +116,10 @@
 "Unread"        = "Unread";
 "messages"      = "messages";
 
-"first"         = "first";
-"previous"      = "prev";
-"next"          = "next";
+"first"         = "First";
+"previous"      = "Previous";
+"next"          = "Next";
+"last"          = "Last";
 
 "msgnumber_to"  = "to";
 "msgnumber_of"  = "of";

@@ -48,6 +48,9 @@
 	    >| <a href="#"
 	      var:idx="nextFirstMessageNumber"
 	      ><var:string label:value="next" /></a>
+	    | <a href="#"
+	      var:idx="lastFirstMessageNumber"
+	      ><var:string label:value="last" /></a>
 	  </var:if>
         </var:if
 	  ></td
