@@ -303,6 +303,10 @@ static GCSStringFormatter *stringFormatter = nil;
   return [self _fetchValueOfColumn:@"c_version" inContentWithName:_name];
 }
 
+- (NSNumber *)deletionOfContentWithName:(NSString *)_name {
+  return [self _fetchValueOfColumn:@"c_deleted" inContentWithName:_name];
+}
+
 - (NSString *)fetchContentWithName:(NSString *)_name {
   return [self _fetchValueOfColumn:@"c_content" inContentWithName:_name];
 }
@@ -525,6 +529,21 @@ static GCSStringFormatter *stringFormatter = nil;
   return AUTORELEASE(qualifier);
 }
 
+- (void) _purgeRecordWithName: (NSString *) recordName
+{
+  NSString *delSql, *table;
+  EOAdaptorChannel *channel;
+
+  channel = [self acquireStoreChannel];
+
+  table = [self storeTableName];
+  delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+		     @" WHERE c_name = %@", table,
+		     [self _formatRowValue: recordName]];
+  [channel evaluateExpressionX: delSql];
+  [self releaseChannel: channel];
+}
+
 - (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name
   baseVersion:(unsigned int)_baseVersion
 {
@@ -561,6 +580,14 @@ static GCSStringFormatter *stringFormatter = nil;
   if (doLogStore)
     [self logWithFormat:@"  version: %@", storedVersion];
   isNewRecord = [storedVersion isNotNull] ? NO : YES;
+  if (!isNewRecord)
+    {
+      if ([[self deletionOfContentWithName:_name] isNotNull])
+	{
+	  [self _purgeRecordWithName: _name];
+	  isNewRecord = YES;
+	}
+    }
   
   /* check whether sequence matches */  
   if (_baseVersion != 0 /* use 0 to override check */) {
