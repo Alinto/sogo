@@ -3,6 +3,10 @@
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-lastFirstMessageNumber]): new accessor that returns the first
 	message number of the last series of messages.
+	([UIxMailListView -fetchKeys]): request the bodystructure for each
+	listed message.
+	([UIxMailListView -hasMessageAttachment]): extract the attachment
+	information from the message bodystructure.
 
 2007-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

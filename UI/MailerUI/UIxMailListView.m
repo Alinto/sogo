@@ -40,13 +40,13 @@
 
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxMailListView.h"
 
 #define messagesPerPage 50
-static int attachmentFlagSize = 8096;
 
 @implementation UIxMailListView
 
@@ -80,7 +80,7 @@ static int attachmentFlagSize = 8096;
 
 - (void) setMessage: (id) _msg
 {
-  ASSIGN(message, _msg);
+  ASSIGN (message, _msg);
 }
 
 - (id) message 
@@ -203,11 +203,25 @@ static int attachmentFlagSize = 8096;
 
 - (BOOL) hasMessageAttachment 
 {
-  /* we detect attachments by size ... */
-  unsigned size;
-  
-  size = [[[self message] valueForKey:@"size"] intValue];
-  return size > attachmentFlagSize;
+  NSArray *parts;
+  NSEnumerator *dispositions;
+  NSDictionary *currentDisp;
+  BOOL hasAttachment;
+
+  parts = [[message objectForKey: @"body"] objectForKey: @"parts"];
+  if ([parts count] > 1)
+    {
+      dispositions
+	= [[parts objectsForKey: @"disposition"] objectEnumerator];
+      while (!hasAttachment
+	     && (currentDisp = [dispositions nextObject]))
+	hasAttachment = ([[currentDisp objectForKey: @"type"]
+			   isEqualToString: @"ATTACHMENT"]);
+    }
+  else
+    hasAttachment = NO;
+
+  return hasAttachment;
 }
 
 /* fetching messages */
@@ -216,10 +230,12 @@ static int attachmentFlagSize = 8096;
 {
   /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
   static NSArray *keys = nil;
-  if (keys == nil) {
+
+  if (!keys)
     keys = [[NSArray alloc] initWithObjects: @"UID",
-			      @"FLAGS", @"ENVELOPE", @"RFC822.SIZE", nil];
-  }
+			    @"FLAGS", @"ENVELOPE", @"RFC822.SIZE",
+			    @"BODYSTRUCTURE", nil];
+
   return keys;
 }
 
@@ -384,22 +400,23 @@ static int attachmentFlagSize = 8096;
 
 - (NSArray *) messages 
 {
-  NSArray  *uids;
-  NSArray  *msgs;
-  NSRange  r;
+  NSArray *uids;
+  NSDictionary *msgs;
+  NSRange r;
   unsigned len;
   
-  if (messages != nil)
-    return messages;
-
-  r    = [self fetchBlock];
-  uids = [self sortedUIDs];
-  if ((len = [uids count]) > r.length)
-    /* only need to restrict if we have a lot */
-    uids = [uids subarrayWithRange:r];
+  if (!messages)
+    {
+      r    = [self fetchBlock];
+      uids = [self sortedUIDs];
+      len = [uids count];
+      if (len > r.length)
+	/* only need to restrict if we have a lot */
+	uids = [uids subarrayWithRange: r];
   
-  msgs = [[self clientObject] fetchUIDs: uids parts: [self fetchKeys]];
-  messages = [[msgs valueForKey: @"fetch"] retain];
+      msgs = [[self clientObject] fetchUIDs: uids parts: [self fetchKeys]];
+      messages = [[msgs objectForKey: @"fetch"] retain];
+    }
 
   return messages;
 }
