@@ -144,17 +144,14 @@ function openMessageWindowsForSelection(action, firstOnly) {
     var messageList = $("messageList");
     var rows = messageList.getSelectedRowsId();
     if (rows.length > 0) {
-      if (firstOnly)
-	openMessageWindow(rows[0].substr(4),
+      for (var i = 0; i < rows.length; i++) {
+	openMessageWindow(rows[i].substr(4),
 			  ApplicationBaseURL + currentMailbox
-			  + "/" + rows[0].substr(4)
+			  + "/" + rows[i].substr(4)
 			  + "/" + action);
-      else
-	for (var i = 0; i < rows.length; i++)
-	  openMessageWindow(rows[i].substr(4),
-			    ApplicationBaseURL + currentMailbox
-			    + "/" + rows[i].substr(4)
-			    + "/" + action);
+	if (firstOnly)
+	  break;
+      }
     } else {
       window.alert(labels["Please select a message."]);
     }
@@ -240,6 +237,7 @@ function deleteSelectedMessagesCallback(http) {
 
 	var row = $("row_" + data["id"]);
 	row.parentNode.removeChild(row);
+//	row.addClassName("deleted"); // when we'll offer "mark as deleted"
 
 	deleteMessageRequestCount--;
       }
@@ -417,6 +415,7 @@ function openMailbox(mailbox, reload, idx) {
 	      + "&asc=" + sorting["ascending"]);
     if (idx)
       url += "&idx=" + idx;
+
     if (document.messageListAjaxRequest) {
       document.messageListAjaxRequest.aborted = true;
       document.messageListAjaxRequest.abort();
@@ -704,8 +703,9 @@ function configureLinksInMessage() {
   var messageDiv = $('messageContent');
   var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
 						       messageDiv)[0];
-  Event.observe(mailContentDiv, "contextmenu",
-		onMessageContentMenu.bindAsEventListener(mailContentDiv));
+  if (!document.body.hasClassName("popup"))
+    Event.observe(mailContentDiv, "contextmenu",
+		  onMessageContentMenu.bindAsEventListener(mailContentDiv));
   var anchors = messageDiv.getElementsByTagName('a');
   for (var i = 0; i < anchors.length; i++)
     if (anchors[i].href.substring(0,7) == "mailto:") {
@@ -821,9 +821,6 @@ function validateControls() {
 
 function moveTo(uri) {
   alert("MoveTo: " + uri);
-}
-
-function deleteSelectedMails() {
 }
 
 /* message menu entries */
@@ -1332,7 +1329,7 @@ function buildMailboxes(accountName, encoded) {
   return account;
 }
 
-function onMenuCreateFolder(event) { log ("onMenuCreateFolder " + document.menuTarget);
+function onMenuCreateFolder(event) {
   var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
@@ -1505,16 +1502,15 @@ function messageFlagCallback(http) {
 
 function onLabelMenuPrepareVisibility() {
   var messageList = $("messageList");
-  var rows = messageList.getSelectedRows();
-
   var flags = {};
-  for (var i = 1; i < 6; i++)
-    flags["label" + i] = true;
-  for (var i = 0; i < rows.length; i++) {
-    var rowFlags = rows[i].getAttribute("labels").split(" ");
-    for (var flag in flags)
-      if (flags[flag] && rowFlags.indexOf(flag) == -1)
-	flags[flag] = false;
+
+  if (messageList) {
+    var rows = messageList.getSelectedRows();
+    for (var i = 0; i < rows.length; i++) {
+      $w(rows[i].getAttribute("labels")).each(function(flag) {
+	flags[flag] = true;
+	});
+    }
   }
 
   var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li")

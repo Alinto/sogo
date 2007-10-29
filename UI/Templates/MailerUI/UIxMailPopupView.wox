@@ -7,5 +7,7 @@
     className="UIxPageFrame"
     title="title"
     const:popup="YES">
-    <var:component className="UIxMailView" />
-  </var:component>
+    <span id="messageContent">
+      <var:component className="UIxMailView" />
+    </span>
+   </var:component>

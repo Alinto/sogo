@@ -79,14 +79,6 @@
     </ul>
   </div>
   
-  <div class="menu" id="addressMenu">
-    <ul>
-      <li id="add_to_addressbook"><var:string label:value="Add to Address Book..."/></li>
-      <li id="compose_mailto"><var:string label:value="Compose Mail To"/></li>
-      <li id="create_filter"><var:string label:value="Create Filter From Message..."/></li>
-    </ul>
-  </div>
-
   <div class="menu" id="messageListMenu">
     <ul>
       <li><var:string label:value="Open Message In New Window"/></li>
