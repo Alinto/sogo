@@ -236,20 +236,24 @@ static BOOL debugOn = NO;
   return @"application/octet-stream";
 }
 
-- (NSString *)davContentType {
+- (NSString *) davContentType
+{
   // TODO: what about the content-type and other headers?
   //       => we could pass them in as the extension? (eg generate 1.gif!)
-  NSString *pe;
+  NSString *parts, *contentType, *extension;
   
   /* try type from body structure info */
   
-  if ((pe = [self contentTypeForBodyPartInfo:[self partInfo]]) != nil)
-    return pe;
-  
-  /* construct type */
-  
-  pe = [[self nameInContainer] pathExtension];
-  return [self contentTypeForPathExtension:pe];
+  parts = [self contentTypeForBodyPartInfo: [self partInfo]];
+  contentType = [[parts componentsSeparatedByString: @";"] objectAtIndex: 0];
+
+  if (![contentType length])
+    {
+      extension = [[self nameInContainer] pathExtension];
+      contentType = [self contentTypeForPathExtension: extension];
+    }
+
+  return contentType;
 }
 
 /* actions */
