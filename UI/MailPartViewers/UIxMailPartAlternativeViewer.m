@@ -41,7 +41,7 @@
 
 @interface UIxMailPartAlternativeViewer : UIxMailPartViewer
 {
-  id childInfo;
+  id           childInfo;
   unsigned int childIndex;
 }
 
@@ -49,148 +49,120 @@
 
 @implementation UIxMailPartAlternativeViewer
 
-- (void) dealloc
-{
+- (void)dealloc {
   [childInfo release];
   [super dealloc];
 }
 
 /* caches */
 
-- (void) resetBodyInfoCaches
-{
-  [childInfo release];
-  childInfo = nil;
+- (void)resetBodyInfoCaches {
+  [childInfo release]; childInfo = nil;
   childIndex = 0;
-
   [super resetBodyInfoCaches];
 }
 
 /* part selection */
 
-- (NSArray *) childPartTypes
-{
+- (NSArray *)childPartTypes {
   NSMutableArray *types;
-  NSArray *childParts;
-  NSEnumerator *allParts;
-  NSString *mt, *st;
-  NSDictionary *currentPart;
+  unsigned i, count;
+  NSArray  *childParts;
 
-  types = [NSMutableArray array];
+  childParts = [[self bodyInfo] valueForKey:@"parts"];
+  count      = [childParts count];
+  types      = [NSMutableArray arrayWithCapacity:count];
+  
+  for (i = 0; i < count; i++) {
+    NSString *mt, *st;
 
-  childParts = [[self bodyInfo] valueForKey: @"parts"];
-  allParts = [childParts objectEnumerator];
-
-  while ((currentPart = [allParts nextObject]))
-    {
-      mt = [[currentPart valueForKey:@"type"] lowercaseString];
-      st = [[currentPart valueForKey:@"subtype"] lowercaseString];
-      [types addObject: [NSString stringWithFormat: @"%@/%@", mt, st]];
-    }
-
+    mt = [[[childParts objectAtIndex:i] valueForKey:@"type"] lowercaseString];
+    st = [[[childParts objectAtIndex:i] valueForKey:@"subtype"]
+	               lowercaseString];
+    mt = [[mt stringByAppendingString:@"/"] stringByAppendingString:st];
+    [types addObject:mt ? mt : (id)[NSNull null]];
+  }
   return types;
 }
 
-- (int) selectPartIndexFromTypes: (NSArray *) types
-{
+- (int)selectPartIndexFromTypes:(NSArray *)_types {
   /* returns the index of the selected part or NSNotFound */
-  unsigned int count, max;
-  int index;
+  unsigned i, count;
 
-  index = -1;
+  if ((count = [_types count]) == 0)
+    return NSNotFound;
+  
+  if ((i = [_types indexOfObject:@"text/html"]) != NSNotFound)
+    return i;
+  if ((i = [_types indexOfObject:@"text/plain"]) != NSNotFound)
+    return i;
 
-  max = [types count];
-  if (max > 0)
-    {
-      index = [types indexOfObject: @"text/html"];
-      if (index == NSNotFound)
-	{
-	  index = [types indexOfObject: @"text/plain"];
-	  if (index == NSNotFound)
-	    {
-	      count = 0;
-	      while (index == -1
-		     && count < max)
-		if ([[types objectAtIndex: count] hasPrefix: @"text/"])
-		  index = count;
-		else
-		  count++;
-	      if (index == -1)
-		index = 0;
-	    }
-	}
-      else
-	index = count;
-    }
-  else
-    index = NSNotFound;
-
-  return index;
+  /* then we scan for other text types and choose the first one found */
+  for (i = 0; i < count; i++) {
+    if ([(NSString *)[_types objectAtIndex:i] hasPrefix:@"text/"])
+      return i;
+  }
+  
+  /* as a fallback, we select the first available part */
+  return 0;
 }
 
-- (void) selectChildInfo
-{
-  int idx;
+- (void)selectChildInfo {
+  unsigned idx;
   
-  [childInfo release];
-  childInfo = nil;
+  [childInfo release]; childInfo = nil;
   childIndex = 0;
   
-  idx = [self selectPartIndexFromTypes: [self childPartTypes]];
-  if (idx == NSNotFound)
-    [self errorWithFormat: @"could not select a part of types: %@",
-	  [self childPartTypes]];
-  else
-    {
-      childIndex = idx + 1;
-      childInfo = [[[self bodyInfo] valueForKey:@"parts"] objectAtIndex: idx];
-      [childInfos retain];
-    }
+  idx = [self selectPartIndexFromTypes:[self childPartTypes]];
+  if (idx == NSNotFound) {
+    [self errorWithFormat:@"could not select a part of types: %@",
+            [self childPartTypes]];
+    return;
+  }
+  
+  childIndex = idx + 1;
+  childInfo  = 
+    [[[[self bodyInfo] valueForKey:@"parts"] objectAtIndex:idx] retain];
 }
 
 /* accessors */
 
-- (id) childInfo
-{
-  if (!childInfo)
+- (id)childInfo {
+  if (childInfo == nil)
     [self selectChildInfo];
   
   return childInfo;
 }
 
-- (unsigned int) childIndex
-{
-  if (!childIndex)
+- (unsigned int) childIndex {
+  if (childIndex == 0)
     [self selectChildInfo];
-
+  
   return childIndex - 1;
 }
 
-- (NSString *) childPartName
-{
-  return [NSString stringWithFormat: @"%d", ([self childIndex] + 1)];
+- (NSString *)childPartName {
+  char buf[8];
+  sprintf(buf, "%d", [self childIndex] + 1);
+  return [NSString stringWithCString:buf];
 }
 
-- (id) childPartPath
-{
+- (id)childPartPath {
   NSArray *pp;
 
   pp = [self partPath];
-
   return [pp count] > 0
-    ? [pp arrayByAddingObject: [self childPartName]]
-    : [NSArray arrayWithObject: [self childPartName]];
+    ? [pp arrayByAddingObject:[self childPartName]]
+    : [NSArray arrayWithObject:[self childPartName]];
 }
 
 /* nested viewers */
 
-- (id) contentViewerComponent
-{
+- (id)contentViewerComponent {
   id info;
   
   info = [self childInfo];
-
-  return [[context mailRenderingContext] viewerForBodyInfo:info];
+  return [[[self context] mailRenderingContext] viewerForBodyInfo:info];
 }
 
 @end /* UIxMailPartAlternativeViewer */
