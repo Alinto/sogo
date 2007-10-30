@@ -29,10 +29,6 @@ function openMessageWindow(msguid, url) {
     markMailReadInWindow(window, msguid);
   }
   var msgWin = openMailComposeWindow(url, wId);
-  if (msguid) {
-    msgWin.messageId = msguid;
-    msgWin.messageURL = ApplicationBaseURL + currentMailbox + "/" + msguid;
-  }
   msgWin.focus();
 
   return false;
@@ -137,9 +133,9 @@ function markMailReadInWindow(win, msguid) {
 /* mail list reply */
 
 function openMessageWindowsForSelection(action, firstOnly) {
-  if (document.body.hasClassName("popup"))
-    win = openMessageWindow(window.messageId,
-			    window.messageURL + "/" + action);
+  if (document.body.hasClassName("popup")) {
+    return true;
+  }
   else {
     var messageList = $("messageList");
     var rows = messageList.getSelectedRowsId();
