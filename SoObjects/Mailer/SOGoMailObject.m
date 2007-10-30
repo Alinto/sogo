@@ -398,11 +398,11 @@ static BOOL debugSoParts       = NO;
   NSData *content;
   id     result, fullResult;
   
-  fullResult = [self fetchParts:[NSArray arrayWithObject: @"RFC822"]];
+  fullResult = [self fetchParts: [NSArray arrayWithObject: @"RFC822"]];
   if (fullResult == nil)
     return nil;
   
-  if ([fullResult isKindOfClass:[NSException class]])
+  if ([fullResult isKindOfClass: [NSException class]])
     return fullResult;
   
   /* extract fetch result */
@@ -440,23 +440,30 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) contentAsString
 {
-  NSString *s;
+  id s;
   NSData *content;
-  
-  if ((content = [self content]) == nil)
-    return nil;
-  if ([content isKindOfClass:[NSException class]])
-    return (id)content;
-  
-  s = [[NSString alloc] initWithData: content
-			encoding: NSISOLatin1StringEncoding];
-  if (s == nil) {
-    [self logWithFormat:
-	    @"ERROR: could not convert data of length %d to string", 
-	    [content length]];
-    return nil;
-  }
-  return [s autorelease];
+
+  content = [self content];
+  if (content)
+    {
+      if ([content isKindOfClass: [NSData class]])
+	{
+	  s = [[NSString alloc] initWithData: content
+				encoding: NSISOLatin1StringEncoding];
+	  if (s)
+	    [s autorelease];
+	  else
+	    [self logWithFormat:
+		    @"ERROR: could not convert data of length %d to string", 
+		  [content length]];
+	}
+      else
+	s = content;
+    }
+  else
+    s = nil;
+
+  return s;
 }
 
 /* bulk fetching of plain/text content */
