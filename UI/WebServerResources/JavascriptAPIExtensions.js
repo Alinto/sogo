@@ -82,14 +82,21 @@ Date.prototype.sogoDayName = function() {
 Date.prototype.daysUpTo = function(otherDate) {
   var days = new Array();
 
-  var day1Date = new Date();
-  day1Date.setTime(this.getTime());
-  day1Date.setHours(0, 0, 0, 0);
-  var day2Date = new Date();
-  day2Date.setTime(otherDate.getTime());
-  day2Date.setHours(23, 59, 59, 999);
-  var day1 = day1Date.getTime();
-  var day2 = day2Date.getTime();
+  var day1 = this.getTime();
+  var day2 = otherDate.getTime();
+  if (day1 > day2) {
+    var tmp = day1;
+    day1 = day2;
+    day2 = tmp;
+  }
+//   var day1Date = new Date();
+//   day1Date.setTime(this.getTime());
+//   day1Date.setHours(0, 0, 0, 0);
+//   var day2Date = new Date();
+//   day2Date.setTime(otherDate.getTime());
+//   day2Date.setHours(23, 59, 59, 999);
+//   var day1 = day1Date.getTime();
+//   var day2 = day2Date.getTime();
 
   var nbrDays = Math.floor((day2 - day1) / 86400000) + 1;
   for (var i = 0; i < nbrDays; i++) {

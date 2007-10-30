@@ -25,6 +25,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -287,6 +288,24 @@
   return formattedDate;    
 }
 
+- (NSString *) _adjustedDateForSeconds: (unsigned int) seconds
+                             forAllDay: (BOOL) forAllDay
+{
+  NSCalendarDate *date;
+  unsigned int newSeconds, offset;
+
+  date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+  [date setTimeZone: userTimeZone];
+
+  offset = [userTimeZone secondsFromGMTForDate: date];
+  if (forAllDay)
+    newSeconds = seconds + [userTimeZone secondsFromGMT] - offset;
+  else
+    newSeconds = seconds + offset;
+
+  return [NSString stringWithFormat: @"%u", newSeconds];
+}
+
 - (WOResponse *) eventsListAction
 {
   NSArray *fields, *oldEvent;
@@ -309,9 +328,15 @@
       newEvent = [NSMutableArray arrayWithArray: oldEvent];
       isAllDay = [[oldEvent objectAtIndex: 7] boolValue];
       interval = [[oldEvent objectAtIndex: 4] intValue];
+      [newEvent replaceObjectAtIndex: 4
+		withObject: [self _adjustedDateForSeconds: interval
+				  forAllDay: isAllDay]];
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
       interval = [[oldEvent objectAtIndex: 5] intValue];
+      [newEvent replaceObjectAtIndex: 5
+		withObject: [self _adjustedDateForSeconds: interval
+				  forAllDay: isAllDay]];
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
       [newEvents addObject: newEvent];

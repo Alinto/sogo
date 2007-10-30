@@ -8,9 +8,6 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title">
-  <script type="text/javascript">
-    var UTCOffset = <var:string value="userUTCOffset"/>;
-  </script>
   <div class="preload" style="visibility: hidden;">
     <img rsrc:src="event-gradient.png"/>
   </div>

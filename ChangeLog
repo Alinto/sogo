@@ -1,5 +1,15 @@
 2007-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): substitude the start and end date with their
+	UTC counterpart, taking into account the offset from UTC related
+	to those dates instead of the current one. This renders
+	-[UIxCalMainView -userUTCOffset] obsolete because the computings
+	that occured in javascript are now done server-side.
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView -userUTCOffset]):
+	removed obsolete method.
+
 	* SoObjects/Mailer/NSString+Mail.m ([NSString -htmlToText]): new
 	method converting html content to plain text.
 

@@ -42,15 +42,6 @@ static NSMutableArray *yearMenuItems = nil;
 
 @implementation UIxCalMainView
 
-- (NSString *) userUTCOffset
-{
-  NSTimeZone *userTZ;
-
-  userTZ = [[context activeUser] timeZone];
-
-  return [NSString stringWithFormat: @"%d", [userTZ secondsFromGMT]];
-}
-
 - (NSArray *) monthMenuItems
 {
   unsigned int count;
