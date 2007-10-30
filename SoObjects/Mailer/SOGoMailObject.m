@@ -40,6 +40,7 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMimeMessageParser.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -181,10 +182,13 @@ static BOOL debugSoParts       = NO;
   return ma;
 }
 
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *) toOneRelationshipKeys
+{
   return [self relationshipKeysWithParts:NO];
 }
-- (NSArray *)toManyRelationshipKeys {
+
+- (NSArray *) toManyRelationshipKeys
+{
   return [self relationshipKeysWithParts:YES];
 }
 
@@ -468,29 +472,29 @@ static BOOL debugSoParts       = NO;
 
 /* bulk fetching of plain/text content */
 
-- (BOOL) shouldFetchPartOfType: (NSString *) _type
-		       subtype: (NSString *) _subtype
-{
-  /*
-    This method decides which parts are 'prefetched' for display. Those are
-    usually text parts (the set is currently hardcoded in this method ...).
-  */
-  _type    = [_type    lowercaseString];
-  _subtype = [_subtype lowercaseString];
+// - (BOOL) shouldFetchPartOfType: (NSString *) _type
+// 		       subtype: (NSString *) _subtype
+// {
+//   /*
+//     This method decides which parts are 'prefetched' for display. Those are
+//     usually text parts (the set is currently hardcoded in this method ...).
+//   */
+//   _type    = [_type    lowercaseString];
+//   _subtype = [_subtype lowercaseString];
   
-  return (([_type isEqualToString: @"text"]
-           && ([_subtype isEqualToString: @"plain"]
-               || [_subtype isEqualToString: @"html"]
-               || [_subtype isEqualToString: @"calendar"]))
-          || ([_type isEqualToString: @"application"]
-              && ([_subtype isEqualToString: @"pgp-signature"]
-                  || [_subtype hasPrefix: @"x-vnd.kolab."])));
-}
+//   return (([_type isEqualToString: @"text"]
+//            && ([_subtype isEqualToString: @"plain"]
+//                || [_subtype isEqualToString: @"html"]
+//                || [_subtype isEqualToString: @"calendar"]))
+//           || ([_type isEqualToString: @"application"]
+//               && ([_subtype isEqualToString: @"pgp-signature"]
+//                   || [_subtype hasPrefix: @"x-vnd.kolab."])));
+// }
 
-- (void) addRequiredKeysOfStructure: (id) _info
-			       path: (NSString *) _p
-			    toArray: (NSMutableArray *) _keys
-			    recurse: (BOOL) _recurse
+- (void) addRequiredKeysOfStructure: (NSDictionary *) info
+			       path: (NSString *) p
+			    toArray: (NSMutableArray *) keys
+		      acceptedTypes: (NSArray *) types
 {
   /* 
      This is used to collect the set of IMAP4 fetch-keys required to fetch
@@ -501,19 +505,19 @@ static BOOL debugSoParts       = NO;
   */
   NSArray *parts;
   unsigned i, count;
-  BOOL fetchPart;
   NSString *k;
   id body;
-  NSString *sp;
+  NSString *sp, *mimeType;
   id childInfo;
-    
-  /* Note: if the part itself doesn't qualify, we still check subparts */
-  fetchPart = [self shouldFetchPartOfType: [_info valueForKey: @"type"]
-		    subtype: [_info valueForKey: @"subtype"]];
-  if (fetchPart)
+
+  mimeType = [[NSString stringWithFormat: @"%@/%@",
+			[info valueForKey: @"type"],
+			[info valueForKey: @"subtype"]]
+	       lowercaseString];
+  if ([types containsObject: mimeType])
     {
-      if ([_p length] > 0)
-	k = [NSString stringWithFormat: @"body[%@]", _p];
+      if ([p length] > 0)
+	k = [NSString stringWithFormat: @"body[%@]", p];
       else
 	{
 	  /*
@@ -523,40 +527,37 @@ static BOOL debugSoParts       = NO;
 	  */
 	  k = @"body[text]";
 	}
-      [_keys addObject: k];
+      [keys addObject: [NSDictionary dictionaryWithObjectsAndKeys: k, @"key",
+				     mimeType, @"mimeType", nil]];
     }
 
-  if (_recurse)
+  parts = [info objectForKey: @"parts"];
+  count = [parts count];
+  for (i = 0; i < count; i++)
     {
-      /* recurse */
-      parts = [(NSDictionary *)_info objectForKey: @"parts"];
-      count = [parts count];
-      for (i = 0; i < count; i++)
-	{
-	  sp = (([_p length] > 0)
-		? [_p stringByAppendingFormat: @".%d", i + 1]
-		: [NSString stringWithFormat: @"%d", i + 1]);
-    
-	  childInfo = [parts objectAtIndex: i];
-	
-	  [self addRequiredKeysOfStructure: childInfo
-		path: sp toArray: _keys
-		recurse: YES];
-	}
+      sp = (([p length] > 0)
+	    ? [p stringByAppendingFormat: @".%d", i + 1]
+	    : [NSString stringWithFormat: @"%d", i + 1]);
       
-      /* check body */
-      body = [(NSDictionary *)_info objectForKey: @"body"];
-      if (body)
-	{
-	  sp = [[body valueForKey: @"type"] lowercaseString];
-	  if ([sp isEqualToString: @"multipart"])
-	    sp = _p;
-	  else
-	    sp = [_p length] > 0 ? [_p stringByAppendingString: @".1"] : @"1";
-	  [self addRequiredKeysOfStructure: body
-		path: sp toArray: _keys
-		recurse: YES];
-	}
+      childInfo = [parts objectAtIndex: i];
+      
+      [self addRequiredKeysOfStructure: childInfo
+	    path: sp toArray: keys
+	    acceptedTypes: types];
+    }
+      
+  /* check body */
+  body = [info objectForKey: @"body"];
+  if (body)
+    {
+      sp = [[body valueForKey: @"type"] lowercaseString];
+      if ([sp isEqualToString: @"multipart"])
+	sp = p;
+      else
+	sp = [p length] > 0 ? [p stringByAppendingString: @".1"] : @"1";
+      [self addRequiredKeysOfStructure: body
+	    path: sp toArray: keys
+	    acceptedTypes: types];
     }
 }
 
@@ -567,10 +568,13 @@ static BOOL debugSoParts       = NO;
     keys which are marked by the -shouldFetchPartOfType:subtype: method.
   */
   NSMutableArray *ma;
-  
-  ma = [NSMutableArray arrayWithCapacity:4];
+  NSArray *types;
+
+  types = [NSArray arrayWithObjects: @"text/plain", @"text/html",
+		   @"text/calendar", @"application/pgp-signature", nil];
+  ma = [NSMutableArray arrayWithCapacity: 4];
   [self addRequiredKeysOfStructure: [self bodyStructure]
-	path: @"" toArray: ma recurse: YES];
+	path: @"" toArray: ma acceptedTypes: types];
 
   return ma;
 }
@@ -584,7 +588,7 @@ static BOOL debugSoParts       = NO;
   
   [self debugWithFormat: @"fetch keys: %@", _fetchKeys];
   
-  result = [self fetchParts:_fetchKeys];
+  result = [self fetchParts: [_fetchKeys objectsForKey: @"key"]];
   result = [result valueForKey: @"RawResponse"]; // hackish
   
   // Note: -valueForKey: doesn't work!
@@ -596,7 +600,7 @@ static BOOL debugSoParts       = NO;
     NSString *key;
     NSData   *data;
     
-    key  = [_fetchKeys objectAtIndex:i];
+    key  = [[_fetchKeys objectAtIndex:i] objectForKey: @"key"];
     data = [(NSDictionary *)[(NSDictionary *)result objectForKey:key] 
 			    objectForKey: @"data"];
     
@@ -622,7 +626,7 @@ static BOOL debugSoParts       = NO;
 
 - (NSDictionary *) fetchPlainTextParts
 {
-  return [self fetchPlainTextParts:[self plainTextContentFetchKeys]];
+  return [self fetchPlainTextParts: [self plainTextContentFetchKeys]];
 }
 
 /* convert parts to strings */
@@ -656,19 +660,20 @@ static BOOL debugSoParts       = NO;
 - (NSDictionary *) stringifyTextParts: (NSDictionary *) _datas
 {
   NSMutableDictionary *md;
+  NSDictionary *info;
   NSEnumerator *keys;
-  NSString     *key;
-  
-  md   = [NSMutableDictionary dictionaryWithCapacity:4];
+  NSString     *key, *s;
+
+  md = [NSMutableDictionary dictionaryWithCapacity:4];
   keys = [_datas keyEnumerator];
-  while ((key = [keys nextObject]) != nil) {
-    NSDictionary *info;
-    NSString *s;
-    
-    info = [self lookupInfoForBodyPart:key];
-    if ((s = [self stringForData:[_datas objectForKey:key] partInfo:info]))
-      [md setObject:s forKey:key];
-  }
+  while ((key = [keys nextObject]))
+    {
+      info = [self lookupInfoForBodyPart: key];
+      s = [self stringForData: [_datas objectForKey:key] partInfo: info];
+      if (s)
+	[md setObject: s forKey: key];
+    }
+
   return md;
 }
 

@@ -1,5 +1,26 @@
 2007-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/NSString+Mail.m ([NSString -htmlToText]): new
+	method converting html content to plain text.
+
+	* SoObjects/Mailer/NSString+Mail.[hm]: new category module
+	enhancing NSString with utility methods pertaining to mail handling.
+
+	* SoObjects/Mailer/SOGoMailObject.m
+	([-shouldFetchPartOfType:_typesubtype:_subtype]): removed obsolete method.
+	([SOGoMailObject
+	-addRequiredKeysOfStructure:infopath:ptoArray:keysacceptedTypes:types]):
+	modified method to be always recursive and to take an array of the
+	accepted mime-types as parameter. The returned array now contains
+	the mime-type as well as the part keys.
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-contentForEditingOnParts:_prtskeys:_k]): removed obsolete method.
+	([SOGoMailObject -contentForEditing]): rewrote method to take into
+	account the first text/plain part or the first text/html part
+	converted to text/plain with our new -[NSString htmlToText]
+	category method.
+
 	* UI/MailerUI/UIxMailActions.m ([-replyToAllAction]): invoke
 	"replyToAll:" with YES as parameter instead of NO.
 

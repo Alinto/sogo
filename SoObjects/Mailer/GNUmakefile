@@ -32,7 +32,8 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoMailForward.m		\
 	\
-	NSData+Mail.m
+	NSData+Mail.m			\
+	NSString+Mail.m
 
 Mailer_RESOURCE_FILES += \
 	Version		\
