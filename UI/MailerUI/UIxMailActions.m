@@ -66,7 +66,7 @@
 
 - (WOResponse *) replyToAllAction
 {
-  return [self replyToAll: NO];
+  return [self replyToAll: YES];
 }
 
 - (WOResponse *) forwardAction

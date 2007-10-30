@@ -27,8 +27,10 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
+#import "NSString+Mail.h"
 #import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
 
@@ -67,98 +69,54 @@
   return newSubject;
 }
 
-- (NSString *) contentForEditingOnParts: (NSDictionary *) _prts
-				   keys: (NSArray *) _k
+
+- (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
-  static NSString *textPartSeparator = @"\n---\n";
-  NSMutableString *ms;
-  unsigned int count, max;
-  NSString *k, *v;
-  
-  ms = [NSMutableString stringWithCapacity: 16000];
-
-  max = [_k count];
-  for (count = 0; count < max; count++)
-    {
-      k = [_k objectAtIndex: count];
-   
-    // TODO: this is DUP code to SOGoMailObject
-      if ([k isEqualToString: @"body[text]"])
-	k = @"";
-      else if ([k hasPrefix: @"body["]) {
-	k = [k substringFromIndex: 5];
-	if ([k length] > 0)
-	  k = [k substringToIndex: ([k length] - 1)];
-      }
-
-      v = [_prts objectForKey: k];
-      if ([v isKindOfClass: [NSString class]]
-	  && [v length] > 0)
-	{
-	  if (count > 0)
-	    [ms appendString: textPartSeparator];
-	  [ms appendString: v];
-	}
-      else
-	[self logWithFormat:@"Note: cannot show part %@", k];
-    }
-
-  return ms;
-}
-
-#warning this method should be fixed to return the first available text/plain \
-         part, and otherwise the first text/html part converted to text
-- (NSString *) contentForEditing
-{
-  NSArray *keys;
+  NSArray *types;
   NSDictionary *parts;
-  NSMutableArray *topLevelKeys = nil;
-  unsigned int count, max;
-  NSRange r;
-  NSString *contentForEditing;
+  NSString *rawPart, *content;
+  int index;
+  BOOL htmlContent;
 
-//   SOGoMailObject *co;
-
-//   co = self;
-//   keys = [co plainTextContentFetchKeys];
-//   infos = [co fetchCoreInfos];
-//   partInfos = [infos objectForKey: keys];
-//   NSLog (@"infos: '%@'", infos);
-
-  keys = [self plainTextContentFetchKeys];
-  max = [keys count];
-  if (max > 0)
+  if ([keys count])
     {
-      if (max > 1)
+      types = [keys objectsForKey: @"mimeType"];
+      index = [types indexOfObject: @"text/plain"];
+      if (index == NSNotFound)
 	{
-	  /* filter keys, only include top-level, or if none, the first */
-	  for (count = 0; count < max; count++)
-	    {
-	      r = [[keys objectAtIndex: count] rangeOfString: @"."];
-	      if (!r.length)
-		{
-		  if (!topLevelKeys)
-		    topLevelKeys = [NSMutableArray arrayWithCapacity: 4];
-		  [topLevelKeys addObject: [keys objectAtIndex: count]];
-		}
-	    }
-
-	  if ([topLevelKeys count] > 0)
-	    /* use top-level keys if we have some */
-	    keys = topLevelKeys;
-	  else
-	    /* just take the first part */
-	    keys = [NSArray arrayWithObject: [keys objectAtIndex: 0]];
+	  index = [types indexOfObject: @"text/html"];
+	  htmlContent = YES;
 	}
-
-      parts = [self fetchPlainTextStrings: keys];
-      contentForEditing = [self contentForEditingOnParts: parts
-				keys: keys];
+      if (index == NSNotFound)
+	content = @"";
+      else
+	{
+	  parts = [self fetchPlainTextStrings: keys];
+	  rawPart = [[parts allValues] objectAtIndex: 0];
+	  if (htmlContent)
+	    content = [rawPart htmlToText];
+	  else
+	    content = rawPart;
+	}
     }
   else
-    contentForEditing = nil;
+    content = @"";
 
-  return contentForEditing;
+  return content;
+}
+
+- (NSString *) contentForEditing
+{
+  NSMutableArray *keys;
+  NSArray *acceptedTypes;
+
+  acceptedTypes
+    = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
+  keys = [NSMutableArray new];
+  [self addRequiredKeysOfStructure: [self bodyStructure]
+	path: @"" toArray: keys acceptedTypes: acceptedTypes];
+
+  return [self _contentForEditingFromKeys: keys];
 }
 
 - (NSString *) contentForReply

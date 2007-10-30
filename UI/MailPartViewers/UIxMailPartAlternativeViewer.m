@@ -50,15 +50,15 @@
 @implementation UIxMailPartAlternativeViewer
 
 - (void)dealloc {
-  [self->childInfo release];
+  [childInfo release];
   [super dealloc];
 }
 
 /* caches */
 
 - (void)resetBodyInfoCaches {
-  [self->childInfo release]; self->childInfo = nil;
-  self->childIndex = 0;
+  [childInfo release]; childInfo = nil;
+  childIndex = 0;
   [super resetBodyInfoCaches];
 }
 
@@ -110,8 +110,8 @@
 - (void)selectChildInfo {
   unsigned idx;
   
-  [self->childInfo release]; self->childInfo = nil;
-  self->childIndex = 0;
+  [childInfo release]; childInfo = nil;
+  childIndex = 0;
   
   idx = [self selectPartIndexFromTypes:[self childPartTypes]];
   if (idx == NSNotFound) {
@@ -120,25 +120,25 @@
     return;
   }
   
-  self->childIndex = idx + 1;
-  self->childInfo  = 
+  childIndex = idx + 1;
+  childInfo  = 
     [[[[self bodyInfo] valueForKey:@"parts"] objectAtIndex:idx] retain];
 }
 
 /* accessors */
 
 - (id)childInfo {
-  if (self->childInfo == nil)
+  if (childInfo == nil)
     [self selectChildInfo];
   
-  return self->childInfo;
+  return childInfo;
 }
 
-- (unsigned int)childIndex {
-  if (self->childIndex == 0)
+- (unsigned int) childIndex {
+  if (childIndex == 0)
     [self selectChildInfo];
   
-  return self->childIndex - 1;
+  return childIndex - 1;
 }
 
 - (NSString *)childPartName {
