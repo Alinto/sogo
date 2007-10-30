@@ -228,12 +228,19 @@ function openContactWindow(url, wId) {
 }
 
 function openMailComposeWindow(url, wId) {
+  var parentWindow = this;
+
   if (!wId)
     wId = "" + (new Date().getTime());
-  var w = window.open(url, wId,
+  else
+    if (document.body.hasClassName("popup"))
+      parentWindow = window.opener;
+  
+  var w = parentWindow.open(url, wId,
                       "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0"
                       + ",copyhistory=0");
+
   w.focus();
 
   return w;
@@ -290,7 +297,8 @@ function triggerAjaxRequest(url, callback, userdata) {
 	if (http.readyState == 4
 	    && activeAjaxRequests > 0) {
 	  if (!http.aborted) {
-	    http.callbackData = userdata;
+	    if (userdata)
+	      http.callbackData = userdata;
 	    callback(http);
 	  }
 	  activeAjaxRequests -= 1;

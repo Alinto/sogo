@@ -232,15 +232,12 @@ function clickedEditorSave(sender) {
   if (input)
     input.parentNode.removeChild(input);
 
-  var toolbar = document.getElementById("toolbar");
-  if (!document.busyAnim)
-    document.busyAnim = startAnimation(toolbar);
-
   window.shouldPreserve = true;
   document.pageform.action = "save";
   document.pageform.submit();
 
-  refreshMailbox();
+  if (window.opener && window.open && !window.closed)
+    window.opener.refreshFolderByType('draft');
   return false;
 }
 
@@ -355,13 +352,13 @@ function onMailEditorClose(event) {
   if (window.shouldPreserve)
     window.shouldPreserve = false;
   else {
-    var url = "" + window.location;
-    var parts = url.split("/");
-    parts[parts.length-1] = "delete";
-    url = parts.join("/");
-    http = createHTTPClient();
-    http.open("POST", url, false /* not async */);
-    http.send("");
+    if (window.opener && window.opener.open && !window.opener.closed) {
+      var url = "" + window.location;
+      var parts = url.split("/");
+      parts[parts.length-1] = "delete";
+      url = parts.join("/");
+      window.opener.deleteDraft(url);
+    }
   }
 
   Event.stopObserving(window, "beforeunload", onMailEditorClose);

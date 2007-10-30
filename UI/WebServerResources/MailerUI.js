@@ -247,6 +247,17 @@ function deleteSelectedMessagesCallback(http) {
     log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status);
 }
 
+function deleteDraft(url) {
+  /* this is called by UIxMailEditor with window.opener */
+  new Ajax.Request(url, {
+    method: 'post',
+    onFailure: function(transport) {
+	if (!isHttpStatus204)
+	  log("draftDeleteCallback: problem during ajax request: " + transport.status);
+      }
+    });
+}
+
 function moveMessages(rowIds, folder) {
   var failCount = 0;
 
