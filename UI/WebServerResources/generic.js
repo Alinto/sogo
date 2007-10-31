@@ -546,8 +546,20 @@ function popupMenu(event, menuId, target) {
     hideMenu(document.currentPopupMenu);
 
   var popup = $(menuId);
-  var menuTop = Event.pointerY(event);
-  var menuLeft = Event.pointerX(event);
+
+  var deltaX = 0;
+  var deltaY = 0;
+
+  var pageContent = $("pageContent");
+  if (popup.parentNode.tagName != "BODY") {
+    var offset = pageContent.cascadeLeftOffset();
+    deltaX = -($(popup.parentNode).cascadeLeftOffset() - offset);
+    offset = pageContent.cascadeTopOffset();
+    deltaY = -($(popup.parentNode).cascadeTopOffset() - offset);
+  }
+
+  var menuTop = Event.pointerY(event) + deltaY;
+  var menuLeft = Event.pointerX(event) + deltaX;
   var heightDiff = (window.height()
 		    - (menuTop + popup.offsetHeight));
   if (heightDiff < 0)
