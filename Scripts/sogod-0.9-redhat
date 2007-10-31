@@ -36,4 +36,4 @@ else
 fi
 
 let "port=$startport + $1 - 1"
-exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 -WOPort $PORT >& /var/log/sogo/sogod-$PORT.log
+exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 -WOPort $port >& /var/log/sogo/sogod-$port.log
