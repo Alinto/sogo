@@ -44,6 +44,8 @@
   content = [NSMutableString string];
   superContent = [[super flatContentAsString] stringByEscapingHTMLString];
   [content appendString: [superContent stringByDetectingURLs]];
+  [content replaceString: @"\r\n" withString: @"<br />"];
+  [content replaceString: @"\n" withString: @"<br />"];
 
   return content;
 }

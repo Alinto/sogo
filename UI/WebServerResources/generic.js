@@ -445,44 +445,6 @@ function generateQueryString(queryDict) {
   return s;
 }
 
-function getQueryParaArray(s) {
-  if (s.charAt(0) == "?") s = s.substr(1, s.length - 1);
-  return s.split("&");
-}
-
-function getQueryParaValue(s, name) {
-  var t;
-  
-  t = getQueryParaArray(s);
-  for (var i = 0; i < t.length; i++) {
-    var s = t[i];
-    
-    if (s.indexOf(name) != 0)
-      continue;
-    
-    s = s.substr(name.length, s.length - name.length);
-    return decodeURIComponent(s);
-  }
-  return null;
-}
-
-/* opener callback */
-
-function triggerOpenerCallback() {
-  /* this code has some issue if the folder has no proper trailing slash! */
-  if (window.opener && !window.opener.closed) {
-    var t, cburl;
-    
-    t = getQueryParaValue(window.location.search, "openerurl=");
-    cburl = window.opener.location.href;
-    if (cburl[cburl.length - 1] != "/") {
-      cburl = cburl.substr(0, cburl.lastIndexOf("/") + 1);
-    }
-    cburl = cburl + t;
-    window.opener.location.href = cburl;
-  }
-}
-
 /* selection mechanism */
 
 function deselectAll(parent) {
