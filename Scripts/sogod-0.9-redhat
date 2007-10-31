@@ -25,6 +25,15 @@ PIDFILE=/var/run/sogo/sogod.$1
 
 . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 
+if [ -f $GNUSTEP_USER_ROOT/Tools/sogod-0.9 ]; then
+    sogod="$GNUSTEP_USER_ROOT/Tools/sogod-0.9"
+elif [ -f $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 ]; then
+    sogod="$GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9"
+else
+    echo "Can't find sogod-0.9"
+    exit 1
+fi
+
 echo $$ > $PIDFILE
 
 startport=`defaults read sogod-0.9 WOPort`
@@ -36,4 +45,4 @@ else
 fi
 
 let "port=$startport + $1 - 1"
-exec $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 -WOPort $port >& /var/log/sogo/sogod-$port.log
+exec $sogod -WOPort $port >& /var/log/sogo/sogod-$port.log &

@@ -41,7 +41,7 @@ then
   . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 fi
 
-REAL_DAEMON=$GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9
+REAL_DAEMON=sogod-0.9
 DAEMON=/usr/sbin/sogod
 NAME=sogo
 DESC="Scalable OpenGroupware.Org (Inverse edition)"
@@ -76,18 +76,16 @@ fi
 
 case "$1" in
   start)
-	echo -n $"Starting $DESC: "
+	echo $"Starting $DESC: "
 	for ((a=1; a <= PREFORK ; a++))
 	do
-	  daemon su - sogo -c "$DAEMON $a"
+	  daemon --user=sogo $DAEMON $a
+	  echo "$DAEMON $a"
 	done
-#	daemon --user sogo --pidfile $PIDFILE $DAEMON
-	echo "$NAME."
 	;;
   stop)
 	echo -n $"Stopping $DESC: "
-	killproc `basename $REAL_DAEMON` && rm -f ${PIDFILE}*
-#	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
+	killproc $REAL_DAEMON && rm -f ${PIDFILE}*
 	echo "$NAME."
 	;;
   restart|force-reload)
