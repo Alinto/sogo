@@ -1,3 +1,8 @@
+2007-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): retain
+	"superUsernames" after fetching it from the ud.
+
 2007-10-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

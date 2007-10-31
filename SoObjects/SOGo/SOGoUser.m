@@ -98,9 +98,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 	ASSIGN (defaultLanguage, @"English");
     }
   if (!superUsernames)
-    {
-      superUsernames = [ud arrayForKey: @"SOGoSuperUsernames"];
-    }
+    ASSIGN (superUsernames, [ud arrayForKey: @"SOGoSuperUsernames"]);
 
   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
 		     isEqualToString: @"bypass"]);
