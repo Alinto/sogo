@@ -45,7 +45,7 @@
 		  ><div id="logConsole"><!-- space --></div></var:if>
 		<div id="linkBanner" class="linkbanner">
 		  <a id="logoff" var:href="logoffPath"
-		    ><var:string label:value="Sign Out" /></a>
+		    ><var:string label:value="Disconnect" /></a>
 		  <a var:href="relativeCalendarPath"
 		    ><var:string label:value="Calendar" /></a> |
 		  <a var:href="relativeContactsPath"

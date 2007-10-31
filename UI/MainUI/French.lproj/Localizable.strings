@@ -2,7 +2,7 @@
 
 "title" = "SOGo";
 
-"Login:" = "Nom d'utilisateur :";
+"Username:" = "Nom d'utilisateur :";
 "Password:" = "Mot de passe :";
 
 "Connect" = "Connexion";
