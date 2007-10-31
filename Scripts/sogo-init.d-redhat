@@ -77,13 +77,16 @@ fi
 case "$1" in
   start)
 	echo -n $"Starting $DESC: "
-	daemon su - sogo -c $DAEMON
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	  daemon su - sogo -c "$DAEMON $a"
+	done
 #	daemon --user sogo --pidfile $PIDFILE $DAEMON
 	echo "$NAME."
 	;;
   stop)
 	echo -n $"Stopping $DESC: "
-	killproc `basename $REAL_DAEMON` && rm -f $PIDFILE
+	killproc `basename $REAL_DAEMON` && rm -f ${PIDFILE}*
 #	killproc -p $PIDFILE $REAL_DAEMON && rm -f $PIDFILE
 	echo "$NAME."
 	;;
