@@ -19,12 +19,16 @@
   02111-1307, USA.
 */
 
-#ifndef __Mailer_SOGoTrashFolder_H__
-#define __Mailer_SOGoTrashFolder_H__
+#import <Foundation/NSString.h>
 
-#import "SOGoMailFolder.h"
+#import "SOGoSentFolder.h"
 
-@interface SOGoTrashFolder : SOGoSpecialMailFolder
-@end
+@implementation SOGoSentFolder
 
-#endif /* __Mailer_SOGoTrashFolder_H__ */
+/* folder type */
+
+- (NSString *)outlookFolderClass {
+  return @"IPF.Sent";
+}
+
+@end /* SOGoSentFolder */

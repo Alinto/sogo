@@ -64,6 +64,7 @@
 
 - (NSString *) relativeImap4Name;
 - (NSMutableString *) imap4URLString;
+- (NSMutableString *) traversalFromMailAccount;
 
 - (NSURL *) imap4URL;
 - (NSString *) imap4Login;

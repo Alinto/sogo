@@ -24,7 +24,7 @@
 
 @class SOGoDraftObject;
 
-@interface SOGoDraftsFolder : SOGoMailFolder
+@interface SOGoDraftsFolder : SOGoSpecialMailFolder
 
 - (SOGoDraftObject *) newDraft;
 - (BOOL) isInDraftsFolder;

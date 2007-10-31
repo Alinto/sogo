@@ -133,6 +133,11 @@ static NSString *defaultUserID =  @"anyone";
   return [[self imap4Connection] subfoldersForURL: [self imap4URL]];
 }
 
+- (BOOL) isSpecialFolder
+{
+  return NO;
+}
+
 - (NSArray *) allFolderPaths
 {
   NSMutableArray *deepSubfolders;
@@ -688,3 +693,26 @@ static NSString *defaultUserID =  @"anyone";
 }
 
 @end /* SOGoMailFolder */
+
+@implementation SOGoSpecialMailFolder
+
+- (id) initWithName: (NSString *) newName
+	inContainer: (id) newContainer
+{
+  if ((self = [super initWithName: newName
+		     inContainer: newContainer]))
+    {
+      if (![[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+	[imap4 createMailbox: [self relativeImap4Name]
+	       atURL: [newContainer imap4URL]];
+    }
+
+  return self;
+}
+
+- (BOOL) isSpecialFolder
+{
+  return YES;
+}
+
+@end

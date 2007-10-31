@@ -18,7 +18,10 @@ Mailer_OBJC_FILES += \
 	SOGoMailFolder.m		\
 	SOGoSharedInboxFolder.m		\
 	SOGoMailObject.m		\
+	SOGoDraftObject.m		\
 	SOGoMailObject+Draft.m		\
+	SOGoSentFolder.m		\
+	SOGoDraftsFolder.m		\
 	SOGoTrashFolder.m		\
 	\
 	SOGoMailBodyPart.m		\
@@ -26,9 +29,6 @@ Mailer_OBJC_FILES += \
 	SOGoMessageMailBodyPart.m	\
 	SOGoCalendarMailBodyPart.m	\
 	SOGoVCardMailBodyPart.m		\
-	\
-	SOGoDraftsFolder.m		\
-	SOGoDraftObject.m		\
 	\
 	SOGoMailForward.m		\
 	\

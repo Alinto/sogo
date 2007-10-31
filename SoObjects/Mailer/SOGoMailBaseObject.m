@@ -186,6 +186,16 @@ static BOOL debugOn = YES;
   return [[self authenticatorInContext: context] passwordInContext: context];
 }
 
+- (NSMutableString *) traversalFromMailAccount
+{
+  NSMutableString *currentTraversal;
+
+  currentTraversal = [container traversalFromMailAccount];
+  [currentTraversal appendFormat: @"/%@", [self relativeImap4Name]];
+
+  return currentTraversal;
+}
+
 - (void)flushMailCaches {
   [[self mailManager] flushCachesForURL:[self imap4URL]];
 }

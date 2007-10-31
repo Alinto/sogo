@@ -32,6 +32,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "SOGoMailFolder.h"
@@ -163,7 +164,7 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
       [folders removeObjectsInArray: additionalFolders];
       [folders addObjectsFromArray: additionalFolders];
     }
-
+  
   return folders;
 }
 
@@ -178,13 +179,21 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
 {
   NSMutableArray *newFolders;
   NSArray *rawFolders, *mainFolders;
+  NSString *realDraftsFolderName, *realSentFolderName, *realTrashFolderName;
 
-  rawFolders = [[self imap4Connection]
-		 allFoldersForURL: [self imap4URL]];
+  rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]];
 
-#warning FIXME: the folder names should be prefixed
-  mainFolders = [NSArray arrayWithObjects: inboxFolderName, draftsFolderName,
-			 sentFolder, trashFolder, nil];
+  realDraftsFolderName
+    = [[self draftsFolderInContext: context] traversalFromMailAccount];
+  realSentFolderName
+    = [[self sentFolderInContext: context] traversalFromMailAccount];
+  realTrashFolderName
+    = [[self trashFolderInContext: context] traversalFromMailAccount];
+
+  mainFolders = [NSArray arrayWithObjects: inboxFolderName,
+			 realDraftsFolderName,
+			 realSentFolderName,
+			 realTrashFolderName, nil];
   newFolders = [NSMutableArray arrayWithArray: rawFolders];
   [newFolders removeObjectsInArray: mainFolders];
   [newFolders sortUsingSelector: @selector (caseInsensitiveCompare:)];
@@ -247,6 +256,11 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   return urlString;
 }
 
+- (NSMutableString *) traversalFromMailAccount
+{
+  return [NSMutableString string];
+}
+
 - (NSString *) imap4Login
 {
   return [[self imap4URL] user];
@@ -274,21 +288,24 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   return folder;
 }
 
-- (id) lookupImap4Folder: (NSString *) _key
-	       inContext: (id) _cx
+- (id) lookupSentFolder: (NSString *) _key
+	      inContext: (id) _ctx
 {
-  NSString *s;
-
-  s = [_key isEqualToString: [self trashFolderNameInContext:_cx]]
-    ? @"SOGoTrashFolder" : @"SOGoMailFolder";
-  
-  return [self lookupFolder:_key ofClassNamed:s inContext:_cx];
+  return [self lookupFolder: _key ofClassNamed: @"SOGoSentFolder" 
+	       inContext: _ctx];
 }
 
 - (id) lookupDraftsFolder: (NSString *) _key
 		inContext: (id) _ctx
 {
   return [self lookupFolder: _key ofClassNamed: @"SOGoDraftsFolder" 
+	       inContext: _ctx];
+}
+
+- (id) lookupTrashFolder: (NSString *) _key
+	       inContext: (id) _ctx
+{
+  return [self lookupFolder: _key ofClassNamed: @"SOGoTrashFolder" 
 	       inContext: _ctx];
 }
 
@@ -308,12 +325,17 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
     {
   // TODO: those should be product.plist bindings? (can't be class bindings
   //       though because they are 'per-account')
-      if ([_key isEqualToString: [self draftsFolderNameInContext: _ctx]])
+      if ([_key isEqualToString: [self sentFolderNameInContext: _ctx]])
+	obj = [self lookupSentFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: [self draftsFolderNameInContext: _ctx]])
 	obj = [self lookupDraftsFolder: _key inContext: _ctx];
-      else if ([_key isEqualToString: [self sieveFolderNameInContext: _ctx]])
-	obj = [self lookupFiltersFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: [self trashFolderNameInContext: _ctx]])
+	obj = [self lookupTrashFolder: _key inContext: _ctx];
+//       else if ([_key isEqualToString: [self sieveFolderNameInContext: _ctx]])
+// 	obj = [self lookupFiltersFolder: _key inContext: _ctx];
       else
-	obj = [self lookupImap4Folder: _key inContext: _ctx];
+	obj = [self lookupFolder: _key ofClassNamed: @"SOGoMailFolder"
+		    inContext: _ctx];
     }
   else
     obj = [super lookupName: _key inContext: _ctx acquire: NO];

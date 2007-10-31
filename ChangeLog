@@ -1,5 +1,30 @@
 2007-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.[hm]: added a new subclass of
+	SOGoMailFolder: SOGoMailSpecialFolder.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-traversalFromMailAccount]): overridden method that returns the
+	initialized mutable string.
+	([SOGoMailAccount -allFolderPaths]): take the special folder paths
+	with -traversalFromMailAccount and reposition them at the
+	beginning of the list. By creating the special folders during that
+	request, we also make sure that the folder exists thanks to the
+	new initialisation method of the new "SOGoSpecialMailFolder"
+	class.
+	([SOGoMailAccount -lookupSentFolder:_keyinContext:_ctx]): new
+	method.
+	([SOGoMailAccount -lookupTrashFolder:_keyinContext:_ctx]): new
+	method.
+	([SOGoMailAccount -lookupName:_keyinContext:acquire:_flag]): no
+	longer use lookupImap4Folder.
+	([SOGoMailAccount -lookupImap4Folder:_keyinContext:_ctx]): removed
+	method.
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-traversalFromMailAccount]): new method that returns the full
+	IMAP4 path to the object.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): retain
 	"superUsernames" after fetching it from the ud.
 

@@ -67,8 +67,16 @@
 
 - (NSArray *) subfolders;
 
+- (BOOL) isSpecialFolder;
+
 - (NSArray *) allFolderPaths;
 - (NSArray *) allFolderURLs;
+
+@end
+
+@interface SOGoSpecialMailFolder : SOGoMailFolder
+
+- (BOOL) isSpecialFolder;
 
 @end
 

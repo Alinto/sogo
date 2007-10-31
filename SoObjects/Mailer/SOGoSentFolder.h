@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#ifndef __Mailer_SOGoTrashFolder_H__
-#define __Mailer_SOGoTrashFolder_H__
+#ifndef __Mailer_SOGoSentFolder_H__
+#define __Mailer_SOGoSentFolder_H__
 
 #import "SOGoMailFolder.h"
 
-@interface SOGoTrashFolder : SOGoSpecialMailFolder
+@interface SOGoSentFolder : SOGoSpecialMailFolder
 @end
 
-#endif /* __Mailer_SOGoTrashFolder_H__ */
+#endif /* __Mailer_SOGoSentFolder_H__ */
