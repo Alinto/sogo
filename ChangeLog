@@ -1,5 +1,10 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): make sure that the deserialized "values"
+	is an instance of NSMutableDictionary, otherwise we override it
+	with one.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForReply]): make use of the SOGoMailReply WO page.
 

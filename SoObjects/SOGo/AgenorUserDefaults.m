@@ -158,7 +158,10 @@ static NSString *uidColumnName = @"c_uid";
 					       mutabilityOption: NSPropertyListMutableContainers
 					       format: NULL
 					       errorDescription: &error];
-	      [values retain];
+	      if ([values isKindOfClass: [NSMutableDictionary class]])
+		[values retain];
+	      else
+		values = [NSMutableDictionary new];
 	    }
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
