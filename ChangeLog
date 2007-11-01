@@ -1,5 +1,13 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-setHeaders:newHeaders]): make sure there is a message id in the
+	headers dictionary, if not, generate one.
+	([SOGoDraftObject -fetchMailForEditing:sourceMail]): retrieve the
+	message id from the existing draft.
+	([SOGoDraftObject -mimeHeaderMapWithHeaders:_headers]): store the
+	message id in the header map.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-deleteFolderAction]): no longer prefix the target folder with
 	"folder".

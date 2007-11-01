@@ -23,6 +23,7 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
@@ -67,7 +68,7 @@
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
-				 @"from", @"replyTo",
+				 @"from", @"replyTo", @"message-id",
 				 nil};
 
 @implementation SOGoDraftObject
@@ -161,12 +162,26 @@ static BOOL        showTextAttachmentsInline  = NO;
 
 /* contents */
 
+- (NSString *) _generateMessageID
+{
+  NSMutableString *messageID;
+  NSString *pGUID;
+
+  messageID = [NSMutableString string];
+  [messageID appendFormat: @"<%@", [self globallyUniqueObjectId]];
+  pGUID = [[NSProcessInfo processInfo] globallyUniqueString];
+  [messageID appendFormat: @"@%u>", [pGUID hash]];
+
+  return [messageID lowercaseString];
+}
+
 - (void) setHeaders: (NSDictionary *) newHeaders
 {
   id headerValue;
   unsigned int count;
+  NSString *messageID;
 
-  for (count = 0; count < 7; count++)
+  for (count = 0; count < 8; count++)
     {
       headerValue = [newHeaders objectForKey: headerKeys[count]];
       if (headerValue)
@@ -174,6 +189,13 @@ static BOOL        showTextAttachmentsInline  = NO;
 		 forKey: headerKeys[count]];
       else
 	[headers removeObjectForKey: headerKeys[count]];
+    }
+
+  messageID = [headers objectForKey: @"message-id"];
+  if (!messageID)
+    {
+      messageID = [self _generateMessageID];
+      [headers setObject: messageID forKey: @"message-id"];
     }
 }
 
@@ -462,7 +484,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 
 - (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
 {
-  NSString *subject;
+  NSString *subject, *msgid;
   NSMutableDictionary *info;
   NSMutableArray *addresses;
   NGImap4Envelope *sourceEnvelope;
@@ -477,6 +499,10 @@ static BOOL        showTextAttachmentsInline  = NO;
     [info setObject: subject forKey: @"subject"];
 
   sourceEnvelope = [sourceMail envelope];
+  msgid = [sourceEnvelope messageID];
+  if ([msgid length] > 0)
+    [info setObject: msgid forKey: @"message-id"];
+
   addresses = [NSMutableArray array];
   [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
   [info setObject: addresses forKey: @"to"];
@@ -1055,7 +1081,10 @@ static BOOL        showTextAttachmentsInline  = NO;
     [map setObject: [s asQPSubjectString: @"utf-8"]
 	 forKey: @"subject"];
 //     [map setObject: [s asQPSubjectString: @"utf-8"] forKey: @"subject"];
-  
+
+  [map setObject: [headers objectForKey: @"message-id"]
+       forKey: @"message-id"];
+
   /* add standard headers */
 
   dateString = [[NSCalendarDate date] rfc822DateString];
