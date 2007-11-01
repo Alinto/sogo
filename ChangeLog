@@ -1,5 +1,9 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor -extractQuickFieldsFromEvent:_event])
+	([OCSiCalFieldExtractor -extractQuickFieldsFromTodo:_task]):
+	set title to an empty string where the event/task summary is null.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-setHeaders:newHeaders]): make sure there is a message id in the
 	headers dictionary, if not, generate one.

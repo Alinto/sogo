@@ -89,6 +89,8 @@ static NSNumber *distantFutureNumber = nil;
   endDate = [_event endDate];
   uid = [_event uid];
   title = [_event summary];
+  if (![title isNotNull])
+    title = @"";
   location = [_event location];
   sequence = [_event sequence];
   accessClass = [_event symbolicAccessClass];
@@ -122,7 +124,7 @@ static NSNumber *distantFutureNumber = nil;
   [row setObject: [NSNumber numberWithInt: [_event priorityNumber]]
        forKey: @"c_priority"];
 
-  if ([title isNotNull]) [row setObject: title forKey: @"c_title"];
+  [row setObject: title forKey: @"c_title"];
   if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
 
@@ -230,6 +232,8 @@ static NSNumber *distantFutureNumber = nil;
   dueDate = [_task due];
   uid = [_task uid];
   title = [_task summary];
+  if (![title isNotNull])
+    title = @"";
   location = [_task location];
   sequence = [_task sequence];
   accessClass = [_task symbolicAccessClass];
@@ -262,7 +266,7 @@ static NSNumber *distantFutureNumber = nil;
   [row setObject: [NSNumber numberWithBool: NO]
        forKey: @"c_isopaque"];
 
-  if ([title isNotNull]) [row setObject: title forKey: @"c_title"];
+  [row setObject: title forKey: @"c_title"];
   if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
  
