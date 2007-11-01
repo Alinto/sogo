@@ -31,6 +31,7 @@ Mailer_OBJC_FILES += \
 	SOGoVCardMailBodyPart.m		\
 	\
 	SOGoMailForward.m		\
+	SOGoMailReply.m			\
 	\
 	NSData+Mail.m			\
 	NSString+Mail.m
@@ -42,7 +43,10 @@ Mailer_RESOURCE_FILES += \
 Mailer_RESOURCE_FILES += \
 	SOGoMailEnglishForward.wo \
 	SOGoMailFrenchForward.wo \
-	SOGoMailGermanForward.wo
+	SOGoMailGermanForward.wo \
+	SOGoMailEnglishReply.wo \
+	SOGoMailFrenchReply.wo \
+	SOGoMailGermanReply.wo
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/

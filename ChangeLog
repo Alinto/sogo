@@ -1,5 +1,13 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-contentForReply]): make use of the SOGoMailReply WO page.
+
+	* SoObjects/Mailer/SOGoMailReply.[hm]: new class module copied
+	from SOGoMailForward to handle mail replies instead. Only three
+	methods remaining: date, from and messageBody. The latter is
+	quoted properly.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-fetchMailForForwarding:sourceMail]): fetch attachments for
 	forwarded messages.

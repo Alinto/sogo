@@ -33,6 +33,7 @@
 #import "NSString+Mail.h"
 #import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
+#import "SOGoMailReply.h"
 
 #define maxFilenameLength 64
 
@@ -121,7 +122,18 @@
 
 - (NSString *) contentForReply
 {
-  return [[self contentForEditing] stringByApplyingMailQuoting];
+  SOGoUser *currentUser;
+  NSString *pageName;
+  SOGoMailReply *page;
+
+  currentUser = [context activeUser];
+  pageName = [NSString stringWithFormat: @"SOGoMail%@Reply",
+		       [currentUser language]];
+  page = [[WOApplication application] pageWithName: pageName
+				      inContext: context];
+  [page setRepliedMail: self];
+
+  return [[page generateResponse] contentAsString];
 }
 
 - (NSString *) filenameForForward
