@@ -299,10 +299,34 @@ static NSString *defaultUserID =  @"anyone";
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
 {
+  NSString *folderName, *className;
+  SOGoMailAccount *mailAccount;
   id obj;
 
   if ([_key hasPrefix: @"folder"])
-    obj = [SOGoMailFolder objectWithName: _key inContainer: self];
+    {
+      mailAccount = [self mailAccountFolder];
+      folderName = [NSString stringWithFormat: @"%@/%@",
+			     [self traversalFromMailAccount],
+			     [_key substringFromIndex: 6]];
+      if ([folderName
+	    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
+	className = @"SOGoSentFolder";
+      else if ([folderName isEqualToString:
+			     [mailAccount draftsFolderNameInContext: _ctx]])
+	className = @"SOGoDraftsFolder";
+      else if ([folderName isEqualToString:
+			     [mailAccount trashFolderNameInContext: _ctx]])
+	className = @"SOGoTrashFolder";
+/*       else if ([folderName isEqualToString:
+	 [mailAccount sieveFolderNameInContext: _ctx]])
+	 obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
+      else
+	className = @"SOGoMailFolder";
+
+      obj = [NSClassFromString (className)
+			       objectWithName: _key inContainer: self];
+    }
   else
     {
       if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
@@ -394,22 +418,24 @@ static NSString *defaultUserID =  @"anyone";
 {
   // TODO: detect Trash/Sent/Drafts folders
   SOGoMailAccount *account;
-  NSString *n;
+  NSString *name;
 
-  if (folderType != nil)
-    return folderType;
-  
-  account = [self mailAccountFolder];
-  n = nameInContainer;
+  if (!folderType)
+    {
+      account = [self mailAccountFolder];
+      name = [self traversalFromMailAccount];
 
-  if ([n isEqualToString:[account trashFolderNameInContext:nil]])
-    folderType = @"IPF.Trash";
-  else if ([n isEqualToString:[account inboxFolderNameInContext:nil]])
-    folderType = @"IPF.Inbox";
-  else if ([n isEqualToString:[account sentFolderNameInContext:nil]])
-    folderType = @"IPF.Sent";
-  else
-    folderType = @"IPF.Folder";
+      if ([name isEqualToString: [account trashFolderNameInContext: nil]])
+	folderType = @"IPF.Trash";
+      else if ([name
+		 isEqualToString: [account inboxFolderNameInContext: nil]])
+	folderType = @"IPF.Inbox";
+      else if ([name
+		 isEqualToString: [account sentFolderNameInContext: nil]])
+	folderType = @"IPF.Sent";
+      else
+	folderType = @"IPF.Folder";
+    }
   
   return folderType;
 }

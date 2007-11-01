@@ -140,7 +140,7 @@
   trashFolderName
     = [[co mailAccountFolder] trashFolderNameInContext: context];
   path = [NSString stringWithFormat: @"/%@/%@",
-		   [trashFolderName substringFromIndex: 6], folderName];
+		   trashFolderName, folderName];
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
 			   host: [srcURL host] path: path];
   [destURL autorelease];
@@ -193,7 +193,7 @@
 	  [mailSettings autorelease];
 	}
       [ud setObject: mailSettings forKey: @"Mail"];
-      [mailSettings setObject: [co relativeImap4Name]
+      [mailSettings setObject: [co traversalFromMailAccount]
 		    forKey: [NSString stringWithFormat: @"%@Folder",
 				      purpose]];
       [ud synchronize];

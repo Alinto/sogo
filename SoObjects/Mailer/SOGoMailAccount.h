@@ -35,15 +35,18 @@
 
 @class NSArray;
 @class NSString;
+
 @class SOGoDraftsFolder;
 @class SOGoMailFolder;
+@class SOGoSentFolder;
+@class SOGoTrashFolder;
 
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
   SOGoMailFolder *inboxFolder;
   SOGoDraftsFolder *draftsFolder;
-  SOGoMailFolder *sentFolder;
-  SOGoMailFolder *trashFolder;
+  SOGoSentFolder *sentFolder;
+  SOGoTrashFolder *trashFolder;
 }
 
 /* folder pathes */
@@ -61,14 +64,14 @@
 
 - (NSString *) inboxFolderNameInContext: (id)_ctx;
 - (NSString *) draftsFolderNameInContext: (id)_ctx;
-- (NSString *) sieveFolderNameInContext: (id)_ctx;
+// - (NSString *) sieveFolderNameInContext: (id)_ctx;
 - (NSString *) sentFolderNameInContext: (id)_ctx;
 - (NSString *) trashFolderNameInContext: (id)_ctx;
 
 - (SOGoMailFolder *) inboxFolderInContext: (id)_ctx;
 - (SOGoDraftsFolder *) draftsFolderInContext: (id)_ctx;
-- (SOGoMailFolder *) sentFolderInContext: (id)_ctx;
-- (SOGoMailFolder *) trashFolderInContext: (id)_ctx;
+- (SOGoSentFolder *) sentFolderInContext: (id)_ctx;
+- (SOGoTrashFolder *) trashFolderInContext: (id)_ctx;
 
 /* user defaults */
 - (NSString *) sharedFolderName;

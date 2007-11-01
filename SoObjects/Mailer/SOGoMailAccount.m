@@ -35,9 +35,11 @@
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
+#import "SOGoDraftsFolder.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailManager.h"
-#import "SOGoDraftsFolder.h"
+#import "SOGoSentFolder.h"
+#import "SOGoTrashFolder.h"
 
 #import "SOGoMailAccount.h"
 
@@ -177,30 +179,25 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
 
 - (NSArray *) allFolderPaths
 {
-  NSMutableArray *newFolders;
+  NSMutableArray *folderPaths;
   NSArray *rawFolders, *mainFolders;
-  NSString *realDraftsFolderName, *realSentFolderName, *realTrashFolderName;
 
   rawFolders = [[self imap4Connection] allFoldersForURL: [self imap4URL]];
 
-  realDraftsFolderName
-    = [[self draftsFolderInContext: context] traversalFromMailAccount];
-  realSentFolderName
-    = [[self sentFolderInContext: context] traversalFromMailAccount];
-  realTrashFolderName
-    = [[self trashFolderInContext: context] traversalFromMailAccount];
+  mainFolders = [[NSArray arrayWithObjects:
+			    [self inboxFolderNameInContext: context],
+			  [self draftsFolderNameInContext: context],
+			  [self sentFolderNameInContext: context],
+			  [self trashFolderNameInContext: context],
+			  nil] stringsWithFormat: @"/%@"];
+  folderPaths = [NSMutableArray arrayWithArray: rawFolders];
+  [folderPaths removeObjectsInArray: mainFolders];
+  [folderPaths
+    sortUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  [folderPaths replaceObjectsInRange: NSMakeRange (0, 0)
+	       withObjectsFromArray: mainFolders];
 
-  mainFolders = [NSArray arrayWithObjects: inboxFolderName,
-			 realDraftsFolderName,
-			 realSentFolderName,
-			 realTrashFolderName, nil];
-  newFolders = [NSMutableArray arrayWithArray: rawFolders];
-  [newFolders removeObjectsInArray: mainFolders];
-  [newFolders sortUsingSelector: @selector (caseInsensitiveCompare:)];
-  [newFolders replaceObjectsInRange: NSMakeRange (0, 0)
-	      withObjectsFromArray: mainFolders];
-
-  return newFolders;
+  return folderPaths;
 }
 
 /* IMAP4 */
@@ -268,74 +265,32 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
 
 /* name lookup */
 
-- (id) lookupFolder: (NSString *) _key
-       ofClassNamed: (NSString *) _cn
-	  inContext: (id) _cx
-{
-  Class clazz;
-  SOGoMailFolder *folder;
-
-  if ((clazz = NSClassFromString(_cn)) == Nil)
-    {
-      [self logWithFormat:@"ERROR: did not find class '%@' for key: '%@'", 
-	    _cn, _key];
-      return [NSException exceptionWithHTTPStatus:500 /* server error */
-			  reason:@"did not find mail folder class!"];
-    }
-
-  folder = [clazz objectWithName: _key inContainer: self];
-
-  return folder;
-}
-
-- (id) lookupSentFolder: (NSString *) _key
-	      inContext: (id) _ctx
-{
-  return [self lookupFolder: _key ofClassNamed: @"SOGoSentFolder" 
-	       inContext: _ctx];
-}
-
-- (id) lookupDraftsFolder: (NSString *) _key
-		inContext: (id) _ctx
-{
-  return [self lookupFolder: _key ofClassNamed: @"SOGoDraftsFolder" 
-	       inContext: _ctx];
-}
-
-- (id) lookupTrashFolder: (NSString *) _key
-	       inContext: (id) _ctx
-{
-  return [self lookupFolder: _key ofClassNamed: @"SOGoTrashFolder" 
-	       inContext: _ctx];
-}
-
-- (id) lookupFiltersFolder: (NSString *) _key inContext: (id) _ctx
-{
-  return [self lookupFolder:_key ofClassNamed:@"SOGoSieveScriptsFolder" 
-	       inContext:_ctx];
-}
-
 - (id) lookupName: (NSString *) _key
 	inContext: (id)_ctx
 	  acquire: (BOOL) _flag
 {
+  NSString *folderName;
+  Class klazz;
   id obj;
 
   if ([_key hasPrefix: @"folder"])
     {
-  // TODO: those should be product.plist bindings? (can't be class bindings
-  //       though because they are 'per-account')
-      if ([_key isEqualToString: [self sentFolderNameInContext: _ctx]])
-	obj = [self lookupSentFolder: _key inContext: _ctx];
-      else if ([_key isEqualToString: [self draftsFolderNameInContext: _ctx]])
-	obj = [self lookupDraftsFolder: _key inContext: _ctx];
-      else if ([_key isEqualToString: [self trashFolderNameInContext: _ctx]])
-	obj = [self lookupTrashFolder: _key inContext: _ctx];
-//       else if ([_key isEqualToString: [self sieveFolderNameInContext: _ctx]])
-// 	obj = [self lookupFiltersFolder: _key inContext: _ctx];
+      folderName = [_key substringFromIndex: 6];
+      if ([folderName
+	    isEqualToString: [self sentFolderNameInContext: _ctx]])
+	klazz = [SOGoSentFolder class];
+      else if ([folderName
+		 isEqualToString: [self draftsFolderNameInContext: _ctx]])
+	klazz = [SOGoDraftsFolder class];
+      else if ([folderName
+		 isEqualToString: [self trashFolderNameInContext: _ctx]])
+	klazz = [SOGoTrashFolder class];
+/*       else if ([folderName isEqualToString: [self sieveFolderNameInContext: _ctx]])
+	 obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
       else
-	obj = [self lookupFolder: _key ofClassNamed: @"SOGoMailFolder"
-		    inContext: _ctx];
+	klazz = [SOGoMailFolder class];
+
+      obj = [klazz objectWithName: _key inContainer: self];
     }
   else
     obj = [super lookupName: _key inContext: _ctx acquire: NO];
@@ -352,7 +307,7 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
 - (NSString *) inboxFolderNameInContext: (id)_ctx
 {
   /* cannot be changed in Cyrus ? */
-  return [NSString stringWithFormat: @"folder%@", inboxFolderName];
+  return inboxFolderName;
 }
 
 - (NSString *) _userFolderNameWithPurpose: (NSString *) purpose
@@ -380,13 +335,13 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   if (!folderName)
     folderName = draftsFolderName;
 
-  return [NSString stringWithFormat: @"folder%@", folderName];
+  return folderName;
 }
 
-- (NSString *) sieveFolderNameInContext: (id) _ctx
-{
-  return [NSString stringWithFormat: @"folder%@", sieveFolderName];
-}
+// - (NSString *) sieveFolderNameInContext: (id) _ctx
+// {
+//   return sieveFolderName;
+// }
 
 - (NSString *) sentFolderNameInContext: (id)_ctx
 {
@@ -396,7 +351,7 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   if (!folderName)
     folderName = sentFolderName;
 
-  return [NSString stringWithFormat: @"folder%@", folderName];
+  return folderName;
 }
 
 - (NSString *) trashFolderNameInContext: (id)_ctx
@@ -407,7 +362,38 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   if (!folderName)
     folderName = trashFolderName;
 
-  return [NSString stringWithFormat: @"folder%@", folderName];
+  return folderName;
+}
+
+- (id) folderWithTraversal: (NSString *) traversal
+	      andClassName: (NSString *) className
+{
+  NSArray *paths;
+  NSString *currentName;
+  id currentContainer;
+  unsigned int count, max;
+  Class clazz;
+
+  currentContainer = self;
+  paths = [traversal componentsSeparatedByString: @"/"];
+
+  if (!className)
+    clazz = [SOGoMailFolder class];
+  else
+    clazz = NSClassFromString (className);
+
+  max = [paths count];
+  for (count = 0; count < max - 1; count++)
+    {
+      currentName = [NSString stringWithFormat: @"folder%@",
+			      [paths objectAtIndex: count]];
+      currentContainer = [SOGoMailFolder objectWithName: currentName
+					 inContainer: currentContainer];
+    }
+  currentName = [NSString stringWithFormat: @"folder%@",
+			  [paths objectAtIndex: max - 1]];
+
+  return [clazz objectWithName: currentName inContainer: currentContainer];
 }
 
 - (SOGoMailFolder *) inboxFolderInContext: (id) _ctx
@@ -415,8 +401,9 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   // TODO: use some profile to determine real location, use a -traverse lookup
   if (!inboxFolder)
     {
-      inboxFolder = [self lookupName: [self inboxFolderNameInContext: _ctx]
-			  inContext: _ctx acquire: NO];
+      inboxFolder
+	= [self folderWithTraversal: [self inboxFolderNameInContext: _ctx]
+		andClassName: nil];
       [inboxFolder retain];
     }
 
@@ -430,43 +417,36 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   if (!draftsFolder)
     {
       draftsFolder
-	= [self lookupName: [self draftsFolderNameInContext:_ctx]
-		inContext: _ctx acquire: NO];
-//       if (![draftsFolder isNotNull])
-// 	draftsFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-// 				    reason: @"did not find Drafts folder!"];
+	= [self folderWithTraversal: [self draftsFolderNameInContext: _ctx]
+		andClassName: @"SOGoDraftsFolder"];
       [draftsFolder retain];
     }
 
   return draftsFolder;
 }
 
-- (SOGoMailFolder *) sentFolderInContext: (id) _ctx
+- (SOGoSentFolder *) sentFolderInContext: (id) _ctx
 {
   // TODO: use some profile to determine real location, use a -traverse lookup
 
   if (!sentFolder)
     {
-      sentFolder = [self lookupName: [self sentFolderNameInContext:_ctx]
-			 inContext: _ctx acquire: NO];
-//       if (![sentFolder isNotNull])
-// 	sentFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-// 				  reason: @"did not find Sent folder!"];
+      sentFolder
+	= [self folderWithTraversal: [self sentFolderNameInContext: _ctx]
+		andClassName: @"SOGoSentFolder"];
       [sentFolder retain];
     }
 
   return sentFolder;
 }
 
-- (SOGoMailFolder *) trashFolderInContext: (id) _ctx
+- (SOGoTrashFolder *) trashFolderInContext: (id) _ctx
 {
   if (!trashFolder)
     {
-      trashFolder = [self lookupName: [self trashFolderNameInContext: _ctx]
-			  inContext: _ctx acquire: NO];
-//       if (![trashFolder isNotNull])
-// 	trashFolder = [NSException exceptionWithHTTPStatus: 404 /* not found */
-// 				  reason: @"did not find Trash folder!"];
+      trashFolder
+	= [self folderWithTraversal: [self trashFolderNameInContext: _ctx]
+		andClassName: @"SOGoTrashFolder"];
       [trashFolder retain];
     }
 

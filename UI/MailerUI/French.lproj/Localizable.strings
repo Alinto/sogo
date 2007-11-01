@@ -217,7 +217,6 @@
 "Please select only one message to print." = "Veuillez ne sélectionner qu'un seul message à imprimer.";
 
 "You need to choose a non-virtual folder!" = "Vous devez choisir un dossier non-virtuel.";
-"You need to choose a root subfolder!" = "Vous devez choisir un sous-dossier de la racine.";
 
 "Moving a message into its own folder is impossible!"
 = "Le déplacement d'un message dans son propre dossier est impossible.";

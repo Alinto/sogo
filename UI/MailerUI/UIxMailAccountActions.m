@@ -31,6 +31,7 @@
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
@@ -40,17 +41,56 @@
 
 @implementation UIxMailAccountActions
 
-- (NSString *) _folderType: (NSString *) baseName
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      inboxFolderName = nil;
+      draftsFolderName = nil;
+      sentFolderName = nil;
+      trashFolderName = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [inboxFolderName release];
+  [draftsFolderName release];
+  [sentFolderName release];
+  [trashFolderName release];
+  [super dealloc];
+}
+
+- (NSString *) _folderType: (NSString *) folderName
 {
   NSString *folderType;
+  SOGoMailAccount *co;
+  NSArray *specialFolders;
 
-  if ([baseName isEqualToString: @"INBOX"])
+  if (!inboxFolderName)
+    {
+      co = [self clientObject];
+      specialFolders = [[NSArray arrayWithObjects:
+				   [co inboxFolderNameInContext: context],
+				 [co draftsFolderNameInContext: context],
+				 [co sentFolderNameInContext: context],
+				 [co trashFolderNameInContext: context],
+				 nil] stringsWithFormat: @"/%@"];
+      ASSIGN (inboxFolderName, [specialFolders objectAtIndex: 0]);
+      ASSIGN (draftsFolderName, [specialFolders objectAtIndex: 1]);
+      ASSIGN (sentFolderName, [specialFolders objectAtIndex: 2]);
+      ASSIGN (trashFolderName, [specialFolders objectAtIndex: 3]);
+    }
+
+  if ([folderName isEqualToString: inboxFolderName])
     folderType = @"inbox";
-  else if ([baseName isEqualToString: draftFolderName])
+  else if ([folderName isEqualToString: draftsFolderName])
     folderType = @"draft";
-  else if ([baseName isEqualToString: sentFolderName])
+  else if ([folderName isEqualToString: sentFolderName])
     folderType = @"sent";
-  else if ([baseName isEqualToString: trashFolderName])
+  else if ([folderName isEqualToString: trashFolderName])
     folderType = @"trash";
   else
     folderType = @"folder";
@@ -58,34 +98,20 @@
   return folderType;
 }
 
-- (NSDictionary *) _lineForFolder: (NSString *) folder
-{
-  NSArray *parts;
-  NSMutableDictionary *folderData;
-  NSString *baseName;
-
-  folderData = [NSMutableDictionary dictionary];
-  parts = [folder componentsSeparatedByString: @"/"];
-  baseName = [parts lastObject];
-  [folderData setObject: folder forKey: @"path"];
-  [folderData setObject: [self _folderType: baseName]
-	      forKey: @"type"];
-
-  return folderData;
-}
-
 - (NSArray *) _jsonFolders: (NSEnumerator *) rawFolders
 {
   NSMutableArray *folders;
   NSString *currentFolder;
+  NSDictionary *folderData;
 
   folders = [NSMutableArray array];
-
-  currentFolder = [rawFolders nextObject];
-  while (currentFolder)
+  while ((currentFolder = [rawFolders nextObject]))
     {
-      [folders addObject: [self _lineForFolder: currentFolder]];
-      currentFolder = [rawFolders nextObject];
+      folderData = [NSDictionary dictionaryWithObjectsAndKeys:
+				   currentFolder, @"path",
+				 [self _folderType: currentFolder], @"type",
+				 nil];
+      [folders addObject: folderData];
     }
 
   return folders;
@@ -94,19 +120,14 @@
 - (WOResponse *) listMailboxesAction
 {
   SOGoMailAccount *co;
-  NSArray *rawFolders, *folders;
+  NSEnumerator *rawFolders;
+  NSArray *folders;
   WOResponse *response;
 
   co = [self clientObject];
-  draftFolderName = [[co draftsFolderNameInContext: context]
-		      substringFromIndex: 6];
-  sentFolderName = [[co sentFolderNameInContext: context]
-		     substringFromIndex: 6];
-  trashFolderName = [[co trashFolderNameInContext: context]
-		      substringFromIndex: 6];
 
-  rawFolders = [co allFolderPaths];
-  folders = [self _jsonFolders: [rawFolders objectEnumerator]];
+  rawFolders = [[co allFolderPaths] objectEnumerator];
+  folders = [self _jsonFolders: rawFolders];
 
   response = [self responseWithStatus: 200];
   [response setHeader: @"text/plain; charset=utf-8"

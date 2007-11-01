@@ -191,7 +191,10 @@ static BOOL debugOn = YES;
   NSMutableString *currentTraversal;
 
   currentTraversal = [container traversalFromMailAccount];
-  [currentTraversal appendFormat: @"/%@", [self relativeImap4Name]];
+  if ([container isKindOfClass: [SOGoMailAccount class]])
+    [currentTraversal appendString: [self relativeImap4Name]];
+  else
+    [currentTraversal appendFormat: @"/%@", [self relativeImap4Name]];
 
   return currentTraversal;
 }

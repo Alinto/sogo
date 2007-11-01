@@ -1,5 +1,52 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-deleteFolderAction]): no longer prefix the target folder with
+	"folder".
+
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-listMailboxesAction]): base the folder type on the folder
+	traversal path.
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	-lookupName:_keyinContext:acquire:_acquire]): compare the full
+	traversal to the potential looked up folder with the special
+	folder names and return an object with the appropriate
+	SOGoMailFolder subclass.
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-traversalFromMailAccount]): don't prepend the whole string with
+	"/".
+
+	* SoObjects/Mailer/SOGoMailAccount.m
+	([-lookupSentFolder:_keyinContext:_ctx])
+	([-lookupDraftsFolder:_keyinContext:_ctx])
+	([-lookupTrashFolder:_keyinContext:_ctx])
+	([-lookupFiltersFolder:_key:_ctx]): removed methods.
+	([SOGoMailAccount -inboxFolderNameInContext:])
+	([SOGoMailAccount -draftsFolderNameInContext:_ctx])
+	([SOGoMailAccount -sentFolderNameInContext:])
+	([SOGoMailAccount -trashFolderNameInContext:]): no longer prefixes
+	the resulting name with "prefix" since we might return a nested
+	foldername.
+	([SOGoMailAccount -allFolderPaths]): prefixes all special folder
+	names with "/". Sorts the resulting folder list with
+	localizedCaseInsensitiveCompare: instead of
+	caseInsensitiveCompare:. No longer use the -[lookupXXX] methods
+	that were removed, instead, we choose the appropriate class
+	depending on the folder name. And since we are in SOGoMailAccount,
+	we don't have to compute a traversal path to match the key with
+	the foldernames.
+	([SOGoMailAccount
+	-folderWithTraversal:traversalandClassName:className]): new method
+	that returns an instance of the specified SOGoMailFolder subclass,
+	based on the traversal path passed as parameter.
+	([SOGoMailAccount -inboxFolderInContext:_ctx])
+	([SOGoMailAccount -draftsFolderInContext:_ctx])
+	([-sentFolderInContext:_ctx])
+	([SOGoMailAccount -trashFolderInContext:_ctx]): invoke the new
+	-folderWithTraversal:andClassName: method described above.
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): make use of -[NSPropertyListSerialization
 	propertyListFromData:mutabilityOption:format:errorDescription:] to

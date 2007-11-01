@@ -1393,13 +1393,8 @@ function _onMenuChangeToXXXFolder(event, folder) {
     window.alert(labels["You need to choose a non-virtual folder!"]);
   else {
     var folderID = document.menuTarget.getAttribute("dataname");
-    var number = folderID.split("/").length;
-    if (number > 3)
-      window.alert(labels["You need to choose a root subfolder!"]);
-    else {
-      var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
-      triggerAjaxRequest(urlstr, folderOperationCallback);
-    }
+    var urlstr = URLForFolderID(folderID) + "/setAs" + folder + "Folder";
+    triggerAjaxRequest(urlstr, folderOperationCallback);
   }
 }
 

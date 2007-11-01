@@ -29,7 +29,8 @@
 
 @interface UIxMailAccountActions : WODirectAction
 {
-  NSString *draftFolderName;
+  NSString *inboxFolderName;
+  NSString *draftsFolderName;
   NSString *sentFolderName;
   NSString *trashFolderName;
 }
