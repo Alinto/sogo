@@ -1317,14 +1317,22 @@ function loadPreferences() {
   var http = createHTTPClient();
   http.open("GET", url, false);
   http.send("");
-  if (http.status == 200)
-    userDefaults = http.responseText.evalJSON(true);
+  if (http.status == 200) {
+    if (http.responseText.length > 0)
+      userDefaults = http.responseText.evalJSON(true);
+    else
+      userDefaults = {};
+  }
 
   url = UserFolderURL + "jsonSettings";
   http.open("GET", url, false);
   http.send("");
-  if (http.status == 200)
-    userSettings = http.responseText.evalJSON(true);
+  if (http.status == 200) {
+    if (http.responseText.length > 0)
+      userSettings = http.responseText.evalJSON(true);
+    else
+      userSettings = {};
+  }
 }
 
 function onLoadHandler(event) {
