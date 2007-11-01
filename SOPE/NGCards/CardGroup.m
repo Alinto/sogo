@@ -72,26 +72,29 @@ static NGCardsSaxHandler *sax = nil;
   NSEnumerator *cards;
   CardGroup *currentCard;
 
-  cardParser = [self cardParser];
-  [sax setTopElementClass: [self class]];
+  cardGroups = nil;
 
-  if (parser)
+  if (source)
     {
-      cardGroups = [NSMutableArray new];
-      [cardGroups autorelease];
-      
-      [parser parseFromSource: source];
-      cards = [[sax cards] objectEnumerator];
+      cardParser = [self cardParser];
+      [sax setTopElementClass: [self class]];
 
-      currentCard = [cards nextObject];
-      while (currentCard)
-        {
-          [cardGroups addObject: currentCard];
-          currentCard = [cards nextObject];
-        }
+      if (parser)
+	{
+	  cardGroups = [NSMutableArray new];
+	  [cardGroups autorelease];
+	  
+	  [parser parseFromSource: source];
+	  cards = [[sax cards] objectEnumerator];
+	  
+	  currentCard = [cards nextObject];
+	  while (currentCard)
+	    {
+	      [cardGroups addObject: currentCard];
+	      currentCard = [cards nextObject];
+	    }
+	}
     }
-  else
-    cardGroups = nil;
 
   return cardGroups;
 }

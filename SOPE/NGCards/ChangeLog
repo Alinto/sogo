@@ -1,3 +1,9 @@
+2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup +parseFromSource:source]): make sure the
+	given source is not nil, otherwise the parser will raise an
+	exception, which we don't want.
+
 2007-10-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m ([CardElement -value:anInt]): added handling for
