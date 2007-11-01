@@ -113,12 +113,10 @@ static NSString *uidColumnName = @"c_uid";
   EOAdaptorChannel *channel;
   NSDictionary *row;
   NSException *ex;
-  NSString *sql, *value;
+  NSString *sql, *value, *error;
   NSArray *attrs;
   BOOL rc;
-#if LIB_FOUNDATION_LIBRARY
   NSData *plistData;
-#endif
 
   rc = NO;
   
@@ -134,7 +132,6 @@ static NSString *uidColumnName = @"c_uid";
 		      uidColumnName, [self uid]];
       
       [values release];
-      values = [NSMutableDictionary new];
 
       /* run SQL */
 
@@ -155,15 +152,13 @@ static NSString *uidColumnName = @"c_uid";
 	  value = [row objectForKey: fieldName];
 	  if ([value isNotNull])
 	    {
-#if LIB_FOUNDATION_LIBRARY
 	      plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
-	      [values setDictionary: [NSDeserializer
-				       deserializePropertyListFromData: plistData
-				       mutableContainers: YES]];
-
-#else
-	      [values setDictionary: [value propertyList]];
-#endif
+	      values
+		= [NSPropertyListSerialization propertyListFromData: plistData
+					       mutabilityOption: NSPropertyListMutableContainers
+					       format: NULL
+					       errorDescription: &error];
+	      [values retain];
 	    }
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
@@ -180,22 +175,9 @@ static NSString *uidColumnName = @"c_uid";
   return rc;
 }
 
-- (NSString *) generateSQLForInsert
+- (NSString *) _serializedDefaults
 {
-  NSMutableString *sql;
-  NSString *serializedDefaults;
-
-#if LIB_FOUNDATION_LIBRARY
-  serializedDefaults = [values stringRepresentation];
-
-  sql = [NSString stringWithFormat: (@"INSERT INTO %@"
-				     @"            (%@, %@)"
-				     @"     VALUES ('%@', '%@')"),
-		  [[self tableURL] gcsTableName], uidColumnName, fieldName,
-		  [self uid],
-		  [serializedDefaults stringByReplacingString: @"'"
-				      withString:@"''"]];
-#else
+  NSMutableString *serializedDefaults;
   NSData *serializedDefaultsData;
   NSString *error;
 
@@ -204,75 +186,57 @@ static NSString *uidColumnName = @"c_uid";
     = [NSPropertyListSerialization dataFromPropertyList: values
 				   format: NSPropertyListOpenStepFormat
 				   errorDescription: &error];
-
   if (error)
     {
-      sql = nil;
+      [self errorWithFormat: @"serializing the defaults: %@", error];
+      serializedDefaults = nil;
       [error release];
     }
   else
     {
-      serializedDefaults = [[NSString alloc] initWithData: serializedDefaultsData
-					     encoding: NSUTF8StringEncoding];
-
-      sql = [NSString stringWithFormat: (@"INSERT INTO %@"
-					 @"            (%@, %@)"
-					 @"     VALUES ('%@', '%@')"),
-		      [[self tableURL] gcsTableName], uidColumnName, fieldName,
-		      [self uid],
-		      [serializedDefaults stringByReplacingString:@"'" withString:@"''"]];
-      [serializedDefaults release];
+      serializedDefaults
+	= [[NSMutableString alloc] initWithData: serializedDefaultsData
+				   encoding: NSUTF8StringEncoding];
+      [serializedDefaults autorelease];
+      [serializedDefaults replaceString: @"\\" withString: @"\\\\"];
+      [serializedDefaults replaceString: @"'" withString: @"''"];
     }
-#endif
+
+  return serializedDefaults;
+}
+
+- (NSString *) generateSQLForInsert
+{
+  NSString *sql, *serializedDefaults;
+
+  serializedDefaults = [self _serializedDefaults];
+  if (serializedDefaults)
+    sql = [NSString stringWithFormat: (@"INSERT INTO %@"
+				       @"            (%@, %@)"
+				       @"     VALUES ('%@', '%@')"),
+		    [[self tableURL] gcsTableName], uidColumnName, fieldName,
+		    [self uid], serializedDefaults];
+  else
+    sql = nil;
 
   return sql;
 }
 
 - (NSString *) generateSQLForUpdate
 {
-  NSMutableString *sql;
-  NSString *serializedDefaults;
+  NSString *sql, *serializedDefaults;
 
-#if LIB_FOUNDATION_LIBRARY
-  serializedDefaults = [values stringRepresentation];
-
-  sql = [NSString stringWithFormat: (@"UPDATE %@"
-				     @"     SET %@ = '%@'"
-				     @"   WHERE %@ = '%@'"),
-		  [[self tableURL] gcsTableName],
-		  fieldName,
-		  [serializedDefaults stringByReplacingString:@"'" withString:@"''"],
-		  uidColumnName, [self uid]];
-#else
-  NSData *serializedDefaultsData;
-  NSString *error;
-
-  error = nil;
-  serializedDefaultsData
-    = [NSPropertyListSerialization dataFromPropertyList: values
-				   format: NSPropertyListOpenStepFormat
-				   errorDescription: &error];
-  if (error)
-    {
-      sql = nil;
-      [error release];
-    }
+  serializedDefaults = [self _serializedDefaults];
+  if (serializedDefaults)
+    sql = [NSString stringWithFormat: (@"UPDATE %@"
+				       @"     SET %@ = '%@'"
+				       @"   WHERE %@ = '%@'"),
+		    [[self tableURL] gcsTableName],
+		    fieldName,
+		    serializedDefaults,
+		    uidColumnName, [self uid]];
   else
-    {
-      serializedDefaults = [[NSString alloc] initWithData: serializedDefaultsData
-					     encoding: NSUTF8StringEncoding];
-
-      sql = [NSString stringWithFormat: (@"UPDATE %@"
-					 @"     SET %@ = '%@'"
-					 @"   WHERE %@ = '%@'"),
-		      [[self tableURL] gcsTableName],
-		      fieldName,
-		      [serializedDefaults stringByReplacingString: @"'"
-					  withString: @"''"],
-		      uidColumnName, [self uid]];
-      [serializedDefaults release];
-    }
-#endif
+    sql = nil;
 
   return sql;
 }

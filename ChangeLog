@@ -1,3 +1,17 @@
+2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): make use of -[NSPropertyListSerialization
+	propertyListFromData:mutabilityOption:format:errorDescription:] to
+	deserialize the plist. Removed variant for libFoundation since it
+	should support the above.
+	([AgenorUserDefaults -generateSQLForInsert])
+	([AgenorUserDefaults -generateSQLForUpdate]): make use of
+	-[NSPropertyListSerialization
+	dataFromPropertyList:format:errorDescription:] to serialize the
+	plist. Removed variant for libFoundation since it should support
+	the above. Escape the backslashes from the resulting string.
+
 2007-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.[hm]: added a new subclass of
