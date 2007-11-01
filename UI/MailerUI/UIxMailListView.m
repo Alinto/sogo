@@ -208,6 +208,8 @@
   NSDictionary *currentDisp;
   BOOL hasAttachment;
 
+  hasAttachment = NO;
+
   parts = [[message objectForKey: @"body"] objectForKey: @"parts"];
   if ([parts count] > 1)
     {
@@ -218,8 +220,6 @@
 	hasAttachment = ([[currentDisp objectForKey: @"type"]
 			   isEqualToString: @"ATTACHMENT"]);
     }
-  else
-    hasAttachment = NO;
 
   return hasAttachment;
 }

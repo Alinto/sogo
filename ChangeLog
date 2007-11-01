@@ -1,5 +1,9 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-hasMessageAttachment]): initialize hasAttachment with "NO" to
+	avoid false positives.
+
 	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor -extractQuickFieldsFromEvent:_event])
 	([OCSiCalFieldExtractor -extractQuickFieldsFromTodo:_task]):
 	set title to an empty string where the event/task summary is null.
