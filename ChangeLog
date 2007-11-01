@@ -1,5 +1,9 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-fetchMailForForwarding:sourceMail]): fetch attachments for
+	forwarded messages.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-hasMessageAttachment]): initialize hasAttachment with "NO" to
 	avoid false positives.

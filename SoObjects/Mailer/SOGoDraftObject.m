@@ -187,7 +187,7 @@ static BOOL        showTextAttachmentsInline  = NO;
       if (headerValue)
 	[headers setObject: headerValue
 		 forKey: headerKeys[count]];
-      else
+      else if ([headers objectForKey: headerKeys[count]])
 	[headers removeObjectForKey: headerKeys[count]];
     }
 
@@ -569,7 +569,11 @@ static BOOL        showTextAttachmentsInline  = NO;
   /* attach message */
   currentUser = [context activeUser];
   if ([[currentUser messageForwarding] isEqualToString: @"inline"])
-    [self setText: [sourceMail contentForInlineForward]];
+    {
+      [self setText: [sourceMail contentForInlineForward]];
+      [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys]
+	    fromMail: sourceMail];
+    }
   else
     {
   // TODO: use subject for filename?
