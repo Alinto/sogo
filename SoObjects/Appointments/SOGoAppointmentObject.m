@@ -397,7 +397,8 @@
   if (![removedUIDs containsObject: owner])
     [removedUIDs addObject: owner];
 
-  if ([self sendEMailNotifications])
+  if ([self sendEMailNotifications]
+      && [self _aptIsStillRelevant: apt])
     {
       /* send notification email to attendees excluding organizer */
       attendees = [NSMutableArray arrayWithArray:[apt attendees]];

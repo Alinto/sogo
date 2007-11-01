@@ -1,5 +1,10 @@
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -deleteWithBaseSequence:]): an email was
+	sent when modifying an event, when the event was considered
+	relevant. The same thing is now implemented for event deletion.
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): make sure that the deserialized "values"
 	is an instance of NSMutableDictionary, otherwise we override it
