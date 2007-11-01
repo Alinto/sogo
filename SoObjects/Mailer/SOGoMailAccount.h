@@ -36,10 +36,9 @@
 @class NSArray;
 @class NSString;
 
-@class SOGoDraftsFolder;
-@class SOGoMailFolder;
-@class SOGoSentFolder;
-@class SOGoTrashFolder;
+#import "SOGoDraftsFolder.h"
+#import "SOGoSentFolder.h"
+#import "SOGoTrashFolder.h"
 
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
