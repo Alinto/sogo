@@ -320,27 +320,6 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.h
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(révision 1546)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.h	(copie de travail)
-@@ -28,6 +28,7 @@
- #define ___PostgreSQL72_Channel_H___
- 
- #include <GDLAccess/EOAdaptorChannel.h>
-+#include <GDLContentStore/EOAdaptorChannel+GCS.h>
- #include <libpq-fe.h>
- 
- @class NSArray, NSString, NSMutableDictionary;
-@@ -40,7 +41,7 @@
-   int        modification;
- } PostgreSQL72FieldInfo;
- 
--@interface PostgreSQL72Channel : EOAdaptorChannel
-+@interface PostgreSQL72Channel : EOAdaptorChannel <GCSEOAdaptorChannel>
- {
-   // connection is valid after an openChannel call
-   PGConnection *connection;
 Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
 ===================================================================
 --- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1546)
@@ -385,6 +364,90 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
  @end /* PostgreSQL72Channel */
  
  @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/GNUmakefile
+===================================================================
+--- sope-gdl1/Oracle8/GNUmakefile	(révision 1546)
++++ sope-gdl1/Oracle8/GNUmakefile	(copie de travail)
+@@ -28,15 +28,23 @@
+ SOPE_ROOT=../..
+ ORACLE_VERSION=10.2.0.3
+ #ORACLE_VERSION=11.1.0.1
+-ADDITIONAL_INCLUDE_DIRS += -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
++ADDITIONAL_INCLUDE_DIRS += -I../../sope-core -I../../sope-core/NGExtensions -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
+ 
++local_arch = $(subst 64,,$(shell uname -m))
++
++ifeq ($(local_arch),ppc)
++PPC_LDFLAGS=-L/opt/ibmcmp/lib -libmc++ -l$(local_arch)
++else
++PPC_LDFLAGS=
++endif
++
+ ifneq ($(frameworks),yes)
+-Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
+-otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
++common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -L../GDLAccess/obj -lGDLAccess -L../../sope-core/EOControl/obj -lEOControl $(PPC_LDFLAGS)
+ else
+-Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
+-otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
++common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl $(PPC_LDFLAGS)
+ endif
++Oracle8_BUNDLE_LIBS += $(common_LIBS)
++otest_TOOL_LIBS   += $(common_LIBS)
+ 
+ # Bundle
+ BUNDLE_NAME = Oracle8
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1546)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -57,10 +57,15 @@
+ 
+       // We free our LOB object. If it fails, it likely mean it isn't a LOB
+       // so we just free the value instead.
+-      if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
+-      	{
+-      	  free(info->value);
+-      	}
++      if (info)
++	{
++	  if (info->value && OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	    {
++      	      free(info->value);
++	      info->value = NULL;
++      	    }
++	  free(info);
++	}
+     }
+ 
+   OCIHandleFree(_current_stm, OCI_HTYPE_STMT);
+@@ -138,6 +143,14 @@
+ 	{
+ 	  NSLog(@"FAILED: OCITerminate()");
+ 	}
++
++      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
++      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
++      OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
++
++      _oci_ctx = (OCISvcCtx *)0;
++      _oci_err = (OCIError *)0;
++      _oci_env = (OCIEnv *)0;
+     }
+ }
+ 
+@@ -151,11 +164,6 @@
+   [self _cleanup];
+ 
+   RELEASE(_resultSetProperties);
+-
+-  OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
+-  OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
+-  OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
+-
+   RELEASE(delegate);
+ 
+   [super dealloc];
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1546)
