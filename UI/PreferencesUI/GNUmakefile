@@ -24,8 +24,8 @@ PreferencesUI_RESOURCE_FILES += \
 PreferencesUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\
 
-ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/sope-gdl1/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/sope-gdl1/GDLContentStore/obj/
+ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
