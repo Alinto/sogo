@@ -13,8 +13,8 @@ libOGoContentStore_HEADER_FILES_DIR         = .
 libOGoContentStore_HEADER_FILES_INSTALL_DIR = /OGoContentStore
 # no headers, commented out: FHS_HEADER_DIRS = OGoContentStore
 
-ADDITIONAL_INCLUDE_DIRS += -I../SOPE/sope-gdl1/
-ADDITIONAL_LIB_DIRS += -L../SOPE/sope-gdl1/GDLContentStore/obj/
+ADDITIONAL_INCLUDE_DIRS += -I../SOPE
+ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj
 
 libOGoContentStore_OBJC_FILES +=		\
 	iCalEntityObject+OCS.m			\
