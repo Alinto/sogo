@@ -378,7 +378,7 @@ Index: sope-gdl1/Oracle8/GNUmakefile
 +local_arch = $(subst 64,,$(shell uname -m))
 +
 +ifeq ($(local_arch),ppc)
-+PPC_LDFLAGS=-L/opt/ibmcmp/lib -libmc++ -l$(local_arch)
++PPC_LDFLAGS=-L/opt/ibmcmp/lib -libmc++
 +else
 +PPC_LDFLAGS=
 +endif
@@ -401,7 +401,11 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1546)
 +++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -57,10 +57,15 @@
+@@ -53,14 +53,17 @@
+   while (c--)
+     {
+       info = [[_row_buffer objectAtIndex: c] pointerValue];
+-      [_row_buffer removeObjectAtIndex: c];
  
        // We free our LOB object. If it fails, it likely mean it isn't a LOB
        // so we just free the value instead.
@@ -409,19 +413,18 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 -      	{
 -      	  free(info->value);
 -      	}
-+      if (info)
++      if (info->value)
 +	{
-+	  if (info->value && OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	    {
-+      	      free(info->value);
-+	      info->value = NULL;
-+      	    }
-+	  free(info);
++	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	    free(info->value);
++	  info->value = NULL;
 +	}
++      free(info);
++      [_row_buffer removeObjectAtIndex: c];
      }
  
    OCIHandleFree(_current_stm, OCI_HTYPE_STMT);
-@@ -138,6 +143,14 @@
+@@ -138,6 +141,14 @@
  	{
  	  NSLog(@"FAILED: OCITerminate()");
  	}
@@ -436,7 +439,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
      }
  }
  
-@@ -151,11 +164,6 @@
+@@ -151,11 +162,6 @@
    [self _cleanup];
  
    RELEASE(_resultSetProperties);
@@ -448,6 +451,20 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    RELEASE(delegate);
  
    [super dealloc];
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1546)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
+@@ -155,7 +155,9 @@
+ 	  OCILobFreeTemporary([theChannel serviceContext], [theChannel errorHandle], info->value);
+ 	  OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB);
+ 	}
++      free(info);
+     }
++  [theColumns release];
+ 
+   OCIHandleFree(theStatement, OCI_HTYPE_STMT);
+ }
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1546)
