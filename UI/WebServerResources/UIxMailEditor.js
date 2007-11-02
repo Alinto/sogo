@@ -30,7 +30,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
     var counter = 0;
     var currentRow = $('row_' + counter);
     while (currentRow && !stop) {
-      var currentValue = $(currentRow.childNodesWithTag("span")[1]).childNodesWithTag("input")[0].value;
+      var currentValue = $(currentRow.childNodesWithTag("td")[1]).childNodesWithTag("input")[0].value;
       if (currentValue == neededOptionValue) {
         stop = true;
         insertContact($("addr_" + counter), contactName, contactEmail);
@@ -41,9 +41,10 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 
     if (!stop) {
       fancyAddRow(false, "");
-      $("row_" + counter).childNodesWithTag("span")[0].childNodesWithTag("select")[0].value
+      $($("row_" + counter).childNodesWithTag("td")[0]).childNodesWithTag("select")[0].value
         = neededOptionValue;
       insertContact($("addr_" + counter), contactName, contactEmail);
+      onWindowResize(null);
     }
   }
 }
