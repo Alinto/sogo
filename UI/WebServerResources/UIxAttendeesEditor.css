@@ -9,9 +9,12 @@ DIV#attendeesView
   border: 0px; }
 
 DIV#freeBusyView
-{ position: static;
-  margin-top: 2em;
-  margin-left: 12.5em;
+{ background-color: #fff;
+  position: absolute;
+  margin-top: 0.5em;
+  top: 2em;
+  bottom: 14.5em;
+  left: 13em;
   overflow: auto;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
@@ -35,25 +38,25 @@ TABLE#freeBusy TH
 
 TABLE#freeBusy TH.attendees,
 TABLE#freeBusy TD.attendees
-{ /*position: absolute;*/
-  position: fixed;
+{ position: fixed;
   padding: 0px .5em;
+  padding-right: 0px;
   margin: 0px;
-  width: 11em;
+  width: 13em;
   border: 0px !important;
-  background: #d4d0c8 !important;
+  background-color: #d4d0c8;
   overflow: hidden;
   left: 0px; }
 
 TABLE#freeBusy TD.attendees IMG
 { position: absolute;
   left: 0em;
-  top: .5em; }
+  top: 0.5em; }
 
 TABLE#freeBusy TD.attendees INPUT
-{ width: 10em;
+{ width: 11.5em;
   margin: 0px;
-  margin-left: 10px; }
+  margin-left: 5px; }
 
 TABLE#freeBusy TR.freeBusyHeader2 TH
 { font-weight: normal; }

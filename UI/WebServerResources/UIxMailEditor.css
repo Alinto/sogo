@@ -21,9 +21,10 @@ DIV.addressList
 { margin: 5px; }
 
 TABLE#addressList
-{ border: 1px solid #333;
-  border-bottom: 1px solid #aaa;
-  border-right: 1px solid #ccc;
+{ border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 1px solid #444;
+  border-left: 1px solid #444;
   border-spacing: 0px;
   margin: 0px;
   padding: 0px;
