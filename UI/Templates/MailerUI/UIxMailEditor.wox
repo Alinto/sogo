@@ -46,12 +46,12 @@
       <div class="addressListElement" id="subjectRow"
 	><span class="headerField"><var:string label:value="Subject"
 	    />:</span
-	  ><span class="headerInput"
-	  ><input name="subject"
+	  >
+	  <input name="subject"
 	    type="text"
 	    class="textField"
 	    var:value="subject"
-	    /></span></div>
+	    /></div>
     <!-- separator line --><hr/>
     </div>
     <textarea name="text" rows="30" var:value="text" />

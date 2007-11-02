@@ -254,6 +254,9 @@ function initMailEditor() {
   if (listContent.length > 0)
     $("attachmentsArea").setStyle({ display: "block" });
 
+  var list = $("addressList");
+  TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
+
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);
   Event.observe(window, "beforeunload", onMailEditorClose);
@@ -314,6 +317,30 @@ function onWindowResize(event) {
   var textarea = document.pageform.text;
   var rowheight = (Element.getHeight(textarea) / textarea.rows);
   var headerarea = $("headerArea");
+  
+  var attachmentsarea = $("attachmentsArea");
+  var attachmentswidth = 0;
+  if (attachmentsarea.style.display) {
+    attachmentswidth = attachmentsarea.getWidth();
+    // Resize of attachment list is b0rken under IE7
+//    fromfield = $(document).getElementsByClassName('headerField',
+//						   headerarea)[0];
+//    $("attachments").setStyle({ height: (headerarea.getHeight() - fromfield.getHeight() - 10) + 'px' });
+  }
+//  var subjectfield = $(document).getElementsByClassName('headerField',
+//							$('subjectRow'))[0];
+//  var subjectinput = $(document).getElementsByClassName('textField',
+//							$('subjectRow'))[0];
+//
+  // Resize subject field
+//  subjectinput.setStyle({ width: (window.width()
+//				  - $(subjectfield).getWidth()
+//				  - attachmentswidth
+//				  - 4 - 30) + 'px' });
+
+  // Resize address fields
+  var addresslist = $('addressList');
+  addresslist.setStyle({ width: ($(this).width() - attachmentswidth - 10) + 'px' });
 
   // Set textarea position
   textarea.setStyle({ 'top': (headerarea.getHeight() + headerarea.offsetTop) + 'px' });
@@ -322,30 +349,6 @@ function onWindowResize(event) {
 
   // Resize the textarea (message content)
   textarea.rows = Math.round((window.height() - textareaoffset) / rowheight);
-  
-  var attachmentsarea = $("attachmentsArea");
-  var attachmentswidth = 0;
-  if (attachmentsarea.style.display)
-    attachmentswidth = attachmentsarea.getWidth();
-  var subjectfield = $(document).getElementsByClassName('headerField',
-							$('subjectRow'))[0];
-  var subjectinput = $(document).getElementsByClassName('textField',
-							$('subjectRow'))[0];
-
-  // Resize subject field
-  subjectinput.setStyle({ width: (window.width()
-				  - $(subjectfield).getWidth()
-				  - attachmentswidth
-				  - 4 - 30) + 'px' });
-
-  // Resize address fields
-  var addresslist = $('addressList');
-  var firstselect = document.getElementsByClassName('headerField', addresslist)[0];
-  var inputwidth = ($(this).width() - $(firstselect).getWidth()
-		    - attachmentswidth - 24 - 30);
-  var addresses = document.getElementsByClassName('textField', addresslist);
-  for (var i = 0; i < addresses.length; i++)
-    addresses[i].setStyle({ width: inputwidth + 'px' });
 }
 
 function onMailEditorClose(event) {
