@@ -527,22 +527,24 @@ function quotasCallback(http) {
       && http.status == 200) {
     var hasQuotas = false;
 
-      var quotas = http.responseText.evalJSON(true);
-      for (var i in quotas) {
-	hasQuotas = true;
-	break;
-      }
+    var quotas = http.responseText.evalJSON(true);
+    for (var i in quotas) {
+      hasQuotas = true;
+      break;
+    }
 
-      if (hasQuotas) {
-	var treePath = currentMailbox.split("/");
-	var mbQuotas = quotas["/" + treePath[2]];
-	var used = mbQuotas["usedSpace"];
-	var max = mbQuotas["maxQuota"];
-	var percents = (Math.round(used * 10000 / max) / 100);
-	var format = labels["quotasFormat"];
-	var text = format.formatted(used, max, percents);
-	window.status = text;
-      }
+    if (hasQuotas) {
+      var treePath = currentMailbox.split("/");
+      var quotasMB = new Array();
+      for (var i = 2; i < treePath.length; i++)
+	quotasMB.push(treePath[i].substr(6));
+      var mbQuotas = quotas["/" + quotasMB.join("/")];
+      var used = mbQuotas["usedSpace"];
+      var max = mbQuotas["maxQuota"];
+      var percents = (Math.round(used * 10000 / max) / 100);
+      var format = labels["quotasFormat"];
+      var text = format.formatted(used, max, percents);
+      window.status = text;
     }
   }
 }
