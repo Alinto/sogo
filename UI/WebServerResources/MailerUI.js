@@ -2,8 +2,12 @@
 var accounts = {};
 var mailboxTree;
 var mailAccounts;
-if (typeof textMailAccounts != 'undefined')
-  mailAccounts = textMailAccounts.evalJSON(true);
+if (typeof textMailAccounts != 'undefined') {
+  if (textMailAccounts.length > 0)
+    mailAccounts = textMailAccounts.evalJSON(true);
+  else
+    mailAccounts = new Array;
+}
 
 var currentMessages = new Array();
 var maxCachedMessages = 20;
@@ -523,21 +527,23 @@ function quotasCallback(http) {
       && http.status == 200) {
     var hasQuotas = false;
 
-    var quotas = http.responseText.evalJSON(true);
-    for (var i in quotas) {
-      hasQuotas = true;
-      break;
-    }
+    if (http.responseText.length > 0) {
+      var quotas = http.responseText.evalJSON(true);
+      for (var i in quotas) {
+	hasQuotas = true;
+	break;
+      }
 
-    if (hasQuotas) {
-      var treePath = currentMailbox.split("/");
-      var mbQuotas = quotas["/" + treePath[2]];
-      var used = mbQuotas["usedSpace"];
-      var max = mbQuotas["maxQuota"];
-      var percents = (Math.round(used * 10000 / max) / 100);
-      var format = labels["quotasFormat"];
-      var text = format.formatted(used, max, percents);
-      window.status = text;
+      if (hasQuotas) {
+	var treePath = currentMailbox.split("/");
+	var mbQuotas = quotas["/" + treePath[2]];
+	var used = mbQuotas["usedSpace"];
+	var max = mbQuotas["maxQuota"];
+	var percents = (Math.round(used * 10000 / max) / 100);
+	var format = labels["quotasFormat"];
+	var text = format.formatted(used, max, percents);
+	window.status = text;
+      }
     }
   }
 }

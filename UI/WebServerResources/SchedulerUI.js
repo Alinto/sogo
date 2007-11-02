@@ -319,45 +319,47 @@ function eventsListCallback(http) {
     sortOrder = params["desc"];
     lastClickedRow = null; // from generic.js
 
-    var data = http.responseText.evalJSON(true);
-    for (var i = 0; i < data.length; i++) {
-      var row = document.createElement("tr");
-      table.tBodies[0].appendChild(row);
-      $(row).addClassName("eventRow");
-      row.setAttribute("id", escape(data[i][0]));
-      row.cname = escape(data[i][0]);
-      row.calendar = data[i][1];
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
+      for (var i = 0; i < data.length; i++) {
+	var row = document.createElement("tr");
+	table.tBodies[0].appendChild(row);
+	$(row).addClassName("eventRow");
+	row.setAttribute("id", escape(data[i][0]));
+	row.cname = escape(data[i][0]);
+	row.calendar = data[i][1];
 
-      var startDate = new Date();
-      startDate.setTime(data[i][4] * 1000);
-      row.day = startDate.getDayString();
-      row.hour = startDate.getHourString();
-      Event.observe(row, "click",
-		    onEventClick.bindAsEventListener(row));
-      Event.observe(row, "dblclick",
-		    editDoubleClickedEvent.bindAsEventListener(row));
-      Event.observe(row, "contextmenu",
-		    onEventContextMenu.bindAsEventListener(row));
-
-      var td = document.createElement("td");
-      row.appendChild(td);
-      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-      td.appendChild(document.createTextNode(data[i][3]));
-
-      td = document.createElement("td");
-      row.appendChild(td);
-      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-      td.appendChild(document.createTextNode(data[i][8]));
-
-      td = document.createElement("td");
-      row.appendChild(td);
-      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-      td.appendChild(document.createTextNode(data[i][9]));
+	var startDate = new Date();
+	startDate.setTime(data[i][4] * 1000);
+	row.day = startDate.getDayString();
+	row.hour = startDate.getHourString();
+	Event.observe(row, "click",
+		      onEventClick.bindAsEventListener(row));
+	Event.observe(row, "dblclick",
+		      editDoubleClickedEvent.bindAsEventListener(row));
+	Event.observe(row, "contextmenu",
+		      onEventContextMenu.bindAsEventListener(row));
       
-      td = document.createElement("td");
-      row.appendChild(td);
-      Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-      td.appendChild(document.createTextNode(data[i][6]));
+	var td = document.createElement("td");
+	row.appendChild(td);
+	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.appendChild(document.createTextNode(data[i][3]));
+
+	td = document.createElement("td");
+	row.appendChild(td);
+	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.appendChild(document.createTextNode(data[i][8]));
+
+	td = document.createElement("td");
+	row.appendChild(td);
+	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.appendChild(document.createTextNode(data[i][9]));
+      
+	td = document.createElement("td");
+	row.appendChild(td);
+	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.appendChild(document.createTextNode(data[i][6]));
+      }
     }
   }
   else
@@ -371,42 +373,45 @@ function tasksListCallback(http) {
       && http.status == 200) {
     document.tasksListAjaxRequest = null;
     var list = $("tasksList");
-    var data = http.responseText.evalJSON(true);
+ 
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
 
-    for (var i = 0; i < data.length; i++) {
-      //log(i + " = " + data[i][3]);
-      var listItem = document.createElement("li");
-      list.appendChild(listItem);
-      Event.observe(listItem, "mousedown", listRowMouseDownHandler);
-      Event.observe(listItem, "click", onRowClick);
-      Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
-      listItem.setAttribute("id", data[i][0]);
-      $(listItem).addClassName(data[i][5]);
-      listItem.calendar = data[i][1];
-      $(listItem).addClassName("calendarFolder" + data[i][1]);
-      listItem.cname = escape(data[i][0]);
-      var input = document.createElement("input");
-      input.setAttribute("type", "checkbox");
-      listItem.appendChild(input);
-      Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
-      input.setAttribute("value", "1");
-      if (data[i][2] == 1)
-	input.setAttribute("checked", "checked");
-      $(input).addClassName("checkBox");
-      listItem.appendChild(document.createTextNode(data[i][3]));
-    }
-
-    list.scrollTop = list.previousScroll;
-
-    if (http.callbackData) {
-      var selectedNodesId = http.callbackData;
-      for (var i = 0; i < selectedNodesId.length; i++) {
-// 	log(selectedNodesId[i] + " (" + i + ") is selected");
-        $(selectedNodesId[i]).select();
+      for (var i = 0; i < data.length; i++) {
+	//log(i + " = " + data[i][3]);
+	var listItem = document.createElement("li");
+	list.appendChild(listItem);
+	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
+	Event.observe(listItem, "click", onRowClick);
+	Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
+	listItem.setAttribute("id", data[i][0]);
+	$(listItem).addClassName(data[i][5]);
+	listItem.calendar = data[i][1];
+	$(listItem).addClassName("calendarFolder" + data[i][1]);
+	listItem.cname = escape(data[i][0]);
+	var input = document.createElement("input");
+	input.setAttribute("type", "checkbox");
+	listItem.appendChild(input);
+	Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
+	input.setAttribute("value", "1");
+	if (data[i][2] == 1)
+	  input.setAttribute("checked", "checked");
+	$(input).addClassName("checkBox");
+	listItem.appendChild(document.createTextNode(data[i][3]));
       }
+
+      list.scrollTop = list.previousScroll;
+
+      if (http.callbackData) {
+	var selectedNodesId = http.callbackData;
+	for (var i = 0; i < selectedNodesId.length; i++) {
+	  // 	log(selectedNodesId[i] + " (" + i + ") is selected");
+	  $(selectedNodesId[i]).select();
+	}
+      }
+      else
+	log ("tasksListCallback: no data");
     }
-    else
-      log ("tasksListCallback: no data");
   }
   else
     log ("tasksListCallback Ajax error");
@@ -601,12 +606,15 @@ function refreshCalendarEvents() {
 function refreshCalendarEventsCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
-     var data = http.responseText.evalJSON(true);
+
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
 //      log("refresh calendar events: " + data.length);
-     for (var i = 0; i < data.length; i++)
+      for (var i = 0; i < data.length; i++)
 	drawCalendarEvent(data[i],
 			  http.callbackData["startDate"],
 			  http.callbackData["endDate"]);
+    }
   }
   else
      log("AJAX error when refreshing calendar events");
