@@ -523,10 +523,12 @@ function quotasCallback(http) {
       && http.status == 200) {
     var hasQuotas = false;
 
-    var quotas = http.responseText.evalJSON(true);
-    for (var i in quotas) {
-      hasQuotas = true;
-      break;
+    if (http.responseText.length > 0) {
+      var quotas = http.responseText.evalJSON(true);
+      for (var i in quotas) {
+	hasQuotas = true;
+	break;
+      }
     }
 
     if (hasQuotas) {
@@ -1279,16 +1281,18 @@ function onLoadMailboxesCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     checkAjaxRequestsState();
-    var newAccount = buildMailboxes(http.callbackData,
-				    http.responseText);
-    accounts[http.callbackData] = newAccount;
-    mailboxTree.addMailAccount(newAccount);
-    mailboxTree.pendingRequests--;
-    activeAjaxRequests--;
-    if (!mailboxTree.pendingRequests) {
-      updateMailboxTreeInPage();
-      updateMailboxMenus();
-      checkAjaxRequestsState();
+    if (http.responseText.length > 0) {
+      var newAccount = buildMailboxes(http.callbackData,
+				      http.responseText);
+      accounts[http.callbackData] = newAccount;
+      mailboxTree.addMailAccount(newAccount);
+      mailboxTree.pendingRequests--;
+      activeAjaxRequests--;
+      if (!mailboxTree.pendingRequests) {
+	updateMailboxTreeInPage();
+	updateMailboxMenus();
+	checkAjaxRequestsState();
+      }
     }
   }
 
