@@ -6,7 +6,7 @@ if (typeof textMailAccounts != 'undefined') {
   if (textMailAccounts.length > 0)
     mailAccounts = textMailAccounts.evalJSON(true);
   else
-    mailAccounts = new Array;
+    mailAccounts = new Array();
 }
 
 var currentMessages = new Array();
@@ -527,7 +527,6 @@ function quotasCallback(http) {
       && http.status == 200) {
     var hasQuotas = false;
 
-    if (http.responseText.length > 0) {
       var quotas = http.responseText.evalJSON(true);
       for (var i in quotas) {
 	hasQuotas = true;
@@ -1285,16 +1284,18 @@ function onLoadMailboxesCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     checkAjaxRequestsState();
-    var newAccount = buildMailboxes(http.callbackData,
-				    http.responseText);
-    accounts[http.callbackData] = newAccount;
-    mailboxTree.addMailAccount(newAccount);
-    mailboxTree.pendingRequests--;
-    activeAjaxRequests--;
-    if (!mailboxTree.pendingRequests) {
-      updateMailboxTreeInPage();
-      updateMailboxMenus();
-      checkAjaxRequestsState();
+    if (http.responseText.length > 0) {
+      var newAccount = buildMailboxes(http.callbackData,
+				      http.responseText);
+      accounts[http.callbackData] = newAccount;
+      mailboxTree.addMailAccount(newAccount);
+      mailboxTree.pendingRequests--;
+      activeAjaxRequests--;
+      if (!mailboxTree.pendingRequests) {
+	updateMailboxTreeInPage();
+	updateMailboxMenus();
+	checkAjaxRequestsState();
+      }
     }
   }
 
