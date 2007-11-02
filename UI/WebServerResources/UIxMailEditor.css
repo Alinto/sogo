@@ -17,25 +17,55 @@ DIV#addressList
   overflow-x: hidden;
 }
 
-SPAN.headerField
-{ line-height: 1.8em;
-  float: left;
-  clear: left;
-  text-align: right;
-  min-width: 7em;
-  padding-left: 0.5em; }
+DIV.addressList
+{ margin: 5px; }
 
-SPAN.headerInput INPUT
-{ padding-left: 24px; /* offset text input */
-  padding-right: 4px;
-  background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+TABLE#addressList
+{ border: 1px solid #333;
+  border-bottom: 1px solid #aaa;
+  border-right: 1px solid #ccc;
+  border-spacing: 0px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%; }
+
+TABLE#addressList TD
+{ background-color: #fff;
+  border: 0px;
+  border-bottom: 1px solid #C4C8FF;
+  margin: 0px;
+  padding: 1px; }
+
+TABLE#addressList TD.headerField
+{ border-right: 1px solid #C4C8FF; 
+  width: 110px; }
+
+TABLE#addressList TD.headerField SELECT
+{ border: 1px solid #eee; }
+
+TABLE#addressList TD.headerInput
+{ background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
   background-repeat: no-repeat;
-  background-position: 2px center; }
+  background-position: 2px center;
+  padding-left: 24px;
+  padding-right: 4px; }
+
+TABLE#addressList TD.headerInput INPUT
+{ border: 0px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%; }
+
+SPAN.headerField
+{ line-height: 2.0em;
+  padding-left: 0.5em; }
 
 DIV#subjectRow INPUT
 { background-image: none;
-  padding-left: 4px; /* offset text input */
-  padding-right: 4px; }
+  width: 60%; }
+
+DIV#subjectRow SPAN.headerField
+{ float: left; }
 
 div#compose_internetmarker
 { padding:          8px;
@@ -46,15 +76,16 @@ div#compose_internetmarker
   border-style:     solid; }
 
 div#headerArea
-{ border-top: 1px solid #fff; }
+{ border-top: 1px solid #fff;
+  padding: 5px 0px; }
 
 div#attachmentsArea
 { display: none;
   float: right;
-  width: 12em;
+  width: 120px;
   height: 100%;
-  margin: 0px;
-  padding-right: 1em;
+  margin: auto;
+  padding-right: 5px;
   padding-left: 5px;
   border-left: 1px solid #888; }
 

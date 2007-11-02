@@ -9,19 +9,21 @@
       var currentIndex = <var:string value="currentIndex" />;
     </script>
 
-    <div id="addressList"
+    <div class="addressList">
+    <table id="addressList" cellpadding="0" cellspacing="0"
+      ><tbody
       ><var:foreach list="addressLists" item="addressList"
         ><var:foreach list="addressList" item="address">
-          <div class="addressListElement" var:id="currentRowId">
-            <span class="headerField">
+          <tr class="addressListElement" var:id="currentRowId">
+            <td class="headerField">
             <var:popup name="currentPopUpId"
               list="headers"
               item="item"
               label:displayString="$item"
               selection="currentHeader"
               />
-            </span>
-            <span class="headerInput">
+            </td>
+            <td class="headerInput">
             <input var:id="currentAddressId"
               var:name="currentAddressId"
               class="textField"
@@ -30,29 +32,31 @@
               onfocus="addressFieldGotFocus(this);"
               onblur="addressFieldLostFocus(this);"
               />
-            </span>
-          </div>
+            </td>
+          </tr>
         </var:foreach>
       </var:foreach>
-      <div class="addressListElement" id="lastRow">
-        <span class="headerField">
+      <tr class="addressListElement" id="lastRow">
+        <td class="headerField">
         <var:popup name="currentPopUpId"
               const:disabled="1"
               list="headers"
               item="item"
               label:displayString="$item"
               />
-        </span>
-        <span class="headerInput">
-          <input onfocus="fancyAddRow(true,'');"
+        </td>
+        <td class="headerInput">
+          <span class="headerInput"><input onfocus="fancyAddRow(true,'');"
             readonly="1"
             type="text"
-            class="textField" />
-        </span>
-      </div>
+            class="textField" /></span>
+        </td>
+      </tr>
     <!--<var:if condition="isUIxDebugEnabled">
     <a href="#" onclick="checkAddresses();">check addresses</a>
   </var:if>-->
+    </tbody>
+    </table>
     </div>
     <span id="addr_addresses" style="display: none; visibility: hidden;"><var:foreach list="addressLists" item="addressList"><var:foreach list="addressList" item="address"><span var:id="address"><!-- Space! --></span></var:foreach></var:foreach></span>
   </container>

@@ -86,12 +86,11 @@ case "$1" in
   stop)
 	echo -n $"Stopping $DESC: "
 	killproc $REAL_DAEMON && rm -f ${PIDFILE}*
-	echo "$NAME."
+	echo
 	;;
   restart|force-reload)
-	echo -n $"Restarting $DESC: "
+	echo $"Restarting $DESC: "
 	$0 stop && sleep 2 && $0 start
-	echo "$NAME."
 	;;
   status)
   	status $REAL_DAEMON

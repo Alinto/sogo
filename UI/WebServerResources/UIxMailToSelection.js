@@ -94,7 +94,7 @@ function fancyAddRow(shouldEdit, text) {
       return;
     }
   }
-  addressList = $("addressList");
+  addressList = $("addressList").tBodies[0];
   lastChild = $("lastRow");
   
   currentIndex++;
@@ -104,7 +104,7 @@ function fancyAddRow(shouldEdit, text) {
   row.id = 'row_' + currentIndex;
 
   // select popup
-  var rowNodes = row.childNodesWithTag("span");
+  var rowNodes = row.childNodesWithTag("td");
   select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
 //   select.value = row.childNodesWithTag("span")[0].childNodesWithTag("select")[0].value;
@@ -153,7 +153,7 @@ function removeLastEditedRowIfEmpty() {
     var addresses = $('addr_addresses');
     addresses.removeChild(addr);
   }
-  addressList = $("addressList");
+  addressList = $("addressList").tBodies[0];
   senderRow = $("row_" + idx);
   addressList.removeChild(senderRow);
 }
