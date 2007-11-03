@@ -426,6 +426,12 @@
 			       |iCalWeekDayFriday)];
 	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
 	}
+      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame)
+	{
+	  [rule setNamedValue: @"bymonthday"
+		to: [NSString stringWithFormat: @"%d", [aptStartDate dayOfMonth]]];
+	  [rule setFrequency: iCalRecurrenceFrequenceMonthly];
+	}
       else
 	[rule setFrequency:
 		(iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];

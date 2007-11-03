@@ -1,3 +1,8 @@
+2007-11-03  Ludovic Marcotte  <ludovic@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m
+	Fixed monthly recurrences support. 
+
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
