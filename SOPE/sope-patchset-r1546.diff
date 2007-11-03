@@ -228,6 +228,40 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
+Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1546)
++++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
+@@ -285,24 +285,16 @@
+ - (id)parseValue:(id)_data ofHeaderField:(NSString *)_field {
+   // TODO: use UNICODE
+   NSCalendarDate *date       = nil;
+-  unsigned char  buf[256];
+-  unsigned char  *bytes = buf, *pe;
++  unsigned char  *bytes, *pe;
+   unsigned       length = 0;
+   NSTimeZone     *tz = nil;
+   char  dayOfMonth, monthOfYear, hour, minute, second;
+   short year;
+   BOOL  flag;
+-  
+-  if ((length = [_data cStringLength]) > 254) {
+-    [self logWithFormat:
+-	    @"header field value to large for date parsing: '%@'(%i)",
+-	    _data, length];
+-    length = 254;
+-  }
+-  
+-  [_data getCString:(char *)buf maxLength:length];
+-  buf[length] = '\0';
+-  
++
++  length = [_data length];
++  bytes = [_data cStringUsingEncoding: NSASCIIStringEncoding];
++
+   /* remove leading chars (skip to first digit, the day of the month) */
+   while (length > 0 && (!isdigit(*bytes))) {
+     bytes++;
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1546)
@@ -424,10 +458,45 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
      }
  
    OCIHandleFree(_current_stm, OCI_HTYPE_STMT);
-@@ -138,6 +141,14 @@
- 	{
- 	  NSLog(@"FAILED: OCITerminate()");
+@@ -75,6 +78,30 @@
+ //
+ @implementation OracleAdaptorChannel
+ 
++static void
++DBTerminate()
++{
++  if (OCITerminate(OCI_DEFAULT))
++    NSLog(@"FAILED: OCITerminate()");
++  else
++    NSLog(@"Oracle8: environment shut down");
++}
++
+++ (void) initialize
++{
++  // We Initialize the OCI process environment.
++  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
++                    (dvoid * (*)(dvoid *, size_t)) 0,
++                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
++                    (void (*)(dvoid *, dvoid *)) 0 ))
++    NSLog(@"FAILED: OCIInitialize()");
++  else
++    {
++      NSLog(@"Oracle8: environment initialized");
++      atexit(DBTerminate);
++    }
++}
++
+ - (id) initWithAdaptorContext: (EOAdaptorContext *) theAdaptorContext
+ {
+   if ((self = [super initWithAdaptorContext: theAdaptorContext]))
+@@ -134,10 +161,14 @@
+ 	  NSLog(@"FAILED: OCILogoff()");
  	}
+ 
+-      if (OCITerminate(OCI_DEFAULT))
+-	{
+-	  NSLog(@"FAILED: OCITerminate()");
+-	}
 +
 +      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
 +      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
@@ -439,7 +508,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
      }
  }
  
-@@ -151,11 +162,6 @@
+@@ -151,11 +182,6 @@
    [self _cleanup];
  
    RELEASE(_resultSetProperties);
@@ -451,6 +520,22 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    RELEASE(delegate);
  
    [super dealloc];
+@@ -368,15 +394,6 @@
+       return NO;
+     }
+ 
+-  // We Initialize the OCI process environment.
+-  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
+-                    (dvoid * (*)(dvoid *, size_t)) 0,
+-                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
+-                    (void (*)(dvoid *, dvoid *)) 0 ))
+-    {
+-      NSLog(@"FAILED: OCIInitialize()");
+-      return NO;
+-    }
+   
+   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
+     {
 Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1546)
