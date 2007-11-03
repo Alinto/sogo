@@ -1,3 +1,9 @@
+2007-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDateHolder.m ([iCalDateHolder -awakeAfterUsingSaxDecoder:]):
+	make use of cStringUsingEncoding: instead of getString:length: to
+	retrieve the buffer content to work-around a bug in gnustep-base.
+
 2007-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m ([CardGroup +parseFromSource:source]): make sure the

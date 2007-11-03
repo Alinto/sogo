@@ -130,14 +130,17 @@ static NSTimeZone *gmt = nil;
   if ([s rangeOfString:@"T"].length == 0 && [s length] == 8) {
     /* hm, maybe a date without a time? like an allday event! */
     int year, month, day;
-    char buf[16];
-    [s getCString:&(buf[0])];
+    char *buf;
+
+    buf = strdup([s cStringUsingEncoding: NSASCIIStringEncoding]);
     
-    buf[9] = '\0';
-    day    = atoi(&(buf[6]));  buf[6] = '\0';
-    month  = atoi(&(buf[4]));  buf[4] = '\0';
-    year   = atoi(&(buf[0]));
-    
+    day    = atoi(buf + 6);
+    buf[6] = '\0';
+    month  = atoi(buf + 4);
+    buf[4] = '\0';
+    year   = atoi(buf);
+    free (buf);
+
     date = [NSCalendarDate dateWithYear:year month:month day:day
                            hour:0 minute:0 second:0
                            timeZone:tz];
