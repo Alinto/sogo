@@ -44,6 +44,7 @@ DIV.contactSelector
 LABEL, SPAN.checkBoxList
 { display: block;
   position: relative;
+  line-height: 1.5em;
   height: 1.5em;
   margin-left: .5em;
   margin-bottom: .5em;
@@ -75,6 +76,9 @@ SPAN.content
   top: -.25em;
   left: 8em;
   right: 1em; }
+
+SPAN.content A
+{ line-height: 2em; }
 
 TEXTAREA
 { position: absolute;
