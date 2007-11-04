@@ -552,6 +552,344 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
+===================================================================
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1546)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
+@@ -20,6 +20,8 @@
+   02111-1307, USA.
+ */
+ 
++#include <unistd.h>
++
+ #include <NGExtensions/NSString+Encoding.h>
+ #include <NGExtensions/NSObject+Logs.h>
+ #include "common.h"
+@@ -81,7 +83,6 @@
+ 
+ #else /* ! NeXT_Foundation_LIBRARY */
+ 
+-
+ @implementation NSString(Encoding)
+ 
+ #if GNUSTEP_BASE_LIBRARY
+@@ -192,17 +193,17 @@
+ 
+     memcpy(outbuf, _src, _srcLen);
+     *outLen_ = outlen;
+-    
++
+     return outbuf;
+   }
+   result     = nil;
+   fromEncode = [_fromEncode cString];
+   toEncode   = [_toEncode   cString];
+-  
++
+   type       = iconv_open(toEncode, fromEncode);
+   inbuf      = NULL;
+   outbuf     = NULL;
+-  
++
+   if ((type == (iconv_t)-1)) {
+     [self logWithFormat:@"%s: Could not handle iconv encoding. FromEncoding:%@"
+           @" to encoding:%@", __PRETTY_FUNCTION__, _fromEncode, _toEncode];
+@@ -228,25 +229,25 @@
+     }
+     else if (errno == EINVAL) {
+       [self logWithFormat:@"Got incomplete multibyte sequence. ToEncode: %@"
+-       @" FromEncode: %@", _toEncode, _fromEncode];
++	    @" FromEncode: %@", _toEncode, _fromEncode];
+       if (IconvLogEnabled)
+         [self logWithFormat:@"ByteSequence:\n%s\n", _src];
+-      
++
+     }
+     else if (errno == E2BIG) {
+       [self logWithFormat:
+-	      @"Got to small outputbuffer (inbytesleft=%d, outbytesleft=%d, "
+-	      @"outlen=%d). ToEncode: %@ FromEncode: %@", 
+-	      inbytesleft, outbytesleft, outlen,
+-	      _toEncode, _fromEncode];
++              @"Got to small outputbuffer (inbytesleft=%d, outbytesleft=%d, "
++	    @"outlen=%d). ToEncode: %@ FromEncode: %@",
++	    inbytesleft, outbytesleft, outlen,
++	    _toEncode, _fromEncode];
+       if (IconvLogEnabled)
+         [self logWithFormat:@"ByteSequence:\n%s\n", _src];
+-      
++
+       goto CLEAR_AND_RETURN;
+     }
+     else {
+       [self logWithFormat:@"Got unexpected error. ToEncode: %@"
+-       @" FromEncode: %@", _toEncode, _fromEncode];
++	    @" FromEncode: %@", _toEncode, _fromEncode];
+       goto CLEAR_AND_RETURN;
+     }
+   }
+@@ -255,45 +256,224 @@
+ #endif
+   if (type)
+     iconv_close(type);
+-  
++
+   *outLen_ = outlen - outbytesleft;
+-  
++
+   return outbuf;
+-  
++
+  CLEAR_AND_RETURN:
+   if (type)
+     iconv_close(type);
+-  
++
+   if (outbuf) {
+     free(outbuf); outbuf = NULL;
+   }
+   return NULL;
+ }
+ 
+-+ (NSString *)stringWithData:(NSData *)_data
+-  usingEncodingNamed:(NSString *)_encoding
+++ (int) encodingForCharset: (NSString *) theCharset
++ convertToNSStringEncoding: (BOOL) shouldConvert
+ {
+-  void      *inbuf, *res;
+-  unsigned  len, inbufLen;
+-  NSString  *result;
++  // We define some aliases for the string encoding.
++  static struct { NSString *name; int encoding; BOOL fromCoreFoundation; } encodings[] = {
++    {@"ascii"         ,NSASCIIStringEncoding          ,NO},
++    {@"us-ascii"      ,NSASCIIStringEncoding          ,NO},
++    {@"default"       ,NSASCIIStringEncoding          ,NO},  // Ah... spammers.
++    {@"utf-8"         ,NSUTF8StringEncoding           ,NO},
++    {@"iso-8859-1"    ,NSISOLatin1StringEncoding      ,NO},
++    {@"x-user-defined",NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in Outlook.
++    {@"unknown"       ,NSISOLatin1StringEncoding      ,NO},  // Once more, blame Outlook.
++    {@"x-unknown"     ,NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in Pine 4.21.
++    {@"unknown-8bit"  ,NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in Mutt/1.3.28i
++    {@"0"             ,NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in QUALCOMM Windows Eudora Version 6.0.1.1
++    {@""              ,NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in Ximian Evolution
++    {@"iso8859_1"     ,NSISOLatin1StringEncoding      ,NO},  // To prevent a lame bug in Openwave WebEngine
++    {@"iso-8859-2"    ,NSISOLatin2StringEncoding      ,NO},
++#ifndef MACOSX
++    {@"iso-8859-3"   ,NSISOLatin3StringEncoding                 ,NO},
++    {@"iso-8859-4"   ,NSISOLatin4StringEncoding                 ,NO},
++    {@"iso-8859-5"   ,NSISOCyrillicStringEncoding               ,NO},
++    {@"iso-8859-6"   ,NSISOArabicStringEncoding                 ,NO},
++    {@"iso-8859-7"   ,NSISOGreekStringEncoding                  ,NO},
++    {@"iso-8859-8"   ,NSISOHebrewStringEncoding                 ,NO},
++    {@"iso-8859-9"   ,NSISOLatin5StringEncoding                 ,NO},
++    {@"iso-8859-10"  ,NSISOLatin6StringEncoding                 ,NO},
++    {@"iso-8859-11"  ,NSISOThaiStringEncoding                   ,NO},
++    {@"iso-8859-13"  ,NSISOLatin7StringEncoding                 ,NO},
++    {@"iso-8859-14"  ,NSISOLatin8StringEncoding                 ,NO},
++    {@"iso-8859-15"  ,NSISOLatin9StringEncoding                 ,NO},
++    {@"koi8-r"       ,NSKOI8RStringEncoding                     ,NO},
++    {@"big5"         ,NSBIG5StringEncoding                      ,NO},
++    {@"gb2312"       ,NSGB2312StringEncoding                    ,NO},
++    {@"utf-7"        ,NSUTF7StringEncoding                      ,NO},
++    {@"unicode-1-1-utf-7", NSUTF7StringEncoding                 ,NO},  // To prever a bug (sort of) in MS Hotmail
++#endif
++    {@"windows-1250" ,NSWindowsCP1250StringEncoding             ,NO},
++    {@"windows-1251" ,NSWindowsCP1251StringEncoding             ,NO},
++    {@"cyrillic (windows-1251)", NSWindowsCP1251StringEncoding  ,NO},  // To prevent a bug in MS Hotmail
++    {@"windows-1252" ,NSWindowsCP1252StringEncoding             ,NO},
++    {@"windows-1253" ,NSWindowsCP1253StringEncoding             ,NO},
++    {@"windows-1254" ,NSWindowsCP1254StringEncoding             ,NO},
++    {@"iso-2022-jp"  ,NSISO2022JPStringEncoding                 ,NO},
++    {@"euc-jp"       ,NSJapaneseEUCStringEncoding               ,NO},
++  };
++  
++  NSString *name;
++  int i;
+ 
+-  if (![_encoding length])
+-    return nil;
++  name = [theCharset lowercaseString];
+   
+-  inbufLen = [_data length];
+-  inbuf    = calloc(sizeof(char), inbufLen + 4);
+-  [_data getBytes:inbuf];
++  for (i = 0; i < sizeof(encodings)/sizeof(encodings[0]); i++)
++    {
++      if ([name isEqualToString: encodings[i].name])
++        {
++          int enc = encodings[i].encoding;
++          // Under OS X, we use CoreFoundation if necessary to convert the encoding
++          // to a NSString encoding.
++#ifdef MACOSX
++          if (encodings[i].fromCoreFoundation)
++            {
++              if (shouldConvert)
++		{
++		  return CFStringConvertEncodingToNSStringEncoding(enc);
++		}
++	      else
++		{
++		  return enc;
++		}
++	    }
++          else
++            {
++              if (!shouldConvert)
++		{
++		  return CFStringConvertNSStringEncodingToEncoding(enc);
++		}
++              else
++		{
++		  return enc;
++		}
++	    }
++#else
++          return enc;
++#endif
++        }
++    }
+   
+-  result = nil;
+-  res    = iconv_wrapper(self, inbuf, inbufLen, _encoding, unicharEncoding, &len);
+-  if (res) {
+-    result = [[NSString alloc] initWithCharacters:res length:(len / 2)];
+-    free(res); res = NULL;
+-  }
+-  if (inbuf) free(inbuf); inbuf = NULL;
+-  return [result autorelease];
++#ifdef MACOSX
++  // Last resort: try using CoreFoundation...
++  CFStringEncoding enc;
++  
++  enc = CFStringConvertIANACharSetNameToEncoding((CFStringRef)name);
++  if (kCFStringEncodingInvalidId != enc)
++    {
++      if (shouldConvert)
++	{
++	  return CFStringConvertEncodingToNSStringEncoding(enc);
++	}
++      else
++	{
++	  return enc;
++	}
++    }
++#endif
++  
++  return -1;
+ }
+ 
+++ (int) encodingForCharset: (NSString *) theCharset
++{
++  return [self encodingForCharset: theCharset convertToNSStringEncoding: YES];
++}
++
+++ (NSString *) stringWithData: (NSData *) theData
++	   usingEncodingNamed: (NSString *) theCharset
++{
++  int encoding;
++  
++  if (theData == nil)
++    {
++      return nil;
++    }
++  
++#ifdef MACOSX
++  encoding = [NSString encodingForCharset: theCharset
++                convertToNSStringEncoding: NO];
++#else
++  encoding = [NSString encodingForCharset: theCharset];
++#endif
++
++  if (encoding == -1)
++    {
++      NSString *aString;
++      const char *i_bytes;
++      char *o_bytes;
++
++      size_t i_length, o_length;
++      int total_length, ret;
++      iconv_t conv;
++      
++      // Instead of calling cString directly on theCharset, we first try
++      // to obtain the ASCII string of the data object.
++      if (!theCharset)
++	{
++	  return nil;
++	}
++      
++      conv = iconv_open("UTF-8", [[theCharset uppercaseString] cStringUsingEncoding: NSISOLatin1StringEncoding]);
++      
++      if ((int)conv < 0)
++	{
++	  // Let's assume we got US-ASCII here.
++	  return AUTORELEASE([[NSString alloc] initWithData: theData  encoding: NSASCIIStringEncoding]);
++	}
++      
++      i_bytes = [theData bytes];
++      i_length = [theData length];
++      
++      total_length = o_length = sizeof(unichar)*i_length;
++      o_bytes = (char *)malloc(o_length);
++      
++      if (o_bytes == NULL) return nil;
++
++      while (i_length > 0)
++	{
++	  ret = iconv(conv, (char **)&i_bytes, &i_length, &o_bytes, &o_length);
++	  
++	  if (ret == (size_t)-1)
++	    {
++	      iconv_close(conv);
++	      
++	      total_length = total_length - o_length;
++	      o_bytes -= total_length;
++	      free(o_bytes);
++	      return nil;
++	    }
++	}
++      
++      total_length = total_length - o_length;
++      o_bytes -= total_length;
++      
++      // If we haven't used all our allocated buffer, we shrink it.
++      if (o_length > 0)
++	{
++	  o_bytes = realloc(o_bytes, total_length);
++	}
++      
++      aString = [[NSString alloc] initWithData: [NSData dataWithBytesNoCopy: o_bytes
++							length: total_length]
++				  encoding: NSUTF8StringEncoding];
++      iconv_close(conv);
++      
++      return AUTORELEASE(aString);
++    }
++
++#ifdef MACOSX
++  return AUTORELEASE((NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)theData, encoding));
++#else
++  return AUTORELEASE([[NSString alloc] initWithData: theData  encoding: encoding]);
++#endif
++}
++
+ - (NSData *)dataUsingEncodingNamed:(NSString *)_encoding {
+   unichar  *chars;
+   char     *res;
+Index: sope-core/NGExtensions/ChangeLog
+===================================================================
+--- sope-core/NGExtensions/ChangeLog	(révision 1546)
++++ sope-core/NGExtensions/ChangeLog	(copie de travail)
+@@ -1,3 +1,10 @@
++2007-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
++
++	* FdExt.subproj/NSString+Encoding.m: replaced the code of
++	stringWithData:usingEncodingNamed: with the code from
++	Pantomime/NSString+Extensions.m/stringWithData:charset:, which in
++	turn was adapted to take the same argument types.
++
+ 2007-07-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+ 
+ 	* FdExt.subproj/NSMethodSignature+misc.m: added warning and bogus
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1546)
