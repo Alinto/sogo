@@ -1,3 +1,9 @@
+2007-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-deleteEntriesWithIds:ids]): make sure the objects returned by
+	lookupName:... are not instances of NSException.
+
 2007-11-03  Ludovic Marcotte  <ludovic@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m

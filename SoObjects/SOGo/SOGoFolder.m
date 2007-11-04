@@ -378,7 +378,8 @@ static NSString *defaultUserID = @"<default>";
       currentID = [ids objectAtIndex: count];
       deleteObject = [self lookupName: currentID
 			   inContext: context acquire: NO];
-      [deleteObject delete];
+      if (![deleteObject isKindOfClass: [NSException class]])
+	[deleteObject delete];
     }
 }
 
