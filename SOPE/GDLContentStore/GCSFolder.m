@@ -582,7 +582,7 @@ static GCSStringFormatter *stringFormatter = nil;
   isNewRecord = [storedVersion isNotNull] ? NO : YES;
   if (!isNewRecord)
     {
-      if ([[self deletionOfContentWithName:_name] isNotNull])
+      if ([[self deletionOfContentWithName:_name] intValue] > 0)
 	{
 	  [self _purgeRecordWithName: _name];
 	  isNewRecord = YES;
