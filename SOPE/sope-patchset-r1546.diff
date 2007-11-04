@@ -97,7 +97,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 +	    free(info->value);
 +	  info->value = NULL;
 +	}
-+      free(info);
++       free(info);
 +      [_row_buffer removeObjectAtIndex: c];
      }
  
@@ -144,7 +144,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 +
 +      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
 +      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
-+      OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
++      // OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
 +
 +      _oci_ctx = (OCISvcCtx *)0;
 +      _oci_err = (OCIError *)0;
@@ -164,7 +164,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    RELEASE(delegate);
  
    [super dealloc];
-@@ -368,15 +394,6 @@
+@@ -368,16 +394,7 @@
        return NO;
      }
  
@@ -177,9 +177,11 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 -      NSLog(@"FAILED: OCIInitialize()");
 -      return NO;
 -    }
-   
+-  
++ 
    if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
      {
+       NSLog(@"FAILED: OCIEnvInit()");
 Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
 ===================================================================
 --- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1546)
