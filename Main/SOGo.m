@@ -38,6 +38,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSProcessInfo+misc.h>
+#import <NGExtensions/NSString+Encoding.h>
 
 #import <WEExtensions/WEResourceManager.h>
 
@@ -88,7 +89,7 @@ static BOOL debugObjectAllocation = NO;
       GSDebugAllocationActive (YES);
     }
 #endif
-
+  
   /* vMem size check - default is 200MB */
     
   tmp = [ud objectForKey: @"SxVMemLimit"];
