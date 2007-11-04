@@ -1,3 +1,199 @@
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1546)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/GNUmakefile
+===================================================================
+--- sope-gdl1/Oracle8/GNUmakefile	(révision 1546)
++++ sope-gdl1/Oracle8/GNUmakefile	(copie de travail)
+@@ -28,15 +28,23 @@
+ SOPE_ROOT=../..
+ ORACLE_VERSION=10.2.0.3
+ #ORACLE_VERSION=11.1.0.1
+-ADDITIONAL_INCLUDE_DIRS += -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
++ADDITIONAL_INCLUDE_DIRS += -I../../sope-core -I../../sope-core/NGExtensions -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
+ 
++local_arch = $(subst 64,,$(shell uname -m))
++
++ifeq ($(local_arch),ppc)
++PPC_LDFLAGS=-L/opt/ibmcmp/lib -libmc++
++else
++PPC_LDFLAGS=
++endif
++
+ ifneq ($(frameworks),yes)
+-Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
+-otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
++common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -L../GDLAccess/obj -lGDLAccess -L../../sope-core/EOControl/obj -lEOControl $(PPC_LDFLAGS)
+ else
+-Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
+-otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
++common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl $(PPC_LDFLAGS)
+ endif
++Oracle8_BUNDLE_LIBS += $(common_LIBS)
++otest_TOOL_LIBS   += $(common_LIBS)
+ 
+ # Bundle
+ BUNDLE_NAME = Oracle8
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1546)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -53,14 +53,17 @@
+   while (c--)
+     {
+       info = [[_row_buffer objectAtIndex: c] pointerValue];
+-      [_row_buffer removeObjectAtIndex: c];
+ 
+       // We free our LOB object. If it fails, it likely mean it isn't a LOB
+       // so we just free the value instead.
+-      if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
+-      	{
+-      	  free(info->value);
+-      	}
++      if (info->value)
++	{
++	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	    free(info->value);
++	  info->value = NULL;
++	}
++      free(info);
++      [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+   OCIHandleFree(_current_stm, OCI_HTYPE_STMT);
+@@ -75,6 +78,30 @@
+ //
+ @implementation OracleAdaptorChannel
+ 
++static void
++DBTerminate()
++{
++  if (OCITerminate(OCI_DEFAULT))
++    NSLog(@"FAILED: OCITerminate()");
++  else
++    NSLog(@"Oracle8: environment shut down");
++}
++
+++ (void) initialize
++{
++  // We Initialize the OCI process environment.
++  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
++                    (dvoid * (*)(dvoid *, size_t)) 0,
++                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
++                    (void (*)(dvoid *, dvoid *)) 0 ))
++    NSLog(@"FAILED: OCIInitialize()");
++  else
++    {
++      NSLog(@"Oracle8: environment initialized");
++      atexit(DBTerminate);
++    }
++}
++
+ - (id) initWithAdaptorContext: (EOAdaptorContext *) theAdaptorContext
+ {
+   if ((self = [super initWithAdaptorContext: theAdaptorContext]))
+@@ -134,10 +161,14 @@
+ 	  NSLog(@"FAILED: OCILogoff()");
+ 	}
+ 
+-      if (OCITerminate(OCI_DEFAULT))
+-	{
+-	  NSLog(@"FAILED: OCITerminate()");
+-	}
++
++      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
++      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
++      OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
++
++      _oci_ctx = (OCISvcCtx *)0;
++      _oci_err = (OCIError *)0;
++      _oci_env = (OCIEnv *)0;
+     }
+ }
+ 
+@@ -151,11 +182,6 @@
+   [self _cleanup];
+ 
+   RELEASE(_resultSetProperties);
+-
+-  OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
+-  OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
+-  OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
+-
+   RELEASE(delegate);
+ 
+   [super dealloc];
+@@ -368,15 +394,6 @@
+       return NO;
+     }
+ 
+-  // We Initialize the OCI process environment.
+-  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
+-                    (dvoid * (*)(dvoid *, size_t)) 0,
+-                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
+-                    (void (*)(dvoid *, dvoid *)) 0 ))
+-    {
+-      NSLog(@"FAILED: OCIInitialize()");
+-      return NO;
+-    }
+   
+   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
+     {
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1546)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
+@@ -155,7 +155,9 @@
+ 	  OCILobFreeTemporary([theChannel serviceContext], [theChannel errorHandle], info->value);
+ 	  OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB);
+ 	}
++      free(info);
+     }
++  [theColumns release];
+ 
+   OCIHandleFree(theStatement, OCI_HTYPE_STMT);
+ }
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(révision 1546)
@@ -354,202 +550,6 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1546)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/Oracle8/GNUmakefile
-===================================================================
---- sope-gdl1/Oracle8/GNUmakefile	(révision 1546)
-+++ sope-gdl1/Oracle8/GNUmakefile	(copie de travail)
-@@ -28,15 +28,23 @@
- SOPE_ROOT=../..
- ORACLE_VERSION=10.2.0.3
- #ORACLE_VERSION=11.1.0.1
--ADDITIONAL_INCLUDE_DIRS += -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
-+ADDITIONAL_INCLUDE_DIRS += -I../../sope-core -I../../sope-core/NGExtensions -I../GDLAccess -I.. -I/usr/include/oracle/$(ORACLE_VERSION)/client
- 
-+local_arch = $(subst 64,,$(shell uname -m))
-+
-+ifeq ($(local_arch),ppc)
-+PPC_LDFLAGS=-L/opt/ibmcmp/lib -libmc++
-+else
-+PPC_LDFLAGS=
-+endif
-+
- ifneq ($(frameworks),yes)
--Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
--otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -lGDLAccess -lEOControl
-+common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -L../GDLAccess/obj -lGDLAccess -L../../sope-core/EOControl/obj -lEOControl $(PPC_LDFLAGS)
- else
--Oracle8_BUNDLE_LIBS += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
--otest_TOOL_LIBS   += -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl
-+common_LIBS = -L/usr/lib/oracle/$(ORACLE_VERSION)/client/lib/ -locci -lociei -lclntsh -lnnz10 -framework GDLAccess -framework EOControl $(PPC_LDFLAGS)
- endif
-+Oracle8_BUNDLE_LIBS += $(common_LIBS)
-+otest_TOOL_LIBS   += $(common_LIBS)
- 
- # Bundle
- BUNDLE_NAME = Oracle8
-Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1546)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -53,14 +53,17 @@
-   while (c--)
-     {
-       info = [[_row_buffer objectAtIndex: c] pointerValue];
--      [_row_buffer removeObjectAtIndex: c];
- 
-       // We free our LOB object. If it fails, it likely mean it isn't a LOB
-       // so we just free the value instead.
--      if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
--      	{
--      	  free(info->value);
--      	}
-+      if (info->value)
-+	{
-+	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	    free(info->value);
-+	  info->value = NULL;
-+	}
-+      free(info);
-+      [_row_buffer removeObjectAtIndex: c];
-     }
- 
-   OCIHandleFree(_current_stm, OCI_HTYPE_STMT);
-@@ -75,6 +78,30 @@
- //
- @implementation OracleAdaptorChannel
- 
-+static void
-+DBTerminate()
-+{
-+  if (OCITerminate(OCI_DEFAULT))
-+    NSLog(@"FAILED: OCITerminate()");
-+  else
-+    NSLog(@"Oracle8: environment shut down");
-+}
-+
-++ (void) initialize
-+{
-+  // We Initialize the OCI process environment.
-+  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
-+                    (dvoid * (*)(dvoid *, size_t)) 0,
-+                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
-+                    (void (*)(dvoid *, dvoid *)) 0 ))
-+    NSLog(@"FAILED: OCIInitialize()");
-+  else
-+    {
-+      NSLog(@"Oracle8: environment initialized");
-+      atexit(DBTerminate);
-+    }
-+}
-+
- - (id) initWithAdaptorContext: (EOAdaptorContext *) theAdaptorContext
- {
-   if ((self = [super initWithAdaptorContext: theAdaptorContext]))
-@@ -134,10 +161,14 @@
- 	  NSLog(@"FAILED: OCILogoff()");
- 	}
- 
--      if (OCITerminate(OCI_DEFAULT))
--	{
--	  NSLog(@"FAILED: OCITerminate()");
--	}
-+
-+      OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
-+      OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
-+      OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
-+
-+      _oci_ctx = (OCISvcCtx *)0;
-+      _oci_err = (OCIError *)0;
-+      _oci_env = (OCIEnv *)0;
-     }
- }
- 
-@@ -151,11 +182,6 @@
-   [self _cleanup];
- 
-   RELEASE(_resultSetProperties);
--
--  OCIHandleFree(_oci_ctx, OCI_HTYPE_SVCCTX);
--  OCIHandleFree(_oci_err, OCI_HTYPE_ERROR);
--  OCIHandleFree(_oci_env, OCI_HTYPE_ENV);
--
-   RELEASE(delegate);
- 
-   [super dealloc];
-@@ -368,15 +394,6 @@
-       return NO;
-     }
- 
--  // We Initialize the OCI process environment.
--  if (OCIInitialize((ub4)OCI_DEFAULT, (dvoid *)0,
--                    (dvoid * (*)(dvoid *, size_t)) 0,
--                    (dvoid * (*)(dvoid *, dvoid *, size_t))0,
--                    (void (*)(dvoid *, dvoid *)) 0 ))
--    {
--      NSLog(@"FAILED: OCIInitialize()");
--      return NO;
--    }
-   
-   if (OCIEnvInit((OCIEnv **)&_oci_env, (ub4)OCI_DEFAULT, (size_t)0, (dvoid **)0))
-     {
-Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1546)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
-@@ -155,7 +155,9 @@
- 	  OCILobFreeTemporary([theChannel serviceContext], [theChannel errorHandle], info->value);
- 	  OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB);
- 	}
-+      free(info);
-     }
-+  [theColumns release];
- 
-   OCIHandleFree(theStatement, OCI_HTYPE_STMT);
- }
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
 --- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1546)
