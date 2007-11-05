@@ -83,45 +83,36 @@ function onMenuSharing(event) {
 /* mail list DOM changes */
 
 function markMailInWindow(win, msguid, markread) {
-  var msgDiv;
-
-  msgDiv = win.$("div_" + msguid);
-  if (msgDiv) {
+  var row = win.$("row_" + msguid);
+  var subjectCell = win.$("div_" + msguid);
+  if (row && subjectCell) {
     if (markread) {
-      msgDiv.removeClassName("mailer_unreadmailsubject");
-      msgDiv.addClassName("mailer_readmailsubject");
-      msgDiv = win.$("unreaddiv_" + msguid);
-      if (msgDiv)
-	{
-	  msgDiv.setAttribute("class", "mailerUnreadIcon");
-	  msgDiv.setAttribute("id", "readdiv_" + msguid);
-	  msgDiv.setAttribute("src", ResourcesURL + "/icon_read.gif");
-	  msgDiv.setAttribute("onclick", "mailListMarkMessage(this,"
-			      + " 'markMessageUnread', " + msguid
-			      + ", false);"
-			      +" return false;");
-	  var title = msgDiv.getAttribute("title-markunread");
-	  if (title)
-	    msgDiv.setAttribute("title", title);
-	}
+      row.removeClassName("mailer_unreadmail");
+      subjectCell.addClassName("mailer_readmailsubject");
+      var img = win.$("unreaddiv_" + msguid);
+      if (img) {
+	img.removeClassName("mailerUnreadIcon");
+	img.addClassName("mailerReadIcon");
+	img.setAttribute("id", "readdiv_" + msguid);
+	img.setAttribute("src", ResourcesURL + "/icon_read.gif");
+	var title = img.getAttribute("title-markunread");
+	if (title)
+	  img.setAttribute("title", title);
+      }
     }
     else {
-      msgDiv.removeClassName('mailer_readmailsubject');
-      msgDiv.addClassName('mailer_unreadmailsubject');
-      msgDiv = win.$("readdiv_" + msguid);
-      if (msgDiv)
-	{
-	  msgDiv.setAttribute("class", "mailerReadIcon");
-	  msgDiv.setAttribute("id", "unreaddiv_" + msguid);
-	  msgDiv.setAttribute("src", ResourcesURL + "/icon_unread.gif");
-	  msgDiv.setAttribute("onclick", "mailListMarkMessage(this,"
-			      + " 'markMessageRead', " + msguid
-			      + ", true);"
-			      +" return false;");
-	  var title = msgDiv.getAttribute("title-markread");
-	  if (title)
-	    msgDiv.setAttribute("title", title);
-	}
+      row.addClassName("mailer_unreadmail");
+      subjectCell.removeClassName('mailer_readmailsubject');
+      var img = win.$("readdiv_" + msguid);
+      if (img) {
+	img.removeClassName("mailerReadIcon");
+	img.addClassName("mailerUnreadIcon");
+	img.setAttribute("id", "unreaddiv_" + msguid);
+	img.setAttribute("src", ResourcesURL + "/icon_unread.gif");
+	var title = img.getAttribute("title-markread");
+	if (title)
+	  img.setAttribute("title", title);
+      }
     }
     return true;
   }
@@ -161,25 +152,36 @@ function openMessageWindowsForSelection(action, firstOnly) {
 }
 
 function mailListMarkMessage(event) {
-  var http = createHTTPClient();
-  var url = ApplicationBaseURL + currentMailbox + "/" + msguid + "/" + action;
-
-  if (http) {
-    // TODO: add parameter to signal that we are only interested in OK
-    http.open("POST", url, false /* not async */);
-    http.send("");
-    if (http.status != 200) {
-      // TODO: refresh page?
-      alert("Message Mark Failed: " + http.statusText);
-      window.location.reload();
-    }
-    else {
-      markMailInWindow(window, msguid, markread);
-    }
+  var msguid = this.id.split('_')[1];
+  var action;
+  var markread;
+  if ($(this).hasClassName('mailerUnreadIcon')) {
+    action = 'markMessageRead';
+    markread = true;
   }
   else {
-    window.location.href = url;
+    action = 'markMessageUnread';
+    markread = false;
   }
+  var url = ApplicationBaseURL + currentMailbox + "/" + msguid + "/" + action;
+
+  var data = { "window": window, "msguid": msguid, "markread": markread };
+  triggerAjaxRequest(url, mailListMarkMessageCallback, data);
+
+  preventDefault(event);
+  return false;
+}
+
+function mailListMarkMessageCallback(http) {
+  if (http.readyState == 4)
+    if (isHttpStatus204(http.status)) {
+      var data = http.callbackData;
+      markMailInWindow(data["window"], data["msguid"], data["markread"]);
+    }
+    else {
+      alert("Message Mark Failed (" + http.status + "): " + http.statusText);
+      window.location.reload();
+    }
 }
 
 /* maillist row highlight */
@@ -210,7 +212,7 @@ function deleteSelectedMessages(sender) {
   var rowIds = messageList.getSelectedRowsId();
 
   for (var i = 0; i < rowIds.length; i++) {
-    var url, http;
+    var url;
     var rowId = rowIds[i].substr(4);
     var messageId = currentMailbox + "/" + rowId;
     url = ApplicationBaseURL + messageId + "/trash";
@@ -1054,7 +1056,7 @@ function configureMessageListBodyEvents(table) {
 	  Event.observe(cell, "dblclick", onMessageDoubleClick.bindAsEventListener(cell));
 	else if (j == 4) {
 	  var img = cell.childNodesWithTag("img")[0];
-	  Event.observe(img, "click", mailListMarkMessage);
+	  Event.observe(img, "click", mailListMarkMessage.bindAsEventListener(img));
 	}
       }
     }
@@ -1351,7 +1353,7 @@ function onMenuCreateFolder(event) {
   var name = window.prompt(labels["Name :"], "");
   if (name && name.length > 0) {
     var folderID = document.menuTarget.getAttribute("dataname");
-    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name; log ("create " + urlstr);
+    var urlstr = URLForFolderID(folderID) + "/createFolder?name=" + name;
     triggerAjaxRequest(urlstr, folderOperationCallback);
   }
 }

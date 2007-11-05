@@ -161,39 +161,36 @@
 
 - (NSString *) messageRowStyleClass 
 {
-  return [self isMessageDeleted]
-    ? @"mailer_listcell_deleted"
-    : @"mailer_listcell_regular";
+  NSString *rowClass;
+
+  rowClass = [self isMessageDeleted]? @"mailer_listcell_deleted" : @"mailer_listcell_regular";
+
+  if (![self isMessageRead])
+    rowClass = [rowClass stringByAppendingString: @" mailer_unreadmail"];
+  
+  return rowClass;
 }
 
 - (NSString *) messageSubjectCellStyleClass 
 {
   NSArray *flags;
-  NSString *cellClass;
+  NSString *cellClass = @"messageSubjectColumn ";
 
   flags = [[self message] valueForKey:@"flags"];
 
-  if ([flags containsObject: @"seen"])
+  if ([flags containsObject: @"answered"])
     {
-      if ([flags containsObject: @"answered"])
-	{
-	  if ([flags containsObject: @"$forwarded"])
-	    cellClass = @"mailer_forwardedrepliedmailsubject";
-	  else
-	    cellClass = @"mailer_repliedmailsubject";
-	}
-      else if ([flags containsObject: @"$forwarded"])
-	cellClass = @"mailer_forwardedmailsubject";
+      if ([flags containsObject: @"$forwarded"])
+	cellClass = [cellClass stringByAppendingString: @"mailer_forwardedrepliedmailsubject"];
       else
-	cellClass = @"mailer_readmailsubject";
+	cellClass = [cellClass stringByAppendingString: @"mailer_repliedmailsubject"];
     }
+  else if ([flags containsObject: @"$forwarded"])
+    cellClass = [cellClass stringByAppendingString: @"mailer_forwardedmailsubject"];
   else
-    cellClass = @"mailer_unreadmailsubject";
+    cellClass = [cellClass stringByAppendingString: @"mailer_readmailsubject"];
 
   return cellClass;
-//   return ([self isMessageRead]
-// 	  ? @"mailer_readmailsubject"
-// 	  : @"mailer_unreadmailsubject");
 }
 
 - (BOOL) hasMessageAttachment 
