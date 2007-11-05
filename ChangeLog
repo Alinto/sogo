@@ -1,5 +1,8 @@
 2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-showToAddress]): the answer is cached.
+
 	* UI/Common/UIxObjectActions.m ([UIxObjectActions +initialize]):
 	read "SOGoACLsSendEMailNotifications" from the user defaults to
 	determiner whether to send an email when a user is added or

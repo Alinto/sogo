@@ -38,8 +38,10 @@
 
 #import <EOControl/EOQualifier.h>
 
+#import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoSentFolder.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -60,6 +62,7 @@
       user = [context activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [user timeZone]);
+      folderType = 0;
     }
 
   return self;
@@ -113,10 +116,19 @@
 
 - (BOOL) showToAddress 
 {
-  NSString *ftype;
-  
-  ftype = [[self clientObject] valueForKey:@"outlookFolderClass"];
-  return [ftype isEqual:@"IPF.Sent"];
+  SOGoMailFolder *co;
+
+  if (!folderType)
+    {
+      co = [self clientObject];
+      if ([co isKindOfClass: [SOGoSentFolder class]]
+	  || [co isKindOfClass: [SOGoDraftsFolder class]])
+	folderType = 1;
+      else
+	folderType = -1;
+    }
+
+  return (folderType == 1);
 }
 
 /* title */

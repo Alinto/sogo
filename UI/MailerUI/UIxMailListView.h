@@ -36,6 +36,7 @@
   EOQualifier *qualifier;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
+  int folderType;
 }
 
 - (NSString *) defaultSortKey;
