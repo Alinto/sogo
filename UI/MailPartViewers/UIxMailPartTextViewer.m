@@ -34,18 +34,74 @@
 
 #import "UIxMailPartTextViewer.h"
 
+@interface NSString (SOGoMailUIExtension)
+
+- (NSString *) stringByConvertingCRLNToHTML;
+
+@end
+
+@implementation NSString (SOGoMailUIExtension)
+
+- (NSString *) stringByConvertingCRLNToHTML
+{
+  NSString *convertedString;
+  const char *oldString, *currentChar;
+  char *newString, *destChar;
+  unsigned int oldLength, length, delta;
+
+  oldString = [self cStringUsingEncoding: NSUTF8StringEncoding];
+  oldLength = [self lengthOfBytesUsingEncoding: NSUTF8StringEncoding];
+
+  length = oldLength;
+  newString = malloc (length + 500);
+  destChar = newString;
+  currentChar = oldString;
+  while (currentChar < (oldString + oldLength))
+    {
+      if (*currentChar != '\r')
+	{
+	  if (*currentChar == '\n')
+	    {
+	      strcpy (destChar, "<br />");
+	      destChar += 6;
+	      delta = (destChar - newString);
+	      if (delta > length)
+		{
+		  length += 500;
+		  newString = realloc (newString, length + 500);
+		  destChar = newString + delta;
+		}
+	    }
+	  else
+	    {
+	      *destChar = *currentChar;
+	      destChar++;
+	    }
+	}
+      currentChar++;
+    }
+  *destChar = 0;
+
+  convertedString = [[NSString alloc] initWithBytes: newString
+				      length: (destChar + 1 - newString)
+				      encoding: NSUTF8StringEncoding];
+  [convertedString autorelease];
+  free (newString);
+
+  return convertedString;
+}
+
+@end
+
 @implementation UIxMailPartTextViewer
 
 - (NSString *) flatContentAsString
 {
-  NSMutableString *content;
   NSString *superContent;
 
-  content = [NSMutableString string];
   superContent = [[super flatContentAsString] stringByEscapingHTMLString];
-  [content appendString: [superContent stringByDetectingURLs]];
 
-  return content;
+  return [[superContent stringByDetectingURLs] stringByConvertingCRLNToHTML];
 }
 
 @end /* UIxMailPartTextViewer */

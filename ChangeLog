@@ -1,5 +1,10 @@
 2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m
+	([UIxMailPartTextViewer -flatContentAsString]): re-added
+	conversion of line-break to sequences of HTML "BR", with a fast
+	algorithm in C.
+
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
 	-flatContentAsString]): simplified method now that we know
 	-[NSString stringWithData:usingEncodingNamed:] has a more robust
