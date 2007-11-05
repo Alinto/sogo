@@ -363,8 +363,8 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Workweek days only" = "Semaine de travail seulement";
 "Tasks in View" = "Afficher les tâches";
 
-"eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\\nVoulez-vous continuer?";
-"taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\\nVoulez-vous continuer?";
+"eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\nVoulez-vous continuer?";
+"taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\nVoulez-vous continuer?";
 
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Are you sure you want to delete the calendar \"%{0}\"?";
