@@ -54,7 +54,7 @@
 
   hasPrefix = NO;
 
-  subject = [[self envelope] subject];
+  subject = [self decodedSubject];
   i = 0;
   while (!hasPrefix && replyPrefixes[i])
     if ([subject hasPrefix: replyPrefixes[i]])
@@ -145,7 +145,7 @@
   };
   unsigned int count, length;
 
-  subject = [[self envelope] subject];
+  subject = [self decodedSubject];
   length = [subject length];
   if (!length)
     {
@@ -173,7 +173,7 @@
 {
   NSString *subject, *newSubject;
 
-  subject = [[self envelope] subject];
+  subject = [self decodedSubject];
   if ([subject length] > 0)
     newSubject = [NSString stringWithFormat: @"[Fwd: %@]", subject];
   else

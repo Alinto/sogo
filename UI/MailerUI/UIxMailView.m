@@ -88,16 +88,22 @@ static NSString *mailETag = nil;
   return currentAddress;
 }
 
-- (NSString *) objectTitle
+- (NSString *) messageSubject
 {
-  return [[self clientObject] subject];
+  NSString *subject;
+
+  subject = [[self clientObject] decodedSubject];
+  if (![subject length])
+    subject = [self labelForKey: @"Untitled"];
+
+  return subject;
 }
 
 - (NSString *) panelTitle
 {
   return [NSString stringWithFormat: @"%@: %@",
                    [self labelForKey: @"View Mail"],
-                   [self objectTitle]];
+                   [self messageSubject]];
 }
 
 /* links (DUP to UIxMailPartViewer!) */

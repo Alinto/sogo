@@ -22,6 +22,9 @@
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
+#import <SoObjects/Mailer/NSData+Mail.h>
+#import <SoObjects/Mailer/NSString+Mail.h>
+
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 #import "UIxMailRenderingContext.h"
 
@@ -142,6 +145,19 @@
     }
 
   return [formattedComponents componentsJoinedByString: @", "];
+}
+
+- (NSString *) messageSubject
+{
+  id baseSubject;
+  NSString *subject;
+
+  baseSubject = [[self envelope] subject];
+  subject = [baseSubject decodedSubject];
+  if (![subject length])
+    subject = [self labelForKey: @"Untitled"];
+
+  return subject;
 }
 
 - (NSString *) fromAddresses

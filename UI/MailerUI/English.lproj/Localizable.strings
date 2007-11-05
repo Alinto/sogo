@@ -127,6 +127,8 @@
 "Mark Unread" = "Mark Unread";
 "Mark Read"   = "Mark Read";
 
+"Untitled" = "Untitled";
+
 /* Tree */
 
 "SentFolderName"   = "Sent";

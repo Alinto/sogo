@@ -33,11 +33,6 @@
 // TODO: make configurable
 // TODO: cache!
 
-- (NSFormatter *) mailSubjectFormatter
-{
-  return [[[UIxSubjectFormatter alloc] init] autorelease];
-}
-
 - (NSFormatter *) mailDateFormatter
 {
   return [[self activeUser] dateFormatterInContext: self];

@@ -100,18 +100,13 @@
 
 - (NSString *) messageSubject
 {
+  id baseSubject;
   NSString *subject;
-  id envSubject;
 
-  envSubject = [[message valueForKey: @"envelope"] subject];
-  if ([envSubject isKindOfClass: [NSData class]])
-    {
-      subject = [[NSString alloc] initWithData: envSubject
-				  encoding: NSUTF8StringEncoding];
-      [subject autorelease];
-    }
-  else
-    subject = envSubject;
+  baseSubject = [[message valueForKey: @"envelope"] subject];
+  subject = [baseSubject decodedSubject];
+  if (![subject length])
+    subject = [self labelForKey: @"Untitled"];
 
   return subject;
 }

@@ -261,6 +261,11 @@ static BOOL debugSoParts       = NO;
   return [[self envelope] subject];
 }
 
+- (NSString *) decodedSubject
+{
+  return [[self subject] decodedSubject];
+}
+
 - (NSCalendarDate *) date
 {
   NSTimeZone *userTZ;

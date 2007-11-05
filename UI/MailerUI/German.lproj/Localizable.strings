@@ -105,11 +105,13 @@
 "next"          = "Nächste";
 "last"          = "Letzter";
 
+"msgnumber_to"  = "bis";
+"msgnumber_of"  = "von";
+
 "Mark Unread" = "Als ungelesen markieren"; 
 "Mark Read"   = "Als gelesen markieren";
 
-"msgnumber_to"  = "bis";
-"msgnumber_of"  = "von";
+"Untitled" = "Untitled";
 
 /* Tree */
 

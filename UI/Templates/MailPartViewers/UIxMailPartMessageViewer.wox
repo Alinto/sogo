@@ -9,8 +9,7 @@
     <!-- TODO: the table is a DUP to UIxMailView, own component? -->
     <div class="bodyFields">
       <span class="fieldName"><var:string label:value="Subject"/>:</span>
-      <var:string value="envelope.subject"
-	formatter="context.mailSubjectFormatter"/><br/>
+      <var:string value="messageSubject"/><br/>
       <span class="fieldName"><var:string label:value="From"/>:</span>
       <var:string value="fromAddresses"/><br/>
       <span class="fieldName"><var:string label:value="Date"/>:</span>

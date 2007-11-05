@@ -29,6 +29,8 @@
 
 - (NSString *) htmlToText;
 
+- (NSString *) decodedSubject;
+
 @end
 
 #endif /* NSSTRING_MAIL_H */

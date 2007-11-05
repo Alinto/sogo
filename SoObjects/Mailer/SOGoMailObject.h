@@ -58,6 +58,7 @@
 
 - (NGImap4Envelope *)envelope;
 - (NSString *)subject;
+- (NSString *)decodedSubject;
 - (NSCalendarDate *)date;
 - (NSArray *)fromEnvelopeAddresses;
 - (NSArray *)toEnvelopeAddresses;

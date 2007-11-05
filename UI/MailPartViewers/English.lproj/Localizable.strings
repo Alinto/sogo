@@ -11,7 +11,11 @@ add_info_text       = "iMIP 'ADD' requests are not yet supported by SOGo.";
 publish_info_text   = "The sender informs you of the attached event.";
 cancel_info_text    = "Your invitation or the whole event was canceled.";
 request_info_no_attendee = "is proposing a meeting to the attendees. You receive this mail as a notification, you are not scheduled as a participant.";
-Organizer           = "Organizer";
+Appointment         = "Appointment";
+
+Organizer           = "Organisateur";
+Time                = "Time";
+Attendees           = "Attendees";
 request_info        = "invites you to participate in a meeting.";
 do_add_to_cal       = "add to calendar";
 do_del_from_cal     = "delete from calendar";
@@ -21,3 +25,7 @@ do_tentative        = "tentative";
 do_update_status    = "update status in calendar";
 reply_info_no_attendee = "You received a reply to a scheduling event but the sender of the reply is not a participant.";
 reply_info          = "This is a reply to an event invitation done by you.";
+
+"Untitled" = "Untitled";
+
+"Size" = "Size";

@@ -52,4 +52,50 @@
   return decodedData;
 }
 
+- (NSString *) decodedSubject
+{
+  const char *cData, *endFlag;
+  unsigned int len;
+  NSString *converted, *decodedSubject;
+
+  cData = [self bytes];
+  len = [self length];
+
+  if (len)
+    {
+      decodedSubject = nil;
+      if (len > 6)
+	{
+	  endFlag = cData + len - 2;
+	  if (*cData == '=' && *(cData + 1) == '?'
+	      && *endFlag == '?' && *(endFlag + 1) == '=')
+	    {
+	      converted
+		= [[NSString alloc] initWithData: self
+				    encoding: NSASCIIStringEncoding];
+	      if (converted)
+		{
+		  [converted autorelease];
+		  decodedSubject = [converted stringByDecodingQuotedPrintable];
+		}
+	    }
+	}
+      if (!decodedSubject)
+	{
+	  decodedSubject
+	    = [[NSString alloc] initWithData: self
+				encoding: NSUTF8StringEncoding];
+	  if (!decodedSubject)
+	    decodedSubject
+	      = [[NSString alloc] initWithData: self
+				  encoding: NSISOLatin1StringEncoding];
+	  [decodedSubject autorelease];
+	}
+    }
+  else
+    decodedSubject = @"";
+
+  return decodedSubject;
+}
+
 @end

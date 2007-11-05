@@ -63,32 +63,6 @@
 
 @end
 
-/*
-  TODO: the subject formatter should deal with the various 're:' like prefixes
-        and translate them into the native languages?
-        (or something like Re(5): ?)
-*/
-
-@interface UIxSubjectFormatter : UIxMailFormatter
-{
-  unsigned maxLength;
-}
-
-/* configuration */
-
-- (unsigned int)maxLength;
-
-/* labels */
-
-- (NSString *)missingSubjectLabel;
-
-/* specific formatters */
-
-- (NSString *)stringForStringValue:(NSString *)_subject;
-- (NSString *)stringForDataValue:(NSData *)_subject;
-
-@end
-
 @interface UIxEnvelopeAddressFormatter : UIxMailFormatter
 {
   NSString     *separator;

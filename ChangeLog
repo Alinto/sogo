@@ -1,3 +1,39 @@
+2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/WOContext+UIxMailer.m ([-mailSubjectFormatter]):
+	removed method.
+
+	* UI/MailerUI/UIxMailView.m ([UIxMailView -messageSubject]): new
+	method replacing -objectTitle, written like the ones below.
+
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-messageSubject]): rewrote method to act the one below.
+
+	* UI/MailPartViewers/UIxMailPartMessageViewer.m
+	([UIxMailPartMessageViewer -messageSubject]): new method that
+	returns the decoded mail subject or "Untitled" if the subject is
+	empty.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-decodedSubject]): new method that invoke -decodedSubject from the
+	NSString and NSData class, depending on the identity of the
+	subject obtained from the envelope.
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
+	-subjectForReply]): take the value of -[SOGoMail decodedSubject]
+	instead of the subject of the envelope.
+	([SOGoMailObject -filenameForForward]): same as above.
+	([SOGoMailObject -subjectForForward]): same as above.
+
+	* SoObjects/Mailer/NSString+Mail.m ([NSString -decodedSubject]):
+	same as below for NSString.
+
+	* SoObjects/Mailer/NSData+Mail.m ([NSData -decodedSubject]): new
+	method that decodes the subject of a mail taken as an NSData
+	instance. Handling the exceptions and the badly formatted headers.
+
+	* UI/MailerUI/UIxSubjectFormatter.[hm]: dropped class module.
+
 2007-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder

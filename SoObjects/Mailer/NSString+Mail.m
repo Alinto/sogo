@@ -28,6 +28,7 @@
 #import <SaxObjC/SaxLexicalHandler.h>
 #import <SaxObjC/SaxXMLReader.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -346,6 +347,22 @@
   [parser parseFromSource: self];
 
   return [handler result];
+}
+
+- (NSString *) decodedSubject
+{
+  NSString *decodedSubject;
+
+  if ([self hasPrefix: @"=?"] && [self hasSuffix: @"?="])
+    {
+      decodedSubject = [self stringByDecodingQuotedPrintable];
+      if (!decodedSubject)
+	decodedSubject = self;
+    }
+  else
+    decodedSubject = self;
+
+  return decodedSubject;
 }
 
 @end

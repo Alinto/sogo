@@ -122,11 +122,13 @@
 "next"          = "Suivant";
 "last"          = "Dernier";
 
+"msgnumber_to"  = "à";
+"msgnumber_of"  = "de";
+
 "Mark Unread" = "Marquer comme non lu"; 
 "Mark Read"   = "Marquer comme lu";
 
-"msgnumber_to"  = "à";
-"msgnumber_of"  = "de";
+"Untitled" = "Sans titre";
 
 /* Tree */
 

@@ -12,7 +12,6 @@ MailerUI_OBJC_FILES += \
 	MailerUIProduct.m	\
 	\
 	UIxMailFormatter.m		\
-	UIxSubjectFormatter.m		\
 	UIxEnvelopeAddressFormatter.m	\
 	WOContext+UIxMailer.m		\
 	\

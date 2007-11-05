@@ -13,8 +13,7 @@
       <tr class="mailer_fieldrow">
         <td class="mailer_fieldname" ><var:string label:value="Subject"/>:</td>
         <td class="mailer_subjectfieldvalue">
-          <var:string value="clientObject.subject"
-            formatter="context.mailSubjectFormatter"/>
+          <var:string value="messageSubject"/>
         </td>
       </tr>
       <tr class="mailer_fieldrow">
