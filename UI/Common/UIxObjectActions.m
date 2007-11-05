@@ -20,8 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -40,7 +42,7 @@ static BOOL sendACLAdvisories = NO;
   NSUserDefaults *ud;
 
   ud = [NSUserDefaults standardUserDefaults];
-  sendACLAdvistories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
+  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
 }
 
 - (WOResponse *) addUserInAclsAction
@@ -63,7 +65,7 @@ static BOOL sendACLAdvisories = NO;
 	  clientObject = [self clientObject];
 	  [clientObject setRoles: [clientObject aclsForUser: uid]
 			forUser: uid];
-	  if (sendACLAdvistories)
+	  if (sendACLAdvisories)
 	    [clientObject sendACLAdditionAdvisoryToUser: uid];
           code = 204;
         }
@@ -94,7 +96,7 @@ static BOOL sendACLAdvisories = NO;
 	{
 	  co = [self clientObject];
 	  [co removeAclsForUsers: [NSArray arrayWithObject: uid]];
-	  if (sendACLAdvistories)
+	  if (sendACLAdvisories)
 	    [co sendACLRemovalAdvisoryToUser: uid];
           code = 204;
         }
