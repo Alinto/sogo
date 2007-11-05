@@ -75,7 +75,7 @@
 {
   NSArray *types;
   NSDictionary *parts;
-  NSString *rawPart, *content;
+  NSString *rawPart, *content, *contentKey;
   int index;
   BOOL htmlContent;
 
@@ -88,11 +88,15 @@
 	  index = [types indexOfObject: @"text/html"];
 	  htmlContent = YES;
 	}
+      else
+	htmlContent = NO;
       if (index == NSNotFound)
 	content = @"";
       else
 	{
-	  parts = [self fetchPlainTextStrings: keys];
+	  contentKey = [keys objectAtIndex: index];
+	  parts = [self fetchPlainTextStrings:
+			  [NSArray arrayWithObject: contentKey]];
 	  rawPart = [[parts allValues] objectAtIndex: 0];
 	  if (htmlContent)
 	    content = [rawPart htmlToText];
