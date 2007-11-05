@@ -31,7 +31,17 @@
 
 #import "UIxObjectActions.h"
 
+static BOOL sendACLAdvisories = NO;
+
 @implementation UIxObjectActions
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  sendACLAdvistories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
+}
 
 - (WOResponse *) addUserInAclsAction
 {
@@ -53,7 +63,8 @@
 	  clientObject = [self clientObject];
 	  [clientObject setRoles: [clientObject aclsForUser: uid]
 			forUser: uid];
-	  [clientObject sendACLAdditionAdvisoryToUser: uid];
+	  if (sendACLAdvistories)
+	    [clientObject sendACLAdditionAdvisoryToUser: uid];
           code = 204;
         }
     }
@@ -83,7 +94,8 @@
 	{
 	  co = [self clientObject];
 	  [co removeAclsForUsers: [NSArray arrayWithObject: uid]];
-	  [co sendACLRemovalAdvisoryToUser: uid];
+	  if (sendACLAdvistories)
+	    [co sendACLRemovalAdvisoryToUser: uid];
           code = 204;
         }
     }

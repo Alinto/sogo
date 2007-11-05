@@ -1,5 +1,10 @@
 2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions +initialize]):
+	read "SOGoACLsSendEMailNotifications" from the user defaults to
+	determiner whether to send an email when a user is added or
+	removed from an object's acl.
+
 	* SoObjects/Mailer/SOGoMailObject+Draft.m ([SOGoMailObject
 	-contentForEditing]): make sure the htmlContent flag is set to NO
 	when we select the textual part. Also we select only the relevant
