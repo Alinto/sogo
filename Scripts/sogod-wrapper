@@ -21,7 +21,12 @@
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-PIDFILE=/var/run/sogo/sogod.$1
+if [ -z "$1" ]
+then
+  PIDFILE=/var/run/sogo/sogod.pid
+else
+  PIDFILE=/var/run/sogo/sogod.$1
+fi
 
 if [ -d /usr/lib/GNUstep ]
 then
