@@ -23,7 +23,7 @@
  * It's required that "currentIndex" is defined in a top level context.
  *
  * Exports:
- * defines UIxRecipientSelectorHasRecipients() returning a bool for the
+ * defines hasRecipients() returning a bool for the
  * surrounding context to check.
  */
 
@@ -179,16 +179,16 @@ function getAddressIDs() {
 
   addressIDs = new Array();
 
-  addressList = $("addressList");
+  addressList = $("addressList").tBodies[0];
   rows  = addressList.childNodes;
   count = rows.length;
 
   for (i = 0; i < count; i++) {
     var row, rowId;
     
-    row = addressList.childNodes[i];
+    row = rows[i];
     rowId = row.id;
-    if (rowId && rowId != 'row_last') {
+    if (rowId && rowId != 'lastRow') {
       var idx;
 
       idx = this.getIndexFromIdentifier(rowId);
@@ -215,7 +215,7 @@ function getAddressCount() {
   return addressCount;
 }
 
-function UIxRecipientSelectorHasRecipients() {
+function hasRecipients() {
   var count;
   
   count = this.getAddressCount();

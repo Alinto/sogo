@@ -14,7 +14,7 @@ function validateEditorInput(sender) {
   if (field.value == "")
     errortext = errortext + labels.error_missingsubject + "\n";
 
-  if (!UIxRecipientSelectorHasRecipients())
+  if (!hasRecipients())
     errortext = errortext + labels.error_missingrecipients + "\n";
   
   if (errortext.length > 0) {

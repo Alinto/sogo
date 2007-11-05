@@ -317,7 +317,7 @@ function eventsListCallback(http) {
     var params = parseQueryParameters(http.callbackData);
     sortKey = params["sort"];
     sortOrder = params["desc"];
-    lastClickedRow = null; // from generic.js
+    lastClickedRow = -1; // from generic.js
 
     if (http.responseText.length > 0) {
       var data = http.responseText.evalJSON(true);

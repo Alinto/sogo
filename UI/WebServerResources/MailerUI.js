@@ -405,7 +405,7 @@ function openMailbox(mailbox, reload, idx) {
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
     var messageContent = $("messageContent");
     messageContent.update();
-    lastClickedRow = null; // from generic.js
+    lastClickedRow = -1; // from generic.js
 
     var currentMessage;
     if (!idx) {

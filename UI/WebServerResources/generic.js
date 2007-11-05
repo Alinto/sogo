@@ -31,7 +31,7 @@ var menus = new Array();
 var search = {};
 var sorting = {};
 
-var lastClickedRow = null;
+var lastClickedRow = -1;
 
 var weekStartIsMonday = true;
 
@@ -495,7 +495,7 @@ function onRowClick(event) {
 
   var initialSelection = $(node.parentNode).getSelectedNodes();
   if ((event.shiftKey == 1 || event.ctrlKey == 1)
-      && lastClickedRow
+      && (lastClickedRow >= 0)
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
     if (event.shiftKey)
