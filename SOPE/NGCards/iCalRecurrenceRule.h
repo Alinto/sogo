@@ -82,9 +82,12 @@ typedef enum {
 
 - (void) setFrequency: (iCalRecurrenceFrequency) _frequency;
 - (iCalRecurrenceFrequency) frequency;
+- (iCalRecurrenceFrequency) valueForFrequency: (NSString *) value;
 
 - (void) setRepeatInterval: (int) _repeatInterval;
 - (int) repeatInterval;
+
+- (void) setInterval: (NSString *) _interval;
 
 - (void) setWeekStart: (iCalWeekDay) _weekStart;
 - (iCalWeekDay) weekStart;
