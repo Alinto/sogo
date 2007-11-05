@@ -347,10 +347,7 @@ static NSString *defaultMailDomain = nil;
 
   // If our LDAP queries gave us nothing, we add at least one default
   // email address based on the default domain.
-  if ([emails count] == 0)
-    {
-      [self _fillContactMailRecords: currentUser];
-    }
+  [self _fillContactMailRecords: currentUser];
 }
 
 - (void) _retainUser: (NSDictionary *) newUser
