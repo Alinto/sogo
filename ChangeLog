@@ -1,5 +1,10 @@
 2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-flatContentAsString]): simplified method now that we know
+	-[NSString stringWithData:usingEncodingNamed:] has a more robust
+	implementation.
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-showToAddress]): the answer is cached.
 
