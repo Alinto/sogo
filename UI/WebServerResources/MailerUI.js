@@ -701,12 +701,12 @@ function loadMessage(idx) {
 
   var cachedMessage = getCachedMessage(idx);
 
+  markMailInWindow(window, idx, true);
   if (cachedMessage == null) {
     var url = (ApplicationBaseURL + currentMailbox + "/"
 	       + idx + "/view?noframe=1");
     document.messageAjaxRequest
       = triggerAjaxRequest(url, messageCallback, idx);
-    markMailInWindow(window, idx, true);
   } else {
     var div = $('messageContent');
     div.update(cachedMessage['text']);
