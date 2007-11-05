@@ -36,12 +36,17 @@
 @class NSString, NSArray;
 @class SOGoContactObject;
 @class SOGoObject;
+@class WOResponse;
 
 @protocol SOGoContactObject;
 
 #import <SoObjects/SOGo/SOGoFolder.h>
 
 @protocol SOGoContactFolder <NSObject>
+
+- (void) appendObject: (NSDictionary *) object
+          withBaseURL: (NSString *) baseURL
+     toREPORTResponse: (WOResponse *) r;
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                                 sortBy: (NSString *) sortKey

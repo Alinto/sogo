@@ -34,12 +34,55 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/LDAPSource.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactLDAPFolder.h"
+#import <NGExtensions/NSString+misc.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/SoSelectorInvocation.h>
 
 @class WOContext;
 
+
+
 @implementation SOGoContactLDAPFolder
+
+- (void) appendObject: (NSDictionary *) object
+          withBaseURL: (NSString *) baseURL
+     toREPORTResponse: (WOResponse *) r
+{
+  SOGoContactLDIFEntry *component;
+  Class componentClass;
+  NSString *name, *etagLine, *contactString;
+
+  name = [object objectForKey: @"c_name"];
+  componentClass = [SOGoContactLDIFEntry class];
+
+  
+  component = [componentClass contactEntryWithName: name  withLDIFEntry: object  inContainer: self];
+
+  [r appendContentString: @"  <D:response>\r\n"];
+  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: baseURL];
+  if (![baseURL hasSuffix: @"/"])
+    [r appendContentString: @"/"];
+  [r appendContentString: name];
+  [r appendContentString: @"</D:href>\r\n"];
+
+  [r appendContentString: @"    <D:propstat>\r\n"];
+  [r appendContentString: @"      <D:prop>\r\n"];
+  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
+                       [component davEntityTag]];
+  [r appendContentString: etagLine];
+  [r appendContentString: @"      </D:prop>\r\n"];
+  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
+  [r appendContentString: @"    </D:propstat>\r\n"];
+  [r appendContentString: @"    <C:addressbook-data>"];
+  contactString = [[component contentAsString] stringByEscapingXMLString];
+  [r appendContentString: contactString];
+  [r appendContentString: @"</C:addressbook-data>\r\n"];
+  [r appendContentString: @"  </D:response>\r\n"];
+}
 
 + (id) folderWithName: (NSString *) aName
        andDisplayName: (NSString *) aDisplayName
@@ -99,6 +142,11 @@
   return displayName;
 }
 
+- (NSArray *) davNamespaces
+{
+  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
+}
+
 - (id) lookupName: (NSString *) objectName
         inContext: (WOContext *) lookupContext
           acquire: (BOOL) acquire
@@ -106,20 +154,52 @@
   id obj;
   NSDictionary *ldifEntry;
 
-//   NSLog (@"looking up name '%@'...", name);
+  //NSLog (@"looking up name '%@'...", objectName);
 
   /* first check attributes directly bound to the application */
   ignoreSoObjectHunger = YES;
   obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
   ignoreSoObjectHunger = NO;
+
   if (!obj)
     {
       ldifEntry = [ldapSource lookupContactEntry: objectName];
+#if 0
       obj = ((ldifEntry)
 	     ? [SOGoContactLDIFEntry contactEntryWithName: objectName
 				     withLDIFEntry: ldifEntry
 				     inContainer: self]
 	     : [NSException exceptionWithHTTPStatus: 404]);
+#else
+      if (ldifEntry)
+	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
+				    withLDIFEntry: ldifEntry
+				    inContainer: self];
+      else
+	{
+	  NSArray *davNamespaces;
+	  NSDictionary *davInvocation;
+	  NSString *objcMethod;
+	  
+	  davNamespaces = [self davNamespaces];
+	  if ([davNamespaces count] > 0)
+	    {
+	      davInvocation = [objectName asDavInvocation];
+	      if (davInvocation
+		  && [davNamespaces
+		       containsObject: [davInvocation objectForKey: @"ns"]])
+		{
+		  objcMethod = [[davInvocation objectForKey: @"method"]
+			     davMethodToObjC];
+		  obj = [[SoSelectorInvocation alloc]
+			  initWithSelectorNamed:
+			    [NSString stringWithFormat: @"%@:", objcMethod]
+			  addContextParameter: YES];
+		  [obj autorelease];
+		}
+	    }
+	}
+#endif
     }
 
   return obj;
