@@ -17,6 +17,7 @@
 - support for resizable columns in tables;
 - improved support for multiple selection in tables and lists;
 - improved IE7 and Safari support: attendees selector, email file attachments;
+- changed look of message composition window to Thunderbird 2.0;
 - countless bugfixes;
 
 0.9.0-20070824
