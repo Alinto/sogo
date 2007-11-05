@@ -243,9 +243,14 @@ TD.mailer_readmailsubject
   padding-left: 20px !important;
 }
 
-TD.mailer_unreadmailsubject
+TR.mailer_unreadmail TD 
 {
-  background-image: url(icon-new.png) !important;
+  font-weight: bold !important;
+}
+
+TR.mailer_unreadmail TD.messageSubjectColumn
+{
+  background-image: url(icon-new.png);
   background-repeat: no-repeat !important;
   background-position: 0px 0px !important;
   padding-left: 20px !important;
