@@ -1,3 +1,4 @@
+
 # GNUstep makefile
 
 include ../common.make
@@ -7,8 +8,8 @@ BUNDLE_NAME = Contacts
 Contacts_PRINCIPAL_CLASS = SOGoContactsProduct
 
 Contacts_OBJC_FILES =			\
+	NSObject+CardDAV.m		\
 	Product.m			\
-					\
 	SOGoContactFolders.m		\
 	SOGoContactGCSEntry.m		\
 	SOGoContactGCSFolder.m		\

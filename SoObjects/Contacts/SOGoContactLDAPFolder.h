@@ -24,6 +24,7 @@
 #define SOGOCONTACTLDAPFOLDER_H
 
 #import "SOGoContactFolder.h"
+#import "NSObject+CardDAV.h"
 
 @class NSMutableDictionary;
 
