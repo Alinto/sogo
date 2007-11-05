@@ -1,0 +1,14 @@
+date: WOString {
+  value = date;
+  escapeHTML = NO;
+}
+
+from: WOString {
+  value = from;
+  escapeHTML = NO;
+}
+
+messageBody: WOString {
+  value = messageBody;
+  escapeHTML = NO;
+}
