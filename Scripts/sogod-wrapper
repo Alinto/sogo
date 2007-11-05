@@ -23,7 +23,12 @@
 
 PIDFILE=/var/run/sogo/sogod.$1
 
-. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+if [ -d /usr/lib/GNUstep ]
+then
+  . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
+else
+  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+fi
 
 if [ -f $GNUSTEP_USER_ROOT/Tools/sogod-0.9 ]; then
     sogod="$GNUSTEP_USER_ROOT/Tools/sogod-0.9"
@@ -44,5 +49,11 @@ else
   startport=20000
 fi
 
-let "port=$startport + $1 - 1"
-exec $sogod -WOPort $port >& /var/log/sogo/sogod-$port.log &
+if [ -z "$1" ]
+then
+  port=$startport
+else
+  let "port=$startport + $1 - 1"
+fi
+
+exec $sogod -WOPort $port >> /var/log/sogo/sogod-$port.log 2>&1 &
