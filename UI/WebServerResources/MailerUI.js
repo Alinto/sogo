@@ -470,10 +470,13 @@ function messageListCallback(http) {
     if (table) {
       // Update table
       var thead = table.tHead;
+      var addressHeaderCell = thead.rows[0].cells[3];
       var tbody = table.tBodies[0];
       var tmp = document.createElement('div');
       $(tmp).update(http.responseText);
       thead.rows[1].parentNode.replaceChild(tmp.firstChild.tHead.rows[1], thead.rows[1]);
+      addressHeaderCell.replaceChild(tmp.firstChild.tHead.rows[0].cells[3].lastChild, 
+				     addressHeaderCell.lastChild);
       table.replaceChild(tmp.firstChild.tBodies[0], tbody);
     }
     else {
