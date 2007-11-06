@@ -368,44 +368,58 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 }
 
 /* mail */
-- (NSArray *) mailAccounts
+- (void) _prepareDefaultMailAccounts
 {
-#warning should be implemented with the user defaults interfaces
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities;
   NSString *name, *fullName;
+  NSArray *mails;
+  unsigned int count, max;
+
+  mailAccount = [NSMutableDictionary dictionary];
+  name = [NSString stringWithFormat: @"%@@%@",
+		   login, fallbackIMAP4Server];
+  [mailAccount setObject: login forKey: @"userName"];
+  [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
+  [mailAccount setObject: name forKey: @"name"];
+
+  identities = [NSMutableArray array];
+  mails = [self allEmails];
+
+  max = [mails count];
+  if (max > 1)
+    max--;
+  for (count = 0; count < max; count++)
+    {
+      identity = [NSMutableDictionary dictionary];
+      fullName = [self cn];
+      if (![fullName length])
+	fullName = login;
+      [identity setObject: fullName forKey: @"fullName"];
+      [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
+      [identities addObject: identity];
+    }
+  [[identities objectAtIndex: 0] setObject: [NSNumber numberWithBool: YES]
+				 forKey: @"isDefault"];
+
+  [mailAccount setObject: identities forKey: @"identities"];
+
+  mailAccounts = [NSMutableArray new];
+  [mailAccounts addObject: mailAccount];
+}
+
+- (NSArray *) mailAccounts
+{
+  NSUserDefaults *ud;
 
   if (!mailAccounts)
     {
-      NSArray *mails;
-      int i;
-
-      mailAccount = [NSMutableDictionary dictionary];
-      name = [NSString stringWithFormat: @"%@@%@", login, fallbackIMAP4Server];
-      [mailAccount setObject: login forKey: @"userName"];
-      [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
-      [mailAccount setObject: name forKey: @"name"];
-
-      identities = [NSMutableArray array];
-      mails = [self allEmails];
-
-      for (i = 0; i < [mails count]; i++)
-	{
-	  identity = [NSMutableDictionary dictionary];
-	  fullName = [self cn];
-	  if (![fullName length])
-	    fullName = login;
-	  [identity setObject: fullName forKey: @"fullName"];
-	  [identity setObject: [mails objectAtIndex: i] forKey: @"email"];
-	  
-	  if (i == 0) [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
-	  [identities addObject: identity];
-	}
-	
-      [mailAccount setObject: identities forKey: @"identities"];
-
-      mailAccounts = [NSMutableArray new];
-      [mailAccounts addObject: mailAccount];
+      ud = [self userDefaults];
+      mailAccounts = [ud objectForKey: @"MailAccounts"];
+      if (mailAccounts)
+	[mailAccounts retain];
+      else
+	[self _prepareDefaultMailAccounts];
     }
 
   return mailAccounts;

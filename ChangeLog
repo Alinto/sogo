@@ -1,3 +1,9 @@
+2007-11-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): we now
+	fetch the accounts from the user defaults and create default
+	values if missing.
+
 2007-11-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartTextViewer.m
