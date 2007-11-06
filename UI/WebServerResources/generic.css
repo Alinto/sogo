@@ -33,6 +33,9 @@ IMG#progressIndicator
   margin-top: 1.5em;
   margin-right: 1em; }
 
+SPAN#toolbar IMG#progressIndicator
+{ margin-top: 0.75em; }
+
 DIV#pageContent
 { clear: both; }
 

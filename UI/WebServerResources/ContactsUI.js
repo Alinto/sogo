@@ -333,6 +333,9 @@ function onToolbarWriteToSelectedContacts(event) {
   var rows = contactsList.getSelectedRowsId();
   var rowsWithEmail = 0;
 
+  if (rows.length == 0)
+    return false;
+
   for (var i = 0; i < rows.length; i++) {
     var emailCell = $(rows[i]).down('td', 1);
     if (emailCell.firstChild) { // .nodeValue is the contact email address
@@ -341,7 +344,7 @@ function onToolbarWriteToSelectedContacts(event) {
 			    + "/" + rows[i] + "/write");
     }
   }
-  
+
   if (rowsWithEmail == 0) {
     window.alert(labels["The selected contact has no email address."]);
   }

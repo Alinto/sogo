@@ -284,7 +284,7 @@ function triggerAjaxRequest(url, callback, userdata) {
   var http = createHTTPClient();
 
   activeAjaxRequests += 1;
-  document.animTimer = setTimeout("checkAjaxRequestsState();", 200);
+  document.animTimer = setTimeout("checkAjaxRequestsState();", 50);
   //url = appendDifferentiator(url);
 
   if (http) {

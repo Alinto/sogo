@@ -1485,28 +1485,23 @@ function appendCalendar(folderName, folderPath) {
     
     // Update CSS for events color
     if (!document.styleSheets) return;
-    var theRules = new Array();
-    var lastSheet = document.styleSheets[document.styleSheets.length - 1];
-    if (lastSheet.insertRule) { // Mozilla
-      lastSheet.insertRule('.calendarFolder' + folderPath.substr(1) + ' {'
-			   + ' background-color: '
-			   + color
-			   + ' !important; }', 0);
-      lastSheet.insertRule('div.colorBox.calendarFolder' + folderPath.substr(1) + ' {'
-			   + ' color: '
-			   + color
-			   + ' !important; }', 0);
-    }
-    else { // IE
-      lastSheet.addRule('.calendarFolder' + folderPath.substr(1),
-			' background-color: '
-			+ color
-			+ ' !important; }');
-      lastSheet.addRule('div.colorBox.calendarFolder' + folderPath.substr(1),
-			' color: '
-			+ color
-			+ ' !important; }');
-    }
+    
+    var styleElement = document.createElement("style");
+    styleElement.type = "text/css";
+    var selectors = [
+		     '.calendarFolder' + folderPath.substr(1),
+		     'div.colorBox.calendarFolder' + folderPath.substr(1)
+		     ];
+    var rules = [
+		 ' { background-color: ' + color + ' !important; }',
+		 ' { color: ' + color + ' !important; }'
+		 ];
+    for (var i = 0; i < rules.length; i++)
+      if (styleElement.styleSheet && styleElement.styleSheet.addRule)
+	styleElement.styleSheet.addRule(selectors[i], rules[i]); // IE
+      else
+	styleElement.appendChild(document.createTextNode(selectors[i] + rules[i])); // Mozilla _+ Safari
+    document.getElementsByTagName("head")[0].appendChild(styleElement);
   }
 }
 
