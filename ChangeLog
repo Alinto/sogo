@@ -1,5 +1,9 @@
 2007-11-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailToSelection.m ([UIxMailToSelection
+	-getAddressesFromFormValues:_dict]): take NSString and NSArray
+	values. Ignore addresses with a length of 0.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): we now
 	fetch the accounts from the user defaults and create default
 	values if missing.

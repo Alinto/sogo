@@ -285,11 +285,31 @@ static NSArray *headers = nil;
 
 /* handling requests */
 
+- (void) _fillAddresses: (NSMutableArray *) addresses
+	     withObject: (id) object
+{
+  NSEnumerator *list;
+  NSString *currentAddress;
+
+  if ([object isKindOfClass: [NSString class]])
+    [addresses addObject: object];
+  else if ([object isKindOfClass: [NSArray class]])
+    {
+      list = [object objectEnumerator];
+      while ((currentAddress
+	      = [[list nextObject] stringByTrimmingSpaces]))
+	if ([currentAddress length])
+	  [addresses addObject: currentAddress];
+    }
+}
+
 - (void) getAddressesFromFormValues: (NSDictionary *) _dict
 {
   NSMutableArray *rawTo, *rawCc, *rawBcc;
+  NSString *idx, *popupKey, *popupValue;
   NSArray *keys;
   unsigned i, count;
+  id addr;
 
   rawTo  = [NSMutableArray arrayWithCapacity:4];
   rawCc  = [NSMutableArray arrayWithCapacity:4];
@@ -304,18 +324,16 @@ static NSArray *headers = nil;
       key = [keys objectAtIndex:i];
       if ([key hasPrefix:@"addr_"])
 	{
-	  NSString *idx, *addr, *popupKey, *popupValue;
-	  
-	  addr = [[_dict objectForKey:key] lastObject];
+	  addr = [_dict objectForKey:key];
 	  idx  = [self getIndexFromIdentifier:key];
 	  popupKey = [NSString stringWithFormat:@"popup_%@", idx];
 	  popupValue = [[_dict objectForKey:popupKey] lastObject];
 	  if([popupValue isEqualToString:@"0"])
-	    [rawTo addObject:addr];
+	    [self _fillAddresses: rawTo withObject: addr];
 	  else if([popupValue isEqualToString:@"1"])
-	    [rawCc addObject:addr];
+	    [self _fillAddresses: rawCc withObject: addr];
 	  else
-	    [rawBcc addObject:addr];
+	    [self _fillAddresses: rawBcc withObject: addr];
 	}
     }
   
