@@ -28,7 +28,6 @@
 @interface NSString (SOGoExtension)
 
 - (NSString *) htmlToText;
-
 - (NSString *) decodedSubject;
 
 @end

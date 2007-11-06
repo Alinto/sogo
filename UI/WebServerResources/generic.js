@@ -218,8 +218,13 @@ function openUserFolderSelector(callback, type) {
 }
 
 function openContactWindow(url, wId) {
-  if (!wId)
-    wId = "" + (new Date().getTime());
+  if (typeof wId == "undefined")
+    wId = "_blank";
+  else {
+    var r = new RegExp("[\.\/-]", "g");
+    wId = wId.replace(r, "_");
+  }
+
   var w = window.open(url, wId,
 		      "width=450,height=600,resizable=0,location=0");
   w.focus();
@@ -230,12 +235,15 @@ function openContactWindow(url, wId) {
 function openMailComposeWindow(url, wId) {
   var parentWindow = this;
 
-  if (!wId)
-    wId = "" + (new Date().getTime());
-  else
+  if (typeof wId == "undefined")
+    wId = "_blank";
+  else {
+    var r = new RegExp("[\.\/-]", "g");
+    wId = wId.replace(r, "_");
     if (document.body.hasClassName("popup"))
       parentWindow = window.opener;
-  
+  }
+
   var w = parentWindow.open(url, wId,
                       "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
                       + "location=0,directories=0,status=0,menubar=0"

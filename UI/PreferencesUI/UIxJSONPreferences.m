@@ -33,14 +33,14 @@
 
 @implementation UIxJSONPreferences
 
-- (WOResponse *) _makeResponse: (NSString *) jsonText
+- (WOResponse *) _makeResponse: (NSUserDefaults *) defaults
 {
   WOResponse *response;
 
   response = [context response];
   [response setHeader: @"text/plain; charset=utf-8"
 	    forKey: @"content-type"];
-  [response appendContentString: jsonText];
+  [response appendContentString: [defaults jsonRepresentation]];
 
   return response;
 }
@@ -51,7 +51,7 @@
 
   defaults = [[context activeUser] userDefaults];
 
-  return [self _makeResponse: [defaults jsonRepresentation]];
+  return [self _makeResponse: defaults];
 }
 
 - (WOResponse *) jsonSettingsAction
@@ -60,7 +60,7 @@
 
   settings = [[context activeUser] userSettings];
 
-  return [self _makeResponse: [settings jsonRepresentation]];
+  return [self _makeResponse: settings];
 }
 
 @end

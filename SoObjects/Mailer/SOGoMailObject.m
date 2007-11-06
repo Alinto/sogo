@@ -44,6 +44,7 @@
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
+#import "NSString+Mail.h"
 #import "NSData+Mail.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailAccount.h"

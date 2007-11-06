@@ -20,6 +20,10 @@
 	      protectedBy = "View";
 	      pageName = "UIxPreferences";
 	   };
+	   identities = {
+	      protectedBy = "View";
+	      pageName = "UIxIdentities";
+	   };
 	   jsonDefaults = {
 	      protectedBy = "View";
 	      actionClass = "UIxJSONPreferences";

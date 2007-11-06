@@ -32,7 +32,7 @@
 
 @interface UIxPreferences : UIxComponent
 {
-  NSString *item;
+  id item;
   SOGoUser *user;
   NSUserDefaults *userDefaults;
   NSCalendarDate *today;

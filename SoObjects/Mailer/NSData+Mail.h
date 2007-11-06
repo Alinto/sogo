@@ -30,6 +30,7 @@
 @interface NSData (SOGoMailUtilities)
 
 - (NSData *) bodyDataFromEncoding: (NSString *) encoding;
+- (NSString *) decodedSubject;
 
 @end
 

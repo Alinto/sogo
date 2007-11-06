@@ -43,7 +43,7 @@
 
 - (void)removeAllRecurrenceRules;
 - (void)addToRecurrenceRules:(id)_rrule;
-- (void)setRecurrenceRules:(id)_rrule;
+- (void)setRecurrenceRules:(NSArray *)_rrule;
 - (BOOL)hasRecurrenceRules;
 - (NSArray *)recurrenceRules;
 
