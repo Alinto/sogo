@@ -66,7 +66,9 @@
     return 1;
   }
   
-  if ((error = [self->folderManager createFolderOfType:_type atPath:_path])) {
+  if ((error = [self->folderManager createFolderOfType:_type
+		    withName: @"testFolder"
+		    atPath:_path])) {
     [self logWithFormat:@"creation of folder %@ at %@ failed: %@",
 	    _type, _path, error];
     return 1;
