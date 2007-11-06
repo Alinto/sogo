@@ -79,6 +79,9 @@
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
+"Default identity:" = "Identité par défaut :";
+"Manage identities..." = "Gérer les identitiés...";
+
 /* password */
 "New password:" = "Nouveau mot de passe :";
 "Confirmation:" = "Confirmation :";

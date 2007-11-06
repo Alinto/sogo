@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxPreferences.h"
@@ -464,6 +465,35 @@ static BOOL shouldDisplayPasswordChange = NO;
 - (void) setUserMessageForwarding: (NSString *) newMessageForwarding
 {
   [userDefaults setObject: newMessageForwarding forKey: @"MessageForwarding"];
+}
+
+// 	<label><var:string label:value="Default identity:"/>
+// 	  <var:popup list="identitiesList" item="item"
+// 	    string="itemIdentityText" selection="defaultIdentity"/></label>
+- (NSArray *) identitiesList
+{
+  return [user allIdentities];
+}
+
+- (NSString *) itemIdentityText
+{
+  return [item keysWithFormat: @"%{fullName} <%{email}>"];
+}
+
+- (NSDictionary *) defaultIdentity
+{
+  NSDictionary *currentIdentity, *defaultIdentity;
+  NSEnumerator *identities;
+
+  defaultIdentity = nil;
+
+  identities = [[user allIdentities] objectEnumerator];
+  while (!defaultIdentity
+	 && (currentIdentity = [identities nextObject]))
+    if ([[currentIdentity objectForKey: @"isDefault"] boolValue])
+      defaultIdentity = currentIdentity;
+
+  return defaultIdentity;
 }
 
 - (id <WOActionResults>) defaultAction
