@@ -80,6 +80,12 @@
 	<label><var:string label:value="Forward messages:"/>
 	  <var:popup list="messageForwardingList" item="item"
 	    string="itemMessageForwardingText" selection="userMessageForwarding"/></label><br/>
+	<label><var:string label:value="Default identity:"/>
+	  <var:popup list="identitiesList" item="item"
+	    string="itemIdentityText" selection="defaultIdentity"/></label>
+	<input type="button" class="button" id="manageIdentitiesBtn"
+	  label:value="Manage identities..."/>
+	<br/>
 	<!--	<label><input
 	const:name="inTheOffice" type="radio" const:value="YES"
 	var:selection="inTheOffice"/>
