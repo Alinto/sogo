@@ -1176,7 +1176,7 @@ function initMailboxTree() {
   mailboxTree.pendingRequests = mailAccounts.length;
   activeAjaxRequests += mailAccounts.length;
   for (var i = 0; i < mailAccounts.length; i++) {
-    var url = ApplicationBaseURL + "/" + mailAccounts[i] + "/mailboxes";
+    var url = ApplicationBaseURL + mailAccounts[i] + "/mailboxes";
     triggerAjaxRequest(url, onLoadMailboxesCallback, mailAccounts[i]);
   }
 }

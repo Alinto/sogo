@@ -150,7 +150,8 @@ function URLForFolderID(folderID) {
   var url;
   if (folderInfos.length > 1) {
     url = UserFolderURL + "../" + folderInfos[0];
-    if (!folderInfos[1].startsWith('/'))
+    if (!(folderInfos[0].endsWith('/')
+	  || folderInfos[1].startsWith('/')))
       url += '/';
     url += folderInfos[1];
   }
