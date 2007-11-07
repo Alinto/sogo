@@ -205,18 +205,16 @@
   return records;
 }
 
+#warning this should be unified within SOGoFolder
 - (void) appendObject: (NSDictionary *) object
           withBaseURL: (NSString *) baseURL
      toREPORTResponse: (WOResponse *) r
 {
   SOGoContactGCSEntry *component;
-  Class componentClass;
   NSString *name, *etagLine, *contactString;
 
   name = [object objectForKey: @"c_name"];
-  componentClass = [SOGoContactGCSEntry class];
-
-  component = [componentClass objectWithName: name inContainer: self];
+  component = [self lookupName: name inContext: context acquire: NO];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];

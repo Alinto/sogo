@@ -45,20 +45,16 @@
 
 @implementation SOGoContactLDAPFolder
 
+#warning this should be unified within SOGoFolder
 - (void) appendObject: (NSDictionary *) object
           withBaseURL: (NSString *) baseURL
      toREPORTResponse: (WOResponse *) r
 {
   SOGoContactLDIFEntry *component;
-  Class componentClass;
   NSString *name, *etagLine, *contactString;
 
   name = [object objectForKey: @"c_name"];
-  componentClass = [SOGoContactLDIFEntry class];
-
-  
-  component = [componentClass contactEntryWithName: name
-			      withLDIFEntry: object  inContainer: self];
+  component = [self lookupName: name inContext: context acquire: NO];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];
@@ -163,42 +159,11 @@
   if (!obj)
     {
       ldifEntry = [ldapSource lookupContactEntry: objectName];
-#if 0
       obj = ((ldifEntry)
 	     ? [SOGoContactLDIFEntry contactEntryWithName: objectName
 				     withLDIFEntry: ldifEntry
 				     inContainer: self]
 	     : [NSException exceptionWithHTTPStatus: 404]);
-#else
-      if (ldifEntry)
-	obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
-				    withLDIFEntry: ldifEntry
-				    inContainer: self];
-      else
-	{
-	  NSArray *davNamespaces;
-	  NSDictionary *davInvocation;
-	  NSString *objcMethod;
-	  
-	  davNamespaces = [self davNamespaces];
-	  if ([davNamespaces count] > 0)
-	    {
-	      davInvocation = [objectName asDavInvocation];
-	      if (davInvocation
-		  && [davNamespaces
-		       containsObject: [davInvocation objectForKey: @"ns"]])
-		{
-		  objcMethod = [[davInvocation objectForKey: @"method"]
-			     davMethodToObjC];
-		  obj = [[SoSelectorInvocation alloc]
-			  initWithSelectorNamed:
-			    [NSString stringWithFormat: @"%@:", objcMethod]
-			  addContextParameter: YES];
-		  [obj autorelease];
-		}
-	    }
-	}
-#endif
     }
 
   return obj;

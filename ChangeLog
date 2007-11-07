@@ -1,5 +1,16 @@
 2007-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]):
+	take the content of an object returned by
+	lookupName:inContext:acquire: instead of the dictionary passed as
+	parameter since it represents a flattened entry return by
+	lookupContactsWithFilter...
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m: NSObject+CardDAV
+	category renamed to SOGoFolder+CardDAV.
+
 	* SoObjects/SOGo/SOGoParentFolder.m: no longer a subclass of
 	SOGoObject, but of SOGoFolder instead.
 

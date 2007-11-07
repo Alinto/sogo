@@ -23,7 +23,9 @@
 #ifndef __Contacts_NSObject_CardDAV_H__
 #define __Contacts_NSObject_CardDAV_H__
 
-@interface NSObject (CardDAV)
+#import "SOGoContactFolder.h"
+
+@interface SOGoFolder (CardDAV) <SOGoContactFolder>
 
 - (id) davAddressbookQuery: (id) queryContext;
 

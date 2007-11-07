@@ -24,13 +24,13 @@
 #define SOGOCONTACTLDAPFOLDER_H
 
 #import "SOGoContactFolder.h"
-#import "NSObject+CardDAV.h"
+#import "SOGoFolder+CardDAV.h"
 
 @class NSMutableDictionary;
 
 @class LDAPSource;
 
-@interface SOGoContactLDAPFolder : SOGoObject <SOGoContactFolder>
+@interface SOGoContactLDAPFolder : SOGoFolder <SOGoContactFolder>
 {
   NSString *displayName;
   LDAPSource *ldapSource;

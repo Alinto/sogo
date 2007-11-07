@@ -33,14 +33,12 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSString, NSArray;
-@class SOGoContactObject;
-@class SOGoObject;
-@class WOResponse;
-
-@protocol SOGoContactObject;
-
 #import <SoObjects/SOGo/SOGoFolder.h>
+
+@class NSArray;
+@class NSDictionary;
+@class NSString;
+@class WOResponse;
 
 @protocol SOGoContactFolder <NSObject>
 

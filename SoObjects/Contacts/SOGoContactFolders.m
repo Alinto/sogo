@@ -53,21 +53,20 @@
 {
   LDAPUserManager *um;
   NSEnumerator *sourceIDs;
-  NSString *currentSourceID, *displayName;
+  NSString *currentSourceID, *srcDisplayName;
   SOGoContactLDAPFolder *currentFolder;
 
   um = [LDAPUserManager sharedUserManager];
   sourceIDs = [[um addressBookSourceIDs] objectEnumerator]; 
   currentSourceID = [sourceIDs nextObject];
-  while (currentSourceID)
+  while ((currentSourceID = [sourceIDs nextObject]))
     {
-      displayName = [um displayNameForSourceWithID: currentSourceID];
+      srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
       currentFolder = [SOGoContactLDAPFolder folderWithName: currentSourceID
-					     andDisplayName: displayName
+					     andDisplayName: srcDisplayName
 					     inContainer: self];
       [currentFolder setLDAPSource: [um sourceWithID: currentSourceID]];
       [subFolders setObject: currentFolder forKey: currentSourceID];
-      currentSourceID = [sourceIDs nextObject];
     }
 }
 

@@ -25,7 +25,7 @@
 #import <SoObjects/SOGo/SOGoGCSFolder.h>
 
 #import "SOGoContactFolder.h"
-#import "NSObject+CardDAV.h"
+#import "SOGoFolder+CardDAV.h"
 
 @class NSArray;
 @class NSString;

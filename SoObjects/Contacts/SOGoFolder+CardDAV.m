@@ -33,11 +33,11 @@
 #import "SOGoContactFolder.h"
 #import "SOGoContactGCSEntry.h"
 
-@implementation NSObject (CardDAV)
+@implementation SOGoFolder (CardDAV)
 
 - (void) _appendComponentsMatchingFilters: (NSArray *) filters
                                toResponse: (WOResponse *) response
-				  context: (id) context
+				  context: (id) localContext
 {
   unsigned int count, max;
   NSDictionary *currentFilter, *contact;
@@ -46,7 +46,7 @@
   SOGoObject <SOGoContactFolder> *o;
 
   o = (id<SOGoContactFolder>)self;
-  baseURL = [o baseURLInContext: context];
+  baseURL = [o baseURLInContext: localContext];
   
   max = [filters count];
   for (count = 0; count < max; count++)
