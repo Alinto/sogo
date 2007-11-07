@@ -49,11 +49,6 @@
 
 - (NSString *) ownerInContext: (WOContext *) _ctx;
 
-/* pathes */
-
-- (NSString *) ocsUserPath;
-- (NSString *) ocsPrivateCalendarPath;
-
 /* TODO: not implemented, bad bad */
 // - (id)lookupFreeBusyObject;
 

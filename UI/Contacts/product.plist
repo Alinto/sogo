@@ -136,7 +136,7 @@
               actionName  = "delete";
            };
            edit = {
-              protectedBy = "Change Images And Files";
+              protectedBy = "Access Contents Information";
               pageName    = "UIxContactEditor";
            };
            save = {
@@ -158,16 +158,16 @@
 	      protectedBy = "<public>";
               pageName    = "UIxContactView";
            };
-           delete = {
+/*           delete = {
               protectedBy = "View";
               pageName    = "UIxContactView";
               actionName  = "delete";
-           };
+           }; */
            edit = {
-              protectedBy = "View";
+              protectedBy = "Access Contents Information";
               pageName    = "UIxContactEditor";
            };
-           save = {
+/*           save = {
               protectedBy = "View";
               pageName    = "UIxContactEditor";
               actionName  = "save";
@@ -176,7 +176,7 @@
               protectedBy = "View";
               pageName    = "UIxContactEditor";
               actionName  = "write";
-           };
+           }; */
         };
      };
   };

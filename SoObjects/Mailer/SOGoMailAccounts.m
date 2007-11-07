@@ -127,24 +127,4 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
 }
 
-/* WebDAV */
-
-- (BOOL) davIsCollection
-{
-  return YES;
-}
-
-- (NSString *) davContentType
-{
-  return @"httpd/unix-directory";
-}
-
-/* acls */
-
-- (NSArray *) aclsForUser: (NSString *) uid
-{
-  return nil;
-}
-
-
 @end /* SOGoMailAccounts */

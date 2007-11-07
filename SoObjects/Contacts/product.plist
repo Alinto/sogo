@@ -12,13 +12,13 @@
       superclass = "SOGoParentFolder";
     };
     SOGoContactGCSFolder = {
-      superclass = "SOGoFolder";
+      superclass = "SOGoGCSFolder";
     };
     SOGoContactGCSEntry = {
       superclass = "SOGoContentObject";
     };
     SOGoContactLDAPFolder = {
-      superclass = "SOGoFolder";
+      superclass = "SOGoGCSFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {
 	"Access Contents Information" = ( "Authenticated" );

@@ -12,7 +12,7 @@
       superclass    = "SOGoObject";
     };
     SOGoMailAccounts = {
-      superclass    = "SOGoMailBaseObject";
+      superclass    = "SOGoFolder";
       defaultRoles = {
         "View"          = ( "Owner", "AuthorizedSubscriber" );
         "Access Contents Information" = ( "Owner", "AuthorizedSubscriber" );

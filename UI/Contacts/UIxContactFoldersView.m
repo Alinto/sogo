@@ -177,7 +177,7 @@
 {
   NSMutableArray *folders;
   NSEnumerator *subfolders;
-  SOGoFolder *currentFolder;
+  SOGoGCSFolder *currentFolder;
   NSString *folderName;
   NSMutableDictionary *currentDictionary;
   SoSecurityManager *securityManager;

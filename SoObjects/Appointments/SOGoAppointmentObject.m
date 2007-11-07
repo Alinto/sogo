@@ -147,30 +147,33 @@
   return allErrors;
 }
 
-- (NSException *)deleteInUIDs:(NSArray *)_uids {
+- (NSException *) deleteInUIDs: (NSArray *) _uids
+{
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
+  NSException           *error;
+  SOGoAppointmentObject *apt;
   
   e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
 	objectEnumerator];
-  while ((folder = [e nextObject])) {
-    NSException           *error;
-    SOGoAppointmentObject *apt;
+  while ((folder = [e nextObject]))
+    {
+      apt = [folder lookupName: [self nameInContainer]
+		    inContext: context
+		    acquire:NO];
+      if ([apt isKindOfClass: [NSException class]]) {
+	[self logWithFormat: @"%@", [(NSException *) apt reason]];
+	continue;
+      }
     
-    apt = [folder lookupName:[self nameInContainer] inContext: context
-		  acquire:NO];
-    if ([apt isKindOfClass: [NSException class]]) {
-      [self logWithFormat: @"%@", [(NSException *) apt reason]];
-      continue;
+      if ((error = [apt primaryDelete]) != nil) {
+	[self logWithFormat:@"Note: failed to delete in folder: %@", folder];
+	// TODO: make compound
+	allErrors = error;
+      }
     }
-    
-    if ((error = [apt primaryDelete]) != nil) {
-      [self logWithFormat:@"Note: failed to delete in folder: %@", folder];
-      // TODO: make compound
-      allErrors = error;
-    }
-  }
+
   return allErrors;
 }
 

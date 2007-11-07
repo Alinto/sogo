@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailAccounts_H__
 #define __Mailer_SOGoMailAccounts_H__
 
-#import <SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoFolder.h>
 
 /*
   SOGoMailAccounts
@@ -39,7 +39,7 @@
 
 @class NSArray;
 
-@interface SOGoMailAccounts : SOGoObject
+@interface SOGoMailAccounts : SOGoFolder
 
 @end
 

@@ -71,7 +71,7 @@
 	};
       };
     };
-    SOGoFolder = {
+    SOGoGCSFolder = {
       methods = {
 	subscribe = {
 	  protectedBy = "<public>";

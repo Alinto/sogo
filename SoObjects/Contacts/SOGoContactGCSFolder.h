@@ -22,7 +22,7 @@
 #ifndef __Contacts_SOGoContactGCSFolder_H__
 #define __Contacts_SOGoContactGCSFolder_H__
 
-#import <SoObjects/SOGo/SOGoFolder.h>
+#import <SoObjects/SOGo/SOGoGCSFolder.h>
 
 #import "SOGoContactFolder.h"
 #import "NSObject+CardDAV.h"
@@ -30,7 +30,7 @@
 @class NSArray;
 @class NSString;
 
-@interface SOGoContactGCSFolder : SOGoFolder <SOGoContactFolder>
+@interface SOGoContactGCSFolder : SOGoGCSFolder <SOGoContactFolder>
 
 @end
 

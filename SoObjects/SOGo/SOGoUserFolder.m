@@ -68,7 +68,8 @@
 
   if (!children)
     children = [[NSArray alloc] initWithObjects:
-				  @"Calendar", @"Contacts", @"Mail", nil];
+				  @"Calendar", @"Contacts", @"Mail",
+				@"Preferences",  nil];
 
   return children;
 }
@@ -92,39 +93,6 @@
 //   return [self lookupName: @"Groups" inContext: nil acquire: NO];
 // }
 
-/* pathes */
-
-- (void) setOCSPath: (NSString *) _path
-{
-  [self warnWithFormat:
-          @"rejected attempt to reset user-folder path: '%@'", _path];
-}
-
-- (NSString *) ocsPath
-{
-  return [NSString stringWithFormat: @"/Users/%@", nameInContainer];
-}
-
-- (NSString *) ocsUserPath
-{
-  return [self ocsPath];
-}
-
-- (BOOL) folderIsMandatory
-{
-  return NO;
-}
-
-- (NSString *) ocsPrivateCalendarPath
-{
-  return [[self ocsUserPath] stringByAppendingString:@"/Calendar"];
-}
-
-- (NSString *) ocsPrivateContactsPath
-{
-  return [[self ocsUserPath] stringByAppendingString:@"/Contacts"];
-}
-
 /* name lookup */
 
 // - (NSString *) permissionForKey: (NSString *) key
@@ -140,7 +108,8 @@
   SOGoAppointmentFolders *calendars;
   
   calendars = [$(@"SOGoAppointmentFolders") objectWithName: _key inContainer: self];
-  [calendars setBaseOCSPath: [self ocsPrivateCalendarPath]];
+  [calendars setBaseOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar",
+				       nameInContainer]];
 
   return calendars;
 }
@@ -151,7 +120,8 @@
   SOGoContactFolders *contacts;
 
   contacts = [$(@"SOGoContactFolders") objectWithName:_key inContainer: self];
-  [contacts setBaseOCSPath: [self ocsPrivateContactsPath]];
+  [contacts setBaseOCSPath: [NSString stringWithFormat: @"/Users/%@/Contacts",
+				      nameInContainer]];
 
   return contacts;
 }
@@ -195,6 +165,9 @@
 //         obj = [self groupsFolder: _key inContext: _ctx];
       else if ([_key isEqualToString: @"Mail"])
         obj = [self mailAccountsFolder: _key inContext: _ctx];
+      else if ([_key isEqualToString: @"Preferences"])
+        obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
+		inContainer: self];
       else if ([_key isEqualToString: @"freebusy.ifb"])
         obj = [self freeBusyObject:_key inContext: _ctx];
       else

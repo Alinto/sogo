@@ -52,6 +52,7 @@
 #import <SOGo/SOGoUser.h>
 
 #import "SOGoAppointmentObject.h"
+#import "SOGoAppointmentFolders.h"
 #import "SOGoTaskObject.h"
 
 #import "SOGoAppointmentFolder.h"
@@ -1001,20 +1002,29 @@ static NSNumber   *sharedYes = nil;
 
 - (SOGoAppointmentFolder *) lookupCalendarFolderForUID: (NSString *) uid
 {
-  SOGoFolder *upperContainer;
-  SOGoUserFolder *userFolder;
-  SOGoAppointmentFolder *calendarFolder;
+  SOGoFolder *currentContainer;
+  SOGoAppointmentFolders *parent;
+  NSException *error;
 
-  upperContainer = [[self container] container];
-  userFolder = [SOGoUserFolder objectWithName: uid
-                               inContainer: upperContainer];
-  calendarFolder = [SOGoAppointmentFolder objectWithName: @"Calendar"
-                                          inContainer: userFolder];
-  [calendarFolder
-    setOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar/personal", uid]];
-  [calendarFolder setOwner: uid];
+  currentContainer = [[container container] container];
+  currentContainer = [currentContainer lookupName: uid
+				       inContext: context
+				       acquire: NO];
+  parent = [currentContainer lookupName: @"Calendar" inContext: context
+			     acquire: NO];
+  currentContainer = [parent lookupName: @"personal" inContext: context
+			     acquire: NO];
+  if (!currentContainer)
+    {
+      error = [parent newFolderWithName: [parent defaultFolderName]
+		      andNameInContainer: @"personal"];
+      if (!error)
+	currentContainer = [parent lookupName: @"personal"
+				   inContext: context
+				   acquire: NO];
+    }
 
-  return calendarFolder;
+  return (SOGoAppointmentFolder *) currentContainer;
 }
 
 - (NSArray *) lookupCalendarFoldersForUIDs: (NSArray *) _uids
@@ -1041,8 +1051,9 @@ static NSNumber   *sharedYes = nil;
 	  if (![folder isNotNull])
 	    [self logWithFormat:@"Note: did not find folder for uid: '%@'", uid];
 	}
-    
-      [folders addObject: folder];
+
+      if (folder)
+	[folders addObject: folder];
     }
 
   return folders;

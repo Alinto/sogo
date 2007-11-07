@@ -23,13 +23,13 @@
 #ifndef SOGOPARENTFOLDERS_H
 #define SOGOPARENTFOLDERS_H
 
-#import "SOGoObject.h"
+#import "SOGoFolder.h"
 
 @class NSMutableDictionary;
 @class NSString;
 @class WOResponse;
 
-@interface SOGoParentFolder : SOGoObject
+@interface SOGoParentFolder : SOGoFolder
 {
   NSMutableDictionary *subFolders;
   NSString *OCSPath;
@@ -39,10 +39,14 @@
 + (NSString *) gcsFolderType;
 + (Class) subFolderClass;
 
+- (NSString *) defaultFolderName;
+
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
 - (NSArray *) subFolders;
 
+- (NSException *) newFolderWithName: (NSString *) name
+		 andNameInContainer: (NSString *) newNameInContainer;
 - (NSException *) newFolderWithName: (NSString *) name
 		    nameInContainer: (NSString **) newNameInContainer;
 

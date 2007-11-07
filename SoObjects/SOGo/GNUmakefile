@@ -53,6 +53,7 @@ libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
 	SOGoContentObject.m		\
 	SOGoFolder.m			\
+	SOGoGCSFolder.m			\
 	SOGoParentFolder.m		\
 	SOGoUserFolder.m		\
 	SOGoGroupsFolder.m		\

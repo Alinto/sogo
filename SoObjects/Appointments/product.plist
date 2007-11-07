@@ -12,7 +12,7 @@
       superclass = "SOGoParentFolder";
     };
     SOGoAppointmentFolder = {
-      superclass = "SOGoFolder";
+      superclass = "SOGoGCSFolder";
       defaultRoles = {
 /*        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );  */
 	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );

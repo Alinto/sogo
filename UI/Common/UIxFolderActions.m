@@ -35,9 +35,9 @@
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoFolder.h>
+#import <SoObjects/SOGo/SOGoGCSFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "WODirectAction+SOGo.h"
 

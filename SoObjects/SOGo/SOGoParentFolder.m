@@ -31,7 +31,7 @@
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 
-#import "SOGoFolder.h"
+#import "SOGoGCSFolder.h"
 #import "SOGoUser.h"
 
 #import "SOGoParentFolder.h"
@@ -86,9 +86,9 @@
 {
   NSArray *attrs;
   NSDictionary *row;
-  SOGoFolder *folder;
+  SOGoGCSFolder *folder;
   BOOL hasPersonal;
-  NSString *key, *path, *personalName;
+  NSString *key;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
@@ -111,17 +111,17 @@
       row = [fc fetchAttributes: attrs withZone: NULL];
     }
 
-  if (!hasPersonal)
-    {
-      folder = [subFolderClass objectWithName: @"personal" inContainer: self];
-      personalName = [self labelForKey: [self defaultFolderName]];
-      [folder setDisplayName: personalName];
-      path = [NSString stringWithFormat: @"/Users/%@/%@/personal",
-		       [self ownerInContext: context],
-		       nameInContainer];
-      [folder setOCSPath: path];
-      [subFolders setObject: folder forKey: @"personal"];
-    }
+//   if (!hasPersonal)
+//     {
+//       folder = [subFolderClass objectWithName: @"personal" inContainer: self];
+//       personalName = [self labelForKey: [self defaultFolderName]];
+//       [folder setDisplayName: personalName];
+//       path = [NSString stringWithFormat: @"/Users/%@/%@/personal",
+// 		       [self ownerInContext: context],
+// 		       nameInContainer];
+//       [folder setOCSPath: path];
+//       [subFolders setObject: folder forKey: @"personal"];
+//     }
 }
 
 - (void) appendPersonalSources
@@ -163,7 +163,7 @@
   NSUserDefaults *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
-  SOGoFolder *subscribedFolder;
+  SOGoGCSFolder *subscribedFolder;
 
   settings = [[context activeUser] userSettings];
   subscribedReferences = [[settings objectForKey: nameInContainer]
@@ -185,17 +185,15 @@
 }
 
 - (NSException *) newFolderWithName: (NSString *) name
-		    nameInContainer: (NSString **) newNameInContainer
+		 andNameInContainer: (NSString *) newNameInContainer
 {
   NSString *newFolderID;
-  SOGoFolder *newFolder;
+  SOGoGCSFolder *newFolder;
   NSException *error;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
-  *newNameInContainer = nil;
-  newFolderID = [self globallyUniqueObjectId];
   newFolder = [subFolderClass objectWithName: newFolderID inContainer: self];
   if ([newFolder isKindOfClass: [NSException class]])
     error = (NSException *) newFolder;
@@ -205,14 +203,28 @@
       [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
                                        OCSPath, newFolderID]];
       if ([newFolder create])
-	{
-	  error = nil;
-	  *newNameInContainer = newFolderID;
-	}
+	error = nil;
       else
         error = [NSException exceptionWithHTTPStatus: 400
 			     reason: @"The new folder could not be created"];
     }
+
+  return error;
+}
+
+- (NSException *) newFolderWithName: (NSString *) name
+		    nameInContainer: (NSString **) newNameInContainer
+{
+  NSString *newFolderID;
+  NSException *error;
+
+  newFolderID = [self globallyUniqueObjectId];
+  error = [self newFolderWithName: name
+		andNameInContainer: newFolderID];
+  if (error)
+    *newNameInContainer = nil;
+  else
+    *newNameInContainer = newFolderID;
 
   return error;
 }
@@ -266,22 +278,6 @@
 
   return [[subFolders allValues]
 	   sortedArrayUsingSelector: @selector (compare:)];
-}
-
-/* acls */
-- (NSArray *) aclsForUser: (NSString *) uid
-{
-  return nil;
-}
-
-- (BOOL) davIsCollection
-{
-  return YES;
-}
-
-- (NSString *) davContentType
-{
-  return @"httpd/unix-directory";
 }
 
 @end

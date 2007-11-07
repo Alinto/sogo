@@ -19,10 +19,10 @@
   02111-1307, USA.
 */
 
-#ifndef __SOGo_SOGoFolder_H__
-#define __SOGo_SOGoFolder_H__
+#ifndef __SOGo_SOGoGCSFolder_H__
+#define __SOGo_SOGoGCSFolder_H__
 
-#import "SOGoObject.h"
+#import "SOGoFolder.h"
 
 @class NSArray;
 @class NSDictionary;
@@ -32,7 +32,7 @@
 @class GCSFolder;
 
 /*
-  SOGoFolder
+  SOGoGCSFolder
   
   A common superclass for folders stored in GCS. Already deals with all GCS
   folder specific things.
@@ -41,9 +41,8 @@
              cyclic references.
 */
 
-@interface SOGoFolder : SOGoObject
+@interface SOGoGCSFolder : SOGoFolder
 {
-  NSMutableString *displayName;
   NSString *ocsPath;
   GCSFolder *ocsFolder;
   NSMutableDictionary *aclCache;
@@ -53,9 +52,6 @@
 			   inContainer: (id) aContainer;
 
 /* accessors */
-
-- (void) setDisplayName: (NSString *) newDisplayName;
-- (NSString *) displayName;
 
 - (void) setOCSPath: (NSString *)_Path;
 - (NSString *) ocsPath;
@@ -73,19 +69,14 @@
 
 /* folder type */
 
-- (NSString *) outlookFolderClass;
-
 - (BOOL) folderIsMandatory;
-- (NSString *) folderType;
 
 /* sorting */
-- (NSComparisonResult) compare: (SOGoFolder *) otherFolder;
+- (NSComparisonResult) compare: (SOGoGCSFolder *) otherFolder;
 
 - (BOOL) create;
 - (NSException *) delete;
 - (void) renameTo: (NSString *) newName;
-/* dav */
-- (NSArray *) davNamespaces;
 
 /* acls as a container */
 - (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;
@@ -99,10 +90,10 @@
 
 @end
 
-@interface SOGoFolder (GroupDAVExtensions)
+@interface SOGoGCSFolder (GroupDAVExtensions)
 
 - (NSString *) groupDavResourceType;
 
 @end
 
-#endif /* __SOGo_SOGoFolder_H__ */
+#endif /* __SOGo_SOGoGCSFolder_H__ */

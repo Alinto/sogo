@@ -47,12 +47,6 @@
 
 @implementation SOGoFreeBusyObject
 
-- (NSString *) iCalString
-{
-  // for UI-X appointment viewer
-  return [self contentAsString];
-}
-
 - (NSString *) contentAsString
 {
   NSCalendarDate *today, *startDate, *endDate;
@@ -101,6 +95,12 @@
 //     }
 
   return infos;
+}
+
+- (NSString *) iCalString
+{
+  // for UI-X appointment viewer
+  return [self contentAsString];
 }
 
 /* Private API */
@@ -194,7 +194,8 @@
   WOResponse *r;
   NSData     *contentData;
 
-  contentData = [[self contentAsString] dataUsingEncoding: NSUTF8StringEncoding];
+  contentData = [[self contentAsString]
+		  dataUsingEncoding: NSUTF8StringEncoding];
 
   r = [(WOContext *) _ctx response];
   [r setHeader: @"text/calendar" forKey: @"content-type"];
@@ -207,6 +208,11 @@
 - (NSString *) davContentType
 {
   return @"text/calendar";
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
 }
 
 @end

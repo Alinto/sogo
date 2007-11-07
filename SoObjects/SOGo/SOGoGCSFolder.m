@@ -29,7 +29,6 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
-#import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -51,23 +50,11 @@
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
-#import "SOGoFolder.h"
+#import "SOGoGCSFolder.h"
 
 static NSString *defaultUserID = @"<default>";
 
-@implementation SOGoFolder
-
-+ (int) version
-{
-  return [super version] + 0 /* v0 */;
-}
-
-+ (void) initialize
-{
-  NSAssert2([super version] == 0,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-}
+@implementation SOGoGCSFolder
 
 + (id) folderWithSubscriptionReference: (NSString *) reference
 			   inContainer: (id) aContainer
@@ -120,46 +107,6 @@ static NSString *defaultUserID = @"<default>";
 
 /* accessors */
 
-- (BOOL) isFolderish
-{
-  return YES;
-}
-
-- (void) setOCSPath: (NSString *) _path
-{
-  if (![ocsPath isEqualToString:_path])
-    {
-      if (ocsPath)
-	[self warnWithFormat: @"GCS path is already set! '%@'", _path];
-      ASSIGN (ocsPath, _path);
-    }
-}
-
-- (NSString *) ocsPath
-{
-  return ocsPath;
-}
-
-- (GCSFolderManager *) folderManager
-{
-  static GCSFolderManager *folderManager = nil;
-
-  if (!folderManager)
-    folderManager = [GCSFolderManager defaultFolderManager];
-
-  return folderManager;
-}
-
-- (GCSFolder *) ocsFolderForPath: (NSString *) _path
-{
-  return [[self folderManager] folderAtPath: _path];
-}
-
-- (BOOL) folderIsMandatory
-{
-  return [nameInContainer isEqualToString: @"personal"];
-}
-
 - (void) _setDisplayNameFromRow: (NSDictionary *) row
 {
   NSString *currentLogin, *ownerLogin;
@@ -209,17 +156,47 @@ static NSString *defaultUserID = @"<default>";
     }
 }
 
-- (void) setDisplayName: (NSString *) newDisplayName
-{
-  ASSIGN (displayName, newDisplayName);
-}
-
 - (NSString *) displayName
 {
   if (!displayName)
     [self _fetchDisplayName];
 
   return displayName;
+}
+
+- (void) setOCSPath: (NSString *) _path
+{
+  if (![ocsPath isEqualToString:_path])
+    {
+      if (ocsPath)
+	[self warnWithFormat: @"GCS path is already set! '%@'", _path];
+      ASSIGN (ocsPath, _path);
+    }
+}
+
+- (NSString *) ocsPath
+{
+  return ocsPath;
+}
+
+- (GCSFolderManager *) folderManager
+{
+  static GCSFolderManager *folderManager = nil;
+
+  if (!folderManager)
+    folderManager = [GCSFolderManager defaultFolderManager];
+
+  return folderManager;
+}
+
+- (GCSFolder *) ocsFolderForPath: (NSString *) _path
+{
+  return [[self folderManager] folderAtPath: _path];
+}
+
+- (BOOL) folderIsMandatory
+{
+  return [nameInContainer isEqualToString: @"personal"];
 }
 
 - (NSString *) davDisplayName
@@ -237,7 +214,7 @@ static NSString *defaultUserID = @"<default>";
       ocsFolder = [self ocsFolderForPath: [self ocsPath]];
       userLogin = [[context activeUser] login];
       if (!ocsFolder
-/*	  && [userLogin isEqualToString: [self ownerInContext: context]] */
+	  && [userLogin isEqualToString: [self ownerInContext: context]]
 	  && [self folderIsMandatory]
 	  && [self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
@@ -250,11 +227,6 @@ static NSString *defaultUserID = @"<default>";
     folder = nil;
 
   return folder;
-}
-
-- (NSString *) folderType
-{
-  return @"";
 }
 
 - (void) sendFolderAdvisoryTemplate: (NSString *) template
@@ -426,11 +398,6 @@ static NSString *defaultUserID = @"<default>";
     rType = [NSArray arrayWithObject: @"collection"];
 
   return rType;
-}
-
-- (NSString *) davContentType
-{
-  return @"httpd/unix-directory";
 }
 
 - (NSArray *) toOneRelationshipKeys
@@ -668,51 +635,6 @@ static NSString *defaultUserID = @"<default>";
   return defaultUserID;
 }
 
-- (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
-{
-  return [[self soURL] absoluteString];
-}
-
-- (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid
-{
-  return [[self davURL] absoluteString];
-}
-
-- (id) lookupName: (NSString *) lookupName
-        inContext: (id) localContext
-          acquire: (BOOL) acquire
-{
-  id obj;
-  NSArray *davNamespaces;
-  NSDictionary *davInvocation;
-  NSString *objcMethod;
-
-  obj = [super lookupName: lookupName inContext: localContext
-	       acquire: acquire];
-  if (!obj)
-    {
-      davNamespaces = [self davNamespaces];
-      if ([davNamespaces count] > 0)
-	{
-	  davInvocation = [lookupName asDavInvocation];
-	  if (davInvocation
-	      && [davNamespaces
-		   containsObject: [davInvocation objectForKey: @"ns"]])
-	    {
-	      objcMethod = [[davInvocation objectForKey: @"method"]
-			     davMethodToObjC];
-	      obj = [[SoSelectorInvocation alloc]
-		      initWithSelectorNamed:
-			[NSString stringWithFormat: @"%@:", objcMethod]
-		      addContextParameter: YES];
-	      [obj autorelease];
-	    }
-	}
-    }
-
-  return obj;
-}
-
 - (NSComparisonResult) _compareByOrigin: (SOGoFolder *) otherFolder
 {
   NSArray *thisElements, *otherElements;
@@ -767,7 +689,7 @@ static NSString *defaultUserID = @"<default>";
   return comparison;
 }
 
-- (NSComparisonResult) compare: (SOGoFolder *) otherFolder
+- (NSComparisonResult) compare: (SOGoGCSFolder *) otherFolder
 {
   NSComparisonResult comparison;
 
@@ -784,27 +706,6 @@ static NSString *defaultUserID = @"<default>";
   return comparison;
 }
 
-/* WebDAV */
-
-- (NSArray *) davNamespaces
-{
-  return nil;
-}
-
-- (BOOL) davIsCollection
-{
-  return [self isFolderish];
-}
-
-/* folder type */
-
-- (NSString *) outlookFolderClass
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 /* description */
 
 - (void) appendAttributesToDescription: (NSMutableString *) _ms
@@ -812,13 +713,6 @@ static NSString *defaultUserID = @"<default>";
   [super appendAttributesToDescription:_ms];
   
   [_ms appendFormat:@" ocs=%@", [self ocsPath]];
-}
-
-- (NSString *) loggingPrefix
-{
-  return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
-		   self, NSStringFromClass([self class]),
-		   [self nameInContainer]];
 }
 
 @end /* SOGoFolder */
