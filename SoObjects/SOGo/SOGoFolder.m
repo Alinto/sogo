@@ -113,6 +113,78 @@
   return [[self davURL] absoluteString];
 }
 
+/* sorting */
+- (NSComparisonResult) _compareByOrigin: (SOGoFolder *) otherFolder
+{
+  NSArray *thisElements, *otherElements;
+  unsigned thisCount, otherCount;
+  NSComparisonResult comparison;
+
+  thisElements = [nameInContainer componentsSeparatedByString: @"_"];
+  otherElements = [[otherFolder nameInContainer]
+		    componentsSeparatedByString: @"_"];
+  thisCount = [thisElements count];
+  otherCount = [otherElements count];
+  if (thisCount == otherCount)
+    {
+      if (thisCount == 1)
+	comparison = NSOrderedSame;
+      else
+	comparison = [[thisElements objectAtIndex: 0]
+		       compare: [otherElements objectAtIndex: 0]];
+    }
+  else
+    {
+      if (thisCount > otherCount)
+	comparison = NSOrderedDescending;
+      else
+	comparison = NSOrderedAscending;
+    }
+
+  return comparison;
+}
+
+- (NSComparisonResult) _compareByNameInContainer: (SOGoFolder *) otherFolder
+{
+  NSString *otherName;
+  NSComparisonResult comparison;
+
+  otherName = [otherFolder nameInContainer];
+  if ([nameInContainer hasSuffix: @"personal"])
+    {
+      if ([otherName hasSuffix: @"personal"])
+	comparison = [nameInContainer compare: otherName];
+      else
+	comparison = NSOrderedAscending;
+    }
+  else
+    {
+      if ([otherName hasSuffix: @"personal"])
+	comparison = NSOrderedDescending;
+      else
+	comparison = NSOrderedSame;
+    }
+
+  return comparison;
+}
+
+- (NSComparisonResult) compare: (id) otherFolder
+{
+  NSComparisonResult comparison;
+
+  comparison = [self _compareByOrigin: otherFolder];
+  if (comparison == NSOrderedSame)
+    {
+      comparison = [self _compareByNameInContainer: otherFolder];
+      if (comparison == NSOrderedSame)
+	comparison
+	  = [[self displayName]
+	      localizedCaseInsensitiveCompare: [otherFolder displayName]];
+    }
+
+  return comparison;
+}
+
 /* WebDAV */
 
 - (NSArray *) davNamespaces

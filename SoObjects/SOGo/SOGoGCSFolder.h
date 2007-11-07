@@ -71,9 +71,6 @@
 
 - (BOOL) folderIsMandatory;
 
-/* sorting */
-- (NSComparisonResult) compare: (SOGoGCSFolder *) otherFolder;
-
 - (BOOL) create;
 - (NSException *) delete;
 - (void) renameTo: (NSString *) newName;

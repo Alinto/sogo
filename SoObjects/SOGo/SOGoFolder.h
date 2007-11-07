@@ -35,6 +35,9 @@
 
 - (NSString *) folderType;
 
+/* sorting */
+- (NSComparisonResult) compare: (id) otherFolder;
+
 /* dav */
 - (NSArray *) davNamespaces;
 
