@@ -383,7 +383,8 @@ function tasksListCallback(http) {
 	list.appendChild(listItem);
 	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
 	Event.observe(listItem, "click", onRowClick);
-	Event.observe(listItem, "dblclick", editDoubleClickedEvent.bindAsEventListener(listItem));
+	Event.observe(listItem, "dblclick",
+		      editDoubleClickedEvent.bindAsEventListener(listItem));
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	listItem.calendar = data[i][1];
@@ -470,16 +471,16 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
   }
 }
 
-function changeCalendarDisplay(time, newView) {
+function changeCalendarDisplay(data, newView) {
   var url = ApplicationBaseURL + "/" + ((newView) ? newView : currentView);
 
   selectedCalendarCell = null;
 
   var day = null;
-  var hour = null;
-  if (time) {
-    day = time['day'];
-    hour = time['hour'];
+  var scrollEvent = null;
+  if (data) {
+    day = data['day'];
+    scrollEvent = data['scrollEvent'];
   }
 
   if (!day)
@@ -498,7 +499,9 @@ function changeCalendarDisplay(time, newView) {
   }
   document.dayDisplayAjaxRequest
      = triggerAjaxRequest(url, calendarDisplayCallback,
-			  { "view": newView, "day": day, "hour": hour });
+			  { "view": newView,
+			    "day": day,
+			    "scrollEvent": scrollEvent });
 
   return false;
 }
@@ -526,25 +529,26 @@ function onMonthOverview() {
   return _ensureView("monthview");
 }
 
-function scrollDayView(hour) {
-  var rowNumber;
-  if (hour) {
-    if (hour.length == 3)
-      rowNumber = parseInt(hour.substr(0, 1));
-    else {
-      if (hour.substr(0, 1) == "0")
-        rowNumber = parseInt(hour.substr(1, 1));
-      else
-        rowNumber = parseInt(hour.substr(0, 2));
-    }
-  } else
-    rowNumber = 8;
-
+function scrollDayView(scrollEvent) {
+  var offset = 0;
   var daysView = $("daysView");
   var hours =
-     $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
-  if (hours.length > 0)
-    daysView.scrollTop = hours[rowNumber].offsetTop;
+    $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
+
+  if (scrollEvent && scrollEvent.siblings) {
+    var classes = scrollEvent.siblings[0].getAttribute("class").split(" ");
+    for (var i = 0; i < classes.length; i++) {
+      if (classes[i].startsWith("starts")) {
+	var starts = parseInt(classes[i].substr(6)) / 4;
+	offset = hours[starts].offsetTop;
+      }
+    }
+  }
+  else {
+    offset = hours[8].offsetTop;
+  }
+
+  daysView.scrollTop = offset - 5;
 }
 
 function onClickableCellsDblClick(event) {
@@ -633,8 +637,6 @@ function drawCalendarEvent(eventData, sd, ed) {
 
    var days = startDate.daysUpTo(endDate);
 
-   var divs = new Array();
-
    var title;
    if (currentView == "monthview"
        && (eventData[7] == 0))
@@ -721,8 +723,12 @@ function drawCalendarEvent(eventData, sd, ed) {
 	    }
 	 }
 	 if (parentDiv)
- 	    parentDiv.appendChild(eventDiv);
+	   parentDiv.appendChild(eventDiv);
       }
+
+   var eventTR = $(eventData[0]);
+   if (eventTR)
+     eventTR.siblings = siblings;
 }
 
 function newEventDIV(cname, calendar, starts, lasts,
@@ -785,22 +791,22 @@ function calendarDisplayCallback(http) {
     if (http.callbackData["day"])
       currentDay = http.callbackData["day"];
 
-    var hour = null;
-    if (http.callbackData["hour"])
-      hour = http.callbackData["hour"];
     var contentView;
     if (currentView == "monthview")
       contentView = $("calendarContent");
     else {
-      scrollDayView(hour);
+      var scrollEvent = http.callbackData.scrollEvent;
+      scrollDayView($(scrollEvent));
       contentView = $("daysView");
     }
     refreshCalendarEvents();
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
-        Event.observe(days[i], "click",  onCalendarSelectDay.bindAsEventListener(days[i]));
-        Event.observe(days[i], "dblclick",  onClickableCellsDblClick.bindAsEventListener(days[i]));
+        Event.observe(days[i], "click",
+		      onCalendarSelectDay.bindAsEventListener(days[i]));
+        Event.observe(days[i], "dblclick",
+		      onClickableCellsDblClick.bindAsEventListener(days[i]));
       }
     else {
        var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
@@ -966,12 +972,10 @@ function onListFilterChange() {
   return refreshEvents();
 }
 
-function onEventClick(event) { log ("onEventClick");
-  var day = this.day;
-  var hour = this.hour;
-
-  changeCalendarDisplay( { "day": day, "hour": hour} );
-  changeDateSelectorDisplay(day);
+function onEventClick(event) {
+  changeCalendarDisplay( { "day": this.day,
+	                   "scrollEvent": this.getAttribute("id") } );
+  changeDateSelectorDisplay(this.day);
 
   return onRowClick(event);
 }
