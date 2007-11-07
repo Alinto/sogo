@@ -6,6 +6,7 @@
 "General" = "Général";
 "Calendar Options" = "Calendrier";
 "Mail Options" = "Courrier";
+"Identities" = "Identités";
 "Password" = "Mot de passe";
 
 /* ooo */
@@ -79,6 +80,7 @@
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
+/* Identities */
 "Default identity:" = "Identité par défaut :";
 "Manage identities..." = "Gérer les identitiés...";
 

@@ -19,6 +19,8 @@
 	    label:value="Calendar Options"/></li>
 	<li target="mailOptionsView"><var:string
 	    label:value="Mail Options"/></li>
+<!--	<li target="identitiesView"><var:string
+	    label:value="Identities"/></li> -->
 	<var:if condition="shouldDisplayPasswordChange">
 	  <li target="passwordView"><var:string label:value="Password"/></li>
 	</var:if>
@@ -80,12 +82,6 @@
 	<label><var:string label:value="Forward messages:"/>
 	  <var:popup list="messageForwardingList" item="item"
 	    string="itemMessageForwardingText" selection="userMessageForwarding"/></label><br/>
-	<label><var:string label:value="Default identity:"/>
-	  <var:popup list="identitiesList" item="item"
-	    string="itemIdentityText" selection="defaultIdentity"/></label>
-	<input type="button" class="button" id="manageIdentitiesBtn"
-	  label:value="Manage identities..."/>
-	<br/>
 	<!--	<label><input
 	const:name="inTheOffice" type="radio" const:value="YES"
 	var:selection="inTheOffice"/>
@@ -99,6 +95,12 @@
 	<label><var:string label:value="AutoReply only once to each sender with the following text :"/><br/>
 	<textarea const:name="autoReplyText" var:value="autoReplyText"/>
       </label> -->
+      </div>
+      <div id="identitiesView" class="tab">
+	<var:multiselection id="identitiesList" item="item"
+	  string="itemIdentityText" selection="defaultIdentity">
+	</var:multiselection>
+	<br/>
       </div>
       <var:if condition="shouldDisplayPasswordChange">
 	<div id="passwordView" class="tab">
