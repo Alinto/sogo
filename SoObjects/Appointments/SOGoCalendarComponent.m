@@ -375,8 +375,8 @@ static BOOL sendEMailNotifications = NO;
             recipient = email;
 
 	  language = [[context activeUser] language];
-#warning this could be optimized in a class hierarchy common with the \
-          SOGoObject's acl notification mechanism
+#warning this could be optimized in a class hierarchy common with the	\
+          SOGoObject acl notification mechanism
           /* create page name */
           // TODO: select user's default language?
           pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
