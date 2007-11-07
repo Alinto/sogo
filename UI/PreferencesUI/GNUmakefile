@@ -11,7 +11,6 @@ PreferencesUI_LANGUAGES = English French German
 PreferencesUI_OBJC_FILES =		\
 	PreferencesUIProduct.m		\
 	\
-	UIxIdentities.m			\
 	UIxJSONPreferences.m		\
 	UIxPreferences.m
 
