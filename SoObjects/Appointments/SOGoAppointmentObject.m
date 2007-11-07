@@ -106,43 +106,23 @@
   NSEnumerator *e;
   id folder;
   NSException *allErrors = nil;
-  
+  NSException           *error;
+  SOGoAppointmentObject *apt;
+
   e = [[container lookupCalendarFoldersForUIDs:_uids inContext: context]
 	objectEnumerator];
-  while ((folder = [e nextObject]) != nil) {
-    NSException           *error;
-    SOGoAppointmentObject *apt;
-    
-    if (![folder isNotNull]) /* no folder was found for given UID */
-      continue;
-
-    apt = [folder lookupName: [self nameInContainer] inContext: context
-		  acquire: NO];
-    if ([apt isKindOfClass: [NSException class]])
-      {
-        [self logWithFormat:@"Note: an exception occured finding '%@' in folder: %@",
-	      [self nameInContainer], folder];
-        [self logWithFormat:@"the exception reason was: %@",
-              [(NSException *) apt reason]];
-        continue;
-      }
-
-    if (![apt isNotNull]) {
-      [self logWithFormat:@"Note: did not find '%@' in folder: %@",
-	      [self nameInContainer], folder];
-      continue;
+  while ((folder = [e nextObject]))
+    {
+      apt = [SOGoAppointmentObject objectWithName: nameInContainer
+				   inContainer: folder];
+      error = [apt primarySaveContentString:_iCal];
+      if (error)
+	{
+	  [self logWithFormat:@"Note: failed to save iCal in folder: %@", folder];
+	  // TODO: make compound
+	  allErrors = error;
+	}
     }
-    if ([apt isKindOfClass: [NSException class]]) {
-      [self logWithFormat:@"Exception: %@", [(NSException *) apt reason]];
-      continue;
-    }
-    
-    if ((error = [apt primarySaveContentString:_iCal]) != nil) {
-      [self logWithFormat:@"Note: failed to save iCal in folder: %@", folder];
-      // TODO: make compound
-      allErrors = error;
-    }
-  }
 
   return allErrors;
 }

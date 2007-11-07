@@ -1,5 +1,10 @@
 2007-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveContentString:_iCalinUIDs:_uids]):
+	simplified method by directly building a similar appointment
+	object with the current folder as container.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	-appendObject:objectwithBaseURL:baseURLtoREPORTResponse:r]):
