@@ -58,7 +58,6 @@
 
   um = [LDAPUserManager sharedUserManager];
   sourceIDs = [[um addressBookSourceIDs] objectEnumerator]; 
-  currentSourceID = [sourceIDs nextObject];
   while ((currentSourceID = [sourceIDs nextObject]))
     {
       srcDisplayName = [um displayNameForSourceWithID: currentSourceID];
