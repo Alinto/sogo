@@ -20,17 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "SOGoContactFolder.h"
-#import "SOGoContactGCSEntry.h"
-
-#import <DOM/DOMProtocols.h>
 #import <Foundation/NSArray.h>
-#import <NGExtensions/NSString+misc.h>
-#import <SaxObjC/SaxObjC.h>
-#import <SaxObjC/XMLNamespaces.h>
+
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMProtocols.h>
+#import <SaxObjC/SaxObjC.h>
+#import <SaxObjC/XMLNamespaces.h>
+
+#import "SOGoContactFolder.h"
+#import "SOGoContactGCSEntry.h"
 
 @implementation NSObject (CardDAV)
 
@@ -42,7 +43,7 @@
   NSDictionary *currentFilter, *contact;
   NSEnumerator *contacts;
   NSString *baseURL;
-  id<SOGoContactFolder> o;
+  SOGoObject <SOGoContactFolder> *o;
 
   o = (id<SOGoContactFolder>)self;
   baseURL = [o baseURLInContext: context];

@@ -1,3 +1,22 @@
+2007-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoParentFolder.m: no longer a subclass of
+	SOGoObject, but of SOGoFolder instead.
+
+	* SoObjects/SOGo/SOGoUserFolder.m: no longer a subclass of
+	SOGoGCSFolder, but of SOGoFolder instead.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupCalendarFolderForUID:uid]): fixed
+	to take the new SOGoParentFolder class into account. Also, create
+	the personal folder if it doesn't exist.
+
+	* SoObjects/SOGo/SOGoFolder.[hm]: new class module implementing
+	the parent of all SOGo containers.
+
+	* SoObjects/SOGo/SOGoGCSFolder.[hm]: SOGoFolder class renamed to
+	SOGoGCSFolder.
+
 2007-11-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailToSelection.m ([UIxMailToSelection

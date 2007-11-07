@@ -581,7 +581,7 @@
           Update: remember that there are group folders as well.
   */
   NSString *uri, *objectId, *nextMethod;
-  id <SOGoContactFolder> co;
+  SOGoObject <SOGoContactFolder> *co;
 
   co = [self clientObject];
   if ([co respondsToSelector: @selector (globallyUniqueObjectId)])

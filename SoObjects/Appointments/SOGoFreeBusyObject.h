@@ -24,7 +24,7 @@
 #ifndef	__Appointments_SOGoFreeBusyObject_H_
 #define	__Appointments_SOGoFreeBusyObject_H_
 
-#include <SOGo/SOGoContentObject.h>
+#include <SOGo/SOGoObject.h>
 
 /*
  SOGoFreeBusyObject
@@ -34,7 +34,7 @@
 
 @class NSArray, NSCalendarDate;
 
-@interface SOGoFreeBusyObject : SOGoContentObject
+@interface SOGoFreeBusyObject : SOGoObject
 {
 }
 

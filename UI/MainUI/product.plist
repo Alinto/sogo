@@ -49,7 +49,7 @@
       };
     };
     SOGoParentFolder = {
-      superclass = "SOGoObject";
+      superclass = "SOGoFolder";
       protectedBy = "Access Contents Information";
       defaultRoles = {
 	"Access Contents Information" = ( "Authenticated" );

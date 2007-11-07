@@ -43,8 +43,6 @@
 
 @class WOContext;
 
-
-
 @implementation SOGoContactLDAPFolder
 
 - (void) appendObject: (NSDictionary *) object
@@ -59,7 +57,8 @@
   componentClass = [SOGoContactLDIFEntry class];
 
   
-  component = [componentClass contactEntryWithName: name  withLDIFEntry: object  inContainer: self];
+  component = [componentClass contactEntryWithName: name
+			      withLDIFEntry: object  inContainer: self];
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];

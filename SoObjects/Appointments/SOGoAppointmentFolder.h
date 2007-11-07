@@ -36,7 +36,7 @@
   create two different vevent-files with the same uid in the store.
 */
 
-#import "SOGo/SOGoFolder.h"
+#import "SOGo/SOGoGCSFolder.h"
 
 @class NSArray;
 @class NSCalendarDate;
@@ -47,7 +47,7 @@
 @class GCSFolder;
 
 #import <NGCards/iCalEntityObject.h>
-@interface SOGoAppointmentFolder : SOGoFolder
+@interface SOGoAppointmentFolder : SOGoGCSFolder
 {
   NSTimeZone *timeZone;
   NSMutableDictionary *uidToFilename;

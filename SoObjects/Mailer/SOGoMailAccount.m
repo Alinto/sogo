@@ -479,14 +479,16 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   s = [self nameInContainer];
   
   r = [s rangeOfString:@"@"];
-  if (r.length > 0) {
-    login = [s substringToIndex:r.location];
-    host  = [s substringFromIndex:(r.location + r.length)];
-  }
-  else {
-    login = nil;
-    host  = s;
-  }
+  if (r.length > 0)
+    {
+      login = [s substringToIndex:r.location];
+      host  = [s substringFromIndex:(r.location + r.length)];
+    }
+  else
+    {
+      login = nil;
+      host  = s;
+    }
   
   r = [host rangeOfString:@"."];
   if (r.length > 0)

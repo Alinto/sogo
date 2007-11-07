@@ -31,11 +31,11 @@
 @class NSMutableDictionary;
 
 @class LDAPUserManager;
-@class SOGoFolder;
+@class SOGoGCSFolder;
 
 @interface UIxFolderActions : WODirectAction
 {
-  SOGoFolder *clientObject;
+  SOGoGCSFolder *clientObject;
   LDAPUserManager *um;
   NSUserDefaults *ud;
   NSString *owner;

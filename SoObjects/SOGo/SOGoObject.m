@@ -1017,4 +1017,11 @@ static BOOL kontactGroupDAV = YES;
   return ms;
 }
 
+- (NSString *) loggingPrefix
+{
+  return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
+		   self, NSStringFromClass([self class]),
+		   [self nameInContainer]];
+}
+
 @end /* SOGoObject */

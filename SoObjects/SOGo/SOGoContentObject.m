@@ -29,7 +29,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import "SOGoFolder.h"
+#import "SOGoGCSFolder.h"
 #import "SOGoUser.h"
 #import "SOGoPermissions.h"
 #import "SOGoContentObject.h"
