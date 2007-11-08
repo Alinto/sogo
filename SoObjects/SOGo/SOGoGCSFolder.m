@@ -42,6 +42,7 @@
 #import <GDLContentStore/NSURL+GCS.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <UI/SOGoUI/SOGoFolderAdvisory.h>
+#import "NSDictionary+Utilities.h"
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
@@ -119,9 +120,9 @@ static NSString *defaultUserID = @"<default>";
     {
       ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
 			primaryIdentity];
-      [displayName appendFormat: @" (%@ <%@>)",
-		   [ownerIdentity objectForKey: @"fullName"],
-		   [ownerIdentity objectForKey: @"email"]];
+      [displayName
+	appendString: [ownerIdentity keysWithFormat:
+				       @" (%{fullName} <%{email}>)"]];
     }
   [displayName retain];
 }
