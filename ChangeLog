@@ -1,5 +1,20 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveContentString:_iCalbaseSequence:_v]):
+	don't propagate the event among the attendees if this is not an
+	"so" request.
+	([SOGoAppointmentObject -deleteWithBaseSequence:]): same as above.
+
+	* Main/SOGo.m ([SOGo -authenticatorInContext:context]): make use
+	of the new category method below.
+
+	* SoObjects/SOGo/WORequest+SOGo.m ([WORequest
+	-handledByDefaultHandler]): new method that returns whether this
+	is an "so" or alike request.
+
+	* SoObjects/SOGo/WORequest+SOGo.[hm]: new category module.
+
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
 	-newFolderWithName:nameandNameInContainer:newNameInContainer]):
 	write the new folder's name in the folder cache.
