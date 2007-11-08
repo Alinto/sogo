@@ -23,6 +23,7 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 

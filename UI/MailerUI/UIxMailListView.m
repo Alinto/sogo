@@ -28,7 +28,9 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
+
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject+SoDAV.h>

@@ -25,6 +25,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalPerson.h>
 

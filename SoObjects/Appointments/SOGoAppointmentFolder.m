@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>

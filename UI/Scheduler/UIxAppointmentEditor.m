@@ -27,6 +27,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>

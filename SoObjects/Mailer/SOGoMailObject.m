@@ -48,6 +48,7 @@
 #import "NSData+Mail.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailAccount.h"
+#import "SOGoMailAccounts.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailBodyPart.h"
 
