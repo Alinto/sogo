@@ -61,10 +61,10 @@ static NSString *defaultUserID = @"<default>";
 {
   id newFolder;
   NSArray *elements, *pathElements;
-  NSString *ocsPath, *objectPath, *owner, *ocsName, *folderName;
+  NSString *ocsPath, *objectPath, *login, *ocsName, *folderName;
 
   elements = [reference componentsSeparatedByString: @":"];
-  owner = [elements objectAtIndex: 0];
+  login = [elements objectAtIndex: 0];
   objectPath = [elements objectAtIndex: 1];
   pathElements = [objectPath componentsSeparatedByString: @"/"];
   if ([pathElements count] > 1)
@@ -73,12 +73,12 @@ static NSString *defaultUserID = @"<default>";
     ocsName = @"personal";
 
   ocsPath = [NSString stringWithFormat: @"/Users/%@/%@/%@",
-		      owner, [pathElements objectAtIndex: 0], ocsName];
-  folderName = [NSString stringWithFormat: @"%@_%@", owner, ocsName];
+		      login, [pathElements objectAtIndex: 0], ocsName];
+  folderName = [NSString stringWithFormat: @"%@_%@", login, ocsName];
   newFolder = [[self alloc] initWithName: folderName
 			    inContainer: aContainer];
   [newFolder setOCSPath: ocsPath];
-  [newFolder setOwner: owner];
+  [newFolder setOwner: login];
 
   return newFolder;
 }

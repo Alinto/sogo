@@ -108,17 +108,17 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSArray *bLanguages;
   WOContext *context;
-  NSString *language;
+  NSString *lng;
 
   context = [[WOApplication application] context];
   bLanguages = [[context request] browserLanguages];
   if ([bLanguages count] > 0)
-    language = [bLanguages objectAtIndex: 0];
+    lng = [bLanguages objectAtIndex: 0];
 
-  if (![language length])
-    language = defaultLanguage;
+  if (![lng length])
+    lng = defaultLanguage;
 
-  return language;
+  return lng;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin

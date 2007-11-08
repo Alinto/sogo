@@ -25,10 +25,11 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoUser.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>

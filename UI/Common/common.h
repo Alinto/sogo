@@ -23,6 +23,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WODynamicElement.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOResourceManager.h>
 #import <NGObjWeb/WOSession.h>
 #import <NGExtensions/NSObject+Logs.h>

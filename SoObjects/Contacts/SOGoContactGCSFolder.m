@@ -26,6 +26,7 @@
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <EOControl/EOQualifier.h>

@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 
 #import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
