@@ -539,7 +539,7 @@ function scrollDayView(scrollEvent) {
     var classes = scrollEvent.siblings[0].getAttribute("class").split(" ");
     for (var i = 0; i < classes.length; i++) {
       if (classes[i].startsWith("starts")) {
-	var starts = parseInt(classes[i].substr(6)) / 4;
+	var starts = Math.floor(parseInt(classes[i].substr(6)) / 4);
 	offset = hours[starts].offsetTop;
       }
     }
