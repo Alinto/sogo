@@ -1,5 +1,9 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+folderWithSubscriptionReference:referenceinContainer:aContainer]):
+	fixed a leak.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	([UIxMailPartHTMLViewer -_attachmentIds]): the reference was one
 	character too short, which cause the images not to be displayed
