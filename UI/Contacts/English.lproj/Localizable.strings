@@ -32,6 +32,9 @@
 "invalidemailwarn" = "invalidemailwarn";
 "new" = "new";
 
+/* Folders */
+"Personal Address Book" = "Personal Address Book";
+
 /* Tooltips */
 
 "Create a new address book card" = "Create a new address book card";

@@ -1,5 +1,12 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-calendars]): same as below.
+
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([UIxContactsListViewContainer -currentContactFolderName]):
+	translate the display name if its the default one.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -create]): overriden method that invokes
 	its ancestor and then activate itself within the user settings.

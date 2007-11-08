@@ -88,6 +88,9 @@
 "Reload Remote Calendars" = "Recharger les agendas distants";
 "Properties" = "Propriétés";
 
+/* Folders */
+"Personal calendar" = "Agenda personnel";
+
 /* Misc */
 
 "OpenGroupware.org" = "OpenGroupware.org";

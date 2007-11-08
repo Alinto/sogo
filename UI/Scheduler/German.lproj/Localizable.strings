@@ -62,7 +62,6 @@
 
 "this year" = "dieses Jahr";
 
-
 /* Menu */
 
 "Calendars" = "Kalenderliste";
@@ -76,6 +75,9 @@
 "Publish Calendar..." = "Kalender publizieren...";
 "Reload Remote Calendars" = "Externe Kalender neu laden";
 "Properties" = "Einstellungen";
+
+/* Folders */
+"Personal calendar" = "Personal calendar";
 
 /* Misc */
 

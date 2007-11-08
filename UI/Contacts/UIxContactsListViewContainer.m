@@ -95,7 +95,14 @@
 
 - (NSString *) currentContactFolderName
 {
-  return [currentFolder displayName];
+  NSString *folderName, *defaultFolderName;
+
+  folderName = [currentFolder displayName];
+  defaultFolderName = [[currentFolder container] defaultFolderName];
+  if ([folderName isEqualToString: folderName])
+    folderName = [self labelForKey: folderName];
+
+  return folderName;
 }
 
 - (NSString *) currentContactFolderOwner

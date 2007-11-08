@@ -39,6 +39,9 @@
 "invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
 "new"               = "Neu";
 
+/* Folders */
+"Personal Address Book" = "Personal Address Book";
+
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
 "htmlMailFormat_FALSE" = "Reintext";
 "htmlMailFormat_TRUE" = "HTML";

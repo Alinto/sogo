@@ -103,15 +103,17 @@ colorForNumber (unsigned int number)
 - (NSArray *) calendars
 {
   NSArray *folders;
+  SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *calendar;
   unsigned int count, max;
-  NSString *folderName;
+  NSString *folderName, *fDisplayName;
   NSNumber *isActive;
 
   if (!calendars)
     {
-      folders = [[self clientObject] subFolders];
+      co = [self clientObject];
+      folders = [co subFolders];
       max = [folders count];
       calendars = [[NSMutableArray alloc] initWithCapacity: max];
       for (count = 0; count < max; count++)
@@ -119,11 +121,12 @@ colorForNumber (unsigned int number)
 	  folder = [folders objectAtIndex: count];
 	  calendar = [NSMutableDictionary dictionary];
 	  folderName = [folder nameInContainer];
-	  [calendar setObject:
-		      [NSString stringWithFormat: @"/%@", folderName]
+	  fDisplayName = [folder displayName];
+	  if ([fDisplayName isEqualToString: [co defaultFolderName]])
+	    fDisplayName = [self labelForKey: fDisplayName];
+	  [calendar setObject: [NSString stringWithFormat: @"/%@", folderName]
 		    forKey: @"id"];
-	  [calendar setObject: [folder displayName]
-		    forKey: @"displayName"];
+	  [calendar setObject: fDisplayName forKey: @"displayName"];
 	  [calendar setObject: folderName forKey: @"folder"];
 	  [calendar setObject: colorForNumber (count)
 		    forKey: @"color"];

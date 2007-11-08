@@ -87,6 +87,9 @@
 "Reload Remote Calendars" = "Reload Remote Calendars";
 "Properties" = "Properties";
 
+/* Folders */
+"Personal calendar" = "Personal calendar";
+
 /* Misc */
 
 "OpenGroupware.org" = "OpenGroupware.org";

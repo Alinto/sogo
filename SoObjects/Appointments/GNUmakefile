@@ -6,10 +6,6 @@ WOBUNDLE_NAME = Appointments
 
 Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 
-Appointments_LANGUAGES = English French German
-
-Appointments_LOCALIZED_RESOURCE_FILES=Localizable.strings
-
 Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
