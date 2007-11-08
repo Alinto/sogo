@@ -1,5 +1,11 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([UIxMailPartHTMLViewer -_attachmentIds]): the reference was one
+	character too short, which cause the images not to be displayed
+	sometimes and crashes to happen whenever the references on a
+	message were wrong (due to bugs in SOPE).
+
 	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
 	-hasMessageAttachment]): consider an attachment any content that
 	has a non-nil disposition.

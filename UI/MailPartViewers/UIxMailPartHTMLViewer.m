@@ -449,7 +449,7 @@
       url = [NSMutableString new];
       [url appendString: baseURL];
       [url appendFormat: @"/%@", [partPath componentsJoinedByString: @"/"]];
-      [url deleteCharactersInRange: NSMakeRange([url length] - 3, 2)];
+      [url deleteCharactersInRange: NSMakeRange([url length] - 2, 2)];
       parts = [[parent bodyInfo] objectForKey: @"parts"];
       max = [parts count];
       for (count = 0; count < max; count++)
