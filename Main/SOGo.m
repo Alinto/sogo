@@ -47,6 +47,7 @@
 #import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
+#import <SoObjects/SOGo/WORequest+SOGo.h>
 
 #import "build.h"
 #import "SOGoProductLoader.h"
@@ -236,13 +237,11 @@ static BOOL debugObjectAllocation = NO;
 - (id) authenticatorInContext: (WOContext *) context
 {
   id authenticator;
-  NSString *key;
 
-  key = [[context request] requestHandlerKey];
-  if ([key isEqualToString: @"dav"])
-    authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
-  else
+  if ([[context request] handledByDefaultHandler])
     authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+  else
+    authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
 
   return authenticator;
 }

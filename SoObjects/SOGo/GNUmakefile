@@ -48,6 +48,8 @@ libSOGo_HEADER_FILES = \
 	SOGoWebAuthenticator.h		\
 	SOGoMailer.h			\
 	SOGoUser.h			\
+	\
+	WORequest+SOGo.h
 
 libSOGo_OBJC_FILES = \
 	SOGoObject.m			\
@@ -79,6 +81,8 @@ libSOGo_OBJC_FILES = \
 	SOGoWebAuthenticator.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
+	\
+	WORequest+SOGo.m
 
 # tools
 

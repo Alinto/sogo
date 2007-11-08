@@ -22,6 +22,7 @@
 #import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalCalendar.h>
@@ -32,6 +33,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
+#import <SoObjects/SOGo/WORequest+SOGo.h>
 
 #import "NSArray+Appointments.h"
 #import "SOGoAppointmentFolder.h"
@@ -196,158 +198,163 @@
   NSException *storeError, *delError;
   BOOL updateForcesReconsider;
   
-  updateForcesReconsider = NO;
-
-  if ([_iCal length] == 0)
-    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-			reason: @"got no iCalendar content to store!"];
-
-  um = [LDAPUserManager sharedUserManager];
-
-  /* handle old content */
-  
-  oldContent = [self contentAsString]; /* if nil, this is a new appointment */
-  if ([oldContent length] == 0)
+  if ([[context request] handledByDefaultHandler])
     {
-    /* new appointment */
-      [self debugWithFormat:@"saving new appointment: %@", _iCal];
-      oldApt = nil;
+      updateForcesReconsider = NO;
+
+      if ([_iCal length] == 0)
+	return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+			    reason: @"got no iCalendar content to store!"];
+
+      um = [LDAPUserManager sharedUserManager];
+
+      /* handle old content */
+  
+      oldContent = [self contentAsString]; /* if nil, this is a new appointment */
+      if ([oldContent length] == 0)
+	{
+	  /* new appointment */
+	  [self debugWithFormat:@"saving new appointment: %@", _iCal];
+	  oldApt = nil;
+	}
+      else
+	oldApt = (iCalEvent *) [self component: NO];
+  
+      /* compare sequence if requested */
+      if (_v != 0) {
+	// TODO
+      }
+  
+      /* handle new content */
+  
+      newApt = (iCalEvent *) [self component: NO];
+      if (!newApt)
+	return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+			    reason: @"could not parse iCalendar content!"];
+
+      /* diff */
+  
+      changes = [iCalEventChanges changesFromEvent: oldApt toEvent: newApt];
+      uids = [self getUIDsForICalPersons: [changes deletedAttendees]];
+      removedUIDs = [NSMutableArray arrayWithArray: uids];
+
+      uids = [self getUIDsForICalPersons: [newApt attendees]];
+      storeUIDs = [NSMutableArray arrayWithArray: uids];
+      props = [changes updatedProperties];
+
+      /* detect whether sequence has to be increased */
+      if ([changes hasChanges])
+	[newApt increaseSequence];
+
+      /* preserve organizer */
+
+      organizer = [newApt organizer];
+      uid = [self getUIDForICalPerson: organizer];
+      if (!uid)
+	uid = [self ownerInContext: nil];
+      if (uid) {
+	if (![storeUIDs containsObject:uid])
+	  [storeUIDs addObject:uid];
+	[removedUIDs removeObject:uid];
+      }
+
+      /* organizer might have changed completely */
+
+      if (oldApt && ([props containsObject: @"organizer"])) {
+	uid = [self getUIDForICalPerson:[oldApt organizer]];
+	if (uid) {
+	  if (![storeUIDs containsObject:uid]) {
+	    if (![removedUIDs containsObject:uid]) {
+	      [removedUIDs addObject:uid];
+	    }
+	  }
+	}
+      }
+
+      [self debugWithFormat:@"UID ops:\n  store: %@\n  remove: %@",
+	    storeUIDs, removedUIDs];
+
+      /* if time did change, all participants have to re-decide ...
+       * ... exception from that rule: the organizer
+       */
+
+      if (oldApt != nil &&
+	  ([props containsObject: @"startDate"] ||
+	   [props containsObject: @"endDate"]   ||
+	   [props containsObject: @"duration"]))
+	{
+	  NSArray  *ps;
+	  unsigned i, count;
+    
+	  ps    = [newApt attendees];
+	  count = [ps count];
+	  for (i = 0; i < count; i++) {
+	    iCalPerson *p;
+      
+	    p = [ps objectAtIndex:i];
+	    if (![p hasSameEmailAddress:organizer])
+	      [p setParticipationStatus:iCalPersonPartStatNeedsAction];
+	  }
+	  _iCal = [[newApt parent] versitString];
+	  updateForcesReconsider = YES;
+	}
+
+      /* perform storing */
+
+      storeError = [self saveContentString: _iCal inUIDs: storeUIDs];
+      delError = [self deleteInUIDs: removedUIDs];
+
+      // TODO: make compound
+      if (storeError != nil) return storeError;
+      if (delError   != nil) return delError;
+
+      /* email notifications */
+      if ([self sendEMailNotifications]
+	  && [self _aptIsStillRelevant: newApt])
+	{
+	  attendees
+	    = [NSMutableArray arrayWithArray: [changes insertedAttendees]];
+	  [attendees removePerson: organizer];
+	  [self sendEMailUsingTemplateNamed: @"Invitation"
+		forOldObject: nil
+		andNewObject: newApt
+		toAttendees: attendees];
+
+	  if (updateForcesReconsider) {
+	    attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
+	    [attendees removeObjectsInArray:[changes insertedAttendees]];
+	    [attendees removePerson:organizer];
+	    [self sendEMailUsingTemplateNamed: @"Update"
+		  forOldObject: oldApt
+		  andNewObject: newApt
+		  toAttendees: attendees];
+	  }
+
+	  attendees
+	    = [NSMutableArray arrayWithArray: [changes deletedAttendees]];
+	  [attendees removePerson: organizer];
+	  if ([attendees count])
+	    {
+	      iCalEvent *cancelledApt;
+    
+	      cancelledApt = [newApt copy];
+	      [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
+	      [self sendEMailUsingTemplateNamed: @"Removal"
+		    forOldObject: nil
+		    andNewObject: cancelledApt
+		    toAttendees: attendees];
+	      [cancelledApt release];
+	    }
+	}
     }
   else
-    oldApt = (iCalEvent *) [self component: NO];
-  
-  /* compare sequence if requested */
-
-  if (_v != 0) {
-    // TODO
-  }
-  
-  /* handle new content */
-  
-  newApt = (iCalEvent *) [self component: NO];
-  if (!newApt)
-    return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-			reason: @"could not parse iCalendar content!"];
-
-  /* diff */
-  
-  changes = [iCalEventChanges changesFromEvent: oldApt toEvent: newApt];
-  uids = [self getUIDsForICalPersons: [changes deletedAttendees]];
-  removedUIDs = [NSMutableArray arrayWithArray: uids];
-
-  uids = [self getUIDsForICalPersons: [newApt attendees]];
-  storeUIDs = [NSMutableArray arrayWithArray: uids];
-  props = [changes updatedProperties];
-
-  /* detect whether sequence has to be increased */
-  if ([changes hasChanges])
-    [newApt increaseSequence];
-
-  /* preserve organizer */
-
-  organizer = [newApt organizer];
-  uid = [self getUIDForICalPerson: organizer];
-  if (!uid)
-    uid = [self ownerInContext: nil];
-  if (uid) {
-    if (![storeUIDs containsObject:uid])
-      [storeUIDs addObject:uid];
-    [removedUIDs removeObject:uid];
-  }
-
-  /* organizer might have changed completely */
-
-  if (oldApt && ([props containsObject: @"organizer"])) {
-    uid = [self getUIDForICalPerson:[oldApt organizer]];
-    if (uid) {
-      if (![storeUIDs containsObject:uid]) {
-        if (![removedUIDs containsObject:uid]) {
-          [removedUIDs addObject:uid];
-        }
-      }
-    }
-  }
-
-  [self debugWithFormat:@"UID ops:\n  store: %@\n  remove: %@",
-                        storeUIDs, removedUIDs];
-
-  /* if time did change, all participants have to re-decide ...
-   * ... exception from that rule: the organizer
-   */
-
-  if (oldApt != nil &&
-      ([props containsObject: @"startDate"] ||
-       [props containsObject: @"endDate"]   ||
-       [props containsObject: @"duration"]))
-  {
-    NSArray  *ps;
-    unsigned i, count;
-    
-    ps    = [newApt attendees];
-    count = [ps count];
-    for (i = 0; i < count; i++) {
-      iCalPerson *p;
-      
-      p = [ps objectAtIndex:i];
-      if (![p hasSameEmailAddress:organizer])
-        [p setParticipationStatus:iCalPersonPartStatNeedsAction];
-    }
-    _iCal = [[newApt parent] versitString];
-    updateForcesReconsider = YES;
-  }
-
-  /* perform storing */
-
-  storeError = [self saveContentString: _iCal inUIDs: storeUIDs];
-  delError = [self deleteInUIDs: removedUIDs];
-
-  // TODO: make compound
-  if (storeError != nil) return storeError;
-  if (delError   != nil) return delError;
-
-  /* email notifications */
-  if ([self sendEMailNotifications]
-      && [self _aptIsStillRelevant: newApt])
-    {
-      attendees
-	= [NSMutableArray arrayWithArray: [changes insertedAttendees]];
-      [attendees removePerson: organizer];
-      [self sendEMailUsingTemplateNamed: @"Invitation"
-            forOldObject: nil
-            andNewObject: newApt
-            toAttendees: attendees];
-
-      if (updateForcesReconsider) {
-        attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
-        [attendees removeObjectsInArray:[changes insertedAttendees]];
-        [attendees removePerson:organizer];
-        [self sendEMailUsingTemplateNamed: @"Update"
-              forOldObject: oldApt
-              andNewObject: newApt
-              toAttendees: attendees];
-      }
-
-      attendees
-	= [NSMutableArray arrayWithArray: [changes deletedAttendees]];
-      [attendees removePerson: organizer];
-      if ([attendees count])
-        {
-          iCalEvent *cancelledApt;
-    
-          cancelledApt = [newApt copy];
-          [(iCalCalendar *) [cancelledApt parent] setMethod: @"cancel"];
-          [self sendEMailUsingTemplateNamed: @"Removal"
-                forOldObject: nil
-                andNewObject: cancelledApt
-                toAttendees: attendees];
-          [cancelledApt release];
-        }
-    }
+    [self primarySaveContentString: _iCal];
 
   return nil;
 }
 
-- (NSException *)deleteWithBaseSequence:(int)_v {
+- (NSException *) deleteWithBaseSequence: (int)_v
+{
   /* 
      Note: We need to delete in all participants folders and send iMIP messages
            for all external accounts.
@@ -364,10 +371,12 @@
   */
   iCalEvent *apt;
   NSMutableArray *attendees, *removedUIDs;
+  NSException *error;
 
+  if ([[context request] handledByDefaultHandler])
+    {
   /* load existing content */
-
-  apt = (iCalEvent *) [self component: NO];
+      apt = (iCalEvent *) [self component: NO];
   
   /* compare sequence if requested */
 
@@ -375,35 +384,38 @@
 //     // TODO
 //   }
   
-  removedUIDs = [NSMutableArray arrayWithArray:
-				  [self attendeeUIDsFromAppointment: apt]];
-  if (![removedUIDs containsObject: owner])
-    [removedUIDs addObject: owner];
+      removedUIDs = [NSMutableArray arrayWithArray:
+				      [self attendeeUIDsFromAppointment: apt]];
+      if (![removedUIDs containsObject: owner])
+	[removedUIDs addObject: owner];
 
-  if ([self sendEMailNotifications]
-      && [self _aptIsStillRelevant: apt])
-    {
-      /* send notification email to attendees excluding organizer */
-      attendees = [NSMutableArray arrayWithArray:[apt attendees]];
-      [attendees removePerson:[apt organizer]];
+      if ([self sendEMailNotifications]
+	  && [self _aptIsStillRelevant: apt])
+	{
+	  /* send notification email to attendees excluding organizer */
+	  attendees = [NSMutableArray arrayWithArray:[apt attendees]];
+	  [attendees removePerson:[apt organizer]];
   
-      /* flag appointment as being cancelled */
-      [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
-      [apt increaseSequence];
+	  /* flag appointment as being cancelled */
+	  [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
+	  [apt increaseSequence];
 
-      /* remove all attendees to signal complete removal */
-      [apt removeAllAttendees];
+	  /* remove all attendees to signal complete removal */
+	  [apt removeAllAttendees];
 
-      /* send notification email */
-      [self sendEMailUsingTemplateNamed: @"Deletion"
-            forOldObject: nil
-            andNewObject: apt
-            toAttendees: attendees];
+	  /* send notification email */
+	  [self sendEMailUsingTemplateNamed: @"Deletion"
+		forOldObject: nil
+		andNewObject: apt
+		toAttendees: attendees];
+	}
+
+      error = [self deleteInUIDs: removedUIDs];
     }
+  else
+    error = [self primaryDelete];
 
-  /* perform */
-
-  return [self deleteInUIDs: removedUIDs];
+  return error;
 }
 
 - (NSException *) saveContentString: (NSString *) _iCalString
