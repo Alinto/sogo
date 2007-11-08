@@ -221,8 +221,7 @@
 	= [[parts objectsForKey: @"disposition"] objectEnumerator];
       while (!hasAttachment
 	     && (currentDisp = [dispositions nextObject]))
-	hasAttachment = ([[currentDisp objectForKey: @"type"]
-			   isEqualToString: @"ATTACHMENT"]);
+	  hasAttachment = ([currentDisp objectForKey: @"type"]);
     }
 
   return hasAttachment;

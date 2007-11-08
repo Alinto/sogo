@@ -1,5 +1,9 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailListView.m ([UIxMailListView
+	-hasMessageAttachment]): consider an attachment any content that
+	has a non-nil disposition.
+
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
 	-newFolderWithName:nameandNameInContainer:newNameInContainer]):
 	fixed method to make use of the parameters instead of the useless
