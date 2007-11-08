@@ -221,7 +221,7 @@
 	= [[parts objectsForKey: @"disposition"] objectEnumerator];
       while (!hasAttachment
 	     && (currentDisp = [dispositions nextObject]))
-	  hasAttachment = ([currentDisp objectForKey: @"type"]);
+	  hasAttachment = ([[currentDisp objectForKey: @"type"] length]);
     }
 
   return hasAttachment;
@@ -417,7 +417,8 @@
 	/* only need to restrict if we have a lot */
 	uids = [uids subarrayWithRange: r];
   
-      msgs = [[self clientObject] fetchUIDs: uids parts: [self fetchKeys]];
+      msgs = (NSDictionary *) [[self clientObject] fetchUIDs: uids
+						   parts: [self fetchKeys]];
       messages = [[msgs objectForKey: @"fetch"] retain];
     }
 
@@ -552,7 +553,7 @@
 {
   WORequest *request;
   NSString *specificMessage, *searchCriteria, *searchValue;
-  SOGoUserFolder *co;
+  SOGoMailFolder *co;
 
   request = [context request];
 
