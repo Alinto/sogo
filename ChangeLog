@@ -1,5 +1,10 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-newFolderWithName:nameandNameInContainer:newNameInContainer]):
+	fixed method to make use of the parameters instead of the useless
+	remains that weren't even initialized.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -saveContentString:_iCalbaseSequence:_v]):
 	don't propagate the event among the attendees if this is not an

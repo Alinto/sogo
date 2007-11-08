@@ -196,24 +196,24 @@
 - (NSException *) newFolderWithName: (NSString *) name
 		 andNameInContainer: (NSString *) newNameInContainer
 {
-  NSString *newFolderID;
   SOGoGCSFolder *newFolder;
   NSException *error;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
-  newFolder = [subFolderClass objectWithName: newFolderID inContainer: self];
+  newFolder = [subFolderClass objectWithName: newNameInContainer
+			      inContainer: self];
   if ([newFolder isKindOfClass: [NSException class]])
     error = (NSException *) newFolder;
   else
     {
       [newFolder setDisplayName: name];
       [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                                       OCSPath, newFolderID]];
+                                       OCSPath, newNameInContainer]];
       if ([newFolder create])
 	{
-	  [subFolders setObject: newFolder forKey: name];
+	  [subFolders setObject: newFolder forKey: newNameInContainer];
 	  error = nil;
 	}
       else
