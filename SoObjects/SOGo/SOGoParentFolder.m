@@ -212,7 +212,10 @@
       [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
                                        OCSPath, newFolderID]];
       if ([newFolder create])
-	error = nil;
+	{
+	  [subFolders setObject: newFolder forKey: name];
+	  error = nil;
+	}
       else
         error = [NSException exceptionWithHTTPStatus: 400
 			     reason: @"The new folder could not be created"];

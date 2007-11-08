@@ -1,5 +1,9 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-newFolderWithName:nameandNameInContainer:newNameInContainer]):
+	write the new folder's name in the folder cache.
+
 	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
 	-calendars]): same as below.
 
