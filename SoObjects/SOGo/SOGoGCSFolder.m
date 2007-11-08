@@ -246,7 +246,6 @@ static NSString *defaultUserID = @"<default>";
   [page send];
 }
 
-
 //   if (!result) [self sendFolderAdvisoryTemplate: @"Addition"];
 
 - (BOOL) create
