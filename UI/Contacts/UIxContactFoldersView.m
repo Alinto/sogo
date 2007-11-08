@@ -204,7 +204,7 @@
 	  currentDictionary
 	    = [NSMutableDictionary dictionaryWithCapacity: 3];
 	  [currentDictionary setObject: [currentFolder displayName]
-			 forKey: @"displayName"];
+			     forKey: @"displayName"];
 	  [currentDictionary setObject: folderName forKey: @"name"];
 	  [currentDictionary setObject: [currentFolder folderType]
 			     forKey: @"type"];
