@@ -163,6 +163,8 @@ static NSString *uidColumnName = @"c_uid";
 	      else
 		values = [NSMutableDictionary new];
 	    }
+	  else
+	    values = [NSMutableDictionary new];
 
 	  ASSIGN (lastFetch, [NSCalendarDate date]);
 	  defFlags.modified = NO;

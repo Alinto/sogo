@@ -1,3 +1,10 @@
+2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): when no row is returned, we initialize
+	"values" to a new dictionary. This solves a bug where the defaults
+	would not be initialized properly.
+
 2007-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([-compare:otherFolder]): method
