@@ -32,6 +32,7 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 
 #import "SOGoGCSFolder.h"
+#import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
 #import "SOGoParentFolder.h"
@@ -81,13 +82,30 @@
   return @"Personal";
 }
 
+- (void) _createPersonalFolder
+{
+  NSArray *roles;
+  SOGoGCSFolder *folder;
+
+  roles = [[context activeUser] rolesForObject: self inContext: context];
+  if ([roles containsObject: SoRole_Owner])
+    {
+      folder = [subFolderClass objectWithName: @"personal" inContainer: self];
+      [folder setDisplayName: [self defaultFolderName]];
+      [folder
+	setOCSPath: [NSString stringWithFormat: @"%@/personal", OCSPath]];
+      if ([folder create])
+	[subFolders setObject: folder forKey: @"personal"];
+    }
+}
+
 - (void) _fetchPersonalFolders: (NSString *) sql
 		   withChannel: (EOAdaptorChannel *) fc
 {
   NSArray *attrs;
   NSDictionary *row;
-  SOGoGCSFolder *folder;
   BOOL hasPersonal;
+  SOGoGCSFolder *folder;
   NSString *key;
 
   if (!subFolderClass)
@@ -111,17 +129,8 @@
       row = [fc fetchAttributes: attrs withZone: NULL];
     }
 
-//   if (!hasPersonal)
-//     {
-//       folder = [subFolderClass objectWithName: @"personal" inContainer: self];
-//       personalName = [self labelForKey: [self defaultFolderName]];
-//       [folder setDisplayName: personalName];
-//       path = [NSString stringWithFormat: @"/Users/%@/%@/personal",
-// 		       [self ownerInContext: context],
-// 		       nameInContainer];
-//       [folder setOCSPath: path];
-//       [subFolders setObject: folder forKey: @"personal"];
-//     }
+  if (!hasPersonal)
+    [self _createPersonalFolder];
 }
 
 - (void) appendPersonalSources

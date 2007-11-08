@@ -1,5 +1,14 @@
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -create]): overriden method that invokes
+	its ancestor and then activate itself within the user settings.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendPersonalSources]): when the user is the owner of the
+	current folder, we create the "personal" folder if it doesn't
+	exist by invoking "create".
+
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
 	-primaryFetchProfile]): when no row is returned, we initialize
 	"values" to a new dictionary. This solves a bug where the defaults

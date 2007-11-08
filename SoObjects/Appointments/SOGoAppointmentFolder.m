@@ -48,6 +48,7 @@
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 
@@ -962,6 +963,40 @@ static NSNumber   *sharedYes = nil;
 }
 
 /* folder management */
+- (BOOL) create
+{
+  BOOL rc;
+  NSMutableArray *folderSubscription;
+  NSUserDefaults *userSettings;
+  NSMutableDictionary *calendarSettings;
+  SOGoUser *ownerUser;
+
+  rc = [super create];
+  if (rc)
+    {
+      ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]
+			    roles: nil];
+      userSettings = [ownerUser userSettings];
+      calendarSettings = [userSettings objectForKey: @"Calendar"];
+      if (!calendarSettings)
+	{
+	  calendarSettings = [NSMutableDictionary dictionary];
+	  [userSettings setObject: calendarSettings forKey: @"Calendar"];
+	}
+      folderSubscription
+	= [calendarSettings objectForKey: @"ActiveFolders"];
+      if (!folderSubscription)
+	{
+	  folderSubscription = [NSMutableArray array];
+	  [calendarSettings setObject: folderSubscription
+			    forKey: @"ActiveFolders"];
+	}
+      [folderSubscription addObjectUniquely: nameInContainer];
+      [userSettings synchronize];
+    }
+
+  return rc;
+}
 
 - (id) lookupHomeFolderForUID: (NSString *) _uid
                     inContext: (id)_ctx
