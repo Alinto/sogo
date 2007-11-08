@@ -147,8 +147,8 @@ static NGCardsSaxHandler *sax = nil;
 
 - (Class) classForTag: (NSString *) tagClass
 {
-  NSLog (@"class '%@': '%@'", NSStringFromClass([self class]),
-         tagClass);
+//   NSLog (@"class '%@': '%@'", NSStringFromClass([self class]),
+//          tagClass);
 
   return nil;
 }
@@ -174,9 +174,9 @@ static NGCardsSaxHandler *sax = nil;
             newChild = [aChild elementWithClass: mappedClass];
         }
     }
-  else
-    NSLog (@"warning: no mapped class for tag '%@'",
-           childTag);
+//   else
+//     NSLog (@"warning: no mapped class for tag '%@'",
+//            childTag);
 
   if (!newChild)
     newChild = aChild;
