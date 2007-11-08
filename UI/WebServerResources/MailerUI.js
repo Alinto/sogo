@@ -57,8 +57,8 @@ function toggleMailSelect(sender) {
 
 function openAddressbook(sender) {
   var urlstr;
-   
-  urlstr = ApplicationBaseURL + "/../Contacts/?popup=YES";
+
+  urlstr = ApplicationBaseURL + "../Contacts/?popup=YES";
   var w = window.open(urlstr, "Addressbook",
 		      "width=640,height=400,resizable=1,scrollbars=1,toolbar=0,"
 		      + "location=no,directories=0,status=0,menubar=0,copyhistory=0");
