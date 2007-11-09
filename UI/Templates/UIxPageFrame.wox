@@ -66,6 +66,8 @@
 	  
 	  <div id="pageContent"><var:component-content/></div>
 
+	  <div id="javascriptSafetyNet"><!-- space --></div>
+
 	  <script type="text/javascript">
 	    var ApplicationBaseURL = '<var:string value="applicationPath" />';
 	    var ResourcesURL = '/SOGo.woa/WebServerResources';
@@ -95,6 +97,7 @@
 	  <var:foreach list="additionalJSFiles" item="item"
 	    ><script type="text/javascript" var:src="item"><!-- space --></script>
 	  </var:foreach>
+	  <script type="text/javascript">addEvent(window, 'load', onFinalLoadHandler);</script>
         </var:if>
         <var:if condition="isCompatibleBrowser" const:negate="YES">
 	  <div id="loginScreen">

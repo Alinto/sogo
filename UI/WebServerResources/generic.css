@@ -503,6 +503,14 @@ INPUT#searchValue
   background-position: 2px 2px;
   color: #aaa; }
 
+DIV#javascriptSafetyNet
+{ position: absolute;
+  background-color: transparent;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px; }
+
 DIV.javascriptPopupBackground
 { position: absolute;
   background-color: #999;

@@ -1437,6 +1437,12 @@ function createFolderCallback(http) {
   }
 }
 
+function onFinalLoadHandler(event) {
+  var safetyNet = $("javascriptSafetyNet");
+  if (safetyNet)
+    safetyNet.parentNode.removeChild(safetyNet);
+}
+
 addEvent(window, 'load', onLoadHandler);
 
 function parent$(element) {

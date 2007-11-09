@@ -84,6 +84,10 @@
 	};
       };
       methods = {
+	view = {
+	  protectedBy = "View";
+	  pageName    = "UIxMailListView";
+	};
 	subscribe = {
 	  protectedBy = "<public>";
 	  actionClass = "UIxMailFolderActions";
@@ -98,10 +102,6 @@
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
 	  actionName = "quotas";
-	};
-	view = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailListView";
 	};
 	ajax = {
 	  protectedBy = "View";
@@ -378,16 +378,6 @@
 		    );
 	};
       };
-      methods = {
-	view = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailListView";
-	};
-	getMail = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailListView";
-	};
-      };
     };
 
     SOGoDraftObject = {
@@ -398,6 +388,10 @@
 	};
       };
       methods = {
+	view = {
+	  protectedBy = "View";
+	  pageName    = "UIxMailEditor";
+	};
 	edit = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailEditor";
