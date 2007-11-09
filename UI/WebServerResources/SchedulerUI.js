@@ -1434,14 +1434,11 @@ function appendCalendar(folderName, folderPath) {
   else {
     var calendarList = $("calendarList");
     var lis = calendarList.childNodesWithTag("li");
-    var color = indexColor(lis.length + 100);
-    //log ("color: " + color);
-
     var li = document.createElement("li");
     
     // Add the calendar to the proper place
     var previousOwner = null;
-    for (var i = 1; i < lis.length; i++) {
+    for (var i = 0; i < lis.length; i++) {
       var currentFolderName = lis[i].lastChild.nodeValue.strip();
       var currentOwner = lis[i].readAttribute('owner');
       if (currentOwner == owner) {
@@ -1461,6 +1458,29 @@ function appendCalendar(folderName, folderPath) {
     li.setAttribute("id", folderPath);
     li.setAttribute("owner", owner);
 
+    // Generate new color
+    var colorTable = [1, 1, 1];
+    var color;
+    var currentValue = lis.length + 1;
+    var index = 0;
+    while (currentValue) {
+      if (currentValue & 1)
+	colorTable[index]++;
+      if (index == 3)
+	index = 0;
+      currentValue >>= 1;
+      index++;
+    }
+    colorTable[0] = parseInt(255 / colorTable[0]) - 1;
+    colorTable[1] = parseInt(255 / colorTable[1]) - 1;
+    colorTable[2] = parseInt(255 / colorTable[2]) - 1;
+
+    color = "#"
+      + colorTable[2].toString(16)
+      + colorTable[1].toString(16)
+      + colorTable[0].toString(16);
+    //log ("color = " + color);
+    
     var checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
     li.appendChild(checkBox);
