@@ -1,3 +1,17 @@
+2007-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-lookupName:lookupNameinContext:localContextacquire:acquire]):
+	overriden method to bind looked up keys to So methods but by
+	avoiding a call to toOneRelationshipKeys. This will be the top
+	method of the chain, meant to override SoObject's behaviour.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupName:objectNameinContext:lookupContextacquire:acquire]):
+	removed hack to prevent [super lookupName...] to read the entire
+	LDAP directory when looking up a record.
+
 2007-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder

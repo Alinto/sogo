@@ -33,6 +33,7 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/SoClass.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WEClientCapabilities.h>
@@ -550,6 +551,19 @@ static BOOL kontactGroupDAV = YES;
     [ma addObject:folder];
   }
   return ma;
+}
+
+- (id) lookupName: (NSString *) lookupName
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+
+  obj = [[self soClass] lookupKey: lookupName inContext: localContext];
+  if (obj)
+    [obj bindToObject: self inContext: localContext];
+
+  return obj;
 }
 
 /* looking up shared objects */

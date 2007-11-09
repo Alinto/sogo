@@ -34,7 +34,6 @@
 {
   LDAPSource *ldapSource;
   NSMutableDictionary *entries;
-  BOOL ignoreSoObjectHunger;
 }
 
 + (id) folderWithName: (NSString *) aName

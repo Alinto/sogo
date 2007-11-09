@@ -101,7 +101,6 @@
       displayName = nil;
       entries = nil;
       ldapSource = nil;
-      ignoreSoObjectHunger = NO;
     }
 
   return self;
@@ -153,9 +152,7 @@
   //NSLog (@"looking up name '%@'...", objectName);
 
   /* first check attributes directly bound to the application */
-  ignoreSoObjectHunger = YES;
   obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
-  ignoreSoObjectHunger = NO;
 
   if (!obj)
     {
@@ -172,14 +169,7 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  NSArray *keys;
-
-  if (ignoreSoObjectHunger)
-    keys = nil;
-  else
-    keys = [ldapSource allEntryIDs];
-
-  return keys;
+  return [ldapSource allEntryIDs];
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records
