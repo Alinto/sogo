@@ -87,10 +87,4 @@
 
 @end
 
-@interface SOGoGCSFolder (GroupDAVExtensions)
-
-- (NSString *) groupDavResourceType;
-
-@end
-
 #endif /* __SOGo_SOGoGCSFolder_H__ */

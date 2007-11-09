@@ -26,6 +26,8 @@
 
 #import <NGObjWeb/SoSelectorInvocation.h>
 
+#import <SaxObjC/XMLNamespaces.h>
+
 #import "NSString+Utilities.h"
 
 #import "SOGoFolder.h"
@@ -200,6 +202,24 @@
 - (NSString *) davContentType
 {
   return @"httpd/unix-directory";
+}
+
+- (NSArray *) davResourceType
+{
+  NSArray *rType, *groupDavCollection;
+
+  if ([self respondsToSelector: @selector (groupDavResourceType)])
+    {
+      groupDavCollection
+	= [NSArray arrayWithObjects: [self groupDavResourceType],
+		   XMLNS_GROUPDAV, nil];
+      rType = [NSArray arrayWithObjects: @"collection", groupDavCollection,
+		       nil];
+    }
+  else
+    rType = [NSArray arrayWithObject: @"collection"];
+
+  return rType;
 }
 
 /* folder type */

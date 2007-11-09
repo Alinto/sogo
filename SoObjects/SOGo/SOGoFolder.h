@@ -46,4 +46,10 @@
 
 @end
 
+@interface SOGoFolder (GroupDAVExtensions)
+
+- (NSString *) groupDavResourceType;
+
+@end
+
 #endif /* SOGOFOLDER_H */

@@ -98,7 +98,6 @@
 {
   if ((self = [super init]))
     {
-      displayName = nil;
       entries = nil;
       ldapSource = nil;
     }
@@ -121,7 +120,6 @@
 
 - (void) dealloc
 {
-  [displayName release];
   [entries release];
   [ldapSource release];
   [super dealloc];
@@ -132,14 +130,14 @@
   ASSIGN (ldapSource, newLDAPSource);
 }
 
-- (NSString *) displayName
-{
-  return displayName;
-}
-
 - (NSArray *) davNamespaces
 {
   return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
+}
+
+- (NSString *) groupDavResourceType
+{
+  return @"vcard-collection";
 }
 
 - (id) lookupName: (NSString *) objectName
@@ -261,27 +259,6 @@
   return result;
 }
 
-- (NSArray *) davResourceType
-{
-  NSArray *rType, *groupDavCollection;
-
-  groupDavCollection = [NSArray arrayWithObjects: @"vcard-collection",
-				XMLNS_GROUPDAV, nil];
-  rType = [NSArray arrayWithObjects: @"collection", groupDavCollection, nil];
-
-  return rType;
-}
-
-- (NSString *) davContentType
-{
-  return @"httpd/unix-directory";
-}
-
-- (BOOL) davIsCollection
-{
-  return YES;
-}
-
 - (NSString *) davDisplayName
 {
   return displayName;
@@ -290,6 +267,18 @@
 - (BOOL) isFolderish
 {
   return YES;
+}
+
+/* folder type */
+
+- (NSString *) folderType
+{
+  return @"Contact";
+}
+
+- (NSString *) outlookFolderClass
+{
+  return @"IPF.Contact";
 }
 
 /* sorting */

@@ -381,24 +381,6 @@ static NSString *defaultUserID = @"<default>";
   return nil;
 }
 
-- (NSArray *) davResourceType
-{
-  NSArray *rType, *groupDavCollection;
-
-  if ([self respondsToSelector: @selector (groupDavResourceType)])
-    {
-      groupDavCollection
-	= [NSArray arrayWithObjects: [self groupDavResourceType],
-		   XMLNS_GROUPDAV, nil];
-      rType = [NSArray arrayWithObjects: @"collection", groupDavCollection,
-		       nil];
-    }
-  else
-    rType = [NSArray arrayWithObject: @"collection"];
-
-  return rType;
-}
-
 - (NSArray *) toOneRelationshipKeys
 {
   /* toOneRelationshipKeys are the 'files' contained in a folder */

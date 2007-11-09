@@ -267,25 +267,6 @@
   return @"vcard-collection";
 }
 
-// /* GET */
-
-// - (id) GETAction: (id)_ctx
-// {
-//   // TODO: I guess this should really be done by SOPE (redirect to
-//   //       default method)
-//   WOResponse *r;
-//   NSString *uri;
-
-//   uri = [[_ctx request] uri];
-//   if (![uri hasSuffix:@"/"]) uri = [uri stringByAppendingString:@"/"];
-//   uri = [uri stringByAppendingString:@"view"];
-  
-//   r = [_ctx response];
-//   [r setStatus:302 /* moved */];
-//   [r setHeader:uri forKey:@"location"];
-//   return r;
-// }
-
 /* sorting */
 - (NSComparisonResult) compare: (id) otherFolder
 {
