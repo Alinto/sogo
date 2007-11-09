@@ -158,25 +158,10 @@
 	      protectedBy = "<public>";
               pageName    = "UIxContactView";
            };
-/*           delete = {
-              protectedBy = "View";
-              pageName    = "UIxContactView";
-              actionName  = "delete";
-           }; */
            edit = {
-              protectedBy = "Access Contents Information";
+              protectedBy = "<public>";
               pageName    = "UIxContactEditor";
            };
-/*           save = {
-              protectedBy = "View";
-              pageName    = "UIxContactEditor";
-              actionName  = "save";
-           };
-           write = {
-              protectedBy = "View";
-              pageName    = "UIxContactEditor";
-              actionName  = "write";
-           }; */
         };
      };
   };

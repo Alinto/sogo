@@ -1,5 +1,9 @@
 2007-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -canCreateOrModify]):
+	new boolean accessor that determines whether someone can create
+	(i.e. modify a new entry) or modify an existing entry.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-lookupName:lookupNameinContext:localContextacquire:acquire]):
 	overriden method to bind looked up keys to So methods but by

@@ -335,11 +335,12 @@
         </div>
       </div>
       <div id="buttons">
-        <input
-          type="submit"
-          class="button"
-          label:value="Save"
-          name="save:method" />
+	<var:if condition="canCreateOrModify"
+	  ><input
+	    type="submit"
+	    class="button"
+	    label:value="Save"
+	    name="save:method" /></var:if>
         <input
           type="submit"
           class="button"

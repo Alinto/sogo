@@ -35,11 +35,13 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
-#import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoContentObject.h>
+#import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
+#import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxJSClose.h"
 
@@ -421,6 +423,18 @@ static BOOL uixDebugEnabled = NO;
   [jsClose setRefreshMethod: methodName];
 
   return jsClose;
+}
+
+/* common conditions */
+- (BOOL) canCreateOrModify
+{
+  SoSecurityManager *sm;
+
+  sm = [SoSecurityManager sharedSecurityManager];
+
+  return (![sm validatePermission: SoPerm_ChangeImagesAndFiles
+	       onObject: [self clientObject]
+	       inContext: context]);
 }
 
 /* SoUser */
