@@ -735,8 +735,22 @@ static BOOL debugSoParts       = NO;
 {
   // TODO: we might want to check for existence prior controller creation
   Class clazz;
-  
-  clazz = [SOGoMailBodyPart bodyPartClassForKey:_key inContext:_ctx];
+  NSArray *parts;
+  int part;
+  NSDictionary *partDesc;
+  NSString *mimeType;
+
+  parts = [[self bodyStructure] objectForKey: @"parts"];
+  part = [_key intValue] - 1;
+  if (part > -1 && part < [parts count])
+    {
+      partDesc = [parts objectAtIndex: part];
+      mimeType = [[partDesc keysWithFormat: @"%{type}/%{subtype}"] lowercaseString];
+      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+				inContext: _ctx];
+    }
+  else
+    clazz = Nil;
 
   return [clazz objectWithName:_key inContainer: self];
 }
@@ -755,7 +769,7 @@ static BOOL debugSoParts       = NO;
   
   if ([self isBodyPartKey:_key inContext:_ctx]) {
     if ((obj = [self lookupImap4BodyPartKey:_key inContext:_ctx]) != nil) {
-      if (debugSoParts) 
+      if (debugSoParts)
 	[self logWithFormat: @"mail looked up part %@: %@", _key, obj];
       return obj;
     }

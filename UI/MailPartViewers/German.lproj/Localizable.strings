@@ -17,14 +17,16 @@ Organizer           = "Organisateur";
 Time                = "Time";
 Attendees           = "Attendees";
 request_info        = "invites you to participate in a meeting.";
-do_add_to_cal       = "add to calendar";
-do_del_from_cal     = "delete from calendar";
-do_accept           = "accept";
-do_decline          = "decline";
-do_tentative        = "tentative";
-do_update_status    = "update status in calendar";
+"Add to calendar" = "Add to calendar";
+"Delete from calendar" = "Delete from calendar";
+Accept = "Accept";
+Decline = "Decline";
+Tentative = "Tentative";
+"Update status in calendar" = "Update status in calendar";
 reply_info_no_attendee = "You received a reply to a scheduling event but the sender of the reply is not a participant.";
 reply_info          = "This is a reply to an event invitation done by you.";
+
+"to" = "to";
 
 "Untitled" = "Untitled";
 

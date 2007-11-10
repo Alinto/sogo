@@ -1,76 +1,63 @@
-/*
-  Copyright (C) 2005 SKYRIX Software AG
+/* UIxMailPartICalAction.m - this file is part of SOGo
+ *
+ * Copyright (C) 2007 Inverse groupe conseil
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
-
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
-#import <NGObjWeb/SoObject.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WOResponse.h>
+#import <Foundation/NSString.h>
 #import <NGObjWeb/WODirectAction.h>
-#import <NGExtensions/NSNull+misc.h>
-#import <NGExtensions/NSString+misc.h>
+
+#import <UI/Common/WODirectAction+SOGo.h>
 
 @interface UIxMailPartICalAction : WODirectAction
 @end
 
 @implementation UIxMailPartICalAction
 
-- (id)redirectToViewerWithError:(NSString *)_error {
-  WOResponse *r;
-  NSString *viewURL;
-  id mail;
-  
-  mail = [[self clientObject] valueForKey:@"mailObject"];
-  [self logWithFormat:@"MAIL: %@", mail];
-  
-  viewURL = [mail baseURLInContext:[self context]];
-  [self logWithFormat:@"  url: %@", viewURL];
-  
-  viewURL = [viewURL stringByAppendingString:
-		       [viewURL hasSuffix:@"/"] ? @"view" : @"/view"];
-
-  if ([_error isNotNull] && [_error length] > 0) {
-    viewURL = [viewURL stringByAppendingString:@"?error="];
-    viewURL = [viewURL stringByAppendingString:
-			 [_error stringByEscapingURL]];
-  }
-  
-  r = [[self context] response];
-  [r setStatus:302 /* moved */];
-  [r setHeader:viewURL forKey:@"location"];
-  return r;
+- (WOResponse *) _changePartStatusAction: (NSString *) _newStatus
+{
+  return [self responseWithStatus: 404];
 }
 
-- (id)changePartStatusAction:(NSString *)_newStatus {
-  [self logWithFormat:@"TODO: should %@: %@", _newStatus, [self clientObject]];
-  return [self redirectToViewerWithError:
-		 [_newStatus stringByAppendingString:@" not implemented!"]];
+- (WOResponse *) markAcceptedAction
+{
+  return [self _changePartStatusAction: @"ACCEPTED"];
 }
 
-- (id)markAcceptedAction {
-  return [self changePartStatusAction:@"ACCEPTED"];
+- (WOResponse *) markDeclinedAction
+{
+  return [self _changePartStatusAction: @"DECLINED"];
 }
-- (id)markDeclinedAction {
-  return [self changePartStatusAction:@"DECLINED"];
+
+- (WOResponse *) markTentativeAction
+{
+  return [self _changePartStatusAction: @"TENTATIVE"];
 }
-- (id)markTentativeAction {
-  return [self changePartStatusAction:@"TENTATIVE"];
+
+- (WOResponse *) addToCalendarAction
+{
+  return [self responseWithStatus: 404];
+}
+
+- (WOResponse *) deleteFromCalendarAction
+{
+  return [self responseWithStatus: 404];
 }
 
 @end /* UIxMailPartICalAction */

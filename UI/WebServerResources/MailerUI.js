@@ -9,7 +9,7 @@ if (typeof textMailAccounts != 'undefined') {
     mailAccounts = new Array();
 }
 
-var currentMessages = new Array();
+var currentMessages = {};
 var maxCachedMessages = 20;
 var cachedMessages = new Array();
 var currentMailbox = null;
@@ -743,13 +743,56 @@ function configureLinksInMessage() {
   if (editDraftButton)
     Event.observe(editDraftButton, "click",
 		  onMessageEditDraft.bindAsEventListener(editDraftButton));
+
+  configureiCalLinksInMessage();
+}
+
+function configureiCalLinksInMessage() {
+  var buttons = { "iCalendarAccept": "accept",
+		  "iCalendarDecline": "decline",
+		  "iCalendarTentative": "tentative",
+		  "iCalendarAddToCalendar": "addToCalendar",
+		  "iCalendarDeleteFromCalendar": "deleteFromCalendar" };
+
+  for (var key in buttons) {
+    var button = $(key);
+    if (button) {
+      button.action = buttons[key];
+      Event.observe(button, "click",
+		    onICalendarButtonClick.bindAsEventListener(button));
+    }
+  }
+}
+
+function onICalendarButtonClick(event) {
+  var link = $("iCalendarAttachment").value;
+  if (link) {
+    var urlstr = link + "/" + this.action;
+    triggerAjaxRequest(urlstr, ICalendarButtonCallback,
+		       currentMailbox + "/"
+		       + currentMessages[currentMailbox]);
+    window.alert(urlstr);
+  }
+}
+
+function ICalendarButtonCallback(http) {
+  if (http.readyState == 4)
+    if (isHttpStatus204(http.status)) {
+      var oldMsg = http.callbackData;
+      var msg = currentMailbox + "/" + currentMessages[currentMailbox];
+      if (oldMsg == msg) {
+	deleteCachedMessage(oldMsg);
+	loadMessage(currentMessages[currentMailbox]);
+      }
+    }
 }
 
 function resizeMailContent() {
   var headerTable = document.getElementsByClassName('mailer_fieldtable')[0];
   var contentDiv = document.getElementsByClassName('mailer_mailcontent')[0];
   
-  contentDiv.setStyle({ 'top': (Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
+  contentDiv.setStyle({ 'top':
+	(Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
 }
 
 function onMessageContentMenu(event) {

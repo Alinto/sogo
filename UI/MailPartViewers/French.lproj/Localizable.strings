@@ -1,30 +1,32 @@
-ACCEPTED     = "Accepté";
-COMPLETED    = "Terminé";
-DECLINED     = "Refusé";
-DELEGATED    = "Délégué";
-IN-PROCESS   = "En cours de traitement";
+ACCEPTED = "Accepté";
+COMPLETED = "Terminé";
+DECLINED = "Refusé";
+DELEGATED = "Délégué";
+IN-PROCESS = "En cours de traitement";
 NEEDS-ACTION = "Prise de décision nécessaire";
-TENTATIVE    = "Proposition";
-organized_by_you    = "vous êtes l'organisateur";
+TENTATIVE = "Proposition";
+organized_by_you = "vous êtes l'organisateur";
 you_are_an_attendee = "vous êtes invité";
-add_info_text       = "iMIP 'ADD' requests are not yet supported by SOGo.";
-publish_info_text   = "L'expéditeur vous informe de l'événement attaché.";
-cancel_info_text    = "Votre invitation ou l'événement au complet a été annulé.";
+add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
+publish_info_text = "L'expéditeur vous informe de l'événement attaché.";
+cancel_info_text = "Votre invitation ou l'événement au complet a été annulé.";
 request_info_no_attendee = "propose une réunion entre les invités. Ce message tint seulement lieu d'avis, vous n'êtes pas indiqué comme invité.";
-Appointment         = "Événement";
+Appointment = "Événement";
 
-Organizer           = "Organisateur";
-Time                = "Date";
-Attendees           = "Invités";
-request_info        = "vous invite à une réunion.";
-do_add_to_cal       = "ajouter à l'agenda";
-do_del_from_cal     = "effacer de l'agenda";
-do_accept           = "accepter";
-do_decline          = "decliner";
-do_tentative        = "tentative";
-do_update_status    = "mettre l'agenda à jour";
+Organizer = "Organisateur";
+Time = "Date";
+Attendees = "Invités";
+request_info = "vous invite à une réunion.";
+"Add to calendar" = "Ajouter à l'agenda";
+"Delete from calendar" = "Effacer de l'agenda";
+Accept = "Accepter";
+Decline = "Decliner";
+Tentative = "Tentative";
+"Update status in calendar" = "Mettre l'agenda à jour";
 reply_info_no_attendee = "Vous avez reçu une réponse à un événement mais l'expéditeur n'est pas un invité.";
-reply_info          = "Ceci est une réponse à un événement que vous avez organisé.";
+reply_info = "Ceci est une réponse à un événement que vous avez organisé.";
+
+"to" = "à";
 
 "Untitled" = "Sans titre";
 

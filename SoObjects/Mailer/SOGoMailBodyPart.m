@@ -34,6 +34,8 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGImap4/NGImap4Connection.h>
 
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+
 #import "SOGoMailObject.h"
 #import "SOGoMailManager.h"
 
@@ -305,7 +307,9 @@ static BOOL debugOn = NO;
 
 /* factory */
 
-+ (Class)bodyPartClassForKey:(NSString *)_key inContext:(id)_ctx {
++ (Class) bodyPartClassForKey: (NSString *) _key
+		    inContext: (id) _ctx
+{
   NSString *pe;
   
   pe = [_key pathExtension];
@@ -333,6 +337,36 @@ static BOOL debugOn = NO;
     return self;
   }
   return self;
+}
+
++ (Class) bodyPartClassForMimeType: (NSString *) mimeType
+			 inContext: (id) _ctx
+{
+  NSString *classString;
+  Class klazz;
+
+  if ([mimeType isEqualToString: @"image/gif"]
+      || [mimeType isEqualToString: @"image/png"]
+      || [mimeType isEqualToString: @"image/jpg"])
+    classString = @"SOGoImageMailBodyPart";
+  else if ([mimeType isEqualToString: @"text/calendar"])
+    classString = @"SOGoCalendarMailBodyPart";
+  else if ([mimeType isEqualToString: @"text/x-vcard"])
+    classString = @"SOGoVCardMailBodyPart";
+  else if ([mimeType isEqualToString: @"message/rfc822"])
+    classString = @"SOGoMessageMailBodyPart";
+  else
+    {
+      NSLog (@"unhandled mime type: '%@'", mimeType);
+      classString = nil;
+    }
+
+  if (classString)
+    klazz = NSClassFromString (classString);
+  else
+    klazz = Nil;
+
+  return klazz;
 }
 
 /* etag support */

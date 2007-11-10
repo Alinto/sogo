@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -10,18 +10,18 @@
 
   OGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with OGo; see the file COPYING. If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
 /*
   UIxMailPartICalViewer
-  
+ 
   Show plain/calendar mail parts.
 */
 
@@ -46,44 +46,47 @@
 
 @implementation UIxMailPartICalViewer
 
-- (void)dealloc {
-  [self->storedEventObject release];
-  [self->storedEvent   release];
-  [self->attendee      release];
-  [self->item          release];
-  [self->inCalendar    release];
-  [self->inEvent       release];
-  [self->dateFormatter release];
+- (void) dealloc
+{
+  [storedEventObject release];
+  [storedEvent release];
+  [attendee release];
+  [item release];
+  [inCalendar release];
+  [inEvent release];
+  [dateFormatter release];
   [super dealloc];
 }
 
 /* maintain caches */
 
-- (void)resetPathCaches {
+- (void) resetPathCaches
+{
   [super resetPathCaches];
-  [self->inEvent           release]; self->inEvent           = nil;
-  [self->inCalendar        release]; self->inCalendar        = nil;
-  [self->storedEventObject release]; self->storedEventObject = nil;
-  [self->storedEvent       release]; self->storedEvent       = nil;
-  
+  [inEvent release]; inEvent = nil;
+  [inCalendar release]; inCalendar = nil;
+  [storedEventObject release]; storedEventObject = nil;
+  [storedEvent release]; storedEvent = nil;
+ 
   /* not strictly path-related, but useless without it anyway: */
-  [self->attendee release]; self->attendee = nil;
-  [self->item     release]; self->item     = nil;
+  [attendee release]; attendee = nil;
+  [item release]; item = nil;
 }
 
 /* raw content handling */
 
-- (NSStringEncoding)fallbackStringEncoding {
+- (NSStringEncoding) fallbackStringEncoding
+{
   /*
     iCalendar invitations sent by Outlook 2002 have the annoying bug that the
     mail states an UTF-8 content encoding but the actual iCalendar content is
     encoding in Latin-1 (or Windows Western?).
-    
+ 
     As a result the content decoding will fail (TODO: always?). In this case we
     try to decode with Latin-1.
-    
+ 
     Note: we could check for the Outlook x-mailer, but it was considered better
-          to try Latin-1 as a fallback in any case (be tolerant).
+    to try Latin-1 as a fallback in any case (be tolerant).
   */
   return NSISOLatin1StringEncoding;
 }
@@ -95,59 +98,73 @@
   if (!inCalendar)
     {
       inCalendar
-        = [iCalCalendar parseSingleFromSource: [self flatContentAsString]];
+	= [iCalCalendar parseSingleFromSource: [self flatContentAsString]];
       [inCalendar retain];
     }
 
   return inCalendar;
 }
 
-- (BOOL)couldParseCalendar {
+- (BOOL) couldParseCalendar
+{
   return [[self inCalendar] isNotNull];
 }
 
-- (iCalEvent *)inEvent {
+- (iCalEvent *) inEvent
+{
   NSArray *events;
-  
-  if (self->inEvent != nil)
-    return [self->inEvent isNotNull] ? self->inEvent : nil;
-  
+ 
+  if (inEvent)
+    return [inEvent isNotNull] ? inEvent : nil;
+ 
   events = [[self inCalendar] events];
   if ([events count] > 0) {
-    self->inEvent = [[events objectAtIndex:0] retain];
-    return self->inEvent;
+    inEvent = [[events objectAtIndex:0] retain];
+    return inEvent;
   }
   else {
-    self->inEvent = [[NSNull null] retain];
+    inEvent = [[NSNull null] retain];
     return nil;
   }
 }
 
 /* formatters */
 
-- (SOGoDateFormatter *)dateFormatter {
-  if (self->dateFormatter == nil) {
+- (SOGoDateFormatter *) dateFormatter
+{
+  if (dateFormatter == nil) {
     dateFormatter = [[context activeUser] dateFormatterInContext: context];
     [dateFormatter retain];
   }
 
-  return self->dateFormatter;
+  return dateFormatter;
 }
 
 /* below is copied from UIxAppointmentView, can we avoid that? */
 
-- (void)setAttendee:(id)_attendee {
-  ASSIGN(self->attendee, _attendee);
+- (void) setAttendee: (id) _attendee
+{
+  ASSIGN(attendee, _attendee);
 }
-- (id)attendee {
-  return self->attendee;
+
+- (id) attendee
+{
+  return attendee;
 }
 
 - (NSString *) _personForDisplay: (iCalPerson *) person
 {
-  return [NSString stringWithFormat: @"%@ <%@>",
-		   [person cnWithoutQuotes],
-		   [person rfc822Email]];
+  NSString *fn, *email, *result;
+
+  fn = [person cnWithoutQuotes];
+  email = [person rfc822Email];
+  if ([fn length])
+    result = [NSString stringWithFormat: @"%@ <%@>",
+		       fn, email];
+  else
+    result = email;
+
+  return result;
 }
 
 - (NSString *) attendeeForDisplay
@@ -155,18 +172,21 @@
   return [self _personForDisplay: attendee];
 }
 
-- (void)setItem:(id)_item {
-  ASSIGN(self->item, _item);
+- (void) setItem: (id) _item
+{
+  ASSIGN(item, _item);
 }
-- (id)item {
-  return self->item;
+
+- (id) item
+{
+  return item;
 }
 
 - (NSCalendarDate *) startTime
 {
   NSCalendarDate *date;
   NSTimeZone *timeZone;
-  
+ 
   date = [[self authorativeEvent] startDate];
   timeZone = [[context activeUser] timeZone];
   [date setTimeZone: timeZone];
@@ -178,7 +198,7 @@
 {
   NSCalendarDate *date;
   NSTimeZone *timeZone;
-  
+ 
   date = [[self authorativeEvent] endDate];
   timeZone = [[context activeUser] timeZone];
   [date setTimeZone: timeZone];
@@ -186,10 +206,13 @@
   return date;
 }
 
-- (BOOL)isEndDateOnSameDay {
+- (BOOL) isEndDateOnSameDay
+{
   return [[self startTime] isDateOnSameDay:[self endTime]];
 }
-- (NSTimeInterval)duration {
+
+- (NSTimeInterval) duration
+{
   return [[self endTime] timeIntervalSinceDate:[self startTime]];
 }
 
@@ -209,45 +232,48 @@
   return [folder lookupName: @"personal" inContext: context acquire: NO];
 }
 
-- (id)storedEventObject {
+- (id) storedEventObject
+{
   /* lookup object in the users Calendar */
   id calendar;
-  
-  if (self->storedEventObject != nil)
-    return [self->storedEventObject isNotNull] ? self->storedEventObject : nil;
-  
+ 
+  if (storedEventObject)
+    return [storedEventObject isNotNull] ? storedEventObject : nil;
+ 
   calendar = [self calendarFolder];
   if ([calendar isKindOfClass:[NSException class]]) {
     [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
   }
   else {
     NSString *filename;
-    
+ 
     filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
-    if (filename != nil) {
+    if (filename) {
       // TODO: When we get an exception, this might be an auth issue meaning
-      //       that the UID indeed exists but that the user has no access to
-      //       the object.
-      //       Of course this is quite unusual for the private calendar though.
+      // that the UID indeed exists but that the user has no access to
+      // the object.
+      // Of course this is quite unusual for the private calendar though.
       id tmp;
-      
+ 
       tmp = [calendar lookupName:filename inContext:[self context] acquire:NO];
       if ([tmp isNotNull] && ![tmp isKindOfClass:[NSException class]])
-	self->storedEventObject = [tmp retain];
+	storedEventObject = [tmp retain];
     }
   }
-  
-  if (self->storedEventObject == nil)
-    self->storedEventObject = [[NSNull null] retain];
-  
-  return self->storedEventObject;
+ 
+  if (storedEventObject == nil)
+    storedEventObject = [[NSNull null] retain];
+ 
+  return storedEventObject;
 }
 
-- (BOOL)isEventStoredInCalendar {
+- (BOOL) isEventStoredInCalendar
+{
   return [[self storedEventObject] isNotNull];
 }
 
-- (iCalEvent *)storedEvent {
+- (iCalEvent *) storedEvent
+{
   return (iCalEvent *) [(SOGoAppointmentObject *)[self storedEventObject] component: NO];
 }
 
@@ -262,27 +288,30 @@
   return [identity objectForKey: @"email"];
 }
 
-- (iCalEvent *)authorativeEvent {
+- (iCalEvent *) authorativeEvent
+{
   /* DB is considered master, when in DB, ignore mail organizer */
   return [self isEventStoredInCalendar]
     ? [self storedEvent]
     : [self inEvent];
 }
 
-- (BOOL)isLoggedInUserTheOrganizer {
+- (BOOL) isLoggedInUserTheOrganizer
+{
   NSString *loginEMail;
-  
+ 
   if ((loginEMail = [self loggedInUserEMail]) == nil) {
     [self warnWithFormat:@"Could not determine email of logged in user?"];
     return NO;
   }
-  
+ 
   return [[self authorativeEvent] isOrganizer:loginEMail];
 }
 
-- (BOOL)isLoggedInUserAnAttendee {
+- (BOOL) isLoggedInUserAnAttendee
+{
   NSString *loginEMail;
-  
+ 
   if ((loginEMail = [self loggedInUserEMail]) == nil) {
     [self warnWithFormat:@"Could not determine email of logged in user?"];
     return NO;
@@ -309,69 +338,70 @@
 
 /* replies */
 
-- (NGImap4EnvelopeAddress *)replySenderAddress {
+- (NGImap4EnvelopeAddress *) replySenderAddress
+{
   /* 
      The iMIP reply is the sender of the mail, the 'attendees' are NOT set to
      the actual attendees. BUT the attendee field contains the reply-status!
   */
   id tmp;
-  
+ 
   tmp = [[self clientObject] fromEnvelopeAddresses];
   if ([tmp count] == 0) return nil;
   return [tmp objectAtIndex:0];
 }
 
-- (NSString *)replySenderEMail {
+- (NSString *) replySenderEMail
+{
   return [[self replySenderAddress] email];
 }
-- (NSString *)replySenderBaseEMail {
+
+- (NSString *) replySenderBaseEMail
+{
   return [[self replySenderAddress] baseEMail];
 }
 
-- (iCalPerson *)inReplyAttendee {
+- (iCalPerson *) inReplyAttendee
+{
   NSArray *attendees;
-  
+ 
   attendees = [[self inEvent] attendees];
   if ([attendees count] == 0)
     return nil;
   if ([attendees count] > 1)
     [self warnWithFormat:@"More than one attendee in REPLY: %@", attendees];
-  
+ 
   return [attendees objectAtIndex:0];
 }
-- (iCalPerson *)storedReplyAttendee {
+
+- (iCalPerson *) storedReplyAttendee
+{
   /*
     TODO: since an attendee can have multiple email addresses, maybe we
-          should translate the email to an internal uid and then retrieve
-	  all emails addresses for matching the participant.
-	  
+    should translate the email to an internal uid and then retrieve
+    all emails addresses for matching the participant.
+ 
     Note: -findParticipantWithEmail: does not parse the email!
   */
-  iCalEvent  *e;
+  iCalEvent *e;
   iCalPerson *p;
-  
-  if ((e = [self storedEvent]) == nil)
-    return nil;
-  if ((p = [e findParticipantWithEmail:[self replySenderBaseEMail]]))
-    return p;
-  if ((p = [e findParticipantWithEmail:[self replySenderEMail]]))
-    return p;
-  return nil;
+
+  p = nil;
+ 
+  e = [self storedEvent];
+  if (e)
+    {
+      p = [e findParticipantWithEmail: [self replySenderBaseEMail]];
+      if (!p)
+	p = [e findParticipantWithEmail:[self replySenderEMail]];
+    }
+
+  return p;
 }
-- (BOOL)isReplySenderAnAttendee {
+
+- (BOOL) isReplySenderAnAttendee
+{
   return [[self storedReplyAttendee] isNotNull];
-}
-
-/* action URLs */
-
-- (id)acceptLink {
-  return [[self pathToAttachmentObject] stringByAppendingString:@"/accept"];
-}
-- (id)declineLink {
-  return [[self pathToAttachmentObject] stringByAppendingString:@"/decline"];
-}
-- (id)tentativeLink {
-  return [[self pathToAttachmentObject] stringByAppendingString:@"/tentative"];
 }
 
 @end /* UIxMailPartICalViewer */

@@ -62,6 +62,8 @@
 
 + (Class) bodyPartClassForKey: (NSString *) _key
 		    inContext: (id) _ctx;
++ (Class) bodyPartClassForMimeType: (NSString *) mimeType
+			 inContext: (id) _ctx;
 
 @end
 

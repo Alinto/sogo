@@ -1,5 +1,21 @@
 2007-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -acceptLink])
+	([UIxMailPartICalViewer -declineLink])
+	([UIxMailPartICalViewer -tentativeLink]): removed useless methods.
+
+	* UI/MailPartViewers/UIxMailPartICalAction.m ([UIxMailPartICalAction -addToCalendarAction])
+	([UIxMailPartICalAction -deleteFromCalendarAction]): new stub
+	methods.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-lookupImap4BodyPartKey:]): make use of the new method below.
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	+bodyPartClassForMimeType:mimeTypeinContext:_ctx]): new method
+	that returns an appropriate Class depending on a given mime type.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -canCreateOrModify]):
 	new boolean accessor that determines whether someone can create
 	(i.e. modify a new entry) or modify an existing entry.
