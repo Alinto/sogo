@@ -335,9 +335,23 @@
   SOGoAppointmentFolder *calendar, *currentCalendar;
   SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
+  SoSecurityManager *sm;
+  NSString *perm, *privacy;
 
   if (!calendarList)
     {
+      sm = [SoSecurityManager sharedSecurityManager];
+      if ([[self clientObject] isNew])
+	perm = SoPerm_AddDocumentsImagesAndFiles;
+      else {
+	privacy = [component accessClass];
+	if ([privacy isEqualToString: @"PRIVATE"])
+	  perm = SOGoCalendarPerm_ModifyPrivateRecords;
+	else if ([privacy isEqualToString: @"CONFIDENTIAL"])
+	  perm = SOGoCalendarPerm_ModifyConfidentialRecords;
+	else
+	  perm = SOGoCalendarPerm_ModifyPublicRecords;
+      }
       calendarList = [NSMutableArray new];
       calendar = [[self clientObject] container];
       calendarParent = [calendar container];
@@ -345,7 +359,9 @@
       currentCalendar = [allCalendars nextObject];
       while (currentCalendar)
 	{
-	  if ([currentCalendar isActive])
+	  if (![sm validatePermission: perm
+		   onObject: currentCalendar
+		   inContext: context])
 	    [calendarList addObject: currentCalendar];
 	  currentCalendar = [allCalendars nextObject];
 	}
