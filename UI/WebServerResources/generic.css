@@ -600,9 +600,9 @@ LI.denied
 LI._selected,
 TR._selected > TD,
 TD._selected
-{ 
+{
   background-color: #4b6983;
-  color: #fff;
+  color: #000 !important;
 }
 
 LI[class~="_selected"].denied

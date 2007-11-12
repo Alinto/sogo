@@ -89,7 +89,7 @@
   <div id="rightPanel">
     <var:component className="UIxCalFilterPanel" />
     <div id="eventsListView">
-      <table id="eventsList">
+      <table id="eventsList" cellspacing="0">
         <thead>
 	  <tr>
 	    <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>

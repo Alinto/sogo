@@ -9,7 +9,7 @@
     className="UIxContactsListViewContainer"
     selectorComponentClass="selectorComponentClass"
     title="name">
-    <table id="contactsList">
+    <table id="contactsList" cellspacing="0">
       <thead>
         <tr class="tableview">
           <!-- localize -->

@@ -191,23 +191,19 @@ DIV#dateSelectorView
   margin: 0px;
   border: 0px; }
 
-#dateSelector > .header A
-{ width: 1em;
-  padding: .4em .2em; }
-
 #dateSelector > .header #leftArrow
 { float: left; }
 
 #dateSelector > .header #rightArrow
-{ float: right; }
+{ float: right;
+  margin-right: 2px; }
 
 #dateSelector > .header SPAN
 { cursor: default;
   font-size: medium;
   vertical-align: middle;
   font-weight: bold;
-  border: 1px solid transparent;
-  margin: .5em .2em; }
+  border: 1px solid transparent; }
 
 #dateSelector > .header SPAN:hover
 { border-left: 1px solid #fff;
@@ -221,43 +217,32 @@ DIV#dateSelectorView
 TABLE#dateSelectorTable
 { padding: 2px; }
 
-#dateSelector TABLE#dateSelectorTable TD
-{ width: 14%; }
-
-#dateSelector TABLE#dateSelectorTable TD TABLE TD
-{ width: 100% }
-
 #dateSelector TABLE,
 #dateSelector TABLE TABLE
 { border-collapse: collapse;
   margin: 0px auto;
   width: 100%; }
 
+#dateSelector TABLE#dateSelectorTable TD TABLE TD
+{ width: 0px; /* temp hack */ }
+
+#dateSelector TABLE#dateSelectorTable TD TABLE TD.activeDay,
+#dateSelector TABLE#dateSelectorTable TD TABLE TD.inactiveDay,
+#dateSelector TABLE#dateSelectorTable TD TABLE TD.dayOfToday
+{ width: 1em; }
+
 #dateSelector TABLE TABLE TD
 { cursor: pointer;
   margin: 0px;
   padding: 0px;
-  width: 100%;
-  border: 1px solid #fff; }
+  border: 1px solid #fff; 
+  text-align: center; }
 
 #dateSelector TABLE TABLE TD:hover
-{ color: #f00;
-  border: 1px solid #deebf7; }
-
-#dateSelector TABLE TABLE TD:hover A
-{ color: #f00; }
-
-#dateSelector .inactiveDay
-{ color: #dedfde; }
-
-#dateSelector .dayOfToday
-{ background-color: #deebf7;
-  border: 1px solid #deebf7; }
+{ border: 1px solid #deebf7; }
 
 #dateSelector TD SPAN
-{ width: 1.5em;
-  height: 1.5em;
-  text-align: center;
+{ text-align: center;
   display: block; }
 
 #dateSelector TD SPAN A
@@ -268,6 +253,17 @@ TABLE#dateSelectorTable
 #dateSelector TD:active
 { background-color: #ddd;
   border: 1px solid #deebf7; }
+
+#dateSelector TD.inactiveDay A
+{ color: #dedfde; }
+
+#dateSelector TD.dayOfToday
+{ background-color: #deebf7;
+  border: 1px solid #deebf7; }
+
+#dateSelector TD._selected A
+{ color: #fff; }
+
 
 TABLE#eventsList
 { width: 100%; }
@@ -287,9 +283,9 @@ TABLE#eventsList TH
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
 TABLE._unfocused#eventsList TR._selected TD
-{ 
-  background-color: #d4d0c8 !important;;
-  color: #fff !important;;
+{
+  background-color: #d4d0c8 !important;
+  color: #fff !important;
 }
 
 SPAN.dayCellLabel

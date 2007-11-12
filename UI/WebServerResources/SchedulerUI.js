@@ -6,6 +6,7 @@ var listFilter = 'view_today';
 
 var listOfSelection = null;
 var selectedCalendarCell;
+var calendarColorIndex = null;
 
 var showCompletedTasks = 0;
 
@@ -1459,9 +1460,12 @@ function appendCalendar(folderName, folderPath) {
     li.setAttribute("owner", owner);
 
     // Generate new color
+    if (calendarColorIndex == null)
+      calendarColorIndex = lis.length;
+    calendarColorIndex++;
     var colorTable = [1, 1, 1];
     var color;
-    var currentValue = lis.length + 1;
+    var currentValue = calendarColorIndex;
     var index = 0;
     while (currentValue) {
       if (currentValue & 1)
