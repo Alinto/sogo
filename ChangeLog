@@ -16,7 +16,8 @@
 	([UIxMailPartICalViewer -declineLink])
 	([UIxMailPartICalViewer -tentativeLink]): removed useless methods.
 
-	* UI/MailPartViewers/UIxMailPartICalAction.m ([UIxMailPartICalAction -addToCalendarAction])
+	* UI/MailPartViewers/UIxMailPartICalAction.m
+	([UIxMailPartICalAction -addToCalendarAction])
 	([UIxMailPartICalAction -deleteFromCalendarAction]): new stub
 	methods.
 
