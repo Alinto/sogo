@@ -1,3 +1,9 @@
+2007-11-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartTextViewer.m ([NSString
+	-stringByConvertingCRLNToHTML]): build the returned NSString
+	without the ending \0.
+
 2007-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m

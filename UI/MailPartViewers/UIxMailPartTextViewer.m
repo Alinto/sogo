@@ -83,7 +83,7 @@
   *destChar = 0;
 
   convertedString = [[NSString alloc] initWithBytes: newString
-				      length: (destChar + 1 - newString)
+				      length: (destChar - newString)
 				      encoding: NSUTF8StringEncoding];
   [convertedString autorelease];
   free (newString);
