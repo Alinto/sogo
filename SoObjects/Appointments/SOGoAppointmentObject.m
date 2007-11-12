@@ -252,36 +252,32 @@
       uid = [self getUIDForICalPerson: organizer];
       if (!uid)
 	uid = [self ownerInContext: nil];
-      if (uid) {
-	if (![storeUIDs containsObject:uid])
-	  [storeUIDs addObject:uid];
-	[removedUIDs removeObject:uid];
-      }
+      if (uid)
+	{
+	  [storeUIDs addObjectUniquely: uid];
+	  [removedUIDs removeObject: uid];
+	}
 
       /* organizer might have changed completely */
 
-      if (oldApt && ([props containsObject: @"organizer"])) {
-	uid = [self getUIDForICalPerson:[oldApt organizer]];
-	if (uid) {
-	  if (![storeUIDs containsObject:uid]) {
-	    if (![removedUIDs containsObject:uid]) {
-	      [removedUIDs addObject:uid];
-	    }
-	  }
+      if (oldApt && ([props containsObject: @"organizer"]))
+	{
+	  uid = [self getUIDForICalPerson: [oldApt organizer]];
+	  if (uid && ![storeUIDs containsObject: uid])
+	    [removedUIDs addObjectUniquely: uid];
 	}
-      }
 
-      [self debugWithFormat:@"UID ops:\n  store: %@\n  remove: %@",
+      [self debugWithFormat: @"UID ops:\n  store: %@\n  remove: %@",
 	    storeUIDs, removedUIDs];
 
       /* if time did change, all participants have to re-decide ...
        * ... exception from that rule: the organizer
        */
 
-      if (oldApt != nil &&
-	  ([props containsObject: @"startDate"] ||
-	   [props containsObject: @"endDate"]   ||
-	   [props containsObject: @"duration"]))
+      if (oldApt
+	  && ([props containsObject: @"startDate"]
+	      || [props containsObject: @"endDate"]
+	      || [props containsObject: @"duration"]))
 	{
 	  NSArray  *ps;
 	  unsigned i, count;
@@ -320,15 +316,16 @@
 		andNewObject: newApt
 		toAttendees: attendees];
 
-	  if (updateForcesReconsider) {
-	    attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
-	    [attendees removeObjectsInArray:[changes insertedAttendees]];
-	    [attendees removePerson:organizer];
-	    [self sendEMailUsingTemplateNamed: @"Update"
-		  forOldObject: oldApt
-		  andNewObject: newApt
-		  toAttendees: attendees];
-	  }
+	  if (updateForcesReconsider)
+	    {
+	      attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
+	      [attendees removeObjectsInArray:[changes insertedAttendees]];
+	      [attendees removePerson:organizer];
+	      [self sendEMailUsingTemplateNamed: @"Update"
+		    forOldObject: oldApt
+		    andNewObject: newApt
+		    toAttendees: attendees];
+	    }
 
 	  attendees
 	    = [NSMutableArray arrayWithArray: [changes deletedAttendees]];
@@ -393,8 +390,8 @@
 	  && [self _aptIsStillRelevant: apt])
 	{
 	  /* send notification email to attendees excluding organizer */
-	  attendees = [NSMutableArray arrayWithArray:[apt attendees]];
-	  [attendees removePerson:[apt organizer]];
+	  attendees = [NSMutableArray arrayWithArray: [apt attendees]];
+	  [attendees removePerson: [apt organizer]];
   
 	  /* flag appointment as being cancelled */
 	  [(iCalCalendar *) [apt parent] setMethod: @"cancel"];
