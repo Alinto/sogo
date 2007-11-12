@@ -31,7 +31,11 @@ function newEvent(sender, type) {
    var hour = sender.hour;
    if (!hour)
       hour = sender.getAttribute("hour");
-   var folderID = getSelectedFolder();
+   var folder = getSelectedFolder();
+   var roles = folder.getAttribute("roles").split(",");
+   var folderID = folder.getAttribute("id");
+   if ($(roles).indexOf("PublicModifier") < 0)
+     folderID = "/personal";
    var urlstr = ApplicationBaseURL + folderID + "/new" + type;
    var params = new Array();
    if (day)
@@ -48,12 +52,12 @@ function newEvent(sender, type) {
 
 function getSelectedFolder() {
   var folder;
-
-  var nodes = $("calendarList").getSelectedRows();
+  var list = $("calendarList");
+  var nodes = list.getSelectedRows();
   if (nodes.length > 0)
-    folder = nodes[0].getAttribute("id");
+    folder = nodes[0];
   else
-    folder = "/personal";
+    folder = list.down("li");
 
   return folder;
 }

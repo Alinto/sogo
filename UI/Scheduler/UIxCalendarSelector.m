@@ -25,6 +25,9 @@
 #import <Foundation/NSValue.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+
+#import <SoObjects/SOGo/SOGoUser.h>
+
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 
@@ -102,23 +105,26 @@ colorForNumber (unsigned int number)
 
 - (NSArray *) calendars
 {
-  NSArray *folders;
+  NSArray *folders, *roles;
   SOGoAppointmentFolders *co;
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *calendar;
   unsigned int count, max;
   NSString *folderName, *fDisplayName;
   NSNumber *isActive;
+  SOGoUser *user;
 
   if (!calendars)
     {
       co = [self clientObject];
+      user = [[self context] activeUser];
       folders = [co subFolders];
       max = [folders count];
       calendars = [[NSMutableArray alloc] initWithCapacity: max];
       for (count = 0; count < max; count++)
 	{
 	  folder = [folders objectAtIndex: count];
+	  roles = [user rolesForObject: folder inContext: [self context]];
 	  calendar = [NSMutableDictionary dictionary];
 	  folderName = [folder nameInContainer];
 	  fDisplayName = [folder displayName];
@@ -134,6 +140,8 @@ colorForNumber (unsigned int number)
 	  [calendar setObject: isActive forKey: @"active"];
 	  [calendar setObject: [folder ownerInContext: context]
 		    forKey: @"owner"];
+	  [calendar setObject: [roles componentsJoinedByString: @","]
+		    forKey: @"roles"];
 	  [calendars addObject: calendar];
 	}
     }

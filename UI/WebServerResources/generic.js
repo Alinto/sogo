@@ -525,18 +525,7 @@ function onRowClick(event) {
       var parentNode = node.parentNode;
       if (parentNode.tagName == 'TBODY')
 	parentNode = parentNode.parentNode;
-      if (document.createEvent) {
-	var onSelectionChangeEvent;
-	if (isSafari())
-	  onSelectionChangeEvent = document.createEvent("UIEvents");
-	else
-	  onSelectionChangeEvent = document.createEvent("Events");
-	onSelectionChangeEvent.initEvent("mousedown", true, true);
-	parentNode.dispatchEvent(onSelectionChangeEvent);
-      }
-      else if (document.createEventObject) {
-	parentNode.fireEvent("onmousedown");
-      }
+      parentNode.fire("mousedown");
     }
   }
   lastClickedRow = rowIndex;

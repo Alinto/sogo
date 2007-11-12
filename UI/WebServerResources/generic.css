@@ -602,7 +602,7 @@ TR._selected > TD,
 TD._selected
 {
   background-color: #4b6983;
-  color: #000 !important;
+  color: #fff;
 }
 
 LI[class~="_selected"].denied

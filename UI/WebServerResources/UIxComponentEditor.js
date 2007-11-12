@@ -149,18 +149,7 @@ function onComponentEditorLoad(event) {
    Event.observe(list, "mousedown",
 		 onChangeCalendar.bindAsEventListener(list),
 		 false);
-   if (document.createEvent) {
-     var onSelectionChangeEvent;
-      if (isSafari())
-	onSelectionChangeEvent = document.createEvent("UIEvents");
-      else
-	onSelectionChangeEvent = document.createEvent("Events");
-      onSelectionChangeEvent.initEvent("mousedown", false, false);
-     list.dispatchEvent(onSelectionChangeEvent);
-   }
-   else {
-     list.fireEvent("onmousedown"); // IE
-   }
+   list.fire("mousedown");
 
    var menuItems = $("itemPrivacyList").childNodesWithTag("li");
    for (var i = 0; i < menuItems.length; i++)
