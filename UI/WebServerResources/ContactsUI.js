@@ -758,6 +758,7 @@ function initContacts(event) {
    var table = $("contactsList");
    if (table) {
      // Initialize contacts table
+     table.multiselect = true;
      configureSortableTableHeaders(table);
      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
    }
