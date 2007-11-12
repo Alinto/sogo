@@ -99,35 +99,48 @@
   return dayOfWeek;
 }
 
-- (NSCalendarDate *) occurenceForDate: (NSCalendarDate *) refDate;
+- (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
+			       byRRule: (iCalRecurrenceRule *) rrule
 {
   NSCalendarDate *tmpDate;
-  iCalRecurrenceRule *rrule;
   NSString *byDay;
   int dayOfWeek, dateDayOfWeek, offset, pos;
 
-  rrule = (iCalRecurrenceRule *) [self uniqueChildWithTag: @"rrule"];
   byDay = [rrule namedValue: @"byday"];
   dayOfWeek = [self dayOfWeekFromRruleDay: [rrule byDayMask]];
   pos = [[byDay substringToIndex: 2] intValue];
   if (!pos)
     pos = 1;
 
-  tmpDate = [NSCalendarDate
-              dateWithYear: [refDate yearOfCommonEra]
-              month: [[rrule namedValue: @"bymonth"] intValue]
-              day: 1 hour: 0 minute: 0 second: 0
-              timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
+  tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
+			    month: [[rrule namedValue: @"bymonth"] intValue]
+			    day: 1 hour: 0 minute: 0 second: 0
+			    timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [tmpDate addYear: 0 month: ((pos > 0) ? 0 : 1)
-                     day: 0 hour: 0 minute: 0
-                     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
+		     day: 0 hour: 0 minute: 0
+		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
   dateDayOfWeek = [tmpDate dayOfWeek];
   offset = (dayOfWeek - dateDayOfWeek);
   if (pos > 0 && offset < 0)
     offset += 7;
   offset += (pos * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
-                     hour: 0 minute: 0 second: 0];
+		     hour: 0 minute: 0 second: 0];
+
+  return tmpDate;
+}
+
+- (NSCalendarDate *) occurenceForDate: (NSCalendarDate *) refDate;
+{
+  NSCalendarDate *tmpDate;
+  iCalRecurrenceRule *rrule;
+
+  rrule = (iCalRecurrenceRule *) [self uniqueChildWithTag: @"rrule"];
+  if ([rrule isVoid])
+    tmpDate
+      = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] dateTime];
+  else
+    tmpDate = [self _occurenceForDate: refDate byRRule: rrule];
 
   return tmpDate;
 }

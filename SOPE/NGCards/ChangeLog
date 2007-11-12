@@ -1,3 +1,10 @@
+2007-11-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTimeZonePeriod.m ([iCalTimeZonePeriod
+	-occurenceForDate:refDate]): added support for timezone periods
+	which do not contain a recurrence rule, such as the one provided
+	by iCal.
+
 2007-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateHolder.m ([iCalDateHolder -awakeAfterUsingSaxDecoder:]):
