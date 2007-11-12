@@ -82,6 +82,7 @@ static NSTimeZone     *EST = nil;
 - (NSString *)homePageURL {
   return self->homePageURL;
 }
+
 - (void)setHomePageURL:(NSString *)_homePageURL {
   ASSIGN(self->homePageURL, _homePageURL);
 }
