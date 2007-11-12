@@ -1,5 +1,10 @@
 2007-11-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-fetchMailForReplying:sourceMailtoAll:toAll]): remove the current
+	user from the list of recipients and make sure no other address is
+	counted twice.
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m ([NSString
 	-stringByConvertingCRLNToHTML]): build the returned NSString
 	without the ending \0.

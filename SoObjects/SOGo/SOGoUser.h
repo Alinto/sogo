@@ -80,7 +80,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 // - (NSString *) primaryEmail;
 // - (NSString *) systemEmail;
-// - (NSArray *) allEmails;
+- (NSArray *) allEmails;
 
 - (BOOL) hasEmail: (NSString *) email;
 

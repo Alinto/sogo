@@ -384,11 +384,47 @@ static BOOL        showTextAttachmentsInline  = NO;
 - (void) _addEMailsOfAddresses: (NSArray *) _addrs
 		       toArray: (NSMutableArray *) _ma
 {
-  unsigned i, count;
+  NSEnumerator *addresses;
+  NGImap4EnvelopeAddress *currentAddress;
 
-  for (i = 0, count = [_addrs count]; i < count; i++)
-    [_ma addObject:
-	   [(NGImap4EnvelopeAddress *) [_addrs objectAtIndex: i] email]];
+  addresses = [_addrs objectEnumerator];
+  while ((currentAddress = [addresses nextObject]))
+    [_ma addObject: [currentAddress email]];
+}
+
+- (void) _addRecipients: (NSArray *) recipients
+	        toArray: (NSMutableArray *) array
+{
+  NSEnumerator *addresses;
+  NGImap4EnvelopeAddress *currentAddress;
+
+  addresses = [recipients objectEnumerator];
+  while ((currentAddress = [addresses nextObject]))
+    [array addObject: [currentAddress baseEMail]];
+}
+
+- (void) _purgeRecipients: (NSArray *) recipients
+	    fromAddresses: (NSMutableArray *) addresses
+{
+  NSEnumerator *allRecipients;
+  NSString *currentRecipient;
+  NGImap4EnvelopeAddress *currentAddress;
+  int count, max;
+
+  max = [addresses count];
+
+  allRecipients = [recipients objectEnumerator];
+  while (max > 0
+	 && ((currentRecipient = [allRecipients nextObject])))
+    for (count = max - 1; count >= 0; count--)
+      {
+	currentAddress = [addresses objectAtIndex: count];
+	if ([currentRecipient isEqualToString: [currentAddress baseEMail]])
+	  {
+	    [addresses removeObjectAtIndex: count];
+	    max--;
+	  }
+      }
 }
 
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
@@ -407,32 +443,51 @@ static BOOL        showTextAttachmentsInline  = NO;
     
     TODO: what about sender (RFC 822 3.6.2)
   */
-  NSMutableArray *to;
-  NSArray *addrs;
-  
-  to = [NSMutableArray arrayWithCapacity:2];
+  NSMutableArray *to, *addrs, *allRecipients;
+  NSArray *envelopeAddresses, *userEmails;
 
-  /* first check for "reply-to" */
-  
-  addrs = [_envelope replyTo];
-  if ([addrs count] == 0)
-    /* no "reply-to", try "from" */
-    addrs = [_envelope from];
+  allRecipients = [NSMutableArray new];
+  userEmails = [[context activeUser] allEmails];
+  [allRecipients addObjectsFromArray: userEmails];
 
+  to = [NSMutableArray arrayWithCapacity: 2];
+
+  addrs = [NSMutableArray new];
+  envelopeAddresses = [_envelope replyTo];
+  if ([envelopeAddresses count])
+    [addrs setArray: envelopeAddresses];
+  else
+    [addrs setArray: [_envelope from]];
+
+  [self _purgeRecipients: allRecipients
+	fromAddresses: addrs];
   [self _addEMailsOfAddresses: addrs toArray: to];
+  [self _addRecipients: addrs toArray: allRecipients];
   [_info setObject: to forKey: @"to"];
 
   /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
-  
+
   if (_replyToAll)
     {
-      to = [NSMutableArray arrayWithCapacity:8];
+      to = [NSMutableArray new];
 
-      [self _addEMailsOfAddresses: [_envelope to] toArray: to];
-      [self _addEMailsOfAddresses: [_envelope cc] toArray: to];
+      [addrs setArray: [_envelope to]];
+      [self _purgeRecipients: allRecipients
+	    fromAddresses: addrs];
+      [self _addEMailsOfAddresses: addrs toArray: to];
+      [self _addRecipients: addrs toArray: allRecipients];
+
+      [addrs setArray: [_envelope cc]];
+      [self _purgeRecipients: allRecipients
+	    fromAddresses: addrs];
+      [self _addEMailsOfAddresses: addrs toArray: to];
     
       [_info setObject: to forKey: @"cc"];
+
+      [to release];
     }
+
+  [allRecipients release];
 }
 
 - (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths
