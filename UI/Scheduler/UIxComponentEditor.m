@@ -332,9 +332,28 @@
 		 [NSString stringWithFormat: @"category_%@", item]];
 }
 
+- (NSString *) _permissionForEditing
+{
+  NSString *perm;
+
+  if ([[self clientObject] isNew])
+    perm = SoPerm_AddDocumentsImagesAndFiles;
+  else
+    {
+      if ([privacy isEqualToString: @"PRIVATE"])
+	perm = SOGoCalendarPerm_ModifyPrivateRecords;
+      else if ([privacy isEqualToString: @"CONFIDENTIAL"])
+	perm = SOGoCalendarPerm_ModifyConfidentialRecords;
+      else
+	perm = SOGoCalendarPerm_ModifyPublicRecords;
+    }
+
+  return perm;
+}
+
 - (NSArray *) calendarList
 {
-  SOGoAppointmentFolder *calendar, *currentCalendar;
+  SOGoAppointmentFolder *currentCalendar;
   SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
   SoSecurityManager *sm;
@@ -342,30 +361,18 @@
 
   if (!calendarList)
     {
-      sm = [SoSecurityManager sharedSecurityManager];
-      if ([[self clientObject] isNew])
-	perm = SoPerm_AddDocumentsImagesAndFiles;
-      else {
-	if ([privacy isEqualToString: @"PRIVATE"])
-	  perm = SOGoCalendarPerm_ModifyPrivateRecords;
-	else if ([privacy isEqualToString: @"CONFIDENTIAL"])
-	  perm = SOGoCalendarPerm_ModifyConfidentialRecords;
-	else
-	  perm = SOGoCalendarPerm_ModifyPublicRecords;
-      }
       calendarList = [NSMutableArray new];
-      calendar = [[self clientObject] container];
-      calendarParent = [calendar container];
+
+      perm = [self _permissionForEditing];
+      calendarParent
+	= [[context activeUser] calendarsFolderInContext: context];
+      sm = [SoSecurityManager sharedSecurityManager];
       allCalendars = [[calendarParent subFolders] objectEnumerator];
-      currentCalendar = [allCalendars nextObject];
-      while (currentCalendar)
-	{
-	  if (![sm validatePermission: perm
-		   onObject: currentCalendar
-		   inContext: context])
-	    [calendarList addObject: currentCalendar];
-	  currentCalendar = [allCalendars nextObject];
-	}
+      while ((currentCalendar = [allCalendars nextObject]))
+	if (![sm validatePermission: perm
+		 onObject: currentCalendar
+		 inContext: context])
+	  [calendarList addObject: currentCalendar];
     }
 
   return calendarList;
