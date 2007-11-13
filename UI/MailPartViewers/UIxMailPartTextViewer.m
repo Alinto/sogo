@@ -28,6 +28,8 @@
   TODO: add contained link detection.
 */
 
+#import <Foundation/NSException.h>
+
 #import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -42,35 +44,45 @@
 
 @implementation NSString (SOGoMailUIExtension)
 
-- (NSString *) stringByConvertingCRLNToHTML
+static inline char *
+convertChars (const char *oldString, unsigned int oldLength,
+	      unsigned int *newLength)
 {
-  NSString *convertedString;
-  const char *oldString, *currentChar;
-  char *newString, *destChar;
-  unsigned int oldLength, length, delta;
+  const char *currentChar, *upperLimit;
+  char *newString, *destChar, *reallocated;
+  unsigned int length, maxLength, iteration;
 
-  oldString = [self cStringUsingEncoding: NSUTF8StringEncoding];
-  oldLength = [self lengthOfBytesUsingEncoding: NSUTF8StringEncoding];
-
-  length = oldLength;
-  newString = malloc (length + 500);
+  maxLength = oldLength + 500;
+  newString = malloc (maxLength);
   destChar = newString;
   currentChar = oldString;
-  while (currentChar < (oldString + oldLength))
+
+  length = 0;
+  iteration = 0;
+
+  upperLimit = oldString + oldLength;
+  while ((unsigned int) currentChar < (unsigned int) upperLimit)
     {
       if (*currentChar != '\r')
 	{
 	  if (*currentChar == '\n')
 	    {
+	      length = (unsigned int) destChar - (unsigned int) newString;
+	      if ((length + (6 * iteration) + 500) > maxLength)
+		{
+		  maxLength = length + (iteration * 6) + 500;
+		  reallocated = realloc (newString, maxLength);
+		  if (reallocated)
+		    newString = reallocated;
+		  else
+		    [NSException raise: NSMallocException
+				 format: @"reallocation failed in %s",
+				 __PRETTY_FUNCTION__];
+		  destChar = newString + length;
+		}
 	      strcpy (destChar, "<br />");
 	      destChar += 6;
-	      delta = (destChar - newString);
-	      if (delta > length)
-		{
-		  length += 500;
-		  newString = realloc (newString, length + 500);
-		  destChar = newString + delta;
-		}
+	      iteration++;
 	    }
 	  else
 	    {
@@ -81,9 +93,23 @@
       currentChar++;
     }
   *destChar = 0;
+  *newLength = (unsigned int) destChar - (unsigned int) newString;
 
+  return newString;
+}
+
+- (NSString *) stringByConvertingCRLNToHTML
+{
+  NSString *convertedString;
+  char *newString;
+  unsigned int newLength;
+
+  newString
+    = convertChars ([self cStringUsingEncoding: NSUTF8StringEncoding],
+		    [self lengthOfBytesUsingEncoding: NSUTF8StringEncoding],
+		    &newLength);
   convertedString = [[NSString alloc] initWithBytes: newString
-				      length: (destChar - newString)
+				      length: newLength
 				      encoding: NSUTF8StringEncoding];
   [convertedString autorelease];
   free (newString);

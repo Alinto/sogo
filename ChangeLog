@@ -1,5 +1,9 @@
 2007-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m ([NSString
+	-stringByConvertingCRLNToHTML]): fixed crashes due to overflows in
+	temporary buffer we are handing.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-setComponent:newComponent]): check that newComponent is non-nil
 	before replacing the default values.
