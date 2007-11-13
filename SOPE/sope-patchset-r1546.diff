@@ -426,6 +426,23 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  - (NSException *)exceptionForFailedMatch:(unsigned char)_match
    got:(unsigned char)_avail
  {
+Index: sope-mime/NGMail/NGSmtpClient.m
+===================================================================
+--- sope-mime/NGMail/NGSmtpClient.m	(révision 1546)
++++ sope-mime/NGMail/NGSmtpClient.m	(copie de travail)
+@@ -442,10 +442,10 @@
+     [self->text flush];
+ 
+     if (self->isDebuggingEnabled)
+-      [NGTextErr writeFormat:@"C: data(%i bytes) ..\n", [_data bytes]];
++      [NGTextErr writeFormat:@"C: data(%i bytes) ..\n", [_data length]];
+     
+     [self->connection safeWriteBytes:[_data bytes] count:[_data length]];
+-    [self->connection safeWriteBytes:".\r\n" count:3];
++    [self->connection safeWriteBytes:"\r\n.\r\n" count:5];
+     [self->connection flush];
+ 
+     reply = [self receiveReply];
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1546)
