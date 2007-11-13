@@ -25,6 +25,8 @@
   Show plain/calendar mail parts.
 */
 
+#import <NGObjWeb/WOResponse.h>
+
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
