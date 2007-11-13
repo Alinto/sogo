@@ -41,6 +41,7 @@
 #import <NGMail/NGMimeMessageParser.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
