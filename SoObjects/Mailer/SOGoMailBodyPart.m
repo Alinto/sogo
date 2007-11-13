@@ -167,7 +167,8 @@ static BOOL debugOn = NO;
 
 /* fetch */
 
-- (NSData *)fetchBLOB {
+- (NSData *) fetchBLOB
+{
   // HEADER, HEADER.FIELDS, HEADER.FIELDS.NOT, MIME, TEXT
   NSString *enc;
   NSData *data;
@@ -225,7 +226,8 @@ static BOOL debugOn = NO;
   return type;
 }
 
-- (NSString *)contentTypeForPathExtension:(NSString *)pe {
+- (NSString *) contentTypeForPathExtension: (NSString *) pe
+{
   if ([pe length] == 0)
     return @"application/octet-stream";
   
