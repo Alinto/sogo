@@ -148,18 +148,20 @@
 
       co = [self clientObject];
       componentOwner = [co ownerInContext: nil];
-
-      ASSIGN (title, [component summary]);
-      ASSIGN (location, [component location]);
-      ASSIGN (comment, [component comment]);
-      ASSIGN (url, [[component url] absoluteString]);
-      ASSIGN (privacy, [component accessClass]);
-      ASSIGN (priority, [component priority]);
-      ASSIGN (status, [component status]);
-      ASSIGN (categories, [[component categories] commaSeparatedValues]);
-      ASSIGN (organizer, [component organizer]);
-      [self _loadCategories];
-      [self _loadAttendees];
+      if (component)
+	{
+	  ASSIGN (title, [component summary]);
+	  ASSIGN (location, [component location]);
+	  ASSIGN (comment, [component comment]);
+	  ASSIGN (url, [[component url] absoluteString]);
+	  ASSIGN (privacy, [component accessClass]);
+	  ASSIGN (priority, [component priority]);
+	  ASSIGN (status, [component status]);
+	  ASSIGN (categories, [[component categories] commaSeparatedValues]);
+	  ASSIGN (organizer, [component organizer]);
+	  [self _loadCategories];
+	  [self _loadAttendees];
+	}
     }
 //   /* cycles */
 //   if ([component isRecurrent])
@@ -336,7 +338,7 @@
   SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
   SoSecurityManager *sm;
-  NSString *perm, *privacy;
+  NSString *perm;
 
   if (!calendarList)
     {
@@ -344,7 +346,6 @@
       if ([[self clientObject] isNew])
 	perm = SoPerm_AddDocumentsImagesAndFiles;
       else {
-	privacy = [component accessClass];
 	if ([privacy isEqualToString: @"PRIVATE"])
 	  perm = SOGoCalendarPerm_ModifyPrivateRecords;
 	else if ([privacy isEqualToString: @"CONFIDENTIAL"])

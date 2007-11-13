@@ -1,3 +1,11 @@
+2007-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-setComponent:newComponent]): check that newComponent is non-nil
+	before replacing the default values.
+	([UIxComponentEditor -calendarList]): privacy is already an ivar.
+	We don't need to refetch it.
+
 2007-11-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
