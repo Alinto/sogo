@@ -34,6 +34,7 @@ libSOGo_HEADER_FILES = \
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
 	SOGoDAVRendererTypes.h		\
+	iCalEntityObject+Utilities.h	\
 	NSArray+Utilities.h		\
 	NSDictionary+URL.h		\
 	NSDictionary+Utilities.h	\
@@ -68,6 +69,7 @@ libSOGo_OBJC_FILES = \
 	LDAPSource.m			\
 	SOGoDAVRendererTypes.m		\
 	AgenorUserDefaults.m		\
+	iCalEntityObject+Utilities.m	\
 	NSArray+Utilities.m		\
 	NSDictionary+URL.m		\
 	NSDictionary+Utilities.m	\

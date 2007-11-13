@@ -1,5 +1,27 @@
 2007-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/iCalEntityObject+Utilities.m ([iCalEntityObject
+	-findParticipant:user]): new method based on the one removed from
+	SOGoCalendarComponent below.
+
+	* SoObjects/SOGo/iCalEntityObject+Utilities.[hm]: new category
+	module for iCalEntityObject.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([-findParticipant:user]): removed method.
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-setContentString:newContent]): new accessor method.
+	([SOGoContentObject
+	-saveContentString:newContentbaseVersion:newBaseVersion]): invoke
+	-[self setContentString:].
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -authorativeEvent]): returns the most
+	up-to-date event.
+	([-isLoggedInUserTheOrganizer]): make use of -[SOGoUser
+	hasEmail:].
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m ([NSString
 	-stringByConvertingCRLNToHTML]): fixed crashes due to overflows in
 	temporary buffer we are handing.

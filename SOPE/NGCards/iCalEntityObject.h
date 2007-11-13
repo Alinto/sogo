@@ -116,6 +116,9 @@ typedef enum
 - (NSArray *) alarms;
 - (BOOL) hasAlarms;
 
+/* comparisons */
+- (NSComparisonResult) compare: (iCalEntityObject *) otherObject;
+
 @end
 
 #endif /* __NGCards_iCalEntityObject_H__ */

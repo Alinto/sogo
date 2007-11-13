@@ -292,22 +292,24 @@
 
 - (iCalEvent *) authorativeEvent
 {
-  /* DB is considered master, when in DB, ignore mail organizer */
-  return [self isEventStoredInCalendar]
-    ? [self storedEvent]
-    : [self inEvent];
+  iCalEvent *authorativeEvent;
+
+  if ([[self storedEvent] compare: [self inEvent]]
+      == NSOrderedAscending)
+    authorativeEvent = inEvent;
+  else
+    authorativeEvent = storedEventObject;
+
+  return authorativeEvent;
 }
 
 - (BOOL) isLoggedInUserTheOrganizer
 {
-  NSString *loginEMail;
+  iCalPerson *organizer;
  
-  if ((loginEMail = [self loggedInUserEMail]) == nil) {
-    [self warnWithFormat:@"Could not determine email of logged in user?"];
-    return NO;
-  }
- 
-  return [[self authorativeEvent] isOrganizer:loginEMail];
+  organizer = [[self authorativeEvent] organizer];
+
+  return [[context activeUser] hasEmail: [organizer rfc822Email]];
 }
 
 - (BOOL) isLoggedInUserAnAttendee

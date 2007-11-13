@@ -785,6 +785,9 @@ function ICalendarButtonCallback(http) {
 	loadMessage(currentMessages[currentMailbox]);
       }
     }
+    else {
+      window.alert("received code: " + http.status);
+    }
 }
 
 function resizeMailContent() {

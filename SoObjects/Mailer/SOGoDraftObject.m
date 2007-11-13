@@ -1149,7 +1149,7 @@ static BOOL        showTextAttachmentsInline  = NO;
   dateString = [[NSCalendarDate date] rfc822DateString];
   [map addObject: dateString forKey: @"date"];
   [map addObject: @"1.0" forKey: @"MIME-Version"];
-  [map addObject: userAgent forKey: @"X-Mailer"];
+  [map addObject: userAgent forKey: @"User-Agent"];
 
   /* add custom headers */
   

@@ -425,4 +425,27 @@
   return nil; /* not found */
 }
 
+- (NSComparisonResult) _compareVersions: (iCalEntityObject *) otherObject
+{
+  NSComparisonResult result;
+
+  result = [[self sequence] compare: [otherObject sequence]];
+  if (result == NSOrderedSame)
+    result = [[self lastModified] compare: [otherObject lastModified]];
+
+  return result;
+}
+
+- (NSComparisonResult) compare: (iCalEntityObject *) otherObject
+{
+  NSComparisonResult result;
+
+  if ([[self uid] isEqualToString: [otherObject uid]])
+    result = [self _compareVersions: otherObject];
+  else
+    result = [[self created] compare: [otherObject created]];
+
+  return result;
+}
+
 @end /* iCalEntityObject */

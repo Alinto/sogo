@@ -24,7 +24,7 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartMessageViewer.m	\
 	UIxMailPartICalViewer.m		\
 	\
-	UIxMailPartICalAction.m		\
+	UIxMailPartICalActions.m	\
 	\
 	UIxKolabPartViewer.m		\
 	UIxKolabPartContactViewer.m	\

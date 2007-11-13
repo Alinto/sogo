@@ -31,6 +31,7 @@
 #import <NGCards/iCalPerson.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
@@ -308,23 +309,33 @@
       if ([self sendEMailNotifications]
 	  && [self _aptIsStillRelevant: newApt])
 	{
+	  iCalEvent *requestApt;
+
+	  requestApt = [newApt copy];
+	  [(iCalCalendar *) [requestApt parent] setMethod: @"request"];
 	  attendees
 	    = [NSMutableArray arrayWithArray: [changes insertedAttendees]];
 	  [attendees removePerson: organizer];
 	  [self sendEMailUsingTemplateNamed: @"Invitation"
 		forOldObject: nil
-		andNewObject: newApt
+		andNewObject: requestApt
 		toAttendees: attendees];
+	  [requestApt release];
 
 	  if (updateForcesReconsider)
 	    {
+	      iCalEvent *updatedApt;
+    
+	      updatedApt = [newApt copy];
+	      [(iCalCalendar *) [updatedApt parent] setMethod: @"request"];
 	      attendees = [NSMutableArray arrayWithArray:[newApt attendees]];
 	      [attendees removeObjectsInArray:[changes insertedAttendees]];
 	      [attendees removePerson:organizer];
 	      [self sendEMailUsingTemplateNamed: @"Update"
 		    forOldObject: oldApt
-		    andNewObject: newApt
+		    andNewObject: updatedApt
 		    toAttendees: attendees];
+	      [updatedApt release];
 	    }
 
 	  attendees

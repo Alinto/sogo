@@ -1,4 +1,4 @@
-{
+{ /* -*-java-*- */
   requires = ( MAIN );
 
   publicResources = (
@@ -12,29 +12,29 @@
       methods = {
         accept = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction"; 
-          actionName  = "markAccepted";
+          actionClass = "UIxMailPartICalActions";
+          actionName  = "accept";
         };
         decline = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction"; 
-          actionName  = "markDeclined";
+          actionClass = "UIxMailPartICalActions";
+          actionName  = "decline";
         };
-        tentative = {
+	/*        tentative = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction"; 
+          actionClass = "UIxMailPartICalAction";
           actionName  = "markTentative";
         };
         addToCalendar = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction"; 
+          actionClass = "UIxMailPartICalAction";
           actionName  = "addToCalendar";
         };
         deleteFromCalendar = {
           protectedBy = "View";
-          actionClass = "UIxMailPartICalAction"; 
+          actionClass = "UIxMailPartICalAction";
           actionName  = "deleteFromCalendar";
-        };
+	  }; */
       };
     };
   };

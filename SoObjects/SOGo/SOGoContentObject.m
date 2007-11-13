@@ -138,6 +138,11 @@
   return content;
 }
 
+- (void) setContentString: (NSString *) newContent
+{
+  ASSIGN (content, newContent);
+}
+
 - (NSException *) saveContentString: (NSString *) newContent
                         baseVersion: (unsigned int) newBaseVersion
 {
@@ -147,12 +152,11 @@
 
   ex = nil;
 
-  ASSIGN (content, newContent);
+  [self setContentString: newContent];
   folder = [container ocsFolder];
   if (folder)
     {
-      ex = [folder writeContent: newContent
-		   toName: nameInContainer
+      ex = [folder writeContent: content toName: nameInContainer
 		   baseVersion: newBaseVersion];
       if (ex)
 	[self errorWithFormat:@"write failed: %@", ex];

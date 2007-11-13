@@ -36,6 +36,7 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessage.h>
 
+#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/SOGoMailer.h>
@@ -161,21 +162,28 @@ static BOOL sendEMailNotifications = NO;
   return calContent;
 }
 
-- (NSException *) saveContentString: (NSString *) contentString
-                        baseVersion: (unsigned int) baseVersion
+- (void) setContentString: (NSString *) newContent
 {
-  NSException *result;
-
-  result = [super saveContentString: contentString
-                  baseVersion: baseVersion];
-  if (!result && calContent)
-    {
-      [calContent release];
-      calContent = nil;
-    }
-
-  return result;
+  [super setContentString: newContent];
+  ASSIGN (calendar, nil);
+  ASSIGN (calContent, nil);
 }
+
+// - (NSException *) saveContentString: (NSString *) contentString
+//                         baseVersion: (unsigned int) baseVersion
+// {
+//   NSException *result;
+
+//   result = [super saveContentString: contentString
+//                   baseVersion: baseVersion];
+//   if (!result && calContent)
+//     {
+//       [calContent release];
+//       calContent = nil;
+//     }
+
+//   return result;
+// }
 
 - (iCalCalendar *) calendar: (BOOL) create
 {
@@ -445,6 +453,11 @@ static BOOL sendEMailNotifications = NO;
     }
 }
 
+- (void) sendResponseToOrganizer
+{
+#warning THIS IS A STUB  
+}
+
 // - (BOOL) isOrganizerOrOwner: (SOGoUser *) user
 // {
 //   BOOL isOrganizerOrOwner;
@@ -464,33 +477,13 @@ static BOOL sendEMailNotifications = NO;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid
 {
+  iCalEntityObject *component;
   SOGoUser *user;
 
   user = [SOGoUser userWithLogin: uid roles: nil];
-
-  return [self findParticipant: user];
-}
-
-- (iCalPerson *) findParticipant: (SOGoUser *) user
-{
-  iCalPerson *participant, *currentParticipant;
-  iCalEntityObject *component;
-  NSEnumerator *participants;
-
-  participant = nil;
   component = [self component: NO];
-  if (component)
-    {
-      participants = [[component participants] objectEnumerator];
-      currentParticipant = [participants nextObject];
-      while (currentParticipant && !participant)
-	if ([user hasEmail: [currentParticipant rfc822Email]])
-	  participant = currentParticipant;
-	else
-	  currentParticipant = [participants nextObject];
-    }
 
-  return participant;
+  return [component findParticipant: user];
 }
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid

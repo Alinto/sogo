@@ -551,6 +551,21 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return folder;
 }
 
+- (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context
+{
+  return [[self homeFolderInContext: context] lookupName: @"Calendar"
+					      inContext: context
+					      acquire: NO];
+}
+
+- (SOGoAppointmentFolder *)
+ personalCalendarFolderInContext: (WOContext *) context
+{
+  return [[self calendarsFolderInContext: context] lookupName: @"personal"
+						   inContext: context
+						   acquire: NO];
+}
+
 // - (id) schedulingCalendarInContext: (id) _ctx
 // {
 //   /* Note: watch out for cyclic references */

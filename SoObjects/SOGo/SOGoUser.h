@@ -41,7 +41,10 @@
 @class NSUserDefaults;
 @class NSTimeZone;
 @class WOContext;
+@class SOGoAppointmentFolder;
+@class SOGoAppointmentFolders;
 @class SOGoDateFormatter;
+@class WOContext;
 
 extern NSString *SOGoWeekStartHideWeekNumbers;
 extern NSString *SOGoWeekStartJanuary1;
@@ -117,7 +120,10 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 /* folders */
 
 - (id) homeFolderInContext: (id) _ctx;
-// - (id) schedulingCalendarInContext: (id) _ctx;
+
+- (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context;
+- (SOGoAppointmentFolder *)
+ personalCalendarFolderInContext: (WOContext *) context;
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context;
