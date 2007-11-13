@@ -302,8 +302,6 @@ function resetAttendeesValue() {
       currentInput.setAttribute("uid", null);
     }
     currentInput.setAttribute("autocomplete", "off");
-    //Event.observe(currentInput, "keydown", onContactKeydown.bindAsEventListener(currentInput));
-    //Event.observe(currentInput, "blur", checkAttendee.bindAsEventListener(currentInput));
   }
   inputs[inputs.length - 2].setAttribute("autocomplete", "off");
   Event.observe(inputs[inputs.length - 2], "click", newAttendee);
@@ -511,6 +509,8 @@ function prepareAttendees() {
 	 input.value = value;
 	 $(input).addClassName("textField");
 	 input.setAttribute("modified", "0");
+	 input.observe("blur", checkAttendee);
+	 input.observe("keydown", onContactKeydown);
 	 tr.appendChild(td);
 	 td.appendChild(input);
 	 displayFreeBusyForNode(input);
