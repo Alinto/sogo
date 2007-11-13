@@ -301,7 +301,7 @@ function triggerAjaxRequest(url, callback, userdata) {
     http.url = url;
     http.onreadystatechange
       = function() {
-      //log ("state changed (" + http.readyState + "): " + url);
+//       log ("state changed (" + http.readyState + "): " + url);
       try {
 	if (http.readyState == 4
 	    && activeAjaxRequests > 0) {
