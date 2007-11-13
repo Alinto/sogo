@@ -42,6 +42,10 @@ function onContactKeydown(event) {
       running = true;
       requestField = this;
       requestField.setAttribute("modified", "1");
+      if (searchField) {
+	searchField.confirmedValue = null;
+	searchField.uid = null;
+      }
       setTimeout("triggerRequest()", delay);
     }
     else if (this.confirmedValue) {
@@ -67,32 +71,92 @@ function triggerRequest() {
 
 function updateResults(http) {
   if (http.readyState == 4) {
+    var menu = $('attendeesMenu');
+    var list = menu.down("ul");
+
+    searchField = http.callbackData;
+    searchField.hasfreebusy = false;
+
     if (http.status == 200) {
-      var searchField = http.callbackData;
       var start = searchField.value.length;
-      var text = http.responseText.split(":");
-      if (text[0].length > 0)
-        searchField.uid = text[0];
-      else
-        searchField.uid = null;
-      searchField.hasfreebusy = false;
-      var completeEmail = text[1] + " <" + text[2] + ">";
-      if (text[1].substring(0, searchField.value.length).toUpperCase()
-          == searchField.value.toUpperCase())
-        searchField.value = completeEmail;
+      var data = http.responseText.evalJSON(true);
+      if (data.length > 1) {
+	$(list.childNodesWithTag("li")).each(function(item) {
+	    item.remove();
+	  });
+	
+	// Populate popup menu
+	for (var i = 0; i < data.length; i++) {
+	  var contact = data[i];
+	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
+	  var node = document.createElement("li");
+	  list.appendChild(node);
+	  node.uid = contact["uid"];
+	  node.appendChild(document.createTextNode(completeEmail));
+	  $(node).observe("mousedown", onAttendeeResultClick);
+	}
+
+	// Show popup menu
+	var offset;
+	if (isSafari())
+	  offset = Position.positionedOffset(searchField);
+	else
+	  offset = Position.cumulativeOffset(searchField);
+	var top = offset[1] + node.offsetHeight + 3;
+	var height = 'auto';
+	if (data.length > 5) {
+	  height = 5 * node.getHeight() + 'px';
+	}
+	menu.setStyle({ top: top + "px",
+	      left: offset[0] + "px",
+	      height: height,
+	      visibility: "visible"  });
+	menu.scrollTop = 0;
+
+	document.currentPopupMenu = menu;
+	$(document.body).observe("click", onBodyClickMenuHandler);
+      }
       else {
-        searchField.value += ' >> ' + completeEmail;
+	if (document.currentPopupMenu)
+	  hideMenu(document.currentPopupMenu);
+
+	if (data.length == 1) {
+	  var contact = data[0];
+	  if (contact["uid"].length > 0)
+	    searchField.uid = contact["uid"];
+	  else
+	    searchField.uid = null;
+	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
+	  if (contact["name"].substring(0, searchField.value.length).toUpperCase()
+	      == searchField.value.toUpperCase())
+	    searchField.value = completeEmail;
+	  else {
+	    searchField.value += ' >> ' + completeEmail;
+	  }
+	  searchField.confirmedValue = completeEmail;
+	  if (searchField.focussed) {
+	    var end = searchField.value.length;
+	    $(searchField).selectText(start, end);
+	  }
+	  else
+	    searchField.value = contact["name"];
+	}
       }
-      searchField.confirmedValue = completeEmail;
-      if (searchField.focussed) {
-        var end = searchField.value.length;
-	$(searchField).selectText(start, end);
-      }
-      else
-        searchField.value = text[1];
     }
+    else
+      if (document.currentPopupMenu)
+	hideMenu(document.currentPopupMenu);
     running = false;
     document.contactLookupAjaxRequest = null;
+  }
+}
+
+function onAttendeeResultClick(event) {
+  if (searchField) {
+    searchField.uid = this.uid;
+    searchField.value = this.firstChild.nodeValue.trim();
+    searchField.confirmedValue = searchField.value;
+    searchField.blur(); // triggers checkAttendee function call
   }
 }
 
@@ -198,14 +262,21 @@ function newAttendee(event) {
   
    var input = $(newRow.cells[0]).childNodesWithTag("input")[0];
    input.setAttribute("autocomplete", "off");
-   Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
    Event.observe(input, "keydown", onContactKeydown.bindAsEventListener(input));
+   Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
 
    input.focussed = true;
    input.activate();
 }
 
 function checkAttendee() {
+  if (document.currentPopupMenu && !this.confirmedValue) {
+    // Hack for IE7; blur event is triggered on input field when
+    // selecting a menu item
+    var visible = $(document.currentPopupMenu).getStyle('visibility') != 'hidden';
+    if (visible)
+      return;
+  }
   this.focussed = false;
   var th = this.parentNode.parentNode;
   var tbody = th.parentNode;
@@ -541,4 +612,4 @@ function onFreeBusyLoadHandler() {
    initializeFreebusys();
 }
 
-addEvent(window, 'load', onFreeBusyLoadHandler);
+document.observe("dom:loaded", onFreeBusyLoadHandler);

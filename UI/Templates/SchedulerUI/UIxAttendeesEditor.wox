@@ -11,6 +11,9 @@
   const:toolbar="none"
   const:popup="YES"
   const:jsFiles="skycalendar.js">
+  <div class="menu" id="attendeesMenu">
+    <ul></ul>
+  </div>
   <div id="attendeesView">
     <div id="freeBusyViewButtons">
       <var:string label:value="Suggest time slot:"/>

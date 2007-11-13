@@ -576,7 +576,7 @@ function popupMenu(event, menuId, target) {
 
   document.currentPopupMenu = popup;
 
-  Event.observe(document.body, "click", onBodyClickMenuHandler);
+  $(document.body).observe("click", onBodyClickMenuHandler);
 
   preventDefault(event);
 }
@@ -600,7 +600,7 @@ function getParentMenu(node) {
 
 function onBodyClickMenuHandler(event) {
   hideMenu(document.currentPopupMenu);
-  Event.stopObserving(document.body, "click", onBodyClickMenuHandler);
+  document.body.stopObserving("click", onBodyClickMenuHandler);
 
   if (event)
     preventDefault(event);
@@ -615,15 +615,12 @@ function hideMenu(menuNode) {
   }
 
   menuNode.setStyle({ visibility: "hidden" });
-  //   menuNode.hide();
   if (menuNode.parentMenuItem) {
-    Event.stopObserving(menuNode.parentMenuItem, "mouseover",
-			onMouseEnteredSubmenu);
-    Event.stopObserving(menuNode, "mouseover", onMouseEnteredSubmenu);
-    Event.stopObserving(menuNode.parentMenuItem, "mouseout", onMouseLeftSubmenu);
-    Event.stopObserving(menuNode, "mouseout", onMouseLeftSubmenu);
-    Event.stopObserving(menuNode.parentMenu, "mouseover",
-			onMouseEnteredParentMenu);
+    menuNode.parentMenuItem.stopObserving("mouseover",onMouseEnteredSubmenu);
+    menuNode.stopObserving("mouseover", onMouseEnteredSubmenu);
+    menuNode.parentMenuItem.stopObserving("mouseout", onMouseLeftSubmenu);
+    menuNode.stopObserving("mouseout", onMouseLeftSubmenu);
+    menuNode.parentMenu.stopObserving("mouseover", onMouseEnteredParentMenu);
     $(menuNode.parentMenuItem).removeClassName("submenu-selected");
     menuNode.parentMenuItem.mouseInside = false;
     menuNode.parentMenuItem = null;
@@ -632,18 +629,7 @@ function hideMenu(menuNode) {
     menuNode.parentMenu = null;
   }
 
-  if (document.createEvent) { // Safari & Mozilla
-    var onhideEvent;
-    if (isSafari())
-      onhideEvent = document.createEvent("UIEvents");
-    else
-      onhideEvent = document.createEvent("Events");
-    onhideEvent.initEvent("mousedown", false, true);
-    menuNode.dispatchEvent(onhideEvent);
-  }
-  else if (document.createEventObject) { // IE
-    menuNode.fireEvent("onmousedown");
-  }
+  $(menuNode).fire("mousedown");
 }
 
 function onMenuEntryClick(event) {
@@ -673,8 +659,8 @@ function initLogConsole() {
   var logConsole = $("logConsole");
   if (logConsole) {
     logConsole.highlighted = false;
-    Event.observe(logConsole, "dblclick", onLogDblClick, false);
-    logConsole.innerHTML = "";
+    logConsole.observe("dblclick", onLogDblClick, false);
+    logConsole.update();
     Event.observe(window, "keydown", onBodyKeyDown);
   }
 }
@@ -776,15 +762,11 @@ function popupSubmenu(event) {
       menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
 
     this.mouseInside = true;
-    Event.observe(this, "mouseover",
-		  onMouseEnteredSubmenu.bindAsEventListener(this));
-    Event.observe(submenuNode, "mouseover",
-		  onMouseEnteredSubmenu.bindAsEventListener(submenuNode));
-    Event.observe(this, "mouseout", onMouseLeftSubmenu.bindAsEventListener(this));
-    Event.observe(submenuNode, "mouseout",
-		  onMouseLeftSubmenu.bindAsEventListener(submenuNode));
-    Event.observe(parentNode, "mouseover",
-		  onMouseEnteredParentMenu.bindAsEventListener(parentNode));
+    this.observe("mouseover", onMouseEnteredSubmenu);
+    submenuNode.observe("mouseover", onMouseEnteredSubmenu);
+    this.observe("mouseout", onMouseLeftSubmenu);
+    submenuNode.observe("mouseout", onMouseLeftSubmenu);
+    parentNode.observe("mouseover", onMouseEnteredParentMenu);
     $(this).addClassName("submenu-selected");
     submenuNode.setStyle({ top: menuTop + "px",
 	                   left: menuLeft + "px",
@@ -829,7 +811,7 @@ function popupSearchMenu(event) {
 	  visibility: "visible" });
   
     document.currentPopupMenu = popup;
-    Event.observe(document.body, "click", onBodyClickMenuHandler);
+    $(document.body).observe("click", onBodyClickMenuHandler);
   }
 }
 
@@ -865,17 +847,12 @@ function configureSearchField() {
 
   if (!searchValue) return;
 
-  Event.observe(searchValue, "mousedown",
-		onSearchMouseDown.bindAsEventListener(searchValue));
-  Event.observe(searchValue, "click",
-		popupSearchMenu.bindAsEventListener(searchValue));
-  Event.observe(searchValue, "blur",
-		onSearchBlur.bindAsEventListener(searchValue));
-  Event.observe(searchValue, "focus",
-		onSearchFocus.bindAsEventListener(searchValue));
-  Event.observe(searchValue, "keydown",
-		onSearchKeyDown.bindAsEventListener(searchValue));
-
+  searchValue.observe("click", popupSearchMenu);
+  searchValue.observe("blur", onSearchBlur);
+  searchValue.observe("focus", onSearchFocus);
+  searchValue.observe("keydown", onSearchKeyDown);
+  searchValue.observe("mousedown", onSearchMouseDown);
+  
   if (!searchOptions) return;
    
   // Set the checkmark to the first option
@@ -975,7 +952,7 @@ function popupToolbarMenu(node, menuId) {
 	visibility: "visible" });
 
   document.currentPopupMenu = popup;
-  Event.observe(document.body, "click", onBodyClickMenuHandler);
+  $(document.body).observe("click", onBodyClickMenuHandler);
 }
 
 /* contact selector */
@@ -1099,10 +1076,8 @@ function initTabs() {
       if (currentNode.tagName == 'LI') {
 	if (!firstTab)
 	  firstTab = i;
-	Event.observe(currentNode, "mousedown",
-		      onTabMouseDown.bindAsEventListener(currentNode));
-	Event.observe(currentNode, "click",
-		      onTabClick.bindAsEventListener(currentNode));
+	$(currentNode).observe("mousedown", onTabMouseDown);
+	$(currentNode).observe("click", onTabClick);
 	//$(currentNode.getAttribute("target")).hide();
       }
     }
@@ -1132,9 +1107,7 @@ function initMenu(menuDIV, callbacks) {
   var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
   for (var j = 0; j < lis.length; j++) {
     var node = $(lis[j]);
-    Event.observe(node, "mousedown",
-		  listRowMouseDownHandler.bindAsEventListener(node),
-		  false);
+    node.observe("mousedown", listRowMouseDownHandler, false);
     var callback = callbacks[j];
     if (callback) {
       if (typeof(callback) == "string") {
@@ -1143,15 +1116,12 @@ function initMenu(menuDIV, callbacks) {
 	else {
 	  node.submenu = callback;
 	  node.addClassName("submenu");
-	  Event.observe(node, "mouseover",
-			popupSubmenu.bindAsEventListener(node));
+	  node.observe("mouseover", popupSubmenu);
 	}
       }
       else {
-	Event.observe(node, "mouseup",
-		      onBodyClickMenuHandler);
-	Event.observe(node, "click",
-		      $(callback).bindAsEventListener(node));
+	node.observe("mouseup", onBodyClickMenuHandler);
+	node.observe("click", callback);
       }
     }
     else
@@ -1349,7 +1319,7 @@ function onLoadHandler(event) {
   var progressImage = $("progressIndicator");
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
-  Event.observe(document.body, "contextmenu", onBodyClickContextMenu);
+  $(document.body).observe("contextmenu", onBodyClickContextMenu);
 }
 
 function onBodyClickContextMenu(event) {
@@ -1360,8 +1330,8 @@ function configureSortableTableHeaders(table) {
   var headers = $(table).getElementsByClassName("sortableTableHeader");
   for (var i = 0; i < headers.length; i++) {
     var header = headers[i];
-    Event.observe(header, "click", onHeaderClick.bindAsEventListener(header))
-      }
+    $(header).observe("click", onHeaderClick);
+  }
 }
 
 function onLinkBannerClick() {
@@ -1384,13 +1354,13 @@ function configureLinkBanner() {
   if (linkBanner) {
     var anchors = linkBanner.childNodesWithTag("a");
     for (var i = 1; i < 3; i++) {
-      Event.observe(anchors[i], "mousedown", listRowMouseDownHandler);
-      Event.observe(anchors[i], "click", onLinkBannerClick);
+      $(anchors[i]).observe("mousedown", listRowMouseDownHandler);
+      $(anchors[i]).observe("click", onLinkBannerClick);
     }
-    Event.observe(anchors[4], "mousedown", listRowMouseDownHandler);
-    Event.observe(anchors[4], "click", onPreferencesClick);
+    $(anchors[4]).observe("mousedown", listRowMouseDownHandler);
+    $(anchors[4]).observe("click", onPreferencesClick);
     if (anchors.length > 5)
-      Event.observe(anchors[5], "click", toggleLogConsole);
+      $(anchors[5]).observe("click", toggleLogConsole);
   }
 }
 
@@ -1432,7 +1402,7 @@ function onFinalLoadHandler(event) {
     safetyNet.parentNode.removeChild(safetyNet);
 }
 
-addEvent(window, 'load', onLoadHandler);
+document.observe("dom:loaded", onLoadHandler);
 
 function parent$(element) {
   return this.opener.document.getElementById(element);

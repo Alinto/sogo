@@ -35,6 +35,7 @@
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Contacts/SOGoContactFolders.h>
 #import <SoObjects/Contacts/SOGoContactFolder.h>
@@ -121,8 +122,10 @@
 {
   WOResponse *response;
   NSEnumerator *contacts;
-  NSString *responseString, *email;
+  NSString *email;
   NSDictionary *contact;
+  NSMutableArray *formattedContacts;
+  NSMutableDictionary *formattedContact; 
 
   response = [context response];
 
@@ -131,21 +134,25 @@
       [response setStatus: 200];
       contacts = [results objectEnumerator];
       contact = [contacts nextObject];
-      if (contact)
+      formattedContacts = [[NSMutableArray alloc] initWithCapacity: [results count]];
+      while (contact)
 	{
 	  email = [contact objectForKey: @"c_email"];
 	  if ([email length])
 	    {
-	      responseString = [NSString stringWithFormat: @"%@:%@:%@",
-					 [contact objectForKey: @"c_uid"],
-					 [contact objectForKey: @"cn"],
-					 email];
-// 	  [response setHeader: @"text/plain; charset=iso-8859-1"
-// 		    forKey: @"Content-Type"];
-	      [response appendContentString: responseString];
+	      formattedContact = [NSMutableDictionary dictionary];
+	      [formattedContact setObject: [contact objectForKey: @"c_uid"]
+				forKey: @"uid"];
+	      [formattedContact setObject: [contact objectForKey: @"cn"]
+				forKey: @"name"];
+	      [formattedContact setObject: email
+				forKey: @"email"];
+	      [formattedContacts addObject: formattedContact];
 	    }
-//	  contact = [contacts nextObject];
+	  contact = [contacts nextObject];
 	}
+      [response appendContentString: [formattedContacts jsonRepresentation]];
+      [formattedContacts release];
     }
   else
     [response setStatus: 404];

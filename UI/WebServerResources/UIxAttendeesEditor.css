@@ -1,3 +1,7 @@
+DIV#attendeesMenu
+{ overflow: auto;
+  overflow-x: hidden; }
+
 DIV#attendeesView
 { position: absolute;
   left: 1em;
