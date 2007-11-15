@@ -78,6 +78,7 @@ function updateResults(http) {
 
     searchField = http.callbackData; // requestField
     searchField.hasfreebusy = false;
+    searchField.setAttribute("uid", null);
 
     if (http.status == 200) {
       var start = searchField.value.length;
@@ -126,8 +127,6 @@ function updateResults(http) {
 	  var contact = data[0];
 	  if (contact["uid"].length > 0)
 	    searchField.setAttribute("uid", contact["uid"]);
-	  else
-	    searchField.setAttribute("uid", null);
 	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
 	  if (contact["name"].substring(0, searchField.value.length).toUpperCase()
 	      == searchField.value.toUpperCase())
