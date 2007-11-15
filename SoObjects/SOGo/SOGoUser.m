@@ -506,7 +506,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   messageForwarding
     = [[self userDefaults] stringForKey: @"MessageForwarding"];
   if (![messageForwarding length])
-    messageForwarding = @"attached";
+    messageForwarding = @"inline";
 
   return messageForwarding;
 }

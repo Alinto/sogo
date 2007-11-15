@@ -51,6 +51,7 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
+#import <NGMime/NGMimeHeaderFields.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
@@ -614,10 +615,14 @@ static BOOL        showTextAttachmentsInline  = NO;
   SOGoUser *currentUser;
 
   [sourceMail fetchCoreInfos];
-
-  info = [NSDictionary dictionaryWithObject: [sourceMail subjectForForward]
-		       forKey: @"subject"];
-  [self setHeaders: info];
+  
+  if ([sourceMail subjectForForward])
+    {
+      info = [NSDictionary dictionaryWithObject: [sourceMail subjectForForward] 
+			   forKey: @"subject"];
+      [self setHeaders: info];
+    }
+  
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"$Forwarded"];
 
@@ -905,7 +910,7 @@ static BOOL        showTextAttachmentsInline  = NO;
     cdtype = @"inline";
   else
     cdtype = @"attachment";
-  
+
   cd = [cdtype stringByAppendingString: @"; filename=\""];
   cd = [cd stringByAppendingString: _name];
   cd = [cd stringByAppendingString: @"\""];
@@ -950,7 +955,13 @@ static BOOL        showTextAttachmentsInline  = NO;
       is7bit = YES;
   }
   if ((s = [self contentDispositionForAttachmentWithName:_name]))
-    [map setObject:s forKey: @"content-disposition"];
+    {
+      NGMimeContentDispositionHeaderField *o;
+      
+      o = [[NGMimeContentDispositionHeaderField alloc] initWithString: s];
+      [map setObject:o forKey: @"content-disposition"];
+      [o release];
+    }
   
   /* prepare body content */
   

@@ -211,14 +211,18 @@ function deleteSelectedMessages(sender) {
   var messageList = $("messageList");
   var rowIds = messageList.getSelectedRowsId();
 
-  for (var i = 0; i < rowIds.length; i++) {
-    var url;
-    var rowId = rowIds[i].substr(4);
-    var messageId = currentMailbox + "/" + rowId;
-    url = ApplicationBaseURL + messageId + "/trash";
-    deleteMessageRequestCount++;
-    var data = { "id": rowId, "mailbox": currentMailbox, "messageId": messageId };
-    triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+  if (rowIds.length > 0) {
+    for (var i = 0; i < rowIds.length; i++) {
+      var url;
+      var rowId = rowIds[i].substr(4);
+      var messageId = currentMailbox + "/" + rowId;
+      url = ApplicationBaseURL + messageId + "/trash";
+      deleteMessageRequestCount++;
+      var data = { "id": rowId, "mailbox": currentMailbox, "messageId": messageId };
+      triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+    }
+  } else {
+    window.alert(labels["Please select a message."]);
   }
 
   return false;

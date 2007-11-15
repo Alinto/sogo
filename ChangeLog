@@ -1,3 +1,27 @@
+2007-11-15  Ludovic Marcotte <ludovic@inverse.ca>
+
+        * UI/WebServerResources/MailerUI.js
+        We now check for empty selection and warn the
+        user about it when deleting messages
+ 
+        * SoObjects/Mailer/SOGoDraftObject.m
+        Correctly check for the presence of a subject
+        before attempting to forward a message from
+        the Drafts folder.
+
+        * SoObjects/Mailer/SOGoMailObject+Draft.m
+        We no longer use "[Fwd: ]" but simply "Fwd:"
+        when forwarding email messages.
+ 
+        * SoObjects/SOGo/SOGoUser.m
+        Modified the default forwarding format to be
+        inline instead of "attachment".
+ 
+        * SoObjects/Mailer/SOGoDraftObject.m
+        We now create and use a NGMimeContentDispositionHeaderField
+        in order to avoid encoding the whole Content-Disposition
+        header in case a non-ASCII char is present!
+
 2007-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/iCalEntityObject+Utilities.m ([iCalEntityObject

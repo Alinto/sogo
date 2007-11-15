@@ -180,7 +180,7 @@
 
   subject = [self decodedSubject];
   if ([subject length] > 0)
-    newSubject = [NSString stringWithFormat: @"[Fwd: %@]", subject];
+    newSubject = [NSString stringWithFormat: @"Fwd: %@", subject];
   else
     newSubject = subject;
 
