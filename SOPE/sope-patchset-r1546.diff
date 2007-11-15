@@ -443,6 +443,72 @@ Index: sope-mime/NGMail/NGSmtpClient.m
      [self->connection flush];
  
      reply = [self receiveReply];
+Index: sope-mime/NGMail/NGMimeMessageGenerator.m
+===================================================================
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1546)
++++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
+@@ -86,37 +86,40 @@
+   char         *des    = NULL;
+   unsigned int cnt;
+   BOOL         doEnc;
+-  NSString     *str;
++//   NSString     *str;
+ 
+   // TODO: this s***s big time!
++//   NSLog (@"class: '%@'", NSStringFromClass ([_data class]));
++// #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
++//   str = [[NSString alloc] initWithData:_data
++//                           encoding:NSISOLatin1StringEncoding];
++//   str = [str autorelease];
++  
++// #else
++//   str = [[NSString alloc] initWithData:_data
++//                           encoding:NSISOLatin9StringEncoding];
++// #endif
++//   bytes  = [str cString];
++//   length = [str cStringLength];
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+-  str = [[NSString alloc] initWithData:_data
+-                          encoding:NSISOLatin1StringEncoding];
+-#else
+-  str = [[NSString alloc] initWithData:_data
+-                          encoding:NSISOLatin9StringEncoding];
+-#endif
+-  str = [str autorelease];
+-  
+-  bytes  = [str cString];
+-  length = [str cStringLength];
+-  
++  bytes = [_data bytes];
++  length = [_data length];
++
+   /* check whether we need to encode */
+-  
+-  for (cnt = 0, doEnc = NO; cnt < length; cnt++) {
+-    if ((unsigned char)bytes[cnt] > 127) {
++  cnt = 0;
++  doEnc = NO;
++  while (!doEnc && cnt < length)
++    if ((unsigned char)bytes[cnt] > 127)
+       doEnc = YES;
+-      break;
+-    }
+-  }
+-  
++    else
++      cnt++;
++
+   if (!doEnc)
+     return _data;
+   
+   /* encode quoted printable */
+   {
+-    char        iso[]     = "=?iso-8859-15?q?";
++    char        iso[]     = "=?utf-8?q?";
+     unsigned    isoLen    = 16;
+     char        isoEnd[]  = "?=";
+     unsigned    isoEndLen = 2;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1546)
