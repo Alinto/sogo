@@ -623,6 +623,15 @@ Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
 --- sope-mime/NGMime/NGMimePartParser.m	(révision 1546)
 +++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
+@@ -227,7 +227,7 @@
+ }
+ 
+ + (NSStringEncoding)defaultHeaderFieldEncoding {
+-  return NSISOLatin1StringEncoding;
++  return NSUTF8StringEncoding;
+ }
+ 
+ - (id)valueOfHeaderField:(NSString *)_name data:(id)_data {
 @@ -1091,7 +1091,10 @@
    id<NGMimeBodyParser> bodyParser   = nil;
    
@@ -635,6 +644,142 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
+===================================================================
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1546)
++++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
+@@ -49,80 +49,70 @@
+   
+   // TODO: move the stuff below to some NSString or NSData category?
+   
+-  data = [NSMutableData dataWithCapacity:64];
++  data = [NSMutableData dataWithCapacity: 64];
+   tmp  = [field type];
+   [data appendBytes:[tmp cString] length:[tmp length]];
+   tmp = [field filename];
+   if (tmp != nil) {
+     [data appendBytes:"; " length:2];
+     [data appendBytes:"filename=\"" length:10];
+-    {
+-      unsigned char *ctmp;
+-      int  cnt, len;
+-      BOOL doEnc;
+-      
+-      // TODO: unicode?
+-      len  = [tmp cStringLength];
+-      ctmp = malloc(len + 3);
+-      [tmp getCString:(char *)ctmp]; ctmp[len] = '\0';
+-      cnt  = 0;
+-      doEnc = NO;
+-      while (cnt < len) {
+-        if ((unsigned char)ctmp[cnt] > 127) {
+-          doEnc = YES;
+-          break;
+-        }
+-        cnt++;
++    
++    NSData *d;
++    unsigned char* bytes;
++    unsigned length;
++    int  cnt;
++    BOOL doEnc;
++
++    //d = [tmp dataUsingEncoding: NSUTF8StringEncoding];
++    //bytes = [d bytes];
++    //length = [d length];
++    bytes = [tmp cStringUsingEncoding: NSUTF8StringEncoding];
++    length = strlen(bytes);
++    
++    cnt = 0;
++    doEnc = NO;
++    while (cnt < length) {
++      if ((unsigned char)bytes[cnt] > 127) {
++	doEnc = YES;
++	break;
+       }
+-      if (doEnc) {
+-        char        iso[]     = "=?iso-8859-15?q?";
+-        unsigned    isoLen    = 16;
+-        char        isoEnd[]  = "?=";
+-        unsigned    isoEndLen = 2;
+-        unsigned    desLen;
+-        char        *des;
+-      
+-        if (ctmp) free(ctmp);
+-        {
+-          NSData *data;
++      cnt++;
++    }
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+-          data = [tmp dataUsingEncoding:NSISOLatin1StringEncoding];
+-#else
+-          data = [tmp dataUsingEncoding:NSISOLatin9StringEncoding];
+-#endif
+-
+-          len  = [data length];
+-          ctmp =  malloc(len+1);
+-          [data getBytes:ctmp];  ctmp[len] = '\0';
+-        }
+-          
+-        desLen = len * 3 + 20;
+-        des    = calloc(desLen + 10, sizeof(char));
+-      
+-        memcpy(des, ctmp, cnt);
+-        memcpy(des + cnt, iso, isoLen);
+-        desLen =
+-	  NGEncodeQuotedPrintableMime((unsigned char *)ctmp + cnt, len - cnt,
+-				      (unsigned char *)des + cnt + isoLen,
+-				      desLen - cnt - isoLen);
+-        if ((int)desLen != -1) {
+-          memcpy(des + cnt + isoLen + desLen, isoEnd, isoEndLen);
+-          [data appendBytes:des length:(cnt + isoLen + desLen + isoEndLen)];
+-        }
+-        else {
++    if (doEnc)
++      {
++	char        iso[]     = "=?utf-8?q?";
++	unsigned    isoLen    = 10;
++	char        isoEnd[]  = "?=";
++	unsigned    isoEndLen = 2;
++	int    desLen;
++	char        *des;
++	
++	desLen = length * 3 + 20;
++	
++	des = calloc(desLen + 2, sizeof(char));
++	
++	memcpy(des, iso, isoLen);
++	desLen = NGEncodeQuotedPrintableMime((unsigned char *)bytes, length,
++					     (unsigned char *)(des + isoLen),
++					     desLen - isoLen);
++	if (desLen != -1) {
++	  memcpy(des + isoLen + desLen, isoEnd, isoEndLen);
++	  [data appendBytes:des length:(isoLen + desLen + isoEndLen)];
++	}
++	else {
+           [self logWithFormat:@"WARNING(%s:%i): An error occour during "
+ 		@"quoted-printable decoding",
+                 __PRETTY_FUNCTION__, __LINE__];
+-        }
+-        if (des) free(des);
++	  if (des != NULL) free(des);
++	}
+       }
+-      else {
+-        [data appendBytes:ctmp length:len];
++    else
++      {
++	[data appendBytes:[tmp cString] length:[tmp length]];
+       }
+-    }
+-      //      [data appendBytes:[tmp cString] length:[tmp length]];
+-      [data appendBytes:"\"" length:1];
++
++    [data appendBytes:"\"" length:1];
+   }
+   return data;
+ }
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
 --- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1546)
