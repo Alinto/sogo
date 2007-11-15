@@ -1169,8 +1169,8 @@ function openInbox(node) {
   mailboxTree.o(1);
 }
 
-function initMailer(event) {
-  if (!document.body.hasClassName("popup")) {
+function initMailer(event) { log ("initMailer");
+  if (!$(document.body).hasClassName("popup")) {
 //     initDnd();
     initMailboxTree();
     initMessageCheckTimer();
@@ -1652,7 +1652,7 @@ function getMenus() {
   return menus;
 }
 
-addEvent(window, 'load', initMailer);
+FastInit.addOnLoad(initMailer);
 
 function Mailbox(type, name) {
   this.type = type;

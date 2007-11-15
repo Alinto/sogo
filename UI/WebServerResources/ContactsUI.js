@@ -764,4 +764,4 @@ function initContacts(event) {
    }
 }
 
-addEvent(window, 'load', initContacts);
+FastInit.addOnLoad(initContacts);

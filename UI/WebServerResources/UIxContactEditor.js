@@ -134,4 +134,4 @@ function initEditorForm() {
   $("givenName").onkeyup = onFnNewValue;
 }
 
-addEvent(window, 'load', initEditorForm);
+FastInit.addOnLoad(initEditorForm);

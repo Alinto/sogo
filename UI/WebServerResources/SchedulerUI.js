@@ -1660,4 +1660,4 @@ function initCalendars() {
    }
 }
 
-addEvent(window, 'load', initCalendars);
+FastInit.addOnLoad(initCalendars);

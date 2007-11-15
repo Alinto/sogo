@@ -38,4 +38,4 @@ function onLoginCallback(http) {
   }
 }
 
-addEvent(window, 'load', initLogin);
+FastInit.addOnLoad(initLogin);

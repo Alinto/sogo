@@ -9,4 +9,4 @@ function initPopupMailer(event) {
   resizeMailContent();
 }
 
-addEvent(window, 'load', initPopupMailer);
+FastInit.addOnLoad(initPopupMailer);

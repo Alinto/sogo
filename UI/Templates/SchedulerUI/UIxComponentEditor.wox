@@ -75,6 +75,8 @@
 	var:value="privacy"/>
       <input type="hidden" name="attendeesNames" id="attendeesNames"
 	var:value="attendeesNames"/>
+      <input type="hidden" name="attendeesUIDs" id="attendeesUIDs"
+	var:value="attendeesUIDs"/>
       <input type="hidden" name="attendeesEmails" id="attendeesEmails"
 	var:value="attendeesEmails"/>
       <input type="hidden" name="calendarFoldersList"

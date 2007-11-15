@@ -59,6 +59,7 @@
   NSString *componentOwner;
 
   NSString *attendeesNames;
+  NSString *attendeesUIDs;
   NSString *attendeesEmails;
 }
 
@@ -106,6 +107,9 @@
 
 - (void) setAttendeesNames: (NSString *) newAttendeesNames;
 - (NSString *) attendeesNames;
+
+- (void) setAttendeesUIDs: (NSString *) newAttendeesUIDs;
+- (NSString *) attendeesUIDs;
 
 - (void) setAttendeesEmails: (NSString *) newAttendeesEmails;
 - (NSString *) attendeesEmails;

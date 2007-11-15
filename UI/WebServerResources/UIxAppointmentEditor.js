@@ -286,4 +286,4 @@ function onAppointmentEditorLoad() {
   initTimeWidgets(widgets);
 }
 
-addEvent(window, 'load', onAppointmentEditorLoad);
+FastInit.addOnLoad(onAppointmentEditorLoad);

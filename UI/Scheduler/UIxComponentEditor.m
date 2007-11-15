@@ -45,6 +45,7 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
+#import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
@@ -65,6 +66,7 @@
       componentOwner = @"";
       organizer = nil;
       attendeesNames = nil;
+      attendeesUIDs = nil;
       attendeesEmails = nil;
       calendarList = nil;
     }
@@ -86,6 +88,7 @@
   [cycleEnd release];
   [url release];
   [attendeesNames release];
+  [attendeesUIDs release];
   [attendeesEmails release];
   [calendarList release];
 
@@ -96,10 +99,14 @@
 {
   NSEnumerator *attendees;
   iCalPerson *currentAttendee;
-  NSMutableString *names, *emails;
+  NSMutableString *names, *uids, *emails;
+  NSString *uid;
+  LDAPUserManager *um;
 
   names = [NSMutableString new];
+  uids = [NSMutableString new];
   emails = [NSMutableString new];
+  um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
   currentAttendee = [attendees nextObject];
@@ -107,12 +114,18 @@
     {
       [names appendFormat: @"%@,", [currentAttendee cn]];
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
+      uid = [um getUIDForEmail: [currentAttendee rfc822Email]];
+      if (uid != nil)
+	[uids appendFormat: @"%@,", uid];
+      else
+	[uids appendString: @","];
       currentAttendee = [attendees nextObject];
     }
 
   if ([names length] > 0)
     {
       ASSIGN (attendeesNames, [names substringToIndex: [names length] - 1]);
+      ASSIGN (attendeesUIDs, [uids substringToIndex: [uids length] - 1]);
       ASSIGN (attendeesEmails,
 	      [emails substringToIndex: [emails length] - 1]);
     }
@@ -240,6 +253,16 @@
 - (NSString *) attendeesNames
 {
   return attendeesNames;
+}
+
+- (void) setAttendeesUIDs: (NSString *) newAttendeesUIDs
+{
+  ASSIGN (attendeesUIDs, newAttendeesUIDs);
+}
+
+- (NSString *) attendeesUIDs
+{
+  return attendeesUIDs;
 }
 
 - (void) setAttendeesEmails: (NSString *) newAttendeesEmails

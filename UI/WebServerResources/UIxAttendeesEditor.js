@@ -1,9 +1,9 @@
 var resultsDiv;
-var searchField;
 var running = false;
 var address;
 var delay = 500;
 var requestField;
+var searchField;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 
@@ -11,6 +11,7 @@ var dayStartHour = 8;
 var dayEndHour = 18;
 
 var attendeesNames;
+var attendeesUIDs;
 var attendeesEmails;
 
 function onContactKeydown(event) {
@@ -57,16 +58,17 @@ function onContactKeydown(event) {
 }
 
 function triggerRequest() {
-  if (document.contactLookupAjaxRequest) {
-    document.contactLookupAjaxRequest.aborted = yes;
-    document.contactLookupAjaxRequest.abort();
+  if (requestField) {
+    if (document.contactLookupAjaxRequest) {
+      document.contactLookupAjaxRequest.aborted = yes;
+      document.contactLookupAjaxRequest.abort();
+    }
+    var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+		   + escape(requestField.value) );
+    document.contactLookupAjaxRequest = triggerAjaxRequest(urlstr,
+							   updateResults,
+							   requestField);
   }
-  var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-                 + escape(requestField.value) );
-  //log (urlstr);
-  document.contactLookupAjaxRequest = triggerAjaxRequest(urlstr,
-                                                         updateResults,
-                                                         requestField);
 }
 
 function updateResults(http) {
@@ -74,7 +76,7 @@ function updateResults(http) {
     var menu = $('attendeesMenu');
     var list = menu.down("ul");
 
-    searchField = http.callbackData;
+    searchField = http.callbackData; // requestField
     searchField.hasfreebusy = false;
 
     if (http.status == 200) {
@@ -123,9 +125,9 @@ function updateResults(http) {
 	if (data.length == 1) {
 	  var contact = data[0];
 	  if (contact["uid"].length > 0)
-	    searchField.uid = contact["uid"];
+	    searchField.setAttribute("uid", contact["uid"]);
 	  else
-	    searchField.uid = null;
+	    searchField.setAttribute("uid", null);
 	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
 	  if (contact["name"].substring(0, searchField.value.length).toUpperCase()
 	      == searchField.value.toUpperCase())
@@ -153,26 +155,10 @@ function updateResults(http) {
 
 function onAttendeeResultClick(event) {
   if (searchField) {
-    searchField.uid = this.uid;
+    searchField.setAttribute("uid", this.getAttribute("uid"));
     searchField.value = this.firstChild.nodeValue.trim();
     searchField.confirmedValue = searchField.value;
     searchField.blur(); // triggers checkAttendee function call
-  }
-}
-
-function UIDLookupCallback(http) {
-  if (http.readyState == 4) {
-    if (http.status == 200) {
-      var searchField = http.callbackData;
-      var start = searchField.value.length;
-      var text = http.responseText.split(":");
-      if (text[0].length > 0) {
-	 searchField.uid = text[0];
-	 displayFreeBusyForNode(searchField);
-      }
-      else
-	 searchField.uid = null
-    }
   }
 }
 
@@ -270,6 +256,9 @@ function newAttendee(event) {
 }
 
 function checkAttendee() {
+  if (document.currentPopupMenu)
+    hideMenu(document.currentPopupMenu);
+
   if (document.currentPopupMenu && !this.confirmedValue) {
     // Hack for IE7; blur event is triggered on input field when
     // selecting a menu item
@@ -277,53 +266,56 @@ function checkAttendee() {
     if (visible)
       return;
   }
+
   this.focussed = false;
-  var th = this.parentNode.parentNode;
-  var tbody = th.parentNode;
+  var row = this.parentNode.parentNode;
+  var tbody = row.parentNode;
   if (tbody && this.value.trim().length == 0)
-    tbody.removeChild(th);
+    tbody.removeChild(row);
   else if (!this.hasfreebusy) {
     if (this.confirmedValue)
       this.value = this.confirmedValue;
     displayFreeBusyForNode(this);
     this.hasfreebusy = true;
   }
-  resetAttendeesValue();
+
+  requestField = null;
+  searchField = null;
 }
 
 function displayFreeBusyForNode(node) {
-   if (document.contactFreeBusyAjaxRequest)
+  var nodes = node.parentNode.parentNode.cells;
+  if (node.getAttribute("uid")) {
+    if (document.contactFreeBusyAjaxRequest)
       awaitingFreeBusyRequests.push(node);
-   else {
-      var nodes = node.parentNode.parentNode.cells;
-      if (node.uid) {
-	 for (var i = 1; i < nodes.length; i++) {
-	    $(nodes[i]).removeClassName("noFreeBusy");
-	    nodes[i].innerHTML = ('<span class="freeBusyZoneElement"></span>'
-				  + '<span class="freeBusyZoneElement"></span>'
-				  + '<span class="freeBusyZoneElement"></span>'
-				  + '<span class="freeBusyZoneElement"></span>');
-	 }
-	 if (document.contactFreeBusyAjaxRequest) {
-	    document.contactFreeBusyAjaxRequest.aborted = true;
-	    document.contactFreeBusyAjaxRequest.abort();
-	 }
-	 var sd = $('startTime_date').valueAsShortDateString();
-	 var ed = $('endTime_date').valueAsShortDateString();
-	 var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
-			+ "sday=" + sd + "&eday=" + ed + "&additional=" +
-			additionalDays );
-	 document.contactFreeBusyAjaxRequest
-	    = triggerAjaxRequest(urlstr,
-				 updateFreeBusyData,
-				 node);
-      } else {
-	 for (var i = 1; i < nodes.length; i++) {
-	    $(nodes[i]).addClassName("noFreeBusy");
-	    nodes[i].innerHTML = '';
-	 }
+    else {
+      for (var i = 1; i < nodes.length; i++) {
+	$(nodes[i]).removeClassName("noFreeBusy");
+	$(nodes[i]).innerHTML = ('<span class="freeBusyZoneElement"></span>'
+				 + '<span class="freeBusyZoneElement"></span>'
+				 + '<span class="freeBusyZoneElement"></span>'
+				 + '<span class="freeBusyZoneElement"></span>');
       }
-   }
+      if (document.contactFreeBusyAjaxRequest) {
+	document.contactFreeBusyAjaxRequest.aborted = true;
+	document.contactFreeBusyAjaxRequest.abort();
+      }
+      var sd = $('startTime_date').valueAsShortDateString();
+      var ed = $('endTime_date').valueAsShortDateString();
+      var urlstr = ( UserFolderURL + "../" + node.getAttribute("uid") + "/freebusy.ifb/ajaxRead?"
+		     + "sday=" + sd + "&eday=" + ed + "&additional=" +
+		     additionalDays );
+      document.contactFreeBusyAjaxRequest
+	= triggerAjaxRequest(urlstr,
+			     updateFreeBusyData,
+			     node);
+    }
+  } else {
+    for (var i = 1; i < nodes.length; i++) {
+      $(nodes[i]).addClassName("noFreeBusy");
+      $(nodes[i]).update();
+    }
+  }
 }
 
 function setSlot(tds, nbr, status) {
@@ -362,22 +354,6 @@ function updateFreeBusyData(http) {
   }
 }
 
-function resetAttendeesValue() {
-  var table = $("freeBusy");
-  var inputs = table.getElementsByTagName("input");
-  for (var i = 0; i < inputs.length - 2; i++) {
-    var currentInput = inputs[i];
-    var uid = currentInput.getAttribute("uid");
-    if (uid) {
-      currentInput.uid = uid;
-      currentInput.setAttribute("uid", null);
-    }
-    currentInput.setAttribute("autocomplete", "off");
-  }
-  inputs[inputs.length - 2].setAttribute("autocomplete", "off");
-  Event.observe(inputs[inputs.length - 2], "click", newAttendee);
-}
-
 function resetAllFreeBusys() {
   var table = $("freeBusy");
   var inputs = table.getElementsByTagName("input");
@@ -409,25 +385,33 @@ function initializeWindowButtons() {
 
 function onEditorOkClick(event) {
    preventDefault(event);
-
+   
    attendeesNames = new Array();
+   attendeesUIDs = new Array();
    attendeesEmails = new Array();
-
+   
    var table = $("freeBusy");
    var inputs = table.getElementsByTagName("input");
    for (var i = 0; i < inputs.length - 2; i++) {
      var name = extractEmailName(inputs[i].value);
-     if (!(name && name.length > 0))
-       name = inputs[i].uid;
      var email = extractEmailAddress(inputs[i].value);
+     var uid = "";
+     if (inputs[i].getAttribute("uid"))
+       uid = inputs[i].getAttribute("uid");
+     if (!(name && name.length > 0))
+       if (inputs[i].uid)
+	 name = inputs[i].uid;
+       else
+	 name = email;
      var pos = attendeesEmails.indexOf(email);
      if (pos == -1)
        pos = attendeesEmails.length;
      attendeesNames[pos] = name;
+     attendeesUIDs[pos] = uid;
      attendeesEmails[pos] = email;
    }
-
    parent$("attendeesNames").value = attendeesNames.join(",");
+   parent$("attendeesUIDs").value = attendeesUIDs.join(",");
    parent$("attendeesEmails").value = attendeesEmails.join(",");
    window.opener.refreshAttendees();
 
@@ -507,7 +491,6 @@ function onTimeDateWidgetChange(event) {
   prepareTableHeaders();
   prepareTableRows();
   redisplayFreeBusyZone();
-  resetAttendeesValue();
   resetAllFreeBusys();
 }
 
@@ -563,53 +546,52 @@ function prepareTableRows() {
 
 function prepareAttendees() {
    var value = parent$("attendeesNames").value;
+   var table = $("freeBusy");
    if (value.length > 0) {
       attendeesNames = parent$("attendeesNames").value.split(",");
+      attendeesUIDs = parent$("attendeesUIDs").value.split(",");
       attendeesEmails = parent$("attendeesEmails").value.split(",");
 
-      var body = $("freeBusy").tBodies[0];
+      var tbody = table.tBodies[0];
+      var model = tbody.rows[tbody.rows.length - 1];
+      var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
       for (var i = 0; i < attendeesNames.length; i++) {
-	 var tr = body.insertRow(i);
-	 var td = document.createElement("td");
-	 $(td).addClassName("attendees");
-	 var input = document.createElement("input");
+	 var row = model.cloneNode(true);
+	 tbody.insertBefore(row, newAttendeeRow);
+	 $(row).removeClassName("attendeeModel");
+	 var input = $(row).down("input");
 	 var value = "";
-	 if (attendeesNames[i].length > 0)
+	 if (attendeesNames[i].length > 0 && attendeesNames[i] != attendeesEmails[i])
 	    value += attendeesNames[i] + " ";
 	 value += "<" + attendeesEmails[i] + ">";
 	 input.value = value;
-	 $(input).addClassName("textField");
+	 if (attendeesUIDs[i].length > 0)
+	   input.setAttribute("uid", attendeesUIDs[i]);
+	 input.setAttribute("name", "");
 	 input.setAttribute("modified", "0");
 	 input.observe("blur", checkAttendee);
 	 input.observe("keydown", onContactKeydown);
-	 tr.appendChild(td);
-	 td.appendChild(input);
 	 displayFreeBusyForNode(input);
       }
    }
    else {
       attendeesNames = new Array();
+      attendeesUIDs = new Array();
       attendeesEmails = new Array();
    }
-}
 
-function initializeFreebusys() {
-   var inputs = $("freeBusy").getElementsByTagName("input");
-   var baseUrl = UserFolderURL + "Contacts/contactSearch?search=";
-   for (var i = 0; i < attendeesEmails.length; i++)
-      triggerAjaxRequest(baseUrl + attendeesEmails[i],
-			 UIDLookupCallback, inputs[i]);
+   var inputs = table.getElementsByTagName("input");
+   inputs[inputs.length - 2].setAttribute("autocomplete", "off");
+   Event.observe(inputs[inputs.length - 2], "click", newAttendee);
 }
 
 function onFreeBusyLoadHandler() {
    initializeWindowButtons();
    initializeTimeWidgets();
-   prepareAttendees();
    prepareTableHeaders();
    prepareTableRows();
    redisplayFreeBusyZone();
-   resetAttendeesValue();
-   initializeFreebusys();
+   prepareAttendees();
 }
 
-document.observe("dom:loaded", onFreeBusyLoadHandler);
+FastInit.addOnLoad(onFreeBusyLoadHandler);

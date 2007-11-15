@@ -297,4 +297,4 @@ function onTaskEditorLoad() {
   initializeStatusLine();
 }
 
-addEvent(window, 'load', onTaskEditorLoad);
+FastInit.addOnLoad(onTaskEditorLoad);

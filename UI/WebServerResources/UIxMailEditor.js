@@ -368,4 +368,4 @@ function onMailEditorClose(event) {
   Event.stopObserving(window, "beforeunload", onMailEditorClose);
 }
 
-addEvent(window, 'load', initMailEditor);
+FastInit.addOnLoad(initMailEditor);

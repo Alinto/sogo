@@ -141,4 +141,4 @@ function initUserFoldersWindow() {
    Event.observe($("addButton"), "click",  onConfirmFolderSelection);
 }
 
-addEvent(window, 'load', initUserFoldersWindow);
+FastInit.addOnLoad(initUserFoldersWindow);

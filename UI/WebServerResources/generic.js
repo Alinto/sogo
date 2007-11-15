@@ -1402,7 +1402,7 @@ function onFinalLoadHandler(event) {
     safetyNet.parentNode.removeChild(safetyNet);
 }
 
-document.observe("dom:loaded", onLoadHandler);
+FastInit.addOnLoad(onLoadHandler);
 
 function parent$(element) {
   return this.opener.document.getElementById(element);

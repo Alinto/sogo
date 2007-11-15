@@ -56,12 +56,12 @@
       cssClass = "tbicon_delete";
       label = "Delete";
       tooltip = "Delete selected message or folder"; },
-    { link = "#";
-      isSafe = NO;
-      image = "tb-mail-junk-flat-24x24.png";
-      cssClass = "tbicon_junk";
-      label = "Junk";
-      tooltip = "Mark the selected messages as junk"; },
+//    { link = "#";
+//      isSafe = NO;
+//      image = "tb-mail-junk-flat-24x24.png";
+//      cssClass = "tbicon_junk";
+//      label = "Junk";
+//      tooltip = "Mark the selected messages as junk"; },
   ),
   (
    { link = "#";

@@ -158,4 +158,4 @@ function onComponentEditorLoad(event) {
 		    false);
 }
 
-addEvent(window, 'load', onComponentEditorLoad);
+FastInit.addOnLoad(onComponentEditorLoad);

@@ -18,7 +18,7 @@
 - improved support for multiple selection in tables and lists;
 - improved IE7 and Safari support: attendees selector, email file attachments;
 - updated PrototypeJS to version 1.6.0;
-- improved address completion in attendees selector;
+- improved address completion and freebusy timeline in attendees selector;
 - changed look of message composition window to Thunderbird 2.0;
 - countless bugfixes;
 
