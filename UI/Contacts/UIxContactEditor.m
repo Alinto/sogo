@@ -560,13 +560,13 @@
       else
 	[address appendString: email];
 	
-      url = [NSString stringWithFormat: @"Mail/compose?mailto=%@", address];
+      url = [NSString stringWithFormat: @"%@/Mail/compose?mailto=%@",
+		      [self userFolderPath], address];
     }
   else
-    url = @"Mail/compose";
-
-  return
-    [self redirectToLocation: [self relativePathToUserFolderSubPath: url]];
+    url = [NSString stringWithFormat: @"%@/Mail/compose", [self userFolderPath]];
+  
+  return [self redirectToLocation: url];
 }
 
 - (id) newAction

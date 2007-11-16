@@ -257,9 +257,10 @@ function openMailComposeWindow(url, wId) {
 
 function openMailTo(senderMailTo) {
   var mailto = sanitizeMailTo(senderMailTo);
+
   if (mailto.length > 0)
     openMailComposeWindow(ApplicationBaseURL
-			  + "/../Mail/compose?mailto=" + mailto);
+			  + "../Mail/compose?mailto=" + mailto);
 
   return false; /* stop following the link */
 }

@@ -1173,7 +1173,7 @@ function openInbox(node) {
   mailboxTree.o(1);
 }
 
-function initMailer(event) { log ("initMailer");
+function initMailer(event) {
   if (!$(document.body).hasClassName("popup")) {
 //     initDnd();
     initMailboxTree();
