@@ -349,7 +349,8 @@ static BOOL debugOn = NO;
 
   if ([mimeType isEqualToString: @"image/gif"]
       || [mimeType isEqualToString: @"image/png"]
-      || [mimeType isEqualToString: @"image/jpg"])
+      || [mimeType isEqualToString: @"image/jpg"]
+      || [mimeType isEqualToString: @"image/jpeg"])
     classString = @"SOGoImageMailBodyPart";
   else if ([mimeType isEqualToString: @"text/calendar"])
     classString = @"SOGoCalendarMailBodyPart";
@@ -366,7 +367,7 @@ static BOOL debugOn = NO;
   if (classString)
     klazz = NSClassFromString (classString);
   else
-    klazz = Nil;
+    klazz = [SOGoMailBodyPart class];
 
   return klazz;
 }

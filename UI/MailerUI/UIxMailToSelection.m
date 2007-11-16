@@ -64,8 +64,6 @@
 - (void) setBcc: (NSArray *) _bcc;
 - (NSArray *) bcc;
 
-- (NSArray *) properlySplitAddresses: (NSArray *) _addresses;
-
 - (void) getAddressesFromFormValues: (NSDictionary *) _dict;
 - (NSString *) getIndexFromIdentifier: (NSString *) _identifier;
 
@@ -108,7 +106,7 @@ static NSArray *headers = nil;
 
 - (void) setTo: (NSArray *) _to
 {
-  ASSIGN (to, [self properlySplitAddresses: _to]);
+  ASSIGN (to, _to);
 }
 
 - (NSArray *) to
@@ -127,7 +125,7 @@ static NSArray *headers = nil;
 
 - (void) setCc: (NSArray *) _cc
 {
-  ASSIGN (cc, [self properlySplitAddresses: _cc]);
+  ASSIGN (cc, _cc);
 }
 
 - (NSArray *) cc
@@ -137,7 +135,7 @@ static NSArray *headers = nil;
 
 - (void) setBcc: (NSArray *) _bcc
 {
-  ASSIGN (bcc, [self properlySplitAddresses: _bcc]);
+  ASSIGN (bcc, _bcc);
 }
 
 - (NSArray *) bcc
@@ -235,52 +233,6 @@ static NSArray *headers = nil;
   currentIndex++;
 
   return @"";
-}
-
-/* address handling */
-
-- (NSArray *) properlySplitAddresses: (NSArray *) _addresses
-{
-  NSString            *addrs;
-  NGMailAddressParser *parser;
-  NSArray             *result;
-  NSMutableArray      *ma;
-  unsigned            i, count;
-
-  if (!_addresses || [_addresses count] == 0)
-    return nil;
-
-  /* create one huge string, then split it using the parser */
-  addrs = [_addresses componentsJoinedByString:@","];
-  parser = [NGMailAddressParser mailAddressParserWithString:addrs];
-  result = [parser parseAddressList];
-  if(result == nil) {
-    [self debugWithFormat:@"Couldn't parse given addresses:%@", _addresses];
-    return _addresses;
-  }
-
-  count = [result count];
-  ma = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NGMailAddress   *addr;
-    NSMutableString *s;
-    BOOL hasName = NO;
-
-    s = [[NSMutableString alloc] init];
-    addr = [result objectAtIndex:i];
-    if([addr displayName]) {
-      [s appendString:[addr displayName]];
-      [s appendString:@" "];
-      hasName = YES;
-    }
-    if(hasName)
-      [s appendString:@"<"];
-    [s appendString:[addr address]];
-    if(hasName)
-      [s appendString:@">"];
-    [ma addObject:s];
-  }
-  return ma;
 }
 
 /* handling requests */

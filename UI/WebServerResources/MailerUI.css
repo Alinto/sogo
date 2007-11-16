@@ -379,6 +379,11 @@ DIV.mailer_mailcontent
   bottom: 0px;
   overflow: auto; }
 
+DIV.mailer_mailcontent TABLE
+{
+  table-layout: auto;
+}
+
 TD.mailer_fieldname
 {
   white-space: nowrap;

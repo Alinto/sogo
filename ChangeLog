@@ -1,3 +1,31 @@
+2007-11-16  Ludovic Marcotte <ludovic@inverse.ca>
+
+        * SoObjects/Mailer/SOGoMailBaseObject.m
+	Fixed typo.
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m
+	We also grok image/jpeg and return the SOGoMailBodyPart
+	for attachments fetching.
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m
+	Prevent a crash in case body decoding failed during
+	a reply.
+
+	* SoObjects/Mailer/SOGoMailObject.m
+	Improved body decoding during a reply to also try
+	latin1 as an encoding.
+
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	Greatly improved the display mechanisms for emails.
+	Also properly consider the content disposition for
+	most content types.
+
+	* UI/MailerUI/UIxMailToSelection.m
+	Removed worthless code.
+
+	* UI/WebServerResources/MailerUI.css
+	CSS fix for table views.
+
 2007-11-15  Ludovic Marcotte <ludovic@inverse.ca>
 
         * UI/WebServerResources/MailerUI.js

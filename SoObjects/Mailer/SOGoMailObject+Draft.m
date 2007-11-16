@@ -80,6 +80,8 @@
   int index;
   BOOL htmlContent;
 
+  content = @"";
+
   if ([keys count])
     {
       types = [keys objectsForKey: @"mimeType"];
@@ -91,23 +93,23 @@
 	}
       else
 	htmlContent = NO;
-      if (index == NSNotFound)
-	content = @"";
-      else
+      
+      if (index != NSNotFound)
 	{
 	  contentKey = [keys objectAtIndex: index];
 	  parts = [self fetchPlainTextStrings:
 			  [NSArray arrayWithObject: contentKey]];
-	  rawPart = [[parts allValues] objectAtIndex: 0];
-	  if (htmlContent)
-	    content = [rawPart htmlToText];
-	  else
-	    content = rawPart;
+	  if ([parts count] > 0)
+	    {
+	      rawPart = [[parts allValues] objectAtIndex: 0];
+	      if (htmlContent)
+		content = [rawPart htmlToText];
+	      else
+		content = rawPart;
+	    }
 	}
     }
-  else
-    content = @"";
-
+  
   return content;
 }
 

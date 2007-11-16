@@ -656,8 +656,13 @@ static BOOL debugSoParts       = NO;
 	  [s autorelease];
 	}
       else
-	s = [NSString stringWithData: mailData
-		      usingEncodingNamed: charset];
+	{
+	  s = [NSString stringWithData: mailData usingEncodingNamed: charset];
+	  
+	  // If it has failed, we try at least using UTF-8. Normally, this can NOT fail
+	  if (!s)
+	    s = [[[NSString alloc] initWithData: mailData encoding: NSISOLatin1StringEncoding] autorelease];
+	}
     }
   else
     s = nil;

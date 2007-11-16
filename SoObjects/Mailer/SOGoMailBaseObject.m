@@ -207,7 +207,7 @@ static BOOL debugOn = YES;
 
 - (BOOL)isBodyPartKey:(NSString *)_key inContext:(id)_ctx {
   /*
-    Every key starting with a digit is consider an IMAP4 mime part key, used in
+    Every key starting with a digit is considered an IMAP4 mime part key, used in
     SOGoMailObject and SOGoMailBodyPart.
   */
   if ([_key length] == 0)

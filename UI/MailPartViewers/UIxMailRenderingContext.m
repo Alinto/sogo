@@ -29,6 +29,25 @@
 
 #import "UIxMailRenderingContext.h"
 
+@interface UIxMailRenderingContext (Private)
+
+- (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info;
+
+@end
+
+@implementation UIxMailRenderingContext (Private)
+
+- (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info
+{
+  NSString *s;
+
+  s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
+	
+  return (s && [s caseInsensitiveCompare: @"ATTACHMENT"] == NSOrderedSame);
+}
+
+@end
+
 @implementation UIxMailRenderingContext
 
 static BOOL showNamedTextAttachmentsInline = NO;
@@ -235,13 +254,12 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
   if ([mt isEqualToString:@"multipart"])
     {
-      if ([st isEqualToString:@"mixed"])
+      if ([st isEqualToString:@"mixed"] || [st isEqualToString:@"related"])
 	return [self mixedViewer];
       else if ([st isEqualToString:@"signed"])
 	return [self signedViewer];
-      else if ([st isEqualToString:@"alternative"]
-             || [st isEqualToString:@"related"])
-      return [self alternativeViewer];
+      else if ([st isEqualToString:@"alternative"])
+	return [self alternativeViewer];
     
     if ([st isEqualToString:@"report"])
       /* this is used by mail-delivery reports */
@@ -249,19 +267,9 @@ static BOOL showNamedTextAttachmentsInline = NO;
     }
   else if ([mt isEqualToString:@"text"])
     {
-    /* 
-       Note: in the _info dictionary we do not get the content-disposition
-             information (inline vs attachment). Our hack is to check for the
-	     'name' parameter.
-    */
     if ([st isEqualToString:@"plain"] || [st isEqualToString:@"html"]) {
-      if (!showNamedTextAttachmentsInline) {
-	NSString *n;
-	
-	n = [[_info objectForKey:@"parameterList"] objectForKey:@"name"];
-	if ([n isNotNull] && [n length] > 0)
-	  return [self linkViewer];
-      }
+      if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info])
+	return [self linkViewer];
       
       return [st isEqualToString:@"html"] 
 	? [self htmlViewer] : [self textViewer];
@@ -269,10 +277,15 @@ static BOOL showNamedTextAttachmentsInline = NO;
     
     if ([st isEqualToString:@"calendar"])
       return [self iCalViewer];
-  }
+    }
   
   if ([mt isEqualToString:@"image"])
-    return [self imageViewer];
+    {
+      if ([self _shouldDisplayAsAttachment: _info])
+	return [self linkViewer];
+     
+      return [self imageViewer];
+    }
   
   if ([mt isEqualToString:@"message"] && [st isEqualToString:@"rfc822"])
     return [self messageViewer];
