@@ -178,7 +178,7 @@ static NSArray *headers = nil;
   NSMutableArray *ma;
   
   ma = [NSMutableArray arrayWithCapacity:3];
-  if ([to isNotNull])
+  if ([to isNotNull] && [to count] > 0)
     [ma addObject: to];
   if ([cc isNotNull])
     [ma addObject: cc];

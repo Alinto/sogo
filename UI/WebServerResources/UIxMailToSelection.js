@@ -219,9 +219,8 @@ function hasRecipients() {
   var count;
   
   count = this.getAddressCount();
-  if (count > 0)
-    return true;
-  return false;
+
+  return (count > 0)
 }
 
 /* addressbook helpers */

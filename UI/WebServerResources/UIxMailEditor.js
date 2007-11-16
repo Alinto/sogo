@@ -4,11 +4,9 @@ function onContactAdd() {
   var selector = null;
   var selectorURL = '?popup=YES&selectorId=mailer-contacts';
  
-  urlstr = ApplicationBaseURL;
-  if (urlstr[urlstr.length-1] != '/')
-    urlstr += '/';
-  urlstr += ("../../" + UserLogin + "/Contacts/"
-             + contactSelectorAction + selectorURL);
+  urlstr = ApplicationBaseURL 
+    + "../Contacts/"
+    + contactSelectorAction + selectorURL;
   var w = window.open(urlstr, "Addressbook",
                       "width=640,height=400,resizable=1,scrollbars=0");
   w.selector = selector;
