@@ -33,7 +33,7 @@ IMG#progressIndicator
   margin-top: 1.5em;
   margin-right: 1em; }
 
-SPAN#toolbar IMG#progressIndicator
+DIV#toolbar IMG#progressIndicator
 { margin-top: 0.75em; }
 
 DIV#pageContent
@@ -232,12 +232,14 @@ SPAN.toolbarSeparator
   width: 0px;
   padding: 0px; }
 
-A.toolbarButton
+BUTTON.toolbarButton,
+SPAN.toolbarButton,
+SPAN.disabledToolbarButton
 { color: #000;
-  text-decoration: none; }
-
-SPAN.toolbarButton, SPAN.disabledToolbarButton
-{ cursor: default;
+  font-family: Lucida Grande, Bitstream VeraSans, Tahoma;
+  font-size: 8pt;
+  text-decoration: none;
+  cursor: default;
   display: inline;
   float: left;
   text-align: center;
@@ -249,12 +251,16 @@ SPAN.toolbarButton, SPAN.disabledToolbarButton
   border-bottom: 1px solid transparent;
   padding: 1px 2px;
   background-color: transparent;
-  color: -moz-DialogText; }
+  color: -moz-DialogText;
+  overflow: visible;
+  margin: 0px; }
 
 SPAN.disabledToolbarButton
 { -moz-opacity: 0.4;
-  opacity: 0.4; }
+  opacity: 0.4;
+  padding-top: 2px; }
 
+BUTTON.toolbarButton:hover,
 SPAN.toolbarButton:hover
 { color: -moz-buttonhovertext;
   border-top: 1px solid #fff;
@@ -262,6 +268,7 @@ SPAN.toolbarButton:hover
   border-bottom: 1px solid #828482;
   border-right: 1px solid #828482; }
 
+BUTTON.toolbarButton:active,
 SPAN.toolbarButton:active
 { color: -moz-buttonhovertext;
   border-top: 1px solid #828482;

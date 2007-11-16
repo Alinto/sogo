@@ -261,9 +261,11 @@ TABLE#dateSelectorTable
 { background-color: #deebf7;
   border: 1px solid #deebf7; }
 
+#dateSelector TD.dayOfToday._selected
+{ background-color: #4b6983; }
+
 #dateSelector TD._selected A
 { color: #fff; }
-
 
 TABLE#eventsList
 { width: 100%; }
@@ -283,10 +285,8 @@ TABLE#eventsList TH
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
 TABLE._unfocused#eventsList TR._selected TD
-{
-  background-color: #d4d0c8 !important;
-  color: #fff !important;
-}
+{ background-color: #d4d0c8 !important;
+  color: #fff !important; }
 
 SPAN.dayCellLabel
 { color: #77a;

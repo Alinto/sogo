@@ -452,7 +452,7 @@ function restoreCurrentDaySelection(div) {
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
-  var url = ApplicationBaseURL + "/dateselector";
+  var url = ApplicationBaseURL + "dateselector";
   if (day)
     url += "?day=" + day;
 
@@ -480,7 +480,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 }
 
 function changeCalendarDisplay(data, newView) {
-  var url = ApplicationBaseURL + "/" + ((newView) ? newView : currentView);
+  var url = ApplicationBaseURL + ((newView) ? newView : currentView);
 
   selectedCalendarCell = null;
 
@@ -493,9 +493,55 @@ function changeCalendarDisplay(data, newView) {
 
   if (!day)
     day = currentDay;
-  if (day)
-    url += "?day=" + day;
 
+  if (day) {
+    var divs = $$('div.day[day='+day+']');
+    if (divs.length > 0) {
+      // Don't reload the view if the event is present in current view
+
+      // Find day number
+      var dayNumber;
+      var classes = $w(divs[0].className);
+      for (var i = 0; i < classes.length; i++) {
+	if (classes[i] == 'day')
+	  continue;
+	if (classes[i] == 'selectedDay')
+	  break;
+	dayNumber = classes[i];
+	break;
+      }
+
+      // Deselect previous day
+      var selectedDivs = $$('div.day.selectedDay');
+      selectedDivs.each(function(div) {
+	  div.removeClassName('selectedDay');
+	});
+      
+      // Select new day
+      selectedDivs = $$('div.day.'+dayNumber);
+      selectedDivs.each(function(div) {
+	  div.addClassName('selectedDay');
+	});
+      
+      // Deselect day in date selector
+      if (document.selectedDate)
+	document.selectedDate.deselect();
+      
+      // Select day in date selector
+      var selectedLink = $$('table#dateSelectorTable a[day='+day+']');
+      if (selectedLink.length > 0) {
+	selectedCell = selectedLink[0].up(1);
+	selectedCell.select();
+	document.selectedDate = selectedCell;
+      }
+
+      // Scroll to event
+      scrollDayView(scrollEvent);
+
+      return false;
+    }
+    url += "?day=" + day;
+  }
 //   if (newView)
 //     log ("switching to view: " + newView);
 //   log ("changeCalendarDisplay: " + url);
@@ -538,18 +584,24 @@ function onMonthOverview() {
 }
 
 function scrollDayView(scrollEvent) {
+
+  if (currentView == "monthview")
+    return;
+
   var offset = 0;
   var daysView = $("daysView");
   var hours =
     $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
 
-  if (scrollEvent && scrollEvent.siblings) {
-    var classes = scrollEvent.siblings[0].getAttribute("class").split(" ");
-    for (var i = 0; i < classes.length; i++)
+  if (scrollEvent) {
+    var divs = $$("div#calendarContent div." + eventClass(scrollEvent));
+    var classes = $w(divs[0].className);
+    for (var i = 0; i < classes.length; i++) {
       if (classes[i].startsWith("starts")) {
 	var starts = Math.floor(parseInt(classes[i].substr(6)) / 4);
 	offset = hours[starts].offsetTop;
       }
+    }
   }
   else
     offset = hours[8].offsetTop;
@@ -564,7 +616,7 @@ function onClickableCellsDblClick(event) {
   event.returnValue = false;
 }
 
-function refreshCalendarEvents() {
+function refreshCalendarEvents(scrollEvent) {
    var todayDate = new Date();
    var sd;
    var ed;
@@ -610,7 +662,7 @@ function refreshCalendarEvents() {
    var url = ApplicationBaseURL + "/eventslist?sd=" + sd + "&ed=" + ed;
    document.refreshCalendarEventsAjaxRequest
       = triggerAjaxRequest(url, refreshCalendarEventsCallback,
-	                   {"startDate": sd, "endDate": ed});
+	                   {"startDate": sd, "endDate": ed, "scrollEvent": scrollEvent});
 }
 
 function refreshCalendarEventsCallback(http) {
@@ -625,6 +677,8 @@ function refreshCalendarEventsCallback(http) {
 			  http.callbackData["startDate"],
 			  http.callbackData["endDate"]);
     }
+    if (http.callbackData["scrollEvent"])
+      scrollDayView(http.callbackData["scrollEvent"]);
   }
   else
      log("AJAX error when refreshing calendar events");
@@ -655,7 +709,6 @@ function drawCalendarEvent(eventData, sd, ed) {
    var startHour = null;
    var endHour = null;
 
-   var siblings = new Array();
    for (var i = 0; i < days.length; i++)
       if (days[i].earlierDate(viewStartDate) == viewStartDate
 	  && days[i].laterDate(viewEndDate) == viewEndDate) {
@@ -687,8 +740,6 @@ function drawCalendarEvent(eventData, sd, ed) {
 
  	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
  				    null, null, title);
-	 siblings.push(eventDiv);
-	 eventDiv.siblings = siblings;
 	 var dayString = days[i].getDayString();
 // 	 log("day: " + dayString);
 	 var parentDiv = null;
@@ -731,11 +782,12 @@ function drawCalendarEvent(eventData, sd, ed) {
 	 if (parentDiv)
 	   parentDiv.appendChild(eventDiv);
       }
-
-   var eventTR = $(eventData[0]);
-   if (eventTR)
-     eventTR.siblings = siblings;
 }
+
+function eventClass(cname) {
+  return  escape(cname.replace(".", "-"));
+}
+
 
 function newEventDIV(cname, calendar, starts, lasts,
 		     startHour, endHour, title) {
@@ -743,6 +795,7 @@ function newEventDIV(cname, calendar, starts, lasts,
    eventDiv.cname = escape(cname);
    eventDiv.calendar = calendar;
    $(eventDiv).addClassName("event");
+   $(eventDiv).addClassName(eventClass(cname));
    $(eventDiv).addClassName("starts" + starts);
    $(eventDiv).addClassName("lasts" + lasts);
    for (var i = 1; i < 5; i++) {
@@ -800,12 +853,11 @@ function calendarDisplayCallback(http) {
     var contentView;
     if (currentView == "monthview")
       contentView = $("calendarContent");
-    else {
-      var scrollEvent = http.callbackData.scrollEvent;
-      scrollDayView($(scrollEvent));
+    else
       contentView = $("daysView");
-    }
-    refreshCalendarEvents();
+    
+    refreshCalendarEvents(http.callbackData.scrollEvent);
+    
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
@@ -980,9 +1032,9 @@ function onListFilterChange() {
 
 function onEventClick(event) {
   changeCalendarDisplay( { "day": this.day,
-	                   "scrollEvent": this.getAttribute("id") } );
+	"scrollEvent": this.getAttribute("id") } );
   changeDateSelectorDisplay(this.day);
-
+  
   return onRowClick(event);
 }
 
