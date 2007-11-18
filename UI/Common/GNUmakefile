@@ -11,16 +11,12 @@ CommonUI_LANGUAGES = English French German
 CommonUI_OBJC_FILES +=		\
 	CommonUIProduct.m	\
 	UIxPageFrame.m		\
-	UIxPrintPageFrame.m	\
-	UIxAppNavView.m		\
 	\
 	UIxAclEditor.m  \
 	UIxObjectActions.m	\
 	UIxFolderActions.m	\
 	UIxParentFolderActions.m \
 	UIxElemBuilder.m	\
-	UIxTabView.m		\
-	UIxTabItem.m		\
 	UIxUserRightsEditor.m	\
 	\
 	UIxToolbar.m		\

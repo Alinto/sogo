@@ -28,7 +28,6 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
-#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
@@ -40,9 +39,11 @@
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartICalViewer.h"
 
@@ -109,35 +110,32 @@
 
 - (BOOL) couldParseCalendar
 {
-  return [[self inCalendar] isNotNull];
+  return (([self inCalendar]));
 }
 
 - (iCalEvent *) inEvent
 {
   NSArray *events;
  
-  if (inEvent)
-    return [inEvent isNotNull] ? inEvent : nil;
- 
-  events = [[self inCalendar] events];
-  if ([events count] > 0) {
-    inEvent = [[events objectAtIndex:0] retain];
-    return inEvent;
-  }
-  else {
-    inEvent = [[NSNull null] retain];
-    return nil;
-  }
+  if (!inEvent)
+    {
+      events = [[self inCalendar] events];
+      if ([events count] > 0)
+	inEvent = [[events objectAtIndex:0] retain];
+    }
+
+  return inEvent;
 }
 
 /* formatters */
 
 - (SOGoDateFormatter *) dateFormatter
 {
-  if (dateFormatter == nil) {
-    dateFormatter = [[context activeUser] dateFormatterInContext: context];
-    [dateFormatter retain];
-  }
+  if (!dateFormatter)
+    {
+      dateFormatter = [[context activeUser] dateFormatterInContext: context];
+      [dateFormatter retain];
+    }
 
   return dateFormatter;
 }
@@ -146,7 +144,7 @@
 
 - (void) setAttendee: (id) _attendee
 {
-  ASSIGN(attendee, _attendee);
+  ASSIGN (attendee, _attendee);
 }
 
 - (id) attendee
@@ -220,7 +218,7 @@
 
 /* calendar folder support */
 
-- (id) calendarFolder
+- (SOGoAppointmentFolder *) calendarFolder
 {
   /* return scheduling calendar of currently logged-in user */
   SOGoUser *user;
@@ -234,49 +232,50 @@
   return [folder lookupName: @"personal" inContext: context acquire: NO];
 }
 
-- (id) storedEventObject
+- (SOGoAppointmentObject *) storedEventObject
 {
   /* lookup object in the users Calendar */
-  id calendar;
+  SOGoAppointmentFolder *calendar;
+  NSString *filename;
  
-  if (storedEventObject)
-    return [storedEventObject isNotNull] ? storedEventObject : nil;
- 
-  calendar = [self calendarFolder];
-  if ([calendar isKindOfClass:[NSException class]]) {
-    [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
-  }
-  else {
-    NSString *filename;
- 
-    filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
-    if (filename) {
-      // TODO: When we get an exception, this might be an auth issue meaning
-      // that the UID indeed exists but that the user has no access to
-      // the object.
-      // Of course this is quite unusual for the private calendar though.
-      id tmp;
- 
-      tmp = [calendar lookupName:filename inContext:[self context] acquire:NO];
-      if ([tmp isNotNull] && ![tmp isKindOfClass:[NSException class]])
-	storedEventObject = [tmp retain];
+  if (!storedEventObject)
+    {
+      calendar = [self calendarFolder];
+      if ([calendar isKindOfClass: [NSException class]])
+	[self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
+      else
+	{
+	  filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
+	  if (filename)
+	    {
+	      storedEventObject = [calendar lookupName: filename
+					    inContext: [self context]
+					    acquire: NO];
+	      if ([storedEventObject isKindOfClass: [NSException class]])
+		storedEventObject = nil;
+	      else
+		[storedEventObject retain];
+	    }
+	}
     }
-  }
- 
-  if (storedEventObject == nil)
-    storedEventObject = [[NSNull null] retain];
  
   return storedEventObject;
 }
 
 - (BOOL) isEventStoredInCalendar
 {
-  return [[self storedEventObject] isNotNull];
+  return (([self storedEventObject]));
 }
 
 - (iCalEvent *) storedEvent
 {
-  return (iCalEvent *) [(SOGoAppointmentObject *)[self storedEventObject] component: NO];
+  if (!storedEvent)
+    {
+      storedEvent = [[self storedEventObject] component: NO secure: NO];
+      [storedEvent retain];
+    }
+
+  return storedEvent;
 }
 
 /* organizer tracking */
@@ -294,34 +293,24 @@
 {
   iCalEvent *authorativeEvent;
 
-  if ([[self storedEvent] compare: [self inEvent]]
-      == NSOrderedAscending)
+  [self storedEvent];
+  if (!storedEvent
+      || ([storedEvent compare: [self inEvent]] == NSOrderedAscending))
     authorativeEvent = inEvent;
   else
-    authorativeEvent = storedEventObject;
+    authorativeEvent = [self storedEvent];
 
   return authorativeEvent;
 }
 
 - (BOOL) isLoggedInUserTheOrganizer
 {
-  iCalPerson *organizer;
- 
-  organizer = [[self authorativeEvent] organizer];
-
-  return [[context activeUser] hasEmail: [organizer rfc822Email]];
+  return [[self authorativeEvent] userIsOrganizer: [context activeUser]];
 }
 
 - (BOOL) isLoggedInUserAnAttendee
 {
-  NSString *loginEMail;
- 
-  if ((loginEMail = [self loggedInUserEMail]) == nil) {
-    [self warnWithFormat:@"Could not determine email of logged in user?"];
-    return NO;
-  }
-
-  return [[self authorativeEvent] isParticipant:loginEMail];
+  return [[self authorativeEvent] userIsParticipant: [context activeUser]];
 }
 
 /* derived fields */
@@ -405,7 +394,34 @@
 
 - (BOOL) isReplySenderAnAttendee
 {
-  return [[self storedReplyAttendee] isNotNull];
+  return (([self storedReplyAttendee]));
+}
+
+- (iCalPerson *) _emailParticipantWithEvent: (iCalEvent *) event
+{
+  NSString *emailFrom;
+  SOGoMailObject *mailObject;
+  NGImap4EnvelopeAddress *address;
+
+  mailObject = [[self clientObject] mailObject];
+  address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
+  emailFrom = [address baseEMail];
+
+  return [event findParticipantWithEmail: emailFrom];
+}
+
+- (BOOL) hasSenderStatusChanged
+{
+  iCalPerson *emailParticipant, *calendarParticipant;
+
+  [self inEvent];
+  [self storedEvent];
+  emailParticipant = [self _emailParticipantWithEvent: inEvent];
+  calendarParticipant = [self _emailParticipantWithEvent: storedEvent];
+
+  return ([[emailParticipant partStat]
+	    caseInsensitiveCompare: [calendarParticipant partStat]]
+	  != NSOrderedSame);
 }
 
 @end /* UIxMailPartICalViewer */

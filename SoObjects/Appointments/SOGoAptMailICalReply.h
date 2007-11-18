@@ -1,4 +1,4 @@
-/* iCalEntityObject+SOGo.h - this file is part of SOGo
+/* SOGoAptMailICalReply.h - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,25 +20,40 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALENTITYOBJECT_SOGO_H
-#define ICALENTITYOBJECT_SOGO_H
+#ifndef SOGOAPTMAILICALREPLY_H
+#define SOGOAPTMAILICALREPLY_H
 
-#import <NGCards/iCalEntityObject.h>
+#import <NGObjWeb/SoComponent.h>
 
-@class SOGoUser;
+@class NSString;
+@class NSCalendarDate;
 
-@interface iCalEntityObject (SOGoExtensions)
+@class iCalPerson;
+@class iCalEntityObject;
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
-- (BOOL) userIsOrganizer: (SOGoUser *) user;
+/*
+ * NOTE: We inherit from SoComponent in order to get the correct
+ *       resourceManager required for this product
+ */
+@interface SOGoAptMailICalReply : SoComponent
+{
+  iCalEntityObject *apt;
+  iCalPerson *attendee;
+  NSString *homePageURL;
+  BOOL isSubject;
+}
 
-- (NSArray *) attendeeUIDs;
-- (BOOL) isStillRelevant;
+- (void) setApt: (iCalEntityObject *) newApt;
+- (iCalEntityObject *) apt;
 
-- (id) itipEntryWithMethod: (NSString *) method;
+- (void) setAttendee: (iCalPerson *) newAttendee;
+- (iCalPerson *) attendee;
 
-- (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+/* Content Generation */
 
+- (NSString *) getSubject;
+- (NSString *) getBody;
+  
 @end
 
-#endif /* ICALENTITYOBJECT_SOGO_H */
+#endif /* SOGOAPTMAILICALREPLY_H */

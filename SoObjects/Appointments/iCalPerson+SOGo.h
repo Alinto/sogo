@@ -1,4 +1,4 @@
-/* iCalEntityObject+SOGo.h - this file is part of SOGo
+/* iCalPerson+SOGo.h - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,25 +20,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALENTITYOBJECT_SOGO_H
-#define ICALENTITYOBJECT_SOGO_H
+#ifndef ICALPERSON_SOGO_H
+#define ICALPERSON_SOGO_H
 
-#import <NGCards/iCalEntityObject.h>
+#import <NGCards/iCalPerson.h>
 
-@class SOGoUser;
+#import <SoObjects/SOGo/LDAPUserManager.h>
 
-@interface iCalEntityObject (SOGoExtensions)
+@class NSString;
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
-- (BOOL) userIsOrganizer: (SOGoUser *) user;
+@interface iCalPerson (SOGoExtension)
 
-- (NSArray *) attendeeUIDs;
-- (BOOL) isStillRelevant;
-
-- (id) itipEntryWithMethod: (NSString *) method;
-
-- (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+- (NSString *) mailAddress;
+- (NSString *) uid;
 
 @end
 
-#endif /* ICALENTITYOBJECT_SOGO_H */
+#endif /* ICALPERSON_SOGO_H */

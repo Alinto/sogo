@@ -41,6 +41,7 @@
   NSString *IDField; /* the first part of a user DN */
   NSString *CNField;
   NSString *UIDField;
+  NSArray *mailFields;
   NSString *bindFields;
 
   NGLdapConnection *ldapConnection;
@@ -59,6 +60,7 @@
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
+	mailFields: (NSArray *) newMailFields
      andBindFields: (NSString *) newBindFields;
 
 - (BOOL) checkLogin: (NSString *) login

@@ -23,10 +23,13 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+
+#import "iCalPerson+SOGo.h"
 
 #import "iCalEntityObject+SOGo.h"
 
@@ -52,6 +55,7 @@
   return isParticipant;
 }
 
+#warning user could be a delegate, we will need to handle that someday
 - (BOOL) userIsOrganizer: (SOGoUser *) user
 {
   NSString *orgMail;
@@ -59,6 +63,68 @@
   orgMail = [[self organizer] rfc822Email];
 
   return [user hasEmail: orgMail];
+}
+
+- (NSArray *) attendeeUIDs
+{
+  NSEnumerator *attendees;
+  NSString *uid;
+  iCalPerson *currentAttendee;
+  NSMutableArray *uids;
+
+  uids = [NSMutableArray array];
+
+  attendees = [[self attendees] objectEnumerator];
+  while ((currentAttendee = [attendees nextObject]))
+    {
+      uid = [currentAttendee uid];
+      if (uid)
+	[uids addObject: uid];
+    }
+
+  return uids;
+}
+
+#warning this method should be implemented in a category of iCalToDo
+- (BOOL) isStillRelevant
+{
+  [self subclassResponsibility: _cmd];
+  return NO;
+}
+
+- (id) itipEntryWithMethod: (NSString *) method
+{
+  iCalCalendar *newCalendar;
+  iCalEntityObject *newEntry;
+
+  newCalendar = [parent mutableCopy];
+  [newCalendar autorelease];
+  [newCalendar setMethod: method];
+  newEntry = (iCalEntityObject *) [newCalendar firstChildWithTag: tag];
+
+  return newEntry;
+}
+
+- (NSArray *) attendeesWithoutUser: (SOGoUser *) user
+{
+  NSMutableArray *newAttendees;
+  NSArray *oldAttendees;
+  unsigned int count, max;
+  iCalPerson *currentAttendee;
+  NSString *userID;
+
+  userID = [user login];
+  oldAttendees = [self attendees];
+  max = [oldAttendees count];
+  newAttendees = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentAttendee = [oldAttendees objectAtIndex: count];
+      if (![[currentAttendee uid] isEqualToString: userID])
+	[newAttendees addObject: currentAttendee];
+    }
+
+  return newAttendees;
 }
 
 @end

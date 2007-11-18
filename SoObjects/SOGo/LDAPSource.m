@@ -146,6 +146,8 @@ static int sizeLimit;
       IDField = @"cn"; /* the first part of a user DN */
       CNField = @"cn";
       UIDField = @"uid";
+      mailFields = [NSArray arrayWithObject: @"mail"];
+      [mailFields retain];
       bindFields = nil;
 
       ldapConnection = nil;
@@ -164,6 +166,7 @@ static int sizeLimit;
   [IDField release];
   [CNField release];
   [UIDField release];
+  [mailFields release];
   [bindFields release];
   [ldapConnection release];
   [sourceID release];
@@ -183,7 +186,8 @@ static int sizeLimit;
   [self setBaseDN: [udSource objectForKey: @"baseDN"]
 	IDField: [udSource objectForKey: @"IDFieldName"]
 	CNField: [udSource objectForKey: @"CNFieldName"]
-	UIDField:  [udSource objectForKey: @"UIDFieldName"]
+	UIDField: [udSource objectForKey: @"UIDFieldName"]
+	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
 
   return self;
@@ -205,6 +209,7 @@ static int sizeLimit;
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
+	mailFields: (NSArray *) newMailFields
      andBindFields: (NSString *) newBindFields
 {
   ASSIGN (baseDN, newBaseDN);
@@ -214,6 +219,8 @@ static int sizeLimit;
     ASSIGN (CNField, newCNField);
   if (UIDField)
     ASSIGN (UIDField, newUIDField);
+  if (newMailFields)
+    ASSIGN (mailFields, newMailFields);
   if (newBindFields)
     ASSIGN (bindFields, newBindFields);
 }
@@ -346,8 +353,6 @@ static int sizeLimit;
 
 - (NSArray *) _searchAttributes
 {
-  NSArray *attrs;
-
   if (!searchAttributes)
     {
       searchAttributes = [NSMutableArray new];
@@ -355,13 +360,8 @@ static int sizeLimit;
 	[searchAttributes addObject: CNField];
       if (UIDField)
 	[searchAttributes addObject: UIDField];
+      [searchAttributes addObjectsFromArray: mailFields];
       [searchAttributes addObjectsFromArray: commonSearchFields];
-    }
-
-  // We also include our MailFieldNames in the search
-  if ((attrs = [[[LDAPUserManager sharedUserManager] metadataForSourceID: sourceID] objectForKey: @"MailFieldNames"]))
-    {
-      [searchAttributes addObjectsFromArray: attrs];
     }
 
   return searchAttributes;
@@ -397,6 +397,25 @@ static int sizeLimit;
   return ids;
 }
 
+- (void) _fillEmailsOfEntry: (NGLdapEntry *) ldapEntry
+	   intoContactEntry: (NSMutableDictionary *) contactEntry
+{
+  NSEnumerator *emailFields;
+  NSString *currentFieldName, *value;
+  NSMutableArray *emails;
+
+  emails = [NSMutableArray new];
+  emailFields = [mailFields objectEnumerator];
+  while ((currentFieldName = [emailFields nextObject]))
+    {
+      value = [[ldapEntry attributeWithName: currentFieldName] stringValueAtIndex: 0];
+      if (value)
+	[emails addObject: value];
+    }
+  [emails autorelease];
+  [contactEntry setObject: emails forKey: @"c_emails"];
+}
+
 - (NSDictionary *) _convertLDAPEntryToContact: (NGLdapEntry *) ldapEntry
 {
   NSMutableDictionary *contactEntry;
@@ -426,6 +445,7 @@ static int sizeLimit;
   if (!value)
     value = @"";
   [contactEntry setObject: value forKey: @"c_cn"];
+  [self _fillEmailsOfEntry: ldapEntry intoContactEntry: contactEntry];
 
   return contactEntry;
 }

@@ -350,7 +350,11 @@ static NSString *defaultUserID = @"<default>";
       deleteObject = [self lookupName: currentID
 			   inContext: context acquire: NO];
       if (![deleteObject isKindOfClass: [NSException class]])
-	[deleteObject delete];
+	{
+	  if ([deleteObject respondsToSelector: @selector (prepareDelete)])
+	    [deleteObject prepareDelete];
+	  [deleteObject delete];
+	}
     }
 }
 

@@ -11,6 +11,7 @@
   const:popup="YES"
   title="name"
   var:toolbar="toolbar"
+  const:cssFiles="UIxComponentEditor.css"
   const:jsFiles="skycalendar.js,UIxComponentEditor.js">
 
   <script type="text/javascript">
@@ -54,7 +55,11 @@
             label:noSelectionString="prio_0"
             string="itemPriorityText" selection="priority"/>
       </span></span>
-      <label id="attendeesLabel" style="display: none;"><var:string label:value="Attendees:"
+      <var:if condition="hasOrganizer"
+	><label id="organizerLabel"><var:string label:value="Organizer:"
+	    /><span class="content"><var:string value="organizerName"/></span></label>
+      </var:if>
+      <label id="attendeesLabel"><var:string label:value="Attendees:"
 	  /><span class="content"
 	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
       <hr />

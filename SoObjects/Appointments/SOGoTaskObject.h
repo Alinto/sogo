@@ -44,13 +44,6 @@
 
 @interface SOGoTaskObject : SOGoCalendarComponent
 
-/* "iCal multifolder saves" */
-
-- (NSException *) saveContentString: (NSString *) _iCal
-		       baseSequence: (int) _v;
-- (NSException *) deleteWithBaseSequence: (int) _v;
-- (NSException *) saveContentString: (NSString *) _iCalString;
-
 @end
 
 #endif /* __Appointmentss_SOGoTaskObject_H__ */

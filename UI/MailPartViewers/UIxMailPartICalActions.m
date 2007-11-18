@@ -26,12 +26,17 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+
+#import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
@@ -58,12 +63,12 @@
 }
 
 - (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
+					forUser: (SOGoUser *) user
 {
   SOGoAppointmentFolder *personalFolder;
   SOGoAppointmentObject *eventObject;
 
-  personalFolder
-    = [[context activeUser] personalCalendarFolderInContext: context];
+  personalFolder = [user personalCalendarFolderInContext: context];
   eventObject = [personalFolder lookupName: uid
 				inContext: context acquire: NO];
   if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
@@ -71,6 +76,11 @@
 					 inContainer: personalFolder];
   
   return eventObject;
+}
+
+- (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
+{
+  return [self _eventObjectWithUID: uid forUser: [context activeUser]];
 }
 
 - (iCalEvent *)
@@ -86,7 +96,7 @@
 	chosenEvent = emailEvent;
       else
 	{
-	  calendarEvent = (iCalEvent *) [*eventObject component: NO];
+	  calendarEvent = (iCalEvent *) [*eventObject component: NO secure: NO];
 	  if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
 	    chosenEvent = emailEvent;
 	  else
@@ -99,14 +109,42 @@
   return chosenEvent;
 }
 
+#warning this is code copied from SOGoAppointmentObject...
+- (void) _updateAttendee: (iCalPerson *) attendee
+	    withSequence: (NSNumber *) sequence
+	       andCalUID: (NSString *) calUID
+		  forUID: (NSString *) uid
+{
+  SOGoAppointmentObject *eventObject;
+  iCalEvent *event;
+  iCalPerson *otherAttendee;
+  NSString *iCalString;
+
+  eventObject = [self _eventObjectWithUID: calUID
+		      forUser: [SOGoUser userWithLogin: uid roles: nil]];
+  if (![eventObject isNew])
+    {
+      event = [eventObject component: NO secure: NO];
+      if ([[event sequence] compare: sequence]
+	  == NSOrderedSame)
+	{
+	  otherAttendee
+	    = [event findParticipantWithEmail: [attendee rfc822Email]];
+	  [otherAttendee setPartStat: [attendee partStat]];
+	  iCalString = [[event parent] versitString];
+	  [eventObject saveContentString: iCalString];
+	}
+    }
+}
+
 - (WOResponse *) _changePartStatusAction: (NSString *) newStatus
 {
   WOResponse *response;
   SOGoAppointmentObject *eventObject;
   iCalEvent *chosenEvent;
   iCalPerson *user;
-  iCalCalendar *calendar;
-  NSString *rsvp, *method;
+  iCalCalendar *emailCalendar, *calendar;
+  NSString *rsvp, *method, *organizerUID;
 
   chosenEvent = [self _setupChosenEventAndEventObject: &eventObject];
   if (chosenEvent)
@@ -114,7 +152,8 @@
       user = [chosenEvent findParticipant: [context activeUser]];
       [user setPartStat: newStatus];
       calendar = [chosenEvent parent];
-      method = [[calendar method] lowercaseString];
+      emailCalendar = [[self _emailEvent] parent];
+      method = [[emailCalendar method] lowercaseString];
       if ([method isEqualToString: @"request"])
 	{
 	  [calendar setMethod: @""];
@@ -123,8 +162,12 @@
       else
 	rsvp = nil;
       [eventObject saveContentString: [calendar versitString]];
-      if (rsvp && [rsvp isEqualToString: @"true"])
+      if ([rsvp isEqualToString: @"true"])
 	[eventObject sendResponseToOrganizer];
+      organizerUID = [[chosenEvent organizer] uid];
+      if (organizerUID)
+	[self _updateAttendee: user withSequence: [chosenEvent sequence]
+	      andCalUID: [chosenEvent uid] forUID: organizerUID];
       response = [self responseWith204];
     }
   else
@@ -144,6 +187,97 @@
 - (WOResponse *) declineAction
 {
   return [self _changePartStatusAction: @"DECLINED"];
+}
+
+- (WOResponse *) deleteFromCalendarAction
+{
+  iCalEvent *emailEvent;
+  SOGoAppointmentObject *eventObject;
+  WOResponse *response;
+
+  emailEvent = [self _emailEvent];
+  if (emailEvent)
+    {
+      eventObject = [self _eventObjectWithUID: [emailEvent uid]];
+      response = [self responseWith204];
+    }
+  else
+    {
+      response = [context response];
+      [response setStatus: 409];
+    }
+
+  return response;
+}
+
+- (iCalPerson *) _emailParticipantWithEvent: (iCalEvent *) event
+{
+  NSString *emailFrom;
+  SOGoMailObject *mailObject;
+  NGImap4EnvelopeAddress *address;
+
+  mailObject = [[self clientObject] mailObject];
+  address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
+  emailFrom = [address baseEMail];
+
+  return [event findParticipantWithEmail: emailFrom];
+}
+
+- (BOOL) _updateParticipantStatusInEvent: (iCalEvent *) calendarEvent
+			       fromEvent: (iCalEvent *) emailEvent
+				inObject: (SOGoAppointmentObject *) eventObject
+{
+  iCalPerson *calendarParticipant, *mailParticipant;
+  NSString *partStat;
+  BOOL result;
+
+  calendarParticipant = [self _emailParticipantWithEvent: calendarEvent];
+  mailParticipant = [self _emailParticipantWithEvent: emailEvent];
+  if (calendarParticipant && mailParticipant)
+    {
+      result = YES;
+      partStat = [mailParticipant partStat];
+      if ([partStat caseInsensitiveCompare: [calendarParticipant partStat]]
+	  != NSOrderedSame)
+	{
+	  [calendarParticipant setPartStat: [partStat uppercaseString]];
+	  [eventObject saveComponent: calendarEvent];
+	}
+    }
+  else
+    result = NO;
+
+  return result;
+}
+
+- (WOResponse *) updateUserStatusAction
+{
+  iCalEvent *emailEvent, *calendarEvent;
+  SOGoAppointmentObject *eventObject;
+  WOResponse *response;
+
+  response = nil;
+
+  emailEvent = [self _emailEvent];
+  if (emailEvent)
+    {
+      eventObject = [self _eventObjectWithUID: [emailEvent uid]];
+      calendarEvent = [eventObject component: NO secure: NO];
+      if (([[emailEvent sequence] compare: [calendarEvent sequence]]
+	  != NSOrderedDescending)
+	  && ([self _updateParticipantStatusInEvent: calendarEvent
+		    fromEvent: emailEvent
+		    inObject: eventObject]))
+	response = [self responseWith204];
+    }
+
+  if (!response)
+    {
+      response = [context response];
+      [response setStatus: 409];
+    }
+
+  return response;
 }
 
 // - (WOResponse *) markTentativeAction

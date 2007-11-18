@@ -41,6 +41,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
@@ -243,6 +244,16 @@
 - (NSString *) url
 {
   return url;
+}
+
+- (BOOL) hasOrganizer
+{
+  return (![organizer isVoid]);
+}
+
+- (NSString *) organizerName
+{
+  return [organizer mailAddress];
 }
 
 - (void) setAttendeesNames: (NSString *) newAttendeesNames
@@ -694,28 +705,7 @@
 	        respondsToSelector: @selector(saveContentString:)];
 }
 
-- (BOOL) containsConflict: (id) _component
-{
-  [self subclassResponsibility: _cmd];
-
-  return NO;
-}
-
 /* access */
-
-#if 0
-- (iCalPerson *) getOrganizer
-{
-  iCalPerson *p;
-  NSString *emailProp;
-  
-  emailProp = [@"MAILTO:" stringByAppendingString:[self emailForUser]];
-  p = [[[iCalPerson alloc] init] autorelease];
-  [p setEmail:emailProp];
-  [p setCn:[self cnForUser]];
-  return p;
-}
-#endif
 
 - (BOOL) isMyComponent
 {
@@ -845,6 +835,7 @@
 	      [currentAttendee setCn: [names objectAtIndex: count]];
 	      [currentAttendee setEmail: currentEmail];
 	      [currentAttendee setRole: @"REQ-PARTICIPANT"];
+	      [currentAttendee setRsvp: @"TRUE"];
 	      [currentAttendee
 		setParticipationStatus: iCalPersonPartStatNeedsAction];
 	    }

@@ -19,6 +19,7 @@ Attendees           = "Attendees";
 request_info        = "invites you to participate in a meeting.";
 "Add to calendar" = "Add to calendar";
 "Delete from calendar" = "Delete from calendar";
+"Update status" = "Update status";
 Accept = "Accept";
 Decline = "Decline";
 Tentative = "Tentative";

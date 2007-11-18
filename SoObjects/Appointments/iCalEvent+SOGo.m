@@ -1,4 +1,4 @@
-/* iCalEntityObject+SOGo.h - this file is part of SOGo
+/* iCalEvent+SOGo.m - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,25 +20,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALENTITYOBJECT_SOGO_H
-#define ICALENTITYOBJECT_SOGO_H
+#import <Foundation/NSCalendarDate.h>
 
-#import <NGCards/iCalEntityObject.h>
+#import "iCalEvent+SOGo.h"
 
-@class SOGoUser;
+@implementation iCalEvent (SOGoExtensions)
 
-@interface iCalEntityObject (SOGoExtensions)
+- (BOOL) isStillRelevant
+{
+  NSCalendarDate *now;
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
-- (BOOL) userIsOrganizer: (SOGoUser *) user;
+  now = [NSCalendarDate calendarDate];
 
-- (NSArray *) attendeeUIDs;
-- (BOOL) isStillRelevant;
-
-- (id) itipEntryWithMethod: (NSString *) method;
-
-- (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+  return ([[self endDate] earlierDate: now] == now);
+}
 
 @end
-
-#endif /* ICALENTITYOBJECT_SOGO_H */

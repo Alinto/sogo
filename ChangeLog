@@ -1,5 +1,109 @@
 2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -saveAction]):
+	invoke saveComponent:.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor -hasOrganizer])
+	([UIxComponentEditor -organizerName]): new template accessor
+	related to displaying the event's organizer.
+	([-containsConflict:_component]): removed method.
+	([UIxComponentEditor -takeValuesFromRequest:_rqinContext:_ctx]):
+	set RSVP to "TRUE" on each attendee.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-saveAction]): invoke saveComponent:.
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -isLoggedInUserTheOrganizer]): make use of
+	the -userIsOrganizer: category method.
+	([-isLoggedInUserAnAttendee]): make use of -userIsParticipant:.
+	([UIxMailPartICalViewer -hasSenderStatusChanged]): new template
+	accessor that determines whether the "Update" button should be
+	displayed.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -deleteFromCalendarAction]): implemented
+	action.
+	([UIxMailPartICalActions -updateUserStatusAction]): implemented
+	action.
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame
+	-setCssFiles:newCSSFiles]): new accessor that enables the
+	sub-templates to specify extra CSS files to load.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-homeFolderInContext:context]): cache the home folder of the user
+	object instead of the current user.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-deleteEntriesWithIds:ids]): invokes the "prepareDelete" optional
+	method if the child object implements it.
+
+	* SoObjects/SOGo/SOGoContentObject.m ([-setContentString:])
+	removed method.
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-setBaseDN:newBaseDNIDField:newIDFieldCNField:newCNFieldUIDField:newUIDFieldmailFields:newMailFieldsandBindFields:newBindFields]):
+	take a new "mailFields" parameter defining an array of fields
+	where to look at when searching the user's emails. It defaults to
+	the standard "mail" LDAP field.
+
+	* SoObjects/Appointments/SOGoAptMailICalReply.[hm]: new
+	SoComponent implementing a template for ITIP replies.
+
+	* SoObjects/Appointments/iCalPerson+SOGo.m ([iCalPerson
+	-mailAddress]): new method that returns a properly formatted email
+	address for the specified person entry.
+	([iCalPerson -uid]): new method that tests whether the user is
+	known to the system and if so, returns its user id.
+
+	* SoObjects/Appointments/iCalPerson+SOGo.[hm]: new category module.
+
+	* SoObjects/Appointments/iCalEventChanges+SOGo.m
+	([iCalEventChanges -sequenceShouldBeIncreased]): determine whether
+	the changes involved need a sequence inscrease, based on the
+	RFC2446 (ITIP).
+
+	* SoObjects/Appointments/iCalEventChanges+SOGo.[hm]: new category
+	module.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m ([iCalEvent
+	-isStillRelevant]): new overriden method determining the relevance
+	of the current event based on its end date.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.[hm]: new category module.
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	([iCalEntityObject -attendeeUIDs]): new category methods that
+	returns an array containing the uids of the system-know attendees.
+	([iCalEntityObject -isStillRelevant]): new template method.
+	([iCalEntityObject -itipEntryWithMethod:method]): clone the
+	current entry calendar with the specified ITIP method.
+	([iCalEntityObject -attendeesWithoutUser:user]): returns an array
+	of attendees while making sure the specified user is not listed.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -calendar:create:secure]): new name for
+	-calendar:. Added a "secure" parameter that specifies whether a
+	stripped calendar instance is needed or not. Also, we no longer
+	cache the content to simplify handling of new data.
+	([SOGoCalendarComponent -component:create:secure]): same as above.
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]):
+	test whether the component is "still relevant" before sending an
+	email...
+	([SOGoCalendarComponent -sendResponseToOrganizer]): new method for
+	sending ITIP replies.
+	([SOGoCalendarComponent -getUIDsForICalPerson:iCalPerson]):
+	removed method. Replaced with -[iCalPerson uid] category method.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.[hm]: rewrote
+	class. No longer override saveContentString:,
+	saveContentString:baseSequence:, .... Implemented the
+	saveComponent: and the prepareDelete methods instead. Those
+	methods are called only from the web methods. This avoids the
+	risks related to email sending and changes propagation.
+
 	* UI/Common/UIxTabItem.m: removed useless class module.
 
 	* UI/Common/UIxTabView.[hm]: removed useless class module.

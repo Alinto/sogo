@@ -1,4 +1,4 @@
-/* iCalEntityObject+SOGo.h - this file is part of SOGo
+/* iCalPerson+SOGo.m - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,25 +20,34 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALENTITYOBJECT_SOGO_H
-#define ICALENTITYOBJECT_SOGO_H
+#import <Foundation/NSString.h>
 
-#import <NGCards/iCalEntityObject.h>
+#import "iCalPerson+SOGo.h"
 
-@class SOGoUser;
+static LDAPUserManager *um = nil;
 
-@interface iCalEntityObject (SOGoExtensions)
+@implementation iCalPerson (SOGoExtension)
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
-- (BOOL) userIsOrganizer: (SOGoUser *) user;
+- (NSString *) mailAddress
+{
+  NSString *cn, *email, *mailAddress;
 
-- (NSArray *) attendeeUIDs;
-- (BOOL) isStillRelevant;
+  cn = [self cnWithoutQuotes];
+  email = [self rfc822Email];
+  if ([cn length])
+    mailAddress = [NSString stringWithFormat:@"%@ <%@>", cn, email];
+  else
+    mailAddress = email;
 
-- (id) itipEntryWithMethod: (NSString *) method;
+  return mailAddress;
+}
 
-- (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+- (NSString *) uid
+{
+  if (!um)
+    um = [LDAPUserManager sharedUserManager];
+
+  return [um getUIDForEmail: [self rfc822Email]];
+}
 
 @end
-
-#endif /* ICALENTITYOBJECT_SOGO_H */

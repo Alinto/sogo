@@ -755,6 +755,7 @@ function configureiCalLinksInMessage() {
   var buttons = { "iCalendarAccept": "accept",
 		  "iCalendarDecline": "decline",
 		  "iCalendarTentative": "tentative",
+		  "iCalendarUpdateUserStatus": "updateUserStatus",
 		  "iCalendarAddToCalendar": "addToCalendar",
 		  "iCalendarDeleteFromCalendar": "deleteFromCalendar" };
 
@@ -772,11 +773,13 @@ function onICalendarButtonClick(event) {
   var link = $("iCalendarAttachment").value;
   if (link) {
     var urlstr = link + "/" + this.action;
+    log ("click: " + urlstr);
     triggerAjaxRequest(urlstr, ICalendarButtonCallback,
 		       currentMailbox + "/"
 		       + currentMessages[currentMailbox]);
-    window.alert(urlstr);
   }
+  else
+    log("no link");
 }
 
 function ICalendarButtonCallback(http) {

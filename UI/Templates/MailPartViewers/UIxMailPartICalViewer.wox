@@ -9,6 +9,9 @@
   >
   <!-- TODO: add iMIP actions -->
 
+  <input id="iCalendarAttachment" type="hidden"
+    var:value="pathToAttachmentObject"/>
+
   <var:if condition="couldParseCalendar" const:negate="1">
     <fieldset>
       <legend>Parsing Error</legend>
@@ -33,23 +36,24 @@
 	</var:if>
       </legend>
       
-      <var:if condition="inCalendar.method" const:value="REQUEST">
+      <var:if condition="inCalendar.method.uppercaseString" const:value="REQUEST">
 	<!-- sent to attendees to propose or update a meeting -->
 	<var:if condition="isLoggedInUserAnAttendee">
-	  <p class="uix_ical_toolbar" id="iCalendarToolbar">
-	    <input id="iCalendarAttachment" type="hidden"
-	      var:value="pathToAttachmentObject"/>
-	    <input id="iCalendarAccept" class="button"
-	      type="button" label:value="Accept"/>
-	    <input id="iCalendarDecline" class="button"
-	      type="button" label:value="Decline"/>
-	    <input id="iCalendarTentative" class="button"
-	      type="button" label:value="Tentative"/>
-	    <var:if condition="isEventStoredInCalendar" const:negate="YES">
-	      | <input id="iCalendarAddToCalendar" class="button"
-		type="button" label:value="Add to calendar"/>
-	    </var:if>
-	  </p>
+	  <var:if condition="$storedReplyAttendee.partStatWithDefault"
+	    const:value="NEEDS-ACTION" const:negate="YES">
+	    <p class="uix_ical_toolbar" id="iCalendarToolbar">
+	      <input id="iCalendarAccept" class="button"
+		type="button" label:value="Accept"/>
+	      <input id="iCalendarDecline" class="button"
+		type="button" label:value="Decline"/>
+	      <!-- <input id="iCalendarTentative" class="button"
+	      type="button" label:value="Tentative"/> -->
+	      <var:if condition="isEventStoredInCalendar" const:negate="YES">
+		| <input id="iCalendarAddToCalendar" class="button"
+		  type="button" label:value="Add to calendar"/>
+	      </var:if>
+	    </p>
+	  </var:if>
 
 	  <p>
 	    <var:string label:value="Organizer" />
@@ -70,20 +74,20 @@
       </var:if>
 
 	
-      <var:if condition="inCalendar.method" const:value="REPLY">
+      <var:if condition="inCalendar.method.uppercaseString" const:value="REPLY">
 	<!-- sent to organizer to update the status of the participant -->
 	<var:if condition="isReplySenderAnAttendee" const:negate="1">
 	  <p><var:string label:value="reply_info_no_attendee" /></p>
 	</var:if>
 
 	<var:if condition="isReplySenderAnAttendee">
-	  <p class="uix_ical_toolbar">
-	    <a var:href="addStatusReplyLink"
-	      var:_newstat="$inReplyAttendee.partStatWithDefault"
-	      var:_sender="replySenderBaseEMail"
-	      label:string="do_update_status"/>
-	  </p>
-
+	  <var:if condition="hasSenderStatusChanged"
+	    ><p class="uix_ical_toolbar">
+	      <input id="iCalendarUpdateUserStatus" class="button"
+		type="button" label:value="Update status"/>
+	    </p
+	      ></var:if>
+	  
 	  <!-- TODO: replies to events not in the calendar? -->
 
 	  <p>
@@ -96,7 +100,7 @@
 	</var:if>
       </var:if>
 
-      <var:if condition="inCalendar.method" const:value="CANCEL">
+      <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
 	<!-- sent to attendees to notify of the attendee being removed or the
 	event being deleted -->
 	<var:if condition="isEventStoredInCalendar">
@@ -113,13 +117,13 @@
       </var:if>
 
 
-      <var:if condition="inCalendar.method" const:value="ADD">
+      <var:if condition="inCalendar.method.uppercaseString" const:value="ADD">
 	<!-- TODO -->
 	<p><var:string label:value="add_info_text" /></p>
       </var:if>
 
 
-      <var:if condition="inCalendar.method" const:value="PUBLISH">
+      <var:if condition="inCalendar.method.uppercaseString" const:value="PUBLISH">
 	<!-- none-scheduling event sent to someone for adding to the calendar -->
 	<p><var:string label:value="publish_info_text" /></p>
       </var:if>
@@ -144,7 +148,6 @@
 	DECLINE-COUNTER
 	-->
       </var:if>
-
 
       <!-- the user comment is used in replies -->
       <var:if condition="inEvent.userComment.isNotEmpty">

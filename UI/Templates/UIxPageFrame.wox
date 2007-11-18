@@ -28,6 +28,10 @@
 	<var:if condition="hasPageSpecificCSS"
 	  ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
 	    /></var:if>
+	<var:foreach list="additionalCSSFiles" item="item"
+	  ><link type="text/css" rel="stylesheet" var:href="item"
+	    />
+	</var:foreach>
 	<var:if-ie
 	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"
 	    /></var:if-ie>

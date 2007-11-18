@@ -30,6 +30,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGMime/NGMimeBodyPart.h>
@@ -42,10 +43,13 @@
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/WORequest+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 
+#import "SOGoAptMailICalReply.h"
 #import "SOGoAptMailNotification.h"
 #import "iCalEntityObject+SOGo.h"
+#import "iCalPerson+SOGo.h"
 #import "SOGoCalendarComponent.h"
 
 static BOOL sendEMailNotifications = NO;
@@ -65,26 +69,6 @@ static BOOL sendEMailNotifications = NO;
       sendEMailNotifications
         = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
     }
-}
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      calendar = nil;
-      calContent = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  if (calendar)
-    [calendar release];
-  if (calContent)
-    [calContent release];
-  [super dealloc];
 }
 
 - (NSString *) davContentType
@@ -111,16 +95,15 @@ static BOOL sendEMailNotifications = NO;
   [component removeAllAlarms];
 }
 
-- (NSString *) contentAsString
+- (NSString *) secureContentAsString
 {
   iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
 //   NSArray *roles;
 //   NSString *uid;
   SoSecurityManager *sm;
+  NSString *iCalString;
 
-  if (!calContent)
-    {
 //       uid = [[context activeUser] login];
 //       roles = [self aclsForUser: uid];
 //       if ([roles containsObject: SOGoCalendarRole_Organizer]
@@ -139,112 +122,75 @@ static BOOL sendEMailNotifications = NO;
 //       else
 // 	calContent = nil;
 
-      sm = [SoSecurityManager sharedSecurityManager];
-      if (![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
-	       onObject: self inContext: context])
-	calContent = content;
-      else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
-		    onObject: self inContext: context])
+  sm = [SoSecurityManager sharedSecurityManager];
+  if (![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
+	   onObject: self inContext: context])
+    iCalString = content;
+  else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
+		onObject: self inContext: context])
+    {
+      tmpCalendar = [[self calendar: NO secure: NO] copy];
+      tmpComponent = (iCalRepeatableEntityObject *)
+	[tmpCalendar firstChildWithTag: [self componentTag]];
+      [self _filterComponent: tmpComponent];
+      iCalString = [tmpCalendar versitString];
+      [tmpCalendar release];
+    }
+  else
+    iCalString = nil;
+
+  return iCalString;
+}
+
+- (iCalCalendar *) calendar: (BOOL) create secure: (BOOL) secure
+{
+  NSString *componentTag;
+  CardGroup *newComponent;
+  iCalCalendar *calendar;
+  NSString *iCalString;
+
+  if (secure)
+    iCalString = [self secureContentAsString];
+  else
+    iCalString = content;
+
+  if ([iCalString length] > 0)
+    calendar = [iCalCalendar parseSingleFromSource: iCalString];
+  else
+    {
+      if (create)
 	{
-	  tmpCalendar = [[self calendar: NO] copy];
-	  tmpComponent = (iCalRepeatableEntityObject *)
-	    [tmpCalendar firstChildWithTag: [self componentTag]];
-	  [self _filterComponent: tmpComponent];
-	  calContent = [tmpCalendar versitString];
-	  [tmpCalendar release];
+	  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
+	  [calendar setVersion: @"2.0"];
+	  [calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
+	  componentTag = [[self componentTag] uppercaseString];
+	  newComponent = [[calendar classForTag: componentTag]
+			   groupWithTag: componentTag];
+	  [calendar addChild: newComponent];
 	}
       else
-	calContent = nil;
-
-      [calContent retain];
-    }
-
-  return calContent;
-}
-
-- (void) setContentString: (NSString *) newContent
-{
-  [super setContentString: newContent];
-  ASSIGN (calendar, nil);
-  ASSIGN (calContent, nil);
-}
-
-// - (NSException *) saveContentString: (NSString *) contentString
-//                         baseVersion: (unsigned int) baseVersion
-// {
-//   NSException *result;
-
-//   result = [super saveContentString: contentString
-//                   baseVersion: baseVersion];
-//   if (!result && calContent)
-//     {
-//       [calContent release];
-//       calContent = nil;
-//     }
-
-//   return result;
-// }
-
-- (iCalCalendar *) calendar: (BOOL) create
-{
-  NSString *iCalString, *componentTag;
-  CardGroup *newComponent;
-
-  if (!calendar)
-    {
-      iCalString = [super contentAsString];
-      if ([iCalString length] > 0)
-        calendar = [iCalCalendar parseSingleFromSource: iCalString];
-      else
-        {
-          if (create)
-            {
-              calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-              [calendar setVersion: @"2.0"];
-              [calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
-              componentTag = [[self componentTag] uppercaseString];
-              newComponent = [[calendar classForTag: componentTag]
-                               groupWithTag: componentTag];
-              [calendar addChild: newComponent];
-            }
-        }
-      if (calendar)
-        [calendar retain];
+	calendar = nil;
     }
 
   return calendar;
 }
 
-- (iCalRepeatableEntityObject *) component: (BOOL) create
+- (id) component: (BOOL) create secure: (BOOL) secure
 {
-  return
-    (iCalRepeatableEntityObject *) [[self calendar: create]
-				     firstChildWithTag: [self componentTag]];
+  return [[self calendar: create secure: secure]
+	   firstChildWithTag: [self componentTag]];
+}
+
+- (void) saveComponent: (iCalRepeatableEntityObject *) newObject
+{
+  NSString *newiCalString;
+
+  newiCalString = [[newObject parent] versitString];
+
+  [self saveContentString: newiCalString];
 }
 
 /* raw saving */
-
-- (NSException *) primarySaveContentString: (NSString *) _iCalString
-{
-  return [super saveContentString: _iCalString];
-}
-
-- (NSException *) primaryDelete
-{
-  return [super delete];
-}
-
-- (NSException *) deleteWithBaseSequence: (int) a
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
-- (NSException *) delete
-{
-  return [self deleteWithBaseSequence: 0];
-}
 
 /* EMail Notifications */
 - (NSString *) homePageURLForPerson: (iCalPerson *) _person
@@ -262,56 +208,11 @@ static BOOL sendEMailNotifications = NO;
       baseURL = @"http://localhost/";
       [self warnWithFormat:@"Unable to create baseURL from context!"];
     }
-  uid = [[LDAPUserManager sharedUserManager]
-          getUIDForEmail: [_person rfc822Email]];
+  uid = [_person uid];
 
   return ((uid)
           ? [NSString stringWithFormat:@"%@%@", baseURL, uid]
           : nil);
-}
-
-- (NSException *) changeParticipationStatus: (NSString *) _status
-{
-  iCalRepeatableEntityObject *component;
-  iCalPerson *person;
-  NSString *newContent;
-  NSException *ex;
-  
-  ex = nil;
-
-  component = [self component: NO];
-  if (component)
-    {
-      person = [self findParticipantWithUID: owner];
-      if (person)
-        {
-	  // TODO: send iMIP reply mails?
-          [person setPartStat: _status];
-          newContent = [[component parent] versitString];
-          if (newContent)
-            {
-              ex = [self saveContentString: newContent];
-              if (ex)
-                // TODO: why is the exception wrapped?
-                /* Server Error */
-                ex = [NSException exceptionWithHTTPStatus: 500
-                                  reason: [ex reason]];
-            }
-          else
-            ex
-              = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-                             reason: @"Could not generate iCalendar data ..."];
-        }
-      else
-        ex = [NSException exceptionWithHTTPStatus: 404 /* Not Found */
-                          reason: @"user does not participate in this "
-                          @"calendar component"];
-    }
-  else
-    ex = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-                      reason: @"unable to parse component record"];
-
-  return ex;
 }
 
 - (BOOL) sendEMailNotifications
@@ -335,7 +236,7 @@ static BOOL sendEMailNotifications = NO;
 {
   NSString *pageName;
   iCalPerson *organizer;
-  NSString *cn, *email, *sender, *iCalString;
+  NSString *email, *sender, *iCalString;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
@@ -347,115 +248,196 @@ static BOOL sendEMailNotifications = NO;
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
 
-  if ([_attendees count])
+  if (sendEMailNotifications 
+      && [_newObject isStillRelevant])
     {
-      /* sender */
-
-      organizer = [_newObject organizer];
-      cn = [organizer cnWithoutQuotes];
-      if (cn)
-        sender = [NSString stringWithFormat:@"%@ <%@>",
-                           cn,
-                           [organizer rfc822Email]];
-      else
-        sender = [organizer rfc822Email];
-
-      /* generate iCalString once */
-      iCalString = [[_newObject parent] versitString];
-  
-      /* get WOApplication instance */
-      app = [WOApplication application];
-
-      /* generate dynamic message content */
-
       count = [_attendees count];
-      for (i = 0; i < count; i++)
-        {
-          attendee = [_attendees objectAtIndex:i];
+      if (count)
+	{
+	  /* sender */
+	  organizer = [_newObject organizer];
+	  sender = [organizer mailAddress];
 
-          /* construct recipient */
-          cn = [attendee cn];
-	  email = [attendee rfc822Email];
-          if (cn)
-            recipient = [NSString stringWithFormat: @"%@ <%@>",
-                                  cn, email];
-          else
-            recipient = email;
+	  NSLog (@"sending '%@' from %@",
+		 [(iCalCalendar *) [_newObject parent] method], organizer);
 
-	  language = [[context activeUser] language];
+	  /* generate iCalString once */
+	  iCalString = [[_newObject parent] versitString];
+  
+	  /* get WOApplication instance */
+	  app = [WOApplication application];
+
+	  /* generate dynamic message content */
+
+	  for (i = 0; i < count; i++)
+	    {
+	      attendee = [_attendees objectAtIndex: i];
+	      if (![[attendee uid] isEqualToString: owner])
+		{
+		  /* construct recipient */
+		  recipient = [attendee mailAddress];
+		  email = [attendee rfc822Email];
+
+		  NSLog (@"recipient: %@", recipient);
+		  language = [[context activeUser] language];
 #warning this could be optimized in a class hierarchy common with the	\
-          SOGoObject acl notification mechanism
-          /* create page name */
-          // TODO: select user's default language?
-          pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
-                               language,
-                               _pageName];
-          /* construct message content */
-          p = [app pageWithName: pageName inContext: context];
-          [p setNewApt: _newObject];
-          [p setOldApt: _oldObject];
-          [p setHomePageURL: [self homePageURLForPerson: attendee]];
-          [p setViewTZ: [self timeZoneForUser: email]];
-          subject = [p getSubject];
-          text = [p getBody];
+  SOGoObject acl notification mechanism
+		  /* create page name */
+		  pageName = [NSString stringWithFormat: @"SOGoAptMail%@%@",
+				       language, _pageName];
+		  /* construct message content */
+		  p = [app pageWithName: pageName inContext: context];
+		  [p setNewApt: _newObject];
+		  [p setOldApt: _oldObject];
+		  [p setHomePageURL: [self homePageURLForPerson: attendee]];
+		  [p setViewTZ: [self timeZoneForUser: email]];
+		  subject = [p getSubject];
+		  text = [p getBody];
 
-          /* construct message */
-          headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+		  /* construct message */
+		  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
           
-          /* NOTE: multipart/alternative seems like the correct choice but
-           * unfortunately Thunderbird doesn't offer the rich content alternative
-           * at all. Mail.app shows the rich content alternative _only_
-           * so we'll stick with multipart/mixed for the time being.
-           */
-          [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-          [headerMap setObject: sender forKey: @"From"];
-          [headerMap setObject: recipient forKey: @"To"];
-	  mailDate = [[NSCalendarDate date] rfc822DateString];
-          [headerMap setObject: mailDate forKey: @"date"];
-          [headerMap setObject: subject forKey: @"Subject"];
-          msg = [NGMimeMessage messageWithHeader: headerMap];
+		  /* NOTE: multipart/alternative seems like the correct choice but
+		   * unfortunately Thunderbird doesn't offer the rich content alternative
+		   * at all. Mail.app shows the rich content alternative _only_
+		   * so we'll stick with multipart/mixed for the time being.
+		   */
+		  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+		  [headerMap setObject: sender forKey: @"From"];
+		  [headerMap setObject: recipient forKey: @"To"];
+		  mailDate = [[NSCalendarDate date] rfc822DateString];
+		  [headerMap setObject: mailDate forKey: @"date"];
+		  [headerMap setObject: subject forKey: @"Subject"];
+		  msg = [NGMimeMessage messageWithHeader: headerMap];
 
-          /* multipart body */
-          body = [[NGMimeMultipartBody alloc] initWithPart: msg];
+		  /* multipart body */
+		  body = [[NGMimeMultipartBody alloc] initWithPart: msg];
+
+		  /* text part */
+		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+		  [headerMap setObject: @"text/plain; charset=utf-8"
+			     forKey: @"content-type"];
+		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+		  [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
+
+		  /* attach text part to multipart body */
+		  [body addBodyPart: bodyPart];
     
-          /* text part */
-          headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-          [headerMap setObject: @"text/plain; charset=utf-8"
-                     forKey: @"content-type"];
-          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-          [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
+		  /* calendar part */
+		  header = [NSString stringWithFormat: @"text/calendar; method=%@;"
+				     @" charset=utf-8",
+				     [(iCalCalendar *) [_newObject parent] method]];
+		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+		  [headerMap setObject:header forKey: @"content-type"];
+		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+		  [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
 
-          /* attach text part to multipart body */
-          [body addBodyPart: bodyPart];
+		  /* attach calendar part to multipart body */
+		  [body addBodyPart: bodyPart];
     
-          /* calendar part */
-          header = [NSString stringWithFormat: @"text/calendar; method=%@;"
-                             @" charset=utf-8",
-                             [(iCalCalendar *) [_newObject parent] method]];
-          headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-          [headerMap setObject:header forKey: @"content-type"];
-          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-          [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
+		  /* attach multipart body to message */
+		  [msg setBody: body];
+		  [body release];
 
-          /* attach calendar part to multipart body */
-          [body addBodyPart: bodyPart];
-    
-          /* attach multipart body to message */
-          [msg setBody: body];
-          [body release];
-
-          /* send the damn thing */
-          [[SOGoMailer sharedMailer]
-	    sendMimePart: msg
-	    toRecipients: [NSArray arrayWithObject: email]
-	    sender: [organizer rfc822Email]];
-        }
+		  /* send the damn thing */
+		  [[SOGoMailer sharedMailer]
+		    sendMimePart: msg
+		    toRecipients: [NSArray arrayWithObject: email]
+		    sender: [organizer rfc822Email]];
+		}
+	    }
+	}
     }
 }
 
 - (void) sendResponseToOrganizer
 {
-#warning THIS IS A STUB  
+  NSString *pageName, *language, *mailDate, *email;
+  WOApplication *app;
+  iCalPerson *organizer, *attendee;
+  NSString *iCalString;
+  iCalEvent *event;
+  SOGoAptMailICalReply *p;
+  NGMutableHashMap *headerMap;
+  NGMimeMessage *msg;
+  NGMimeBodyPart *bodyPart;
+  NGMimeMultipartBody *body;
+  NSData *bodyData;
+
+  event = [[self component: NO secure: NO] itipEntryWithMethod: @"reply"];
+  if (![event userIsOrganizer: [context activeUser]])
+    {
+      organizer = [event organizer];
+      attendee = [event findParticipant: [context activeUser]];
+      [event setAttendees: [NSArray arrayWithObject: attendee]];
+
+      /* get WOApplication instance */
+      app = [WOApplication application];
+
+      language = [[context activeUser] language];
+      /* create page name */
+      pageName
+	= [NSString stringWithFormat: @"SOGoAptMail%@ICalReply", language];
+      /* construct message content */
+      p = [app pageWithName: pageName inContext: context];
+      [p setApt: event];
+      [p setAttendee: attendee];
+
+      /* construct message */
+      headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+          
+      /* NOTE: multipart/alternative seems like the correct choice but
+       * unfortunately Thunderbird doesn't offer the rich content alternative
+       * at all. Mail.app shows the rich content alternative _only_
+       * so we'll stick with multipart/mixed for the time being.
+       */
+      [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+      [headerMap setObject: [attendee mailAddress] forKey: @"From"];
+      [headerMap setObject: [organizer mailAddress] forKey: @"To"];
+      mailDate = [[NSCalendarDate date] rfc822DateString];
+      [headerMap setObject: mailDate forKey: @"date"];
+      [headerMap setObject: [p getSubject] forKey: @"Subject"];
+      msg = [NGMimeMessage messageWithHeader: headerMap];
+
+      NSLog (@"sending 'REPLY' from %@ to %@",
+	     [attendee mailAddress], [organizer mailAddress]);
+
+      /* multipart body */
+      body = [[NGMimeMultipartBody alloc] initWithPart: msg];
+
+      /* text part */
+      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+      [headerMap setObject: @"text/plain; charset=utf-8"
+		 forKey: @"content-type"];
+      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+      bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+      [bodyPart setBody: bodyData];
+
+      /* attach text part to multipart body */
+      [body addBodyPart: bodyPart];
+
+      /* calendar part */
+      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+      [headerMap setObject: @"text/calendar; method=REPLY; charset=utf-8"
+		 forKey: @"content-type"];
+      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+      iCalString = [[event parent] versitString];
+      [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
+
+      /* attach calendar part to multipart body */
+      [body addBodyPart: bodyPart];
+
+      /* attach multipart body to message */
+      [msg setBody: body];
+      [body release];
+
+      /* send the damn thing */
+      email = [organizer rfc822Email];
+      [[SOGoMailer sharedMailer]
+	sendMimePart: msg
+	toRecipients: [NSArray arrayWithObject: email]
+	sender: [attendee rfc822Email]];
+    }
 }
 
 // - (BOOL) isOrganizerOrOwner: (SOGoUser *) user
@@ -481,7 +463,7 @@ static BOOL sendEMailNotifications = NO;
   SOGoUser *user;
 
   user = [SOGoUser userWithLogin: uid roles: nil];
-  component = [self component: NO];
+  component = [self component: NO secure: NO];
 
   return [component findParticipant: user];
 }
@@ -503,31 +485,20 @@ static BOOL sendEMailNotifications = NO;
   return person;
 }
 
-- (NSString *) getUIDForICalPerson: (iCalPerson *) person
-{
-  LDAPUserManager *um;
-
-  um = [LDAPUserManager sharedUserManager];
-
-  return [um getUIDForEmail: [person rfc822Email]];
-}
-
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons
 {
   iCalPerson *currentPerson;
   NSEnumerator *persons;
   NSMutableArray *uids;
   NSString *uid;
-  LDAPUserManager *um;
 
   uids = [NSMutableArray array];
 
-  um = [LDAPUserManager sharedUserManager];
   persons = [iCalPersons objectEnumerator];
   currentPerson = [persons nextObject];
   while (currentPerson)
     {
-      uid = [um getUIDForEmail: [currentPerson rfc822Email]];
+      uid = [currentPerson uid];
       if (uid)
 	[uids addObject: uid];
       currentPerson = [persons nextObject];
@@ -591,7 +562,7 @@ static BOOL sendEMailNotifications = NO;
   if ([superAcls count] > 0)
     [roles addObjectsFromArray: superAcls];
 
-  component = [self component: NO];
+  component = [self component: NO secure: NO];
   ownerRole = [self _roleOfOwner: component];
   if ([owner isEqualToString: uid])
     [roles addObject: ownerRole];

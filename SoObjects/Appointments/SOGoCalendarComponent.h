@@ -35,21 +35,19 @@
 @class SOGoUser;
 
 @interface SOGoCalendarComponent : SOGoContentObject
-{
-  iCalCalendar *calendar;
-  NSString *calContent;
-}
 
 - (NSString *) componentTag;
-- (iCalCalendar *) calendar: (BOOL) create;
-- (iCalRepeatableEntityObject *) component: (BOOL) create;
 
-- (NSException *) primarySaveContentString: (NSString *) _iCalString;
-- (NSException *) primaryDelete;
+- (iCalCalendar *) calendar: (BOOL) create
+  		     secure: (BOOL) secure;
+- (id) component: (BOOL) create secure: (BOOL) secure;
 
-- (NSException *) delete;
+// - (NSException *) primarySaveContentString: (NSString *) _iCalString;
+// - (NSException *) primaryDelete;
 
-- (NSException *) changeParticipationStatus: (NSString *) _status;
+// - (NSException *) delete;
+
+- (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */
 - (BOOL) sendEMailNotifications;
@@ -64,7 +62,6 @@
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid;
-- (NSString *) getUIDForICalPerson: (iCalPerson *) person;
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons;
 
 @end

@@ -34,17 +34,19 @@
     context.activeUser
 */
 
-@class NSString;
 @class NSArray;
 @class NSDictionary;
+@class NSString;
+@class NSTimeZone;
 @class NSURL;
 @class NSUserDefaults;
-@class NSTimeZone;
+
 @class WOContext;
+
 @class SOGoAppointmentFolder;
 @class SOGoAppointmentFolders;
 @class SOGoDateFormatter;
-@class WOContext;
+@class SOGoUserFolder;
 
 extern NSString *SOGoWeekStartHideWeekNumbers;
 extern NSString *SOGoWeekStartJanuary1;
@@ -68,6 +70,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
   NSTimeZone *userTimeZone;
   SOGoDateFormatter *dateFormatter;
   NSMutableArray *mailAccounts;
+  SOGoUserFolder *homeFolder;
 }
 
 + (NSString *) language;
@@ -119,7 +122,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 /* folders */
 
-- (id) homeFolderInContext: (id) _ctx;
+- (SOGoUserFolder *) homeFolderInContext: (id) context;
 
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context;
 - (SOGoAppointmentFolder *)

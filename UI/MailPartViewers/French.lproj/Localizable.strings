@@ -19,6 +19,7 @@ Attendees = "Invités";
 request_info = "vous invite à une réunion.";
 "Add to calendar" = "Ajouter à l'agenda";
 "Delete from calendar" = "Effacer de l'agenda";
+"Update status" = "Intégrer les modifications";
 Accept = "Accepter";
 Decline = "Decliner";
 Tentative = "Tentative";

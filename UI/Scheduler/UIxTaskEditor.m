@@ -282,7 +282,7 @@
   NSString *duration;
   unsigned int minutes;
 
-  todo = (iCalToDo *) [[self clientObject] component: NO];
+  todo = (iCalToDo *) [[self clientObject] component: NO secure: YES];
   if (todo)
     {
       startDate = [todo startDate];
@@ -345,15 +345,22 @@
 
 - (id <WOActionResults>) saveAction
 {
-  SOGoTaskObject *clientObject;
-  NSString *iCalString;
-
-  clientObject = [self clientObject];
-  iCalString = [[clientObject calendar: NO] versitString];
-  [clientObject saveContentString: iCalString];
+  [[self clientObject] saveComponent: todo];
 
   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
 }
+
+// - (id <WOActionResults>) saveAction
+// {
+//   SOGoTaskObject *clientObject;
+//   NSString *iCalString;
+
+//   clientObject = [self clientObject];
+//   iCalString = [[clientObject calendar: NO secure: NO] versitString];
+//   [clientObject saveContentString: iCalString];
+
+//   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
+// }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
@@ -372,7 +379,7 @@
   SOGoTaskObject *clientObject;
 
   clientObject = [self clientObject];
-  todo = (iCalToDo *) [clientObject component: YES];
+  todo = (iCalToDo *) [clientObject component: YES secure: NO];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
@@ -428,7 +435,7 @@
   NSString *newStatus, *iCalString;
 
   clientObject = [self clientObject];
-  todo = (iCalToDo *) [clientObject component: NO];
+  todo = (iCalToDo *) [clientObject component: NO secure: NO];
   if (todo)
     {
       newStatus = [self queryParameterForKey: @"status"];
@@ -441,7 +448,7 @@
 	  [todo setStatus: @"IN-PROCESS"];
 	}
 
-      iCalString = [[clientObject calendar: NO] versitString];
+      iCalString = [[clientObject calendar: NO secure: NO] versitString];
       [clientObject saveContentString: iCalString];
     }
 

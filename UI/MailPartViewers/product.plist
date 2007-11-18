@@ -20,6 +20,11 @@
           actionClass = "UIxMailPartICalActions";
           actionName  = "decline";
         };
+	updateUserStatus = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalActions";
+          actionName  = "updateUserStatus";
+	};
 	/*        tentative = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalAction";
@@ -29,12 +34,12 @@
           protectedBy = "View";
           actionClass = "UIxMailPartICalAction";
           actionName  = "addToCalendar";
-        };
+        }; */
         deleteFromCalendar = {
           protectedBy = "View";
           actionClass = "UIxMailPartICalAction";
           actionName  = "deleteFromCalendar";
-	  }; */
+	};
       };
     };
   };

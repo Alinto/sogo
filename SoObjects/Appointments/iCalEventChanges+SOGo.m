@@ -1,4 +1,4 @@
-/* iCalEntityObject+SOGo.h - this file is part of SOGo
+/* iCalEventChanges+SOGo.m - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,25 +20,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ICALENTITYOBJECT_SOGO_H
-#define ICALENTITYOBJECT_SOGO_H
+#import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
 
-#import <NGCards/iCalEntityObject.h>
+#import "iCalEventChanges+SOGo.h"
 
-@class SOGoUser;
+@implementation iCalEventChanges (SOGoExtensions)
 
-@interface iCalEntityObject (SOGoExtensions)
+- (BOOL) sequenceShouldBeIncreased
+{
+  NSString *properties[] = {@"organizer", @"startDate", @"endDate", /* vtask:
+								       @"due" */
+			    @"rdate", @"rrule", @"exdate", @"exrule",
+			    @"status", @"location", nil};
+  NSString **currentProperty;
+  BOOL updateRequired;
 
-- (BOOL) userIsParticipant: (SOGoUser *) user;
-- (BOOL) userIsOrganizer: (SOGoUser *) user;
+  updateRequired = NO;
 
-- (NSArray *) attendeeUIDs;
-- (BOOL) isStillRelevant;
+  currentProperty = properties;
+  while (!updateRequired && *currentProperty)
+    if ([updatedProperties containsObject: *currentProperty])
+      updateRequired = YES;
+    else
+      currentProperty++;
 
-- (id) itipEntryWithMethod: (NSString *) method;
-
-- (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+  return updateRequired;
+}
 
 @end
-
-#endif /* ICALENTITYOBJECT_SOGO_H */

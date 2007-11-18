@@ -27,6 +27,7 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
+#import "NSArray+Utilities.h"
 #import "LDAPSource.h"
 #import "LDAPUserManager.h"
 
@@ -289,9 +290,7 @@ static NSString *defaultMailDomain = nil;
   emails = [contact objectForKey: @"emails"];
   uid = [contact objectForKey: @"c_uid"];
   systemEmail = [NSString stringWithFormat: @"%@@%@", uid, defaultMailDomain];
-  if ([emails containsObject: systemEmail])
-    [emails removeObject: systemEmail];
-  [emails addObject: systemEmail];
+  [emails addObjectUniquely: systemEmail];
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 
@@ -302,8 +301,8 @@ static NSString *defaultMailDomain = nil;
   NSDictionary *userEntry;
   NSEnumerator *ldapSources;
   LDAPSource *currentSource;
-  NSString *cn, *email, *c_uid;
-  NSArray *attrs;
+  NSString *cn, *c_uid;
+  NSArray *c_emails;
   
   emails = [NSMutableArray array];
   cn = nil;
@@ -320,18 +319,9 @@ static NSString *defaultMailDomain = nil;
 	    cn = [userEntry objectForKey: @"c_cn"];
 	  if (!c_uid)
 	    c_uid = [userEntry objectForKey: @"c_uid"];
-
-	  if ((attrs = [[sourcesMetadata objectForKey: [currentSource sourceID]] objectForKey: @"MailFieldNames"]))
-	    {
-	      int i;
-
-	      for (i = 0; i < [attrs count]; i++)
-		{
-		  email = [userEntry objectForKey: [attrs objectAtIndex: i]];
-		  if (email && ![emails containsObject: email])
-		    [emails addObject: email];
-		}
-	    }
+	  c_emails = [userEntry objectForKey: @"c_emails"];
+	  if ([c_emails count])
+	    [emails addObjectsFromArray: c_emails];
 	}
       currentSource = [ldapSources nextObject];
     }

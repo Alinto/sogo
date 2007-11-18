@@ -24,9 +24,11 @@
 
 #import "UIxMailPartViewer.h"
 
-@class SOGoDateFormatter;
 @class iCalEvent;
 @class iCalCalendar;
+
+@class SOGoAppointmentObject;
+@class SOGoDateFormatter;
 
 @interface UIxMailPartICalViewer : UIxMailPartViewer
 {
@@ -35,7 +37,7 @@
   id attendee;
   SOGoDateFormatter *dateFormatter;
   id item;
-  id storedEventObject;
+  SOGoAppointmentObject *storedEventObject;
   iCalEvent *storedEvent;
 }
 

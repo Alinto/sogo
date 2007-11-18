@@ -241,6 +241,29 @@
   return ([[self productJavaScriptURL] length] > 0);
 }
 
+- (void) setCssFiles: (NSString *) newCSSFiles
+{
+  NSEnumerator *cssFiles;
+  NSString *currentFile, *filename;
+
+  [additionalCSSFiles release];
+  additionalCSSFiles = [NSMutableArray new];
+
+  cssFiles
+    = [[newCSSFiles componentsSeparatedByString: @","] objectEnumerator];
+  while ((currentFile = [cssFiles nextObject]))
+    {
+      filename = [self urlForResourceFilename:
+			 [currentFile stringByTrimmingSpaces]];
+      [additionalCSSFiles addObject: filename];
+    }
+}
+
+- (NSArray *) additionalCSSFiles
+{
+  return additionalCSSFiles;
+}
+
 - (void) setJsFiles: (NSString *) newJSFiles
 {
   NSEnumerator *jsFiles;

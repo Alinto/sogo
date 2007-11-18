@@ -10,6 +10,9 @@ Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
 	iCalEntityObject+SOGo.m 	\
+	iCalEvent+SOGo.m	 	\
+	iCalEventChanges+SOGo.m 	\
+	iCalPerson+SOGo.m 	\
 	\
 	SOGoCalendarComponent.m		\
 	SOGoAppointmentObject.m		\
@@ -24,6 +27,7 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailUpdate.m		\
 	SOGoAptMailRemoval.m		\
 	SOGoAptMailDeletion.m		\
+	SOGoAptMailICalReply.m		\
 
 Appointments_RESOURCE_FILES +=		\
 	Version				\
@@ -31,14 +35,17 @@ Appointments_RESOURCE_FILES +=		\
 
 Appointments_COMPONENTS +=	\
 	SOGoAptMailEnglishInvitation.wo	\
+	SOGoAptMailEnglishICalReply.wo	\
 	SOGoAptMailEnglishUpdate.wo	\
 	SOGoAptMailEnglishRemoval.wo	\
 	SOGoAptMailEnglishDeletion.wo	\
 	SOGoAptMailFrenchInvitation.wo	\
+	SOGoAptMailFrenchICalReply.wo	\
 	SOGoAptMailFrenchUpdate.wo	\
 	SOGoAptMailFrenchRemoval.wo	\
 	SOGoAptMailFrenchDeletion.wo	\
 	SOGoAptMailGermanInvitation.wo	\
+	SOGoAptMailGermanICalReply.wo	\
 	SOGoAptMailGermanUpdate.wo	\
 	SOGoAptMailGermanRemoval.wo	\
 	SOGoAptMailGermanDeletion.wo	\

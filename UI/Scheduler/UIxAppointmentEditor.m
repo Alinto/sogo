@@ -264,7 +264,7 @@
   unsigned int minutes;
   iCalRecurrenceRule *rule;
 
-  event = (iCalEvent *) [[self clientObject] component: NO];
+  event = (iCalEvent *) [[self clientObject] component: NO secure: YES];
   if (event)
     {
       startDate = [event startDate];
@@ -352,16 +352,7 @@
 
 - (id <WOActionResults>) saveAction
 {
-  SOGoAppointmentObject *clientObject;
-  NSString *iCalString;
-
-  clientObject = [self clientObject];
-  NSLog(@"saveAction, clientObject = %@", clientObject);
-
-  iCalString = [[clientObject calendar: NO] versitString];
-
-  NSLog(@"saveAction, iCalString = %@", iCalString);
-  [clientObject saveContentString: iCalString];
+  [[self clientObject] saveComponent: event];
 
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
 }
@@ -385,7 +376,7 @@
   iCalRecurrenceRule *rule;
 
   clientObject = [self clientObject];
-  event = (iCalEvent *) [clientObject component: YES];
+  event = (iCalEvent *) [clientObject component: YES secure: NO];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
@@ -443,23 +434,18 @@
 
 // TODO: add tentatively
 
-- (id) acceptOrDeclineAction: (BOOL) accept
+- (id) acceptAction
 {
-  [[self clientObject] changeParticipationStatus: (accept
-						   ? @"ACCEPTED"
-						   : @"DECLINED")];
+  [[self clientObject] changeParticipationStatus: @"ACCEPTED"];
 
   return self;
 }
 
-- (id) acceptAction
-{
-  return [self acceptOrDeclineAction: YES];
-}
-
 - (id) declineAction
 {
-  return [self acceptOrDeclineAction: NO];
+  [[self clientObject] changeParticipationStatus: @"DECLINED"];
+
+  return self;
 }
 
 @end

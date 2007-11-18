@@ -142,6 +142,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       language = nil;
       currentPassword = nil;
       dateFormatter = nil;
+      homeFolder = nil;
     }
 
   return self;
@@ -176,6 +177,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   [allEmails release];
   [language release];
   [dateFormatter release];
+  [homeFolder release];
   [super dealloc];
 }
 
@@ -528,27 +530,17 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 // TODO: those methods should check whether the traversal stack in the context
 //       already contains proper folders to improve caching behaviour
 
-- (id) homeFolderInContext: (id) _ctx
+- (SOGoUserFolder *) homeFolderInContext: (id) context
 {
-  /* Note: watch out for cyclic references */
-  // TODO: maybe we should add an [activeUser reset] method to SOPE
-  id folder;
-  
-  folder = [(WOContext *)_ctx objectForKey:@"ActiveUserHomeFolder"];
-  if (folder != nil)
-    return [folder isNotNull] ? folder : nil;
-  
-  folder = [[WOApplication application] lookupName: [self login]
-					inContext: _ctx
-					acquire: NO];
-  if ([folder isKindOfClass:[NSException class]])
-    return folder;
-  
-  [(WOContext *)_ctx setObject: ((folder)
-				 ? folder
-				 : (id)[NSNull null])
-		forKey: @"ActiveUserHomeFolder"];
-  return folder;
+  if (!homeFolder)
+    {
+      homeFolder = [[WOApplication application] lookupName: [self login]
+						inContext: context
+						acquire: NO];
+      [homeFolder retain];
+    }
+
+  return homeFolder;
 }
 
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context
