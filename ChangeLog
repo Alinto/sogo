@@ -1,3 +1,13 @@
+2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxTabItem.m: removed useless class module.
+
+	* UI/Common/UIxTabView.[hm]: removed useless class module.
+
+	* UI/Common/UIxPrintPageFrame.m: removed useless class module.
+
+	* UI/Common/UIxAppNavView.m: removed useless class module.
+
 2007-11-16  Ludovic Marcotte <ludovic@inverse.ca>
 
         * SoObjects/Mailer/SOGoMailBaseObject.m
