@@ -41,13 +41,13 @@
 - (id)initWithFromEvent:(iCalEvent *)_from toEvent:(iCalEvent *)_to {
   self = [super init];
   if(self) {
-    self->insertedAttendees = [[NSMutableArray alloc] init];
-    self->deletedAttendees  = [[NSMutableArray alloc] init];
-    self->updatedAttendees  = [[NSMutableArray alloc] init];
-    self->insertedAlarms    = [[NSMutableArray alloc] init];
-    self->deletedAlarms     = [[NSMutableArray alloc] init];
-    self->updatedAlarms     = [[NSMutableArray alloc] init];
-    self->updatedProperties = [[NSMutableArray alloc] init];
+    insertedAttendees = [NSMutableArray new];
+    deletedAttendees  = [NSMutableArray new];
+    updatedAttendees  = [NSMutableArray new];
+    insertedAlarms    = [NSMutableArray new];
+    deletedAlarms     = [NSMutableArray new];
+    updatedAlarms     = [NSMutableArray new];
+    updatedProperties = [NSMutableArray new];
     [self _trackAttendeeChanges:_from :_to];
     [self _trackPropertyChanges:_from :_to];
   }
@@ -55,13 +55,13 @@
 }
 
 - (void)dealloc {
-  [self->insertedAttendees release];
-  [self->deletedAttendees  release];
-  [self->updatedAttendees  release];
-  [self->insertedAlarms    release];
-  [self->deletedAlarms     release];
-  [self->updatedAlarms     release];
-  [self->updatedProperties release];
+  [insertedAttendees release];
+  [deletedAttendees  release];
+  [updatedAttendees  release];
+  [insertedAlarms    release];
+  [deletedAlarms     release];
+  [updatedAlarms     release];
+  [updatedProperties release];
   [super dealloc];
 }
 
@@ -86,13 +86,13 @@
       if([fp hasSameEmailAddress:tp]) {
         found = YES;
         if(![fp isEqualToPerson:tp]) {
-          [self->updatedAttendees addObject:tp];
+          [updatedAttendees addObject:tp];
         }
         break;
       }
     }
     if(!found) {
-      [self->deletedAttendees addObject:fp];
+      [deletedAttendees addObject:fp];
     }
   }
   for(t = 0; t < tcount; t++) {
@@ -110,7 +110,7 @@
       }
     }
     if(!found)
-      [self->insertedAttendees addObject:tp];
+      [insertedAttendees addObject:tp];
   }
 }
 
@@ -119,31 +119,31 @@
 
 - (void)_trackPropertyChanges:(iCalEvent *)_from :(iCalEvent *)_to {
   if(!IS_EQUAL([_from startDate], [_to startDate], isEqualToDate:))
-    [self->updatedProperties addObject:@"startDate"];
+    [updatedProperties addObject:@"startDate"];
   if(!IS_EQUAL([_from endDate], [_to endDate], isEqualToDate:))
-    [self->updatedProperties addObject:@"endDate"];
+    [updatedProperties addObject:@"endDate"];
   if(!IS_EQUAL([_from created], [_to created], isEqualToDate:))
-    [self->updatedProperties addObject:@"created"];
+    [updatedProperties addObject:@"created"];
   if(!IS_EQUAL([_from lastModified], [_to lastModified], isEqualToDate:))
-    [self->updatedProperties addObject:@"lastModified"];
+    [updatedProperties addObject:@"lastModified"];
   if(![_from durationAsTimeInterval] == [_to durationAsTimeInterval])
-    [self->updatedProperties addObject:@"duration"];
+    [updatedProperties addObject:@"duration"];
   if(!IS_EQUAL([_from summary], [_to summary], isEqualToString:))
-    [self->updatedProperties addObject:@"summary"];
+    [updatedProperties addObject:@"summary"];
   if(!IS_EQUAL([_from location], [_to location], isEqualToString:))
-    [self->updatedProperties addObject:@"location"];
+    [updatedProperties addObject:@"location"];
   if(!IS_EQUAL([_from comment], [_to comment], isEqualToString:))
-    [self->updatedProperties addObject:@"comment"];
+    [updatedProperties addObject:@"comment"];
   if(!IS_EQUAL([_from priority], [_to priority], isEqualToString:))
-    [self->updatedProperties addObject:@"priority"];
+    [updatedProperties addObject:@"priority"];
   if(!IS_EQUAL([_from status], [_to status], isEqualToString:))
-    [self->updatedProperties addObject:@"status"];
+    [updatedProperties addObject:@"status"];
   if(!IS_EQUAL([_from accessClass], [_to accessClass], isEqualToString:))
-    [self->updatedProperties addObject:@"accessClass"];
+    [updatedProperties addObject:@"accessClass"];
   if(!IS_EQUAL([_from sequence], [_to sequence], isEqualToNumber:))
-    [self->updatedProperties addObject:@"sequence"];
+    [updatedProperties addObject:@"sequence"];
   if(!IS_EQUAL([_from organizer], [_to organizer], isEqual:))
-    [self->updatedProperties addObject:@"organizer"];
+    [updatedProperties addObject:@"organizer"];
 }
 
 - (BOOL)hasChanges {
@@ -169,27 +169,27 @@
 }
 
 - (NSArray *)insertedAttendees {
-  return self->insertedAttendees;
+  return insertedAttendees;
 }
 - (NSArray *)deletedAttendees {
-  return self->deletedAttendees;
+  return deletedAttendees;
 }
 - (NSArray *)updatedAttendees {
-  return self->updatedAttendees;
+  return updatedAttendees;
 }
 
 - (NSArray *)insertedAlarms {
-  return self->insertedAlarms;
+  return insertedAlarms;
 }
 - (NSArray *)deletedAlarms {
-  return self->deletedAlarms;
+  return deletedAlarms;
 }
 - (NSArray *)updatedAlarms {
-  return self->updatedAlarms;
+  return updatedAlarms;
 }
 
 - (NSArray *)updatedProperties {
-  return self->updatedProperties;
+  return updatedProperties;
 }
 
 /* descriptions */
@@ -200,10 +200,10 @@
   ms = [NSMutableString stringWithCapacity:128];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   
-  [ms appendFormat:@" updatedProperties=%@", self->updatedProperties];
-  [ms appendFormat:@" insertedAttendees=%@", self->insertedAttendees];
-  [ms appendFormat:@" deletedAttendees=%@", self->deletedAttendees];
-  [ms appendFormat:@" updatedAttendees=%@", self->updatedAttendees];
+  [ms appendFormat:@" updatedProperties=%@", updatedProperties];
+  [ms appendFormat:@" insertedAttendees=%@", insertedAttendees];
+  [ms appendFormat:@" deletedAttendees=%@", deletedAttendees];
+  [ms appendFormat:@" updatedAttendees=%@", updatedAttendees];
   
   [ms appendString:@">"];
   return ms;

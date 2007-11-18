@@ -1,5 +1,10 @@
 2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalPerson.m ([-rsvp]): return lowercase string.
+
+	* iCalCalendar.m ([iCalCalendar -setMethod:_value]): convert
+	method to uppercase before setting value.
+
 	* CardGroup.m ([CardGroup -addChild:aChild]): don't process nil
 	values for aChild.
 	([CardGroup -setUniqueChild:aChild]): same as above.

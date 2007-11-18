@@ -85,7 +85,7 @@
 
 - (NSString *) rsvp
 {
-  return [self value: 0 ofAttribute: @"rsvp"];
+  return [[self value: 0 ofAttribute: @"rsvp"] lowercaseString];
 }
 
 // - (void)setXuid:(NSString *)_s {
