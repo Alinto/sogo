@@ -116,7 +116,7 @@
   parent = aParent;
 }
 
-- (CardGroup *) parent
+- (id) parent
 {
   return parent;
 }
@@ -520,6 +520,21 @@
   [new setParent: parent];
   [new setValuesAsCopy: [values copyWithZone: aZone]];
   [new setAttributesAsCopy: [attributes copyWithZone: aZone]];
+
+  return new;
+}
+
+/* NSMutableCopying */
+- (id) mutableCopyWithZone: (NSZone *) aZone
+{
+  CardElement *new;
+
+  new = [[self class] new];
+  [new setTag: [tag mutableCopyWithZone: aZone]];
+  [new setGroup: [group mutableCopyWithZone: aZone]];
+  [new setParent: parent];
+  [new setValuesAsCopy: [values mutableCopyWithZone: aZone]];
+  [new setAttributesAsCopy: [attributes mutableCopyWithZone: aZone]];
 
   return new;
 }

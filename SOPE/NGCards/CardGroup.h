@@ -29,7 +29,7 @@
 @class NSMutableArray;
 @class NSString;
 
-@interface CardGroup : CardElement <NSCopying>
+@interface CardGroup : CardElement <NSCopying, NSMutableCopying>
 {
   NSMutableArray *children;
 }

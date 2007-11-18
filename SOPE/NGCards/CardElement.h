@@ -33,7 +33,7 @@
 
 @class CardGroup;
 
-@interface CardElement : NSObject <NSCopying>
+@interface CardElement : NSObject <NSCopying, NSMutableCopying>
 {
   NSString *tag;
   NSMutableArray *values;
@@ -56,7 +56,7 @@
                values: (NSArray *) someValues;
 
 - (void) setParent: (CardGroup *) aParent;
-- (CardGroup *) parent;
+- (id) parent;
 
 - (void) setTag: (NSString *) aTag;
 

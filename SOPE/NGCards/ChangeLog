@@ -1,3 +1,16 @@
+2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup -addChild:aChild]): don't process nil
+	values for aChild.
+	([CardGroup -setUniqueChild:aChild]): same as above.
+	([CardGroup -setChildrenAsCopy:someChildren]): reparent the copied
+	children.
+	([CardGroup -mutableCopyWithZone:aZone]): implemented
+	NSMutableCopying protocol.
+
+	* CardElement.m ([CardElement -mutableCopyWithZone:aZone]):
+	implemented NSMutableCopying protocol.
+
 2007-11-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZonePeriod.m ([iCalTimeZonePeriod
