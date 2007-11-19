@@ -37,8 +37,15 @@
   would address the MIME part 1.2.3 of the mail 12345 in the folder INBOX.
 */
 
-@class NSData, NSString, NSArray, NSCalendarDate, NSException, NSDictionary;
-@class NGImap4Envelope, NGImap4EnvelopeAddress;
+@class NSArray;
+@class NSCalendarDate;
+@class NSData;
+@class NSDictionary;
+@class NSException;
+@class NSString;
+
+@class NGImap4Envelope;
+@class NGImap4EnvelopeAddress;
 
 @interface SOGoMailObject : SOGoMailBaseObject
 {
@@ -53,42 +60,43 @@
 
 /* core infos */
 
-- (BOOL)doesMailExist;
-- (id)fetchCoreInfos; // TODO: what does it do?
+- (BOOL) doesMailExist;
+- (id) fetchCoreInfos; // TODO: what does it do?
 
-- (NGImap4Envelope *)envelope;
-- (NSString *)subject;
-- (NSString *)decodedSubject;
-- (NSCalendarDate *)date;
-- (NSArray *)fromEnvelopeAddresses;
-- (NSArray *)toEnvelopeAddresses;
-- (NSArray *)ccEnvelopeAddresses;
+- (NGImap4Envelope *) envelope;
+- (NSString *) subject;
+- (NSString *) decodedSubject;
+- (NSCalendarDate *) date;
+- (NSArray *) fromEnvelopeAddresses;
+- (NSArray *) replyToEnvelopeAddresses;
+- (NSArray *) toEnvelopeAddresses;
+- (NSArray *) ccEnvelopeAddresses;
 
 - (NSDictionary *) mailHeaders;
 
-- (id)bodyStructure;
-- (id)lookupInfoForBodyPart:(id)_path;
+- (id) bodyStructure;
+- (id) lookupInfoForBodyPart:(id)_path;
 
 /* content */
 
-- (NSData *)content;
-- (NSString *)contentAsString;
+- (NSData *) content;
+- (NSString *) contentAsString;
 
 /* bulk fetching of plain/text content */
 
-- (NSArray *)plainTextContentFetchKeys;
-- (NSDictionary *)fetchPlainTextParts:(NSArray *)_fetchKeys;
-- (NSDictionary *)fetchPlainTextParts;
-- (NSDictionary *)fetchPlainTextStrings:(NSArray *)_fetchKeys;
+- (NSArray *) plainTextContentFetchKeys;
+- (NSDictionary *) fetchPlainTextParts:(NSArray *)_fetchKeys;
+- (NSDictionary *) fetchPlainTextParts;
+- (NSDictionary *) fetchPlainTextStrings:(NSArray *)_fetchKeys;
 
 /* flags */
 
-- (NSException *)addFlags:(id)_f;
-- (NSException *)removeFlags:(id)_f;
+- (NSException *) addFlags:(id)_f;
+- (NSException *) removeFlags:(id)_f;
 
 /* deletion */
 
-- (BOOL)isDeletionAllowed;
+- (BOOL) isDeletionAllowed;
 - (NSException *) trashInContext:(id)_ctx;
 - (NSException *) copyToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx;

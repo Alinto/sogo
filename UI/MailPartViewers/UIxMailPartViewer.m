@@ -312,7 +312,7 @@
   if (![url hasSuffix: @"/"])
     url = [url stringByAppendingString: @"/"];
   
-  /* if we get a message with an image/* or applicatio/*
+  /* if we get a message with an image/* or application/*
      Content-Type, we must generate a 'fake' part since our
      decoded mail won't have any. Also see SOGoMailBodyPart: -fetchBLOB
      and SOGoMailObject: -lookupImap4BodyPartKey: inContext for

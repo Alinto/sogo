@@ -938,13 +938,13 @@ static BOOL debugSoParts       = NO;
 - (NSException *) copyToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx
 {
-  SOGoMailAccounts *destFolder;
+  SOGoMailFolder *destFolder;
   NSEnumerator *folders;
   NSString *currentFolderName, *reason;
 
   // TODO: check for safe HTTP method
 
-  destFolder = [self mailAccountsFolder];
+  destFolder = (SOGoMailFolder *) [self mailAccountsFolder];
   folders = [[folderName componentsSeparatedByString: @"/"] objectEnumerator];
   currentFolderName = [folders nextObject];
   currentFolderName = [folders nextObject];
