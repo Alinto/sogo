@@ -71,10 +71,12 @@
 /* template values */
 - (iCalToDo *) todo
 {
-  if (!todo) {
-    todo = (iCalToDo *) [[self clientObject] component: NO secure: NO];
-    [todo retain];
-  }
+  if (!todo)
+    {
+      todo = (iCalToDo *) [[self clientObject] component: NO secure: NO];
+      [todo retain];
+    }
+
   return todo;
 }
 

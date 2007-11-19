@@ -1,6 +1,19 @@
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-setComponent:newComponent]): retain the component object.
+	([UIxComponentEditor -organizerIdentity]): new accessor method to
+	handle list of possible organizers.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-event]): retain the returned event object.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -saveComponent:newEvent]): reset the
+	organizer only if there are no attendees AND the owner of the
+	component is not the organizer him-/herself.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-toolbar]): rewrote in a way that ensures that each case is
 	handled properly.
 

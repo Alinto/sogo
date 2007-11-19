@@ -230,9 +230,11 @@
 {
   iCalEvent *oldEvent;
   NSArray *attendees;
+  SOGoUser *currentUser;
 
   [[newEvent parent] setMethod: @""];
-  if ([newEvent userIsOrganizer: [context activeUser]])
+  currentUser = [context activeUser];
+  if ([newEvent userIsOrganizer: currentUser])
     {
       oldEvent = [self component: NO secure: NO];
       if (oldEvent)
@@ -249,7 +251,9 @@
 		    toAttendees: attendees];
 	    }
 
-	  if (![[newEvent attendees] count])
+	  if (![[newEvent attendees] count]
+	      && [[self ownerInContext: context]
+		   isEqualToString: [currentUser login]])
 	    [[newEvent uniqueChildWithTag: @"organizer"] setValue: 0
 							 to: @""];
 	}

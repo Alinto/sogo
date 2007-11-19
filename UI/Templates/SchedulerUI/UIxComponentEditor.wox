@@ -57,8 +57,15 @@
       </span></span>
       <var:if condition="hasOrganizer"
 	><label id="organizerLabel"><var:string label:value="Organizer:"
-	    /><span class="content"><var:string value="organizerName"/></span></label>
+	    /><span class="content"><var:string
+	      value="organizerName"/></span></label>
       </var:if>
+      <var:if condition="canBeOrganizer"
+	><label id="organizerListLabel"><var:string label:value="Organizer:"
+	    /><span class="content"><var:popup list="organizerList"
+	      item="item" string="itemOrganizerText"
+	      var:selection="organizerIdentity"/>
+	  </span></label></var:if>
       <label id="attendeesLabel"><var:string label:value="Attendees:"
 	  /><span class="content"
 	  ><a href="#" id="attendeesHref"><!-- space --></a></span></label>

@@ -49,6 +49,7 @@
 #import <SoObjects/Appointments/SOGoTaskObject.h>
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
@@ -68,6 +69,7 @@
       [self setIsCycleEndNever];
       componentOwner = @"";
       organizer = nil;
+      organizerIdentity = nil;
       attendeesNames = nil;
       attendeesUIDs = nil;
       attendeesEmails = nil;
@@ -84,6 +86,7 @@
   [title release];
   [location release];
   [organizer release];
+  [organizerIdentity release];
   [comment release];
   [priority release];
   [categories release];
@@ -94,6 +97,8 @@
   [attendeesUIDs release];
   [attendeesEmails release];
   [calendarList release];
+
+  [component release];
 
   [super dealloc];
 }
@@ -160,7 +165,7 @@
 
   if (!component)
     {
-      component = newComponent;
+      ASSIGN (component, newComponent);
 
       co = [self clientObject];
       componentOwner = [co ownerInContext: nil];
@@ -248,14 +253,73 @@
   return url;
 }
 
-- (BOOL) hasOrganizer
-{
-  return (![organizer isVoid]);
-}
-
 - (NSString *) organizerName
 {
   return [organizer mailAddress];
+}
+
+- (BOOL) canBeOrganizer
+{
+  NSString *owner;
+  SOGoCalendarComponent *co;
+  SOGoUser *currentUser;
+  BOOL hasOrganizer;
+
+  co = [self clientObject];
+  owner = [co ownerInContext: context];
+  currentUser = [context activeUser];
+
+  hasOrganizer = ([[organizer value: 0] length] > 0);
+
+  return ([co isNew]
+	  || ([owner isEqualToString: [currentUser login]]
+	      && (!hasOrganizer || [component userIsOrganizer: currentUser])));
+}
+
+- (BOOL) hasOrganizer
+{
+  return ([[organizer value: 0] length] && ![self canBeOrganizer]);
+}
+
+- (void) setOrganizerIdentity: (NSDictionary *) newOrganizerIdentity
+{
+  ASSIGN (organizerIdentity, newOrganizerIdentity);
+}
+
+- (NSDictionary *) organizerIdentity
+{
+  NSArray *allIdentities;
+  NSEnumerator *identities;
+  NSDictionary *currentIdentity;
+  NSString *orgEmail;
+
+  orgEmail = [organizer rfc822Email];
+  if (!organizerIdentity)
+    {
+      if ([orgEmail length])
+	{
+	  allIdentities = [[context activeUser] allIdentities];
+	  identities = [allIdentities objectEnumerator];
+	  while (!organizerIdentity
+		 && ((currentIdentity = [identities nextObject])))
+	    if ([[currentIdentity objectForKey: @"email"]
+		  caseInsensitiveCompare: orgEmail]
+		== NSOrderedSame)
+	      ASSIGN (organizerIdentity, currentIdentity);
+	}
+    }
+
+  return organizerIdentity;
+}
+
+- (NSArray *) organizerList
+{
+  return [[context activeUser] allIdentities];
+}
+
+- (NSString *) itemOrganizerText
+{
+  return [item keysWithFormat: @"%{fullName} <%{email}>"];
 }
 
 - (void) setAttendeesNames: (NSString *) newAttendeesNames
@@ -852,19 +916,19 @@
 - (void) _handleOrganizer
 {
   NSString *organizerEmail;
-  SOGoUser *activeUser;
-  NSDictionary *primaryIdentity;
+  NSString *owner, *login;
 
   organizerEmail = [[component organizer] email];
   if ([organizerEmail length] == 0)
     {
-      if ([[component attendees] count] > 0)
+      owner = [[self clientObject] ownerInContext: context];
+      login = [[context activeUser] login];
+      if (![owner isEqualToString: login]
+	  || [[component attendees] count] > 0)
 	{
 	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-	  activeUser = [context activeUser];
-	  primaryIdentity = [activeUser primaryIdentity];
-	  [organizer setCn: [activeUser cn]];
-	  [organizer setEmail: [primaryIdentity objectForKey: @"email"]];
+	  [organizer setCn: [organizerIdentity objectForKey: @"fullName"]];
+	  [organizer setEmail: [organizerIdentity objectForKey: @"email"]];
 	  [component setOrganizer: organizer];
 	}
     }
@@ -908,6 +972,7 @@
 
 #warning the following methods probably share some code...
 - (NSString *) _toolbarForOwner: (SOGoUser *) ownerUser
+		andClientObject: (SOGoCalendarComponent *) clientObject
 {
   NSString *toolbarFilename;
   iCalPersonPartStat participationStatus;
@@ -928,7 +993,7 @@
     }
   else
     {
-      if ([component isKindOfClass: [iCalEvent class]])
+      if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
 	toolbarFilename = @"SOGoAppointmentObject.toolbar";
       else
 	toolbarFilename = @"SOGoTaskObject.toolbar";
@@ -938,15 +1003,13 @@
 }
 
 - (NSString *) _toolbarForDelegate: (SOGoUser *) ownerUser
+		   andClientObject: (SOGoCalendarComponent *) clientObject
 {
-  SOGoCalendarComponent *clientObject;
   SoSecurityManager *sm;
   NSString *toolbarFilename, *adminToolbar;
   iCalPersonPartStat participationStatus;
 
-  clientObject = [self clientObject];
-
-  if ([component isKindOfClass: [iCalEvent class]])
+  if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
     adminToolbar = @"SOGoAppointmentObject.toolbar";
   else
     adminToolbar = @"SOGoTaskObject.toolbar";
@@ -1001,9 +1064,11 @@
 			roles: nil];
 
   if ([ownerUser isEqual: [context activeUser]])
-    toolbarFilename = [self _toolbarForOwner: ownerUser];
+    toolbarFilename = [self _toolbarForOwner: ownerUser
+			    andClientObject: clientObject];
   else
-    toolbarFilename = [self _toolbarForDelegate: ownerUser];
+    toolbarFilename = [self _toolbarForDelegate: ownerUser
+			    andClientObject: clientObject];
 
 
   return toolbarFilename;

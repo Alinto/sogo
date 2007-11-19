@@ -69,6 +69,12 @@
 /* template values */
 - (iCalEvent *) event
 {
+  if (!event)
+    {
+      event = (iCalEvent *) [[self clientObject] component: NO secure: NO];
+      [event retain];
+    }
+
   return event;
 }
 

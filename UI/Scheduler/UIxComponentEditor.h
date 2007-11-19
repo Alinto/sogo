@@ -41,6 +41,8 @@
 
   NSString *saveURL;
   NSMutableArray *calendarList;
+  NSMutableArray *organizerList;
+  NSDictionary *organizerIdentity;
   
   /* individual values */
   NSCalendarDate *cycleUntilDate;
@@ -69,6 +71,9 @@
 - (void) setSaveURL: (NSString *) newSaveURL;
 - (NSString *) saveURL;
 
+- (void) setItem: (id) _item;
+- (id) item;
+
 - (NSArray *) categoryList;
 - (void) setCategories: (NSArray *) _categories;
 - (NSArray *) categories;
@@ -89,14 +94,12 @@
 - (NSString *) status;
 - (NSString *) itemStatusText;
 
-- (void) setItem: (id) _item;
-- (id) item;
-- (NSString *) itemPriorityText;
-
 - (void) setTitle: (NSString *) _value;
 - (NSString *) title;
 
 - (void) setLocation: (NSString *) _value;
+- (NSString *) location;
+
 - (NSString *) location;
 
 - (void) setComment: (NSString *) _value;
