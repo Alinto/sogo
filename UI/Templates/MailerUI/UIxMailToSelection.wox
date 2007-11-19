@@ -37,9 +37,8 @@
         </var:foreach>
       </var:foreach>
       <tr class="addressListElement" id="lastRow">
-        <td class="headerField">
+        <td class="headerField" onclick="fancyAddRow(true,'');">
         <var:popup name="currentPopUpId"
-              const:disabled="1"
               list="headers"
               item="item"
               label:displayString="$item"
