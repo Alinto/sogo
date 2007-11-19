@@ -601,6 +601,7 @@ function scrollDayView(scrollEvent) {
     }
   }
   else
+    // Scroll to 8 AM
     offset = hours[8].offsetTop;
 
   daysView.scrollTop = offset - 5;
@@ -674,8 +675,7 @@ function refreshCalendarEventsCallback(http) {
 			  http.callbackData["startDate"],
 			  http.callbackData["endDate"]);
     }
-    if (http.callbackData["scrollEvent"])
-      scrollDayView(http.callbackData["scrollEvent"]);
+    scrollDayView(http.callbackData["scrollEvent"]);
   }
   else
      log("AJAX error when refreshing calendar events");
