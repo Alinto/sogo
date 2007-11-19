@@ -337,7 +337,12 @@
 
 - (BOOL) isSuperUser
 {
-  return [[context activeUser] isSuperUser];
+  SOGoUser *user;
+
+  user = [context activeUser];
+
+  return ([user respondsToSelector: @selector (isSuperUser)]
+	  && [user isSuperUser]);
 }
 
 /* browser/os identification */
