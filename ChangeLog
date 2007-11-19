@@ -1,5 +1,8 @@
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([-acceptAction])
+	([-declineAction]): commented out unused methods.
+
 	* UI/MailPartViewers/UIxMailPartICalActions.m
 	([UIxMailPartICalActions -deleteFromCalendarAction]): actually
 	delete the found object.

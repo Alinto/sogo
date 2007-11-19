@@ -179,11 +179,6 @@
 	   };
 	};
 	methods = {
-// 	   delete = { 
-// 	      protectedBy = "Delete Objects";
-// 	      pageName    = "UIxTaskView"; 
-// 	      actionName  = "delete";
-// 	   };
 	   edit = { 
 	      protectedBy = "ViewAllComponent";
 	      pageName    = "UIxTaskEditor"; 
@@ -206,16 +201,6 @@
 	      protectedBy = "ModifyComponent";
 	      pageName    = "UIxTaskEditor"; 
 	      actionName  = "changeStatus";
-	   };
-	   accept = { 
-	      protectedBy = "RespondToComponent";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "accept";
-	   };
-	   decline = { 
-	      protectedBy = "RespondToComponent";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "decline";
 	   };
 	};
      };

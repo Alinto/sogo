@@ -411,23 +411,23 @@
 
 // TODO: add tentatively
 
-- (id) acceptOrDeclineAction: (BOOL) _accept
-{
-  [[self clientObject] changeParticipationStatus:
-                         _accept ? @"ACCEPTED" : @"DECLINED"];
+// - (id) acceptOrDeclineAction: (BOOL) _accept
+// {
+//   [[self clientObject] changeParticipationStatus:
+//                          _accept ? @"ACCEPTED" : @"DECLINED"];
 
-  return self;
-}
+//   return self;
+// }
 
-- (id) acceptAction
-{
-  return [self acceptOrDeclineAction: YES];
-}
+// - (id) acceptAction
+// {
+//   return [self acceptOrDeclineAction: YES];
+// }
 
-- (id) declineAction
-{
-  return [self acceptOrDeclineAction: NO];
-}
+// - (id) declineAction
+// {
+//   return [self acceptOrDeclineAction: NO];
+// }
 
 - (id) changeStatusAction
 {
