@@ -73,8 +73,14 @@
 	  <div id="javascriptSafetyNet"><!-- space --></div>
 
 	  <script type="text/javascript">
-	    var ApplicationBaseURL = '<var:string value="applicationPath" />';
+	    var ApplicationBaseURL = '<var:string value="applicationPath"/>';
 	    var ResourcesURL = '/SOGo.woa/WebServerResources';
+	    <var:if condition="isSuperUser"
+	      >var IsSuperUser = true;
+	    </var:if>
+	    <var:if condition="isSuperUser" const:negate="YES"
+	      >var IsSuperUser = false;
+	    </var:if>
 	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	      const:negate="YES"
 	      >var UserFolderURL = '<var:string value="userFolderPath" />';

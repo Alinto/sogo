@@ -1,5 +1,13 @@
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -isSuperUser]): new
+	accessor that forwards the call to the active user.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -signature]): returns the
+	user default signature.
+	([SOGoUser -isSuperUser]): declares whether the user is listed
+	among the super users.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-setComponent:newComponent]): retain the component object.
 	([UIxComponentEditor -organizerIdentity]): new accessor method to

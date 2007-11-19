@@ -335,6 +335,11 @@
   return toolbar;
 }
 
+- (BOOL) isSuperUser
+{
+  return [[context activeUser] isSuperUser];
+}
+
 /* browser/os identification */
 
 - (BOOL) isCompatibleBrowser

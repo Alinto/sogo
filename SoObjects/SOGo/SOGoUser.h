@@ -120,6 +120,10 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) messageForwarding;
 - (NSString *) messageCheck;
 
+- (NSString *) signature;
+
+- (BOOL) isSuperUser;
+
 /* folders */
 
 - (SOGoUserFolder *) homeFolderInContext: (id) context;

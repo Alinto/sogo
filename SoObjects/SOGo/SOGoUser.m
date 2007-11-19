@@ -501,6 +501,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [[defaultAccount objectForKey: @"identities"] objectAtIndex: 0];
 }
 
+- (NSString *) signature
+{
+  return [[self primaryIdentity] objectForKey: @"signature"];
+}
+
 - (NSString *) messageForwarding
 {
   NSString *messageForwarding;
@@ -610,6 +615,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   return ([otherUser isKindOfClass: [SoUser class]]
 	  && [login isEqualToString: [otherUser login]]);
+}
+
+- (BOOL) isSuperUser
+{
+  return [superUsernames containsObject: login];
 }
 
 @end /* SOGoUser */
