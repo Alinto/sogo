@@ -980,7 +980,7 @@ function _loadTasksHref(href) {
     document.tasksListAjaxRequest.aborted = true;
     document.tasksListAjaxRequest.abort();
   }
-  url = ApplicationBaseURL + "/" + href;
+  url = ApplicationBaseURL + href;
 
   var tasksList = $("tasksList");
   var selectedIds;
@@ -1215,7 +1215,7 @@ function updateTaskStatus(event) {
     newStatus = (newStatus ? 0 : 1);
   }
   
-  url = (ApplicationBaseURL + "/" + this.parentNode.calendar
+  url = (ApplicationBaseURL + this.parentNode.calendar
 	 + "/" + taskId + "/changeStatus?status=" + newStatus);
 
   if (http) {
@@ -1223,7 +1223,7 @@ function updateTaskStatus(event) {
     http.open("POST", url, false /* not async */);
     http.url = url;
     http.send("");
-    if (http.status == 200)
+    if (isHttpStatus204(http.status))
       refreshTasks();
   } else
     log ("no http client?");

@@ -64,12 +64,17 @@
   [statusDate release];
   [status release];
   [statusPercent release];
+  [todo release];
   [super dealloc];
 }
 
 /* template values */
 - (iCalToDo *) todo
 {
+  if (!todo) {
+    todo = (iCalToDo *) [[self clientObject] component: NO secure: NO];
+    [todo retain];
+  }
   return todo;
 }
 
@@ -432,10 +437,11 @@
 - (id) changeStatusAction
 {
   SOGoTaskObject *clientObject;
-  NSString *newStatus, *iCalString;
+  NSString *newStatus;
 
   clientObject = [self clientObject];
   todo = (iCalToDo *) [clientObject component: NO secure: NO];
+  [todo retain];
   if (todo)
     {
       newStatus = [self queryParameterForKey: @"status"];
@@ -447,12 +453,10 @@
 	  [todo setPercentComplete: @"0"];
 	  [todo setStatus: @"IN-PROCESS"];
 	}
-
-      iCalString = [[clientObject calendar: NO secure: NO] versitString];
-      [clientObject saveContentString: iCalString];
+      [clientObject saveComponent: todo];
     }
 
-  return self;
+  return [self responseWith204];
 }
 
 @end
