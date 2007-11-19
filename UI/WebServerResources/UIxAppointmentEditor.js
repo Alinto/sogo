@@ -23,15 +23,12 @@ var contactSelectorAction = 'calendars-contacts';
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
-  //   cuicui = 'year';
   if (date1.getYear()  < date2.getYear()) return date1;
   if (date1.getYear()  > date2.getYear()) return date2;
   // same year
-  //   cuicui += '/month';
   if (date1.getMonth() < date2.getMonth()) return date1;
   if (date1.getMonth() > date2.getMonth()) return date2;
   //   // same month
-  //   cuicui += '/date';
   if (date1.getDate() < date2.getDate()) return date1;
   if (date1.getDate() > date2.getDate()) return date2;
   // same day
@@ -68,10 +65,8 @@ function validateAptEditor() {
     alert(labels.validate_invalid_enddate);
     return false;
   }
-  //   cuicui = '';
   tmpdate = uixEarlierDate(startdate, enddate);
   if (tmpdate == enddate) {
-    //     window.alert(cuicui);
     alert(labels.validate_endbeforestart);
     return false;
   }

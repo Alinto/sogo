@@ -481,11 +481,9 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 
 function changeCalendarDisplay(data, newView) {
   var url = ApplicationBaseURL + ((newView) ? newView : currentView);
-
-  selectedCalendarCell = null;
-
   var day = null;
   var scrollEvent = null;
+
   if (data) {
     day = data['day'];
     scrollEvent = data['scrollEvent'];
@@ -495,56 +493,47 @@ function changeCalendarDisplay(data, newView) {
     day = currentDay;
 
   if (day) {
-    var divs = $$('div.day[day='+day+']');
-    if (divs.length > 0) {
-      // Don't reload the view if the event is present in current view
+    if (data) {
+      var divs = $$('div.day[day='+day+']');
+      if (divs.length) {
+	// Don't reload the view if the event is present in current view
+	
+	// Deselect previous day
+	var selectedDivs = $$('div.day.selectedDay');
+	selectedDivs.each(function(div) {
+	    div.removeClassName('selectedDay');
+	  });
+	
+	// Select new day
+	divs.each(function(div) {
+	    div.addClassName('selectedDay');
+	  });
+	
+	// Deselect day in date selector
+	if (document.selectedDate)
+	  document.selectedDate.deselect();
+	
+	// Select day in date selector
+	var selectedLink = $$('table#dateSelectorTable a[day='+day+']');
+	if (selectedLink.length > 0) {
+	  selectedCell = selectedLink[0].up(1);
+	  selectedCell.select();
+	  document.selectedDate = selectedCell;
+	}
+	
+	// Scroll to event
+	scrollDayView(scrollEvent);	
 
-      // Find day number
-      var dayNumber;
-      var classes = $w(divs[0].className);
-      for (var i = 0; i < classes.length; i++) {
-	if (classes[i] == 'day')
-	  continue;
-	if (classes[i] == 'selectedDay')
-	  break;
-	dayNumber = classes[i];
-	break;
+	return false;
       }
-
-      // Deselect previous day
-      var selectedDivs = $$('div.day.selectedDay');
-      selectedDivs.each(function(div) {
-	  div.removeClassName('selectedDay');
-	});
-      
-      // Select new day
-      selectedDivs = $$('div.day.'+dayNumber);
-      selectedDivs.each(function(div) {
-	  div.addClassName('selectedDay');
-	});
-      
-      // Deselect day in date selector
-      if (document.selectedDate)
-	document.selectedDate.deselect();
-      
-      // Select day in date selector
-      var selectedLink = $$('table#dateSelectorTable a[day='+day+']');
-      if (selectedLink.length > 0) {
-	selectedCell = selectedLink[0].up(1);
-	selectedCell.select();
-	document.selectedDate = selectedCell;
-      }
-
-      // Scroll to event
-      scrollDayView(scrollEvent);
-
-      return false;
     }
     url += "?day=" + day;
   }
 //   if (newView)
 //     log ("switching to view: " + newView);
 //   log ("changeCalendarDisplay: " + url);
+
+  selectedCalendarCell = null;
 
   if (document.dayDisplayAjaxRequest) {
 //     log ("aborting day ajaxrq");
@@ -584,7 +573,15 @@ function onMonthOverview() {
 }
 
 function scrollDayView(scrollEvent) {
+  var divs;
 
+  // Select event in calendar view
+  if (scrollEvent) {
+    divs = $$("div#calendarContent div." + eventClass(scrollEvent));
+    selectCalendarEvent(divs[0]);
+  }
+  
+  // Don't scroll if in month view
   if (currentView == "monthview")
     return;
 
@@ -594,7 +591,7 @@ function scrollDayView(scrollEvent) {
     $(daysView.childNodesWithTag("div")[0]).childNodesWithTag("div");
 
   if (scrollEvent) {
-    var divs = $$("div#calendarContent div." + eventClass(scrollEvent));
+    divs = $$("div#calendarContent div." + eventClass(scrollEvent));
     var classes = $w(divs[0].className);
     for (var i = 0; i < classes.length; i++) {
       if (classes[i].startsWith("starts")) {
@@ -659,7 +656,7 @@ function refreshCalendarEvents(scrollEvent) {
       document.refreshCalendarEventsAjaxRequest.aborted = true;
       document.refreshCalendarEventsAjaxRequest.abort();
    }
-   var url = ApplicationBaseURL + "/eventslist?sd=" + sd + "&ed=" + ed;
+   var url = ApplicationBaseURL + "eventslist?sd=" + sd + "&ed=" + ed;
    document.refreshCalendarEventsAjaxRequest
       = triggerAjaxRequest(url, refreshCalendarEventsCallback,
 	                   {"startDate": sd, "endDate": ed, "scrollEvent": scrollEvent});
@@ -708,7 +705,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 //    log("viewS: " + viewStartDate);
    var startHour = null;
    var endHour = null;
-
+   
+   var siblings = new Array();
    for (var i = 0; i < days.length; i++)
       if (days[i].earlierDate(viewStartDate) == viewStartDate
 	  && days[i].laterDate(viewEndDate) == viewEndDate) {
@@ -740,6 +738,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 
  	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
  				    null, null, title);
+	 siblings.push(eventDiv);
+	 eventDiv.siblings = siblings;
 	 var dayString = days[i].getDayString();
 // 	 log("day: " + dayString);
 	 var parentDiv = null;
@@ -1103,17 +1103,25 @@ function onSearchFormSubmit() {
   return false;
 }
 
-function onCalendarSelectEvent() {
-  var list = $("eventsList");
-  $(list.tBodies[0]).deselectAll();
-
+function selectCalendarEvent(div) {
+  // Select event in calendar view
   if (selectedCalendarCell)
      for (var i = 0; i < selectedCalendarCell.length; i++)
 	selectedCalendarCell[i].deselect();
 
-  for (var i = 0; i < this.siblings.length; i++)
-     this.siblings[i].select();
-  selectedCalendarCell = this.siblings;
+  for (var i = 0; i < div.siblings.length; i++)
+     div.siblings[i].select();
+
+  selectedCalendarCell = div.siblings;
+}
+
+function onCalendarSelectEvent() {
+  var list = $("eventsList");
+
+  selectCalendarEvent(this);
+
+  // Select event in events list
+  $(list.tBodies[0]).deselectAll();
   var row = $(this.cname);
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
