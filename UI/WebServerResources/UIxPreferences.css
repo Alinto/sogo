@@ -28,5 +28,7 @@ DIV#identitiesView
   padding-left: 5px; }
 
 #signature
-{ width: 380px;
+{ overflow: auto;
+  width: 380px;
+  max-width: 380px;
   height: 125px; }
