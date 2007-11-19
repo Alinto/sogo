@@ -61,6 +61,9 @@ SPAN.headerField
 { line-height: 2.0em;
   padding-left: 0.5em; }
 
+TABLE#addressList TR#lastRow SELECT
+{ visibility: hidden; }
+
 DIV#subjectRow INPUT
 { background-image: none;
   width: 60%; }
