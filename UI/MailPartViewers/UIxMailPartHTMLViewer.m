@@ -487,8 +487,9 @@
 
   css = [handler css];
   if ([css length])
-    cssContent = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
-			   [handler css]];
+    cssContent
+      = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
+		  [handler css]];
   else
     cssContent = @"";
 
