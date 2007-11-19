@@ -709,6 +709,9 @@ function folderRenameCallback(http) {
 }
 
 function onMenuSharing(event) {
+  if ($(this).hasClassName("disabled"))
+    return;
+
    var folders = $("contactFolders");
    var selected = folders.getSelectedNodes()[0];
    var owner = selected.getAttribute("owner");
@@ -723,6 +726,21 @@ function onMenuSharing(event) {
    }
 }
 
+function onContactFoldersMenuPrepareVisibility() {
+  var folders = $("contactFolders");
+  var selected = folders.getSelectedNodes();  
+
+  if (selected.length > 0) {
+    var folderOwner = selected[0].getAttribute("owner");
+    var sharingOption = $(this).down("ul").childElements().last();
+    // Disable the "Sharing" option when address book is not owned by user
+    if (folderOwner == UserLogin || IsSuperUser)
+      sharingOption.removeClassName("disabled");
+    else
+      sharingOption.addClassName("disabled");
+  }
+}
+
 function getMenus() {
    var menus = {};
    menus["contactFoldersMenu"] = new Array(onMenuModify, "-", null,
@@ -732,7 +750,11 @@ function getMenus() {
 				    onMenuWriteToContact, null, "-",
 				    onMenuDeleteContact);
    menus["searchMenu"] = new Array(setSearchCriteria);
-
+   
+   var contactFoldersMenu = $("contactFoldersMenu");
+   if (contactFoldersMenu)
+     contactFoldersMenu.prepareVisibility = onContactFoldersMenuPrepareVisibility;
+   
    return menus;
 }
 

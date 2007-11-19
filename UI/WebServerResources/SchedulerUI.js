@@ -1371,7 +1371,7 @@ function onCalendarsMenuPrepareVisibility() {
     var folderOwner = selected[0].getAttribute("owner");
     var sharingOption = $(this).down("ul").childElements().last();
     // Disable the "Sharing" option when calendar is not owned by user
-    if (folderOwner == UserLogin)
+    if (folderOwner == UserLogin || IsSuperUser)
       sharingOption.removeClassName("disabled");
     else
       sharingOption.addClassName("disabled");
