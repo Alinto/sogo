@@ -1,5 +1,21 @@
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -signature]):
+	returns the signature for the default identity of the default
+	accouunt...
+	([UIxPreferences -setSignature:newSignature]): accessor that sets
+	the default signature.
+
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-composeAction]): append the message signature to the new draft.
+
+	* SoObjects/Mailer/SOGoMailReply.m ([SOGoMailReply -signature]):
+	same as above.
+
+	* SoObjects/Mailer/SOGoMailForward.m ([SOGoMailForward
+	-signature]): new method that takes the user's signature and put
+	it at the end of the message, if exists.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -isSuperUser]): new
 	accessor that forwards the call to the active user.
 

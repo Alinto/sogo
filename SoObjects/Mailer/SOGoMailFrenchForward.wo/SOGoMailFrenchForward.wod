@@ -67,3 +67,8 @@ messageBody: WOString {
   value = messageBody;
   escapeHTML = NO;
 }
+
+signature: WOString {
+  value = signature;
+  escapeHTML = NO;
+}

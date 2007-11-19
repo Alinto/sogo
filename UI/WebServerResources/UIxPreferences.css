@@ -22,3 +22,11 @@ DIV#mailOptionsView TEXTAREA
 DIV#passwordView
 { padding-top: 3em;
   padding-right: 10em; }
+
+DIV#identitiesView
+{ padding-top: 5px;
+  padding-left: 5px; }
+
+#signature
+{ width: 380px;
+  height: 125px; }

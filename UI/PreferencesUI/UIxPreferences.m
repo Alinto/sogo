@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -472,7 +473,12 @@ static BOOL shouldDisplayPasswordChange = NO;
 // 	    string="itemIdentityText" selection="defaultIdentity"/></label>
 - (NSArray *) identitiesList
 {
-  return [user allIdentities];
+  NSDictionary *primaryAccount;
+
+#warning we manage only one account per user at this time...
+  primaryAccount = [[user mailAccounts] objectAtIndex: 0];
+
+  return [primaryAccount objectForKey: @"identities"];
 }
 
 - (NSString *) itemIdentityText
@@ -480,9 +486,9 @@ static BOOL shouldDisplayPasswordChange = NO;
   return [item keysWithFormat: @"%{fullName} <%{email}>"];
 }
 
-- (NSDictionary *) defaultIdentity
+- (NSMutableDictionary *) defaultIdentity
 {
-  NSDictionary *currentIdentity, *defaultIdentity;
+  NSMutableDictionary *currentIdentity, *defaultIdentity;
   NSEnumerator *identities;
 
   defaultIdentity = nil;
@@ -494,6 +500,19 @@ static BOOL shouldDisplayPasswordChange = NO;
       defaultIdentity = currentIdentity;
 
   return defaultIdentity;
+}
+
+- (NSString *) signature
+{
+  return [[self defaultIdentity] objectForKey: @"signature"];
+}
+
+- (void) setSignature: (NSString *) newSignature
+{
+  [[self defaultIdentity] setObject: newSignature
+			  forKey: @"signature"];
+  [userDefaults setObject: [user mailAccounts]
+		forKey: @"MailAccounts"];
 }
 
 - (id <WOActionResults>) defaultAction

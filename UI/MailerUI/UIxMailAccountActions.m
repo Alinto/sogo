@@ -24,16 +24,18 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGImap4/NGImap4Connection.h>
+
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -143,21 +145,34 @@
 {
   SOGoDraftsFolder *drafts;
   SOGoDraftObject *newDraftMessage;
-  NSString *urlBase, *url, *value;
+  NSString *urlBase, *url, *value, *signature;
   NSArray *mailTo;
-  
+  BOOL save;
 
   drafts = [[self clientObject] draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
+
+  save = NO;
 
   value = [[self request] formValueForKey: @"mailto"];
   if ([value length] > 0)
     {
       mailTo = [NSArray arrayWithObject: value];
-      [newDraftMessage setHeaders: [NSDictionary dictionaryWithObject: mailTo
-						 forKey: @"to"]];
-      [newDraftMessage storeInfo];
+      [newDraftMessage
+	setHeaders: [NSDictionary dictionaryWithObject: mailTo
+				  forKey: @"to"]];
+      save = YES;
     }
+
+  signature = [[context activeUser] signature];
+  if ([signature length])
+    {
+      [newDraftMessage
+	setText: [NSString stringWithFormat: @"\r\n--\r\n%@", signature]];
+      save = YES;
+    }
+  if (save)
+    [newDraftMessage storeInfo];
 
   urlBase = [newDraftMessage baseURLInContext: context];
   url = [urlBase composeURLWithAction: @"edit"
