@@ -1,5 +1,12 @@
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-toolbar]): rewrote in a way that ensures that each case is
+	handled properly.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -isEqual:otherUser]): new
+	override method.
+
 	* UI/Scheduler/UIxTaskEditor.m ([-acceptAction])
 	([-declineAction]): commented out unused methods.
 

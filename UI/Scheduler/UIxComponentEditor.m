@@ -41,11 +41,13 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
 #import <SoObjects/Appointments/iCalPerson+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolders.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 #import <SoObjects/Appointments/SOGoTaskObject.h>
+#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -904,27 +906,18 @@
   [component setLastModified: now];
 }
 
-- (NSString *) toolbar
+#warning the following methods probably share some code...
+- (NSString *) _toolbarForOwner: (SOGoUser *) ownerUser
 {
-  SOGoCalendarComponent *clientObject;
   NSString *toolbarFilename;
-  iCalPerson *participant;
   iCalPersonPartStat participationStatus;
-  SoSecurityManager *sm;
-  NSString *owner;
 
-  sm = [SoSecurityManager sharedSecurityManager];
-  clientObject = [self clientObject];
-
-  owner = [clientObject ownerInContext: context];
-  participant = [clientObject findParticipantWithUID: owner];
-
-  if (participant
-      && ![sm validatePermission: SOGoCalendarPerm_RespondToComponent
-	      onObject: clientObject
-	      inContext: context])
+  if ([[component attendees] count]
+      && [component userIsParticipant: ownerUser]
+      && ![component userIsOrganizer: ownerUser])
     {
-      participationStatus = [participant participationStatus];
+      participationStatus
+	= [[component findParticipant: ownerUser] participationStatus];
       /* Lightning does not manage participation status within tasks */
       if (participationStatus == iCalPersonPartStatAccepted)
 	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
@@ -933,17 +926,85 @@
       else
 	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
     }
-  else if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-		onObject: clientObject
-		inContext: context])
+  else
     {
-      if ([[clientObject componentTag] isEqualToString: @"vevent"])
+      if ([component isKindOfClass: [iCalEvent class]])
 	toolbarFilename = @"SOGoAppointmentObject.toolbar";
       else
 	toolbarFilename = @"SOGoTaskObject.toolbar";
     }
+
+  return toolbarFilename;
+}
+
+- (NSString *) _toolbarForDelegate: (SOGoUser *) ownerUser
+{
+  SOGoCalendarComponent *clientObject;
+  SoSecurityManager *sm;
+  NSString *toolbarFilename, *adminToolbar;
+  iCalPersonPartStat participationStatus;
+
+  clientObject = [self clientObject];
+
+  if ([component isKindOfClass: [iCalEvent class]])
+    adminToolbar = @"SOGoAppointmentObject.toolbar";
   else
-    toolbarFilename = @"SOGoComponentClose.toolbar";
+    adminToolbar = @"SOGoTaskObject.toolbar";
+
+  sm = [SoSecurityManager sharedSecurityManager];
+  if ([[component attendees] count])
+    {
+      if ([component userIsOrganizer: ownerUser]
+	  && ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+		  onObject: clientObject
+		  inContext: context])
+	toolbarFilename = adminToolbar;
+      else if ([component userIsParticipant: ownerUser]
+	       && ![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+		       onObject: clientObject
+		       inContext: context])
+	{
+	  participationStatus
+	    = [[component findParticipant: ownerUser] participationStatus];
+	  /* Lightning does not manage participation status within tasks */
+	  if (participationStatus == iCalPersonPartStatAccepted)
+	    toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
+	  else if (participationStatus == iCalPersonPartStatDeclined)
+	    toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
+	  else
+	    toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+	}
+      else
+	toolbarFilename = @"SOGoComponentClose.toolbar";
+    }
+  else
+    {
+      if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+	       onObject: clientObject
+	       inContext: context])
+	toolbarFilename = adminToolbar;
+      else
+	toolbarFilename = @"SOGoComponentClose.toolbar";
+    }
+
+  return toolbarFilename;
+}
+
+- (NSString *) toolbar
+{
+  SOGoCalendarComponent *clientObject;
+  NSString *toolbarFilename;
+  SOGoUser *ownerUser;
+
+  clientObject = [self clientObject];
+  ownerUser = [SOGoUser userWithLogin: [clientObject ownerInContext: context]
+			roles: nil];
+
+  if ([ownerUser isEqual: [context activeUser]])
+    toolbarFilename = [self _toolbarForOwner: ownerUser];
+  else
+    toolbarFilename = [self _toolbarForDelegate: ownerUser];
+
 
   return toolbarFilename;
 }

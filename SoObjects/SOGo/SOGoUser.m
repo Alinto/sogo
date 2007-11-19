@@ -606,4 +606,10 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return rolesForObject;
 }
 
+- (BOOL) isEqual: (id) otherUser
+{
+  return ([otherUser isKindOfClass: [SoUser class]]
+	  && [login isEqualToString: [otherUser login]]);
+}
+
 @end /* SOGoUser */
