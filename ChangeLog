@@ -1,3 +1,17 @@
+2007-11-18  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m
+	SoObjects/Mailer/SOGoMailObject.m
+	UI/MailPartViewers/UIxMailPartViewer.m
+	Added support of messages containing non-textual
+	content and no parts.
+
+	* UI/MailerUI/UIxMailView.m
+	SoObjects/Mailer/SOGoMailObject.m
+	UI/Templates/MailerUI/UIxMailView.wox
+	Added support for the Reply-To header upon
+	message display.
+
 2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -saveAction]):

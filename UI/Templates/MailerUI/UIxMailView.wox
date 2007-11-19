@@ -66,6 +66,20 @@
           </td>
         </tr>
       </var:if>
+      <var:if condition="hasReplyTo">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname"><var:string label:value="Reply-To"/>:</td>
+          <td class="mailer_fieldvalue">
+            <var:foreach list="clientObject.replyToEnvelopeAddresses" 
+              item="currentAddress">
+              <a var:href="currentAddressLink"
+		><var:string value="currentAddress"
+                  formatter="context.mailEnvelopeFullAddressFormatter"
+                  /></a>
+            </var:foreach>
+          </td>
+        </tr>
+      </var:if>
     </table>
 
     <div class="mailer_mailcontent">

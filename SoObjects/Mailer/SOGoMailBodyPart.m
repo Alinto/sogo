@@ -179,17 +179,25 @@ static BOOL debugOn = NO;
   if (data == nil) return nil;
 
   /* check for content encodings */
-  
-  if ((enc = [[self partInfo] valueForKey:@"encoding"]) != nil) {
-    enc = [enc uppercaseString];
-    
-    if ([enc isEqualToString:@"BASE64"])
-      data = [data dataByDecodingBase64];
-    else if ([enc isEqualToString:@"7BIT"])
-      ; /* keep data as is */ // TODO: do we need to change encodings?
-    else
-      [self errorWithFormat:@"unsupported encoding: %@", enc];
-  }
+  enc = [[self partInfo] valueForKey: @"encoding"];
+ 
+  /* if we haven't found one, check out the main message's encoding
+     as we could be trying to fetch the message's content as a part */
+  if (!enc)
+    enc = [[[[self mailObject] fetchCoreInfos] valueForKey: @"body"]
+	    valueForKey: @"encoding"];
+
+  if (enc)
+    {
+      enc = [enc uppercaseString];
+      
+      if ([enc isEqualToString:@"BASE64"])
+	data = [data dataByDecodingBase64];
+      else if ([enc isEqualToString:@"7BIT"])
+	; /* keep data as is */ // TODO: do we need to change encodings?
+      else
+	[self errorWithFormat:@"unsupported encoding: %@", enc];
+    }
   
   return data;
 }

@@ -131,6 +131,11 @@ static NSString *mailETag = nil;
   return [[[self clientObject] ccEnvelopeAddresses] count] > 0 ? YES : NO;
 }
 
+- (BOOL) hasReplyTo
+{
+  return [[[self clientObject] replyToEnvelopeAddresses] count] > 0 ? YES : NO;
+}
+
 /* viewers */
 
 - (id) contentViewerComponent

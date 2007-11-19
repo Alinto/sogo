@@ -312,9 +312,16 @@
   if (![url hasSuffix: @"/"])
     url = [url stringByAppendingString: @"/"];
   
-  /* mail relative path to body-part */
-  
-  /* eg this was nil for a draft containing an HTML message */
+  /* if we get a message with an image/* or applicatio/*
+     Content-Type, we must generate a 'fake' part since our
+     decoded mail won't have any. Also see SOGoMailBodyPart: -fetchBLOB
+     and SOGoMailObject: -lookupImap4BodyPartKey: inContext for
+     other workarounds */
+  if (!partPath || [partPath count] == 0)
+    partPath = [NSArray arrayWithObject: @"0"];
+
+  /* mail relative path to body-part
+     eg this was nil for a draft containing an HTML message */
   if ([(n = [partPath componentsJoinedByString:@"/"]) isNotNull])
     url = [url stringByAppendingString:n];
   

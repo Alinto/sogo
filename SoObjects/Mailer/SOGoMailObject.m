@@ -296,6 +296,11 @@ static BOOL debugSoParts       = NO;
   return [[self envelope] cc];
 }
 
+- (NSArray *) replyToEnvelopeAddresses
+{
+  return [[self envelope] replyTo];
+}
+
 - (NSData *) mailHeaderData
 {
   return [[self fetchCoreInfos] valueForKey: @"header"];
@@ -460,6 +465,7 @@ static BOOL debugSoParts       = NO;
     {
       if ([content isKindOfClass: [NSData class]])
 	{
+#warning we ignore the charset here?
 	  s = [[NSString alloc] initWithData: content
 				encoding: NSISOLatin1StringEncoding];
 	  if (s)
@@ -747,6 +753,14 @@ static BOOL debugSoParts       = NO;
   NSString *mimeType;
 
   parts = [[self bodyStructure] objectForKey: @"parts"];
+
+  /* We don't have parts here but we're trying to download the message's
+     content that could be an image/jpeg, as an example */
+  if ([parts count] == 0)
+    {
+      return [SOGoMailBodyPart objectWithName: @"1" inContainer: self];
+    }
+
   part = [_key intValue] - 1;
   if (part > -1 && part < [parts count])
     {
