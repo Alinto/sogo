@@ -67,11 +67,21 @@
 {
   SOGoAppointmentFolder *personalFolder;
   SOGoAppointmentObject *eventObject;
+  NSString *cname;
+
+  eventObject = nil;
 
   personalFolder = [user personalCalendarFolderInContext: context];
-  eventObject = [personalFolder lookupName: uid
-				inContext: context acquire: NO];
-  if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
+  cname = [personalFolder resourceNameForEventUID: uid];
+  if (cname)
+    {
+      eventObject = [personalFolder lookupName: cname
+				    inContext: context acquire: NO];
+      if (![eventObject isKindOfClass: [SOGoAppointmentObject class]])
+	eventObject = nil;
+    }
+
+  if (!eventObject)
     eventObject = [SOGoAppointmentObject objectWithName: uid
 					 inContainer: personalFolder];
   
@@ -96,7 +106,8 @@
 	chosenEvent = emailEvent;
       else
 	{
-	  calendarEvent = (iCalEvent *) [*eventObject component: NO secure: NO];
+	  calendarEvent = (iCalEvent *) [*eventObject component: NO
+						      secure: NO];
 	  if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
 	    chosenEvent = emailEvent;
 	  else
@@ -199,6 +210,7 @@
   if (emailEvent)
     {
       eventObject = [self _eventObjectWithUID: [emailEvent uid]];
+      [eventObject delete];
       response = [self responseWith204];
     }
   else
