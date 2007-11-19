@@ -149,6 +149,19 @@
   return [sourceMail contentForEditing];
 }
 
+- (NSString *) signature
+{
+  NSString *signature, *mailSignature;
+
+  signature = [[context activeUser] signature];
+  if ([signature length])
+    mailSignature = [NSString stringWithFormat: @"--\r\n%@", signature];
+  else
+    mailSignature = @"";
+
+  return mailSignature;
+}
+
 @end
 
 @implementation SOGoMailEnglishForward

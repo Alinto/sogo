@@ -19,8 +19,8 @@
 	    label:value="Calendar Options"/></li>
 	<li target="mailOptionsView"><var:string
 	    label:value="Mail Options"/></li>
-<!--	<li target="identitiesView"><var:string
-	    label:value="Identities"/></li> -->
+	<li target="identitiesView"><var:string
+	    label:value="Identities"/></li>
 	<var:if condition="shouldDisplayPasswordChange">
 	  <li target="passwordView"><var:string label:value="Password"/></li>
 	</var:if>
@@ -97,10 +97,13 @@
       </label> -->
       </div>
       <div id="identitiesView" class="tab">
-	<var:multiselection id="identitiesList" item="item"
-	  string="itemIdentityText" selection="defaultIdentity">
+	<!--<var:multiselection const:id="identitiesList" item="item"
+	  list="identitiesList" displayString="itemIdentityText">
 	</var:multiselection>
-	<br/>
+	<br/>-->
+	<var:string label:value="Signature:"/><br/>
+	<textarea const:id="signature" const:name="signature"
+	  var:value="signature"/>
       </div>
       <var:if condition="shouldDisplayPasswordChange">
 	<div id="passwordView" class="tab">
