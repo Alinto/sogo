@@ -56,7 +56,7 @@
 	  pageName    = "UIxUserRightsEditor";
 	};
 	saveUserRights = {
-	  protectedBy = "ReadAcls";
+	  protectedBy = "SaveAcls";
 	  pageName    = "UIxUserRightsEditor";
 	  actionName = "saveUserRights";
 	};

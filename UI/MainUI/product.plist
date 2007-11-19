@@ -24,7 +24,7 @@
 	"Access Contents Information" = ( "Owner", "ObjectReader" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
 	"Add Folders" = ( "Owner", "FolderCreator" );
-        "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
+        "ReadAcls" = ( "Owner" );
         "SaveAcls" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
       };

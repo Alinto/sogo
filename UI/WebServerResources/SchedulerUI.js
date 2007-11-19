@@ -1363,6 +1363,21 @@ function browseURL(anchor, event) {
   return false;
 }
 
+function onCalendarsMenuPrepareVisibility() {
+  var folders = $("calendarList");
+  var selected = folders.getSelectedNodes();  
+
+  if (selected.length > 0) {
+    var folderOwner = selected[0].getAttribute("owner");
+    var sharingOption = $(this).down("ul").childElements().last();
+    // Disable the "Sharing" option when calendar is not owned by user
+    if (folderOwner == UserLogin)
+      sharingOption.removeClassName("disabled");
+    else
+      sharingOption.addClassName("disabled");
+  }
+}
+
 function getMenus() {
    var menus = {};
 
@@ -1388,13 +1403,20 @@ function getMenus() {
 				      null, "-", onMenuSharing);
    menus["searchMenu"] = new Array(setSearchCriteria);
 
+   var calendarsMenu = $("calendarsMenu");
+   if (calendarsMenu)
+     calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
+
    return menus;
 }
 
 function onMenuSharing(event) {
+  if ($(this).hasClassName("disabled"))
+    return;
+
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
-  /* FIXME: activation of the context menu should preferable select the entry
+  /* FIXME: activation of the context menu should preferably select the entry
 	       above which the event has occured */
   if (selected) {
      var folderID = selected.getAttribute("id");
