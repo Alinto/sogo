@@ -571,6 +571,7 @@ function popupMenu(event, menuId, target) {
 
   if (popup.prepareVisibility)
     popup.prepareVisibility();
+  
   popup.setStyle({ top: menuTop + "px",
 	           left: menuLeft + "px",
 	           visibility: "visible" });

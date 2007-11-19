@@ -2,6 +2,8 @@
 
 var contactSelectorAction = 'acls-contacts';
 var defaultUserID = '';
+var userRightsHeight;
+var userRightsWidth;
 
 function addUser(userName, userID) {
    if (!$(userID)) {
@@ -20,6 +22,7 @@ function addUserCallback(http) {
 
 function setEventsOnUserNode(node) {
    Event.observe(node, "mousedown", listRowMouseDownHandler);
+   Event.observe(node, "selectstart", listRowMouseDownHandler);
    Event.observe(node, "dblclick", onOpenUserRights);
    Event.observe(node, "click", onRowClick);
 }
@@ -97,8 +100,8 @@ function openRightsForUserID(userID) {
    elements[elements.length-1] = "userRights?uid=" + userID;
 
    window.open(elements.join("/"), "",
-	       "width=" + this.userRightsWidth
-	       + ",height=" + this.userRightsHeight
+	       "width=" + userRightsWidth
+	       + ",height=" + userRightsHeight
 	       + ",resizable=0,scrollbars=0,toolbar=0,"
 	       + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 }
@@ -138,8 +141,8 @@ function onAclLoadHandler() {
       Event.observe(buttons[1], "click", onUserRemove);
    }
 
-   this.userRightsHeight = window.opener.getUsersRightsWindowHeight();
-   this.userRightsWidth = window.opener.getUsersRightsWindowWidth();
+   userRightsHeight = window.opener.getUsersRightsWindowHeight();
+   userRightsWidth = window.opener.getUsersRightsWindowWidth();
 }
 
 FastInit.addOnLoad(onAclLoadHandler);

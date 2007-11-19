@@ -137,6 +137,9 @@ Element.addMethods({
     if (leftDiff < 0)
       menuLeft -= popup.offsetWidth;
 
+    if (popup.prepareVisibility)
+      popup.prepareVisibility();
+
     popup.setStyle( { top: menuTop + "px",
 		      left: menuLeft + "px",
 		      visibility: "visible" } );
