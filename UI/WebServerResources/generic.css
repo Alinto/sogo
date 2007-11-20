@@ -595,6 +595,9 @@ A[class~="_disabled"].button:active
   text-decoration: none;
   color: inherit; }
 
+A.button
+{ padding: 4px; }
+
 A.button IMG
 { vertical-align: middle; }
 
