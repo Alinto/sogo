@@ -102,8 +102,8 @@ function openRightsForUserID(userID) {
    elements[elements.length-1] = "userRights?uid=" + userID;
 
    window.open(elements.join("/"), "",
-	       "width=" + AclEditor['userRightsWidth']
-	       + ",height=" + AclEditor['userRightsHeight']
+	       "width=" + AclEditor.userRightsWidth
+	       + ",height=" + AclEditor.userRightsHeight
 	       + ",resizable=0,scrollbars=0,toolbar=0,"
 	       + "location=0,directories=0,status=0,menubar=0,copyhistory=0");
 }
