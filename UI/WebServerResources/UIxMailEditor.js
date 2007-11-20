@@ -242,8 +242,11 @@ function clickedEditorSave(sender) {
 }
 
 function onTextFocus() {
-  this.insertBefore(document.createTextNode("\r\n"),
-		    this.lastChild);
+  var content = this.getValue();
+  if (content.lastIndexOf("--") == 0) {
+    this.insertBefore(document.createTextNode("\r\n"),
+		      this.lastChild);
+  }
   if (signatureLength > 0) {
     var length = this.getValue().length - signatureLength - 1;
     this.setSelectionRange(length, length);
@@ -272,8 +275,8 @@ function initMailEditor() {
   var sigLimit = textContent.lastIndexOf("--");
   if (sigLimit > -1)
     signatureLength = (textContent.length - sigLimit);
-  Event.observe(textarea, "focus",
-		onTextFocus.bindAsEventListener(textarea));
+  textarea.observe("focus", onTextFocus);
+  textarea.scrollTop = textarea.offsetHeight;
 
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);
