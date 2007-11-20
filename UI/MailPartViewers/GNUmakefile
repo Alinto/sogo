@@ -40,7 +40,7 @@ MailPartViewers_LOCALIZED_RESOURCE_FILES += \
 
 # make
 
-ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
+ADDITIONAL_INCLUDE_DIRS += $(shell xml2-config --cflags)
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 
 -include GNUmakefile.preamble

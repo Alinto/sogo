@@ -22,6 +22,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSValue.h>
+
 #import <SaxObjC/SaxAttributes.h>
 #import <SaxObjC/SaxContentHandler.h>
 #import <SaxObjC/SaxLexicalHandler.h>
@@ -29,6 +32,8 @@
 #import <SaxObjC/SaxXMLReaderFactory.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGObjWeb/SoObjects.h>
+
+#include <libxml/encoding.h>
 
 #import "UIxMailPartHTMLViewer.h"
 
@@ -49,6 +54,7 @@
   BOOL inCSSDeclaration;
   BOOL hasEmbeddedCSS;
   NSMutableArray *crumb;
+  xmlCharEncoding contentEncoding;
 }
 
 - (NSString *) result;
@@ -65,6 +71,7 @@
       css = nil;
       result = nil;
       attachmentIds = nil;
+      contentEncoding = XML_CHAR_ENCODING_UTF8;
     }
 
   return self;
@@ -76,6 +83,16 @@
   [result release];
   [css release];
   [super dealloc];
+}
+
+- (void) setContentEncoding: (xmlCharEncoding) newContentEncoding
+{
+  contentEncoding = newContentEncoding;
+}
+
+- (xmlCharEncoding) contentEncoding
+{
+  return contentEncoding;
 }
 
 - (void) setAttachmentIds: (NSDictionary *) newAttachmentIds
@@ -463,17 +480,79 @@
   return attachmentIds;
 }
 
+- (xmlCharEncoding) _xmlCharsetForCharset: (NSString *) charset
+{
+  struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
+    { @"us-ascii", XML_CHAR_ENCODING_NONE},
+    { @"utf-8", XML_CHAR_ENCODING_UTF8},
+    { @"utf-16le", XML_CHAR_ENCODING_UTF16LE},
+    { @"utf-16be",  XML_CHAR_ENCODING_UTF16BE},
+    { @"ucs-4le", XML_CHAR_ENCODING_UCS4LE},
+    { @"ucs-4be", XML_CHAR_ENCODING_UCS4BE},
+    { @"ebcdic", XML_CHAR_ENCODING_EBCDIC},
+//     { @"iso-10646" , XML_CHAR_ENCODING_UCS4_2143},
+//     {  , XML_CHAR_ENCODING_UCS4_3412},
+//     { @"ucs-2", XML_CHAR_ENCODING_UCS2},
+    { @"iso8859_1", XML_CHAR_ENCODING_8859_1},
+    { @"iso-8859-1", XML_CHAR_ENCODING_8859_1},
+    { @"iso-8859-2",  XML_CHAR_ENCODING_8859_2},
+    { @"iso-8859-3", XML_CHAR_ENCODING_8859_3},
+    { @"iso-8859-4", XML_CHAR_ENCODING_8859_4},
+    { @"iso-8859-5", XML_CHAR_ENCODING_8859_5},
+    { @"iso-8859-6", XML_CHAR_ENCODING_8859_6},
+    { @"iso-8859-7", XML_CHAR_ENCODING_8859_7},
+    { @"iso-8859-8", XML_CHAR_ENCODING_8859_8},
+    { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
+    { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
+//     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
+    { @"euc-jp", XML_CHAR_ENCODING_EUC_JP},
+    { @"us-ascii", XML_CHAR_ENCODING_ASCII}};
+  unsigned count;
+  xmlCharEncoding encoding;
+
+  encoding = XML_CHAR_ENCODING_NONE;
+  count = 0;
+
+  while (encoding == XML_CHAR_ENCODING_NONE
+	 && count < (sizeof (xmlEncodings) / sizeof (xmlEncodings[0])))
+    if ([charset isEqualToString: xmlEncodings[count].name])
+      encoding = xmlEncodings[count].encoding;
+    else
+      count++;
+
+  if (encoding == XML_CHAR_ENCODING_NONE)
+    encoding = XML_CHAR_ENCODING_8859_1;
+
+  return encoding;
+}
+
+- (xmlCharEncoding) _xmlCharEncoding
+{
+
+  NSString *charset;
+
+  charset = [[bodyInfo objectForKey:@"parameterList"]
+	      objectForKey: @"charset"];
+  if (![charset length])
+    charset = @"us-ascii";
+  
+  return [self _xmlCharsetForCharset: [charset lowercaseString]];
+}
+
 - (void) _parseContent
 {
-  id <NSObject, SaxXMLReader> parser;
+  NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
 
   preparsedContent = [super decodedFlatContent];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
+  [parser setValue: [NSNumber numberWithBool: NO]
+	  forKey: @"encodeEntities"];
 
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [self _attachmentIds]];
+  [handler setContentEncoding: [self _xmlCharEncoding]];
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
 }
