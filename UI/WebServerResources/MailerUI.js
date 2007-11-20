@@ -734,14 +734,11 @@ function configureLinksInMessage() {
   var anchors = messageDiv.getElementsByTagName('a');
   for (var i = 0; i < anchors.length; i++)
     if (anchors[i].href.substring(0,7) == "mailto:") {
-      Event.observe(anchors[i], "click",
-		    onEmailAddressClick.bindAsEventListener(anchors[i]));
-      Event.observe(anchors[i], "contextmenu",
-		    onEmailAddressClick.bindAsEventListener(anchors[i]));
+      $(anchors[i]).observe("click", onEmailTo);
+      $(anchors[i]).observe("contextmenu", onEmailAddressClick);
     }
     else
-      Event.observe(anchors[i], "click",
-		    onMessageAnchorClick.bindAsEventListener(anchors[i]));
+      $(anchors[i]).observe("click", onMessageAnchorClick);
 
   var editDraftButton = $("editDraftButton");
   if (editDraftButton)
@@ -773,7 +770,6 @@ function onICalendarButtonClick(event) {
   var link = $("iCalendarAttachment").value;
   if (link) {
     var urlstr = link + "/" + this.action;
-    log ("click: " + urlstr);
     triggerAjaxRequest(urlstr, ICalendarButtonCallback,
 		       currentMailbox + "/"
 		       + currentMessages[currentMailbox]);
@@ -942,6 +938,10 @@ function newContactFromEmail(event) {
     }
 
   return false; /* stop following the link */
+}
+
+function onEmailTo(event) {
+  return openMailTo(this.innerHTML.strip());
 }
 
 function newEmailTo(sender) {
