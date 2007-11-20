@@ -1,4 +1,5 @@
 var contactSelectorAction = 'mailer-contacts';
+var signatureLength = 0;
 
 function onContactAdd() {
   var selector = null;
@@ -240,6 +241,16 @@ function clickedEditorSave(sender) {
   return false;
 }
 
+function onTextFocus() {
+  this.insertBefore(document.createTextNode("\r\n"),
+		    this.lastChild);
+  if (signatureLength > 0) {
+    var length = this.getValue().length - signatureLength - 1;
+    this.setSelectionRange(length, length);
+  }
+  Event.stopObserving(this, "focus", onTextFocus);
+}
+
 function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
@@ -255,6 +266,14 @@ function initMailEditor() {
 
   var list = $("addressList");
   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
+
+  var textarea = $("text");
+  var textContent = textarea.getValue();
+  var sigLimit = textContent.lastIndexOf("--");
+  if (sigLimit > -1)
+    signatureLength = (textContent.length - sigLimit);
+  Event.observe(textarea, "focus",
+		onTextFocus.bindAsEventListener(textarea));
 
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);

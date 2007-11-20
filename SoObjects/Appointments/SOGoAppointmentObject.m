@@ -73,6 +73,8 @@
 	  if ([object isKindOfClass: [NSException class]])
 	    object = nil;
 	}
+      else
+	object = nil;
     }
 
   if (!object)
@@ -310,7 +312,8 @@
       ex = [self saveContentString: newContent];
       if (!(ex || [event userIsOrganizer: [context activeUser]]))
 	{
-	  if ([[attendee rsvp] isEqualToString: @"true"])
+	  if ([[attendee rsvp] isEqualToString: @"true"]
+	      && [event isStillRelevant])
 	    [self sendResponseToOrganizer];
 	  organizerUID = [[event organizer] uid];
 	  if (organizerUID)
