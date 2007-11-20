@@ -1,3 +1,9 @@
+2007-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m: don't take an
+	empty c_name as a valid response when looking up an event. Create
+	one in that case instead.
+
 2007-11-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -signature]):
