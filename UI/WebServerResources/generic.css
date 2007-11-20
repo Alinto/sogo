@@ -196,8 +196,7 @@ DIV, TEXTAREA, INPUT, SELECT
   font-size: inherit; }
 
 TEXTAREA, INPUT.textField
-{ padding: 0px;
-  margin: .15em;
+{ margin: 1px;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
@@ -205,8 +204,13 @@ TEXTAREA, INPUT.textField
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent; }
 
+TEXTAREA
+{ padding: 0px;
+  padding-left: 2px; }
+
 INPUT.textField
-{ vertical-align: middle; }
+{ padding: 2px;
+  vertical-align: middle; }
 
 DIV#toolbar
 { left: 0px;
