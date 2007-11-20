@@ -94,7 +94,7 @@ function updateResults(http) {
 	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
 	  var node = document.createElement("li");
 	  list.appendChild(node);
-	  node.uid = contact["uid"];
+	  node.setAttribute("uid", contact["uid"]);
 	  node.appendChild(document.createTextNode(completeEmail));
 	  $(node).observe("mousedown", onAttendeeResultClick);
 	}
