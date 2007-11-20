@@ -47,7 +47,7 @@
             /><var:string label:value="Calendar:" />
           <var:popup const:id="calendarList"
 	    list="calendarList" item="item"
-            string="item.displayName"
+            string="calendarDisplayName"
 	    selection="componentCalendar"
 	    /></span></span>
       <span class="checkBoxList"><var:string label:value="Priority:" />

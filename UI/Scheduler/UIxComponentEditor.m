@@ -478,6 +478,21 @@
   return calendarList;
 }
 
+- (NSString *) calendarDisplayName
+{
+  NSString *fDisplayName;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentFolders *parentFolder;
+
+  fDisplayName = [item displayName];
+  folder = [[self clientObject] container];
+  parentFolder = [folder container];
+  if ([fDisplayName isEqualToString: [parentFolder defaultFolderName]])
+    fDisplayName = [self labelForKey: fDisplayName];
+
+  return fDisplayName;
+}
+
 - (NSString *) calendarsFoldersList
 {
   NSArray *calendars;

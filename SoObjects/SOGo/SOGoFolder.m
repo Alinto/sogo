@@ -224,6 +224,14 @@
 
 /* folder type */
 
+- (BOOL) isEqual: (id) otherFolder
+{
+  return ([otherFolder class] == [self class]
+	  && [container isEqual: [otherFolder container]]
+	  && [nameInContainer
+	       isEqualToString: [otherFolder nameInContainer]]);
+}
+
 - (NSString *) outlookFolderClass
 {
   [self subclassResponsibility: _cmd];

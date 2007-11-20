@@ -995,11 +995,13 @@ static BOOL kontactGroupDAV = YES;
 
   userLanguage = [[context activeUser] language];
   paths = [bundle pathsForResourcesOfType: @"strings"
-		  inDirectory: [NSString stringWithFormat: @"%@.lproj", userLanguage]
+		  inDirectory: [NSString stringWithFormat: @"%@.lproj",
+					 userLanguage]
 		  forLocalization: userLanguage];
   if ([paths count] > 0)
     {
-      strings = [NSDictionary dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+      strings = [NSDictionary
+		  dictionaryFromStringsFile: [paths objectAtIndex: 0]];
       label = [strings objectForKey: key];
       if (!label)
 	label = key;

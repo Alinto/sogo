@@ -48,6 +48,7 @@
 #import "NSString+Utilities.h"
 
 #import "SOGoContentObject.h"
+#import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
@@ -109,11 +110,16 @@ static NSString *defaultUserID = @"<default>";
 
 - (void) _setDisplayNameFromRow: (NSDictionary *) row
 {
-  NSString *currentLogin, *ownerLogin;
+  NSString *currentLogin, *ownerLogin, *primaryDN;
   NSDictionary *ownerIdentity;
 
-  displayName
-    = [NSMutableString stringWithString: [row objectForKey: @"c_foldername"]];
+  primaryDN = [row objectForKey: @"c_foldername"];
+  displayName = [NSMutableString string];
+  if ([primaryDN isEqualToString: [container defaultFolderName]])
+    [displayName appendString: [self labelForKey: primaryDN]];
+  else
+    [displayName appendString: primaryDN];
+
   currentLogin = [[context activeUser] login];
   ownerLogin = [self ownerInContext: context];
   if (![currentLogin isEqualToString: ownerLogin])
