@@ -23,6 +23,25 @@ TD.tbtv_navcell
   border-right: 1px solid #666;
   border-bottom: 1px solid #666; }
 
+A.button,
+INPUT.button
+{ border: 1px solid #fff;
+  border-right: 1px solid #666;
+  border-bottom: 1px solid #666;
+  margin: 0px;
+  padding: 0px; }
+
+A.button IMG
+{ margin: 1px; }
+
+/* UIxAclEditor */
+
+DIV#userRoles
+{  }
+
+UL#userList
+{ top: 3em; }
+
 /* MailerUI */
 IMG.dragMessage
 { filter: alpha(opacity=70); }
