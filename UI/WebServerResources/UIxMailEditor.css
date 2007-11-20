@@ -64,12 +64,12 @@ SPAN.headerField
 TABLE#addressList TR#lastRow SELECT
 { visibility: hidden; }
 
-DIV#subjectRow INPUT
-{ background-image: none;
-  width: 60%; }
-
 DIV#subjectRow SPAN.headerField
 { float: left; }
+
+DIV#subjectRow INPUT
+{ background-image: none;
+  padding: 0px 2px 0px 4px; }
 
 div#compose_internetmarker
 { padding:          8px;

@@ -1,19 +1,26 @@
 var contactSelectorAction = 'mailer-contacts';
 var signatureLength = 0;
+var MailEditor = {
+ addressBook: null
+};
 
 function onContactAdd() {
   var selector = null;
   var selectorURL = '?popup=YES&selectorId=mailer-contacts';
  
-  urlstr = ApplicationBaseURL 
-    + "../Contacts/"
-    + contactSelectorAction + selectorURL;
-  var w = window.open(urlstr, "Addressbook",
-                      "width=640,height=400,resizable=1,scrollbars=0");
-  w.selector = selector;
-  w.opener = this;
-  w.focus();
-
+  if (MailEditor.addressBook)
+    MailEditor.addressBook.focus();
+  else {
+    urlstr = ApplicationBaseURL 
+      + "../Contacts/"
+      + contactSelectorAction + selectorURL;
+    MailEditor.addressBook = window.open(urlstr, "_blank",
+					 "width=640,height=400,resizable=1,scrollbars=0");
+    MailEditor.addressBook.selector = selector;
+    MailEditor.addressBook.opener = this;
+    MailEditor.addressBook.focus();
+  }
+  
   return false;
 }
 
@@ -150,7 +157,7 @@ function clickedEditorSend(sender) {
   var toolbar = document.getElementById("toolbar");
   if (!document.busyAnim)
     document.busyAnim = startAnimation(toolbar);
-   
+  
   window.shouldPreserve = true;
   document.pageform.action = "send";
   document.pageform.submit();
@@ -348,16 +355,16 @@ function onWindowResize(event) {
 //						   headerarea)[0];
 //    $("attachments").setStyle({ height: (headerarea.getHeight() - fromfield.getHeight() - 10) + 'px' });
   }
-//  var subjectfield = $(document).getElementsByClassName('headerField',
-//							$('subjectRow'))[0];
-//  var subjectinput = $(document).getElementsByClassName('textField',
-//							$('subjectRow'))[0];
-//
+  var subjectfield = $(document).getElementsByClassName('headerField',
+							$('subjectRow'))[0];
+  var subjectinput = $(document).getElementsByClassName('textField',
+							$('subjectRow'))[0];
+
   // Resize subject field
-//  subjectinput.setStyle({ width: (window.width()
-//				  - $(subjectfield).getWidth()
-//				  - attachmentswidth
-//				  - 4 - 30) + 'px' });
+  subjectinput.setStyle({ width: (window.width()
+				  - $(subjectfield).getWidth()
+				  - attachmentswidth
+				  - 16) + 'px' });
 
   // Resize address fields
   var addresslist = $('addressList');
@@ -384,6 +391,9 @@ function onMailEditorClose(event) {
       window.opener.deleteDraft(url);
     }
   }
+
+  if (MailEditor.addressBook)
+    MailEditor.addressBook.close();
 
   Event.stopObserving(window, "beforeunload", onMailEditorClose);
 }
