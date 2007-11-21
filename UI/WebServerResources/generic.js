@@ -575,7 +575,7 @@ function popupMenu(event, menuId, target) {
   popup.setStyle({ top: menuTop + "px",
 	           left: menuLeft + "px",
 	           visibility: "visible" });
-
+  
   document.currentPopupMenu = popup;
 
   $(document.body).observe("click", onBodyClickMenuHandler);

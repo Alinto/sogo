@@ -8,16 +8,16 @@ function onContactAdd() {
   var selector = null;
   var selectorURL = '?popup=YES&selectorId=mailer-contacts';
  
-  if (MailEditor.addressBook)
+  if (MailEditor.addressBook && MailEditor.addressBook.open && !MailEditor.addressBook.closed)
     MailEditor.addressBook.focus();
   else {
-    urlstr = ApplicationBaseURL 
+    var urlstr = ApplicationBaseURL 
       + "../Contacts/"
       + contactSelectorAction + selectorURL;
     MailEditor.addressBook = window.open(urlstr, "_blank",
 					 "width=640,height=400,resizable=1,scrollbars=0");
     MailEditor.addressBook.selector = selector;
-    MailEditor.addressBook.opener = this;
+    MailEditor.addressBook.opener = self;
     MailEditor.addressBook.focus();
   }
   
@@ -392,7 +392,7 @@ function onMailEditorClose(event) {
     }
   }
 
-  if (MailEditor.addressBook)
+  if (MailEditor.addressBook && MailEditor.addressBook.open && !MailEditor.addressBook.closed)
     MailEditor.addressBook.close();
 
   Event.stopObserving(window, "beforeunload", onMailEditorClose);

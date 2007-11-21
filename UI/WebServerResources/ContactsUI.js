@@ -476,7 +476,7 @@ function onConfirmContactSelection(event) {
       var cid = rows[i].getAttribute("contactid");
       var cname = '' + rows[i].getAttribute("contactname");
       var email = '' + rows[i].cells[1].innerHTML;
-      opener.window.addContact(tag, currentContactFolderName + '/' + cname,
+      window.opener.addContact(tag, currentContactFolderName + '/' + cname,
 			       cid, cname, email);
    }
 
