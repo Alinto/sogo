@@ -453,7 +453,7 @@
 
 - (NSArray *) calendarList
 {
-  SOGoAppointmentFolder *currentCalendar;
+  SOGoAppointmentFolder *calendar, *currentCalendar;
   SOGoAppointmentFolders *calendarParent;
   NSEnumerator *allCalendars;
   SoSecurityManager *sm;
@@ -467,9 +467,11 @@
       calendarParent
 	= [[context activeUser] calendarsFolderInContext: context];
       sm = [SoSecurityManager sharedSecurityManager];
+      calendar = [self componentCalendar];
       allCalendars = [[calendarParent subFolders] objectEnumerator];
       while ((currentCalendar = [allCalendars nextObject]))
-	if (![sm validatePermission: perm
+	if ([calendar isEqual: currentCalendar] ||
+	    ![sm validatePermission: perm
 		 onObject: currentCalendar
 		 inContext: context])
 	  [calendarList addObject: currentCalendar];

@@ -8,7 +8,7 @@
   xmlns:rsrc="OGo:url"
   className="UIxPageFrame"
   title="title"
-  var:toolbar="toolbar"
+  const:toolbar="SOGoAclOwner.toolbar"
   const:popup="YES">
 
   <form id="aclForm" const:href="saveAcls">

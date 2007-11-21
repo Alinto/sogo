@@ -74,6 +74,8 @@
 - (void) setItem: (id) _item;
 - (id) item;
 
+- (SOGoAppointmentFolder *) componentCalendar;
+
 - (NSArray *) categoryList;
 - (void) setCategories: (NSArray *) _categories;
 - (NSArray *) categories;

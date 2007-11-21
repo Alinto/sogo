@@ -30,6 +30,7 @@
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxAclEditor.h"
 
@@ -149,17 +150,6 @@
   return [self _displayNameForUID: currentUser];
 }
 
-- (NSString *) toolbar
-{
-  NSString *currentLogin, *ownerLogin;
-
-  currentLogin = [[context activeUser] login];
-  ownerLogin = [[self clientObject] ownerInContext: context];
-
-  return (([ownerLogin isEqualToString: currentLogin])
-          ? @"SOGoAclOwner.toolbar" : @"SOGoAclAssistant.toolbar");
-}
-
 - (void) setUserUIDS: (NSString *) retainedUsers
 {
   if ([retainedUsers length] > 0)
@@ -199,13 +189,17 @@
 - (BOOL) currentUserIsOwner
 {
   SOGoObject *clientObject;
+  SOGoUser *currentUser;
   NSString *currentUserLogin, *ownerLogin;
 
   clientObject = [self clientObject];
   ownerLogin = [clientObject ownerInContext: context];
-  currentUserLogin = [[context activeUser] login];
-
-  return [ownerLogin isEqualToString: currentUserLogin];
+  currentUser = [context activeUser];
+  currentUserLogin = [currentUser login];
+  
+  return ([ownerLogin isEqualToString: currentUserLogin]
+	  || ([currentUser respondsToSelector: @selector (isSuperUser)]
+	      && [currentUser isSuperUser]));
 }
 
 // - (id <WOActionResults>) addUserInAcls

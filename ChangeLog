@@ -1,3 +1,13 @@
+2007-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-calendarList]): also returns the calendar of the current
+	event. This is required	so the proper calender is selected when
+	you view an event to which you don't have write access.
+
+	* UI/Common/UIxAclEditor.m ([UIxAclEditor -currentUserIsOwner]): 
+	also returns true for super users.
+
 2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
