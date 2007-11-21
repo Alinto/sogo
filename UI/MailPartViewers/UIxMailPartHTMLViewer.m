@@ -483,7 +483,7 @@
 - (xmlCharEncoding) _xmlCharsetForCharset: (NSString *) charset
 {
   struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
-    { @"us-ascii", XML_CHAR_ENCODING_NONE},
+    { @"us-ascii", XML_CHAR_ENCODING_ASCII},
     { @"utf-8", XML_CHAR_ENCODING_UTF8},
     { @"utf-16le", XML_CHAR_ENCODING_UTF16LE},
     { @"utf-16be",  XML_CHAR_ENCODING_UTF16BE},
@@ -505,8 +505,7 @@
     { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
     { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
 //     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
-    { @"euc-jp", XML_CHAR_ENCODING_EUC_JP},
-    { @"us-ascii", XML_CHAR_ENCODING_ASCII}};
+    { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
   unsigned count;
   xmlCharEncoding encoding;
 

@@ -1,5 +1,8 @@
 2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: fixed infinite loop
+	when charset is us-ascii, match it to ascii rather than none.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatetitle:titlecomponent:_component]):
