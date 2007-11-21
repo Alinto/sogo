@@ -189,17 +189,17 @@
 - (BOOL) currentUserIsOwner
 {
   SOGoObject *clientObject;
-  SOGoUser *currentUser;
+  SOGoUser *user;
   NSString *currentUserLogin, *ownerLogin;
-
+  
   clientObject = [self clientObject];
   ownerLogin = [clientObject ownerInContext: context];
-  currentUser = [context activeUser];
-  currentUserLogin = [currentUser login];
+  user = [context activeUser];
+  currentUserLogin = [user login];
   
   return ([ownerLogin isEqualToString: currentUserLogin]
-	  || ([currentUser respondsToSelector: @selector (isSuperUser)]
-	      && [currentUser isSuperUser]));
+	  || ([user respondsToSelector: @selector (isSuperUser)]
+	      && [user isSuperUser]));
 }
 
 // - (id <WOActionResults>) addUserInAcls
