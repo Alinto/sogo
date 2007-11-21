@@ -14,7 +14,7 @@ var Mailer = {
  maxCachedMessages: 20,
  cachedMessages: new Array(),
  currentMailbox: null,
- currentMailboxType: "",
+ currentMailboxType: ""
 };
 
 var usersRightsWindowHeight = 320;
@@ -131,7 +131,10 @@ function markMailReadInWindow(win, msguid) {
 
 function openMessageWindowsForSelection(action, firstOnly) {
   if (document.body.hasClassName("popup")) {
-    return true;
+    var url = window.location.href;
+    var parts = url.split("/");
+    parts[parts.length-1] = action;
+    window.location.href = parts.join("/");
   }
   else {
     var messageList = $("messageList");
