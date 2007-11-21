@@ -81,22 +81,16 @@ function refreshAttendees() {
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames");
   var attendeesHref = $("attendeesHref");
-  var organizerListLabel = $("organizerListLabel");
 
-  log ("label: "+ organizerListLabel);
   for (var i = 0; i < attendeesHref.childNodes.length; i++)
     attendeesHref.removeChild(attendeesHref.childNodes[i]);
 
   if (attendeesNames.value.length > 0) {
     attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
     attendeesLabel.setStyle({ display: "block" });
-    if (organizerListLabel)
-      organizerListLabel.setStyle({ display: "block" });
   }
   else {
     attendeesLabel.setStyle({ display: "none" });
-    if (organizerListLabel)
-      organizerListLabel.setStyle({ display: "none" });
   }
 }
 
@@ -104,12 +98,9 @@ function initializeAttendeesHref() {
   var attendeesHref = $("attendeesHref");
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames");
-  var organizerListLabel = $("organizerListLabel");
 
   Event.observe(attendeesHref, "click", onPopupAttendeesWindow, false);
   if (attendeesNames.value.length > 0) {
-    if (organizerListLabel)
-      organizerListLabel.setStyle({ display: "block" });
     attendeesHref.setStyle({ textDecoration: "underline", color: "#00f" });
     attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
     attendeesLabel.setStyle({ display: "block" });

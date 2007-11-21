@@ -9,11 +9,13 @@ if (typeof textMailAccounts != 'undefined') {
     mailAccounts = new Array();
 }
 
-var currentMessages = {};
-var maxCachedMessages = 20;
-var cachedMessages = new Array();
-var currentMailbox = null;
-var currentMailboxType = "";
+var Mailer = {
+ currentMessages: {},
+ maxCachedMessages: 20,
+ cachedMessages: new Array(),
+ currentMailbox: null,
+ currentMailboxType: "",
+};
 
 var usersRightsWindowHeight = 320;
 var usersRightsWindowWidth = 400;
@@ -41,7 +43,7 @@ function openMessageWindow(msguid, url) {
 function onMessageDoubleClick(event) {
   var action;
 
-  if (currentMailboxType == "draft")
+  if (Mailer.currentMailboxType == "draft")
     action = "edit";
   else
     action = "popupview";
@@ -137,7 +139,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
     if (rows.length > 0) {
       for (var i = 0; i < rows.length; i++) {
 	openMessageWindow(rows[i].substr(4),
-			  ApplicationBaseURL + currentMailbox
+			  ApplicationBaseURL + Mailer.currentMailbox
 			  + "/" + rows[i].substr(4)
 			  + "/" + action);
 	if (firstOnly)
@@ -163,7 +165,7 @@ function mailListMarkMessage(event) {
     action = 'markMessageUnread';
     markread = false;
   }
-  var url = ApplicationBaseURL + currentMailbox + "/" + msguid + "/" + action;
+  var url = ApplicationBaseURL + Mailer.currentMailbox + "/" + msguid + "/" + action;
 
   var data = { "window": window, "msguid": msguid, "markread": markread };
   triggerAjaxRequest(url, mailListMarkMessageCallback, data);
@@ -215,10 +217,10 @@ function deleteSelectedMessages(sender) {
     for (var i = 0; i < rowIds.length; i++) {
       var url;
       var rowId = rowIds[i].substr(4);
-      var messageId = currentMailbox + "/" + rowId;
+      var messageId = Mailer.currentMailbox + "/" + rowId;
       url = ApplicationBaseURL + messageId + "/trash";
       deleteMessageRequestCount++;
-      var data = { "id": rowId, "mailbox": currentMailbox, "messageId": messageId };
+      var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
       triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
     }
   } else {
@@ -233,12 +235,12 @@ function deleteSelectedMessagesCallback(http) {
     if (isHttpStatus204(http.status)) {
       var data = http.callbackData;
       deleteCachedMessage(data["messageId"]);
-      if (currentMailbox == data["mailbox"]) {
+      if (Mailer.currentMailbox == data["mailbox"]) {
 	
 	var div = $('messageContent');
-	if (currentMessages[currentMailbox] == data["id"]) {
+	if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
 	  div.update();
-	  currentMessages[currentMailbox] = null;	
+	  Mailer.currentMessages[Mailer.currentMailbox] = null;	
 	}
 
 	var row = $("row_" + data["id"]);
@@ -272,7 +274,7 @@ function moveMessages(rowIds, folder) {
 
     /* send AJAX request (synchronously) */
 	  
-    var messageId = currentMailbox + "/" + rowIds[i];
+    var messageId = Mailer.currentMailbox + "/" + rowIds[i];
     url = (ApplicationBaseURL + messageId
 	   + "/move?tofolder=" + folder);
     http = createHTTPClient();
@@ -282,10 +284,10 @@ function moveMessages(rowIds, folder) {
       var row = $("row_" + rowIds[i]);
       row.parentNode.removeChild(row);
       deleteCachedMessage(messageId);
-      if (currentMessages[currentMailbox] == rowIds[i]) {
+      if (Mailer.currentMessages[Mailer.currentMailbox] == rowIds[i]) {
 	var div = $('messageContent');
 	div.update();
-	currentMessages[currentMailbox] = null;
+	Mailer.currentMessages[Mailer.currentMailbox] = null;
       }
     }
     else /* request failed */
@@ -335,9 +337,9 @@ function onMailboxTreeItemClick(event) {
   $("searchValue").value = "";
   initCriteria();
 
-  currentMailboxType = this.parentNode.getAttribute("datatype");
-  if (currentMailboxType == "account" || currentMailboxType == "additional") {
-    currentMailbox = mailbox;
+  Mailer.currentMailboxType = this.parentNode.getAttribute("datatype");
+  if (Mailer.currentMailboxType == "account" || Mailer.currentMailboxType == "additional") {
+    Mailer.currentMailbox = mailbox;
     $("messageContent").update();
     var table = $("messageList");
     var head = table.tHead;
@@ -356,18 +358,18 @@ function onMailboxTreeItemClick(event) {
 function _onMailboxMenuAction(menuEntry, error, actionName) {
   var targetMailbox = menuEntry.mailbox.fullName();
 
-  if (targetMailbox == currentMailbox)
+  if (targetMailbox == Mailer.currentMailbox)
     window.alert(labels[error]);
   else {
     var message;
     if (document.menuTarget.tagName == "DIV")
-      message = currentMessages[currentMailbox];
+      message = Mailer.currentMessages[Mailer.currentMailbox];
     else
       message = document.menuTarget.getAttribute("id").substr(4);
 
-    var urlstr = (URLForFolderID(currentMailbox) + "/" + message
+    var urlstr = (URLForFolderID(Mailer.currentMailbox) + "/" + message
 		  + "/" + actionName + "?folder=" + targetMailbox);
-    triggerAjaxRequest(urlstr, folderRefreshCallback, currentMailbox);
+    triggerAjaxRequest(urlstr, folderRefreshCallback, Mailer.currentMailbox);
   }
 }
 
@@ -400,14 +402,14 @@ function onComposeMessage() {
 }
 
 function composeNewMessage() {
-  var account = currentMailbox.split("/")[1];
+  var account = Mailer.currentMailbox.split("/")[1];
   var url = ApplicationBaseURL + "/" + account + "/compose";
   openMailComposeWindow(url);
 }
 
 function openMailbox(mailbox, reload, idx) {
-  if (mailbox != currentMailbox || reload) {
-    currentMailbox = mailbox;
+  if (mailbox != Mailer.currentMailbox || reload) {
+    Mailer.currentMailbox = mailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
     var messageContent = $("messageContent");
     messageContent.update();
@@ -415,7 +417,7 @@ function openMailbox(mailbox, reload, idx) {
 
     var currentMessage;
     if (!idx) {
-      currentMessage = currentMessages[mailbox];
+      currentMessage = Mailer.currentMessages[mailbox];
       if (currentMessage) {
 	loadMessage(currentMessage);
 	url += '&pageforuid=' + currentMessage;
@@ -458,7 +460,7 @@ function openMailbox(mailbox, reload, idx) {
 }
 
 function openMailboxAtIndex(event) {
-  openMailbox(currentMailbox, true, this.getAttribute("idx"));
+  openMailbox(Mailer.currentMailbox, true, this.getAttribute("idx"));
 
   Event.stop(event);
 }
@@ -545,7 +547,7 @@ function quotasCallback(http) {
     }
     
     if (hasQuotas) {
-      var treePath = currentMailbox.split("/");
+      var treePath = Mailer.currentMailbox.split("/");
       var quotasMB = new Array();
       for (var i = 2; i < treePath.length; i++)
 	quotasMB.push(treePath[i].substr(6));
@@ -637,11 +639,11 @@ function deleteCachedMessage(messageId) {
   var done = false;
   var counter = 0;
 
-  while (counter < cachedMessages.length
+  while (counter < Mailer.cachedMessages.length
 	 && !done)
-    if (cachedMessages[counter]
-	&& cachedMessages[counter]['idx'] == messageId) {
-      cachedMessages.splice(counter, 1);
+    if (Mailer.cachedMessages[counter]
+	&& Mailer.cachedMessages[counter]['idx'] == messageId) {
+      Mailer.cachedMessages.splice(counter, 1);
       done = true;
     }
     else
@@ -652,11 +654,11 @@ function getCachedMessage(idx) {
   var message = null;
   var counter = 0;
 
-  while (counter < cachedMessages.length
+  while (counter < Mailer.cachedMessages.length
 	 && message == null)
-    if (cachedMessages[counter]
-	&& cachedMessages[counter]['idx'] == currentMailbox + '/' + idx)
-      message = cachedMessages[counter];
+    if (Mailer.cachedMessages[counter]
+	&& Mailer.cachedMessages[counter]['idx'] == Mailer.currentMailbox + '/' + idx)
+      message = Mailer.cachedMessages[counter];
     else
       counter++;
 
@@ -668,14 +670,14 @@ function storeCachedMessage(cachedMessage) {
   var timeOldest = -1;
   var counter = 0;
 
-  if (cachedMessages.length < maxCachedMessages)
-    oldest = cachedMessages.length;
+  if (Mailer.cachedMessages.length < Mailer.maxCachedMessages)
+    oldest = Mailer.cachedMessages.length;
   else {
-    while (cachedMessages[counter]) {
+    while (Mailer.cachedMessages[counter]) {
       if (oldest == -1
-	  || cachedMessages[counter]['time'] < timeOldest) {
+	  || Mailer.cachedMessages[counter]['time'] < timeOldest) {
 	oldest = counter;
-	timeOldest = cachedMessages[counter]['time'];
+	timeOldest = Mailer.cachedMessages[counter]['time'];
       }
       counter++;
     }
@@ -684,7 +686,7 @@ function storeCachedMessage(cachedMessage) {
       oldest = 0;
   }
 
-  cachedMessages[oldest] = cachedMessage;
+  Mailer.cachedMessages[oldest] = cachedMessage;
 }
 
 function onMessageSelectionChange() {
@@ -693,8 +695,8 @@ function onMessageSelectionChange() {
   if (rows.length == 1) {
     var idx = rows[0].substr(4);
 
-    if (currentMessages[currentMailbox] != idx) {
-      currentMessages[currentMailbox] = idx;
+    if (Mailer.currentMessages[Mailer.currentMailbox] != idx) {
+      Mailer.currentMessages[Mailer.currentMailbox] = idx;
       loadMessage(idx);
     }
   }
@@ -710,7 +712,7 @@ function loadMessage(idx) {
 
   markMailInWindow(window, idx, true);
   if (cachedMessage == null) {
-    var url = (ApplicationBaseURL + currentMailbox + "/"
+    var url = (ApplicationBaseURL + Mailer.currentMailbox + "/"
 	       + idx + "/view?noframe=1");
     document.messageAjaxRequest
       = triggerAjaxRequest(url, messageCallback, idx);
@@ -771,8 +773,8 @@ function onICalendarButtonClick(event) {
   if (link) {
     var urlstr = link + "/" + this.action;
     triggerAjaxRequest(urlstr, ICalendarButtonCallback,
-		       currentMailbox + "/"
-		       + currentMessages[currentMailbox]);
+		       Mailer.currentMailbox + "/"
+		       + Mailer.currentMessages[Mailer.currentMailbox]);
   }
   else
     log("no link");
@@ -782,10 +784,10 @@ function ICalendarButtonCallback(http) {
   if (http.readyState == 4)
     if (isHttpStatus204(http.status)) {
       var oldMsg = http.callbackData;
-      var msg = currentMailbox + "/" + currentMessages[currentMailbox];
+      var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
       if (oldMsg == msg) {
 	deleteCachedMessage(oldMsg);
-	loadMessage(currentMessages[currentMailbox]);
+	loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
       }
     }
     else {
@@ -830,7 +832,7 @@ function messageCallback(http) {
     
     if (http.callbackData) {
       var cachedMessage = new Array();
-      cachedMessage['idx'] = currentMailbox + '/' + http.callbackData;
+      cachedMessage['idx'] = Mailer.currentMailbox + '/' + http.callbackData;
       cachedMessage['time'] = (new Date()).getTime();
       cachedMessage['text'] = http.responseText;
       if (cachedMessage['text'].length < 30000)
@@ -915,7 +917,7 @@ function onMenuViewMessageSource(event) {
   var rows = messageList.getSelectedRowsId();
 
   if (rows.length > 0) {
-    var url = (ApplicationBaseURL + currentMailbox + "/"
+    var url = (ApplicationBaseURL + Mailer.currentMailbox + "/"
 	       + rows[0].substr(4) + "/viewsource");
     openMailComposeWindow(url);
   }
@@ -988,11 +990,11 @@ function onHeaderClick(event) {
 }
 
 function refreshCurrentFolder() {
-  openMailbox(currentMailbox, true);
+  openMailbox(Mailer.currentMailbox, true);
 }
 
 function refreshFolderByType(type) {
-  if (currentMailboxType == type)
+  if (Mailer.currentMailboxType == type)
     refreshCurrentFolder();
 }
 
@@ -1013,7 +1015,7 @@ var mailboxSpanDrop = function(data) {
 
   if (data) {
     var folder = this.parentNode.parentNode.getAttribute("dataname");
-    if (folder != currentMailbox)
+    if (folder != Mailer.currentMailbox)
       success = (moveMessages(data, folder) == 0);
   }
   else
@@ -1365,7 +1367,7 @@ function onLoadMailboxesCallback(http) {
   //       var treeNodes = document.getElementsByClassName("dTreeNode", tree);
   //       var i = 0;
   //       while (i < treeNodes.length
-  // 	     && treeNodes[i].getAttribute("dataname") != currentMailbox)
+  // 	     && treeNodes[i].getAttribute("dataname") != Mailer.currentMailbox)
   // 	 i++;
   //       if (i < treeNodes.length) {
   // 	 //     log("found mailbox");
@@ -1445,13 +1447,13 @@ function onMenuEmptyTrash(event) {
   var urlstr = URLForFolderID(folderID) + "/emptyTrash";
   triggerAjaxRequest(urlstr, folderOperationCallback, folderID);
 
-  if (folderID == currentMailbox) {
+  if (folderID == Mailer.currentMailbox) {
     var div = $('messageContent');
     for (var i = div.childNodes.length - 1; i > -1; i--)
       div.removeChild(div.childNodes[i]);
     refreshCurrentFolder();
   }
-  var msgID = currentMessages[folderID];
+  var msgID = Mailer.currentMessages[folderID];
   if (msgID)
     deleteCachedMessage(folderID + "/" + msgID);
 }
@@ -1481,17 +1483,17 @@ function onMenuChangeToTrashFolder(event) {
 
 function onMenuLabelNone() {
   var rowId = document.menuTarget.getAttribute("id").substr(4);
-  var messageId = currentMailbox + "/" + rowId;
+  var messageId = Mailer.currentMailbox + "/" + rowId;
   var urlstr = ApplicationBaseURL + messageId + "/removeAllLabels";
   triggerAjaxRequest(urlstr, messageFlagCallback,
-		     { mailbox: currentMailbox, msg: rowId, label: null } );
+		     { mailbox: Mailer.currentMailbox, msg: rowId, label: null } );
 }
 
 function _onMenuLabelFlagX(flag) {
   var flags = document.menuTarget.getAttribute("labels").split(" ");
 
   var rowId = document.menuTarget.getAttribute("id").substr(4);
-  var messageId = currentMailbox + "/" + rowId;
+  var messageId = Mailer.currentMailbox + "/" + rowId;
 
   var operation = "add";
   if (flags.indexOf("label" + flag) > -1)
@@ -1499,7 +1501,7 @@ function _onMenuLabelFlagX(flag) {
   var urlstr = (ApplicationBaseURL + messageId
 		+ "/" + operation + "Label" + flag);
   triggerAjaxRequest(urlstr, messageFlagCallback,
-		     { mailbox: currentMailbox, msg: rowId,
+		     { mailbox: Mailer.currentMailbox, msg: rowId,
 		       label: operation + flag } );
 }
 
@@ -1535,7 +1537,7 @@ function folderRefreshCallback(http) {
   if (http.readyState == 4
       && isHttpStatus204(http.status)) {
     var oldMailbox = http.callbackData;
-    if (oldMailbox == currentMailbox)
+    if (oldMailbox == Mailer.currentMailbox)
       refreshCurrentFolder();
   }
   else
@@ -1546,7 +1548,7 @@ function messageFlagCallback(http) {
   if (http.readyState == 4
       && isHttpStatus204(http.status)) {
     var data = http.callbackData;
-    if (data["mailbox"] == currentMailbox) {
+    if (data["mailbox"] == Mailer.currentMailbox) {
       var row = $("row_" + data["msg"]);
       var operation = data["label"];
       if (operation) {

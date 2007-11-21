@@ -77,6 +77,9 @@ SPAN.content
   left: 8em;
   right: 1em; }
 
+SPAN.content
+{ line-height: 2em; }
+
 SPAN.content A
 { line-height: 2em; }
 
