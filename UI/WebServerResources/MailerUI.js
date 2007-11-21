@@ -248,6 +248,9 @@ function deleteSelectedMessagesCallback(http) {
 //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
 
 	deleteMessageRequestCount--;
+      
+	if (deleteMessageRequestCount == 0)
+	  openMailbox(data["mailbox"], true);
       }
     }
   }
@@ -1184,6 +1187,10 @@ function initMailer(event) {
     initMailboxTree();
     initMessageCheckTimer();
   }
+
+  // Default sort options
+  sorting["attribute"] = "date";
+  sorting["ascending"] = false;
 }
 
 function initMessageCheckTimer() {

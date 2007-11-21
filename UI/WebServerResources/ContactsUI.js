@@ -784,6 +784,10 @@ function initContacts(event) {
      configureSortableTableHeaders(table);
      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
    }
+
+   // Default sort options
+   sorting["attribute"] = "displayName";
+   sorting["ascending"] = true;
 }
 
 FastInit.addOnLoad(initContacts);
