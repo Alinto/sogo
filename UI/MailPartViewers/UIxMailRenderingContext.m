@@ -117,10 +117,14 @@ static BOOL showNamedTextAttachmentsInline = NO;
 - (NSData *) flatContentForPartPath: (NSArray *) _partPath
 {
   NSString *pid;
-  
-  pid = _partPath ? [_partPath componentsJoinedByString:@"."] : @"";
+  NSData *content;
 
-  return [[self flatContents] objectForKey:pid];
+  pid = _partPath ? [_partPath componentsJoinedByString: @"."] : @"";
+  content = [[self flatContents] objectForKey: pid];
+  if (!content && ![pid intValue])
+    content = [flatContents objectForKey: @""];
+
+  return content;
 }
 
 /* viewer components */

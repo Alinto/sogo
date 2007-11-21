@@ -368,14 +368,11 @@ static BOOL debugOn = NO;
     classString = @"SOGoMessageMailBodyPart";
   else
     {
-      NSLog (@"unhandled mime type: '%@'", mimeType);
-      classString = nil;
+      classString = @"SOGoMailBodyPart";
+//       NSLog (@"unhandled mime type: '%@'", mimeType);
     }
 
-  if (classString)
-    klazz = NSClassFromString (classString);
-  else
-    klazz = [SOGoMailBodyPart class];
+  klazz = NSClassFromString (classString);
 
   return klazz;
 }
