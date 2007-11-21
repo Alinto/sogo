@@ -1,3 +1,9 @@
+2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): the
+	user infos are now posted as "application/x-www-form-urlencoded".
+	So we have to have like a form has been posted.
+
 2007-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor

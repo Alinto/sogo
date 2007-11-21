@@ -63,16 +63,18 @@
 - (id <WOActionResults>) connectAction
 {
   WOResponse *response;
+  WORequest *request;
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
   NSString *cookieValue, *cookieString;
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
+  request = [context request];
   response = [self responseWith204];
   cookieString = [NSString stringWithFormat: @"%@:%@",
-			   [self queryParameterForKey: @"userName"],
-			   [self queryParameterForKey: @"password"]];
+			   [request formValueForKey: @"userName"],
+			   [request formValueForKey: @"password"]];
   cookieValue = [NSString stringWithFormat: @"basic %@",
 			  [cookieString stringByEncodingBase64]];
   authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]

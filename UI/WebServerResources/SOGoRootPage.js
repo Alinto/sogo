@@ -20,11 +20,13 @@ function onLoginClick(event) {
   var password = $("password").value;
 
   if (userName.length > 0) {
-    var url = ($("connectForm").getAttribute("action")
-	       + "?userName=" + userName
-	       + "&password=" + password);
+    var url = $("connectForm").getAttribute("action");
+    var parameters = ("userName=" + userName + "&password=" + password);
     document.cookie = "";
-    triggerAjaxRequest(url, onLoginCallback);
+    triggerAjaxRequest(url, onLoginCallback, null, parameters,
+		       { "Content-type": "application/x-www-form-urlencoded",
+			 "Content-length": parameters.length,
+			 "Connection": "close" });
   }
 
   preventDefault(event);
@@ -32,9 +34,8 @@ function onLoginClick(event) {
 
 function onLoginCallback(http) {
   if (http.readyState == 4) {
-    if (isHttpStatus204(http.status)) {
+    if (isHttpStatus204(http.status))
       window.location.href = ApplicationBaseURL + $("userName").value;
-    }
   }
 }
 

@@ -290,7 +290,7 @@ function appendDifferentiator(url) {
   return url_nocache;
 }
 
-function triggerAjaxRequest(url, callback, userdata) {
+function triggerAjaxRequest(url, callback, userdata, content, headers) {
   var http = createHTTPClient();
 
   activeAjaxRequests += 1;
@@ -323,7 +323,11 @@ function triggerAjaxRequest(url, callback, userdata) {
 	log(backtrace());
       }
     };
-    http.send(null);
+    if (headers) {
+      for (var i in headers)
+	http.setRequestHeader(i, headers[i]);
+    }
+    http.send(content);
   }
   else {
     log("triggerAjaxRequest: error creating HTTP Client!");
