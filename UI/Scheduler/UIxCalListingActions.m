@@ -161,7 +161,10 @@
 
   param = [request formValueForKey: @"filterpopup"];
   if ([param length] > 0)
-    [self _setupDatesWithPopup: param andUserTZ: userTZ];
+    {
+      [self _setupDatesWithPopup: param andUserTZ: userTZ];
+      title = [request formValueForKey: @"search"];
+    }
   else
     {
       param = [request formValueForKey: @"sd"];
@@ -241,6 +244,7 @@
 	{
 	  currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
 					 to: endDate
+					 title: title
 					 component: component] objectEnumerator];
 
 	  while ((newInfo = [currentInfos nextObject]))

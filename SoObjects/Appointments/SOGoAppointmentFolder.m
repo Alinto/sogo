@@ -266,6 +266,7 @@ static NSNumber   *sharedYes = nil;
       currentFilter = [filters objectAtIndex: 0];
       apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
+		   title: [currentFilter objectForKey: @"title"]
                    component: [currentFilter objectForKey: @"name"]];
       appointments = [apts objectEnumerator];
       appointment = [appointments nextObject];
@@ -801,12 +802,14 @@ static NSNumber   *sharedYes = nil;
                fromFolder: (GCSFolder *) _folder
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate 
+		    title: (NSString *) title
                 component: (id) _component
 {
   EOQualifier *qualifier;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
-  NSString *sql, *dateSqlString, *componentSqlString, *privacySqlString;
+  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
+               *privacySqlString;
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -827,6 +830,12 @@ static NSNumber   *sharedYes = nil;
       dateSqlString = @"";
     }
 
+  if ([title length])
+    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
+			       @" isCaseInsensitiveLike: '%%%@%%')", title];
+  else
+    titleSqlString = @"";
+
   componentSqlString = [self _sqlStringForComponent: _component];
   privacySqlString = [self _privacySqlString];
 
@@ -840,8 +849,9 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
 
-  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@",
-                  dateSqlString, componentSqlString, privacySqlString];
+  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@",
+                  dateSqlString, titleSqlString,
+		  componentSqlString, privacySqlString];
 
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
@@ -860,7 +870,8 @@ static NSNumber   *sharedYes = nil;
   /* fetch recurrent apts now. we do NOT consider the date range when doing that
      as the c_startdate/c_enddate of a recurring event is always set to the first
      recurrence - others are generated on the fly */
-  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@", componentSqlString, privacySqlString];
+  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@", titleSqlString,
+		  componentSqlString, privacySqlString];
 
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
@@ -896,6 +907,7 @@ static NSNumber   *sharedYes = nil;
 - (NSArray *) fetchFields: (NSArray *) _fields
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate 
+		    title: (NSString *) title
                 component: (id) _component
 {
   GCSFolder *folder;
@@ -908,6 +920,7 @@ static NSNumber   *sharedYes = nil;
 
   return [self fetchFields: _fields fromFolder: folder
                from: _startDate to: _endDate
+	       title: title
                component: _component];
 }
 
@@ -921,11 +934,13 @@ static NSNumber   *sharedYes = nil;
                              @"c_isopaque", @"c_status", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate
+	       title: nil
                component: @"vevent"];
 }
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
+			   title: (NSString *) title
                        component: (id) _component
 {
   static NSArray *infos = nil; // TODO: move to a plist file
@@ -940,7 +955,7 @@ static NSNumber   *sharedYes = nil;
                              @"c_partstates", @"c_sequence", @"c_priority", @"c_cycleinfo",
 			     nil];
 
-  return [self fetchFields: infos from: _startDate to: _endDate
+  return [self fetchFields: infos from: _startDate to: _endDate title: title
                component: _component];
 }
 

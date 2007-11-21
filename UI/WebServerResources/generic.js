@@ -843,10 +843,6 @@ function checkSearchValue(event) {
     searchValue.value = "";
 }
 
-function onSearchChange() {
-  log ("onSearchChange()...");
-}
-
 function configureSearchField() {
   var searchValue = $("searchValue");
   var searchOptions = $("searchOptions");

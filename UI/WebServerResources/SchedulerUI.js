@@ -660,7 +660,8 @@ function refreshCalendarEvents(scrollEvent) {
    var url = ApplicationBaseURL + "eventslist?sd=" + sd + "&ed=" + ed;
    document.refreshCalendarEventsAjaxRequest
       = triggerAjaxRequest(url, refreshCalendarEventsCallback,
-	                   {"startDate": sd, "endDate": ed, "scrollEvent": scrollEvent});
+	                   {"startDate": sd, "endDate": ed,
+			    "scrollEvent": scrollEvent});
 }
 
 function refreshCalendarEventsCallback(http) {
@@ -1005,11 +1006,23 @@ function onHeaderClick(event) {
   preventDefault(event);
 }
 
+function refreshCurrentFolder() {
+  refreshEvents();
+}
+
 function refreshEvents() {
-   return _loadEventHref("eventslist?desc=" + sortOrder
-			 + "&sort=" + sortKey
-			 + "&day=" + currentDay
-			 + "&filterpopup=" + listFilter);
+  var titleSearch;
+  var value = search["value"];
+  if (value && value.length)
+    titleSearch = "&search=" + value;
+  else
+    titleSearch = "";
+
+  return _loadEventHref("eventslist?desc=" + sortOrder
+			+ "&sort=" + sortKey
+			+ "&day=" + currentDay
+			+ titleSearch
+			+ "&filterpopup=" + listFilter);
 }
 
 function refreshTasks() {
@@ -1095,12 +1108,6 @@ function onYearMenuItemClick(event) {
   var year = '' + this.innerHTML;
 
   changeDateSelectorDisplay(year + month + "01", true);
-}
-
-function onSearchFormSubmit() {
-  log ("search not implemented");
-
-  return false;
 }
 
 function selectCalendarEvent(div) {

@@ -41,6 +41,7 @@
   NSMutableDictionary *componentsData;
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
+  NSString *title;
   NSString *userLogin;
   WORequest *request;
   SOGoDateFormatter *dateFormatter;

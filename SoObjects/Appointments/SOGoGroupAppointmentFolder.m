@@ -180,6 +180,7 @@
     results = [aptFolder fetchFields: _fields
                          from: _startDate
                          to: _endDate
+			 title: nil
                          component: _component];
     if (![results isNotNull]) continue;
     

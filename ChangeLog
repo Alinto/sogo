@@ -1,5 +1,15 @@
 2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatetitle:titlecomponent:_component]):
+	added search on the c_title column too.
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): take the "search" url parameter into account.
+	([UIxCalListingActions -eventsListAction]): fetch events matching
+	the title filter too.
+
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -connectAction]): the
 	user infos are now posted as "application/x-www-form-urlencoded".
 	So we have to have like a form has been posted.

@@ -452,7 +452,7 @@ function onFolderSelectionChange() {
 }
 
 function refreshCurrentFolder() {
-   openContactsFolder(currentContactFolder, true);
+  openContactsFolder(currentContactFolder, true);
 }
 
 function onConfirmContactSelection(event) {
