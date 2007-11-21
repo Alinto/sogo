@@ -1,3 +1,13 @@
+2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-lookupImap4BodyPartKey:inContext:]): return a correct body part
+	when "0" is requested, taking its mime-type into account.
+
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	([UIxMailRenderingContext -flatContentForPartPath:_partPath]):
+	return content for part "0", which would be the message body.
+
 2007-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m

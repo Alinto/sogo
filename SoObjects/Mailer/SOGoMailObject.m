@@ -756,22 +756,26 @@ static BOOL debugSoParts       = NO;
 
   /* We don't have parts here but we're trying to download the message's
      content that could be an image/jpeg, as an example */
-  if ([parts count] == 0)
+  if ([parts count] == 0 && ![_key intValue])
+    partDesc = [self bodyStructure];
+  else
     {
-      return [SOGoMailBodyPart objectWithName: @"1" inContainer: self];
+      part = [_key intValue] - 1;
+      if (part > -1 && part < [parts count])
+	partDesc = [parts objectAtIndex: part];
+      else
+	partDesc = nil;
     }
 
-  part = [_key intValue] - 1;
-  if (part > -1 && part < [parts count])
+  if (partDesc)
     {
-      partDesc = [parts objectAtIndex: part];
       mimeType = [[partDesc keysWithFormat: @"%{type}/%{subtype}"] lowercaseString];
       clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
 				inContext: _ctx];
     }
   else
     clazz = Nil;
-
+    
   return [clazz objectWithName:_key inContainer: self];
 }
 
