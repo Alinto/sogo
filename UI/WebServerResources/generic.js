@@ -825,7 +825,7 @@ function setSearchCriteria(event) {
   var searchValue = $("searchValue");
   var searchCriteria = $("searchCriteria");
 
-  searchValue.setAttribute("ghost-phrase", this.innerHTML);
+  searchValue.ghostPhrase = this.innerHTML;
   searchCriteria.value = this.getAttribute('id');
   
   if (this.parentNode.chosenNode)
@@ -835,11 +835,9 @@ function setSearchCriteria(event) {
 }
 
 function checkSearchValue(event) {
-  var form = event.target;
   var searchValue = $("searchValue");
-  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
 
-  if (searchValue.value == ghostPhrase)
+  if (searchValue.value == searchValue.ghostPhrase)
     searchValue.value = "";
 }
 
@@ -875,7 +873,7 @@ function onSearchMouseDown(event) {
 }
 
 function onSearchFocus() {
-  ghostPhrase = this.getAttribute("ghost-phrase");
+  ghostPhrase = this.ghostPhrase;
   if (this.value == ghostPhrase) {
     this.value = "";
     this.setAttribute("modified", "");
@@ -887,14 +885,16 @@ function onSearchFocus() {
 }
 
 function onSearchBlur(event) {
-  var ghostPhrase = this.getAttribute("ghost-phrase");
-
   if (!this.value) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
-    this.value = ghostPhrase;
-    refreshCurrentFolder();
-  } else if (this.value == ghostPhrase) {
+    this.value = this.ghostPhrase;
+    search["value"] = "";
+    if (searchValue.lastSearch != "") {
+      searchValue.lastSearch = "";
+      refreshCurrentFolder();
+    }
+  } else if (this.value == this.ghostPhrase) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
   } else {
@@ -913,31 +913,32 @@ function onSearchKeyDown(event) {
 function onSearchFormSubmit(event) {
   var searchValue = $("searchValue");
   var searchCriteria = $("searchCriteria");
-  var ghostPhrase = searchValue.getAttribute('ghost-phrase');
    
-  if (searchValue.value == ghostPhrase) return;
-
-  search["criteria"] = searchCriteria.value;
-  search["value"] = searchValue.value;
-
-  refreshCurrentFolder();
+  if (searchValue.value != searchValue.ghostPhrase
+      && searchValue.value != searchValue.lastSearch) {
+    search["criteria"] = searchCriteria.value;
+    search["value"] = searchValue.value;
+    searchValue.lastSearch = searchValue.value;
+    refreshCurrentFolder();
+  }
 }
 
 function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
  
-  if (!searchValue) return;
-
-  var searchOptions = $("searchOptions").childNodesWithTag("li");
-  if (searchOptions.length > 0) {
-    var firstChild = searchOptions[0];
-    searchCriteria.value = $(firstChild).getAttribute('id');
-    searchValue.setAttribute('ghost-phrase', firstChild.innerHTML);
-    if (searchValue.value == '') {
-      searchValue.value = firstChild.innerHTML;
-      searchValue.setAttribute("modified", "");
-      searchValue.setStyle({ color: "#aaa" });
+  if (searchValue) {
+    var searchOptions = $("searchOptions").childNodesWithTag("li");
+    if (searchOptions.length > 0) {
+      var firstChild = searchOptions[0];
+      searchCriteria.value = $(firstChild).getAttribute('id');
+      searchValue.ghostPhrase = firstChild.innerHTML;
+      searchValue.lastSearch = "";
+      if (searchValue.value == '') {
+	searchValue.value = firstChild.innerHTML;
+	searchValue.setAttribute("modified", "");
+	searchValue.setStyle({ color: "#aaa" });
+      }
     }
   }
 }
