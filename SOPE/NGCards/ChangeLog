@@ -1,3 +1,8 @@
+2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEntityObject.m ([iCalEntityObject -compare:otherObject]):
+	safely compare between objects which may be nil.
+
 2007-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalPerson.m ([-rsvp]): return lowercase string.

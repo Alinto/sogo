@@ -265,22 +265,22 @@ static BOOL showNamedTextAttachmentsInline = NO;
       else if ([st isEqualToString:@"alternative"])
 	return [self alternativeViewer];
     
-    if ([st isEqualToString:@"report"])
-      /* this is used by mail-delivery reports */
-      return [self mixedViewer];
+      if ([st isEqualToString:@"report"])
+	/* this is used by mail-delivery reports */
+	return [self mixedViewer];
     }
   else if ([mt isEqualToString:@"text"])
     {
-    if ([st isEqualToString:@"plain"] || [st isEqualToString:@"html"]) {
-      if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info])
-	return [self linkViewer];
+      if ([st isEqualToString:@"plain"] || [st isEqualToString:@"html"]) {
+	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info])
+	  return [self linkViewer];
       
-      return [st isEqualToString:@"html"] 
-	? [self htmlViewer] : [self textViewer];
-    }
+	return [st isEqualToString:@"html"] 
+	  ? [self htmlViewer] : [self textViewer];
+      }
     
-    if ([st isEqualToString:@"calendar"])
-      return [self iCalViewer];
+      if ([st isEqualToString:@"calendar"])
+	return [self iCalViewer];
     }
   
   if ([mt isEqualToString:@"image"])
@@ -307,7 +307,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
       Action: failed
       Status: 5.0.0
       Diagnostic-Code: X-Postfix; host plop.com[64.39.31.55] said: 550 5.7.1
-          <ioioi@plop.com>... Relaying denied
+      <ioioi@plop.com>... Relaying denied
     */
     // Note: we cannot use the text viewer because the body is not pre-fetched
     return [self linkViewer];
@@ -317,28 +317,30 @@ static BOOL showNamedTextAttachmentsInline = NO;
     {
       // octet-stream (generate download link?, autodetect type?)
     
-    if ([st hasPrefix:@"x-vnd.kolab."])
-      {
-	if ([st isEqualToString:@"x-vnd.kolab.contact"])
-	  return [self kolabContactViewer];
-	if ([st isEqualToString:@"x-vnd.kolab.event"])
-	  return [self kolabEventViewer];
-	if ([st isEqualToString:@"x-vnd.kolab.task"])
-	  return [self kolabTodoViewer];
-	if ([st isEqualToString:@"x-vnd.kolab.note"])
-	  return [self kolabNoteViewer];
-	if ([st isEqualToString:@"x-vnd.kolab.journal"])
-	  return [self kolabJournalViewer];
-	if ([st isEqualToString:@"x-vnd.kolab.contact.distlist"])
-	  return [self kolabDistributionListViewer];
+      if ([st hasPrefix:@"x-vnd.kolab."])
+	{
+	  if ([st isEqualToString:@"x-vnd.kolab.contact"])
+	    return [self kolabContactViewer];
+	  if ([st isEqualToString:@"x-vnd.kolab.event"])
+	    return [self kolabEventViewer];
+	  if ([st isEqualToString:@"x-vnd.kolab.task"])
+	    return [self kolabTodoViewer];
+	  if ([st isEqualToString:@"x-vnd.kolab.note"])
+	    return [self kolabNoteViewer];
+	  if ([st isEqualToString:@"x-vnd.kolab.journal"])
+	    return [self kolabJournalViewer];
+	  if ([st isEqualToString:@"x-vnd.kolab.contact.distlist"])
+	    return [self kolabDistributionListViewer];
       
-	[self errorWithFormat:@"found no viewer for Kolab type: %@/%@", mt, st];
-	return [self linkViewer];
-      }
-    
+	  [self errorWithFormat:@"found no viewer for Kolab type: %@/%@", mt, st];
+	  return [self linkViewer];
+	}
+      else if ([st isEqualToString:@"ics"]) /* Cooqle K4lendahr - Google Calendar */
+	return [self iCalViewer];
+
 #if 0 /* the link viewer looks better than plain text ;-) */
-    if ([st isEqualToString:@"pgp-signature"]) // TODO: real PGP viewer
-      return [self textViewer];
+      if ([st isEqualToString:@"pgp-signature"]) // TODO: real PGP viewer
+	return [self textViewer];
 #endif
     }
 

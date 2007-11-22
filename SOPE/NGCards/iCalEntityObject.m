@@ -425,13 +425,38 @@
   return nil; /* not found */
 }
 
+- (NSComparisonResult) _compareValue: (id) selfValue
+			   withValue: (id) otherValue
+{
+  NSComparisonResult result;
+
+  if (selfValue)
+    {
+      if (otherValue)
+	result = [selfValue compare: otherValue];
+      else
+	result = NSOrderedDescending;
+    }
+  else
+    {
+      if (otherValue)
+	result = NSOrderedAscending;
+      else
+	result = NSOrderedSame;
+    }
+
+  return result;
+}
+
 - (NSComparisonResult) _compareVersions: (iCalEntityObject *) otherObject
 {
   NSComparisonResult result;
 
-  result = [[self sequence] compare: [otherObject sequence]];
+  result = [self _compareValue: [self sequence]
+		 withValue: [otherObject sequence]];
   if (result == NSOrderedSame)
-    result = [[self lastModified] compare: [otherObject lastModified]];
+    result = [self _compareValue: [self lastModified]
+		   withValue: [otherObject lastModified]];
 
   return result;
 }

@@ -41,6 +41,9 @@
 
 - (NSString *) rfc822DateString;
 
++ (id) distantFuture;
++ (id) distantPast;
+
 @end
 
 #endif /* NSCALENDARDATE_SCHEDULER_H */

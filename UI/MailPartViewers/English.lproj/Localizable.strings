@@ -13,7 +13,7 @@ cancel_info_text = "Your invitation or the whole event was canceled.";
 request_info_no_attendee = "is proposing a meeting to the attendees. You receive this mail as a notification, you are not scheduled as a participant.";
 Appointment = "Appointment";
 
-Organizer = "Organisateur";
+Organizer = "Organizer";
 Time = "Time";
 Attendees = "Attendees";
 request_info = "invites you to participate in a meeting.";
