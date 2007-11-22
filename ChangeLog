@@ -1,5 +1,15 @@
 2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	([UIxMailRenderingContext -viewerForBodyInfo:_info]): same as below.
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-plainTextContentFetchKeys]): same as below.
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	+bodyPartClassForMimeType:mimeTypeinContext:_ctx]): accept the
+	application/ics type from Google Calendar.
+
 	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
 	+distantFuture]): rewrote method to return an object that is
 	compatible with NSCalendarDate, unlike the implementation in

@@ -360,7 +360,8 @@ static BOOL debugOn = NO;
       || [mimeType isEqualToString: @"image/jpg"]
       || [mimeType isEqualToString: @"image/jpeg"])
     classString = @"SOGoImageMailBodyPart";
-  else if ([mimeType isEqualToString: @"text/calendar"])
+  else if ([mimeType isEqualToString: @"text/calendar"]
+	   || [mimeType isEqualToString: @"application/ics"])
     classString = @"SOGoCalendarMailBodyPart";
   else if ([mimeType isEqualToString: @"text/x-vcard"])
     classString = @"SOGoVCardMailBodyPart";

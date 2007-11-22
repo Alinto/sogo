@@ -585,7 +585,8 @@ static BOOL debugSoParts       = NO;
   NSArray *types;
 
   types = [NSArray arrayWithObjects: @"text/plain", @"text/html",
-		   @"text/calendar", @"application/pgp-signature", nil];
+		   @"text/calendar", @"application/ics",
+		   @"application/pgp-signature", nil];
   ma = [NSMutableArray arrayWithCapacity: 4];
   [self addRequiredKeysOfStructure: [self bodyStructure]
 	path: @"" toArray: ma acceptedTypes: types];
