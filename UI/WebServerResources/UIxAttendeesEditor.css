@@ -58,9 +58,16 @@ TABLE#freeBusy TD.attendees IMG
   top: 0.5em; }
 
 TABLE#freeBusy TD.attendees INPUT
-{ width: 11.5em;
+{ background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  width: 11.5em;
   margin: 0px;
+  padding-left: 24px;
   margin-left: 5px; }
+
+TABLE#freeBusy TR.futureAttendee INPUT
+{ background-image: none; }
 
 TABLE#freeBusy TR.freeBusyHeader2 TH
 { font-weight: normal; }
