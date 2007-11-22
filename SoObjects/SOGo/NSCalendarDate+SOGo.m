@@ -136,4 +136,29 @@ static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
 	      timeZoneShift];
 }
 
+#define secondsOfDistantFuture 63113990400.0
+#define secondsOfDistantPast -63113817600.0
+
++ (id) distantFuture
+{
+  static NSCalendarDate *date = nil;
+
+  if (!date)
+    date
+      = [[self alloc] initWithTimeIntervalSinceReferenceDate: secondsOfDistantFuture];
+
+  return date;
+}
+
++ (id) distantPast
+{
+  static NSCalendarDate *date = nil;
+
+  if (!date)
+    date
+      = [[self alloc] initWithTimeIntervalSinceReferenceDate: secondsOfDistantPast];
+
+  return date;
+}
+
 @end

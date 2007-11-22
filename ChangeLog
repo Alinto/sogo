@@ -1,3 +1,11 @@
+2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
+	+distantFuture]): rewrote method to return an object that is
+	compatible with NSCalendarDate, unlike the implementation in
+	GNUstep.
+	([NSCalendarDate +distantPast]): same as above.
+
 2007-11-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: fixed infinite loop
