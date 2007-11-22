@@ -737,8 +737,7 @@ function configureLinksInMessage() {
   var mailContentDiv = document.getElementsByClassName('mailer_mailcontent',
 						       messageDiv)[0];
   if (!document.body.hasClassName("popup"))
-    Event.observe(mailContentDiv, "contextmenu",
-		  onMessageContentMenu.bindAsEventListener(mailContentDiv));
+    mailContentDiv.observe("contextmenu", onMessageContentMenu);
   var anchors = messageDiv.getElementsByTagName('a');
   for (var i = 0; i < anchors.length; i++)
     if (anchors[i].href.substring(0,7) == "mailto:") {
@@ -810,6 +809,11 @@ function resizeMailContent() {
 }
 
 function onMessageContentMenu(event) {
+  var element = getTarget(event);
+  if (element.tagName == 'A' && element.href.substring(0,7) == "mailto:")
+    // Don't show the default contextual menu; let the click propagate to 
+    // other observers
+    return true;
   popupMenu(event, 'messageContentMenu', this);
 }
 
@@ -819,6 +823,8 @@ function onMessageEditDraft(event) {
 
 function onEmailAddressClick(event) {
   popupMenu(event, 'addressMenu', this);
+  preventDefault(event);
+  return false;
 }
 
 function onMessageAnchorClick(event) {
@@ -949,7 +955,9 @@ function newContactFromEmail(event) {
 }
 
 function onEmailTo(event) {
-  return openMailTo(this.innerHTML.strip());
+  openMailTo(this.innerHTML.strip());
+  preventDefault(event);
+  return false;
 }
 
 function newEmailTo(sender) {
