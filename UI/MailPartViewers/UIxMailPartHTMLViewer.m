@@ -546,8 +546,6 @@
   preparsedContent = [super decodedFlatContent];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
-  [parser setValue: [NSNumber numberWithBool: NO]
-	  forKey: @"encodeEntities"];
 
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: [self _attachmentIds]];
