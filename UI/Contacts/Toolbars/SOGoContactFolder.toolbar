@@ -28,7 +28,7 @@
    { link = "delete";
      label="Delete";
      onclick = "return uixDeleteSelectedContacts(this);";
-     image="delete.png";
+     image="tb-mail-delete-flat-24x24.png";
      tooltip = "Delete selected card or address book"; }
   )
 )
