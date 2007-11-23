@@ -363,19 +363,30 @@ function onMailboxTreeItemClick(event) {
 
 function _onMailboxMenuAction(menuEntry, error, actionName) {
   var targetMailbox = menuEntry.mailbox.fullName();
+  var messages = new Array();
 
   if (targetMailbox == Mailer.currentMailbox)
     window.alert(labels[error]);
   else {
-    var message;
     if (document.menuTarget.tagName == "DIV")
-      message = Mailer.currentMessages[Mailer.currentMailbox];
+      // Menu called from message content view
+      messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
+    else if (Object.isArray(document.menuTarget))
+      // Menu called from multiple selection in messages list view
+      messages = $(document.menuTarget).collect(function(row) {
+	  return row.getAttribute("id").substr(4);
+	});
     else
-      message = document.menuTarget.getAttribute("id").substr(4);
+      // Menu called from one selection in messages list view
+      messages.push(document.menuTarget.getAttribute("id").substr(4));
 
-    var urlstr = (URLForFolderID(Mailer.currentMailbox) + "/" + message
-		  + "/" + actionName + "?folder=" + targetMailbox);
-    triggerAjaxRequest(urlstr, folderRefreshCallback, Mailer.currentMailbox);
+    var url_prefix = URLForFolderID(Mailer.currentMailbox) + "/";
+    messages.each(function(msgid, i) {
+	var url = url_prefix + msgid + "/" + actionName
+	  + "?folder=" + targetMailbox;
+	triggerAjaxRequest(url, folderRefreshCallback,
+			   ((i == messages.size() - 1)?Mailer.currentMailbox:""));
+      });
   }
 }
 
@@ -570,16 +581,15 @@ function quotasCallback(http) {
 
 function onMessageContextMenu(event) {
   var menu = $('messageListMenu');
-  Event.observe(menu, "hideMenu", onMessageContextMenuHide);
-  popupMenu(event, "messageListMenu", this);
-
   var topNode = $('messageList');
   var selectedNodes = topNode.getSelectedRows();
-  for (var i = 0; i < selectedNodes.length; i++)
-    selectedNodes[i].deselect();
-  topNode.menuSelectedRows = selectedNodes;
-  topNode.menuSelectedEntry = this;
-  this.select();
+
+  Event.observe(menu, "hideMenu", onMessageContextMenuHide);
+  
+  if (selectedNodes.length > 1)
+    popupMenu(event, "messagesListMenu", selectedNodes);
+  else
+    popupMenu(event, "messageListMenu", this);    
 }
 
 function onMessageContextMenuHide(event) {
@@ -1355,7 +1365,7 @@ function updateMailboxMenus() {
       menu.appendChild(menuEntry);
       var mailbox = accounts[mailAccounts[i]];
       var newSubmenuId = generateMenuForMailbox(mailbox,
-					      key, mailboxActions[key]);
+						key, mailboxActions[key]);
       submenuIds.push(newSubmenuId);
     }
     initMenu(menuDIV, submenuIds);
@@ -1500,27 +1510,59 @@ function onMenuChangeToTrashFolder(event) {
 }
 
 function onMenuLabelNone() {
-  var rowId = document.menuTarget.getAttribute("id").substr(4);
-  var messageId = Mailer.currentMailbox + "/" + rowId;
-  var urlstr = ApplicationBaseURL + messageId + "/removeAllLabels";
-  triggerAjaxRequest(urlstr, messageFlagCallback,
-		     { mailbox: Mailer.currentMailbox, msg: rowId, label: null } );
+  var messages = new Array();
+
+  if (document.menuTarget.tagName == "DIV")
+    // Menu called from message content view
+    messages.push(Mailer.currentMessages[Mailer.currentMailbox]);
+  else if (Object.isArray(document.menuTarget))
+    // Menu called from multiple selection in messages list view
+    $(document.menuTarget).collect(function(row) {
+	messages.push(row.getAttribute("id").substr(4));
+      });
+  else
+    // Menu called from one selection in messages list view
+    messages.push(document.menuTarget.getAttribute("id").substr(4));
+  
+  var url = ApplicationBaseURL + Mailer.currentMailbox + "/";
+  messages.each(function(id) {
+      triggerAjaxRequest(url + id + "/removeAllLabels",
+			 messageFlagCallback,
+			 { mailbox: Mailer.currentMailbox, msg: id, label: null } );
+    });  
 }
 
 function _onMenuLabelFlagX(flag) {
-  var flags = document.menuTarget.getAttribute("labels").split(" ");
+  var messages = new Hash();
 
-  var rowId = document.menuTarget.getAttribute("id").substr(4);
-  var messageId = Mailer.currentMailbox + "/" + rowId;
+  if (document.menuTarget.tagName == "DIV")
+    // Menu called from message content view
+    messages.set(Mailer.currentMessages[Mailer.currentMailbox],
+		 $('tr#row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
+  else if (Object.isArray(document.menuTarget))
+    // Menu called from multiple selection in messages list view
+    $(document.menuTarget).collect(function(row) {
+	messages.set(row.getAttribute("id").substr(4),
+		     row.getAttribute("labels"));
+      });
+  else
+    // Menu called from one selection in messages list view
+    messages.set(document.menuTarget.getAttribute("id").substr(4),
+		 document.menuTarget.getAttribute("labels"));
+  
+  var url = ApplicationBaseURL + Mailer.currentMailbox + "/";
+  messages.keys().each(function(id) {
+      var flags = messages.get(id).split(" ");
+      var operation = "add";
+      
+      if (flags.indexOf("label" + flag) > -1)
+	operation = "remove";
 
-  var operation = "add";
-  if (flags.indexOf("label" + flag) > -1)
-    operation = "remove";
-  var urlstr = (ApplicationBaseURL + messageId
-		+ "/" + operation + "Label" + flag);
-  triggerAjaxRequest(urlstr, messageFlagCallback,
-		     { mailbox: Mailer.currentMailbox, msg: rowId,
-		       label: operation + flag } );
+      triggerAjaxRequest(url + id + "/" + operation + "Label" + flag,
+			 messageFlagCallback,
+			 { mailbox: Mailer.currentMailbox, msg: id,
+			     label: operation + flag } );
+    });
 }
 
 function onMenuLabelFlag1() {
@@ -1650,6 +1692,12 @@ function getMenus() {
 				       "mark-menu", "-", null,
 				       onMenuViewMessageSource, null,
 				       null, onMenuDeleteMessage);
+  menus["messagesListMenu"] = new Array(onMenuForwardMessage,
+					"-", "moveMailboxMenu",
+				       "copyMailboxMenu", "label-menu",
+				       "mark-menu", "-",
+					null, null,
+					onMenuDeleteMessage);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
 					  onMenuReplyToAll,
 					  onMenuForwardMessage,

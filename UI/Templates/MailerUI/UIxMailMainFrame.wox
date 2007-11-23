@@ -101,6 +101,21 @@
     </ul>
   </div>
 
+  <div class="menu" id="messagesListMenu">
+    <ul>
+      <li><var:string label:value="Forward"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Move To"/></li>
+      <li><var:string label:value="Copy To"/></li>
+      <li><var:string label:value="Label"/></li>
+      <li><var:string label:value="Mark"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="Print Preview"/></li>
+      <li><var:string label:value="Print..."/></li>
+      <li><var:string label:value="Delete Selected Messages"/></li>
+    </ul>
+  </div>
+
   <div class="menu" id="messageContentMenu">
     <ul>
       <li><var:string label:value="Reply to Sender Only"/></li>

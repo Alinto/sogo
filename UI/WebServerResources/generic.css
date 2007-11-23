@@ -311,6 +311,7 @@ SPAN.toolbarButton:active
   list-style-image: none;
   margin: 0px;
   padding: 0px;
+  padding-top: 1px;
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
   border-right: 1px solid #9e9a92;
@@ -319,8 +320,8 @@ SPAN.toolbarButton:active
 .menu LI
 { padding-left: 1em;
   padding-right: 1em;
-  padding-top: .2em;
-  padding-bottom: .2em;
+  padding-top: .15em;
+  padding-bottom: .15em;
   margin: 0px;
   width: auto;
   white-space: nowrap; }

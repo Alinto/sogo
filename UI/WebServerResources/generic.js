@@ -492,10 +492,6 @@ function onRowClick(event) {
   var node = getTarget(event);
   var rowIndex = null;
 
-  if (!Event.isLeftClick(event))
-    // Ignore non primary-click (ie right-click)
-    return true;
-
   if (node.tagName == 'TD') {
     node = node.parentNode; // select TR
     rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  
@@ -513,6 +509,11 @@ function onRowClick(event) {
   }
 
   var initialSelection = $(node.parentNode).getSelectedNodes();
+
+  if (initialSelection.length > 0 && !Event.isLeftClick(event))
+    // Ignore non primary-click (ie right-click)
+    return true;
+  
   if ((event.shiftKey == 1 || event.ctrlKey == 1)
       && (lastClickedRow >= 0)
       && (acceptMultiSelect(node.parentNode)
@@ -763,10 +764,14 @@ function popupSubmenu(event) {
 
     var menuTop = (parentNode.offsetTop - 1
 		   + this.offsetTop);
+
     if (window.height()
-	< (menuTop + submenuNode.offsetHeight)
-	&& submenuNode.offsetHeight < window.height())
-      menuTop -= submenuNode.offsetHeight - this.offsetHeight - 4;
+	< (menuTop + submenuNode.offsetHeight))
+      if (submenuNode.offsetHeight < window.height())
+	menuTop = window.height() - submenuNode.offsetHeight;
+      else
+	menuTop = 0;
+
     var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
     if (window.width()
 	< (menuLeft + submenuNode.offsetWidth))
