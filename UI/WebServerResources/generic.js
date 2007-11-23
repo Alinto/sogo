@@ -241,9 +241,10 @@ function openMailComposeWindow(url, wId) {
   else {
     var r = new RegExp("[\.\/-]", "g");
     wId = wId.replace(r, "_");
-    if (document.body.hasClassName("popup"))
-      parentWindow = window.opener;
   }
+  
+  if (document.body.hasClassName("popup"))
+    parentWindow = window.opener;
 
   var w = parentWindow.open(url, wId,
                       "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
@@ -490,6 +491,10 @@ function acceptMultiSelect(node) {
 function onRowClick(event) {
   var node = getTarget(event);
   var rowIndex = null;
+
+  if (!Event.isLeftClick(event))
+    // Ignore non primary-click (ie right-click)
+    return true;
 
   if (node.tagName == 'TD') {
     node = node.parentNode; // select TR
@@ -1107,7 +1112,7 @@ function initMenus() {
 }
 
 function initMenu(menuDIV, callbacks) {
-  var lis = $(menuDIV.childNodesWithTag("ul")[0]).childNodesWithTag("li");
+  var lis = $(menuDIV.down("ul")).childNodesWithTag("li");
   for (var j = 0; j < lis.length; j++) {
     var node = $(lis[j]);
     node.observe("mousedown", listRowMouseDownHandler, false);
