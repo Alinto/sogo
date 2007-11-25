@@ -659,17 +659,21 @@ static BOOL debugSoParts       = NO;
       charset = [[_info valueForKey: @"parameterList"] valueForKey: @"charset"];
       if (![charset length])
 	{
-	  s = [[NSString alloc] initWithData: mailData encoding: NSUTF8StringEncoding];
-	  [s autorelease];
+	  s = nil;
 	}
       else
 	{
 	  s = [NSString stringWithData: mailData usingEncodingNamed: charset];
-	  
-	  // If it has failed, we try at least using UTF-8. Normally, this can NOT fail
-	  if (!s)
-	    s = [[[NSString alloc] initWithData: mailData encoding: NSISOLatin1StringEncoding] autorelease];
 	}
+      
+      // If it has failed, we try at least using UTF-8. Normally, this can NOT fail.
+      // Unfortunately, it seems to fail under GNUstep so we try latin1 if that's
+      // the case
+      if (!s)
+	s = [[[NSString alloc] initWithData: mailData encoding: NSUTF8StringEncoding] autorelease];
+      
+      if (!s)
+	s = [[[NSString alloc] initWithData: mailData encoding: NSISOLatin1StringEncoding] autorelease];
     }
   else
     s = nil;

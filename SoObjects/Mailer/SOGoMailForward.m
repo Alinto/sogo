@@ -55,7 +55,7 @@
 
 - (NSString *) subject
 {
-  return [sourceMail subject];
+  return [sourceMail decodedSubject];
 }
 
 - (NSString *) date
@@ -155,7 +155,7 @@
 
   signature = [[context activeUser] signature];
   if ([signature length])
-    mailSignature = [NSString stringWithFormat: @"--\r\n%@", signature];
+    mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
   else
     mailSignature = @"";
 

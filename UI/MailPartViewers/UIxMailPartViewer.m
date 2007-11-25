@@ -183,10 +183,9 @@
       s = [NSString stringWithData: content usingEncodingNamed: charset];
       if (![s length])
 	{
-	  /* latin 1 is used as a 8bit fallback charset... but does this
-	     encoding accept any byte from 0 to 255? */
+	  /* UTF-8 is used as a 8bit fallback charset... */
 	  s = [[NSString alloc] initWithData: content
-				encoding: NSISOLatin1StringEncoding];
+				encoding: NSUTF8StringEncoding];
 	  [s autorelease];
 	}
 

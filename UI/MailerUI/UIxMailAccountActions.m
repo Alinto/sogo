@@ -168,7 +168,7 @@
   if ([signature length])
     {
       [newDraftMessage
-	setText: [NSString stringWithFormat: @"\r\n--\r\n%@", signature]];
+	setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
       save = YES;
     }
   if (save)

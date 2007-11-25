@@ -70,7 +70,21 @@
 
 - (NSString *) messageBody
 {
-  return [[sourceMail contentForEditing] stringByApplyingMailQuoting];
+  NSString *s;
+  
+  s = [sourceMail contentForEditing];
+
+  if (s)
+    {
+      NSRange r;
+
+      r = [s rangeOfString: @"\n-- \n"  options: NSBackwardsSearch];
+
+      if (r.length)
+	s = [s substringToIndex: r.location];
+    }
+
+  return [s stringByApplyingMailQuoting];
 }
 
 - (NSString *) signature
@@ -79,7 +93,7 @@
 
   signature = [[context activeUser] signature];
   if ([signature length])
-    mailSignature = [NSString stringWithFormat: @"--\r\n%@", signature];
+    mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
   else
     mailSignature = @"";
 

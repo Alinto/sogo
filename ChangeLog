@@ -1,3 +1,32 @@
+2007-11-25  Ludovic Marcotte <ludovic@inverse.ca>
+
+        * SoObjects/Mailer/SOGoMailForward.m
+        Use [sourceMail decodedSubject] instead of [sourceMail subject]
+        Signature fix in -signature - see the comment
+        for SOGoMailReply.
+
+        * SoObjects/Mailer/SOGoMailObject.m
+        Improved -stringFromData: to try UTF-8 then fallback to Latin1
+
+        * SoObjects/Mailer/SOGoMailReply.m
+        Modified -messageBody to strip the signature from the reply.
+        Also modified -signature to add "-- \n%@" instead of the
+        broken ""--\r\n%@" pattern.
+
+        * UI/MailPartViewers/UIxMailPartAlternativeViewer.m
+        We now favor text/calendar parts over text/html and
+        text/plain parts when viewing a multipart/alternative mail.
+        This allows us to show the email invitations coming from
+        Microsoft Outlook.
+
+        * UI/MailerUI/UIxMailAccountActions.m
+        Signature fix in -composeAction - see the comment
+        for SOGoMailReply.
+
+        * UI/MailPartViewers/UIxMailPartViewer.m
+        Modified -flatContentAsString to use UTF-8 as the
+        default fallback encoding for 8-bit content.
+
 2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m
