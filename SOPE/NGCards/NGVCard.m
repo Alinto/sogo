@@ -476,7 +476,8 @@
 - (NSString *) versitString
 {
   [self setVersion: @"3.0"];
-  return [self versitString];
+
+  return [super versitString];
 }
 
 /* description */

@@ -203,7 +203,8 @@
 - (NSString *) versitString
 {
   [self setVersion: @"2.0"];
-  return [self versitString];
+
+  return [super versitString];
 }
 
 /* ical typing */
