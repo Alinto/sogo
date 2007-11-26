@@ -76,24 +76,6 @@
   [item release]; item = nil;
 }
 
-/* raw content handling */
-
-- (NSStringEncoding) fallbackStringEncoding
-{
-  /*
-    iCalendar invitations sent by Outlook 2002 have the annoying bug that the
-    mail states an UTF-8 content encoding but the actual iCalendar content is
-    encoding in Latin-1 (or Windows Western?).
- 
-    As a result the content decoding will fail (TODO: always?). In this case we
-    try to decode with Latin-1.
- 
-    Note: we could check for the Outlook x-mailer, but it was considered better
-    to try Latin-1 as a fallback in any case (be tolerant).
-  */
-  return NSISOLatin1StringEncoding;
-}
-
 /* accessors */
 
 - (iCalCalendar *) inCalendar

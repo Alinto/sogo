@@ -1,3 +1,14 @@
+2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartViewer.m
+	([-fallbackStringEncoding]): removed method.
+	([UIxMailPartViewer -flatContentAsString]): we no longer use [self
+	fallbackStringEncoding]. Instead we directly specify
+	NSISOLatin1StringEncoding if UTF-8 has failed.
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([-fallbackStringEncoding]): removed method.
+
 2007-11-25  Ludovic Marcotte <ludovic@inverse.ca>
 
         * SoObjects/Mailer/SOGoMailForward.m

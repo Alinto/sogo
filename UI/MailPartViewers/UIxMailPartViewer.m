@@ -159,11 +159,6 @@
   return content;
 }
 
-- (NSStringEncoding) fallbackStringEncoding
-{
-  return 0;
-}
-
 - (NSString *) flatContentAsString
 {
   /* Note: we even have the line count in the body-info! */
@@ -191,23 +186,24 @@
 
       if (!s)
 	{
-	  /* 
-	     Note: this can happend with iCalendar invitations sent by Outlook 2002.
-	     It will mark the content as UTF-8 but actually deliver it as
-	     Latin-1 (or Windows encoding?).
+	  /*
+	    iCalendar invitations sent by Outlook 2002 have the annoying bug that the
+	    mail states an UTF-8 content encoding but the actual iCalendar content is
+	    encoding in Latin-1 (or Windows Western?).
+		
+	    As a result the content decoding will fail (TODO: always?). In this case we
+	    try to decode with Latin-1.
+ 
+	    Note: we could check for the Outlook x-mailer, but it was considered better
+	    to try Latin-1 as a fallback in any case (be tolerant).
 	  */
-	  [self errorWithFormat:@"could not convert content to text, charset: '%@'",
-		charset];
-	  if ([self fallbackStringEncoding] > 0)
-	    {
-	      s = [[NSString alloc] initWithData:content 
-				    encoding: [self fallbackStringEncoding]];
-	      if (s)
-		[s autorelease];
-	      else
-		[self errorWithFormat:
-			@"an attempt to use fallback encoding failed to."];
-	    }
+
+	  s = [[NSString alloc] initWithData:content 
+				encoding: NSISOLatin1StringEncoding];
+	  if (!s)
+	    [self errorWithFormat: @"an attempt to use"
+		  @" NSISOLatin1StringEncoding as callback failed"];
+	  [s autorelease];
 	}
     }
   else
