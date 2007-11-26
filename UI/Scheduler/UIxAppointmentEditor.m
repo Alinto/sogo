@@ -71,7 +71,7 @@
 {
   if (!event)
     {
-      event = (iCalEvent *) [[self clientObject] component: NO secure: YES];
+      event = (iCalEvent *) [[self clientObject] component: YES secure: YES];
       [event retain];
     }
 

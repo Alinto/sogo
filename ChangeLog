@@ -1,5 +1,10 @@
 2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -todo]): same as below.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-event]): create the event if it doesn't exist.
+
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -userHasCalendarAccess])
 	([UIxPreferences -userHasMailAccess]): same as below, for
 	displaying preference tabs.

@@ -73,7 +73,7 @@
 {
   if (!todo)
     {
-      todo = (iCalToDo *) [[self clientObject] component: NO secure: YES];
+      todo = (iCalToDo *) [[self clientObject] component: YES secure: YES];
       [todo retain];
     }
 
