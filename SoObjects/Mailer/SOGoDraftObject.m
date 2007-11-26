@@ -488,15 +488,14 @@ static BOOL        showTextAttachmentsInline  = NO;
       [to release];
     }
 
-  /* If "to" is empty, we add at least ourself as a recipient! */
+  /* If "to" is empty, we add at least ourself as a recipient!
+     This is for emails in the "Sent" folder that we reply to... */
   if (![to count])
     {
-      [to removeAllObjects];
-      
       if ([[_envelope replyTo] count])
-	[self _addEMailsOfAddresses: [_envelope replyTo]  toArray: to];
+	[self _addEMailsOfAddresses: [_envelope replyTo] toArray: to];
       else
-	[self _addEMailsOfAddresses: [_envelope from]  toArray: to];
+	[self _addEMailsOfAddresses: [_envelope from] toArray: to];
     }
 
   [allRecipients release];
