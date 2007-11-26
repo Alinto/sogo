@@ -1,5 +1,23 @@
 2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-roleForComponentsWithAccessClass:accessClassforUser:uid]): cache
+	acl to reduce method calls.
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatetitle:titlecomponent:_component]):
+	if the user is not the current user, we strip the useless info
+	from the meta data.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-labelForKey:key]): new category method.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-event]): same as below.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -todo]): request a
+	secured version of the component.
+
 	* UI/MailPartViewers/UIxMailPartViewer.m
 	([-fallbackStringEncoding]): removed method.
 	([UIxMailPartViewer -flatContentAsString]): we no longer use [self

@@ -400,5 +400,14 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Location" = "Ort";
 "(Private Event)" = "(Privater Termin)";
 
+/* event list */
+vevent_class0 = "(Public event)";
+vevent_class1 = "(Private event)";
+vevent_class2 = "(Confidential event)";
+
+vtodo_class0 = "(Public task)";
+vtodo_class1 = "(Private task)";
+vtodo_class2 = "(Confidential task)";
+
 "closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
 "Multicolumn Day View" = "Multicolonne";

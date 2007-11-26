@@ -489,12 +489,6 @@ static BOOL uixDebugEnabled = NO;
   if ([lTable hasPrefix:@"$"])
     lTable = [self valueForKeyPath:[lTable substringFromIndex:1]];
   
-#if 0
-  if ([lVal hasPrefix:@"$"])
-    lVal = [self valueForKeyPath:[lVal substringFromIndex:1]];
-  
-#endif
-  
   /* lookup string */
   return [rm stringForKey: lKey
              inTableNamed: lTable

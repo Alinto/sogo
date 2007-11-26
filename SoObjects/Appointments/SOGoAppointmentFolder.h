@@ -38,6 +38,8 @@
 
 #import "SOGo/SOGoGCSFolder.h"
 
+#import <NGCards/iCalEntityObject.h>
+
 @class NSArray;
 @class NSCalendarDate;
 @class NSException;
@@ -46,11 +48,12 @@
 @class NSTimeZone;
 @class GCSFolder;
 
-#import <NGCards/iCalEntityObject.h>
 @interface SOGoAppointmentFolder : SOGoGCSFolder
 {
   NSTimeZone *timeZone;
   NSMutableDictionary *uidToFilename;
+  NSMutableDictionary *aclMatrix;
+  NSMutableArray *stripFields;
 }
 
 - (BOOL) isActive;

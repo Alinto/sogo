@@ -71,7 +71,7 @@
 {
   if (!event)
     {
-      event = (iCalEvent *) [[self clientObject] component: NO secure: NO];
+      event = (iCalEvent *) [[self clientObject] component: NO secure: YES];
       [event retain];
     }
 
@@ -270,7 +270,7 @@
   unsigned int minutes;
   iCalRecurrenceRule *rule;
 
-  event = (iCalEvent *) [[self clientObject] component: NO secure: YES];
+  [self event];
   if (event)
     {
       startDate = [event startDate];
@@ -382,7 +382,7 @@
   iCalRecurrenceRule *rule;
 
   clientObject = [self clientObject];
-  event = (iCalEvent *) [clientObject component: YES secure: NO];
+  [self event];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 

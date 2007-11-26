@@ -413,5 +413,13 @@ validate_endbeforestart    = "Enddate is before startdate!";
 "Location" = "Location";
 "(Private Event)" = "(Private Event)";
 
+vevent_class0 = "(Public event)";
+vevent_class1 = "(Private event)";
+vevent_class2 = "(Confidential event)";
+
+vtodo_class0 = "(Public task)";
+vtodo_class1 = "(Private task)";
+vtodo_class2 = "(Confidential task)";
+
 "closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
 "Multicolumn Day View" = "Multicolumn Day View";

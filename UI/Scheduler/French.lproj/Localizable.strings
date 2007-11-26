@@ -412,5 +412,13 @@ validate_endbeforestart    = "La date de fin est avant la date de début !";
 "Location" = "Lieu";
 "(Private Event)" = "(Événement privé)";
 
+vevent_class0 = "(Événement public)";
+vevent_class1 = "(Événement privé)";
+vevent_class2 = "(Événement confidentiel)";
+
+vtodo_class0 = "(Tâche publique)";
+vtodo_class1 = "(Tâche privée)";
+vtodo_class2 = "(Tâche confidentielle)";
+
 "closeThisWindowMessage" = "Merci! Vous pouvez maintenant fermer cette fenêtre ou consulter votre ";
 "Multicolumn Day View" = "Multicolonne";

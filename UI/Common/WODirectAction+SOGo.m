@@ -20,9 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSBundle.h>
 
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
+
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "WODirectAction+SOGo.h"
 
@@ -53,5 +57,33 @@
   return response;
 }
 
+- (NSString *) labelForKey: (NSString *) key
+{
+  NSString *userLanguage, *label;
+  NSArray *paths;
+  NSBundle *bundle;
+  NSDictionary *strings;
 
+  bundle = [NSBundle bundleForClass: [self class]];
+  if (!bundle)
+    bundle = [NSBundle mainBundle];
+
+  userLanguage = [[context activeUser] language];
+  paths = [bundle pathsForResourcesOfType: @"strings"
+		  inDirectory: [NSString stringWithFormat: @"%@.lproj",
+					 userLanguage]
+		  forLocalization: userLanguage];
+  if ([paths count] > 0)
+    {
+      strings = [NSDictionary
+		  dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+      label = [strings objectForKey: key];
+      if (!label)
+	label = key;
+    }
+  else
+    label = key;
+  
+  return label;
+}
 @end

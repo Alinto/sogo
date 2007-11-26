@@ -35,6 +35,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
@@ -110,6 +111,9 @@ static NSNumber   *sharedYes = nil;
   if ((self = [super initWithName: name inContainer: newContainer]))
     {
       timeZone = [[context activeUser] timeZone];
+      aclMatrix = [NSMutableDictionary new];
+      stripFields = nil;
+      uidToFilename = nil;
     }
 
   return self;
@@ -117,6 +121,8 @@ static NSNumber   *sharedYes = nil;
 
 - (void) dealloc
 {
+  [aclMatrix release];
+  [stripFields release];
   [uidToFilename release];
   [super dealloc];
 }
@@ -774,6 +780,7 @@ static NSNumber   *sharedYes = nil;
 {
   NSString *accessRole, *prefix, *currentRole, *suffix;
   NSEnumerator *acls;
+  NSMutableDictionary *userRoles;
 
   accessRole = nil;
 
@@ -784,18 +791,72 @@ static NSNumber   *sharedYes = nil;
   else
     prefix = @"Confidential";
 
-  acls = [[self aclsForUser: uid] objectEnumerator];
-  currentRole = [acls nextObject];
-  while (currentRole && !accessRole)
-    if ([currentRole hasPrefix: prefix])
-      {
-	suffix = [currentRole substringFromIndex: [prefix length]];
-	accessRole = [NSString stringWithFormat: @"Component%@", suffix];
-      }
-    else
+  userRoles = [aclMatrix objectForKey: uid];
+  if (!userRoles)
+    {
+      userRoles = [NSMutableDictionary dictionaryWithCapacity: 3];
+      [aclMatrix setObject: userRoles forKey: uid];
+    }
+
+  accessRole = [userRoles objectForKey: prefix];
+  if (!accessRole)
+    {
+      acls = [[self aclsForUser: uid] objectEnumerator];
       currentRole = [acls nextObject];
+      while (currentRole && !accessRole)
+	if ([currentRole hasPrefix: prefix])
+	  {
+	    suffix = [currentRole substringFromIndex: [prefix length]];
+	    accessRole = [NSString stringWithFormat: @"Component%@", suffix];
+	  }
+	else
+	  currentRole = [acls nextObject];
+      if (!accessRole)
+	accessRole = @"";
+      [userRoles setObject: accessRole forKey: prefix];
+    }
 
   return accessRole;
+}
+
+- (void) _buildStripFieldsFromFields: (NSArray *) fields
+{
+  stripFields = [[NSMutableArray alloc] initWithCapacity: [fields count]];
+  [stripFields setArray: fields];
+  [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
+					      @"c_uid", @"c_startdate",
+					      @"c_enddate", @"c_isallday",
+					      @"c_iscycle",
+					      @"c_classification",
+					      @"c_component", nil]];
+}
+
+- (void) _fixupProtectedInformation: (NSEnumerator *) ma
+			   inFields: (NSArray *) fields
+			    forUser: (NSString *) uid
+{
+  NSMutableDictionary *currentRecord;
+  NSString *roles[] = {nil, nil, nil};
+  iCalAccessClass accessClass;
+  NSString *role;
+
+  if (!stripFields)
+    [self _buildStripFieldsFromFields: fields];
+
+  while ((currentRecord = [ma nextObject]))
+    {
+      accessClass
+	= [[currentRecord objectForKey: @"c_classification"] intValue];
+      role = roles[accessClass];
+      if (!role)
+	{
+	  role = [[self roleForComponentsWithAccessClass: accessClass
+			forUser: uid] substringFromIndex: 9];
+	  roles[accessClass] = role;
+	}
+      if ([role isEqualToString: @"DAndTViewer"])
+	[currentRecord removeObjectsForKeys: stripFields];
+    }
 }
 
 - (NSArray *) fetchFields: (NSArray *) _fields
@@ -809,7 +870,7 @@ static NSNumber   *sharedYes = nil;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-               *privacySqlString;
+    *privacySqlString, *currentLogin;
   NGCalendarDateRange *r;
 
   if (_folder == nil) {
@@ -896,6 +957,11 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"returning %i records", [ma count]];
 
+  currentLogin = [[context activeUser] login];
+  if (![currentLogin isEqualToString: owner])
+    [self _fixupProtectedInformation: [ma objectEnumerator]
+	  inFields: _fields
+	  forUser: currentLogin];
 //   [ma makeObjectsPerform: @selector (setObject:forKey:)
 //       withObject: owner
 //       withObject: @"owner"];

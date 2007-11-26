@@ -185,22 +185,6 @@
     }
 }
 
-- (void) _updatePrivacyInComponent: (NSMutableDictionary *) component
-			fromFolder: (SOGoAppointmentFolder *) folder
-{
-  int privacyFlag;
-  NSString *roleString;
-
-  privacyFlag = [[component objectForKey: @"classification"] intValue];
-  roleString = [folder roleForComponentsWithAccessClass: privacyFlag
-		       forUser: userLogin];
-  if ([roleString isEqualToString: @"ComponentDAndTViewer"])
-    {
-      [component setObject: @"" forKey: @"c_title"];
-      [component setObject: @"" forKey: @"c_location"];
-    }
-}
-
 - (SOGoAppointmentFolder *) _aptFolder: (NSString *) folder
 		      withClientObject: (SOGoAppointmentFolder *) clientObject
 {
@@ -220,6 +204,17 @@
   return aptFolder;
 }
 
+- (void) _fixComponentTitle: (NSMutableDictionary *) component
+                   withType: (NSString *) type
+{
+  NSString *labelKey;
+
+  labelKey = [NSString stringWithFormat: @"%@_class%@",
+		       type, [component objectForKey: @"c_classification"]];
+  [component setObject: [self labelForKey: labelKey]
+	     forKey: @"c_title"];
+}
+
 - (NSArray *) _fetchFields: (NSArray *) fields
 	forComponentOfType: (NSString *) component
 {
@@ -232,28 +227,29 @@
 
   marker = [NSNull null];
 
-   clientObject = [self clientObject];
+  clientObject = [self clientObject];
 
   folders = [[clientObject subFolders] objectEnumerator];
   currentFolder = [folders nextObject];
 
   infos = [NSMutableArray array];
+
   while (currentFolder)
     {
       if ([currentFolder isActive])
 	{
-	  currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
-					 to: endDate
-					 title: title
-					 component: component] objectEnumerator];
+	  currentInfos
+	    = [[currentFolder fetchCoreInfosFrom: startDate
+			      to: endDate
+			      title: title
+			      component: component] objectEnumerator];
 
 	  while ((newInfo = [currentInfos nextObject]))
 	    {
-	      [self _updatePrivacyInComponent: newInfo
-		    fromFolder: currentFolder];
 	      [newInfo setObject: [currentFolder nameInContainer]
 		       forKey: @"c_folder"];
-	      
+	      if (![[newInfo objectForKey: @"c_title"] length])
+		[self _fixComponentTitle: newInfo withType: component];
 	      [infos addObject: [newInfo objectsForKeys: fields
 					 notFoundMarker: marker]];
 	    }
@@ -323,7 +319,7 @@
   newEvents = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
 		    @"c_title", @"c_startdate", @"c_enddate", @"c_location",
-		    @"c_isallday", nil];
+		    @"c_isallday", @"c_classification", nil];
   events = [[self _fetchFields: fields
 		  forComponentOfType: @"vevent"] objectEnumerator];
   oldEvent = [events nextObject];
@@ -399,7 +395,7 @@
   [self _setupContext];
 
   fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
-		    @"c_title", @"c_enddate", nil];
+		    @"c_title", @"c_enddate", @"c_classification", nil];
 
   tasks = [[self _fetchFields: fields
 		 forComponentOfType: @"vtodo"] objectEnumerator];

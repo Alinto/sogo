@@ -34,6 +34,8 @@
 - (WOResponse *) responseWith204;
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 
+- (NSString *) labelForKey: (NSString *) _str;
+
 @end
 
 #endif /* WODIRECTACTION_SOGO_H */

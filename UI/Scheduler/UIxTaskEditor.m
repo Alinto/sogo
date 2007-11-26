@@ -73,7 +73,7 @@
 {
   if (!todo)
     {
-      todo = (iCalToDo *) [[self clientObject] component: NO secure: NO];
+      todo = (iCalToDo *) [[self clientObject] component: NO secure: YES];
       [todo retain];
     }
 
@@ -289,7 +289,7 @@
   NSString *duration;
   unsigned int minutes;
 
-  todo = (iCalToDo *) [[self clientObject] component: NO secure: YES];
+  [self todo];
   if (todo)
     {
       startDate = [todo startDate];
@@ -383,10 +383,7 @@
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
 {
-  SOGoTaskObject *clientObject;
-
-  clientObject = [self clientObject];
-  todo = (iCalToDo *) [clientObject component: YES secure: NO];
+  [self todo];
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
@@ -438,12 +435,9 @@
 
 - (id) changeStatusAction
 {
-  SOGoTaskObject *clientObject;
   NSString *newStatus;
 
-  clientObject = [self clientObject];
-  todo = (iCalToDo *) [clientObject component: NO secure: NO];
-  [todo retain];
+  [self todo];
   if (todo)
     {
       newStatus = [self queryParameterForKey: @"status"];
@@ -455,7 +449,7 @@
 	  [todo setPercentComplete: @"0"];
 	  [todo setStatus: @"IN-PROCESS"];
 	}
-      [clientObject saveComponent: todo];
+      [[self clientObject] saveComponent: todo];
     }
 
   return [self responseWith204];

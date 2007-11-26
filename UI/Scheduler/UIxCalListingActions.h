@@ -23,8 +23,7 @@
 #ifndef UIXCALLISTINGACTIONVIEW_H
 #define UIXCALLISTINGACTIONVIEW_H
 
-
-#import <NGObjWeb/WODirectAction.h>
+#import <Common/WODirectAction+SOGo.h>
 
 @class NSCalendarDate;
 @class NSMutableDictionary;
