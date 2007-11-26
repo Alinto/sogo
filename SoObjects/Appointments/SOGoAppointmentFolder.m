@@ -771,7 +771,7 @@ static NSNumber   *sharedYes = nil;
 		    [self _privacyClassificationStringsForUID: login],
 		    email, email, email];
     }
-  
+
   return privacySqlString;
 }
 
