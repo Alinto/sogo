@@ -131,6 +131,9 @@
 "Compose Mail To" = "Verfassen";
 "Create Filter From Message..." = "Filter aus Nachricht erstellen...";
 
+/* Image Popup menu */
+"View Image" = "View Image";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In neuem Fenster öffnen";
 "Copy Folder Location" = "Ordner-Adresse kopieren";

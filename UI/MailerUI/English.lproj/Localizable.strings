@@ -147,6 +147,9 @@
 "Compose Mail To" = "Compose Mail To";
 "Create Filter From Message..." = "Create Filter From Message...";
 
+/* Image Popup menu */
+"View Image" = "View Image";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Open in New Mail Window";
 "Copy Folder Location" = "Copy Folder Location";
