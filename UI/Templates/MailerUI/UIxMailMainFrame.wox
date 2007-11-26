@@ -171,6 +171,12 @@
     </ul>
   </div>
 
+  <div class="menu" id="imageMenu">
+    <ul>
+      <li id="view_image"><var:string label:value="View Image"/></li>
+    </ul>
+  </div>
+
   <div id="leftPanel">
     <div class="titlediv"><var:string label:value="Folders" /></div>
     <div id="folderTreeContent"><!-- space --></div>

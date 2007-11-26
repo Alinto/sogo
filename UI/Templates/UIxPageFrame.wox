@@ -117,7 +117,7 @@
 	  <var:foreach list="additionalJSFiles" item="item"
 	    ><script type="text/javascript" var:src="item"><!-- space --></script>
 	  </var:foreach>
-	  <script type="text/javascript">addEvent(window, 'load', onFinalLoadHandler);</script>
+	  <script type="text/javascript">FastInit.addOnLoad(onFinalLoadHandler);</script>
         </var:if>
         <var:if condition="isCompatibleBrowser" const:negate="YES">
 	  <div id="loginScreen">

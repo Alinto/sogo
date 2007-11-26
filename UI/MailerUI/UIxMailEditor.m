@@ -443,7 +443,7 @@ static NSArray *infoKeys = nil;
 	{
 	  result = [[self clientObject] sendMail];
 	  if (!result)
-	    result = [self jsCloseWithRefreshMethod: @"refreshFolderByType(\"sent\")"];
+	    result = [self jsCloseWithRefreshMethod: @"refreshCurrentFolder()"];
 	}
       else
 	result = [self failedToSaveFormResponse];

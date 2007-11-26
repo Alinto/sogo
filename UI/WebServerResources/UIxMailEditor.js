@@ -161,7 +161,7 @@ function clickedEditorSend(sender) {
   window.shouldPreserve = true;
   document.pageform.action = "send";
   document.pageform.submit();
-
+  
   return false;
 }
 
@@ -256,7 +256,7 @@ function onTextFocus() {
   }
   if (signatureLength > 0) {
     var length = this.getValue().length - signatureLength - 1;
-    this.setSelectionRange(length, length);
+    this.selectText(length, length);
   }
   Event.stopObserving(this, "focus", onTextFocus);
 }

@@ -10,11 +10,11 @@ if (typeof textMailAccounts != 'undefined') {
 }
 
 var Mailer = {
+ currentMailbox: null,
+ currentMailboxType: "",
  currentMessages: {},
  maxCachedMessages: 20,
- cachedMessages: new Array(),
- currentMailbox: null,
- currentMailboxType: ""
+ cachedMessages: new Array()
 };
 
 var usersRightsWindowHeight = 320;
@@ -238,6 +238,7 @@ function deleteSelectedMessagesCallback(http) {
     if (isHttpStatus204(http.status)) {
       var data = http.callbackData;
       deleteCachedMessage(data["messageId"]);
+      deleteMessageRequestCount--;
       if (Mailer.currentMailbox == data["mailbox"]) {
 	
 	var div = $('messageContent');
@@ -247,13 +248,17 @@ function deleteSelectedMessagesCallback(http) {
 	}
 
 	var row = $("row_" + data["id"]);
+	var nextRow = row.next("tr");
+	if (!nextRow)
+	  nextRow = row.previous("tr");
 	row.parentNode.removeChild(row);
 //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-
-	deleteMessageRequestCount--;
       
-	if (deleteMessageRequestCount == 0)
+	if (deleteMessageRequestCount == 0) {
+	  if (nextRow)
+	    Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
 	  openMailbox(data["mailbox"], true);
+	}
       }
     }
   }
@@ -488,7 +493,7 @@ function messageListCallback(http) {
   
   if (http.readyState == 4
       && http.status == 200) {
-    document.messageListAjaxRequest = null;    
+    document.messageListAjaxRequest = null;
 
     if (table) {
       // Update table
@@ -748,6 +753,7 @@ function configureLinksInMessage() {
 						       messageDiv)[0];
   if (!document.body.hasClassName("popup"))
     mailContentDiv.observe("contextmenu", onMessageContentMenu);
+
   var anchors = messageDiv.getElementsByTagName('a');
   for (var i = 0; i < anchors.length; i++)
     if (anchors[i].href.substring(0,7) == "mailto:") {
@@ -756,6 +762,10 @@ function configureLinksInMessage() {
     }
     else
       $(anchors[i]).observe("click", onMessageAnchorClick);
+
+  var images = messageDiv.getElementsByTagName('img');
+  for (var i = 0; i < images.length; i++)
+    $(images[i]).observe("contextmenu", onImageClick);
 
   var editDraftButton = $("editDraftButton");
   if (editDraftButton)
@@ -820,7 +830,8 @@ function resizeMailContent() {
 
 function onMessageContentMenu(event) {
   var element = getTarget(event);
-  if (element.tagName == 'A' && element.href.substring(0,7) == "mailto:")
+  if ((element.tagName == 'A' && element.href.substring(0,7) == "mailto:")
+      || element.tagName == 'IMG')
     // Don't show the default contextual menu; let the click propagate to 
     // other observers
     return true;
@@ -840,6 +851,12 @@ function onEmailAddressClick(event) {
 function onMessageAnchorClick(event) {
   window.open(this.href);
   preventDefault(event);
+}
+
+function onImageClick(event) {
+  popupMenu(event, 'imageMenu', this);
+  preventDefault(event);
+  return false;
 }
 
 function messageCallback(http) {
@@ -945,6 +962,11 @@ function onMenuViewMessageSource(event) {
   }
 
   preventDefault(event);
+}
+
+function viewImage(event) {
+  var img = document.menuTarget;
+  window.open(img.getAttribute("src"),'_blank','resizable=1'); 
 }
 
 /* contacts */
@@ -1277,6 +1299,7 @@ function updateMailboxTreeInPage() {
 		  onFolderMenuClick.bindAsEventListener(nodes[i]));
     if (!inboxFound
 	&& nodes[i].parentNode.getAttribute("datatype") == "inbox") {
+      Mailer.currentMailboxType = "inbox";
       openInbox(nodes[i]);
       inboxFound = true;
     }
@@ -1698,6 +1721,7 @@ function getMenus() {
 				       "mark-menu", "-",
 					null, null,
 					onMenuDeleteMessage);
+  menus["imageMenu"] = new Array(viewImage);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
 					  onMenuReplyToAll,
 					  onMenuForwardMessage,
