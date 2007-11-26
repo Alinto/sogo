@@ -874,12 +874,13 @@ static NSNumber   *sharedYes = nil;
     *privacySqlString, *currentLogin;
   NGCalendarDateRange *r;
 
-  if (_folder == nil) {
-    [self errorWithFormat:@"(%s): missing folder for fetch!",
+  if (!_folder)
+    {
+      [self errorWithFormat:@"(%s): missing folder for fetch!",
             __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
+      return nil;
+    }
+
   if (_startDate && _endDate)
     {
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
