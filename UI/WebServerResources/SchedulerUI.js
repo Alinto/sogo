@@ -1476,7 +1476,7 @@ function onMenuModify(event) {
   var selected = folders.getSelectedNodes()[0];
 
   if (UserLogin == selected.getAttribute("owner")) {
-    var node = selected.childNodes[4];
+    var node = selected.childNodes[selected.childNodes.length - 1];
     var currentName = node.nodeValue.trim();
     var newName = window.prompt(labels["Name of the Calendar"],
 				currentName);
