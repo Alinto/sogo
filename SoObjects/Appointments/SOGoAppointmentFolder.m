@@ -843,6 +843,7 @@ static NSNumber   *sharedYes = nil;
   if (!stripFields)
     [self _buildStripFieldsFromFields: fields];
 
+#warning we do not take the participation status into account
   while ((currentRecord = [ma nextObject]))
     {
       accessClass
