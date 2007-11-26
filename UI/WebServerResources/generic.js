@@ -1365,15 +1365,24 @@ function onPreferencesClick(event) {
 function configureLinkBanner() {
   var linkBanner = $("linkBanner");
   if (linkBanner) {
-    var anchors = linkBanner.childNodesWithTag("a");
-    for (var i = 1; i < 3; i++) {
-      $(anchors[i]).observe("mousedown", listRowMouseDownHandler);
-      $(anchors[i]).observe("click", onLinkBannerClick);
+    var moduleLinks = [ "calendar", "contacts", "mail" ];
+    for (var i = 0; i < moduleLinks.length; i++) {
+      var link = $(moduleLinks[i] + "BannerLink");
+      if (link) {
+	link.observe("mousedown", listRowMouseDownHandler);
+	link.observe("click", onLinkBannerClick);
+      }
     }
-    $(anchors[4]).observe("mousedown", listRowMouseDownHandler);
-    $(anchors[4]).observe("click", onPreferencesClick);
-    if (anchors.length > 5)
-      $(anchors[5]).observe("click", toggleLogConsole);
+    link = $("preferencesBannerLink");
+    if (link) {
+      link.observe("mousedown", listRowMouseDownHandler);
+      link.observe("click", onPreferencesClick);
+    }
+    link = $("consoleBannerLink");
+    if (link) {
+      link.observe("mousedown", listRowMouseDownHandler);
+      link.observe("click", toggleLogConsole);
+    }
   }
 }
 

@@ -622,4 +622,15 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [superUsernames containsObject: login];
 }
 
+/* module access */
+- (BOOL) canAccessModule: (NSString *) module
+{
+  NSString *accessValue;
+
+  accessValue = [self _fetchFieldForUser:
+			[NSString stringWithFormat: @"%@Access", module]];
+
+  return [accessValue boolValue];
+}
+
 @end /* SOGoUser */

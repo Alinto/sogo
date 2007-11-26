@@ -44,6 +44,8 @@
   NSArray *mailFields;
   NSString *bindFields;
 
+  NSDictionary *modulesConstraints;
+
   NGLdapConnection *ldapConnection;
   NSMutableArray *searchAttributes;
 }

@@ -303,10 +303,16 @@ static NSString *defaultMailDomain = nil;
   LDAPSource *currentSource;
   NSString *cn, *c_uid;
   NSArray *c_emails;
-  
+  BOOL access;
+
   emails = [NSMutableArray array];
   cn = nil;
   c_uid = nil;
+
+  [currentUser setObject: [NSNumber numberWithBool: YES]
+	       forKey: @"CalendarAccess"];
+  [currentUser setObject: [NSNumber numberWithBool: YES]
+	       forKey: @"MailAccess"];
 
   ldapSources = [sources objectEnumerator];
   currentSource = [ldapSources nextObject];
@@ -322,6 +328,14 @@ static NSString *defaultMailDomain = nil;
 	  c_emails = [userEntry objectForKey: @"c_emails"];
 	  if ([c_emails count])
 	    [emails addObjectsFromArray: c_emails];
+	  access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
+	  if (!access)
+	    [currentUser setObject: [NSNumber numberWithBool: NO]
+			 forKey: @"CalendarAccess"];
+	  access = [[userEntry objectForKey: @"MailAccess"] boolValue];
+	  if (!access)
+	    [currentUser setObject: [NSNumber numberWithBool: NO]
+			 forKey: @"MailAccess"];
 	}
       currentSource = [ldapSources nextObject];
     }

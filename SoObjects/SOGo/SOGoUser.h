@@ -124,6 +124,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (BOOL) isSuperUser;
 
+/* module access */
+- (BOOL) canAccessModule: (NSString *) module;
+
 /* folders */
 
 - (SOGoUserFolder *) homeFolderInContext: (id) context;

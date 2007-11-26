@@ -345,6 +345,24 @@
 	  && [user isSuperUser]);
 }
 
+- (BOOL) userHasCalendarAccess
+{
+  SOGoUser *user;
+
+  user = [context activeUser];
+
+  return [user canAccessModule: @"Calendar"];
+}
+
+- (BOOL) userHasMailAccess
+{
+  SOGoUser *user;
+
+  user = [context activeUser];
+
+  return [user canAccessModule: @"Mail"];
+}
+
 /* browser/os identification */
 
 - (BOOL) isCompatibleBrowser

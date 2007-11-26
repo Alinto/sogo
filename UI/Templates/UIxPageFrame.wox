@@ -42,7 +42,8 @@
 	  >
 	  <var:if condition="shortUserNameForDisplay" const:value="anonymous"
 	    const:negate="YES"
-	    ><var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
+	    ><var:if condition="shortUserNameForDisplay"
+	      const:value="wrongusernamepassword"
 	      const:negate="YES"
 	      ><var:if condition="isPopup" const:negate="YES"
 		><var:if condition="context.isUIxDebugEnabled"
@@ -50,16 +51,24 @@
 		<div id="linkBanner" class="linkbanner">
 		  <a id="logoff" var:href="logoffPath"
 		    ><var:string label:value="Disconnect" /></a>
-		  <a var:href="relativeCalendarPath"
-		    ><var:string label:value="Calendar" /></a> |
-		  <a var:href="relativeContactsPath"
+		  <var:if condition="userHasCalendarAccess">
+		    <a id="calendarBannerLink"
+		      var:href="relativeCalendarPath"
+		      ><var:string label:value="Calendar" /></a> |
+		  </var:if>
+		  <a id="contactsBannerLink"
+		    var:href="relativeContactsPath"
 		    ><var:string label:value="Address Book" /></a> |
-		  <a var:href="relativeMailPath"
-		    ><var:string label:value="Mail" /></a> |
-		  <a var:href="relativePreferencesPath"
+		  <var:if condition="userHasMailAccess">
+		    <a id="mailBannerLink" var:href="relativeMailPath"
+		      ><var:string label:value="Mail" /></a> |
+		  </var:if>
+		  <a id="preferencesBannerLink"
+		    var:href="relativePreferencesPath"
 		    ><var:string label:value="Preferences" /></a>
 		  <var:if condition="context.isUIxDebugEnabled"
-		    >| <a href="#"><var:string
+		    >| <a id="consoleBannerLink"
+		      href="#"><var:string
 			label:value="Log Console (dev.)" /></a
 		      ></var:if>
 		</div>

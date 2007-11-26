@@ -170,6 +170,7 @@ static int sizeLimit;
   [bindFields release];
   [ldapConnection release];
   [sourceID release];
+  [modulesConstraints release];
   [super dealloc];
 }
 
@@ -189,6 +190,7 @@ static int sizeLimit;
 	UIDField: [udSource objectForKey: @"UIDFieldName"]
 	mailFields: [udSource objectForKey: @"MailFieldNames"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
+  ASSIGN (modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
 
   return self;
 }
@@ -351,6 +353,20 @@ static int sizeLimit;
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
 
+- (NSArray *) _contraintsFields
+{
+  NSMutableArray *fields;
+  NSEnumerator *values;
+  NSDictionary *currentConstraint;
+
+  fields = [NSMutableArray array];
+  values = [[modulesConstraints allValues] objectEnumerator];
+  while ((currentConstraint = [values nextObject]))
+    [fields addObjectsFromArray: [currentConstraint allKeys]];
+
+  return fields;
+}
+
 - (NSArray *) _searchAttributes
 {
   if (!searchAttributes)
@@ -361,6 +377,7 @@ static int sizeLimit;
       if (UIDField)
 	[searchAttributes addObject: UIDField];
       [searchAttributes addObjectsFromArray: mailFields];
+      [searchAttributes addObjectsFromArray: [self _contraintsFields]];
       [searchAttributes addObjectsFromArray: commonSearchFields];
     }
 
@@ -408,12 +425,45 @@ static int sizeLimit;
   emailFields = [mailFields objectEnumerator];
   while ((currentFieldName = [emailFields nextObject]))
     {
-      value = [[ldapEntry attributeWithName: currentFieldName] stringValueAtIndex: 0];
+      value = [[ldapEntry attributeWithName: currentFieldName]
+		stringValueAtIndex: 0];
       if (value)
 	[emails addObject: value];
     }
   [emails autorelease];
   [contactEntry setObject: emails forKey: @"c_emails"];
+}
+
+- (void) _fillConstraints: (NGLdapEntry *) ldapEntry
+		forModule: (NSString *) module
+	 intoContactEntry: (NSMutableDictionary *) contactEntry
+{
+  NSDictionary *constraints;
+  NSEnumerator *matches;
+  NSString *currentMatch, *currentValue, *ldapValue;
+  BOOL result;
+
+  result = YES;
+
+  constraints = [modulesConstraints objectForKey: module];
+  if (constraints)
+    {
+      matches = [[constraints allKeys] objectEnumerator];
+      currentMatch = [matches nextObject];
+      while (result && currentMatch)
+	{
+	  ldapValue = [[ldapEntry attributeWithName: currentMatch]
+			stringValueAtIndex: 0];
+	  currentValue = [constraints objectForKey: currentMatch];
+	  if ([ldapValue isEqualToString: currentValue])
+	    currentMatch = [matches nextObject];
+	  else
+	    result = NO;
+	}
+    }
+
+  [contactEntry setObject: [NSNumber numberWithBool: result]
+		forKey: [NSString stringWithFormat: @"%@Access", module]];
 }
 
 - (NSDictionary *) _convertLDAPEntryToContact: (NGLdapEntry *) ldapEntry
@@ -446,6 +496,10 @@ static int sizeLimit;
     value = @"";
   [contactEntry setObject: value forKey: @"c_cn"];
   [self _fillEmailsOfEntry: ldapEntry intoContactEntry: contactEntry];
+  [self _fillConstraints: ldapEntry forModule: @"Calendar"
+	intoContactEntry: (NSMutableDictionary *) contactEntry];
+  [self _fillConstraints: ldapEntry forModule: @"Mail"
+	intoContactEntry: (NSMutableDictionary *) contactEntry];
 
   return contactEntry;
 }

@@ -1,5 +1,30 @@
 2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -userHasCalendarAccess])
+	([UIxPreferences -userHasMailAccess]): same as below, for
+	displaying preference tabs.
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame
+	-userHasCalendarAccess]): new accessor for the link banner.
+	([UIxPageFrame -userHasMailAccess]): same as above.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-toManyRelationshipKeys]): do not report the path to modules to
+	which the user has no access. No longer cache this information
+	statically, the array will be generated at each call.
+	([SOGoUserFolder -lookupName:_keyinContext:_ctxacquire:_flag]):
+	ignore the path to modules to which the user has no access.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -canAccessModule:module]):
+	new method that returns whether the user has access to the
+	specified module.
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource
+	-initFromUDSource:udSource]): take a new parameter named
+	'ModulesContraints' that defines a set of constraints for
+	accessing specified named modules. This is an optout, meaning the
+	modules will be present unless a constraint is specified.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-roleForComponentsWithAccessClass:accessClassforUser:uid]): cache

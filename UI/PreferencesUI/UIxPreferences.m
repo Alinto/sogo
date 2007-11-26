@@ -483,7 +483,7 @@ static BOOL shouldDisplayPasswordChange = NO;
 
 - (NSString *) itemIdentityText
 {
-  return [item keysWithFormat: @"%{fullName} <%{email}>"];
+  return [(NSDictionary *) item keysWithFormat: @"%{fullName} <%{email}>"];
 }
 
 - (NSMutableDictionary *) defaultIdentity
@@ -536,6 +536,16 @@ static BOOL shouldDisplayPasswordChange = NO;
                            inContext: (WOContext*) context
 {
   return [[request method] isEqualToString: @"POST"];
+}
+
+- (BOOL) userHasCalendarAccess
+{
+  return [user canAccessModule: @"Calendar"];
+}
+
+- (BOOL) userHasMailAccess
+{
+  return [user canAccessModule: @"Mail"];
 }
 
 - (BOOL) shouldDisplayPasswordChange

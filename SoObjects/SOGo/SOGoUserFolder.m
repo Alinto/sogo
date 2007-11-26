@@ -24,6 +24,8 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -64,12 +66,18 @@
 
 - (NSArray *) toManyRelationshipKeys
 {
-  static NSArray *children = nil;
+  NSMutableArray *children;
+  SOGoUser *currentUser;
 
-  if (!children)
-    children = [[NSArray alloc] initWithObjects:
-				  @"Calendar", @"Contacts", @"Mail",
-				@"Preferences",  nil];
+  children = [NSMutableArray arrayWithCapacity: 4];
+
+  currentUser = [context activeUser];
+  if ([currentUser canAccessModule: @"Calendar"])
+    [children addObject: @"Calendar"];
+  [children addObject: @"Contacts"];
+  if ([currentUser canAccessModule: @"Mail"])
+    [children addObject: @"Mail"];
+  [children addObject: @"Preferences"];
 
   return children;
 }
@@ -149,12 +157,15 @@
           acquire: (BOOL) _flag
 {
   id obj;
+  SOGoUser *currentUser;
   
   /* first check attributes directly bound to the application */
   obj = [super lookupName: _key inContext: _ctx acquire: NO];
   if (!obj)
     {
-      if ([_key isEqualToString: @"Calendar"])
+      currentUser = [_ctx activeUser];
+      if ([_key isEqualToString: @"Calendar"]
+	  && [currentUser canAccessModule: _key])
 	obj = [self privateCalendars: @"Calendar" inContext: _ctx];
 //           if (![_key isEqualToString: @"Calendar"])
 //             obj = [obj lookupName: [_key pathExtension] 
@@ -163,7 +174,8 @@
         obj = [self privateContacts: _key inContext: _ctx];
 //       else if ([_key isEqualToString: @"Groups"])
 //         obj = [self groupsFolder: _key inContext: _ctx];
-      else if ([_key isEqualToString: @"Mail"])
+      else if ([_key isEqualToString: @"Mail"]
+	       && [currentUser canAccessModule: _key])
         obj = [self mailAccountsFolder: _key inContext: _ctx];
       else if ([_key isEqualToString: @"Preferences"])
         obj = [$(@"SOGoPreferencesFolder") objectWithName: _key
