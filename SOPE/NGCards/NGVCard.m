@@ -29,16 +29,6 @@
 
 @implementation NGVCard
 
-+ (id) parseSingleFromSource: (id) source
-{
-  NGVCard *newCard;
-
-  newCard = [super parseSingleFromSource: source];
-  [newCard setVersion: @"3.0"];
-
-  return newCard;
-}
-
 + (id) cardWithUid: (NSString *) _uid
 {
   NGVCard *newCard;
@@ -481,6 +471,12 @@
 - (CardElement *) preferredAdr
 {
   return [self _preferredElementWithTag: @"adr"];
+}
+
+- (NSString *) versitString
+{
+  [self setVersion: @"3.0"];
+  return [self versitString];
 }
 
 /* description */

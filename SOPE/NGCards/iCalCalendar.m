@@ -200,6 +200,12 @@
   return ma;
 }
 
+- (NSString *) versitString
+{
+  [self setVersion: @"2.0"];
+  return [self versitString];
+}
+
 /* ical typing */
 
 - (NSString *) entityName

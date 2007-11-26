@@ -1,3 +1,12 @@
+2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalCalendar.m ([iCalCalendar -versitString]): same as below,
+	with "2.0" as value.
+
+	* NGVCard.m ([NGVCard -versitString]): overriden method by forcing
+	version to "3.0" since it's the format we comply with.
+	
+
 2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEntityObject.m ([iCalEntityObject -compare:otherObject]):
