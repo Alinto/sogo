@@ -85,18 +85,17 @@
 	    ><p class="uix_ical_toolbar">
 	      <input id="iCalendarUpdateUserStatus" class="button"
 		type="button" label:value="Update status"/>
-	    </p
-	      ></var:if>
+	    </p>
 	  
 	  <!-- TODO: replies to events not in the calendar? -->
 
-	  <p>
-	    Status Update:
-	    <var:string label:value="$inReplyAttendee.partStatWithDefault" />,
-	    was:
-	    <var:string
-	      label:value="$storedReplyAttendee.partStatWithDefault" />.
-	  </p>
+	    <p>
+	      Status Update:
+	      <var:string label:value="$inReplyAttendee.partStatWithDefault" />,
+	      was:
+	      <var:string
+		label:value="$storedReplyAttendee.partStatWithDefault" />.
+	    </p></var:if>
 	</var:if>
       </var:if>
 
