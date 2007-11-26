@@ -27,6 +27,12 @@
         Modified -flatContentAsString to use UTF-8 as the
         default fallback encoding for 8-bit content.
 
+	* SoObjects/Mailer/SOGoDraftObject.m
+	Modified _fillInReplyAddresses:replyToAll:envelope:
+	so that if there's no recipient, we add at least
+	ourself to the list.	
+	Fixed a mem leak in the same method.
+	
 2007-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m

@@ -488,7 +488,19 @@ static BOOL        showTextAttachmentsInline  = NO;
       [to release];
     }
 
+  /* If "to" is empty, we add at least ourself as a recipient! */
+  if (![to count])
+    {
+      [to removeAllObjects];
+      
+      if ([[_envelope replyTo] count])
+	[self _addEMailsOfAddresses: [_envelope replyTo]  toArray: to];
+      else
+	[self _addEMailsOfAddresses: [_envelope from]  toArray: to];
+    }
+
   [allRecipients release];
+  [addrs release];
 }
 
 - (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths
