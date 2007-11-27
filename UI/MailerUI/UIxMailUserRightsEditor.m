@@ -29,15 +29,15 @@
 
 @implementation UIxMailUserRightsEditor
 
-- (void) setUserCanSeeFolder: (BOOL) userCanSeeFolder
+- (void) setUserCanReadMails: (BOOL) userCanReadMails
 {
-  if (userCanSeeFolder)
+  if (userCanReadMails)
     [self appendRight: SOGoRole_ObjectViewer];
   else
     [self removeRight: SOGoRole_ObjectViewer];
 }
 
-- (BOOL) userCanSeeFolder
+- (BOOL) userCanReadMails
 {
   return [userRights containsObject: SOGoRole_ObjectViewer];
 }

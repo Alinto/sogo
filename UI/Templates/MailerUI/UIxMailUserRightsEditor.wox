@@ -24,11 +24,6 @@
     <div class="calendarUserRights">
       <label><input type="checkbox" class="checkBox"
 	  const:name="ObjectViewer"
-	  var:checked="userCanSeeFolder"/><var:string
-	  label:value="List and see this folder"/></label>
-      <br/>
-      <label><input type="checkbox" class="checkBox"
-	  const:name="ObjectReader"
 	  var:checked="userCanReadMails"/><var:string
 	  label:value="Read mails from this folder"/></label>
       <br/>
