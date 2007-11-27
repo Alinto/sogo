@@ -374,16 +374,14 @@
   containerAcls = [container aclsForUser: uid];
   if ([containerAcls count] > 0)
     {
-      if ([containerAcls containsObject: SOGoRole_ObjectCreator])
+      [acls addObjectsFromArray: containerAcls];
+      if (isNew)
 	{
-	  [acls addObject: SOGoRole_ObjectCreator];
-	  if (isNew)
+	  if ([containerAcls containsObject: SOGoRole_ObjectCreator])
 	    [acls addObject: SOGoRole_ObjectEditor];
+	  else
+	    [acls removeObject: SOGoRole_ObjectEditor];
 	}
-      if ([containerAcls containsObject: SOGoRole_ObjectReader])
-	[acls addObject: SOGoRole_ObjectViewer];
-      if ([containerAcls containsObject: SOGoRole_ObjectEditor])
-	[acls addObject: SOGoRole_ObjectEditor];
     }
 
   return acls;

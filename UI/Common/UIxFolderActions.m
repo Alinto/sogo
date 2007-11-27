@@ -147,34 +147,39 @@
 
 - (WOResponse *) canAccessContentAction
 {
-#warning IMPROVEMENTS REQUIRED!
-  NSArray *acls;
-//  NSEnumerator *userAcls;
-//  NSString *currentAcl;
+  /* We want this action to be authorized managed by the SOPE's internal acl
+     handling. */
+  return [self responseWith204];
+// #warning IMPROVEMENTS REQUIRED!
+//   NSArray *acls;
+// //  NSEnumerator *userAcls;
+// //  NSString *currentAcl;
 
-  [self _setupContext];
+//   [self _setupContext];
   
-//  NSLog(@"canAccessContentAction %@, owner %@", subscriptionPointer, owner);
+// //  NSLog(@"canAccessContentAction %@, owner %@", subscriptionPointer, owner);
 
-  if ([login isEqualToString: owner] || [owner isEqualToString: @"nobody"]) {
-    return [self responseWith204];
-  }
-  else {
-    acls = [clientObject aclsForUser: login];
-//    userAcls = [acls objectEnumerator];
-//    currentAcl = [userAcls nextObject];
-//    while (currentAcl) {
-//      NSLog(@"ACL login %@, owner %@, folder %@: %@",
-//	    login, owner, baseFolder, currentAcl);
-//      currentAcl = [userAcls nextObject];
-//    }
-    if (([[clientObject folderType] isEqualToString: @"Contact"]     && [acls containsObject: SOGoRole_ObjectReader]) ||
-	([[clientObject folderType] isEqualToString: @"Appointment"] && [acls containsObject: SOGoRole_AuthorizedSubscriber])) {
-      return [self responseWith204];
-    }
-  }
+//   if ([login isEqualToString: owner] || [owner isEqualToString: @"nobody"]) {
+//     return [self responseWith204];
+//   }
+//   else {
+//     acls = [clientObject aclsForUser: login];
+// //    userAcls = [acls objectEnumerator];
+// //    currentAcl = [userAcls nextObject];
+// //    while (currentAcl) {
+// //      NSLog(@"ACL login %@, owner %@, folder %@: %@",
+// //	    login, owner, baseFolder, currentAcl);
+// //      currentAcl = [userAcls nextObject];
+// //    }
+//     if (([[clientObject folderType] isEqualToString: @"Contact"]
+// 	 && [acls containsObject: SOGoRole_ObjectViewer]) ||
+// 	([[clientObject folderType] isEqualToString: @"Appointment"]
+// 	 && [acls containsObject: SOGoRole_AuthorizedSubscriber])) {
+//       return [self responseWith204];
+//     }
+//   }
   
-  return [self responseWithStatus: 403];
+//   return [self responseWithStatus: 403];
 }
 
 - (WOResponse *) _realFolderActivation: (BOOL) makeActive

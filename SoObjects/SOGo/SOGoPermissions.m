@@ -26,7 +26,6 @@
 NSString *SOGoRole_ObjectCreator = @"ObjectCreator";
 NSString *SOGoRole_ObjectEraser = @"ObjectEraser";
 NSString *SOGoRole_ObjectViewer = @"ObjectViewer";
-NSString *SOGoRole_ObjectReader = @"ObjectReader";
 NSString *SOGoRole_ObjectEditor = @"ObjectEditor";
 
 NSString *SOGoRole_FolderCreator = @"FolderCreator";

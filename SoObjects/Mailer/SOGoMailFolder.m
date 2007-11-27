@@ -454,10 +454,8 @@ static NSString *defaultUserID =  @"anyone";
       switch ([imapAcls characterAtIndex: count])
 	{
 	case 'l':
-	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectViewer];
-	  break;
 	case 'r':
-	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectReader];
+	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectViewer];
 	  break;
 	case 's':
 	  [SOGoAcls addObjectUniquely: SOGoMailRole_SeenKeeper];
@@ -505,9 +503,10 @@ static NSString *defaultUserID =  @"anyone";
   while (currentAcl)
     {
       if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
-	character = 'l';
-      else if ([currentAcl isEqualToString: SOGoRole_ObjectReader])
-	character = 'r';
+	{
+	  [imapAcls appendFormat: @"lr"];
+	  character = 0;
+	}
       else if ([currentAcl isEqualToString: SOGoMailRole_SeenKeeper])
 	character = 's';
       else if ([currentAcl isEqualToString: SOGoMailRole_Writer])

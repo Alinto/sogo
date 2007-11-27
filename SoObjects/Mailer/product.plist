@@ -42,7 +42,7 @@
       superclass    = "SOGoMailBaseObject";
       defaultRoles = {
         "View" = ( "Owner", "ObjectViewer" );
-        "Access Contents Information" = ( "Owner", "ObjectReader" );
+        "Access Contents Information" = ( "Owner", "ObjectViewer" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer" );
