@@ -1,3 +1,32 @@
+2007-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-aclsForUser:uid]): copy all the roles from the container. If the
+	object is new, make sure the roles contain "ObjectEditor" if and
+	only if "ObjectCreator" is present.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-aclsForUser:uid]): no longer take the "ObjectReader" role into
+	account.
+
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions
+	-canAccessContentAction]): always return HTTP status 204. We want
+	this because we are relying on the SOPE access control manager to
+	grant access to this method. This requires a fine-tuned access
+	control in SOGo itself...
+
+	* UI/Contacts/UIxContactsUserRightsEditor.m ([-userCanReadObjects])
+	([-setUserCanReadObjects:userCanReadObjects]): removed methods.
+
+	* UI/MailerUI/UIxMailUserRightsEditor.m ([UIxMailUserRightsEditor
+	-updateRights]): no longer take the "ObjectReader" role into account.
+	([-userCanReadMails], [-setUserCanReadMails:userCanReadMails]):
+	removed methods.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): specify context
+	when looking up the Calendar folder.
+
 2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -todo]): same as below.

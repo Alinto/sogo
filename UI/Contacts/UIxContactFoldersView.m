@@ -199,8 +199,7 @@
   [folders autorelease];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
-  currentFolder = [subfolders nextObject];
-  while (currentFolder)
+  while ((currentFolder = [subfolders nextObject]))
     {
       if (![securityManager validatePermission: SOGoPerm_AccessObject
 			    onObject: currentFolder inContext: context])
@@ -217,7 +216,6 @@
 			     forKey: @"type"];
 	  [folders addObject: currentDictionary];
 	}
-      currentFolder = [subfolders nextObject];
     }
 
   return folders;

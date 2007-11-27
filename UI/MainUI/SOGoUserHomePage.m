@@ -95,8 +95,7 @@ static NSString *defaultModule = nil;
   NSNumber *status;
   NSCalendarDate *currentDate;
   
-  record = [records nextObject];
-  while (record)
+  while ((record = [records nextObject]))
     {
       status = [record objectForKey: @"c_status"];
  
@@ -117,8 +116,6 @@ static NSString *defaultModule = nil;
 
       for (count = startInterval; count < endInterval; count++)
         [items replaceObjectAtIndex: count withObject: status];
-
-      record = [records nextObject];
     }
 }
  

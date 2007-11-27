@@ -81,19 +81,6 @@
   return [userRights containsObject: SOGoRole_ObjectViewer];
 }
 
-- (void) setUserCanReadObjects: (BOOL) userCanReadObjects
-{
-  if (userCanReadObjects)
-    [self appendRight: SOGoRole_ObjectReader];
-  else
-    [self removeRight: SOGoRole_ObjectReader];
-}
-
-- (BOOL) userCanReadObjects
-{
-  return [userRights containsObject: SOGoRole_ObjectReader];
-}
-
 - (void) updateRights
 {
   WORequest *request;
@@ -114,11 +101,6 @@
     [self appendRight: SOGoRole_ObjectViewer];
   else
     [self removeRight: SOGoRole_ObjectViewer];
-
-  if ([[request formValueForKey: @"ObjectReader"] length] > 0)
-    [self appendRight: SOGoRole_ObjectReader];
-  else
-    [self removeRight: SOGoRole_ObjectReader];
 
   if ([[request formValueForKey: @"ObjectEraser"] length] > 0)
     [self appendRight: SOGoRole_ObjectEraser];

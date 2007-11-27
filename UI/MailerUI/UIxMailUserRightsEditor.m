@@ -42,19 +42,6 @@
   return [userRights containsObject: SOGoRole_ObjectViewer];
 }
 
-- (void) setUserCanReadMails: (BOOL) userCanReadMails
-{
-  if (userCanReadMails)
-    [self appendRight: SOGoRole_ObjectReader];
-  else
-    [self removeRight: SOGoRole_ObjectReader];
-}
-
-- (BOOL) userCanReadMails
-{
-  return [userRights containsObject: SOGoRole_ObjectReader];
-}
-
 - (void) setUserCanMarkMailsRead: (BOOL) userCanMarkMailsRead
 {
   if (userCanMarkMailsRead)
@@ -182,11 +169,6 @@
     [self appendRight: SOGoRole_ObjectViewer];
   else
     [self removeRight: SOGoRole_ObjectViewer];
-
-  if ([[request formValueForKey: SOGoRole_ObjectReader] length] > 0)
-    [self appendRight: SOGoRole_ObjectReader];
-  else
-    [self removeRight: SOGoRole_ObjectReader];
 
   if ([[request formValueForKey: SOGoMailRole_SeenKeeper] length] > 0)
     [self appendRight: SOGoMailRole_SeenKeeper];

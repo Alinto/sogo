@@ -74,45 +74,45 @@ function openContactsFolderAtIndex(element) {
 }
 
 function contactsListCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
-    document.contactsListAjaxRequest = null;
+  if (http.readyState == 4) {
+    if (http.status == 200) {
+      document.contactsListAjaxRequest = null;
 
-    var table = $("contactsList");
-    if (table) {
-      // Update table
-      var data = http.responseText;
-      var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
-      var tbody = table.tBodies[0]; 
-      var tmp = document.createElement('div');
-      $(tmp).update(html);
-      table.replaceChild(tmp.firstChild.tBodies[0], tbody);
-    }
-    else {
-      // Add table (doesn't happen .. yet)
-      var div = $("contactsListContent");
-      div.update(http.responseText);
-      table = $("contactsList");
-      configureSortableTableHeaders(table);
-      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-    }
+      var table = $("contactsList");
+      if (table) {
+	// Update table
+	var data = http.responseText;
+	var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
+	var tbody = table.tBodies[0]; 
+	var tmp = document.createElement('div');
+	$(tmp).update(html);
+	table.replaceChild(tmp.firstChild.tBodies[0], tbody);
+      }
+      else {
+	// Add table (doesn't happen .. yet)
+	var div = $("contactsListContent");
+	div.update(http.responseText);
+	table = $("contactsList");
+	configureSortableTableHeaders(table);
+	TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+      }
     
-    if (sorting["attribute"] && sorting["attribute"].length > 0) {
-       var sortHeader;
-       if (sorting["attribute"] == "displayName")
+      if (sorting["attribute"] && sorting["attribute"].length > 0) {
+	var sortHeader;
+	if (sorting["attribute"] == "displayName")
 	  sortHeader = $("nameHeader");
-       else if (sorting["attribute"] == "mail")
+	else if (sorting["attribute"] == "mail")
 	  sortHeader = $("mailHeader");
-       else if (sorting["attribute"] == "screenName")
+	else if (sorting["attribute"] == "screenName")
 	  sortHeader = $("screenNameHeader");
-       else if (sorting["attribute"] == "org")
+	else if (sorting["attribute"] == "org")
 	  sortHeader = $("orgHeader");
-       else if (sorting["attribute"] == "phone")
+	else if (sorting["attribute"] == "phone")
 	  sortHeader = $("phoneHeader");
-       else
+	else
 	  sortHeader = null;
        
-       if (sortHeader) {
+	if (sortHeader) {
 	  var sortImages = $(table.tHead).getElementsByClassName("sortImage");
 	  $(sortImages).each(function(item) {
 	      item.remove();
@@ -121,19 +121,33 @@ function contactsListCallback(http) {
 	  var sortImage = createElement("img", "messageSortImage", "sortImage");
 	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
 	  if (sorting["ascending"])
-	     sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+	    sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
 	  else
-	     sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
-       }
-    }
+	    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+	}
+      }
 
-    var selected = http.callbackData;
-    if (selected) {
-       for (var i = 0; i < selected.length; i++) {
+      var selected = http.callbackData;
+      if (selected) {
+	for (var i = 0; i < selected.length; i++) {
 	  var row = $(selected[i]);
 	  if (row)
-	     row.select();
-       }
+	    row.select();
+	}
+      }
+    }
+    else {
+      var table = $("contactsList");
+      if (table) {
+	var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	$(sortImages).each(function(item) {
+	    item.remove();
+	  });
+	var tBody = $(table.tBodies[0]);
+	var length = tBody.rows.length;
+	for (var i = length - 1; i > -1; i--)
+	  tBody.removeChild(tBody.rows[i]);
+      }
     }
   }
   else

@@ -84,7 +84,7 @@
 	  actionName = "unsubscribe";
 	};
 	canAccessContent = {
-	  protectedBy = "<public>";
+	  protectedBy = "Access Object";
 	  actionClass = "UIxFolderActions";
 	  actionName = "canAccessContent";
 	};

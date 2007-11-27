@@ -596,8 +596,6 @@ static NSString *defaultUserID = @"<default>";
       containerAcls = [container aclsForUser: uid];
       if ([containerAcls count] > 0)
 	{
-	  if ([containerAcls containsObject: SOGoRole_ObjectReader])
-	    [acls addObject: SOGoRole_ObjectViewer];
 #warning this should be checked
 	  if ([containerAcls containsObject: SOGoRole_ObjectEraser])
 	    [acls addObject: SOGoRole_ObjectEraser];
