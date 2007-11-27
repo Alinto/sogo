@@ -27,9 +27,6 @@
 
 @interface UIxMailUserRightsEditor : UIxUserRightsEditor
 
-- (void) setUserCanReadMails: (BOOL) userCanReadMails;
-- (BOOL) userCanReadMails;
-
 - (void) setUserCanWriteMails: (BOOL) userCanWriteMails;
 - (BOOL) userCanWriteMails;
 
