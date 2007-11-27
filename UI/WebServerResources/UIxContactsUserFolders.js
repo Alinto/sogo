@@ -36,8 +36,8 @@ function addLineToTree(tree, parent, line) {
 	    icon += 'calendar-folder-16x16.png';
 	 var folderId = userInfos[0] + ":" + folderInfos[1];
 	 var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
-	 var pos = name.indexOf(' (')
-	 if (pos !== -1)
+	 var pos = name.lastIndexOf(' (')
+	 if (pos != -1)
 	   name = name.substring(0, pos); // strip the part with fullname and email
 	 tree.add(parent + i, parent, name, 0, '#', folderId,
 		  folderInfos[2] + '-folder', '', '', icon, icon);
