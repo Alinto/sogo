@@ -271,16 +271,7 @@
   iCalRecurrenceRule *rule;
 
   [self event];
-  if (event)
-    {
-      startDate = [event startDate];
-      isAllDay = [event isAllDay];
-      if (isAllDay)
-	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
-      else
-	endDate = [event endDate];
-    }
-  else
+  if ([[self clientObject] isNew])
     {
       startDate = [self newStartDate];
       duration = [self queryParameterForKey:@"dur"];
@@ -291,6 +282,15 @@
       endDate
 	= [startDate dateByAddingYears: 0 months: 0 days: 0
 		     hours: 0 minutes: minutes seconds: 0];
+    }
+  else
+    {
+      startDate = [event startDate];
+      isAllDay = [event isAllDay];
+      if (isAllDay)
+	endDate = [[event endDate] dateByAddingYears: 0 months: 0 days: -1];
+      else
+	endDate = [event endDate];
     }
 
   ASSIGN (aptStartDate, startDate);

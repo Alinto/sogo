@@ -24,16 +24,13 @@ var usersRightsWindowHeight = 250;
 var usersRightsWindowWidth = 502;
 
 function newEvent(sender, type) {
-   var day = sender.day;
+   var day = sender.readAttribute("day");
    if (!day)
       day = currentDay;
-
-   var hour = sender.hour;
-   if (!hour)
-      hour = sender.getAttribute("hour");
+   var hour = sender.readAttribute("hour");
    var folder = getSelectedFolder();
-   var folderID = folder.getAttribute("id");
-   var roles = folder.getAttribute("roles");
+   var folderID = folder.readAttribute("id");
+   var roles = folder.readAttribute("roles");
    if (roles) {
      roles = roles.split(",")
        if ($(roles).indexOf("PublicModifier") < 0)
@@ -47,7 +44,6 @@ function newEvent(sender, type) {
       params.push("hm=" + hour);
    if (params.length > 0)
       urlstr += "?" + params.join("&");
-   
    window.open(urlstr, "", "width=490,height=470,resizable=0");
    
    return false; /* stop following the link */
