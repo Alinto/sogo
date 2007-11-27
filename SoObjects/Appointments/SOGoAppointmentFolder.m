@@ -838,7 +838,7 @@ static NSNumber   *sharedYes = nil;
   NSMutableDictionary *currentRecord;
   NSString *roles[] = {nil, nil, nil};
   iCalAccessClass accessClass;
-  NSString *role;
+  NSString *fullRole, *role;
 
   if (!stripFields)
     [self _buildStripFieldsFromFields: fields];
@@ -851,8 +851,10 @@ static NSNumber   *sharedYes = nil;
       role = roles[accessClass];
       if (!role)
 	{
-	  role = [[self roleForComponentsWithAccessClass: accessClass
-			forUser: uid] substringFromIndex: 9];
+	  fullRole = [self roleForComponentsWithAccessClass: accessClass
+			   forUser: uid];
+	  if ([fullRole length] > 9)
+	    role = [fullRole substringFromIndex: 9];
 	  roles[accessClass] = role;
 	}
       if ([role isEqualToString: @"DAndTViewer"])
