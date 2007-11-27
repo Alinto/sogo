@@ -1,3 +1,9 @@
+2007-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): specify context
+	when looking up the Calendar folder.
+
 2007-11-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -todo]): same as below.

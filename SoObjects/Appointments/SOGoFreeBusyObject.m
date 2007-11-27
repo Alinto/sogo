@@ -80,8 +80,8 @@
 //   SoSecurityManager *sm;
   NSArray *infos;
 
-  calFolder = [[container lookupName: @"Calendar" inContext: nil acquire: NO]
-		lookupName: @"personal" inContext: nil acquire: NO];
+  calFolder = [[container lookupName: @"Calendar" inContext: context acquire: NO]
+		lookupName: @"personal" inContext: context acquire: NO];
 //   sm = [SoSecurityManager sharedSecurityManager];
 //   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
 //            onObject: calFolder
