@@ -34,8 +34,31 @@ function onLoginClick(event) {
 
 function onLoginCallback(http) {
   if (http.readyState == 4) {
-    if (isHttpStatus204(http.status))
-      window.location.href = ApplicationBaseURL + $("userName").value;
+    if (isHttpStatus204(http.status)) {
+      var userName = $("userName").value;
+      var address = "" + window.location.href;
+      var baseAddress = ApplicationBaseURL + $("userName").value;
+      var altBaseAddress;
+      if (baseAddress[0] == "/") {
+	var parts = address.split("/");
+	var hostpart = parts[2];
+	var protocol = parts[0];
+	baseAddress = protocol + "//" + hostpart + baseAddress;
+      }
+      var altBaseAddress;
+      var parts = baseAddress.split("/");
+      parts.splice(3, 0);
+      altBaseAddress = parts.join("/");
+
+      var newAddress;
+      if ((address.startsWith(baseAddress)
+	   || address.startsWith(altBaseAddress))
+	  && !address.endsWith("/logoff"))
+	newAddress = address;
+      else
+	newAddress = baseAddress;
+      window.location.href = newAddress;
+    }
   }
 }
 
