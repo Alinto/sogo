@@ -111,20 +111,8 @@ function set_datetime(n_datetime, b_close) {
             ? obj_caller.gen_tsmp(dt_datetime)
             : obj_caller.gen_date(dt_datetime)
           );
-          if (document.initEvent) {
-            var onChangeEvent = document.createEvent("Events");
-            onChangeEvent.initEvent("mousedown", false, true);
-            obj_caller.target.dispatchEvent(onChangeEvent);
-          }
-          else if (document.createEvent) {
-            var onChangeEvent = document.createEvent("UIEvents");
-            onChangeEvent.initEvent("mousedown", false, true);
-            obj_caller.target.dispatchEvent(onChangeEvent);
-          }
-          else {
-            // Francis: add support for IE
-            obj_caller.target.fireEvent("onmousedown");
-          }
+          var adjustTime = window.opener.onAdjustTime.bind(obj_caller.target);
+          adjustTime();
         }
 	if (b_close) window.close();
 	else obj_caller.popup(dt_datetime.valueOf());

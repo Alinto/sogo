@@ -10,6 +10,7 @@
   className="UIxComponentEditor"
   var:component="event"
   var:saveURL="saveURL">
+
   <label><span id="allDay" class="content"><input class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"

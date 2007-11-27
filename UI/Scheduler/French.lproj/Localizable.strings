@@ -346,7 +346,7 @@
 validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";
 validate_invalid_startdate = "La date de début est invalide !";
 validate_invalid_enddate   = "La date de fin est invalide !";
-validate_endbeforestart    = "La date de fin est avant la date de début !";
+validate_endbeforestart    = "La date de fin est avant la date de début.";
 
 "Tasks" = "Tâches";
 "Show completed tasks" = "Afficher les tâches accomplies";

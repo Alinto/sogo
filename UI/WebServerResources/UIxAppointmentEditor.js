@@ -134,15 +134,13 @@ function toggleCycleVisibility(node, nodeName, hiddenValue) {
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   var uids = $('uixselector-participants-uidList');
-  log ("contactId: " + contactId);
+
   if (contactId)
     {
       var re = new RegExp("(^|,)" + contactId + "($|,)");
 
-      log ("uids: " + uids);
       if (!re.test(uids.value))
         {
-          log ("no match... realling adding");
           if (uids.value.length > 0)
             uids.value += ',' + contactId;
           else
@@ -154,8 +152,6 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
                               + ResourcesURL + '/abcard.gif" />'
                               + contactName + '</li>');
         }
-      else
-        log ("match... ignoring contact");
     }
 
   return false;
@@ -190,7 +186,6 @@ function _getShadowDate(which) {
   date.setHours(intValue);
   intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
   date.setMinutes(intValue);
-  //   window.alert("shadow: " + date);
 
   return date;
 }
@@ -225,19 +220,40 @@ function setStartDate(newStartDate) {
 }
 
 function setEndDate(newEndDate) {
-  //   window.alert(newEndDate);
   this._setDate('end', newEndDate);
 }
 
-function onAdjustEndTime(event) {
-  var dateDelta = (window.getStartDate().valueOf()
-                   - window.getShadowStartDate().valueOf());
-  //   window.alert(window.getEndDate().valueOf() + '  ' + dateDelta);
-  var newEndDate = new Date(window.getEndDate().valueOf() + dateDelta);
-  window.setEndDate(newEndDate);
-  window.timeWidgets['start']['date'].updateShadowValue();
-  window.timeWidgets['start']['hour'].updateShadowValue();
-  window.timeWidgets['start']['minute'].updateShadowValue();
+function onAdjustTime(event) {
+  var endDate = window.getEndDate();
+  var startDate = window.getStartDate();
+  
+  if ($(this).readAttribute("id").startsWith("start")) {
+    // Start date was changed
+    var delta = window.getShadowStartDate().valueOf() -
+      startDate.valueOf();
+    var newEndDate = new Date(endDate.valueOf() - delta);
+    window.setEndDate(newEndDate);
+    
+    window.timeWidgets['end']['date'].updateShadowValue();
+    window.timeWidgets['end']['hour'].updateShadowValue();
+    window.timeWidgets['end']['minute'].updateShadowValue();
+    window.timeWidgets['start']['date'].updateShadowValue();
+    window.timeWidgets['start']['hour'].updateShadowValue();
+    window.timeWidgets['start']['minute'].updateShadowValue();
+  }
+  else {
+    // End date was changed
+    var delta = endDate.valueOf() - startDate.valueOf();  
+    if (delta < 0) {
+      alert(labels.validate_endbeforestart);
+      var oldEndDate = window.getShadowEndDate();
+      window.setEndDate(oldEndDate);
+
+      window.timeWidgets['end']['date'].updateShadowValue();
+      window.timeWidgets['end']['hour'].updateShadowValue();
+      window.timeWidgets['end']['minute'].updateShadowValue();
+    }
+  }
 }
 
 function onAllDayChanged(event) {
@@ -251,11 +267,18 @@ function initTimeWidgets(widgets) {
   this.timeWidgets = widgets;
 
   Event.observe(widgets['start']['date'], "change",
-		this.onAdjustEndTime, false);
+		this.onAdjustTime, false);
   Event.observe(widgets['start']['hour'], "change",
-		this.onAdjustEndTime, false);
+		this.onAdjustTime, false);
   Event.observe(widgets['start']['minute'], "change",
-		this.onAdjustEndTime, false);
+		this.onAdjustTime, false);
+
+  Event.observe(widgets['end']['date'], "change",
+		this.onAdjustTime, false);
+  Event.observe(widgets['end']['hour'], "change",
+		this.onAdjustTime, false);
+  Event.observe(widgets['end']['minute'], "change",
+		this.onAdjustTime, false);
 
   var allDayLabel = $("allDay");
   var input = $(allDayLabel).childNodesWithTag("input")[0];

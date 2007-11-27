@@ -901,7 +901,7 @@ function assignCalendar(name) {
 }
 
 function popupCalendar(node) {
-   var nodeId = node.getAttribute("inputId");
+   var nodeId = $(node).readAttribute("inputId");
    var input = $(nodeId);
    input.calendar.popup();
 
