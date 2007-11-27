@@ -256,7 +256,7 @@ function onTextFocus() {
   }
   if (signatureLength > 0) {
     var length = this.getValue().length - signatureLength - 1;
-    this.selectText(length, length);
+    this.setCaretTo(length);
   }
   Event.stopObserving(this, "focus", onTextFocus);
 }
@@ -282,8 +282,8 @@ function initMailEditor() {
   var sigLimit = textContent.lastIndexOf("--");
   if (sigLimit > -1)
     signatureLength = (textContent.length - sigLimit);
+  textarea.scrollTop = textarea.scrollHeight;
   textarea.observe("focus", onTextFocus);
-  textarea.scrollTop = textarea.offsetHeight;
 
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);

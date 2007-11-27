@@ -201,11 +201,11 @@ Element.addMethods({
 
   setCaretTo: function(element, pos) { 
     element = $(element);
-    if (element.selectionStart) { // For Mozilla and Safari
+    if (element.selectionStart) {        // For Mozilla and Safari
       element.focus(); 
       element.setSelectionRange(pos, pos); 
     }
-    else if (element.createTextRange) {       // For IE
+    else if (element.createTextRange) {  // For IE
       var range = element.createTextRange(); 
       range.move("character", pos); 
       range.select();
