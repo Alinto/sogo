@@ -299,7 +299,7 @@
       mailInvitationURL
 	= [[clientObject soURLToBaseContainerForCurrentUser]
 	    absoluteString];
-      [response setStatus: 302];
+      response = [self responseWithStatus: 302];
       [response setHeader: mailInvitationURL
 		forKey: @"location"];
     }
