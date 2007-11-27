@@ -251,13 +251,16 @@ static GCSStringFormatter *stringFormatter = nil;
 			       recursive:YES];
 }
 
-- (id)_fetchValueOfColumn:(NSString *)_col inContentWithName:(NSString *)_name{
+- (id) _fetchValueOfColumn: (NSString *)_col
+	 inContentWithName: (NSString *)_name
+	     ignoreDeleted: (BOOL) ignoreDeleted
+{
   EOAdaptorChannel *channel;
   NSException  *error;
   NSDictionary *row;
   NSArray      *attrs;
   NSString     *result;
-  NSString     *sql;
+  NSMutableString     *sql;
   
   if ((channel = [self acquireStoreChannel]) == nil) {
     [self errorWithFormat:@"could not open storage channel!"];
@@ -265,20 +268,18 @@ static GCSStringFormatter *stringFormatter = nil;
   }
   
   /* generate SQL */
-  
-  sql = @"SELECT ";
-  sql = [sql stringByAppendingString:_col];
-  sql = [sql stringByAppendingString:@" FROM "];
-  sql = [sql stringByAppendingString:[self storeTableName]];
-  sql = [sql stringByAppendingString:@" WHERE c_name = '"];
-  sql = [sql stringByAppendingString:_name];
-  sql = [sql stringByAppendingString:@"'"];
-  
+  sql = [NSMutableString stringWithFormat: @"SELECT %@"
+			 @" FROM %@"
+			 @" WHERE c_name = '%@'",
+			 _col, [self storeTableName], _name];
+  if (ignoreDeleted)
+    [sql appendString: @" AND (c_deleted != 1 OR c_deleted IS NULL)"];
+
   /* run SQL */
   
   if ((error = [channel evaluateExpressionX:sql]) != nil) {
     [self errorWithFormat:@"%s: cannot execute SQL '%@': %@", 
-	    __PRETTY_FUNCTION__, sql, error];
+	  __PRETTY_FUNCTION__, sql, error];
     [self releaseChannel:channel];
     return nil;
   }
@@ -300,15 +301,18 @@ static GCSStringFormatter *stringFormatter = nil;
 }
 
 - (NSNumber *)versionOfContentWithName:(NSString *)_name {
-  return [self _fetchValueOfColumn:@"c_version" inContentWithName:_name];
+  return [self _fetchValueOfColumn:@"c_version" inContentWithName:_name
+	       ignoreDeleted: YES];
 }
 
 - (NSNumber *)deletionOfContentWithName:(NSString *)_name {
-  return [self _fetchValueOfColumn:@"c_deleted" inContentWithName:_name];
+  return [self _fetchValueOfColumn:@"c_deleted" inContentWithName:_name
+	       ignoreDeleted: NO];
 }
 
 - (NSString *)fetchContentWithName:(NSString *)_name {
-  return [self _fetchValueOfColumn:@"c_content" inContentWithName:_name];
+  return [self _fetchValueOfColumn:@"c_content" inContentWithName:_name
+	       ignoreDeleted: YES];
 }
 
 - (NSDictionary *)fetchContentsOfAllFiles {

@@ -1,3 +1,9 @@
+2007-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m ([GCSFolder -versionOfContentWithName:], [GCSFolder
+	-fetchContentWithName:]): ignore records marked as deleted.
+	([GCSFolder -deletionOfContentWithName:]): don't.
+
 2007-11-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m ([GCSFolder -writeContent:toName:baseVersion:]): the
