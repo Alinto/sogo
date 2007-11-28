@@ -1,5 +1,22 @@
-0.9.0-200710XX
---------------
+0.9.0-20071127 (1.0 rc2)
+------------------------
+- the user password is no longer transmitted in the url when logging in;
+- SOGo will no longer redirect the browser to the default page when a
+  specific location is submitted before login;
+- it is now possible to specify a sequence of LDAP attributes/values pairs
+  required in a user record to enable or prevent access to the Calendar and/or Mail
+  module;
+- many messages can be moved or copied at the same time;
+- replying to mails in the Sent folder will take the recipients of the
+  original mails into account;
+- complete review of the ACLs wrt to the address books, both in the Web UI and
+  through DAV access;
+- invitation from Google calendar are now correctly parsed;
+- it is now possible to search events by title in the Calendar module;
+- all the writable calendars are now listed in the event edition dialog;
+
+0.9.0-20071119 (1.0 rc1)
+------------------------
 - the user can now configure his folders as drafts, trash or sent folder;
 - added the ability the move and copy message across mail folders;
 - added the ability to label messages;
