@@ -80,6 +80,8 @@ static NSString *defaultUserID = @"<default>";
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
+  if (![newFolder displayName])
+    newFolder = nil;
 
   return newFolder;
 }
@@ -88,10 +90,10 @@ static NSString *defaultUserID = @"<default>";
 {
   if ((self = [super init]))
     {
-      displayName = nil;
       ocsPath = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
+      [self _fetchDisplayName];
     }
 
   return self;
@@ -164,9 +166,6 @@ static NSString *defaultUserID = @"<default>";
 
 - (NSString *) displayName
 {
-  if (!displayName)
-    [self _fetchDisplayName];
-
   return displayName;
 }
 

@@ -166,6 +166,11 @@
 {
 }
 
+- (void) _removeSubscribedSource: (NSString *) key
+{
+#warning TO BE IMPLEMENTED SOON FIXME
+}
+
 - (void) appendSubscribedSources
 {
   NSArray *subscribedReferences;
@@ -186,8 +191,11 @@
 	  subscribedFolder
 	    = [subFolderClass folderWithSubscriptionReference: currentKey
 			      inContainer: self];
-	  [subFolders setObject: subscribedFolder
-		      forKey: [subscribedFolder nameInContainer]];
+	  if (subscribedFolder)
+	    [subFolders setObject: subscribedFolder
+			forKey: [subscribedFolder nameInContainer]];
+	  else
+	    [self _removeSubscribedSource: currentKey];
 	  currentKey = [allKeys nextObject];
 	}
     }
