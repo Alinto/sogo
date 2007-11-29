@@ -1,5 +1,9 @@
 2007-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-ocsPathOfContainer]): return the intended value, not that of
+	ocsPath...
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -sendResponseToOrganizer]): send the
 	message only of sendEMailNotifications is set.

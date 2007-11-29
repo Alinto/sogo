@@ -118,7 +118,7 @@
   else
     ocsPathOfContainer = nil;
 
-  return ocsPath;
+  return ocsPathOfContainer;
 }
 
 - (GCSFolder *) ocsFolder
