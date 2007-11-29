@@ -1,5 +1,14 @@
 2007-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+folderWithSubscriptionReference:referenceinContainer:aContainer]):
+	return nil if the subscribed folder has no display name (meaning
+	it no longer exists).
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendPersonalSources]): don't include sources which are no
+	longer existing.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-ocsPathOfContainer]): return the intended value, not that of
 	ocsPath...
