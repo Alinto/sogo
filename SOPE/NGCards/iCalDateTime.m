@@ -23,6 +23,8 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import "NSCalendarDate+NGCards.h"
 #import "NSString+NGCards.h"
 
@@ -76,13 +78,17 @@
   NSString *tzId;
   iCalTimeZone *timeZone;
 
+  timeZone = nil;
+
   tzId = [self value: 0 ofAttribute: @"tzid"];
-  calendar
-    = (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
-  if ([tzId length] && calendar)
-    timeZone = [calendar timeZoneWithId: tzId];
-  else
-    timeZone = nil;
+  if ([tzId length])
+    {
+      calendar
+	= (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
+      timeZone = [calendar timeZoneWithId: tzId];
+      if (!timeZone)
+	[self logWithFormat: @"timezone '%@' not found in calendar", tzId];
+    }
 
   return timeZone;
 }
