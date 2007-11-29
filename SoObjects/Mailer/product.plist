@@ -19,8 +19,6 @@
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
-        "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
-        "SaveAcls" = ( "Owner" );
       };
     };
     SOGoMailAccount = {
@@ -31,8 +29,6 @@
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
-        "ReadAcls" = ( "Owner", "AuthorizedSubscriber" );
-        "SaveAcls" = ( "Owner" );
       };
     };
     SOGoSharedMailAccount = {
@@ -46,8 +42,6 @@
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer" );
-        "ReadAcls" = ( "Owner", "ObjectViewer" );
-        "SaveAcls" = ( "Owner", "MailAdministrator" );
       };
     };
     SOGoSharedInboxFolder = {

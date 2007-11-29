@@ -26,21 +26,21 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/SoUser.h>
+#import <NGExtensions/NSString+misc.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/LDAPSource.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactLDAPFolder.h"
-#import <NGExtensions/NSString+misc.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/SoSelectorInvocation.h>
 
 @class WOContext;
 
@@ -301,6 +301,11 @@
 - (NSString *) ownerInContext: (WOContext *) noContext
 {
   return @"nobody";
+}
+
+- (NSArray *) subscriptionRoles
+{
+  return [NSArray arrayWithObject: SoRole_Authenticated];
 }
 
 /* TODO: this might change one day when we support LDAP acls */

@@ -21,7 +21,7 @@
       defaultRoles = {
 	"View" = ( "Owner", "ObjectViewer" );
 	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
-	"Access Object" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
+	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
 	"Add Folders" = ( "Owner", "FolderCreator" );
@@ -51,7 +51,6 @@
 	};
       };
     };
-
     SOGoFolder = {
       superclass = "SOGoObject";
       protectedBy = "Access Object";

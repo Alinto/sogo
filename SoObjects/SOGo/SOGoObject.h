@@ -111,6 +111,8 @@
 
 /* acls */
 
+- (NSArray *) subscriptionRoles;
+
 - (NSArray *) aclUsers;
 - (NSArray *) aclsForUser: (NSString *) uid;
 - (void) setRoles: (NSArray *) roles

@@ -604,8 +604,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if ([object isKindOfClass: [SOGoObject class]])
     {
       sogoRoles = [(SOGoObject *) object aclsForUser: login];
-      if (sogoRoles)
+      if ([sogoRoles count])
         [rolesForObject addObjectsFromArray: sogoRoles];
+      sogoRoles = [(SOGoObject *) object subscriptionRoles];
+      if ([sogoRoles firstObjectCommonWithArray: rolesForObject])
+	[rolesForObject addObject: SOGoRole_AuthorizedSubscriber];
     }
 
   return rolesForObject;

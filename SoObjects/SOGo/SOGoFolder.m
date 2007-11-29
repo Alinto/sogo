@@ -30,6 +30,7 @@
 
 #import "NSString+Utilities.h"
 
+#import "SOGoPermissions.h"
 #import "SOGoFolder.h"
 
 @implementation SOGoFolder
@@ -240,6 +241,13 @@
 }
 
 /* acls */
+
+- (NSArray *) subscriptionRoles
+{
+  return [NSArray arrayWithObjects: SoRole_Owner, SOGoRole_ObjectViewer,
+		  SOGoRole_ObjectEditor, SOGoRole_ObjectCreator,
+ SOGoRole_ObjectEraser, nil];
+}
 
 - (NSArray *) aclsForUser: (NSString *) uid
 {

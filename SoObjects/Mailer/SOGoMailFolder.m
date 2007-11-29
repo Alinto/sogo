@@ -544,6 +544,16 @@ static NSString *defaultUserID =  @"anyone";
   [mailboxACL retain];
 }
 
+- (NSArray *) subscriptionRoles
+{
+  return [NSArray arrayWithObjects: SOGoRole_ObjectViewer,
+		  SOGoMailRole_SeenKeeper, SOGoMailRole_Writer,
+		  SOGoRole_ObjectCreator, SOGoMailRole_Poster,
+		  SOGoRole_FolderCreator, SOGoRole_FolderEraser,
+		  SOGoRole_ObjectEraser, SOGoMailRole_Expunger,
+		  SOGoMailRole_Administrator, nil];
+}
+
 - (NSArray *) aclUsers
 {
   NSArray *users;

@@ -39,7 +39,6 @@
 	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
 	"ModifyComponent" = ( "Owner", "Organizer" );
 	"RespondToComponent" = ( "Participant" );
-	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
     };
     SOGoAppointmentObject = {

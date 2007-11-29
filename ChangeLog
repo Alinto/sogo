@@ -1,3 +1,9 @@
+2007-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -subscriptionRoles]):
+	new method that returns the roles that qualifies for adding the
+	special "authorized subscribed" sogo role.
+
 2007-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

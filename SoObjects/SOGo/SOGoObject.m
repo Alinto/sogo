@@ -830,6 +830,12 @@ static BOOL kontactGroupDAV = YES;
 
 /* acls */
 
+/* roles required to obtain the "authorized subscriber" role */
+- (NSArray *) subscriptionRoles
+{
+  return [container subscriptionRoles];
+}
+
 - (NSArray *) aclUsers
 {
   [self subclassResponsibility: _cmd];

@@ -452,10 +452,7 @@ static NSString *defaultUserID = @"<default>";
 
   acls = [NSMutableArray array];
   if ([records count] > 0)
-    {
-      [acls addObject: SOGoRole_AuthorizedSubscriber];
-      [acls addObjectsFromArray: [records valueForKey: @"c_role"]];
-    }
+    [acls addObjectsFromArray: [records valueForKey: @"c_role"]];
 
   return acls;
 }

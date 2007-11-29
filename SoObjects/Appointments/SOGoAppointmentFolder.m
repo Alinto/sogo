@@ -775,6 +775,24 @@ static NSNumber   *sharedYes = nil;
   return privacySqlString;
 }
 
+- (NSArray *) subscriptionRoles
+{
+  return [NSArray arrayWithObjects:
+		    SOGoRole_ObjectCreator, SOGoRole_ObjectEraser,
+		  SOGoCalendarRole_PublicResponder,
+		  SOGoCalendarRole_PublicModifier,
+		  SOGoCalendarRole_PublicViewer,
+		  SOGoCalendarRole_PublicDAndTViewer,
+		  SOGoCalendarRole_PrivateResponder,
+		  SOGoCalendarRole_PrivateModifier,
+		  SOGoCalendarRole_PrivateViewer,
+		  SOGoCalendarRole_PrivateDAndTViewer,
+		  SOGoCalendarRole_ConfidentialResponder,
+		  SOGoCalendarRole_ConfidentialModifier,
+		  SOGoCalendarRole_ConfidentialViewer,
+		  SOGoCalendarRole_ConfidentialDAndTViewer, nil];
+}
+
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid
 {
