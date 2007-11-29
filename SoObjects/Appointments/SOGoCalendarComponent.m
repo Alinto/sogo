@@ -364,79 +364,82 @@ static BOOL sendEMailNotifications = NO;
   NGMimeMultipartBody *body;
   NSData *bodyData;
 
-  event = [[self component: NO secure: NO] itipEntryWithMethod: @"reply"];
-  if (![event userIsOrganizer: [context activeUser]])
+  if (sendEMailNotifications)
     {
-      organizer = [event organizer];
-      attendee = [event findParticipant: [context activeUser]];
-      [event setAttendees: [NSArray arrayWithObject: attendee]];
+      event = [[self component: NO secure: NO] itipEntryWithMethod: @"reply"];
+      if (![event userIsOrganizer: [context activeUser]])
+	{
+	  organizer = [event organizer];
+	  attendee = [event findParticipant: [context activeUser]];
+	  [event setAttendees: [NSArray arrayWithObject: attendee]];
 
-      /* get WOApplication instance */
-      app = [WOApplication application];
+	  /* get WOApplication instance */
+	  app = [WOApplication application];
 
-      language = [[context activeUser] language];
-      /* create page name */
-      pageName
-	= [NSString stringWithFormat: @"SOGoAptMail%@ICalReply", language];
-      /* construct message content */
-      p = [app pageWithName: pageName inContext: context];
-      [p setApt: event];
-      [p setAttendee: attendee];
+	  language = [[context activeUser] language];
+	  /* create page name */
+	  pageName
+	    = [NSString stringWithFormat: @"SOGoAptMail%@ICalReply", language];
+	  /* construct message content */
+	  p = [app pageWithName: pageName inContext: context];
+	  [p setApt: event];
+	  [p setAttendee: attendee];
 
-      /* construct message */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+	  /* construct message */
+	  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
           
-      /* NOTE: multipart/alternative seems like the correct choice but
-       * unfortunately Thunderbird doesn't offer the rich content alternative
-       * at all. Mail.app shows the rich content alternative _only_
-       * so we'll stick with multipart/mixed for the time being.
-       */
-      [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-      [headerMap setObject: [attendee mailAddress] forKey: @"From"];
-      [headerMap setObject: [organizer mailAddress] forKey: @"To"];
-      mailDate = [[NSCalendarDate date] rfc822DateString];
-      [headerMap setObject: mailDate forKey: @"date"];
-      [headerMap setObject: [p getSubject] forKey: @"Subject"];
-      msg = [NGMimeMessage messageWithHeader: headerMap];
+	  /* NOTE: multipart/alternative seems like the correct choice but
+	   * unfortunately Thunderbird doesn't offer the rich content alternative
+	   * at all. Mail.app shows the rich content alternative _only_
+	   * so we'll stick with multipart/mixed for the time being.
+	   */
+	  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+	  [headerMap setObject: [attendee mailAddress] forKey: @"From"];
+	  [headerMap setObject: [organizer mailAddress] forKey: @"To"];
+	  mailDate = [[NSCalendarDate date] rfc822DateString];
+	  [headerMap setObject: mailDate forKey: @"date"];
+	  [headerMap setObject: [p getSubject] forKey: @"Subject"];
+	  msg = [NGMimeMessage messageWithHeader: headerMap];
 
-      NSLog (@"sending 'REPLY' from %@ to %@",
-	     [attendee mailAddress], [organizer mailAddress]);
+	  NSLog (@"sending 'REPLY' from %@ to %@",
+		 [attendee mailAddress], [organizer mailAddress]);
 
-      /* multipart body */
-      body = [[NGMimeMultipartBody alloc] initWithPart: msg];
+	  /* multipart body */
+	  body = [[NGMimeMultipartBody alloc] initWithPart: msg];
 
-      /* text part */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/plain; charset=utf-8"
-		 forKey: @"content-type"];
-      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-      bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
-      [bodyPart setBody: bodyData];
+	  /* text part */
+	  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+	  [headerMap setObject: @"text/plain; charset=utf-8"
+		     forKey: @"content-type"];
+	  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+	  bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+	  [bodyPart setBody: bodyData];
 
-      /* attach text part to multipart body */
-      [body addBodyPart: bodyPart];
+	  /* attach text part to multipart body */
+	  [body addBodyPart: bodyPart];
 
-      /* calendar part */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/calendar; method=REPLY; charset=utf-8"
-		 forKey: @"content-type"];
-      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-      iCalString = [[event parent] versitString];
-      [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
+	  /* calendar part */
+	  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+	  [headerMap setObject: @"text/calendar; method=REPLY; charset=utf-8"
+		     forKey: @"content-type"];
+	  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+	  iCalString = [[event parent] versitString];
+	  [bodyPart setBody: [iCalString dataUsingEncoding: NSUTF8StringEncoding]];
 
-      /* attach calendar part to multipart body */
-      [body addBodyPart: bodyPart];
+	  /* attach calendar part to multipart body */
+	  [body addBodyPart: bodyPart];
 
-      /* attach multipart body to message */
-      [msg setBody: body];
-      [body release];
+	  /* attach multipart body to message */
+	  [msg setBody: body];
+	  [body release];
 
-      /* send the damn thing */
-      email = [organizer rfc822Email];
-      [[SOGoMailer sharedMailer]
-	sendMimePart: msg
-	toRecipients: [NSArray arrayWithObject: email]
-	sender: [attendee rfc822Email]];
+	  /* send the damn thing */
+	  email = [organizer rfc822Email];
+	  [[SOGoMailer sharedMailer]
+	    sendMimePart: msg
+	    toRecipients: [NSArray arrayWithObject: email]
+	    sender: [attendee rfc822Email]];
+	}
     }
 }
 
