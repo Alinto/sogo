@@ -15,6 +15,7 @@
       superclass = "SOGoGCSFolder";
       defaultRoles = {
 /*        "FreeBusyLookup" = ( "Owner", "FreeBusy", "AuthorizedSubscriber" );  */
+	"Access Contents Information" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer", "PublicDAndTViewer", "PrivateResponder", "PrivateModifier", "PrivateViewer", "PrivateDAndTViewer", "ConfidentialResponder", "ConfidentialModifier", "ConfidentialViewer", "ConfidentialDAndTViewer" );
 	"ViewWholePublicRecords" = ( "Owner", "PublicResponder", "PublicModifier", "PublicViewer" );
 	"ViewDAndTOfPublicRecords" = ( "Owner", "PublicDAndTViewer" );
 	"ModifyPublicRecords" = ( "Owner", "PublicModifier" );
@@ -34,18 +35,20 @@
     };
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
+/*      defaultAccess = "SeeComponent"; */
       defaultRoles = {
 	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
 	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
 	"ModifyComponent" = ( "Owner", "Organizer" );
 	"RespondToComponent" = ( "Participant" );
+/*	"SeeComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" ); */
       };
     };
     SOGoAppointmentObject = {
       superclass = "SOGoCalendarComponent";
     };
     SOGoTaskObject = {
-      superclass    = "SOGoCalendarComponent";
+      superclass = "SOGoCalendarComponent";
     };
     SOGoFreeBusyObject = {
       superclass = "SOGoContentObject";
