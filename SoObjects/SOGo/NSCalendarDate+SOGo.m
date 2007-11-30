@@ -129,7 +129,7 @@ static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
   timeZoneShift += tzSeconds / 60;
 
   return
-    [NSString stringWithFormat: @"%@, %.2d %@ %d %.2d:%.2d:%.2d %.4d",
+    [NSString stringWithFormat: @"%@, %.2d %@ %d %.2d:%.2d:%.2d %+.4d",
 	      rfc822Days[[self dayOfWeek]], [self dayOfMonth],
 	      rfc822Months[[self monthOfYear]], [self yearOfCommonEra],
 	      [self hourOfDay], [self minuteOfHour], [self secondOfMinute],

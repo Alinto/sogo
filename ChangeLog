@@ -1,3 +1,9 @@
+2007-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
+	-rfc822DateString]): we want positive timezones to be specified
+	with a leading "+" too.
+
 2007-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
