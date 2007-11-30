@@ -1,50 +1,6 @@
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1551)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.m	(révision 1551)
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1552)
 +++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
 @@ -381,7 +381,7 @@
    
@@ -57,7 +13,7 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
      [self errorWithFormat:@"Could not list mailbox hierarchy!"];
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1551)
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1552)
 +++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
 @@ -648,14 +648,13 @@
    enumerator = [_flags objectEnumerator];
@@ -83,7 +39,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    if (objs) free(objs);
 Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1551)
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1552)
 +++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
 @@ -84,6 +84,8 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
@@ -274,7 +230,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  {
 Index: sope-mime/NGMail/NGSmtpClient.m
 ===================================================================
---- sope-mime/NGMail/NGSmtpClient.m	(révision 1551)
+--- sope-mime/NGMail/NGSmtpClient.m	(révision 1552)
 +++ sope-mime/NGMail/NGSmtpClient.m	(copie de travail)
 @@ -24,6 +24,82 @@
  #include "NGSmtpReplyCodes.h"
@@ -430,7 +386,7 @@ Index: sope-mime/NGMail/NGSmtpClient.m
      reply = [self receiveReply];
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
---- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1551)
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1552)
 +++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
 @@ -86,37 +86,40 @@
    char         *des    = NULL;
@@ -496,9 +452,324 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoEndLen = 2;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1551)
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1552)
 +++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
-@@ -285,24 +285,16 @@
+@@ -19,88 +19,30 @@
+   02111-1307, USA.
+ */
+ 
++#define _GNU_SOURCE 1
++#include <string.h>
++
+ #include "NGMimeHeaderFieldParser.h"
+ #include "NGMimeHeaderFields.h"
+ #include "NGMimeUtilities.h"
+ #include "common.h"
+-#include <string.h>
+ 
+ @implementation NGMimeRFC822DateHeaderFieldParser
+ 
+-static Class CalDateClass = Nil;
+-static NSTimeZone *gmt   = nil;
+-static NSTimeZone *gmt01 = nil;
+-static NSTimeZone *gmt02 = nil;
+-static NSTimeZone *gmt03 = nil;
+-static NSTimeZone *gmt04 = nil;
+-static NSTimeZone *gmt05 = nil;
+-static NSTimeZone *gmt06 = nil;
+-static NSTimeZone *gmt07 = nil;
+-static NSTimeZone *gmt08 = nil;
+-static NSTimeZone *gmt09 = nil;
+-static NSTimeZone *gmt10 = nil;
+-static NSTimeZone *gmt11 = nil;
+-static NSTimeZone *gmt12 = nil;
+-static NSTimeZone *gmt0530 = nil;
+-static NSTimeZone *gmtM01 = nil;
+-static NSTimeZone *gmtM02 = nil;
+-static NSTimeZone *gmtM03 = nil;
+-static NSTimeZone *gmtM04 = nil;
+-static NSTimeZone *gmtM05 = nil;
+-static NSTimeZone *gmtM06 = nil;
+-static NSTimeZone *gmtM07 = nil;
+-static NSTimeZone *gmtM08 = nil;
+-static NSTimeZone *gmtM09 = nil;
+-static NSTimeZone *gmtM10 = nil;
+-static NSTimeZone *gmtM11 = nil;
+-static NSTimeZone *gmtM12 = nil;
+-static NSTimeZone *gmtM13 = nil;
+-static NSTimeZone *gmtM14 = nil;
+-static NSTimeZone *met    = nil;
++static NSTimeZone *gmt = nil;
++static NSTimeZone *met = nil;
+ 
+ + (int)version {
+   return 2;
+ }
++
+ + (void)initialize {
+   static BOOL didInit = NO;
+-  Class TzClass;
+   if (didInit) return;
+   didInit = YES;
+   
+-  CalDateClass = [NSCalendarDate class];
+-  
+-  /* timezones which were actually used in a maillist mailbox */
+-  TzClass = [NSTimeZone class];
+-  gmt    = [[TzClass timeZoneWithName:@"GMT"] retain];
+-  met    = [[TzClass timeZoneWithName:@"MET"] retain];
+-  gmt01  = [[TzClass timeZoneForSecondsFromGMT:  1 * (60 * 60)] retain];
+-  gmt02  = [[TzClass timeZoneForSecondsFromGMT:  2 * (60 * 60)] retain];
+-  gmt03  = [[TzClass timeZoneForSecondsFromGMT:  3 * (60 * 60)] retain];
+-  gmt04  = [[TzClass timeZoneForSecondsFromGMT:  4 * (60 * 60)] retain];
+-  gmt05  = [[TzClass timeZoneForSecondsFromGMT:  5 * (60 * 60)] retain];
+-  gmt06  = [[TzClass timeZoneForSecondsFromGMT:  6 * (60 * 60)] retain];
+-  gmt07  = [[TzClass timeZoneForSecondsFromGMT:  7 * (60 * 60)] retain];
+-  gmt08  = [[TzClass timeZoneForSecondsFromGMT:  8 * (60 * 60)] retain];
+-  gmt09  = [[TzClass timeZoneForSecondsFromGMT:  9 * (60 * 60)] retain];
+-  gmt10  = [[TzClass timeZoneForSecondsFromGMT: 10 * (60 * 60)] retain];
+-  gmt11  = [[TzClass timeZoneForSecondsFromGMT: 11 * (60 * 60)] retain];
+-  gmt12  = [[TzClass timeZoneForSecondsFromGMT: 12 * (60 * 60)] retain];
+-  gmtM01 = [[TzClass timeZoneForSecondsFromGMT: -1 * (60 * 60)] retain];
+-  gmtM02 = [[TzClass timeZoneForSecondsFromGMT: -2 * (60 * 60)] retain];
+-  gmtM03 = [[TzClass timeZoneForSecondsFromGMT: -3 * (60 * 60)] retain];
+-  gmtM04 = [[TzClass timeZoneForSecondsFromGMT: -4 * (60 * 60)] retain];
+-  gmtM05 = [[TzClass timeZoneForSecondsFromGMT: -5 * (60 * 60)] retain];
+-  gmtM06 = [[TzClass timeZoneForSecondsFromGMT: -6 * (60 * 60)] retain];
+-  gmtM07 = [[TzClass timeZoneForSecondsFromGMT: -7 * (60 * 60)] retain];
+-  gmtM08 = [[TzClass timeZoneForSecondsFromGMT: -8 * (60 * 60)] retain];
+-  gmtM09 = [[TzClass timeZoneForSecondsFromGMT: -9 * (60 * 60)] retain];
+-  gmtM10 = [[TzClass timeZoneForSecondsFromGMT:-10 * (60 * 60)] retain];
+-  gmtM11 = [[TzClass timeZoneForSecondsFromGMT:-11 * (60 * 60)] retain];
+-  gmtM12 = [[TzClass timeZoneForSecondsFromGMT:-12 * (60 * 60)] retain];
+-  gmtM13 = [[TzClass timeZoneForSecondsFromGMT:-13 * (60 * 60)] retain];
+-  gmtM14 = [[TzClass timeZoneForSecondsFromGMT:-14 * (60 * 60)] retain];
+-  
+-  gmt0530 = [[TzClass timeZoneForSecondsFromGMT:5 * (60*60) + (30*60)] retain];
++  gmt = [[NSTimeZone timeZoneWithName:@"GMT"] retain];
++  met = [[NSTimeZone timeZoneWithName:@"MET"] retain];
+ }
+ 
+ /* 
+@@ -147,162 +89,110 @@
+   }
+ }
+ 
+-static NSTimeZone *parseTimeZone(unsigned char *s, unsigned int len) {
++static int offsetFromTZAbbreviation(const char **p) {
++  NSString *abbreviation;
++  NSTimeZone *offsetTZ;
++  unsigned int length;
++
++  length = 0;
++  while (isalpha(*(*p+length)))
++    length++;
++  abbreviation = [[NSString alloc] initWithBytes: *p
++				   length: length - 1
++				   encoding: NSASCIIStringEncoding];
++  offsetTZ = [NSTimeZone timeZoneWithAbbreviation: abbreviation];
++  [abbreviation release];
++  *p += length;
++
++  return [offsetTZ secondsFromGMT];
++}
++
++static inline char *digitsString(const char *string) {
++  const char *p;
++  unsigned int len;
++
++  p = string;
++  while (!isdigit(*p))
++    p++;
++  len = 0;
++  while (isdigit(*(p + len)))
++    len++;
++
++  return strndup(p, len);
++}
++ 
++static NSTimeZone *parseTimeZone(const char *s, unsigned int len) {
+   /*
+     WARNING: failed to parse RFC822 timezone: '+0530' \
+              (value='Tue, 13 Jul 2004 21:39:28 +0530')
+     TODO: this is because libFoundation doesn't accept 'GMT+0530' as input.
+   */
+-  char       *p = (char *)s;
++  char *newString, *digits;
++  const char *p;
+   NSTimeZone *tz;
+-  NSString   *ts;
+-  
+-  if (len == 0) 
+-    return nil;
+-  
+-  if (*s == '+' || *s == '-') {
+-    if (len == 3) {
+-      if (p[1] == '0' && p[2] == '0') // '+00' or '-00'
+-	return gmt;
+-      if (*s == '+') {
+-	if (p[1] == '0' && p[2] == '1') // '+01'
+-	  return gmt01;
+-	if (p[1] == '0' && p[2] == '2') // '+02'
+-	  return gmt02;
+-      }
+-    }
+-    else if (len == 5) {
+-      if (p[3] == '0' && p[4] == '0' && p[1] == '0') { // '?0x00'
+-	if (p[2] == '0') // '+0000'
+-	  return gmt;
+-	
+-	if (*s == '+') {
+-	  if (p[2] == '1') return gmt01; // '+0100'
+-	  if (p[2] == '2') return gmt02; // '+0200'
+-	  if (p[2] == '3') return gmt03; // '+0300'
+-	  if (p[2] == '4') return gmt04; // '+0400'
+-	  if (p[2] == '5') return gmt05; // '+0500'
+-	  if (p[2] == '6') return gmt06; // '+0600'
+-	  if (p[2] == '7') return gmt07; // '+0700'
+-	  if (p[2] == '8') return gmt08; // '+0800'
+-	  if (p[2] == '9') return gmt09; // '+0900'
+-	}
+-	else if (*s == '-') {
+-          if (p[2] == '1') return gmtM01; // '-0100'
+-          if (p[2] == '2') return gmtM02; // '-0200'
+-          if (p[2] == '3') return gmtM03; // '-0300'
+-	  if (p[2] == '4') return gmtM04; // '-0400'
+-	  if (p[2] == '5') return gmtM05; // '-0500'
+-	  if (p[2] == '6') return gmtM06; // '-0600'
+-	  if (p[2] == '7') return gmtM07; // '-0700'
+-	  if (p[2] == '8') return gmtM08; // '-0800'
+-	  if (p[2] == '9') return gmtM09; // '-0900'
+-	}
+-      }
+-      else if (p[3] == '0' && p[4] == '0' && p[1] == '1') { // "?1x00"
+-        if (*s == '+') {
+-          if (p[2] == '0') return gmt10; // '+1000'
+-          if (p[2] == '1') return gmt11; // '+1100'
+-          if (p[2] == '2') return gmt12; // '+1200'
+-        }
+-        else if (*s == '-') {
+-          if (p[2] == '0') return gmtM10; // '-1000'
+-          if (p[2] == '1') return gmtM11; // '-1100'
+-          if (p[2] == '2') return gmtM12; // '-1200'
+-          if (p[2] == '3') return gmtM13; // '-1300'
+-          if (p[2] == '4') return gmtM14; // '-1400'
+-        }
+-      }
+-      
+-      /* special case for GMT+0530 */
+-      if (strncmp((char *)s, "+0530", 5) == 0)
+-	return gmt0530;
+-    }
+-    else if (len == 7) {
+-      /*
+-        "MultiMail" submits timezones like this: 
+-          "Tue, 9 Mar 2004 9:43:00 -05-500",
+-        don't know what the "-500" trailer is supposed to mean? Apparently 
+-        Thunderbird just uses the "-05", so do we.
+-      */
+-      
+-      if (isdigit(p[1]) && isdigit(p[2]) && (p[3] == '-'||p[3] == '+')) {
+-        unsigned char tmp[8];
+-        
+-        strncpy((char *)tmp, p, 3);
+-        tmp[3] = '0';
+-        tmp[4] = '0';
+-        tmp[5] = '\0';
+-        return parseTimeZone(tmp, 5);
+-      }
+-    }
++  unsigned int hours, minutes, seconds, remaining;
++  int sign;
++
++  sign = 1;
++  hours = 0;
++  minutes = 0;
++  seconds = 0;
++
++  newString = strndup(s, len);
++  p = newString;
++
++  if (isalpha(*p))
++    seconds = offsetFromTZAbbreviation(&p);
++  while (isspace(*p))
++    p++;
++  while (*p == '+' || *p == '-') {
++    if (*p == '-')
++      sign = -sign;
++    p++;
+   }
+-  else if (*s == '0') {
+-    if (len == 2) { // '00'
+-      if (p[1] == '0') return gmt;
+-      if (p[1] == '1') return gmt01;
+-      if (p[1] == '2') return gmt02;
+-    }
+-    else if (len == 4) {
+-      if (p[2] == '0' && p[3] == '0') { // '0x00'
+-	if (p[1] == '0') return gmt;
+-	if (p[1] == '1') return gmt01;
+-	if (p[1] == '2') return gmt02;
+-      }
+-    }
++  digits = digitsString(p);
++  p = digits;
++  remaining = strlen(p);
++  switch(remaining) {
++  case 6: /* hhmmss */
++    seconds += (10 * (*(p + remaining - 2) - 48)
++		+ *(p + remaining - 1) - 48);
++  case 4: /* hhmm */
++    hours += 10 * (*p - 48);
++    p++;
++  case 3: /* hmm */
++    hours += (*p - 48);
++    p++;
++    minutes += 10 * (*p - 48) + *(p + 1) - 48;
++    break;
++  case 2: /* hh */
++    hours += 10 * (*p - 48) + *(p + 1) - 48;
++    break;
++  default:
++    NSLog (@"%s: cannot parse time notation '%s'", p);
+   }
+-  else if (len == 3) {
+-    if (strcasecmp((char *)s, "GMT") == 0) return gmt;
+-    if (strcasecmp((char *)s, "UTC") == 0) return gmt;
+-    if (strcasecmp((char *)s, "MET") == 0) return met;
+-    if (strcasecmp((char *)s, "CET") == 0) return met;
+-  }
+-  
+-  if (isalpha(*s)) {
+-    ts = [[NSString alloc] initWithCString:(char *)s length:len];
+-  }
+-  else {
+-    char buf[len + 5];
+-    
+-    buf[0] = 'G'; buf[1] = 'M'; buf[2] = 'T';
+-    if (*s == '+' || *s == '-') {
+-      strcpy(&(buf[3]), (char *)s);
+-    }
+-    else {
+-      buf[3] = '+';
+-      strcpy(&(buf[4]), (char *)s);
+-    }
+-    ts = [[NSString alloc] initWithCString:buf];
+-  }
+-#if 1
+-  NSLog(@"%s: RFC822 TZ Parser: expensive: '%@'", __PRETTY_FUNCTION__, ts);
+-#endif
+-  tz = [NSTimeZone timeZoneWithAbbreviation:ts];
+-  [ts release];
++  free(digits);
++
++  seconds += sign * (3600 * hours + 60 * minutes);
++  tz = [NSTimeZone timeZoneForSecondsFromGMT: seconds];
++  free(newString);
++
+   return tz;
+ }
+ 
  - (id)parseValue:(id)_data ofHeaderField:(NSString *)_field {
    // TODO: use UNICODE
    NSCalendarDate *date       = nil;
@@ -522,15 +793,46 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 -  buf[length] = '\0';
 -  
 +
-+  length = [_data length];
++  length = [_data lengthOfBytesUsingEncoding: NSASCIIStringEncoding];
 +  bytes = [_data cStringUsingEncoding: NSASCIIStringEncoding];
 +
    /* remove leading chars (skip to first digit, the day of the month) */
    while (length > 0 && (!isdigit(*bytes))) {
      bytes++;
+@@ -312,7 +202,7 @@
+   if (length == 0) {
+     NSLog(@"WARNING(%s): empty value for header field %@ ..",
+           __PRETTY_FUNCTION__, _field);
+-    return [CalDateClass date];
++    return [NSCalendarDate date];
+   }
+   
+   // TODO: should be a category on NSCalendarDate
+@@ -435,7 +325,7 @@
+   for (pe = bytes; isalnum(*pe) || *pe == '-' || *pe == '+'; pe++)
+     ;
+   *pe = '\0';
+-  if ((tz = parseTimeZone(bytes, (pe - bytes))) == nil) {
++  if ((tz = parseTimeZone((const char *) bytes, (pe - bytes))) == nil) {
+     [self logWithFormat:
+             @"WARNING: failed to parse RFC822 timezone: '%s' (value='%@')",
+ 	    bytes, _data];
+@@ -444,9 +334,9 @@
+   
+   /* construct and return */
+  finished:  
+-  date = [CalDateClass dateWithYear:year month:monthOfYear day:dayOfMonth
+-		       hour:hour minute:minute second:second
+-		       timeZone:tz];
++  date = [NSCalendarDate dateWithYear:year month:monthOfYear day:dayOfMonth
++			 hour:hour minute:minute second:second
++			 timeZone:tz];
+   if (date == nil) goto failed;
+ 
+ #if 0  
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1551)
+--- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1552)
 +++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
 @@ -31,18 +31,6 @@
    return 2;
@@ -568,7 +870,7 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  - (NSString *)contentId {
 Index: sope-mime/NGMime/NGMimeBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1551)
+--- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1552)
 +++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
 @@ -67,7 +67,10 @@
    if (_data == nil) return nil;
@@ -584,7 +886,7 @@ Index: sope-mime/NGMime/NGMimeBodyParser.m
    
 Index: sope-mime/NGMime/NGMimePartParser.h
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.h	(révision 1551)
+--- sope-mime/NGMime/NGMimePartParser.h	(révision 1552)
 +++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
 @@ -117,6 +117,7 @@
      BOOL parserParseRawBodyDataOfPart:1;
@@ -606,7 +908,7 @@ Index: sope-mime/NGMime/NGMimePartParser.h
  @interface NSObject(NGMimePartParser)
 Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.m	(révision 1551)
+--- sope-mime/NGMime/NGMimePartParser.m	(révision 1552)
 +++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
 @@ -227,7 +227,7 @@
  }
@@ -631,7 +933,7 @@ Index: sope-mime/NGMime/NGMimePartParser.m
      : [NGMimeType mimeType:[ctype stringValue]];
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1551)
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1552)
 +++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
 @@ -49,80 +49,70 @@
    
@@ -765,9 +1067,53 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1552)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1551)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1552)
 +++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
 @@ -140,8 +140,12 @@
  
@@ -810,7 +1156,7 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1551)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1552)
 +++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
 @@ -19,6 +19,8 @@
    02111-1307, USA.
@@ -832,7 +1178,7 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
    id<NSObject,SaxEntityResolver> entityResolver;
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1551)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1552)
 +++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
 @@ -30,6 +30,12 @@
  #include <libxml/HTMLparser.h>
@@ -892,7 +1238,7 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
  - (void)tearDownParser {
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1551)
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1552)
 +++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
 @@ -23,14 +23,20 @@
  
@@ -921,7 +1267,7 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 -endif
 Index: sope-appserver/NGObjWeb/WOContext.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOContext.m	(révision 1551)
+--- sope-appserver/NGObjWeb/WOContext.m	(révision 1552)
 +++ sope-appserver/NGObjWeb/WOContext.m	(copie de travail)
 @@ -64,11 +64,13 @@
  static BOOL     testNSURLs           = NO;
@@ -961,7 +1307,7 @@ Index: sope-appserver/NGObjWeb/WOContext.m
        serverURL = [@"http://" stringByAppendingString:host];
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1551)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1552)
 +++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
 @@ -216,6 +216,12 @@
        assocCount++;
@@ -978,7 +1324,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1551)
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1552)
 +++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
 @@ -40,6 +40,7 @@
    WOAssociation *string;
@@ -1008,7 +1354,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
      return YES;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1551)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1552)
 +++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
 @@ -41,7 +41,8 @@
    WOAssociation *pageName;
@@ -1022,7 +1368,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    /* 'ivar' associations */
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1551)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1552)
 +++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
 @@ -39,22 +39,34 @@
  static int debugLookup  = -1;
@@ -1173,7 +1519,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
    
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1551)
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1552)
 +++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
 @@ -31,6 +31,7 @@
  #include <NGObjWeb/WOCookie.h>
