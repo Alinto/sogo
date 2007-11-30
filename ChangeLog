@@ -1,5 +1,9 @@
 2007-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-appendSubscribedSources]): don't include sources for which we
+	don't have the SOGoPerm_AccessObject permission.
+
 	* SoObjects/SOGo/NSCalendarDate+SOGo.m ([NSCalendarDate
 	-rfc822DateString]): we want positive timezones to be specified
 	with a leading "+" too.

@@ -93,7 +93,6 @@ static NSString *defaultUserID = @"<default>";
       ocsPath = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
-      [self _fetchDisplayName];
     }
 
   return self;
@@ -104,7 +103,6 @@ static NSString *defaultUserID = @"<default>";
   [ocsFolder release];
   [ocsPath release];
   [aclCache release];
-  [displayName release];
   [super dealloc];
 }
 
@@ -116,23 +114,25 @@ static NSString *defaultUserID = @"<default>";
   NSDictionary *ownerIdentity;
 
   primaryDN = [row objectForKey: @"c_foldername"];
-  displayName = [NSMutableString string];
-  if ([primaryDN isEqualToString: [container defaultFolderName]])
-    [displayName appendString: [self labelForKey: primaryDN]];
-  else
-    [displayName appendString: primaryDN];
-
-  currentLogin = [[context activeUser] login];
-  ownerLogin = [self ownerInContext: context];
-  if (![currentLogin isEqualToString: ownerLogin])
+  if ([primaryDN length])
     {
-      ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
-			primaryIdentity];
-      [displayName
-	appendString: [ownerIdentity keysWithFormat:
-				       @" (%{fullName} <%{email}>)"]];
+      displayName = [NSMutableString new];
+      if ([primaryDN isEqualToString: [container defaultFolderName]])
+	[displayName appendString: [self labelForKey: primaryDN]];
+      else
+	[displayName appendString: primaryDN];
+
+      currentLogin = [[context activeUser] login];
+      ownerLogin = [self ownerInContext: context];
+      if (![currentLogin isEqualToString: ownerLogin])
+	{
+	  ownerIdentity = [[SOGoUser userWithLogin: ownerLogin roles: nil]
+			    primaryIdentity];
+	  [displayName
+	    appendString: [ownerIdentity keysWithFormat:
+					   @" (%{fullName} <%{email}>)"]];
+	}
     }
-  [displayName retain];
 }
 
 - (void) _fetchDisplayName
@@ -166,6 +166,9 @@ static NSString *defaultUserID = @"<default>";
 
 - (NSString *) displayName
 {
+  if (!displayName)
+    [self _fetchDisplayName];
+
   return displayName;
 }
 

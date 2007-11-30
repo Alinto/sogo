@@ -25,6 +25,7 @@
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
@@ -37,7 +38,15 @@
 
 #import "SOGoParentFolder.h"
 
+static SoSecurityManager *sm = nil;
+
 @implementation SOGoParentFolder
+
++ (void) initialize
+{
+  if (!sm)
+    sm = [SoSecurityManager sharedSecurityManager];
+}
 
 - (id) init
 {
@@ -171,13 +180,29 @@
 #warning TO BE IMPLEMENTED SOON FIXME
 }
 
+- (void) _appendSubscribedSource: (NSString *) sourceKey
+{
+  SOGoGCSFolder *subscribedFolder;
+
+  subscribedFolder
+    = [subFolderClass folderWithSubscriptionReference: sourceKey
+		      inContainer: self];
+  if (subscribedFolder
+      && ![sm validatePermission: SOGoPerm_AccessObject
+	      onObject: subscribedFolder
+	      inContext: context])
+    [subFolders setObject: subscribedFolder
+		forKey: [subscribedFolder nameInContainer]];
+  else
+    [self _removeSubscribedSource: sourceKey];
+}
+
 - (void) appendSubscribedSources
 {
   NSArray *subscribedReferences;
   NSUserDefaults *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
-  SOGoGCSFolder *subscribedFolder;
 
   settings = [[context activeUser] userSettings];
   subscribedReferences = [[settings objectForKey: nameInContainer]
@@ -185,19 +210,8 @@
   if ([subscribedReferences isKindOfClass: [NSArray class]])
     {
       allKeys = [subscribedReferences objectEnumerator];
-      currentKey = [allKeys nextObject];
-      while (currentKey)
-	{
-	  subscribedFolder
-	    = [subFolderClass folderWithSubscriptionReference: currentKey
-			      inContainer: self];
-	  if (subscribedFolder)
-	    [subFolders setObject: subscribedFolder
-			forKey: [subscribedFolder nameInContainer]];
-	  else
-	    [self _removeSubscribedSource: currentKey];
-	  currentKey = [allKeys nextObject];
-	}
+      while ((currentKey = [allKeys nextObject]))
+	[self _appendSubscribedSource: currentKey];
     }
 }
 
