@@ -13,6 +13,7 @@
 
 <var:if condition="isBody">
 <var:string value="currentUserName"/> hat Ihnen den Zugang zu seinem Ordner '<var:string value="resourceName"/>' erlaubt.
+
 Folgende URL erlaubt Ihnen, sich sofort an diesem Ordner zu abonnieren:
     <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
 

@@ -97,6 +97,21 @@
   return url;
 }
 
+- (NSString *) httpFolderURL
+{
+  NSString *absoluteString;
+  NSMutableString *url;
+
+#warning the url returned by SOGoMail may be empty, we need to handle that
+  absoluteString = [[aclObject soURL] absoluteString];
+  url = [NSMutableString stringWithString: absoluteString];
+
+  if (![url hasSuffix: @"/"])
+    [url appendString: @"/"];
+
+  return url;
+}
+
 - (NSString *) resourceName
 {
   return [aclObject nameInContainer];
@@ -223,6 +238,12 @@
 
 @end
 
+@implementation SOGoACLModificationAdvisory
+
+- (NSString *) aclMethod { return @"modify"; }
+
+@end
+
 @implementation SOGoACLEnglishAdditionAdvisory
 @end
 
@@ -230,6 +251,15 @@
 @end
 
 @implementation SOGoACLGermanAdditionAdvisory
+@end
+
+@implementation SOGoACLEnglishModificationAdvisory
+@end
+
+@implementation SOGoACLFrenchModificationAdvisory
+@end
+
+@implementation SOGoACLGermanModificationAdvisory
 @end
 
 @implementation SOGoACLEnglishRemovalAdvisory

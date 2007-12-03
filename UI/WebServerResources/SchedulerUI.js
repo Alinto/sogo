@@ -81,12 +81,19 @@ function editEvent() {
   if (listOfSelection) {
     var nodes = listOfSelection.getSelectedRows();
 
+    if (nodes.length == 0) {
+      window.alert(labels["Please select an event or a task."]);
+      return false;
+    }
+
     for (var i = 0; i < nodes.length; i++)
       _editEventId(nodes[i].getAttribute("id"),
                    nodes[i].calendar);
   } else if (selectedCalendarCell) {
-      _editEventId(selectedCalendarCell[0].cname,
-                   selectedCalendarCell[0].calendar);
+    _editEventId(selectedCalendarCell[0].cname,
+                 selectedCalendarCell[0].calendar);
+  } else {
+    window.alert(labels["Please select an event or a task."]);
   }
 
   return false; /* stop following the link */
@@ -135,6 +142,8 @@ function deleteEvent() {
         }
         _batchDeleteEvents();
       }
+    } else {
+      window.alert(labels["Please select an event or a task."]);
     }
   }
   else if (selectedCalendarCell) {
@@ -150,7 +159,7 @@ function deleteEvent() {
      }
   }
   else
-    window.alert("no selection");
+    window.alert(labels["Please select an event or a task."]);
 
   return false;
 }

@@ -51,6 +51,7 @@
 
 #import "build.h"
 #import "SOGoProductLoader.h"
+#import "NSException+Stacktrace.h"
 
 @interface SOGo : SoApplication
 {

@@ -55,8 +55,17 @@
 #import "SOGoGCSFolder.h"
 
 static NSString *defaultUserID = @"<default>";
+static BOOL sendFolderAdvisories = NO;
 
 @implementation SOGoGCSFolder
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  sendFolderAdvisories = [ud boolForKey: @"SOGoFoldersSendEMailNotifications"];
+}
 
 + (id) folderWithSubscriptionReference: (NSString *) reference
 			   inContainer: (id) aContainer
@@ -254,8 +263,6 @@ static NSString *defaultUserID = @"<default>";
   [page send];
 }
 
-//   if (!result) [self sendFolderAdvisoryTemplate: @"Addition"];
-
 - (BOOL) create
 {
   NSException *result;
@@ -263,6 +270,8 @@ static NSString *defaultUserID = @"<default>";
   result = [[self folderManager] createFolderOfType: [self folderType]
 				 withName: displayName
                                  atPath: ocsPath];
+
+  if (!result && sendFolderAdvisories) [self sendFolderAdvisoryTemplate: @"Addition"];
 
   return (result == nil);
 }
@@ -280,10 +289,10 @@ static NSString *defaultUserID = @"<default>";
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
+  if (!error && sendFolderAdvisories) [self sendFolderAdvisoryTemplate: @"Removal"];
+
   return error;
 }
-
-//   if (!error) [self sendFolderAdvisoryTemplate: @"Removal"];
 
 - (void) renameTo: (NSString *) newName
 {

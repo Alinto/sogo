@@ -1,3 +1,33 @@
+2007-12-03  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* Main/NSException+Stacktrace.{h,m} - new files
+	to handle automatic stack trace generation
+	upon an uncaught exception.
+
+	* Updated the templates and Localizable.string files
+	to fix typos and add new strings.
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m
+	Fixed attachment retreival when the first character
+	is a digit.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	Fixed the sending of emails when folders are created/removed.
+	Notifications are sent if the defaults SOGoFoldersSendEMailNotifications
+	is set to YES.
+
+	* UI/Common/UIxUserRightsEditor.m
+	* UI/Templates/SOGoACLEnglishModificationAdvisory.wox
+	* UI/Templates/SOGoACLFrenchModificationAdvisory.wox
+	* UI/Templates/SOGoACLGermanModificationAdvisory.wox
+	Added the capabilities to email notifications when ACLs have
+	changed on a DAV collection or an IMAP mailbox. Also added
+	new templates (3 .wox) to deal with this. 
+
+	* UI/WebServerResources/ContactsUI.js
+	UI/WebServerResources/SchedulerUI.js
+	Added warnings on operations w/o selection.
+
 2007-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder

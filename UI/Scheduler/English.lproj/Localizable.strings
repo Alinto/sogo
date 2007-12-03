@@ -423,3 +423,5 @@ vtodo_class2 = "(Confidential task)";
 
 "closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
 "Multicolumn Day View" = "Multicolumn Day View";
+
+"Please select an event or a task." = "Please select an event or a task.";

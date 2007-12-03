@@ -31,6 +31,7 @@
 "edit" = "edit";
 "invalidemailwarn" = "invalidemailwarn";
 "new" = "new";
+"Preferred Phone"   = "Preferred Phone";
 
 /* Folders */
 "Personal Address Book" = "Personal Address Book";
@@ -131,3 +132,5 @@
 
 "The selected contact has no email address."
 = "The selected contact has no email address.";
+
+"Please select a contact." = "Please select a contact.";

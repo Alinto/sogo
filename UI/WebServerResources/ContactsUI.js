@@ -310,20 +310,20 @@ function onMenuEditContact(event) {
 }
 
 function onMenuWriteToContact(event) {
-   var contactId = document.menuTarget.getAttribute('id');
-   var contactRow = $(contactId);
-   var emailCell = contactRow.down('td', 1);
+  var contactId = document.menuTarget.getAttribute('id');
+  var contactRow = $(contactId);
+  var emailCell = contactRow.down('td', 1);
 
-   if (!emailCell.firstChild) { // .nodeValue is the contact email address
-     window.alert(labels["The selected contact has no email address."]);
-     return false;
-   }
+  if (!emailCell.firstChild) { // .nodeValue is the contact email address
+    window.alert(labels["The selected contact has no email address."]);
+    return false;
+  }
 
-   openMailComposeWindow(ApplicationBaseURL + currentContactFolder
-			 + "/" + contactId + "/write");
+  openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+			+ "/" + contactId + "/write");
 
-   if (document.body.hasClassName("popup"))
-     window.close();
+  if (document.body.hasClassName("popup"))
+    window.close();
 }
 
 function onMenuDeleteContact(event) {
@@ -333,6 +333,11 @@ function onMenuDeleteContact(event) {
 function onToolbarEditSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
+
+  if (rows.length == 0) {
+    window.alert(labels["Please select a contact."]);
+    return false;
+  }
 
   for (var i = 0; i < rows.length; i++) {
     openContactWindow(URLForFolderID(currentContactFolder)
@@ -347,8 +352,10 @@ function onToolbarWriteToSelectedContacts(event) {
   var rows = contactsList.getSelectedRowsId();
   var rowsWithEmail = 0;
 
-  if (rows.length == 0)
+  if (rows.length == 0) {
+    window.alert(labels["Please select a contact."]);
     return false;
+  }
 
   for (var i = 0; i < rows.length; i++) {
     var emailCell = $(rows[i]).down('td', 1);
@@ -372,6 +379,11 @@ function uixDeleteSelectedContacts(sender) {
   var failCount = 0;
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
+
+  if (rows.length == 0) {
+    window.alert(labels["Please select a contact."]);
+    return false;
+  }
 
   var contactView = $('contactView');
   contactView.innerHTML = '';

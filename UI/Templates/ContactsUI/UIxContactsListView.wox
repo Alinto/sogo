@@ -23,7 +23,7 @@
 	    ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
 	    ><var:string label:value="Organization" /></td
 	    ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
-	    ><var:string label:value="Work Phone" /></td
+	    ><var:string label:value="Preferred Phone" /></td
 	    ></tr>
       </thead>
       <tbody>

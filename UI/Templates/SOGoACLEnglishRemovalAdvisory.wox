@@ -13,10 +13,15 @@
 
 <var:if condition="isBody">
 <var:string value="currentUserName"/> has removed you from the access list for his '<var:string value="resourceName"/>' folder.
+
 You can unsubscribe directly to that folder by following this link:
     <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
 
 Otherwise, you will be able to unsubscribe later from the SOGo web interface.
+
+You can also no longer access this resource using the following URL:
+
+<var:string value="httpFolderURL"/>
 </var:if>
 
 </container>

@@ -68,6 +68,15 @@
 @interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
+@interface SOGoACLEnglishModificationAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLFrenchModificationAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLGermanModificationAdvisory : SOGoACLAdditionAdvisory
+@end
+
 @interface SOGoACLEnglishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 

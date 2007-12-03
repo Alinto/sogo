@@ -8,11 +8,11 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName"/> has added you
+    <var:string value="currentUserName"/> has modified the access rights
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> has added you to the access list for his '<var:string value="resourceName"/>' folder.
+<var:string value="currentUserName"/> has modified your access rights for his '<var:string value="resourceName"/>' folder.
 
 You can subscribe directly to that folder by following this link:
     <var:string value="httpAdvisoryURL"/>subscribe?mail-invitation=YES

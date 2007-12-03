@@ -8,11 +8,11 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName"/> a modifié les droits
+    <var:string value="currentUserName"/> vous a ajouté
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> vous a ajouté à sa liste de permission pour son dossier '<var:string value="resourceName"/>'.
+<var:string value="currentUserName"/> a modifité vos droits d'accès pour son dossier '<var:string value="resourceName"/>'.
 
 Vous pouvez vous inscrire directement à ce dossier en cliquant sur le lien suivant:
     <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES

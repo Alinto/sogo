@@ -21,15 +21,29 @@
  */
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoObject.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <UI/SOGoUI/SOGoACLAdvisory.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import "UIxUserRightsEditor.h"
 
+static BOOL sendACLAdvisories = NO;
+
 @implementation UIxUserRightsEditor
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
+}
 
 - (id) init
 {
@@ -121,6 +135,25 @@
   return response;
 }
 
+- (void) sendACLAdvisoryTemplateForObject: (id) theObject
+{
+  NSString *language, *pageName;
+  SOGoUser *user;
+  SOGoACLAdvisory *page;
+  WOApplication *app;
+
+  user = [SOGoUser userWithLogin: uid roles: nil];
+  language = [user language];
+  pageName = [NSString stringWithFormat: @"SOGoACL%@ModificationAdvisory",
+		       language];
+
+  app = [WOApplication application];
+  page = [app pageWithName: pageName inContext: context];
+  [page setACLObject: theObject];
+  [page setRecipientUID: uid];
+  [page send];
+}
+
 - (id <WOActionResults>) saveUserRightsAction
 {
   id <WOActionResults> response;
@@ -130,8 +163,18 @@
 			    reason: @"No such user."];
   else
     {
+      NSArray *o;
+
+      o = [NSArray arrayWithArray: userRights];
+
       [self updateRights];
       [[self clientObject] setRoles: userRights forUser: uid];
+
+      if (![o isEqualToArray: userRights] && sendACLAdvisories)
+	{
+	  [self sendACLAdvisoryTemplateForObject: [self clientObject]];
+	} 
+      
       response = [self jsCloseWithRefreshMethod: nil];
     }
 

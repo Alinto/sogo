@@ -467,7 +467,6 @@ static BOOL        showTextAttachmentsInline  = NO;
   [_info setObject: to forKey: @"to"];
 
   /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
-
   if (_replyToAll)
     {
       to = [NSMutableArray new];
@@ -496,6 +495,17 @@ static BOOL        showTextAttachmentsInline  = NO;
 	[self _addEMailsOfAddresses: [_envelope replyTo] toArray: to];
       else
 	[self _addEMailsOfAddresses: [_envelope from] toArray: to];
+    }
+
+  /* If we have no To but we have Cc recipients, let's move the Cc
+     to the To bucket... */
+  if ([[_info objectForKey: @"to"] count] == 0 && [_info objectForKey: @"cc"])
+    {
+      id o;
+
+      o = [_info objectForKey: @"cc"];
+      [_info setObject: o  forKey: @"to"];
+      [_info removeObjectForKey: @"cc"];
     }
 
   [allRecipients release];
