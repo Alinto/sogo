@@ -190,7 +190,7 @@
   SoSecurityManager *securityManager;
 
   securityManager = [SoSecurityManager sharedSecurityManager];
-   
+
 //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
 //                             onObject: contactFolder
 //                             inContext: context] == nil)
@@ -294,8 +294,7 @@
 
       responseString = [NSMutableString new];
       contacts = [results objectEnumerator];
-      contact = [contacts nextObject];
-      while (contact)
+      while ((contact = [contacts nextObject]))
 	{
 	  uid = [contact objectForKey: @"c_uid"];
 	  folders = [self _foldersForUID: uid ofType: folderType];
@@ -305,7 +304,6 @@
 			  [contact objectForKey: @"cn"],
 			  [contact objectForKey: @"c_email"],
 			  foldersString];
-	  contact = [contacts nextObject];
 	}
       [response appendContentString: responseString];
       [responseString release];
