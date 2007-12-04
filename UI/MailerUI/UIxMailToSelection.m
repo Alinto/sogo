@@ -213,6 +213,13 @@ static NSArray *headers = nil;
 
 /* identifiers */
 
+- (NSString *) nextId
+{
+  currentIndex++;
+
+  return @"";
+}
+
 - (NSString *) currentRowId
 {
   [self nextId];
@@ -229,13 +236,6 @@ static NSArray *headers = nil;
 - (NSString *) currentAddressId
 {
   return [NSString stringWithFormat: @"addr_%d", currentIndex];
-}
-
-- (NSString *) nextId
-{
-  currentIndex++;
-
-  return @"";
 }
 
 /* handling requests */
