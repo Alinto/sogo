@@ -86,7 +86,7 @@ static NSArray *headers = nil;
 - (id) init
 {
   if ((self = [super init]))
-    currentIndex = 0;
+    currentIndex = -1;
 
   return self;
 }
@@ -215,11 +215,14 @@ static NSArray *headers = nil;
 
 - (NSString *) currentRowId
 {
+  [self nextId];
+  
   return [NSString stringWithFormat: @"row_%d", currentIndex];
 }
 
 - (NSString *) currentPopUpId
 {
+  
   return [NSString stringWithFormat: @"popup_%d", currentIndex];
 }
 
@@ -324,15 +327,6 @@ static NSArray *headers = nil;
 - (int) addressCount
 {
   return [to count] + [cc count] + [bcc count];
-}
-
-- (int) currentIndex
-{
-  int count;
-
-  count = [self addressCount];
-
-  return count > 0 ? count - 1 : 0;
 }
 
 @end /* UIxMailToSelection */

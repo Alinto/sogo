@@ -98,16 +98,15 @@ function fancyAddRow(shouldEdit, text) {
   lastChild = $("lastRow");
   
   currentIndex++;
-
-  proto = $('row_' + lastIndex);
+  proto = lastChild.previous("tr");
   row = proto.cloneNode(true);
-  row.id = 'row_' + currentIndex;
+  row.setAttribute("id", 'row_' + currentIndex);
 
   // select popup
   var rowNodes = row.childNodesWithTag("td");
   select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
-//   select.value = row.childNodesWithTag("span")[0].childNodesWithTag("select")[0].value;
+  select.value = proto.down("select").value;
   input = $(rowNodes[1]).childNodesWithTag("input")[0];
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
@@ -136,7 +135,7 @@ function addressFieldGotFocus(sender) {
 
 function addressFieldLostFocus(sender) {
   lastIndex = this.getIndexFromIdentifier(sender.id);
-
+  
   return false;
 }
 
@@ -147,7 +146,7 @@ function removeLastEditedRowIfEmpty() {
   if (idx == 0) return;
   addr = $('addr_' + idx);
   if (!addr) return;
-  if (addr.value != '') return;
+  if (addr.value.strip() != '') return;
   addr = this.findAddressWithIndex(idx);
   if(addr) {
     var addresses = $('addr_addresses');
@@ -223,5 +222,8 @@ function hasRecipients() {
   return (count > 0)
 }
 
-/* addressbook helpers */
+function initMailToSelection() {
+  currentIndex = lastIndex = $$("table#addressList tr").length - 2;
+}
 
+FastInit.addOnLoad(initMailToSelection);
