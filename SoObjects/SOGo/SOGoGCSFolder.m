@@ -25,12 +25,14 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
@@ -430,6 +432,75 @@ static BOOL sendFolderAdvisories = NO;
     }
 
   return names;
+}
+
+#warning this code should be cleaned up
+#warning this code is a dup of UIxFolderActions,\
+         we should remove the methods there instead
+- (WOResponse *) _subscribe: (BOOL) reallyDo
+		  inContext: (WOContext *) localContext
+{
+  WOResponse *response;
+  NSMutableArray *folderSubscription;
+  NSString *subscriptionPointer, *baseFolder, *folder;
+  SOGoUser *activeUser;
+  NSUserDefaults *ud;
+  NSArray *realFolderPath;
+  NSMutableDictionary *moduleSettings;
+
+  activeUser = [localContext activeUser];
+  ud = [activeUser userSettings];
+  baseFolder = [container nameInContainer];
+  moduleSettings = [ud objectForKey: baseFolder];
+
+  response = [localContext response];
+  if ([owner isEqualToString: [activeUser login]])
+    {
+      [response setStatus: 403];
+      [response appendContentString:
+		 @"You cannot (un)subscribe to a folder that you own!"];
+    }
+  else
+    {
+      folderSubscription
+	= [moduleSettings objectForKey: @"SubscribedFolders"];
+      if (!(folderSubscription
+	    && [folderSubscription isKindOfClass: [NSMutableArray class]]))
+	{
+	  folderSubscription = [NSMutableArray array];
+	  [moduleSettings setObject: folderSubscription
+			  forKey: @"SubscribedFolders"];
+	}
+
+      realFolderPath = [nameInContainer componentsSeparatedByString: @"_"];
+      if ([realFolderPath count] > 1)
+	folder = [realFolderPath objectAtIndex: 1];
+      else
+	folder = [realFolderPath objectAtIndex: 0];
+
+      subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
+				      owner, baseFolder, folder];
+      if (reallyDo)
+	[folderSubscription addObjectUniquely: subscriptionPointer];
+      else
+	[folderSubscription removeObject: subscriptionPointer];
+
+      [ud synchronize];
+
+      [response setStatus: 204];
+    }
+
+  return response;
+}
+
+- (id <WOActionResults>) davSubscribe: (WOContext *) localContext
+{
+  return [self _subscribe: YES inContext: localContext];
+}
+
+- (id <WOActionResults>) davUnsubscribe: (WOContext *) localContext
+{
+  return [self _subscribe: NO inContext: localContext];
 }
 
 /* acls as a container */

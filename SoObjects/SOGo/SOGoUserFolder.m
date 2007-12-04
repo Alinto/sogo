@@ -21,18 +21,29 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMDocument.h>
+#import <DOM/DOMNode.h>
+#import <DOM/DOMProtocols.h>
+#import <SaxObjC/SaxObjC.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoFreeBusyObject.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
 
+#import "NSDictionary+Utilities.h"
+#import "LDAPUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 
@@ -94,6 +105,212 @@
 - (SOGoUserFolder *) lookupUserFolder
 {
   return self;
+}
+
+- (NSArray *) davNamespaces
+{
+  return [NSArray arrayWithObject: @"urn:inverse:params:xml:ns:inverse-dav"];
+}
+
+- (NSDictionary *) _parseCollectionFilters: (id <DOMDocument>) parentNode
+{
+  NSEnumerator *children;
+  NGDOMNode *node;
+  NSMutableDictionary *filter;
+  NSString *componentName;
+    
+  filter = [NSMutableDictionary dictionaryWithCapacity: 2];
+  children = [[parentNode getElementsByTagName: @"prop-match"]
+	       objectEnumerator];
+  while ((node = [children nextObject]))
+    {
+      componentName = [[node attribute: @"name"] lowercaseString];
+      [filter setObject: [node textValue] forKey: componentName];
+    }
+
+  return filter;
+}
+
+#warning UIxContactsFoldersView should use these methods\
+         instead from now on...
+
+- (NSArray *) _subFoldersFromFolder: (SOGoParentFolder *) parentFolder
+{
+  NSMutableArray *folders;
+  NSEnumerator *subfolders;
+  SOGoFolder *currentFolder;
+  NSString *folderName;
+  NSMutableDictionary *currentDictionary;
+  SoSecurityManager *securityManager;
+
+  securityManager = [SoSecurityManager sharedSecurityManager];
+   
+  folders = [NSMutableArray array];
+
+  subfolders = [[parentFolder subFolders] objectEnumerator];
+  while ((currentFolder = [subfolders nextObject]))
+    {
+      if (![securityManager validatePermission: SOGoPerm_AccessObject
+			    onObject: currentFolder inContext: context])
+	{
+	  folderName = [NSString stringWithFormat: @"/%@/%@",
+				 [parentFolder nameInContainer],
+				 [currentFolder nameInContainer]];
+	  currentDictionary
+	    = [NSMutableDictionary dictionaryWithCapacity: 3];
+	  [currentDictionary setObject: [currentFolder displayName]
+			     forKey: @"displayName"];
+	  [currentDictionary setObject: folderName forKey: @"name"];
+	  [currentDictionary setObject: [currentFolder folderType]
+			     forKey: @"type"];
+	  [folders addObject: currentDictionary];
+	}
+    }
+
+  return folders;
+}
+
+- (NSArray *) foldersOfType: (NSString *) folderType
+		     forUID: (NSString *) uid
+{
+  NSObject *userFolder;
+  SOGoParentFolder *parentFolder;
+  NSMutableArray *folders;
+
+  folders = [NSMutableArray array];
+
+  userFolder = [container lookupName: uid inContext: context acquire: NO];
+
+  /* FIXME: should be moved in the SOGo* classes. Maybe by having a SOGoFolderManager. */
+  if ([folderType length] == 0 || [folderType isEqualToString: @"calendar"])
+    {
+      parentFolder = [userFolder lookupName: @"Calendar"
+				 inContext: context acquire: NO];
+      [folders
+	addObjectsFromArray: [self _subFoldersFromFolder: parentFolder]];
+    }
+  if ([folderType length] == 0 || [folderType isEqualToString: @"contact"])
+    {
+      parentFolder = [userFolder lookupName: @"Contacts"
+				 inContext: context acquire: NO];
+      [folders
+	addObjectsFromArray: [self _subFoldersFromFolder: parentFolder]];
+    }
+
+  return folders;
+}
+
+- (NSDictionary *) foldersOfType: (NSString *) type
+		     matchingUID: (NSString *) uid
+{
+  NSArray *contacts, *folders;
+  NSEnumerator *enumerator;
+  NSDictionary *contact;
+  NSMutableDictionary *results;
+
+  results = [NSMutableDictionary dictionary];
+
+  contacts
+    = [[LDAPUserManager sharedUserManager] fetchContactsMatching: uid];
+  enumerator = [contacts objectEnumerator];
+  while ((contact = [enumerator nextObject]))
+    {
+      uid = [contact objectForKey: @"c_uid"];
+      folders = [self foldersOfType: type
+		      forUID: [contact objectForKey: @"c_uid"]];
+      [results setObject: folders forKey: contact];
+    }
+
+  return results;
+}
+
+- (NSString *) _baseDAVURLWithSuffix: (NSString *) suffix
+{
+  NSURL *prefixURL;
+
+  prefixURL = [NSURL URLWithString: [NSString stringWithFormat: @"../%@", suffix]
+		     relativeToURL: [self davURL]];
+
+  return [[prefixURL standardizedURL] absoluteString];
+}
+
+- (void) _appendFolders: (NSDictionary *) users
+	     toResponse: (WOResponse *) r
+{
+  NSDictionary *currentContact, *currentFolder;
+  NSEnumerator *keys, *folders;
+  NSString *baseHREF, *data;
+
+  baseHREF = [self _baseDAVURLWithSuffix: @"./"];
+
+  keys = [[users allKeys] objectEnumerator];
+  while ((currentContact = [keys nextObject]))
+    {
+      folders = [[users objectForKey: currentContact] objectEnumerator];
+      while ((currentFolder = [folders nextObject]))
+	{
+	  [r appendContentString: @"<D:response><D:href>"];
+	  data = [NSString stringWithFormat: @"%@%@%@", baseHREF,
+			   [currentContact objectForKey: @"c_uid"],
+			   [currentFolder objectForKey: @"name"]];
+	  [r appendContentString: data];
+	  [r appendContentString: @"</D:href><D:propstat>"];
+	  [r appendContentString: @"<D:status>HTTP/1.1 200 OK</D:status>"];
+	  [r appendContentString: @"</D:propstat><D:owner>"];
+	  data = [NSString stringWithFormat: @"%@users/%@", baseHREF,
+			   [currentContact objectForKey: @"c_uid"]];
+	  [r appendContentString: data];
+	  [r appendContentString: @"</D:owner><ownerdisplayname>"];
+	  data = [currentContact keysWithFormat: @"%{cn} <%{c_email}>"];
+	  [r appendContentString: [data stringByEscapingXMLString]];
+	  [r appendContentString: @"</ownerdisplayname><D:displayname>"];
+	  data = [currentFolder objectForKey: @"displayName"];
+	  [r appendContentString: [data stringByEscapingXMLString]];
+	  [r appendContentString: @"</D:displayname></D:response>\r\n"];
+	}
+    }
+}
+
+- (void) _appendCollectionsMatchingFilter: (NSDictionary *) filter
+			       toResponse: (WOResponse *) r
+{
+  NSString *prefix, *queryOwner, *uid;
+  NSDictionary *folders;
+
+  prefix = [self _baseDAVURLWithSuffix: @"users/"];
+  queryOwner = [filter objectForKey: @"owner"];
+  if ([queryOwner hasPrefix: prefix])
+    {
+      uid = [queryOwner substringFromIndex: [prefix length]];
+      folders = [self foldersOfType: [filter objectForKey: @"resource-type"]
+		      matchingUID: uid];
+      [self _appendFolders: folders toResponse: r];
+    }
+}
+
+- (id) davCollectionQuery: (id) queryContext
+{
+  WOResponse *r;
+  NSDictionary *filter;
+  id <DOMDocument> document;
+
+  r = [context response];
+  [r setStatus: 207];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
+     @" xmlns=\"urn:ietf:params:xml:ns:inverse-dav\">\r\n"];
+
+  document = [[context request] contentAsDOMDocument];
+  filter = [self _parseCollectionFilters: document];
+  [self _appendCollectionsMatchingFilter: filter toResponse: r];
+
+  [r appendContentString:@"</D:multistatus>\r\n"];
+
+  return r;
 }
 
 // - (SOGoGroupsFolder *) lookupGroupsFolder

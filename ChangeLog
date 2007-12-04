@@ -1,3 +1,32 @@
+2007-12-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davCalendarQuery:queryContext]): fixed a leak.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder -davSubscribe:localContext])
+	([SOGoGCSFolder -davUnsubscribe:localContext]): subscribe an
+	unsubscribe from DAV-based accesses. We could be compatible with
+	Microsoft's extensions but we have no need for a "subcription id",
+	so we implement our own.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-POSTAction:localContext]): new method to intercept DAV POSTs,
+	which we now use to implement certain custom commands such as
+	"subscribe" and "unsubscribe".
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davNamespaces]): declare the
+	"urn:inverse:params:xml:ns:inverse-dav" xml ns.
+	([SOGoUserFolder -foldersOfType:folderTypeforUID:uid]): new method
+	designed to replace the UIxContactFoldersView.m mechanism for
+	displaying folders to subcribe to, as a common code base for both
+	Web and DAV-based subscriptions.
+	([SOGoUserFolder -foldersOfType:typematchingUID:uid]): same as
+	above.
+	([SOGoUserFolder -davCollectionQuery:queryContext]): new method
+	that implement a custom DAV-based protocol query for querying
+	folder based on specified attributes.
+
 2007-12-03  Ludovic Marcotte <ludovic@inverse.ca>
 
 	* Main/NSException+Stacktrace.{h,m} - new files

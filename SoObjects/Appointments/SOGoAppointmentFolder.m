@@ -238,8 +238,7 @@ static NSNumber   *sharedYes = nil;
   NSMutableArray *filters;
   NSDictionary *filter;
 
-  filters = [NSMutableArray new];
-
+  filters = [NSMutableArray array];
   children = [[parentNode getElementsByTagName: @"comp-filter"]
 	       objectEnumerator];
   node = [children nextObject];
@@ -268,8 +267,7 @@ static NSNumber   *sharedYes = nil;
   max = [filters count];
   for (count = 0; count < max; count++)
     {
-#warning huh? why not objectAtIndex: count?
-      currentFilter = [filters objectAtIndex: 0];
+      currentFilter = [filters objectAtIndex: count];
       apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
 		   title: [currentFilter objectForKey: @"title"]

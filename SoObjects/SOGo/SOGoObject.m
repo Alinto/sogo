@@ -46,6 +46,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMProtocols.h>
 #import <NGCards/NSDictionary+NGCards.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
@@ -644,6 +645,42 @@ static BOOL kontactGroupDAV = YES;
     [response setHeader: etag forKey: @"etag"];
 
   return response;
+}
+
+- (NSString *) _parseXMLCommand: (id <DOMDocument>) document
+{
+  NSString *command;
+
+  command = [[document firstChild] nodeName];
+
+  return [NSString stringWithFormat: @"%@:", command];
+}
+
+- (id) POSTAction: (id) localContext
+{
+  id obj;
+  NSString *cType, *command;
+  id <DOMDocument> document;
+  SEL commandSel;
+  WORequest *rq;
+
+  obj = nil;
+
+  rq = [localContext request];
+  if ([rq isSoWebDAVRequest])
+    {
+      cType = [rq headerForKey: @"content-type"];
+      if ([cType isEqualToString: @"application/xml"])
+	{
+	  document = [rq contentAsDOMDocument];
+	  command = [[self _parseXMLCommand: document] davMethodToObjC];
+	  commandSel = NSSelectorFromString (command);
+	  if ([self respondsToSelector: commandSel])
+	    obj = [self performSelector: commandSel withObject: localContext];
+	}
+    }
+
+  return obj;
 }
 
 - (id) GETAction: (id) localContext
