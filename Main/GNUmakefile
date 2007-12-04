@@ -6,7 +6,7 @@ include ../Version
 include ./Version
 
 ADDITIONAL_INCLUDE_DIRS += -I../SOPE/
-ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ -lbfd
 
 SOGOD     = sogod-$(MAJOR_VERSION).$(MINOR_VERSION)
 TOOL_NAME = $(SOGOD)

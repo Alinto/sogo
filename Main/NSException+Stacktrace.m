@@ -36,6 +36,9 @@
 #include <Foundation/NSProcessInfo.h>
 #include <Foundation/NSThread.h>
 
+#if GNUSTEP_BASE_MAJOR_VERSION >= 1
+#if GNUSTEP_BASE_MINOR_VERSION > 13
+
 //
 //
 //
@@ -65,12 +68,14 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
 //
 //
 //
+
 #define	STACKSYMBOLS	1
 
 @interface GSStackTrace : NSObject
 {
   NSMutableArray *frames;
 }
+
 + (GSStackTrace*) currentStack;
 
 - (NSString*) description;
@@ -81,7 +86,7 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
 
 @end
 
-#if	defined(STACKSYMBOLS)
+#ifdef STACKSYMBOLS
 
 // GSStackTrace inspired by  FYStackTrace.m
 // created by Wim Oudshoorn on Mon 11-Apr-2006
@@ -538,3 +543,6 @@ GSLoadModule(NSString *fileName)
 }
 
 @end
+
+#endif /* GNUSTEP_BASE_MINOR_VERSION */
+#endif /* GNUSTEP_BASE_MAJOR_VERSION */
