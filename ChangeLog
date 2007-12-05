@@ -1,5 +1,8 @@
 2007-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/NSException+Stacktrace.m: added missing symbols from
+	NSException.m and NSDebug.m (GNUstep).
+
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
 	-foldersSearchAction]): make use of the new search methods in
 	SOGoUserFolder (see below).

@@ -27,17 +27,25 @@
          by Ludovic Marcotte <ludovic@inverse.ca>
 */
 
-#include "NSException+Stacktrace.h"
+#include <bfd.h>
+#include <dlfcn.h>
+#include <signal.h>
 
-#include <Foundation/NSArray.h>
-#include <Foundation/NSBundle.h>
-#include <Foundation/NSLock.h>
-#include <Foundation/NSNull.h>
-#include <Foundation/NSProcessInfo.h>
-#include <Foundation/NSThread.h>
+typedef void* dl_handle_t;
+typedef void* dl_symbol_t;
 
-#if GNUSTEP_BASE_MAJOR_VERSION >= 1
-#if GNUSTEP_BASE_MINOR_VERSION > 13
+#import "NSException+Stacktrace.h"
+
+#import <Foundation/NSArray.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSLock.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSThread.h>
+
+// #if GNUSTEP_BASE_MAJOR_VERSION >= 1
+// #if GNUSTEP_BASE_MINOR_VERSION > 13
 
 //
 //
@@ -91,8 +99,6 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
 // GSStackTrace inspired by  FYStackTrace.m
 // created by Wim Oudshoorn on Mon 11-Apr-2006
 // reworked by Lloyd Dupont @ NovaMind.com  on 4-May-2006
-
-#include <bfd.h>
 
 @class GSBinaryFileInfo;
 
@@ -544,5 +550,340 @@ GSLoadModule(NSString *fileName)
 
 @end
 
-#endif /* GNUSTEP_BASE_MINOR_VERSION */
-#endif /* GNUSTEP_BASE_MAJOR_VERSION */
+static jmp_buf *
+jbuf()
+{
+  NSMutableData	*d;
+
+  d = [[[NSThread currentThread] threadDictionary] objectForKey: @"GSjbuf"];
+  if (d == nil)
+    {
+      d = [[NSMutableData alloc] initWithLength:
+	sizeof(jmp_buf) + sizeof(void(*)(int))];
+      [[[NSThread currentThread] threadDictionary] setObject: d
+						      forKey: @"GSjbuf"];
+      RELEASE(d);
+    }
+  return (jmp_buf*)[d mutableBytes];
+}
+
+static void
+recover(int sig)
+{
+  jmp_buf	*env = jbuf();
+
+  longjmp(*env, 1);
+}
+
+#define _NS_FRAME_HACK(a) case a: val = __builtin_frame_address(a + 1); break;
+#define _NS_RETURN_HACK(a) case a: val = __builtin_return_address(a + 1); break;
+
+static void *
+NSFrameAddress(int offset)
+{
+  jmp_buf	*env;
+  void		(*old)(int);
+  void		*val;
+
+  env = jbuf();
+  if (setjmp(*env) == 0)
+    {
+      old = signal(SIGSEGV, recover);
+      memcpy(env + 1, &old, sizeof(old));
+      switch (offset)
+	{
+	  _NS_FRAME_HACK(0); _NS_FRAME_HACK(1); _NS_FRAME_HACK(2);
+	  _NS_FRAME_HACK(3); _NS_FRAME_HACK(4); _NS_FRAME_HACK(5);
+	  _NS_FRAME_HACK(6); _NS_FRAME_HACK(7); _NS_FRAME_HACK(8);
+	  _NS_FRAME_HACK(9); _NS_FRAME_HACK(10); _NS_FRAME_HACK(11);
+	  _NS_FRAME_HACK(12); _NS_FRAME_HACK(13); _NS_FRAME_HACK(14);
+	  _NS_FRAME_HACK(15); _NS_FRAME_HACK(16); _NS_FRAME_HACK(17);
+	  _NS_FRAME_HACK(18); _NS_FRAME_HACK(19); _NS_FRAME_HACK(20);
+	  _NS_FRAME_HACK(21); _NS_FRAME_HACK(22); _NS_FRAME_HACK(23);
+	  _NS_FRAME_HACK(24); _NS_FRAME_HACK(25); _NS_FRAME_HACK(26);
+	  _NS_FRAME_HACK(27); _NS_FRAME_HACK(28); _NS_FRAME_HACK(29);
+	  _NS_FRAME_HACK(30); _NS_FRAME_HACK(31); _NS_FRAME_HACK(32);
+	  _NS_FRAME_HACK(33); _NS_FRAME_HACK(34); _NS_FRAME_HACK(35);
+	  _NS_FRAME_HACK(36); _NS_FRAME_HACK(37); _NS_FRAME_HACK(38);
+	  _NS_FRAME_HACK(39); _NS_FRAME_HACK(40); _NS_FRAME_HACK(41);
+	  _NS_FRAME_HACK(42); _NS_FRAME_HACK(43); _NS_FRAME_HACK(44);
+	  _NS_FRAME_HACK(45); _NS_FRAME_HACK(46); _NS_FRAME_HACK(47);
+	  _NS_FRAME_HACK(48); _NS_FRAME_HACK(49); _NS_FRAME_HACK(50);
+	  _NS_FRAME_HACK(51); _NS_FRAME_HACK(52); _NS_FRAME_HACK(53);
+	  _NS_FRAME_HACK(54); _NS_FRAME_HACK(55); _NS_FRAME_HACK(56);
+	  _NS_FRAME_HACK(57); _NS_FRAME_HACK(58); _NS_FRAME_HACK(59);
+	  _NS_FRAME_HACK(60); _NS_FRAME_HACK(61); _NS_FRAME_HACK(62);
+	  _NS_FRAME_HACK(63); _NS_FRAME_HACK(64); _NS_FRAME_HACK(65);
+	  _NS_FRAME_HACK(66); _NS_FRAME_HACK(67); _NS_FRAME_HACK(68);
+	  _NS_FRAME_HACK(69); _NS_FRAME_HACK(70); _NS_FRAME_HACK(71);
+	  _NS_FRAME_HACK(72); _NS_FRAME_HACK(73); _NS_FRAME_HACK(74);
+	  _NS_FRAME_HACK(75); _NS_FRAME_HACK(76); _NS_FRAME_HACK(77);
+	  _NS_FRAME_HACK(78); _NS_FRAME_HACK(79); _NS_FRAME_HACK(80);
+	  _NS_FRAME_HACK(81); _NS_FRAME_HACK(82); _NS_FRAME_HACK(83);
+	  _NS_FRAME_HACK(84); _NS_FRAME_HACK(85); _NS_FRAME_HACK(86);
+	  _NS_FRAME_HACK(87); _NS_FRAME_HACK(88); _NS_FRAME_HACK(89);
+	  _NS_FRAME_HACK(90); _NS_FRAME_HACK(91); _NS_FRAME_HACK(92);
+	  _NS_FRAME_HACK(93); _NS_FRAME_HACK(94); _NS_FRAME_HACK(95);
+	  _NS_FRAME_HACK(96); _NS_FRAME_HACK(97); _NS_FRAME_HACK(98);
+	  _NS_FRAME_HACK(99);
+	  default: val = NULL; break;
+	}
+      signal(SIGSEGV, old);
+    }
+  else
+    {
+      env = jbuf();
+      memcpy(&old, env + 1, sizeof(old));
+      signal(SIGSEGV, old);
+      val = NULL;
+    }
+  return val;
+}
+
+static void *
+NSReturnAddress(int offset)
+{
+  jmp_buf	*env;
+  void		(*old)(int);
+  void		*val;
+
+  env = jbuf();
+  if (setjmp(*env) == 0)
+    {
+      old = signal(SIGSEGV, recover);
+      memcpy(env + 1, &old, sizeof(old));
+      switch (offset)
+	{
+	  _NS_RETURN_HACK(0); _NS_RETURN_HACK(1); _NS_RETURN_HACK(2);
+	  _NS_RETURN_HACK(3); _NS_RETURN_HACK(4); _NS_RETURN_HACK(5);
+	  _NS_RETURN_HACK(6); _NS_RETURN_HACK(7); _NS_RETURN_HACK(8);
+	  _NS_RETURN_HACK(9); _NS_RETURN_HACK(10); _NS_RETURN_HACK(11);
+	  _NS_RETURN_HACK(12); _NS_RETURN_HACK(13); _NS_RETURN_HACK(14);
+	  _NS_RETURN_HACK(15); _NS_RETURN_HACK(16); _NS_RETURN_HACK(17);
+	  _NS_RETURN_HACK(18); _NS_RETURN_HACK(19); _NS_RETURN_HACK(20);
+	  _NS_RETURN_HACK(21); _NS_RETURN_HACK(22); _NS_RETURN_HACK(23);
+	  _NS_RETURN_HACK(24); _NS_RETURN_HACK(25); _NS_RETURN_HACK(26);
+	  _NS_RETURN_HACK(27); _NS_RETURN_HACK(28); _NS_RETURN_HACK(29);
+	  _NS_RETURN_HACK(30); _NS_RETURN_HACK(31); _NS_RETURN_HACK(32);
+	  _NS_RETURN_HACK(33); _NS_RETURN_HACK(34); _NS_RETURN_HACK(35);
+	  _NS_RETURN_HACK(36); _NS_RETURN_HACK(37); _NS_RETURN_HACK(38);
+	  _NS_RETURN_HACK(39); _NS_RETURN_HACK(40); _NS_RETURN_HACK(41);
+	  _NS_RETURN_HACK(42); _NS_RETURN_HACK(43); _NS_RETURN_HACK(44);
+	  _NS_RETURN_HACK(45); _NS_RETURN_HACK(46); _NS_RETURN_HACK(47);
+	  _NS_RETURN_HACK(48); _NS_RETURN_HACK(49); _NS_RETURN_HACK(50);
+	  _NS_RETURN_HACK(51); _NS_RETURN_HACK(52); _NS_RETURN_HACK(53);
+	  _NS_RETURN_HACK(54); _NS_RETURN_HACK(55); _NS_RETURN_HACK(56);
+	  _NS_RETURN_HACK(57); _NS_RETURN_HACK(58); _NS_RETURN_HACK(59);
+	  _NS_RETURN_HACK(60); _NS_RETURN_HACK(61); _NS_RETURN_HACK(62);
+	  _NS_RETURN_HACK(63); _NS_RETURN_HACK(64); _NS_RETURN_HACK(65);
+	  _NS_RETURN_HACK(66); _NS_RETURN_HACK(67); _NS_RETURN_HACK(68);
+	  _NS_RETURN_HACK(69); _NS_RETURN_HACK(70); _NS_RETURN_HACK(71);
+	  _NS_RETURN_HACK(72); _NS_RETURN_HACK(73); _NS_RETURN_HACK(74);
+	  _NS_RETURN_HACK(75); _NS_RETURN_HACK(76); _NS_RETURN_HACK(77);
+	  _NS_RETURN_HACK(78); _NS_RETURN_HACK(79); _NS_RETURN_HACK(80);
+	  _NS_RETURN_HACK(81); _NS_RETURN_HACK(82); _NS_RETURN_HACK(83);
+	  _NS_RETURN_HACK(84); _NS_RETURN_HACK(85); _NS_RETURN_HACK(86);
+	  _NS_RETURN_HACK(87); _NS_RETURN_HACK(88); _NS_RETURN_HACK(89);
+	  _NS_RETURN_HACK(90); _NS_RETURN_HACK(91); _NS_RETURN_HACK(92);
+	  _NS_RETURN_HACK(93); _NS_RETURN_HACK(94); _NS_RETURN_HACK(95);
+	  _NS_RETURN_HACK(96); _NS_RETURN_HACK(97); _NS_RETURN_HACK(98);
+	  _NS_RETURN_HACK(99);
+	  default: val = NULL; break;
+	}
+      signal(SIGSEGV, old);
+    }
+  else
+    {
+      env = jbuf();
+      memcpy(&old, env + 1, sizeof(old));
+      signal(SIGSEGV, old);
+      val = NULL;
+    }
+
+  return val;
+}
+
+static unsigned NSCountFrames(void)
+{
+   unsigned    x = 0;
+
+   while (NSFrameAddress(x + 1)) x++;
+
+   return x;
+}
+
+
+static void *
+__objc_dynamic_get_symbol_path(dl_handle_t handle, dl_symbol_t symbol)
+{
+  dl_symbol_t sym;
+  Dl_info     info;
+
+  if (handle == 0)
+    handle = RTLD_DEFAULT;
+
+  sym = dlsym(handle, symbol);
+
+  if (!sym)
+    return NULL;
+
+  if (!dladdr(sym, &info))
+    return NULL;
+
+  return (void *) info.dli_fname;
+}
+
+static NSArray*
+GSListModules()
+{
+  NSArray	*result;
+
+  GSLoadModule(nil);	// initialise
+  [modLock lock];
+  result = [stackModules allValues];
+  [modLock unlock];
+  return result;
+}
+
+@implementation GSStackTrace : NSObject
+
++ (GSStackTrace*) currentStack
+{
+  return [[[GSStackTrace alloc] init] autorelease];
+}
+
+- (oneway void) dealloc
+{
+  [frames release];
+  frames = nil;
+
+  [super dealloc];
+}
+
+- (NSString*) description
+{
+  NSMutableString *result = [NSMutableString string];
+  int i;
+  int n;
+
+  n = [frames count];
+  for (i = 0; i < n; i++)
+    {
+      id	line = [frames objectAtIndex: i];
+
+      [result appendFormat: @"%3d: %@\n", i, line];
+    }
+  return result;
+}
+
+- (NSEnumerator*) enumerator
+{
+  return [frames objectEnumerator];
+}
+
+- (id) frameAt: (unsigned)index
+{
+  return [frames objectAtIndex: index];
+}
+
+- (unsigned) frameCount
+{
+  return [frames count];
+}
+
+// grab the current stack 
+- (id) init
+{
+#if	defined(STACKSYMBOLS)
+  int i;
+  int n;
+
+  frames = [[NSMutableArray alloc] init];
+  n = NSCountFrames();
+
+  for (i = 0; i < n; i++)
+    {
+      GSFunctionInfo	*aFrame = nil;
+      void		*address = NSReturnAddress(i);
+      void		*base;
+      NSString		*modulePath = __objc_dynamic_get_symbol_path(address, &base);
+      GSBinaryFileInfo	*bfi;
+
+      if (modulePath != nil && (bfi = GSLoadModule(modulePath)) != nil)
+        {
+	  aFrame = [bfi functionForAddress: (void*)(address - base)];
+	  if (aFrame == nil)
+	    {
+	      /* We know we have the right module be function lookup
+	       * failed ... perhaps we need to use the absolute
+	       * address rather than offest by 'base' in this case.
+	       */
+	      aFrame = [bfi functionForAddress: address];
+	    }
+//if (aFrame == nil) NSLog(@"BFI base for %@ (%p) is %p", modulePath, address, base);
+	}
+      else
+        {
+	  NSArray	*modules;
+	  int		j;
+	  int		m;
+
+//if (modulePath != nil) NSLog(@"BFI not found for %@ (%p)", modulePath, address);
+
+	  modules = GSListModules();
+	  m = [modules count];
+	  for (j = 0; j < m; j++)
+	    {
+	      bfi = [modules objectAtIndex: j];
+
+	      if ((id)bfi != (id)[NSNull null])
+		{
+		  aFrame = [bfi functionForAddress: address];
+		  if (aFrame != nil)
+		    {
+		      break;
+		    }
+		}
+	    }
+	}
+
+      // not found (?!), add an 'unknown' function
+      if (aFrame == nil)
+	{
+	  aFrame = [GSFunctionInfo alloc];
+	  [aFrame initWithModule: nil
+			 address: address 
+			    file: nil
+			function: nil
+			    line: 0];
+	  [aFrame autorelease];
+	}
+      [frames addObject: aFrame];
+    }
+#else
+  int i;
+  int n;
+
+  frames = [[NSMutableArray alloc] init];
+  n = NSCountFrames();
+
+  for (i = 0; i < n; i++)
+    {
+      void		*address = NSReturnAddress(i);
+
+      [frames addObject: [NSString stringWithFormat: @"%p", address]];
+    }
+#endif
+
+  return self;
+}
+
+- (NSEnumerator*) reverseEnumerator
+{
+  return [frames reverseObjectEnumerator];
+}
+
+@end
+
+// #endif /* GNUSTEP_BASE_MINOR_VERSION */
+// #endif /* GNUSTEP_BASE_MAJOR_VERSION */
