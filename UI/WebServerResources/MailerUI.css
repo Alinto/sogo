@@ -663,8 +663,7 @@ DIV#rightDragHandle
     overflow: visible; }
 
   TD.mailer_fieldname
-  { text-align: left;
-    width: auto; }
+  { text-align: left; }
 
   TD.mailer_fieldvalue
   { white-space: normal; }
