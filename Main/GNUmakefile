@@ -17,7 +17,6 @@ all::
 
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
-#	NSException+Stacktrace.m\
 	SOGo.m			\
 	SOGoProductLoader.m	\
 	build.m
