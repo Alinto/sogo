@@ -593,9 +593,10 @@
     return [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
                         reason: @"could not create a unique ID"];
 
-  nextMethod = [NSString stringWithFormat: @"../%@/%@", 
+  nextMethod = [NSString stringWithFormat: @"../%@.vcf/%@", 
 			 objectId, [self editActionName]];
   uri = [self _completeURIForMethod: nextMethod];
+
   return [self redirectToLocation: uri];
 }
 

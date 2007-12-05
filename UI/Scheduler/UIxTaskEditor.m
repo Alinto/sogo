@@ -338,7 +338,7 @@
   objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/%@/editAsTask",
+      method = [NSString stringWithFormat:@"%@/%@.ics/editAsTask",
                          [co soURL], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];

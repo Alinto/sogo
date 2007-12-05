@@ -1,5 +1,14 @@
 2007-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -newAction]):
+	create task obejcts with the .ics extension.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-newAction]): create appointment objects with the .ics extension.
+
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor -newAction]):
+	create objects with the .vcf extension.
+
 	* Main/NSException+Stacktrace.m: added missing symbols from
 	NSException.m and NSDebug.m (GNUstep).
 

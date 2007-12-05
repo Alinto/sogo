@@ -344,7 +344,7 @@
   objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/%@/editAsAppointment",
+      method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
                          [co soURL], objectId];
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
