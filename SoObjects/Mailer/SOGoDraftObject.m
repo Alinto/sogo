@@ -466,27 +466,6 @@ static BOOL        showTextAttachmentsInline  = NO;
   [self _addRecipients: addrs toArray: allRecipients];
   [_info setObject: to forKey: @"to"];
 
-  /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
-  if (_replyToAll)
-    {
-      to = [NSMutableArray new];
-
-      [addrs setArray: [_envelope to]];
-      [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
-      [self _addEMailsOfAddresses: addrs toArray: to];
-      [self _addRecipients: addrs toArray: allRecipients];
-
-      [addrs setArray: [_envelope cc]];
-      [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
-      [self _addEMailsOfAddresses: addrs toArray: to];
-    
-      [_info setObject: to forKey: @"cc"];
-
-      [to release];
-    }
-
   /* If "to" is empty, we add at least ourself as a recipient!
      This is for emails in the "Sent" folder that we reply to... */
   if (![to count])
@@ -506,6 +485,27 @@ static BOOL        showTextAttachmentsInline  = NO;
       o = [_info objectForKey: @"cc"];
       [_info setObject: o  forKey: @"to"];
       [_info removeObjectForKey: @"cc"];
+    }
+
+  /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
+  if (_replyToAll)
+    {
+      to = [NSMutableArray new];
+
+      [addrs setArray: [_envelope to]];
+      [self _purgeRecipients: allRecipients
+	    fromAddresses: addrs];
+      [self _addEMailsOfAddresses: addrs toArray: to];
+      [self _addRecipients: addrs toArray: allRecipients];
+
+      [addrs setArray: [_envelope cc]];
+      [self _purgeRecipients: allRecipients
+	    fromAddresses: addrs];
+      [self _addEMailsOfAddresses: addrs toArray: to];
+    
+      [_info setObject: to forKey: @"cc"];
+
+      [to release];
     }
 
   [allRecipients release];
