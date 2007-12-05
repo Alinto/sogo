@@ -918,7 +918,12 @@ function onSearchKeyDown(event) {
   if (this.timer)
     clearTimeout(this.timer);
 
-  this.timer = setTimeout("onSearchFormSubmit()", 1000);
+  if (event.keyCode == 13) {
+    onSearchFormSubmit();
+    event.preventDefault();
+  }
+  else
+    this.timer = setTimeout("onSearchFormSubmit()", 1000);
 }
 
 function onSearchFormSubmit(event) {

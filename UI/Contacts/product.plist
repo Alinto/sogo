@@ -27,11 +27,6 @@
               pageName    = "UIxContactFoldersView";
               actionName  = "contactSearch";
            };
-           foldersSearch = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "foldersSearch";
-           };
            updateAdditionalAddressBooks = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";

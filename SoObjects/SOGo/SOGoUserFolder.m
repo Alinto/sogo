@@ -131,27 +131,27 @@
   return filter;
 }
 
-#warning UIxContactsFoldersView should use these methods\
-         instead from now on...
-
 - (NSArray *) _subFoldersFromFolder: (SOGoParentFolder *) parentFolder
 {
   NSMutableArray *folders;
   NSEnumerator *subfolders;
   SOGoFolder *currentFolder;
-  NSString *folderName;
+  NSString *folderName, *folderOwner;
   NSMutableDictionary *currentDictionary;
   SoSecurityManager *securityManager;
 
+  folderOwner = [parentFolder ownerInContext: context];
   securityManager = [SoSecurityManager sharedSecurityManager];
-   
+
   folders = [NSMutableArray array];
 
   subfolders = [[parentFolder subFolders] objectEnumerator];
   while ((currentFolder = [subfolders nextObject]))
     {
       if (![securityManager validatePermission: SOGoPerm_AccessObject
-			    onObject: currentFolder inContext: context])
+			    onObject: currentFolder inContext: context]
+	  && [[currentFolder ownerInContext: context]
+	       isEqualToString: folderOwner])
 	{
 	  folderName = [NSString stringWithFormat: @"/%@/%@",
 				 [parentFolder nameInContainer],

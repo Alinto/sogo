@@ -27,6 +27,7 @@
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -36,6 +37,7 @@
 #import <Appointments/SOGoFreeBusyObject.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserFolder.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
@@ -228,6 +230,87 @@ static NSString *defaultModule = nil;
   [response setHeader: @"no-cache" forKey: @"Pragma"];
 
   return response;
+}
+
+- (NSString *) _foldersStringForFolders: (NSEnumerator *) folders
+{
+  NSMutableString *foldersString;
+  NSDictionary *currentFolder;
+
+  foldersString = [NSMutableString new];
+  [foldersString autorelease];
+
+  currentFolder = [folders nextObject];
+  while (currentFolder)
+    {
+      [foldersString appendFormat: @";%@:%@:%@",
+		     [currentFolder objectForKey: @"displayName"],
+		     [currentFolder objectForKey: @"name"],
+		     [currentFolder objectForKey: @"type"]];
+      currentFolder = [folders nextObject];
+    }
+
+  return foldersString;
+}
+
+- (WOResponse *) _foldersResponseForResults: (NSDictionary *) results
+{
+  WOResponse *response;
+  NSString *uid, *foldersString;
+  NSMutableString *responseString;
+  NSDictionary *contact;
+  NSEnumerator *contacts;
+  NSArray *folders;
+
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"Content-Type"];
+
+  responseString = [NSMutableString new];
+  contacts = [[results allKeys] objectEnumerator];
+  while ((contact = [contacts nextObject]))
+    {
+      uid = [contact objectForKey: @"c_uid"];
+      folders = [results objectForKey: contact];
+      foldersString
+	= [self _foldersStringForFolders: [folders objectEnumerator]];
+      [responseString appendFormat: @"%@:%@:%@%@\n", uid,
+		      [contact objectForKey: @"cn"],
+		      [contact objectForKey: @"c_email"],
+		      foldersString];
+    }
+  [response appendContentString: responseString];
+  [responseString release];
+
+  return response;
+}
+
+- (id <WOActionResults>) foldersSearchAction
+{
+  NSString *contact, *folderType;
+  NSDictionary *folders;
+  id <WOActionResults> result;
+
+  contact = [self queryParameterForKey: @"search"];
+  if ([contact length])
+    {
+      folderType = [self queryParameterForKey: @"type"];
+      if ([folderType length])
+	{
+	  folders = [[self clientObject] foldersOfType: folderType
+					 matchingUID: contact];
+	  result = [self _foldersResponseForResults: folders];
+	}
+      else
+	result = [NSException exceptionWithHTTPStatus: 400
+			      reason: @"missing 'type' parameter"];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'search' parameter"];
+
+  return result;
 }
 
 @end

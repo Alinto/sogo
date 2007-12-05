@@ -1,3 +1,16 @@
+2007-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-foldersSearchAction]): make use of the new search methods in
+	SOGoUserFolder (see below).
+
+	* UI/Contacts/UIxContactFoldersView.m ([-foldersSearchAction]):
+	moved method into ../MainUI/SOGoUserHomePage.m.
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-foldersOfType:folderTypeforUID:uid]): only return folders owned
+	by the specified user.
+
 2007-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m: The condition for replyToAll

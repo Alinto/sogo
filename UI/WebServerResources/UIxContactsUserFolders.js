@@ -1,8 +1,8 @@
 function onSearchFormSubmit() {
   var searchValue = $("searchValue");
 
-  var url = (ApplicationBaseURL
-	     + "/foldersSearch?ldap-only=YES&search=" + escape(searchValue.value)
+  var url = (UserFolderURL
+	     + "foldersSearch?search=" + escape(searchValue.value)
 	     + "&type=" + window.opener.userFolderType);
   if (document.userFoldersRequest) {
      document.userFoldersRequest.aborted = true;
@@ -97,6 +97,7 @@ function userFoldersCallback(http) {
       if (http.status == 200) {
 	 var response = http.responseText;
 	 div.innerHTML = buildTree(http.responseText);
+	 div.clean = false;
 	 var nodes = document.getElementsByClassName("node", $("d"));
 	 for (i = 0; i < nodes.length; i++)
 	   Event.observe(nodes[i], "click", onFolderTreeItemClick.bindAsEventListener(nodes[i]));
@@ -136,9 +137,17 @@ function onConfirmFolderSelection(event) {
    }
 }
 
+function onFolderSearchKeyDown(event) {
+  var div = $("folders");
+  if (!div.clean) {
+    div.innerHTML = "";
+    div.clean = true;
+  }
+}
+
 function initUserFoldersWindow() {
-   configureSearchField();
-   Event.observe($("addButton"), "click",  onConfirmFolderSelection);
+  $("searchValue").observe("keydown", onFolderSearchKeyDown);
+  $("addButton").observe("click",  onConfirmFolderSelection);
 }
 
 FastInit.addOnLoad(initUserFoldersWindow);
