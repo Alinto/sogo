@@ -140,20 +140,20 @@ function addressFieldLostFocus(sender) {
 }
 
 function removeLastEditedRowIfEmpty() {
-  var idx, addr, addressList, senderRow;
+  var addr, addressList, senderRow;
   
-  idx = lastIndex;
-  if (idx == 0) return;
-  addr = $('addr_' + idx);
+  addressList = $("addressList").tBodies[0];
+  
+  if (lastIndex == 0 && addressList.childNodes.length <= 2) return;
+  addr = $('addr_' + lastIndex);
   if (!addr) return;
   if (addr.value.strip() != '') return;
-  addr = this.findAddressWithIndex(idx);
+  addr = this.findAddressWithIndex(lastIndex);
   if(addr) {
     var addresses = $('addr_addresses');
     addresses.removeChild(addr);
   }
-  addressList = $("addressList").tBodies[0];
-  senderRow = $("row_" + idx);
+  senderRow = $("row_" + lastIndex);
   addressList.removeChild(senderRow);
 }
 

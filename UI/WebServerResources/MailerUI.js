@@ -255,9 +255,11 @@ function deleteSelectedMessagesCallback(http) {
 //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
       
 	if (deleteMessageRequestCount == 0) {
-	  if (nextRow)
+	  if (nextRow) {
 	    Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
-	  openMailbox(data["mailbox"], true);
+	    nextRow.select();
+	    loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
+	  }
 	}
       }
     }
@@ -522,7 +524,10 @@ function messageListCallback(http) {
       if (row) {
 	row.select();
 	lastClickedRow = row.rowIndex - $(row).up('table').down('thead').getElementsByTagName('tr').length;  
-	div.scrollTop = row.rowIndex * row.getHeight(); // scroll to selected message
+	var rowPosition = row.rowIndex * row.getHeight();
+	if ($(row).up('div').getHeight() > rowPosition)
+	  rowPosition = 0;
+	div.scrollTop = rowPosition; // scroll to selected message
       }
       else
 	$("messageContent").update();
@@ -715,7 +720,6 @@ function onMessageSelectionChange() {
 
   if (rows.length == 1) {
     var idx = rows[0].substr(4);
-
     if (Mailer.currentMessages[Mailer.currentMailbox] != idx) {
       Mailer.currentMessages[Mailer.currentMailbox] = idx;
       loadMessage(idx);

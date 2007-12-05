@@ -74,7 +74,8 @@ function _editEventId(id, calendar) {
   var targetname = "SOGo_edit_" + id;
   var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
-  win.focus();
+  if (win)
+    win.focus();
 }
 
 function editEvent() {
@@ -346,8 +347,8 @@ function eventsListCallback(http) {
 	startDate.setTime(data[i][4] * 1000);
 	row.day = startDate.getDayString();
 	row.hour = startDate.getHourString();
-	Event.observe(row, "click",
-		      onEventClick.bindAsEventListener(row));
+	Event.observe(row, "mousedown", onRowClick);
+	Event.observe(row, "selectstart", listRowMouseDownHandler);
 	Event.observe(row, "dblclick",
 		      editDoubleClickedEvent.bindAsEventListener(row));
 	Event.observe(row, "contextmenu",
@@ -919,21 +920,10 @@ function popupCalendar(node) {
 
 function onEventContextMenu(event) {
   var topNode = $("eventsList");
-//   log(topNode);
-
   var menu = $("eventsListMenu");
 
   Event.observe(menu, "hideMenu",  onEventContextMenuHide);
   popupMenu(event, "eventsListMenu", this);
-
-  var topNode = $("eventsList");
-  var selectedNodes = topNode.getSelectedRows();
-  topNode.menuSelectedRows = selectedNodes;
-  for (var i = 0; i < selectedNodes.length; i++)
-    selectedNodes[i].deselect();
-
-  topNode.menuSelectedEntry = this;
-  this.select();
 }
 
 function onEventContextMenuHide(event) {
@@ -943,20 +933,20 @@ function onEventContextMenuHide(event) {
     topNode.menuSelectedEntry.deselect();
     topNode.menuSelectedEntry = null;
   }
-  if (topNode.menuSelectedRows) {
-    var nodeIds = topNode.menuSelectedRows;
-    for (var i = 0; i < nodeIds.length; i++) {
-      var node = $(nodeIds[i]);
-      node.select();
-    }
-    topNode.menuSelectedRows = null;
-  }
 }
 
 function onEventsSelectionChange() {
   listOfSelection = this;
   this.removeClassName("_unfocused");
   $("tasksList").addClassName("_unfocused");
+
+  var rows = this.tBodies[0].getSelectedNodes();
+  if (rows.length == 1) {
+    var row = rows[0];
+    changeCalendarDisplay( { "day": row.day,
+	  "scrollEvent": row.getAttribute("id") } );
+    changeDateSelectorDisplay(row.day);
+  }
 }
 
 function onTasksSelectionChange() {
@@ -1046,14 +1036,6 @@ function onListFilterChange() {
 //   log ("listFilter = " + listFilter);
 
   return refreshEvents();
-}
-
-function onEventClick(event) {
-  changeCalendarDisplay( { "day": this.day,
-	"scrollEvent": this.getAttribute("id") } );
-  changeDateSelectorDisplay(this.day);
-  
-  return onRowClick(event);
 }
 
 function selectMonthInMenu(menu, month) {
@@ -1721,9 +1703,6 @@ function configureLists() {
    TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
    Event.observe(list, "mousedown",
 		 onEventsSelectionChange.bindAsEventListener(list));
-   var div = list.parentNode;
-   Event.observe(div, "contextmenu",
-		 onEventContextMenu.bindAsEventListener(div));
 }
 
 function initDateSelectorEvents() {

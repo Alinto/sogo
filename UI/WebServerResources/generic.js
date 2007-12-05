@@ -509,9 +509,10 @@ function onRowClick(event) {
   }
 
   var initialSelection = $(node.parentNode).getSelectedNodes();
-
-  if (initialSelection.length > 0 && !Event.isLeftClick(event))
-    // Ignore non primary-click (ie right-click)
+  if (initialSelection.length > 0 
+      && initialSelection.indexOf(node) >= 0
+      && !Event.isLeftClick(event))
+    // Ignore non primary-click (ie right-click) inside current selection
     return true;
   
   if ((event.shiftKey == 1 || event.ctrlKey == 1)
