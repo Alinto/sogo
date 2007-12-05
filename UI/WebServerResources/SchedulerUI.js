@@ -392,7 +392,6 @@ function tasksListCallback(http) {
       var data = http.responseText.evalJSON(true);
 
       for (var i = 0; i < data.length; i++) {
-	//log(i + " = " + data[i][3]);
 	var listItem = document.createElement("li");
 	list.appendChild(listItem);
 	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
@@ -401,6 +400,7 @@ function tasksListCallback(http) {
 		      editDoubleClickedEvent.bindAsEventListener(listItem));
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
+	$(listItem).addClassName(data[i][6]);
 	listItem.calendar = data[i][1];
 	$(listItem).addClassName("calendarFolder" + data[i][1]);
 	listItem.cname = escape(data[i][0]);
