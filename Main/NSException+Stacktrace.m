@@ -77,7 +77,7 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
 //
 //
 
-#define	STACKSYMBOLS	1
+// #define	STACKSYMBOLS	1
 
 @interface GSStackTrace : NSObject
 {
@@ -94,7 +94,7 @@ _NSFoundationUncaughtExceptionHandler (NSException *exception)
 
 @end
 
-#ifdef STACKSYMBOLS
+// #ifdef STACKSYMBOLS
 
 // GSStackTrace inspired by  FYStackTrace.m
 // created by Wim Oudshoorn on Mon 11-Apr-2006
@@ -467,7 +467,7 @@ GSLoadModule(NSString *fileName)
   return module;
 }
 
-#endif	/* STACKSYMBOLS */
+// #endif	/* STACKSYMBOLS */
 
 
 //
@@ -749,14 +749,12 @@ GSListModules()
 
 + (GSStackTrace*) currentStack
 {
-  return [[[GSStackTrace alloc] init] autorelease];
+  return [[GSStackTrace new] autorelease];
 }
 
 - (oneway void) dealloc
 {
   [frames release];
-  frames = nil;
-
   [super dealloc];
 }
 
@@ -794,11 +792,11 @@ GSListModules()
 // grab the current stack 
 - (id) init
 {
-#if	defined(STACKSYMBOLS)
+// #if	defined(STACKSYMBOLS)
   int i;
   int n;
 
-  frames = [[NSMutableArray alloc] init];
+  frames = [NSMutableArray new];
   n = NSCountFrames();
 
   for (i = 0; i < n; i++)
@@ -860,20 +858,20 @@ GSListModules()
 	}
       [frames addObject: aFrame];
     }
-#else
-  int i;
-  int n;
+// #else
+//   int i;
+//   int n;
 
-  frames = [[NSMutableArray alloc] init];
-  n = NSCountFrames();
+//   frames = [NSMutableArray new];
+//   n = NSCountFrames();
 
-  for (i = 0; i < n; i++)
-    {
-      void		*address = NSReturnAddress(i);
+//   for (i = 0; i < n; i++)
+//     {
+//       void		*address = NSReturnAddress(i);
 
-      [frames addObject: [NSString stringWithFormat: @"%p", address]];
-    }
-#endif
+//       [frames addObject: [NSString stringWithFormat: @"%p", address]];
+//     }
+// #endif
 
   return self;
 }

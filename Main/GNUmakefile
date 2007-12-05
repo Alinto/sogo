@@ -6,7 +6,7 @@ include ../Version
 include ./Version
 
 ADDITIONAL_INCLUDE_DIRS += -I../SOPE/ -D_GNU_SOURCE
-ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ -lbfd
+ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
 
 SOGOD     = sogod-$(MAJOR_VERSION).$(MINOR_VERSION)
 TOOL_NAME = $(SOGOD)
@@ -17,7 +17,7 @@ all::
 
 $(SOGOD)_OBJC_FILES += \
 	sogod.m			\
-	NSException+Stacktrace.m\
+#	NSException+Stacktrace.m\
 	SOGo.m			\
 	SOGoProductLoader.m	\
 	build.m
