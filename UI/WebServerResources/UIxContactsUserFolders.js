@@ -30,7 +30,7 @@ function addLineToTree(tree, parent, line) {
       for (var i = 1; i < nodes.length; i++) {
 	 var folderInfos = nodes[i].split(":");
 	 var icon = ResourcesURL + '/';
-	 if (folderInfos[2] == 'Contacts')
+	 if (folderInfos[2] == 'Contact')
 	    icon += 'tb-mail-addressbook-flat-16x16.png';
 	 else
 	    icon += 'calendar-folder-16x16.png';
