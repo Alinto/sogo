@@ -1,3 +1,9 @@
+2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxPageFrame.m ([UIxPageFrame -isCalendar])
+	([UIxPageFrame -isContacts], [UIxPageFrame -isMail]): getters to
+	determine which module is the current one.
+
 2007-12-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/NSArray+Scheduler.m ([NSArray -compareEventsTitleAscending:otherEvent])

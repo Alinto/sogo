@@ -52,16 +52,37 @@
 		  <a id="logoff" var:href="logoffPath"
 		    ><var:string label:value="Disconnect" /></a>
 		  <var:if condition="userHasCalendarAccess">
-		    <a id="calendarBannerLink"
-		      var:href="relativeCalendarPath"
-		      ><var:string label:value="Calendar" /></a> |
+		    <var:if condition="isCalendar">
+		      <span class="active"><var:string label:value="Calendar"
+			  /></span>
+		    </var:if>
+		    <var:if condition="isCalendar" const:negate="YES">
+		      <a id="calendarBannerLink"
+			var:href="relativeCalendarPath"
+			><var:string label:value="Calendar" /></a>
+		    </var:if>
+		    |
 		  </var:if>
-		  <a id="contactsBannerLink"
-		    var:href="relativeContactsPath"
-		    ><var:string label:value="Address Book" /></a> |
+		  <var:if condition="isContacts">
+		    <span class="active"><var:string label:value="Address Book"
+			/></span>
+		  </var:if>
+		  <var:if condition="isContacts" const:negate="YES">
+		    <a id="contactsBannerLink"
+		      var:href="relativeContactsPath"
+		      ><var:string label:value="Address Book" /></a>
+		  </var:if>
+		  |
 		  <var:if condition="userHasMailAccess">
-		    <a id="mailBannerLink" var:href="relativeMailPath"
-		      ><var:string label:value="Mail" /></a> |
+		    <var:if condition="isMail">
+		      <span class="active"><var:string label:value="Mail"
+			  /></span>
+		    </var:if>
+		    <var:if condition="isMail" const:negate="YES">
+		      <a id="mailBannerLink" var:href="relativeMailPath"
+			><var:string label:value="Mail" /></a>
+		    </var:if>
+		      |
 		  </var:if>
 		  <a id="preferencesBannerLink"
 		    var:href="relativePreferencesPath"

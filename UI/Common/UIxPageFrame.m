@@ -325,6 +325,30 @@
   return ([[self productCSSURL] length] > 0);
 }
 
+- (BOOL) _moduleIs: (NSString *) moduleName
+{
+  NSString *frameworkName;
+
+  frameworkName = [[context page] frameworkName];
+
+  return [frameworkName isEqualToString: moduleName];
+}
+
+- (BOOL) isCalendar
+{
+  return [self _moduleIs: @"SchedulerUI"];
+}
+
+- (BOOL) isContacts
+{
+  return [self _moduleIs: @"ContactsUI"];
+}
+
+- (BOOL) isMail
+{
+  return [self _moduleIs: @"MailerUI"];
+}
+
 - (void) setToolbar: (NSString *) newToolbar
 {
   ASSIGN (toolbar, newToolbar);

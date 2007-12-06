@@ -137,12 +137,17 @@ DIV.linkbanner
   z-index: 100;
   color: #aaa; }
 
-DIV.linkbanner A
-{ top: 0px;
-  left: 0px;
+DIV.linkbanner A,
+DIV.linkbanner SPAN
+{ cursor: default;
   color: #ddd;
   text-decoration: none;
-  padding: .2em .5em; }
+  top: 0px;
+  left: 0px;
+  padding: 2px 5px; }
+
+DIV.linkbanner SPAN
+{ color: #afafff; }
 
 DIV.linkbanner A:hover
 { color: #dd5; }
