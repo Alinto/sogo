@@ -27,7 +27,7 @@
       <input id="defaultRolesBtn" type="button"
 	class="button" label:value="Default Roles"/>
       <div class="userSelector" id="userRoles">
-	<var:if condition="currentUserIsOwner">
+	<var:if condition="canModifyAcls">
 	  <span id="userSelectorButtons">
 	    <a href="#"
 	      class="button"><img rsrc:src="add-contact.gif"

@@ -25,6 +25,7 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGCards/iCalPerson.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
@@ -186,20 +187,15 @@
   return [self jsCloseWithRefreshMethod: nil];
 }
 
-- (BOOL) currentUserIsOwner
+- (BOOL) canModifyAcls
 {
-  SOGoObject *clientObject;
-  SOGoUser *user;
-  NSString *currentUserLogin, *ownerLogin;
-  
-  clientObject = [self clientObject];
-  ownerLogin = [clientObject ownerInContext: context];
-  user = [context activeUser];
-  currentUserLogin = [user login];
-  
-  return ([ownerLogin isEqualToString: currentUserLogin]
-	  || ([user respondsToSelector: @selector (isSuperUser)]
-	      && [user isSuperUser]));
+  SoSecurityManager *mgr;
+
+  mgr = [SoSecurityManager sharedSecurityManager];
+
+  return (![mgr validatePermission: SOGoPerm_SaveAcls
+		onObject: [self clientObject]
+		inContext: context]);
 }
 
 // - (id <WOActionResults>) addUserInAcls

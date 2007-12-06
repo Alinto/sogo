@@ -1,5 +1,9 @@
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Common/UIxAclEditor.m ([-currentUserIsOwner]): replaced
+	method with -canModifyAcls that invokes the security manager
+	instead for the permission "SaveAcls" on the client object.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent -contentAsString]): securize the returned content.
 	([SOGoCalendarComponent -aclsForUser:uid]): check whether the user

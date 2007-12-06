@@ -42,6 +42,8 @@
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer" );
+        "ReadAcls" = ( "Owner", "MailAdministrator" );
+        "SaveAcls" = ( "Owner", "MailAdministrator" );
       };
     };
     SOGoSharedInboxFolder = {
