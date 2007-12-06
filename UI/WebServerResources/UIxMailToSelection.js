@@ -44,45 +44,11 @@ function hasAddress(email) {
   return false;
 }
 
-function rememberAddress(email) {
-  var list, span, idx;
-  
-  list    = $('addr_addresses');
-  span    = document.createElement('span');
-  span.id = email;
-  idx     = document.createTextNode(currentIndex);
-  span.appendChild(idx);
-  list.appendChild(span);
-}
-
 function checkAddresses() {
   alert("addressCount: " + this.getAddressCount() + " currentIndex: " + currentIndex + " lastIndex: " + lastIndex);
 }
 
-function addAddress(type, email, uid, sn, cn, dn) {
-  var shouldAddRow, s, e;
-  
-  shouldAddRow = true;
-  if (cn)
-    s = this.sanitizedCn(cn) + ' <' + email + '>';
-  else
-    s = email;
-
-  if(this.hasAddress(email))
-    return;
-  
-  e = $('addr_0');
-  if(e.value == '') {
-    e.value = s;
-    shouldAddRow = false;
-  }
-  if(shouldAddRow) {
-    this.fancyAddRow(false, s);
-  }
-  this.rememberAddress(email);
-}
-
-function fancyAddRow(shouldEdit, text) {
+function fancyAddRow(shouldEdit, text, type) {
   var addr, addressList, lastChild, proto, row, select, input;
   
   addr = $('addr_' + lastIndex);
@@ -106,7 +72,7 @@ function fancyAddRow(shouldEdit, text) {
   var rowNodes = row.childNodesWithTag("td");
   select = $(rowNodes[0]).childNodesWithTag("select")[0];
   select.name = 'popup_' + currentIndex;
-  select.value = proto.down("select").value;
+  select.value = (type? type : proto.down("select").value);
   input = $(rowNodes[1]).childNodesWithTag("input")[0];
   input.name  = 'addr_' + currentIndex;
   input.id = 'addr_' + currentIndex;
@@ -136,6 +102,16 @@ function addressFieldGotFocus(sender) {
 function addressFieldLostFocus(sender) {
   lastIndex = this.getIndexFromIdentifier(sender.id);
   
+  var addresses = sender.value.split(',');
+  if (addresses.length > 0) {
+    sender.value = addresses[0].strip();
+    for (var i = 1; i < addresses.length; i++) {
+      var addr = addresses[i].strip();
+      if (addr.length > 0)
+	fancyAddRow(false, addr, $(sender).up("tr").down("select").value);
+    }
+  }
+
   return false;
 }
 
@@ -148,25 +124,8 @@ function removeLastEditedRowIfEmpty() {
   addr = $('addr_' + lastIndex);
   if (!addr) return;
   if (addr.value.strip() != '') return;
-  addr = this.findAddressWithIndex(lastIndex);
-  if(addr) {
-    var addresses = $('addr_addresses');
-    addresses.removeChild(addr);
-  }
   senderRow = $("row_" + lastIndex);
   addressList.removeChild(senderRow);
-}
-
-function findAddressWithIndex(idx) {
-  var list, i, count, addr, idx
-  list = $('addr_addresses').childNodes;
-  count = list.length;
-  for(i = 0; i < count; i++) {
-    addr = list[i];
-    if(addr.innerHTML == idx)
-      return addr;
-  }
-  return null;
 }
 
 function getIndexFromIdentifier(id) {
