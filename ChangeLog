@@ -1,3 +1,9 @@
+2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-fetchBLOB]): added support for quoted-printable decoding. Also,
+	we return nil if the type is not supported.
+
 2007-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -newAction]):

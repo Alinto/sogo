@@ -32,6 +32,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGImap4/NGImap4Connection.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
@@ -209,16 +210,22 @@ static BOOL debugOn = NO;
 
   if (enc)
     {
-      enc = [enc uppercaseString];
+      enc = [enc lowercaseString];
       
-      if ([enc isEqualToString:@"BASE64"])
+      if ([enc isEqualToString: @"base64"])
 	data = [data dataByDecodingBase64];
-      else if ([enc isEqualToString:@"7BIT"])
+      else if ([enc isEqualToString: @"quoted-printable"])
+	data = [data dataByDecodingQuotedPrintableTransferEncoding];
+      else if ([enc isEqualToString: @"7bit"]
+	       || [enc isEqualToString: @"8bit"])
 	; /* keep data as is */ // TODO: do we need to change encodings?
       else
-	[self errorWithFormat:@"unsupported encoding: %@", enc];
+	{
+	  data = nil;
+	  [self errorWithFormat: @"unsupported encoding: %@", enc];
+	}
     }
-  
+
   return data;
 }
 
