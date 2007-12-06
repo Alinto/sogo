@@ -157,6 +157,11 @@
               protectedBy = "<public>";
               pageName    = "UIxContactEditor";
            };
+           write = {
+              protectedBy = "<public>";
+              pageName    = "UIxContactEditor";
+              actionName  = "write";
+           };
         };
      };
   };
