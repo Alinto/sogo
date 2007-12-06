@@ -1,7 +1,5 @@
 /* JavaScript for SOGoCalendar */
 
-var sortOrder = '';
-var sortKey = '';
 var listFilter = 'view_today';
 
 var listOfSelection = null;
@@ -328,9 +326,6 @@ function eventsListCallback(http) {
 
     document.eventsListAjaxRequest = null;
     var table = $("eventsList");
-    var params = parseQueryParameters(http.callbackData);
-    sortKey = params["sort"];
-    sortOrder = params["desc"];
     lastClickedRow = -1; // from generic.js
 
     if (http.responseText.length > 0) {
@@ -373,6 +368,24 @@ function eventsListCallback(http) {
 	row.appendChild(td);
 	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][6]));
+      }
+
+      if (sorting["attribute"] && sorting["attribute"].length > 0) {
+	var sortHeader = $(sorting["attribute"] + "Header");
+      
+	if (sortHeader) {
+	  var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	  $(sortImages).each(function(item) {
+	      item.remove();
+	    });
+
+	  var sortImage = createElement("img", "messageSortImage", "sortImage");
+	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+	  if (sorting["ascending"])
+	    sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+	  else
+	    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+	}
       }
     }
   }
@@ -995,10 +1008,28 @@ function _loadTasksHref(href) {
 }
 
 function onHeaderClick(event) {
-  //log("onHeaderClick: " + this.link);
-  //_loadEventHref(this.link);
+   var headerId = this.getAttribute("id");
+  var newSortAttribute;
+  if (headerId == "titleHeader")
+    newSortAttribute = "title";
+  else if (headerId == "startHeader")
+    newSortAttribute = "start";
+  else if (headerId == "endHeader")
+    newSortAttribute = "end";
+  else if (headerId == "locationHeader")
+    newSortAttribute = "location";
+  else
+    newSortAttribute = "start";
+  
+   if (sorting["attribute"] == newSortAttribute)
+    sorting["ascending"] = !sorting["ascending"];
+  else {
+    sorting["attribute"] = newSortAttribute;
+    sorting["ascending"] = true;
+  }
+   refreshEvents();
 
-  preventDefault(event);
+  Event.stop(event);
 }
 
 function refreshCurrentFolder() {
@@ -1012,9 +1043,9 @@ function refreshEvents() {
     titleSearch = "&search=" + value;
   else
     titleSearch = "";
-
-  return _loadEventHref("eventslist?desc=" + sortOrder
-			+ "&sort=" + sortKey
+ 
+  return _loadEventHref("eventslist?asc=" + sorting["ascending"]
+			+ "&sort=" + sorting["attribute"]
 			+ "&day=" + currentDay
 			+ titleSearch
 			+ "&filterpopup=" + listFilter);
@@ -1699,7 +1730,7 @@ function configureLists() {
 
    list = $("eventsList");
    list.multiselect = true;
-   //configureSortableTableHeaders(list);
+   configureSortableTableHeaders(list);
    TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
    Event.observe(list, "mousedown",
 		 onEventsSelectionChange.bindAsEventListener(list));
@@ -1722,6 +1753,9 @@ function initDateSelectorEvents() {
 }
 
 function initCalendars() {
+   sorting["attribute"] = "start";
+   sorting["ascending"] = true;
+  
    if (!document.body.hasClassName("popup")) {
       initDateSelectorEvents();
       initCalendarSelector();

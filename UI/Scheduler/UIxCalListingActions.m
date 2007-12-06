@@ -313,6 +313,7 @@
   NSMutableArray *newEvents, *newEvent;
   unsigned int interval;
   BOOL isAllDay;
+  NSString *sort, *ascending;
 
   [self _setupContext];
 
@@ -340,10 +341,23 @@
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
       [newEvents addObject: newEvent];
-
+      
       oldEvent = [events nextObject];
     }
-  [newEvents sortUsingSelector: @selector (compareEventsAscending:)];
+  
+  sort = [[context request] formValueForKey: @"sort"];
+  if ([sort isEqualToString: @"title"])
+    [newEvents sortUsingSelector: @selector (compareEventsTitleAscending:)];
+  else if ([sort isEqualToString: @"end"])
+    [newEvents sortUsingSelector: @selector (compareEventsEndDateAscending:)];
+  else if ([sort isEqualToString: @"location"])
+    [newEvents sortUsingSelector: @selector (compareEventsLocationAscending:)];
+  else
+    [newEvents sortUsingSelector: @selector (compareEventsStartDateAscending:)];
+  
+  ascending = [[context request] formValueForKey: @"asc"];
+  if (![ascending boolValue])
+    newEvents = [newEvents reversedArray];
 
   return [self _responseWithData: newEvents];
 }

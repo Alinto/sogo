@@ -47,7 +47,7 @@
   return result;
 }
 
-- (NSComparisonResult) compareEventsAscending: (NSArray *) otherEvent
+- (NSComparisonResult) compareEventsStartDateAscending: (NSArray *) otherEvent
 {
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
@@ -62,6 +62,43 @@
     result = NSOrderedSame;
 
   return result;
+}
+
+- (NSComparisonResult) compareEventsEndDateAscending: (NSArray *) otherEvent
+{
+  NSComparisonResult result;
+  unsigned int selfTime, otherTime;
+
+  selfTime = [[self objectAtIndex: 5] intValue];
+  otherTime = [[otherEvent objectAtIndex: 5] intValue];
+  if (selfTime > otherTime)
+    result = NSOrderedDescending;
+  else if (selfTime < otherTime)
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedSame;
+
+  return result;
+}
+
+- (NSComparisonResult) compareEventsTitleAscending: (NSArray *) otherEvent
+{
+  NSString *selfTitle, *otherTitle;
+
+  selfTitle = [self objectAtIndex: 3];
+  otherTitle = [otherEvent objectAtIndex: 3];
+
+  return [selfTitle caseInsensitiveCompare: otherTitle];
+}
+
+- (NSComparisonResult) compareEventsLocationAscending: (NSArray *) otherEvent
+{
+  NSString *selfTitle, *otherTitle;
+
+  selfTitle = [self objectAtIndex: 6];
+  otherTitle = [otherEvent objectAtIndex: 6];
+
+  return [selfTitle caseInsensitiveCompare: otherTitle];
 }
 
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask
@@ -94,6 +131,11 @@
     }
 
   return result;
+}
+
+- (NSArray *) reversedArray 
+{
+  return [[self reverseObjectEnumerator] allObjects];
 }
 
 @end

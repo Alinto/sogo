@@ -27,8 +27,12 @@
 
 @interface NSArray (SOGoEventComparison)
 
-- (NSComparisonResult) compareEventsAscending: (NSArray *) otherEvent;
+- (NSComparisonResult) compareEventsStartDateAscending: (NSArray *) otherEvent;
+- (NSComparisonResult) compareEventsEndDateAscending: (NSArray *) otherEvent;
+- (NSComparisonResult) compareEventsTitleAscending: (NSArray *) otherEvent;
+- (NSComparisonResult) compareEventsLocationAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask;
+- (NSArray *) reversedArray;
 
 @end
 

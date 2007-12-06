@@ -92,10 +92,10 @@
       <table id="eventsList" cellspacing="0">
         <thead>
 	  <tr>
-	    <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-	    <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
-	    <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
-	    <td class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+	    <td id="titleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+	    <td id="startHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
+	    <td id="endHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
+	    <td id="locationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
 	  </tr>
         </thead>
         <tbody></tbody>

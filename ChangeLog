@@ -1,3 +1,14 @@
+2007-12-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/NSArray+Scheduler.m ([NSArray -compareEventsTitleAscending:otherEvent])
+	([NSArray -compareEventsLocationAscending:otherEvent])
+	([NSArray -compareEventsEndDateAscending:otherEvent])
+	([NSArray -reversedArray]): new methods that sort an array of
+	events depending of various parameters.
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): added support for sorting events.
+
 2007-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -newAction]):
@@ -25,7 +36,7 @@
 
 2007-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/Mailer/SOGoDraftObject.m: The condition for replyToAll
+	* SoObjects/Mailer/SOGoDraftObject.m: the condition for replyToAll
 	has to be done later to avoid duplicated to and cc addresses.
 
 2007-12-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
