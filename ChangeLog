@@ -1,5 +1,10 @@
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -saveAction])
+	([UIxMailEditor -sendAction]): make sure that the attachments
+	having the same filename are correctly sequenced (ex: base.ext,
+	base-1.ext, base-2.ext).
+
 	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
 	-fetchBLOB]): added support for quoted-printable decoding. Also,
 	we return nil if the type is not supported.
