@@ -920,7 +920,7 @@ function onSearchKeyDown(event) {
 
   if (event.keyCode == 13) {
     onSearchFormSubmit();
-    event.preventDefault();
+    preventDefault(event);
   }
   else
     this.timer = setTimeout("onSearchFormSubmit()", 1000);
