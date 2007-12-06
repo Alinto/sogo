@@ -58,6 +58,7 @@
 #import "SOGoDAVRendererTypes.h"
 
 #import "NSArray+Utilities.h"
+#import "NSCalendarDate+SOGo.h"
 #import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 
@@ -627,6 +628,11 @@ static BOOL kontactGroupDAV = YES;
 - (NSString *) davContentType
 {
   return @"text/plain";
+}
+
+- (NSString *) davLastModified
+{
+  return [[NSCalendarDate date] rfc822DateString];
 }
 
 - (WOResponse *) _webDAVResponse: (WOContext *) localContext

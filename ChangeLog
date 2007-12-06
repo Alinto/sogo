@@ -1,5 +1,8 @@
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davLastModified]):
+	override SoObject's implementation. Otherwise a localized date is returned.
+
 	* UI/Common/UIxPageFrame.m ([UIxPageFrame -isCalendar])
 	([UIxPageFrame -isContacts], [UIxPageFrame -isMail]): getters to
 	determine which module is the current one.
