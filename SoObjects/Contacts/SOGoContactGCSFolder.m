@@ -267,6 +267,21 @@
   return @"vcard-collection";
 }
 
+- (NSArray *) davResourceType
+{
+  NSMutableArray *resourceType;
+  NSArray *cardDavCollection;
+
+  cardDavCollection
+    = [NSArray arrayWithObjects: @"addressbook",
+	       @"urn:ietf:params:xml:ns:carddav", nil];
+
+  resourceType = [NSMutableArray arrayWithArray: [super davResourceType]];
+  [resourceType addObject: cardDavCollection];
+
+  return resourceType;
+}
+
 /* sorting */
 - (NSComparisonResult) compare: (id) otherFolder
 {

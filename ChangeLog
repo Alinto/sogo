@@ -1,5 +1,12 @@
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder -davResourceType]): declared as a carddav
+	addressbook collection.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-davResourceType]):  declared as a carddav addressbook collection.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -davLastModified]):
 	override SoObject's implementation. Otherwise a localized date is returned.
 
