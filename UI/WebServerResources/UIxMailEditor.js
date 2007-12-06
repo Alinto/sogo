@@ -214,6 +214,7 @@ function onAttachmentChange(event) {
     this.removeClassName("currentAttachment");
     var list = $("attachments");
     createAttachment(this, list);
+    clickedEditorAttach(null)
   }
 }
 
@@ -249,6 +250,12 @@ function clickedEditorSave(sender) {
 }
 
 function onTextFocus() {
+  var input = currentAttachmentInput();
+  if (input)
+    input.parentNode.removeChild(input);
+}
+
+function onTextFirstFocus() {
   var content = this.getValue();
   if (content.lastIndexOf("--") == 0) {
     this.insertBefore(document.createTextNode("\r\n"),
@@ -258,7 +265,7 @@ function onTextFocus() {
     var length = this.getValue().length - signatureLength - 1;
     this.setCaretTo(length);
   }
-  Event.stopObserving(this, "focus", onTextFocus);
+  Event.stopObserving(this, "focus", onTextFirstFocus);
 }
 
 function initMailEditor() {
@@ -283,6 +290,7 @@ function initMailEditor() {
   if (sigLimit > -1)
     signatureLength = (textContent.length - sigLimit);
   textarea.scrollTop = textarea.scrollHeight;
+  textarea.observe("focus", onTextFirstFocus);
   textarea.observe("focus", onTextFocus);
 
   onWindowResize(null);
