@@ -67,6 +67,7 @@
   /* these are for the inline attachment list */
   NSString *attachmentName;
   NSArray  *attachmentNames;
+  NSMutableArray *attachedFiles;
 }
 
 @end
@@ -115,6 +116,7 @@ static NSArray *infoKeys = nil;
   [bcc release];
   [attachmentName release];
   [attachmentNames release];
+  [attachedFiles release];
   [super dealloc];
 }
 
@@ -262,6 +264,29 @@ static NSArray *infoKeys = nil;
 }
 
 /* actions */
+- (NSString *) _fixedFilename: (NSString *) filename
+{
+  NSString *newFilename, *baseFilename, *extension;
+  unsigned int variation;
+
+  if (!attachedFiles)
+    attachedFiles = [NSMutableArray new];
+
+  newFilename = filename;
+
+  baseFilename = [filename stringByDeletingPathExtension];
+  extension = [filename pathExtension];
+  variation = 0;
+  while ([attachedFiles containsObject: newFilename])
+    {
+      variation++;
+      newFilename = [NSString stringWithFormat: @"%@-%d.%@", baseFilename,
+			      variation, extension];
+    }
+  [attachedFiles addObject: newFilename];
+
+  return newFilename;
+}
 
 - (NSDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
 {
@@ -271,7 +296,7 @@ static NSArray *infoKeys = nil;
   unsigned int count, max;
   NGMimeBodyPart *part;
   NGMimeContentDispositionHeaderField *header;
-  NSString *mimeType;
+  NSString *mimeType, *filename;
 
   parts = [httpBody parts];
   max = [parts count];
@@ -284,8 +309,9 @@ static NSArray *infoKeys = nil;
 	[part headerForKey: @"content-disposition"];
       mimeType = [(NGMimeType *)
 		   [part headerForKey: @"content-type"] stringValue];
+      filename = [self _fixedFilename: [header filename]];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
-				   [header filename], @"filename",
+				   filename, @"filename",
 				 mimeType, @"mimetype", nil];
       [filenames setObject: attachment forKey: [header name]];
     }
@@ -370,12 +396,12 @@ static NSArray *infoKeys = nil;
 {
   NSArray *a;
 
-  if (attachmentNames != nil)
-    return attachmentNames;
-
-  a = [[self clientObject] fetchAttachmentNames];
-  a = [a sortedArrayUsingSelector: @selector (compare:)];
-  attachmentNames = [a copy];
+  if (attachmentNames)
+    {
+      a = [[self clientObject] fetchAttachmentNames];
+      a = [a sortedArrayUsingSelector: @selector (compare:)];
+      attachmentNames = [a copy];
+    }
 
   return attachmentNames;
 }

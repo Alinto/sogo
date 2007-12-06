@@ -35,8 +35,6 @@
       </ul>
     </div>
 
-    <form name="searchform" var:href="view" var:_sort="sortKey"
-      onsubmit="return onSearchFormSubmit();" method="GET">
       <!--	var:if condition="isPopup" const:negate="YES" -->
       <!--          <var:if condition="hideFolderTree" const:negate="YES" -->
       <div class="contactFoldersList" id="contactFoldersList">
@@ -95,7 +93,6 @@
       <!--	var:if condition="isPopup">
       var:component-content />
       /var:if> -->
-    </form>
 
     <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
   </var:if>
