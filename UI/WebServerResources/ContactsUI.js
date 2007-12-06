@@ -532,16 +532,34 @@ function onAddressBookNew(event) {
 }
 
 function appendAddressBook(name, folder) {
-  if (folder)
+  var owner;
+
+  if (folder) {
+    owner = getSubscribedFolderOwner(folder);
     folder = accessToSubscribedFolder(folder);
+  }
   else
     folder = "/" + name;
+  
+  if (!owner)
+    owner = UserLogin;
+
   if ($(folder))
     window.alert(clabels["You have already subscribed to that folder!"]);
   else {
+    var contactFolders = $("contactFolders");
+    var items = contactFolders.childNodesWithTag("li");
     var li = document.createElement("li");
-    $("contactFolders").appendChild(li);
+
+    // Add the calendar to the proper place
+    var i = getListIndexForFolder(items, owner, name);
+    if (i != items.length) // User is subscribed to other calendars of the same owner
+      contactFolders.insertBefore(li, items[i]);
+    else 
+      contactFolders.appendChild(li);
+
     li.setAttribute("id", folder);
+    li.setAttribute("owner", owner);
     li.appendChild(document.createTextNode(name));
     setEventsOnContactFolder(li);
   }
@@ -758,12 +776,18 @@ function onContactFoldersMenuPrepareVisibility() {
 
   if (selected.length > 0) {
     var folderOwner = selected[0].getAttribute("owner");
+    var modifyOption = $(this).down("ul").childElements().first();
     var sharingOption = $(this).down("ul").childElements().last();
-    // Disable the "Sharing" option when address book is not owned by user
-    if (folderOwner == UserLogin || IsSuperUser)
+    // Disable the "Sharing" and "Modify" options when address book
+    // is not owned by user
+    if (folderOwner == UserLogin || IsSuperUser) {
+      modifyOption.removeClassName("disabled");
       sharingOption.removeClassName("disabled");
-    else
+    }
+    else {
+      modifyOption.addClassName("disabled");
       sharingOption.addClassName("disabled");
+    }
   }
 }
 

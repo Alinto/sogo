@@ -1070,6 +1070,28 @@ function getSubscribedFolderOwner(serverFolder) {
   return owner;
 }
 
+function getListIndexForFolder(items, owner, folderName) {
+  var i;
+  var previousOwner = null;
+  
+  for (var i = 0; i < items.length; i++) {
+    var currentFolderName = items[i].lastChild.nodeValue.strip();
+    var currentOwner = items[i].readAttribute('owner');
+    if (currentOwner == owner) {
+      previousOwner = currentOwner;
+      if (currentFolderName > folderName)
+	break;
+    }
+    else if (previousOwner || 
+	     (currentOwner != UserLogin && currentOwner > owner))
+      break;
+    else if (currentOwner == "nobody")
+      break;
+  }
+  
+  return i;
+}
+
 function listRowMouseDownHandler(event) {
   preventDefault(event);
   //Event.stop(event); 

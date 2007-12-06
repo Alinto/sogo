@@ -1548,25 +1548,13 @@ function appendCalendar(folderName, folderPath) {
     window.alert(clabels["You have already subscribed to that folder!"]);
   else {
     var calendarList = $("calendarList");
-    var lis = calendarList.childNodesWithTag("li");
+    var items = calendarList.childNodesWithTag("li");
     var li = document.createElement("li");
     
     // Add the calendar to the proper place
-    var previousOwner = null;
-    for (var i = 0; i < lis.length; i++) {
-      var currentFolderName = lis[i].lastChild.nodeValue.strip();
-      var currentOwner = lis[i].readAttribute('owner');
-      if (currentOwner == owner) {
-	previousOwner = currentOwner;
-	if (currentFolderName > folderName)
-	  break;
-      }
-      else if (previousOwner || 
-	       (currentOwner != UserLogin && currentOwner > owner))
-	break;
-    }
-    if (i != lis.length) // User is subscribed to other calendars of the same owner
-      calendarList.insertBefore(li, lis[i]);
+    var i = getListIndexForFolder(items, owner, folderName);
+    if (i != items.length) // User is subscribed to other calendars of the same owner
+      calendarList.insertBefore(li, items[i]);
     else 
       calendarList.appendChild(li);
     
@@ -1575,7 +1563,7 @@ function appendCalendar(folderName, folderPath) {
 
     // Generate new color
     if (calendarColorIndex == null)
-      calendarColorIndex = lis.length;
+      calendarColorIndex = items.length;
     calendarColorIndex++;
     var colorTable = [1, 1, 1];
     var color;
