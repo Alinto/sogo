@@ -40,6 +40,7 @@
 
 /* dav */
 - (NSArray *) davNamespaces;
+- (NSArray *) davResourceType;
 
 /* outlook */
 - (NSString *) outlookFolderClass;
