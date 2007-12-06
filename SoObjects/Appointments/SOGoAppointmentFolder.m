@@ -26,6 +26,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>
@@ -230,7 +231,6 @@ static NSNumber   *sharedYes = nil;
   return filterData;
 }
 
-#warning filters is leaked here
 - (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
 {
   NSEnumerator *children;
@@ -1421,6 +1421,17 @@ static NSNumber   *sharedYes = nil;
 
 //   return objectNames;
 // }
+
+- (NSArray *) fetchContentObjectNames
+{
+  static NSArray *cNameField = nil;
+
+  if (!cNameField)
+    cNameField = [[NSArray alloc] initWithObjects: @"c_name", nil];
+
+  return [[self fetchFields: cNameField from: nil to: nil
+		title: nil component: nil] objectsForKey: @"c_name"];
+}
 
 /* folder type */
 

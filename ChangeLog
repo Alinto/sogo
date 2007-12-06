@@ -1,5 +1,26 @@
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -contentAsString]): securize the returned content.
+	([SOGoCalendarComponent -aclsForUser:uid]): check whether the user
+	is an organizer or a participant as well.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -changeParticipationStatus:_status]): the
+	user we should change the status of is not the active user but the
+	owner of the object. This is for delegation.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -fetchContentObjectNames]): fetch the
+	elements through the fetchFields:from:to:title:component: method
+	method, so that the result is already filtered depending on the
+	acl.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-toolbar]): if the current user is a delegate, take the permission
+	"ModifyComponent" into account. Also, do not let him/her modify an
+	event for which he/she is the organizer.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder -davResourceType]): declared as a carddav
 	addressbook collection.

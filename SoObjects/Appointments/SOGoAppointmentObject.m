@@ -332,13 +332,15 @@
   iCalEvent *event;
   iCalPerson *attendee;
   NSException *ex;
+  SOGoUser *ownerUser;
   
   ex = nil;
 
   event = [self component: NO secure: NO];
   if (event)
     {
-      attendee = [event findParticipant: [context activeUser]];
+      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+      attendee = [event findParticipant: ownerUser];
       if (attendee)
 	ex = [self _handleAttendee: attendee statusChange: _status
 		   inEvent: event];

@@ -27,6 +27,7 @@
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest+So.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGCards/iCalCalendar.h>
@@ -140,6 +141,18 @@ static BOOL sendEMailNotifications = NO;
     iCalString = nil;
 
   return iCalString;
+}
+
+- (NSString *) contentAsString
+{
+  NSString *secureContent;
+
+  if ([[context request] isSoWebDAVRequest])
+    secureContent = [self secureContentAsString];
+  else
+    secureContent = [super contentAsString];
+
+  return secureContent;
 }
 
 - (iCalCalendar *) calendar: (BOOL) create secure: (BOOL) secure
@@ -559,6 +572,7 @@ static BOOL sendEMailNotifications = NO;
   NSArray *superAcls;
   iCalRepeatableEntityObject *component;
   NSString *accessRole, *ownerRole;
+  SOGoUser *aclUser;
 
   roles = [NSMutableArray array];
   superAcls = [super aclsForUser: uid];
@@ -573,6 +587,11 @@ static BOOL sendEMailNotifications = NO;
     {
       if (component)
 	{
+	  aclUser = [SOGoUser userWithLogin: uid roles: nil];
+	  if ([component userIsOrganizer: aclUser])
+	    [roles addObject: SOGoCalendarRole_Organizer];
+	  else if ([component userIsParticipant: aclUser])
+	    [roles addObject: SOGoCalendarRole_Participant];
 	  accessRole = [container roleForComponentsWithAccessClass:
 				    [component symbolicAccessClass]
 				  forUser: uid];

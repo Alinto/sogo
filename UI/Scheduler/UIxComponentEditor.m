@@ -1025,6 +1025,7 @@
   SoSecurityManager *sm;
   NSString *toolbarFilename, *adminToolbar;
   iCalPersonPartStat participationStatus;
+  SOGoUser *currentUser;
 
   if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
     adminToolbar = @"SOGoAppointmentObject.toolbar";
@@ -1034,28 +1035,37 @@
   sm = [SoSecurityManager sharedSecurityManager];
   if ([[component attendees] count])
     {
-      if ([component userIsOrganizer: ownerUser]
-	  && ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-		  onObject: clientObject
-		  inContext: context])
-	toolbarFilename = adminToolbar;
-      else if ([component userIsParticipant: ownerUser]
-	       && ![sm validatePermission: SOGoCalendarPerm_RespondToComponent
-		       onObject: clientObject
-		       inContext: context])
-	{
-	  participationStatus
-	    = [[component findParticipant: ownerUser] participationStatus];
-	  /* Lightning does not manage participation status within tasks */
-	  if (participationStatus == iCalPersonPartStatAccepted)
-	    toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
-	  else if (participationStatus == iCalPersonPartStatDeclined)
-	    toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
-	  else
-	    toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-	}
-      else
+      currentUser = [context activeUser];
+      if ([component userIsOrganizer: currentUser])
 	toolbarFilename = @"SOGoComponentClose.toolbar";
+      else
+	{	
+	  if ([component userIsOrganizer: ownerUser]
+	      && ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+		      onObject: clientObject
+		      inContext: context])
+	    toolbarFilename = adminToolbar;
+	  else if ([component userIsParticipant: ownerUser]
+		   && !([sm validatePermission: SOGoCalendarPerm_RespondToComponent
+			    onObject: clientObject
+			    inContext: context]
+			&& [sm validatePermission: SOGoCalendarPerm_ModifyComponent
+			       onObject: clientObject
+			       inContext: context]))
+	    {
+	      participationStatus
+		= [[component findParticipant: ownerUser] participationStatus];
+	      /* Lightning does not manage participation status within tasks */
+	      if (participationStatus == iCalPersonPartStatAccepted)
+		toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
+	      else if (participationStatus == iCalPersonPartStatDeclined)
+		toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
+	      else
+		toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
+	    }
+	  else
+	    toolbarFilename = @"SOGoComponentClose.toolbar";
+	}
     }
   else
     {

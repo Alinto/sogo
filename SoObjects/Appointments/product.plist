@@ -35,13 +35,14 @@
     };
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
-/*      defaultAccess = "SeeComponent"; */
       defaultRoles = {
 	"ViewAllComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer" );
 	"ViewDAndT" = ( "Organizer", "Participant", "ComponentDAndTViewer" );
 	"ModifyComponent" = ( "Owner", "Organizer" );
-	"RespondToComponent" = ( "Participant" );
-/*	"SeeComponent" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" ); */
+	"RespondToComponent" = ( "Participant", "ComponentModifier", "ComponentResponder" );
+	"Access Object" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+      	"Access Contents Information" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
+        "WebDAV Access" = ( "Owner", "Organizer", "Participant", "ComponentModifier", "ComponentResponder", "ComponentViewer", "ComponentDAndTViewer" );
       };
     };
     SOGoAppointmentObject = {
