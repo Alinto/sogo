@@ -29,7 +29,7 @@
 "Unit" = "Unit";
 "delete" = "delete";
 "edit" = "edit";
-"invalidemailwarn" = "invalidemailwarn";
+"invalidemailwarn" = "The specified email is invalid";
 "new" = "new";
 "Preferred Phone"   = "Preferred Phone";
 

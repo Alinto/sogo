@@ -258,7 +258,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
   if ([mt isEqualToString:@"multipart"])
     {
-      if ([st isEqualToString:@"mixed"] || [st isEqualToString:@"related"])
+      if ([st isEqualToString:@"mixed"] || [st isEqualToString:@"related"] || [st isEqualToString: @"appledouble"])
 	return [self mixedViewer];
       else if ([st isEqualToString:@"signed"])
 	return [self signedViewer];

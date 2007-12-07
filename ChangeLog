@@ -1,3 +1,11 @@
+2007-12-07  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailRenderingContext.m 
+	We treat multipart/appledouble like multipart/mixed
+	for now. That allows the user to save both parts.
+
+	* Corrected typos in Localizable.string files.
+
 2007-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Common/UIxAclEditor.m ([-currentUserIsOwner]): replaced
