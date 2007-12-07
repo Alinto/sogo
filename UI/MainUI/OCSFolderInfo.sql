@@ -3,7 +3,7 @@
 -- (C) 2006-2007 Inverse groupe conseil
 --
 
-CREATE TABLE SOGo_folder_info (
+CREATE TABLE @{tableName} (
   c_folder_id      SERIAL,
   c_path           VARCHAR(255)  NOT NULL, -- the full path to the folder
   c_path1          VARCHAR(255)  NOT NULL, -- parts (for fast queries)

@@ -2,7 +2,7 @@
 -- (C) 2007 Inverse groupe conseil
 --
 
-CREATE TABLE SOGo_folder_info (
+CREATE TABLE @{tableName} (
   c_folder_id      INTEGER PRIMARY KEY,
   c_path           VARCHAR(255)  NOT NULL, -- the full path to the folder
   c_path1          VARCHAR(255)  NOT NULL, -- parts (for fast queries)
@@ -16,12 +16,12 @@ CREATE TABLE SOGo_folder_info (
   c_folder_type    VARCHAR(255)  NOT NULL  -- the folder type ...
 );
 
-CREATE SEQUENCE SOGo_folder_info_seq;
-CREATE OR REPLACE TRIGGER SOGo_folder_info_autonumber
-BEFORE INSERT ON SOGo_folder_info FOR EACH ROW
+CREATE SEQUENCE @{tableName}_seq;
+CREATE OR REPLACE TRIGGER @{tableName}_autonumber
+BEFORE INSERT ON @{tableName} FOR EACH ROW
 BEGIN
     IF :new.c_folder_id IS NULL THEN
-        SELECT SOGO_folder_info_seq.nextval INTO :new.c_folder_id FROM DUAL;
+        SELECT @{tableName}_seq.nextval INTO :new.c_folder_id FROM DUAL;
     END IF;
 END;
 /

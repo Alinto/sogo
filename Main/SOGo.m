@@ -151,18 +151,48 @@ static BOOL debugObjectAllocation = NO;
   [super dealloc];
 }
 
+- (NSString *) _sqlScriptFromTableFile: (NSString *) fileName
+			 withTableName: (NSString *) tableName
+{
+  NSString *script;
+
+
+  return script;
+}
+
+- (NSString *) _sqlScriptForTable: (NSString *) tableName
+			 withType: (NSString *) tableType
+		    andFileSuffix: (NSString *) fileSuffix
+{
+  NSString *tableFile, *descFile;
+  NGBundleManager *bm;
+  NSBundle *bundle;
+  unsigned int length;
+
+  bm = [NGBundleManager defaultBundleManager];
+
+  bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
+  length = [tableType length] - 3;
+  tableFile = [tableType substringToIndex: length];
+  descFile
+    = [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
+					 tableFile, fileSuffix]
+	      ofType: @"sql"];
+  if (!descFile)
+    descFile = [bundle pathForResource: tableFile ofType: @"sql"];
+
+  return [[NSString stringWithContentsOfFile: descFile]
+	   stringByReplacingString: @"@{tableName}"
+	   withString: tableName];
+}
+
 - (void) _checkTableWithCM: (GCSChannelManager *) cm
 		  tableURL: (NSString *) url
 		   andType: (NSString *) tableType
 {
-  NSString *tableName, *descFile, *tableFile, *fileSuffix;
+  NSString *tableName, *fileSuffix, *tableScript;
   EOAdaptorChannel *tc;
-  NGBundleManager *bm;
-  NSBundle *bundle;
-  unsigned int length;
   NSURL *channelURL;
-
-  bm = [NGBundleManager defaultBundleManager];
 
   channelURL = [NSURL URLWithString: url];
   fileSuffix = [channelURL scheme];
@@ -170,19 +200,13 @@ static BOOL debugObjectAllocation = NO;
 
   tableName = [url lastPathComponent];
   if ([tc evaluateExpressionX:
-	    [NSString stringWithFormat: @"SELECT count(*) FROM %@", tableName]])
+	    [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+		      tableName]])
     {
-      bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
-      length = [tableType length] - 3;
-      tableFile = [tableType substringToIndex: length];
-      descFile
-	= [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
-					     tableFile, fileSuffix]
-			 ofType: @"sql"];
-      if (!descFile)
-	descFile = [bundle pathForResource: tableFile ofType: @"sql"];
-      if (![tc evaluateExpressionX:
-		 [NSString stringWithContentsOfFile: descFile]])
+      tableScript = [self _sqlScriptForTable: tableName
+			  withType: tableType
+			  andFileSuffix: fileSuffix];
+      if (![tc evaluateExpressionX: tableScript])
 	[self logWithFormat: @"table '%@' successfully created!", tableName];
     }
   else

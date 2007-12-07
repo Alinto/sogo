@@ -3,7 +3,7 @@
 -- (C) 2006-2007 Inverse groupe conseil
 --
 
-CREATE TABLE SOGo_user_profile (
+CREATE TABLE @{tableName} (
   c_uid      VARCHAR(255) NOT NULL PRIMARY KEY,
   c_defaults TEXT,
   c_settings TEXT

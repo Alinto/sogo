@@ -1,3 +1,9 @@
+2007-12-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Main/SOGo.m ([SOGo -run]): the table creation script now have a
+	@{tableName} substitution variable to be substitued with the real
+	table name obtained from the configuration variables.
+
 2007-12-07  Ludovic Marcotte <ludovic@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m 
