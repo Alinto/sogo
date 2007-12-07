@@ -264,6 +264,7 @@
   SOGoCalendarComponent *co;
   SOGoUser *currentUser;
   BOOL hasOrganizer;
+  SoSecurityManager *sm;
 
   co = [self clientObject];
   owner = [co ownerInContext: context];
@@ -271,8 +272,13 @@
 
   hasOrganizer = ([[organizer value: 0] length] > 0);
 
+  sm = [SoSecurityManager sharedSecurityManager];
+  
   return ([co isNew]
-	  || ([owner isEqualToString: [currentUser login]]
+	  || (([owner isEqualToString: [currentUser login]]
+	       || ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+		       onObject: co
+		       inContext: context])
 	      && (!hasOrganizer || [component userIsOrganizer: currentUser])));
 }
 
@@ -934,26 +940,30 @@
 {
   NSString *organizerEmail;
   NSString *owner, *login;
+  BOOL isOwner, hasOrganizer, hasAttendees;
 
+  owner = [[self clientObject] ownerInContext: context];
+  login = [[context activeUser] login];
+  isOwner = [owner isEqualToString: login];
+  hasAttendees = ([[component attendees] count] > 0);
   organizerEmail = [[component organizer] email];
-  if ([organizerEmail length] == 0)
+  hasOrganizer = ([organizerEmail length] > 0);
+
+  if (hasOrganizer)
     {
-      owner = [[self clientObject] ownerInContext: context];
-      login = [[context activeUser] login];
-      if (![owner isEqualToString: login]
-	  || [[component attendees] count] > 0)
+      if (isOwner && !hasAttendees)
 	{
 	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-	  [organizer setCn: [organizerIdentity objectForKey: @"fullName"]];
-	  [organizer setEmail: [organizerIdentity objectForKey: @"email"]];
 	  [component setOrganizer: organizer];
 	}
     }
   else
     {
-      if ([[component attendees] count] == 0)
+      if (!isOwner || hasAttendees)
 	{
 	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
+	  [organizer setCn: [organizerIdentity objectForKey: @"fullName"]];
+	  [organizer setEmail: [organizerIdentity objectForKey: @"email"]];
 	  [component setOrganizer: organizer];
 	}
     }
@@ -1039,7 +1049,7 @@
       if ([component userIsOrganizer: currentUser])
 	toolbarFilename = @"SOGoComponentClose.toolbar";
       else
-	{	
+	{
 	  if ([component userIsOrganizer: ownerUser]
 	      && ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
 		      onObject: clientObject
