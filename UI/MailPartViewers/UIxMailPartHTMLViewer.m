@@ -432,17 +432,26 @@
                         andBaseURL: (NSString *) url
                     intoDictionary: (NSMutableDictionary *) attachmentIds
 {
-  NSString *bodyId;
+  NSString *bodyId, *filename;
+  NSMutableString *attachmentURL;
 
   bodyId = [part objectForKey: @"bodyId"];
   if ([bodyId length] > 0)
     {
+      filename = [[part objectForKey: @"parameterList"] objectForKey: @"name"];
+      if (!filename)
+	filename = [[[part objectForKey: @"disposition"]
+		      objectForKey: @"parameterList"]
+		     objectForKey: @"filename"];
       if ([bodyId hasPrefix: @"<"])
         bodyId = [bodyId substringFromIndex: 1];
       if ([bodyId hasSuffix: @">"])
         bodyId = [bodyId substringToIndex: [bodyId length] - 1];
-      [attachmentIds setObject: [url stringByAppendingFormat: @"/%d", count]
-                     forKey: bodyId];
+      attachmentURL = [NSMutableString stringWithString: url];
+      [attachmentURL appendFormat: @"/%d", count];
+      if ([filename length])
+	[attachmentURL appendFormat: @"/%@", filename];
+      [attachmentIds setObject: attachmentURL forKey: bodyId];
     }
 }
 
@@ -451,7 +460,7 @@
   NSMutableDictionary *attachmentIds;
   UIxMailPartViewer *parent;
   unsigned int count, max;
-  NSMutableString *url;
+//   NSMutableString *url;
   NSString *baseURL;
   NSArray *parts;
 
@@ -463,18 +472,18 @@
                          isEqualToString: @"UIxMailPartAlternativeViewer"])
     {
       baseURL = [[self clientObject] baseURLInContext: context];
-      url = [NSMutableString new];
-      [url appendString: baseURL];
-      [url appendFormat: @"/%@", [partPath componentsJoinedByString: @"/"]];
-      [url deleteCharactersInRange: NSMakeRange([url length] - 2, 2)];
-      parts = [[parent bodyInfo] objectForKey: @"parts"];
+//       url = [NSMutableString new];
+//       [url appendString: baseURL];
+//       [url appendFormat: @"/%@", [partPath componentsJoinedByString: @"/"]];
+//       [url deleteCharactersInRange: NSMakeRange([url length] - 4, 4)];
+      parts = [[[parent parent] bodyInfo] objectForKey: @"parts"];
       max = [parts count];
       for (count = 0; count < max; count++)
         [self _convertReferencesForPart: [parts objectAtIndex: count]
               withCount: count + 1
-              andBaseURL: url
+              andBaseURL: baseURL
               intoDictionary: attachmentIds];
-      [url release];
+//       [url release];
     }
 
   return attachmentIds;

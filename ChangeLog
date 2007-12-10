@@ -1,3 +1,10 @@
+2007-12-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([UIxMailPartHTMLViewer -flatContentAsString]): when in
+	UIxMailPartAlternative, scan the filenames of potential cid at the
+	same level as our parent.
+
 2007-12-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -run]): the table creation script now have a
