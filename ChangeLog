@@ -1,3 +1,10 @@
+2007-12-10  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-GETAction:]): when asAttachment is set to true, the header
+	"content-disposition" is set to "attachment" so browsers like IE
+	and Safari properly asks the user to save the file.
+
 2007-12-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
