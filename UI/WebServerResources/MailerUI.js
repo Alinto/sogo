@@ -213,24 +213,24 @@ function ml_lowlight(sender) {
 /* bulk delete of messages */
 
 function deleteSelectedMessages(sender) {
-  var messageList = $("messageList");
-  var rowIds = messageList.getSelectedRowsId();
-
-  if (rowIds.length > 0) {
-    for (var i = 0; i < rowIds.length; i++) {
-      var url;
-      var rowId = rowIds[i].substr(4);
-      var messageId = Mailer.currentMailbox + "/" + rowId;
-      url = ApplicationBaseURL + messageId + "/trash";
-      deleteMessageRequestCount++;
-      var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
-      triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
-    }
-  } else {
-    window.alert(labels["Please select a message."]);
-  }
-
-  return false;
+   var messageList = $("messageList");
+   var rowIds = messageList.getSelectedRowsId();
+  
+   if (rowIds.length > 0) {
+      for (var i = 0; i < rowIds.length; i++) {
+	var url;
+	var rowId = rowIds[i].substr(4);
+	var messageId = Mailer.currentMailbox + "/" + rowId;
+	url = ApplicationBaseURL + messageId + "/trash";
+	deleteMessageRequestCount++;
+	var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
+	triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+      }
+   }
+   else
+     window.alert(labels["Please select a message."]);
+   
+   return false;
 }
 
 function deleteSelectedMessagesCallback(http) {
@@ -240,7 +240,6 @@ function deleteSelectedMessagesCallback(http) {
       deleteCachedMessage(data["messageId"]);
       deleteMessageRequestCount--;
       if (Mailer.currentMailbox == data["mailbox"]) {
-	
 	var div = $('messageContent');
 	if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
 	  div.update();
@@ -273,8 +272,7 @@ function deleteDraft(url) {
   new Ajax.Request(url, {
     method: 'post',
     onFailure: function(transport) {
-	if (!isHttpStatus204)
-	  log("draftDeleteCallback: problem during ajax request: " + transport.status);
+	log("draftDeleteCallback: problem during ajax request: " + transport.status);
       }
     });
 }
@@ -318,8 +316,24 @@ function moveMessages(rowIds, folder) {
 }
 
 function onMenuDeleteMessage(event) {
-  deleteSelectedMessages();
-  preventDefault(event);
+    deleteSelectedMessages();
+    preventDefault(event);
+}
+
+function deleteMessage(url, id, mailbox, messageId) {
+  var data = { "id": id, "mailbox": mailbox, "messageId": messageId };
+  deleteMessageRequestCount++;
+  triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+}
+
+function deleteMessageWithDelay(url, id, mailbox, messageId) {
+  /* this is called by UIxMailPopupView with window.opener */
+  setTimeout("deleteMessage('" +
+	     url + "', '" +
+	     id + "', '" +
+	     mailbox + "', '" +
+	     messageId + "')",
+	     50);
 }
 
 function onPrintCurrentMessage(event) {
