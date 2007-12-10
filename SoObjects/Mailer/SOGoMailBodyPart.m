@@ -63,12 +63,27 @@ static BOOL debugOn = NO;
     NSLog(@"Note(SOGoMailBodyPart): etag caching disabled!");
 }
 
-- (void)dealloc {
+- (id) init
+{
+  if ((self = [super init]))
+    asAttachment = NO;
+
+  return self;
+}
+
+- (void) dealloc
+{
   [self->partInfo   release];
   [self->identifier release];
   [self->pathToPart release];
   [super dealloc];
 }
+
+- (void) setAsAttachment
+{
+  asAttachment = YES;
+}
+
 
 /* hierarchy */
 
@@ -178,6 +193,8 @@ static BOOL debugOn = NO;
       /* lookup body part */
       if ([self isBodyPartKey:_key inContext:_ctx])
 	obj = [self lookupImap4BodyPartKey:_key inContext:_ctx];
+      else if ([_key isEqualToString: @"asAttachment"])
+	[self setAsAttachment];
       /* should check whether such a filename exist in the attached names */
       if (!obj)
 	obj = self;
@@ -283,14 +300,18 @@ static BOOL debugOn = NO;
   
   /* try type from body structure info */
   
-  parts = [self contentTypeForBodyPartInfo: [self partInfo]];
-  contentType = [[parts componentsSeparatedByString: @";"] objectAtIndex: 0];
-
-  if (![contentType length])
-    {
-      extension = [[self nameInContainer] pathExtension];
-      contentType = [self contentTypeForPathExtension: extension];
-    }
+  if (asAttachment)
+    contentType = @"application/octet-stream";
+  else {
+    parts = [self contentTypeForBodyPartInfo: [self partInfo]];
+    contentType = [[parts componentsSeparatedByString: @";"] objectAtIndex: 0];
+  
+    if (![contentType length])
+      {
+	extension = [[self nameInContainer] pathExtension];
+	contentType = [self contentTypeForPathExtension: extension];
+      }
+  }
 
   return contentType;
 }
@@ -301,7 +322,7 @@ static BOOL debugOn = NO;
   NSException *error;
   WOResponse *r;
   NSData     *data;
-  NSString   *etag, *mimeType;
+  NSString   *etag, *mimeType, *fileName;
   
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil) {
     // TODO: currently we fetch the body structure to get here - check this!
@@ -333,6 +354,17 @@ static BOOL debugOn = NO;
   [r setHeader: mimeType forKey:@"content-type"];
   [r setHeader: [NSString stringWithFormat:@"%d", [data length]]
      forKey: @"content-length"];
+  
+  if (asAttachment) {
+    fileName = [[[self partInfo] objectForKey: @"parameterList"] objectForKey: @"name"];
+    if (!fileName)
+      fileName = [[[[self partInfo] objectForKey: @"disposition"]
+		    objectForKey: @"parameterList"] 
+		   objectForKey: @"filename"];
+    if ([fileName length])
+      [r setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
+	 forKey: @"content-disposition"];
+  }
 
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];

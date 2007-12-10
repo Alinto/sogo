@@ -173,7 +173,7 @@
 
   <div class="menu" id="imageMenu">
     <ul>
-      <li id="view_image"><var:string label:value="View Image"/></li>
+      <li id="save_image"><var:string label:value="Save Image"/></li>
     </ul>
   </div>
 

@@ -985,9 +985,12 @@ function onMenuViewMessageSource(event) {
   preventDefault(event);
 }
 
-function viewImage(event) {
+function saveImage(event) {
   var img = document.menuTarget;
-  window.open(img.getAttribute("src"),'_blank','resizable=1'); 
+  var url = img.getAttribute("src");
+  var urlAsAttachment = url.replace(/(\/[^\/]*)$/,"/asAttachment$1");
+
+  window.location.href = urlAsAttachment;
 }
 
 /* contacts */
@@ -1742,7 +1745,7 @@ function getMenus() {
 				       "mark-menu", "-",
 					null, null,
 					onMenuDeleteMessage);
-  menus["imageMenu"] = new Array(viewImage);
+  menus["imageMenu"] = new Array(saveImage);
   menus["messageContentMenu"] = new Array(onMenuReplyToSender,
 					  onMenuReplyToAll,
 					  onMenuForwardMessage,
