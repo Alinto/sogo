@@ -449,12 +449,15 @@ function openMailbox(mailbox, reload, idx) {
   if (mailbox != Mailer.currentMailbox || reload) {
     Mailer.currentMailbox = mailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
-    var messageContent = $("messageContent");
-    messageContent.update();
-    lastClickedRow = -1; // from generic.js
-
+    
+    if (!reload) {
+      var messageContent = $("messageContent");
+      messageContent.update();
+      lastClickedRow = -1; // from generic.js
+    }
+    
     var currentMessage;
-    if (!idx) {
+    if (!idx && !reload) {
       currentMessage = Mailer.currentMessages[mailbox];
       if (currentMessage) {
 	loadMessage(currentMessage);
