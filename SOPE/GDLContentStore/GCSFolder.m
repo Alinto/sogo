@@ -305,6 +305,24 @@ static GCSStringFormatter *stringFormatter = nil;
 	       ignoreDeleted: YES];
 }
 
+- (NSCalendarDate *)creationDateOfEntryWithName:(NSString *)_name {
+  int seconds;
+
+  seconds = [[self _fetchValueOfColumn:@"c_creationdate" inContentWithName:_name
+		   ignoreDeleted: YES] intValue];
+
+  return [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+}
+
+- (NSCalendarDate *)lastModificationOfEntryWithName:(NSString *)_name {
+  int seconds;
+
+  seconds = [[self _fetchValueOfColumn:@"c_lastmodified" inContentWithName:_name
+		   ignoreDeleted: YES] intValue];
+
+  return [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+}
+
 - (NSNumber *)deletionOfContentWithName:(NSString *)_name {
   return [self _fetchValueOfColumn:@"c_deleted" inContentWithName:_name
 	       ignoreDeleted: NO];

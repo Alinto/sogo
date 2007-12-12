@@ -1,3 +1,10 @@
+2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m ([GCSFolder -creationDateOfEntryWithName:]): new
+	method that returns the creation date of the specified entry.
+	([GCSFolder -lastModificationOfEntryWithName:]): same as above for
+	the last modification time.
+
 2007-11-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m ([GCSFolder -versionOfContentWithName:], [GCSFolder
