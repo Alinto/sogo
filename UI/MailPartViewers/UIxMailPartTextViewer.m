@@ -127,7 +127,8 @@ convertChars (const char *oldString, unsigned int oldLength,
 
   superContent = [[super flatContentAsString] stringByEscapingHTMLString];
 
-  return [[superContent stringByDetectingURLs] stringByConvertingCRLNToHTML];
+  return [[superContent stringByDetectingURLs]
+	   stringByConvertingCRLNToHTML];
 }
 
 @end /* UIxMailPartTextViewer */
