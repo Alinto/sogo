@@ -1,5 +1,7 @@
 var contactSelectorAction = 'mailer-contacts';
 var signatureLength = 0;
+
+var attachmentCount = 0;
 var MailEditor = {
  addressBook: null
 };
@@ -189,12 +191,13 @@ function clickedEditorAttach(sender) {
       onWindowResize(null);
     }
     var inputs = area.getElementsByTagName("input");
-    var attachmentName = "attachment" + inputs.length;
+    var attachmentName = "attachment" + attachmentCount;
     var newAttachment = createElement("input", attachmentName,
 				      "currentAttachment", null,
 				      { type: "file",
 					name: attachmentName },
 				      area);
+    attachmentCount++;
     Event.observe(newAttachment, "change",
 		  onAttachmentChange.bindAsEventListener(newAttachment));
   }
