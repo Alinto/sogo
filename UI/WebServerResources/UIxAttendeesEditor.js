@@ -1,18 +1,20 @@
 var resultsDiv;
-var running = false;
 var address;
-var delay = 500;
-var requestField;
-var searchField;
+var delayedSearch = false;
+var currentField;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 
 var dayStartHour = 8;
 var dayEndHour = 18;
 
-var attendeesNames;
-var attendeesUIDs;
-var attendeesEmails;
+var attendeesEditor = {
+ delay: 500,
+ names: null,
+ UIDs: null,
+ emails: null,
+ states: null
+};
 
 function onContactKeydown(event) {
   if (event.ctrlKey || event.metaKey) {
@@ -23,11 +25,10 @@ function onContactKeydown(event) {
     preventDefault(event);
     if (this.confirmedValue)
       this.value = this.confirmedValue;
-    var row = this.parentNode.parentNode.nextSibling;
-    while (row && row.tagName != 'TR')
-      row = row.nextSibling;
-    this.blur();
-    var input = $(row.cells[0]).childNodesWithTag("input")[0];
+    this.hasfreebusy = false;
+    var row = $(this).up("tr").next();
+    this.blur(); // triggers checkAttendee function call
+    var input = row.down("input");
     if (input.readOnly)
       newAttendee(null);
     else {
@@ -35,53 +36,51 @@ function onContactKeydown(event) {
       input.activate();
     }
   }
-  else if (!running) {
-    if (event.keyCode == 0
+  else if (event.keyCode == 0
 	|| event.keyCode == 8 // Backspace
         || event.keyCode == 32  // Space
         || event.keyCode > 47) {
-      running = true;
-      requestField = this;
-      requestField.setAttribute("modified", "1");
-      if (searchField) {
-	searchField.confirmedValue = null;
-	searchField.uid = null;
+      this.setAttribute("modified", "1");
+      this.confirmedValue = null;
+      this.uid = null;
+      this.hasfreebusy = false;
+      currentField = this;
+      if (this.value.length > 0 && !delayedSearch) {
+	delayedSearch = true;
+	setTimeout("performSearch()", attendeesEditor.delay);
       }
-      setTimeout("triggerRequest()", delay);
-    }
-    else if (this.confirmedValue) {
-      if (event.keyCode == 13) { // Enter
-	$(this).setCaretTo(this.value.length);
-      }
-    }
   }
+  else if (this.confirmedValue)
+    if (event.keyCode == 13) // Enter
+      $(this).setCaretTo(this.value.length);
 }
 
-function triggerRequest() {
-  if (requestField) {
+function performSearch() {
+  if (currentField) {
     if (document.contactLookupAjaxRequest) {
-      document.contactLookupAjaxRequest.aborted = yes;
+      // Abort any pending request
+      document.contactLookupAjaxRequest.aborted = true;
       document.contactLookupAjaxRequest.abort();
     }
-    var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-		   + escape(requestField.value) );
-    document.contactLookupAjaxRequest = triggerAjaxRequest(urlstr,
-							   updateResults,
-							   requestField);
+    if (currentField.value.trim().length > 0) {
+      var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+		     + escape(currentField.value) ); log (urlstr);
+      document.contactLookupAjaxRequest =
+	triggerAjaxRequest(urlstr, performSearchCallback, currentField);
+    }
   }
+  delayedSearch = false;
 }
 
-function updateResults(http) {
+function performSearchCallback(http) {
   if (http.readyState == 4) {
     var menu = $('attendeesMenu');
     var list = menu.down("ul");
-
-    searchField = http.callbackData; // requestField
-    searchField.hasfreebusy = false;
-    searchField.setAttribute("uid", null);
+    
+    var input = http.callbackData;
 
     if (http.status == 200) {
-      var start = searchField.value.length;
+      var start = input.value.length;
       var data = http.responseText.evalJSON(true);
       if (data.length > 1) {
 	$(list.childNodesWithTag("li")).each(function(item) {
@@ -94,7 +93,7 @@ function updateResults(http) {
 	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
 	  var node = document.createElement("li");
 	  list.appendChild(node);
-	  node.setAttribute("uid", contact["uid"]);
+	  node.uid = contact["uid"];
 	  node.appendChild(document.createTextNode(completeEmail));
 	  $(node).observe("mousedown", onAttendeeResultClick);
 	}
@@ -102,9 +101,9 @@ function updateResults(http) {
 	// Show popup menu
 	var offset;
 	if (isSafari())
-	  offset = Position.positionedOffset(searchField);
+	  offset = Position.positionedOffset(currentField);
 	else
-	  offset = Position.cumulativeOffset(searchField);
+	  offset = Position.cumulativeOffset(currentField);
 	var top = offset[1] + node.offsetHeight + 3;
 	var height = 'auto';
 	if (data.length > 5) {
@@ -113,7 +112,7 @@ function updateResults(http) {
 	menu.setStyle({ top: top + "px",
 	      left: offset[0] + "px",
 	      height: height,
-	      visibility: "visible"  });
+	      visibility: "visible" });
 	menu.scrollTop = 0;
 
 	document.currentPopupMenu = menu;
@@ -124,40 +123,40 @@ function updateResults(http) {
 	  hideMenu(document.currentPopupMenu);
 
 	if (data.length == 1) {
+	  // Single result
 	  var contact = data[0];
 	  if (contact["uid"].length > 0)
-	    searchField.setAttribute("uid", contact["uid"]);
+	    input.uid = contact["uid"];
 	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
-	  if (contact["name"].substring(0, searchField.value.length).toUpperCase()
-	      == searchField.value.toUpperCase())
-	    searchField.value = completeEmail;
-	  else {
-	    searchField.value += ' >> ' + completeEmail;
-	  }
-	  searchField.confirmedValue = completeEmail;
-	  if (searchField.focussed) {
-	    var end = searchField.value.length;
-	    $(searchField).selectText(start, end);
+	  if (contact["name"].substring(0, input.value.length).toUpperCase()
+	      == input.value.toUpperCase())
+	    input.value = completeEmail;
+	  else
+	    // The result matches email address, not user name
+	    input.value += ' >> ' + completeEmail;
+	  input.confirmedValue = completeEmail;
+	  if (input.focussed) {
+	    var end = input.value.length;
+	    $(input).selectText(start, end);
 	  }
 	  else
-	    searchField.value = contact["name"];
+	    input.value = contact["name"];
 	}
       }
     }
     else
       if (document.currentPopupMenu)
 	hideMenu(document.currentPopupMenu);
-    running = false;
     document.contactLookupAjaxRequest = null;
   }
 }
 
 function onAttendeeResultClick(event) {
-  if (searchField) {
-    searchField.setAttribute("uid", this.getAttribute("uid"));
-    searchField.value = this.firstChild.nodeValue.trim();
-    searchField.confirmedValue = searchField.value;
-    searchField.blur(); // triggers checkAttendee function call
+  if (currentField) {
+    currentField.uid = this.uid;
+    currentField.value = this.firstChild.nodeValue.trim();
+    currentField.confirmedValue = currentField.value;
+    currentField.blur(); // triggers checkAttendee function call
   }
 }
 
@@ -243,12 +242,11 @@ function newAttendee(event) {
    var newRow = model.cloneNode(true);
    tbody.insertBefore(newRow, newAttendeeRow);
   
-   $(newRow).className = "";
-  
-   var input = $(newRow.cells[0]).childNodesWithTag("input")[0];
-   input.setAttribute("autocomplete", "off");
-   Event.observe(input, "keydown", onContactKeydown.bindAsEventListener(input));
-   Event.observe(input, "blur", checkAttendee.bindAsEventListener(input));
+   $(newRow).removeClassName("attendeeModel");
+ 
+   var input = $(newRow).down("input");
+   input.observe("keydown", onContactKeydown);
+   input.observe("blur", checkAttendee);
 
    input.focussed = true;
    input.activate();
@@ -265,26 +263,33 @@ function checkAttendee() {
     if (visible)
       return;
   }
-
+  
   this.focussed = false;
   var row = this.parentNode.parentNode;
   var tbody = row.parentNode;
   if (tbody && this.value.trim().length == 0)
     tbody.removeChild(row);
-  else if (!this.hasfreebusy) {
-    if (this.confirmedValue)
-      this.value = this.confirmedValue;
-    displayFreeBusyForNode(this);
-    this.hasfreebusy = true;
+  else if (this.readAttribute("modified") == "1") {
+    if (!$(row).hasClassName("needs-action")) {
+      $(row).addClassName("needs-action");
+      $(row).removeClassName("declined");
+      $(row).removeClassName("accepted");    
+    }
+    if (!this.hasfreebusy) {
+      if (this.uid && this.confirmedValue)
+	this.value = this.confirmedValue;
+      displayFreeBusyForNode(this);
+      this.hasfreebusy = true;
+    }
+    this.setAttribute("modified", "0");
   }
-
-  requestField = null;
-  searchField = null;
+  
+  currentField = null;
 }
 
 function displayFreeBusyForNode(node) {
   var nodes = node.parentNode.parentNode.cells;
-  if (node.getAttribute("uid")) {
+  if (node.uid) {
     if (document.contactFreeBusyAjaxRequest)
       awaitingFreeBusyRequests.push(node);
     else {
@@ -296,17 +301,18 @@ function displayFreeBusyForNode(node) {
 				 + '<span class="freeBusyZoneElement"></span>');
       }
       if (document.contactFreeBusyAjaxRequest) {
+	// Abort any pending request
 	document.contactFreeBusyAjaxRequest.aborted = true;
 	document.contactFreeBusyAjaxRequest.abort();
       }
       var sd = $('startTime_date').valueAsShortDateString();
       var ed = $('endTime_date').valueAsShortDateString();
-      var urlstr = ( UserFolderURL + "../" + node.getAttribute("uid") + "/freebusy.ifb/ajaxRead?"
+      var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
 		     + "sday=" + sd + "&eday=" + ed + "&additional=" +
 		     additionalDays );
       document.contactFreeBusyAjaxRequest
 	= triggerAjaxRequest(urlstr,
-			     updateFreeBusyData,
+			     updateFreeBusyDataCallback,
 			     node);
     }
   } else {
@@ -336,7 +342,7 @@ function setSlot(tds, nbr, status) {
   }
 }
 
-function updateFreeBusyData(http) {
+function updateFreeBusyDataCallback(http) {
   if (http.readyState == 4) {
     if (http.status == 200) {
       var node = http.callbackData;
@@ -385,33 +391,42 @@ function initializeWindowButtons() {
 function onEditorOkClick(event) {
    preventDefault(event);
    
-   attendeesNames = new Array();
-   attendeesUIDs = new Array();
-   attendeesEmails = new Array();
-   
+   attendeesEditor.names = new Array();
+   attendeesEditor.UIDs = new Array();
+   attendeesEditor.emails = new Array();
+   attendeesEditor.states = new Array();
+
    var table = $("freeBusy");
    var inputs = table.getElementsByTagName("input");
    for (var i = 0; i < inputs.length - 2; i++) {
+     var row = $(inputs[i]).up("tr");
      var name = extractEmailName(inputs[i].value);
      var email = extractEmailAddress(inputs[i].value);
      var uid = "";
-     if (inputs[i].getAttribute("uid"))
-       uid = inputs[i].getAttribute("uid");
+     if (inputs[i].uid)
+       uid = inputs[i].uid;
      if (!(name && name.length > 0))
        if (inputs[i].uid)
 	 name = inputs[i].uid;
        else
 	 name = email;
-     var pos = attendeesEmails.indexOf(email);
+     var state = "needs-action";
+     if (row.hasClassName("accepted"))
+       state = "accepted";
+     else if (row.hasClassName("declined"))
+       state = "declined";
+     var pos = attendeesEditor.emails.indexOf(email);
      if (pos == -1)
-       pos = attendeesEmails.length;
-     attendeesNames[pos] = name;
-     attendeesUIDs[pos] = uid;
-     attendeesEmails[pos] = email;
+       pos = attendeesEditor.emails.length;
+     attendeesEditor.names[pos] = name;
+     attendeesEditor.UIDs[pos] = uid;
+     attendeesEditor.emails[pos] = email;
+     attendeesEditor.states[pos] = state;
    }
-   parent$("attendeesNames").value = attendeesNames.join(",");
-   parent$("attendeesUIDs").value = attendeesUIDs.join(",");
-   parent$("attendeesEmails").value = attendeesEmails.join(",");
+   parent$("attendeesNames").value = attendeesEditor.names.join(",");
+   parent$("attendeesUIDs").value = attendeesEditor.UIDs.join(",");
+   parent$("attendeesEmails").value = attendeesEditor.emails.join(",");
+   parent$("attendeesStates").value = attendeesEditor.states.join(",");
    window.opener.refreshAttendees();
 
    updateParentDateFields("startTime", "startTime");
@@ -547,25 +562,27 @@ function prepareAttendees() {
    var value = parent$("attendeesNames").value;
    var table = $("freeBusy");
    if (value.length > 0) {
-      attendeesNames = parent$("attendeesNames").value.split(",");
-      attendeesUIDs = parent$("attendeesUIDs").value.split(",");
-      attendeesEmails = parent$("attendeesEmails").value.split(",");
+      attendeesEditor.names = parent$("attendeesNames").value.split(",");
+      attendeesEditor.UIDs = parent$("attendeesUIDs").value.split(",");
+      attendeesEditor.emails = parent$("attendeesEmails").value.split(",");
+      attendeesEditor.states = parent$("attendeesStates").value.split(",");
 
       var tbody = table.tBodies[0];
       var model = tbody.rows[tbody.rows.length - 1];
       var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
-      for (var i = 0; i < attendeesNames.length; i++) {
+      for (var i = 0; i < attendeesEditor.names.length; i++) {
 	 var row = model.cloneNode(true);
 	 tbody.insertBefore(row, newAttendeeRow);
 	 $(row).removeClassName("attendeeModel");
+	 $(row).addClassName(attendeesEditor.states[i]);
 	 var input = $(row).down("input");
 	 var value = "";
-	 if (attendeesNames[i].length > 0 && attendeesNames[i] != attendeesEmails[i])
-	    value += attendeesNames[i] + " ";
-	 value += "<" + attendeesEmails[i] + ">";
+	 if (attendeesEditor.names[i].length > 0 && attendeesEditor.names[i] != attendeesEditor.emails[i])
+	    value += attendeesEditor.names[i] + " ";
+	 value += "<" + attendeesEditor.emails[i] + ">";
 	 input.value = value;
-	 if (attendeesUIDs[i].length > 0)
-	   input.setAttribute("uid", attendeesUIDs[i]);
+	 if (attendeesEditor.UIDs[i].length > 0)
+	   input.uid = attendeesEditor.UIDs[i];
 	 input.setAttribute("name", "");
 	 input.setAttribute("modified", "0");
 	 input.observe("blur", checkAttendee);
@@ -574,9 +591,9 @@ function prepareAttendees() {
       }
    }
    else {
-      attendeesNames = new Array();
-      attendeesUIDs = new Array();
-      attendeesEmails = new Array();
+      attendeesEditor.names = new Array();
+      attendeesEditor.UIDs = new Array();
+      attendeesEditor.emails = new Array();
    }
 
    var inputs = table.getElementsByTagName("input");

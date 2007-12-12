@@ -63,6 +63,7 @@
   NSString *attendeesNames;
   NSString *attendeesUIDs;
   NSString *attendeesEmails;
+  NSString *attendeesStates;
 }
 
 - (NSString *) toolbar;

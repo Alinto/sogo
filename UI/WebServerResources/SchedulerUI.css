@@ -902,6 +902,26 @@ DIV.monthView DIV.event
 DIV.event DIV.text
 { font-size: 92%; }
 
+DIV.event.needs-action DIV.text
+{ background-image: url("needs-action.png");
+  background-repeat: no-repeat;
+  background-position: 98% 95%; }
+
+DIV.event.accepted DIV.text
+{ background-image: url("accepted.png"); 
+  background-repeat: no-repeat;
+  background-position: 98% 95%; }
+
+DIV.event.declined DIV.text
+{ background-image: url("declined.png"); 
+  background-repeat: no-repeat;
+  background-position: 98% 95%; }
+
+DIV.event.tentative DIV.text
+{ background-image: url("tentative.png"); 
+  background-repeat: no-repeat;
+  background-position: 98% 95%; }
+
 DIV#daysView DIV[class~="event"].starts0
 { top: 0.000000%; }
 

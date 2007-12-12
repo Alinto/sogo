@@ -760,6 +760,8 @@ function drawCalendarEvent(eventData, sd, ed) {
  				    null, null, title);
 	 siblings.push(eventDiv);
 	 eventDiv.siblings = siblings;
+	 if (eventData[9].length > 0)
+	   eventDiv.addClassName(eventData[9]);
 	 var dayString = days[i].getDayString();
 // 	 log("day: " + dayString);
 	 var parentDiv = null;

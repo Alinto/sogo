@@ -91,6 +91,8 @@
 	var:value="attendeesUIDs"/>
       <input type="hidden" name="attendeesEmails" id="attendeesEmails"
 	var:value="attendeesEmails"/>
+      <input type="hidden" name="attendeesStates" id="attendeesStates"
+	var:value="attendeesStates"/>
       <input type="hidden" name="calendarFoldersList"
 	id="calendarFoldersList"
 	var:value="calendarsFoldersList"/>

@@ -33,6 +33,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGCards/iCalPerson.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
@@ -308,21 +309,23 @@
 
 - (WOResponse *) eventsListAction
 {
-  NSArray *fields, *oldEvent;
+  NSArray *fields, *oldEvent, *participants, *states;
   NSEnumerator *events;
   NSMutableArray *newEvents, *newEvent;
-  unsigned int interval;
+  unsigned int interval, i;
   BOOL isAllDay;
-  NSString *sort, *ascending;
+  NSString *sort, *ascending, *participant, *state;
+  SOGoUser *user;
 
   [self _setupContext];
 
   newEvents = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
 		    @"c_title", @"c_startdate", @"c_enddate", @"c_location",
-		    @"c_isallday", @"c_classification", nil];
+		    @"c_isallday", @"c_classification", @"c_partmails", @"c_partstates", nil];
   events = [[self _fetchFields: fields
 		  forComponentOfType: @"vevent"] objectEnumerator];
+  user = [[self context] activeUser];
   oldEvent = [events nextObject];
   while (oldEvent)
     {
@@ -340,6 +343,35 @@
 				  forAllDay: isAllDay]];
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
+
+      participants = state = nil;
+      if ([[oldEvent objectAtIndex: 9] length] > 0 &&
+	  [[oldEvent objectAtIndex: 10] length] > 0) {
+	participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
+	states = [[oldEvent objectAtIndex: 10] componentsSeparatedByString: @"\n"];
+	for (i = 0; i < [participants count]; i++) {
+	  participant = [participants objectAtIndex: i];
+	  if ([user hasEmail: participant]) {
+	    switch ([[states objectAtIndex: i] intValue]) {
+	    case iCalPersonPartStatNeedsAction:
+	      state = @"needs-action";
+	      break;
+	    case iCalPersonPartStatAccepted:
+	      state = @"accepted";
+	      break;
+	    case iCalPersonPartStatDeclined:
+	      state = @"declined";
+	      break;
+	    }
+	    [newEvent replaceObjectAtIndex: 9 withObject: state];
+	    break;
+	  }
+	}
+      }
+      if (participants == nil || i == [participants count])
+	[newEvent replaceObjectAtIndex: 9 withObject: @""];
+      [newEvent removeObjectAtIndex: 10];
+
       [newEvents addObject: newEvent];
       
       oldEvent = [events nextObject];

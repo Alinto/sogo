@@ -94,3 +94,9 @@ TABLE#freeBusy TD.attendees
 TABLE#freeBusy TD.attendees INPUT
 { border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc; }
+
+TABLE#freeBusy TR.needs-action INPUT,
+TABLE#freeBusy TR.accepted INPUT,
+TABLE#freeBusy TR.declined INPUT
+{ margin-left: 2.0em;
+  width: 10.0em; }

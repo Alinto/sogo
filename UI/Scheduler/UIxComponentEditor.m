@@ -73,6 +73,7 @@
       attendeesNames = nil;
       attendeesUIDs = nil;
       attendeesEmails = nil;
+      attendeesStates = nil;
       calendarList = nil;
     }
 
@@ -96,6 +97,7 @@
   [attendeesNames release];
   [attendeesUIDs release];
   [attendeesEmails release];
+  [attendeesStates release];
   [calendarList release];
 
   [component release];
@@ -107,13 +109,14 @@
 {
   NSEnumerator *attendees;
   iCalPerson *currentAttendee;
-  NSMutableString *names, *uids, *emails;
+  NSMutableString *names, *uids, *emails, *states;
   NSString *uid;
   LDAPUserManager *um;
 
   names = [NSMutableString new];
   uids = [NSMutableString new];
   emails = [NSMutableString new];
+  states = [NSMutableString new];
   um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
@@ -127,6 +130,7 @@
 	[uids appendFormat: @"%@,", uid];
       else
 	[uids appendString: @","];
+      [states appendFormat: @"%@,", [[currentAttendee partStat] lowercaseString]];
       currentAttendee = [attendees nextObject];
     }
 
@@ -136,6 +140,7 @@
       ASSIGN (attendeesUIDs, [uids substringToIndex: [uids length] - 1]);
       ASSIGN (attendeesEmails,
 	      [emails substringToIndex: [emails length] - 1]);
+      ASSIGN (attendeesStates, [states substringToIndex: [states length] - 1]);
     }
 
   [names release];
@@ -356,6 +361,16 @@
 - (NSString *) attendeesEmails
 {
   return attendeesEmails;
+}
+
+- (void) setAttendeesStates: (NSString *) newAttendeesStates
+{
+  ASSIGN (attendeesStates, newAttendeesStates);
+}
+
+- (NSString *) attendeesStates
+{
+  return attendeesStates;
 }
 
 - (void) setLocation: (NSString *) _value

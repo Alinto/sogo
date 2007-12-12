@@ -1,3 +1,13 @@
+2007-12-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsListAction]): added the state of the calendar's owner with
+	respect to the current event.
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-_loadAttendees]): added the retrieval of attendees state on
+	current event.
+
 2007-12-12  Ludovic Marcotte <ludovic@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.{h,m} 
