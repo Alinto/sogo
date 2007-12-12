@@ -1,3 +1,9 @@
+2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTimeZone.m ([iCalTimeZone -periodForDate:date]): at least
+	one timezone period is needed so we might need to fallback on the
+	only one present if the other does not exist.
+
 2007-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m ([iCalDateTime -timeZone]): log a message if the

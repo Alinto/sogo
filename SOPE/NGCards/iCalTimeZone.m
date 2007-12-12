@@ -89,13 +89,18 @@
                             forDate: date];
   standardOccurence = [self _occurenceForPeriodNamed: @"standard"
                             forDate: date];
-  if ([date earlierDate: daylightOccurence] == date
-      || [date earlierDate: standardOccurence] == standardOccurence)
+
+  if (!standardOccurence)
+    period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+  else if (!daylightOccurence)
+    period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+  else if ([date earlierDate: daylightOccurence] == date
+	   || [date earlierDate: standardOccurence] == standardOccurence)
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
   else
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
 
-  NSLog (@"chosen period: '%@'", [period tag]);
+//   NSLog (@"chosen period: '%@'", [period tag]);
 
   return period;
 }
