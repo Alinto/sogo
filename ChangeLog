@@ -1,3 +1,20 @@
+2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
+	-fetchAttachmentIds]): new method that wanders through the mail
+	structure to collect the attachment content ids and to associate
+	them with their url.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([_UIxHTMLMailContentHandler
+	-startElement:_localNamenamespace:_nsrawName:_rawNameattributes:_attributes]):
+	the content-ids are now enclosed between "<>" before retrieval
+	from the attachment dictionary.
+	([UIxMailPartHTMLViewer -cssContent])
+	([UIxMailPartHTMLViewer -flatContentAsString]): the content-ids
+	are now fetch from the clientobject (an instance of
+	SOGoMailObject) with the new "fetchAttachmentIds" method.
+
 2007-12-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

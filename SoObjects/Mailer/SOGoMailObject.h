@@ -89,6 +89,8 @@
 - (NSDictionary *) fetchPlainTextParts;
 - (NSDictionary *) fetchPlainTextStrings:(NSArray *)_fetchKeys;
 
+- (NSDictionary *) fetchAttachmentIds;
+
 /* flags */
 
 - (NSException *) addFlags:(id)_f;

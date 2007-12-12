@@ -35,6 +35,8 @@
 
 #include <libxml/encoding.h>
 
+#import <SoObjects/Mailer/SOGoMailObject.h>
+
 #import "UIxMailPartHTMLViewer.h"
 
 #if 0
@@ -207,7 +209,7 @@
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value;
+  NSString *name, *value, *cid;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
@@ -237,8 +239,9 @@
               value = [_attributes valueAtIndex: count];
               if ([value hasPrefix: @"cid:"])
                 {
-                  value = [attachmentIds
-                            objectForKey: [value substringFromIndex: 4]];
+		  cid = [NSString stringWithFormat: @"<%@>",
+				  [value substringFromIndex: 4]];
+                  value = [attachmentIds objectForKey: cid];
                   skipAttribute = (value == nil);
                 }
               else
@@ -433,68 +436,6 @@
   [super dealloc];
 }
 
-- (void) _convertReferencesForPart: (NSDictionary *) part
-                         withCount: (unsigned int) count
-                        andBaseURL: (NSString *) url
-                    intoDictionary: (NSMutableDictionary *) attachmentIds
-{
-  NSString *bodyId, *filename;
-  NSMutableString *attachmentURL;
-
-  bodyId = [part objectForKey: @"bodyId"];
-  if ([bodyId length] > 0)
-    {
-      filename = [[part objectForKey: @"parameterList"] objectForKey: @"name"];
-      if (!filename)
-	filename = [[[part objectForKey: @"disposition"]
-		      objectForKey: @"parameterList"]
-		     objectForKey: @"filename"];
-      if ([bodyId hasPrefix: @"<"])
-        bodyId = [bodyId substringFromIndex: 1];
-      if ([bodyId hasSuffix: @">"])
-        bodyId = [bodyId substringToIndex: [bodyId length] - 1];
-      attachmentURL = [NSMutableString stringWithString: url];
-      [attachmentURL appendFormat: @"/%d", count];
-      if ([filename length])
-	[attachmentURL appendFormat: @"/%@", filename];
-      [attachmentIds setObject: attachmentURL forKey: bodyId];
-    }
-}
-
-- (NSDictionary *) _attachmentIds
-{
-  NSMutableDictionary *attachmentIds;
-  UIxMailPartViewer *parent;
-  unsigned int count, max;
-//   NSMutableString *url;
-  NSString *baseURL;
-  NSArray *parts;
-
-  attachmentIds = [NSMutableDictionary new];
-  [attachmentIds autorelease];
-  
-  parent = [self parent];
-  if ([NSStringFromClass ([parent class])
-                         isEqualToString: @"UIxMailPartAlternativeViewer"])
-    {
-      baseURL = [[self clientObject] baseURLInContext: context];
-//       url = [NSMutableString new];
-//       [url appendString: baseURL];
-//       [url appendFormat: @"/%@", [partPath componentsJoinedByString: @"/"]];
-//       [url deleteCharactersInRange: NSMakeRange([url length] - 4, 4)];
-      parts = [[[parent parent] bodyInfo] objectForKey: @"parts"];
-      max = [parts count];
-      for (count = 0; count < max; count++)
-        [self _convertReferencesForPart: [parts objectAtIndex: count]
-              withCount: count + 1
-              andBaseURL: baseURL
-              intoDictionary: attachmentIds];
-//       [url release];
-    }
-
-  return attachmentIds;
-}
-
 - (xmlCharEncoding) _xmlCharsetForCharset: (NSString *) charset
 {
   struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
@@ -557,13 +498,16 @@
 {
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
+  SOGoMailObject *mail;
+
+  mail = [self clientObject];
 
   preparsedContent = [super decodedFlatContent];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [self _attachmentIds]];
+  [handler setAttachmentIds: [mail fetchAttachmentIds]];
   [handler setContentEncoding: [self _xmlCharEncoding]];
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];

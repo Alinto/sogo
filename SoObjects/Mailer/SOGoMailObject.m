@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
@@ -642,6 +643,72 @@ static BOOL debugSoParts       = NO;
 - (NSDictionary *) fetchPlainTextParts
 {
   return [self fetchPlainTextParts: [self plainTextContentFetchKeys]];
+}
+
+- (NSString *) _urlToPart: (NSDictionary *) infos
+	       withPrefix: (NSString *) urlPrefix
+{
+  NSDictionary *parameters;
+  NSString *urlToPart, *filename;
+
+  parameters = [infos objectForKey: @"parameterList"];
+  filename = [parameters objectForKey: @"name"];
+  if (!filename)
+    {
+      parameters = [[infos objectForKey: @"disposition"]
+		     objectForKey: @"parameterList"];
+      filename = [parameters objectForKey: @"filename"];
+    }
+
+  if ([filename length])
+    urlToPart = [NSString stringWithFormat: @"%@/%@", urlPrefix, filename];
+  else
+    urlToPart = nil;
+
+  return urlToPart;
+}
+
+- (void) _feedAttachmentIds: (NSMutableDictionary *) attachmentIds
+		  withInfos: (NSDictionary *) infos
+		  andPrefix: (NSString *) prefix
+{
+  NSArray *parts;
+  NSDictionary *currentPart;
+  unsigned int count, max;
+  NSString *url, *cid;
+
+  cid = [infos objectForKey: @"bodyId"];
+  if ([cid length])
+    {
+      url = [self _urlToPart: infos withPrefix: prefix];
+      if (url)
+	[attachmentIds setObject: url forKey: cid];
+    }
+
+  parts = [infos objectForKey: @"parts"];
+  max = [parts count];
+  for (count = 0; count < max; count++)
+    {
+      currentPart = [parts objectAtIndex: count];
+      [self _feedAttachmentIds: attachmentIds
+	    withInfos: currentPart
+	    andPrefix: [NSString stringWithFormat: @"%@/%d",
+				 prefix, count + 1]];
+    }
+}
+
+- (NSDictionary *) fetchAttachmentIds
+{
+  NSMutableDictionary *attachmentIds;
+
+  attachmentIds = [NSMutableDictionary dictionary];
+
+  [self fetchCoreInfos];
+  [self _feedAttachmentIds: attachmentIds
+	withInfos: [coreInfos objectForKey: @"body"]
+	andPrefix: [[self soURL] absoluteString]];
+
+  return attachmentIds;
 }
 
 /* convert parts to strings */
