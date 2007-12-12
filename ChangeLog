@@ -1,3 +1,13 @@
+2007-12-12  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailRenderingContext.{h,m} 
+	Removed template caching which added very little
+	and created re-entrant issues.
+	
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m 
+        Added a hack (and stated so in the source file)
+	to avoid what seems to be a bug in libxml. 
+
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

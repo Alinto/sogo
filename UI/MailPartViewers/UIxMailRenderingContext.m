@@ -72,32 +72,13 @@ static BOOL showNamedTextAttachmentsInline = NO;
 - (void) dealloc
 {
   [flatContents release];
-  [iCalViewer release];
-  [htmlViewer release];
-  [textViewer release];
-  [imageViewer release];
-  [linkViewer release];
-  [messageViewer release];
   [super dealloc];
 }
 
 - (void) reset
 {
   [flatContents release];
-  [iCalViewer release];
-  [htmlViewer release];
-  [textViewer release];
-  [imageViewer release];
-  [linkViewer release];
-  [messageViewer release];
-
   flatContents = nil;
-  iCalViewer = nil;
-  textViewer = nil;
-  imageViewer = nil;
-  htmlViewer = nil;
-  linkViewer = nil;
-  messageViewer = nil;
 }
 
 /* fetching */
@@ -151,68 +132,32 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 - (WOComponent *) textViewer
 {
-  if (!textViewer)
-    {
-      textViewer = [viewer pageWithName: @"UIxMailPartTextViewer"];
-      [textViewer retain];
-    }
-
-  return textViewer;
+  return [viewer pageWithName: @"UIxMailPartTextViewer"];
 }
 
 - (WOComponent *) imageViewer
 {
-  if (!imageViewer)
-    {
-      imageViewer = [viewer pageWithName: @"UIxMailPartImageViewer"];
-      [imageViewer retain];
-    }
-
-  return imageViewer;
+  return [viewer pageWithName: @"UIxMailPartImageViewer"];
 }
 
 - (WOComponent *) linkViewer
 {
-  if (!linkViewer)
-    {
-      linkViewer = [viewer pageWithName: @"UIxMailPartLinkViewer"];
-      [linkViewer retain];
-    }
-
-  return linkViewer;
+  return [viewer pageWithName: @"UIxMailPartLinkViewer"];
 }
 
 - (WOComponent *) htmlViewer
 {
-  if (!htmlViewer)
-    {
-      htmlViewer = [viewer pageWithName: @"UIxMailPartHTMLViewer"];
-      [htmlViewer retain];
-    }
-
-  return htmlViewer;
+  return [viewer pageWithName: @"UIxMailPartHTMLViewer"];
 }
 
 - (WOComponent *) messageViewer
 {
-  if (!messageViewer)
-    {
-      messageViewer = [viewer pageWithName: @"UIxMailPartMessageViewer"];
-      [messageViewer retain];
-    }
-
-  return messageViewer;
+  return [viewer pageWithName: @"UIxMailPartMessageViewer"];
 }
 
 - (WOComponent *) iCalViewer
 {
-  if (!iCalViewer)
-    {
-      iCalViewer = [viewer pageWithName: @"UIxMailPartICalViewer"];
-      [iCalViewer retain];
-    }
-
-  return iCalViewer;
+  return [viewer pageWithName: @"UIxMailPartICalViewer"];
 }
 
 /* Kolab viewers */

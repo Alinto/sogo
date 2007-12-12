@@ -43,13 +43,6 @@
   WOComponent  *viewer;       /* non-retained! */
   WOContext    *context;      /* non-retained! */
   NSDictionary *flatContents; /* IMAP4 name to NSData */
-
-  WOComponent  *textViewer;
-  WOComponent  *imageViewer;
-  WOComponent  *linkViewer;
-  WOComponent  *messageViewer;
-  WOComponent  *iCalViewer;
-  WOComponent  *htmlViewer;
 }
 
 - (id) initWithViewer: (WOComponent *) _viewer

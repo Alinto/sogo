@@ -298,8 +298,6 @@
 - (void) characters: (unichar *) _chars
              length: (int) _len
 {
-  NSString *tmpString;
-
   showWhoWeAre();
   if (!inScript)
     {
@@ -307,8 +305,16 @@
         [self _appendStyle: _chars length: _len];
       else if (inBody)
         {
+	  NSString *tmpString;
+  
           tmpString = [NSString stringWithCharacters: _chars length: _len];
-          [result appendString: [tmpString stringByEscapingHTMLString]];
+	  
+	  // HACK: This is to avoid appending the useless junk in the <html> tag
+	  //       that Outlook adds. It seems to confuse the XML parser for
+	  //       forwarded messages as we get this in the _body_ of the email
+	  //       while we really aren't in it!
+	  if (![tmpString hasPrefix: @" xmlns:v=\"urn:schemas-microsoft-com:vml\""])
+	    [result appendString: [tmpString stringByEscapingHTMLString]];
         }
     }
 }
