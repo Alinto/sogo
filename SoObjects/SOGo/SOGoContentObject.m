@@ -29,6 +29,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
 
+#import "NSCalendarDate+SOGo.h"
 #import "SOGoGCSFolder.h"
 #import "SOGoUser.h"
 #import "SOGoPermissions.h"
@@ -320,6 +321,30 @@
 }
 
 /* WebDAV */
+- (NSString *) davCreationDate
+{
+  NSCalendarDate *date;
+
+  date = [[self ocsFolder] creationDateOfEntryWithName: nameInContainer];
+
+  return [date rfc822DateString];
+}
+
+- (NSString *) davLastModified
+{
+  NSCalendarDate *date;
+
+  date = [[self ocsFolder] lastModificationOfEntryWithName: nameInContainer];
+
+  return [date rfc822DateString];
+}
+
+- (NSString *) davContentLength
+{
+  return [NSString stringWithFormat: @"%u",
+		   [content
+		     lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]];
+}
 
 - (NSException *) davMoveToTargetObject: (id) _target
 				newName: (NSString *) _name
