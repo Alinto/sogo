@@ -357,12 +357,12 @@ function eventsListCallback(http) {
 	td = document.createElement("td");
 	row.appendChild(td);
 	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][9]));
+	td.appendChild(document.createTextNode(data[i][10]));
 
 	td = document.createElement("td");
 	row.appendChild(td);
 	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][10]));
+	td.appendChild(document.createTextNode(data[i][11]));
       
 	td = document.createElement("td");
 	row.appendChild(td);
