@@ -89,6 +89,21 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
+	crash = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+	  actionName = "crash";
+        };
+	exception = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+	  actionName = "exception";
+        };
+	raisedException = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+	  actionName = "raisedException";
+        };
 	connect = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";

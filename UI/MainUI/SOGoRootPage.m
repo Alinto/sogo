@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSException.h>
+
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOCookie.h>
@@ -34,6 +36,12 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "SOGoRootPage.h"
+
+@interface SOGoRootPage (crashAdditions)
+
+- (void) segfault;
+
+@end
 
 @implementation SOGoRootPage
 
@@ -108,6 +116,29 @@
 - (BOOL) isPublicInContext: (WOContext *) localContext
 {
   return YES;
+}
+
+- (id <WOActionResults>) crashAction
+{
+  [self segfault];
+
+  return nil;
+}
+
+- (id <WOActionResults>) exceptionAction
+{
+  return (id <WOActionResults>)
+    [NSException exceptionWithName: @"ExceptionAction"
+		 reason: @"This exception is brought to you by SOGo"
+		 userInfo: nil];
+}
+
+- (id <WOActionResults>) raisedExceptionAction
+{
+  [NSException raise: @"ExceptionAction"
+	       format: @"This exception is brought to you by SOGo"];
+
+  return nil;
 }
 
 @end /* SOGoRootPage */

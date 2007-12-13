@@ -1,5 +1,12 @@
 2007-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -crashAction]): new
+	action methods that generates a segmentation faults.
+	([SOGoRootPage -exceptionAction]): new method that returns an
+	exception object.
+	([SOGoRootPage -raisedExceptionAction]): new method that raises an
+	exception without returning it.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:status])
 	([UIxComponent -responseWithStatus:statusandString:contentString])
 	([UIxComponent -responseWithStatus:statusandJSONRepresentation:contentObject])
