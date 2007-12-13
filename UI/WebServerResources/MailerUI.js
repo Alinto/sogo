@@ -451,18 +451,20 @@ function openMailbox(mailbox, reload, idx) {
     Mailer.currentMailbox = mailbox;
     var url = ApplicationBaseURL + encodeURI(mailbox) + "/view?noframe=1";
     
-    if (!reload) {
+    if (!reload || idx) {
       var messageContent = $("messageContent");
       messageContent.update();
       lastClickedRow = -1; // from generic.js
     }
     
     var currentMessage;
-    if (!idx && !reload) {
+      
+    if (!idx) {
       currentMessage = Mailer.currentMessages[mailbox];
       if (currentMessage) {
-	loadMessage(currentMessage);
 	url += '&pageforuid=' + currentMessage;
+	if (!reload)
+	  loadMessage(currentMessage);
       }
     }
 
