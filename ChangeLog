@@ -1,5 +1,9 @@
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-stringByDetectingURLs]): we now go back until the real start of
+	the found url.
+
 	* SoObjects/Mailer/SOGoMailObject.m ([SOGoMailObject
 	-fetchAttachmentIds]): new method that wanders through the mail
 	structure to collect the attachment content ids and to associate

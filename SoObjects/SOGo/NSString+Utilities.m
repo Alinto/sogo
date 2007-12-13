@@ -33,6 +33,7 @@
 
 static NSMutableCharacterSet *urlNonEndingChars = nil;
 static NSMutableCharacterSet *urlAfterEndingChars = nil;
+static NSMutableCharacterSet *urlStartChars = nil;
 
 @implementation NSString (SOGoURLExtension)
 
@@ -150,12 +151,12 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @">=,.:;\t \r\n"];
+      [urlNonEndingChars addCharactersInString: @"=,.:;\t \r\n"];
     }
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"[]\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"&;[]\t \r\n"];
     }
 
   start = refRange.location;
@@ -187,9 +188,26 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
   NSRange httpRange, currentURL, rest;
   NSString *urlText, *newUrlText;
   unsigned int length, matchLength;
+  int startLocation;
 
+  if (!urlStartChars)
+    {
+      urlStartChars = [NSMutableCharacterSet new];
+      [urlStartChars addCharactersInString: @"abcdefghijklmnopqrstuvwxyz"
+		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		     @"0123456789:@"];
+    }
   matchLength = [match length];
   httpRange = [selfCopy rangeOfString: match];
+  if (httpRange.location != NSNotFound)
+    {
+      startLocation = httpRange.location;
+      while (startLocation > -1
+	     && [urlStartChars characterIsMember:
+				 [selfCopy characterAtIndex: startLocation]])
+	startLocation--;
+      httpRange.location = startLocation + 1;
+    }
   while (httpRange.location != NSNotFound)
     {
       if ([ranges hasRangeIntersection: httpRange])
