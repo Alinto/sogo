@@ -328,7 +328,17 @@
 	compose = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailMainFrame";
-	  actionName = "compose";
+	  actionName  = "compose";
+	};
+	foldersState = {
+	  protectedBy = "View";
+	  pageName    = "UIxMailMainFrame";
+	  actionName  = "getFoldersState";
+	};
+	saveFoldersState = {
+	  protectedBy = "View";
+	  pageName    = "UIxMailMainFrame";
+	  actionName  = "saveFoldersState";
 	};
       };
     };

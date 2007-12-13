@@ -1,3 +1,9 @@
+2007-12-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame -saveFoldersStateAction])
+	([UIxMailMainFrame -getFoldersStateAction]): new methods to get
+	and set the folders state of the user's web view.
+
 2007-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -crashAction]): new

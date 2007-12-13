@@ -26,7 +26,10 @@
 #import "../SOGoUI/UIxComponent.h"
 
 @interface UIxMailMainFrame : UIxComponent
-
+{
+  NSUserDefaults *ud;
+  NSMutableDictionary *moduleSettings;
+}
 @end
 
 #endif /* UIXMAILMAINFRAME_H */

@@ -29,8 +29,31 @@ var MailerUIdTreeExtension = {
       this._addFolder(thisCounter, folder.children[i]);
    },
    addMailAccount: function (mailAccount) {
-      this._addFolder(0, mailAccount);
-   }
+     this._addFolder(0, mailAccount);
+  },
+  setCookie: function(cookieName, cookieValue, expires, path, domain, secure) {
+    
+  },
+  getCookie: function(cookieName) {
+    return ("");
+  },
+  updateCookie: function () {
+    if (Mailer.foldersStateTimer)
+      clearTimeout(Mailer.foldersStateTimer);
+    Mailer.foldersStateTimer = setTimeout('saveFoldersState()', 3000); // 3 seconds
+  },
+  getFoldersState: function () {
+    var expandedFolders = new Array();
+    for (var n = 0; n < this.aNodes.length; n++) {
+      if (this.aNodes[n]._io && this.aNodes[n].pid != this.root.id) {
+	 expandedFolders.push(this.aNodes[n].dataname);
+      }
+    }
+    return expandedFolders.toJSON();
+  },
+  autoSync: function() {
+    this.config.useCookies = true;
+  }
 };
 
 Object.extend(dTree.prototype, MailerUIdTreeExtension);

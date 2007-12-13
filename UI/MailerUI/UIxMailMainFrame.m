@@ -36,6 +36,28 @@
 
 @implementation UIxMailMainFrame
 
+- (void) _setupContext
+{
+  SOGoUser *activeUser;
+  NSString *login, *module;
+  SOGoMailAccounts *clientObject;
+
+  activeUser = [context activeUser];
+  login = [activeUser login];
+  clientObject = [self clientObject];
+
+  module = [clientObject nameInContainer];
+
+  ud = [activeUser userSettings];
+  moduleSettings = [ud objectForKey: module];
+  if (!moduleSettings)
+    {
+      moduleSettings = [NSMutableDictionary new];
+      [moduleSettings autorelease];
+    }
+  [ud setObject: moduleSettings forKey: module];
+}
+
 /* accessors */
 - (NSString *) mailAccounts
 {
@@ -109,6 +131,33 @@
 			  [formValues asURLParameters]];
 
   return [self redirectToLocation: newLocation];
+}
+
+- (WOResponse *) getFoldersStateAction
+{
+  NSString *expandedFolders;
+
+  [self _setupContext];
+  expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
+
+  return [self responseWithStatus: 200 andString: expandedFolders];
+}
+
+- (WOResponse *) saveFoldersStateAction
+{
+  WORequest *request;
+  NSString *expandedFolders;
+  
+  [self _setupContext];
+  request = [context request];
+  expandedFolders = [request formValueForKey: @"expandedFolders"];
+
+  [moduleSettings setObject: expandedFolders
+		  forKey: @"ExpandedFolders"];
+
+  [ud synchronize];
+
+  return [self responseWithStatus: 204];
 }
 
 @end /* UIxMailMainFrame */

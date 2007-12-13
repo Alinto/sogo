@@ -14,7 +14,8 @@ var Mailer = {
  currentMailboxType: "",
  currentMessages: {},
  maxCachedMessages: 20,
- cachedMessages: new Array()
+ cachedMessages: new Array(),
+ foldersStateTimer: false
 };
 
 var usersRightsWindowHeight = 320;
@@ -1254,7 +1255,7 @@ function initMailer(event) {
     initMailboxTree();
     initMessageCheckTimer();
   }
-
+  
   // Default sort options
   sorting["attribute"] = "date";
   sorting["ascending"] = false;
@@ -1434,6 +1435,7 @@ function onLoadMailboxesCallback(http) {
 	updateMailboxTreeInPage();
 	updateMailboxMenus();
 	checkAjaxRequestsState();
+	getFoldersState();
       }
     }
   }
@@ -1480,6 +1482,45 @@ function buildMailboxes(accountName, encoded) {
   }
 
   return account;
+}
+
+function getFoldersState() {
+  if (mailAccounts.length > 0) {
+    var urlstr =  ApplicationBaseURL + "foldersState";
+    triggerAjaxRequest(urlstr, getFoldersStateCallback);
+  }
+}
+
+function getFoldersStateCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    if (http.responseText.length > 0) {
+      // The response text is a JSOn representation
+      // of the folders that were left opened.
+      var data = http.responseText.evalJSON(true);
+      for (var i = 1; i < mailboxTree.aNodes.length; i++) {
+	if ($(data).indexOf(mailboxTree.aNodes[i].dataname) > 0)
+	  // If the folder is found, open it
+	  mailboxTree.o(i);
+      }
+    }
+  }
+  mailboxTree.autoSync();
+}
+
+function saveFoldersState() {
+  if (mailAccounts.length > 0) {
+    var foldersState = mailboxTree.getFoldersState();
+    var urlstr =  ApplicationBaseURL + "saveFoldersState" + "?expandedFolders=" + foldersState;
+    triggerAjaxRequest(urlstr, saveFoldersStateCallback);
+  }
+}
+
+function saveFoldersStateCallback(http) {
+  if (http.readyState == 4
+      && isHttpStatus204(http.status)) {
+    log ("folders state saved");
+  }
 }
 
 function onMenuCreateFolder(event) {
