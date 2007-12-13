@@ -25,6 +25,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -40,6 +41,24 @@
   [response setStatus: status];
 
   return response;
+}
+
+- (WOResponse *) responseWithStatus: (unsigned int) status
+			  andString: (NSString *) contentString
+{
+  WOResponse *response;
+
+  response = [self responseWithStatus: status];
+  [response appendContentString: contentString];
+
+  return response;
+}
+
+- (WOResponse *) responseWithStatus: (unsigned int) status
+	      andJSONRepresentation: (NSObject *) contentObject;
+{
+  return [self responseWithStatus: status
+	       andString: [contentObject jsonRepresentation]];
 }
 
 - (WOResponse *) responseWith204

@@ -1,5 +1,15 @@
 2007-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -responseWithStatus:status])
+	([UIxComponent -responseWithStatus:statusandString:contentString])
+	([UIxComponent -responseWithStatus:statusandJSONRepresentation:contentObject])
+	([UIxComponent -responseWith204]): new utility methods.
+
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction -responseWithStatus:statusandString:contentString])
+	([WODirectAction
+	-responseWithStatus:statusandJSONRepresentation:contentObject]):
+	new utility methods.
+
 	* SoObjects/SOGo/NSScanner+BSJSONAdditions.m ([NSScanner
 	-scanJSONStringDelimiterString]): new category module taken from
 	BSJSONAdditions 1.3.

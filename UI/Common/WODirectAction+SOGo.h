@@ -31,6 +31,10 @@
 @interface WODirectAction (SOGoExtension)
 
 - (WOResponse *) responseWithStatus: (unsigned int) status;
+- (WOResponse *) responseWithStatus: (unsigned int) status
+			  andString: (NSString *) contentString;
+- (WOResponse *) responseWithStatus: (unsigned int) status
+	      andJSONRepresentation: (NSObject *) contentObject;
 - (WOResponse *) responseWith204;
 - (WOResponse *) redirectToLocation: (NSString *) newLocation;
 

@@ -36,6 +36,7 @@
 #import <NGExtensions/NSURL+misc.h>
 
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoObject.h>
@@ -584,12 +585,45 @@ static BOOL uixDebugEnabled = NO;
   return url;
 }
 
-- (WOResponse *) responseWith204
+- (WOResponse *) responseWithStatus: (unsigned int) status
 {
   WOResponse *response;
 
   response = [context response];
-  [response setStatus: 204];
+  [response setStatus: status];
+
+  return response;
+}
+
+- (WOResponse *) responseWithStatus: (unsigned int) status
+			  andString: (NSString *) contentString
+{
+  WOResponse *response;
+
+  response = [self responseWithStatus: status];
+  [response appendContentString: contentString];
+
+  return response;
+}
+
+- (WOResponse *) responseWithStatus: (unsigned int) status
+	      andJSONRepresentation: (NSObject *) contentObject;
+{
+  return [self responseWithStatus: status
+	       andString: [contentObject jsonRepresentation]];
+}
+
+- (WOResponse *) responseWith204
+{
+  return [self responseWithStatus: 204];
+}
+
+- (WOResponse *) redirectToLocation: (NSString *) newLocation
+{
+  WOResponse *response;
+
+  response = [self responseWithStatus: 302];
+  [response setHeader: newLocation forKey: @"location"];
 
   return response;
 }
