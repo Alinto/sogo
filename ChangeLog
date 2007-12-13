@@ -5,7 +5,8 @@
 	([UIxComponent -responseWithStatus:statusandJSONRepresentation:contentObject])
 	([UIxComponent -responseWith204]): new utility methods.
 
-	* UI/Common/WODirectAction+SOGo.m ([WODirectAction -responseWithStatus:statusandString:contentString])
+	* UI/Common/WODirectAction+SOGo.m ([WODirectAction
+	-responseWithStatus:statusandString:contentString])
 	([WODirectAction
 	-responseWithStatus:statusandJSONRepresentation:contentObject]):
 	new utility methods.
