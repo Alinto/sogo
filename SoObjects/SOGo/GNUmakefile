@@ -50,6 +50,9 @@ libSOGo_HEADER_FILES = \
 	SOGoMailer.h			\
 	SOGoUser.h			\
 	\
+	NSDictionary+BSJSONAdditions.h	\
+	NSScanner+BSJSONAdditions.h	\
+	\
 	WORequest+SOGo.h
 
 libSOGo_OBJC_FILES = \
@@ -83,6 +86,9 @@ libSOGo_OBJC_FILES = \
 	SOGoWebAuthenticator.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
+	\
+	NSDictionary+BSJSONAdditions.m	\
+	NSScanner+BSJSONAdditions.m	\
 	\
 	WORequest+SOGo.m
 
