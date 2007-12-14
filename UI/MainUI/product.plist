@@ -89,7 +89,7 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
         };
-	crash = {
+/*	crash = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";
 	  actionName = "crash";
@@ -103,7 +103,7 @@
           protectedBy = "<public>";
           pageName = "SOGoRootPage";
 	  actionName = "raisedException";
-        };
+        }; */
 	connect = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";
