@@ -874,6 +874,19 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
    if (date == nil) goto failed;
  
  #if 0  
+Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
+===================================================================
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1557)
++++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
+@@ -70,6 +70,8 @@
+     [rfc822Set setGenerator:gen forField:Fields->cc];
+     [rfc822Set setGenerator:gen forField:@"bcc"];
+     [rfc822Set setGenerator:gen forField:Fields->from];
++    [rfc822Set setGenerator:gen forField:@"reply-to"];
++    [rfc822Set setGenerator:gen forField:@"in-reply-to"];
+   }
+   
+   if ((gen = [NGMimeStringHeaderFieldGenerator headerFieldGenerator]))
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1557)
@@ -975,6 +988,37 @@ Index: sope-mime/NGMime/NGMimePartParser.m
    contentType = ([ctype isKindOfClass:[NGMimeType class]])
      ? ctype
      : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
+===================================================================
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1557)
++++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
+@@ -122,8 +122,13 @@
+     }
+     
+     if (doEnc) {
++#if NeXT_Foundation_LIBRARY
+       unsigned char iso[]     = "=?iso-8859-15?q?";
+       unsigned      isoLen    = 16;
++#else
++      unsigned char iso[]     = "=?utf-8?q?";
++      unsigned      isoLen    = 10;
++#endif
+       unsigned char isoEnd[]  = "?=";
+       unsigned      isoEndLen = 2;
+       unsigned      desLen;
+@@ -133,10 +138,10 @@
+       {
+         NSData *data;
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
++#if NeXT_Foundation_LIBRARY
+         data = [tmp dataUsingEncoding:NSISOLatin1StringEncoding];
+ #else
+-        data = [tmp dataUsingEncoding:NSISOLatin9StringEncoding];
++        data = [tmp dataUsingEncoding:NSUTF8StringEncoding];
+ #endif
+ 
+         bufLen  = [data length];
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1557)
