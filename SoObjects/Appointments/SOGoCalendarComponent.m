@@ -316,11 +316,11 @@ static BOOL sendEMailNotifications = NO;
 		   * so we'll stick with multipart/mixed for the time being.
 		   */
 		  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-		  [headerMap setObject: sender forKey: @"From"];
-		  [headerMap setObject: recipient forKey: @"To"];
+		  [headerMap setObject: sender forKey: @"from"];
+		  [headerMap setObject: recipient forKey: @"to"];
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
-		  [headerMap setObject: subject forKey: @"Subject"];
+		  [headerMap setObject: subject forKey: @"subject"];
 		  msg = [NGMimeMessage messageWithHeader: headerMap];
 
 		  /* multipart body */
@@ -407,11 +407,11 @@ static BOOL sendEMailNotifications = NO;
 	   * so we'll stick with multipart/mixed for the time being.
 	   */
 	  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-	  [headerMap setObject: [attendee mailAddress] forKey: @"From"];
-	  [headerMap setObject: [organizer mailAddress] forKey: @"To"];
+	  [headerMap setObject: [attendee mailAddress] forKey: @"from"];
+	  [headerMap setObject: [organizer mailAddress] forKey: @"to"];
 	  mailDate = [[NSCalendarDate date] rfc822DateString];
 	  [headerMap setObject: mailDate forKey: @"date"];
-	  [headerMap setObject: [p getSubject] forKey: @"Subject"];
+	  [headerMap setObject: [p getSubject] forKey: @"subject"];
 	  msg = [NGMimeMessage messageWithHeader: headerMap];
 
 	  NSLog (@"sending 'REPLY' from %@ to %@",

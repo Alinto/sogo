@@ -1,3 +1,12 @@
+2007-12-14  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	We set headers in lowercase so that they get properly
+	encoded by SOPE.
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	Minor cleanups.	
+
 2007-12-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame -saveFoldersStateAction])

@@ -1164,20 +1164,18 @@ static BOOL        showTextAttachmentsInline  = NO;
   else if (![self isEmptyValue:from])
     [map setObjects:[map objectsForKey: @"from"] forKey: @"reply-to"];
   
-  /* add subject */
   if (inReplyTo)
     [map setObject: inReplyTo forKey: @"in-reply-to"];
 
+  /* add subject */
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
     [map setObject: [s asQPSubjectString: @"utf-8"]
 	 forKey: @"subject"];
-//     [map setObject: [s asQPSubjectString: @"utf-8"] forKey: @"subject"];
 
   [map setObject: [headers objectForKey: @"message-id"]
        forKey: @"message-id"];
 
   /* add standard headers */
-
   dateString = [[NSCalendarDate date] rfc822DateString];
   [map addObject: dateString forKey: @"date"];
   [map addObject: @"1.0" forKey: @"MIME-Version"];
