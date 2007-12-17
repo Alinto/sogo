@@ -18,7 +18,7 @@ DIV#freeBusyView
   margin-top: 0.5em;
   top: 2em;
   bottom: 14.5em;
-  left: 13em;
+  left: 15em;
   right: 0px;
   overflow: auto;
   border-top: 2px solid #222;
@@ -47,7 +47,7 @@ TABLE#freeBusy TD.attendees
   padding: 0px .5em;
   padding-right: 0px;
   margin: 0px;
-  width: 13em;
+  width: 15em;
   border: 0px !important;
   background-color: #d4d0c8;
   overflow: hidden;
@@ -62,10 +62,11 @@ TABLE#freeBusy TD.attendees INPUT
 { background-image: url("abcard.gif");
   background-repeat: no-repeat;
   background-position: 2px center;
-  width: 11.5em;
+  width: 12em;
   margin: 0px;
   padding-left: 24px;
-  margin-left: 5px; }
+  margin-left: 5px;
+  margin-left: 1.5em; }
 
 TABLE#freeBusy TR.needs-action TD.attendees
 { background-image: url("needs-action.png");
@@ -81,12 +82,6 @@ TABLE#freeBusy TR.accepted TD.attendees
 { background-image: url("accepted.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
-
-TABLE#freeBusy TR.needs-action INPUT,
-TABLE#freeBusy TR.accepted INPUT,
-TABLE#freeBusy TR.declined INPUT
-{ margin-left: 1.5em;
-  width: 10em; }
 
 TABLE#freeBusy TR.futureAttendee INPUT
 { background-image: none; }
@@ -207,7 +202,7 @@ DIV#freeBusyViewButtons
   padding: 3px;
   height: 2em;
   top: 0px;
-  left: 13em; }
+  left: 15em; }
 
 DIV#freeBusyZoomButtons
 { position: absolute;
