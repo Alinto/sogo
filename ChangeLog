@@ -1,3 +1,8 @@
+2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/NSArray+Scheduler.m ([NSMutableArray
+	-reverseArray]): new category method.
+
 2007-12-14  Ludovic Marcotte <ludovic@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
