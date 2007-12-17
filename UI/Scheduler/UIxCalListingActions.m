@@ -249,6 +249,8 @@
 	    {
 	      [newInfo setObject: [currentFolder nameInContainer]
 		       forKey: @"c_folder"];
+	      [newInfo setObject: [currentFolder ownerInContext: context]
+		       forKey: @"c_owner"];
 	      if (![[newInfo objectForKey: @"c_title"] length])
 		[self _fixComponentTitle: newInfo withType: component];
 	      [infos addObject: [newInfo objectsForKeys: fields
@@ -322,10 +324,10 @@
   newEvents = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", @"c_folder", @"c_status",
 		    @"c_title", @"c_startdate", @"c_enddate", @"c_location",
-		    @"c_isallday", @"c_classification", @"c_partmails", @"c_partstates", nil];
+		    @"c_isallday", @"c_classification", @"c_partmails", @"c_partstates",
+		    @"c_owner", nil];
   events = [[self _fetchFields: fields
 		  forComponentOfType: @"vevent"] objectEnumerator];
-  user = [[self context] activeUser];
   oldEvent = [events nextObject];
   while (oldEvent)
     {
@@ -351,6 +353,7 @@
 	participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
 	states = [[oldEvent objectAtIndex: 10] componentsSeparatedByString: @"\n"];
 	for (i = 0; i < [participants count]; i++) {
+	  user = [SOGoUser userWithLogin: [oldEvent objectAtIndex: 11] roles: nil];
 	  participant = [participants objectAtIndex: i];
 	  if ([user hasEmail: participant]) {
 	    switch ([[states objectAtIndex: i] intValue]) {
