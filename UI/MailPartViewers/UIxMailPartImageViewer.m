@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <SoObjects/Mailer/SOGoMailBodyPart.h>
+
 #import "UIxMailPartViewer.h"
 
 @interface UIxMailPartImageViewer : UIxMailPartViewer
@@ -28,27 +30,5 @@
 @end
 
 @implementation UIxMailPartImageViewer
-
-/* URLs */
-
-- (NSString *) pathToImage
-{
-  NSMutableString *url;
-  NSString *s;
-
-  s = [[self clientObject] baseURLInContext: [self context]];
-  url = [NSMutableString stringWithString: s];
-  if (![url hasSuffix: @"/"])
-    [url appendString: @"/"];
-
-  s = [[self partPath] componentsJoinedByString:@"/"];
-  [url appendString: s];
-
-  s = [self preferredPathExtension];
-  if (s)
-    [url appendFormat: @".%@", s];
-  
-  return url;
-}
 
 @end /* UIxMailPartImageViewer */

@@ -73,9 +73,9 @@ static BOOL debugOn = NO;
 
 - (void) dealloc
 {
-  [self->partInfo   release];
-  [self->identifier release];
-  [self->pathToPart release];
+  [partInfo   release];
+  [identifier release];
+  [pathToPart release];
   [super dealloc];
 }
 
@@ -108,8 +108,8 @@ static BOOL debugOn = NO;
   NSMutableArray *p;
   id obj;
   
-  if (self->pathToPart != nil)
-    return [self->pathToPart isNotNull] ? self->pathToPart : nil;
+  if (pathToPart != nil)
+    return [pathToPart isNotNull] ? pathToPart : nil;
   
   p = [[NSMutableArray alloc] initWithCapacity:8];
   for (obj = self; [obj isKindOfClass:[SOGoMailBodyPart class]]; 
@@ -117,18 +117,18 @@ static BOOL debugOn = NO;
     [p insertObject:[obj bodyPartName] atIndex:0];
   }
   
-  self->pathToPart = [p copy];
+  pathToPart = [p copy];
   [p release];
-  return self->pathToPart;
+  return pathToPart;
 }
 
 - (NSString *)bodyPartIdentifier {
-  if (self->identifier != nil)
-    return [self->identifier isNotNull] ? self->identifier : nil;
+  if (identifier != nil)
+    return [identifier isNotNull] ? identifier : nil;
   
-  self->identifier =
+  identifier =
     [[[self bodyPartPath] componentsJoinedByString:@"."] copy];
-  return self->identifier;
+  return identifier;
 }
 
 - (NSURL *)imap4URL {
@@ -139,12 +139,12 @@ static BOOL debugOn = NO;
 /* part info */
 
 - (id)partInfo {
-  if (self->partInfo != nil)
-    return [self->partInfo isNotNull] ? self->partInfo : nil;
+  if (partInfo != nil)
+    return [partInfo isNotNull] ? partInfo : nil;
 
-  self->partInfo =
+  partInfo =
     [[[self mailObject] lookupInfoForBodyPart:[self bodyPartPath]] retain];
-  return self->partInfo;
+  return partInfo;
 }
 
 /* name lookup */
@@ -160,25 +160,40 @@ static BOOL debugOn = NO;
   return [clazz objectWithName: _key inContainer: self];
 }
 
+- (NSString *) filename
+{
+  NSString *filename;
+  NSDictionary *parameters;
+
+  [self partInfo];
+
+  filename = [[partInfo objectForKey: @"parameterList"]
+	       objectForKey: @"name"];
+  if (!filename)
+    {
+      parameters = [[partInfo objectForKey: @"disposition"]
+		     objectForKey: @"parameterList"];
+      filename = [parameters objectForKey: @"filename"];
+    }
+
+  return filename;
+}
+
 /* We overwrite the super's class method in order to make sure
    we aren't dealing with our actual filename as the _key. That
    could lead to problems if we weren't doing this as our filename
    could start with a digit, leading to a wrong assumption in
    the super class
 */
-- (BOOL)isBodyPartKey:(NSString *)_key inContext:(id)_ctx
-{
-  NSString *s;
-  
-  s = [[[self partInfo] objectForKey: @"parameterList"] objectForKey: @"name"];
+// - (BOOL)isBodyPartKey:(NSString *)_key inContext:(id)_ctx
+// {
+//   NSString *s;
 
-  if (!s)
-    s = [[[[self partInfo] objectForKey: @"disposition"] objectForKey: @"parameterList"] objectForKey: @"filename"];
-  
-  if (s && [s isEqualToString: _key]) return NO;
+//   s = [self filename];
+//   if (s && [s isEqualToString: _key]) return NO;
 
-  return [super isBodyPartKey: _key  inContext: _ctx];
-}
+//   return [super isBodyPartKey: _key  inContext: _ctx];
+// }
 
 - (id) lookupName: (NSString *) _key
 	inContext: (id) _ctx
@@ -355,16 +370,13 @@ static BOOL debugOn = NO;
   [r setHeader: [NSString stringWithFormat:@"%d", [data length]]
      forKey: @"content-length"];
   
-  if (asAttachment) {
-    fileName = [[[self partInfo] objectForKey: @"parameterList"] objectForKey: @"name"];
-    if (!fileName)
-      fileName = [[[[self partInfo] objectForKey: @"disposition"]
-		    objectForKey: @"parameterList"] 
-		   objectForKey: @"filename"];
-    if ([fileName length])
-      [r setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
-	 forKey: @"content-disposition"];
-  }
+  if (asAttachment)
+    {
+      fileName = [self filename];
+      if ([fileName length])
+	[r setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
+	   forKey: @"content-disposition"];
+    }
 
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];

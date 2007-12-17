@@ -134,29 +134,25 @@
   return [self flatContent];
 }
 
-- (NSData *) content
+- (SOGoMailBodyPart *) clientPart
 {
-  NSData *content;
-  NSEnumerator *parts;
   id currentObject;
   NSString *currentPart;
-
-  content = nil;
+  NSEnumerator *parts;
 
   currentObject = [self clientObject];
   parts = [partPath objectEnumerator];
-  currentPart = [parts nextObject];
-  while (currentPart)
-    {
-      currentObject = [currentObject lookupName: currentPart
-				     inContext: context
-				     acquire: NO];
-      currentPart = [parts nextObject];
-    }
+  while ((currentPart = [parts nextObject]))
+    currentObject = [currentObject lookupName: currentPart
+				   inContext: context
+				   acquire: NO];
 
-  content = [currentObject fetchBLOB];
+  return currentObject;
+}
 
-  return content;
+- (NSData *) content
+{
+  return [[self clientPart] fetchBLOB];
 }
 
 - (NSString *) flatContentAsString
@@ -323,32 +319,41 @@
   return url;
 }
 
+- (NSString *) _filenameForAttachment: (SOGoMailBodyPart *) bodyPart
+{
+  NSMutableString *filename;
+  NSString *extension;
+
+  filename = [NSMutableString stringWithString: [bodyPart filename]];
+  if (![filename length])
+    [filename appendFormat: @"%@-%@",
+	      [self labelForKey: @"Untitled"],
+	      [bodyPart nameInContainer]];
+
+  if (![[filename pathExtension] length])
+    {
+      extension = [self preferredPathExtension];
+      if (extension)
+	[filename appendFormat: @".%@", extension];
+    }
+
+  return [filename stringByEscapingURL];
+}
+
 - (NSString *) pathToAttachment
 {
-  /* this generates a more beautiful 'download' URL for a part */
-  NSString *fn;
   NSMutableString *url;
+  NSString *s;
+  SOGoMailBodyPart *bodyPart;
 
-  fn = [self filename];
-  if ([fn length] > 0)
-    {
-      /* get basic URL */
-      url = [NSMutableString stringWithString: [self pathToAttachmentObject]];
-  
-      /* 
-	 If we have an attachment name, we attach it, this is properly handled by
-	 SOGoMailBodyPart.
-      */
-  
-      if (![url hasSuffix: @"/"])
-	[url appendString: @"/"];
-      if (isdigit([url characterAtIndex: 0]))
-	[url appendString: @"fn-"];
-      [url appendString: [fn stringByEscapingURL]];
-      // TODO: should we check for a proper extension?
-    }
-  else
-    url = nil;
+  bodyPart = [self clientPart];
+  s = [bodyPart baseURLInContext: [self context]];
+  url = [NSMutableString stringWithString: s];
+  if (![url hasSuffix: @"/"])
+    [url appendString: @"/"];
+
+//   s = [[self partPath] componentsJoinedByString: @"/"];
+  [url appendString: [self _filenameForAttachment: bodyPart]];
 
   return url;
 }
