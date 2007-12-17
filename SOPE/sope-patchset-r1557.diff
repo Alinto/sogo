@@ -1,47 +1,3 @@
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1557)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(révision 1557)
@@ -153,7 +109,14 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    return address;
  }
  
-@@ -1627,6 +1650,29 @@
+@@ -1620,13 +1643,35 @@
+   return str;
+ }
+ 
+-
+ static NSString *_parseBodyString(NGImap4ResponseParser *self,
+                                   BOOL _convertString)
+ {
    return _parseBodyDecodeString(self, _convertString, NO /* no decode */);
  }
  
@@ -183,7 +146,16 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
  {
    NSMutableDictionary *list;
-@@ -1734,10 +1780,11 @@
+@@ -1646,7 +1691,7 @@
+       _consumeIfMatch(self, ' ');
+       value = _parseBodyDecodeString(self, YES, YES);
+ 
+-      [list setObject:value forKey:[key lowercaseString]];
++      if (value) [list setObject:value forKey:[key lowercaseString]];
+     }
+     _consumeIfMatch(self, ')');
+   }
+@@ -1734,10 +1779,11 @@
  		      *encoding, *bodysize;
    NSDictionary        *parameterList;
    NSMutableDictionary *dict;
@@ -196,7 +168,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    _consumeIfMatch(self, ' ');
    parameterList = _parseBodyParameterList(self);
    _consumeIfMatch(self, ' ');
-@@ -1762,7 +1809,8 @@
+@@ -1762,7 +1808,8 @@
      _consumeIfMatch(self, ' ');
      [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
    }
@@ -206,7 +178,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
      if (_la(self, 0) != ')') {
        _consumeIfMatch(self, ' ');
        _consumeIfMatch(self, '(');
-@@ -1805,14 +1853,9 @@
+@@ -1805,14 +1852,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -224,7 +196,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -1829,6 +1872,7 @@
+@@ -1829,6 +1871,7 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
  					 BOOL isBodyStructure) {
    NSMutableArray *parts;
@@ -232,7 +204,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
    NSString       *kind;
    NSMutableDictionary *dict;
  
-@@ -1854,14 +1898,9 @@
+@@ -1854,14 +1897,9 @@
  	      forKey: @"disposition"];
  	if (_la(self, 0) != ')') {
  	  _consume(self,1);
@@ -250,7 +222,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  	  if (_la(self, 0) != ')') {
  	    _consume(self,1);
  	    [dict setObject: _parseBodyString(self, YES)
-@@ -2170,6 +2209,21 @@
+@@ -2170,6 +2208,21 @@
    }
  }
  
@@ -1155,6 +1127,50 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1557)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
 --- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1557)
@@ -1515,6 +1531,27 @@ Index: sope-appserver/NGObjWeb/WOContext.m
    if ((serverURL = [rq headerForKey:@"x-webobjects-server-url"]) == nil) {
      if ((host = [rq headerForKey:@"host"]))
        serverURL = [@"http://" stringByAppendingString:host];
+Index: sope-appserver/NGObjWeb/DAVPropMap.plist
+===================================================================
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1557)
++++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
+@@ -123,11 +123,14 @@
+ 
+   /* CalDAV */
+   "{urn:ietf:params:xml:ns:caldav}calendar-home-set" = davCalendarHomeSet;
++  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set" = davCalendarUserAddressSet;
++  "{urn:ietf:params:xml:ns:caldav}schedule-inbox-URL" = davCalendarScheduleInboxURL;
++  "{urn:ietf:params:xml:ns:caldav}schedule-outbox-URL" = davCalendarScheduleOutboxURL;
+ 
+   /* Apple CalServer */
+-  "{http://apple.com/ns/calendarserver/}dropbox-home-URL" =
++  "{http://calendarserver.org/ns/}dropbox-home-URL" =
+     davDropboxHomeURL;
+-  "{http://apple.com/ns/calendarserver/}notifications-URL" =
++  "{http://calendarserver.org/ns/}notifications-URL" =
+     davNotificationsURL;
+   "{com.apple.ical:}calendarcolor" = davCalendarColor;
+ }
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1557)
