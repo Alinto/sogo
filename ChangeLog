@@ -1,5 +1,9 @@
 2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-fetchMailForForwarding:sourceMail]): append the signature to
+	mails forwarded as attachment.
+
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
 	-clientPart]): new method that returns the corresponding
 	SOGoMailPart instance.
