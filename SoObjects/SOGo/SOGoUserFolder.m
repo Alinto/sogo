@@ -470,11 +470,87 @@
 	  public folder and the groups folder.
   */
   NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
+  parent = [self privateCalendars: @"Calendar" inContext: context];
   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [self baseURLInContext: context], nil];
+                 [parent davURL], nil];
 
   return [NSArray arrayWithObject: tag];
 }
+
+// - (NSArray *) davCalendarUserAddressSet
+// {
+//   NSArray *tag, *allEmails;
+//   NSMutableArray *addresses;
+//   NSEnumerator *emails;
+//   NSString *currentEmail;
+
+//   addresses = [NSMutableArray array];
+
+//   allEmails = [[context activeUser] allEmails];
+//   emails = [allEmails objectEnumerator];
+//   while ((currentEmail = [emails nextObject]))
+//     {
+//       tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+// 		     [NSString stringWithFormat: @"MAILTO:%@", currentEmail],
+// 		     nil];
+//       [addresses addObject: tag];
+//     }
+
+//   return addresses;
+// }
+
+// - (NSArray *) davCalendarScheduleInboxURL
+// {
+//   NSArray *tag;
+//   SOGoAppointmentFolders *parent;
+
+//   parent = [self privateCalendars: @"Calendar" inContext: context];
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davCalendarScheduleOutboxURL
+// {
+//   NSArray *tag;
+//   SOGoAppointmentFolders *parent;
+
+//   parent = [self privateCalendars: @"Calendar" inContext: context];
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davDropboxHomeURL
+// {
+//   NSArray *tag;
+//   SOGoAppointmentFolders *parent;
+
+//   parent = [self privateCalendars: @"Calendar" inContext: context];
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davNotificationsURL
+// {
+//   NSArray *tag;
+//   SOGoAppointmentFolders *parent;
+
+//   parent = [self privateCalendars: @"Calendar" inContext: context];
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
 
 @end /* SOGoUserFolder */

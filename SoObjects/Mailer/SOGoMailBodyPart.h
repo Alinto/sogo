@@ -59,7 +59,6 @@
 - (id) partInfo;
 - (NSData *) fetchBLOB;
 - (void) setAsAttachment;
-- (BOOL) asAttachment;
 
 /* factory */
 

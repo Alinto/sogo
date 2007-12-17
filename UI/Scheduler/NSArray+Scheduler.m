@@ -139,3 +139,12 @@
 }
 
 @end
+
+@implementation NSMutableArray (SOGoEventComparison)
+
+- (void) reverseArray
+{
+  [self setArray: [self reversedArray]];
+}
+
+@end

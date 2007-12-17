@@ -757,7 +757,9 @@ static GCSStringFormatter *stringFormatter = nil;
     [self errorWithFormat:@"could not open storage channel!"];
     return nil;
   }
-  if (!self->ofFlags.sameTableForQuick) {
+  if (!self->ofFlags.sameTableForQuick)
+    quickChannel = nil;
+  else {
     if ((quickChannel = [self acquireQuickChannel]) == nil) {
       [self errorWithFormat:@"could not open quick channel!"];
       [self releaseChannel:storeChannel];
@@ -1103,25 +1105,25 @@ static GCSStringFormatter *stringFormatter = nil;
     [sql appendString:[self aclTableName]];
     [sql appendString:@" WHERE "];
     [sql appendString:[self generateSQLForQualifier:qualifier]];
-  }
   
-  /* open channel */
+    /* open channel */
 
-  if ((channel = [self acquireAclChannel]) == nil) {
-    [self errorWithFormat:@"could not open acl channel!"];
-    return;
-  }
+    if ((channel = [self acquireAclChannel]) == nil) {
+      [self errorWithFormat:@"could not open acl channel!"];
+      return;
+    }
   
-  /* run SQL */
-
-  if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
+    /* run SQL */
+    
+    if ((error = [channel evaluateExpressionX:sql]) != nil) {
+      [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
 	    __PRETTY_FUNCTION__, sql, error];
-    [self releaseChannel:channel];
-    return;
-  }
+      [self releaseChannel:channel];
+      return;
+    }
   
-  [self releaseChannel:channel];
+    [self releaseChannel:channel];
+  }
 }
 
 /* description */

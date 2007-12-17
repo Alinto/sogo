@@ -59,6 +59,12 @@
 
 @end
 
+@interface SOGoACLModificationAdvisory : SOGoACLAdvisory
+
+- (NSString *) aclMethod;
+
+@end
+
 @interface SOGoACLEnglishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
@@ -68,13 +74,13 @@
 @interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLEnglishModificationAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLEnglishModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLFrenchModificationAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLFrenchModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLGermanModificationAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLGermanModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
 @interface SOGoACLEnglishRemovalAdvisory : SOGoACLRemovalAdvisory

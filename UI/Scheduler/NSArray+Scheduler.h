@@ -36,4 +36,10 @@
 
 @end
 
+@interface NSMutableArray (SOGoEventComparison)
+
+- (void) reverseArray;
+
+@end
+
 #endif	/* NSARRAY_SCHEDULER_H */

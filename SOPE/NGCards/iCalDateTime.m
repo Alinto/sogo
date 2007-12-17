@@ -68,6 +68,9 @@
         [calendar addTimeZone: iTZ];
       newTZId = [iTZ tzId];
     }
+  else
+    newTZId = nil;
+
   [self setValue: 0 ofAttribute: @"tzid" to: newTZId];
   [self setDateTime: dateTime];
 }

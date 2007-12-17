@@ -22,6 +22,7 @@
 
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 

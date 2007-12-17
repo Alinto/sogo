@@ -96,6 +96,7 @@
       else {
 	[self errorWithFormat:@"%s: unsupported operation for null: %@",
 	      __PRETTY_FUNCTION__, NSStringFromSelector(op)];
+	qOperator = @"=";
       }
 
       if ([val isKindOfClass:[NSNumber class]])
@@ -109,6 +110,7 @@
       }
     }
     else {
+      isCI = NO;
       if (sel_eq(op, EOQualifierOperatorEqual)) {
 	qOperator = @"IS";
 	qValue = @"NULL";
@@ -118,6 +120,8 @@
 	qValue = @"NULL";
       }
       else {
+	qOperator = @"IS";
+	qValue = @"NULL";
 	[self errorWithFormat:@"%s: invalid operation for null: %@",
 	      __PRETTY_FUNCTION__, NSStringFromSelector(op)];
       }

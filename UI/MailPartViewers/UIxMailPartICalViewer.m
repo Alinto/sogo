@@ -92,7 +92,7 @@
 
 - (BOOL) couldParseCalendar
 {
-  return (([self inCalendar]));
+  return ([self inCalendar] != nil);
 }
 
 - (iCalEvent *) inEvent
@@ -246,7 +246,7 @@
 
 - (BOOL) isEventStoredInCalendar
 {
-  return (([self storedEventObject]));
+  return ([self storedEventObject] != nil);
 }
 
 - (iCalEvent *) storedEvent
@@ -376,7 +376,7 @@
 
 - (BOOL) isReplySenderAnAttendee
 {
-  return (([self storedReplyAttendee]));
+  return ([self storedReplyAttendee] != nil);
 }
 
 - (iCalPerson *) _emailParticipantWithEvent: (iCalEvent *) event

@@ -344,7 +344,8 @@
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
 
-      participants = state = nil;
+      participants = nil;
+      state = nil;
       if ([[oldEvent objectAtIndex: 9] length] > 0 &&
 	  [[oldEvent objectAtIndex: 10] length] > 0) {
 	participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
@@ -389,7 +390,7 @@
   
   ascending = [[context request] formValueForKey: @"asc"];
   if (![ascending boolValue])
-    newEvents = [newEvents reversedArray];
+    [newEvents reverseArray];
 
   return [self _responseWithData: newEvents];
 }
