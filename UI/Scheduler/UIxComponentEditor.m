@@ -1096,7 +1096,8 @@
     {
       if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
 	       onObject: clientObject
-	       inContext: context])
+	       inContext: context]
+	  || [component userIsOrganizer: currentUser])
 	toolbarFilename = adminToolbar;
       else
 	toolbarFilename = @"SOGoComponentClose.toolbar";
