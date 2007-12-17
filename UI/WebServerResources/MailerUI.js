@@ -1040,6 +1040,9 @@ function expandUpperTree(node) {
 }
 
 function onHeaderClick(event) {
+  if (TableKit.Resizable._onHandle)
+    return;
+  
   var headerId = this.getAttribute("id");
   var newSortAttribute;
   if (headerId == "subjectHeader")
