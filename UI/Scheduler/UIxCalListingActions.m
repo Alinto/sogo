@@ -349,33 +349,35 @@
       participants = nil;
       state = nil;
       if ([[oldEvent objectAtIndex: 9] length] > 0 &&
-	  [[oldEvent objectAtIndex: 10] length] > 0) {
-	participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
-	states = [[oldEvent objectAtIndex: 10] componentsSeparatedByString: @"\n"];
-	for (i = 0; i < [participants count]; i++) {
-	  user = [SOGoUser userWithLogin: [oldEvent objectAtIndex: 11] roles: nil];
-	  participant = [participants objectAtIndex: i];
-	  if ([user hasEmail: participant]) {
-	    switch ([[states objectAtIndex: i] intValue]) {
-	    case iCalPersonPartStatNeedsAction:
-	      state = @"needs-action";
-	      break;
-	    case iCalPersonPartStatAccepted:
-	      state = @"accepted";
-	      break;
-	    case iCalPersonPartStatDeclined:
-	      state = @"declined";
-	      break;
+	  [[oldEvent objectAtIndex: 10] length] > 0)
+	{
+	  participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
+	  states = [[oldEvent objectAtIndex: 10] componentsSeparatedByString: @"\n"];
+	  for (i = 0; i < [participants count]; i++)
+	    {
+	      user = [SOGoUser userWithLogin: [oldEvent objectAtIndex: 11] roles: nil];
+	      participant = [participants objectAtIndex: i];
+	      if ([user hasEmail: participant]) {
+		switch ([[states objectAtIndex: i] intValue]) {
+		case iCalPersonPartStatNeedsAction:
+		state = @"needs-action";
+		break;
+		case iCalPersonPartStatAccepted:
+		  state = @"accepted";
+		  break;
+		case iCalPersonPartStatDeclined:
+		  state = @"declined";
+		  break;
+		}
+		[newEvent replaceObjectAtIndex: 9 withObject: state];
+		break;
+	      }
 	    }
-	    [newEvent replaceObjectAtIndex: 9 withObject: state];
-	    break;
-	  }
 	}
-      }
       if (participants == nil || i == [participants count])
 	[newEvent replaceObjectAtIndex: 9 withObject: @""];
-      [newEvent removeObjectAtIndex: 10];
       [newEvent removeObjectAtIndex: 11];
+      [newEvent removeObjectAtIndex: 10];
 
       [newEvents addObject: newEvent];
       
