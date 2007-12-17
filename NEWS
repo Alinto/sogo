@@ -3,6 +3,8 @@
 - mail folders state is now saved;
 - image attachments in emails can now be saved;
 - the status of participants in represented with an icon;
+- added the option to save attached images;
+- fixed problems with mod_ngobjweb (part of SOPE);
 - the current module can no longer be reselected from the module navigation bar;
 - many bugfixes in the Mail and Calendar modules;
 - improved handling of ACLs;
