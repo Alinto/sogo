@@ -1,5 +1,9 @@
 2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -attachmentNames]):
+	initialize "attachmentNames" if it was NOT initialized... I think
+	this was a typo.
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-fetchMailForForwarding:sourceMail]): append the signature to
 	mails forwarded as attachment.

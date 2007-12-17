@@ -23,15 +23,15 @@
   </div>
 
   <form const:href="send" name="pageform" enctype="multipart/form-data">
-      <div id="attachmentsArea">
-	<var:string label:value="Attachments:" />
-	<ul id="attachments">
-	  <var:foreach list="attachmentNames" item="attachmentName"
-	    ><li><img rsrc:src="attachment.gif"
-		/><var:string value="attachmentName"
-		/></li></var:foreach>
-	</ul>
-      </div>
+    <div id="attachmentsArea">
+      <var:string label:value="Attachments:" />
+      <ul id="attachments">
+	<var:foreach list="attachmentNames" item="attachmentName"
+	  ><li><img rsrc:src="attachment.gif"
+	      /><var:string value="attachmentName"
+	      /></li></var:foreach>
+      </ul>
+    </div>
     <div id="headerArea">
       <span class="headerField"><var:string label:value="From" />:</span>
       <var:popup const:name="from"
@@ -47,12 +47,12 @@
 	><span class="headerField"><var:string label:value="Subject"
 	    />:</span
 	  >
-	  <input name="subject"
-	    type="text"
-	    class="textField"
-	    var:value="subject"
-	    /></div>
-    <!-- separator line --><hr/>
+	<input name="subject"
+	  type="text"
+	  class="textField"
+	  var:value="subject"
+	  /></div>
+      <!-- separator line --><hr/>
     </div>
     <textarea id="text" name="text" rows="30" var:value="text"/>
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
