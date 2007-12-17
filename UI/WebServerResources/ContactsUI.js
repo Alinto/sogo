@@ -533,6 +533,7 @@ function onAddressBookNew(event) {
 
 function appendAddressBook(name, folder) {
   var owner;
+  var result = true;
 
   if (folder) {
     owner = getSubscribedFolderOwner(folder);
@@ -545,7 +546,7 @@ function appendAddressBook(name, folder) {
     owner = UserLogin;
 
   if ($(folder))
-    window.alert(clabels["You have already subscribed to that folder!"]);
+    result = false;
   else {
     var contactFolders = $("contactFolders");
     var items = contactFolders.childNodesWithTag("li");
@@ -563,6 +564,8 @@ function appendAddressBook(name, folder) {
     li.appendChild(document.createTextNode(name));
     setEventsOnContactFolder(li);
   }
+
+  return result;
 }
 
 function newFolderCallback(http) {
