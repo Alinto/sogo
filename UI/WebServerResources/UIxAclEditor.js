@@ -8,6 +8,7 @@ var AclEditor = {
 };
 
 function addUser(userName, userID) {
+   var result = false;
    if (!$(userID)) {
       var ul = $("userList");
       ul.appendChild(nodeForUser(userName, userID));
@@ -16,7 +17,9 @@ function addUser(userName, userID) {
       elements[elements.length-1] = ("addUserInAcls?uid="
                                      + userID);
       triggerAjaxRequest(elements.join("/"), addUserCallback);
+      result = true;
    }
+   return result;
 }
 
 function addUserCallback(http) {
@@ -88,12 +91,14 @@ function onUserRemove(event) {
 }
 
 function subscribeToFolder(refreshCallback, refreshCallbackData) {
+   var result = true;
    if (UserLogin != refreshCallbackData["folder"]) {
-      addUser(refreshCallbackData["folderName"],
-	      refreshCallbackData["folder"]);
+      result = addUser(refreshCallbackData["folderName"],
+		       refreshCallbackData["folder"]);
    }
    else
       refreshCallbackData["window"].alert(clabels["You cannot subscribe to a folder that you own!"]);
+   return result;
 }
 
 function openRightsForUserID(userID) {
