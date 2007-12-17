@@ -375,6 +375,7 @@
       if (participants == nil || i == [participants count])
 	[newEvent replaceObjectAtIndex: 9 withObject: @""];
       [newEvent removeObjectAtIndex: 10];
+      [newEvent removeObjectAtIndex: 11];
 
       [newEvents addObject: newEvent];
       
