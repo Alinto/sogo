@@ -20,8 +20,10 @@
 */
 
 #import <Foundation/NSUserDefaults.h>
+
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoComponent.h>
 #import <NGExtensions/NSString+misc.h>
 

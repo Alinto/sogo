@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSURL.h>
+
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGMail/NGMimeMessage.h>
