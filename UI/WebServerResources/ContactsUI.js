@@ -386,7 +386,7 @@ function uixDeleteSelectedContacts(sender) {
   }
 
   var contactView = $('contactView');
-  contactView.innerHTML = '';
+  contactView.update();
 
   for (var i = 0; i < rows.length; i++) {
     var url, http, rowElem;
@@ -459,10 +459,17 @@ function newContact(sender) {
   return false; /* stop following the link */
 }
 
-function onFolderSelectionChange() {
+function onFolderSelectionChange(event) {
    var folderList = $("contactFolders");
    var nodes = folderList.getSelectedNodes();
-   $("contactView").innerHTML = '';
+
+   if (event) {
+     var node = getTarget(event);
+     if (node.tagName == 'UL')
+       return;
+   }
+
+   $("contactView").update();
   
    if (nodes[0].hasClassName("denied")) {
       var div = $("contactsListContent");
