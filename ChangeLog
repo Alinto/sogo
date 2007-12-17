@@ -1,3 +1,8 @@
+2007-12-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-composeAction]): fixed URL when no recipient is specified.
+
 2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/NSArray+Scheduler.m ([NSMutableArray
