@@ -396,11 +396,11 @@ static NSArray *infoKeys = nil;
 {
   NSArray *a;
 
-  if (attachmentNames)
+  if (!attachmentNames)
     {
       a = [[self clientObject] fetchAttachmentNames];
-      a = [a sortedArrayUsingSelector: @selector (compare:)];
-      attachmentNames = [a copy];
+      ASSIGN (attachmentNames,
+	      [a sortedArrayUsingSelector: @selector (compare:)]);
     }
 
   return attachmentNames;

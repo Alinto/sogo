@@ -41,7 +41,11 @@
   content.
 */
 
-@class NSData, NSArray, NSFormatter;
+@class NSArray;
+@class NSData;
+@class NSFormatter;
+
+@class SOGoMailBodyPart;
 
 @interface UIxMailPartViewer : UIxComponent
 {
@@ -57,6 +61,8 @@
 
 - (void)setBodyInfo:(id)_info;
 - (id)bodyInfo;
+
+- (SOGoMailBodyPart *) clientPart;
 
 - (NSData *)flatContent;
 - (NSData *)decodedFlatContent;

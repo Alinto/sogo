@@ -634,6 +634,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 {
   NSDictionary *info, *attachment;
   SOGoUser *currentUser;
+  NSString *signature;
 
   [sourceMail fetchCoreInfos];
   
@@ -659,6 +660,9 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
   // TODO: use subject for filename?
 //   error = [newDraft saveAttachment:content withName:@"forward.mail"];
+      signature = [currentUser signature];
+      if ([signature length])
+	[self setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [sourceMail filenameForForward], @"filename",
 				 @"message/rfc822", @"mimetype",
@@ -666,6 +670,7 @@ static BOOL        showTextAttachmentsInline  = NO;
       [self saveAttachment: [sourceMail content]
 	    withMetadata: attachment];
     }
+
   [self storeInfo];
 }
 

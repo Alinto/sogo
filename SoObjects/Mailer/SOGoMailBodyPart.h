@@ -53,6 +53,7 @@
 - (NSString *) bodyPartName;
 - (NSArray *) bodyPartPath;
 - (NSString *) bodyPartIdentifier;
+- (NSString *) filename;
 
 /* part info */
 

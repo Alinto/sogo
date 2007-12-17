@@ -3,7 +3,7 @@
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   
-  var:src="pathToImage"
+  var:src="pathToAttachment"
   var:title="filenameForDisplay"
   class="mailer_imagecontent"
 ></img>

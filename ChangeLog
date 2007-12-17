@@ -1,12 +1,39 @@
+2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -attachmentNames]):
+	initialize "attachmentNames" if it was NOT initialized... I think
+	this was a typo.
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-fetchMailForForwarding:sourceMail]): append the signature to
+	mails forwarded as attachment.
+
+	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
+	-clientPart]): new method that returns the corresponding
+	SOGoMailPart instance.
+	([UIxMailPartViewer -pathToAttachment]): simplified method, ensure
+	the filename is present. If the part has none, create one with the
+	"Untitled-" prefix. Add an extension if none is found.
+
+	* UI/MailPartViewers/UIxMailPartImageViewer.m
+	([UIxMailPartImageViewer -pathToImage]): removed method since it
+	implementents exactly the same functionality as
+	[UIxMailPartViewer -pathToAttachment].
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-filename]): new method that returns the filename to the current
+	part by taking the different mime implementations into account.
+	[SOGoMailBodyPart -isBodyPartKey:inContext:]: commented out method
+	because we need to handle the part recognition in a different way,
+	by using the prefix "part" for example. One day we will do that.
+
+	* UI/Scheduler/NSArray+Scheduler.m ([NSMutableArray
+	-reverseArray]): new category method.
+
 2007-12-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
 	-composeAction]): fixed URL when no recipient is specified.
-
-2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* UI/Scheduler/NSArray+Scheduler.m ([NSMutableArray
-	-reverseArray]): new category method.
 
 2007-12-14  Ludovic Marcotte <ludovic@inverse.ca>
 
