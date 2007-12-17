@@ -353,7 +353,7 @@ function onToolbarWriteToSelectedContacts(event) {
   var rowsWithEmail = 0;
 
   if (rows.length == 0) {
-    window.alert(labels["Please select a contact."]);
+    openMailComposeWindow(ApplicationBaseURL + "Mail/compose");
     return false;
   }
 

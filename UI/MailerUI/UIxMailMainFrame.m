@@ -119,7 +119,7 @@
 - (id <WOActionResults>) composeAction
 {
   NSArray *accounts;
-  NSString *firstAccount, *newLocation;
+  NSString *firstAccount, *newLocation, *parameters;
   SOGoMailAccounts *co;
   NSDictionary *formValues;
 
@@ -127,10 +127,11 @@
   accounts = [[context activeUser] mailAccounts];
   firstAccount = [[accounts objectsForKey: @"name"] objectAtIndex: 0];
   formValues = [[context request] formValues];
+  parameters = [formValues count] > 0 ? [formValues asURLParameters] : @"?mailto=";
   newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
 			  [co baseURLInContext: context],
 			  firstAccount,
-			  [formValues asURLParameters]];
+			  parameters];
 
   return [self redirectToLocation: newLocation];
 }
