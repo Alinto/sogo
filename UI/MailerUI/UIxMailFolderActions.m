@@ -84,6 +84,8 @@
   NSURL *destURL;
 
   path = [[srcURL path] stringByDeletingLastPathComponent];
+  if (![path hasSuffix: @"/"])
+    path = [path stringByAppendingString: @"/"];
 
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
 			   host: [srcURL host]
