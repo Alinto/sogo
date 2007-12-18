@@ -757,7 +757,7 @@ static GCSStringFormatter *stringFormatter = nil;
     [self errorWithFormat:@"could not open storage channel!"];
     return nil;
   }
-  if (!self->ofFlags.sameTableForQuick)
+  if (self->ofFlags.sameTableForQuick)
     quickChannel = nil;
   else {
     if ((quickChannel = [self acquireQuickChannel]) == nil) {
