@@ -77,6 +77,9 @@ DIV#attendeesMenu
 { overflow: scroll;
   overflow-x: hidden; }
 
+DIV#attendeesView
+{ left: 0px; }
+
 DIV#freeBusyView
 { border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -93,10 +96,5 @@ TABLE#freeBusy TD.attendees
 
 TABLE#freeBusy TD.attendees INPUT
 { border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc; }
-
-TABLE#freeBusy TR.needs-action INPUT,
-TABLE#freeBusy TR.accepted INPUT,
-TABLE#freeBusy TR.declined INPUT
-{ margin-left: 2.0em;
-  width: 10.0em; }
+  border-right: 1px solid #ccc;
+  margin-left: 2.0em; }
