@@ -183,7 +183,8 @@
 	  ASSIGN (privacy, [component accessClass]);
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
-	  ASSIGN (categories, [[component categories] commaSeparatedValues]);
+	  ASSIGN (categories,
+		  [[component categories] componentsWithSafeSeparator: ',']);
 	  ASSIGN (organizer, [component organizer]);
 	  [self _loadCategories];
 	  [self _loadAttendees];
