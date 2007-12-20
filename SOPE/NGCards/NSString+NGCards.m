@@ -261,26 +261,50 @@ static NSString *commaSeparator = nil;
   return ([self length] == 8);
 }
 
-- (NSArray *) commaSeparatedValues
+- (NSArray *) componentsWithSafeSeparator: (unichar) separator
 {
-  NSEnumerator *rawValues;
-  NSMutableArray *values;
-  NSString *currentValue, *newValue;
+  NSMutableArray *components;
+  NSRange currentRange;
+  unichar *stringBuffer;
+  unichar currentChar;
+  unsigned int count, length;
+  BOOL escaped;
 
-  values = [NSMutableArray new];
-  [values autorelease];
+  components = [NSMutableArray array];
 
-  rawValues = [[self componentsSeparatedByString: @","] objectEnumerator];
-  currentValue = [rawValues nextObject];
-  while (currentValue)
+  length = [self length];
+  stringBuffer = malloc (sizeof (unichar) * length);
+  [self getCharacters: stringBuffer];
+
+  currentRange = NSMakeRange(0, 0);
+  escaped = NO;
+  count = 0;
+  while (count < length)
     {
-      newValue = [currentValue stringByTrimmingSpaces];
-      if ([newValue length])
-        [values addObject: newValue];
-      currentValue = [rawValues nextObject];
+      if (escaped)
+	currentRange.length++;
+      else
+	{
+	  currentChar = *(stringBuffer + count);
+	  if (currentChar == '\\')
+	    escaped = YES;
+	  else if (currentChar == separator)
+	    {
+	      [components
+		addObject: [self substringWithRange: currentRange]];
+	      currentRange = NSMakeRange (count + 1, 0);
+	    }
+	  else
+	    currentRange.length++;
+	}
+      count++;
     }
+  [components
+    addObject: [self substringWithRange: currentRange]];
 
-  return values;
+  free (stringBuffer);
+
+  return components;
 }
 
 @end

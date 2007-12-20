@@ -247,7 +247,7 @@
       free (content);
       content = NULL;
 //       NSLog (@"content: '%@'", s);
-      contentValues = [s componentsSeparatedByString: @";"];
+      contentValues = [s componentsWithSafeSeparator: ';'];
     }
   else
     contentValues = nil;
@@ -270,7 +270,7 @@
       else
         {
           /* increase content */
-          content = 
+          content =
             realloc (content, (contentLength + _len+2) * sizeof(unichar));
           memcpy (&(content[contentLength]), _chars, 
                   (_len * sizeof(unichar)));

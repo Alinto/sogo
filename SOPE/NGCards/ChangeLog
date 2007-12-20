@@ -1,3 +1,10 @@
+2007-12-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m ([NSString
+	-componentsWithSafeSeparator:separator]): new method that
+	separated the elements of a string into an array while avoiding
+	escaped instances of the separator passed as parameter.
+
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZone.m ([iCalTimeZone -periodForDate:date]): at least

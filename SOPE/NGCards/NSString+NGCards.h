@@ -25,6 +25,7 @@
 
 #import <Foundation/NSString.h>
 
+@class NSArray;
 @class NSCalendarDate;
 @class NSTimeZone;
 
@@ -39,7 +40,7 @@
 - (NSCalendarDate *) asCalendarDate;
 - (BOOL) isAllDayDate;
 
-- (NSArray *) commaSeparatedValues;
+- (NSArray *) componentsWithSafeSeparator: (unichar) separator;
 
 @end
 
