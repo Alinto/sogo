@@ -1,3 +1,9 @@
+2007-12-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-aclsForUser:uid]): removed useless ACL checks on the current
+	object to reduce DB usage.
+
 2007-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -attachmentNames]):
