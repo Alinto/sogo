@@ -540,7 +540,7 @@ TABLE#messageList
 
 TABLE#messageList TD,
 TABLE#messageList TH
-{ height: 1.2em;
+{ height: 20px;
   overflow: hidden;
   white-space: nowrap; }
 
@@ -551,6 +551,10 @@ TD#messageFlagHeader,
 TABLE#messageList TD.messageFlagColumn
 { width: 22px;
   text-align: center; }
+
+TABLE#messageList TD.messageFlagColumn IMG
+{ width: 14px;
+  height: 14px; }
 
 TD#subjectHeader,
 TABLE#messageList TD.tbtv_subject_headercell,
