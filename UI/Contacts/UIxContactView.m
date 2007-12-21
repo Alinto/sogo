@@ -105,19 +105,26 @@
 
   emails = [NSMutableArray new];
   [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+
   [emails removeObjectsInArray: [card childrenWithTag: @"email"
 				      andAttribute: @"type"
 				      havingValue: @"pref"]];
 
-  if ([emails count] > 1)
+  // We might not have a preferred item but rather something like this:
+  // EMAIL;TYPE=work:dd@ee.com
+  // EMAIL;TYPE=home:ff@gg.com
+  // In this case, we always return the last entry.
+  if ([emails count] > 0)
     {
-      email = [[emails objectAtIndex: 0] value: 0];
+      email = [[emails objectAtIndex: [emails count]-1] value: 0];
       mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
 			 @" onclick=\"return onContactMailTo(this);\">"
 			 @"%@</a>", email, email];
     }
   else
     mailTo = nil;
+
+  [emails release];
 
   return [self _cardStringWithLabel: @"Additional Email:"
                value: mailTo];
