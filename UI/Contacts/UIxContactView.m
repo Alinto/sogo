@@ -104,8 +104,9 @@
   NSMutableArray *emails;
 
   emails = [NSMutableArray new];
-  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+  mailTo = nil;
 
+  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
   [emails removeObjectsInArray: [card childrenWithTag: @"email"
 				      andAttribute: @"type"
 				      havingValue: @"pref"]];
@@ -117,12 +118,12 @@
   if ([emails count] > 0)
     {
       email = [[emails objectAtIndex: [emails count]-1] value: 0];
-      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-			 @" onclick=\"return onContactMailTo(this);\">"
-			 @"%@</a>", email, email];
+
+      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+	mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+			   @" onclick=\"return onContactMailTo(this);\">"
+			   @"%@</a>", email, email];
     }
-  else
-    mailTo = nil;
 
   [emails release];
 
