@@ -50,7 +50,7 @@
 
 - (void) dealloc
 {
-  [snapshot      release];
+  [snapshot release];
   [preferredEmail release];
   [super dealloc];
 }
@@ -88,44 +88,26 @@
 
 /* load/store content format */
 
-- (void) _fixupSnapshot
-{
-  // TODO: perform sanity checking, eg build CN on demand
-  NSString *cn, *gn, *sn;
-  
-  cn = [snapshot objectForKey: @"cn"];
-  gn = [snapshot objectForKey: @"givenName"];
-  sn = [snapshot objectForKey: @"sn"];
-  
-  if (![sn isNotNull] || [sn length] == 0)
-    sn = nil;
-  if (![cn isNotNull] || [cn length] == 0)
-    cn = nil;
-  
-  if (sn == nil) {
-    if (cn == nil)
-      sn = @"[noname]";
-    else {
-      // TODO: need a better name parser here
-      NSRange r;
-      
-      r = [cn rangeOfString: @" "];
-      sn = (r.length > 0)
-	? [cn substringFromIndex:(r.location + r.length)]
-	: cn;
-    }
-    [snapshot setObject:sn forKey: @"sn"];
-  }
-  if (sn == nil && gn == nil)
-    cn = @"[noname]";
-  else if (sn == nil)
-    cn = gn;
-  else if (gn == nil)
-    cn = sn;
-  else
-    cn = [[gn stringByAppendingString: @" "] stringByAppendingString:sn];
-  [snapshot setObject:cn forKey: @"cn"];
-}
+// - (void) _fixupSnapshot
+// {
+//   NSString *currentKey, *currentString;
+//   NSMutableString *newString;
+//   NSArray *keys;
+//   unsigned int count, max;
+
+//   keys = [snapshot allKeys];
+//   max = [keys count];
+//   for (count = 0; count < max; count++)
+//     {
+//       currentKey = [keys objectAtIndex: count];
+//       currentString = [snapshot objectForKey: currentKey];
+//       newString = [currentString mutableCopy];
+//       [newString autorelease];
+//       [newString replaceString: @";" withString: @"\\;"];
+//       if (![newString isEqualToString: currentString])
+// 	[snapshot setObject: newString forKey: currentKey];
+//     }
+// }
 
 /* helper */
 
@@ -518,6 +500,7 @@
   card = [contact vCard];
   if (card)
     {
+//       [self _fixupSnapshot];
       [self _saveSnapshot];
       [contact save];
 
