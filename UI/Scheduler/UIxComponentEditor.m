@@ -1058,10 +1058,10 @@
   else
     adminToolbar = @"SOGoTaskObject.toolbar";
 
+  currentUser = [context activeUser];
   sm = [SoSecurityManager sharedSecurityManager];
   if ([[component attendees] count])
     {
-      currentUser = [context activeUser];
       if ([component userIsOrganizer: currentUser])
 	toolbarFilename = @"SOGoComponentClose.toolbar";
       else
