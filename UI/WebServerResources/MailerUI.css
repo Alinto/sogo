@@ -521,6 +521,9 @@ DIV[datatype~="additional"] > A.node > SPAN.nodeName
 { color: #777;
   font-style: italic; }
 
+DIV[datatype~="additional"] > A.node._selected > SPAN.nodeName
+{ color: #fff; }
+
 /* drag-n-drop */
 IMG.dragMessage
 { position: absolute;
