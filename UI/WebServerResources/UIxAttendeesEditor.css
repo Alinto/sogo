@@ -18,9 +18,9 @@ DIV#freeBusyView
   margin-top: 0.5em;
   top: 2em;
   bottom: 14.5em;
-  left: 15em;
+  left: 0px;
   right: 0px;
-  overflow: auto;
+  overflow: hidden;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
   border-right: 1px solid #fff;
@@ -28,96 +28,97 @@ DIV#freeBusyView
   -moz-border-top-colors: #9c9a94 #000;
   -moz-border-left-colors: #9c9a94 #000; }
 
-TABLE#freeBusy
-{ border-collapse: collapse;
-  table-layout: auto; }
+TABLE
+{ border-collapse: separated;
+  table-layout: auto;
+  border-spacing: 0px 0px; }
 
-TABLE#freeBusy THEAD TH
+TABLE#freeBusyHeader TH
 { white-space: nowrap; }
 
 TABLE#freeBusy TD,
 TABLE#freeBusy TH
 { padding: 0px;
   margin: 0px;
-  border: 0px; }
+  border: 0px;
+  vertical-align: top; }
 
-TABLE#freeBusy TH.attendees,
-TABLE#freeBusy TD.attendees
-{ position: fixed;
-  padding: 0px .5em;
-  padding-right: 0px;
-  margin: 0px;
-  width: 15em;
-  border: 0px !important;
-  background-color: #d4d0c8;
-  overflow: hidden;
-  left: 0px; }
+TABLE#freeBusy TD.freeBusyHeader DIV,
+TABLE#freeBusy TD.freeBusyAttendees DIV
+{ overflow: hidden; }
 
-TABLE#freeBusy TD.attendees IMG
-{ position: absolute;
-  left: 0em;
-  top: 0.5em; }
+TABLE#freeBusy TD.freeBusyData DIV
+{ overflow: scroll; }
 
-TABLE#freeBusy TD.attendees INPUT
-{ background-image: url("abcard.gif");
-  background-repeat: no-repeat;
-  background-position: 2px center;
-  width: 12em;
-  margin: 0px;
-  padding-left: 24px;
-  margin-left: 5px;
-  margin-left: 1.5em; }
-
-TABLE#freeBusy TR.needs-action TD.attendees
+TABLE#freeBusyAttendees TR.needs-action TD.attendees
 { background-image: url("needs-action.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
 
-TABLE#freeBusy TR.declined TD.attendees
+TABLE#freeBusyAttendees TR.declined TD.attendees
 { background-image: url("declined.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
 
-TABLE#freeBusy TR.accepted TD.attendees
+TABLE#freeBusyAttendees TR.accepted TD.attendees
 { background-image: url("accepted.png");
   background-repeat: no-repeat;
   background-position: 5px center; }
 
-TABLE#freeBusy TR.futureAttendee INPUT
-{ background-image: none; }
-
-TABLE#freeBusy TR.freeBusyHeader2 TH
+TABLE#freeBusyHeader TR.freeBusyHeader2 TH
 { font-weight: normal; }
 
-TABLE#freeBusy TR.freeBusyHeader1 TH,
-TABLE#freeBusy TR.freeBusyHeader2 TH,
-TABLE#freeBusy TR.freeBusyHeader3 TH
+TABLE#freeBusyHeader TR.freeBusyHeader1 TH,
+TABLE#freeBusyHeader TR.freeBusyHeader2 TH,
+TABLE#freeBusyHeader TR.freeBusyHeader3 TH
 { text-align: left;
   color: #777;
   background: #fff; }
 
-TABLE#freeBusy TR.freeBusyHeader2 TH
+TABLE#freeBusyHeader TR.freeBusyHeader2 TH
 { padding-right: 2em; }
 
-TABLE#freeBusy TR.freeBusyHeader3 TH
+TABLE#freeBusyHeader TR.freeBusyHeader3 TH
 { border-left: 1px solid #fff;
   border-bottom: 1px solid #cecbff; }
 
-TABLE#freeBusy TR.attendeeModel
+TABLE#freeBusyAttendees TR.attendeeModel,
+TABLE#freeBusyData TR.dataModel
 { display: none; }
 
-TABLE#freeBusy TR.futureAttendee TD
-{ border-right: none; }
+TABLE#freeBusy TD.freeBusyHeader,
+TABLE#freeBusy TD.freeBusyData
+{ border-left: 2px solid #bbb; }
 
-TABLE#freeBusy TD
+TABLE#freeBusyAttendees TD,
+TABLE#freeBusyData TD
 { border-bottom: 1px solid #cecbff;
-  border-right: 1px solid #cecbff;
+  border-left: 1px solid #cecbff;
+  border-top: 0px;
+  border-right: 0px;
   height: 2em;
   background-color: #fff; }
 
-TABLE#freeBusy TD.noFreeBusy
-{ background-color: #559;
-  border-right: 0px; }
+TABLE#freeBusyAttendees TD
+{ border-left: 1px solid #fff; }
+
+TABLE#freeBusyData TR.futureData TD
+{ border-left: none; }
+
+TABLE#freeBusy TD.freeBusyAttendees DIV
+{ width: 16em; }
+
+TABLE#freeBusyAttendees TD.attendees INPUT
+{ background-image: url("abcard.gif");
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  border: 0px;
+  width: 12em;
+  padding-left: 24px;
+  margin-left: 2em; }
+
+TABLE#freeBusyAttendees TR.futureAttendee INPUT
+{ background-image: none; }
 
 SPAN.freeBusyZoneElement
 { display: block;
@@ -128,17 +129,17 @@ SPAN.freeBusyZoneElement
   padding: 0px;
   border: 0px; }
 
-TABLE#freeBusy TR.freeBusyHeader3 SPAN.freeBusyZoneElement
+TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement
 { height: .25em; }
 
-TABLE#freeBusy TD SPAN.freeBusyZoneElement
-{ height: 100%; }
+TABLE#freeBusyData TD SPAN.freeBusyZoneElement
+{ height: 98%; /* not nice under Safari */ }
 
-SPAN[class~="colorBox"].free,
-TABLE#freeBusy TD SPAN.freeBusyZoneElement
+SPAN.colorBox.free,
+TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 { background-color: #8ca6bd; }
 
-TABLE#freeBusy TH SPAN[class~="freeBusyZoneElement"].busy
+TABLE#freeBusyHeader TH SPAN.freeBusyZoneElement.busy
 { background-color: #c55 !important; }
 
 DIV#freeBusyFooter
@@ -184,15 +185,16 @@ SPAN.colorBox
   width: 1em;
   height: .75em; }
 
-SPAN[class~="colorBox"].busy,
-SPAN[class~="freeBusyZoneElement"].busy
+SPAN.colorBox.busy,
+SPAN.freeBusyZoneElement.busy
 { background-color: #5a6b79 !important; }
 
-SPAN[class~="colorBox"].maybe-busy,
-SPAN[class~="freeBusyZoneElement"].maybe-busy
+SPAN.colorBox.maybe-busy,
+SPAN.freeBusyZoneElement.maybe-busy
 { background-color: #adc0d0 !important; }
 
-SPAN[class~="colorBox"].noFreeBusy
+SPAN.colorBox.noFreeBusy,
+TABLE#freeBusyData TD.noFreeBusy
 { background-color: #559; }
 
 DIV#freeBusyViewButtons
@@ -202,7 +204,7 @@ DIV#freeBusyViewButtons
   padding: 3px;
   height: 2em;
   top: 0px;
-  left: 15em; }
+  left: 16em; }
 
 DIV#freeBusyZoomButtons
 { position: absolute;

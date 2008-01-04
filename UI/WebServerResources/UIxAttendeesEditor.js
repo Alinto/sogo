@@ -99,12 +99,9 @@ function performSearchCallback(http) {
 	}
 
 	// Show popup menu
-	var offset;
-	if (isSafari())
-	  offset = Position.positionedOffset(currentField);
-	else
-	  offset = Position.cumulativeOffset(currentField);
-	var top = offset[1] + node.offsetHeight + 3;
+	var offsetScroll = Element.cumulativeScrollOffset(currentField);
+	var offset = Element.cumulativeOffset(currentField);
+	var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
 	var height = 'auto';
 	if (data.length > 5) {
 	  height = 5 * node.getHeight() + 'px';
@@ -161,9 +158,9 @@ function onAttendeeResultClick(event) {
 }
 
 function resetFreeBusyZone() {
-  var table = $("freeBusy");
-  var row = table.tHead.rows[2];
-  for (var i = 1; i < row.cells.length; i++) {
+  var table = $("freeBusyHeader");
+  var row = table.rows[2];
+  for (var i = 0; i < row.cells.length; i++) {
     var nodes = $(row.cells[i]).childNodesWithTag("span");
     for (var j = 0; j < nodes.length; j++)
       nodes[j].removeClassName("busy");
@@ -171,8 +168,8 @@ function resetFreeBusyZone() {
 }
 
 function redisplayFreeBusyZone() {
-  var table = $("freeBusy");
-  var row = table.tHead.rows[2];
+  var table = $("freeBusyHeader");
+  var row = table.rows[2];
   var stDay = $("startTime_date").valueAsDate();
   var etDay = $("endTime_date").valueAsDate();
 
@@ -215,7 +212,7 @@ function redisplayFreeBusyZone() {
 
   var deltaCells = (etHour - stHour) + (11 * addDays);
   var deltaSpans = (deltaCells * 4 ) + (etMinute - stMinute);
-  var currentCellNbr = stHour - 7;
+  var currentCellNbr = stHour - 7 - 1;
   var currentCell = row.cells[currentCellNbr];
   var currentSpanNbr = stMinute;
   var spans = $(currentCell).childNodesWithTag("span");
@@ -235,12 +232,12 @@ function redisplayFreeBusyZone() {
 }
 
 function newAttendee(event) {
-   var table = $("freeBusy");
+   var table = $("freeBusyAttendees");
    var tbody = table.tBodies[0];
    var model = tbody.rows[tbody.rows.length - 1];
-   var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
+   var futureRow = tbody.rows[tbody.rows.length - 2];
    var newRow = model.cloneNode(true);
-   tbody.insertBefore(newRow, newAttendeeRow);
+   tbody.insertBefore(newRow, futureRow);
   
    $(newRow).removeClassName("attendeeModel");
  
@@ -250,6 +247,19 @@ function newAttendee(event) {
 
    input.focussed = true;
    input.activate();
+
+   table = $("freeBusyData");
+   tbody = table.tBodies[0];
+   model = tbody.rows[tbody.rows.length - 1];
+   futureRow = tbody.rows[tbody.rows.length - 2];
+   newRow = model.cloneNode(true);
+   tbody.insertBefore(newRow, futureRow);
+   $(newRow).removeClassName("dataModel");
+
+   var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
+   var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+   
+   dataDiv.scrollTop = attendeesDiv.scrollTop;
 }
 
 function checkAttendee() {
@@ -267,8 +277,12 @@ function checkAttendee() {
   this.focussed = false;
   var row = this.parentNode.parentNode;
   var tbody = row.parentNode;
-  if (tbody && this.value.trim().length == 0)
+  if (tbody && this.value.trim().length == 0) {
+    var dataTable = $("freeBusyData").tBodies[0];
+    var dataRow = dataTable.rows[row.sectionRowIndex];
     tbody.removeChild(row);
+    dataTable.removeChild(dataRow);
+  }
   else if (this.readAttribute("modified") == "1") {
     if (!$(row).hasClassName("needs-action")) {
       $(row).addClassName("needs-action");
@@ -287,13 +301,14 @@ function checkAttendee() {
   currentField = null;
 }
 
-function displayFreeBusyForNode(node) {
-  var nodes = node.parentNode.parentNode.cells;
-  if (node.uid) {
+function displayFreeBusyForNode(input) {
+  var rowIndex = input.parentNode.parentNode.sectionRowIndex;
+  var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
+  if (input.uid) {
     if (document.contactFreeBusyAjaxRequest)
-      awaitingFreeBusyRequests.push(node);
+      awaitingFreeBusyRequests.push(input);
     else {
-      for (var i = 1; i < nodes.length; i++) {
+      for (var i = 0; i < nodes.length; i++) {
 	$(nodes[i]).removeClassName("noFreeBusy");
 	$(nodes[i]).innerHTML = ('<span class="freeBusyZoneElement"></span>'
 				 + '<span class="freeBusyZoneElement"></span>'
@@ -307,16 +322,16 @@ function displayFreeBusyForNode(node) {
       }
       var sd = $('startTime_date').valueAsShortDateString();
       var ed = $('endTime_date').valueAsShortDateString();
-      var urlstr = ( UserFolderURL + "../" + node.uid + "/freebusy.ifb/ajaxRead?"
+      var urlstr = ( UserFolderURL + "../" + input.uid + "/freebusy.ifb/ajaxRead?"
 		     + "sday=" + sd + "&eday=" + ed + "&additional=" +
 		     additionalDays );
       document.contactFreeBusyAjaxRequest
 	= triggerAjaxRequest(urlstr,
 			     updateFreeBusyDataCallback,
-			     node);
+			     input);
     }
   } else {
-    for (var i = 1; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
       $(nodes[i]).addClassName("noFreeBusy");
       $(nodes[i]).update();
     }
@@ -333,7 +348,7 @@ function setSlot(tds, nbr, status) {
   }
   if (tdnbr > 7 && tdnbr < 19) {
     var i = (days * 11 + tdnbr - 7);
-    var td = tds[i];
+    var td = tds[i - 1];
     var spans = $(td).childNodesWithTag("span");
     if (status == '2')
       $(spans[spannbr]).addClassName("maybe-busy");
@@ -345,12 +360,13 @@ function setSlot(tds, nbr, status) {
 function updateFreeBusyDataCallback(http) {
   if (http.readyState == 4) {
     if (http.status == 200) {
-      var node = http.callbackData;
+      var input = http.callbackData;
       var slots = http.responseText.split(",");
-      var tds = node.parentNode.parentNode.cells;
+      var rowIndex = input.parentNode.parentNode.sectionRowIndex;
+      var nodes = $("freeBusyData").tBodies[0].rows[rowIndex].cells;
       for (var i = 0; i < slots.length; i++) {
         if (slots[i] != '0')
-	  setSlot(tds, i, slots[i]);
+	  setSlot(nodes, i, slots[i]);
       }
     }
     document.contactFreeBusyAjaxRequest = null;
@@ -516,7 +532,7 @@ function prepareTableHeaders() {
    var endDate = endTimeDate.valueAsDate();
    endDate.setTime(endDate.getTime() + (additionalDays * 86400000));
 
-   var rows = $("freeBusy").tHead.rows;
+   var rows = $("freeBusyHeader").rows;
    var days = startDate.daysUpTo(endDate);
    for (var i = 0; i < days.length; i++) {
       var header1 = document.createElement("th");
@@ -550,29 +566,37 @@ function prepareTableRows() {
    var endDate = endTimeDate.valueAsDate();
    endDate.setTime(endDate.getTime() + (additionalDays * 86400000));
 
-   var rows = $("freeBusy").tBodies[0].rows;
+   var rows = $("freeBusyData").tBodies[0].rows;
    var days = startDate.daysUpTo(endDate);
+   var width = $('freeBusyHeader').getWidth();
+   $("freeBusyData").setStyle({ width: width + 'px' });
    for (var i = 0; i < days.length; i++)
       for (var rowNbr = 0; rowNbr < rows.length; rowNbr++)
-	 for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++)
-	    rows[rowNbr].appendChild(document.createElement("td"));
+	for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++)
+	  rows[rowNbr].appendChild(document.createElement("td"));
 }
 
 function prepareAttendees() {
    var value = parent$("attendeesNames").value;
-   var table = $("freeBusy");
+   var tableAttendees = $("freeBusyAttendees");
+   var tableData = $("freeBusyData");
    if (value.length > 0) {
       attendeesEditor.names = parent$("attendeesNames").value.split(",");
       attendeesEditor.UIDs = parent$("attendeesUIDs").value.split(",");
       attendeesEditor.emails = parent$("attendeesEmails").value.split(",");
       attendeesEditor.states = parent$("attendeesStates").value.split(",");
 
-      var tbody = table.tBodies[0];
-      var model = tbody.rows[tbody.rows.length - 1];
-      var newAttendeeRow = tbody.rows[tbody.rows.length - 2];
+      var tbodyAttendees = tableAttendees.tBodies[0];
+      var modelAttendee = tbodyAttendees.rows[tbodyAttendees.rows.length - 1];
+      var newAttendeeRow = tbodyAttendees.rows[tbodyAttendees.rows.length - 2];
+
+      var tbodyData = tableData.tBodies[0];
+      var modelData = tbodyData.rows[tbodyData.rows.length - 1];
+      var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
+
       for (var i = 0; i < attendeesEditor.names.length; i++) {
-	 var row = model.cloneNode(true);
-	 tbody.insertBefore(row, newAttendeeRow);
+	 var row = modelAttendee.cloneNode(true);
+	 tbodyAttendees.insertBefore(row, newAttendeeRow);
 	 $(row).removeClassName("attendeeModel");
 	 $(row).addClassName(attendeesEditor.states[i]);
 	 var input = $(row).down("input");
@@ -587,6 +611,11 @@ function prepareAttendees() {
 	 input.setAttribute("modified", "0");
 	 input.observe("blur", checkAttendee);
 	 input.observe("keydown", onContactKeydown);
+	 
+	 row = modelData.cloneNode(true);
+	 tbodyData.insertBefore(row, newDataRow);
+	 $(row).removeClassName("dataModel");
+	 
 	 displayFreeBusyForNode(input);
       }
    }
@@ -596,9 +625,33 @@ function prepareAttendees() {
       attendeesEditor.emails = new Array();
    }
 
-   var inputs = table.getElementsByTagName("input");
+   var inputs = tableAttendees.getElementsByTagName("input");
    inputs[inputs.length - 2].setAttribute("autocomplete", "off");
    Event.observe(inputs[inputs.length - 2], "click", newAttendee);
+}
+
+function onWindowResize(event) {
+  var view = $('freeBusyView');
+  var attendeesCell = $$('TABLE#freeBusy TD.freeBusyAttendees').first();
+  var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
+  var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
+  var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+  var width = view.getWidth() - attendeesCell.getWidth();
+  var height = view.getHeight() - headerDiv.getHeight();
+
+  attendeesDiv.setStyle({ height: (height - 20) + 'px' });
+  headerDiv.setStyle({ width: (width - 20) + 'px' });
+  dataDiv.setStyle({ width: (width - 4) + 'px',
+	             height: (height - 2) + 'px' });
+}
+
+function onScroll(event) {
+  var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
+  var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
+  var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+
+  headerDiv.scrollLeft = dataDiv.scrollLeft;
+  attendeesDiv.scrollTop = dataDiv.scrollTop;
 }
 
 function onFreeBusyLoadHandler() {
@@ -608,6 +661,9 @@ function onFreeBusyLoadHandler() {
    prepareTableRows();
    redisplayFreeBusyZone();
    prepareAttendees();
+   onWindowResize(null);
+   Event.observe(window, "resize", onWindowResize);
+   Event.observe($$('TABLE#freeBusy TD.freeBusyData DIV').first(), "scroll", onScroll);
 }
 
 FastInit.addOnLoad(onFreeBusyLoadHandler);

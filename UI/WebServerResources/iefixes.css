@@ -78,23 +78,20 @@ DIV#attendeesMenu
   overflow-x: hidden; }
 
 DIV#attendeesView
-{ left: 0px; }
+{ left: 0.5em; }
 
 DIV#freeBusyView
 { border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
   border-left: 2px solid #222;
-  left: 0.5em;
-  margin-left: 0.5em; }
+  left: 0.5em; }
 
-TABLE#freeBusy TH.attendees,
-TABLE#freeBusy TD.attendees
-{ background-color: #fff !important;
-  padding-right: 5px;
-  padding-left: 0px; }
+TABLE#freeBusyData TD.noFreeBusy
+{ height: 2.2em; }
 
-TABLE#freeBusy TD.attendees INPUT
-{ border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  margin-left: 2.0em; }
+TABLE#freeBusyData TD SPAN.freeBusyZoneElement
+{ height: 103%; }
+
+TABLE
+{ empty-cells: show; }

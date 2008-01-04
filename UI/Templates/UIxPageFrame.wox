@@ -127,7 +127,6 @@
 	  <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="HTMLUListElement.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="SOGoDragAndDrop.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>

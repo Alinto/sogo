@@ -29,9 +29,8 @@
 	string="itemZoomText" selection="zoom"/>
       <a href="#" class="button _disabled"><var:string label:value="+" /></a>
     </div>
-    <div/>
     <div id="freeBusyView">
-      <table id="freeBusy"
+      <table id="freeBusy" cellspacing="0" cellpadding="0"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:var="http://www.skyrix.com/od/binding"
 	xmlns:const="http://www.skyrix.com/od/constant"
@@ -39,25 +38,41 @@
 	xmlns:rsrc="OGo:url"
 	xmlns:label="OGo:label">
 	<thead>
-	  <tr class="freeBusyHeader1"
-	    ><th class="attendees"><!--space --></th
-	      ></tr>
-	  <tr class="freeBusyHeader2"
-	    ><th class="attendees"><!--space --></th
-	      ></tr>
-	  <tr class="freeBusyHeader3"
-	    ><th class="attendees"><!--space --></th
-	      ></tr>
+          <tr>
+            <td><!--space --></td>
+            <td class="freeBusyHeader">
+              <div><table id="freeBusyHeader" cellspacing="0" cellpadding="0">
+	        <tr class="freeBusyHeader1"><!--space --></tr>
+	        <tr class="freeBusyHeader2"><!--space --></tr>
+	        <tr class="freeBusyHeader3"><!--space --></tr>
+              </table></div>
+            </td>
+          </tr>
 	</thead>
-
 	<tbody>
-	  <tr class="futureAttendee"
-	    ><td class="attendees"><input type="text" class="textField"
-		readonly="readonly" /></td
-	      ></tr>
-	  <tr class="attendeeModel"
-	    ><td class="attendees"><input type="text" class="textField" /></td
-	      ></tr>
+          <tr>
+            <td class="freeBusyAttendees">
+              <div><table id="freeBusyAttendees" cellspacing="0" cellpadding="0">
+                <tbody>
+	          <tr class="futureAttendee"
+	            ><td class="attendees"><input type="text" class="textField"
+		    readonly="readonly" /></td
+	          ></tr>
+	          <tr class="attendeeModel"
+	            ><td class="attendees"><input type="text" class="textField" /></td
+	          ></tr>
+                </tbody>
+              </table></div>
+            </td>
+            <td class="freeBusyData">
+              <div><table id="freeBusyData" cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr class="futureData"></tr>
+                  <tr class="dataModel"></tr>
+                </tbody>
+              </table></div>
+            </td>
+          </tr>
 	</tbody>
       </table>
     </div>
