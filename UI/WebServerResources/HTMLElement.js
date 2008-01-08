@@ -226,6 +226,16 @@ Element.addMethods({
     else {
       element.select();
     }
- }
+  },
+
+  getRadioValue: function(element, radioName) {
+    element = $(element);
+    var radioValue;
+    Form.getInputs(element, 'radio', radioName).each(function(input) {
+	if (input.checked)
+	  radioValue = input.value;
+      });
+    return radioValue;
+  }
 
 });
