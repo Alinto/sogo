@@ -87,6 +87,9 @@
 "Reload Remote Calendars" = "Reload Remote Calendars";
 "Properties" = "Properties";
 
+"Compose E-Mail to All Attendees" = "Compose E-Mail to All Attendees";
+"Compose E-Mail to Undecided Attendees" = "Compose E-Mail to Undecided Attendees";
+
 /* Folders */
 "Personal calendar" = "Personal calendar";
 

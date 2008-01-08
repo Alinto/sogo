@@ -1,3 +1,9 @@
+2008-01-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions
+	-composeAction]): the mailto form parameter can now be a
+	comma-separated list of email addresses.
+
 2007-12-21  Ludovic Marcotte <ludovic@inverse.ca>
 	
 	* UI/Contacts/UIxContactView.m

@@ -77,36 +77,6 @@ function onChangeCalendar(event) {
   form.setAttribute("action", urlElems.join("/"));
 }
 
-function refreshAttendees() {
-  var attendeesLabel = $("attendeesLabel");
-  var attendeesNames = $("attendeesNames");
-  var attendeesHref = $("attendeesHref");
-
-  for (var i = 0; i < attendeesHref.childNodes.length; i++)
-    attendeesHref.removeChild(attendeesHref.childNodes[i]);
-
-  if (attendeesNames.value.length > 0) {
-    attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
-    attendeesLabel.setStyle({ display: "block" });
-  }
-  else {
-    attendeesLabel.setStyle({ display: "none" });
-  }
-}
-
-function initializeAttendeesHref() {
-  var attendeesHref = $("attendeesHref");
-  var attendeesLabel = $("attendeesLabel");
-  var attendeesNames = $("attendeesNames");
-
-  Event.observe(attendeesHref, "click", onPopupAttendeesWindow, false);
-  if (attendeesNames.value.length > 0) {
-    attendeesHref.setStyle({ textDecoration: "underline", color: "#00f" });
-    attendeesHref.appendChild(document.createTextNode(attendeesNames.value));
-    attendeesLabel.setStyle({ display: "block" });
-  }
-}
-
 function initializeDocumentHref() {
   var documentHref = $("documentHref");
   var documentLabel = $("documentLabel");
@@ -141,8 +111,6 @@ function initializePrivacyMenu() {
 }
 
 function onComponentEditorLoad(event) {
-  if (!$("statusPercent"))
-    initializeAttendeesHref();
   initializeDocumentHref();
   initializePrivacyMenu();
   var list = $("calendarList");

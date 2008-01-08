@@ -76,6 +76,9 @@
 "Reload Remote Calendars" = "Externe Kalender neu laden";
 "Properties" = "Einstellungen";
 
+"Compose E-Mail to All Attendees" = "E-Mail an alle Teilnehmer erstellen";
+"Compose E-Mail to Undecided Attendees" = "E-Mail an unentschlossene Teilnehmer erstellen";
+
 /* Folders */
 "Personal calendar" = "Personal calendar";
 

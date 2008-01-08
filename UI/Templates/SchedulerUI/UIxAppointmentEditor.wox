@@ -11,6 +11,16 @@
   var:component="event"
   var:saveURL="saveURL">
 
+  <div class="menu" id="attendeesMenu">
+    <ul>
+      <li><var:string label:value="Invite Attendees"/>...</li>
+      <li class="separator"><!-- separator --></li>
+      <li><var:string label:value="Compose E-Mail to All Attendees" />...</li>
+      <li id="composeToUndecidedAttendees"><var:string label:value="Compose E-Mail to Undecided Attendees" />...</li>
+      <li class="separator"><!-- separator --></li>
+    </ul>
+  </div>
+
   <label><span id="allDay" class="content"><input class="checkBox"
         type="checkbox" var:selection="isAllDay"
         var:checked="isAllDay"

@@ -20,6 +20,9 @@
 */
 
 var contactSelectorAction = 'calendars-contacts';
+var AppointmentEditor = {
+ attendeesMenu: null
+};
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
@@ -130,6 +133,42 @@ function toggleCycleVisibility(node, nodeName, hiddenValue) {
         otherSpanNode.superVisibility = null;
       }
   }
+}
+
+function onAttendeesMenuPrepareVisibility()
+{
+  var composeToUndecidedAttendees = $('composeToUndecidedAttendees');
+  var attendeesStates = $('attendeesStates').value;
+  
+  if (attendeesStates.indexOf("needs-action") < 0)
+    composeToUndecidedAttendees.addClassName("disabled");
+  else
+    composeToUndecidedAttendees.removeClassName("disabled");
+}
+
+function onComposeToAllAttendees()
+{
+  var attendees = $$("DIV#attendeesMenu LI.attendee");
+  var addresses = new Array();
+  attendees.each(function(item) {
+      addresses.push(item.readAttribute("email"));
+  });
+  if (window.opener)
+    window.opener.openMailTo(addresses.join(","));
+}
+
+function onComposeToUndecidedAttendees()
+{
+  if ($(this).hasClassName("disabled"))
+    return;
+ 
+  var attendees = $$("DIV#attendeesMenu LI.attendee.needs-action");
+  var addresses = new Array();
+  attendees.each(function(item) {
+      addresses.push(item.readAttribute("email"));
+  });
+  if (window.opener)
+    window.opener.openMailTo(addresses.join(","));
 }
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
@@ -291,6 +330,81 @@ function initTimeWidgets(widgets) {
   }
 }
 
+function refreshAttendees() {
+  var attendeesLabel = $("attendeesLabel");
+  var attendeesNames = $("attendeesNames").value;
+  var attendeesEmails = $("attendeesEmails").value.split(",");
+  var attendeesStates = $("attendeesStates").value.split(",");
+  var attendeesMenu = $("attendeesMenu").down("ul");
+  var attendeesHref = $("attendeesHref");
+  
+  // Remove link of attendees
+  for (var i = 0; i < attendeesHref.childNodes.length; i++)
+    attendeesHref.removeChild(attendeesHref.childNodes[i]);
+
+  // Remove attendees from menu
+  var menuItems = $$("DIV#attendeesMenu LI.attendee");
+  if (menuItems)
+    for (var i = 0; i < menuItems.length; i++)
+      attendeesMenu.removeChild(menuItems[i]);
+  
+  if (attendeesNames.length > 0) {
+    // Update attendees link and show label
+    attendeesHref.appendChild(document.createTextNode(attendeesNames));
+    attendeesLabel.setStyle({ display: "block" });
+
+    // Update attendees in menu
+    attendeesNames = attendeesNames.split(",");
+    for (var i = 0; i < attendeesEmails.length; i++) {
+      var node = document.createElement("li");
+      attendeesMenu.appendChild(node);
+      $(node).writeAttribute("email", attendeesEmails[i]);
+      $(node).addClassName("attendee");
+      $(node).addClassName(attendeesStates[i]);
+      node.appendChild(document.createTextNode(attendeesNames[i]));
+      $(node).observe("click", onMailTo);
+    }
+  }
+  else {
+    // Hide link of attendees
+    attendeesLabel.setStyle({ display: "none" });
+  }
+}
+
+function initializeAttendeesHref() {
+  var attendeesHref = $("attendeesHref");
+  var attendeesLabel = $("attendeesLabel");
+  var attendeesNames = $("attendeesNames");
+
+  Event.observe(attendeesHref, "click", onAttendeesHrefClick, false);
+  refreshAttendees();
+}
+
+function onAttendeesHrefClick(event) {
+  popupToolbarMenu(this, 'attendeesMenu');
+  preventDefault(event);
+  return false;
+}
+
+function onMailTo(event) {
+  var target = getTarget(event);
+  openMailTo(target.readAttribute("email"));
+}
+
+function getMenus() {
+  AppointmentEditor.attendeesMenu = new Array(onPopupAttendeesWindow,
+					      "-",
+					      onComposeToAllAttendees,
+					      onComposeToUndecidedAttendees,
+					      "-",
+					      null);
+  
+  var attendeesMenu = $('attendeesMenu');
+  attendeesMenu.prepareVisibility = onAttendeesMenuPrepareVisibility;
+
+  return { "attendeesMenu": AppointmentEditor.attendeesMenu };
+}
+
 function onAppointmentEditorLoad() {
   assignCalendar('startTime_date');
   assignCalendar('endTime_date');
@@ -302,6 +416,7 @@ function onAppointmentEditorLoad() {
 			 'hour': $("endTime_time_hour"),
 			 'minute': $("endTime_time_minute")}};
   initTimeWidgets(widgets);
+  initializeAttendeesHref();
 }
 
 FastInit.addOnLoad(onAppointmentEditorLoad);

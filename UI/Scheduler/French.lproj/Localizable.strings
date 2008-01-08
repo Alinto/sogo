@@ -88,6 +88,9 @@
 "Reload Remote Calendars" = "Recharger les agendas distants";
 "Properties" = "Propriétés";
 
+"Compose E-Mail to All Attendees" = "Rédiger un courriel pour tous les participants";
+"Compose E-Mail to Undecided Attendees" = "Rédiger un courriel pour les participants indécis";
+
 /* Folders */
 "Personal calendar" = "Agenda personnel";
 

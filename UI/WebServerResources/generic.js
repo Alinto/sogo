@@ -257,13 +257,31 @@ function openMailComposeWindow(url, wId) {
 }
 
 function openMailTo(senderMailTo) {
-  var mailto = sanitizeMailTo(senderMailTo);
+  var addresses = senderMailTo.split(",");
+  var sanitizedAddresses = new Array();
+  for (var i = 0; i < addresses.length; i++) {
+    var sanitizedAddress = sanitizeMailTo(addresses[i]);
+    if (sanitizedAddress.length > 0)
+      sanitizedAddresses.push(sanitizedAddress);
+  }
 
+  var mailto = sanitizedAddresses.join(",");
+ 
   if (mailto.length > 0)
     openMailComposeWindow(ApplicationBaseURL
 			  + "../Mail/compose?mailto=" + mailto);
 
   return false; /* stop following the link */
+}
+
+function deleteDraft(url) {
+  /* this is called by UIxMailEditor with window.opener */
+  new Ajax.Request(url, {
+    method: 'post',
+    onFailure: function(transport) {
+	log("draftDeleteCallback: problem during ajax request: " + transport.status);
+      }
+    });
 }
 
 function createHTTPClient() {
@@ -579,10 +597,10 @@ function popupMenu(event, menuId, target) {
 		  - (menuLeft + popup.offsetWidth));
   if (leftDiff < 0)
     menuLeft -= popup.offsetWidth;
-
+  
   if (popup.prepareVisibility)
     popup.prepareVisibility();
-  
+
   popup.setStyle({ top: menuTop + "px",
 	           left: menuLeft + "px",
 	           visibility: "visible" });
@@ -614,6 +632,8 @@ function getParentMenu(node) {
 function onBodyClickMenuHandler(event) {
   hideMenu(document.currentPopupMenu);
   document.body.stopObserving("click", onBodyClickMenuHandler);
+  document.body.stopObserving("mouseup", onBodyClickMenuHandler);
+  document.currentPopupMenu = null;
 
   if (event)
     preventDefault(event);
@@ -965,13 +985,18 @@ function popupToolbarMenu(node, menuId) {
     hideMenu(document.currentPopupMenu);
 
   var popup = $(menuId);
-  var top = ($(node).getStyle('top') || 0) + node.offsetHeight - 2;
+
+  if (popup.prepareVisibility)
+    popup.prepareVisibility();
+
+  var offset = $(node).cumulativeOffset();
+  var top = offset.top + node.offsetHeight;
   popup.setStyle({ top: top + "px",
-	left: $(node).cascadeLeftOffset() + "px",
+	left: offset.left + "px",
 	visibility: "visible" });
 
   document.currentPopupMenu = popup;
-  $(document.body).observe("click", onBodyClickMenuHandler);
+  $(document.body).observe("mouseup", onBodyClickMenuHandler);
 }
 
 /* contact selector */
