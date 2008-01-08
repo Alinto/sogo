@@ -267,6 +267,7 @@ function onDaySelect(node) {
   document.selectedDate = td;
 
   changeCalendarDisplay( { "day": day } );
+  currentDay = day;
   if (needRefresh)
     refreshEvents();
 
