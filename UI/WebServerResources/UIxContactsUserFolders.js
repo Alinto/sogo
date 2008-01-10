@@ -133,8 +133,10 @@ function onConfirmFolderSelection(event) {
 	 folderName = spans1[0].innerHTML + ' (' + email + ')';
       }
       var data = { folderName: folderName, folder: folder, window: window };
-      if (!window.opener.subscribeToFolder(window.opener.userFolderCallback, data))
+      if (parent$(accessToSubscribedFolder(folder)))
 	window.alert(clabels["You have already subscribed to that folder!"]);
+      else
+	window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
    }
 }
 
