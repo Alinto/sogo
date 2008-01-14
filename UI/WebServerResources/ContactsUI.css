@@ -169,7 +169,8 @@ DIV#folderTreeContent TABLE TD
   padding: 0px; }
 
 TABLE#contactsList
-{ width: 100%; }
+{ -khtml-user-select: none;
+  width: 100%; }
 
 TABLE#contactsList TD,
 TABLE#contactsList TH
