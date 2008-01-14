@@ -5,3 +5,87 @@ DIV#windowButtons
   right: 0px;
   height: 4em;
   text-align: right; }
+
+DIV#pageContent
+{ padding: 1em; }
+
+TABLE.section
+{ border: 1px solid #aaa;
+  margin-top: -.5em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  padding: 1em;
+  -moz-border-radius: 6px;
+  table-layout: auto;
+  text-align: right;
+  width: 100%; }
+
+TABLE TH
+{ font-weight: normal;
+  text-align: right;
+  width: 5em; }
+
+TABLE TD
+{ text-align: left; }
+
+TABLE TD.label
+{ width: 11em; }
+
+SPAN.caption
+{ display: inline-block;
+  position: relative;
+  text-align: center;
+  cursor: default;
+  background-color: #d4d0c8;
+  width: auto;
+  padding: .25em;
+  margin-left: 7px;
+  border: 0px; }
+
+INPUT.textField
+{ margin: 0px 0.7em;
+  width: 2em; }
+
+/* Days selectors */
+
+DIV#week,
+DIV#month
+{ background-color: #fff;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #999;
+  border-bottom: 1px solid #999; }
+
+DIV#week
+{ width: 210px; /* 7*(28+2)px */ }
+
+DIV#month
+{ width: 140px; /* 7*(18+2)px */ }
+
+DIV.week
+{ clear: both;
+  display: block; }
+
+DIV.week DIV
+{ border: 1px solid #fff;
+  display: block;
+  float: left; }
+
+DIV.week DIV.selected
+{ background-color: #ccc; }
+
+DIV.week DIV P
+{ display: block; 
+  margin: 2px 0px;
+  padding: 0px;
+  text-align: center; }
+
+DIV#week DIV.week DIV P
+{ width: 28px; }
+
+DIV#month DIV.week DIV P
+{ width: 18px; }
+
+DIV.week DIV:hover
+{ border: 1px solid blue; }
