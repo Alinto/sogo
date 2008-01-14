@@ -40,18 +40,4 @@
         const:dayStartHour="0"
         const:dayEndHour="23"
         /></span></span>
-  <hr />
-  <label><var:string label:value="Repeat:" />
-    <span class="content"><var:popup list="repeatList" item="item"
-        label:noSelectionString="repeat_NEVER"
-        const:disabledValue="-"
-        string="itemRepeatText" selection="repeat"
-        /></span></label>
-  <hr />
-  <label><var:string label:value="Reminder:" />
-    <span class="content"><var:popup list="reminderList" item="item"
-        const:disabledValue="-"
-        label:noSelectionString="reminder_NONE"
-        string="itemReminderText" selection="reminder"
-        /></span></label>
 </var:component>

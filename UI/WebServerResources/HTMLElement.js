@@ -236,6 +236,44 @@ Element.addMethods({
 	  radioValue = input.value;
       });
     return radioValue;
+  },
+
+  setRadioValue: function(element, radioName, value) {
+    element = $(element);
+    var i = 0;
+
+    Form.getInputs(element, 'radio', radioName).each(function(input) {
+      if (i == value)
+	input.checked = 1;
+      i++;
+      });
+  },
+
+  getCheckBoxListValues: function(element, checkboxName) {
+    element = $(element);
+    var values = new Array();
+    var i = 0;
+
+    Form.getInputs(element, 'checkbox', checkboxName).each(function(input) {
+	if (input.checked)
+	  values.push(i+1);
+	
+	i++;
+      });
+    return values.join(",");
+  },
+
+  setCheckBoxListValues: function(element, checkboxName, values) {
+    element = $(element);
+    var v = values.split(',');
+    var i = 1;
+
+    Form.getInputs(element, 'checkbox', checkboxName).each(function(input) {
+      
+      if ($(v).indexOf(i+"") != -1)
+	input.checked = 1;
+      i++;
+      });
   }
 
 });

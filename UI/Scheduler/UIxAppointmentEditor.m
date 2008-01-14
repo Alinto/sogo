@@ -51,7 +51,6 @@
       aptEndDate = nil;
       item = nil;
       event = nil;
-      repeat = nil;
       isAllDay = NO;
     }
 
@@ -61,7 +60,6 @@
 - (void) dealloc
 {
   [item release];
-  [repeat release];
   [aptStartDate release];
   [aptEndDate release];
   [super dealloc];
@@ -121,39 +119,6 @@
   return aptEndDate;
 }
 
-- (NSArray *) repeatList
-{
-  static NSArray *repeatItems = nil;
-
-  if (!repeatItems)
-    {
-      repeatItems = [NSArray arrayWithObjects: @"DAILY",
-                             @"WEEKLY",
-                             @"BI-WEEKLY",
-                             @"EVERY WEEKDAY",
-                             @"MONTHLY",
-                             @"YEARLY",
-                             @"-",
-                             @"CUSTOM",
-                             nil];
-      [repeatItems retain];
-    }
-
-  return repeatItems;
-}
-
-- (NSString *) itemRepeatText
-{
-  NSString *text;
-
-  if ([item isEqualToString: @"-"])
-    text = item;
-  else
-    text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
-
-  return text;
-}
-
 - (void) setItem: (NSString *) newItem
 {
   ASSIGN (item, newItem);
@@ -162,76 +127,6 @@
 - (NSString *) item
 {
   return item;
-}
-
-- (NSArray *) reminderList
-{
-  static NSArray *reminderItems = nil;
-
-  if (!reminderItems)
-    {
-      reminderItems = [NSArray arrayWithObjects: @"5_MINUTES_BEFORE",
-                               @"10_MINUTES_BEFORE",
-                               @"15_MINUTES_BEFORE",
-                               @"30_MINUTES_BEFORE",
-                               @"45_MINUTES_BEFORE",
-                               @"-",
-                               @"1_HOUR_BEFORE",
-                               @"2_HOURS_BEFORE",
-                               @"5_HOURS_BEFORE",
-                               @"15_HOURS_BEFORE",
-                               @"-",
-                               @"1_DAY_BEFORE",
-                               @"2_DAYS_BEFORE",
-                               @"1_WEEK_BEFORE",
-                               @"-",
-                               @"CUSTOM",
-                               nil];
-      [reminderItems retain];
-    }
-
-  return reminderItems;
-}
-
-// - (void) setReminder: (NSString *) reminder
-// {
-//   ASSIGN(reminder, _reminder);
-// }
-
-// - (NSString *) reminder
-// {
-//   return reminder;
-// }
-
-- (NSString *) reminder
-{
-  return @"";
-}
-
-- (void) setReminder: (NSString *) newReminder
-{
-}
-
-- (NSString *) itemReminderText
-{
-  NSString *text;
-
-  if ([item isEqualToString: @"-"])
-    text = item;
-  else
-    text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
-
-  return text;
-}
-
-- (NSString *) repeat
-{
-  return repeat;
-}
-
-- (void) setRepeat: (NSString *) newRepeat
-{
-  ASSIGN (repeat, newRepeat);
 }
 
 /* actions */
@@ -269,7 +164,6 @@
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
   unsigned int minutes;
-  iCalRecurrenceRule *rule;
 
   [self event];
   if ([[self clientObject] isNew])
@@ -296,41 +190,6 @@
 
   ASSIGN (aptStartDate, startDate);
   ASSIGN (aptEndDate, endDate);
-
-  // We initialize our repeat ivars
-  if ([event hasRecurrenceRules])
-    {
-      repeat = @"CUSTOM";
-
-      rule = [[event recurrenceRules] lastObject];
-
-      if ([rule frequency] == iCalRecurrenceFrequenceWeekly)
-	{
-	  if ([rule repeatInterval] == 1)
-	    repeat = @"WEEKLY";
-	  else if ([rule repeatInterval] == 2)
-	    repeat = @"BI-WEEKLY";
-	}
-      else if ([rule frequency] == iCalRecurrenceFrequenceDaily)
-	{
-	  if ([rule byDayMask] == (iCalWeekDayMonday
-				   | iCalWeekDayTuesday
-				   | iCalWeekDayWednesday
-				   | iCalWeekDayThursday
-				   | iCalWeekDayFriday))
-	    repeat = @"EVERY WEEKDAY";
-	  else if (![rule byDayMask])
-	    repeat = @"DAILY";
-	}
-      else if ([rule frequency] == iCalRecurrenceFrequenceMonthly
-	       && [rule repeatInterval] == 1)
-	repeat = @"MONTHLY";
-      else if ([rule frequency] == iCalRecurrenceFrequenceYearly
-	       && [rule repeatInterval] == 1)
-	repeat = @"YEARLY";
-    }
-  else
-    DESTROY(repeat);
 
   return self;
 }
@@ -380,7 +239,6 @@
 {
   SOGoAppointmentObject *clientObject;
   int nbrDays;
-  iCalRecurrenceRule *rule;
 
   clientObject = [self clientObject];
   [self event];
@@ -401,42 +259,6 @@
     }
   if ([clientObject isNew])
     [event setTransparency: @"OPAQUE"];
-
-  // We remove any repeat rules
-  if (!repeat && [event hasRecurrenceRules])
-    [event removeAllRecurrenceRules];
-  else if (!([repeat caseInsensitiveCompare: @"-"] == NSOrderedSame
-	     || [repeat caseInsensitiveCompare: @"CUSTOM"] == NSOrderedSame))
-    {
-      rule = [iCalRecurrenceRule new];
-
-      [rule setInterval: @"1"];
-      if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
-	{
-	  [rule setFrequency: iCalRecurrenceFrequenceWeekly];
-	  [rule setInterval: @"2"];
-	}
-      else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
-	{
-	  [rule setByDayMask: (iCalWeekDayMonday
-			       |iCalWeekDayTuesday
-			       |iCalWeekDayWednesday
-			       |iCalWeekDayThursday
-			       |iCalWeekDayFriday)];
-	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
-	}
-      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame)
-	{
-	  [rule setNamedValue: @"bymonthday"
-		to: [NSString stringWithFormat: @"%d", [aptStartDate dayOfMonth]]];
-	  [rule setFrequency: iCalRecurrenceFrequenceMonthly];
-	}
-      else
-	[rule setFrequency:
-		(iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
-      [event setRecurrenceRules: [NSArray arrayWithObject: rule]];
-      [rule release];
-    }
 }
 
 // TODO: add tentatively

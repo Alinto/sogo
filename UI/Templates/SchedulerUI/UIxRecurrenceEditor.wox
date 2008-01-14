@@ -1,0 +1,154 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:toolbar="none"
+  const:popup="YES"
+  const:jsFiles="skycalendar.js">
+
+  <form id="recurrence_form">
+  <div id="recurrence_pattern">
+
+    <var:string label:value="Recurrence pattern"/>
+    <br />
+    <br />	
+    <var:string label:value="Repeat"/>
+    <var:popup list="repeatList" const:id="repeatType" item="item"
+       	string="itemText" selection="repeatType"
+    />
+
+    <hr />
+
+    <div id="recurrenceDaily">
+      <var:radio-button-list list="dailyRadioList" const:id="dailyRadioButton" item="item"
+	const:name="dailyRadioButtonName" value="item" />
+	<input type="text" name="dailyDaysFieldName" const:id="dailyDaysField"
+            class="textField"
+            var:value="title"
+         />
+	<var:string label:value="Days"/>
+    </div>
+ 
+    <hr />
+
+    <div id="recurrenceWeekly">
+     	<var:string label:value="Every"/>
+	<input type="text" name="weeklyWeeksFieldName" const:id="weeklyWeeksField"
+            class="textField"
+            var:value="title"
+         />
+     	<var:string label:value="Week(s)"/>
+	<br />
+	<var:string label:value="On"/>
+	<var:checkbox-list list="weeklyCheckBoxList" const:id="weeklyCheckBox" item="item"
+		const:name="weeklyCheckBoxName" value="item" />
+    </div>
+
+    <hr />
+
+    <div id="recurrenceMonthly">
+	<var:string label:value="Every"/>
+	<input type="text" name="monthlyMonthsFieldName" const:id="monthlyMonthsField"
+            class="textField"
+            var:value="title"
+         />
+     	<var:string label:value="Month(s)"/>
+	<br />
+	<var:radio-button-list list="monthlyRadioList" const:id="monthlyRadioButton" item="item"
+		const:name="monthlyRadioButtonName" value="item" />
+	<br />
+	<var:popup list="monthlyRepeatList" const:id="monthlyRepeat" item="item"
+        	label:noSelectionString="FIRST"
+        	string="itemText" selection="FIRST"
+        />
+	<var:popup list="monthlyDayList" const:id="monthlyDay" item="item"
+        	label:noSelectionString="MONDAY"
+        	string="itemText" selection="MONDAY"
+        />
+	<br />
+	<var:checkbox-list list="dayMonthList" const:id="monthlyCheckBox" item="item"
+		const:name="monthlyCheckBoxName" value="item" />
+    </div>
+
+    <hr />
+
+    <div id="recurrenceYearly">
+	<var:string label:value="Every"/>
+	<input type="text" name="yearlyYearsFieldName" const:id="yearlyYearsField"
+            class="textField"
+            var:value="title"
+         />
+     	<var:string label:value="Year(s)"/>
+	<br />
+	<var:radio-button-list list="yearlyRadioList" const:id="yearlyRadioButton" item="item"
+		const:name="yearlyRadioButtonName" value="item" />
+	<br />
+	<input type="text" name="yearlyDayFieldName" const:id="yearlyDayField"
+            class="textField"
+            var:value="title"
+         />
+	<var:popup list="yearlyMonthList" const:id="yearlyMonth1" item="item"
+        	label:noSelectionString="JANUARY"
+        	string="itemText" selection="JANUARY"
+        />
+  	<br />
+	<var:popup list="monthlyRepeatList" const:id="yearlyRepeat" item="item"
+        	label:noSelectionString="FIRST"
+        	string="itemText" selection="FIRST"
+        />
+	<var:popup list="yearlyDayList" const:id="yearlyDay" item="item"
+        	label:noSelectionString="MONDAY"
+        	string="itemText" selection="MONDAY"
+        />
+     	<var:string label:value="of"/>
+	<var:popup list="yearlyMonthList" const:id="yearlyMonth2" item="item"
+        	label:noSelectionString="JANUARY"
+        	string="itemText" selection="JANUARY"
+        />
+    </div>
+
+  </div>
+
+  <br />
+  <br />
+  <hr />
+  <br />
+  <br />
+
+  <div id="range_of_recurrence">
+    <var:string label:value="Range of recurrence"/>
+    <br />
+    <br />
+    <var:radio-button-list list="rangeRadioList" const:id="rangeRadioButton" item="item"
+	const:name="rangeRadioButtonName" value="item" />
+    <br />
+    <input type="text" name="rangeAppointmentsFieldName" const:id="rangeAppointmentsField"
+           class="textField"
+           var:value="title"
+     />
+    <var:string label:value="Appointments(s)"/>
+    <br />
+    <var:component className="UIxDatePicker"
+                   const:dateID="endDate"
+                   day="endDateDay"
+                   month="endDateMonth"
+                   year="endDateYear"
+                   label:label="browse end date"
+    />
+  </div>
+
+  <div id="windowButtons">
+	<hr />
+	<a id="cancelButton" href="#" class="button"
+	  ><var:string label:value="Cancel"/></a>
+	<a id="okButton" href="#" class="button"
+	  ><var:string label:value="OK"/></a>
+      </div>
+  </form>
+</var:component>

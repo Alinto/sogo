@@ -51,11 +51,4 @@
 	var:disabled="statusPercentDisabled"
 	/><var:string label:value="% complete"
 	/></span></span>
-  <hr />
-  <label><var:string label:value="Repeat:" />
-    <span class="content"><var:popup list="repeatList" item="item"
-        label:noSelectionString="repeat_NEVER"
-        const:disabledValue="-"
-        string="itemRepeatText" selection="repeat"
-        /></span></label>
 </var:component>

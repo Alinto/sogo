@@ -52,9 +52,6 @@
 - (void) setTaskDueDate: (NSCalendarDate *) _date;
 - (NSCalendarDate *) taskDueDate;
 
-- (NSString *) repeat;
-- (void) setRepeat: (NSString *) newRepeat;
-
 @end
 
 #endif /* UIXAPPOINTMENTEDITOR_H */

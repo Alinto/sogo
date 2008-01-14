@@ -64,6 +64,22 @@
   NSString *attendeesUIDs;
   NSString *attendeesEmails;
   NSString *attendeesStates;
+
+  NSString *repeat;
+  NSString *reminder;
+  
+  /* ugly */
+  NSString *repeatType;
+  NSString *repeat1;
+  NSString *repeat2;
+  NSString *repeat3;
+  NSString *repeat4;
+  NSString *repeat5;
+  NSString *repeat6;
+  NSString *repeat7;
+  
+  NSString *range1;
+  NSString *range2;
 }
 
 - (NSString *) toolbar;
@@ -120,6 +136,15 @@
 - (void) setAttendeesEmails: (NSString *) newAttendeesEmails;
 - (NSString *) attendeesEmails;
 
+- (NSString *) repeat;
+- (void) setRepeat: (NSString *) newRepeat;
+
+- (NSString *) reminder;
+- (void) setReminder: (NSString *) newReminder;
+
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
 - (NSArray *) cycles;
 - (void) setCycle: (NSDictionary *) _cycle;
 - (NSDictionary *) cycle;
@@ -136,6 +161,9 @@
 - (BOOL) isCycleEndUntil;
 - (void) setIsCycleEndUntil;
 - (void) setIsCycleEndNever;
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
 
 /* access */
 - (BOOL) isMyComponent;

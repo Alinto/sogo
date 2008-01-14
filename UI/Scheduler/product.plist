@@ -97,6 +97,10 @@
 	      protectedBy = "View";
 	      pageName    = "UIxAttendeesEditor";
 	   };
+	   editRecurrence = {
+	      protectedBy = "View";
+	      pageName    = "UIxRecurrenceEditor";
+	   };
 	};
      };
 

@@ -41,7 +41,8 @@ SchedulerUI_OBJC_FILES =		\
 	UIxTimeDateControl.m		\
 	UIxCalParticipationStatusView.m \
 	UIxCalMonthOverview.m	\
-	UIxCalMonthViewOld.m
+	UIxCalMonthViewOld.m \
+	UIxRecurrenceEditor.m
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\

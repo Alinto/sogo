@@ -1,3 +1,17 @@
+2008-01-14  Ludovic Marcotte <ludovic@inverse.ca>
+
+	* Added files related to the custom recurrence
+	  editor of the SOGo Web interface. The CSS
+	  needs to be done correctly.
+
+	* Fixed a bug in the daily recurrence generator.
+	  We now consider the byDayMask, if any.
+
+	* Moved the repeat/reminder code to the
+	  UIxComponentEditor class / template.
+
+	* Added a few JavaScript methods to HTMLElement.js
+
 2008-01-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountActions.m ([UIxMailAccountActions

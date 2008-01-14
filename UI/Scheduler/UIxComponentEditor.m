@@ -58,6 +58,14 @@
 
 #import "UIxComponentEditor.h"
 
+#define REPEAT(X) \
+- (NSString *) repeat##X { return repeat##X; } \
+- (void) setRepeat##X: (NSString *) theValue { NSLog(@"setRepeat %@", theValue); ASSIGN(repeat##X, theValue); } \
+
+#define RANGE(X) \
+- (NSString *) range##X { return range##X; } \
+- (void) setRange##X: (NSString *) theValue { ASSIGN(range##X, theValue);  }
+
 @implementation UIxComponentEditor
 
 - (id) init
@@ -75,6 +83,18 @@
       attendeesEmails = nil;
       attendeesStates = nil;
       calendarList = nil;
+      repeat = nil;
+      reminder = nil;
+      repeatType = nil;
+      repeat1 = nil;
+      repeat2 = nil;
+      repeat3 = nil;
+      repeat4 = nil;
+      repeat5 = nil;
+      repeat6 = nil;
+      repeat7 = nil;
+      range1 = nil;
+      range2 = nil;
     }
 
   return self;
@@ -100,6 +120,20 @@
   [attendeesStates release];
   [calendarList release];
 
+  [repeat release];
+  [reminder release];
+
+  [repeatType release];
+  [repeat1 release];
+  [repeat2 release];
+  [repeat3 release];
+  [repeat4 release];
+  [repeat5 release];
+  [repeat6 release];
+  [repeat7 release];
+  [range1 release];
+  [range2 release];
+  
   [component release];
 
   [super dealloc];
@@ -160,6 +194,160 @@
     }
 }
 
+- (NSString *) _dayMaskToInteger: (unsigned int) theMask
+{
+  NSMutableString *s;
+  unsigned int i, v;
+
+  unsigned char maskDays[] = { iCalWeekDayMonday, iCalWeekDayTuesday,
+                               iCalWeekDayWednesday, iCalWeekDayThursday,
+                               iCalWeekDayFriday, iCalWeekDaySaturday,
+                               iCalWeekDaySunday };
+  
+  s = [NSMutableString string];
+  
+  for (i = 0; i < 7; i++)
+    {
+      if ((theMask&maskDays[i]) == maskDays[i])
+	[s appendFormat: @"%d,", i+1];
+    }
+
+  if ([s length])
+    return [s substringToIndex: [s length]-1];
+
+  return s;
+}
+
+- (void) _loadRRules
+{
+  // We initialize our repeat ivars
+  if ([component hasRecurrenceRules])
+    {
+      iCalRecurrenceRule *rule;
+
+      [self setRepeat: @"CUSTOM"];
+
+      rule = [[component recurrenceRules] lastObject];
+
+      // If we either have an end date or a recurrence count
+      // it's automatically a CUSTOM one.
+      //if (![rule isInfinite] || [rule repeatInterval] != 1)
+      //	{
+      //	  // We initialize the proper ivars
+      //	  repeatType = @"1";
+      //	  repeat1 = @"1";
+      //	  repeat2 = @"1,3,5";
+      //	  return;
+      //	}
+
+      if ([rule frequency] == iCalRecurrenceFrequenceDaily)
+	{
+	  repeatType = @"0";
+	  
+	  if ([rule byDayMask] == (iCalWeekDayMonday
+				   | iCalWeekDayTuesday
+				   | iCalWeekDayWednesday
+				   | iCalWeekDayThursday
+				   | iCalWeekDayFriday))
+	    {
+	      if ([rule isInfinite])
+		{
+		  repeat = @"EVERY WEEKDAY";
+		}
+	      repeat1 = @"1";
+	    }
+	  else
+	    {
+	      repeat1 = @"0";
+	      
+	      if ([rule repeatInterval] == 1)
+		{
+		  repeat = @"DAILY";
+		}
+
+	      [self setRepeat2: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
+	    }
+	}
+      else if ([rule frequency] == iCalRecurrenceFrequenceWeekly)
+	{
+	  repeatType = @"1";
+
+	  if (![rule byDayMask])
+	    {
+	      if ([rule repeatInterval] == 1)
+		repeat = @"WEEKLY";
+	      else if ([rule repeatInterval] == 2)
+		repeat = @"BI-WEEKLY";
+	    }
+	  else
+	    {
+	      [self setRepeat1: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
+	      [self setRepeat2: [self _dayMaskToInteger: [rule byDayMask]]];
+	    }
+	}
+      else if ([rule frequency] == iCalRecurrenceFrequenceMonthly)
+	{
+	  repeatType = @"2";
+
+	  if ([rule byDayMask])
+	    {
+	      // TODO
+	      [self setRepeat2: @"0"];
+	    }
+	  else if ([[rule byMonthDay] count])
+	    {
+	      [self setRepeat2: @"1"];
+	      [self setRepeat5: [[rule byMonthDay] componentsJoinedByString: @","]];
+	    }
+	  else if ([rule repeatInterval] == 1)
+	    repeat = @"MONTHLY";
+
+	  [self setRepeat1: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
+	}
+      else
+	{
+	  repeatType = @"3";
+	 
+	  if ([rule namedValue: @"bymonth"])
+	    {
+	      if (![rule byDayMask])
+		{
+		  [self setRepeat2: @"0"];
+		  [self setRepeat3: [rule namedValue: @"bymonthday"]];
+		  [self setRepeat4: [NSString stringWithFormat: @"%d", [[rule namedValue: @"bymonth"] intValue]-1]];
+		}
+	      else
+		{
+		  // TODO
+		  [self setRepeat2: @"1"];
+		}
+	    }
+	  else if ([rule repeatInterval] == 1)
+	    repeat = @"YEARLY";
+
+	  [self setRepeat1: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
+	}
+
+      // We decode the proper end date, recurrences count, etc.
+      if ([rule repeatCount])
+	{
+	  [self setRange1: @"1"];
+	  [self setRange2: [rule namedValue: @"count"]];
+	}
+      else if ([rule untilDate])
+	{
+	  [self setRange1: @"2"];
+	  [self setRange2: [[rule untilDate] descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+	}
+      else
+	{
+	  [self setRange1: @"0"];
+	}
+    }
+  else
+    DESTROY(repeat);
+}
+
 /* warning: we use this method which will be triggered by the template system
    when the page is instantiated, but we should find another and cleaner way of
    doing this... for example, when the clientObject is set */
@@ -188,6 +376,7 @@
 	  ASSIGN (organizer, [component organizer]);
 	  [self _loadCategories];
 	  [self _loadAttendees];
+	  [self _loadRRules];
 	}
     }
 //   /* cycles */
@@ -454,6 +643,109 @@
 		 [NSString stringWithFormat: @"category_%@", item]];
 }
 
+- (NSArray *) repeatList
+{
+  static NSArray *repeatItems = nil;
+
+  if (!repeatItems)
+    {
+      repeatItems = [NSArray arrayWithObjects: @"DAILY",
+                             @"WEEKLY",
+                             @"BI-WEEKLY",
+                             @"EVERY WEEKDAY",
+                             @"MONTHLY",
+                             @"YEARLY",
+                             @"-",
+                             @"CUSTOM",
+                             nil];
+      [repeatItems retain];
+    }
+
+  return repeatItems;
+}
+
+- (NSString *) itemRepeatText
+{
+  NSString *text;
+
+  if ([item isEqualToString: @"-"])
+    text = item;
+  else
+    text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
+
+  return text;
+}
+
+- (NSArray *) reminderList
+{
+  static NSArray *reminderItems = nil;
+
+  if (!reminderItems)
+    {
+      reminderItems = [NSArray arrayWithObjects: @"5_MINUTES_BEFORE",
+                               @"10_MINUTES_BEFORE",
+                               @"15_MINUTES_BEFORE",
+                               @"30_MINUTES_BEFORE",
+                               @"45_MINUTES_BEFORE",
+                               @"-",
+                               @"1_HOUR_BEFORE",
+                               @"2_HOURS_BEFORE",
+                               @"5_HOURS_BEFORE",
+                               @"15_HOURS_BEFORE",
+                               @"-",
+                               @"1_DAY_BEFORE",
+                               @"2_DAYS_BEFORE",
+                               @"1_WEEK_BEFORE",
+                               @"-",
+                               @"CUSTOM",
+                               nil];
+      [reminderItems retain];
+    }
+
+  return reminderItems;
+}
+
+// - (void) setReminder: (NSString *) reminder
+// {
+//   ASSIGN(reminder, _reminder);
+// }
+
+// - (NSString *) reminder
+// {
+//   return reminder;
+// }
+
+- (NSString *) reminder
+{
+  return @"";
+}
+
+- (void) setReminder: (NSString *) newReminder
+{
+}
+
+- (NSString *) itemReminderText
+{
+  NSString *text;
+
+  if ([item isEqualToString: @"-"])
+    text = item;
+  else
+    text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
+
+  return text;
+}
+
+- (NSString *) repeat
+{
+  return repeat;
+}
+
+- (void) setRepeat: (NSString *) newRepeat
+{
+  ASSIGN(repeat, newRepeat);
+}
+
 - (NSString *) _permissionForEditing
 {
   NSString *perm;
@@ -612,6 +904,29 @@
   return status;
 }
 
+- (void) setRepeatType: (NSString *) theValue
+{
+  ASSIGN (repeatType, theValue);
+}
+
+- (NSString *) repeatType
+{
+  return repeatType;
+}
+
+REPEAT(1);
+REPEAT(2);
+REPEAT(3);
+REPEAT(4);
+REPEAT(5);
+REPEAT(6);
+REPEAT(7);
+RANGE(1);
+RANGE(2);
+
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
 - (NSArray *) cycles
 {
   NSBundle *bundle;
@@ -779,6 +1094,10 @@
 {
   [self setCycleEnd: @"cycle_end_never"];
 }
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
+////////////////////////////////// JUNK ////////////////////////////////////////
+
 
 /* helpers */
 - (NSString *) completeURIForMethod: (NSString *) _method
@@ -985,11 +1304,171 @@
     }
 }
 
+- (void) _handleCustomRRule: (iCalRecurrenceRule *) theRule
+
+{
+  int type, range;
+
+  // We decode the range
+  range = [[self range1] intValue];
+
+  // Create X appointments
+  if (range == 1)
+    {
+      [theRule setRepeatCount: [[self range2] intValue]];
+    }
+  // Repeat until date
+  else if (range == 2)
+    {
+    }
+  // No end date.
+  else
+    {
+    }
+
+
+  // We decode the type and the rest accordingly.
+  type = [[self repeatType] intValue];
+
+  switch (type)
+    {
+      // DAILY:
+      //
+      // repeat1 holds the value of the radio button:
+      //   0 -> Every X days
+      //   1 -> Every weekday
+      //
+      // repeat2 holds the value of X when repeat1 equals 0
+      //
+    case 0:
+      {
+	[theRule setFrequency: iCalRecurrenceFrequenceDaily];
+
+	if ([[self repeat1] intValue] == 0)
+	  {
+	    [theRule setInterval: [self repeat2]];
+	  }
+	else
+	  {
+	    [theRule setByDayMask: (iCalWeekDayMonday
+				    |iCalWeekDayTuesday
+				    |iCalWeekDayWednesday
+				    |iCalWeekDayThursday
+				    |iCalWeekDayFriday)];
+	  }
+      }
+      break;
+      
+      // WEEKLY
+      //
+      // repeat1 holds the value of "Every X week(s)" 
+      //
+      // repeat2 holds which days are part of the recurrence rule
+      //  1 -> Monday
+      //  2 -> Tuesday .. and so on.
+      //  The list is separated by commas, like: 1,3,4
+    case 1:
+      {
+	NSArray *v;
+	int c, mask;
+
+	[theRule setFrequency: iCalRecurrenceFrequenceWeekly];
+	[theRule setInterval: [self repeat1]];
+
+	v = [[self repeat2] componentsSeparatedByString: @","];
+	c = [v count];
+	mask = 0;
+	
+	while (c--)
+	  {
+	    mask |= (unsigned int)exp2([[v objectAtIndex: c] intValue]-1);
+	  }
+	
+	[theRule setByDayMask: mask];
+      }
+      break;
+      
+      // MONTHLY
+      //
+      // repeat1 holds the value of "Every X month(s)"
+      //
+      // repeat2 holds the value of the radio-button "The" / "Recur on day(s)"
+      //  0 -> The
+      //  1 -> Recur on day(s)
+      //
+      // repeat3 holds the value of the first popup
+      //  0 -> First
+      //  1 -> Second ... and so on.
+      //
+      // repeat4 holds the value of the second popop
+      //  0 -> Sunday
+      //  1 -> Monday ... and so on.
+      //  7 -> Day of the month
+      //
+      // repeat5 holds the selected days when "Recur on day(s)"
+      // is chosen. The value starts at 1.
+      //
+    case 2:
+      {
+	[theRule setFrequency: iCalRecurrenceFrequenceMonthly];
+	[theRule setInterval: [self repeat1]];
+
+	// We recur on specific days...
+	if ([[self repeat2] intValue] == 1)
+	  {
+	    [theRule setNamedValue: @"bymonthday"  to: [self repeat5]];
+	  }
+	else
+	  {
+	    // TODO
+	  }
+      }
+      break;
+
+      // YEARLY
+      //
+      // repeat1 holds the value of "Every X year(s)"
+      //
+      // repeat2 holds the value of the radio-button "Every" / "Every .. of .."
+      //  0 -> Every
+      //  1 -> Every .. of ..
+      //
+      // repeat3 holds the value of the DAY parameter
+      // repeat4 holds the value of the MONTH parameter (0 -> January, 1 -> February ... )
+      //  ex: 3 February
+      //
+      // repeat5 holds the value of the OCCURENCE parameter (0 -> First, 1 -> Second ..)
+      // repeat6 holds the value of the DAY parameter (0 -> Sunday, 1 -> Monday, etc..)
+      // repeat7 holds the value of the MONTH parameter (0 -> January, 1 -> February ... )
+      // 
+    case 3:
+    default:
+      {
+	[theRule setFrequency: iCalRecurrenceFrequenceYearly];
+	[theRule setInterval: [self repeat1]];
+
+	// We recur Every .. of ..
+	if ([[self repeat2] intValue] == 1)
+	  {
+	    // TODO
+	  }
+	else
+	  {
+	    [theRule setNamedValue: @"bymonthday"  to: [self repeat3]];
+	    [theRule setNamedValue: @"bymonth" 
+		     to: [NSString stringWithFormat: @"%d", ([[self repeat4] intValue]+1)]];
+	  }
+      }
+      break;
+    }
+}
+
 - (void) takeValuesFromRequest: (WORequest *) _rq
                      inContext: (WOContext *) _ctx
 {
-  NSCalendarDate *now;
   SOGoCalendarComponent *clientObject;
+  iCalRecurrenceRule *rule;
+  NSCalendarDate *now;
 
   [super takeValuesFromRequest: _rq inContext: _ctx];
 
@@ -1011,6 +1490,53 @@
     }
   [component setPriority: priority];
   [component setLastModified: now];
+
+  // We remove any repeat rules
+  if (!repeat && [component hasRecurrenceRules])
+    [component removeAllRecurrenceRules];
+  else if ([repeat caseInsensitiveCompare: @"-"] != NSOrderedSame)
+    {
+      rule = [iCalRecurrenceRule new];
+
+      [rule setInterval: @"1"];
+
+      if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
+	{
+	  [rule setFrequency: iCalRecurrenceFrequenceWeekly];
+	  [rule setInterval: @"2"];
+	}
+      else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
+	{
+	  [rule setByDayMask: (iCalWeekDayMonday
+			       |iCalWeekDayTuesday
+			       |iCalWeekDayWednesday
+			       |iCalWeekDayThursday
+			       |iCalWeekDayFriday)];
+	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
+	}
+      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame)
+	{
+	  [rule setNamedValue: @"bymonthday"
+		to: [NSString stringWithFormat: @"%d", [[component startDate] dayOfMonth]]];
+	  [rule setFrequency: iCalRecurrenceFrequenceMonthly];
+	}
+      else if ([repeat caseInsensitiveCompare: @"DAILY"] == NSOrderedSame ||
+	       [repeat caseInsensitiveCompare: @"WEEKLY"] == NSOrderedSame ||
+	       [repeat caseInsensitiveCompare: @"YEARLY"] == NSOrderedSame)
+	{
+	  [rule setFrequency:
+		  (iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
+	}
+      else
+	{
+	  // We have a CUSTOM recurrence. Let's decode what kind of custome recurrence
+	  // we have and set that.
+	  [self _handleCustomRRule: rule];
+	}
+
+      [component setRecurrenceRules: [NSArray arrayWithObject: rule]];
+      [rule release];
+    }
 }
 
 #warning the following methods probably share some code...

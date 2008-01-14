@@ -124,6 +124,19 @@ function onComponentEditorLoad(event) {
     Event.observe(menuItems[i], "mousedown",
 		  onMenuSetClassification.bindAsEventListener(menuItems[i]),
 		  false);
+
+  $("repeatList").observe("change", onPopupRecurrenceWindow);
+}
+
+function onPopupRecurrenceWindow(event) {
+  if (event)
+    preventDefault(event);
+
+  if ($("repeatList").value == 7)
+    window.open(ApplicationBaseURL + "/editRecurrence", null, 
+		"width=803,height=573");
+
+  return false;
 }
 
 FastInit.addOnLoad(onComponentEditorLoad);

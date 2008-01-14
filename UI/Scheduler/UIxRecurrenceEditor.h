@@ -1,8 +1,8 @@
-/* UIxAppointmentEditor.h - this file is part of SOGo
+/* UIxRecurrenceEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,37 +20,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXAPPOINTMENTEDITOR_H
-#define UIXAPPOINTMENTEDITOR_H
+#ifndef UIXRECURRENCEEDITOR_H
+#define UIXRECURRENCEEDITOR_H
 
 #import <SOGoUI/UIxComponent.h>
 
-@class iCalEvent;
-@class NSString;
-
-@interface UIxAppointmentEditor : UIxComponent
+@interface UIxRecurrenceEditor : UIxComponent
 {
-  iCalEvent *event;
-  BOOL isAllDay;
-  NSCalendarDate *aptStartDate;
-  NSCalendarDate *aptEndDate;
-  NSString *item;
+  NSString *item, *repeat;
 }
 
-/* template values */
-- (NSString *) saveURL;
-- (iCalEvent *) event;
+- (NSArray *) dailyRadioList;
 
-/* icalendar values */
-- (BOOL) isAllDay;
-- (void) setIsAllDay: (BOOL) newIsAllDay;
+- (NSArray *) weeklyCheckBoxList;
 
-- (void) setAptStartDate: (NSCalendarDate *) _date;
-- (NSCalendarDate *) aptStartDate;
+- (NSArray *) dayMonthList;
+- (NSArray *) monthlyRepeatList;
+- (NSArray *) monthlyDayList;
+- (NSArray *) monthlyRadioList;
 
-- (void) setAptEndDate: (NSCalendarDate *) _date;
-- (NSCalendarDate *) aptEndDate;
+- (NSArray *) yearlyMonthList;
+- (NSArray *) yearlyDayList;
+
+- (NSArray *) rangeRadioList;
+- (NSArray *) repeatList;
+- (NSArray *) yearlyRadioList;
+
+- (void) setItem: (NSString *) theItem;
+- (NSString *) item;
 
 @end
 
-#endif /* UIXAPPOINTMENTEDITOR_H */
+#endif /* UIXRECURRENCEEDITOR_H */

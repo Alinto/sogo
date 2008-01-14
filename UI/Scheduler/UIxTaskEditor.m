@@ -138,39 +138,6 @@
   return !hasDueDate;
 }
 
-- (NSArray *) repeatList
-{
-  static NSArray *repeatItems = nil;
-
-  if (!repeatItems)
-    {
-      repeatItems = [NSArray arrayWithObjects: @"DAILY",
-                             @"WEEKLY",
-                             @"BI-WEEKLY",
-                             @"EVERY WEEKDAY",
-                             @"MONTHLY",
-                             @"YEARLY",
-                             @"-",
-                             @"CUSTOM",
-                             nil];
-      [repeatItems retain];
-    }
-
-  return repeatItems;
-}
-
-- (NSString *) itemRepeatText
-{
-  NSString *text;
-
-  if ([item isEqualToString: @"-"])
-    text = item;
-  else
-    text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
-
-  return text;
-}
-
 - (NSArray *) statusList
 {
   static NSArray *statusItems = nil;
@@ -201,15 +168,6 @@
 - (NSString *) item
 {
   return item;
-}
-
-- (NSString *) repeat
-{
-  return @"";
-}
-
-- (void) setRepeat: (NSString *) newRepeat
-{
 }
 
 - (NSString *) status

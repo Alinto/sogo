@@ -72,6 +72,21 @@
       <hr />
       <var:component-content />
       <hr />
+      <label><var:string label:value="Repeat:" />
+       <span class="content"><var:popup list="repeatList" item="item"
+          label:noSelectionString="repeat_NEVER"
+          const:disabledValue="-"
+	  const:id="repeatList"
+          string="itemRepeatText" selection="repeat"
+          /></span></label>
+      <hr />
+      <label><var:string label:value="Reminder:" />
+      <span class="content"><var:popup list="reminderList" item="item"
+         const:disabledValue="-"
+         label:noSelectionString="reminder_NONE"
+         string="itemReminderText" selection="reminder"
+         /></span></label>
+      <hr />
       <label id="commentArea"><var:string label:value="Description:"
 	  /><textarea rows="20" name="comment" var:value="comment" /></label>
       <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
@@ -96,6 +111,40 @@
       <input type="hidden" name="calendarFoldersList"
 	id="calendarFoldersList"
 	var:value="calendarsFoldersList"/>
+
+      <input type="hidden" name="repeatType"
+	id="repeatType"
+	var:value="repeatType"/>
+      <input type="hidden" name="repeat1"
+	id="repeat1"
+	var:value="repeat1"/>
+      <input type="hidden" name="repeat2"
+	id="repeat2"
+	var:value="repeat2"/>
+      <input type="hidden" name="repeat3"
+	id="repeat3"
+	var:value="repeat3"/>
+      <input type="hidden" name="repeat4"
+	id="repeat4"
+	var:value="repeat4"/>
+      <input type="hidden" name="repeat5"
+	id="repeat5"
+	var:value="repeat5"/>
+      <input type="hidden" name="repeat6"
+	id="repeat6"
+	var:value="repeat6"/>
+      <input type="hidden" name="repeat7"
+	id="repeat7"
+	var:value="repeat7"/>
+
+     <input type="hidden" name="range1"
+	id="range1"
+	var:value="range1"/>
+     <input type="hidden" name="range2"
+	id="range2"
+	var:value="range2"/>
+
+
     </div>
   </form>
 </var:component>

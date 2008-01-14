@@ -33,6 +33,8 @@
 #import "iCalRecurrenceRule.h"
 #import "NSCalendarDate+ICal.h"
 
+#include <math.h>
+
 @interface iCalRecurrenceCalculator(PrivateAPI)
 - (NSCalendarDate *)lastInstanceStartDate;
 @end
@@ -90,13 +92,23 @@
       if ((jnTest % interval) == 0) {
         NSCalendarDate      *start, *end;
         NGCalendarDateRange *r;
-      
+	unsigned int mask;
+
         start = [NSCalendarDate dateForJulianNumber:jnCurrent];
         [start setTimeZone:[firStart timeZone]];
         start = [start hour:  [firStart hourOfDay]
                        minute:[firStart minuteOfHour]
                        second:[firStart secondOfMinute]];
         end   = [start addTimeInterval:[self->firstRange duration]];
+
+	// We check if our start date is within the byDayMask 
+	// FIXME: Should we also check the end date? We might want
+	//        to check if the end date is also within it.
+	if ([self->rrule byDayMask]) {
+	  mask = [start dayOfWeek] == 0 ? iCalWeekDaySunday : (unsigned int)exp2([start dayOfWeek]-1);
+	  if (([self->rrule byDayMask]&mask) != mask) continue;
+	}
+
         r     = [NGCalendarDateRange calendarDateRangeWithStartDate:start
                                      endDate:end];
         if ([_r containsDateRange:r])
