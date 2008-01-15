@@ -12,7 +12,7 @@ function setRepeatType(type) {
 
   RecurrenceEditor.currentRepeatType = type;
 
-  for (var i = 0; i <=3; i++) {
+  for (var i = 0; i <= 3; i++) {
     elements = $$("TABLE TR.recurrence" + RecurrenceEditor.types[i]);
     if (i != type)
       elements.each(function(row) {
@@ -25,20 +25,38 @@ function setRepeatType(type) {
     });
 }
 
+function getSelectedDays(element) {
+  var elementsArray = $A(element.getElementsByTagName('DIV'));
+  var days = new Array();
+  elementsArray.each(function(item) {
+       if (isNodeSelected(item))
+	days.push(item.readAttribute("name"));
+    });
+  return days.join(",");
+}
+
 function onDayClick(event) {
   var element = $(this);
-  if (element.hasClassName("selected"))
-    this.removeClassName("selected");
+  if (isNodeSelected(element))
+    this.removeClassName("_selected");
   else
-    this.addClassName("selected");
+    this.addClassName("_selected");
+}
+
+function onRangeChange(event) {
+  $('endDate_date').disabled = (this.value != 2);
+}
+
+function onAdjustTime(event) {
+  // must be defined for date picker widget
 }
 
 function initializeSelectors() {
-  $$("DIV#week DIV.week DIV").each(function(element) {
+  $$("DIV#week SPAN.week DIV").each(function(element) {
       element.observe("click", onDayClick, false);
     });
 
-  $$("DIV#month DIV.week DIV").each(function(element) {
+  $$("DIV#month SPAN.week DIV").each(function(element) {
       element.observe("click", onDayClick, false);
     });
 }
@@ -51,28 +69,48 @@ function initializeWindowButtons() {
    Event.observe(cancelButton, "click", onEditorCancelClick, false);
 
    $("repeatType").observe("change", onRepeatTypeChange, false);
-
 }
 
 function initializeFormValues() {
   var repeatType = parent$("repeatType").value;
 
-  if (repeatType === 0) {
+  // Select repeat type
+  $("repeatType").value = repeatType;
+
+  // Default values
+  $('recurrence_form').setRadioValue('dailyRadioButtonName', 0);
+  $('recurrence_form').setRadioValue('monthlyRadioButtonName', 0);
+  $('recurrence_form').setRadioValue('yearlyRadioButtonName', 0);
+  $('endDate_date').disabled = true;
+  
+  if (repeatType == 0) {
+    // Repeat daily
     $('recurrence_form').setRadioValue('dailyRadioButtonName', parent$("repeat1").value);
     $('dailyDaysField').value = parent$("repeat2").value;
   }
-  else if ($("repeatType").value == 1) {
+  else if (repeatType == 1) {
+    // Repeat weekly
     $('weeklyWeeksField').value = parent$("repeat1").value;
-    $('recurrence_form').setCheckBoxListValues('weeklyCheckBoxName', parent$("repeat2").value);
+    var weekDiv = $("week").firstChild;
+    var daysArray = parent$("repeat2").value.split(",");
+    daysArray.each(function(index) {
+	$(weekDiv).down('div', index).addClassName("_selected");
+      });
   }
-  else if ($("repeatType").value == 2) {
+  else if (repeatType == 2) {
+    // Repeat monthly
     $('monthlyMonthsField').value = parent$("repeat1").value;
     $('recurrence_form').setRadioValue('monthlyRadioButtonName', parent$("repeat2").value);
     $('monthlyRepeat').value = parent$("repeat3").value;
     $('monthlyDay').value = parent$("repeat4").value;
-    $('recurrence_form').setCheckBoxListValues('monthlyCheckBoxName', parent$("repeat5").value);
+    var monthDiv = $("month");
+    var daysArray = parent$("repeat5").value.split(",");
+    daysArray.each(function(index) {
+	$(monthDiv).down('DIV[name="'+index+'"]').addClassName("_selected");
+      });
   }
   else if (repeatType == 3) {
+    // Repeat yearly
     $('yearlyYearsField').value = parent$("repeat1").value;
     $('recurrence_form').setRadioValue('yearlyRadioButtonName', parent$("repeat2").value);
     $('yearlyDayField').value = parent$("repeat3").value;
@@ -81,76 +119,85 @@ function initializeFormValues() {
     $('yearlyDay').value = parent$("repeat6").value;
     $('yearlyMonth2').value = parent$("repeat7").value;
   }
-  else {
-    // Default values
-    setRepeatType(0);
-    $('recurrence_form').setRadioValue('dailyRadioButtonName', 0);
-    $('dailyDaysField').value = 1;
+  else
+    repeatType = 0;
+  
+  setRepeatType(repeatType);
 
-    $('weeklyWeeksField').value = 1;
+  var range = parent$("range1").value;
+  $('recurrence_form').setRadioValue('rangeRadioButtonName', range);
 
-    $('monthlyMonthsField').value = 1;
-    $('recurrence_form').setRadioValue('monthlyRadioButtonName', 0);
-
-    $('yearlyYearsField').value = 1;
-    $('recurrence_form').setRadioValue('yearlyRadioButtonName', 0);
-    $('yearlyDayField').value = 1;
-    
-  }
-
-  $('recurrence_form').setRadioValue('rangeRadioButtonName', parent$("range1").value);
-
-  if (parent$("range1").value == 1) {
+  if (range == 1) {
     $('rangeAppointmentsField').value = parent$("range2").value;
   }
-  else if (parent$("range1").value == 2) {
+  else if (range == 2) {
     $('endDate').value = parent$("range2").value;
+    $('endDate_date').disabled = false;
   }
+
+  // Observe change of range radio buttons to activate the date picker when required
+  Form.getInputs($('recurrence_form'), 'radio', 'rangeRadioButtonName').each(function(input) {
+      input.observe("change", onRangeChange);
+    });
+
+  // Show page
+  $("recurrence_pattern").show();
+  $("range_of_recurrence").show();
 }
 
 function onEditorOkClick(event) {
    preventDefault(event);
+   var repeatType = $("repeatType").value;
    var v;
 
-   parent$("repeatType").value = $("repeatType").value;
+   parent$("repeatType").value = repeatType;
 
-   if ($("repeatType").value == 0) {
-     parent$("repeat1").value = $('recurrence_form').getRadioValue('dailyRadioButtonName');
-     parent$("repeat2").value = $('dailyDaysField').value;
+   if (repeatType == 0) {
+     // Repeat daily
+     v = $('recurrence_form').getRadioValue('dailyRadioButtonName')
+     parent$("repeat1").value = v;
 
      // We check if the dailyDaysField really contains an integer
-     v = parseInt(parent$("repeat2").value);
-     if (parent$("repeat1").value == 0 && (isNaN(v) || v <= 0)) {
-       window.alert("Please specify a numerical value in the Days field greater or equal to 1.");
-       return false;
+     if (v == 0) {
+       parent$("repeat2").value = $('dailyDaysField').value;
+       v = parseInt(parent$("repeat2").value);
+       if (isNaN(v) || v <= 0) {
+	 window.alert("Please specify a numerical value in the Days field greater or equal to 1.");
+	 return false;
+       }
      }
    } 
-   else if ($("repeatType").value == 1) {
-     parent$("repeat1").value = $('weeklyWeeksField').value;
-     parent$("repeat2").value = $('recurrence_form').getCheckBoxListValues('weeklyCheckBoxName');
+   else if (repeatType == 1) {
+     // Repeat weekly
+     v = $('weeklyWeeksField').value;
+     parent$("repeat1").value = v;
+     parent$("repeat2").value = getSelectedDays($('week'));
 
      // We check if the weeklyWeeksField really contains an integer
-     v = parseInt(parent$("repeat1").value);
+     v = parseInt(v);
      if (isNaN(v) || v <= 0) {
        window.alert("Please specify a numerical value in the Week(s) field greater or equal to 1.");
        return false;
      }
    }
-   else if ($("repeatType").value == 2) {
-     parent$("repeat1").value = $('monthlyMonthsField').value;
+   else if (repeatType == 2) {
+     // Repeat monthly
+     v = $('monthlyMonthsField').value;
+     parent$("repeat1").value = v;
      parent$("repeat2").value = $('recurrence_form').getRadioValue('monthlyRadioButtonName');
      parent$("repeat3").value = $('monthlyRepeat').value;
      parent$("repeat4").value = $('monthlyDay').value;
-     parent$("repeat5").value = $('recurrence_form').getCheckBoxListValues('monthlyCheckBoxName');
-     
+     parent$("repeat5").value = getSelectedDays($('month'));
+
      // We check if the monthlyMonthsField really contains an integer
-     v = parseInt(parent$("repeat1").value);
+     v = parseInt(v);
      if (isNaN(v) || v <= 0) {
        window.alert("Please specify a numerical value in the Month(s) field greater or equal to 1.");
        return false;
      }
    }
    else {
+     // Repeat yearly 
      parent$("repeat1").value = $('yearlyYearsField').value;
      parent$("repeat2").value = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
      parent$("repeat3").value = $('yearlyDayField').value;
@@ -167,9 +214,10 @@ function onEditorOkClick(event) {
      }
    }
 
-   parent$("range1").value = $('recurrence_form').getRadioValue('rangeRadioButtonName');
+   var range = $('recurrence_form').getRadioValue('rangeRadioButtonName');
+   parent$("range1").value = range;
 
-   if (parent$("range1").value == 1) {
+   if (range == 1) {
      parent$("range2").value = $('rangeAppointmentsField').value;
 
      // We check if the rangeAppointmentsField really contains an integer
@@ -179,7 +227,7 @@ function onEditorOkClick(event) {
        return false;
      }
    }
-   else if (parent$("range1").value == 2) {
+   else if (range == 2) {
      parent$("range2").value = $('endDate').value;
    }
 
@@ -195,6 +243,7 @@ function onRecurrenceLoadHandler() {
   initializeFormValues();
   initializeSelectors();
   initializeWindowButtons();
+  assignCalendar('endDate_date');
 }
 
 FastInit.addOnLoad(onRecurrenceLoadHandler);

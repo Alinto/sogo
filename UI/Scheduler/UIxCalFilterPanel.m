@@ -104,11 +104,7 @@ static NSArray *filters = nil;
 
 - (NSString *) filterLabel
 {
-#if 1
-  return [[[self context] page] labelForKey: [self valueForKey:@"filter"]];
-#else
-  return [self valueForKey: @"filter"];
-#endif
+  return [self labelForKey: [self valueForKey:@"filter"]];
 }
 
 - (NSString *) selectedFilter

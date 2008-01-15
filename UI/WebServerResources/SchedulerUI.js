@@ -1595,6 +1595,8 @@ function appendCalendar(folderName, folderPath) {
     li.appendChild(checkBox);
     li.appendChild(document.createTextNode(" "));
     $(checkBox).addClassName("checkBox");
+    if (owner == UserLogin)
+      checkBox.checked = 1;
 
     var colorBox = document.createElement("div");
     li.appendChild(colorBox);

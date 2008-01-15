@@ -3,7 +3,8 @@ DIV#windowButtons
   bottom: 0px;
   left: 0px;
   right: 0px;
-  height: 4em;
+  height: 2em;
+  margin: 1em;
   text-align: right; }
 
 DIV#pageContent
@@ -47,13 +48,16 @@ INPUT.textField
 { margin: 0px 0.7em;
   width: 2em; }
 
+SPAN.datePicker INPUT.textField
+{ width: 6em; }
+
 /* Days selectors */
 
 DIV#week,
 DIV#month
 { background-color: #fff;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
   border-right: 1px solid #999;
   border-bottom: 1px solid #999; }
 
@@ -63,29 +67,32 @@ DIV#week
 DIV#month
 { width: 140px; /* 7*(18+2)px */ }
 
-DIV.week
+SPAN.week
 { clear: both;
   display: block; }
 
-DIV.week DIV
+SPAN.week DIV
 { border: 1px solid #fff;
+  cursor: pointer;
   display: block;
   float: left; }
 
-DIV.week DIV.selected
-{ background-color: #ccc; }
+SPAN.week DIV._selected
+{ background-color: #4b6983;
+  border-color: #4b6983;
+  color: #fff; }
 
-DIV.week DIV P
+SPAN.week DIV P
 { display: block; 
   margin: 2px 0px;
   padding: 0px;
   text-align: center; }
 
-DIV#week DIV.week DIV P
+DIV#week SPAN.week DIV P
 { width: 28px; }
 
-DIV#month DIV.week DIV P
+DIV#month SPAN.week DIV P
 { width: 18px; }
 
-DIV.week DIV:hover
-{ border: 1px solid blue; }
+SPAN.week DIV:hover
+{ border: 1px solid #4b6983; }

@@ -28,23 +28,16 @@
 @interface UIxRecurrenceEditor : UIxComponent
 {
   NSString *item, *repeat;
+  NSCalendarDate *aptStartDate;
 }
 
-- (NSArray *) dailyRadioList;
-
-- (NSArray *) weeklyCheckBoxList;
-
-- (NSArray *) dayMonthList;
 - (NSArray *) monthlyRepeatList;
 - (NSArray *) monthlyDayList;
-- (NSArray *) monthlyRadioList;
 
 - (NSArray *) yearlyMonthList;
 - (NSArray *) yearlyDayList;
 
-- (NSArray *) rangeRadioList;
 - (NSArray *) repeatList;
-- (NSArray *) yearlyRadioList;
 
 - (void) setItem: (NSString *) theItem;
 - (NSString *) item;

@@ -36,71 +36,14 @@
   return self;
 }
 
-//
-// Items used for the "Daily" recurrences.
-//
-- (NSArray *) dailyRadioList
-{
-  static NSArray *dailyItems = nil;
-
-  if (!dailyItems)
-    {
-      dailyItems = [NSArray arrayWithObjects: @"Every", @"Every weekday", nil];
-      [dailyItems retain];
-    }
-
-  return dailyItems;
-}
-
-
-//
-// Items used for the "Weekly" recurrences.
-//
-- (NSArray *) weeklyCheckBoxList
-{
-  static NSArray *dayItems = nil;
-
-  if (!dayItems)
-    {
-      dayItems = [NSArray arrayWithObjects: @"Mon", @"Tue", @"Wed", 
-			  @"Thu", @"Fri", @"Sat", @"Sun", nil];
-      [dayItems retain];
-    }
-  
-  return dayItems;
-}
-
-
-//
-// Items used for the "Montly" recurrences".
-//
-- (NSArray *) dayMonthList
-{
-  static NSArray *dayMonthList = nil;
-
-  if (!dayMonthList)
-    {
-      int i;
-      
-      dayMonthList = [[NSMutableArray alloc] init];
-
-      for (i = 1; i <= 31; i++)
-	{
-	  [(NSMutableArray *)dayMonthList addObject: [NSString stringWithFormat: @"%d", i]];
-	}
-    }
-
-  return dayMonthList;
-}
-
 - (NSArray *) monthlyRepeatList
 {
   static NSArray *monthlyRepeatList = nil;
 
   if (!monthlyRepeatList)
     {
-      monthlyRepeatList = [NSArray arrayWithObjects: @"FIRST", @"SECOND", @"THIRD",
-				  @"FOURTH", @"FIFT", @"LAST", nil];
+      monthlyRepeatList = [NSArray arrayWithObjects: @"First", @"Second", @"Third",
+				  @"Fourth", @"Fift", @"Last", nil];
       [monthlyRepeatList retain];
     }
 
@@ -113,43 +56,13 @@
 
   if (!monthlyDayList)
     {
-      monthlyDayList = [NSArray arrayWithObjects: @"SUNDAY", @"MONDAY", @"TUESDAY",
-				@"WEDNESDAY", @"THURSDAY", @"FRIDAY",
-				@"SATURDAY", @"DAYOFTHEMONTH", nil];
+      monthlyDayList = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday",
+				@"Wednesday", @"Thursday", @"Friday",
+				@"Saturday", @"DayOfTheMonth", nil];
       [monthlyDayList retain];
     }
   
   return monthlyDayList;
-}
-
-- (NSArray *) monthlyRadioList
-{
-  static NSArray *monthlyRadioList = nil;
-
-  if (!monthlyRadioList)
-    {
-      monthlyRadioList = [NSArray arrayWithObjects: @"The", @"Recur on day(s)", nil];
-      [monthlyRadioList retain];
-    }
-
-  return monthlyRadioList;
-}
-
-
-//
-// Items used for the "Yearly" recurrences".
-//
-- (NSArray *) yearlyRadioList
-{
-  static NSArray *yearlyRadioList = nil;
-
-  if (!yearlyRadioList)
-    {
-      yearlyRadioList = [NSArray arrayWithObjects: @"Every", @"Every", nil];
-      [yearlyRadioList retain];
-    }
-
-  return yearlyRadioList;
 }
 
 - (NSArray *) yearlyMonthList
@@ -158,9 +71,9 @@
 
   if (!yearlyMonthList)
     {
-      yearlyMonthList = [NSArray arrayWithObjects: @"JANUARY", @"FEBRUARY", @"MARCH",
-				 @"APRIL", @"MAY", @"JUNE", @"JULY", @"AUGUST",
-				 @"SEPTEMBER", @"OCTOBER", @"NOVEMBER", @"DECEMBER", nil];
+      yearlyMonthList = [NSArray arrayWithObjects: @"January", @"February", @"March",
+				 @"April", @"May", @"June", @"July", @"August",
+				 @"September", @"October", @"November", @"December", nil];
       [yearlyMonthList retain];
     }
   
@@ -173,33 +86,14 @@
 
   if (!yearlyDayList)
     {
-      yearlyDayList = [NSArray arrayWithObjects: @"SUNDAY", @"MONDAY", @"TUESDAY",
-			       @"WEDNESDAY", @"THURSDAY", @"FRIDAY",
-			       @"SATURDAY", nil];
+      yearlyDayList = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday",
+			       @"Wednesday", @"Thursday", @"Friday",
+			       @"Saturday", nil];
       [yearlyDayList retain];
     }
   
   return yearlyDayList;
 }
-
-
-//
-// Items used to specify the range.
-//
-- (NSArray *) rangeRadioList
-{
-  static NSArray *rangeRadioList = nil;
- 
-  if (!rangeRadioList)
-    {
-      rangeRadioList = [NSArray arrayWithObjects: @"No end date", @"Create", 
-				@"Repeat until", nil];
-      [rangeRadioList retain];
-    }
-
-  return rangeRadioList;
-}
-
 
 //
 // Items used to specify what kind of recurrence we want
@@ -210,8 +104,8 @@
 
   if (!repeatList)
     {
-      repeatList = [NSArray arrayWithObjects: @"DAILY", @"WEEKLY",
-			    @"MONTHLY", @"YEARLY", nil];
+      repeatList = [NSArray arrayWithObjects: @"Daily", @"Weekly",
+			    @"Monthly", @"Yearly", nil];
       [repeatList retain];
     }
 
@@ -232,11 +126,11 @@
   return item;
 }
 
-- (NSString *) itemText
+- (NSString *) itemText 
 {
   NSString *text;
 
-  text = [self labelForKey: [NSString stringWithFormat: @"repeat_%@", item]];
+  text = [self labelForKey: item];
 
   return text;
 }

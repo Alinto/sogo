@@ -44,6 +44,11 @@
 	      protectedBy = "View";
 	      pageName    = "UIxCalDateSelector"; 
 	   };
+	   calendarslist = {
+	      protectedBy = "View";
+	      pageName = "UIxCalendarSelector";
+	      actionName = "calendarsList";
+	   };
 	   eventslist = {
 	      protectedBy = "View";
 	      actionClass = "UIxCalListingActions";

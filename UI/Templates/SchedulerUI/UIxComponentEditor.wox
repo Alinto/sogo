@@ -76,9 +76,11 @@
        <span class="content"><var:popup list="repeatList" item="item"
           label:noSelectionString="repeat_NEVER"
           const:disabledValue="-"
+          const:name="repeatList"
 	  const:id="repeatList"
-          string="itemRepeatText" selection="repeat"
-          /></span></label>
+          string="itemRepeatText" var:selection="repeat"
+          /> <a href="#" id="repeatHref" style="display: none;"
+             ><var:string label:value="Edit"/></a></span></label>
       <hr />
       <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"

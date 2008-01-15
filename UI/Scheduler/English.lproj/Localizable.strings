@@ -21,6 +21,14 @@
 "Friday" = "Friday";
 "Saturday" = "Saturday";
 
+"Sun" = "Sun";
+"Mon" = "Mon";
+"Tue" = "Tue";
+"Wed" = "Wed";
+"Thu" = "Thu";
+"Fri" = "Fri";
+"Sat" = "Sat";
+
 "a2_Sunday" = "Su";
 "a2_Monday" = "Mo";
 "a2_Tuesday" = "Tu";
@@ -290,6 +298,35 @@
 
 "cycle_end_never" = "cycle_end_never";
 "cycle_end_until" = "cycle_end_until";
+
+"Recurrence pattern" = "Recurrence pattern";
+"Range of recurrence" = "Range of recurrence";
+
+"Repeat" = "Repeat";
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Monthly" = "Monthly";
+"Yearly" = "Yearly";
+"Every" = "Every";
+"Days" = "Days";
+"Week(s)" = "Week(s)";
+"On" = "On";
+"Month(s)" = "Month(s)";
+"The" = "The";
+"Recur on day(s)" = "Recur on day(s)";
+"Year(s)" = "Year(s)";
+"cycle_of" = "of";
+"No end date" = "No end date";
+"Create" = "Create";
+"Appointment(s)" = "Appointment(s)";
+"Repeat until" = "Repeat until";
+
+"First" = "First";
+"Second" = "Second";
+"Third" = "Third";
+"Fourth" = "Fourth";
+"Fift" = "Fift";
+"Last" = "Last";
 
 /* Appointment categories */
 

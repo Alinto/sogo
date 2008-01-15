@@ -12,237 +12,237 @@
   const:popup="YES"
   const:jsFiles="skycalendar.js">
 
-  <form id="recurrence_form">
-  <div id="recurrence_pattern">
-    <span class="caption"><var:string label:value="Recurrence pattern"/></span>
-    <table class="section">
-      <tr>
-        <th>
-          <var:string label:value="Repeat"/>
-        </th>
-        <td colspan="2">
-          <var:popup list="repeatList" const:name="repeatType" const:id="repeatType" item="item"
-       	    string="itemText" selection="repeatType"/>
-        </td>
-      </tr>
-
-      <tr class="recurrenceDaily" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <input name="dailyRadioButtonName" value="0" id="dailyRadioButton" type="radio"
-          /><var:string label:value="Every"
-          /><input type="text" name="dailyDaysFieldName" id="dailyDaysField"
-            class="textField"
-          /><var:string label:value="Days"/>
-        </td>
-      </tr>
-      <tr class="recurrenceDaily" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <input name="dailyRadioButtonName" value="1" id="dailyRadioButton" type="radio"
-          /><var:string label:value="Every weekday"/>
-        </td>
-      </tr>
-
-      <tr class="recurrenceWeekly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-     	  <var:string label:value="Every"/><input type="text" name="weeklyWeeksFieldName" const:id="weeklyWeeksField"
-            class="textField"
-            var:value="title"
-          /><var:string label:value="Week(s)"/>
-        </td>
-      </tr>
-      <tr class="recurrenceWeekly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td class="label">
-          <var:string label:value="On"/>
-        </td>
-        <td>
-          <div id="week"><div class="week">
-            <div name="0"><p><var:string label:value="Sun"/></p></div>
-            <div name="1"><p><var:string label:value="Mon"/></p></div>
-            <div name="2"><p><var:string label:value="Tue"/></p></div>
-            <div name="3"><p><var:string label:value="Wed"/></p></div>
-            <div name="4"><p><var:string label:value="Thu"/></p></div>
-            <div name="5"><p><var:string label:value="Fri"/></p></div>
-            <div name="6"><p><var:string label:value="Sat"/></p></div>
-            </div><div class="week"></div>
-          </div>
-        </td>
-      </tr>
-
-      <tr class="recurrenceMonthly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <var:string label:value="Every"
-          /><input type="text" name="monthlyMonthsFieldName" const:id="monthlyMonthsField"
-            class="textField"
-            var:value="title"
-          /><var:string label:value="Month(s)"/>
-        </td>
-      </tr>
-      <tr class="recurrenceMonthly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <input name="monthlyRadioButtonName" value="0" id="monthlyRadioButton" type="radio"
-          /><var:string label:value="The"
-          /><var:popup list="monthlyRepeatList" const:id="monthlyRepeat" item="item"
-        	label:noSelectionString="FIRST"
-        	string="itemText" selection="FIRST"
-          /><var:popup list="monthlyDayList" const:id="monthlyDay" item="item"
-        	label:noSelectionString="MONDAY"
-        	string="itemText" selection="MONDAY"
-          />
-        </td>
-      </tr>
-      <tr class="recurrenceMonthly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td class="label">
-          <input name="monthlyRadioButtonName" value="0" id="monthlyRadioButton" type="radio"
-          /><var:string label:value="Recur on day(s)"/>
-        </td>
-        <td>
-          <div id="month">
-            <div class="week">
-              <div name="1"><p>1</p></div>
-              <div name="2"><p>2</p></div>
-              <div name="3"><p>3</p></div>
-              <div name="4"><p>4</p></div>
-              <div name="5"><p>5</p></div>
-              <div name="6"><p>6</p></div>
-              <div name="7"><p>7</p></div>
+  <form name="recurrence_form" id="recurrence_form" href="editRecurrence">
+    <div id="recurrence_pattern" style="display: none;">
+      <span class="caption"><var:string label:value="Recurrence pattern"/></span>
+      <table class="section">
+        <tr>
+          <th>
+            <var:string label:value="Repeat"/>
+          </th>
+          <td colspan="2">
+            <var:popup list="repeatList" const:name="repeatType" const:id="repeatType" item="item"
+         	    string="itemText"/>
+          </td>
+        </tr>
+  
+        <tr class="recurrenceDaily" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <input name="dailyRadioButtonName" value="0" id="dailyRadioButton" type="radio"
+            /><var:string label:value="Every"
+            /><input type="text" name="dailyDaysFieldName" id="dailyDaysField"
+              class="textField"
+            /><var:string label:value="Days"/>
+          </td>
+        </tr>
+        <tr class="recurrenceDaily" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <input name="dailyRadioButtonName" value="1" id="dailyRadioButton" type="radio"
+            /><var:string label:value="repeat_EVERY WEEKDAY"/>
+          </td>
+        </tr>
+  
+        <tr class="recurrenceWeekly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+       	  <var:string label:value="Every"/><input type="text" name="weeklyWeeksFieldName" const:id="weeklyWeeksField"
+              class="textField"
+              var:value="title"
+            /><var:string label:value="Week(s)"/>
+          </td>
+        </tr>
+        <tr class="recurrenceWeekly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td class="label">
+            <var:string label:value="On"/>
+          </td>
+          <td>
+            <div id="week"><span class="week">
+              <div name="0"><p><var:string label:value="Sun"/></p></div>
+              <div name="1"><p><var:string label:value="Mon"/></p></div>
+              <div name="2"><p><var:string label:value="Tue"/></p></div>
+              <div name="3"><p><var:string label:value="Wed"/></p></div>
+              <div name="4"><p><var:string label:value="Thu"/></p></div>
+              <div name="5"><p><var:string label:value="Fri"/></p></div>
+              <div name="6"><p><var:string label:value="Sat"/></p></div>
+              </span><span class="week"></span>
             </div>
-            <div class="week">
-              <div name="8"><p>8</p></div>
-              <div name="9"><p>9</p></div>
-              <div name="10"><p>10</p></div>
-              <div name="11"><p>11</p></div>
-              <div name="12"><p>12</p></div>
-              <div name="13"><p>13</p></div>
-              <div name="14"><p>14</p></div>
+          </td>
+        </tr>
+  
+        <tr class="recurrenceMonthly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <var:string label:value="Every"
+            /><input type="text" name="monthlyMonthsFieldName" const:id="monthlyMonthsField"
+              class="textField"
+              var:value="title"
+            /><var:string label:value="Month(s)"/>
+          </td>
+        </tr>
+        <tr class="recurrenceMonthly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <input name="monthlyRadioButtonName" value="0" id="monthlyRadioButton" type="radio"
+            /><var:string label:value="The"
+            /><var:popup list="monthlyRepeatList" const:id="monthlyRepeat" item="item"
+          	string="itemText" selection="First"
+            /><var:popup list="monthlyDayList" const:id="monthlyDay" item="item"
+          	string="itemText" selection="Monday"
+            />
+          </td>
+        </tr>
+        <tr class="recurrenceMonthly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td class="label">
+            <input name="monthlyRadioButtonName" value="1" id="monthlyRadioButton" type="radio"
+            /><var:string label:value="Recur on day(s)"/>
+          </td>
+          <td>
+            <div id="month">
+              <span class="week">
+                <div name="1"><p>1</p></div>
+                <div name="2"><p>2</p></div>
+                <div name="3"><p>3</p></div>
+                <div name="4"><p>4</p></div>
+                <div name="5"><p>5</p></div>
+                <div name="6"><p>6</p></div>
+                <div name="7"><p>7</p></div>
+              </span>
+              <span class="week">
+                <div name="8"><p>8</p></div>
+                <div name="9"><p>9</p></div>
+                <div name="10"><p>10</p></div>
+                <div name="11"><p>11</p></div>
+                <div name="12"><p>12</p></div>
+                <div name="13"><p>13</p></div>
+                <div name="14"><p>14</p></div>
+              </span>
+              <span class="week">
+                <div name="15"><p>15</p></div>
+                <div name="16"><p>16</p></div>
+                <div name="17"><p>17</p></div>
+                <div name="18"><p>18</p></div>
+                <div name="19"><p>19</p></div>
+                <div name="20"><p>20</p></div>
+                <div name="21"><p>21</p></div>
+              </span>
+              <span class="week">
+                <div name="22"><p>22</p></div>
+                <div name="23"><p>23</p></div>
+                <div name="24"><p>24</p></div>
+                <div name="25"><p>25</p></div>
+                <div name="26"><p>26</p></div>
+                <div name="27"><p>27</p></div>
+                <div name="28"><p>28</p></div>
+              </span>
+              <span class="week">
+                <div name="29"><p>29</p></div>
+                <div name="30"><p>30</p></div>
+                <div name="31"><p>31</p></div>
+              </span>
+              <span class="week"></span>
             </div>
-            <div class="week">
-              <div name="15"><p>15</p></div>
-              <div name="16"><p>16</p></div>
-              <div name="17"><p>17</p></div>
-              <div name="18"><p>18</p></div>
-              <div name="19"><p>19</p></div>
-              <div name="20"><p>20</p></div>
-              <div name="21"><p>21</p></div>
-            </div>
-            <div class="week">
-              <div name="22"><p>22</p></div>
-              <div name="23"><p>23</p></div>
-              <div name="24"><p>24</p></div>
-              <div name="25"><p>25</p></div>
-              <div name="26"><p>26</p></div>
-              <div name="27"><p>27</p></div>
-              <div name="28"><p>28</p></div>
-            </div>
-            <div class="week">
-              <div name="29"><p>29</p></div>
-              <div name="30"><p>30</p></div>
-              <div name="31"><p>31</p></div>
-            </div>
-            <div class="week"></div>
-          </div>
-        </td>
-      </tr>
-
-      <tr class="recurrenceYearly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <var:string label:value="Every"
-          /><input type="text" name="yearlyYearsFieldName" const:id="yearlyYearsField"
-            class="textField"
-            var:value="title"
-          /><var:string label:value="Year(s)"/>
-        </td>
-      </tr>
-      <tr class="recurrenceYearly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td colspan="2">
-          <input name="yearlyRadioButtonName" value="0" id="yearlyRadioButton" type="radio"
-          /><var:string label:value="Every"
-          /><input type="text" name="yearlyDayFieldName" const:id="yearlyDayField"
-            class="textField"
-            var:value="title"
-          /><var:popup list="yearlyMonthList" const:id="yearlyMonth1" item="item"
-        	label:noSelectionString="JANUARY"
-        	string="itemText" selection="JANUARY"/>
-        </td>
-      </tr>
-      <tr class="recurrenceYearly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td class="label">
-          <input name="yearlyRadioButtonName" value="1" id="yearlyRadioButton" type="radio"
-          /><var:string label:value="Every"/>
-        </td>
-        <td>
-          <var:popup list="monthlyRepeatList" const:id="yearlyRepeat" item="item"
-               label:noSelectionString="FIRST"
-               string="itemText" selection="FIRST"
-          /><var:popup list="yearlyDayList" const:id="yearlyDay" item="item"
-                 label:noSelectionString="MONDAY"
-                 string="itemText" selection="MONDAY"/>
-        </td>
-      </tr>
-      <tr class="recurrenceYearly" style="display:none;">
-        <td><!-- empty cell --></td>
-        <td class="label" style="text-align: right;">
-          <var:string label:value="of"/>
-        </td>
-        <td>
-	  <var:popup list="yearlyMonthList" const:id="yearlyMonth2" item="item"
-               label:noSelectionString="JANUARY"
-               string="itemText" selection="JANUARY"/>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <div id="range_of_recurrence">
-    <span class="caption"><var:string label:value="Range of recurrence"/></span>
-    <table class="section">
-      <tr>
-        <td>
-          <input name="rangeRadioButtonName" value="0" id="rangeRadioButton" type="radio"
-          /><var:string label:value="No end date"/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input name="rangeRadioButtonName" value="1" id="rangeRadioButton" type="radio"
-          /><var:string label:value="Create"
-          /><input type="text" name="rangeAppointmentsFieldName" const:id="rangeAppointmentsField"
-             class="textField"
-             var:value="title"
-          /><var:string label:value="Appointments(s)"/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input name="rangeRadioButtonName" value="2" id="rangeRadioButton" type="radio"
-          /><var:string label:value="Repeat until"
-          /><var:component className="UIxDatePicker"
-                   const:dateID="endDate"
-                   day="endDateDay"
-                   month="endDateMonth"
-                   year="endDateYear"
-                   label:label="browse end date"/>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <div id="windowButtons">
-	<hr />
-	<a id="cancelButton" href="#" class="button"
-	  ><var:string label:value="Cancel"/></a>
-	<a id="okButton" href="#" class="button"
-	  ><var:string label:value="OK"/></a>
-      </div>
+          </td>
+        </tr>
+  
+        <tr class="recurrenceYearly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <var:string label:value="Every"
+            /><input type="text" name="yearlyYearsFieldName" const:id="yearlyYearsField"
+              class="textField"
+              var:value="title"
+            /><var:string label:value="Year(s)"/>
+          </td>
+        </tr>
+        <tr class="recurrenceYearly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td colspan="2">
+            <input name="yearlyRadioButtonName" value="0" id="yearlyRadioButton" type="radio"
+            /><var:string label:value="Every"
+            /><input type="text" name="yearlyDayFieldName" const:id="yearlyDayField"
+              class="textField"
+              var:value="title"
+            /><var:popup list="yearlyMonthList" const:id="yearlyMonth1" item="item"
+          	string="itemText" selection="January"/>
+          </td>
+        </tr>
+        <tr class="recurrenceYearly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td class="label">
+            <input name="yearlyRadioButtonName" value="1" id="yearlyRadioButton" type="radio"
+            /><var:string label:value="Every"/>
+          </td>
+          <td>
+            <var:popup list="monthlyRepeatList" const:id="yearlyRepeat" item="item"
+                 string="itemText" selection="First"
+            /><var:popup list="yearlyDayList" const:id="yearlyDay" item="item"
+                   string="itemText" selection="Monday"/>
+          </td>
+        </tr>
+        <tr class="recurrenceYearly" style="display:none;">
+          <td><!-- empty cell --></td>
+          <td class="label" style="text-align: right;">
+            <var:string label:value="cycle_of"/>
+          </td>
+          <td>
+  	  <var:popup list="yearlyMonthList" const:id="yearlyMonth2" item="item"
+                 string="itemText" selection="January"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+  
+    <div id="range_of_recurrence" style="display: none;">
+      <span class="caption"><var:string label:value="Range of recurrence"/></span>
+      <table class="section">
+        <tr>
+          <td>
+            <input name="rangeRadioButtonName" value="0" id="rangeRadioButton" type="radio"
+            /><var:string label:value="No end date"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input name="rangeRadioButtonName" value="1" id="rangeRadioButton" type="radio"
+            /><var:string label:value="Create"
+            /><input type="text" name="rangeAppointmentsFieldName" const:id="rangeAppointmentsField"
+               class="textField"
+               var:value="title"
+            /><var:string label:value="Appointments(s)"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input name="rangeRadioButtonName" value="2" id="rangeRadioButton" type="radio"
+            /><var:string label:value="Repeat until"
+            /><var:component className="UIxTimeDateControl"
+        	const:displayTimeControl="0"
+        	const:controlID="endDate"
+                const:id="endDate"
+        	date="endDate"
+        	const:dayStartHour="0"
+        	const:dayEndHour="23"
+        	/><!--<var:component className="UIxDatePicker"
+                     const:dateID="endDate"
+                     day="endDateDay"
+                     month="endDateMonth"
+                     year="endDateYear"
+                     label="label"/>-->
+          </td>
+        </tr>
+      </table>
+    </div>
+  
+    <div id="windowButtons">
+      <a id="cancelButton" href="#" class="button"
+        ><var:string label:value="Cancel"/></a>
+      <a id="okButton" href="#" class="button"
+        ><var:string label:value="OK"/></a>
+    </div>
   </form>
 
 </var:component>

@@ -226,7 +226,7 @@
       iCalRecurrenceRule *rule;
 
       [self setRepeat: @"CUSTOM"];
-
+      
       rule = [[component recurrenceRules] lastObject];
 
       // If we either have an end date or a recurrence count

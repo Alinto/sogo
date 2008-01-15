@@ -125,16 +125,25 @@ function onComponentEditorLoad(event) {
 		  onMenuSetClassification.bindAsEventListener(menuItems[i]),
 		  false);
 
+  $("repeatHref").observe("click", onPopupRecurrenceWindow);
   $("repeatList").observe("change", onPopupRecurrenceWindow);
+  onPopupRecurrenceWindow(null);
 }
 
 function onPopupRecurrenceWindow(event) {
   if (event)
     preventDefault(event);
 
-  if ($("repeatList").value == 7)
-    window.open(ApplicationBaseURL + "/editRecurrence", null, 
-		"width=803,height=573");
+  var repeatHref = $("repeatHref");
+
+  if ($("repeatList").value == 7) {
+    repeatHref.show();
+    if (event)
+      window.open(ApplicationBaseURL + "editRecurrence", null, 
+		  "width=500,height=400");
+  }
+  else
+    repeatHref.hide();
 
   return false;
 }

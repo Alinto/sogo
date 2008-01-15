@@ -21,6 +21,14 @@
 "Friday" = "Vendredi";
 "Saturday" = "Samedi";
 
+"Sun" = "Dim";
+"Mon" = "Lun";
+"Tue" = "Mar";
+"Wed" = "Mer";
+"Thu" = "Jeu";
+"Fri" = "Ven";
+"Sat" = "Sam";
+
 "a2_Sunday" = "Di";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";
@@ -289,6 +297,35 @@
 "cycle_end_never" = "Jamais";
 "cycle_end_until" = "À la date :";
 
+"Recurrence pattern" = "Définir la fréquence";
+"Range of recurrence" = "Fenêtre de répétition";
+
+"Repeat" = "Répétition";
+"Daily" = "quotidienne";
+"Weekly" = "hebdomadaire";
+"Monthly" = "mensuelle";
+"Yearly" = "annuelle";
+"Every" = "Chaque";
+"Days" = "Jours";
+"Week(s)" = "Semaine(s)";
+"On" = "Le";
+"Month(s)" = "Mois";
+"The" = "Le";
+"Recur on day(s)" = "Se répète le(s) jour(s)";
+"Year(s)" = "Année(s)";
+"cycle_of" = "de";
+"No end date" = "Pas de date de fin";
+"Create" = "Créer";
+"Appointment(s)" = "Rendez-vous";
+"Repeat until" = "Répéter jusqu'à";
+
+"First" = "premier";
+"Second" = "deuxieme";
+"Third" = "troisieme";
+"Fourth" = "quatrieme";
+"Fift" = "cinquieme";
+"Last" = "dernier";
+
 /* Appointment categories */
 
 "category_NONE" = "Aucune";
@@ -315,12 +352,12 @@
 "category_VACATION" = "Absence";
 
 "repeat_NEVER" = "Ne se répète pas";
-"repeat_DAILY" = "quotidiennement";
-"repeat_WEEKLY" = "hebdomadairement";
-"repeat_BI-WEEKLY" = "bi-hebdomadairement";
-"repeat_EVERY WEEKDAY" = "les jours ouvrables";
-"repeat_MONTHLY" = "mensuellement";
-"repeat_YEARLY" = "annuellement";
+"repeat_DAILY" = "Quotidiennement";
+"repeat_WEEKLY" = "Hebdomadairement";
+"repeat_BI-WEEKLY" = "Bi-hebdomadairement";
+"repeat_EVERY WEEKDAY" = "Chaque jour ouvrable";
+"repeat_MONTHLY" = "Mensuellement";
+"repeat_YEARLY" = "Annuellement";
 "repeat_CUSTOM" = "Personnaliser...";
 
 "reminder_NONE" = "Pas de rappel";

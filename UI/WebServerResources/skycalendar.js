@@ -62,7 +62,7 @@ function cal_popup1(str_datetime) {
 
   var obj_calwindow = window.open(
     this.calpage+'?datetime=' + this.dt_current.valueOf()+ '&id=' + this.id,
-      'Calendar', 'width=200,height=190'+
+      'Calendar', 'width=253,height=190'+
       ',status=no,resizable=no,top=200,left=200,dependent=yes,alwaysRaised=yes'
     );
   obj_calwindow.opener = window;

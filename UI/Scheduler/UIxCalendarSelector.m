@@ -1,6 +1,6 @@
 /* UIxCalendarSelector.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007, 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -24,8 +24,11 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOResponse.h>
+
 #import <SOGo/NSDictionary+Utilities.h>
 
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -169,6 +172,18 @@ colorForNumber (unsigned int number)
 {
   return [currentCalendar
 	   keysWithFormat: @"color: %{color}; background-color: %{color};"];
+}
+
+- (WOResponse *) calendarsListAction
+{
+  WOResponse *response;
+
+  response = [self responseWithStatus: 200];
+  [response setHeader: @"text/plain; charset=utf-8"
+	    forKey: @"content-type"];
+  [response appendContentString: [[self calendars] jsonRepresentation]];
+
+  return response;
 }
 
 @end /* UIxCalendarSelector */
