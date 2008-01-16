@@ -48,8 +48,11 @@
 
 - (NGVCard *) vCard
 {
+  NSString *content;
+
   if (!card)
     {
+      content = [record objectForKey: @"c_content"];
       if ([[content uppercaseString] hasPrefix: @"BEGIN:VCARD"])
         card = [NGVCard parseSingleFromSource: content];
       else

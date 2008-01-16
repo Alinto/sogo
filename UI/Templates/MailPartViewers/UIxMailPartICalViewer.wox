@@ -10,7 +10,7 @@
   <!-- TODO: add iMIP actions -->
 
   <input id="iCalendarAttachment" type="hidden"
-    var:value="pathToAttachmentObject"/>
+    var:value="pathToAttachment"/>
 
   <var:if condition="couldParseCalendar" const:negate="1">
     <fieldset>
