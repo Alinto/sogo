@@ -1,3 +1,8 @@
+2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m: fetch the content, version and dates at the same
+	time per record, to avoid multiple queries.
+
 2007-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m ([GCSFolder -creationDateOfEntryWithName:]): new
