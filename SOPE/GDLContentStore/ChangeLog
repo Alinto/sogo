@@ -1,5 +1,9 @@
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* GCSFolderManager.m ([GCSFolderManager -baseTableNameWithUID:]):
+	generate an id that is guaranteed to be unique in more than
+	1000000 cases (from unit testing).
+
 	* GCSFolder.m: fetch the content, version and dates at the same
 	time per record, to avoid multiple queries.
 
