@@ -216,19 +216,25 @@ function modifyEventCallback(http) {
 function deleteEventCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
+      var isTask = false;
       var nodes = http.callbackData;
       for (var i = 0; i < nodes.length; i++) {
 	var node = $(nodes[i]);
-	if (node)
+	if (node) {
+	  isTask = isTask || (node.parentNode.id == 'tasksList');
 	  node.parentNode.removeChild(node);
+	}
       }
       if (eventsToDelete.length)
 	_batchDeleteEvents();
       else {
 	document.deleteEventAjaxRequest = null;
-	refreshEvents();
-	refreshTasks();
-	changeCalendarDisplay();
+	if (isTask)
+	  refreshTasks();
+	else {
+	  refreshEvents();
+	  changeCalendarDisplay();
+	}
       }
     }
     else
