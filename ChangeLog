@@ -1,3 +1,8 @@
+2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoCache.[hm]: new cache module implementing a
+	per-connection cache mechanism.
+
 2008-01-16  Ludovic Marcotte <ludovic@inverse.ca>
 	
 	* Minor adjustments / bug fixes to previous commit.
