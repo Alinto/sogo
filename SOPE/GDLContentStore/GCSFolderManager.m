@@ -19,16 +19,18 @@
   02111-1307, USA.
 */
 
-#include "GCSFolderManager.h"
-#include "GCSChannelManager.h"
-#include "GCSFolderType.h"
-#include "GCSFolder.h"
-#include "NSURL+GCS.h"
-#include "EOAdaptorChannel+GCS.h"
-#include "common.h"
-#include <GDLAccess/EOAdaptorChannel.h>
-#include <NGExtensions/NGResourceLocator.h>
-#include <unistd.h>
+#import <Foundation/NSProcessInfo.h>
+
+#import "GCSFolderManager.h"
+#import "GCSChannelManager.h"
+#import "GCSFolderType.h"
+#import "GCSFolder.h"
+#import "NSURL+GCS.h"
+#import "EOAdaptorChannel+GCS.h"
+#import "common.h"
+#import <GDLAccess/EOAdaptorChannel.h>
+#import <NGExtensions/NGResourceLocator.h>
+#import <unistd.h>
 
 /*
   Required database schema:
@@ -49,6 +51,7 @@ static BOOL       debugOn                   = NO;
 static BOOL       debugSQLGen               = NO;
 static BOOL       debugPathTraversal        = NO;
 static int        quickPathCount            = 4;
+static int        randInc = 0;
 static NSArray    *emptyArray               = nil;
 #if 0
 static NSString   *GCSPathColumnName        = @"c_path";
@@ -60,9 +63,15 @@ static NSString   *GCSGenericFolderTypeName = @"Container";
 static const char *GCSPathColumnPattern     = "c_path%i";
 static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
+  int seed;
+
+  seed = ([[NSDate date] timeIntervalSince1970]
+	  + [[NSProcessInfo processInfo] processIdentifier]);
+  srand (seed);
+
   debugOn     = [ud boolForKey:@"GCSFolderManagerDebugEnabled"];
   debugSQLGen = [ud boolForKey:@"GCSFolderManagerSQLDebugEnabled"];
   emptyArray  = [[NSArray alloc] init];
@@ -619,13 +628,11 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 }
 
 - (NSString *)baseTableNameWithUID:(NSString *)_uid {
-  NSDate *now;
   unichar currentChar;
   unsigned int count, max, done;
   NSMutableString *newUID;
 
   newUID = [NSMutableString stringWithString: @"sogo"];
-  now = [NSDate date];
 
   max = [_uid length];
   done = 0;
@@ -640,9 +647,10 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 	}
       count++;
     }
+  randInc++;
 
-  return [NSString stringWithFormat: @"%@%u",
-		   newUID, (unsigned int) [now timeIntervalSince1970]];
+  return [NSString stringWithFormat: @"%@%.8x%.8x",
+		   newUID, randInc, (unsigned int) rand()];
 }
 
 - (NSException *)createFolderOfType:(NSString *)_type
