@@ -10,6 +10,14 @@
 "Friday" = "Freitag";
 "Saturday" = "Samstag";
 
+"Sun" = "Son";
+"Mon" = "Mon";
+"Tue" = "Die";
+"Wed" = "Mit";
+"Thu" = "Don";
+"Fri" = "Fre";
+"Sat" = "Sam";
+
 "a2_Sunday" = "So";
 "a2_Monday" = "Mo";
 "a2_Tuesday" = "Di";
@@ -276,6 +284,35 @@
 
 "cycle_end_never" = "Unendlich oft wiederholen";
 "cycle_end_until" = "Wiederholen bis :";
+
+"Recurrence pattern" = "Wiederholungsschema";
+"Range of recurrence" = "Bereich der Wiederholung";
+
+"Repeat" = "Wiederhole";
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Monthly" = "Monthly";
+"Yearly" = "Yearly";
+"Every" = "Jeden";
+"Days" = "Tage";
+"Week(s)" = "Woche(n)";
+"On" = "On";
+"Month(s)" = "Monat(e)";
+"The" = "Der";
+"Recur on day(s)" = "Wiederholung an Tag(en) ";
+"Year(s)" = "Jahr(e)";
+"cycle_of" = "of";
+"No end date" = "Kein Enddatum";
+"Create" = "Erstellen";
+"Appointment(s)" = "Verabredung(en)";
+"Repeat until" = "Wiederhole bis";
+
+"First" = "Erste";
+"Second" = "Zweite";
+"Third" = "Dritte";
+"Fourth" = "Vierte";
+"Fift" = "Fünfte";
+"Last" = "Letzter";
 
 /* Appointment categories */
 
