@@ -290,9 +290,13 @@ function onDateSelectorGotoMonth(event) {
 
 function onCalendarGotoDay(node) {
    var day = node.getAttribute("date");
+   var needRefresh = (listFilter == 'view_selectedday'
+                     && day != currentDay);
    
    changeDateSelectorDisplay(day);
    changeCalendarDisplay( { "day": day } );
+   if (needRefresh)
+     refreshEvents();
   
    return false;
 }
