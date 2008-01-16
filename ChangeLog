@@ -1,5 +1,9 @@
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoCache.m ([SOGoCache
+	-registerObject:objectwithName:nameinContainer:container]):
+	register the object and its parents too.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
 	+userWithLogin:newLoginroles:newRoles]): try to retrieve the
 	specified user from the SOGoCache.

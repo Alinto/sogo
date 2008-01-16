@@ -92,11 +92,20 @@ static SOGoCache *sharedCache = nil;
 {
   NSString *fullPath;
 
-  if (object)
+  if (object && name)
     {
+      [self registerObject: container
+	    withName: [container nameInContainer]
+	    inContainer: [container container]];
       fullPath = [self _pathFromObject: container
 		       withName: name];
-      [cache setObject: object forKey: fullPath];
+      if (![cache objectForKey: fullPath])
+	{
+// 	  NSLog (@"registering '%@'", fullPath);
+	  [cache setObject: object forKey: fullPath];
+	}
+//       else
+// 	NSLog (@"'%@' already registered", fullPath);
     }
 }
 
@@ -109,18 +118,20 @@ static SOGoCache *sharedCache = nil;
 		   withName: name];
 
   return [cache objectForKey: fullPath];
+//   if (object)
+//     NSLog (@"found cached object '%@'", fullPath);
 }
 
 - (void) registerUser: (SOGoUser *) user
 {
-  NSLog (@"registerUser: %@", user);
+//   NSLog (@"registerUser: %@", user);
 
   [users setObject: user forKey: [user login]];
 }
 
 - (id) userNamed: (NSString *) name
 {
-  NSLog (@"userNamed: %@", name);
+//   NSLog (@"userNamed: %@", name);
 
   return [users objectForKey: name];
 }
