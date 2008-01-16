@@ -20,6 +20,7 @@ libSOGo_HEADER_FILES_INSTALL_DIR = /SOGo
 FHS_HEADER_DIRS = SOGo
 
 libSOGo_HEADER_FILES = \
+	SOGoCache.h			\
 	SOGoObject.h			\
 	SOGoContentObject.h		\
 	SOGoFolder.h			\
@@ -56,6 +57,7 @@ libSOGo_HEADER_FILES = \
 	WORequest+SOGo.h
 
 libSOGo_OBJC_FILES = \
+	SOGoCache.m			\
 	SOGoObject.m			\
 	SOGoContentObject.m		\
 	SOGoFolder.m			\

@@ -1,5 +1,17 @@
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-lookupName:lookupNameinContext:localContextacquire:acquire]): try
+	to retrieve the object specified from the cache and returns it if
+	it exists.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -lookupName:inContext:acquire:]): cache
+	the result in the SOGoCache.
+
+	* Main/SOGo.m ([SOGo -dispatchRequest:_request]): initialize and
+	kill the shared cache before and after the connection processing.
+
 	* SoObjects/SOGo/SOGoCache.[hm]: new cache module implementing a
 	per-connection cache mechanism.
 
