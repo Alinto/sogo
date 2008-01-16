@@ -862,7 +862,12 @@ function setSearchCriteria(event) {
   if (this.parentNode.chosenNode)
     this.parentNode.chosenNode.removeClassName("_chosen");
   this.addClassName("_chosen");
-  this.parentNode.chosenNode = this;
+
+  if (this.parentNode.chosenNode != this) {
+    searchValue.lastSearch = null;
+    this.parentNode.chosenNode = this;
+    onSearchFormSubmit();
+  }
 }
 
 function checkSearchValue(event) {
