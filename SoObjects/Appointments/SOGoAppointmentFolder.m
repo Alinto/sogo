@@ -48,7 +48,6 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
-#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
@@ -300,8 +299,8 @@ static NSNumber   *sharedYes = nil;
   [r setStatus: 207];
   [r setContentEncoding: NSUTF8StringEncoding];
   [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-//   [r setHeader: @"no-cache" forKey: @"pragma"];
-//   [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
   [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
   [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
@@ -403,11 +402,6 @@ static NSNumber   *sharedYes = nil;
       if (!obj)
         obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
     }
-
-  if (obj)
-    [[SOGoCache sharedCache] registerObject: obj
-			     withName: _key
-			     inContainer: container];
 
   return obj;
 }

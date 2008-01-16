@@ -104,8 +104,11 @@
 - (NSArray *)subFolderNames;
 - (NSArray *)allSubFolderNames;
 
-- (NSDictionary *) recordOfEntryWithName: (NSString *) name;
+- (NSNumber *)versionOfContentWithName:(NSString *)_name;
+- (NSCalendarDate *)creationDateOfEntryWithName:(NSString *)_name;
+- (NSCalendarDate *)lastModificationOfEntryWithName:(NSString *)_name;
 
+- (NSString *)fetchContentWithName:(NSString *)_name;
 - (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name
   baseVersion:(unsigned int)_baseVersion;
 - (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name;

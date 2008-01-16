@@ -850,7 +850,7 @@ static BOOL debugSoParts       = NO;
     }
   else
     clazz = Nil;
-
+    
   return [clazz objectWithName:_key inContainer: self];
 }
 

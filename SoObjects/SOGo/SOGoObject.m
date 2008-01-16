@@ -62,7 +62,6 @@
 #import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 
-#import "SOGoCache.h"
 #import "SOGoObject.h"
 
 @interface SOGoObject(Content)
@@ -561,19 +560,10 @@ static BOOL kontactGroupDAV = YES;
           acquire: (BOOL) acquire
 {
   id obj;
-  SOGoCache *cache;
 
-  cache = [SOGoCache sharedCache];
-  obj = [cache objectNamed: lookupName inContainer: self];
-  if (!obj)
-    {
-      obj = [[self soClass] lookupKey: lookupName inContext: localContext];
-      if (obj)
-	{
-	  [obj bindToObject: self inContext: localContext];
-	  [cache registerObject: obj withName: lookupName inContainer: self];
-	}
-    }
+  obj = [[self soClass] lookupKey: lookupName inContext: localContext];
+  if (obj)
+    [obj bindToObject: self inContext: localContext];
 
   return obj;
 }

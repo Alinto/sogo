@@ -31,7 +31,7 @@
 @interface SOGoContentObject : SOGoObject
 {
   NSString *ocsPath;
-  NSDictionary *record;
+  NSString *content;
   BOOL isNew;
 }
 

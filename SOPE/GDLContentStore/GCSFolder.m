@@ -251,14 +251,15 @@ static GCSStringFormatter *stringFormatter = nil;
 			       recursive:YES];
 }
 
-- (NSDictionary *) _fetchValueOfColumns: (NSArray *) _cols
-		      inContentWithName: (NSString *) _name
-			  ignoreDeleted: (BOOL) ignoreDeleted
+- (id) _fetchValueOfColumn: (NSString *)_col
+	 inContentWithName: (NSString *)_name
+	     ignoreDeleted: (BOOL) ignoreDeleted
 {
   EOAdaptorChannel *channel;
   NSException  *error;
   NSDictionary *row;
   NSArray      *attrs;
+  NSString     *result;
   NSMutableString     *sql;
   
   if ((channel = [self acquireStoreChannel]) == nil) {
@@ -270,13 +271,12 @@ static GCSStringFormatter *stringFormatter = nil;
   sql = [NSMutableString stringWithFormat: @"SELECT %@"
 			 @" FROM %@"
 			 @" WHERE c_name = '%@'",
-			 [_cols componentsJoinedByString: @","],
-			 [self storeTableName], _name];
+			 _col, [self storeTableName], _name];
   if (ignoreDeleted)
     [sql appendString: @" AND (c_deleted != 1 OR c_deleted IS NULL)"];
 
   /* run SQL */
-
+  
   if ((error = [channel evaluateExpressionX:sql]) != nil) {
     [self errorWithFormat:@"%s: cannot execute SQL '%@': %@", 
 	  __PRETTY_FUNCTION__, sql, error];
@@ -286,64 +286,51 @@ static GCSStringFormatter *stringFormatter = nil;
   
   /* fetch results */
   
+  result = nil;
   attrs  = [channel describeResults:NO /* do not beautify names */];
-  row = [channel fetchAttributes: attrs withZone: NULL];
-  if (row)
+  if ((row = [channel fetchAttributes:attrs withZone:NULL]) != nil) {
+    result = [[[row objectForKey:_col] copy] autorelease];
+    if (![result isNotNull]) result = nil;
     [channel cancelFetch];
+  }
   
   /* release and return result */
   
   [self releaseChannel:channel];
-
-  return row;
+  return result;
 }
 
-- (NSDictionary *) recordOfEntryWithName: (NSString *) name
-{
-  NSDictionary *row;
-  NSMutableDictionary *record;
-  NSArray *columns;
-  NSString *strValue;
-  int intValue;
-
-  columns = [NSArray arrayWithObjects: @"c_content", @"c_version",
-		     @"c_creationdate", @"c_lastmodified", nil];
-  row = [self _fetchValueOfColumns: columns
-	      inContentWithName: name
-	      ignoreDeleted: YES];
-  if (row)
-    {
-      record = [NSMutableDictionary dictionaryWithCapacity: 5];
-      strValue = [row objectForKey: @"c_content"];
-      if (![strValue isNotNull])
-	strValue = @"";
-      [record setObject: strValue forKey: @"c_content"];
-      [record setObject: [row objectForKey: @"c_version"]
-	      forKey: @"c_version"];
-      intValue = [[row objectForKey: @"c_creationdate"] intValue];
-      [record
-	setObject: [NSCalendarDate dateWithTimeIntervalSince1970: intValue]
-	forKey: @"c_creationdate"];
-      intValue = [[row objectForKey: @"c_lastmodified"] intValue];
-      [record
-	setObject: [NSCalendarDate dateWithTimeIntervalSince1970: intValue]
-	forKey: @"c_lastmodified"];
-    }
-  else
-    record = nil;
-
-  return record;
+- (NSNumber *)versionOfContentWithName:(NSString *)_name {
+  return [self _fetchValueOfColumn:@"c_version" inContentWithName:_name
+	       ignoreDeleted: YES];
 }
 
-- (NSNumber *) deletionOfEntryWithName: (NSString *) name
-{
-  NSDictionary *row;
+- (NSCalendarDate *)creationDateOfEntryWithName:(NSString *)_name {
+  int seconds;
 
-  row = [self _fetchValueOfColumns: [NSArray arrayWithObject: @"c_deleted"]
-	      inContentWithName: name
-	      ignoreDeleted: NO];
+  seconds = [[self _fetchValueOfColumn:@"c_creationdate" inContentWithName:_name
+		   ignoreDeleted: YES] intValue];
 
-  return [row objectForKey: @"c_deleted"];
+  return [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+}
+
+- (NSCalendarDate *)lastModificationOfEntryWithName:(NSString *)_name {
+  int seconds;
+
+  seconds = [[self _fetchValueOfColumn:@"c_lastmodified" inContentWithName:_name
+		   ignoreDeleted: YES] intValue];
+
+  return [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+}
+
+- (NSNumber *)deletionOfContentWithName:(NSString *)_name {
+  return [self _fetchValueOfColumn:@"c_deleted" inContentWithName:_name
+	       ignoreDeleted: NO];
+}
+
+- (NSString *)fetchContentWithName:(NSString *)_name {
+  return [self _fetchValueOfColumn:@"c_content" inContentWithName:_name
+	       ignoreDeleted: YES];
 }
 
 - (NSDictionary *)fetchContentsOfAllFiles {
@@ -584,7 +571,6 @@ static GCSStringFormatter *stringFormatter = nil;
 {
   EOAdaptorChannel    *storeChannel, *quickChannel;
   NSMutableDictionary *quickRow, *contentRow;
-  NSDictionary	      *currentRow;
   GCSFieldExtractor   *extractor;
   NSException         *error;
   NSNumber            *storedVersion;
@@ -612,24 +598,19 @@ static GCSStringFormatter *stringFormatter = nil;
   if (doLogStore)
     [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
   
-  currentRow = [self _fetchValueOfColumns: [NSArray arrayWithObjects:
-						      @"c_version",
-						    @"c_deleted", nil]
-		     inContentWithName: _name
-		     ignoreDeleted: NO];
-  storedVersion = [currentRow objectForKey: @"c_version"];
+  storedVersion = [self versionOfContentWithName:_name];
   if (doLogStore)
     [self logWithFormat:@"  version: %@", storedVersion];
   isNewRecord = [storedVersion isNotNull] ? NO : YES;
   if (!isNewRecord)
     {
-      if ([[currentRow objectForKey: @"c_deleted"] intValue] > 0)
+      if ([[self deletionOfContentWithName:_name] intValue] > 0)
 	{
 	  [self _purgeRecordWithName: _name];
 	  isNewRecord = YES;
 	}
     }
-
+  
   /* check whether sequence matches */  
   if (_baseVersion != 0 /* use 0 to override check */) {
     if (_baseVersion != [storedVersion unsignedIntValue]) {

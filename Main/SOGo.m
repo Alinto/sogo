@@ -42,7 +42,6 @@
 
 #import <WEExtensions/WEResourceManager.h>
 
-#import <SoObjects/SOGo/SOGoCache.h>
 #import <SoObjects/SOGo/SOGoDAVAuthenticator.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUserFolder.h>
@@ -57,7 +56,6 @@
 @interface SOGo : SoApplication
 {
   NSMutableDictionary *localeLUT;
-  SOGoCache *cache;
 }
 
 - (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
@@ -392,9 +390,7 @@ static BOOL debugObjectAllocation = NO;
   static NSArray *runLoopModes = nil;
   WOResponse *resp;
 
-  cache = [SOGoCache sharedCache];
   resp = [super dispatchRequest: _request];
-  [SOGoCache killCache];
 
   if (![self isTerminating])
     {

@@ -32,11 +32,10 @@
 
 #import "AgenorUserDefaults.h"
 #import "LDAPUserManager.h"
-#import "NSArray+Utilities.h"
-#import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
 #import "SOGoObject.h"
 #import "SOGoPermissions.h"
+#import "NSArray+Utilities.h"
 
 #import "SOGoUser.h"
 
@@ -125,18 +124,10 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
 		       roles: (NSArray *) newRoles
 {
-  SOGoCache *cache;
   SOGoUser *user;
 
-  cache = [SOGoCache sharedCache];
-  user = [cache userNamed: newLogin];
-  if (!user)
-    {
-      user = [[self alloc] initWithLogin: newLogin roles: newRoles];
-      [user autorelease];
-      [cache registerUser: user];
-    }
-  [user setPrimaryRoles: newRoles];
+  user = [[self alloc] initWithLogin: newLogin roles: newRoles];
+  [user autorelease];
 
   return user;
 }
@@ -188,11 +179,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   [dateFormatter release];
   [homeFolder release];
   [super dealloc];
-}
-
-- (void) setPrimaryRoles: (NSArray *) newRoles
-{
-  ASSIGN (roles, newRoles);
 }
 
 - (void) setCurrentPassword: (NSString *) newPassword

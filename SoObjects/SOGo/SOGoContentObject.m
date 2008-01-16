@@ -49,9 +49,9 @@
   if ((self = [super initWithName: newName inContainer: newContainer]))
     {
       ocsPath = nil;
-      record = [[self ocsFolder] recordOfEntryWithName: newName];
-      [record retain];
-      isNew = (!record);
+      content = [[self ocsFolder] fetchContentWithName: newName];
+      [content retain];
+      isNew = (!content);
     }
 
   return self;
@@ -59,9 +59,17 @@
 
 - (void) dealloc
 {
-  [record release];
+  [content release];
   [ocsPath release];
   [super dealloc];
+}
+
+/* notifications */
+
+- (void) sleep
+{
+  [content release]; content = nil;
+  [super sleep];
 }
 
 /* accessors */
@@ -128,25 +136,19 @@
 
 - (NSString *) contentAsString
 {
-  return [record objectForKey: @"c_content"];
+  return content;
 }
 
 - (NSException *) saveContentString: (NSString *) newContent
                         baseVersion: (unsigned int) newBaseVersion
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
-  GCSFolder *folder;
+  GCSFolder   *folder;
   NSException *ex;
-  NSMutableDictionary *newRecord;
 
   ex = nil;
 
-  if (record)
-    newRecord = [NSMutableDictionary dictionaryWithDictionary: record];
-  else
-    newRecord = [NSMutableDictionary dictionary];
-  [newRecord setObject: newContent forKey: @"c_content"];
-  ASSIGN (record, newRecord);
+  ASSIGN (content, newContent);
 
   folder = [container ocsFolder];
   if (folder)
@@ -305,7 +307,7 @@
   folder = [self ocsFolder];
   if (folder)
     {
-      versionValue = [record objectForKey: @"c_version"];
+      versionValue = [folder versionOfContentWithName: [self nameInContainer]];
       sprintf (buf, "\"gcs%08d\"", [versionValue unsignedIntValue]);
       entityTag = [NSString stringWithCString: buf];
     }
@@ -323,7 +325,7 @@
 {
   NSCalendarDate *date;
 
-  date = [record objectForKey: @"c_creationdate"];
+  date = [[self ocsFolder] creationDateOfEntryWithName: nameInContainer];
 
   return [date rfc822DateString];
 }
@@ -332,19 +334,16 @@
 {
   NSCalendarDate *date;
 
-  date = [record objectForKey: @"c_lastmodified"];
+  date = [[self ocsFolder] lastModificationOfEntryWithName: nameInContainer];
 
   return [date rfc822DateString];
 }
 
 - (NSString *) davContentLength
 {
-  NSString *content;
-
-  content = [record objectForKey: @"c_content"];
-
   return [NSString stringWithFormat: @"%u",
-		   [content lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]];
+		   [content
+		     lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]];
 }
 
 - (NSException *) davMoveToTargetObject: (id) _target
