@@ -48,6 +48,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
@@ -402,6 +403,11 @@ static NSNumber   *sharedYes = nil;
       if (!obj)
         obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
     }
+
+  if (obj)
+    [[SOGoCache sharedCache] registerObject: obj
+			     withName: _key
+			     inContainer: container];
 
   return obj;
 }

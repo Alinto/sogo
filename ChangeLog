@@ -1,5 +1,9 @@
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	+userWithLogin:newLoginroles:newRoles]): try to retrieve the
+	specified user from the SOGoCache.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-lookupName:lookupNameinContext:localContextacquire:acquire]): try
 	to retrieve the object specified from the cache and returns it if
