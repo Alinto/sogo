@@ -1,6 +1,11 @@
 0.9.0-2008MMDD (1.0 rc4)
 ------------------------
 - improved the attendees window;
+- added the attendees pulldown menu in the event editor (like in Lightning);
+- added the recurrence window;
+- a message can be composed to multiple recipients from an address book or
+  from an event attendees menu;
+- many bugfixes in the Calendar module;
 
 0.9.0-20071217 (1.0 rc3)
 ------------------------
