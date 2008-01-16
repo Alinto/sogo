@@ -197,7 +197,7 @@
 - (NSString *) _dayMaskToInteger: (unsigned int) theMask
 {
   NSMutableString *s;
-  unsigned int i, v;
+  unsigned int i;
 
   unsigned char maskDays[] = { iCalWeekDayMonday, iCalWeekDayTuesday,
                                iCalWeekDayWednesday, iCalWeekDayThursday,
@@ -229,17 +229,6 @@
       
       rule = [[component recurrenceRules] lastObject];
 
-      // If we either have an end date or a recurrence count
-      // it's automatically a CUSTOM one.
-      //if (![rule isInfinite] || [rule repeatInterval] != 1)
-      //	{
-      //	  // We initialize the proper ivars
-      //	  repeatType = @"1";
-      //	  repeat1 = @"1";
-      //	  repeat2 = @"1,3,5";
-      //	  return;
-      //	}
-
       if ([rule frequency] == iCalRecurrenceFrequenceDaily)
 	{
 	  repeatType = @"0";
@@ -260,7 +249,7 @@
 	    {
 	      repeat1 = @"0";
 	      
-	      if ([rule repeatInterval] == 1)
+	      if ([rule repeatInterval] == 1 && [rule isInfinite])
 		{
 		  repeat = @"DAILY";
 		}
@@ -1320,10 +1309,13 @@ RANGE(2);
   // Repeat until date
   else if (range == 2)
     {
+      [theRule setUntilDate: [NSCalendarDate dateWithString: [self range2]
+					     calendarFormat: @"%Y-%m-%d"]];
     }
   // No end date.
   else
     {
+      // Do nothing?
     }
 
 

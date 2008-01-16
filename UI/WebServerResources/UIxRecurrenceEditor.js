@@ -131,7 +131,7 @@ function initializeFormValues() {
     $('rangeAppointmentsField').value = parent$("range2").value;
   }
   else if (range == 2) {
-    $('endDate').value = parent$("range2").value;
+    $('endDate_date').value = parent$("range2").value;
     $('endDate_date').disabled = false;
   }
 
@@ -189,6 +189,13 @@ function onEditorOkClick(event) {
      parent$("repeat4").value = $('monthlyDay').value;
      parent$("repeat5").value = getSelectedDays($('month'));
 
+     // FIXME - right now we do not support rules
+     //         such as The Second Tuesday...
+     if (parent$("repeat2").value == 0) {
+       window.alert("This type of recurrence is currently unsupported.");
+       return false;
+     }
+
      // We check if the monthlyMonthsField really contains an integer
      v = parseInt(v);
      if (isNaN(v) || v <= 0) {
@@ -205,6 +212,13 @@ function onEditorOkClick(event) {
      parent$("repeat5").value = $('yearlyRepeat').value;
      parent$("repeat6").value = $('yearlyDay').value;
      parent$("repeat7").value = $('yearlyMonth2').value;
+
+     // FIXME - right now we do not support rules
+     //         such as Every Second Tuesday of February
+     if (parent$("repeat2").value == 1) {
+       window.alert("This type of recurrence is currently unsupported.");
+       return false;
+     }
 
      // We check if the yearlyYearsField really contains an integer
      v = parseInt(parent$("repeat1").value);
@@ -228,7 +242,7 @@ function onEditorOkClick(event) {
      }
    }
    else if (range == 2) {
-     parent$("range2").value = $('endDate').value;
+     parent$("range2").value = $('endDate_date').value;
    }
 
    window.close();
