@@ -104,7 +104,7 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   /* first check attributes directly bound to the application */
   if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
     return obj;
-  
+
   if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
     [self warnWithFormat:@ "User %@ tried to access mail hierarchy of %@",
 	  userLogin, [container nameInContainer]];
