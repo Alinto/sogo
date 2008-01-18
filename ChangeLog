@@ -1,3 +1,9 @@
+2008-01-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m ([SOGoFolder
+	-davAddressbookQuery:queryContext]): when empty values are fed to
+	SOGo, their dictionary should be explicitly set to nil.
+
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoCache.m ([SOGoCache

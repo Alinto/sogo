@@ -95,14 +95,17 @@
       [self _isValidFilter: [filterElement attribute: @"name"]])
     {
       ranges = [filterElement getElementsByTagName: @"text-match"];
-     
-      if ([(NSArray *)ranges count] && [(NSArray *)[[ranges objectAtIndex: 0] childNodes] count])
+
+      if ([(NSArray *)ranges count]
+	  && [(NSArray *)[[ranges objectAtIndex: 0] childNodes] count])
 	{
 	  filterData = [NSMutableDictionary new];
 	  [filterData autorelease];
 	  [filterData setObject: [[(NSArray *)[[ranges objectAtIndex: 0] childNodes] lastObject] data]
 		      forKey: [filterElement attribute: @"name"]];
 	}
+      else
+	filterData = nil;
     }
   else
     filterData = nil;
