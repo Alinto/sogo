@@ -1,3 +1,10 @@
+2008-01-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolderManager.m ([GCSFolderManager
+	-baseTableNameWithUID:_uid]): the id was too long for the quick
+	tables, we reduce the length of the increment string to 3
+	characters instead of 8.
+
 2008-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderManager.m ([GCSFolderManager -baseTableNameWithUID:]):

@@ -627,7 +627,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return [self folderForRecord:record];
 }
 
-- (NSString *)baseTableNameWithUID:(NSString *)_uid {
+- (NSString *) baseTableNameWithUID: (NSString *) _uid
+{
   unichar currentChar;
   unsigned int count, max, done;
   NSMutableString *newUID;
@@ -649,8 +650,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     }
   randInc++;
 
-  return [NSString stringWithFormat: @"%@%.8x%.8x",
-		   newUID, randInc, (unsigned int) rand()];
+  return [NSString stringWithFormat: @"%@%.3x%.8x",
+		   newUID, randInc & 0xfff, (unsigned int) rand()];
 }
 
 - (NSException *)createFolderOfType:(NSString *)_type

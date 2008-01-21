@@ -45,9 +45,9 @@
   NSString *baseURL;
   SOGoObject <SOGoContactFolder> *o;
 
-  o = (id<SOGoContactFolder>)self;
+  o = (id <SOGoContactFolder>) self;
   baseURL = [o baseURLInContext: localContext];
-  
+
   max = [filters count];
   for (count = 0; count < max; count++)
     {
@@ -58,29 +58,22 @@
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))
-      {
 	[o appendObject: contact
 	   withBaseURL: baseURL
 	   toREPORTResponse: response];
-        }
     }
 }
 
 - (BOOL) _isValidFilter: (NSString *) theString
 {
-  if ([theString caseInsensitiveCompare: @"sn"] == NSOrderedSame)
-    return YES;
+  NSString *newString;
 
-  if ([theString caseInsensitiveCompare: @"givenname"] == NSOrderedSame)
-    return YES;
+  newString = [theString lowercaseString];
 
-  if ([theString caseInsensitiveCompare: @"mail"] == NSOrderedSame)
-    return YES;
-
-  if ([theString caseInsensitiveCompare: @"telephonenumber"] == NSOrderedSame)
-    return YES;
-
-  return NO;
+  return ([theString isEqualToString: @"sn"]
+	  || [theString isEqualToString: @"givenname"]
+	  || [theString isEqualToString: @"mail"]
+	  || [theString isEqualToString: @"telephonenumber"]);
 }
 
 - (NSDictionary *) _parseContactFilter: (id <DOMElement>) filterElement
@@ -89,26 +82,24 @@
   id <DOMNode> parentNode;
   id <DOMNodeList> ranges;
 
+  filterData = nil;
+
   parentNode = [filterElement parentNode];
 
-  if ([[parentNode tagName] isEqualToString: @"filter"] &&
-      [self _isValidFilter: [filterElement attribute: @"name"]])
+  if ([[parentNode tagName] isEqualToString: @"filter"]
+      && [self _isValidFilter: [filterElement attribute: @"name"]])
     {
       ranges = [filterElement getElementsByTagName: @"text-match"];
 
-      if ([(NSArray *)ranges count]
-	  && [(NSArray *)[[ranges objectAtIndex: 0] childNodes] count])
+      if ([(NSArray *) ranges count]
+	  && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
 	{
 	  filterData = [NSMutableDictionary new];
 	  [filterData autorelease];
 	  [filterData setObject: [[(NSArray *)[[ranges objectAtIndex: 0] childNodes] lastObject] data]
 		      forKey: [filterElement attribute: @"name"]];
 	}
-      else
-	filterData = nil;
     }
-  else
-    filterData = nil;
 
   return filterData;
 }
@@ -116,23 +107,19 @@
 - (NSArray *) _parseContactFilters: (id <DOMElement>) parentNode
 {
   NSEnumerator *children;
-  id<DOMElement> node;
+  id <DOMElement> node;
   NSMutableArray *filters;
   NSDictionary *filter;
 
-  filters = [[NSMutableArray new] autorelease];
+  filters = [NSMutableArray array];
 
   children = [[parentNode getElementsByTagName: @"prop-filter"]
 	       objectEnumerator];
-
-  node = [children nextObject];
-
-  while (node)
+  while ((node = [children nextObject]))
     {
       filter = [self _parseContactFilter: node];
       if (filter)
         [filters addObject: filter];
-      node = [children nextObject];
     }
 
   return filters;
