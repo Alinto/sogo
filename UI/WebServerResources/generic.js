@@ -864,8 +864,9 @@ function setSearchCriteria(event) {
   this.addClassName("_chosen");
 
   if (this.parentNode.chosenNode != this) {
-    searchValue.lastSearch = null;
+    searchValue.lastSearch = "";
     this.parentNode.chosenNode = this;
+    
     onSearchFormSubmit();
   }
 }
@@ -879,7 +880,6 @@ function checkSearchValue(event) {
 
 function configureSearchField() {
   var searchValue = $("searchValue");
-  var searchOptions = $("searchOptions");
 
   if (!searchValue) return;
 
@@ -888,13 +888,6 @@ function configureSearchField() {
   searchValue.observe("focus", onSearchFocus);
   searchValue.observe("keydown", onSearchKeyDown);
   searchValue.observe("mousedown", onSearchMouseDown);
-  
-  if (!searchOptions) return;
-   
-  // Set the checkmark to the first option
-  var firstOption = searchOptions.down('li');
-  firstOption.addClassName("_chosen");
-  searchOptions.chosenNode = firstOption;
 }
 
 function onSearchMouseDown(event) {
@@ -921,13 +914,13 @@ function onSearchFocus() {
 }
 
 function onSearchBlur(event) {
-  if (!this.value) {
+  if (!this.value || this.value.strip().length == 0) {
     this.setAttribute("modified", "");
     this.setStyle({ color: "#aaa" });
     this.value = this.ghostPhrase;
     search["value"] = "";
-    if (searchValue.lastSearch != "") {
-      searchValue.lastSearch = "";
+    if (this.lastSearch != "") {
+      this.lastSearch = "";
       refreshCurrentFolder();
     }
   } else if (this.value == this.ghostPhrase) {
@@ -956,7 +949,8 @@ function onSearchFormSubmit(event) {
   var searchCriteria = $("searchCriteria");
    
   if (searchValue.value != searchValue.ghostPhrase
-      && searchValue.value != searchValue.lastSearch) {
+      && (searchValue.value != searchValue.lastSearch
+	  || searchValue.value.strip().length > 0)) {
     search["criteria"] = searchCriteria.value;
     search["value"] = searchValue.value;
     searchValue.lastSearch = searchValue.value;
@@ -967,19 +961,24 @@ function onSearchFormSubmit(event) {
 function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
- 
+  var searchOptions = $("searchOptions");
+  
   if (searchValue) {
-    var searchOptions = $("searchOptions").childNodesWithTag("li");
-    if (searchOptions.length > 0) {
-      var firstChild = searchOptions[0];
-      searchCriteria.value = $(firstChild).getAttribute('id');
-      searchValue.ghostPhrase = firstChild.innerHTML;
+    var firstOption = searchOptions.down('li');
+    if (firstOption) {
+      searchCriteria.value = firstOption.getAttribute('id');
+      searchValue.ghostPhrase = firstOption.innerHTML;
       searchValue.lastSearch = "";
       if (searchValue.value == '') {
-	searchValue.value = firstChild.innerHTML;
+	searchValue.value = firstOption.innerHTML;
 	searchValue.setAttribute("modified", "");
 	searchValue.setStyle({ color: "#aaa" });
       }
+      // Set the checkmark to the first option
+      firstOption.addClassName("_chosen");
+      if (searchOptions.chosenNode)
+	searchOptions.chosenNode.removeClassName("_chosen");
+      searchOptions.chosenNode = firstOption;
     }
   }
 }
