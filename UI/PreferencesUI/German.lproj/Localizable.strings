@@ -6,7 +6,7 @@
 "General" = "Allgemein";
 "Calendar Options" = "Kalender";
 "Mail Options" = "E-Mail";
-"Identities" = "Identities";
+"Identities" = "Identität";
 "Password" = "Passwort";
 
 /* ooo */
@@ -66,22 +66,22 @@
 "reminderTime_4800" = "2 Tage";
 
 /* Mailer */
-"Check for new mail:" = "Check for new mail:";
-"messagecheck_manually" = "Manually";
-"messagecheck_every_minute" = "Every minute";
-"messagecheck_every_2_minutes" = "Every 2 minutes";
-"messagecheck_every_5_minutes" = "Every 5 minutes";
-"messagecheck_every_10_minutes" = "Every 10 minutes";
-"messagecheck_every_20_minutes" = "Every 20 minutes";
-"messagecheck_every_30_minutes" = "Every 30 minutes";
-"messagecheck_once_per_hour" = "Once per hour";
+"Check for new mail:" = "Auf neue Nachrichten prüfen:";
+"messagecheck_manually" = "Manuell";
+"messagecheck_every_minute" = "Minütlich";
+"messagecheck_every_2_minutes" = "Alle 2 Minuten";
+"messagecheck_every_5_minutes" = "Alle 5 Minuten";
+"messagecheck_every_10_minutes" = "Alle 10 Minuten";
+"messagecheck_every_20_minutes" = "Alle 20 Minuten";
+"messagecheck_every_30_minutes" = "Alle 30 Minuten";
+"messagecheck_once_per_hour" = "Stündlich";
 
 "Forward messages:" = "Nachrichten weiterleiten:";
 "messageforward_inline" = "Eingebunden";
 "messageforward_attached" = "Als Anhang";
 
-"Default identity:" = "Default identity:";
-"Manage identities..." = "Manage identities...";
+"Default identity:" = "Standard Identität:";
+"Manage identities..." = "Identitäten verwalten...";
 
 /* password */
 "New password:" = "Neues Passwort:";

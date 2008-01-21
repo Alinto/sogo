@@ -10,46 +10,46 @@
 "Home" = "Privat";
 "Work" = "Dienstlich";
 
-"Address Books"      = "Adressbücher";
-"Addresses"         = "Adresses";
-"Update" = "Speichern";
+"Address Books"     = "Adressbücher";
+"Addresses"         = "Adressen";
+"Update"	    = "Speichern";
 "Cancel"            = "Abbrechen";
 "Common"            = "Name";
-"Contact editor"    = "Éditer le contact";
-"Contact viewer"    = "Visualiser le contact";
+"Contact editor"    = "Kontakt bearbeiten";
+"Contact viewer"    = "Kontakt anzeigen";
 "Email"             = "E-Mail";
 "Screen Name"	    = "Messenger-Name";
-"Extended"          = "Informations complémentaires";
+"Extended"          = "Erweiterte Information";
 "Fax"               = "Fax";
 "Firstname"         = "Vorname";
 "HomePhone"         = "Privat";
 "Lastname"          = "Name";
-"Location"          = "Lieux";
+"Location"          = "Adresse";
 "MobilePhone"       = "Mobil";
 "OfficePhone"       = "Dienstlich";
 "Organization"      = "Organisation";
-"Work Phone" = "Dienstlich";
+"Work Phone"	    = "Dienstlich";
 "Phone"             = "Telefon";
 "Postal"            = "Professionnelle";
 "Save"              = "Speichern";
 "URL"               = "Webseite";
 "Unit"              = "Abteilung";
 "delete"            = "Löschen";
-"edit"              = "Éditer";
-"invalidemailwarn"  = "Champ de l'email invalide, continuer quand même ?";
+"edit"              = "Bearbeiten";
+"invalidemailwarn"  = "Adressfeld der e-Mail ist ungültig. Wollen Sie trotzdem fortfahren?";
 "new"               = "Neu";
-"Preferred Phone"   = "FIXME";
+"Preferred Phone"   = "Bevorzugt";
 
 /* Folders */
-"Personal Address Book" = "Personal Address Book";
+"Personal Address Book" = "Persönliches Addressbuch";
 
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
 "htmlMailFormat_FALSE" = "Reintext";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Name oder E-Mail";
-"Personal Addressbook" = "Adresses personnelles";
-"Search in Addressbook" = "Carnet d'adresses...";
+"Personal Addressbook" = "Persönliches Adressbuch";
+"Search in Addressbook" = "Im Adressbuch suchen ...";
 
 "New Card" = "Neue Karte";
 "New List" = "Neue Liste";
@@ -61,7 +61,7 @@
 "Add..." = "Hinzufügen...";
 "Remove" = "Löschen";
 
-"Preferred" = "Préféré";
+"Preferred" = "Bevorzugt";
 "Card for %@" = "%@";
 "Display:" = "Anzeigename:";
 "Display Name:" = "Anzeigename:";
@@ -100,10 +100,10 @@
 "Birthday:" = "Geburtsdatum:";
 "Freebusy URL:" = "Free/Busy URL:";
 
-"Add as..." = "Ajouter...";
-"Recipient" = "Destinataire";
-"Carbon Copy" = "Copie carbone";
-"Blind Carbon Copy" = "C. carbone cachée";
+"Add as..." = "Hinzufügen als ...";
+"Recipient" = "Empfänger";
+"Carbon Copy" = "Kopie";
+"Blind Carbon Copy" = "Blindkopie";
 
 "New Addressbook..." = "Neues Adressbuch...";
 "Subscribe to an Addressbook..." = "Abonnieren...";
@@ -111,14 +111,14 @@
 
 "Name of the Address Book" = "Adressbuch-Name";
 "Are you sure you want to delete the selected address book?"
-= "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
+= "Wollen Sie wirklich das ausgewählte Adressbuch löschen?";
 
-"Address Book Name" = "Address Book Name";
+"Address Book Name" = "Adressbuch Name";
 
 "You cannot subscribe to a folder that you own!"
-= "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
+= "Sie können ihre eigenen Ordner nicht abonnieren!";
 "Unable to subscribe to that folder!"
-= "Impossible de vous inscrire à ce dossier!";
+= "Abonnieren des Ordners nicht möglich!";
 
 "Default Roles" = "Standard-Rollen";
 "User rights for:" = "Benutzerrechte für:";
@@ -135,6 +135,6 @@
 = "Diese Person kann Karten aus diesem Adressbuch löschen";
 
 "The selected contact has no email address."
-= "The selected contact has no email address.";
+= "Der ausgewählte Kontakt hat keine e-Mail Adresse.";
 
 "Please select a contact." = "Bitte einen Kontakt auswählen.";

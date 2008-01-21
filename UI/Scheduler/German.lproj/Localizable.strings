@@ -10,13 +10,13 @@
 "Friday" = "Freitag";
 "Saturday" = "Samstag";
 
-"Sun" = "Son";
-"Mon" = "Mon";
-"Tue" = "Die";
-"Wed" = "Mit";
-"Thu" = "Don";
-"Fri" = "Fre";
-"Sat" = "Sam";
+"Sun" = "So";
+"Mon" = "Mo";
+"Tue" = "Di";
+"Wed" = "Mi";
+"Thu" = "Do";
+"Fri" = "Fr";
+"Sat" = "Sa";
 
 "a2_Sunday" = "So";
 "a2_Monday" = "Mo";
@@ -88,12 +88,12 @@
 "Compose E-Mail to Undecided Attendees" = "E-Mail an unentschlossene Teilnehmer erstellen";
 
 /* Folders */
-"Personal calendar" = "Personal calendar";
+"Personal calendar" = "Persönlicher Kalendar";
 
 /* Misc */
 
 "OpenGroupware.org" = "OpenGroupware.org";
-"Forbidden" = "Accès non autorisée";
+"Forbidden" = "Zugriff verboten";
 
 /* acls */
 "Default Roles" = "Standard-Rollen";
@@ -114,13 +114,13 @@
 /* Button Titles */
 
 "New Calendar..." = "New Calendar...";
-"Subscribe to a Calendar..." = "Subscribe to a Calendar...";
-"Remove the selected Calendar" = "Remove the selected Calendar";
+"Subscribe to a Calendar..." = "Einen Kalender abonnieren...";
+"Remove the selected Calendar" = "Ausgewählten Kalender löschen";
 
-"Name of the Calendar" = "Name of the Calendar";
+"Name of the Calendar" = "Name des Kalenders";
 
 "new" = "Neu";
-"printview" = "Version imprimable";
+"printview" = "Druckversion";
 "edit" = "Bearbeiten";
 "delete" = "Löschen";
 "proposal" = "Recherche de plages horaires";
@@ -130,27 +130,27 @@
 "Documents" = "Dokumente";
 "Update" = "Speichern";
 "Cancel" = "Abbrechen";
-"show_rejected_apts" = "Afficher les rendez-vous refusés";
-"hide_rejected_apts" = "Cacher les rendez-vous refusés";
+"show_rejected_apts" = "Abgelehnte Termine anzeigen";
+"hide_rejected_apts" = "Abgelehnte Termine ausblenden";
 
 /* Schedule */
-"Schedule" = "Suivi de rendez-vous";
-"No appointments found" = "Aucun rendez-vous";
-"Meetings proposed by you" = "Rendez-vous que vous proposez";
-"Meetings proposed to you" = "Rendez-vous qui vous sont proposés";
+"Schedule" = "Terminplan";
+"No appointments found" = "Keine Termine gefunden";
+"Meetings proposed by you" = "Von Ihnen vorgeschlagene Termine";
+"Meetings proposed to you" = "Von Anderen vorgeschlagene Termine";
 "sched_startDateFormat" = "%d/%m %H:%M";
-"action" = "Action";
-"accept" = "Accepter";
-"decline" = "Refuser";
-"more attendees" = "Autres participants";
-"Hide already accepted and rejected appointments" = "Cacher les invitations refusées";
-"Show already accepted and rejected appointments" = "Montrer aussi les invitations refusées";
+"action" = "Aktion";
+"accept" = "Annehmen";
+"decline" = "Ablehnen";
+"more attendees" = "Weitere Teilnehmer";
+"Hide already accepted and rejected appointments" = "Abgelehnte und angenommene Termine ausblenden";
+"Show already accepted and rejected appointments" = "Abgelehnte und angenommene Termine anzeigen";
 
 /* Appointments */
 
-"Appointment viewer" = "Visualisation de rendez-vous";
-"Appointment editor" = "Edition de rendez-vous";
-"Appointment proposal" = "Proposition de rendez-vous";
+"Appointment viewer" = "Termin Anzeige";
+"Appointment editor" = "Termin Bearbeitung";
+"Appointment proposal" = "Termin Vorschlag";
 "Appointment on" = "Termin am";
 "Start:" = "Beginn:";
 "End:" = "Ende:";
@@ -165,13 +165,13 @@
 "Priority:" = "Priorität";
 "Privacy" = "Datenschutz";
 "Cycle" = "Wiederholen";
-"Cycle End" = "s'arreter";
+"Cycle End" = "Enddatum";
 "Categories" = "Kategorie";
-"Classification" = "Classification";
+"Classification" = "Kategorie";
 "Duration" = "Dauer";
 "Attendees:" = "Teilnehmer:";
-"Resources" = "Ressources";
-"Organizer:" = "Organisateur :";
+"Resources" = "Ressourcen";
+"Organizer:" = "Organisator :";
 "Description:" = "Beschreibung:";
 "Document:" = "Dokument:";
 "Category:" = "Kategorie:";
@@ -180,7 +180,7 @@
 
 "Target:" = "Destination :";
 
-"attributes" = "Attributs";
+"attributes" = "Attribute";
 "attendees" = "Teilnehmer";
 /* checkbox title */
 "is private" = "Privater Termin";
@@ -199,7 +199,7 @@
 "partStat_ACCEPTED" = "Akzeptiert";
 "partStat_DECLINED" = "Abgelehnt";
 "partStat_TENTATIVE" = "Vorläufig";
-"partStat_DELEGATED" = "Delegué";
+"partStat_DELEGATED" = "Vertreter";
 "partStat_OTHER" = "???";
 
 /* Appointments (error messages) */
@@ -224,7 +224,7 @@
 
 "Search" = "Suchen";
 "Search attendees"	="Teilnehmer suchen";
-"Search resources"	="Recherche de ressources";
+"Search resources"	="Ressourcen suchen";
 "Search appointments" = "Termine suchen";
 "Search in Anais" = "Suche über Anaïs";
 
@@ -235,10 +235,10 @@
 
 /* calendar modes */
 
-"Overview" = "Vue synthétique";
-"Chart" = "Vue avec repères horaires";
-"List" = "Vue multi-agenda";
-"Columns" = "Vue avec repères mensuels";
+"Overview" = "Übersicht";
+"Chart" = "Tabelle";
+"List" = "Liste";
+"Columns" = "Spalten";
 
 /* Priorities */
 
@@ -279,7 +279,7 @@
 "cycle_2weeks" = "zweiwöchentlich";
 "cycle_4weeks" = "vierwöchentlich";
 "cycle_monthly" = "monatlich";
-"cycle_weekday" = "À chaque même jour de la semaine";
+"cycle_weekday" = "jeden Arbeitstag";
 "cycle_yearly" = "jährlich";
 
 "cycle_end_never" = "Unendlich oft wiederholen";
@@ -289,14 +289,14 @@
 "Range of recurrence" = "Bereich der Wiederholung";
 
 "Repeat" = "Wiederhole";
-"Daily" = "Daily";
-"Weekly" = "Weekly";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
+"Daily" = "Täglich";
+"Weekly" = "Wöchentlich";
+"Monthly" = "Monatlich";
+"Yearly" = "Jährlich";
 "Every" = "Jeden";
 "Days" = "Tage";
 "Week(s)" = "Woche(n)";
-"On" = "On";
+"On" = "An";
 "Month(s)" = "Monat(e)";
 "The" = "Der";
 "Recur on day(s)" = "Wiederholung an Tag(en) ";
@@ -317,27 +317,27 @@
 /* Appointment categories */
 
 "category_NONE" = "Keine";
-"category_ANNIVERSARY" = "Anniversaire";
-"category_BIRTHDAY" = "Anniversaire (de nais.)";
-"category_BUSINESS" = "Business";
-"category_CALLS" = "Appels"; 
-"category_CLIENTS" = "Clients";
-"category_COMPETITION" = "Compétition";
-"category_CUSTOMER" = "Client";
-"category_FAVORITES" = "Favoris";
-"category_FOLLOW UP" = "Suivi";
-"category_GIFTS" = "Cadeaux";
-"category_HOLIDAYS" = "Vacances";
-"category_IDEAS" = "Idées";
-"category_ISSUES" = "Problèmes";
-"category_MISCELLANEOUS" = "Divers";
-"category_PERSONAL" = "Personnel";
-"category_PROJECTS" = "Projets";
-"category_PUBLIC HOLIDAY" = "Public Holiday";
-"category_STATUS" = "Statut";
-"category_SUPPLIERS" = "Fournisseurs";
-"category_TRAVEL" = "Voyage";
-"category_VACATION" = "Absence";
+"category_ANNIVERSARY" = "Jubiläum";
+"category_BIRTHDAY" = "Geburtstag";
+"category_BUSINESS" = "Geschäftlich";
+"category_CALLS" = "Anrufe"; 
+"category_CLIENTS" = "Kunden";
+"category_COMPETITION" = "Konkurrenz";
+"category_CUSTOMER" = "Auftraggeber";
+"category_FAVORITES" = "Favoriten";
+"category_FOLLOW UP" = "Kurzfristig";
+"category_GIFTS" = "Geschenke";
+"category_HOLIDAYS" = "Urlaub";
+"category_IDEAS" = "Ideen";
+"category_ISSUES" = "Probleme";
+"category_MISCELLANEOUS" = "Andere";
+"category_PERSONAL" = "Persönlich";
+"category_PROJECTS" = "Projekte";
+"category_PUBLIC HOLIDAY" = "Feiertage";
+"category_STATUS" = "Zustand";
+"category_SUPPLIERS" = "Lieferanten";
+"category_TRAVEL" = "Reisen";
+"category_VACATION" = "Ferien";
 
 "repeat_NEVER" = "wiederholt sich nicht";
 "repeat_DAILY" = "täglich";
@@ -371,7 +371,7 @@
 
 /* validation errors */
 
-validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";
+validate_notitle           = "Sie haben keinen Titel eingegeben. Wollen Sie trotzdem fortfahren?";
 validate_invalid_startdate = "Ungültiges Startdatum !";
 validate_invalid_enddate   = "Ungültiges Enddatum !";
 validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
@@ -394,26 +394,26 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Week View" = "Wochenansicht";
 "Month View" = "Monatsansicht";
 
-"eventPartStatModificationError" = "Votre état de participation à l'événement n'a pas pu être modifié.";
+"eventPartStatModificationError" = "Ihre Teilnahme an dem Termin kann nicht geändert werden.";
 
 /* menu */
 "New Event..." = "Neuer Termin...";
 "New Task..." = "Neue Aufgabe...";
 "Edit Selected Event..." = "Markierten Termin bearbeiten...";
 "Delete Selected Event" = "Markierten Termin löschen";
-"Select All" = "Tout sélectionner";
-"Workweek days only" = "Semaine de travail seulement";
-"Tasks in View" = "Afficher les tâches";
+"Select All" = "Alles auswählen";
+"Workweek days only" = "nur Arbeitstage";
+"Tasks in View" = "Aufgaben anzeigen";
 
-"eventDeleteConfirmation" = "L'effacement de cet événement sera permanent.\nVoulez-vous continuer?";
-"taskDeleteConfirmation" = "L'effacement de cette tâche sera permanent.\nVoulez-vous continuer?";
+"eventDeleteConfirmation" = "Wollen Sie diesen Termin wirklich dauerhaft löschen?";
+"taskDeleteConfirmation" = "Wollen Sie diese Aufgabe wirklich dauerhaft löschen?";
 
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "Are you sure you want to delete the calendar \"%{0}\"?";
+= "Wollen Sie diesen Kalender wirklich dauerhaft löschen \"%{0}\"?";
 
 /* Legend */
-"Required participant" = "Participant obligatoire";
-"Optional participant" = "Participant facultatif";
+"Required participant" = "notwendiger Teilnehmer";
+"Optional participant" = "optionaler Teilnehmer";
 "Chair" = "Stuhl";
 
 "Needs action" = "Benötigt Eingriff";
@@ -452,4 +452,4 @@ vtodo_class2 = "(Confidential task)";
 "closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
 "Multicolumn Day View" = "Multicolonne";
 
-"Please select an event or a task." = "Veuillez sélectionner un événement ou une tâche.";
+"Please select an event or a task." = "Bitte wählen Sie einen Termin oder eine Aufgabe aus!";

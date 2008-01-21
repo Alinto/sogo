@@ -2,7 +2,7 @@
 
 /* Icon's label */
 
-"Create"      = "Créer";
+"Create"      = "Erstellen";
 "Empty Trash" = "Papierkorb leeren";
 "Delete"      = "Löschen";
 "Expunge"     = "Purger";
@@ -32,12 +32,12 @@
 
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Willkommen zu SOGo Mailer.";
 
-"Read messages"       = "Lire les messages";
+"Read messages"       = "Nachrichten lesen";
 "Write a new message" = "Eine neue Nachricht schreiben";
 
 "Share: " = "Benutzerrechte: ";
 "Account: " = "Konto: ";
-"Shared Account: " = "Compte Partagé ";
+"Shared Account: " = "Gemeinsames Konto";
 
 /* acls */
 "Default Roles" = "Standard-Rollen";
@@ -76,19 +76,19 @@
 
 "Edit Draft..." = "Entwurf bearbeiten...";
 
-"This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
+"This mail is being sent from an unsecure network!" = "Diese e-Mail wurde von einem unsicheren Netzwerk gesendet!"
 
 /* Popup "show" */
 
-"all"     = "Tous";
-"read"    = "Lus";
-"unread"  = "Non Lus";
-"deleted" = "Effacés";
-"flagged" = "Drapeau";
+"all"     = "Alle";
+"read"    = "Gelesene";
+"unread"  = "Ungelesene";
+"deleted" = "Gelöschte";
+"flagged" = "Markierte";
 
 /* MailListView */
 
-"View:"         = "Voir :";
+"View:"         = "Anzeigen :";
 
 "Sender" = "Absender";
 "Subject or Sender" = "Betreff oder Absender";
@@ -96,9 +96,9 @@
 "Entire Message" = "Nachrichtentext";
 
 "Date"          = "Datum";
-"All"           = "Tous";
-"Unread"        = "Non lus";
-"messages"      = "message(s)";
+"All"           = "Alle";
+"Unread"        = "Ungelesene";
+"messages"      = "Nachricht(en)";
 
 "first"         = "Erste";
 "previous"      = "Vorherige";
@@ -111,11 +111,11 @@
 "Mark Unread" = "Als ungelesen markieren"; 
 "Mark Read"   = "Als gelesen markieren";
 
-"Untitled" = "Untitled";
+"Untitled" = "ohne Titel";
 
 /* Tree */
 
-"SentFolderName"   = "Envoyés";
+"SentFolderName"   = "Gesendet";
 "TrashFolderName"  = "Papierkorb";
 "InboxFolderName"  = "Posteingang";
 "DraftsFolderName" = "Entwürfe";
@@ -124,7 +124,7 @@
 
 /* MailMoveToPopUp */
 
-"MoveTo" = "Déplacer vers";
+"MoveTo" = "Verschieben nach";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Zu Adressbuch hinzufügen";
@@ -146,13 +146,13 @@
 "New Subfolder..." = "Neuer Unterordner...";
 "Rename Folder..." = "Umbenennen...";
 "Delete Folder" = "Löschen";
-"Use This Folder For" = "Use This Folder For";
+"Use This Folder For" = "Diesen Ordner verwenden für";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
 
 /* Use This Folder menu */
-"Sent Messages" = "Sent Messages";
-"Drafts" = "Drafts";
-"Deleted Messages" = "Deleted Messages";
+"Sent Messages" = "Nachrichten versenden";
+"Drafts" = "Entwürfe";
+"Deleted Messages" = "Gelöschte Nachrichten";
 
 /* Message list popup menu */
 "Open Message In New Window" = "In neuem Fenster õffnen";
@@ -170,15 +170,15 @@
 "Print..." = "Drucken...";
 "Delete Message" = "Lõschen";
 
-"This Folder" = "This Folder";
+"This Folder" = "Dieser Ordner";
 
 /* Label popup menu */
-"None" = "Aucune";
-"Important" = "Important";
-"Work" = "Travail";
-"Personal" = "Personnel";
-"To Do" = "À faire";
-"Later" = "Peut attendre";
+"None" = "Kein";
+"Important" = "Wichtig";
+"Work" = "Geschäftlich";
+"Personal" = "Persönlich";
+"To Do" = "To Do";
+"Later" = "Später";
 
 /* Mark popup menu */
 "As Read" = "Gelesen";
@@ -195,7 +195,7 @@
 "Enter the new name of your folder :"
  = "Geben Sie den Namen des neuen Ordners ein:";
 "Do you really want to move this folder into the trash ?"
- = "Voulez-vous vraiment déplacer le dossier sélectionné dans la corbeille?";
+ = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
 "Operation failed" = "L'opération a échoué.";
 
 "quotasFormat" = "Quota: %{0} von %{1} KB verwendet; %{2}%";
@@ -204,14 +204,14 @@
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
 
-"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+"You need to choose a non-virtual folder!" = "Sie müssen einen nicht-virtuellen Ordner auswählen!";
 
 "Moving a message into its own folder is impossible!"
-= "Moving a message into its own folder is impossible!";
+= "Nachricht befindet sich bereits in diesem Ordner!";
 "Copying a message into its own folder is impossible!"
-= "Copying a message into its own folder is impossible!";
+= "Nachricht befindet sich bereits in diesem Ordner!";
 
 /* Message editing */
-"error_validationfailed" = "Validation failed";
-"error_missingsubject" = "Subject is missing";
-"error_missingrecipients" = "No recipients specified";
+"error_validationfailed" = "Prüfung ist fehlgeschlagen!";
+"error_missingsubject" = "Der Betreff fehlt!";
+"error_missingrecipients" = "Der Empfänger fehlt!";

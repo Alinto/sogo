@@ -9,34 +9,34 @@
 "Mail" = "Mail";
 "Preferences" = "Einstellungen";
 "Logoff" = "Beenden";
-"Right Administration" = "Partage";
-"Log Console (dev.)" = "Journal (dév.)";
+"Right Administration" = "Rechte Administration";
+"Log Console (dev.)" = " (dév.)";
 
 "User" = "Benutzer";
 
 "Help" = "Hilfe";
 
-"noJavascriptError" = "SOGo requiert l'utilisation de Javascript. Veuillez vous assurer que cette option est disponible et activée dans votre fureteur.";
-"noJavascriptRetry" = "Réessayer";
+"noJavascriptError" = "SOGo benötigt Javascript. Bitte aktivieren Sie Javascript in Ihrem Browser.";
+"noJavascriptRetry" = "Erneut versuchen";
 
 "Add..." = "Hinzufügen...";
 "Remove" = "Löschen";
 "Owner:" = "Besitzer:";
-"Associated Users:" = "Utilisateurs associés :";
-"(Unchecked = assistant, checked = delegate)" = "(Coché = assistant, décoché = délégué)";
-"Publish the Free/Busy information" = "Publier l'occupation du temps";
+"Associated Users:" = "Verbundene Benutzer :";
+"(Unchecked = assistant, checked = delegate)" = "(Nicht ausgewählt = Assistent, Ausgewählt = Teilnehmer)";
+"Publish the Free/Busy information" = "Free/Busy Informationen veröffentlichen";
 
 "Default Roles" = "Standard-Rollen";
 
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 
 /* generic.js */
-"Unable to subscribe to that folder!" = "Unmöglich sich an diesem Ordner zu abonnieren.";
-"You cannot subscribe to a folder that you own!" = "Unmöglich sich an einem Ordner zu abonnieren, der Ihnen selbst gehört.";
-"Unable to unsubscribe from that folder!" = "Unmöglich sich von diesem Ordner zu des-abonnieren.";
-"You cannot unsubscribe from a folder that you own!" = "Unmöglich sich von einem Ordner zu des-abonnieren, der Ihnen selbst gehört.";
-"Unable to rename that folder!" = "Unable to rename that folder!";
+"Unable to subscribe to that folder!" = "Es ist nicht möglich diesen Ordner zu abonnieren.";
+"You cannot subscribe to a folder that you own!" = "Es ist nicht möglich einen Ordner zu abonnieren, der Ihnen selbst gehört.";
+"Unable to unsubscribe from that folder!" = "Es ist nicht möglich diesen Ordner zu kündigen.";
+"You cannot unsubscribe from a folder that you own!" = "Es ist nicht möglich einen Ordner zu kündigen, der Ihnen selbst gehört.";
+"Unable to rename that folder!" = "Es ist nicht möglich diesen Ordner umzubenennen!";
 "You have already subscribed to that folder!"
-     	= "You have already subscribed to that folder!";
+     	= "Sie haben diesen Ordner bereits abonniert!";
 "The user rights cannot be edited for this object!"
-        = "The user rights cannot be edited for this object!";
+        = "Die Benutzer-Rechte können für dieses Objekt nicht verändert werden!";
