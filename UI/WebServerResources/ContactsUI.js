@@ -398,6 +398,7 @@ function uixDeleteSelectedContacts(sender) {
     http = createHTTPClient();
     http.open("POST", url, false /* not async */);
     http.send("");
+    http.setRequestHeader("Content-Length", 0);
     if (http.status != 200) { /* request failed */
       failCount++;
       http = null;

@@ -334,7 +334,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 	  checkAjaxRequestsState();
 	}
       }
-      catch( e ) {
+      catch (e) {
 	activeAjaxRequests -= 1;
 	checkAjaxRequestsState();
 	log("AJAX Request, Caught Exception: " + e.name);
@@ -342,9 +342,19 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 	log(backtrace());
       }
     };
+    var hasContentLength = false;
     if (headers) {
-      for (var i in headers)
+      for (var i in headers) {
+	if (i.toLowerCase() == "content-length")
+	  hasContentLength = true;
 	http.setRequestHeader(i, headers[i]);
+      }
+    }
+    if (!hasContentLength) {
+      var cLength = "0";
+      if (content)
+	cLength = "" + content.length;
+      http.setRequestHeader("Content-Length", "" + cLength);
     }
     http.send(content);
   }
@@ -1355,6 +1365,7 @@ function loadPreferences() {
   var http = createHTTPClient();
   http.open("GET", url, false);
   http.send("");
+
   if (http.status == 200) {
     if (http.responseText.length > 0)
       userDefaults = http.responseText.evalJSON(true);
