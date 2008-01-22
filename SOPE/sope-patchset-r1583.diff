@@ -1,50 +1,6 @@
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1557)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4Connection.m	(révision 1557)
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1583)
 +++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
 @@ -381,7 +381,7 @@
    
@@ -57,7 +13,7 @@ Index: sope-mime/NGImap4/NGImap4Connection.m
      [self errorWithFormat:@"Could not list mailbox hierarchy!"];
 Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1557)
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1583)
 +++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
 @@ -648,14 +648,13 @@
    enumerator = [_flags objectEnumerator];
@@ -83,7 +39,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
    if (objs) free(objs);
 Index: sope-mime/NGImap4/NGImap4ResponseParser.m
 ===================================================================
---- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1557)
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1583)
 +++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
 @@ -84,6 +84,8 @@
  static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
@@ -290,7 +246,7 @@ Index: sope-mime/NGImap4/NGImap4ResponseParser.m
  {
 Index: sope-mime/NGMail/NGSmtpClient.m
 ===================================================================
---- sope-mime/NGMail/NGSmtpClient.m	(révision 1557)
+--- sope-mime/NGMail/NGSmtpClient.m	(révision 1583)
 +++ sope-mime/NGMail/NGSmtpClient.m	(copie de travail)
 @@ -24,6 +24,82 @@
  #include "NGSmtpReplyCodes.h"
@@ -446,7 +402,7 @@ Index: sope-mime/NGMail/NGSmtpClient.m
      reply = [self receiveReply];
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
---- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1557)
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1583)
 +++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
 @@ -86,37 +86,40 @@
    char         *des    = NULL;
@@ -512,7 +468,7 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoEndLen = 2;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
 @@ -19,88 +19,45 @@
    02111-1307, USA.
@@ -907,7 +863,7 @@ Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
  #if 0  
 Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
 ===================================================================
---- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
 @@ -70,6 +70,8 @@
      [rfc822Set setGenerator:gen forField:Fields->cc];
@@ -920,7 +876,7 @@ Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
    if ((gen = [NGMimeStringHeaderFieldGenerator headerFieldGenerator]))
 Index: sope-mime/NGMime/NGMimeBodyPart.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
 @@ -31,18 +31,6 @@
    return 2;
@@ -958,7 +914,7 @@ Index: sope-mime/NGMime/NGMimeBodyPart.m
  - (NSString *)contentId {
 Index: sope-mime/NGMime/GNUmakefile.preamble
 ===================================================================
---- sope-mime/NGMime/GNUmakefile.preamble	(révision 1557)
+--- sope-mime/NGMime/GNUmakefile.preamble	(révision 1583)
 +++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
 @@ -5,6 +5,11 @@
  	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
@@ -974,7 +930,7 @@ Index: sope-mime/NGMime/GNUmakefile.preamble
  	-I../../sope-core/NGStreams/	\
 Index: sope-mime/NGMime/NGMimeBodyParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
 @@ -67,7 +67,10 @@
    if (_data == nil) return nil;
@@ -990,7 +946,7 @@ Index: sope-mime/NGMime/NGMimeBodyParser.m
    
 Index: sope-mime/NGMime/NGMimePartParser.h
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.h	(révision 1557)
+--- sope-mime/NGMime/NGMimePartParser.h	(révision 1583)
 +++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
 @@ -117,6 +117,7 @@
      BOOL parserParseRawBodyDataOfPart:1;
@@ -1012,7 +968,7 @@ Index: sope-mime/NGMime/NGMimePartParser.h
  @interface NSObject(NGMimePartParser)
 Index: sope-mime/NGMime/NGMimePartParser.m
 ===================================================================
---- sope-mime/NGMime/NGMimePartParser.m	(révision 1557)
+--- sope-mime/NGMime/NGMimePartParser.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
 @@ -227,7 +227,7 @@
  }
@@ -1037,7 +993,7 @@ Index: sope-mime/NGMime/NGMimePartParser.m
      : [NGMimeType mimeType:[ctype stringValue]];
 Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
 @@ -122,8 +122,13 @@
      }
@@ -1068,7 +1024,7 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
          bufLen  = [data length];
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
---- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1557)
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1583)
 +++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
 @@ -49,80 +49,70 @@
    
@@ -1202,9 +1158,53 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1583)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1557)
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1583)
 +++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
 @@ -140,8 +140,12 @@
  
@@ -1247,7 +1247,7 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1557)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1583)
 +++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
 @@ -19,6 +19,8 @@
    02111-1307, USA.
@@ -1269,7 +1269,7 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
    id<NSObject,SaxEntityResolver> entityResolver;
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
 ===================================================================
---- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1557)
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1583)
 +++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
 @@ -30,6 +30,12 @@
  #include <libxml/HTMLparser.h>
@@ -1329,7 +1329,7 @@ Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
  - (void)tearDownParser {
 Index: sope-appserver/mod_ngobjweb/config.c
 ===================================================================
---- sope-appserver/mod_ngobjweb/config.c	(révision 1557)
+--- sope-appserver/mod_ngobjweb/config.c	(révision 1583)
 +++ sope-appserver/mod_ngobjweb/config.c	(copie de travail)
 @@ -21,7 +21,7 @@
  
@@ -1340,9 +1340,21 @@ Index: sope-appserver/mod_ngobjweb/config.c
  
  static char *_makeString(char *buf, char *str, int max) {
    if (buf == NULL)
+Index: sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c
+===================================================================
+--- sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(révision 1583)
++++ sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(copie de travail)
+@@ -23,6 +23,7 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <stdio.h>
++#include "common.h"
+ #include "NGBufferedDescriptor.h"
+ 
+ // returns the number of bytes which where read from the buffer
 Index: sope-appserver/mod_ngobjweb/GNUmakefile
 ===================================================================
---- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1557)
+--- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1583)
 +++ sope-appserver/mod_ngobjweb/GNUmakefile	(copie de travail)
 @@ -81,7 +81,7 @@
  
@@ -1353,21 +1365,9 @@ Index: sope-appserver/mod_ngobjweb/GNUmakefile
  
  LDFLAGS = $(APXS_LDFLAGS) $(APR_LDFLAGS) -shared -fPIC
  
-Index: sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c
-===================================================================
---- sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(révision 1557)
-+++ sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(copie de travail)
-@@ -23,6 +23,7 @@
- #include <unistd.h>
- #include <string.h>
- #include <stdio.h>
-+#include "common.h"
- #include "NGBufferedDescriptor.h"
- 
- // returns the number of bytes which where read from the buffer
 Index: sope-appserver/mod_ngobjweb/handler.c
 ===================================================================
---- sope-appserver/mod_ngobjweb/handler.c	(révision 1557)
+--- sope-appserver/mod_ngobjweb/handler.c	(révision 1583)
 +++ sope-appserver/mod_ngobjweb/handler.c	(copie de travail)
 @@ -267,7 +267,7 @@
    const char           *uri;
@@ -1382,9 +1382,9 @@ Index: sope-appserver/mod_ngobjweb/handler.c
                   "could not create socket in domain %i.", domain);
      return DECLINED;
    }
-+  else
-+    ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server,
-+                 "appFd socket created in domain %i: %d", domain, appFd);
++/*   else */
++/*     ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server, */
++/*                  "appFd socket created in domain %i: %d", domain, appFd); */
  
    if ((result = _connectInstance(r, appFd, address, addressLen)) < 0)
      return 500;
@@ -1495,7 +1495,7 @@ Index: sope-appserver/mod_ngobjweb/handler.c
  static void test(void) {
 Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1557)
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1583)
 +++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
 @@ -23,14 +23,20 @@
  
@@ -1524,7 +1524,7 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
 -endif
 Index: sope-appserver/NGObjWeb/WOContext.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOContext.m	(révision 1557)
+--- sope-appserver/NGObjWeb/WOContext.m	(révision 1583)
 +++ sope-appserver/NGObjWeb/WOContext.m	(copie de travail)
 @@ -64,11 +64,13 @@
  static BOOL     testNSURLs           = NO;
@@ -1564,7 +1564,7 @@ Index: sope-appserver/NGObjWeb/WOContext.m
        serverURL = [@"http://" stringByAppendingString:host];
 Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
---- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1557)
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1583)
 +++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
 @@ -123,11 +123,14 @@
  
@@ -1585,7 +1585,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
  }
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1557)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1583)
 +++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
 @@ -216,6 +216,12 @@
        assocCount++;
@@ -1602,7 +1602,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
    
 Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1557)
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1583)
 +++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
 @@ -40,6 +40,7 @@
    WOAssociation *string;
@@ -1632,7 +1632,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
      return YES;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1557)
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1583)
 +++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
 @@ -41,7 +41,8 @@
    WOAssociation *pageName;
@@ -1646,7 +1646,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
    /* 'ivar' associations */
 Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1557)
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1583)
 +++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
 @@ -39,22 +39,34 @@
  static int debugLookup  = -1;
@@ -1797,7 +1797,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
    
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1557)
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1583)
 +++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
 @@ -31,6 +31,7 @@
  #include <NGObjWeb/WOCookie.h>
