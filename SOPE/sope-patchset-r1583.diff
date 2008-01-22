@@ -1202,6 +1202,46 @@ Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
  @end /* PostgreSQL72Channel */
  
  @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1583)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -30,6 +30,7 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++static BOOL debugOn = NO;
+ //
+ //
+ //
+@@ -41,8 +42,16 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
+++ (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
++- (void) _cleanup
++{
+   column_info *info;
+   int c;
+ 
+@@ -231,6 +240,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
 --- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1583)
