@@ -1,3 +1,14 @@
+2008-01-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfromFolder:_folderfrom:_startDateto:_endDatetitle:titlecomponent:_component]):
+	change the algorithm a little bit to compare the roles of the
+	current users to see if he is an "owner" instead of solely
+	checking its login name. This enables the users listed as
+	"SuperUsers" to be considered as owners and see everything as
+	expected.
+
 2008-01-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoFolder+CardDAV.m ([SOGoFolder

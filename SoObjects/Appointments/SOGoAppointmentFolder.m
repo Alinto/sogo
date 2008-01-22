@@ -752,21 +752,22 @@ static NSNumber   *sharedYes = nil;
 
 - (NSString *) _privacySqlString
 {
-  NSString *privacySqlString, *login, *email;
+  NSString *privacySqlString, *email, *login;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
-  login = [activeUser login];
 
-  if ([login isEqualToString: owner])
+  if ([[activeUser rolesForObject: self inContext: context]
+	containsObject: SoRole_Owner])
     privacySqlString = @"";
-  else if ([login isEqualToString: @"freebusy"])
+  else if ([[activeUser login] isEqualToString: @"freebusy"])
     privacySqlString = @"and (c_isopaque = 1)";
   else
     {
 #warning we do not manage all the possible user emails
       email = [[activeUser primaryIdentity] objectForKey: @"email"];
-      
+      login = [activeUser login];
+
       privacySqlString
         = [NSString stringWithFormat:
                       @"(%@(c_orgmail = '%@')"
