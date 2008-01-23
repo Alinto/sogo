@@ -237,7 +237,13 @@
 
 - (int) repeatInterval
 {
-  return [[self namedValue: @"interval"] intValue];
+  int interval;
+
+  interval = [[self namedValue: @"interval"] intValue];
+  if (interval < 1)
+    interval = 1;
+
+  return interval;
 }
 
 - (void) setWkst: (NSString *) _weekStart

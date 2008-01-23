@@ -1,3 +1,8 @@
+2008-01-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule -repeatInterval]):
+	return 1 if the parsed value is < 1.
+
 2007-12-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NSString+NGCards.m ([NSString
