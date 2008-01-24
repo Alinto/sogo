@@ -303,7 +303,7 @@
   if (![url hasSuffix: @"/"])
     url = [url stringByAppendingString: @"/"];
   
-  /* if we get a message with an image/* or application/*
+  /* if we get a message with an image-* or application-*
      Content-Type, we must generate a 'fake' part since our
      decoded mail won't have any. Also see SOGoMailBodyPart: -fetchBLOB
      and SOGoMailObject: -lookupImap4BodyPartKey: inContext for
@@ -343,7 +343,7 @@
 - (NSString *) pathToAttachment
 {
   NSMutableString *url;
-  NSString *s;
+  NSString *s, *attachment;
   SOGoMailBodyPart *bodyPart;
 
   bodyPart = [self clientPart];
@@ -353,7 +353,11 @@
     [url appendString: @"/"];
 
 //   s = [[self partPath] componentsJoinedByString: @"/"];
-  [url appendString: [self _filenameForAttachment: bodyPart]];
+  if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
+    attachment = [self _filenameForAttachment: bodyPart];
+  else
+    attachment = @"0";
+  [url appendString: attachment];
 
   return url;
 }
