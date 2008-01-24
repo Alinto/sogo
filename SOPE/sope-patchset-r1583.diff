@@ -1214,7 +1214,7 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
  //
  //
  //
-@@ -41,8 +42,16 @@
+@@ -41,10 +42,19 @@
  
  @implementation OracleAdaptorChannel (Private)
  
@@ -1231,8 +1231,43 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
 +{
    column_info *info;
    int c;
++  sword result;
  
-@@ -231,6 +240,9 @@
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +68,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -231,6 +259,9 @@
  
    [self _cleanup];
  
@@ -1242,6 +1277,17 @@ Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
    if (!theExpression || ![theExpression length])
      {
        [NSException raise: @"OracleInvalidExpressionException"
+@@ -302,7 +333,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
 Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
 ===================================================================
 --- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1583)
