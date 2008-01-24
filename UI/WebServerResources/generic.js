@@ -1141,33 +1141,27 @@ function initTabs() {
   var containers = document.getElementsByClassName("tabsContainer");
   for (var x = 0; x < containers.length; x++) {
     var container = containers[x];
-    var firstTab = null;
-    for (var i = 0; i < container.childNodes.length; i++) {
-      if (container.childNodes[i].tagName == 'UL') {
+    var list = container.childNodesWithTag("ul");
+
+    if (list.length > 0) {
+      var firstTab = null;
+      var nodes = $(list[0]).childNodesWithTag("li");
+      for (var i = 0; i < nodes.length; i++) {
+	var currentNode = $(nodes[i]);
 	if (!firstTab)
-	  firstTab = i;
-      }
-    }
-    var nodes = container.childNodes[firstTab].childNodes;
-    
-    firstTab = null;
-    for (var i = 0; i < nodes.length; i++) {
-      var currentNode = nodes[i];
-      if (currentNode.tagName == 'LI') {
-	if (!firstTab)
-	  firstTab = i;
-	$(currentNode).observe("mousedown", onTabMouseDown);
-	$(currentNode).observe("click", onTabClick);
+	  firstTab = currentNode;
+	currentNode.observe("mousedown", onTabMouseDown);
+	currentNode.observe("click", onTabClick);
 	//$(currentNode.getAttribute("target")).hide();
       }
+
+      firstTab.addClassName("first");
+      firstTab.addClassName("active");
+      container.activeTab = firstTab;
+
+      var target = $(firstTab.getAttribute("target"));
+      target.addClassName("active");
     }
-
-    nodes[firstTab].addClassName("first");
-    nodes[firstTab].addClassName("active");
-    container.activeTab = nodes[firstTab];
-
-    var target = $(nodes[firstTab].getAttribute("target"));
-    target.addClassName("active");
     //target.show();
   }
 }
@@ -1210,8 +1204,8 @@ function initMenu(menuDIV, callbacks) {
 }
 
 function onTabMouseDown(event) {
-  event.cancelBubble = true;
-  preventDefault(event);
+  event.stopPropagation();
+  event.preventDefault();
 }
 
 function openExternalLink(anchor) {
@@ -1252,18 +1246,13 @@ function getTopWindow() {
 }
 
 function onTabClick(event) {
-  var node = getTarget(event); // LI element
-
-  var target = node.getAttribute("target");
-
-  var container = node.parentNode.parentNode;
-  var oldTarget = container.activeTab.getAttribute("target");
-  var content = $(target);
-  var oldContent = $(oldTarget);
+  var container = this.parentNode.parentNode;
+  var content = $(this.getAttribute("target"));
+  var oldContent = $(container.activeTab.getAttribute("target"));
 
   oldContent.removeClassName("active");
   container.activeTab.removeClassName("active"); // previous LI
-  container.activeTab = node;
+  container.activeTab = this;
   container.activeTab.addClassName("active"); // current LI
   content.addClassName("active");
   
@@ -1280,8 +1269,6 @@ function onTabClick(event) {
 
   //container.activeTab = node;
   //container.activeTab.show();
-
-  return false;
 }
 
 function enableAnchor(anchor) {
