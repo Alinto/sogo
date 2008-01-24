@@ -634,12 +634,21 @@ static NSNumber   *sharedYes = nil;
   NGCalendarDateRange *fir;
   NSArray             *rules, *exRules, *exDates, *ranges;
   unsigned            i, count;
+  NSString *content;
 
-  cycleinfo  = [[_row objectForKey:@"c_cycleinfo"] propertyList];
-  if (cycleinfo == nil) {
-    [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
-    return;
-  }
+  content = [_row objectForKey: @"c_cycleinfo"];
+  if (![content isNotNull])
+    {
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
+      return;
+    }
+
+  cycleinfo = [content propertyList];
+  if (!cycleinfo)
+    {
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
+      return;
+    }
 
   row = [self fixupRecord:_row fetchRange: _r];
   [row removeObjectForKey: @"c_cycleinfo"];
