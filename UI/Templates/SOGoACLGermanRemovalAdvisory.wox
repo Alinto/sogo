@@ -8,14 +8,14 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    Zugangserlaubniss von <var:string value="currentUserName"/> gelöscht
+    Zugangserlaubniss von <var:string value="currentUserName" const:escapeHTML="NO"/> gelöscht
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order '<var:string value="resourceName"/>'.
+<var:string value="currentUserName" const:escapeHTML="NO"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order "<var:string value="resourceName"/>".
 
 Sie können sich sofort an folgender URL von diesem Order des-abonnieren:
-    <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
 Sich können sich auch später immer noch durch die SOGo Webseiten des-abonnieren.</var:if>
 

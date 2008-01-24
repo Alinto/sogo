@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> vous a enlevé de sa liste de permission pour son dossier '<var:string value="resourceName"/>'.
+<var:string value="currentUserName"/> vous a enlevé de sa liste de permission pour son dossier "<var:string value="resourceName"/>".
 
 Vous pouvez vous désinscrire directement en cliquant sur le lien suivant:
     <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES

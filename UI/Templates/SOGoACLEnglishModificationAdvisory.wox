@@ -8,20 +8,20 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName"/> has modified the access rights
+    <var:string value="currentUserName" const:escapeHTML="NO"/> has modified the access rights
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> has modified your access rights for his '<var:string value="resourceName"/>' folder.
+<var:string value="currentUserName" const:escapeHTML="NO"/> has modified your access rights for his "<var:string value="resourceName" const:escapeHTML="NO"/>" folder.
 
 You can subscribe directly to that folder by following this link:
-    <var:string value="httpAdvisoryURL"/>subscribe?mail-invitation=YES
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
 
 Otherwise, you will be able to subscribe later from the SOGo web interface.
 
 You can also access this resource remotely using the following URL:
 
-<var:string value="httpFolderURL"/>
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>

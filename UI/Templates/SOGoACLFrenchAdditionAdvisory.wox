@@ -8,20 +8,20 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName"/> a modifié les droits
+    <var:string value="currentUserName" const:escapeHTML="NO"/> a modifié les droits
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> vous a ajouté à sa liste de permission pour son dossier '<var:string value="resourceName"/>'.
+<var:string value="currentUserName" const:escapeHTML="NO"/> vous a ajouté à sa liste de permissions pour son dossier "<var:string value="resourceName" const:escapeHTML="NO"/>".
 
 Vous pouvez vous inscrire directement à ce dossier en cliquant sur le lien suivant:
-    <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
 Autrement, il vous sera toujours possible de vous inscrire plus tard via l'interface web de SOGo.
 
-De plus, vous pouvez aussi accéder au dossier en utilisant le lien suivant:
+De plus, vous pouvez accéder au dossier en utilisant le lien suivant:
 
-<var:string value="httpFolderURL"/>
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>

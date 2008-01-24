@@ -8,14 +8,14 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    Zugangserlaubniss von <var:string value="currentUserName"/> erstellt
+    Zugangserlaubniss von <var:string value="currentUserName" const:escapeHTML="NO"/> erstellt
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName"/> PLEASE TRANSLATE '<var:string value="resourceName"/>' XXXXXXXXXX.
+<var:string value="currentUserName" const:escapeHTML="NO"/> PLEASE TRANSLATE "<var:string value="resourceName"/>" XXXXXXXXXX.
 
 Folgende URL erlaubt Ihnen, sich sofort an diesem Ordner zu abonnieren:
-    <var:string value="httpAdvisoryURL"/>unsubscribe?mail-invitation=YES
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
 Sie können sich auch später immer noch durch die SOGo Webseiten abonnieren.
 </var:if>

@@ -8,15 +8,15 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="displayName"/> has been deleted
+    "<var:string value="displayName" const:escapeHTML="NO"/>" has been deleted
 </var:if>
 
 <var:if condition="isBody">
-The <var:string value="displayName"/> folder has been deleted. 
+The "<var:string value="displayName" const:escapeHTML="NO"/>" folder has been deleted. 
 
 The following URL is now no longer active:  
 
-<var:string value="httpFolderURL"/>
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>

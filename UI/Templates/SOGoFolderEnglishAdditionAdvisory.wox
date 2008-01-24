@@ -8,15 +8,15 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="displayName"/> has been created
+    <var:string value="displayName" const:escapeHTML="NO"/> has been created
 </var:if>
 
 <var:if condition="isBody">
-The <var:string value="displayName"/> folder has been created. 
+The "<var:string value="displayName" const:escapeHTML="NO"/>" folder has been created. 
 
 You can access this resource remotely by using the following URL:  
 
-<var:string value="httpFolderURL"/>
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>

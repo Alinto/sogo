@@ -8,15 +8,15 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="displayName"/> a été supprimé
+    "<var:string value="displayName" const:escapeHTML="NO"/>" a été supprimé
 </var:if>
 
 <var:if condition="isBody">
-Le dossier <var:string value="displayName"/> a été supprimé.
+Le dossier "<var:string value="displayName" const:escapeHTML="NO"/>" a été supprimé.
 
 Le lien suivant n'est plus actif:
 
-<var:string value="httpFolderURL"/>
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
 </var:if>
 
 </container>
