@@ -22,29 +22,29 @@ var usersRightsWindowHeight = 250;
 var usersRightsWindowWidth = 502;
 
 function newEvent(sender, type) {
-   var day = sender.readAttribute("day");
-   if (!day)
-      day = currentDay;
-   var hour = sender.readAttribute("hour");
-   var folder = getSelectedFolder();
-   var folderID = folder.readAttribute("id");
-   var roles = folder.readAttribute("roles");
-   if (roles) {
-     roles = roles.split(",")
-       if ($(roles).indexOf("PublicModifier") < 0)
-	 folderID = "/personal";
-   }
-   var urlstr = ApplicationBaseURL + folderID + "/new" + type;
-   var params = new Array();
-   if (day)
-      params.push("day=" + day);
-   if (hour)
-      params.push("hm=" + hour);
-   if (params.length > 0)
-      urlstr += "?" + params.join("&");
-   window.open(urlstr, "", "width=490,height=470,resizable=0");
+  var day = $(sender).readAttribute("day");
+  if (!day)
+    day = currentDay;
+  var hour = sender.readAttribute("hour");
+  var folder = getSelectedFolder();
+  var folderID = folder.readAttribute("id");
+  var roles = folder.readAttribute("roles");
+  if (roles) {
+    roles = roles.split(",")
+      if ($(roles).indexOf("PublicModifier") < 0)
+	folderID = "/personal";
+  }
+  var urlstr = ApplicationBaseURL + folderID + "/new" + type;
+  var params = new Array();
+  if (day)
+    params.push("day=" + day);
+  if (hour)
+    params.push("hm=" + hour);
+  if (params.length > 0)
+    urlstr += "?" + params.join("&");
+  window.open(urlstr, "", "width=490,height=470,resizable=0");
    
-   return false; /* stop following the link */
+  return false; /* stop following the link */
 }
 
 function getSelectedFolder() {
@@ -60,11 +60,11 @@ function getSelectedFolder() {
 }
 
 function onMenuNewEventClick(event) {
-   newEvent(this, "event");
+  newEvent(this, "event");
 }
 
 function onMenuNewTaskClick(event) {
-   newEvent(this, "task");
+  newEvent(this, "task");
 }
 
 function _editEventId(id, calendar) {
@@ -146,16 +146,16 @@ function deleteEvent() {
     }
   }
   else if (selectedCalendarCell) {
-     var label = labels["eventDeleteConfirmation"];
-     if (confirm(label)) {
-        if (document.deleteEventAjaxRequest) {
-           document.deleteEventAjaxRequest.aborted = true;
-           document.deleteEventAjaxRequest.abort();
-        }
-        eventsToDelete.push([selectedCalendarCell[0].cname]);
-        calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
-        _batchDeleteEvents();
-     }
+    var label = labels["eventDeleteConfirmation"];
+    if (confirm(label)) {
+      if (document.deleteEventAjaxRequest) {
+	document.deleteEventAjaxRequest.aborted = true;
+	document.deleteEventAjaxRequest.abort();
+      }
+      eventsToDelete.push([selectedCalendarCell[0].cname]);
+      calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
+      _batchDeleteEvents();
+    }
   }
   else
     window.alert(labels["Please select an event or a task."]);
@@ -206,7 +206,7 @@ function modifyEventCallback(http) {
       }
     }
     else {
-// 	 log("showing alert...");
+      // 	 log("showing alert...");
       window.alert(labels["eventPartStatModificationError"]);
     }
     document.modifyEventAjaxRequest = null;
@@ -264,7 +264,7 @@ function onDaySelect(node) {
   var td = $(node).getParentWithTagName("td");
   var table = $(td).getParentWithTagName("table");
 
-//   log ("table.selected: " + table.selected);
+  //   log ("table.selected: " + table.selected);
 
   if (document.selectedDate)
     document.selectedDate.deselect();
@@ -281,24 +281,24 @@ function onDaySelect(node) {
 }
 
 function onDateSelectorGotoMonth(event) {
-   var day = this.getAttribute("date");
+  var day = this.getAttribute("date");
 
-   changeDateSelectorDisplay(day, true);
+  changeDateSelectorDisplay(day, true);
 
-   Event.stop(event);
+  Event.stop(event);
 }
 
 function onCalendarGotoDay(node) {
-   var day = node.getAttribute("date");
-   var needRefresh = (listFilter == 'view_selectedday'
+  var day = node.getAttribute("date");
+  var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
    
-   changeDateSelectorDisplay(day);
-   changeCalendarDisplay( { "day": day } );
-   if (needRefresh)
-     refreshEvents();
+  changeDateSelectorDisplay(day);
+  changeCalendarDisplay( { "day": day } );
+  if (needRefresh)
+    refreshEvents();
   
-   return false;
+  return false;
 }
 
 function gotoToday() {
@@ -321,10 +321,10 @@ function setDateSelectorContent(content) {
 function dateSelectorCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
-     document.dateSelectorAjaxRequest = null;
-     var content = http.responseText;
-     setDateSelectorContent(content);
-     cachedDateSelectors[http.callbackData] = content;
+    document.dateSelectorAjaxRequest = null;
+    var content = http.responseText;
+    setDateSelectorContent(content);
+    cachedDateSelectors[http.callbackData] = content;
   }
   else
     log ("dateSelectorCallback Ajax error");
@@ -333,7 +333,7 @@ function dateSelectorCallback(http) {
 function eventsListCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
-     var div = $("eventsListView");
+    var div = $("eventsListView");
 
     document.eventsListAjaxRequest = null;
     var table = $("eventsList");
@@ -468,17 +468,17 @@ function restoreCurrentDaySelection(div) {
 
   if (day
       && day.substr(0, 6) == currentDay.substr(0, 6)) {
-      for (i = 0; i < elements.length; i++) {
-        day = elements[i].day;
-        if (day && day == currentDay) {
-          var td = $(elements[i]).getParentWithTagName("td");
-          if (document.selectedDate)
-            document.selectedDate.deselect();
-          $(td).select();
-          document.selectedDate = td;
-        }
+    for (i = 0; i < elements.length; i++) {
+      day = elements[i].day;
+      if (day && day == currentDay) {
+	var td = $(elements[i]).getParentWithTagName("td");
+	if (document.selectedDate)
+	  document.selectedDate.deselect();
+	$(td).select();
+	document.selectedDate = td;
       }
     }
+  }
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
@@ -492,11 +492,11 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
-//       log ("restoring cached selector for month: " + month);
+      //       log ("restoring cached selector for month: " + month);
       setDateSelectorContent(cachedDateSelectors[month]);
     }
     else {
-//       log ("loading selector for month: " + month);
+      //       log ("loading selector for month: " + month);
       if (document.dateSelectorAjaxRequest) {
         document.dateSelectorAjaxRequest.aborted = true;
         document.dateSelectorAjaxRequest.abort();
@@ -559,22 +559,22 @@ function changeCalendarDisplay(data, newView) {
     }
     url += "?day=" + day;
   }
-//   if (newView)
-//     log ("switching to view: " + newView);
-//   log ("changeCalendarDisplay: " + url);
+  //   if (newView)
+  //     log ("switching to view: " + newView);
+  //   log ("changeCalendarDisplay: " + url);
 
   selectedCalendarCell = null;
 
   if (document.dayDisplayAjaxRequest) {
-//     log ("aborting day ajaxrq");
+    //     log ("aborting day ajaxrq");
     document.dayDisplayAjaxRequest.aborted = true;
     document.dayDisplayAjaxRequest.abort();
   }
   document.dayDisplayAjaxRequest
-     = triggerAjaxRequest(url, calendarDisplayCallback,
-			  { "view": newView,
-			    "day": day,
-			    "scrollEvent": scrollEvent });
+    = triggerAjaxRequest(url, calendarDisplayCallback,
+			 { "view": newView,
+			   "day": day,
+			   "scrollEvent": scrollEvent });
 
   return false;
 }
@@ -645,53 +645,53 @@ function onClickableCellsDblClick(event) {
 }
 
 function refreshCalendarEvents(scrollEvent) {
-   var todayDate = new Date();
-   var sd;
-   var ed;
-   if (currentView == "dayview") {
-      if (currentDay)
-	 sd = currentDay;
-      else
-	 sd = todayDate.getDayString();
-      ed = sd;
-   }
-   else if (currentView == "weekview") {
-      var startDate;
-      if (currentDay)
-	 startDate = currentDay.asDate();
-      else
-	 startDate = todayDate;
-      startDate = startDate.beginOfWeek();
-      sd = startDate.getDayString();
-      var endDate = new Date();
-      endDate.setTime(startDate.getTime());
-      endDate.addDays(6);
-      ed = endDate.getDayString();
-   }
-   else {
-      var monthDate;
-      if (currentDay)
-	 monthDate = currentDay.asDate();
-      else
-	 monthDate = todayDate;
-      monthDate.setDate(1);
-      sd = monthDate.beginOfWeek().getDayString();
+  var todayDate = new Date();
+  var sd;
+  var ed;
+  if (currentView == "dayview") {
+    if (currentDay)
+      sd = currentDay;
+    else
+      sd = todayDate.getDayString();
+    ed = sd;
+  }
+  else if (currentView == "weekview") {
+    var startDate;
+    if (currentDay)
+      startDate = currentDay.asDate();
+    else
+      startDate = todayDate;
+    startDate = startDate.beginOfWeek();
+    sd = startDate.getDayString();
+    var endDate = new Date();
+    endDate.setTime(startDate.getTime());
+    endDate.addDays(6);
+    ed = endDate.getDayString();
+  }
+  else {
+    var monthDate;
+    if (currentDay)
+      monthDate = currentDay.asDate();
+    else
+      monthDate = todayDate;
+    monthDate.setDate(1);
+    sd = monthDate.beginOfWeek().getDayString();
 
-      var lastMonthDate = new Date();
-      lastMonthDate.setTime(monthDate.getTime());
-      lastMonthDate.setMonth(monthDate.getMonth() + 1);
-      lastMonthDate.addDays(-1);
-      ed = lastMonthDate.endOfWeek().getDayString();
-   }
-   if (document.refreshCalendarEventsAjaxRequest) {
-      document.refreshCalendarEventsAjaxRequest.aborted = true;
-      document.refreshCalendarEventsAjaxRequest.abort();
-   }
-   var url = ApplicationBaseURL + "eventslist?sd=" + sd + "&ed=" + ed;
-   document.refreshCalendarEventsAjaxRequest
-      = triggerAjaxRequest(url, refreshCalendarEventsCallback,
-	                   {"startDate": sd, "endDate": ed,
-			    "scrollEvent": scrollEvent});
+    var lastMonthDate = new Date();
+    lastMonthDate.setTime(monthDate.getTime());
+    lastMonthDate.setMonth(monthDate.getMonth() + 1);
+    lastMonthDate.addDays(-1);
+    ed = lastMonthDate.endOfWeek().getDayString();
+  }
+  if (document.refreshCalendarEventsAjaxRequest) {
+    document.refreshCalendarEventsAjaxRequest.aborted = true;
+    document.refreshCalendarEventsAjaxRequest.abort();
+  }
+  var url = ApplicationBaseURL + "eventslist?sd=" + sd + "&ed=" + ed;
+  document.refreshCalendarEventsAjaxRequest
+    = triggerAjaxRequest(url, refreshCalendarEventsCallback,
+			 {"startDate": sd, "endDate": ed,
+			  "scrollEvent": scrollEvent});
 }
 
 function refreshCalendarEventsCallback(http) {
@@ -700,7 +700,7 @@ function refreshCalendarEventsCallback(http) {
 
     if (http.responseText.length > 0) {
       var data = http.responseText.evalJSON(true);
-//      log("refresh calendar events: " + data.length);
+      //      log("refresh calendar events: " + data.length);
       for (var i = 0; i < data.length; i++)
 	drawCalendarEvent(data[i],
 			  http.callbackData["startDate"],
@@ -709,112 +709,112 @@ function refreshCalendarEventsCallback(http) {
     scrollDayView(http.callbackData["scrollEvent"]);
   }
   else
-     log("AJAX error when refreshing calendar events");
+    log("AJAX error when refreshing calendar events");
 }
 
 function drawCalendarEvent(eventData, sd, ed) {
-   var viewStartDate = sd.asDate();
-   var viewEndDate = ed.asDate();
+  var viewStartDate = sd.asDate();
+  var viewEndDate = ed.asDate();
 
-   var startDate = new Date();
-   startDate.setTime(eventData[4] * 1000);
-   var endDate = new Date();
-   endDate.setTime(eventData[5] * 1000);
+  var startDate = new Date();
+  startDate.setTime(eventData[4] * 1000);
+  var endDate = new Date();
+  endDate.setTime(eventData[5] * 1000);
 
-//    log ("s: " + startDate + "; e: " + endDate);
+  //    log ("s: " + startDate + "; e: " + endDate);
 
-   var days = startDate.daysUpTo(endDate);
+  var days = startDate.daysUpTo(endDate);
 
-   var title;
-   if (currentView == "monthview"
-       && (eventData[7] == 0))
-      title = startDate.getDisplayHoursString() + " " + eventData[3];
-   else
-      title = eventData[3];
+  var title;
+  if (currentView == "monthview"
+      && (eventData[7] == 0))
+    title = startDate.getDisplayHoursString() + " " + eventData[3];
+  else
+    title = eventData[3];
 
-//    log("title: " + title); 
-//    log("viewS: " + viewStartDate);
-   var startHour = null;
-   var endHour = null;
+  //    log("title: " + title); 
+  //    log("viewS: " + viewStartDate);
+  var startHour = null;
+  var endHour = null;
    
-   var siblings = new Array();
-   for (var i = 0; i < days.length; i++)
-      if (days[i].earlierDate(viewStartDate) == viewStartDate
-	  && days[i].laterDate(viewEndDate) == viewEndDate) {
-	 var starts;
+  var siblings = new Array();
+  for (var i = 0; i < days.length; i++)
+    if (days[i].earlierDate(viewStartDate) == viewStartDate
+	&& days[i].laterDate(viewEndDate) == viewEndDate) {
+      var starts;
 
-// 	 log("day: " + days[i]);
-	 if (i == 0) {
-	    var quarters = (startDate.getUTCHours() * 4
-			    + Math.floor(startDate.getUTCMinutes() / 15));
-	    starts = quarters;
-	    startHour = startDate.getDisplayHoursString();
-	    endHour = endDate.getDisplayHoursString();
-	 }
-	 else
-	    starts = 0;
-	 
-	 var ends;
-	 var lasts;
-	 if (i == days.length - 1) {
-	    var quarters = (endDate.getUTCHours() * 4
-			    + Math.ceil(endDate.getUTCMinutes() / 15));
-	    ends = quarters;
-	 }
-	 else
-	    ends = 96;
-	 lasts = ends - starts;
-	 if (!lasts)
-	    lasts = 1;
-
- 	 var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
- 				    null, null, title);
-	 siblings.push(eventDiv);
-	 eventDiv.siblings = siblings;
-	 if (eventData[9].length > 0)
-	   eventDiv.addClassName(eventData[9]);
-	 var dayString = days[i].getDayString();
-// 	 log("day: " + dayString);
-	 var parentDiv = null;
-	 if (currentView == "monthview") {
-	    var dayDivs = $("monthDaysView").childNodesWithTag("div");
-	    var j = 0; 
-	    while (!parentDiv && j < dayDivs.length) {
-	       if (dayDivs[j].getAttribute("day") == dayString)
-		  parentDiv = dayDivs[j];
-	       else
-		  j++;
-	    }
-	 }
-	 else {
-	    if (eventData[7] == 0) {
-	       var daysView = $("daysView");
-	       var eventsDiv = $(daysView).childNodesWithTag("div")[1];
-	       var dayDivs = $(eventsDiv).childNodesWithTag("div");
-	       var j = 0; 
-	       while (!parentDiv && j < dayDivs.length) {
-		  if (dayDivs[j].getAttribute("day") == dayString)
-		     parentDiv = dayDivs[j].childNodesWithTag("div")[0];
-		  else
-		     j++;
-	       }
-	    }
-	    else {
-	       var header = $("calendarHeader");
-	       var daysDiv = $(header).childNodesWithTag("div")[1];
-	       var dayDivs = $(daysDiv).childNodesWithTag("div");
-	       var j = 0; 
-	       while (!parentDiv && j < dayDivs.length) {
-		  if (dayDivs[j].getAttribute("day") == dayString)
-		     parentDiv = dayDivs[j];
-		  else
-		     j++;
-	       }
-	    }
-	 }
-	 if (parentDiv)
-	   parentDiv.appendChild(eventDiv);
+      // 	 log("day: " + days[i]);
+      if (i == 0) {
+	var quarters = (startDate.getUTCHours() * 4
+			+ Math.floor(startDate.getUTCMinutes() / 15));
+	starts = quarters;
+	startHour = startDate.getDisplayHoursString();
+	endHour = endDate.getDisplayHoursString();
       }
+      else
+	starts = 0;
+	 
+      var ends;
+      var lasts;
+      if (i == days.length - 1) {
+	var quarters = (endDate.getUTCHours() * 4
+			+ Math.ceil(endDate.getUTCMinutes() / 15));
+	ends = quarters;
+      }
+      else
+	ends = 96;
+      lasts = ends - starts;
+      if (!lasts)
+	lasts = 1;
+
+      var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
+				 null, null, title);
+      siblings.push(eventDiv);
+      eventDiv.siblings = siblings;
+      if (eventData[9].length > 0)
+	eventDiv.addClassName(eventData[9]);
+      var dayString = days[i].getDayString();
+      // 	 log("day: " + dayString);
+      var parentDiv = null;
+      if (currentView == "monthview") {
+	var dayDivs = $("monthDaysView").childNodesWithTag("div");
+	var j = 0; 
+	while (!parentDiv && j < dayDivs.length) {
+	  if (dayDivs[j].getAttribute("day") == dayString)
+	    parentDiv = dayDivs[j];
+	  else
+	    j++;
+	}
+      }
+      else {
+	if (eventData[7] == 0) {
+	  var daysView = $("daysView");
+	  var eventsDiv = $(daysView).childNodesWithTag("div")[1];
+	  var dayDivs = $(eventsDiv).childNodesWithTag("div");
+	  var j = 0; 
+	  while (!parentDiv && j < dayDivs.length) {
+	    if (dayDivs[j].getAttribute("day") == dayString)
+	      parentDiv = dayDivs[j].childNodesWithTag("div")[0];
+	    else
+	      j++;
+	  }
+	}
+	else {
+	  var header = $("calendarHeader");
+	  var daysDiv = $(header).childNodesWithTag("div")[1];
+	  var dayDivs = $(daysDiv).childNodesWithTag("div");
+	  var j = 0; 
+	  while (!parentDiv && j < dayDivs.length) {
+	    if (dayDivs[j].getAttribute("day") == dayString)
+	      parentDiv = dayDivs[j];
+	    else
+	      j++;
+	  }
+	}
+      }
+      if (parentDiv)
+	parentDiv.appendChild(eventDiv);
+    }
 }
 
 function eventClass(cname) {
@@ -824,51 +824,51 @@ function eventClass(cname) {
 
 function newEventDIV(cname, calendar, starts, lasts,
 		     startHour, endHour, title) {
-   var eventDiv = document.createElement("div");
-   eventDiv.cname = escape(cname);
-   eventDiv.calendar = calendar;
-   $(eventDiv).addClassName("event");
-   $(eventDiv).addClassName(eventClass(cname));
-   $(eventDiv).addClassName("starts" + starts);
-   $(eventDiv).addClassName("lasts" + lasts);
-   for (var i = 1; i < 5; i++) {
-      var shadowDiv = document.createElement("div");
-      eventDiv.appendChild(shadowDiv);
-      $(shadowDiv).addClassName("shadow");
-      $(shadowDiv).addClassName("shadow" + i);
-   }
-   var innerDiv = document.createElement("div");
-   eventDiv.appendChild(innerDiv);
-   $(innerDiv).addClassName("eventInside");
-   $(innerDiv).addClassName("calendarFolder" + calendar);
+  var eventDiv = document.createElement("div");
+  eventDiv.cname = escape(cname);
+  eventDiv.calendar = calendar;
+  $(eventDiv).addClassName("event");
+  $(eventDiv).addClassName(eventClass(cname));
+  $(eventDiv).addClassName("starts" + starts);
+  $(eventDiv).addClassName("lasts" + lasts);
+  for (var i = 1; i < 5; i++) {
+    var shadowDiv = document.createElement("div");
+    eventDiv.appendChild(shadowDiv);
+    $(shadowDiv).addClassName("shadow");
+    $(shadowDiv).addClassName("shadow" + i);
+  }
+  var innerDiv = document.createElement("div");
+  eventDiv.appendChild(innerDiv);
+  $(innerDiv).addClassName("eventInside");
+  $(innerDiv).addClassName("calendarFolder" + calendar);
 
-   var gradientDiv = document.createElement("div");
-   innerDiv.appendChild(gradientDiv);
-   $(gradientDiv).addClassName("gradient");
-   var gradientImg = document.createElement("img");
-   gradientDiv.appendChild(gradientImg);
-   gradientImg.src = ResourcesURL + "/event-gradient.png";
+  var gradientDiv = document.createElement("div");
+  innerDiv.appendChild(gradientDiv);
+  $(gradientDiv).addClassName("gradient");
+  var gradientImg = document.createElement("img");
+  gradientDiv.appendChild(gradientImg);
+  gradientImg.src = ResourcesURL + "/event-gradient.png";
 
-   var textDiv = document.createElement("div");
-   innerDiv.appendChild(textDiv);
-   $(textDiv).addClassName("text");
-   if (startHour) {
-      var headerSpan = document.createElement("span");
-      textDiv.appendChild(headerSpan);
-      $(headerSpan).addClassName("eventHeader");
-      headerSpan.appendChild(document.createTextNode(startHour + " - "
-						     + endHour));
-      textDiv.appendChild(document.createElement("br"));
-   }
-   textDiv.appendChild(document.createTextNode(title));
+  var textDiv = document.createElement("div");
+  innerDiv.appendChild(textDiv);
+  $(textDiv).addClassName("text");
+  if (startHour) {
+    var headerSpan = document.createElement("span");
+    textDiv.appendChild(headerSpan);
+    $(headerSpan).addClassName("eventHeader");
+    headerSpan.appendChild(document.createTextNode(startHour + " - "
+						   + endHour));
+    textDiv.appendChild(document.createElement("br"));
+  }
+  textDiv.appendChild(document.createTextNode(title));
 
-   Event.observe(eventDiv, "mousedown", listRowMouseDownHandler);
-   Event.observe(eventDiv, "click",
-		 onCalendarSelectEvent.bindAsEventListener(eventDiv));
-   Event.observe(eventDiv, "dblclick",
-		 editDoubleClickedEvent.bindAsEventListener(eventDiv));
+  Event.observe(eventDiv, "mousedown", listRowMouseDownHandler);
+  Event.observe(eventDiv, "click",
+		onCalendarSelectEvent.bindAsEventListener(eventDiv));
+  Event.observe(eventDiv, "dblclick",
+		editDoubleClickedEvent.bindAsEventListener(eventDiv));
 
-   return eventDiv;
+  return eventDiv;
 }
 
 function calendarDisplayCallback(http) {
@@ -900,24 +900,24 @@ function calendarDisplayCallback(http) {
 		      onClickableCellsDblClick.bindAsEventListener(days[i]));
       }
     else {
-       var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
-       var headerDaysLabels = document.getElementsByClassName("day", headerDivs[0]);
-       var headerDays = document.getElementsByClassName("day", headerDivs[1]);
-       for (var i = 0; i < days.length; i++) {
-	  headerDays[i].hour = "allday";
-	  Event.observe(headerDaysLabels[i], "mousedown", listRowMouseDownHandler);
-	  Event.observe(headerDays[i], "click",
-			onCalendarSelectDay.bindAsEventListener(days[i]));
-	  Event.observe(headerDays[i], "dblclick",
-			onClickableCellsDblClick.bindAsEventListener(headerDays[i]));
-	  Event.observe(days[i], "click",
-			onCalendarSelectDay.bindAsEventListener(days[i]));
-	  var clickableCells = document.getElementsByClassName("clickableHourCell",
-							       days[i]);
-	  for (var j = 0; j < clickableCells.length; j++)
-	     Event.observe(clickableCells[j], "dblclick",
-			   onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
-       }
+      var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
+      var headerDaysLabels = document.getElementsByClassName("day", headerDivs[0]);
+      var headerDays = document.getElementsByClassName("day", headerDivs[1]);
+      for (var i = 0; i < days.length; i++) {
+	headerDays[i].hour = "allday";
+	Event.observe(headerDaysLabels[i], "mousedown", listRowMouseDownHandler);
+	Event.observe(headerDays[i], "click",
+		      onCalendarSelectDay.bindAsEventListener(days[i]));
+	Event.observe(headerDays[i], "dblclick",
+		      onClickableCellsDblClick.bindAsEventListener(headerDays[i]));
+	Event.observe(days[i], "click",
+		      onCalendarSelectDay.bindAsEventListener(days[i]));
+	var clickableCells = document.getElementsByClassName("clickableHourCell",
+							     days[i]);
+	for (var j = 0; j < clickableCells.length; j++)
+	  Event.observe(clickableCells[j], "dblclick",
+			onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
+      }
     }
   }
   else
@@ -937,11 +937,11 @@ function assignCalendar(name) {
 }
 
 function popupCalendar(node) {
-   var nodeId = $(node).readAttribute("inputId");
-   var input = $(nodeId);
-   input.calendar.popup();
+  var nodeId = $(node).readAttribute("inputId");
+  var input = $(nodeId);
+  input.calendar.popup();
 
-   return false;
+  return false;
 }
 
 function onEventContextMenu(event) {
@@ -992,7 +992,7 @@ function _loadEventHref(href) {
 
   var table = $("eventsList").tBodies[0];
   while (table.rows.length > 0)
-     table.removeChild(table.rows[0]);
+    table.removeChild(table.rows[0]);
 
   return false;
 }
@@ -1007,21 +1007,21 @@ function _loadTasksHref(href) {
   var tasksList = $("tasksList");
   var selectedIds;
   if (tasksList)
-     selectedIds = tasksList.getSelectedNodesId();
+    selectedIds = tasksList.getSelectedNodesId();
   else
-     selectedIds = null;
+    selectedIds = null;
   document.tasksListAjaxRequest
     = triggerAjaxRequest(url, tasksListCallback, selectedIds);
 
   tasksList.previousScroll = tasksList.scrollTop;
   while (tasksList.childNodes.length)
-     tasksList.removeChild(tasksList.childNodes[0]);
+    tasksList.removeChild(tasksList.childNodes[0]);
 
   return true;
 }
 
 function onHeaderClick(event) {
-   var headerId = this.getAttribute("id");
+  var headerId = this.getAttribute("id");
   var newSortAttribute;
   if (headerId == "titleHeader")
     newSortAttribute = "title";
@@ -1034,13 +1034,13 @@ function onHeaderClick(event) {
   else
     newSortAttribute = "start";
   
-   if (sorting["attribute"] == newSortAttribute)
+  if (sorting["attribute"] == newSortAttribute)
     sorting["ascending"] = !sorting["ascending"];
   else {
     sorting["attribute"] = newSortAttribute;
     sorting["ascending"] = true;
   }
-   refreshEvents();
+  refreshEvents();
 
   Event.stop(event);
 }
@@ -1077,21 +1077,21 @@ function onListFilterChange() {
   var node = $("filterpopup");
 
   listFilter = node.value;
-//   log ("listFilter = " + listFilter);
+  //   log ("listFilter = " + listFilter);
 
   return refreshEvents();
 }
 
 function selectMonthInMenu(menu, month) {
-   var entries = menu.childNodes[1].childNodesWithTag("LI");
-   for (i = 0; i < entries.length; i++) {
-      var entry = entries[i];
-      var entryMonth = entry.getAttribute("month");
-      if (entryMonth == month)
-	 entry.addClassName("currentMonth");
-      else
-	 entry.removeClassName("currentMonth");
-   }
+  var entries = menu.childNodes[1].childNodesWithTag("LI");
+  for (i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+    var entryMonth = entry.getAttribute("month");
+    if (entryMonth == month)
+      entry.addClassName("currentMonth");
+    else
+      entry.removeClassName("currentMonth");
+  }
 }
 
 function selectYearInMenu(menu, month) {
@@ -1112,9 +1112,9 @@ function popupMonthMenu(event) {
   if (event.button == 0) {
     var id = this.getAttribute("id");
     if (id == "monthLabel")
-       menuId = "monthListMenu";
+      menuId = "monthListMenu";
     else
-       menuId = "yearListMenu";
+      menuId = "yearListMenu";
 
     var popup = $(menuId);
     if (id == "monthLabel")
@@ -1144,11 +1144,11 @@ function onYearMenuItemClick(event) {
 function selectCalendarEvent(div) {
   // Select event in calendar view
   if (selectedCalendarCell)
-     for (var i = 0; i < selectedCalendarCell.length; i++)
-	selectedCalendarCell[i].deselect();
+    for (var i = 0; i < selectedCalendarCell.length; i++)
+      selectedCalendarCell[i].deselect();
 
   for (var i = 0; i < div.siblings.length; i++)
-     div.siblings[i].select();
+    div.siblings[i].select();
 
   selectedCalendarCell = div.siblings;
 }
@@ -1171,9 +1171,9 @@ function onCalendarSelectEvent() {
 function onCalendarSelectDay(event) {
   var day;
   if (currentView == "multicolumndayview")
-     day = this.getAttribute("day");
+    day = this.getAttribute("day");
   else
-     day = this.getAttribute("day");
+    day = this.getAttribute("day");
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
 
@@ -1197,51 +1197,51 @@ function changeWeekCalendarDisplayOfSelectedDay(node) {
   var headerDiv = $("calendarHeader").childNodesWithTag("div")[1];
   var headerDays = document.getElementsByClassName("day", headerDiv);
 
-//   log ("days: " + days.length + "; headerDays: " + headerDays.length);
+  //   log ("days: " + days.length + "; headerDays: " + headerDays.length);
   for (var i = 0; i < days.length; i++)
-     if (days[i] != node) {
-// 	log("unselect day : " + i);
-	headerDays[i].removeClassName("selectedDay");
-	days[i].removeClassName("selectedDay");
-     }
-     else {
-// 	log("selected day : " + i);
-	headerDays[i].addClassName("selectedDay");
-	days[i].addClassName("selectedDay");
-     }
+    if (days[i] != node) {
+      // 	log("unselect day : " + i);
+      headerDays[i].removeClassName("selectedDay");
+      days[i].removeClassName("selectedDay");
+    }
+    else {
+      // 	log("selected day : " + i);
+      headerDays[i].addClassName("selectedDay");
+      days[i].addClassName("selectedDay");
+    }
 }
 
 function findMonthCalendarSelectedCell(daysContainer) {
-   var found = false;
-   var i = 0;
+  var found = false;
+  var i = 0;
 
-   while (!found && i < daysContainer.childNodes.length) {
-      var currentNode = daysContainer.childNodes[i];
-      if (currentNode.tagName == 'DIV'
-          && currentNode.hasClassName("selectedDay")) {
-         daysContainer.selectedCell = currentNode;
-         found = true;
-      }
-      else
-         i++;
-   }
+  while (!found && i < daysContainer.childNodes.length) {
+    var currentNode = daysContainer.childNodes[i];
+    if (currentNode.tagName == 'DIV'
+	&& currentNode.hasClassName("selectedDay")) {
+      daysContainer.selectedCell = currentNode;
+      found = true;
+    }
+    else
+      i++;
+  }
 }
 
 function changeMonthCalendarDisplayOfSelectedDay(node) {
-   var daysContainer = node.parentNode;
-   if (!daysContainer.selectedCell)
-      findMonthCalendarSelectedCell(daysContainer);
+  var daysContainer = node.parentNode;
+  if (!daysContainer.selectedCell)
+    findMonthCalendarSelectedCell(daysContainer);
    
-   if (daysContainer.selectedCell)
-      daysContainer.selectedCell.removeClassName("selectedDay");
-   daysContainer.selectedCell = node;
-   node.addClassName("selectedDay");
+  if (daysContainer.selectedCell)
+    daysContainer.selectedCell.removeClassName("selectedDay");
+  daysContainer.selectedCell = node;
+  node.addClassName("selectedDay");
 }
 
 function onShowCompletedTasks(event) {
-   showCompletedTasks = (this.checked ? 1 : 0);
+  showCompletedTasks = (this.checked ? 1 : 0);
 
-   return refreshTasks();
+  return refreshTasks();
 }
 
 function updateTaskStatus(event) {
@@ -1283,38 +1283,38 @@ function updateCalendarStatus(event) {
   for (var i = 0; i < nodes.length; i++) {
     var input = $(nodes[i]).childNodesWithTag("input")[0];
     if (input.checked) {
-       var folderId = nodes[i].getAttribute("id");
-       var elems = folderId.split(":");
-       if (elems.length > 1)
-	  list.push(elems[0]);
-       else
-	  list.push(UserLogin);
+      var folderId = nodes[i].getAttribute("id");
+      var elems = folderId.split(":");
+      if (elems.length > 1)
+	list.push(elems[0]);
+      else
+	list.push(UserLogin);
     }
   }
 
-//   if (!list.length) {
-//      list.push(UserLogin);
-//      nodes[0].childNodesWithTag("input")[0].checked = true;
-//   }
+  //   if (!list.length) {
+  //      list.push(UserLogin);
+  //      nodes[0].childNodesWithTag("input")[0].checked = true;
+  //   }
 
-//   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
-// 			+ list.join(",") + "/Calendar/");
+  //   ApplicationBaseURL = (UserFolderURL + "Groups/_custom_"
+  // 			+ list.join(",") + "/Calendar/");
 
   if (event) {
-     var folderID = this.parentNode.getAttribute("id");
-     var urlstr = URLForFolderID(folderID);
-     if (newStatus)
-       urlstr += "/activateFolder";
-     else
-       urlstr += "/deactivateFolder";
-     //log("updateCalendarStatus: ajax request = " + urlstr + ", folderID = " + folderID);
-     triggerAjaxRequest(urlstr, calendarStatusCallback, folderID);
+    var folderID = this.parentNode.getAttribute("id");
+    var urlstr = URLForFolderID(folderID);
+    if (newStatus)
+      urlstr += "/activateFolder";
+    else
+      urlstr += "/deactivateFolder";
+    //log("updateCalendarStatus: ajax request = " + urlstr + ", folderID = " + folderID);
+    triggerAjaxRequest(urlstr, calendarStatusCallback, folderID);
   }
   else {
-     updateCalendarsList();
-     refreshEvents();
-     refreshTasks();
-     changeCalendarDisplay();
+    updateCalendarsList();
+    refreshEvents();
+    refreshTasks();
+    changeCalendarDisplay();
   }
 
   return false;
@@ -1338,28 +1338,28 @@ function calendarStatusCallback(http) {
 }
 
 function calendarEntryCallback(http) {
-   if (http.readyState == 4) {
-      var denied = !isHttpStatus204(http.status);
-      var entry = $(http.callbackData);
-      if (denied)
-	 entry.addClassName("denied");
-      else
-	 entry.removeClassName("denied");
-   }
+  if (http.readyState == 4) {
+    var denied = !isHttpStatus204(http.status);
+    var entry = $(http.callbackData);
+    if (denied)
+      entry.addClassName("denied");
+    else
+      entry.removeClassName("denied");
+  }
 }
 
 function updateCalendarsList(method) {
   var list = $("calendarList").childNodesWithTag("li");
   for (var i = 0; i < list.length; i++) {
-     var folderID = list[i].getAttribute("id");
-     var url = URLForFolderID(folderID) + "/canAccessContent";
-     triggerAjaxRequest(url, calendarEntryCallback, folderID);
+    var folderID = list[i].getAttribute("id");
+    var url = URLForFolderID(folderID) + "/canAccessContent";
+    triggerAjaxRequest(url, calendarEntryCallback, folderID);
   }
 }
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
   var uids = $("uixselector-calendarsList-uidList");
-//   log("addContact");
+  //   log("addContact");
   if (contactId)
     {
       var re = new RegExp("(^|,)" + contactId + "($|,)");
@@ -1418,35 +1418,35 @@ function onCalendarsMenuPrepareVisibility() {
 }
 
 function getMenus() {
-   var menus = {};
+  var menus = {};
 
-   var dateMenu = new Array();
-   for (var i = 0; i < 12; i++)
-      dateMenu.push(onMonthMenuItemClick);
-   menus["monthListMenu"] = dateMenu;
+  var dateMenu = new Array();
+  for (var i = 0; i < 12; i++)
+    dateMenu.push(onMonthMenuItemClick);
+  menus["monthListMenu"] = dateMenu;
 
-   dateMenu = new Array();
-   for (var i = 0; i < 11; i++)
-      dateMenu.push(onYearMenuItemClick);
-   menus["yearListMenu"] = dateMenu;
+  dateMenu = new Array();
+  for (var i = 0; i < 11; i++)
+    dateMenu.push(onYearMenuItemClick);
+  menus["yearListMenu"] = dateMenu;
 
-   menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
-				       onMenuNewTaskClick,
-				       editEvent, deleteEvent, "-",
-				       onSelectAll, "-",
-				       null, null);
-   menus["calendarsMenu"] = new Array(onMenuModify,
-				      "-",
-				      onCalendarNew, onCalendarRemove,
-				      "-", null, null, "-",
-				      null, "-", onMenuSharing);
-   menus["searchMenu"] = new Array(setSearchCriteria);
+  menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
+				      onMenuNewTaskClick,
+				      editEvent, deleteEvent, "-",
+				      onSelectAll, "-",
+				      null, null);
+  menus["calendarsMenu"] = new Array(onMenuModify,
+				     "-",
+				     onCalendarNew, onCalendarRemove,
+				     "-", null, null, "-",
+				     null, "-", onMenuSharing);
+  menus["searchMenu"] = new Array(setSearchCriteria);
 
-   var calendarsMenu = $("calendarsMenu");
-   if (calendarsMenu)
-     calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
+  var calendarsMenu = $("calendarsMenu");
+  if (calendarsMenu)
+    calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
 
-   return menus;
+  return menus;
 }
 
 function onMenuSharing(event) {
@@ -1456,12 +1456,12 @@ function onMenuSharing(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
   /* FIXME: activation of the context menu should preferably select the entry
-	       above which the event has occured */
+     above which the event has occured */
   if (selected) {
-     var folderID = selected.getAttribute("id");
-     var urlstr = URLForFolderID(folderID) + "/acls";
+    var folderID = selected.getAttribute("id");
+    var urlstr = URLForFolderID(folderID) + "/acls";
 
-     openAclWindow(urlstr);
+    openAclWindow(urlstr);
   }
 }
 
@@ -1651,8 +1651,8 @@ function appendCalendar(folderName, folderPath) {
 
 function onFolderSubscribeCB(folderData) {
   var folder = $(folderData["folder"]);
-   if (!folder)
-     appendCalendar(folderData["folderName"], folderData["folder"]);
+  if (!folder)
+    appendCalendar(folderData["folderName"], folderData["folder"]);
 }
 
 function onFolderUnsubscribeCB(folderId) {
@@ -1723,52 +1723,52 @@ function deletePersonalCalendarCallback(http) {
 }
 
 function configureLists() {
-   var list = $("tasksList");
-   list.multiselect = true;
-   Event.observe(list, "mousedown",
-		 onTasksSelectionChange.bindAsEventListener(list));
+  var list = $("tasksList");
+  list.multiselect = true;
+  Event.observe(list, "mousedown",
+		onTasksSelectionChange.bindAsEventListener(list));
 
-   var input = $("showHideCompletedTasks");
-   Event.observe(input, "click",
-		 onShowCompletedTasks.bindAsEventListener(input));
+  var input = $("showHideCompletedTasks");
+  Event.observe(input, "click",
+		onShowCompletedTasks.bindAsEventListener(input));
 
-   list = $("eventsList");
-   list.multiselect = true;
-   configureSortableTableHeaders(list);
-   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
-   Event.observe(list, "mousedown",
-		 onEventsSelectionChange.bindAsEventListener(list));
+  list = $("eventsList");
+  list.multiselect = true;
+  configureSortableTableHeaders(list);
+  TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
+  Event.observe(list, "mousedown",
+		onEventsSelectionChange.bindAsEventListener(list));
 }
 
 function initDateSelectorEvents() {
-   var arrow = $("rightArrow");
-   Event.observe(arrow, "click",
-		 onDateSelectorGotoMonth.bindAsEventListener(arrow));
-   arrow = $("leftArrow");
-   Event.observe(arrow, "click",
-		 onDateSelectorGotoMonth.bindAsEventListener(arrow));
+  var arrow = $("rightArrow");
+  Event.observe(arrow, "click",
+		onDateSelectorGotoMonth.bindAsEventListener(arrow));
+  arrow = $("leftArrow");
+  Event.observe(arrow, "click",
+		onDateSelectorGotoMonth.bindAsEventListener(arrow));
    
-   var menuButton = $("monthLabel");
-   Event.observe(menuButton, "click",
-		 popupMonthMenu.bindAsEventListener(menuButton));
-   menuButton = $("yearLabel");
-   Event.observe(menuButton, "click",
-		 popupMonthMenu.bindAsEventListener(menuButton));
+  var menuButton = $("monthLabel");
+  Event.observe(menuButton, "click",
+		popupMonthMenu.bindAsEventListener(menuButton));
+  menuButton = $("yearLabel");
+  Event.observe(menuButton, "click",
+		popupMonthMenu.bindAsEventListener(menuButton));
 }
 
 function initCalendars() {
-   sorting["attribute"] = "start";
-   sorting["ascending"] = true;
+  sorting["attribute"] = "start";
+  sorting["ascending"] = true;
   
-   if (!document.body.hasClassName("popup")) {
-      initDateSelectorEvents();
-      initCalendarSelector();
-      configureSearchField();
-      configureLists();
-      var selector = $("calendarSelector");
-      if (selector)
-	 selector.attachMenu("calendarsMenu");
-   }
+  if (!document.body.hasClassName("popup")) {
+    initDateSelectorEvents();
+    initCalendarSelector();
+    configureSearchField();
+    configureLists();
+    var selector = $("calendarSelector");
+    if (selector)
+      selector.attachMenu("calendarsMenu");
+  }
 }
 
 FastInit.addOnLoad(initCalendars);
