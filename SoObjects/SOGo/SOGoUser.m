@@ -133,8 +133,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if (!user)
     {
       user = [[self alloc] initWithLogin: newLogin roles: newRoles];
-      [user autorelease];
-      [cache registerUser: user];
+      if (user)
+	{
+	  [user autorelease];
+	  [cache registerUser: user];
+	}
     }
   [user setPrimaryRoles: newRoles];
 
@@ -173,7 +176,13 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
 		  objectForKey: @"c_uid"];
     }
-  self = [super initWithLogin: realUID roles: newRoles];
+  if (realUID)
+    self = [super initWithLogin: realUID roles: newRoles];
+  else
+    {
+      [self release];
+      self = nil;
+    }
 
   return self;
 }
