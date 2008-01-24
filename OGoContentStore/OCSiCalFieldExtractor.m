@@ -282,6 +282,14 @@ static NSNumber *distantFutureNumber = nil;
     date = [NSNull null];
   [row setObject: date forKey: @"c_enddate"];
 
+  if ([_task isRecurrent])
+    {
+      [row setObject: [self numberForDate: distantFuture]
+	   forKey: @"c_cycleenddate"];
+      [row setObject: [_task cycleInfo]
+	   forKey: @"c_cycleinfo"];
+    }
+
   if ([participants length] > 0)
     [row setObject:participants forKey: @"c_participants"];
   if ([partmails length] > 0)

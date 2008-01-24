@@ -1,5 +1,9 @@
 2008-01-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/OCSiCalFieldExtractor.m ([OCSiCalFieldExtractor
+	-extractQuickFieldsFromTodo:_task]): handle recurrence info in
+	tasks.
+
 	* UI/MailPartViewers/UIxMailPartViewer.m ([UIxMailPartViewer
 	-pathToAttachment]): in the case where the client object is not a
 	mail body part (when the message IS the attachment), we append 0
