@@ -334,13 +334,15 @@
   /* be tolerant */
   iCalWeekDay foundDay;
   unichar chars[2];
+  unsigned int dayLength;
 
   foundDay = 0;
 
-  if ([_day length] > 1)
+  dayLength = [_day length];
+  if (dayLength > 1)
     {
       [[_day uppercaseString] getCharacters: chars
-			      range: NSMakeRange ([day length] - 3, 2)];
+			      range: NSMakeRange (dayLength - 2, 2)];
 
       switch (chars[0])
 	{
