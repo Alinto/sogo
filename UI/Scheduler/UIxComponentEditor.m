@@ -1370,11 +1370,9 @@ RANGE(2);
 	v = [[self repeat2] componentsSeparatedByString: @","];
 	c = [v count];
 	mask = 0;
-	
+
 	while (c--)
-	  {
-	    mask |= (unsigned int)exp2([[v objectAtIndex: c] intValue]-1);
-	  }
+	  mask |= 1 << ([[v objectAtIndex: c] intValue] - 1);
 	
 	[theRule setByDayMask: mask];
       }
