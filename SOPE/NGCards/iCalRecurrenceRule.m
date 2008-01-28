@@ -340,7 +340,7 @@
   if ([_day length] > 1)
     {
       [[_day uppercaseString] getCharacters: chars
-			      range: NSMakeRange ([day length] - 2, 2)];
+			      range: NSMakeRange ([day length] - 3, 2)];
 
       switch (chars[0])
 	{
