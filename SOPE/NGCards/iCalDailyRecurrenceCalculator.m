@@ -23,17 +23,15 @@
 #import <Foundation/NSArray.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NGCalendarDateRange.h>
+
+#import "NSCalendarDate+ICal.h"
 
 #import "iCalRecurrenceCalculator.h"
+#import "iCalRecurrenceRule.h"
 
 @interface iCalDailyRecurrenceCalculator : iCalRecurrenceCalculator
 @end
-
-#import <NGExtensions/NGCalendarDateRange.h>
-#import "iCalRecurrenceRule.h"
-#import "NSCalendarDate+ICal.h"
-
-#include <math.h>
 
 @interface iCalRecurrenceCalculator(PrivateAPI)
 - (NSCalendarDate *)lastInstanceStartDate;
@@ -105,7 +103,9 @@
 	// FIXME: Should we also check the end date? We might want
 	//        to check if the end date is also within it.
 	if ([self->rrule byDayMask]) {
-	  mask = [start dayOfWeek] == 0 ? iCalWeekDaySunday : (unsigned int)exp2([start dayOfWeek]-1);
+	  mask = ([start dayOfWeek]
+		  ? (unsigned int) 1 << ([start dayOfWeek] - 1)
+		  : iCalWeekDaySunday);
 	  if (([self->rrule byDayMask]&mask) != mask) continue;
 	}
 

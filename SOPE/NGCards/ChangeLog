@@ -1,3 +1,9 @@
+2008-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDailyRecurrenceCalculator.m ([iCalDailyRecurrenceCalculator
+	-recurrenceRangesWithinCalendarDateRange:]): make use of <<
+	instead of exp2 to compute the mask.
+
 2008-01-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceRule.m ([iCalRecurrenceRule -repeatInterval]):
