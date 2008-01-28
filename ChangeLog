@@ -1,3 +1,9 @@
+2008-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): make use of the <<
+	operator to handle the day masks in custom rules.
+
 2008-01-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
