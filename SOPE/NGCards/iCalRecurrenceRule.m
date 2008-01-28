@@ -302,7 +302,6 @@
       for (count = 0; count < max; count++)
 	{
 	  day = [days objectAtIndex: count];
-	  day = [day substringFromIndex: [day length] - 2];
 	  mask |= [self weekDayFromICalRepresentation: day];
 	}
     }
@@ -331,27 +330,43 @@
 
 - (iCalWeekDay) weekDayFromICalRepresentation: (NSString *) _day
 {
-  if ([_day length] > 1) {
-    /* be tolerant */
-    unichar c0, c1;
-    
-    c0 = [_day characterAtIndex:0];
-    if (c0 == 'm' || c0 == 'M') return iCalWeekDayMonday;
-    if (c0 == 'w' || c0 == 'W') return iCalWeekDayWednesday;
-    if (c0 == 'f' || c0 == 'F') return iCalWeekDayFriday;
+  NSString *day;
+  /* be tolerant */
+  iCalWeekDay foundDay;
+  unichar chars[2];
 
-    c1 = [_day characterAtIndex:1];
-    if (c0 == 't' || c0 == 'T') {
-      if (c1 == 'u' || c1 == 'U') return iCalWeekDayTuesday;
-      if (c1 == 'h' || c1 == 'H') return iCalWeekDayThursday;
-    }
-    if (c0 == 's' || c0 == 'S') {
-      if (c1 == 'a' || c1 == 'A') return iCalWeekDaySaturday;
-      if (c1 == 'u' || c1 == 'U') return iCalWeekDaySunday;
-    }
-  }
+  foundDay = 0;
 
-  return -1;
+  if ([_day length] > 1)
+    {
+      [[_day uppercaseString] getCharacters: chars
+			      range: NSMakeRange ([day length] - 2, 2)];
+
+      switch (chars[0])
+	{
+	case 'M': foundDay = iCalWeekDayMonday;
+	  break;
+	case 'W': foundDay = iCalWeekDayWednesday;
+	  break;
+	case 'F': foundDay = iCalWeekDayFriday;
+	  break;
+	case 'T':
+	  if (chars[1] == 'U')
+	    foundDay = iCalWeekDayTuesday;
+	  else if (chars[1] == 'H')
+	    foundDay = iCalWeekDayThursday;
+	case 'S':
+	  if (chars[1] == 'A')
+	    foundDay = iCalWeekDaySaturday;
+	  else if (chars[1] == 'H')
+	    foundDay = iCalWeekDaySunday;
+	}
+    }
+
+  if (!foundDay)
+    [self errorWithFormat: @"wrong weekday representation: '%@'", _day];
+
+  return foundDay;
 //   // TODO: do not raise but rather return an error value?
 //   [NSException raise:NSGenericException
 // 	       format:@"Incorrect weekDay '%@' specified!", _day];

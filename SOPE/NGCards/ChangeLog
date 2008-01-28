@@ -1,5 +1,12 @@
 2008-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule
+	-weekDayFromICalRepresentation:_day]): issue an error whenever the
+	day cannot be deduced. Accept days notated with a prefix.
+	([iCalRecurrenceRule -byDayMask]): don't strip the represented
+	day, feed it directly to weekDayFromICalRepresentation: since it
+	will do the correct syntax validation.
+
 	* iCalDailyRecurrenceCalculator.m ([iCalDailyRecurrenceCalculator
 	-recurrenceRangesWithinCalendarDateRange:]): make use of <<
 	instead of exp2 to compute the mask.
