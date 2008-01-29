@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> PLEASE TRANSLATE "<var:string value="resourceName"/>" XXXXXXXXXX.
+<var:string value="currentUserName" const:escapeHTML="NO"/> PLEASE TRANSLATE <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/> XXXXXXXXXX.
 
 Folgende URL erlaubt Ihnen, sich sofort an diesem Ordner zu abonnieren:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES

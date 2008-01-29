@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> vous a ajouté à sa liste de permissions pour son dossier "<var:string value="resourceName" const:escapeHTML="NO"/>".
+<var:string value="currentUserName" const:escapeHTML="NO"/> vous a ajouté à sa liste de permissions pour son dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
 
 Vous pouvez vous inscrire directement à ce dossier en cliquant sur le lien suivant:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES

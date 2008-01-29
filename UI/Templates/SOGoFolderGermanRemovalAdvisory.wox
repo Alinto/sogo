@@ -8,11 +8,11 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    "<var:string value="displayName" const:escapeHTML="NO"/>" has been deleted
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> has been deleted
 </var:if>
 
 <var:if condition="isBody">
-The "<var:string value="displayName" const:escapeHTML="NO"/>" folder has been deleted. 
+The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been deleted. 
 
 The following URL is now no longer active:  
 

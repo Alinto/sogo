@@ -8,11 +8,11 @@
   xmlns:label="OGo:label">
 
   <var:if condition="isSubject">
-    "<var:string value="displayName" const:escapeHTML="NO"/>" a été créé
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> a été créé
   </var:if>
 
   <var:if condition="isBody">
-Le dossier "<var:string value="displayName" const:escapeHTML="NO"/>" a été créé.
+Le dossier <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> a été créé.
 
 Vous pouvez accéder à distance à ce dossier avec le lien suivant:
 
