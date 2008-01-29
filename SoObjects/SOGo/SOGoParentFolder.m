@@ -314,4 +314,11 @@ static SoSecurityManager *sm = nil;
 	   sortedArrayUsingSelector: @selector (compare:)];
 }
 
+- (NSException *) davCreateCollection: (NSString *) pathInfo
+			    inContext: (WOContext *) localContext
+{
+  return [self newFolderWithName: pathInfo
+	       andNameInContainer: pathInfo];
+}
+
 @end

@@ -503,6 +503,19 @@ static BOOL sendFolderAdvisories = NO;
   return [self _subscribe: NO inContext: localContext];
 }
 
+- (NSException *) davSetProperties: (NSDictionary *) setProps
+  	     removePropertiesNamed: (NSDictionary *) removedProps
+			 inContext: (WOContext *) localContext
+{
+  NSString *newDisplayName;
+
+  newDisplayName = [setProps objectForKey: @"davDisplayName"];
+  if ([newDisplayName length])
+    [self renameTo: newDisplayName];
+
+  return nil;
+}
+
 /* acls as a container */
 
 - (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;

@@ -1,3 +1,13 @@
+2008-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-davSetProperties:setPropsremovePropertiesNamed:removedPropsinContext:localContext]):
+	new method that takes the displayname into account.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	-davCreateCollection:pathInfoinContext:localContext]): new method
+	that acts as a proxy to newFolderWithName:andNameInContainer:.
+
 2008-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
