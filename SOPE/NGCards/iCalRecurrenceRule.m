@@ -330,7 +330,6 @@
 
 - (iCalWeekDay) weekDayFromICalRepresentation: (NSString *) _day
 {
-  NSString *day;
   /* be tolerant */
   iCalWeekDay foundDay;
   unichar chars[2];
