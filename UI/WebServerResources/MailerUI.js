@@ -735,6 +735,8 @@ function onMessageSelectionChange() {
       loadMessage(idx);
     }
   }
+  else if (rows.length > 1)
+    $('messageContent').update();
 }
 
 function loadMessage(idx) {
