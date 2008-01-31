@@ -623,6 +623,7 @@ function prepareAttendees() {
       attendeesEditor.names = new Array();
       attendeesEditor.UIDs = new Array();
       attendeesEditor.emails = new Array();
+      newAttendee(null);
    }
 
    var inputs = tableAttendees.getElementsByTagName("input");
