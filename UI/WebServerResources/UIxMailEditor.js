@@ -271,6 +271,18 @@ function onTextFirstFocus() {
   Event.stopObserving(this, "focus", onTextFirstFocus);
 }
 
+function onTextContextMenu(event) {
+  log("coucou");
+  event.returnValue = true;
+  event.cancelBubble = true;
+}
+
+function onTextMouseDown(event) {
+  log("coucou 1");
+  event.returnValue = false;
+  event.cancelBubble = false;
+}
+
 function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
@@ -295,6 +307,8 @@ function initMailEditor() {
   textarea.scrollTop = textarea.scrollHeight;
   textarea.observe("focus", onTextFirstFocus);
   textarea.observe("focus", onTextFocus);
+  textarea.observe("contextmenu", onTextContextMenu);
+  textarea.observe("mousedown", onTextMouseDown);
 
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);

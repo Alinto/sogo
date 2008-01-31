@@ -10,7 +10,7 @@
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
   <form id="connectForm" var:href="connectURL">
     <div id="loginScreen">
-      <img id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
+      <img const:alt="*" id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
       <var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
       ><p class="error"><var:string label:value="Wrong username or password."/></p>
       </var:if><label><var:string label:value="Username:"/><br/>
@@ -24,5 +24,5 @@
       </div>
     </div>
   </form
-  ><img id="preparedAnimation" rsrc:src="busy.gif"/>
+  ><img const:alt="*" id="preparedAnimation" rsrc:src="busy.gif"/>
 </var:component>
