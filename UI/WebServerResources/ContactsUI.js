@@ -763,6 +763,10 @@ function folderRenameCallback(http) {
   }
 }
 
+function saveDragHandlesState() {
+  // Call from SOGoDragHandles.js
+}
+
 function onMenuSharing(event) {
   if ($(this).hasClassName("disabled"))
     return;

@@ -1253,6 +1253,7 @@ function initMailer(event) {
 //     initDnd();
     initMailboxTree();
     initMessageCheckTimer();
+    getDragHandlesState();
   }
   
   // Default sort options
@@ -1486,6 +1487,28 @@ function buildMailboxes(accountName, encoded) {
   return account;
 }
 
+function getDragHandlesState() {
+  var urlstr =  ApplicationBaseURL + "dragHandlesState";
+  triggerAjaxRequest(urlstr, getDragHandlesStateCallback);
+}
+
+function getDragHandlesStateCallback(http) {
+  if (http.status == 200) {
+    if (http.responseText.length > 0) {
+      // The response text is a JSON array
+      // of the right and top offsets.
+      var data = http.responseText.evalJSON(true);
+
+      $("leftPanel").setStyle({ width: data[0] });
+      $("rightPanel").setStyle({ left: data[0] });
+      $("verticalDragHandle").setStyle({ left: data[0] });
+      $("mailboxContent").setStyle({ height: data[1] });
+      $("messageContent").setStyle({ top: data[1] });
+      $("rightDragHandle").setStyle({ top: data[1] });
+    }
+  }
+}
+
 function getFoldersState() {
   if (mailAccounts.length > 0) {
     var urlstr =  ApplicationBaseURL + "foldersState";
@@ -1496,7 +1519,7 @@ function getFoldersState() {
 function getFoldersStateCallback(http) {
   if (http.status == 200) {
     if (http.responseText.length > 0) {
-      // The response text is a JSOn representation
+      // The response text is a JSON array
       // of the folders that were left opened.
       var data = http.responseText.evalJSON(true);
       for (var i = 1; i < mailboxTree.aNodes.length; i++) {
@@ -1506,6 +1529,26 @@ function getFoldersStateCallback(http) {
       }
     }
     mailboxTree.autoSync();
+  }
+}
+
+function saveDragHandlesState() {
+  // Call from SOGoDragHandles.js
+  var leftBlock = $("leftPanel");
+  var upperBlock = $("mailboxContent");
+
+  if (leftBlock && upperBlock) {
+    var dragHandlesState = new Array(leftBlock.getStyle("width"), 
+				     upperBlock.getStyle("height"));
+    var urlstr =  ApplicationBaseURL + "saveDragHandlesState" + "?dragHandles=" + dragHandlesState.toJSON();
+    triggerAjaxRequest(urlstr, saveDragHandlesStateCallback);
+  }
+}
+
+function saveDragHandlesStateCallback(http) {
+  if (http.readyState == 4
+      && isHttpStatus204(http.status)) {
+    log ("drag handles state saved");
   }
 }
 

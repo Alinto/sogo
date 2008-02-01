@@ -30,6 +30,13 @@
   NSUserDefaults *ud;
   NSMutableDictionary *moduleSettings;
 }
+
+- (WOResponse *) getDragHandlesStateAction;
+- (WOResponse *) getFoldersStateAction;
+
+- (WOResponse *) saveDragHandlesStateAction;
+- (WOResponse *) saveFoldersStateAction;
+
 @end
 
 #endif /* UIXMAILMAINFRAME_H */

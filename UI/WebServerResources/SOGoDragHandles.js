@@ -88,6 +88,8 @@ var SOGoDragHandlesInterface = {
     document.body.setAttribute('style', '');
     
     Event.stop(event);
+
+    saveDragHandlesState();
   },
   move: function (event) {
     if (!this.dhType)

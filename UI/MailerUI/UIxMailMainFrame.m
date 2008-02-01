@@ -163,6 +163,16 @@
   return [self redirectToLocation: newLocation];
 }
 
+- (WOResponse *) getDragHandlesStateAction
+{
+  NSString *dragHandles;
+
+  [self _setupContext];
+  dragHandles = [moduleSettings objectForKey: @"DragHandles"];
+
+  return [self responseWithStatus: 200 andString: dragHandles];
+}
+
 - (WOResponse *) getFoldersStateAction
 {
   NSString *expandedFolders;
@@ -171,6 +181,23 @@
   expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
 
   return [self responseWithStatus: 200 andString: expandedFolders];
+}
+
+- (WOResponse *) saveDragHandlesStateAction
+{
+  WORequest *request;
+  NSString *dragHandles;
+  
+  [self _setupContext];
+  request = [context request];
+  dragHandles = [request formValueForKey: @"dragHandles"];
+  
+  [moduleSettings setObject: dragHandles
+		  forKey: @"DragHandles"];
+
+  [ud synchronize];
+
+  return [self responseWithStatus: 204];
 }
 
 - (WOResponse *) saveFoldersStateAction

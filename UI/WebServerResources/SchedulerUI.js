@@ -1722,6 +1722,10 @@ function deletePersonalCalendarCallback(http) {
     log ("ajax problem 5: " + http.status);
 }
 
+function saveDragHandlesState() {
+  // Call from SOGoDragHandles.js
+}
+
 function configureLists() {
   var list = $("tasksList");
   list.multiselect = true;
