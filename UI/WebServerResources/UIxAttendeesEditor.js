@@ -322,7 +322,8 @@ function displayFreeBusyForNode(input) {
       }
       var sd = $('startTime_date').valueAsShortDateString();
       var ed = $('endTime_date').valueAsShortDateString();
-      var urlstr = ( UserFolderURL + "../" + input.uid + "/freebusy.ifb/ajaxRead?"
+      var urlstr = ( UserFolderURL + "../" + input.uid
+		     + "/freebusy.ifb/ajaxRead?"
 		     + "sday=" + sd + "&eday=" + ed + "&additional=" +
 		     additionalDays );
       document.contactFreeBusyAjaxRequest
@@ -601,7 +602,8 @@ function prepareAttendees() {
 	 $(row).addClassName(attendeesEditor.states[i]);
 	 var input = $(row).down("input");
 	 var value = "";
-	 if (attendeesEditor.names[i].length > 0 && attendeesEditor.names[i] != attendeesEditor.emails[i])
+	 if (attendeesEditor.names[i].length > 0
+	     && attendeesEditor.names[i] != attendeesEditor.emails[i])
 	    value += attendeesEditor.names[i] + " ";
 	 value += "<" + attendeesEditor.emails[i] + ">";
 	 input.value = value;
