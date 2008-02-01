@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -28,6 +29,7 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/SOGo/NSDictionary+URL.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
@@ -69,6 +71,29 @@
   accountNames = [accounts objectsForKey: @"name"];
 
   return [accountNames jsonRepresentation];
+}
+
+- (NSString *) quotaSupport
+{
+  NSEnumerator *accountNames;
+  NSMutableArray *quotas;
+  NSString *currentAccount;
+  SOGoMailAccounts *co;
+  BOOL supportsQuota;
+
+  co = [self clientObject];
+  accountNames = [[co toManyRelationshipKeys] objectEnumerator];
+
+  quotas = [NSMutableArray array];
+  while ((currentAccount = [accountNames nextObject]))
+    {
+      supportsQuota = [[co lookupName: currentAccount
+			   inContext: context
+			   acquire: NO] supportsQuotas];
+      [quotas addObject: [NSNumber numberWithInt: supportsQuota]];
+    }
+
+  return [quotas jsonRepresentation];
 }
 
 - (NSString *) pageFormURL
@@ -127,7 +152,9 @@
   accounts = [[context activeUser] mailAccounts];
   firstAccount = [[accounts objectsForKey: @"name"] objectAtIndex: 0];
   formValues = [[context request] formValues];
-  parameters = [formValues count] > 0 ? [formValues asURLParameters] : @"?mailto=";
+  parameters = ([formValues count] > 0
+		? [formValues asURLParameters]
+		: @"?mailto=");
   newLocation = [NSString stringWithFormat: @"%@/%@/compose%@",
 			  [co baseURLInContext: context],
 			  firstAccount,

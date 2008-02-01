@@ -2,11 +2,18 @@
 var accounts = {};
 var mailboxTree;
 var mailAccounts;
+var quotaSupport;
 if (typeof textMailAccounts != 'undefined') {
   if (textMailAccounts.length > 0)
     mailAccounts = textMailAccounts.evalJSON(true);
   else
     mailAccounts = new Array();
+}
+if (typeof textQuotaSupport != 'undefined') {
+  if (textQuotaSupport.length > 0)
+    quotaSupport = textQuotaSupport.evalJSON(true);
+  else
+    quotaSupport = new Array();
 }
 
 var Mailer = {
@@ -179,15 +186,14 @@ function mailListMarkMessage(event) {
 }
 
 function mailListMarkMessageCallback(http) {
-  if (http.readyState == 4)
-    if (isHttpStatus204(http.status)) {
-      var data = http.callbackData;
-      markMailInWindow(data["window"], data["msguid"], data["markread"]);
-    }
-    else {
-      alert("Message Mark Failed (" + http.status + "): " + http.statusText);
-      window.location.reload();
-    }
+  if (isHttpStatus204(http.status)) {
+    var data = http.callbackData;
+    markMailInWindow(data["window"], data["msguid"], data["markread"]);
+  }
+  else {
+    alert("Message Mark Failed (" + http.status + "): " + http.statusText);
+    window.location.reload();
+  }
 }
 
 /* maillist row highlight */
@@ -235,31 +241,29 @@ function deleteSelectedMessages(sender) {
 }
 
 function deleteSelectedMessagesCallback(http) {
-  if (http.readyState == 4) {
-    if (isHttpStatus204(http.status)) {
-      var data = http.callbackData;
-      deleteCachedMessage(data["messageId"]);
-      deleteMessageRequestCount--;
-      if (Mailer.currentMailbox == data["mailbox"]) {
-	var div = $('messageContent');
-	if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
-	  div.update();
-	  Mailer.currentMessages[Mailer.currentMailbox] = null;	
-	}
+  if (isHttpStatus204(http.status)) {
+    var data = http.callbackData;
+    deleteCachedMessage(data["messageId"]);
+    deleteMessageRequestCount--;
+    if (Mailer.currentMailbox == data["mailbox"]) {
+      var div = $('messageContent');
+      if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
+	div.update();
+	Mailer.currentMessages[Mailer.currentMailbox] = null;	
+      }
 
-	var row = $("row_" + data["id"]);
-	var nextRow = row.next("tr");
-	if (!nextRow)
-	  nextRow = row.previous("tr");
-	row.parentNode.removeChild(row);
+      var row = $("row_" + data["id"]);
+      var nextRow = row.next("tr");
+      if (!nextRow)
+	nextRow = row.previous("tr");
+      row.parentNode.removeChild(row);
 //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
       
-	if (deleteMessageRequestCount == 0) {
-	  if (nextRow) {
-	    Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
-	    nextRow.select();
-	    loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
-	  }
+      if (deleteMessageRequestCount == 0) {
+	if (nextRow) {
+	  Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
+	  nextRow.select();
+	  loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
 	}
       }
     }
@@ -487,9 +491,11 @@ function openMailbox(mailbox, reload, idx) {
       = triggerAjaxRequest(url, messageListCallback,
 			   currentMessage);
 
-    var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
-    document.quotasAjaxRequest
-      = triggerAjaxRequest(quotasUrl, quotasCallback);
+    var account = Mailer.currentMailbox.split("/")[1];
+    if (accounts[account].supportsQuotas) {
+      var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
+      triggerAjaxRequest(quotasUrl, quotasCallback);
+    }
   }
 }
 
@@ -503,8 +509,7 @@ function messageListCallback(http) {
   var div = $('mailboxContent');
   var table = $('messageList');
   
-  if (http.readyState == 4
-      && http.status == 200) {
+  if (http.status == 200) {
     document.messageListAjaxRequest = null;
 
     if (table) {
@@ -571,8 +576,7 @@ function messageListCallback(http) {
 }
 
 function quotasCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
+  if (http.status == 200) {
     var hasQuotas = false;
 
     if (http.responseText.length > 0) {
@@ -629,7 +633,7 @@ function onMessageContextMenuHide(event) {
 
 function onFolderMenuClick(event) {
   var onhide, menuName;
-   
+
   var menutype = this.parentNode.getAttribute("datatype");
   if (menutype) {
     if (menutype == "inbox") {
@@ -822,18 +826,16 @@ function onICalendarButtonClick(event) {
 }
 
 function ICalendarButtonCallback(http) {
-  if (http.readyState == 4)
-    if (isHttpStatus204(http.status)) {
-      var oldMsg = http.callbackData;
-      var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
-      if (oldMsg == msg) {
-	deleteCachedMessage(oldMsg);
-	loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
-      }
+  if (isHttpStatus204(http.status)) {
+    var oldMsg = http.callbackData;
+    var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
+    if (oldMsg == msg) {
+      deleteCachedMessage(oldMsg);
+      loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
     }
-    else {
-      window.alert("received code: " + http.status);
-    }
+  }
+  else
+    window.alert("received code: " + http.status);
 }
 
 function resizeMailContent() {
@@ -878,8 +880,7 @@ function onImageClick(event) {
 function messageCallback(http) {
   var div = $('messageContent');
 
-  if (http.readyState == 4
-      && http.status == 200) {
+  if (http.status == 200) {
     document.messageAjaxRequest = null;
     div.update(http.responseText);
     configureLinksInMessage();
@@ -1161,7 +1162,8 @@ function configureMessageListBodyEvents(table) {
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
-	Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
+	Event.observe(anchors[i], "click",
+		      openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
     rows = table.tBodies[0].rows;
@@ -1418,8 +1420,7 @@ function updateMailboxMenus() {
 }
 
 function onLoadMailboxesCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
+  if (http.status == 200) {
     checkAjaxRequestsState();
     if (http.responseText.length > 0) {
       var newAccount = buildMailboxes(http.callbackData,
@@ -1456,6 +1457,10 @@ function onLoadMailboxesCallback(http) {
 
 function buildMailboxes(accountName, encoded) {
   var account = new Mailbox("account", accountName);
+
+  var accountIndex = mailAccounts.indexOf(accountName);
+  account.supportsQuotas = (quotaSupport[accountIndex] != 0);
+
   var data = encoded.evalJSON(true);
   for (var i = 0; i < data.length; i++) {
     var currentNode = account;
@@ -1489,8 +1494,7 @@ function getFoldersState() {
 }
 
 function getFoldersStateCallback(http) {
-  if (http.readyState == 4
-      && http.status == 200) {
+  if (http.status == 200) {
     if (http.responseText.length > 0) {
       // The response text is a JSOn representation
       // of the folders that were left opened.
@@ -1501,8 +1505,8 @@ function getFoldersStateCallback(http) {
 	  mailboxTree.o(i);
       }
     }
+    mailboxTree.autoSync();
   }
-  mailboxTree.autoSync();
 }
 
 function saveFoldersState() {
@@ -1514,8 +1518,7 @@ function saveFoldersState() {
 }
 
 function saveFoldersStateCallback(http) {
-  if (http.readyState == 4
-      && isHttpStatus204(http.status)) {
+  if (isHttpStatus204(http.status)) {
     log ("folders state saved");
   }
 }

@@ -309,39 +309,47 @@ function appendDifferentiator(url) {
   return url_nocache;
 }
 
+function onAjaxRequestStateChange(http) {
+  try {
+    if (http.readyState == 4
+	&& activeAjaxRequests > 0) {
+      if (!http.aborted)
+	http.callback(http);
+      activeAjaxRequests--;
+      checkAjaxRequestsState();
+      http.onreadystatechange = Prototype.emptyFunction;
+      http.callback = Prototype.emptyFunction;
+      http.callbackData = null;
+    }
+  }
+  catch (e) {
+    activeAjaxRequests--;
+    checkAjaxRequestsState();
+    http.onreadystatechange = Prototype.emptyFunction;
+    http.callback = Prototype.emptyFunction;
+    http.callbackData = null;
+    log("AJAX Request, Caught Exception: " + e.name);
+    log(e.message);
+    log(backtrace());
+  }
+}
+
 function triggerAjaxRequest(url, callback, userdata, content, headers) {
   var http = createHTTPClient();
 
-  activeAjaxRequests += 1;
-  document.animTimer = setTimeout("checkAjaxRequestsState();", 50);
+  activeAjaxRequests++;
+  document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
   //url = appendDifferentiator(url);
 
   if (http) {
     http.open("POST", url, true);
     http.url = url;
-    http.onreadystatechange
-      = function() {
-//       log ("state changed (" + http.readyState + "): " + url);
-      try {
-	if (http.readyState == 4
-	    && activeAjaxRequests > 0) {
-	  if (!http.aborted) {
-	    if (userdata)
-	      http.callbackData = userdata;
-	    callback(http);
-	  }
-	  activeAjaxRequests -= 1;
-	  checkAjaxRequestsState();
-	}
-      }
-      catch (e) {
-	activeAjaxRequests -= 1;
-	checkAjaxRequestsState();
-	log("AJAX Request, Caught Exception: " + e.name);
-	log(e.message);
-	log(backtrace());
-      }
-    };
+    http.callback = callback;
+    http.callbackData = userdata;
+    http.onreadystatechange = function() { onAjaxRequestStateChange(http) };
+//       = function() {
+// //       log ("state changed (" + http.readyState + "): " + url);
+//     };
     var hasContentLength = false;
     if (headers) {
       for (var i in headers) {
@@ -367,36 +375,31 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 
 function startAnimation(parent, nextNode) {
   var anim = $("progressIndicator");
-  if (anim) return anim;
-  
-  anim = document.createElement("img");
-  anim = $(anim);
-  anim.id = "progressIndicator";
-  anim.src = ResourcesURL + "/busy.gif";
-  anim.setStyle({ visibility: "hidden" });
-  if (nextNode)
-    parent.insertBefore(anim, nextNode);
-  else
-    parent.appendChild(anim);
-  anim.setStyle({ visibility: "visible" });
+  if (!anim) {
+    anim = createElement("img", "progressIndicator", null,
+			 {src: ResourcesURL + "/busy.gif"});
+    anim.setStyle({ visibility: "hidden" });
+    if (nextNode)
+      parent.insertBefore(anim, nextNode);
+    else
+      parent.appendChild(anim);
+    anim.setStyle({ visibility: "visible" });
+  }
 
   return anim;
 }
 
 function checkAjaxRequestsState() {
-  var toolbar = document.getElementById("toolbar");
-  if (toolbar) {
-    if (activeAjaxRequests > 0
-        && !document.busyAnim) {
-      document.busyAnim = startAnimation(toolbar);
-    }
-    else if (activeAjaxRequests == 0
-	     && document.busyAnim
-	     && document.busyAnim.parentNode) {
-      document.busyAnim.parentNode.removeChild(document.busyAnim);
-      document.busyAnim = null;
-    }
+  var progressImage = $("progressIndicator");
+  if (activeAjaxRequests > 0
+      && !progressImage) {
+    var toolbar = $("toolbar");
+    if (toolbar)
+      startAnimation(toolbar);
   }
+  else if (!activeAjaxRequests
+	   && progressImage)
+    progressImage.parentNode.removeChild(progressImage);
 }
 
 function isSafari3() {
