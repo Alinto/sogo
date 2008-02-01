@@ -41,6 +41,8 @@
 
 @interface SOGoMailAccounts : SOGoFolder
 
+- (NSArray *) toManyRelationshipKeys;
+
 @end
 
 #endif /* __Mailer_SOGoMailAccounts_H__ */

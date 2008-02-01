@@ -31,6 +31,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Context.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -168,6 +170,15 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
     }
   
   return folders;
+}
+
+- (BOOL) supportsQuotas
+{
+  NGImap4Client *imapClient;
+
+  imapClient = [[self imap4Connection] client];
+
+  return [[imapClient context] canQuota];
 }
 
 /* hierarchy */

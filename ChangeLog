@@ -1,3 +1,13 @@
+2008-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-quotaSupport]): new json string that lists the quota support
+	among the user's mail accounts.
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-supportsQuotas]): new method that returns whether the current
+	account server has support for quotas.
+
 2008-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder

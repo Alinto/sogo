@@ -2,11 +2,18 @@
 var accounts = {};
 var mailboxTree;
 var mailAccounts;
+var quotaSupport;
 if (typeof textMailAccounts != 'undefined') {
   if (textMailAccounts.length > 0)
     mailAccounts = textMailAccounts.evalJSON(true);
   else
     mailAccounts = new Array();
+}
+if (typeof textQuotaSupport != 'undefined') {
+  if (textQuotaSupport.length > 0)
+    quotaSupport = textQuotaSupport.evalJSON(true);
+  else
+    quotaSupport = new Array();
 }
 
 var Mailer = {
@@ -484,8 +491,11 @@ function openMailbox(mailbox, reload, idx) {
       = triggerAjaxRequest(url, messageListCallback,
 			   currentMessage);
 
-    var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
-    triggerAjaxRequest(quotasUrl, quotasCallback);
+    var account = Mailer.currentMailbox.split("/")[1];
+    if (accounts[account].supportsQuotas) {
+      var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
+      triggerAjaxRequest(quotasUrl, quotasCallback);
+    }
   }
 }
 
@@ -623,7 +633,7 @@ function onMessageContextMenuHide(event) {
 
 function onFolderMenuClick(event) {
   var onhide, menuName;
-   
+
   var menutype = this.parentNode.getAttribute("datatype");
   if (menutype) {
     if (menutype == "inbox") {
@@ -1152,7 +1162,8 @@ function configureMessageListBodyEvents(table) {
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
-	Event.observe(anchors[i], "click", openMailboxAtIndex.bindAsEventListener(anchors[i]));
+	Event.observe(anchors[i], "click",
+		      openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
     rows = table.tBodies[0].rows;
@@ -1446,6 +1457,10 @@ function onLoadMailboxesCallback(http) {
 
 function buildMailboxes(accountName, encoded) {
   var account = new Mailbox("account", accountName);
+
+  var accountIndex = mailAccounts.indexOf(accountName);
+  account.supportsQuotas = (quotaSupport[accountIndex] != 0);
+
   var data = encoded.evalJSON(true);
   for (var i = 0; i < data.length; i++) {
     var currentNode = account;

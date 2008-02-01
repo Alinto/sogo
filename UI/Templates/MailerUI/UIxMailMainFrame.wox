@@ -10,6 +10,7 @@
   const:jsFiles="dtree.js,MailerUI+dTree.js">
   <script type="text/javascript">
     var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
+    var textQuotaSupport = '<var:string value="quotaSupport" const:escapeHTML="NO"/>';
   </script>
   <div class="menu" id="accountIconMenu">
     <ul>

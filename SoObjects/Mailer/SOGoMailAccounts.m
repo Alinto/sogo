@@ -76,6 +76,7 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   }
   
   ct = [[ctClass alloc] initWithName:_key inContainer:self];
+
   return [ct autorelease];
 }
 

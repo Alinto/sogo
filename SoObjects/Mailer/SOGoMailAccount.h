@@ -48,6 +48,8 @@
   SOGoTrashFolder *trashFolder;
 }
 
+- (BOOL) supportsQuotas;
+
 /* folder pathes */
 
 - (NSArray *) allFolderPaths;
