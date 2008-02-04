@@ -10,7 +10,7 @@ you_are_an_attendee = "vous êtes invité";
 add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
 publish_info_text = "L'expéditeur vous informe de l'événement attaché.";
 cancel_info_text = "Votre invitation ou l'événement au complet a été annulé.";
-request_info_no_attendee = "propose une réunion entre les invités. Ce message tint seulement lieu d'avis, vous n'êtes pas indiqué comme invité.";
+request_info_no_attendee = "propose une réunion entre les invités. Ce message tient seulement lieu d'avis, vous n'êtes pas indiqué comme invité.";
 Appointment = "Événement";
 
 Organizer = "Organisateur";
