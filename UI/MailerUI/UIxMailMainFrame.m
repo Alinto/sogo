@@ -165,12 +165,20 @@
 
 - (WOResponse *) getDragHandlesStateAction
 {
-  NSString *dragHandles;
+  NSArray *dragHandles;
+  NSString *vertical, *horizontal;
 
   [self _setupContext];
-  dragHandles = [moduleSettings objectForKey: @"DragHandles"];
 
-  return [self responseWithStatus: 200 andString: dragHandles];
+  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+  dragHandles = [[NSArray alloc] initWithObjects: 
+				   vertical ? vertical : @"",
+				 horizontal ? horizontal : @"",
+				 nil];
+
+  return [self responseWithStatus: 200 
+	       andString: [dragHandles jsonRepresentation]];
 }
 
 - (WOResponse *) getFoldersStateAction
@@ -183,20 +191,25 @@
   return [self responseWithStatus: 200 andString: expandedFolders];
 }
 
-- (WOResponse *) saveDragHandlesStateAction
+- (WOResponse *) saveDragHandleStateAction
 {
   WORequest *request;
-  NSString *dragHandles;
+  NSString *dragHandle;
   
   [self _setupContext];
   request = [context request];
-  dragHandles = [request formValueForKey: @"dragHandles"];
+
+  if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleVertical"];
+  else if ((dragHandle = [request formValueForKey: @"horizontal"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleHorizontal"];
+  else
+    return [self responseWithStatus: 400];
   
-  [moduleSettings setObject: dragHandles
-		  forKey: @"DragHandles"];
-
   [ud synchronize];
-
+  
   return [self responseWithStatus: 204];
 }
 

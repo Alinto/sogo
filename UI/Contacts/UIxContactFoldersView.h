@@ -26,6 +26,13 @@
 #import <SOGoUI/UIxComponent.h>
 
 @interface UIxContactFoldersView : UIxComponent
+{
+  NSUserDefaults *ud;
+  NSMutableDictionary *moduleSettings;
+}
+
+- (WOResponse *) getDragHandlesStateAction;
+- (WOResponse *) saveDragHandleStateAction;
 
 @end
 

@@ -34,7 +34,7 @@
 - (WOResponse *) getDragHandlesStateAction;
 - (WOResponse *) getFoldersStateAction;
 
-- (WOResponse *) saveDragHandlesStateAction;
+- (WOResponse *) saveDragHandleStateAction;
 - (WOResponse *) saveFoldersStateAction;
 
 @end

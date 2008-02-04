@@ -70,7 +70,9 @@ var SOGoDragHandlesInterface = {
 	this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
 	this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
       }
-    } else if (this.dhType == 'vertical') {
+      this.saveDragHandleState(this.dhType, this.leftBlock.getStyle("width"));
+    }
+    else if (this.dhType == 'vertical') {
       var pointerY = Event.pointerY(event);
       if (pointerY <= this.topMargin) {
 	this.lowerBlock.setStyle({ top: (this.topMargin - delta) + 'px' });
@@ -81,6 +83,7 @@ var SOGoDragHandlesInterface = {
 	this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
 	this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
       }
+      this.saveDragHandleState(this.dhType, this.upperBlock.getStyle("height"));
     }
     Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
     Event.stopObserving(document.body, "mousemove", this.moveBound, true);
@@ -88,8 +91,6 @@ var SOGoDragHandlesInterface = {
     document.body.setAttribute('style', '');
     
     Event.stop(event);
-
-    saveDragHandlesState();
   },
   move: function (event) {
     if (!this.dhType)
@@ -135,6 +136,19 @@ var SOGoDragHandlesInterface = {
         this.lowerBlock.setStyle({ top: (uTop + topdelta) + 'px' });
       }
     }
+  },
+  saveDragHandleState: function (type, position) {
+    var urlstr =  ApplicationBaseURL + "saveDragHandleState"
+    + "?" + type + "=" + position;
+    triggerAjaxRequest(urlstr, this.saveDragHandleStateCallback);
+  },
+    
+  saveDragHandleStateCallback: function (http) {
+    if (isHttpStatus204(http.status)) {
+      log ("drag handle state saved");
+    }
+    else if (http.readyState == 4) {
+      log ("can't save handle state");
+    }
   }
-
 };

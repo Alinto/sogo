@@ -1722,8 +1722,29 @@ function deletePersonalCalendarCallback(http) {
     log ("ajax problem 5: " + http.status);
 }
 
-function saveDragHandlesState() {
-  // Call from SOGoDragHandles.js
+function getDragHandlesState() {
+  var urlstr =  ApplicationBaseURL + "dragHandlesState";
+  triggerAjaxRequest(urlstr, getDragHandlesStateCallback);
+}
+
+function getDragHandlesStateCallback(http) {
+  if (http.status == 200) {
+    if (http.responseText.length > 0) {
+      // The response text is a JSON array
+      // of the top and right offsets.
+      var data = http.responseText.evalJSON(true);
+      if (data[0].length > 0) {
+	$("eventsListView").setStyle({ height: data[0] });
+	$("calendarView").setStyle({ top: data[0] });
+	$("rightDragHandle").setStyle({ top: data[0] });
+      }
+      if (data[1].length > 0) {
+	$("leftPanel").setStyle({ width: data[1] });
+	$("rightPanel").setStyle({ left: data[1] });
+	$("verticalDragHandle").setStyle({ left: data[1] });
+      }
+    }
+  }
 }
 
 function configureLists() {
@@ -1765,6 +1786,7 @@ function initCalendars() {
   sorting["ascending"] = true;
   
   if (!document.body.hasClassName("popup")) {
+    getDragHandlesState();
     initDateSelectorEvents();
     initCalendarSelector();
     configureSearchField();

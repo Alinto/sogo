@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
@@ -45,6 +46,27 @@
 #import "UIxContactFoldersView.h"
 
 @implementation UIxContactFoldersView
+
+- (void) _setupContext
+{
+  SOGoUser *activeUser;
+  NSString *module;
+  SOGoContactFolders *clientObject;
+
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+
+  module = [clientObject nameInContainer];
+
+  ud = [activeUser userSettings];
+  moduleSettings = [ud objectForKey: module];
+  if (!moduleSettings)
+    {
+      moduleSettings = [NSMutableDictionary new];
+      [moduleSettings autorelease];
+    }
+  [ud setObject: moduleSettings forKey: module];
+}
 
 - (id) _selectActionForApplication: (NSString *) actionName
 {
@@ -246,5 +268,45 @@
 //                             inContext: context] == nil)
 //           ? contactFolder : nil);
 // }
+
+- (WOResponse *) getDragHandlesStateAction
+{
+  NSArray *dragHandles;
+  NSString *vertical, *horizontal;
+
+  [self _setupContext];
+
+  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+  dragHandles = [[NSArray alloc] initWithObjects: 
+				   vertical ? vertical : @"",
+				 horizontal ? horizontal : @"",
+				 nil];
+
+  return [self responseWithStatus: 200 
+	       andString: [dragHandles jsonRepresentation]];
+}
+
+- (WOResponse *) saveDragHandleStateAction
+{
+  WORequest *request;
+  NSString *dragHandle;
+  
+  [self _setupContext];
+  request = [context request];
+ 
+  if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleVertical"];
+  else if ((dragHandle = [request formValueForKey: @"horizontal"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleHorizontal"];
+  else
+    return [self responseWithStatus: 400];
+  
+  [ud synchronize];
+
+  return [self responseWithStatus: 204];
+}
 
 @end

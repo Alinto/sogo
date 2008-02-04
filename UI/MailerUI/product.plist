@@ -340,10 +340,10 @@
 	  pageName    = "UIxMailMainFrame";
 	  actionName  = "getFoldersState";
 	};
-	saveDragHandlesState = {
+	saveDragHandleState = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailMainFrame";
-	  actionName  = "saveDragHandlesState";
+	  actionName  = "saveDragHandleState";
 	};
 	saveFoldersState = {
 	  protectedBy = "View";

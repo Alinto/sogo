@@ -40,6 +40,16 @@
 	      protectedBy = "View";
 	      pageName    = "UIxCalMainView";
 	   };
+           dragHandlesState = {
+              protectedBy = "<public>";
+              pageName    = "UIxCalMainView";
+              actionName  = "getDragHandlesState";
+           };
+	   saveDragHandleState = {
+      	      protectedBy = "View";
+      	      pageName    = "UIxCalMainView";
+      	      actionName  = "saveDragHandleState";
+      	   };
 	   dateselector = {
 	      protectedBy = "View";
 	      pageName    = "UIxCalDateSelector"; 

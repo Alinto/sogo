@@ -33,6 +33,8 @@
 {
   NSString *monthMenuItem;
   NSNumber *yearMenuItem;
+  NSUserDefaults *ud;
+  NSMutableDictionary *moduleSettings;
 }
 
 - (NSArray *) monthMenuItems;
@@ -44,6 +46,9 @@
 
 - (void) setYearMenuItem: (NSNumber *) aYearMenuItem;
 - (NSNumber *) yearMenuItem;
+
+- (WOResponse *) getDragHandlesStateAction;
+- (WOResponse *) saveDragHandleStateAction;
 
 @end
 

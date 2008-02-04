@@ -28,10 +28,13 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 
 #import "UIxCalMainView.h"
 
@@ -41,6 +44,27 @@ static NSMutableArray *monthMenuItems = nil;
 static NSMutableArray *yearMenuItems = nil;
 
 @implementation UIxCalMainView
+
+- (void) _setupContext
+{
+  SOGoUser *activeUser;
+  NSString *module;
+  SOGoAppointmentFolders *clientObject;
+
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+
+  module = [clientObject nameInContainer];
+
+  ud = [activeUser userSettings];
+  moduleSettings = [ud objectForKey: module];
+  if (!moduleSettings)
+    {
+      moduleSettings = [NSMutableDictionary new];
+      [moduleSettings autorelease];
+    }
+  [ud setObject: moduleSettings forKey: module];
+}
 
 - (NSArray *) monthMenuItems
 {
@@ -98,6 +122,46 @@ static NSMutableArray *yearMenuItems = nil;
 - (NSNumber *) yearMenuItem
 {
   return yearMenuItem;
+}
+
+- (WOResponse *) getDragHandlesStateAction
+{
+  NSArray *dragHandles;
+  NSString *vertical, *horizontal;
+
+  [self _setupContext];
+
+  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+  dragHandles = [[NSArray alloc] initWithObjects: 
+				   vertical != nil ? vertical : @"",
+				 horizontal ? horizontal : @"",
+				 nil];
+
+  return [self responseWithStatus: 200 
+	       andString: [dragHandles jsonRepresentation]];
+}
+
+- (WOResponse *) saveDragHandleStateAction
+{
+  WORequest *request;
+  NSString *dragHandle;
+  
+  [self _setupContext];
+  request = [context request];
+
+  if ((dragHandle = [request formValueForKey: @"vertical"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleVertical"];
+  else if ((dragHandle = [request formValueForKey: @"horizontal"]) != nil)
+    [moduleSettings setObject: dragHandle
+		    forKey: @"DragHandleHorizontal"];
+  else
+    return [self responseWithStatus: 400];
+
+  [ud synchronize];
+
+  return [self responseWithStatus: 204];
 }
 
 @end

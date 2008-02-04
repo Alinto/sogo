@@ -1496,15 +1496,18 @@ function getDragHandlesStateCallback(http) {
   if (http.status == 200) {
     if (http.responseText.length > 0) {
       // The response text is a JSON array
-      // of the right and top offsets.
+      // of the top and right offsets.
       var data = http.responseText.evalJSON(true);
-
-      $("leftPanel").setStyle({ width: data[0] });
-      $("rightPanel").setStyle({ left: data[0] });
-      $("verticalDragHandle").setStyle({ left: data[0] });
-      $("mailboxContent").setStyle({ height: data[1] });
-      $("messageContent").setStyle({ top: data[1] });
-      $("rightDragHandle").setStyle({ top: data[1] });
+      if (data[0].length > 0) {
+	$("mailboxContent").setStyle({ height: data[0] });
+	$("messageContent").setStyle({ top: data[0] });
+	$("rightDragHandle").setStyle({ top: data[0] });
+      }
+      if (data[1].length > 0) {
+	$("leftPanel").setStyle({ width: data[1] });
+	$("rightPanel").setStyle({ left: data[1] });
+	$("verticalDragHandle").setStyle({ left: data[1] });
+      }
     }
   }
 }
@@ -1529,26 +1532,6 @@ function getFoldersStateCallback(http) {
       }
     }
     mailboxTree.autoSync();
-  }
-}
-
-function saveDragHandlesState() {
-  // Call from SOGoDragHandles.js
-  var leftBlock = $("leftPanel");
-  var upperBlock = $("mailboxContent");
-
-  if (leftBlock && upperBlock) {
-    var dragHandlesState = new Array(leftBlock.getStyle("width"), 
-				     upperBlock.getStyle("height"));
-    var urlstr =  ApplicationBaseURL + "saveDragHandlesState" + "?dragHandles=" + dragHandlesState.toJSON();
-    triggerAjaxRequest(urlstr, saveDragHandlesStateCallback);
-  }
-}
-
-function saveDragHandlesStateCallback(http) {
-  if (http.readyState == 4
-      && isHttpStatus204(http.status)) {
-    log ("drag handles state saved");
   }
 }
 

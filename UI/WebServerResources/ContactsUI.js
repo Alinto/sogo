@@ -763,8 +763,29 @@ function folderRenameCallback(http) {
   }
 }
 
-function saveDragHandlesState() {
-  // Call from SOGoDragHandles.js
+function getDragHandlesState() {
+  var urlstr =  ApplicationBaseURL + "dragHandlesState";
+  triggerAjaxRequest(urlstr, getDragHandlesStateCallback);
+}
+
+function getDragHandlesStateCallback(http) {
+  if (http.status == 200) {
+    if (http.responseText.length > 0) {
+      // The response text is a JSON array
+      // of the top and right offsets.
+      var data = http.responseText.evalJSON(true);
+      if (data[0].length > 0) {
+	$("contactsListContent").setStyle({ height: data[0] });
+	$("contactView").setStyle({ top: data[0] });
+	$("rightDragHandle").setStyle({ top: data[0] });
+      }
+      if (data[1].length > 0) {
+	$("contactFoldersList").setStyle({ width: data[1] });
+	$("rightPanel").setStyle({ left: data[1] });
+	$("dragHandle").setStyle({ left: data[1] });
+      }
+    }
+  }
 }
 
 function onMenuSharing(event) {
@@ -836,6 +857,7 @@ function configureSelectionButtons() {
 function initContacts(event) {
    if (!document.body.hasClassName("popup")) {
      configureAbToolbar();
+     getDragHandlesState();
    }
    else
      configureSelectionButtons();
