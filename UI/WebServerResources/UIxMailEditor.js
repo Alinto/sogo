@@ -278,9 +278,10 @@ function onTextContextMenu(event) {
 }
 
 function onTextMouseDown(event) {
-  log("coucou 1");
-  event.returnValue = false;
-  event.cancelBubble = false;
+  if (event.button == 0) {
+    event.returnValue = false;
+    event.cancelBubble = false;
+  }
 }
 
 function initMailEditor() {
@@ -307,8 +308,8 @@ function initMailEditor() {
   textarea.scrollTop = textarea.scrollHeight;
   textarea.observe("focus", onTextFirstFocus);
   textarea.observe("focus", onTextFocus);
-  textarea.observe("contextmenu", onTextContextMenu);
-  textarea.observe("mousedown", onTextMouseDown);
+//   textarea.observe("contextmenu", onTextContextMenu);
+  textarea.observe("mousedown", onTextMouseDown, true);
 
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);
