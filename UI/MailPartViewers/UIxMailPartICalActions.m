@@ -25,6 +25,9 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
@@ -93,10 +96,46 @@
   return [self _eventObjectWithUID: uid forUser: [context activeUser]];
 }
 
+- (void) _fixOrganizerInEvent: (iCalEvent *) brokenEvent
+{
+  iCalPerson *organizer;
+  SOGoMailObject *mail;
+  NSArray *addresses;
+  NGImap4EnvelopeAddress *from;
+  id value;
+
+  organizer = nil;
+
+  mail = [[self clientObject] mailObject];
+
+  addresses = [mail replyToEnvelopeAddresses];
+  if (![addresses count])
+    addresses = [mail fromEnvelopeAddresses];
+  if ([addresses count] > 0)
+    {
+      from = [addresses objectAtIndex: 0];
+      value = [from baseEMail];
+      if ([value isNotNull])
+	{
+	  organizer = [iCalPerson elementWithTag: @"organizer"];
+	  [organizer setEmail: value];
+	  value = [from personalName];
+	  if ([value isNotNull])
+	    [organizer setCn: value];
+	  [brokenEvent setOrganizer: organizer];
+	}
+    }
+
+  if (!organizer)
+    [self errorWithFormat: @"no organizer could be found, SOGo will crash"
+	  @" if the user replies"];
+}
+
 - (iCalEvent *)
   _setupChosenEventAndEventObject: (SOGoAppointmentObject **) eventObject
 {
   iCalEvent *emailEvent, *calendarEvent, *chosenEvent;
+  iCalPerson *organizer;
 
   emailEvent = [self _emailEvent];
   if (emailEvent)
@@ -113,6 +152,10 @@
 	  else
 	    chosenEvent = calendarEvent;
 	}
+
+      organizer = [chosenEvent organizer];
+      if (![[organizer rfc822Email] length])
+	[self _fixOrganizerInEvent: chosenEvent];
     }
   else
     chosenEvent = nil;

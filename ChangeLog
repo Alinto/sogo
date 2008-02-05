@@ -1,3 +1,10 @@
+2008-02-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m ([UIxMailPartICalActions -acceptAction])
+	([UIxMailPartICalActions -declineAction]): define the organizer of
+	the event as one of the reply-to or from addresses whenever the
+	organizer is not specified in those Outlook invitations.
+
 2008-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
