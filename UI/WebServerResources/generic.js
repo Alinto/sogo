@@ -1375,7 +1375,7 @@ function loadPreferences() {
 }
 
 function onLoadHandler(event) {
-  if (typeof UserLogin != "undefined")
+  if (typeof UserLogin != "undefined" && UserLogin != "wrongusernamepassword")
     loadPreferences();
   queryParameters = parseQueryParameters('' + window.location);
   if (!$(document.body).hasClassName("popup")) {
