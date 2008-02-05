@@ -51,20 +51,20 @@
 
 @implementation SOGoUserFolder
 
-+ (void) initialize
-{
-  SoClassSecurityInfo *sInfo;
-  NSArray *basicRoles;
+// + (void) initialize
+// {
+//   SoClassSecurityInfo *sInfo;
+//   NSArray *basicRoles;
 
-  sInfo = [self soClassSecurityInfo];
-  [sInfo declareObjectProtected: SoPerm_View];
+//   sInfo = [self soClassSecurityInfo];
+//   [sInfo declareObjectProtected: SoPerm_View];
 
-  basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
+//   basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
 
-  /* require Authenticated role for View and WebDAV */
-  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
-  [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
-}
+//   /* require Authenticated role for View and WebDAV */
+//   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
+//   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
+// }
 
 /* accessors */
 

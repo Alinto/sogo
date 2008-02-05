@@ -75,6 +75,7 @@
       defaultRoles = {
 	"Access Contents Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
+	"View" = ( "Authenticated" );
       };
     };
     SOGoGCSFolder = {
