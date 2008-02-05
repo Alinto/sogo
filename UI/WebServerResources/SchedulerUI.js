@@ -269,7 +269,7 @@ function onDaySelect(node) {
   if (document.selectedDate)
     document.selectedDate.deselect();
 
-  td.select();
+  td.selectElement();
   document.selectedDate = td;
 
   changeCalendarDisplay( { "day": day } );
@@ -445,7 +445,7 @@ function tasksListCallback(http) {
 	var selectedNodesId = http.callbackData;
 	for (var i = 0; i < selectedNodesId.length; i++) {
 	  // 	log(selectedNodesId[i] + " (" + i + ") is selected");
-	  $(selectedNodesId[i]).select();
+	  $(selectedNodesId[i]).selectElement();
 	}
       }
       else
@@ -474,7 +474,7 @@ function restoreCurrentDaySelection(div) {
 	var td = $(elements[i]).getParentWithTagName("td");
 	if (document.selectedDate)
 	  document.selectedDate.deselect();
-	$(td).select();
+	$(td).selectElement();
 	document.selectedDate = td;
       }
     }
@@ -547,7 +547,7 @@ function changeCalendarDisplay(data, newView) {
 	var selectedLink = $$('table#dateSelectorTable a[day='+day+']');
 	if (selectedLink.length > 0) {
 	  selectedCell = selectedLink[0].up(1);
-	  selectedCell.select();
+	  selectedCell.selectElement();
 	  document.selectedDate = selectedCell;
 	}
 	
@@ -1148,7 +1148,7 @@ function selectCalendarEvent(div) {
       selectedCalendarCell[i].deselect();
 
   for (var i = 0; i < div.siblings.length; i++)
-    div.siblings[i].select();
+    div.siblings[i].selectElement();
 
   selectedCalendarCell = div.siblings;
 }
@@ -1164,7 +1164,7 @@ function onCalendarSelectEvent() {
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
     div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
-    row.select();
+    row.selectElement();
   }
 }
 

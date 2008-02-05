@@ -86,7 +86,7 @@ function onFolderTreeItemClick(event) {
    var topNode = $("d");
    if (topNode.selectedEntry)
       topNode.selectedEntry.deselect();
-   this.select();
+   this.selectElement();
    topNode.selectedEntry = this;
 }
 

@@ -221,7 +221,7 @@ dTree.prototype.s = function(id) {
       eOld.deselect();
     }
     eNew = document.getElementById("s" + this.obj + id);
-    eNew.select();
+    eNew.selectElement();
     this.selectedNode = id;
     if (this.config.useCookies) this.setCookie('cs' + this.obj, cn.id);
   }

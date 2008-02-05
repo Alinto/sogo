@@ -155,7 +155,7 @@ Element.addMethods({
 		  element.onContextMenu.bindAsEventListener(element));
   },
 
-  select: function(element) {
+  selectElement: function(element) {
     element = $(element);
     element.addClassName('_selected');
   },
@@ -180,7 +180,7 @@ Element.addMethods({
       rows = element.getElementsByTagName('TR');
     while (s <= e) {
       if (rows[s].nodeType == 1)
-	$(rows[s]).select();
+	$(rows[s]).selectElement();
       s++;
     }
   },

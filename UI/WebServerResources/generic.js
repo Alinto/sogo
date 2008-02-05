@@ -555,13 +555,13 @@ function onRowClick(event) {
     else if (isNodeSelected(node) == true) {
       $(node).deselect();
     } else {
-      $(node).select();
+      $(node).selectElement();
     }
     // At this point, should empty content of 3-pane view
   } else {
     // Single line selection
     $(node.parentNode).deselectAll();
-    $(node).select();
+    $(node).selectElement();
   
     if (initialSelection != $(node.parentNode).getSelectedNodes()) {
       // Selection has changed; fire mousedown event
@@ -920,7 +920,7 @@ function onSearchFocus() {
     this.value = "";
     this.setAttribute("modified", "");
   } else {
-    this.select();
+    this.selectElement();
   }
 
   this.setStyle({ color: "#000" });
@@ -975,9 +975,9 @@ function initCriteria() {
   var searchCriteria = $("searchCriteria");
   var searchValue = $("searchValue");
   var searchOptions = $("searchOptions");
-  
+    
   if (searchValue) {
-    var firstOption = searchOptions.down('li');
+    var firstOption = searchOptions.down("li");
     if (firstOption) {
       searchCriteria.value = firstOption.getAttribute('id');
       searchValue.ghostPhrase = firstOption.innerHTML;
@@ -1181,7 +1181,7 @@ function initMenus() {
 }
 
 function initMenu(menuDIV, callbacks) {
-  var lis = $(menuDIV.down("ul")).childNodesWithTag("li");
+  var lis = menuDIV.down("ul").childNodesWithTag("li");
   for (var j = 0; j < lis.length; j++) {
     var node = $(lis[j]);
     node.observe("mousedown", listRowMouseDownHandler, false);

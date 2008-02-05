@@ -262,7 +262,7 @@ function deleteSelectedMessagesCallback(http) {
       if (deleteMessageRequestCount == 0) {
 	if (nextRow) {
 	  Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
-	  nextRow.select();
+	  nextRow.selectElement();
 	  loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
 	}
       }
@@ -351,7 +351,7 @@ function onMailboxTreeItemClick(event) {
 
   if (topNode.selectedEntry)
     topNode.selectedEntry.deselect();
-  this.select();
+  this.selectElement();
   topNode.selectedEntry = this;
 
   search = {};
@@ -537,7 +537,7 @@ function messageListCallback(http) {
     if (selected) {
       var row = $("row_" + selected);
       if (row) {
-	row.select();
+	row.selectElement();
 	lastClickedRow = row.rowIndex - $(row).up('table').down('thead').getElementsByTagName('tr').length;  
 	var rowPosition = row.rowIndex * row.getHeight();
 	if ($(row).up('div').getHeight() > rowPosition)
@@ -626,7 +626,7 @@ function onMessageContextMenuHide(event) {
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      nodes[i].select();
+      nodes[i].selectElement();
     topNode.menuSelectedRows = null;
   }
 }
@@ -659,7 +659,7 @@ function onFolderMenuClick(event) {
   if (topNode.menuSelectedEntry)
     topNode.menuSelectedEntry.deselect();
   topNode.menuSelectedEntry = this;
-  this.select();
+  this.selectElement();
 
   preventDefault(event);
 }
@@ -672,7 +672,7 @@ function onFolderMenuHide(event) {
     topNode.menuSelectedEntry = null;
   }
   if (topNode.selectedEntry)
-    topNode.selectedEntry.select();
+    topNode.selectedEntry.selectElement();
 }
 
 function deleteCachedMessage(messageId) {
@@ -1244,7 +1244,7 @@ function openInbox(node) {
   openMailbox(node.parentNode.getAttribute("dataname"));
   var tree = $("mailboxTree");
   tree.selectedEntry = node;
-  node.select();
+  node.selectElement();
   mailboxTree.o(1);
 }
 
@@ -1450,7 +1450,7 @@ function onLoadMailboxesCallback(http) {
   // 	 var links = document.getElementsByClassName("node", treeNodes[i]);
   // 	 if (tree.selectedEntry)
   // 	    tree.selectedEntry.deselect();
-  // 	 links[0].select();
+  // 	 links[0].selectElement();
   // 	 tree.selectedEntry = links[0];
   // 	 expandUpperTree(links[0]);
   //       }

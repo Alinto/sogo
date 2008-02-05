@@ -364,7 +364,7 @@ function onSelectAllAttachments() {
   var list = $("attachments");
   var nodes = list.childNodesWithTag("li");
   for (var i = 0; i < nodes.length; i++)
-    nodes[i].select();
+    nodes[i].selectElement();
 }
 
 function onWindowResize(event) {

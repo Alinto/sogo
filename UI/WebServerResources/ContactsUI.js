@@ -132,7 +132,7 @@ function contactsListCallback(http) {
 	for (var i = 0; i < selected.length; i++) {
 	  var row = $(selected[i]);
 	  if (row)
-	    row.select();
+	    row.selectElement();
 	}
       }
     }
@@ -166,7 +166,7 @@ function onContactFoldersContextMenu(event) {
   for (var i = 0; i < selectedNodes.length; i++)
     $(selectedNodes[i]).deselect();
   topNode.menuSelectedEntry = this;
-  $(this).select();
+  $(this).selectElement();
 }
 
 function onContactContextMenu(event, element) { log ("onContactContextMenu");
@@ -181,7 +181,7 @@ function onContactContextMenu(event, element) { log ("onContactContextMenu");
   for (var i = 0; i < selectedNodes.length; i++)
     $(selectedNodes[i]).deselect();
   topNode.menuSelectedEntry = element;
-  $(element).select();
+  $(element).selectElement();
 }
 
 function onContactContextMenuHide(event) {
@@ -194,7 +194,7 @@ function onContactContextMenuHide(event) {
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      $(nodes[i]).select();
+      $(nodes[i]).selectElement();
     topNode.menuSelectedRows = null;
   }
 }
@@ -209,7 +209,7 @@ function onContactFoldersContextMenuHide(event) {
   if (topNode.menuSelectedRows) {
     var nodes = topNode.menuSelectedRows;
     for (var i = 0; i < nodes.length; i++)
-      nodes[i].select();
+      nodes[i].selectElement();
     topNode.menuSelectedRows = null;
   }
 }
@@ -222,7 +222,7 @@ function onFolderMenuHide(event) {
     topNode.menuSelectedEntry = null;
   }
   if (topNode.selectedEntry)
-    topNode.selectedEntry.select();
+    topNode.selectedEntry.selectElement();
 }
 
 function loadContact(idx) {
@@ -602,7 +602,7 @@ function onFolderUnsubscribeCB(folderId) {
    var node = $(folderId);
    node.parentNode.removeChild(node);
    var personal = $("/personal");
-   personal.select();
+   personal.selectElement();
    onFolderSelectionChange();
 }
 
@@ -619,7 +619,7 @@ function onAddressBookRemove(event) {
       var abId = folderIdElements[0].substr(1);
       deletePersonalAddressBook(abId);
       var personal = $("/personal");
-      personal.select();
+      personal.selectElement();
       onFolderSelectionChange();
     }
   }
@@ -723,7 +723,7 @@ function configureContactFolders() {
     lookupDeniedFolders();
 
     var personalFolder = $("/personal");
-    personalFolder.select();
+    personalFolder.selectElement();
     openContactsFolder("/personal");
   }
 }

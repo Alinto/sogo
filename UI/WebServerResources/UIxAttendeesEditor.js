@@ -49,6 +49,10 @@ function onContactKeydown(event) {
 	delayedSearch = true;
 	setTimeout("performSearch()", attendeesEditor.delay);
       }
+      else if (this.value.length == 0) {
+	if (document.currentPopupMenu)
+	  hideMenu(document.currentPopupMenu);
+      }
   }
   else if (this.confirmedValue)
     if (event.keyCode == 13) // Enter

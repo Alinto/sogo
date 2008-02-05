@@ -31,7 +31,7 @@ Element.addMethods({
       for (var i = 0; i < nodes.length; i++) {
 	var node = nodes.item(i);
 	if (node.tagName && node.hasClassName(className))
-	  node.select();
+	  node.selectElement();
       }
     }
   }
