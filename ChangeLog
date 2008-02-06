@@ -1,3 +1,8 @@
+2008-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-supportsQuotas]): test quota support by querying the server capability.
+
 2008-02-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m ([UIxMailPartICalActions -acceptAction])

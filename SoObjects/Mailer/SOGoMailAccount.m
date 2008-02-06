@@ -175,10 +175,12 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
 - (BOOL) supportsQuotas
 {
   NGImap4Client *imapClient;
+  NSArray *capability;
 
   imapClient = [[self imap4Connection] client];
+  capability = [[imapClient capability] objectForKey: @"capability"];
 
-  return [[imapClient context] canQuota];
+  return [capability containsObject: @"quota"];
 }
 
 /* hierarchy */
