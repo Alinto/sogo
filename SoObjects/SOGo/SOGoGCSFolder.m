@@ -273,7 +273,10 @@ static BOOL sendFolderAdvisories = NO;
 				 withName: displayName
                                  atPath: ocsPath];
 
-  if (!result && sendFolderAdvisories) [self sendFolderAdvisoryTemplate: @"Addition"];
+  if (!result
+      && [[context request] handledByDefaultHandler]
+      && sendFolderAdvisories)
+    [self sendFolderAdvisoryTemplate: @"Addition"];
 
   return (result == nil);
 }
@@ -291,7 +294,9 @@ static BOOL sendFolderAdvisories = NO;
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 
-  if (!error && sendFolderAdvisories) [self sendFolderAdvisoryTemplate: @"Removal"];
+  if (!error && sendFolderAdvisories
+      && [[context request] handledByDefaultHandler])
+    [self sendFolderAdvisoryTemplate: @"Removal"];
 
   return error;
 }

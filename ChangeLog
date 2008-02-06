@@ -1,5 +1,9 @@
 2008-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder -ocsFolder]):
+	send an email only when not in a dav request.
+	([SOGoGCSFolder -delete]): same as above.
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-supportsQuotas]): test quota support by querying the server
 	capability.
