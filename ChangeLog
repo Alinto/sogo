@@ -1,11 +1,13 @@
 2008-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
-	-supportsQuotas]): test quota support by querying the server capability.
+	-supportsQuotas]): test quota support by querying the server
+	capability.
 
 2008-02-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/MailPartViewers/UIxMailPartICalActions.m ([UIxMailPartICalActions -acceptAction])
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -acceptAction])
 	([UIxMailPartICalActions -declineAction]): define the organizer of
 	the event as one of the reply-to or from addresses whenever the
 	organizer is not specified in those Outlook invitations.
