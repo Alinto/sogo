@@ -652,6 +652,11 @@ function onBodyClickMenuHandler(event) {
     preventDefault(event);
 }
 
+function onMenuClickHandler(event) {
+  if (!this.hasClassName("disabled"))
+    this.menuCallback.apply(this, [event]);
+}
+
 function hideMenu(menuNode) {
   var onHide;
 
@@ -1198,7 +1203,8 @@ function initMenu(menuDIV, callbacks) {
       }
       else {
 	node.observe("mouseup", onBodyClickMenuHandler);
-	node.observe("click", callback);
+	node.menuCallback = callback;
+	node.observe("click", onMenuClickHandler);
       }
     }
     else

@@ -169,7 +169,7 @@ function onContactFoldersContextMenu(event) {
   $(this).selectElement();
 }
 
-function onContactContextMenu(event, element) { log ("onContactContextMenu");
+function onContactContextMenu(event, element) {//  log ("onContactContextMenu");
   var menu = $("contactMenu");
 
   Event.observe(menu, "mousedown", onContactContextMenuHide, false);
@@ -324,6 +324,14 @@ function onMenuWriteToContact(event) {
 
   if (document.body.hasClassName("popup"))
     window.close();
+}
+
+function onMenuAIMContact(event) {
+  var contactId = document.menuTarget.getAttribute('id');
+  var contactRow = $(contactId);
+  var aimCell = contactRow.down('td', 2);
+
+  window.location.href = "aim:goim?ScreenName=" + aimCell.firstChild.nodeValue;
 }
 
 function onMenuDeleteContact(event) {
@@ -808,7 +816,7 @@ function onMenuSharing(event) {
 
 function onContactFoldersMenuPrepareVisibility() {
   var folders = $("contactFolders");
-  var selected = folders.getSelectedNodes();  
+  var selected = folders.getSelectedNodes();
 
   if (selected.length > 0) {
     var folderOwner = selected[0].getAttribute("owner");
@@ -827,19 +835,42 @@ function onContactFoldersMenuPrepareVisibility() {
   }
 }
 
+function onContactMenuPrepareVisibility() {
+  var contactId = document.menuTarget.getAttribute('id');
+  var contactRow = $(contactId);
+  var elements = $(this).down("ul").childElements();
+
+  var writeOption = elements[2];
+  var emailCell = contactRow.down('td', 1);
+  if (emailCell.firstChild)
+    writeOption.removeClassName("disabled");
+  else
+    writeOption.addClassName("disabled");
+
+  var aimOption = elements[3];
+  var aimCell = contactRow.down('td', 2);
+  if (aimCell.firstChild)
+    aimOption.removeClassName("disabled");
+  else
+    aimOption.addClassName("disabled");
+}
+
 function getMenus() {
    var menus = {};
    menus["contactFoldersMenu"] = new Array(onMenuModify, "-", null,
 					   null, "-", null, "-",
 					   onMenuSharing);
    menus["contactMenu"] = new Array(onMenuEditContact, "-",
-				    onMenuWriteToContact, null, "-",
-				    onMenuDeleteContact);
+				    onMenuWriteToContact, onMenuAIMContact,
+				    "-", onMenuDeleteContact);
    menus["searchMenu"] = new Array(setSearchCriteria);
    
    var contactFoldersMenu = $("contactFoldersMenu");
    if (contactFoldersMenu)
      contactFoldersMenu.prepareVisibility = onContactFoldersMenuPrepareVisibility;
+   var contactMenu = $("contactMenu");
+   if (contactMenu)
+     contactMenu.prepareVisibility = onContactMenuPrepareVisibility;
    
    return menus;
 }
