@@ -26,12 +26,14 @@
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "NSArray+Utilities.h"
 #import "LDAPSource.h"
 #import "LDAPUserManager.h"
 
 static NSString *defaultMailDomain = nil;
+static BOOL defaultMailDomainIsConfigured = NO;
 
 @implementation LDAPUserManager
 
@@ -44,7 +46,20 @@ static NSString *defaultMailDomain = nil;
     {
       defaultMailDomain = [ud stringForKey: @"SOGoDefaultMailDomain"];
       [defaultMailDomain retain];
+      defaultMailDomainIsConfigured = YES;
     }
+  if (!defaultMailDomain)
+    {
+      [self warnWithFormat:
+	      @"no domain specified for SOGoDefaultMailDomain,"
+	    @" value set to 'localhost'"];
+      defaultMailDomain = @"localhost";
+    }
+}
+
++ (BOOL) defaultMailDomainIsConfigured
+{
+  return defaultMailDomainIsConfigured;
 }
 
 + (id) sharedUserManager

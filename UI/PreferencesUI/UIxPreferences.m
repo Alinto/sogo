@@ -486,33 +486,16 @@ static BOOL shouldDisplayPasswordChange = NO;
   return [(NSDictionary *) item keysWithFormat: @"%{fullName} <%{email}>"];
 }
 
-- (NSMutableDictionary *) defaultIdentity
-{
-  NSMutableDictionary *currentIdentity, *defaultIdentity;
-  NSEnumerator *identities;
-
-  defaultIdentity = nil;
-
-  identities = [[user allIdentities] objectEnumerator];
-  while (!defaultIdentity
-	 && (currentIdentity = [identities nextObject]))
-    if ([[currentIdentity objectForKey: @"isDefault"] boolValue])
-      defaultIdentity = currentIdentity;
-
-  return defaultIdentity;
-}
-
 - (NSString *) signature
 {
-  return [[self defaultIdentity] objectForKey: @"signature"];
+  return [[user defaultIdentity] objectForKey: @"signature"];
 }
 
 - (void) setSignature: (NSString *) newSignature
 {
-  [[self defaultIdentity] setObject: newSignature
+  [[user defaultIdentity] setObject: newSignature
 			  forKey: @"signature"];
-  [userDefaults setObject: [user mailAccounts]
-		forKey: @"MailAccounts"];
+  [user saveMailAccounts];
 }
 
 - (id <WOActionResults>) defaultAction

@@ -77,6 +77,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 + (SOGoUser *) userWithLogin: (NSString *) login
 		       roles: (NSArray *) roles;
+
+- (void) setPrimaryRoles: (NSArray *) newRoles;
+
 - (void) setCurrentPassword: (NSString *) newPassword;
 - (NSString *) currentPassword;
 
@@ -117,10 +120,13 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSArray *) mailAccounts;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
+- (NSMutableDictionary *) defaultIdentity;
 - (NSString *) messageForwarding;
 - (NSString *) messageCheck;
 
 - (NSString *) signature;
+
+- (void) saveMailAccounts;
 
 - (BOOL) isSuperUser;
 

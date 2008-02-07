@@ -1,3 +1,20 @@
+2008-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-setSignature:newSignature]): invoke -[SOGoUser saveMailAccounts]
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -defaultIdentity]): method
+	moved from UIxPreferences.m.
+	([SOGoUser -saveMailAccounts]): new methods that save the
+	"MailAccounts" preference in the user settings.
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	+initialize]): issue a warning whenever "SOGoDefaultMailDomain"
+	is not configured in the user defaults, setting it to "localhost"
+	by default.
+	([LDAPUserManager +defaultMailDomainIsConfigured]): new method
+	that returns whether "SOGoDefaultMailDomain" is configured.
+
 2008-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder -ocsFolder]):

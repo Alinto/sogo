@@ -29,6 +29,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "AgenorUserDefaults.h"
 #import "LDAPUserManager.h"
@@ -42,6 +43,7 @@
 
 static NSTimeZone *serverTimeZone = nil;
 static NSString *fallbackIMAP4Server = nil;
+static BOOL fallbackIsConfigured = NO;
 static NSString *defaultLanguage = nil;
 static NSArray *superUsernames = nil;
 static NSURL *AgenorProfileURL = nil;
@@ -92,6 +94,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   if (!fallbackIMAP4Server)
     ASSIGN (fallbackIMAP4Server,
 	    [ud stringForKey: @"SOGoFallbackIMAP4Server"]);
+  if (fallbackIMAP4Server)
+    fallbackIsConfigured = YES;
+  else
+    {
+      [self warnWithFormat:
+	      @"no server specified for SOGoFallbackIMAP4Server,"
+	    @" value set to 'localhost'"];
+      fallbackIMAP4Server = @"localhost";
+    }
+
   if (!defaultLanguage)
     {
       ASSIGN (defaultLanguage, [ud stringForKey: @"SOGoDefaultLanguage"]);
@@ -120,6 +132,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     lng = defaultLanguage;
 
   return lng;
+}
+
++ (NSString *) fallbackIMAP4Server
+{
+  return fallbackIMAP4Server;
 }
 
 + (SOGoUser *) userWithLogin: (NSString *) newLogin
@@ -176,6 +193,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
 		  objectForKey: @"c_uid"];
     }
+
   if (realUID)
     self = [super initWithLogin: realUID roles: newRoles];
   else
@@ -282,6 +300,45 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     [self _fetchCN];
 
   return cn;
+}
+
+- (NSMutableDictionary *) defaultIdentity
+{
+  NSMutableDictionary *currentIdentity, *defaultIdentity;
+  NSEnumerator *identities;
+
+  defaultIdentity = nil;
+
+  identities = [[self allIdentities] objectEnumerator];
+  while (!defaultIdentity
+	 && (currentIdentity = [identities nextObject]))
+    if ([[currentIdentity objectForKey: @"isDefault"] boolValue])
+      defaultIdentity = currentIdentity;
+
+  return defaultIdentity;
+}
+
+- (void) saveMailAccounts
+{
+  BOOL doSave;
+
+  doSave = YES;
+  if (!fallbackIsConfigured)
+    {
+      [self logWithFormat: @"'SOGoFallbackIMAP4Server' is not set"];
+      doSave = NO;
+    }
+  if (![LDAPUserManager defaultMailDomainIsConfigured])
+    {
+      [self logWithFormat: @"'SOGoDefaultMailDomain' is not set"];
+      doSave = NO;
+    }
+  if (doSave)
+    [userDefaults setObject: [self mailAccounts]
+		  forKey: @"MailAccounts"];
+  else
+    [self logWithFormat: @"saving mail accounts is disabled until the"
+	  @" variable(s) mentionned above are configured"];
 }
 
 // - (NSString *) primaryMailServer

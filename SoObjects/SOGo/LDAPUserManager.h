@@ -43,6 +43,8 @@
 
 + (id) sharedUserManager;
 
++ (BOOL) defaultMailDomainIsConfigured;
+
 - (NSArray *) sourceIDs;
 - (NSDictionary *) metadataForSourceID: (NSString *) sourceID;
 - (NSArray *) authenticationSourceIDs;
