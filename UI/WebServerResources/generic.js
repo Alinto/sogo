@@ -322,7 +322,7 @@ function onAjaxRequestStateChange(http) {
       http.callbackData = null;
     }
   }
-  catch (e) {
+  catch(e) {
     activeAjaxRequests--;
     checkAjaxRequestsState();
     http.onreadystatechange = Prototype.emptyFunction;

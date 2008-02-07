@@ -494,7 +494,11 @@ function openMailbox(mailbox, reload, idx) {
     var account = Mailer.currentMailbox.split("/")[1];
     if (accounts[account].supportsQuotas) {
       var quotasUrl = ApplicationBaseURL + mailbox + "/quotas";
-      triggerAjaxRequest(quotasUrl, quotasCallback);
+      if (document.quotaAjaxRequest) {
+	document.quotaAjaxRequest.aborted = true;
+	document.quotaAjaxRequest.abort();
+      }
+      document.quotaAjaxRequest = triggerAjaxRequest(quotasUrl, quotasCallback);
     }
   }
 }
@@ -601,6 +605,8 @@ function quotasCallback(http) {
       window.status = text;
     }
   }
+
+  document.quotaAjaxRequest = null;
 }
 
 function onMessageContextMenu(event) {
