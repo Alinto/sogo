@@ -454,16 +454,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities;
-  NSString *name, *fullName, *userName;
+  NSString *name, *fullName;
   NSArray *mails;
   unsigned int count, max;
 
   mailAccount = [NSMutableDictionary dictionary];
-  userName = [[login stringByReplacingString: @"@" withString: @"%40"]
-	       stringByEscapingURL];
   name = [NSString stringWithFormat: @"%@@%@",
-		   userName, fallbackIMAP4Server];
-  [mailAccount setObject: userName forKey: @"userName"];
+		   login, fallbackIMAP4Server];
+  [mailAccount setObject: login forKey: @"userName"];
   [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
   [mailAccount setObject: name forKey: @"name"];
 
@@ -507,6 +505,23 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     }
 
   return mailAccounts;
+}
+
+- (NSDictionary *) accountWithName: (NSString *) accountName;
+{
+  NSEnumerator *accounts;
+  NSDictionary *mailAccount, *currentAccount;
+
+  mailAccount = nil;
+
+  accounts = [[self mailAccounts] objectEnumerator];
+  while (!mailAccount
+	 && ((currentAccount = [accounts nextObject])))
+    if ([[currentAccount objectForKey: @"name"]
+	  isEqualToString: accountName])
+      mailAccount = currentAccount;
+
+  return mailAccount;
 }
 
 /*

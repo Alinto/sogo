@@ -95,7 +95,6 @@
 //     return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
 // 			reason:@"Tried to access the mail of another user"];
 //   }
- 
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];

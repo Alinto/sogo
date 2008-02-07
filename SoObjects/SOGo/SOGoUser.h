@@ -118,6 +118,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSTimeZone *) serverTimeZone;
 
 - (NSArray *) mailAccounts;
+- (NSDictionary *) accountWithName: (NSString *) accountName;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
 - (NSMutableDictionary *) defaultIdentity;

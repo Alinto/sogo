@@ -28,8 +28,9 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Context.h>
@@ -245,6 +246,27 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   return [creds objectAtIndex:0]; /* the user */
 }
 
+- (NSString *) _urlHostString
+{
+  NSDictionary *mailAccount;
+  NSString *username, *escUsername, *hostString;
+
+  mailAccount = [[context activeUser] accountWithName: nameInContainer];
+  if (mailAccount)
+    {
+      username = [mailAccount objectForKey: @"userName"];
+      escUsername
+	= [[username stringByReplacingString: @"@" withString: @"%40"]
+	    stringByEscapingURL];
+      hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
+			     [mailAccount objectForKey: @"serverName"]];
+    }
+  else
+    hostString = @"localhost";
+
+  return hostString;
+}
+
 - (NSMutableString *) imap4URLString
 {
   /* private, overridden by SOGoSharedMailAccount */
@@ -258,7 +280,7 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
   else
     [urlString appendString: @"imap://"];
 
-  host = [self nameInContainer];
+  host = [self _urlHostString];
   if (![host rangeOfString: @"@"].length)
     [urlString appendFormat: @"%@@", [self imap4LoginFromHTTP]];
   [urlString appendFormat: @"%@/", host];

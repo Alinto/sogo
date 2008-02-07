@@ -1,8 +1,15 @@
 2008-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-imap4URLString]): compose the mail hostname part of the url by
+	escaping the username. This is part of the fix below.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): if the
 	loginname for the default mail account contains an "@", it should
 	be url-escaped to avoid confusing NSURL.
+	([SOGoUser -accountWithName:accountName]): new method that wanders
+	the accounts list and returns the one that matches the name passed
+	as parameter, if found.
 
 	* SoObjects/SOGo/SOGoUserFolder.m ([-login]): removed useless
 	method.
