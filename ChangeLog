@@ -1,5 +1,9 @@
 2008-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): if the
+	loginname for the default mail account contains an "@", it should
+	be url-escaped to avoid confusing NSURL.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([-login]): removed useless
 	method.
 	([SOGoUserFolder -ownerInContext:_ctx]): compute the owner name

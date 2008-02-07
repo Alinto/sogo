@@ -454,14 +454,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities;
-  NSString *name, *fullName;
+  NSString *name, *fullName, *userName;
   NSArray *mails;
   unsigned int count, max;
 
   mailAccount = [NSMutableDictionary dictionary];
+  userName = [[login stringByReplacingString: @"@" withString: @"%40"]
+	       stringByEscapingURL];
   name = [NSString stringWithFormat: @"%@@%@",
-		   login, fallbackIMAP4Server];
-  [mailAccount setObject: login forKey: @"userName"];
+		   userName, fallbackIMAP4Server];
+  [mailAccount setObject: userName forKey: @"userName"];
   [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
   [mailAccount setObject: name forKey: @"name"];
 
