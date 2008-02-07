@@ -28,19 +28,18 @@
 
 #import "../SOGo/NSArray+Utilities.h"
 #import "../SOGo/SOGoUser.h"
+#import "SOGoMailAccount.h"
 
 #import "SOGoMailAccounts.h"
 
 @implementation SOGoMailAccounts
 
-static NSString *AgenorShareLoginMarker  = @".-.";
-
 /* listing the available mailboxes */
 
-- (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
-{
-  return [[container nameInContainer] isEqualToString: userLogin];
-}
+// - (BOOL) isInHomeFolderBranchOfLoggedInAccount: (NSString *) userLogin
+// {
+//   return [[container nameInContainer] isEqualToString: userLogin];
+// }
 
 - (NSArray *) toManyRelationshipKeys
 {
@@ -62,70 +61,53 @@ static NSString *AgenorShareLoginMarker  = @".-.";
   return [[accounts objectsForKey: @"name"] containsObject: _key];
 }
 
-- (id) mailAccountWithName: (NSString *) _key
-		 inContext: (id) _ctx
-{
-  static Class ctClass = Nil;
-  id ct;
+// - (id) mailAccountWithName: (NSString *) _key
+// 		 inContext: (id) _ctx
+// {
+//   static Class ctClass = Nil;
+//   id ct;
   
-  if (ctClass == Nil)
-    ctClass = NSClassFromString(@"SOGoMailAccount");
-  if (ctClass == Nil) {
-    [self errorWithFormat:@"missing SOGoMailAccount class!"];
-    return nil;
-  }
+//   if (ctClass == Nil)
+//     ctClass = NSClassFromString(@"SOGoMailAccount");
+//   if (ctClass == Nil) {
+//     [self errorWithFormat:@"missing SOGoMailAccount class!"];
+//     return nil;
+//   }
   
-  ct = [[ctClass alloc] initWithName:_key inContainer:self];
+//   ct = [[ctClass alloc] initWithName:_key inContainer:self];
 
-  return [ct autorelease];
-}
-
-- (id) sharedMailAccountWithName: (NSString *) _key
-		       inContext: (id) _ctx
-{
-  static Class ctClass = Nil;
-
-  if (ctClass == Nil)
-    ctClass = NSClassFromString (@"SOGoSharedMailAccount");
-  if (ctClass == Nil)
-    [self errorWithFormat:@"missing SOGoSharedMailAccount class!"];
-  
-  return [ctClass objectWithName: _key inContainer: self];
-}
+//   return [ct autorelease];
+// }
 
 - (id) lookupName: (NSString *) _key
 	inContext: (id) _ctx
 	  acquire: (BOOL) _flag
 {
   id obj;
-  NSString *userLogin;
+//   NSString *userLogin;
 
-  userLogin = [[context activeUser] login];
+//   userLogin = [[context activeUser] login];
   
+//   if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
+//     [self warnWithFormat:@ "User %@ tried to access mail hierarchy of %@",
+// 	  userLogin, [container nameInContainer]];
+    
+//     return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
+// 			reason:@"Tried to access the mail of another user"];
+//   }
+ 
+
   /* first check attributes directly bound to the application */
-  if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]))
-    return obj;
+  obj = [super lookupName:_key inContext:_ctx acquire:NO];
+  if (!obj)
+    {
+      if ([self isValidMailAccountName: _key])
+	obj = [SOGoMailAccount objectWithName: _key inContainer: self];
+      else
+	obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
+    }
 
-  if (![self isInHomeFolderBranchOfLoggedInAccount: userLogin]) {
-    [self warnWithFormat:@ "User %@ tried to access mail hierarchy of %@",
-	  userLogin, [container nameInContainer]];
-    
-    return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
-			reason:@"Tried to access the mail of another user"];
-  }
-  
-  if ([self isValidMailAccountName:_key]) {
-    BOOL isSharedKey;
-    
-    isSharedKey = [_key rangeOfString:AgenorShareLoginMarker].length > 0;
-    
-    return isSharedKey
-      ? [self sharedMailAccountWithName:_key inContext:_ctx]
-      : [self mailAccountWithName:_key inContext:_ctx];
-  }
-
-  /* return 404 to stop acquisition */
-  return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+  return obj;
 }
 
 @end /* SOGoMailAccounts */

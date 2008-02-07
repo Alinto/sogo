@@ -31,9 +31,9 @@
         "WebDAV Access" = ( "Owner", "AuthorizedSubscriber" );
       };
     };
-    SOGoSharedMailAccount = {
+/*    SOGoSharedMailAccount = {
       superclass    = "SOGoMailAccount";
-    };
+    }; */
     SOGoMailFolder = {
       superclass    = "SOGoMailBaseObject";
       defaultRoles = {
@@ -46,9 +46,9 @@
         "SaveAcls" = ( "Owner", "MailAdministrator" );
       };
     };
-    SOGoSharedInboxFolder = {
+/*    SOGoSharedInboxFolder = {
       superclass    = "SOGoMailFolder";
-    };
+    }; */
     SOGoTrashFolder = {
       superclass    = "SOGoMailFolder";
     };

@@ -132,7 +132,7 @@ static BOOL debugOn = YES;
 {
   NSURL *url;
 
-  if ([container respondsToSelector:@selector(imap4URL)])
+  if ([container respondsToSelector: @selector(imap4URL)])
     url = [container imap4URL];
   else
     {
