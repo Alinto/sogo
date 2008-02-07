@@ -14,9 +14,7 @@ Mailer_OBJC_FILES += \
 	SOGoMailBaseObject.m		\
 	SOGoMailAccounts.m		\
 	SOGoMailAccount.m		\
-	SOGoSharedMailAccount.m		\
 	SOGoMailFolder.m		\
-	SOGoSharedInboxFolder.m		\
 	SOGoMailObject.m		\
 	SOGoDraftObject.m		\
 	SOGoMailObject+Draft.m		\

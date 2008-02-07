@@ -1,5 +1,11 @@
 2008-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoSharedMailAccount.[hm]: removed useless
+	module.
+
+	* SoObjects/Mailer/SOGoSharedInboxFolder.[hm]: removed useless
+	module.
+
 	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
 	-setSignature:newSignature]): invoke -[SOGoUser saveMailAccounts]
 
