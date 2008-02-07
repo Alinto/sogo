@@ -5,9 +5,6 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-    <span id="toolbar">
-    </span>
-
     <div class="menu" id="searchMenu">
       <ul id="searchOptions" class="choiceMenu">
         <li id="name_or_address"><var:string
