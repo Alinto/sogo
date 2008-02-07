@@ -66,13 +66,6 @@
 //   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
 // }
 
-/* accessors */
-
-- (NSString *) login
-{
-  return nameInContainer;
-}
-
 /* hierarchy */
 
 - (NSArray *) toManyRelationshipKeys
@@ -97,7 +90,15 @@
 
 - (NSString *) ownerInContext: (WOContext *) _ctx
 {
-  return nameInContainer;
+  SOGoUser *ownerUser;
+
+  if (!owner)
+    {
+      ownerUser = [SOGoUser userWithLogin: nameInContainer roles: nil];
+      owner = [ownerUser login];
+    }
+
+  return owner;
 }
 
 /* looking up shared objects */
@@ -327,14 +328,17 @@
 //           : [super permissionForKey: key]);
 // }
 
-- (SOGoAppointmentFolders *) privateCalendars: (NSString *) _key
-				    inContext: (WOContext *) _ctx
+- (SOGoAppointmentFolders *) privateCalendars: (NSString *) key
+				    inContext: (WOContext *) localContext
 {
   SOGoAppointmentFolders *calendars;
-  
-  calendars = [$(@"SOGoAppointmentFolders") objectWithName: _key inContainer: self];
-  [calendars setBaseOCSPath: [NSString stringWithFormat: @"/Users/%@/Calendar",
-				       nameInContainer]];
+  NSString *baseOCSPath;
+
+  calendars = [$(@"SOGoAppointmentFolders") objectWithName: key
+		inContainer: self];
+  baseOCSPath = [NSString stringWithFormat: @"/Users/%@/Calendar",
+			  [self ownerInContext: nil]];
+  [calendars setBaseOCSPath: baseOCSPath];
 
   return calendars;
 }
@@ -343,10 +347,12 @@
                                inContext: (WOContext *) _ctx
 {
   SOGoContactFolders *contacts;
+  NSString *baseOCSPath;
 
   contacts = [$(@"SOGoContactFolders") objectWithName:_key inContainer: self];
-  [contacts setBaseOCSPath: [NSString stringWithFormat: @"/Users/%@/Contacts",
-				      nameInContainer]];
+  baseOCSPath = [NSString stringWithFormat: @"/Users/%@/Contacts",
+			  [self ownerInContext: nil]];
+  [contacts setBaseOCSPath: baseOCSPath];
 
   return contacts;
 }

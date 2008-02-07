@@ -1,5 +1,16 @@
 2008-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([-login]): removed useless
+	method.
+	([SOGoUserFolder -ownerInContext:_ctx]): compute the owner name
+	from a SOGoUser instance initialized with the nameInContainer as
+	initial login name. This way, all the objects belonging to the
+	corresponding user will be accessible with all the fields
+	mentionned in the "bindFields" LDAP settings value.
+	([SOGoUserFolder -privateCalendars:keyinContext:localContext])
+	([SOGoUserFolder -privateContacts:_keyinContext:_ctx]): use -[self
+	ownerInContext:] to determine the OCS path.
+
 	* SoObjects/Mailer/SOGoSharedMailAccount.[hm]: removed useless
 	module.
 

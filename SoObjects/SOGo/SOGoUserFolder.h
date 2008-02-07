@@ -43,10 +43,6 @@
 
 @interface SOGoUserFolder : SOGoFolder
 
-/* accessors */
-
-- (NSString *) login;
-
 /* ownership */
 
 - (NSString *) ownerInContext: (WOContext *) _ctx;
