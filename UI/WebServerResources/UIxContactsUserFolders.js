@@ -88,56 +88,61 @@ function onFolderTreeItemClick(event) {
       topNode.selectedEntry.deselect();
    this.selectElement();
    topNode.selectedEntry = this;
+
+   if (window.opener.userFolderType == "user")
+     $("addButton").disabled = false;
+   else {
+     var dataname = this.parentNode.getAttribute("dataname");
+     $("addButton").disabled = (dataname.indexOf(":") == -1);
+   };
 }
 
 function userFoldersCallback(http) {
-   if (http.readyState == 4) {
-      document.userFoldersRequest = null;
-      var div = $("folders");
-      if (http.status == 200) {
-	 var response = http.responseText;
-	 div.innerHTML = buildTree(http.responseText);
-	 div.clean = false;
-	 var nodes = document.getElementsByClassName("node", $("d"));
-	 for (i = 0; i < nodes.length; i++)
-	   Event.observe(nodes[i], "click", onFolderTreeItemClick.bindAsEventListener(nodes[i]));
-      }
-      else if (http.status == 404) {
-	 div.innerHTML = "";
-      }
-   }
+  document.userFoldersRequest = null;
+  var div = $("folders");
+  if (http.status == 200) {
+    var response = http.responseText;
+    div.innerHTML = buildTree(http.responseText);
+    div.clean = false;
+    var nodes = document.getElementsByClassName("node", $("d"));
+    for (i = 0; i < nodes.length; i++)
+      $(nodes[i]).observe("click", onFolderTreeItemClick);
+  }
+  else if (http.status == 404)
+    div.innerHTML = "";
 }
 
 function onConfirmFolderSelection(event) {
   var topNode = $("d");
   if (topNode && topNode.selectedEntry) {
-      var node = topNode.selectedEntry.parentNode;
-      var folder = node.getAttribute("dataname");
-      var folderName;
-      if (window.opener.userFolderType == "user") {
-	 var spans = document.getElementsByClassName("nodeName",
-						     topNode.selectedEntry);
-	 var email = spans[0].innerHTML;
-	 email = email.replace("&lt;", "<");
-	 email = email.replace("&gt;", ">");
-	 folderName = email;
-      }
-      else {
-	 var spans1 = document.getElementsByClassName("nodeName",
+    var node = topNode.selectedEntry.parentNode;
+    var folder = node.getAttribute("dataname");
+
+    var folderName;
+    if (window.opener.userFolderType == "user") {
+      var spans = document.getElementsByClassName("nodeName",
+						  topNode.selectedEntry);
+      var email = spans[0].innerHTML;
+      email = email.replace("&lt;", "<");
+      email = email.replace("&gt;", ">");
+      folderName = email;
+    }
+    else {
+      var spans1 = document.getElementsByClassName("nodeName",
 						   node);
-	 var spans2 = document.getElementsByClassName("nodeName",
-						      node.parentNode.previousSibling);
-	 var email = spans2[0].innerHTML;
-	 email = email.replace("&lt;", "<");
-	 email = email.replace("&gt;", ">");
-	 folderName = spans1[0].innerHTML + ' (' + email + ')';
-      }
-      var data = { folderName: folderName, folder: folder, window: window };
-      if (parent$(accessToSubscribedFolder(folder)))
-	window.alert(clabels["You have already subscribed to that folder!"]);
-      else
-	window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
-   }
+      var spans2 = document.getElementsByClassName("nodeName",
+						   node.parentNode.previousSibling);
+      var email = spans2[0].innerHTML;
+      email = email.replace("&lt;", "<");
+      email = email.replace("&gt;", ">");
+      folderName = spans1[0].innerHTML + ' (' + email + ')';
+    }
+    var data = { folderName: folderName, folder: folder, window: window };
+    if (parent$(accessToSubscribedFolder(folder)))
+      window.alert(clabels["You have already subscribed to that folder!"]);
+    else
+      window.opener.subscribeToFolder(window.opener.userFolderCallback, data);
+  }
 }
 
 function onFolderSearchKeyDown(event) {
@@ -150,7 +155,9 @@ function onFolderSearchKeyDown(event) {
 
 function initUserFoldersWindow() {
   $("searchValue").observe("keydown", onFolderSearchKeyDown);
-  $("addButton").observe("click",  onConfirmFolderSelection);
+  var addButton = $("addButton");
+  addButton.observe("click", onConfirmFolderSelection);
+  addButton.disabled = true;
 }
 
 FastInit.addOnLoad(initUserFoldersWindow);

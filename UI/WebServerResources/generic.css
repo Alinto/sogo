@@ -585,6 +585,7 @@ A.button:active
   -moz-border-left-colors: #9c9a94 #000; }
 
 INPUT.button,
+INPUT.button:disabled,
 A.button,
 A[class~="_disabled"].button:active
 { cursor: default;
@@ -600,6 +601,9 @@ A[class~="_disabled"].button:active
   -moz-border-right-colors: #000 #9c9a94 transparent;
   text-decoration: none;
   color: inherit; }
+
+INPUT.button:disabled
+{ color: #999; }
 
 A.button
 { padding: 4px; }
