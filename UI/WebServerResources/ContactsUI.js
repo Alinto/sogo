@@ -311,13 +311,6 @@ function onMenuEditContact(event) {
 
 function onMenuWriteToContact(event) {
   var contactId = document.menuTarget.getAttribute('id');
-  var contactRow = $(contactId);
-  var emailCell = contactRow.down('td', 1);
-
-  if (!emailCell.firstChild) { // .nodeValue is the contact email address
-    window.alert(labels["The selected contact has no email address."]);
-    return false;
-  }
 
   openMailComposeWindow(ApplicationBaseURL + currentContactFolder
 			+ "/" + contactId + "/write");
@@ -327,8 +320,7 @@ function onMenuWriteToContact(event) {
 }
 
 function onMenuAIMContact(event) {
-  var contactId = document.menuTarget.getAttribute('id');
-  var contactRow = $(contactId);
+  var contactRow = $(document.menuTarget.getAttribute('id'));
   var aimCell = contactRow.down('td', 2);
 
   window.location.href = "aim:goim?ScreenName=" + aimCell.firstChild.nodeValue;
