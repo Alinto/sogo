@@ -53,6 +53,7 @@
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "WORequest+SOGo.h"
 
 #import "SOGoGCSFolder.h"
 

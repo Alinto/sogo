@@ -391,7 +391,7 @@
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   NSMutableArray *acls;
-  NSArray *ownAcls, *containerAcls;
+  NSArray *containerAcls;
 
   acls = [NSMutableArray array];
   /* this is unused... */
