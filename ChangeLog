@@ -1,5 +1,9 @@
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
+	-_urlHostString]): replace "@" with %40 AFTER invoking
+	stringByEscapingURL.
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
 	-isBodyPartKey:key]): hacked a little bit to test for the length
 	of the key trimmed from its bordering digits. So if the key

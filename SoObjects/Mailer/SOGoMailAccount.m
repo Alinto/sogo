@@ -256,8 +256,8 @@ static NSString *otherUsersFolderName = @""; // TODO: add English default
     {
       username = [mailAccount objectForKey: @"userName"];
       escUsername
-	= [[username stringByReplacingString: @"@" withString: @"%40"]
-	    stringByEscapingURL];
+	= [[username stringByEscapingURL] stringByReplacingString: @"@"
+					  withString: @"%40"];
       hostString = [NSString stringWithFormat: @"%@@%@", escUsername,
 			     [mailAccount objectForKey: @"serverName"]];
     }
