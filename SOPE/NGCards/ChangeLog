@@ -1,5 +1,10 @@
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule -wkst]): if no wkst
+	parameter is specified, we supply "MO" as default value.
+	([iCalRecurrenceRule -weekDayFromICalRepresentation:_day]): the
+	second letter of sunday if "u", fixed typo.
+
 	* CardElement.m ([CardElement
 	-setNamedValue:aValueNameto:aValue]): if the value is empty, we
 	removed the named value.

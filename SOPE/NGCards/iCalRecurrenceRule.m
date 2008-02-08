@@ -258,7 +258,7 @@
 
   start = [self namedValue: @"wkst"];
   if (![start length])
-    start = @"SU";
+    start = @"MO";
 
   return start;
 }
