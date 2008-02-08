@@ -94,8 +94,8 @@ function initializeFormValues() {
     // Repeat weekly
     $('weeklyWeeksField').value = parent$("repeat1").value;
     var weekDiv = $($("week").firstChild);
-    log ("div: " + weekDiv);
-    log ("days: " + parent$("repeat2").value);
+//     log ("div: " + weekDiv);
+//     log ("days: " + parent$("repeat2").value);
     var days = "" + parent$("repeat2").value;
     if (days.length > 0) {
       var daysArray = days.split(",");
@@ -168,7 +168,7 @@ function handleDailyRecurrence() {
     var v = "" + $('dailyDaysField').value;
     if (v.length > 0) {
       v = parseInt(v);
-      log("v: " + v);
+//       log("v: " + v);
       if (!isNaN(v) && v > 0) {
 	validate = true;
 	showError = false;
