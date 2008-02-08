@@ -58,6 +58,28 @@
 
 #import "UIxComponentEditor.h"
 
+#define iREPEAT(X) \
+- (NSString *) repeat##X; \
+- (void) setRepeat##X: (NSString *) theValue
+
+#define iRANGE(X) \
+- (NSString *) range##X; \
+- (void) setRange##X: (NSString *) theValue
+
+@interface UIxComponentEditor (Private)
+
+iREPEAT(1);
+iREPEAT(2);
+iREPEAT(3);
+iREPEAT(4);
+iREPEAT(5);
+iREPEAT(6);
+iREPEAT(7);
+iRANGE(1);
+iRANGE(2);
+
+@end
+
 #define REPEAT(X) \
 - (NSString *) repeat##X { return repeat##X; } \
 - (void) setRepeat##X: (NSString *) theValue { NSLog(@"setRepeat %@", theValue); ASSIGN(repeat##X, theValue); } \
