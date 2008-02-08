@@ -1099,4 +1099,16 @@ static BOOL kontactGroupDAV = YES;
 		   [self nameInContainer]];
 }
 
+- (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
+{
+  NSMutableArray *newClasses;
+
+  newClasses
+    = [NSMutableArray arrayWithArray:
+			[super davComplianceClassesInContext: localContext]];
+  [newClasses addObject: @"access-control"];
+
+  return newClasses;
+}
+
 @end /* SOGoObject */
