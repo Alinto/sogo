@@ -314,7 +314,7 @@
     [self addValue: newValue];
   else
     {
-      if (aValue)
+      if ([aValue length])
         [self setValue: index to: newValue];
       else
         [values removeObjectAtIndex: index];

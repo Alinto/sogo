@@ -1,3 +1,9 @@
+2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardElement.m ([CardElement
+	-setNamedValue:aValueNameto:aValue]): if the value is empty, we
+	removed the named value.
+
 2008-01-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceRule.m ([iCalRecurrenceRule

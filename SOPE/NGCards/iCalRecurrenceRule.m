@@ -251,9 +251,16 @@
   [self setNamedValue: @"wkst" to: _weekStart];
 }
 
+#warning we also should handle the user weekstarts
 - (NSString *) wkst
 {
-  return [self namedValue: @"wkst"];
+  NSString *start;
+
+  start = [self namedValue: @"wkst"];
+  if (![start length])
+    start = @"SU";
+
+  return start;
 }
 
 - (void) setWeekStart: (iCalWeekDay) _weekStart
@@ -359,7 +366,7 @@
 	case 'S':
 	  if (chars[1] == 'A')
 	    foundDay = iCalWeekDaySaturday;
-	  else if (chars[1] == 'H')
+	  else if (chars[1] == 'U')
 	    foundDay = iCalWeekDaySunday;
 	}
     }
