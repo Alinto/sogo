@@ -866,7 +866,7 @@ static BOOL debugSoParts       = NO;
   
   /* lookup body part */
   
-  if ([self isBodyPartKey:_key inContext:_ctx]) {
+  if ([self isBodyPartKey:_key]) {
     if ((obj = [self lookupImap4BodyPartKey:_key inContext:_ctx]) != nil) {
       if (debugSoParts)
 	[self logWithFormat: @"mail looked up part %@: %@", _key, obj];

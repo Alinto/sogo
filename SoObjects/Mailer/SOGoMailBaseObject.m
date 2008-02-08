@@ -19,6 +19,9 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSString.h>
+
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -205,18 +208,15 @@ static BOOL debugOn = YES;
 
 /* IMAP4 names */
 
-- (BOOL)isBodyPartKey:(NSString *)_key inContext:(id)_ctx {
-  /*
-    Every key starting with a digit is considered an IMAP4 mime part key, used in
-    SOGoMailObject and SOGoMailBodyPart.
-  */
-  if ([_key length] == 0)
-    return NO;
-  
-  if (isdigit([_key characterAtIndex:0]))
-    return YES;
-  
-  return NO;
+#warning we could improve this by simply testing if the reference is the filename of an attachment or if the body part mentionned actually exists in the list of body parts. Another way is to use a prefix such as "attachment-*" to declare attachments.
+- (BOOL) isBodyPartKey: (NSString *) key
+{
+  NSString *trimmedKey;
+
+  trimmedKey = [key stringByTrimmingCharactersInSet:
+		      [NSCharacterSet decimalDigitCharacterSet]];
+
+  return (![trimmedKey length]);
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid

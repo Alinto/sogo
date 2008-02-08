@@ -1,5 +1,13 @@
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBaseObject.m ([SOGoMailBaseObject
+	-isBodyPartKey:key]): hacked a little bit to test for the length
+	of the key trimmed from its bordering digits. So if the key
+	contains only digits, we consider it to be a body part key. There
+	is room for improvement but we can consider this will be accurate
+	in 99.99% of the cases. Also, removed the context parameter which
+	was useless.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-davComplianceClassesInContext:localContext]): new method,
 	declaring "access-control" in the compliance classes.

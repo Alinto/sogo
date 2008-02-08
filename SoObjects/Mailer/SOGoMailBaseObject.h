@@ -74,7 +74,7 @@
 
 /* IMAP4 names */
 
-- (BOOL) isBodyPartKey: (NSString *) _key inContext: (id) _ctx;
+- (BOOL) isBodyPartKey: (NSString *) key;
 
 @end
 

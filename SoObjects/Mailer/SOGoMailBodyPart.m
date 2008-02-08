@@ -206,7 +206,7 @@ static BOOL debugOn = NO;
   if (!obj)
     {
       /* lookup body part */
-      if ([self isBodyPartKey:_key inContext:_ctx])
+      if ([self isBodyPartKey:_key])
 	obj = [self lookupImap4BodyPartKey:_key inContext:_ctx];
       else if ([_key isEqualToString: @"asAttachment"])
 	[self setAsAttachment];
