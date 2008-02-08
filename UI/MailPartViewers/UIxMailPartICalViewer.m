@@ -39,6 +39,7 @@
 
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/Appointments/iCalEntityObject+SOGo.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
@@ -347,6 +348,15 @@
     [self warnWithFormat:@"More than one attendee in REPLY: %@", attendees];
  
   return [attendees objectAtIndex:0];
+}
+
+- (iCalPerson *) currentUserAttendee
+{
+  iCalPerson *currentUser;
+
+  currentUser = [[self storedEvent] findParticipant: [context activeUser]];
+
+  return currentUser;
 }
 
 - (iCalPerson *) storedReplyAttendee

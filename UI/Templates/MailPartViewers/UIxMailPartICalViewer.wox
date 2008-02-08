@@ -39,21 +39,24 @@
       <var:if condition="inCalendar.method.uppercaseString" const:value="REQUEST">
 	<!-- sent to attendees to propose or update a meeting -->
 	<var:if condition="isLoggedInUserAnAttendee">
-	  <var:if condition="$storedReplyAttendee.partStatWithDefault"
-	    const:value="NEEDS-ACTION" const:negate="YES">
-	    <p class="uix_ical_toolbar" id="iCalendarToolbar">
+	  <p class="uix_ical_toolbar" id="iCalendarToolbar">
+	    <var:if condition="currentUserAttendee.partStatWithDefault"
+	      const:value="ACCEPTED" const:negate="YES">
 	      <input id="iCalendarAccept" class="button"
 		type="button" label:value="Accept"/>
+	    </var:if>
+	    <var:if condition="currentUserAttendee.partStatWithDefault"
+	      const:value="DECLINED" const:negate="YES">
 	      <input id="iCalendarDecline" class="button"
 		type="button" label:value="Decline"/>
-	      <!-- <input id="iCalendarTentative" class="button"
-	      type="button" label:value="Tentative"/> -->
-	      <var:if condition="isEventStoredInCalendar" const:negate="YES">
-		| <input id="iCalendarAddToCalendar" class="button"
-		  type="button" label:value="Add to calendar"/>
-	      </var:if>
-	    </p>
-	  </var:if>
+	    </var:if>
+	    <!-- <input id="iCalendarTentative" class="button"
+	    type="button" label:value="Tentative"/> -->
+	    <var:if condition="isEventStoredInCalendar" const:negate="YES">
+	      | <input id="iCalendarAddToCalendar" class="button"
+		type="button" label:value="Add to calendar"/>
+	    </var:if>
+	  </p>
 
 	  <p>
 	    <var:string label:value="Organizer" />

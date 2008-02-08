@@ -1,5 +1,10 @@
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -currentUserAttendee]): new method that
+	returns the current user as an attendee representation in the
+	displayed event, if found.
+
 	* SoObjects/Mailer/SOGoMailAccount.m ([SOGoMailAccount
 	-_urlHostString]): replace "@" with %40 AFTER invoking
 	stringByEscapingURL.
