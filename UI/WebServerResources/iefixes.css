@@ -52,16 +52,215 @@ TD.mailer_fieldname
 
 /* SchedulerUI */
 
+DIV#daysView > DIV.hours > DIV.hour
+{ /* height: 43px = 4em = too much */ }
+
 DIV[class~="event"]._selected > DIV.eventInside
 { filter: alpha(opacity=70); }
 
-DIV.shadow1.css,
-DIV.shadow2.css,
-DIV.shadow3.css,
+DIV.shadow1,
+DIV.shadow2,
+DIV.shadow3,
 { filter: alpha(opacity=10); }
 
-DIV.shadow4.css
+DIV.shadow4
 { filter: alpha(opacity=40); }
+
+DIV#daysView DIV.event.starts0   { top:   0em; }
+DIV#daysView DIV.event.starts1   { top:   1em; }
+DIV#daysView DIV.event.starts2   { top:   2em; }
+DIV#daysView DIV.event.starts3   { top:   3em; }
+DIV#daysView DIV.event.starts4   { top:   4em; }
+DIV#daysView DIV.event.starts5   { top:   5em; }
+DIV#daysView DIV.event.starts6   { top:   6em; }
+DIV#daysView DIV.event.starts7   { top:   7em; }
+DIV#daysView DIV.event.starts8   { top:   8em; }
+DIV#daysView DIV.event.starts9   { top:   9em; }
+DIV#daysView DIV.event.starts10  { top:  10em; }
+DIV#daysView DIV.event.starts11  { top:  11em; }
+DIV#daysView DIV.event.starts12  { top:  12em; }
+DIV#daysView DIV.event.starts13  { top:  13em; }
+DIV#daysView DIV.event.starts14  { top:  14em; }
+DIV#daysView DIV.event.starts15  { top:  15em; }
+DIV#daysView DIV.event.starts16  { top:  16em; }
+DIV#daysView DIV.event.starts17  { top:  17em; }
+DIV#daysView DIV.event.starts18  { top:  18em; }
+DIV#daysView DIV.event.starts19  { top:  19em; }
+DIV#daysView DIV.event.starts20  { top:  20em; }
+DIV#daysView DIV.event.starts21  { top:  21em; }
+DIV#daysView DIV.event.starts22  { top:  22em; }
+DIV#daysView DIV.event.starts23  { top:  23em; }
+DIV#daysView DIV.event.starts24  { top:  24em; }
+DIV#daysView DIV.event.starts25  { top:  25em; }
+DIV#daysView DIV.event.starts26  { top:  26em; }
+DIV#daysView DIV.event.starts27  { top:  27em; }
+DIV#daysView DIV.event.starts28  { top:  28em; }
+DIV#daysView DIV.event.starts29  { top:  29em; }
+DIV#daysView DIV.event.starts30  { top:  30em; }
+DIV#daysView DIV.event.starts31  { top:  31em; }
+DIV#daysView DIV.event.starts32  { top:  32em; }
+DIV#daysView DIV.event.starts33  { top:  33em; }
+DIV#daysView DIV.event.starts34  { top:  34em; }
+DIV#daysView DIV.event.starts35  { top:  35em; }
+DIV#daysView DIV.event.starts36  { top:  36em; }
+DIV#daysView DIV.event.starts37  { top:  37em; }
+DIV#daysView DIV.event.starts38  { top:  38em; }
+DIV#daysView DIV.event.starts39  { top:  39em; }
+DIV#daysView DIV.event.starts40  { top:  40em; }
+DIV#daysView DIV.event.starts41  { top:  41em; }
+DIV#daysView DIV.event.starts42  { top:  42em; }
+DIV#daysView DIV.event.starts43  { top:  43em; }
+DIV#daysView DIV.event.starts44  { top:  44em; }
+DIV#daysView DIV.event.starts45  { top:  45em; }
+DIV#daysView DIV.event.starts46  { top:  46em; }
+DIV#daysView DIV.event.starts47  { top:  47em; }
+DIV#daysView DIV.event.starts48  { top:  48em; }
+DIV#daysView DIV.event.starts49  { top:  49em; }
+DIV#daysView DIV.event.starts50  { top:  50em; }
+DIV#daysView DIV.event.starts51  { top:  51em; }
+DIV#daysView DIV.event.starts52  { top:  52em; }
+DIV#daysView DIV.event.starts53  { top:  53em; }
+DIV#daysView DIV.event.starts54  { top:  54em; }
+DIV#daysView DIV.event.starts55  { top:  55em; }
+DIV#daysView DIV.event.starts56  { top:  56em; }
+DIV#daysView DIV.event.starts57  { top:  57em; }
+DIV#daysView DIV.event.starts58  { top:  58em; }
+DIV#daysView DIV.event.starts59  { top:  59em; }
+DIV#daysView DIV.event.starts60  { top:  60em; }
+DIV#daysView DIV.event.starts61  { top:  61em; }
+DIV#daysView DIV.event.starts62  { top:  62em; }
+DIV#daysView DIV.event.starts63  { top:  63em; }
+DIV#daysView DIV.event.starts64  { top:  64em; }
+DIV#daysView DIV.event.starts65  { top:  65em; }
+DIV#daysView DIV.event.starts66  { top:  66em; }
+DIV#daysView DIV.event.starts67  { top:  67em; }
+DIV#daysView DIV.event.starts68  { top:  68em; }
+DIV#daysView DIV.event.starts69  { top:  69em; }
+DIV#daysView DIV.event.starts70  { top:  70em; }
+DIV#daysView DIV.event.starts71  { top:  71em; }
+DIV#daysView DIV.event.starts72  { top:  72em; }
+DIV#daysView DIV.event.starts73  { top:  73em; }
+DIV#daysView DIV.event.starts74  { top:  74em; }
+DIV#daysView DIV.event.starts75  { top:  75em; }
+DIV#daysView DIV.event.starts76  { top:  76em; }
+DIV#daysView DIV.event.starts77  { top:  77em; }
+DIV#daysView DIV.event.starts78  { top:  78em; }
+DIV#daysView DIV.event.starts79  { top:  79em; }
+DIV#daysView DIV.event.starts80  { top:  80em; }
+DIV#daysView DIV.event.starts81  { top:  81em; }
+DIV#daysView DIV.event.starts82  { top:  82em; }
+DIV#daysView DIV.event.starts83  { top:  83em; }
+DIV#daysView DIV.event.starts84  { top:  84em; }
+DIV#daysView DIV.event.starts85  { top:  85em; }
+DIV#daysView DIV.event.starts86  { top:  86em; }
+DIV#daysView DIV.event.starts87  { top:  87em; }
+DIV#daysView DIV.event.starts88  { top:  88em; }
+DIV#daysView DIV.event.starts89  { top:  89em; }
+DIV#daysView DIV.event.starts90  { top:  90em; }
+DIV#daysView DIV.event.starts91  { top:  91em; }
+DIV#daysView DIV.event.starts92  { top:  92em; }
+DIV#daysView DIV.event.starts93  { top:  93em; }
+DIV#daysView DIV.event.starts94  { top:  94em; }
+DIV#daysView DIV.event.starts95  { top:  95em; }
+DIV#daysView DIV.event.starts96  { top:  96em; }
+
+DIV#daysView DIV.event.lasts0   { height:   0em; }
+DIV#daysView DIV.event.lasts1   { height:   1em; }
+DIV#daysView DIV.event.lasts2   { height:   2em; }
+DIV#daysView DIV.event.lasts3   { height:   3em; }
+DIV#daysView DIV.event.lasts4   { height:   4em; }
+DIV#daysView DIV.event.lasts5   { height:   5em; }
+DIV#daysView DIV.event.lasts6   { height:   6em; }
+DIV#daysView DIV.event.lasts7   { height:   7em; }
+DIV#daysView DIV.event.lasts8   { height:   8em; }
+DIV#daysView DIV.event.lasts9   { height:   9em; }
+DIV#daysView DIV.event.lasts10  { height:  10em; }
+DIV#daysView DIV.event.lasts11  { height:  11em; }
+DIV#daysView DIV.event.lasts12  { height:  12em; }
+DIV#daysView DIV.event.lasts13  { height:  13em; }
+DIV#daysView DIV.event.lasts14  { height:  14em; }
+DIV#daysView DIV.event.lasts15  { height:  15em; }
+DIV#daysView DIV.event.lasts16  { height:  16em; }
+DIV#daysView DIV.event.lasts17  { height:  17em; }
+DIV#daysView DIV.event.lasts18  { height:  18em; }
+DIV#daysView DIV.event.lasts19  { height:  19em; }
+DIV#daysView DIV.event.lasts20  { height:  20em; }
+DIV#daysView DIV.event.lasts21  { height:  21em; }
+DIV#daysView DIV.event.lasts22  { height:  22em; }
+DIV#daysView DIV.event.lasts23  { height:  23em; }
+DIV#daysView DIV.event.lasts24  { height:  24em; }
+DIV#daysView DIV.event.lasts25  { height:  25em; }
+DIV#daysView DIV.event.lasts26  { height:  26em; }
+DIV#daysView DIV.event.lasts27  { height:  27em; }
+DIV#daysView DIV.event.lasts28  { height:  28em; }
+DIV#daysView DIV.event.lasts29  { height:  29em; }
+DIV#daysView DIV.event.lasts30  { height:  30em; }
+DIV#daysView DIV.event.lasts31  { height:  31em; }
+DIV#daysView DIV.event.lasts32  { height:  32em; }
+DIV#daysView DIV.event.lasts33  { height:  33em; }
+DIV#daysView DIV.event.lasts34  { height:  34em; }
+DIV#daysView DIV.event.lasts35  { height:  35em; }
+DIV#daysView DIV.event.lasts36  { height:  36em; }
+DIV#daysView DIV.event.lasts37  { height:  37em; }
+DIV#daysView DIV.event.lasts38  { height:  38em; }
+DIV#daysView DIV.event.lasts39  { height:  39em; }
+DIV#daysView DIV.event.lasts40  { height:  40em; }
+DIV#daysView DIV.event.lasts41  { height:  41em; }
+DIV#daysView DIV.event.lasts42  { height:  42em; }
+DIV#daysView DIV.event.lasts43  { height:  43em; }
+DIV#daysView DIV.event.lasts44  { height:  44em; }
+DIV#daysView DIV.event.lasts45  { height:  45em; }
+DIV#daysView DIV.event.lasts46  { height:  46em; }
+DIV#daysView DIV.event.lasts47  { height:  47em; }
+DIV#daysView DIV.event.lasts48  { height:  48em; }
+DIV#daysView DIV.event.lasts49  { height:  49em; }
+DIV#daysView DIV.event.lasts50  { height:  50em; }
+DIV#daysView DIV.event.lasts51  { height:  51em; }
+DIV#daysView DIV.event.lasts52  { height:  52em; }
+DIV#daysView DIV.event.lasts53  { height:  53em; }
+DIV#daysView DIV.event.lasts54  { height:  54em; }
+DIV#daysView DIV.event.lasts55  { height:  55em; }
+DIV#daysView DIV.event.lasts56  { height:  56em; }
+DIV#daysView DIV.event.lasts57  { height:  57em; }
+DIV#daysView DIV.event.lasts58  { height:  58em; }
+DIV#daysView DIV.event.lasts59  { height:  59em; }
+DIV#daysView DIV.event.lasts60  { height:  60em; }
+DIV#daysView DIV.event.lasts61  { height:  61em; }
+DIV#daysView DIV.event.lasts62  { height:  62em; }
+DIV#daysView DIV.event.lasts63  { height:  63em; }
+DIV#daysView DIV.event.lasts64  { height:  64em; }
+DIV#daysView DIV.event.lasts65  { height:  65em; }
+DIV#daysView DIV.event.lasts66  { height:  66em; }
+DIV#daysView DIV.event.lasts67  { height:  67em; }
+DIV#daysView DIV.event.lasts68  { height:  68em; }
+DIV#daysView DIV.event.lasts69  { height:  69em; }
+DIV#daysView DIV.event.lasts70  { height:  70em; }
+DIV#daysView DIV.event.lasts71  { height:  71em; }
+DIV#daysView DIV.event.lasts72  { height:  72em; }
+DIV#daysView DIV.event.lasts73  { height:  73em; }
+DIV#daysView DIV.event.lasts74  { height:  74em; }
+DIV#daysView DIV.event.lasts75  { height:  75em; }
+DIV#daysView DIV.event.lasts76  { height:  76em; }
+DIV#daysView DIV.event.lasts77  { height:  77em; }
+DIV#daysView DIV.event.lasts78  { height:  78em; }
+DIV#daysView DIV.event.lasts79  { height:  79em; }
+DIV#daysView DIV.event.lasts80  { height:  80em; }
+DIV#daysView DIV.event.lasts81  { height:  81em; }
+DIV#daysView DIV.event.lasts82  { height:  82em; }
+DIV#daysView DIV.event.lasts83  { height:  83em; }
+DIV#daysView DIV.event.lasts84  { height:  84em; }
+DIV#daysView DIV.event.lasts85  { height:  85em; }
+DIV#daysView DIV.event.lasts86  { height:  86em; }
+DIV#daysView DIV.event.lasts87  { height:  87em; }
+DIV#daysView DIV.event.lasts88  { height:  88em; }
+DIV#daysView DIV.event.lasts89  { height:  89em; }
+DIV#daysView DIV.event.lasts90  { height:  90em; }
+DIV#daysView DIV.event.lasts91  { height:  91em; }
+DIV#daysView DIV.event.lasts92  { height:  92em; }
+DIV#daysView DIV.event.lasts93  { height:  93em; }
+DIV#daysView DIV.event.lasts94  { height:  94em; }
+DIV#daysView DIV.event.lasts95  { height:  95em; }
+DIV#daysView DIV.event.lasts96  { height:  96em; }
 
 /* UIxAppointmentEditor */
 

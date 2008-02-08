@@ -82,33 +82,6 @@ function getAllElements(scope) {
   return elements;
 }
 
-/* from
-   http://www.robertnyman.com/2005/11/07/the-ultimate-getelementsbyclassname/ */
-function getElementsByClassName2(_tag, _class, _scope) {
-  var regexp, classes, elements, element, returnElements;
-
-  _scope = _scope || document;
-
-  elements = (!_tag || _tag == "*"
-	      ? getAllElements(null)
-	      : _scope.getElementsByTagName(_tag));
-  returnElements = [];
-
-  classes = _class.split(/\s+/);
-  regexp = new RegExp("(^|\s+)("+ classes.join("|") +")(\s+|$)","i");
-
-  if (_class) {
-    for(var i = 0; element = elements[i]; i++) {
-      if (regexp.test(element.className)) {
-	returnElements.push(element);
-      }
-    }
-    return returnElements;
-  } else {
-    return elements;
-  }
-}
-
 function createElement(tagName, id, classes, attributes, htmlAttributes,
 		       parentNode) {
   var newElement = $(document.createElement(tagName));
