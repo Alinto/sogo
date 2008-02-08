@@ -292,12 +292,12 @@ function onCalendarGotoDay(node) {
   var day = node.getAttribute("date");
   var needRefresh = (listFilter == 'view_selectedday'
                      && day != currentDay);
-   
+
   changeDateSelectorDisplay(day);
   changeCalendarDisplay( { "day": day } );
   if (needRefresh)
     refreshEvents();
-  
+
   return false;
 }
 
@@ -510,7 +510,8 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 }
 
 function changeCalendarDisplay(data, newView) {
-  var url = ApplicationBaseURL + ((newView) ? newView : currentView);
+  newView = ((newView) ? newView : currentView);
+  var url = ApplicationBaseURL + newView;
   var day = null;
   var scrollEvent = null;
 
@@ -523,17 +524,17 @@ function changeCalendarDisplay(data, newView) {
     day = currentDay;
 
   if (day) {
-    if (data) {
+    if (data && newView != "monthview") {
       var divs = $$('div.day[day='+day+']');
       if (divs.length) {
 	// Don't reload the view if the event is present in current view
-	
+
 	// Deselect previous day
 	var selectedDivs = $$('div.day.selectedDay');
 	selectedDivs.each(function(div) {
 	    div.removeClassName('selectedDay');
 	  });
-	
+
 	// Select new day
 	divs.each(function(div) {
 	    div.addClassName('selectedDay');
