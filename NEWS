@@ -8,7 +8,7 @@
   current day of the new month was already displayed in the current view
 - enabled the instant-messaging entry in the addressbook
 - prevent the user from selecting disabled menu entries
-- added the ability to add/remove and renamed calendars in DAV
+- added the ability to add/remove and rename calendars in DAV
 - no longer require a default domain name/imap server to work properly
 - the position of the splitters is now remembered across user sessions
 - improved the email notifications when creating and removing a folder
