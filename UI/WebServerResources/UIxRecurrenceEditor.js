@@ -3,9 +3,9 @@ var RecurrenceEditor = {
  currentRepeatType: 0
 }
 
-function onRepeatTypeChange(event) {
-  setRepeatType(parseInt(this.value));
-}
+  function onRepeatTypeChange(event) {
+    setRepeatType(parseInt(this.value));
+  }
 
 function setRepeatType(type) {
   var elements;
@@ -29,7 +29,7 @@ function getSelectedDays(element) {
   var elementsArray = $A(element.getElementsByTagName('DIV'));
   var days = new Array();
   elementsArray.each(function(item) {
-       if (isNodeSelected(item))
+      if (isNodeSelected(item))
 	days.push(item.readAttribute("name"));
     });
   return days.join(",");
@@ -62,15 +62,15 @@ function initializeSelectors() {
 }
 
 function initializeWindowButtons() {
-   var okButton = $("okButton");
-   var cancelButton = $("cancelButton");
+  var okButton = $("okButton");
+  var cancelButton = $("cancelButton");
 
-   Event.observe(okButton, "click", onEditorOkClick, false);
-   Event.observe(cancelButton, "click", onEditorCancelClick, false);
+  Event.observe(okButton, "click", onEditorOkClick, false);
+  Event.observe(cancelButton, "click", onEditorCancelClick, false);
 
-   var repeatType = $("repeatType");
-   setRepeatType(parseInt(repeatType.value));
-   repeatType.observe("change", onRepeatTypeChange, false);
+  var repeatType = $("repeatType");
+  setRepeatType(parseInt(repeatType.value));
+  repeatType.observe("change", onRepeatTypeChange, false);
 }
 
 function initializeFormValues() {
@@ -147,112 +147,186 @@ function initializeFormValues() {
   $("range_of_recurrence").show();
 }
 
+function handleDailyRecurrence() {
+  var validate = false;
+
+  var radioValue = $('recurrence_form').getRadioValue('dailyRadioButtonName');
+
+  // We check if the dailyDaysField really contains an integer
+  if (radioValue == 0) {
+    var showError = true;
+
+    var v = "" + $('dailyDaysField').value;
+    if (v.length > 0) {
+      v = parseInt(v);
+      log("v: " + v);
+      if (!isNaN(v) && v > 0) {
+	validate = true;
+	showError = false;
+	parent$("repeat1").value = radioValue;
+	parent$("repeat2").value = v;
+      }
+    }
+
+    if (showError)
+      window.alert("Please specify a numerical value in the Days field greater or equal to 1.");
+  }
+  else {
+    validate = true;
+    parent$("repeat1").value = radioValue;
+  }
+
+  return validate;
+}
+
+function handleWeeklyRecurrence() {
+  var validate = false;
+
+  var showError = true;
+  var fieldValue = "" + $('weeklyWeeksField').value;
+  if (fieldValue.length > 0) {
+    // We check if the weeklyWeeksField really contains an integer
+    var v = parseInt(fieldValue);
+    if (!isNaN(v) && v > 0) {
+      validate = true;
+      showError = false;
+      parent$("repeat1").value = fieldValue;
+      parent$("repeat2").value = getSelectedDays($('week'));
+    }
+  }
+
+  if (showError)
+    window.alert("Please specify a numerical value in the Week(s) field greater or equal to 1.");
+
+  return validate;
+}
+
+function handleMonthlyRecurrence() {
+  var validate = false;
+
+  var radioValue = $('recurrence_form').getRadioValue('monthlyRadioButtonName');
+
+  // FIXME - right now we do not support rules
+  //         such as The Second Tuesday...
+  if (radioValue == 0)
+    window.alert("This type of recurrence is currently unsupported.");
+  else {
+    // We check if the monthlyMonthsField really contains an integer
+    var showError = true;
+
+    var fieldValue = "" + $('monthlyMonthsField').value;
+    if (fieldValue.length > 0) {
+      var v = parseInt(fieldValue);
+      if (!isNaN(v) && v > 0) {
+	validate = true;
+	showError = false;
+	parent$("repeat1").value = fieldValue;
+	parent$("repeat2").value = radioValue;
+	parent$("repeat3").value = $('monthlyRepeat').value;
+	parent$("repeat4").value = $('monthlyDay').value;
+	parent$("repeat5").value = getSelectedDays($('month'));
+      }
+    }
+
+    if (showError)
+      window.alert("Please specify a numerical value in the Month(s) field greater or equal to 1.");
+  }
+
+  return validate;
+}
+
+function handleYearlyRecurrence() {
+  var validate = false;
+
+  var radioValue = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
+
+  // FIXME - right now we do not support rules
+  //         such as Every Second Tuesday of February
+  if (radioValue == 1)
+    window.alert("This type of recurrence is currently unsupported.");
+  else {
+    var showError = true;
+
+    var fieldValue = "" + $('yearlyYearsField').value;
+    if (fieldValue.length > 0) {
+      // We check if the yearlyYearsField really contains an integer
+      var v = parseInt(fieldValue);
+      if (!isNaN(v) && v > 0) {
+	validate = true;
+	showError = false;
+	parent$("repeat1").value = fieldValue;
+	parent$("repeat2").value = radioValue;
+	parent$("repeat3").value = $('yearlyDayField').value;
+	parent$("repeat4").value = $('yearlyMonth1').value;
+	parent$("repeat5").value = $('yearlyRepeat').value;
+	parent$("repeat6").value = $('yearlyDay').value;
+	parent$("repeat7").value = $('yearlyMonth2').value;
+      }
+    }
+
+    if (showError)
+      window.alert("Please specify a numerical value in the Year(s) field greater or equal to 1.");
+  }
+
+  return validate;
+}
+
+function handleRange() {
+  var validate = false;
+
+  var radioValue = $('recurrence_form').getRadioValue('rangeRadioButtonName');
+  if (radioValue == 0)
+    validate = true;
+  else if (radioValue == 1) {
+    var showError = true;
+
+    var fieldValue = "" + $('rangeAppointmentsField').value;
+    if (fieldValue.length > 0) {
+      // We check if the rangeAppointmentsField really contains an integer
+      var v = parseInt(fieldValue);
+      if (!isNaN(v) && v > 0) {
+	validate = true;
+	showError = false;
+	parent$("range2").value = fieldValue;
+      }
+    }
+
+    if (showError)
+      window.alert("Please specify a numerical value in the Appointment(s) field  greater or equal to 1.");
+  }
+  else if (radioValue == 2) {
+    validate = true;
+    parent$("range2").value = $('endDate_date').value;
+  }
+
+  if (validate)
+    parent$("range1").value = radioValue;
+
+  return validate;
+}
+
 function onEditorOkClick(event) {
-   preventDefault(event);
-   var repeatType = $("repeatType").value;
-   var v;
+  preventDefault(event);
+  var repeatType = $("repeatType").value;
+  parent$("repeatType").value = repeatType;
 
-   parent$("repeatType").value = repeatType;
+  var validate;
+  if (repeatType == 0)
+    validate = handleDailyRecurrence();
+  else if (repeatType == 1)
+    validate = handleWeeklyRecurrence();
+  else if (repeatType == 2)
+    validate = handleMonthlyRecurrence();
+  else
+    validate = handleYearlyRecurrence();
 
-   if (repeatType == 0) {
-     // Repeat daily
-     v = $('recurrence_form').getRadioValue('dailyRadioButtonName')
-     parent$("repeat1").value = v;
-
-     // We check if the dailyDaysField really contains an integer
-     if (v == 0) {
-       parent$("repeat2").value = $('dailyDaysField').value;
-       v = parseInt(parent$("repeat2").value);
-       if (isNaN(v) || v <= 0) {
-	 window.alert("Please specify a numerical value in the Days field greater or equal to 1.");
-	 return false;
-       }
-     }
-   } 
-   else if (repeatType == 1) {
-     // Repeat weekly
-     v = $('weeklyWeeksField').value;
-     parent$("repeat1").value = v;
-     parent$("repeat2").value = getSelectedDays($('week'));
-
-     // We check if the weeklyWeeksField really contains an integer
-     v = parseInt(v);
-     if (isNaN(v) || v <= 0) {
-       window.alert("Please specify a numerical value in the Week(s) field greater or equal to 1.");
-       return false;
-     }
-   }
-   else if (repeatType == 2) {
-     // Repeat monthly
-     v = $('monthlyMonthsField').value;
-     parent$("repeat1").value = v;
-     parent$("repeat2").value = $('recurrence_form').getRadioValue('monthlyRadioButtonName');
-     parent$("repeat3").value = $('monthlyRepeat').value;
-     parent$("repeat4").value = $('monthlyDay').value;
-     parent$("repeat5").value = getSelectedDays($('month'));
-
-     // FIXME - right now we do not support rules
-     //         such as The Second Tuesday...
-     if (parent$("repeat2").value == 0) {
-       window.alert("This type of recurrence is currently unsupported.");
-       return false;
-     }
-
-     // We check if the monthlyMonthsField really contains an integer
-     v = parseInt(v);
-     if (isNaN(v) || v <= 0) {
-       window.alert("Please specify a numerical value in the Month(s) field greater or equal to 1.");
-       return false;
-     }
-   }
-   else {
-     // Repeat yearly 
-     parent$("repeat1").value = $('yearlyYearsField').value;
-     parent$("repeat2").value = $('recurrence_form').getRadioValue('yearlyRadioButtonName');
-     parent$("repeat3").value = $('yearlyDayField').value;
-     parent$("repeat4").value = $('yearlyMonth1').value;
-     parent$("repeat5").value = $('yearlyRepeat').value;
-     parent$("repeat6").value = $('yearlyDay').value;
-     parent$("repeat7").value = $('yearlyMonth2').value;
-
-     // FIXME - right now we do not support rules
-     //         such as Every Second Tuesday of February
-     if (parent$("repeat2").value == 1) {
-       window.alert("This type of recurrence is currently unsupported.");
-       return false;
-     }
-
-     // We check if the yearlyYearsField really contains an integer
-     v = parseInt(parent$("repeat1").value);
-     if (isNaN(v) || v <= 0) {
-       window.alert("Please specify a numerical value in the Year(s) field greater or equal to 1.");
-       return false;
-     }
-   }
-
-   var range = $('recurrence_form').getRadioValue('rangeRadioButtonName');
-   parent$("range1").value = range;
-
-   if (range == 1) {
-     parent$("range2").value = $('rangeAppointmentsField').value;
-
-     // We check if the rangeAppointmentsField really contains an integer
-     v = parseInt(parent$("range2").value);
-     if (isNaN(v) || v <= 0) {
-       window.alert("Please specify a numerical value in the Appointment(s) field  greater or equal to 1.");
-       return false;
-     }
-   }
-   else if (range == 2) {
-     parent$("range2").value = $('endDate_date').value;
-   }
-
-   window.close();
+  if (validate && handleRange())
+    window.close();
 }
 
 function onEditorCancelClick(event) {
-   preventDefault(event);
-   window.close();
+  preventDefault(event);
+  window.close();
 }
 
 function onRecurrenceLoadHandler() {
