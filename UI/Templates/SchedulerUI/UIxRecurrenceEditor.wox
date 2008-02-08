@@ -60,14 +60,14 @@
           </td>
           <td>
             <div id="week"><span class="week">
-              <div name="0"><p><var:string label:value="Sun"/></p></div>
               <div name="1"><p><var:string label:value="Mon"/></p></div>
               <div name="2"><p><var:string label:value="Tue"/></p></div>
               <div name="3"><p><var:string label:value="Wed"/></p></div>
               <div name="4"><p><var:string label:value="Thu"/></p></div>
               <div name="5"><p><var:string label:value="Fri"/></p></div>
               <div name="6"><p><var:string label:value="Sat"/></p></div>
-              </span><span class="week"></span>
+              <div name="7"><p><var:string label:value="Sun"/></p></div>
+              </span><span class="week"><!-- space --></span>
             </div>
           </td>
         </tr>

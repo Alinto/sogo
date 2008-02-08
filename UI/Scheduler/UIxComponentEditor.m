@@ -82,7 +82,7 @@ iRANGE(2);
 
 #define REPEAT(X) \
 - (NSString *) repeat##X { return repeat##X; } \
-- (void) setRepeat##X: (NSString *) theValue { NSLog(@"setRepeat %@", theValue); ASSIGN(repeat##X, theValue); } \
+- (void) setRepeat##X: (NSString *) theValue { NSLog(@"setRepeat%d %@", X, theValue); ASSIGN(repeat##X, theValue); } \
 
 #define RANGE(X) \
 - (NSString *) range##X { return range##X; } \

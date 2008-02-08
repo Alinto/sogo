@@ -93,11 +93,17 @@ function initializeFormValues() {
   else if (repeatType == 1) {
     // Repeat weekly
     $('weeklyWeeksField').value = parent$("repeat1").value;
-    var weekDiv = $("week").firstChild;
-    var daysArray = parent$("repeat2").value.split(",");
-    daysArray.each(function(index) {
-	$(weekDiv).down('div', index).addClassName("_selected");
+    var weekDiv = $($("week").firstChild);
+    log ("div: " + weekDiv);
+    log ("days: " + parent$("repeat2").value);
+    var days = "" + parent$("repeat2").value;
+    if (days.length > 0) {
+      var daysArray = days.split(",");
+      var divs = weekDiv.childNodesWithTag("div");
+      daysArray.each(function(index) {
+	  divs[index-1].addClassName("_selected");
       });
+    }
   }
   else if (repeatType == 2) {
     // Repeat monthly
@@ -106,10 +112,13 @@ function initializeFormValues() {
     $('monthlyRepeat').value = parent$("repeat3").value;
     $('monthlyDay').value = parent$("repeat4").value;
     var monthDiv = $("month");
-    var daysArray = parent$("repeat5").value.split(",");
-    daysArray.each(function(index) {
-	$(monthDiv).down('DIV[name="'+index+'"]').addClassName("_selected");
-      });
+    var days = "" + parent$("repeat5").value;
+    if (days.length > 0) {
+      var daysArray = days.split(",");
+      daysArray.each(function(index) {
+	  $(monthDiv).down('DIV[name="'+index+'"]').addClassName("_selected");
+	});
+    }
   }
   else if (repeatType == 3) {
     // Repeat yearly
