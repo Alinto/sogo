@@ -13,6 +13,7 @@
 - the position of the splitters is now remembered across user sessions
 - improved the email notifications when creating and removing a folder
 - fixed the tab handling in IE7
+- improved the appearance of widgets in IE7
 - dramatic improvement in the overall stability of SOGo
 
 0.9.0-20080116 (1.0 rc4)
