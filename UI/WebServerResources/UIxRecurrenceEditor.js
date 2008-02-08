@@ -68,7 +68,9 @@ function initializeWindowButtons() {
    Event.observe(okButton, "click", onEditorOkClick, false);
    Event.observe(cancelButton, "click", onEditorCancelClick, false);
 
-   $("repeatType").observe("change", onRepeatTypeChange, false);
+   var repeatType = $("repeatType");
+   setRepeatType(parseInt(repeatType.value));
+   repeatType.observe("change", onRepeatTypeChange, false);
 }
 
 function initializeFormValues() {
