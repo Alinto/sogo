@@ -462,28 +462,28 @@
   return YES;
 }
 
-/* CalDAV support */
-- (NSArray *) davCalendarHomeSet
-{
-  /*
-    <C:calendar-home-set xmlns:D="DAV:"
-        xmlns:C="urn:ietf:params:xml:ns:caldav">
-      <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
-    </C:calendar-home-set>
+// /* CalDAV support */
+// - (NSArray *) davCalendarHomeSet
+// {
+//   /*
+//     <C:calendar-home-set xmlns:D="DAV:"
+//         xmlns:C="urn:ietf:params:xml:ns:caldav">
+//       <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
+//     </C:calendar-home-set>
 
-    Note: this is the *container* for calendar collections, not the
-          collections itself. So for use its the home folder, the
-	  public folder and the groups folder.
-  */
-  NSArray *tag;
-  SOGoAppointmentFolders *parent;
+//     Note: this is the *container* for calendar collections, not the
+//           collections itself. So for use its the home folder, the
+// 	  public folder and the groups folder.
+//   */
+//   NSArray *tag;
+//   SOGoAppointmentFolders *parent;
 
-  parent = [self privateCalendars: @"Calendar" inContext: context];
-  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                 [parent davURL], nil];
+//   parent = [self privateCalendars: @"Calendar" inContext: context];
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [parent davURL], nil];
 
-  return [NSArray arrayWithObject: tag];
-}
+//   return [NSArray arrayWithObject: tag];
+// }
 
 // - (NSArray *) davCalendarUserAddressSet
 // {

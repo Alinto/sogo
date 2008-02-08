@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 #import "SOGoAppointmentFolder.h"
@@ -42,5 +43,104 @@
 {
   return @"Personal calendar";
 }
+
+// /* CalDAV support */
+// - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
+// {
+//   NSMutableArray *newClasses;
+
+//   newClasses
+//     = [NSMutableArray arrayWithArray:
+// 			[super davComplianceClassesInContext: localContext]];
+//   [newClasses addObject: @"calendar-access"];
+
+//   return newClasses;
+// }
+
+// - (NSArray *) davCalendarHomeSet
+// {
+//   /*
+//     <C:calendar-home-set xmlns:D="DAV:"
+//         xmlns:C="urn:ietf:params:xml:ns:caldav">
+//       <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
+//     </C:calendar-home-set>
+
+//     Note: this is the *container* for calendar collections, not the
+//           collections itself. So for use its the home folder, the
+// 	  public folder and the groups folder.
+//   */
+//   NSArray *tag;
+
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [self davURL], nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSArray *) davCalendarUserAddressSet
+// {
+//   NSArray *tag, *allEmails;
+//   NSMutableArray *addresses;
+//   NSEnumerator *emails;
+//   NSString *currentEmail;
+
+//   addresses = [NSMutableArray array];
+
+//   allEmails = [[context activeUser] allEmails];
+//   emails = [allEmails objectEnumerator];
+//   while ((currentEmail = [emails nextObject]))
+//     {
+//       tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+// 		     [NSString stringWithFormat: @"mailto:%@", currentEmail],
+// 		     nil];
+//       [addresses addObject: tag];
+//     }
+
+//   return addresses;
+// }
+
+// - (NSArray *) davCalendarScheduleInboxURL
+// {
+//   NSArray *tag;
+
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [self davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davCalendarScheduleOutboxURL
+// {
+//   NSArray *tag;
+
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [self davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davDropboxHomeURL
+// {
+//   NSArray *tag;
+
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [self davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
+
+// - (NSString *) davNotificationsURL
+// {
+//   NSArray *tag;
+
+//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+//                  [NSString stringWithFormat: @"%@personal/", [self davURL]],
+// 		 nil];
+
+//   return [NSArray arrayWithObject: tag];
+// }
 
 @end
