@@ -1,5 +1,10 @@
 2008-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-iCalStringForFreeBusyInfos:_infosfrom:_startDateto:_endDate]): we
+	no longer invoke [container login], since this method has been
+	removed. Instead we invoke ownerInContext:.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-fetchContentObjectNames]): new model method for all subclasses.
 	This will be removed in the future since toOneRelationshipKeys
