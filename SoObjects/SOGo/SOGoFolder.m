@@ -101,6 +101,17 @@
   return obj;
 }
 
+#warning we should remove this method
+- (NSArray *) toOneRelationshipKeys
+{
+  return [self fetchContentObjectNames];
+}
+
+- (NSArray *) fetchContentObjectNames
+{
+  return [NSArray array];
+}
+
 - (BOOL) isFolderish
 {
   return YES;

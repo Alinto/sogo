@@ -342,6 +342,7 @@ static BOOL sendFolderAdvisories = NO;
     }
   if ([records isKindOfClass: [NSException class]])
     return records;
+
   return [records objectsForKey: @"c_name"];
 }
 
@@ -383,6 +384,7 @@ static BOOL sendFolderAdvisories = NO;
     }
 }
 
+#warning this method is dirty code
 - (NSDictionary *) fetchContentStringsAndNamesOfAllObjects
 {
   NSDictionary *files;
@@ -396,48 +398,6 @@ static BOOL sendFolderAdvisories = NO;
   if ([files isKindOfClass:[NSException class]])
     return files;
   return files;
-}
-
-/* reflection */
-
-- (NSString *) defaultFilenameExtension
-{
-  /* 
-     Override to add an extension to a filename
-     
-     Note: be careful with that, needs to be consistent with object lookup!
-  */
-  return nil;
-}
-
-- (NSArray *) toOneRelationshipKeys
-{
-  /* toOneRelationshipKeys are the 'files' contained in a folder */
-  NSMutableArray *ma;
-  NSArray  *names;
-  NSString *name, *ext;
-  unsigned i, count;
-  NSRange  r;
-
-  names = [self fetchContentObjectNames];
-  count = [names count];
-  ext = [self defaultFilenameExtension];
-  if (count && [ext length] > 0)
-    {
-      ma = [NSMutableArray arrayWithCapacity: count];
-      for (i = 0; i < count; i++)
-        {
-          name = [names objectAtIndex: i];
-          r = [name rangeOfString: @"."];
-          if (r.length == 0)
-	    name = [NSMutableString stringWithFormat: @"%@.%@", name, ext];
-          [ma addObject: name];
-        }
-
-      names = ma;
-    }
-
-  return names;
 }
 
 #warning this code should be cleaned up

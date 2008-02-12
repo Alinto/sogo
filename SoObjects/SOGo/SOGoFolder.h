@@ -34,6 +34,7 @@
 - (NSString *) displayName;
 
 - (NSString *) folderType;
+- (NSArray *) fetchContentObjectNames;
 
 /* sorting */
 - (NSComparisonResult) compare: (id) otherFolder;

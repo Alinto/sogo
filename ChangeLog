@@ -1,3 +1,14 @@
+2008-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-fetchContentObjectNames]): new model method for all subclasses.
+	This will be removed in the future since toOneRelationshipKeys
+	must be sufficient.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-defaultFilenameExtension]): removed useless method.
+	([-toOneRelationshipKeys]): moved method into SOGoFolder.m.
+
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
