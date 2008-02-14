@@ -32,7 +32,12 @@ if [ -d /usr/lib/GNUstep ]
 then
   . /usr/lib/GNUstep/System/Library/Makefiles/GNUstep.sh
 else
+if [ -f /usr/share/GNUstep/Makefiles/GNUstep.sh ]
+then
+  . /usr/share/GNUstep/Makefiles/GNUstep.sh
+else
   . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+fi
 fi
 
 if [ -f $GNUSTEP_USER_ROOT/Tools/sogod-0.9 ]; then
