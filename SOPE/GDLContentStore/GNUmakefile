@@ -13,7 +13,8 @@ FRAMEWORK_NAME = GDLContentStore
 endif
 
 libGDLContentStore_PCH_FILE = common.h
-libGDLContentStore_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libGDLContentStore_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libGDLContentStore_INSTALL_DIR=$(SOGO_SYSLIBDIR)
 libGDLContentStore_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 TOOL_NAME = gcs_ls gcs_mkdir gcs_cat gcs_recreatequick gcs_gensql
@@ -68,10 +69,12 @@ GDLContentStore_SUBPROJECTS  = $(libGDLContentStore_SUBPROJECTS)
 
 -include GNUmakefile.preamble
 ifneq ($(frameworks),yes)
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 else
 include $(GNUSTEP_MAKEFILES)/framework.make
 endif
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
-include fhs.make

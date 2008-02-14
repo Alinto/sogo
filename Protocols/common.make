@@ -1,12 +1,12 @@
 # common make file for Protocol bundles
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../../Version
 include ./Version
 
 BUNDLE_EXTENSION   = .SOGo
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SOGo-$(MAJOR_VERSION).$(MINOR_VERSION)
+BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I..		\

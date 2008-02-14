@@ -1,12 +1,12 @@
 # common make file for SoObject bundles
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../../Version
 include ./Version
 
 BUNDLE_EXTENSION     = .SOGo
-BUNDLE_INSTALL_DIR   = $(GNUSTEP_INSTALLATION_DIR)/Library/SOGo-$(MAJOR_VERSION).$(MINOR_VERSION)
+BUNDLE_INSTALL_DIR   = $(SOGO_LIBDIR)
 WOBUNDLE_EXTENSION   = $(BUNDLE_EXTENSION)
 WOBUNDLE_INSTALL_DIR = $(BUNDLE_INSTALL_DIR)
 

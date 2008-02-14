@@ -1,10 +1,6 @@
 # compilation settings
 
-ifeq ($(FHS_INSTALL_ROOT),)
-MAPDIR="$(GNUSTEP_INSTALLATION_DIR)/Library/SaxMappings/"
-else
-MAPDIR="$(FHS_INSTALL_ROOT)/share/sope-$(MAJOR_VERSION).$(MINOR_VERSION)/saxmappings/"
-endif
+MAPDIR="$(SOPE_SAXMAPPINGS)"
 
 mappings-dir ::
 	$(MKDIRS) $(MAPDIR)

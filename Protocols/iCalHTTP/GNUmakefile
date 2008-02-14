@@ -26,4 +26,3 @@ ADDITIONAL_INCLUDE_DIRS += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-include ../../fhsbundle.make

@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 -include ../../Version
 -include ./Version
@@ -13,11 +13,11 @@ TOOL_NAME = \
 # 	agenor_emails4uid	\
 # 	agenor_defaults
 
-libSOGo_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libSOGo_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libSOGo_INSTALL_DIR=$(SOGO_SYSLIBDIR)
 
 libSOGo_HEADER_FILES_DIR         = .
 libSOGo_HEADER_FILES_INSTALL_DIR = /SOGo
-FHS_HEADER_DIRS = SOGo
 
 libSOGo_HEADER_FILES = \
 	SOGoCache.h			\
@@ -107,8 +107,9 @@ ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
 include ../common.make
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include ../../fhslib.make
--include ../../fhstools.make

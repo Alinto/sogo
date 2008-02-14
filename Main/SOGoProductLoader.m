@@ -80,28 +80,12 @@
 }
 
 - (void)_addGNUstepSearchPathesToArray:(NSMutableArray *)ma {
-  NSDictionary *env;
-  id tmp;
-  
-  env = [[NSProcessInfo processInfo] environment];
-  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
-    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
-  
-  tmp = [tmp componentsSeparatedByString:@":"];
-  if ([tmp count] > 0) {
-    NSEnumerator *e;
-      
-    e = [tmp objectEnumerator];
-    while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:@"Library"];
-      tmp = [tmp stringByAppendingPathComponent:self->productDirectoryName];
-      if (![ma containsObject:tmp])
-        [ma addObject:tmp];
-    }
-  }
-  else {
-    NSLog(@"%s: empty library search path !", __PRETTY_FUNCTION__);
-  }
+  NSEnumerator *libraryPaths;
+  NSString *directory;
+
+  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
+  while ((directory = [libraryPaths nextObject]))
+    [ma addObject: [directory stringByAppendingPathComponent:self->productDirectoryName]];
 }
 
 - (void)_addFHSPathesToArray:(NSMutableArray *)ma {
@@ -114,18 +98,13 @@
 
 - (NSArray *)productSearchPathes {
   NSMutableArray *ma;
-  BOOL hasGNUstepEnv;
   
   if (self->searchPathes != nil)
     return self->searchPathes;
 
-  hasGNUstepEnv = [[[[NSProcessInfo processInfo] environment]
-		     objectForKey:@"GNUSTEP_USER_ROOT"] length] > 0 ? YES : NO;
-  
   ma  = [NSMutableArray arrayWithCapacity:6];
   
-  if (hasGNUstepEnv)
-    [self _addGNUstepSearchPathesToArray:ma];
+  [self _addGNUstepSearchPathesToArray:ma];
 #if COCOA_Foundation_LIBRARY
   else
     [self _addCocoaSearchPathesToArray:ma];

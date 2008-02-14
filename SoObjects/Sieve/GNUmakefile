@@ -19,4 +19,3 @@ Sieve_RESOURCE_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-include ../../fhsbundle.make

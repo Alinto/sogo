@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
@@ -12,11 +12,10 @@ else
 FRAMEWORK_NAME = NGCards
 endif
 
-FHS_HEADER_DIRS = NGCards
-
 libNGCards_HEADER_FILES_DIR         = .
 libNGCards_HEADER_FILES_INSTALL_DIR = /NGCards
-libNGCards_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libNGCards_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libNGCards_INSTALL_DIR=$(SOGO_SYSLIBDIR)
 libNGCards_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libNGCards_HEADER_FILES =  		\
@@ -118,10 +117,12 @@ NGCards_SUBPROJECTS  = $(libNGCards_SUBPROJECTS)
 
 -include GNUmakefile.preamble
 ifneq ($(frameworks),yes)
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 else
 include $(GNUSTEP_MAKEFILES)/framework.make
 endif
 include $(GNUSTEP_MAKEFILES)/aggregate.make
 -include GNUmakefile.postamble
--include ../../fhslib.make

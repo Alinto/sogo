@@ -48,6 +48,8 @@
 
 - (NSString *) asQPSubjectString: (NSString *) encoding;
 
+- (NSRange) _rangeOfURLInRange: (NSRange) refRange;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif

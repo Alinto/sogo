@@ -10,7 +10,8 @@ LIBRARY_NAME = libSOGoUI
 
 libSOGoUI_HEADER_FILES_DIR         = .
 libSOGoUI_HEADER_FILES_INSTALL_DIR = /SOGoUI
-FHS_HEADER_DIRS = SOGoUI
+libSOGoUI_INTERFACE_VERSION	   = $(MAJOR_VERSION).$(MINOR_VERSION)
+libSOGoUI_INSTALL_DIR=$(SOGO_SYSLIBDIR)
 
 libSOGoUI_HEADER_FILES +=	\
 	\
@@ -33,6 +34,8 @@ libSOGoUI_OBJC_FILES +=		\
 # make
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
--include ../../fhslib.make

@@ -1,3 +1,7 @@
+2008-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GNUmakefile: migrated to GNUstep Make 2.
+
 2008-02-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject

@@ -1,0 +1,3184 @@
+Index: configure
+===================================================================
+--- configure	(révision 1604)
++++ configure	(copie de travail)
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+ #
+ # Note: When adding make options to this script, ensure that the source still
+@@ -15,8 +15,9 @@
+ ARG_NOCREATE=0
+ ARG_PREFIX=""
+ ARG_FRAMEWORK_DIR=""
+-ARG_GSMAKE="$GNUSTEP_MAKEFILES"
++ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES`
+ ARG_CFGMAKE="$PWD/config.make"
++ARG_FHSMAKE="$PWD/fhs-postinstall.make"
+ ARG_WITH_GNUSTEP=0
+ ARG_WITH_DEBUG=1
+ ARG_WITH_STRIP=1
+@@ -30,12 +31,20 @@
+ INTERNAL_MAKEDIR="${SOPE_SRCDIR}/.gsmake"
+ USES_INTERNAL_MAKE=no
+ 
++# detect GNU make, needed at least on *BSD
++make -v 2>/dev/null | grep GNU >/dev/null 2>/dev/null
++if [ $? -eq 0 ];then
++  MAKE=make
++else
++  MAKE=gmake
++fi
++
+ # TODO: add pg_config, mysql_config etc!
+ LINK_SYSLIBDIRS="-L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib"
+ 
+ # ******************** usage ********************
+ 
+-function usage() {
++usage() {
+   cat <<_ACEOF
+ \`configure' configures a GNUstep-make based sourcetree for installation.
+ 
+@@ -66,7 +75,7 @@
+ 
+ # ******************** running ********************
+ 
+-function printParas() {
++printParas() {
+   echo "Configuration:"
+   if test $ARG_BEQUIET  = 1; then echo "  will be quite.";  fi
+   if test $ARG_NOCREATE = 1; then echo "  won't create files"; fi
+@@ -97,7 +106,7 @@
+   echo ""
+ }
+ 
+-function warnOnFHSPrefix() {
++warnOnFHSPrefix() {
+   cat <<_ACEOFWARN
+ Warning: you are configuring for a non standard FHS style prefix.
+          prefix: $ARG_PREFIX
+@@ -114,7 +123,7 @@
+ _ACEOFWARN
+ }
+ 
+-function setupInternalGSMake() {
++setupInternalGSMake() {
+   if test -f ${INTERNAL_MAKEDIR}/Library/Makefiles/GNUstep.sh; then
+     ARG_GSMAKE="${INTERNAL_MAKEDIR}/Library/Makefiles/"
+     ARG_IS_FHS=1
+@@ -149,7 +158,7 @@
+       --with-library-combo="${SETUP_COMBO}"
+ 
+     echo -n ".. install .."
+-    make install >>${pregsmdir}/${SETUP_LOGNAME}
++    $MAKE install >>${pregsmdir}/${SETUP_LOGNAME}
+     
+     ARG_GSMAKE="${INTERNAL_MAKEDIR}/Library/Makefiles/"
+     ARG_IS_FHS=1
+@@ -174,7 +183,7 @@
+   fi
+ }
+ 
+-function validateGNUstepArgs() {
++validateGNUstepArgs() {
+   # GNUstep make
+   if test "x$ARG_GSMAKE" = "x"; then
+     if test -f $HOME/OGoRoot/Library/Makefiles/GNUstep.sh; then
+@@ -203,7 +212,7 @@
+   fi
+ }
+ 
+-function setupAppleArgs() {
++setupAppleArgs() {
+   ARG_WITH_STRIP=0
+   if test "x${USES_INTERNAL_MAKE}" = "no"; then
+     ARG_WITH_GNUSTEP=1
+@@ -218,7 +227,7 @@
+   #fi
+ }
+ 
+-function validateArgs() {
++validateArgs() {
+   # validate prefix (could be better?)
+   case "x$ARG_PREFIX" in
+     "x/usr/local"|"x/usr/local/")
+@@ -273,7 +282,7 @@
+   fi
+ }
+ 
+-function printGNUstepSetup() {
++printGNUstepSetup() {
+   echo "GNUstep environment:"
+   echo "  system: ${GNUSTEP_SYSTEM_ROOT}"
+   echo "  local:  ${GNUSTEP_LOCAL_ROOT}"
+@@ -285,11 +294,11 @@
+   echo ""
+ }
+ 
+-function cfgwrite() {
++cfgwrite() {
+   echo "$1" >> $ARG_CFGMAKE
+ }
+ 
+-function genConfigMake() {
++genConfigMake() {
+   # we ignore the following vars also patches by gstep-make:
+   #   PATH
+   #   DYLD_LIBRARY_PATH
+@@ -303,6 +312,8 @@
+   echo "# GNUstep environment configuration" > $ARG_CFGMAKE
+   cfgwrite "#   created by: '$CFG_ARGS'"
+   cfgwrite ""
++  cfgwrite "SOPE_ROOT=`pwd`"
++  cfgwrite "include \${SOPE_ROOT}/Version"
+   
+   cfgwrite "# Note: you can override any option as a 'make' parameter, eg:"
+   cfgwrite "#         make debug=yes"
+@@ -313,7 +324,27 @@
+   #cfgwrite "	@echo Local GNUstep config.make is active"
+   #cfgwrite ""
+   
+-  # TODO: should be also write a GNUSTEP_INSTALLATION_DIR / BUNDLE_INSTALL_DIR?
++  # TODO: should be also write a GNUSTEP_INSTALLATION_DOMAIN?
++  # Note: GNUSTEP_TARGET_CPU is not yet available (set by common.make), so we
++  #       only have environment variables
++  # Note: we can't set SYSTEM_LIB_DIR in this location, it gets overridden by
++  #       common.make
++  UNAME=`uname`
++  if [ "X${UNAME}" = "XLinux" ];then
++    UNAME=`uname -p`
++    if [ ${UNAME} = x86_64 -o ${UNAME} = sparc64 -o ${UNAME} = ppc64 ];then
++      cfgwrite "CGS_LIBDIR_NAME:=lib64"
++    else
++      cfgwrite "CGS_LIBDIR_NAME:=lib"
++    fi
++  else
++    cfgwrite "CGS_LIBDIR_NAME:=lib"
++  fi
++  cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
++  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
++  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
++  cfgwrite "endif"
++  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
+   
+   
+   if test "x$ARG_FRAMEWORK_DIR" != "x"; then
+@@ -325,13 +356,38 @@
+     cfgwrite "# configured for FHS install"
+     cfgwrite "FHS_INSTALL_ROOT:=$ARG_PREFIX"
+     cfgwrite ""
++    cfgwrite "SOPE_SYSLIBDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/\$(CGS_LIBDIR_NAME)"
++    cfgwrite "SOPE_LIBDIR=\${SOPE_SYSLIBDIR}/sope-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_SYSSHAREDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/share"
++    cfgwrite "SOPE_SHAREDIR=\${SOPE_SYSSHAREDIR}/sope-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_DBADAPTORS=\${SOPE_LIBDIR}/dbadaptors"
++    cfgwrite "SOPE_PRODUCTS=\${SOPE_LIBDIR}/products"
++    cfgwrite "SOPE_SAXDRIVERS=\${SOPE_LIBDIR}/saxdrivers"
++    cfgwrite "SOPE_WOXBUILDERS=\${SOPE_LIBDIR}/wox-builders"
++    cfgwrite "SOPE_NGOBJWEB=\${SOPE_SHAREDIR}/ngobjweb"
++    cfgwrite "SOPE_SAXMAPPINGS=\${SOPE_SHAREDIR}/saxmappings"
++    cfgwrite "SOPE_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/bin"
++    cfgwrite "SOPE_ADMIN_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/sbin"
++    cfgwrite ""
+   else
+     cfgwrite "# configured for GNUstep install"
++    cfgwrite ""
++    cfgwrite "SOPE_SYSLIBDIR=\${DESTDIR}\${GNUSTEP_LIBRARIES}"
++    cfgwrite "SOPE_LIBDIR=\${DESTDIR}\${GNUSTEP_LIBRARY}"
++    cfgwrite "SOPE_DBADAPTORS=\${SOPE_LIBDIR}/GDLAdaptors-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_PRODUCTS=\${SOPE_LIBDIR}/SoProducts-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_SAXDRIVERS=\${SOPE_LIBDIR}/SaxDrivers-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_NGOBJWEB=\${DESTDIR}\${GNUSTEP_RESOURCES}/NGObjWeb"
++    cfgwrite "SOPE_WOXBUILDERS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_SAXMAPPINGS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/SaxMappings"
++    cfgwrite "SOPE_TOOLS=\${DESTDIR}/\${GNUSTEP_TOOLS}"
++    cfgwrite "SOPE_ADMIN_TOOLS=\${DESTDIR}\${GNUSTEP_ADMIN_TOOLS}"
+   fi
+   
+   if test $ARG_WITH_DEBUG = 1; then
+     cfgwrite "# configured to produce debugging code";
+     cfgwrite "debug:=yes"
++
+   else
+     cfgwrite "# configured to produce non-debugging code";
+     cfgwrite "debug:=no"
+@@ -358,29 +414,9 @@
+   done
+   cfgwrite "LIBRARY_COMBO=$LIBRARY_COMBO"
+   cfgwrite ""
+-  
+-  # Note: GNUSTEP_TARGET_CPU is not yet available (set by common.make), so we
+-  #       only have environment variables
+-  # Note: we can't set SYSTEM_LIB_DIR in this location, it gets overridden by
+-  #       common.make
+-  cfgwrite "ifeq (\$(findstring _64, \$(GNUSTEP_HOST_CPU)), _64)"
+-  cfgwrite "CONFIGURE_64BIT:=yes"
+-  cfgwrite "CGS_LIBDIR_NAME:=lib64"
+-  cfgwrite "else"
+-  cfgwrite "CGS_LIBDIR_NAME:=lib"
+-  cfgwrite "endif"
+-
+-  cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
+-  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
+-  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
+-  cfgwrite "endif"
+-  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
+-  
+-  cfgwrite "# avoid a gstep-make warning"
+-  cfgwrite "PATH:=\$(GNUSTEP_SYSTEM_ROOT)/Tools:\$(PATH)"
+ }
+ 
+-function checkLinking() {
++checkLinking() {
+   # library-name => $1, type => $2
+   local oldpwd=$PWD
+   local tmpdir=".configure-test-$$"
+@@ -388,18 +424,26 @@
+   mkdir $tmpdir
+   cd $tmpdir
+   cp ../maintenance/dummytool.c .
++
++  for LIB in $1;do
++    LIBS="$LIBS -l${LIB}"
++  done
+   
+   tmpmake="GNUmakefile"
+-  echo  >$tmpmake "include ../config.make"
++  echo  >$tmpmake "-include ../config.make"
+   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/common.make"
+   echo >>$tmpmake "CTOOL_NAME           := linktest"
+   echo >>$tmpmake "linktest_C_FILES := dummytool.c"
+-  echo >>$tmpmake "linktest_TOOL_LIBS  += -l$1"
++  echo >>$tmpmake "ifeq (\$(findstring openbsd, \$(GNUSTEP_HOST_OS)), openbsd)"
++  echo >>$tmpmake "linktest_TOOL_LIBS  += $LIBS -liconv"
++  echo >>$tmpmake "else"
++  echo >>$tmpmake "linktest_TOOL_LIBS  += $LIBS"
++  echo >>$tmpmake "endif"
+   echo >>$tmpmake "SYSTEM_LIB_DIR += \$(CONFIGURE_SYSTEM_LIB_DIR)"
+   echo >>$tmpmake "SYSTEM_LIB_DIR      += ${LINK_SYSLIBDIRS}"
+   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/ctool.make"
+   
+-  make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
++  $MAKE -s messages=yes -f $tmpmake linktest >out.log 2>err.log
+   LINK_RESULT=$?
+   
+   if test $LINK_RESULT = 0; then
+@@ -420,18 +464,22 @@
+   rm -rf $tmpdir
+ }
+ 
+-function checkDependencies() {
++checkDependencies() {
+   cfgwrite ""
+   cfgwrite "# library dependencies"
+   checkLinking "xml2"        optional;
+   checkLinking "ldap"        optional;
+-  checkLinking "ssl"         required; # TODO: make optional
++  if [ `uname` = "OpenBSD" ];then
++    checkLinking "ssl crypto"  required; # TODO: make optional
++  else
++    checkLinking "ssl"         required; # TODO: make optional
++  fi
+   checkLinking "pq"          optional;
+   checkLinking "sqlite3"     optional;
+   checkLinking "mysqlclient" optional;
+ }
+ 
+-function runIt() {
++runIt() {
+   if test $ARG_BEQUIET != 1; then
+     printParas;
+   fi
+@@ -459,11 +507,11 @@
+ 
+ # ******************** options ********************
+ 
+-function extractFuncValue() {
++extractFuncValue() {
+   VALUE="`echo "$1" | sed "s/[^=]*=//g"`"
+ }
+ 
+-function processOption() {
++processOption() {
+   case "x$1" in
+     "x--help"|"x-h")
+ 	usage;
+@@ -518,7 +566,7 @@
+ # load GNUstep environment
+ validateGNUstepArgs
+ # first we load the GNUstep.sh environment
+-source $DARG_GNUSTEP_SH
++. $DARG_GNUSTEP_SH
+ if test $ARG_BEQUIET != 1; then
+   printGNUstepSetup;
+ fi
+Index: sope-ldap/samples/GNUmakefile
+===================================================================
+--- sope-ldap/samples/GNUmakefile	(révision 1604)
++++ sope-ldap/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+@@ -9,8 +9,11 @@
+ 	ldapchkpwd	\
+ 
+ ldapls_OBJC_FILES	 = ldapls.m
++ldapls_INSTALL_DIR	 = $(SOPE_TOOLS)/
+ ldap2dsml_OBJC_FILES	 = ldap2dsml.m
++ldap2dsml_INSTALL_DIR	 = $(SOPE_TOOLS)/
+ ldapchkpwd_OBJC_FILES	 = ldapchkpwd.m
++ldapchkpwd_INSTALL_DIR	 = $(SOPE_TOOLS)/
+ 
+ #TOOL_NAME = #pwd-check
+ #pwd-check_OBJC_FILES = pwd-check.m
+@@ -19,4 +22,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-ldap/NGLdap/GNUmakefile
+===================================================================
+--- sope-ldap/NGLdap/GNUmakefile	(révision 1604)
++++ sope-ldap/NGLdap/GNUmakefile	(copie de travail)
+@@ -1,11 +1,9 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ LIBRARY_NAME = libNGLdap
+ else
+@@ -15,7 +13,8 @@
+ libNGLdap_PCH_FILE = common.h
+ libNGLdap_HEADER_FILES_DIR         = .
+ libNGLdap_HEADER_FILES_INSTALL_DIR = /NGLdap
+-libNGLdap_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGLdap_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGLdap_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGLdap_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGLdap_HEADER_FILES = \
+@@ -61,10 +60,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-ldap/GNUmakefile
+===================================================================
+--- sope-ldap/GNUmakefile	(révision 1604)
++++ sope-ldap/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-ldap
+Index: GNUmakefile
+===================================================================
+--- GNUmakefile	(révision 1604)
++++ GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ./config.make
++include ./config.make
+ 
+ ifeq ($(GNUSTEP_MAKEFILES),)
+ 
+@@ -35,8 +35,6 @@
+ include $(GNUSTEP_MAKEFILES)/aggregate.make
+ -include $(GNUSTEP_MAKEFILES)/GNUmakefile.postamble
+ 
+-include ./Version
+-
+ endif
+ 
+ distclean ::
+Index: sope-mime/NGImap4/GNUmakefile
+===================================================================
+--- sope-mime/NGImap4/GNUmakefile	(révision 1604)
++++ sope-mime/NGImap4/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ 
+@@ -63,7 +63,10 @@
+ 	NGImap4MailboxInfo.m		\
+ 	NGImap4ConnectionManager.m	\
+ 
+--include GNUmakefile.preamble
++include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ else
+Index: sope-mime/samples/GNUmakefile
+===================================================================
+--- sope-mime/samples/GNUmakefile	(révision 1604)
++++ sope-mime/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+@@ -14,16 +14,24 @@
+ 	imapcontest	\
+ 
+ imapquota_OBJC_FILES     = ImapQuotaTool.m ImapTool.m imapquota.m
++imapquota_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapacl_OBJC_FILES       = ImapQuotaTool.m ImapTool.m imapacl.m
++imapctl_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapget_OBJC_FILES       = ImapTool.m imapget.m
++imapget_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imap_tool_OBJC_FILES     = imap_tool.m
++imap_tool_INSTALL_DIR	 = $(SOPE_TOOLS)
+ mime2xml_OBJC_FILES      = Mime2XmlTool.m mime2xml.m
++mime2xml_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapls_OBJC_FILES        = ImapTool.m ImapListTool.m imapls.m
++imapls_INSTALL_DIR	 = $(SOPE_TOOLS)
+ test_qpdecode_OBJC_FILES = test_qpdecode.m
++test_qpdecode_INSTALL_DIR= $(SOPE_TOOLS)
+ sievetool_OBJC_FILES	 = sievetool.m
++sievetool_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapcontest_OBJC_FILES	 = imapcontest.m
++imapcontest_INSTALL_DIR	 = $(SOPE_TOOLS)
+ 
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-mime/NGMail/GNUmakefile
+===================================================================
+--- sope-mime/NGMail/GNUmakefile	(révision 1604)
++++ sope-mime/NGMail/GNUmakefile	(copie de travail)
+@@ -1,10 +1,8 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ SUBPROJECT_NAME = NGMail
+ else
+@@ -55,6 +53,9 @@
+ 	NSData+MimeQP.m		\
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ else
+Index: sope-mime/GNUmakefile
+===================================================================
+--- sope-mime/GNUmakefile	(révision 1604)
++++ sope-mime/GNUmakefile	(copie de travail)
+@@ -1,11 +1,9 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ LIBRARY_NAME = libNGMime
+ else
+@@ -14,7 +12,8 @@
+ 
+ libNGMime_HEADER_FILES_DIR         = .
+ libNGMime_HEADER_FILES_INSTALL_DIR = /NGMime
+-libNGMime_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGMime_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGMime_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGMime_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ ifneq ($(frameworks),yes)
+@@ -35,6 +34,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+@@ -42,7 +44,6 @@
+ include $(GNUSTEP_MAKEFILES)/aggregate.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+ 
+ 
+ # package
+Index: sope-mime/NGMime/GNUmakefile.preamble
+===================================================================
+--- sope-mime/NGMime/GNUmakefile.preamble	(révision 1604)
++++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
+@@ -5,6 +5,15 @@
+ 	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
+ 	-DLIBRARY_SUBMINOR_VERSION=${SUBMINOR_VERSION} \
+ 
++ifeq ($(patsubstr GNU/%,glibc,$(shell uname -o)),glibc)
++ADDITIONAL_CPPFLAGS += \
++        -DHAVE_STRNDUP
++endif
++
++ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
++	ADDITIONAL_CPPFLAGS += -DHAVE_STRNDUP
++endif
++
+ NGMime_INCLUDE_DIRS += \
+ 	-I.. -I../..			\
+ 	-I../../sope-core/NGStreams/	\
+Index: sope-mime/NGMime/GNUmakefile
+===================================================================
+--- sope-mime/NGMime/GNUmakefile	(révision 1604)
++++ sope-mime/NGMime/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ 
+@@ -76,5 +76,8 @@
+ 	NGMimeRfc822BodyGenerator.m			\
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ -include GNUmakefile.postamble
+Index: sope-gdl1/PostgreSQL/GNUmakefile.preamble
+===================================================================
+--- sope-gdl1/PostgreSQL/GNUmakefile.preamble	(révision 1604)
++++ sope-gdl1/PostgreSQL/GNUmakefile.preamble	(copie de travail)
+@@ -27,7 +27,7 @@
+ ifeq ($(frameworks),yes)
+ BUNDLE_INSTALL_DIR := $(FRAMEWORK_INSTALL_DIR)/GDLAccess.framework/Resources/GDLAdaptors/
+ else
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/GDLAdaptors-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_DBADAPTORS)/
+ endif
+ 
+ 
+Index: sope-gdl1/PostgreSQL/GNUmakefile
+===================================================================
+--- sope-gdl1/PostgreSQL/GNUmakefile	(révision 1604)
++++ sope-gdl1/PostgreSQL/GNUmakefile	(copie de travail)
+@@ -22,7 +22,7 @@
+ # If not, write to the Free Software Foundation,
+ # 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -70,4 +70,3 @@
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ #include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+-include fhs.make
+Index: sope-gdl1/SQLite3/GNUmakefile.preamble
+===================================================================
+--- sope-gdl1/SQLite3/GNUmakefile.preamble	(révision 1604)
++++ sope-gdl1/SQLite3/GNUmakefile.preamble	(copie de travail)
+@@ -27,7 +27,7 @@
+ ifeq ($(frameworks),yes)
+ BUNDLE_INSTALL_DIR := $(FRAMEWORK_INSTALL_DIR)/GDLAccess.framework/Resources/GDLAdaptors/
+ else
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/GDLAdaptors-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_DBADAPTORS)/
+ endif
+ 
+ 
+Index: sope-gdl1/SQLite3/GNUmakefile
+===================================================================
+--- sope-gdl1/SQLite3/GNUmakefile	(révision 1604)
++++ sope-gdl1/SQLite3/GNUmakefile	(copie de travail)
+@@ -22,7 +22,7 @@
+ # If not, write to the Free Software Foundation,
+ # 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -67,4 +67,3 @@
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ endif
+ -include GNUmakefile.postamble
+-include fhs.make
+Index: sope-gdl1/FrontBase2/GNUmakefile
+===================================================================
+--- sope-gdl1/FrontBase2/GNUmakefile	(révision 1604)
++++ sope-gdl1/FrontBase2/GNUmakefile	(copie de travail)
+@@ -22,7 +22,7 @@
+ # If not, write to the Free Software Foundation,
+ # 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ CAN_COMPILE_FB = \
+@@ -30,8 +30,6 @@
+ 
+ ifeq ($(CAN_COMPILE_FB),yes)
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ BUNDLE_NAME = FrontBase2
+ 
+ FrontBase2_OBJC_FILES = \
+@@ -51,7 +49,7 @@
+ FrontBase2_RESOURCE_FILES  = Info.plist Version
+ 
+ BUNDLE_INSTALL     = FrontBase2
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_SYSTEM_ROOT)/Libraries/Adaptors
++BUNDLE_INSTALL_DIR = $(SOPE_DBADAPTORS)/
+ 
+ # Use .gdladaptor as the bundle extension
+ BUNDLE_EXTENSION = .gdladaptor
+Index: sope-gdl1/MySQL/GNUmakefile.preamble
+===================================================================
+--- sope-gdl1/MySQL/GNUmakefile.preamble	(révision 1604)
++++ sope-gdl1/MySQL/GNUmakefile.preamble	(copie de travail)
+@@ -27,7 +27,7 @@
+ ifeq ($(frameworks),yes)
+ BUNDLE_INSTALL_DIR := $(FRAMEWORK_INSTALL_DIR)/GDLAccess.framework/Resources/GDLAdaptors/
+ else
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/GDLAdaptors-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_DBADAPTORS)/
+ endif
+ 
+ 
+Index: sope-gdl1/MySQL/GNUmakefile
+===================================================================
+--- sope-gdl1/MySQL/GNUmakefile	(révision 1604)
++++ sope-gdl1/MySQL/GNUmakefile	(copie de travail)
+@@ -22,7 +22,7 @@
+ # If not, write to the Free Software Foundation,
+ # 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -67,4 +67,3 @@
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ endif
+ -include GNUmakefile.postamble
+-include fhs.make
+Index: sope-gdl1/GNUmakefile
+===================================================================
+--- sope-gdl1/GNUmakefile	(révision 1604)
++++ sope-gdl1/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-gdl1
+Index: sope-gdl1/GDLAccess/GNUmakefile.preamble
+===================================================================
+--- sope-gdl1/GDLAccess/GNUmakefile.preamble	(révision 1604)
++++ sope-gdl1/GDLAccess/GNUmakefile.preamble	(copie de travail)
+@@ -21,17 +21,12 @@
+ 	-I$(SOPE_ROOT)/sope-core/NGExtensions/
+ 
+ 
+-# Parameters for EOAdaptor lookup
+ 
+-ifneq ($(FHS_INSTALL_ROOT),)
+-ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\@\"$(FHS_INSTALL_ROOT)\"
++ifneq ($(CGS_LIBDIR_NAME),)
++ADDITIONAL_CPPFLAGS += -DCGS_LIBDIR_NAME=\@\"$(CGS_LIBDIR_NAME)\"
+ endif
+ 
+-ifeq ($(CONFIGURE_64BIT),yes)
+-ADDITIONAL_CPPFLAGS += -DCONFIGURE_64BIT=1
+-endif
+ 
+-
+ # dependencies
+ 
+ libGDLAccess_LIBRARIES_DEPEND_UPON += -lEOControl
+Index: sope-gdl1/GDLAccess/GNUmakefile
+===================================================================
+--- sope-gdl1/GDLAccess/GNUmakefile	(révision 1604)
++++ sope-gdl1/GDLAccess/GNUmakefile	(copie de travail)
+@@ -1,12 +1,10 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ -include ../Version
+ -include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = ${GNUSTEP_LOCAL_ROOT}
+-
+ ifneq ($(frameworks),yes)
+ LIBRARY_NAME = libGDLAccess
+ else
+@@ -14,7 +12,8 @@
+ endif
+ 
+ libGDLAccess_PCH_FILE = common.h
+-libGDLAccess_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libGDLAccess_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libGDLAccess_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libGDLAccess_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libGDLAccess_DLL_DEF = libGDLAccess.def
+@@ -123,6 +122,8 @@
+ connect-EOAdaptor_OBJC_FILES = connect-EOAdaptor.m
+ load-EOAdaptor_PCH_FILE      = common.h
+ connect-EOAdaptor_PCH_FILE   = common.h
++load-EOAdaptor_INSTALL_DIR	= $(SOPE_TOOLS)/
++connect-EOAdaptor_INSTALL_DIR	= $(SOPE_TOOLS)/
+ 
+ 
+ # framework support
+@@ -136,6 +137,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+@@ -143,4 +147,3 @@
+ endif
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+-include fhs.make
+Index: sope-gdl1/GDLAccess/EOAdaptor.h
+===================================================================
+--- sope-gdl1/GDLAccess/EOAdaptor.h	(révision 1604)
++++ sope-gdl1/GDLAccess/EOAdaptor.h	(copie de travail)
+@@ -62,11 +62,14 @@
+ + (id)adaptorWithModel:(EOModel *)aModel;
+ + (id)adaptorWithName:(NSString *)aName;
+ + (id)adaptorForURL:(id)_url;
+++ (NSString *)libraryDriversSubDir;
+ - (id)initWithName:(NSString *)aName;
+ 
+ /* Getting an adaptor's name */
+ - (NSString*)name;
+ 
++/* Get the library subdir name */
++
+ /* Setting connection information */
+ - (void)setConnectionDictionary:(NSDictionary*)aDictionary;
+ - (NSDictionary*)connectionDictionary;
+Index: sope-gdl1/GDLAccess/EOAdaptor.m
+===================================================================
+--- sope-gdl1/GDLAccess/EOAdaptor.m	(révision 1604)
++++ sope-gdl1/GDLAccess/EOAdaptor.m	(copie de travail)
+@@ -53,14 +53,23 @@
+ + (NSArray *)adaptorSearchPathes {
+   // TODO: add support for Cocoa
+   static NSArray *searchPathes = nil;
+-  NSDictionary   *env;
+   NSMutableArray *ma;
+   id             tmp;
+ 
+   if (searchPathes != nil) return searchPathes;
+ 
++  ma  = [NSMutableArray arrayWithCapacity:8];
++
++#if GNUSTEP_BASE_LIBRARY
++  NSEnumerator *libraryPaths;
++  NSString *directory, *suffix;
++  suffix = [self libraryDriversSubDir];
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  while ((directory = [libraryPaths nextObject]))
++    [ma addObject: [directory stringByAppendingPathComponent: suffix]];
++#else
++  NSDictionary   *env;
+   env = [[NSProcessInfo processInfo] environment];
+-  ma  = [NSMutableArray arrayWithCapacity:8];
+   
+   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+@@ -79,10 +88,11 @@
+       [ma addObject:tmp];
+     }
+   }
++#endif
+   
+   tmp = [NSString stringWithFormat:
+-#if CONFIGURE_64BIT
+-		    @"/lib64/sope-%i.%i/dbadaptors",
++#ifdef CGS_LIBDIR_NAME
++		    [CGS_LIBDIR_NAME stringByAppendingString:@"/sope-%i.%i/dbadaptors"],
+ #else
+ 		    @"/lib/sope-%i.%i/dbadaptors",
+ #endif
+@@ -92,9 +102,8 @@
+   [ma addObject:[FHS_INSTALL_ROOT stringByAppendingPathComponent:tmp]];
+ #endif
+ 
+-  [ma addObject:[@"/usr/local" stringByAppendingString:tmp]];
+-  [ma addObject:[@"/usr" stringByAppendingString:tmp]];
+-  
++  [ma addObject:[@"/usr/local/" stringByAppendingString:tmp]];
++  [ma addObject:[@"/usr/" stringByAppendingString:tmp]];
+   searchPathes = [ma copy];
+   if ([searchPathes count] == 0)
+     NSLog(@"%s: empty library search path !", __PRETTY_FUNCTION__);
+@@ -213,6 +222,11 @@
+   return _scheme;
+ }
+ 
+++ (NSString *)libraryDriversSubDir {
++  return [NSString stringWithFormat:@"GDLAdaptors-%i.%i",
++                     GDL_MAJOR_VERSION, GDL_MINOR_VERSION];
++}
++
+ - (NSDictionary *)connectionDictionaryForNSURL:(NSURL *)_url {
+   /*
+     "Database URLs"
+Index: sope-gdl1/GDLAccess/FoundationExt/GNUmakefile
+===================================================================
+--- sope-gdl1/GDLAccess/FoundationExt/GNUmakefile	(révision 1604)
++++ sope-gdl1/GDLAccess/FoundationExt/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../../Version
+ include ../Version
+Index: sope-gdl1/GDLAccess/common.h
+===================================================================
+--- sope-gdl1/GDLAccess/common.h	(révision 1604)
++++ sope-gdl1/GDLAccess/common.h	(copie de travail)
+@@ -42,7 +42,7 @@
+ #import <Foundation/NSZone.h>
+ #import <Foundation/Foundation.h>
+ 
+-#if !(COCOA_Foundation_LIBRARY || NeXT_Foundation_LIBRARY)
++#if !(COCOA_Foundation_LIBRARY || NeXT_Foundation_LIBRARY || GNUSTEP_BASE_LIBRARY)
+ #  import <Foundation/NSUtilities.h>
+ #endif
+ 
+Index: sope-gdl1/Oracle8/GNUmakefile
+===================================================================
+--- sope-gdl1/Oracle8/GNUmakefile	(révision 1604)
++++ sope-gdl1/Oracle8/GNUmakefile	(copie de travail)
+@@ -19,7 +19,7 @@
+ #  License along with this library; if not, write to the Free Software
+ #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -51,7 +51,7 @@
+ ifeq ($(frameworks),yes)
+ BUNDLE_INSTALL_DIR := $(FRAMEWORK_INSTALL_DIR)/GDLAccess.framework/Resources/GDLAdaptors/
+ else
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/GDLAdaptors-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_DBADAPTORS)/
+ endif
+ 
+ Oracle8_OBJC_FILES = \
+Index: sope-core/NGExtensions/NGExtensions/NGResourceLocator.h
+===================================================================
+--- sope-core/NGExtensions/NGExtensions/NGResourceLocator.h	(révision 1604)
++++ sope-core/NGExtensions/NGExtensions/NGResourceLocator.h	(copie de travail)
+@@ -52,23 +52,54 @@
+     int reserved:29;
+   } flags;
+ }
+-
++/* The 'GNUstepPath' is a string describing the required path.  This
++ * is the relative location of the path in a standard GNUstep
++ * hierarchy when a standard GNUstep hierarchy is being used; but if
++ * gnustep-base (which supports arbitrary filesystem layouts) is being
++ * used, the path is heuristically mapped to the standard paths
++ * accepted by NSSearchPathForDirectoriesInDomains using the following
++ * logic:
++ *
++ *  "Library/WebApplications" --> GSWebApplicationsDirectory
++ *  "Library/Libraries"       --> GSLibrariesDirectory
++ *  "Tools"                   --> GSToolsDirectory
++ *  "Tools/Admin"             --> GSAdminToolsDirectory
++ *  "Applications"            --> GSApplicationsDirectory
++ *  "Applications/Admin"      --> GSAdminApplicationsDirectory
++ *  "Library/xxx"             --> NSLibraryDirectory/xxx
++ *  "yyy"                     --> NSLibraryDirectory/yyy
++ *  
++ * In the last two cases 'xxx' and 'yyy' are arbitrary strings/paths
++ * that don't match anything else.  Eg, if you create an
++ * NGResourceLocators to look up files in "Library/Resources" you will
++ * get one that looks them up in NSLibraryDirectory/Resources (which
++ * means a list of directories containing
++ * GNUSTEP_USER_LIBRARY/Resources, GNUSTEP_LOCAL_LIBRARY/Resources,
++ * GNUSTEP_NETWORK_LIBRARY/Resources,
++ * GNUSTEP_SYSTEM_LIBRARY/Resources).
++ */
+ + (id)resourceLocatorForGNUstepPath:(NSString *)_path fhsPath:(NSString *)_fhs;
+ - (id)initWithGNUstepPath:(NSString *)_path fhsPath:(NSString *)_fhs;
+ 
+ /* resource pathes */
+ 
++/* It's not a good idea to access these directly if you want portable
++ * code.  More logical to use directly the 'operations' lookup methods
++ * below which encapsulate all the internal filesystem details.
++ */
+ - (NSArray *)gsRootPathes;  /* GNUSTEP_PATHPREFIX_LIST or MacOSX */
+ - (NSArray *)fhsRootPathes;
+ - (NSArray *)searchPathes;
+ 
+ /* operations */
+ 
++/* These are public and work across all types of filesystems, it's how you find resources.  */
+ - (NSString *)lookupFileWithName:(NSString *)_name;
+ - (NSString *)lookupFileWithName:(NSString *)_name extension:(NSString *)_ext;
+ 
+ - (NSArray *)lookupAllFilesWithExtension:(NSString *)_ext
+   doReturnFullPath:(BOOL)_withPath;
++/* End public */
+ 
+ @end
+ 
+Index: sope-core/NGExtensions/NGBundleManager.m
+===================================================================
+--- sope-core/NGExtensions/NGBundleManager.m	(révision 1604)
++++ sope-core/NGExtensions/NGBundleManager.m	(copie de travail)
+@@ -332,10 +332,7 @@
+ }
+ 
+ - (void)_addGNUstepPathsToPathArray:(NSMutableArray *)_paths {
+-#if !GNUSTEP
+-#else
+-  // TODO: whats that supposed to do?
+-  // TODO: replace with proper path locator function!
++  /* Old code for old gstep-make and gstep-base.  */
+   NSDictionary *env;
+   NSString     *p;
+   unsigned     i, count;
+@@ -355,7 +352,19 @@
+       
+     if (p) [self->bundleSearchPaths addObject:p];
+   }
+-#endif
++   
++  /* New code for new gstep-make and gstep-base.  */
++  tmp = NSStandardLibraryPaths();
++  {
++    NSEnumerator *e = [tmp objectEnumerator];
++    while ((tmp = [e nextObject]) != nil) {
++      tmp = [tmp stringByAppendingPathComponent:@"Bundles"];
++      if ([self->bundleSearchPaths containsObject:tmp])
++	continue;
++      
++      [self->bundleSearchPaths addObject:tmp];
++    }
++  }
+ }
+ 
+ - (void)_setupBundleSearchPathes {
+Index: sope-core/NGExtensions/FdExt.subproj/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/FdExt.subproj/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/FdExt.subproj/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../common.make
+ 
+ SUBPROJECT_NAME = FdExt
+Index: sope-core/NGExtensions/XmlExt.subproj/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/XmlExt.subproj/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/XmlExt.subproj/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../common.make
+ 
+ SUBPROJECT_NAME = XmlExt
+Index: sope-core/NGExtensions/EOExt.subproj/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/EOExt.subproj/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/EOExt.subproj/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../common.make
+ 
+ SUBPROJECT_NAME = EOExt
+Index: sope-core/NGExtensions/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -11,7 +11,8 @@
+ 
+ libNGExtensions_PCH_FILE = common.h
+ libNGExtensions_DLL_DEF = libNGExtensions.def
+-libNGExtensions_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGExtensions_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGExtensions_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGExtensions_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGExtensions_HEADER_FILES_DIR	 = ./NGExtensions
+@@ -157,10 +158,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-core/NGExtensions/NGResourceLocator.m
+===================================================================
+--- sope-core/NGExtensions/NGResourceLocator.m	(révision 1604)
++++ sope-core/NGExtensions/NGResourceLocator.m	(copie de travail)
+@@ -43,7 +43,11 @@
+   return self;
+ }
+ - (id)init {
++#if GNUSTEP_BASE_LIBRARY
++  return [self initWithGNUstepPath:@"Resources" fhsPath:@"share"];
++#else
+   return [self initWithGNUstepPath:@"Library/Resources" fhsPath:@"share"];
++#endif
+ }
+ 
+ - (void)dealloc {
+@@ -93,19 +97,30 @@
+   NSString *p;
+   
+   ma = [NSMutableArray arrayWithCapacity:6];
+-  
+-  e = ([self->gsSubPath length] > 0)
+-    ? [[self gsRootPathes] objectEnumerator]
+-    : (NSEnumerator *)nil;
+-  while ((p = [e nextObject]) != nil) {
+-    p = [p stringByAppendingPathComponent:self->gsSubPath];
+-    if ([ma containsObject:p])
+-      continue;
++
++  if ([self->gsSubPath length] > 0) {
+     
+-    if (![self->fileManager fileExistsAtPath:p])
+-      continue;
++#if GNUSTEP_BASE_LIBRARY
++    NSString *directory;
+ 
+-    [ma addObject:p];
++    e = [NSStandardLibraryPaths() objectEnumerator];
++    while ((directory = [e nextObject]))
++      [ma addObject: [directory stringByAppendingPathComponent:self->gsSubPath]];
++#else
++
++    /* Old hack using GNUSTEP_PATHLIST.  Should be removed at some point.  */
++    e = [[self gsRootPathes] objectEnumerator];
++    while ((p = [e nextObject]) != nil) {
++      p = [p stringByAppendingPathComponent:self->gsSubPath];
++      if ([ma containsObject:p])
++	continue;
++      
++      if (![self->fileManager fileExistsAtPath:p])
++	continue;
++      
++      [ma addObject:p];
++    }
++#endif
+   }
+   
+   e = ([self->fhsSubPath length] > 0)
+Index: sope-core/NGExtensions/NGLogging.subproj/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/NGLogging.subproj/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/NGLogging.subproj/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../common.make
+ 
+ SUBPROJECT_NAME = NGLogging
+Index: sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile
+===================================================================
+--- sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile	(révision 1604)
++++ sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../common.make
+ 
+ SUBPROJECT_NAME = NGRuleEngine
+Index: sope-core/GNUmakefile
+===================================================================
+--- sope-core/GNUmakefile	(révision 1604)
++++ sope-core/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-core
+@@ -32,4 +32,4 @@
+ # package
+ 
+ macosx-pkg :: all
+-	../maintenance/make-osxpkg.sh sope-core
++	../maintenance/make-osxpkg.sh $(PACKAGE_NAME)
+Index: sope-core/NGStreams/GNUmakefile.preamble
+===================================================================
+--- sope-core/NGStreams/GNUmakefile.preamble	(révision 1604)
++++ sope-core/NGStreams/GNUmakefile.preamble	(copie de travail)
+@@ -38,7 +38,11 @@
+ endif
+ 
+ ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
++ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
++SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
++else
+ SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
++endif
+ else
+ SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+ endif
+Index: sope-core/NGStreams/GNUmakefile
+===================================================================
+--- sope-core/NGStreams/GNUmakefile	(révision 1604)
++++ sope-core/NGStreams/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ include ./Version
+ 
+@@ -12,7 +12,8 @@
+ 
+ libNGStreams_PCH_FILE                 = common.h
+ libNGStreams_DLL_DEF                  = libNGStreams.def
+-libNGStreams_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGStreams_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGStreams_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGStreams_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGStreams_HEADER_FILES_DIR         = NGStreams
+@@ -106,10 +107,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-core/samples/GNUmakefile
+===================================================================
+--- sope-core/samples/GNUmakefile	(révision 1604)
++++ sope-core/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+@@ -36,4 +36,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-core/EOControl/GNUmakefile
+===================================================================
+--- sope-core/EOControl/GNUmakefile	(révision 1604)
++++ sope-core/EOControl/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -11,7 +11,8 @@
+ 
+ libEOControl_PCH_FILE = common.h
+ libEOControl_DLL_DEF = libEOControl.def
+-libEOControl_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libEOControl_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libEOControl_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libEOControl_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libEOControl_HEADER_FILES_DIR         = .
+@@ -73,10 +74,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-core/common.make
+===================================================================
+--- sope-core/common.make	(révision 1604)
++++ sope-core/common.make	(copie de travail)
+@@ -6,8 +6,6 @@
+ include $(SKYROOT)/Version
+ -include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ ifeq ($(reentrant),yes)
+ ADDITIONAL_CPPFLAGS += -D_REENTRANT=1
+Index: sope-core/EOCoreData/GNUmakefile
+===================================================================
+--- sope-core/EOCoreData/GNUmakefile	(révision 1604)
++++ sope-core/EOCoreData/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -10,7 +10,8 @@
+ endif
+ 
+ libEOCoreData_PCH_FILE = common.h
+-libEOCoreData_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libEOCoreData_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libEOCoreData_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libEOCoreData_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libEOCoreData_HEADER_FILES_DIR         = .
+@@ -67,10 +68,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sopex/GNUmakefile
+===================================================================
+--- sopex/GNUmakefile	(révision 1604)
++++ sopex/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ ifeq ($(FOUNDATION_LIB),apple)
+Index: sopex/SOPEX/GNUmakefile
+===================================================================
+--- sopex/SOPEX/GNUmakefile	(révision 1604)
++++ sopex/SOPEX/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ./Version
+ 
+Index: xmlrpc_call/GNUmakefile
+===================================================================
+--- xmlrpc_call/GNUmakefile	(révision 1604)
++++ xmlrpc_call/GNUmakefile	(copie de travail)
+@@ -1,10 +1,11 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ 
+ TOOL_NAME = xmlrpc_call
++xmlrpc_call_INSTALL_DIR	= $(SOPE_TOOLS)
+ 
+ xmlrpc_call_PCH_FILE = common.h
+ 
+@@ -17,7 +18,6 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+ 
+ macosx-pkg ::
+ 	# do not build a pkg just for this tool
+Index: xmlrpc_call/GNUmakefile.preamble
+===================================================================
+--- xmlrpc_call/GNUmakefile.preamble	(révision 1604)
++++ xmlrpc_call/GNUmakefile.preamble	(copie de travail)
+@@ -1,5 +1,6 @@
+ # compilation settings
+ 
++include ../config.make
+ SOPE_ROOT=..
+ CORE_ROOT=$(SOPE_ROOT)/sope-core
+ APPSERVER_ROOT=$(SOPE_ROOT)/sope-appserver
+@@ -57,14 +58,13 @@
+ 	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+ endif
+ 
+-ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
+-SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
++ifneq ($(CGS_LIBDIR_NAME),)
++SYSTEM_LIB_DIR += -L/usr/local/$(CGS_LIBDIR_NAME) -L/usr/$(CGS_LIBDIR_NAME)
+ else
+ SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+ endif
+ 
+-
+ # OS dependend stuff
+-ifeq ($(findstring openbsd3, $(GNUSTEP_HOST_OS)), openbsd3)
++ifeq ($(findstring openbsd, $(GNUSTEP_HOST_OS)), openbsd)
+ xmlrpc_call_TOOL_LIBS += -liconv
+ endif
+Index: sope-xml/libxmlSAXDriver/GNUmakefile
+===================================================================
+--- sope-xml/libxmlSAXDriver/GNUmakefile	(révision 1604)
++++ sope-xml/libxmlSAXDriver/GNUmakefile	(copie de travail)
+@@ -1,13 +1,13 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+ 
+ BUNDLE_NAME        = libxmlSAXDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SaxDrivers-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_SAXDRIVERS)
+ 
+ libxmlSAXDriver_PCH_FILE = common.h
+ 
+@@ -24,4 +24,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/DOM/GNUmakefile.preamble
+===================================================================
+--- sope-xml/DOM/GNUmakefile.preamble	(révision 1604)
++++ sope-xml/DOM/GNUmakefile.preamble	(copie de travail)
+@@ -1,10 +1,13 @@
+ # compilation settings
+ 
++include ./Version
++
+ libDOM_HEADER_FILES_DIR         = .
+ libDOM_HEADER_FILES_INSTALL_DIR = /DOM
+-libDOM_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libDOM_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libDOM_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libDOM_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+-DOM_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++DOM_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+ DOM_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ 
+Index: sope-xml/DOM/GNUmakefile
+===================================================================
+--- sope-xml/DOM/GNUmakefile	(révision 1604)
++++ sope-xml/DOM/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -98,10 +98,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/ChangeLogSaxDriver/GNUmakefile
+===================================================================
+--- sope-xml/ChangeLogSaxDriver/GNUmakefile	(révision 1604)
++++ sope-xml/ChangeLogSaxDriver/GNUmakefile	(copie de travail)
+@@ -1,13 +1,13 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ -include ../../Version
+ -include ./Version
+ 
+ BUNDLE_NAME        = ChangeLogSaxDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SaxDrivers-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = ${SOPE_SAXDRIVERS}/
+ 
+ ChangeLogSaxDriver_OBJC_FILES =		\
+ 	ChangeLogSaxDriver.m		\
+@@ -20,4 +20,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/GNUmakefile
+===================================================================
+--- sope-xml/GNUmakefile	(révision 1604)
++++ sope-xml/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-xml
+Index: sope-xml/SaxObjC/SaxXMLReaderFactory.m
+===================================================================
+--- sope-xml/SaxObjC/SaxXMLReaderFactory.m	(révision 1604)
++++ sope-xml/SaxObjC/SaxXMLReaderFactory.m	(copie de travail)
+@@ -137,11 +137,19 @@
+ 
+ - (void)addSearchPathesForGNUstepEnv:(NSMutableArray *)ma {
+   /* for libFoundation */
++#if GNUSTEP_BASE_LIBRARY
++NSEnumerator *libraryPaths;
++  NSString *directory, *suffix;
++
++  suffix = [self libraryDriversSubDir];
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  while ((directory = [libraryPaths nextObject]))
++    [ma addObject: [directory stringByAppendingPathComponent: suffix]];
++#else  
++  NSString *subdir;
++  NSEnumerator *e;
+   NSDictionary *env;
+-  NSEnumerator *e;
+-  NSString *subdir;
+   id tmp;
+-  
+   env = [[NSProcessInfo processInfo] environment];
+   
+   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+@@ -159,6 +167,7 @@
+ 
+     [ma addObject:tmp];
+   }
++#endif
+ }
+ 
+ - (NSArray *)saxReaderSearchPathes {
+@@ -182,8 +191,8 @@
+   /* FHS fallback */
+   
+   tmp = [[NSString alloc] initWithFormat:
+-#if CONFIGURE_64BIT
+-			    @"lib64/sope-%i.%i/saxdrivers/",
++#ifdef CGS_LIBDIR_NAME
++			    [CGS_LIBDIR_NAME stringByAppendingString:@"/sope-%i.%i/saxdrivers/"],
+ #else
+ 			    @"lib/sope-%i.%i/saxdrivers/",
+ #endif
+Index: sope-xml/SaxObjC/SaxObjectModel.h
+===================================================================
+--- sope-xml/SaxObjC/SaxObjectModel.h	(révision 1604)
++++ sope-xml/SaxObjC/SaxObjectModel.h	(copie de travail)
+@@ -34,6 +34,7 @@
+ 
+ + (id)modelWithName:(NSString *)_name;
+ + (id)modelWithContentsOfFile:(NSString *)_path;
+++ (NSString *)libraryDriversSubDir;
+ 
+ - (id)initWithDictionary:(NSDictionary *)_dict;
+ 
+Index: sope-xml/SaxObjC/SaxObjectModel.m
+===================================================================
+--- sope-xml/SaxObjC/SaxObjectModel.m	(révision 1604)
++++ sope-xml/SaxObjC/SaxObjectModel.m	(copie de travail)
+@@ -67,12 +67,12 @@
+   if (searchPathes == nil) {
+     NSMutableArray *ma;
+     NSDictionary   *env;
+-    id tmp;
+     
+     env = [[NSProcessInfo processInfo] environment];
+     ma  = [NSMutableArray arrayWithCapacity:6];
+ 
+ #if COCOA_Foundation_LIBRARY
++    id tmp;
+     tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
+                                               NSAllDomainsMask,
+                                               YES);
+@@ -86,7 +86,16 @@
+           [ma addObject:tmp];
+       }
+     }
++#elif GNUSTEP_BASE_LIBRARY
++    NSEnumerator *libraryPaths;
++    NSString *directory, *suffix;
++
++    suffix = [self libraryDriversSubDir];
++    libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++    while ((directory = [libraryPaths nextObject]))
++      [ma addObject: [directory stringByAppendingPathComponent: suffix]];
+ #else
++    id tmp;
+     if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+       tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+     tmp = [tmp componentsSeparatedByString:@":"];
+@@ -122,6 +131,10 @@
+   return searchPathes;
+ }
+ 
+++ (NSString *)libraryDriversSubDir {
++  return [NSString stringWithFormat:@"SaxMappings"];
++}
++
+ + (id)modelWithName:(NSString *)_name {
+   NSFileManager *fileManager;
+   NSEnumerator  *pathes;
+Index: sope-xml/SaxObjC/GNUmakefile.preamble
+===================================================================
+--- sope-xml/SaxObjC/GNUmakefile.preamble	(révision 1604)
++++ sope-xml/SaxObjC/GNUmakefile.preamble	(copie de travail)
+@@ -1,9 +1,12 @@
+ # compilation settings
+ 
++include ./Version
++
+ libSaxObjC_DLL_DEF      = libSaxObjC.def
+-libSaxObjC_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libSaxObjC_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libSaxObjC_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libSaxObjC_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+-SaxObjC_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++SaxObjC_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+ SaxObjC_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libSaxObjC_HEADER_FILES_DIR         = .
+@@ -48,8 +51,8 @@
+ ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\@\"$(FHS_INSTALL_ROOT)\"
+ endif
+ 
+-ifeq ($(CONFIGURE_64BIT),yes)
+-ADDITIONAL_CPPFLAGS += -DCONFIGURE_64BIT=1
++ifneq ($(CGS_LIBDIR_NAME),)
++ADDITIONAL_CPPFLAGS += -DCGS_LIBDIR_NAME=\@\"$(CGS_LIBDIR_NAME)\"
+ endif
+ 
+ # Apple
+Index: sope-xml/SaxObjC/GNUmakefile
+===================================================================
+--- sope-xml/SaxObjC/GNUmakefile	(révision 1604)
++++ sope-xml/SaxObjC/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -56,10 +56,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/common.make
+===================================================================
+--- sope-xml/common.make	(révision 1604)
++++ sope-xml/common.make	(copie de travail)
+@@ -1,13 +1,7 @@
+ # GNUstep makefile
+ 
+-SKYROOT=..
+-
+ include $(GNUSTEP_MAKEFILES)/common.make
+-include $(SKYROOT)/Version
+--include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ 
+ ADDITIONAL_INCLUDE_DIRS += -I..
+Index: sope-xml/samples/PlistSaxDriver/GNUmakefile
+===================================================================
+--- sope-xml/samples/PlistSaxDriver/GNUmakefile	(révision 1604)
++++ sope-xml/samples/PlistSaxDriver/GNUmakefile	(copie de travail)
+@@ -1,11 +1,11 @@
+ # GNUstep Makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ BUNDLE_NAME        = PlistSaxDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/Bundles
++BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
+ 
+ PlistSaxDriver_OBJC_FILES = \
+ 	PlistSaxDriver.m
+Index: sope-xml/samples/GNUmakefile
+===================================================================
+--- sope-xml/samples/GNUmakefile	(révision 1604)
++++ sope-xml/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+@@ -13,14 +13,20 @@
+ 	testqp		\
+ 
+ rss2plist1_OBJC_FILES = rss2plist1.m
++rss2plist1_INSTALL_DIR = $(SOPE_TOOLS)/
+ rss2plist2_OBJC_FILES = rss2plist2.m
++rss2plist2_INSTALL_DIR = $(SOPE_TOOLS)/
+ rssparse_OBJC_FILES   = rssparse.m
++rssparse_INSTALL_DIR = $(SOPE_TOOLS)/
+ saxxml_OBJC_FILES     = saxxml.m
++saxxml_INSTALL_DIR = $(SOPE_TOOLS)/
+ xmln_OBJC_FILES       = xmln.m
++xmln_INSTALL_DIR = $(SOPE_TOOLS)/
+ domxml_OBJC_FILES     = domxml.m
++domxml_INSTALL_DIR = $(SOPE_TOOLS)/
+ testqp_OBJC_FILES     = testqp.m
++testqp_INSTALL_DIR = $(SOPE_TOOLS)/
+ 
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/samples/GNUmakefile.preamble
+===================================================================
+--- sope-xml/samples/GNUmakefile.preamble	(révision 1604)
++++ sope-xml/samples/GNUmakefile.preamble	(copie de travail)
+@@ -1,5 +1,6 @@
+ # compilation settings
+ 
++include ../../config.make
+ 
+ rss2plist1_PCH_FILE = common.h
+ rss2plist2_PCH_FILE = common.h
+@@ -42,8 +43,8 @@
+ 	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+ endif
+ 
+-ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
+-SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
++ifneq ($(CGS_LIBDIR_NAME),)
++SYSTEM_LIB_DIR += -L/usr/local/$(CGS_LIBDIR_NAME) -L/usr/$(CGS_LIBDIR_NAME)
+ else
+ SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+ endif
+Index: sope-xml/XmlRpc/GNUmakefile.preamble
+===================================================================
+--- sope-xml/XmlRpc/GNUmakefile.preamble	(révision 1604)
++++ sope-xml/XmlRpc/GNUmakefile.preamble	(copie de travail)
+@@ -1,10 +1,13 @@
+ # compilation settings
+ 
++include ./Version
++
+ libXmlRpc_HEADER_FILES_DIR         = .
+ libXmlRpc_HEADER_FILES_INSTALL_DIR = /XmlRpc
+-libXmlRpc_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libXmlRpc_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libXmlRpc_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libXmlRpc_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+-XmlRpc_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++XmlRpc_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+ XmlRpc_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ 
+Index: sope-xml/XmlRpc/GNUmakefile
+===================================================================
+--- sope-xml/XmlRpc/GNUmakefile	(révision 1604)
++++ sope-xml/XmlRpc/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ 
+ ifneq ($(frameworks),yes)
+@@ -43,10 +43,12 @@
+ 
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile
+===================================================================
+--- sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile	(révision 1604)
++++ sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = ExtraSTX
+Index: sope-xml/STXSaxDriver/GNUmakefile
+===================================================================
+--- sope-xml/STXSaxDriver/GNUmakefile	(révision 1604)
++++ sope-xml/STXSaxDriver/GNUmakefile	(copie de travail)
+@@ -1,13 +1,13 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+ 
+ BUNDLE_NAME        = STXSaxDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SaxDrivers-$(SOPE_MAJOR_VERSION).$(SOPE_MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_SAXDRIVERS)
+ 
+ STXSaxDriver_PCH_FILE = common.h
+ 
+@@ -24,4 +24,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-xml/STXSaxDriver/Model/GNUmakefile
+===================================================================
+--- sope-xml/STXSaxDriver/Model/GNUmakefile	(révision 1604)
++++ sope-xml/STXSaxDriver/Model/GNUmakefile	(copie de travail)
+@@ -6,7 +6,7 @@
+ #  Date: 24 November 2003
+ #
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = Model
+Index: sope-xml/pyxSAXDriver/GNUmakefile
+===================================================================
+--- sope-xml/pyxSAXDriver/GNUmakefile	(révision 1604)
++++ sope-xml/pyxSAXDriver/GNUmakefile	(copie de travail)
+@@ -1,17 +1,16 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+ 
+ BUNDLE_NAME        = pyxSAXDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/SaxDrivers-$(SOPE_MAJOR_VERSION).$(SOPE_MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = ${SOPE_SAXDRIVERS}/
+ 
+ pyxSAXDriver_OBJC_FILES = pyxSAXDriver.m
+ 
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/GNUmakefile
+===================================================================
+--- sope-appserver/GNUmakefile	(révision 1604)
++++ sope-appserver/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-appserver
+@@ -13,7 +13,8 @@
+ 	WOXML		\
+ 	SoOFS		\
+ 	NGXmlRpc	\
+-	WEPrototype
++	WEPrototype	\
++	mod_ngobjweb
+ 
+ 
+ ifeq ($(frameworks),yes)
+@@ -38,4 +39,4 @@
+ # package
+ 
+ macosx-pkg :: all
+-	../maintenance/make-osxpkg.sh sope-appserver
++	../maintenance/make-osxpkg.sh $(PACKAGE_NAME)
+Index: sope-appserver/SoOFS/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/SoOFS/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/SoOFS/GNUmakefile.preamble	(copie de travail)
+@@ -76,17 +76,9 @@
+ 	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+ endif
+ 
+-ifeq ($(findstring _64, $(GNUSTEP_TARGET_CPU)), _64)
+-SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64
+-else
+-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+-endif
+-
+-
+-
+ # platform specific settings
+ 
+-ifneq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
++ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+ # OpenBSD does not require libcrypt
+ ifneq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+ # and neither does MacOSX? ...
+@@ -94,6 +86,6 @@
+ endif
+ endif
+ 
+-ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
++ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+ $(SOPED_NAME)_TOOL_LIBS += -liconv
+ endif
+Index: sope-appserver/SoOFS/GNUmakefile
+===================================================================
+--- sope-appserver/SoOFS/GNUmakefile	(révision 1604)
++++ sope-appserver/SoOFS/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -14,7 +14,8 @@
+ 
+ 
+ libSoOFS_PCH_FILE = common.h
+-libSoOFS_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libSoOFS_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libSoOFS_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libSoOFS_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libSoOFS_HEADER_FILES_DIR         = .
+@@ -75,7 +76,7 @@
+ 
+ BUNDLE_NAME      = SoOFS
+ BUNDLE_EXTENSION = .sxp
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SoProducts-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_PRODUCTS)/
+ 
+ SoOFS_OBJC_FILES       = SoOFSProduct.m
+ SoOFS_RESOURCE_FILES   = product.plist Version
+@@ -91,9 +92,13 @@
+ TOOL_NAME = $(SOPED_NAME)
+ 
+ $(SOPED_NAME)_OBJC_FILES = sope.m
++$(SOPED_NAME)_INSTALL_DIR = $(SOPE_ADMIN_TOOLS)
+ 
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+@@ -102,4 +107,3 @@
+ endif
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/NGXmlRpc/GNUmakefile
+===================================================================
+--- sope-appserver/NGXmlRpc/GNUmakefile	(révision 1604)
++++ sope-appserver/NGXmlRpc/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -12,7 +12,8 @@
+ endif
+ 
+ libNGXmlRpc_PCH_FILE = common.h
+-libNGXmlRpc_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGXmlRpc_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGXmlRpc_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGXmlRpc_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGXmlRpc_HEADER_FILES_DIR         = .
+@@ -65,6 +66,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+@@ -72,4 +76,3 @@
+ endif
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/WEExtensions/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/WEExtensions/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/WEExtensions/GNUmakefile.preamble	(copie de travail)
+@@ -21,7 +21,8 @@
+ 	  cp ../bundle-info.plist .)
+ endif
+ 
+-libWEExtensions_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWEExtensions_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWEExtensions_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libWEExtensions_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ 
+Index: sope-appserver/WEExtensions/GNUmakefile
+===================================================================
+--- sope-appserver/WEExtensions/GNUmakefile	(révision 1604)
++++ sope-appserver/WEExtensions/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -11,7 +11,7 @@
+ 
+ BUNDLE_NAME      = WEExtensions
+ BUNDLE_EXTENSION = .wox
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/WOxElemBuilders-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_WOXBUILDERS)/
+ 
+ else
+ FRAMEWORK_NAME = WEExtensions
+@@ -99,6 +99,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+@@ -106,4 +109,3 @@
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/WEExtensions/WEResourceManager.m
+===================================================================
+--- sope-appserver/WEExtensions/WEResourceManager.m	(révision 1604)
++++ sope-appserver/WEExtensions/WEResourceManager.m	(copie de travail)
+@@ -53,28 +53,43 @@
+ 
+ + (NSString *)gsTemplatesSubpath {
+   NSString *p;
+-  
+   p = [[WOApplication application] gsTemplatesDirectoryName];
++#if ! GNUSTEP_BASE_LIBRARY  
++  // for GNUSTEP_BASE_LIBRARY this is already there in rootPathesInGNUstep
+   p = [@"Library/" stringByAppendingString:p];
++#endif
+   return p;
+ }
+ + (NSString *)gsWebSubpath {
+   NSString *p;
+   
+   p = [[WOApplication application] gsWebDirectoryName];
++#if ! GNUSTEP_BASE_LIBRARY  
++  // for GNUSTEP_BASE_LIBRARY this is already there in rootPathesInGNUstep
+   p = [@"Library/" stringByAppendingString:p];
++#endif
+   return p;
+ }
+ 
+ /* locate resource directories */
+ 
+ + (NSArray *)rootPathesInGNUstep {
++  id tmp;
++#if GNUSTEP_BASE_LIBRARY
++  NSEnumerator *libraryPaths;
++  NSString *directory;
++
++  tmp = [[NSMutableArray alloc] init];
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  while ((directory = [libraryPaths nextObject]))
++    [tmp addObject: directory];
++  return tmp;
++#else  
+   NSDictionary *env;
+-  id tmp;
+-  
+   env = [[NSProcessInfo processInfo] environment];
+   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
++#endif
+   
+   return [tmp componentsSeparatedByString:@":"];
+ }
+@@ -95,9 +110,17 @@
+   NSMutableArray *ma;
+   BOOL           isDir;
+   id tmp;
+-
+   fm  = [NSFileManager defaultManager];
+   ma  = [NSMutableArray arrayWithCapacity:8];
++
++#ifdef GNUSTEP_BASE_LIBRARY
++  NSEnumerator *libraryPaths;
++  NSString *directory;
++
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  while ((directory = [libraryPaths nextObject]))
++    [ma addObject: [directory stringByAppendingPathComponent: _name]];
++#else
+   
+   e = [[self rootPathesInGNUstep] objectEnumerator];
+   while ((tmp = [e nextObject]) != nil) {
+@@ -115,6 +138,7 @@
+     
+     [ma addObject:tmp];
+   }
++#endif
+ 
+   /* hack in FHS pathes */
+   
+Index: sope-appserver/WEExtensions/WETableView/GNUmakefile
+===================================================================
+--- sope-appserver/WEExtensions/WETableView/GNUmakefile	(révision 1604)
++++ sope-appserver/WEExtensions/WETableView/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = WETableView
+Index: sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m	(révision 1604)
++++ sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m	(copie de travail)
+@@ -50,8 +50,6 @@
+   }
+   else {
+     NSDictionary *env;
+-    NSEnumerator *e;
+-    id tmp;
+     
+     env = [[NSProcessInfo processInfo] environment];
+     
+@@ -67,7 +65,20 @@
+     bp = @"/System/Library";
+     bp = [bp stringByAppendingPathComponent:_domain];
+     [chkPathes addObject:bp];
++#elif GNUSTEP_BASE_LIBRARY
++    NSEnumerator *libraryPaths;
++    NSString *directory;
++
++    libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++    while ((directory = [libraryPaths nextObject])) {
++      directory = [directory stringByAppendingPathComponent:_domain];
++      if ([chkPathes containsObject:directory]) continue;
++      [chkPathes addObject:directory];
++
++    }
+ #else
++    NSEnumerator *e;
++    id tmp;
+     if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+       tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+     tmp = [tmp componentsSeparatedByString:@":"];
+Index: sope-appserver/NGObjWeb/wobundle-gs.make
+===================================================================
+--- sope-appserver/NGObjWeb/wobundle-gs.make	(révision 1604)
++++ sope-appserver/NGObjWeb/wobundle-gs.make	(copie de travail)
+@@ -85,7 +85,7 @@
+ endif
+ 
+ ifeq ($(WOBUNDLE_INSTALL_DIR),)
+-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Libraries
++WOBUNDLE_INSTALL_DIR = $(GNUSTEP_WEB_APPS)
+ endif
+ # The name of the bundle is in the BUNDLE_NAME variable.
+ # The list of languages the bundle is localized in are in xxx_LANGUAGES
+@@ -287,8 +287,10 @@
+ 	@$(MKDIRS) $@
+ 
+ internal-wobundle-install_:: $(WOBUNDLE_INSTALL_DIR) shared-instance-headers-install
+-	rm -rf $(WOBUNDLE_INSTALL_DIR)/$(WOBUNDLE_DIR_NAME); \
+-	$(TAR) chf - --exclude=CVS --exclude=.svn --to-stdout $(WOBUNDLE_DIR_NAME) | (cd $(WOBUNDLE_INSTALL_DIR); $(TAR) xf -)
++#	rm -rf $(WOBUNDLE_INSTALL_DIR)/$(WOBUNDLE_DIR_NAME); \
++#	$(TAR) chf - --exclude=CVS --exclude=.svn --to-stdout $(WOBUNDLE_DIR_NAME) | (cd $(WOBUNDLE_INSTALL_DIR); $(TAR) xf -)
++	if [ -e $(WOBUNDLE_INSTALL_DIR)/$(WOBUNDLE_DIR_NAME) ]; then rm -rf $(WOBUNDLE_INSTALL_DIR)/$(WOBUNDLE_DIR_NAME); fi; \
++	cp -LR $(WOBUNDLE_DIR_NAME) $(WOBUNDLE_INSTALL_DIR)
+ ifneq ($(CHOWN_TO),)
+ 	$(CHOWN) -R $(CHOWN_TO) $(WOBUNDLE_INSTALL_DIR)/$(WOBUNDLE_DIR_NAME)
+ endif
+Index: sope-appserver/NGObjWeb/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/NGObjWeb/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/NGObjWeb/GNUmakefile.preamble	(copie de travail)
+@@ -50,9 +50,6 @@
+ 	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
+ endif
+ 
+-SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
+-
+-
+ # dependencies
+ 
+ ifneq ($(frameworks),yes)
+@@ -85,6 +82,7 @@
+ 	$(sope-mime-libs)	\
+ 	$(sope-core-libs)	\
+ 	$(sope-xml-libs)
++wod_INSTALL_DIR = $(SOPE_TOOLS)
+ SoCore_BUNDLE_LIBS += \
+ 	$(sope-ngobjweb-libs)	\
+ 	$(sope-mime-libs)	\
+@@ -94,7 +92,7 @@
+ 
+ # platform specific settings
+ 
+-ifneq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
++ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+ # OpenBSD does not require libcrypt
+ ifneq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+ # and neither does MacOSX? ...
+@@ -116,6 +114,6 @@
+ libNGObjWeb_LIBRARIES_DEPEND_UPON += -lFoundationExt
+ endif
+ 
+-ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
++ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+ wod_TOOL_LIBS += -liconv
+ endif
+Index: sope-appserver/NGObjWeb/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/GNUmakefile	(copie de travail)
+@@ -1,11 +1,9 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ LIBRARY_NAME   = libNGObjWeb
+ else
+@@ -14,15 +12,12 @@
+ 
+ 
+ ifneq ($(frameworks),yes)
+-ifeq ($(FHS_INSTALL_ROOT),)
+-RESOURCES_DIR = $(GNUSTEP_RESOURCES)/NGObjWeb
+-else
+-RESOURCES_DIR = $(FHS_INSTALL_ROOT)/share/sope-$(MAJOR_VERSION).$(MINOR_VERSION)/ngobjweb
++RESOURCES_DIR = $(SOPE_NGOBJWEB)/
+ endif
+-endif
+ 
+ libNGObjWeb_PCH_FILE = common.h
+-libNGObjWeb_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGObjWeb_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGObjWeb_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGObjWeb_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGObjWeb_SUBPROJECTS = \
+@@ -40,7 +35,7 @@
+ libNGObjWeb_RESOURCES = \
+ 	Defaults.plist		\
+ 	Languages.plist		\
+-	DAVPropMap.plist	\
++	DAVPropMap.plist	
+ 
+ FHS_MANPAGES += \
+ 	sope-ngobjweb-defaults.5	\
+@@ -167,7 +162,7 @@
+ 
+ BUNDLE_NAME      = SoCore
+ BUNDLE_EXTENSION = .sxp
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SoProducts-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_PRODUCTS)/
+ 
+ SoCore_PCH_FILE        = common.h
+ SoCore_OBJC_FILES      = SoCoreProduct.m
+@@ -190,6 +185,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+@@ -198,4 +196,3 @@
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/NGObjWeb/WebDAV/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/WebDAV/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include ../../Version
+ include ../Version
+ include $(GNUSTEP_MAKEFILES)/common.make
+Index: sope-appserver/NGObjWeb/DynamicElements/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/DynamicElements/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = DynamicElements
+Index: sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m	(révision 1604)
++++ sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m	(copie de travail)
+@@ -74,6 +74,14 @@
+ }
+ 
+ - (void)_addGNUstepSearchPathesToArray:(NSMutableArray *)ma {
++#if GNUSTEP_BASE_LIBRARY
++  NSEnumerator *libraryPaths;
++  NSString *directory;
++
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  while ((directory = [libraryPaths nextObject]))
++    [ma addObject: [directory stringByAppendingPathComponent: self->productDirectoryName]];
++#else
+   NSDictionary *env;
+   id tmp;
+   
+@@ -97,6 +105,7 @@
+     [self logWithFormat:@"%s: empty library search path !", 
+ 	  __PRETTY_FUNCTION__];
+   }
++#endif
+ }
+ 
+ - (void)_addFHSPathesToArray:(NSMutableArray *)ma {
+Index: sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m	(révision 1604)
++++ sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m	(copie de travail)
+@@ -231,7 +231,7 @@
+   
+   fm = [NSFileManager defaultManager];
+   pi = [NSProcessInfo processInfo];
+-  
++#if ! GNUSTEP_BASE_LIBRARY  
+ #if COCOA_Foundation_LIBRARY && !COMPILE_FOR_GNUSTEP
+   /* 
+      TODO: (like COMPILE_FOR_GNUSTEP)
+@@ -250,12 +250,9 @@
+   pathes = [[pathes stringValue] componentsSeparatedByString:@":"];
+   relPath = @"Library/";
+ #endif
+-  
+-  [self debugWithFormat:@"scanning for products ..."];
+-  
+   relPath = [relPath stringByAppendingFormat:@"SoProducts-%i.%i/",
+                         SOPE_MAJOR_VERSION, SOPE_MINOR_VERSION];
+-  
++  [self debugWithFormat:@"scanning for products ..."];
+   for (i = 0; i < [pathes count]; i++) {
+     NSString *lPath;
+     BOOL     isDir;
+@@ -271,7 +268,38 @@
+     [self debugWithFormat:@"  directory %@", lPath];
+     [self scanForProductsInDirectory:lPath];
+   }
++#else
++  NSEnumerator *libraryPaths;
++  NSString *directory;
++  NSMutableArray *tmppath;
+ 
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  tmppath = [[NSMutableArray alloc] init];
++  while ((directory = [libraryPaths nextObject]))
++    [tmppath addObject: [directory stringByAppendingPathComponent: 
++		[NSString stringWithFormat:@"SoProducts-%i.%i/",
++		SOPE_MAJOR_VERSION, SOPE_MINOR_VERSION]]];
++  pathes = [tmppath mutableCopy];
++  [self debugWithFormat:@"scanning for products ..."];
++  for (i = 0; i < [pathes count]; i++) {
++    NSString *lPath;
++    BOOL     isDir;
++    
++    lPath = [pathes objectAtIndex:i];
++    [self debugWithFormat:@"  scan: %@", lPath];
++    
++    if (![fm fileExistsAtPath:lPath isDirectory:&isDir])
++      continue;
++    if (!isDir)
++      continue;
++    
++    [self debugWithFormat:@"  directory %@", lPath];
++    [self scanForProductsInDirectory:lPath];
++  }
++  [tmppath release];
++#endif
++
++
+ #if COCOA_Foundation_LIBRARY
+   /* look in wrapper places */
+   bundle = [NSBundle bundleForClass:[self class]];
+@@ -282,8 +310,8 @@
+   /* look into FHS pathes */
+   
+   relPath = [NSString stringWithFormat:
+-#if CONFIGURE_64BIT
+-			@"lib64/sope-%i.%i/products/",
++#ifdef CGS_LIBDIR_NAME
++			[CGS_LIBDIR_NAME stringByAppendingString:@"/sope-%i.%i/products/"],
+ #else
+ 			@"lib/sope-%i.%i/products/",
+ #endif
+Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble	(copie de travail)
+@@ -1,5 +1,7 @@
+ # compilation settings
+ 
++include ../../../config.make
++
+ ADDITIONAL_INCLUDE_DIRS += -I../WebDAV/
+ 
+ ADDITIONAL_CPPFLAGS += -DCOMPILING_NGOBJWEB=1 -DCOMPILE_FOR_GNUSTEP=1
+@@ -10,6 +12,6 @@
+ ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\@\"$(FHS_INSTALL_ROOT)\"
+ endif
+ 
+-ifeq ($(CONFIGURE_64BIT),yes)
+-ADDITIONAL_CPPFLAGS += -DCONFIGURE_64BIT=1
++ifneq ($(CGS_LIBDIR_NAME),)
++ADDITIONAL_CPPFLAGS += -DCGS_LIBDIR_NAME=\@\"$(CGS_LIBDIR_NAME)\"
+ endif
+Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/SoObjects/GNUmakefile	(copie de travail)
+@@ -1,7 +1,7 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
+ include ../subdirs.make
++include ../../../config.make
+ 
+ SUBPROJECT_NAME = SoObjects
+ 
+Index: sope-appserver/NGObjWeb/Templates/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/Templates/GNUmakefile	(copie de travail)
+@@ -1,7 +1,7 @@
+ # GNUmakefile makefile
+ 
+--include ../../../config.make
+ include ../subdirs.make
++include ../../../config.make
+ 
+ SUBPROJECT_NAME = Templates
+ 
+Index: sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m	(révision 1604)
++++ sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m	(copie de travail)
+@@ -76,7 +76,7 @@
+   
+   fm = [NSFileManager defaultManager];
+   pi = [NSProcessInfo processInfo];
+-  
++#if ! GNUSTEP_BASE_LIBRARY  
+ #if COCOA_Foundation_LIBRARY
+   /* 
+      TODO: (like COMPILE_FOR_GNUSTEP)
+@@ -121,16 +121,43 @@
+     [self debugWithFormat:@"  directory %@", lPath];
+     [self scanForBuilderBundlesInDirectory:lPath];
+   }
++#else
++ NSEnumerator *libraryPaths;
++  NSString *directory;
++ NSMutableArray *tmppathes;
++
++  libraryPaths = [NSStandardLibraryPaths() objectEnumerator];
++  tmppathes = [[NSMutableArray alloc] init];
++  while ((directory = [libraryPaths nextObject]))
++    [tmppathes addObject: [directory stringByAppendingPathComponent: 
++		[NSString stringWithFormat:@"WOxElemBuilders-%i.%i/", 
++			SOPE_MAJOR_VERSION, SOPE_MINOR_VERSION]]];
++  pathes = [tmppathes mutableCopy];
++  for (i = 0; i < [pathes count]; i++) {
++    NSString *lPath;
++    BOOL     isDir;
++    
++    lPath = [pathes objectAtIndex:i];
++    if (![fm fileExistsAtPath:lPath isDirectory:&isDir])
++      continue;
++    if (!isDir)
++      continue;
++    
++    [self debugWithFormat:@"  directory %@", lPath];
++    [self scanForBuilderBundlesInDirectory:lPath];
++  }
++  [tmppathes release];
++#endif
+   
+   /* look into FHS pathes */
+   
+   relPath = [NSString stringWithFormat:
+-#if CONFIGURE_64BIT
+-			@"lib/sope-%i.%i/wox-builders/",
++#ifdef CGS_LIBDIR_NAME
++	[CGS_LIBDIR_NAME stringByAppendingString:@"/sope-%i.%i/wox-builders/"],
+ #else
+-			@"lib64/sope-%i.%i/wox-builders/",
++	@"lib/sope-%i.%i/wox-builders/",
+ #endif
+-                        SOPE_MAJOR_VERSION, SOPE_MINOR_VERSION];
++        SOPE_MAJOR_VERSION, SOPE_MINOR_VERSION];
+   pathes = [NSArray arrayWithObjects:
+ #ifdef FHS_INSTALL_ROOT
+ 		      [FHS_INSTALL_ROOT stringByAppendingString:relPath],
+Index: sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble	(copie de travail)
+@@ -6,6 +6,6 @@
+ ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\@\"$(FHS_INSTALL_ROOT)\"
+ endif
+ 
+-ifeq ($(CONFIGURE_64BIT),yes)
+-ADDITIONAL_CPPFLAGS += -DCONFIGURE_64BIT=1
++ifneq ($(CGS_LIBDIR_NAME),)
++ADDITIONAL_CPPFLAGS += -DCGS_LIBDIR_NAME=\@\"$(CGS_LIBDIR_NAME)\"
+ endif
+Index: sope-appserver/NGObjWeb/Associations/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/Associations/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/Associations/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = Associations
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = WOHttpAdaptor
+Index: sope-appserver/NGObjWeb/woapp-gs.make
+===================================================================
+--- sope-appserver/NGObjWeb/woapp-gs.make	(révision 1604)
++++ sope-appserver/NGObjWeb/woapp-gs.make	(copie de travail)
+@@ -103,7 +103,7 @@
+ # Determine the application directory extension
+ WOAPP_EXTENSION = woa
+ 
+-GNUSTEP_WOAPPS = $(GNUSTEP_INSTALLATION_DIR)/WOApps
++GNUSTEP_WOAPPS = $(GNUSTEP_WEB_APPS)
+ 
+ .PHONY: internal-woapp-all_ \
+         internal-woapp-install_ \
+@@ -372,8 +372,9 @@
+ 
+ internal-woapp-install_::
+ 	@($(MKINSTALLDIRS) $(GNUSTEP_WOAPPS); \
+-	rm -rf $(GNUSTEP_WOAPPS)/$(WOAPP_DIR_NAME); \
+-	$(TAR) chf - --exclude=CVS --exclude=.svn --to-stdout $(WOAPP_DIR_NAME) | (cd $(GNUSTEP_WOAPPS); $(TAR) xf -))
++	if [ -e $(GNUSTEP_WOAPPS)/$(WOAPP_DIR_NAME) ]; then rm -rf $(GNUSTEP_WOAPPS)/$(WOAPP_DIR_NAME); fi; \
++#	$(TAR) chf - --exclude=CVS --exclude=.svn --to-stdout $(WOAPP_DIR_NAME) | (cd $(GNUSTEP_WOAPPS); $(TAR) xf -))
++	cp -LR $(WOAPP_DIR_NAME) $(GNUSTEP_WOAPPS)
+ ifneq ($(CHOWN_TO),)
+ 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_WOAPPS)/$(WOAPP_DIR_NAME)
+ endif
+Index: sope-appserver/NGObjWeb/WOCoreApplication.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOCoreApplication.m	(révision 1604)
++++ sope-appserver/NGObjWeb/WOCoreApplication.m	(copie de travail)
+@@ -731,9 +731,15 @@
+                      [self sopeMajorVersion], [self sopeMinorVersion]];
+ }
+ + (NGResourceLocator *)ngobjwebResourceLocator {
++#if GNUSTEP_BASE_LIBRARY
+   return [NGResourceLocator resourceLocatorForGNUstepPath:
++                              @"Libraries/Resources/NGObjWeb"
++                            fhsPath:[self ngobjwebShareDirectorySubPath]];
++#else
++  return [NGResourceLocator resourceLocatorForGNUstepPath:
+                               @"Library/Libraries/Resources/NGObjWeb"
+                             fhsPath:[self ngobjwebShareDirectorySubPath]];
++#endif
+ }
+ 
+ + (NSArray *)resourcesSearchPathes {
+Index: sope-appserver/NGObjWeb/NGHttp/GNUmakefile
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/GNUmakefile	(révision 1604)
++++ sope-appserver/NGObjWeb/NGHttp/GNUmakefile	(copie de travail)
+@@ -1,10 +1,8 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ SUBPROJECT_NAME = NGHttp
+ 
+ NGHttp_PCH_FILE = common.h
+@@ -37,5 +35,8 @@
+ 	NGUrlFormCoder.m		\
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ -include GNUmakefile.postamble
+Index: sope-appserver/WEPrototype/GNUmakefile
+===================================================================
+--- sope-appserver/WEPrototype/GNUmakefile	(révision 1604)
++++ sope-appserver/WEPrototype/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -10,7 +10,7 @@
+ 
+ BUNDLE_NAME      = WEPrototype
+ BUNDLE_EXTENSION = .wox
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/WOxElemBuilders-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_WOXBUILDERS)/
+ else
+ FRAMEWORK_NAME = WEPrototype
+ endif
+@@ -46,6 +46,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+@@ -53,4 +56,3 @@
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/WEPrototype/doc/GNUmakefile
+===================================================================
+--- sope-appserver/WEPrototype/doc/GNUmakefile	(révision 1604)
++++ sope-appserver/WEPrototype/doc/GNUmakefile	(copie de travail)
+@@ -2,7 +2,7 @@
+ 
+ SOPE_ROOT=../../..
+ 
+--include $(SOPE_ROOT)/config.make
++include $(SOPE_ROOT)/config.make
+ include $(SOPE_ROOT)/Version
+ include ../Version
+ 
+Index: sope-appserver/WEPrototype/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/WEPrototype/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/WEPrototype/GNUmakefile.preamble	(copie de travail)
+@@ -1,4 +1,4 @@
+-# compiler flags
++# GNUstep makefile
+ 
+ SOPE_ROOT=../..
+ 
+@@ -21,7 +21,8 @@
+ 	-I$(SOPE_ROOT)/sope-xml
+ 
+ 
+-libWEPrototype_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWEPrototype_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWEPrototype_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libWEPrototype_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libWEPrototype_LIBRARIES_DEPEND_UPON += \
+Index: sope-appserver/common.make
+===================================================================
+--- sope-appserver/common.make	(révision 1604)
++++ sope-appserver/common.make	(copie de travail)
+@@ -4,8 +4,6 @@
+ include ../Version
+ -include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ 
+ ADDITIONAL_INCLUDE_DIRS += \
+Index: sope-appserver/samples/CoreDataBlog/GNUmakefile
+===================================================================
+--- sope-appserver/samples/CoreDataBlog/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/CoreDataBlog/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = CoreDataBlog
+Index: sope-appserver/samples/HelloForm/GNUmakefile
+===================================================================
+--- sope-appserver/samples/HelloForm/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/HelloForm/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = HelloForm
+Index: sope-appserver/samples/GNUmakefile
+===================================================================
+--- sope-appserver/samples/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECTS += \
+Index: sope-appserver/samples/iCalPortal/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/samples/iCalPortal/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/samples/iCalPortal/GNUmakefile.preamble	(copie de travail)
+@@ -7,7 +7,9 @@
+ 	-lEOControl	\
+ 	-lXmlRpc -lDOM -lSaxObjC
+ else
++ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+ ADDITIONAL_TOOL_LIBS += -lcrypt
+ endif
++endif
+ 
+ SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+Index: sope-appserver/samples/iCalPortal/GNUmakefile
+===================================================================
+--- sope-appserver/samples/iCalPortal/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/iCalPortal/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = iCalPortal
+Index: sope-appserver/samples/iCalPortal/Pages/GNUmakefile
+===================================================================
+--- sope-appserver/samples/iCalPortal/Pages/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/iCalPortal/Pages/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../../config.make
++include ../../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = Pages
+Index: sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile
+===================================================================
+--- sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../../config.make
++include ../../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ SUBPROJECT_NAME = DAV
+Index: sope-appserver/samples/SoCookieAuth/GNUmakefile
+===================================================================
+--- sope-appserver/samples/SoCookieAuth/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/SoCookieAuth/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = SoCookieAuth
+Index: sope-appserver/samples/WOxExtTest/GNUmakefile
+===================================================================
+--- sope-appserver/samples/WOxExtTest/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/WOxExtTest/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = WOxExtTest
+Index: sope-appserver/samples/TestPages/GNUmakefile
+===================================================================
+--- sope-appserver/samples/TestPages/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/TestPages/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = TestPages
+Index: sope-appserver/samples/parsedav/GNUmakefile
+===================================================================
+--- sope-appserver/samples/parsedav/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/parsedav/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = parsedav
+Index: sope-appserver/samples/xmlrpc/GNUmakefile
+===================================================================
+--- sope-appserver/samples/xmlrpc/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/xmlrpc/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+Index: sope-appserver/samples/TestPrototype/GNUmakefile
+===================================================================
+--- sope-appserver/samples/TestPrototype/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/TestPrototype/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = TestPrototype
+Index: sope-appserver/samples/HelloWorld/GNUmakefile
+===================================================================
+--- sope-appserver/samples/HelloWorld/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/HelloWorld/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ WOAPP_NAME = HelloWorld
+Index: sope-appserver/samples/davpropget/GNUmakefile
+===================================================================
+--- sope-appserver/samples/davpropget/GNUmakefile	(révision 1604)
++++ sope-appserver/samples/davpropget/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../../config.make
++include ../../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = davpropget
+Index: sope-appserver/WOExtensions/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/WOExtensions/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/WOExtensions/GNUmakefile.preamble	(copie de travail)
+@@ -12,7 +12,8 @@
+ 	-I$(SOPE_ROOT)/sope-xml
+ 
+ 
+-libWOExtensions_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWOExtensions_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWOExtensions_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libWOExtensions_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ 
+Index: sope-appserver/WOExtensions/GNUmakefile
+===================================================================
+--- sope-appserver/WOExtensions/GNUmakefile	(révision 1604)
++++ sope-appserver/WOExtensions/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ include ./Version
+@@ -9,7 +9,7 @@
+ LIBRARY_NAME     = libWOExtensions
+ BUNDLE_NAME      = WOExtensions
+ BUNDLE_EXTENSION = .wox
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/WOxElemBuilders-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_WOXBUILDERS)/
+ 
+ else
+ FRAMEWORK_NAME = WOExtensions
+@@ -71,6 +71,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+@@ -78,4 +81,3 @@
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/WOXML/GNUmakefile
+===================================================================
+--- sope-appserver/WOXML/GNUmakefile	(révision 1604)
++++ sope-appserver/WOXML/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include ../common.make
+ include ../Version
+ include ./Version
+@@ -15,6 +15,7 @@
+ libWOXML_PCH_FILE = common.h
+ libWOXML_HEADER_FILES_DIR         = .
+ libWOXML_HEADER_FILES_INSTALL_DIR = /WOXML
++libWOXML_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ 
+ 
+ libWOXML_HEADER_FILES += \
+@@ -42,10 +43,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-appserver/WOXML/GNUmakefile.preamble
+===================================================================
+--- sope-appserver/WOXML/GNUmakefile.preamble	(révision 1604)
++++ sope-appserver/WOXML/GNUmakefile.preamble	(copie de travail)
+@@ -2,7 +2,7 @@
+ 
+ SOPE_ROOT=../..
+ 
+-libWOXML_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libWOXML_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+ libWOXML_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libWOXML_INCLUDE_DIRS += -I. -I..
+Index: sope-ical/samples/GNUmakefile
+===================================================================
+--- sope-ical/samples/GNUmakefile	(révision 1604)
++++ sope-ical/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = icalparsetest icalds vcf2xml vcfparsetest ievalrrule
+@@ -14,4 +14,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-ical/versitSaxDriver/GNUmakefile
+===================================================================
+--- sope-ical/versitSaxDriver/GNUmakefile	(révision 1604)
++++ sope-ical/versitSaxDriver/GNUmakefile	(copie de travail)
+@@ -1,13 +1,13 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ -include ../../Version
+ -include ./Version
+ 
+ BUNDLE_NAME        = versitSaxDriver
+ BUNDLE_EXTENSION   = .sax
+-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/SaxDrivers-$(MAJOR_VERSION).$(MINOR_VERSION)/
++BUNDLE_INSTALL_DIR = $(SOPE_SAXDRIVERS)/
+ 
+ versitSaxDriver_PRINCIPAL_CLASS = VSSaxDriver
+ 
+@@ -24,4 +24,3 @@
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/bundle.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-ical/GNUmakefile
+===================================================================
+--- sope-ical/GNUmakefile	(révision 1604)
++++ sope-ical/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ PACKAGE_NAME=sope-ical
+Index: sope-ical/NGiCal/GNUmakefile.postamble
+===================================================================
+--- sope-ical/NGiCal/GNUmakefile.postamble	(révision 1604)
++++ sope-ical/NGiCal/GNUmakefile.postamble	(copie de travail)
+@@ -1,10 +1,6 @@
+ # compilation settings
+ 
+-ifeq ($(FHS_INSTALL_ROOT),)
+-MAPDIR="$(GNUSTEP_INSTALLATION_DIR)/Library/SaxMappings/"
+-else
+-MAPDIR="$(FHS_INSTALL_ROOT)/share/sope-$(MAJOR_VERSION).$(MINOR_VERSION)/saxmappings/"
+-endif
++MAPDIR="$(SOPE_SAXMAPPINGS)/"
+ 
+ mappings-dir ::
+ 	$(MKDIRS) $(MAPDIR)
+Index: sope-ical/NGiCal/GNUmakefile
+===================================================================
+--- sope-ical/NGiCal/GNUmakefile	(révision 1604)
++++ sope-ical/NGiCal/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ./Version
+ 
+@@ -14,7 +14,8 @@
+ libNGiCal_PCH_FILE = common.h
+ libNGiCal_HEADER_FILES_DIR         = .
+ libNGiCal_HEADER_FILES_INSTALL_DIR = /NGiCal
+-libNGiCal_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGiCal_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGiCal_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGiCal_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ libNGiCal_HEADER_FILES =  		\
+@@ -107,10 +108,12 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+ include $(GNUSTEP_MAKEFILES)/framework.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make

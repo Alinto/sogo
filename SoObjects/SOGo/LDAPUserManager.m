@@ -80,7 +80,10 @@ static BOOL defaultMailDomainIsConfigured = NO;
   
   sourceID = [udSource objectForKey: @"id"];
   ldapSource = [LDAPSource sourceFromUDSource: udSource];
-  [sources setObject: ldapSource forKey: sourceID];
+  if (sourceID)
+    [sources setObject: ldapSource forKey: sourceID];
+  else
+    NSLog(@"LDAPUserManager.m: WARNING: id field missing in a LDAP source, check the SOGoLDAPSources default");
   metadata = [NSMutableDictionary dictionary];
   value = [udSource objectForKey: @"canAuthenticate"];
   if (value)

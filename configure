@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # Note: When adding make options to this script, ensure that the source still
@@ -14,7 +14,7 @@ CFG_ARGS="$0 $1 $2 $3 $4 $5 $6 $7 $8 $9"
 ARG_BEQUIET=0
 ARG_NOCREATE=0
 ARG_PREFIX=""
-ARG_GSMAKE="$GNUSTEP_MAKEFILES"
+ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
 ARG_WITH_GNUSTEP=1
 ARG_WITH_DEBUG=1
@@ -23,12 +23,20 @@ ARG_WITH_STRIP=1
 DARG_GNUSTEP_SH="$ARG_GSMAKE/GNUstep.sh"
 DARG_IS_FHS=1
 
+# detect GNU make, needed at least on *BSD
+make -v 2>/dev/null | grep GNU >/dev/null 2>/dev/null
+if [ $? -eq 0 ];then
+  MAKE=make
+else
+  MAKE=gmake
+fi
+
 NGSTREAMS_DIR="./sope-core/NGStreams"
 LINK_SYSLIBDIRS="-L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib"
 
 # ******************** usage ********************
 
-function usage() {
+usage() {
   cat <<_ACEOF
 \`configure' configures a GNUstep-make based sourcetree for installation.
 
@@ -58,7 +66,7 @@ _ACEOF
 
 # ******************** running ********************
 
-function printParas() {
+printParas() {
   echo "Configuration:"
   if test $ARG_BEQUIET  = 1; then echo "  will be quite.";  fi
   if test $ARG_NOCREATE = 1; then echo "  won't create files"; fi
@@ -86,7 +94,7 @@ function printParas() {
   echo ""
 }
 
-function warnOnFHSPrefix() {
+warnOnFHSPrefix() {
   cat <<_ACEOFWARN
 Warning: you are configuring for a non standard FHS style prefix.
          prefix: $ARG_PREFIX
@@ -103,7 +111,7 @@ environment.
 _ACEOFWARN
 }
 
-function validateGNUstepArgs() {
+validateGNUstepArgs() {
   # GNUstep make
   if test "x$ARG_GSMAKE" = "x"; then
     if test -f $HOME/OGoRoot/Library/Makefiles/GNUstep.sh; then
@@ -133,7 +141,7 @@ function validateGNUstepArgs() {
   fi
 }
 
-function setupAppleArgs() {
+setupAppleArgs() {
   ARG_WITH_STRIP=0
   ARG_WITH_GNUSTEP=1
   
@@ -145,7 +153,7 @@ function setupAppleArgs() {
   fi
 }
 
-function validateArgs() {
+validateArgs() {
   # validate prefix (could be better?)
   case "x$ARG_PREFIX" in
     "x/usr/local"|"x/usr/local/")
@@ -195,7 +203,7 @@ function validateArgs() {
   fi
 }
 
-function printGNUstepSetup() {
+printGNUstepSetup() {
   echo "GNUstep environment:"
   echo "  system: ${GNUSTEP_SYSTEM_ROOT}"
   echo "  local:  ${GNUSTEP_LOCAL_ROOT}"
@@ -207,11 +215,11 @@ function printGNUstepSetup() {
   echo ""
 }
 
-function cfgwrite() {
+cfgwrite() {
   echo "$1" >> $ARG_CFGMAKE
 }
 
-function genConfigMake() {
+genConfigMake() {
   # we ignore the following vars also patches by gstep-make:
   #   PATH
   #   DYLD_LIBRARY_PATH
@@ -227,15 +235,18 @@ function genConfigMake() {
   cfgwrite ""
   
   cfgwrite "# Note: you can override any option as a 'make' parameter, eg:"
-  cfgwrite "#         make debug=yes"
+  cfgwrite "#         $MAKE debug=yes"
   cfgwrite ""
   
   #cfgwrite "# print on the cmdline that this file is being used"
   #cfgwrite "all :: "
   #cfgwrite "	@echo Local GNUstep config.make is active"
   #cfgwrite ""
-  
-  # TODO: should be also write a GNUSTEP_INSTALLATION_DIR / BUNDLE_INSTALL_DIR?
+
+  cfgwrite "SOGO_MAJOR_VERSION=0"
+  cfgwrite "SOGO_MINOR_VERSION=9"
+  cfgwrite "SOPE_MAJOR_VERSION=4"
+  cfgwrite "SOPE_MINOR_VERSION=7"
   
   if test $DARG_IS_FHS = 1; then
     cfgwrite "# configured for FHS install"
@@ -251,7 +262,59 @@ function genConfigMake() {
     cfgwrite "debug:=no"
   fi
   cfgwrite ""
-  
+  UNAME=`uname`
+  if [ "X${UNAME}" = "XLinux" ];then
+    UNAME=`uname -p`
+    if [ ${UNAME} = x86_64 -o ${UNAME} = sparc64 -o ${UNAME} = ppc64 ];then
+      cfgwrite "CGS_LIBDIR_NAME:=lib64"
+    else
+      cfgwrite "CGS_LIBDIR_NAME:=lib"
+    fi
+  else
+    cfgwrite "CGS_LIBDIR_NAME:=lib"
+  fi
+
+  cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
+  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
+#  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
+  cfgwrite "endif"
+#  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
+
+  if test $DARG_IS_FHS = 1; then
+    cfgwrite "# configured for FHS install"
+    cfgwrite "FHS_INSTALL_ROOT:=$ARG_PREFIX"
+    cfgwrite ""
+    cfgwrite "SOGO_SYSLIBDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/\${CGS_LIBDIR_NAME}"
+    cfgwrite "SOGO_LIBDIR=\${SOGO_SYSLIBDIR}/sogod-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
+    cfgwrite "SOPE_LIBDIR=\$(SOGO_SYSLIBDIR)/sope-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+    cfgwrite "SOGO_SYSSHAREDIR=\${DESTDIR}\${FHS_INSTALL_ROOT}/share"
+    cfgwrite "SOGO_SHARED=\${SOGO_SYSSHAREDIR}/sogo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
+    cfgwrite "SOPE_SHARED=\${SOGO_SYSSHAREDIR}/sope-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+    cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_SHARED}/templates"
+    cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_SHARED}/www"
+    cfgwrite "SOGO_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/bin"
+    cfgwrite "SOGO_ADMIN_TOOLS=\${DESTDIR}\${FHS_INSTALL_ROOT}/sbin"
+    cfgwrite "SOPE_SAXMAPPINGS=\${SOPE_SHARED}/saxmappings"
+    cfgwrite "SOPE_SAXDRIVERS=\${SOPE_LIBDIR}/saxdrivers"
+    cfgwrite "SOPE_WOXBUILDERS=\${SOPE_LIBDIR}/wox-builders"
+    cfgwrite "SOGO_TYPEMODELS=\${SOGO_SYSSHAREDIR}/ocs"
+
+    cfgwrite ""
+  else
+    cfgwrite "# configured for GNUstep install"
+    cfgwrite ""
+    cfgwrite "SOGO_SYSLIBDIR=\${DESTDIR}/\${GNUSTEP_LIBRARIES}"
+    cfgwrite "SOGO_LIBDIR=\${DESTDIR}/\${GNUSTEP_LIBRARY}/SOGo-\${SOGO_MAJOR_VERSION}.\${SOGO_MINOR_VERSION}"
+    cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
+    cfgwrite "SOGO_WEBSERVERRESOURCESDIR=\${SOGO_LIBDIR}/WebServerResources"
+    cfgwrite "SOGO_TOOLS=\${DESTDIR}/\${GNUSTEP_TOOLS}"
+    cfgwrite "SOGO_ADMIN_TOOLS=\${DESTDIR}/\${GNUSTEP_ADMIN_TOOLS}"
+    cfgwrite "SOPE_SAXMAPPINGS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/SaxMappings"
+    cfgwrite "SOPE_SAXDRIVERS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/SaxDrivers-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+    cfgwrite "SOPE_WOXBUILDERS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${SOPE_MAJOR_VERSION}.\${SOPE_MINOR_VERSION}"
+    cfgwrite "SOGO_TYPEMODELS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/OCSTypeModels"
+  fi
+
   if test $ARG_WITH_STRIP = 1; then
     cfgwrite "# configured to produce stripped code";
     cfgwrite "strip:=yes"
@@ -273,11 +336,9 @@ function genConfigMake() {
   cfgwrite "LIBRARY_COMBO=$LIBRARY_COMBO"
   cfgwrite ""
   
-  cfgwrite "# avoid a gstep-make warning"
-  cfgwrite "PATH:=\$(GNUSTEP_SYSTEM_ROOT)/Tools:\$(PATH)"
 }
 
-function checkLinking() {
+checkLinking() {
   local oldpwd=$PWD
   local tmpdir=".configure-test-$$"
   
@@ -294,7 +355,7 @@ function checkLinking() {
   echo >>$tmpmake "SYSTEM_LIB_DIR      += ${LINK_SYSLIBDIRS}"
   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/tool.make"
   
-  make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
+  $MAKE -s messages=yes -f $tmpmake linktest >out.log 2>err.log
   LINK_RESULT=$?
 
   if test $LINK_RESULT = 0; then
@@ -313,12 +374,12 @@ function checkLinking() {
   rm -rf $tmpdir
 }
 
-function checkDependencies() {
+checkDependencies() {
   checkLinking "SaxObjC" required;
   checkLinking "NGLdap"  required;
 }
 
-function runIt() {
+runIt() {
   if test $ARG_BEQUIET != 1; then
     printParas;
   fi
@@ -346,11 +407,11 @@ function runIt() {
 
 # ******************** options ********************
 
-function extractFuncValue() {
+extractFuncValue() {
   VALUE="`echo "$1" | sed "s/[^=]*=//g"`"
 }
 
-function processOption() {
+processOption() {
   case "x$1" in
     "x--help"|"x-h")
 	usage;
@@ -401,7 +462,7 @@ done
 # load GNUstep environment
 validateGNUstepArgs
 # first we load the GNUstep.sh environment
-source $DARG_GNUSTEP_SH
+. $DARG_GNUSTEP_SH
 if test $ARG_BEQUIET != 1; then
   printGNUstepSetup;
 fi

@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../config.make
+include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
@@ -10,6 +10,7 @@ ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
 
 SOGOD     = sogod-$(MAJOR_VERSION).$(MINOR_VERSION)
 TOOL_NAME = $(SOGOD)
+$(SOGOD)_INSTALL_DIR = $(SOGO_ADMIN_TOOLS)
 
 # daemon tool
 all::
@@ -24,4 +25,3 @@ $(SOGOD)_OBJC_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
-include fhs.make

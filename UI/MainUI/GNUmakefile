@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../common.make
+include ../common.make
 
 BUNDLE_NAME = MainUI
 
@@ -32,4 +32,3 @@ ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-include ../../fhsbundle.make

@@ -64,7 +64,7 @@
   
   // TODO: fix me, GCS instead of OCS
   loc = [NGResourceLocator resourceLocatorForGNUstepPath:
-			     @"Library/OCSTypeModels"
+			     @"OCSTypeModels"
                            fhsPath:@"share/ocs"];
   return loc;
 }
