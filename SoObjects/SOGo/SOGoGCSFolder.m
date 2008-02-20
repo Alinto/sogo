@@ -682,6 +682,65 @@ static BOOL sendFolderAdvisories = NO;
   return defaultUserID;
 }
 
+- (void) _appendACLUserData: (NSString *) user
+		   toString: (NSMutableString *) aclAnswer
+{
+  SOGoUser *aclUser;
+
+  [aclAnswer appendFormat: @"<id>%@</id>", user];
+  aclUser = [SOGoUser userWithLogin: user roles: nil];
+  [aclAnswer appendFormat: @"<displayName>%@</displayName>",
+	     [aclUser cn]];
+}
+
+- (void) _appendACL: (NSArray *) userAcl
+	   toString: (NSMutableString *) aclAnswer
+{
+  NSEnumerator *aclForUser;
+  NSString *currentAcl;
+
+  [aclAnswer appendString: @"<acl>"];
+  aclForUser = [userAcl objectEnumerator];
+  while ((currentAcl = [aclForUser nextObject]))
+    [aclAnswer appendFormat: @"<%@/>", currentAcl];
+  [aclAnswer appendString: @"</acl>"];
+}
+
+- (NSString *) davInverseACL
+{
+  NSMutableArray *aclAnswer;
+  NSEnumerator *aclUsers;
+  NSMutableDictionary *data;
+  NSString *currentUser, *cn;
+  SOGoUser *sogoUser;
+
+  aclAnswer = [NSMutableArray array];
+  currentUser = [self defaultUserID];
+
+  data = [NSMutableDictionary new];
+  [data setObject: [self aclsForUser: currentUser]
+	forKey: @"acl"];
+  [aclAnswer addObject: [NSDictionary dictionaryWithObject: data forKey: @"defaultUser"]];
+  [data release];
+
+  aclUsers = [[self aclUsers] objectEnumerator];
+  while ((currentUser = [aclUsers nextObject]))
+    {
+      data = [NSMutableDictionary new];
+      [data setObject: currentUser forKey: @"id"];
+      sogoUser = [SOGoUser userWithLogin: currentUser roles: nil];
+      cn = [sogoUser cn];
+      if (!cn)
+	cn = currentUser;
+      [data setObject: cn forKey: @"displayName"];
+      [data setObject: [self aclsForUser: currentUser] forKey: @"acl"];
+      [aclAnswer addObject: [NSDictionary dictionaryWithObject: data forKey: @"user"]];
+      [data release];
+    }
+  
+  return [aclAnswer jsonRepresentation];
+}
+
 /* description */
 
 - (void) appendAttributesToDescription: (NSMutableString *) _ms

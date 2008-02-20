@@ -1,3 +1,9 @@
+2008-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder -davInverseACL]):
+	first implementation of a DAV interface to SOGo roles. Returns the
+	result in JSON.
+
 2008-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GNUmakefile: migrated to GNUstep Make 2.

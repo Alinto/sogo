@@ -257,7 +257,7 @@
 {
   return [NSArray arrayWithObjects: SoRole_Owner, SOGoRole_ObjectViewer,
 		  SOGoRole_ObjectEditor, SOGoRole_ObjectCreator,
- SOGoRole_ObjectEraser, nil];
+		  SOGoRole_ObjectEraser, nil];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
