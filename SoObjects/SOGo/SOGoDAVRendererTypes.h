@@ -26,6 +26,7 @@
 #import <NGObjWeb/SoWebDAVValue.h>
 
 @class NSArray;
+@class NSDictionary;
 @class NSString;
 
 @interface SOGoDAVSet : SoWebDAVValue
@@ -40,6 +41,20 @@
 - (void) setValueTag: (NSString *) newValueTag;
 - (void) setValues: (NSArray *) newValues;
   
+@end
+
+@interface SOGoDAVDictionary : SoWebDAVValue
+{
+  NSString *valueTag;
+  NSDictionary *values;
+}
+
++ (id) davDictionary: (NSDictionary *) newValues
+	    taggedAs: (NSString *) newValueTag;
+
+- (void) setValueTag: (NSString *) newValueTag;
+- (void) setValues: (NSDictionary *) newValues;
+
 @end
 
 #endif /* SOGODAVRENDERERTYPES_H */

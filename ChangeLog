@@ -1,5 +1,8 @@
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoDAVRendererTypes.h (SoWebDAVValue): added
+	SOGoDAVDictionary webdav value class.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray -uniqueObjects]):
 	new method that returns unique occurences of the objects.
 

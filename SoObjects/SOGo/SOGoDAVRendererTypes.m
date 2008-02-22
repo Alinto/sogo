@@ -54,10 +54,8 @@
 
 - (void) dealloc
 {
-  if (valueTag)
-    [valueTag release];
-  if (values)
-    [values release];
+  [valueTag release];
+  [values release];
   [super dealloc];
 }
 
@@ -84,10 +82,9 @@
   resultString = [NSMutableString new];
   [resultString autorelease];
 
-  [resultString appendFormat: @"<%@>", setTag];
+//   [resultString appendFormat: @"<%@>", setTag];
   valueEnum = [values objectEnumerator];
-  currentValue = [valueEnum nextObject];
-  while (currentValue)
+  while ((currentValue = [valueEnum nextObject]))
     {
       if ([currentValue isKindOfClass: [SoWebDAVValue class]])
         valueString
@@ -97,16 +94,101 @@
                           inContext: context
                           prefixes: prefixes];
       else
-        valueString = currentValue;
+        valueString = [[currentValue description] stringByEscapingXMLString];
 
-      [resultString appendFormat: @"<%@>%@</%@>",
-                    valueTag, valueString, valueTag];
-      currentValue = [valueEnum nextObject];
+      [resultString appendFormat: valueString];
+//       [resultString appendFormat: @"<%@>%@</%@>",
+//                     valueTag, valueString, valueTag];
     }
-  [resultString appendFormat: @"</%@>", setTag];
+//   [resultString appendFormat: @"</%@>", setTag];
 
   NSLog(@"dav rendering for key '%@' and tag '%@':\n", _key, setTag,
         resultString);
+
+  return resultString;
+}
+
+- (NSString *) stringValue
+{
+  return [self stringForTag: valueTag rawName: valueTag
+	       inContext: nil prefixes: nil];
+}
+
+@end
+
+@implementation SOGoDAVDictionary
+
++ (id) davDictionary: (NSDictionary *) newValues
+	    taggedAs: (NSString *) newValueTag;
+{
+  SOGoDAVDictionary *davDictionary;
+
+  davDictionary = [self new];
+  [davDictionary setValueTag: newValueTag];
+  [davDictionary setValues: newValues];
+  [davDictionary autorelease];
+
+  return davDictionary;
+}
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      valueTag = nil;
+      values = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [valueTag release];
+  [values release];
+  [super dealloc];
+}
+
+- (void) setValueTag: (NSString *) newValueTag
+{
+  ASSIGN (valueTag, newValueTag);
+}
+
+- (void) setValues: (NSDictionary *) newValues
+{
+  ASSIGN (values, newValues);
+}
+
+- (NSString *) stringForTag: (NSString *) _key
+                    rawName: (NSString *) setTag
+                  inContext: (id) context
+                   prefixes: (NSDictionary *) prefixes
+{
+  NSMutableString *resultString;
+  id currentValue;
+  NSEnumerator *objects;
+  NSString *currentKey, *valueString;
+
+  resultString = [NSMutableString string];
+
+  [resultString appendFormat: @"<%@>", valueTag];
+  objects = [[values allKeys] objectEnumerator];
+  while ((currentKey = [objects nextObject]))
+    {
+      currentValue = [values objectForKey: currentKey];
+      if ([currentValue isKindOfClass: [SoWebDAVValue class]])
+        valueString
+          = [currentValue stringForTag:
+                            [NSString stringWithFormat: @"{DAV:}%@", valueTag]
+                          rawName: [NSString stringWithFormat: @"D:%@", valueTag]
+                          inContext: context
+                          prefixes: prefixes];
+      else
+        valueString = [[currentValue description] stringByEscapingXMLString];
+
+      [resultString appendFormat: @"<%@>%@</%@>", currentKey, valueString, currentKey];
+    }
+  [resultString appendFormat: @"</%@>", valueTag];
 
   return resultString;
 }
