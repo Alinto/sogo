@@ -36,6 +36,8 @@
 - (NSArray *) objectsForKey: (NSString *) key;
 - (NSArray *) flattenedArray;
 
+- (NSArray *) uniqueObjects;
+
 - (BOOL) containsCaseInsensitiveString: (NSString *) match;
 
 #ifdef GNUSTEP_BASE_LIBRARY

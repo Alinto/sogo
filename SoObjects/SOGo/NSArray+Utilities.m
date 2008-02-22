@@ -105,6 +105,21 @@
   return flattenedArray;
 }
 
+- (NSArray *) uniqueObjects
+{
+  NSMutableArray *newArray;
+  NSEnumerator *objects;
+  id currentObject;
+
+  newArray = [NSMutableArray array];
+
+  objects = [self objectEnumerator];
+  while ((currentObject = [objects nextObject]))
+    [newArray addObjectUniquely: currentObject];
+
+  return newArray;
+}
+
 - (void) makeObjectsPerform: (SEL) selector
                  withObject: (id) object1
                  withObject: (id) object2

@@ -1,5 +1,8 @@
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray -uniqueObjects]):
+	new method that returns unique occurences of the objects.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
 	-davNamespaces]): same as below.
 
