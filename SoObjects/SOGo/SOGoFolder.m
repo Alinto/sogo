@@ -201,11 +201,6 @@
 
 /* WebDAV */
 
-- (NSArray *) davNamespaces
-{
-  return nil;
-}
-
 - (BOOL) davIsCollection
 {
   return [self isFolderish];

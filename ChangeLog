@@ -1,5 +1,7 @@
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([-davNamespaces]): removed method.
+
 	* SoObjects/SOGo/SOGoDAVRendererTypes.h (SoWebDAVValue): added
 	SOGoDAVDictionary webdav value class.
 

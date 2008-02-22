@@ -40,7 +40,6 @@
 - (NSComparisonResult) compare: (id) otherFolder;
 
 /* dav */
-- (NSArray *) davNamespaces;
 - (NSArray *) davResourceType;
 
 /* outlook */
