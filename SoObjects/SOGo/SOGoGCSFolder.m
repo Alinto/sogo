@@ -1,23 +1,28 @@
-/*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+/* SOGoGCSFolder.m - this file is part of SOGo
+ *
+ * Copyright (C) 2004-2005 SKYRIX Software AG
+ * Copyright (C) 2006-2008 Inverse groupe conseil
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
-
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
+#import <NGObjWeb/SoWebDAVValue.h>
+#import "SOGoDAVRendererTypes.h"
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDate.h>
@@ -33,6 +38,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
@@ -488,14 +494,15 @@ static BOOL sendFolderAdvisories = NO;
 {
   EOQualifier *qualifier;
   NSString *qs;
-  NSArray *records;
+  NSArray *records, *uids;
 
   qs = [NSString stringWithFormat: @"c_object = '/%@'",
 		 [objectPathArray componentsJoinedByString: @"/"]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
+  uids = [[records valueForKey: @"c_uid"] uniqueObjects];
 
-  return [records valueForKey: @"c_uid"];
+  return uids;
 }
 
 - (NSArray *) _fetchAclsForUser: (NSString *) uid
@@ -515,7 +522,7 @@ static BOOL sendFolderAdvisories = NO;
   if ([records count] > 0)
     [acls addObjectsFromArray: [records valueForKey: @"c_role"]];
 
-  return acls;
+  return [acls uniqueObjects];
 }
 
 - (void) _cacheRoles: (NSArray *) roles
@@ -680,65 +687,6 @@ static BOOL sendFolderAdvisories = NO;
 - (NSString *) defaultUserID
 {
   return defaultUserID;
-}
-
-- (void) _appendACLUserData: (NSString *) user
-		   toString: (NSMutableString *) aclAnswer
-{
-  SOGoUser *aclUser;
-
-  [aclAnswer appendFormat: @"<id>%@</id>", user];
-  aclUser = [SOGoUser userWithLogin: user roles: nil];
-  [aclAnswer appendFormat: @"<displayName>%@</displayName>",
-	     [aclUser cn]];
-}
-
-- (void) _appendACL: (NSArray *) userAcl
-	   toString: (NSMutableString *) aclAnswer
-{
-  NSEnumerator *aclForUser;
-  NSString *currentAcl;
-
-  [aclAnswer appendString: @"<acl>"];
-  aclForUser = [userAcl objectEnumerator];
-  while ((currentAcl = [aclForUser nextObject]))
-    [aclAnswer appendFormat: @"<%@/>", currentAcl];
-  [aclAnswer appendString: @"</acl>"];
-}
-
-- (NSString *) davInverseACL
-{
-  NSMutableArray *aclAnswer;
-  NSEnumerator *aclUsers;
-  NSMutableDictionary *data;
-  NSString *currentUser, *cn;
-  SOGoUser *sogoUser;
-
-  aclAnswer = [NSMutableArray array];
-  currentUser = [self defaultUserID];
-
-  data = [NSMutableDictionary new];
-  [data setObject: [self aclsForUser: currentUser]
-	forKey: @"acl"];
-  [aclAnswer addObject: [NSDictionary dictionaryWithObject: data forKey: @"defaultUser"]];
-  [data release];
-
-  aclUsers = [[self aclUsers] objectEnumerator];
-  while ((currentUser = [aclUsers nextObject]))
-    {
-      data = [NSMutableDictionary new];
-      [data setObject: currentUser forKey: @"id"];
-      sogoUser = [SOGoUser userWithLogin: currentUser roles: nil];
-      cn = [sogoUser cn];
-      if (!cn)
-	cn = currentUser;
-      [data setObject: cn forKey: @"displayName"];
-      [data setObject: [self aclsForUser: currentUser] forKey: @"acl"];
-      [aclAnswer addObject: [NSDictionary dictionaryWithObject: data forKey: @"user"]];
-      [data release];
-    }
-  
-  return [aclAnswer jsonRepresentation];
 }
 
 /* description */
