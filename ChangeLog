@@ -1,5 +1,12 @@
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder
+	-davNamespaces]): same as below.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davNamespaces]): take the parents
+	namespaces into account.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -addUserInAcls:uid]):
 	new method.
 	([SOGoObject -removeUserFromAcls:uid]): new methods (see below).

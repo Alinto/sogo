@@ -259,7 +259,12 @@
 
 - (NSArray *) davNamespaces
 {
-  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
+  NSMutableArray *ns;
+
+  ns = [NSMutableArray arrayWithArray: [super davNamespaces]];
+  [ns addObjectUniquely: @"urn:ietf:params:xml:ns:carddav"];
+
+  return ns;
 }
 
 - (NSString *) groupDavResourceType

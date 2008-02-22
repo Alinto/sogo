@@ -287,7 +287,12 @@ static NSNumber   *sharedYes = nil;
 
 - (NSArray *) davNamespaces
 {
-  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:caldav"];
+  NSMutableArray *ns;
+
+  ns = [NSMutableArray arrayWithArray: [super davNamespaces]];
+  [ns addObjectUniquely: @"urn:ietf:params:xml:ns:caldav"];
+
+  return ns;
 }
 
 - (id) davCalendarQuery: (id) queryContext
