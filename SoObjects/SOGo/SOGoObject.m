@@ -46,27 +46,31 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMDocument.h>
+#import <DOM/DOMNode.h>
 #import <DOM/DOMProtocols.h>
 #import <NGCards/NSDictionary+NGCards.h>
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
-#import "SOGoPermissions.h"
-#import "SOGoUser.h"
-#import "SOGoDAVAuthenticator.h"
-#import "SOGoUserFolder.h"
-
-#import "SOGoDAVRendererTypes.h"
-
+#import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
 #import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
-
 #import "SOGoCache.h"
+#import "SOGoDAVAuthenticator.h"
+#import "SOGoDAVRendererTypes.h"
+#import "SOGoPermissions.h"
+#import "SOGoUser.h"
+#import "SOGoUserFolder.h"
+
 #import "SOGoObject.h"
 
+static BOOL kontactGroupDAV = YES;
+static BOOL sendACLAdvisories = NO;
+
 @interface SOGoObject(Content)
-- (NSString *)contentAsString;
+- (NSString *) contentAsString;
 @end
 
 @interface SoClassSecurityInfo (SOGoAcls)
@@ -160,18 +164,13 @@
 
 @implementation SOGoObject
 
-static BOOL kontactGroupDAV = YES;
-
-+ (int)version {
-  return 0;
-}
-
 + (void) initialize
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults *ud;
 
-  kontactGroupDAV = 
-    [ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"] ? NO : YES;
+  ud = [NSUserDefaults standardUserDefaults];
+  kontactGroupDAV = ![ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"];
+  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
 
 //   SoClass security declarations
   
@@ -201,7 +200,7 @@ static BOOL kontactGroupDAV = YES;
   float f;
 
   if (pid == 0)
-    { /* break if we fork ;-) */
+    {
       pid = getpid();
       rndm = random();
     }
@@ -889,6 +888,44 @@ static BOOL kontactGroupDAV = YES;
   return [container subscriptionRoles];
 }
 
+- (BOOL) addUserInAcls: (NSString *) uid
+{
+  BOOL result;
+
+  if ([uid length]
+      && ![uid isEqualToString: [self ownerInContext: nil]]
+      && [[LDAPUserManager sharedUserManager]
+	   contactInfosForUserWithUIDorEmail: uid])
+    {
+      [self setRoles: [self aclsForUser: uid]
+	    forUser: uid];
+      if (sendACLAdvisories)
+	[self sendACLAdditionAdvisoryToUser: uid];
+      result = YES;
+    }
+  else
+    result = NO;
+
+  return result;
+}
+
+- (BOOL) removeUserFromAcls: (NSString *) uid
+{
+  BOOL result;
+
+  if ([uid length])
+    {
+      [self removeAclsForUsers: [NSArray arrayWithObject: uid]];
+      if (sendACLAdvisories)
+	[self sendACLRemovalAdvisoryToUser: uid];
+      result = YES;
+    }
+  else
+    result = NO;
+
+  return result;
+}
+
 - (NSArray *) aclUsers
 {
   [self subclassResponsibility: _cmd];
@@ -1109,6 +1146,186 @@ static BOOL kontactGroupDAV = YES;
   [newClasses addObject: @"access-control"];
 
   return newClasses;
+}
+
+/* dav acls */
+- (NSArray *) davNamespaces
+{
+  return [NSArray arrayWithObject:
+		    @"urn:inverse:params:xml:ns:inverse-dav"];
+}
+
+- (NSString *) davRecordForUser: (NSString *) user
+{
+  NSMutableString *userRecord;
+  SOGoUser *sogoUser;
+  NSString *cn, *email;
+
+  userRecord = [NSMutableString string];
+
+  [userRecord appendFormat: @"<id>%@</id>",
+	      [user stringByEscapingXMLString]];
+  sogoUser = [SOGoUser userWithLogin: user roles: nil];
+  cn = [sogoUser cn];
+  if (!cn)
+    cn = user;
+  [userRecord appendFormat: @"<displayName>%@</displayName>",
+	      [cn stringByEscapingXMLString]];
+  email = [[sogoUser allEmails] objectAtIndex: 0];
+  if (email)
+    [userRecord appendFormat: @"<email>%@</email>",
+		[email stringByEscapingXMLString]];
+
+  return userRecord;
+}
+
+- (NSString *) _davAclUserListQuery
+{
+  NSMutableString *userList;
+  NSString *defaultUserID, *currentUserID;
+  NSEnumerator *users;
+
+  userList = [NSMutableString string];
+
+  defaultUserID = [self defaultUserID];
+  if ([defaultUserID length])
+    [userList appendFormat: @"<default-user><id>%@</id></default-user>",
+	      [defaultUserID stringByEscapingXMLString]];
+  users = [[self aclUsers] objectEnumerator];
+  while ((currentUserID = [users nextObject]))
+    if (![currentUserID isEqualToString: defaultUserID])
+      [userList appendFormat: @"<user>%@</user>",
+		[self davRecordForUser: currentUserID]];
+
+  return userList;
+}
+
+- (NSString *) _davAclUserRoles: (NSString *) userName
+{
+  NSArray *roles;
+
+  roles = [[self aclsForUser: userName] stringsWithFormat: @"<%@/>"];
+
+  return [roles componentsJoinedByString: @""];
+}
+
+- (NSArray *) _davGetRolesFromRequest: (id <DOMNode>) node
+{
+  NSMutableArray *roles;
+  id <DOMNodeList> childNodes;
+  NSString *currentRole;
+  unsigned int count, max;
+
+  roles = [NSMutableArray array];
+  childNodes = [node childNodes];
+  max = [childNodes length];
+  for (count = 0; count < max; count++)
+    {
+      currentRole = [[childNodes objectAtIndex: count] nodeName];
+      [roles addObject: currentRole];
+    }
+
+  return roles;
+}
+
+- (NSString *) _davAclActionFromQuery: (id <DOMDocument>) document
+{
+  id <DOMNode> node, userAttr;
+  id <DOMNamedNodeMap> attrs;
+  NSString *nodeName, *result, *response, *user;
+
+  node = [[document documentElement] firstChild];
+  nodeName = [node nodeName];
+  if ([nodeName isEqualToString: @"user-list"])
+    result = [self _davAclUserListQuery];
+  else if ([nodeName isEqualToString: @"roles"])
+    {
+      attrs = [node attributes];
+      userAttr = [attrs namedItem: @"user"];
+      user = [userAttr nodeValue];
+      if ([user length])
+	result = [self _davAclUserRoles: user];
+      else
+	result = nil;
+    }
+  else if ([nodeName isEqualToString: @"set-roles"])
+    {
+      attrs = [node attributes];
+      userAttr = [attrs namedItem: @"user"];
+      user = [userAttr nodeValue];
+      if ([user length])
+	{
+	  [self setRoles: [self _davGetRolesFromRequest: node]
+		forUser: user];
+	  result = @"";
+	}
+      else
+	result = nil;
+    }
+  else if ([nodeName isEqualToString: @"add-user"])
+    {
+      attrs = [node attributes];
+      userAttr = [attrs namedItem: @"user"];
+      user = [userAttr nodeValue];
+      if ([self addUserInAcls: user])
+	result = @"";
+      else
+	result = nil;
+    }
+  else if ([nodeName isEqualToString: @"remove-user"])
+    {
+      attrs = [node attributes];
+      userAttr = [attrs namedItem: @"user"];
+      user = [userAttr nodeValue];
+      if ([self removeUserFromAcls: user])
+	result = @"";
+      else
+	result = nil;
+    }
+  else
+    result = nil;
+
+  if (result)
+    {
+      if ([result length])
+	response = [NSString stringWithFormat: @"<%@>%@</%@>",
+			     nodeName, result, nodeName];
+      else
+	response = @"";
+    }
+  else
+    response = nil;
+
+  return response;
+}
+
+- (id) davAclQuery: (WOContext *) queryContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  NSString *content;
+
+  r = [queryContext response];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+
+  document = [[context request] contentAsDOMDocument];
+  content = [self _davAclActionFromQuery: document];
+  if (content)
+    {
+      [r setStatus: 207];
+      if ([content length])
+	{
+	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+	  [r appendContentString: content];
+	}
+    }
+  else
+    [r setStatus: 400];
+
+  return r;
 }
 
 @end /* SOGoObject */

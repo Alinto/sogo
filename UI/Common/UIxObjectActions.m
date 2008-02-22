@@ -33,43 +33,19 @@
 
 #import "UIxObjectActions.h"
 
-static BOOL sendACLAdvisories = NO;
-
 @implementation UIxObjectActions
-
-+ (void) initialize
-{
-  NSUserDefaults *ud;
-
-  ud = [NSUserDefaults standardUserDefaults];
-  sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
-}
 
 - (WOResponse *) addUserInAclsAction
 {
   WOResponse *response;
-  WORequest *request;
   NSString *uid;
   unsigned int code;
-  LDAPUserManager *um;
-  SOGoObject *clientObject;
 
-  code = 403;
-  request = [context request];
-  uid = [request formValueForKey: @"uid"];
-  if ([uid length] > 0)
-    {
-      um = [LDAPUserManager sharedUserManager];
-      if ([um contactInfosForUserWithUIDorEmail: uid])
-        {
-	  clientObject = [self clientObject];
-	  [clientObject setRoles: [clientObject aclsForUser: uid]
-			forUser: uid];
-	  if (sendACLAdvisories)
-	    [clientObject sendACLAdditionAdvisoryToUser: uid];
-          code = 204;
-        }
-    }
+  uid = [[context request] formValueForKey: @"uid"];
+  if ([[self clientObject] addUserInAcls: uid])
+    code = 204;
+  else
+    code = 403;
 
   response = [context response];
   [response setStatus: code];
@@ -80,27 +56,14 @@ static BOOL sendACLAdvisories = NO;
 - (WOResponse *) removeUserFromAclsAction
 {
   WOResponse *response;
-  WORequest *request;
   NSString *uid;
   unsigned int code;
-  LDAPUserManager *um;
-  SOGoObject *co;
 
-  code = 403;
-  request = [context request];
-  uid = [request formValueForKey: @"uid"];
-  if ([uid length] > 0)
-    {
-      um = [LDAPUserManager sharedUserManager];
-      if ([um contactInfosForUserWithUIDorEmail: uid])
-	{
-	  co = [self clientObject];
-	  [co removeAclsForUsers: [NSArray arrayWithObject: uid]];
-	  if (sendACLAdvisories)
-	    [co sendACLRemovalAdvisoryToUser: uid];
-          code = 204;
-        }
-    }
+  uid = [[context request] formValueForKey: @"uid"];
+  if ([[self clientObject] removeUserFromAcls: uid])
+    code = 204;
+  else
+    code = 403;
 
   response = [context response];
   [response setStatus: code];

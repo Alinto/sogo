@@ -1,3 +1,20 @@
+2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -addUserInAcls:uid]):
+	new method.
+	([SOGoObject -removeUserFromAcls:uid]): new methods (see below).
+	([SOGoObject -davNamespaces]): declare the
+	"urn:inverse:params:xml:ns:inverse-dav" namespace.
+	([SOGoObject -davRecordForUser:user])
+	([SOGoObject -davAclQuery:queryContext]): new methods to answer to
+	the "user-list", "roles", "set-roles", "add-user", "remove-user"
+	inverse DAV methods.
+
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions -addUserInAclsAction])
+	([UIxObjectActions -removeUserFromAclsAction]): moved the core of
+	those methods into SOGoObject and translate its result into an
+	appropriate HTTP status.
+
 2008-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder -davInverseACL]):

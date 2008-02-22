@@ -113,6 +113,9 @@
 
 - (NSArray *) subscriptionRoles;
 
+- (BOOL) addUserInAcls: (NSString *) uid;
+- (BOOL) removeUserFromAcls: (NSString *) uid;
+
 - (NSArray *) aclUsers;
 - (NSArray *) aclsForUser: (NSString *) uid;
 - (void) setRoles: (NSArray *) roles
@@ -125,6 +128,10 @@
 
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
+
+/* dav */
+- (NSArray *) davNamespaces;
+- (NSString *) davRecordForUser: (NSString *) user;
 
 /* description */
 
