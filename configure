@@ -329,6 +329,7 @@ genConfigMake() {
   cfgwrite ""
   
   cfgwrite "# GNUstep environment variables:";
+  cfgwrite "GNUSTEP_INSTALLATION_DOMAIN=LOCAL"
   for i in `env | grep GNUSTEP_ | sort`; do
     MAKE_ASSI="`echo $i | sed s/=/:=/`"
     cfgwrite "${MAKE_ASSI}";
