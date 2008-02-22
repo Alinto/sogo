@@ -42,6 +42,7 @@
 #import <Contacts/SOGoContactFolders.h>
 #import <Mailer/SOGoMailAccounts.h>
 
+#import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
 #import "LDAPUserManager.h"
 #import "SOGoPermissions.h"
@@ -108,18 +109,13 @@
   return self;
 }
 
-- (NSArray *) davNamespaces
-{
-  return [NSArray arrayWithObject: @"urn:inverse:params:xml:ns:inverse-dav"];
-}
-
 - (NSDictionary *) _parseCollectionFilters: (id <DOMDocument>) parentNode
 {
   NSEnumerator *children;
   NGDOMNode *node;
   NSMutableDictionary *filter;
   NSString *componentName;
-    
+
   filter = [NSMutableDictionary dictionaryWithCapacity: 2];
   children = [[parentNode getElementsByTagName: @"prop-match"]
 	       objectEnumerator];
@@ -289,7 +285,7 @@
     }
 }
 
-- (id) davCollectionQuery: (id) queryContext
+- (id) davCollectionQuery: (WOContext *) queryContext
 {
   WOResponse *r;
   NSDictionary *filter;
@@ -310,6 +306,99 @@
   [self _appendCollectionsMatchingFilter: filter toResponse: r];
 
   [r appendContentString:@"</D:multistatus>\r\n"];
+
+  return r;
+}
+
+- (NSString *) _davFetchUsersMatching: (NSString *) user
+{
+  LDAPUserManager *um;
+  NSEnumerator *users;
+  NSMutableString *fetch;
+  NSDictionary *currentUser;
+  NSString *field;
+
+  fetch = [NSMutableString string];
+  um = [LDAPUserManager sharedUserManager];
+  users = [[um fetchContactsMatching: user] objectEnumerator];
+  while ((currentUser = [users nextObject]))
+    {
+      [fetch appendString: @"<user>"];
+      field = [currentUser objectForKey: @"c_uid"];
+      [fetch appendFormat: @"<id>%@</id>",
+	     [field stringByEscapingXMLString]];
+      field = [currentUser objectForKey: @"cn"];
+      [fetch appendFormat: @"<displayName>%@</displayName>",
+	     [field stringByEscapingXMLString]];
+      field = [currentUser objectForKey: @"c_email"];
+      [fetch appendFormat: @"<email>%@</email>",
+	     [field stringByEscapingXMLString]];
+      [fetch appendString: @"</user>"];
+    }
+
+  return fetch;
+}
+
+- (NSString *) _davUsersFromQuery: (id <DOMDocument>) document
+{
+  id <DOMNode> node, userAttr;
+  id <DOMNamedNodeMap> attrs;
+  NSString *nodeName, *result, *response, *user;
+
+  node = [[document documentElement] firstChild];
+  nodeName = [node nodeName];
+  if ([nodeName isEqualToString: @"users"])
+    {
+      attrs = [node attributes];
+      userAttr = [attrs namedItem: @"match-name"];
+      user = [userAttr nodeValue];
+      if ([user length])
+	result = [self _davFetchUsersMatching: user];
+      else
+	result = nil;
+    }
+  else
+    result = nil;
+
+  if (result)
+    {
+      if ([result length])
+	response = [NSString stringWithFormat: @"<%@>%@</%@>",
+			     nodeName, result, nodeName];
+      else
+	response = @"";
+    }
+  else
+    response = nil;
+
+  return response;
+}
+
+- (id) davUserQuery: (WOContext *) queryContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  NSString *content;
+
+  r = [queryContext response];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+
+  document = [[context request] contentAsDOMDocument];
+  content = [self _davUsersFromQuery: document];
+  if (content)
+    {
+      [r setStatus: 207];
+      if ([content length])
+	{
+	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+	  [r appendContentString: content];
+	}
+    }
+  else
+    [r setStatus: 400];
 
   return r;
 }

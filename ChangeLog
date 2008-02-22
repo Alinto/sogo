@@ -1,5 +1,12 @@
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davUserQuery:queryContext]): new method for the "user-query"
+	inverse DAV method.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-aclUsersForObjectAtPath:objectPathArray]): return unique uids.
+
 	* SoObjects/SOGo/SOGoFolder.m ([-davNamespaces]): removed method.
 
 	* SoObjects/SOGo/SOGoDAVRendererTypes.h (SoWebDAVValue): added
