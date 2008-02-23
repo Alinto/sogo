@@ -1729,7 +1729,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
 --- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1605)
 +++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
-@@ -123,11 +123,18 @@
+@@ -123,11 +123,14 @@
  
    /* CalDAV */
    "{urn:ietf:params:xml:ns:caldav}calendar-home-set" = davCalendarHomeSet;
@@ -1745,10 +1745,6 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 +  "{http://calendarserver.org/ns/}notifications-URL" =
      davNotificationsURL;
    "{com.apple.ical:}calendarcolor" = davCalendarColor;
-+
-+  /* Inverse DAV Extensions */
-+  "{urn:ietf:params:xml:ns:inverse-dav:}acl" =
-+    davInverseACL;
  }
 Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
 ===================================================================

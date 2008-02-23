@@ -1,6 +1,6 @@
 Index: configure
 ===================================================================
---- configure	(révision 1604)
+--- configure	(révision 1608)
 +++ configure	(copie de travail)
 @@ -1,4 +1,4 @@
 -#!/bin/bash
@@ -141,7 +141,6 @@ Index: configure
    #cfgwrite ""
    
 -  # TODO: should be also write a GNUSTEP_INSTALLATION_DIR / BUNDLE_INSTALL_DIR?
-+  # TODO: should be also write a GNUSTEP_INSTALLATION_DOMAIN?
 +  # Note: GNUSTEP_TARGET_CPU is not yet available (set by common.make), so we
 +  #       only have environment variables
 +  # Note: we can't set SYSTEM_LIB_DIR in this location, it gets overridden by
@@ -161,6 +160,7 @@ Index: configure
 +  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
 +  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
 +  cfgwrite "endif"
++  cfgwrite "GNUSTEP_INSTALLATION_DOMAIN:=LOCAL"
 +  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
    
    
@@ -316,7 +316,7 @@ Index: configure
  fi
 Index: sope-ldap/samples/GNUmakefile
 ===================================================================
---- sope-ldap/samples/GNUmakefile	(révision 1604)
+--- sope-ldap/samples/GNUmakefile	(révision 1608)
 +++ sope-ldap/samples/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -345,7 +345,7 @@ Index: sope-ldap/samples/GNUmakefile
 --include fhs.make
 Index: sope-ldap/NGLdap/GNUmakefile
 ===================================================================
---- sope-ldap/NGLdap/GNUmakefile	(révision 1604)
+--- sope-ldap/NGLdap/GNUmakefile	(révision 1608)
 +++ sope-ldap/NGLdap/GNUmakefile	(copie de travail)
 @@ -1,11 +1,9 @@
  # GNUstep makefile
@@ -386,7 +386,7 @@ Index: sope-ldap/NGLdap/GNUmakefile
 --include fhs.make
 Index: sope-ldap/GNUmakefile
 ===================================================================
---- sope-ldap/GNUmakefile	(révision 1604)
+--- sope-ldap/GNUmakefile	(révision 1608)
 +++ sope-ldap/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -398,7 +398,7 @@ Index: sope-ldap/GNUmakefile
  PACKAGE_NAME=sope-ldap
 Index: GNUmakefile
 ===================================================================
---- GNUmakefile	(révision 1604)
+--- GNUmakefile	(révision 1608)
 +++ GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -417,183 +417,9 @@ Index: GNUmakefile
  endif
  
  distclean ::
-Index: sope-mime/NGImap4/GNUmakefile
-===================================================================
---- sope-mime/NGImap4/GNUmakefile	(révision 1604)
-+++ sope-mime/NGImap4/GNUmakefile	(copie de travail)
-@@ -1,6 +1,6 @@
- # GNUstep makefile
- 
---include ../../config.make
-+include ../../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- include ../Version
- 
-@@ -63,7 +63,10 @@
- 	NGImap4MailboxInfo.m		\
- 	NGImap4ConnectionManager.m	\
- 
---include GNUmakefile.preamble
-+include GNUmakefile.preamble
-+ifneq ($(FHS_INSTALL_ROOT),)
-+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
-+endif
- ifneq ($(frameworks),yes)
- include $(GNUSTEP_MAKEFILES)/subproject.make
- else
-Index: sope-mime/samples/GNUmakefile
-===================================================================
---- sope-mime/samples/GNUmakefile	(révision 1604)
-+++ sope-mime/samples/GNUmakefile	(copie de travail)
-@@ -1,6 +1,6 @@
- # GNUstep makefile
- 
---include ../../config.make
-+include ../../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- 
- TOOL_NAME = \
-@@ -14,16 +14,24 @@
- 	imapcontest	\
- 
- imapquota_OBJC_FILES     = ImapQuotaTool.m ImapTool.m imapquota.m
-+imapquota_INSTALL_DIR	 = $(SOPE_TOOLS)
- imapacl_OBJC_FILES       = ImapQuotaTool.m ImapTool.m imapacl.m
-+imapctl_INSTALL_DIR	 = $(SOPE_TOOLS)
- imapget_OBJC_FILES       = ImapTool.m imapget.m
-+imapget_INSTALL_DIR	 = $(SOPE_TOOLS)
- imap_tool_OBJC_FILES     = imap_tool.m
-+imap_tool_INSTALL_DIR	 = $(SOPE_TOOLS)
- mime2xml_OBJC_FILES      = Mime2XmlTool.m mime2xml.m
-+mime2xml_INSTALL_DIR	 = $(SOPE_TOOLS)
- imapls_OBJC_FILES        = ImapTool.m ImapListTool.m imapls.m
-+imapls_INSTALL_DIR	 = $(SOPE_TOOLS)
- test_qpdecode_OBJC_FILES = test_qpdecode.m
-+test_qpdecode_INSTALL_DIR= $(SOPE_TOOLS)
- sievetool_OBJC_FILES	 = sievetool.m
-+sievetool_INSTALL_DIR	 = $(SOPE_TOOLS)
- imapcontest_OBJC_FILES	 = imapcontest.m
-+imapcontest_INSTALL_DIR	 = $(SOPE_TOOLS)
- 
- -include GNUmakefile.preamble
- include $(GNUSTEP_MAKEFILES)/tool.make
- -include GNUmakefile.postamble
---include fhs.make
-Index: sope-mime/NGMail/GNUmakefile
-===================================================================
---- sope-mime/NGMail/GNUmakefile	(révision 1604)
-+++ sope-mime/NGMail/GNUmakefile	(copie de travail)
-@@ -1,10 +1,8 @@
- # GNUstep makefile
- 
---include ../../config.make
-+include ../../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- 
--GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
--
- ifneq ($(frameworks),yes)
- SUBPROJECT_NAME = NGMail
- else
-@@ -55,6 +53,9 @@
- 	NSData+MimeQP.m		\
- 
- -include GNUmakefile.preamble
-+ifneq ($(FHS_INSTALL_ROOT),)
-+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
-+endif
- ifneq ($(frameworks),yes)
- include $(GNUSTEP_MAKEFILES)/subproject.make
- else
-Index: sope-mime/GNUmakefile
-===================================================================
---- sope-mime/GNUmakefile	(révision 1604)
-+++ sope-mime/GNUmakefile	(copie de travail)
-@@ -1,11 +1,9 @@
- # GNUstep makefile
- 
---include ../config.make
-+include ../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- include ./Version
- 
--GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
--
- ifneq ($(frameworks),yes)
- LIBRARY_NAME = libNGMime
- else
-@@ -14,7 +12,8 @@
- 
- libNGMime_HEADER_FILES_DIR         = .
- libNGMime_HEADER_FILES_INSTALL_DIR = /NGMime
--libNGMime_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
-+libNGMime_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
-+libNGMime_INSTALL_DIR=$(SOPE_SYSLIBDIR)
- libNGMime_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
- 
- ifneq ($(frameworks),yes)
-@@ -35,6 +34,9 @@
- # building
- 
- -include GNUmakefile.preamble
-+ifneq ($(FHS_INSTALL_ROOT),)
-+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
-+endif
- ifneq ($(frameworks),yes)
- include $(GNUSTEP_MAKEFILES)/library.make
- else
-@@ -42,7 +44,6 @@
- include $(GNUSTEP_MAKEFILES)/aggregate.make
- endif
- -include GNUmakefile.postamble
---include fhs.make
- 
- 
- # package
-Index: sope-mime/NGMime/GNUmakefile.preamble
-===================================================================
---- sope-mime/NGMime/GNUmakefile.preamble	(révision 1604)
-+++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
-@@ -5,6 +5,15 @@
- 	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
- 	-DLIBRARY_SUBMINOR_VERSION=${SUBMINOR_VERSION} \
- 
-+ifeq ($(patsubstr GNU/%,glibc,$(shell uname -o)),glibc)
-+ADDITIONAL_CPPFLAGS += \
-+        -DHAVE_STRNDUP
-+endif
-+
-+ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
-+	ADDITIONAL_CPPFLAGS += -DHAVE_STRNDUP
-+endif
-+
- NGMime_INCLUDE_DIRS += \
- 	-I.. -I../..			\
- 	-I../../sope-core/NGStreams/	\
-Index: sope-mime/NGMime/GNUmakefile
-===================================================================
---- sope-mime/NGMime/GNUmakefile	(révision 1604)
-+++ sope-mime/NGMime/GNUmakefile	(copie de travail)
-@@ -1,6 +1,6 @@
- # GNUstep makefile
- 
---include ../../config.make
-+include ../../config.make
- include $(GNUSTEP_MAKEFILES)/common.make
- include ../Version
- 
-@@ -76,5 +76,8 @@
- 	NGMimeRfc822BodyGenerator.m			\
- 
- -include GNUmakefile.preamble
-+ifneq ($(FHS_INSTALL_ROOT),)
-+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
-+endif
- include $(GNUSTEP_MAKEFILES)/subproject.make
- -include GNUmakefile.postamble
 Index: sope-gdl1/PostgreSQL/GNUmakefile.preamble
 ===================================================================
---- sope-gdl1/PostgreSQL/GNUmakefile.preamble	(révision 1604)
+--- sope-gdl1/PostgreSQL/GNUmakefile.preamble	(révision 1608)
 +++ sope-gdl1/PostgreSQL/GNUmakefile.preamble	(copie de travail)
 @@ -27,7 +27,7 @@
  ifeq ($(frameworks),yes)
@@ -606,7 +432,7 @@ Index: sope-gdl1/PostgreSQL/GNUmakefile.preamble
  
 Index: sope-gdl1/PostgreSQL/GNUmakefile
 ===================================================================
---- sope-gdl1/PostgreSQL/GNUmakefile	(révision 1604)
+--- sope-gdl1/PostgreSQL/GNUmakefile	(révision 1608)
 +++ sope-gdl1/PostgreSQL/GNUmakefile	(copie de travail)
 @@ -22,7 +22,7 @@
  # If not, write to the Free Software Foundation,
@@ -624,7 +450,7 @@ Index: sope-gdl1/PostgreSQL/GNUmakefile
 -include fhs.make
 Index: sope-gdl1/SQLite3/GNUmakefile.preamble
 ===================================================================
---- sope-gdl1/SQLite3/GNUmakefile.preamble	(révision 1604)
+--- sope-gdl1/SQLite3/GNUmakefile.preamble	(révision 1608)
 +++ sope-gdl1/SQLite3/GNUmakefile.preamble	(copie de travail)
 @@ -27,7 +27,7 @@
  ifeq ($(frameworks),yes)
@@ -637,7 +463,7 @@ Index: sope-gdl1/SQLite3/GNUmakefile.preamble
  
 Index: sope-gdl1/SQLite3/GNUmakefile
 ===================================================================
---- sope-gdl1/SQLite3/GNUmakefile	(révision 1604)
+--- sope-gdl1/SQLite3/GNUmakefile	(révision 1608)
 +++ sope-gdl1/SQLite3/GNUmakefile	(copie de travail)
 @@ -22,7 +22,7 @@
  # If not, write to the Free Software Foundation,
@@ -655,7 +481,7 @@ Index: sope-gdl1/SQLite3/GNUmakefile
 -include fhs.make
 Index: sope-gdl1/FrontBase2/GNUmakefile
 ===================================================================
---- sope-gdl1/FrontBase2/GNUmakefile	(révision 1604)
+--- sope-gdl1/FrontBase2/GNUmakefile	(révision 1608)
 +++ sope-gdl1/FrontBase2/GNUmakefile	(copie de travail)
 @@ -22,7 +22,7 @@
  # If not, write to the Free Software Foundation,
@@ -686,7 +512,7 @@ Index: sope-gdl1/FrontBase2/GNUmakefile
  BUNDLE_EXTENSION = .gdladaptor
 Index: sope-gdl1/MySQL/GNUmakefile.preamble
 ===================================================================
---- sope-gdl1/MySQL/GNUmakefile.preamble	(révision 1604)
+--- sope-gdl1/MySQL/GNUmakefile.preamble	(révision 1608)
 +++ sope-gdl1/MySQL/GNUmakefile.preamble	(copie de travail)
 @@ -27,7 +27,7 @@
  ifeq ($(frameworks),yes)
@@ -699,7 +525,7 @@ Index: sope-gdl1/MySQL/GNUmakefile.preamble
  
 Index: sope-gdl1/MySQL/GNUmakefile
 ===================================================================
---- sope-gdl1/MySQL/GNUmakefile	(révision 1604)
+--- sope-gdl1/MySQL/GNUmakefile	(révision 1608)
 +++ sope-gdl1/MySQL/GNUmakefile	(copie de travail)
 @@ -22,7 +22,7 @@
  # If not, write to the Free Software Foundation,
@@ -717,7 +543,7 @@ Index: sope-gdl1/MySQL/GNUmakefile
 -include fhs.make
 Index: sope-gdl1/GNUmakefile
 ===================================================================
---- sope-gdl1/GNUmakefile	(révision 1604)
+--- sope-gdl1/GNUmakefile	(révision 1608)
 +++ sope-gdl1/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -729,7 +555,7 @@ Index: sope-gdl1/GNUmakefile
  PACKAGE_NAME=sope-gdl1
 Index: sope-gdl1/GDLAccess/GNUmakefile.preamble
 ===================================================================
---- sope-gdl1/GDLAccess/GNUmakefile.preamble	(révision 1604)
+--- sope-gdl1/GDLAccess/GNUmakefile.preamble	(révision 1608)
 +++ sope-gdl1/GDLAccess/GNUmakefile.preamble	(copie de travail)
 @@ -21,17 +21,12 @@
  	-I$(SOPE_ROOT)/sope-core/NGExtensions/
@@ -753,7 +579,7 @@ Index: sope-gdl1/GDLAccess/GNUmakefile.preamble
  libGDLAccess_LIBRARIES_DEPEND_UPON += -lEOControl
 Index: sope-gdl1/GDLAccess/GNUmakefile
 ===================================================================
---- sope-gdl1/GDLAccess/GNUmakefile	(révision 1604)
+--- sope-gdl1/GDLAccess/GNUmakefile	(révision 1608)
 +++ sope-gdl1/GDLAccess/GNUmakefile	(copie de travail)
 @@ -1,12 +1,10 @@
  # GNUstep makefile
@@ -805,7 +631,7 @@ Index: sope-gdl1/GDLAccess/GNUmakefile
 -include fhs.make
 Index: sope-gdl1/GDLAccess/EOAdaptor.h
 ===================================================================
---- sope-gdl1/GDLAccess/EOAdaptor.h	(révision 1604)
+--- sope-gdl1/GDLAccess/EOAdaptor.h	(révision 1608)
 +++ sope-gdl1/GDLAccess/EOAdaptor.h	(copie de travail)
 @@ -62,11 +62,14 @@
  + (id)adaptorWithModel:(EOModel *)aModel;
@@ -824,7 +650,7 @@ Index: sope-gdl1/GDLAccess/EOAdaptor.h
  - (NSDictionary*)connectionDictionary;
 Index: sope-gdl1/GDLAccess/EOAdaptor.m
 ===================================================================
---- sope-gdl1/GDLAccess/EOAdaptor.m	(révision 1604)
+--- sope-gdl1/GDLAccess/EOAdaptor.m	(révision 1608)
 +++ sope-gdl1/GDLAccess/EOAdaptor.m	(copie de travail)
 @@ -53,14 +53,23 @@
  + (NSArray *)adaptorSearchPathes {
@@ -892,7 +718,7 @@ Index: sope-gdl1/GDLAccess/EOAdaptor.m
      "Database URLs"
 Index: sope-gdl1/GDLAccess/FoundationExt/GNUmakefile
 ===================================================================
---- sope-gdl1/GDLAccess/FoundationExt/GNUmakefile	(révision 1604)
+--- sope-gdl1/GDLAccess/FoundationExt/GNUmakefile	(révision 1608)
 +++ sope-gdl1/GDLAccess/FoundationExt/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -904,7 +730,7 @@ Index: sope-gdl1/GDLAccess/FoundationExt/GNUmakefile
  include ../Version
 Index: sope-gdl1/GDLAccess/common.h
 ===================================================================
---- sope-gdl1/GDLAccess/common.h	(révision 1604)
+--- sope-gdl1/GDLAccess/common.h	(révision 1608)
 +++ sope-gdl1/GDLAccess/common.h	(copie de travail)
 @@ -42,7 +42,7 @@
  #import <Foundation/NSZone.h>
@@ -917,7 +743,7 @@ Index: sope-gdl1/GDLAccess/common.h
  
 Index: sope-gdl1/Oracle8/GNUmakefile
 ===================================================================
---- sope-gdl1/Oracle8/GNUmakefile	(révision 1604)
+--- sope-gdl1/Oracle8/GNUmakefile	(révision 1608)
 +++ sope-gdl1/Oracle8/GNUmakefile	(copie de travail)
 @@ -19,7 +19,7 @@
  #  License along with this library; if not, write to the Free Software
@@ -937,9 +763,183 @@ Index: sope-gdl1/Oracle8/GNUmakefile
  endif
  
  Oracle8_OBJC_FILES = \
+Index: sope-mime/NGImap4/GNUmakefile
+===================================================================
+--- sope-mime/NGImap4/GNUmakefile	(révision 1608)
++++ sope-mime/NGImap4/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ 
+@@ -63,7 +63,10 @@
+ 	NGImap4MailboxInfo.m		\
+ 	NGImap4ConnectionManager.m	\
+ 
+--include GNUmakefile.preamble
++include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ else
+Index: sope-mime/samples/GNUmakefile
+===================================================================
+--- sope-mime/samples/GNUmakefile	(révision 1608)
++++ sope-mime/samples/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+ TOOL_NAME = \
+@@ -14,16 +14,24 @@
+ 	imapcontest	\
+ 
+ imapquota_OBJC_FILES     = ImapQuotaTool.m ImapTool.m imapquota.m
++imapquota_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapacl_OBJC_FILES       = ImapQuotaTool.m ImapTool.m imapacl.m
++imapctl_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapget_OBJC_FILES       = ImapTool.m imapget.m
++imapget_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imap_tool_OBJC_FILES     = imap_tool.m
++imap_tool_INSTALL_DIR	 = $(SOPE_TOOLS)
+ mime2xml_OBJC_FILES      = Mime2XmlTool.m mime2xml.m
++mime2xml_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapls_OBJC_FILES        = ImapTool.m ImapListTool.m imapls.m
++imapls_INSTALL_DIR	 = $(SOPE_TOOLS)
+ test_qpdecode_OBJC_FILES = test_qpdecode.m
++test_qpdecode_INSTALL_DIR= $(SOPE_TOOLS)
+ sievetool_OBJC_FILES	 = sievetool.m
++sievetool_INSTALL_DIR	 = $(SOPE_TOOLS)
+ imapcontest_OBJC_FILES	 = imapcontest.m
++imapcontest_INSTALL_DIR	 = $(SOPE_TOOLS)
+ 
+ -include GNUmakefile.preamble
+ include $(GNUSTEP_MAKEFILES)/tool.make
+ -include GNUmakefile.postamble
+--include fhs.make
+Index: sope-mime/NGMail/GNUmakefile
+===================================================================
+--- sope-mime/NGMail/GNUmakefile	(révision 1608)
++++ sope-mime/NGMail/GNUmakefile	(copie de travail)
+@@ -1,10 +1,8 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ SUBPROJECT_NAME = NGMail
+ else
+@@ -55,6 +53,9 @@
+ 	NSData+MimeQP.m		\
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ else
+Index: sope-mime/GNUmakefile
+===================================================================
+--- sope-mime/GNUmakefile	(révision 1608)
++++ sope-mime/GNUmakefile	(copie de travail)
+@@ -1,11 +1,9 @@
+ # GNUstep makefile
+ 
+--include ../config.make
++include ../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ./Version
+ 
+-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+-
+ ifneq ($(frameworks),yes)
+ LIBRARY_NAME = libNGMime
+ else
+@@ -14,7 +12,8 @@
+ 
+ libNGMime_HEADER_FILES_DIR         = .
+ libNGMime_HEADER_FILES_INSTALL_DIR = /NGMime
+-libNGMime_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGMime_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
++libNGMime_INSTALL_DIR=$(SOPE_SYSLIBDIR)
+ libNGMime_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+ 
+ ifneq ($(frameworks),yes)
+@@ -35,6 +34,9 @@
+ # building
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ ifneq ($(frameworks),yes)
+ include $(GNUSTEP_MAKEFILES)/library.make
+ else
+@@ -42,7 +44,6 @@
+ include $(GNUSTEP_MAKEFILES)/aggregate.make
+ endif
+ -include GNUmakefile.postamble
+--include fhs.make
+ 
+ 
+ # package
+Index: sope-mime/NGMime/GNUmakefile.preamble
+===================================================================
+--- sope-mime/NGMime/GNUmakefile.preamble	(révision 1608)
++++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
+@@ -5,6 +5,15 @@
+ 	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
+ 	-DLIBRARY_SUBMINOR_VERSION=${SUBMINOR_VERSION} \
+ 
++ifeq ($(patsubstr GNU/%,glibc,$(shell uname -o)),glibc)
++ADDITIONAL_CPPFLAGS += \
++        -DHAVE_STRNDUP
++endif
++
++ifneq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
++	ADDITIONAL_CPPFLAGS += -DHAVE_STRNDUP
++endif
++
+ NGMime_INCLUDE_DIRS += \
+ 	-I.. -I../..			\
+ 	-I../../sope-core/NGStreams/	\
+Index: sope-mime/NGMime/GNUmakefile
+===================================================================
+--- sope-mime/NGMime/GNUmakefile	(révision 1608)
++++ sope-mime/NGMime/GNUmakefile	(copie de travail)
+@@ -1,6 +1,6 @@
+ # GNUstep makefile
+ 
+--include ../../config.make
++include ../../config.make
+ include $(GNUSTEP_MAKEFILES)/common.make
+ include ../Version
+ 
+@@ -76,5 +76,8 @@
+ 	NGMimeRfc822BodyGenerator.m			\
+ 
+ -include GNUmakefile.preamble
++ifneq ($(FHS_INSTALL_ROOT),)
++GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
++endif
+ include $(GNUSTEP_MAKEFILES)/subproject.make
+ -include GNUmakefile.postamble
 Index: sope-core/NGExtensions/NGExtensions/NGResourceLocator.h
 ===================================================================
---- sope-core/NGExtensions/NGExtensions/NGResourceLocator.h	(révision 1604)
+--- sope-core/NGExtensions/NGExtensions/NGResourceLocator.h	(révision 1608)
 +++ sope-core/NGExtensions/NGExtensions/NGResourceLocator.h	(copie de travail)
 @@ -52,23 +52,54 @@
      int reserved:29;
@@ -999,7 +999,7 @@ Index: sope-core/NGExtensions/NGExtensions/NGResourceLocator.h
  
 Index: sope-core/NGExtensions/NGBundleManager.m
 ===================================================================
---- sope-core/NGExtensions/NGBundleManager.m	(révision 1604)
+--- sope-core/NGExtensions/NGBundleManager.m	(révision 1608)
 +++ sope-core/NGExtensions/NGBundleManager.m	(copie de travail)
 @@ -332,10 +332,7 @@
  }
@@ -1036,7 +1036,7 @@ Index: sope-core/NGExtensions/NGBundleManager.m
  - (void)_setupBundleSearchPathes {
 Index: sope-core/NGExtensions/FdExt.subproj/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/FdExt.subproj/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/FdExt.subproj/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/FdExt.subproj/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1048,7 +1048,7 @@ Index: sope-core/NGExtensions/FdExt.subproj/GNUmakefile
  SUBPROJECT_NAME = FdExt
 Index: sope-core/NGExtensions/XmlExt.subproj/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/XmlExt.subproj/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/XmlExt.subproj/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/XmlExt.subproj/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1060,7 +1060,7 @@ Index: sope-core/NGExtensions/XmlExt.subproj/GNUmakefile
  SUBPROJECT_NAME = XmlExt
 Index: sope-core/NGExtensions/EOExt.subproj/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/EOExt.subproj/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/EOExt.subproj/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/EOExt.subproj/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1072,7 +1072,7 @@ Index: sope-core/NGExtensions/EOExt.subproj/GNUmakefile
  SUBPROJECT_NAME = EOExt
 Index: sope-core/NGExtensions/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1108,7 +1108,7 @@ Index: sope-core/NGExtensions/GNUmakefile
 --include fhs.make
 Index: sope-core/NGExtensions/NGResourceLocator.m
 ===================================================================
---- sope-core/NGExtensions/NGResourceLocator.m	(révision 1604)
+--- sope-core/NGExtensions/NGResourceLocator.m	(révision 1608)
 +++ sope-core/NGExtensions/NGResourceLocator.m	(copie de travail)
 @@ -43,7 +43,11 @@
    return self;
@@ -1166,7 +1166,7 @@ Index: sope-core/NGExtensions/NGResourceLocator.m
    e = ([self->fhsSubPath length] > 0)
 Index: sope-core/NGExtensions/NGLogging.subproj/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/NGLogging.subproj/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/NGLogging.subproj/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/NGLogging.subproj/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1178,7 +1178,7 @@ Index: sope-core/NGExtensions/NGLogging.subproj/GNUmakefile
  SUBPROJECT_NAME = NGLogging
 Index: sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile
 ===================================================================
---- sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile	(révision 1604)
+--- sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile	(révision 1608)
 +++ sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1190,7 +1190,7 @@ Index: sope-core/NGExtensions/NGRuleEngine.subproj/GNUmakefile
  SUBPROJECT_NAME = NGRuleEngine
 Index: sope-core/GNUmakefile
 ===================================================================
---- sope-core/GNUmakefile	(révision 1604)
+--- sope-core/GNUmakefile	(révision 1608)
 +++ sope-core/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1208,7 +1208,7 @@ Index: sope-core/GNUmakefile
 +	../maintenance/make-osxpkg.sh $(PACKAGE_NAME)
 Index: sope-core/NGStreams/GNUmakefile.preamble
 ===================================================================
---- sope-core/NGStreams/GNUmakefile.preamble	(révision 1604)
+--- sope-core/NGStreams/GNUmakefile.preamble	(révision 1608)
 +++ sope-core/NGStreams/GNUmakefile.preamble	(copie de travail)
 @@ -38,7 +38,11 @@
  endif
@@ -1224,7 +1224,7 @@ Index: sope-core/NGStreams/GNUmakefile.preamble
  endif
 Index: sope-core/NGStreams/GNUmakefile
 ===================================================================
---- sope-core/NGStreams/GNUmakefile	(révision 1604)
+--- sope-core/NGStreams/GNUmakefile	(révision 1608)
 +++ sope-core/NGStreams/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1260,7 +1260,7 @@ Index: sope-core/NGStreams/GNUmakefile
 --include fhs.make
 Index: sope-core/samples/GNUmakefile
 ===================================================================
---- sope-core/samples/GNUmakefile	(révision 1604)
+--- sope-core/samples/GNUmakefile	(révision 1608)
 +++ sope-core/samples/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1277,7 +1277,7 @@ Index: sope-core/samples/GNUmakefile
 --include fhs.make
 Index: sope-core/EOControl/GNUmakefile
 ===================================================================
---- sope-core/EOControl/GNUmakefile	(révision 1604)
+--- sope-core/EOControl/GNUmakefile	(révision 1608)
 +++ sope-core/EOControl/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1313,7 +1313,7 @@ Index: sope-core/EOControl/GNUmakefile
 --include fhs.make
 Index: sope-core/common.make
 ===================================================================
---- sope-core/common.make	(révision 1604)
+--- sope-core/common.make	(révision 1608)
 +++ sope-core/common.make	(copie de travail)
 @@ -6,8 +6,6 @@
  include $(SKYROOT)/Version
@@ -1326,7 +1326,7 @@ Index: sope-core/common.make
  ADDITIONAL_CPPFLAGS += -D_REENTRANT=1
 Index: sope-core/EOCoreData/GNUmakefile
 ===================================================================
---- sope-core/EOCoreData/GNUmakefile	(révision 1604)
+--- sope-core/EOCoreData/GNUmakefile	(révision 1608)
 +++ sope-core/EOCoreData/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1362,7 +1362,7 @@ Index: sope-core/EOCoreData/GNUmakefile
 --include fhs.make
 Index: sopex/GNUmakefile
 ===================================================================
---- sopex/GNUmakefile	(révision 1604)
+--- sopex/GNUmakefile	(révision 1608)
 +++ sopex/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1374,7 +1374,7 @@ Index: sopex/GNUmakefile
  ifeq ($(FOUNDATION_LIB),apple)
 Index: sopex/SOPEX/GNUmakefile
 ===================================================================
---- sopex/SOPEX/GNUmakefile	(révision 1604)
+--- sopex/SOPEX/GNUmakefile	(révision 1608)
 +++ sopex/SOPEX/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1386,7 +1386,7 @@ Index: sopex/SOPEX/GNUmakefile
  
 Index: xmlrpc_call/GNUmakefile
 ===================================================================
---- xmlrpc_call/GNUmakefile	(révision 1604)
+--- xmlrpc_call/GNUmakefile	(révision 1608)
 +++ xmlrpc_call/GNUmakefile	(copie de travail)
 @@ -1,10 +1,11 @@
  # GNUstep makefile
@@ -1411,7 +1411,7 @@ Index: xmlrpc_call/GNUmakefile
  	# do not build a pkg just for this tool
 Index: xmlrpc_call/GNUmakefile.preamble
 ===================================================================
---- xmlrpc_call/GNUmakefile.preamble	(révision 1604)
+--- xmlrpc_call/GNUmakefile.preamble	(révision 1608)
 +++ xmlrpc_call/GNUmakefile.preamble	(copie de travail)
 @@ -1,5 +1,6 @@
  # compilation settings
@@ -1440,7 +1440,7 @@ Index: xmlrpc_call/GNUmakefile.preamble
  endif
 Index: sope-xml/libxmlSAXDriver/GNUmakefile
 ===================================================================
---- sope-xml/libxmlSAXDriver/GNUmakefile	(révision 1604)
+--- sope-xml/libxmlSAXDriver/GNUmakefile	(révision 1608)
 +++ sope-xml/libxmlSAXDriver/GNUmakefile	(copie de travail)
 @@ -1,13 +1,13 @@
  # GNUstep makefile
@@ -1465,7 +1465,7 @@ Index: sope-xml/libxmlSAXDriver/GNUmakefile
 --include fhs.make
 Index: sope-xml/DOM/GNUmakefile.preamble
 ===================================================================
---- sope-xml/DOM/GNUmakefile.preamble	(révision 1604)
+--- sope-xml/DOM/GNUmakefile.preamble	(révision 1608)
 +++ sope-xml/DOM/GNUmakefile.preamble	(copie de travail)
 @@ -1,10 +1,13 @@
  # compilation settings
@@ -1485,7 +1485,7 @@ Index: sope-xml/DOM/GNUmakefile.preamble
  
 Index: sope-xml/DOM/GNUmakefile
 ===================================================================
---- sope-xml/DOM/GNUmakefile	(révision 1604)
+--- sope-xml/DOM/GNUmakefile	(révision 1608)
 +++ sope-xml/DOM/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1511,7 +1511,7 @@ Index: sope-xml/DOM/GNUmakefile
 --include fhs.make
 Index: sope-xml/ChangeLogSaxDriver/GNUmakefile
 ===================================================================
---- sope-xml/ChangeLogSaxDriver/GNUmakefile	(révision 1604)
+--- sope-xml/ChangeLogSaxDriver/GNUmakefile	(révision 1608)
 +++ sope-xml/ChangeLogSaxDriver/GNUmakefile	(copie de travail)
 @@ -1,13 +1,13 @@
  # GNUstep makefile
@@ -1536,7 +1536,7 @@ Index: sope-xml/ChangeLogSaxDriver/GNUmakefile
 --include fhs.make
 Index: sope-xml/GNUmakefile
 ===================================================================
---- sope-xml/GNUmakefile	(révision 1604)
+--- sope-xml/GNUmakefile	(révision 1608)
 +++ sope-xml/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1548,7 +1548,7 @@ Index: sope-xml/GNUmakefile
  PACKAGE_NAME=sope-xml
 Index: sope-xml/SaxObjC/SaxXMLReaderFactory.m
 ===================================================================
---- sope-xml/SaxObjC/SaxXMLReaderFactory.m	(révision 1604)
+--- sope-xml/SaxObjC/SaxXMLReaderFactory.m	(révision 1608)
 +++ sope-xml/SaxObjC/SaxXMLReaderFactory.m	(copie de travail)
 @@ -137,11 +137,19 @@
  
@@ -1594,7 +1594,7 @@ Index: sope-xml/SaxObjC/SaxXMLReaderFactory.m
  #endif
 Index: sope-xml/SaxObjC/SaxObjectModel.h
 ===================================================================
---- sope-xml/SaxObjC/SaxObjectModel.h	(révision 1604)
+--- sope-xml/SaxObjC/SaxObjectModel.h	(révision 1608)
 +++ sope-xml/SaxObjC/SaxObjectModel.h	(copie de travail)
 @@ -34,6 +34,7 @@
  
@@ -1606,7 +1606,7 @@ Index: sope-xml/SaxObjC/SaxObjectModel.h
  
 Index: sope-xml/SaxObjC/SaxObjectModel.m
 ===================================================================
---- sope-xml/SaxObjC/SaxObjectModel.m	(révision 1604)
+--- sope-xml/SaxObjC/SaxObjectModel.m	(révision 1608)
 +++ sope-xml/SaxObjC/SaxObjectModel.m	(copie de travail)
 @@ -67,12 +67,12 @@
    if (searchPathes == nil) {
@@ -1652,7 +1652,7 @@ Index: sope-xml/SaxObjC/SaxObjectModel.m
    NSEnumerator  *pathes;
 Index: sope-xml/SaxObjC/GNUmakefile.preamble
 ===================================================================
---- sope-xml/SaxObjC/GNUmakefile.preamble	(révision 1604)
+--- sope-xml/SaxObjC/GNUmakefile.preamble	(révision 1608)
 +++ sope-xml/SaxObjC/GNUmakefile.preamble	(copie de travail)
 @@ -1,9 +1,12 @@
  # compilation settings
@@ -1682,7 +1682,7 @@ Index: sope-xml/SaxObjC/GNUmakefile.preamble
  # Apple
 Index: sope-xml/SaxObjC/GNUmakefile
 ===================================================================
---- sope-xml/SaxObjC/GNUmakefile	(révision 1604)
+--- sope-xml/SaxObjC/GNUmakefile	(révision 1608)
 +++ sope-xml/SaxObjC/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1708,7 +1708,7 @@ Index: sope-xml/SaxObjC/GNUmakefile
 --include fhs.make
 Index: sope-xml/common.make
 ===================================================================
---- sope-xml/common.make	(révision 1604)
+--- sope-xml/common.make	(révision 1608)
 +++ sope-xml/common.make	(copie de travail)
 @@ -1,13 +1,7 @@
  # GNUstep makefile
@@ -1726,7 +1726,7 @@ Index: sope-xml/common.make
  ADDITIONAL_INCLUDE_DIRS += -I..
 Index: sope-xml/samples/PlistSaxDriver/GNUmakefile
 ===================================================================
---- sope-xml/samples/PlistSaxDriver/GNUmakefile	(révision 1604)
+--- sope-xml/samples/PlistSaxDriver/GNUmakefile	(révision 1608)
 +++ sope-xml/samples/PlistSaxDriver/GNUmakefile	(copie de travail)
 @@ -1,11 +1,11 @@
  # GNUstep Makefile
@@ -1744,7 +1744,7 @@ Index: sope-xml/samples/PlistSaxDriver/GNUmakefile
  	PlistSaxDriver.m
 Index: sope-xml/samples/GNUmakefile
 ===================================================================
---- sope-xml/samples/GNUmakefile	(révision 1604)
+--- sope-xml/samples/GNUmakefile	(révision 1608)
 +++ sope-xml/samples/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1778,7 +1778,7 @@ Index: sope-xml/samples/GNUmakefile
 --include fhs.make
 Index: sope-xml/samples/GNUmakefile.preamble
 ===================================================================
---- sope-xml/samples/GNUmakefile.preamble	(révision 1604)
+--- sope-xml/samples/GNUmakefile.preamble	(révision 1608)
 +++ sope-xml/samples/GNUmakefile.preamble	(copie de travail)
 @@ -1,5 +1,6 @@
  # compilation settings
@@ -1800,7 +1800,7 @@ Index: sope-xml/samples/GNUmakefile.preamble
  endif
 Index: sope-xml/XmlRpc/GNUmakefile.preamble
 ===================================================================
---- sope-xml/XmlRpc/GNUmakefile.preamble	(révision 1604)
+--- sope-xml/XmlRpc/GNUmakefile.preamble	(révision 1608)
 +++ sope-xml/XmlRpc/GNUmakefile.preamble	(copie de travail)
 @@ -1,10 +1,13 @@
  # compilation settings
@@ -1820,7 +1820,7 @@ Index: sope-xml/XmlRpc/GNUmakefile.preamble
  
 Index: sope-xml/XmlRpc/GNUmakefile
 ===================================================================
---- sope-xml/XmlRpc/GNUmakefile	(révision 1604)
+--- sope-xml/XmlRpc/GNUmakefile	(révision 1608)
 +++ sope-xml/XmlRpc/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1846,7 +1846,7 @@ Index: sope-xml/XmlRpc/GNUmakefile
 --include fhs.make
 Index: sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile
 ===================================================================
---- sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile	(révision 1604)
+--- sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile	(révision 1608)
 +++ sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1858,7 +1858,7 @@ Index: sope-xml/STXSaxDriver/ExtraSTX/GNUmakefile
  SUBPROJECT_NAME = ExtraSTX
 Index: sope-xml/STXSaxDriver/GNUmakefile
 ===================================================================
---- sope-xml/STXSaxDriver/GNUmakefile	(révision 1604)
+--- sope-xml/STXSaxDriver/GNUmakefile	(révision 1608)
 +++ sope-xml/STXSaxDriver/GNUmakefile	(copie de travail)
 @@ -1,13 +1,13 @@
  # GNUstep makefile
@@ -1883,7 +1883,7 @@ Index: sope-xml/STXSaxDriver/GNUmakefile
 --include fhs.make
 Index: sope-xml/STXSaxDriver/Model/GNUmakefile
 ===================================================================
---- sope-xml/STXSaxDriver/Model/GNUmakefile	(révision 1604)
+--- sope-xml/STXSaxDriver/Model/GNUmakefile	(révision 1608)
 +++ sope-xml/STXSaxDriver/Model/GNUmakefile	(copie de travail)
 @@ -6,7 +6,7 @@
  #  Date: 24 November 2003
@@ -1896,7 +1896,7 @@ Index: sope-xml/STXSaxDriver/Model/GNUmakefile
  SUBPROJECT_NAME = Model
 Index: sope-xml/pyxSAXDriver/GNUmakefile
 ===================================================================
---- sope-xml/pyxSAXDriver/GNUmakefile	(révision 1604)
+--- sope-xml/pyxSAXDriver/GNUmakefile	(révision 1608)
 +++ sope-xml/pyxSAXDriver/GNUmakefile	(copie de travail)
 @@ -1,17 +1,16 @@
  # GNUstep makefile
@@ -1920,7 +1920,7 @@ Index: sope-xml/pyxSAXDriver/GNUmakefile
 --include fhs.make
 Index: sope-appserver/GNUmakefile
 ===================================================================
---- sope-appserver/GNUmakefile	(révision 1604)
+--- sope-appserver/GNUmakefile	(révision 1608)
 +++ sope-appserver/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -1948,7 +1948,7 @@ Index: sope-appserver/GNUmakefile
 +	../maintenance/make-osxpkg.sh $(PACKAGE_NAME)
 Index: sope-appserver/SoOFS/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/SoOFS/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/SoOFS/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/SoOFS/GNUmakefile.preamble	(copie de travail)
 @@ -76,17 +76,9 @@
  	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
@@ -1979,7 +1979,7 @@ Index: sope-appserver/SoOFS/GNUmakefile.preamble
  endif
 Index: sope-appserver/SoOFS/GNUmakefile
 ===================================================================
---- sope-appserver/SoOFS/GNUmakefile	(révision 1604)
+--- sope-appserver/SoOFS/GNUmakefile	(révision 1608)
 +++ sope-appserver/SoOFS/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2029,7 +2029,7 @@ Index: sope-appserver/SoOFS/GNUmakefile
 --include fhs.make
 Index: sope-appserver/NGXmlRpc/GNUmakefile
 ===================================================================
---- sope-appserver/NGXmlRpc/GNUmakefile	(révision 1604)
+--- sope-appserver/NGXmlRpc/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGXmlRpc/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2066,7 +2066,7 @@ Index: sope-appserver/NGXmlRpc/GNUmakefile
 --include fhs.make
 Index: sope-appserver/WEExtensions/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/WEExtensions/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/WEExtensions/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/WEExtensions/GNUmakefile.preamble	(copie de travail)
 @@ -21,7 +21,8 @@
  	  cp ../bundle-info.plist .)
@@ -2080,7 +2080,7 @@ Index: sope-appserver/WEExtensions/GNUmakefile.preamble
  
 Index: sope-appserver/WEExtensions/GNUmakefile
 ===================================================================
---- sope-appserver/WEExtensions/GNUmakefile	(révision 1604)
+--- sope-appserver/WEExtensions/GNUmakefile	(révision 1608)
 +++ sope-appserver/WEExtensions/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2116,7 +2116,7 @@ Index: sope-appserver/WEExtensions/GNUmakefile
 --include fhs.make
 Index: sope-appserver/WEExtensions/WEResourceManager.m
 ===================================================================
---- sope-appserver/WEExtensions/WEResourceManager.m	(révision 1604)
+--- sope-appserver/WEExtensions/WEResourceManager.m	(révision 1608)
 +++ sope-appserver/WEExtensions/WEResourceManager.m	(copie de travail)
 @@ -53,28 +53,43 @@
  
@@ -2194,7 +2194,7 @@ Index: sope-appserver/WEExtensions/WEResourceManager.m
    
 Index: sope-appserver/WEExtensions/WETableView/GNUmakefile
 ===================================================================
---- sope-appserver/WEExtensions/WETableView/GNUmakefile	(révision 1604)
+--- sope-appserver/WEExtensions/WETableView/GNUmakefile	(révision 1608)
 +++ sope-appserver/WEExtensions/WETableView/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2206,7 +2206,7 @@ Index: sope-appserver/WEExtensions/WETableView/GNUmakefile
  SUBPROJECT_NAME = WETableView
 Index: sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m	(révision 1604)
+--- sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m	(révision 1608)
 +++ sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m	(copie de travail)
 @@ -50,8 +50,6 @@
    }
@@ -2240,7 +2240,7 @@ Index: sope-appserver/NGObjWeb/WOCoreApplication+Bundle.m
      tmp = [tmp componentsSeparatedByString:@":"];
 Index: sope-appserver/NGObjWeb/wobundle-gs.make
 ===================================================================
---- sope-appserver/NGObjWeb/wobundle-gs.make	(révision 1604)
+--- sope-appserver/NGObjWeb/wobundle-gs.make	(révision 1608)
 +++ sope-appserver/NGObjWeb/wobundle-gs.make	(copie de travail)
 @@ -85,7 +85,7 @@
  endif
@@ -2266,7 +2266,7 @@ Index: sope-appserver/NGObjWeb/wobundle-gs.make
  endif
 Index: sope-appserver/NGObjWeb/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/NGObjWeb/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/NGObjWeb/GNUmakefile.preamble	(copie de travail)
 @@ -50,9 +50,6 @@
  	$(foreach dir,$(DEP_DIRS),-F$(GNUSTEP_BUILD_DIR)/$(dir))
@@ -2305,7 +2305,7 @@ Index: sope-appserver/NGObjWeb/GNUmakefile.preamble
  endif
 Index: sope-appserver/NGObjWeb/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/GNUmakefile	(copie de travail)
 @@ -1,11 +1,9 @@
  # GNUstep makefile
@@ -2374,7 +2374,7 @@ Index: sope-appserver/NGObjWeb/GNUmakefile
 --include fhs.make
 Index: sope-appserver/NGObjWeb/WebDAV/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/WebDAV/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/WebDAV/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/WebDAV/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2386,7 +2386,7 @@ Index: sope-appserver/NGObjWeb/WebDAV/GNUmakefile
  include $(GNUSTEP_MAKEFILES)/common.make
 Index: sope-appserver/NGObjWeb/DynamicElements/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/DynamicElements/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/DynamicElements/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/DynamicElements/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2398,7 +2398,7 @@ Index: sope-appserver/NGObjWeb/DynamicElements/GNUmakefile
  SUBPROJECT_NAME = DynamicElements
 Index: sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m	(révision 1604)
+--- sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m	(révision 1608)
 +++ sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m	(copie de travail)
 @@ -74,6 +74,14 @@
  }
@@ -2425,7 +2425,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoProductLoader.m
  - (void)_addFHSPathesToArray:(NSMutableArray *)ma {
 Index: sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m	(révision 1604)
+--- sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m	(révision 1608)
 +++ sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m	(copie de travail)
 @@ -231,7 +231,7 @@
    
@@ -2502,7 +2502,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoProductRegistry.m
  #endif
 Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble	(copie de travail)
 @@ -1,5 +1,7 @@
  # compilation settings
@@ -2523,7 +2523,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile.preamble
  endif
 Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/SoObjects/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/SoObjects/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/SoObjects/GNUmakefile	(copie de travail)
 @@ -1,7 +1,7 @@
  # GNUstep makefile
@@ -2536,7 +2536,7 @@ Index: sope-appserver/NGObjWeb/SoObjects/GNUmakefile
  
 Index: sope-appserver/NGObjWeb/Templates/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/Templates/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/Templates/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/Templates/GNUmakefile	(copie de travail)
 @@ -1,7 +1,7 @@
  # GNUmakefile makefile
@@ -2549,7 +2549,7 @@ Index: sope-appserver/NGObjWeb/Templates/GNUmakefile
  
 Index: sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m
 ===================================================================
---- sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m	(révision 1604)
+--- sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m	(révision 1608)
 +++ sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m	(copie de travail)
 @@ -76,7 +76,7 @@
    
@@ -2610,7 +2610,7 @@ Index: sope-appserver/NGObjWeb/Templates/WOApplication+Builders.m
  		      [FHS_INSTALL_ROOT stringByAppendingString:relPath],
 Index: sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble	(copie de travail)
 @@ -6,6 +6,6 @@
  ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\@\"$(FHS_INSTALL_ROOT)\"
@@ -2623,7 +2623,7 @@ Index: sope-appserver/NGObjWeb/Templates/GNUmakefile.preamble
  endif
 Index: sope-appserver/NGObjWeb/Associations/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/Associations/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/Associations/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/Associations/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2635,7 +2635,7 @@ Index: sope-appserver/NGObjWeb/Associations/GNUmakefile
  SUBPROJECT_NAME = Associations
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2647,7 +2647,7 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/GNUmakefile
  SUBPROJECT_NAME = WOHttpAdaptor
 Index: sope-appserver/NGObjWeb/woapp-gs.make
 ===================================================================
---- sope-appserver/NGObjWeb/woapp-gs.make	(révision 1604)
+--- sope-appserver/NGObjWeb/woapp-gs.make	(révision 1608)
 +++ sope-appserver/NGObjWeb/woapp-gs.make	(copie de travail)
 @@ -103,7 +103,7 @@
  # Determine the application directory extension
@@ -2672,9 +2672,9 @@ Index: sope-appserver/NGObjWeb/woapp-gs.make
  endif
 Index: sope-appserver/NGObjWeb/WOCoreApplication.m
 ===================================================================
---- sope-appserver/NGObjWeb/WOCoreApplication.m	(révision 1604)
+--- sope-appserver/NGObjWeb/WOCoreApplication.m	(révision 1608)
 +++ sope-appserver/NGObjWeb/WOCoreApplication.m	(copie de travail)
-@@ -731,9 +731,15 @@
+@@ -730,9 +730,15 @@
                       [self sopeMajorVersion], [self sopeMinorVersion]];
  }
  + (NGResourceLocator *)ngobjwebResourceLocator {
@@ -2692,7 +2692,7 @@ Index: sope-appserver/NGObjWeb/WOCoreApplication.m
  + (NSArray *)resourcesSearchPathes {
 Index: sope-appserver/NGObjWeb/NGHttp/GNUmakefile
 ===================================================================
---- sope-appserver/NGObjWeb/NGHttp/GNUmakefile	(révision 1604)
+--- sope-appserver/NGObjWeb/NGHttp/GNUmakefile	(révision 1608)
 +++ sope-appserver/NGObjWeb/NGHttp/GNUmakefile	(copie de travail)
 @@ -1,10 +1,8 @@
  # GNUstep makefile
@@ -2717,7 +2717,7 @@ Index: sope-appserver/NGObjWeb/NGHttp/GNUmakefile
  -include GNUmakefile.postamble
 Index: sope-appserver/WEPrototype/GNUmakefile
 ===================================================================
---- sope-appserver/WEPrototype/GNUmakefile	(révision 1604)
+--- sope-appserver/WEPrototype/GNUmakefile	(révision 1608)
 +++ sope-appserver/WEPrototype/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2753,7 +2753,7 @@ Index: sope-appserver/WEPrototype/GNUmakefile
 --include fhs.make
 Index: sope-appserver/WEPrototype/doc/GNUmakefile
 ===================================================================
---- sope-appserver/WEPrototype/doc/GNUmakefile	(révision 1604)
+--- sope-appserver/WEPrototype/doc/GNUmakefile	(révision 1608)
 +++ sope-appserver/WEPrototype/doc/GNUmakefile	(copie de travail)
 @@ -2,7 +2,7 @@
  
@@ -2766,7 +2766,7 @@ Index: sope-appserver/WEPrototype/doc/GNUmakefile
  
 Index: sope-appserver/WEPrototype/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/WEPrototype/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/WEPrototype/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/WEPrototype/GNUmakefile.preamble	(copie de travail)
 @@ -1,4 +1,4 @@
 -# compiler flags
@@ -2786,7 +2786,7 @@ Index: sope-appserver/WEPrototype/GNUmakefile.preamble
  libWEPrototype_LIBRARIES_DEPEND_UPON += \
 Index: sope-appserver/common.make
 ===================================================================
---- sope-appserver/common.make	(révision 1604)
+--- sope-appserver/common.make	(révision 1608)
 +++ sope-appserver/common.make	(copie de travail)
 @@ -4,8 +4,6 @@
  include ../Version
@@ -2799,7 +2799,7 @@ Index: sope-appserver/common.make
  ADDITIONAL_INCLUDE_DIRS += \
 Index: sope-appserver/samples/CoreDataBlog/GNUmakefile
 ===================================================================
---- sope-appserver/samples/CoreDataBlog/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/CoreDataBlog/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/CoreDataBlog/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2811,7 +2811,7 @@ Index: sope-appserver/samples/CoreDataBlog/GNUmakefile
  WOAPP_NAME = CoreDataBlog
 Index: sope-appserver/samples/HelloForm/GNUmakefile
 ===================================================================
---- sope-appserver/samples/HelloForm/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/HelloForm/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/HelloForm/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2823,7 +2823,7 @@ Index: sope-appserver/samples/HelloForm/GNUmakefile
  WOAPP_NAME = HelloForm
 Index: sope-appserver/samples/GNUmakefile
 ===================================================================
---- sope-appserver/samples/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2835,7 +2835,7 @@ Index: sope-appserver/samples/GNUmakefile
  SUBPROJECTS += \
 Index: sope-appserver/samples/iCalPortal/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/samples/iCalPortal/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/samples/iCalPortal/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/samples/iCalPortal/GNUmakefile.preamble	(copie de travail)
 @@ -7,7 +7,9 @@
  	-lEOControl	\
@@ -2849,7 +2849,7 @@ Index: sope-appserver/samples/iCalPortal/GNUmakefile.preamble
  SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 Index: sope-appserver/samples/iCalPortal/GNUmakefile
 ===================================================================
---- sope-appserver/samples/iCalPortal/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/iCalPortal/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/iCalPortal/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2861,7 +2861,7 @@ Index: sope-appserver/samples/iCalPortal/GNUmakefile
  WOAPP_NAME = iCalPortal
 Index: sope-appserver/samples/iCalPortal/Pages/GNUmakefile
 ===================================================================
---- sope-appserver/samples/iCalPortal/Pages/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/iCalPortal/Pages/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/iCalPortal/Pages/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2873,7 +2873,7 @@ Index: sope-appserver/samples/iCalPortal/Pages/GNUmakefile
  SUBPROJECT_NAME = Pages
 Index: sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile
 ===================================================================
---- sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2885,7 +2885,7 @@ Index: sope-appserver/samples/iCalPortal/WebDAV/GNUmakefile
  SUBPROJECT_NAME = DAV
 Index: sope-appserver/samples/SoCookieAuth/GNUmakefile
 ===================================================================
---- sope-appserver/samples/SoCookieAuth/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/SoCookieAuth/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/SoCookieAuth/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2897,7 +2897,7 @@ Index: sope-appserver/samples/SoCookieAuth/GNUmakefile
  WOAPP_NAME = SoCookieAuth
 Index: sope-appserver/samples/WOxExtTest/GNUmakefile
 ===================================================================
---- sope-appserver/samples/WOxExtTest/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/WOxExtTest/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/WOxExtTest/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2909,7 +2909,7 @@ Index: sope-appserver/samples/WOxExtTest/GNUmakefile
  WOAPP_NAME = WOxExtTest
 Index: sope-appserver/samples/TestPages/GNUmakefile
 ===================================================================
---- sope-appserver/samples/TestPages/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/TestPages/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/TestPages/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2921,7 +2921,7 @@ Index: sope-appserver/samples/TestPages/GNUmakefile
  WOAPP_NAME = TestPages
 Index: sope-appserver/samples/parsedav/GNUmakefile
 ===================================================================
---- sope-appserver/samples/parsedav/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/parsedav/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/parsedav/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2933,7 +2933,7 @@ Index: sope-appserver/samples/parsedav/GNUmakefile
  TOOL_NAME = parsedav
 Index: sope-appserver/samples/xmlrpc/GNUmakefile
 ===================================================================
---- sope-appserver/samples/xmlrpc/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/xmlrpc/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/xmlrpc/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2945,7 +2945,7 @@ Index: sope-appserver/samples/xmlrpc/GNUmakefile
  TOOL_NAME = \
 Index: sope-appserver/samples/TestPrototype/GNUmakefile
 ===================================================================
---- sope-appserver/samples/TestPrototype/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/TestPrototype/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/TestPrototype/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2957,7 +2957,7 @@ Index: sope-appserver/samples/TestPrototype/GNUmakefile
  WOAPP_NAME = TestPrototype
 Index: sope-appserver/samples/HelloWorld/GNUmakefile
 ===================================================================
---- sope-appserver/samples/HelloWorld/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/HelloWorld/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/HelloWorld/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2969,7 +2969,7 @@ Index: sope-appserver/samples/HelloWorld/GNUmakefile
  WOAPP_NAME = HelloWorld
 Index: sope-appserver/samples/davpropget/GNUmakefile
 ===================================================================
---- sope-appserver/samples/davpropget/GNUmakefile	(révision 1604)
+--- sope-appserver/samples/davpropget/GNUmakefile	(révision 1608)
 +++ sope-appserver/samples/davpropget/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -2981,7 +2981,7 @@ Index: sope-appserver/samples/davpropget/GNUmakefile
  TOOL_NAME = davpropget
 Index: sope-appserver/WOExtensions/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/WOExtensions/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/WOExtensions/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/WOExtensions/GNUmakefile.preamble	(copie de travail)
 @@ -12,7 +12,8 @@
  	-I$(SOPE_ROOT)/sope-xml
@@ -2995,7 +2995,7 @@ Index: sope-appserver/WOExtensions/GNUmakefile.preamble
  
 Index: sope-appserver/WOExtensions/GNUmakefile
 ===================================================================
---- sope-appserver/WOExtensions/GNUmakefile	(révision 1604)
+--- sope-appserver/WOExtensions/GNUmakefile	(révision 1608)
 +++ sope-appserver/WOExtensions/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -3031,7 +3031,7 @@ Index: sope-appserver/WOExtensions/GNUmakefile
 --include fhs.make
 Index: sope-appserver/WOXML/GNUmakefile
 ===================================================================
---- sope-appserver/WOXML/GNUmakefile	(révision 1604)
+--- sope-appserver/WOXML/GNUmakefile	(révision 1608)
 +++ sope-appserver/WOXML/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -3065,7 +3065,7 @@ Index: sope-appserver/WOXML/GNUmakefile
 --include fhs.make
 Index: sope-appserver/WOXML/GNUmakefile.preamble
 ===================================================================
---- sope-appserver/WOXML/GNUmakefile.preamble	(révision 1604)
+--- sope-appserver/WOXML/GNUmakefile.preamble	(révision 1608)
 +++ sope-appserver/WOXML/GNUmakefile.preamble	(copie de travail)
 @@ -2,7 +2,7 @@
  
@@ -3078,7 +3078,7 @@ Index: sope-appserver/WOXML/GNUmakefile.preamble
  libWOXML_INCLUDE_DIRS += -I. -I..
 Index: sope-ical/samples/GNUmakefile
 ===================================================================
---- sope-ical/samples/GNUmakefile	(révision 1604)
+--- sope-ical/samples/GNUmakefile	(révision 1608)
 +++ sope-ical/samples/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -3095,7 +3095,7 @@ Index: sope-ical/samples/GNUmakefile
 --include fhs.make
 Index: sope-ical/versitSaxDriver/GNUmakefile
 ===================================================================
---- sope-ical/versitSaxDriver/GNUmakefile	(révision 1604)
+--- sope-ical/versitSaxDriver/GNUmakefile	(révision 1608)
 +++ sope-ical/versitSaxDriver/GNUmakefile	(copie de travail)
 @@ -1,13 +1,13 @@
  # GNUstep makefile
@@ -3120,7 +3120,7 @@ Index: sope-ical/versitSaxDriver/GNUmakefile
 --include fhs.make
 Index: sope-ical/GNUmakefile
 ===================================================================
---- sope-ical/GNUmakefile	(révision 1604)
+--- sope-ical/GNUmakefile	(révision 1608)
 +++ sope-ical/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
@@ -3132,7 +3132,7 @@ Index: sope-ical/GNUmakefile
  PACKAGE_NAME=sope-ical
 Index: sope-ical/NGiCal/GNUmakefile.postamble
 ===================================================================
---- sope-ical/NGiCal/GNUmakefile.postamble	(révision 1604)
+--- sope-ical/NGiCal/GNUmakefile.postamble	(révision 1608)
 +++ sope-ical/NGiCal/GNUmakefile.postamble	(copie de travail)
 @@ -1,10 +1,6 @@
  # compilation settings
@@ -3148,7 +3148,7 @@ Index: sope-ical/NGiCal/GNUmakefile.postamble
  	$(MKDIRS) $(MAPDIR)
 Index: sope-ical/NGiCal/GNUmakefile
 ===================================================================
---- sope-ical/NGiCal/GNUmakefile	(révision 1604)
+--- sope-ical/NGiCal/GNUmakefile	(révision 1608)
 +++ sope-ical/NGiCal/GNUmakefile	(copie de travail)
 @@ -1,6 +1,6 @@
  # GNUstep makefile
