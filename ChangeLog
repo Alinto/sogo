@@ -1,3 +1,11 @@
+2008-02-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-davSubscribe:queryContext]): implemented subscribing users other
+	that the current one, if the user doing the operation is a superuser.
+	([SOGoGCSFolder -davUnsubscribe:queryContext]): same as above for
+	unsubscription.
+
 2008-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder

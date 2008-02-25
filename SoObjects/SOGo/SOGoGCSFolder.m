@@ -41,6 +41,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -408,25 +409,22 @@ static BOOL sendFolderAdvisories = NO;
 
 #warning this code should be cleaned up
 #warning this code is a dup of UIxFolderActions,\
-         we should remove the methods there instead
-- (WOResponse *) _subscribe: (BOOL) reallyDo
-		  inContext: (WOContext *) localContext
+         we should remove the methods there
+- (void) _subscribeUser: (SOGoUser *) subscribingUser
+	       reallyDo: (BOOL) reallyDo
+	     inResponse: (WOResponse *) response
 {
-  WOResponse *response;
   NSMutableArray *folderSubscription;
   NSString *subscriptionPointer, *baseFolder, *folder;
-  SOGoUser *activeUser;
   NSUserDefaults *ud;
   NSArray *realFolderPath;
   NSMutableDictionary *moduleSettings;
 
-  activeUser = [localContext activeUser];
-  ud = [activeUser userSettings];
+  ud = [subscribingUser userSettings];
   baseFolder = [container nameInContainer];
   moduleSettings = [ud objectForKey: baseFolder];
 
-  response = [localContext response];
-  if ([owner isEqualToString: [activeUser login]])
+  if ([owner isEqualToString: [subscribingUser login]])
     {
       [response setStatus: 403];
       [response appendContentString:
@@ -461,18 +459,68 @@ static BOOL sendFolderAdvisories = NO;
 
       [response setStatus: 204];
     }
+}
+
+- (WOResponse *) _subscribe: (BOOL) reallyDo
+		inTheNameOf: (NSString *) delegatedUser
+		  inContext: (WOContext *) localContext
+{
+  WOResponse *response;
+  SOGoUser *currentUser, *subscriptionUser;
+  BOOL validRequest;
+
+  response = [localContext response];
+  currentUser = [localContext activeUser];
+
+  if ([delegatedUser length])
+    {
+      validRequest = ([currentUser isSuperUser]);
+      subscriptionUser = [SOGoUser userWithLogin: delegatedUser roles: nil];
+    }
+  else
+    {
+      validRequest = YES;
+      subscriptionUser = currentUser;
+    }
+
+  if (validRequest)
+    [self _subscribeUser: subscriptionUser
+	  reallyDo: reallyDo
+	  inResponse: response];
+  else
+    {
+      [response setStatus: 403];
+      [response appendContentString:
+		 @"You cannot subscribe another user to any folder"
+		@" unless you are a super-user."];
+    }
 
   return response;
 }
 
-- (id <WOActionResults>) davSubscribe: (WOContext *) localContext
+- (NSString *) _parseDAVDelegatedUser: (WOContext *) queryContext
 {
-  return [self _subscribe: YES inContext: localContext];
+  id <DOMDocument> document;
+  id <DOMNamedNodeMap> attrs;
+
+  document = [[queryContext request] contentAsDOMDocument];
+  attrs = [[document documentElement] attributes];
+
+  return [[attrs namedItem: @"user"] nodeValue];
 }
 
-- (id <WOActionResults>) davUnsubscribe: (WOContext *) localContext
+- (id <WOActionResults>) davSubscribe: (WOContext *) queryContext
 {
-  return [self _subscribe: NO inContext: localContext];
+  return [self _subscribe: YES
+	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       inContext: queryContext];
+}
+
+- (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
+{
+  return [self _subscribe: NO
+	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       inContext: queryContext];
 }
 
 - (NSException *) davSetProperties: (NSDictionary *) setProps
