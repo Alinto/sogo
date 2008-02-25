@@ -1,6 +1,6 @@
 /* SOGoDAVRendererTypes.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006, 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,6 +23,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+
+#import <NGExtensions/NSString+misc.h>
 
 #import "SOGoDAVRendererTypes.h"
 
