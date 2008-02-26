@@ -46,6 +46,8 @@ elif [ -f $GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9 ]; then
     sogod="$GNUSTEP_LOCAL_ROOT/Tools/sogod-0.9"
 elif [ -f $GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9 ]; then
     sogod="$GNUSTEP_SYSTEM_ROOT/Tools/sogod-0.9"
+elif [ -f $GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod-0.9 ]; then
+    sogod="$GNUSTEP_SYSTEM_ROOT/Tools/Admin/sogod-0.9"
 else
     echo "Can't find sogod-0.9"
     exit 1

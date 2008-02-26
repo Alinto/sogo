@@ -185,16 +185,16 @@ Index: configure
    else
      cfgwrite "# configured for GNUstep install"
 +    cfgwrite ""
-+    cfgwrite "SOPE_SYSLIBDIR=\${DESTDIR}\${GNUSTEP_LIBRARIES}"
-+    cfgwrite "SOPE_LIBDIR=\${DESTDIR}\${GNUSTEP_LIBRARY}"
++    cfgwrite "SOPE_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
++    cfgwrite "SOPE_LIBDIR=\${GNUSTEP_LIBRARY}"
 +    cfgwrite "SOPE_DBADAPTORS=\${SOPE_LIBDIR}/GDLAdaptors-\${MAJOR_VERSION}.\${MINOR_VERSION}"
 +    cfgwrite "SOPE_PRODUCTS=\${SOPE_LIBDIR}/SoProducts-\${MAJOR_VERSION}.\${MINOR_VERSION}"
 +    cfgwrite "SOPE_SAXDRIVERS=\${SOPE_LIBDIR}/SaxDrivers-\${MAJOR_VERSION}.\${MINOR_VERSION}"
-+    cfgwrite "SOPE_NGOBJWEB=\${DESTDIR}\${GNUSTEP_RESOURCES}/NGObjWeb"
-+    cfgwrite "SOPE_WOXBUILDERS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${MAJOR_VERSION}.\${MINOR_VERSION}"
-+    cfgwrite "SOPE_SAXMAPPINGS=\${DESTDIR}/\${GNUSTEP_LIBRARY}/SaxMappings"
-+    cfgwrite "SOPE_TOOLS=\${DESTDIR}/\${GNUSTEP_TOOLS}"
-+    cfgwrite "SOPE_ADMIN_TOOLS=\${DESTDIR}\${GNUSTEP_ADMIN_TOOLS}"
++    cfgwrite "SOPE_NGOBJWEB=\${GNUSTEP_RESOURCES}/NGObjWeb"
++    cfgwrite "SOPE_WOXBUILDERS=\${GNUSTEP_LIBRARY}/WOxElemBuilders-\${MAJOR_VERSION}.\${MINOR_VERSION}"
++    cfgwrite "SOPE_SAXMAPPINGS=\${GNUSTEP_LIBRARY}/SaxMappings"
++    cfgwrite "SOPE_TOOLS=\${GNUSTEP_TOOLS}"
++    cfgwrite "SOPE_ADMIN_TOOLS=\${GNUSTEP_ADMIN_TOOLS}"
    fi
    
    if test $ARG_WITH_DEBUG = 1; then
