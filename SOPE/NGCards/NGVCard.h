@@ -59,6 +59,14 @@
 @class NSDictionary;
 @class NSString;
 
+/* this should be merged in a common definition headers with iCalAccessClass */
+typedef enum
+{
+  NGCardsAccessPublic = 0,
+  NGCardsAccessPrivate = 1,
+  NGCardsAccessConfidential = 2,
+} NGCardsAccessClass;
+
 @interface NGVCard : CardGroup
 
 + (id) cardWithUid: (NSString *) _uid;

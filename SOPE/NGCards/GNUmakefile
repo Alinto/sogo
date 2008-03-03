@@ -53,6 +53,8 @@ libNGCards_HEADER_FILES =  		\
 	NSCalendarDate+ICal.h		\
 	\
 	NGVCard.h			\
+	NGVList.h			\
+	NGVCardReference.h		\
 # 	NGVCardAddress.h		\
 # 	NGVCardStrArrayValue.h		\
 # 	NGVCardName.h			\
@@ -101,10 +103,11 @@ libNGCards_OBJC_FILES =    		\
 	iCalYearlyRecurrenceCalculator.m\
 	\
 	NGVCard.m			\
+	NGVList.m			\
+	NGVCardReference.m		\
 	NGCardsSaxHandler.m		\
 #	IcalElements.m
 #	IcalResponse.m
-
 
 # framework support
 

@@ -1,3 +1,11 @@
+2008-03-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCardReference.[hm]: new class module that implements the base
+	data type contained in a VLIST element.
+
+	* NGVList.[hm]: new class module that implements Thunderbird-style
+	personal mailing lists. Base mime-type is "text/x-vlist".
+
 2008-02-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceRule.m ([iCalRecurrenceRule -wkst]): if no wkst
