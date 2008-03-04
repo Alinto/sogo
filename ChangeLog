@@ -1,3 +1,10 @@
+2008-03-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -isFolderish]): new
+	parent method, meant to be overriden.
+	([SOGoObject -davIsCollection]): moved method from SOGoFolder up
+	to this parent class.
+
 2008-02-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder

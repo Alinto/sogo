@@ -60,6 +60,11 @@ static BOOL debugOn = YES;
   [super dealloc];
 }
 
+- (BOOL) isFolderish
+{
+  return YES;
+}
+
 /* hierarchy */
 
 - (SOGoMailAccount *) mailAccountFolder

@@ -205,6 +205,11 @@
   return r;
 }
 
+- (BOOL) isFolderish
+{
+  return NO;
+}
+
 - (NSString *) davContentType
 {
   return @"text/calendar";

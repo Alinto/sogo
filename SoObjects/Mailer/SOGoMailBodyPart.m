@@ -449,6 +449,11 @@ static BOOL debugOn = NO;
   return klazz;
 }
 
+- (BOOL) isFolderish
+{
+  return NO;
+}
+
 /* etag support */
 
 - (id)davEntityTag {

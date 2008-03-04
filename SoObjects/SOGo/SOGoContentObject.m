@@ -377,10 +377,6 @@
                       reason:@"this object cannot be copied via WebDAV"];
 }
 
-- (BOOL)davIsCollection {
-  return [self isFolderish];
-}
-
 /* acls */
 
 - (NSArray *) aclUsers

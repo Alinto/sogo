@@ -634,6 +634,18 @@ static BOOL sendACLAdvisories = NO;
   return [NSNumber numberWithBool:YES]; /* delete worked out ... */
 }
 
+- (BOOL) isFolderish
+{
+  [self subclassResponsibility: _cmd];
+
+  return NO;
+}
+
+- (BOOL) davIsCollection
+{
+  return [self isFolderish];
+}
+
 - (NSString *) davContentType
 {
   return @"text/plain";
