@@ -8,7 +8,7 @@
   };
   
   classes = {
-    SOGoAppointmentFolder = {
+    SOGoAppointmentFolders = {
       superclass = "SOGoParentFolder";
     };
     SOGoAppointmentFolder = {
