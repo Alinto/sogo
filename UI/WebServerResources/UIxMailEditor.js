@@ -288,10 +288,8 @@ function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
   var elements = list.childNodesWithTag("li");
-  for (var i = 0; i < elements.length; i++) {
-    Event.observe(elements[i], "click",
-		  onRowClick.bindAsEventListener(elements[i]));
-  }
+  for (var i = 0; i < elements.length; i++)
+    elements[i].observe("click", onRowClick);
 
   var listContent = $("attachments").childNodesWithTag("li");
   if (listContent.length > 0)
