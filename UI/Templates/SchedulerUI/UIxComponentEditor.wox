@@ -145,8 +145,6 @@
      <input type="hidden" name="range2"
 	id="range2"
 	var:value="range2"/>
-
-
     </div>
   </form>
 </var:component>
