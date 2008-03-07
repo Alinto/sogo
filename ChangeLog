@@ -1,3 +1,23 @@
+2008-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor -saveURL]):
+	new accessor that returns the url + "saveAsContact".
+	([UIxContactEditor
+	-shouldTakeValuesFromRequest:requestinContext:context]): changed
+	method to match the one from the event and todo editor module.
+	([UIxContactEditor -editActionName]): changed to "editAsContact".
+	([UIxContactEditor -newAction]): changed method to match the one
+	from the event and todo editor module.
+
+	* UI/Contacts/UIxListView.m: new view module for the VLIST format
+	components.
+
+	* UI/Contacts/UIxListEditor.m: new edition module for the VLIST
+	format components.
+
+	* SoObjects/Contacts/SOGoContactGCSList.m: new controller module
+	for the VLIST format.
+
 2008-03-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -isFolderish]): new

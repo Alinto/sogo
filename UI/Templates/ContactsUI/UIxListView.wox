@@ -1,0 +1,12 @@
+<?xml version='1.0' standalone='yes'?>
+  <var:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:rsrc="OGo:url"
+    xmlns:label="OGo:label"
+    xmlns:uix="OGo:uix"
+    className="UIxPageFrame"
+    title="name"
+    const:popup="YES"
+    >Unimplemented</var:component>

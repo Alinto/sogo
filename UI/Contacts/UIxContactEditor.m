@@ -25,13 +25,15 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
 #import <Contacts/SOGoContactObject.h>
-#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactGCSEntry.h>
+#import <Contacts/SOGoContactGCSFolder.h>
 
 #import "UIxContactEditor.h"
 
@@ -56,6 +58,12 @@
 }
 
 /* accessors */
+
+- (NSString *) saveURL
+{
+  return [NSString stringWithFormat: @"%@/saveAsContact",
+		   [[self clientObject] baseURL]];
+}
 
 - (NSArray *) htmlMailFormatList
 {
@@ -136,10 +144,15 @@
 
 /* actions */
 
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
-                           inContext: (WOContext*) _c
+- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
+                           inContext: (WOContext*) context
 {
-  return YES;
+  NSString *actionName;
+
+  actionName = [[request requestHandlerPath] lastPathComponent];
+
+  return ([[self clientObject] isKindOfClass: [SOGoContactGCSEntry class]]
+	  && [actionName hasPrefix: @"save"]);
 }
 
 - (void) _setSnapshotValue: (NSString *) key
@@ -375,7 +388,7 @@
 - (NSString *) editActionName
 {
   /* this is overridden in the mail based contacts UI to redirect to tb.edit */
-  return @"edit";
+  return @"editAsContact";
 }
 
 - (CardElement *) _elementWithTag: (NSString *) tag
@@ -492,7 +505,7 @@
 
 - (id <WOActionResults>) saveAction
 {
-  id <SOGoContactObject> contact;
+  SOGoContactGCSEntry *contact;
   id result;
   NSString *jsRefreshMethod;
 
@@ -552,35 +565,27 @@
   return [self redirectToLocation: url];
 }
 
+#warning Could this be part of a common parent with UIxAppointment/UIxTaskEditor/UIxListEditor ?
 - (id) newAction
 {
-  // TODO: this is almost a DUP of UIxAppointmentEditor
-  /*
-    This method creates a unique ID and redirects to the "edit" method on the
-    new ID.
-    It is actually a folder method and should be defined on the folder.
-    
-    Note: 'clientObject' is the SOGoAppointmentFolder!
-          Update: remember that there are group folders as well.
-  */
-  NSString *uri, *objectId, *nextMethod;
-  SOGoObject <SOGoContactFolder> *co;
+  NSString *objectId, *method, *uri;
+  id <WOActionResults> result;
+  SOGoContactGCSFolder *co;
 
   co = [self clientObject];
-  if ([co respondsToSelector: @selector (globallyUniqueObjectId)])
-    objectId = [co globallyUniqueObjectId];
+  objectId = [co globallyUniqueObjectId];
+  if ([objectId length] > 0)
+    {
+      method = [NSString stringWithFormat:@"%@/%@.vcf/editAsContact",
+                         [co soURL], objectId];
+      uri = [self completeHrefForMethod: method];
+      result = [self redirectToLocation: uri];
+    }
   else
-    objectId = nil;
+    result = [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
+                          reason: @"could not create a unique ID"];
 
-  if ([objectId length] == 0)
-    return [NSException exceptionWithHTTPStatus: 500 /* Internal Error */
-                        reason: @"could not create a unique ID"];
-
-  nextMethod = [NSString stringWithFormat: @"../%@.vcf/%@", 
-			 objectId, [self editActionName]];
-  uri = [self _completeURIForMethod: nextMethod];
-
-  return [self redirectToLocation: uri];
+  return result;
 }
 
 @end /* UIxContactEditor */

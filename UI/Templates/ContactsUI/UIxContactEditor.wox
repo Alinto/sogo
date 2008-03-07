@@ -9,7 +9,7 @@
     title="name"
     const:popup="YES"
     >
-    <form var:href="clientObject.baseURL" name="editform"
+    <form var:href="saveURL" name="editform"
       onsubmit="return validateContactEditor()">
 
       <div class="tabsContainer" id="editorTabs">
@@ -336,17 +336,17 @@
       </div>
       <div id="buttons">
         <input
-          type="submit"
+	  id="cancelButton"
+          type="button"
           class="button"
           label:value="Cancel"
-          name="cancel"
-          onclick="window.close(); return false;" />
+          name="cancel"/>
         <var:if condition="canCreateOrModify"
 	><input
 	    type="submit"
 	    class="button"
 	    label:value="Save"
-	    name="save:method" /></var:if>
+	    name="submit" /></var:if>
       </div>
     </form>
   </var:component>

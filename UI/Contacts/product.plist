@@ -77,9 +77,14 @@
               protectedBy = "View";
               pageName    = "UIxContactsListView";
            };
-           new = {
+           newcontact = {
               protectedBy = "Add Documents, Images, and Files";
               pageName    = "UIxContactEditor";
+              actionName  = "new";
+           };
+           newlist = {
+              protectedBy = "Add Documents, Images, and Files";
+              pageName    = "UIxListEditor";
               actionName  = "new";
            };
            mailer-contacts = {
@@ -144,7 +149,16 @@
               protectedBy = "Access Contents Information";
               pageName    = "UIxContactEditor";
            };
+           editAsContact = {
+              protectedBy = "Access Contents Information";
+              pageName    = "UIxContactEditor";
+           };
            save = {
+              protectedBy = "Change Images And Files";
+              pageName    = "UIxContactEditor";
+              actionName  = "save";
+           };
+           saveAsContact = {
               protectedBy = "Change Images And Files";
               pageName    = "UIxContactEditor";
               actionName  = "save";
@@ -153,6 +167,38 @@
               protectedBy = "View";
               pageName    = "UIxContactEditor";
               actionName  = "write";
+           };
+        };
+     };
+
+     SOGoContactGCSList = {
+        methods = {
+           view = {
+              protectedBy = "Access Contents Information";
+              pageName    = "UIxListView";
+           };
+           delete = {
+              protectedBy = "Delete Objects";
+              pageName    = "UIxListView";
+              actionName  = "delete";
+           };
+           edit = {
+              protectedBy = "Access Contents Information";
+              pageName    = "UIxListEditor";
+           };
+           editAsList = {
+              protectedBy = "Access Contents Information";
+              pageName    = "UIxListEditor";
+           };
+           save = {
+              protectedBy = "Change Images And Files";
+              pageName    = "UIxListEditor";
+              actionName  = "save";
+           };
+           saveAsList = {
+              protectedBy = "Change Images And Files";
+              pageName    = "UIxListEditor";
+              actionName  = "save";
            };
         };
      };
@@ -176,4 +222,3 @@
      };
   };
 }
-
