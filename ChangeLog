@@ -1,5 +1,10 @@
 2008-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OGoContentStore/OCSContactFieldExtractor.m
+	([OCSContactFieldExtractor -extractQuickFieldsFromVList:vList]):
+	new method to handle extraction of quick information from the
+	VLIST components. I.e.: the display name of the card.
+
 	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
 	-isValidContentName:name]): moved method from
 	SOGoAppointmentFolder's isValidAppointmentName.

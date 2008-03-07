@@ -54,5 +54,10 @@
       sqlType    = "VARCHAR(256)";
       allowsNull = YES;
     },
+    {
+      columnName = c_component;
+      sqlType    = "VARCHAR(10)";
+      allowsNull = NO;
+    },
   );
 }

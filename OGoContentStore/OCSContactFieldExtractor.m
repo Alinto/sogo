@@ -25,6 +25,7 @@
 
 #import <GDLContentStore/GCSFieldExtractor.h>
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVList.h>
 
 @interface OCSContactFieldExtractor : GCSFieldExtractor
 @end
@@ -75,6 +76,22 @@
     [fields setObject: [adr value: 3] forKey: @"c_l"];
   value = [[vCard uniqueChildWithTag: @"X-AIM"] value: 0];
   [fields setObject: value forKey: @"c_screenname"];
+  [fields setObject: @"vcard" forKey: @"c_component"];
+
+  return fields;
+}
+
+- (NSMutableDictionary *) extractQuickFieldsFromVList: (NGVList *) vList
+{
+  NSMutableDictionary *fields;
+  NSString *value;
+
+  fields = [NSMutableDictionary dictionaryWithCapacity: 1];
+
+  value = [vList fn];
+  if (value)
+    [fields setObject: value forKey: @"c_cn"];
+  [fields setObject: @"vlist" forKey: @"c_component"];
 
   return fields;
 }
@@ -83,19 +100,34 @@
 {
   NSMutableDictionary *fields;
   NGVCard *vCard;
+  NGVList *vList;
+  NSString *upperContent;
 
   fields = nil;
-  if ([content length] > 0
-      && [[content uppercaseString] hasPrefix: @"BEGIN:VCARD"])
+  if ([content length] > 0)
     {
-      vCard = [NGVCard parseSingleFromSource: content];
-      if (vCard)
-	fields = [self extractQuickFieldsFromVCard: vCard];
+      upperContent = [content uppercaseString];
+      if ([upperContent hasPrefix: @"BEGIN:VCARD"])
+	{
+	  vCard = [NGVCard parseSingleFromSource: content];
+	  if (vCard)
+	    fields = [self extractQuickFieldsFromVCard: vCard];
+	  else
+	    [self errorWithFormat: @"Could not parse VCARD content."];
+	}
+      else if ([upperContent hasPrefix: @"BEGIN:VLIST"])
+	{
+	  vList = [NGVList parseSingleFromSource: content];
+	  if (vList)
+	    fields = [self extractQuickFieldsFromVList: vList];
+	  else
+	    [self errorWithFormat: @"Could not parse VLIST content."];
+	}
       else
-	[self errorWithFormat: @"Could not parse content as a vCard."];
+	[self errorWithFormat: @"Content is unknown."];
     }
   else
-    [self errorWithFormat: @"Content is not a vCard"];
+    [self errorWithFormat: @"Content is empty."];
 
   return fields;
 }
