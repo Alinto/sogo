@@ -1,5 +1,15 @@
 2008-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder -objectClassForContent:content])
+	([SOGoContactGCSFolder -deduceObjectForName:inContext:])
+	([SOGoContactGCSFolder -requestNamedIsHandledLater:name])
+	([SOGoContactGCSFolder -lookupName:inContext:acquire:]): those
+	methods were modified to match the ones in SOGoAppointmentFolder,
+	in order to manage both vcard and vlist components.
+
+	* SoObjects/Contacts/SOGoContactGCSList.[hm]: new class module
+	that implements the list counterpart to VCARD: VLIST.
+
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor -saveURL]):
 	new accessor that returns the url + "saveAsContact".
 	([UIxContactEditor
