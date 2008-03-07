@@ -112,6 +112,11 @@
   return [NSArray array];
 }
 
+- (BOOL) isValidContentName: (NSString *) name
+{
+  return ([name length] > 0);
+}
+
 - (BOOL) isFolderish
 {
   return YES;
@@ -200,11 +205,6 @@
 }
 
 /* WebDAV */
-
-- (BOOL) davIsCollection
-{
-  return [self isFolderish];
-}
 
 - (NSString *) davContentType
 {

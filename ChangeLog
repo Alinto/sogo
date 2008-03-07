@@ -1,5 +1,9 @@
 2008-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder
+	-isValidContentName:name]): moved method from
+	SOGoAppointmentFolder's isValidAppointmentName.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m ([SOGoContactGCSFolder -objectClassForContent:content])
 	([SOGoContactGCSFolder -deduceObjectForName:inContext:])
 	([SOGoContactGCSFolder -requestNamedIsHandledLater:name])
