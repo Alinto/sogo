@@ -29,12 +29,19 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGCards/CardGroup.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoCache.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
+
 #import "SOGoContactGCSEntry.h"
+#import "SOGoContactGCSList.h"
+
 #import "SOGoContactGCSFolder.h"
 
 #define folderListingFields [NSArray arrayWithObjects: @"c_name", @"c_cn", \
@@ -59,29 +66,149 @@
   return contact;
 }
 
-- (id) lookupName: (NSString *) _key
-        inContext: (WOContext *) _ctx
-          acquire: (BOOL) _flag
+- (Class) objectClassForContent: (NSString *) content
+{
+  CardGroup *cardEntry;
+  NSString *firstTag;
+  Class objectClass;
+
+  objectClass = Nil;
+
+  cardEntry = [CardGroup parseSingleFromSource: content];
+  if (cardEntry)
+    {
+      firstTag = [[cardEntry tag] uppercaseString];
+      if ([firstTag isEqualToString: @"VCARD"])
+	objectClass = [SOGoContactGCSEntry class];
+      else if ([firstTag isEqualToString: @"VLIST"])
+	objectClass = [SOGoContactGCSList class];
+    }
+
+  return objectClass;
+}
+
+- (Class) objectClassForResourceNamed: (NSString *) name
+{
+  EOQualifier *qualifier;
+  NSArray *records;
+  NSString *component;
+  Class objectClass;
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", name];
+  records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"c_component"]
+                              matchingQualifier: qualifier];
+
+  if ([records count])
+    {
+      component = [[records objectAtIndex: 0] valueForKey: @"c_component"];
+      if ([component isEqualToString: @"vcard"])
+        objectClass = [SOGoContactGCSEntry class];
+      else if ([component isEqualToString: @"vlist"])
+        objectClass = [SOGoContactGCSList class];
+      else
+        objectClass = Nil;
+    }
+  else
+    objectClass = Nil;
+  
+  return objectClass;
+}
+
+- (id) deduceObjectForName: (NSString *)_key
+                 inContext: (id)_ctx
+{
+  WORequest *request;
+  NSString *method;
+  Class objectClass;
+  id obj;
+
+  request = [_ctx request];
+  method = [request method];
+  if ([method isEqualToString: @"PUT"])
+    objectClass = [self objectClassForContent: [request contentAsString]];
+  else
+    objectClass = [self objectClassForResourceNamed: _key];
+
+  if (objectClass)
+    obj = [objectClass objectWithName: _key inContainer: self];
+  else
+    obj = nil;
+
+  return obj;
+}
+
+- (BOOL) requestNamedIsHandledLater: (NSString *) name
+{
+  return [name isEqualToString: @"OPTIONS"];
+}
+
+- (id) lookupName: (NSString *)_key
+        inContext: (id)_ctx
+          acquire: (BOOL)_flag
 {
   id obj;
-  BOOL isPut;
+  NSString *url;
+  BOOL handledLater;
 
-  isPut = NO;
-  obj = [super lookupName:_key inContext:_ctx acquire:NO];
-  
-  if (!obj)
+  /* first check attributes directly bound to the application */
+  handledLater = [self requestNamedIsHandledLater: _key];
+  if (handledLater)
+    obj = nil;
+  else
     {
-      if ([[[_ctx request] method] isEqualToString: @"PUT"])
-	{
-	  if ([_key isEqualToString: @"PUT"])
-	    isPut = YES;
-	  else
-	    obj = [SOGoContactGCSEntry objectWithName: _key
-				       inContainer: self];
-	}
-      else
-        obj = [self lookupContactWithId: _key];
+      obj = [super lookupName:_key inContext:_ctx acquire:NO];
+      if (!obj)
+        {
+	  if ([self isValidContentName: _key])
+            {
+              url = [[[_ctx request] uri] urlWithoutParameters];
+              if ([url hasSuffix: @"AsContact"])
+                obj = [SOGoContactGCSEntry objectWithName: _key
+					   inContainer: self];
+              else if ([url hasSuffix: @"AsList"])
+                obj = [SOGoContactGCSList objectWithName: _key
+					  inContainer: self];
+              else
+                obj = [self deduceObjectForName: _key
+                            inContext: _ctx];
+            }
+        }
+      if (!obj)
+        obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
     }
+
+  if (obj)
+    [[SOGoCache sharedCache] registerObject: obj
+			     withName: _key
+			     inContainer: container];
+
+  return obj;
+}
+
+// - (id) lookupName: (NSString *) _key
+//         inContext: (WOContext *) _ctx
+//           acquire: (BOOL) _flag
+// {
+//   id obj;
+//   BOOL isPut;
+
+//   isPut = NO;
+//   obj = [super lookupName:_key inContext:_ctx acquire:NO];
+  
+//   if (!obj)
+//     {
+//       if ([[[_ctx request] method] isEqualToString: @"PUT"])
+// 	{
+// 	  if ([_key isEqualToString: @"PUT"])
+// 	    isPut = YES;
+// 	  else
+
+// 	    obj = [SOGoContactGCSEntry objectWithName: _key
+// 				       inContainer: self];
+// 	}
+//       else
+//         obj = [self lookupContactWithId: _key];
+//     }
 //   if (!(obj || isPut))
 //     obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
 
@@ -91,9 +218,9 @@
 //       return [self contactWithName:_key inContext:_ctx];
 //   }
 
-  /* return 404 to stop acquisition */
-  return obj;
-}
+//   /* return 404 to stop acquisition */
+//   return obj;
+// }
 
 /* fetching */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
@@ -280,7 +407,6 @@
   cardDavCollection
     = [NSArray arrayWithObjects: @"addressbook",
 	       @"urn:ietf:params:xml:ns:carddav", nil];
-
   resourceType = [NSMutableArray arrayWithArray: [super davResourceType]];
   [resourceType addObject: cardDavCollection];
 

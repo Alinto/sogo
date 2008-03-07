@@ -1,6 +1,6 @@
-/* SOGoContactGCSEntry.h - this file is part of SOGo
+/* SOGoContactGCSList.h - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,21 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOCONTACTGCSENTRY_H
-#define SOGOCONTACTGCSENTRY_H
+#ifndef SOGOCONTACTGCSLIST_H
+#define SOGOCONTACTGCSLIST_H
 
 #import <SOGo/SOGoContentObject.h>
 
-#import "SOGoContactObject.h"
+@class NGVList;
 
-@class NGVCard;
-
-@interface SOGoContactGCSEntry
-  : SOGoContentObject <SOGoContactObject>
+@interface SOGoContactGCSList : SOGoContentObject
 {
-  NGVCard *card;
+  NGVList *list;
 }
 
 @end
 
-#endif /* SOGOCONTACTGCSENTRY_H */
+#endif /* SOGOCONTACTGCSLIST_H */

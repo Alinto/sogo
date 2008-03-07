@@ -17,6 +17,9 @@
     SOGoContactGCSEntry = {
       superclass = "SOGoContentObject";
     };
+    SOGoContactGCSList = {
+      superclass = "SOGoContentObject";
+    };
     SOGoContactLDAPFolder = {
       superclass = "SOGoGCSFolder";
       protectedBy = "Access Contents Information";

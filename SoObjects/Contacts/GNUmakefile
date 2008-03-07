@@ -12,6 +12,7 @@ Contacts_OBJC_FILES =			\
 	SOGoFolder+CardDAV.m		\
 	SOGoContactFolders.m		\
 	SOGoContactGCSEntry.m		\
+	SOGoContactGCSList.m		\
 	SOGoContactGCSFolder.m		\
 	SOGoContactLDIFEntry.m		\
 	SOGoContactLDAPFolder.m		\
