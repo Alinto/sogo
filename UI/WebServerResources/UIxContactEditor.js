@@ -127,11 +127,18 @@ function onFnNewValue(event) {
   return true;
 }
 
+function onEditorCancelClick(event) {
+   preventDefault(event);
+   window.close();
+}
+
 function initEditorForm() {
   displayNameChanged = ($("fn").value.length > 0);
   $("fn").onkeydown = onFnKeyDown;
   $("sn").onkeyup = onFnNewValue;
   $("givenName").onkeyup = onFnNewValue;
+
+  $("cancelButton").observe("click", onEditorCancelClick);
 }
 
 FastInit.addOnLoad(initEditorForm);

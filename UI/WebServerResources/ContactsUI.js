@@ -455,7 +455,7 @@ function onHeaderClick(event) {
 }
 
 function newContact(sender) {
-  openContactWindow(URLForFolderID(currentContactFolder) + "/new");
+  openContactWindow(URLForFolderID(currentContactFolder) + "/newcontact");
 
   return false; /* stop following the link */
 }
