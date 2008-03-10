@@ -497,24 +497,24 @@ static BOOL uixDebugEnabled = NO;
              languages: languages];
 }
 
-- (NSString *) localizedNameForDayOfWeek:(unsigned)_dayOfWeek {
-  NSString *key =  [dayLabelKeys objectAtIndex:_dayOfWeek % 7];
-  return [self labelForKey:key];
+- (NSString *) localizedNameForDayOfWeek: (unsigned) dayOfWeek
+{
+  return [self labelForKey: [dayLabelKeys objectAtIndex: dayOfWeek % 7]];
 }
 
-- (NSString *)localizedAbbreviatedNameForDayOfWeek:(unsigned)_dayOfWeek {
-  NSString *key =  [abbrDayLabelKeys objectAtIndex:_dayOfWeek % 7];
-  return [self labelForKey:key];
+- (NSString *) localizedAbbreviatedNameForDayOfWeek: (unsigned) dayOfWeek
+{
+  return [self labelForKey: [abbrDayLabelKeys objectAtIndex: dayOfWeek % 7]];
 }
 
-- (NSString *)localizedNameForMonthOfYear:(unsigned)_monthOfYear {
-  NSString *key =  [monthLabelKeys objectAtIndex:(_monthOfYear - 1) % 12];
-  return [self labelForKey:key];
+- (NSString *) localizedNameForMonthOfYear: (unsigned) monthOfYear
+{
+  return [self labelForKey: [monthLabelKeys objectAtIndex: (monthOfYear - 1) % 12]];
 }
 
-- (NSString *)localizedAbbreviatedNameForMonthOfYear:(unsigned)_monthOfYear {
-  NSString *key =  [abbrMonthLabelKeys objectAtIndex:(_monthOfYear - 1) % 12];
-  return [self labelForKey:key];
+- (NSString *) localizedAbbreviatedNameForMonthOfYear: (unsigned) monthOfYear
+{
+  return [self labelForKey: [abbrMonthLabelKeys objectAtIndex: (monthOfYear - 1) % 12]];
 }
 
 /* HTTP method safety */

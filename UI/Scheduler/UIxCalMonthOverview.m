@@ -9,71 +9,71 @@
 @implementation UIxCalMonthOverview
 
 - (void)dealloc {
-  [self->currentWeekStart release];
+  [currentWeekStart release];
   [super dealloc];
 }
 
 - (void)configureFormatters {
   [super configureFormatters];
   
-  [self->aptFormatter        setShortTitleOnly];
-  [self->privateAptFormatter setPrivateTitleOnly];
+  [aptFormatter        setShortTitleOnly];
+  [privateAptFormatter setPrivateTitleOnly];
 }
 
 - (void)setDayIndex:(int)_idx {
-    self->dayIndex = _idx;
+  dayIndex = _idx;
 }
 
 - (int)dayIndex {
-    return self->dayIndex;
+  return dayIndex;
 }
 
 - (void)setDayOfWeek:(int)_day {
-    self->dayOfWeek = _day;
+  dayOfWeek = _day;
 }
 
 - (int)dayOfWeek {
-    return self->dayOfWeek;
+  return dayOfWeek;
 }
 
 - (void)setCurrentWeekStartDate:(NSCalendarDate *)_date {
-    ASSIGN(self->currentWeekStart, _date);
+  ASSIGN(currentWeekStart, _date);
 }
 
 - (NSCalendarDate *)currentWeekStartDate {
-    return self->currentWeekStart;
+  return currentWeekStart;
 }
 
 - (void)setWeekOfYear:(int)_week {
-    NSCalendarDate *date;
+  NSCalendarDate *date;
     
-    self->weekOfYear = _week;
-    if(_week == 52 || _week == 53)
-        date = [[self startOfMonth] mondayOfWeek];
-    else
-        date = [self startOfMonth];
-    date = [date mondayOfWeek:_week];
-    [self setCurrentWeekStartDate:date];
+  weekOfYear = _week;
+  if(_week == 52 || _week == 53)
+    date = [[self startOfMonth] mondayOfWeek];
+  else
+    date = [self startOfMonth];
+  date = [date mondayOfWeek:_week];
+  [self setCurrentWeekStartDate:date];
 }
 
 - (int)weekOfYear {
-    return self->weekOfYear;
+  return weekOfYear;
 }
 
 - (int)year {
-    return [[self startOfMonth] yearOfCommonEra];
+  return [[self startOfMonth] yearOfCommonEra];
 }
 
 - (int)month {
-    return [[self startOfMonth] monthOfYear];
+  return [[self startOfMonth] monthOfYear];
 }
 
 - (NSString *)localizedDayOfWeekName {
-    return [self localizedNameForDayOfWeek:self->dayOfWeek];
+  return [self localizedNameForDayOfWeek:dayOfWeek];
 }
 
 - (NSDictionary *)currentWeekQueryParameters {
-    return [self queryParametersBySettingSelectedDate:self->currentWeekStart];
+  return [self queryParametersBySettingSelectedDate:currentWeekStart];
 }
 
 
@@ -81,17 +81,17 @@
 
 
 - (NSString *)weekStyle {
-    if([self->currentWeekStart isDateInSameWeek:[NSCalendarDate date]])
-        return @"monthoverview_week_hilite";
-    return @"monthoverview_week";
+  if([currentWeekStart isDateInSameWeek:[NSCalendarDate date]])
+    return @"monthoverview_week_hilite";
+  return @"monthoverview_week";
 }
 
 - (NSString *)contentStyle {
-    if([self->currentDay isToday])
-        return @"monthoverview_content_hilite";
-    else if([self->currentDay monthOfYear] != [[self startOfMonth] monthOfYear])
-        return @"monthoverview_content_dimmed";
-    return @"monthoverview_content";
+  if([currentDay isToday])
+    return @"monthoverview_content_hilite";
+  else if([currentDay monthOfYear] != [[self startOfMonth] monthOfYear])
+    return @"monthoverview_content_dimmed";
+  return @"monthoverview_content";
 }
 
 
