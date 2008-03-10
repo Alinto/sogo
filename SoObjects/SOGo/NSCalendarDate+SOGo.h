@@ -34,11 +34,8 @@
                     inTimeZone: (NSTimeZone *) timeZone;
 
 - (BOOL) isDateInSameMonth: (NSCalendarDate *) _other;
-- (NSCalendarDate *) dayOfWeeK: (unsigned) _day
-              offsetFromSunday: (unsigned) _off;
-- (NSCalendarDate *) sundayOfWeek;
-- (NSString *) shortDateString;
 
+- (NSString *) shortDateString;
 - (NSString *) rfc822DateString;
 
 + (id) distantFuture;

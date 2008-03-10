@@ -1,3 +1,13 @@
+2008-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalMonthViewOld.m ([UIxCalMonthViewOld
+	-endDate]): removed useless method.
+
+	* SoObjects/SOGo/NSCalendarDate+SOGo.m
+	([-dayOfWeeK:_dayoffsetFromSunday:_offset]): removed useless
+	method.
+	([-sundayOfWeek]): removed useless method.
+
 2008-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OGoContentStore/OCSContactFieldExtractor.m
