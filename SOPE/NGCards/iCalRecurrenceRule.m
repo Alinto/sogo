@@ -277,10 +277,10 @@
 {
   NSMutableArray *days;
   unsigned int count;
-  unsigned char maskDays[] = { iCalWeekDayMonday, iCalWeekDayTuesday,
-                               iCalWeekDayWednesday, iCalWeekDayThursday,
-                               iCalWeekDayFriday, iCalWeekDaySaturday,
-                               iCalWeekDaySunday };
+  unsigned char maskDays[] = { iCalWeekDaySunday, iCalWeekDayMonday,
+			       iCalWeekDayTuesday, iCalWeekDayWednesday,
+			       iCalWeekDayThursday, iCalWeekDayFriday,
+			       iCalWeekDaySaturday };
   days = [NSMutableArray arrayWithCapacity: 7];
   if (_mask)
     {

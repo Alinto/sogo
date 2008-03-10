@@ -1,3 +1,14 @@
+2008-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTimeZonePeriod.m ([iCalTimeZonePeriod
+	-dayOfWeekFromRruleDay:day]): the algorithm would never work if
+	the day was monday. After it was changed for sunday (see below),
+	it would return 1 instead of 0.
+
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule -setByDayMask:_mask]):
+	the first day of the week is always sunday, following Apple's
+	documentation.
+
 2008-03-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCardReference.[hm]: new class module that implements the base

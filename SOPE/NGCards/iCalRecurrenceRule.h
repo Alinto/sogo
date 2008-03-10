@@ -46,13 +46,13 @@ typedef enum {
 } iCalRecurrenceFrequency;
 
 typedef enum {
-  iCalWeekDayMonday    = 1,
-  iCalWeekDayTuesday   = 2,
-  iCalWeekDayWednesday = 4,
-  iCalWeekDayThursday  = 8,
-  iCalWeekDayFriday    = 16,
-  iCalWeekDaySaturday  = 32,
-  iCalWeekDaySunday    = 64,
+  iCalWeekDaySunday    = 1,
+  iCalWeekDayMonday    = 2,
+  iCalWeekDayTuesday   = 4,
+  iCalWeekDayWednesday = 8,
+  iCalWeekDayThursday  = 16,
+  iCalWeekDayFriday    = 32,
+  iCalWeekDaySaturday  = 64,
 } iCalWeekDay;
 
 @class NSString, NSCalendarDate, NGCalendarDateRange, NSArray;

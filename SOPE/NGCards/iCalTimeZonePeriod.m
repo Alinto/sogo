@@ -92,8 +92,8 @@
 {
   unsigned int dayOfWeek;
 
-  dayOfWeek = 1;
-  while (day >> dayOfWeek)
+  dayOfWeek = 0;
+  while (day >> (dayOfWeek + 1))
     dayOfWeek++;
 
   return dayOfWeek;
@@ -120,10 +120,8 @@
 		     day: 0 hour: 0 minute: 0
 		     second: -[self _secondsOfOffset: @"tzoffsetfrom"]];
   dateDayOfWeek = [tmpDate dayOfWeek];
-  offset = (dayOfWeek - dateDayOfWeek);
-  if (pos > 0 && offset < 0)
-    offset += 7;
-  offset += (pos * 7);
+// #warning FIXME
+  offset = (dayOfWeek - dateDayOfWeek) + ((pos -1 ) * 7);
   tmpDate = [tmpDate addYear: 0 month: 0 day: offset
 		     hour: 0 minute: 0 second: 0];
 
