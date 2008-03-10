@@ -32,12 +32,6 @@
   if ((self = [super init]))
     {
       locale = nil;
-//       locale = [_locale retain];
-      
-//       if ([[locale objectForKey:@"NSLocaleCode"] isEqualToString: @"fr"])
-// 	shortDateFormat = SOGoDateDMYFormat;
-//       else
-// 	shortDateFormat = SOGoDateISOFormat;
       shortDateFormat = nil;
       longDateFormat = nil;
       timeFormat = nil;
@@ -79,12 +73,6 @@
 {
   ASSIGN (timeFormat, newFormat);
 }
-
-// - (void) setFullWeekdayNameAndDetails
-// {
-//   auxFormatAction = formatAction;
-//   formatAction = @selector(fullWeekdayNameAndDetailsForDate:);
-// }
 
 /* operation */
 
@@ -138,115 +126,5 @@
 
   return formattedString;
 }
-
-// /* Helpers */
-
-// - (NSString *)shortDayOfWeek:(int)_day {
-//   return [[locale objectForKey:@"NSShortWeekDayNameArray"]
-// 	   objectAtIndex:_day];
-// }
-
-// - (NSString *)fullDayOfWeek:(int)_day {
-//   return [[locale objectForKey:@"NSWeekDayNameArray"]
-// 	   objectAtIndex:_day];
-// }
-
-// - (NSString *)shortMonthOfYear:(int)_month {
-//   return [[locale objectForKey:@"NSShortMonthNameArray"]
-// 	   objectAtIndex:_month - 1];
-// }
-
-// - (NSString *)fullMonthOfYear:(int)_month {
-//   return [[locale objectForKey:@"NSMonthNameArray"]
-// 	   objectAtIndex:_month - 1];
-// }
-
-
-/* Private API */
-
-// - (NSString *) fullWeekdayNameAndDetailsForDate: (NSCalendarDate *) _date
-// {
-//   NSMutableString *desc;
-
-//   if (_date)
-//     {  
-//       desc = [NSMutableString stringWithCapacity:24];
-//       [desc appendString:[self fullDayOfWeek:[_date dayOfWeek]]];
-//       [desc appendString:@", "];
-//       [desc appendString:[self performSelector:auxFormatAction
-//                            withObject:_date]];
-//       [desc appendString:@" "];
-//       [desc appendFormat:@"%02d:%02d ", [_date hourOfDay], [_date minuteOfHour]];
-//       [desc appendString:[[_date timeZone] abbreviation]];
-//     }
-//   else
-//     desc = nil;
-
-//   return desc;
-// }
-
-// - (NSString *) _separatorForFormat: (unsigned int) format
-// {
-//   NSString *separator;
-
-//   switch (format & (3))
-//     {
-//     case SOGoDateDotFormat:
-//       separator = @".";
-//       break;
-//     case SOGoDateDashFormat:
-//       separator = @".";
-//       break;
-//     default:
-//       separator = @"/";
-//     }
-
-//   return separator;
-// }
-
-// - (NSString *) _dateFormatForDate: (NSCalendarDate *) date
-// 		       withFormat: (unsigned int) format
-// 		     andSeparator: (NSString *) separator
-// {
-//   NSString *day, *month, *year;
-//   NSString *formattedDate;
-
-//   day = [NSString stringWithFormat: @"%.2d", [date dayOfMonth]];
-//   month = [NSString stringWithFormat: @"%.2d", [date monthOfYear]];
-//   if (format & SOGoDateTwoDigitsYearFormat)
-//     year = [NSString stringWithFormat: @"%.2d", [date yearOfCommonEra] % 100];
-//   else
-//     year = [NSString stringWithFormat: @"%.4d", [date yearOfCommonEra]];
-
-//   if (format & SOGoDateDMYFormat)
-//     formattedDate = [NSString stringWithFormat: @"%@%@%@%@%@",
-// 			      day, separator, month, separator, year];
-//   else if (format & SOGoDateMDYFormat)
-//     formattedDate = [NSString stringWithFormat: @"%@%@%@%@%@",
-// 			      month, separator, day, separator, year];
-//   else
-//     formattedDate = [NSString stringWithFormat: @"%@%@%@%@%@",
-// 			      year, separator, month, separator, day];
-
-//   return formattedDate;
-// }
-
-// - (NSString *) date: (NSCalendarDate *) date
-// 	 withFormat: (unsigned int) format
-// {
-//   NSString *separator;
-
-//   separator = [self _separatorForFormat: format];
-  
-//   return [self _dateFormatForDate: date
-// 	       withFormat: format
-// 	       andSeparator: separator];
-// }
-
-// - (NSString *) date: (NSCalendarDate *) date
-//        withNSFormat: (NSNumber *) format
-// {
-//   return [self date: date withFormat: [format unsignedIntValue]];
-// }
 
 @end /* SOGoDateFormatter */
