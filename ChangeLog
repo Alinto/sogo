@@ -1,3 +1,10 @@
+2008-03-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-davAclQuery:queryContext]): declare the "text/xml" mime type only
+	when the content is not empty. Otherwise, returns no mime type at
+	all and set the status code to 204.
+
 2008-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthViewOld.m ([UIxCalMonthViewOld

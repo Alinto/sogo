@@ -1319,7 +1319,6 @@ static BOOL sendACLAdvisories = NO;
 
   r = [queryContext response];
   [r setContentEncoding: NSUTF8StringEncoding];
-  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
   [r setHeader: @"no-cache" forKey: @"pragma"];
   [r setHeader: @"no-cache" forKey: @"cache-control"];
 
@@ -1327,12 +1326,15 @@ static BOOL sendACLAdvisories = NO;
   content = [self _davAclActionFromQuery: document];
   if (content)
     {
-      [r setStatus: 207];
       if ([content length])
 	{
+	  [r setStatus: 207];
+	  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
 	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
 	  [r appendContentString: content];
 	}
+      else
+ 	[r setStatus: 204];
     }
   else
     [r setStatus: 400];
