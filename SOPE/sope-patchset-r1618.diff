@@ -1,0 +1,2010 @@
+Index: sope-mime/NGImap4/NGImap4Connection.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1618)
++++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
+@@ -381,7 +381,7 @@
+   
+   if (debugCache) [self logWithFormat:@"  no folders cached yet .."];
+   
+-  result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"*")
++  result = [[self client] list:(onlyFetchInbox ? @"INBOX" : @"")
+ 			  pattern:@"*"];
+   if (![[result valueForKey:@"result"] boolValue]) {
+     [self errorWithFormat:@"Could not list mailbox hierarchy!"];
+Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1618)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
+@@ -648,14 +648,13 @@
+   enumerator = [_flags objectEnumerator];
+   cnt = 0;
+   while ((obj = [enumerator nextObject])) {
+-    if (![obj isNotEmpty])
+-      continue;
+-    
+-    if (![[obj substringToIndex:1] isEqualToString:@"\\"])
+-      continue;
+-
+-    objs[cnt] = [obj substringFromIndex:1];
+-    cnt++;
++    if ([obj isNotEmpty]) {
++      if ([obj hasPrefix:@"\\"])
++	objs[cnt] = [obj substringFromIndex:1];
++      else
++	objs[cnt] = obj;
++      cnt++;
++    }
+   }
+   result = [NSArray arrayWithObjects:objs count:cnt];
+   if (objs) free(objs);
+Index: sope-mime/NGImap4/NGImap4ResponseParser.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4ResponseParser.m	(révision 1618)
++++ sope-mime/NGImap4/NGImap4ResponseParser.m	(copie de travail)
+@@ -84,6 +84,8 @@
+ static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
+ 					 BOOL isBodyStructure);
+ 
++static NSArray *_parseLanguages();
++
+ static NSString *_parseBodyString(NGImap4ResponseParser *self,
+                                   BOOL _convertString);
+ static NSString *_parseBodyDecodeString(NGImap4ResponseParser *self,
+@@ -111,6 +113,7 @@
+ static NSNumber *_parseUnsigned(NGImap4ResponseParser *self);
+ static NSString *_parseUntil(NGImap4ResponseParser *self, char _c);
+ static NSString *_parseUntil2(NGImap4ResponseParser *self, char _c1, char _c2);
++static BOOL _endsWithCQuote(NSString *_string);
+ 
+ static __inline__ NSException *_consumeIfMatch
+   (NGImap4ResponseParser *self, unsigned char _m);
+@@ -649,12 +652,35 @@
+ }
+ 
+ - (NSString *)_parseQuotedString {
++  NSMutableString *quotedString;
++  NSString *tmpString;
++  BOOL stop;
++
+   /* parse a quoted string, eg '"' */
+   if (_la(self, 0) == '"') {
+     _consume(self, 1);
+-    return _parseUntil(self, '"');
++    quotedString = [NSMutableString string];
++    stop = NO;
++    while (!stop) {
++      tmpString = _parseUntil(self, '"');
++      [quotedString appendString: tmpString];
++      if(_endsWithCQuote(tmpString)) {
++	[quotedString deleteSuffix: @"\\"];
++	[quotedString appendString: @"\""];
++      }
++      else {
++	stop = YES;
++      }
++    }
+   }
+-  return nil;
++  else {
++    quotedString = nil;
++  }
++
++  [quotedString replaceString:@"?=\t=?"
++		withString:@"?==?"];
++
++  return quotedString;
+ }
+ - (void)_consumeOptionalSpace {
+   if (_la(self, 0) == ' ') _consume(self, 1);
+@@ -1185,7 +1211,7 @@
+   route   = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+   mailbox = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+   host    = [self _parseQuotedStringOrNIL]; [self _consumeOptionalSpace];
+-  
++
+   if (_la(self, 0) != ')') {
+     [self logWithFormat:@"WARNING: IMAP4 envelope "
+ 	    @"address not properly closed (c0=%c,c1=%c): %@",
+@@ -1197,6 +1223,7 @@
+   address = [[NGImap4EnvelopeAddress alloc] initWithPersonalName:pname
+ 					    sourceRoute:route mailbox:mailbox
+ 					    host:host];
++
+   return address;
+ }
+ 
+@@ -1594,8 +1621,11 @@
+     if (_decode)
+       data = [data decodeQuotedPrintableValueOfMIMEHeaderField:nil];
+     
+-    return [[[StrClass alloc] initWithData:data encoding:encoding]
+-                            autorelease];
++    if ([data isKindOfClass: [NSString class]])
++      return (NSString *) data;
++    else
++      return [[[StrClass alloc] initWithData:data encoding:encoding]
++	       autorelease];
+   }
+   else {
+     str = _parseUntil2(self, ' ', ')');
+@@ -1620,13 +1650,35 @@
+   return str;
+ }
+ 
+-
+ static NSString *_parseBodyString(NGImap4ResponseParser *self,
+                                   BOOL _convertString)
+ {
+   return _parseBodyDecodeString(self, _convertString, NO /* no decode */);
+ }
+ 
++static NSArray *_parseLanguages(NGImap4ResponseParser *self) {
++  NSMutableArray *languages;
++  NSString *language;
++
++  languages = [NSMutableArray array];
++  if (_la(self, 0) == '(') {
++    while (_la(self, 0) != ')') {
++      _consume(self,1);
++      language = _parseBodyString(self, YES);
++      if ([language length])
++	[languages addObject: language];
++    }
++    _consume(self,1);
++  }
++  else {
++    language = _parseBodyString(self, YES);
++    if ([language length])
++      [languages addObject: language];
++  }
++
++  return languages;
++}
++
+ static NSDictionary *_parseBodyParameterList(NGImap4ResponseParser *self)
+ {
+   NSMutableDictionary *list;
+@@ -1646,7 +1698,7 @@
+       _consumeIfMatch(self, ' ');
+       value = _parseBodyDecodeString(self, YES, YES);
+ 
+-      [list setObject:value forKey:[key lowercaseString]];
++      if (value) [list setObject:value forKey:[key lowercaseString]];
+     }
+     _consumeIfMatch(self, ')');
+   }
+@@ -1734,10 +1786,11 @@
+ 		      *encoding, *bodysize;
+   NSDictionary        *parameterList;
+   NSMutableDictionary *dict;
++  NSArray	      *languages;
+ 
+   type = [_parseBodyString(self, YES) lowercaseString];
+   _consumeIfMatch(self, ' ');
+-  subtype = _parseBodyString(self, YES);
++  subtype = [_parseBodyString(self, YES) lowercaseString];
+   _consumeIfMatch(self, ' ');
+   parameterList = _parseBodyParameterList(self);
+   _consumeIfMatch(self, ' ');
+@@ -1762,7 +1815,8 @@
+     _consumeIfMatch(self, ' ');
+     [dict setObject:_parseBodyString(self, YES) forKey:@"lines"];
+   }
+-  else if ([type isEqualToString:@"message"]) {
++  else if ([type isEqualToString:@"message"]
++	   && [subtype isEqualToString:@"rfc822"]) {
+     if (_la(self, 0) != ')') {
+       _consumeIfMatch(self, ' ');
+       _consumeIfMatch(self, '(');
+@@ -1805,14 +1859,9 @@
+ 	      forKey: @"disposition"];
+ 	if (_la(self, 0) != ')') {
+ 	  _consume(self,1);
+-	  if (_la(self, 0) == '(') {
+-	    [dict setObject: _parseBodyParameterList(self)
+-		  forKey: @"language"];
+-	  }
+-	  else {
+-	    [dict setObject: _parseBodyString(self, YES)
+-		  forKey: @"language"];
+-	  }
++	  languages = _parseLanguages(self);
++	  if ([languages count])
++	    [dict setObject: languages forKey: @"languages"];
+ 	  if (_la(self, 0) != ')') {
+ 	    _consume(self,1);
+ 	    [dict setObject: _parseBodyString(self, YES)
+@@ -1829,6 +1878,7 @@
+ static NSDictionary *_parseMultipartBody(NGImap4ResponseParser *self,
+ 					 BOOL isBodyStructure) {
+   NSMutableArray *parts;
++  NSArray	 *languages;
+   NSString       *kind;
+   NSMutableDictionary *dict;
+ 
+@@ -1854,14 +1904,9 @@
+ 	      forKey: @"disposition"];
+ 	if (_la(self, 0) != ')') {
+ 	  _consume(self,1);
+-	  if (_la(self, 0) == '(') {
+-	    [dict setObject: _parseBodyParameterList(self)
+-		  forKey: @"language"];
+-	  }
+-	  else {
+-	    [dict setObject: _parseBodyString(self, YES)
+-		  forKey: @"language"];
+-	  }
++	  languages = _parseLanguages(self);
++	  if ([languages count])
++	    [dict setObject: languages forKey: @"languages"];
+ 	  if (_la(self, 0) != ')') {
+ 	    _consume(self,1);
+ 	    [dict setObject: _parseBodyString(self, YES)
+@@ -2170,6 +2215,21 @@
+   }
+ }
+ 
++static BOOL _endsWithCQuote(NSString *_string){
++  unsigned int quoteSlashes;
++  int pos;
++
++  quoteSlashes = 0;
++  pos = [_string length] - 1;
++  while (pos > -1
++	 && [_string characterAtIndex: pos] == '\\') {
++    quoteSlashes++;
++    pos--;
++  }
++
++  return ((quoteSlashes % 2) == 1);
++}
++
+ - (NSException *)exceptionForFailedMatch:(unsigned char)_match
+   got:(unsigned char)_avail
+ {
+Index: sope-mime/NGMail/NGSmtpClient.m
+===================================================================
+--- sope-mime/NGMail/NGSmtpClient.m	(révision 1618)
++++ sope-mime/NGMail/NGSmtpClient.m	(copie de travail)
+@@ -24,6 +24,82 @@
+ #include "NGSmtpReplyCodes.h"
+ #include "common.h"
+ 
++//
++// Useful extension that comes from Pantomime which is also
++// released under the LGPL.
++//
++@interface NSMutableData (DataCleanupExtension)
++
++- (NSRange) rangeOfCString: (const char *) theCString;
++- (NSRange) rangeOfCString: (const char *) theCString
++		  options: (unsigned int) theOptions
++		    range: (NSRange) theRange;
++@end
++
++@implementation NSMutableData (DataCleanupExtension)
++
++- (NSRange) rangeOfCString: (const char *) theCString
++{
++  return [self rangeOfCString: theCString
++	       options: 0
++	       range: NSMakeRange(0,[self length])];
++}
++
++-(NSRange) rangeOfCString: (const char *) theCString
++		  options: (unsigned int) theOptions
++		    range: (NSRange) theRange
++{
++  const char *b, *bytes;
++  int i, len, slen;
++  
++  if (!theCString)
++    {
++      return NSMakeRange(NSNotFound,0);
++    }
++  
++  bytes = [self bytes];
++  len = [self length];
++  slen = strlen(theCString);
++  
++  b = bytes;
++  
++  if (len > theRange.location + theRange.length)
++    {
++      len = theRange.location + theRange.length;
++    }
++
++  if (theOptions == NSCaseInsensitiveSearch)
++    {
++      i = theRange.location;
++      b += i;
++      
++      for (; i <= len-slen; i++, b++)
++	{
++	  if (!strncasecmp(theCString,b,slen))
++	    {
++	      return NSMakeRange(i,slen);
++	    }
++	}
++    }
++  else
++    {
++      i = theRange.location;
++      b += i;
++      
++      for (; i <= len-slen; i++, b++)
++	{
++	  if (!memcmp(theCString,b,slen))
++	    {
++	      return NSMakeRange(i,slen);
++	    }
++	}
++    }
++  
++  return NSMakeRange(NSNotFound,0);
++}
++
++@end
++
+ @interface NGSmtpClient(PrivateMethods)
+ - (void)_fetchExtensionInfo;
+ @end
+@@ -429,7 +505,9 @@
+ 
+ - (BOOL)sendData:(NSData *)_data {
+   NGSmtpResponse *reply = nil;
+-  
++  NSMutableData *cleaned_data;
++  NSRange r1, r2;
++
+   [self requireState:NGSmtpState_TRANSACTION];
+ 
+   reply = [self sendCommand:@"DATA"];
+@@ -441,11 +519,54 @@
+     }
+     [self->text flush];
+ 
++    cleaned_data = [NSMutableData dataWithData: _data];
++
++    //
++    // According to RFC 2821 section 4.5.2, we must check for the character
++    // sequence "<CRLF>.<CRLF>"; any occurrence have its period duplicated
++    // to avoid data transparency.
++    //
++    // The following code was copied from Pantomime (and also the one
++    // that strips Bcc: headers from the mail's content)
++    //
++    r1 = [cleaned_data rangeOfCString: "\r\n."];
++    
++    while (r1.location != NSNotFound)
++      {
++	[cleaned_data replaceBytesInRange: r1  withBytes: "\r\n.."  length: 4];
++	
++	r1 = [cleaned_data rangeOfCString: "\r\n."
++			   options: 0 
++			   range: NSMakeRange(NSMaxRange(r1)+1, [cleaned_data length]-NSMaxRange(r1)-1)];
++      }
++    
++    //
++    // We now look for the Bcc: header. If it is present, we remove it.
++    // Some servers, like qmail, do not remove it automatically.
++    //
++    r1 = [cleaned_data rangeOfCString: "\r\n\r\n"];
++    r1 = [cleaned_data rangeOfCString: "\r\nBcc: "
++		       options: 0
++		       range: NSMakeRange(0,r1.location-1)];
++    
++    if (r1.location != NSNotFound)
++      {
++	// We search for the first \r\n AFTER the Bcc: header and
++	// replace the whole thing with \r\n.
++	r2 = [cleaned_data rangeOfCString: "\r\n"
++			   options: 0
++			   range: NSMakeRange(NSMaxRange(r1)+1,[cleaned_data length]-NSMaxRange(r1)-1)];
++	[cleaned_data replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
++		      withBytes: "\r\n"
++		      length: 2];
++      }
++    
++    
+     if (self->isDebuggingEnabled)
+-      [NGTextErr writeFormat:@"C: data(%i bytes) ..\n", [_data bytes]];
++      [NGTextErr writeFormat:@"C: data(%i bytes) ..\n", [cleaned_data length]];
+     
+-    [self->connection safeWriteBytes:[_data bytes] count:[_data length]];
+-    [self->connection safeWriteBytes:".\r\n" count:3];
++    [self->connection safeWriteBytes:[cleaned_data bytes] count:[cleaned_data length]];
++    [self->connection safeWriteBytes:"\r\n.\r\n" count:5];
+     [self->connection flush];
+ 
+     reply = [self receiveReply];
+Index: sope-mime/NGMail/NGMimeMessageGenerator.m
+===================================================================
+--- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1618)
++++ sope-mime/NGMail/NGMimeMessageGenerator.m	(copie de travail)
+@@ -86,37 +86,40 @@
+   char         *des    = NULL;
+   unsigned int cnt;
+   BOOL         doEnc;
+-  NSString     *str;
++//   NSString     *str;
+ 
+   // TODO: this s***s big time!
++//   NSLog (@"class: '%@'", NSStringFromClass ([_data class]));
++// #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
++//   str = [[NSString alloc] initWithData:_data
++//                           encoding:NSISOLatin1StringEncoding];
++//   str = [str autorelease];
++  
++// #else
++//   str = [[NSString alloc] initWithData:_data
++//                           encoding:NSISOLatin9StringEncoding];
++// #endif
++//   bytes  = [str cString];
++//   length = [str cStringLength];
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+-  str = [[NSString alloc] initWithData:_data
+-                          encoding:NSISOLatin1StringEncoding];
+-#else
+-  str = [[NSString alloc] initWithData:_data
+-                          encoding:NSISOLatin9StringEncoding];
+-#endif
+-  str = [str autorelease];
+-  
+-  bytes  = [str cString];
+-  length = [str cStringLength];
+-  
++  bytes = [_data bytes];
++  length = [_data length];
++
+   /* check whether we need to encode */
+-  
+-  for (cnt = 0, doEnc = NO; cnt < length; cnt++) {
+-    if ((unsigned char)bytes[cnt] > 127) {
++  cnt = 0;
++  doEnc = NO;
++  while (!doEnc && cnt < length)
++    if ((unsigned char)bytes[cnt] > 127)
+       doEnc = YES;
+-      break;
+-    }
+-  }
+-  
++    else
++      cnt++;
++
+   if (!doEnc)
+     return _data;
+   
+   /* encode quoted printable */
+   {
+-    char        iso[]     = "=?iso-8859-15?q?";
++    char        iso[]     = "=?utf-8?q?";
+     unsigned    isoLen    = 16;
+     char        isoEnd[]  = "?=";
+     unsigned    isoEndLen = 2;
+Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(copie de travail)
+@@ -19,88 +19,45 @@
+   02111-1307, USA.
+ */
+ 
++#ifdef HAVE_STRNDUP
++#define _GNU_SOURCE 1
++#endif
++
++#include <string.h>
++
+ #include "NGMimeHeaderFieldParser.h"
+ #include "NGMimeHeaderFields.h"
+ #include "NGMimeUtilities.h"
+ #include "common.h"
+-#include <string.h>
+ 
++#ifndef HAVE_STRNDUP
++char *strndup(const char *str, size_t len)
++{
++  char *dup = (char *)malloc(len+1);
++  if (dup) {
++    strncpy(dup,str,len);
++    dup[len]= '\0';
++  }
++  return dup;
++}
++#endif
++
+ @implementation NGMimeRFC822DateHeaderFieldParser
+ 
+-static Class CalDateClass = Nil;
+-static NSTimeZone *gmt   = nil;
+-static NSTimeZone *gmt01 = nil;
+-static NSTimeZone *gmt02 = nil;
+-static NSTimeZone *gmt03 = nil;
+-static NSTimeZone *gmt04 = nil;
+-static NSTimeZone *gmt05 = nil;
+-static NSTimeZone *gmt06 = nil;
+-static NSTimeZone *gmt07 = nil;
+-static NSTimeZone *gmt08 = nil;
+-static NSTimeZone *gmt09 = nil;
+-static NSTimeZone *gmt10 = nil;
+-static NSTimeZone *gmt11 = nil;
+-static NSTimeZone *gmt12 = nil;
+-static NSTimeZone *gmt0530 = nil;
+-static NSTimeZone *gmtM01 = nil;
+-static NSTimeZone *gmtM02 = nil;
+-static NSTimeZone *gmtM03 = nil;
+-static NSTimeZone *gmtM04 = nil;
+-static NSTimeZone *gmtM05 = nil;
+-static NSTimeZone *gmtM06 = nil;
+-static NSTimeZone *gmtM07 = nil;
+-static NSTimeZone *gmtM08 = nil;
+-static NSTimeZone *gmtM09 = nil;
+-static NSTimeZone *gmtM10 = nil;
+-static NSTimeZone *gmtM11 = nil;
+-static NSTimeZone *gmtM12 = nil;
+-static NSTimeZone *gmtM13 = nil;
+-static NSTimeZone *gmtM14 = nil;
+-static NSTimeZone *met    = nil;
++static NSTimeZone *gmt = nil;
++static NSTimeZone *met = nil;
+ 
+ + (int)version {
+   return 2;
+ }
++
+ + (void)initialize {
+   static BOOL didInit = NO;
+-  Class TzClass;
+   if (didInit) return;
+   didInit = YES;
+   
+-  CalDateClass = [NSCalendarDate class];
+-  
+-  /* timezones which were actually used in a maillist mailbox */
+-  TzClass = [NSTimeZone class];
+-  gmt    = [[TzClass timeZoneWithName:@"GMT"] retain];
+-  met    = [[TzClass timeZoneWithName:@"MET"] retain];
+-  gmt01  = [[TzClass timeZoneForSecondsFromGMT:  1 * (60 * 60)] retain];
+-  gmt02  = [[TzClass timeZoneForSecondsFromGMT:  2 * (60 * 60)] retain];
+-  gmt03  = [[TzClass timeZoneForSecondsFromGMT:  3 * (60 * 60)] retain];
+-  gmt04  = [[TzClass timeZoneForSecondsFromGMT:  4 * (60 * 60)] retain];
+-  gmt05  = [[TzClass timeZoneForSecondsFromGMT:  5 * (60 * 60)] retain];
+-  gmt06  = [[TzClass timeZoneForSecondsFromGMT:  6 * (60 * 60)] retain];
+-  gmt07  = [[TzClass timeZoneForSecondsFromGMT:  7 * (60 * 60)] retain];
+-  gmt08  = [[TzClass timeZoneForSecondsFromGMT:  8 * (60 * 60)] retain];
+-  gmt09  = [[TzClass timeZoneForSecondsFromGMT:  9 * (60 * 60)] retain];
+-  gmt10  = [[TzClass timeZoneForSecondsFromGMT: 10 * (60 * 60)] retain];
+-  gmt11  = [[TzClass timeZoneForSecondsFromGMT: 11 * (60 * 60)] retain];
+-  gmt12  = [[TzClass timeZoneForSecondsFromGMT: 12 * (60 * 60)] retain];
+-  gmtM01 = [[TzClass timeZoneForSecondsFromGMT: -1 * (60 * 60)] retain];
+-  gmtM02 = [[TzClass timeZoneForSecondsFromGMT: -2 * (60 * 60)] retain];
+-  gmtM03 = [[TzClass timeZoneForSecondsFromGMT: -3 * (60 * 60)] retain];
+-  gmtM04 = [[TzClass timeZoneForSecondsFromGMT: -4 * (60 * 60)] retain];
+-  gmtM05 = [[TzClass timeZoneForSecondsFromGMT: -5 * (60 * 60)] retain];
+-  gmtM06 = [[TzClass timeZoneForSecondsFromGMT: -6 * (60 * 60)] retain];
+-  gmtM07 = [[TzClass timeZoneForSecondsFromGMT: -7 * (60 * 60)] retain];
+-  gmtM08 = [[TzClass timeZoneForSecondsFromGMT: -8 * (60 * 60)] retain];
+-  gmtM09 = [[TzClass timeZoneForSecondsFromGMT: -9 * (60 * 60)] retain];
+-  gmtM10 = [[TzClass timeZoneForSecondsFromGMT:-10 * (60 * 60)] retain];
+-  gmtM11 = [[TzClass timeZoneForSecondsFromGMT:-11 * (60 * 60)] retain];
+-  gmtM12 = [[TzClass timeZoneForSecondsFromGMT:-12 * (60 * 60)] retain];
+-  gmtM13 = [[TzClass timeZoneForSecondsFromGMT:-13 * (60 * 60)] retain];
+-  gmtM14 = [[TzClass timeZoneForSecondsFromGMT:-14 * (60 * 60)] retain];
+-  
+-  gmt0530 = [[TzClass timeZoneForSecondsFromGMT:5 * (60*60) + (30*60)] retain];
++  gmt = [[NSTimeZone timeZoneWithName:@"GMT"] retain];
++  met = [[NSTimeZone timeZoneWithName:@"MET"] retain];
+ }
+ 
+ /* 
+@@ -147,162 +104,110 @@
+   }
+ }
+ 
+-static NSTimeZone *parseTimeZone(unsigned char *s, unsigned int len) {
++static int offsetFromTZAbbreviation(const char **p) {
++  NSString *abbreviation;
++  NSTimeZone *offsetTZ;
++  unsigned int length;
++
++  length = 0;
++  while (isalpha(*(*p+length)))
++    length++;
++  abbreviation = [[NSString alloc] initWithBytes: *p
++				   length: length - 1
++				   encoding: NSASCIIStringEncoding];
++  offsetTZ = [NSTimeZone timeZoneWithAbbreviation: abbreviation];
++  [abbreviation release];
++  *p += length;
++
++  return [offsetTZ secondsFromGMT];
++}
++
++static inline char *digitsString(const char *string) {
++  const char *p;
++  unsigned int len;
++
++  p = string;
++  while (!isdigit(*p))
++    p++;
++  len = 0;
++  while (isdigit(*(p + len)))
++    len++;
++
++  return strndup(p, len);
++}
++ 
++static NSTimeZone *parseTimeZone(const char *s, unsigned int len) {
+   /*
+     WARNING: failed to parse RFC822 timezone: '+0530' \
+              (value='Tue, 13 Jul 2004 21:39:28 +0530')
+     TODO: this is because libFoundation doesn't accept 'GMT+0530' as input.
+   */
+-  char       *p = (char *)s;
++  char *newString, *digits;
++  const char *p;
+   NSTimeZone *tz;
+-  NSString   *ts;
+-  
+-  if (len == 0) 
+-    return nil;
+-  
+-  if (*s == '+' || *s == '-') {
+-    if (len == 3) {
+-      if (p[1] == '0' && p[2] == '0') // '+00' or '-00'
+-	return gmt;
+-      if (*s == '+') {
+-	if (p[1] == '0' && p[2] == '1') // '+01'
+-	  return gmt01;
+-	if (p[1] == '0' && p[2] == '2') // '+02'
+-	  return gmt02;
+-      }
+-    }
+-    else if (len == 5) {
+-      if (p[3] == '0' && p[4] == '0' && p[1] == '0') { // '?0x00'
+-	if (p[2] == '0') // '+0000'
+-	  return gmt;
+-	
+-	if (*s == '+') {
+-	  if (p[2] == '1') return gmt01; // '+0100'
+-	  if (p[2] == '2') return gmt02; // '+0200'
+-	  if (p[2] == '3') return gmt03; // '+0300'
+-	  if (p[2] == '4') return gmt04; // '+0400'
+-	  if (p[2] == '5') return gmt05; // '+0500'
+-	  if (p[2] == '6') return gmt06; // '+0600'
+-	  if (p[2] == '7') return gmt07; // '+0700'
+-	  if (p[2] == '8') return gmt08; // '+0800'
+-	  if (p[2] == '9') return gmt09; // '+0900'
+-	}
+-	else if (*s == '-') {
+-          if (p[2] == '1') return gmtM01; // '-0100'
+-          if (p[2] == '2') return gmtM02; // '-0200'
+-          if (p[2] == '3') return gmtM03; // '-0300'
+-	  if (p[2] == '4') return gmtM04; // '-0400'
+-	  if (p[2] == '5') return gmtM05; // '-0500'
+-	  if (p[2] == '6') return gmtM06; // '-0600'
+-	  if (p[2] == '7') return gmtM07; // '-0700'
+-	  if (p[2] == '8') return gmtM08; // '-0800'
+-	  if (p[2] == '9') return gmtM09; // '-0900'
+-	}
+-      }
+-      else if (p[3] == '0' && p[4] == '0' && p[1] == '1') { // "?1x00"
+-        if (*s == '+') {
+-          if (p[2] == '0') return gmt10; // '+1000'
+-          if (p[2] == '1') return gmt11; // '+1100'
+-          if (p[2] == '2') return gmt12; // '+1200'
+-        }
+-        else if (*s == '-') {
+-          if (p[2] == '0') return gmtM10; // '-1000'
+-          if (p[2] == '1') return gmtM11; // '-1100'
+-          if (p[2] == '2') return gmtM12; // '-1200'
+-          if (p[2] == '3') return gmtM13; // '-1300'
+-          if (p[2] == '4') return gmtM14; // '-1400'
+-        }
+-      }
+-      
+-      /* special case for GMT+0530 */
+-      if (strncmp((char *)s, "+0530", 5) == 0)
+-	return gmt0530;
+-    }
+-    else if (len == 7) {
+-      /*
+-        "MultiMail" submits timezones like this: 
+-          "Tue, 9 Mar 2004 9:43:00 -05-500",
+-        don't know what the "-500" trailer is supposed to mean? Apparently 
+-        Thunderbird just uses the "-05", so do we.
+-      */
+-      
+-      if (isdigit(p[1]) && isdigit(p[2]) && (p[3] == '-'||p[3] == '+')) {
+-        unsigned char tmp[8];
+-        
+-        strncpy((char *)tmp, p, 3);
+-        tmp[3] = '0';
+-        tmp[4] = '0';
+-        tmp[5] = '\0';
+-        return parseTimeZone(tmp, 5);
+-      }
+-    }
++  unsigned int hours, minutes, seconds, remaining;
++  int sign;
++
++  sign = 1;
++  hours = 0;
++  minutes = 0;
++  seconds = 0;
++
++  newString = strndup(s, len);
++  p = newString;
++
++  if (isalpha(*p))
++    seconds = offsetFromTZAbbreviation(&p);
++  while (isspace(*p))
++    p++;
++  while (*p == '+' || *p == '-') {
++    if (*p == '-')
++      sign = -sign;
++    p++;
+   }
+-  else if (*s == '0') {
+-    if (len == 2) { // '00'
+-      if (p[1] == '0') return gmt;
+-      if (p[1] == '1') return gmt01;
+-      if (p[1] == '2') return gmt02;
+-    }
+-    else if (len == 4) {
+-      if (p[2] == '0' && p[3] == '0') { // '0x00'
+-	if (p[1] == '0') return gmt;
+-	if (p[1] == '1') return gmt01;
+-	if (p[1] == '2') return gmt02;
+-      }
+-    }
++  digits = digitsString(p);
++  p = digits;
++  remaining = strlen(p);
++  switch(remaining) {
++  case 6: /* hhmmss */
++    seconds += (10 * (*(p + remaining - 2) - 48)
++		+ *(p + remaining - 1) - 48);
++  case 4: /* hhmm */
++    hours += 10 * (*p - 48);
++    p++;
++  case 3: /* hmm */
++    hours += (*p - 48);
++    p++;
++    minutes += 10 * (*p - 48) + *(p + 1) - 48;
++    break;
++  case 2: /* hh */
++    hours += 10 * (*p - 48) + *(p + 1) - 48;
++    break;
++  default:
++    NSLog (@"%s: cannot parse time notation '%s'", p);
+   }
+-  else if (len == 3) {
+-    if (strcasecmp((char *)s, "GMT") == 0) return gmt;
+-    if (strcasecmp((char *)s, "UTC") == 0) return gmt;
+-    if (strcasecmp((char *)s, "MET") == 0) return met;
+-    if (strcasecmp((char *)s, "CET") == 0) return met;
+-  }
+-  
+-  if (isalpha(*s)) {
+-    ts = [[NSString alloc] initWithCString:(char *)s length:len];
+-  }
+-  else {
+-    char buf[len + 5];
+-    
+-    buf[0] = 'G'; buf[1] = 'M'; buf[2] = 'T';
+-    if (*s == '+' || *s == '-') {
+-      strcpy(&(buf[3]), (char *)s);
+-    }
+-    else {
+-      buf[3] = '+';
+-      strcpy(&(buf[4]), (char *)s);
+-    }
+-    ts = [[NSString alloc] initWithCString:buf];
+-  }
+-#if 1
+-  NSLog(@"%s: RFC822 TZ Parser: expensive: '%@'", __PRETTY_FUNCTION__, ts);
+-#endif
+-  tz = [NSTimeZone timeZoneWithAbbreviation:ts];
+-  [ts release];
++  free(digits);
++
++  seconds += sign * (3600 * hours + 60 * minutes);
++  tz = [NSTimeZone timeZoneForSecondsFromGMT: seconds];
++  free(newString);
++
+   return tz;
+ }
+ 
+ - (id)parseValue:(id)_data ofHeaderField:(NSString *)_field {
+   // TODO: use UNICODE
+   NSCalendarDate *date       = nil;
+-  unsigned char  buf[256];
+-  unsigned char  *bytes = buf, *pe;
++  unsigned char  *bytes, *pe;
+   unsigned       length = 0;
+   NSTimeZone     *tz = nil;
+   char  dayOfMonth, monthOfYear, hour, minute, second;
+   short year;
+   BOOL  flag;
+-  
+-  if ((length = [_data cStringLength]) > 254) {
+-    [self logWithFormat:
+-	    @"header field value to large for date parsing: '%@'(%i)",
+-	    _data, length];
+-    length = 254;
+-  }
+-  
+-  [_data getCString:(char *)buf maxLength:length];
+-  buf[length] = '\0';
+-  
++
++  length = [_data lengthOfBytesUsingEncoding: NSASCIIStringEncoding];
++  bytes = [_data cStringUsingEncoding: NSASCIIStringEncoding];
++
+   /* remove leading chars (skip to first digit, the day of the month) */
+   while (length > 0 && (!isdigit(*bytes))) {
+     bytes++;
+@@ -312,7 +217,7 @@
+   if (length == 0) {
+     NSLog(@"WARNING(%s): empty value for header field %@ ..",
+           __PRETTY_FUNCTION__, _field);
+-    return [CalDateClass date];
++    return [NSCalendarDate date];
+   }
+   
+   // TODO: should be a category on NSCalendarDate
+@@ -435,7 +340,7 @@
+   for (pe = bytes; isalnum(*pe) || *pe == '-' || *pe == '+'; pe++)
+     ;
+   *pe = '\0';
+-  if ((tz = parseTimeZone(bytes, (pe - bytes))) == nil) {
++  if ((tz = parseTimeZone((const char *) bytes, (pe - bytes))) == nil) {
+     [self logWithFormat:
+             @"WARNING: failed to parse RFC822 timezone: '%s' (value='%@')",
+ 	    bytes, _data];
+@@ -444,9 +349,9 @@
+   
+   /* construct and return */
+  finished:  
+-  date = [CalDateClass dateWithYear:year month:monthOfYear day:dayOfMonth
+-		       hour:hour minute:minute second:second
+-		       timeZone:tz];
++  date = [NSCalendarDate dateWithYear:year month:monthOfYear day:dayOfMonth
++			 hour:hour minute:minute second:second
++			 timeZone:tz];
+   if (date == nil) goto failed;
+ 
+ #if 0  
+Index: sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m
+===================================================================
+--- sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeHeaderFieldGeneratorSet.m	(copie de travail)
+@@ -77,6 +77,7 @@
+     [rfc822Set setGenerator:gen forField:@"bcc"];
+     [rfc822Set setGenerator:gen forField:Fields->from];
+     [rfc822Set setGenerator:gen forField:@"reply-to"];
++    [rfc822Set setGenerator:gen forField:@"in-reply-to"];
+     [rfc822Set setGenerator:gen forField:@"Disposition-Notification-To"];
+   }
+   
+Index: sope-mime/NGMime/NGMimeBodyPart.m
+===================================================================
+--- sope-mime/NGMime/NGMimeBodyPart.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeBodyPart.m	(copie de travail)
+@@ -31,18 +31,6 @@
+   return 2;
+ }
+ 
+-static NGMimeType *defaultType = nil;
+-
+-+ (void)initialize {
+-  static BOOL isInitialized = NO;
+-  if (!isInitialized) {
+-    isInitialized = YES;
+-    
+-    defaultType =
+-      [[NGMimeType mimeType:@"text/plain; charset=us-ascii"] retain];
+-  }
+-}
+-  
+ + (id)bodyPartWithHeader:(NGHashMap *)_header {
+   return [[[self alloc] initWithHeader:_header] autorelease];
+ }
+@@ -156,13 +144,12 @@
+   if (!Fields)
+     Fields = (NGMimeHeaderNames *)[NGMimePartParser headerFieldNames];
+   
+-  
+   type = [self->header objectForKey:Fields->contentType];
+   
+   if (![type isKindOfClass:[NGMimeType class]])
+     type = [NGMimeType mimeType:[type stringValue]];
+   
+-  return (type != nil ? type : (id)defaultType);
++  return type;
+ }
+ 
+ - (NSString *)contentId {
+Index: sope-mime/NGMime/GNUmakefile.preamble
+===================================================================
+--- sope-mime/NGMime/GNUmakefile.preamble	(révision 1618)
++++ sope-mime/NGMime/GNUmakefile.preamble	(copie de travail)
+@@ -5,6 +5,11 @@
+ 	-DLIBRARY_MINOR_VERSION=${MINOR_VERSION} \
+ 	-DLIBRARY_SUBMINOR_VERSION=${SUBMINOR_VERSION} \
+ 
++ifeq ($(patsubstr GNU/%,glibc,$(shell uname -o)),glibc)
++ADDITIONAL_CPPFLAGS += \
++        -DHAVE_STRNDUP
++endif
++
+ NGMime_INCLUDE_DIRS += \
+ 	-I.. -I../..			\
+ 	-I../../sope-core/NGStreams/	\
+Index: sope-mime/NGMime/NGMimeBodyParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimeBodyParser.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeBodyParser.m	(copie de travail)
+@@ -67,7 +67,10 @@
+   if (_data == nil) return nil;
+   
+   ctype = [_part contentType];
+-  
++  if (!ctype
++      && [_d respondsToSelector: @selector(parser:contentTypeOfPart:)])
++    ctype = [_d parser: self contentTypeOfPart: _part];
++
+   if (![ctype isKindOfClass:[NGMimeType class]])
+     ctype = [NGMimeType mimeType:[ctype stringValue]];
+   
+Index: sope-mime/NGMime/NGMimePartParser.h
+===================================================================
+--- sope-mime/NGMime/NGMimePartParser.h	(révision 1618)
++++ sope-mime/NGMime/NGMimePartParser.h	(copie de travail)
+@@ -117,6 +117,7 @@
+     BOOL parserParseRawBodyDataOfPart:1;
+     BOOL parserBodyParserForPart:1;
+     BOOL parserDecodeBodyOfPart:1;
++    BOOL parserContentTypeOfPart:1;
+   } delegateRespondsTo;
+ 
+   
+@@ -275,6 +276,9 @@
+ - (id<NGMimeBodyParser>)parser:(NGMimePartParser *)_parser
+   bodyParserForPart:(id<NGMimePart>)_part;
+ 
++- (NGMimeType *)parser:(id)_parser
++  contentTypeOfPart:(id<NGMimePart>)_part;
++
+ @end /* NSObject(NGMimePartParserDelegate) */
+ 
+ @interface NSObject(NGMimePartParser)
+Index: sope-mime/NGMime/NGMimePartParser.m
+===================================================================
+--- sope-mime/NGMime/NGMimePartParser.m	(révision 1618)
++++ sope-mime/NGMime/NGMimePartParser.m	(copie de travail)
+@@ -227,7 +227,7 @@
+ }
+ 
+ + (NSStringEncoding)defaultHeaderFieldEncoding {
+-  return NSISOLatin1StringEncoding;
++  return NSUTF8StringEncoding;
+ }
+ 
+ - (id)valueOfHeaderField:(NSString *)_name data:(id)_data {
+@@ -1091,7 +1091,10 @@
+   id<NGMimeBodyParser> bodyParser   = nil;
+   
+   ctype = [_p contentType];
+-  
++  if (!ctype
++      && self->delegateRespondsTo.parserContentTypeOfPart)
++    ctype = [self->delegate parser: self contentTypeOfPart: _p];
++
+   contentType = ([ctype isKindOfClass:[NGMimeType class]])
+     ? ctype
+     : [NGMimeType mimeType:[ctype stringValue]];
+Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
+===================================================================
+--- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
+@@ -130,8 +130,13 @@
+     
+     if (doEnc) {
+       /* FIXME - better use UTF8 encoding! */
++#if NeXT_Foundation_LIBRARY
+       unsigned char iso[]     = "=?iso-8859-15?q?";
+       unsigned      isoLen    = 16;
++#else
++      unsigned char iso[]     = "=?utf-8?q?";
++      unsigned      isoLen    = 10;
++#endif
+       unsigned char isoEnd[]  = "?=";
+       unsigned      isoEndLen = 2;
+       unsigned      desLen;
+@@ -141,10 +146,10 @@
+       {
+         NSData *data;
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
++#if NeXT_Foundation_LIBRARY
+         data = [tmp dataUsingEncoding:NSISOLatin1StringEncoding];
+ #else
+-        data = [tmp dataUsingEncoding:NSISOLatin9StringEncoding];
++        data = [tmp dataUsingEncoding:NSUTF8StringEncoding];
+ #endif
+ 
+         bufLen  = [data length];
+Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
+===================================================================
+--- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1618)
++++ sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(copie de travail)
+@@ -49,80 +49,70 @@
+   
+   // TODO: move the stuff below to some NSString or NSData category?
+   
+-  data = [NSMutableData dataWithCapacity:64];
++  data = [NSMutableData dataWithCapacity: 64];
+   tmp  = [field type];
+   [data appendBytes:[tmp cString] length:[tmp length]];
+   tmp = [field filename];
+   if (tmp != nil) {
+     [data appendBytes:"; " length:2];
+     [data appendBytes:"filename=\"" length:10];
+-    {
+-      unsigned char *ctmp;
+-      int  cnt, len;
+-      BOOL doEnc;
+-      
+-      // TODO: unicode?
+-      len  = [tmp cStringLength];
+-      ctmp = malloc(len + 3);
+-      [tmp getCString:(char *)ctmp]; ctmp[len] = '\0';
+-      cnt  = 0;
+-      doEnc = NO;
+-      while (cnt < len) {
+-        if ((unsigned char)ctmp[cnt] > 127) {
+-          doEnc = YES;
+-          break;
+-        }
+-        cnt++;
++    
++    NSData *d;
++    unsigned char* bytes;
++    unsigned length;
++    int  cnt;
++    BOOL doEnc;
++
++    //d = [tmp dataUsingEncoding: NSUTF8StringEncoding];
++    //bytes = [d bytes];
++    //length = [d length];
++    bytes = [tmp cStringUsingEncoding: NSUTF8StringEncoding];
++    length = strlen(bytes);
++    
++    cnt = 0;
++    doEnc = NO;
++    while (cnt < length) {
++      if ((unsigned char)bytes[cnt] > 127) {
++	doEnc = YES;
++	break;
+       }
+-      if (doEnc) {
+-        char        iso[]     = "=?iso-8859-15?q?";
+-        unsigned    isoLen    = 16;
+-        char        isoEnd[]  = "?=";
+-        unsigned    isoEndLen = 2;
+-        unsigned    desLen;
+-        char        *des;
+-      
+-        if (ctmp) free(ctmp);
+-        {
+-          NSData *data;
++      cnt++;
++    }
+ 
+-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+-          data = [tmp dataUsingEncoding:NSISOLatin1StringEncoding];
+-#else
+-          data = [tmp dataUsingEncoding:NSISOLatin9StringEncoding];
+-#endif
+-
+-          len  = [data length];
+-          ctmp =  malloc(len+1);
+-          [data getBytes:ctmp];  ctmp[len] = '\0';
+-        }
+-          
+-        desLen = len * 3 + 20;
+-        des    = calloc(desLen + 10, sizeof(char));
+-      
+-        memcpy(des, ctmp, cnt);
+-        memcpy(des + cnt, iso, isoLen);
+-        desLen =
+-	  NGEncodeQuotedPrintableMime((unsigned char *)ctmp + cnt, len - cnt,
+-				      (unsigned char *)des + cnt + isoLen,
+-				      desLen - cnt - isoLen);
+-        if ((int)desLen != -1) {
+-          memcpy(des + cnt + isoLen + desLen, isoEnd, isoEndLen);
+-          [data appendBytes:des length:(cnt + isoLen + desLen + isoEndLen)];
+-        }
+-        else {
++    if (doEnc)
++      {
++	char        iso[]     = "=?utf-8?q?";
++	unsigned    isoLen    = 10;
++	char        isoEnd[]  = "?=";
++	unsigned    isoEndLen = 2;
++	int    desLen;
++	char        *des;
++	
++	desLen = length * 3 + 20;
++	
++	des = calloc(desLen + 2, sizeof(char));
++	
++	memcpy(des, iso, isoLen);
++	desLen = NGEncodeQuotedPrintableMime((unsigned char *)bytes, length,
++					     (unsigned char *)(des + isoLen),
++					     desLen - isoLen);
++	if (desLen != -1) {
++	  memcpy(des + isoLen + desLen, isoEnd, isoEndLen);
++	  [data appendBytes:des length:(isoLen + desLen + isoEndLen)];
++	}
++	else {
+           [self logWithFormat:@"WARNING(%s:%i): An error occour during "
+ 		@"quoted-printable decoding",
+                 __PRETTY_FUNCTION__, __LINE__];
+-        }
+-        if (des) free(des);
++	  if (des != NULL) free(des);
++	}
+       }
+-      else {
+-        [data appendBytes:ctmp length:len];
++    else
++      {
++	[data appendBytes:[tmp cString] length:[tmp length]];
+       }
+-    }
+-      //      [data appendBytes:[tmp cString] length:[tmp length]];
+-      [data appendBytes:"\"" length:1];
++
++    [data appendBytes:"\"" length:1];
+   }
+   return data;
+ }
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1618)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1618)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -30,6 +30,7 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++static BOOL debugOn = NO;
+ //
+ //
+ //
+@@ -41,10 +42,19 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
+++ (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
++- (void) _cleanup
++{
+   column_info *info;
+   int c;
++  sword result;
+ 
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +68,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -231,6 +259,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
+@@ -302,7 +333,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1618)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
+@@ -31,6 +31,8 @@
+ #import <Foundation/Foundation.h>
+ #import <GDLAccess/EOSQLExpression.h>
+ 
++static BOOL debugOn = NO;
++
+ //
+ //
+ //
+@@ -48,6 +50,14 @@
+ //
+ @implementation OracleAdaptorChannelController
+ 
+++ (void) initialize
++{
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
+ - (EODelegateResponse) adaptorChannel: (id) theChannel
+                         willInsertRow: (NSMutableDictionary *) theRow
+                             forEntity: (EOEntity *) theEntity
+@@ -56,7 +66,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
++  if (debugOn)
++    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+@@ -101,7 +112,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
++  if (debugOn)
++    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
+===================================================================
+--- sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(révision 1618)
++++ sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m	(copie de travail)
+@@ -140,8 +140,12 @@
+ 
+ 
+ #ifdef __linux__
++#if __BYTE_ORDER == __LITTLE_ENDIAN
+ static NSString *unicharEncoding = @"UCS-2LE";
+ #else
++static NSString *unicharEncoding = @"UCS-2BE";
++#endif /* __BYTE_ORDER */
++#else
+ static NSString *unicharEncoding = @"UCS-2-INTERNAL";
+ #endif
+ static int IconvLogEnabled = -1;
+@@ -149,21 +153,12 @@
+ static void checkDefaults(void) {
+   NSUserDefaults *ud;
+   
+-  if (IconvLogEnabled != -1) 
+-    return;
+-  ud = [NSUserDefaults standardUserDefaults];
+-  IconvLogEnabled = [ud boolForKey:@"IconvLogEnabled"]?1:0;
++  if (IconvLogEnabled == -1) {
++    ud = [NSUserDefaults standardUserDefaults];
++    IconvLogEnabled = [ud boolForKey:@"IconvLogEnabled"]?1:0;
+ 
+-#ifdef __linux__
+-  if (NSHostByteOrder() == NS_BigEndian) {
+-    NSLog(@"Note: using UCS-2 big endian on Linux.");
+-    unicharEncoding = @"UCS-2BE";
++    NSLog(@"Note: using '%@' on Linux.", unicharEncoding);
+   }
+-  else {
+-    NSLog(@"Note: using UCS-2 little endian on Linux.");
+-    unicharEncoding = @"UCS-2LE";
+-  }
+-#endif
+ }
+ 
+ static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
+Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
+===================================================================
+--- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(révision 1618)
++++ sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(copie de travail)
+@@ -19,6 +19,7 @@
+   02111-1307, USA.
+ */
+ 
++#import <Foundation/NSString.h>
+ #import <EOControl/EOGlobalID.h>
+ #import <Foundation/NSString.h>
+ 
+Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
+===================================================================
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1618)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(copie de travail)
+@@ -19,6 +19,8 @@
+   02111-1307, USA.
+ */
+ 
++#include <libxml/encoding.h>
++
+ #include <SaxObjC/SaxXMLReader.h>
+ #include <SaxObjC/SaxLexicalHandler.h>
+ #include <SaxObjC/SaxDeclHandler.h>
+@@ -34,7 +36,7 @@
+ 
+ @interface libxmlHTMLSAXDriver : NSObject < SaxXMLReader >
+ {
+-  id<NSObject,SaxContentHandler> contentHandler;
++  NSObject<SaxContentHandler> *contentHandler;
+   id<NSObject,SaxDTDHandler>     dtdHandler;
+   id<NSObject,SaxErrorHandler>   errorHandler;
+   id<NSObject,SaxEntityResolver> entityResolver;
+Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m
+===================================================================
+--- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(révision 1618)
++++ sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.m	(copie de travail)
+@@ -30,6 +30,12 @@
+ #include <libxml/HTMLparser.h>
+ #include <libxml/HTMLtree.h>
+ 
++@interface NSObject (contentHandlerExtensions) <SaxContentHandler>
++
++- (xmlCharEncoding) contentEncoding;
++
++@end
++
+ @interface libxmlHTMLSAXDriver(PrivateMethods)
+ 
+ - (void)tearDownParser;
+@@ -194,10 +200,10 @@
+   return self->entityResolver;
+ }
+ 
+-- (void)setContentHandler:(id<NSObject,SaxContentHandler>)_handler {
++- (void)setContentHandler:(NSObject <NSObject,SaxContentHandler> *)_handler {
+   ASSIGN(self->contentHandler, _handler);
+ }
+-- (id<NSObject,SaxContentHandler>)contentHandler {
++- (NSObject <NSObject,SaxContentHandler> *)contentHandler {
+   return self->contentHandler;
+ }
+ 
+@@ -205,6 +211,7 @@
+ 
+ - (void)setupParserWithDocumentPath:(NSString *)_path {
+   xmlSAXHandler sax;
++  xmlCharEncoding charEncoding;
+   
+   if (self->ctxt != NULL) {
+     NSLog(@"WARNING(%s): HTML parser context already setup !",
+@@ -223,14 +230,18 @@
+           __PRETTY_FUNCTION__, self, activeDriver);
+   }
+   activeDriver = self;
+-  
++
++  if ([self->contentHandler respondsToSelector: @selector (contentEncoding)])
++    charEncoding = [self->contentHandler contentEncoding];
++  else
++    charEncoding = XML_CHAR_ENCODING_8859_1;
++
+   self->ctxt = htmlCreatePushParserCtxt(&sax             /* sax      */,
+                                         NULL /*self*/    /* userdata */,
+                                         NULL             /* chunk    */,
+                                         0                /* chunklen */,
+                                         [_path cString]  /* filename */,
+-                                        XML_CHAR_ENCODING_8859_1
+-                                        /* encoding */);
++					charEncoding /* encoding */);
+   self->doc = NULL;
+ }
+ - (void)tearDownParser {
+Index: sope-appserver/mod_ngobjweb/config.c
+===================================================================
+--- sope-appserver/mod_ngobjweb/config.c	(révision 1618)
++++ sope-appserver/mod_ngobjweb/config.c	(copie de travail)
+@@ -21,7 +21,7 @@
+ 
+ #include "common.h"
+ 
+-//#define LOG_CONFIG 1
++#define LOG_CONFIG 0
+ 
+ static char *_makeString(char *buf, char *str, int max) {
+   if (buf == NULL)
+Index: sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c
+===================================================================
+--- sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(révision 1618)
++++ sope-appserver/mod_ngobjweb/NGBufferedDescriptor.c	(copie de travail)
+@@ -23,6 +23,7 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <stdio.h>
++#include "common.h"
+ #include "NGBufferedDescriptor.h"
+ 
+ // returns the number of bytes which where read from the buffer
+Index: sope-appserver/mod_ngobjweb/GNUmakefile
+===================================================================
+--- sope-appserver/mod_ngobjweb/GNUmakefile	(révision 1618)
++++ sope-appserver/mod_ngobjweb/GNUmakefile	(copie de travail)
+@@ -81,7 +81,7 @@
+ 
+ CFLAGS  = -Wall -I. -fPIC \
+ 	$(APXS_CFLAGS) $(APR_CFLAGS) \
+-	$(APXS_INCLUDE_DIRS) $(APR_INCLUDE_DIRS)
++	$(APXS_INCLUDE_DIRS) $(APR_INCLUDE_DIRS) -O0 -ggdb
+ 
+ LDFLAGS = $(APXS_LDFLAGS) $(APR_LDFLAGS) -shared -fPIC
+ 
+Index: sope-appserver/mod_ngobjweb/handler.c
+===================================================================
+--- sope-appserver/mod_ngobjweb/handler.c	(révision 1618)
++++ sope-appserver/mod_ngobjweb/handler.c	(copie de travail)
+@@ -267,7 +267,7 @@
+   const char           *uri;
+   unsigned             requestContentLength;
+   void                 *requestBody;
+-  
++
+   uri = r->uri;
+   requestContentLength = 0;
+   requestBody = NULL;
+@@ -404,6 +404,9 @@
+                  "could not create socket in domain %i.", domain);
+     return DECLINED;
+   }
++/*   else */
++/*     ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server, */
++/*                  "appFd socket created in domain %i: %d", domain, appFd); */
+ 
+   if ((result = _connectInstance(r, appFd, address, addressLen)) < 0)
+     return 500;
+@@ -646,7 +649,10 @@
+ 
+  writeErrorHandler:
+   if (writeError == 1) {
+-    if (toApp) NGBufferedDescriptor_free(toApp);
++    if (toApp) {
++      NGBufferedDescriptor_free(toApp);
++      toApp = NULL;
++    }
+     
+     ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server,
+                  "socket write error during transfer of HTTP header section");
+@@ -659,7 +665,10 @@
+     if (!NGBufferedDescriptor_safeWrite(toApp,
+                                         requestBody,
+                                         requestContentLength)) {
+-      if (toApp) NGBufferedDescriptor_free(toApp);
++      if (toApp) {
++	NGBufferedDescriptor_free(toApp);
++	toApp = NULL;
++      }
+       ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server,
+                    "couldn't transfer HTTP req body to app server (%i bytes)",
+                    contentLength);
+@@ -677,7 +686,10 @@
+   /* read response line */
+   
+   if (!NGScanResponseLine(toApp, NULL, &statusCode, NULL)) {
+-    if (toApp) NGBufferedDescriptor_free(toApp);
++    if (toApp) {
++      NGBufferedDescriptor_free(toApp);
++      toApp = NULL;
++    }
+     ap_log_error(__FILE__, __LINE__, APLOG_ERR, 0, r->server,
+                  "error during reading of response line ..");
+     return 500;
+@@ -716,16 +728,8 @@
+       }
+ 
+       // read whole response
+-      if (!NGBufferedDescriptor_safeRead(toApp, buffer, contentLength)) {
+-        if (toApp) NGBufferedDescriptor_free(toApp);
+-      }
++      NGBufferedDescriptor_safeRead(toApp, buffer, contentLength);
+ 
+-      // close connection to app
+-      if (toApp) {
+-        NGBufferedDescriptor_free(toApp);
+-        toApp = NULL;
+-      }
+-
+       ap_log_error(__FILE__, __LINE__, APLOG_INFO, 0, r->server,
+                    "send response (size=%i)",
+                    contentLength);
+@@ -739,15 +743,14 @@
+       int result = 0;
+       int writeCount = 0;
+ 
+-      do {
+-        result = NGBufferedDescriptor_read(toApp, buffer, sizeof(buffer));
+-        if (result > 0) {
+-          ap_rwrite(buffer, result, r);
+-          ap_rflush(r);
+-          writeCount += result;
+-        }
++      while ((result = NGBufferedDescriptor_read(toApp,
++						 buffer,
++						 sizeof(buffer))
++	      > 0)) {
++	ap_rwrite(buffer, result, r);
++	ap_rflush(r);
++	writeCount += result;
+       }
+-      while (result > 0);
+ 
+       if (HEAVY_LOG && (writeCount > 0)) {
+         ap_log_error(__FILE__, __LINE__, APLOG_INFO, 0, r->server,
+@@ -756,10 +759,26 @@
+       }
+     }
+   }
+-  
++
++  // close connection to app
++  if (toApp) {
++    NGBufferedDescriptor_free(toApp);
++    toApp = NULL;
++  }
++
+   return OK;
+ }
+ 
++/* int ngobjweb_handler(request_rec *r) { */
++/*   int code; */
++
++/*   fprintf (stderr, "ngobjweb_handler...\n======================"); */
++/*   code = real_ngobjweb_handler(r); */
++/*   fprintf (stderr, "================ %d\n", code); */
++
++/*   return code; */
++/* } */
++
+ #if WITH_LOGGING
+ #if 0
+ static void test(void) {
+Index: sope-appserver/NGObjWeb/GNUmakefile.postamble
+===================================================================
+--- sope-appserver/NGObjWeb/GNUmakefile.postamble	(révision 1618)
++++ sope-appserver/NGObjWeb/GNUmakefile.postamble	(copie de travail)
+@@ -23,14 +23,20 @@
+ 
+ # install makefiles
+ 
+-after-install ::
+-	$(MKDIRS) $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/
+-	$(INSTALL_DATA) ngobjweb.make $(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make
++after-install :: $(DESTDIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make
+ 
+ ifneq ($(GNUSTEP_MAKE_VERSION),1.3.0)
+-after-install ::
++after-install :: $(DESTDIR)/$(GNUSTEP_MAKEFILES)/woapp.make $(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
++endif
++
++$(DESTDIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make: ngobjweb.make
++	$(MKDIRS) $(DESTDIR)/$(GNUSTEP_MAKEFILES)/Additional/
++	$(INSTALL_DATA) ngobjweb.make $(DESTDIR)/$(GNUSTEP_MAKEFILES)/Additional/ngobjweb.make
++
++$(DESTDIR)/$(GNUSTEP_MAKEFILES)/woapp.make: woapp-gs.make
+ 	$(INSTALL_DATA) woapp-gs.make    \
+-		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/woapp.make
++		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/woapp.make
++
++$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make: wobundle-gs.make
+ 	$(INSTALL_DATA) wobundle-gs.make \
+-		$(INSTALL_ROOT_DIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
+-endif
++		$(DESTDIR)/$(GNUSTEP_MAKEFILES)/wobundle.make
+Index: sope-appserver/NGObjWeb/WOContext.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOContext.m	(révision 1618)
++++ sope-appserver/NGObjWeb/WOContext.m	(copie de travail)
+@@ -64,11 +64,13 @@
+ static BOOL     testNSURLs           = NO;
+ static BOOL     newCURLStyle         = NO;
+ static NSString *WOApplicationSuffix = nil;
++static NSURL    *redirectURL         = nil;
+ 
+ + (void)initialize {
+   static BOOL    didInit = NO;
+   NSUserDefaults *ud;
+   NSString       *cn;
++  NSString       *url;
+ 
+   if (didInit) return;
+ 
+@@ -91,6 +93,9 @@
+   debugCursor         = [ud boolForKey:@"WODebugCursor"] ? 1 : 0;
+   debugComponentAwake = [ud boolForKey:@"WODebugComponentAwake"];
+   WOApplicationSuffix = [[ud stringForKey:@"WOApplicationSuffix"] copy];
++  url                 = [ud stringForKey:@"WOApplicationRedirectURL"];
++  if (url != nil)
++    redirectURL       = [NSURL URLWithString: url];
+ }
+ 
+ + (id)contextWithRequest:(WORequest *)_r {
+@@ -503,6 +508,11 @@
+     return nil;
+   }
+   
++  if (redirectURL) {
++    // Use URL from user defaults (WOApplicationRedirectURL)
++    return redirectURL;
++  }
++  
+   if ((serverURL = [rq headerForKey:@"x-webobjects-server-url"]) == nil) {
+     if ((host = [rq headerForKey:@"host"]))
+       serverURL = [@"http://" stringByAppendingString:host];
+Index: sope-appserver/NGObjWeb/DAVPropMap.plist
+===================================================================
+--- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1618)
++++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
+@@ -120,17 +120,21 @@
+   "{http://ucb.openoffice.org/dav/props/}IsRemoveable"  = isOOoRemoveable;
+   "{http://ucb.openoffice.org/dav/props/}IsVolume"      = isOOoVolume;
+   "{http://ucb.openoffice.org/dav/props/}TargetURL"     = davOOoTargetURL;
+-
++  
+   /* WebDAV ACL */
+   "{DAV:}current-user-privilege-set" = davCurrentUserPrivilegeSet;
+ 
+   /* CalDAV */
++  "{urn:ietf:params:xml:ns:caldav}calendar-data" = davCalendarData;
++  "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
+   "{urn:ietf:params:xml:ns:caldav}calendar-home-set" = davCalendarHomeSet;
++  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set" = davCalendarUserAddressSet;
++  "{urn:ietf:params:xml:ns:caldav}schedule-inbox-URL" = davCalendarScheduleInboxURL;
++  "{urn:ietf:params:xml:ns:caldav}schedule-outbox-URL" = davCalendarScheduleOutboxURL;
+   "{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set" =
+      davCalendarComponentSet;
+   "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
+      davSupportedCalendarDataTypes;
+-  "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
+ 
+   /* CardDAV */
+   "{urn:ietf:params:xml:ns:carddav}supported-address-data" =
+Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(révision 1618)
++++ sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(copie de travail)
+@@ -655,6 +655,7 @@
+       if (self->responses == nil)
+ 	self->responses = [[NSMutableArray alloc] initWithCapacity:64];
+     }
++
+     break;
+ 
+   case 'n':
+Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1618)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(copie de travail)
+@@ -216,6 +216,12 @@
+       assocCount++;
+     }
+   }
++  if (count > 0) {
++    if ((self->isAbsolute = OWGetProperty(_config, @"absolute"))) {
++      count--;
++      assocCount++;
++    }
++  }
+   
+   self->rest = _config;
+   
+Index: sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(révision 1618)
++++ sope-appserver/NGObjWeb/DynamicElements/_WOComplexHyperlink.m	(copie de travail)
+@@ -41,6 +41,7 @@
+   WOAssociation *string;
+   WOAssociation *target;
+   WOAssociation *disabled;
++  WOAssociation *isAbsolute;
+   WOElement     *template;
+   
+   /* new in WO4: */
+@@ -360,6 +361,7 @@
+ {
+   if ((self = [super initWithName:_name hyperlinkInfo:_info template:_t])) {
+     self->href = _info->href;
++    self->isAbsolute = _info->isAbsolute;
+   }
+   return self;
+ }
+@@ -375,8 +377,11 @@
+   // TODO: we need a binding to disable rewriting!
+   NSRange r;
+ 
++  if ([[self->isAbsolute valueInContext:_ctx] boolValue] == YES)
++    return NO;
++
+   r.length = [_s length];
+-  
++
+   /* do not rewrite pure fragment URLs */
+   if (r.length > 0 && [_s characterAtIndex:0] == '#')
+     return NO;
+Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h
+===================================================================
+--- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(révision 1618)
++++ sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.h	(copie de travail)
+@@ -41,7 +41,8 @@
+   WOAssociation *pageName;
+   WOAssociation *actionClass;
+   WOAssociation *directActionName;
+-  
++  WOAssociation *isAbsolute;
++
+   BOOL          sidInUrl;
+ 
+   /* 'ivar' associations */
+Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoObject.m	(révision 1618)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject.m	(copie de travail)
+@@ -39,22 +39,34 @@
+ static int debugLookup  = -1;
+ static int debugBaseURL = -1;
+ static int useRelativeURLs = -1;
++static int redirectInitted = -1;
++static NSURL *redirectURL = nil;
++
+ static void _initialize(void) {
++  NSString *url;
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++
+   if (debugLookup == -1) {
+-    debugLookup = [[NSUserDefaults standardUserDefaults]
+-		                   boolForKey:@"SoDebugKeyLookup"] ? 1 : 0;
++    debugLookup = [ud boolForKey:@"SoDebugKeyLookup"] ? 1 : 0;
+     NSLog(@"Note(SoObject): SoDebugKeyLookup is enabled!");
+   }
+   if (debugBaseURL == -1) {
+-    debugBaseURL = [[NSUserDefaults standardUserDefaults]
+-		                     boolForKey:@"SoDebugBaseURL"] ? 1 : 0;
++    debugBaseURL = [ud boolForKey:@"SoDebugBaseURL"] ? 1 : 0;
+     NSLog(@"Note(SoObject): SoDebugBaseURL is enabled!");
+   }
+   if (useRelativeURLs == -1) {
+-    useRelativeURLs = [[NSUserDefaults standardUserDefaults]
+-		                       boolForKey:@"WOUseRelativeURLs"] ?1:0;
++    useRelativeURLs = [ud boolForKey:@"WOUseRelativeURLs"] ?1:0;
+     NSLog(@"Note(SoObject): relative base URLs are enabled.");
+   }
++  if (redirectInitted == -1) {
++    url = [ud stringForKey:@"WOApplicationRedirectURL"];
++    if ([url length]) {
++      redirectURL = [[NSURL alloc] initWithString: url];
++    }
++    redirectInitted = 1;
++  }
+ }
+ 
+ /* classes */
+@@ -318,56 +330,61 @@
+   
+   rq = [_ctx request];
+   ms = [[NSMutableString alloc] initWithCapacity:128];
++
++  if (redirectURL) {
++    [ms appendString: [redirectURL absoluteString]];
++  }
++  else {  
++    if (!useRelativeURLs) {
++      port = [[rq headerForKey:@"x-webobjects-server-port"] intValue];
+   
+-  if (!useRelativeURLs) {
+-    port = [[rq headerForKey:@"x-webobjects-server-port"] intValue];
+-  
+-    /* this is actually a bug in Apache */
+-    if (port == 0) {
+-      static BOOL didWarn = NO;
+-      if (!didWarn) {
+-	[self warnWithFormat:@"(%s:%i): got an empty port from Apache!",
+-              __PRETTY_FUNCTION__, __LINE__];
+-	didWarn = YES;
++      /* this is actually a bug in Apache */
++      if (port == 0) {
++	static BOOL didWarn = NO;
++	if (!didWarn) {
++	  [self warnWithFormat:@"(%s:%i): got an empty port from Apache!",
++		__PRETTY_FUNCTION__, __LINE__];
++	  didWarn = YES;
++	}
++	port = 80;
+       }
+-      port = 80;
+-    }
+   
+-    if ((tmp = [rq headerForKey:@"host"]) != nil) { 
+-      /* check whether we have a host header with port */
+-      if ([tmp rangeOfString:@":"].length == 0)
+-	tmp = nil;
+-    }
+-    if (tmp != nil) { /* we have a host header with port */
+-      isHTTPS = 
+-	[[rq headerForKey:@"x-webobjects-server-url"] hasPrefix:@"https"];
+-      [ms appendString:isHTTPS ? @"https://" : @"http://"]; 
+-      [ms appendString:tmp];
+-    }
+-    else if ((tmp = [rq headerForKey:@"x-webobjects-server-url"]) != nil) {
+-      /* sometimes the URL is just wrong! (suggests port 80) */
+-      if ([tmp hasSuffix:@":0"] && [tmp length] > 2) { // TODO: bad bad bad
+-	[self warnWithFormat:@"%s: got incorrect URL from Apache: '%@'",
+-	      __PRETTY_FUNCTION__, tmp];
+-	tmp = [tmp substringToIndex:([tmp length] - 2)];
++      if ((tmp = [rq headerForKey:@"host"]) != nil) { 
++	/* check whether we have a host header with port */
++	if ([tmp rangeOfString:@":"].length == 0)
++	  tmp = nil;
+       }
+-      else if ([tmp hasSuffix:@":443"] && [tmp hasPrefix:@"http://"]) {
+-	/* see OGo bug #1435, Debian Apache hack */
+-	[self warnWithFormat:@"%s: got 'http' protocol but 443 port, "
+-	      @"assuming Debian/Apache bug (OGo #1435): '%@'",
+-	      __PRETTY_FUNCTION__, tmp];
+-	tmp = [tmp substringWithRange:NSMakeRange(4, [tmp length] - 4 - 4)];
+-	tmp = [@"https" stringByAppendingString:tmp];
++      if (tmp != nil) { /* we have a host header with port */
++	isHTTPS = 
++	  [[rq headerForKey:@"x-webobjects-server-url"] hasPrefix:@"https"];
++	[ms appendString:isHTTPS ? @"https://" : @"http://"]; 
++	[ms appendString:tmp];
+       }
+-      [ms appendString:tmp];
+-    }
+-    else {
+-      // TODO: isHTTPS always no in this case?
+-      [ms appendString:isHTTPS ? @"https://" : @"http://"]; 
++      else if ((tmp = [rq headerForKey:@"x-webobjects-server-url"]) != nil) {
++	/* sometimes the URL is just wrong! (suggests port 80) */
++	if ([tmp hasSuffix:@":0"] && [tmp length] > 2) { // TODO: bad bad bad
++	  [self warnWithFormat:@"%s: got incorrect URL from Apache: '%@'",
++		__PRETTY_FUNCTION__, tmp];
++	  tmp = [tmp substringToIndex:([tmp length] - 2)];
++	}
++	else if ([tmp hasSuffix:@":443"] && [tmp hasPrefix:@"http://"]) {
++	  /* see OGo bug #1435, Debian Apache hack */
++	  [self warnWithFormat:@"%s: got 'http' protocol but 443 port, "
++		@"assuming Debian/Apache bug (OGo #1435): '%@'",
++		__PRETTY_FUNCTION__, tmp];
++	  tmp = [tmp substringWithRange:NSMakeRange(4, [tmp length] - 4 - 4)];
++	  tmp = [@"https" stringByAppendingString:tmp];
++	}
++	[ms appendString:tmp];
++      }
++      else {
++	// TODO: isHTTPS always no in this case?
++	[ms appendString:isHTTPS ? @"https://" : @"http://"]; 
+   
+-      [ms appendString:[rq headerForKey:@"x-webobjects-server-name"]];
+-      if ((isHTTPS ? (port != 443) : (port != 80)) && port != 0)
+-	[ms appendFormat:@":%i", port];
++	[ms appendString:[rq headerForKey:@"x-webobjects-server-name"]];
++	if ((isHTTPS ? (port != 443) : (port != 80)) && port != 0)
++	  [ms appendFormat:@":%i", port];
++      }
+     }
+   }
+   
+Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
+===================================================================
+--- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1618)
++++ sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(copie de travail)
+@@ -32,6 +32,7 @@
+ #include <NGObjWeb/WOCookie.h>
+ #include <NGExtensions/NSData+gzip.h>
+ #include <NGHttp/NGHttp.h>
++#include <NGMime/NGMimeType.h>
+ #include "common.h"
+ 
+ #include <string.h>
+@@ -1042,6 +1043,12 @@
+ - (void)parser:(NGMimePartParser *)_parser didParseHeader:(NGHashMap *)_header {
+ }
+ 
++- (NGMimeType *)parser:(id)_parser
++  contentTypeOfPart:(id<NGMimePart>)_part
++{
++  return [NGMimeType mimeType: @"text/plain; charset=utf-8"];
++}
++
+ @end /* WOHttpAdaptor */
+ 
+ @implementation WOCoreApplication(SimpleParserSelection)
