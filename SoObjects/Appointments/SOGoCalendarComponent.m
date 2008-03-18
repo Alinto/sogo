@@ -155,6 +155,11 @@ static BOOL sendEMailNotifications = NO;
   return secureContent;
 }
 
+- (NSString *) davCalendarData
+{
+  return [self contentAsString];
+}
+
 - (iCalCalendar *) calendar: (BOOL) create secure: (BOOL) secure
 {
   NSString *componentTag;

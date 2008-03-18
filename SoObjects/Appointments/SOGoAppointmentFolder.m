@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
@@ -150,43 +151,213 @@ static NSNumber   *sharedYes = nil;
 
 /* name lookup */
 
-- (void) appendObject: (NSDictionary *) object
-          withBaseURL: (NSString *) baseURL
-     toREPORTResponse: (WOResponse *) r
+- (void) _appendPropstat: (NSDictionary *) propstat
+	      toResponse: (WOResponse *) r
 {
-  SOGoCalendarComponent *component;
-  Class componentClass;
-  NSString *name, *etagLine, *calString;
+  NSArray *properties;
+  unsigned int count, max;
 
-  name = [object objectForKey: @"c_name"];
+  [r appendContentString: @"<D:propstat>"];
+  [r appendContentString: @"<D:prop>"];
+  properties = [propstat objectForKey: @"properties"];
+  max = [properties count];
+  for (count = 0; count < max; count++)
+    [r appendContentString: [properties objectAtIndex: count]];
+  [r appendContentString: @"</D:prop>"];
+  [r appendContentString: @"<D:status>"];
+  [r appendContentString: [propstat objectForKey: @"status"]];
+  [r appendContentString: @"</D:status>"];
+  [r appendContentString: @"</D:propstat>"];
+}
 
-  if ([[object objectForKey: @"c_component"] isEqualToString: @"vevent"])
-    componentClass = [SOGoAppointmentObject class];
+#warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
+
+#warning components in calendar-data query are ignored
+- (NSString *) _property: (NSObject <DOMElement> *) property
+		ofObject: (SOGoObject *) sogoObject
+{
+  NSDictionary *map;
+  NSString *value, *propName, *methodName;
+  SEL methodSel;
+
+  value = nil;
+
+  propName = [NSString stringWithFormat: @"{%@}%@",
+		       [property namespaceURI],
+		       [property nodeName]];
+  map = [[self class] defaultWebDAVAttributeMap];
+  methodName = [map objectForKey: propName];
+  if (methodName)
+    {
+      methodSel = NSSelectorFromString(methodName);
+      if ([sogoObject respondsToSelector: methodSel])
+	{
+	  value = [[sogoObject performSelector: methodSel]
+		    stringByEscapingXMLString];
+	  if (![value length])
+	    NSLog (@"value empty?");
+	}
+    }
+
+  return value;
+}
+
+- (NSString *) _namespaceRep: (NSString *) namespace
+{
+  NSString *rep;
+
+  if ([namespace isEqualToString: @"urn:ietf:params:xml:ns:caldav"])
+    rep = @"C";
   else
-    componentClass = [SOGoTaskObject class];
+    rep = @"D";
 
-  component = [componentClass objectWithName: name inContainer: self];
+  return rep;
+}
+
+- (NSString *) _nodeTag: (NSObject <DOMElement> *) property
+{
+  NSMutableString *nodeTag;
+  NSString *nsRep;
+
+  nodeTag = [NSMutableString string];
+  nsRep = [self _namespaceRep: [property namespaceURI]];
+  if (nsRep)
+    [nodeTag appendFormat: @"%@:", nsRep];
+  [nodeTag appendString: [property nodeName]];
+
+  return nodeTag;
+}
+
+- (NSString *) _representProperty: (NSDictionary *) property
+{
+  NSMutableString *propertyValue;
+  NSString *content, *nodeTag;
+
+  propertyValue = [NSMutableString string];
+  nodeTag = [self _nodeTag: [property objectForKey: @"property"]];
+  content = [property objectForKey: @"content"];
+  if (content)
+    [propertyValue appendFormat: @"<%@>%@</%@>", nodeTag, content, nodeTag];
+  else
+    [propertyValue appendFormat: @"<%@/>", nodeTag];
+
+  return propertyValue;
+}
+
+- (NSArray *) _properties: (NSArray *) properties
+		 ofObject: (NSDictionary *) object
+{
+  NSMutableArray *values;
+  NSEnumerator *list;
+  NSObject <DOMElement> *currentProperty;
+  NSMutableDictionary *currentValue;
+  SOGoObject *sogoObject;
+  NSString *content;
+
+  values = [NSMutableArray array];
+
+  sogoObject = [self lookupName: [object objectForKey: @"c_name"]
+		     inContext: context
+		     acquire: NO];
+  list = [properties objectEnumerator];
+  while ((currentProperty = [list nextObject]))
+    {
+      currentValue = [NSMutableDictionary dictionary];
+      [currentValue setObject: currentProperty
+		    forKey: @"property"];
+      content = [self _property: currentProperty
+		      ofObject: sogoObject];
+      if (content)
+	[currentValue setObject: content
+		      forKey: @"content"];
+      [values addObject: currentValue];
+    }
+
+  return values;
+}
+
+- (NSArray *) _propstats: (NSArray *) properties
+		ofObject: (NSDictionary *) object
+{
+  NSMutableArray *propstats, *properties200, *properties404;
+  NSEnumerator *values;
+  NSDictionary *currentProperty;
+  NSString *content, *propertyValue;
+
+  propstats = [NSMutableArray array];
+
+  properties200 = [NSMutableArray new];
+  properties404 = [NSMutableArray new];
+
+  values = [[self _properties: properties ofObject: object]
+	     objectEnumerator];
+  while ((currentProperty = [values nextObject]))
+    {
+      content = [currentProperty objectForKey: @"content"];
+      propertyValue = [self _representProperty: currentProperty];
+      if (content)
+	[properties200 addObject: propertyValue];
+      else
+	[properties404 addObject: propertyValue];
+    }
+
+  if ([properties200 count])
+    {
+      [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					    properties200, @"properties",
+					  @"HTTP/1.1 200 OK", @"status",
+					  nil]];
+      [properties200 autorelease];
+    }
+  else
+    [properties200 release];
+  
+  if ([properties404 count])
+    {
+      [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					    properties404, @"properties",
+					  @"HTTP/1.1 404 Not Found", @"status",
+					nil]];
+      [properties404 autorelease];
+    }
+  else
+    [properties404 release];
+
+  return propstats;
+}
+
+- (void) appendObject: (NSDictionary *) object
+	   properties: (NSArray *) properties
+          withBaseURL: (NSString *) baseURL
+    toComplexResponse: (WOResponse *) r
+{
+  NSEnumerator *propstats;
+  NSDictionary *propstat;
 
   [r appendContentString: @"  <D:response>\r\n"];
   [r appendContentString: @"    <D:href>"];
   [r appendContentString: baseURL];
   if (![baseURL hasSuffix: @"/"])
     [r appendContentString: @"/"];
-  [r appendContentString: name];
+  [r appendContentString: [object objectForKey: @"c_name"]];
   [r appendContentString: @"</D:href>\r\n"];
 
-  [r appendContentString: @"    <D:propstat>\r\n"];
-  [r appendContentString: @"      <D:prop>\r\n"];
-  etagLine = [NSString stringWithFormat: @"        <D:getetag>%@</D:getetag>\r\n",
-                       [component davEntityTag]];
-  [r appendContentString: etagLine];
-  [r appendContentString: @"      </D:prop>\r\n"];
-  [r appendContentString: @"      <D:status>HTTP/1.1 200 OK</D:status>\r\n"];
-  [r appendContentString: @"    </D:propstat>\r\n"];
-  [r appendContentString: @"    <C:calendar-data>"];
-  calString = [[component contentAsString] stringByEscapingXMLString];
-  [r appendContentString: calString];
-  [r appendContentString: @"</C:calendar-data>\r\n"];
+  propstats = [[self _propstats: properties ofObject: object]
+		objectEnumerator];
+  while ((propstat = [propstats nextObject]))
+    [self _appendPropstat: propstat toResponse: r];
+
+  [r appendContentString: @"  </D:response>\r\n"];
+}
+
+- (void) appendMissingObjectRef: (NSString *) href
+	      toComplexResponse: (WOResponse *) r
+{
+  [r appendContentString: @"  <D:response>\r\n"];
+  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: href];
+  [r appendContentString: @"</D:href>\r\n"];
+  [r appendContentString: @"    <D:status>HTTP/1.1 404 Not Found</D:status>\r\n"];
   [r appendContentString: @"  </D:response>\r\n"];
 }
 
@@ -204,11 +375,11 @@ static NSNumber   *sharedYes = nil;
 - (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
 {
   NSMutableDictionary *filterData;
-  id <DOMNode> parentNode;
+  id <DOMElement> parentNode;
   id <DOMNodeList> ranges;
   NSString *componentName;
 
-  parentNode = [filterElement parentNode];
+  parentNode = (id <DOMElement>) [filterElement parentNode];
   if ([[parentNode tagName] isEqualToString: @"comp-filter"]
       && [[parentNode attribute: @"name"] isEqualToString: @"VCALENDAR"])
     {
@@ -217,7 +388,7 @@ static NSNumber   *sharedYes = nil;
       [filterData autorelease];
       [filterData setObject: componentName forKey: @"name"];
       ranges = [filterElement getElementsByTagName: @"time-range"];
-      if ([ranges count])
+      if ([ranges length])
         [self _appendTimeRange: [ranges objectAtIndex: 0]
               toFilter: filterData];
     }
@@ -227,30 +398,60 @@ static NSNumber   *sharedYes = nil;
   return filterData;
 }
 
+- (NSArray *) _parseRequestedProperties: (id <DOMElement>) parentNode
+{
+  NSMutableArray *properties;
+  NSObject <DOMNodeList> *propList, *children;
+  NSObject <DOMNode> *currentChild;
+  unsigned int count, max, count2, max2;
+
+  properties = [NSMutableArray array];
+
+  propList = [parentNode getElementsByTagName: @"prop"];
+  max = [propList length];
+  for (count = 0; count < max; count++)
+    {
+      children = [[propList objectAtIndex: count] childNodes];
+      max2 = [children length];
+      for (count2 = 0; count2 < max2; count2++)
+	{
+	  currentChild = [children objectAtIndex: count2];
+	  if ([currentChild conformsToProtocol: @protocol(DOMElement)])
+	    [properties addObject: currentChild];
+	}
+
+//       while ([children hasChildNodes])
+// 	[properties addObject: [children next]];
+    }
+
+  return properties;
+}
+
 - (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
 {
-  NSEnumerator *children;
-  id<DOMElement> node;
+  id <DOMNodeList> children;
+  id <DOMElement> node;
   NSMutableArray *filters;
   NSDictionary *filter;
+  unsigned int count, max;
 
   filters = [NSMutableArray array];
-  children = [[parentNode getElementsByTagName: @"comp-filter"]
-	       objectEnumerator];
-  node = [children nextObject];
-  while (node)
+  children = [parentNode getElementsByTagName: @"comp-filter"];
+  max = [children length];
+  for (count = 0; count < max; count++)
     {
+      node = [children objectAtIndex: count];
       filter = [self _parseCalendarFilter: node];
       if (filter)
-        [filters addObject: filter];
-      node = [children nextObject];
+	[filters addObject: filter];
     }
 
   return filters;
 }
 
-- (void) _appendComponentsMatchingFilters: (NSArray *) filters
-                               toResponse: (WOResponse *) response
+- (void) _appendComponentProperties: (NSArray *) properties
+		    matchingFilters: (NSArray *) filters
+			 toResponse: (WOResponse *) response
 {
   NSArray *apts;
   unsigned int count, max;
@@ -273,10 +474,72 @@ static NSNumber   *sharedYes = nil;
       while (appointment)
         {
           [self appendObject: appointment
+		properties: properties
                 withBaseURL: baseURL
-                toREPORTResponse: response];
+                toComplexResponse: response];
           appointment = [appointments nextObject];
         }
+    }
+}
+
+#warning this is baddddd because we return a single-valued dictionary containing \
+  a cname which may not event exist... the logic behind appendObject:... should be \
+  rethought, especially since we may start using SQL views
+
+- (NSDictionary *) _componentMatchingURL: (NSString *) url
+                               inBaseURL: (NSString *) baseURL
+{
+  NSDictionary *component;
+  NSURL *componentURL, *realBaseURL;
+  NSArray *urlComponents;
+  NSString *componentURLPath, *cName;
+
+  component = nil;
+
+  realBaseURL = [NSURL URLWithString: baseURL];
+  componentURL = [[NSURL URLWithString: url
+			 relativeToURL: realBaseURL]
+		   standardizedURL];
+  componentURLPath = [componentURL absoluteString];
+  if ([componentURLPath rangeOfString: [realBaseURL absoluteString]].location
+      != NSNotFound)
+    {
+      urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
+      cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
+      if ([cName isEqualToString: @"2AAC-4E8AB421-1-B767AA80"])
+	NSLog (@"breakpoint...");
+      component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
+    }
+
+  return component;
+}
+
+- (void) _appendComponentProperties: (NSArray *) properties
+		       matchingURLs: (id <DOMNodeList>) refs
+			 toResponse: (WOResponse *) response
+{
+  NSObject <DOMElement> *element;
+  NSDictionary *currentComponent;
+  NSString *baseURL, *currentURL;
+  unsigned int count, max;
+
+  baseURL = [self baseURLInContext: context];
+
+  max = [refs length];
+  for (count = 0; count < max; count++)
+    {
+      element = [refs objectAtIndex: count];
+      currentURL = [[element firstChild] nodeValue];
+      currentComponent = [self _componentMatchingURL: currentURL
+			       inBaseURL: baseURL];
+      if (currentComponent)
+	[self appendObject: currentComponent
+	      properties: properties
+	      withBaseURL: baseURL
+	      toComplexResponse: response];
+      else
+	[self appendMissingObjectRef: currentURL
+	      toComplexResponse: response];
     }
 }
 
@@ -293,8 +556,8 @@ static NSNumber   *sharedYes = nil;
 - (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;
-  NSArray *filters;
   id <DOMDocument> document;
+  id <DOMElement> documentElement;
 
   r = [context response];
   [r setStatus: 207];
@@ -307,8 +570,35 @@ static NSNumber   *sharedYes = nil;
      @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
 
   document = [[context request] contentAsDOMDocument];
-  filters = [self _parseCalendarFilters: [document documentElement]];
-  [self _appendComponentsMatchingFilters: filters
+  documentElement = [document documentElement];
+  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+	matchingFilters: [self _parseCalendarFilters: documentElement]
+        toResponse: r];
+  [r appendContentString:@"</D:multistatus>\r\n"];
+
+  return r;
+}
+
+- (id) davCalendarMultiget: (id) queryContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  id <DOMElement> documentElement;
+
+  r = [context response];
+  [r setStatus: 207];
+  [r setContentEncoding: NSUTF8StringEncoding];
+  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+  [r setHeader: @"no-cache" forKey: @"pragma"];
+  [r setHeader: @"no-cache" forKey: @"cache-control"];
+  [r appendContentString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+  [r appendContentString: @"<D:multistatus xmlns:D=\"DAV:\""
+     @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">\r\n"];
+
+  document = [[context request] contentAsDOMDocument];
+  documentElement = [document documentElement];
+  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+	matchingURLs: [documentElement getElementsByTagName: @"href"]
         toResponse: r];
   [r appendContentString:@"</D:multistatus>\r\n"];
 

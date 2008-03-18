@@ -1,3 +1,16 @@
+2008-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davCalendarMultiget:queryContext]):
+	implemented new CalDAV method.
+	([SOGoAppointmentFolder -davCalendarQuery:queryContext]):
+	refactored method to return exactly the properties requested in
+	the query and to share code with the new method above.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -davCalendarData]): added method for
+	better CalDAV compliance.
+
 2008-03-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
