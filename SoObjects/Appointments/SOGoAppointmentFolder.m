@@ -249,6 +249,8 @@ static NSNumber   *sharedYes = nil;
 
   values = [NSMutableArray array];
 
+//   if ([[object objectForKey: @"c_name"] isEqualToString: @"176A-4E8BDE62-5-B73ECD10"])
+//     NSLog(@"breajpoint");
   sogoObject = [self lookupName: [object objectForKey: @"c_name"]
 		     inContext: context
 		     acquire: NO];

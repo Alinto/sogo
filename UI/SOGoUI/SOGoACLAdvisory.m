@@ -255,6 +255,9 @@
 @implementation SOGoACLGermanAdditionAdvisory
 @end
 
+@implementation SOGoACLItalianAdditionAdvisory
+@end
+
 @implementation SOGoACLEnglishModificationAdvisory
 @end
 
@@ -262,6 +265,9 @@
 @end
 
 @implementation SOGoACLGermanModificationAdvisory
+@end
+
+@implementation SOGoACLItalianModificationAdvisory
 @end
 
 @implementation SOGoACLEnglishRemovalAdvisory
@@ -272,3 +278,7 @@
 
 @implementation SOGoACLGermanRemovalAdvisory
 @end
+
+@implementation SOGoACLItalianRemovalAdvisory
+@end
+

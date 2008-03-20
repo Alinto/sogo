@@ -230,3 +230,12 @@
 @implementation SOGoFolderGermanRemovalAdvisory
 - (NSString *) folderMethod { return @"remove"; }
 @end
+
+@implementation SOGoFolderItalianAdditionAdvisory
+- (NSString *) folderMethod { return @"add"; }
+@end
+
+@implementation SOGoFolderItalianRemovalAdvisory
+- (NSString *) folderMethod { return @"remove"; }
+@end
+

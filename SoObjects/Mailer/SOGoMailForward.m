@@ -172,3 +172,7 @@
 
 @implementation SOGoMailGermanForward
 @end
+
+@implementation SOGoMailItalianForward
+@end
+

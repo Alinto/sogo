@@ -38,3 +38,10 @@
 
 @implementation SOGoAptMailGermanDeletion
 @end
+
+@interface SOGoAptMailItalinDeletion : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailItalianDeletion
+@end
+

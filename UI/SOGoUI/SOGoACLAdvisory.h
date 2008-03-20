@@ -74,6 +74,9 @@
 @interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
+@interface SOGoACLItalianAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
 @interface SOGoACLEnglishModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
@@ -83,6 +86,9 @@
 @interface SOGoACLGermanModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
+@interface SOGoACLItalianModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
 @interface SOGoACLEnglishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
@@ -90,6 +96,9 @@
 @end
 
 @interface SOGoACLGermanRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLItalianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 #endif /* SOGOACLADVISORY_H */

@@ -38,3 +38,10 @@
 
 @implementation SOGoAptMailGermanRemoval
 @end
+
+@interface SOGoAptMailItalianRemoval : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailItalianRemoval
+@end
+

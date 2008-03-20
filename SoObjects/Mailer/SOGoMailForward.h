@@ -47,4 +47,7 @@
 @interface SOGoMailGermanForward : SOGoMailForward
 @end
 
+@interface SOGoMailItalianForward : SOGoMailForward
+@end
+
 #endif /* SOGOMAILFORWARD_H */

@@ -38,3 +38,10 @@
 
 @implementation SOGoAptMailGermanInvitation
 @end
+
+@interface SOGoAptMailItalianInvitation : SOGoAptMailNotification
+@end
+
+@implementation SOGoAptMailItalianInvitation
+@end
+

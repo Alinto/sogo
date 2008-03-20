@@ -42,9 +42,12 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailEnglishForward.wo \
 	SOGoMailFrenchForward.wo \
 	SOGoMailGermanForward.wo \
+    SOGoMailItalianForward.wo \
 	SOGoMailEnglishReply.wo \
 	SOGoMailFrenchReply.wo \
-	SOGoMailGermanReply.wo
+	SOGoMailGermanReply.wo \
+    SOGoMailItalianReply.wo 
+
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/

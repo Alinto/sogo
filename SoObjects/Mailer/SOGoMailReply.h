@@ -47,4 +47,7 @@
 @interface SOGoMailGermanReply : SOGoMailReply
 @end
 
+@interface SOGoMailItalianReply : SOGoMailReply
+@end
+
 #endif /* SOGOMAILREPLY_H */

@@ -110,3 +110,7 @@
 
 @implementation SOGoMailGermanReply
 @end
+
+@implementation SOGoMailItalianReply
+@end
+

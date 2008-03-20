@@ -65,4 +65,11 @@
 @interface SOGoFolderGermanRemovalAdvisory : SOGoFolderAdvisory
 @end
 
+@interface SOGoFolderItalianAdditionAdvisory : SOGoFolderAdvisory
+@end
+
+@interface SOGoFolderItalianRemovalAdvisory : SOGoFolderAdvisory
+@end
+
+
 #endif /* SOGOFOLDERADVISORY_H */

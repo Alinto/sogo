@@ -6,7 +6,7 @@ BUNDLE_NAME = iCalHTTP
 
 iCalHTTP_PRINCIPAL_CLASS = iCalHTTPProduct
 
-iCalHTTP_LANGUAGES = English French
+iCalHTTP_LANGUAGES = English French Italian
 
 iCalHTTP_OBJC_FILES = \
 	iCalHTTPProduct.m	\

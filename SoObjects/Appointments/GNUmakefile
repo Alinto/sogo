@@ -49,6 +49,12 @@ Appointments_COMPONENTS +=	\
 	SOGoAptMailGermanUpdate.wo	\
 	SOGoAptMailGermanRemoval.wo	\
 	SOGoAptMailGermanDeletion.wo	\
+    SOGoAptMailItalianInvitation.wo \
+    SOGoAptMailItalianICalReply.wo  \
+    SOGoAptMailItalianUpdate.wo \
+    SOGoAptMailItalianRemoval.wo    \
+    SOGoAptMailItalianDeletion.wo   \
+
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/

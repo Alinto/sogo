@@ -36,3 +36,22 @@
 
 @implementation SOGoAptMailFrenchUpdate
 @end
+
+
+@interface SOGoAptMailGermanUpdate : SOGoAptMailNotification
+{
+}
+@end
+
+@implementation SOGoAptMailGermanUpdate
+@end
+
+
+@interface SOGoAptMailItalianUpdate : SOGoAptMailNotification
+{
+}
+@end
+
+@implementation SOGoAptMailItalianUpdate
+@end
+
