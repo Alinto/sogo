@@ -3,6 +3,8 @@
 - converted to use the gnustep-make 2 build framework
 - added custom DAV methods for managing user permissions from the SOGo Integrator
 - pressing enter in the contact edition dialog will perform the creation/update operation
+- implemented more of the CalDAV specification for compatibility with Lightning 0.8
+- added Italian translation, thanks to Marco Lertora
 
 0.9.0-20080208 (1.0 rc5)
 ------------------------
