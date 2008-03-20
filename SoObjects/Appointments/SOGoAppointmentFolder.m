@@ -157,17 +157,14 @@ static NSNumber   *sharedYes = nil;
   NSArray *properties;
   unsigned int count, max;
 
-  [r appendContentString: @"<D:propstat>"];
-  [r appendContentString: @"<D:prop>"];
+  [r appendContentString: @"<D:propstat><D:prop>"];
   properties = [propstat objectForKey: @"properties"];
   max = [properties count];
   for (count = 0; count < max; count++)
     [r appendContentString: [properties objectAtIndex: count]];
-  [r appendContentString: @"</D:prop>"];
-  [r appendContentString: @"<D:status>"];
+  [r appendContentString: @"</D:prop><D:status>"];
   [r appendContentString: [propstat objectForKey: @"status"]];
-  [r appendContentString: @"</D:status>"];
-  [r appendContentString: @"</D:propstat>"];
+  [r appendContentString: @"</D:status></D:propstat>"];
 }
 
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
@@ -191,12 +188,8 @@ static NSNumber   *sharedYes = nil;
     {
       methodSel = NSSelectorFromString(methodName);
       if ([sogoObject respondsToSelector: methodSel])
-	{
-	  value = [[sogoObject performSelector: methodSel]
-		    stringByEscapingXMLString];
-	  if (![value length])
-	    NSLog (@"value empty?");
-	}
+	value = [[sogoObject performSelector: methodSel]
+		  stringByEscapingXMLString];
     }
 
   return value;
@@ -334,31 +327,27 @@ static NSNumber   *sharedYes = nil;
   NSEnumerator *propstats;
   NSDictionary *propstat;
 
-  [r appendContentString: @"  <D:response>\r\n"];
-  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: @"<D:response><D:href>"];
   [r appendContentString: baseURL];
   if (![baseURL hasSuffix: @"/"])
     [r appendContentString: @"/"];
   [r appendContentString: [object objectForKey: @"c_name"]];
-  [r appendContentString: @"</D:href>\r\n"];
+  [r appendContentString: @"</D:href>"];
 
   propstats = [[self _propstats: properties ofObject: object]
 		objectEnumerator];
   while ((propstat = [propstats nextObject]))
     [self _appendPropstat: propstat toResponse: r];
 
-  [r appendContentString: @"  </D:response>\r\n"];
+  [r appendContentString: @"</D:response>\r\n"];
 }
 
 - (void) appendMissingObjectRef: (NSString *) href
 	      toComplexResponse: (WOResponse *) r
 {
-  [r appendContentString: @"  <D:response>\r\n"];
-  [r appendContentString: @"    <D:href>"];
+  [r appendContentString: @"<D:response><D:href>"];
   [r appendContentString: href];
-  [r appendContentString: @"</D:href>\r\n"];
-  [r appendContentString: @"    <D:status>HTTP/1.1 404 Not Found</D:status>\r\n"];
-  [r appendContentString: @"  </D:response>\r\n"];
+  [r appendContentString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>\r\n"];
 }
 
 - (void) _appendTimeRange: (id <DOMElement>) timeRangeElement
@@ -506,8 +495,6 @@ static NSNumber   *sharedYes = nil;
     {
       urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
       cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-      if ([cName isEqualToString: @"2AAC-4E8AB421-1-B767AA80"])
-	NSLog (@"breakpoint...");
       component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
     }
 
