@@ -53,12 +53,12 @@
 	  label:value="Add subfolders to this folder"/></label>
       <br/>
       <label><input type="checkbox" class="checkBox"
-	  const:name="ObjectEraser"
+	  const:name="FolderEraser"
 	  var:checked="userCanRemoveFolder"/><var:string
 	  label:value="Remove this folder"/></label>
       <br/>
       <label><input type="checkbox" class="checkBox"
-	  const:name="MailMessageEraser"
+	  const:name="ObjectEraser"
 	  var:checked="userCanEraseMails"/><var:string
 	  label:value="Erase mails from this folder"/></label>
       <br/>
