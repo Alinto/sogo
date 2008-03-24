@@ -34,7 +34,7 @@ sqlscript=""
 function addField() {
     oldIFS="$IFS"
     IFS=" "
-    part="`echo -e \"ALTER TABLE $table ADD COLUMN c_component VARCHAR(10) NOT NULL DEFAULT 'vcard';\\n\"`";
+    part="`echo -e \"ALTER TABLE $table ADD COLUMN c_component VARCHAR(10); UPDATE TABLE $table SET COLUMN c_component = 'vcard' WHERE c_component IS NULL; ALTER TABLE $table ALTER COLUMN c_component SET NOT NULL;\\n\"`";
     sqlscript="$sqlscript$part"
     IFS="$oldIFS"
 }
