@@ -1,0 +1,41 @@
+﻿/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Salva";
+"Close" = "Chiudi";
+"Edit User Rights" = "Modifica permessi";
+
+"Home" = "Home";
+"Calendar" = "Calendario";
+"Address Book"	= "Rubrica";
+"Mail" = "Posta";
+"Preferences" = "Preferenze";
+"Disconnect" = "Disconnetti";
+"Right Administration" = "Amministrazione permessi";
+"Log Console (dev.)" = "Log Console (dev.)";
+
+"User"			= "Utente";
+"Owner:" 		= "Proprietario:";
+"Help"			= "Aiuto";
+"Add..."		= "Aggiungi...";
+"Remove"		= "Rimuovi...";
+
+"noJavascriptError" = "SOGo ha bisogno di Javascript per essere eseguito. Verifica che questo elemento sia presente ed attivato nelle preferenze del browser";
+"noJavascriptRetry" = "Riprova";
+
+"Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
+"Default Roles" = "Permessi predefiniti";
+"Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
+"browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
+"alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";
+"alternativeBrowserSafari" = "Alternativamente, puoi utilizzare Safari.";
+"Download" = "Scarica";
+
+/* generic.js */
+"Unable to subscribe to that folder!"	= "Impossibile sottoscrivere la cartella!";
+"You cannot subscribe to a folder that you own!" = "Non puoi sottoscrivere una cartella di cui sei proprietario!";
+"Unable to unsubscribe from that folder!" = "Impossibile annullare la sottoscrizione alla cartella!";
+"You cannot unsubscribe from a folder that you own!" = "Non puoi annullare la sottoscrizione ad una cartella di cui sei proprietario!";
+"Unable to rename that folder!" = "Impossibile rinominare la cartella!";
+"You have already subscribed to that folder!" 	= "Hai già sottoscritto la cartella!";
+"The user rights cannot be edited for this object!"  = "I permessi di questo oggetto non possono essere modificati!";

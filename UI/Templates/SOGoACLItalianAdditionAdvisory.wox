@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    Sei stato aggiunto da <var:string value="currentUserName" const:escapeHTML="NO"/>
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> ti ha aggiunto alla lista di accesso per la cartella <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+
+Puoi iscriverti direttamente alla cartella utilizzando questo link:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
+
+Altrimenti, potrai farlo in un secondo momento utilizzando l'interfaccia web di SOGo.
+
+Puoi anche accedere a questa risorsa da remoto utilizzando questo URL:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+</var:if>
+
+</container>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> ti ha rimosso
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> ti ha rimosso dalla lista accessi per la cartella <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+
+Puoi annullare la tua sottoscrizione utilizzando questo link:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
+
+Altrimenti, potrai annullare la sottoscrizione in un secondo momento dall'interfaccia di SOGo.
+
+Potrai anche accedere a questa risorsa utilizzando l'URL:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+</var:if>
+
+</container>

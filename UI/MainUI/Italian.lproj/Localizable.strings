@@ -1,0 +1,10 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Username:";
+"Password:" = "Password:";
+
+"Connect" = "Entra";
+
+"Wrong username or password." = "Username o password non corretti.";

@@ -1,0 +1,160 @@
+﻿/* this file is in UTF-8 format! */
+
+"Contact" = "Contatto";
+"Address" = "Indirizzo";
+"Other" = "Altro";
+
+"Name" = "Nome";
+"Internet" = "Email";
+"Phones" = "Numeri di telefono";
+"Home" = "Personale";
+"Work" = "Lavoro";
+
+"Address Books" = "Rubrica";
+
+"Addressbook" = "Rubrica";
+"Addresses" = "Indirizzi";
+"Update" = "Aggiorna";
+"Cancel" = "Anulla";
+"Common" = "Comuni";
+"Contact editor" = "Editor dei contatti";
+"Contact viewer" = "Visulizzatore dei contatti";
+"Email" = "Email";
+"Screen Name" = "Nome Instant Messeger";
+"Extended" = "Nome completo";
+"Fax" = "Fax";
+"Firstname" = "Nome";
+"Home" = "Casa";
+"HomePhone" = "Telefono casa";
+"Lastname" = "Cognome";
+"Location" = "Località";
+"MobilePhone" = "Cellulare";
+"Name" = "Nome";
+"OfficePhone" = "Telefono ufficio";
+"Organization" = "Società";
+"Work Phone" = "Telefono di lavoro";
+"Phone" = "Telefono";
+"Phones" = "Telefoni";
+"Postal" = "CAP";
+"Save" = "Salva";
+"URL" = "Pagina Web";
+"Unit" = "Unità";
+"delete" = "cancella";
+"edit" = "modifica";
+"invalidemailwarn" = "L'indirizzo email specificato non è valido";
+"new" = "new";
+"Preferred Phone"   = "Telefono lavoro";
+
+/* Folders */
+"Personal Address Book" = "Rubrica personale";
+
+/* Tooltips */
+
+"Create a new address book card" = "Crea un nuovo contatto";
+"Create a new list" = "Crea una nuova lista";
+"Edit the selected card" = "Modifica il contatto selezionato";
+"Send a mail message" = "Invia un'email";
+"Delete selected card or address book" = "Cancella il contatto selezionato";
+
+"htmlMailFormat_UNKNOWN" = "Sconosciuto";
+"htmlMailFormat_FALSE" = "Testo normale";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Nome o indirizzo Email";
+"Personal Addressbook" = "Rubrica personale";
+"Search in Addressbook" = "Cerca nella rubrica";
+
+"New Card" = "Nuovo contatto";
+"New List" = "Nuova lista";
+"Modify" = "Modifica";
+"Sharing..." = "Condividi...";
+"Write" = "Scrivi";
+"Delete" = "Cancella";
+"Instant Message" = "Messaggio istantaneo";
+"Add..." = "Aggiungi...";
+"Remove" = "Rimuovi";
+
+"Preferred" = "Predefinito";
+"Card for %@" = "Biglietto da visita di %@";
+"Display:" = "Nome visualizzato:";
+"Display Name:" = "Nome visualizzato:";
+"Email:" = "Email:";
+"Additional Email:" = "Email aggiuntiva:";
+
+"Phone Number:" = "Numero di telefono:";
+"Prefers to receive messages formatted as:"
+= "Formato preferito per i messaggi di posta:";
+"Screen Name:" = "Nome Instant Messenger:";
+
+"Firstname:" = "Nome:";
+"Lastname:" = "Cognome:";
+"First:" = "Nome:";
+"Last:" = "Cognome";
+"Nickname:" = "Soprannome:";
+
+"Telephone" = "Telefono";
+"Work:" = "Lavoro:";
+"Home:" = "Casa:";
+"Fax:" = "Fax:";
+"Mobile:" = "Cellulare:";
+"Pager:" = "Cerca Persone:";
+
+"Title:" = "Titolo:";
+"Service:" = "Service:";
+"Company:" = "Società:";
+"Street Address:" = "Indirizzo:";
+"Address:" = "Indirizzo:";
+"City:" = "Città:";
+"State_Province:" = "Provincia:";
+"ZIP_Postal Code:" = "CAP:";
+"Country:" = "Nazione:";
+"Web:" = "Pagina Web:";
+"Web Page:" = "Pagina Web:";
+"Department:" = "Reparto:";
+"Organization:" = "Società:";
+"Work" = "Lavoro";
+"Other Infos" = "Altre informazioni";
+
+"Note:" = "Note:";
+"Timezone:" = "Fuso orario:";
+"Birthday:" = "Data di Nascita:";
+"Freebusy URL:" = "Freebusy URL:";
+
+"Add as..." = "Aggiungi come...";
+"Recipient" = "Destinatario";
+"Carbon Copy" = "Copia Carbone";
+"Blind Carbon Copy" = "Copia Carbone Nascosta";
+
+"New Addressbook..." = "Nuova rubrica...";
+"Subscribe to an Addressbook..." = "Sottoscrivi una rubrica...";
+"Remove the selected Addressbook" = "Rimuovi la rubrica selezionata";
+
+"Name of the Address Book" = "Nome della rubrica";
+"Are you sure you want to delete the selected address book?"
+= "Sei sicuro di voler cancellare la rubrica selezionata?";
+
+"Address Book Name" = "Nome della Rubrica";
+
+"You cannot subscribe to a folder that you own!"
+= "Non puoi sottoscrivere una cartella di cui sei proprietario!";
+"Unable to subscribe to that folder!"
+= "Non puoi sottoscrivere la cartella!";
+
+"Default Roles" = "Permessi predefiniti";
+"User rights for:" = "Permessi per:";
+
+"This person can add cards to this addressbook."
+= "Questa persona può aggiungere contatti a questa rubrica.";
+"This person can edit the cards of this addressbook."
+= "Questa persona può modificare i contatti di questa rubrica.";
+"This person can list the content of this addressbook."
+= "Questa persona può visualizzare i contenuti di questa rubrica.";
+"This person can read the cards of this addressbook."
+= "Questa persona può leggere i contatti di questa rubrica.";
+"This person can erase cards from this addressbook."
+= "Questa persona può eliminare contatti da questa rubrica.";
+
+"The selected contact has no email address."
+= "Il contatto selezionato non dispone di indirizzo email.";
+
+"Please select a contact." = "Per favore seleziona un contatto.";
