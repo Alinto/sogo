@@ -1428,7 +1428,7 @@ RANGE(2);
 	// We recur on specific days...
 	if ([[self repeat2] intValue] == 1)
 	  {
-	    [theRule setNamedValue: @"bymonthday"  to: [self repeat5]];
+	    [theRule setNamedValue: @"bymonthday" to: [self repeat5]];
 	  }
 	else
 	  {
@@ -1526,16 +1526,12 @@ RANGE(2);
 			       |iCalWeekDayFriday)];
 	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
 	}
-      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame)
+      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame
+	       || [repeat caseInsensitiveCompare: @"DAILY"] == NSOrderedSame
+	       || [repeat caseInsensitiveCompare: @"WEEKLY"] == NSOrderedSame
+	       || [repeat caseInsensitiveCompare: @"YEARLY"] == NSOrderedSame)
 	{
-	  [rule setNamedValue: @"bymonthday"
-		to: [NSString stringWithFormat: @"%d", [[component startDate] dayOfMonth]]];
-	  [rule setFrequency: iCalRecurrenceFrequenceMonthly];
-	}
-      else if ([repeat caseInsensitiveCompare: @"DAILY"] == NSOrderedSame ||
-	       [repeat caseInsensitiveCompare: @"WEEKLY"] == NSOrderedSame ||
-	       [repeat caseInsensitiveCompare: @"YEARLY"] == NSOrderedSame)
-	{
+	  [rule setInterval: @"1"];
 	  [rule setFrequency:
 		  (iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
 	}

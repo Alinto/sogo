@@ -1,5 +1,9 @@
 2008-03-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-takeValuesFromRequest:_rqinContext:_ctx]): treat the regular
+	monthly recurrences as all others.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	-davSetProperties:setPropsremovePropertiesNamed:removedPropsinContext:localContext]):
 	returns an exception if the property to modify is not
