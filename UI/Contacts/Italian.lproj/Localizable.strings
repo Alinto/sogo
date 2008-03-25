@@ -157,4 +157,7 @@
 "The selected contact has no email address."
 = "Il contatto selezionato non dispone di indirizzo email.";
 
+"You cannot delete the selected contact(s)"
+= "Non puoi eliminare il contatto selezionato.";
+
 "Please select a contact." = "Per favore seleziona un contatto.";
