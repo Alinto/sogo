@@ -71,11 +71,38 @@ static Class yearlyCalcClass  = Nil;
 
 /* factory */
 
-+ (id)recurrenceCalculatorForRecurrenceRule:(iCalRecurrenceRule *)_rrule
-  withFirstInstanceCalendarDateRange:(NGCalendarDateRange *)_range
++ (id)  recurrenceCalculatorForRecurrenceRule: (iCalRecurrenceRule *) _rrule
+	   withFirstInstanceCalendarDateRange: (NGCalendarDateRange *) _range
 {
-  return [[[self alloc] initWithRecurrenceRule:_rrule
-                        firstInstanceCalendarDateRange:_range] autorelease];
+  iCalRecurrenceFrequency freq;
+  Class calcClass;
+  id calc;
+
+  freq = [_rrule frequency];
+  if (freq == iCalRecurrenceFrequenceDaily)
+    calcClass = dailyCalcClass;
+  else if (freq == iCalRecurrenceFrequenceWeekly)
+    calcClass = weeklyCalcClass;
+  else if (freq == iCalRecurrenceFrequenceMonthly)
+    calcClass = monthlyCalcClass;
+  else if (freq == iCalRecurrenceFrequenceYearly)
+    calcClass = yearlyCalcClass;
+  else
+    calcClass = Nil;
+
+  if (calcClass)
+    {
+      calc = [[calcClass alloc] initWithRecurrenceRule:_rrule
+				firstInstanceCalendarDateRange: _range];
+      [calc autorelease];
+    }
+  else
+    {
+      [self errorWithFormat: @"unsupported rrule frequency: %@", _rrule];
+      calc = nil;
+    }
+
+  return calc;
 }
 
 /* complex calculation convenience */
@@ -178,131 +205,130 @@ static Class yearlyCalcClass  = Nil;
 
 /* init */
 
-- (id)initWithRecurrenceRule:(iCalRecurrenceRule *)_rrule
-  firstInstanceCalendarDateRange:(NGCalendarDateRange *)_range
+- (id)    initWithRecurrenceRule: (iCalRecurrenceRule *) _rrule
+  firstInstanceCalendarDateRange: (NGCalendarDateRange *) _range
 {
-  iCalRecurrenceFrequency freq;
-  Class calcClass = Nil;
+  if ((self = [super init]))
+    {
+      rrule = [_rrule retain];
+      firstRange = [_range retain];
+    }
 
-  freq = [_rrule frequency];
-  if (freq == iCalRecurrenceFrequenceDaily)
-    calcClass = dailyCalcClass;
-  else if (freq == iCalRecurrenceFrequenceWeekly)
-    calcClass = weeklyCalcClass;
-  else if (freq == iCalRecurrenceFrequenceMonthly)
-    calcClass = monthlyCalcClass;
-  else if (freq == iCalRecurrenceFrequenceYearly)
-    calcClass = yearlyCalcClass;
-  else {
-    [self errorWithFormat:@"unsupported rrule frequency: %@", _rrule];
-    calcClass = Nil;
-    [self release];
-    return nil;
-  }
-  
-  [self autorelease]; // TODO: why autorelease?
-  if (calcClass == Nil)
-    return nil;
-  
-  if ((self = [[calcClass alloc] init]) != nil) {
-    self->rrule      = [_rrule retain];
-    self->firstRange = [_range retain];
-  }
   return self;  
 }
 
-- (void)dealloc {
-  [self->firstRange release];
-  [self->rrule      release];
+- (void) dealloc
+{
+  [firstRange release];
+  [rrule release];
   [super dealloc];
 }
 
 /* helpers */
 
-- (unsigned)offsetFromSundayForJulianNumber:(long)_jn {
-  return (unsigned)((int)(_jn + 1.5)) % 7;
+- (unsigned) offsetFromSundayForJulianNumber: (long) _jn
+{
+  return (unsigned)((int) (_jn + 1.5)) % 7;
 }
 
-- (unsigned)offsetFromSundayForWeekDay:(iCalWeekDay)_weekDay {
+- (unsigned) offsetFromSundayForWeekDay: (iCalWeekDay) _weekDay
+{
   unsigned offset;
   
-  switch (_weekDay) {
-    case iCalWeekDaySunday:    offset = 0; break;
-    case iCalWeekDayMonday:    offset = 1; break;
-    case iCalWeekDayTuesday:   offset = 2; break;
-    case iCalWeekDayWednesday: offset = 3; break;
-    case iCalWeekDayThursday:  offset = 4; break;
-    case iCalWeekDayFriday:    offset = 5; break;
-    case iCalWeekDaySaturday:  offset = 6; break;
-    default:                   offset = 0; break;
-  }
+  switch (_weekDay)
+    {
+    case iCalWeekDaySunday:
+      offset = 0; break;
+    case iCalWeekDayMonday:
+      offset = 1; break;
+    case iCalWeekDayTuesday:
+      offset = 2; break;
+    case iCalWeekDayWednesday:
+      offset = 3; break;
+    case iCalWeekDayThursday:
+      offset = 4; break;
+    case iCalWeekDayFriday:
+      offset = 5; break;
+    case iCalWeekDaySaturday:
+      offset = 6; break;
+    default:
+      offset = 0; break;
+    }
+
   return offset;
 }
 
-- (unsigned)offsetFromSundayForCurrentWeekStart {
-  return [self offsetFromSundayForWeekDay:[self->rrule weekStart]];
+- (unsigned) offsetFromSundayForCurrentWeekStart
+{
+  return [self offsetFromSundayForWeekDay: [rrule weekStart]];
 }
 
-- (iCalWeekDay)weekDayForJulianNumber:(long)_jn {
-  unsigned    day;
+- (iCalWeekDay) weekDayForJulianNumber: (long)_jn
+{
+  unsigned int day;
   iCalWeekDay weekDay;
+  iCalWeekDay weekDays[] = {iCalWeekDaySunday, iCalWeekDayMonday,
+			    iCalWeekDayTuesday, iCalWeekDayWednesday,
+			    iCalWeekDayThursday, iCalWeekDayFriday,
+			    iCalWeekDaySaturday};
 
-  day = [self offsetFromSundayForJulianNumber:_jn];
-  switch (day) {
-    case 0:  weekDay = iCalWeekDaySunday;    break;
-    case 1:  weekDay = iCalWeekDayMonday;    break;
-    case 2:  weekDay = iCalWeekDayTuesday;   break;
-    case 3:  weekDay = iCalWeekDayWednesday; break;
-    case 4:  weekDay = iCalWeekDayThursday;  break;
-    case 5:  weekDay = iCalWeekDayFriday;    break;
-    case 6:  weekDay = iCalWeekDaySaturday;  break;
-    default: 
-      [self errorWithFormat:@"got unexpected weekday: %d", day];
+  if (day < 7)
+    weekDay = weekDays[day];
+  else
+    {
+      [self errorWithFormat:
+	      @"got unexpected weekday: %d (falling back on sunday)", day];
       weekDay = iCalWeekDaySunday;
-      break; /* keep compiler happy */
-  }
+    }
+
   return weekDay;
 }
 
 /* calculation */
 
-- (NSArray *)recurrenceRangesWithinCalendarDateRange:(NGCalendarDateRange *)_r{
+- (NSArray *)
+ recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+{
   return nil; /* subclass responsibility */
 }
-- (BOOL)doesRecurrWithinCalendarDateRange:(NGCalendarDateRange *)_range {
-  NSArray *ranges;
 
-  ranges = [self recurrenceRangesWithinCalendarDateRange:_range];
-  return (ranges == nil || [ranges count] == 0) ? NO : YES;
+- (BOOL) doesRecurrWithinCalendarDateRange: (NGCalendarDateRange *) _range
+{
+  return ([[self recurrenceRangesWithinCalendarDateRange: _range] count]
+	  > 0);
 }
 
-- (NGCalendarDateRange *)firstInstanceCalendarDateRange {
-  return self->firstRange;
+- (NGCalendarDateRange *) firstInstanceCalendarDateRange
+{
+  return firstRange;
 }
 
-- (NGCalendarDateRange *)lastInstanceCalendarDateRange {
+- (NGCalendarDateRange *) lastInstanceCalendarDateRange
+{
   NSCalendarDate *start, *end;
+  NGCalendarDateRange *range;
 
-  if ((start = [self lastInstanceStartDate]) == nil)
-    return nil;
-  
-  end   = [start addTimeInterval:[self->firstRange duration]];
-  return [NGCalendarDateRange calendarDateRangeWithStartDate:start
-                              endDate:end];
+  range = nil;
+
+  start = [self lastInstanceStartDate];
+  if (start)
+    {
+      end = [start addTimeInterval: [firstRange duration]];
+      range = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+				   endDate: end];
+    }
+
+  return range;
 }
 
-- (NSCalendarDate *)lastInstanceStartDate {
-  NSCalendarDate *until;
-  
+- (NSCalendarDate *) lastInstanceStartDate
+{
   /* 
      NOTE: this is horribly inaccurate and doesn't even consider the use
            of repeatCount. It MUST be implemented by subclasses properly!
 	   However, it does the trick for SOGo 1.0 - that's why it's left here.
   */
-  if ((until = [self->rrule untilDate]) != nil)
-    return until;
-  
-  return nil;
+  return [rrule untilDate];
 }
 
 @end /* iCalRecurrenceCalculator */
