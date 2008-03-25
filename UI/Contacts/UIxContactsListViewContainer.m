@@ -37,6 +37,27 @@
 
 @implementation UIxContactsListViewContainer
 
+- (void) _setupContext
+{
+  SOGoUser *activeUser;
+  NSString *module;
+  SOGoContactFolders *clientObject;
+
+  activeUser = [context activeUser];
+  clientObject = [[self clientObject] container];
+
+  module = [clientObject nameInContainer];
+
+  ud = [activeUser userSettings];
+  moduleSettings = [ud objectForKey: module];
+  if (!moduleSettings)
+    {
+      moduleSettings = [NSMutableDictionary new];
+      [moduleSettings autorelease];
+    }
+  [ud setObject: moduleSettings forKey: module];
+}
+
 - (id) init
 {
   if ((self = [super init]))
@@ -118,6 +139,36 @@
 - (BOOL) isPopup
 {
   return [[self queryParameterForKey: @"popup"] boolValue];
+}
+
+- (NSString *) verticalDragHandleStyle
+{
+   NSString *vertical;
+
+   [self _setupContext];
+   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+
+   return (vertical ? [vertical stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) horizontalDragHandleStyle
+{
+   NSString *horizontal;
+
+   [self _setupContext];
+   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+
+   return (horizontal ? [horizontal stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) contactsListContentStyle
+{
+   int height;
+
+   [self _setupContext];
+   height = [[moduleSettings objectForKey: @"DragHandleVertical"] intValue];
+
+   return (height ? [NSString stringWithFormat: @"%ipx", (height - 27)] : nil);
 }
 
 @end

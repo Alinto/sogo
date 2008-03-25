@@ -1,3 +1,23 @@
+2008-03-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-verticalDragHandleStyle]): CSS style wrt to position of drag
+	handle saved by current user.
+	([UIxCalMainView -horizontalDragHandleStyle]): idem.
+	([UIxCalMainView -eventsListViewStyle]): idem.
+
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([UIxContactsListViewContainer -verticalDragHandleStyle]): CSS
+	style wrt to position of drag handle saved by current user.
+	([UIxContactsListViewContainer -horizontalDragHandleStyle]): idem.
+	([UIxContactsListViewContainer -contactsListContentStyle]): idem.
+
+	* UI/MailerUI/UIxMailMainFrame.m ([UIxMailMainFrame
+	-verticalDragHandleStyle]): CSS style wrt to position of drag
+	handle saved by current user.
+	([UIxMailMainFrame -horizontalDragHandleStyle]): idem.
+	([UIxMailMainFrame -mailboxContentStyle]): idem.
+
 2008-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

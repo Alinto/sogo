@@ -31,12 +31,7 @@
           <tr class="tableview"
             var:id="currentCName"
             var:contactname="currentContact.displayName"
-            var:contactid="currentContact.c_uid"
-            onclick="return onContactRowClick(event, this);"
-            ondblclick="return onContactRowDblClick(event, this);"
-            onmousedown="return false;"
-            onselectstart="return false;"
-            oncontextmenu="return onContactContextMenu(event, this);">
+            var:contactid="currentContact.c_uid">
             <td><img rsrc:src="abcard.gif"
 		/><var:string value="currentContact.displayName" const:escapeHTML="YES" /></td>
             <td><var:string value="currentContact.mail"/></td>

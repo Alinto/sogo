@@ -330,11 +330,6 @@
 	  pageName    = "UIxMailMainFrame";
 	  actionName  = "compose";
 	};
-	dragHandlesState = {
-	  protectedBy = "View";
-	  pageName    = "UIxMailMainFrame";
-	  actionName  = "getDragHandlesState";
-	};
 	foldersState = {
 	  protectedBy = "View";
 	  pageName    = "UIxMailMainFrame";

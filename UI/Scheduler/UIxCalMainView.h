@@ -47,7 +47,10 @@
 - (void) setYearMenuItem: (NSNumber *) aYearMenuItem;
 - (NSNumber *) yearMenuItem;
 
-- (WOResponse *) getDragHandlesStateAction;
+- (NSString *) verticalDragHandleStyle;
+- (NSString *) horizontalDragHandleStyle;
+- (NSString *) eventsListViewStyle;
+
 - (WOResponse *) saveDragHandleStateAction;
 
 @end

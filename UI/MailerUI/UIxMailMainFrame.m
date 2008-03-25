@@ -163,24 +163,6 @@
   return [self redirectToLocation: newLocation];
 }
 
-- (WOResponse *) getDragHandlesStateAction
-{
-  NSArray *dragHandles;
-  NSString *vertical, *horizontal;
-
-  [self _setupContext];
-
-  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
-  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
-  dragHandles = [[NSArray alloc] initWithObjects: 
-				   vertical ? vertical : @"",
-				 horizontal ? horizontal : @"",
-				 nil];
-
-  return [self responseWithStatus: 200 
-	       andString: [dragHandles jsonRepresentation]];
-}
-
 - (WOResponse *) getFoldersStateAction
 {
   NSString *expandedFolders;
@@ -189,6 +171,36 @@
   expandedFolders = [moduleSettings objectForKey: @"ExpandedFolders"];
 
   return [self responseWithStatus: 200 andString: expandedFolders];
+}
+
+- (NSString *) verticalDragHandleStyle
+{
+   NSString *vertical;
+
+   [self _setupContext];
+   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+   
+   return (vertical ? [vertical stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) horizontalDragHandleStyle
+{
+   NSString *horizontal;
+
+   [self _setupContext];
+   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+
+   return (horizontal ? [horizontal stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) mailboxContentStyle
+{
+   NSString *height;
+
+   [self _setupContext];
+   height = [moduleSettings objectForKey: @"DragHandleVertical"];
+
+   return (height ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction

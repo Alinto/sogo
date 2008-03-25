@@ -50,11 +50,6 @@
               protectedBy = "View";
               pageName    = "UIxContactsUserFolders"; 
 	   };
-           dragHandlesState = {
-              protectedBy = "<public>";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "getDragHandlesState";
-           };
 	   saveDragHandleState = {
       	      protectedBy = "View";
       	      pageName    = "UIxContactFoldersView";

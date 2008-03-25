@@ -558,7 +558,7 @@ function messageListCallback(http) {
       var sortHeader = $(sorting["attribute"] + "Header");
       
       if (sortHeader) {
-	var sortImages = $(table.tHead).getElementsByClassName("sortImage");
+	var sortImages = $(table.tHead).select(".sortImage");
 	$(sortImages).each(function(item) {
 	    item.remove();
 	  });
@@ -1259,7 +1259,6 @@ function initMailer(event) {
 //     initDnd();
     initMailboxTree();
     initMessageCheckTimer();
-    getDragHandlesState();
   }
   
   // Default sort options
@@ -1491,31 +1490,6 @@ function buildMailboxes(accountName, encoded) {
   }
 
   return account;
-}
-
-function getDragHandlesState() {
-  var urlstr =  ApplicationBaseURL + "dragHandlesState";
-  triggerAjaxRequest(urlstr, getDragHandlesStateCallback);
-}
-
-function getDragHandlesStateCallback(http) {
-  if (http.status == 200) {
-    if (http.responseText.length > 0) {
-      // The response text is a JSON array
-      // of the top and right offsets.
-      var data = http.responseText.evalJSON(true);
-      if (data[0].length > 0) {
-	$("mailboxContent").setStyle({ height: data[0] });
-	$("messageContent").setStyle({ top: data[0] });
-	$("rightDragHandle").setStyle({ top: data[0] });
-      }
-      if (data[1].length > 0) {
-	$("leftPanel").setStyle({ width: data[1] });
-	$("rightPanel").setStyle({ left: data[1] });
-	$("verticalDragHandle").setStyle({ left: data[1] });
-      }
-    }
-  }
 }
 
 function getFoldersState() {

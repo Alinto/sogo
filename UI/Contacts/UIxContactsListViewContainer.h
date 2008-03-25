@@ -33,6 +33,8 @@
 {
   NSString *selectorComponentClass;
   id currentFolder;
+  NSUserDefaults *ud;
+  NSMutableDictionary *moduleSettings;
 }
 
 - (void) setCurrentFolder: (id) folder;
@@ -42,6 +44,10 @@
 - (NSString *) currentContactFolderId;
 - (NSString *) currentContactFolderOwner;
 - (NSString *) currentContactFolderName;
+
+- (NSString *) verticalDragHandleStyle;
+- (NSString *) horizontalDragHandleStyle;
+- (NSString *) contactsListContentStyle;
 
 @end
 

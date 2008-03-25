@@ -124,22 +124,34 @@ static NSMutableArray *yearMenuItems = nil;
   return yearMenuItem;
 }
 
-- (WOResponse *) getDragHandlesStateAction
+- (NSString *) verticalDragHandleStyle
 {
-  NSArray *dragHandles;
-  NSString *vertical, *horizontal;
+   NSString *vertical;
 
-  [self _setupContext];
+   [self _setupContext];
+   vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
+   
+   return (vertical ? [vertical stringByAppendingFormat: @"px"] : nil);
+}
 
-  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
-  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
-  dragHandles = [[NSArray alloc] initWithObjects: 
-				   vertical != nil ? vertical : @"",
-				 horizontal ? horizontal : @"",
-				 nil];
+- (NSString *) horizontalDragHandleStyle
+{
+   NSString *horizontal;
 
-  return [self responseWithStatus: 200 
-	       andString: [dragHandles jsonRepresentation]];
+   [self _setupContext];
+   horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
+
+   return (horizontal ? [horizontal stringByAppendingFormat: @"px"] : nil);
+}
+
+- (NSString *) eventsListViewStyle
+{
+   NSString *height;
+
+   [self _setupContext];
+   height = [moduleSettings objectForKey: @"DragHandleVertical"];
+
+   return (height ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction

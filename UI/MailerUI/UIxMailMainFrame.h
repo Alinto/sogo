@@ -31,8 +31,11 @@
   NSMutableDictionary *moduleSettings;
 }
 
-- (WOResponse *) getDragHandlesStateAction;
 - (WOResponse *) getFoldersStateAction;
+
+- (NSString *) verticalDragHandleStyle;
+- (NSString *) horizontalDragHandleStyle;
+- (NSString *) mailboxContentStyle;
 
 - (WOResponse *) saveDragHandleStateAction;
 - (WOResponse *) saveFoldersStateAction;

@@ -626,22 +626,18 @@ TABLE#messageList TR[labels~="label1"]._selected TD
 
 /* drag handles */
 DIV#verticalDragHandle
-{
-  cursor: e-resize;
+{ cursor: e-resize;
   top: 7.5em;
   left: 15em;
   width: 5px;
-  bottom: 0px;
-}
+  bottom: 0px; }
 
 DIV#rightDragHandle
-{ 
-  cursor: n-resize;
+{ cursor: n-resize;
   top: 18em;
   left: 0px;
   right: 0px;
-  height: 5px;
-}
+  height: 5px; }
 
 @media print
 {

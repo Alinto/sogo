@@ -12,6 +12,20 @@
     var textMailAccounts = '<var:string value="mailAccounts" const:escapeHTML="NO"/>';
     var textQuotaSupport = '<var:string value="quotaSupport" const:escapeHTML="NO"/>';
   </script>
+  <style type="text/css">
+  <var:if condition="horizontalDragHandleStyle">
+    DIV#verticalDragHandle, DIV#rightPanel
+     { left: <var:string value="horizontalDragHandleStyle" />; }
+    DIV#leftPanel
+     { width: <var:string value="horizontalDragHandleStyle" />; }
+  </var:if><var:if condition="verticalDragHandleStyle">
+    DIV#rightDragHandle, DIV#messageContent
+     { top: <var:string value="verticalDragHandleStyle" />; }
+  </var:if><var:if condition="mailboxContentStyle">
+    DIV#mailboxContent
+     { height: <var:string value="mailboxContentStyle" />; }
+  </var:if>
+  </style>
   <div class="menu" id="accountIconMenu">
     <ul>
       <li><var:string label:value="Subscribe..." /></li>

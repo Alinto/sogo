@@ -31,7 +31,6 @@
   NSMutableDictionary *moduleSettings;
 }
 
-- (WOResponse *) getDragHandlesStateAction;
 - (WOResponse *) saveDragHandleStateAction;
 
 @end

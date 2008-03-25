@@ -38,7 +38,7 @@ DIV#contactsListContent
   top: 2.5em;
   left: 0px;
   right: 0px;
-  height: 16em;
+  height: 15.5em;
   overflow: auto;
   overflow-x: hidden; }
 
@@ -169,7 +169,8 @@ DIV#folderTreeContent TABLE TD
   padding: 0px; }
 
 TABLE#contactsList
-{ -khtml-user-select: none;
+{ -moz-user-select: none;
+  -khtml-user-select: none;
   width: 100%; }
 
 TABLE#contactsList TD,
@@ -249,13 +250,11 @@ INPUT#searchValue:focus
 
 /* drag handles */
 DIV#dragHandle
-{ 
-  cursor: e-resize;
+{ cursor: e-resize;
   top: 8em;
   left: 15em;
   width: 5px;
-  bottom: 0px;
-}
+  bottom: 0px; }
 
 DIV#rightDragHandle
 {

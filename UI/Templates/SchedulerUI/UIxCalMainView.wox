@@ -8,6 +8,20 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title">
+  <style type="text/css">
+  <var:if condition="horizontalDragHandleStyle">
+    DIV#verticalDragHandle, DIV#rightPanel
+     { left: <var:string value="horizontalDragHandleStyle" />; }
+    DIV#leftPanel
+     { width: <var:string value="horizontalDragHandleStyle" />; }
+  </var:if><var:if condition="verticalDragHandleStyle">
+    DIV#rightDragHandle, DIV#calendarView
+     { top: <var:string value="verticalDragHandleStyle" />; }
+  </var:if><var:if condition="eventsListViewStyle">
+    DIV#eventsListView
+     { height: <var:string value="eventsListViewStyle" />; }
+  </var:if>
+  </style>
   <div class="preload" style="visibility: hidden;">
     <img rsrc:src="event-gradient.png"/>
   </div>

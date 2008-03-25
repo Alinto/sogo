@@ -112,6 +112,8 @@
 "Name of the Address Book" = "Adressbuch-Name";
 "Are you sure you want to delete the selected address book?"
 = "Wollen Sie wirklich das ausgewählte Adressbuch löschen?";
+"You cannot delete the selected contact(s)"
+= "Ausgewählte Karten können nicht gelöscht werden.";
 
 "Address Book Name" = "Adressbuch Name";
 

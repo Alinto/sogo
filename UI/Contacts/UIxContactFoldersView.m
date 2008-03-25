@@ -269,24 +269,6 @@
 //           ? contactFolder : nil);
 // }
 
-- (WOResponse *) getDragHandlesStateAction
-{
-  NSArray *dragHandles;
-  NSString *vertical, *horizontal;
-
-  [self _setupContext];
-
-  vertical = [moduleSettings objectForKey: @"DragHandleVertical"];
-  horizontal = [moduleSettings objectForKey: @"DragHandleHorizontal"];
-  dragHandles = [[NSArray alloc] initWithObjects: 
-				   vertical ? vertical : @"",
-				 horizontal ? horizontal : @"",
-				 nil];
-
-  return [self responseWithStatus: 200 
-	       andString: [dragHandles jsonRepresentation]];
-}
-
 - (WOResponse *) saveDragHandleStateAction
 {
   WORequest *request;

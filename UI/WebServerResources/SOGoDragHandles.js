@@ -62,28 +62,28 @@ var SOGoDragHandlesInterface = {
     if (this.dhType == 'horizontal') {
       var pointerX = Event.pointerX(event);
       if (pointerX <= this.leftMargin) {
-	this.rightBlock.setStyle({ left: (this.leftMargin) + 'px' });
-	this.leftBlock.setStyle({ width: (this.leftMargin) + 'px' });
+         this.rightBlock.setStyle({ left: (this.leftMargin) + 'px' });
+         this.leftBlock.setStyle({ width: (this.leftMargin) + 'px' });
       }
       else {
-	var deltaX = Math.floor(pointerX - this.origX - (this.offsetWidth / 2));
-	this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
-	this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
+         var deltaX = Math.floor(pointerX - this.origX - (this.offsetWidth / 2));
+         this.rightBlock.setStyle({ left: (this.origRight + deltaX) + 'px' });
+         this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
       }
-      this.saveDragHandleState(this.dhType, this.leftBlock.getStyle("width"));
+      this.saveDragHandleState(this.dhType, parseInt(this.leftBlock.getStyle("width")));
     }
     else if (this.dhType == 'vertical') {
-      var pointerY = Event.pointerY(event);
-      if (pointerY <= this.topMargin) {
-	this.lowerBlock.setStyle({ top: (this.topMargin - delta) + 'px' });
-	this.upperBlock.setStyle({ height: (this.topMargin - delta) + 'px' });
-      }
-      else {
-        var deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
-	this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
-	this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
-      }
-      this.saveDragHandleState(this.dhType, this.upperBlock.getStyle("height"));
+       var pointerY = Event.pointerY(event);
+       if (pointerY <= this.topMargin) {
+          this.lowerBlock.setStyle({ top: (this.topMargin - delta) + 'px' });
+          this.upperBlock.setStyle({ height: (this.topMargin - delta) + 'px' });
+       }
+       else {
+          var deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
+          this.lowerBlock.setStyle({ top: (this.origLower + deltaY - delta) + 'px' });
+          this.upperBlock.setStyle({ height: (this.origUpper + deltaY - delta) + 'px' });
+       }
+       this.saveDragHandleState(this.dhType, parseInt(this.lowerBlock.getStyle("top")));
     }
     Event.stopObserving(document.body, "mouseup", this.stopHandleDraggingBound, true);
     Event.stopObserving(document.body, "mousemove", this.moveBound, true);

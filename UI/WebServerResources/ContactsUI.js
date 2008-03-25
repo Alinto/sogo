@@ -26,39 +26,39 @@ function validateEditorInput(sender) {
 }
 
 function openContactsFolder(contactsFolder, reload, idx) {
-  if ((contactsFolder && contactsFolder != currentContactFolder)
-      || reload) {
-     currentContactFolder = contactsFolder;
-     var url = URLForFolderID(currentContactFolder) +
-	"/view?noframe=1";
+   if ((contactsFolder && contactsFolder != currentContactFolder)
+       || reload) {
+      currentContactFolder = contactsFolder;
+      var url = URLForFolderID(currentContactFolder) +
+         "/view?noframe=1";
 
-     var searchValue = search["value"];
-     if (searchValue && searchValue.length > 0)
-	url += ("&search=" + search["criteria"]
-		+ "&value=" + escape(searchValue.utf8encode()));
-     var sortAttribute = sorting["attribute"];
-     if (sortAttribute && sortAttribute.length > 0)
-	url += ("&sort=" + sorting["attribute"]
-		+ "&asc=" + sorting["ascending"]);
+      var searchValue = search["value"];
+      if (searchValue && searchValue.length > 0)
+         url += ("&search=" + search["criteria"]
+                 + "&value=" + escape(searchValue.utf8encode()));
+      var sortAttribute = sorting["attribute"];
+      if (sortAttribute && sortAttribute.length > 0)
+         url += ("&sort=" + sorting["attribute"]
+                 + "&asc=" + sorting["ascending"]);
 
-     var selection;
-     if (contactsFolder == currentContactFolder) {
-        var contactsList = $("contactsList");
-        if (contactsList)
-           selection = contactsList.getSelectedRowsId();
-//        else
-//           window.alert("no contactsList");
-     }
-     else
-	selection = null;
+      var selection;
+      if (contactsFolder == currentContactFolder) {
+         var contactsList = $("contactsList");
+         if (contactsList)
+            selection = contactsList.getSelectedRowsId();
+         //        else
+         //           window.alert("no contactsList");
+      }
+      else
+         selection = null;
 
-     if (document.contactsListAjaxRequest) {
-	document.contactsListAjaxRequest.aborted = true;
-	document.contactsListAjaxRequest.abort();
-     }
-     document.contactsListAjaxRequest
-	= triggerAjaxRequest(url, contactsListCallback, selection);
-  }
+      if (document.contactsListAjaxRequest) {
+         document.contactsListAjaxRequest.aborted = true;
+         document.contactsListAjaxRequest.abort();
+      }
+      document.contactsListAjaxRequest
+         = triggerAjaxRequest(url, contactsListCallback, selection);
+   }
 }
 
 function openContactsFolderAtIndex(element) {
@@ -74,89 +74,96 @@ function openContactsFolderAtIndex(element) {
 }
 
 function contactsListCallback(http) {
-  if (http.readyState == 4) {
-    if (http.status == 200) {
-      document.contactsListAjaxRequest = null;
+   if (http.readyState == 4) {
+      if (http.status == 200) {
+         document.contactsListAjaxRequest = null;
 
-      var table = $("contactsList");
-      if (table) {
-	// Update table
-	var data = http.responseText;
-	var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
-	var tbody = table.tBodies[0]; 
-	var tmp = document.createElement('div');
-	$(tmp).update(html);
-	table.replaceChild(tmp.firstChild.tBodies[0], tbody);
+         var table = $("contactsList");
+         if (table) {
+            // Update table
+            var data = http.responseText;
+            var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
+            var tbody = table.tBodies[0];
+            var tmp = document.createElement('div');
+            $(tmp).update(html);
+            table.replaceChild($(tmp).select("table tbody")[0], tbody);
+
+            var rows = table.tBodies[0].rows;
+            for (var i = 0; i < rows.length; i++) {
+               Event.observe(rows[i], "mousedown", onRowClick);
+               Event.observe(rows[i], "dblclick", onContactRowDblClick.bindAsEventListener(rows[i]));
+               Event.observe(rows[i], "selectstart", listRowMouseDownHandler);
+               Event.observe(rows[i], "contextmenu", onContactContextMenu.bindAsEventListener(rows[i]));
+            }
+         }
+         else {
+            // Add table (doesn't happen .. yet)
+            var div = $("contactsListContent");
+            div.update(http.responseText);
+            table = $("contactsList");
+            configureSortableTableHeaders(table);
+            TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+         }
+
+         if (sorting["attribute"] && sorting["attribute"].length > 0) {
+            var sortHeader;
+            if (sorting["attribute"] == "displayName")
+               sortHeader = $("nameHeader");
+            else if (sorting["attribute"] == "mail")
+               sortHeader = $("mailHeader");
+            else if (sorting["attribute"] == "screenName")
+               sortHeader = $("screenNameHeader");
+            else if (sorting["attribute"] == "org")
+               sortHeader = $("orgHeader");
+            else if (sorting["attribute"] == "phone")
+               sortHeader = $("phoneHeader");
+            else
+               sortHeader = null;
+       
+            if (sortHeader) {
+               var sortImages = $(table.tHead).select(".sortImage");
+               $(sortImages).each(function(item) {
+                     item.remove();
+                  });
+
+               var sortImage = createElement("img", "messageSortImage", "sortImage");
+               sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+               if (sorting["ascending"])
+                  sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
+               else
+                  sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
+            }
+         }
+
+         var selected = http.callbackData;
+         if (selected) {
+            for (var i = 0; i < selected.length; i++) {
+               var row = $(selected[i]);
+               if (row)
+                  row.selectElement();
+            }
+         }
       }
       else {
-	// Add table (doesn't happen .. yet)
-	var div = $("contactsListContent");
-	div.update(http.responseText);
-	table = $("contactsList");
-	configureSortableTableHeaders(table);
-	TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+         var table = $("contactsList");
+         if (table) {
+            var sortImages = $(table.tHead).select(".sortImage");
+            $(sortImages).each(function(item) {
+                  item.remove();
+               });
+            var tBody = $(table.tBodies[0]);
+            var length = tBody.rows.length;
+            for (var i = length - 1; i > -1; i--)
+               tBody.removeChild(tBody.rows[i]);
+         }
       }
-    
-      if (sorting["attribute"] && sorting["attribute"].length > 0) {
-	var sortHeader;
-	if (sorting["attribute"] == "displayName")
-	  sortHeader = $("nameHeader");
-	else if (sorting["attribute"] == "mail")
-	  sortHeader = $("mailHeader");
-	else if (sorting["attribute"] == "screenName")
-	  sortHeader = $("screenNameHeader");
-	else if (sorting["attribute"] == "org")
-	  sortHeader = $("orgHeader");
-	else if (sorting["attribute"] == "phone")
-	  sortHeader = $("phoneHeader");
-	else
-	  sortHeader = null;
-       
-	if (sortHeader) {
-	  var sortImages = $(table.tHead).getElementsByClassName("sortImage");
-	  $(sortImages).each(function(item) {
-	      item.remove();
-	    });
-
-	  var sortImage = createElement("img", "messageSortImage", "sortImage");
-	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
-	  if (sorting["ascending"])
-	    sortImage.src = ResourcesURL + "/title_sortdown_12x12.png";
-	  else
-	    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
-	}
-      }
-
-      var selected = http.callbackData;
-      if (selected) {
-	for (var i = 0; i < selected.length; i++) {
-	  var row = $(selected[i]);
-	  if (row)
-	    row.selectElement();
-	}
-      }
-    }
-    else {
-      var table = $("contactsList");
-      if (table) {
-	var sortImages = $(table.tHead).getElementsByClassName("sortImage");
-	$(sortImages).each(function(item) {
-	    item.remove();
-	  });
-	var tBody = $(table.tBodies[0]);
-	var length = tBody.rows.length;
-	for (var i = length - 1; i > -1; i--)
-	  tBody.removeChild(tBody.rows[i]);
-      }
-    }
-  }
-  else
-    log ("ajax problem 1: status = " + http.status);
+   }
+   else
+      log ("ajax problem 1: status = " + http.status);
 }
 
 function onContactFoldersContextMenu(event) {
   var menu = $("contactFoldersMenu");
-  //Event.observe(menu, "hideMenu", onContactFoldersContextMenuHide, false);
   Event.observe(menu, "mousedown", onContactFoldersContextMenuHide, false);
   popupMenu(event, "contactFoldersMenu", this);
 
@@ -169,19 +176,18 @@ function onContactFoldersContextMenu(event) {
   $(this).selectElement();
 }
 
-function onContactContextMenu(event, element) {//  log ("onContactContextMenu");
+function onContactContextMenu(event) {
   var menu = $("contactMenu");
-
-  Event.observe(menu, "mousedown", onContactContextMenuHide, false);
-  popupMenu(event, "contactMenu", element);
-
-  var topNode = $("contactsList");
+  var topNode = $('contactsList');
   var selectedNodes = topNode.getSelectedRows();
-  topNode.menuSelectedRows = selectedNodes;
-  for (var i = 0; i < selectedNodes.length; i++)
-    $(selectedNodes[i]).deselect();
-  topNode.menuSelectedEntry = element;
-  $(element).selectElement();
+
+  if (selectedNodes.length > 1) {
+    // TODO: Add support for selection of multiple contacts
+  }
+  else {
+    Event.observe(menu, "hideMenu", onContactContextMenuHide);
+    popupMenu(event, "contactMenu", this);
+  }
 }
 
 function onContactContextMenuHide(event) {
@@ -287,19 +293,25 @@ function moveTo(uri) {
 }
 
 /* contact menu entries */
-function onContactRowClick(event, node) {
-  loadContact(node.getAttribute('id'));
-
-  return onRowClick(event);
-}
-
-function onContactRowDblClick(event, node) {
-  var contactId = node.getAttribute('id');
+function onContactRowDblClick(event) {
+  var contactId = this.getAttribute('id');
 
   openContactWindow(URLForFolderID(currentContactFolder)
                     + "/" + contactId + "/edit", contactId);
 
   return false;
+}
+
+function onContactSelectionChange(event) {
+  var rows = this.getSelectedRowsId();
+  
+  if (rows.length == 1) {
+    var node = $(rows[0]);
+    loadContact(node.getAttribute('id'));
+  }
+  else if (rows.length > 1) {
+    $('contactView').update();
+  }
 }
 
 function onMenuEditContact(event) {
@@ -386,7 +398,6 @@ function uixDeleteSelectedContacts(sender) {
   }
 
   var contactView = $('contactView');
-  contactView.update();
 
   for (var i = 0; i < rows.length; i++) {
     var url, http, rowElem;
@@ -414,7 +425,9 @@ function uixDeleteSelectedContacts(sender) {
   }
 
   if (failCount > 0)
-    alert("Could not delete the selected contacts!");
+    alert(labels["You cannot delete the selected contact(s)."]);
+  else
+    contactView.update();
   
   return false;
 }
@@ -522,7 +535,7 @@ function onConfirmContactSelection(event) {
 }
 
 function onContactMailTo(node) {
-  return openMailTo(node.innerHTML);
+   return openMailTo(node.innerHTML);
 }
 
 function refreshContacts(contactId) {
@@ -534,46 +547,46 @@ function refreshContacts(contactId) {
 }
 
 function onAddressBookNew(event) {
-  createFolder(window.prompt(labels["Name of the Address Book"]),
-	       appendAddressBook);
-  preventDefault(event);
+   createFolder(window.prompt(labels["Name of the Address Book"]),
+                appendAddressBook);
+   preventDefault(event);
 }
 
 function appendAddressBook(name, folder) {
-  var owner;
-  var result = true;
+   var owner;
+   var result = true;
 
-  if (folder) {
-    owner = getSubscribedFolderOwner(folder);
-    folder = accessToSubscribedFolder(folder);
-  }
-  else
-    folder = "/" + name;
+   if (folder) {
+      owner = getSubscribedFolderOwner(folder);
+      folder = accessToSubscribedFolder(folder);
+   }
+   else
+      folder = "/" + name;
   
-  if (!owner)
-    owner = UserLogin;
+   if (!owner)
+      owner = UserLogin;
 
-  if ($(folder))
-    result = false;
-  else {
-    var contactFolders = $("contactFolders");
-    var items = contactFolders.childNodesWithTag("li");
-    var li = document.createElement("li");
+   if ($(folder))
+      result = false;
+   else {
+      var contactFolders = $("contactFolders");
+      var items = contactFolders.childNodesWithTag("li");
+      var li = document.createElement("li");
 
-    // Add the calendar to the proper place
-    var i = getListIndexForFolder(items, owner, name);
-    if (i != items.length) // User is subscribed to other calendars of the same owner
-      contactFolders.insertBefore(li, items[i]);
-    else 
-      contactFolders.appendChild(li);
+      // Add the calendar to the proper place
+      var i = getListIndexForFolder(items, owner, name);
+      if (i != items.length) // User is subscribed to other calendars of the same owner
+         contactFolders.insertBefore(li, items[i]);
+      else 
+         contactFolders.appendChild(li);
 
-    li.setAttribute("id", folder);
-    li.setAttribute("owner", owner);
-    li.appendChild(document.createTextNode(name));
-    setEventsOnContactFolder(li);
-  }
+      li.setAttribute("id", folder);
+      li.setAttribute("owner", owner);
+      li.appendChild(document.createTextNode(name));
+      setEventsOnContactFolder(li);
+   }
 
-  return result;
+   return result;
 }
 
 function newFolderCallback(http) {
@@ -714,78 +727,55 @@ function configureAbToolbar() {
 function configureContactFolders() {
   var contactFolders = $("contactFolders");
   if (contactFolders) {
-    Event.observe(contactFolders, "mousedown", listRowMouseDownHandler);
-    Event.observe(contactFolders, "click", onFolderSelectionChange);
+    contactFolders.observe("mousedown", listRowMouseDownHandler);
+    contactFolders.observe("click", onFolderSelectionChange);
     var lis = contactFolders.childNodesWithTag("li");
     for (var i = 0; i < lis.length; i++)
       setEventsOnContactFolder(lis[i]);
-
+    
     lookupDeniedFolders();
-
+    
     var personalFolder = $("/personal");
     personalFolder.selectElement();
     openContactsFolder("/personal");
   }
 }
 
-function setEventsOnContactFolder(node) {
-   Event.observe(node, "mousedown", listRowMouseDownHandler, false);
-   Event.observe(node, "click", onRowClick, false);
-   Event.observe(node, "contextmenu",
-		 onContactFoldersContextMenu.bindAsEventListener(node), false);
+function setEventsOnContactFolder(folder) {
+  var node = $(folder);
+
+  node.observe("mousedown", listRowMouseDownHandler);
+  node.observe("click", onRowClick);
+  Event.observe(node, "contextmenu",
+		onContactFoldersContextMenu.bindAsEventListener(node));
 }
 
 function onMenuModify(event) {
-  var folders = $("contactFolders");
-  var selected = folders.getSelectedNodes()[0];
+   var folders = $("contactFolders");
+   var selected = folders.getSelectedNodes()[0];
 
-  if (UserLogin == selected.getAttribute("owner")) {
-    var currentName = selected.innerHTML;
-    var newName = window.prompt(labels["Address Book Name"],
-				currentName);
-    if (newName && newName.length > 0
-	&& newName != currentName) {
-      var url = (URLForFolderID(selected.getAttribute("id"))
-		 + "/renameFolder?name=" + escape(newName.utf8encode()));
-      triggerAjaxRequest(url, folderRenameCallback,
-			 {node: selected, name: newName});
-    }
-  } else
-    window.alert(clabels["Unable to rename that folder!"]);
+   if (UserLogin == selected.getAttribute("owner")) {
+      var currentName = selected.innerHTML;
+      var newName = window.prompt(labels["Address Book Name"],
+                                  currentName);
+      if (newName && newName.length > 0
+          && newName != currentName) {
+         var url = (URLForFolderID(selected.getAttribute("id"))
+                    + "/renameFolder?name=" + escape(newName.utf8encode()));
+         triggerAjaxRequest(url, folderRenameCallback,
+                            {node: selected, name: newName});
+      }
+   } else
+      window.alert(clabels["Unable to rename that folder!"]);
 }
 
 function folderRenameCallback(http) {
-  if (http.readyState == 4) {
-    if (isHttpStatus204(http.status)) {
-      var dict = http.callbackData;
-      dict["node"].innerHTML = dict["name"];
-    }
-  }
-}
-
-function getDragHandlesState() {
-  var urlstr =  ApplicationBaseURL + "dragHandlesState";
-  triggerAjaxRequest(urlstr, getDragHandlesStateCallback);
-}
-
-function getDragHandlesStateCallback(http) {
-  if (http.status == 200) {
-    if (http.responseText.length > 0) {
-      // The response text is a JSON array
-      // of the top and right offsets.
-      var data = http.responseText.evalJSON(true);
-      if (data[0].length > 0) {
-	$("contactsListContent").setStyle({ height: data[0] });
-	$("contactView").setStyle({ top: data[0] });
-	$("rightDragHandle").setStyle({ top: data[0] });
+   if (http.readyState == 4) {
+      if (isHttpStatus204(http.status)) {
+         var dict = http.callbackData;
+         dict["node"].innerHTML = dict["name"];
       }
-      if (data[1].length > 0) {
-	$("contactFoldersList").setStyle({ width: data[1] });
-	$("rightPanel").setStyle({ left: data[1] });
-	$("dragHandle").setStyle({ left: data[1] });
-      }
-    }
-  }
+   }
 }
 
 function onMenuSharing(event) {
@@ -880,10 +870,10 @@ function configureSelectionButtons() {
 function initContacts(event) {
    if (!document.body.hasClassName("popup")) {
      configureAbToolbar();
-     getDragHandlesState();
    }
    else
      configureSelectionButtons();
+
    configureContactFolders();
 //     initDnd();
 
@@ -891,6 +881,8 @@ function initContacts(event) {
    if (table) {
      // Initialize contacts table
      table.multiselect = true;
+     Event.observe(table, "mousedown",
+		   onContactSelectionChange.bindAsEventListener(table));    
      configureSortableTableHeaders(table);
      TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
    }

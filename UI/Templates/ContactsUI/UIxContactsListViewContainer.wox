@@ -11,6 +11,22 @@
   title="name"
   var:popup="isPopup">
   <var:if condition="hideFrame" const:negate="YES">
+
+    <style type="text/css">
+    <var:if condition="horizontalDragHandleStyle">
+      DIV#dragHandle, DIV#rightPanel
+       { left: <var:string value="horizontalDragHandleStyle" />; }
+      DIV#contactFoldersList
+       { width: <var:string value="horizontalDragHandleStyle" />; }
+    </var:if><var:if condition="verticalDragHandleStyle">
+      DIV#rightDragHandle, DIV#contactView
+       { top: <var:string value="verticalDragHandleStyle" />; }
+    </var:if><var:if condition="contactsListContentStyle">
+      DIV#contactsListContent
+       { height: <var:string value="contactsListContentStyle" />; }
+    </var:if>
+    </style>
+
     <div class="menu" id="contactFoldersMenu">
       <ul>
 	<li><var:string label:value="Modify" /></li>
@@ -85,8 +101,7 @@
 
 	<div class="dragHandle" id="rightDragHandle"><!-- space --></div>
 
-	<div id="contactView" onmousedown="return false;"
-	  ></div>
+	<div id="contactView" onmousedown="return false;"><!-- space --></div>
       </div>
       <!--          /var:if> -->
 
