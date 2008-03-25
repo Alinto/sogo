@@ -20,8 +20,8 @@
 */
 
 #if LIB_FOUNDATION_LIBRARY
-#error SOGo will not work properly with libFoundation. \
-       Please use gnustep-base instead.
+#error SOGo will not work properly with libFoundation.
+#error Please use gnustep-base instead.
 #endif
 
 #import <unistd.h>

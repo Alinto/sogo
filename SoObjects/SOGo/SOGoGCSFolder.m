@@ -528,12 +528,26 @@ static BOOL sendFolderAdvisories = NO;
 			 inContext: (WOContext *) localContext
 {
   NSString *newDisplayName;
+  NSException *exception;
+  NSArray *currentRoles;
 
-  newDisplayName = [setProps objectForKey: @"davDisplayName"];
-  if ([newDisplayName length])
-    [self renameTo: newDisplayName];
+  currentRoles = [[localContext activeUser] rolesForObject: self
+					    inContext: localContext];
+  if ([currentRoles containsObject: SoRole_Owner])
+    {
+      newDisplayName = [setProps objectForKey: @"davDisplayName"];
+      if ([newDisplayName length])
+	{
+	  [self renameTo: newDisplayName];
+	  exception = nil;
+	}
+      else
+	exception = [NSException exceptionWithHTTPStatus: 404];
+    }
+  else
+    exception = [NSException exceptionWithHTTPStatus: 403];
 
-  return nil;
+  return exception;
 }
 
 /* acls as a container */
