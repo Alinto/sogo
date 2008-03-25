@@ -1,3 +1,11 @@
+2008-03-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-davSetProperties:setPropsremovePropertiesNamed:removedPropsinContext:localContext]):
+	returns an exception if the property to modify is not
+	"davDisplayName" and if the current user has not the owner role
+	over the current collection.
+
 2008-03-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
