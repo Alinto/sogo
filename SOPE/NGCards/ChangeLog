@@ -1,3 +1,13 @@
+2008-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalRecurrenceRule.m ([iCalRecurrenceRule -byMonthDay]): check
+	whether the "bymonthday" value is empty and returns an array only if
+	not, otherwise returns nil.
+
+	* iCalRecurrenceCalculator.m ([iCalRecurrenceCalculator
+	+recurrenceRangesWithinCalendarDateRange:_rfirstInstanceCalendarDateRange:_firrecurrenceRules:_rRulesexceptionRules:_exRulesexceptionDates:_exDates]):
+	split method in many submethods for clarity.
+
 2008-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZonePeriod.m ([iCalTimeZonePeriod

@@ -43,18 +43,21 @@
 typedef BOOL NGMonthSet[12];
 typedef BOOL NGMonthDaySet[32]; // 0 is unused
 
-static void NGMonthDaySet_clear(NGMonthDaySet *daySet) {
-  register unsigned i;
-  
-  for (i = 1; i <= 31; i++)
-    (*daySet)[i] = NO;
-}
-
-static void NGMonthDaySet_copyOrUnion(NGMonthDaySet *base, NGMonthDaySet *new,
-                                      BOOL doCopy)
+static void
+NGMonthDaySet_clear(NGMonthDaySet *daySet)
 {
   register unsigned i;
   
+  for (i = 0; i <= 31; i++)
+    (*daySet)[i] = NO;
+}
+
+static void
+NGMonthDaySet_copyOrUnion(NGMonthDaySet *base, NGMonthDaySet *new,
+			  BOOL doCopy)
+{
+  register unsigned i;
+
   if (doCopy)
     memcpy(base, new, sizeof(NGMonthDaySet));
   else {
@@ -265,7 +268,7 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
 
 
   /* check whether the range to be processed is beyond the 'until' date */  
-  if (until != nil) {
+  if (until) {
     if ([until compare:rStart] == NSOrderedAscending) /* until before start */
       return nil;
     if ([until compare:rEnd] == NSOrderedDescending) /* end before until */
@@ -275,7 +278,7 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
   
   /* precalculate month days (same for all instances) */
 
-  if (byMonthDay != nil) {
+  if (byMonthDay) {
 #if HEAVY_DEBUG
     NSLog(@"byMonthDay: %@", byMonthDay);
 #endif
@@ -343,7 +346,7 @@ static void NGMonthDaySet_fillWithByDayX(NGMonthDaySet *daySet,
     
     didByFill = NO;
     
-    if (byMonthDay != nil) { /* list of days in the month */
+    if (byMonthDay) { /* list of days in the month */
       NGMonthDaySet_copyOrUnion(&monthDays, &byMonthDaySet, !didByFill);
       didByFill = YES;
     }

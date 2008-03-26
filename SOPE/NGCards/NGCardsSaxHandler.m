@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import "NSString+NGCards.h"
 #import "NGCardsSaxHandler.h"
 
 #import "CardGroup.h"

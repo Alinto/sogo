@@ -48,19 +48,22 @@
 @implementation iCalRecurrenceCalculator
 
 static Class NSCalendarDateClass     = Nil;
+static Class NSStringClass     = Nil;
 static Class iCalRecurrenceRuleClass = Nil;
 static Class dailyCalcClass   = Nil;
 static Class weeklyCalcClass  = Nil;
 static Class monthlyCalcClass = Nil;
 static Class yearlyCalcClass  = Nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   static BOOL didInit = NO;
   
   if (didInit) return;
   didInit = YES;
 
   NSCalendarDateClass     = [NSCalendarDate class];
+  NSStringClass = [NSString class];
   iCalRecurrenceRuleClass = [iCalRecurrenceRule class];
 
   dailyCalcClass   = NSClassFromString(@"iCalDailyRecurrenceCalculator");
@@ -107,98 +110,122 @@ static Class yearlyCalcClass  = Nil;
 
 /* complex calculation convenience */
 
-+ (NSArray *)recurrenceRangesWithinCalendarDateRange:(NGCalendarDateRange *)_r
-  firstInstanceCalendarDateRange:(NGCalendarDateRange *)_fir
-  recurrenceRules:(NSArray *)_rRules
-  exceptionRules:(NSArray *)_exRules
-  exceptionDates:(NSArray *)_exDates
++ (void)    _fillRanges: (NSMutableArray *) ranges
+              fromRules: (NSArray *) rrules
+	    withinRange: (NGCalendarDateRange *) limits
+       startingWithDate: (NGCalendarDateRange *) first
 {
-  id                       rule;
+  NSEnumerator *rules;
+  iCalRecurrenceRule *currentRule;
   iCalRecurrenceCalculator *calc;
-  NSMutableArray           *ranges;
-  NSMutableArray           *exDates;
-  unsigned                 i, count, rCount;
-  
-  ranges = [NSMutableArray arrayWithCapacity:64];
-  
-  for (i = 0, count  = [_rRules count]; i < count; i++) {
-    NSArray *rs;
 
-    rule = [_rRules objectAtIndex:i];
-    if (![rule isKindOfClass:iCalRecurrenceRuleClass])
-      rule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation:rule];
-        
-    calc = [self recurrenceCalculatorForRecurrenceRule:rule
-                 withFirstInstanceCalendarDateRange:_fir];
+  rules = [rrules objectEnumerator];
+  while ((currentRule = [rules nextObject]))
+    {
+      if ([currentRule isKindOfClass: NSStringClass])
+	currentRule =
+	  [iCalRecurrenceRule
+	    recurrenceRuleWithICalRepresentation: (NSString *) currentRule];
 
-    rs   = [calc recurrenceRangesWithinCalendarDateRange:_r];
-    [ranges addObjectsFromArray:rs];
-  }
-  
-  if ([ranges count] == 0)
-    return nil;
-  
-  /* test if any exceptions do match */
-  
-  for (i = 0, count = [_exRules count]; i < count; i++) {
-    NSArray *rs;
-
-    rule = [_exRules objectAtIndex:i];
-    if (![rule isKindOfClass:iCalRecurrenceRuleClass])
-      rule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation:rule];
-
-    calc = [self recurrenceCalculatorForRecurrenceRule:rule
-                 withFirstInstanceCalendarDateRange:_fir];
-    rs   = [calc recurrenceRangesWithinCalendarDateRange:_r];
-    [ranges removeObjectsInArray:rs];
-  }
-  
-  if (![ranges isNotEmpty])
-    return nil;
-  
-  /* exception dates */
-
-  if ((count = [_exDates count]) == 0)
-    return ranges;
-  
-  /* sort out exDates not within range */
-
-  exDates = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    id exDate;
-
-    exDate = [_exDates objectAtIndex:i];
-    if (![exDate isKindOfClass:NSCalendarDateClass])
-      exDate = [NSCalendarDate calendarDateWithICalRepresentation:exDate];
-    
-    if ([_r containsDate:exDate])
-      [exDates addObject:exDate];
-  }
-
-  /* remove matching exDates from ranges */
-
-  if ((count = [exDates count]) == 0)
-    return ranges;
-  
-  for (i = 0, rCount = [ranges count]; i < count; i++) {
-    NSCalendarDate      *exDate;
-    NGCalendarDateRange *r;
-    unsigned            k;
-
-    exDate = [exDates objectAtIndex:i];
-    
-    for (k = 0; k < rCount; k++) {
-      unsigned rIdx;
-      
-      rIdx = (rCount - k) - 1;
-      r    = [ranges objectAtIndex:rIdx];
-      if ([r containsDate:exDate]) {
-        [ranges removeObjectAtIndex:rIdx];
-        rCount--;
-        break; /* this is safe because we know that ranges don't overlap */
-      }
+      calc = [self recurrenceCalculatorForRecurrenceRule: currentRule
+		   withFirstInstanceCalendarDateRange: first];
+      [ranges addObjectsFromArray:
+		[calc recurrenceRangesWithinCalendarDateRange: limits]];
     }
-  }
+}
+
++ (void) _removeExceptionsFromRanges: (NSMutableArray *) ranges
+			   withRules: (NSArray *) exrules
+			 withinRange: (NGCalendarDateRange *) limits
+		    startingWithDate: (NGCalendarDateRange *) first
+{
+  NSEnumerator *rules;
+  iCalRecurrenceRule *currentRule;
+  iCalRecurrenceCalculator *calc;
+
+  rules = [exrules objectEnumerator];
+  while ((currentRule = [rules nextObject]))
+    {
+      if ([currentRule isKindOfClass: NSStringClass])
+	currentRule =
+	  [iCalRecurrenceRule
+	    recurrenceRuleWithICalRepresentation: (NSString *) currentRule];
+	  
+      calc = [self recurrenceCalculatorForRecurrenceRule: currentRule
+		   withFirstInstanceCalendarDateRange: first];
+      [ranges removeObjectsInArray:
+		[calc recurrenceRangesWithinCalendarDateRange: limits]];
+    }
+}
+
++ (NSArray *) _dates: (NSArray *) dateList
+	 withinRange: (NGCalendarDateRange *) limits
+{
+  NSMutableArray *newDates;
+  NSEnumerator *dates;
+  NSCalendarDate *currentDate;
+
+  newDates = [NSMutableArray array];
+
+  dates = [dateList objectEnumerator];
+  while ((currentDate = [dates nextObject]))
+    {
+      if ([currentDate isKindOfClass: NSStringClass])
+	currentDate
+	  = [NSCalendarDate
+	      calendarDateWithICalRepresentation: (NSString *) currentDate];
+      if ([limits containsDate: currentDate])
+	[newDates addObject: currentDate];
+    }
+
+  return newDates;
+}
+
++ (void) _removeExceptionDatesFromRanges: (NSMutableArray *) ranges
+			       withDates: (NSArray *) exdates
+			     withinRange: (NGCalendarDateRange *) limits
+			startingWithDate: (NGCalendarDateRange *) first
+{
+  NSEnumerator *dates;
+  NSCalendarDate *currentDate;
+  NGCalendarDateRange *currentRange;
+  int count, maxRanges;
+
+  maxRanges = [ranges count];
+  dates = [[self _dates: exdates withinRange: limits] objectEnumerator];
+  while ((currentDate = [dates nextObject]))
+    for (count = (maxRanges - 1); count > -1; count++)
+      {
+	currentRange = [ranges objectAtIndex: count];
+	if ([currentRange containsDate: currentDate])
+	  {
+	    [ranges removeObjectAtIndex: count];
+	    maxRanges--;
+	  }
+      }
+}
+
++ (NSArray *)
+ recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+	  firstInstanceCalendarDateRange: (NGCalendarDateRange *) _fir
+			 recurrenceRules: (NSArray *) _rRules
+			  exceptionRules: (NSArray *) _exRules
+			  exceptionDates: (NSArray *) _exDates
+{
+  NSMutableArray *ranges;
+
+  ranges = [NSMutableArray arrayWithCapacity: 64];
+
+  if ([_rRules count] > 0)
+    {
+      [self _fillRanges: ranges fromRules: _rRules
+	    withinRange: _r startingWithDate: _fir];
+      [self _removeExceptionsFromRanges: ranges withRules: _exRules
+	    withinRange: _r startingWithDate: _fir];
+      [self _removeExceptionDatesFromRanges: ranges withDates: _exDates
+	    withinRange: _r startingWithDate: _fir];
+    }
+
   return ranges;
 }
 
@@ -265,23 +292,12 @@ static Class yearlyCalcClass  = Nil;
 
 - (iCalWeekDay) weekDayForJulianNumber: (long)_jn
 {
-  unsigned int day;
-  iCalWeekDay weekDay;
   iCalWeekDay weekDays[] = {iCalWeekDaySunday, iCalWeekDayMonday,
 			    iCalWeekDayTuesday, iCalWeekDayWednesday,
 			    iCalWeekDayThursday, iCalWeekDayFriday,
 			    iCalWeekDaySaturday};
 
-  if (day < 7)
-    weekDay = weekDays[day];
-  else
-    {
-      [self errorWithFormat:
-	      @"got unexpected weekday: %d (falling back on sunday)", day];
-      weekDay = iCalWeekDaySunday;
-    }
-
-  return weekDay;
+  return weekDays[[self offsetFromSundayForJulianNumber: _jn]];
 }
 
 /* calculation */
