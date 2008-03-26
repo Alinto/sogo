@@ -21,7 +21,7 @@ function onLoginClick(event) {
 
   if (userName.length > 0) {
     var url = $("connectForm").getAttribute("action");
-    var parameters = ("userName=" + userName + "&password=" + password);
+    var parameters = ("userName=" + encodeURI(userName) + "&password=" + encodeURI(password));
     document.cookie = "";
     triggerAjaxRequest(url, onLoginCallback, null, parameters,
 		       { "Content-type": "application/x-www-form-urlencoded",
@@ -37,7 +37,7 @@ function onLoginCallback(http) {
     if (isHttpStatus204(http.status)) {
       var userName = $("userName").value;
       var address = "" + window.location.href;
-      var baseAddress = ApplicationBaseURL + $("userName").value;
+      var baseAddress = ApplicationBaseURL + encodeURI(userName);
       var altBaseAddress;
       if (baseAddress[0] == "/") {
 	var parts = address.split("/");
