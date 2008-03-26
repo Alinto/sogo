@@ -505,9 +505,9 @@ function onRowClick(event) {
     var list = node.parentNode;
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
-      if (items[i] == node) {
-	rowIndex = i;
-	break;
+       if (items[i] == node) {
+          rowIndex = i;
+          break;
       }
     }
   }

@@ -384,6 +384,15 @@ DIV.mailer_mailcontent TABLE
   table-layout: auto;
 }
 
+/* collapsable header */
+TD.mailer_fieldname IMG
+{ cursor: pointer;
+  padding-right: 5px; }
+TD.mailer_fieldvalue SPAN.collapse
+{ white-space: nowrap; }
+TD.mailer_fieldvalue SPAN.expand
+{ white-space: normal; }
+
 TD.mailer_fieldname
 {
   white-space: nowrap;
@@ -395,9 +404,7 @@ TD.mailer_fieldname
 }
 
 TD.mailer_fieldvalue
-{
-  vertical-align: top;
-}
+{ vertical-align: top; }
 
 TD.mailer_subjectfieldvalue
 {

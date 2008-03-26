@@ -40,29 +40,29 @@
       </tr>
 
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname"><var:string label:value="To"/>:</td>
+        <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="To"/>:</td>
         <td class="mailer_fieldvalue">
-          <var:foreach list="clientObject.toEnvelopeAddresses"
+          <span class="collapse"><var:foreach list="clientObject.toEnvelopeAddresses"
             item="currentAddress"
             ><a var:href="currentAddressLink">
               <var:string value="currentAddress"
                 formatter="context.mailEnvelopeFullAddressFormatter"
                 /></a>
-          </var:foreach>
+          </var:foreach></span>
         </td>
       </tr>
       <var:if condition="hasCC">
         <tr class="mailer_fieldrow">
-          <td class="mailer_fieldname"><var:string label:value="CC"/>:</td>
+          <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="CC"/>:</td>
           <td class="mailer_fieldvalue">
-            <var:foreach list="clientObject.ccEnvelopeAddresses" 
+            <span class="collapse"><var:foreach list="clientObject.ccEnvelopeAddresses" 
               item="currentAddress">
               <a var:href="currentAddressLink"
 		><var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter"
                   /></a>
               <!-- TODO: better to use li+CSS -->
-            </var:foreach>
+            </var:foreach></span>
           </td>
         </tr>
       </var:if>

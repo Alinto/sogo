@@ -850,6 +850,38 @@ function resizeMailContent() {
   
   contentDiv.setStyle({ 'top':
 	(Element.getHeight(headerTable) + headerTable.offsetTop) + 'px' });
+
+  // Show expand buttons if necessary
+  var spans = $$("TABLE TR.mailer_fieldrow TD.mailer_fieldvalue SPAN");
+  spans.each(function(span) {
+        var row = span.up("TR");
+        if (span.getWidth() > row.getWidth()) {
+           var cell = row.select("TD.mailer_fieldname").first();
+           var link = cell.down("img");
+           link.show();
+           link.observe("click", toggleDisplayHeader);
+        }
+     });
+}
+
+function toggleDisplayHeader(event) {
+   var row = this.up("TR");
+   var span = row.down("SPAN");
+   
+   if (this.hasClassName("collapse")) {
+      this.writeAttribute("src", ResourcesURL + '/minus.png');
+      this.writeAttribute("class", "expand");
+      span.writeAttribute("class", "expand");
+   }
+   else {
+      this.writeAttribute("src", ResourcesURL + '/plus.png');
+      this.writeAttribute("class", "collapse");
+      span.writeAttribute("class", "collapse");
+   }
+   resizeMailContent();
+
+   preventDefault(event);
+   return false;
 }
 
 function onMessageContentMenu(event) {
@@ -1030,8 +1062,8 @@ function expandUpperTree(node) {
       var id = currentNode.getAttribute("id");
       var number = parseInt(id.substr(2));
       if (number > 0) {
-	var cn = mailboxTree.aNodes[number];
-	mailboxTree.nodeStatus(1, number, cn._ls);
+         var cn = mailboxTree.aNodes[number];
+         mailboxTree.nodeStatus(1, number, cn._ls);
       }
     }
     currentNode = currentNode.parentNode;
@@ -1168,8 +1200,8 @@ function configureMessageListBodyEvents(table) {
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
-	Event.observe(anchors[i], "click",
-		      openMailboxAtIndex.bindAsEventListener(anchors[i]));
+         Event.observe(anchors[i], "click",
+                       openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
     rows = table.tBodies[0].rows;
