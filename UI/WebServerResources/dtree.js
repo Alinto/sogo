@@ -294,15 +294,17 @@ dTree.prototype.closeAllChildren = function(node) {
 // Change the status of a node(open or closed)
 dTree.prototype.nodeStatus = function(status, id, bottom) {
   eDiv = document.getElementById('d' + this.obj + id);
-  eJoin = document.getElementById('j' + this.obj + id);
-  if (this.config.useIcons) {
-    eIcon = document.getElementById('i' + this.obj + id);
-    eIcon.src = (status) ? this.aNodes[id].iconOpen : this.aNodes[id].icon;
+  if (eDiv) {
+    eJoin = document.getElementById('j' + this.obj + id);
+    if (this.config.useIcons) {
+      eIcon = document.getElementById('i' + this.obj + id);
+      eIcon.src = (status) ? this.aNodes[id].iconOpen : this.aNodes[id].icon;
+    }
+    eJoin.src = (this.config.useLines)?
+      ((status)?((bottom)?this.icon.minusBottom:this.icon.minus):((bottom)?this.icon.plusBottom:this.icon.plus)):
+      ((status)?this.icon.nlMinus:this.icon.nlPlus);
+    eDiv.style.display = (status) ? 'block': 'none';
   }
-  eJoin.src = (this.config.useLines)?
-  ((status)?((bottom)?this.icon.minusBottom:this.icon.minus):((bottom)?this.icon.plusBottom:this.icon.plus)):
-  ((status)?this.icon.nlMinus:this.icon.nlPlus);
-  eDiv.style.display = (status) ? 'block': 'none';
 };
 
 
