@@ -56,7 +56,7 @@
                 <tbody>
 	          <tr class="futureAttendee"
 	            ><td class="attendees"><input type="text" class="textField"
-		    readonly="readonly" /></td
+		    readonly="readonly" label:value="newAttendee" /></td
 	          ></tr>
 	          <tr class="attendeeModel"
 	            ><td class="attendees"><input type="text" class="textField" /></td

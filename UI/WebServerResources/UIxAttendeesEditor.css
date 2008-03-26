@@ -118,7 +118,8 @@ TABLE#freeBusyAttendees TD.attendees INPUT
   margin-left: 2em; }
 
 TABLE#freeBusyAttendees TR.futureAttendee INPUT
-{ background-image: none; }
+{ background-image: none;
+  color: #aaa; }
 
 SPAN.freeBusyZoneElement
 { display: block;
