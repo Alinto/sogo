@@ -96,13 +96,13 @@
 	  ><var:string label:value="Next hour" /></a>
       </div>
       <div id="freeBusyReplicas">
-	<div><var:string label:value="From"
+	<div><var:string label:value="Start:"
             /><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
-	<div><var:string label:value="To"
+	<div><var:string label:value="End:"
             /><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             const:dayStartHour="0"
