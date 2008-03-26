@@ -32,13 +32,13 @@
 
 @interface iCalRecurrenceCalculator (PrivateAPI)
 
-- (NSCalendarDate *)lastInstanceStartDate;
+- (NSCalendarDate *) lastInstanceStartDate;
 
-- (unsigned)offsetFromSundayForJulianNumber:(long)_jn;
-- (unsigned)offsetFromSundayForWeekDay:(iCalWeekDay)_weekDay;
-- (unsigned)offsetFromSundayForCurrentWeekStart;
+- (unsigned) offsetFromSundayForJulianNumber:(long)_jn;
+- (unsigned) offsetFromSundayForWeekDay:(iCalWeekDay)_weekDay;
+- (unsigned) offsetFromSundayForCurrentWeekStart;
   
-- (iCalWeekDay)weekDayForJulianNumber:(long)_jn;
+- (iCalWeekDay) weekDayForJulianNumber:(long)_jn;
 
 @end
 
@@ -48,7 +48,9 @@
 */
 @implementation iCalWeeklyRecurrenceCalculator
 
-- (NSArray *)recurrenceRangesWithinCalendarDateRange:(NGCalendarDateRange *)_r {
+- (NSArray *)
+ recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+{
   NSMutableArray *ranges;
   NSCalendarDate *firStart;
   long           i, jnFirst, jnStart, jnEnd, startEndCount;

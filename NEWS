@@ -5,9 +5,12 @@
 - pressing enter in the contact edition dialog will perform the creation/update operation
 - implemented more of the CalDAV specification for compatibility with Lightning 0.8
 - added Italian translation, thanks to Marco Lertora
-- improved restoration of drag hanldes state
+- improved restoration of drag handles state
 - improved contextual menu handling of Address Book module
-- fixed various bugs with Safari 3.1
+- fixed various bugs occuring with Safari 3.1
+- monthly events would not be returned properly
+- bi-weekly events would appear every week instead
+- weekly events with specified days of week would not appear on the correct days
 
 0.9.0-20080208 (1.0 rc5)
 ------------------------

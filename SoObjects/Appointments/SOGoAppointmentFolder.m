@@ -907,10 +907,10 @@ static NSNumber   *sharedYes = nil;
                     forRange: (NGCalendarDateRange *) _r
                    intoArray: (NSMutableArray *) _ma
 {
-  NSMutableDictionary *row;
+  NSMutableDictionary *row, *fixedRow;
   NSDictionary        *cycleinfo;
   NSCalendarDate      *startDate, *endDate;
-  NGCalendarDateRange *fir;
+  NGCalendarDateRange *fir, *rRange;
   NSArray             *rules, *exRules, *exDates, *ranges;
   unsigned            i, count;
   NSString *content;
@@ -918,47 +918,44 @@ static NSNumber   *sharedYes = nil;
   content = [_row objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
     {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+	    _row];
       return;
     }
 
   cycleinfo = [content propertyList];
   if (!cycleinfo)
     {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", _row];
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+	    _row];
       return;
     }
 
   row = [self fixupRecord:_row fetchRange: _r];
   [row removeObjectForKey: @"c_cycleinfo"];
-  [row setObject: sharedYes forKey:@"isRecurrentEvent"];
+  [row setObject: sharedYes forKey: @"isRecurrentEvent"];
 
-  startDate = [row objectForKey:@"startDate"];
-  endDate   = [row objectForKey:@"endDate"];
-  fir       = [NGCalendarDateRange calendarDateRangeWithStartDate:startDate
-                                   endDate:endDate];
-  rules     = [cycleinfo objectForKey:@"rules"];
-  exRules   = [cycleinfo objectForKey:@"exRules"];
-  exDates   = [cycleinfo objectForKey:@"exDates"];
+  startDate = [row objectForKey: @"startDate"];
+  endDate   = [row objectForKey: @"endDate"];
+  fir       = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+                                   endDate: endDate];
+  rules     = [cycleinfo objectForKey: @"rules"];
+  exRules   = [cycleinfo objectForKey: @"exRules"];
+  exDates   = [cycleinfo objectForKey: @"exDates"];
   
-  ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange:_r
-                                     firstInstanceCalendarDateRange:fir
-                                     recurrenceRules:rules
-                                     exceptionRules:exRules
-                                     exceptionDates:exDates];
+  ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: _r
+                                     firstInstanceCalendarDateRange: fir
+                                     recurrenceRules: rules
+                                     exceptionRules: exRules
+                                     exceptionDates: exDates];
   count = [ranges count];
-
-  for (i = 0; i < count; i++) {
-    NGCalendarDateRange *rRange;
-    id fixedRow;
-    
-    rRange   = [ranges objectAtIndex:i];
-    fixedRow = [self fixupCycleRecord:row cycleRange:rRange];
-    if (fixedRow != nil)
-      {
+  for (i = 0; i < count; i++)
+    {
+      rRange = [ranges objectAtIndex:i];
+      fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
+      if (fixedRow)
 	[_ma addObject:fixedRow];
-      }
-  }
+    }
 }
 
 - (NSArray *) fixupCyclicRecords: (NSArray *) _records
@@ -966,19 +963,18 @@ static NSNumber   *sharedYes = nil;
 {
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
-  unsigned i, count;
-  
-  if (_records == nil) return nil;
-  if ((count = [_records count]) == 0)
-    return _records;
-  
-  ma = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    id row; // TODO: what is the type of the record?
-    
-    row = [_records objectAtIndex:i];
-    [self _flattenCycleRecord:row forRange:_r intoArray:ma];
-  }
+  NSDictionary *row;
+  unsigned int i, count;
+
+  count = [_records count];
+  ma = [NSMutableArray arrayWithCapacity: count];
+  if (count > 0)
+    for (i = 0; i < count; i++)
+      {
+	row = [_records objectAtIndex: i];
+	[self _flattenCycleRecord: row forRange: _r intoArray: ma];
+      }
+
   return ma;
 }
 

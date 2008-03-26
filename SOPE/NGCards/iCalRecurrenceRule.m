@@ -325,7 +325,16 @@
 
 - (NSArray *) byMonthDay
 {
-  return [[self namedValue: @"bymonthday"] componentsSeparatedByString: @","];
+  NSArray *byMonthDay;
+  NSString *byMonthDayStr;
+
+  byMonthDayStr = [self namedValue: @"bymonthday"];
+  if ([byMonthDayStr length])
+    byMonthDay = [byMonthDayStr componentsSeparatedByString: @","];
+  else
+    byMonthDay = nil;
+
+  return byMonthDay;
 }
 
 - (BOOL) isInfinite
@@ -363,11 +372,13 @@
 	    foundDay = iCalWeekDayTuesday;
 	  else if (chars[1] == 'H')
 	    foundDay = iCalWeekDayThursday;
+	  break;
 	case 'S':
 	  if (chars[1] == 'A')
 	    foundDay = iCalWeekDaySaturday;
 	  else if (chars[1] == 'U')
 	    foundDay = iCalWeekDaySunday;
+	  break;
 	}
     }
 

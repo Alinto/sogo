@@ -120,6 +120,10 @@ validateGNUstepArgs() {
       ARG_GSMAKE="$HOME/GNUstep/Library/Makefiles/"
     elif test -f /usr/GNUstep/System/Library/Makefiles/GNUstep.sh; then
       ARG_GSMAKE="/usr/GNUstep/System/Library/Makefiles/"
+    elif test -f /usr/share/GNUstep/Makefiles/GNUstep.sh; then
+      ARG_GSMAKE="/usr/share/GNUstep/Makefiles/"
+    elif test -f $GNUSTEP_MAKEFILES/GNUstep.sh; then
+      ARG_GSMAKE="$GNUSTEP_MAKEFILES/"
     else
       echo "error: please specify a GNUstep make tree!"
       exit 1
