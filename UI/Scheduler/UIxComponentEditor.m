@@ -218,24 +218,19 @@ iRANGE(2);
 
 - (NSString *) _dayMaskToInteger: (unsigned int) theMask
 {
-  NSMutableString *s;
+  iCalWeekDay maskDays[] = {iCalWeekDaySunday, iCalWeekDayMonday,
+			    iCalWeekDayTuesday, iCalWeekDayWednesday,
+			    iCalWeekDayThursday, iCalWeekDayFriday,
+			    iCalWeekDaySaturday};
   unsigned int i;
+  NSMutableString *s;
 
-  unsigned char maskDays[] = { iCalWeekDayMonday, iCalWeekDayTuesday,
-                               iCalWeekDayWednesday, iCalWeekDayThursday,
-                               iCalWeekDayFriday, iCalWeekDaySaturday,
-                               iCalWeekDaySunday };
-  
   s = [NSMutableString string];
-  
-  for (i = 0; i < 7; i++)
-    {
-      if ((theMask&maskDays[i]) == maskDays[i])
-	[s appendFormat: @"%d,", i+1];
-    }
 
-  if ([s length])
-    return [s substringToIndex: [s length]-1];
+  for (i = 0; i < 7; i++)
+    if ((theMask & maskDays[i]))
+      [s appendFormat: @"%d,", i];
+  [s deleteSuffix: @","];
 
   return s;
 }
@@ -262,9 +257,7 @@ iRANGE(2);
 				   | iCalWeekDayFriday))
 	    {
 	      if ([rule isInfinite])
-		{
-		  repeat = @"EVERY WEEKDAY";
-		}
+		repeat = @"EVERY WEEKDAY";
 	      repeat1 = @"1";
 	    }
 	  else
@@ -272,9 +265,7 @@ iRANGE(2);
 	      repeat1 = @"0";
 	      
 	      if ([rule repeatInterval] == 1 && [rule isInfinite])
-		{
-		  repeat = @"DAILY";
-		}
+		repeat = @"DAILY";
 
 	      [self setRepeat2: [NSString stringWithFormat: @"%d", [rule repeatInterval]]];
 	    }
@@ -351,9 +342,7 @@ iRANGE(2);
 	  [self setRange2: [[rule untilDate] descriptionWithCalendarFormat: @"%Y-%m-%d"]];
 	}
       else
-	{
-	  [self setRange1: @"0"];
-	}
+	[self setRange1: @"0"];
     }
   else
     DESTROY(repeat);
@@ -1394,7 +1383,7 @@ RANGE(2);
 	mask = 0;
 
 	while (c--)
-	  mask |= 1 << ([[v objectAtIndex: c] intValue] - 1);
+	  mask |= 1 << ([[v objectAtIndex: c] intValue]);
 	
 	[theRule setByDayMask: mask];
       }

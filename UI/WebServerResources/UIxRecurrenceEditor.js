@@ -25,12 +25,16 @@ function setRepeatType(type) {
     });
 }
 
-function getSelectedDays(element) {
+function getSelectedDays(periodType) {
+  var element = $(periodType);
   var elementsArray = $A(element.getElementsByTagName('DIV'));
   var days = new Array();
+  var dayPrefix = periodType + "Day";
   elementsArray.each(function(item) {
-      if (isNodeSelected(item))
-	days.push(item.readAttribute("name"));
+      if (isNodeSelected(item)) {
+	var label = ""  + item.getAttribute("id");
+	days.push(label.substr(dayPrefix.length));
+      }
     });
   return days.join(",");
 }
@@ -93,15 +97,13 @@ function initializeFormValues() {
   else if (repeatType == 1) {
     // Repeat weekly
     $('weeklyWeeksField').value = parent$("repeat1").value;
-    var weekDiv = $($("week").firstChild);
 //     log ("div: " + weekDiv);
 //     log ("days: " + parent$("repeat2").value);
     var days = "" + parent$("repeat2").value;
     if (days.length > 0) {
       var daysArray = days.split(",");
-      var divs = weekDiv.childNodesWithTag("div");
       daysArray.each(function(index) {
-	  divs[index-1].addClassName("_selected");
+	  $("weekDay"+index).addClassName("_selected");
       });
     }
   }
@@ -111,12 +113,11 @@ function initializeFormValues() {
     $('recurrence_form').setRadioValue('monthlyRadioButtonName', parent$("repeat2").value);
     $('monthlyRepeat').value = parent$("repeat3").value;
     $('monthlyDay').value = parent$("repeat4").value;
-    var monthDiv = $("month");
     var days = "" + parent$("repeat5").value;
     if (days.length > 0) {
       var daysArray = days.split(",");
       daysArray.each(function(index) {
-	  $(monthDiv).down('DIV[name="'+index+'"]').addClassName("_selected");
+	  $("monthDay" + index).addClassName("_selected");
 	});
     }
   }
@@ -200,7 +201,7 @@ function handleWeeklyRecurrence() {
       validate = true;
       showError = false;
       parent$("repeat1").value = fieldValue;
-      parent$("repeat2").value = getSelectedDays($('week'));
+      parent$("repeat2").value = getSelectedDays("week");
     }
   }
 
@@ -233,7 +234,7 @@ function handleMonthlyRecurrence() {
 	parent$("repeat2").value = radioValue;
 	parent$("repeat3").value = $('monthlyRepeat').value;
 	parent$("repeat4").value = $('monthlyDay').value;
-	parent$("repeat5").value = getSelectedDays($('month'));
+	parent$("repeat5").value = getSelectedDays("month");
       }
     }
 

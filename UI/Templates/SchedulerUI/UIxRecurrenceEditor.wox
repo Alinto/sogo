@@ -60,13 +60,13 @@
           </td>
           <td>
             <div id="week"><span class="week">
-              <div name="1"><p><var:string label:value="Mon"/></p></div>
-              <div name="2"><p><var:string label:value="Tue"/></p></div>
-              <div name="3"><p><var:string label:value="Wed"/></p></div>
-              <div name="4"><p><var:string label:value="Thu"/></p></div>
-              <div name="5"><p><var:string label:value="Fri"/></p></div>
-              <div name="6"><p><var:string label:value="Sat"/></p></div>
-              <div name="7"><p><var:string label:value="Sun"/></p></div>
+              <div id="weekDay1"><p><var:string label:value="Mon"/></p></div>
+              <div id="weekDay2"><p><var:string label:value="Tue"/></p></div>
+              <div id="weekDay3"><p><var:string label:value="Wed"/></p></div>
+              <div id="weekDay4"><p><var:string label:value="Thu"/></p></div>
+              <div id="weekDay5"><p><var:string label:value="Fri"/></p></div>
+              <div id="weekDay6"><p><var:string label:value="Sat"/></p></div>
+              <div id="weekDay0"><p><var:string label:value="Sun"/></p></div>
               </span><span class="week"><!-- space --></span>
             </div>
           </td>
@@ -103,45 +103,45 @@
           <td>
             <div id="month">
               <span class="week">
-                <div name="1"><p>1</p></div>
-                <div name="2"><p>2</p></div>
-                <div name="3"><p>3</p></div>
-                <div name="4"><p>4</p></div>
-                <div name="5"><p>5</p></div>
-                <div name="6"><p>6</p></div>
-                <div name="7"><p>7</p></div>
+                <div id="monthDay1"><p>1</p></div>
+                <div id="monthDay2"><p>2</p></div>
+                <div id="monthDay3"><p>3</p></div>
+                <div id="monthDay4"><p>4</p></div>
+                <div id="monthDay5"><p>5</p></div>
+                <div id="monthDay6"><p>6</p></div>
+                <div id="monthDay7"><p>7</p></div>
               </span>
               <span class="week">
-                <div name="8"><p>8</p></div>
-                <div name="9"><p>9</p></div>
-                <div name="10"><p>10</p></div>
-                <div name="11"><p>11</p></div>
-                <div name="12"><p>12</p></div>
-                <div name="13"><p>13</p></div>
-                <div name="14"><p>14</p></div>
+                <div id="monthDay8"><p>8</p></div>
+                <div id="monthDay9"><p>9</p></div>
+                <div id="monthDay10"><p>10</p></div>
+                <div id="monthDay11"><p>11</p></div>
+                <div id="monthDay12"><p>12</p></div>
+                <div id="monthDay13"><p>13</p></div>
+                <div id="monthDay14"><p>14</p></div>
               </span>
               <span class="week">
-                <div name="15"><p>15</p></div>
-                <div name="16"><p>16</p></div>
-                <div name="17"><p>17</p></div>
-                <div name="18"><p>18</p></div>
-                <div name="19"><p>19</p></div>
-                <div name="20"><p>20</p></div>
-                <div name="21"><p>21</p></div>
+                <div id="monthDay15"><p>15</p></div>
+                <div id="monthDay16"><p>16</p></div>
+                <div id="monthDay17"><p>17</p></div>
+                <div id="monthDay18"><p>18</p></div>
+                <div id="monthDay19"><p>19</p></div>
+                <div id="monthDay20"><p>20</p></div>
+                <div id="monthDay21"><p>21</p></div>
               </span>
               <span class="week">
-                <div name="22"><p>22</p></div>
-                <div name="23"><p>23</p></div>
-                <div name="24"><p>24</p></div>
-                <div name="25"><p>25</p></div>
-                <div name="26"><p>26</p></div>
-                <div name="27"><p>27</p></div>
-                <div name="28"><p>28</p></div>
+                <div id="monthDay22"><p>22</p></div>
+                <div id="monthDay23"><p>23</p></div>
+                <div id="monthDay24"><p>24</p></div>
+                <div id="monthDay25"><p>25</p></div>
+                <div id="monthDay26"><p>26</p></div>
+                <div id="monthDay27"><p>27</p></div>
+                <div id="monthDay28"><p>28</p></div>
               </span>
               <span class="week">
-                <div name="29"><p>29</p></div>
-                <div name="30"><p>30</p></div>
-                <div name="31"><p>31</p></div>
+                <div id="monthDay29"><p>29</p></div>
+                <div id="monthDay30"><p>30</p></div>
+                <div id="monthDay31"><p>31</p></div>
               </span>
               <span class="week"></span>
             </div>

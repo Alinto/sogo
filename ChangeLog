@@ -1,3 +1,9 @@
+2008-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-setComponent:newComponent]): the weeks start on sunday in
+	OpenStep and are indexed from 0.
+
 2008-03-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
