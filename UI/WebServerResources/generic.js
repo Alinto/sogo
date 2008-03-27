@@ -1373,7 +1373,10 @@ function onLoadHandler(event) {
 }
 
 function onBodyClickContextMenu(event) {
-  preventDefault(event);
+  if (!(event.target
+	&& (event.target.tagName == "INPUT"
+	    || event.target.tagName == "TEXTAREA")))
+    preventDefault(event);
 }
 
 function configureSortableTableHeaders(table) {
