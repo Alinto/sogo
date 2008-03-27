@@ -99,12 +99,14 @@
 	<div><var:string label:value="Start:"
             /><var:component className="UIxTimeDateControl"
             const:controlID="startTime"
+            date="aptStartDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
 	<div><var:string label:value="End:"
             /><var:component className="UIxTimeDateControl"
             const:controlID="endTime"
+            date="aptEndDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>

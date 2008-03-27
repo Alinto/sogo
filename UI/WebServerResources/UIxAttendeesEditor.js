@@ -60,20 +60,20 @@ function onContactKeydown(event) {
 }
 
 function performSearch() {
-  if (currentField) {
-    if (document.contactLookupAjaxRequest) {
-      // Abort any pending request
-      document.contactLookupAjaxRequest.aborted = true;
-      document.contactLookupAjaxRequest.abort();
-    }
-    if (currentField.value.trim().length > 0) {
-      var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-		     + escape(currentField.value) ); log (urlstr);
-      document.contactLookupAjaxRequest =
-	triggerAjaxRequest(urlstr, performSearchCallback, currentField);
-    }
-  }
-  delayedSearch = false;
+   if (currentField) {
+      if (document.contactLookupAjaxRequest) {
+         // Abort any pending request
+         document.contactLookupAjaxRequest.aborted = true;
+         document.contactLookupAjaxRequest.abort();
+      }
+      if (currentField.value.trim().length > 0) {
+         var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+                        + escape(currentField.value) );
+         document.contactLookupAjaxRequest =
+            triggerAjaxRequest(urlstr, performSearchCallback, currentField);
+      }
+   }
+   delayedSearch = false;
 }
 
 function performSearchCallback(http) {
@@ -465,14 +465,17 @@ function synchronizeWithParent(srcWidgetName, dstWidgetName) {
    var srcDate = parent$(srcWidgetName + "_date");
    var dstDate = $(dstWidgetName + "_date");
    dstDate.value = srcDate.value;
+   dstDate.updateShadowValue(srcDate);
 
    var srcHour = parent$(srcWidgetName + "_time_hour");
    var dstHour = $(dstWidgetName + "_time_hour");
    dstHour.value = srcHour.value;
+   dstHour.updateShadowValue(srcHour);
 
    var srcMinute = parent$(srcWidgetName + "_time_minute");
    var dstMinute = $(dstWidgetName + "_time_minute");
    dstMinute.value = srcMinute.value;
+   dstMinute.updateShadowValue(dstMinute);
 }
 
 function updateParentDateFields(srcWidgetName, dstWidgetName) {
@@ -489,44 +492,31 @@ function updateParentDateFields(srcWidgetName, dstWidgetName) {
    dstMinute.value = srcMinute.value;
 }
 
-function initializeTimeWidgets() {
-   synchronizeWithParent("startTime", "startTime");
-   synchronizeWithParent("endTime", "endTime");
-
-   Event.observe($("startTime_date"), "change", onTimeDateWidgetChange, false);
-   Event.observe($("startTime_time_hour"), "change", onTimeWidgetChange, false);
-   Event.observe($("startTime_time_minute"), "change", onTimeWidgetChange, false);
-
-   Event.observe($("endTime_date"), "change", onTimeDateWidgetChange, false);
-   Event.observe($("endTime_time_hour"), "change", onTimeWidgetChange, false);
-   Event.observe($("endTime_time_minute"), "change", onTimeWidgetChange, false);
-}
-
 function onTimeWidgetChange() {
    redisplayFreeBusyZone();
 }
 
-function onTimeDateWidgetChange(event) {
-  var table = $("freeBusy");
+function onTimeDateWidgetChange() {
+   var table = $("freeBusyHeader");
+   var rows = table.select("tr");
+   for (var i = 0; i < rows.length; i++) {
+      for (var j = rows[i].cells.length - 1; j > -1; j--) {
+         rows[i].deleteCell(j);
+      }
+   }
+  
+   table = $("freeBusyData");
+   rows = table.select("tr");
+   for (var i = 0; i < rows.length; i++) {
+      for (var j = rows[i].cells.length - 1; j > -1; j--) {
+         rows[i].deleteCell(j);
+      }
+   }
 
-  var rows = table.tHead.rows;
-  for (var i = 0; i < rows.length; i++) {
-     for (var j = rows[i].cells.length - 1; j > 0; j--) {
-	rows[i].deleteCell(j);
-     }
-  }
-
-  rows = table.tBodies[0].rows;
-  for (var i = 0; i < rows.length; i++) {
-     for (var j = rows[i].cells.length - 1; j > 0; j--) {
-	rows[i].deleteCell(j);
-     }
-  }
-
-  prepareTableHeaders();
-  prepareTableRows();
-  redisplayFreeBusyZone();
-  resetAllFreeBusys();
+   prepareTableHeaders();
+   prepareTableRows();
+   redisplayFreeBusyZone();
+   resetAllFreeBusys();
 }
 
 function prepareTableHeaders() {
@@ -545,20 +535,20 @@ function prepareTableHeaders() {
       header1.appendChild(document.createTextNode(days[i].toLocaleDateString()));
       rows[0].appendChild(header1);
       for (var hour = dayStartHour; hour < (dayEndHour + 1); hour++) {
-	 var header2 = document.createElement("th");
-	 var text = hour + ":00";
-	 if (hour < 10)
-	    text = "0" + text;
-	 header2.appendChild(document.createTextNode(text));
-	 rows[1].appendChild(header2);
+         var header2 = document.createElement("th");
+         var text = hour + ":00";
+         if (hour < 10)
+            text = "0" + text;
+         header2.appendChild(document.createTextNode(text));
+         rows[1].appendChild(header2);
 
-	 var header3 = document.createElement("th");
-	 for (var span = 0; span < 4; span++) {
-	    var spanElement = document.createElement("span");
-	    $(spanElement).addClassName("freeBusyZoneElement");
-	    header3.appendChild(spanElement);
-	 }
-	 rows[2].appendChild(header3);
+         var header3 = document.createElement("th");
+         for (var span = 0; span < 4; span++) {
+            var spanElement = document.createElement("span");
+            $(spanElement).addClassName("freeBusyZoneElement");
+            header3.appendChild(spanElement);
+         }
+         rows[2].appendChild(header3);
       }
    }
 }
@@ -600,29 +590,29 @@ function prepareAttendees() {
       var newDataRow = tbodyData.rows[tbodyData.rows.length - 2];
 
       for (var i = 0; i < attendeesEditor.names.length; i++) {
-	 var row = modelAttendee.cloneNode(true);
-	 tbodyAttendees.insertBefore(row, newAttendeeRow);
-	 $(row).removeClassName("attendeeModel");
-	 $(row).addClassName(attendeesEditor.states[i]);
-	 var input = $(row).down("input");
-	 var value = "";
-	 if (attendeesEditor.names[i].length > 0
-	     && attendeesEditor.names[i] != attendeesEditor.emails[i])
-	    value += attendeesEditor.names[i] + " ";
-	 value += "<" + attendeesEditor.emails[i] + ">";
-	 input.value = value;
-	 if (attendeesEditor.UIDs[i].length > 0)
-	   input.uid = attendeesEditor.UIDs[i];
-	 input.setAttribute("name", "");
-	 input.setAttribute("modified", "0");
-	 input.observe("blur", checkAttendee);
-	 input.observe("keydown", onContactKeydown);
+         var row = modelAttendee.cloneNode(true);
+         tbodyAttendees.insertBefore(row, newAttendeeRow);
+         $(row).removeClassName("attendeeModel");
+         $(row).addClassName(attendeesEditor.states[i]);
+         var input = $(row).down("input");
+         var value = "";
+         if (attendeesEditor.names[i].length > 0
+             && attendeesEditor.names[i] != attendeesEditor.emails[i])
+            value += attendeesEditor.names[i] + " ";
+         value += "<" + attendeesEditor.emails[i] + ">";
+         input.value = value;
+         if (attendeesEditor.UIDs[i].length > 0)
+            input.uid = attendeesEditor.UIDs[i];
+         input.setAttribute("name", "");
+         input.setAttribute("modified", "0");
+         input.observe("blur", checkAttendee);
+         input.observe("keydown", onContactKeydown);
 	 
-	 row = modelData.cloneNode(true);
-	 tbodyData.insertBefore(row, newDataRow);
-	 $(row).removeClassName("dataModel");
+         row = modelData.cloneNode(true);
+         tbodyData.insertBefore(row, newDataRow);
+         $(row).removeClassName("dataModel");
 	 
-	 displayFreeBusyForNode(input);
+         displayFreeBusyForNode(input);
       }
    }
    else {
@@ -638,18 +628,18 @@ function prepareAttendees() {
 }
 
 function onWindowResize(event) {
-  var view = $('freeBusyView');
-  var attendeesCell = $$('TABLE#freeBusy TD.freeBusyAttendees').first();
-  var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
-  var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
-  var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
-  var width = view.getWidth() - attendeesCell.getWidth();
-  var height = view.getHeight() - headerDiv.getHeight();
+   var view = $('freeBusyView');
+   var attendeesCell = $$('TABLE#freeBusy TD.freeBusyAttendees').first();
+   var headerDiv = $$('TABLE#freeBusy TD.freeBusyHeader DIV').first();
+   var attendeesDiv = $$('TABLE#freeBusy TD.freeBusyAttendees DIV').first();
+   var dataDiv = $$('TABLE#freeBusy TD.freeBusyData DIV').first();
+   var width = view.getWidth() - attendeesCell.getWidth();
+   var height = view.getHeight() - headerDiv.getHeight();
 
-  attendeesDiv.setStyle({ height: (height - 20) + 'px' });
-  headerDiv.setStyle({ width: (width - 20) + 'px' });
-  dataDiv.setStyle({ width: (width - 4) + 'px',
-	             height: (height - 2) + 'px' });
+   attendeesDiv.setStyle({ height: (height - 20) + 'px' });
+   headerDiv.setStyle({ width: (width - 20) + 'px' });
+   dataDiv.setStyle({ width: (width - 4) + 'px',
+            height: (height - 2) + 'px' });
 }
 
 function onScroll(event) {
@@ -662,8 +652,18 @@ function onScroll(event) {
 }
 
 function onFreeBusyLoadHandler() {
+   var widgets = {'start': {'date': $("startTime_date"),
+                            'hour': $("startTime_time_hour"),
+                            'minute': $("startTime_time_minute")},
+                  'end': {'date': $("endTime_date"),
+                          'hour': $("endTime_time_hour"),
+                          'minute': $("endTime_time_minute")}};
+
+   synchronizeWithParent("startTime", "startTime");
+   synchronizeWithParent("endTime", "endTime");
+
+   initTimeWidgets(widgets);   
    initializeWindowButtons();
-   initializeTimeWidgets();
    prepareTableHeaders();
    prepareTableRows();
    redisplayFreeBusyZone();
@@ -674,3 +674,123 @@ function onFreeBusyLoadHandler() {
 }
 
 FastInit.addOnLoad(onFreeBusyLoadHandler);
+
+/* Functions related to UIxTimeDateControl widget */
+
+function initTimeWidgets(widgets) {
+   this.timeWidgets = widgets;
+
+   assignCalendar('startTime_date');
+   assignCalendar('endTime_date');
+
+   Event.observe(widgets['start']['date'], "change",
+                 this.onAdjustTime, false);
+   Event.observe(widgets['start']['hour'], "change",
+                 this.onAdjustTime, false);
+   Event.observe(widgets['start']['minute'], "change",
+                 this.onAdjustTime, false);
+
+   Event.observe(widgets['end']['date'], "change",
+                 this.onAdjustTime, false);
+   Event.observe(widgets['end']['hour'], "change",
+                 this.onAdjustTime, false);
+   Event.observe(widgets['end']['minute'], "change",
+                 this.onAdjustTime, false);
+
+   var allDayLabel = $("allDay");
+   if (allDayLabel) {
+      var input = $(allDayLabel).childNodesWithTag("input")[0];
+      Event.observe(input, "change", onAllDayChanged.bindAsEventListener(input));
+      if (input.checked) {
+         for (var type in widgets) {
+            widgets[type]['hour'].disabled = true;
+            widgets[type]['minute'].disabled = true;
+         }
+      }
+   }
+}
+
+function onAdjustTime(event) {
+   var endDate = window.getEndDate();
+   var startDate = window.getStartDate();
+   if ($(this).readAttribute("id").startsWith("start")) {
+      // Start date was changed
+      var delta = window.getShadowStartDate().valueOf() -
+         startDate.valueOf();
+      var newEndDate = new Date(endDate.valueOf() - delta);
+      window.setEndDate(newEndDate);
+      window.timeWidgets['end']['date'].updateShadowValue();
+      window.timeWidgets['end']['hour'].updateShadowValue();
+      window.timeWidgets['end']['minute'].updateShadowValue();
+      window.timeWidgets['start']['date'].updateShadowValue();
+      window.timeWidgets['start']['hour'].updateShadowValue();
+      window.timeWidgets['start']['minute'].updateShadowValue();
+   }
+   else {
+      // End date was changed
+      var delta = endDate.valueOf() - startDate.valueOf();  
+      if (delta < 0) {
+         alert(labels.validate_endbeforestart);
+         var oldEndDate = window.getShadowEndDate();
+         window.setEndDate(oldEndDate);
+
+         window.timeWidgets['end']['date'].updateShadowValue();
+         window.timeWidgets['end']['hour'].updateShadowValue();
+         window.timeWidgets['end']['minute'].updateShadowValue();
+      }
+   }
+
+   // Specific function for the attendees editor
+   onTimeDateWidgetChange();
+}
+
+function _getDate(which) {
+  var date = window.timeWidgets[which]['date'].valueAsDate();
+  date.setHours( window.timeWidgets[which]['hour'].value );
+  date.setMinutes( window.timeWidgets[which]['minute'].value );
+
+  return date;
+}
+
+function getStartDate() {
+  return this._getDate('start');
+}
+
+function getEndDate() {
+  return this._getDate('end');
+}
+
+function _getShadowDate(which) {
+  var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
+  var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
+  date.setHours(intValue);
+  intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
+  date.setMinutes(intValue);
+
+  return date;
+}
+
+function getShadowStartDate() {
+  return this._getShadowDate('start');
+}
+
+function getShadowEndDate() {
+  return this._getShadowDate('end');
+}
+
+function _setDate(which, newDate) {
+   window.timeWidgets[which]['date'].setValueAsDate(newDate);
+   window.timeWidgets[which]['hour'].value = newDate.getHours();
+   var minutes = newDate.getMinutes();
+   if (minutes % 15)
+      minutes += (15 - minutes % 15);
+   window.timeWidgets[which]['minute'].value = minutes;
+}
+
+function setStartDate(newStartDate) {
+   this._setDate('start', newStartDate);
+}
+
+function setEndDate(newEndDate) {
+   this._setDate('end', newEndDate);
+}

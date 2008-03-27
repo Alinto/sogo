@@ -703,9 +703,134 @@ function refreshCalendarEventsCallback(http) {
          // log("refresh calendar events: " + data.length);
          var dateTuples = new Array();
          for (var i = 0; i < data.length; i++) {
-            drawCalendarEvent(data[i],
-                              http.callbackData["startDate"],
-                              http.callbackData["endDate"]);
+            var dates = drawCalendarEvent(data[i],
+                                          http.callbackData["startDate"],
+                                          http.callbackData["endDate"]);
+            dates.each(function(tuple) {
+                  if (tuple[3] == 0) tuple[3] = 96;
+                  dateTuples.push(tuple);
+               });
+         }
+      
+         var c = {
+         div:               0,
+         day:               1,
+         start:             2,
+         end:               3,
+         siblingsCount:     4,
+         siblingsPosition:  5,
+         siblingsMaxCount:  6
+         };
+         for (var i = 0; i < dateTuples.length; i++) {
+            if (dateTuples[i].length < 6) {
+               dateTuples[i][c.siblingsCount] = 1;
+               dateTuples[i][c.siblingsPosition] = 0;
+            }
+            for (var j = 0; j < dateTuples.length; j++) {
+               if (j == i) continue;
+               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+                  // Same day
+                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
+                      i < j) {
+                     // Same period
+                     if (dateTuples[j].length < 6) {
+                        dateTuples[j][c.siblingsCount] = 2;
+                        dateTuples[j][c.siblingsPosition] = dateTuples[i][c.siblingsPosition] + 1;
+                     }
+                     else {
+                        dateTuples[j][c.siblingsCount]++;
+                        dateTuples[j][c.siblingsPosition]++;
+                     }
+                     dateTuples[i][c.siblingsCount]++;
+                  }
+               }
+            }
+         }
+         
+         // Second loop; adjust total number of siblings for each event
+         for (var i = 0; i < dateTuples.length; i++) {
+            //log (i + " " + dateTuples[i].inspect());
+            var maxCount = 0;
+            for (var j = 0; j < dateTuples.length; j++) {
+               if (j == i) continue;
+               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+                  // Same day
+                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] < dateTuples[i][c.end] ){
+                     // Same period
+                     if (dateTuples[j][c.siblingsCount] > maxCount)
+                        maxCount = dateTuples[j][c.siblingsCount];
+                  }
+               }
+            }
+            if (maxCount > 0) {
+               dateTuples[i][c.siblingsCount] = maxCount;
+               dateTuples[i][c.siblingsMaxCount] = maxCount;
+            }
+         }
+
+         // Third loop; adjust position and total number of siblings for each event
+         for (var i = 0; i < dateTuples.length; i++) {
+            //log (i + " " + dateTuples[i].inspect());
+            for (var j = 0; j < dateTuples.length; j++) {
+               if (j == i) continue;
+               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+                  // Same day
+                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
+                      i < j) {
+                     // Overlapping period
+                     if (dateTuples[j][c.siblingsPosition] == dateTuples[i][c.siblingsPosition]) {
+                        // Same position
+                        dateTuples[j][c.siblingsPosition]--; // not very clever
+                     }
+                     if (dateTuples[j].length < 7 ||
+                         dateTuples[j][c.siblingsMaxCount] < dateTuples[i][c.siblingsMaxCount])
+                        dateTuples[j][c.siblingsMaxCount] = dateTuples[i][c.siblingsMaxCount];
+                  }
+               }
+            }
+            if (dateTuples[i].length < 7)
+               dateTuples[i][c.siblingsMaxCount] = dateTuples[i][c.siblingsCount];
+         }
+
+         // Final loop; draw the events
+         //log ("[div, day, start index, end index, siblings count, siblings position, siblings max count]");
+         for (var i = 0; i < dateTuples.length; i++) {
+            //log (i + " " + dateTuples[i].inspect());
+	
+            var base = dateTuples[i][c.siblingsCount] * dateTuples[i][c.siblingsMaxCount];
+            var length = 1;
+            var maxLength = 1 * dateTuples[i][c.siblingsMaxCount];
+
+            for (var j = dateTuples[i][c.siblingsCount];
+                 j < maxLength;
+                 j += dateTuples[i][c.siblingsCount]) { }
+
+            if (j > maxLength) {
+               j -= dateTuples[i][c.siblingsCount];
+            }
+	
+            var width = 100 * j / base;
+            var left = width * dateTuples[i][c.siblingsPosition];
+            dateTuples[i][0].setStyle({ width: width + "%",
+                     left: left + "%" });
          }
       }
       scrollDayView(http.callbackData["scrollEvent"]);
@@ -715,6 +840,8 @@ function refreshCalendarEventsCallback(http) {
 }
 
 function drawCalendarEvent(eventData, sd, ed) {
+   var dateTuples = new Array();
+
    var viewStartDate = sd.asDate();
    var viewEndDate = ed.asDate();
 
@@ -744,7 +871,7 @@ function drawCalendarEvent(eventData, sd, ed) {
       if (days[i].earlierDate(viewStartDate) == viewStartDate
           && days[i].laterDate(viewEndDate) == viewEndDate) {
          var starts;
-         
+
          // 	 log("day: " + days[i]);
          if (i == 0) {
             var quarters = (startDate.getUTCHours() * 4
@@ -775,6 +902,10 @@ function drawCalendarEvent(eventData, sd, ed) {
          eventDiv.siblings = siblings;
          if (eventData[9].length > 0)
             eventDiv.addClassName(eventData[9]); // event owner status
+         //eventDiv.setStyle({ width: '50%' });
+         if (currentView != "monthview" && 
+             eventData[7] == 0) // not "all day"
+            dateTuples.push(new Array(eventDiv, days[i].getDayString(), starts, ends));
          var dayString = days[i].getDayString();
          // log("day: " + dayString);
          var parentDiv = null;
@@ -817,6 +948,8 @@ function drawCalendarEvent(eventData, sd, ed) {
          if (parentDiv)
             parentDiv.appendChild(eventDiv);
       }
+
+   return dateTuples;
 }
 
 function eventClass(cname) {
@@ -929,7 +1062,7 @@ function calendarDisplayCallback(http) {
 function assignCalendar(name) {
   if (typeof(skycalendar) != "undefined") {
     var node = $(name);
-      
+    
     node.calendar = new skycalendar(node);
     node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
     var dateFormat = node.getAttribute("dateFormat");
@@ -939,11 +1072,11 @@ function assignCalendar(name) {
 }
 
 function popupCalendar(node) {
-  var nodeId = $(node).readAttribute("inputId");
-  var input = $(nodeId);
-  input.calendar.popup();
+   var nodeId = $(node).readAttribute("inputId");
+   var input = $(nodeId);
+   input.calendar.popup();
 
-  return false;
+   return false;
 }
 
 function onEventContextMenu(event) {

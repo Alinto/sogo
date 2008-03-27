@@ -115,15 +115,15 @@ function onComponentEditorLoad(event) {
   initializePrivacyMenu();
   var list = $("calendarList");
   Event.observe(list, "mousedown",
-		onChangeCalendar.bindAsEventListener(list),
-		false);
+                onChangeCalendar.bindAsEventListener(list),
+                false);
   list.fire("mousedown");
 
   var menuItems = $("itemPrivacyList").childNodesWithTag("li");
   for (var i = 0; i < menuItems.length; i++)
-    Event.observe(menuItems[i], "mousedown",
-		  onMenuSetClassification.bindAsEventListener(menuItems[i]),
-		  false);
+     Event.observe(menuItems[i], "mousedown",
+                   onMenuSetClassification.bindAsEventListener(menuItems[i]),
+                   false);
 
   $("repeatHref").observe("click", onPopupRecurrenceWindow);
   $("repeatList").observe("change", onPopupRecurrenceWindow);

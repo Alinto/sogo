@@ -88,8 +88,8 @@ function validateAptEditor() {
       start = parseInt(document.forms[0]['startTime_time_minute'].value);
       end = parseInt(document.forms[0]['endTime_time_minute'].value);
       if (start > end) {
-	alert(labels.validate_endbeforestart);
-	return false;
+         alert(labels.validate_endbeforestart);
+         return false;
       }
     }
   }
@@ -406,17 +406,17 @@ function getMenus() {
 }
 
 function onAppointmentEditorLoad() {
-  assignCalendar('startTime_date');
-  assignCalendar('endTime_date');
-
-  var widgets = {'start': {'date': $("startTime_date"),
-			   'hour': $("startTime_time_hour"),
-			   'minute': $("startTime_time_minute")},
-		 'end': {'date': $("endTime_date"),
-			 'hour': $("endTime_time_hour"),
-			 'minute': $("endTime_time_minute")}};
-  initTimeWidgets(widgets);
-  initializeAttendeesHref();
+   assignCalendar('startTime_date');
+   assignCalendar('endTime_date');
+   
+   var widgets = {'start': {'date': $("startTime_date"),
+                            'hour': $("startTime_time_hour"),
+                            'minute': $("startTime_time_minute")},
+                  'end': {'date': $("endTime_date"),
+                          'hour': $("endTime_time_hour"),
+                          'minute': $("endTime_time_minute")}};
+   initTimeWidgets(widgets);
+   initializeAttendeesHref();
 }
 
 FastInit.addOnLoad(onAppointmentEditorLoad);

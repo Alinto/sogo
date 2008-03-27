@@ -5,8 +5,10 @@
 - pressing enter in the contact edition dialog will perform the creation/update operation
 - implemented more of the CalDAV specification for compatibility with Lightning 0.8
 - added Italian translation, thanks to Marco Lertora
+- added initial logic for splitting overlapping events
 - improved restoration of drag handles state
 - improved contextual menu handling of Address Book module
+- fixed time/date control widget of attendees editor
 - fixed various bugs occuring with Safari 3.1
 - monthly events would not be returned properly
 - bi-weekly events would appear every week instead
