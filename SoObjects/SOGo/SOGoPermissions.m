@@ -69,7 +69,6 @@ NSString *SOGoMailRole_Writer = @"MailWriter";
 NSString *SOGoMailRole_Poster = @"MailPoster";
 NSString *SOGoMailRole_Expunger = @"MailExpunger";
 NSString *SOGoMailRole_Administrator = @"MailAdministrator";
-NSString *SOGoMailRole_MessageEraser = @"MailMessageEraser";
 
 /* permissions */
 NSString *SOGoPerm_AccessObject= @"Access Object";
