@@ -153,6 +153,10 @@ static NSString *uidColumnName = @"c_uid";
 	  value = [row objectForKey: fieldName];
 	  if ([value isNotNull])
 	    {
+	      value = [value stringByReplacingString: @"''"
+			     withString: @"'"];
+	      value = [value stringByReplacingString: @"\\\\"
+			     withString: @"\\"];
 	      plistData = [value dataUsingEncoding: NSUTF8StringEncoding];
 	      values
 		= [NSPropertyListSerialization propertyListFromData: plistData

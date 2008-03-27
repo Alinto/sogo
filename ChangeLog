@@ -1,5 +1,9 @@
 2008-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
+	-primaryFetchProfile]): we unescape the fetched value before
+	constructing the NSDictionary.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-setComponent:newComponent]): the weeks start on sunday in
 	OpenStep and are indexed from 0.
