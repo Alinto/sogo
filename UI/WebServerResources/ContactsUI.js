@@ -720,9 +720,9 @@ function configureAbToolbar() {
    var toolbar = $("abToolbar");
    if (toolbar) {
      var links = toolbar.childNodesWithTag("a");
-     links[0].observe("click", onAddressBookNew);
-     links[1].observe("click", onAddressBookAdd);
-     links[2].observe("click", onAddressBookRemove);
+     $(links[0]).observe("click", onAddressBookNew);
+     $(links[1]).observe("click", onAddressBookAdd);
+     $(links[2]).observe("click", onAddressBookRemove);
    }
 }
 

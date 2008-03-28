@@ -766,7 +766,11 @@ function refreshCalendarEventsCallback(http) {
                       dateTuples[j][c.start] < dateTuples[i][c.end] ||
 		
                       dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] < dateTuples[i][c.end] ){
+                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
+                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
+                      i < j) {
                      // Same period
                      if (dateTuples[j][c.siblingsCount] > maxCount)
                         maxCount = dateTuples[j][c.siblingsCount];
