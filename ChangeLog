@@ -1,5 +1,8 @@
 2008-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
+	-isFolderish]): new overriden method.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder
 	-appendObject:objectproperties:propertieswithBaseURL:baseURLtoComplexResponse:r]):

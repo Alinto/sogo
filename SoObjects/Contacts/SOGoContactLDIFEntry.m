@@ -171,6 +171,11 @@
   return vcard;
 }
 
+- (BOOL) isFolderish
+{
+  return NO;
+}
+
 - (NSString *) davEntityTag
 {
   unsigned int hash;
