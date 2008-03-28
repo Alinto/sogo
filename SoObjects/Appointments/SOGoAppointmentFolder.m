@@ -246,26 +246,32 @@ static NSNumber   *sharedYes = nil;
   NSMutableDictionary *currentValue;
   SOGoObject *sogoObject;
   NSString *content;
+  SoSecurityManager *mgr;
 
   values = [NSMutableArray array];
 
-//   if ([[object objectForKey: @"c_name"] isEqualToString: @"176A-4E8BDE62-5-B73ECD10"])
-//     NSLog(@"breajpoint");
+#warning this check should be done directly in the query... we should fix this sometime
+  mgr = [SoSecurityManager sharedSecurityManager];
   sogoObject = [self lookupName: [object objectForKey: @"c_name"]
 		     inContext: context
 		     acquire: NO];
-  list = [properties objectEnumerator];
-  while ((currentProperty = [list nextObject]))
+  if (!([mgr validatePermission: SOGoPerm_AccessObject
+	     onObject: sogoObject
+	     inContext: context]))
     {
-      currentValue = [NSMutableDictionary dictionary];
-      [currentValue setObject: currentProperty
-		    forKey: @"property"];
-      content = [self _property: currentProperty
-		      ofObject: sogoObject];
-      if (content)
-	[currentValue setObject: content
-		      forKey: @"content"];
-      [values addObject: currentValue];
+      list = [properties objectEnumerator];
+      while ((currentProperty = [list nextObject]))
+	{
+	  currentValue = [NSMutableDictionary dictionary];
+	  [currentValue setObject: currentProperty
+			forKey: @"property"];
+	  content = [self _property: currentProperty
+			  ofObject: sogoObject];
+	  if (content)
+	    [currentValue setObject: content
+			  forKey: @"content"];
+	  [values addObject: currentValue];
+	}
     }
 
   return values;

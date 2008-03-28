@@ -1,3 +1,11 @@
+2008-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-appendObject:objectproperties:propertieswithBaseURL:baseURLtoComplexResponse:r]):
+	check whether the current user has access to the objects returned
+	before including their properties.
+
 2008-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/AgenorUserDefaults.m ([AgenorUserDefaults
