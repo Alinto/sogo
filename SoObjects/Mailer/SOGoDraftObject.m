@@ -713,21 +713,25 @@ static BOOL        showTextAttachmentsInline  = NO;
   return ma;
 }
 
-- (BOOL) isValidAttachmentName: (NSString *) _name
+- (BOOL) isValidAttachmentName: (NSString *) filename
 {
   static NSString *sescape[] = { @"/", @"..", @"~", @"\"", @"'", nil };
-  unsigned i;
+  unsigned int i;
   NSRange  r;
+  BOOL result;
 
-  if (![_name isNotNull])     return NO;
-  if ([_name length] == 0)    return NO;
-  if ([_name hasPrefix: @"."]) return NO;
-  
-  for (i = 0; sescape[i] != nil; i++) {
-    r = [_name rangeOfString:sescape[i]];
-    if (r.length > 0) return NO;
-  }
-  return YES;
+  result = ([filename length] && ![filename hasPrefix: @"."]);
+  i = 0;
+  while (result && sescape[i])
+    {
+      r = [filename rangeOfString: sescape[i]];
+      if (r.length > 0)
+	result = NO;
+      else
+	i++;
+    }
+
+  return result;
 }
 
 - (NSString *) pathToAttachmentWithName: (NSString *) _name

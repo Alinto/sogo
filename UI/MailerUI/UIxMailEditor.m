@@ -337,15 +337,11 @@ static NSArray *infoKeys = nil;
 
   co = [self clientObject];
   allKeys = [[request formValueKeys] objectEnumerator];
-  key = [allKeys nextObject];
-  while (key && success)
-    {
-      if ([key hasPrefix: @"attachment"])
-	success
-	  = (![co saveAttachment: (NSData *) [request formValueForKey: key]
-		  withMetadata: [filenames objectForKey: key]]);
-      key = [allKeys nextObject];
-    }
+  while ((key = [allKeys nextObject]) && success)
+    if ([key hasPrefix: @"attachment"])
+      success
+	= (![co saveAttachment: (NSData *) [request formValueForKey: key]
+		withMetadata: [filenames objectForKey: key]]);
 
   return success;
 }
