@@ -510,11 +510,11 @@ function onConfirmContactSelection(event) {
    var initialValues = null;
 
    if (selector) {
-      var selectorId = selector.getAttribute("id");
-      selectorList = opener.window.document.getElementById('uixselector-'
-                                                           + selectorId
-                                                           + '-uidList');
-      initialValues = selectorList.value;
+     var selectorId = selector.getAttribute("id");
+     selectorList = opener.window.document.getElementById('uixselector-'
+							  + selectorId
+							  + '-uidList');
+     initialValues = selectorList.value;
    }
 
    var contactsList = $("contactsList");
@@ -718,10 +718,12 @@ function deniedFoldersLookupCallback(http) {
 
 function configureAbToolbar() {
    var toolbar = $("abToolbar");
-   var links = toolbar.childNodesWithTag("a");
-   Event.observe(links[0], "click", onAddressBookNew, false);
-   Event.observe(links[1], "click", onAddressBookAdd, false);
-   Event.observe(links[2], "click", onAddressBookRemove, false);
+   if (toolbar) {
+     var links = toolbar.childNodesWithTag("a");
+     links[0].observe("click", onAddressBookNew);
+     links[1].observe("click", onAddressBookAdd);
+     links[2].observe("click", onAddressBookRemove);
+   }
 }
 
 function configureContactFolders() {
@@ -858,18 +860,18 @@ function getMenus() {
 }
 
 function configureSelectionButtons() {
-   var container = $("contactSelectionButtons");
-   if (container) {
-      var buttons = container.childNodesWithTag("input");
-      for (var i = 0; i < buttons.length; i++)
-         Event.observe(buttons[i], "click",
-                       onConfirmContactSelection.bindAsEventListener(buttons[i]));
-   }
+  var container = $("contactSelectionButtons");
+  if (container) {
+    var buttons = container.childNodesWithTag("input");
+    for (var i = 0; i < buttons.length; i++)
+      $(buttons[i]).observe("click",
+			    onConfirmContactSelection);
+  }
 }
 
 function initContacts(event) {
    if (document.body.hasClassName("popup"))
-      configureSelectionButtons();
+     configureSelectionButtons();
    configureAbToolbar();
    configureContactFolders();
    //     initDnd();
