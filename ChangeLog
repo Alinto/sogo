@@ -1,3 +1,8 @@
+2008-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -resourceName]):
+	use the resource display name instead of its "nameInContainer".
+
 2008-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry

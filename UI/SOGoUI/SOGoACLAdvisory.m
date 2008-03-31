@@ -116,7 +116,7 @@
 
 - (NSString *) resourceName
 {
-  return [aclObject nameInContainer];
+  return [aclObject displayName];
 }
 
 - (NSString *) subject
