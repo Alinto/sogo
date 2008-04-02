@@ -74,6 +74,7 @@ static BOOL sendFolderAdvisories = NO;
   NSUserDefaults *ud;
 
   ud = [NSUserDefaults standardUserDefaults];
+
   sendFolderAdvisories = [ud boolForKey: @"SOGoFoldersSendEMailNotifications"];
 }
 

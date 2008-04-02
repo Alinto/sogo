@@ -194,14 +194,11 @@ static Class yearlyCalcClass  = Nil;
   maxRanges = [ranges count];
   dates = [[self _dates: exdates withinRange: limits] objectEnumerator];
   while ((currentDate = [dates nextObject]))
-    for (count = (maxRanges - 1); count > -1; count++)
+    for (count = (maxRanges - 1); count > -1; count--)
       {
 	currentRange = [ranges objectAtIndex: count];
 	if ([currentRange containsDate: currentDate])
-	  {
-	    [ranges removeObjectAtIndex: count];
-	    maxRanges--;
-	  }
+	  [ranges removeObjectAtIndex: count];
       }
 }
 

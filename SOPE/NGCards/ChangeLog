@@ -1,3 +1,11 @@
+2008-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalRecurrenceCalculator.m ([iCalRecurrenceCalculator
+	+recurrenceRangesWithinCalendarDateRange:_rfirstInstanceCalendarDateRange:_firrecurrenceRules:_rRulesexceptionRules:_exRulesexceptionDates:_exDates]):
+	when removing dates, the decremental count of dates to remove was
+	actually incremental, which caused an out of bound reference
+	exception.
+
 2008-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceRule.m ([iCalRecurrenceRule -byMonthDay]): check
