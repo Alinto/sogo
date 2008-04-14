@@ -1,3 +1,9 @@
+2008-04-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -davCalendarQuery:queryContext])
+	([SOGoAppointmentFolder -davCalendarMultiget:queryContext]):
+	deduce the cname of objects even if we are using hostless urls.
+
 2008-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/SOGoUI/SOGoACLAdvisory.m ([SOGoACLAdvisory -resourceName]):

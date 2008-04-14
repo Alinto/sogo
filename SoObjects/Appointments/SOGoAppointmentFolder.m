@@ -494,16 +494,29 @@ static NSNumber   *sharedYes = nil;
   component = nil;
 
   realBaseURL = [NSURL URLWithString: baseURL];
-  componentURL = [[NSURL URLWithString: url
-			 relativeToURL: realBaseURL]
-		   standardizedURL];
-  componentURLPath = [componentURL absoluteString];
-  if ([componentURLPath rangeOfString: [realBaseURL absoluteString]].location
-      != NSNotFound)
+  if (realBaseURL) /* url has a host part */
     {
-      urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
-      cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-      component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
+      componentURL = [[NSURL URLWithString: url
+			     relativeToURL: realBaseURL]
+		       standardizedURL];
+      componentURLPath = [componentURL absoluteString];
+      if ([componentURLPath rangeOfString: [realBaseURL absoluteString]].location
+	  != NSNotFound)
+	{
+	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
+	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
+	  component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
+	}
+    }
+  else
+    {
+      if ([url hasPrefix: baseURL])
+	{
+	  urlComponents = [[url stringByDeletingPrefix: baseURL]
+			    componentsSeparatedByString: @"/"];
+	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
+	  component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
+	}
     }
 
   return component;
