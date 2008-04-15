@@ -11,6 +11,9 @@
   title="panelTitle"
   const:popup="YES"
   const:jsFiles="UIxMailToSelection.js">
+  <script type="text/javascript">
+    var mailIsReply = <var:string value="isMailReply"/>;
+  </script>
   <div class="menu" id="attachmentsMenu">
     <ul>
       <li><var:string label:value="Open"/></li>

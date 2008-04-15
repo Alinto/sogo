@@ -121,6 +121,10 @@ static NSArray *infoKeys = nil;
 }
 
 /* accessors */
+- (NSString *) isMailReply
+{
+  return ([to count] > 0 ? @"true" : @"false");
+}
 
 - (void) setFrom: (NSString *) newFrom
 {

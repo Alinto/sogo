@@ -312,6 +312,9 @@ function initMailEditor() {
   onWindowResize(null);
   Event.observe(window, "resize", onWindowResize);
   Event.observe(window, "beforeunload", onMailEditorClose);
+
+  var focusField = (mailIsReply ? textarea : $("addr_0"));
+  focusField.focus();
 }
 
 function getMenus() {

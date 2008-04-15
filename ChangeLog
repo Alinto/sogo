@@ -1,3 +1,9 @@
+2008-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -isMailReply]): new
+	method that returns the JS values "true" or "false" as strings is
+	the mail has a non-null count of recipients.
+
 2008-04-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -davCalendarQuery:queryContext])
