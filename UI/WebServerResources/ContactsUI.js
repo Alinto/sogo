@@ -1,7 +1,7 @@
 /* JavaScript for SOGoContacts */
 
 var cachedContacts = new Array();
-var currentContactFolder = null;
+var currentAddressBook = null;
 
 var usersRightsWindowHeight = 200;
 var usersRightsWindowWidth = 450;
@@ -26,10 +26,10 @@ function validateEditorInput(sender) {
 }
 
 function openContactsFolder(contactsFolder, reload, idx) {
-   if ((contactsFolder && contactsFolder != currentContactFolder)
+   if ((contactsFolder && contactsFolder != currentAddressBook)
        || reload) {
-      currentContactFolder = contactsFolder;
-      var url = URLForFolderID(currentContactFolder) +
+      currentAddressBook = contactsFolder;
+      var url = URLForFolderID(currentAddressBook) +
          "/view?noframe=1";
 
       var searchValue = search["value"];
@@ -42,7 +42,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
                  + "&asc=" + sorting["ascending"]);
 
       var selection;
-      if (contactsFolder == currentContactFolder) {
+      if (contactsFolder == currentAddressBook) {
          var contactsList = $("contactsList");
          if (contactsList)
             selection = contactsList.getSelectedRowsId();
@@ -63,7 +63,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
 
 function openContactsFolderAtIndex(element) {
    var idx = element.getAttribute("idx");
-   var url = URLForFolderID(currentContactFolder) + "/view?noframe=1&idx=" + idx;
+   var url = URLForFolderID(currentAddressBook) + "/view?noframe=1&idx=" + idx;
 
    if (document.contactsListAjaxRequest) {
       document.contactsListAjaxRequest.aborted = true;
@@ -162,9 +162,9 @@ function contactsListCallback(http) {
       log ("ajax problem 1: status = " + http.status);
 }
 
-function onContactFoldersContextMenu(event) {
+function onAddressBooksContextMenu(event) {
    var menu = $("contactFoldersMenu");
-   Event.observe(menu, "mousedown", onContactFoldersContextMenuHide, false);
+   Event.observe(menu, "mousedown", onAddressBooksContextMenuHide, false);
    popupMenu(event, "contactFoldersMenu", this);
 
    var topNode = $("contactFolders");
@@ -205,7 +205,7 @@ function onContactContextMenuHide(event) {
    }
 }
 
-function onContactFoldersContextMenuHide(event) {
+function onAddressBooksContextMenuHide(event) {
    var topNode = $("contactFolders");
 
    if (topNode.menuSelectedEntry) {
@@ -237,12 +237,12 @@ function loadContact(idx) {
       document.contactAjaxRequest.abort();
    }
 
-   if (cachedContacts[currentContactFolder + "/" + idx]) {
+   if (cachedContacts[currentAddressBook + "/" + idx]) {
       var div = $('contactView');
-      div.innerHTML = cachedContacts[currentContactFolder + "/" + idx];
+      div.innerHTML = cachedContacts[currentAddressBook + "/" + idx];
    }
    else {
-      var url = (URLForFolderID(currentContactFolder)
+      var url = (URLForFolderID(currentAddressBook)
                  + "/" + idx + "/view?noframe=1");
       document.contactAjaxRequest
          = triggerAjaxRequest(url, contactLoadCallback, idx);
@@ -256,7 +256,7 @@ function contactLoadCallback(http) {
        && http.status == 200) {
       document.contactAjaxRequest = null;
       var content = http.responseText;
-      cachedContacts[currentContactFolder + "/" + http.callbackData] = content;
+      cachedContacts[currentAddressBook + "/" + http.callbackData] = content;
       div.innerHTML = content;
    }
    else
@@ -296,7 +296,7 @@ function moveTo(uri) {
 function onContactRowDblClick(event) {
    var contactId = this.getAttribute('id');
 
-   openContactWindow(URLForFolderID(currentContactFolder)
+   openContactWindow(URLForFolderID(currentAddressBook)
                      + "/" + contactId + "/edit", contactId);
 
    return false;
@@ -317,14 +317,14 @@ function onContactSelectionChange(event) {
 function onMenuEditContact(event) {
    var contactId = document.menuTarget.getAttribute('id');
 
-   openContactWindow(URLForFolderID(currentContactFolder)
+   openContactWindow(URLForFolderID(currentAddressBook)
                      + "/" + contactId + "/edit", contactId);
 }
 
 function onMenuWriteToContact(event) {
    var contactId = document.menuTarget.getAttribute('id');
 
-   openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+   openMailComposeWindow(ApplicationBaseURL + currentAddressBook
                          + "/" + contactId + "/write");
 
    if (document.body.hasClassName("popup"))
@@ -352,7 +352,7 @@ function onToolbarEditSelectedContacts(event) {
    }
 
    for (var i = 0; i < rows.length; i++) {
-      openContactWindow(URLForFolderID(currentContactFolder)
+      openContactWindow(URLForFolderID(currentAddressBook)
                         + "/" + rows[i] + "/edit", rows[i]);
    }
 
@@ -373,7 +373,7 @@ function onToolbarWriteToSelectedContacts(event) {
       var emailCell = $(rows[i]).down('td', 1);
       if (emailCell.firstChild) { // .nodeValue is the contact email address
          rowsWithEmail++;
-         openMailComposeWindow(ApplicationBaseURL + currentContactFolder
+         openMailComposeWindow(ApplicationBaseURL + currentAddressBook
                                + "/" + rows[i] + "/write");
       }
    }
@@ -404,7 +404,7 @@ function uixDeleteSelectedContacts(sender) {
     
       /* send AJAX request (synchronously) */
     
-      url = (URLForFolderID(currentContactFolder) + "/"
+      url = (URLForFolderID(currentAddressBook) + "/"
              + rows[i] + "/delete");
       http = createHTTPClient();
       http.open("POST", url, false /* not async */);
@@ -468,7 +468,7 @@ function onHeaderClick(event) {
 }
 
 function newContact(sender) {
-   openContactWindow(URLForFolderID(currentContactFolder) + "/newcontact");
+   openContactWindow(URLForFolderID(currentAddressBook) + "/newcontact");
 
    return false; /* stop following the link */
 }
@@ -499,13 +499,13 @@ function onFolderSelectionChange(event) {
 }
 
 function refreshCurrentFolder() {
-   openContactsFolder(currentContactFolder, true);
+   openContactsFolder(currentAddressBook, true);
 }
 
 function onConfirmContactSelection(event) {
    var tag = this.getAttribute("name");
-   var folderLi = $(currentContactFolder);
-   var currentContactFolderName = folderLi.innerHTML;
+   var folderLi = $(currentAddressBook);
+   var currentAddressBookName = folderLi.innerHTML;
    var selectorList = null;
    var initialValues = null;
 
@@ -523,7 +523,8 @@ function onConfirmContactSelection(event) {
       var cid = rows[i].getAttribute("contactid");
       var cname = '' + rows[i].getAttribute("contactname");
       var email = '' + rows[i].cells[1].innerHTML;
-      window.opener.addContact(tag, currentContactFolderName + '/' + cname,
+
+      window.opener.addContact(tag, currentAddressBookName + '/' + cname,
                                cid, cname, email);
    }
 
@@ -540,7 +541,7 @@ function onContactMailTo(node) {
 
 function refreshContacts(contactId) {
    refreshCurrentFolder();
-   cachedContacts[currentContactFolder + "/" + contactId] = null;
+   cachedContacts[currentAddressBook + "/" + contactId] = null;
    loadContact(contactId);
 
    return false;
@@ -583,7 +584,7 @@ function appendAddressBook(name, folder) {
       li.setAttribute("id", folder);
       li.setAttribute("owner", owner);
       li.appendChild(document.createTextNode(name));
-      setEventsOnContactFolder(li);
+      setEventsOnAddressBook(li);
    }
 
    return result;
@@ -726,14 +727,14 @@ function configureAbToolbar() {
    }
 }
 
-function configureContactFolders() {
+function configureAddressBooks() {
    var contactFolders = $("contactFolders");
    if (contactFolders) {
       contactFolders.observe("mousedown", listRowMouseDownHandler);
       contactFolders.observe("click", onFolderSelectionChange);
       var lis = contactFolders.childNodesWithTag("li");
       for (var i = 0; i < lis.length; i++)
-         setEventsOnContactFolder(lis[i]);
+         setEventsOnAddressBook(lis[i]);
     
       lookupDeniedFolders();
     
@@ -743,16 +744,17 @@ function configureContactFolders() {
    }
 }
 
-function setEventsOnContactFolder(folder) {
+function setEventsOnAddressBook(folder) {
    var node = $(folder);
 
    node.observe("mousedown", listRowMouseDownHandler);
    node.observe("click", onRowClick);
+   node.observe("dblclick", onAddressBookModify);
    Event.observe(node, "contextmenu",
-                 onContactFoldersContextMenu.bindAsEventListener(node));
+                 onAddressBooksContextMenu.bindAsEventListener(node));
 }
 
-function onMenuModify(event) {
+function onAddressBookModify(event) {
    var folders = $("contactFolders");
    var selected = folders.getSelectedNodes()[0];
 
@@ -798,7 +800,7 @@ function onMenuSharing(event) {
    }
 }
 
-function onContactFoldersMenuPrepareVisibility() {
+function onAddressBooksMenuPrepareVisibility() {
    var folders = $("contactFolders");
    var selected = folders.getSelectedNodes();
 
@@ -841,7 +843,7 @@ function onContactMenuPrepareVisibility() {
 
 function getMenus() {
    var menus = {};
-   menus["contactFoldersMenu"] = new Array(onMenuModify, "-", null,
+   menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", null,
                                            null, "-", null, "-",
                                            onMenuSharing);
    menus["contactMenu"] = new Array(onMenuEditContact, "-",
@@ -851,7 +853,7 @@ function getMenus() {
    
    var contactFoldersMenu = $("contactFoldersMenu");
    if (contactFoldersMenu)
-      contactFoldersMenu.prepareVisibility = onContactFoldersMenuPrepareVisibility;
+      contactFoldersMenu.prepareVisibility = onAddressBooksMenuPrepareVisibility;
    var contactMenu = $("contactMenu");
    if (contactMenu)
       contactMenu.prepareVisibility = onContactMenuPrepareVisibility;
@@ -873,7 +875,7 @@ function initContacts(event) {
    if (document.body.hasClassName("popup"))
      configureSelectionButtons();
    configureAbToolbar();
-   configureContactFolders();
+   configureAddressBooks();
    //     initDnd();
 
    var table = $("contactsList");

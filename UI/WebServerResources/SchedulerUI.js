@@ -418,10 +418,10 @@ function tasksListCallback(http) {
       for (var i = 0; i < data.length; i++) {
 	var listItem = document.createElement("li");
 	list.appendChild(listItem);
-	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
-	Event.observe(listItem, "click", onRowClick);
-	Event.observe(listItem, "dblclick",
-		      editDoubleClickedEvent.bindAsEventListener(listItem));
+// 	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
+// 	Event.observe(listItem, "click", onRowClick);
+// 	Event.observe(listItem, "dblclick",
+// 		      editDoubleClickedEvent.bindAsEventListener(listItem));
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	$(listItem).addClassName(data[i][6]);
@@ -431,11 +431,14 @@ function tasksListCallback(http) {
 	var input = document.createElement("input");
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
-	Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
+// 	Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
 	input.setAttribute("value", "1");
 	if (data[i][2] == 1)
 	  input.setAttribute("checked", "checked");
 	$(input).addClassName("checkBox");
+
+	setEventsOnCalendar(input, listItem);
+
 	listItem.appendChild(document.createTextNode(data[i][3]));
       }
 
@@ -1496,30 +1499,6 @@ function updateCalendarsList(method) {
   }
 }
 
-function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
-  var uids = $("uixselector-calendarsList-uidList");
-  //   log("addContact");
-  if (contactId)
-    {
-      var re = new RegExp("(^|,)" + contactId + "($|,)");
-
-      if (!re.test(uids.value))
-        {
-          if (uids.value.length > 0)
-            uids.value += ',' + contactId;
-          else
-            uids.value = contactId;
-          var names = $("calendarList");
-          var listElems = names.childNodesWithTag("li");
-          var colorDef = indexColor(listElems.length);
-          names.appendChild(userCalendarEntry(contactId, colorDef));
-
-        }
-    }
-
-  return false;
-}
-
 function validateBrowseURL(input) {
   var button = $("browseURLBtn");
 
@@ -1574,7 +1553,7 @@ function getMenus() {
 				      editEvent, deleteEvent, "-",
 				      onSelectAll, "-",
 				      null, null);
-  menus["calendarsMenu"] = new Array(onMenuModify,
+  menus["calendarsMenu"] = new Array(onCalendarModify,
 				     "-",
 				     onCalendarNew, onCalendarRemove,
 				     "-", null, null, "-",
@@ -1634,6 +1613,7 @@ function initCalendarSelector() {
     Event.observe(items[i], "mousedown", listRowMouseDownHandler);
     Event.observe(items[i], "selectstart", listRowMouseDownHandler);
     Event.observe(items[i], "click", onRowClick);
+    items[i].observe("dblclick", onCalendarModify);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -1642,7 +1622,7 @@ function initCalendarSelector() {
   Event.observe(links[2], "click",  onCalendarRemove);
 }
 
-function onMenuModify(event) {
+function onCalendarModify(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
 
@@ -1680,6 +1660,14 @@ function onCalendarNew(event) {
 function onCalendarAdd(event) {
   openUserFolderSelector(onFolderSubscribeCB, "calendar");
   preventDefault(event);
+}
+
+function setEventsOnCalendar(checkBox, li) {
+  li.observe("mousedown", listRowMouseDownHandler);
+  li.observe("selectstart", listRowMouseDownHandler);
+  li.observe("click", onRowClick);
+  li.observe("dblclick", onCalendarModify);
+  checkBox.observe("click", updateCalendarStatus);
 }
 
 function appendCalendar(folderName, folderPath) {
@@ -1757,11 +1745,7 @@ function appendCalendar(folderName, folderPath) {
     $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));
 
     // Register events (doesn't work with Safari)
-    Event.observe(li, "mousedown",  listRowMouseDownHandler);
-    Event.observe(li, "selectstart", listRowMouseDownHandler);
-    Event.observe(li, "click",  onRowClick);
-    Event.observe(checkBox, "click",
-		  updateCalendarStatus.bindAsEventListener(checkBox));
+    setEventsOnCalendar(checkBox, li);
 
     var url = URLForFolderID(folderPath) + "/canAccessContent";
     triggerAjaxRequest(url, calendarEntryCallback, folderPath);
