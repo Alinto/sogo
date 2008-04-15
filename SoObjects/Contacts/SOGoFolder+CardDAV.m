@@ -43,24 +43,22 @@
   NSDictionary *currentFilter, *contact;
   NSEnumerator *contacts;
   NSString *baseURL;
-  SOGoObject <SOGoContactFolder> *o;
 
-  o = (id <SOGoContactFolder>) self;
-  baseURL = [o baseURLInContext: localContext];
+  baseURL = [self baseURLInContext: localContext];
 
   max = [filters count];
   for (count = 0; count < max; count++)
     {
       currentFilter = [filters objectAtIndex: count];
-      contacts = [[o lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-		     sortBy: @"c_givenname"
-		     ordering: NSOrderedDescending]
+      contacts = [[self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+			sortBy: @"c_givenname"
+			ordering: NSOrderedDescending]
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))
-	[o appendObject: contact
-	   withBaseURL: baseURL
-	   toREPORTResponse: response];
+	[self appendObject: contact
+	      withBaseURL: baseURL
+	      toREPORTResponse: response];
     }
 }
 
