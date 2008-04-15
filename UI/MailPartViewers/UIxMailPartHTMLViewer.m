@@ -171,7 +171,7 @@
       currentChar = _chars + count;
       if (inCSSDeclaration)
         {
-          if (*(char *) currentChar == '}')
+          if (*currentChar == '}')
             {
               inCSSDeclaration = NO;
               hasEmbeddedCSS = NO;
@@ -179,16 +179,16 @@
         }
       else
         {
-          if (*(char *) currentChar == '{')
+          if (*currentChar == '{')
             inCSSDeclaration = YES;
-          if (*(char *) currentChar == ',')
+          if (*currentChar == ',')
             hasEmbeddedCSS = NO;
           else if (!hasEmbeddedCSS)
             {
-              if (*(char *) currentChar == '@')
+              if (*currentChar == '@')
                 hasEmbeddedCSS = YES;
               else
-                if (*(char *) currentChar > 32)
+                if (*currentChar > 32)
                   {
                     [css appendString: [NSString stringWithCharacters: start
                                                  length: (currentChar - start)]];

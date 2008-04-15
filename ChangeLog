@@ -1,5 +1,11 @@
 2008-04-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	([_UIxHTMLMailContentHandler -characters:_charslength:_len])
+	([_UIxHTMLMailContentHandler -comment:_charslength:_len]): don't
+	cast the unichar data to char, to avoid issues with endianness
+	which prevents the CSS from being parsed properly.
+
 	* UI/MailerUI/UIxMailEditor.m ([UIxMailEditor -isMailReply]): new
 	method that returns the JS values "true" or "false" as strings is
 	the mail has a non-null count of recipients.
