@@ -353,31 +353,31 @@ function eventsListCallback(http) {
 	startDate.setTime(data[i][4] * 1000);
 	row.day = startDate.getDayString();
 	row.hour = startDate.getHourString();
-	Event.observe(row, "mousedown", onRowClick);
-	Event.observe(row, "selectstart", listRowMouseDownHandler);
-	Event.observe(row, "dblclick",
-		      editDoubleClickedEvent.bindAsEventListener(row));
-	Event.observe(row, "contextmenu",
-		      onEventContextMenu.bindAsEventListener(row));
+	row.observe("mousedown", onRowClick);
+	row.observe("selectstart", listRowMouseDownHandler);
+	row.observe("dblclick",
+		    editDoubleClickedEvent.bindAsEventListener(row));
+	row.observe("contextmenu",
+		    onEventContextMenu.bindAsEventListener(row));
       
 	var td = document.createElement("td");
 	row.appendChild(td);
-	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][3]));
 
 	td = document.createElement("td");
 	row.appendChild(td);
-	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][10]));
 
 	td = document.createElement("td");
 	row.appendChild(td);
-	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][11]));
       
 	td = document.createElement("td");
 	row.appendChild(td);
-	Event.observe(td, "mousedown", listRowMouseDownHandler, true);
+	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][6]));
       }
 
@@ -418,10 +418,10 @@ function tasksListCallback(http) {
       for (var i = 0; i < data.length; i++) {
 	var listItem = document.createElement("li");
 	list.appendChild(listItem);
-// 	Event.observe(listItem, "mousedown", listRowMouseDownHandler);
-// 	Event.observe(listItem, "click", onRowClick);
-// 	Event.observe(listItem, "dblclick",
-// 		      editDoubleClickedEvent.bindAsEventListener(listItem));
+	// 	listItem.observe("mousedown", listRowMouseDownHandler);
+	// 	listItem.observe("click", onRowClick);
+	// 	listItem.observe("dblclick",
+	// 		      editDoubleClickedEvent.bindAsEventListener(listItem));
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	$(listItem).addClassName(data[i][6]);
@@ -431,7 +431,7 @@ function tasksListCallback(http) {
 	var input = document.createElement("input");
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
-// 	Event.observe(input, "click", updateTaskStatus.bindAsEventListener(input), true);
+	// 	input.observe("click", updateTaskStatus.bindAsEventListener(input), true);
 	input.setAttribute("value", "1");
 	if (data[i][2] == 1)
 	  input.setAttribute("checked", "checked");
@@ -699,264 +699,264 @@ function refreshCalendarEvents(scrollEvent) {
 }
 
 function refreshCalendarEventsCallback(http) {
-   if (http.readyState == 4
-       && http.status == 200) {
-      if (http.responseText.length > 0) {
-         var data = http.responseText.evalJSON(true);
-         // log("refresh calendar events: " + data.length);
-         var dateTuples = new Array();
-         for (var i = 0; i < data.length; i++) {
-            var dates = drawCalendarEvent(data[i],
-                                          http.callbackData["startDate"],
-                                          http.callbackData["endDate"]);
-            dates.each(function(tuple) {
-                  if (tuple[3] == 0) tuple[3] = 96;
-                  dateTuples.push(tuple);
-               });
-         }
-      
-         var c = {
-         div:               0,
-         day:               1,
-         start:             2,
-         end:               3,
-         siblingsCount:     4,
-         siblingsPosition:  5,
-         siblingsMaxCount:  6
-         };
-         for (var i = 0; i < dateTuples.length; i++) {
-            if (dateTuples[i].length < 6) {
-               dateTuples[i][c.siblingsCount] = 1;
-               dateTuples[i][c.siblingsPosition] = 0;
-            }
-            for (var j = 0; j < dateTuples.length; j++) {
-               if (j == i) continue;
-               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
-                  // Same day
-                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
-                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
-		
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
-
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
-                      i < j) {
-                     // Same period
-                     if (dateTuples[j].length < 6) {
-                        dateTuples[j][c.siblingsCount] = 2;
-                        dateTuples[j][c.siblingsPosition] = dateTuples[i][c.siblingsPosition] + 1;
-                     }
-                     else {
-                        dateTuples[j][c.siblingsCount]++;
-                        dateTuples[j][c.siblingsPosition]++;
-                     }
-                     dateTuples[i][c.siblingsCount]++;
-                  }
-               }
-            }
-         }
-         
-         // Second loop; adjust total number of siblings for each event
-         for (var i = 0; i < dateTuples.length; i++) {
-            //log (i + " " + dateTuples[i].inspect());
-            var maxCount = 0;
-            for (var j = 0; j < dateTuples.length; j++) {
-               if (j == i) continue;
-               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
-                  // Same day
-                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
-                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
-		
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
-
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
-                      i < j) {
-                     // Same period
-                     if (dateTuples[j][c.siblingsCount] > maxCount)
-                        maxCount = dateTuples[j][c.siblingsCount];
-                  }
-               }
-            }
-            if (maxCount > 0) {
-               dateTuples[i][c.siblingsCount] = maxCount;
-               dateTuples[i][c.siblingsMaxCount] = maxCount;
-            }
-         }
-
-         // Third loop; adjust position and total number of siblings for each event
-         for (var i = 0; i < dateTuples.length; i++) {
-            //log (i + " " + dateTuples[i].inspect());
-            for (var j = 0; j < dateTuples.length; j++) {
-               if (j == i) continue;
-               if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
-                  // Same day
-                  if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
-                      dateTuples[j][c.start] < dateTuples[i][c.end] ||
-		
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] < dateTuples[i][c.end] ||
-
-                      dateTuples[j][c.start] == dateTuples[i][c.start] &&
-                      dateTuples[j][c.end] == dateTuples[i][c.end] &&
-                      i < j) {
-                     // Overlapping period
-                     if (dateTuples[j][c.siblingsPosition] == dateTuples[i][c.siblingsPosition]) {
-                        // Same position
-                        dateTuples[j][c.siblingsPosition]--; // not very clever
-                     }
-                     if (dateTuples[j].length < 7 ||
-                         dateTuples[j][c.siblingsMaxCount] < dateTuples[i][c.siblingsMaxCount])
-                        dateTuples[j][c.siblingsMaxCount] = dateTuples[i][c.siblingsMaxCount];
-                  }
-               }
-            }
-            if (dateTuples[i].length < 7)
-               dateTuples[i][c.siblingsMaxCount] = dateTuples[i][c.siblingsCount];
-         }
-
-         // Final loop; draw the events
-         //log ("[div, day, start index, end index, siblings count, siblings position, siblings max count]");
-         for (var i = 0; i < dateTuples.length; i++) {
-            //log (i + " " + dateTuples[i].inspect());
-	
-            var base = dateTuples[i][c.siblingsCount] * dateTuples[i][c.siblingsMaxCount];
-            var length = 1;
-            var maxLength = 1 * dateTuples[i][c.siblingsMaxCount];
-
-            for (var j = dateTuples[i][c.siblingsCount];
-                 j < maxLength;
-                 j += dateTuples[i][c.siblingsCount]) { }
-
-            if (j > maxLength) {
-               j -= dateTuples[i][c.siblingsCount];
-            }
-	
-            var width = 100 * j / base;
-            var left = width * dateTuples[i][c.siblingsPosition];
-            dateTuples[i][0].setStyle({ width: width + "%",
-                     left: left + "%" });
-         }
+  if (http.readyState == 4
+      && http.status == 200) {
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
+      // log("refresh calendar events: " + data.length);
+      var dateTuples = new Array();
+      for (var i = 0; i < data.length; i++) {
+	var dates = drawCalendarEvent(data[i],
+				      http.callbackData["startDate"],
+				      http.callbackData["endDate"]);
+	dates.each(function(tuple) {
+	    if (tuple[3] == 0) tuple[3] = 96;
+	    dateTuples.push(tuple);
+	  });
       }
-      scrollDayView(http.callbackData["scrollEvent"]);
-   }
-   else
-      log("AJAX error when refreshing calendar events");
+      
+      var c = {
+      div:               0,
+      day:               1,
+      start:             2,
+      end:               3,
+      siblingsCount:     4,
+      siblingsPosition:  5,
+      siblingsMaxCount:  6
+      };
+      for (var i = 0; i < dateTuples.length; i++) {
+	if (dateTuples[i].length < 6) {
+	  dateTuples[i][c.siblingsCount] = 1;
+	  dateTuples[i][c.siblingsPosition] = 0;
+	}
+	for (var j = 0; j < dateTuples.length; j++) {
+	  if (j == i) continue;
+	  if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+	    // Same day
+	    if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+		dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] == dateTuples[i][c.end] &&
+		i < j) {
+	      // Same period
+	      if (dateTuples[j].length < 6) {
+		dateTuples[j][c.siblingsCount] = 2;
+		dateTuples[j][c.siblingsPosition] = dateTuples[i][c.siblingsPosition] + 1;
+	      }
+	      else {
+		dateTuples[j][c.siblingsCount]++;
+		dateTuples[j][c.siblingsPosition]++;
+	      }
+	      dateTuples[i][c.siblingsCount]++;
+	    }
+	  }
+	}
+      }
+         
+      // Second loop; adjust total number of siblings for each event
+      for (var i = 0; i < dateTuples.length; i++) {
+	//log (i + " " + dateTuples[i].inspect());
+	var maxCount = 0;
+	for (var j = 0; j < dateTuples.length; j++) {
+	  if (j == i) continue;
+	  if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+	    // Same day
+	    if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+		dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] == dateTuples[i][c.end] &&
+		i < j) {
+	      // Same period
+	      if (dateTuples[j][c.siblingsCount] > maxCount)
+		maxCount = dateTuples[j][c.siblingsCount];
+	    }
+	  }
+	}
+	if (maxCount > 0) {
+	  dateTuples[i][c.siblingsCount] = maxCount;
+	  dateTuples[i][c.siblingsMaxCount] = maxCount;
+	}
+      }
+
+      // Third loop; adjust position and total number of siblings for each event
+      for (var i = 0; i < dateTuples.length; i++) {
+	//log (i + " " + dateTuples[i].inspect());
+	for (var j = 0; j < dateTuples.length; j++) {
+	  if (j == i) continue;
+	  if (dateTuples[i][c.day] == dateTuples[j][c.day]) {
+	    // Same day
+	    if (dateTuples[j][c.start] > dateTuples[i][c.start] &&
+		dateTuples[j][c.start] < dateTuples[i][c.end] ||
+		
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] < dateTuples[i][c.end] ||
+
+		dateTuples[j][c.start] == dateTuples[i][c.start] &&
+		dateTuples[j][c.end] == dateTuples[i][c.end] &&
+		i < j) {
+	      // Overlapping period
+	      if (dateTuples[j][c.siblingsPosition] == dateTuples[i][c.siblingsPosition]) {
+		// Same position
+		dateTuples[j][c.siblingsPosition]--; // not very clever
+	      }
+	      if (dateTuples[j].length < 7 ||
+		  dateTuples[j][c.siblingsMaxCount] < dateTuples[i][c.siblingsMaxCount])
+		dateTuples[j][c.siblingsMaxCount] = dateTuples[i][c.siblingsMaxCount];
+	    }
+	  }
+	}
+	if (dateTuples[i].length < 7)
+	  dateTuples[i][c.siblingsMaxCount] = dateTuples[i][c.siblingsCount];
+      }
+
+      // Final loop; draw the events
+      //log ("[div, day, start index, end index, siblings count, siblings position, siblings max count]");
+      for (var i = 0; i < dateTuples.length; i++) {
+	//log (i + " " + dateTuples[i].inspect());
+	
+	var base = dateTuples[i][c.siblingsCount] * dateTuples[i][c.siblingsMaxCount];
+	var length = 1;
+	var maxLength = 1 * dateTuples[i][c.siblingsMaxCount];
+
+	for (var j = dateTuples[i][c.siblingsCount];
+	     j < maxLength;
+	     j += dateTuples[i][c.siblingsCount]) { }
+
+	if (j > maxLength) {
+	  j -= dateTuples[i][c.siblingsCount];
+	}
+	
+	var width = 100 * j / base;
+	var left = width * dateTuples[i][c.siblingsPosition];
+	dateTuples[i][0].setStyle({ width: width + "%",
+	      left: left + "%" });
+      }
+    }
+    scrollDayView(http.callbackData["scrollEvent"]);
+  }
+  else
+    log("AJAX error when refreshing calendar events");
 }
 
 function drawCalendarEvent(eventData, sd, ed) {
-   var dateTuples = new Array();
+  var dateTuples = new Array();
 
-   var viewStartDate = sd.asDate();
-   var viewEndDate = ed.asDate();
+  var viewStartDate = sd.asDate();
+  var viewEndDate = ed.asDate();
 
-   var startDate = new Date();
-   startDate.setTime(eventData[4] * 1000);
-   var endDate = new Date();
-   endDate.setTime(eventData[5] * 1000);
+  var startDate = new Date();
+  startDate.setTime(eventData[4] * 1000);
+  var endDate = new Date();
+  endDate.setTime(eventData[5] * 1000);
 
-   //log ("s: " + startDate + "; e: " + endDate);
+  //log ("s: " + startDate + "; e: " + endDate);
 
-   var days = startDate.daysUpTo(endDate);
+  var days = startDate.daysUpTo(endDate);
 
-   var title;
-   if (currentView == "monthview"
-       && (eventData[7] == 0))
-      title = startDate.getDisplayHoursString() + " " + eventData[3];
-   else
-      title = eventData[3];
+  var title;
+  if (currentView == "monthview"
+      && (eventData[7] == 0))
+    title = startDate.getDisplayHoursString() + " " + eventData[3];
+  else
+    title = eventData[3];
 
-   //    log("title: " + title); 
-   //    log("viewS: " + viewStartDate);
-   var startHour = null;
-   var endHour = null;
+  //    log("title: " + title); 
+  //    log("viewS: " + viewStartDate);
+  var startHour = null;
+  var endHour = null;
    
-   var siblings = new Array();
-   for (var i = 0; i < days.length; i++)
-      if (days[i].earlierDate(viewStartDate) == viewStartDate
-          && days[i].laterDate(viewEndDate) == viewEndDate) {
-         var starts;
+  var siblings = new Array();
+  for (var i = 0; i < days.length; i++)
+    if (days[i].earlierDate(viewStartDate) == viewStartDate
+	&& days[i].laterDate(viewEndDate) == viewEndDate) {
+      var starts;
 
-         // 	 log("day: " + days[i]);
-         if (i == 0) {
-            var quarters = (startDate.getUTCHours() * 4
-                            + Math.floor(startDate.getUTCMinutes() / 15));
-            starts = quarters;
-            startHour = startDate.getDisplayHoursString();
-            endHour = endDate.getDisplayHoursString();
-         }
-         else
-            starts = 0;
-	 
-         var ends;
-         var lasts;
-         if (i == days.length - 1) {
-            var quarters = (endDate.getUTCHours() * 4
-                            + Math.ceil(endDate.getUTCMinutes() / 15));
-            ends = quarters;
-         }
-         else
-            ends = 96;
-         lasts = ends - starts;
-         if (!lasts)
-            lasts = 1;
-
-         var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
-                                    null, null, title);
-         siblings.push(eventDiv);
-         eventDiv.siblings = siblings;
-         if (eventData[9].length > 0)
-            eventDiv.addClassName(eventData[9]); // event owner status
-         //eventDiv.setStyle({ width: '50%' });
-         if (currentView != "monthview" && 
-             eventData[7] == 0) // not "all day"
-            dateTuples.push(new Array(eventDiv, days[i].getDayString(), starts, ends));
-         var dayString = days[i].getDayString();
-         // log("day: " + dayString);
-         var parentDiv = null;
-         if (currentView == "monthview") {
-            var dayDivs = $("monthDaysView").childNodesWithTag("div");
-            var j = 0; 
-            while (!parentDiv && j < dayDivs.length) {
-               if (dayDivs[j].getAttribute("day") == dayString)
-                  parentDiv = dayDivs[j];
-               else
-                  j++;
-            }
-         }
-         else {
-            if (eventData[7] == 0) {
-               var daysView = $("daysView");
-               var eventsDiv = $(daysView).childNodesWithTag("div")[1];
-               var dayDivs = $(eventsDiv).childNodesWithTag("div");
-               var j = 0; 
-               while (!parentDiv && j < dayDivs.length) {
-                  if (dayDivs[j].getAttribute("day") == dayString)
-                     parentDiv = dayDivs[j].childNodesWithTag("div")[0];
-                  else
-                     j++;
-               }
-            }
-            else {
-               var header = $("calendarHeader");
-               var daysDiv = $(header).childNodesWithTag("div")[1];
-               var dayDivs = $(daysDiv).childNodesWithTag("div");
-               var j = 0; 
-               while (!parentDiv && j < dayDivs.length) {
-                  if (dayDivs[j].getAttribute("day") == dayString)
-                     parentDiv = dayDivs[j];
-                  else
-                     j++;
-               }
-            }
-         }
-         if (parentDiv)
-            parentDiv.appendChild(eventDiv);
+      // 	 log("day: " + days[i]);
+      if (i == 0) {
+	var quarters = (startDate.getUTCHours() * 4
+			+ Math.floor(startDate.getUTCMinutes() / 15));
+	starts = quarters;
+	startHour = startDate.getDisplayHoursString();
+	endHour = endDate.getDisplayHoursString();
       }
+      else
+	starts = 0;
+	 
+      var ends;
+      var lasts;
+      if (i == days.length - 1) {
+	var quarters = (endDate.getUTCHours() * 4
+			+ Math.ceil(endDate.getUTCMinutes() / 15));
+	ends = quarters;
+      }
+      else
+	ends = 96;
+      lasts = ends - starts;
+      if (!lasts)
+	lasts = 1;
 
-   return dateTuples;
+      var eventDiv = newEventDIV(eventData[0], eventData[1], starts, lasts,
+				 null, null, title);
+      siblings.push(eventDiv);
+      eventDiv.siblings = siblings;
+      if (eventData[9].length > 0)
+	eventDiv.addClassName(eventData[9]); // event owner status
+      //eventDiv.setStyle({ width: '50%' });
+      if (currentView != "monthview" && 
+	  eventData[7] == 0) // not "all day"
+	dateTuples.push(new Array(eventDiv, days[i].getDayString(), starts, ends));
+      var dayString = days[i].getDayString();
+      // log("day: " + dayString);
+      var parentDiv = null;
+      if (currentView == "monthview") {
+	var dayDivs = $("monthDaysView").childNodesWithTag("div");
+	var j = 0; 
+	while (!parentDiv && j < dayDivs.length) {
+	  if (dayDivs[j].getAttribute("day") == dayString)
+	    parentDiv = dayDivs[j];
+	  else
+	    j++;
+	}
+      }
+      else {
+	if (eventData[7] == 0) {
+	  var daysView = $("daysView");
+	  var eventsDiv = $(daysView).childNodesWithTag("div")[1];
+	  var dayDivs = $(eventsDiv).childNodesWithTag("div");
+	  var j = 0; 
+	  while (!parentDiv && j < dayDivs.length) {
+	    if (dayDivs[j].getAttribute("day") == dayString)
+	      parentDiv = dayDivs[j].childNodesWithTag("div")[0];
+	    else
+	      j++;
+	  }
+	}
+	else {
+	  var header = $("calendarHeader");
+	  var daysDiv = $(header).childNodesWithTag("div")[1];
+	  var dayDivs = $(daysDiv).childNodesWithTag("div");
+	  var j = 0; 
+	  while (!parentDiv && j < dayDivs.length) {
+	    if (dayDivs[j].getAttribute("day") == dayString)
+	      parentDiv = dayDivs[j];
+	    else
+	      j++;
+	  }
+	}
+      }
+      if (parentDiv)
+	parentDiv.appendChild(eventDiv);
+    }
+
+  return dateTuples;
 }
 
 function eventClass(cname) {
@@ -1004,11 +1004,11 @@ function newEventDIV(cname, calendar, starts, lasts,
   }
   textDiv.appendChild(document.createTextNode(title));
 
-  Event.observe(eventDiv, "mousedown", listRowMouseDownHandler);
-  Event.observe(eventDiv, "click",
-		onCalendarSelectEvent.bindAsEventListener(eventDiv));
-  Event.observe(eventDiv, "dblclick",
-		editDoubleClickedEvent.bindAsEventListener(eventDiv));
+  eventDiv.observe("mousedown", listRowMouseDownHandler);
+  eventDiv.observe("click",
+		   onCalendarSelectEvent.bindAsEventListener(eventDiv));
+  eventDiv.observe("dblclick",
+		   editDoubleClickedEvent.bindAsEventListener(eventDiv));
 
   return eventDiv;
 }
@@ -1036,10 +1036,10 @@ function calendarDisplayCallback(http) {
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
-        Event.observe(days[i], "click",
-		      onCalendarSelectDay.bindAsEventListener(days[i]));
-        Event.observe(days[i], "dblclick",
-		      onClickableCellsDblClick.bindAsEventListener(days[i]));
+        days[i].observe("click",
+			onCalendarSelectDay.bindAsEventListener(days[i]));
+        days[i].observe("dblclick",
+			onClickableCellsDblClick.bindAsEventListener(days[i]));
       }
     else {
       var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
@@ -1047,18 +1047,18 @@ function calendarDisplayCallback(http) {
       var headerDays = document.getElementsByClassName("day", headerDivs[1]);
       for (var i = 0; i < days.length; i++) {
 	headerDays[i].hour = "allday";
-	Event.observe(headerDaysLabels[i], "mousedown", listRowMouseDownHandler);
-	Event.observe(headerDays[i], "click",
-		      onCalendarSelectDay.bindAsEventListener(days[i]));
-	Event.observe(headerDays[i], "dblclick",
-		      onClickableCellsDblClick.bindAsEventListener(headerDays[i]));
-	Event.observe(days[i], "click",
-		      onCalendarSelectDay.bindAsEventListener(days[i]));
+	headerDaysLabels[i].observe("mousedown", listRowMouseDownHandler);
+	headerDays[i].observe("click",
+			      onCalendarSelectDay.bindAsEventListener(days[i]));
+	headerDays[i].observe("dblclick",
+			      onClickableCellsDblClick.bindAsEventListener(headerDays[i]));
+	days[i].observe("click",
+			onCalendarSelectDay.bindAsEventListener(days[i]));
 	var clickableCells = document.getElementsByClassName("clickableHourCell",
 							     days[i]);
 	for (var j = 0; j < clickableCells.length; j++)
-	  Event.observe(clickableCells[j], "dblclick",
-			onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
+	  clickableCells[j].observe("dblclick",
+				    onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
       }
     }
   }
@@ -1079,18 +1079,18 @@ function assignCalendar(name) {
 }
 
 function popupCalendar(node) {
-   var nodeId = $(node).readAttribute("inputId");
-   var input = $(nodeId);
-   input.calendar.popup();
+  var nodeId = $(node).readAttribute("inputId");
+  var input = $(nodeId);
+  input.calendar.popup();
 
-   return false;
+  return false;
 }
 
 function onEventContextMenu(event) {
   var topNode = $("eventsList");
   var menu = $("eventsListMenu");
 
-  Event.observe(menu, "hideMenu",  onEventContextMenuHide);
+  menu.observe("hideMenu",  onEventContextMenuHide);
   popupMenu(event, "eventsListMenu", this);
 }
 
@@ -1609,17 +1609,17 @@ function initCalendarSelector() {
   var items = list.childNodesWithTag("li");
   for (var i = 0; i < items.length; i++) {
     var input = items[i].childNodesWithTag("input")[0];
-    Event.observe(input, "click", updateCalendarStatus.bindAsEventListener(input));
-    Event.observe(items[i], "mousedown", listRowMouseDownHandler);
-    Event.observe(items[i], "selectstart", listRowMouseDownHandler);
-    Event.observe(items[i], "click", onRowClick);
+    input.observe("click", updateCalendarStatus.bindAsEventListener(input));
+    items[i].observe("mousedown", listRowMouseDownHandler);
+    items[i].observe("selectstart", listRowMouseDownHandler);
+    items[i].observe("click", onRowClick);
     items[i].observe("dblclick", onCalendarModify);
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
-  Event.observe(links[0], "click",  onCalendarNew);
-  Event.observe(links[1], "click",  onCalendarAdd);
-  Event.observe(links[2], "click",  onCalendarRemove);
+  links[0].observe("click",  onCalendarNew);
+  links[1].observe("click",  onCalendarAdd);
+  links[2].observe("click",  onCalendarRemove);
 }
 
 function onCalendarModify(event) {
@@ -1848,50 +1848,50 @@ function deletePersonalCalendarCallback(http) {
 function configureLists() {
   var list = $("tasksList");
   list.multiselect = true;
-  Event.observe(list, "mousedown",
-		onTasksSelectionChange.bindAsEventListener(list));
+  list.observe("mousedown",
+	       onTasksSelectionChange.bindAsEventListener(list));
 
   var input = $("showHideCompletedTasks");
-  Event.observe(input, "click",
+  input.observe("click",
 		onShowCompletedTasks.bindAsEventListener(input));
 
   list = $("eventsList");
   list.multiselect = true;
   configureSortableTableHeaders(list);
   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
-  Event.observe(list, "mousedown",
-		onEventsSelectionChange.bindAsEventListener(list));
+  list.observe("mousedown",
+	       onEventsSelectionChange.bindAsEventListener(list));
 }
 
 function initDateSelectorEvents() {
   var arrow = $("rightArrow");
-  Event.observe(arrow, "click",
+  arrow.observe("click",
 		onDateSelectorGotoMonth.bindAsEventListener(arrow));
   arrow = $("leftArrow");
-  Event.observe(arrow, "click",
+  arrow.observe("click",
 		onDateSelectorGotoMonth.bindAsEventListener(arrow));
    
   var menuButton = $("monthLabel");
-  Event.observe(menuButton, "click",
-		popupMonthMenu.bindAsEventListener(menuButton));
+  menuButton.observe("click",
+		     popupMonthMenu.bindAsEventListener(menuButton));
   menuButton = $("yearLabel");
-  Event.observe(menuButton, "click",
-		popupMonthMenu.bindAsEventListener(menuButton));
+  menuButton.observe("click",
+		     popupMonthMenu.bindAsEventListener(menuButton));
 }
 
 function initCalendars() {
-   sorting["attribute"] = "start";
-   sorting["ascending"] = true;
+  sorting["attribute"] = "start";
+  sorting["ascending"] = true;
   
-   if (!document.body.hasClassName("popup")) {
-      initDateSelectorEvents();
-      initCalendarSelector();
-      configureSearchField();
-      configureLists();
-      var selector = $("calendarSelector");
-      if (selector)
-         selector.attachMenu("calendarsMenu");
-   }
+  if (!document.body.hasClassName("popup")) {
+    initDateSelectorEvents();
+    initCalendarSelector();
+    configureSearchField();
+    configureLists();
+    var selector = $("calendarSelector");
+    if (selector)
+      selector.attachMenu("calendarsMenu");
+  }
 }
 
 FastInit.addOnLoad(initCalendars);

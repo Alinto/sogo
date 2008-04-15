@@ -69,8 +69,8 @@ function initializeWindowButtons() {
   var okButton = $("okButton");
   var cancelButton = $("cancelButton");
 
-  Event.observe(okButton, "click", onEditorOkClick, false);
-  Event.observe(cancelButton, "click", onEditorCancelClick, false);
+  okButton.observe("click", onEditorOkClick, false);
+  cancelButton.observe("click", onEditorCancelClick, false);
 
   var repeatType = $("repeatType");
   setRepeatType(parseInt(repeatType.value));

@@ -82,7 +82,7 @@ function initializeDocumentHref() {
   var documentLabel = $("documentLabel");
   var documentUrl = $("url");
 
-  Event.observe(documentHref, "click", onPopupDocumentWindow, false);
+  documentHref.observe("click", onPopupDocumentWindow, false);
   documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
   if (documentUrl.value.length > 0) {
     documentHref.appendChild(document.createTextNode(documentUrl.value));
@@ -90,7 +90,7 @@ function initializeDocumentHref() {
   }
 
   var changeUrlButton = $("changeUrlButton");
-  Event.observe(changeUrlButton, "click", onPopupUrlWindow, false);
+  changeUrlButton.observe("click", onPopupUrlWindow, false);
 }
 
 function initializePrivacyMenu() {
@@ -114,16 +114,16 @@ function onComponentEditorLoad(event) {
   initializeDocumentHref();
   initializePrivacyMenu();
   var list = $("calendarList");
-  Event.observe(list, "mousedown",
+  list.observe("mousedown",
                 onChangeCalendar.bindAsEventListener(list),
                 false);
   list.fire("mousedown");
 
   var menuItems = $("itemPrivacyList").childNodesWithTag("li");
   for (var i = 0; i < menuItems.length; i++)
-     Event.observe(menuItems[i], "mousedown",
-                   onMenuSetClassification.bindAsEventListener(menuItems[i]),
-                   false);
+     menuItems[i].observe("mousedown",
+			  onMenuSetClassification.bindAsEventListener(menuItems[i]),
+			  false);
 
   $("repeatHref").observe("click", onPopupRecurrenceWindow);
   $("repeatList").observe("change", onPopupRecurrenceWindow);

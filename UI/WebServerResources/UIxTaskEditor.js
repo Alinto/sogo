@@ -251,9 +251,9 @@ this.onAdjustDueTime = function(event) {
 this.initTimeWidgets = function (widgets) {
    this.timeWidgets = widgets;
    
-   Event.observe(widgets['start']['date'], "change", this.onAdjustDueTime, false);
-   Event.observe(widgets['start']['hour'], "change", this.onAdjustDueTime, false);
-   Event.observe(widgets['start']['minute'], "change", this.onAdjustDueTime, false);
+   widgets['start']['date'].observe("change", this.onAdjustDueTime, false);
+   widgets['start']['hour'].observe("change", this.onAdjustDueTime, false);
+   widgets['start']['minute'].observe("change", this.onAdjustDueTime, false);
 };
    
 function onStatusListChange(event) {
@@ -290,7 +290,7 @@ function onStatusListChange(event) {
 
 function initializeStatusLine() {
   var statusList = $("statusList");
-  Event.observe(statusList, "mouseup", onStatusListChange, false);
+  statusList.observe("mouseup", onStatusListChange, false);
 }
 
 function onTaskEditorLoad() {

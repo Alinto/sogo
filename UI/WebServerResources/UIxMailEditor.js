@@ -198,7 +198,7 @@ function clickedEditorAttach(sender) {
 					name: attachmentName },
 				      area);
     attachmentCount++;
-    Event.observe(newAttachment, "change",
+    newAttachment.observe("change",
 		  onAttachmentChange.bindAsEventListener(newAttachment));
   }
 
@@ -225,7 +225,7 @@ function createAttachment(node, list) {
   var attachment = createElement("li", null, null, { node: node }, null, list);
   createElement("img", null, null, { src: ResourcesURL + "/attachment.gif" },
 		null, attachment);
-  Event.observe(attachment, "click", onRowClick);
+  attachment.observe("click", onRowClick);
 
   var filename = node.value;
   var separator;

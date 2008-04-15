@@ -4,7 +4,7 @@ function onCancelClick(event) {
 
 function initACLButtons() {
   var button = $("cancelButton");
-   Event.observe(button, "click", onCancelClick);
+  button.observe("click", onCancelClick);
 }
 
 FastInit.addOnLoad(initACLButtons);

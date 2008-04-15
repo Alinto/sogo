@@ -11,7 +11,7 @@ Form.Element.Methods._replicate =  function(element) {
 Form.Element.Methods.assignReplica = function(element, otherInput) {
   element = $(element);
   if (!element._onChangeBound) {
-    Event.observe(element, "change", element._replicate, false);
+    element.observe("change", element._replicate, false);
     element._onChangeBound = true;
   }
   element.replica = otherInput;

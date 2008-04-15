@@ -220,24 +220,24 @@ function ml_lowlight(sender) {
 /* bulk delete of messages */
 
 function deleteSelectedMessages(sender) {
-   var messageList = $("messageList");
-   var rowIds = messageList.getSelectedRowsId();
+  var messageList = $("messageList");
+  var rowIds = messageList.getSelectedRowsId();
   
-   if (rowIds.length > 0) {
-      for (var i = 0; i < rowIds.length; i++) {
-	var url;
-	var rowId = rowIds[i].substr(4);
-	var messageId = Mailer.currentMailbox + "/" + rowId;
-	url = ApplicationBaseURL + messageId + "/trash";
-	deleteMessageRequestCount++;
-	var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
-	triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
-      }
-   }
-   else
-     window.alert(labels["Please select a message."]);
+  if (rowIds.length > 0) {
+    for (var i = 0; i < rowIds.length; i++) {
+      var url;
+      var rowId = rowIds[i].substr(4);
+      var messageId = Mailer.currentMailbox + "/" + rowId;
+      url = ApplicationBaseURL + messageId + "/trash";
+      deleteMessageRequestCount++;
+      var data = { "id": rowId, "mailbox": Mailer.currentMailbox, "messageId": messageId };
+      triggerAjaxRequest(url, deleteSelectedMessagesCallback, data);
+    }
+  }
+  else
+    window.alert(labels["Please select a message."]);
    
-   return false;
+  return false;
 }
 
 function deleteSelectedMessagesCallback(http) {
@@ -257,7 +257,7 @@ function deleteSelectedMessagesCallback(http) {
       if (!nextRow)
 	nextRow = row.previous("tr");
       row.parentNode.removeChild(row);
-//	row.addClassName("deleted"); // when we'll offer "mark as deleted"
+      //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
       
       if (deleteMessageRequestCount == 0) {
 	if (nextRow) {
@@ -311,8 +311,8 @@ function moveMessages(rowIds, folder) {
 }
 
 function onMenuDeleteMessage(event) {
-    deleteSelectedMessages();
-    preventDefault(event);
+  deleteSelectedMessages();
+  preventDefault(event);
 }
 
 function deleteMessage(url, id, mailbox, messageId) {
@@ -614,7 +614,7 @@ function onMessageContextMenu(event) {
   var topNode = $('messageList');
   var selectedNodes = topNode.getSelectedRows();
 
-  Event.observe(menu, "hideMenu", onMessageContextMenuHide);
+  menu.observe("hideMenu", onMessageContextMenuHide);
   
   if (selectedNodes.length > 1)
     popupMenu(event, "messagesListMenu", selectedNodes);
@@ -656,7 +656,7 @@ function onFolderMenuClick(event) {
   }
 
   var menu = $(menuName);
-  Event.observe(menu, "hideMenu", onFolderMenuHide);
+  menu.observe("hideMenu", onFolderMenuHide);
   popupMenu(event, menuName, this.parentNode);
 
   var topNode = $("mailboxTree");
@@ -795,8 +795,8 @@ function configureLinksInMessage() {
 
   var editDraftButton = $("editDraftButton");
   if (editDraftButton)
-    Event.observe(editDraftButton, "click",
-		  onMessageEditDraft.bindAsEventListener(editDraftButton));
+    editDraftButton.observe("click",
+			    onMessageEditDraft.bindAsEventListener(editDraftButton));
 
   configureiCalLinksInMessage();
 }
@@ -813,8 +813,8 @@ function configureiCalLinksInMessage() {
     var button = $(key);
     if (button) {
       button.action = buttons[key];
-      Event.observe(button, "click",
-		    onICalendarButtonClick.bindAsEventListener(button));
+      button.observe("click",
+		     onICalendarButtonClick.bindAsEventListener(button));
     }
   }
 }
@@ -854,34 +854,34 @@ function resizeMailContent() {
   // Show expand buttons if necessary
   var spans = $$("TABLE TR.mailer_fieldrow TD.mailer_fieldvalue SPAN");
   spans.each(function(span) {
-        var row = span.up("TR");
-        if (span.getWidth() > row.getWidth()) {
-           var cell = row.select("TD.mailer_fieldname").first();
-           var link = cell.down("img");
-           link.show();
-           link.observe("click", toggleDisplayHeader);
-        }
-     });
+      var row = span.up("TR");
+      if (span.getWidth() > row.getWidth()) {
+	var cell = row.select("TD.mailer_fieldname").first();
+	var link = cell.down("img");
+	link.show();
+	link.observe("click", toggleDisplayHeader);
+      }
+    });
 }
 
 function toggleDisplayHeader(event) {
-   var row = this.up("TR");
-   var span = row.down("SPAN");
+  var row = this.up("TR");
+  var span = row.down("SPAN");
    
-   if (this.hasClassName("collapse")) {
-      this.writeAttribute("src", ResourcesURL + '/minus.png');
-      this.writeAttribute("class", "expand");
-      span.writeAttribute("class", "expand");
-   }
-   else {
-      this.writeAttribute("src", ResourcesURL + '/plus.png');
-      this.writeAttribute("class", "collapse");
-      span.writeAttribute("class", "collapse");
-   }
-   resizeMailContent();
+  if (this.hasClassName("collapse")) {
+    this.writeAttribute("src", ResourcesURL + '/minus.png');
+    this.writeAttribute("class", "expand");
+    span.writeAttribute("class", "expand");
+  }
+  else {
+    this.writeAttribute("src", ResourcesURL + '/plus.png');
+    this.writeAttribute("class", "collapse");
+    span.writeAttribute("class", "collapse");
+  }
+  resizeMailContent();
 
-   preventDefault(event);
-   return false;
+  preventDefault(event);
+  return false;
 }
 
 function onMessageContentMenu(event) {
@@ -1062,8 +1062,8 @@ function expandUpperTree(node) {
       var id = currentNode.getAttribute("id");
       var number = parseInt(id.substr(2));
       if (number > 0) {
-         var cn = mailboxTree.aNodes[number];
-         mailboxTree.nodeStatus(1, number, cn._ls);
+	var cn = mailboxTree.aNodes[number];
+	mailboxTree.nodeStatus(1, number, cn._ls);
       }
     }
     currentNode = currentNode.parentNode;
@@ -1109,46 +1109,46 @@ var mailboxSpanAcceptType = function(type) {
   return (type == "mailRow");
 }
 
-var mailboxSpanEnter = function() {
-  this.addClassName("_dragOver");
-}
-
-var mailboxSpanExit = function() {
-  this.removeClassName("_dragOver");
-}
-
-var mailboxSpanDrop = function(data) {
-  var success = false;
-
-  if (data) {
-    var folder = this.parentNode.parentNode.getAttribute("dataname");
-    if (folder != Mailer.currentMailbox)
-      success = (moveMessages(data, folder) == 0);
+  var mailboxSpanEnter = function() {
+    this.addClassName("_dragOver");
   }
-  else
-    success = false;
 
-  return success;
-}
+    var mailboxSpanExit = function() {
+      this.removeClassName("_dragOver");
+    }
 
-var plusSignEnter = function() {
-  var nodeNr = parseInt(this.id.substr(2));
-  if (!mailboxTree.aNodes[nodeNr]._io)
-    this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
-}
+      var mailboxSpanDrop = function(data) {
+	var success = false;
 
-var plusSignExit = function() {
-  if (this.plusSignTimer) {
-    clearTimeout(this.plusSignTimer);
-    this.plusSignTimer = null;
-  }
-}
+	if (data) {
+	  var folder = this.parentNode.parentNode.getAttribute("dataname");
+	  if (folder != Mailer.currentMailbox)
+	    success = (moveMessages(data, folder) == 0);
+	}
+	else
+	  success = false;
+
+	return success;
+      }
+
+	var plusSignEnter = function() {
+	  var nodeNr = parseInt(this.id.substr(2));
+	  if (!mailboxTree.aNodes[nodeNr]._io)
+	    this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
+	}
+
+	  var plusSignExit = function() {
+	    if (this.plusSignTimer) {
+	      clearTimeout(this.plusSignTimer);
+	      this.plusSignTimer = null;
+	    }
+	  }
 	
-function openPlusSign(nodeNr) {
-  mailboxTree.nodeStatus(1, nodeNr, mailboxTree.aNodes[nodeNr]._ls);
-  mailboxTree.aNodes[nodeNr]._io = 1;
-  this.plusSignTimer = null;
-}
+	    function openPlusSign(nodeNr) {
+	      mailboxTree.nodeStatus(1, nodeNr, mailboxTree.aNodes[nodeNr]._ls);
+	      mailboxTree.aNodes[nodeNr]._io = 1;
+	      this.plusSignTimer = null;
+	    }
 
 var messageListGhost = function () {
   var newDiv = document.createElement("div");
@@ -1172,26 +1172,26 @@ var messageListGhost = function () {
   return newDiv;
 }
 
-var messageListData = function(type) {
-  var rows = this.parentNode.parentNode.getSelectedRowsId();
-  var msgIds = new Array();
-  for (var i = 0; i < rows.length; i++)
-    msgIds.push(rows[i].substr(4));
+  var messageListData = function(type) {
+    var rows = this.parentNode.parentNode.getSelectedRowsId();
+    var msgIds = new Array();
+    for (var i = 0; i < rows.length; i++)
+      msgIds.push(rows[i].substr(4));
 
-  return msgIds;
-}
-
-/* a model for a futur refactoring of the sortable table headers mechanism */
-function configureMessageListEvents(table) {
-  if (table) {
-    table.multiselect = true;
-    // Each body row can load a message
-    Event.observe(table, "mousedown",
-    		  onMessageSelectionChange.bindAsEventListener(table));    
-    // Sortable columns
-    configureSortableTableHeaders(table);
+    return msgIds;
   }
-}
+
+  /* a model for a futur refactoring of the sortable table headers mechanism */
+    function configureMessageListEvents(table) {
+      if (table) {
+	table.multiselect = true;
+	// Each body row can load a message
+	table.observe("mousedown",
+		      onMessageSelectionChange.bindAsEventListener(table));    
+	// Sortable columns
+	configureSortableTableHeaders(table);
+      }
+    }
 
 function configureMessageListBodyEvents(table) {
   if (table) {
@@ -1200,29 +1200,29 @@ function configureMessageListBodyEvents(table) {
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
-         Event.observe(anchors[i], "click",
-                       openMailboxAtIndex.bindAsEventListener(anchors[i]));
+	anchors[i].observe("click",
+			   openMailboxAtIndex.bindAsEventListener(anchors[i]));
     }
 
     rows = table.tBodies[0].rows;
     for (var i = 0; i < rows.length; i++) {
-      Event.observe(rows[i], "mousedown", onRowClick);
-      Event.observe(rows[i], "selectstart", listRowMouseDownHandler);
-      Event.observe(rows[i], "contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
+      rows[i].observe("mousedown", onRowClick);
+      rows[i].observe("selectstart", listRowMouseDownHandler);
+      rows[i].observe("contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
       
       rows[i].dndTypes = function() { return new Array("mailRow"); };
       rows[i].dndGhost = messageListGhost;
       rows[i].dndDataForType = messageListData;
-//       document.DNDManager.registerSource(rows[i]);
+      //       document.DNDManager.registerSource(rows[i]);
 
       for (var j = 0; j < rows[i].cells.length; j++) {
 	var cell = rows[i].cells[j];
-	Event.observe(cell, "mousedown", listRowMouseDownHandler);
+	cell.observe("mousedown", listRowMouseDownHandler);
 	if (j == 2 || j == 3 || j == 5)
-	  Event.observe(cell, "dblclick", onMessageDoubleClick.bindAsEventListener(cell));
+	  cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
 	else if (j == 4) {
 	  var img = cell.childNodesWithTag("img")[0];
-	  Event.observe(img, "click", mailListMarkMessage.bindAsEventListener(img));
+	  img.observe("click", mailListMarkMessage.bindAsEventListener(img));
 	}
       }
     }
@@ -1288,7 +1288,7 @@ function openInbox(node) {
 
 function initMailer(event) {
   if (!$(document.body).hasClassName("popup")) {
-//     initDnd();
+    //     initDnd();
     initMailboxTree();
     initMessageCheckTimer();
   }
@@ -1355,10 +1355,10 @@ function updateMailboxTreeInPage() {
   var tree = $("mailboxTree");
   var nodes = document.getElementsByClassName("node", tree);
   for (i = 0; i < nodes.length; i++) {
-    Event.observe(nodes[i], "click",
-		  onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
-    Event.observe(nodes[i], "contextmenu",
-		  onFolderMenuClick.bindAsEventListener(nodes[i]));
+    nodes[i].observe("click",
+		     onMailboxTreeItemClick.bindAsEventListener(nodes[i]));
+    nodes[i].observe("contextmenu",
+		     onFolderMenuClick.bindAsEventListener(nodes[i]));
     if (!inboxFound
 	&& nodes[i].parentNode.getAttribute("datatype") == "inbox") {
       Mailer.currentMailboxType = "inbox";
@@ -1767,13 +1767,13 @@ function onLabelMenuPrepareVisibility() {
     var rows = messageList.getSelectedRows();
     for (var i = 0; i < rows.length; i++) {
       $w(rows[i].getAttribute("labels")).each(function(flag) {
-	flags[flag] = true;
+	  flags[flag] = true;
 	});
     }
   }
 
   var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li")
-  var isFlagged = false;
+    var isFlagged = false;
   for (var i = 1; i < 6; i++) {
     if (flags["label" + i]) {
       isFlagged = true;
@@ -1820,8 +1820,8 @@ function getMenus() {
 				       null, onMenuDeleteMessage);
   menus["messagesListMenu"] = new Array(onMenuForwardMessage,
 					"-", "moveMailboxMenu",
-				       "copyMailboxMenu", "label-menu",
-				       "mark-menu", "-",
+					"copyMailboxMenu", "label-menu",
+					"mark-menu", "-",
 					null, null,
 					onMenuDeleteMessage);
   menus["imageMenu"] = new Array(saveImage);
@@ -1864,41 +1864,41 @@ function Mailbox(type, name) {
   return this;
 }
 
-Mailbox.prototype.dump = function(indent) {
-  if (!indent)
-    indent = 0;
-  log(" ".repeat(indent) + this.name);
-  for (var i = 0; i < this.children.length; i++) {
-    this.children[i].dump(indent + 2);
-  }
-}
+Mailbox.prototype = {
+ dump: function(indent) {
+    if (!indent)
+      indent = 0;
+    log(" ".repeat(indent) + this.name);
+    for (var i = 0; i < this.children.length; i++) {
+      this.children[i].dump(indent + 2);
+    }
+  },
+ fullName: function() {
+   var fullName = "";
 
-Mailbox.prototype.fullName = function() {
-  var fullName = "";
+   var currentFolder = this;
+   while (currentFolder.parentFolder) {
+     fullName = "/folder" + currentFolder.name + fullName;
+     currentFolder = currentFolder.parentFolder;
+   }
 
-  var currentFolder = this;
-  while (currentFolder.parentFolder) {
-    fullName = "/folder" + currentFolder.name + fullName;
-    currentFolder = currentFolder.parentFolder;
-  }
+   return "/" + currentFolder.name + fullName;
+ },
+ findMailboxByName: function(name) {
+   var mailbox = null;
 
-  return "/" + currentFolder.name + fullName;
-}
+   var i = 0;
+   while (!mailbox && i < this.children.length)
+     if (this.children[i].name == name)
+       mailbox = this.children[i];
+     else
+       i++;
 
-Mailbox.prototype.findMailboxByName = function(name) {
-  var mailbox = null;
+   return mailbox;
+ },
+ addMailbox: function(mailbox) {
+   mailbox.parentFolder = this;
+   this.children.push(mailbox);
+ }
+};
 
-  var i = 0;
-  while (!mailbox && i < this.children.length)
-    if (this.children[i].name == name)
-      mailbox = this.children[i];
-    else
-      i++;
-
-  return mailbox;
-}
-
-Mailbox.prototype.addMailbox = function(mailbox) {
-  mailbox.parentFolder = this;
-  this.children.push(mailbox);
-}

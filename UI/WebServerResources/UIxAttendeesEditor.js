@@ -395,18 +395,18 @@ function initializeWindowButtons() {
    var okButton = $("okButton");
    var cancelButton = $("cancelButton");
 
-   Event.observe(okButton, "click", onEditorOkClick, false);
-   Event.observe(cancelButton, "click", onEditorCancelClick, false);
+   okButton.observe("click", onEditorOkClick, false);
+   cancelButton.observe("click", onEditorCancelClick, false);
 
    var buttons = $("freeBusyViewButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
+     buttons[i].observe("click", listRowMouseDownHandler, false);
    buttons = $("freeBusyZoomButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
+     buttons[i].observe("click", listRowMouseDownHandler, false);
    buttons = $("freeBusyButtons").childNodesWithTag("a");
    for (var i = 0; i < buttons.length; i++)
-     Event.observe(buttons[i], "click", listRowMouseDownHandler, false);
+     buttons[i].observe("click", listRowMouseDownHandler, false);
 }
 
 function onEditorOkClick(event) {
@@ -624,7 +624,7 @@ function prepareAttendees() {
 
    var inputs = tableAttendees.getElementsByTagName("input");
    inputs[inputs.length - 2].setAttribute("autocomplete", "off");
-   Event.observe(inputs[inputs.length - 2], "click", newAttendee);
+   inputs[inputs.length - 2].observe("click", newAttendee);
 }
 
 function onWindowResize(event) {
@@ -670,7 +670,7 @@ function onFreeBusyLoadHandler() {
    prepareAttendees();
    onWindowResize(null);
    Event.observe(window, "resize", onWindowResize);
-   Event.observe($$('TABLE#freeBusy TD.freeBusyData DIV').first(), "scroll", onScroll);
+   $$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
 }
 
 FastInit.addOnLoad(onFreeBusyLoadHandler);
@@ -683,24 +683,24 @@ function initTimeWidgets(widgets) {
    assignCalendar('startTime_date');
    assignCalendar('endTime_date');
 
-   Event.observe(widgets['start']['date'], "change",
+   widgets['start']['date'].observe("change",
                  this.onAdjustTime, false);
-   Event.observe(widgets['start']['hour'], "change",
+   widgets['start']['hour'].observe("change",
                  this.onAdjustTime, false);
-   Event.observe(widgets['start']['minute'], "change",
+   widgets['start']['minute'].observe("change",
                  this.onAdjustTime, false);
 
-   Event.observe(widgets['end']['date'], "change",
+   widgets['end']['date'].observe("change",
                  this.onAdjustTime, false);
-   Event.observe(widgets['end']['hour'], "change",
+   widgets['end']['hour'].observe("change",
                  this.onAdjustTime, false);
-   Event.observe(widgets['end']['minute'], "change",
+   widgets['end']['minute'].observe("change",
                  this.onAdjustTime, false);
 
    var allDayLabel = $("allDay");
    if (allDayLabel) {
       var input = $(allDayLabel).childNodesWithTag("input")[0];
-      Event.observe(input, "change", onAllDayChanged.bindAsEventListener(input));
+      input.observe("change", onAllDayChanged.bindAsEventListener(input));
       if (input.checked) {
          for (var type in widgets) {
             widgets[type]['hour'].disabled = true;

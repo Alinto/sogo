@@ -26,10 +26,10 @@ function addUserCallback(http) {
 }
 
 function setEventsOnUserNode(node) {
-   Event.observe(node, "mousedown", listRowMouseDownHandler);
-   Event.observe(node, "selectstart", listRowMouseDownHandler);
-   Event.observe(node, "dblclick", onOpenUserRights);
-   Event.observe(node, "click", onRowClick);
+   node.observe("mousedown", listRowMouseDownHandler);
+   node.observe("selectstart", listRowMouseDownHandler);
+   node.observe("dblclick", onOpenUserRights);
+   node.observe("click", onRowClick);
 }
 
 function nodeForUser(userName, userId) {
@@ -135,7 +135,7 @@ function onAclLoadHandler() {
    defaultUserID = $("defaultUserID").value;
    var defaultRolesBtn = $("defaultRolesBtn");
    if (defaultRolesBtn)
-      Event.observe(defaultRolesBtn, "click", openRightsForDefaultUser);
+      defaultRolesBtn.observe("click", openRightsForDefaultUser);
    var ul = $("userList");
    var lis = ul.childNodesWithTag("li");
    for (var i = 0; i < lis.length; i++)
@@ -144,8 +144,8 @@ function onAclLoadHandler() {
    var buttonArea = $("userSelectorButtons");
    if (buttonArea) {
       var buttons = buttonArea.childNodesWithTag("a");
-      Event.observe(buttons[0], "click", onUserAdd);
-      Event.observe(buttons[1], "click", onUserRemove);
+      buttons[0].observe("click", onUserAdd);
+      buttons[1].observe("click", onUserRemove);
    }
 
    AclEditor['userRightsHeight'] = window.opener.getUsersRightsWindowHeight();

@@ -305,23 +305,17 @@ function onAllDayChanged(event) {
 function initTimeWidgets(widgets) {
   this.timeWidgets = widgets;
 
-  Event.observe(widgets['start']['date'], "change",
-		this.onAdjustTime, false);
-  Event.observe(widgets['start']['hour'], "change",
-		this.onAdjustTime, false);
-  Event.observe(widgets['start']['minute'], "change",
-		this.onAdjustTime, false);
+  widgets['start']['date'].observe("change", this.onAdjustTime, false);
+  widgets['start']['hour'].observe("change", this.onAdjustTime, false);
+  widgets['start']['minute'].observe("change", this.onAdjustTime, false);
 
-  Event.observe(widgets['end']['date'], "change",
-		this.onAdjustTime, false);
-  Event.observe(widgets['end']['hour'], "change",
-		this.onAdjustTime, false);
-  Event.observe(widgets['end']['minute'], "change",
-		this.onAdjustTime, false);
+  widgets['end']['date'].observe("change", this.onAdjustTime, false);
+  widgets['end']['hour'].observe("change", this.onAdjustTime, false);
+  widgets['end']['minute'].observe("change", this.onAdjustTime, false);
 
   var allDayLabel = $("allDay");
   var input = $(allDayLabel).childNodesWithTag("input")[0];
-  Event.observe(input, "change", onAllDayChanged.bindAsEventListener(input));
+  input.observe("change", onAllDayChanged.bindAsEventListener(input));
   if (input.checked) {
     for (var type in widgets) {
       widgets[type]['hour'].disabled = true;
@@ -376,7 +370,7 @@ function initializeAttendeesHref() {
   var attendeesLabel = $("attendeesLabel");
   var attendeesNames = $("attendeesNames");
 
-  Event.observe(attendeesHref, "click", onAttendeesHrefClick, false);
+  attendeesHref.observe("click", onAttendeesHrefClick, false);
   refreshAttendees();
 }
 

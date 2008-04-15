@@ -18,7 +18,7 @@ var SOGoDragHandlesInterface = {
   moveBound: null,
   bind: function () {
     this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
-    Event.observe(this, "mousedown", this.startHandleDraggingBound, false);
+    this.observe("mousedown", this.startHandleDraggingBound, false);
   },
   _determineType: function () {
     if (this.leftBlock && this.rightBlock)
@@ -47,9 +47,9 @@ var SOGoDragHandlesInterface = {
         document.body.setStyle({ cursor: "n-resize" });
       }
       this.stopHandleDraggingBound = this.stopHandleDragging.bindAsEventListener(this);
-      Event.observe(document.body, "mouseup", this.stopHandleDraggingBound, true);
+      document.body.observe("mouseup", this.stopHandleDraggingBound, true);
       this.moveBound = this.move.bindAsEventListener(this);
-      Event.observe(document.body, "mousemove", this.moveBound, true);
+      document.body.observe("mousemove", this.moveBound, true);
       this.move(event);
       event.cancelBubble = true;
     }

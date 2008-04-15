@@ -4,7 +4,7 @@ function initLogin() {
   document.cookie = ("0xHIGHFLYxSOGo-0.9=discard; path=/"
 		     + "; expires=" + date.toGMTString());
   var submit = $("submit");
-  Event.observe(submit, "click", onLoginClick);
+  submit.observe("click", onLoginClick);
 
   var userName = $("userName");
   userName.focus();

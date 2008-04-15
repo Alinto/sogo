@@ -145,14 +145,14 @@ Element.addMethods({
 		      visibility: "visible" } );
     
     document.currentPopupMenu = popup;
-    Event.observe(document.body, "click", onBodyClickMenuHandler);
+    document.body.observe("click", onBodyClickMenuHandler);
   },
 
   attachMenu: function(element, menuName) {
     element = $(element);
     element.sogoContextMenu = $(menuName);
-    Event.observe(element, "contextmenu",
-		  element.onContextMenu.bindAsEventListener(element));
+    element.observe("contextmenu",
+		    element.onContextMenu.bindAsEventListener(element));
   },
 
   selectElement: function(element) {
