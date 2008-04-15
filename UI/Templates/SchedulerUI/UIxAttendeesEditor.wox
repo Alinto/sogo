@@ -83,8 +83,8 @@
 	      ><var:string label:value="Free" /></li>
 	  <li><span class="colorBox busy"><!-- spacer --></span
 	      ><var:string label:value="Busy" /></li>
-	  <li><span class="colorBox maybe-busy"><!-- spacer --></span
-	      ><var:string label:value="Maybe busy" /></li>
+<!-- 	  li><span class="colorBox maybe-busy">\- spacer -\->/span -->
+<!-- 	      >var:string label:value="Maybe busy" />/li> -->
 	  <li><span class="colorBox noFreeBusy"><!-- spacer --></span
 	      ><var:string label:value="No free-busy information" /></li>
 	</ul>

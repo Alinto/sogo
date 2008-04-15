@@ -138,10 +138,7 @@ TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 
 SPAN.colorBox.free,
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
-{ background-color: #8ca6bd; }
-
-TABLE#freeBusyHeader TH SPAN.freeBusyZoneElement.busy
-{ background-color: #c55 !important; }
+{ background-color: #ebebe4; }
 
 DIV#freeBusyFooter
 { position: absolute;
@@ -188,7 +185,7 @@ SPAN.colorBox
 
 SPAN.colorBox.busy,
 SPAN.freeBusyZoneElement.busy
-{ background-color: #5a6b79 !important; }
+{ background-color: #35556b !important; }
 
 SPAN.colorBox.maybe-busy,
 SPAN.freeBusyZoneElement.maybe-busy
@@ -196,7 +193,7 @@ SPAN.freeBusyZoneElement.maybe-busy
 
 SPAN.colorBox.noFreeBusy,
 TABLE#freeBusyData TD.noFreeBusy
-{ background-color: #559; }
+{ background-color: #e09ebd; }
 
 DIV#freeBusyViewButtons
 { position: absolute;
