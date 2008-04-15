@@ -91,9 +91,9 @@ function contactsListCallback(http) {
 	var rows = table.tBodies[0].rows;
 	for (var i = 0; i < rows.length; i++) {
 	  rows[i].observe("mousedown", onRowClick);
-	  rows[i].observe("dblclick", onContactRowDblClick.bindAsEventListener(rows[i]));
+	  rows[i].observe("dblclick", onContactRowDblClick);
 	  rows[i].observe("selectstart", listRowMouseDownHandler);
-	  rows[i].observe("contextmenu", onContactContextMenu.bindAsEventListener(rows[i]));
+	  rows[i].observe("contextmenu", onContactContextMenu);
 	}
       }
       else {
@@ -164,7 +164,7 @@ function contactsListCallback(http) {
 
 function onAddressBooksContextMenu(event) {
   var menu = $("contactFoldersMenu");
-  menu.observe("mousedown", onAddressBooksContextMenuHide, false);
+  menu.observe("mousedown", onAddressBooksContextMenuHide);
   popupMenu(event, "contactFoldersMenu", this);
 
   var topNode = $("contactFolders");
@@ -750,8 +750,7 @@ function setEventsOnAddressBook(folder) {
   node.observe("mousedown", listRowMouseDownHandler);
   node.observe("click", onRowClick);
   node.observe("dblclick", onAddressBookModify);
-  node.observe("contextmenu",
-	       onAddressBooksContextMenu.bindAsEventListener(node));
+  node.observe("contextmenu", onAddressBooksContextMenu);
 }
 
 function onAddressBookModify(event) {
@@ -866,8 +865,7 @@ function configureSelectionButtons() {
   if (container) {
     var buttons = container.childNodesWithTag("input");
     for (var i = 0; i < buttons.length; i++)
-      $(buttons[i]).observe("click",
-			    onConfirmContactSelection);
+      $(buttons[i]).observe("click", onConfirmContactSelection);
   }
 }
 
@@ -882,8 +880,7 @@ function initContacts(event) {
   if (table) {
     // Initialize contacts table
     table.multiselect = true;
-    table.observe("mousedown",
-		  onContactSelectionChange.bindAsEventListener(table));    
+    table.observe("mousedown", onContactSelectionChange);
     configureSortableTableHeaders(table);
     TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
   }

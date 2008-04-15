@@ -355,10 +355,8 @@ function eventsListCallback(http) {
 	row.hour = startDate.getHourString();
 	row.observe("mousedown", onRowClick);
 	row.observe("selectstart", listRowMouseDownHandler);
-	row.observe("dblclick",
-		    editDoubleClickedEvent.bindAsEventListener(row));
-	row.observe("contextmenu",
-		    onEventContextMenu.bindAsEventListener(row));
+	row.observe("dblclick", editDoubleClickedEvent);
+	row.observe("contextmenu", onEventContextMenu);
       
 	var td = document.createElement("td");
 	row.appendChild(td);
@@ -421,7 +419,7 @@ function tasksListCallback(http) {
 	// 	listItem.observe("mousedown", listRowMouseDownHandler);
 	// 	listItem.observe("click", onRowClick);
 	// 	listItem.observe("dblclick",
-	// 		      editDoubleClickedEvent.bindAsEventListener(listItem));
+	// 		      editDoubleClickedEvent);
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	$(listItem).addClassName(data[i][6]);
@@ -431,7 +429,7 @@ function tasksListCallback(http) {
 	var input = document.createElement("input");
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
-	// 	input.observe("click", updateTaskStatus.bindAsEventListener(input), true);
+	// 	input.observe("click", updateTaskStatus, true);
 	input.setAttribute("value", "1");
 	if (data[i][2] == 1)
 	  input.setAttribute("checked", "checked");
@@ -1005,10 +1003,8 @@ function newEventDIV(cname, calendar, starts, lasts,
   textDiv.appendChild(document.createTextNode(title));
 
   eventDiv.observe("mousedown", listRowMouseDownHandler);
-  eventDiv.observe("click",
-		   onCalendarSelectEvent.bindAsEventListener(eventDiv));
-  eventDiv.observe("dblclick",
-		   editDoubleClickedEvent.bindAsEventListener(eventDiv));
+  eventDiv.observe("click", onCalendarSelectEvent);
+  eventDiv.observe("dblclick", editDoubleClickedEvent);
 
   return eventDiv;
 }
@@ -1036,34 +1032,30 @@ function calendarDisplayCallback(http) {
     var days = document.getElementsByClassName("day", contentView);
     if (currentView == "monthview")
       for (var i = 0; i < days.length; i++) {
-        days[i].observe("click",
-			onCalendarSelectDay.bindAsEventListener(days[i]));
-        days[i].observe("dblclick",
-			onClickableCellsDblClick.bindAsEventListener(days[i]));
+        days[i].observe("click", onCalendarSelectDay);
+        days[i].observe("dblclick", onClickableCellsDblClick);
       }
     else {
       var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
-      var headerDaysLabels = document.getElementsByClassName("day", headerDivs[0]);
+      var headerDaysLabels
+	= document.getElementsByClassName("day", headerDivs[0]);
       var headerDays = document.getElementsByClassName("day", headerDivs[1]);
       for (var i = 0; i < days.length; i++) {
 	headerDays[i].hour = "allday";
 	headerDaysLabels[i].observe("mousedown", listRowMouseDownHandler);
-	headerDays[i].observe("click",
-			      onCalendarSelectDay.bindAsEventListener(days[i]));
-	headerDays[i].observe("dblclick",
-			      onClickableCellsDblClick.bindAsEventListener(headerDays[i]));
-	days[i].observe("click",
-			onCalendarSelectDay.bindAsEventListener(days[i]));
-	var clickableCells = document.getElementsByClassName("clickableHourCell",
-							     days[i]);
+	headerDays[i].observe("click", onCalendarSelectDay);
+	headerDays[i].observe("dblclick", onClickableCellsDblClick);
+	days[i].observe("click", onCalendarSelectDay);
+	var clickableCells
+	  = document.getElementsByClassName("clickableHourCell", days[i]);
 	for (var j = 0; j < clickableCells.length; j++)
-	  clickableCells[j].observe("dblclick",
-				    onClickableCellsDblClick.bindAsEventListener(clickableCells[j]));
+	  clickableCells[j].observe("dblclick", onClickableCellsDblClick);
       }
     }
   }
   else
-    log ("calendarDisplayCallback Ajax error (" + http.readyState + "/" + http.status + ")");
+    log ("calendarDisplayCallback Ajax error ("
+	 + http.readyState + "/" + http.status + ")");
 }
 
 function assignCalendar(name) {
@@ -1090,7 +1082,7 @@ function onEventContextMenu(event) {
   var topNode = $("eventsList");
   var menu = $("eventsListMenu");
 
-  menu.observe("hideMenu",  onEventContextMenuHide);
+  menu.observe("hideMenu", onEventContextMenuHide);
   popupMenu(event, "eventsListMenu", this);
 }
 
@@ -1609,7 +1601,7 @@ function initCalendarSelector() {
   var items = list.childNodesWithTag("li");
   for (var i = 0; i < items.length; i++) {
     var input = items[i].childNodesWithTag("input")[0];
-    input.observe("click", updateCalendarStatus.bindAsEventListener(input));
+    input.observe("click", updateCalendarStatus);
     items[i].observe("mousedown", listRowMouseDownHandler);
     items[i].observe("selectstart", listRowMouseDownHandler);
     items[i].observe("click", onRowClick);
@@ -1617,9 +1609,9 @@ function initCalendarSelector() {
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
-  links[0].observe("click",  onCalendarNew);
-  links[1].observe("click",  onCalendarAdd);
-  links[2].observe("click",  onCalendarRemove);
+  links[0].observe("click", onCalendarNew);
+  links[1].observe("click", onCalendarAdd);
+  links[2].observe("click", onCalendarRemove);
 }
 
 function onCalendarModify(event) {
@@ -1848,35 +1840,28 @@ function deletePersonalCalendarCallback(http) {
 function configureLists() {
   var list = $("tasksList");
   list.multiselect = true;
-  list.observe("mousedown",
-	       onTasksSelectionChange.bindAsEventListener(list));
+  list.observe("mousedown", onTasksSelectionChange);
 
   var input = $("showHideCompletedTasks");
-  input.observe("click",
-		onShowCompletedTasks.bindAsEventListener(input));
+  input.observe("click", onShowCompletedTasks);
 
   list = $("eventsList");
   list.multiselect = true;
   configureSortableTableHeaders(list);
   TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
-  list.observe("mousedown",
-	       onEventsSelectionChange.bindAsEventListener(list));
+  list.observe("mousedown", onEventsSelectionChange);
 }
 
 function initDateSelectorEvents() {
   var arrow = $("rightArrow");
-  arrow.observe("click",
-		onDateSelectorGotoMonth.bindAsEventListener(arrow));
+  arrow.observe("click", onDateSelectorGotoMonth);
   arrow = $("leftArrow");
-  arrow.observe("click",
-		onDateSelectorGotoMonth.bindAsEventListener(arrow));
+  arrow.observe("click", onDateSelectorGotoMonth);
    
   var menuButton = $("monthLabel");
-  menuButton.observe("click",
-		     popupMonthMenu.bindAsEventListener(menuButton));
+  menuButton.observe("click", popupMonthMenu);
   menuButton = $("yearLabel");
-  menuButton.observe("click",
-		     popupMonthMenu.bindAsEventListener(menuButton));
+  menuButton.observe("click", popupMonthMenu);
 }
 
 function initCalendars() {
