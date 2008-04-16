@@ -392,6 +392,7 @@ static BOOL debugObjectAllocation = NO;
   static NSArray *runLoopModes = nil;
   WOResponse *resp;
 
+//   sleep (1);
   cache = [SOGoCache sharedCache];
   resp = [super dispatchRequest: _request];
   [SOGoCache killCache];
