@@ -1,0 +1,69 @@
+Index: sope-mime/NGImap4/NGImap4Client.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4Client.m	(révision 1620)
++++ sope-mime/NGImap4/NGImap4Client.m	(copie de travail)
+@@ -1054,17 +1054,18 @@
+ 
+   if (![_encoding   isNotNull]) _encoding   = @"UTF-8";
+   if (![_qualString isNotNull]) _qualString = @" ALL";
++
++  sortStr = @"FETCH 1:* UID";
++//   sortStr = [NSMutableString stringWithCapacity:128];
+   
+-  sortStr = [NSMutableString stringWithCapacity:128];
++//   [sortStr appendString:@"UID SORT ("];
++//   if (_sort != nil) [sortStr appendString:_sort];
++//   [sortStr appendString:@") "];
+   
+-  [sortStr appendString:@"UID SORT ("];
+-  if (_sort != nil) [sortStr appendString:_sort];
+-  [sortStr appendString:@") "];
++//   [sortStr appendString:_encoding];   /* eg 'UTF-8' */
+   
+-  [sortStr appendString:_encoding];   /* eg 'UTF-8' */
+-  
+   /* Note: this is _space sensitive_! to many spaces lead to error! */
+-  [sortStr appendString:_qualString]; /* eg ' ALL' or ' TEXT "abc"' */
++//   [sortStr appendString:_qualString]; /* eg ' ALL' or ' TEXT "abc"' */
+   
+   return [self->normer normalizeSortResponse:[self processCommand:sortStr]];
+ }
+Index: sope-mime/NGImap4/NGImap4Connection.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4Connection.m	(révision 1620)
++++ sope-mime/NGImap4/NGImap4Connection.m	(copie de travail)
+@@ -456,7 +456,7 @@
+     return nil;
+   }
+   
+-  uids = [result valueForKey:@"sort"];
++  uids = [result valueForKey:@"fetch"];
+   if (![uids isNotNull]) {
+     [self errorWithFormat:@"got no UIDs for URL: %@: %@", _url, result];
+     return nil;
+Index: sope-mime/NGImap4/NGImap4ResponseNormalizer.m
+===================================================================
+--- sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(révision 1620)
++++ sope-mime/NGImap4/NGImap4ResponseNormalizer.m	(copie de travail)
+@@ -148,12 +148,18 @@
+   /* filter for sort response (search  : NSArray (msn)) */
+   id                  obj;
+   NSMutableDictionary *result;
++  NSMutableArray *uids;
++  NSEnumerator *fetchEnum;
+ 
+   result = [self normalizeResponse:_map];
++  uids = [NSMutableArray array];
++
++  fetchEnum = [_map objectEnumeratorForKey:@"fetch"];
++  while ((obj = [fetchEnum nextObject]))
++    [uids addObject: [obj objectForKey: @"uid"]];
+   
+-  if ((obj = [[_map objectEnumeratorForKey:@"sort"] nextObject]) != nil)
+-    [result setObject:obj forKey:@"sort"];
+-  
++  [result setObject: uids forKey:@"fetch"];
++
+   return result;
+ }
+ 
