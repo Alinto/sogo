@@ -1787,6 +1787,25 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
  
    /* CardDAV */
    "{urn:ietf:params:xml:ns:carddav}supported-address-data" =
+@@ -138,13 +142,13 @@
+   "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
+ 
+   /* Apple CalServer */
+-  "{http://apple.com/ns/calendarserver/}dropbox-home-URL" =
+-    davDropboxHomeURL;
+-  "{http://apple.com/ns/calendarserver/}notifications-URL" =
+-    davNotificationsURL;
+-  "{com.apple.ical:}calendarcolor" = davCalendarColor;
++  "{http://calendarserver.org/ns/}dropbox-home-URL" = davDropboxHomeURL;
++  "{http://calendarserver.org/ns/}notifications-URL" = davNotificationsURL;
+   "{http://calendarserver.org/ns/}getctag" = davCollectionTag;
+ 
++  /* Apple extensions */
++  "{http://apple.com/ns/ical/}calendar-color" = davCalendarColor;
++
+   /* GroupDAV */
+   "{http://www.groupdav.org/}component-set" = gdavComponentSet;
+   "{http://groupdav.org/}component-set"     = gdavComponentSet;
 Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m	(révision 1620)
