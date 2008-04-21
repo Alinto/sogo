@@ -1618,7 +1618,7 @@ function onCalendarModify(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
   var calendarID = selected.getAttribute("id");
-  var url = (URLForFolderID(calendarID) + "/properties");
+  var url = ApplicationBaseURL + calendarID + "/properties";
   var properties = window.open(url, calendarID + "properties",
 			       "width=300,height=100,resizable=0,scrollbars=0"
 			       + "toolbar=0,location=0,directories=0,status=0,"
