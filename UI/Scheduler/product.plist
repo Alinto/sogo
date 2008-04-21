@@ -121,11 +121,11 @@
      SOGoAppointmentFolder = {
 	methods = {
 	   properties = { 
-	      protectedBy = "View";
+	      protectedBy = "Access Contents Information";
 	      pageName    = "UIxCalendarProperties"; 
 	   };
 	   saveProperties = { 
-	      protectedBy = "View";
+	      protectedBy = "Access Contents Information";
 	      pageName = "UIxCalendarProperties";
 	      actionName = "saveProperties";
 	   };
