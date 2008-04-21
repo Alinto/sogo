@@ -36,56 +36,6 @@
 
 #import "UIxCalendarSelector.h"
 
-// static inline char
-// darkenedColor (const char value)
-// {
-//   char newValue;
-
-//   if (value >= '0' && value <= '9')
-//     newValue = ((value - '0') / 2) + '0';
-//   else if (value >= 'a' && value <= 'f')
-//     newValue = ((value + 10 - 'a') / 2) + '0';
-//   else if (value >= 'A' && value <= 'F')
-//     newValue = ((value + 10 - 'A') / 2) + '0';
-//   else
-//     newValue = value;
-
-//   return newValue;
-// }
-
-static inline NSString *
-colorForNumber (unsigned int number)
-{
-  unsigned int index, currentValue;
-  unsigned char colorTable[] = { 1, 1, 1 };
-  NSString *color;
-
-  if (number == 0)
-    color = @"#ccf";
-  else if (number == NSNotFound)
-    color = @"#f00";
-  else
-    {
-      currentValue = number;
-      index = 0;
-      while (currentValue)
-        {
-          if (currentValue & 1)
-            colorTable[index]++;
-          if (index == 3)
-            index = 0;
-          currentValue >>= 1;
-          index++;
-        }
-      color = [NSString stringWithFormat: @"#%2x%2x%2x",
-                        (255 / colorTable[2]) - 1,
-                        (255 / colorTable[1]) - 1,
-                        (255 / colorTable[0]) - 1];
-    }
-
-  return color;
-}
-
 @implementation UIxCalendarSelector
 
 - (id) init
@@ -137,7 +87,7 @@ colorForNumber (unsigned int number)
 		    forKey: @"id"];
 	  [calendar setObject: fDisplayName forKey: @"displayName"];
 	  [calendar setObject: folderName forKey: @"folder"];
-	  [calendar setObject: colorForNumber (count)
+	  [calendar setObject: [folder calendarColor]
 		    forKey: @"color"];
 	  isActive = [NSNumber numberWithBool: [folder isActive]];
 	  [calendar setObject: isActive forKey: @"active"];

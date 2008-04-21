@@ -59,6 +59,8 @@
 - (GCSFolder *) ocsFolderForPath: (NSString *)_path;
 - (GCSFolder *) ocsFolder;
 
+- (NSString *) folderReference;
+
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
 

@@ -111,6 +111,18 @@ static NSMutableCharacterSet *urlStartChars = nil;
   return newName;
 }
 
+- (NSString *) davSetterName
+{
+  unichar firstLetter;
+  NSString *firstString;
+
+  firstLetter = [self characterAtIndex: 0];
+  firstString = [[NSString stringWithCharacters: &firstLetter length: 1]
+		  uppercaseString];
+  return [NSString stringWithFormat: @"set%@%@:",
+		   firstString, [self substringFromIndex: 1]];
+}
+
 - (NSDictionary *) asDavInvocation
 {
   NSMutableDictionary *davInvocation;

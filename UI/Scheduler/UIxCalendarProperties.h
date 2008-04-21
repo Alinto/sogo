@@ -1,6 +1,6 @@
-/* UIxFolderActions.h - this file is part of SOGo
+/* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,37 +20,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXFOLDERACTIONS_H
-#define UIXFOLDERACTIONS_H
-
-#import <NGObjWeb/WODirectAction.h>
+#import "SOGoUI/UIxComponent.h"
 
 @class NSString;
-@class NSUserDefaults;
-@class NSMutableString;
-@class NSMutableDictionary;
 
-@class LDAPUserManager;
-@class SOGoGCSFolder;
+@class SOGoAppointmentFolder;
 
-@interface UIxFolderActions : WODirectAction
+@interface UIxCalendarProperties : UIxComponent
 {
-  SOGoGCSFolder *clientObject;
-  LDAPUserManager *um;
-  NSUserDefaults *ud;
-  NSString *owner;
-  NSString *login;
-  NSString *baseFolder;
-  NSMutableDictionary *moduleSettings;
-  BOOL isMailInvitation;
+  SOGoAppointmentFolder *calendar;
 }
 
-- (WOResponse *) subscribeAction;
-- (WOResponse *) unsubscribeAction;
-- (WOResponse *) canAccessContentAction;
-- (WOResponse *) activateFolderAction;
-- (WOResponse *) deactivateFolderAction;
+- (NSString *) calendarName;
+- (void) setCalendarName: (NSString *) newName;
+- (NSString *) calendarNameIsDisabled;
+
+- (NSString *) calendarColor;
+- (void) setCalendarColor: (NSString *) newColor;
+
 
 @end
-
-#endif /* UIXFOLDERACTIONS_H */

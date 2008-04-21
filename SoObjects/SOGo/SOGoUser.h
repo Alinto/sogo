@@ -36,6 +36,8 @@
 
 @class NSArray;
 @class NSDictionary;
+@class NSMutableArray;
+@class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
 @class NSURL;

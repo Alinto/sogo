@@ -63,6 +63,8 @@
 
 #import "SOGoAppointmentFolder.h"
 
+#define defaultColor @"#AAAAAA"
+
 #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
 @interface NSDate(UsedPrivates)
 - (id)initWithTimeIntervalSince1970:(NSTimeInterval)_interval;
@@ -128,6 +130,46 @@ static NSNumber   *sharedYes = nil;
   [stripFields release];
   [uidToFilename release];
   [super dealloc];
+}
+
+- (NSString *) calendarColor
+{
+  NSUserDefaults *settings;
+  NSDictionary *colors;
+  NSString *color;
+
+  settings = [[context activeUser] userSettings];
+  colors = [[settings objectForKey: @"Calendar"]
+	     objectForKey: @"FolderColors"];
+  color = [colors objectForKey: [self folderReference]];
+  if (!color)
+    color = defaultColor;
+
+  return color;
+}
+
+- (void) setCalendarColor: (NSString *) newColor
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *colors;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+  if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [settings setObject: calendarSettings
+		forKey: @"Calendar"];
+    }
+  colors = [calendarSettings objectForKey: @"FolderColors"];
+  if (!colors)
+    {
+      colors = [NSMutableDictionary dictionary];
+      [calendarSettings setObject: colors forKey: @"FolderColors"];
+    }
+  [colors setObject: newColor forKey: [self folderReference]];
+  [settings synchronize];
 }
 
 /* logging */
@@ -559,6 +601,34 @@ static NSNumber   *sharedYes = nil;
   [ns addObjectUniquely: @"urn:ietf:params:xml:ns:caldav"];
 
   return ns;
+}
+
+- (NSString *) davCalendarColor
+{
+  NSString *color;
+
+  color = [[self calendarColor] uppercaseString];
+
+  return [NSString stringWithFormat: @"%@FF", color];
+}
+
+- (NSException *) setDavCalendarColor: (NSString *) newColor
+{
+  NSException *error;
+  NSString *realColor;
+
+  if ([newColor length] == 9
+      && [newColor hasPrefix: @"#"])
+    {
+      realColor = [newColor substringToIndex: 7];
+      [self setCalendarColor: realColor];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+			 reason: @"Bad color format (should be '#XXXXXXXX')."];
+
+  return error;
 }
 
 - (id) davCalendarQuery: (id) queryContext

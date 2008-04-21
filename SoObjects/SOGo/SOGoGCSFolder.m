@@ -227,9 +227,51 @@ static BOOL sendFolderAdvisories = NO;
   return [nameInContainer isEqualToString: @"personal"];
 }
 
+- (NSString *) folderReference
+{
+  NSString *login, *reference, *realName;
+  NSArray *nameComponents;
+
+  login = [[context activeUser] login];
+  if ([owner isEqualToString: login])
+    reference = nameInContainer;
+  else
+    {
+      nameComponents = [nameInContainer componentsSeparatedByString: @"_"];
+      if ([nameComponents count] > 1)
+	realName = [nameComponents objectAtIndex: 1];
+      else
+	realName = nameInContainer;
+
+      reference = [NSString stringWithFormat: @"%@:%@/%@",
+			    owner,
+			    [container nameInContainer],
+			    realName];
+    }
+
+  return reference;
+}
+
 - (NSString *) davDisplayName
 {
   return [self displayName];
+}
+
+- (NSException *) setDavDisplayName: (NSString *) newName
+{
+  NSException *error;
+
+  if ([newName length])
+    {
+      [self renameTo: newName];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+			 reason: [NSString stringWithFormat:
+					     @"Empty string"]];
+
+  return error;
 }
 
 - (GCSFolder *) ocsFolder
@@ -449,8 +491,7 @@ static BOOL sendFolderAdvisories = NO;
       else
 	folder = [realFolderPath objectAtIndex: 0];
 
-      subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
-				      owner, baseFolder, folder];
+      subscriptionPointer = [self folderReference];
       if (reallyDo)
 	[folderSubscription addObjectUniquely: subscriptionPointer];
       else
@@ -522,33 +563,6 @@ static BOOL sendFolderAdvisories = NO;
   return [self _subscribe: NO
 	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
 	       inContext: queryContext];
-}
-
-- (NSException *) davSetProperties: (NSDictionary *) setProps
-  	     removePropertiesNamed: (NSDictionary *) removedProps
-			 inContext: (WOContext *) localContext
-{
-  NSString *newDisplayName;
-  NSException *exception;
-  NSArray *currentRoles;
-
-  currentRoles = [[localContext activeUser] rolesForObject: self
-					    inContext: localContext];
-  if ([currentRoles containsObject: SoRole_Owner])
-    {
-      newDisplayName = [setProps objectForKey: @"davDisplayName"];
-      if ([newDisplayName length])
-	{
-	  [self renameTo: newDisplayName];
-	  exception = nil;
-	}
-      else
-	exception = [NSException exceptionWithHTTPStatus: 404];
-    }
-  else
-    exception = [NSException exceptionWithHTTPStatus: 403];
-
-  return exception;
 }
 
 /* acls as a container */

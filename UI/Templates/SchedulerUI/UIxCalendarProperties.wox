@@ -1,0 +1,44 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:toolbar="none"
+  const:popup="YES"
+  title="title">
+  <form const:href="saveProperties" name="propertiesform">
+    <input type="hidden" const:name="calendarID" const:id="calendarID" var:value="calendarID"/>
+    <div id="propertiesView">
+      <label><var:string label:value="Name:" /><span class="content"
+          ><input type="text" name="calendarName" id="calendarName"
+	    var:disabled="calendarNameIsDisabled"
+            class="textField"
+            var:value="calendarName"
+            /></span></label>
+      <label><var:string label:value="Color:" /><span class="content"
+          ><button id="colorButton"><!-- space --></button>
+	  <input type="hidden"
+	    name="calendarColor"
+	    id="calendarColor"
+            class="textField"
+            var:value="calendarColor"
+            /></span></label>
+    </div>
+    <div id="buttons">
+      <input type="button"
+	const:class="button"
+	label:value="Cancel"
+	const:id="cancelButton"
+	name="cancelButton"/>
+      <input type="submit"
+	const:class="button"
+	label:value="OK"
+	const:id="okButton"
+	name="okButton"/>
+    </div>
+  </form>
+</var:component>

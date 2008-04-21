@@ -50,8 +50,7 @@
 
 - (void) _setupContext
 {
-  NSString *folder, *mailInvitationParam;
-  NSArray *realFolderPath;
+  NSString *mailInvitationParam;
   SOGoUser *activeUser;
 
   activeUser = [context activeUser];
@@ -71,15 +70,6 @@
     }
   [ud setObject: moduleSettings forKey: baseFolder];
 
-  realFolderPath = [[clientObject nameInContainer]
-		     componentsSeparatedByString: @"_"];
-  if ([realFolderPath count] > 1)
-    folder = [realFolderPath objectAtIndex: 1];
-  else
-    folder = [realFolderPath objectAtIndex: 0];
-  subscriptionPointer = [NSString stringWithFormat: @"%@:%@/%@",
-				  owner, baseFolder, folder];
-
   mailInvitationParam
     = [[context request] formValueForKey: @"mail-invitation"];
   isMailInvitation = [mailInvitationParam boolValue];
@@ -89,7 +79,7 @@
 {
   WOResponse *response;
   NSMutableArray *folderSubscription;
-  NSString *mailInvitationURL;
+  NSString *mailInvitationURL, *subscriptionPointer;
 
   if ([owner isEqualToString: login])
     {
@@ -108,6 +98,7 @@
 	  [moduleSettings setObject: folderSubscription
 			  forKey: @"SubscribedFolders"];
 	}
+      subscriptionPointer = [[self clientObject] folderReference];
       if (reallyDo)
 	[folderSubscription addObjectUniquely: subscriptionPointer];
       else

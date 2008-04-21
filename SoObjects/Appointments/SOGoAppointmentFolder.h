@@ -58,6 +58,9 @@
 
 - (BOOL) isActive;
 
+- (NSString *) calendarColor;
+- (void) setCalendarColor: (NSString *) newColor;
+
 /* selection */
 
 - (NSArray *) calendarUIDs;

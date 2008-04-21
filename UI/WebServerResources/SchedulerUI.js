@@ -1617,30 +1617,25 @@ function initCalendarSelector() {
 function onCalendarModify(event) {
   var folders = $("calendarList");
   var selected = folders.getSelectedNodes()[0];
-
-  if (UserLogin == selected.getAttribute("owner")) {
-    var node = selected.childNodes[selected.childNodes.length - 1];
-    var currentName = node.nodeValue.trim();
-    var newName = window.prompt(labels["Name of the Calendar"],
-				currentName);
-    if (newName && newName.length > 0
-	&& newName != currentName) {
-      var url = (URLForFolderID(selected.getAttribute("id"))
-		 + "/renameFolder?name=" + escape(newName.utf8encode()));
-      triggerAjaxRequest(url, folderRenameCallback,
-			 {node: node, name: " " + newName});
-    }
-  } else
-    window.alert(clabels["Unable to rename that folder!"]);
+  var calendarID = selected.getAttribute("id");
+  var url = (URLForFolderID(calendarID) + "/properties");
+  var properties = window.open(url, calendarID + "properties",
+			       "width=300,height=100,resizable=0,scrollbars=0"
+			       + "toolbar=0,location=0,directories=0,status=0,"
+			       + "menubar=0,copyhistory=0");
+  properties.focus();
 }
 
-function folderRenameCallback(http) {
-  if (http.readyState == 4) {
-    if (isHttpStatus204(http.status)) {
-      var dict = http.callbackData;
-      dict["node"].nodeValue = dict["name"];
-    }
-  }
+function updateCalendarProperties(calendarID, calendarName, calendarColor) {
+  var idParts = calendarID.split(":");
+  var nodeID = "/" + idParts[0];
+  if (idParts.length > 1)
+    nodeID += "_" + idParts[1].split("/")[1];
+  var calendarNode = $(nodeID);
+  var childNodes = calendarNode.childNodes;
+  childNodes[childNodes.length-1].nodeValue = calendarName;
+
+  appendStyleElement(nodeID, calendarColor);
 }
 
 function onCalendarNew(event) {
@@ -1743,8 +1738,12 @@ function appendCalendar(folderName, folderPath) {
     triggerAjaxRequest(url, calendarEntryCallback, folderPath);
     
     // Update CSS for events color
-    if (!document.styleSheets) return;
-    
+    appendStyleElement(folderPath, color);
+  }
+}
+
+function appendStyleElement(folderPath, color) {
+  if (document.styleSheets) {    
     var styleElement = document.createElement("style");
     styleElement.type = "text/css";
     var selectors = [

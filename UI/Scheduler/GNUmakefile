@@ -13,6 +13,8 @@ SchedulerUI_OBJC_FILES =		\
 	NSArray+Scheduler.m		\
 					\
 	UIxCalMainView.m		\
+	UIxCalendarProperties.m		\
+	UIxColorPicker.m		\
 					\
 	UIxCalFilterPanel.m		\
 	UIxCalDayTable.m		\

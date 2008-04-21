@@ -7,7 +7,7 @@
         ><script type="text/javascript"
           ><var:if condition="hasRefreshMethod"
             >window.opener.setTimeout('<var:string value="refreshMethod"
-              const:escapeHTML="NO" />;', 200);</var:if
+              const:escapeHTML="NO" />;', 50);</var:if
             >window.close();</script
 ></body></html
 ></container>

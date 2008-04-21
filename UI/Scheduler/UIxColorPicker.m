@@ -1,6 +1,6 @@
-/* UIxJSClose.m - this file is part of SOGo
+/* UIxColorPicker.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,47 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#import "UIxColorPicker.h"
 
-#import "UIxJSClose.h"
+#warning this module should probably be moved into a "Utility" product
 
-@implementation UIxJSClose
-
-- (id) init
-{
-  if ((self = [super init]))
-    refreshMethod = nil;
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [refreshMethod release];
-  [super dealloc];
-}
-
-- (NSString *) doctype
-{
-  return (@"<?xml version=\"1.0\"?>\n"
-          @"<!DOCTYPE html"
-          @" PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
-          @" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-}
-
-- (void) setRefreshMethod: (NSString *) method
-{
-  ASSIGN (refreshMethod, method);
-}
-
-- (NSString *) refreshMethod
-{
-  return refreshMethod;
-}
-
-- (BOOL) hasRefreshMethod
-{
-  return (refreshMethod != nil);
-}
+@implementation UIxColorPicker
 
 @end

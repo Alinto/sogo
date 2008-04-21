@@ -111,20 +111,23 @@
 	      protectedBy = "View";
 	      pageName    = "UIxRecurrenceEditor";
 	   };
+	   colorPicker = {
+	     protectedBy = "View";
+	     pageName = "UIxColorPicker";
+	   };
 	};
      };
 
      SOGoAppointmentFolder = {
 	methods = {
-	   newevent = {
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "new";
+	   properties = { 
+	      protectedBy = "View";
+	      pageName    = "UIxCalendarProperties"; 
 	   };
-	   newtask = { 
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "new";
+	   saveProperties = { 
+	      protectedBy = "View";
+	      pageName = "UIxCalendarProperties";
+	      actionName = "saveProperties";
 	   };
 	   show = { 
 	      protectedBy = "View";
@@ -139,6 +142,16 @@
 	      protectedBy = "SaveAcls";
 	      pageName    = "UIxCalUserRightsEditor";
 	      actionName  = "saveUserRights";
+	   };
+	   newevent = {
+	      protectedBy = "Add Documents, Images, and Files";
+	      pageName    = "UIxAppointmentEditor"; 
+	      actionName  = "new";
+	   };
+	   newtask = { 
+	      protectedBy = "Add Documents, Images, and Files";
+	      pageName    = "UIxTaskEditor"; 
+	      actionName  = "new";
 	   };
 	};
      };
