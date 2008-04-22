@@ -260,16 +260,25 @@ static BOOL sendFolderAdvisories = NO;
 - (NSException *) setDavDisplayName: (NSString *) newName
 {
   NSException *error;
+  NSArray *currentRoles;
 
-  if ([newName length])
+  currentRoles = [[context activeUser] rolesForObject: self
+				       inContext: context];
+  if ([currentRoles containsObject: SoRole_Owner])
     {
-      [self renameTo: newName];
-      error = nil;
+      if ([newName length])
+	{
+	  [self renameTo: newName];
+	  error = nil;
+	}
+      else
+	error = [NSException exceptionWithHTTPStatus: 400
+			     reason: [NSString stringWithFormat:
+						 @"Empty string"]];
     }
   else
-    error = [NSException exceptionWithHTTPStatus: 400
-			 reason: [NSString stringWithFormat:
-					     @"Empty string"]];
+    error = [NSException exceptionWithHTTPStatus: 403
+			 reason: @"Modification denied."];
 
   return error;
 }

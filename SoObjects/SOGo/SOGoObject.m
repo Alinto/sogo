@@ -1342,53 +1342,35 @@ static BOOL sendACLAdvisories = NO;
   return r;
 }
 
-- (NSException *) _setDavProperty: (NSString *) property
-			  toValue: (id) newValue
-{
-  NSException *exception;
-  SEL methodSel;
-
-  methodSel = NSSelectorFromString ([property davSetterName]);
-  if ([self respondsToSelector: methodSel])
-    exception = [self performSelector: methodSel
-		      withObject: newValue];
-  else
-    exception
-      = [NSException exceptionWithHTTPStatus: 404
-		     reason: [NSString stringWithFormat:
-					 @"Property '%@' cannot be set.",
-				       property]];
-
-  return exception;
-}
-
 - (NSException *) davSetProperties: (NSDictionary *) setProps
 	     removePropertiesNamed: (NSDictionary *) removedProps
 			 inContext: (WOContext *) localContext
 {
   NSString *currentProp;
   NSException *exception;
-  NSArray *currentRoles;
   NSEnumerator *properties;
   id currentValue;
+  SEL methodSel;
 
-  currentRoles = [[localContext activeUser] rolesForObject: self
-					    inContext: localContext];
-  if ([currentRoles containsObject: SoRole_Owner])
+  properties = [[setProps allKeys] objectEnumerator];
+  exception = nil;
+  while (!exception
+	 && (currentProp = [properties nextObject]))
     {
-      properties = [[setProps allKeys] objectEnumerator];
-      exception = nil;
-      while (!exception
-	     && (currentProp = [properties nextObject]))
+      methodSel = NSSelectorFromString ([currentProp davSetterName]);
+      if ([self respondsToSelector: methodSel])
 	{
 	  currentValue = [setProps objectForKey: currentProp];
-	  exception = [self _setDavProperty: currentProp
-			    toValue: currentValue];
+	  exception = [self performSelector: methodSel
+			    withObject: currentValue];
 	}
+      else
+	exception
+	  = [NSException exceptionWithHTTPStatus: 404
+			 reason: [NSString stringWithFormat:
+					     @"Property '%@' cannot be set.",
+					   currentProp]];
     }
-  else
-    exception = [NSException exceptionWithHTTPStatus: 403
-			     reason: @"Modification denied."];
 
   return exception;
 }

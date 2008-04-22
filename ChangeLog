@@ -1,3 +1,13 @@
+2008-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-setDavDisplayName:newName]): deny the renaming of the folder if
+	not owner.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-davSetProperties:setPropsremovePropertiesNamed:removedPropsinContext:localContext]):
+	certain properties should be authorized when not owner.
+
 2008-04-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxColorPicker.[hm]: new class module that
