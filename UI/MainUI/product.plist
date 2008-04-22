@@ -55,7 +55,7 @@
       superclass = "SOGoObject";
       protectedBy = "Access Object";
       defaultRoles = {
-	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
+	"Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
 	"View" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );
 	"WebDAV Access" = ( "Authenticated", "AuthorizedSubscriber" );
