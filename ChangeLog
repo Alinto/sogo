@@ -1,5 +1,10 @@
 2008-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector
+	-contrastingTextColor]): new method (code taken from Lightning)
+	that returns a foreground color easily readible based on the
+	brightness of the background color.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	-setDavDisplayName:newName]): deny the renaming of the folder if
 	not owner.

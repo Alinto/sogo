@@ -4,7 +4,6 @@ var listFilter = 'view_today';
 
 var listOfSelection = null;
 var selectedCalendarCell;
-var calendarColorIndex = null;
 
 var showCompletedTasks = 0;
 
@@ -1689,32 +1688,6 @@ function appendCalendar(folderName, folderPath) {
     li.setAttribute("id", folderPath);
     li.setAttribute("owner", owner);
 
-    // Generate new color
-    if (calendarColorIndex == null)
-      calendarColorIndex = items.length;
-    calendarColorIndex++;
-    var colorTable = [1, 1, 1];
-    var color;
-    var currentValue = calendarColorIndex;
-    var index = 0;
-    while (currentValue) {
-      if (currentValue & 1)
-	colorTable[index]++;
-      if (index == 3)
-	index = 0;
-      currentValue >>= 1;
-      index++;
-    }
-    colorTable[0] = parseInt(255 / colorTable[0]) - 1;
-    colorTable[1] = parseInt(255 / colorTable[1]) - 1;
-    colorTable[2] = parseInt(255 / colorTable[2]) - 1;
-
-    color = "#"
-      + colorTable[2].toString(16)
-      + colorTable[1].toString(16)
-      + colorTable[0].toString(16);
-    //log ("color = " + color);
-    
     var checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
     li.appendChild(checkBox);
@@ -1738,12 +1711,13 @@ function appendCalendar(folderName, folderPath) {
     triggerAjaxRequest(url, calendarEntryCallback, folderPath);
     
     // Update CSS for events color
-    appendStyleElement(folderPath, color);
+    appendStyleElement(folderPath, "#AAAAAA");
   }
 }
 
 function appendStyleElement(folderPath, color) {
-  if (document.styleSheets) {    
+  if (document.styleSheets) {
+    var fgColor = getContrastingTextColor(color);
     var styleElement = document.createElement("style");
     styleElement.type = "text/css";
     var selectors = [
@@ -1751,7 +1725,8 @@ function appendStyleElement(folderPath, color) {
 		     'div.colorBox.calendarFolder' + folderPath.substr(1)
 		     ];
     var rules = [
-		 ' { background-color: ' + color + ' !important; }',
+		 ' { background-color: ' + color + ' !important;'
+		 + ' color: ' + fgColor + ' !important; }',
 		 ' { color: ' + color + ' !important; }'
 		 ];
     for (var i = 0; i < rules.length; i++)

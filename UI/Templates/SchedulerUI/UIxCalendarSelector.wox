@@ -9,7 +9,7 @@
   <style type="text/css">
     <var:foreach list="calendars" item="currentCalendar">
 .calendarFolder<var:string value="currentCalendar.folder" />
-{ background-color: <var:string value="currentCalendar.color" /> !important; }
+{ background-color: <var:string value="currentCalendar.color" /> !important; color: <var:string value="contrastingTextColor" /> !important; }
 div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
 { color: <var:string value="currentCalendar.color" /> !important; }
     </var:foreach>

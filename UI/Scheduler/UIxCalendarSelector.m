@@ -36,6 +36,35 @@
 
 #import "UIxCalendarSelector.h"
 
+static inline unsigned int
+_intValueFromHexChar (unichar hexChar)
+{
+  unichar base;
+
+  if (hexChar >= '0' && hexChar <= '9')
+    base = '0';
+  else if (hexChar >= 'A' && hexChar <= 'F')
+    base = 'A' - 10;
+  else
+    base = 'a' - 10;
+
+  return (hexChar - base);
+}
+
+static inline unsigned int
+_intValueFromHex (NSString *hexString)
+{
+  unsigned int value, count, max;
+
+  value = 0;
+  max = [hexString length];
+  for (count = 0; count < max; count++)
+    value = (value * 16
+	     + _intValueFromHexChar([hexString characterAtIndex: count]));
+
+  return value;
+}
+
 @implementation UIxCalendarSelector
 
 - (id) init
@@ -87,8 +116,7 @@
 		    forKey: @"id"];
 	  [calendar setObject: fDisplayName forKey: @"displayName"];
 	  [calendar setObject: folderName forKey: @"folder"];
-	  [calendar setObject: [folder calendarColor]
-		    forKey: @"color"];
+	  [calendar setObject: [folder calendarColor] forKey: @"color"];
 	  isActive = [NSNumber numberWithBool: [folder isActive]];
 	  [calendar setObject: isActive forKey: @"active"];
 	  [calendar setObject: [folder ownerInContext: context]
@@ -122,6 +150,22 @@
 {
   return [currentCalendar
 	   keysWithFormat: @"color: %{color}; background-color: %{color};"];
+}
+
+/* code taken from Lightning 0.7 */
+- (NSString *) contrastingTextColor
+{
+  NSString *bgColor;
+  unsigned int red, green, blue;
+  float brightness;
+
+  bgColor = [[currentCalendar objectForKey: @"color"] substringFromIndex: 1];
+  red = _intValueFromHex ([bgColor substringFromRange: NSMakeRange (0, 2)]);
+  green = _intValueFromHex ([bgColor substringFromRange: NSMakeRange (2, 2)]);
+  blue = _intValueFromHex ([bgColor substringFromRange: NSMakeRange (4, 2)]);
+  brightness = (0.299 * red) + (0.587 * green) + (0.114 * blue);
+
+  return ((brightness < 144) ? @"white" : @"black");
 }
 
 - (WOResponse *) calendarsListAction
