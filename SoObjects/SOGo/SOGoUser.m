@@ -687,6 +687,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSMutableArray *rolesForObject;
   NSArray *sogoRoles;
+  NSString *rqMethod;
 
   rolesForObject = [NSMutableArray new];
   [rolesForObject autorelease];
@@ -707,6 +708,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       if ([sogoRoles firstObjectCommonWithArray: rolesForObject])
 	[rolesForObject addObject: SOGoRole_AuthorizedSubscriber];
     }
+
+#warning this is a hack to work-around the poor implementation of PROPPATCH in SOPE
+  rqMethod = [[context request] method];
+  if ([rqMethod isEqualToString: @"PROPPATCH"])
+    [rolesForObject addObject: @"PROPPATCHer"];
 
   return rolesForObject;
 }

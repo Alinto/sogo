@@ -1,25 +1,24 @@
 LABEL
 { display: block;
   position: relative;
-  line-height: 1.5em;
-  height: 1.5em;
-  margin-left: .5em;
-  margin-bottom: .5em;
+  line-height: 18px;
+  height: 20px;
+  margin-left: 5px;
+  margin-bottom: 5px;
   width: 100%; }
 
 DIV#propertiesView
 { overflow: hidden;
-  padding: .5em; }
+  padding: 10px; }
 
 SPAN.content
 { position: absolute;
   top: -.25em;
-  left: 8em;
+  left: 4em;
   right: 1em; }
 
 BUTTON#colorButton
-{
-  display: none;
+{ display: none;
   margin: 1px;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -28,9 +27,9 @@ BUTTON#colorButton
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   width: 3em;
-  height: 2em;
-}
+  height: 2em; }
 
 DIV#buttons
-{ padding: .5em;
+{ padding: 10px;
+  padding-top: 0px;
   text-align: right; }

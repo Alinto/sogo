@@ -20,7 +20,7 @@
       defaultAccess = "allow";
       defaultRoles = {
 	"View" = ( "Owner", "ObjectViewer" );
-	"Change Images And Files"  = ( "Owner", "ObjectEditor" );
+	"Change Images And Files"  = ( "Owner", "ObjectEditor", "PROPPATCHer" );
 	"Access Object" = ( "Owner", "AuthorizedSubscriber" );
 	"Access Contents Information" = ( "Owner", "ObjectViewer" );
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
