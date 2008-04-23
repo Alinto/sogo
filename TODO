@@ -1,0 +1,6 @@
+Rendering of multi-status responses is suboptimal in SOPE:
+  PROPPATCH "subresponses" indicates either complete failure or success
+  REPORT responses are handled by SOGo
+Therefore it would be nice to refactor those things a little bit and maybe put
+some code from SOGo up into SOPE.
+ -- wsourdeau@inverse.ca, Tue, 22 Apr 2008 15:21:32 -0400
