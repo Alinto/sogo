@@ -221,6 +221,16 @@
   return results;
 }
 
+- (NSArray *) davResourceType
+{
+  NSMutableArray *rType;
+
+  rType = [NSMutableArray arrayWithArray: [super davResourceType]];
+  [rType addObject: @"principal"];
+
+  return rType;
+}
+
 - (NSString *) _baseDAVURLWithSuffix: (NSString *) suffix
 {
   NSURL *prefixURL;
