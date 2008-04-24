@@ -194,7 +194,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 		  objectForKey: @"c_uid"];
     }
 
-  if (realUID)
+  if ([realUID length])
     self = [super initWithLogin: realUID roles: newRoles];
   else
     {

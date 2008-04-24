@@ -1,5 +1,9 @@
 2008-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
+	-initWithLogin:newLoginroles:newRoles]): we make sure realUID is
+	not an empty string.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-davResourceType]): we declare self as a "principal".
 
