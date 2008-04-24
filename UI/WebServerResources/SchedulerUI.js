@@ -415,10 +415,10 @@ function tasksListCallback(http) {
       for (var i = 0; i < data.length; i++) {
 	var listItem = document.createElement("li");
 	list.appendChild(listItem);
-	// 	listItem.observe("mousedown", listRowMouseDownHandler);
-	// 	listItem.observe("click", onRowClick);
-	// 	listItem.observe("dblclick",
-	// 		      editDoubleClickedEvent);
+	listItem.observe("mousedown", listRowMouseDownHandler);
+	listItem.observe("click", onRowClick);
+	listItem.observe("dblclick",
+			 editDoubleClickedEvent);
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	$(listItem).addClassName(data[i][6]);
@@ -433,8 +433,6 @@ function tasksListCallback(http) {
 	if (data[i][2] == 1)
 	  input.setAttribute("checked", "checked");
 	$(input).addClassName("checkBox");
-
-	setEventsOnCalendar(input, listItem);
 
 	listItem.appendChild(document.createTextNode(data[i][3]));
       }
