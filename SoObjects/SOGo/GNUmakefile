@@ -5,7 +5,9 @@ include $(GNUSTEP_MAKEFILES)/common.make
 -include ../../Version
 -include ./Version
 
-LIBRARY_NAME = libSOGo
+FRAMEWORK_NAME = SOGo
+
+SOGo_INSTALL_DIR = $(SOGO_LIBDIR)
 
 TOOL_NAME = \
 # 	agenor_email2uid	\
@@ -13,13 +15,9 @@ TOOL_NAME = \
 # 	agenor_emails4uid	\
 # 	agenor_defaults
 
-libSOGo_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
-libSOGo_INSTALL_DIR=$(SOGO_SYSLIBDIR)
+SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
-libSOGo_HEADER_FILES_DIR         = .
-libSOGo_HEADER_FILES_INSTALL_DIR = /SOGo
-
-libSOGo_HEADER_FILES = \
+SOGo_HEADER_FILES = \
 	SOGoCache.h			\
 	SOGoObject.h			\
 	SOGoContentObject.h		\
@@ -56,7 +54,7 @@ libSOGo_HEADER_FILES = \
 	\
 	WORequest+SOGo.h
 
-libSOGo_OBJC_FILES = \
+SOGo_OBJC_FILES = \
 	SOGoCache.m			\
 	SOGoObject.m			\
 	SOGoContentObject.m		\
@@ -94,6 +92,9 @@ libSOGo_OBJC_FILES = \
 	\
 	WORequest+SOGo.m
 
+SOGo_RESOURCE_FILES = \
+	DAVReportMap.plist
+
 # tools
 
 agenor_email2uid_OBJC_FILES  += agenor_email2uid.m
@@ -106,10 +107,9 @@ ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 
 -include GNUmakefile.preamble
-include ../common.make
 ifneq ($(FHS_INSTALL_ROOT),)
 GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
 endif
-include $(GNUSTEP_MAKEFILES)/library.make
+include $(GNUSTEP_MAKEFILES)/framework.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble

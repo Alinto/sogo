@@ -11,7 +11,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I.. -DSOGO_BUILD_DATE="@\"$(BUILD_DATE)\""
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ \
+	-L../SoObjects/SOGo/SOGo.framework  \
 	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ \
 	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/
 

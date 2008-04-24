@@ -14,7 +14,6 @@ endif
 
 libGDLContentStore_PCH_FILE = common.h
 libGDLContentStore_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
-libGDLContentStore_INSTALL_DIR=$(SOGO_SYSLIBDIR)
 libGDLContentStore_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 TOOL_NAME = gcs_ls gcs_mkdir gcs_cat gcs_recreatequick gcs_gensql

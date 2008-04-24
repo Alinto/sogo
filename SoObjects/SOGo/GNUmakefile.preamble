@@ -1,10 +1,8 @@
 # compilation settings
 
-libSOGo_INCLUDE_DIRS += -I.. -I../../..
+SOGo_INCLUDE_DIRS += -I.. -I../.. -DSOGO_MAJOR_VERSION="\"$(MAJOR_VERSION)\"" -DSOGO_MINOR_VERSION="\"$(MINOR_VERSION)\""
 
-SYSTEM_LIB_DIR += -L/usr/local/lib
-
-libSOGo_LIBRARIES_DEPEND_UPON += \
+SOGo_LIBRARIES_DEPEND_UPON += \
 	-lOGoContentStore	\
 	-lGDLAccess		\
 	-lNGObjWeb		\
