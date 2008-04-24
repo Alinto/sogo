@@ -1,3 +1,9 @@
+2008-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-davContentLength]): the content length should is now based on the
+	UTF-8 encoding.
+
 2008-04-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalendarSelector.m ([UIxCalendarSelector

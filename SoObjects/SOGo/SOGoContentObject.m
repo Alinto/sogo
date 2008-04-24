@@ -344,7 +344,7 @@
   content = [record objectForKey: @"c_content"];
 
   return [NSString stringWithFormat: @"%u",
-		   [content lengthOfBytesUsingEncoding: NSISOLatin1StringEncoding]];
+		   [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]];
 }
 
 - (NSException *) davMoveToTargetObject: (id) _target
