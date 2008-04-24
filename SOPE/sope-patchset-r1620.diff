@@ -1,3 +1,181 @@
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1620)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1620)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -30,6 +30,7 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++static BOOL debugOn = NO;
+ //
+ //
+ //
+@@ -41,10 +42,19 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
+++ (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
++- (void) _cleanup
++{
+   column_info *info;
+   int c;
++  sword result;
+ 
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +68,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -231,6 +259,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
+@@ -302,7 +333,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1620)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
+@@ -31,6 +31,8 @@
+ #import <Foundation/Foundation.h>
+ #import <GDLAccess/EOSQLExpression.h>
+ 
++static BOOL debugOn = NO;
++
+ //
+ //
+ //
+@@ -48,6 +50,14 @@
+ //
+ @implementation OracleAdaptorChannelController
+ 
+++ (void) initialize
++{
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
+ - (EODelegateResponse) adaptorChannel: (id) theChannel
+                         willInsertRow: (NSMutableDictionary *) theRow
+                             forEntity: (EOEntity *) theEntity
+@@ -56,7 +66,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
++  if (debugOn)
++    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+@@ -101,7 +112,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
++  if (debugOn)
++    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
 Index: sope-mime/NGImap4/NGImap4Connection.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Connection.m	(révision 1620)
@@ -1175,184 +1353,6 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1620)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1620)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -30,6 +30,7 @@
- 
- #import <NGExtensions/NSObject+Logs.h>
- 
-+static BOOL debugOn = NO;
- //
- //
- //
-@@ -41,10 +42,19 @@
- 
- @implementation OracleAdaptorChannel (Private)
- 
---  (void) _cleanup
-++ (void) initialize
- {
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
-+- (void) _cleanup
-+{
-   column_info *info;
-   int c;
-+  sword result;
- 
-   [_resultSetProperties removeAllObjects];
- 
-@@ -58,11 +68,29 @@
-       // so we just free the value instead.
-       if (info->value)
- 	{
--	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	  if (info->type == SQLT_CLOB
-+	      || info->type == SQLT_BLOB
-+	      || info->type == SQLT_BFILEE
-+	      || info->type == SQLT_CFILEE)
-+	    {
-+	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
-+	      if (result != OCI_SUCCESS)
-+		{
-+		  NSLog (@"value was not a LOB descriptor");
-+		  abort();
-+		}
-+	    }
-+	  else
- 	    free(info->value);
- 	  info->value = NULL;
- 	}
--       free(info);
-+      else
-+	{
-+	  NSLog (@"trying to free an already freed value!");
-+	  abort();
-+	}
-+      free(info);
-+
-       [_row_buffer removeObjectAtIndex: c];
-     }
- 
-@@ -231,6 +259,9 @@
- 
-   [self _cleanup];
- 
-+  if (debugOn)
-+    [self logWithFormat: @"expression: %@", theExpression];
-+
-   if (!theExpression || ![theExpression length])
-     {
-       [NSException raise: @"OracleInvalidExpressionException"
-@@ -302,7 +333,9 @@
-       // We read the maximum width of a column
-       info->max_width = 0;
-       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
--      
-+
-+      if (debugOn)
-+	NSLog(@"name: %s, type: %d", cname, info->type);
-       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
-       [_resultSetProperties addObject: attribute];
- 
-Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1620)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
-@@ -31,6 +31,8 @@
- #import <Foundation/Foundation.h>
- #import <GDLAccess/EOSQLExpression.h>
- 
-+static BOOL debugOn = NO;
-+
- //
- //
- //
-@@ -48,6 +50,14 @@
- //
- @implementation OracleAdaptorChannelController
- 
-++ (void) initialize
-+{
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
- - (EODelegateResponse) adaptorChannel: (id) theChannel
-                         willInsertRow: (NSMutableDictionary *) theRow
-                             forEntity: (EOEntity *) theEntity
-@@ -56,7 +66,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
-+  if (debugOn)
-+    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
-@@ -101,7 +112,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
-+  if (debugOn)
-+    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
 Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
 ===================================================================
 --- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(révision 1620)
@@ -1763,7 +1763,21 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 ===================================================================
 --- sope-appserver/NGObjWeb/DAVPropMap.plist	(révision 1620)
 +++ sope-appserver/NGObjWeb/DAVPropMap.plist	(copie de travail)
-@@ -120,17 +120,21 @@
+@@ -24,6 +24,13 @@
+   "{DAV:}status"               = "davStatus";
+   "{http://apache.org/dav/props/}executable" = "davIsExecutable";
+ 
++  /* RFC 3253 - Versioning Extensions to WebDAV (DeltaV) */
++  "{DAV:}comment" = "davComment";
++  "{DAV:}creator-displayname" = "davCreatorDisplayName";
++  "{DAV:}supported-method-set" = "davSupportedMethodSet";
++  "{DAV:}supported-live-property-set" = "davSupportedLivePropertySet";
++  "{DAV:}supported-report-set" = "davSupportedReportSet";
++
+   /* used with Apple WebDAV */
+   "{DAV:}quota"                = davQuota;
+   "{DAV:}quotaused"            = davQuotaUsed;
+@@ -120,17 +127,21 @@
    "{http://ucb.openoffice.org/dav/props/}IsRemoveable"  = isOOoRemoveable;
    "{http://ucb.openoffice.org/dav/props/}IsVolume"      = isOOoVolume;
    "{http://ucb.openoffice.org/dav/props/}TargetURL"     = davOOoTargetURL;
@@ -1787,7 +1801,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
  
    /* CardDAV */
    "{urn:ietf:params:xml:ns:carddav}supported-address-data" =
-@@ -138,13 +142,13 @@
+@@ -138,13 +149,13 @@
    "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
  
    /* Apple CalServer */
