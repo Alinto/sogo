@@ -28,6 +28,8 @@
 
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSClassDescription.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
@@ -36,6 +38,8 @@
 #import <NGObjWeb/SoClass.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/SoSelectorInvocation.h>
+#import <NGObjWeb/SoWebDAVValue.h>
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
@@ -56,6 +60,7 @@
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
 #import "NSDictionary+Utilities.h"
+#import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDAVAuthenticator.h"
@@ -68,6 +73,8 @@
 
 static BOOL kontactGroupDAV = YES;
 static BOOL sendACLAdvisories = NO;
+
+static NSDictionary *reportMap = nil;
 
 @interface SOGoObject(Content)
 - (NSString *) contentAsString;
@@ -164,6 +171,31 @@ static BOOL sendACLAdvisories = NO;
 
 @implementation SOGoObject
 
++ (void) _loadReportMap
+{
+  NSFileManager *fm;
+  NSEnumerator *paths;
+  NSString *currentPath, *filename;
+
+  [self logWithFormat: @"Loading DAV REPORT map:"];
+
+  fm = [NSFileManager defaultManager];
+  paths = [NSStandardLibraryPaths() objectEnumerator];
+  while (!reportMap && (currentPath = [paths nextObject]))
+    {
+      filename = [NSString stringWithFormat: @"%@/SOGo-%s.%s/SOGo.framework"
+			   @"/Resources/DAVReportMap.plist",
+			   currentPath,
+			   SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION];
+      [self logWithFormat: @"  %@", filename];
+      if ([fm fileExistsAtPath: filename])
+	{
+	  reportMap = [[NSDictionary alloc] initWithContentsOfFile: filename];
+	  [self logWithFormat: @"found!"];
+	}
+    }
+}
+
 + (void) initialize
 {
   NSUserDefaults *ud;
@@ -172,6 +204,8 @@ static BOOL sendACLAdvisories = NO;
   kontactGroupDAV = ![ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"];
   sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
 
+  if (!reportMap)
+    [self _loadReportMap];
 //   SoClass security declarations
   
 //   require View permission to access the root (bound to authenticated ...)
@@ -276,8 +310,8 @@ static BOOL sendACLAdvisories = NO;
 /* DAV ACL properties */
 - (NSString *) davOwner
 {
-  return [NSString stringWithFormat: @"%@users/%@",
-                   [self rootURLInContext: context],
+  return [NSString stringWithFormat: @"%@%@",
+                   [WOApplication davURL],
 		   [self ownerInContext: nil]];
 }
 
@@ -555,12 +589,32 @@ static BOOL sendACLAdvisories = NO;
   return ma;
 }
 
+- (NSString *) _reportSelector: (NSString *) reportName
+{
+  NSString *methodName, *objcMethod, *resultName;
+  SEL reportSel;
+
+  resultName = nil;
+
+  methodName = [reportMap objectForKey: reportName];
+  if (methodName)
+    {
+      objcMethod = [NSString stringWithFormat: @"%@:", methodName];
+      reportSel = NSSelectorFromString (objcMethod);
+      if ([self respondsToSelector: reportSel])
+	resultName = objcMethod;
+    }
+
+  return resultName;
+}
+
 - (id) lookupName: (NSString *) lookupName
         inContext: (id) localContext
           acquire: (BOOL) acquire
 {
   id obj;
   SOGoCache *cache;
+  NSString *objcMethod;
 
   cache = [SOGoCache sharedCache];
   obj = [cache objectNamed: lookupName inContainer: self];
@@ -568,10 +622,21 @@ static BOOL sendACLAdvisories = NO;
     {
       obj = [[self soClass] lookupKey: lookupName inContext: localContext];
       if (obj)
+	[obj bindToObject: self inContext: localContext];
+      else
 	{
-	  [obj bindToObject: self inContext: localContext];
-	  [cache registerObject: obj withName: lookupName inContainer: self];
+	  objcMethod = [self _reportSelector: lookupName];
+	  if (objcMethod)
+	    {
+	      obj = [[SoSelectorInvocation alloc]
+		      initWithSelectorNamed: objcMethod
+		      addContextParameter: YES];
+	      [obj autorelease];
+	    }
 	}
+
+      if (obj)
+	[cache registerObject: obj withName: lookupName inContainer: self];
     }
 
   return obj;
@@ -625,13 +690,14 @@ static BOOL sendACLAdvisories = NO;
 
 - (id) DELETEAction: (id) _ctx
 {
-  NSException *error;
+  id result;
 
-  if ((error = [self delete]) != nil)
-    return error;
-  
+  result = [self delete];
   /* Note: returning 'nil' breaks in SoObjectRequestHandler */
-  return [NSNumber numberWithBool:YES]; /* delete worked out ... */
+  if (!result)
+    result = [NSNumber numberWithBool: YES]; /* delete worked out ... */
+  
+  return result;
 }
 
 - (BOOL) isFolderish
@@ -1329,8 +1395,10 @@ static BOOL sendACLAdvisories = NO;
       if ([content length])
 	{
 	  [r setStatus: 207];
-	  [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
-	  [r appendContentString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+	  [r setHeader: @"application/xml; charset=\"utf-8\""
+	     forKey: @"content-type"];
+	  [r appendContentString:
+	       @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
 	  [r appendContentString: content];
 	}
       else
@@ -1373,6 +1441,27 @@ static BOOL sendACLAdvisories = NO;
     }
 
   return exception;
+}
+
+- (NSArray *) davSupportedReportSet
+{
+  NSEnumerator *reportKeys;
+  NSMutableArray *reportSet;
+  NSString *currentKey, *currentValue;
+
+  reportSet = [NSMutableArray array];
+
+  reportKeys = [[reportMap allKeys] objectEnumerator];
+  while ((currentKey = [reportKeys nextObject]))
+    if ([self _reportSelector: currentKey])
+      {
+	currentValue = [[currentKey asDavInvocation]
+			 keysWithFormat: @"<%{method} xmlns=\"%{ns}\"/>"];
+	[reportSet addObject: [SoWebDAVValue valueForObject: currentValue
+					     attributes: nil]];
+      }
+
+  return [SOGoDAVSet davSetWithArray: reportSet ofValuesTaggedAs: @"report"];
 }
 
 @end /* SOGoObject */

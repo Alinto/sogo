@@ -24,8 +24,6 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 
-#import <NGObjWeb/SoSelectorInvocation.h>
-
 #import <SaxObjC/XMLNamespaces.h>
 
 #import "NSString+Utilities.h"
@@ -64,41 +62,6 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
-}
-
-- (id) lookupName: (NSString *) lookupName
-        inContext: (id) localContext
-          acquire: (BOOL) acquire
-{
-  id obj;
-  NSArray *davNamespaces;
-  NSDictionary *davInvocation;
-  NSString *objcMethod;
-
-  obj = [super lookupName: lookupName inContext: localContext
-	       acquire: acquire];
-  if (!obj)
-    {
-      davNamespaces = [self davNamespaces];
-      if ([davNamespaces count] > 0)
-	{
-	  davInvocation = [lookupName asDavInvocation];
-	  if (davInvocation
-	      && [davNamespaces
-		   containsObject: [davInvocation objectForKey: @"ns"]])
-	    {
-	      objcMethod = [[davInvocation objectForKey: @"method"]
-			     davMethodToObjC];
-	      obj = [[SoSelectorInvocation alloc]
-		      initWithSelectorNamed:
-			[NSString stringWithFormat: @"%@:", objcMethod]
-		      addContextParameter: YES];
-	      [obj autorelease];
-	    }
-	}
-    }
-
-  return obj;
 }
 
 #warning we should remove this method

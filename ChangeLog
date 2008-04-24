@@ -1,5 +1,22 @@
 2008-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +initialize]): the
+	module is now a framework and we now load the new DAVReportMap
+	description file.
+	([-davOwner]): the principal URL is now based on the DAV
+	application URL.
+	([SOGoObject
+	-lookupName:lookupNameinContext:localContextacquire:acquire]): we
+	now lookup report methods from here (code from SOGoFolder). The
+	method has changed to refer to the new DAVReportMAP description
+	file in order to resolve the lookups on self.
+	([SOGoObject -davSupportedReportSet]): implemented the new
+	"supported-report-set" dav method, based on the new mechanism
+	described above.
+
+	* SoObjects/SOGo/SOGoFolder.m: REPORT lookups are now done
+	directly from SOGoObject.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser
 	-initWithLogin:newLoginroles:newRoles]): we make sure realUID is
 	not an empty string.

@@ -1,0 +1,17 @@
+{ /* -*-java-*- */
+  /* CalDAV */
+  "{urn:ietf:params:xml:ns:caldav}calendar-query" = davCalendarQuery;
+  "{urn:ietf:params:xml:ns:caldav}calendar-multiget" = davCalendarMultiget;
+
+  /* CardDAV */
+  "{urn:ietf:params:xml:ns:carddav}addressbook-query" = davAddressbookQuery;
+  "{urn:ietf:params:xml:ns:carddav}addressbook-multiget"
+    = davAddressbookMultiget;
+  "{urn:ietf:params:xml:ns:carddav}supported-collation-set"
+    = davSupportedCollectionSet;
+
+  /* Inverse DAV */
+  "{urn:inverse:params:xml:ns:inverse-dav}collection-query"
+    = davCollectionQuery;
+  "{urn:inverse:params:xml:ns:inverse-dav}acl-query" = davAclQuery;
+}
