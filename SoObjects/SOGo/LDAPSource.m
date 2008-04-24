@@ -418,20 +418,20 @@ static int sizeLimit;
 	   intoContactEntry: (NSMutableDictionary *) contactEntry
 {
   NSEnumerator *emailFields;
-  NSString *currentFieldName, *value;
+  NSString *currentFieldName;
   NSMutableArray *emails;
+  NSArray *allValues;
 
   emails = [NSMutableArray new];
   emailFields = [mailFields objectEnumerator];
   while ((currentFieldName = [emailFields nextObject]))
     {
-      value = [[ldapEntry attributeWithName: currentFieldName]
-		stringValueAtIndex: 0];
-      if (value)
-	[emails addObject: value];
+      allValues = [[ldapEntry attributeWithName: currentFieldName]
+		    allValues];
+      [emails addObjectsFromArray: allValues];
     }
-  [emails autorelease];
   [contactEntry setObject: emails forKey: @"c_emails"];
+  [emails release];
 }
 
 - (void) _fillConstraints: (NGLdapEntry *) ldapEntry
