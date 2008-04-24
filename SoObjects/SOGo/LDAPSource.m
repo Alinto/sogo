@@ -427,7 +427,7 @@ static int sizeLimit;
   while ((currentFieldName = [emailFields nextObject]))
     {
       allValues = [[ldapEntry attributeWithName: currentFieldName]
-		    allValues];
+		    allStringValues];
       [emails addObjectsFromArray: allValues];
     }
   [contactEntry setObject: emails forKey: @"c_emails"];
