@@ -417,8 +417,7 @@ function tasksListCallback(http) {
 	list.appendChild(listItem);
 	listItem.observe("mousedown", listRowMouseDownHandler);
 	listItem.observe("click", onRowClick);
-	listItem.observe("dblclick",
-			 editDoubleClickedEvent);
+	listItem.observe("dblclick", editDoubleClickedEvent);
 	listItem.setAttribute("id", data[i][0]);
 	$(listItem).addClassName(data[i][5]);
 	$(listItem).addClassName(data[i][6]);
@@ -428,7 +427,7 @@ function tasksListCallback(http) {
 	var input = document.createElement("input");
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
-	// 	input.observe("click", updateTaskStatus, true);
+	input.observe("click", updateTaskStatus, true);
 	input.setAttribute("value", "1");
 	if (data[i][2] == 1)
 	  input.setAttribute("checked", "checked");
