@@ -333,8 +333,7 @@ static BOOL defaultMailDomainIsConfigured = NO;
 	       forKey: @"MailAccess"];
 
   ldapSources = [sources objectEnumerator];
-  currentSource = [ldapSources nextObject];
-  while (currentSource)
+  while ((currentSource = [ldapSources nextObject]))
     {
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];
       if (userEntry)
@@ -355,7 +354,6 @@ static BOOL defaultMailDomainIsConfigured = NO;
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
 	}
-      currentSource = [ldapSources nextObject];
     }
 
   if (!cn)
@@ -505,13 +503,9 @@ static BOOL defaultMailDomainIsConfigured = NO;
 
   contacts = [NSMutableArray array];
   ldapSources = [sources objectEnumerator];
-  currentSource = [ldapSources nextObject];
-  while (currentSource)
-    {
-      [contacts addObjectsFromArray:
-		  [currentSource fetchContactsMatching: filter]];
-      currentSource = [ldapSources nextObject];
-    }
+  while ((currentSource = [ldapSources nextObject]))
+    [contacts addObjectsFromArray:
+		[currentSource fetchContactsMatching: filter]];
 
   return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
 }
