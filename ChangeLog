@@ -1,3 +1,9 @@
+2008-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m ([LDAPSource -fetchContactsMatching:match])
+	([LDAPSource -lookupContactEntryWithUIDorEmail:uid]): take all the
+	mail fields into account when doing a search.
+
 2008-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +initialize]): the

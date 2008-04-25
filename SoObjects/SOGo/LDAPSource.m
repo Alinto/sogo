@@ -31,6 +31,7 @@
 
 #import "LDAPSource.h"
 #import "LDAPUserManager.h"
+#import "NSArray+Utilities.h"
 
 static NSArray *commonSearchFields;
 static int timeLimit;
@@ -268,7 +269,8 @@ static int sizeLimit;
 
   [self _initLDAPConnection];
   entries = [ldapConnection deepSearchAtBaseDN: baseDN
-			    qualifier: [self _qualifierForBindFilter: loginToCheck]
+			    qualifier:
+			      [self _qualifierForBindFilter: loginToCheck]
 			    attributes: [NSArray arrayWithObject: @"dn"]];
   userEntry = [entries nextObject];
   if (userEntry)
@@ -318,8 +320,12 @@ static int sizeLimit;
 /* contact management */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
-  NSString *qs;
+  NSString *qs, *mailFormat, *fieldFormat;
   EOQualifier *qualifier;
+
+  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", filter];
+  mailFormat = [[mailFields stringsWithFormat: fieldFormat]
+		 componentsJoinedByString: @" OR "];
 
   if ([filter length] > 0)
     {
@@ -330,9 +336,9 @@ static int sizeLimit;
                          @"(cn='%@*')"
                        @"OR (sn='%@*')"
                        @"OR (displayName='%@*')"
-                       @"OR (mail='%@*')"
+                       @"OR %@"
                        @"OR (telephoneNumber='*%@*')",
-                       filter, filter, filter, filter, filter];
+                       filter, filter, filter, mailFormat, filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
   else
@@ -343,12 +349,13 @@ static int sizeLimit;
 
 - (EOQualifier *) _qualifierForUIDFilter: (NSString *) uid
 {
-  NSString *qs;
+  NSString *qs, *mailFormat, *fieldFormat;
 
-  qs = [NSString stringWithFormat: (@"(%@='%@') OR (mail='%@')"
-				    @" OR (mozillaSecondEmail='%@')"
-				    @" OR (xmozillasecondemail='%@')"),
-		 UIDField, uid, uid, uid, uid];
+  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", uid];
+  mailFormat = [[mailFields stringsWithFormat: fieldFormat]
+		 componentsJoinedByString: @" OR "];
+  qs = [NSString stringWithFormat: (@"(%@='%@') OR %@"),
+		 UIDField, uid, mailFormat];
 
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
@@ -474,14 +481,12 @@ static int sizeLimit;
 
   contactEntry = [NSMutableDictionary dictionary];
   attributes = [[self _searchAttributes] objectEnumerator];
-  currentAttribute = [attributes nextObject];
-  while (currentAttribute)
+  while ((currentAttribute = [attributes nextObject]))
     {
       value = [[ldapEntry attributeWithName: currentAttribute]
 		stringValueAtIndex: 0];
       if (value)
 	[contactEntry setObject: value forKey: currentAttribute];
-      currentAttribute = [attributes nextObject];
     }
   value = [[ldapEntry attributeWithName: IDField] stringValueAtIndex: 0];
   if (!value)
