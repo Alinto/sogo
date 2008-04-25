@@ -176,8 +176,7 @@ iRANGE(2);
   um = [LDAPUserManager sharedUserManager];
 
   attendees = [[component attendees] objectEnumerator];
-  currentAttendee = [attendees nextObject];
-  while (currentAttendee)
+  while ((currentAttendee = [attendees nextObject]))
     {
       [names appendFormat: @"%@,", [currentAttendee cn]];
       [emails appendFormat: @"%@,", [currentAttendee rfc822Email]];
@@ -186,8 +185,8 @@ iRANGE(2);
 	[uids appendFormat: @"%@,", uid];
       else
 	[uids appendString: @","];
-      [states appendFormat: @"%@,", [[currentAttendee partStat] lowercaseString]];
-      currentAttendee = [attendees nextObject];
+      [states appendFormat: @"%@,",
+	      [[currentAttendee partStat] lowercaseString]];
     }
 
   if ([names length] > 0)
