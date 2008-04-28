@@ -1597,7 +1597,7 @@ function initCalendarSelector() {
   var items = list.childNodesWithTag("li");
   for (var i = 0; i < items.length; i++) {
     var input = items[i].childNodesWithTag("input")[0];
-    input.observe("click", updateCalendarStatus);
+    $(input).observe("click", updateCalendarStatus);
     items[i].observe("mousedown", listRowMouseDownHandler);
     items[i].observe("selectstart", listRowMouseDownHandler);
     items[i].observe("click", onRowClick);
