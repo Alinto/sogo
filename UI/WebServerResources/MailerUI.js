@@ -1170,16 +1170,16 @@ var messageListGhost = function () {
   newDiv.appendChild(document.createTextNode(count + " messages..."));
 
   return newDiv;
+};
+
+var messageListData = function(type) {
+  var rows = this.parentNode.parentNode.getSelectedRowsId();
+  var msgIds = new Array();
+  for (var i = 0; i < rows.length; i++)
+    msgIds.push(rows[i].substr(4));
+
+  return msgIds;
 }
-
-  var messageListData = function(type) {
-    var rows = this.parentNode.parentNode.getSelectedRowsId();
-    var msgIds = new Array();
-    for (var i = 0; i < rows.length; i++)
-      msgIds.push(rows[i].substr(4));
-
-    return msgIds;
-  }
 
   /* a model for a futur refactoring of the sortable table headers mechanism */
     function configureMessageListEvents(table) {
@@ -1200,28 +1200,28 @@ function configureMessageListBodyEvents(table) {
     if ($(cell).hasClassName("tbtv_navcell")) {
       var anchors = $(cell).childNodesWithTag("a");
       for (var i = 0; i < anchors.length; i++)
-	anchors[i].observe("click",
-			   openMailboxAtIndex.bindAsEventListener(anchors[i]));
+	$(anchors[i]).observe("click", openMailboxAtIndex);
     }
 
     rows = table.tBodies[0].rows;
     for (var i = 0; i < rows.length; i++) {
-      rows[i].observe("mousedown", onRowClick);
-      rows[i].observe("selectstart", listRowMouseDownHandler);
-      rows[i].observe("contextmenu", onMessageContextMenu.bindAsEventListener(rows[i]));
+      var row = $(rows[i]);
+      row.observe("mousedown", onRowClick);
+      row.observe("selectstart", listRowMouseDownHandler);
+      row.observe("contextmenu", onMessageContextMenu);
       
-      rows[i].dndTypes = function() { return new Array("mailRow"); };
-      rows[i].dndGhost = messageListGhost;
-      rows[i].dndDataForType = messageListData;
-      //       document.DNDManager.registerSource(rows[i]);
+      row.dndTypes = function() { return new Array("mailRow"); };
+      row.dndGhost = messageListGhost;
+      row.dndDataForType = messageListData;
+      //   document.DNDManager.registerSource(row);
 
-      for (var j = 0; j < rows[i].cells.length; j++) {
-	var cell = rows[i].cells[j];
+      for (var j = 0; j < row.cells.length; j++) {
+	var cell = $(row.cells[j]);
 	cell.observe("mousedown", listRowMouseDownHandler);
 	if (j == 2 || j == 3 || j == 5)
 	  cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
 	else if (j == 4) {
-	  var img = cell.childNodesWithTag("img")[0];
+	  var img = $(cell.childNodesWithTag("img")[0]);
 	  img.observe("click", mailListMarkMessage.bindAsEventListener(img));
 	}
       }

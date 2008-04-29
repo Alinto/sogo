@@ -261,11 +261,11 @@ function onTextFocus() {
 function onTextFirstFocus() {
   var content = this.getValue();
   if (content.lastIndexOf("--") == 0) {
-    this.insertBefore(document.createTextNode("\r\n"),
+    this.insertBefore(document.createTextNode("\r"),
 		      this.lastChild);
   }
   if (signatureLength > 0) {
-    var length = this.getValue().length - signatureLength - 1;
+    var length = this.getValue().length - signatureLength - 2;
     this.setCaretTo(length);
   }
   Event.stopObserving(this, "focus", onTextFirstFocus);

@@ -304,6 +304,7 @@ function onAjaxRequestStateChange(http) {
     log("AJAX Request, Caught Exception: " + e.name);
     log(e.message);
     log(backtrace());
+    log("request url was '" + http.url + "'");
   }
 }
 
@@ -1387,6 +1388,16 @@ function onLoadHandler(event) {
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
   $(document.body).observe("contextmenu", onBodyClickContextMenu);
+ /* $(document.body).observe("click", testclic); */
+}
+
+function testclic(event) {
+log("test: " + event.target);
+if (event.target) {
+log("tag: " + event.target.tagName);
+log("id: " + event.target.getAttribute("id"));
+log("class: " + event.target.getAttribute("class"));
+}
 }
 
 function onBodyClickContextMenu(event) {

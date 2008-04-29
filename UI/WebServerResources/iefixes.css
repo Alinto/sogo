@@ -1,4 +1,11 @@
 /* SOGoRootPage */
+HTML
+{ overflow: hidden; }
+
+FORM
+{ padding: 0px;
+  margin: 0px; }
+
 DIV#loginScreen
 { border: 2px solid #fff;
   border-right: 2px solid #666;
