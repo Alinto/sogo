@@ -39,6 +39,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSProcessInfo+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <WEExtensions/WEResourceManager.h>
 
@@ -513,6 +514,52 @@ static BOOL debugObjectAllocation = NO;
           __PRETTY_FUNCTION__];
 
   return locale;
+}
+
+- (NSURL *) _urlPreferringParticle: (NSString *) expected
+		       overThisOne: (NSString *) possible
+{
+  NSURL *serverURL, *url;
+  NSMutableArray *path;
+  NSString *baseURL, *urlMethod;
+  WOContext *context;
+
+  context = [self context];
+  serverURL = [context serverURL];
+  baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
+  path = [NSMutableArray arrayWithArray: [baseURL componentsSeparatedByString:
+						    @"/"]];
+  if ([baseURL hasPrefix: @"http"])
+    {
+      [path removeObjectAtIndex: 1];
+      [path removeObjectAtIndex: 0];
+      [path replaceObjectAtIndex: 0 withObject: @""];
+    }
+  urlMethod = [path objectAtIndex: 2];
+  if (![urlMethod isEqualToString: expected])
+    {
+      if ([urlMethod isEqualToString: possible])
+	[path replaceObjectAtIndex: 2 withObject: expected];
+      else
+	[path insertObject: expected atIndex: 2];
+    }
+
+  url = [[NSURL alloc] initWithScheme: [serverURL scheme]
+		       host: [serverURL host]
+		       path: [path componentsJoinedByString: @"/"]];
+  [url autorelease];
+
+  return url;
+}
+
+- (NSURL *) davURL
+{
+  return [self _urlPreferringParticle: @"dav" overThisOne: @"so"];
+}
+
+- (NSURL *) soURL
+{
+  return [self _urlPreferringParticle: @"so" overThisOne: @"dav"];
 }
 
 /* name (used by the WEResourceManager) */

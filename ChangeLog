@@ -1,5 +1,8 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m ([SOGo -davURL], [SOGo -soURL]): copied methods from
+	SOGoObject.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-davDisplayName]): new overriden method to provide a display name
 	to the users principal.
