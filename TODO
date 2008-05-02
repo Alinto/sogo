@@ -5,7 +5,9 @@ Therefore it would be nice to refactor those things a little bit and maybe put
 some code from SOGo up into SOPE.
  -- wsourdeau@inverse.ca, Tue, 22 Apr 2008 15:21:32 -0400
 
-ACL: the "default user" concept in the SOGo ACL paradigm should probably match
+ACL:
+- the "default user" concept in the SOGo ACL paradigm should probably match
 the "authenticated" role in SOGo/SOPE. Also, we should reconsider the handling
 of the DAV:authenticated principal wrt the DAV ACL interface.
+- we should add support for DAV privilege descriptions
  -- wsourdeau@inverse.ca, Tue, 29 Apr 2008 12:05:17 -0400
