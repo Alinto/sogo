@@ -160,7 +160,7 @@
 	  pageName    = "UIxMailUserRightsEditor";
 	};
 	saveUserRights = {
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  pageName    = "UIxMailUserRightsEditor";
 	  actionName  = "saveUserRights";
 	};

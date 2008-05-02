@@ -10,6 +10,9 @@
   "{urn:ietf:params:xml:ns:carddav}supported-collation-set"
     = davSupportedCollectionSet;
 
+  /* WebDAV ACL */
+  "{DAV:}principal-match" = davPrincipalMatch;
+
   /* Inverse DAV */
   "{urn:inverse:params:xml:ns:inverse-dav}collection-query"
     = davCollectionQuery;

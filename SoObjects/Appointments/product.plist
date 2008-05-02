@@ -30,9 +30,9 @@
 	"RespondToConfidentialRecords" = ( "Owner", "ConfidentialModifier", "ConfidentialResponder" );
       };
     };
-    SOGoGroupAppointmentFolder = {
-      superclass = "SOGoAppointmentFolder";
-    };
+//     SOGoGroupAppointmentFolder = {
+//       superclass = "SOGoAppointmentFolder";
+//     };
     SOGoCalendarComponent = {
       superclass = "SOGoContentObject";
       defaultRoles = {

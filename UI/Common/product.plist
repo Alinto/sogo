@@ -31,12 +31,12 @@
     SOGoObject = {
       methods = {
 	addUserInAcls = { 
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  actionClass = "UIxObjectActions";
 	  actionName  = "addUserInAcls";
 	};
 	removeUserFromAcls = { 
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  actionClass = "UIxObjectActions";
 	  actionName  = "removeUserFromAcls";
 	};
@@ -45,7 +45,7 @@
 	  pageName    = "UIxAclEditor";
 	};
 	saveAcls = {
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  pageName    = "UIxAclEditor";
 	  actionName  = "saveAcls";
 	};
@@ -54,7 +54,7 @@
 	  pageName    = "UIxUserRightsEditor";
 	};
 	saveUserRights = {
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  pageName    = "UIxUserRightsEditor";
 	  actionName = "saveUserRights";
 	};
@@ -63,7 +63,7 @@
     SOGoParentFolder = {
       methods = {
 	createFolder = {
-	  protectedBy = "View";
+	  protectedBy = "SoPerm_AddFolders";
 	  actionClass = "UIxParentFolderActions";
 	  actionName = "createFolder";
 	};
@@ -97,12 +97,12 @@
 	  actionName  = "deactivateFolder";
 	};
 	deleteFolder = {
-	  protectedBy = "SaveAcls"; /* a hack to force "owner" */
+	  protectedBy = "Delete Objects";
 	  actionClass = "UIxFolderActions";
 	  actionName  = "deleteFolder";
 	};
 	renameFolder = {
-	  protectedBy = "SaveAcls";
+	  protectedBy = "Change Permissions";
 	  actionClass = "UIxFolderActions";
 	  actionName  = "renameFolder";
 	};

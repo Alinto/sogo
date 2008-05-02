@@ -43,7 +43,7 @@
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer" );
         "ReadAcls" = ( "Owner", "MailAdministrator" );
-        "SaveAcls" = ( "Owner", "MailAdministrator" );
+        "Change Permissions" = ( "Owner", "MailAdministrator" );
       };
     };
 /*    SOGoSharedInboxFolder = {

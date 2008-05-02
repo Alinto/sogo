@@ -1,4 +1,4 @@
-{ /* -*-javascript-*- */
+{ /* -*-java-*- */
   requires = ( MAIN, MainUI, CommonUI, Appointments, Contacts, ContactsUI );
 
   publicResources = (
@@ -99,7 +99,7 @@
 	      pageName    = "UIxCalUserRightsEditor";
 	   };
 	   saveUserRights = {
-	      protectedBy = "SaveAcls";
+	      protectedBy = "Change Permissions";
 	      pageName    = "UIxCalUserRightsEditor";
 	      actionName  = "saveUserRights";
 	   };
@@ -139,7 +139,7 @@
 	      pageName    = "UIxCalUserRightsEditor";
 	   };
 	   saveUserRights = {
-	      protectedBy = "SaveAcls";
+	      protectedBy = "Change Permissions";
 	      pageName    = "UIxCalUserRightsEditor";
 	      actionName  = "saveUserRights";
 	   };

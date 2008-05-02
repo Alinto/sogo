@@ -193,7 +193,7 @@
 
   mgr = [SoSecurityManager sharedSecurityManager];
 
-  return (![mgr validatePermission: SOGoPerm_SaveAcls
+  return (![mgr validatePermission: SoPerm_ChangePermissions
 		onObject: [self clientObject]
 		inContext: context]);
 }

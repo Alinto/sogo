@@ -17,6 +17,9 @@ TOOL_NAME = \
 
 SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
+#	SOGoCustomGroupFolder.h		\
+# 	SOGoGroupsFolder.h		\
+# 	SOGoGroupFolder.h		
 SOGo_HEADER_FILES = \
 	SOGoCache.h			\
 	SOGoObject.h			\
@@ -24,28 +27,30 @@ SOGo_HEADER_FILES = \
 	SOGoFolder.h			\
 	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
-	SOGoGroupsFolder.h		\
-	SOGoGroupFolder.h		\
-	SOGoCustomGroupFolder.h		\
 	\
 	LDAPUserManager.h		\
 	LDAPSource.h			\
 	SOGoDateFormatter.h		\
 	SOGoPermissions.h		\
-	SOGoDAVRendererTypes.h		\
 	iCalEntityObject+Utilities.h	\
+	NSArray+DAV.h			\
 	NSArray+Utilities.h		\
+	NSCalendarDate+SOGo.h		\
+	NSDictionary+DAV.h		\
 	NSDictionary+URL.h		\
 	NSDictionary+Utilities.h	\
-	NSObject+Utilities.h		\
-	NSString+Utilities.h		\
-	NSNumber+Utilities.h		\
 	NSNull+Utilities.h		\
-	NSDictionary+URL.h		\
-	NSCalendarDate+SOGo.h		\
+	NSNumber+Utilities.h		\
+	NSObject+DAV.h			\
+	NSObject+Utilities.h		\
+	NSString+DAV.h			\
+	NSString+Utilities.h		\
+	NSURL+DAV.h			\
 	\
 	SOGoDAVAuthenticator.h		\
 	SOGoWebAuthenticator.h		\
+	SOGoWebDAVAclManager.h		\
+	SOGoWebDAVValue.h		\
 	SOGoMailer.h			\
 	SOGoUser.h			\
 	\
@@ -54,6 +59,9 @@ SOGo_HEADER_FILES = \
 	\
 	WORequest+SOGo.h
 
+#	SOGoCustomGroupFolder.m		\
+# 	SOGoGroupsFolder.m		\
+# 	SOGoGroupFolder.m		
 SOGo_OBJC_FILES = \
 	SOGoCache.m			\
 	SOGoObject.m			\
@@ -62,28 +70,31 @@ SOGo_OBJC_FILES = \
 	SOGoGCSFolder.m			\
 	SOGoParentFolder.m		\
 	SOGoUserFolder.m		\
-	SOGoGroupsFolder.m		\
-	SOGoGroupFolder.m		\
-	SOGoCustomGroupFolder.m		\
 	\
 	SOGoDateFormatter.m		\
 	SOGoPermissions.m		\
 	LDAPUserManager.m		\
 	LDAPSource.m			\
-	SOGoDAVRendererTypes.m		\
 	AgenorUserDefaults.m		\
 	iCalEntityObject+Utilities.m	\
+	NSArray+DAV.m			\
 	NSArray+Utilities.m		\
+	NSCalendarDate+SOGo.m		\
+	NSDictionary+DAV.m		\
 	NSDictionary+URL.m		\
 	NSDictionary+Utilities.m	\
-	NSObject+Utilities.m		\
-	NSString+Utilities.m		\
-	NSNumber+Utilities.m		\
 	NSNull+Utilities.m		\
-	NSCalendarDate+SOGo.m		\
+	NSNumber+Utilities.m		\
+	NSObject+DAV.m			\
+	NSObject+Utilities.m		\
+	NSString+DAV.m  		\
+	NSString+Utilities.m		\
+	NSURL+DAV.m	  		\
 	\
 	SOGoDAVAuthenticator.m		\
 	SOGoWebAuthenticator.m		\
+	SOGoWebDAVAclManager.m		\
+	SOGoWebDAVValue.m		\
 	SOGoMailer.m			\
 	SOGoUser.m			\
 	\

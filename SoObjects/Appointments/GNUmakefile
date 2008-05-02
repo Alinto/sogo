@@ -6,6 +6,7 @@ WOBUNDLE_NAME = Appointments
 
 Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 
+#	SOGoGroupAppointmentFolder.m	
 Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
@@ -19,8 +20,8 @@ Appointments_OBJC_FILES = \
 	SOGoTaskObject.m		\
 	SOGoAppointmentFolder.m		\
 	SOGoAppointmentFolders.m	\
-	SOGoGroupAppointmentFolder.m	\
 	SOGoFreeBusyObject.m		\
+	SOGoUserFolder+Appointments.m	\
 	\
 	SOGoAptMailNotification.m	\
 	SOGoAptMailInvitation.m		\

@@ -20,13 +20,13 @@ ifeq ($(GNUSTEP_BUILD_DIR),)
 ADDITIONAL_LIB_DIRS += 				\
         -L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)	\
 	-L../SOGoUI/$(GNUSTEP_OBJ_DIR)		\
-	-L../../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)
+	-L../../SoObjects/SOGo/SOGo.framework/
 
 else
 RELBUILD_DIR_libNGCards = \
 	$(GNUSTEP_BUILD_DIR)/../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR_NAME)
 RELBUILD_DIR_libSOGo = \
-	$(GNUSTEP_BUILD_DIR)/../../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR_NAME)
+	$(GNUSTEP_BUILD_DIR)/../../SoObjects/SOGo/SOGo.framework/
 RELBUILD_DIR_libSOGoUI = \
 	$(GNUSTEP_BUILD_DIR)/../SOGoUI/$(GNUSTEP_OBJ_DIR_NAME)
 RELBUILD_DIR_libOGoContentStore = \

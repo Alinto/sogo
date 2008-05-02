@@ -37,7 +37,7 @@
               pageName    = "UIxAclEditor";
            };
            saveAcls = {
-              protectedBy = "SaveAcls";
+              protectedBy = "Change Permissions";
               pageName    = "UIxAclEditor";
               actionName  = "saveAcls";
            };
@@ -92,7 +92,7 @@
 	      pageName    = "UIxContactsUserRightsEditor";
 	   };
 	   saveUserRights = {
-	      protectedBy = "SaveAcls";
+	      protectedBy = "Change Permissions";
 	      pageName    = "UIxContactsUserRightsEditor";
 	      actionName  = "saveUserRights";
 	   };
