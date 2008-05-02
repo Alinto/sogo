@@ -1,5 +1,11 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+webdavAclManager]): new overriden method.
+
+	* SoObjects/SOGo/SOGoParentFolder.m ([SOGoParentFolder
+	+webdavAclManager]): new overriden method.
+
 	* UI/MailPartViewers/UIxMailPartTextViewer.m (convertChars): do
 	not cast pointers to unsigned int to avoid problems with big
 	endian archs.

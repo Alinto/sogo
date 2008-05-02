@@ -32,9 +32,11 @@
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 
+#import "NSObject+DAV.h"
 #import "SOGoGCSFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoWebDAVAclManager.h"
 
 #import "SOGoParentFolder.h"
 
@@ -46,6 +48,48 @@ static SoSecurityManager *sm = nil;
 {
   if (!sm)
     sm = [SoSecurityManager sharedSecurityManager];
+}
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  SOGoWebDAVAclManager *webdavAclManager = nil;
+
+  if (!webdavAclManager)
+    {
+      webdavAclManager = [SOGoWebDAVAclManager new];
+      [webdavAclManager registerDAVPermission: davElement (@"read", @"DAV:")
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
+			abstract: NO
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"read", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"write", @"DAV:")
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"bind", @"DAV:")
+			abstract: NO
+			withEquivalent: SoPerm_AddFolders
+			asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"unbind", @"DAV:")
+			abstract: NO
+			withEquivalent: SoPerm_DeleteObjects
+			asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-properties", @"DAV:")
+	abstract: YES
+	withEquivalent: nil
+	asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-content", @"DAV:")
+	abstract: YES
+	withEquivalent: nil
+	asChildOf: davElement (@"write", @"DAV:")];
+    }
+
+  return webdavAclManager;
 }
 
 - (id) init

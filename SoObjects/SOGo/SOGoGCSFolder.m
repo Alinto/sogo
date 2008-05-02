@@ -21,9 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <NGObjWeb/SoWebDAVValue.h>
-#import "SOGoDAVRendererTypes.h"
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
@@ -54,12 +51,14 @@
 #import "NSDictionary+Utilities.h"
 
 #import "NSArray+Utilities.h"
+#import "NSObject+DAV.h"
 #import "NSString+Utilities.h"
 
 #import "SOGoContentObject.h"
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
 
 #import "SOGoGCSFolder.h"
@@ -68,6 +67,62 @@ static NSString *defaultUserID = @"<default>";
 static BOOL sendFolderAdvisories = NO;
 
 @implementation SOGoGCSFolder
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  SOGoWebDAVAclManager *webdavAclManager = nil;
+
+  if (!webdavAclManager)
+    {
+      webdavAclManager = [SOGoWebDAVAclManager new];
+      [webdavAclManager registerDAVPermission: davElement (@"read", @"DAV:")
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"read", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"write", @"DAV:")
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"bind", @"DAV:")
+			abstract: NO
+			withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+			asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"unbind", @"DAV:")
+			abstract: NO
+			withEquivalent: SoPerm_DeleteObjects
+			asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-properties", @"DAV:")
+	abstract: YES
+	withEquivalent: SoPerm_ChangePermissions /* hackish */
+	asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-content", @"DAV:")
+	abstract: YES
+	withEquivalent: nil
+	asChildOf: davElement (@"write", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"read-acl", @"DAV:")
+	abstract: YES
+	withEquivalent: SOGoPerm_ReadAcls
+	asChildOf: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-acl", @"DAV:")
+	abstract: YES
+	withEquivalent: SoPerm_ChangePermissions
+	asChildOf: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")];
+    }
+
+  return webdavAclManager;
+}
 
 + (void) initialize
 {
@@ -273,8 +328,7 @@ static BOOL sendFolderAdvisories = NO;
 	}
       else
 	error = [NSException exceptionWithHTTPStatus: 400
-			     reason: [NSString stringWithFormat:
-						 @"Empty string"]];
+			     reason: @"Empty string"];
     }
   else
     error = [NSException exceptionWithHTTPStatus: 403
