@@ -39,7 +39,7 @@
 @implementation SOGoAptMailGermanDeletion
 @end
 
-@interface SOGoAptMailItalinDeletion : SOGoAptMailNotification
+@interface SOGoAptMailItalianDeletion : SOGoAptMailNotification
 @end
 
 @implementation SOGoAptMailItalianDeletion
