@@ -49,13 +49,15 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSObject+DAV.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoCache.h>
-#import <SOGo/SOGoCustomGroupFolder.h>
+// #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
-#import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoWebDAVAclManager.h>
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
@@ -108,6 +110,139 @@ static NSNumber   *sharedYes = nil;
 //                 asDefaultForPermission: SoPerm_View];
 
   sharedYes = [[NSNumber numberWithBool: YES] retain];
+}
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  SOGoWebDAVAclManager *webdavAclManager = nil;
+  NSString *nsCD, *nsD, *nsI;
+
+  if (!webdavAclManager)
+    {
+      nsD = @"DAV:";
+      nsCD = @"urn:ietf:params:xml:ns:caldav";
+      nsI = @"urn:inverse:params:xml:ns:inverse-dav";
+
+      webdavAclManager = [SOGoWebDAVAclManager new];
+      [webdavAclManager registerDAVPermission: davElement (@"read", nsD)
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", nsD)
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"read", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-free-busy", nsD)
+			abstract: NO
+			withEquivalent: SoPerm_AccessContentsInformation
+			asChildOf: davElement (@"read", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"write", nsD)
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"bind", nsD)
+			abstract: NO
+			withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+			asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"schedule",
+							   nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"bind", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"schedule-post",
+							   nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-post-vevent", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-post", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-post-vtodo", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-post", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-post-vjournal", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-post", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-post-vfreebusy", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-post", nsCD)];
+      [webdavAclManager registerDAVPermission: davElement (@"schedule-deliver",
+							   nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-deliver-vevent", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-deliver", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-deliver-vtodo", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-deliver", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-deliver-vjournal", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-deliver", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-deliver-vfreebusy", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-deliver", nsCD)];
+      [webdavAclManager registerDAVPermission: davElement (@"schedule-respond",
+							   nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-respond-vevent", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-respond", nsCD)];
+      [webdavAclManager registerDAVPermission:
+			  davElement (@"schedule-respond-vtodo", nsCD)
+			abstract: NO
+			withEquivalent: nil
+			asChildOf: davElement (@"schedule-respond", nsCD)];
+      [webdavAclManager registerDAVPermission: davElement (@"unbind", nsD)
+			abstract: NO
+			withEquivalent: SoPerm_DeleteObjects
+			asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-properties", nsD)
+	abstract: YES
+	withEquivalent: SoPerm_ChangePermissions /* hackish */
+	asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-content", nsD)
+	abstract: YES
+	withEquivalent: nil
+	asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"admin", nsI)
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-acl", nsD)
+			abstract: YES
+			withEquivalent: SOGoPerm_ReadAcls
+			asChildOf: davElement (@"admin", nsI)];
+      [webdavAclManager registerDAVPermission: davElement (@"write-acl", nsD)
+			abstract: YES
+			withEquivalent: SoPerm_ChangePermissions
+			asChildOf: davElement (@"admin", nsI)];
+    }
+
+  return webdavAclManager;
 }
 
 - (id) initWithName: (NSString *) name
@@ -591,16 +726,6 @@ static NSNumber   *sharedYes = nil;
 	[self appendMissingObjectRef: currentURL
 	      toComplexResponse: response];
     }
-}
-
-- (NSArray *) davNamespaces
-{
-  NSMutableArray *ns;
-
-  ns = [NSMutableArray arrayWithArray: [super davNamespaces]];
-  [ns addObjectUniquely: @"urn:ietf:params:xml:ns:caldav"];
-
-  return ns;
 }
 
 - (NSString *) davCalendarColor
@@ -1649,37 +1774,37 @@ static NSNumber   *sharedYes = nil;
   return [self lookupCalendarFoldersForUIDs:uids inContext:_ctx];
 }
 
-- (id) lookupGroupFolderForUIDs: (NSArray *) _uids
-                      inContext: (id)_ctx
-{
-  SOGoCustomGroupFolder *folder;
+// - (id) lookupGroupFolderForUIDs: (NSArray *) _uids
+//                       inContext: (id)_ctx
+// {
+//   SOGoCustomGroupFolder *folder;
   
-  if (_uids == nil)
-    return nil;
+//   if (_uids == nil)
+//     return nil;
 
-  folder = [[SOGoCustomGroupFolder alloc] initWithUIDs:_uids inContainer:self];
-  return [folder autorelease];
-}
+//   folder = [[SOGoCustomGroupFolder alloc] initWithUIDs:_uids inContainer:self];
+//   return [folder autorelease];
+// }
 
-- (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
-                              inContext: (id) _ctx
-{
-  SOGoCustomGroupFolder *folder;
+// - (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
+//                               inContext: (id) _ctx
+// {
+//   SOGoCustomGroupFolder *folder;
   
-  if ((folder = [self lookupGroupFolderForUIDs:_uids inContext:_ctx]) == nil)
-    return nil;
+//   if ((folder = [self lookupGroupFolderForUIDs:_uids inContext:_ctx]) == nil)
+//     return nil;
   
-  folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
-  if (![folder isNotNull])
-    return nil;
-  if ([folder isKindOfClass:[NSException class]]) {
-    [self debugWithFormat:@"Note: could not lookup 'Calendar' in folder: %@",
-	    folder];
-    return nil;
-  }
+//   folder = [folder lookupName:@"Calendar" inContext:_ctx acquire:NO];
+//   if (![folder isNotNull])
+//     return nil;
+//   if ([folder isKindOfClass:[NSException class]]) {
+//     [self debugWithFormat:@"Note: could not lookup 'Calendar' in folder: %@",
+// 	    folder];
+//     return nil;
+//   }
   
-  return folder;
-}
+//   return folder;
+// }
 
 /* bulk fetches */
 

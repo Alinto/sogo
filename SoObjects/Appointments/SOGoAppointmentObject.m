@@ -33,9 +33,12 @@
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/NSObject+DAV.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoWebDAVAclManager.h>
+#import <SoObjects/SOGo/SOGoWebDAVValue.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
 
 #import "NSArray+Appointments.h"
@@ -47,6 +50,76 @@
 #import "SOGoAppointmentObject.h"
 
 @implementation SOGoAppointmentObject
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  SOGoWebDAVAclManager *webdavAclManager = nil;
+  NSString *nsD, *nsI;
+
+  if (!webdavAclManager)
+    {
+      nsD = @"DAV:";
+      nsI = @"urn:inverse:params:xml:ns:inverse-dav";
+
+// extern NSString *SOGoCalendarPerm_ViewAllComponent;
+// extern NSString *SOGoCalendarPerm_ViewDAndT;
+// extern NSString *SOGoCalendarPerm_ModifyComponent;
+// extern NSString *SOGoCalendarPerm_RespondToComponent;
+
+      webdavAclManager = [SOGoWebDAVAclManager new];
+      [webdavAclManager registerDAVPermission: davElement (@"read", nsD)
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", nsD)
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"read", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"view-whole-component", nsI)
+			abstract: NO
+			withEquivalent: SOGoCalendarPerm_ViewAllComponent
+			asChildOf: davElement (@"read", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"view-date-and-time", nsI)
+			abstract: NO
+			withEquivalent: SOGoCalendarPerm_ViewDAndT
+			asChildOf: davElement (@"view-whole-component", nsI)];
+      [webdavAclManager registerDAVPermission: davElement (@"write", nsD)
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-properties", nsD)
+	abstract: YES
+	withEquivalent: SoPerm_ChangePermissions /* hackish */
+	asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-content", nsD)
+	abstract: YES
+	withEquivalent: SOGoCalendarPerm_ModifyComponent
+	asChildOf: davElement (@"write", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"respond-to-component", nsI)
+	abstract: YES
+	withEquivalent: SOGoCalendarPerm_RespondToComponent
+	asChildOf: davElement (@"write-content", nsD)];
+      [webdavAclManager registerDAVPermission: davElement (@"admin", nsI)
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"all", nsD)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"read-acl", nsD)
+	abstract: YES
+	withEquivalent: SOGoPerm_ReadAcls
+	asChildOf: davElement (@"admin", nsI)];
+      [webdavAclManager
+	registerDAVPermission: davElement (@"write-acl", nsD)
+	abstract: YES
+	withEquivalent: nil
+	asChildOf: davElement (@"admin", nsI)];
+    }
+
+  return webdavAclManager;
+}
 
 - (NSString *) componentTag
 {

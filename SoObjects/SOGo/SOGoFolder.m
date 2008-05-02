@@ -26,12 +26,41 @@
 
 #import <SaxObjC/XMLNamespaces.h>
 
+#import "NSObject+DAV.h"
 #import "NSString+Utilities.h"
 
 #import "SOGoPermissions.h"
+#import "SOGoWebDAVAclManager.h"
+
 #import "SOGoFolder.h"
 
+@interface SOGoObject (SOGoDAVHelpers)
+
+- (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs;
+
+@end
+
 @implementation SOGoFolder
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  SOGoWebDAVAclManager *webdavAclManager = nil;
+
+  if (!webdavAclManager)
+    {
+      webdavAclManager = [SOGoWebDAVAclManager new];
+      [webdavAclManager registerDAVPermission: davElement (@"read", @"DAV:")
+			abstract: YES
+			withEquivalent: SoPerm_WebDAVAccess
+			asChildOf: davElement (@"all", @"DAV:")];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
+			abstract: YES
+			withEquivalent: nil
+			asChildOf: davElement (@"read", @"DAV:")];
+    }
+
+  return webdavAclManager;
+}
 
 - (id) init
 {
@@ -73,6 +102,11 @@
 - (NSArray *) fetchContentObjectNames
 {
   return [NSArray array];
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  return nil;
 }
 
 - (BOOL) isValidContentName: (NSString *) name
@@ -192,6 +226,24 @@
   return rType;
 }
 
+/* web dav acl helper */
+- (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs
+{
+  NSEnumerator *children;
+  NSString *currentKey;
+
+  [super _fillArrayWithPrincipalsOwnedBySelf: hrefs];
+  children = [[self toOneRelationshipKeys] objectEnumerator];
+  while ((currentKey = [children nextObject]))
+    [[self lookupName: currentKey inContext: context
+	   acquire: NO] _fillArrayWithPrincipalsOwnedBySelf: hrefs];
+
+  children = [[self toManyRelationshipKeys] objectEnumerator];
+  while ((currentKey = [children nextObject]))
+    [[self lookupName: currentKey inContext: context
+	   acquire: NO] _fillArrayWithPrincipalsOwnedBySelf: hrefs];
+}
+
 /* folder type */
 
 - (BOOL) isEqual: (id) otherFolder
@@ -211,6 +263,11 @@
 
 /* acls */
 
+- (NSString *) defaultUserID
+{
+  return nil;
+}
+
 - (NSArray *) subscriptionRoles
 {
   return [NSArray arrayWithObjects: SoRole_Owner, SOGoRole_ObjectViewer,
@@ -219,6 +276,11 @@
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
+{
+  return nil;
+}
+
+- (NSArray *) aclUsers
 {
   return nil;
 }

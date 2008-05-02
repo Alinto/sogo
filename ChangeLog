@@ -1,5 +1,51 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m ([-davNamespaces]):
+	removed method.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m ([-davNamespaces]):
+	removed method.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	+webdavAclManager]): new overriden method.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder +webdavAclManager]):
+	new overriden method.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject +webdavAclManager]): new overriden method.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder +webdavAclManager]): new overriden method.
+	([-davNamespaces]): removed method.
+	([-lookupGroupFolderForUIDs:_uidsinContext:])
+	([-lookupGroupCalendarFolderForUIDs:_uidsinContext:_ctx]):
+	disabled methods.
+
+	* SoObjects/SOGo/SOGoWebDAVAclManager.[hm]: new class module that
+	implements the rendering of DAV acl trees as well as their mapping
+	from SOGo permissions.
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject +initialize]): libSOGo
+	is now a framework, so we can simplify the loading of the DAVReportMap.
+	([-lookupGroupsFolder]): disabled method.
+	([SOGoObject -davOwner], [SOGoObject -davAclRestrictions])
+	([SOGoObject -davPrincipalCollectionSet])
+	([SOGoObject -davCurrentUserPrivilegeSet])
+	([SOGoObject -davSupportedPrivilegeSet], [SOGoObject -davAcl])
+	([SOGoObject -davPrincipalMatch:localContext])
+	([SOGoObject -davSupportedReportSet]): (re-)implemented dav
+	methods with our new dav rendering paradigm.
+	([-davNamespaces]): removed method.
+	([SOGoObject -domNode:nodegetChildNodesByType:type]): new helper
+	method to help subclass with parsing dav requests, especially wrt
+	REPORT ones.
+	([SOGoObject +webdavAclManager]): new overridable method that
+	returns a properly configured DAV acl manager (see above).
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.[hm]: new
+	category module that implements DAV methods required by CalDAV.
+
 	* UI/SOGoUI/UIxComponent.m ([UIxComponent -applicationPath]):
 	disabled all mentions of "SOGoGroupFolder*".
 

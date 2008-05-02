@@ -24,6 +24,14 @@
 
 #import <Foundation/NSObject.h>
 
+#import <DOM/DOMProtocols.h>
+
+#if LIB_FOUNDATION_LIBRARY
+#error SOGo will not work properly with libFoundation.
+#error Please use gnustep-base instead.
+#endif
+
+
 /*
   SOGoObject
   
@@ -48,8 +56,8 @@
 @class GCSFolder;
 
 @class SOGoUserFolder;
-@class SOGoGroupsFolder;
-@class SOGoDAVSet;
+@class SOGoWebDAVValue;
+@class SOGoWebDAVAclManager;
 
 #define $(class) NSClassFromString(class)
 
@@ -58,6 +66,7 @@
   WOContext *context;
   NSString *nameInContainer;
   NSString *owner;
+  SOGoWebDAVAclManager *webdavAclManager;
   id container;
 }
 
@@ -90,7 +99,6 @@
 /* looking up shared objects */
 
 - (SOGoUserFolder *) lookupUserFolder;
-- (SOGoGroupsFolder *) lookupGroupsFolder;
 
 - (void) sleep;
 
@@ -102,8 +110,6 @@
 
 - (NSException *)delete;
 - (id)GETAction:(id)_ctx;
-
-- (SOGoDAVSet *) davCurrentUserPrivilegeSet;
 
 /* etag support */
 
@@ -129,13 +135,28 @@
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
 
-/* dav */
-- (NSArray *) davNamespaces;
+/* dav acls */
+- (SOGoWebDAVValue *) davCurrentUserPrivilegeSet;
+
+/* inverse dav extensions for acls */
 - (NSString *) davRecordForUser: (NSString *) user;
 
 /* description */
 
 - (void) appendAttributesToDescription:(NSMutableString *)_ms;
+
+@end
+
+@interface SOGoObject (SOGo)
+
+- (NSString *) contentAsString;
+
+@end
+
+@interface SOGoObject (SOGoDomHelpers)
+
+- (NSArray *) domNode: (id <DOMNode>) node
+  getChildNodesByType: (DOMNodeType) type;
 
 @end
 

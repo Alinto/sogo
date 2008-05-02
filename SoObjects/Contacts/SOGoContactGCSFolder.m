@@ -384,16 +384,6 @@
   return classes;
 }
 
-- (NSArray *) davNamespaces
-{
-  NSMutableArray *ns;
-
-  ns = [NSMutableArray arrayWithArray: [super davNamespaces]];
-  [ns addObjectUniquely: @"urn:ietf:params:xml:ns:carddav"];
-
-  return ns;
-}
-
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";

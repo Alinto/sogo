@@ -130,11 +130,6 @@
   ASSIGN (ldapSource, newLDAPSource);
 }
 
-- (NSArray *) davNamespaces
-{
-  return [NSArray arrayWithObject: @"urn:ietf:params:xml:ns:carddav"];
-}
-
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";

@@ -1,28 +1,25 @@
-/*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the
-  Free Software Foundation; either version 2, or (at your option) any
-  later version.
-
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-  License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
-  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-  02111-1307, USA.
-*/
-
-#if LIB_FOUNDATION_LIBRARY
-#error SOGo will not work properly with libFoundation.
-#error Please use gnustep-base instead.
-#endif
+/* SOGoGCSFolder.m - this file is part of SOGo
+ *
+ *  Copyright (C) 2004-2005 SKYRIX Software AG
+ *  Copyright (C) 2006-2008 Inverse groupe conseil
+ *
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #import <unistd.h>
 
@@ -36,10 +33,8 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoClass.h>
-#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/SoSelectorInvocation.h>
-#import <NGObjWeb/SoWebDAVValue.h>
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
@@ -60,14 +55,15 @@
 #import "NSArray+Utilities.h"
 #import "NSCalendarDate+SOGo.h"
 #import "NSDictionary+Utilities.h"
+#import "NSObject+DAV.h"
 #import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoCache.h"
-#import "SOGoDAVAuthenticator.h"
-#import "SOGoDAVRendererTypes.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
 #import "SOGoUserFolder.h"
+#import "SOGoWebDAVAclManager.h"
+#import "SOGoWebDAVValue.h"
 
 #import "SOGoObject.h"
 
@@ -76,136 +72,62 @@ static BOOL sendACLAdvisories = NO;
 
 static NSDictionary *reportMap = nil;
 
-@interface SOGoObject(Content)
-- (NSString *) contentAsString;
-@end
-
-@interface SoClassSecurityInfo (SOGoAcls)
-
-+ (id) defaultWebDAVPermissionsMap;
-
-- (NSArray *) allPermissions;
-- (NSArray *) allDAVPermissions;
-- (NSArray *) DAVPermissionsForRole: (NSString *) role;
-- (NSArray *) DAVPermissionsForRoles: (NSArray *) roles;
-
-@end
-
-@implementation SoClassSecurityInfo (SOGoAcls)
-
-+ (id) defaultWebDAVPermissionsMap
-{
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-                         @"read", SoPerm_AccessContentsInformation,
-                       @"bind", SoPerm_AddDocumentsImagesAndFiles,
-                       @"unbind", SoPerm_DeleteObjects,
-                       @"write-acl", SoPerm_ChangePermissions,
-                       @"write-content", SoPerm_ChangeImagesAndFiles,
-                       @"read-free-busy", SOGoPerm_FreeBusyLookup,
-                       NULL];
-}
-
-- (NSArray *) allPermissions
-{
-  return [defRoles allKeys];
-}
-
-- (NSArray *) allDAVPermissions
-{
-  NSEnumerator *allPermissions;
-  NSMutableArray *davPermissions;
-  NSDictionary *davPermissionsMap;
-  NSString *sopePermission, *davPermission;
-
-  davPermissions = [NSMutableArray array];
-
-  davPermissionsMap = [[self class] defaultWebDAVPermissionsMap];
-  allPermissions = [[self allPermissions] objectEnumerator];
-  sopePermission = [allPermissions nextObject];
-  while (sopePermission)
-    {
-      davPermission = [davPermissionsMap objectForCaseInsensitiveKey: sopePermission];
-      if (davPermission && ![davPermissions containsObject: davPermission])
-        [davPermissions addObject: davPermission];
-      sopePermission = [allPermissions nextObject];
-    }
-
-  return davPermissions;
-}
-
-- (NSArray *) DAVPermissionsForRole: (NSString *) role
-{
-  return [self DAVPermissionsForRoles: [NSArray arrayWithObject: role]];
-}
-
-- (NSArray *) DAVPermissionsForRoles: (NSArray *) roles
-{
-  NSEnumerator *allPermissions;
-  NSMutableArray *davPermissions;
-  NSDictionary *davPermissionsMap;
-  NSString *sopePermission, *davPermission;
-
-  davPermissions = [NSMutableArray array];
-
-  davPermissionsMap = [[self class] defaultWebDAVPermissionsMap];
-  allPermissions = [[self allPermissions] objectEnumerator];
-  sopePermission = [allPermissions nextObject];
-  while (sopePermission)
-    {
-      if ([[defRoles objectForCaseInsensitiveKey: sopePermission]
-            firstObjectCommonWithArray: roles])
-        {
-          davPermission
-            = [davPermissionsMap objectForCaseInsensitiveKey: sopePermission];
-          if (davPermission
-              && ![davPermissions containsObject: davPermission])
-            [davPermissions addObject: davPermission];
-        }
-      sopePermission = [allPermissions nextObject];
-    }
-
-  return davPermissions;
-}
-
-@end
-
 @implementation SOGoObject
 
-+ (void) _loadReportMap
++ (SOGoWebDAVAclManager *) webdavAclManager
 {
-  NSFileManager *fm;
-  NSEnumerator *paths;
-  NSString *currentPath, *filename;
+  SOGoWebDAVAclManager *webdavAclManager = nil;
 
-  [self logWithFormat: @"Loading DAV REPORT map:"];
+  if (!webdavAclManager)
+    webdavAclManager = [SOGoWebDAVAclManager new];
 
-  fm = [NSFileManager defaultManager];
-  paths = [NSStandardLibraryPaths() objectEnumerator];
-  while (!reportMap && (currentPath = [paths nextObject]))
-    {
-      filename = [NSString stringWithFormat: @"%@/SOGo-%s.%s/SOGo.framework"
-			   @"/Resources/DAVReportMap.plist",
-			   currentPath,
-			   SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION];
-      [self logWithFormat: @"  %@", filename];
-      if ([fm fileExistsAtPath: filename])
-	{
-	  reportMap = [[NSDictionary alloc] initWithContentsOfFile: filename];
-	  [self logWithFormat: @"found!"];
-	}
-    }
+  return webdavAclManager;
 }
+
+/*
++ (id) WebDAVPermissionsMap
+{
+  static NSDictionary *permissions = nil;
+
+  if (!permissions)
+    {
+      permissions = [NSDictionary dictionaryWithObjectsAndKeys:
+				    davElement (@"read", @"DAV:"),
+				  SoPerm_AccessContentsInformation,
+				  davElement (@"bind", @"DAV:"),
+				  SoPerm_AddDocumentsImagesAndFiles,
+				  davElement (@"unbind", @"DAV:"),
+				  SoPerm_DeleteObjects,
+				  davElement (@"write-acl", @"DAV:"),
+				  SoPerm_ChangePermissions,
+				  davElement (@"write-content", @"DAV:"),
+				  SoPerm_ChangeImagesAndFiles, NULL];
+      [permissions retain];
+    }
+
+  return permissions; 
+  } */
 
 + (void) initialize
 {
   NSUserDefaults *ud;
+  NSString *filename;
+  NSBundle *bundle;
 
   ud = [NSUserDefaults standardUserDefaults];
   kontactGroupDAV = ![ud boolForKey:@"SOGoDisableKontact34GroupDAVHack"];
   sendACLAdvisories = [ud boolForKey: @"SOGoACLsSendEMailNotifications"];
 
   if (!reportMap)
-    [self _loadReportMap];
+    {
+      bundle = [NSBundle bundleForClass: self];
+      filename = [bundle pathForResource: @"DAVReportMap" ofType: @"plist"];
+      if (filename
+	  && [[NSFileManager defaultManager] fileExistsAtPath: filename])
+	reportMap = [[NSDictionary alloc] initWithContentsOfFile: filename];
+      else
+	[self logWithFormat: @"DAV REPORT map not found!"];
+    }
 //   SoClass security declarations
   
 //   require View permission to access the root (bound to authenticated ...)
@@ -250,51 +172,6 @@ static NSDictionary *reportMap = nil;
   return [[self class] globallyUniqueObjectId];
 }
 
-+ (void) _fillDictionary: (NSMutableDictionary *) dictionary
-          withDAVMethods: (NSString *) firstMethod, ...
-{
-  va_list ap;
-  NSString *aclMethodName;
-  NSString *methodName;
-  SEL methodSel;
-
-  va_start (ap, firstMethod);
-  aclMethodName = firstMethod;
-  while (aclMethodName)
-    {
-      methodName = [aclMethodName davMethodToObjC];
-      methodSel = NSSelectorFromString (methodName);
-      if (methodSel && [self instancesRespondToSelector: methodSel])
-        [dictionary setObject: methodName
-                    forKey: [NSString stringWithFormat: @"{DAV:}%@",
-                                      aclMethodName]];
-      else
-        NSLog(@"************ method '%@' is still unimplemented!",
-              methodName);
-      aclMethodName = va_arg (ap, NSString *);
-    }
-
-  va_end (ap);
-}
-
-+ (NSDictionary *) defaultWebDAVAttributeMap
-{
-  static NSMutableDictionary *map = nil;
-
-  if (!map)
-    {
-      map = [NSMutableDictionary
-              dictionaryWithDictionary: [super defaultWebDAVAttributeMap]];
-      [map retain];
-      [self _fillDictionary: map
-            withDAVMethods: @"owner", @"group", @"supported-privilege-set",
-            @"current-user-privilege-set", @"acl", @"acl-restrictions",
-            @"inherited-acl-set", @"principal-collection-set", nil];
-    }
-
-  return map;
-}
-
 /* containment */
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container
@@ -305,156 +182,6 @@ static NSDictionary *reportMap = nil;
   [object autorelease];
 
   return object;
-}
-
-/* DAV ACL properties */
-- (NSString *) davOwner
-{
-  return [NSString stringWithFormat: @"%@%@",
-                   [WOApplication davURL],
-		   [self ownerInContext: nil]];
-}
-
-- (NSString *) davAclRestrictions
-{
-  NSMutableString *restrictions;
-
-  restrictions = [NSMutableString string];
-  [restrictions appendString: @"<D:grant-only/>"];
-  [restrictions appendString: @"<D:no-invert/>"];
-
-  return restrictions;
-}
-
-- (SOGoDAVSet *) davPrincipalCollectionSet
-{
-  NSString *usersUrl;
-
-  usersUrl = [NSString stringWithFormat: @"%@users",
-                       [self rootURLInContext: context]];
-
-  return [SOGoDAVSet davSetWithArray: [NSArray arrayWithObject: usersUrl]
-                     ofValuesTaggedAs: @"D:href"];
-}
-
-- (SOGoDAVSet *) davCurrentUserPrivilegeSet
-{
-  SOGoDAVAuthenticator *sAuth;
-  SoUser *user;
-  NSArray *roles;
-  SoClassSecurityInfo *sInfo;
-  NSArray *davPermissions;
-
-  sAuth = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
-  user = [sAuth userInContext: context];
-  roles = [user rolesForObject: self inContext: context];
-  sInfo = [[self class] soClassSecurityInfo];
-
-  davPermissions
-    = [[sInfo DAVPermissionsForRoles: roles] stringsWithFormat: @"<D:%@/>"];
-
-  return [SOGoDAVSet davSetWithArray: davPermissions
-                     ofValuesTaggedAs: @"D:privilege"];
-}
-
-- (SOGoDAVSet *) davSupportedPrivilegeSet
-{
-  SoClassSecurityInfo *sInfo;
-  NSArray *allPermissions;
-
-  sInfo = [[self class] soClassSecurityInfo];
-
-  allPermissions = [[sInfo allDAVPermissions] stringsWithFormat: @"<D:%@/>"];
-
-  return [SOGoDAVSet davSetWithArray: allPermissions
-                     ofValuesTaggedAs: @"D:privilege"];
-}
-
-- (NSArray *) _davAcesFromAclsDictionary: (NSDictionary *) aclsDictionary
-{
-  NSEnumerator *keys;
-  NSArray *privileges;
-  NSMutableString *currentAce;
-  NSMutableArray *davAces;
-  NSString *currentKey, *principal;
-  SOGoDAVSet *privilegesDS;
-
-  davAces = [NSMutableArray array];
-  keys = [[aclsDictionary allKeys] objectEnumerator];
-  currentKey = [keys nextObject];
-  while (currentKey)
-    {
-      currentAce = [NSMutableString string];
-      if ([currentKey hasPrefix: @":"])
-        [currentAce
-          appendFormat: @"<D:principal><D:property><D:%@/></D:property></D:principal>",
-          [currentKey substringFromIndex: 1]];
-      else
-	{
-	  principal = [NSString stringWithFormat: @"%@users/%@",
-				[self rootURLInContext: context],
-				currentKey];
-	  [currentAce
-	    appendFormat: @"<D:principal><D:href>%@</D:href></D:principal>",
-	    principal];
-	}
-
-      privileges = [[aclsDictionary objectForKey: currentKey]
-                     stringsWithFormat: @"<D:%@/>"];
-      privilegesDS = [SOGoDAVSet davSetWithArray: privileges
-                                 ofValuesTaggedAs: @"privilege"];
-      [currentAce appendString: [privilegesDS stringForTag: @"{DAV:}grant"
-                                              rawName: @"grant"
-                                              inContext: nil prefixes: nil]];
-      [davAces addObject: currentAce];
-      currentKey = [keys nextObject];
-    }
-
-  return davAces;
-}
-
-- (void) _appendRolesForPseudoPrincipals: (NSMutableDictionary *) aclsDictionary
-                   withClassSecurityInfo: (SoClassSecurityInfo *) sInfo
-{
-  NSArray *perms;
-
-  perms = [sInfo DAVPermissionsForRole: SoRole_Owner];
-  if ([perms count])
-    [aclsDictionary setObject: perms forKey: @":owner"];
-  perms = [sInfo DAVPermissionsForRole: SoRole_Authenticated];
-  if ([perms count])
-    [aclsDictionary setObject: perms forKey: @":authenticated"];
-  perms = [sInfo DAVPermissionsForRole: SoRole_Anonymous];
-  if ([perms count])
-    [aclsDictionary setObject: perms forKey: @":unauthenticated"];
-}
-
-- (SOGoDAVSet *) davAcl
-{
-  NSArray *roles;
-  NSEnumerator *uids;
-  NSMutableDictionary *aclsDictionary;
-  NSString *currentUID;
-  SoClassSecurityInfo *sInfo;
-
-  aclsDictionary = [NSMutableDictionary dictionary];
-  uids = [[self aclUsers] objectEnumerator];
-  sInfo = [[self class] soClassSecurityInfo];
-
-  currentUID = [uids nextObject];
-  while (currentUID)
-    {
-      roles = [self aclsForUser: currentUID];
-      [aclsDictionary setObject: [sInfo DAVPermissionsForRoles: roles]
-                      forKey: currentUID];
-      currentUID = [uids nextObject];
-    }
-  [self _appendRolesForPseudoPrincipals: aclsDictionary
-        withClassSecurityInfo: sInfo];
-
-  return [SOGoDAVSet davSetWithArray:
-                       [self _davAcesFromAclsDictionary: aclsDictionary]
-                     ofValuesTaggedAs: @"D:ace"];
 }
 
 /* end of properties */
@@ -472,6 +199,7 @@ static NSDictionary *reportMap = nil;
       nameInContainer = nil;
       container = nil;
       owner = nil;
+      webdavAclManager = [[self class] webdavAclManager];
     }
 
   return self;
@@ -614,16 +342,14 @@ static NSDictionary *reportMap = nil;
 {
   id obj;
   SOGoCache *cache;
-  NSString *objcMethod;
+  NSString *objcMethod, *httpMethod;
 
   cache = [SOGoCache sharedCache];
   obj = [cache objectNamed: lookupName inContainer: self];
   if (!obj)
     {
-      obj = [[self soClass] lookupKey: lookupName inContext: localContext];
-      if (obj)
-	[obj bindToObject: self inContext: localContext];
-      else
+      httpMethod = [[localContext request] method];
+      if ([httpMethod isEqualToString: @"REPORT"])
 	{
 	  objcMethod = [self _reportSelector: lookupName];
 	  if (objcMethod)
@@ -633,6 +359,12 @@ static NSDictionary *reportMap = nil;
 		      addContextParameter: YES];
 	      [obj autorelease];
 	    }
+	}
+      else
+	{
+	  obj = [[self soClass] lookupKey: lookupName inContext: localContext];
+	  if (obj)
+	    [obj bindToObject: self inContext: localContext];
 	}
 
       if (obj)
@@ -652,10 +384,10 @@ static NSDictionary *reportMap = nil;
   return [container lookupUserFolder];
 }
 
-- (SOGoGroupsFolder *) lookupGroupsFolder
-{
-  return [[self lookupUserFolder] lookupGroupsFolder];
-}
+// - (SOGoGroupsFolder *) lookupGroupsFolder
+// {
+//   return [[self lookupUserFolder] lookupGroupsFolder];
+// }
 
 - (void) sleep
 {
@@ -684,6 +416,316 @@ static NSDictionary *reportMap = nil;
 - (NSString *) davDisplayName
 {
   return [self nameInContainer];
+}
+
+/* DAV ACL properties */
+- (SOGoWebDAVValue *) davOwner
+{
+  NSDictionary *ownerHREF;
+  NSString *usersUrl;
+
+  usersUrl = [NSString stringWithFormat: @"%@%@/",
+		       [[WOApplication application] davURL], owner];
+  ownerHREF = davElementWithContent (@"href", @"DAV:", usersUrl);
+
+  return [davElementWithContent (@"owner", @"DAV:", ownerHREF)
+				asWebDAVValue];
+}
+
+- (SOGoWebDAVValue *) davAclRestrictions
+{
+  NSArray *restrictions;
+
+  restrictions = [NSArray arrayWithObjects:
+			    davElement (@"grant-only", @"DAV:"),
+			  davElement (@"no-invert", @"DAV:"),
+			  nil];
+
+  return [davElementWithContent (@"acl-restrictions", @"DAV:", restrictions)
+				asWebDAVValue];
+}
+
+- (SOGoWebDAVValue *) davPrincipalCollectionSet
+{
+  NSString *usersUrl;
+  NSDictionary *collectionHREF;
+
+  /* WOApplication has no support for the DAV methods we define here so we
+     use the user's principal object as a reference */
+  usersUrl = [NSString stringWithFormat: @"%@%@/",
+		       [[WOApplication application] davURL], owner];
+  collectionHREF = davElementWithContent (@"href", @"DAV:", usersUrl);
+
+  return [davElementWithContent (@"principal-collection-set",
+				 @"DAV:",
+				 [NSArray arrayWithObject: collectionHREF])
+				asWebDAVValue];
+}
+
+- (NSArray *) _davPrivilegesFromRoles: (NSArray *) roles
+{
+  NSEnumerator *privileges;
+  NSDictionary *privilege;
+  NSMutableArray *davPrivileges;
+
+  davPrivileges = [NSMutableArray array];
+
+  privileges = [[webdavAclManager davPermissionsForRoles: roles
+				  onObject: self] objectEnumerator];
+  while ((privilege = [privileges nextObject]))
+    [davPrivileges addObject: davElementWithContent (@"privilege", @"DAV:",
+						     privilege)];
+
+  return davPrivileges;
+}
+
+- (SOGoWebDAVValue *) davCurrentUserPrivilegeSet
+{
+  NSArray *userRoles;
+
+  userRoles = [[context activeUser] rolesForObject: self inContext: context];
+
+  return [davElementWithContent (@"current-user-privilege-set",
+				 @"DAV:",
+				 [self _davPrivilegesFromRoles: userRoles])
+				asWebDAVValue];
+}
+
+- (SOGoWebDAVValue *) davSupportedPrivilegeSet
+{
+  return [davElementWithContent (@"supported-privilege-set",
+				 @"DAV:",
+				 [webdavAclManager treeAsWebDAVValue])
+				asWebDAVValue];
+}
+
+#warning this method has probably some code shared with its pseudo principal equivalent
+- (void)  _fillAces: (NSMutableArray *) aces
+    withRolesForUID: (NSString *) currentUID
+{
+  NSMutableArray *currentAce;
+  NSArray *roles;
+  NSDictionary *currentGrant, *userHREF;
+  NSString *principalURL;
+
+  currentAce = [NSMutableArray new];
+  roles = [[SOGoUser userWithLogin: currentUID roles: nil]
+	    rolesForObject: self
+	    inContext: context];
+  if ([roles count])
+    {
+      principalURL = [NSString stringWithFormat: @"%@%@/",
+			       [[WOApplication application] davURL],
+			       currentUID];
+      userHREF = davElementWithContent (@"href", @"DAV:", principalURL);
+      [currentAce addObject: davElementWithContent (@"principal", @"DAV:",
+						    userHREF)];
+      currentGrant
+	= davElementWithContent (@"grant", @"DAV:",
+				 [self _davPrivilegesFromRoles: roles]);
+      [currentAce addObject: currentGrant];
+      [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
+      [currentAce release];
+    }
+}
+
+- (void) _fillAcesWithRolesForPseudoPrincipals: (NSMutableArray *) aces
+{
+  NSArray *roles, *currentAce;
+  NSDictionary *principal, *currentGrant;
+  SOGoUser *user;
+
+//  DAV:self, DAV:property(owner), DAV:authenticated
+  user = [context activeUser];
+  roles = [user rolesForObject: self inContext: context];
+  if ([roles count])
+    {
+      principal = davElement (@"self", @"DAV:");
+      currentGrant
+	= davElementWithContent (@"grant", @"DAV:",
+				 [self _davPrivilegesFromRoles: roles]);
+      currentAce = [NSArray arrayWithObjects:
+			      davElementWithContent (@"principal", @"DAV:",
+						     principal),
+			    currentGrant, nil];
+      [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
+    }
+
+  user = [SOGoUser userWithLogin: [self ownerInContext: context] roles: nil];
+  roles = [user rolesForObject: self inContext: context];
+  if ([roles count])
+    {
+      principal = davElementWithContent (@"property", @"DAV:",
+					 davElement (@"owner", @"DAV:"));
+      currentGrant
+	= davElementWithContent (@"grant", @"DAV:",
+				 [self _davPrivilegesFromRoles: roles]);
+      currentAce = [NSArray arrayWithObjects:
+			      davElementWithContent (@"principal", @"DAV:",
+						     principal),
+			    currentGrant, nil];
+      [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
+    }
+
+  roles = [self aclsForUser: [self defaultUserID]];
+  if ([roles count])
+    {
+      principal = davElement (@"authenticated", @"DAV:");
+      currentGrant
+	= davElementWithContent (@"grant", @"DAV:",
+				 [self _davPrivilegesFromRoles: roles]);
+      currentAce = [NSArray arrayWithObjects:
+			      davElementWithContent (@"principal", @"DAV:",
+						     principal),
+			    currentGrant, nil];
+      [aces addObject: davElementWithContent (@"ace", @"DAV:", currentAce)];
+    }
+}
+
+- (SOGoWebDAVValue *) davAcl
+{
+  NSEnumerator *uids;
+  NSMutableArray *aces;
+  NSString *currentUID;
+
+  aces = [NSMutableArray array];
+
+  [self _fillAcesWithRolesForPseudoPrincipals: aces];
+  uids = [[self aclUsers] objectEnumerator];
+  while ((currentUID = [uids nextObject]))
+    [self _fillAces: aces withRolesForUID: currentUID];
+
+  return [davElementWithContent (@"acl", @"DAV:", aces)
+				asWebDAVValue];
+}
+
+#warning all REPORT method should be standardized...
+- (NSDictionary *) _formalizePrincipalMatchResponse: (NSArray *) hrefs
+{
+  NSDictionary *multiStatus;
+  NSEnumerator *hrefList;
+  NSString *currentHref;
+  NSMutableArray *responses;
+  NSArray *responseElements;
+
+  responses = [NSMutableArray new];
+
+  hrefList = [hrefs objectEnumerator];
+  while ((currentHref = [hrefList nextObject]))
+    {
+      responseElements
+	= [NSArray arrayWithObjects: davElementWithContent (@"href", @"DAV:",
+							    currentHref),
+		   davElementWithContent (@"status", @"DAV:",
+					  @"HTTP/1.1 200 OK"),
+		   nil];
+      [responses addObject: davElementWithContent (@"response", @"DAV:",
+						   responseElements)];
+    }
+
+  multiStatus = davElementWithContent (@"multistatus", @"DAV:", responses);
+  [responses release];
+
+  return multiStatus;
+}
+
+- (NSDictionary *) _handlePrincipalMatchSelf
+{
+  NSString *davURL, *userLogin;
+  NSArray *principalURL;
+
+  davURL = [[WOApplication application] davURL];
+  userLogin = [[context activeUser] login];
+  principalURL
+    = [NSArray arrayWithObject: [NSString stringWithFormat: @"%@%@/", davURL,
+					  userLogin]];
+  return [self _formalizePrincipalMatchResponse: principalURL];
+}
+
+- (void) _fillArrayWithPrincipalsOwnedBySelf: (NSMutableArray *) hrefs
+{
+  NSString *url;
+  NSArray *roles;
+
+  roles = [[context activeUser] rolesForObject: self inContext: context];
+  if ([roles containsObject: SoRole_Owner])
+    {
+      url = [[self davURL] absoluteString];
+      [hrefs addObject: url];
+    }
+}
+
+- (NSDictionary *)
+    _handlePrincipalMatchPrincipalProperty: (id <DOMElement>) child
+{
+  NSMutableArray *hrefs;
+  NSDictionary *response;
+
+  hrefs = [NSMutableArray new];
+  [self _fillArrayWithPrincipalsOwnedBySelf: hrefs];
+
+  response = [self _formalizePrincipalMatchResponse: hrefs];
+  [hrefs release];
+
+  return response;
+}
+
+- (NSDictionary *) _handlePrincipalMatchReport: (id <DOMDocument>) document
+{
+  NSDictionary *response;
+  id <DOMElement> documentElement, queryChild;
+  NSArray *children;
+  NSString *queryTag;
+
+  documentElement = [document documentElement];
+  children = [self domNode: documentElement
+		   getChildNodesByType: DOM_ELEMENT_NODE];
+  if ([children count] == 1)
+    {
+      queryChild = [children objectAtIndex: 0];
+      queryTag = [queryChild tagName];
+      if ([queryTag isEqualToString: @"self"])
+	response = [self _handlePrincipalMatchSelf];
+      else if ([queryTag isEqualToString: @"principal-property"])
+	response = [self _handlePrincipalMatchPrincipalProperty: queryChild];
+      else
+	response = [NSException exceptionWithHTTPStatus: 400
+				reason: @"Query element must be either "
+				@" '{DAV:}principal-property' or '{DAV:}self'"];
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+			    reason: @"Query must have one element:"
+			    @" '{DAV:}principal-property' or '{DAV:}self'"];
+
+  return response;
+}
+
+- (WOResponse *) davPrincipalMatch: (WOContext *) localContext
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  NSDictionary *xmlResponse;
+
+  r = [context response];
+
+  document = [[context request] contentAsDOMDocument];
+  xmlResponse = [self _handlePrincipalMatchReport: document];
+  if ([xmlResponse isKindOfClass: [NSException class]])
+    r = (WOResponse *) xmlResponse;
+  else
+    {
+      [r setStatus: 207];
+      [r setContentEncoding: NSUTF8StringEncoding];
+      [r setHeader: @"text/xml; charset=\"utf-8\"" forKey: @"content-type"];
+      [r setHeader: @"no-cache" forKey: @"pragma"];
+      [r setHeader: @"no-cache" forKey: @"cache-control"];
+      [r appendContentString:
+	   @"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"];
+      [r appendContentString: [xmlResponse asWebDavStringWithNamespaces: nil]];
+    }
+
+  return r;
 }
 
 /* actions */
@@ -763,7 +805,8 @@ static NSDictionary *reportMap = nil;
   if ([rq isSoWebDAVRequest])
     {
       cType = [rq headerForKey: @"content-type"];
-      if ([cType isEqualToString: @"application/xml"])
+      if ([cType hasPrefix: @"application/xml"]
+	  || [cType hasPrefix: @"text/xml"])
 	{
 	  document = [rq contentAsDOMDocument];
 	  command = [[self _parseXMLCommand: document] davMethodToObjC];
@@ -1188,7 +1231,8 @@ static NSDictionary *reportMap = nil;
 
 /* description */
 
-- (void)appendAttributesToDescription:(NSMutableString *)_ms {
+- (void) appendAttributesToDescription: (NSMutableString *) _ms
+{
   if (nameInContainer) 
     [_ms appendFormat:@" name=%@", nameInContainer];
   if (container)
@@ -1196,7 +1240,8 @@ static NSDictionary *reportMap = nil;
          container, [container valueForKey:@"nameInContainer"]];
 }
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:64];
@@ -1227,12 +1272,6 @@ static NSDictionary *reportMap = nil;
 }
 
 /* dav acls */
-- (NSArray *) davNamespaces
-{
-  return [NSArray arrayWithObject:
-		    @"urn:inverse:params:xml:ns:inverse-dav"];
-}
-
 - (NSString *) davRecordForUser: (NSString *) user
 {
   NSMutableString *userRecord;
@@ -1443,11 +1482,12 @@ static NSDictionary *reportMap = nil;
   return exception;
 }
 
-- (NSArray *) davSupportedReportSet
+- (SOGoWebDAVValue *) davSupportedReportSet
 {
+  NSDictionary *currentValue;
   NSEnumerator *reportKeys;
   NSMutableArray *reportSet;
-  NSString *currentKey, *currentValue;
+  NSString *currentKey;
 
   reportSet = [NSMutableArray array];
 
@@ -1455,13 +1495,37 @@ static NSDictionary *reportMap = nil;
   while ((currentKey = [reportKeys nextObject]))
     if ([self _reportSelector: currentKey])
       {
-	currentValue = [[currentKey asDavInvocation]
-			 keysWithFormat: @"<%{method} xmlns=\"%{ns}\"/>"];
-	[reportSet addObject: [SoWebDAVValue valueForObject: currentValue
-					     attributes: nil]];
+	currentValue = [currentKey asDavInvocation];
+	[reportSet addObject: davElementWithContent(@"report",
+						    @"DAV:",
+						    currentValue)];
       }
 
-  return [SOGoDAVSet davSetWithArray: reportSet ofValuesTaggedAs: @"report"];
+  return [davElementWithContent (@"supported-report-set", @"DAV:", reportSet)
+				asWebDAVValue];
 }
 
 @end /* SOGoObject */
+
+@implementation SOGoObject (SOGoDomHelpers)
+
+- (NSArray *) domNode: (id <DOMNode>) node
+  getChildNodesByType: (DOMNodeType ) type
+{
+  NSMutableArray *nodes;
+  id <DOMNode> currentChild;
+
+  nodes = [NSMutableArray array];
+
+  currentChild = [node firstChild];
+  while (currentChild)
+    {
+      if ([currentChild nodeType] == type)
+	[nodes addObject: currentChild];
+      currentChild = [currentChild nextSibling];
+    }
+
+  return nodes;
+}
+
+@end
