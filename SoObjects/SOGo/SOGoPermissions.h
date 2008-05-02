@@ -71,7 +71,6 @@ extern NSString *SOGoCalendarRole_ComponentResponder;
 
 extern NSString *SOGoPerm_AccessObject;
 extern NSString *SOGoPerm_ReadAcls;
-extern NSString *SOGoPerm_SaveAcls;
 extern NSString *SOGoPerm_FreeBusyLookup;
 
 extern NSString *SOGoCalendarPerm_ViewWholePublicRecords;

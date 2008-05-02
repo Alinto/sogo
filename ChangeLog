@@ -1,5 +1,8 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoPermissions.[hm]: removed the "Save Acls"
+	permission since its purposes matches SOPE's "Change Permissions".
+
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
 	+webdavAclManager]): new overriden method.
 

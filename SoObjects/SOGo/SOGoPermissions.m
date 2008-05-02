@@ -75,7 +75,6 @@ NSString *SOGoPerm_AccessObject= @"Access Object";
 NSString *SOGoPerm_ReadAcls = @"ReadAcls"; /* the equivalent of "read-acl" in
                                               the WebDAV acls spec, which is
                                               currently missing from SOPE */
-NSString *SOGoPerm_SaveAcls = @"SaveAcls";
 NSString *SOGoPerm_FreeBusyLookup = @"FreeBusyLookup";
 
 NSString *SOGoCalendarPerm_ViewWholePublicRecords = @"ViewWholePublicRecords";
@@ -95,4 +94,3 @@ NSString *SOGoCalendarPerm_ViewAllComponent = @"ViewAllComponent";
 NSString *SOGoCalendarPerm_ViewDAndT = @"ViewDAndT";
 NSString *SOGoCalendarPerm_ModifyComponent = @"ModifyComponent";
 NSString *SOGoCalendarPerm_RespondToComponent = @"RespondToComponent";
-
