@@ -1,5 +1,9 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davDisplayName]): new overriden method to provide a display name
+	to the users principal.
+
 	* SoObjects/SOGo/SOGoPermissions.[hm]: removed the "Save Acls"
 	permission since its purposes matches SOPE's "Change Permissions".
 
