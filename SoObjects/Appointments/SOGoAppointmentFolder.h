@@ -113,10 +113,10 @@
 - (NSArray *) lookupCalendarFoldersForICalPerson: (NSArray *) _persons
                                        inContext: (id) _ctx;
 
-- (id) lookupGroupFolderForUIDs: (NSArray *) _uids
-                      inContext: (id) _ctx;
-- (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
-                              inContext: (id) _ctx;
+// - (id) lookupGroupFolderForUIDs: (NSArray *) _uids
+//                       inContext: (id) _ctx;
+// - (id) lookupGroupCalendarFolderForUIDs: (NSArray *) _uids
+//                               inContext: (id) _ctx;
 
 /* bulk fetches */
 

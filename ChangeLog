@@ -1,5 +1,8 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/SOGoUI/UIxComponent.m ([UIxComponent -applicationPath]):
+	disabled all mentions of "SOGoGroupFolder*".
+
 	* SoObjects/SOGo/SOGoDAVRendererTypes.[hm]: removed subclass
 	module, superseded by the new method mentionned below.
 

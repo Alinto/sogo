@@ -26,7 +26,7 @@
         "Add Documents, Images, and Files" = ( "Owner", "ObjectCreator" );
 	"Add Folders" = ( "Owner", "FolderCreator" );
         "ReadAcls" = ( "Owner" );
-        "SaveAcls" = ( "Owner" );
+        "Change Permissions" = ( "Owner" );
         "Delete Objects" = ( "Owner", "ObjectEraser" );
         "WebDAV Access" = ( "Owner", "ObjectViewer", "ObjectEditor", "ObjectCreator", "ObjectEraser" );
       };
@@ -67,6 +67,8 @@
       defaultRoles = {
 	"Access Contents Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
+	"Add Folders" = ( "Owner" );
+	"Delete Objects" = ( "Owner" );
       };
     };
     SOGoUserFolder = {
@@ -136,22 +138,22 @@
 	};
       };
     };
-    SOGoGroupsFolder = {
-      methods = {
-        index = { 
-          protectedBy = "View";
-          pageName = "SOGoGroupsPage"; 
-        };
-      };
-    };
-    SOGoGroupFolder = {
-      methods = {
-        index = { 
-          protectedBy = "View";
-          pageName = "SOGoGroupPage"; 
-        };
-      };
-    };
+//     SOGoGroupsFolder = {
+//       methods = {
+//         index = { 
+//           protectedBy = "View";
+//           pageName = "SOGoGroupsPage"; 
+//         };
+//       };
+//     };
+//     SOGoGroupFolder = {
+//       methods = {
+//         index = { 
+//           protectedBy = "View";
+//           pageName = "SOGoGroupPage"; 
+//         };
+//       };
+//     };
     SOGoFreeBusyObject = {
       methods = {
         ajaxRead = { 
@@ -161,9 +163,9 @@
         };
       };
     };
-    SOGoCustomGroupFolder = {
-      methods = {
-      };
-    };
+//     SOGoCustomGroupFolder = {
+//       methods = {
+//       };
+//     };
   };
 }

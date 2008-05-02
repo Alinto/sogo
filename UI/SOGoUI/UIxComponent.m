@@ -41,7 +41,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
-#import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
+// #import <SoObjects/SOGo/SOGoCustomGroupFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxJSClose.h"
@@ -318,23 +318,26 @@ static BOOL uixDebugEnabled = NO;
 {
   SOGoObject *currentClient, *parent;
   BOOL found;
-  Class objectClass, groupFolderClass, userFolderClass;
+  Class objectClass, userFolderClass;
+// , groupFolderClass
 
   currentClient = [self clientObject];
   if (currentClient
       && [currentClient isKindOfClass: [SOGoObject class]])
     {
-      groupFolderClass = [SOGoCustomGroupFolder class];
+//       groupFolderClass = [SOGoCustomGroupFolder class];
       userFolderClass = [SOGoUserFolder class];
 
       objectClass = [currentClient class];
-      found = (objectClass == groupFolderClass || objectClass == userFolderClass);
+//       found = (objectClass == groupFolderClass || objectClass == userFolderClass);
+      found = (objectClass == userFolderClass);
       while (!found && currentClient)
 	{
 	  parent = [currentClient container];
 	  objectClass = [parent class];
-	  if (objectClass == groupFolderClass
-	      || objectClass == userFolderClass)
+	  if (// objectClass == groupFolderClass
+// 	      || 
+	      objectClass == userFolderClass)
 	    found = YES;
 	  else
 	    currentClient = parent;
