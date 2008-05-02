@@ -61,13 +61,13 @@ convertChars (const char *oldString, unsigned int oldLength,
   iteration = 0;
 
   upperLimit = oldString + oldLength;
-  while ((unsigned int) currentChar < (unsigned int) upperLimit)
+  while (currentChar < upperLimit)
     {
       if (*currentChar != '\r')
 	{
 	  if (*currentChar == '\n')
 	    {
-	      length = (unsigned int) destChar - (unsigned int) newString;
+	      length = destChar - newString;
 	      if ((length + (6 * iteration) + 500) > maxLength)
 		{
 		  maxLength = length + (iteration * 6) + 500;
@@ -93,7 +93,7 @@ convertChars (const char *oldString, unsigned int oldLength,
       currentChar++;
     }
   *destChar = 0;
-  *newLength = (unsigned int) destChar - (unsigned int) newString;
+  *newLength = destChar - newString;
 
   return newString;
 }

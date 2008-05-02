@@ -1,5 +1,9 @@
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartTextViewer.m (convertChars): do
+	not cast pointers to unsigned int to avoid problems with big
+	endian archs.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m ([-davNamespaces]):
 	removed method.
 
