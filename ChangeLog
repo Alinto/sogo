@@ -1,3 +1,22 @@
+2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoDAVRendererTypes.[hm]: removed subclass
+	module, superseded by the new method mentionned below.
+
+	* SoObjects/SOGo/SOGoWebDAVValue.m ([SOGoWebDAVValue
+	-stringForTag:_keyrawName:setTaginContext:contextprefixes:prefixes]):
+	a simple wrapper that returns an uninterpreted NSString to SOPE.
+
+	* SoObjects/SOGo/NSArray+DAV.[hm],
+	* SoObjects/SOGo/NSDictionary+DAV.[hm],
+	* SoObjects/SOGo/NSObject+DAV.[hm],
+	* SoObjects/SOGo/NSString+DAV.[hm],
+	* SoObjects/SOGo/NSURL+DAV.[hm]: new class category modules that
+	handle the correct generation of DAV entries, with namespace
+	accounting. Those were implemented to enable the use of a simple
+	SoWebDAVValue as the root of the resulting string, thereby
+	avoiding the xml escaping done by SOPE when returning a real NSString.
+
 2008-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m ([LDAPSource -fetchContactsMatching:match])
