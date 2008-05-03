@@ -1850,6 +1850,29 @@ Index: sope-appserver/NGObjWeb/WebDAV/SaxDAVHandler.m
      break;
  
    case 'n':
+Index: sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(révision 1620)
++++ sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m	(copie de travail)
+@@ -1523,14 +1523,16 @@
+ - (id)doREPORT:(WOContext *)_ctx {
+   id<DOMDocument> domDocument;
+   WORequest *rq;
+-  NSString  *mname;
++  NSString  *mname, *ctype;
+   id method, resultObject;
+   
+   rq = [_ctx request];
+   
+   /* ensure XML */
+ 
+-  if (![[rq headerForKey:@"content-type"] hasPrefix:@"text/xml"]) {
++  ctype = [rq headerForKey:@"content-type"];
++  if (!([ctype hasPrefix:@"text/xml"]
++	|| [ctype hasPrefix:@"application/xml"])) {
+     return [self httpException:400 /* invalid request */
+ 		 reason:@"XML entity expected for WebDAV REPORT."];
+   }
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1620)
