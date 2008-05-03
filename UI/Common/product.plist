@@ -63,7 +63,7 @@
     SOGoParentFolder = {
       methods = {
 	createFolder = {
-	  protectedBy = "SoPerm_AddFolders";
+	  protectedBy = "Add Folders";
 	  actionClass = "UIxParentFolderActions";
 	  actionName = "createFolder";
 	};
