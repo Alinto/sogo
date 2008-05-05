@@ -1,5 +1,8 @@
 2008-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-davAclQuery:queryContext]): parse the names only of element nodes.
+
 	* UI/Common/UIxFolderActions.m ([UIxFolderActions -activateFolderAction])
 	([UIxFolderActions -deactivateFolderAction]): reversed the logic
 	and remove or add the folder name from/into the 'InactiveFolders'

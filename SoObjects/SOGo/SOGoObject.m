@@ -786,7 +786,7 @@ static NSDictionary *reportMap = nil;
 {
   NSString *command;
 
-  command = [[document firstChild] nodeName];
+  command = [[document firstChild] localName];
 
   return [NSString stringWithFormat: @"%@:", command];
 }
@@ -1329,16 +1329,16 @@ static NSDictionary *reportMap = nil;
 - (NSArray *) _davGetRolesFromRequest: (id <DOMNode>) node
 {
   NSMutableArray *roles;
-  id <DOMNodeList> childNodes;
+  NSArray *childNodes;
   NSString *currentRole;
   unsigned int count, max;
 
   roles = [NSMutableArray array];
-  childNodes = [node childNodes];
-  max = [childNodes length];
+  childNodes = [self domNode: node getChildNodesByType: DOM_ELEMENT_NODE];
+  max = [childNodes count];
   for (count = 0; count < max; count++)
     {
-      currentRole = [[childNodes objectAtIndex: count] nodeName];
+      currentRole = [[childNodes objectAtIndex: count] localName];
       [roles addObject: currentRole];
     }
 
@@ -1350,57 +1350,55 @@ static NSDictionary *reportMap = nil;
   id <DOMNode> node, userAttr;
   id <DOMNamedNodeMap> attrs;
   NSString *nodeName, *result, *response, *user;
+  NSArray *childNodes;
 
-  node = [[document documentElement] firstChild];
-  nodeName = [node nodeName];
-  if ([nodeName isEqualToString: @"user-list"])
-    result = [self _davAclUserListQuery];
-  else if ([nodeName isEqualToString: @"roles"])
+  result = nil;
+
+  childNodes = [self domNode: [document documentElement]
+		     getChildNodesByType: DOM_ELEMENT_NODE];
+  if ([childNodes count])
     {
-      attrs = [node attributes];
-      userAttr = [attrs namedItem: @"user"];
-      user = [userAttr nodeValue];
-      if ([user length])
-	result = [self _davAclUserRoles: user];
-      else
-	result = nil;
-    }
-  else if ([nodeName isEqualToString: @"set-roles"])
-    {
-      attrs = [node attributes];
-      userAttr = [attrs namedItem: @"user"];
-      user = [userAttr nodeValue];
-      if ([user length])
+      node = [childNodes objectAtIndex: 0];
+      nodeName = [node localName];
+      if ([nodeName isEqualToString: @"user-list"])
+	result = [self _davAclUserListQuery];
+      else if ([nodeName isEqualToString: @"roles"])
 	{
-	  [self setRoles: [self _davGetRolesFromRequest: node]
-		forUser: user];
-	  result = @"";
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"user"];
+	  user = [userAttr nodeValue];
+	  if ([user length])
+	    result = [self _davAclUserRoles: user];
 	}
-      else
-	result = nil;
+      else if ([nodeName isEqualToString: @"set-roles"])
+	{
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"user"];
+	  user = [userAttr nodeValue];
+	  if ([user length])
+	    {
+	      [self setRoles: [self _davGetRolesFromRequest: node]
+		    forUser: user];
+	      result = @"";
+	    }
+	}
+      else if ([nodeName isEqualToString: @"add-user"])
+	{
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"user"];
+	  user = [userAttr nodeValue];
+	  if ([self addUserInAcls: user])
+	    result = @"";
+	}
+      else if ([nodeName isEqualToString: @"remove-user"])
+	{
+	  attrs = [node attributes];
+	  userAttr = [attrs namedItem: @"user"];
+	  user = [userAttr nodeValue];
+	  if ([self removeUserFromAcls: user])
+	    result = @"";
+	}
     }
-  else if ([nodeName isEqualToString: @"add-user"])
-    {
-      attrs = [node attributes];
-      userAttr = [attrs namedItem: @"user"];
-      user = [userAttr nodeValue];
-      if ([self addUserInAcls: user])
-	result = @"";
-      else
-	result = nil;
-    }
-  else if ([nodeName isEqualToString: @"remove-user"])
-    {
-      attrs = [node attributes];
-      userAttr = [attrs namedItem: @"user"];
-      user = [userAttr nodeValue];
-      if ([self removeUserFromAcls: user])
-	result = @"";
-      else
-	result = nil;
-    }
-  else
-    result = nil;
 
   if (result)
     {
