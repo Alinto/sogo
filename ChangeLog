@@ -1,3 +1,16 @@
+2008-05-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Common/UIxFolderActions.m ([UIxFolderActions -activateFolderAction])
+	([UIxFolderActions -deactivateFolderAction]): reversed the logic
+	and remove or add the folder name from/into the 'InactiveFolders'
+	settings key.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -create]): no longer write the folder name
+	in the 'ActiveFolders' settings key.
+	([-isActive]): returns whether the folder is NOT listed in the
+	'InactiveFolders' settings key.
+
 2008-05-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo.m ([SOGo -davURL], [SOGo -soURL]): copied methods from

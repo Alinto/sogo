@@ -1573,7 +1573,6 @@ static NSNumber   *sharedYes = nil;
 - (BOOL) create
 {
   BOOL rc;
-  NSMutableArray *folderSubscription;
   NSUserDefaults *userSettings;
   NSMutableDictionary *calendarSettings;
   SOGoUser *ownerUser;
@@ -1590,15 +1589,6 @@ static NSNumber   *sharedYes = nil;
 	  calendarSettings = [NSMutableDictionary dictionary];
 	  [userSettings setObject: calendarSettings forKey: @"Calendar"];
 	}
-      folderSubscription
-	= [calendarSettings objectForKey: @"ActiveFolders"];
-      if (!folderSubscription)
-	{
-	  folderSubscription = [NSMutableArray array];
-	  [calendarSettings setObject: folderSubscription
-			    forKey: @"ActiveFolders"];
-	}
-      [folderSubscription addObjectUniquely: nameInContainer];
       [userSettings synchronize];
     }
 
@@ -1953,13 +1943,13 @@ static NSNumber   *sharedYes = nil;
 - (BOOL) isActive
 {
   NSUserDefaults *settings;
-  NSArray *activeFolders;
+  NSArray *inactiveFolders;
 
   settings = [[context activeUser] userSettings];
-  activeFolders
-    = [[settings objectForKey: @"Calendar"] objectForKey: @"ActiveFolders"];
+  inactiveFolders
+    = [[settings objectForKey: @"Calendar"] objectForKey: @"InactiveFolders"];
 
-  return [activeFolders containsObject: nameInContainer];
+  return ![inactiveFolders containsObject: nameInContainer];
 }
 
 @end /* SOGoAppointmentFolder */

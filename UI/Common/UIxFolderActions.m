@@ -180,18 +180,18 @@
 
   [self _setupContext];
   folderSubscription
-    = [moduleSettings objectForKey: @"ActiveFolders"];
+    = [moduleSettings objectForKey: @"InactiveFolders"];
   if (!folderSubscription)
     {
       folderSubscription = [NSMutableArray array];
-      [moduleSettings setObject: folderSubscription forKey: @"ActiveFolders"];
+      [moduleSettings setObject: folderSubscription forKey: @"InactiveFolders"];
     }
 
   folderName = [clientObject nameInContainer];
   if (makeActive)
-    [folderSubscription addObjectUniquely: folderName];
-  else
     [folderSubscription removeObject: folderName];
+  else
+    [folderSubscription addObjectUniquely: folderName];
 
   [ud synchronize];
 
