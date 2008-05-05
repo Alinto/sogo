@@ -10,14 +10,16 @@ Element.addMethods({
 
   childNodesWithTag: function(element, tagName) {
     element = $(element);
+
     var matchingNodes = new Array();
     var tagName = tagName.toUpperCase();
     
     for (var i = 0; i < element.childNodes.length; i++) {
-      if (typeof(element.childNodes[i]) == "object"
-	  && element.childNodes[i].tagName
-	  && element.childNodes[i].tagName.toUpperCase() == tagName)
-	matchingNodes.push(element.childNodes[i]);
+      var childNode = $(element.childNodes[i]);
+      if (Object.isElement(childNode)
+	  && childNode.tagName
+	  && childNode.tagName.toUpperCase() == tagName)
+	matchingNodes.push(childNode);
     }
 
     return matchingNodes;

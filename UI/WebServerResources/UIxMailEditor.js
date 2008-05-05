@@ -97,10 +97,11 @@ function insertContact(inputNode, contactName, contactEmail) {
 
 function toggleAttachments() {
   var div = $("attachmentsArea");
-  if (div.style.display)
-    div.style.display = "";
+  var style = "" + div.getStyle("display");
+  if (style.length)
+    div.setStyle({ display: "" });
   else
-    div.style.display = "block;";
+    div.setStyle({ display: "block" });
 
   return false;
 }
@@ -111,21 +112,22 @@ function updateInlineAttachmentList(sender, attachments) {
   var div = $("attachmentsArea");
   if (attachments)
     count = attachments.length;
-  if (count)
-    {
-      var text  = "";
-      for (var i = 0; i < count; i++) {
-        text = text + attachments[i];
-        text = text + '<br />';
-      }
 
-      var e = $('compose_attachments_list');
-      e.innerHTML = text;
-      if (!div.style.display)
-        div.style.display = "block;";
+  if (count) {
+    var text  = "";
+    for (var i = 0; i < count; i++) {
+      text = text + attachments[i];
+      text = text + '<br />';
     }
+
+    var e = $('compose_attachments_list');
+    e.innerHTML = text;
+    var style = "" + div.getStyle("display");
+    if (!style.length)
+    	div.setStyle({display: "block"});
+  }
   else
-    div.style.display = "";
+    div.setStyle({display: ""});
 }
 /* mail editor */
 
@@ -272,7 +274,6 @@ function onTextFirstFocus() {
 }
 
 function onTextContextMenu(event) {
-  log("coucou");
   event.returnValue = true;
   event.cancelBubble = true;
 }
@@ -287,7 +288,7 @@ function onTextMouseDown(event) {
 function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
-  var elements = list.childNodesWithTag("li");
+  var elements = $(list).childNodesWithTag("li");
   for (var i = 0; i < elements.length; i++)
     elements[i].observe("click", onRowClick);
 
