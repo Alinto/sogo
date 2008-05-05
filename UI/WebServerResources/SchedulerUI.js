@@ -333,7 +333,6 @@ function eventsListCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     var div = $("eventsListView");
-
     document.eventsListAjaxRequest = null;
     var table = $("eventsList");
     lastClickedRow = -1; // from generic.js
@@ -357,22 +356,22 @@ function eventsListCallback(http) {
 	row.observe("dblclick", editDoubleClickedEvent);
 	row.observe("contextmenu", onEventContextMenu);
       
-	var td = document.createElement("td");
+	var td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][3]));
 
-	td = document.createElement("td");
+	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][10]));
 
-	td = document.createElement("td");
+	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][11]));
       
-	td = document.createElement("td");
+	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
 	td.appendChild(document.createTextNode(data[i][6]));
@@ -413,18 +412,18 @@ function tasksListCallback(http) {
       var data = http.responseText.evalJSON(true);
 
       for (var i = 0; i < data.length; i++) {
-	var listItem = document.createElement("li");
+	var listItem = $(document.createElement("li"));
 	list.appendChild(listItem);
 	listItem.observe("mousedown", listRowMouseDownHandler);
 	listItem.observe("click", onRowClick);
 	listItem.observe("dblclick", editDoubleClickedEvent);
 	listItem.setAttribute("id", data[i][0]);
-	$(listItem).addClassName(data[i][5]);
-	$(listItem).addClassName(data[i][6]);
+	listItem.addClassName(data[i][5]);
+	listItem.addClassName(data[i][6]);
 	listItem.calendar = data[i][1];
-	$(listItem).addClassName("calendarFolder" + data[i][1]);
+	listItem.addClassName("calendarFolder" + data[i][1]);
 	listItem.cname = escape(data[i][0]);
-	var input = document.createElement("input");
+	var input = $(document.createElement("input"));
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
 	input.observe("click", updateTaskStatus, true);
@@ -1615,10 +1614,9 @@ function onCalendarModify(event) {
   var selected = folders.getSelectedNodes()[0];
   var calendarID = selected.getAttribute("id");
   var url = ApplicationBaseURL + calendarID + "/properties";
-  var properties = window.open(url, calendarID + "properties",
-			       "width=300,height=100,resizable=0,scrollbars=0"
-			       + "toolbar=0,location=0,directories=0,status=0,"
-			       + "menubar=0,copyhistory=0");
+  var windowID = (calendarID + "properties").replace("/", "_", "g");
+  var properties = window.open(url, windowID,
+			       "width=300,height=100,resizable=0");
   properties.focus();
 }
 
