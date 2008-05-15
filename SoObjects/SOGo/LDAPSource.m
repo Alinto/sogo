@@ -249,14 +249,11 @@ static int sizeLimit;
   NSString *currentField;
 
   qs = [NSMutableString string];
+
   fields = [[bindFields componentsSeparatedByString: @","] objectEnumerator];
-  currentField = [fields nextObject];
-  while (currentField)
-    {
-      [qs appendFormat: @"OR (%@='%@')", currentField, uid];
-      currentField = [fields nextObject];
-    }
-  [qs deleteCharactersInRange: NSMakeRange (0, 3)];
+  while ((currentField = [fields nextObject]))
+    [qs appendFormat: @" OR (%@='%@')", currentField, uid];
+  [qs deleteCharactersInRange: NSMakeRange (0, 4)];
 
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
