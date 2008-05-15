@@ -450,9 +450,9 @@ function openMailbox(mailbox, reload, idx) {
       messageContent.update();
       lastClickedRow = -1; // from generic.js
     }
-    
+
     var currentMessage;
-      
+
     if (!idx) {
       currentMessage = Mailer.currentMessages[mailbox];
       if (currentMessage) {
@@ -1033,13 +1033,13 @@ function newContactFromEmail(event) {
 
   var email = extractEmailAddress(mailto);
   var c_name = extractEmailName(mailto);
-  if (email.length > 0)
-    {
-      var url = UserFolderURL + "Contacts/new?contactEmail=" + email;
-      if (c_name)
-	url += "&contactFN=" + c_name;
-      openContactWindow(url);
-    }
+  if (email.length > 0) {
+    var url = (UserFolderURL + "Contacts/personal/newcontact?contactEmail="
+	       + encodeURI(email));
+    if (c_name)
+      url += "&contactFN=" + c_name;
+    openContactWindow(url);
+  }
 
   return false; /* stop following the link */
 }
