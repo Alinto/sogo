@@ -91,11 +91,6 @@
   return [self _selectActionForApplication: @"view"];
 }
 
-- (id) newAction
-{
-  return [self _selectActionForApplication: @"new"];
-}
-
 - (id) selectForMailerAction
 {
   return [self _selectActionForApplication: @"mailer-contacts"];

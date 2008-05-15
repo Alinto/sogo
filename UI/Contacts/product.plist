@@ -1,4 +1,4 @@
-{ /* -*-javascript-*- */
+{ /* -*-java-*- */
   requires = ( MAIN, MainUI, CommonUI, Contacts );
 
   publicResources = ();
@@ -11,11 +11,6 @@
            view = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
-           };
-           new = {
-              protectedBy = "View";
-              pageName    = "UIxContactFoldersView";
-              actionName  = "new";
            };
            mailer-contacts = {
               protectedBy = "View";
