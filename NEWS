@@ -15,6 +15,9 @@
 - bi-weekly events would appear every week instead
 - weekly events with specified days of week would not appear on the correct days
 - started supporting Lightning 0.8, improved general implementation of the CalDAV protocol
+- added support for calendar colors, both in the web and DAV interfaces
+- refactored and fixed the implementation of DAV acl, with partial support for CalDAV Scheduling extensions
+- removed the limitation that prevented the user of underscore characters in usernames
 
 0.9.0-20080208 (1.0 rc5)
 ------------------------
