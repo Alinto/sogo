@@ -138,10 +138,13 @@ static BOOL sendFolderAdvisories = NO;
 {
   id newFolder;
   NSArray *elements, *pathElements;
-  NSString *path, *objectPath, *login, *ocsName, *folderName;
+  NSString *path, *objectPath, *login, *currentUser, *ocsName, *folderName;
+  WOContext *context;
 
   elements = [reference componentsSeparatedByString: @":"];
   login = [elements objectAtIndex: 0];
+  context = [[WOApplication application] context];
+  currentUser = [[context activeUser] login];
   objectPath = [elements objectAtIndex: 1];
   pathElements = [objectPath componentsSeparatedByString: @"/"];
   if ([pathElements count] > 1)
@@ -155,6 +158,7 @@ static BOOL sendFolderAdvisories = NO;
   newFolder = [self objectWithName: folderName inContainer: aContainer];
   [newFolder setOCSPath: path];
   [newFolder setOwner: login];
+  [newFolder setIsSubscription: ![login isEqualToString: currentUser]];
   if (![newFolder displayName])
     newFolder = nil;
 
@@ -284,27 +288,21 @@ static BOOL sendFolderAdvisories = NO;
 
 - (NSString *) folderReference
 {
-  NSString *login, *reference, *realName;
-  NSArray *nameComponents;
+  return [NSString stringWithFormat: @"%@:%@/%@",
+		   owner,
+		   [container nameInContainer],
+		   [self realNameInContainer]];
+}
 
-  login = [[context activeUser] login];
-  if ([owner isEqualToString: login])
-    reference = nameInContainer;
-  else
-    {
-      nameComponents = [nameInContainer componentsSeparatedByString: @"_"];
-      if ([nameComponents count] > 1)
-	realName = [nameComponents objectAtIndex: 1];
-      else
-	realName = nameInContainer;
+- (NSArray *) pathArrayToFolder
+{
+  NSArray *basePathElements;
+  unsigned int max;
 
-      reference = [NSString stringWithFormat: @"%@:%@/%@",
-			    owner,
-			    [container nameInContainer],
-			    realName];
-    }
+  basePathElements = [[self ocsPath] componentsSeparatedByString: @"/"];
+  max = [basePathElements count];
 
-  return reference;
+  return [basePathElements subarrayWithRange: NSMakeRange (2, max - 2)];
 }
 
 - (NSString *) davDisplayName
@@ -497,7 +495,6 @@ static BOOL sendFolderAdvisories = NO;
     }
 }
 
-#warning this method is dirty code
 - (NSDictionary *) fetchContentStringsAndNamesOfAllObjects
 {
   NSDictionary *files;
@@ -508,27 +505,23 @@ static BOOL sendFolderAdvisories = NO;
       [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
       return nil;
     }
-  if ([files isKindOfClass:[NSException class]])
-    return files;
+
   return files;
 }
 
 #warning this code should be cleaned up
-#warning this code is a dup of UIxFolderActions,\
-         we should remove the methods there
 - (void) _subscribeUser: (SOGoUser *) subscribingUser
 	       reallyDo: (BOOL) reallyDo
+     fromMailInvitation: (BOOL) isMailInvitation
 	     inResponse: (WOResponse *) response
 {
   NSMutableArray *folderSubscription;
-  NSString *subscriptionPointer, *baseFolder, *folder;
+  NSString *subscriptionPointer, *mailInvitationURL;
   NSUserDefaults *ud;
-  NSArray *realFolderPath;
   NSMutableDictionary *moduleSettings;
 
   ud = [subscribingUser userSettings];
-  baseFolder = [container nameInContainer];
-  moduleSettings = [ud objectForKey: baseFolder];
+  moduleSettings = [ud objectForKey: [container nameInContainer]];
 
   if ([owner isEqualToString: [subscribingUser login]])
     {
@@ -548,12 +541,6 @@ static BOOL sendFolderAdvisories = NO;
 			  forKey: @"SubscribedFolders"];
 	}
 
-      realFolderPath = [nameInContainer componentsSeparatedByString: @"_"];
-      if ([realFolderPath count] > 1)
-	folder = [realFolderPath objectAtIndex: 1];
-      else
-	folder = [realFolderPath objectAtIndex: 0];
-
       subscriptionPointer = [self folderReference];
       if (reallyDo)
 	[folderSubscription addObjectUniquely: subscriptionPointer];
@@ -562,13 +549,23 @@ static BOOL sendFolderAdvisories = NO;
 
       [ud synchronize];
 
-      [response setStatus: 204];
+      if (isMailInvitation)
+	{
+	  mailInvitationURL = [[self soURLToBaseContainerForCurrentUser]
+				absoluteString];
+	  [response setStatus: 302];
+	  [response setHeader: mailInvitationURL
+		    forKey: @"location"];
+	}
+      else
+	[response setStatus: 204];
     }
 }
 
-- (WOResponse *) _subscribe: (BOOL) reallyDo
-		inTheNameOf: (NSString *) delegatedUser
-		  inContext: (WOContext *) localContext
+- (WOResponse *) subscribe: (BOOL) reallyDo
+	       inTheNameOf: (NSString *) delegatedUser
+	fromMailInvitation: (BOOL) isMailInvitation
+		 inContext: (WOContext *) localContext
 {
   WOResponse *response;
   SOGoUser *currentUser, *subscriptionUser;
@@ -591,6 +588,7 @@ static BOOL sendFolderAdvisories = NO;
   if (validRequest)
     [self _subscribeUser: subscriptionUser
 	  reallyDo: reallyDo
+	  fromMailInvitation: isMailInvitation
 	  inResponse: response];
   else
     {
@@ -616,15 +614,17 @@ static BOOL sendFolderAdvisories = NO;
 
 - (id <WOActionResults>) davSubscribe: (WOContext *) queryContext
 {
-  return [self _subscribe: YES
+  return [self subscribe: YES
 	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       fromMailInvitation: NO
 	       inContext: queryContext];
 }
 
 - (id <WOActionResults>) davUnsubscribe: (WOContext *) queryContext
 {
-  return [self _subscribe: NO
+  return [self subscribe: NO
 	       inTheNameOf: [self _parseDAVDelegatedUser: queryContext]
+	       fromMailInvitation: NO
 	       inContext: queryContext];
 }
 
@@ -784,7 +784,7 @@ static BOOL sendFolderAdvisories = NO;
 /* acls */
 - (NSArray *) aclUsers
 {
-  return [self aclUsersForObjectAtPath: [self pathArrayToSOGoObject]];
+  return [self aclUsersForObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
@@ -793,8 +793,7 @@ static BOOL sendFolderAdvisories = NO;
   NSArray *ownAcls, *containerAcls;
 
   acls = [NSMutableArray array];
-  ownAcls = [self aclsForUser: uid
-		  forObjectAtPath: [self pathArrayToSOGoObject]];
+  ownAcls = [self aclsForUser: uid forObjectAtPath: [self pathArrayToFolder]];
   [acls addObjectsFromArray: ownAcls];
   if ([container respondsToSelector: @selector (aclsForUser:)])
     {
@@ -815,13 +814,13 @@ static BOOL sendFolderAdvisories = NO;
 {
   return [self setRoles: roles
                forUser: uid
-               forObjectAtPath: [self pathArrayToSOGoObject]];
+               forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
 {
   return [self removeAclsForUsers: users
-               forObjectAtPath: [self pathArrayToSOGoObject]];
+               forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (NSString *) defaultUserID

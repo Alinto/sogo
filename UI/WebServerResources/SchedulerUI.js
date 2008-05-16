@@ -1754,10 +1754,11 @@ function onCalendarRemove(event) {
     var nodes = $("calendarList").getSelectedNodes();
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].deselect();
-      var folderId = nodes[i].getAttribute("id");
-      var folderIdElements = folderId.split("_");
-      if (folderIdElements.length > 1) {
-	unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+      var owner = nodes[i].getAttribute("owner");
+      if (owner != UserLogin) {
+	var folderId = nodes[i].getAttribute("id");
+	unsubscribeFromFolder(folderId, owner,
+			      onFolderUnsubscribeCB, folderId);
       }
       else
 	deletePersonalCalendar(folderIdElements[0]);

@@ -65,7 +65,10 @@
 - (id) init
 {
   if ((self = [super init]))
-    displayName = nil;
+    {
+      displayName = nil;
+      isSubscription = NO;
+    }
 
   return self;
 }
@@ -84,6 +87,32 @@
 - (NSString *) displayName
 {
   return ((displayName) ? displayName : nameInContainer);
+}
+
+- (void) setIsSubscription: (BOOL) newIsSubscription
+{
+  isSubscription = newIsSubscription;
+}
+
+- (BOOL) isSubscription
+{
+  return isSubscription;
+}
+
+- (NSString *) realNameInContainer
+{
+  NSString *realNameInContainer, *ownerName;
+
+  if (isSubscription)
+    {
+      ownerName = [self ownerInContext: context];
+      realNameInContainer
+	= [nameInContainer substringFromIndex: [ownerName length] + 1];
+    }
+  else
+    realNameInContainer = nameInContainer;
+
+  return realNameInContainer;
 }
 
 - (NSString *) folderType
@@ -132,26 +161,13 @@
 /* sorting */
 - (NSComparisonResult) _compareByOrigin: (SOGoFolder *) otherFolder
 {
-  NSArray *thisElements, *otherElements;
-  unsigned thisCount, otherCount;
   NSComparisonResult comparison;
 
-  thisElements = [nameInContainer componentsSeparatedByString: @"_"];
-  otherElements = [[otherFolder nameInContainer]
-		    componentsSeparatedByString: @"_"];
-  thisCount = [thisElements count];
-  otherCount = [otherElements count];
-  if (thisCount == otherCount)
-    {
-      if (thisCount == 1)
-	comparison = NSOrderedSame;
-      else
-	comparison = [[thisElements objectAtIndex: 0]
-		       compare: [otherElements objectAtIndex: 0]];
-    }
+  if (isSubscription == [otherFolder isSubscription])
+    comparison = NSOrderedSame;
   else
     {
-      if (thisCount > otherCount)
+      if (isSubscription)
 	comparison = NSOrderedDescending;
       else
 	comparison = NSOrderedAscending;
@@ -162,23 +178,24 @@
 
 - (NSComparisonResult) _compareByNameInContainer: (SOGoFolder *) otherFolder
 {
-  NSString *otherName;
+  NSString *selfName, *otherName;
   NSComparisonResult comparison;
 
-  otherName = [otherFolder nameInContainer];
-  if ([nameInContainer hasSuffix: @"personal"])
+  selfName = [self realNameInContainer];
+  otherName = [otherFolder realNameInContainer];
+  if ([selfName isEqualToString: @"personal"])
     {
-      if ([otherName hasSuffix: @"personal"])
-	comparison = [nameInContainer compare: otherName];
+      if ([otherName isEqualToString: @"personal"])
+	comparison = NSOrderedSame;
       else
 	comparison = NSOrderedAscending;
     }
   else
     {
-      if ([otherName hasSuffix: @"personal"])
+      if ([otherName isEqualToString: @"personal"])
 	comparison = NSOrderedDescending;
       else
-	comparison = NSOrderedSame;
+	comparison = [selfName compare: otherName];
     }
 
   return comparison;

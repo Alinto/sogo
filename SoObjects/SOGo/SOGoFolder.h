@@ -28,10 +28,16 @@
 @interface SOGoFolder : SOGoObject
 {
   NSMutableString *displayName;
+  BOOL isSubscription;
 }
 
 - (void) setDisplayName: (NSString *) newDisplayName;
 - (NSString *) displayName;
+
+- (void) setIsSubscription: (BOOL) newIsSubscription;
+- (BOOL) isSubscription;
+
+- (NSString *) realNameInContainer;
 
 - (NSString *) folderType;
 - (NSArray *) fetchContentObjectNames;

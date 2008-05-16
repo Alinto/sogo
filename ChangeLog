@@ -1,5 +1,14 @@
 2008-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder
+	-subscribe:reallyDoinTheNameOf:delegatedUserfromMailInvitation:isMailInvitationinContext:localContext]):
+	published method.
+	([-folderReference]): no longer distingish between the user owned
+	and the subscribed folders.
+
+	* SoObjects/SOGo/SOGoFolder.m ([SOGoFolder -compare:otherFolder]):
+	no longer use the "_" in the folder's nameInContainer.
+
 	* UI/Common/UIxFolderActions.m ([UIxFolderActions -subscribeAction])
 	([UIxFolderActions -unsubscribeAction]): use the client object's
 	method for un-/subscribing.

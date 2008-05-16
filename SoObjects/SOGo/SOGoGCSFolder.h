@@ -30,6 +30,8 @@
 @class NSString;
 
 @class GCSFolder;
+@class WOContext;
+@class WOResponse;
 
 /*
   SOGoGCSFolder
@@ -60,6 +62,7 @@
 - (GCSFolder *) ocsFolder;
 
 - (NSString *) folderReference;
+- (NSArray *) pathArrayToFolder;
 
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
@@ -76,6 +79,11 @@
 - (BOOL) create;
 - (NSException *) delete;
 - (void) renameTo: (NSString *) newName;
+
+- (WOResponse *) subscribe: (BOOL) reallyDo
+	       inTheNameOf: (NSString *) delegatedUser
+	fromMailInvitation: (BOOL) isMailInvitation
+		 inContext: (WOContext *) localContext;
 
 /* acls as a container */
 - (NSArray *) aclUsersForObjectAtPath: (NSArray *) objectPathArray;

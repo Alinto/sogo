@@ -1061,18 +1061,16 @@ function folderUnsubscriptionCallback(http) {
   }
 }
 
-function unsubscribeFromFolder(folder, refreshCallback, refreshCallbackData) {
+function unsubscribeFromFolder(folder, owner, refreshCallback,
+			       refreshCallbackData) {
   if (document.body.hasClassName("popup")) {
     window.opener.unsubscribeFromFolder(folder, refreshCallback,
 					refreshCallbackData);
   }
   else {
-    var folderData = folder.split("_");
-    var username = folderData[0];
-    var folderPath = folderData[1];
-    if (username.startsWith('/'))
-      username = username.substring(1);
-    if (username != UserLogin) {
+    if (owner.startsWith('/'))
+      owner = owner.substring(1);
+    if (owner != UserLogin) {
       var url = (ApplicationBaseURL + folder + "/unsubscribe");
       removeFolderRequestCount++;
       var rfCbData = { method: refreshCallback, data: refreshCallbackData };

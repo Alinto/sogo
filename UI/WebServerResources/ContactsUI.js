@@ -623,12 +623,13 @@ function onFolderUnsubscribeCB(folderId) {
 function onAddressBookRemove(event) {
   var selector = $("contactFolders");
   var nodes = selector.getSelectedNodes();
-  if (nodes.length > 0) { 
+  if (nodes.length > 0) {
     nodes[0].deselect();
-    var folderId = nodes[0].getAttribute("id");
-    var folderIdElements = folderId.split("_");
-    if (folderIdElements.length > 1)
-      unsubscribeFromFolder(folderId, onFolderUnsubscribeCB, folderId);
+    var owner = nodes[0].getAttribute("owner");
+    if (owner != UserLogin) {
+      var folderId = nodes[0].getAttribute("id");
+      unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
+    }
     else {
       var abId = folderIdElements[0].substr(1);
       deletePersonalAddressBook(abId);

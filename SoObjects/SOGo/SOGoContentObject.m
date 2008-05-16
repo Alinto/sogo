@@ -381,7 +381,12 @@
 
 - (NSArray *) aclUsers
 {
-  return [container aclUsersForObjectAtPath: [self pathArrayToSOGoObject]];
+  NSMutableArray *pathArray;
+
+  pathArray = [NSMutableArray arrayWithArray: [container pathArrayToFolder]];
+  [pathArray addObject: nameInContainer];
+
+  return pathArray;
 }
 
 - (NSArray *) aclsForUser: (NSString *) uid
