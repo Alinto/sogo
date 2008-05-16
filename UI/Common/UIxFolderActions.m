@@ -45,9 +45,6 @@
 
 @implementation UIxFolderActions
 
-#warning some of this code could probably be moved in one of the \
-         clientObject classes...
-
 - (void) _setupContext
 {
   NSString *mailInvitationParam;
@@ -75,65 +72,24 @@
   isMailInvitation = [mailInvitationParam boolValue];
 }
 
-- (WOResponse *) _realSubscribe: (BOOL) reallyDo
-{
-  WOResponse *response;
-  NSMutableArray *folderSubscription;
-  NSString *mailInvitationURL, *subscriptionPointer;
-
-  if ([owner isEqualToString: login])
-    {
-      response = [self responseWithStatus: 403];
-      [response appendContentString:
-		 @"You cannot (un)subscribe to a folder that you own!"];
-    }
-  else
-    {
-      folderSubscription
-	= [moduleSettings objectForKey: @"SubscribedFolders"];
-      if (!(folderSubscription
-	    && [folderSubscription isKindOfClass: [NSMutableArray class]]))
-	{
-	  folderSubscription = [NSMutableArray array];
-	  [moduleSettings setObject: folderSubscription
-			  forKey: @"SubscribedFolders"];
-	}
-      subscriptionPointer = [[self clientObject] folderReference];
-      if (reallyDo)
-	[folderSubscription addObjectUniquely: subscriptionPointer];
-      else
-	[folderSubscription removeObject: subscriptionPointer];
-
-      [ud synchronize];
-
-      if (isMailInvitation)
-	{
-	  mailInvitationURL
-	    = [[clientObject soURLToBaseContainerForCurrentUser]
-		absoluteString];
-	  response = [self responseWithStatus: 302];
-	  [response setHeader: mailInvitationURL
-		    forKey: @"location"];
-	}
-      else
-	response = [self responseWith204];
-    }
-
-  return response;
-}
-
 - (WOResponse *) subscribeAction
 {
   [self _setupContext];
 
-  return [self _realSubscribe: YES];
+  return [clientObject subscribe: YES
+		       inTheNameOf: nil
+		       fromMailInvitation: isMailInvitation
+		       inContext: context];
 }
 
 - (WOResponse *) unsubscribeAction
 {
   [self _setupContext];
 
-  return [self _realSubscribe: NO];
+  return [clientObject subscribe: NO
+		       inTheNameOf: nil
+		       fromMailInvitation: isMailInvitation
+		       inContext: context];
 }
 
 - (WOResponse *) canAccessContentAction
