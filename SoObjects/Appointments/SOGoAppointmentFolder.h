@@ -73,22 +73,21 @@
 /* fetching */
 
 - (NSArray *) fetchFields: (NSArray *) _fields
-               fromFolder: (GCSFolder *) _folder
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate
 		    title: (NSString *) title
-                component: (id) _component;
-
-- (NSArray * ) fetchFields: (NSArray *) _fields
-                      from: (NSCalendarDate *) _startDate
-                        to: (NSCalendarDate *) _endDate
-		     title: (NSString *) title
-                 component: (id) _component;
+                component: (id) _component
+	additionalFilters: (NSString *) filters;
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
 			   title: (NSString *) title
                        component: (id) _component;
+- (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
+                              to: (NSCalendarDate *) _endDate
+			   title: (NSString *) title
+                       component: (id) _component
+	       additionalFilters: (NSString *) filters;
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate;

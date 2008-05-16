@@ -35,6 +35,7 @@
 #import <NGExtensions/NGLoggerManager.h>
 #import <NGExtensions/NSString+misc.h>
 #import <GDLContentStore/GCSFolder.h>
+#import <DOM/DOMNode.h>
 #import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
 #import <NGCards/iCalCalendar.h>
@@ -504,6 +505,7 @@ static NSNumber   *sharedYes = nil;
   return propstats;
 }
 
+#warning We need to use the new DAV utilities here...
 - (void) appendObject: (NSDictionary *) object
 	   properties: (NSArray *) properties
           withBaseURL: (NSString *) baseURL
@@ -546,11 +548,34 @@ static NSNumber   *sharedYes = nil;
   [filter setObject: parsedDate forKey: @"end"];
 }
 
+#warning This method lacks support for timeranges
+- (void) _appendPropertyFilter: (id <DOMElement>) propFilter
+		      toFilter: (NSMutableDictionary *) filter
+{
+  NSString *propName, *textMatch;
+  id <DOMNodeList> matches;
+
+  propName = [[propFilter attribute: @"name"] lowercaseString];
+  matches = [propFilter getElementsByTagName: @"text-match"];
+  if ([matches length])
+    textMatch = [[matches objectAtIndex: 0] textValue];
+  else
+    {
+      matches = [propFilter getElementsByTagName: @"is-not-defined"];
+      if ([matches length])
+	textMatch = @"NULL";
+      else
+	textMatch = @"";
+    }
+
+  [filter setObject: textMatch forKey: propName];
+}
+
 - (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
 {
   NSMutableDictionary *filterData;
   id <DOMElement> parentNode;
-  id <DOMNodeList> ranges;
+  id <DOMNodeList> elements;
   NSString *componentName;
 
   parentNode = (id <DOMElement>) [filterElement parentNode];
@@ -558,12 +583,16 @@ static NSNumber   *sharedYes = nil;
       && [[parentNode attribute: @"name"] isEqualToString: @"VCALENDAR"])
     {
       componentName = [[filterElement attribute: @"name"] lowercaseString];
-      filterData = [NSMutableDictionary new];
-      [filterData autorelease];
+      filterData = [NSMutableDictionary dictionary];
       [filterData setObject: componentName forKey: @"name"];
-      ranges = [filterElement getElementsByTagName: @"time-range"];
-      if ([ranges length])
-        [self _appendTimeRange: [ranges objectAtIndex: 0]
+      elements = [filterElement getElementsByTagName: @"time-range"];
+      if ([elements length])
+        [self _appendTimeRange: [elements objectAtIndex: 0]
+              toFilter: filterData];
+
+      elements = [filterElement getElementsByTagName: @"prop-filter"];
+      if ([elements length])
+        [self _appendPropertyFilter: [elements objectAtIndex: 0]
               toFilter: filterData];
     }
   else
@@ -623,36 +652,88 @@ static NSNumber   *sharedYes = nil;
   return filters;
 }
 
+- (NSString *) _additionalFilterKey: (NSString *) key
+			      value: (NSString *) value
+{
+  NSString *filterString;
+
+  if ([value length])
+    {
+      if ([value isEqualToString: @"NULL"])
+	filterString = [NSString stringWithFormat: @"(%@ = '')", key];
+      else
+	filterString
+	  = [NSString stringWithFormat: @"(%@ like '%%%@%%')", key, value];
+    }
+  else
+    filterString = [NSString stringWithFormat: @"(%@ != '')", key];
+
+  return filterString;
+}
+
+- (NSString *) _composeAdditionalFilters: (NSDictionary *) filter
+{
+  NSString *additionalFilter;
+  NSEnumerator *keys;
+  NSString *currentKey, *keyField, *filterString;
+  static NSArray *fields = nil;
+  NSMutableArray *filters;
+
+#warning the list of fields should be taken from the .ocs description file
+  if (!fields)
+    {
+      fields = [NSArray arrayWithObject: @"c_uid"];
+      [fields retain];
+    }
+
+  filters = [NSMutableArray new];
+  keys = [[filter allKeys] objectEnumerator];
+  while ((currentKey = [keys nextObject]))
+    {
+      keyField = [NSString stringWithFormat: @"c_%@", currentKey];
+      if ([fields containsObject: keyField])
+	{
+	  filterString = [self _additionalFilterKey: keyField
+			       value: [filter objectForKey: currentKey]];
+	  [filters addObject: filterString];
+	}
+    }
+
+  if ([filters count])
+    additionalFilter = [filters componentsJoinedByString: @" and "];
+  else
+    additionalFilter = nil;
+  [filters release];
+
+  return additionalFilter;
+}
+
 - (void) _appendComponentProperties: (NSArray *) properties
 		    matchingFilters: (NSArray *) filters
 			 toResponse: (WOResponse *) response
 {
   NSArray *apts;
-  unsigned int count, max;
   NSDictionary *currentFilter, *appointment;
-  NSEnumerator *appointments;
-  NSString *baseURL;
+  NSEnumerator *appointments, *filterList;
+  NSString *baseURL, *additionalFilters;
 
   baseURL = [self baseURLInContext: context];
 
-  max = [filters count];
-  for (count = 0; count < max; count++)
+  filterList = [filters objectEnumerator];
+  while ((currentFilter = [filterList nextObject]))
     {
-      currentFilter = [filters objectAtIndex: count];
+      additionalFilters = [self _composeAdditionalFilters: currentFilter];
       apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
                    to: [currentFilter objectForKey: @"end"]
 		   title: [currentFilter objectForKey: @"title"]
-                   component: [currentFilter objectForKey: @"name"]];
+                   component: [currentFilter objectForKey: @"name"]
+		   additionalFilters: additionalFilters];
       appointments = [apts objectEnumerator];
-      appointment = [appointments nextObject];
-      while (appointment)
-        {
-          [self appendObject: appointment
-		properties: properties
-                withBaseURL: baseURL
-                toComplexResponse: response];
-          appointment = [appointments nextObject];
-        }
+      while ((appointment = [appointments nextObject]))
+	[self appendObject: appointment
+	      properties: properties
+	      withBaseURL: baseURL
+	      toComplexResponse: response];
     }
 }
 
@@ -774,7 +855,8 @@ static NSNumber   *sharedYes = nil;
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+  [self _appendComponentProperties:
+	  [self _parseRequestedProperties: documentElement]
 	matchingFilters: [self _parseCalendarFilters: documentElement]
         toResponse: r];
   [r appendContentString:@"</D:multistatus>\r\n"];
@@ -989,8 +1071,13 @@ static NSNumber   *sharedYes = nil;
   
   if (![_uid isNotNull])
     return nil;
-  if ((rname = [uidToFilename objectForKey:_uid]) != nil)
-    return [rname isNotNull] ? rname : nil;
+  rname = [uidToFilename objectForKey:_uid];
+  if (rname)
+    {
+      if (![rname isNotNull])
+	rname = nil;
+      return rname;
+    }
   
   if ((folder = [self ocsFolder]) == nil) {
     [self errorWithFormat:@"(%s): missing folder for fetch!",
@@ -1384,20 +1471,22 @@ static NSNumber   *sharedYes = nil;
 }
 
 - (NSArray *) fetchFields: (NSArray *) _fields
-               fromFolder: (GCSFolder *) _folder
                      from: (NSCalendarDate *) _startDate
                        to: (NSCalendarDate *) _endDate 
 		    title: (NSString *) title
                 component: (id) _component
+	additionalFilters: (NSString *) filters
 {
   EOQualifier *qualifier;
+  GCSFolder *folder;
   NSMutableArray *fields, *ma = nil;
   NSArray *records;
   NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySqlString, *currentLogin;
+    *privacySqlString, *currentLogin, *filterSqlString;
   NGCalendarDateRange *r;
 
-  if (!_folder)
+  folder = [self ocsFolder];
+  if (!folder)
     {
       [self errorWithFormat:@"(%s): missing folder for fetch!",
             __PRETTY_FUNCTION__];
@@ -1424,6 +1513,10 @@ static NSNumber   *sharedYes = nil;
 
   componentSqlString = [self _sqlStringForComponent: _component];
   privacySqlString = [self _privacySqlString];
+  if (filters)
+    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
+  else
+    filterSqlString = @"";
 
   /* prepare mandatory fields */
 
@@ -1435,14 +1528,14 @@ static NSNumber   *sharedYes = nil;
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
 
-  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@",
-                  dateSqlString, titleSqlString,
-		  componentSqlString, privacySqlString];
+  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@%@",
+                  dateSqlString, titleSqlString, componentSqlString,
+                  privacySqlString, filterSqlString];
 
   /* fetch non-recurrent apts first */
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  records = [_folder fetchFields: fields matchingQualifier: qualifier];
+  records = [folder fetchFields: fields matchingQualifier: qualifier];
   if (records)
     {
       if (r)
@@ -1456,12 +1549,12 @@ static NSNumber   *sharedYes = nil;
   /* fetch recurrent apts now. we do NOT consider the date range when doing that
      as the c_startdate/c_enddate of a recurring event is always set to the first
      recurrence - others are generated on the fly */
-  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@", titleSqlString,
-		  componentSqlString, privacySqlString];
+  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@%@", titleSqlString,
+		  componentSqlString, privacySqlString, filterSqlString];
 
   qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
-  records = [_folder fetchFields: fields matchingQualifier: qualifier];
+  records = [folder fetchFields: fields matchingQualifier: qualifier];
 
   if (records)
     {
@@ -1494,27 +1587,6 @@ static NSNumber   *sharedYes = nil;
   return ma;
 }
 
-/* override this in subclasses */
-- (NSArray *) fetchFields: (NSArray *) _fields
-                     from: (NSCalendarDate *) _startDate
-                       to: (NSCalendarDate *) _endDate 
-		    title: (NSString *) title
-                component: (id) _component
-{
-  GCSFolder *folder;
-  
-  if ((folder = [self ocsFolder]) == nil) {
-    [self errorWithFormat:@"(%s): missing folder for fetch!",
-      __PRETTY_FUNCTION__];
-    return nil;
-  }
-
-  return [self fetchFields: _fields fromFolder: folder
-               from: _startDate to: _endDate
-	       title: title
-               component: _component];
-}
-
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate
 {
@@ -1524,15 +1596,27 @@ static NSNumber   *sharedYes = nil;
     infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
                              @"c_isopaque", @"c_status", nil];
 
-  return [self fetchFields: infos from: _startDate to: _endDate
+  return [self fetchFields: infos
+	       from: _startDate to: _endDate
 	       title: nil
-               component: @"vevent"];
+               component: @"vevent"
+	       additionalFilters: nil];
 }
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
 			   title: (NSString *) title
                        component: (id) _component
+{
+  return [self fetchCoreInfosFrom: _startDate to: _endDate title: title
+	       component: _component additionalFilters: nil];
+}
+
+- (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
+                              to: (NSCalendarDate *) _endDate
+			   title: (NSString *) title
+                       component: (id) _component
+	       additionalFilters: (NSString *) filters
 {
   static NSArray *infos = nil; // TODO: move to a plist file
 
@@ -1543,11 +1627,12 @@ static NSNumber   *sharedYes = nil;
                              @"c_status", @"c_classification",
                              @"c_isallday", @"c_isopaque",
                              @"c_participants", @"c_partmails",
-                             @"c_partstates", @"c_sequence", @"c_priority", @"c_cycleinfo",
-			     nil];
+                             @"c_partstates", @"c_sequence", @"c_priority",
+			     @"c_cycleinfo", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
-               component: _component];
+               component: _component
+	       additionalFilters: filters];
 }
 
 /* URL generation */
@@ -1702,21 +1787,27 @@ static NSNumber   *sharedYes = nil;
   if ([_uids count] == 0) return nil;
   objs = [NSMutableArray arrayWithCapacity:16];
   e    = [_uids objectEnumerator];
-  while ((uid = [e nextObject])) {
-    id obj;
+  while ((uid = [e nextObject]))
+    {
+      id obj;
     
-    obj = [self lookupHomeFolderForUID:uid inContext:nil];
-    if ([obj isNotNull]) {
-      obj = [obj lookupName:@"freebusy.ifb" inContext:nil acquire:NO];
-      if ([obj isKindOfClass:[NSException class]])
-	obj = nil;
+      obj = [self lookupHomeFolderForUID:uid inContext:nil];
+      if ([obj isNotNull])
+	{
+	  obj = [obj lookupName: @"freebusy.ifb" inContext: nil acquire: NO];
+	  if ([obj isKindOfClass: [NSException class]])
+	    obj = nil;
+	}
+      if (![obj isNotNull])
+	[self logWithFormat: @"Note: did not find freebusy.ifb for uid: '%@'",
+	      uid];
+    
+      /* Note: intentionally add 'null' folders to allow a mapping */
+      if (!obj)
+	obj = [NSNull null];
+      [objs addObject: obj];
     }
-    if (![obj isNotNull])
-      [self logWithFormat:@"Note: did not find freebusy.ifb for uid: '%@'", uid];
-    
-    /* Note: intentionally add 'null' folders to allow a mapping */
-    [objs addObject:obj ? obj : [NSNull null]];
-  }
+
   return objs;
 }
 
@@ -1734,21 +1825,24 @@ static NSNumber   *sharedYes = nil;
   uids  = [NSMutableArray arrayWithCapacity:count + 1];
   um    = [LDAPUserManager sharedUserManager];
   
-  for (i = 0; i < count; i++) {
-    iCalPerson *person;
-    NSString   *email;
-    NSString   *uid;
+  for (i = 0; i < count; i++)
+    {
+      iCalPerson *person;
+      NSString   *email;
+      NSString   *uid;
     
-    person = [_persons objectAtIndex:i];
-    email  = [person rfc822Email];
-    if ([email isNotNull]) {
-      uid = [um getUIDForEmail:email];
+      person = [_persons objectAtIndex:i];
+      email  = [person rfc822Email];
+      if ([email isNotNull])
+	uid = [um getUIDForEmail:email];
+      else
+	uid = nil;
+
+      if (!uid)
+	uid = (NSString *) [NSNull null];
+      [uids addObject: uid];
     }
-    else
-      uid = nil;
-    
-    [uids addObject:(uid != nil ? uid : (id)[NSNull null])];
-  }
+
   return uids;
 }
 
@@ -1925,7 +2019,9 @@ static NSNumber   *sharedYes = nil;
     cNameField = [[NSArray alloc] initWithObjects: @"c_name", nil];
 
   return [[self fetchFields: cNameField from: nil to: nil
-		title: nil component: nil] objectsForKey: @"c_name"];
+		title: nil component: nil
+		additionalFilters: nil]
+	   objectsForKey: @"c_name"];
 }
 
 /* folder type */

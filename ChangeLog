@@ -1,3 +1,9 @@
+2008-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davCalendarQuery:queryContext]): added
+	partial support for the "text-match" caldav directive.
+
 2008-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([-newAction]): removed
