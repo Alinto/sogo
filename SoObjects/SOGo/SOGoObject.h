@@ -82,8 +82,6 @@
 - (NSString *) nameInContainer;
 - (id) container;
 
-- (NSArray *) pathArrayToSOGoObject;
-
 - (NSURL *) davURL;
 - (NSURL *) soURL;
 - (NSURL *) soURLToBaseContainerForUser: (NSString *) uid;
