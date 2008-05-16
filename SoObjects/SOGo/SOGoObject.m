@@ -246,33 +246,6 @@ static NSDictionary *reportMap = nil;
   return container;
 }
 
-- (NSArray *) pathArrayToSOGoObject
-{
-  NSMutableArray *realPathArray;
-  NSString *objectName;
-  NSArray *objectDescription;
-
-  realPathArray
-    = [NSMutableArray arrayWithArray: [self pathArrayToSoObject]];
-  if ([realPathArray count] > 2)
-    {
-      objectName = [realPathArray objectAtIndex: 2];
-      if ([objectName isKindOfClass: [NSString class]])
-	{
-	  objectDescription = [objectName componentsSeparatedByString: @"_"];
-	  if ([objectDescription count] > 1)
-	    {
-	      [realPathArray replaceObjectAtIndex: 0
-			     withObject: [objectDescription objectAtIndex: 0]];
-	      [realPathArray replaceObjectAtIndex: 2
-			     withObject: [objectDescription objectAtIndex: 1]];
-	    }
-	}
-    }
-
-  return realPathArray;
-}
-
 /* ownership */
 
 - (void) setOwner: (NSString *) newOwner
