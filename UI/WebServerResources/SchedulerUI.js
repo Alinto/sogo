@@ -1622,9 +1622,13 @@ function onCalendarModify(event) {
 
 function updateCalendarProperties(calendarID, calendarName, calendarColor) {
   var idParts = calendarID.split(":");
-  var nodeID = "/" + idParts[0];
-  if (idParts.length > 1)
-    nodeID += "_" + idParts[1].split("/")[1];
+  var folderName = idParts[1].split("/")[1];
+  var nodeID;
+  if (idParts[0] != UserLogin)
+    nodeID = "/" + idParts[0] + "_" + folderName;
+  else
+    nodeID = "/" + folderName;
+  log("nodeID: " + nodeID);
   var calendarNode = $(nodeID);
   var childNodes = calendarNode.childNodes;
   childNodes[childNodes.length-1].nodeValue = calendarName;
@@ -1688,8 +1692,7 @@ function appendCalendar(folderName, folderPath) {
     li.appendChild(checkBox);
     li.appendChild(document.createTextNode(" "));
     $(checkBox).addClassName("checkBox");
-    if (owner == UserLogin)
-      checkBox.checked = 1;
+    checkBox.checked = 1;
 
     var colorBox = document.createElement("div");
     li.appendChild(colorBox);
