@@ -355,7 +355,7 @@ function triggerAjaxRequest(url, callback, userdata, content, headers) {
 	cLength = "" + content.length;
       http.setRequestHeader("Content-Length", "" + cLength);
     }
-    http.send(content);
+    http.send(content ? content : "");
   }
   else {
     log("triggerAjaxRequest: error creating HTTP Client!");

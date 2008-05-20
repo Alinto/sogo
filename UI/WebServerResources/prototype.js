@@ -1219,7 +1219,7 @@ Ajax.Request = Class.create(Ajax.Base, {
       this.transport.onreadystatechange = this.onStateChange.bind(this);
       this.setRequestHeaders();
 
-      this.body = this.method == 'post' ? (this.options.postBody || params) : null;
+      this.body = this.method == 'post' ? (this.options.postBody || params) : '';
       this.transport.send(this.body);
 
       /* Force Firefox to handle ready state 4 for synchronous requests */
