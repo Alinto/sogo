@@ -418,6 +418,44 @@ Index: sope-mime/NGMail/NGSmtpClient.m
      [self->connection flush];
  
      reply = [self receiveReply];
+Index: sope-mime/NGMail/NGMailAddressParser.h
+===================================================================
+--- sope-mime/NGMail/NGMailAddressParser.h	(révision 1621)
++++ sope-mime/NGMail/NGMailAddressParser.h	(copie de travail)
+@@ -24,7 +24,9 @@
+ 
+ #import <Foundation/NSObject.h>
+ 
+-@class NSData, NSString, NSArray;
++#import <Foundation/NSString.h>
++
++@class NSData, NSArray;
+ @class NGMailAddressList;
+ 
+ /*
+@@ -34,16 +36,16 @@
+ @interface NGMailAddressParser : NSObject
+ {
+ @private
+-  unsigned char *data;
+-  int           dataPos;
+-  int           errorPos;  
+-  int           maxLength;
++  unichar *data;
++  int     dataPos;
++  int     errorPos;  
++  int     maxLength;
+ }
+ 
+ + (id)mailAddressParserWithString:(NSString *)_string;
+ + (id)mailAddressParserWithData:(NSData *)_data;
+-+ (id)mailAddressParserWithCString:(char *)_cString;
+-- (id)initWithCString:(const unsigned char *)_cstr length:(int unsigned)_len;
+++ (id)mailAddressParserWithCString:(const char *)_cString;
++- (id)initWithString:(NSString *)_str;
+ 
+ /* parsing */
+ 
 Index: sope-mime/NGMail/NGMimeMessageGenerator.m
 ===================================================================
 --- sope-mime/NGMail/NGMimeMessageGenerator.m	(révision 1621)
@@ -484,6 +522,118 @@ Index: sope-mime/NGMail/NGMimeMessageGenerator.m
      unsigned    isoLen    = 16;
      char        isoEnd[]  = "?=";
      unsigned    isoEndLen = 2;
+Index: sope-mime/NGMail/NGMailAddressParser.m
+===================================================================
+--- sope-mime/NGMail/NGMailAddressParser.m	(révision 1621)
++++ sope-mime/NGMail/NGMailAddressParser.m	(copie de travail)
+@@ -52,9 +52,9 @@
+   StrClass = [NSString class];
+ }
+ 
+-static inline NSString *mkStrObj(const unsigned char *s, unsigned int l) {
++static inline NSString *mkStrObj(const unichar *s, unsigned int l) {
+   // TODO: unicode
+-  return [(NSString *)[StrClass alloc] initWithCString:(char *)s length:l];
++  return [(NSString *)[StrClass alloc] initWithCharacters:s length:l];
+ }
+ 
+ static inline id parseWhiteSpaces(NGMailAddressParser *self, BOOL _guessMode) {
+@@ -84,7 +84,7 @@
+   int  keepPos     = self->dataPos; // keep reference for backtracking
+   id   returnValue = nil;
+   BOOL isAtom      = YES;
+-  unsigned char text[self->maxLength + 2];  // token text
++  unichar text[self->maxLength + 2];  // token text
+   int  length      = 0;  // token text length
+   BOOL done        = NO;
+ 
+@@ -162,7 +162,7 @@
+   int  keepPos     = self->dataPos; // keep reference for backtracking
+   id   returnValue = nil;
+   BOOL isQText    = YES;
+-  unsigned char text[self->maxLength + 4];  // token text
++  unichar text[self->maxLength + 4];  // token text
+   int  length      = 0;  // token text length
+   BOOL done        = YES;
+ 
+@@ -215,7 +215,7 @@
+   int  keepPos     = self->dataPos; // keep reference for backtracking
+   id   returnValue = nil;
+   BOOL isDText    = YES;
+-  unsigned char text[self->maxLength];  // token text
++  unichar text[self->maxLength];  // token text
+   int  length      = 0;  // token text length
+   BOOL done        = YES;
+ 
+@@ -320,42 +320,47 @@
+ /* constructors */
+ 
+ + (id)mailAddressParserWithData:(NSData *)_data {
+-  return [[(NGMailAddressParser *)[self alloc] 
+-				  initWithCString:[_data bytes]
+-				  length:[_data length]] autorelease];
++  NSString *uniString;
++
++  uniString = [NSString stringWithCharacters:(unichar *)[_data bytes]
++			length:([_data length] / sizeof(unichar))];
++
++  return [(NGMailAddressParser *)self mailAddressParserWithString:uniString];
+ }
++
+ + (id)mailAddressParserWithCString:(char *)_cString {
+-  return [[(NGMailAddressParser *)[self alloc] 
+-				  initWithCString:(unsigned char *)_cString
+-				  length:strlen(_cString)] autorelease];
++  NSString *nsCString;
++
++  nsCString = [NSString stringWithCString:_cString];
++
++  return [(NGMailAddressParser *)self mailAddressParserWithString:nsCString];
+ }
+-- (id)initWithCString:(const unsigned char *)_cstr length:(int unsigned)_len {
++
+++ (id)mailAddressParserWithString:(NSString *)_string {
++  return [[(NGMailAddressParser *)[self alloc] initWithString:_string] 
++	   autorelease];
++}
++
++- (id)initWithString:(NSString *)_str {
+   if ((self = [super init])) {
+     // TODO: remember some string encoding?
+-    self->data      = (unsigned char *)_cstr;
+-    self->maxLength = _len;
++    self->maxLength = [_str length];
++    self->data      = malloc(self->maxLength*sizeof(unichar));
++    [_str getCharacters:self->data];
+     self->dataPos   = 0;
+     self->errorPos  = -1;
+   }
+   return self;
+ }
+ 
+-- (id)initWithString:(NSString *)_str {
+-  // TODO: unicode
+-  return [self initWithCString:(unsigned char *)[_str cString] 
+-	       length:[_str cStringLength]];
+-}
+-
+ - (id)init {
+-  return [self initWithCString:NULL length:0];
++  return [self initWithString:nil];
+ }
+ 
+-+ (id)mailAddressParserWithString:(NSString *)_string {
+-  return [[(NGMailAddressParser *)[self alloc] initWithString:_string] 
+-	   autorelease];
+-}
+-
+ - (void)dealloc {
++  if (self->data != NULL) {
++    free(self->data);
++  }
+   self->data      = NULL;
+   self->maxLength = 0;
+   self->dataPos   = 0;
 Index: sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeRFC822DateHeaderFieldParser.m	(révision 1621)
