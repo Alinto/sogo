@@ -1,6 +1,6 @@
 # GNUstep makefile
 
-# include ../common.make
+include ../common.make
 
 XMLLINT = xmllint
 XMLLINT-BIN = $(shell which $(XMLLINT))
@@ -12,29 +12,29 @@ all :: validate-wox
 endif
 
 WOXS = $(shell find . -name '*.wox' -type f)
-# TEMPLATE_FILES = $(shell ls *wox)
-# TEMPLATE_DIRS = ContactsUI \
-		MailPartViewers \
-		MailerUI 	\
-		MainUI 		\
-		PreferencesUI 	\
-		SchedulerUI
+TEMPLATE_DIRS = $(shell find . -type d | grep -v .svn)
 
 validate-wox:
-	for wox in $(WOXS); \
+	@for wox in $(WOXS); \
 	  do $(XMLLINT-BIN) --noout $$wox || exit 1; \
 	done;
 
-# install ::
-# 	mkdir -p ${SOGO_TEMPLATESDIR}
-# 	for TEMPLATE in $(TEMPLATE_FILES); do \
-# 		cp $$TEMPLATE ${SOGO_TEMPLATESDIR}; \
-# 	done;
-# 	for TEMPLATEDIR in $(TEMPLATE_DIRS); do \
-# 		cp -r $$TEMPLATEDIR ${SOGO_TEMPLATESDIR}; \
-# 	done;
+mkinstall-dirs ::
+	@if [ ! -d $(SOGO_TEMPLATESDIR) ]; then mkdir -p $(SOGO_TEMPLATESDIR); fi 
+	@for dir in $(TEMPLATE_DIRS); do \
+	  if [ ! -d $(SOGO_TEMPLATESDIR)/$$dir ]; then \
+	    echo Creating template directory \"$(SOGO_TEMPLATESDIR)/$$dir\"...; \
+	    mkdir $(SOGO_TEMPLATESDIR)/$$dir; \
+	  fi; \
+	done
 
-install clean ::
+install-files ::
+	@echo Installing template files...
+	@tar cf - $(WOXS) | ( cd $(SOGO_TEMPLATESDIR); tar xf -)
+
+install :: validate-wox mkinstall-dirs install-files
+
+clean ::
 
 distclean :: clean
 
