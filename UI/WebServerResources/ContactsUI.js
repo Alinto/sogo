@@ -626,16 +626,17 @@ function onAddressBookRemove(event) {
   if (nodes.length > 0) {
     nodes[0].deselect();
     var owner = nodes[0].getAttribute("owner");
-    if (owner != UserLogin) {
-      var folderId = nodes[0].getAttribute("id");
-      unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
-    }
-    else {
+    if (owner == UserLogin) {
+      var folderIdElements = nodes[0].getAttribute("id").split(":");
       var abId = folderIdElements[0].substr(1);
       deletePersonalAddressBook(abId);
       var personal = $("/personal");
       personal.selectElement();
       onFolderSelectionChange();
+    }
+    else {
+      var folderId = nodes[0].getAttribute("id");
+      unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
     }
   }
 
@@ -650,7 +651,7 @@ function deletePersonalAddressBook(folderId) {
       document.deletePersonalABAjaxRequest.aborted = true;
       document.deletePersonalABAjaxRequest.abort();
     }
-    var url = ApplicationBaseURL + "/" + folderId + "/deleteFolder";
+    var url = ApplicationBaseURL + folderId + "/deleteFolder";
     document.deletePersonalABAjaxRequest
       = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
 			   folderId);
