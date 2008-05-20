@@ -1,0 +1,104 @@
+/* this file is in UTF-8 format! */
+/* Author: erny@yaco.es */
+/* Based on: rev 1397 */
+/* Last update: 2008-04-04 */
+
+/* toolbar */
+"Save and Close" = "Guardar y cerrar";
+"Close" = "Cerrar";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "Opciones de calendario";
+"Mail Options" = "Opciones de correo";
+"Identities" = "Identidades";
+"Password" = "Contraseña";
+
+/* ooo */
+"I'm currently in the office" = "Ahora estoy disponible";
+"I'm currently out of the office" = "Ahora estoy fuera";
+"AutoReply only once to each sender with the following text :"
+= "Responder automáticamente una sola vez a cada remitente con el siguiente texto: ";
+
+/* d & t */
+"Current Time Zone :" = "Zona horaria actual: ";
+"Short Date Format :" = "Formato de fecha corto: ";
+"Long Date Format :" = "Formato de fecha largo: ";
+"Time Format :" = "Formato de hora: ";
+
+"shortDateFmt_0" = "%e/%m/%Y";
+"shortDateFmt_1" = "%d/%m/%Y";
+"shortDateFmt_2" = "%e/%m/%y";
+"shortDateFmt_3" = "%d/%m/%y";
+"shortDateFmt_4" = "%e-%m-%y";
+"shortDateFmt_5" = "%d-%m-%y";
+"shortDateFmt_6" = "%e-%m-%Y";
+"shortDateFmt_7" = "%d-%m-%Y";
+"shortDateFmt_8" = "%Y-%m-%d";
+"shortDateFmt_9" = "";
+
+"longDateFmt_0" = "%A, %e %B %Y";
+"longDateFmt_1" = "%A, %e de %B de %Y";
+"longDateFmt_2" = "%e de %b %Y";   /* ??? */
+"longDateFmt_3" = "%e de %b de %Y";   /* ??? */
+"longDateFmt_4" = "%e %B %Y";
+"longDateFmt_5" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
+
+/* calendar */
+"Week begins on :" = "Semana empieza con: ";
+"Day start time :" = "Hora inicio: ";
+"Day end time :" = "Hora fin: ";
+"First week of year :" = "Primera semana del año: ";
+"Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
+"Play a sound when a reminder comes due"
+= "Señal acústica para los recordatorios";
+"Default reminder :" = "Recordatorio por omisión: ";
+
+"firstWeekOfYear_HideWeekNumbers" = "No mostrar número de semana";
+"firstWeekOfYear_January1" = "Empieza el 1 de enero";
+"firstWeekOfYear_First4DayWeek" = "Primera semana de 4 días";
+"firstWeekOfYear_FirstFullWeek" = "Primera semana completa";
+
+"reminderTime_0000" = "0 minutos";
+"reminderTime_0005" = "5 minutos";
+"reminderTime_0010" = "10 minutos";
+"reminderTime_0015" = "15 minutos";
+"reminderTime_0030" = "30 minutos";
+"reminderTime_0100" = "1 hora";
+"reminderTime_0200" = "2 horas";
+"reminderTime_0400" = "4 horas";
+"reminderTime_0800" = "8 horas";
+"reminderTime_1200" = "1/2 día";
+"reminderTime_2400" = "1 día";
+"reminderTime_4800" = "2 días";
+
+/* Mailer */
+"Check for new mail:" = "Comprobar nuevo correo: ";
+"messagecheck_manually" = "Manualmente";
+"messagecheck_every_minute" = "Cada minuto";
+"messagecheck_every_2_minutes" = "Cada 2 minutos";
+"messagecheck_every_5_minutes" = "Cada 5 minutos";
+"messagecheck_every_10_minutes" = "Cada 10 minutos";
+"messagecheck_every_20_minutes" = "Cada 20 minutos";
+"messagecheck_every_30_minutes" = "Cada 30 minutos";
+"messagecheck_once_per_hour" = "Cada hora";
+
+"Forward messages:" = "Reenviar mensajes:";
+"messageforward_inline" = "Incorporado";
+"messageforward_attached" = "Como adjunto";
+
+"Default identity:" = "Identidad por defecto:";
+"Manage identities..." = "Gestionar identidades...";
+"Signature:" = "Firma:";
+
+/* password */
+"New password:" = "Contraseña nueva:";
+"Confirmation:" = "Confirmar contraseña nueva:"; /* ??? */
+"Change" = "Cambiar";
+
+"Signature" = "Firma";

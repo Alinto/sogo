@@ -1,0 +1,457 @@
+/* this file is in UTF-8 format! */
+
+/* Day */
+
+"Sunday" = "Zondag";
+"Monday" = "Maandag";
+"Tuesday" = "Dinsdag";
+"Wednesday" = "Woensdag";
+"Thursday" = "Donderdag";
+"Friday" = "Vrijdag";
+"Saturday" = "Zaterdag";
+
+"Sun" = "Zo";
+"Mon" = "Ma";
+"Tue" = "Di";
+"Wed" = "Wo";
+"Thu" = "Do";
+"Fri" = "Vr";
+"Sat" = "Za";
+
+"a2_Sunday" = "Zo";
+"a2_Monday" = "Ma";
+"a2_Tuesday" = "Di";
+"a2_Wednesday" = "Wo";
+"a2_Thursday" = "Do";
+"a2_Friday" = "Vr";
+"a2_Saturday" = "Za";
+
+"dayLabelFormat" = "%d/%m/%Y";
+"today" = "vandaag";
+
+/* Week */
+
+"Week" = "Week";
+"this week" = "deze week";
+
+"Week %d" = "Week %d";
+
+/* Month */
+
+"this month" = "deze maand";
+
+"January" = "Januari";
+"February" = "Februari";
+"March" = "Maart";
+"April" = "April";
+"May" = "Mei";
+"June" = "Juni";
+"July" = "Juli";
+"August" = "Augustus";
+"September" = "September";
+"October" = "Oktober";
+"November" = "November";
+"December" = "December";
+
+"a3_January" = "Jan";
+"a3_February" = "Feb";
+"a3_March" = "Maa";
+"a3_April" = "Apr";
+"a3_May" = "Mei";
+"a3_June" = "Jun";
+"a3_July" = "Jul";
+"a3_August" = "Aug";
+"a3_September" = "Sep";
+"a3_October" = "Okt";
+"a3_November" = "Nov";
+"a3_December" = "Dec";
+
+/* Year */
+
+"this year" = "dit jaar";
+
+/* Menu */
+
+"Calendars" = "Agenda's";
+"Calendar" = "Agenda";
+"Contacts" = "Adresboek";
+
+"New Calendar..." = "Nieuwe agenda...";
+"Delete Calendar" = "Agenda verwijderen";
+"Sharing..." = "Delen...";
+"Export Calendar..." = "Agenda exporteren...";
+"Publish Calendar..." = "Agenda publiceren...";
+"Reload Remote Calendars" = "Externe agenda vernieuwen";
+"Properties" = "Instellingen";
+
+"Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
+"Compose E-Mail to Undecided Attendees" = "E-mail aan deelnemers opstellen die nog niet hebben gereageerd";
+
+/* Folders */
+"Personal calendar" = "Persoonlijke agenda";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Toegang geweigerd";
+
+/* acls */
+"Default Roles" = "Standaardmachtigingen";
+"User rights for:" = "Machtigingen voor:";
+"label_Public" = "Publiek";
+"label_Private" = "Privé";
+"label_Confidential" = "Vertrouwelijk";
+"View All" = "Alles inzien";
+"View the Date & Time" = "Alleen Datum & tijd inzien";
+"Modify" = "Aanpassen";
+"Respond To" = "Reageren op";
+"None" = "Geen toegang";
+"This person can create objects in my calendar."
+= "Deze persoon mag afspraken in mijn agenda plaatsen.";
+"This person can erase objects from my calendar."
+= "Deze persoon mag afspraken verwijderen uit mijn agenda.";
+
+/* Button Titles */
+
+"New Calendar..." = "Nieuwe agenda...";
+"Subscribe to a Calendar..." = "Abonneren op een agenda...";
+"Remove the selected Calendar" = "Agenda verwijderen";
+
+"Name of the Calendar" = "Naam van de agenda";
+
+"new" = "Nieuw";
+"printview" = "Afdrukvoorbeeld";
+"edit" = "Aanpassen";
+"delete" = "Verwijderen";
+"proposal" = "Voorstel";
+"Save and Close" = "Opslaan en Sluiten";
+"Close" = "Sluiten";
+"Invite Attendees" = "Deelnemers uitnodigen";
+"Documents" = "Documenten";
+"Update" = "Opslaan";
+"Cancel" = "Annuleren";
+"show_rejected_apts" = "Geweigerde afspraken weergeven";
+"hide_rejected_apts" = "Geweigerde afspraken verbergen";
+
+/* Schedule */
+"Schedule" = "Planning";
+"No appointments found" = "Geen afspraken gevonden";
+"Meetings proposed by you" = "Door u voorgestelde vergaderingen";
+"Meetings proposed to you" = "Aan u voorgestelde vergaderingen";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Actie";
+"accept" = "Accepteren";
+"decline" = "Weigeren";
+"more attendees" = "Andere deelnemers";
+"Hide already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken verbergen";
+"Show already accepted and rejected appointments" = "Reeds geaccepteerde/geweigerde afspraken weergeven";
+
+/* Appointments */
+
+"Appointment viewer" = "Aspraak inzien";
+"Appointment editor" = "Afspraak aanpassen";
+"Appointment proposal" = "Afspraak voorstellen";
+"Appointment on" = "Afspraak op";
+"Start:" = "Begin:";
+"End:" = "Einde:";
+"Due Date:" = "Verloopdatum:";
+"Title:" = "Titel:";
+"Calendar:" = "Agenda:";
+"Name" = "Naam";
+"Email" = "E-mail";
+"Status:" = "Status:";
+"% complete" = "% voltooid";
+"Location:" = "Plaats:";
+"Priority:" = "Prioriteit";
+"Privacy" = "Privacy";
+"Cycle" = "Herhalen";
+"Cycle End" = "Einde herhaling";
+"Categories" = "Categoriën";
+"Classification" = "Classificatie";
+"Duration" = "Duur";
+"Attendees:" = "Deelnemers:";
+"Resources" = "Resources";
+"Organizer:" = "Organisator:";
+"Description:" = "Omschrijving:";
+"Document:" = "Document:";
+"Category:" = "Categorie:";
+"Repeat:" = "Herhalen:";
+"Reminder:" = "Alarm:";
+
+"Target:" = "Bestemming:";
+
+"attributes" = "attributen";
+"attendees" = "deelnemers";
+
+/* checkbox title */
+"is private" = "is privé";
+/* classification */
+"Public" = "Publiek";
+"Private" = "Privé";
+
+/* text used in overviews and tooltips */
+"empty title" = "geen titel";
+"private appointment" = "Privé-afspraak";
+
+"Change..." = "Aanpassen...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Actie vereist";
+"partStat_ACCEPTED" = "Geaccepteerd";
+"partStat_DECLINED" = "Geweigerd";
+"partStat_TENTATIVE" = "Onder voorbehoud";
+"partStat_DELEGATED" = "Gedelegeerd";
+"partStat_OTHER" = "Anders";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Er zijn een of meerdere conflicten gevonden.";
+"Invalid iCal data!" = "Ongeldige iCal data...";
+"Could not create iCal data!" = "Er kon geen iCal data worden gegenereerd...";
+
+/* Searching */
+
+"view_all" = "Alle afspraken";
+"view_today" = "Vandaag";
+"view_next7" = "Afspraken in de volgende 7 dagen";
+"view_next14" = "Afspraken in de volgende 14 dagen";
+"view_next31" = "Afspraken in de volgende 31 dagen";
+"view_thismonth" = "Afspraken in deze kalendermaand";
+"view_future" = "Alle toekomstige afspraken";
+"view_selectedday" = "Afspraken op de geselecteerde dag";
+
+"View:" = "Bekijken:";
+"Title or Description" = "Titel of Omschrijving";
+
+"Search" = "Zoeken";
+"Search attendees"	="Deelnemers zoeken";
+"Search resources"	="Resources zoeken";
+"Search appointments" = "Afspraken zoeken";
+"Search in Anais" = "Zoeken in Anais???";
+
+"All day Event" = "Afspraak duurt de hele dag";
+"check for conflicts" = "Op conflicten controleren";
+
+"Browse URL" = "Naar URL gaan";
+
+/* calendar modes */
+
+"Overview" = "Overzicht";
+"Chart" = "Tabel";
+"List" = "Lijst";
+"Columns" = "Kolommen";
+
+/* Priorities */
+
+"prio_0" = "Niet opgegeven";
+"prio_1" = "Zeer hoog";
+"prio_2" = "Hoog";
+"prio_3" = "Hoog";
+"prio_4" = "Hoog";
+"prio_5" = "Middel";
+"prio_6" = "Laag";
+"prio_7" = "Laag";
+"prio_8" = "Laag";
+"prio_9" = "Zeer laag";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Publieke afspraak";
+"CONFIDENTIAL_vevent" = "Vertrouwelijke afspraak";
+"PRIVATE_vevent" = "Privé-afspraak";
+"PUBLIC_vtodo" = "Publieke taak";
+"CONFIDENTIAL_vtodo" = "Vertrouwelijke taak";
+"PRIVATE_vtodo" = "Privétaak";
+
+/* status type */
+"status_" = "Niet opgegeven";
+"status_NOT-SPECIFIED" = "Niet opgegeven";
+"status_TENTATIVE" = "Onder voorbehoud";
+"status_CONFIRMED" = "Bevestigd";
+"status_CANCELLED" = "Geannuleerd";
+"status_NEEDS-ACTION" = "Actie vereist";
+"status_IN-PROCESS" = "In behandeling";
+"status_COMPLETED" = "Voltooid";
+
+/* Cycles */
+
+"cycle_once" = "herhaalt zich niet";
+"cycle_daily" = "dagelijks";
+"cycle_weekly" = "wekelijks";
+"cycle_2weeks" = "twee-wekelijks";
+"cycle_4weeks" = "vier-wekelijks";
+"cycle_monthly" = "maandelijks";
+"cycle_weekday" = "op werkdagen";
+"cycle_yearly" = "jaarlijks";
+
+"cycle_end_never" = "Unendlich oft wiederholen";
+"cycle_end_until" = "Wiederholen bis :";
+
+"Recurrence pattern" = "Herhalingsschema";
+"Range of recurrence" = "Herhalingsbereik";
+
+"Repeat" = "Herhalen";
+"Daily" = "Dagelijk";
+"Weekly" = "Wekelijks";
+"Monthly" = "Maandelijks";
+"Yearly" = "Jaarlijks";
+"Every" = "Iedere";
+"Days" = "Dagen";
+"Week(s)" = "Weken";
+"On" = "op";
+"Month(s)" = "Maand";
+"The" = "De";
+"Recur on day(s)" = "Herhaling op dagen";
+"Year(s)" = "Jaren";
+"cycle_of" = "van";
+"No end date" = "Geen einddatum";
+"Create" = "Aanmaken";
+"Appointment(s)" = "afspraken";
+"Repeat until" = "Herhalen tot";
+
+"First" = "Eerste";
+"Second" = "Tweede";
+"Third" = "Derde";
+"Fourth" = "Vierde";
+"Fift" = "Vijfde";
+"Last" = "Laatste";
+
+/* Appointment categories */
+
+"category_NONE" = "Geen categorie";
+"category_ANNIVERSARY" = "Jubileum";
+"category_BIRTHDAY" = "Verjaardag";
+"category_BUSINESS" = "Bedrijfsmatig";
+"category_CALLS" = "Telefoongesprekken"; 
+"category_CLIENTS" = "Cliënten";
+"category_COMPETITION" = "Competitie";
+"category_CUSTOMER" = "Klant";
+"category_FAVORITES" = "Favorieten";
+"category_FOLLOW UP" = "Opvolgen";
+"category_GIFTS" = "Geschenken";
+"category_HOLIDAYS" = "Vakanties";
+"category_IDEAS" = "Ideën";
+"category_ISSUES" = "Uitdagingen";
+"category_MISCELLANEOUS" = "Anderen";
+"category_PERSONAL" = "Persoonlijk";
+"category_PROJECTS" = "Projecten";
+"category_PUBLIC HOLIDAY" = "Feestdagen";
+"category_STATUS" = "Status";
+"category_SUPPLIERS" = "Leverancier";
+"category_TRAVEL" = "Reizen";
+"category_VACATION" = "Op vakantie";
+
+"repeat_NEVER" = "herhaalt zich niet";
+"repeat_DAILY" = "dagelijks";
+"repeat_WEEKLY" = "wekelijst";
+"repeat_BI-WEEKLY" = "tweewekelijks";
+"repeat_EVERY WEEKDAY" = "op werkdagen";
+"repeat_MONTHLY" = "maandelijks";
+"repeat_YEARLY" = "jaarlijks";
+"repeat_CUSTOM" = "aangepast...";
+
+"reminder_NONE" = "Geen herinnering";
+"reminder_5_MINUTES_BEFORE" = "5 minuten van tevoren";
+"reminder_10_MINUTES_BEFORE" = "10 minuten van tevoren";
+"reminder_15_MINUTES_BEFORE" = "15 minuten van tevoren";
+"reminder_30_MINUTES_BEFORE" = "30 minuten van tevoren";
+"reminder_45_MINUTES_BEFORE" = "45 minuten van tevoren";
+"reminder_1_HOUR_BEFORE" = "1 uur van tevoren";
+"reminder_2_HOURS_BEFORE" = "2 uren van tevoren";
+"reminder_5_HOURS_BEFORE" = "5 uren van tevoren";
+"reminder_15_HOURS_BEFORE" = "15 uren van tevoren";
+"reminder_1_DAY_BEFORE" = "1 dag van tevoren";
+"reminder_2_DAYS_BEFORE" = "2 dagen van tevoren";
+"reminder_1_WEEK_BEFORE" = "1 week van tevoren";
+"reminder_CUSTOM" = "aangepast...";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* validation errors */
+
+validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
+validate_invalid_startdate = "Ongeldige begindatum !";
+validate_invalid_enddate   = "Ongeldige einddatum!";
+validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
+
+"Tasks" = "Taken";
+"Show completed tasks" = "Voltooide taken weergeven";
+
+/* tabs */
+"Task" = "Taak";
+"Event" = "Afspraak";
+"Recurrence" = "Herhaling";
+
+/* toolbar */
+"New Event" = "Nieuwe afspraak";
+"New Task" = "Nieuwe taak";
+"Edit" = "Aanpassen";
+"Delete" = "Verwijderen";
+"Go to Today" = "Ga naar vandaag";
+"Day View" = "Dagoverzicht";
+"Week View" = "Weekoverzicht";
+"Month View" = "Maandoverzicht";
+
+"eventPartStatModificationError" = "Ihre Teilnahme an dem Termin kann nicht geändert werden.";
+
+/* menu */
+"New Event..." = "Nieuwe afspraak...";
+"New Task..." = "Nieuwe taak...";
+"Edit Selected Event..." = "Afspraak aanpassen...";
+"Delete Selected Event" = "Afspraak verwijderen...";
+"Select All" = "Alles selecteren";
+"Workweek days only" = "Alleen werkdagen weergeven";
+"Tasks in View" = "Taken in binnen het zicht";
+
+"eventDeleteConfirmation" = "Weet u zeker dat u deze afspraak wilt verwijderen?";
+"taskDeleteConfirmation" = "Weet u zeker dat u deze taak wilt verwijderen?";
+
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Weet u zeker dat u de agenda \"%{0}\" wilt verwijderen?";
+
+/* Legend */
+"Required participant" = "Vereiste deelnemer";
+"Optional participant" = "Gewenste deelnemer";
+"Chair" = "Voorzitter";
+
+"Needs action" = "Actie vereist";
+"Accepted" = "Geaccepteerd";
+"Declined" = "Geweigerd";
+"Tentative" = "Onder voorbehoud";
+
+"Free" = "Beschikbaar";
+"Busy" = "Bezet";
+"Maybe busy" = "Waarschijnlijk bezet";
+"No free-busy information" = "Geen beschikbaarheidsinformatie";
+
+/* FreeBusy panel buttons */
+"Suggest time slot:" = "Tijdzone:";
+"Previous slot" = "Vorige";
+"Next slot" = "Volgende";
+"Previous hour" = "Vorig uur";
+"Next hour" = "Vorgend uur";
+
+/* apt list */
+"Title" = "Titel";
+"Start" = "Begin";
+"End" = "Eind";
+"Location" = "Plaats";
+"(Private Event)" = "(Privé-afspraak)";
+
+/* event list */
+vevent_class0 = "(Publieke afspraak)";
+vevent_class1 = "(Privé-afspraak)";
+vevent_class2 = "(Vertrouwelijke afspraak)";
+
+vtodo_class0 = "(Publieke taak)";
+vtodo_class1 = "(Privétaak)";
+vtodo_class2 = "(Vertrouwelijke taak)";
+
+"closeThisWindowMessage" = "Hartelijk bedankt. U kunt dit venster nu sluiten.";
+"Multicolumn Day View" = "Meerdere kolommen dagweergave";
+
+"Please select an event or a task." = "Selecteer een afspraak of een taak.";

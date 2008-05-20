@@ -1,0 +1,142 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Contactpersoon";
+"Address" = "Adres";
+"Other" = "Overige";
+
+"Name"              = "Naam";
+"Internet"          = "Internet";
+"Phones"            = "Telefoonnummers";
+"Home" = "Privé";
+"Work" = "Werk";
+
+"Address Books"     = "Adresboeken";
+"Addresses"         = "Adressen";
+"Update"	    = "Opslaan";
+"Cancel"            = "Annuleren";
+"Common"            = "Algemeen";
+"Contact editor"    = "Contactinformatie bijwerken";
+"Contact viewer"    = "Contactinformatie bekijken";
+"Email"             = "E-mail";
+"Screen Name"	    = "Weergavenaam";
+"Extended"          = "Uitgebreide informatie";
+"Fax"               = "Fax";
+"Firstname"         = "Voornaam";
+"HomePhone"         = "Privé";
+"Lastname"          = "Achternaam";
+"Location"          = "Adres";
+"MobilePhone"       = "Mobiel";
+"OfficePhone"       = "Kantoor";
+"Organization"      = "Organisatie";
+"Work Phone"	    = "Werk";
+"Phone"             = "Telefoon";
+"Postal"            = "Postcode";
+"Save"              = "Opslaan";
+"URL"               = "Website";
+"Unit"              = "Afdeling";
+"delete"            = "Verwijderen";
+"edit"              = "Bewerken";
+"invalidemailwarn"  = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
+"new"               = "Nieuw";
+"Preferred Phone"   = "Voorkeurstelefoon";
+
+/* Folders */
+"Personal Address Book" = "Persoonlijk adresboek";
+
+"htmlMailFormat_UNKNOWN" = "Onbekend";
+"htmlMailFormat_FALSE" = "Platte tekst";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Naam of E-mail";
+"Personal Addressbook" = "Persoonlijk adresboek";
+"Search in Addressbook" = "Adresboek doorzoeken...";
+
+"New Card" = "Nieuw contactpersoon";
+"New List" = "Nieuwe lijst";
+"Modify" = "Eigenschappen";
+"Sharing..." = "Delen...";
+"Write" = "Bericht opstellen...";
+"Delete" = "Verwijderen";
+"Instant Message" = "Stuur IM bericht";
+"Add..." = "Toevoegen...";
+"Remove" = "Verwijderen";
+
+"Preferred" = "Voorkeurs-";
+"Card for %@" = "%@";
+"Display:" = "Weergavenaam:";
+"Display Name:" = "Weergavenaam:";
+"Email:" = "E-mail:";
+"Additional Email:" = "Alternatieve E-mail:";
+
+"Phone Number:" = "Telefoon:";
+"Prefers to receive messages formatted as:" = "Geeft voorkeur aan berichten geformatteerd als:";
+"Screen Name:" = "Weergavenaam:";
+
+"First:" = "Voornaam:";
+"Last:" = "Achternaam:";
+"Nickname:" = "Nickname:";
+
+"Telephone" = "Telefoon:";
+"Work:" = "Werk:";
+"Home:" = "Privé:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobiel:";
+"Pager:" = "Pieper:";
+
+"Title:" = "Titel:";
+"Department:" = "Afdeling:";
+"Organization:" = "Organisatie:";
+"Address:" = "Adres:";
+"City:" = "Plaats:";
+"State_Province:" = "Provincie:";
+"ZIP_Postal Code:" = "Postcode:";
+"Country:" = "Land:";
+"Web Page:" = "Website:";
+
+"Other Infos" = "Overige";
+
+"Note:" = "Notitie:";
+"Timezone:" = "Tijdzone:";
+"Birthday:" = "Geboortedatum:";
+"Freebusy URL:" = "Beschikbaarheids (Free/Busy) URL:";
+
+"Add as..." = "Toevoegen als ...";
+"Recipient" = "Ontvanger";
+"Carbon Copy" = "Cc";
+"Blind Carbon Copy" = "Bcc";
+
+"New Addressbook..." = "Nieuw adresboek...";
+"Subscribe to an Addressbook..." = "Abonneren...";
+"Remove the selected Addressbook" = "Verwijderen";
+
+"Name of the Address Book" = "Naam van het adresboek";
+"Are you sure you want to delete the selected address book?"
+= "Weet u zeker dat u het geselecteerde adresboek wilt verwijderen?";
+"You cannot delete the selected contact(s)"
+= "U kunt deze contactpersonen niet verwijderen.";
+
+"Address Book Name" = "Naam van het adresboek";
+
+"You cannot subscribe to a folder that you own!"
+= "U kunt uzelf niet abonneren op uw eigen mappen!";
+"Unable to subscribe to that folder!"
+= "Abonneren op deze map mislukt!";
+
+"Default Roles" = "Standaardmachtigingen";
+"User rights for:" = "Machtigingen voor:";
+
+"This person can add cards to this addressbook."
+= "Deze persoon mag contactpersonen toevoegen aan dit adresboek.";
+"This person can edit the cards of this addressbook."
+= "Deze persoon mag de contactinformatie in dit adresboek aanpassen.";
+"This person can list the content of this addressbook."
+= "Deze persoon mag de inhoud van dit adresboek opvragen.";
+"This person can read the cards of this addressbook."
+= "Deze persoon mag contactinformatie lezen in dit adresboek.";
+"This person can erase cards from this addressbook."
+= "Deze persoon mag contactpersonen verwijderen van dit adresboek";
+
+"The selected contact has no email address."
+= "De geselecteerde contactpersoon heeft geen e-mailadres.";
+
+"Please select a contact." = "Selecteer een contactpersoon.";

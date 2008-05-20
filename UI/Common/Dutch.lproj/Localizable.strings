@@ -1,0 +1,42 @@
+/* toolbars */
+"Save" = "Opslaan";
+"Close" = "Sluiten";
+"Edit User Rights" = "Machtigingen aanpassen";
+
+"Home" = "Start";
+"Calendar" = "Agenda";
+"Address Book"	= "Adresboek";
+"Mail" = "E-mail";
+"Preferences" = "Instellingen";
+"Logoff" = "Uitloggen";
+"Right Administration" = "Machtigingen beheren";
+"Log Console (dev.)" = " (dev.)";
+
+"User" = "Gebruiker";
+
+"Help" = "Help";
+
+"noJavascriptError" = "SOGo heeft Javascript nodig om te functioneren. U dient Javascript in uw browser in te schakelen.";
+"noJavascriptRetry" = "Opnieuw proberen";
+
+"Add..." = "Toevoegen...";
+"Remove" = "Verwijderen";
+"Owner:" = "Eigenaar:";
+"Associated Users:" = "Gerelateerde gebruikers:";
+"(Unchecked = assistant, checked = delegate)" = "(uitgevinkt = assistent, aangevinkt = deelnemer)";
+"Publish the Free/Busy information" = "Beschikbaarheidsinformatie publiceren";
+
+"Default Roles" = "Standaardmachtigingen";
+
+"Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
+
+/* generic.js */
+"Unable to subscribe to that folder!" = "Het is niet mogelijk om te abonneren op deze map.";
+"You cannot subscribe to a folder that you own!" = "Het is niet mogelijk om u te abonneren op uw eigen mappen.";
+"Unable to unsubscribe from that folder!" = "Het is niet mogelijk om u hiervan uit te schrijven.";
+"You cannot unsubscribe from a folder that you own!" = "Het is niet mogelijk om u uit te schrijven van uw eigen mappen.";
+"Unable to rename that folder!" = "Het is niet mogelijk om deze map te hernoemen.";
+"You have already subscribed to that folder!"
+     	= "U bent al op deze map geabonneerd!";
+"The user rights cannot be edited for this object!"
+        = "De machtigingen kunnen niet worden aangepast voor dit object!";

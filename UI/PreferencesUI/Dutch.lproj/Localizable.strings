@@ -1,0 +1,89 @@
+/* toolbar */
+"Save and Close" = "Opslaan en sluiten";
+"Close" = "Sluiten";
+
+/* tabs */
+"General" = "Algemeen";
+"Calendar Options" = "Agenda";
+"Mail Options" = "E-mail";
+"Identities" = "Identiteit";
+"Password" = "Wachtwoord";
+
+/* ooo */
+"I'm currently in the office" = "Ik ben op kantoor";
+"I'm currently out of the office" = "Ik ben niet op kantoor";
+"AutoReply only once to each sender with the following text :"
+= "Automatisch eenmalig met het volgende bericht beantwoorden:";
+
+/* d & t */
+"Current Time Zone :" = "Huidige tijdzone:";
+"Short Date Format :" = "Kort datumformaat:";
+"Long Date Format :" = "Lang datumformaat:";
+"Time Format :" = "Tijdformaat:";
+
+"shortDateFmt_0" = "%d/%m/%Y";
+"shortDateFmt_1" = "%d/%m/%y";
+"shortDateFmt_2" = "%d.%m.%y";
+"shortDateFmt_3" = "%d-%m-%y";
+"shortDateFmt_4" = "%Y-%m-%d";
+"shortDateFmt_5" = "";
+
+"longDateFmt_0" = "%A %e %B %Y";
+"longDateFmt_1" = "%e %b. %Y";
+"longDateFmt_2" = "%e %B %Y";
+"longDateFmt_3" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
+
+/* calendar */
+"Week begins on :" = "Week begint op:";
+"Day start time :" = "Dag begint om:";
+"Day end time :" = "Dag eindigt om:";
+"First week of year :" = "Eerste week van het jaar:";
+"Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
+"Play a sound when a reminder comes due" = "Geluidafspelen bij herinnering";
+"Default reminder :" = "Standaard herinnering:";
+
+"firstWeekOfYear_HideWeekNumbers" = "Weeknummers verbergen";
+"firstWeekOfYear_January1" = "Begint op 1 januari";
+"firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
+"firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
+
+"reminderTime_0000" = "0 minuten";
+"reminderTime_0005" = "5 minuten";
+"reminderTime_0010" = "10 minuten";
+"reminderTime_0015" = "15 minuten";
+"reminderTime_0030" = "30 minuten";
+"reminderTime_0100" = "1 uur";
+"reminderTime_0200" = "2 uren";
+"reminderTime_0400" = "4 uren";
+"reminderTime_0800" = "8 uren";
+"reminderTime_1200" = "12 uur";
+"reminderTime_2400" = "1 dag";
+"reminderTime_4800" = "2 dagen";
+
+/* Mailer */
+"Check for new mail:" = "Controleren op nieuwe mail:";
+"messagecheck_manually" = "Handmatig";
+"messagecheck_every_minute" = "Iedere minuut";
+"messagecheck_every_2_minutes" = "Iedere 2 minuten";
+"messagecheck_every_5_minutes" = "Iedere 5 minuten";
+"messagecheck_every_10_minutes" = "Iedere 10 minuten";
+"messagecheck_every_20_minutes" = "Iedere 20 minuten";
+"messagecheck_every_30_minutes" = "Iedere 30 minuten";
+"messagecheck_once_per_hour" = "Ieder uur";
+
+"Forward messages:" = "Berichten doorsturen:";
+"messageforward_inline" = "In het bericht";
+"messageforward_attached" = "Als bijlage";
+
+"Default identity:" = "Standaardidentiteit:";
+"Manage identities..." = "Identiteiten beheren...";
+
+/* password */
+"New password:" = "Nieuw wachtwoord:";
+"Confirmation:" = "Bevestig wachtwoord:";
+"Change" = "Veranderen";

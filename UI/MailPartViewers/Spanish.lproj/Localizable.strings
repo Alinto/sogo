@@ -1,0 +1,39 @@
+/* this file is in UTF-8 format! */
+/* Author: erny@yaco.es */
+/* Based on: rev 1397 */
+/* Last update: 2008-04-04 */
+
+ACCEPTED = "confirmado";
+COMPLETED = "completado";
+DECLINED = "rechazado";
+DELEGATED = "delegado";
+IN-PROCESS = "en curso";
+NEEDS-ACTION = "necesita acción";
+TENTATIVE = "tentativo";
+organized_by_you = "organizado por ud.";
+you_are_an_attendee = "es un participante";
+add_info_text = "iMIP 'ADD' aún no está soportado.";
+publish_info_text = "El remitente le informa del evento adjunto.";
+cancel_info_text = "Su invitación o el evento han sido cancelados.";
+request_info_no_attendee = "ha propuesto un evento. Usted recibe este correo como notificación, pero no aparece como participante.";
+Appointment = "Cita";
+
+Organizer = "Organizador";
+Time = "Hora";
+Attendees = "Participantes";
+request_info = "le invita a un evento.";
+"Add to calendar" = "Añadir al calendario";
+"Delete from calendar" = "Borrar del calendario";
+"Update status" = "Actualizar estado";
+Accept = "Confirmar";
+Decline = "Rechazar";
+Tentative = "Tentativo";
+"Update status in calendar" = "Actualizar estado en calendario";
+reply_info_no_attendee = "Ha recibido una respuesta a una invitación de evento pero el remitente no aparece como un participante.";
+reply_info = "Esta es la respuesta a una invitación de evento hecha por usted.";
+
+"to" = "para";
+
+"Untitled" = "Sin título";
+
+"Size" = "Tamaño";

@@ -1,0 +1,13 @@
+/* this file is in UTF-8 format! */
+/* Author: erny@yaco.es */
+/* Based on: rev 1397 */
+/* Last update: 2008-04-05 */
+
+"title" = "SOGo";
+
+"Username:" = "Usuario:";
+"Password:" = "Contraseña:";
+
+"Connect" = "Conectar";
+
+"Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";

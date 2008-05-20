@@ -1,0 +1,217 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+
+"Create"      = "Aanmaken";
+"Empty Trash" = "Prullenbak leegmaken";
+"Delete"      = "Verwijderen";
+"Expunge"     = "Leegmaken";
+"Get Mail"    = "E-mail ophalen";
+"Junk"        = "Ongewenst";
+"Reply"       = "Beantwoorden";
+"Reply All"   = "Allen beantwoorden";
+"Print"       = "Afdrukken";
+"Stop"        = "Stoppen";
+"Write"       = "Opstellen";
+
+"Send" = "Verzenden";
+"Contacts" = "Adresboek";
+"Attach" = "Bijlage";
+"Save" = "Opslaan";
+
+/* Main Frame  */
+
+"Home"                 = "Start"; 
+"Calendar"             = "Agenda";
+"Addressbook"          = "Adresboek";
+"Mail"                 = "E-mail";
+"Right Administration" = "Machtigingen beheren";
+"Help" = "Help";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welkom bij de SOGo Mailer. Gebruik de mappenlijst aan de linkerkant om door uw e-mailaccounts te bladeren.";
+
+"Read messages"       = "Berichten lezen";
+"Write a new message" = "Een nieuw bericht opstellen";
+
+"Share: " = "Delen: ";
+"Account: " = "Account: ";
+"Shared Account: " = "Gedeeld account";
+
+/* acls */
+"Default Roles" = "Standaardmachtigingen";
+"User rights for:" = "Machtigingen voor:";
+
+"List and see this folder" = "De inhoud van deze map bekijken";
+"Read mails from this folder" = "E-mails in deze map lezen";
+"Mark mails read and unread" = "E-mails in deze map als (on)gelezen markeren";
+"Modify the flags of the mails in this folder" = "De markeringen van e-mails in deze map aanpassen";
+"Insert, copy and move mails into this folder" = "E-mails aan deze map toevoegen";
+"Post mails" = "E-mail verzenden";
+"Add subfolders to this folder" = "Nieuwe submappen maken";
+"Remove this folder" = "Deze map verwijderen";
+"Erase mails from this folder" = "E-mails in in deze map verwijderen";
+"Expunge this folder" = "Deze map leegmaken";
+"Modify the acl of this folder" = "Machtigingen van deze map aanpassen";
+
+"Update" = "Opslaan";
+"Cancel" = "Sluiten";
+
+/* Mail edition */
+
+"From"          = "Van";
+"Subject"       = "Onderwerp";
+"Add address"   = "Adres toevoegen";
+
+"Attachments:" = "Bijlage:";
+
+"To"            = "Aan";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+
+"to"            = "aan";
+"cc"            = "cc";
+"bcc"           = "bcc";
+
+"Edit Draft..." = "Concept aanpassen...";
+
+"This mail is being sent from an unsecure network!" = "Deze e-mail wordt verzonden vanaf een onveilig netwerk!";
+
+/* Popup "show" */
+
+"all"     = "alle";
+"read"    = "gelezen";
+"unread"  = "ongelezen";
+"deleted" = "verwijderde";
+"flagged" = "gemarkeerde";
+
+/* MailListView */
+
+"View:"         = "Bekijken:";
+
+"Sender" = "Afzender";
+"Subject or Sender" = "Onderwerp of afzender";
+"To or Cc" = "Ontvanger (Aan of Cc)";
+"Entire Message" = "Volledig bericht";
+
+"Date"          = "Datum";
+"All"           = "Alle";
+"Unread"        = "Ongelezen";
+"messages"      = "berichten";
+
+"first"         = "eerste";
+"previous"      = "vorige";
+"next"          = "volgende";
+"last"          = "laatste";
+
+"msgnumber_to"  = "tot";
+"msgnumber_of"  = "van";
+
+"Mark Unread" = "Als ongelezen markeren"; 
+"Mark Read"   = "Als gelezen markeren";
+
+"Untitled" = "(geen onderwerp)";
+
+/* Tree */
+
+"SentFolderName"   = "Verzonden";
+"TrashFolderName"  = "Prullenbak";
+"InboxFolderName"  = "Postvak IN";
+"DraftsFolderName" = "Concepten";
+"SieveFolderName"  = "Berichtregel";
+"Folders"          = "Mappen"; 
+
+/* MailMoveToPopUp */
+
+"MoveTo" = "Verplaatsen naar";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Aan adresboek toevoegen";
+"Compose Mail To" = "Bericht opstellen";
+"Create Filter From Message..." = "Berichtregel creëren op basis van bericht...";
+
+/* Image Popup menu */
+"Save Image" = "Afbeelding opslaan";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "In nieuw e-mailvenster openen";
+"Copy Folder Location" = "Kopieer maplocatie";
+"Subscribe..." = "Abonneren...";
+"Mark Folder Read..." = "Map als gelezen markeren";
+"New Folder..." = "Nieuwe map...";
+"Compact This Folder" = "Comprimeren";
+"Search Messages..." = "Zoeken...";
+"Sharing..." = "Delen...";
+"New Subfolder..." = "Nieuwe submap...";
+"Rename Folder..." = "Naam wijzigen...";
+"Delete Folder" = "Map verwijderen";
+"Use This Folder For" = "De map gebruiken voor...";
+"Get Messages for Account" = "Berichten ophalen voor account";
+
+/* Use This Folder menu */
+"Sent Messages" = "Berichten verzenden";
+"Drafts" = "Concepten";
+"Deleted Messages" = "Verwijderde berichten";
+
+/* Message list popup menu */
+"Open Message In New Window" = "In nieuw venster openen";
+"Reply to Sender Only" = "Beantwoorden";
+"Reply to All" = "Allen beantwoorden";
+"Forward" = "Doorsturen";
+"Edit As New..." = "Als nieuw bewerken";
+"Move To" = "Verplaatsen naar";
+"Copy To" = "Kopiëren naar";
+"Label" = "Labelen";
+"Mark" = "Markeren";
+"Save As..." = "Opslaan als...";
+"Print Preview" = "Afdrukvoorbeeld";
+"View Message Source" = "Bron bekijken";
+"Print..." = "Afdrukken...";
+"Delete Message" = "Bericht verwijderen";
+
+"This Folder" = "Deze map";
+
+/* Label popup menu */
+"None" = "Geen label";
+"Important" = "Belangrijk";
+"Work" = "Werk";
+"Personal" = "Persoonlijk";
+"To Do" = "Te doen";
+"Later" = "Later";
+
+/* Mark popup menu */
+"As Read" = "Als gelezen";
+"Thread As Read" = "Draad als gelezen";
+"As Read By Date..." = "Per datum als gelezen...";
+"All Read" = "Alles als gelezen";
+"Flag" = "Met vlag";
+"As Junk" = "Als ongewenst";
+"As Not Junk" = "Als gewenst";
+"Run Junk Mail Controls" = "Ongewenste berichtenfilter starten";
+
+/* Folder operations */
+"Name :" = "Naam:";
+"Enter the new name of your folder :"
+ = "Geef de nieuw naam van de map op:";
+"Do you really want to move this folder into the trash ?"
+ = "Weet u zeker dat u deze map wilt verplaatsen naar de prullenbak";
+"Operation failed" = "Operatie mislukt.";
+
+"quotasFormat" = "Quota: %{0} van %{1} KB gebruikt; %{2}%";
+
+"Please select a message." = "Selecteer een bericht.";
+"Please select a message to print." = "Selecteer een bericht om af te drukken.";
+"Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
+
+"You need to choose a non-virtual folder!" = "U dient een niet-virtuele map te kiezen!";
+
+"Moving a message into its own folder is impossible!"
+= "Kan bericht niet naar zijn eigen map verplaatsen";
+"Copying a message into its own folder is impossible!"
+= "Kan bericht niet naar zijn eigen map kopiëren!";
+
+/* Message editing */
+"error_validationfailed" = "Validering mislukt!";
+"error_missingsubject" = "U heeft geen onderwerp opgegeven!";
+"error_missingrecipients" = "U heeft geen ontvanger opgegeven!";

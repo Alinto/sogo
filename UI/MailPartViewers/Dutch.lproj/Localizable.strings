@@ -1,0 +1,34 @@
+ACCEPTED            = "geaccepteerd";
+COMPLETED           = "klaar";
+DECLINED            = "afgewezen";
+DELEGATED           = "gedelegeerd";
+IN-PROCESS          = "in behandeling";
+NEEDS-ACTION        = "actie vereist";
+TENTATIVE           = "onder voorbehoud";
+organized_by_you    = "door u georganiseerd";
+you_are_an_attendee = "u bent een deelnemer";
+add_info_text       = "Info toevoegen wordt nog niet ondersteund.";
+publish_info_text   = "De afzender stelt u op de hoogte van bijgevoegde afspraak.";
+cancel_info_text    = "Uw uitnodiging of de hele afspraak is vervallen..";
+request_info_no_attendee = "stelt een afspraak voor met de volgende deelnemers. U ontvangt deze mail als notificatie, u bent geen deelnemer.";
+Appointment         = "afspraak";
+
+Organizer           = "Organisator";
+Time                = "Tijd";
+Attendees           = "Deelnemers";
+request_info        = "nodigt u uit deel te nemen aan bijgevoegde afspraak.";
+"Add to calendar" = "Aan agenda toevoegen";
+"Delete from calendar" = "Uit agenda verwijderen";
+"Update status" = "Status bijwerken";
+Accept = "Accepteren";
+Decline = "Weigeren";
+Tentative = "Onder voorbehoud";
+"Update status in calendar" = "Afspraak bijwerken in agenda";
+reply_info_no_attendee = "U heeft een antwoord betreffende een afspraak ontvangen van een niet-deelnemer.";
+reply_info          = "Dit is een antwoord op een door u verstuurde uitnodiging.";
+
+"to" = "naar";
+
+"Untitled" = "Geen titel";
+
+"Size" = "Grootte";
