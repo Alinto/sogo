@@ -7,8 +7,12 @@ WEBSERVER_RESOURCE_FILES = $(shell ls *css *ico *js *.jpg *gif *png *html *txt)
 all ::
 
 install ::
-	@mkdir -p ${SOGO_WEBSERVERRESOURCESDIR}
-	@cp $(WEBSERVER_RESOURCE_FILES) ${SOGO_WEBSERVERRESOURCESDIR}
+	@if [ -L "$(SOGO_WEBSERVERRESOURCESDIR)" ]; then \
+	  echo "$(SOGO_WEBSERVERRESOURCESDIR) is a symbolic link (for development?). Installation skipped."; \
+	else \
+	  mkdir -p $(SOGO_WEBSERVERRESOURCESDIR); \
+	  cp $(WEBSERVER_RESOURCE_FILES) $(SOGO_WEBSERVERRESOURCESDIR); \
+	fi
 
 clean ::
 

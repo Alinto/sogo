@@ -18,21 +18,22 @@ validate-wox:
 	@for wox in $(WOXS); \
 	  do $(XMLLINT-BIN) --noout $$wox || exit 1; \
 	done;
+	@echo "Template files validated"
 
-mkinstall-dirs ::
-	@if [ ! -d $(SOGO_TEMPLATESDIR) ]; then mkdir -p $(SOGO_TEMPLATESDIR); fi 
-	@for dir in $(TEMPLATE_DIRS); do \
-	  if [ ! -d $(SOGO_TEMPLATESDIR)/$$dir ]; then \
-	    echo Creating template directory \"$(SOGO_TEMPLATESDIR)/$$dir\"...; \
-	    mkdir $(SOGO_TEMPLATESDIR)/$$dir; \
-	  fi; \
-	done
-
-install-files ::
-	@echo Installing template files...
-	@tar cf - $(WOXS) | ( cd $(SOGO_TEMPLATESDIR); tar xf -)
-
-install :: mkinstall-dirs install-files
+install ::
+	@if [ -L "$(SOGO_TEMPLATESDIR)" ]; then \
+	  echo "$(SOGO_TEMPLATESDIR) is a symbolic link (for development?). Installation skipped."; \
+	else \
+	  if [ ! -d $(SOGO_TEMPLATESDIR) ]; then mkdir -p $(SOGO_TEMPLATESDIR); fi; \
+	  for dir in $(TEMPLATE_DIRS); do \
+	    if [ ! -d $(SOGO_TEMPLATESDIR)/$$dir ]; then \
+	      echo Creating template directory \"$(SOGO_TEMPLATESDIR)/$$dir\"...; \
+	      mkdir $(SOGO_TEMPLATESDIR)/$$dir; \
+	    fi; \
+	  done; \
+	  echo Installing template files...; \
+	  tar cf - $(WOXS) | ( cd $(SOGO_TEMPLATESDIR); tar xf -) ;\
+	fi
 
 clean ::
 
