@@ -65,40 +65,58 @@
 
 @end
 
+@interface SOGoACLDutchAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLDutchModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLDutchRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLEnglishAdditionAdvisory : SOGoACLAdditionAdvisory
-@end
-
-@interface SOGoACLFrenchAdditionAdvisory : SOGoACLAdditionAdvisory
-@end
-
-@interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
-@end
-
-@interface SOGoACLItalianAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
 @interface SOGoACLEnglishModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLFrenchModificationAdvisory : SOGoACLModificationAdvisory
-@end
-
-@interface SOGoACLGermanModificationAdvisory : SOGoACLModificationAdvisory
-@end
-
-@interface SOGoACLItalianModificationAdvisory : SOGoACLModificationAdvisory
-@end
-
 @interface SOGoACLEnglishRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLFrenchAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLFrenchModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
 @interface SOGoACLFrenchRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLGermanAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLGermanModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
 @interface SOGoACLGermanRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLItalianAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLItalianModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
 @interface SOGoACLItalianRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLSpanishAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLSpanishModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLSpanishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 #endif /* SOGOACLADVISORY_H */

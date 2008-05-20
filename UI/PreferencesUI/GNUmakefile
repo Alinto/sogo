@@ -6,7 +6,7 @@ BUNDLE_NAME = PreferencesUI
 
 PreferencesUI_PRINCIPAL_CLASS = PreferencesUIProduct
 
-PreferencesUI_LANGUAGES = English French German Italian
+PreferencesUI_LANGUAGES = Dutch English French German Italian Spanish
 
 PreferencesUI_OBJC_FILES =		\
 	PreferencesUIProduct.m		\

@@ -246,39 +246,56 @@
 
 @end
 
+@implementation SOGoACLDutchAdditionAdvisory
+@end
+
+@implementation SOGoACLDutchModificationAdvisory
+@end
+
+@implementation SOGoACLDutchRemovalAdvisory
+@end
+
 @implementation SOGoACLEnglishAdditionAdvisory
-@end
-
-@implementation SOGoACLFrenchAdditionAdvisory
-@end
-
-@implementation SOGoACLGermanAdditionAdvisory
-@end
-
-@implementation SOGoACLItalianAdditionAdvisory
 @end
 
 @implementation SOGoACLEnglishModificationAdvisory
 @end
 
-@implementation SOGoACLFrenchModificationAdvisory
-@end
-
-@implementation SOGoACLGermanModificationAdvisory
-@end
-
-@implementation SOGoACLItalianModificationAdvisory
-@end
-
 @implementation SOGoACLEnglishRemovalAdvisory
+@end
+
+@implementation SOGoACLFrenchAdditionAdvisory
+@end
+
+@implementation SOGoACLFrenchModificationAdvisory
 @end
 
 @implementation SOGoACLFrenchRemovalAdvisory
 @end
 
+@implementation SOGoACLGermanAdditionAdvisory
+@end
+
+@implementation SOGoACLGermanModificationAdvisory
+@end
+
 @implementation SOGoACLGermanRemovalAdvisory
+@end
+
+@implementation SOGoACLItalianModificationAdvisory
+@end
+
+@implementation SOGoACLItalianAdditionAdvisory
 @end
 
 @implementation SOGoACLItalianRemovalAdvisory
 @end
 
+@implementation SOGoACLSpanishAdditionAdvisory
+@end
+
+@implementation SOGoACLSpanishModificationAdvisory
+@end
+
+@implementation SOGoACLSpanishRemovalAdvisory
+@end

@@ -39,14 +39,18 @@ Mailer_RESOURCE_FILES += \
 	product.plist	\
 
 Mailer_RESOURCE_FILES += \
+	SOGoMailDutchForward.wo \
 	SOGoMailEnglishForward.wo \
 	SOGoMailFrenchForward.wo \
 	SOGoMailGermanForward.wo \
-    SOGoMailItalianForward.wo \
+	SOGoMailItalianForward.wo \
+	SOGoMailSpanishForward.wo \
+	SOGoMailDutchReply.wo \
 	SOGoMailEnglishReply.wo \
 	SOGoMailFrenchReply.wo \
 	SOGoMailGermanReply.wo \
-    SOGoMailItalianReply.wo 
+	SOGoMailItalianReply.wo \
+	SOGoMailSpanishReply.wo 
 
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/

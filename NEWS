@@ -5,7 +5,7 @@
 - added custom DAV methods for managing user permissions from the SOGo Integrator
 - pressing enter in the contact edition dialog will perform the creation/update operation
 - implemented more of the CalDAV specification for compatibility with Lightning 0.8
-- added Italian translation, thanks to Marco Lertora
+- added Italian translation, thanks to Marco Lertora and Sauro Saltini
 - added initial logic for splitting overlapping events
 - improved restoration of drag handles state
 - improved contextual menu handling of Address Book module
@@ -18,6 +18,8 @@
 - added support for calendar colors, both in the web and DAV interfaces
 - refactored and fixed the implementation of DAV acl, with partial support for CalDAV Scheduling extensions
 - removed the limitation that prevented the user of underscore characters in usernames
+- added Spanish translation, thanks to Ernesto Revilla
+- added Dutch translation, thanks to Wilco Baan Hofman
 
 0.9.0-20080208 (1.0 rc5)
 ------------------------

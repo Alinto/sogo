@@ -11,6 +11,10 @@
 "Switch to week view" = "Settimana";
 "Switch to month view" = "Mese";
 
+/* Tabs */
+"Date" = "Data";
+"Calendars" = "Calendari";
+
 /* Day */
 
 "Sunday" = "Domenica";
@@ -83,7 +87,6 @@
 
 /* Menu */
 
-"Calendars" = "Calendari";
 "Calendar" = "Calendario";
 "Contacts" = "Contatti";
 

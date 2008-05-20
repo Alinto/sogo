@@ -82,6 +82,7 @@
 
 "Default identity:" = "Standard Identität:";
 "Manage identities..." = "Identitäten verwalten...";
+"Signature:" = "Unterschrift:";
 
 /* password */
 "New password:" = "Neues Passwort:";

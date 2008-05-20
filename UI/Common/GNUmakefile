@@ -6,7 +6,7 @@ BUNDLE_NAME = CommonUI
 
 CommonUI_PRINCIPAL_CLASS = CommonUIProduct
 
-CommonUI_LANGUAGES = English French German Italian
+CommonUI_LANGUAGES = Dutch English French German Italian Spanish
 
 CommonUI_OBJC_FILES +=		\
 	CommonUIProduct.m	\

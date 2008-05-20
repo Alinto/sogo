@@ -85,6 +85,7 @@
 
 "Default identity:" = "Default identity:";
 "Manage identities..." = "Manage identities...";
+"Signature:" = "Signature:";
 
 /* password */
 "New password:" = "New password:";

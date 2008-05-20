@@ -207,35 +207,50 @@
 
 @end
 
-@implementation SOGoFolderEnglishAdditionAdvisory
+@implementation SOGoFolderAdditionAdvisory
+
 - (NSString *) folderMethod { return @"add"; }
+
+@end
+
+@implementation SOGoFolderRemovalAdvisory
+
+- (NSString *) folderMethod { return @"remove"; }
+
+@end
+
+@implementation SOGoFolderDutchAdditionAdvisory
+@end
+
+@implementation SOGoFolderDutchRemovalAdvisory
+@end
+
+@implementation SOGoFolderEnglishAdditionAdvisory
 @end
 
 @implementation SOGoFolderEnglishRemovalAdvisory
-- (NSString *) folderMethod { return @"remove"; }
 @end
 
 @implementation SOGoFolderFrenchAdditionAdvisory
-- (NSString *) folderMethod { return @"add"; }
 @end
 
 @implementation SOGoFolderFrenchRemovalAdvisory
-- (NSString *) folderMethod { return @"remove"; }
 @end
 
 @implementation SOGoFolderGermanAdditionAdvisory
-- (NSString *) folderMethod { return @"add"; }
 @end
 
 @implementation SOGoFolderGermanRemovalAdvisory
-- (NSString *) folderMethod { return @"remove"; }
 @end
 
 @implementation SOGoFolderItalianAdditionAdvisory
-- (NSString *) folderMethod { return @"add"; }
 @end
 
 @implementation SOGoFolderItalianRemovalAdvisory
-- (NSString *) folderMethod { return @"remove"; }
 @end
 
+@implementation SOGoFolderSpanishAdditionAdvisory
+@end
+
+@implementation SOGoFolderSpanishRemovalAdvisory
+@end

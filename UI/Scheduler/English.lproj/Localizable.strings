@@ -11,6 +11,10 @@
 "Switch to week view" = "Switch to week view";
 "Switch to month view" = "Switch to month view";
 
+/* Tabs */
+"Date" = "Date";
+"Calendars" = "Calendars";
+
 /* Day */
 
 "Sunday" = "Sunday";
@@ -83,7 +87,6 @@
 
 /* Menu */
 
-"Calendars" = "Calendars";
 "Calendar" = "Calendar";
 "Contacts" = "Contacts";
 
@@ -442,7 +445,9 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Maybe busy" = "Maybe busy";
 "No free-busy information" = "No free-busy information";
 
-/* FreeBusy panel buttons */
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Suggest time slot:";
+"Zoom:" = "Zoom:";
 "Previous slot" = "Previous slot";
 "Next slot" = "Next slot";
 "Previous hour" = "Previous hour";

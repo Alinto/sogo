@@ -10,6 +10,10 @@
 "Friday" = "Freitag";
 "Saturday" = "Samstag";
 
+/* Tabs */
+"Date" = "Datum";
+"Calendars" = "Kalenderliste";
+
 "Sun" = "So";
 "Mon" = "Mo";
 "Tue" = "Di";
@@ -72,7 +76,6 @@
 
 /* Menu */
 
-"Calendars" = "Kalenderliste";
 "Calendar" = "Kalender";
 "Contacts" = "Kontakte";
 
@@ -88,7 +91,7 @@
 "Compose E-Mail to Undecided Attendees" = "E-Mail an unentschlossene Teilnehmer erstellen";
 
 /* Folders */
-"Personal calendar" = "Persönlicher Kalendar";
+"Personal calendar" = "Persönlicher Kalender";
 
 /* Misc */
 
@@ -113,7 +116,7 @@
 
 /* Button Titles */
 
-"New Calendar..." = "New Calendar...";
+"New Calendar..." = "Neuer Kalender...";
 "Subscribe to a Calendar..." = "Einen Kalender abonnieren...";
 "Remove the selected Calendar" = "Ausgewählten Kalender löschen";
 
@@ -123,7 +126,7 @@
 "printview" = "Druckversion";
 "edit" = "Bearbeiten";
 "delete" = "Löschen";
-"proposal" = "Recherche de plages horaires";
+"proposal" = "Vorschlag";
 "Save and Close" = "Speichern und schließen";
 "Close" = "Schließen";
 "Invite Attendees" = "Teilnehmer";

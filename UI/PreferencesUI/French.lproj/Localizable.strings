@@ -83,6 +83,7 @@
 /* Identities */
 "Default identity:" = "Identité par défaut :";
 "Manage identities..." = "Gérer les identitiés...";
+"Signature:" = "Signature :";
 
 /* password */
 "New password:" = "Nouveau mot de passe :";

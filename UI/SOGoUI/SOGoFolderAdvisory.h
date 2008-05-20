@@ -47,29 +47,46 @@
 
 @end
 
-@interface SOGoFolderEnglishAdditionAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderAdditionAdvisory : SOGoFolderAdvisory
 @end
 
-@interface SOGoFolderEnglishRemovalAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderRemovalAdvisory : SOGoFolderAdvisory
 @end
 
-@interface SOGoFolderFrenchAdditionAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderDutchAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderFrenchRemovalAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderDutchRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderGermanAdditionAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderEnglishAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderGermanRemovalAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderEnglishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderItalianAdditionAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderFrenchAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderItalianRemovalAdvisory : SOGoFolderAdvisory
+@interface SOGoFolderFrenchRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderGermanAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderGermanRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderItalianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderSpanishAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderSpanishRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
 
 #endif /* SOGOFOLDERADVISORY_H */

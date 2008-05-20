@@ -13,6 +13,7 @@ SUBPROJECTS += \
 	MainUI		\
 	PreferencesUI	\
 	Scheduler	\
-	Templates
+	Templates	\
+	WebServerResources
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make

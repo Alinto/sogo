@@ -11,6 +11,10 @@
 "Switch to week view" = "Passer à la vue par semaine";
 "Switch to month view" = "Passer à la vue par mois";
 
+/* Tabs */
+"Date" = "Date";
+"Calendars" = "Agendas";
+
 /* Day */
 
 "Sunday" = "Dimanche";
@@ -84,7 +88,6 @@
 
 /* Menu */
 
-"Calendars" = "Agendas";
 "Calendar" = "Agenda";
 "Contacts" = "Contacts";
 
