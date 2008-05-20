@@ -5,10 +5,10 @@ include ../common.make
 XMLLINT = xmllint
 XMLLINT-BIN = $(shell which $(XMLLINT))
 ifeq ($(XMLLINT-BIN),)
-all ::
+all install ::
 	@echo Utility \"$(XMLLINT)\" not found. Skipping validation.
 else
-all :: validate-wox
+all install :: validate-wox
 endif
 
 WOXS = $(shell find . -name '*.wox' -type f)
@@ -32,7 +32,7 @@ install-files ::
 	@echo Installing template files...
 	@tar cf - $(WOXS) | ( cd $(SOGO_TEMPLATESDIR); tar xf -)
 
-install :: validate-wox mkinstall-dirs install-files
+install :: mkinstall-dirs install-files
 
 clean ::
 
