@@ -152,7 +152,7 @@
 
 - (WOResponse *) deleteFolderAction
 {
-  SOGoMailFolder *co;
+  SOGoMailFolder *co, *inbox;
   WOResponse *response;
   NGImap4Connection *connection;
   NSException *error;
@@ -164,6 +164,8 @@
   destURL = [self _trashedURLOfFolder: srcURL
 		  withCO: co];
   connection = [co imap4Connection];
+  inbox = [[co mailAccountFolder] inboxFolderInContext: context];
+  [[connection client] select: [inbox absoluteImap4Name]];
   error = [connection moveMailboxAtURL: srcURL
 		      toURL: destURL];
   if (error)
