@@ -1758,13 +1758,14 @@ function onCalendarRemove(event) {
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].deselect();
       var owner = nodes[i].getAttribute("owner");
-      if (owner != UserLogin) {
-	var folderId = nodes[i].getAttribute("id");
-	unsubscribeFromFolder(folderId, owner,
-			      onFolderUnsubscribeCB, folderId);
+      var folderId = nodes[i].getAttribute("id");
+      if (owner == UserLogin) {
+        var folderIdElements = folderId.split(":");
+	deletePersonalCalendar(folderIdElements[0]);
       }
       else
-	deletePersonalCalendar(folderIdElements[0]);
+	unsubscribeFromFolder(folderId, owner,
+			      onFolderUnsubscribeCB, folderId);
     }
   }
   
