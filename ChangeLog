@@ -1,3 +1,10 @@
+2008-05-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-deleteFolderAction]): select the INBOX folder before removing the
+	target folder, so that Courier does not complain about the current
+	mailbox being in use.
+
 2008-05-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m ([SOGoGCSFolder

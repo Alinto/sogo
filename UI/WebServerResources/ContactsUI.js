@@ -636,7 +636,7 @@ function onAddressBookRemove(event) {
       onFolderSelectionChange();
     }
     else {
-      var folderId = nodes[0].getAttribute("id");
+      var folderId = nodes[0].getAttribute("id").substr("1");
       unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
     }
   }
