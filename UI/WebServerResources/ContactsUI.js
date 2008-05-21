@@ -90,10 +90,11 @@ function contactsListCallback(http) {
 
 	var rows = table.tBodies[0].rows;
 	for (var i = 0; i < rows.length; i++) {
-	  rows[i].observe("mousedown", onRowClick);
-	  rows[i].observe("dblclick", onContactRowDblClick);
-	  rows[i].observe("selectstart", listRowMouseDownHandler);
-	  rows[i].observe("contextmenu", onContactContextMenu);
+          var row = $(rows[i]);
+	  row.observe("mousedown", onRowClick);
+	  row.observe("dblclick", onContactRowDblClick);
+	  row.observe("selectstart", listRowMouseDownHandler);
+	  row.observe("contextmenu", onContactContextMenu);
 	}
       }
       else {
