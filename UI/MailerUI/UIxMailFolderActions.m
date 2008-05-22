@@ -98,7 +98,7 @@
 
 - (WOResponse *) renameFolderAction
 {
-  SOGoMailFolder *co;
+  SOGoMailFolder *co, *inbox;
   WOResponse *response;
   NGImap4Connection *connection;
   NSException *error;
@@ -113,6 +113,8 @@
       srcURL = [co imap4URL];
       destURL = [self _urlOfFolder: srcURL renamedTo: folderName];
       connection = [co imap4Connection];
+      inbox = [[co mailAccountFolder] inboxFolderInContext: context];
+      [[connection client] select: [inbox absoluteImap4Name]];
       error = [connection moveMailboxAtURL: srcURL
 			  toURL: destURL];
       if (error)

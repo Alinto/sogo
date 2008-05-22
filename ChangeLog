@@ -1,5 +1,9 @@
 2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
+	-renameFolderAction]): select the INBOX folder before renaming the
+	target folder.
+
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -loginSuffix]): new
 	method that returns the login suffix configured in the user
 	defaults.
