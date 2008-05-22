@@ -1269,6 +1269,21 @@ static BOOL        showTextAttachmentsInline  = NO;
   return allRecipients;
 }
 
+- (NSArray *) allBareRecipients
+{
+  NSMutableArray *bareRecipients;
+  NSEnumerator *allRecipients;
+  NSString *recipient;
+
+  bareRecipients = [NSMutableArray array];
+
+  allRecipients = [[self allRecipients] objectEnumerator];
+  while ((recipient = [allRecipients nextObject]))
+    [bareRecipients addObject: [recipient pureEMailAddress]];
+
+  return bareRecipients;
+}
+
 - (NSException *) sendMail
 {
   NSException *error;
@@ -1284,7 +1299,7 @@ static BOOL        showTextAttachmentsInline  = NO;
     {
       message = [self mimeMessageAsData];
       error = [[SOGoMailer sharedMailer] sendMailData: message
-					 toRecipients: [self allRecipients]
+					 toRecipients: [self allBareRecipients]
 					 sender: [self sender]];
       if (!error)
 	{

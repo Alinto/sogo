@@ -1,3 +1,9 @@
+2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-sendMail]): the email passed as parameter to sendmail is now the
+	bare user email.
+
 2008-05-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
