@@ -34,7 +34,7 @@
 
 static NSString *defaultMailDomain = nil;
 static BOOL defaultMailDomainIsConfigured = NO;
-static BOOL forceImapLoginWithEmail = YES;
+static BOOL forceImapLoginWithEmail = NO;
 
 @implementation LDAPUserManager
 
