@@ -295,7 +295,7 @@ function moveTo(uri) {
 
 /* contact menu entries */
 function onContactRowDblClick(event) {
-  var contactId = this.getAttribute('id');
+  var contactId = this.getAttribute('contactid');
 
   openContactWindow(URLForFolderID(currentAddressBook)
 		    + "/" + contactId + "/edit", contactId);
@@ -308,11 +308,10 @@ function onContactSelectionChange(event) {
   
   if (rows.length == 1) {
     var node = $(rows[0]);
-    loadContact(node.getAttribute('id'));
+    loadContact(node.getAttribute('contactid'));
   }
-  else if (rows.length > 1) {
+  else if (rows.length > 1)
     $('contactView').update();
-  }
 }
 
 function onMenuEditContact(event) {
