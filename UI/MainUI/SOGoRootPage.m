@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSException.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
@@ -139,6 +140,20 @@
 	       format: @"This exception is brought to you by SOGo"];
 
   return nil;
+}
+
+- (NSString *) loginSuffix
+{
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+
+  return [ud stringForKey: @"SOGoLoginSuffix"];
+}
+
+- (BOOL) hasLoginSuffix
+{
+  return ([[self loginSuffix] length]);
 }
 
 @end /* SOGoRootPage */

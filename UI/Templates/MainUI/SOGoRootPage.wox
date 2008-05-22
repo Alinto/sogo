@@ -10,6 +10,9 @@
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
   <form id="connectForm" var:href="connectURL">
     <div id="loginScreen">
+      <var:if condition="hasLoginSuffix"><script
+	 type="text/javascript">var loginSuffix = '<var:string value="loginSuffix"/>';</script
+	></var:if>
       <img const:alt="*" id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
       <var:if condition="shortUserNameForDisplay" const:value="wrongusernamepassword"
       ><p class="error"><var:string label:value="Wrong username or password."/></p>

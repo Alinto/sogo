@@ -1,5 +1,11 @@
 2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -loginSuffix]): new
+	method that returns the login suffix configured in the user
+	defaults.
+	([SOGoRootPage -hasLoginSuffix]): returns whether a login suffix
+	has been configured in the user defaults.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): request
 	the user login to the imap server from the LDAP user manager.
 

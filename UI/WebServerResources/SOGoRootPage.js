@@ -20,6 +20,9 @@ function onLoginClick(event) {
   var password = $("password").value;
 
   if (userName.length > 0) {
+    if (loginSuffix && loginSuffix.length > 0
+	&& !userName.endsWith(loginSuffix))
+      userName += loginSuffix;
     var url = $("connectForm").getAttribute("action");
     var parameters = ("userName=" + encodeURI(userName) + "&password=" + encodeURI(password));
     document.cookie = "";
@@ -36,6 +39,10 @@ function onLoginCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
       var userName = $("userName").value;
+      if (loginSuffix
+	  && loginSuffix.length > 0
+	  && !userName.endsWith(loginSuffix))
+	userName += loginSuffix;
       var address = "" + window.location.href;
       var baseAddress = ApplicationBaseURL + encodeURI(userName);
       var altBaseAddress;
