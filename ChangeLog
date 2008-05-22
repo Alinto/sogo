@@ -1,5 +1,14 @@
 2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -mailAccounts]): request
+	the user login to the imap server from the LDAP user manager.
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	-getImapLoginForUID:uid]): new method that returns the user
+	identifier to use when login to the imap server, in case it's not
+	the ldap uid. This is configurable through the boolean user
+	default "SOGoForceIMAPLoginWithEmail".
+
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
 	-sendMail]): the email passed as parameter to sendmail is now the
 	bare user email.

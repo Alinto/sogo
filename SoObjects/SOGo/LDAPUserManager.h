@@ -58,6 +58,7 @@
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;
 - (NSString *) getFullEmailForUID: (NSString *) uid;
+- (NSString *) getImapLoginForUID: (NSString *) uid;
 - (NSString *) getUIDForEmail: (NSString *) email;
 
 - (BOOL) checkLogin: (NSString *) login

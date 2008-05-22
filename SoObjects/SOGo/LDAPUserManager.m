@@ -34,6 +34,7 @@
 
 static NSString *defaultMailDomain = nil;
 static BOOL defaultMailDomainIsConfigured = NO;
+static BOOL forceImapLoginWithEmail = YES;
 
 @implementation LDAPUserManager
 
@@ -55,6 +56,8 @@ static BOOL defaultMailDomainIsConfigured = NO;
 	    @" value set to 'localhost'"];
       defaultMailDomain = @"localhost";
     }
+  if (!forceImapLoginWithEmail)
+    forceImapLoginWithEmail = [ud boolForKey: @"SOGoForceIMAPLoginWithEmail"];
 }
 
 + (BOOL) defaultMailDomainIsConfigured
@@ -233,6 +236,11 @@ static BOOL defaultMailDomainIsConfigured = NO;
 		   [contactInfos objectForKey: @"c_email"]];
 }
 
+- (NSString *) getImapLoginForUID: (NSString *) uid
+{
+  return ((forceImapLoginWithEmail) ? [self getEmailForUID: uid] : uid);
+}
+
 - (NSString *) getUIDForEmail: (NSString *) email
 {
   NSDictionary *contactInfos;
@@ -254,13 +262,10 @@ static BOOL defaultMailDomainIsConfigured = NO;
   checkOK = NO;
 
   authIDs = [[self authenticationSourceIDs] objectEnumerator];
-  currentID = [authIDs nextObject];
-  while (currentID && !checkOK)
+  while (!checkOK && (currentID = [authIDs nextObject]))
     {
       ldapSource = [sources objectForKey: currentID];
       checkOK = [ldapSource checkLogin: login andPassword: password];
-      if (!checkOK)
-	currentID = [authIDs nextObject];
     }
 
   return checkOK;

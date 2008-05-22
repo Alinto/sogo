@@ -454,14 +454,15 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSMutableDictionary *mailAccount, *identity;
   NSMutableArray *identities;
-  NSString *name, *fullName;
+  NSString *name, *fullName, *imapLogin;
   NSArray *mails;
   unsigned int count, max;
 
+  imapLogin = [[LDAPUserManager sharedUserManager] getImapLoginForUID: login];
   mailAccount = [NSMutableDictionary dictionary];
   name = [NSString stringWithFormat: @"%@@%@",
-		   login, fallbackIMAP4Server];
-  [mailAccount setObject: login forKey: @"userName"];
+		   imapLogin, fallbackIMAP4Server];
+  [mailAccount setObject: imapLogin forKey: @"userName"];
   [mailAccount setObject: fallbackIMAP4Server forKey: @"serverName"];
   [mailAccount setObject: name forKey: @"name"];
 
