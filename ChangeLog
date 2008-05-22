@@ -1,5 +1,10 @@
 2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davCollectionQuery:queryContext]): fixed the owner url returned
+	in the list so that it matches what the regular davOwner method
+	returns.
+
 	* UI/MailerUI/UIxMailFolderActions.m ([UIxMailFolderActions
 	-renameFolderAction]): select the INBOX folder before renaming the
 	target folder.

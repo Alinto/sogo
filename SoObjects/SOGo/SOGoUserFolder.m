@@ -257,14 +257,14 @@
       while ((currentFolder = [folders nextObject]))
 	{
 	  [r appendContentString: @"<D:response><D:href>"];
-	  data = [NSString stringWithFormat: @"%@%@%@", baseHREF,
+	  data = [NSString stringWithFormat: @"%@%@%@/", baseHREF,
 			   [currentContact objectForKey: @"c_uid"],
 			   [currentFolder objectForKey: @"name"]];
 	  [r appendContentString: data];
 	  [r appendContentString: @"</D:href><D:propstat>"];
 	  [r appendContentString: @"<D:status>HTTP/1.1 200 OK</D:status>"];
 	  [r appendContentString: @"</D:propstat><D:owner>"];
-	  data = [NSString stringWithFormat: @"%@users/%@", baseHREF,
+	  data = [NSString stringWithFormat: @"%@%@", baseHREF,
 			   [currentContact objectForKey: @"c_uid"]];
 	  [r appendContentString: data];
 	  [r appendContentString: @"</D:owner><ownerdisplayname>"];
