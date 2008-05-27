@@ -17,4 +17,5 @@
   "{urn:inverse:params:xml:ns:inverse-dav}collection-query"
     = davCollectionQuery;
   "{urn:inverse:params:xml:ns:inverse-dav}acl-query" = davAclQuery;
+  "{urn:inverse:params:xml:ns:inverse-dav}user-query" = davUserQuery;
 }
