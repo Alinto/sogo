@@ -24,18 +24,18 @@
 /* This script handles the automatic propagation of extensions pertaining to a
    SOGo site */
 $plugins
-= array("sogo-connector@inverse.ca"
+= array( "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
                    "version" => "0.67",
                    "filename" => "sogo-connector-0.80.xpi" ),
-        "sogo-integrator@inverse.ca"
-         => array( "application" => "thunderbird",
-                   "version" => "0.67",
-                   "filename" => "sogo-integrator-0.80-sogo-demo.xpi" ),
-        "{e2fda1a4-762b-4020-b5ad-a41df1933103}" 
-        => array( "application" => "thunderbird",
+	 "sogo-integrator@inverse.ca"
+	 => array( "application" => "thunderbird",
+		   "version" => "0.67",
+		   "filename" => "sogo-integrator-0.80-sogo-demo.xpi" ),
+	 "{e2fda1a4-762b-4020-b5ad-a41df1933103}" 
+	 => array( "application" => "thunderbird",
 		   "version" => "0.8",
-                   "filename" => "lightning-0.8.xpi" ));
+		   "filename" => "lightning-0.8.xpi" ));
 
 $applications
 = array( "thunderbird" => "<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
@@ -49,7 +49,18 @@ $pluginname = $HTTP_GET_VARS["plugin"];
 $plugin =& $plugins[$pluginname];
 $application =& $applications[$plugin["application"]];
 
-if ($plugin) {
+if ( $plugin ) {
+  $platform = $HTTP_GET_VARS["platform"];
+  if ( $platform
+       && file_exists( $platform . "/" . $plugin["filename"] ) ) {
+    $plugin["filename"] = $platform . "/" . $plugin["filename"];
+  }
+  elseif ( !file_exists( $plugin["filename"] ) ) {
+    $plugin = false;
+  }
+}
+
+if ( $plugin ) {
   header("Content-type: text/xml; charset=utf-8");
   echo ('<?xml version="1.0"?>' . "\n");
 ?>
