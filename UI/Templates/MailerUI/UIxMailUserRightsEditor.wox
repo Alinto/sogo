@@ -53,20 +53,22 @@
 	  label:value="Add subfolders to this folder"/></label>
       <br/>
       <label><input type="checkbox" class="checkBox"
-	  const:name="FolderEraser"
-	  var:checked="userCanRemoveFolder"/><var:string
-	  label:value="Remove this folder"/></label>
-      <br/>
-      <label><input type="checkbox" class="checkBox"
 	  const:name="ObjectEraser"
 	  var:checked="userCanEraseMails"/><var:string
 	  label:value="Erase mails from this folder"/></label>
+      <br/>
+      <var:if condition="conformsToRFC4314">
+      <label><input type="checkbox" class="checkBox"
+	  const:name="FolderEraser"
+	  var:checked="userCanRemoveFolder"/><var:string
+	  label:value="Remove this folder"/></label>
       <br/>
       <label><input type="checkbox" class="checkBox"
 	  const:name="MailExpunger"
 	  var:checked="userCanExpungeFolder"/><var:string
 	  label:value="Expunge this folder"/></label>
       <br/>
+      </var:if>
       <label><input type="checkbox" class="checkBox"
 	  const:name="MailAdministrator"
 	  var:checked="userIsAdministrator"/><var:string

@@ -44,7 +44,39 @@
 
 static NSString *defaultUserID =  @"anyone";
 
+#warning this could be detected from the capabilities
+static SOGoIMAPAclStyle aclStyle = undefined;
+static BOOL aclUsernamesAreQuoted = NO;
+/* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
+static BOOL aclConformsToIMAPExt = NO;
+
 @implementation SOGoMailFolder
+
++ (void) initialize
+{
+  NSUserDefaults *ud;
+  NSString *aclStyleStr;
+
+  if (aclStyle == undefined)
+    {
+      ud = [NSUserDefaults standardUserDefaults];
+      aclStyleStr = [ud stringForKey: @"SOGoIMAPAclStyle"];
+      if ([aclStyleStr isEqualToString: @"rfc2086"])
+	aclStyle = rfc2086;
+      else
+	aclStyle = rfc4314;
+
+      aclUsernamesAreQuoted
+	= [ud boolForKey: @"SOGoIMAPAclUsernamesAreQuoted"];
+      aclConformsToIMAPExt
+	= [ud boolForKey: @"SOGoIMAPAclConformsToIMAPExt"];
+    }
+}
+
++ (SOGoIMAPAclStyle) imapAclStyle
+{
+  return aclStyle;
+}
 
 - (void) _adjustOwner
 {
@@ -469,12 +501,14 @@ static NSString *defaultUserID =  @"anyone";
 	case 'p':
 	  [SOGoAcls addObjectUniquely: SOGoMailRole_Poster];
 	  break;
+	case 'c':
 	case 'k':
 	  [SOGoAcls addObjectUniquely: SOGoRole_FolderCreator];
 	  break;
 	case 'x':
 	  [SOGoAcls addObjectUniquely: SOGoRole_FolderEraser];
 	  break;
+	case 'd':
 	case 't':
 	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectEraser];
 	  break;
@@ -490,6 +524,38 @@ static NSString *defaultUserID =  @"anyone";
   return SOGoAcls;
 }
 
+- (char) _rfc2086StyleRight: (NSString *) sogoRight
+{
+  char character;
+
+  if ([sogoRight isEqualToString: SOGoRole_FolderCreator])
+    character = 'c';
+  else if ([sogoRight isEqualToString: SOGoRole_ObjectEraser])
+    character = 'd';
+  else
+    character = 0;
+
+  return character;
+}
+
+- (char) _rfc4314StyleRight: (NSString *) sogoRight
+{
+  char character;
+
+  if ([sogoRight isEqualToString: SOGoRole_FolderCreator])
+    character = 'k';
+  else if ([sogoRight isEqualToString: SOGoRole_FolderEraser])
+    character = 'x';
+  else if ([sogoRight isEqualToString: SOGoRole_ObjectEraser])
+    character = 't';
+  else if ([sogoRight isEqualToString: SOGoMailRole_Expunger])
+    character = 'e';
+  else
+    character = 0;
+
+  return character;
+}
+
 - (NSString *) _sogoAclsToImapAcls: (NSArray *) sogoAcls
 {
   NSMutableString *imapAcls;
@@ -499,8 +565,7 @@ static NSString *defaultUserID =  @"anyone";
 
   imapAcls = [NSMutableString string];
   acls = [sogoAcls objectEnumerator];
-  currentAcl = [acls nextObject];
-  while (currentAcl)
+  while ((currentAcl = [acls nextObject]))
     {
       if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
 	{
@@ -515,33 +580,76 @@ static NSString *defaultUserID =  @"anyone";
 	character = 'i';
       else if ([currentAcl isEqualToString: SOGoMailRole_Poster])
 	character = 'p';
-      else if ([currentAcl isEqualToString: SOGoRole_FolderCreator])
-	character = 'k';
-      else if ([currentAcl isEqualToString: SOGoRole_FolderEraser])
-	character = 'x';
-      else if ([currentAcl isEqualToString: SOGoRole_ObjectEraser])
-	character = 't';
-      else if ([currentAcl isEqualToString: SOGoMailRole_Expunger])
-	character = 'e';
       else if ([currentAcl isEqualToString: SOGoMailRole_Administrator])
 	character = 'a';
       else
-	character = 0;
+	{
+	  if (aclStyle == rfc2086)
+	    character = [self _rfc2086StyleRight: currentAcl];
+	  else if (aclStyle == rfc4314)
+	    character = [self _rfc4314StyleRight: currentAcl];
+	  else
+	    character = 0;
+	}
 
       if (character)
 	[imapAcls appendFormat: @"%c", character];
-
-      currentAcl = [acls nextObject];
     }
 
   return imapAcls;
 }
 
+- (void) _unquoteACLUsernames
+{
+  NSMutableDictionary *newIMAPAcls;
+  NSEnumerator *usernames;
+  NSString *username, *unquoted;
+
+  newIMAPAcls = [NSMutableDictionary new];
+
+  usernames = [[mailboxACL allKeys] objectEnumerator];
+  while ((username = [usernames nextObject]))
+    {
+      unquoted = [username substringFromRange:
+			     NSMakeRange(1, [username length] - 2)];
+      [newIMAPAcls setObject: [mailboxACL objectForKey: username]
+		   forKey: unquoted];
+    }
+  [mailboxACL release];
+  mailboxACL = newIMAPAcls;
+}
+
+- (void) _removeIMAPExtUsernames
+{
+  NSMutableDictionary *newIMAPAcls;
+  NSEnumerator *usernames;
+  NSString *username;
+
+  newIMAPAcls = [NSMutableDictionary new];
+
+  usernames = [[mailboxACL allKeys] objectEnumerator];
+  while ((username = [usernames nextObject]))
+    if (!([username isEqualToString: @"administrators"]
+	  || [username isEqualToString: @"owner"]
+	  || [username isEqualToString: @"anonymous"]
+	  || [username isEqualToString: @"authuser"]))
+      [newIMAPAcls setObject: [mailboxACL objectForKey: username]
+		   forKey: username];
+  [mailboxACL release];
+  mailboxACL = newIMAPAcls;
+}
+
 - (void) _readMailboxACL
 {
-  mailboxACL
-    = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
+  [mailboxACL release];
+
+  mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
   [mailboxACL retain];
+
+  if (aclUsernamesAreQuoted)
+    [self _unquoteACLUsernames];
+  if (aclConformsToIMAPExt)
+    [self _removeIMAPExtUsernames];
 }
 
 - (NSArray *) subscriptionRoles
@@ -624,20 +732,15 @@ static NSString *defaultUserID =  @"anyone";
 - (void) removeAclsForUsers: (NSArray *) users
 {
   NSEnumerator *uids;
-  NSString *currentUID;
-  NSString *folderName;
+  NSString *currentUID, *folderName;
   NGImap4Client *client;
 
   folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
   client = [imap4 client];
 
   uids = [users objectEnumerator];
-  currentUID = [uids nextObject];
-  while (currentUID)
-    {
-      [client deleteACL: folderName uid: currentUID];
-      currentUID = [uids nextObject];
-    }
+  while ((currentUID = [uids nextObject]))
+    [client deleteACL: folderName uid: currentUID];
   [mailboxACL release];
   mailboxACL = nil;
 }

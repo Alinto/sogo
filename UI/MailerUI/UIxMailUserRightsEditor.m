@@ -23,11 +23,21 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <NGObjWeb/WORequest.h>
+#import <SoObjects/Mailer/SOGoMailFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
 #import "UIxMailUserRightsEditor.h"
 
 @implementation UIxMailUserRightsEditor
+
+- (BOOL) conformsToRFC4314
+{
+  SOGoMailFolder *co;
+
+  co = [self clientObject];
+
+  return ([[co class] imapAclStyle] == rfc4314);
+}
 
 - (void) setUserCanReadMails: (BOOL) userCanReadMails
 {

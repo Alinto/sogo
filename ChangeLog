@@ -1,3 +1,24 @@
+2008-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder
+	+initialize]): new method where we read the three new defaults
+	variables "SOGoIMAPAclStyle", "SOGoIMAPAclUsernamesAreQuoted",
+	"SOGoIMAPAclConformsToIMAPExt".
+	([SOGoMailFolder +imapAclStyle]): new method that returns the rfc
+	number to which the imap server conforms to regarding the acl.
+	([SOGoMailFolder -aclsForUser:uid]): added right 'c' and 'd' from
+	rfc2086.
+	([SOGoMailFolder -setRoles:rolesforUser:uid]): convert SOGo
+	permissions to the acl rights conforming to the RFC configured
+	with SOGoIMAPAclStyle.
+	([SOGoMailFolder -aclUsers]): unquote usernames if
+	"SOGoIMAPAclUsernamesAreQuoted" is set. Remove usernames listed as
+	special usernames in
+	http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ if
+	"SOGoIMAPAclConformsToIMAPExt" is set.
+
+	* UI/MailerUI/UIxMailUserRightsEditor.m ([UIxMailUserRightsEditor conformsToRFC4314]): new template getter.
+
 2008-05-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
