@@ -319,7 +319,7 @@
       eventObject = [self _eventObjectWithUID: [emailEvent uid]];
       calendarEvent = [eventObject component: NO secure: NO];
       if (([[emailEvent sequence] compare: [calendarEvent sequence]]
-	  != NSOrderedDescending)
+	  != NSOrderedAscending)
 	  && ([self _updateParticipantStatusInEvent: calendarEvent
 		    fromEvent: emailEvent
 		    inObject: eventObject]))

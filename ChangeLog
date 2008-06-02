@@ -1,3 +1,16 @@
+2008-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalViewer.m
+	([UIxMailPartICalViewer -canOriginalEventBeUpdated]): new template
+	accessor that return whether the use status has changed in the
+	original reply and if its sequence number concurs.
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m
+	([UIxMailPartICalActions -updateUserStatusAction]): we accept the
+	modification if the sequence number from the reply is equal or
+	SUPERIOR (for Lightning bugs), rather than inferior, where the
+	reply is obsolete anyway.
+
 2008-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m ([SOGoMailFolder

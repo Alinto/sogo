@@ -416,4 +416,11 @@
 	  != NSOrderedSame);
 }
 
+- (BOOL) canOriginalEventBeUpdated
+{
+  return ([self hasSenderStatusChanged]
+	  && ([[inEvent sequence] compare: [storedEvent sequence]]
+	      != NSOrderedAscending));
+}
+
 @end /* UIxMailPartICalViewer */

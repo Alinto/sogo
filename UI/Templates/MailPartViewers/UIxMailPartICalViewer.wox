@@ -84,7 +84,7 @@
 	</var:if>
 
 	<var:if condition="isReplySenderAnAttendee">
-	  <var:if condition="hasSenderStatusChanged"
+	  <var:if condition="canOriginalEventBeUpdated"
 	    ><p class="uix_ical_toolbar">
 	      <input id="iCalendarUpdateUserStatus" class="button"
 		type="button" label:value="Update status"/>
