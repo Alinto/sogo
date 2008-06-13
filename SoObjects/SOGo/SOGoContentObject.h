@@ -25,25 +25,24 @@
 #import <SOGo/SOGoObject.h>
 
 @class NSArray;
+@class NSCalendarDate;
 @class NSException;
 @class NSString;
+@class SOGoGCSFolder;
 
 @interface SOGoContentObject : SOGoObject
 {
-  NSString *ocsPath;
-  NSDictionary *record;
   BOOL isNew;
+  NSString *content;
+  unsigned int version;
+  NSCalendarDate *creationDate;
+  NSCalendarDate *lastModified;
 }
 
-/* accessors */
-
-- (void) setOCSPath: (NSString *) _path;
-- (NSString *) ocsPath;
-
-/* folder */
-
-- (NSString *) ocsPathOfContainer;
-- (GCSFolder *) ocsFolder;
++ (SOGoContentObject *) objectWithRecord: (NSDictionary *) objectRecord
+			     inContainer: (SOGoGCSFolder *) newContainer;
+- (id) initWithRecord: (NSDictionary *) objectRecord
+	  inContainer: (id) newContainer;
 
 /* content */
 
@@ -57,6 +56,9 @@
 /* etag support */
 
 - (id) davEntityTag;
+- (NSString *) davCreationDate;
+- (NSString *) davLastModified;
+- (NSString *) davContentLength;
 
 /* message type */
 

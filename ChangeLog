@@ -1,5 +1,14 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	+objectWithRecord:objectRecordinContainer:newContainer]): new
+	constructor that instantiate an object based on the data found in
+	the corresponding database record.
+	([SOGoContentObject -setOCSPath:newOCSPath]): removed this method and
+	other OCS related ones, since we no longer fetch the record data
+	from here. Indeed, the object is now built from within its
+	container, so that caches can be created and queries avoided.
+
 	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
 	-asPointersOfObjects]): new method that transforms an NSArray into
 	an array of ptr**;

@@ -41,17 +41,64 @@
 
 @implementation SOGoContentObject
 
++ (SOGoContentObject *) objectWithRecord: (NSDictionary *) objectRecord
+			     inContainer: (SOGoGCSFolder *) newContainer
+{
+  SOGoContentObject *newObject;
+
+  newObject = [[self alloc] initWithRecord: objectRecord
+			    inContainer: newContainer];
+  [newObject autorelease];
+
+  return newObject;
+}
+
 // TODO: check superclass version
 
-- (id) initWithName: (NSString *) newName
-	inContainer: (id) newContainer
+- (id) init
 {
+  if ((self = [super init]))
+    {
+      isNew = YES;
+      content = nil;
+      version = 0;
+      lastModified = nil;
+      creationDate = nil;
+    }
+
+  return self;
+}
+
+
+- (void) _setRecord: (NSDictionary *) objectRecord
+{
+  NSString *newContent;
+  int intValue;
+
+  newContent = [objectRecord objectForKey: @"c_content"];
+  if (newContent)
+    {
+      isNew = NO;
+      ASSIGN (content, newContent);
+      version = [[objectRecord objectForKey: @"c_version"] unsignedIntValue];
+      intValue = [[objectRecord objectForKey: @"c_creationdate"] intValue];
+      ASSIGN (creationDate,
+	      [NSCalendarDate dateWithTimeIntervalSince1970: intValue]);
+      intValue = [[objectRecord objectForKey: @"c_lastmodified"] intValue];
+      ASSIGN (lastModified,
+	      [NSCalendarDate dateWithTimeIntervalSince1970: intValue]);
+    }
+}
+
+- (id) initWithRecord: (NSDictionary *) objectRecord
+	  inContainer: (id) newContainer
+{
+  NSString *newName;
+
+  newName = [objectRecord objectForKey: @"c_name"];
   if ((self = [super initWithName: newName inContainer: newContainer]))
     {
-      ocsPath = nil;
-      record = [[self ocsFolder] recordOfEntryWithName: newName];
-      [record retain];
-      isNew = (!record);
+      [self _setRecord: objectRecord];
     }
 
   return self;
@@ -59,8 +106,9 @@
 
 - (void) dealloc
 {
-  [record release];
-  [ocsPath release];
+  [content release];
+  [creationDate release];
+  [lastModified release];
   [super dealloc];
 }
 
@@ -69,54 +117,6 @@
 - (BOOL) isFolderish
 {
   return NO;
-}
-
-- (void) setOCSPath: (NSString *) newOCSPath
-{
-  if (![ocsPath isEqualToString: newOCSPath])
-    {
-      if (ocsPath)
-	[self warnWithFormat:@"GCS path is already set! '%@'", newOCSPath];
-  
-      ASSIGNCOPY (ocsPath, newOCSPath);
-    }
-}
-
-- (NSString *) ocsPath
-{
-  NSMutableString *newOCSPath;
-
-  if (!ocsPath)
-    {
-      newOCSPath = [NSMutableString new];
-      [newOCSPath appendString: [self ocsPathOfContainer]];
-      if ([newOCSPath length] > 0)
-	{
-	  if (![newOCSPath hasSuffix:@"/"])
-	    [newOCSPath appendString: @"/"];
-	  [newOCSPath appendString: nameInContainer];
-	  ocsPath = newOCSPath;
-	}
-    }
-
-  return ocsPath;
-}
-
-- (NSString *) ocsPathOfContainer
-{
-  NSString *ocsPathOfContainer;
-
-  if ([container respondsToSelector: @selector (ocsPath)])
-    ocsPathOfContainer = [container ocsPath];
-  else
-    ocsPathOfContainer = nil;
-
-  return ocsPathOfContainer;
-}
-
-- (GCSFolder *) ocsFolder
-{
-  return [container ocsFolder];
 }
 
 /* content */
@@ -128,31 +128,32 @@
 
 - (NSString *) contentAsString
 {
-  return [record objectForKey: @"c_content"];
+  return content;
 }
 
 - (NSException *) saveContentString: (NSString *) newContent
-                        baseVersion: (unsigned int) newBaseVersion
+                        baseVersion: (unsigned int) newVersion
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */
   GCSFolder *folder;
   NSException *ex;
-  NSMutableDictionary *newRecord;
+  NSCalendarDate *now;
 
   ex = nil;
 
-  if (record)
-    newRecord = [NSMutableDictionary dictionaryWithDictionary: record];
-  else
-    newRecord = [NSMutableDictionary dictionary];
-  [newRecord setObject: newContent forKey: @"c_content"];
-  ASSIGN (record, newRecord);
+  now = [NSCalendarDate calendarDate];
+  if (!content)
+    ASSIGN (creationDate, now);
+  ASSIGN (lastModified, now);
+  ASSIGN (content, newContent);
+  version = newVersion;
 
   folder = [container ocsFolder];
   if (folder)
     {
-      ex = [folder writeContent: newContent toName: nameInContainer
-		   baseVersion: newBaseVersion];
+      ex = [folder writeContent: newContent
+		   toName: nameInContainer
+		   baseVersion: newVersion];
       if (ex)
 	[self errorWithFormat:@"write failed: %@", ex];
     }
@@ -175,7 +176,7 @@
   
   // TODO: add precondition check? (or add DELETEAction?)
   
-  if ((folder = [self ocsFolder]) == nil) {
+  if ((folder = [container ocsFolder]) == nil) {
     [self errorWithFormat:@"Did not find folder of content object."];
     return nil;
   }
@@ -238,7 +239,6 @@
     
     /* kinda dangerous */
     ASSIGNCOPY(nameInContainer, tmp);
-    ASSIGN(ocsPath, nil);
   }
   
   /* determine base version from etag in if-match header */
@@ -296,53 +296,22 @@
 
 - (id) davEntityTag
 {
-  // TODO: cache tag in ivar? => if you do, remember to flush after PUT
-  GCSFolder *folder;
-  char buf[64];
-  NSString *entityTag;
-  NSNumber *versionValue;
-  
-  folder = [self ocsFolder];
-  if (folder)
-    {
-      versionValue = [record objectForKey: @"c_version"];
-      sprintf (buf, "\"gcs%08d\"", [versionValue unsignedIntValue]);
-      entityTag = [NSString stringWithCString: buf];
-    }
-  else
-    {
-      [self errorWithFormat:@"Did not find folder of content object."];
-      entityTag = nil;
-    }
-
-  return entityTag;
+  return [NSString stringWithFormat: @"\"gcs%.8d\"", version];
 }
 
 /* WebDAV */
 - (NSString *) davCreationDate
 {
-  NSCalendarDate *date;
-
-  date = [record objectForKey: @"c_creationdate"];
-
-  return [date rfc822DateString];
+  return [creationDate rfc822DateString];
 }
 
 - (NSString *) davLastModified
 {
-  NSCalendarDate *date;
-
-  date = [record objectForKey: @"c_lastmodified"];
-
-  return [date rfc822DateString];
+  return [lastModified rfc822DateString];
 }
 
 - (NSString *) davContentLength
 {
-  NSString *content;
-
-  content = [record objectForKey: @"c_content"];
-
   return [NSString stringWithFormat: @"%u",
 		   [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]];
 }
@@ -439,15 +408,6 @@
 - (NSString *) outlookMessageClass
 {
   return nil;
-}
-
-/* description */
-
-- (void) appendAttributesToDescription: (NSMutableString *) _ms
-{
-  [super appendAttributesToDescription:_ms];
-  
-  [_ms appendFormat:@" ocs=%@", [self ocsPath]];
 }
 
 @end /* SOGoContentObject */
