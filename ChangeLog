@@ -1,5 +1,9 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-ownerInContext:localContext]): set a new ivar: activeUserIsOwner
+	to reduce method calls.
+
 	* Main/SOGo.m ([SOGo -dispatchRequest:_request]): we now report
 	the time taken by the request, if the "SOGoDebugRequests" user
 	default is set.

@@ -68,6 +68,7 @@
   NSString *owner;
   SOGoWebDAVAclManager *webdavAclManager;
   id container;
+  BOOL activeUserIsOwner;
 }
 
 + (NSString *) globallyUniqueObjectId;

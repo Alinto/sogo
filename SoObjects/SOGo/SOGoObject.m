@@ -200,6 +200,7 @@ static NSDictionary *reportMap = nil;
       container = nil;
       owner = nil;
       webdavAclManager = [[self class] webdavAclManager];
+      activeUserIsOwner = NO;
     }
 
   return self;
@@ -255,8 +256,14 @@ static NSDictionary *reportMap = nil;
 
 - (NSString *) ownerInContext: (id) localContext
 {
+  NSString *uid;
+
   if (!owner)
-    owner = [container ownerInContext: context];
+    {
+      owner = [container ownerInContext: context];
+      uid = [[localContext activeUser] login];
+      activeUserIsOwner = [owner isEqualToString: uid];
+    }
 
   return owner;
 }
