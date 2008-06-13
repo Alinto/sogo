@@ -1,5 +1,23 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m
+	([-fetchContentStringsAndNamesOfAllObjects]): removed useless method.
+	([SOGoGCSFolder
+	-lookupName:keyinContext:localContextacquire:acquire]): added new
+	overriden method, to fetch all the required metadata and content
+	for basic handling of SOGoContentObjects.
+	([SOGoGCSFolder -fetchContentObjectNames]): prefetch and cache all
+	the metadata and content of children objects since this method is
+	used by the PROPFIND operation, which will likely require children
+	instantiation.
+	([SOGoGCSFolder -objectClassForComponentName:componentName]): new
+	mandatory method for subclasses.
+	([SOGoGCSFolder -objectClassForContent:content]): new mandator
+	method for subclasses.
+	([SOGoGCSFolder
+	-lookupName:keyinContext:localContextacquire:acquire]): fetch and
+	cache the requested child object record.
+
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-ownerInContext:localContext]): set a new ivar: activeUserIsOwner
 	to reduce method calls.

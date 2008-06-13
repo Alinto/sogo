@@ -47,6 +47,7 @@
 {
   NSString *ocsPath;
   GCSFolder *ocsFolder;
+  NSMutableDictionary *childRecords;
   NSMutableDictionary *aclCache;
 }
 
@@ -69,8 +70,10 @@
 
 - (void) deleteEntriesWithIds: (NSArray *) ids;
 
+- (Class) objectClassForComponentName: (NSString *) componentName;
+- (Class) objectClassForContent: (NSString *) content;
+
 - (NSArray *) fetchContentObjectNames;
-- (NSDictionary *) fetchContentStringsAndNamesOfAllObjects;
 
 /* folder type */
 

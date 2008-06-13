@@ -22,12 +22,13 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSDate.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject.h>
@@ -65,6 +66,7 @@
 
 static NSString *defaultUserID = @"<default>";
 static BOOL sendFolderAdvisories = NO;
+static NSArray *childRecordFields = nil;
 
 @implementation SOGoGCSFolder
 
@@ -131,6 +133,13 @@ static BOOL sendFolderAdvisories = NO;
   ud = [NSUserDefaults standardUserDefaults];
 
   sendFolderAdvisories = [ud boolForKey: @"SOGoFoldersSendEMailNotifications"];
+  if (!childRecordFields)
+    {
+      childRecordFields = [NSArray arrayWithObjects: @"c_name", @"c_version",
+				   @"c_creationdate", @"c_lastmodified",
+				   @"c_component", @"c_content", nil];
+      [childRecordFields retain];
+    }
 }
 
 + (id) folderWithSubscriptionReference: (NSString *) reference
@@ -172,6 +181,7 @@ static BOOL sendFolderAdvisories = NO;
       ocsPath = nil;
       ocsFolder = nil;
       aclCache = [NSMutableDictionary new];
+      childRecords = [NSMutableDictionary new];
     }
 
   return self;
@@ -182,6 +192,7 @@ static BOOL sendFolderAdvisories = NO;
   [ocsFolder release];
   [ocsPath release];
   [aclCache release];
+  [childRecords release];
   [super dealloc];
 }
 
@@ -442,10 +453,10 @@ static BOOL sendFolderAdvisories = NO;
 
 - (NSArray *) fetchContentObjectNames
 {
-  NSArray *fields, *records;
+  NSArray *records, *names;
   
-  fields = [NSArray arrayWithObject: @"c_name"];
-  records = [[self ocsFolder] fetchFields:fields matchingQualifier:nil];
+  records = [[self ocsFolder] fetchFields: childRecordFields
+			      matchingQualifier:nil];
   if (![records isNotNull])
     {
       [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
@@ -454,24 +465,119 @@ static BOOL sendFolderAdvisories = NO;
   if ([records isKindOfClass: [NSException class]])
     return records;
 
-  return [records objectsForKey: @"c_name"];
+  [childRecords release];
+  names = [records objectsForKey: @"c_name"];
+  childRecords = [[NSMutableDictionary alloc] initWithObjects: records
+					      forKeys: names];
+
+  return names;
 }
 
-- (BOOL) nameExistsInFolder: (NSString *) objectName
+- (NSDictionary *) _recordForObjectName: (NSString *) objectName
 {
-  NSArray *fields, *records;
+  NSArray *records;
   EOQualifier *qualifier;
+  NSDictionary *record;
 
   qualifier
     = [EOQualifier qualifierWithQualifierFormat:
                      [NSString stringWithFormat: @"c_name='%@'", objectName]];
 
-  fields = [NSArray arrayWithObject: @"c_name"];
-  records = [[self ocsFolder] fetchFields: fields
+  records = [[self ocsFolder] fetchFields: childRecordFields
                               matchingQualifier: qualifier];
-  return (records
-          && ![records isKindOfClass:[NSException class]]
-          && [records count] > 0);
+  if (![records isKindOfClass: [NSException class]]
+      && [records count])
+    record = [records objectAtIndex: 0];
+  else
+    record = nil;
+
+  return record;
+}
+
+- (BOOL) nameExistsInFolder: (NSString *) objectName
+{
+  NSDictionary *record;
+
+  record = [self _recordForObjectName: objectName];
+
+  return (record != nil);
+}
+
+- (Class) objectClassForComponentName: (NSString *) componentName
+{
+  [self subclassResponsibility: _cmd];
+
+  return Nil;
+}
+
+- (Class) objectClassForContent: (NSString *) content
+{
+  [self subclassResponsibility: _cmd];
+
+  return Nil;
+}
+
+- (id) _createChildComponentWithRecord: (NSDictionary *) record
+{
+  Class klazz;
+
+  klazz = [self objectClassForComponentName:
+		  [record objectForKey: @"c_component"]];
+
+  return [klazz objectWithRecord: record inContainer: self];
+}
+
+- (id) _createChildComponentWithName: (NSString *) newName
+			  andContent: (NSString *) newContent
+{
+  Class klazz;
+  NSDictionary *record;
+  unsigned int now;
+  NSNumber *nowNumber;
+
+  klazz = [self objectClassForContent: newContent];
+  now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
+  nowNumber = [NSNumber numberWithUnsignedInt: now];
+  record = [NSDictionary dictionaryWithObjectsAndKeys: newName, @"c_name",
+			 newContent, @"c_content",
+			 nowNumber, @"c_creationdate",
+			 nowNumber, @"c_lastmodified", nil];
+
+  return [klazz objectWithRecord: record inContainer: self];
+}
+
+- (id) lookupName: (NSString *) key
+        inContext: (WOContext *) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  NSDictionary *record;
+  WORequest *request;
+
+  obj = [super lookupName: key
+	       inContext: localContext
+	       acquire: acquire];
+  if (!obj)
+    {
+      record = [childRecords objectForKey: key];
+      if (!record)
+	{
+	  record = [self _recordForObjectName: key];
+	  if (record)
+	    [childRecords setObject: record forKey: key];
+	}
+      if (record)
+	obj = [self _createChildComponentWithRecord: record];
+      else
+	{
+	  request = [localContext request];
+	  if ([[request method] isEqualToString: @"PUT"])
+	    obj = [self _createChildComponentWithName: key
+			andContent:[request contentAsString]];
+	}
+    }
+
+  return obj;
 }
 
 - (void) deleteEntriesWithIds: (NSArray *) ids
@@ -485,7 +591,8 @@ static BOOL sendFolderAdvisories = NO;
     {
       currentID = [ids objectAtIndex: count];
       deleteObject = [self lookupName: currentID
-			   inContext: context acquire: NO];
+			   inContext: context
+			   acquire: NO];
       if (![deleteObject isKindOfClass: [NSException class]])
 	{
 	  if ([deleteObject respondsToSelector: @selector (prepareDelete)])
@@ -493,20 +600,6 @@ static BOOL sendFolderAdvisories = NO;
 	  [deleteObject delete];
 	}
     }
-}
-
-- (NSDictionary *) fetchContentStringsAndNamesOfAllObjects
-{
-  NSDictionary *files;
-  
-  files = [[self ocsFolder] fetchContentsOfAllFiles];
-  if (![files isNotNull])
-    {
-      [self errorWithFormat:@"(%s): fetch failed!", __PRETTY_FUNCTION__];
-      return nil;
-    }
-
-  return files;
 }
 
 #warning this code should be cleaned up
