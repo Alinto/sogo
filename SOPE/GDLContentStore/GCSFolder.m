@@ -20,21 +20,29 @@
   02111-1307, USA.
 */
 
-#include "GCSFolder.h"
-#include "GCSFolderManager.h"
-#include "GCSFolderType.h"
-#include "GCSChannelManager.h"
-#include "GCSFieldExtractor.h"
-#include "NSURL+GCS.h"
-#include "EOAdaptorChannel+GCS.h"
-#include "EOQualifier+GCS.h"
-#include "GCSStringFormatter.h"
-#include "common.h"
+#import "GCSFieldInfo.h"
+#import "GCSFolder.h"
+#import "GCSFolderManager.h"
+#import "GCSFolderType.h"
+#import "GCSChannelManager.h"
+#import "GCSFieldExtractor.h"
+#import "NSURL+GCS.h"
+#import "EOAdaptorChannel+GCS.h"
+#import "EOQualifier+GCS.h"
+#import "GCSStringFormatter.h"
+#import "common.h"
 
-#include <GDLAccess/EOEntity.h>
-#include <GDLAccess/EOAttribute.h>
-#include <GDLAccess/EOSQLQualifier.h>
-#include <GDLAccess/EOAdaptorContext.h>
+#import <GDLAccess/EOEntity.h>
+#import <GDLAccess/EOAttribute.h>
+#import <GDLAccess/EOSQLQualifier.h>
+#import <GDLAccess/EOAdaptorContext.h>
+
+typedef enum {
+  noTableRequired = 0,
+  quickTableRequired = 1,
+  contentTableRequired = 2,
+  bothTableRequired = 3
+} GCSTableRequirement;
 
 #define CHECKERROR() \
  if (error) { \
@@ -55,8 +63,10 @@ static Class NSNumberClass       = Nil;
 static Class NSCalendarDateClass = Nil;
 
 static GCSStringFormatter *stringFormatter = nil;
+static NSArray *contentFieldNames = nil;
 
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   debugOn         = [ud boolForKey:@"GCSFolderDebugEnabled"];
@@ -65,47 +75,73 @@ static GCSStringFormatter *stringFormatter = nil;
   NSStringClass       = [NSString class];
   NSNumberClass       = [NSNumber class];
   NSCalendarDateClass = [NSCalendarDate class];
-  
+  if (!contentFieldNames)
+    {
+      contentFieldNames = [NSArray arrayWithObjects: @"c_content",
+				    @"c_creationdate", @"c_lastmodified",
+				    @"c_version", @"c_deleted", nil];
+      [contentFieldNames retain];
+    }
+
   stringFormatter = [GCSStringFormatter sharedFormatter];
 }
 
-- (id)initWithPath:(NSString *)_path primaryKey:(id)_folderId
-  folderTypeName:(NSString *)_ftname folderType:(GCSFolderType *)_ftype
-  location:(NSURL *)_loc quickLocation:(NSURL *)_qloc
-  aclLocation:(NSURL *)_aloc
-  folderManager:(GCSFolderManager *)_fm
+- (id) initWithPath: (NSString *)_path
+	 primaryKey: (id)_folderId
+     folderTypeName: (NSString *)_ftname
+	 folderType: (GCSFolderType *)_ftype
+	   location: (NSURL *)_loc
+      quickLocation: (NSURL *)_qloc
+	aclLocation: (NSURL *)_aloc
+      folderManager: (GCSFolderManager *)_fm
 {
-  if (![_loc isNotNull]) {
-    [self errorWithFormat:@"missing quicktable parameter!"];
-    [self release];
-    return nil;
-  }
+  NSEnumerator *fields;
+  GCSFieldInfo *field;
+  NSString *fieldName;
+
+  if (![_loc isNotNull])
+    {
+      [self errorWithFormat:@"missing quicktable parameter!"];
+      [self release];
+      return nil;
+    }
   
   if ((self = [super init])) {
-    self->folderManager  = [_fm    retain];
-    self->folderInfo     = [_ftype retain];
+    folderManager  = [_fm    retain];
+    folderInfo     = [_ftype retain];
+    fields = [[_ftype fields] objectEnumerator];
+    quickFieldNames = [NSMutableArray new];
+    while ((field = [fields nextObject]))
+      {
+	fieldName = [field columnName];
+	if (![fieldName isEqualToString: @"c_name"])
+	  [quickFieldNames addObject: fieldName];
+      }
     
-    self->folderId       = [_folderId copy];
-    self->folderName     = [[_path lastPathComponent] copy];
-    self->path           = [_path   copy];
-    self->location       = [_loc    retain];
-    self->quickLocation  = _qloc ? [_qloc   retain] : [_loc retain];
-    self->aclLocation    = [_aloc   retain];
-    self->folderTypeName = [_ftname copy];
+    folderId       = [_folderId copy];
+    folderName     = [[_path lastPathComponent] copy];
+    path           = [_path   copy];
+    location       = [_loc    retain];
+    quickLocation  = _qloc ? [_qloc   retain] : [_loc retain];
+    aclLocation    = [_aloc   retain];
+    folderTypeName = [_ftname copy];
 
-    self->ofFlags.requiresFolderSelect = 0;
-    self->ofFlags.sameTableForQuick = 
-      [self->location isEqualTo:self->quickLocation] ? 1 : 0;
+    ofFlags.requiresFolderSelect = 0;
+    ofFlags.sameTableForQuick = 
+      [location isEqualTo:quickLocation] ? 1 : 0;
   }
   return self;
 }
-- (id)init {
+
+- (id) init
+{
   return [self initWithPath:nil primaryKey:nil
 	       folderTypeName:nil folderType:nil 
 	       location:nil quickLocation:nil
                aclLocation:nil
 	       folderManager:nil];
 }
+
 - (id)initWithPath:(NSString *)_path primaryKey:(id)_folderId
   folderTypeName:(NSString *)_ftname folderType:(GCSFolderType *)_ftype
   location:(NSURL *)_loc quickLocation:(NSURL *)_qloc
@@ -117,48 +153,50 @@ static GCSStringFormatter *stringFormatter = nil;
 	       folderManager:_fm];
 }
 
-- (void)dealloc {
-  [self->folderManager  release];
-  [self->folderInfo     release];
-  [self->folderId       release];
-  [self->folderName     release];
-  [self->path           release];
-  [self->location       release];
-  [self->quickLocation  release];
-  [self->aclLocation    release];
-  [self->folderTypeName release];
+- (void) dealloc
+{
+  [folderManager  release];
+  [folderInfo     release];
+  [folderId       release];
+  [folderName     release];
+  [path           release];
+  [location       release];
+  [quickLocation  release];
+  [quickFieldNames release];
+  [aclLocation    release];
+  [folderTypeName release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (NSNumber *)folderId {
-  return self->folderId;
+  return folderId;
 }
 
 - (NSString *)folderName {
-  return self->folderName;
+  return folderName;
 }
 - (NSString *)path {
-  return self->path;
+  return path;
 }
 
 - (NSURL *)location {
-  return self->location;
+  return location;
 }
 - (NSURL *)quickLocation {
-  return self->quickLocation;
+  return quickLocation;
 }
 - (NSURL *)aclLocation {
-  return self->aclLocation;
+  return aclLocation;
 }
 
 - (NSString *)folderTypeName {
-  return self->folderTypeName;
+  return folderTypeName;
 }
 
 - (GCSFolderManager *)folderManager {
-  return self->folderManager;
+  return folderManager;
 }
 - (GCSChannelManager *)channelManager {
   return [[self folderManager] channelManager];
@@ -175,7 +213,7 @@ static GCSStringFormatter *stringFormatter = nil;
 }
 
 - (BOOL)isQuickInfoStoredInContentTable {
-  return self->ofFlags.sameTableForQuick ? YES : NO;
+  return ofFlags.sameTableForQuick ? YES : NO;
 }
 
 /* channels */
@@ -251,68 +289,301 @@ static GCSStringFormatter *stringFormatter = nil;
 			       recursive:YES];
 }
 
-- (NSDictionary *) _fetchValueOfColumns: (NSArray *) _cols
-		      inContentWithName: (NSString *) _name
-			  ignoreDeleted: (BOOL) ignoreDeleted
+- (GCSTableRequirement) _tableRequirementForFields: (NSArray *) fields
+				    andOrQualifier: (EOQualifier *) qualifier
+{
+  GCSTableRequirement requirement;
+  NSMutableArray *allFields;
+  NSArray *quFields;
+  unsigned int fieldCount;
+
+  requirement = noTableRequired;
+  allFields = [NSMutableArray new];
+  if ([fields count])
+    [allFields addObjectsFromArray: fields];
+  quFields = [[qualifier allQualifierKeys] allObjects];
+  if ([quFields count])
+    [allFields addObjectsFromArray: quFields];
+
+  fieldCount = [allFields count];
+  if (fieldCount)
+    {
+      if ([allFields firstObjectCommonWithArray: quickFieldNames])
+	requirement |= quickTableRequired;
+      if ([allFields firstObjectCommonWithArray: contentFieldNames])
+	requirement |= contentTableRequired;
+      if (requirement == noTableRequired
+	  && [allFields containsObject: @"c_name"])
+	requirement |= quickTableRequired;
+    }
+  else
+    {
+      [allFields release];
+      [NSException raise: @"GCSFolderMissingFieldNames"
+		   format: @"No field specified for query"];
+    }
+
+  [allFields release];
+
+  return requirement;
+}
+
+- (NSString *) _dottedFields: (NSArray *) fields
+{
+  NSMutableString *dottedFields;
+  NSEnumerator *fieldsEnum;
+  NSString *currentField, *prefix;
+
+  dottedFields = [NSMutableString string];
+  fieldsEnum = [fields objectEnumerator];
+  while ((currentField = [fieldsEnum nextObject]))
+    {
+      if ([quickFieldNames containsObject: currentField])
+	prefix = @"a";
+      else
+	prefix = @"b";
+      [dottedFields appendFormat: @"%@.%@,", prefix, currentField];
+    }
+  [dottedFields deleteCharactersInRange: NSMakeRange ([dottedFields length] -
+						      1, 1)];
+
+  return dottedFields;
+}
+
+- (NSString *) _selectedFields: (NSArray *) fields
+		   requirement: (GCSTableRequirement) requirement
+{
+  NSMutableString *selectedFields;
+
+  selectedFields = [NSMutableString string];
+  
+  if (requirement == bothTableRequired
+      && [fields containsObject: @"c_name"])
+    [selectedFields appendString: [self _dottedFields: fields]];
+  else
+    [selectedFields appendString: [fields componentsJoinedByString: @", "]];
+
+  return selectedFields;
+}
+
+- (NSString *) _sqlForQualifier: (EOQualifier *) qualifier
+{
+  NSMutableString *ms;
+  
+  if (qualifier)
+    {
+      ms = [NSMutableString stringWithCapacity:32];
+      [qualifier _gcsAppendToString: ms];
+    }
+  else
+    ms = nil;
+
+  return ms;
+}
+
+- (NSString *)_sqlForSortOrderings:(NSArray *)_so {
+  NSMutableString *sql;
+  unsigned i, count;
+
+  if ((count = [_so count]) == 0)
+    return nil;
+  
+  sql = [NSMutableString stringWithCapacity:(count * 16)];
+  for (i = 0; i < count; i++) {
+    EOSortOrdering *so;
+    NSString *column;
+    SEL      sel;
+
+    so     = [_so objectAtIndex:i];
+    sel    = [so selector];
+    column = [so key];
+    
+    if (i > 0) [sql appendString:@", "];
+    
+    if (sel_eq(sel, EOCompareAscending)) {
+      [sql appendString:column];
+      [sql appendString:@" ASC"];
+    }
+    else if (sel_eq(sel, EOCompareDescending)) {
+      [sql appendString:column];
+      [sql appendString:@" DESC"];
+    }
+    else if (sel_eq(sel, EOCompareCaseInsensitiveAscending)) {
+      [sql appendString:@"UPPER("];
+      [sql appendString:column];
+      [sql appendString:@") ASC"];
+    }
+    else if (sel_eq(sel, EOCompareCaseInsensitiveDescending)) {
+      [sql appendString:@"UPPER("];
+      [sql appendString:column];
+      [sql appendString:@") DESC"];
+    }
+    else {
+      [self logWithFormat:@"cannot handle sort selector in store: %@",
+	      NSStringFromSelector(sel)];
+    }
+  }
+  return sql;
+}
+
+- (NSString *) _queryForFields: (NSArray *) fields
+                          spec: (EOFetchSpecification *) spec
+		 ignoreDeleted: (BOOL) ignoreDeleted
+{
+  EOQualifier      *qualifier;
+  NSArray          *sortOrderings;
+  NSMutableString  *sql;
+  NSMutableArray   *whereSql;
+  GCSTableRequirement requirement;
+  NSString *whereString;
+
+//   NSLog(@"queryForFields...");
+  qualifier = [spec qualifier];
+  requirement = [self _tableRequirementForFields: fields
+		      andOrQualifier: qualifier];
+  sql = [NSMutableString stringWithCapacity: 256];
+  [sql appendString: @"SELECT "];
+  if (fields)
+    [sql appendString: [self _selectedFields: fields requirement: requirement]];
+  else
+    [sql appendString: @"*"];
+  [sql appendString:@" FROM "];
+  if (requirement == bothTableRequired)
+    [sql appendFormat: @"%@ as a, %@ as b",
+	 [self quickTableName], [self storeTableName]];
+  else
+    {
+      if ((requirement & quickTableRequired))
+	[sql appendString: [self quickTableName]];
+      else if ((requirement & contentTableRequired))
+	[sql appendString: [self storeTableName]];
+    }
+
+  whereSql = [NSMutableArray new];
+  if (qualifier)
+    {
+      whereString = [NSString stringWithFormat: @"(%@)",
+			      [self _sqlForQualifier: qualifier]];
+      #warning this may be dangerous...
+      if (requirement == bothTableRequired)
+	[whereSql addObject: [whereString stringByReplacingString: @"c_name"
+					  withString: @"a.c_name"]];
+      else
+	[whereSql addObject: whereString];
+    }
+  if (requirement == bothTableRequired)
+    [whereSql addObject: @"a.c_name = b.c_name"];
+  if ((requirement & contentTableRequired)
+      && ignoreDeleted)
+    [whereSql addObject: @"(c_deleted != 1 OR c_deleted IS NULL)"];
+  if ([whereSql count])
+    [sql appendFormat: @" WHERE %@",
+	 [whereSql componentsJoinedByString: @" AND "]];
+  [whereSql release];
+
+  sortOrderings = [spec sortOrderings];
+  if ([sortOrderings count] > 0)
+    {
+      [sql appendString:@" ORDER BY "];
+      [sql appendString:[self _sqlForSortOrderings:sortOrderings]];
+    }
+
+#if 0
+  /* limit */
+  [sql appendString:@" LIMIT "]; // count
+  [sql appendString:@" OFFSET "]; // index from 0
+#endif
+
+//   NSLog(@"/queryForFields...");
+
+//   NSLog (@"query:\n/%@/", sql);
+
+  return sql;
+}
+
+- (NSArray *) _fetchFields: (NSArray *) fields
+        fetchSpecification: (EOFetchSpecification *) spec
+	     ignoreDeleted: (BOOL) ignoreDeleted
 {
   EOAdaptorChannel *channel;
-  NSException  *error;
-  NSDictionary *row;
-  NSArray      *attrs;
-  NSMutableString     *sql;
-  
-  if ((channel = [self acquireStoreChannel]) == nil) {
-    [self errorWithFormat:@"could not open storage channel!"];
-    return nil;
-  }
-  
-  /* generate SQL */
-  sql = [NSMutableString stringWithFormat: @"SELECT %@"
-			 @" FROM %@"
-			 @" WHERE c_name = '%@'",
-			 [_cols componentsJoinedByString: @","],
-			 [self storeTableName], _name];
-  if (ignoreDeleted)
-    [sql appendString: @" AND (c_deleted != 1 OR c_deleted IS NULL)"];
+  NSException      *error;
+  NSString  *sql;
+  NSArray          *attrs;
+  NSMutableArray   *results;
+  NSDictionary     *row;
 
-  /* run SQL */
+  sql = [self _queryForFields: fields spec: spec ignoreDeleted: ignoreDeleted];
+  channel = [self acquireStoreChannel];
+  if (channel)
+    {
+      /* run SQL */
+//       NSLog(@"running query...");
 
-  if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self errorWithFormat:@"%s: cannot execute SQL '%@': %@", 
-	  __PRETTY_FUNCTION__, sql, error];
-    [self releaseChannel:channel];
-    return nil;
-  }
+      error = [channel evaluateExpressionX:sql];
+      if (error)
+	{
+	  [self errorWithFormat:@"%s: cannot execute quick-fetch SQL '%@': %@", 
+		__PRETTY_FUNCTION__, sql, error];
+	  [self releaseChannel: channel];
+	  results = nil;
+	}
+      else
+	{
+	  /* fetch results */
   
-  /* fetch results */
-  
-  attrs  = [channel describeResults:NO /* do not beautify names */];
-  row = [channel fetchAttributes: attrs withZone: NULL];
-  if (row)
-    [channel cancelFetch];
-  
-  /* release and return result */
-  
-  [self releaseChannel:channel];
+	  results = [NSMutableArray arrayWithCapacity: 64];
+	  attrs = [channel describeResults: NO /* do not beautify names */];
+	  while ((row = [channel fetchAttributes: attrs withZone: NULL]))
+	    [results addObject: row];
 
-  return row;
+	  /* release channels */
+  
+	  [self releaseChannel: channel];
+	}
+//         NSLog(@"/running query");
+    }
+  else
+    {
+      [self errorWithFormat:@" could not open storage channel!"];
+      results = nil;
+    }
+  
+  return results;
+}
+
+- (EOFetchSpecification *) _simpleFetchSpecificationWith: (NSString *) field
+						andValue: (NSString *) value
+{
+  EOQualifier *qualifier;
+
+  qualifier
+    = [EOQualifier qualifierWithQualifierFormat:
+                     [NSString stringWithFormat: @"%@='%@'", field, value]];
+
+  return [EOFetchSpecification
+	   fetchSpecificationWithEntityName: [self folderName]
+	   qualifier: qualifier
+	   sortOrderings: nil];
 }
 
 - (NSDictionary *) recordOfEntryWithName: (NSString *) name
 {
   NSDictionary *row;
   NSMutableDictionary *record;
-  NSArray *columns;
+  NSArray *rows, *columns;
   NSString *strValue;
   int intValue;
 
   columns = [NSArray arrayWithObjects: @"c_content", @"c_version",
 		     @"c_creationdate", @"c_lastmodified", nil];
-  row = [self _fetchValueOfColumns: columns
-	      inContentWithName: name
-	      ignoreDeleted: YES];
-  if (row)
+  rows
+    = [self _fetchFields: columns
+	    fetchSpecification: [self _simpleFetchSpecificationWith: @"c_name"
+				      andValue: name]
+	    ignoreDeleted: YES];
+  if ([rows count])
     {
+      row = [rows objectAtIndex: 0];
       record = [NSMutableDictionary dictionaryWithCapacity: 5];
       strValue = [row objectForKey: @"c_content"];
       if (![strValue isNotNull])
@@ -333,77 +604,6 @@ static GCSStringFormatter *stringFormatter = nil;
     record = nil;
 
   return record;
-}
-
-- (NSNumber *) deletionOfEntryWithName: (NSString *) name
-{
-  NSDictionary *row;
-
-  row = [self _fetchValueOfColumns: [NSArray arrayWithObject: @"c_deleted"]
-	      inContentWithName: name
-	      ignoreDeleted: NO];
-
-  return [row objectForKey: @"c_deleted"];
-}
-
-- (NSDictionary *)fetchContentsOfAllFiles {
-  /*
-    Note: try to avoid the use of this method! The key of the dictionary
-          will be filename, the value the content.
-  */
-  NSMutableDictionary *result;
-  EOAdaptorChannel *channel;
-  NSException  *error;
-  NSDictionary *row;
-  NSArray      *attrs;
-  NSString     *sql;
-  
-  if ((channel = [self acquireStoreChannel]) == nil) {
-    [self errorWithFormat:@"%s: could not open storage channel!",
-            __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
-  /* generate SQL */
-  
-  sql = @"SELECT c_name, c_content FROM ";
-  sql = [sql stringByAppendingString:[self storeTableName]];
-  
-  /* run SQL */
-  
-  if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self logWithFormat:@"ERROR(%s): cannot execute SQL '%@': %@", 
-	    __PRETTY_FUNCTION__, sql, error];
-    [self releaseChannel:channel];
-    return nil;
-  }
-  
-  /* fetch results */
-  
-  result = [NSMutableDictionary dictionaryWithCapacity:128];
-  attrs  = [channel describeResults:NO /* do not beautify names */];
-  while ((row = [channel fetchAttributes:attrs withZone:NULL]) != nil) {
-    NSString *cName, *cContent;
-    
-    cName    = [row objectForKey:@"c_name"];
-    cContent = [row objectForKey:@"c_content"];
-    
-    if (![cName isNotNull]) {
-      [self errorWithFormat:@"missing c_name in row: %@", row];
-      continue;
-    }
-    if (![cContent isNotNull]) {
-      [self errorWithFormat:@"missing c_content in row: %@", row];
-      continue;
-    }
-    
-    [result setObject:cContent forKey:cName];
-  }
-  
-  /* release and return result */
-  
-  [self releaseChannel:channel];
-  return result;
 }
 
 /* writing content */
@@ -579,8 +779,9 @@ static GCSStringFormatter *stringFormatter = nil;
   [self releaseChannel: channel];
 }
 
-- (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name
-  baseVersion:(unsigned int)_baseVersion
+- (NSException *) writeContent: (NSString *) _content
+			toName: (NSString *) _name
+		   baseVersion: (unsigned int) _baseVersion
 {
   EOAdaptorChannel    *storeChannel, *quickChannel;
   NSMutableDictionary *quickRow, *contentRow;
@@ -591,6 +792,7 @@ static GCSStringFormatter *stringFormatter = nil;
   BOOL                isNewRecord, hasInsertDelegate, hasUpdateDelegate;
   NSCalendarDate      *nowDate;
   NSNumber            *now;
+  NSArray *rows;
 
   /* check preconditions */  
   if (_name == nil) {
@@ -612,22 +814,32 @@ static GCSStringFormatter *stringFormatter = nil;
   if (doLogStore)
     [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
   
-  currentRow = [self _fetchValueOfColumns: [NSArray arrayWithObjects:
-						      @"c_version",
-						    @"c_deleted", nil]
-		     inContentWithName: _name
-		     ignoreDeleted: NO];
-  storedVersion = [currentRow objectForKey: @"c_version"];
-  if (doLogStore)
-    [self logWithFormat:@"  version: %@", storedVersion];
-  isNewRecord = [storedVersion isNotNull] ? NO : YES;
-  if (!isNewRecord)
+  rows = [self _fetchFields: [NSArray arrayWithObjects:
+					@"c_version",
+				      @"c_deleted",
+				   nil]
+	       fetchSpecification: [self _simpleFetchSpecificationWith:
+					   @"c_name"
+					 andValue: _name]
+	       ignoreDeleted: NO];
+  if ([rows count])
     {
+      currentRow = [rows objectAtIndex: 0];
+      storedVersion = [currentRow objectForKey: @"c_version"];
+      if (doLogStore)
+	[self logWithFormat:@"  version: %@", storedVersion];
       if ([[currentRow objectForKey: @"c_deleted"] intValue] > 0)
 	{
 	  [self _purgeRecordWithName: _name];
 	  isNewRecord = YES;
 	}
+      else
+	isNewRecord = NO;
+    }
+  else
+    {
+      storedVersion = nil;
+      isNewRecord = YES;
     }
 
   /* check whether sequence matches */  
@@ -641,7 +853,7 @@ static GCSStringFormatter *stringFormatter = nil;
   }
   
   /* extract quick info */
-  extractor = [self->folderInfo quickExtractor];
+  extractor = [folderInfo quickExtractor];
   if ((quickRow = [extractor extractQuickFieldsFromContent:_content]) == nil) {
     return [self errorExtractorReturnedNoQuickRow:extractor
 		 forContent:_content];
@@ -655,7 +867,7 @@ static GCSStringFormatter *stringFormatter = nil;
   /* make content row */
   contentRow = [NSMutableDictionary dictionaryWithCapacity:16];
   
-  if (self->ofFlags.sameTableForQuick)
+  if (ofFlags.sameTableForQuick)
     [contentRow addEntriesFromDictionary:quickRow];
   
   [contentRow setObject:_name forKey:@"c_name"];
@@ -677,7 +889,7 @@ static GCSStringFormatter *stringFormatter = nil;
 	    __PRETTY_FUNCTION__];
     return nil;
   }
-  if (!self->ofFlags.sameTableForQuick) {
+  if (!ofFlags.sameTableForQuick) {
     if ((quickChannel = [self acquireQuickChannel]) == nil) {
       [self errorWithFormat:@"%s: could not open quick channel!",
 	      __PRETTY_FUNCTION__];
@@ -698,7 +910,7 @@ static GCSStringFormatter *stringFormatter = nil;
   [[quickChannel adaptorContext] beginTransaction];
   
   if (isNewRecord) {
-    if (!self->ofFlags.sameTableForQuick) {
+    if (!ofFlags.sameTableForQuick) {
 	error = (hasInsertDelegate ? [quickChannel insertRowX: quickRow
 						   forEntity: [self _entityWithName: [self quickTableName]]]
 		 : [quickChannel evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
@@ -714,7 +926,7 @@ static GCSStringFormatter *stringFormatter = nil;
     CHECKERROR();
   }
   else {
-    if (!self->ofFlags.sameTableForQuick) {
+    if (!ofFlags.sameTableForQuick) {
       error = (hasUpdateDelegate ? [quickChannel updateRowX: quickRow
 						 describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
 									     isEqualTo: _name  andColumn: nil  isEqualTo: nil
@@ -742,7 +954,7 @@ static GCSStringFormatter *stringFormatter = nil;
   [[quickChannel adaptorContext] commitTransaction];
   
   [self releaseChannel: storeChannel];
-  if (!self->ofFlags.sameTableForQuick) [self releaseChannel: quickChannel];
+  if (!ofFlags.sameTableForQuick) [self releaseChannel: quickChannel];
 
   return error;
 }
@@ -776,7 +988,7 @@ static GCSStringFormatter *stringFormatter = nil;
     [self errorWithFormat:@"could not open storage channel!"];
     return nil;
   }
-  if (self->ofFlags.sameTableForQuick)
+  if (ofFlags.sameTableForQuick)
     quickChannel = nil;
   else {
     if ((quickChannel = [self acquireQuickChannel]) == nil) {
@@ -800,7 +1012,7 @@ static GCSStringFormatter *stringFormatter = nil;
 	    @"%s: cannot delete content '%@': %@", 
 	  __PRETTY_FUNCTION__, delsql, error];
   }
-  else if (!self->ofFlags.sameTableForQuick) {
+  else if (!ofFlags.sameTableForQuick) {
     /* content row deleted, now delete the quick row */
     delsql = [@"DELETE FROM " stringByAppendingString:[self quickTableName]];
     delsql = [delsql stringByAppendingString:@" WHERE c_name="];
@@ -819,7 +1031,7 @@ static GCSStringFormatter *stringFormatter = nil;
   /* release channels and return */
   
   [self releaseChannel:storeChannel];
-  if (!self->ofFlags.sameTableForQuick)
+  if (!ofFlags.sameTableForQuick)
     [self releaseChannel:quickChannel];
   return error;
 }
@@ -859,164 +1071,35 @@ static GCSStringFormatter *stringFormatter = nil;
   return nil;
 }
 
-- (NSString *)columnNameForFieldName:(NSString *)_fieldName {
-  return _fieldName;
-}
-
 /* SQL generation */
 
-- (NSString *)generateSQLForSortOrderings:(NSArray *)_so {
-  NSMutableString *sql;
-  unsigned i, count;
-
-  if ((count = [_so count]) == 0)
-    return nil;
-  
-  sql = [NSMutableString stringWithCapacity:(count * 16)];
-  for (i = 0; i < count; i++) {
-    EOSortOrdering *so;
-    NSString *column;
-    SEL      sel;
-    
-    so     = [_so objectAtIndex:i];
-    sel    = [so selector];
-    column = [self columnNameForFieldName:[so key]];
-    
-    if (i > 0) [sql appendString:@", "];
-    
-    if (sel_eq(sel, EOCompareAscending)) {
-      [sql appendString:column];
-      [sql appendString:@" ASC"];
-    }
-    else if (sel_eq(sel, EOCompareDescending)) {
-      [sql appendString:column];
-      [sql appendString:@" DESC"];
-    }
-    else if (sel_eq(sel, EOCompareCaseInsensitiveAscending)) {
-      [sql appendString:@"UPPER("];
-      [sql appendString:column];
-      [sql appendString:@") ASC"];
-    }
-    else if (sel_eq(sel, EOCompareCaseInsensitiveDescending)) {
-      [sql appendString:@"UPPER("];
-      [sql appendString:column];
-      [sql appendString:@") DESC"];
-    }
-    else {
-      [self logWithFormat:@"cannot handle sort selector in store: %@",
-	      NSStringFromSelector(sel)];
-    }
-  }
-  return sql;
-}
-
-- (NSString *)generateSQLForQualifier:(EOQualifier *)_q {
-  NSMutableString *ms;
-  
-  if (_q == nil) return nil;
-  ms = [NSMutableString stringWithCapacity:32];
-  [_q _gcsAppendToString:ms];
-  return ms;
-}
-
 /* fetching */
-
-- (NSArray *)fetchFields:(NSArray *)_flds 
-  fetchSpecification:(EOFetchSpecification *)_fs
+- (NSArray *) fetchFields: (NSArray *) fields
+       fetchSpecification: (EOFetchSpecification *) spec
 {
-  EOQualifier      *qualifier;
-  NSArray          *sortOrderings;
-  EOAdaptorChannel *channel;
-  NSException      *error;
-  NSMutableString  *sql;
-  NSArray          *attrs;
-  NSMutableArray   *results;
-  NSDictionary     *row;
-  
-  qualifier     = [_fs qualifier];
-  sortOrderings = [_fs sortOrderings];
-  
-#if 0
-  [self logWithFormat:@"FETCH: %@", _flds];
-  [self logWithFormat:@"  MATCH: %@", _q];
-#endif
-  
-  /* generate SQL */
-
-  sql = [NSMutableString stringWithCapacity:256];
-  [sql appendString:@"SELECT "];
-  if (_flds == nil)
-    [sql appendString:@"*"];
-  else {
-    unsigned i, count;
-    
-    count = [_flds count];
-    for (i = 0; i < count; i++) {
-      if (i > 0) [sql appendString:@", "];
-      [sql appendString:[self columnNameForFieldName:[_flds objectAtIndex:i]]];
-    }
-  }
-  [sql appendString:@" FROM "];
-  [sql appendString:[self quickTableName]];
-  
-  if (qualifier != nil) {
-    [sql appendString:@" WHERE "];
-    [sql appendString:[self generateSQLForQualifier:qualifier]];
-  }
-  if ([sortOrderings count] > 0) {
-    [sql appendString:@" ORDER BY "];
-    [sql appendString:[self generateSQLForSortOrderings:sortOrderings]];
-  }
-#if 0
-  /* limit */
-  [sql appendString:@" LIMIT "]; // count
-  [sql appendString:@" OFFSET "]; // index from 0
-#endif
-  
-  /* open channel */
-
-  if ((channel = [self acquireStoreChannel]) == nil) {
-    [self errorWithFormat:@" could not open storage channel!"];
-    return nil;
-  }
-  
-  /* run SQL */
-
-  if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self errorWithFormat:@"%s: cannot execute quick-fetch SQL '%@': %@", 
-	    __PRETTY_FUNCTION__, sql, error];
-    [self releaseChannel:channel];
-    return nil;
-  }
-  
-  /* fetch results */
-  
-  results = [NSMutableArray arrayWithCapacity:64];
-  attrs   = [channel describeResults:NO /* do not beautify names */];
-  while ((row = [channel fetchAttributes:attrs withZone:NULL]) != nil)
-    [results addObject:row];
-  
-  /* release channels */
-  
-  [self releaseChannel:channel];
-  
-  return results;
+  return [self _fetchFields: fields
+	       fetchSpecification: spec
+	       ignoreDeleted: YES];
 }
-- (NSArray *)fetchFields:(NSArray *)_flds matchingQualifier:(EOQualifier *)_q {
+
+- (NSArray *) fetchFields: (NSArray *) _flds
+	matchingQualifier: (EOQualifier *)_q
+{
   EOFetchSpecification *fs;
 
   if (_q == nil)
     fs = nil;
-  else {
+  else
     fs = [EOFetchSpecification fetchSpecificationWithEntityName:
 				 [self folderName]
 			       qualifier:_q
 			       sortOrderings:nil];
-  }
+
   return [self fetchFields:_flds fetchSpecification:fs];
 }
 
-- (NSArray *)fetchAclWithSpecification:(EOFetchSpecification *)_fs {
+- (NSArray *) fetchAclWithSpecification: (EOFetchSpecification *)_fs
+{
   EOQualifier      *qualifier;
   NSArray          *sortOrderings;
   EOAdaptorChannel *channel;
@@ -1043,11 +1126,11 @@ static GCSStringFormatter *stringFormatter = nil;
   
   if (qualifier != nil) {
     [sql appendString:@" WHERE "];
-    [sql appendString:[self generateSQLForQualifier:qualifier]];
+    [sql appendString:[self _sqlForQualifier:qualifier]];
   }
   if ([sortOrderings count] > 0) {
     [sql appendString:@" ORDER BY "];
-    [sql appendString:[self generateSQLForSortOrderings:sortOrderings]];
+    [sql appendString:[self _sqlForSortOrderings:sortOrderings]];
   }
 #if 0
   /* limit */
@@ -1080,11 +1163,13 @@ static GCSStringFormatter *stringFormatter = nil;
   
   /* release channels */
   
-  [self releaseChannel:channel];
+  [self releaseChannel: channel];
   
   return results;
 }
-- (NSArray *) fetchAclMatchingQualifier:(EOQualifier *)_q {
+
+- (NSArray *) fetchAclMatchingQualifier: (EOQualifier *) _q
+{
   EOFetchSpecification *fs;
 
   if (_q == nil)
@@ -1098,19 +1183,21 @@ static GCSStringFormatter *stringFormatter = nil;
   return [self fetchAclWithSpecification:fs];
 }
 
-- (void) deleteAclMatchingQualifier:(EOQualifier *)_q {
+- (void) deleteAclMatchingQualifier: (EOQualifier *)_q
+{
   EOFetchSpecification *fs;
 
-  if (_q != nil) {
-    fs = [EOFetchSpecification fetchSpecificationWithEntityName:
-				 [self folderName]
-			       qualifier:_q
-			       sortOrderings:nil];
-    [self deleteAclWithSpecification:fs];
-  }
+  if (_q)
+    {
+      fs = [EOFetchSpecification fetchSpecificationWithEntityName:
+				   [self folderName]
+				 qualifier:_q
+				 sortOrderings:nil];
+      [self deleteAclWithSpecification: fs];
+    }
 }
 
-- (void)deleteAclWithSpecification:(EOFetchSpecification *)_fs
+- (void) deleteAclWithSpecification: (EOFetchSpecification *) _fs
 {
   EOQualifier      *qualifier;
   EOAdaptorChannel *channel;
@@ -1118,31 +1205,32 @@ static GCSStringFormatter *stringFormatter = nil;
   NSMutableString  *sql;
   
   qualifier     = [_fs qualifier];
-  if (qualifier != nil) {
-    sql = [NSMutableString stringWithCapacity:256];
-    [sql appendString:@"DELETE FROM "];
-    [sql appendString:[self aclTableName]];
-    [sql appendString:@" WHERE "];
-    [sql appendString:[self generateSQLForQualifier:qualifier]];
+  if (qualifier)
+    {
+      sql = [NSMutableString stringWithCapacity:256];
+      [sql appendString:@"DELETE FROM "];
+      [sql appendString:[self aclTableName]];
+      [sql appendString:@" WHERE "];
+      [sql appendString:[self _sqlForQualifier:qualifier]];
   
-    /* open channel */
+      /* open channel */
 
-    if ((channel = [self acquireAclChannel]) == nil) {
-      [self errorWithFormat:@"could not open acl channel!"];
-      return;
-    }
+      if ((channel = [self acquireAclChannel]) == nil) {
+	[self errorWithFormat:@"could not open acl channel!"];
+	return;
+      }
   
-    /* run SQL */
+      /* run SQL */
     
-    if ((error = [channel evaluateExpressionX:sql]) != nil) {
-      [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
-	    __PRETTY_FUNCTION__, sql, error];
+      if ((error = [channel evaluateExpressionX:sql]) != nil) {
+	[self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
+	      __PRETTY_FUNCTION__, sql, error];
+	[self releaseChannel:channel];
+	return;
+      }
+      
       [self releaseChannel:channel];
-      return;
     }
-  
-    [self releaseChannel:channel];
-  }
 }
 
 /* description */
@@ -1154,8 +1242,8 @@ static GCSStringFormatter *stringFormatter = nil;
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
 
-  if (self->folderId)
-    [ms appendFormat:@" id=%@", self->folderId];
+  if (folderId)
+    [ms appendFormat:@" id=%@", folderId];
   else
     [ms appendString:@" no-id"];
 

@@ -77,6 +77,7 @@
 
 + (NGResourceLocator *)resourceLocator;
 
+- (NSArray *) fields;
 @end
 
 #endif /* __GDLContentStore_GCSFolderType_H__ */

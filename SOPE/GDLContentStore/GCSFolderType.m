@@ -33,15 +33,15 @@
   if ((self = [super init])) {
     NSDictionary *plist = _plist;
     
-    self->blobTablePattern  = [[plist objectForKey:@"blobTablePattern"] copy];
-    self->quickTablePattern = [[plist objectForKey:@"quickTablePattern"]copy];
+    blobTablePattern  = [[plist objectForKey:@"blobTablePattern"] copy];
+    quickTablePattern = [[plist objectForKey:@"quickTablePattern"]copy];
     
-    self->extractorClassName = 
+    extractorClassName = 
       [[plist objectForKey:@"extractorClassName"] copy];
     // TODO: qualifier;
     
-    self->fields = [[GCSFieldInfo fieldsForPropertyList:
-				    [plist objectForKey:@"fields"]] retain];
+    fields = [[GCSFieldInfo fieldsForPropertyList:
+			      [plist objectForKey:@"fields"]] retain];
   }
   return self;
 }
@@ -91,24 +91,24 @@
 }
 
 - (void)dealloc {
-  [self->extractor          release];
-  [self->extractorClassName release];
-  [self->blobTablePattern   release];
-  [self->quickTablePattern  release];
-  [self->fields             release];
-  [self->fieldDict          release];
-  [self->folderQualifier    release];
+  [extractor          release];
+  [extractorClassName release];
+  [blobTablePattern   release];
+  [quickTablePattern  release];
+  [fields             release];
+  [fieldDict          release];
+  [folderQualifier    release];
   [super dealloc];
 }
 
 /* operations */
 
 - (NSString *)blobTableNameForFolder:(GCSFolder *)_folder {
-  return [self->blobTablePattern 
+  return [blobTablePattern 
 	      stringByReplacingVariablesWithBindings:_folder];
 }
 - (NSString *)quickTableNameForFolder:(GCSFolder *)_folder {
-  return [self->quickTablePattern
+  return [quickTablePattern
 	      stringByReplacingVariablesWithBindings:_folder];
 }
 
@@ -116,12 +116,12 @@
   NSArray      *keys;
   NSDictionary *bindings;
   
-  keys = [[self->folderQualifier allQualifierKeys] allObjects];
+  keys = [[folderQualifier allQualifierKeys] allObjects];
   if ([keys count] == 0)
-    return self->folderQualifier;
+    return folderQualifier;
 
   bindings = [_folder valuesForKeys:keys];
-  return [self->folderQualifier qualifierWithBindings:bindings
+  return [folderQualifier qualifierWithBindings:bindings
 	                        requiresAllVariables:NO];
 }
 
@@ -136,12 +136,12 @@
   [sql appendString:_tabName];
   [sql appendString:@" (\n"];
 
-  count = [self->fields count];
+  count = [fields count];
   for (i = 0; i < count; i++) {
     if (i > 0) [sql appendString:@",\n"];
     
     [sql appendString:@"  "];
-    [sql appendString:[[self->fields objectAtIndex:i] sqlCreateSection]];
+    [sql appendString:[[fields objectAtIndex:i] sqlCreateSection]];
   }
   
   [sql appendString:@"\n)"];
@@ -154,25 +154,30 @@
 - (GCSFieldExtractor *)quickExtractor {
   Class clazz;
   
-  if (self->extractor != nil) {
-    return [self->extractor isNotNull]
-      ? self->extractor : (GCSFieldExtractor *)nil;
+  if (extractor != nil) {
+    return [extractor isNotNull]
+      ? extractor : (GCSFieldExtractor *)nil;
   }
 
-  clazz = self->extractorClassName
-    ? NSClassFromString(self->extractorClassName)
+  clazz = extractorClassName
+    ? NSClassFromString(extractorClassName)
     : [GCSFieldExtractor class];
   if (clazz == Nil) {
     [self logWithFormat:@"ERROR: did not find field extractor class!"];
     return nil;
   }
   
-  if ((self->extractor = [[clazz alloc] init]) == nil) {
+  if ((extractor = [[clazz alloc] init]) == nil) {
     [self logWithFormat:@"ERROR: could not create field extractor of class %@",
 	    clazz];
     return nil;
   }
-  return self->extractor;
+  return extractor;
+}
+
+- (NSArray *) fields
+{
+  return fields;
 }
 
 /* description */
@@ -183,13 +188,13 @@
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
 
-  [ms appendFormat:@" blobtable='%@'",  self->blobTablePattern];
-  [ms appendFormat:@" quicktable='%@'", self->quickTablePattern];
-  [ms appendFormat:@" fields=%@",       self->fields];
-  [ms appendFormat:@" extractor=%@",    self->extractorClassName];
+  [ms appendFormat:@" blobtable='%@'",  blobTablePattern];
+  [ms appendFormat:@" quicktable='%@'", quickTablePattern];
+  [ms appendFormat:@" fields=%@",       fields];
+  [ms appendFormat:@" extractor=%@",    extractorClassName];
   
-  if (self->folderQualifier)
-    [ms appendFormat:@" qualifier=%@", self->folderQualifier];
+  if (folderQualifier)
+    [ms appendFormat:@" qualifier=%@", folderQualifier];
   
   [ms appendString:@">"];
   return ms;

@@ -39,24 +39,34 @@
   - "c_version" (update revision of the file in the folder)
 */
 
-@class NSString, NSURL, NSNumber, NSArray, NSException, NSMutableString;
+@class NSString;
+@class NSURL;
+@class NSNumber;
+@class NSArray;
+@class NSMutableArray;
+@class NSException;
+@class NSMutableString;
 @class NSDictionary;
-@class EOQualifier, EOFetchSpecification;
+@class EOQualifier;
+@class EOFetchSpecification;
 @class EOAdaptorChannel;
-@class GCSFolderManager, GCSFolderType, GCSChannelManager;
+@class GCSFolderManager;
+@class GCSFolderType;
+@class GCSChannelManager;
 
 @interface GCSFolder : NSObject
 {
   GCSFolderManager *folderManager;
-  GCSFolderType    *folderInfo;
+  GCSFolderType *folderInfo;
   
   NSNumber *folderId;
   NSString *folderName;
   NSString *path;
-  NSURL    *location;
-  NSURL    *quickLocation;
-  NSURL    *aclLocation;
+  NSURL *location;
+  NSURL *quickLocation;
+  NSURL *aclLocation;
   NSString *folderTypeName;
+  NSMutableArray *quickFieldNames;
 
   struct {
     int requiresFolderSelect:1;
@@ -65,62 +75,66 @@
   } ofFlags;
 }
 
-- (id)initWithPath:(NSString *)_path primaryKey:(id)_folderId
-  folderTypeName:(NSString *)_ftname folderType:(GCSFolderType *)_ftype
-  location:(NSURL *)_loc quickLocation:(NSURL *)_qloc
-  aclLocation: (NSURL *)_aloc
-  folderManager:(GCSFolderManager *)_fm;
+- (id) initWithPath: (NSString *) _path
+	 primaryKey: (id) _folderId
+     folderTypeName: (NSString *) _ftname
+	 folderType: (GCSFolderType *) _ftype
+	   location: (NSURL *) _loc
+      quickLocation: (NSURL *) _qloc
+	aclLocation: (NSURL *) _aloc
+      folderManager: (GCSFolderManager *) _fm;
 
 /* accessors */
 
-- (NSNumber *)folderId;
-- (NSString *)folderName;
-- (NSString *)path;
-- (NSURL    *)location;
-- (NSURL    *)quickLocation;
-- (NSURL    *)aclLocation;
-- (NSString *)folderTypeName;
+- (NSNumber *) folderId;
+- (NSString *) folderName;
+- (NSString *) path;
+- (NSURL *) location;
+- (NSURL *) quickLocation;
+- (NSURL *) aclLocation;
+- (NSString *) folderTypeName;
 
-- (GCSFolderManager *)folderManager;
-- (GCSChannelManager *)channelManager;
+- (GCSFolderManager *) folderManager;
+- (GCSChannelManager *) channelManager;
 
-- (NSString *)storeTableName;
-- (NSString *)quickTableName;
-- (NSString *)aclTableName;
-- (BOOL)isQuickInfoStoredInContentTable;
+- (NSString *) storeTableName;
+- (NSString *) quickTableName;
+- (NSString *) aclTableName;
+- (BOOL) isQuickInfoStoredInContentTable;
 
 /* connection */
 
-- (EOAdaptorChannel *)acquireStoreChannel;
-- (EOAdaptorChannel *)acquireQuickChannel;
-- (EOAdaptorChannel *)acquireAclChannel;
-- (void)releaseChannel:(EOAdaptorChannel *)_channel;
+- (EOAdaptorChannel *) acquireStoreChannel;
+- (EOAdaptorChannel *) acquireQuickChannel;
+- (EOAdaptorChannel *) acquireAclChannel;
+- (void) releaseChannel: (EOAdaptorChannel *) _channel;
 
-- (BOOL)canConnectStore;
-- (BOOL)canConnectQuick;
+- (BOOL) canConnectStore;
+- (BOOL) canConnectQuick;
 
 /* operations */
 
-- (NSArray *)subFolderNames;
-- (NSArray *)allSubFolderNames;
+- (NSArray *) subFolderNames;
+- (NSArray *) allSubFolderNames;
 
 - (NSDictionary *) recordOfEntryWithName: (NSString *) name;
 
-- (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name
-  baseVersion:(unsigned int)_baseVersion;
-- (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name;
-- (NSException *)deleteContentWithName:(NSString *)_name;
+- (NSException *) writeContent: (NSString *) _content
+			toName: (NSString *) _name
+		   baseVersion: (unsigned int) _baseVersion;
+- (NSException *) writeContent: (NSString *) _content
+			toName: (NSString *) _name;
+- (NSException *) deleteContentWithName: (NSString *) _name;
 
-- (NSException *)deleteFolder;
+- (NSException *) deleteFolder;
 
-- (NSDictionary *)fetchContentsOfAllFiles;
-
-- (NSArray *)fetchFields:(NSArray *)_flds 
-  fetchSpecification:(EOFetchSpecification *)_fs;
-- (NSArray *)fetchFields:(NSArray *)_flds matchingQualifier:(EOQualifier *)_q;
-- (NSArray *)fetchAclMatchingQualifier:(EOQualifier *)_q;
-- (void)deleteAclMatchingQualifier:(EOQualifier *)_q;
-- (void)deleteAclWithSpecification:(EOFetchSpecification *)_fs;
+- (NSArray *) fetchFields: (NSArray *) _flds 
+       fetchSpecification: (EOFetchSpecification *) _fs;
+- (NSArray *) fetchFields: (NSArray *) _flds
+	matchingQualifier: (EOQualifier *) _q;
+- (NSArray *) fetchAclMatchingQualifier: (EOQualifier *) _q;
+- (void) deleteAclMatchingQualifier: (EOQualifier *) _q;
+- (void) deleteAclWithSpecification: (EOFetchSpecification *) _fs;
 
 @end
 
