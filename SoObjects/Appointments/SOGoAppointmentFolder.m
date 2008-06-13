@@ -972,6 +972,7 @@ _selectorForProperty (NSString *property)
 
   values = [self _properties: properties ofObject: object];
   currentValue = values;
+
   property = properties;
   while (*property)
     {
@@ -987,7 +988,7 @@ _selectorForProperty (NSString *property)
 	  propertyValue = [NSString stringWithFormat: @"<%@/>", nodeTag];
 	  propDict = properties404;
 	}
-      [properties200 addObject: propertyValue];
+      [propDict addObject: propertyValue];
       property++;
       currentValue++;
     }
