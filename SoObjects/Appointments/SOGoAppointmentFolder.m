@@ -920,7 +920,7 @@ _selectorForProperty (NSString *property)
   SEL methodSel;
 
 #warning things may crash here...
-  values = malloc (sizeof (NSMutableString *) * 100);
+  values = calloc (100, sizeof (NSMutableString *));
 
 //   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
@@ -943,21 +943,8 @@ _selectorForProperty (NSString *property)
 	  if (methodSel && [sogoObject respondsToSelector: methodSel])
 	    *currentValue = [[sogoObject performSelector: methodSel]
 			      stringByEscapingXMLString];
-	  else
-	    *currentValue = nil;
 	  currentProperty++;
 	  currentValue++;
-	}
-      *currentValue = nil;
-    }
-  else
-    {
-      currentProperty = properties;
-      currentValue = values;
-      while (*currentProperty)
-	{
-	  *currentValue = nil;
-	  *currentProperty++;
 	}
     }
 
