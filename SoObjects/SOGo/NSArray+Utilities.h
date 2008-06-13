@@ -29,6 +29,8 @@
 
 @interface NSArray (SOGoArrayUtilities)
 
+- (id *) asPointersOfObjects;
+
 - (NSString *) jsonRepresentation;
 
 - (NSArray *) stringsWithFormat: (NSString *) format;

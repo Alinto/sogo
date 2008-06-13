@@ -1,3 +1,9 @@
+2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSArray+Utilities.m ([NSArray
+	-asPointersOfObjects]): new method that transforms an NSArray into
+	an array of ptr**;
+
 2008-06-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m

@@ -27,6 +27,19 @@
 
 @implementation NSArray (SOGoArrayUtilities)
 
+- (id *) asPointersOfObjects
+{
+  id *pointers;
+  unsigned int max;
+
+  max = [self count];
+  pointers = malloc (sizeof(id) * (max + 1));
+  [self getObjects: pointers];
+  *(pointers + max) = nil;
+
+  return pointers;
+}
+
 - (NSArray *) stringsWithFormat: (NSString *) format
 {
   NSMutableArray *formattedStrings;
