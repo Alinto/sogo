@@ -973,7 +973,7 @@ _selectorForProperty (NSString *property)
   values = [self _properties: properties ofObject: object];
   currentValue = values;
   property = properties;
-  while (*currentValue)
+  while (*property)
     {
       nodeTag = [self _nodeTag: *property];
       if (*currentValue)
@@ -988,8 +988,8 @@ _selectorForProperty (NSString *property)
 	  propDict = properties404;
 	}
       [properties200 addObject: propertyValue];
-      currentValue++;
       property++;
+      currentValue++;
     }
   free (values);
 
