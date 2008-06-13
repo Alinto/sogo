@@ -1279,10 +1279,10 @@ _selectorForProperty (NSString *property)
   NSArray *apts;
   NSDictionary *currentFilter;
   NSEnumerator *filterList;
-  NSString *baseURL, *additionalFilters;
+  NSString *additionalFilters, *baseURL;
   unsigned int count, max;
 
-  baseURL = [self baseURLInContext: context];
+  baseURL = [[self davURL] absoluteString];
 
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
@@ -1336,57 +1336,31 @@ _selectorForProperty (NSString *property)
   return r;
 }
 
-- (NSArray *) _deduceObjectNamesFromPartialURLs: (NSArray *) urls
-			      withBaseURLString: (NSString *) baseURL
+- (NSDictionary *) _deduceObjectNamesFromURLs: (NSArray *) urls
 {
   unsigned int count, max;
-  NSString *url, *cName;
+  NSString *url, *componentURLPath, *cName, *baseURLString;
+  NSMutableDictionary *cNames;
+  NSURL *componentURL, *baseURL;
   NSArray *urlComponents;
-  NSMutableArray *cNames;
 
   max = [urls count];
-  cNames = [NSMutableArray arrayWithCapacity: max];
+  cNames = [NSMutableDictionary dictionaryWithCapacity: max];
+  baseURL = [self davURL];
+  baseURLString = [baseURL absoluteString];
 
   for (count = 0; count < max; count++)
     {
       url = [urls objectAtIndex: count];
-      if ([url hasPrefix: baseURL])
-	{
-	  urlComponents = [[url stringByDeletingPrefix: baseURL]
-			    componentsSeparatedByString: @"/"];
-	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-	  [cNames addObject: cName];
-	}
-    }
-
-  return cNames;
-}
-
-- (NSArray *) _deduceObjectNamesFromFullURLs: (NSArray *) urls
-				 withBaseURL: (NSURL *) baseURL
-{
-  unsigned int count, max;
-  NSString *url, *componentURLPath, *cName;
-  NSMutableArray *cNames;
-  NSURL *componentURL;
-  NSArray *urlComponents;
-
-  max = [urls count];
-  cNames = [NSMutableArray arrayWithCapacity: max];
-
-  for (count = 0; count < max; count++)
-    {
-      url = [urls objectAtIndex: count];
-      componentURL = [[NSURL URLWithString: url
-			     relativeToURL: baseURL]
+      componentURL = [[NSURL URLWithString: url relativeToURL: baseURL]
 		       standardizedURL];
       componentURLPath = [componentURL absoluteString];
-      if ([componentURLPath rangeOfString: [baseURL absoluteString]].location
+      if ([componentURLPath rangeOfString: baseURLString].location
 	  != NSNotFound)
 	{
 	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
 	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-	  [cNames addObject: cName];
+	  [cNames setObject: url forKey: cName];
 	}
     }
 
@@ -1459,53 +1433,27 @@ _selectorForProperty (NSString *property)
   return components;
 }
 
-- (NSDictionary *) _convertRecordsArray: (NSArray *) records
-			    withBaseURL: (NSString *) baseURL
+- (NSDictionary *) _fetchComponentsMatchingURLs: (NSArray *) urls
 {
-  NSDictionary *currentRecord;
-  unsigned int count, max;
   NSMutableDictionary *components;
+  NSDictionary *cnames, *record;
   NSString *recordURL;
+  NSArray *records;
+  unsigned int count, max;
 
+  components = [NSMutableDictionary dictionary];
+
+  cnames = [self _deduceObjectNamesFromURLs: urls];
+  records = [self _fetchComponentsMatchingObjectNames: [cnames allKeys]];
   max = [records count];
-  components = [NSMutableDictionary dictionaryWithCapacity: max];
   for (count = 0; count < max; count++)
     {
-      currentRecord = [records objectAtIndex: count];
-      recordURL = [NSString stringWithFormat: @"%@%@", baseURL,
-			    [currentRecord objectForKey: @"c_name"]];
-      [components setObject: currentRecord forKey: recordURL];
+      record = [records objectAtIndex: count];
+      recordURL = [cnames objectForKey: [record objectForKey: @"c_name"]];
+      [components setObject: record forKey: recordURL];
     }
 
   return components;
-}
-
-- (NSDictionary *) _fetchComponentsMatchingURLs: (NSArray *) urls
-				    withBaseURL: (NSString *) baseURL
-{
-  NSURL *realBaseURL;
-  NSArray *cnames;
-  NSString *cnameBaseURL;
-
-  realBaseURL = [NSURL URLWithString: baseURL];
-//   NSLog (@"deducing names...\n");
-  if (realBaseURL) /* url has a host part */
-    {
-      cnames = [self _deduceObjectNamesFromFullURLs: urls
-		     withBaseURL: realBaseURL];
-      cnameBaseURL = [realBaseURL absoluteString];
-    }
-  else
-    {
-      cnames = [self _deduceObjectNamesFromPartialURLs: urls
-		     withBaseURLString: baseURL];
-      cnameBaseURL = baseURL;
-    }
-//   NSLog (@"/deducing names...\n");
-
-  return [self _convertRecordsArray:
-		 [self _fetchComponentsMatchingObjectNames: cnames]
-	       withBaseURL: cnameBaseURL];
 }
 
 - (void) _appendComponentProperties: (NSString **) properties
@@ -1514,9 +1462,11 @@ _selectorForProperty (NSString *property)
 {
   NSObject <DOMElement> *element;
   NSDictionary *currentComponent, *components;
-  NSString *baseURL, *currentURL;
+  NSString *currentURL, *baseURL;
   NSMutableArray *urls;
   unsigned int count, max;
+
+  baseURL = [[self davURL] absoluteString];
 
   urls = [NSMutableArray new];
   max = [refs length];
@@ -1527,10 +1477,7 @@ _selectorForProperty (NSString *property)
       [urls addObject: currentURL];
     }
 
-  baseURL = [self baseURLInContext: context];
-
-  components = [self _fetchComponentsMatchingURLs: urls
-		     withBaseURL: baseURL];
+  components = [self _fetchComponentsMatchingURLs: urls];
   max = [urls count];
 //   NSLog (@"adding properties with url");
   for (count = 0; count < max; count++)
