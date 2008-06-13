@@ -1474,8 +1474,7 @@ _selectorForProperty (NSString *property)
       currentRecord = [records objectAtIndex: count];
       recordURL = [NSString stringWithFormat: @"%@%@", baseURL,
 			    [currentRecord objectForKey: @"c_name"]];
-      [components setObject: currentRecord
-		  forKey: recordURL];
+      [components setObject: currentRecord forKey: recordURL];
     }
 
   return components;
@@ -1486,20 +1485,27 @@ _selectorForProperty (NSString *property)
 {
   NSURL *realBaseURL;
   NSArray *cnames;
+  NSString *cnameBaseURL;
 
   realBaseURL = [NSURL URLWithString: baseURL];
 //   NSLog (@"deducing names...\n");
   if (realBaseURL) /* url has a host part */
-    cnames = [self _deduceObjectNamesFromFullURLs: urls
-		   withBaseURL: realBaseURL];
+    {
+      cnames = [self _deduceObjectNamesFromFullURLs: urls
+		     withBaseURL: realBaseURL];
+      cnameBaseURL = [realBaseURL absoluteString];
+    }
   else
-    cnames = [self _deduceObjectNamesFromPartialURLs: urls
-		   withBaseURLString: baseURL];
+    {
+      cnames = [self _deduceObjectNamesFromPartialURLs: urls
+		     withBaseURLString: baseURL];
+      cnameBaseURL = baseURL;
+    }
 //   NSLog (@"/deducing names...\n");
 
   return [self _convertRecordsArray:
 		 [self _fetchComponentsMatchingObjectNames: cnames]
-	       withBaseURL: baseURL];
+	       withBaseURL: cnameBaseURL];
 }
 
 - (void) _appendComponentProperties: (NSString **) properties
