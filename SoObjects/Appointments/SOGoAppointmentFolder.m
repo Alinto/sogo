@@ -951,7 +951,15 @@ _selectorForProperty (NSString *property)
       *currentValue = nil;
     }
   else
-    *values = nil;
+    {
+      currentProperty = properties;
+      currentValue = values;
+      while (*currentProperty)
+	{
+	  *currentValue = nil;
+	  *currentProperty++;
+	}
+    }
 
 //    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
 
