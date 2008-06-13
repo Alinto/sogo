@@ -1,5 +1,14 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
+	-vCard]): use the new "content" ivar.
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m
+	([-deduceObjectForName:inContext:]): removed method since the
+	object type is now deduced in the parent class.
+	([SOGoContactGCSFolder -objectClassForResourceNamed:name]): new
+	overriden method.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m
 	([-fetchContentStringsAndNamesOfAllObjects]): removed useless method.
 	([SOGoGCSFolder

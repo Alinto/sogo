@@ -87,6 +87,20 @@
   return objectClass;
 }
 
+- (Class) objectClassForComponentName: (NSString *) componentName
+{
+  Class objectClass;
+
+  if ([componentName isEqualToString: @"vcard"])
+    objectClass = [SOGoContactGCSEntry class];
+  else if ([componentName isEqualToString: @"vlist"])
+    objectClass = [SOGoContactGCSList class];
+  else
+    objectClass = Nil;
+
+  return objectClass;
+}
+
 - (Class) objectClassForResourceNamed: (NSString *) name
 {
   EOQualifier *qualifier;
@@ -101,40 +115,12 @@
   if ([records count])
     {
       component = [[records objectAtIndex: 0] valueForKey: @"c_component"];
-      if ([component isEqualToString: @"vcard"])
-        objectClass = [SOGoContactGCSEntry class];
-      else if ([component isEqualToString: @"vlist"])
-        objectClass = [SOGoContactGCSList class];
-      else
-        objectClass = Nil;
+      objectClass = [self objectClassForComponentName: component];
     }
   else
     objectClass = Nil;
   
   return objectClass;
-}
-
-- (id) deduceObjectForName: (NSString *)_key
-                 inContext: (id)_ctx
-{
-  WORequest *request;
-  NSString *method;
-  Class objectClass;
-  id obj;
-
-  request = [_ctx request];
-  method = [request method];
-  if ([method isEqualToString: @"PUT"])
-    objectClass = [self objectClassForContent: [request contentAsString]];
-  else
-    objectClass = [self objectClassForResourceNamed: _key];
-
-  if (objectClass)
-    obj = [objectClass objectWithName: _key inContainer: self];
-  else
-    obj = nil;
-
-  return obj;
 }
 
 - (BOOL) requestNamedIsHandledLater: (NSString *) name
@@ -168,9 +154,6 @@
               else if ([url hasSuffix: @"AsList"])
                 obj = [SOGoContactGCSList objectWithName: _key
 					  inContainer: self];
-              else
-                obj = [self deduceObjectForName: _key
-                            inContext: _ctx];
             }
         }
       if (!obj)

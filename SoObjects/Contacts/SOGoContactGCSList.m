@@ -49,11 +49,8 @@
 
 - (NGVList *) vList
 {
-  NSString *content;
-
   if (!list)
     {
-      content = [record objectForKey: @"c_content"];
       if ([[content uppercaseString] hasPrefix: @"BEGIN:VLIST"])
         list = [NGVList parseSingleFromSource: content];
       else
