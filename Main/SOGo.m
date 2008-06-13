@@ -21,6 +21,7 @@
 
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSURL.h>
@@ -71,6 +72,7 @@
 static unsigned int vMemSizeLimit = 0;
 static BOOL doCrashOnSessionCreate = NO;
 static BOOL hasCheckedTables = NO;
+static BOOL debugRequests = NO;
 
 #ifdef GNUSTEP_BASE_LIBRARY
 static BOOL debugObjectAllocation = NO;
@@ -94,7 +96,7 @@ static BOOL debugObjectAllocation = NO;
       GSDebugAllocationActive (YES);
     }
 #endif
-  
+  debugRequests = [ud boolForKey: @"SOGoDebugRequests"];
   /* vMem size check - default is 200MB */
     
   tmp = [ud objectForKey: @"SxVMemLimit"];
@@ -392,10 +394,24 @@ static BOOL debugObjectAllocation = NO;
 {
   static NSArray *runLoopModes = nil;
   WOResponse *resp;
+  NSDate *startDate, *endDate;
 
+  if (debugRequests)
+    {
+      [self logWithFormat: @"starting method '%@' on uri '%@'",
+	    [_request method], [_request uri]];
+      startDate = [NSDate date];
+    }
   cache = [SOGoCache sharedCache];
   resp = [super dispatchRequest: _request];
   [SOGoCache killCache];
+
+  if (debugRequests)
+    {
+      endDate = [NSDate date];
+      [self logWithFormat: @"request took %f seconds to execute",
+	    [endDate timeIntervalSinceDate: startDate]];
+    }
 
   if (![self isTerminating])
     {

@@ -1,5 +1,9 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo.m ([SOGo -dispatchRequest:_request]): we now report
+	the time taken by the request, if the "SOGoDebugRequests" user
+	default is set.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	+objectWithRecord:objectRecordinContainer:newContainer]): new
 	constructor that instantiate an object based on the data found in
