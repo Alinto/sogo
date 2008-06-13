@@ -68,7 +68,6 @@
 /* vevent UID handling */
 
 - (NSString *) resourceNameForEventUID: (NSString *) _uid;
-- (Class) objectClassForResourceNamed: (NSString *) c_name;
 
 /* fetching */
 
@@ -118,8 +117,6 @@
 //                               inContext: (id) _ctx;
 
 /* bulk fetches */
-
-- (NSArray *) fetchAllSOGoAppointments;
 
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid;

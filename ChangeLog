@@ -1,5 +1,22 @@
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([-fetchContentObjectNames]): removed useless method.
+	([-fetchAllSOGoAppointments]): removed useless method.
+	([SOGoAppointmentFolder
+	-fetchCoreInfosFrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filters]):
+	retrieve the fields required for object instantiation and cache
+	the resulting records.
+	([SOGoAppointmentFolder
+	-bareFetchFields:fieldsfrom:startDateto:endDatetitle:titlecomponent:componentadditionalFilters:filters]):
+	new method based on the non-bare part but simpler and without the
+	handling of cyclic records.
+	([SOGoAppointmentFolder -davCalendarQuery:queryContext])
+	([SOGoAppointmentFolder -davCalendarMultiget:queryContext]):
+	optimized those methods by replacing often-used NSArray instances
+	with arrays of ptr** and by removing utility submethods when
+	useful.
+
 	* SoObjects/Contacts/SOGoContactGCSEntry.m ([SOGoContactGCSEntry
 	-vCard]): use the new "content" ivar.
 

@@ -101,7 +101,6 @@ static BOOL sendEMailNotifications = NO;
   iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
 //   NSArray *roles;
-//   NSString *uid;
   SoSecurityManager *sm;
   NSString *iCalString;
 
@@ -124,9 +123,11 @@ static BOOL sendEMailNotifications = NO;
 // 	calContent = nil;
 
   sm = [SoSecurityManager sharedSecurityManager];
-  if (![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
-	   onObject: self inContext: context])
-    iCalString = [record objectForKey: @"c_content"];
+  if (activeUserIsOwner
+      || [[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
+      || ![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
+	      onObject: self inContext: context])
+    iCalString = content;
   else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
 		onObject: self inContext: context])
     {
@@ -170,7 +171,7 @@ static BOOL sendEMailNotifications = NO;
   if (secure)
     iCalString = [self secureContentAsString];
   else
-    iCalString = [record objectForKey: @"c_content"];
+    iCalString = content;
 
   if ([iCalString length] > 0)
     calendar = [iCalCalendar parseSingleFromSource: iCalString];

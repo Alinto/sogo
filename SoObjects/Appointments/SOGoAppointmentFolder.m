@@ -78,11 +78,9 @@
 
 static NGLogger   *logger    = nil;
 static NSNumber   *sharedYes = nil;
+static NSArray *reportQueryFields = nil;
 
-+ (int) version
-{
-  return [super version] + 1 /* v1 */;
-}
+static Class sogoAppointmentFolderKlass = Nil;
 
 + (void) initialize
 {
@@ -93,6 +91,15 @@ static NSNumber   *sharedYes = nil;
   if (didInit) return;
   didInit = YES;
   
+  if (!sogoAppointmentFolderKlass)
+    sogoAppointmentFolderKlass = self;
+
+  if (!reportQueryFields)
+    reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
+					 @"c_content", @"c_creationdate",
+					 @"c_lastmodified", @"c_version",
+					 @"c_component", nil];
+
   NSAssert2([super version] == 0,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
@@ -268,6 +275,20 @@ static NSNumber   *sharedYes = nil;
   [super dealloc];
 }
 
+- (Class) objectClassForComponentName: (NSString *) componentName
+{
+  Class objectClass;
+
+  if ([componentName isEqualToString: @"vevent"])
+    objectClass = [SOGoAppointmentObject class];
+  else if ([componentName isEqualToString: @"vtodo"])
+    objectClass = [SOGoTaskObject class];
+  else
+    objectClass = Nil;
+
+  return objectClass;
+}
+
 - (NSString *) calendarColor
 {
   NSUserDefaults *settings;
@@ -327,7 +348,484 @@ static NSNumber   *sharedYes = nil;
   return [s isNotNull] ? [NSArray arrayWithObjects:&s count:1] : nil;
 }
 
-/* name lookup */
+/* fetching */
+
+- (NSString *) _sqlStringForComponent: (id) _component
+{
+  NSString *sqlString;
+  NSArray *components;
+
+  if (_component)
+    {
+      if ([_component isKindOfClass: [NSArray class]])
+        components = _component;
+      else
+        components = [NSArray arrayWithObject: _component];
+
+      sqlString
+        = [NSString stringWithFormat: @"AND (c_component = '%@')",
+                    [components componentsJoinedByString: @"' OR c_component = '"]];
+    }
+  else
+    sqlString = @"";
+
+  return sqlString;
+}
+
+- (NSString *) _sqlStringRangeFrom: (NSCalendarDate *) _startDate
+                                to: (NSCalendarDate *) _endDate
+{
+  unsigned int start, end;
+
+  start = (unsigned int) [_startDate timeIntervalSince1970];
+  end = (unsigned int) [_endDate timeIntervalSince1970];
+
+  return [NSString stringWithFormat:
+                     @" AND (c_startdate <= %u) AND (c_enddate >= %u)",
+                   end, start];
+}
+
+- (NSString *) _privacyClassificationStringsForUID: (NSString *) uid
+{
+  NSMutableString *classificationString;
+  NSString *currentRole;
+  unsigned int counter;
+  iCalAccessClass classes[] = {iCalAccessPublic, iCalAccessPrivate,
+			       iCalAccessConfidential};
+
+  classificationString = [NSMutableString string];
+  for (counter = 0; counter < 3; counter++)
+    {
+      currentRole = [self roleForComponentsWithAccessClass: classes[counter]
+			  forUser: uid];
+      if ([currentRole length] > 0)
+	[classificationString appendFormat: @"c_classification = %d or ",
+			      classes[counter]];
+    }
+
+  return classificationString;
+}
+
+- (NSString *) _privacySqlString
+{
+  NSString *privacySqlString, *email, *login;
+  SOGoUser *activeUser;
+
+  activeUser = [context activeUser];
+
+  if (activeUserIsOwner
+      || [[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
+      || [[activeUser rolesForObject: self inContext: context]
+	   containsObject: SoRole_Owner])
+    privacySqlString = @"";
+  else if ([[activeUser login] isEqualToString: @"freebusy"])
+    privacySqlString = @"and (c_isopaque = 1)";
+  else
+    {
+#warning we do not manage all the possible user emails
+      email = [[activeUser primaryIdentity] objectForKey: @"email"];
+      login = [activeUser login];
+
+      privacySqlString
+        = [NSString stringWithFormat:
+                      @"(%@(c_orgmail = '%@')"
+		    @" or ((c_partmails caseInsensitiveLike '%@%%'"
+		    @" or c_partmails caseInsensitiveLike '%%\n%@%%')))",
+		    [self _privacyClassificationStringsForUID: login],
+		    email, email, email];
+    }
+
+  return privacySqlString;
+}
+
+- (NSArray *) bareFetchFields: (NSArray *) fields
+			 from: (NSCalendarDate *) startDate
+			   to: (NSCalendarDate *) endDate 
+			title: (NSString *) title
+		    component: (id) component
+	    additionalFilters: (NSString *) filters
+{
+  EOQualifier *qualifier;
+  GCSFolder *folder;
+  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
+    *filterSqlString;
+  NGCalendarDateRange *r;
+
+  folder = [self ocsFolder];
+  if (startDate && endDate)
+    {
+      r = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+                               endDate: endDate];
+      dateSqlString = [self _sqlStringRangeFrom: startDate to: endDate];
+    }
+  else
+    {
+      r = nil;
+      dateSqlString = @"";
+    }
+
+  if ([title length])
+    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
+			       @" isCaseInsensitiveLike: '%%%@%%')", title];
+  else
+    titleSqlString = @"";
+
+  componentSqlString = [self _sqlStringForComponent: component];
+  if (filters)
+    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
+  else
+    filterSqlString = @"";
+
+  /* prepare mandatory fields */
+
+  sql = [[NSString stringWithFormat: @"%@%@%@%@",
+		   dateSqlString, titleSqlString, componentSqlString,
+		   filterSqlString] substringFromIndex: 4];
+
+  /* fetch non-recurrent apts first */
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+
+  return [folder fetchFields: fields matchingQualifier: qualifier];
+}
+
+- (BOOL) _checkIfWeCanRememberRecords: (NSArray *) fields
+{
+  return ([fields containsObject: @"c_name"]
+	  && [fields containsObject: @"c_version"]
+	  && [fields containsObject: @"c_lastmodified"]
+	  && [fields containsObject: @"c_creationdate"]
+	  && [fields containsObject: @"c_component"]);
+}
+
+- (void) _rememberRecords: (NSArray *) records
+{
+  NSEnumerator *recordsEnum;
+  NSDictionary *currentRecord;
+
+  recordsEnum = [records objectEnumerator];
+  while ((currentRecord = [recordsEnum nextObject]))
+    [childRecords setObject: currentRecord
+		  forKey: [currentRecord objectForKey: @"c_name"]];
+}
+
+- (NSMutableDictionary *) fixupRecord: (NSDictionary *) _record
+                           fetchRange: (NGCalendarDateRange *) _r
+{
+  NSMutableDictionary *md;
+  id tmp;
+  
+  md = [[_record mutableCopy] autorelease];
+ 
+  if ((tmp = [_record objectForKey:@"c_startdate"])) {
+    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
+          (NSTimeInterval)[tmp unsignedIntValue]];
+    [tmp setTimeZone: timeZone];
+    if (tmp) [md setObject:tmp forKey:@"startDate"];
+    [tmp release];
+  }
+  else
+    [self logWithFormat:@"missing 'startdate' in record?"];
+
+  if ((tmp = [_record objectForKey:@"c_enddate"])) {
+    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
+          (NSTimeInterval)[tmp unsignedIntValue]];
+    [tmp setTimeZone: timeZone];
+    if (tmp) [md setObject:tmp forKey:@"endDate"];
+    [tmp release];
+  }
+  else
+    [self logWithFormat:@"missing 'enddate' in record?"];
+
+  return md;
+}
+
+- (NSArray *) fixupRecords: (NSArray *) records
+                fetchRange: (NGCalendarDateRange *) r
+{
+  // TODO: is the result supposed to be sorted by date?
+  NSMutableArray *ma;
+  unsigned count, max;
+  id row; // TODO: what is the type of the record?
+
+  if (records)
+    {
+      max = [records count];
+      ma = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+	{
+	  row = [self fixupRecord: [records objectAtIndex: count]
+		      fetchRange: r];
+	  if (row)
+	    [ma addObject: row];
+	}
+    }
+  else
+    ma = nil;
+
+  return ma;
+}
+
+- (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) _record
+                                cycleRange: (NGCalendarDateRange *) _r
+{
+  NSMutableDictionary *md;
+  id tmp;
+  
+  md = [[_record mutableCopy] autorelease];
+  
+  /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
+     the reccurence since we use those when displaying events in SOGo Web */
+  tmp = [_r startDate];
+  [tmp setTimeZone: timeZone];
+  [md setObject:tmp forKey:@"startDate"];
+  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_startdate"];
+  tmp = [_r endDate];
+  [tmp setTimeZone: timeZone];
+  [md setObject:tmp forKey:@"endDate"];
+  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_enddate"];
+  
+  return md;
+}
+
+- (void) _flattenCycleRecord: (NSDictionary *) _row
+                    forRange: (NGCalendarDateRange *) _r
+                   intoArray: (NSMutableArray *) _ma
+{
+  NSMutableDictionary *row, *fixedRow;
+  NSDictionary        *cycleinfo;
+  NSCalendarDate      *startDate, *endDate;
+  NGCalendarDateRange *fir, *rRange;
+  NSArray             *rules, *exRules, *exDates, *ranges;
+  unsigned            i, count;
+  NSString *content;
+
+  content = [_row objectForKey: @"c_cycleinfo"];
+  if (![content isNotNull])
+    {
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+	    _row];
+      return;
+    }
+
+  cycleinfo = [content propertyList];
+  if (!cycleinfo)
+    {
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
+	    _row];
+      return;
+    }
+
+  row = [self fixupRecord:_row fetchRange: _r];
+  [row removeObjectForKey: @"c_cycleinfo"];
+  [row setObject: sharedYes forKey: @"isRecurrentEvent"];
+
+  startDate = [row objectForKey: @"startDate"];
+  endDate   = [row objectForKey: @"endDate"];
+  fir       = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+                                   endDate: endDate];
+  rules     = [cycleinfo objectForKey: @"rules"];
+  exRules   = [cycleinfo objectForKey: @"exRules"];
+  exDates   = [cycleinfo objectForKey: @"exDates"];
+  
+  ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: _r
+                                     firstInstanceCalendarDateRange: fir
+                                     recurrenceRules: rules
+                                     exceptionRules: exRules
+                                     exceptionDates: exDates];
+  count = [ranges count];
+  for (i = 0; i < count; i++)
+    {
+      rRange = [ranges objectAtIndex:i];
+      fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
+      if (fixedRow)
+	[_ma addObject:fixedRow];
+    }
+}
+
+- (NSArray *) fixupCyclicRecords: (NSArray *) _records
+                      fetchRange: (NGCalendarDateRange *) _r
+{
+  // TODO: is the result supposed to be sorted by date?
+  NSMutableArray *ma;
+  NSDictionary *row;
+  unsigned int i, count;
+
+  count = [_records count];
+  ma = [NSMutableArray arrayWithCapacity: count];
+  if (count > 0)
+    for (i = 0; i < count; i++)
+      {
+	row = [_records objectAtIndex: i];
+	[self _flattenCycleRecord: row forRange: _r intoArray: ma];
+      }
+
+  return ma;
+}
+
+- (void) _buildStripFieldsFromFields: (NSArray *) fields
+{
+  stripFields = [[NSMutableArray alloc] initWithCapacity: [fields count]];
+  [stripFields setArray: fields];
+  [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
+					      @"c_uid", @"c_startdate",
+					      @"c_enddate", @"c_isallday",
+					      @"c_iscycle",
+					      @"c_classification",
+					      @"c_component", nil]];
+}
+
+- (void) _fixupProtectedInformation: (NSEnumerator *) ma
+			   inFields: (NSArray *) fields
+			    forUser: (NSString *) uid
+{
+  NSMutableDictionary *currentRecord;
+  NSString *roles[] = {nil, nil, nil};
+  iCalAccessClass accessClass;
+  NSString *fullRole, *role;
+
+  if (!stripFields)
+    [self _buildStripFieldsFromFields: fields];
+
+#warning we do not take the participation status into account
+  while ((currentRecord = [ma nextObject]))
+    {
+      accessClass
+	= [[currentRecord objectForKey: @"c_classification"] intValue];
+      role = roles[accessClass];
+      if (!role)
+	{
+	  fullRole = [self roleForComponentsWithAccessClass: accessClass
+			   forUser: uid];
+	  if ([fullRole length] > 9)
+	    role = [fullRole substringFromIndex: 9];
+	  roles[accessClass] = role;
+	}
+      if ([role isEqualToString: @"DAndTViewer"])
+	[currentRecord removeObjectsForKeys: stripFields];
+    }
+}
+
+- (NSArray *) fetchFields: (NSArray *) _fields
+                     from: (NSCalendarDate *) _startDate
+                       to: (NSCalendarDate *) _endDate 
+		    title: (NSString *) title
+                component: (id) _component
+	additionalFilters: (NSString *) filters
+{
+  EOQualifier *qualifier;
+  GCSFolder *folder;
+  NSMutableArray *fields, *ma = nil;
+  NSArray *records;
+  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
+    *privacySqlString, *currentLogin, *filterSqlString;
+  NGCalendarDateRange *r;
+  BOOL rememberRecords;
+
+  rememberRecords = [self _checkIfWeCanRememberRecords: _fields];
+//   if (rememberRecords)
+//     NSLog (@"we will remember those records!");
+
+  folder = [self ocsFolder];
+  if (!folder)
+    {
+      [self errorWithFormat:@"(%s): missing folder for fetch!",
+            __PRETTY_FUNCTION__];
+      return nil;
+    }
+
+  if (_startDate && _endDate)
+    {
+      r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
+                               endDate: _endDate];
+      dateSqlString = [self _sqlStringRangeFrom: _startDate to: _endDate];
+    }
+  else
+    {
+      r = nil;
+      dateSqlString = @"";
+    }
+
+  if ([title length])
+    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
+			       @" isCaseInsensitiveLike: '%%%@%%')", title];
+  else
+    titleSqlString = @"";
+
+  componentSqlString = [self _sqlStringForComponent: _component];
+  privacySqlString = [self _privacySqlString];
+  if (filters)
+    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
+  else
+    filterSqlString = @"";
+
+  /* prepare mandatory fields */
+
+  fields = [NSMutableArray arrayWithArray: _fields];
+  [fields addObject: @"c_uid"];
+  [fields addObject: @"c_startdate"];
+  [fields addObject: @"c_enddate"];
+
+  if (logger)
+    [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
+
+  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@%@",
+                  dateSqlString, titleSqlString, componentSqlString,
+                  privacySqlString, filterSqlString];
+
+  /* fetch non-recurrent apts first */
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+
+  records = [folder fetchFields: fields matchingQualifier: qualifier];
+  if (records)
+    {
+      if (r)
+        records = [self fixupRecords: records fetchRange: r];
+      if (logger)
+        [self debugWithFormat: @"fetched %i records: %@",
+              [records count], records];
+      ma = [NSMutableArray arrayWithArray: records];
+    }
+
+  /* fetch recurrent apts now. we do NOT consider the date range when doing that
+     as the c_startdate/c_enddate of a recurring event is always set to the first
+     recurrence - others are generated on the fly */
+  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@%@", titleSqlString,
+		  componentSqlString, privacySqlString, filterSqlString];
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+
+  records = [folder fetchFields: fields matchingQualifier: qualifier];
+  if (records)
+    {
+      if (r) {
+        records = [self fixupCyclicRecords: records fetchRange: r];
+      }
+      if (!ma)
+        ma = [NSMutableArray arrayWithCapacity: [records count]];
+    }
+  else if (!ma)
+    {
+      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
+      return nil;
+    }
+
+  if (logger)
+    [self debugWithFormat:@"returning %i records", [ma count]];
+
+  currentLogin = [[context activeUser] login];
+  if (![currentLogin isEqualToString: owner])
+    [self _fixupProtectedInformation: [ma objectEnumerator]
+	  inFields: _fields
+	  forUser: currentLogin];
+//   [ma makeObjectsPerform: @selector (setObject:forKey:)
+//       withObject: owner
+//       withObject: @"owner"];
+
+  if (rememberRecords)
+    [self _rememberRecords: ma];
+
+  return ma;
+}
 
 - (void) _appendPropstat: (NSDictionary *) propstat
 	      toResponse: (WOResponse *) r
@@ -348,137 +846,152 @@ static NSNumber   *sharedYes = nil;
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
 
 #warning components in calendar-data query are ignored
-- (NSString *) _property: (NSObject <DOMElement> *) property
-		ofObject: (SOGoObject *) sogoObject
+static inline SEL
+_selectorForProperty (NSString *property)
 {
+  static NSMutableDictionary *methodMap = nil;
+  SEL propSel;
+  NSValue *propPtr;
   NSDictionary *map;
-  NSString *value, *propName, *methodName;
-  SEL methodSel;
+  NSString *methodName;
 
-  value = nil;
-
-  propName = [NSString stringWithFormat: @"{%@}%@",
-		       [property namespaceURI],
-		       [property nodeName]];
-  map = [[self class] defaultWebDAVAttributeMap];
-  methodName = [map objectForKey: propName];
-  if (methodName)
+  if (!methodMap)
+    methodMap = [NSMutableDictionary new];
+  propPtr = [methodMap objectForKey: property];
+  if (propPtr)
+    propSel = [propPtr pointerValue];
+  else
     {
-      methodSel = NSSelectorFromString(methodName);
-      if ([sogoObject respondsToSelector: methodSel])
-	value = [[sogoObject performSelector: methodSel]
-		  stringByEscapingXMLString];
+      map = [sogoAppointmentFolderKlass defaultWebDAVAttributeMap];
+      methodName = [map objectForKey: property];
+      if (methodName)
+	{
+	  propSel = NSSelectorFromString (methodName);
+	  if (propSel)
+	    [methodMap setObject: [NSValue valueWithPointer: propSel]
+		       forKey: property];
+	}
     }
 
-  return value;
+  return propSel;
 }
 
-- (NSString *) _namespaceRep: (NSString *) namespace
+- (NSString *) _nodeTagForProperty: (NSString *) property
 {
-  NSString *rep;
+  NSString *namespace, *nodeName, *nsRep;
+  NSRange nsEnd;
 
+  nsEnd = [property rangeOfString: @"}"];
+  namespace
+    = [property substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
+  nodeName = [property substringFromIndex: nsEnd.location + 1];
   if ([namespace isEqualToString: @"urn:ietf:params:xml:ns:caldav"])
-    rep = @"C";
+    nsRep = @"C";
   else
-    rep = @"D";
+    nsRep = @"D";
 
-  return rep;
+  return [NSString stringWithFormat: @"%@:%@", nsRep, nodeName];
 }
 
-- (NSString *) _nodeTag: (NSObject <DOMElement> *) property
+- (NSString *) _nodeTag: (NSString *) property
 {
-  NSMutableString *nodeTag;
-  NSString *nsRep;
+  static NSMutableDictionary *tags = nil;
+  NSString *nodeTag;
 
-  nodeTag = [NSMutableString string];
-  nsRep = [self _namespaceRep: [property namespaceURI]];
-  if (nsRep)
-    [nodeTag appendFormat: @"%@:", nsRep];
-  [nodeTag appendString: [property nodeName]];
+  if (!tags)
+    tags = [NSMutableDictionary new];
+  nodeTag = [tags objectForKey: property];
+  if (!nodeTag)
+    {
+      nodeTag = [self _nodeTagForProperty: property];
+      [tags setObject: nodeTag forKey: property];
+    }
 
   return nodeTag;
 }
 
-- (NSString *) _representProperty: (NSDictionary *) property
+- (NSString **) _properties: (NSString **) properties
+                   ofObject: (NSDictionary *) object
 {
-  NSMutableString *propertyValue;
-  NSString *content, *nodeTag;
-
-  propertyValue = [NSMutableString string];
-  nodeTag = [self _nodeTag: [property objectForKey: @"property"]];
-  content = [property objectForKey: @"content"];
-  if (content)
-    [propertyValue appendFormat: @"<%@>%@</%@>", nodeTag, content, nodeTag];
-  else
-    [propertyValue appendFormat: @"<%@/>", nodeTag];
-
-  return propertyValue;
-}
-
-- (NSArray *) _properties: (NSArray *) properties
-		 ofObject: (NSDictionary *) object
-{
-  NSMutableArray *values;
-  NSEnumerator *list;
-  NSObject <DOMElement> *currentProperty;
-  NSMutableDictionary *currentValue;
+  NSString **currentProperty;
+  NSString **values, **currentValue;
   SOGoObject *sogoObject;
-  NSString *content;
   SoSecurityManager *mgr;
+  SEL methodSel;
 
-  values = [NSMutableArray array];
+#warning things may crash here...
+  values = malloc(sizeof (NSMutableString *) * 100);
+
+//   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
 #warning this check should be done directly in the query... we should fix this sometime
   mgr = [SoSecurityManager sharedSecurityManager];
-  sogoObject = [self lookupName: [object objectForKey: @"c_name"]
-		     inContext: context
-		     acquire: NO];
-  if (!([mgr validatePermission: SOGoPerm_AccessObject
-	     onObject: sogoObject
-	     inContext: context]))
+  sogoObject = [self _createChildComponentWithRecord: object];
+
+  if (activeUserIsOwner
+      || [[self ownerInContext: context]
+	   isEqualToString: [[context activeUser] login]]
+      || !([mgr validatePermission: SOGoPerm_AccessObject
+		onObject: sogoObject
+		inContext: context]))
     {
-      list = [properties objectEnumerator];
-      while ((currentProperty = [list nextObject]))
+      currentProperty = properties;
+      currentValue = values;
+      while (*currentProperty)
 	{
-	  currentValue = [NSMutableDictionary dictionary];
-	  [currentValue setObject: currentProperty
-			forKey: @"property"];
-	  content = [self _property: currentProperty
-			  ofObject: sogoObject];
-	  if (content)
-	    [currentValue setObject: content
-			  forKey: @"content"];
-	  [values addObject: currentValue];
+	  methodSel = _selectorForProperty (*currentProperty);
+	  if (methodSel && [sogoObject respondsToSelector: methodSel])
+	    *currentValue = [[sogoObject performSelector: methodSel]
+			      stringByEscapingXMLString];
+	  else
+	    *currentValue = nil;
+	  currentProperty++;
+	  currentValue++;
 	}
+      *currentValue = nil;
     }
+
+//    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
 
   return values;
 }
 
-- (NSArray *) _propstats: (NSArray *) properties
+- (NSArray *) _propstats: (NSString **) properties
 		ofObject: (NSDictionary *) object
 {
-  NSMutableArray *propstats, *properties200, *properties404;
-  NSEnumerator *values;
-  NSDictionary *currentProperty;
-  NSString *content, *propertyValue;
+  NSMutableArray *propstats, *properties200, *properties404, *propDict;
+  NSString **property, **values, **currentValue;
+  NSString *propertyValue, *nodeTag;
+
+//   NSLog (@"_propstats:ofObject:: %@", [NSDate date]);
 
   propstats = [NSMutableArray array];
 
   properties200 = [NSMutableArray new];
   properties404 = [NSMutableArray new];
 
-  values = [[self _properties: properties ofObject: object]
-	     objectEnumerator];
-  while ((currentProperty = [values nextObject]))
+  values = [self _properties: properties ofObject: object];
+  currentValue = values;
+  property = properties;
+  while (*currentValue)
     {
-      content = [currentProperty objectForKey: @"content"];
-      propertyValue = [self _representProperty: currentProperty];
-      if (content)
-	[properties200 addObject: propertyValue];
+      nodeTag = [self _nodeTag: *property];
+      if (*currentValue)
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@>%@</%@>",
+				    nodeTag, *currentValue, nodeTag];
+	  propDict = properties200;
+	}
       else
-	[properties404 addObject: propertyValue];
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@/>", nodeTag];
+	  propDict = properties404;
+	}
+      [properties200 addObject: propertyValue];
+      currentValue++;
+      property++;
     }
+  free (values);
 
   if ([properties200 count])
     {
@@ -502,29 +1015,34 @@ static NSNumber   *sharedYes = nil;
   else
     [properties404 release];
 
+//    NSLog (@"/_propstats:ofObject:: %@", [NSDate date]);
+
   return propstats;
 }
 
 #warning We need to use the new DAV utilities here...
 - (void) appendObject: (NSDictionary *) object
-	   properties: (NSArray *) properties
+	   properties: (NSString **) properties
           withBaseURL: (NSString *) baseURL
     toComplexResponse: (WOResponse *) r
 {
-  NSEnumerator *propstats;
-  NSDictionary *propstat;
+  NSArray *propstats;
+  unsigned int count, max;
 
   [r appendContentString: @"<D:response><D:href>"];
   [r appendContentString: baseURL];
-  if (![baseURL hasSuffix: @"/"])
-    [r appendContentString: @"/"];
+//   if (![baseURL hasSuffix: @"/"])
+//     [r appendContentString: @"/"];
   [r appendContentString: [object objectForKey: @"c_name"]];
   [r appendContentString: @"</D:href>"];
 
-  propstats = [[self _propstats: properties ofObject: object]
-		objectEnumerator];
-  while ((propstat = [propstats nextObject]))
-    [self _appendPropstat: propstat toResponse: r];
+//   NSLog (@"(appendPropstats...): %@", [NSDate date]);
+  propstats = [self _propstats: properties ofObject: object];
+  max = [propstats count];
+  for (count = 0; count < max; count++)
+    [self _appendPropstat: [propstats objectAtIndex: count]
+	  toResponse: r];
+//   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
 
   [r appendContentString: @"</D:response>\r\n"];
 }
@@ -607,7 +1125,9 @@ static NSNumber   *sharedYes = nil;
   NSObject <DOMNodeList> *propList, *children;
   NSObject <DOMNode> *currentChild;
   unsigned int count, max, count2, max2;
+  NSString *flatProperty;
 
+//   NSLog (@"parseRequestProperties: %@", [NSDate date]);
   properties = [NSMutableArray array];
 
   propList = [parentNode getElementsByTagName: @"prop"];
@@ -619,13 +1139,19 @@ static NSNumber   *sharedYes = nil;
       for (count2 = 0; count2 < max2; count2++)
 	{
 	  currentChild = [children objectAtIndex: count2];
-	  if ([currentChild conformsToProtocol: @protocol(DOMElement)])
-	    [properties addObject: currentChild];
+	  if ([currentChild conformsToProtocol: @protocol (DOMElement)])
+	    {
+	      flatProperty = [NSString stringWithFormat: @"{%@}%@",
+				       [currentChild namespaceURI],
+				       [currentChild nodeName]];
+	      [properties addObject: flatProperty];
+	    }
 	}
 
 //       while ([children hasChildNodes])
 // 	[properties addObject: [children next]];
     }
+//   NSLog (@"/parseRequestProperties: %@", [NSDate date]);
 
   return properties;
 }
@@ -638,6 +1164,8 @@ static NSNumber   *sharedYes = nil;
   NSDictionary *filter;
   unsigned int count, max;
 
+//   NSLog (@"parseCalendarFilter: %@", [NSDate date]);
+
   filters = [NSMutableArray array];
   children = [parentNode getElementsByTagName: @"comp-filter"];
   max = [children length];
@@ -648,6 +1176,7 @@ static NSNumber   *sharedYes = nil;
       if (filter)
 	[filters addObject: filter];
     }
+//   NSLog (@"/parseCalendarFilter: %@", [NSDate date]);
 
   return filters;
 }
@@ -708,106 +1237,9 @@ static NSNumber   *sharedYes = nil;
   return additionalFilter;
 }
 
-- (void) _appendComponentProperties: (NSArray *) properties
-		    matchingFilters: (NSArray *) filters
-			 toResponse: (WOResponse *) response
-{
-  NSArray *apts;
-  NSDictionary *currentFilter, *appointment;
-  NSEnumerator *appointments, *filterList;
-  NSString *baseURL, *additionalFilters;
-
-  baseURL = [self baseURLInContext: context];
-
-  filterList = [filters objectEnumerator];
-  while ((currentFilter = [filterList nextObject]))
-    {
-      additionalFilters = [self _composeAdditionalFilters: currentFilter];
-      apts = [self fetchCoreInfosFrom: [currentFilter objectForKey: @"start"]
-                   to: [currentFilter objectForKey: @"end"]
-		   title: [currentFilter objectForKey: @"title"]
-                   component: [currentFilter objectForKey: @"name"]
-		   additionalFilters: additionalFilters];
-      appointments = [apts objectEnumerator];
-      while ((appointment = [appointments nextObject]))
-	[self appendObject: appointment
-	      properties: properties
-	      withBaseURL: baseURL
-	      toComplexResponse: response];
-    }
-}
-
 #warning this is baddddd because we return a single-valued dictionary containing \
   a cname which may not event exist... the logic behind appendObject:... should be \
   rethought, especially since we may start using SQL views
-
-- (NSDictionary *) _componentMatchingURL: (NSString *) url
-                               inBaseURL: (NSString *) baseURL
-{
-  NSDictionary *component;
-  NSURL *componentURL, *realBaseURL;
-  NSArray *urlComponents;
-  NSString *componentURLPath, *cName;
-
-  component = nil;
-
-  realBaseURL = [NSURL URLWithString: baseURL];
-  if (realBaseURL) /* url has a host part */
-    {
-      componentURL = [[NSURL URLWithString: url
-			     relativeToURL: realBaseURL]
-		       standardizedURL];
-      componentURLPath = [componentURL absoluteString];
-      if ([componentURLPath rangeOfString: [realBaseURL absoluteString]].location
-	  != NSNotFound)
-	{
-	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
-	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-	  component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
-	}
-    }
-  else
-    {
-      if ([url hasPrefix: baseURL])
-	{
-	  urlComponents = [[url stringByDeletingPrefix: baseURL]
-			    componentsSeparatedByString: @"/"];
-	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
-	  component = [NSDictionary dictionaryWithObject: cName forKey: @"c_name"];
-	}
-    }
-
-  return component;
-}
-
-- (void) _appendComponentProperties: (NSArray *) properties
-		       matchingURLs: (id <DOMNodeList>) refs
-			 toResponse: (WOResponse *) response
-{
-  NSObject <DOMElement> *element;
-  NSDictionary *currentComponent;
-  NSString *baseURL, *currentURL;
-  unsigned int count, max;
-
-  baseURL = [self baseURLInContext: context];
-
-  max = [refs length];
-  for (count = 0; count < max; count++)
-    {
-      element = [refs objectAtIndex: count];
-      currentURL = [[element firstChild] nodeValue];
-      currentComponent = [self _componentMatchingURL: currentURL
-			       inBaseURL: baseURL];
-      if (currentComponent)
-	[self appendObject: currentComponent
-	      properties: properties
-	      withBaseURL: baseURL
-	      toComplexResponse: response];
-      else
-	[self appendMissingObjectRef: currentURL
-	      toComplexResponse: response];
-    }
-}
 
 - (NSString *) davCalendarColor
 {
@@ -837,11 +1269,46 @@ static NSNumber   *sharedYes = nil;
   return error;
 }
 
+- (void) _appendComponentProperties: (NSString **) properties
+		    matchingFilters: (NSArray *) filters
+			 toResponse: (WOResponse *) response
+{
+  NSArray *apts;
+  NSDictionary *currentFilter;
+  NSEnumerator *filterList;
+  NSString *baseURL, *additionalFilters;
+  unsigned int count, max;
+
+  baseURL = [self baseURLInContext: context];
+
+  filterList = [filters objectEnumerator];
+  while ((currentFilter = [filterList nextObject]))
+    {
+      additionalFilters = [self _composeAdditionalFilters: currentFilter];
+//       NSLog(@"query");
+      apts = [self bareFetchFields: reportQueryFields
+		   from: [currentFilter objectForKey: @"start"]
+                   to: [currentFilter objectForKey: @"end"]
+		   title: [currentFilter objectForKey: @"title"]
+                   component: [currentFilter objectForKey: @"name"]
+		   additionalFilters: additionalFilters];
+//       NSLog(@"adding properties");
+      max = [apts count];
+      for (count = 0; count < max; count++)
+	[self appendObject: [apts objectAtIndex: count]
+	      properties: properties
+	      withBaseURL: baseURL
+	      toComplexResponse: response];
+//       NSLog(@"done");
+    }
+}
+
 - (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
+  NSString **properties;
 
   r = [context response];
   [r setStatus: 207];
@@ -855,13 +1322,224 @@ static NSNumber   *sharedYes = nil;
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  [self _appendComponentProperties:
-	  [self _parseRequestedProperties: documentElement]
+  properties = [[self _parseRequestedProperties: documentElement]
+		 asPointersOfObjects];
+  [self _appendComponentProperties: properties
 	matchingFilters: [self _parseCalendarFilters: documentElement]
         toResponse: r];
   [r appendContentString:@"</D:multistatus>\r\n"];
+  free (properties);
 
   return r;
+}
+
+- (NSArray *) _deduceObjectNamesFromPartialURLs: (NSArray *) urls
+			      withBaseURLString: (NSString *) baseURL
+{
+  unsigned int count, max;
+  NSString *url, *cName;
+  NSArray *urlComponents;
+  NSMutableArray *cNames;
+
+  max = [urls count];
+  cNames = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      url = [urls objectAtIndex: count];
+      if ([url hasPrefix: baseURL])
+	{
+	  urlComponents = [[url stringByDeletingPrefix: baseURL]
+			    componentsSeparatedByString: @"/"];
+	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
+	  [cNames addObject: cName];
+	}
+    }
+
+  return cNames;
+}
+
+- (NSArray *) _deduceObjectNamesFromFullURLs: (NSArray *) urls
+				 withBaseURL: (NSURL *) baseURL
+{
+  unsigned int count, max;
+  NSString *url, *componentURLPath, *cName;
+  NSMutableArray *cNames;
+  NSURL *componentURL;
+  NSArray *urlComponents;
+
+  max = [urls count];
+  cNames = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      url = [urls objectAtIndex: count];
+      componentURL = [[NSURL URLWithString: url
+			     relativeToURL: baseURL]
+		       standardizedURL];
+      componentURLPath = [componentURL absoluteString];
+      if ([componentURLPath rangeOfString: [baseURL absoluteString]].location
+	  != NSNotFound)
+	{
+	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
+	  cName = [urlComponents objectAtIndex: [urlComponents count] - 1];
+	  [cNames addObject: cName];
+	}
+    }
+
+  return cNames;
+}
+
+- (NSArray *) _fetchComponentsWithNames: (NSArray *) cNames
+{
+  NSMutableString *filterString;
+  NSArray *records;
+
+//   NSLog (@"fetchComponentsWithNames");
+  filterString = [NSMutableString new];
+  [filterString appendFormat: @"c_name='%@'",
+		[cNames componentsJoinedByString: @"' OR c_name='"]];
+//   NSLog (@"fetchComponentsWithNames: query");
+  records = [self bareFetchFields: reportQueryFields
+		  from: nil
+		  to: nil
+		  title: nil
+		  component: nil
+		  additionalFilters: filterString];
+  [filterString release];
+//   NSLog (@"/fetchComponentsWithNames");
+
+  return records;
+}
+
+#define maxQuerySize 2500
+#define baseQuerySize 160
+#define idQueryOverhead 13
+
+- (NSArray *) _fetchComponentsMatchingObjectNames: (NSArray *) cNames
+{
+  NSMutableArray *components;
+  NSArray *records;
+  NSMutableArray *currentNames;
+  unsigned int count, max, currentSize, queryNameLength;
+  NSString *currentName;
+
+//   NSLog (@"fetching components matching names");
+
+  currentNames = [NSMutableArray new];
+  currentSize = baseQuerySize;
+
+  max = [cNames count];
+  components = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentName = [cNames objectAtIndex: count];
+      queryNameLength = idQueryOverhead + [currentName length];
+      if ((currentSize + queryNameLength)
+	  > maxQuerySize)
+	{
+	  records = [self _fetchComponentsWithNames: currentNames];
+	  [components addObjectsFromArray: records];
+	  [currentNames removeAllObjects];
+	  currentSize = baseQuerySize;
+	}
+      [currentNames addObject: currentName];
+      currentSize += queryNameLength;
+    }
+
+  records = [self _fetchComponentsWithNames: currentNames];
+  [components addObjectsFromArray: records];
+  [currentNames release];
+
+//   NSLog (@"/fetching components matching names");
+
+  return components;
+}
+
+- (NSDictionary *) _convertRecordsArray: (NSArray *) records
+			    withBaseURL: (NSString *) baseURL
+{
+  NSDictionary *currentRecord;
+  unsigned int count, max;
+  NSMutableDictionary *components;
+  NSString *recordURL;
+
+  max = [records count];
+  components = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentRecord = [records objectAtIndex: count];
+      recordURL = [NSString stringWithFormat: @"%@%@", baseURL,
+			    [currentRecord objectForKey: @"c_name"]];
+      [components setObject: currentRecord
+		  forKey: recordURL];
+    }
+
+  return components;
+}
+
+- (NSDictionary *) _fetchComponentsMatchingURLs: (NSArray *) urls
+				    withBaseURL: (NSString *) baseURL
+{
+  NSURL *realBaseURL;
+  NSArray *cnames;
+
+  realBaseURL = [NSURL URLWithString: baseURL];
+//   NSLog (@"deducing names...\n");
+  if (realBaseURL) /* url has a host part */
+    cnames = [self _deduceObjectNamesFromFullURLs: urls
+		   withBaseURL: realBaseURL];
+  else
+    cnames = [self _deduceObjectNamesFromPartialURLs: urls
+		   withBaseURLString: baseURL];
+//   NSLog (@"/deducing names...\n");
+
+  return [self _convertRecordsArray:
+		 [self _fetchComponentsMatchingObjectNames: cnames]
+	       withBaseURL: baseURL];
+}
+
+- (void) _appendComponentProperties: (NSString **) properties
+		       matchingURLs: (id <DOMNodeList>) refs
+			 toResponse: (WOResponse *) response
+{
+  NSObject <DOMElement> *element;
+  NSDictionary *currentComponent, *components;
+  NSString *baseURL, *currentURL;
+  NSMutableArray *urls;
+  unsigned int count, max;
+
+  urls = [NSMutableArray new];
+  max = [refs length];
+  for (count = 0; count < max; count++)
+    {
+      element = [refs objectAtIndex: count];
+      currentURL = [[element firstChild] nodeValue];
+      [urls addObject: currentURL];
+    }
+
+  baseURL = [self baseURLInContext: context];
+
+  components = [self _fetchComponentsMatchingURLs: urls
+		     withBaseURL: baseURL];
+  max = [urls count];
+//   NSLog (@"adding properties with url");
+  for (count = 0; count < max; count++)
+    {
+      currentComponent
+	= [components objectForKey: [urls objectAtIndex: count]];
+      if (currentComponent)
+	[self appendObject: currentComponent
+	      properties: properties
+	      withBaseURL: baseURL
+	      toComplexResponse: response];
+      else
+	[self appendMissingObjectRef: currentURL
+	      toComplexResponse: response];
+    }
+//   NSLog (@"/adding properties with url");
+
+  [urls release];
 }
 
 - (id) davCalendarMultiget: (id) queryContext
@@ -869,6 +1547,7 @@ static NSNumber   *sharedYes = nil;
   WOResponse *r;
   id <DOMDocument> document;
   id <DOMElement> documentElement;
+  NSString **properties;
 
   r = [context response];
   [r setStatus: 207];
@@ -882,10 +1561,13 @@ static NSNumber   *sharedYes = nil;
 
   document = [[context request] contentAsDOMDocument];
   documentElement = [document documentElement];
-  [self _appendComponentProperties: [self _parseRequestedProperties: documentElement]
+  properties = [[self _parseRequestedProperties: documentElement]
+		 asPointersOfObjects];
+  [self _appendComponentProperties: properties
 	matchingURLs: [documentElement getElementsByTagName: @"href"]
         toResponse: r];
   [r appendContentString:@"</D:multistatus>\r\n"];
+  free (properties);
 
   return r;
 }
@@ -914,29 +1596,6 @@ static NSNumber   *sharedYes = nil;
     }
 
   return objectClass;
-}
-
-- (id) deduceObjectForName: (NSString *)_key
-                 inContext: (id)_ctx
-{
-  WORequest *request;
-  NSString *method;
-  Class objectClass;
-  id obj;
-
-  request = [_ctx request];
-  method = [request method];
-  if ([method isEqualToString: @"PUT"])
-    objectClass = [self objectClassForContent: [request contentAsString]];
-  else
-    objectClass = [self objectClassForResourceNamed: _key];
-
-  if (objectClass)
-    obj = [objectClass objectWithName: _key inContainer: self];
-  else
-    obj = nil;
-
-  return obj;
 }
 
 - (BOOL) requestNamedIsHandledLater: (NSString *) name
@@ -970,9 +1629,6 @@ static NSNumber   *sharedYes = nil;
               else if ([url hasSuffix: @"AsAppointment"])
                 obj = [SOGoAppointmentObject objectWithName: _key
                                              inContainer: self];
-              else
-                obj = [self deduceObjectForName: _key
-                            inContext: _ctx];
             }
         }
       if (!obj)
@@ -1096,275 +1752,6 @@ static NSNumber   *sharedYes = nil;
   return rname;
 }
 
-- (Class) objectClassForResourceNamed: (NSString *) name
-{
-  EOQualifier *qualifier;
-  NSArray *records;
-  NSString *component;
-  Class objectClass;
-
-  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", name];
-  records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"c_component"]
-                              matchingQualifier: qualifier];
-
-  if ([records count])
-    {
-      component = [[records objectAtIndex:0] valueForKey: @"c_component"];
-      if ([component isEqualToString: @"vevent"])
-        objectClass = [SOGoAppointmentObject class];
-      else if ([component isEqualToString: @"vtodo"])
-        objectClass = [SOGoTaskObject class];
-      else
-        objectClass = Nil;
-    }
-  else
-    objectClass = Nil;
-  
-  return objectClass;
-}
-
-/* fetching */
-
-- (NSMutableDictionary *) fixupRecord: (NSDictionary *) _record
-                           fetchRange: (NGCalendarDateRange *) _r
-{
-  NSMutableDictionary *md;
-  id tmp;
-  
-  md = [[_record mutableCopy] autorelease];
- 
-  if ((tmp = [_record objectForKey:@"c_startdate"])) {
-    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
-          (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: timeZone];
-    if (tmp) [md setObject:tmp forKey:@"startDate"];
-    [tmp release];
-  }
-  else
-    [self logWithFormat:@"missing 'startdate' in record?"];
-
-  if ((tmp = [_record objectForKey:@"c_enddate"])) {
-    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
-          (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: timeZone];
-    if (tmp) [md setObject:tmp forKey:@"endDate"];
-    [tmp release];
-  }
-  else
-    [self logWithFormat:@"missing 'enddate' in record?"];
-
-  return md;
-}
-
-- (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) _record
-                                cycleRange: (NGCalendarDateRange *) _r
-{
-  NSMutableDictionary *md;
-  id tmp;
-  
-  md = [[_record mutableCopy] autorelease];
-  
-  /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
-     the reccurence since we use those when displaying events in SOGo Web */
-  tmp = [_r startDate];
-  [tmp setTimeZone: timeZone];
-  [md setObject:tmp forKey:@"startDate"];
-  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_startdate"];
-  tmp = [_r endDate];
-  [tmp setTimeZone: timeZone];
-  [md setObject:tmp forKey:@"endDate"];
-  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_enddate"];
-  
-  return md;
-}
-
-- (NSArray *) fixupRecords: (NSArray *) records
-                fetchRange: (NGCalendarDateRange *) r
-{
-  // TODO: is the result supposed to be sorted by date?
-  NSMutableArray *ma;
-  unsigned count, max;
-  id row; // TODO: what is the type of the record?
-
-  if (records)
-    {
-      max = [records count];
-      ma = [NSMutableArray arrayWithCapacity: max];
-      for (count = 0; count < max; count++)
-	{
-	  row = [self fixupRecord: [records objectAtIndex: count]
-		      fetchRange: r];
-	  if (row)
-	    [ma addObject: row];
-	}
-    }
-  else
-    ma = nil;
-
-  return ma;
-}
-
-- (void) _flattenCycleRecord: (NSDictionary *) _row
-                    forRange: (NGCalendarDateRange *) _r
-                   intoArray: (NSMutableArray *) _ma
-{
-  NSMutableDictionary *row, *fixedRow;
-  NSDictionary        *cycleinfo;
-  NSCalendarDate      *startDate, *endDate;
-  NGCalendarDateRange *fir, *rRange;
-  NSArray             *rules, *exRules, *exDates, *ranges;
-  unsigned            i, count;
-  NSString *content;
-
-  content = [_row objectForKey: @"c_cycleinfo"];
-  if (![content isNotNull])
-    {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    _row];
-      return;
-    }
-
-  cycleinfo = [content propertyList];
-  if (!cycleinfo)
-    {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    _row];
-      return;
-    }
-
-  row = [self fixupRecord:_row fetchRange: _r];
-  [row removeObjectForKey: @"c_cycleinfo"];
-  [row setObject: sharedYes forKey: @"isRecurrentEvent"];
-
-  startDate = [row objectForKey: @"startDate"];
-  endDate   = [row objectForKey: @"endDate"];
-  fir       = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
-                                   endDate: endDate];
-  rules     = [cycleinfo objectForKey: @"rules"];
-  exRules   = [cycleinfo objectForKey: @"exRules"];
-  exDates   = [cycleinfo objectForKey: @"exDates"];
-  
-  ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: _r
-                                     firstInstanceCalendarDateRange: fir
-                                     recurrenceRules: rules
-                                     exceptionRules: exRules
-                                     exceptionDates: exDates];
-  count = [ranges count];
-  for (i = 0; i < count; i++)
-    {
-      rRange = [ranges objectAtIndex:i];
-      fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
-      if (fixedRow)
-	[_ma addObject:fixedRow];
-    }
-}
-
-- (NSArray *) fixupCyclicRecords: (NSArray *) _records
-                      fetchRange: (NGCalendarDateRange *) _r
-{
-  // TODO: is the result supposed to be sorted by date?
-  NSMutableArray *ma;
-  NSDictionary *row;
-  unsigned int i, count;
-
-  count = [_records count];
-  ma = [NSMutableArray arrayWithCapacity: count];
-  if (count > 0)
-    for (i = 0; i < count; i++)
-      {
-	row = [_records objectAtIndex: i];
-	[self _flattenCycleRecord: row forRange: _r intoArray: ma];
-      }
-
-  return ma;
-}
-
-- (NSString *) _sqlStringForComponent: (id) _component
-{
-  NSString *sqlString;
-  NSArray *components;
-
-  if (_component)
-    {
-      if ([_component isKindOfClass: [NSArray class]])
-        components = _component;
-      else
-        components = [NSArray arrayWithObject: _component];
-
-      sqlString
-        = [NSString stringWithFormat: @" AND (c_component = '%@')",
-                    [components componentsJoinedByString: @"' OR c_component = '"]];
-    }
-  else
-    sqlString = @"";
-
-  return sqlString;
-}
-
-- (NSString *) _sqlStringRangeFrom: (NSCalendarDate *) _startDate
-                                to: (NSCalendarDate *) _endDate
-{
-  unsigned int start, end;
-
-  start = (unsigned int) [_startDate timeIntervalSince1970];
-  end = (unsigned int) [_endDate timeIntervalSince1970];
-
-  return [NSString stringWithFormat:
-                     @" AND (c_startdate <= %u) AND (c_enddate >= %u)",
-                   end, start];
-}
-
-- (NSString *) _privacyClassificationStringsForUID: (NSString *) uid
-{
-  NSMutableString *classificationString;
-  NSString *currentRole;
-  unsigned int counter;
-  iCalAccessClass classes[] = {iCalAccessPublic, iCalAccessPrivate,
-			       iCalAccessConfidential};
-
-  classificationString = [NSMutableString string];
-  for (counter = 0; counter < 3; counter++)
-    {
-      currentRole = [self roleForComponentsWithAccessClass: classes[counter]
-			  forUser: uid];
-      if ([currentRole length] > 0)
-	[classificationString appendFormat: @"c_classification = %d or ",
-			      classes[counter]];
-    }
-
-  return classificationString;
-}
-
-- (NSString *) _privacySqlString
-{
-  NSString *privacySqlString, *email, *login;
-  SOGoUser *activeUser;
-
-  activeUser = [context activeUser];
-
-  if ([[activeUser rolesForObject: self inContext: context]
-	containsObject: SoRole_Owner])
-    privacySqlString = @"";
-  else if ([[activeUser login] isEqualToString: @"freebusy"])
-    privacySqlString = @"and (c_isopaque = 1)";
-  else
-    {
-#warning we do not manage all the possible user emails
-      email = [[activeUser primaryIdentity] objectForKey: @"email"];
-      login = [activeUser login];
-
-      privacySqlString
-        = [NSString stringWithFormat:
-                      @"(%@(c_orgmail = '%@')"
-		    @" or ((c_partmails caseInsensitiveLike '%@%%'"
-		    @" or c_partmails caseInsensitiveLike '%%\n%@%%')))",
-		    [self _privacyClassificationStringsForUID: login],
-		    email, email, email];
-    }
-
-  return privacySqlString;
-}
-
 - (NSArray *) subscriptionRoles
 {
   return [NSArray arrayWithObjects:
@@ -1427,166 +1814,6 @@ static NSNumber   *sharedYes = nil;
   return accessRole;
 }
 
-- (void) _buildStripFieldsFromFields: (NSArray *) fields
-{
-  stripFields = [[NSMutableArray alloc] initWithCapacity: [fields count]];
-  [stripFields setArray: fields];
-  [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
-					      @"c_uid", @"c_startdate",
-					      @"c_enddate", @"c_isallday",
-					      @"c_iscycle",
-					      @"c_classification",
-					      @"c_component", nil]];
-}
-
-- (void) _fixupProtectedInformation: (NSEnumerator *) ma
-			   inFields: (NSArray *) fields
-			    forUser: (NSString *) uid
-{
-  NSMutableDictionary *currentRecord;
-  NSString *roles[] = {nil, nil, nil};
-  iCalAccessClass accessClass;
-  NSString *fullRole, *role;
-
-  if (!stripFields)
-    [self _buildStripFieldsFromFields: fields];
-
-#warning we do not take the participation status into account
-  while ((currentRecord = [ma nextObject]))
-    {
-      accessClass
-	= [[currentRecord objectForKey: @"c_classification"] intValue];
-      role = roles[accessClass];
-      if (!role)
-	{
-	  fullRole = [self roleForComponentsWithAccessClass: accessClass
-			   forUser: uid];
-	  if ([fullRole length] > 9)
-	    role = [fullRole substringFromIndex: 9];
-	  roles[accessClass] = role;
-	}
-      if ([role isEqualToString: @"DAndTViewer"])
-	[currentRecord removeObjectsForKeys: stripFields];
-    }
-}
-
-- (NSArray *) fetchFields: (NSArray *) _fields
-                     from: (NSCalendarDate *) _startDate
-                       to: (NSCalendarDate *) _endDate 
-		    title: (NSString *) title
-                component: (id) _component
-	additionalFilters: (NSString *) filters
-{
-  EOQualifier *qualifier;
-  GCSFolder *folder;
-  NSMutableArray *fields, *ma = nil;
-  NSArray *records;
-  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySqlString, *currentLogin, *filterSqlString;
-  NGCalendarDateRange *r;
-
-  folder = [self ocsFolder];
-  if (!folder)
-    {
-      [self errorWithFormat:@"(%s): missing folder for fetch!",
-            __PRETTY_FUNCTION__];
-      return nil;
-    }
-
-  if (_startDate && _endDate)
-    {
-      r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
-                               endDate: _endDate];
-      dateSqlString = [self _sqlStringRangeFrom: _startDate to: _endDate];
-    }
-  else
-    {
-      r = nil;
-      dateSqlString = @"";
-    }
-
-  if ([title length])
-    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
-			       @" isCaseInsensitiveLike: '%%%@%%')", title];
-  else
-    titleSqlString = @"";
-
-  componentSqlString = [self _sqlStringForComponent: _component];
-  privacySqlString = [self _privacySqlString];
-  if (filters)
-    filterSqlString = [NSString stringWithFormat: @"AND (%@)", filters];
-  else
-    filterSqlString = @"";
-
-  /* prepare mandatory fields */
-
-  fields = [NSMutableArray arrayWithArray: _fields];
-  [fields addObject: @"c_uid"];
-  [fields addObject: @"c_startdate"];
-  [fields addObject: @"c_enddate"];
-
-  if (logger)
-    [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];
-
-  sql = [NSString stringWithFormat: @"(c_iscycle = 0)%@%@%@%@%@",
-                  dateSqlString, titleSqlString, componentSqlString,
-                  privacySqlString, filterSqlString];
-
-  /* fetch non-recurrent apts first */
-  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
-
-  records = [folder fetchFields: fields matchingQualifier: qualifier];
-  if (records)
-    {
-      if (r)
-        records = [self fixupRecords: records fetchRange: r];
-      if (logger)
-        [self debugWithFormat: @"fetched %i records: %@",
-              [records count], records];
-      ma = [NSMutableArray arrayWithArray: records];
-    }
-
-  /* fetch recurrent apts now. we do NOT consider the date range when doing that
-     as the c_startdate/c_enddate of a recurring event is always set to the first
-     recurrence - others are generated on the fly */
-  sql = [NSString stringWithFormat: @"(c_iscycle = 1)%@%@%@%@", titleSqlString,
-		  componentSqlString, privacySqlString, filterSqlString];
-
-  qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
-
-  records = [folder fetchFields: fields matchingQualifier: qualifier];
-
-  if (records)
-    {
-      if (r) {
-        records = [self fixupCyclicRecords: records fetchRange: r];
-      }
-      if (!ma)
-        ma = [NSMutableArray arrayWithCapacity: [records count]];
-
-      [ma addObjectsFromArray: records];
-    }
-  else if (!ma)
-    {
-      [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
-      return nil;
-    }
-
-  if (logger)
-    [self debugWithFormat:@"returning %i records", [ma count]];
-
-  currentLogin = [[context activeUser] login];
-  if (![currentLogin isEqualToString: owner])
-    [self _fixupProtectedInformation: [ma objectEnumerator]
-	  inFields: _fields
-	  forUser: currentLogin];
-//   [ma makeObjectsPerform: @selector (setObject:forKey:)
-//       withObject: owner
-//       withObject: @"owner"];
-
-  return ma;
-}
-
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
                                   to: (NSCalendarDate *) _endDate
 {
@@ -1621,13 +1848,13 @@ static NSNumber   *sharedYes = nil;
   static NSArray *infos = nil; // TODO: move to a plist file
 
   if (!infos)
-    infos = [[NSArray alloc] initWithObjects:
-                               @"c_name", @"c_component",
-                             @"c_title", @"c_location", @"c_orgmail",
-                             @"c_status", @"c_classification",
-                             @"c_isallday", @"c_isopaque",
-                             @"c_participants", @"c_partmails",
-                             @"c_partstates", @"c_sequence", @"c_priority",
+    infos = [[NSArray alloc] initWithObjects: @"c_name", @"c_content",
+			     @"c_creationdate", @"c_lastmodified",
+			     @"c_version", @"c_component", @"c_title",
+			     @"c_location", @"c_orgmail", @"c_status",
+			     @"c_classification", @"c_isallday",
+			     @"c_isopaque", @"c_participants", @"c_partmails",
+			     @"c_partstates", @"c_sequence", @"c_priority",
 			     @"c_cycleinfo", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
@@ -1892,36 +2119,6 @@ static NSNumber   *sharedYes = nil;
 
 /* bulk fetches */
 
-- (NSArray *) fetchAllSOGoAppointments
-{
-  /* 
-     Note: very expensive method, do not use unless absolutely required.
-           returns an array of SOGoAppointment objects.
-	   
-     Note that we can leave out the filenames, supposed to be stored
-     in the 'uid' field of the iCalendar object!
-  */
-  NSMutableArray *events;
-  NSDictionary *files;
-  NSEnumerator *contents;
-  NSString     *content;
-  
-  /* fetch all raw contents */
-  
-  files = [self fetchContentStringsAndNamesOfAllObjects];
-  if (![files isNotNull]) return nil;
-  if ([files isKindOfClass:[NSException class]]) return (id)files;
-  
-  /* transform to SOGo appointments */
-  
-  events   = [NSMutableArray arrayWithCapacity:[files count]];
-  contents = [files objectEnumerator];
-  while ((content = [contents nextObject]) != nil)
-    [events addObject: [iCalCalendar parseSingleFromSource: content]];
-  
-  return events;
-}
-
 // #warning We only support ONE calendar per user at this time
 // - (BOOL) _appendSubscribedFolders: (NSDictionary *) subscribedFolders
 // 		     toFolderList: (NSMutableArray *) calendarFolders
@@ -2011,19 +2208,6 @@ static NSNumber   *sharedYes = nil;
 //   return objectNames;
 // }
 
-- (NSArray *) fetchContentObjectNames
-{
-  static NSArray *cNameField = nil;
-
-  if (!cNameField)
-    cNameField = [[NSArray alloc] initWithObjects: @"c_name", nil];
-
-  return [[self fetchFields: cNameField from: nil to: nil
-		title: nil component: nil
-		additionalFilters: nil]
-	   objectsForKey: @"c_name"];
-}
-
 /* folder type */
 
 - (NSString *) folderType
@@ -2045,7 +2229,7 @@ static NSNumber   *sharedYes = nil;
   inactiveFolders
     = [[settings objectForKey: @"Calendar"] objectForKey: @"InactiveFolders"];
 
-  return ![inactiveFolders containsObject: nameInContainer];
+  return (![inactiveFolders containsObject: nameInContainer]);
 }
 
 @end /* SOGoAppointmentFolder */
