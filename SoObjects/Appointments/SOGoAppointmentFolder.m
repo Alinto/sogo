@@ -920,7 +920,7 @@ _selectorForProperty (NSString *property)
   SEL methodSel;
 
 #warning things may crash here...
-  values = malloc(sizeof (NSMutableString *) * 100);
+  values = malloc (sizeof (NSMutableString *) * 100);
 
 //   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
 
@@ -950,6 +950,8 @@ _selectorForProperty (NSString *property)
 	}
       *currentValue = nil;
     }
+  else
+    *values = nil;
 
 //    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
 
