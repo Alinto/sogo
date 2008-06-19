@@ -41,6 +41,8 @@
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 
+#define intervalSeconds 900 /* 15 minutes */
+
 static NSString *defaultModule = nil;
 
 @interface SOGoUserHomePage : UIxComponent
@@ -87,60 +89,65 @@ static NSString *defaultModule = nil;
   return [self redirectToLocation: [moduleURL absoluteString]];
 }
 
-- (void) _fillFreeBusyItems: (NSMutableArray *) items
-                withRecords: (NSEnumerator *) records
+- (void) _fillFreeBusyItems: (unsigned int *) items
+		      count: (unsigned int) itemCount
+                withRecords: (NSArray *) records
               fromStartDate: (NSCalendarDate *) startDate
                   toEndDate: (NSCalendarDate *) endDate
 {
   NSDictionary *record;
-  int count, startInterval, endInterval, value;
-  NSNumber *status;
+  int recordCount, recordMax, count, startInterval, endInterval;
   NSCalendarDate *currentDate;
-  
-  while ((record = [records nextObject]))
+
+  recordMax = [records count];
+  for (recordCount = 0; recordCount < recordMax; recordCount++)
     {
-      status = [record objectForKey: @"c_status"];
- 
-      value = [[record objectForKey: @"c_startdate"] intValue];
-      currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
-      if ([currentDate earlierDate: startDate] == currentDate)
-        startInterval = 0;
-      else
-        startInterval
-          = ([currentDate timeIntervalSinceDate: startDate] / 900);
+      record = [records objectAtIndex: recordCount];
+      if ([[record objectForKey: @"c_isopaque"] boolValue])
+	{
+	  currentDate = [record objectForKey: @"startDate"];
+	  if ([currentDate earlierDate: startDate] == currentDate)
+	    startInterval = 0;
+	  else
+	    startInterval = ([currentDate timeIntervalSinceDate: startDate]
+			     / intervalSeconds);
 
-      value = [[record objectForKey: @"c_enddate"] intValue];
-      currentDate = [NSCalendarDate dateWithTimeIntervalSince1970: value];
-      if ([currentDate earlierDate: endDate] == endDate)
-        endInterval = [items count] - 1;
-      else
-        endInterval = ([currentDate timeIntervalSinceDate: startDate] / 900);
+	  currentDate = [record objectForKey: @"endDate"];
+	  if ([currentDate earlierDate: endDate] == endDate)
+	    endInterval = itemCount - 1;
+	  else
+	    endInterval = ([currentDate timeIntervalSinceDate: startDate]
+			   / intervalSeconds);
 
-      for (count = startInterval; count < endInterval; count++)
-        [items replaceObjectAtIndex: count withObject: status];
+	  for (count = startInterval; count < endInterval; count++)
+	    *(items + count) = 1;
+	}
     }
 }
- 
+
 - (NSString *) _freeBusyAsTextFromStartDate: (NSCalendarDate *) startDate
                                   toEndDate: (NSCalendarDate *) endDate
                                 forFreeBusy: (SOGoFreeBusyObject *) fb
 {
-  NSEnumerator *records;
-  NSMutableArray *freeBusyItems;
+  NSMutableString *response;
+  unsigned int *freeBusyItems;
   NSTimeInterval interval;
-  int count, intervals;
+  unsigned int count, intervals;
 
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
-  intervals = interval / 900; /* slices of 15 minutes */
-  freeBusyItems = [NSMutableArray arrayWithCapacity: intervals];
-  for (count = 1; count < intervals; count++)
-    [freeBusyItems addObject: @"0"];
-
-  records = [[fb fetchFreeBusyInfosFrom: startDate to: endDate] objectEnumerator];
-  [self _fillFreeBusyItems: freeBusyItems withRecords: records
+  intervals = interval / intervalSeconds; /* slices of 15 minutes */
+  freeBusyItems = calloc (intervals, sizeof (int));
+  [self _fillFreeBusyItems: freeBusyItems count: intervals
+	withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
         fromStartDate: startDate toEndDate: endDate];
 
-  return [freeBusyItems componentsJoinedByString: @","];
+  response = [NSMutableString string];
+  for (count = 0; count < intervals; count++)
+    [response appendFormat: @"%d,", *(freeBusyItems + count)];
+  [response deleteCharactersInRange: NSMakeRange (intervals * 2 - 1, 1)];
+  free (freeBusyItems);
+
+  return response;
 }
 
 - (NSString *) _freeBusyAsText

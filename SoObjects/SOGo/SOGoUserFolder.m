@@ -52,21 +52,6 @@
 
 @implementation SOGoUserFolder
 
-// + (void) initialize
-// {
-//   SoClassSecurityInfo *sInfo;
-//   NSArray *basicRoles;
-
-//   sInfo = [self soClassSecurityInfo];
-//   [sInfo declareObjectProtected: SoPerm_View];
-
-//   basicRoles = [NSArray arrayWithObject: SoRole_Authenticated];
-
-//   /* require Authenticated role for View and WebDAV */
-//   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_View];
-//   [sInfo declareRoles: basicRoles asDefaultForPermission: SoPerm_WebDAVAccess];
-// }
-
 /* hierarchy */
 
 - (NSArray *) toManyRelationshipKeys
@@ -413,20 +398,6 @@
   return r;
 }
 
-// - (SOGoGroupsFolder *) lookupGroupsFolder
-// {
-//   return [self lookupName: @"Groups" inContext: nil acquire: NO];
-// }
-
-/* name lookup */
-
-// - (NSString *) permissionForKey: (NSString *) key
-// {
-//   return ([key isEqualToString: @"freebusy.ifb"]
-//           ? SoPerm_WebDAVAccess
-//           : [super permissionForKey: key]);
-// }
-
 - (SOGoAppointmentFolders *) privateCalendars: (NSString *) key
 				    inContext: (WOContext *) localContext
 {
@@ -456,12 +427,6 @@
   return contacts;
 }
 
-// - (id) groupsFolder: (NSString *) _key
-//           inContext: (WOContext *) _ctx
-// {
-//   return [$(@"SOGoGroupsFolder") objectWithName: _key inContainer: self];
-// }
-
 - (id) mailAccountsFolder: (NSString *) _key
                 inContext: (WOContext *) _ctx
 {
@@ -489,13 +454,8 @@
       if ([_key isEqualToString: @"Calendar"]
 	  && [currentUser canAccessModule: _key])
 	obj = [self privateCalendars: @"Calendar" inContext: _ctx];
-//           if (![_key isEqualToString: @"Calendar"])
-//             obj = [obj lookupName: [_key pathExtension] 
-//                        inContext: _ctx acquire: NO];
       else if ([_key isEqualToString: @"Contacts"])
         obj = [self privateContacts: _key inContext: _ctx];
-//       else if ([_key isEqualToString: @"Groups"])
-//         obj = [self groupsFolder: _key inContext: _ctx];
       else if ([_key isEqualToString: @"Mail"]
 	       && [currentUser canAccessModule: _key])
         obj = [self mailAccountsFolder: _key inContext: _ctx];
@@ -510,39 +470,6 @@
 
   return obj;
 }
-
-// /* FIXME: here is a vault of hackish ways to gain access to subobjects by
-//    granting ro access to the homepage depending on the subobject in question.
-//    This is wrong and dangerous. */
-// - (NSString *) roleOfUser: (NSString *) uid
-//                 inContext: (WOContext *) context
-// {
-//   NSArray *roles, *traversalPath;
-//   NSString *objectName, *role;
-
-//   role = nil;
-//   traversalPath = [context objectForKey: @"SoRequestTraversalPath"];
-//   if ([traversalPath count] > 1)
-//     {
-//       objectName = [traversalPath objectAtIndex: 1];
-//       if ([objectName isEqualToString: @"Calendar"]
-//           || [objectName isEqualToString: @"Contacts"])
-//         {
-//           roles = [[context activeUser]
-//                     rolesForObject: [self lookupName: objectName
-//                                           inContext: context
-//                                           acquire: NO]
-//                     inContext: context];
-//           if ([roles containsObject: SOGoRole_Assistant]
-//               || [roles containsObject: SOGoRole_Delegate])
-//             role = SOGoRole_Assistant;
-//         }
-//       else if ([objectName isEqualToString: @"freebusy.ifb"])
-//         role = SOGoRole_Assistant;
-//     }
-
-//   return role;
-// }
 
 /* WebDAV */
 

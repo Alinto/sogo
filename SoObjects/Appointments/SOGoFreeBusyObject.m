@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
@@ -36,8 +37,12 @@
 #import <SOGo/SOGoPermissions.h>
 
 #import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentFolders.h"
 
 #import "SOGoFreeBusyObject.h"
+
+static unsigned int freebusyRangeStart = 0;
+static unsigned int freebusyRangeEnd = 0;
 
 @interface SOGoFreeBusyObject (PrivateAPI)
 - (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
@@ -46,6 +51,25 @@
 @end
 
 @implementation SOGoFreeBusyObject
+
++ (void) initialize
+{
+  NSArray *freebusyDateRange;
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  freebusyDateRange = [ud arrayForKey: @"SOGoFreeBusyDefaultInterval"];
+  if (freebusyDateRange && [freebusyDateRange count] > 1)
+    {
+      freebusyRangeStart = [[freebusyDateRange objectAtIndex: 0] unsignedIntValue];
+      freebusyRangeEnd = [[freebusyDateRange objectAtIndex: 1] unsignedIntValue];
+    }
+  else
+    {
+      freebusyRangeStart = 7;
+      freebusyRangeEnd = 7;
+    }
+}
 
 - (NSString *) contentAsString
 {
@@ -56,9 +80,9 @@
   timeZone = [[context activeUser] timeZone];
   [today setTimeZone: timeZone];
 
-  startDate = [today dateByAddingYears: 0 months: 0 days: -14
+  startDate = [today dateByAddingYears: 0 months: 0 days: -freebusyRangeStart
                      hours: 0 minutes: 0 seconds: 0];
-  endDate = [startDate dateByAddingYears: 0 months: 1 days: 0
+  endDate = [startDate dateByAddingYears: 0 months: 0 days: freebusyRangeEnd
                        hours: 0 minutes: 0 seconds: 0];
 
   return [self contentAsStringFrom: startDate to: endDate];
@@ -70,29 +94,32 @@
   NSArray *infos;
   
   infos = [self fetchFreeBusyInfosFrom:_startDate to:_endDate];
+
   return [self iCalStringForFreeBusyInfos:infos from:_startDate to:_endDate];
 }
 
-- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
-                                  to: (NSCalendarDate *) _endDate
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
+                                  to: (NSCalendarDate *) endDate
 {
   SOGoAppointmentFolder *calFolder;
 //   SoSecurityManager *sm;
-  NSArray *infos;
+  NSArray *folders;
+  NSMutableArray *infos;
+  unsigned int count, max;
 
-  calFolder = [[container lookupName: @"Calendar" inContext: context acquire: NO]
-		lookupName: @"personal" inContext: context acquire: NO];
-//   sm = [SoSecurityManager sharedSecurityManager];
-//   if (![sm validatePermission: SOGoPerm_FreeBusyLookup
-//            onObject: calFolder
-//            inContext: context])
-  infos = [calFolder fetchFreeBusyInfosFrom: _startDate
-		     to: _endDate];
-//   else
-//     {
-//       infos = [NSArray new];
-//       [infos autorelease];
-//     }
+  infos = [NSMutableArray array];
+
+  folders = [[container lookupName: @"Calendar"
+			inContext: context
+			acquire: NO] subFolders];
+  max = [folders count];
+  for (count = 0; count < max; count++)
+    {
+      calFolder = [folders objectAtIndex: count];
+      if (![calFolder isSubscription])
+	[infos addObjectsFromArray: [calFolder fetchFreeBusyInfosFrom: startDate
+					       to: endDate]];
+    }
 
   return infos;
 }
@@ -169,18 +196,14 @@
 
   /* FREEBUSY */
   events = [_infos objectEnumerator];
-  info = [events nextObject];
-  while (info)
-    {
-      if ([[info objectForKey: @"c_isopaque"] boolValue])
-        {
-          type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
-          [freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
-                    to: [info objectForKey: @"endDate"]
-                    type: type];
-        }
-      info = [events nextObject];
-    }
+  while ((info = [events nextObject]))
+    if ([[info objectForKey: @"c_isopaque"] boolValue])
+      {
+	type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
+	[freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
+		  to: [info objectForKey: @"endDate"]
+		  type: type];
+      }
 
   [calendar setUniqueChild: freebusy];
 

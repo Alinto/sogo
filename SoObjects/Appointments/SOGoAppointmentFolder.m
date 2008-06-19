@@ -512,29 +512,29 @@ static Class sogoAppointmentFolderKlass = Nil;
                            fetchRange: (NGCalendarDateRange *) _r
 {
   NSMutableDictionary *md;
-  id tmp;
-  
-  md = [[_record mutableCopy] autorelease];
- 
-  if ((tmp = [_record objectForKey:@"c_startdate"])) {
-    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
-          (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: timeZone];
-    if (tmp) [md setObject:tmp forKey:@"startDate"];
-    [tmp release];
-  }
-  else
-    [self logWithFormat:@"missing 'startdate' in record?"];
+  static NSString *fields[] = { @"c_startdate", @"startDate",
+				@"c_enddate", @"endDate" };
+  unsigned int count;
+  NSCalendarDate *date;
+  NSNumber *dateValue;
 
-  if ((tmp = [_record objectForKey:@"c_enddate"])) {
-    tmp = [[NSCalendarDate alloc] initWithTimeIntervalSince1970:
-          (NSTimeInterval)[tmp unsignedIntValue]];
-    [tmp setTimeZone: timeZone];
-    if (tmp) [md setObject:tmp forKey:@"endDate"];
-    [tmp release];
-  }
-  else
-    [self logWithFormat:@"missing 'enddate' in record?"];
+  md = [[_record mutableCopy] autorelease];
+  for (count = 0; count < 2; count++)
+    {
+      dateValue = [_record objectForKey: fields[count * 2]];
+      if (dateValue)
+	{
+	  date = [NSCalendarDate dateWithTimeIntervalSince1970:
+				   (NSTimeInterval) [dateValue unsignedIntValue]];
+	  if (date)
+	    {
+	      [date setTimeZone: timeZone];
+	      [md setObject: date forKey: fields[count * 2 + 1]];
+	    }
+	}
+      else
+	[self logWithFormat:@"missing '%@' in record?", fields[count * 2]];
+    }
 
   return md;
 }
@@ -797,11 +797,11 @@ static Class sogoAppointmentFolderKlass = Nil;
   records = [folder fetchFields: fields matchingQualifier: qualifier];
   if (records)
     {
-      if (r) {
+      if (r)
         records = [self fixupCyclicRecords: records fetchRange: r];
-      }
       if (!ma)
         ma = [NSMutableArray arrayWithCapacity: [records count]];
+      [ma addObjectsFromArray: records];
     }
   else if (!ma)
     {
@@ -1772,7 +1772,7 @@ _selectorForProperty (NSString *property)
   
   if (!infos)
     infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
-                             @"c_isopaque", @"c_status", nil];
+                             @"c_isopaque", @"c_status", @"c_cycleinfo", nil];
 
   return [self fetchFields: infos
 	       from: _startDate to: _endDate

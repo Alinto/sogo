@@ -1,3 +1,25 @@
+2008-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
+	-readFreeBusyAction]): accelerated the process of rendering free
+	busy information by using ptr** instead of NSArray.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	+initialize]): initialize the default interval based on the new
+	"SOGoFreeBusyDefaultInterval" user default array.
+	([SOGoFreeBusyObject
+	-fetchFreeBusyInfosFrom:startDateto:endDate]): fetch the events
+	from all the owner calendars.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filters]):
+	add processed recurrent events to the list of records.
+	([SOGoAppointmentFolder
+	-fetchFreeBusyInfosFrom:_startDateto:_endDate]): request the
+	"c_cycleinfo" field in order for the recurrent events to be taken
+	into account.
+
 2008-06-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
