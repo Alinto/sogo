@@ -402,6 +402,8 @@ static BOOL debugObjectAllocation = NO;
 	    [_request method], [_request uri]];
       startDate = [NSDate date];
     }
+
+//   sleep (1);
   cache = [SOGoCache sharedCache];
   resp = [super dispatchRequest: _request];
   [SOGoCache killCache];
