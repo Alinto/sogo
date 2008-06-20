@@ -329,6 +329,47 @@ static Class sogoAppointmentFolderKlass = Nil;
   [settings synchronize];
 }
 
+- (NSString *) syncTag
+{
+  NSUserDefaults *settings;
+  NSDictionary *syncTags;
+  NSString *syncTag;
+
+  settings = [[context activeUser] userSettings];
+  syncTags = [[settings objectForKey: @"Calendar"]
+	       objectForKey: @"FolderSyncTags"];
+  syncTag = [syncTags objectForKey: [self folderReference]];
+  if (!syncTag)
+    syncTag = @"";
+
+  return syncTag;
+}
+
+#warning this code shares a lot with the colour code
+- (void) setSyncTag: (NSString *) newSyncTag
+{
+  NSUserDefaults *settings;
+  NSMutableDictionary *calendarSettings;
+  NSMutableDictionary *syncTags;
+
+  settings = [[context activeUser] userSettings];
+  calendarSettings = [settings objectForKey: @"Calendar"];
+  if (!calendarSettings)
+    {
+      calendarSettings = [NSMutableDictionary dictionary];
+      [settings setObject: calendarSettings
+		forKey: @"Calendar"];
+    }
+  syncTags = [calendarSettings objectForKey: @"FolderSyncTags"];
+  if (!syncTags)
+    {
+      syncTags = [NSMutableDictionary dictionary];
+      [calendarSettings setObject: syncTags forKey: @"FolderSyncTags"];
+    }
+  [syncTags setObject: newSyncTag forKey: [self folderReference]];
+  [settings synchronize];
+}
+
 /* logging */
 
 - (id) debugLogger

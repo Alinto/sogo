@@ -61,6 +61,9 @@
 - (NSString *) calendarColor;
 - (void) setCalendarColor: (NSString *) newColor;
 
+- (NSString *) syncTag;
+- (void) setSyncTag: (NSString *) newSyncTag;
+
 /* selection */
 
 - (NSArray *) calendarUIDs;
