@@ -77,6 +77,16 @@
   [calendar setCalendarColor: newColor];
 }
 
+- (NSString *) calendarSyncTag
+{
+  return [calendar syncTag];
+}
+
+- (void) setCalendarSyncTag: (NSString *) newTag
+{
+  [calendar setSyncTag: newTag];
+}
+
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {

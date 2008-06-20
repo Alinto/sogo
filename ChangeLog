@@ -1,3 +1,13 @@
+2008-06-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalendarProperties.m ([UIxCalendarProperties -calendarSyncTag])
+	([UIxCalendarProperties -setCalendarSyncTag:newTag]): new
+	accessors to retrieve and set the calendar tags from the template.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -syncTag])
+	([SOGoAppointmentFolder -setSyncTag:newSyncTag]): new accessors
+	that retrieves and set the calendar tags.
+
 2008-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage

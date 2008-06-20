@@ -455,3 +455,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Multicolumn Day View" = "Meerdere kolommen dagweergave";
 
 "Please select an event or a task." = "Selecteer een afspraak of een taak.";
+
+/* Properties dialog */
+"Name:" = "Naam:";
+"Color:" = "Kleur:";
+"Tag:" = "Tag:";

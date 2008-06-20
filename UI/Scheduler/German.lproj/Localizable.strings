@@ -456,3 +456,8 @@ vtodo_class2 = "(Confidential task)";
 "Multicolumn Day View" = "Multicolonne";
 
 "Please select an event or a task." = "Bitte wählen Sie einen Termin oder eine Aufgabe aus!";
+
+/* Properties dialog */
+"Name:" = "Name:";
+"Color:" = "Farbe:";
+"Tag:" = "Tag:";

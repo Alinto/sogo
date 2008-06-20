@@ -470,3 +470,8 @@ vtodo_class2 = "(Attività confidenziale)";
 "Suggest time slot:" = "Periodo suggerito:";
 "From" = "Da";
 "To" = "A";
+
+/* Properties dialog */
+"Name:" = "Nome:";
+"Color:" = "Colore:";
+"Tag:" = "Tag:";

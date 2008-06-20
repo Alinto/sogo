@@ -1,4 +1,4 @@
-LABEL
+SPAN.line
 { display: block;
   position: relative;
   line-height: 18px;
@@ -14,8 +14,11 @@ DIV#propertiesView
 SPAN.content
 { position: absolute;
   top: -.25em;
-  left: 4em;
+  left: 6em;
   right: 1em; }
+
+LABEL#calendarSync
+{ margin-left: 7em; }
 
 BUTTON#colorButton
 { display: none;
@@ -33,3 +36,6 @@ DIV#buttons
 { padding: 10px;
   padding-top: 0px;
   text-align: right; }
+
+INPUT#calendarSyncTag
+{ width: 5em; }
