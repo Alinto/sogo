@@ -391,6 +391,16 @@
   return @"editAsContact";
 }
 
+- (BOOL) canCreateOrModify
+{
+  SOGoObject *co;
+
+  co = [self clientObject];
+
+  return ([co isKindOfClass: [SOGoContentObject class]]
+          && [super canCreateOrModify]);
+}
+
 - (CardElement *) _elementWithTag: (NSString *) tag
                            ofType: (NSString *) type
 {
@@ -589,3 +599,4 @@
 }
 
 @end /* UIxContactEditor */
+

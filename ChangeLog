@@ -1,3 +1,12 @@
+2008-06-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor
+	-canCreateOrModify]): new overriden method that checks whether the
+	current clientObject is an instance of SOGoContactLDIFEntry before
+	returning the super method. This is to avoid the case where the
+	"save" button would appear because the user is listed as a super
+	user, which owns everything.
+
 2008-06-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoUserHomePage.m ([SOGoUserHomePage
