@@ -87,6 +87,9 @@
 
 /* HTTP method safety */
 - (BOOL) isInvokedBySafeMethod;
+
+/* display the "save" button */
+- (BOOL) canCreateOrModify;
     
 /* locale */
 - (NSDictionary *)locale;
