@@ -49,5 +49,6 @@
 	const:id="okButton"
 	name="okButton"/>
       </div>
+    </div>
   </form>
 </var:component>
