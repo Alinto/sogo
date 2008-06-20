@@ -1934,7 +1934,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{DAV:}locktoken"            = davLockToken;
    "{DAV:}activelock"           = davActiveLock;
    // TODO: non-standard?, also used by WebDrive
-@@ -120,17 +126,32 @@
+@@ -120,12 +126,29 @@
    "{http://ucb.openoffice.org/dav/props/}IsRemoveable"  = isOOoRemoveable;
    "{http://ucb.openoffice.org/dav/props/}IsVolume"      = isOOoVolume;
    "{http://ucb.openoffice.org/dav/props/}TargetURL"     = davOOoTargetURL;
@@ -1958,18 +1958,14 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
 +  "{urn:ietf:params:xml:ns:caldav}calendar-data" = davCalendarData;
 +  "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
    "{urn:ietf:params:xml:ns:caldav}calendar-home-set" = davCalendarHomeSet;
-+  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set" = davCalendarUserAddressSet;
++  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set" =
++     davCalendarUserAddressSet;
 +  "{urn:ietf:params:xml:ns:caldav}schedule-inbox-URL" = davCalendarScheduleInboxURL;
 +  "{urn:ietf:params:xml:ns:caldav}schedule-outbox-URL" = davCalendarScheduleOutboxURL;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set" =
       davCalendarComponentSet;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
-      davSupportedCalendarDataTypes;
--  "{urn:ietf:params:xml:ns:caldav}calendar-description" = davDescription;
- 
-   /* CardDAV */
-   "{urn:ietf:params:xml:ns:carddav}supported-address-data" =
-@@ -138,13 +159,13 @@
+@@ -138,13 +161,13 @@
    "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
  
    /* Apple CalServer */
