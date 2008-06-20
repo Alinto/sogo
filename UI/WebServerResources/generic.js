@@ -82,7 +82,8 @@ function getAllElements(scope) {
   return elements;
 }
 
-function createElement(tagName, id, classes, attributes, htmlAttributes,
+function createElement(tagName, id, classes,
+		       attributes, htmlAttributes,
 		       parentNode) {
   var newElement = $(document.createElement(tagName));
   if (id)
