@@ -14,31 +14,31 @@
     <input type="hidden" const:name="calendarID" const:id="calendarID"
       var:value="calendarID"/>
     <div id="propertiesView">
-      <span class="line"><label
-	  ><var:string label:value="Name:"
-	    /><span class="content"
-	    ><input type="text" name="calendarName" id="calendarName"
-	      var:disabled="calendarNameIsDisabled"
-	      class="textField"
-	      var:value="calendarName"
-	      /></span></label></span>
-      <span class="line"><label><var:string
-	    label:value="Color:"/><span class="content"
-	    ><button id="colorButton"><!-- space --></button
-	      ><input type="hidden"
-	      name="calendarColor"
-	      id="calendarColor"
-	      var:value="calendarColor"
-	      /></span></label><label id="calendarSync"><var:string
+      <div><span class="label"><var:string label:value="Name:"/></span
+	  ><span class="content"><input type="text"
+	    name="calendarName" id="calendarName"
+	    var:disabled="calendarNameIsDisabled"
+	    class="textField"
+	    var:value="calendarName"
+	    /></span></div>
+      <div><span class="label"><var:string
+	    label:value="Color:"
+	    /></span><span class="content"
+	  ><button id="colorButton"><!-- space --></button
+	    ><input type="hidden"
+	    name="calendarColor"
+	    id="calendarColor"
+	    var:value="calendarColor"
+	    /><var:string
 	    label:value="Tag:"/><input type="text"
 	    name="calendarSyncTag"
 	    id="calendarSyncTag"
 	    class="textField"
 	    var:value="calendarSyncTag"
-	    /></label></span>
-    </div>
-    <div id="buttons">
-      <input type="button"
+	    /></span>
+      </div>
+      <div id="buttons">
+	<input type="button"
 	const:class="button"
 	label:value="Cancel"
 	const:id="cancelButton"
@@ -48,6 +48,6 @@
 	label:value="OK"
 	const:id="okButton"
 	name="okButton"/>
-    </div>
+      </div>
   </form>
 </var:component>

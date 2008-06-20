@@ -1,24 +1,26 @@
-SPAN.line
-{ display: block;
-  position: relative;
-  line-height: 18px;
-  height: 20px;
-  margin-left: 5px;
-  margin-bottom: 5px;
-  width: 100%; }
-
 DIV#propertiesView
 { overflow: hidden;
-  padding: 10px; }
+  padding: 5px; }
+
+DIV
+{ clear: both; }
+
+SPAN.label
+{ cursor: default;
+  width: 7em;
+  text-align: right;
+  padding-right: 1em;
+  padding-top: .5em;
+  float: left;
+  display: block; }
 
 SPAN.content
-{ position: absolute;
-  top: -.25em;
-  left: 6em;
-  right: 1em; }
+{ display: block;
+  vertical-alignment: middle;
+  float: left; }
 
 LABEL#calendarSync
-{ margin-left: 7em; }
+{ margin-left: 10em; }
 
 BUTTON#colorButton
 { display: none;
@@ -34,7 +36,7 @@ BUTTON#colorButton
 
 DIV#buttons
 { padding: 10px;
-  padding-top: 0px;
+  padding-top: 5px;
   text-align: right; }
 
 INPUT#calendarSyncTag
