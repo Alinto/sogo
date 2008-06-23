@@ -1179,31 +1179,57 @@ static NSDictionary *reportMap = nil;
   return nil;
 }
 
+- (NSArray *) _languagesForLabels
+{
+  NSMutableArray *languages;
+  NSArray *browserLanguages;
+  NSString *language;
+  NSUserDefaults *ud;
+
+  languages = [NSMutableArray array];
+
+  language = [[context activeUser] language];
+  [languages addObject: language];
+  browserLanguages = [[context request] browserLanguages];
+  [languages addObjectsFromArray: browserLanguages];
+  ud = [NSUserDefaults standardUserDefaults];
+  language = [ud stringForKey: @"SOGoDefaultLanguage"];
+  if (language)
+    [languages addObject: language];
+  [languages addObject: @"English"];
+
+  return languages;
+}
+
 - (NSString *) labelForKey: (NSString *) key
 {
-  NSString *userLanguage, *label;
+  NSString *language, *label;
   NSArray *paths;
+  NSEnumerator *languages;
   NSBundle *bundle;
   NSDictionary *strings;
+
+  label = nil;
 
   bundle = [NSBundle bundleForClass: [self class]];
   if (!bundle)
     bundle = [NSBundle mainBundle];
+  languages = [[self _languagesForLabels] objectEnumerator];
 
-  userLanguage = [[context activeUser] language];
-  paths = [bundle pathsForResourcesOfType: @"strings"
-		  inDirectory: [NSString stringWithFormat: @"%@.lproj",
-					 userLanguage]
-		  forLocalization: userLanguage];
-  if ([paths count] > 0)
+  while (!label && (language = [languages nextObject]))
     {
-      strings = [NSDictionary
-		  dictionaryFromStringsFile: [paths objectAtIndex: 0]];
-      label = [strings objectForKey: key];
-      if (!label)
-	label = key;
+      paths = [bundle pathsForResourcesOfType: @"strings"
+		      inDirectory: [NSString stringWithFormat: @"%@.lproj",
+					     language]
+		      forLocalization: language];
+      if ([paths count] > 0)
+	{
+	  strings = [NSDictionary
+		      dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+	  label = [strings objectForKey: key];
+	}
     }
-  else
+  if (!label)
     label = key;
   
   return label;

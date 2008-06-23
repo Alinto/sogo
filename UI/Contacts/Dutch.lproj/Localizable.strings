@@ -40,9 +40,6 @@
 "new"               = "Nieuw";
 "Preferred Phone"   = "Voorkeurstelefoon";
 
-/* Folders */
-"Personal Address Book" = "Persoonlijk adresboek";
-
 "htmlMailFormat_UNKNOWN" = "Onbekend";
 "htmlMailFormat_FALSE" = "Platte tekst";
 "htmlMailFormat_TRUE" = "HTML";

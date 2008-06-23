@@ -1,3 +1,14 @@
+2008-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]):
+	enhanced method to request the user language, his/her browser
+	languages and the system language as fallback.
+
+	* UI/Contacts/UIxContactsListViewContainer.m
+	([-currentContactFolderName]): no longer interprets the name of
+	the personal folder, since the default name is now localized at
+	creation time.
+
 2008-06-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalendarProperties.m ([UIxCalendarProperties -calendarSyncTag])

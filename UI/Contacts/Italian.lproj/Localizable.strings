@@ -45,9 +45,6 @@
 "new" = "new";
 "Preferred Phone"   = "Telefono lavoro";
 
-/* Folders */
-"Personal Address Book" = "Rubrica personale";
-
 /* Tooltips */
 
 "Create a new address book card" = "Crea un nuovo contatto";

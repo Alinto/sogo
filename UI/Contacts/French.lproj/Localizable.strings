@@ -40,9 +40,6 @@
 "new"               = "Nouveau";
 "Preferred Phone"   = "Numéro préféré";
 
-/* Folders */
-"Personal Address Book" = "Carnet d'adresses personnel";
-
 /* Tooltips */
 
 "Create a new address book card" = "Créer une nouvelle fiche";

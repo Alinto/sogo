@@ -40,9 +40,6 @@
 "new"               = "Neu";
 "Preferred Phone"   = "Bevorzugt";
 
-/* Folders */
-"Personal Address Book" = "Persönliches Addressbuch";
-
 "htmlMailFormat_UNKNOWN" = "Unbekannt";
 "htmlMailFormat_FALSE" = "Reintext";
 "htmlMailFormat_TRUE" = "HTML";

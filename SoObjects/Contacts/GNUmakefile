@@ -21,6 +21,10 @@ Contacts_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
+Contacts_LANGUAGES = Dutch English French German Italian Spanish
+
+Contacts_LOCALIZED_RESOURCE_FILES = Localizable.strings
+
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 

@@ -34,6 +34,10 @@ Appointments_RESOURCE_FILES +=		\
 	Version				\
 	product.plist			\
 
+Appointments_LANGUAGES = Dutch English French German Italian Spanish
+
+Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
+
 Appointments_COMPONENTS +=	\
 	SOGoAptMailDutchInvitation.wo	\
 	SOGoAptMailDutchICalReply.wo	\

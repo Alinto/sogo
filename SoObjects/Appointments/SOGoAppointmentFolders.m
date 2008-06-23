@@ -41,7 +41,7 @@
 
 - (NSString *) defaultFolderName
 {
-  return @"Personal calendar";
+  return [self labelForKey: @"Personal Calendar"];
 }
 
 // /* CalDAV support */

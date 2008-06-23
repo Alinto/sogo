@@ -42,9 +42,6 @@
 "new" = "nuevo";
 "Preferred Phone"   = "Teléfono preferido";
 
-/* Folders */
-"Personal Address Book" = "Libreta personal de direcciones";
-
 /* Tooltips */
 
 "Create a new address book card" = "Añadir un nuevo contacto";

@@ -71,7 +71,7 @@
 
 - (NSString *) defaultFolderName
 {
-  return @"Personal Address Book";
+  return [self labelForKey: @"Personal Address Book"];
 }
 
 @end
