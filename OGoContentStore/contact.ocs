@@ -8,6 +8,7 @@
       columnName = c_name;
       sqlType    = "VARCHAR(256)";
       allowsNull = NO;
+      isPrimaryKey = YES;
     },
     {
       columnName = c_givenname;
