@@ -753,19 +753,19 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
 
   sql = [NSString stringWithFormat: @"INSERT INTO %@"
-                       @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
-                       @"         c_foldername, c_location, c_quick_location,"
-                       @"         c_acl_location, c_folder_type)"
-                       @" VALUES ('%@', %@, %@, %@, %@, '%@', '%@/%@',"
-                       @"         '%@/%@', '%@/%@', '%@')",
-                       [self folderInfoTableName], _path,
-                       [paths objectAtIndex: 1], [paths objectAtIndex: 2],
-                       [paths objectAtIndex: 3], [paths objectAtIndex: 4],
-                       _name,
-		       baseURL, tableName,
-		       baseURL, quickTableName,
-		       baseURL, aclTableName,
-                       _type];
+		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
+		  @"         c_foldername, c_location, c_quick_location,"
+		  @"         c_acl_location, c_folder_type)"
+		  @" VALUES ('%@', %@, %@, %@, %@, '%@', '%@/%@',"
+		  @"         '%@/%@', '%@/%@', '%@')",
+		  [self folderInfoTableName], _path,
+		  [paths objectAtIndex: 1], [paths objectAtIndex: 2],
+		  [paths objectAtIndex: 3], [paths objectAtIndex: 4],
+		  [_name stringByReplacingString: @"'" withString: @"''"],
+		  baseURL, tableName,
+		  baseURL, quickTableName,
+		  baseURL, aclTableName,
+		  _type];
   if ((error = [channel evaluateExpressionX:sql]) != nil)
     return error;
 
