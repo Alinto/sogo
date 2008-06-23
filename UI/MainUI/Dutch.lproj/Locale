@@ -1,0 +1,35 @@
+/* German */
+{
+  NSLanguageName = "Dutch";
+  NSFormalName = "Nederlands";
+  NSLocaleCode = "nl"; /* ISO 639-1 */
+  NSLanguageCode = "nld"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSCurrencySymbol = " €";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = (vorige, vorige, vorige, vorige);
+  NSHourNameDesignations = ((0, Middernacht), (12, Middag), (10, Ochtend), (14, Namiddag), (19, Avond));
+  NSInternationalCurrencyString = EUR; /* ISO 4217 */
+  NSLaterTimeDesignations = (volgende, volgende, volgende, volgende);
+  NSMonthNameArray = (Januari, Februari, Maart, April, Mei, Juni, Juli, Augustus, September, Oktober, November, December);
+  NSNextDayDesignations = (morgen);
+  NSNextNextDayDesignations = (overmorgen);
+  NSPriorDayDesignations = (gisteren);
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Jan, Feb, Maa, Apr, Mei, Jun, Jul, Aug, Sep, Okt, Nov, Dec);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = (Zo, Ma, Di, Wo, Do, Vr, Za);
+  NSThisDayDesignations = (vandaag);
+  NSThousandsSeparator = " "; /* space */
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S"; /* no space before and after colons*/
+  NSWeekDayNameArray = (Zondag, Maandag, Dinsdag, Woensdag, Donderdag, Vrijdag, Zaterdag);
+  NSYearMonthWeekDesignations = (Jaar, Maand, Week);
+  NSAMPMDesignation = (AM, PM);
+  NSPositiveCurrencyFormatString = "$ 9,999.00";
+  NSNegativeCurrencyFormatString = "$ -9,999.00";
+}
