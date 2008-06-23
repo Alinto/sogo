@@ -111,6 +111,7 @@ function addressFieldLostFocus(sender) {
 	fancyAddRow(false, addr, $(sender).up("tr").down("select").value);
     }
   }
+  onWindowResize(null);
 
   return false;
 }

@@ -425,7 +425,7 @@ function uixDeleteSelectedContacts(sender) {
   }
 
   if (failCount > 0)
-    alert(labels["You cannot delete the selected contact(s)."]);
+    alert(labels["You cannot delete the selected contact(s)"]);
   else
     contactView.update();
   
@@ -563,7 +563,7 @@ function appendAddressBook(name, folder) {
   }
   else
     folder = "/" + name;
-  
+
   if (!owner)
     owner = UserLogin;
 
@@ -583,7 +583,9 @@ function appendAddressBook(name, folder) {
 
     li.setAttribute("id", folder);
     li.setAttribute("owner", owner);
-    li.appendChild(document.createTextNode(name));
+    li.appendChild(document.createTextNode(name
+					   .replace("&lt;", "<", "g")
+					   .replace("&gt;", ">", "g")));
     setEventsOnAddressBook(li);
   }
 
@@ -635,7 +637,7 @@ function onAddressBookRemove(event) {
       onFolderSelectionChange();
     }
     else {
-      var folderId = nodes[0].getAttribute("id").substr("1");
+      var folderId = nodes[0].getAttribute("id");
       unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
     }
   }

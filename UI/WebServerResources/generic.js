@@ -142,7 +142,7 @@ function extractEmailAddress(mailTo) {
   var email = "";
 
   var emailre
-    = /([a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9\._-]+[a-zA-Z0-9]+)/g;
+    = /(([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+@([a-zA-Z0-9\._-]+)*[a-zA-Z0-9_-]+)/g;
   if (emailre.test(mailTo)) {
     emailre.exec(mailTo);
     email = RegExp.$1;

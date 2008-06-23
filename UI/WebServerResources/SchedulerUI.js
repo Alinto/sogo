@@ -842,6 +842,7 @@ function refreshCalendarEventsCallback(http) {
 function drawCalendarEvent(eventData, sd, ed) {
   var dateTuples = new Array();
 
+//   log ("drawCalendarEvent...");
   var viewStartDate = sd.asDate();
   var viewEndDate = ed.asDate();
 
@@ -850,7 +851,7 @@ function drawCalendarEvent(eventData, sd, ed) {
   var endDate = new Date();
   endDate.setTime(eventData[5] * 1000);
 
-  //log ("s: " + startDate + "; e: " + endDate);
+//   log ("s: " + startDate + "; e: " + endDate);
 
   var days = startDate.daysUpTo(endDate);
 
@@ -861,8 +862,8 @@ function drawCalendarEvent(eventData, sd, ed) {
   else
     title = eventData[3];
 
-  //    log("title: " + title); 
-  //    log("viewS: " + viewStartDate);
+//   log("title: " + title);
+//   log("viewS: " + viewStartDate);
   var startHour = null;
   var endHour = null;
    
@@ -872,7 +873,7 @@ function drawCalendarEvent(eventData, sd, ed) {
 	&& days[i].laterDate(viewEndDate) == viewEndDate) {
       var starts;
 
-      // 	 log("day: " + days[i]);
+//       log("day: " + days[i]);
       if (i == 0) {
 	var quarters = (startDate.getUTCHours() * 4
 			+ Math.floor(startDate.getUTCMinutes() / 15));
@@ -882,7 +883,7 @@ function drawCalendarEvent(eventData, sd, ed) {
       }
       else
 	starts = 0;
-	 
+
       var ends;
       var lasts;
       if (i == days.length - 1) {
@@ -953,9 +954,8 @@ function drawCalendarEvent(eventData, sd, ed) {
 }
 
 function eventClass(cname) {
-  return  escape(cname.replace(".", "-"));
+  return escape(cname.replace(".", "-"));
 }
-
 
 function newEventDIV(cname, calendar, starts, lasts,
 		     startHour, endHour, title) {
@@ -1628,7 +1628,7 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
     nodeID = "/" + idParts[0] + "_" + folderName;
   else
     nodeID = "/" + folderName;
-  log("nodeID: " + nodeID);
+//   log("nodeID: " + nodeID);
   var calendarNode = $(nodeID);
   var childNodes = calendarNode.childNodes;
   childNodes[childNodes.length-1].nodeValue = calendarName;
@@ -1687,16 +1687,15 @@ function appendCalendar(folderName, folderPath) {
     li.setAttribute("id", folderPath);
     li.setAttribute("owner", owner);
 
-    var checkBox = document.createElement("input");
-    checkBox.setAttribute("type", "checkbox");
-    li.appendChild(checkBox);
+    var checkBox = createElement("input", null, "checkBox", { checked: 1 },
+				 { type: "checkbox" }, li);
     li.appendChild(document.createTextNode(" "));
-    $(checkBox).addClassName("checkBox");
-    checkBox.checked = 1;
 
     var colorBox = document.createElement("div");
     li.appendChild(colorBox);
-    li.appendChild(document.createTextNode(folderName));
+    li.appendChild(document.createTextNode(folderName
+					   .replace("&lt;", "<", "g")
+					   .replace("&gt;", ">", "g")));
     colorBox.appendChild(document.createTextNode("OO"));
 
     $(colorBox).addClassName("colorBox");

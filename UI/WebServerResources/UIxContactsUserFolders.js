@@ -122,9 +122,9 @@ function onConfirmFolderSelection(event) {
     if (window.opener.userFolderType == "user") {
       var spans = document.getElementsByClassName("nodeName",
 						  topNode.selectedEntry);
-      var email = spans[0].innerHTML;
-      email = email.replace("&lt;", "<");
-      email = email.replace("&gt;", ">");
+      var email = (spans[0].innerHTML
+		   .replace("&lt;", "<", "g")
+		   .replace("&gt;", ">", "g"));
       folderName = email;
     }
     else {
@@ -132,9 +132,9 @@ function onConfirmFolderSelection(event) {
 						   node);
       var spans2 = document.getElementsByClassName("nodeName",
 						   node.parentNode.previousSibling);
-      var email = spans2[0].innerHTML;
-      email = email.replace("&lt;", "<");
-      email = email.replace("&gt;", ">");
+      var email = (spans2[0].innerHTML
+		   .replace("&lt;", "<", "g")
+		   .replace("&gt;", ">", "g"));
       folderName = spans1[0].innerHTML + ' (' + email + ')';
     }
     var data = { folderName: folderName, folder: folder, window: window };
@@ -154,10 +154,12 @@ function onFolderSearchKeyDown(event) {
 }
 
 function initUserFoldersWindow() {
-  $("searchValue").observe("keydown", onFolderSearchKeyDown);
+  var searchValue = $("searchValue");
+  searchValue.observe("keydown", onFolderSearchKeyDown);
   var addButton = $("addButton");
   addButton.observe("click", onConfirmFolderSelection);
   addButton.disabled = true;
+  searchValue.focus();
 }
 
 FastInit.addOnLoad(initUserFoldersWindow);

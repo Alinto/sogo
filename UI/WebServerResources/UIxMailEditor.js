@@ -420,7 +420,8 @@ function onMailEditorClose(event) {
     }
   }
 
-  if (MailEditor.addressBook && MailEditor.addressBook.open && !MailEditor.addressBook.closed)
+  if (MailEditor.addressBook && MailEditor.addressBook.open
+      && !MailEditor.addressBook.closed)
     MailEditor.addressBook.close();
 
   Event.stopObserving(window, "beforeunload", onMailEditorClose);
