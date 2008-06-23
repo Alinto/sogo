@@ -128,8 +128,8 @@ function onConfirmFolderSelection(event) {
       folderName = email;
     }
     else {
-      var spans1 = document.getElementsByClassName("nodeName",
-						   node);
+      log("topNode.selectedEntry: " + topNode.selectedEntry.innerHTML);
+      var spans1 = topNode.selectedEntry.childNodesWithTag("span");
       var spans2 = document.getElementsByClassName("nodeName",
 						   node.parentNode.previousSibling);
       var email = (spans2[0].innerHTML
