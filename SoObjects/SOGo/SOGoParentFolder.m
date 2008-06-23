@@ -328,7 +328,6 @@ static SoSecurityManager *sm = nil;
 {
   id obj;
 
-  NSLog (@"default name: '%@'", [self defaultFolderName]);
   /* first check attributes directly bound to the application */
   obj = [super lookupName: name inContext: lookupContext acquire: NO];
   if (!obj)
