@@ -1,3 +1,13 @@
+2008-06-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-contentAsString]): add the ending interval to "today" instead of
+	to the start date.
+	([SOGoFreeBusyObject
+	-contentAsStringWithMethod:methodfrom:_startDateto:_endDate]): new
+	method that accepts a method parameter to specify in the returned
+	iCalendar object.
+
 2008-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]):
