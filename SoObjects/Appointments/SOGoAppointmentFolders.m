@@ -44,6 +44,24 @@
   return [self labelForKey: @"Personal Calendar"];
 }
 
+#warning THIS CAUSES LIGHTNING TO FAIL (that's why its commented out)
+// - (NSArray *) davComplianceClassesInContext: (id)_ctx
+// {
+//   NSMutableArray *classes;
+//   NSArray *primaryClasses;
+
+//   classes = [NSMutableArray new];
+//   [classes autorelease];
+
+//   primaryClasses = [super davComplianceClassesInContext: _ctx];
+//   if (primaryClasses)
+//     [classes addObjectsFromArray: primaryClasses];
+//   [classes addObject: @"calendar-access"];
+//   [classes addObject: @"calendar-schedule"];
+
+//   return classes;
+// }
+
 // /* CalDAV support */
 // - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
 // {
