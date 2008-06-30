@@ -710,42 +710,41 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   while ([paths count] < 5)
     [paths addObject: @"NULL"];
   
-  tableName = [self baseTableNameWithUID: [paths objectAtIndex: 2]];
-
   aContext = [channel adaptorContext];
   [aContext beginTransaction];
-  error = [channel createGCSFolderTableWithName: tableName];
+
+  tableName = [self baseTableNameWithUID: [paths objectAtIndex: 2]];
+  quickTableName = [tableName stringByAppendingString: @"_quick"];
+  aclTableName = [tableName stringByAppendingString: @"_acl"];
+
+  // TBD: fix SQL injection issues
+  baseURL
+    = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
+  
+  sql = [NSString stringWithFormat: @"INSERT INTO %@"
+		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
+		  @"         c_foldername, c_location, c_quick_location,"
+		  @"         c_acl_location, c_folder_type)"
+		  @" VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@/%@',"
+		  @"         '%@/%@', '%@/%@', '%@')",
+		  [self folderInfoTableName], path,
+		  [paths objectAtIndex: 1], [paths objectAtIndex: 2],
+		  [paths objectAtIndex: 3], [paths objectAtIndex: 4],
+		  [folderName stringByReplacingString: @"'" withString: @"''"],
+		  baseURL, tableName,
+		  baseURL, quickTableName,
+		  baseURL, aclTableName,
+		  folderType];
+  error = [channel evaluateExpressionX: sql];
   if (!error)
     {
-      quickTableName = [tableName stringByAppendingString: @"_quick"];
-      sql = [ftype sqlQuickCreateWithTableName: quickTableName];
-      error = [channel evaluateExpressionX: sql];
+      error = [channel createGCSFolderTableWithName: tableName];
       if (!error)
 	{
-	  aclTableName = [tableName stringByAppendingString: @"_acl"];
-	  error = [channel createGCSFolderACLTableWithName: aclTableName];
+	  sql = [ftype sqlQuickCreateWithTableName: quickTableName];
+	  error = [channel evaluateExpressionX: sql];
 	  if (!error)
-	    {
-	      // TBD: fix SQL injection issues
-	      baseURL
-		= [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
-
-	      sql = [NSString stringWithFormat: @"INSERT INTO %@"
-			      @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
-			      @"         c_foldername, c_location, c_quick_location,"
-			      @"         c_acl_location, c_folder_type)"
-			      @" VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@/%@',"
-			      @"         '%@/%@', '%@/%@', '%@')",
-			      [self folderInfoTableName], path,
-			      [paths objectAtIndex: 1], [paths objectAtIndex: 2],
-			      [paths objectAtIndex: 3], [paths objectAtIndex: 4],
-			      [folderName stringByReplacingString: @"'" withString: @"''"],
-			      baseURL, tableName,
-			      baseURL, quickTableName,
-			      baseURL, aclTableName,
-			      folderType];
-	      error = [channel evaluateExpressionX: sql];
-	    }
+	    error = [channel createGCSFolderACLTableWithName: aclTableName];
 	}
     }
 
