@@ -4,6 +4,8 @@
 	([SOGoAppointmentFolder
 	-caldavEventRequest:eventfrom:originatorto:recipients]): handle
 	caldav replies.
+	([SOGoAppointmentFolder -lookupComponentByUID:uid]): new method
+	that returns an event search by uid.
 
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m ([SOGoUserFolder -davCalendarHomeSet])
 	([SOGoUserFolder -davCalendarScheduleInboxURL])

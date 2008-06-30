@@ -1591,6 +1591,24 @@ _selectorForProperty (NSString *property)
   return [name isEqualToString: @"OPTIONS"];
 }
 
+- (id) lookupComponentByUID: (NSString *) uid
+{
+  NSString *filename;
+  id component;
+
+  filename = [self resourceNameForEventUID: uid];
+  if (filename)
+    {
+      component = [self lookupName: filename inContext: context acquire: NO];
+      if ([component isKindOfClass: [NSException class]])
+	component = nil;
+    }
+  else
+    component = nil;
+
+  return nil;
+}
+
 - (id) lookupName: (NSString *)_key
         inContext: (id)_ctx
           acquire: (BOOL)_flag
@@ -1728,10 +1746,10 @@ _selectorForProperty (NSString *property)
   NSString *recipient;
   unsigned int count, max;
 
-  filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
-  apt = [self lookupName: filename inContext: context acquire: NO];
-  if ([apt isKindOfClass: [NSException class]])
+  apt = [self lookupComponentByUID: [event uid]];
+  if (!apt)
     {
+      filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
       iCalString = [[event parent] versitString];
       apt = [self _createChildComponentWithName: filename
 		  andContent: iCalString];
@@ -1768,14 +1786,12 @@ _selectorForProperty (NSString *property)
 {
   NSDictionary *responseElement, *attendeeCode;
   NSMutableArray *content;
-  NSString *filename;
   iCalPerson *attendee;
   NSException *ex;
   SOGoAppointmentObject *apt;
 
   /* this is a fake success status */
-  filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
-  apt = [self lookupName: filename inContext: context acquire: NO];
+  apt = [self lookupComponentByUID: [event uid]];
   if ([apt isKindOfClass: [SOGoAppointmentObject class]])
     {
       content = [NSMutableArray new];
@@ -1994,66 +2010,56 @@ _selectorForProperty (NSString *property)
 
 /* vevent UID handling */
 
-- (NSString *) resourceNameForEventUID: (NSString *)_u
-                              inFolder: (GCSFolder *)_f
+- (NSString *) resourceNameForEventUID: (NSString *) uid
+                              inFolder: (GCSFolder *) folder
 {
   static NSArray *nameFields = nil;
   EOQualifier *qualifier;
-  NSArray     *records;
-  
-  if (![_u isNotNull]) return nil;
-  if (_f == nil) {
-    [self errorWithFormat:@"(%s): missing folder for fetch!",
-	    __PRETTY_FUNCTION__];
-    return nil;
-  }
-  
-  if (nameFields == nil)
+  NSArray *records;
+  NSString *filename;
+  unsigned int count;
+
+  if (!nameFields)
     nameFields = [[NSArray alloc] initWithObjects: @"c_name", nil];
-  
-  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_uid = %@", _u];
-  records   = [_f fetchFields: nameFields matchingQualifier: qualifier];
-  
-  if ([records count] == 1)
-    return [[records objectAtIndex:0] valueForKey:@"c_name"];
-  if ([records count] == 0)
-    return nil;
-  
-  [self errorWithFormat:
-	  @"The storage contains more than file with the same UID!"];
-  return [[records objectAtIndex:0] valueForKey:@"c_name"];
+
+  if (uid && folder)
+    {
+      qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_uid = %@", uid];
+      records = [folder fetchFields: nameFields matchingQualifier: qualifier];
+      count = [records count];
+      if (count)
+	{
+	  filename = [[records objectAtIndex:0] valueForKey:@"c_name"];
+	  if (count > 1)
+	    [self errorWithFormat:
+		    @"The storage contains more than file with UID '%@'", uid];
+	}
+    }
+
+  return filename;
 }
 
-- (NSString *) resourceNameForEventUID: (NSString *) _uid
+- (NSString *) resourceNameForEventUID: (NSString *) uid
 {
   /* caches UIDs */
   GCSFolder *folder;
   NSString  *rname;
-  
-  if (![_uid isNotNull])
-    return nil;
-  rname = [uidToFilename objectForKey:_uid];
-  if (rname)
-    {
-      if (![rname isNotNull])
-	rname = nil;
-      return rname;
-    }
-  
-  if ((folder = [self ocsFolder]) == nil) {
-    [self errorWithFormat:@"(%s): missing folder for fetch!",
-      __PRETTY_FUNCTION__];
-    return nil;
-  }
 
-  if (uidToFilename == nil)
-    uidToFilename = [[NSMutableDictionary alloc] initWithCapacity:16];
-  
-  if ((rname = [self resourceNameForEventUID:_uid inFolder:folder]) == nil)
-    [uidToFilename setObject:[NSNull null] forKey:_uid];
-  else
-    [uidToFilename setObject:rname forKey:_uid];
-  
+  rname = nil;
+  if (uid)
+    {
+      if (!uidToFilename)
+	uidToFilename = [NSMutableDictionary new];
+      rname = [uidToFilename objectForKey: uid];
+      if (!rname)
+	{
+	  folder = [self ocsFolder];
+	  rname = [self resourceNameForEventUID: uid inFolder: folder];
+	  if (rname)
+	    [uidToFilename setObject: rname forKey: uid];
+	}
+    }
+
   return rname;
 }
 
