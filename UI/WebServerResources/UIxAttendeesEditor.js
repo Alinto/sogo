@@ -622,7 +622,7 @@ function prepareAttendees() {
       //newAttendee(null);
    }
 
-   var inputs = tableAttendees.getElementsByTagName("input");
+   var inputs = tableAttendees.select("input");
    inputs[inputs.length - 2].setAttribute("autocomplete", "off");
    inputs[inputs.length - 2].observe("click", newAttendee);
 }
