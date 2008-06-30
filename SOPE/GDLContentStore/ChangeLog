@@ -1,5 +1,11 @@
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* GCSFolder.m ([GCSFolder -recordOfEntryWithName:name])
+	([GCSFolder -writeContent:_contenttoName:_namebaseVersion:_baseVersion])
+	([GCSFolder -fetchFields:fieldsfetchSpecification:spec]): don't
+	use the "as" keyword when specifying multiple tables, so that
+	Oracle doesn't choke on the queries.
+
 	* EOAdaptorChannel+GCS.m ([EOAdaptorChannel
 	-dropTables:tableNames]): new method that drops a list of tables.
 
