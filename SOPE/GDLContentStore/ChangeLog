@@ -1,5 +1,10 @@
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* GCSFolderManager.m ([GCSFolderManager
+	-createFolderOfType:_typewithName:_nameatPath:_path]): wrap the
+	creation queries in a transaction, to ensure the creation of
+	tables is atomic.
+
 	* GCSFolder.m ([GCSFolder -recordOfEntryWithName:name])
 	([GCSFolder -writeContent:_contenttoName:_namebaseVersion:_baseVersion])
 	([GCSFolder -fetchFields:fieldsfetchSpecification:spec]): don't
