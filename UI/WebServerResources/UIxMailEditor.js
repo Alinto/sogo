@@ -285,6 +285,17 @@ function onTextMouseDown(event) {
   }
 }
 
+function initTabIndex(addressList, subjectField, msgArea) {
+  
+  var i = 1;
+  addressList.select("input.textField").each(function (input) {
+      if (!input.readAttribute("readonly"))
+	input.writeAttribute("tabindex", i++);
+    });
+  subjectField.writeAttribute("tabindex", i++);
+  msgArea.writeAttribute("tabindex", i);
+}
+
 function initMailEditor() {
   var list = $("attachments");
   $(list).attachMenu("attachmentsMenu");
@@ -310,7 +321,9 @@ function initMailEditor() {
 //   textarea.observe("contextmenu", onTextContextMenu);
   textarea.observe("mousedown", onTextMouseDown, true);
 
+  initTabIndex(list, $$("div#subjectRow input").first(), textarea);
   onWindowResize(null);
+
   Event.observe(window, "resize", onWindowResize);
   Event.observe(window, "beforeunload", onMailEditorClose);
 

@@ -63,8 +63,7 @@ function onMenuSetClassification(event) {
   this.addClassName("_chosen");
   this.parentNode.chosenNode = this;
 
-  //    log("classification: " + classification);
-  var privacyInput = document.getElementById("privacy");
+  var privacyInput = $("privacy");
   privacyInput.value = classification;
 }
 
@@ -95,19 +94,17 @@ function initializeDocumentHref() {
 
 function initializePrivacyMenu() {
   var privacy = $("privacy").value.toUpperCase();
-  if (privacy.length > 0) {
-    var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
-    var menuEntries = $(privacyMenu).childNodesWithTag("li");
-    var chosenNode;
-    if (privacy == "CONFIDENTIAL")
-      chosenNode = menuEntries[1];
-    else if (privacy == "PRIVATE")
-      chosenNode = menuEntries[2];
-    else
-      chosenNode = menuEntries[0];
-    privacyMenu.chosenNode = chosenNode;
-    $(chosenNode).addClassName("_chosen");
-  }
+  var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
+  var menuEntries = $(privacyMenu).childNodesWithTag("li");
+  var chosenNode;
+  if (privacy == "CONFIDENTIAL")
+    chosenNode = menuEntries[1];
+  else if (privacy == "PRIVATE")
+    chosenNode = menuEntries[2];
+  else
+    chosenNode = menuEntries[0];
+  privacyMenu.chosenNode = chosenNode;
+  $(chosenNode).addClassName("_chosen");
 }
 
 function onComponentEditorLoad(event) {
