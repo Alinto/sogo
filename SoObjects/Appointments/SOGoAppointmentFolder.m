@@ -37,8 +37,11 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <DOM/DOMNode.h>
 #import <DOM/DOMProtocols.h>
+#import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
@@ -58,10 +61,12 @@
 #import <SOGo/LDAPUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
+#import "SOGoFreeBusyObject.h"
 #import "SOGoTaskObject.h"
 
 #import "SOGoAppointmentFolder.h"
@@ -76,8 +81,8 @@
 
 @implementation SOGoAppointmentFolder
 
-static NGLogger   *logger    = nil;
-static NSNumber   *sharedYes = nil;
+static NGLogger *logger = nil;
+static NSNumber *sharedYes = nil;
 static NSArray *reportQueryFields = nil;
 
 static Class sogoAppointmentFolderKlass = Nil;
@@ -123,128 +128,126 @@ static Class sogoAppointmentFolderKlass = Nil;
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
   SOGoWebDAVAclManager *webdavAclManager = nil;
-  NSString *nsCD, *nsD, *nsI;
+  NSString *nsI;
 
   if (!webdavAclManager)
     {
-      nsD = @"DAV:";
-      nsCD = @"urn:ietf:params:xml:ns:caldav";
       nsI = @"urn:inverse:params:xml:ns:inverse-dav";
 
       webdavAclManager = [SOGoWebDAVAclManager new];
-      [webdavAclManager registerDAVPermission: davElement (@"read", nsD)
+      [webdavAclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"all", nsD)];
-      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", nsD)
+			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"read", nsD)];
-      [webdavAclManager registerDAVPermission: davElement (@"read-free-busy", nsD)
+			asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-free-busy", XMLNS_WEBDAV)
 			abstract: NO
 			withEquivalent: SoPerm_AccessContentsInformation
-			asChildOf: davElement (@"read", nsD)];
-      [webdavAclManager registerDAVPermission: davElement (@"write", nsD)
+			asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: nil
-			asChildOf: davElement (@"all", nsD)];
-      [webdavAclManager registerDAVPermission: davElement (@"bind", nsD)
+			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"bind", XMLNS_WEBDAV)
 			abstract: NO
 			withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-			asChildOf: davElement (@"write", nsD)];
+			asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [webdavAclManager registerDAVPermission: davElement (@"schedule",
-							   nsCD)
+							   XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"bind", nsD)];
+			asChildOf: davElement (@"bind", XMLNS_WEBDAV)];
       [webdavAclManager registerDAVPermission: davElement (@"schedule-post",
-							   nsCD)
+							   XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule", nsCD)];
+			asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-post-vevent", nsCD)
+			  davElement (@"schedule-post-vevent", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-post", nsCD)];
+			asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-post-vtodo", nsCD)
+			  davElement (@"schedule-post-vtodo", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-post", nsCD)];
+			asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-post-vjournal", nsCD)
+			  davElement (@"schedule-post-vjournal", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-post", nsCD)];
+			asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-post-vfreebusy", nsCD)
+			  davElement (@"schedule-post-vfreebusy", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-post", nsCD)];
+			asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission: davElement (@"schedule-deliver",
-							   nsCD)
+							   XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule", nsCD)];
+			asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-deliver-vevent", nsCD)
+			  davElement (@"schedule-deliver-vevent", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-deliver", nsCD)];
+			asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-deliver-vtodo", nsCD)
+			  davElement (@"schedule-deliver-vtodo", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-deliver", nsCD)];
+			asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-deliver-vjournal", nsCD)
+			  davElement (@"schedule-deliver-vjournal", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-deliver", nsCD)];
+			asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-deliver-vfreebusy", nsCD)
+			  davElement (@"schedule-deliver-vfreebusy", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-deliver", nsCD)];
+			asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission: davElement (@"schedule-respond",
-							   nsCD)
+							   XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule", nsCD)];
+			asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-respond-vevent", nsCD)
+			  davElement (@"schedule-respond-vevent", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-respond", nsCD)];
+			asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
       [webdavAclManager registerDAVPermission:
-			  davElement (@"schedule-respond-vtodo", nsCD)
+			  davElement (@"schedule-respond-vtodo", XMLNS_CALDAV)
 			abstract: NO
 			withEquivalent: nil
-			asChildOf: davElement (@"schedule-respond", nsCD)];
-      [webdavAclManager registerDAVPermission: davElement (@"unbind", nsD)
+			asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"unbind", XMLNS_WEBDAV)
 			abstract: NO
 			withEquivalent: SoPerm_DeleteObjects
-			asChildOf: davElement (@"write", nsD)];
+			asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [webdavAclManager
-	registerDAVPermission: davElement (@"write-properties", nsD)
+	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
 	abstract: YES
 	withEquivalent: SoPerm_ChangePermissions /* hackish */
-	asChildOf: davElement (@"write", nsD)];
+	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [webdavAclManager
-	registerDAVPermission: davElement (@"write-content", nsD)
+	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
 	abstract: YES
 	withEquivalent: nil
-	asChildOf: davElement (@"write", nsD)];
+	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [webdavAclManager registerDAVPermission: davElement (@"admin", nsI)
 			abstract: YES
 			withEquivalent: nil
-			asChildOf: davElement (@"all", nsD)];
-      [webdavAclManager registerDAVPermission: davElement (@"read-acl", nsD)
+			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [webdavAclManager registerDAVPermission: davElement (@"read-acl", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SOGoPerm_ReadAcls
 			asChildOf: davElement (@"admin", nsI)];
-      [webdavAclManager registerDAVPermission: davElement (@"write-acl", nsD)
+      [webdavAclManager registerDAVPermission: davElement (@"write-acl", XMLNS_WEBDAV)
 			abstract: YES
 			withEquivalent: SoPerm_ChangePermissions
 			asChildOf: davElement (@"admin", nsI)];
@@ -926,7 +929,7 @@ _selectorForProperty (NSString *property)
   namespace
     = [property substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
   nodeName = [property substringFromIndex: nsEnd.location + 1];
-  if ([namespace isEqualToString: @"urn:ietf:params:xml:ns:caldav"])
+  if ([namespace isEqualToString: XMLNS_CALDAV])
     nsRep = @"C";
   else
     nsRep = @"D";
@@ -1033,26 +1036,18 @@ _selectorForProperty (NSString *property)
   free (values);
 
   if ([properties200 count])
-    {
-      [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					    properties200, @"properties",
-					  @"HTTP/1.1 200 OK", @"status",
-					  nil]];
-      [properties200 autorelease];
-    }
-  else
-    [properties200 release];
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties200, @"properties",
+					@"HTTP/1.1 200 OK", @"status",
+					nil]];
+  [properties200 release];
   
   if ([properties404 count])
-    {
-      [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
-					    properties404, @"properties",
-					  @"HTTP/1.1 404 Not Found", @"status",
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties404, @"properties",
+					@"HTTP/1.1 404 Not Found", @"status",
 					nil]];
-      [properties404 autorelease];
-    }
-  else
-    [properties404 release];
+  [properties404 release];
 
 //    NSLog (@"/_propstats:ofObject:: %@", [NSDate date]);
 
@@ -1635,6 +1630,219 @@ _selectorForProperty (NSString *property)
   return obj;
 }
 
+- (NSDictionary *) freebusyResponseForRecipient: (NSString *) recipient
+				       withUser: (SOGoUser *) user
+				andCalendarData: (NSString *) calendarData
+{
+  NSDictionary *response;
+  NSMutableArray *content;
+
+  content = [NSMutableArray new];
+
+  [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
+  if (user)
+    {
+      [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
+						 @"2.0;Success")];
+      [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
+						 calendarData)];
+    }
+  else
+      [content addObject:
+		 davElementWithContent (@"request-status", XMLNS_CALDAV,
+					@"3.7;Invalid Calendar User")];
+  response = davElementWithContent (@"response", XMLNS_CALDAV, content);
+  [content release];
+
+  return response;
+}
+
+- (NSDictionary *) caldavFreeBusyRequestOnRecipient: (NSString *) recipient
+					       from: (NSCalendarDate *) start
+						 to: (NSCalendarDate *) to
+{
+  LDAPUserManager *um;
+  SOGoUser *user;
+  NSString *lRecipient, *login, *calendarData;
+  SOGoFreeBusyObject *freebusy;
+
+  user = nil;
+  calendarData = nil;
+
+  lRecipient = [recipient lowercaseString];
+  if ([lRecipient hasPrefix: @"mailto:"])
+    {
+      um = [LDAPUserManager sharedUserManager];
+      login = [um getUIDForEmail: [lRecipient substringFromIndex: 7]];
+      if ([login length])
+	{
+	  user = [SOGoUser userWithLogin: login roles: nil];
+	  freebusy = [[user homeFolderInContext: context]
+		       freeBusyObject: @"freebusy.ifb"
+		       inContext: context];
+	  calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
+				   from: start to: to];
+	}
+    }
+
+  return [self freebusyResponseForRecipient: recipient
+	       withUser: user
+	       andCalendarData: calendarData];
+}
+
+- (NSDictionary *) caldavFreeBusyRequest: (iCalFreeBusy *) freebusy
+				    from: (NSString *) originator
+				      to: (NSArray *) recipients
+{
+  NSDictionary *responseElement;
+  NSMutableArray *elements;
+  NSString *recipient;
+  unsigned int count, max;
+  NSCalendarDate *startDate, *endDate;
+
+  elements = [NSMutableArray new];
+  [freebusy fillStartDate: &startDate andEndDate: &endDate];
+  max = [recipients count];
+  for (count = 0; count < max; count++)
+    {
+      recipient = [recipients objectAtIndex: count];
+      [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
+				 from: startDate to: endDate]];
+    }
+   
+  responseElement = davElementWithContent (@"schedule-response",
+					   XMLNS_CALDAV, elements);
+  [elements release];
+
+  return responseElement;
+}
+
+- (void) _saveCalDAVEvent: (iCalEvent *) event
+{
+  NSString *filename, *iCalString;
+  SOGoAppointmentObject *apt;
+
+  filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
+  apt = [self lookupName: filename inContext: context acquire: NO];
+  if ([apt isKindOfClass: [NSException class]])
+    {
+      iCalString = [[event parent] versitString];
+      apt = [self _createChildComponentWithName: filename
+		  andContent: iCalString];
+    }
+  [apt saveComponent: event];
+}
+
+- (NSDictionary *) caldavEventRequest: (iCalEvent *) event
+				 from: (NSString *) originator
+				   to: (NSArray *) recipients
+{
+  NSDictionary *responseElement;
+  NSMutableArray *elements, *content;
+  NSString *recipient;
+  unsigned int count, max;
+
+  [self _saveCalDAVEvent: event];
+
+  elements = [NSMutableArray new];
+  max = [recipients count];
+  for (count = 0; count < max; count++)
+    {
+      /* this is a fake success status */
+      recipient = [recipients objectAtIndex: count];
+      content = [NSMutableArray new];
+      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
+      [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
+						 @"2.0;Success")];
+      [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV, content)];
+      [content release];
+    }
+
+  responseElement = davElementWithContent (@"schedule-response",
+					   XMLNS_CALDAV, elements);
+  [elements release];
+
+  return responseElement;
+}
+
+- (WOResponse *) _caldavScheduleResponse: (NSDictionary *) tags
+{
+  WOResponse *response;
+
+  response = [context response];
+  if (tags)
+    {
+      [response setStatus: 200];
+      [response appendContentString:@"<?xml version=\"1.0\""
+		@" encoding=\"utf-8\"?>\r\n"];
+      [response setHeader: @"application/xml; charset=utf-8"
+		forKey: @"Content-Type"];
+      [response appendContentString:
+		  [tags asWebDavStringWithNamespaces: nil]];
+    }
+  else
+    [response setStatus: 415];
+
+  return response;
+}
+
+- (WOResponse *) caldavScheduleRequest: (WORequest *) rq
+			  withCalendar: (iCalCalendar *) calendar
+{
+  NSString *tag, *originator;
+  NSArray *recipients, *elements;
+  iCalEntityObject *element;
+  NSDictionary *tags;
+
+  elements = [calendar allObjects];
+  if ([elements count])
+    {
+      element = [elements objectAtIndex: 0];
+      originator = [rq headerForKey: @"originator"];
+      recipients = [[rq headerForKey: @"recipient"]
+		     componentsSeparatedByString: @", "];
+      tag = [[element tag] uppercaseString];
+      if ([tag isEqualToString: @"VFREEBUSY"])
+	tags = [self caldavFreeBusyRequest: (iCalFreeBusy *) element
+		     from: originator
+		     to: recipients];
+      else if ([tag isEqualToString: @"VEVENT"])
+	tags = [self caldavEventRequest: (iCalEvent *) element
+		     from: originator
+		     to: recipients];
+      else
+	tags = nil;
+#warning needs to handle errors
+    }
+
+  return [self _caldavScheduleResponse: tags];
+}
+
+- (id) POSTAction: (id) localContext
+{
+  id obj;
+  NSString *cType;
+  WORequest *rq;
+  iCalCalendar *calendar;
+
+  obj = nil;
+
+  rq = [localContext request];
+  if ([rq isSoWebDAVRequest])
+    {
+      cType = [rq headerForKey: @"content-type"];
+      if ([cType hasPrefix: @"text/calendar"])
+	{
+	  calendar
+	    = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+	  obj = [self caldavScheduleRequest: rq
+		      withCalendar: calendar];
+	}
+    }
+
+  return obj;
+}
+
 - (NSArray *) davComplianceClassesInContext: (id)_ctx
 {
   NSMutableArray *classes;
@@ -1646,8 +1854,8 @@ _selectorForProperty (NSString *property)
   primaryClasses = [super davComplianceClassesInContext: _ctx];
   if (primaryClasses)
     [classes addObjectsFromArray: primaryClasses];
-  [classes addObject: @"access-control"];
   [classes addObject: @"calendar-access"];
+  [classes addObject: @"calendar-schedule"];
 
   return classes;
 }
@@ -1677,6 +1885,45 @@ _selectorForProperty (NSString *property)
     }
 
   return colType;
+}
+
+- (NSString *) davCollectionTag
+{
+  NSArray *records;
+  GCSFolder *folder;
+  static EOFetchSpecification *cTagSpec = nil;
+  EOSortOrdering *ordering;
+  NSNumber *lastModified;
+  NSString *cTag;
+
+  folder = [self ocsFolder];
+  if (!cTagSpec)
+    {
+      ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
+				 selector: EOCompareDescending];
+      cTagSpec = [EOFetchSpecification
+		   fetchSpecificationWithEntityName: [folder folderName]
+		   qualifier: nil
+		   sortOrderings: [NSArray arrayWithObject: ordering]];
+      [cTagSpec retain];
+    }
+
+  records = [folder fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
+		    fetchSpecification: cTagSpec];
+  if ([records count])
+    {
+      lastModified = [[records objectAtIndex: 0] objectForKey: @"c_lastmodified"];
+      cTag = [lastModified stringValue];
+    }
+  else
+    cTag = @"-1";
+
+  return cTag;
+}
+
+- (NSString *) davDescription
+{
+  return @"";
 }
 
 /* vevent UID handling */
@@ -2036,45 +2283,50 @@ _selectorForProperty (NSString *property)
   NSMutableArray    *uids;
   LDAPUserManager *um;
   unsigned          i, count;
+  iCalPerson *person;
+  NSString   *email;
+  NSString   *uid;
   
-  if (_persons == nil)
-    return nil;
-
-  count = [_persons count];
-  uids  = [NSMutableArray arrayWithCapacity:count + 1];
-  um    = [LDAPUserManager sharedUserManager];
-  
-  for (i = 0; i < count; i++)
+  if (_persons)
     {
-      iCalPerson *person;
-      NSString   *email;
-      NSString   *uid;
-    
-      person = [_persons objectAtIndex:i];
-      email  = [person rfc822Email];
-      if ([email isNotNull])
-	uid = [um getUIDForEmail:email];
-      else
-	uid = nil;
-
-      if (!uid)
-	uid = (NSString *) [NSNull null];
-      [uids addObject: uid];
+      count = [_persons count];
+      uids  = [NSMutableArray arrayWithCapacity:count + 1];
+      um    = [LDAPUserManager sharedUserManager];
+  
+      for (i = 0; i < count; i++)
+	{
+	  person = [_persons objectAtIndex:i];
+	  email  = [person rfc822Email];
+	  if ([email isNotNull])
+	    uid = [um getUIDForEmail:email];
+	  else
+	    uid = nil;
+	  
+	  if (!uid)
+	    uid = (NSString *) [NSNull null];
+	  [uids addObject: uid];
+	}
     }
+  else
+    uids = nil;
 
   return uids;
 }
 
-- (NSArray *)lookupCalendarFoldersForICalPerson: (NSArray *) _persons
-                                      inContext: (id) _ctx
+- (NSArray *) lookupCalendarFoldersForICalPerson: (NSArray *) _persons
+				       inContext: (id) _ctx
 {
   /* Note: can return NSNull objects in the array! */
-  NSArray *uids;
+  NSArray *uids, *folders;
 
-  if ((uids = [self uidsFromICalPersons:_persons]) == nil)
-    return nil;
+  uids = [self uidsFromICalPersons: _persons];
+  if (uids)
+    folders = [self lookupCalendarFoldersForUIDs: uids
+		    inContext: _ctx];
+  else
+    folders = nil;
   
-  return [self lookupCalendarFoldersForUIDs:uids inContext:_ctx];
+  return folders;
 }
 
 // - (id) lookupGroupFolderForUIDs: (NSArray *) _uids

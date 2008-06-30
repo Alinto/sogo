@@ -43,6 +43,9 @@
 
 - (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
 				to: (NSCalendarDate *) _endDate;
+- (NSString *) contentAsStringWithMethod: (NSString *) method
+				    from: (NSCalendarDate *) _startDate
+				      to: (NSCalendarDate *) _endDate;
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
 				  to: (NSCalendarDate *) _endDate;

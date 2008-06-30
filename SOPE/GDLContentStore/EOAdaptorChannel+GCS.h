@@ -33,7 +33,8 @@
 
 @interface EOAdaptorChannel(GCS)
 
-- (BOOL)tableExistsWithName:(NSString *)_tableName;
+- (BOOL) tableExistsWithName: (NSString *) _tableName;
+- (void) dropTables: (NSArray *) tableNames;
 
 @end
 

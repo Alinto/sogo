@@ -29,16 +29,17 @@
 #import "EOAdaptorChannel+GCS.h"
 #import "common.h"
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLAccess/EOAdaptorContext.h>
 #import <NGExtensions/NGResourceLocator.h>
 #import <unistd.h>
 
 /*
   Required database schema:
   
-    <arbitary table>
-      c_path
-      c_path1, path2, path3... [quickPathCount times]
-      c_foldername
+  <arbitary table>
+  c_path
+  c_path1, path2, path3... [quickPathCount times]
+  c_foldername
   
   TODO:
   - add a local cache?
@@ -68,12 +69,12 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   int seed;
 
-  seed = ([[NSDate date] timeIntervalSince1970]
+  seed = ((unsigned int) [[NSDate date] timeIntervalSince1970]
 	  + [[NSProcessInfo processInfo] processIdentifier]);
   srand (seed);
 
-  debugOn     = [ud boolForKey:@"GCSFolderManagerDebugEnabled"];
-  debugSQLGen = [ud boolForKey:@"GCSFolderManagerSQLDebugEnabled"];
+  debugOn     = [ud boolForKey: @"GCSFolderManagerDebugEnabled"];
+  debugSQLGen = [ud boolForKey: @"GCSFolderManagerSQLDebugEnabled"];
   emptyArray  = [[NSArray alloc] init];
   if (!asciiAlphaNumericCS)
     {
@@ -112,7 +113,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return fm;
 }
 
-- (NSDictionary *)loadDefaultFolderTypes {
+- (NSDictionary *) loadDefaultFolderTypes
+{
   NSMutableDictionary *typeMap;
   NSArray  *types;
   unsigned i, count;
@@ -136,7 +138,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     typeObject = [[GCSFolderType alloc] initWithFolderTypeName:type];
     
     [self logWithFormat:@"  %@: %s", 
-	    type, [typeObject isNotNull] ? "OK" : "FAIL"];
+	  type, [typeObject isNotNull] ? "OK" : "FAIL"];
     [typeMap setObject:typeObject forKey:type];
     [typeObject release];
   }
@@ -147,13 +149,13 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 - (id)initWithFolderInfoLocation:(NSURL *)_url {
   if (_url == nil) {
     [self logWithFormat:@"ERROR(%s): missing folder info url!", 
-	    __PRETTY_FUNCTION__];
+	  __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }
   if ((self = [super init])) {
-    self->channelManager = [[GCSChannelManager defaultChannelManager] retain];
-    self->folderInfoLocation = [_url retain];
+    channelManager = [[GCSChannelManager defaultChannelManager] retain];
+    folderInfoLocation = [_url retain];
 
     if ([[self folderInfoTableName] length] == 0) {
       [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@", 
@@ -163,22 +165,23 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     }
     
     /* register default folder types */
-    self->nameToType = [[self loadDefaultFolderTypes] copy];
+    nameToType = [[self loadDefaultFolderTypes] copy];
   }
   return self;
 }
 
-- (void)dealloc {
-  [self->nameToType         release];
-  [self->folderInfoLocation release];
-  [self->channelManager     release];
+- (void) dealloc
+{
+  [nameToType         release];
+  [folderInfoLocation release];
+  [channelManager     release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (NSURL *)folderInfoLocation {
-  return self->folderInfoLocation;
+  return folderInfoLocation;
 }
 
 - (NSString *)folderInfoTableName {
@@ -188,14 +191,14 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 /* connection */
 
 - (GCSChannelManager *)channelManager {
-  return self->channelManager;
+  return channelManager;
 }
 
 - (EOAdaptorChannel *)acquireOpenChannel {
   EOAdaptorChannel *ch;
   
   ch = [[self channelManager] acquireOpenChannelForURL:
-	      [self folderInfoLocation]];
+				[self folderInfoLocation]];
   return ch;
 }
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {
@@ -226,7 +229,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   
   if ((ex = [channel evaluateExpressionX:_sql]) != nil) {
     [self logWithFormat:@"ERROR(%s): cannot execute\n  SQL '%@':\n  %@", 
-	    __PRETTY_FUNCTION__, _sql, ex];
+	  __PRETTY_FUNCTION__, _sql, ex];
     [self releaseChannel:channel];
     return nil;
   }
@@ -256,14 +259,14 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   folderTypeName = [_record objectForKey:@"c_folder_type"];
   if (![folderTypeName isNotNull]) {
     [self logWithFormat:@"ERROR(%s): missing type in folder: %@",
-	    __PRETTY_FUNCTION__, _record];
+	  __PRETTY_FUNCTION__, _record];
     return nil;
   }
   if ((folderType = [self folderTypeWithName:folderTypeName]) == nil) {
     [self logWithFormat:
 	    @"ERROR(%s): could not resolve type '%@' of folder: %@",
-	    __PRETTY_FUNCTION__,
-	    folderTypeName, [_record valueForKey:@"c_path"]];
+	  __PRETTY_FUNCTION__,
+	  folderTypeName, [_record valueForKey:@"c_path"]];
     return nil;
   }
   
@@ -277,7 +280,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     : nil;
   if (location == nil) {
     [self logWithFormat:@"ERROR(%s): missing folder location in record: %@", 
-	    __PRETTY_FUNCTION__, _record];
+	  __PRETTY_FUNCTION__, _record];
     return nil;
   }
   
@@ -288,7 +291,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
   if (quickLocation == nil) {
     [self logWithFormat:@"WARNING(%s): missing quick location in record: %@", 
-	    __PRETTY_FUNCTION__, _record];
+	  __PRETTY_FUNCTION__, _record];
   }
 
   locationString = [_record objectForKey:@"c_acl_location"];
@@ -308,7 +311,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 /* path SQL */
 
 - (NSString *)generateSQLWhereForInternalNames:(NSArray *)_names
-  exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+				    exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
 {
   /* generates a WHERE qualifier for matching the "quick" entries */
   NSMutableString *sql;
@@ -316,7 +319,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   
   if ((count = [_names count]) == 0) {
     [self debugWithFormat:@"WARNING(%s): passed in empty name array!",
-	    __PRETTY_FUNCTION__];
+	  __PRETTY_FUNCTION__];
     return @"1 = 2";
   }
   
@@ -374,7 +377,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 }
 
 - (NSString *)generateSQLPathFetchForInternalNames:(NSArray *)_names
-  exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+					exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
 {
   /* fetches the 'path' subset for a given quick-names */
   NSMutableString *sql;
@@ -404,109 +407,144 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return YES;
 }
 
-- (NSString *)internalNameFromPath:(NSString *)_path {
+- (NSString *) internalNameFromPath: (NSString *) _path
+{
+  NSString *name;
+
   // TODO: ensure proper path and SQL escaping!
-  
-  if (![self _isStandardizedPath:_path]) {
-    [self debugWithFormat:@"%s: not a standardized path: '%@'", 
+
+  if ([self _isStandardizedPath:_path])
+    {
+      if ([_path hasSuffix:@"/"] && [_path length] > 1)
+	name = [_path substringToIndex: ([_path length] - 1)];
+      else
+	name = _path;
+    }
+  else
+    {
+      [self debugWithFormat:@"%s: not a standardized path: '%@'", 
 	    __PRETTY_FUNCTION__, _path];
-    return nil;
-  }
+      name = nil;
+    }
   
-  if ([_path hasSuffix:@"/"] && [_path length] > 1)
-    _path = [_path substringToIndex:([_path length] - 1)];
-  
-  return _path;
+  return name;
 }
-- (NSArray *)internalNamesFromPath:(NSString *)_path {
+
+- (NSArray *) internalNamesFromPath: (NSString *) _path
+{
   NSString *fname;
   NSArray  *fnames;
-  
-  if ((fname = [self internalNameFromPath:_path]) == nil)
-    return nil;
-  
-  if ([fname hasPrefix:@"/"])
-    fname = [fname substringFromIndex:1];
-  
-  fnames = [fname componentsSeparatedByString:@"/"];
-  if ([fnames count] == 0)
-    return nil;
+
+  fname = [self internalNameFromPath: _path];
+  if (fname)
+    {
+      if ([fname hasPrefix:@"/"])
+	fname = [fname substringFromIndex: 1];
+      fnames = [fname componentsSeparatedByString:@"/"];
+      if ([fnames count] == 0)
+	fnames = nil;
+    }
+  else
+    fnames = nil;
   
   return fnames;
 }
-- (NSString *)pathFromInternalName:(NSString *)_name {
+
+- (NSString *) pathFromInternalName: (NSString *) _name
+{
   /* for incomplete pathes, like '/Users/helge/' */
   return _name;
 }
-- (NSString *)pathPartFromInternalName:(NSString *)_name {
+
+- (NSString *) pathPartFromInternalName: (NSString *) _name
+{
   /* for incomplete pathes, like 'Users/' */
   return _name;
 }
 
-- (NSDictionary *)filterRecords:(NSArray *)_records forPath:(NSString *)_path {
-  unsigned i, count;
+- (NSDictionary *) filterRecords: (NSArray *) _records
+			 forPath: (NSString *) _path
+{
   NSString *name;
-  
-  if (_records == nil) return nil;
-  if ((name = [self internalNameFromPath:_path]) == nil) return nil;
-  
-  for (i = 0, count = [_records count]; i < count; i++) {
-    NSDictionary *record;
-    NSString     *recName;
-    
-    record  = [_records objectAtIndex:i];
-    recName = [record objectForKey:GCSPathRecordName];
+  NSDictionary *record, *matchRecord;
+  NSString     *recName;
+  unsigned int i, count;
+
+  matchRecord = nil;
+
+  if (_records)
+    {
+      name = [self internalNameFromPath: _path];
+      if (name)
+	{
+	  count = [_records count];
+	  i = 0;
+	  while (!matchRecord && i < count)
+	    {
+	      record = [_records objectAtIndex: i];
+	      recName = [record objectForKey: GCSPathRecordName];
 #if 0
-    [self logWithFormat:@"check '%@' vs '%@' (%@)...", 
-	  name, recName, [_records objectAtIndex:i]];
+	      [self logWithFormat:@"check '%@' vs '%@' (%@)...", 
+		    name, recName, [_records objectAtIndex:i]];
 #endif
-    
-    if ([name isEqualToString:recName])
-      return [_records objectAtIndex:i];
-  }
-  return nil;
+	      
+	      if ([name isEqualToString: recName])
+		matchRecord = record;
+	      else
+		i++;
+	    }
+	}
+    }
+
+  return matchRecord;
 }
 
-- (BOOL)folderExistsAtPath:(NSString *)_path {
-  NSString *fname;
+- (BOOL) folderExistsAtPath: (NSString *) _path
+{
+  NSString *fname, *sname, *sql;
   NSArray  *fnames, *records;
-  NSString *sql;
-  unsigned count;
+  unsigned int count;
+  NSDictionary *record;
+  BOOL result;
   
-  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
+  result = NO;
+
+  fnames = [self internalNamesFromPath: _path];
+  if (fnames)
+    {
+      sql = [self generateSQLPathFetchForInternalNames: fnames 
+		  exactMatch: YES
+		  orDirectSubfolderMatch: NO];
+      if ([sql length])
+	{
+	  records = [self performSQL: sql];
+	  if (records)
+	    {
+	      count = [records count];
+	      if (count)
+		{
+		  fname = [self internalNameFromPath: _path];
+		  if (count == 1)
+		    {
+		      record = [records objectAtIndex: 0];
+		      sname = [record objectForKey: GCSPathRecordName];
+		      result = [fname isEqualToString: sname];
+		    }
+		  else
+		    [self logWithFormat: @"records: %@", records];
+		}
+	    }
+	  else
+	    [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
+		  __PRETTY_FUNCTION__, sql];
+	}
+      else
+	[self debugWithFormat:@"got no SQL for names: %@", fnames];
+    }
+  else
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
-    return NO;
-  }
   
-  sql = [self generateSQLPathFetchForInternalNames:fnames 
-	      exactMatch:YES orDirectSubfolderMatch:NO];
-  if ([sql length] == 0) {
-    [self debugWithFormat:@"got no SQL for names: %@", fnames];
-    return NO;
-  }
-  
-  if ((records = [self performSQL:sql]) == nil) {
-    [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
-	    __PRETTY_FUNCTION__, sql];
-    return NO;
-  }
-  
-  if ((count = [records count]) == 0)
-    return NO;
-  
-  fname = [self internalNameFromPath:_path];
-  if (count == 1) {
-    NSDictionary *record;
-    NSString *sname;
-    
-    record = [records objectAtIndex:0];
-    sname  = [record objectForKey:GCSPathRecordName];
-    return [fname isEqualToString:sname];
-  }
-  
-  [self logWithFormat:@"records: %@", records];
-  
-  return NO;
+  return result;
 }
 
 - (NSArray *)listSubFoldersAtPath:(NSString *)_path recursive:(BOOL)_recursive{
@@ -530,7 +568,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   
   if ((records = [self performSQL:sql]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
-	    __PRETTY_FUNCTION__, sql];
+	  __PRETTY_FUNCTION__, sql];
     return nil;
   }
   
@@ -567,7 +605,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return result;
 }
 
-- (GCSFolder *)folderAtPath:(NSString *)_path {
+- (GCSFolder *) folderAtPath: (NSString *) _path
+{
   NSMutableString *sql;
   NSArray      *fnames, *records;
   NSString     *ws;
@@ -600,7 +639,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   
   if ((records = [self performSQL:sql]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
-	    __PRETTY_FUNCTION__, sql];
+	  __PRETTY_FUNCTION__, sql];
     return nil;
   }
   
@@ -615,7 +654,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
     }
     
     [self logWithFormat:@"ERROR(%s): more than one row for path: '%@'", 
-	    __PRETTY_FUNCTION__, _path];
+	  __PRETTY_FUNCTION__, _path];
     return nil;
   }
   
@@ -654,128 +693,116 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 		   newUID, randInc & 0xfff, (unsigned int) rand()];
 }
 
-- (NSException *)createFolderOfType:(NSString *)_type
- withName:(NSString*)_name atPath:(NSString *)_path
+- (NSException *) _reallyCreateFolderWithName: (NSString *) folderName
+				andFolderType: (NSString *) folderType
+				      andType: (GCSFolderType *) ftype
+				   andChannel: (EOAdaptorChannel
+						<GCSEOAdaptorChannel> *) channel
+				       atPath: (NSString *) path
 {
-  // TBD: badly broken, needs to be wrapped in a transaction.
-  // TBD: would be best to perform all operations as a single SQL statement.
-  GCSFolderType    *ftype;
-  NSString         *tableName, *quickTableName, *aclTableName;
-  NSString         *baseURL, *pathElement;
-  EOAdaptorChannel <GCSEOAdaptorChannel> *channel;
-  NSEnumerator     *pathElements;
-  NSMutableArray   *paths;
-  NSException      *error;
-  NSString         *sql;
+  NSException *error;
+  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *sql;
+  EOAdaptorContext *aContext;
+  NSMutableArray *paths;
 
-  paths = [[NSMutableArray alloc] initWithCapacity: 5];
-
-  pathElements = [[_path componentsSeparatedByString: @"/"] objectEnumerator];
-  while ((pathElement = [pathElements nextObject]) != nil) {
-    NSString *p = [[NSString alloc] initWithFormat: @"'%@'", pathElement];
-    [paths addObject: p];
-    [p release]; p = nil;
-  }
+  paths
+    = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
   while ([paths count] < 5)
     [paths addObject: @"NULL"];
-
-  // TBD: fix SQL injection issue!
-  sql = [NSString stringWithFormat: @"SELECT * FROM %@ WHERE c_path = '%@'",
-		    [self folderInfoTableName], _path];
-  if ([[self performSQL: sql] isNotEmpty]) {
-    return [NSException exceptionWithName:@"GCSExitingFolder"
-			reason:@"a folder already exists at that path"
-			userInfo:nil];
-  }
-  if ((ftype = [self folderTypeWithName:_type]) == nil) {
-    return [NSException exceptionWithName:@"GCSMissingFolderType"
-			reason:@"missing folder type"userInfo:nil];
-  }
-  if ((channel = [self acquireOpenChannel]) == nil) {
-    return [NSException exceptionWithName:@"GCSNoChannel"
-			reason:@"could not open channel"
-			userInfo:nil];
-  }
+  
+  aContext = [channel adaptorContext];
+  [aContext beginTransaction];
 
   tableName = [self baseTableNameWithUID: [paths objectAtIndex: 2]];
   quickTableName = [tableName stringByAppendingString: @"_quick"];
-  aclTableName   = [tableName stringByAppendingString: @"_acl"];
+  aclTableName = [tableName stringByAppendingString: @"_acl"];
 
-  sql = [@"DROP TABLE " stringByAppendingString:quickTableName];
-  if ((error = [channel evaluateExpressionX:sql]) != nil)
-    ; // 'DROP TABLE' is allowed to fail (DROP IF EXISTS is not in PG<8.2)
-  
-  sql = [@"DROP TABLE " stringByAppendingString:tableName];
-  if ((error = [channel evaluateExpressionX:sql]) != nil)
-    ; // 'DROP TABLE' is allowed to fail (DROP IF EXISTS is not in PG<8.2)
-
-  sql = [@"DROP TABLE " stringByAppendingString:aclTableName];
-  if ((error = [channel evaluateExpressionX:sql]) != nil)
-    ; // 'DROP TABLE' is allowed to fail (DROP IF EXISTS is not in PG<8.2)
-  
-  if ((error = [channel createGCSFolderTableWithName: tableName]) != nil)
-    return error;
-  
-  sql = [ftype sqlQuickCreateWithTableName: quickTableName];
-  if (debugSQLGen) [self logWithFormat:@"quick-Create: %@", sql];
-
-  if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    /* 'rollback' TBD: wrap in proper tx */
-    sql = [@"DROP TABLE " stringByAppendingString:tableName];
-    if ((error = [channel evaluateExpressionX:sql]) != nil) {
-      [self warnWithFormat:@"failed to drop freshly created table: %@", 
-	      tableName];
-    }
-    
-    return error;
-  }
-
-  if (debugSQLGen) [self logWithFormat:@"acl-Create: %@", sql];
-  if ((error = [channel createGCSFolderACLTableWithName: aclTableName])
-      != nil) {
-    /* 'rollback' TBD: wrap in proper tx */
-    sql = [@"DROP TABLE " stringByAppendingString:quickTableName];
-    if ((error = [channel evaluateExpressionX:sql]) != nil) {
-      [self warnWithFormat:@"failed to drop freshly created table: %@", 
-	      tableName];
-    }
-    sql = [@"DROP TABLE " stringByAppendingString:tableName];
-    if ((error = [channel evaluateExpressionX:sql]) != nil) {
-      [self warnWithFormat:@"failed to drop freshly created table: %@", 
-	      tableName];
-    }
-    
-    return error;
-  }
-  
   // TBD: fix SQL injection issues
   baseURL
     = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
-
+  
   sql = [NSString stringWithFormat: @"INSERT INTO %@"
 		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
 		  @"         c_foldername, c_location, c_quick_location,"
 		  @"         c_acl_location, c_folder_type)"
-		  @" VALUES ('%@', %@, %@, %@, %@, '%@', '%@/%@',"
+		  @" VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@/%@',"
 		  @"         '%@/%@', '%@/%@', '%@')",
-		  [self folderInfoTableName], _path,
+		  [self folderInfoTableName], path,
 		  [paths objectAtIndex: 1], [paths objectAtIndex: 2],
 		  [paths objectAtIndex: 3], [paths objectAtIndex: 4],
-		  [_name stringByReplacingString: @"'" withString: @"''"],
+		  [folderName stringByReplacingString: @"'" withString: @"''"],
 		  baseURL, tableName,
 		  baseURL, quickTableName,
 		  baseURL, aclTableName,
-		  _type];
-  if ((error = [channel evaluateExpressionX:sql]) != nil)
-    return error;
+		  folderType];
+  error = [channel evaluateExpressionX: sql];
+  if (!error)
+    {
+      error = [channel createGCSFolderTableWithName: tableName];
+      if (!error)
+	{
+	  sql = [ftype sqlQuickCreateWithTableName: quickTableName];
+	  error = [channel evaluateExpressionX: sql];
+	  if (!error)
+	    error = [channel createGCSFolderACLTableWithName: aclTableName];
+	}
+    }
 
-  [paths release]; paths = nil;
-  [self releaseChannel: channel];
+  if (error)
+    [aContext rollbackTransaction];
+  else
+    [aContext commitTransaction];
 
-  return nil;
+  return error;
+}
+
+- (NSException *) createFolderOfType: (NSString *) _type
+			    withName: (NSString*) _name
+			      atPath: (NSString *) _path
+{
+  // TBD: would be best to perform all operations as a single SQL statement.
+  GCSFolderType    *ftype;
+  EOAdaptorChannel <GCSEOAdaptorChannel> *channel;
+  NSException      *error;
+
+  // TBD: fix SQL injection issue!
+  if ([self folderExistsAtPath: _path])
+    error = [NSException exceptionWithName: @"GCSExitingFolder"
+			 reason: @"a folder already exists at that path"
+			 userInfo: nil];
+  else
+    {
+      ftype = [self folderTypeWithName:_type];
+      if (ftype)
+	{
+	  channel = [self acquireOpenChannel];
+	  if (channel)
+	    {
+	      error = [self _reallyCreateFolderWithName: _name
+			    andFolderType: _type
+			    andType: ftype andChannel: channel
+			    atPath: _path];
+	      if (error && [self folderExistsAtPath: _path])
+		error = nil;
+
+	      [self releaseChannel: channel];
+	    }
+	  else
+	    error = [NSException exceptionWithName: @"GCSNoChannel"
+				 reason: @"could not open channel"
+				 userInfo: nil];
+	}
+      else
+	error = [NSException exceptionWithName: @"GCSMissingFolderType"
+			     reason: @"missing folder type"
+			     userInfo: nil];
+    }
+
+  return error;
 }
   
-- (NSException *)deleteFolderAtPath:(NSString *)_path {
+- (NSException *) deleteFolderAtPath: (NSString *) _path
+{
   GCSFolder    *folder;
   NSArray      *fnames;
   NSString     *sql, *ws;
@@ -816,7 +843,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
 /* folder types */
 
-- (GCSFolderType *)folderTypeWithName:(NSString *)_name {
+- (GCSFolderType *) folderTypeWithName: (NSString *) _name
+{
   NSString *specificName;
   GCSFolderType *type;
 
@@ -825,37 +853,41 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 
   specificName = [NSString stringWithFormat: @"%@-%@",
 			   _name, [folderInfoLocation scheme]];
-  type = [self->nameToType objectForKey: [specificName lowercaseString]];
+  type = [nameToType objectForKey: [specificName lowercaseString]];
   if (!type)
-    type = [self->nameToType objectForKey:[_name lowercaseString]];
+    type = [nameToType objectForKey:[_name lowercaseString]];
 
   return type;
 }
 
 /* cache management */
 
-- (void)reset {
+- (void) reset
+{
   /* does nothing in the moment, but we need a way to signal refreshes */
 }
 
 /* debugging */
 
-- (BOOL)isDebuggingEnabled {
+- (BOOL) isDebuggingEnabled
+{
   return debugOn;
 }
 
 /* description */
 
-- (NSString *)description {
+- (NSString *) description
+{
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   
-  [ms appendFormat:@" url=%@", [self->folderInfoLocation absoluteString]];
+  [ms appendFormat:@" url=%@", [folderInfoLocation absoluteString]];
   [ms appendFormat:@" channel-manager=0x%p", [self channelManager]];
   
   [ms appendString:@">"];
+
   return ms;
 }
 

@@ -449,7 +449,7 @@ static NSArray *contentFieldNames = nil;
     [sql appendString: @"*"];
   [sql appendString:@" FROM "];
   if (requirement == bothTableRequired)
-    [sql appendFormat: @"%@ as a, %@ as b",
+    [sql appendFormat: @"%@ a, %@ b",
 	 [self quickTableName], [self storeTableName]];
   else
     {

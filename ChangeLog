@@ -1,3 +1,36 @@
+2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m ([SOGoUserFolder -davCalendarHomeSet])
+	([SOGoUserFolder -davCalendarScheduleInboxURL])
+	([SOGoUserFolder -davCalendarScheduleOutboxURL])
+	([SOGoUserFolder -davDropboxHomeURL])
+	([SOGoUserFolder -davNotificationsURL]): new methods for
+	supporting the caldav-schedule draft extension to CalDAV.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davComplianceClassesInContext:]): append
+	"calendar-schedule" to the list.
+	([SOGoAppointmentFolder -POSTAction:localContext]): new method to
+	handle POST CalDAV requests.
+	([SOGoAppointmentFolder -davCollectionTag]): new method.
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupName:objectNameinContext:lookupContextacquire:acquire]):
+	use lookupContactentryWithUIDorEmail to make sure we use the ID
+	field specified in the user defaults to match the username, and
+	that the users can be found using their email.
+
+2008-06-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
+	-contentAsString]): add the ending interval to "today" instead of
+	to the start date.
+	([SOGoFreeBusyObject
+	-contentAsStringWithMethod:methodfrom:_startDateto:_endDate]): new
+	method that accepts a method parameter to specify in the returned
+	iCalendar object.
+
 2008-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject -labelForKey:key]):

@@ -62,6 +62,20 @@
   return ([[self childrenWithTag: @"dtend"] count] > 0);
 }
 
+- (void) fillStartDate: (NSCalendarDate **) startDate
+	    andEndDate: (NSCalendarDate **) endDate
+{
+  if ([self hasStartDate])
+    *startDate = [self startDate];
+  else
+    *startDate = nil;
+
+  if ([self hasEndDate])
+    *endDate = [self endDate];
+  else
+    *endDate = nil;
+}
+
 - (NSString *) _freeBusyTypeString: (iCalFreeBusyType) type
 {
   NSString *typeString;

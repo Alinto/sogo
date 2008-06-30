@@ -164,7 +164,7 @@
 
   if (!obj)
     {
-      ldifEntry = [ldapSource lookupContactEntry: objectName];
+      ldifEntry = [ldapSource lookupContactEntryWithUIDorEmail: objectName];
       obj = ((ldifEntry)
 	     ? [SOGoContactLDIFEntry contactEntryWithName: objectName
 				     withLDIFEntry: ldifEntry

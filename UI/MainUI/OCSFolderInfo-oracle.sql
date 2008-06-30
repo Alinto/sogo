@@ -3,8 +3,8 @@
 --
 
 CREATE TABLE @{tableName} (
-  c_folder_id      INTEGER PRIMARY KEY,
-  c_path           VARCHAR(255)  NOT NULL, -- the full path to the folder
+  c_folder_id      INTEGER,
+  c_path           VARCHAR(255)  PRIMARY KEY, -- the full path to the folder
   c_path1          VARCHAR(255)  NOT NULL, -- parts (for fast queries)
   c_path2          VARCHAR(255)  NULL,     -- parts (for fast queries)
   c_path3          VARCHAR(255)  NULL,     -- parts (for fast queries)

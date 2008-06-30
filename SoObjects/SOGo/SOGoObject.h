@@ -134,6 +134,8 @@
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid;
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
 
+- (NSArray *) davComplianceClassesInContext: (WOContext *) localContext;
+
 /* dav acls */
 - (SOGoWebDAVValue *) davCurrentUserPrivilegeSet;
 

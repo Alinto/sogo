@@ -71,6 +71,89 @@ static unsigned int freebusyRangeEnd = 0;
     }
 }
 
+- (iCalPerson *) iCalPersonWithUID: (NSString *) uid
+{
+  iCalPerson *person;
+  LDAPUserManager *um;
+  NSDictionary *contactInfos;
+
+  um = [LDAPUserManager sharedUserManager];
+  contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
+
+  person = [iCalPerson new];
+  [person autorelease];
+  [person setCn: [contactInfos objectForKey: @"cn"]];
+  [person setEmail: [contactInfos objectForKey: @"c_email"]];
+
+  return person;
+}
+
+/* Private API */
+- (iCalFreeBusyType) _fbTypeForEventStatus: (NSNumber *) eventStatus
+{
+  unsigned int status;
+  iCalFreeBusyType fbType;
+
+  status = [eventStatus unsignedIntValue];
+  if (status == 0)
+    fbType = iCalFBBusyTentative;
+  else if (status == 1)
+    fbType = iCalFBBusy;
+  else
+    fbType = iCalFBFree;
+
+  return fbType;    
+}
+
+- (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
+			       withMethod: (NSString *) method
+                                     from: (NSCalendarDate *) _startDate
+                                       to: (NSCalendarDate *) _endDate
+{
+  NSString *uid;
+  NSEnumerator *events;
+  iCalCalendar *calendar;
+  iCalFreeBusy *freebusy;
+  NSDictionary *info;
+  iCalFreeBusyType type;
+
+  uid = [container ownerInContext: context];
+
+  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
+  [calendar setProdID: @"//Inverse groupe conseil/SOGo 0.9"];
+  [calendar setVersion: @"2.0"];
+  if (method)
+    [calendar setMethod: method];
+
+  freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
+  [freebusy addToAttendees: [self iCalPersonWithUID: uid]];
+  [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
+  [freebusy setStartDate: _startDate];
+  [freebusy setEndDate: _endDate];
+
+  /* ORGANIZER - strictly required but missing for now */
+
+  /* ATTENDEE */
+//   person = [self iCalPersonWithUid: uid];
+//   [person setTag: @"ATTENDEE"];
+//   [ms appendString: [person versitString]];
+
+  /* FREEBUSY */
+  events = [_infos objectEnumerator];
+  while ((info = [events nextObject]))
+    if ([[info objectForKey: @"c_isopaque"] boolValue])
+      {
+	type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
+	[freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
+		  to: [info objectForKey: @"endDate"]
+		  type: type];
+      }
+
+  [calendar setUniqueChild: freebusy];
+
+  return [calendar versitString];
+}
+
 - (NSString *) contentAsString
 {
   NSCalendarDate *today, *startDate, *endDate;
@@ -82,20 +165,30 @@ static unsigned int freebusyRangeEnd = 0;
 
   startDate = [today dateByAddingYears: 0 months: 0 days: -freebusyRangeStart
                      hours: 0 minutes: 0 seconds: 0];
-  endDate = [startDate dateByAddingYears: 0 months: 0 days: freebusyRangeEnd
-                       hours: 0 minutes: 0 seconds: 0];
+  endDate = [today dateByAddingYears: 0 months: 0 days: freebusyRangeEnd
+		   hours: 0 minutes: 0 seconds: 0];
 
   return [self contentAsStringFrom: startDate to: endDate];
 }
 
-- (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
-                                to: (NSCalendarDate *) _endDate
+- (NSString *) contentAsStringWithMethod: (NSString *) method
+				    from: (NSCalendarDate *) _startDate
+				      to: (NSCalendarDate *) _endDate
 {
   NSArray *infos;
   
-  infos = [self fetchFreeBusyInfosFrom:_startDate to:_endDate];
+  infos = [self fetchFreeBusyInfosFrom: _startDate to: _endDate];
 
-  return [self iCalStringForFreeBusyInfos:infos from:_startDate to:_endDate];
+  return [self iCalStringForFreeBusyInfos: infos withMethod: method
+	       from: _startDate to: _endDate];
+}
+
+- (NSString *) contentAsStringFrom: (NSCalendarDate *) _startDate
+				to: (NSCalendarDate *) _endDate
+{
+  return [self contentAsStringWithMethod: nil
+	       from: _startDate
+	       to: _endDate];
 }
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
@@ -128,86 +221,6 @@ static unsigned int freebusyRangeEnd = 0;
 {
   // for UI-X appointment viewer
   return [self contentAsString];
-}
-
-/* Private API */
-- (iCalFreeBusyType) _fbTypeForEventStatus: (NSNumber *) eventStatus
-{
-  unsigned int status;
-  iCalFreeBusyType fbType;
-
-  status = [eventStatus unsignedIntValue];
-  if (status == 0)
-    fbType = iCalFBBusyTentative;
-  else if (status == 1)
-    fbType = iCalFBBusy;
-  else
-    fbType = iCalFBFree;
-
-  return fbType;    
-}
-
-- (iCalPerson *) iCalPersonWithUID: (NSString *) uid
-{
-  iCalPerson *person;
-  LDAPUserManager *um;
-  NSDictionary *contactInfos;
-
-  um = [LDAPUserManager sharedUserManager];
-  contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
-
-  person = [iCalPerson new];
-  [person autorelease];
-  [person setCn: [contactInfos objectForKey: @"cn"]];
-  [person setEmail: [contactInfos objectForKey: @"c_email"]];
-
-  return person;
-}
-
-- (NSString *) iCalStringForFreeBusyInfos: (NSArray *) _infos
-                                     from: (NSCalendarDate *) _startDate
-                                       to: (NSCalendarDate *) _endDate
-{
-  NSString *uid;
-  NSEnumerator *events;
-  iCalCalendar *calendar;
-  iCalFreeBusy *freebusy;
-  NSDictionary *info;
-  iCalFreeBusyType type;
-
-  uid = [container ownerInContext: context];
-
-  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-  [calendar setProdID: @"//Inverse groupe conseil/SOGo 0.9"];
-  [calendar setVersion: @"2.0"];
-
-  freebusy = [iCalFreeBusy groupWithTag: @"vfreebusy"];
-  [freebusy addToAttendees: [self iCalPersonWithUID: uid]];
-  [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
-  [freebusy setStartDate: _startDate];
-  [freebusy setEndDate: _endDate];
-
-  /* ORGANIZER - strictly required but missing for now */
-
-  /* ATTENDEE */
-//   person = [self iCalPersonWithUid: uid];
-//   [person setTag: @"ATTENDEE"];
-//   [ms appendString: [person versitString]];
-
-  /* FREEBUSY */
-  events = [_infos objectEnumerator];
-  while ((info = [events nextObject]))
-    if ([[info objectForKey: @"c_isopaque"] boolValue])
-      {
-	type = [self _fbTypeForEventStatus: [info objectForKey: @"c_status"]];
-	[freebusy addFreeBusyFrom: [info objectForKey: @"startDate"]
-		  to: [info objectForKey: @"endDate"]
-		  type: type];
-      }
-
-  [calendar setUniqueChild: freebusy];
-
-  return [calendar versitString];
 }
 
 /* deliver content without need for view method */

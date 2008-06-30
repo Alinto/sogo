@@ -1,3 +1,9 @@
+2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalFreeBusy.m ([iCalFreeBusy
+	-fillStartDate:startDateandEndDate:endDate]): new method created
+	to avoid enlarging the code.
+
 2008-04-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRecurrenceCalculator.m ([iCalRecurrenceCalculator
