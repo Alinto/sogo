@@ -1,6 +1,7 @@
 0.9.0-2008XXXX (1.0)
 --------------------
 - work around the situation where Courier IMAP would refuse to rename the current mailbox or move it into the trash
+- fixed tab index in mail composition window
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
