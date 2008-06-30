@@ -215,7 +215,7 @@ static SoSecurityManager *sm = nil;
 		    [self ownerInContext: context],
 		    gcsFolderType];
       [self _fetchPersonalFolders: sql withChannel: fc];
-      [cm releaseChannel: fc];340 2057
+      [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
 //                  uidColumnName, [self uid]];
     }

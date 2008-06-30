@@ -1,5 +1,12 @@
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m ([SOGoUserFolder -davCalendarHomeSet])
+	([SOGoUserFolder -davCalendarScheduleInboxURL])
+	([SOGoUserFolder -davCalendarScheduleOutboxURL])
+	([SOGoUserFolder -davDropboxHomeURL])
+	([SOGoUserFolder -davNotificationsURL]): new methods for
+	supporting the caldav-schedule draft extension to CalDAV.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -davComplianceClassesInContext:]): append
 	"calendar-schedule" to the list.
