@@ -31,6 +31,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import "NSObject+DAV.h"
 #import "SOGoGCSFolder.h"
