@@ -3,6 +3,7 @@
 - work around the situation where Courier IMAP would refuse to rename the current mailbox or move it into the trash
 - fixed tab index in mail composition window
 - fixed default privacy selection for new events
+- fixed a bug where concurrent versions of SOGo would create the user's personal folders table twice
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
