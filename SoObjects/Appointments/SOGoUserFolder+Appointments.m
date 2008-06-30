@@ -51,80 +51,79 @@
   return addresses;
 }
 
+/* CalDAV support */
+- (NSArray *) davCalendarHomeSet
+{
+  /*
+    <C:calendar-home-set xmlns:D="DAV:"
+        xmlns:C="urn:ietf:params:xml:ns:caldav">
+      <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
+    </C:calendar-home-set>
 
-// /* CalDAV support */
-// - (NSArray *) davCalendarHomeSet
-// {
-//   /*
-//     <C:calendar-home-set xmlns:D="DAV:"
-//         xmlns:C="urn:ietf:params:xml:ns:caldav">
-//       <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
-//     </C:calendar-home-set>
+    Note: this is the *container* for calendar collections, not the
+          collections itself. So for use its the home folder, the
+	  public folder and the groups folder.
+  */
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
-//     Note: this is the *container* for calendar collections, not the
-//           collections itself. So for use its the home folder, the
-// 	  public folder and the groups folder.
-//   */
-//   NSArray *tag;
-//   SOGoAppointmentFolders *parent;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [[parent davURL] path], nil];
 
-//   parent = [self privateCalendars: @"Calendar" inContext: context];
-//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-//                  [parent davURL], nil];
+  return [NSArray arrayWithObject: tag];
+}
 
-//   return [NSArray arrayWithObject: tag];
-// }
+- (NSArray *) davCalendarScheduleInboxURL
+{
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
-// - (NSArray *) davCalendarScheduleInboxURL
-// {
-//   NSArray *tag;
-//   SOGoAppointmentFolders *parent;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+		 nil];
 
-//   parent = [self privateCalendars: @"Calendar" inContext: context];
-//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
-// 		 nil];
+  return [NSArray arrayWithObject: tag];
+}
 
-//   return [NSArray arrayWithObject: tag];
-// }
+- (NSString *) davCalendarScheduleOutboxURL
+{
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
-// - (NSString *) davCalendarScheduleOutboxURL
-// {
-//   NSArray *tag;
-//   SOGoAppointmentFolders *parent;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+		 nil];
 
-//   parent = [self privateCalendars: @"Calendar" inContext: context];
-//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
-// 		 nil];
+  return [NSArray arrayWithObject: tag];
+}
 
-//   return [NSArray arrayWithObject: tag];
-// }
+- (NSString *) davDropboxHomeURL
+{
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
-// - (NSString *) davDropboxHomeURL
-// {
-//   NSArray *tag;
-//   SOGoAppointmentFolders *parent;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+		 nil];
 
-//   parent = [self privateCalendars: @"Calendar" inContext: context];
-//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
-// 		 nil];
+  return [NSArray arrayWithObject: tag];
+}
 
-//   return [NSArray arrayWithObject: tag];
-// }
+- (NSString *) davNotificationsURL
+{
+  NSArray *tag;
+  SOGoAppointmentFolders *parent;
 
-// - (NSString *) davNotificationsURL
-// {
-//   NSArray *tag;
-//   SOGoAppointmentFolders *parent;
+  parent = [self privateCalendars: @"Calendar" inContext: context];
+  tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                 [NSString stringWithFormat: @"%@personal/", [[parent davURL] path]],
+		 nil];
 
-//   parent = [self privateCalendars: @"Calendar" inContext: context];
-//   tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-//                  [NSString stringWithFormat: @"%@personal/", [parent davURL]],
-// 		 nil];
-
-//   return [NSArray arrayWithObject: tag];
-// }
+  return [NSArray arrayWithObject: tag];
+}
 
 @end
