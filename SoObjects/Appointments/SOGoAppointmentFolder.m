@@ -2019,6 +2019,8 @@ _selectorForProperty (NSString *property)
   NSString *filename;
   unsigned int count;
 
+  filename = nil;
+
   if (!nameFields)
     nameFields = [[NSArray alloc] initWithObjects: @"c_name", nil];
 
