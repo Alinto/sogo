@@ -383,11 +383,9 @@ function onWindowResize(event) {
 //						   headerarea)[0];
 //    $("attachments").setStyle({ height: (headerarea.getHeight() - fromfield.getHeight() - 10) + 'px' });
   }
-  var subjectfield = $(document).getElementsByClassName('headerField',
-							$('subjectRow'))[0];
-  var subjectinput = $(document).getElementsByClassName('textField',
-							$('subjectRow'))[0];
-
+  var subjectfield = headerarea.select("div#subjectRow span.headerField").first();
+  var subjectinput = headerarea.select("div#subjectRow input.textField").first();
+  
   // Resize subject field
   subjectinput.setStyle({ width: (window.width()
 				  - $(subjectfield).getWidth()
