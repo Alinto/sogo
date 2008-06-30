@@ -1,5 +1,12 @@
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davComplianceClassesInContext:]): append
+	"calendar-schedule" to the list.
+	([SOGoAppointmentFolder -POSTAction:localContext]): new method to
+	handle POST CalDAV requests.
+	([SOGoAppointmentFolder -davCollectionTag]): new method.
+
 	* SoObjects/Contacts/SOGoContactLDAPFolder.m
 	([SOGoContactLDAPFolder
 	-lookupName:objectNameinContext:lookupContextacquire:acquire]):
