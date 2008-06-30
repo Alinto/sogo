@@ -1,3 +1,12 @@
+2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactLDAPFolder.m
+	([SOGoContactLDAPFolder
+	-lookupName:objectNameinContext:lookupContextacquire:acquire]):
+	use lookupContactentryWithUIDorEmail to make sure we use the ID
+	field specified in the user defaults to match the username, and
+	that the users can be found using their email.
+
 2008-06-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoFreeBusyObject.m ([SOGoFreeBusyObject
