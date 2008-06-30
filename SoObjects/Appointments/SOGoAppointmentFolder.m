@@ -63,6 +63,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
+#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
@@ -1717,10 +1718,15 @@ _selectorForProperty (NSString *property)
   return responseElement;
 }
 
-- (void) _saveCalDAVEvent: (iCalEvent *) event
+- (NSDictionary *) _postCalDAVEventRequest: (iCalEvent *) event
+					to: (NSArray *) recipients
 {
   NSString *filename, *iCalString;
   SOGoAppointmentObject *apt;
+  NSDictionary *responseElement;
+  NSMutableArray *elements, *content;
+  NSString *recipient;
+  unsigned int count, max;
 
   filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
   apt = [self lookupName: filename inContext: context acquire: NO];
@@ -1730,19 +1736,8 @@ _selectorForProperty (NSString *property)
       apt = [self _createChildComponentWithName: filename
 		  andContent: iCalString];
     }
+#warning cleanup: add a method to POST requests from CalDAV from SOGoAppointmentObject
   [apt saveComponent: event];
-}
-
-- (NSDictionary *) caldavEventRequest: (iCalEvent *) event
-				 from: (NSString *) originator
-				   to: (NSArray *) recipients
-{
-  NSDictionary *responseElement;
-  NSMutableArray *elements, *content;
-  NSString *recipient;
-  unsigned int count, max;
-
-  [self _saveCalDAVEvent: event];
 
   elements = [NSMutableArray new];
   max = [recipients count];
@@ -1751,16 +1746,87 @@ _selectorForProperty (NSString *property)
       /* this is a fake success status */
       recipient = [recipients objectAtIndex: count];
       content = [NSMutableArray new];
-      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV, recipient)];
-      [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
+      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+						 recipient)];
+      [content addObject: davElementWithContent (@"request-status",
+						 XMLNS_CALDAV,
 						 @"2.0;Success")];
-      [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV, content)];
+      [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
+						  content)];
       [content release];
     }
 
   responseElement = davElementWithContent (@"schedule-response",
 					   XMLNS_CALDAV, elements);
   [elements release];
+
+  return responseElement;
+}
+
+- (NSDictionary *) _postCalDAVEventReply: (iCalEvent *) event
+				    from: (NSString *) originator
+{
+  NSDictionary *responseElement, *attendeeCode;
+  NSMutableArray *content;
+  NSString *filename;
+  iCalPerson *attendee;
+  NSException *ex;
+  SOGoAppointmentObject *apt;
+
+  /* this is a fake success status */
+  filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
+  apt = [self lookupName: filename inContext: context acquire: NO];
+  if ([apt isKindOfClass: [SOGoAppointmentObject class]])
+    {
+      content = [NSMutableArray new];
+      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+						 originator)];
+
+#warning cleanup: add a method to POST replies from CalDAV from SOGoAppointmentObject
+      attendee = [event findParticipant: [context activeUser]];
+      if (attendee)
+	{
+	  ex = [apt changeParticipationStatus: [attendee partStat]];
+	  if (ex)
+	    attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
+						  @"3.1;Invalid property value");
+	  else
+	    attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
+						  @"2.0;Success");
+	}
+      else
+	attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
+					      @"3.7;Invalid Calendar User");
+      [content addObject: attendeeCode];
+
+      responseElement
+	= davElementWithContent (@"schedule-response", XMLNS_CALDAV,
+				 davElementWithContent (@"response", XMLNS_CALDAV,
+							content));
+      [content release];
+    }
+  else
+    responseElement = nil;
+
+  return responseElement;
+}
+
+- (NSDictionary *) caldavEventRequest: (iCalEvent *) event
+				 from: (NSString *) originator
+				   to: (NSArray *) recipients
+{
+  NSDictionary *responseElement;
+  NSString *method;
+
+  method = [[event parent] method];
+  if ([method isEqualToString: @"REQUEST"])
+    responseElement = [self _postCalDAVEventRequest: event
+			    to: recipients];
+  else if ([method isEqualToString: @"REPLY"])
+    responseElement = [self _postCalDAVEventReply: event
+			    from: originator];
+  else
+    responseElement = nil;
 
   return responseElement;
 }

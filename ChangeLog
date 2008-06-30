@@ -1,5 +1,10 @@
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-caldavEventRequest:eventfrom:originatorto:recipients]): handle
+	caldav replies.
+
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m ([SOGoUserFolder -davCalendarHomeSet])
 	([SOGoUserFolder -davCalendarScheduleInboxURL])
 	([SOGoUserFolder -davCalendarScheduleOutboxURL])
