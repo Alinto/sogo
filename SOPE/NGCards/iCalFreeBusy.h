@@ -43,6 +43,9 @@ typedef enum iCalFreeBusyType
 - (NSCalendarDate *) endDate;
 - (BOOL) hasEndDate;
 
+- (void) fillStartDate: (NSCalendarDate **) startDate
+	    andEndDate: (NSCalendarDate **) endDate;
+
 - (void) addFreeBusyFrom: (NSCalendarDate *) start
                       to: (NSCalendarDate *) end
                     type: (iCalFreeBusyType) type;
