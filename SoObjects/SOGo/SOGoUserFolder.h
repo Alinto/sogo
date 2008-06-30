@@ -52,8 +52,8 @@
 - (NSDictionary *) foldersOfType: (NSString *) type
 		     matchingUID: (NSString *) uid;
 
-/* TODO: not implemented, bad bad */
-// - (id)lookupFreeBusyObject;
+- (id) freeBusyObject: (NSString *) _key
+            inContext: (WOContext *) _ctx;
 
 @end
 
