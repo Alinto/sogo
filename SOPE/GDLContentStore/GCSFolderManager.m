@@ -507,6 +507,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   NSDictionary *record;
   BOOL result;
   
+  result = NO;
+
   fnames = [self internalNamesFromPath: _path];
   if (fnames)
     {
