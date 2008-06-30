@@ -24,7 +24,8 @@
 
 @implementation EOAdaptorChannel(GCS)
 
-- (BOOL)tableExistsWithName:(NSString *)_tableName {
+- (BOOL) tableExistsWithName: (NSString *) _tableName
+{
   NSException *ex;
   NSString    *sql;
   BOOL        didOpen;
@@ -45,6 +46,20 @@
   
   if (didOpen) [self closeChannel];
   return ex != nil ? NO : YES;
+}
+
+- (void) dropTables: (NSArray *) tableNames
+{
+  unsigned int count, max;
+  NSString *sql;
+
+  max = [tableNames count];
+  for (count = 0; count < max; count++)
+    {
+      sql = [NSString stringWithFormat: @"DROP TABLE %@",
+		      [tableNames objectAtIndex: count]];
+      [self evaluateExpressionX: sql];
+    }
 }
 
 @end /* EOAdaptorChannel(GCS) */
