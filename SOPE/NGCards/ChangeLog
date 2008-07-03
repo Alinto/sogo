@@ -1,3 +1,9 @@
+2008-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEvent.m ([iCalEvent -endDate]): if no DTEND is specified,
+	returns the end date based on the start date and take the duration
+	into account if it is specified.
+
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalFreeBusy.m ([iCalFreeBusy

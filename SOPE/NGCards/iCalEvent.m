@@ -68,8 +68,21 @@
 
 - (NSCalendarDate *) endDate
 {
-  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
-			   dateTime];
+  NSCalendarDate *endDate;
+  NSString *duration;
+
+  endDate = [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
+			      dateTime];
+  if (!endDate)
+    {
+      endDate = [self startDate];
+      duration = [self duration];
+      if ([duration length])
+	endDate
+	  = [endDate addTimeInterval: [duration durationAsTimeInterval]];
+    }
+
+  return endDate;
 }
 
 - (BOOL) hasEndDate
