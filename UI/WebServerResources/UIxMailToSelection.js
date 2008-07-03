@@ -81,10 +81,10 @@ function fancyAddRow(shouldEdit, text, type) {
   addressList.insertBefore(row, lastChild);
 
   if (shouldEdit) {
-    input.setAttribute('autocomplete', 'off');
+    input.setAttribute("autocomplete", "off");
+    input.observe("keydown", onContactKeydown); // bind listener for address completion
     input.focus();
     input.select();
-    input.setAttribute('autocomplete', 'on');
   }
 }
 
