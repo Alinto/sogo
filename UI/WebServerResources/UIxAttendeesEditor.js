@@ -1,7 +1,5 @@
 var resultsDiv;
 var address;
-var delayedSearch = false;
-var currentField;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 
@@ -10,6 +8,9 @@ var dayEndHour = 18;
 
 var attendeesEditor = {
  delay: 500,
+ delayedSearch: false,
+ currentField: null,
+ selectedIndex: -1,
  names: null,
  UIDs: null,
  emails: null,
@@ -44,9 +45,9 @@ function onContactKeydown(event) {
       this.confirmedValue = null;
       this.uid = null;
       this.hasfreebusy = false;
-      currentField = this;
-      if (this.value.length > 0 && !delayedSearch) {
-	delayedSearch = true;
+      attendeesEditor.currentField = this;
+      if (this.value.length > 0 && !attendeesEditor.delayedSearch) {
+	attendeesEditor.delayedSearch = true;
 	setTimeout("performSearch()", attendeesEditor.delay);
       }
       else if (this.value.length == 0) {
@@ -54,26 +55,50 @@ function onContactKeydown(event) {
 	  hideMenu(document.currentPopupMenu);
       }
   }
-  else if (this.confirmedValue)
-    if (event.keyCode == 13) // Enter
-      $(this).setCaretTo(this.value.length);
+  else if (event.keyCode == 38) { // Up arrow
+    if (attendeesEditor.selectedIndex > 0) {
+      var attendees = $('attendeesMenu').select("li");
+      attendees[attendeesEditor.selectedIndex--].removeClassName("selected");
+      this.value = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+      attendees[attendeesEditor.selectedIndex].addClassName("selected");
+    }
+  }
+  else if (event.keyCode == 40) { // Down arrow
+    var attendees = $('attendeesMenu').select("li");
+    if (attendees.size() - 1 > attendeesEditor.selectedIndex) {
+      if (attendeesEditor.selectedIndex >= 0)
+	attendees[attendeesEditor.selectedIndex].removeClassName("selected");
+      attendeesEditor.selectedIndex++;
+      this.value = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+      attendees[attendeesEditor.selectedIndex].addClassName("selected");
+    }
+  }
+  else if (event.keyCode == 13) {
+    preventDefault(event);
+    if (this.confirmedValue)
+      this.value = this.confirmedValue;
+    $(this).selectText(0, this.value.length);
+    if (document.currentPopupMenu)
+      hideMenu(document.currentPopupMenu);
+    attendeesEditor.selectedIndex = -1;
+  }
 }
 
 function performSearch() {
-   if (currentField) {
+   if (attendeesEditor.currentField) {
       if (document.contactLookupAjaxRequest) {
          // Abort any pending request
          document.contactLookupAjaxRequest.aborted = true;
          document.contactLookupAjaxRequest.abort();
       }
-      if (currentField.value.trim().length > 0) {
+      if (attendeesEditor.currentField.value.trim().length > 0) {
          var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-                        + escape(currentField.value) );
+                        + escape(attendeesEditor.currentField.value) );
          document.contactLookupAjaxRequest =
-            triggerAjaxRequest(urlstr, performSearchCallback, currentField);
+            triggerAjaxRequest(urlstr, performSearchCallback, attendeesEditor.currentField);
       }
    }
-   delayedSearch = false;
+   attendeesEditor.delayedSearch = false;
 }
 
 function performSearchCallback(http) {
@@ -103,8 +128,8 @@ function performSearchCallback(http) {
 	}
 
 	// Show popup menu
-	var offsetScroll = Element.cumulativeScrollOffset(currentField);
-	var offset = Element.cumulativeOffset(currentField);
+	var offsetScroll = Element.cumulativeScrollOffset(attendeesEditor.currentField);
+	var offset = Element.cumulativeOffset(attendeesEditor.currentField);
 	var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
 	var height = 'auto';
 	if (data.length > 5) {
@@ -136,12 +161,8 @@ function performSearchCallback(http) {
 	    // The result matches email address, not user name
 	    input.value += ' >> ' + completeEmail;
 	  input.confirmedValue = completeEmail;
-	  if (input.focussed) {
-	    var end = input.value.length;
-	    $(input).selectText(start, end);
-	  }
-	  else
-	    input.value = contact["name"];
+	  var end = input.value.length;
+	  $(input).selectText(start, end);
 	}
       }
     }
@@ -153,11 +174,11 @@ function performSearchCallback(http) {
 }
 
 function onAttendeeResultClick(event) {
-  if (currentField) {
-    currentField.uid = this.uid;
-    currentField.value = this.firstChild.nodeValue.trim();
-    currentField.confirmedValue = currentField.value;
-    currentField.blur(); // triggers checkAttendee function call
+  if (attendeesEditor.currentField) {
+    attendeesEditor.currentField.uid = this.uid;
+    attendeesEditor.currentField.value = this.firstChild.nodeValue.trim();
+    attendeesEditor.currentField.confirmedValue = attendeesEditor.currentField.value;
+    attendeesEditor.currentField.blur(); // triggers checkAttendee function call
   }
 }
 
@@ -302,7 +323,7 @@ function checkAttendee() {
     this.setAttribute("modified", "0");
   }
   
-  currentField = null;
+  attendeesEditor.currentField = null;
 }
 
 function displayFreeBusyForNode(input) {
@@ -662,7 +683,7 @@ function onFreeBusyLoadHandler() {
    synchronizeWithParent("startTime", "startTime");
    synchronizeWithParent("endTime", "endTime");
 
-   initTimeWidgets(widgets);   
+   initTimeWidgets(widgets);
    initializeWindowButtons();
    prepareTableHeaders();
    prepareTableRows();

@@ -3,7 +3,11 @@ var signatureLength = 0;
 
 var attachmentCount = 0;
 var MailEditor = {
- addressBook: null
+ addressBook: null,
+ currentField: null,
+ selectedIndex: -1,
+ delay: 500,
+ delayedSearch: false
 };
 
 function onContactAdd() {
@@ -285,12 +289,169 @@ function onTextMouseDown(event) {
   }
 }
 
+function onContactKeydown(event) {
+  if (event.ctrlKey || event.metaKey) {
+    this.focussed = true;
+    return;
+  }
+  if (event.keyCode == 9) { // Tab
+    if (this.confirmedValue)
+      this.value = this.confirmedValue;
+    if (document.currentPopupMenu)
+      hideMenu(document.currentPopupMenu);
+  }
+  else if (event.keyCode == 0
+	|| event.keyCode == 8 // Backspace
+        || event.keyCode == 32  // Space
+        || event.keyCode > 47) {
+      this.confirmedValue = null;
+      MailEditor.selectedIndex = -1;
+      MailEditor.currentField = this;
+      if (this.value.length > 0 && !MailEditor.delayedSearch) {
+	MailEditor.delayedSearch = true;
+	setTimeout("performSearch()", MailEditor.delay);
+      }
+      else if (this.value.length == 0) {
+	if (document.currentPopupMenu)
+	  hideMenu(document.currentPopupMenu);
+      }
+  }
+  else if (event.keyCode == 38) { // Up arrow
+    if (MailEditor.selectedIndex > 0) {
+      var contacts = $('contactsMenu').select("li");
+      contacts[MailEditor.selectedIndex--].removeClassName("selected");
+      this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+      contacts[MailEditor.selectedIndex].addClassName("selected");
+    }
+  }
+  else if (event.keyCode == 40) { // Down arrow
+    var contacts = $('contactsMenu').select("li");
+    if (contacts.size() - 1 > MailEditor.selectedIndex) {
+      if (MailEditor.selectedIndex >= 0)
+	contacts[MailEditor.selectedIndex].removeClassName("selected");
+      MailEditor.selectedIndex++;
+      this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+      contacts[MailEditor.selectedIndex].addClassName("selected");
+    }
+  }
+  else if (event.keyCode == 13) {
+    preventDefault(event);
+    if (this.confirmedValue)
+      this.value = this.confirmedValue;
+    $(this).selectText(0, this.value.length);
+    if (document.currentPopupMenu)
+      hideMenu(document.currentPopupMenu);
+    MailEditor.selectedIndex = -1;
+  }
+}
+
+function performSearch() {
+  // Perform address completion
+  if (MailEditor.currentField) {
+    if (document.contactLookupAjaxRequest) {
+      // Abort any pending request
+      document.contactLookupAjaxRequest.aborted = true;
+      document.contactLookupAjaxRequest.abort();
+    }
+    if (MailEditor.currentField.value.trim().length > 0) {
+      var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+		     + escape(MailEditor.currentField.value) );
+      document.contactLookupAjaxRequest =
+	triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
+    }
+  }
+  MailEditor.delayedSearch = false;
+}
+
+function performSearchCallback(http) {
+  if (http.readyState == 4) {
+    var menu = $('contactsMenu');
+    var list = menu.down("ul");
+    
+    var input = http.callbackData;
+    
+    if (http.status == 200) {
+      var start = input.value.length; log(http.responseText);
+      var data = http.responseText.evalJSON(true);
+      if (data.length > 1) {
+	$(list.childNodesWithTag("li")).each(function(item) {
+	    item.remove();
+	  });
+	
+	// Populate popup menu
+	for (var i = 0; i < data.length; i++) {
+	  var contact = data[i];
+	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
+	  var node = document.createElement("li");
+	  list.appendChild(node);
+	  node.uid = contact["uid"];
+	  node.appendChild(document.createTextNode(completeEmail));
+	  $(node).observe("mousedown", onAddressResultClick);
+	}
+
+	// Show popup menu
+	var offsetScroll = Element.cumulativeScrollOffset(MailEditor.currentField);
+	var offset = Element.cumulativeOffset(MailEditor.currentField);
+	var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
+	var height = 'auto';
+	if (data.length > 5) {
+	  height = 5 * node.getHeight() + 'px';
+	}
+	menu.setStyle({ top: top + "px",
+	      left: offset[0] + "px",
+	      height: height,
+	      visibility: "visible" });
+	menu.scrollTop = 0;
+
+	document.currentPopupMenu = menu;
+	$(document.body).observe("click", onBodyClickMenuHandler);
+      }
+      else {
+	if (document.currentPopupMenu)
+	  hideMenu(document.currentPopupMenu);
+
+	if (data.length == 1) {
+	  // Single result
+	  var contact = data[0];
+	  if (contact["uid"].length > 0)
+	    input.uid = contact["uid"];
+	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
+	  if (contact["name"].substring(0, input.value.length).toUpperCase()
+	      == input.value.toUpperCase())
+	    input.value = completeEmail;
+	  else
+	    // The result matches email address, not user name
+	    input.value += ' >> ' + completeEmail;
+	  input.confirmedValue = completeEmail;
+	  var end = input.value.length;
+	  $(input).selectText(start, end);
+	}
+      }
+    }
+    else
+      if (document.currentPopupMenu)
+	hideMenu(document.currentPopupMenu);
+    document.contactLookupAjaxRequest = null;
+  }
+}
+
+function onAddressResultClick(event) {
+  if (MailEditor.currentField) {
+    MailEditor.currentField.uid = this.uid;
+    MailEditor.currentField.value = this.firstChild.nodeValue.trim();
+    MailEditor.currentField.confirmedValue = currentField.value;
+  }
+}
+
 function initTabIndex(addressList, subjectField, msgArea) {
   
   var i = 1;
   addressList.select("input.textField").each(function (input) {
-      if (!input.readAttribute("readonly"))
+      if (!input.readAttribute("readonly")) {
 	input.writeAttribute("tabindex", i++);
+	input.writeAttribute("autocomplete", "off");
+	input.observe("keydown", onContactKeydown); // bind listener for address completion
+      }
     });
   subjectField.writeAttribute("tabindex", i++);
   msgArea.writeAttribute("tabindex", i);

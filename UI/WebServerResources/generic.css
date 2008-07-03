@@ -354,7 +354,7 @@ UL.choiceMenu LI._chosen
 UL.choiceMenu LI._chosen:hover
 { list-style-image: url("menu-check-hover.gif"); }
 
-.menu LI:hover, .menu LI.submenu-selected
+.menu LI:hover, .menu LI.selected, .menu LI.submenu-selected
 { background-color: #4b6983;
   color: #fff; }
 
