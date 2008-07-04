@@ -771,30 +771,42 @@ static NSDictionary *reportMap = nil;
   return [NSString stringWithFormat: @"%@:", command];
 }
 
-- (id) POSTAction: (id) localContext
+- (id) davPOSTRequest: (WORequest *) request
+      withContentType: (NSString *) cType
+	    inContext: (WOContext *) localContext
 {
   id obj;
-  NSString *cType, *command;
   id <DOMDocument> document;
   SEL commandSel;
-  WORequest *rq;
+  NSString *command;
 
   obj = nil;
 
+  if ([cType hasPrefix: @"application/xml"]
+      || [cType hasPrefix: @"text/xml"])
+    {
+      document = [request contentAsDOMDocument];
+      command = [[self _parseXMLCommand: document] davMethodToObjC];
+      commandSel = NSSelectorFromString (command);
+      if ([self respondsToSelector: commandSel])
+	obj = [self performSelector: commandSel withObject: localContext];
+    }
+
+  return obj;
+}
+
+- (id) POSTAction: (id) localContext
+{
+  WORequest *rq;
+  id obj;
+
   rq = [localContext request];
   if ([rq isSoWebDAVRequest])
-    {
-      cType = [rq headerForKey: @"content-type"];
-      if ([cType hasPrefix: @"application/xml"]
-	  || [cType hasPrefix: @"text/xml"])
-	{
-	  document = [rq contentAsDOMDocument];
-	  command = [[self _parseXMLCommand: document] davMethodToObjC];
-	  commandSel = NSSelectorFromString (command);
-	  if ([self respondsToSelector: commandSel])
-	    obj = [self performSelector: commandSel withObject: localContext];
-	}
-    }
+    obj = [self davPOSTRequest: rq
+		withContentType: [rq headerForKey: @"content-type"]
+		inContext: localContext];
+  else
+    obj = nil;
 
   return obj;
 }

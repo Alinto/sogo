@@ -1901,27 +1901,23 @@ _selectorForProperty (NSString *property)
   return [self _caldavScheduleResponse: tags];
 }
 
-- (id) POSTAction: (id) localContext
+- (id) davPOSTRequest: (WORequest *) request
+      withContentType: (NSString *) cType
+	    inContext: (WOContext *) localContext
 {
   id obj;
-  NSString *cType;
-  WORequest *rq;
   iCalCalendar *calendar;
 
-  obj = nil;
-
-  rq = [localContext request];
-  if ([rq isSoWebDAVRequest])
+  if ([cType hasPrefix: @"text/calendar"])
     {
-      cType = [rq headerForKey: @"content-type"];
-      if ([cType hasPrefix: @"text/calendar"])
-	{
-	  calendar
-	    = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-	  obj = [self caldavScheduleRequest: rq
-		      withCalendar: calendar];
-	}
+      calendar
+	= [iCalCalendar parseSingleFromSource: [request contentAsString]];
+      obj = [self caldavScheduleRequest: request
+		  withCalendar: calendar];
     }
+  else
+    obj = [super davPOSTRequest: request withContentType: cType
+		 inContext: localContext];
 
   return obj;
 }

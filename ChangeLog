@@ -1,3 +1,9 @@
+2008-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
+	-POSTAction:localContext]): take the content type as well as the
+	request and pass them as parameter to the new method below.
+
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

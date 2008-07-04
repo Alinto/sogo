@@ -52,6 +52,7 @@
 @class NSURL;
 
 @class WOContext;
+@class WORequest;
 @class GCSFolderManager;
 @class GCSFolder;
 
@@ -135,6 +136,10 @@
 - (NSString *) resourceURLForAdvisoryToUser: (NSString *) uid;
 
 - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext;
+
+- (id) davPOSTRequest: (WORequest *) request
+      withContentType: (NSString *) cType
+	    inContext: (WOContext *) localContext;
 
 /* dav acls */
 - (SOGoWebDAVValue *) davCurrentUserPrivilegeSet;
