@@ -44,7 +44,7 @@
   return [self labelForKey: @"Personal Calendar"];
 }
 
-#warning THIS CAUSES LIGHTNING TO FAIL (that's why its commented out)
+#warning THIS CAUSES LIGHTNING TO FAIL (that is why its commented out)
 // - (NSArray *) davComplianceClassesInContext: (id)_ctx
 // {
 //   NSMutableArray *classes;
