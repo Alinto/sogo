@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSKeyValueCoding.h>

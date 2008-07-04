@@ -24,6 +24,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSURL.h>
@@ -837,8 +838,7 @@ static NSArray *childRecordFields = nil;
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
   userRoles = [roles objectEnumerator];
-  currentRole = [userRoles nextObject];
-  while (currentRole)
+  while ((currentRole = [userRoles nextObject]))
     {
       SQL = [NSString stringWithFormat: @"INSERT INTO %@"
 		      @" (c_object, c_uid, c_role)"
@@ -846,7 +846,6 @@ static NSArray *childRecordFields = nil;
 		      [folder aclTableName],
 		      objectPath, uid, currentRole];
       [channel evaluateExpressionX: SQL];
-      currentRole = [userRoles nextObject];
     }
 
   [folder releaseChannel: channel];

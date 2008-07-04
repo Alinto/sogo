@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>

@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 

@@ -22,8 +22,10 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSRange.h>
 #import <Foundation/NSTimeZone.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <ctype.h>

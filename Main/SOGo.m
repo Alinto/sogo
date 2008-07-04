@@ -22,6 +22,7 @@
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSURL.h>

@@ -21,6 +21,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSPathUtilities.h>

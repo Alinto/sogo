@@ -24,18 +24,18 @@
 #define SOGOUSERFOLDER_APPOINTMENTS_H
 
 @class NSArray;
+@class NSString;
 
 #import <SOGo/SOGoUserFolder.h>
 
 @interface SOGoUserFolder (SOGoCalDAVSupport)
 
 - (NSArray *) davCalendarUserAddressSet;
-
-// - (NSArray *) davCalendarHomeSet
-// - (NSArray *) davCalendarScheduleInboxURL
-// - (NSString *) davCalendarScheduleOutboxURL
-// - (NSString *) davDropboxHomeURL
-// - (NSString *) davNotificationsURL
+- (NSArray *) davCalendarHomeSet;
+- (NSArray *) davCalendarScheduleInboxURL;
+- (NSString *) davCalendarScheduleOutboxURL;
+- (NSString *) davDropboxHomeURL;
+- (NSString *) davNotificationsURL;
 
 @end
 

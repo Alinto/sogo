@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 

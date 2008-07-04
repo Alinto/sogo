@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
@@ -267,7 +269,7 @@ static BOOL sendEMailNotifications = NO;
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
 
-  if (sendEMailNotifications 
+  if (sendEMailNotifications
       && [_newObject isStillRelevant])
     {
       count = [_attendees count];

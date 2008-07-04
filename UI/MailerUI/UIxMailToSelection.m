@@ -19,6 +19,9 @@
  02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
+
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGMail/NGMailAddress.h>

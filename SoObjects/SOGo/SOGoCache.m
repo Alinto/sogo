@@ -21,6 +21,8 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoObject.h>
 

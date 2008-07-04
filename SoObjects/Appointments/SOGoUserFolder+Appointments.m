@@ -21,11 +21,20 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SOGo/SOGoUser.h>
 
 #import "SOGoUserFolder+Appointments.h"
+
+@interface SOGoUserFolder (private)
+
+- (SOGoAppointmentFolders *) privateCalendars: (NSString *) key
+				    inContext: (WOContext *) localContext;
+
+@end
 
 @implementation SOGoUserFolder (SOGoCalDAVSupport)
 

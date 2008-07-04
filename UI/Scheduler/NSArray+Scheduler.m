@@ -21,8 +21,11 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSValue.h>
+
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "NSArray+Scheduler.h"

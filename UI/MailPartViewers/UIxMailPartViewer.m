@@ -21,6 +21,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>

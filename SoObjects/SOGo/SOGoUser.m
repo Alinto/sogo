@@ -20,6 +20,8 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h>

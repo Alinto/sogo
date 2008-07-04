@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>

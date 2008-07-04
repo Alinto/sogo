@@ -22,7 +22,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
+
 #import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoSecurityManager.h>

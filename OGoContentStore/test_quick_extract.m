@@ -21,6 +21,7 @@
 
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSProcessInfo.h>

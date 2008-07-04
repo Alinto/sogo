@@ -21,6 +21,8 @@
 
 #import <string.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import "NSString+NGCards.h"
