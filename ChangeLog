@@ -3,6 +3,9 @@
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject
 	-POSTAction:localContext]): take the content type as well as the
 	request and pass them as parameter to the new method below.
+	([SOGoObject
+	-davPOSTRequest:requestwithContentType:cTypeinContext:localContext]):
+	new method designed to handle POST requests on DAV objects.
 
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
