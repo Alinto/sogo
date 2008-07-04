@@ -1,3 +1,9 @@
+2008-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFoldersView.m ([WOActionResults
+	allContactSearchAction]): new method to search contacts among
+	all address books.
+
 2008-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m ([SOGoObject

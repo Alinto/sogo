@@ -296,7 +296,8 @@ SPAN.toolbarButton:active
 
 /* popups */
 
-.menu
+.menu,
+.popupMenu
 { visibility: hidden;
   position: absolute;
   z-index: 1000;
@@ -310,7 +311,11 @@ SPAN.toolbarButton:active
   border-right: 1px solid #424142;
   border-bottom: 1px solid #424142; }
 
-.menu UL
+.popupMenu
+{ background-color: #fff; }
+
+.menu UL,
+.popupMenu UL
 { cursor: default;
   list-style-type: none;
   list-style-image: none;
@@ -322,7 +327,8 @@ SPAN.toolbarButton:active
   border-right: 1px solid #9e9a92;
   border-bottom: 1px solid #9e9a92; }
 
-.menu LI
+.menu LI,
+.popupMenu LI
 { padding-left: 1em;
   padding-right: 1em;
   padding-top: .15em;
@@ -332,7 +338,9 @@ SPAN.toolbarButton:active
   white-space: nowrap; }
 
 .menu LI.disabled,
-.menu LI.disabled:hover
+.popuMenu LI.disabled,
+.menu LI.disabled:hover,
+.popupMenu LI.disabled:hover
 { color: #999; }
 
 .menu LI IMG
@@ -354,11 +362,14 @@ UL.choiceMenu LI._chosen
 UL.choiceMenu LI._chosen:hover
 { list-style-image: url("menu-check-hover.gif"); }
 
-.menu LI:hover, .menu LI.selected, .menu LI.submenu-selected
+.menu LI:hover,
+.menu LI.selected,
+.menu LI.submenu-selected
 { background-color: #4b6983;
   color: #fff; }
 
-.menu LI.separator, .menu LI.separator:hover
+.menu LI.separator,
+.menu LI.separator:hover
 { padding: 0px;
   margin: 2px 0px;
   height: 0px;
@@ -621,6 +632,8 @@ LI.denied
   font-style: italic;
   color: #f33; }
 
+.popupMenu LI:hover,
+.popupMenu LI.selected,
 LI._selected,
 TR._selected > TD,
 TD._selected

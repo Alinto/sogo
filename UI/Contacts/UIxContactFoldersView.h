@@ -24,6 +24,7 @@
 #define UIXCONTACTFOLDERSVIEW_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <Foundation/NSSortDescriptor.h>
 
 @interface UIxContactFoldersView : UIxComponent
 {

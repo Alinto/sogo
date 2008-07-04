@@ -17,6 +17,8 @@ var attendeesEditor = {
  states: null
 };
 
+/* address completion */
+
 function onContactKeydown(event) {
   if (event.ctrlKey || event.metaKey) {
     this.focussed = true;
@@ -55,50 +57,58 @@ function onContactKeydown(event) {
 	  hideMenu(document.currentPopupMenu);
       }
   }
-  else if (event.keyCode == 38) { // Up arrow
-    if (attendeesEditor.selectedIndex > 0) {
-      var attendees = $('attendeesMenu').select("li");
-      attendees[attendeesEditor.selectedIndex--].removeClassName("selected");
-      this.value = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
-      attendees[attendeesEditor.selectedIndex].addClassName("selected");
-    }
-  }
-  else if (event.keyCode == 40) { // Down arrow
-    var attendees = $('attendeesMenu').select("li");
-    if (attendees.size() - 1 > attendeesEditor.selectedIndex) {
-      if (attendeesEditor.selectedIndex >= 0)
-	attendees[attendeesEditor.selectedIndex].removeClassName("selected");
-      attendeesEditor.selectedIndex++;
-      this.value = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
-      attendees[attendeesEditor.selectedIndex].addClassName("selected");
-    }
-  }
   else if (event.keyCode == 13) {
     preventDefault(event);
     if (this.confirmedValue)
       this.value = this.confirmedValue;
+    if (this.uid)
+      this.blur(); // triggers checkAttendee function call
     $(this).selectText(0, this.value.length);
     if (document.currentPopupMenu)
       hideMenu(document.currentPopupMenu);
     attendeesEditor.selectedIndex = -1;
   }
+  else if ($('attendeesMenu').getStyle('visibility') == 'visible') {
+    attendeesEditor.currentField = this;
+    if (event.keyCode == 38) { // Up arrow
+      if (attendeesEditor.selectedIndex > 0) {
+	var attendees = $('attendeesMenu').select("li");
+	attendees[attendeesEditor.selectedIndex--].removeClassName("selected");
+	attendees[attendeesEditor.selectedIndex].addClassName("selected");
+	this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+	this.uid = attendees[attendeesEditor.selectedIndex].uid;
+      }
+    }
+    else if (event.keyCode == 40) { // Down arrow
+      var attendees = $('attendeesMenu').select("li");
+      if (attendees.size() - 1 > attendeesEditor.selectedIndex) {
+	if (attendeesEditor.selectedIndex >= 0)
+	  attendees[attendeesEditor.selectedIndex].removeClassName("selected");
+	attendeesEditor.selectedIndex++;
+	attendees[attendeesEditor.selectedIndex].addClassName("selected");
+	this.value = this.confirmedValue = attendees[attendeesEditor.selectedIndex].firstChild.nodeValue.trim();
+	this.uid = attendees[attendeesEditor.selectedIndex].uid;
+      }
+    }
+  }
 }
 
 function performSearch() {
-   if (attendeesEditor.currentField) {
-      if (document.contactLookupAjaxRequest) {
-         // Abort any pending request
-         document.contactLookupAjaxRequest.aborted = true;
-         document.contactLookupAjaxRequest.abort();
-      }
-      if (attendeesEditor.currentField.value.trim().length > 0) {
-         var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
-                        + escape(attendeesEditor.currentField.value) );
-         document.contactLookupAjaxRequest =
-            triggerAjaxRequest(urlstr, performSearchCallback, attendeesEditor.currentField);
-      }
-   }
-   attendeesEditor.delayedSearch = false;
+  // Perform address completion
+  if (attendeesEditor.currentField) {
+    if (document.contactLookupAjaxRequest) {
+      // Abort any pending request
+      document.contactLookupAjaxRequest.aborted = true;
+      document.contactLookupAjaxRequest.abort();
+    }
+    if (attendeesEditor.currentField.value.trim().length > 0) {
+      var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+		     + escape(attendeesEditor.currentField.value) );
+      document.contactLookupAjaxRequest =
+	triggerAjaxRequest(urlstr, performSearchCallback, attendeesEditor.currentField);
+    }
+  }
+  attendeesEditor.delayedSearch = false;
 }
 
 function performSearchCallback(http) {
@@ -111,6 +121,7 @@ function performSearchCallback(http) {
     if (http.status == 200) {
       var start = input.value.length;
       var data = http.responseText.evalJSON(true);
+
       if (data.length > 1) {
 	$(list.childNodesWithTag("li")).each(function(item) {
 	    item.remove();
@@ -163,6 +174,8 @@ function performSearchCallback(http) {
 	  input.confirmedValue = completeEmail;
 	  var end = input.value.length;
 	  $(input).selectText(start, end);
+
+	  attendeesEditor.selectedIndex = -1;
 	}
       }
     }

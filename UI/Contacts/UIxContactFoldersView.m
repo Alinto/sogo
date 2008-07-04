@@ -179,6 +179,52 @@
   return response;
 }
 
+- (id <WOActionResults>) allContactSearchAction
+{
+  id <WOActionResults> result;
+  id <SOGoContactFolder> folder;
+  NSString *searchText;
+  NSArray *folders, *contacts, *descriptors, *sortedContacts;
+  NSMutableArray *allContacts;
+  unsigned int i;
+  NSSortDescriptor *displayNameDescriptor;
+
+  searchText = [self queryParameterForKey: @"search"];
+  if ([searchText length] > 0)
+    {
+      folders = [[self clientObject] subFolders];
+      allContacts = [NSMutableArray new];
+      for (i = 0; i < [folders count]; i++) {
+	folder = [folders objectAtIndex: i];
+	//NSLog(@"Address book: %@ (%@)", [folder displayName], [folder class]);
+	contacts = [folder lookupContactsWithFilter: searchText
+		    sortBy: @"displayName"
+		    ordering: NSOrderedAscending];
+	if ([contacts count] > 0) {
+	  [allContacts addObjectsFromArray: contacts];
+	}
+      }
+
+      result = [context response];
+      if ([allContacts count] > 0) {
+	// Sort the contacts by display name
+	displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
+				  ascending:YES] autorelease];
+	descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
+	sortedContacts = [allContacts sortedArrayUsingDescriptors:descriptors];
+	
+	[(WOResponse*)result appendContentString: [sortedContacts jsonRepresentation]];
+      }
+      else
+	[(WOResponse*)result setStatus: 404];
+    }
+  else
+    result = [NSException exceptionWithHTTPStatus: 400
+                          reason: @"missing 'search' parameter"];  
+
+  return result;
+}
+
 - (id <WOActionResults>) contactSearchAction
 {
   NSString *contact;

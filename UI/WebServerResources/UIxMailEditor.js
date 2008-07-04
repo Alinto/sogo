@@ -289,6 +289,8 @@ function onTextMouseDown(event) {
   }
 }
 
+/* address completion */
+
 function onContactKeydown(event) {
   if (event.ctrlKey || event.metaKey) {
     this.focussed = true;
@@ -316,24 +318,6 @@ function onContactKeydown(event) {
 	  hideMenu(document.currentPopupMenu);
       }
   }
-  else if (event.keyCode == 38) { // Up arrow
-    if (MailEditor.selectedIndex > 0) {
-      var contacts = $('contactsMenu').select("li");
-      contacts[MailEditor.selectedIndex--].removeClassName("selected");
-      this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
-      contacts[MailEditor.selectedIndex].addClassName("selected");
-    }
-  }
-  else if (event.keyCode == 40) { // Down arrow
-    var contacts = $('contactsMenu').select("li");
-    if (contacts.size() - 1 > MailEditor.selectedIndex) {
-      if (MailEditor.selectedIndex >= 0)
-	contacts[MailEditor.selectedIndex].removeClassName("selected");
-      MailEditor.selectedIndex++;
-      this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
-      contacts[MailEditor.selectedIndex].addClassName("selected");
-    }
-  }
   else if (event.keyCode == 13) {
     preventDefault(event);
     if (this.confirmedValue)
@@ -342,6 +326,26 @@ function onContactKeydown(event) {
     if (document.currentPopupMenu)
       hideMenu(document.currentPopupMenu);
     MailEditor.selectedIndex = -1;
+  }
+  else if ($('contactsMenu').getStyle('visibility') == 'visible') {
+    if (event.keyCode == 38) { // Up arrow
+      if (MailEditor.selectedIndex > 0) {
+	var contacts = $('contactsMenu').select("li");
+	contacts[MailEditor.selectedIndex--].removeClassName("selected");
+	this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+	contacts[MailEditor.selectedIndex].addClassName("selected");
+      }
+    }
+    else if (event.keyCode == 40) { // Down arrow
+      var contacts = $('contactsMenu').select("li");
+      if (contacts.size() - 1 > MailEditor.selectedIndex) {
+	if (MailEditor.selectedIndex >= 0)
+	  contacts[MailEditor.selectedIndex].removeClassName("selected");
+	MailEditor.selectedIndex++;
+	this.value = contacts[MailEditor.selectedIndex].firstChild.nodeValue.trim();
+	contacts[MailEditor.selectedIndex].addClassName("selected");
+      }
+    }
   }
 }
 
@@ -354,7 +358,7 @@ function performSearch() {
       document.contactLookupAjaxRequest.abort();
     }
     if (MailEditor.currentField.value.trim().length > 0) {
-      var urlstr = ( UserFolderURL + "Contacts/contactSearch?search="
+      var urlstr = ( UserFolderURL + "Contacts/allContactSearch?search="
 		     + escape(MailEditor.currentField.value) );
       document.contactLookupAjaxRequest =
 	triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
@@ -371,20 +375,21 @@ function performSearchCallback(http) {
     var input = http.callbackData;
     
     if (http.status == 200) {
-      var start = input.value.length; log(http.responseText);
+      var start = input.value.length;
       var data = http.responseText.evalJSON(true);
+      
       if (data.length > 1) {
-	$(list.childNodesWithTag("li")).each(function(item) {
+	list.select("li").each(function(item) {
 	    item.remove();
 	  });
 	
 	// Populate popup menu
 	for (var i = 0; i < data.length; i++) {
 	  var contact = data[i];
-	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
+	  var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
 	  var node = document.createElement("li");
 	  list.appendChild(node);
-	  node.uid = contact["uid"];
+	  node.uid = contact["c_uid"];
 	  node.appendChild(document.createTextNode(completeEmail));
 	  $(node).observe("mousedown", onAddressResultClick);
 	}
@@ -413,18 +418,21 @@ function performSearchCallback(http) {
 	if (data.length == 1) {
 	  // Single result
 	  var contact = data[0];
-	  if (contact["uid"].length > 0)
-	    input.uid = contact["uid"];
-	  var completeEmail = contact["name"] + " <" + contact["email"] + ">";
-	  if (contact["name"].substring(0, input.value.length).toUpperCase()
+	  if (contact["c_uid"].length > 0)
+	    input.uid = contact["c_uid"];
+	  var completeEmail = contact["displayName"] + " <" + contact["mail"] + ">";
+	  if (contact["displayName"].substring(0, input.value.length).toUpperCase()
 	      == input.value.toUpperCase())
 	    input.value = completeEmail;
 	  else
 	    // The result matches email address, not user name
 	    input.value += ' >> ' + completeEmail;
 	  input.confirmedValue = completeEmail;
+	  
 	  var end = input.value.length;
 	  $(input).selectText(start, end);
+
+	  MailEditor.selectedIndex = -1;
 	}
       }
     }

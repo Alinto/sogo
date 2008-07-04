@@ -22,6 +22,11 @@
               pageName    = "UIxContactFoldersView";
               actionName  = "contactSearch";
            };
+           allContactSearch = {
+              protectedBy = "<public>";
+              pageName    = "UIxContactFoldersView";
+              actionName  = "allContactSearch";
+           };
            updateAdditionalAddressBooks = {
               protectedBy = "View";
               pageName    = "UIxContactFoldersView";
