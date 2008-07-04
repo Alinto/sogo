@@ -50,7 +50,6 @@
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 // #import <NGObjWeb/SoClassSecurityInfo.h>
@@ -1057,6 +1056,10 @@ _selectorForProperty (NSString *property)
 }
 
 #warning We need to use the new DAV utilities here...
+#warning this is baddddd because we return a single-valued dictionary containing \
+  a cname which may not event exist... the logic behind appendObject:... should be \
+  rethought, especially since we may start using SQL views
+
 - (void) appendObject: (NSDictionary *) object
 	   properties: (NSString **) properties
           withBaseURL: (NSString *) baseURL
@@ -1272,10 +1275,6 @@ _selectorForProperty (NSString *property)
 
   return additionalFilter;
 }
-
-#warning this is baddddd because we return a single-valued dictionary containing \
-  a cname which may not event exist... the logic behind appendObject:... should be \
-  rethought, especially since we may start using SQL views
 
 - (NSString *) davCalendarColor
 {
@@ -1717,19 +1716,15 @@ _selectorForProperty (NSString *property)
   NSDictionary *responseElement;
   NSMutableArray *elements;
   NSString *recipient;
-  unsigned int count, max;
+  NSEnumerator *allRecipients;
   NSCalendarDate *startDate, *endDate;
 
   elements = [NSMutableArray new];
   [freebusy fillStartDate: &startDate andEndDate: &endDate];
-  max = [recipients count];
-  for (count = 0; count < max; count++)
-    {
-      recipient = [recipients objectAtIndex: count];
-      [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
-				 from: startDate to: endDate]];
-    }
-   
+  allRecipients = [recipients objectEnumerator];
+  while ((recipient = [allRecipients nextObject]))
+    [elements addObject: [self caldavFreeBusyRequestOnRecipient: recipient
+			       from: startDate to: endDate]];
   responseElement = davElementWithContent (@"schedule-response",
 					   XMLNS_CALDAV, elements);
   [elements release];
@@ -1737,47 +1732,22 @@ _selectorForProperty (NSString *property)
   return responseElement;
 }
 
-- (NSDictionary *) _postCalDAVEventRequest: (iCalEvent *) event
+- (NSDictionary *) _postCalDAVEventRequest: (NSString *) iCalString
+				   withUID: (NSString *) uid
 					to: (NSArray *) recipients
 {
-  NSString *filename, *iCalString;
+  NSString *filename;
   SOGoAppointmentObject *apt;
   NSDictionary *responseElement;
-  NSMutableArray *elements, *content;
-  NSString *recipient;
-  unsigned int count, max;
+  NSMutableArray *elements;
 
-  apt = [self lookupComponentByUID: [event uid]];
-  if (!apt)
-    {
-      filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
-      iCalString = [[event parent] versitString];
-      apt = [self _createChildComponentWithName: filename
-		  andContent: iCalString];
-    }
-#warning cleanup: add a method to POST requests from CalDAV from SOGoAppointmentObject
-  [apt saveComponent: event];
-
-  elements = [NSMutableArray new];
-  max = [recipients count];
-  for (count = 0; count < max; count++)
-    {
-      /* this is a fake success status */
-      recipient = [recipients objectAtIndex: count];
-      content = [NSMutableArray new];
-      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
-						 recipient)];
-      [content addObject: davElementWithContent (@"request-status",
-						 XMLNS_CALDAV,
-						 @"2.0;Success")];
-      [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
-						  content)];
-      [content release];
-    }
-
+  filename = [NSString stringWithFormat: @"%@.ics", uid];
+  apt = [SOGoAppointmentObject objectWithName: filename
+			       andContent: iCalString
+			       inContainer: self];
+  elements = [apt postCalDAVEventRequestTo: recipients];
   responseElement = davElementWithContent (@"schedule-response",
 					   XMLNS_CALDAV, elements);
-  [elements release];
 
   return responseElement;
 }
@@ -1829,6 +1799,7 @@ _selectorForProperty (NSString *property)
 }
 
 - (NSDictionary *) caldavEventRequest: (iCalEvent *) event
+			  withContent: (NSString *) iCalString
 				 from: (NSString *) originator
 				   to: (NSArray *) recipients
 {
@@ -1837,10 +1808,12 @@ _selectorForProperty (NSString *property)
 
   method = [[event parent] method];
   if ([method isEqualToString: @"REQUEST"])
-    responseElement = [self _postCalDAVEventRequest: event
+    responseElement = [self _postCalDAVEventRequest: iCalString
+			    withUID: [event uid]
 			    to: recipients];
   else if ([method isEqualToString: @"REPLY"])
     responseElement = [self _postCalDAVEventReply: event
+			    withUID: [event uid]
 			    from: originator];
   else
     responseElement = nil;
@@ -1869,34 +1842,28 @@ _selectorForProperty (NSString *property)
   return response;
 }
 
-- (WOResponse *) caldavScheduleRequest: (WORequest *) rq
-			  withCalendar: (iCalCalendar *) calendar
+- (WOResponse *) caldavScheduleRequest: (NSString *) iCalString
+				  from: (NSString *) originator
+				    to: (NSArray *) recipients
 {
-  NSString *tag, *originator;
-  NSArray *recipients, *elements;
+  NSString *tag;
+  iCalCalendar *calendar;
   iCalEntityObject *element;
   NSDictionary *tags;
 
-  elements = [calendar allObjects];
-  if ([elements count])
-    {
-      element = [elements objectAtIndex: 0];
-      originator = [rq headerForKey: @"originator"];
-      recipients = [[rq headerForKey: @"recipient"]
-		     componentsSeparatedByString: @", "];
-      tag = [[element tag] uppercaseString];
-      if ([tag isEqualToString: @"VFREEBUSY"])
-	tags = [self caldavFreeBusyRequest: (iCalFreeBusy *) element
-		     from: originator
-		     to: recipients];
-      else if ([tag isEqualToString: @"VEVENT"])
-	tags = [self caldavEventRequest: (iCalEvent *) element
-		     from: originator
-		     to: recipients];
-      else
-	tags = nil;
 #warning needs to handle errors
-    }
+  calendar = [iCalCalendar parseSingleFromSource: iCalString];
+  element = [[calendar allObjects] objectAtIndex: 0];
+  tag = [[element tag] uppercaseString];
+  if ([tag isEqualToString: @"VFREEBUSY"])
+    tags = [self caldavFreeBusyRequest: (iCalFreeBusy *) element
+		 from: originator to: recipients];
+  else if ([tag isEqualToString: @"VEVENT"])
+    tags = [self caldavEventRequest: (iCalEvent *) element
+		 withContent: iCalString
+		 from: originator to: recipients];
+  else
+    tags = nil;
 
   return [self _caldavScheduleResponse: tags];
 }
@@ -1906,14 +1873,16 @@ _selectorForProperty (NSString *property)
 	    inContext: (WOContext *) localContext
 {
   id obj;
-  iCalCalendar *calendar;
+  NSString *originator;
+  NSArray *recipients;
 
   if ([cType hasPrefix: @"text/calendar"])
     {
-      calendar
-	= [iCalCalendar parseSingleFromSource: [request contentAsString]];
-      obj = [self caldavScheduleRequest: request
-		  withCalendar: calendar];
+      originator = [request headerForKey: @"originator"];
+      recipients = [[request headerForKey: @"recipient"]
+		     componentsSeparatedByString: @", "];
+      obj = [self caldavScheduleRequest: [request contentAsString]
+		  from: originator to: recipients];
     }
   else
     obj = [super davPOSTRequest: request withContentType: cType
@@ -2023,7 +1992,8 @@ _selectorForProperty (NSString *property)
 
   if (uid && folder)
     {
-      qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_uid = %@", uid];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_uid = %@",
+			       uid];
       records = [folder fetchFields: nameFields matchingQualifier: qualifier];
       count = [records count];
       if (count)
@@ -2031,7 +2001,8 @@ _selectorForProperty (NSString *property)
 	  filename = [[records objectAtIndex:0] valueForKey:@"c_name"];
 	  if (count > 1)
 	    [self errorWithFormat:
-		    @"The storage contains more than file with UID '%@'", uid];
+		    @"The storage contains more than file with UID '%@'",
+		  uid];
 	}
     }
 

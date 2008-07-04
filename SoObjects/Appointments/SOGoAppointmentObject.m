@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -31,6 +31,7 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
+#import <SaxObjC/XMLNamespaces.h>
 
 #import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
 #import <SoObjects/SOGo/LDAPUserManager.h>
@@ -400,6 +401,47 @@
     }
 
   return ex;
+}
+
+- (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients
+{
+  NSMutableArray *elements, *element;
+  NSEnumerator *recipientsEnum;
+  NSString *recipient, *uid;
+  iCalEvent *event;
+  iCalPerson *person;
+
+  elements = [NSMutableArray array];
+  event = [self component: NO secure: NO];
+  recipientsEnum = [recipients objectEnumerator];
+  while ((recipient = [recipientsEnum nextObject]))
+    {
+      if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
+	{
+	  person = [iCalPerson new];
+	  [person setValue: 0 to: recipient];
+	  uid = [person uid];
+	  if (uid)
+	    [self _addOrUpdateEvent: event forUID: uid];
+#warning fix this when sendEmailUsing blabla has been cleaned up
+	  [self sendEMailUsingTemplateNamed: @"Invitation"
+		forOldObject: nil
+		andNewObject: event
+		toAttendees: [NSArray arrayWithObject: person]];
+	  [person release];
+	  element = [NSMutableArray new];
+	  [element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+						     recipient)];
+	  [element addObject: davElementWithContent (@"request-status",
+						     XMLNS_CALDAV,
+						     @"2.0;Success")];
+	  [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
+						      element)];
+	  [element release];
+	}
+    }
+
+  return elements;
 }
 
 - (NSException *) changeParticipationStatus: (NSString *) _status

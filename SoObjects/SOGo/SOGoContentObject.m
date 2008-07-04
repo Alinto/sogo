@@ -41,12 +41,26 @@
 
 @implementation SOGoContentObject
 
-+ (SOGoContentObject *) objectWithRecord: (NSDictionary *) objectRecord
-			     inContainer: (SOGoGCSFolder *) newContainer
++ (id) objectWithRecord: (NSDictionary *) objectRecord
+	    inContainer: (SOGoGCSFolder *) newContainer
 {
   SOGoContentObject *newObject;
 
   newObject = [[self alloc] initWithRecord: objectRecord
+			    inContainer: newContainer];
+  [newObject autorelease];
+
+  return newObject;
+}
+
++ (id) objectWithName: (NSDictionary *) objectRecord
+	   andContent: (NSString *) newContent
+	  inContainer: (SOGoGCSFolder *) newContainer
+{
+  SOGoContentObject *newObject;
+
+  newObject = [[self alloc] initWithName: objectRecord
+			    andContent: newContent
 			    inContainer: newContainer];
   [newObject autorelease];
 
@@ -68,7 +82,6 @@
 
   return self;
 }
-
 
 - (void) _setRecord: (NSDictionary *) objectRecord
 {
@@ -96,9 +109,21 @@
   NSString *newName;
 
   newName = [objectRecord objectForKey: @"c_name"];
-  if ((self = [super initWithName: newName inContainer: newContainer]))
+  if ((self = [self initWithName: newName inContainer: newContainer]))
     {
       [self _setRecord: objectRecord];
+    }
+
+  return self;
+}
+
+- (id) initWithName: (NSString *) newName
+	 andContent: (NSString *) newContent
+	inContainer: (id) newContainer
+{
+  if ((self = [self initWithName: newName inContainer: newContainer]))
+    {
+      ASSIGN (content, newContent);
     }
 
   return self;

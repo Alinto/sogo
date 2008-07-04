@@ -39,10 +39,16 @@
   NSCalendarDate *lastModified;
 }
 
-+ (SOGoContentObject *) objectWithRecord: (NSDictionary *) objectRecord
-			     inContainer: (SOGoGCSFolder *) newContainer;
++ (id) objectWithRecord: (NSDictionary *) objectRecord
+	    inContainer: (SOGoGCSFolder *) newContainer;
++ (id) objectWithName: (NSString *) newName
+	   andContent: (NSString *) newContent
+	  inContainer: (SOGoGCSFolder *) newContainer;
 - (id) initWithRecord: (NSDictionary *) objectRecord
 	  inContainer: (id) newContainer;
++ (id) initWithName: (NSString *) newName
+	 andContent: (NSString *) newContent
+	inContainer: (SOGoGCSFolder *) newContainer;
 
 /* content */
 
