@@ -24,7 +24,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-
 #import <SaxObjC/SaxXMLReader.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
 
@@ -70,9 +69,7 @@ static NGCardsSaxHandler *sax = nil;
 + (NSArray *) parseFromSource: (id) source
 {
   static id <NSObject,SaxXMLReader> cardParser;
-  NSMutableArray *cardGroups;
-  NSEnumerator *cards;
-  CardGroup *currentCard;
+  NSArray *cardGroups;
 
   cardGroups = nil;
 
@@ -83,18 +80,9 @@ static NGCardsSaxHandler *sax = nil;
 
       if (parser)
 	{
-	  cardGroups = [NSMutableArray new];
-	  [cardGroups autorelease];
-	  
 	  [parser parseFromSource: source];
-	  cards = [[sax cards] objectEnumerator];
-	  
-	  currentCard = [cards nextObject];
-	  while (currentCard)
-	    {
-	      [cardGroups addObject: currentCard];
-	      currentCard = [cards nextObject];
-	    }
+
+	  cardGroups = [sax cards];
 	}
     }
 

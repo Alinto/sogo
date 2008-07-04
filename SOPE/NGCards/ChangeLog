@@ -1,3 +1,8 @@
+2008-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup +parseFromSource:source]): directly
+	return the result from [sax cards] instead of creating a new array.
+
 2008-07-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEvent.m ([iCalEvent -endDate]): if no DTEND is specified,
