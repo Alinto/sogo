@@ -124,20 +124,12 @@
 
 - (void) setTag: (NSString *) aTag
 {
-  if (tag)
-    [tag release];
-  tag = aTag;
-  if (tag)
-    [tag retain];
+  ASSIGN (tag, aTag);
 }
 
 - (void) setGroup: (NSString *) aGroup
 {
-  if (group)
-    [group release];
-  group = aGroup;
-  if (group)
-    [group retain];
+  ASSIGN (group, aGroup);
 }
 
 - (NSString *) group
@@ -147,6 +139,8 @@
 
 - (void) addValue: (NSString *) aValue
 {
+  if (!aValue)
+    aValue = @"";
   [values addObject: aValue];
 }
 
@@ -156,9 +150,12 @@
 }
 
 - (void) addAttribute: (NSString *) anAttribute
-                value: (NSString *) aType
+                value: (NSString *) aValue
 {
   NSMutableArray *attrValues;
+
+  if (!aValue)
+    aValue = @"";
 
   attrValues = [attributes objectForCaseInsensitiveKey: anAttribute];
   if (!attrValues)
@@ -168,7 +165,7 @@
       [attributes setObject: attrValues forKey: anAttribute];
     }
 
-  [attrValues addObject: aType];
+  [attrValues addObject: aValue];
 }
 
 - (void) removeValue: (NSString *) aValue
@@ -176,6 +173,9 @@
 {
   NSMutableArray *attrValues;
   NSString *currentValue;
+
+  if (!aValue)
+    aValue = @"";
 
   attrValues = [attributes objectForCaseInsensitiveKey: anAttribute];
   if (attrValues)
@@ -243,8 +243,14 @@
 - (void) setValue: (unsigned int) anInt
                to: (NSString *) aValue
 {
-  while ([values count] <= anInt)
+  unsigned int count, max;
+
+  if (!aValue)
+    aValue = @"";
+  max = [values count];
+  for (count = max; count <= anInt; count++)
     [self addValue: @""];
+
   [values replaceObjectAtIndex: anInt withObject: aValue];
 }
 
@@ -307,6 +313,8 @@
   NSString *newValue;
   unsigned int index;
 
+  if (!aValue)
+    aValue = @"";
   newValue = [NSString stringWithFormat: @"%@=%@",
                        [aValueName uppercaseString],
                        aValue];
@@ -347,6 +355,9 @@
                to: (NSString *) aValue
 {
   NSMutableArray *attrValues;
+
+  if (!aValue)
+    aValue = @"";
 
   attrValues = [attributes objectForCaseInsensitiveKey: anAttribute];
   if (!attrValues)

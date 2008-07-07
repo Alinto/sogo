@@ -1,3 +1,13 @@
+2008-07-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardElement.m ([CardElement -addValue:aValue])
+	([CardElement -addAttribute:anAttributevalue:aValue])
+	([CardElement -removeValue:aValuefromAttribute:anAttribute])
+	([CardElement -setValue:anIntto:aValue])
+	([CardElement -setNamedValue:aValueNameto:aValue])
+	([CardElement -setValue:anIntofAttribute:anAttributeto:aValue]):
+	if aValue is nil, set it to an empty string.
+
 2008-07-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m ([CardGroup +parseFromSource:source]): directly
