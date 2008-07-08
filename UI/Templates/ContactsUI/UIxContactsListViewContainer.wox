@@ -77,6 +77,7 @@
 	  <var:foreach list="contactFolders" item="currentFolder"
 	    ><li var:id="currentContactFolderId"
 	      var:owner="currentContactFolderOwner"
+	      var:class="currentContactFolderClass"
 	      ><var:string value="currentContactFolderName" /></li
 	      ></var:foreach
 	    >

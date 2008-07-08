@@ -98,7 +98,7 @@
 	   };
         };
      };
-
+     
      SOGoContactLDAPFolder = {
         slots = {
            toolbar = {
@@ -108,24 +108,24 @@
         };
         methods = {
            view = {
-	      protectedBy = "<public>";
+              protectedBy = "<public>";
               pageName    = "UIxContactsListView";
            };
            new = {
-	      protectedBy = "<public>";
+              protectedBy = "<public>";
               pageName    = "UIxContactEditor";
               actionName  = "new";
            };
            mailer-contacts = {
-	      protectedBy = "<public>";
+              protectedBy = "<public>";
               pageName    = "UIxContactsListView";
               actionName = "mailerContacts";
            };
-	   canAccessContent = {
-	      protectedBy = "<public>";
-	      actionClass = "UIxFolderActions";
-	      actionName = "canAccessContent";
-	   };
+           canAccessContent = {
+              protectedBy = "<public>";
+              actionClass = "UIxFolderActions";
+              actionName = "canAccessContent";
+           };
         };
      };
 

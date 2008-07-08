@@ -54,18 +54,18 @@
 
 /* name lookup */
 
-- (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId
-{
-  SOGoContactGCSEntry *contact;
-
-  if ([recordId length] > 0)
-    contact = [SOGoContactGCSEntry objectWithName: recordId
-                                   inContainer: self];
-  else
-    contact = nil;
-
-  return contact;
-}
+//- (id <SOGoContactObject>) lookupContactWithId: (NSString *) recordId
+//{
+//  SOGoContactGCSEntry *contact;
+//
+//  if ([recordId length] > 0)
+//    contact = [SOGoContactGCSEntry objectWithName: recordId
+//                                   inContainer: self];
+//  else
+//    contact = nil;
+//
+//  return contact;
+//}
 
 - (Class) objectClassForContent: (NSString *) content
 {

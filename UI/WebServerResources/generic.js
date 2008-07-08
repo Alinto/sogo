@@ -221,9 +221,9 @@ function openMailComposeWindow(url, wId) {
     parentWindow = window.opener;
 
   var w = parentWindow.open(url, wId,
-                      "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-                      + "location=0,directories=0,status=0,menubar=0"
-                      + ",copyhistory=0");
+			    "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+			    + "location=0,directories=0,status=0,menubar=0"
+			    + ",copyhistory=0");
 
   w.focus();
 
@@ -514,7 +514,7 @@ function acceptMultiSelect(node) {
 function onRowClick(event) {
   var node = getTarget(event);
   var rowIndex = null;
-
+   
   if (node.tagName == 'TD') {
     node = node.parentNode; // select TR
     rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  
@@ -524,27 +524,29 @@ function onRowClick(event) {
     var list = node.parentNode;
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
-       if (items[i] == node) {
-          rowIndex = i;
-          break;
+      if (items[i] == node) {
+	rowIndex = i;
+	break;
       }
     }
   }
-
+   
   var initialSelection = $(node.parentNode).getSelectedNodes();
+   
   if (initialSelection.length > 0 
       && initialSelection.indexOf(node) >= 0
-      && !Event.isLeftClick(event))
+      && (!isSafari() && !Event.isLeftClick(event) ||
+	  isSafari() && event.ctrlKey == 1)) // Event.isLeftClick is not supported in Safari
     // Ignore non primary-click (ie right-click) inside current selection
     return true;
-  
-  if ((event.shiftKey == 1 || event.ctrlKey == 1)
+   
+  if ((event.shiftKey == 1 || event.metaKey == 1)
       && (lastClickedRow >= 0)
       && (acceptMultiSelect(node.parentNode)
 	  || acceptMultiSelect(node.parentNode.parentNode))) {
-    if (event.shiftKey)
+    if (event.shiftKey) {
       $(node.parentNode).selectRange(lastClickedRow, rowIndex);
-    else if (isNodeSelected(node) == true) {
+    } else if (isNodeSelected(node)) {
       $(node).deselect();
     } else {
       $(node).selectElement();
@@ -554,7 +556,7 @@ function onRowClick(event) {
     // Single line selection
     $(node.parentNode).deselectAll();
     $(node).selectElement();
-  
+      
     if (initialSelection != $(node.parentNode).getSelectedNodes()) {
       // Selection has changed; fire mousedown event
       var parentNode = node.parentNode;
@@ -564,13 +566,11 @@ function onRowClick(event) {
     }
   }
   lastClickedRow = rowIndex;
-  
+   
   return true;
 }
 
 /* popup menus */
-
-// var acceptClick = false;
 
 function popupMenu(event, menuId, target) {
   document.menuTarget = target;
@@ -614,7 +614,7 @@ function popupMenu(event, menuId, target) {
 
   $(document.body).observe("click", onBodyClickMenuHandler);
 
-  preventDefault(event);
+  Event.stop(event);
 }
 
 function getParentMenu(node) {
@@ -1131,7 +1131,6 @@ function getListIndexForFolder(items, owner, folderName) {
 
 function listRowMouseDownHandler(event) {
   preventDefault(event);
-  //Event.stop(event); 
 }
 
 /* tabs */
@@ -1387,16 +1386,6 @@ function onLoadHandler(event) {
   if (progressImage)
     progressImage.parentNode.removeChild(progressImage);
   $(document.body).observe("contextmenu", onBodyClickContextMenu);
- /* $(document.body).observe("click", testclic); */
-}
-
-function testclic(event) {
-log("test: " + event.target);
-if (event.target) {
-log("tag: " + event.target.tagName);
-log("id: " + event.target.getAttribute("id"));
-log("class: " + event.target.getAttribute("class"));
-}
 }
 
 function onBodyClickContextMenu(event) {

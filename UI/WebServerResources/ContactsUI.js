@@ -87,10 +87,10 @@ function contactsListCallback(http) {
 	var tmp = document.createElement('div');
 	$(tmp).update(html);
 	table.replaceChild($(tmp).select("table tbody")[0], tbody);
-
+         
 	var rows = table.tBodies[0].rows;
 	for (var i = 0; i < rows.length; i++) {
-          var row = $(rows[i]);
+	  var row = $(rows[i]);
 	  row.observe("mousedown", onRowClick);
 	  row.observe("dblclick", onContactRowDblClick);
 	  row.observe("selectstart", listRowMouseDownHandler);
@@ -105,7 +105,7 @@ function contactsListCallback(http) {
 	configureSortableTableHeaders(table);
 	TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
       }
-
+      
       if (sorting["attribute"] && sorting["attribute"].length > 0) {
 	var sortHeader;
 	if (sorting["attribute"] == "displayName")
@@ -120,13 +120,13 @@ function contactsListCallback(http) {
 	  sortHeader = $("phoneHeader");
 	else
 	  sortHeader = null;
-       
+         
 	if (sortHeader) {
 	  var sortImages = $(table.tHead).select(".sortImage");
 	  $(sortImages).each(function(item) {
 	      item.remove();
 	    });
-
+            
 	  var sortImage = createElement("img", "messageSortImage", "sortImage");
 	  sortHeader.insertBefore(sortImage, sortHeader.firstChild);
 	  if (sorting["ascending"])
@@ -135,7 +135,7 @@ function contactsListCallback(http) {
 	    sortImage.src = ResourcesURL + "/title_sortup_12x12.png";
 	}
       }
-
+      
       var selected = http.callbackData;
       if (selected) {
 	for (var i = 0; i < selected.length; i++) {
@@ -179,16 +179,8 @@ function onAddressBooksContextMenu(event) {
 
 function onContactContextMenu(event) {
   var menu = $("contactMenu");
-  var topNode = $('contactsList');
-  var selectedNodes = topNode.getSelectedRows();
-
-  if (selectedNodes.length > 1) {
-    // TODO: Add support for selection of multiple contacts
-  }
-  else {
-    menu.observe("hideMenu", onContactContextMenuHide);
-    popupMenu(event, "contactMenu", this);
-  }
+  menu.observe("hideMenu", onContactContextMenuHide);
+  popupMenu(event, "contactMenu", this);
 }
 
 function onContactContextMenuHide(event) {
@@ -260,8 +252,10 @@ function contactLoadCallback(http) {
     cachedContacts[currentAddressBook + "/" + http.callbackData] = content;
     div.innerHTML = content;
   }
-  else
+  else {
     log ("ajax problem 2: " + http.status);
+    refreshCurrentFolder();
+  }
 }
 
 var rowSelectionCount = 0;
@@ -315,17 +309,11 @@ function onContactSelectionChange(event) {
 }
 
 function onMenuEditContact(event) {
-  var contactId = document.menuTarget.getAttribute('id');
-
-  openContactWindow(URLForFolderID(currentAddressBook)
-		    + "/" + contactId + "/edit", contactId);
+  onToolbarEditSelectedContacts(event);
 }
 
 function onMenuWriteToContact(event) {
-  var contactId = document.menuTarget.getAttribute('id');
-
-  openMailComposeWindow(ApplicationBaseURL + currentAddressBook
-			+ "/" + contactId + "/write");
+  onToolbarWriteToSelectedContacts(event);
 
   if (document.body.hasClassName("popup"))
     window.close();
@@ -339,7 +327,7 @@ function onMenuAIMContact(event) {
 }
 
 function onMenuDeleteContact(event) {
-  uixDeleteSelectedContacts(this);
+  onToolbarDeleteSelectedContacts(event);
 }
 
 function onToolbarEditSelectedContacts(event) {
@@ -369,65 +357,46 @@ function onToolbarWriteToSelectedContacts(event) {
     return false;
   }
 
-  for (var i = 0; i < rows.length; i++) {
-    var emailCell = $(rows[i]).down('td', 1);
-    if (emailCell.firstChild) { // .nodeValue is the contact email address
-      rowsWithEmail++;
-      openMailComposeWindow(ApplicationBaseURL + currentAddressBook
-			    + "/" + rows[i] + "/write");
-    }
-  }
+  openMailComposeWindow(ApplicationBaseURL + "../Mail/compose"
+			+ "?folder=" + currentAddressBook.substring(1)
+			+ "&uid=" + rows.join("&uid="));
 
-  if (rowsWithEmail == 0) {
-    window.alert(labels["The selected contact has no email address."]);
-  }
-  else if (document.body.hasClassName("popup"))
+  if (document.body.hasClassName("popup"))
     window.close();
-
+  
   return false;
 }
 
-function uixDeleteSelectedContacts(sender) {
-  var failCount = 0;
+function onToolbarDeleteSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
-
+   
   if (rows.length == 0) {
     window.alert(labels["Please select a contact."]);
     return false;
   }
-
+   
   var contactView = $('contactView');
-
+   
   for (var i = 0; i < rows.length; i++) {
-    var url, http, rowElem;
-    
-    /* send AJAX request (synchronously) */
-    
+    var url;
     url = (URLForFolderID(currentAddressBook) + "/"
 	   + rows[i] + "/delete");
-    http = createHTTPClient();
-    http.open("POST", url, false /* not async */);
-    http.send("");
-    http.setRequestHeader("Content-Length", 0);
-    if (http.status != 200) { /* request failed */
-      failCount++;
-      http = null;
-      continue;
-    }
-    http = null;
-
-    /* remove from page */
-
-    /* line-through would be nicer, but hiding is OK too */
-    rowElem = $(rows[i]);
-    rowElem.parentNode.removeChild(rowElem);
+    new Ajax.Request(url, {
+      method: 'post',
+      onFailure: function(transport) {
+	  log("Ajax error: can't delete contact");
+	  refreshCurrentFolder();
+	},
+      onSuccess: function(transport) {
+	  var row = $(transport.responseText.trim());
+	  if (row)
+	    row.parentNode.removeChild(row);
+	}
+      });
   }
-
-  if (failCount > 0)
-    alert(labels["You cannot delete the selected contact(s)"]);
-  else
-    contactView.update();
+   
+  contactView.update();
   
   return false;
 }

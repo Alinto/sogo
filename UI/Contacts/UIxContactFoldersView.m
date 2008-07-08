@@ -99,8 +99,8 @@
 }
 
 - (void) _fillResults: (NSMutableDictionary *) results
-	     inFolder: (id <SOGoContactFolder>) folder
-	 withSearchOn: (NSString *) contact
+inFolder: (id <SOGoContactFolder>) folder
+withSearchOn: (NSString *) contact
 {
   NSEnumerator *folderResults;
   NSDictionary *currentContact;
@@ -188,40 +188,41 @@
   NSMutableArray *allContacts;
   unsigned int i;
   NSSortDescriptor *displayNameDescriptor;
-
+  
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
       folders = [[self clientObject] subFolders];
       allContacts = [NSMutableArray new];
-      for (i = 0; i < [folders count]; i++) {
-	folder = [folders objectAtIndex: i];
-	//NSLog(@"Address book: %@ (%@)", [folder displayName], [folder class]);
-	contacts = [folder lookupContactsWithFilter: searchText
-		    sortBy: @"displayName"
-		    ordering: NSOrderedAscending];
-	if ([contacts count] > 0) {
-	  [allContacts addObjectsFromArray: contacts];
+      for (i = 0; i < [folders count]; i++)
+	{
+	  folder = [folders objectAtIndex: i];
+	  //NSLog(@"Address book: %@ (%@)", [folder displayName], [folder class]);
+	  contacts = [folder lookupContactsWithFilter: searchText
+			     sortBy: @"displayName"
+			     ordering: NSOrderedAscending];
+	  if ([contacts count] > 0)
+	    [allContacts addObjectsFromArray: contacts];
 	}
-      }
-
+      
       result = [context response];
-      if ([allContacts count] > 0) {
-	// Sort the contacts by display name
-	displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
-				  ascending:YES] autorelease];
-	descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
-	sortedContacts = [allContacts sortedArrayUsingDescriptors:descriptors];
-	
-	[(WOResponse*)result appendContentString: [sortedContacts jsonRepresentation]];
-      }
+      if ([allContacts count] > 0)
+	{
+	  // Sort the contacts by display name
+	  displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
+							     ascending:YES] autorelease];
+	  descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
+	  sortedContacts = [allContacts sortedArrayUsingDescriptors:descriptors];
+	  
+	  [(WOResponse*)result appendContentString: [sortedContacts jsonRepresentation]];
+	}
       else
 	[(WOResponse*)result setStatus: 404];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'search' parameter"];  
-
+			  reason: @"missing 'search' parameter"];  
+  
   return result;
 }
 
@@ -240,7 +241,7 @@
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-                          reason: @"missing 'search' parameter"];
+			  reason: @"missing 'search' parameter"];
   
   return result;
 }
@@ -256,9 +257,9 @@
 
   securityManager = [SoSecurityManager sharedSecurityManager];
 
-//   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
-//                             onObject: contactFolder
-//                             inContext: context] == nil)
+  //   return (([securityManager validatePermission: SoPerm_AccessContentsInformation
+  //                             onObject: contactFolder
+  //                             inContext: context] == nil)
 
   folders = [NSMutableArray new];
   [folders autorelease];

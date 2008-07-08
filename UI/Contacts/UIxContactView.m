@@ -320,7 +320,7 @@
   else
     result = (([[card childrenWithTag: @"url"
                       andAttribute: @"type"
-                     havingValue: @"work"] count] > 0)
+		      havingValue: @"work"] count] > 0)
               || [[card childrenWithTag: @"org"] count] > 0);
 
   return result;
@@ -524,26 +524,24 @@
 - (id) deleteAction
 {
   NSException *ex;
-  id url;
 
   if (![self isDeletableClientObject])
     /* return 400 == Bad Request */
-    return [NSException exceptionWithHTTPStatus:400
-                        reason:@"method cannot be invoked on "
-                        @"the specified object"];
-
+    return [NSException exceptionWithHTTPStatus: 400
+			reason:@"method cannot be invoked on "
+			@"the specified object"];
+   
   ex = [[self clientObject] delete];
   if (ex)
     {
-    // TODO: improve error handling
-      [self debugWithFormat:@"failed to delete: %@", ex];
-
+      // TODO: improve error handling
+      [self debugWithFormat: @"failed to delete: %@", ex];
+      
       return ex;
     }
-
-  url = [[[self clientObject] container] baseURLInContext:[self context]];
-
-  return [self redirectToLocation:url];
+   
+  return [self responseWithStatus: 200
+	       andString: [[self clientObject] nameInContainer]];
 }
 
 @end /* UIxContactView */
