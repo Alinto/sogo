@@ -151,8 +151,9 @@ function onComposeToAllAttendees()
   var attendees = $$("DIV#attendeesMenu LI.attendee");
   var addresses = new Array();
   attendees.each(function(item) {
-      addresses.push(item.readAttribute("email"));
-  });
+      var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
+      addresses.push(address);
+    });
   if (window.opener)
     window.opener.openMailTo(addresses.join(","));
 }
