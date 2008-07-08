@@ -225,6 +225,9 @@ TABLE.titletable TD.titlecell SELECT
   white-space: nowrap;
 }
 
+DIV#folderTreeContent
+{ -khtml-user-select: none;}
+
 DIV#folderTreeContent TABLE TD
 { height: 18px;
   border-top: 1px solid #fff;
@@ -546,7 +549,9 @@ TABLE#addr_table
 }
 
 TABLE#messageList
-{ width: 100%; }
+{ width: 100%;
+  -moz-user-select: none;
+  -khtml-user-select: none; }
 
 TABLE#messageList TD,
 TABLE#messageList TH

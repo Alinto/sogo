@@ -1107,48 +1107,48 @@ function refreshFolderByType(type) {
 
 var mailboxSpanAcceptType = function(type) {
   return (type == "mailRow");
-}
+};
 
-  var mailboxSpanEnter = function() {
-    this.addClassName("_dragOver");
-  }
+var mailboxSpanEnter = function() {
+   this.addClassName("_dragOver");
+};
 
-    var mailboxSpanExit = function() {
-      this.removeClassName("_dragOver");
-    }
+var mailboxSpanExit = function() {
+   this.removeClassName("_dragOver");
+};
 
-      var mailboxSpanDrop = function(data) {
+var mailboxSpanDrop = function(data) {
 	var success = false;
-
+   
 	if (data) {
-	  var folder = this.parentNode.parentNode.getAttribute("dataname");
-	  if (folder != Mailer.currentMailbox)
-	    success = (moveMessages(data, folder) == 0);
+      var folder = this.parentNode.parentNode.getAttribute("dataname");
+      if (folder != Mailer.currentMailbox)
+         success = (moveMessages(data, folder) == 0);
 	}
 	else
-	  success = false;
-
+      success = false;
+   
 	return success;
-      }
-
-	var plusSignEnter = function() {
-	  var nodeNr = parseInt(this.id.substr(2));
-	  if (!mailboxTree.aNodes[nodeNr]._io)
-	    this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
-	}
-
-	  var plusSignExit = function() {
-	    if (this.plusSignTimer) {
-	      clearTimeout(this.plusSignTimer);
-	      this.plusSignTimer = null;
-	    }
-	  }
+};
+   
+var plusSignEnter = function() {
+   var nodeNr = parseInt(this.id.substr(2));
+   if (!mailboxTree.aNodes[nodeNr]._io)
+      this.plusSignTimer = setTimeout("openPlusSign('" + nodeNr + "');", 1000);
+};
+   
+var plusSignExit = function() {
+   if (this.plusSignTimer) {
+      clearTimeout(this.plusSignTimer);
+      this.plusSignTimer = null;
+   }
+};
 	
-	    function openPlusSign(nodeNr) {
-	      mailboxTree.nodeStatus(1, nodeNr, mailboxTree.aNodes[nodeNr]._ls);
-	      mailboxTree.aNodes[nodeNr]._io = 1;
-	      this.plusSignTimer = null;
-	    }
+function openPlusSign(nodeNr) {
+   mailboxTree.nodeStatus(1, nodeNr, mailboxTree.aNodes[nodeNr]._ls);
+   mailboxTree.aNodes[nodeNr]._io = 1;
+   this.plusSignTimer = null;
+}
 
 var messageListGhost = function () {
   var newDiv = document.createElement("div");
@@ -1176,57 +1176,57 @@ var messageListData = function(type) {
   var rows = this.parentNode.parentNode.getSelectedRowsId();
   var msgIds = new Array();
   for (var i = 0; i < rows.length; i++)
-    msgIds.push(rows[i].substr(4));
+     msgIds.push(rows[i].substr(4));
 
   return msgIds;
+};
+
+/* a model for a futur refactoring of the sortable table headers mechanism */
+function configureMessageListEvents(table) {
+   if (table) {
+      table.multiselect = true;
+      // Each body row can load a message
+      table.observe("mousedown",
+                    onMessageSelectionChange.bindAsEventListener(table));    
+      // Sortable columns
+      configureSortableTableHeaders(table);
+   }
 }
 
-  /* a model for a futur refactoring of the sortable table headers mechanism */
-    function configureMessageListEvents(table) {
-      if (table) {
-	table.multiselect = true;
-	// Each body row can load a message
-	table.observe("mousedown",
-		      onMessageSelectionChange.bindAsEventListener(table));    
-	// Sortable columns
-	configureSortableTableHeaders(table);
-      }
-    }
-
 function configureMessageListBodyEvents(table) {
-  if (table) {
-    // Page navigation
-    var cell = table.tHead.rows[1].cells[0];
-    if ($(cell).hasClassName("tbtv_navcell")) {
-      var anchors = $(cell).childNodesWithTag("a");
-      for (var i = 0; i < anchors.length; i++)
-	$(anchors[i]).observe("click", openMailboxAtIndex);
-    }
-
-    rows = table.tBodies[0].rows;
-    for (var i = 0; i < rows.length; i++) {
-      var row = $(rows[i]);
-      row.observe("mousedown", onRowClick);
-      row.observe("selectstart", listRowMouseDownHandler);
-      row.observe("contextmenu", onMessageContextMenu);
-      
-      row.dndTypes = function() { return new Array("mailRow"); };
-      row.dndGhost = messageListGhost;
-      row.dndDataForType = messageListData;
-      //   document.DNDManager.registerSource(row);
-
-      for (var j = 0; j < row.cells.length; j++) {
-	var cell = $(row.cells[j]);
-	cell.observe("mousedown", listRowMouseDownHandler);
-	if (j == 2 || j == 3 || j == 5)
-	  cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
-	else if (j == 4) {
-	  var img = $(cell.childNodesWithTag("img")[0]);
-	  img.observe("click", mailListMarkMessage.bindAsEventListener(img));
-	}
+   if (table) {
+      // Page navigation
+      var cell = table.tHead.rows[1].cells[0];
+      if ($(cell).hasClassName("tbtv_navcell")) {
+         var anchors = $(cell).childNodesWithTag("a");
+         for (var i = 0; i < anchors.length; i++)
+            $(anchors[i]).observe("click", openMailboxAtIndex);
       }
-    }
-  }
+      
+      rows = table.tBodies[0].rows;
+      for (var i = 0; i < rows.length; i++) {
+         var row = $(rows[i]);
+         row.observe("mousedown", onRowClick);
+         row.observe("selectstart", listRowMouseDownHandler);
+         row.observe("contextmenu", onMessageContextMenu);
+         
+         row.dndTypes = function() { return new Array("mailRow"); };
+         row.dndGhost = messageListGhost;
+         row.dndDataForType = messageListData;
+         //   document.DNDManager.registerSource(row);
+         
+         for (var j = 0; j < row.cells.length; j++) {
+            var cell = $(row.cells[j]);
+            cell.observe("mousedown", listRowMouseDownHandler);
+            if (j == 2 || j == 3 || j == 5)
+               cell.observe("dblclick", onMessageDoubleClick.bindAsEventListener(cell));
+            else if (j == 4) {
+               var img = $(cell.childNodesWithTag("img")[0]);
+               img.observe("click", mailListMarkMessage.bindAsEventListener(img));
+            }
+         }
+      }
+   }
 }
 
 function configureDragHandles() {
