@@ -415,31 +415,94 @@
   event = [self component: NO secure: NO];
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
-    {
-      if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
-	{
-	  person = [iCalPerson new];
-	  [person setValue: 0 to: recipient];
-	  uid = [person uid];
-	  if (uid)
-	    [self _addOrUpdateEvent: event forUID: uid];
+    if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
+      {
+	person = [iCalPerson new];
+	[person setValue: 0 to: recipient];
+	uid = [person uid];
+	if (uid)
+	  [self _addOrUpdateEvent: event forUID: uid];
 #warning fix this when sendEmailUsing blabla has been cleaned up
-	  [self sendEMailUsingTemplateNamed: @"Invitation"
-		forOldObject: nil
-		andNewObject: event
-		toAttendees: [NSArray arrayWithObject: person]];
-	  [person release];
-	  element = [NSMutableArray new];
-	  [element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
-						     recipient)];
-	  [element addObject: davElementWithContent (@"request-status",
-						     XMLNS_CALDAV,
-						     @"2.0;Success")];
-	  [elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
-						      element)];
-	  [element release];
-	}
+	[self sendEMailUsingTemplateNamed: @"Invitation"
+	      forOldObject: nil andNewObject: event
+	      toAttendees: [NSArray arrayWithObject: person]];
+	[person release];
+	element = [NSMutableArray new];
+	[element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+						   recipient)];
+	[element addObject: davElementWithContent (@"request-status",
+						   XMLNS_CALDAV,
+						   @"2.0;Success")];
+	[elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
+						    element)];
+	[element release];
+      }
+
+  return elements;
+}
+
+- (void) takeAttendeeStatus: (iCalPerson *) attendee
+{
+  iCalPerson *localAttendee;
+  iCalEvent *event;
+
+  event = [self component: NO secure: NO];
+  localAttendee = [event findParticipantWithEmail: [attendee rfc822Email]];
+  if (localAttendee)
+    {
+      [localAttendee setPartStat: [attendee partStat]];
+      [self saveComponent: event];
     }
+  else
+    [self errorWithFormat: @"attendee not found: '%@'", attendee];
+}
+
+- (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients
+{
+  NSMutableArray *elements, *element;
+  NSEnumerator *recipientsEnum;
+  NSString *recipient, *uid, *eventUID;
+  iCalEvent *event;
+  iCalPerson *attendee, *person;
+  SOGoAppointmentObject *recipientEvent;
+  SOGoUser *ownerUser;
+
+  elements = [NSMutableArray array];
+  event = [self component: NO secure: NO];
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  attendee = [event findParticipant: ownerUser];
+  eventUID = [event uid];
+
+  recipientsEnum = [recipients objectEnumerator];
+  while ((recipient = [recipientsEnum nextObject]))
+    if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
+      {
+	person = [iCalPerson new];
+	[person setValue: 0 to: recipient];
+	uid = [person uid];
+	if (uid)
+	  {
+	    recipientEvent = [self _lookupEvent: eventUID forUID: uid];
+	    if ([recipientEvent isNew])
+	      [recipientEvent saveComponent: event];
+	    else
+	      [recipientEvent takeAttendeeStatus: attendee];
+	  }
+#warning fix this when sendEmailUsing blabla has been cleaned up
+	[self sendEMailUsingTemplateNamed: @"ICalReply"
+	      forOldObject: nil andNewObject: event
+	      toAttendees: [NSArray arrayWithObject: person]];
+	[person release];
+	element = [NSMutableArray new];
+	[element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+						   recipient)];
+	[element addObject: davElementWithContent (@"request-status",
+						   XMLNS_CALDAV,
+						   @"2.0;Success")];
+	[elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
+						    element)];
+	[element release];
+      }
 
   return elements;
 }
