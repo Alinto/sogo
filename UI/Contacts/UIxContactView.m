@@ -89,8 +89,8 @@
   email = [card preferredEMail];
   if ([email length] > 0)
     mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-                       @" onclick=\"return onContactMailTo(this);\">"
-                       @"%@</a>", email, email];
+                       @" onclick=\"return openMailTo('%@ <%@>');\">"
+                       @"%@</a>", email, [card fn], email, email];
   else
     mailTo = nil;
 
@@ -121,8 +121,8 @@
 
       if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
 	mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-			   @" onclick=\"return onContactMailTo(this);\">"
-			   @"%@</a>", email, email];
+			   @" onclick=\"return openMailTo('%@ <%@>');\">"
+			   @"%@</a>", email, [card fn], email, email];
     }
 
   [emails release];

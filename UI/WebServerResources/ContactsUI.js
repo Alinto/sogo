@@ -504,10 +504,6 @@ function onConfirmContactSelection(event) {
   preventDefault(event);
 }
 
-function onContactMailTo(node) {
-  return openMailTo(node.innerHTML);
-}
-
 function refreshContacts(contactId) {
   refreshCurrentFolder();
   cachedContacts[currentAddressBook + "/" + contactId] = null;
