@@ -399,9 +399,13 @@ function performSearchCallback(http) {
 	var offset = Element.cumulativeOffset(MailEditor.currentField);
 	var top = offset[1] - offsetScroll[1] + node.offsetHeight + 3;
 	var height = 'auto';
-	if (data.length > 5) {
-	  height = 5 * node.getHeight() + 'px';
-	}
+	var heightDiff = window.height() - offset[1];
+	var nodeHeight = node.getHeight();
+
+	if ((data.length * nodeHeight) > heightDiff)
+	    // Limit the size of the popup to the window height, minus 12 pixels
+	    height = parseInt(heightDiff/nodeHeight) * nodeHeight - 12 + 'px';
+
 	menu.setStyle({ top: top + "px",
 	      left: offset[0] + "px",
 	      height: height,
