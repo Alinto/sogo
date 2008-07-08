@@ -28,6 +28,7 @@
 @class NSArray;
 @class NSString;
 @class SOGoContactFolder;
+@class SOGoContactLDAPFolder;
 
 @interface UIxContactsListViewContainer : UIxComponent
 {
@@ -44,6 +45,7 @@
 - (NSString *) currentContactFolderId;
 - (NSString *) currentContactFolderOwner;
 - (NSString *) currentContactFolderName;
+- (NSString *) currentContactFolderClass;
 
 - (NSString *) verticalDragHandleStyle;
 - (NSString *) horizontalDragHandleStyle;

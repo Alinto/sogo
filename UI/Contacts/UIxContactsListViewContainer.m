@@ -124,6 +124,11 @@
   return [currentFolder ownerInContext: context];
 }
 
+- (NSString *) currentContactFolderClass
+{
+   return ([currentFolder isKindOfClass: [SOGoContactLDAPFolder class]]? @"remote" : @"local");
+}
+
 - (BOOL) hasContactSelectionButtons
 {
   return (selectorComponentClass != nil);
