@@ -1,5 +1,10 @@
 2008-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-caldavEventRequest:eventwithContent:iCalStringfrom:originatorto:recipients]):
+	simplified method since REPLY and REQUEST posts are very similar.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -postCalDAVEventReplyTo:recipients]): new
 	method that handle CalDAV REPLY posts by updating the event in the
