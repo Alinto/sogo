@@ -1732,89 +1732,32 @@ _selectorForProperty (NSString *property)
   return responseElement;
 }
 
-- (NSDictionary *) _postCalDAVEventRequest: (NSString *) iCalString
-				   withUID: (NSString *) uid
-					to: (NSArray *) recipients
-{
-  NSString *filename;
-  SOGoAppointmentObject *apt;
-  NSDictionary *responseElement;
-  NSMutableArray *elements;
-
-  filename = [NSString stringWithFormat: @"%@.ics", uid];
-  apt = [SOGoAppointmentObject objectWithName: filename
-			       andContent: iCalString
-			       inContainer: self];
-  elements = [apt postCalDAVEventRequestTo: recipients];
-  responseElement = davElementWithContent (@"schedule-response",
-					   XMLNS_CALDAV, elements);
-
-  return responseElement;
-}
-
-- (NSDictionary *) _postCalDAVEventReply: (iCalEvent *) event
-				    from: (NSString *) originator
-{
-  NSDictionary *responseElement, *attendeeCode;
-  NSMutableArray *content;
-  iCalPerson *attendee;
-  NSException *ex;
-  SOGoAppointmentObject *apt;
-
-  /* this is a fake success status */
-  apt = [self lookupComponentByUID: [event uid]];
-  if ([apt isKindOfClass: [SOGoAppointmentObject class]])
-    {
-      content = [NSMutableArray new];
-      [content addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
-						 originator)];
-
-#warning cleanup: add a method to POST replies from CalDAV from SOGoAppointmentObject
-      attendee = [event findParticipant: [context activeUser]];
-      if (attendee)
-	{
-	  ex = [apt changeParticipationStatus: [attendee partStat]];
-	  if (ex)
-	    attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
-						  @"3.1;Invalid property value");
-	  else
-	    attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
-						  @"2.0;Success");
-	}
-      else
-	attendeeCode = davElementWithContent (@"request-status", XMLNS_CALDAV,
-					      @"3.7;Invalid Calendar User");
-      [content addObject: attendeeCode];
-
-      responseElement
-	= davElementWithContent (@"schedule-response", XMLNS_CALDAV,
-				 davElementWithContent (@"response", XMLNS_CALDAV,
-							content));
-      [content release];
-    }
-  else
-    responseElement = nil;
-
-  return responseElement;
-}
-
+#warning we should merge this code with the code from the iTIP interpreter in MailPartViewer
 - (NSDictionary *) caldavEventRequest: (iCalEvent *) event
 			  withContent: (NSString *) iCalString
 				 from: (NSString *) originator
 				   to: (NSArray *) recipients
 {
   NSDictionary *responseElement;
-  NSString *method;
+  NSArray *elements;
+  NSString *method, *filename;
+  SOGoAppointmentObject *apt;
 
+  filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
+  apt = [SOGoAppointmentObject objectWithName: filename
+			       andContent: iCalString
+			       inContainer: self];
   method = [[event parent] method];
   if ([method isEqualToString: @"REQUEST"])
-    responseElement = [self _postCalDAVEventRequest: iCalString
-			    withUID: [event uid]
-			    to: recipients];
+    elements = [apt postCalDAVEventRequestTo: recipients];
   else if ([method isEqualToString: @"REPLY"])
-    responseElement = [self _postCalDAVEventReply: event
-			    withUID: [event uid]
-			    from: originator];
+   elements = [apt postCalDAVEventReplyTo: recipients];
+  else
+    elements = nil;
+
+  if (elements)
+    responseElement = davElementWithContent (@"schedule-response",
+					     XMLNS_CALDAV, elements);
   else
     responseElement = nil;
 

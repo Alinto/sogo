@@ -268,7 +268,7 @@ genConfigMake() {
   cfgwrite ""
   UNAME=`uname`
   if [ "X${UNAME}" = "XLinux" ];then
-    UNAME=`uname -p`
+    UNAME=`uname -m`
     if [ ${UNAME} = x86_64 -o ${UNAME} = sparc64 -o ${UNAME} = ppc64 ];then
       cfgwrite "CGS_LIBDIR_NAME:=lib64"
     else

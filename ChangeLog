@@ -1,3 +1,20 @@
+2008-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-caldavEventRequest:eventwithContent:iCalStringfrom:originatorto:recipients]):
+	simplified method since REPLY and REQUEST posts are very similar.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -postCalDAVEventReplyTo:recipients]): new
+	method that handle CalDAV REPLY posts by updating the event in the
+	table of the SOGo users and send the reply by email as well.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]):
+	take the current user as originator rather than the object's owner.
+
 2008-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactFoldersView.m ([WOActionResults
