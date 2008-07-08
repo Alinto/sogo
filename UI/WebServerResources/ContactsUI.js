@@ -42,12 +42,15 @@ function openContactsFolder(contactsFolder, reload, idx) {
 	      + "&asc=" + sorting["ascending"]);
 
     var selection;
-    if (contactsFolder == currentAddressBook) {
+    if (idx) {
+      selection = [idx];
+    }
+    else if (contactsFolder == currentAddressBook) {
       var contactsList = $("contactsList");
       if (contactsList)
 	selection = contactsList.getSelectedRowsId();
-      //        else
-      //           window.alert("no contactsList");
+//        else
+//           window.alert("no contactsList");
     }
     else
       selection = null;
@@ -505,7 +508,7 @@ function onConfirmContactSelection(event) {
 }
 
 function refreshContacts(contactId) {
-  refreshCurrentFolder();
+  openContactsFolder(currentAddressBook, true, contactId);
   cachedContacts[currentAddressBook + "/" + contactId] = null;
   loadContact(contactId);
 
