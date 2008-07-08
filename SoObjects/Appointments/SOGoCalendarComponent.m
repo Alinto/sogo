@@ -256,8 +256,7 @@ static BOOL sendEMailNotifications = NO;
                          toAttendees: (NSArray *) _attendees
 {
   NSString *pageName;
-  iCalPerson *organizer;
-  NSString *email, *sender, *iCalString;
+  NSString *senderEmail, *shortSenderEmail, *email, *iCalString;
   WOApplication *app;
   unsigned i, count;
   iCalPerson *attendee;
@@ -268,6 +267,7 @@ static BOOL sendEMailNotifications = NO;
   NGMimeMessage *msg;
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
+  SOGoUser *currentUser;
 
   if (sendEMailNotifications
       && [_newObject isStillRelevant])
@@ -276,11 +276,13 @@ static BOOL sendEMailNotifications = NO;
       if (count)
 	{
 	  /* sender */
-	  organizer = [_newObject organizer];
-	  sender = [organizer mailAddress];
+	  currentUser = [context activeUser];
+	  shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
+	  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
+				  [currentUser cn], shortSenderEmail];
 
 	  NSLog (@"sending '%@' from %@",
-		 [(iCalCalendar *) [_newObject parent] method], organizer);
+		 [(iCalCalendar *) [_newObject parent] method], senderEmail);
 
 	  /* generate iCalString once */
 	  iCalString = [[_newObject parent] versitString];
@@ -324,7 +326,7 @@ static BOOL sendEMailNotifications = NO;
 		   * so we'll stick with multipart/mixed for the time being.
 		   */
 		  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-		  [headerMap setObject: sender forKey: @"from"];
+		  [headerMap setObject: senderEmail forKey: @"from"];
 		  [headerMap setObject: recipient forKey: @"to"];
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
@@ -364,7 +366,7 @@ static BOOL sendEMailNotifications = NO;
 		  [[SOGoMailer sharedMailer]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: email]
-		    sender: [organizer rfc822Email]];
+		    sender: shortSenderEmail];
 		}
 	    }
 	}
