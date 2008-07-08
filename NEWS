@@ -6,6 +6,10 @@
 - fixed a bug where concurrent versions of SOGo would create the user's personal folders table twice
 - added address completion in the web mail editor
 - implemented support for CalDAV methods which were missing for supporting iCal 3
+- added support to write to multiple contacts from the Address Book module
+- added icons to folders in Address Book module
+- fixed various bugs occuring with Safari 3.1
+- fixed various bugs occuring with Firefox 3
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------

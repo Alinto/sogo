@@ -1,3 +1,9 @@
+2008-07-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m ([WOActionResults
+	composeAction]): added support to specify an address book and
+	one more many contact IDs.
+
 2008-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
