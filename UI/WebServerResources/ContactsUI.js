@@ -81,6 +81,7 @@ function contactsListCallback(http) {
     if (http.status == 200) {
       document.contactsListAjaxRequest = null;
 
+      var div = $("contactsListContent");
       var table = $("contactsList");
       if (table) {
 	// Update table
@@ -102,7 +103,6 @@ function contactsListCallback(http) {
       }
       else {
 	// Add table (doesn't happen .. yet)
-	var div = $("contactsListContent");
 	div.update(http.responseText);
 	table = $("contactsList");
 	configureSortableTableHeaders(table);
@@ -143,8 +143,12 @@ function contactsListCallback(http) {
       if (selected) {
 	for (var i = 0; i < selected.length; i++) {
 	  var row = $(selected[i]);
-	  if (row)
+	  if (row) {
+	    var rowPosition = row.rowIndex * row.getHeight();
+	    if (div.getHeight() < rowPosition)
+	      div.scrollTop = rowPosition; // scroll to selected contact
 	    row.selectElement();
+	  }
 	}
       }
     }
