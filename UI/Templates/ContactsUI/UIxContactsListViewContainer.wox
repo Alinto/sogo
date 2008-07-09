@@ -48,6 +48,9 @@
 	<li><var:string label:value="Instant Message" /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="Delete" /></li>
+	<li><!-- separator --></li>
+	<li><var:string label:value="Move To" /></li>
+	<li><var:string label:value="Copy To" /></li>
       </ul>
     </div>
 

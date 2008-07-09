@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
@@ -184,35 +185,48 @@ withSearchOn: (NSString *) contact
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
   NSString *searchText;
+  NSDictionary *contact;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
-  NSMutableArray *allContacts;
-  unsigned int i;
+  NSMutableDictionary *uniqueContacts;
+//  NSMutableArray *allContacts;
+  unsigned int i, j;
   NSSortDescriptor *displayNameDescriptor;
   
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
+      NSLog(@"Search all contacts: %@", searchText);
       folders = [[self clientObject] subFolders];
-      allContacts = [NSMutableArray new];
+      //allContacts = [NSMutableArray new];
+      uniqueContacts = [NSMutableDictionary dictionary];
       for (i = 0; i < [folders count]; i++)
 	{
 	  folder = [folders objectAtIndex: i];
-	  //NSLog(@"Address book: %@ (%@)", [folder displayName], [folder class]);
+	  NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
 	  contacts = [folder lookupContactsWithFilter: searchText
 			     sortBy: @"displayName"
 			     ordering: NSOrderedAscending];
-	  if ([contacts count] > 0)
-	    [allContacts addObjectsFromArray: contacts];
+	  for (j = 0; j < [contacts count]; j++)
+	    {
+	      contact = [contacts objectAtIndex: j];
+	      NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], [contact objectForKey: @"mail"]);
+	      if ([uniqueContacts objectForKey: [contact objectForKey: @"displayName"]] == nil)
+		[uniqueContacts setObject: contact forKey: [contact objectForKey: @"displayName"]];
+	    }
+//	  if ([contacts count] > 0)
+//	    [allContacts addObjectsFromArray: contacts];
 	}
       
       result = [context response];
-      if ([allContacts count] > 0)
+//      if ([allContacts count] > 0)
+      if ([uniqueContacts count] > 0)
 	{
 	  // Sort the contacts by display name
 	  displayNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"displayName"
 							     ascending:YES] autorelease];
 	  descriptors = [NSArray arrayWithObjects: displayNameDescriptor, nil];
-	  sortedContacts = [allContacts sortedArrayUsingDescriptors:descriptors];
+//	  sortedContacts = [allContacts sortedArrayUsingDescriptors:descriptors];
+	  sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
 	  
 	  [(WOResponse*)result appendContentString: [sortedContacts jsonRepresentation]];
 	}

@@ -294,7 +294,7 @@ SPAN.toolbarButton:active
 .toolbarButton .buttonLabel
 { margin: auto; }
 
-/* popups */
+/* contextual menus & popups */
 
 .menu,
 .popupMenu
@@ -309,7 +309,9 @@ SPAN.toolbarButton:active
   border-top: 1px solid #d6cfc6;
   border-left: 1px solid #d6cfc6;
   border-right: 1px solid #424142;
-  border-bottom: 1px solid #424142; }
+  border-bottom: 1px solid #424142;
+  overflow: auto; 
+  overflow-x: hidden; }
 
 .popupMenu
 { background-color: #fff; }
