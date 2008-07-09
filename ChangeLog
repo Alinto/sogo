@@ -1,3 +1,12 @@
+2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-PUTAction:_ctx]): the version passed to
+	saveContentString:baseVersion: is the current value of "version".
+	If the operation is succesful, the version is incremented from
+	here since no refresh is done from GCS. The returned etag has thus
+	now the correct value.
+
 2008-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

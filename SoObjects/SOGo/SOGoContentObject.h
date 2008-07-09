@@ -45,8 +45,8 @@
 	   andContent: (NSString *) newContent
 	  inContainer: (SOGoGCSFolder *) newContainer;
 - (id) initWithRecord: (NSDictionary *) objectRecord
-	  inContainer: (id) newContainer;
-+ (id) initWithName: (NSString *) newName
+	  inContainer: (SOGoGCSFolder *) newContainer;
+- (id) initWithName: (NSString *) newName
 	 andContent: (NSString *) newContent
 	inContainer: (SOGoGCSFolder *) newContainer;
 

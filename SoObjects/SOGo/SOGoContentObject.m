@@ -53,13 +53,13 @@
   return newObject;
 }
 
-+ (id) objectWithName: (NSDictionary *) objectRecord
++ (id) objectWithName: (NSString *) newName
 	   andContent: (NSString *) newContent
 	  inContainer: (SOGoGCSFolder *) newContainer
 {
   SOGoContentObject *newObject;
 
-  newObject = [[self alloc] initWithName: objectRecord
+  newObject = [[self alloc] initWithName: newName
 			    andContent: newContent
 			    inContainer: newContainer];
   [newObject autorelease];
@@ -104,7 +104,7 @@
 }
 
 - (id) initWithRecord: (NSDictionary *) objectRecord
-	  inContainer: (id) newContainer
+	  inContainer: (SOGoGCSFolder *) newContainer
 {
   NSString *newName;
 
@@ -119,7 +119,7 @@
 
 - (id) initWithName: (NSString *) newName
 	 andContent: (NSString *) newContent
-	inContainer: (id) newContainer
+	inContainer: (SOGoGCSFolder *) newContainer
 {
   if ((self = [self initWithName: newName inContainer: newContainer]))
     {
@@ -233,88 +233,98 @@
 
 - (id) PUTAction: (WOContext *) _ctx
 {
-  WORequest    *rq;
-  NSException  *error;
+  WORequest *rq;
+  NSException *error;
   unsigned int baseVersion;
-  id           etag, tmp;
-  BOOL         needsLocation;
-  
-  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
-    return error;
-  
-  rq = [_ctx request];
-  
-  /* check whether its a request to the 'special' 'new' location */
-  /*
-    Note: this is kinda hack. The OGo ZideStore detects writes to 'new' as
-          object creations and will assign a server side identifier. Most
-	  current GroupDAV clients rely on this behaviour, so we reproduce it
-	  here.
-	  A correct client would loop until it has a name which doesn't not
-	  yet exist (by using if-none-match).
-  */
-  needsLocation = NO;
-  tmp = [[self nameInContainer] stringByDeletingPathExtension];
-  if ([tmp isEqualToString:@"new"]) {
-    tmp = [self globallyUniqueObjectId];
-    needsLocation = YES;
-    
-    [self debugWithFormat:
-	    @"reassigned a new location for special new-location: %@", tmp];
-    
-    /* kinda dangerous */
-    ASSIGNCOPY(nameInContainer, tmp);
-  }
-  
-  /* determine base version from etag in if-match header */
-  /*
-    Note: The -matchesRequestConditionInContext: already checks whether the
-          etag matches and returns an HTTP exception in case it doesn't.
-	  We retrieve the etag again here to _ensure_ a transactionally save
-	  commit.
-          (between the check and the update a change could have been done)
-  */
-  tmp  = [rq headerForKey:@"if-match"];
-  tmp  = [self parseETagList:tmp];
-  etag = nil;
-  if ([tmp count] > 0) {
-    if ([tmp count] > 1) {
-      /*
-	Note: we would have to attempt a save for _each_ of the etags being
-	      passed in! In practice most WebDAV clients submit exactly one
-	      etag.
-      */
-      [self warnWithFormat:
-	      @"Got multiple if-match etags from client, only attempting to "
-	      @"save with the first: %@", tmp];
-    }
-    
-    etag = [tmp objectAtIndex:0];
-  }
-  baseVersion = ([etag length] > 0)
-    ? [etag unsignedIntValue]
-    : 0 /* 0 means 'do not check' */;
-  
-  /* attempt a save */
+  id etag, tmp;
+  BOOL needsLocation;
+  WOResponse *response;
 
-  if ((error = [self saveContentString: [rq contentAsString]
-		     baseVersion: baseVersion]) != nil)
-    return error;
+  error = [self matchesRequestConditionInContext: _ctx];
+  if (error)
+    response = (WOResponse *) error;
+  else
+    {
+      rq = [_ctx request];
   
-  /* setup response */
+      /* check whether its a request to the 'special' 'new' location */
+      /*
+	Note: this is kinda hack. The OGo ZideStore detects writes to 'new' as
+	object creations and will assign a server side identifier. Most
+	current GroupDAV clients rely on this behaviour, so we reproduce it
+	here.
+	A correct client would loop until it has a name which doesn't not
+	yet exist (by using if-none-match).
+      */
+      needsLocation = NO;
+
+      tmp = [[self nameInContainer] stringByDeletingPathExtension];
+      if ([tmp isEqualToString: @"new"])
+	{
+	  tmp = [self globallyUniqueObjectId];
+	  needsLocation = YES;
+
+	  [self debugWithFormat:
+		  @"reassigned a new location for special new-location: %@", tmp];
+
+	  /* kinda dangerous */
+	  ASSIGNCOPY (nameInContainer, tmp);
+	}
   
-  // TODO: this should be automatic in the SoDispatcher if we return nil?
-  [[_ctx response] setStatus: 201 /* Created */];
+      /* determine base version from etag in if-match header */
+      /*
+	Note: The -matchesRequestConditionInContext: already checks whether the
+	etag matches and returns an HTTP exception in case it doesn't.
+	We retrieve the etag again here to _ensure_ a transactionally save
+	commit.
+	(between the check and the update a change could have been done)
+      */
+      tmp = [rq headerForKey: @"if-match"];
+      tmp = [self parseETagList: tmp];
+      etag = nil;
+      if ([tmp count] > 0) {
+	if ([tmp count] > 1) {
+	  /*
+	    Note: we would have to attempt a save for _each_ of the etags being
+	    passed in! In practice most WebDAV clients submit exactly one
+	    etag.
+	  */
+	  [self warnWithFormat:
+		  @"Got multiple if-match etags from client, only attempting to "
+		@"save with the first: %@", tmp];
+	}
+	
+	etag = [tmp objectAtIndex: 0];
+      }
+      baseVersion = (isNew ? 0 : version);
   
-  if ((etag = [self davEntityTag]) != nil)
-    [[_ctx response] setHeader:etag forKey:@"etag"];
+      /* attempt a save */
+      
+      error = [self saveContentString: [rq contentAsString]
+		    baseVersion: baseVersion];
+      if (error)
+	response = (WOResponse *) error;
+      else
+	{
+	  version++;
+	  response = [_ctx response];
+	  /* setup response */
   
-  if (needsLocation) {
-    [[_ctx response] setHeader:[self baseURLInContext:_ctx] 
-		     forKey:@"location"];
-  }
+	  // TODO: this should be automatic in the SoDispatcher if we return nil?
+	  [response setStatus: 201 /* Created */];
   
-  return [_ctx response];
+	  etag = [self davEntityTag];
+	  if (etag)
+	    {
+	      [response setHeader: etag forKey: @"etag"];
+	      if (needsLocation)
+		[response setHeader: [self baseURLInContext:_ctx] 
+			  forKey: @"location"];
+	    }
+	}
+    }
+  
+  return response;
 }
 
 /* E-Tags */
