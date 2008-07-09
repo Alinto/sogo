@@ -1,5 +1,10 @@
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject -postCalDAVEventCancelTo:recipients]): new
+	method that implements support for the CalDAV "CANCEL" method for
+	POSTs.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-PUTAction:_ctx]): the version passed to
 	saveContentString:baseVersion: is the current value of "version".
