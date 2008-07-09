@@ -271,7 +271,9 @@ function actionContactCallback(http) {
       var html = new Element("div").update(http.responseText);
       var error = html.select("p").first().firstChild.nodeValue.trim();
       log("actionContactCallback failed: error " + http.status + " (" + error + ")");
-      if (error)
+      if (parseInt(http.status) == 403)
+	window.alert(labels["You cannot delete the selected contact(s)"]);
+      else if (error)
 	window.alert(labels[error]);
       refreshCurrentFolder();
     }
@@ -784,10 +786,13 @@ function onAddressBookMenuPrepareVisibility() {
 function updateAddressBooksMenus() {
   var contactFoldersList = $("contactFolders");
   if (contactFoldersList) {
+    var pageContent = $("pageContent");
     var contactFolders = contactFoldersList.select("li");
     var contactActions = new Hash({ move: onContactMenuMove,
-	                            copy: onContactMenuCopy });    
-    contactActions.keys().each(function(key) {
+	                            copy: onContactMenuCopy });
+    var actions = contactActions.keys();
+    for (var j = 0; j < actions.size(); j++) {
+      var key = actions[j];
 	var callbacks = new Array();
 	var menuId = key + "ContactMenu";
 	var menuDIV = $(menuId);
@@ -795,7 +800,6 @@ function updateAddressBooksMenus() {
 	  menuDIV.parentNode.removeChild(menuDIV);
 	
 	menuDIV = document.createElement("div");
-	pageContent = $("pageContent");
 	pageContent.appendChild(menuDIV);
 	
 	var menu = document.createElement("ul");
@@ -817,7 +821,7 @@ function updateAddressBooksMenus() {
 	}
 	menuDIV.prepareVisibility = onAddressBookMenuPrepareVisibility;
 	initMenu(menuDIV, callbacks);
-      });
+      }
   }
 }
   
@@ -908,7 +912,7 @@ function onContactMenuPrepareVisibility() {
   var aimOption = elements[3];
   var deleteOption = elements[5];
   var moveOption = elements[7];
-
+  
   $A(contactRows).each(function(contactRow) {
       var emailCell = contactRow.down('td', 1);
       options.write |= (emailCell.firstChild != null);
