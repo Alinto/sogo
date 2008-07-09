@@ -189,6 +189,12 @@ TABLE#contactsList
   -khtml-user-select: none;
   width: 100%; }
 
+TABLE#contactsList TBODY TD.displayName
+{ background-repeat: no-repeat;
+  background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+  background-position: 4px 1px;
+  padding-left: 24px; }
+
 TABLE#contactsList TD,
 TABLE#contactsList TH
 { overflow: hidden;
