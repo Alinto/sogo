@@ -1304,6 +1304,32 @@ _selectorForProperty (NSString *property)
   return error;
 }
 
+- (SOGoWebDAVValue *) davCalendarFreeBusySet
+{
+  NSEnumerator *subFolders;
+  SOGoAppointmentFolder *currentFolder;
+  NSMutableArray *response;
+  SOGoWebDAVValue *responseValue;
+
+  response = [NSMutableArray new];
+  subFolders = [[container subFolders] objectEnumerator];
+  while ((currentFolder = [subFolders nextObject]))
+    [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
+						[currentFolder davURL])];
+  responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
+					 asWebDAVValue];
+  [response release];
+
+  return responseValue;
+}
+
+/* This method is ignored but we must return a success value. */
+- (NSException *) setDavCalendarFreeBusySet: (NSString *) newFreeBusySet
+{
+  return nil;
+}
+
+
 - (void) _appendComponentProperties: (NSString **) properties
 		    matchingFilters: (NSArray *) filters
 			 toResponse: (WOResponse *) response
@@ -1751,7 +1777,9 @@ _selectorForProperty (NSString *property)
   if ([method isEqualToString: @"REQUEST"])
     elements = [apt postCalDAVEventRequestTo: recipients];
   else if ([method isEqualToString: @"REPLY"])
-   elements = [apt postCalDAVEventReplyTo: recipients];
+    elements = [apt postCalDAVEventReplyTo: recipients];
+  else if ([method isEqualToString: @"CANCEL"])
+    elements = [apt postCalDAVEventCancelTo: recipients];
   else
     elements = nil;
 

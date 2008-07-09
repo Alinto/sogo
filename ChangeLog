@@ -1,5 +1,15 @@
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -davCalendarFreeBusySet]): new method that
+	returns the HREF to the calendars involved in the user's freebusy.
+	([SOGoAppointmentFolder
+	-setDavCalendarFreeBusySet:newFreeBusySet]): new method that
+	PRETENDS to modify the list of calendars mentionned above.
+	([SOGoAppointmentFolder
+	-caldavEventRequest:eventwithContent:iCalStringfrom:originatorto:recipients]):
+	add support for the "CANCEL" method.
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	([SOGoAppointmentObject -postCalDAVEventCancelTo:recipients]): new
 	method that implements support for the CalDAV "CANCEL" method for
