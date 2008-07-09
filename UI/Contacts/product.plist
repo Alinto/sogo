@@ -97,12 +97,12 @@
 	      actionName  = "saveUserRights";
 	   };
 	   copy = {
-	       protectedBy = "View";
+	       protectedBy = "Access Contents Information";
 	       actionClass = "UIxContactFolderActions";
 	       actionName = "copy";
 	   };
 	   move = {
-	       protectedBy = "View";
+	       protectedBy = "Delete Objects";
 	       actionClass = "UIxContactFolderActions";
 	       actionName = "move";
 	   };
@@ -137,14 +137,9 @@
               actionName = "canAccessContent";
            };
 	   copy = {
-	       protectedBy = "<public>";
+	       protectedBy = "Access Contents Information";
 	       actionClass = "UIxContactFolderActions";
 	       actionName = "copy";
-	   };
-	   move = {
-	       protectedBy = "<public>";
-	       actionClass = "UIxContactFolderActions";
-	       actionName = "move";
 	   };
         };
      };

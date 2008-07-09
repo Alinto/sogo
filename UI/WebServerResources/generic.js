@@ -780,7 +780,7 @@ function backtrace() {
 }
 
 function popupSubmenu(event) {
-  if (this.submenu && this.submenu != "") {
+  if (this.submenu && this.submenu != "" && !$(this).hasClassName("disabled")) {
     var submenuNode = $(this.submenu);
     var parentNode = getParentMenu(this);
     if (parentNode.submenu)
