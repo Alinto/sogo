@@ -213,21 +213,6 @@
   return nil;
 }
 
-- (NSException *) copyTo: (SOGoGCSFolder *) destinationFolder
-{
-  SOGoContentObject *newObject;
-
-  newObject = [SOGoContentObject objectWithName: [SOGoObject globallyUniqueObjectId]
-				 inContainer: destinationFolder];
-
-  return [newObject saveContentString: content];
-}
-
-- (NSException *) moveTo: (SOGoGCSFolder *) destinationFolder
-{
-  return nil;
-}
-
 /* actions */
 
 // - (id) lookupName:

@@ -359,8 +359,7 @@ function performSearch() {
     }
     if (MailEditor.currentField.value.trim().length > 0) {
       var urlstr = ( UserFolderURL + "Contacts/allContactSearch?search="
-		     + MailEditor.currentField.value ); log (urlstr);
-//		     + escape(MailEditor.currentField.value) ); log (urlstr);
+		     + MailEditor.currentField.value );
       document.contactLookupAjaxRequest =
 	triggerAjaxRequest(urlstr, performSearchCallback, MailEditor.currentField);
     }

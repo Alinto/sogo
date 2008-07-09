@@ -58,8 +58,6 @@
                         baseVersion: (unsigned int) _baseVersion;
 - (NSException *) saveContentString: (NSString *)_str;
 - (NSException *) delete;
-- (NSException *) copyTo: (SOGoGCSFolder *) destinationFolder;
-- (NSException *) moveTo: (SOGoGCSFolder *) destinationFolder;
 
 /* etag support */
 
