@@ -891,36 +891,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
 
 #warning components in calendar-data query are ignored
-static inline SEL
-_selectorForProperty (NSString *property)
-{
-  static NSMutableDictionary *methodMap = nil;
-  SEL propSel;
-  NSValue *propPtr;
-  NSDictionary *map;
-  NSString *methodName;
-
-  if (!methodMap)
-    methodMap = [NSMutableDictionary new];
-  propPtr = [methodMap objectForKey: property];
-  if (propPtr)
-    propSel = [propPtr pointerValue];
-  else
-    {
-      map = [sogoAppointmentFolderKlass defaultWebDAVAttributeMap];
-      methodName = [map objectForKey: property];
-      if (methodName)
-	{
-	  propSel = NSSelectorFromString (methodName);
-	  if (propSel)
-	    [methodMap setObject: [NSValue valueWithPointer: propSel]
-		       forKey: property];
-	}
-    }
-
-  return propSel;
-}
-
 - (NSString *) _nodeTagForProperty: (NSString *) property
 {
   NSString *namespace, *nodeName, *nsRep;
@@ -984,7 +954,7 @@ _selectorForProperty (NSString *property)
       currentValue = values;
       while (*currentProperty)
 	{
-	  methodSel = _selectorForProperty (*currentProperty);
+	  methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
 	  if (methodSel && [sogoObject respondsToSelector: methodSel])
 	    *currentValue = [[sogoObject performSelector: methodSel]
 			      stringByEscapingXMLString];
@@ -1303,6 +1273,32 @@ _selectorForProperty (NSString *property)
 
   return error;
 }
+
+- (SOGoWebDAVValue *) davCalendarFreeBusySet
+{
+  NSEnumerator *subFolders;
+  SOGoAppointmentFolder *currentFolder;
+  NSMutableArray *response;
+  SOGoWebDAVValue *responseValue;
+
+  response = [NSMutableArray new];
+  subFolders = [[container subFolders] objectEnumerator];
+  while ((currentFolder = [subFolders nextObject]))
+    [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
+						[currentFolder davURL])];
+  responseValue = [davElementWithContent (@"calendar-free-busy-set", XMLNS_CALDAV, response)
+					 asWebDAVValue];
+  [response release];
+
+  return responseValue;
+}
+
+/* This method is ignored but we must return a success value. */
+- (NSException *) setDavCalendarFreeBusySet: (NSString *) newFreeBusySet
+{
+  return nil;
+}
+
 
 - (void) _appendComponentProperties: (NSString **) properties
 		    matchingFilters: (NSArray *) filters
@@ -1751,7 +1747,9 @@ _selectorForProperty (NSString *property)
   if ([method isEqualToString: @"REQUEST"])
     elements = [apt postCalDAVEventRequestTo: recipients];
   else if ([method isEqualToString: @"REPLY"])
-   elements = [apt postCalDAVEventReplyTo: recipients];
+    elements = [apt postCalDAVEventReplyTo: recipients];
+  else if ([method isEqualToString: @"CANCEL"])
+    elements = [apt postCalDAVEventCancelTo: recipients];
   else
     elements = nil;
 

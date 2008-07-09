@@ -62,6 +62,9 @@
 
 #define $(class) NSClassFromString(class)
 
+SEL SOGoSelectorForPropertyGetter (NSString *property);
+SEL SOGoSelectorForPropertySetter (NSString *property);
+
 @interface SOGoObject : NSObject
 {
   WOContext *context;

@@ -28,6 +28,7 @@
 @interface WORequest (SOGoSOPEUtilities)
 
 - (BOOL) handledByDefaultHandler;
+- (NSDictionary *) davPatchedPropertiesWithTopTag: (NSString *) topTag;
 
 @end
 

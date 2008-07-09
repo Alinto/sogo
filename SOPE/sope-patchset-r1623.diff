@@ -1741,6 +1741,21 @@ Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
  #import <EOControl/EOGlobalID.h>
  #import <Foundation/NSString.h>
  
+Index: sope-core/NGStreams/GNUmakefile.preamble
+===================================================================
+--- sope-core/NGStreams/GNUmakefile.preamble	(révision 1623)
++++ sope-core/NGStreams/GNUmakefile.preamble	(copie de travail)
+@@ -1,7 +1,10 @@
+ # compilation settings
+ 
++MACHCPU = $(shell echo $$MACHTYPE | cut -f 1 -d '-')
++
+ libNGStreams_INCLUDE_DIRS += \
+ 	-I$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS) \
++	-I./$(MACHCPU)/$(GNUSTEP_TARGET_OS) \
+ 	-INGStreams		\
+ 	-I../NGExtensions	\
+ 	-I..
 Index: sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h
 ===================================================================
 --- sope-xml/libxmlSAXDriver/libxmlHTMLSAXDriver.h	(révision 1623)
@@ -1990,7 +2005,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{DAV:}locktoken"            = davLockToken;
    "{DAV:}activelock"           = davActiveLock;
    // TODO: non-standard?, also used by WebDrive
-@@ -120,12 +126,29 @@
+@@ -120,12 +126,31 @@
    "{http://ucb.openoffice.org/dav/props/}IsRemoveable"  = isOOoRemoveable;
    "{http://ucb.openoffice.org/dav/props/}IsVolume"      = isOOoVolume;
    "{http://ucb.openoffice.org/dav/props/}TargetURL"     = davOOoTargetURL;
@@ -2016,12 +2031,14 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{urn:ietf:params:xml:ns:caldav}calendar-home-set" = davCalendarHomeSet;
 +  "{urn:ietf:params:xml:ns:caldav}calendar-user-address-set" =
 +     davCalendarUserAddressSet;
++  "{urn:ietf:params:xml:ns:caldav}calendar-free-busy-set" =
++     davCalendarFreeBusySet;
 +  "{urn:ietf:params:xml:ns:caldav}schedule-inbox-URL" = davCalendarScheduleInboxURL;
 +  "{urn:ietf:params:xml:ns:caldav}schedule-outbox-URL" = davCalendarScheduleOutboxURL;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set" =
       davCalendarComponentSet;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
-@@ -138,13 +161,13 @@
+@@ -138,13 +163,13 @@
    "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
  
    /* Apple CalServer */
@@ -2077,6 +2094,95 @@ Index: sope-appserver/NGObjWeb/WebDAV/SoObjectWebDAVDispatcher.m
      return [self httpException:400 /* invalid request */
  		 reason:@"XML entity expected for WebDAV REPORT."];
    }
+@@ -1601,8 +1601,60 @@
+ /* CalDAV */
+ 
+ - (id)doMKCALENDAR:(WOContext *)_ctx {
+-  return [self httpException:405 /* method not allowed */
+-	       reason:@"CalDAV calendar creation not yet implemented."];
++  SoSecurityManager *sm;
++  NSException       *e;
++  NSString          *pathInfo;
++  
++  pathInfo = [_ctx pathInfo];
++  if (![pathInfo isNotEmpty]) {
++    /* MKCALENDAR target already exists ... */
++    WOResponse *r;
++
++    [self logWithFormat:@"MKCALENDAR target exists !"];
++    
++    r = [_ctx response];
++    [r setStatus:405 /* method not allowed */];
++    [r appendContentString:@"calendar collection already exists !"];
++    return r;
++  }
++  
++  /* check permissions */
++  
++  sm = [_ctx soSecurityManager];
++  e  = [sm validatePermission:SoPerm_AddFolders 
++	   onObject:self->object
++	   inContext:_ctx];
++  if (e != nil) return e;
++
++  /* check whether all the parent collections are available */
++  if ([pathInfo rangeOfString:@"/"].length > 0) {
++    return [self httpException:409 /* Conflict */
++                 reason:
++                   @"invalid WebDAV MKCALENDAR request, first create all "
++		   @"parent collections !"];
++  }
++  
++  /* check whether the object supports creating collections */
++
++  if (![self->object respondsToSelector:
++              @selector(davCreateCalendarCollection:inContext:)]) {
++    /* Note: this should never happen, as this is implemented on NSObject */
++    
++    [self logWithFormat:@"MKCALENDAR: object '%@' path-info '%@'", 
++            self->object, pathInfo];
++    return [self httpException:405 /* not allowed */
++                 reason:
++                   @"this object cannot create a new calendar collection with MKCALENDAR"];
++  }
++  
++  if ((e = [self->object davCreateCalendarCollection:pathInfo inContext:_ctx])) {
++    [self debugWithFormat:@"creation of calendar collection '%@' failed: %@",
++            pathInfo, e];
++    return e;
++  }
++  
++  [self debugWithFormat:@"created calendar collection."];
++  return [NSNumber numberWithBool:YES];
+ }
+ 
+ /* DAV access control lists */
+Index: sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(révision 1623)
++++ sope-appserver/NGObjWeb/WebDAV/SoWebDAVRenderer.m	(copie de travail)
+@@ -277,7 +277,8 @@
+       ok = [self renderLockToken:_object inContext:_ctx];
+     break;
+   case 'M':
+-    if ([m isEqualToString:@"MKCOL"])
++    if ([m isEqualToString:@"MKCOL"]
++	|| [m isEqualToString:@"MKCALENDAR"])
+       ok = [self renderMkColResult:_object inContext:_ctx];
+     else if ([m isEqualToString:@"MOVE"]) {
+       ok = [self renderStatusResult:_object 
+Index: sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h
+===================================================================
+--- sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(révision 1623)
++++ sope-appserver/NGObjWeb/WebDAV/SoObject+SoDAV.h	(copie de travail)
+@@ -62,6 +62,7 @@
+   properties:(NSDictionary *)_props
+   inContext:(id)_ctx;
+ - (NSException *)davCreateCollection:(NSString *)_name inContext:(id)_ctx;
++- (NSException *)davCreateCalendarCollection:(NSString *)_name inContext:(id)_ctx;
+ 
+ - (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
+   inContext:(id)_ctx;
 Index: sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m
 ===================================================================
 --- sope-appserver/NGObjWeb/DynamicElements/WOHyperlinkInfo.m	(révision 1623)
@@ -2292,6 +2398,20 @@ Index: sope-appserver/NGObjWeb/SoObjects/SoObject.m
      }
    }
    
+Index: sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m
+===================================================================
+--- sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(révision 1623)
++++ sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m	(copie de travail)
+@@ -195,7 +195,8 @@
+         isCreateIfMissingMethod = YES;
+       else if ([m isEqualToString:@"PROPPATCH"])
+         isCreateIfMissingMethod = YES;
+-      else if ([m isEqualToString:@"MKCOL"])
++      else if ([m isEqualToString:@"MKCOL"]
++	       || [m isEqualToString:@"MKCALENDAR"])
+         /* this one is strictly creating */
+         isCreateMethod = YES;
+         // TODO: the following are only create-if-missing on the target!
 Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
 ===================================================================
 --- sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m	(révision 1623)
@@ -2317,3 +2437,54 @@ Index: sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
  @end /* WOHttpAdaptor */
  
  @implementation WOCoreApplication(SimpleParserSelection)
+Index: sope-appserver/NGObjWeb/Defaults.plist
+===================================================================
+--- sope-appserver/NGObjWeb/Defaults.plist	(révision 1623)
++++ sope-appserver/NGObjWeb/Defaults.plist	(copie de travail)
+@@ -216,7 +216,7 @@
+   SoWebDAVDisableCrossHostMoveCheck = NO;
+   
+   SoWebDAVDefaultAllowMethods = (
+-    GET, HEAD, POST, OPTIONS, MKCOL, DELETE, PUT,
++    GET, HEAD, POST, OPTIONS, MKCOL, MKCALENDAR, DELETE, PUT,
+     LOCK, UNLOCK, COPY, MOVE
+     /* , NOTIFY, POLL, SUBSCRIBE, UNSUBSCRIBE */
+   );
+@@ -224,6 +224,7 @@
+   SoWebDAVDetectionMethods = (
+     OPTIONS,
+     MKCOL,
++    MKCALENDAR,
+     PROPFIND,
+     PROPPATCH,
+     DELETE,
+Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(révision 1623)
++++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.h	(copie de travail)
+@@ -62,6 +62,10 @@
+   /* RFC 3253 (DeltaV) */
+   NGHttpMethod_REPORT,
+   NGHttpMethod_VERSION_CONTROL,
++  /* RFC 4791 (CalDAV) */
++  NGHttpMethod_MKCALENDAR,
++  /* http://ietfreport.isoc.org/idref/draft-daboo-carddav/ (CardDAV) */
++  NGHttpMethod_MKADDRESSBOOK,
+   NGHttpMethod_last
+ } NGHttpMethod;
+ 
+Index: sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m
+===================================================================
+--- sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(révision 1623)
++++ sope-appserver/NGObjWeb/NGHttp/NGHttpRequest.m	(copie de travail)
+@@ -59,6 +59,10 @@
+   /* RFC 3253 (DeltaV) */
+   @"REPORT",
+   @"VERSION-CONTROL",
++  /* RFC 4791 (CalDAV) */
++  @"MKCALENDAR",
++  /* http://ietfreport.isoc.org/idref/draft-daboo-carddav/ (CardDAV) */
++  @"MKADDRESSBOOK",
+   nil
+ };
+ 

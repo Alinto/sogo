@@ -403,15 +403,34 @@
   return ex;
 }
 
+- (NSDictionary *) _caldavSuccessCodeWithRecipient: (NSString *) recipient
+{
+  NSMutableArray *element;
+  NSDictionary *code;
+
+  element = [NSMutableArray new];
+  [element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
+					     recipient)];
+  [element addObject: davElementWithContent (@"request-status",
+					     XMLNS_CALDAV,
+					     @"2.0;Success")];
+  code = davElementWithContent (@"response", XMLNS_CALDAV,
+				element);
+  [element release];
+
+  return code;
+}
+
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients
 {
-  NSMutableArray *elements, *element;
+  NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
   NSString *recipient, *uid;
   iCalEvent *event;
   iCalPerson *person;
 
   elements = [NSMutableArray array];
+
   event = [self component: NO secure: NO];
   recipientsEnum = [recipients objectEnumerator];
   while ((recipient = [recipientsEnum nextObject]))
@@ -427,15 +446,40 @@
 	      forOldObject: nil andNewObject: event
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
-	element = [NSMutableArray new];
-	[element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
-						   recipient)];
-	[element addObject: davElementWithContent (@"request-status",
-						   XMLNS_CALDAV,
-						   @"2.0;Success")];
-	[elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
-						    element)];
-	[element release];
+	[elements
+	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
+      }
+
+  return elements;
+}
+
+- (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients
+{
+  NSMutableArray *elements;
+  NSEnumerator *recipientsEnum;
+  NSString *recipient, *uid;
+  iCalEvent *event;
+  iCalPerson *person;
+
+  elements = [NSMutableArray array];
+
+  event = [self component: NO secure: NO];
+  recipientsEnum = [recipients objectEnumerator];
+  while ((recipient = [recipientsEnum nextObject]))
+    if ([[recipient lowercaseString] hasPrefix: @"mailto:"])
+      {
+	person = [iCalPerson new];
+	[person setValue: 0 to: recipient];
+	uid = [person uid];
+	if (uid)
+	  [self _removeEventFromUID: uid];
+#warning fix this when sendEmailUsing blabla has been cleaned up
+	[self sendEMailUsingTemplateNamed: @"Deletion"
+	      forOldObject: nil andNewObject: event
+	      toAttendees: [NSArray arrayWithObject: person]];
+	[person release];
+	[elements
+	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
       }
 
   return elements;
@@ -459,7 +503,7 @@
 
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients
 {
-  NSMutableArray *elements, *element;
+  NSMutableArray *elements;
   NSEnumerator *recipientsEnum;
   NSString *recipient, *uid, *eventUID;
   iCalEvent *event;
@@ -493,15 +537,8 @@
 	      forOldObject: nil andNewObject: event
 	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
-	element = [NSMutableArray new];
-	[element addObject: davElementWithContent (@"recipient", XMLNS_CALDAV,
-						   recipient)];
-	[element addObject: davElementWithContent (@"request-status",
-						   XMLNS_CALDAV,
-						   @"2.0;Success")];
-	[elements addObject: davElementWithContent (@"response", XMLNS_CALDAV,
-						    element)];
-	[element release];
+	[elements
+	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
       }
 
   return elements;
