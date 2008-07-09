@@ -52,6 +52,7 @@
 
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients;
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients;
+- (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients;
 
 /* "iCal multifolder saves" */
 
