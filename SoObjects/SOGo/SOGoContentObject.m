@@ -306,7 +306,8 @@
 	response = (WOResponse *) error;
       else
 	{
-	  version++;
+	  if (!isNew)
+	    version++;
 	  response = [_ctx response];
 	  /* setup response */
   

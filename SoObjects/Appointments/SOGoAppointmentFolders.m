@@ -23,6 +23,10 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WORequest+So.h>
+#import <NGObjWeb/NSException+HTTP.h>
+
 #import "SOGoAppointmentFolder.h"
 
 #import "SOGoAppointmentFolders.h"
@@ -42,6 +46,42 @@
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Calendar"];
+}
+
+- (id) lookupName: (NSString *) name
+        inContext: (WOContext *) lookupContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  WORequest *rq;
+
+  obj = [super lookupName: name inContext: lookupContext acquire: NO];
+
+  rq = [context request];
+  if ([rq isSoWebDAVRequest]
+      && [[rq method] isEqualToString: @"MKCALENDAR"])
+    {
+      if (obj)
+	obj = [NSException exceptionWithHTTPStatus: 403];
+      else
+	{
+	  obj = [self newFolderWithName: name andNameInContainer: name];
+	  if (!obj)
+	    obj = [super lookupName: name inContext: lookupContext acquire: NO];
+	}
+    }
+
+  return obj;
+}
+
+- (id) doMKCALENDAR: (id) test
+{
+  return nil;
+}
+
+- (id) MKCALENDARAction: (id) localContext
+{
+  return nil;
 }
 
 #warning THIS CAUSES LIGHTNING TO FAIL (that is why its commented out)

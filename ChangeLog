@@ -1,5 +1,9 @@
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-PUTAction:_ctx]): increment the version number only if the record
+	is not new.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	([SOGoAppointmentFolder -davCalendarFreeBusySet]): new method that
 	returns the HREF to the calendars involved in the user's freebusy.
