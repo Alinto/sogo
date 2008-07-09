@@ -891,36 +891,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
 
 #warning components in calendar-data query are ignored
-static inline SEL
-_selectorForProperty (NSString *property)
-{
-  static NSMutableDictionary *methodMap = nil;
-  SEL propSel;
-  NSValue *propPtr;
-  NSDictionary *map;
-  NSString *methodName;
-
-  if (!methodMap)
-    methodMap = [NSMutableDictionary new];
-  propPtr = [methodMap objectForKey: property];
-  if (propPtr)
-    propSel = [propPtr pointerValue];
-  else
-    {
-      map = [sogoAppointmentFolderKlass defaultWebDAVAttributeMap];
-      methodName = [map objectForKey: property];
-      if (methodName)
-	{
-	  propSel = NSSelectorFromString (methodName);
-	  if (propSel)
-	    [methodMap setObject: [NSValue valueWithPointer: propSel]
-		       forKey: property];
-	}
-    }
-
-  return propSel;
-}
-
 - (NSString *) _nodeTagForProperty: (NSString *) property
 {
   NSString *namespace, *nodeName, *nsRep;
@@ -984,7 +954,7 @@ _selectorForProperty (NSString *property)
       currentValue = values;
       while (*currentProperty)
 	{
-	  methodSel = _selectorForProperty (*currentProperty);
+	  methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
 	  if (methodSel && [sogoObject respondsToSelector: methodSel])
 	    *currentValue = [[sogoObject performSelector: methodSel]
 			      stringByEscapingXMLString];

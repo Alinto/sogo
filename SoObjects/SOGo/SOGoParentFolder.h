@@ -43,6 +43,7 @@
 
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
+- (NSArray *) toManyRelationshipKeys;
 - (NSArray *) subFolders;
 
 - (NSException *) newFolderWithName: (NSString *) name

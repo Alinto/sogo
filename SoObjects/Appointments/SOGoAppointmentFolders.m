@@ -21,12 +21,14 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
 
+#import <SOGo/WORequest+SOGo.h>
 #import "SOGoAppointmentFolder.h"
 
 #import "SOGoAppointmentFolders.h"
@@ -48,40 +50,104 @@
   return [self labelForKey: @"Personal Calendar"];
 }
 
-- (id) lookupName: (NSString *) name
-        inContext: (WOContext *) lookupContext
-          acquire: (BOOL) acquire
+- (NSString *) _fetchPropertyWithName: (NSString *) propertyName
+			      inArray: (NSArray *) section
 {
-  id obj;
-  WORequest *rq;
+  NSObject <DOMElement> *currentElement;
+  NSString *currentName, *property;
+  NSEnumerator *elements;
+  NSObject <DOMNodeList> *values;
 
-  obj = [super lookupName: name inContext: lookupContext acquire: NO];
+  property = nil;
 
-  rq = [context request];
-  if ([rq isSoWebDAVRequest]
-      && [[rq method] isEqualToString: @"MKCALENDAR"])
+  elements = [section objectEnumerator];
+  while (!property && (currentElement = [elements nextObject]))
     {
-      if (obj)
-	obj = [NSException exceptionWithHTTPStatus: 403];
-      else
+      currentName = [NSString stringWithFormat: @"{%@}%@",
+			      [currentElement namespaceURI],
+			      [currentElement nodeName]];
+      if ([currentName isEqualToString: propertyName])
 	{
-	  obj = [self newFolderWithName: name andNameInContainer: name];
-	  if (!obj)
-	    obj = [super lookupName: name inContext: lookupContext acquire: NO];
+	  values = [currentElement childNodes];
+	  if ([values length])
+	    property = [[values objectAtIndex: 0] nodeValue];
 	}
     }
 
-  return obj;
+  return property;
 }
 
-- (id) doMKCALENDAR: (id) test
+#warning this method may be useful at a higher level
+#warning not all values are simple strings...
+- (NSException *) _applyMkCalendarProperties: (NSArray *) properties
+				    toObject: (SOGoObject *) newFolder
 {
+  NSEnumerator *allProperties;
+  NSObject <DOMElement> *currentProperty;
+  NSObject <DOMNodeList> *values;
+  NSString *value, *currentName;
+  SEL methodSel;
+
+  allProperties = [properties objectEnumerator];
+  while ((currentProperty = [allProperties nextObject]))
+    {
+      values = [currentProperty childNodes];
+      if ([values length])
+	{
+	  value = [[values objectAtIndex: 0] nodeValue];
+	  currentName = [NSString stringWithFormat: @"{%@}%@",
+				  [currentProperty namespaceURI],
+				  [currentProperty nodeName]];
+	  methodSel = SOGoSelectorForPropertySetter (currentName);
+	  if ([newFolder respondsToSelector: methodSel])
+	    [newFolder performSelector: methodSel
+		       withObject: value];
+	}
+    }
+
   return nil;
 }
 
-- (id) MKCALENDARAction: (id) localContext
+- (NSException *) davCreateCalendarCollection: (NSString *) newName
+				    inContext: (id) createContext
 {
-  return nil;
+  NSArray *subfolderNames, *setProperties;
+  NSString *content, *newDisplayName;
+  NSDictionary *properties;
+  NSException *error;
+  SOGoAppointmentFolder *newFolder;
+
+  subfolderNames = [self toManyRelationshipKeys];
+  if ([subfolderNames containsObject: newName])
+    {
+      content = [NSString stringWithFormat:
+			    @"A collection named '%@' already exists.",
+			  newName];
+      error = [NSException exceptionWithHTTPStatus: 403
+			   reason: content];
+    }
+  else
+    {
+      properties = [[createContext request]
+		     davPatchedPropertiesWithTopTag: @"mkcalendar"];
+      setProperties = [properties objectForKey: @"set"];
+      newDisplayName = [self _fetchPropertyWithName: @"{DAV:}displayname"
+			     inArray: setProperties];
+      if (![newDisplayName length])
+	newDisplayName = newName;
+      error
+	= [self newFolderWithName: newDisplayName andNameInContainer: newName];
+      if (!error)
+	{
+	  newFolder = [self lookupName: newName
+			    inContext: createContext
+			    acquire: NO];
+	  error = [self _applyMkCalendarProperties: setProperties
+			toObject: newFolder];
+	}
+    }
+
+  return error;
 }
 
 #warning THIS CAUSES LIGHTNING TO FAIL (that is why its commented out)

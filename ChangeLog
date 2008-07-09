@@ -1,5 +1,19 @@
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m ([SOGoAppointmentFolders -davCreateCalendarCollection:newNameinContext:createContext]): 
+	new method that execute a "MKCALENDAR" request.
+
+	* SoObjects/SOGo/SOGoObject.m (SOGoSelectorForPropertyGetter): new
+	function that returns the selector for the getter method for the
+	specified property.
+	(SOGoSelectorForPropertySetter): same as above for the setter
+	method.
+
+	* SoObjects/SOGo/WORequest+SOGo.m ([WORequest
+	-davPatchedPropertiesWithTopTag:topTag]): new category method to
+	help with parsing properties modified or removed from PROPPATCH
+	methods and alike.
+
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
 	-PUTAction:_ctx]): increment the version number only if the record
 	is not new.

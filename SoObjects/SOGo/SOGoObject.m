@@ -71,6 +71,64 @@ static BOOL kontactGroupDAV = YES;
 static BOOL sendACLAdvisories = NO;
 
 static NSDictionary *reportMap = nil;
+static NSMutableDictionary *setterMap = nil;
+static NSMutableDictionary *getterMap = nil;
+
+SEL SOGoSelectorForPropertyGetter (NSString *property)
+{
+  SEL propSel;
+  NSValue *propPtr;
+  NSDictionary *map;
+  NSString *methodName;
+
+  if (!getterMap)
+    getterMap = [NSMutableDictionary new];
+  propPtr = [getterMap objectForKey: property];
+  if (propPtr)
+    propSel = [propPtr pointerValue];
+  else
+    {
+      map = [SOGoObject defaultWebDAVAttributeMap];
+      methodName = [map objectForKey: property];
+      if (methodName)
+	{
+	  propSel = NSSelectorFromString (methodName);
+	  if (propSel)
+	    [getterMap setObject: [NSValue valueWithPointer: propSel]
+		       forKey: property];
+	}
+    }
+
+  return propSel;
+}
+
+SEL SOGoSelectorForPropertySetter (NSString *property)
+{
+  SEL propSel;
+  NSValue *propPtr;
+  NSDictionary *map;
+  NSString *methodName;
+
+  if (!setterMap)
+    setterMap = [NSMutableDictionary new];
+  propPtr = [setterMap objectForKey: property];
+  if (propPtr)
+    propSel = [propPtr pointerValue];
+  else
+    {
+      map = [SOGoObject defaultWebDAVAttributeMap];
+      methodName = [map objectForKey: property];
+      if (methodName)
+	{
+	  propSel = NSSelectorFromString ([methodName davSetterName]);
+	  if (propSel)
+	    [setterMap setObject: [NSValue valueWithPointer: propSel]
+		       forKey: property];
+	}
+    }
+
+  return propSel;
+}
 
 @implementation SOGoObject
 
