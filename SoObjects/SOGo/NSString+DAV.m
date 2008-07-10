@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGExtensions/NSString+misc.h>
 
 #import "NSString+DAV.h"
@@ -31,5 +33,20 @@
 {
   return [self stringByEscapingXMLString];
 }
+
+#warning we should use the same nomenclature as the webdav values...
+- (NSDictionary *) asWebDAVTuple
+{
+  NSString *namespace, *nodeName;
+  NSRange nsEnd;
+
+  nsEnd = [self rangeOfString: @"}"];
+  namespace = [self substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
+  nodeName = [self substringFromIndex: nsEnd.location + 1];
+
+  return [NSDictionary dictionaryWithObjectsAndKeys: namespace, @"ns",
+		       nodeName, @"method", nil];
+}
+
 
 @end

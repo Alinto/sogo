@@ -1,5 +1,9 @@
 2008-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+DAV.m ([NSString -asWebDAVTuple]): new
+	method that parses a webdav tag in the form "{ns:}tag" and returns
+	a dictionary.
+
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
 	([SOGoUserFolder -davPrincipalPropertySearch:queryContext]): new
 	method to answer to "principal-property-search" report.
