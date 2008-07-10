@@ -85,15 +85,15 @@
 	      pageName    = "UIxCalView"; 
 	      actionName  = "redirectForUIDs";
 	   };
-	   proposal = { 
-	      protectedBy = "View";
-	      pageName    = "UIxAppointmentProposal"; 
-	   };
-	   proposalSearch = { 
-	      protectedBy = "View";
-	      pageName    = "UIxAppointmentProposal"; 
-	      actionName  = "proposalSearch";
-	   };
+// 	   proposal = { 
+// 	      protectedBy = "View";
+// 	      pageName    = "UIxAppointmentProposal"; 
+// 	   };
+// 	   proposalSearch = { 
+// 	      protectedBy = "View";
+// 	      pageName    = "UIxAppointmentProposal"; 
+// 	      actionName  = "proposalSearch";
+// 	   };
 	   userRights = {
 	      protectedBy = "ReadAcls";
 	      pageName    = "UIxCalUserRightsEditor";
