@@ -532,10 +532,7 @@
 	    else
 	      [recipientEvent takeAttendeeStatus: attendee];
 	  }
-#warning fix this when sendEmailUsing blabla has been cleaned up
-	[self sendEMailUsingTemplateNamed: @"ICalReply"
-	      forOldObject: nil andNewObject: event
-	      toAttendees: [NSArray arrayWithObject: person]];
+	[self sendIMIPReplyForEvent: event to: person];
 	[person release];
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
