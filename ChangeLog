@@ -1,10 +1,3 @@
-2008-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* SoObjects/Appointments/SOGoCalendarComponent.m
-	([SOGoCalendarComponent -sendResponseTo:recipient]): method
-	renamed from 'sendResponseToOrganizer' and which now takes an
-	optional argument indicating the recipient of the REPLY.
-
 2008-07-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m ([SOGoAppointmentFolders -davCreateCalendarCollection:newNameinContext:createContext]): 

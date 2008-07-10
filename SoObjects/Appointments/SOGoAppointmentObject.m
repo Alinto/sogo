@@ -390,7 +390,7 @@
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
 	      && [event isStillRelevant])
-	    [self sendResponseTo: nil];
+	    [self sendResponseToOrganizer];
 	  organizerUID = [[event organizer] uid];
 	  if (organizerUID)
 	    ex = [self _updateAttendee: attendee
@@ -533,7 +533,9 @@
 	      [recipientEvent takeAttendeeStatus: attendee];
 	  }
 #warning fix this when sendEmailUsing blabla has been cleaned up
-	[self sendResponseTo: person];
+	[self sendEMailUsingTemplateNamed: @"ICalReply"
+	      forOldObject: nil andNewObject: event
+	      toAttendees: [NSArray arrayWithObject: person]];
 	[person release];
 	[elements
 	  addObject: [self _caldavSuccessCodeWithRecipient: recipient]];
