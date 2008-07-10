@@ -101,12 +101,8 @@ static NSMutableCharacterSet *urlStartChars = nil;
 
   newName = [NSMutableString stringWithString: @"dav"];
   components = [[self componentsSeparatedByString: @"-"] objectEnumerator];
-  component = [components nextObject];
-  while (component)
-    {
-      [newName appendString: [component capitalizedString]];
-      component = [components nextObject];
-    }
+  while ((component = [components nextObject]))
+    [newName appendString: [component capitalizedString]];
 
   return newName;
 }
