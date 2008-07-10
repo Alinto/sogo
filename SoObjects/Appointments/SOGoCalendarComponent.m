@@ -402,7 +402,9 @@ static BOOL sendEMailNotifications = NO;
       /* construct message content */
       p = [app pageWithName: pageName inContext: context];
       [p setApt: event];
-      [p setAttendee: [event findParticipant: ownerUser]];
+
+      attendee = [event findParticipant: ownerUser];
+      [p setAttendee: attendee];
 
       /* construct message */
       headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
