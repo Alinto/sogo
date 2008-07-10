@@ -1,5 +1,13 @@
 2008-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	([SOGoUserFolder -davPrincipalPropertySearch:queryContext]): new
+	method to answer to "principal-property-search" report.
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	([SOGoAppointmentFolders -davComplianceClassesInContext:]): new
+	method that declares "calendar-access" and "calendar-schedule".
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent
 	-sendIMIPReplyForEvent:eventto:recipient]): new method, derived from

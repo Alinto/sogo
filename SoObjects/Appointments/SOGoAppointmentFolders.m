@@ -151,35 +151,22 @@
 }
 
 #warning THIS CAUSES LIGHTNING TO FAIL (that is why its commented out)
-// - (NSArray *) davComplianceClassesInContext: (id)_ctx
-// {
-//   NSMutableArray *classes;
-//   NSArray *primaryClasses;
+- (NSArray *) davComplianceClassesInContext: (id)_ctx
+{
+  NSMutableArray *classes;
+  NSArray *primaryClasses;
 
-//   classes = [NSMutableArray new];
-//   [classes autorelease];
+  classes = [NSMutableArray new];
+  [classes autorelease];
 
-//   primaryClasses = [super davComplianceClassesInContext: _ctx];
-//   if (primaryClasses)
-//     [classes addObjectsFromArray: primaryClasses];
-//   [classes addObject: @"calendar-access"];
-//   [classes addObject: @"calendar-schedule"];
+  primaryClasses = [super davComplianceClassesInContext: _ctx];
+  if (primaryClasses)
+    [classes addObjectsFromArray: primaryClasses];
+  [classes addObject: @"calendar-access"];
+  [classes addObject: @"calendar-schedule"];
 
-//   return classes;
-// }
-
-// /* CalDAV support */
-// - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
-// {
-//   NSMutableArray *newClasses;
-
-//   newClasses
-//     = [NSMutableArray arrayWithArray:
-// 			[super davComplianceClassesInContext: localContext]];
-//   [newClasses addObject: @"calendar-access"];
-
-//   return newClasses;
-// }
+  return classes;
+}
 
 // - (NSArray *) davCalendarHomeSet
 // {
