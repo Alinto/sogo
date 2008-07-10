@@ -55,7 +55,7 @@
                         forOldObject: (iCalRepeatableEntityObject *) _oldObject
                         andNewObject: (iCalRepeatableEntityObject *) _newObject
                          toAttendees: (NSArray *) _attendees;
-- (void) sendResponseToOrganizer;
+- (void) sendResponseTo: (iCalPerson *) recipient;
 
 // - (BOOL) isOrganizerOrOwner: (SOGoUser *) user;
 

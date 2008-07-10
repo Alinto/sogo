@@ -373,11 +373,11 @@ static BOOL sendEMailNotifications = NO;
     }
 }
 
-- (void) sendResponseToOrganizer
+- (void) sendResponseTo: (iCalPerson *) recipient
 {
   NSString *pageName, *language, *mailDate, *email;
   WOApplication *app;
-  iCalPerson *organizer, *attendee;
+  iCalPerson *attendee;
   NSString *iCalString;
   iCalEvent *event;
   SOGoAptMailICalReply *p;
@@ -392,7 +392,8 @@ static BOOL sendEMailNotifications = NO;
       event = [[self component: NO secure: NO] itipEntryWithMethod: @"reply"];
       if (![event userIsOrganizer: [context activeUser]])
 	{
-	  organizer = [event organizer];
+	  if (!recipient)
+	    recipient = [event organizer];
 	  attendee = [event findParticipant: [context activeUser]];
 	  [event setAttendees: [NSArray arrayWithObject: attendee]];
 
@@ -418,14 +419,14 @@ static BOOL sendEMailNotifications = NO;
 	   */
 	  [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
 	  [headerMap setObject: [attendee mailAddress] forKey: @"from"];
-	  [headerMap setObject: [organizer mailAddress] forKey: @"to"];
+	  [headerMap setObject: [recipient mailAddress] forKey: @"to"];
 	  mailDate = [[NSCalendarDate date] rfc822DateString];
 	  [headerMap setObject: mailDate forKey: @"date"];
 	  [headerMap setObject: [p getSubject] forKey: @"subject"];
 	  msg = [NGMimeMessage messageWithHeader: headerMap];
 
 	  NSLog (@"sending 'REPLY' from %@ to %@",
-		 [attendee mailAddress], [organizer mailAddress]);
+		 [attendee mailAddress], [recipient mailAddress]);
 
 	  /* multipart body */
 	  body = [[NGMimeMultipartBody alloc] initWithPart: msg];
@@ -457,7 +458,7 @@ static BOOL sendEMailNotifications = NO;
 	  [body release];
 
 	  /* send the damn thing */
-	  email = [organizer rfc822Email];
+	  email = [recipient rfc822Email];
 	  [[SOGoMailer sharedMailer]
 	    sendMimePart: msg
 	    toRecipients: [NSArray arrayWithObject: email]

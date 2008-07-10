@@ -217,7 +217,7 @@
 	rsvp = nil;
       [eventObject saveContentString: [calendar versitString]];
       if ([rsvp isEqualToString: @"true"])
-	[eventObject sendResponseToOrganizer];
+	[eventObject sendResponseTo: nil];
       organizerUID = [[chosenEvent organizer] uid];
       if (organizerUID)
 	[self _updateAttendee: user withSequence: [chosenEvent sequence]
