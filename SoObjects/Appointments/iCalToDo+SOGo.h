@@ -1,4 +1,4 @@
-/* NSDictionary+Utilities.h - this file is part of SOGo
+/* iCalToDo+SOGo.h - this file is part of SOGo
  *
  * Copyright (C) 2007 Inverse groupe conseil
  *
@@ -20,28 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NSDICTIONARY_UTILITIES_H
-#define NSDICTIONARY_UTILITIES_H
+#ifndef ICALTODO_SOGO_H
+#define ICALTODO_SOGO_H
 
-#import <Foundation/NSDictionary.h>
+#import <NGCards/iCalToDo.h>
 
-@class NSArray;
-@class NSString;
+@class NSMutableArray;
 
-@interface NSDictionary (SOGoDictionaryUtilities)
+@interface iCalToDo (SOGoExtensions)
 
-+ (NSDictionary *) dictionaryFromStringsFile: (NSString *) file;
-
-- (NSString *) jsonRepresentation;
-- (NSString *) keysWithFormat: (NSString *) keyFormat;
+- (NSMutableDictionary *) quickRecord;
 
 @end
 
-@interface NSMutableDictionary (SOGoDictionaryUtilities)
-
-- (void) setObjects: (NSArray *) objects
-	    forKeys: (NSArray *) keys;
-
-@end
-
-#endif /* NSDICTIONARY_UTILITIES_H */
+#endif /* ICALTODO_SOGO_H */

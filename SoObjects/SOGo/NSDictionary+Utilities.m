@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
@@ -100,6 +101,26 @@
     }
 
   return keysWithFormat;
+}
+
+@end
+
+@implementation NSMutableDictionary (SOGoDictionaryUtilities)
+
+- (void) setObjects: (NSArray *) objects
+	    forKeys: (NSArray *) keys
+{
+  unsigned int count, max;
+
+  max = [objects count];
+  if ([keys count] == max)
+    for (count = 0; count < max; count++)
+      [self setObject: [objects objectAtIndex: count]
+	    forKey: [keys objectAtIndex: count]];
+  else
+    [NSException raise: NSInvalidArgumentException
+		 format: @"Number of objects does not match"
+		 @" the number of keys."];
 }
 
 @end

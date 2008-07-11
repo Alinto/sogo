@@ -60,6 +60,7 @@
     tagClass = [CardElement class];
   else if ([classTag isEqualToString: @"DTSTAMP"]
            || [classTag isEqualToString: @"DTSTART"]
+           || [classTag isEqualToString: @"RECURRENCE-ID"]
            || [classTag isEqualToString: @"CREATED"]
            || [classTag isEqualToString: @"LAST-MODIFIED"])
     tagClass = [iCalDateTime class];
@@ -254,6 +255,18 @@
 - (NSCalendarDate *) startDate
 {
   return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+			   dateTime];
+}
+
+- (void) setRecurrenceId: (NSCalendarDate *) newRecId
+{
+  [(iCalDateTime *) [self uniqueChildWithTag: @"recurrence-id"]
+		    setDateTime: newRecId];
+}
+
+- (NSCalendarDate *) recurrenceId
+{
+  return [(iCalDateTime *) [self uniqueChildWithTag: @"recurrence-id"]
 			   dateTime];
 }
 

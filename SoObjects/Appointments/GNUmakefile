@@ -11,9 +11,11 @@ Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
 	iCalEntityObject+SOGo.m 	\
+	iCalRepeatableEntityObject+SOGo.m	\
 	iCalEvent+SOGo.m	 	\
 	iCalEventChanges+SOGo.m 	\
 	iCalPerson+SOGo.m 	\
+	iCalToDo+SOGo.m		 	\
 	\
 	SOGoCalendarComponent.m		\
 	SOGoAppointmentObject.m		\

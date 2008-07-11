@@ -1,6 +1,7 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
+ * Copyright (C) 2004-2005 SKYRIX Software AG
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,42 +29,31 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
 
-#import "iCalEvent+SOGo.h"
+#import "iCalToDo+SOGo.h"
 
-@implementation iCalEvent (SOGoExtensions)
-
-- (BOOL) isStillRelevant
-{
-  NSCalendarDate *now;
-
-  now = [NSCalendarDate calendarDate];
-
-  return ([[self endDate] earlierDate: now] == now);
-}
+@implementation iCalToDo (SOGoExtensions)
 
 - (NSMutableDictionary *) quickRecord
 {
   NSMutableDictionary *row;
-  NSCalendarDate *startDate, *endDate;
+  NSCalendarDate *startDate, *dueDate;
   NSArray *attendees;
   NSString *uid, *title, *location, *status;
-  NSNumber *sequence, *dateNumber;
-  id organizer;
+  NSNumber *sequence;
+  id organizer, date;
   id participants, partmails;
   NSMutableString *partstates;
-  unsigned int i, count, boolTmp;
-  BOOL isAllDay;
+  unsigned i, count, code;
   iCalAccessClass accessClass;
 
   /* extract values */
  
   startDate = [self startDate];
-  endDate = [self endDate];
+  dueDate = [self due];
   uid = [self uid];
   title = [self summary];
   if (![title isNotNull])
@@ -71,7 +61,6 @@
   location = [self location];
   sequence = [self sequence];
   accessClass = [self symbolicAccessClass];
-  isAllDay = [self isAllDay];
   status = [[self status] uppercaseString];
 
   attendees = [self attendees];
@@ -84,108 +73,92 @@
 
   row = [NSMutableDictionary dictionaryWithCapacity:8];
 
-  [row setObject: @"vevent" forKey: @"c_component"];
- 
+  [row setObject: @"vtodo" forKey: @"c_component"];
+
   if ([uid isNotNull]) 
     [row setObject:uid forKey: @"c_uid"];
   else
     [self logWithFormat: @"WARNING: could not extract a uid from event!"];
 
-  boolTmp = ((isAllDay) ? 1 : 0);
-  [row setObject: [NSNumber numberWithInt: boolTmp]
-       forKey: @"c_isallday"];
-  boolTmp = (([self isRecurrent]) ? 1 : 0);
-  [row setObject: [NSNumber numberWithInt: boolTmp]
+  [row setObject:[NSNumber numberWithBool:[self isRecurrent]]
        forKey: @"c_iscycle"];
-  boolTmp = (([self isOpaque]) ? 1 : 0);
-  [row setObject: [NSNumber numberWithInt: boolTmp]
-       forKey: @"c_isopaque"];
-  [row setObject: [NSNumber numberWithInt: [self priorityNumber]]
+  [row setObject:[NSNumber numberWithInt:[self priorityNumber]]
        forKey: @"c_priority"];
+
+  [row setObject: [NSNumber numberWithBool: NO]
+       forKey: @"c_isallday"];
+  [row setObject: [NSNumber numberWithBool: NO]
+       forKey: @"c_isopaque"];
 
   [row setObject: title forKey: @"c_title"];
   if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
-
-  if ([startDate isNotNull])
-    [row setObject: [self quickRecordDateAsNumber: startDate]
-	 forKey: @"c_startdate"];
-  if ([endDate isNotNull])
-    {
-      if (endDate == iCalDistantFuture)
-	dateNumber = iCalDistantFutureNumber;
-      else
-	{
-	  if (isAllDay)
-	    i = 1;
-	  else
-	    i = 0;
-	  dateNumber
-	    = [NSNumber numberWithUnsignedInt:
-			  [endDate timeIntervalSince1970] - i];
-	}
-      [row setObject: dateNumber forKey: @"c_enddate"];
-    }
-
-  if ([self isRecurrent]) {
-    NSCalendarDate *date;
  
-    date = [self lastPossibleRecurrenceStartDate];
-    if (!date) {
-      /* this could also be *nil*, but in the end it makes the fetchspecs
-	 more complex - thus we set it to a "reasonable" distant future */
-      date = iCalDistantFuture;
+  if ([startDate isNotNull])
+    date = [self quickRecordDateAsNumber: startDate];
+  else
+    date = [NSNull null];
+  [row setObject: date forKey: @"c_startdate"];
+
+  if ([dueDate isNotNull]) 
+    date = [self quickRecordDateAsNumber: dueDate];
+  else
+    date = [NSNull null];
+  [row setObject: date forKey: @"c_enddate"];
+
+  if ([self isRecurrent])
+    {
+      [row setObject: [self quickRecordDateAsNumber: iCalDistantFuture]
+	   forKey: @"c_cycleenddate"];
+      [row setObject: [self cycleInfo]
+	   forKey: @"c_cycleinfo"];
     }
-    [row setObject:[self quickRecordDateAsNumber:date] forKey: @"c_cycleenddate"];
-    [row setObject:[self cycleInfo] forKey: @"c_cycleinfo"];
-  }
 
   if ([participants length] > 0)
-    [row setObject: participants forKey: @"c_participants"];
+    [row setObject:participants forKey: @"c_participants"];
   if ([partmails length] > 0)
-    [row setObject: partmails forKey: @"c_partmails"];
+    [row setObject:partmails forKey: @"c_partmails"];
 
   if ([status isNotNull]) {
-    int code = 1;
- 
-    if ([status isEqualToString: @"TENTATIVE"])
+    code = 0; /* NEEDS-ACTION */
+    if ([status isEqualToString: @"COMPLETED"])
+      code = 1;
+    else if ([status isEqualToString: @"IN-PROCESS"])
       code = 2;
     else if ([status isEqualToString: @"CANCELLED"])
-      code = 0;
-    [row setObject:[NSNumber numberWithInt:code] forKey: @"c_status"];
+      code = 3;
+    [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
   }
   else {
     /* confirmed by default */
-    [row setObject: [NSNumber numberWithInt:1] forKey: @"c_status"];
+    [row setObject:[NSNumber numberWithInt:1] forKey: @"c_status"];
   }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
        forKey: @"c_classification"];
 
   organizer = [self organizer];
-  if (organizer)
-    {
-      NSString *email;
+  if (organizer) {
+    NSString *email;
  
-      email = [organizer valueForKey: @"rfc822Email"];
-      if (email)
-	[row setObject:email forKey: @"c_orgmail"];
-    }
+    email = [organizer valueForKey: @"rfc822Email"];
+    if (email)
+      [row setObject:email forKey: @"c_orgmail"];
+  }
  
   /* construct partstates */
   count = [attendees count];
   partstates = [[NSMutableString alloc] initWithCapacity:count * 2];
-  for (i = 0; i < count; i++)
-    {
-      iCalPerson *p;
-      iCalPersonPartStat stat;
+  for ( i = 0; i < count; i++) {
+    iCalPerson *p;
+    iCalPersonPartStat stat;
  
-      p = [attendees objectAtIndex:i];
-      stat = [p participationStatus];
-      if (i)
-	[partstates appendString: @"\n"];
-      [partstates appendFormat: @"%d", stat];
-    }
+    p = [attendees objectAtIndex:i];
+    stat = [p participationStatus];
+    if(i != 0)
+      [partstates appendString: @"\n"];
+    [partstates appendFormat: @"%d", stat];
+  }
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 

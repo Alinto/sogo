@@ -17,9 +17,6 @@ ADDITIONAL_INCLUDE_DIRS += -I../SOPE
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj
 
 libOGoContentStore_OBJC_FILES +=		\
-	iCalEntityObject+OCS.m			\
-	iCalRepeatableEntityObject+OCS.m	\
-	\
 	OCSiCalFieldExtractor.m			\
 	OCSContactFieldExtractor.m		\
 

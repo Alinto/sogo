@@ -1,3 +1,17 @@
+2008-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchFields:_fieldsfrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filters]):
+	take exceptional modifications into account.
+
+	* SoObjects/Appointments/iCalToDo+SOGo.m: new class module with
+	category methods for iCalToDo.
+	([iCalToDo -quickRecord]): same as for method below.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m ([iCalEvent
+	-quickRecord]): new method taken from OCSiCalFieldExtractor.
+
 2008-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+DAV.m ([NSString -asWebDAVTuple]): new

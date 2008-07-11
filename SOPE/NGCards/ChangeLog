@@ -1,3 +1,9 @@
+2008-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEntityObject.m ([iCalEntityObject -setRecurrenceId:newRecId])
+	([iCalEntityObject -recurrenceId]): new accessors to handle the
+	"RECURRENCE-ID" fields in recurrence exceptions.
+
 2008-07-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardElement.m ([CardElement -addValue:aValue])

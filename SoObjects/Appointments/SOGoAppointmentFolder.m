@@ -59,12 +59,14 @@
 #import <SOGo/SOGoCache.h>
 // #import <SOGo/SOGoCustomGroupFolder.h>
 #import <SOGo/LDAPUserManager.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
-#import <SoObjects/SOGo/iCalEntityObject+Utilities.h>
+#import <SOGo/iCalEntityObject+Utilities.h>
 
+#import "iCalEntityObject+SOGo.h"
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
 #import "SOGoFreeBusyObject.h"
@@ -98,7 +100,10 @@ static Class sogoAppointmentFolderKlass = Nil;
   didInit = YES;
   
   if (!sogoAppointmentFolderKlass)
-    sogoAppointmentFolderKlass = self;
+    {
+      sogoAppointmentFolderKlass = self;
+      [iCalEntityObject initializeSOGoExtensions];
+    }
 
   if (!reportQueryFields)
     reportQueryFields = [[NSArray alloc] initWithObjects: @"c_name",
@@ -554,7 +559,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (NSMutableDictionary *) fixupRecord: (NSDictionary *) _record
-                           fetchRange: (NGCalendarDateRange *) _r
 {
   NSMutableDictionary *md;
   static NSString *fields[] = { @"c_startdate", @"startDate",
@@ -598,8 +602,7 @@ static Class sogoAppointmentFolderKlass = Nil;
       ma = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
 	{
-	  row = [self fixupRecord: [records objectAtIndex: count]
-		      fetchRange: r];
+	  row = [self fixupRecord: [records objectAtIndex: count]];
 	  if (row)
 	    [ma addObject: row];
 	}
@@ -632,6 +635,117 @@ static Class sogoAppointmentFolderKlass = Nil;
   return md;
 }
 
+- (int) _indexOfRecordMatchingDate: (NSCalendarDate *) matchDate
+			   inArray: (NSArray *) recordArray
+{
+  int count, max, recordIndex;
+  NSDictionary *currentRecord;
+
+  recordIndex = -1;
+
+  count = 0;
+  max = [recordArray count];
+  while (recordIndex == -1 && count < max)
+    {
+      currentRecord = [recordArray objectAtIndex: count];
+      if ([[currentRecord objectForKey: @"startDate"]
+	    isEqual: matchDate])
+	recordIndex = count;
+    }
+
+  return recordIndex;
+}
+
+- (void) _fixExceptionRecord: (NSMutableDictionary *) recRecord
+		     fromRow: (NSDictionary *) row
+{
+  NSArray *objects;
+  static NSArray *fields = nil;
+
+  if (!fields)
+    {
+      fields = [NSArray arrayWithObjects: @"c_name", nil];
+      [fields retain];
+    }
+
+  objects = [row objectsForKeys: fields notFoundMarker: @""];
+  [recRecord setObjects: objects forKeys: fields];
+}
+
+- (void) _appendCycleException: (iCalRepeatableEntityObject *) component
+		       fromRow: (NSDictionary *) row
+		      forRange: (NGCalendarDateRange *) dateRange
+		       toArray: (NSMutableArray *) ma
+{
+  NSCalendarDate *startDate, *recurrenceId;
+  NSMutableDictionary *newRecord;
+  NGCalendarDateRange *newRecordRange;
+  int recordIndex;
+
+  newRecord = nil;
+
+  recurrenceId = [component recurrenceId];
+  if ([dateRange containsDate: recurrenceId])
+    {
+      recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
+			  inArray: ma];
+      if (recordIndex > -1)
+	{
+	  startDate = [component startDate];
+	  if ([dateRange containsDate: startDate])
+	    {
+	      newRecord = [self fixupRecord: [component quickRecord]];
+	      [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
+	    }
+	  else
+	    [ma removeObjectAtIndex: recordIndex];
+	}
+      else
+	[self errorWithFormat:
+		@"missing exception record for recurrence-id: %@",
+	      recurrenceId];
+    }
+  else
+    {
+      newRecord = [self fixupRecord: [component quickRecord]];
+      newRecordRange = [NGCalendarDateRange calendarDateRangeWithStartDate:
+					      [newRecord objectForKey:
+							   @"startDate"]
+					    endDate: [newRecord objectForKey:
+								  @"endDate"]];
+      if ([dateRange doesIntersectWithDateRange: newRecordRange])
+	[ma addObject: newRecord];
+    }
+
+  if (newRecord)
+    [self _fixExceptionRecord: newRecord fromRow: row];
+}
+
+- (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
+		       forRange: (NGCalendarDateRange *) dateRange
+			toArray: (NSMutableArray *) ma
+{
+  NSArray *elements, *components;
+  unsigned int count, max;
+  NSString *content;
+
+  content = [row objectForKey: @"c_content"];
+  if ([content length])
+    {
+      elements = [iCalCalendar parseFromSource: content];
+      if ([elements count])
+	{
+	  components = [[elements objectAtIndex: 0] allObjects];
+	  max = [components count];
+	  for (count = 1; count < max; count++)
+	    [self _appendCycleException: [components objectAtIndex: count]
+		  fromRow: row
+		  forRange: dateRange
+		  toArray: ma];
+	}
+    }
+}
+
 - (void) _flattenCycleRecord: (NSDictionary *) _row
                     forRange: (NGCalendarDateRange *) _r
                    intoArray: (NSMutableArray *) _ma
@@ -660,7 +774,7 @@ static Class sogoAppointmentFolderKlass = Nil;
       return;
     }
 
-  row = [self fixupRecord:_row fetchRange: _r];
+  row = [self fixupRecord: _row];
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
 
@@ -685,6 +799,10 @@ static Class sogoAppointmentFolderKlass = Nil;
       if (fixedRow)
 	[_ma addObject:fixedRow];
     }
+
+  [self _appendCycleExceptionsFromRow: row
+	forRange: _r
+	toArray: _ma];
 }
 
 - (NSArray *) fixupCyclicRecords: (NSArray *) _records
@@ -693,16 +811,16 @@ static Class sogoAppointmentFolderKlass = Nil;
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
   NSDictionary *row;
-  unsigned int i, count;
+  unsigned int count, max;
 
-  count = [_records count];
-  ma = [NSMutableArray arrayWithCapacity: count];
-  if (count > 0)
-    for (i = 0; i < count; i++)
-      {
-	row = [_records objectAtIndex: i];
-	[self _flattenCycleRecord: row forRange: _r intoArray: ma];
-      }
+  max = [_records count];
+  ma = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      row = [_records objectAtIndex: count];
+      [self _flattenCycleRecord: row forRange: _r intoArray: ma];
+    }
 
   return ma;
 }
@@ -844,9 +962,10 @@ static Class sogoAppointmentFolderKlass = Nil;
     {
       if (r)
         records = [self fixupCyclicRecords: records fetchRange: r];
-      if (!ma)
-        ma = [NSMutableArray arrayWithCapacity: [records count]];
-      [ma addObjectsFromArray: records];
+      if (ma)
+	[ma addObjectsFromArray: records];
+      else
+        ma = [NSMutableArray arrayWithArray: records];
     }
   else if (!ma)
     {
@@ -891,6 +1010,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 #warning we should use the EOFetchSpecification for that!!! (see doPROPFIND:)
 
 #warning components in calendar-data query are ignored
+
+#warning the two following methods should be replaced with the new dav rendering mechanism
 - (NSString *) _nodeTagForProperty: (NSString *) property
 {
   NSString *namespace, *nodeName, *nsRep;

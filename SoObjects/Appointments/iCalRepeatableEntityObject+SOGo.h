@@ -1,5 +1,6 @@
-/*
+/* iCalRepeatableEntityObject+SOGo.h - this file is part of SOGo
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2008 Inverse groupe conseil
 
   This file is part of OpenGroupware.org.
 
@@ -19,11 +20,14 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
+#import <NGCards/iCalRepeatableEntityObject.h>
 
-#import "iCalRepeatableEntityObject+OCS.h"
+#import "iCalEntityObject+SOGo.h"
 
-@implementation iCalRepeatableEntityObject (OCS)
+@class NSString;
+
+@interface iCalRepeatableEntityObject (SOGoExtensions)
+
+- (NSString *) cycleInfo;
 
 @end

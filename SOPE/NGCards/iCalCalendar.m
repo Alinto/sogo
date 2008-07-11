@@ -190,8 +190,8 @@
 - (NSArray *) allObjects
 {
   NSMutableArray *ma;
-  
-  ma = [NSMutableArray new];
+
+  ma = [NSMutableArray array];
   [ma addObjectsFromArray: [self events]];
   [ma addObjectsFromArray: [self todos]];
   [ma addObjectsFromArray: [self journals]];

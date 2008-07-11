@@ -25,9 +25,12 @@
 
 #import <NGCards/iCalEvent.h>
 
+@class NSMutableDictionary;
+
 @interface iCalEvent (SOGoExtensions)
 
 - (BOOL) isStillRelevant;
+- (NSMutableDictionary *) quickRecord;
 
 @end
 

@@ -79,6 +79,9 @@ typedef enum
 - (NSCalendarDate *) startDate;
 - (BOOL) hasStartDate;
 
+- (void) setRecurrenceId: (NSCalendarDate *) newRecId;
+- (NSCalendarDate *) recurrenceId;
+
 - (void) setLastModified: (NSCalendarDate *) _value;
 - (NSCalendarDate *) lastModified;
 
@@ -110,7 +113,7 @@ typedef enum
 - (NSArray *) resources;
 - (BOOL) isParticipant: (id) _email;
 - (iCalPerson *) findParticipantWithEmail: (id) _email;
-  
+
 - (void) removeAllAlarms;
 - (void) addToAlarms: (id) _alarm;
 - (NSArray *) alarms;

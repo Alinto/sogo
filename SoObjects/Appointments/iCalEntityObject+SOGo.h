@@ -27,7 +27,12 @@
 
 @class SOGoUser;
 
+NSCalendarDate *iCalDistantFuture;
+NSNumber *iCalDistantFutureNumber;
+
 @interface iCalEntityObject (SOGoExtensions)
+
++ (void) initializeSOGoExtensions;
 
 - (BOOL) userIsParticipant: (SOGoUser *) user;
 - (BOOL) userIsOrganizer: (SOGoUser *) user;
@@ -38,6 +43,10 @@
 - (id) itipEntryWithMethod: (NSString *) method;
 
 - (NSArray *) attendeesWithoutUser: (SOGoUser *) user;
+- (NSMutableDictionary *) quickRecord;
+
+- (int) priorityNumber;
+- (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date;
 
 @end
 

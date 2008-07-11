@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>
@@ -35,6 +36,16 @@
 #import "iCalEntityObject+SOGo.h"
 
 @implementation iCalEntityObject (SOGoExtensions)
+
++ (void) initializeSOGoExtensions;
+{
+  if (!iCalDistantFuture)
+    {
+      iCalDistantFuture = [[NSCalendarDate distantFuture] retain];
+      /* INT_MAX due to Postgres constraint */
+      iCalDistantFutureNumber = [[NSNumber numberWithUnsignedInt: INT_MAX] retain];
+    }
+}
 
 - (BOOL) userIsParticipant: (SOGoUser *) user
 {
@@ -126,6 +137,40 @@
     }
 
   return newAttendees;
+}
+
+- (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
+{
+  return ((_date == iCalDistantFuture)
+	  ? iCalDistantFutureNumber
+	  : [NSNumber numberWithUnsignedInt: [_date timeIntervalSince1970]]);
+}
+
+- (NSMutableDictionary *) quickRecord
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (int) priorityNumber
+{
+  NSString *prio;
+  NSRange r;
+  int priorityNumber;
+
+  prio = [self priority];
+  if (prio)
+    {
+      r = [prio rangeOfString: @";"];
+      if (r.length)
+	prio = [prio substringToIndex:r.location];
+      priorityNumber = [prio intValue];
+    }
+  else
+    priorityNumber = 0;
+
+  return priorityNumber;
 }
 
 @end
