@@ -60,6 +60,7 @@
 - (void) dealloc
 {
   [item release];
+  [event release];
   [aptStartDate release];
   [aptEndDate release];
   [super dealloc];
@@ -91,7 +92,7 @@
   hm = [self queryParameterForKey: @"hm"];
 
   return (isAllDay
-	  || (hm && [hm isEqualToString: @"allday"]));
+	  || [hm isEqualToString: @"allday"]);
 }
 
 - (void) setIsAllDay: (BOOL) newIsAllDay
@@ -137,7 +138,7 @@
   int hour;
 
   newStartDate = [self selectedDate];
-  if ([[self queryParameterForKey: @"hm"] length] == 0)
+  if (![[self queryParameterForKey: @"hm"] length])
     {
       now = [NSCalendarDate calendarDate];
       timeZone = [[context activeUser] timeZone];
@@ -202,7 +203,7 @@
 
   co = [self clientObject];
   objectId = [co globallyUniqueObjectId];
-  if ([objectId length] > 0)
+  if ([objectId length])
     {
       method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
                          [co soURL], objectId];
