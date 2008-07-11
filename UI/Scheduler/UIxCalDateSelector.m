@@ -128,7 +128,6 @@
   return [self localizedAbbreviatedNameForDayOfWeek: [self dayOfWeek]];
 }
 
-
 /* stylesheets */
 
 - (NSString *) currentWeekStyle
