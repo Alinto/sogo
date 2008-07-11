@@ -151,9 +151,14 @@
 
 - (NSString *) extraStyle
 {
-  return (([[self selectedDate] isDateOnSameDay: currentDay])
-          ? [self selectedDayExtraStyle]
-          : nil);
+  NSString *extraStyle;
+
+  if ([[self selectedDate] isDateOnSameDay: currentDay])
+    extraStyle = [self selectedDayExtraStyle];
+  else
+    extraStyle = nil;
+
+  return extraStyle;
 }
 
 /* URLs */
