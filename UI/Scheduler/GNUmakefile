@@ -35,9 +35,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxComponentEditor.m		\
 	UIxCalendarSelector.m		\
 	UIxAppointmentEditor.m		\
-# 	UIxAppointmentProposal.m	\
 	UIxTaskEditor.m		\
-# 	UIxTaskProposal.m	\
 	UIxCalDateLabel.m		\
 	UIxDatePicker.m			\
 	UIxTimeDateControl.m		\
@@ -45,6 +43,8 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalMonthOverview.m	\
 	UIxCalMonthViewOld.m \
 	UIxRecurrenceEditor.m
+# 	UIxAppointmentProposal.m
+# 	UIxTaskProposal.m
 
 SchedulerUI_RESOURCE_FILES += \
 	Version		\
