@@ -651,6 +651,8 @@ static Class sogoAppointmentFolderKlass = Nil;
       if ([[currentRecord objectForKey: @"startDate"]
 	    isEqual: matchDate])
 	recordIndex = count;
+      else
+	count++;
     }
 
   return recordIndex;
@@ -722,8 +724,8 @@ static Class sogoAppointmentFolderKlass = Nil;
 }
 
 - (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
-		       forRange: (NGCalendarDateRange *) dateRange
-			toArray: (NSMutableArray *) ma
+			      forRange: (NGCalendarDateRange *) dateRange
+			       toArray: (NSMutableArray *) ma
 {
   NSArray *elements, *components;
   unsigned int count, max;
@@ -794,7 +796,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   count = [ranges count];
   for (i = 0; i < count; i++)
     {
-      rRange = [ranges objectAtIndex:i];
+      rRange = [ranges objectAtIndex: i];
       fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
       if (fixedRow)
 	[_ma addObject:fixedRow];
@@ -1745,13 +1747,13 @@ static Class sogoAppointmentFolderKlass = Nil;
         {
 	  if ([self isValidContentName:_key])
             {
-              url = [[[_ctx request] uri] urlWithoutParameters];
-              if ([url hasSuffix: @"AsTask"])
-                obj = [SOGoTaskObject objectWithName: _key
-                                      inContainer: self];
-              else if ([url hasSuffix: @"AsAppointment"])
-                obj = [SOGoAppointmentObject objectWithName: _key
-                                             inContainer: self];
+	      url = [[[_ctx request] uri] urlWithoutParameters];
+	      if ([url hasSuffix: @"AsTask"])
+		obj = [SOGoTaskObject objectWithName: _key
+				      inContainer: self];
+	      else if ([url hasSuffix: @"AsAppointment"])
+		obj = [SOGoAppointmentObject objectWithName: _key
+					     inContainer: self];
             }
         }
       if (!obj)

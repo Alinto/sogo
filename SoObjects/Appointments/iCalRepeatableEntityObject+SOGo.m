@@ -35,16 +35,16 @@
   NSMutableArray *ma;
   unsigned int i, count;
   NSString *valuesString;
+  iCalRecurrenceRule *rule;
 
   ma = nil;
+
   count = [rules count];
   if (count > 0)
     {
-      ma = [NSMutableArray arrayWithCapacity:count];
+      ma = [NSMutableArray arrayWithCapacity: count];
       for (i = 0; i < count; i++)
 	{
-	  iCalRecurrenceRule *rule;
-	  
 	  rule = [rules objectAtIndex:i];
 #warning we could return an NSArray instead and feed it as such to the iCalRecurrenceRule in SOGoAppointmentFolder...
 	  valuesString = [[rule values] componentsJoinedByString: @";"];
@@ -73,9 +73,9 @@
       rules = [self _indexedRules: [self exceptionRules]];
       if (rules)
 	[cycleInfo setObject: rules forKey: @"exRules"];
-      
-      rules = [self _indexedRules: [self exceptionDates]];
-      if (rules)
+
+      rules = [self exceptionDates];
+      if ([rules count])
 	[cycleInfo setObject: rules forKey: @"exDates"];
 
       value = [cycleInfo description];

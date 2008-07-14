@@ -1,3 +1,14 @@
+2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m
+	([iCalRepeatableEntityObject -cycleInfo]): exception dates are now
+	returned as an array of strings.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fixupCyclicRecords:_recordsfetchRange:_r]): fix an infinite loop
+	occuring when the exception date was not the first date in the list.
+
 2008-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
