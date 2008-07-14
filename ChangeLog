@@ -1,5 +1,9 @@
 2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -davCalendarOrder])
+	([SOGoAppointmentFolder -setDavCalendarOrder:newColor]): new
+	accessors to handle Apple's "calendar-order" property.
+
 	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m
 	([iCalRepeatableEntityObject -cycleInfo]): exception dates are now
 	returned as an array of strings.
