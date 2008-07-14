@@ -1397,6 +1397,23 @@ static Class sogoAppointmentFolderKlass = Nil;
   return error;
 }
 
+- (NSString *) davCalendarOrder
+{
+  NSArray *siblings;
+  unsigned int order;
+
+  order = [[container subFolders] indexOfObject: self];
+
+  return [NSString stringWithFormat: @"%d", order];
+}
+
+- (NSException *) setDavCalendarOrder: (NSString *) newColor
+{
+  NSException *error;
+
+  return nil;
+}
+
 - (SOGoWebDAVValue *) davCalendarFreeBusySet
 {
   NSEnumerator *subFolders;
@@ -1754,6 +1771,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 	      else if ([url hasSuffix: @"AsAppointment"])
 		obj = [SOGoAppointmentObject objectWithName: _key
 					     inContainer: self];
+	      [obj setIsNew: YES];
             }
         }
       if (!obj)

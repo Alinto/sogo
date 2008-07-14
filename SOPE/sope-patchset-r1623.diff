@@ -2038,7 +2038,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set" =
       davCalendarComponentSet;
    "{urn:ietf:params:xml:ns:caldav}supported-calendar-data" =
-@@ -138,13 +163,13 @@
+@@ -138,13 +163,14 @@
    "{urn:ietf:params:xml:ns:carddav}addressbook-description" = davDescription;
  
    /* Apple CalServer */
@@ -2053,6 +2053,7 @@ Index: sope-appserver/NGObjWeb/DAVPropMap.plist
  
 +  /* Apple extensions */
 +  "{http://apple.com/ns/ical/}calendar-color" = davCalendarColor;
++  "{http://apple.com/ns/ical/}calendar-order" = davCalendarOrder;
 +
    /* GroupDAV */
    "{http://www.groupdav.org/}component-set" = gdavComponentSet;
