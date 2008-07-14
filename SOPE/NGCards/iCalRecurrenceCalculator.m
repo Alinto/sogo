@@ -27,8 +27,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "iCalRecurrenceRule.h"
-#import "NSCalendarDate+ICal.h"
-
+#import "NSString+NGCards.h"
 
 #import "iCalRecurrenceCalculator.h"
 
@@ -173,9 +172,7 @@ static Class yearlyCalcClass  = Nil;
   while ((currentDate = [dates nextObject]))
     {
       if ([currentDate isKindOfClass: NSStringClass])
-	currentDate
-	  = [NSCalendarDate
-	      calendarDateWithICalRepresentation: (NSString *) currentDate];
+	currentDate = [(NSString *) currentDate asCalendarDate];
       if ([limits containsDate: currentDate])
 	[newDates addObject: currentDate];
     }

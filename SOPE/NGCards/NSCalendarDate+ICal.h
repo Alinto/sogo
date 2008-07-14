@@ -28,8 +28,6 @@
 
 @interface NSCalendarDate(iCalRepresentation)
 
-+ (id)calendarDateWithICalRepresentation:(NSString *)_iCalRep;
-
 /* represention */
 
 - (NSString *)icalStringWithTimeZone:(NSTimeZone *)_tz;

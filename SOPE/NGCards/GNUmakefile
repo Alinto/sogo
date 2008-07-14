@@ -71,7 +71,6 @@ libNGCards_OBJC_FILES =    		\
 	NSDictionary+NGCards.m		\
 	NSString+NGCards.m		\
 	NSCalendarDate+ICal.m		\
-	iCalDateHolder.m		\
 	\
 	CardElement.m			\
 	CardGroup.m			\

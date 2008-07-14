@@ -25,7 +25,6 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import "NSCalendarDate+ICal.h"
-#import "iCalDateHolder.h"
 
 static NSTimeZone *gmt = nil;
 static inline void _setupGMT(void) {
@@ -33,26 +32,11 @@ static inline void _setupGMT(void) {
     gmt = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
 }
 
-@interface iCalDateHolder (PrivateAPI)
-- (id)awakeAfterUsingSaxDecoder:(id)_decoder;
-@end
-
 @implementation NSCalendarDate(iCalRepresentation)
 
 /* represention */
 
 static NSString *gmtcalfmt = @"%Y%m%dT%H%M%SZ";
-
-+ (id)calendarDateWithICalRepresentation:(NSString *)_iCalRep {
-  iCalDateHolder *dh;
-  NSCalendarDate *date;
-  
-  dh = [[iCalDateHolder alloc] init];
-  [dh setString:_iCalRep];
-  date = [dh awakeAfterUsingSaxDecoder:nil];
-  [dh release];
-  return date;
-}
 
 - (NSString *)icalStringInGMT {
   NSTimeZone *oldtz;

@@ -1,3 +1,20 @@
+2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* ICalDateHolder.m: removed class module.
+
+	* NSCalendarDate+ICal.m ([NSCalendarDate
+	+calendarDateWithICalRepresentation:]): removed method.
+
+	* iCalRecurrenceCalculator.m: no longer use the
+	calendarDateWithICalRepresentation: category method (removed), use
+	NSString's asCalendarDate category method instead.
+
+	* iCalRepeatableEntityObject.m ([iCalRepeatableEntityObject
+	-classForTag:classTag]): instances of EXDATE are of iCalDateTime
+	class.
+	([iCalRepeatableEntityObject -exceptionDates]): return the dates
+	as utc-based date strings.
+
 2008-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEntityObject.m ([iCalEntityObject -setRecurrenceId:newRecId])

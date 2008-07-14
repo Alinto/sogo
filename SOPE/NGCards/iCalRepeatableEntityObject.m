@@ -26,6 +26,8 @@
 
 #import <NGExtensions/NGCalendarDateRange.h>
 
+#import "NSCalendarDate+NGCards.h"
+#import "iCalDateTime.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalRecurrenceCalculator.h"
 #import "iCalRepeatableEntityObject.h"
@@ -38,6 +40,8 @@
 
   if ([classTag isEqualToString: @"RRULE"])
     tagClass = [iCalRecurrenceRule class];
+  else if ([classTag isEqualToString: @"EXDATE"])
+    tagClass = [iCalDateTime class];
   else
     tagClass = [super classForTag: classTag];
 
@@ -121,7 +125,21 @@
 
 - (NSArray *) exceptionDates
 {
-  return [self childrenWithTag: @"exdate"];
+  NSMutableArray *dates;
+  NSEnumerator *dateList;
+  NSCalendarDate *exDate;
+  NSString *dateString;
+
+  dates = [NSMutableArray array];
+  dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
+  while ((exDate = [[dateList nextObject] dateTime]))
+    {
+      dateString = [NSString stringWithFormat: @"%@Z",
+			     [exDate iCalFormattedDateTimeString]];
+      [dates addObject: dateString];
+    }
+
+  return dates;
 }
 
 /* Convenience */
