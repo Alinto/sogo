@@ -73,7 +73,7 @@
 {
   if ((self = [super init]))
     {
-      isNew = YES;
+      isNew = NO;
       content = nil;
       version = 0;
       lastModified = nil;
@@ -91,7 +91,6 @@
   newContent = [objectRecord objectForKey: @"c_content"];
   if (newContent)
     {
-      isNew = NO;
       ASSIGN (content, newContent);
       version = [[objectRecord objectForKey: @"c_version"] unsignedIntValue];
       intValue = [[objectRecord objectForKey: @"c_creationdate"] intValue];
@@ -149,6 +148,11 @@
 - (BOOL) isNew
 {
   return isNew;
+}
+
+- (void) setIsNew: (BOOL) newIsNew
+{
+  isNew = newIsNew;
 }
 
 - (NSString *) contentAsString

@@ -1,5 +1,9 @@
 2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-setIsNew:newIsNew]): new setter that declares the record as new,
+	since it is no longer so by default.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m ([SOGoAppointmentFolder -davCalendarOrder])
 	([SOGoAppointmentFolder -setDavCalendarOrder:newColor]): new
 	accessors to handle Apple's "calendar-order" property.

@@ -154,8 +154,11 @@
     }
 
   if (!object)
-    object = [SOGoAppointmentObject objectWithName: nameInContainer
-				    inContainer: folder];
+    {
+      object = [SOGoAppointmentObject objectWithName: nameInContainer
+				      inContainer: folder];
+      [object setIsNew: YES];
+    }
 
   return object;
 }

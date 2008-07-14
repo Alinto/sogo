@@ -573,8 +573,11 @@ static NSArray *childRecordFields = nil;
 	{
 	  request = [localContext request];
 	  if ([[request method] isEqualToString: @"PUT"])
-	    obj = [self _createChildComponentWithName: key
-			andContent:[request contentAsString]];
+	    {
+	      obj = [self _createChildComponentWithName: key
+			  andContent: [request contentAsString]];
+	      [obj setIsNew: YES];
+	    }
 	}
     }
 

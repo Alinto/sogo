@@ -53,6 +53,8 @@
 /* content */
 
 - (BOOL) isNew;
+- (void) setIsNew: (BOOL) newIsNew;
+
 - (NSString *) contentAsString;
 - (NSException *) saveContentString: (NSString *) _str
                         baseVersion: (unsigned int) _baseVersion;
