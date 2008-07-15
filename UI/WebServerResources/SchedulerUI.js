@@ -1814,6 +1814,7 @@ function configureLists() {
   var list = $("tasksList");
   list.multiselect = true;
   list.observe("mousedown", onTasksSelectionChange);
+  list.observe("selectstart", listRowMouseDownHandler);
 
   var input = $("showHideCompletedTasks");
   input.observe("click", onShowCompletedTasks);

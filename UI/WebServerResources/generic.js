@@ -905,10 +905,8 @@ function onSearchMouseDown(event) {
   relX = (Event.pointerX(event) - superNode.offsetLeft - this.offsetLeft);
   relY = (Event.pointerY(event) - superNode.offsetTop - this.offsetTop);
 
-  if (relY < 24) {
-    event.cancelBubble = true;
-    event.returnValue = false;
-  }
+  if (relX < 24)
+    Event.stop(event);
 }
 
 function onSearchFocus() {
