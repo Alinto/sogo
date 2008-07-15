@@ -155,6 +155,7 @@
               else if ([url hasSuffix: @"AsList"])
                 obj = [SOGoContactGCSList objectWithName: _key
 					  inContainer: self];
+	      [obj setIsNew: YES];
             }
         }
       if (!obj)
