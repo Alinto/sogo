@@ -31,8 +31,8 @@
 {
 }
 
-- (WOResponse *) copyAction;
-- (WOResponse *) moveAction;
+- (id <WOActionResults>) copyAction;
+- (id <WOActionResults>) moveAction;
 
 @end
 

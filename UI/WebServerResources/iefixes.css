@@ -30,6 +30,9 @@ TD.tbtv_navcell
   border-right: 1px solid #666;
   border-bottom: 1px solid #666; }
 
+DIV#windowButtons
+{ height: 3em; }
+
 A.button,
 INPUT.button
 { border: 1px solid #fff;
@@ -37,6 +40,11 @@ INPUT.button
   border-bottom: 1px solid #666;
   margin: 0px;
   padding: 0px; }
+
+A.button
+{ color: #000;
+  padding: 1px 4px; }
+
 
 A.button IMG
 { margin: 1px; }

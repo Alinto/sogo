@@ -7,6 +7,8 @@
 - added address completion in the web mail editor
 - implemented support for CalDAV methods which were missing for supporting iCal 3
 - added support to write to multiple contacts from the Address Book module
+- added support to move and copy one or many contacts to another
+address book in the Address Book module
 - added icons to folders in Address Book module
 - fixed various bugs occuring with Safari 3.1
 - fixed various bugs occuring with Firefox 3

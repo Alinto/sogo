@@ -882,6 +882,7 @@ DIV.gradient, DIV.text
   left: 2px;
   right: 2px;
   bottom: 2px;
+  height: 100%;
   overflow: hidden; }
 
 DIV.gradient > IMG

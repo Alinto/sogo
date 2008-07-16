@@ -24,6 +24,9 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoPermissions.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -46,83 +49,157 @@
 
 @implementation UIxContactFolderActions
 
-- (id) init
+- (NSException*) _moveContacts: (NSArray*) contactsId 
+                     toFolder: (NSString*) destinationFolderId
+                  andKeepCopy: (BOOL) keepCopy
 {
-  if ((self = [super init]))
-    {
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [super dealloc];
-}
-
-- (WOResponse *) copyAction
-{
-  WORequest *request;
-  NSArray *contactsId;
-  NSEnumerator *uids;
-  NSString *folderId, *uid, *newUid;
-  SOGoContactFolders *folders;
-  SOGoParentFolder *folder, *destinationFolder;
-  id <SOGoContactObject> contact;
-  SOGoContentObject *newContact;
   NGVCard *card;
+  NSEnumerator *uids;
   NSException *ex;
+  NSString *uid, *newUid;
+  id <SOGoContactObject> contact;
+  SOGoContactFolders *folders;
+  SOGoParentFolder *sourceFolder, *destinationFolder;
+  SOGoContentObject *newContact;
+  SoSecurityManager *sm;
+  WORequest *request;
   unsigned int errorCount;
 
+  sm = [SoSecurityManager sharedSecurityManager];
   request = [context request];
+  ex = nil;
   errorCount = 0;
 
-  if ((folderId = [request formValueForKey: @"folder"]) &&
-      (contactsId = [request formValuesForKey: @"uid"]))
+  // Search the specified destination folder
+  sourceFolder = [self clientObject];
+  folders = [(SOGoUserFolder*)[[sourceFolder container] container] privateContacts: @"Contacts"
+			      inContext: nil];
+  destinationFolder = [folders lookupName: destinationFolderId
+			       inContext: nil
+			       acquire: NO];
+  if (destinationFolder)
     {
-      // Search the specified destination folder
-      folder = [self clientObject];
-      folders = [(SOGoUserFolder*)[[folder container] container] privateContacts: @"Contacts"
-						inContext: nil];
-      destinationFolder = [folders lookupName: folderId
-				   inContext: nil
-				   acquire: NO];
-      if (destinationFolder)
+      // Verify write access to the folder
+      ex = [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	       onObject: destinationFolder
+	       inContext: context];
+      if (ex == nil)
 	{
-       	  uids = [contactsId objectEnumerator];
+	  uids = [contactsId objectEnumerator];
 	  uid = [uids nextObject];
-	  
+	      
 	  while (uid)
 	    {
-	      contact = [folder lookupName: uid
-				inContext: [self context]
-				acquire: NO];
-	      if (![(NSObject*)contact isKindOfClass: [NSException class]])
+	      // Search the contact ID
+	      contact = [sourceFolder lookupName: uid
+				      inContext: [self context]
+				      acquire: NO];
+	      if ([(NSObject*)contact isKindOfClass: [NSException class]])
+		errorCount++;
+	      else
 		{
-		  newUid = [SOGoObject globallyUniqueObjectId];
 		  card = [contact vCard];
-		  [card setUid: newUid];
-		  
-		  //[contact setContent: [card versitString]];
-		  //[contact copyTo: destinationFolder]; // verify if exception
 
-		  newContact = [SOGoContentObject objectWithName: newUid
-						  inContainer: destinationFolder];
+		  if (keepCopy)
+		    {
+		      // Change the contact UID
+		      newUid = [SOGoObject globallyUniqueObjectId];
+		      [card setUid: newUid];
+		      newContact = [SOGoContentObject objectWithName: newUid
+						      inContainer: destinationFolder];
+		    }
+		  else
+		    // Don't change the contact UID
+		    newContact = [SOGoContentObject objectWithName: [contact nameInContainer]
+						    inContainer: (SOGoGCSFolder*)destinationFolder];
+		  		  
 		  ex = [newContact saveContentString: [card versitString]];
+		  
+		  if (ex == nil && !keepCopy)
+		    // Delete the original contact if necessary
+		    ex = [contact delete];
 		  if (ex != nil)
 		    errorCount++;
-		}
+		}	      
 	      uid = [uids nextObject];
 	    }
 	}
     }
+  else
+    ex = [NSException exceptionWithName: @"UnkownDestinationFolder"
+		      reason: @"Unknown Destination Folder"
+		      userInfo: nil];
   
-  return [self responseWithStatus: 204];
+  if (errorCount > 0)
+    // At least one contact was not copied
+    ex = [NSException exceptionWithHTTPStatus: 400
+		      reason: @"Invalid Contact"];
+  else if (ex != nil)
+    // Destination address book doesn't exist or is not writable
+    ex = [NSException exceptionWithHTTPStatus: 403
+		      reason: [ex name]];
+
+  return ex;
 }
 
-- (WOResponse *) moveAction
+- (id <WOActionResults>) copyAction
 {
-   return [self responseWithStatus: 204];
+  WORequest *request;
+  id <WOActionResults> response;
+  NSString *destinationFolderId;
+  NSArray *contactsId;
+  NSException *ex;
+  
+  request = [context request];
+  ex = nil;
+
+  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
+      (contactsId = [request formValuesForKey: @"uid"]))
+    {
+      ex = [self _moveContacts: contactsId
+		 toFolder: destinationFolderId
+		 andKeepCopy: YES];
+      if (ex != nil)
+	response = (id)ex;
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+			    reason: @"missing 'folder' and/or 'uid' parameter"];
+  
+    if (ex == nil)
+      response = [self responseWith204];
+
+  return response;
+}
+
+- (id <WOActionResults>) moveAction
+{
+  WORequest *request;
+  id <WOActionResults> response;
+  NSString *destinationFolderId;
+  NSArray *contactsId;
+  NSException *ex;
+  
+  request = [context request];
+  ex = nil;
+
+  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
+      (contactsId = [request formValuesForKey: @"uid"]))
+    {
+      ex = [self _moveContacts: contactsId
+		 toFolder: destinationFolderId
+		 andKeepCopy: NO];
+      if (ex != nil)
+	response = (id)ex;
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+			    reason: @"missing 'folder' and/or 'uid' parameter"];
+  
+    if (ex == nil)
+      response = [self responseWith204];
+
+    return response;
 }
 
 @end

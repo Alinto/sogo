@@ -145,3 +145,10 @@
 = "Cette personne n'a pas d'adresse courriel.";
 
 "Please select a contact." = "Veuillez sélectionner un contact..";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
+"Forbidden" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
+"Invalid Contact" = "La fiche sélectionnée n'existe plus.";
+"Unknown Destination Folder" = "Le carnet d'adresses choisi n'existe plus.";

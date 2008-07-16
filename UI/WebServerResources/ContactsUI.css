@@ -20,8 +20,7 @@
 */
 
 DIV#rightPanel
-{
-  position: absolute;
+{ position: absolute;
   top: 5.5em;
   left: 15em;
   margin-left: 5px;
@@ -188,6 +187,12 @@ TABLE#contactsList
 { -moz-user-select: none;
   -khtml-user-select: none;
   width: 100%; }
+
+TABLE#contactsList TBODY TD.displayName
+{ background-repeat: no-repeat;
+  background-image: url('/SOGo.woa/WebServerResources/abcard.gif');
+  background-position: 4px 1px;
+  padding-left: 24px; }
 
 TABLE#contactsList TD,
 TABLE#contactsList TH

@@ -185,9 +185,11 @@ function onAddressBooksContextMenu(event) {
 }
 
 function onContactContextMenu(event) {
+  var contactsList = $("contactsList");
   var menu = $("contactMenu");
   menu.observe("hideMenu", onContactContextMenuHide);
-  popupMenu(event, "contactMenu", this);
+  if (contactsList)
+    popupMenu(event, "contactMenu", contactsList.getSelectedRows());
 }
 
 function onContactContextMenuHide(event) {
@@ -229,6 +231,52 @@ function onFolderMenuHide(event) {
   }
   if (topNode.selectedEntry)
     topNode.selectedEntry.selectElement();
+}
+
+function _onContactMenuAction(folderItem, action, refresh) {
+  var selectedFolders = $("contactFolders").getSelectedNodes();
+  var folderId = $(folderItem).readAttribute("folderId").substring(1);
+  if (Object.isArray(document.menuTarget) && selectedFolders.length > 0) {
+    var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
+    var contactIds = $(document.menuTarget).collect(function(row) {
+	return row.getAttribute("id");
+      });
+
+    var url = ApplicationBaseURL + selectedFolderId + "/" + action + "?folder=" + folderId + "&uid="
+      + contactIds.join("&uid=");
+    
+    if (refresh)
+      triggerAjaxRequest(url, actionContactCallback, selectedFolderId);
+    else
+      triggerAjaxRequest(url, actionContactCallback);
+  }
+}
+
+function onContactMenuCopy(event) {
+  _onContactMenuAction(this, "copy", false);
+}
+
+function onContactMenuMove(event) {
+  _onContactMenuAction(this, "move", true);
+}
+
+function actionContactCallback(http) {
+  if (http.readyState == 4)
+    if (isHttpStatus204(http.status)) {
+      var refreshFolderId = http.callbackData;
+      if (refreshFolderId)
+	openContactsFolder(refreshFolderId, true);
+    }
+    else {
+      var html = new Element("div").update(http.responseText);
+      var error = html.select("p").first().firstChild.nodeValue.trim();
+      log("actionContactCallback failed: error " + http.status + " (" + error + ")");
+      if (parseInt(http.status) == 403)
+	window.alert(labels["You cannot delete the selected contact(s)"]);
+      else if (error)
+	window.alert(labels[error]);
+      refreshCurrentFolder();
+    }
 }
 
 function loadContact(idx) {
@@ -392,7 +440,7 @@ function onToolbarDeleteSelectedContacts(event) {
     new Ajax.Request(url, {
       method: 'post',
       onFailure: function(transport) {
-	  log("Ajax error: can't delete contact");
+	  window.alert(labels["You cannot delete the selected contact(s)"]);
 	  refreshCurrentFolder();
 	},
       onSuccess: function(transport) {
@@ -555,10 +603,12 @@ function appendAddressBook(name, folder) {
 
     li.setAttribute("id", folder);
     li.setAttribute("owner", owner);
+    li.addClassName("local");
     li.appendChild(document.createTextNode(name
 					   .replace("&lt;", "<", "g")
 					   .replace("&gt;", ">", "g")));
     setEventsOnAddressBook(li);
+    updateAddressBooksMenus();
   }
 
   return result;
@@ -720,6 +770,61 @@ function configureAddressBooks() {
   }
 }
 
+function onAddressBookMenuPrepareVisibility() {
+  var selectedFolder = $("contactFolders").getSelectedNodes()[0];
+  if (selectedFolder) {
+    var selectedFolderId = selectedFolder.readAttribute("id");
+    $(this).select("li").each(function(menuEntry) {
+	if (menuEntry.readAttribute("folderId") == selectedFolderId)
+	  menuEntry.addClassName("disabled");
+	else
+	  menuEntry.removeClassName("disabled");
+      });
+  }
+}
+
+function updateAddressBooksMenus() {
+  var contactFoldersList = $("contactFolders");
+  if (contactFoldersList) {
+    var pageContent = $("pageContent");
+    var contactFolders = contactFoldersList.select("li");
+    var contactActions = new Hash({ move: onContactMenuMove,
+	                            copy: onContactMenuCopy });
+    var actions = contactActions.keys();
+    for (var j = 0; j < actions.size(); j++) {
+      var key = actions[j];
+	var callbacks = new Array();
+	var menuId = key + "ContactMenu";
+	var menuDIV = $(menuId);
+	if (menuDIV)
+	  menuDIV.parentNode.removeChild(menuDIV);
+	
+	menuDIV = document.createElement("div");
+	pageContent.appendChild(menuDIV);
+	
+	var menu = document.createElement("ul");
+	menuDIV.appendChild(menu);
+	
+	$(menuDIV).addClassName("menu");
+	menuDIV.setAttribute("id", menuId);
+	
+	var submenuIds = new Array();
+	for (var i = 0; i < contactFolders.length; i++) {
+	  if (contactFolders[i].hasClassName("local")) {
+	    var menuEntry = new Element("li",
+					{ folderId: contactFolders[i].readAttribute("id"),
+					     owner: contactFolders[i].readAttribute("owner") }
+					).update(contactFolders[i].innerHTML);
+	    menu.appendChild(menuEntry);
+	    callbacks.push(contactActions.get(key));
+	  }
+	}
+	menuDIV.prepareVisibility = onAddressBookMenuPrepareVisibility;
+	initMenu(menuDIV, callbacks);
+      }
+  }
+}
+  
 function setEventsOnAddressBook(folder) {
   var node = $(folder);
 
@@ -797,23 +902,42 @@ function onAddressBooksMenuPrepareVisibility() {
 }
 
 function onContactMenuPrepareVisibility() {
-  var contactId = document.menuTarget.getAttribute('id');
-  var contactRow = $(contactId);
-  var elements = $(this).down("ul").childElements();
+  var contactRows = document.menuTarget;
+  var selectedFolder = $("contactFolders").getSelectedNodes()[0];
+  var options = { write: false,
+                  aim: false };
 
+  var elements = $(this).down("ul").childElements();
   var writeOption = elements[2];
-  var emailCell = contactRow.down('td', 1);
-  if (emailCell.firstChild)
+  var aimOption = elements[3];
+  var deleteOption = elements[5];
+  var moveOption = elements[7];
+  
+  $A(contactRows).each(function(contactRow) {
+      var emailCell = contactRow.down('td', 1);
+      options.write |= (emailCell.firstChild != null);
+      var aimCell = contactRow.down('td', 2);
+      options.aim |= (aimCell.firstChild != null);
+    });
+
+  if (options.write)
     writeOption.removeClassName("disabled");
   else
     writeOption.addClassName("disabled");
-
-  var aimOption = elements[3];
-  var aimCell = contactRow.down('td', 2);
-  if (aimCell.firstChild)
+  if (options.aim)
     aimOption.removeClassName("disabled");
   else
     aimOption.addClassName("disabled");
+
+  if ($(selectedFolder).hasClassName("remote")) {
+    // Remote address books are always read-only
+    deleteOption.addClassName("disabled");
+    moveOption.addClassName("disabled");
+  }
+  else {
+    deleteOption.removeClassName("disabled");
+    moveOption.removeClassName("disabled");
+  }
 }
 
 function getMenus() {
@@ -823,7 +947,8 @@ function getMenus() {
 					  onMenuSharing);
   menus["contactMenu"] = new Array(onMenuEditContact, "-",
 				   onMenuWriteToContact, onMenuAIMContact,
-				   "-", onMenuDeleteContact);
+				   "-", onMenuDeleteContact, "-",
+				   "moveContactMenu", "copyContactMenu");
   menus["searchMenu"] = new Array(setSearchCriteria);
    
   var contactFoldersMenu = $("contactFoldersMenu");
@@ -850,6 +975,7 @@ function initContacts(event) {
     configureSelectionButtons();
   configureAbToolbar();
   configureAddressBooks();
+  updateAddressBooksMenus();
   //     initDnd();
 
   var table = $("contactsList");

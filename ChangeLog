@@ -16,6 +16,22 @@
 	-fetchCoreInfosFrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filters]):
 	requests "c_iscycle".
 
+2008-07-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactFolderActions.m: new class for actions
+	on contacts of a specific address book.
+
+	* UI/Contacts/UIxContactFolderActions.m
+	([_moveContacts:toFolder:andKeepCopy:]): private method to
+	move and optionnaly copy one or many contacts to another
+	address book.
+
+	* UI/Contacts/UIxContactFolderActions.m ([WOActionResults
+	copyAction]): copy one or many contacts to another address book.
+
+	* UI/Contacts/UIxContactFolderActions.m ([WOActionResults
+	moveAction]): move one or many contacts to another address book.
+
 2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

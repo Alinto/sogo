@@ -518,8 +518,7 @@ DIV.dragHandle:active
 
 /* search fields */
 DIV#filterPanel
-{
-  height: 2em;
+{ height: 2em;
   vertical-align: middle;
   width: 100%;
 }
