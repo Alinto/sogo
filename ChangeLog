@@ -1,3 +1,13 @@
+2008-07-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactEditor.m ([BOOL isNew])
+	([void setAddressBookItem:_item])
+	([id addressBookItem])
+	([NSArray addressBooksList])
+	([SOGoContactFolder componentAddressBook])
+	([NSString addressBookDisplayName]): new methods to allow the
+	selection of the destination address book when creating a new contact.
+
 2008-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/NSDictionary+Scheduler.m: new category module that
@@ -22,7 +32,7 @@
 	on contacts of a specific address book.
 
 	* UI/Contacts/UIxContactFolderActions.m
-	([_moveContacts:toFolder:andKeepCopy:]): private method to
+	([NSException _moveContacts:toFolder:andKeepCopy:]): private method to
 	move and optionnaly copy one or many contacts to another
 	address book.
 
