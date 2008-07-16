@@ -1,6 +1,9 @@
 DIV#addressBookSelector
 { margin: .5em; }
 
+DIV#addressBookSelector SELECT
+{ width: auto; }
+
 DIV#editorTabs
 { position: absolute;
   top: .5em;
