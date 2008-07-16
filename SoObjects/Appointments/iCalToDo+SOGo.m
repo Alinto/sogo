@@ -95,23 +95,23 @@
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
  
   if ([startDate isNotNull])
-    date = [self quickRecordDateAsNumber: startDate];
+    date = [self quickRecordDateAsNumber: startDate
+		 withOffset: 0 forAllDay: NO];
   else
     date = [NSNull null];
   [row setObject: date forKey: @"c_startdate"];
 
-  if ([dueDate isNotNull]) 
-    date = [self quickRecordDateAsNumber: dueDate];
+  if ([dueDate isNotNull])
+    date = [self quickRecordDateAsNumber: dueDate
+		 withOffset: 0 forAllDay: NO];
   else
     date = [NSNull null];
   [row setObject: date forKey: @"c_enddate"];
 
   if ([self isRecurrent])
     {
-      [row setObject: [self quickRecordDateAsNumber: iCalDistantFuture]
-	   forKey: @"c_cycleenddate"];
-      [row setObject: [self cycleInfo]
-	   forKey: @"c_cycleinfo"];
+      [row setObject: iCalDistantFutureNumber forKey: @"c_cycleenddate"];
+      [row setObject: [self cycleInfo] forKey: @"c_cycleinfo"];
     }
 
   if ([participants length] > 0)
@@ -119,46 +119,50 @@
   if ([partmails length] > 0)
     [row setObject:partmails forKey: @"c_partmails"];
 
-  if ([status isNotNull]) {
-    code = 0; /* NEEDS-ACTION */
-    if ([status isEqualToString: @"COMPLETED"])
-      code = 1;
-    else if ([status isEqualToString: @"IN-PROCESS"])
-      code = 2;
-    else if ([status isEqualToString: @"CANCELLED"])
-      code = 3;
-    [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
-  }
-  else {
-    /* confirmed by default */
-    [row setObject:[NSNumber numberWithInt:1] forKey: @"c_status"];
-  }
+  if ([status isNotNull])
+    {
+      code = 0; /* NEEDS-ACTION */
+      if ([status isEqualToString: @"COMPLETED"])
+	code = 1;
+      else if ([status isEqualToString: @"IN-PROCESS"])
+	code = 2;
+      else if ([status isEqualToString: @"CANCELLED"])
+	code = 3;
+      [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
+    }
+  else
+    {
+      /* confirmed by default */
+      [row setObject:[NSNumber numberWithInt:1] forKey: @"c_status"];
+    }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
        forKey: @"c_classification"];
 
   organizer = [self organizer];
-  if (organizer) {
-    NSString *email;
+  if (organizer)
+    {
+      NSString *email;
  
-    email = [organizer valueForKey: @"rfc822Email"];
-    if (email)
-      [row setObject:email forKey: @"c_orgmail"];
-  }
+      email = [organizer valueForKey: @"rfc822Email"];
+      if (email)
+	[row setObject:email forKey: @"c_orgmail"];
+    }
  
   /* construct partstates */
   count = [attendees count];
   partstates = [[NSMutableString alloc] initWithCapacity:count * 2];
-  for ( i = 0; i < count; i++) {
-    iCalPerson *p;
-    iCalPersonPartStat stat;
+  for (i = 0; i < count; i++)
+    {
+      iCalPerson *p;
+      iCalPersonPartStat stat;
  
-    p = [attendees objectAtIndex:i];
-    stat = [p participationStatus];
-    if(i != 0)
-      [partstates appendString: @"\n"];
-    [partstates appendFormat: @"%d", stat];
-  }
+      p = [attendees objectAtIndex:i];
+      stat = [p participationStatus];
+      if(i != 0)
+	[partstates appendString: @"\n"];
+      [partstates appendFormat: @"%d", stat];
+    }
   [row setObject:partstates forKey: @"c_partstates"];
   [partstates release];
 

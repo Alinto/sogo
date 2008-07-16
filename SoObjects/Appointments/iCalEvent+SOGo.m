@@ -52,7 +52,7 @@
   NSCalendarDate *startDate, *endDate;
   NSArray *attendees;
   NSString *uid, *title, *location, *status;
-  NSNumber *sequence, *dateNumber;
+  NSNumber *sequence;
   id organizer;
   id participants, partmails;
   NSMutableString *partstates;
@@ -61,7 +61,7 @@
   iCalAccessClass accessClass;
 
   /* extract values */
- 
+
   startDate = [self startDate];
   endDate = [self endDate];
   uid = [self uid];
@@ -108,56 +108,56 @@
   if ([sequence isNotNull]) [row setObject: sequence forKey: @"c_sequence"];
 
   if ([startDate isNotNull])
-    [row setObject: [self quickRecordDateAsNumber: startDate]
-	 forKey: @"c_startdate"];
-  if ([endDate isNotNull])
     {
-      if (endDate == iCalDistantFuture)
-	dateNumber = iCalDistantFutureNumber;
-      else
-	{
-	  if (isAllDay)
-	    i = 1;
-	  else
-	    i = 0;
-	  dateNumber
-	    = [NSNumber numberWithUnsignedInt:
-			  [endDate timeIntervalSince1970] - i];
-	}
-      [row setObject: dateNumber forKey: @"c_enddate"];
+      if (isAllDay)
+	NSLog (@"start date...");
+      [row setObject: [self quickRecordDateAsNumber: startDate
+			    withOffset: 0 forAllDay: isAllDay]
+	   forKey: @"c_startdate"];
     }
+  if ([endDate isNotNull])
+    [row setObject: [self quickRecordDateAsNumber: endDate
+			  withOffset: ((isAllDay) ? -1 : 0)
+			  forAllDay: isAllDay]
+	 forKey: @"c_enddate"];
 
-  if ([self isRecurrent]) {
-    NSCalendarDate *date;
- 
-    date = [self lastPossibleRecurrenceStartDate];
-    if (!date) {
-      /* this could also be *nil*, but in the end it makes the fetchspecs
-	 more complex - thus we set it to a "reasonable" distant future */
-      date = iCalDistantFuture;
+  if ([self isRecurrent])
+    {
+      NSCalendarDate *date;
+      
+      date = [self lastPossibleRecurrenceStartDate];
+      if (!date)
+	{
+	  /* this could also be *nil*, but in the end it makes the fetchspecs
+	     more complex - thus we set it to a "reasonable" distant future */
+	  date = iCalDistantFuture;
+	}
+      [row setObject: [self quickRecordDateAsNumber: date
+			    withOffset: 0 forAllDay: NO]
+	   forKey: @"c_cycleenddate"];
+      [row setObject: [self cycleInfo] forKey: @"c_cycleinfo"];
     }
-    [row setObject:[self quickRecordDateAsNumber:date] forKey: @"c_cycleenddate"];
-    [row setObject:[self cycleInfo] forKey: @"c_cycleinfo"];
-  }
 
   if ([participants length] > 0)
     [row setObject: participants forKey: @"c_participants"];
   if ([partmails length] > 0)
     [row setObject: partmails forKey: @"c_partmails"];
 
-  if ([status isNotNull]) {
-    int code = 1;
+  if ([status isNotNull])
+    {
+      int code = 1;
  
-    if ([status isEqualToString: @"TENTATIVE"])
-      code = 2;
-    else if ([status isEqualToString: @"CANCELLED"])
-      code = 0;
-    [row setObject:[NSNumber numberWithInt:code] forKey: @"c_status"];
-  }
-  else {
-    /* confirmed by default */
-    [row setObject: [NSNumber numberWithInt:1] forKey: @"c_status"];
-  }
+      if ([status isEqualToString: @"TENTATIVE"])
+	code = 2;
+      else if ([status isEqualToString: @"CANCELLED"])
+	code = 0;
+      [row setObject:[NSNumber numberWithInt:code] forKey: @"c_status"];
+    }
+  else
+    {
+      /* confirmed by default */
+      [row setObject: [NSNumber numberWithInt:1] forKey: @"c_status"];
+    }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]
        forKey: @"c_classification"];

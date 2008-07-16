@@ -64,7 +64,6 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
-#import <SOGo/iCalEntityObject+Utilities.h>
 
 #import "iCalEntityObject+SOGo.h"
 #import "SOGoAppointmentObject.h"
@@ -566,6 +565,9 @@ static Class sogoAppointmentFolderKlass = Nil;
   unsigned int count;
   NSCalendarDate *date;
   NSNumber *dateValue;
+  BOOL isAllDay;
+
+  isAllDay = [[_record objectForKey: @"c_isallday"] boolValue];
 
   md = [[_record mutableCopy] autorelease];
   for (count = 0; count < 2; count++)
@@ -573,8 +575,7 @@ static Class sogoAppointmentFolderKlass = Nil;
       dateValue = [_record objectForKey: fields[count * 2]];
       if (dateValue)
 	{
-	  date = [NSCalendarDate dateWithTimeIntervalSince1970:
-				   (NSTimeInterval) [dateValue unsignedIntValue]];
+	  date = [NSCalendarDate dateWithTimeIntervalSince1970: (NSTimeInterval) [dateValue unsignedIntValue]];
 	  if (date)
 	    {
 	      [date setTimeZone: timeZone];
@@ -582,7 +583,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 	    }
 	}
       else
-	[self logWithFormat:@"missing '%@' in record?", fields[count * 2]];
+	[self logWithFormat: @"missing '%@' in record?", fields[count * 2]];
     }
 
   return md;
@@ -926,9 +927,11 @@ static Class sogoAppointmentFolderKlass = Nil;
   /* prepare mandatory fields */
 
   fields = [NSMutableArray arrayWithArray: _fields];
-  [fields addObject: @"c_uid"];
-  [fields addObject: @"c_startdate"];
-  [fields addObject: @"c_enddate"];
+  [fields addObjectUniquely: @"c_name"];
+  [fields addObjectUniquely: @"c_uid"];
+  [fields addObjectUniquely: @"c_startdate"];
+  [fields addObjectUniquely: @"c_enddate"];
+  [fields addObjectUniquely: @"c_isallday"];
 
   if (logger)
     [self debugWithFormat:@"should fetch (%@=>%@) ...", _startDate, _endDate];

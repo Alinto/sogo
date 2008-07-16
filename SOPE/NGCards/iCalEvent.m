@@ -56,6 +56,7 @@
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
 		    setDate: newStartDate];
   endDate = [newStartDate dateByAddingYears: 0 months: 0 days: days];
+  [endDate setTimeZone: [newStartDate timeZone]];
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
 		    setDate: endDate];
 }

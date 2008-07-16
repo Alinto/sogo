@@ -48,8 +48,7 @@ static NSString *commaSeparator = nil;
   unsigned int length;
   NSRange subStringRange;
 
-  foldedString = [NSMutableString new];
-  [foldedString autorelease];
+  foldedString = [NSMutableString string];
 
   length = [self length];
   if (length < 76)
@@ -80,8 +79,7 @@ static NSString *commaSeparator = nil;
   NSEnumerator *rawValues;
   NSString *tmpString, *rawValue, *newString;
 
-  values = [NSMutableArray new];
-  [values autorelease];
+  values = [NSMutableArray array];
 
   if (!commaSeparator)
     [self _initCommaSeparator];
@@ -90,13 +88,11 @@ static NSString *commaSeparator = nil;
                     withString: commaSeparator];
   rawValues = [[tmpString componentsSeparatedByString: @","]
                 objectEnumerator];
-  rawValue = [rawValues nextObject];
-  while (rawValue)
+  while ((rawValue = [rawValues nextObject]))
     {
       newString = [rawValue stringByReplacingString: commaSeparator
                             withString: @","];
       [values addObject: [newString stringByTrimmingSpaces]];
-      rawValue = [rawValues nextObject];
     }
 
   return values;

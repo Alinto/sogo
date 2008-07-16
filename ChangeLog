@@ -1,3 +1,14 @@
+2008-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsBlocksAction]): take user participation status into account
+	again.
+
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	([iCalEntityObject
+	-quickRecordDateAsNumber:_datewithOffset:offsetforAllDay:allDay]):
+	enhanced method to do the special computations for all day events.
+
 2008-07-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m ([BOOL isNew])
