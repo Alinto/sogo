@@ -12,6 +12,8 @@ address book in the Address Book module
 - added icons to folders in Address Book module
 - fixed various bugs occuring with Safari 3.1
 - fixed various bugs occuring with Firefox 3
+- fixed bug where selecting the current day cell would not select the header day cell and vice-versa in the daily and weekly views
+- the events are now computed in the server code again, in order to speedup the drawing of events as well as to fix the bug where events would be shifted back or forth of one day, depending on how their start time would be compared to UTC time
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
