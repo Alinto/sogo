@@ -30,7 +30,7 @@
     };
     SOGoContactLDIFEntry = {
       superclass = "SOGoContentObject";
-      protectedBy = "Access Content Information";
+      protectedBy = "Access Contents Information";
       defaultRoles = {
 	"Access Content Information" = ( "Authenticated" );
         "WebDAV Access" = ( "Authenticated" );
