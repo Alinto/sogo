@@ -1399,7 +1399,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 
 - (NSString *) davCalendarOrder
 {
-  NSArray *siblings;
   unsigned int order;
 
   order = [[container subFolders] indexOfObject: self];
@@ -1409,8 +1408,6 @@ static Class sogoAppointmentFolderKlass = Nil;
 
 - (NSException *) setDavCalendarOrder: (NSString *) newColor
 {
-  NSException *error;
-
   return nil;
 }
 
@@ -2218,7 +2215,7 @@ static Class sogoAppointmentFolderKlass = Nil;
 			     @"c_classification", @"c_isallday",
 			     @"c_isopaque", @"c_participants", @"c_partmails",
 			     @"c_partstates", @"c_sequence", @"c_priority",
-			     @"c_cycleinfo", nil];
+			     @"c_cycleinfo", @"c_iscycle", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
                component: _component

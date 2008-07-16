@@ -1,3 +1,21 @@
+2008-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/NSDictionary+Scheduler.m: new category module that
+	implement helper methods for the Scheduler module.
+	([NSDictionary -compareEventByStart:otherEvent]): new method that
+	compares event block dictionaries based on their value for
+	"start".
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsBlocksAction]): new web method that returns the list of
+	events as well as the precomputed blocks of events, whether "all
+	day" or not.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder
+	-fetchCoreInfosFrom:_startDateto:_endDatetitle:titlecomponent:_componentadditionalFilters:filters]):
+	requests "c_iscycle".
+
 2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject

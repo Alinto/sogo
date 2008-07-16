@@ -59,6 +59,11 @@
 	      actionClass = "UIxCalListingActions";
 	      actionName = "eventsList";
 	   };
+	   eventsblocks = {
+	      protectedBy = "View";
+	      actionClass = "UIxCalListingActions";
+	      actionName = "eventsBlocks";
+	   };
 	   taskslist = {
 	      protectedBy = "View";
 	      actionClass = "UIxCalListingActions";

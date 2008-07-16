@@ -47,89 +47,15 @@
           ><var:string value="labelForCurrentDayToDisplay"
             /></div></var:foreach>
       <div class="days" const:id="monthDaysView"
-        ><var:foreach list="daysToDisplay" item="currentTableColumn">
-          <var:foreach list="currentTableColumn" item="currentTableDay">
-            <div var:class="dayCellClasses"
+        ><var:foreach list="daysToDisplay" item="currentTableColumn"
+          ><var:foreach list="currentTableColumn" item="currentTableDay"
+            ><div var:class="dayCellClasses"
               var:day="currentTableDay.shortDateString">
-              <div class="dayHeader"><var:string value="dayHeaderNumber"/></div>
-              <!-- var:foreach
-	      list="aptsForCurrentDate"
-              item="appointment"
-	      var:component className="UIxCalInlineMdsadsadsaonthAptView"
-	      appointment="appointment"
-	      formatter="monthAptFormatter"
-	      tooltipFormatter="aptTooltipFormatter"
-	      url="appointmentViewURL"
-	      const:style="dayoverview"
-	      queryDictionary="currentDayQueryParameters"
-	      referenceDate="currentTableDay"
-	      canAccess="canAccessApt"
-	      var:foreach -->
-            </div>
+              <div class="dayHeader"><var:string value="dayHeaderNumber"/></div
+		></div>
           </var:foreach>
         </var:foreach>
       </div>
     </div>
   </div>
 </container>
-
-    <!--      <table class="monthOverview">
-    <tr>
-  </tr>
-
-    <var:if condition="hasHolidayInfo">
-    <tr>
-    <td class="hourOfDay" colspan="2">
-    <b><var:string value="holidayInfo.title" /></b>
-  </td>
-  </tr>
-  </var:if> -->
-
-    <!--        <var:foreach list="allDayApts" item="appointment">
-    <tr>
-    <td class="hourOfDay">
-    <var:entity name="nbsp" />
-  </td>
-    <td class="day" width="90%">
-    <var:foreach list="allDayApts" item="appointment">
-    <var:component className="UIxCaaaaalInlineAptView"
-    appointment="appointment"
-    formatter="aptFormatter"
-    tooltipFormatter="aptTooltipFormatter"
-    url="appointmentViewURL"
-    const:style="dayoverview"
-    queryDictionary="currentDateQueryParameters"
-    referenceDate="selectedDate"
-    canAccess="canAccessApt"
-    />
-  </var:foreach>
-  </td>
-  </tr>
-  </var:foreach> -->
-
-    <!--        <var:foreach list="rangesOf7Days" item="currentRangeOf7Days">
-    <tr>
-    <var:foreach list="currentRangeOf7Days" item="currentTableDay"
-    ><td var:class="dayCellClasses"
-    var:day="currentTableDay.shortDateString"
-    const:hour="0800"
-    ><div class="dayContent"><span class="dayCellLabel"
-    ><var:string value="labelForCurrentDayCell" /></span
-    ><br /><var:foreach
-    list="aptsForCurrentDate"
-    item="appointment"
-    ><var:component className="UIxCalInlineAptxxxxView"
-    appointment="appointment"
-    formatter="monthAptFormatter"
-    tooltipFormatter="aptTooltipFormatter"
-    url="appointmentViewURL"
-    const:style="dayoverview"
-    queryDictionary="currentDayQueryParameters"
-    referenceDate="currentTableDay"
-    canAccess="canAccessApt"
-    />
-  </var:foreach></div></td>
-  </var:foreach>
-  </tr>
-  </var:foreach>
-  </table> -->

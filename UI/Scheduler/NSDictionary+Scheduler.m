@@ -1,6 +1,6 @@
-/* UIxCalListingActions.h - this file is part of SOGo
+/* NSDictionary+Scheduler.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,37 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCALLISTINGACTIONVIEW_H
-#define UIXCALLISTINGACTIONVIEW_H
+#import <Foundation/NSString.h>
 
-#import <Common/WODirectAction+SOGo.h>
+#import "NSDictionary+Scheduler.h"
 
-@class NSCalendarDate;
-@class NSMutableDictionary;
-@class NSString;
-@class NSTimeZone;
+@implementation NSDictionary (SOGoEventComparison)
 
-@class SOGoDateFormatter;
-
-@class WOResponse;
-@class WORequest;
-
-@interface UIxCalListingActions : WODirectAction
+- (NSComparisonResult) compareEventByStart: (NSDictionary *) otherEvent
 {
-  NSMutableDictionary *componentsData;
-  NSCalendarDate *startDate;
-  NSCalendarDate *endDate;
-  NSString *title;
-  NSString *userLogin;
-  BOOL dayBasedView;
-  WORequest *request;
-  SOGoDateFormatter *dateFormatter;
-  NSTimeZone *userTimeZone;
+  return [[self objectForKey: @"start"]
+	   compare: [otherEvent objectForKey: @"start"]];
 }
 
-- (WOResponse *) eventsListAction;
-- (WOResponse *) tasksListAction;
-
 @end
-
-#endif /* UIXCALLISTINGACTION_H */

@@ -11,6 +11,7 @@ SchedulerUI_LANGUAGES = Dutch English French German Italian Spanish
 SchedulerUI_OBJC_FILES =		\
 	SchedulerUIProduct.m		\
 	NSArray+Scheduler.m		\
+	NSDictionary+Scheduler.m	\
 					\
 	UIxCalMainView.m		\
 	UIxCalendarProperties.m		\
