@@ -1,3 +1,8 @@
+2008-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDateTime.m ([iCalDateTime -setDate:dateTime]): don't set
+	date in utc.
+
 2008-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* ICalDateHolder.m: removed class module.
