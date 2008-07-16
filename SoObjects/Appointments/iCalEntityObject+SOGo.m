@@ -24,9 +24,13 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalPerson.h>
+
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -35,7 +39,30 @@
 
 #import "iCalEntityObject+SOGo.h"
 
+static int utcOffset = -1;
+
 @implementation iCalEntityObject (SOGoExtensions)
+
+static inline int
+_computeAllDayOffset()
+{
+  NSTimeZone *tz;
+  SOGoUser *user;
+  WOApplication *application;
+  int offset;
+
+  if (utcOffset == -1)
+    {
+      tz = [[NSCalendarDate date] timeZone];
+      utcOffset = [tz secondsFromGMT];
+    }
+
+  application = [WOApplication application];
+  user = [[application context] activeUser];
+  offset = utcOffset - [[user timeZone] secondsFromGMT];
+
+  return offset;
+}
 
 + (void) initializeSOGoExtensions;
 {
@@ -140,10 +167,24 @@
 }
 
 - (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
+			    withOffset: (int) offset
+			     forAllDay: (BOOL) allDay
 {
-  return ((_date == iCalDistantFuture)
-	  ? iCalDistantFutureNumber
-	  : [NSNumber numberWithUnsignedInt: [_date timeIntervalSince1970]]);
+  unsigned int seconds;
+  NSNumber *dateNumber;
+
+  if (_date == iCalDistantFuture)
+    dateNumber = iCalDistantFutureNumber;
+  else
+    {
+      seconds = [_date timeIntervalSince1970] + offset;
+      if (allDay)
+	seconds += _computeAllDayOffset ();
+
+      dateNumber = [NSNumber numberWithUnsignedInt: seconds];
+    }
+
+  return dateNumber;
 }
 
 - (NSMutableDictionary *) quickRecord

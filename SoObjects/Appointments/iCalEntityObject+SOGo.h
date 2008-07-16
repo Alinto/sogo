@@ -46,7 +46,9 @@ NSNumber *iCalDistantFutureNumber;
 - (NSMutableDictionary *) quickRecord;
 
 - (int) priorityNumber;
-- (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date;
+- (NSNumber *) quickRecordDateAsNumber: (NSCalendarDate *) _date
+			    withOffset: (int) offset
+			     forAllDay: (BOOL) allDay;
 
 @end
 

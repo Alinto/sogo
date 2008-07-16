@@ -23,6 +23,8 @@ var usersRightsWindowWidth = 502;
 var eventsBlocks;
 var calendarEvents = null;
 
+var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
+
 function newEvent(sender, type) {
   var day = $(sender).readAttribute("day");
   if (!day)
@@ -389,12 +391,12 @@ function eventsListCallback(http) {
 	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][11]));
+	td.appendChild(document.createTextNode(data[i][13]));
 
 	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][12]));
+	td.appendChild(document.createTextNode(data[i][14]));
       
 	td = $(document.createElement("td"));
 	row.appendChild(td);
@@ -762,7 +764,7 @@ function _drawCalendarAllDaysEvents(events) {
 function newAllDayEventDIV(eventRep) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
-  var eventDiv = document.createElement("div");
+  var eventDiv = $(document.createElement("div"));
   var event = calendarEvents[eventRep.cname];
   if (!event.siblings)
     event.siblings = [];
@@ -770,28 +772,31 @@ function newAllDayEventDIV(eventRep) {
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
 
-  $(eventDiv).addClassName("event");
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = document.createElement("div");
-    eventDiv.appendChild(shadowDiv);
-    $(shadowDiv).addClassName("shadow");
-    $(shadowDiv).addClassName("shadow" + i);
-  }
-  var innerDiv = document.createElement("div");
-  eventDiv.appendChild(innerDiv);
-  $(innerDiv).addClassName("eventInside");
-  $(innerDiv).addClassName("calendarFolder" + event[1]);
+  eventDiv.addClassName("event");
+  if (eventRep.userState && userStates[eventRep.userState])
+    eventDiv.addClassName(userStates[eventRep.userState]);
 
-  var gradientDiv = document.createElement("div");
+  for (var i = 1; i < 5; i++) {
+    var shadowDiv = $(document.createElement("div"));
+    eventDiv.appendChild(shadowDiv);
+    shadowDiv.addClassName("shadow");
+    shadowDiv.addClassName("shadow" + i);
+  }
+  var innerDiv = $(document.createElement("div"));
+  eventDiv.appendChild(innerDiv);
+  innerDiv.addClassName("eventInside");
+  innerDiv.addClassName("calendarFolder" + event[1]);
+
+  var gradientDiv = $(document.createElement("div"));
   innerDiv.appendChild(gradientDiv);
-  $(gradientDiv).addClassName("gradient");
+  gradientDiv.addClassName("gradient");
   var gradientImg = document.createElement("img");
   gradientDiv.appendChild(gradientImg);
   gradientImg.src = ResourcesURL + "/event-gradient.png";
 
-  var textDiv = document.createElement("div");
+  var textDiv = $(document.createElement("div"));
   innerDiv.appendChild(textDiv);
-  $(textDiv).addClassName("text");
+  textDiv.addClassName("text");
   textDiv.appendChild(document.createTextNode(event[3]));
 
   eventDiv.observe("mousedown", listRowMouseDownHandler);
@@ -820,7 +825,7 @@ function _drawCalendarEvents(events) {
 function newEventDIV(eventRep) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
-  var eventDiv = document.createElement("div");
+  var eventDiv = $(document.createElement("div"));
   var event = calendarEvents[eventRep.cname];
   if (!event.siblings)
     event.siblings = [];
@@ -828,31 +833,33 @@ function newEventDIV(eventRep) {
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
 
-  $(eventDiv).addClassName("event");
-//   $(eventDiv).addClassName(eventClass(cname));
-  $(eventDiv).addClassName("starts" + eventRep.start);
-  $(eventDiv).addClassName("lasts" + eventRep.length);
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = document.createElement("div");
-    eventDiv.appendChild(shadowDiv);
-    $(shadowDiv).addClassName("shadow");
-    $(shadowDiv).addClassName("shadow" + i);
-  }
-  var innerDiv = document.createElement("div");
-  eventDiv.appendChild(innerDiv);
-  $(innerDiv).addClassName("eventInside");
-  $(innerDiv).addClassName("calendarFolder" + event[1]);
+  eventDiv.addClassName("event");
+  if (eventRep.userState && userStates[eventRep.userState])
+    eventDiv.addClassName(userStates[eventRep.userState]);
 
-  var gradientDiv = document.createElement("div");
+  eventDiv.addClassName("starts" + eventRep.start);
+  eventDiv.addClassName("lasts" + eventRep.length);
+  for (var i = 1; i < 5; i++) {
+    var shadowDiv = $(document.createElement("div"));
+    eventDiv.appendChild(shadowDiv);
+    shadowDiv.addClassName("shadow");
+    shadowDiv.addClassName("shadow" + i);
+  }
+  var innerDiv = $(document.createElement("div"));
+  eventDiv.appendChild(innerDiv);
+  innerDiv.addClassName("eventInside");
+  innerDiv.addClassName("calendarFolder" + event[1]);
+
+  var gradientDiv = $(document.createElement("div"));
   innerDiv.appendChild(gradientDiv);
-  $(gradientDiv).addClassName("gradient");
-  var gradientImg = document.createElement("img");
+  gradientDiv.addClassName("gradient");
+  var gradientImg = $(document.createElement("img"));
   gradientDiv.appendChild(gradientImg);
   gradientImg.src = ResourcesURL + "/event-gradient.png";
 
-  var textDiv = document.createElement("div");
+  var textDiv = $(document.createElement("div"));
   innerDiv.appendChild(textDiv);
-  $(textDiv).addClassName("text");
+  textDiv.addClassName("text");
 //   if (startHour) {
 //     var headerSpan = document.createElement("span");
 //     textDiv.appendChild(headerSpan);
@@ -893,7 +900,7 @@ function _drawMonthCalendarEvents(events) {
 function newMonthEventDIV(eventRep) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
-  var eventDiv = document.createElement("div");
+  var eventDiv = $(document.createElement("div"));
   var event = calendarEvents[eventRep.cname];
   if (!event.siblings)
     event.siblings = [];
@@ -901,28 +908,33 @@ function newMonthEventDIV(eventRep) {
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
 
-  $(eventDiv).addClassName("event");
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = document.createElement("div");
-    eventDiv.appendChild(shadowDiv);
-    $(shadowDiv).addClassName("shadow");
-    $(shadowDiv).addClassName("shadow" + i);
+  eventDiv.addClassName("event");
+  if (eventRep.userState && userStates[eventRep.userState]) {
+    eventDiv.addClassName(userStates[eventRep.userState]);
+    log (eventDiv.getAttribute("class"));
   }
-  var innerDiv = document.createElement("div");
-  eventDiv.appendChild(innerDiv);
-  $(innerDiv).addClassName("eventInside");
-  $(innerDiv).addClassName("calendarFolder" + event[1]);
 
-  var gradientDiv = document.createElement("div");
+  for (var i = 1; i < 5; i++) {
+    var shadowDiv = $(document.createElement("div"));
+    eventDiv.appendChild(shadowDiv);
+    shadowDiv.addClassName("shadow");
+    shadowDiv.addClassName("shadow" + i);
+  }
+  var innerDiv = $(document.createElement("div"));
+  eventDiv.appendChild(innerDiv);
+  innerDiv.addClassName("eventInside");
+  innerDiv.addClassName("calendarFolder" + event[1]);
+
+  var gradientDiv = $(document.createElement("div"));
   innerDiv.appendChild(gradientDiv);
-  $(gradientDiv).addClassName("gradient");
+  gradientDiv.addClassName("gradient");
   var gradientImg = document.createElement("img");
   gradientDiv.appendChild(gradientImg);
   gradientImg.src = ResourcesURL + "/event-gradient.png";
 
-  var textDiv = document.createElement("div");
+  var textDiv = $(document.createElement("div"));
   innerDiv.appendChild(textDiv);
-  $(textDiv).addClassName("textw");
+  textDiv.addClassName("textw");
 
   var eventText;
   if (event[7])
@@ -1265,8 +1277,8 @@ function changeWeekCalendarDisplayOfSelectedDay(node) {
   var daysView = $("daysView");
   var daysDiv = daysView.childNodesWithTag("div");
   var days = daysDiv[1].childNodesWithTag("div");
-  var headerDiv = $("calendarHeader").childNodesWithTag("div")[1];
-  var headerDays = $(headerDiv).childNodesWithTag("div");
+  var headerDiv = $($("calendarHeader").childNodesWithTag("div")[1]);
+  var headerDays = headerDiv.childNodesWithTag("div");
 
   for (var i = 0; i < days.length; i++) {
     if (days[i] == node

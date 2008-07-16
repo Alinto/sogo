@@ -323,13 +323,12 @@ static NSArray *tasksFields = nil;
 
 - (WOResponse *) eventsListAction
 {
-  NSArray *oldEvent, *participants, *states;
+  NSArray *oldEvent;
   NSEnumerator *events;
   NSMutableArray *newEvents, *newEvent;
-  unsigned int interval, i;
+  unsigned int interval;
   BOOL isAllDay;
-  NSString *sort, *ascending, *participant, *state;
-  SOGoUser *user;
+  NSString *sort, *ascending;
 
   [self _setupContext];
 
@@ -346,40 +345,6 @@ static NSArray *tasksFields = nil;
       interval = [[oldEvent objectAtIndex: 5] intValue];
       [newEvent addObject: [self _formattedDateForSeconds: interval
 				 forAllDay: isAllDay]];
-
-      participants = nil;
-      state = nil;
-      if ([[oldEvent objectAtIndex: 9] length] > 0 &&
-	  [[oldEvent objectAtIndex: 10] length] > 0)
-	{
-	  participants = [[oldEvent objectAtIndex: 9] componentsSeparatedByString: @"\n"];
-	  states = [[oldEvent objectAtIndex: 10] componentsSeparatedByString: @"\n"];
-	  for (i = 0; i < [participants count]; i++)
-	    {
-	      user = [SOGoUser userWithLogin: [oldEvent objectAtIndex: 11] roles: nil];
-	      participant = [participants objectAtIndex: i];
-	      if ([user hasEmail: participant]) {
-		switch ([[states objectAtIndex: i] intValue]) {
-		case iCalPersonPartStatNeedsAction:
-		state = @"needs-action";
-		break;
-		case iCalPersonPartStatAccepted:
-		  state = @"accepted";
-		  break;
-		case iCalPersonPartStatDeclined:
-		  state = @"declined";
-		  break;
-		}
-		[newEvent replaceObjectAtIndex: 9 withObject: state];
-		break;
-	      }
-	    }
-	}
-      if (participants == nil || i == [participants count])
-	[newEvent replaceObjectAtIndex: 9 withObject: @""];
-      [newEvent removeObjectAtIndex: 11];
-      [newEvent removeObjectAtIndex: 10];
-
       [newEvents addObject: newEvent];
     }
   
@@ -440,6 +405,7 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
 					 cname: (NSString *) cName
 					 onDay: (unsigned int) dayStart
 				    recurrence: (BOOL) recurrence
+				     userState: (iCalPersonPartStat) userState
 {
   NSMutableDictionary *block;
 
@@ -452,8 +418,45 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
   [block setObject: cName forKey: @"cname"];
   if (recurrence)
     [block setObject: @"1" forKey: @"recurrence"];
+  if (userState != iCalPersonPartStatOther)
+    [block setObject: [NSNumber numberWithInt: userState]
+	   forKey: @"userState"];
 
   return block;
+}
+
+static inline iCalPersonPartStat
+_userStateInEvent (NSArray *event)
+{
+  unsigned int count, max;
+  iCalPersonPartStat state;
+  NSString *partList, *stateList;
+  NSArray *participants, *states;
+  SOGoUser *user;
+
+  participants = nil;
+  state = iCalPersonPartStatOther;
+
+  partList = [event objectAtIndex: 9];
+  stateList = [event objectAtIndex: 10];
+  if ([partList length] && [stateList length])
+    {
+      participants = [partList componentsSeparatedByString: @"\n"];
+      states = [stateList componentsSeparatedByString: @"\n"];
+      count = 0;
+      max = [participants count];
+      while (state == iCalPersonPartStatOther && count < max)
+	{
+	  user = [SOGoUser userWithLogin: [event objectAtIndex: 11]
+			   roles: nil];
+	  if ([user hasEmail: [participants objectAtIndex: count]])
+	    state = [[states objectAtIndex: count] intValue];
+	  else
+	    count++;
+	}
+    }
+
+  return state;
 }
 
 - (void) _fillBlocks: (NSArray *) blocks
@@ -465,6 +468,7 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
   NSMutableDictionary *eventBlock;
   NSString *eventCName;
   BOOL recurrence;
+  iCalPersonPartStat userState;
 
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
   endsSecs = (unsigned int) [endDate timeIntervalSince1970];
@@ -489,13 +493,15 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
     eventEnd = endsSecs;
 
   eventCName = [event objectAtIndex: 0];
-  while (currentStart + dayLength < eventEnd)
+  userState = _userStateInEvent (event);
+  while (currentDayStart + dayLength < eventEnd)
     {
       eventBlock = [self _eventBlockWithStart: currentStart
-			 end: currentDayStart + 86399
+			 end: currentDayStart + dayLength - 1
 			 cname: eventCName
 			 onDay: currentDayStart
-			 recurrence: recurrence];
+			 recurrence: recurrence
+			 userState: userState];
       [currentDay addObject: eventBlock];
       currentDayStart += dayLength;
       currentStart = currentDayStart;
@@ -506,7 +512,8 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
 		     end: eventEnd
 		     cname: eventCName
 		     onDay: currentDayStart
-		     recurrence: recurrence];
+		     recurrence: recurrence
+		     userState: userState];
   [currentDay addObject: eventBlock];
 }
 
