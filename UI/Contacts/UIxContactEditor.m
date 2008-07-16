@@ -21,8 +21,11 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoPermissions.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -31,6 +34,8 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
+#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
@@ -58,6 +63,16 @@
 }
 
 /* accessors */
+
+- (void) setAddressBookItem: (id) _item
+{
+  ASSIGN (addressBookItem, _item);
+}
+
+- (id) addressBookItem
+{
+  return addressBookItem;
+}
 
 - (NSString *) saveURL
 {
@@ -140,6 +155,63 @@
     
   /* next: append query parameters */
   return [self completeHrefForMethod:uri];
+}
+
+- (BOOL) isNew
+{
+  return [[self clientObject] isNew];
+}
+
+- (NSArray *) addressBooksList
+{
+  NSEnumerator *folders;
+  NSMutableArray *addressBooksList;
+  SoSecurityManager *sm;
+  SOGoContactFolders *folderContainer;
+  SOGoContactFolder *folder, *currentFolder;
+
+  addressBooksList = [NSMutableArray new];
+  sm = [SoSecurityManager sharedSecurityManager];
+  folderContainer = [[[self clientObject] container] container];
+  folders = [[folderContainer subFolders] objectEnumerator];
+  folder = [self componentAddressBook];
+  currentFolder = [folders nextObject];
+
+  while (currentFolder)
+    {
+      if ([currentFolder isEqual: folder] ||
+	  ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	       onObject: currentFolder
+	       inContext: context])
+	[addressBooksList addObject: currentFolder];
+      currentFolder = [folders nextObject];
+    }
+  
+  return addressBooksList;
+}
+
+- (SOGoContactFolder *) componentAddressBook
+{
+  SOGoContactFolder *folder;
+  
+  folder = [[self clientObject] container];
+  
+  return folder;
+}
+
+- (NSString *) addressBookDisplayName
+{
+  NSString *fDisplayName;
+  SOGoContactFolder *folder;
+  SOGoContactFolders *parentFolder;
+
+  fDisplayName = [addressBookItem displayName];
+  folder = [[self clientObject] container];
+  parentFolder = [folder container];
+  if ([fDisplayName isEqualToString: [parentFolder defaultFolderName]])
+    fDisplayName = [self labelForKey: fDisplayName];
+
+  return fDisplayName;
 }
 
 /* actions */

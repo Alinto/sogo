@@ -29,13 +29,24 @@
 
 @class NGVCard;
 
+@class SOGoContactFolder;
+
 @interface UIxContactEditor : UIxComponent
 {
+  id addressBookItem;
   NSString *preferredEmail;
   NSString *item;
   NGVCard *card;
   NSMutableDictionary *snapshot; /* contains the values for editing */
 }
+
+- (void) setAddressBookItem: (id) _item;
+- (id) addressBookItem;
+
+- (BOOL) isNew;
+- (NSArray *) addressBooksList;
+- (SOGoContactFolder *) componentAddressBook;
+- (NSString *) addressBookDisplayName;
 
 @end
 

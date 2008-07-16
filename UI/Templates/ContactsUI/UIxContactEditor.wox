@@ -12,6 +12,16 @@
     <form var:href="saveURL" name="editform"
       onsubmit="return validateContactEditor()">
 
+      <var:if condition="isNew"><div id="addressBookSelector">
+	<style type="text/css">DIV#editorTabs { top: 3.0em; };</style>
+	<var:string label:value="Add to:" />
+	<var:popup const:id="addressBooksList"
+		   list="addressBooksList" item="addressBookItem"
+		   string="addressBookDisplayName"
+		   var:selection="componentAddressBook"
+		   />
+      </div></var:if>
+
       <div class="tabsContainer" id="editorTabs">
         <ul>
           <li target="baseInfos"><var:string label:value="Contact" /></li>
