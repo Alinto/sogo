@@ -277,8 +277,13 @@
 
 - (void) setOrganizer: (iCalPerson *) _organizer
 {
-  [_organizer setTag: @"organizer"];
-  [self setUniqueChild: _organizer];
+  if (_organizer)
+    {
+      [_organizer setTag: @"organizer"];
+      [self setUniqueChild: _organizer];
+    }
+  else
+    [children removeObjectsInArray: [self childrenWithTag: @"organizer"]];
 }
 
 - (iCalPerson *) organizer

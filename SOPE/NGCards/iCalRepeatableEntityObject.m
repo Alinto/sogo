@@ -107,9 +107,15 @@
   [children removeObjectsInArray: [self childrenWithTag: @"exdate"]];
 }
 
-- (void) addToExceptionDates: (id) _rdate
+- (void) addToExceptionDates: (NSCalendarDate *) _rdate
 {
-  [self addChild: _rdate];
+  iCalDateTime *dateTime;
+
+  dateTime = [iCalDateTime new];
+  [dateTime setTag: @"exdate"];
+  [dateTime setDateTime: _rdate];
+  [self addChild: dateTime];
+  [dateTime release];
 }
 
 - (void) setExceptionDates: (NSArray *) _rdates

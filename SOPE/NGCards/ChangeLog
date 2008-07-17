@@ -1,3 +1,17 @@
+2008-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalRepeatableEntityObject.m ([iCalRepeatableEntityObject
+	-addToExceptionDates:_rdate]): the iCalDateTime argument was
+	replaced with NSCalendarDate.
+
+	* iCalEntityObject.m ([iCalEntityObject
+	-setOrganizer:_organizer]): now accepts a nil argument.
+
+	* CardGroup.m ([CardGroup -children]): now returns an NSMutableArray.
+	([CardGroup -copyWithZone:aZone])
+	([CardGroup -mutableCopyWithZone:aZone]): the children were not
+	properlty cloned, we thus clone them explicitly.
+
 2008-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m ([iCalDateTime -setDate:dateTime]): don't set

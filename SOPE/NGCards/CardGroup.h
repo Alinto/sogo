@@ -49,7 +49,7 @@
 - (void) addChild: (CardElement *) aChild;
 - (void) addChildren: (NSArray *) someChildren;
 
-- (NSArray *) children;
+- (NSMutableArray *) children;
 - (CardElement *) firstChildWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithAttribute: (NSString *) anAttribute

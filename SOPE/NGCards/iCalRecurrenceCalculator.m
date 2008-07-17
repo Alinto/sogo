@@ -188,17 +188,19 @@ static Class yearlyCalcClass  = Nil;
   NSEnumerator *dates;
   NSCalendarDate *currentDate;
   NGCalendarDateRange *currentRange;
-  int count, maxRanges;
+  unsigned int count, maxRanges;
 
-  maxRanges = [ranges count];
   dates = [[self _dates: exdates withinRange: limits] objectEnumerator];
   while ((currentDate = [dates nextObject]))
-    for (count = (maxRanges - 1); count > -1; count--)
-      {
-	currentRange = [ranges objectAtIndex: count];
-	if ([currentRange containsDate: currentDate])
-	  [ranges removeObjectAtIndex: count];
-      }
+    {
+      maxRanges = [ranges count];
+      for (count = maxRanges; count > 0; count--)
+	{
+	  currentRange = [ranges objectAtIndex: count - 1];
+	  if ([currentRange containsDate: currentDate])
+	    [ranges removeObjectAtIndex: count - 1];
+	}
+    }
 }
 
 + (NSArray *)

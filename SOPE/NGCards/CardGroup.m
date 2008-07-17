@@ -260,7 +260,7 @@ static NGCardsSaxHandler *sax = nil;
     [self addChild: currentChild];
 }
 
-- (NSArray *) children
+- (NSMutableArray *) children
 {
   return children;
 }
@@ -398,9 +398,20 @@ static NGCardsSaxHandler *sax = nil;
 - (id) copyWithZone: (NSZone *) aZone
 {
   CardGroup *new;
+  CardElement *newChild;
+  NSMutableArray *newChildren;
+  unsigned int count, max;
 
   new = [super copyWithZone: aZone];
-  [new setChildrenAsCopy: [children copyWithZone: aZone]];
+  newChildren = [NSMutableArray new];
+  max = [children count];
+  for (count = 0; count < max; count++)
+    {
+      newChild = [[children objectAtIndex: count] copyWithZone: aZone];
+      [newChildren addObject: newChild];
+    }
+  [new setChildrenAsCopy: newChildren];
+  [newChildren release];
 
   return new;
 }
@@ -410,9 +421,21 @@ static NGCardsSaxHandler *sax = nil;
 - (id) mutableCopyWithZone: (NSZone *) aZone
 {
   CardGroup *new;
+  CardElement *newChild;
+  NSMutableArray *newChildren;
+  unsigned int count, max;
 
   new = [super mutableCopyWithZone: aZone];
-  [new setChildrenAsCopy: [children mutableCopyWithZone: aZone]];
+  newChildren = [NSMutableArray new];
+  max = [children count];
+  for (count = 0; count < max; count++)
+    {
+      newChild
+	= [[children objectAtIndex: count] mutableCopyWithZone: aZone];
+      [newChildren addObject: newChild];
+    }
+  [new setChildrenAsCopy: newChildren];
+  [newChildren release];
 
   return new;
 }

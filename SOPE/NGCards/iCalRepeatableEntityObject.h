@@ -32,7 +32,7 @@
  are VEVENT, VTODO and VJOURNAL.
 */
 
-@class NSMutableArray, NGCalendarDateRange;
+@class NSCalendarDate, NSMutableArray, NGCalendarDateRange;
 
 @interface iCalRepeatableEntityObject : iCalEntityObject
 // {
@@ -53,7 +53,7 @@
 - (NSArray *)exceptionRules;
 
 - (void)removeAllExceptionDates;
-- (void)addToExceptionDates:(id)_date;
+- (void)addToExceptionDates:(NSCalendarDate *)_date;
 - (BOOL)hasExceptionDates;
 - (NSArray *)exceptionDates;
 
