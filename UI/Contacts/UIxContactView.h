@@ -34,8 +34,6 @@
   CardElement *workAdr;
 }
 
-- (BOOL)isDeletableClientObject;
-
 @end
 
 #endif /* UIXCONTACTVIEW_H */

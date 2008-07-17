@@ -335,7 +335,7 @@
 
   actionName = [[request requestHandlerPath] lastPathComponent];
 
-  return ([[self clientObject] isKindOfClass: [SOGoTaskObject class]]
+  return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
 	  && [actionName hasPrefix: @"save"]);
 }
 

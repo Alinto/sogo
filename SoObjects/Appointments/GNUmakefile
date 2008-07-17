@@ -20,6 +20,9 @@ Appointments_OBJC_FILES = \
 	SOGoCalendarComponent.m		\
 	SOGoAppointmentObject.m		\
 	SOGoTaskObject.m		\
+	SOGoComponentOccurence.m	\
+	SOGoAppointmentOccurence.m	\
+	SOGoTaskOccurence.m	\
 	SOGoAppointmentFolder.m		\
 	SOGoAppointmentFolders.m	\
 	SOGoFreeBusyObject.m		\

@@ -29,5 +29,6 @@
 @interface iCalRepeatableEntityObject (SOGoExtensions)
 
 - (NSString *) cycleInfo;
+- (BOOL) doesOccurOnDate: (NSCalendarDate *) occurenceDate;
 
 @end

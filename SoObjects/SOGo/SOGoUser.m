@@ -692,8 +692,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   NSArray *sogoRoles;
   NSString *rqMethod;
 
-  rolesForObject = [NSMutableArray new];
-  [rolesForObject autorelease];
+  rolesForObject = [NSMutableArray array];
 
   sogoRoles = [super rolesForObject: object inContext: context];
   if (sogoRoles)

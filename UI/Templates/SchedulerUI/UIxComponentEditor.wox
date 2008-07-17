@@ -46,6 +46,7 @@
             string="itemCategoryText" selection="category"
             /><var:string label:value="Calendar:" />
           <var:popup const:id="calendarList"
+	    var:disabled="isChildOccurence"
 	    list="calendarList" item="item"
             string="calendarDisplayName"
 	    var:selection="componentCalendar"
@@ -75,6 +76,7 @@
       <label><var:string label:value="Repeat:" />
        <span class="content"><var:popup list="repeatList" item="item"
           label:noSelectionString="repeat_NEVER"
+	    var:disabled="isChildOccurence"
           const:disabledValue="-"
           const:name="repeatList"
 	  const:id="repeatList"

@@ -44,11 +44,12 @@
 #import <SoObjects/SOGo/SOGoWebDAVValue.h>
 #import <SoObjects/SOGo/WORequest+SOGo.h>
 
-#import "NSArray+Appointments.h"
-#import "SOGoAppointmentFolder.h"
 #import "iCalEventChanges+SOGo.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
+#import "NSArray+Appointments.h"
+#import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentOccurence.h"
 
 #import "SOGoAppointmentObject.h"
 
@@ -129,6 +130,35 @@
   return @"vevent";
 }
 
+- (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) occ
+{
+  return [SOGoAppointmentOccurence occurenceWithComponent: occ
+				   withMasterComponent: [self component: NO
+							      secure: NO]
+				   inContainer: self];
+}
+
+- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID
+{
+  iCalEvent *newOccurence;
+  NSCalendarDate *date;
+  unsigned int interval;
+
+  newOccurence = (iCalEvent *) [super newOccurenceWithID: recID];
+  date = [newOccurence recurrenceId];
+  interval = [[newOccurence endDate]
+	       timeIntervalSinceDate: [newOccurence startDate]];
+  [newOccurence setStartDate: date];
+  [newOccurence setEndDate: [date addYear: 0
+				  month: 0
+				  day: 0
+				  hour: 0
+				  minute: 0
+				  second: interval]];
+
+  return newOccurence;
+}
+
 - (SOGoAppointmentObject *) _lookupEvent: (NSString *) eventUID
 				  forUID: (NSString *) uid
 {
@@ -195,6 +225,7 @@
     }
 }
 
+#warning what about occurences?
 - (void) _handleRemovedUsers: (NSArray *) attendees
 {
   NSEnumerator *enumerator;
@@ -573,7 +604,7 @@
   return ex;
 }
 
-- (void) prepareDelete
+- (void) prepareDeleteOccurence: (iCalEvent *) occurence
 {
   iCalEvent *event;
   SOGoUser *currentUser;
@@ -583,21 +614,30 @@
     {
       currentUser = [context activeUser];
       event = [self component: NO secure: NO];
+      if (!occurence)
+	occurence = event;
       if ([event userIsOrganizer: currentUser])
 	{
-	  attendees = [event attendeesWithoutUser: currentUser];
+	  attendees = [occurence attendeesWithoutUser: currentUser];
+	  if (![attendees count] && event != occurence)
+	    attendees = [event attendeesWithoutUser: currentUser];
 	  if ([attendees count])
 	    {
 	      [self _handleRemovedUsers: attendees];
 	      [self sendEMailUsingTemplateNamed: @"Deletion"
 		    forOldObject: nil
-		    andNewObject: [event itipEntryWithMethod: @"cancel"]
+		    andNewObject: [occurence itipEntryWithMethod: @"cancel"]
 		    toAttendees: attendees];
 	    }
 	}
-      else if ([event userIsParticipant: currentUser])
+      else if ([occurence userIsParticipant: currentUser])
 	[self changeParticipationStatus: @"DECLINED"];
     }
+}
+
+- (void) prepareDelete
+{
+  [self prepareDeleteOccurence: nil];
 }
 
 /* message type */

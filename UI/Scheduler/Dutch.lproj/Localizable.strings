@@ -456,6 +456,10 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 
 "Please select an event or a task." = "Selecteer een afspraak of een taak.";
 
+"editRepeatingItem" = "Het item dat u bewerkt is een herhalend item.  Wilt u alle items of enkel dit item bewerken?";
+"button_thisOccurrenceOnly" = "Enkel dit item";
+"button_allOccurrences" = "Alle herhalingen";
+
 /* Properties dialog */
 "Name:" = "Naam:";
 "Color:" = "Kleur:";

@@ -473,6 +473,10 @@ vtodo_class2 = "(Confidential task)";
 
 "Please select an event or a task." = "Please select an event or a task.";
 
+"editRepeatingItem" = "The item you are editing is a repeating item. Do you want to edit all occurences of it or only this single instance?";
+"button_thisOccurrenceOnly" = "This occurence only";
+"button_allOccurrences" = "All occurences";
+
 /* Properties dialog */
 "Name:" = "Name:";
 "Color:" = "Color:";

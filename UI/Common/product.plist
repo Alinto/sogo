@@ -40,6 +40,11 @@
 	  actionClass = "UIxObjectActions";
 	  actionName  = "removeUserFromAcls";
 	};
+	delete = {
+	  protectedBy = "Delete Objects";
+	  actionClass = "UIxObjectActions";
+	  actionName  = "delete";
+	};
 	acls = {
 	  protectedBy = "ReadAcls";
 	  pageName    = "UIxAclEditor";

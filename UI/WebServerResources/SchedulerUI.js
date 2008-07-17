@@ -71,9 +71,14 @@ function onMenuNewTaskClick(event) {
   newEvent(this, "task");
 }
 
-function _editEventId(id, calendar) {
-  var urlstr = ApplicationBaseURL + calendar + "/" + id + "/edit";
+function _editEventId(id, calendar, recurrence) {
   var targetname = "SOGo_edit_" + id;
+  var urlstr = ApplicationBaseURL + calendar + "/" + id;
+  if (recurrence) {
+    urlstr += "/" + recurrence;
+    targetname += recurrence;
+  }
+  urlstr += "/edit";
   var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
   if (win)
@@ -115,50 +120,60 @@ function _batchDeleteEvents() {
 function deleteEvent() {
   if (listOfSelection) {
     var nodes = listOfSelection.getSelectedRows();
-
     if (nodes.length > 0) {
       var label = "";
       if (listOfSelection == $("tasksList"))
         label = labels["taskDeleteConfirmation"];
       else
         label = labels["eventDeleteConfirmation"];
-      
-      if (confirm(label)) {
-        if (document.deleteEventAjaxRequest) {
+
+      if (nodes.length == 1
+	  && nodes[0].recurrenceTime) {
+	_editRecurrenceDialog(nodes[0], "confirmDeletion");
+      }
+      else {
+	if (confirm(label)) {
+	  if (document.deleteEventAjaxRequest) {
           document.deleteEventAjaxRequest.aborted = true;
           document.deleteEventAjaxRequest.abort();
-        }
-        var sortedNodes = [];
-        var calendars = [];
-
-        for (var i = 0; i < nodes.length; i++) {
-          var calendar = nodes[i].calendar;
-          if (!sortedNodes[calendar]) {
-	    sortedNodes[calendar] = [];
-	    calendars.push(calendar);
-          }
-          sortedNodes[calendar].push(nodes[i].cname);
-        }
-        for (var i = 0; i < calendars.length; i++) {
-          calendarsOfEventsToDelete.push(calendars[i]);
-          eventsToDelete.push(sortedNodes[calendars[i]]);
-        }
-        _batchDeleteEvents();
+	  }
+	  var sortedNodes = [];
+	  var calendars = [];
+	  
+	  for (var i = 0; i < nodes.length; i++) {
+	    var calendar = nodes[i].calendar;
+	    if (!sortedNodes[calendar]) {
+	      sortedNodes[calendar] = [];
+	      calendars.push(calendar);
+	    }
+	    sortedNodes[calendar].push(nodes[i].cname);
+	  }
+	  for (var i = 0; i < calendars.length; i++) {
+	    calendarsOfEventsToDelete.push(calendars[i]);
+	    eventsToDelete.push(sortedNodes[calendars[i]]);
+	  }
+	  _batchDeleteEvents();
+	}
       }
     } else {
       window.alert(labels["Please select an event or a task."]);
     }
   }
   else if (selectedCalendarCell) {
-    var label = labels["eventDeleteConfirmation"];
-    if (confirm(label)) {
-      if (document.deleteEventAjaxRequest) {
-	document.deleteEventAjaxRequest.aborted = true;
-	document.deleteEventAjaxRequest.abort();
+    if (selectedCalendarCell[0].recurrenceTime) {
+      _editRecurrenceDialog(selectedCalendarCell[0], "confirmDeletion");
+    }
+    else {
+      var label = labels["eventDeleteConfirmation"];
+      if (confirm(label)) {
+	if (document.deleteEventAjaxRequest) {
+	  document.deleteEventAjaxRequest.aborted = true;
+	  document.deleteEventAjaxRequest.abort();
+	}
+	eventsToDelete.push([selectedCalendarCell[0].cname]);
+	calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
+	_batchDeleteEvents();
       }
-      eventsToDelete.push([selectedCalendarCell[0].cname]);
-      calendarsOfEventsToDelete.push(selectedCalendarCell[0].calendar);
-      _batchDeleteEvents();
     }
   }
   else
@@ -268,11 +283,95 @@ function deleteEventsFromViews(events) {
   }
 }
 
+function _editRecurrenceDialog(eventDiv, method) {
+  var targetname = "SOGo_edit_" + eventDiv.cname + eventDiv.recurrenceTime;
+  var urlstr = (ApplicationBaseURL + eventDiv.calendar + "/" + eventDiv.cname
+		+ "/occurence" + eventDiv.recurrenceTime + "/" + method);
+  var win = window.open(urlstr, "_blank",
+                        "width=490,height=70,resizable=0");
+  if (win)
+    win.focus();
+}
+
 function editDoubleClickedEvent(event) {
-  _editEventId(this.cname, this.calendar);
+  if (this.recurrenceTime)
+    _editRecurrenceDialog(this, "confirmEditing");
+  else
+    _editEventId(this.cname, this.calendar);
 
   preventDefault(event);
   event.cancelBubble = true;
+}
+
+function performEventEdition(folder, event, recurrence) {
+  _editEventId(event, folder, recurrence);
+}
+
+function performEventDeletion(folder, event, recurrence) {
+  if (calendarEvents) {
+    var eventEntry = calendarEvents[event];
+    if (eventEntry) {
+      var urlstr = ApplicationBaseURL + folder + "/" + event;
+      var nodes;
+      if (recurrence) {
+	urlstr += "/" + recurrence;
+	var occurenceTime = recurrence.substring(9);
+	nodes = [];
+	for (var i = 0; i < eventEntry.siblings.length; i++) {
+	  if (eventEntry.siblings[i].recurrenceTime
+	      && eventEntry.siblings[i].recurrenceTime == occurenceTime)
+	    nodes.push(eventEntry.siblings[i]);
+	}
+      }
+      else
+	nodes = eventEntry.siblings;
+      urlstr += "/delete";
+      document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
+							   performDeleteEventCallback,
+							   { nodes: nodes,
+							     recurrence: recurrence });
+    }
+  }
+}
+
+function performDeleteEventCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var nodes = http.callbackData.nodes;
+      var recurrenceTime = 0;
+      if (http.callbackData.recurrence)
+	recurrenceTime = http.callbackData.recurrence.substring(9);
+      var cName = nodes[0].cname;
+      var eventEntry = calendarEvents[cName];
+      var node = nodes.pop();
+      while (node) {
+	node.parentNode.removeChild(node);
+	node = nodes.pop();
+      }
+      if (recurrenceTime) {
+	var row = $(cName + "-" + recurrenceTime);
+	if (row)
+	  row.parentNode.removeChild(row);
+      }
+      else {
+	delete calendarEvents[cName];
+	var tables = [ "eventsList", "tasksList" ];
+	for (var i = 0; i < 2; i++) {
+	  var table = $(tables[i]);
+	  if (table.tBodies)
+	    rows = table.tBodies[0].rows;
+	  else
+	    rows = $(table).childNodesWithTag("li");
+	  for (var j = rows.length; j > 0; j--) {
+	    var row = $(rows[j - 1]);
+	    var id = row.getAttribute("id");
+	    if (id.indexOf(cName) == 0)
+	      row.parentNode.removeChild(row);
+	  }
+	}
+      }
+    }
+  }
 }
 
 function onSelectAll() {
@@ -370,10 +469,15 @@ function eventsListCallback(http) {
 	var row = document.createElement("tr");
 	table.tBodies[0].appendChild(row);
 	$(row).addClassName("eventRow");
-	row.setAttribute("id", escape(data[i][0]));
+	var rTime = data[i][13];
+	var id = escape(data[i][0]);
+	if (rTime)
+	  id += "-" + escape(rTime);
+	row.setAttribute("id", id);
 	row.cname = escape(data[i][0]);
 	row.calendar = data[i][1];
-
+	if (rTime)
+	  row.recurrenceTime = escape(rTime);
 	var startDate = new Date();
 	startDate.setTime(data[i][4] * 1000);
 	row.day = startDate.getDayString();
@@ -391,12 +495,12 @@ function eventsListCallback(http) {
 	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][13]));
+	td.appendChild(document.createTextNode(data[i][14]));
 
 	td = $(document.createElement("td"));
 	row.appendChild(td);
 	td.observe("mousedown", listRowMouseDownHandler, true);
-	td.appendChild(document.createTextNode(data[i][14]));
+	td.appendChild(document.createTextNode(data[i][15]));
       
 	td = $(document.createElement("td"));
 	row.appendChild(td);
@@ -761,84 +865,22 @@ function _drawCalendarAllDaysEvents(events) {
   }
 }
 
-function newAllDayEventDIV(eventRep) {
+function newBaseEventDIV(eventRep, event, eventText) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
   var eventDiv = $(document.createElement("div"));
-  var event = calendarEvents[eventRep.cname];
   if (!event.siblings)
     event.siblings = [];
   eventDiv.event = event;
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
+  if (eventRep.recurrenceTime)
+    eventDiv.recurrenceTime = eventRep.recurrenceTime;
 
   eventDiv.addClassName("event");
   if (eventRep.userState && userStates[eventRep.userState])
     eventDiv.addClassName(userStates[eventRep.userState]);
 
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = $(document.createElement("div"));
-    eventDiv.appendChild(shadowDiv);
-    shadowDiv.addClassName("shadow");
-    shadowDiv.addClassName("shadow" + i);
-  }
-  var innerDiv = $(document.createElement("div"));
-  eventDiv.appendChild(innerDiv);
-  innerDiv.addClassName("eventInside");
-  innerDiv.addClassName("calendarFolder" + event[1]);
-
-  var gradientDiv = $(document.createElement("div"));
-  innerDiv.appendChild(gradientDiv);
-  gradientDiv.addClassName("gradient");
-  var gradientImg = document.createElement("img");
-  gradientDiv.appendChild(gradientImg);
-  gradientImg.src = ResourcesURL + "/event-gradient.png";
-
-  var textDiv = $(document.createElement("div"));
-  innerDiv.appendChild(textDiv);
-  textDiv.addClassName("text");
-  textDiv.appendChild(document.createTextNode(event[3]));
-
-  eventDiv.observe("mousedown", listRowMouseDownHandler);
-  eventDiv.observe("click", onCalendarSelectEvent);
-  eventDiv.observe("dblclick", editDoubleClickedEvent);
-
-  event.siblings.push(eventDiv);
-
-  return eventDiv;
-}
-			     
-function _drawCalendarEvents(events) {
-  var daysView = $("daysView");
-  var subdivs = daysView.childNodesWithTag("div");
-  var days = subdivs[1].childNodesWithTag("div");
-  for (var i = 0; i < events.length; i++) {
-    var parentDiv = days[i].childNodesWithTag("div")[0];
-    for (var j = 0; j < events[i].length; j++) {
-      var eventRep = events[i][j];
-      var eventDiv = newEventDIV(eventRep);
-      parentDiv.appendChild(eventDiv);
-    }
-  }
-}
-
-function newEventDIV(eventRep) {
-// cname, calendar, starts, lasts,
-// 		     startHour, endHour, title) {
-  var eventDiv = $(document.createElement("div"));
-  var event = calendarEvents[eventRep.cname];
-  if (!event.siblings)
-    event.siblings = [];
-  eventDiv.event = event;
-  eventDiv.cname = event[0];
-  eventDiv.calendar = event[1];
-
-  eventDiv.addClassName("event");
-  if (eventRep.userState && userStates[eventRep.userState])
-    eventDiv.addClassName(userStates[eventRep.userState]);
-
-  eventDiv.addClassName("starts" + eventRep.start);
-  eventDiv.addClassName("lasts" + eventRep.length);
   for (var i = 1; i < 5; i++) {
     var shadowDiv = $(document.createElement("div"));
     eventDiv.appendChild(shadowDiv);
@@ -860,26 +902,50 @@ function newEventDIV(eventRep) {
   var textDiv = $(document.createElement("div"));
   innerDiv.appendChild(textDiv);
   textDiv.addClassName("text");
-//   if (startHour) {
-//     var headerSpan = document.createElement("span");
-//     textDiv.appendChild(headerSpan);
-//     $(headerSpan).addClassName("eventHeader");
-//     headerSpan.appendChild(document.createTextNode(startHour + " - "
-// 						   + endHour));
-//     textDiv.appendChild(document.createElement("br"));
-//   }
-  textDiv.appendChild(document.createTextNode(event[3]));
-
-  var pc = 100 / eventRep.siblings;
-  eventDiv.style.width = pc + "%";
-  var left = eventRep.position * pc;
-  eventDiv.style.left = left + "%";
+  textDiv.appendChild(document.createTextNode(eventText));
 
   eventDiv.observe("mousedown", listRowMouseDownHandler);
   eventDiv.observe("click", onCalendarSelectEvent);
   eventDiv.observe("dblclick", editDoubleClickedEvent);
 
   event.siblings.push(eventDiv);
+
+  return eventDiv;
+}
+
+function newAllDayEventDIV(eventRep) {
+// cname, calendar, starts, lasts,
+// 		     startHour, endHour, title) {
+  var event = calendarEvents[eventRep.cname];
+  var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
+
+  return eventDiv;
+}
+			     
+function _drawCalendarEvents(events) {
+  var daysView = $("daysView");
+  var subdivs = daysView.childNodesWithTag("div");
+  var days = subdivs[1].childNodesWithTag("div");
+  for (var i = 0; i < events.length; i++) {
+    var parentDiv = days[i].childNodesWithTag("div")[0];
+    for (var j = 0; j < events[i].length; j++) {
+      var eventRep = events[i][j];
+      var eventDiv = newEventDIV(eventRep);
+      parentDiv.appendChild(eventDiv);
+    }
+  }
+}
+
+function newEventDIV(eventRep) {
+  var event = calendarEvents[eventRep.cname];
+  var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
+
+  var pc = 100 / eventRep.siblings;
+  eventDiv.style.width = pc + "%";
+  var left = eventRep.position * pc;
+  eventDiv.style.left = left + "%";
+  eventDiv.addClassName("starts" + eventRep.start);
+  eventDiv.addClassName("lasts" + eventRep.length);
 
   return eventDiv;
 }
@@ -898,56 +964,14 @@ function _drawMonthCalendarEvents(events) {
 }
 
 function newMonthEventDIV(eventRep) {
-// cname, calendar, starts, lasts,
-// 		     startHour, endHour, title) {
-  var eventDiv = $(document.createElement("div"));
   var event = calendarEvents[eventRep.cname];
-  if (!event.siblings)
-    event.siblings = [];
-  eventDiv.event = event;
-  eventDiv.cname = event[0];
-  eventDiv.calendar = event[1];
-
-  eventDiv.addClassName("event");
-  if (eventRep.userState && userStates[eventRep.userState]) {
-    eventDiv.addClassName(userStates[eventRep.userState]);
-    log (eventDiv.getAttribute("class"));
-  }
-
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = $(document.createElement("div"));
-    eventDiv.appendChild(shadowDiv);
-    shadowDiv.addClassName("shadow");
-    shadowDiv.addClassName("shadow" + i);
-  }
-  var innerDiv = $(document.createElement("div"));
-  eventDiv.appendChild(innerDiv);
-  innerDiv.addClassName("eventInside");
-  innerDiv.addClassName("calendarFolder" + event[1]);
-
-  var gradientDiv = $(document.createElement("div"));
-  innerDiv.appendChild(gradientDiv);
-  gradientDiv.addClassName("gradient");
-  var gradientImg = document.createElement("img");
-  gradientDiv.appendChild(gradientImg);
-  gradientImg.src = ResourcesURL + "/event-gradient.png";
-
-  var textDiv = $(document.createElement("div"));
-  innerDiv.appendChild(textDiv);
-  textDiv.addClassName("textw");
-
   var eventText;
   if (event[7])
     eventText = event[3];
   else
     eventText = eventRep.starthour + " - " + event[3];
-  textDiv.appendChild(document.createTextNode(eventText));
 
-  eventDiv.observe("mousedown", listRowMouseDownHandler);
-  eventDiv.observe("click", onCalendarSelectEvent);
-  eventDiv.observe("dblclick", editDoubleClickedEvent);
-
-  event.siblings.push(eventDiv);
+  var eventDiv = newBaseEventDIV(eventRep, event, eventText);
 
   return eventDiv;
 }

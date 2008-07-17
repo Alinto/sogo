@@ -41,35 +41,26 @@
   id currentAddress;
 }
 
-- (BOOL)isDeletableClientObject;
-
 @end
 
 @implementation UIxMailView
 
 static NSString *mailETag = nil;
 
-+ (int)version {
-  return [super version] + 0 /* v2 */;
-}
-
-+ (void)initialize {
++ (void) initialize
+{
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-  NSAssert2([super version] == 2,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
-  if ([ud boolForKey:@"SOGoDontUseETagsForMailViewer"]) {
+  if ([ud boolForKey:@"SOGoDontUseETagsForMailViewer"])
     NSLog(@"Note: usage of constant etag for mailer viewer is disabled.");
-  }
-  else {
-    mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
-				 UIX_MAILER_MAJOR_VERSION,
-				 UIX_MAILER_MINOR_VERSION,
-				 UIX_MAILER_SUBMINOR_VERSION];
-    NSLog(@"Note: using constant etag for mail viewer: '%@'", mailETag);
-  }
+  else
+    {
+      mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
+				   UIX_MAILER_MAJOR_VERSION,
+				   UIX_MAILER_MINOR_VERSION,
+				   UIX_MAILER_SUBMINOR_VERSION];
+      NSLog(@"Note: using constant etag for mail viewer: '%@'", mailETag);
+    }
 }
 
 - (void)dealloc {
@@ -191,11 +182,6 @@ static NSString *mailETag = nil;
 			reason:@"did not find specified message!"];
   
   return self;
-}
-
-- (BOOL) isDeletableClientObject
-{
-  return [[self clientObject] respondsToSelector: @selector (delete)];
 }
 
 - (BOOL) isInlineViewer

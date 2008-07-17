@@ -26,6 +26,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
+#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -167,6 +168,17 @@
   [partstates release];
 
   return row;
+}
+
+- (NGCalendarDateRange *) firstOccurenceRange
+{
+  return [NGCalendarDateRange calendarDateRangeWithStartDate: [self startDate]
+			      endDate: [self due]];
+}
+
+- (unsigned int) occurenceInterval
+{
+  return [[self due] timeIntervalSinceDate: [self startDate]];
 }
 
 @end

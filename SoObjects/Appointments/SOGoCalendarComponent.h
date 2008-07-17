@@ -25,6 +25,8 @@
 
 #import <SOGo/SOGoContentObject.h>
 
+#import "SOGoComponentOccurence.h"
+
 @class NSArray;
 @class NSString;
 
@@ -33,8 +35,14 @@
 @class iCalRepeatableEntityObject;
 
 @class SOGoUser;
+@class SOGoComponentOccurence;
 
-@interface SOGoCalendarComponent : SOGoContentObject
+@interface SOGoCalendarComponent : SOGoContentObject <SOGoComponentOccurence>
+{
+  iCalCalendar *fullCalendar;
+  iCalCalendar *safeCalendar;
+  iCalCalendar *originalCalendar;
+}
 
 - (NSString *) componentTag;
 
@@ -65,6 +73,11 @@
 
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid;
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons;
+
+/* recurrences */
+- (SOGoComponentOccurence *)
+ occurence: (iCalRepeatableEntityObject *) component;
+- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID;
 
 @end
 

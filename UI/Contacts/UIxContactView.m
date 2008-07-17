@@ -516,32 +516,4 @@
   return self;
 }
 
-- (BOOL) isDeletableClientObject
-{
-  return [[self clientObject] respondsToSelector: @selector(delete)];
-}
-
-- (id) deleteAction
-{
-  NSException *ex;
-
-  if (![self isDeletableClientObject])
-    /* return 400 == Bad Request */
-    return [NSException exceptionWithHTTPStatus: 400
-			reason:@"method cannot be invoked on "
-			@"the specified object"];
-   
-  ex = [[self clientObject] delete];
-  if (ex)
-    {
-      // TODO: improve error handling
-      [self debugWithFormat: @"failed to delete: %@", ex];
-      
-      return ex;
-    }
-   
-  return [self responseWithStatus: 200
-	       andString: [[self clientObject] nameInContainer]];
-}
-
 @end /* UIxContactView */

@@ -25,6 +25,8 @@
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGExtensions/NGCalendarDateRange.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
 
@@ -84,6 +86,44 @@
     value = nil;
 
   return value;
+}
+
+- (NGCalendarDateRange *) firstOccurenceRange
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (unsigned int) occurenceInterval
+{
+  [self subclassResponsibility: _cmd];
+
+  return 0;
+}
+
+- (BOOL) doesOccurOnDate: (NSCalendarDate *) occurenceDate
+{
+  NSArray *ranges;
+  NGCalendarDateRange *checkRange;
+  NSCalendarDate *endDate;
+  BOOL doesOccur;
+
+  doesOccur = [self isRecurrent];
+  if (doesOccur)
+    {
+      endDate = [occurenceDate addTimeInterval: [self occurenceInterval]];
+      checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: occurenceDate
+					endDate: endDate];
+      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
+					 firstInstanceCalendarDateRange: [self firstOccurenceRange]
+					 recurrenceRules: [self recurrenceRules]
+					 exceptionRules: [self exceptionRules]
+					 exceptionDates: [self exceptionDates]];
+      doesOccur = [ranges dateRangeArrayContainsDate: occurenceDate];
+    }
+
+  return doesOccur;
 }
 
 @end

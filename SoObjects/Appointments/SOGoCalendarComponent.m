@@ -53,7 +53,9 @@
 #import "SOGoAptMailNotification.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
+#import "iCalRepeatableEntityObject+SOGo.h"
 #import "SOGoCalendarComponent.h"
+#import "SOGoComponentOccurence.h"
 
 static BOOL sendEMailNotifications = NO;
 
@@ -72,6 +74,26 @@ static BOOL sendEMailNotifications = NO;
       sendEMailNotifications
         = [ud boolForKey: @"SOGoAppointmentSendEMailNotifications"];
     }
+}
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      fullCalendar = nil;
+      safeCalendar = nil;
+      originalCalendar = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [fullCalendar release];
+  [safeCalendar release];
+  [originalCalendar release];
+  [super dealloc];
 }
 
 - (NSString *) davContentType
@@ -146,6 +168,150 @@ static BOOL sendEMailNotifications = NO;
   return iCalString;
 }
 
+static inline BOOL
+_occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
+{
+  unsigned int seconds, recSeconds;
+  
+  seconds = [recID intValue];
+  recSeconds = [[occurence recurrenceId] timeIntervalSince1970];
+
+  return (seconds == recSeconds);
+}
+
+- (iCalRepeatableEntityObject *) lookupOccurence: (NSString *) recID
+{
+  iCalRepeatableEntityObject *component, *occurence, *currentOccurence;
+  NSArray *occurences;
+  unsigned int count, max;
+
+  occurence = nil;
+
+  component = [self component: NO secure: NO];
+  if ([component hasRecurrenceRules])
+    {
+      occurences = [[self calendar: NO secure: NO] allObjects];
+      max = [occurences count];
+      count = 1;
+      while (!occurence && count < max)
+	{
+	  currentOccurence = [occurences objectAtIndex: count];
+	  if (_occurenceHasID (currentOccurence, recID))
+	    occurence = currentOccurence;
+	  else
+	    count++;
+	}
+    }
+
+  return occurence;
+}
+
+- (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) component
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID
+{
+  iCalRepeatableEntityObject *masterOccurence, *newOccurence;
+  iCalCalendar *calendar;
+  NSCalendarDate *recDate;
+
+  recDate = [NSCalendarDate dateWithTimeIntervalSince1970: [recID intValue]];
+  masterOccurence = [self component: NO secure: NO];
+  if ([masterOccurence doesOccurOnDate: recDate])
+    {
+      newOccurence = [masterOccurence mutableCopy];
+      [newOccurence autorelease];
+      [newOccurence removeAllRecurrenceRules];
+      [newOccurence removeAllExceptionRules];
+      [newOccurence removeAllExceptionDates];
+      [newOccurence setOrganizer: nil];
+      [newOccurence setRecurrenceId: recDate];
+
+      calendar = [newOccurence parent];
+      [calendar addChild: newOccurence];
+    }
+  else
+    newOccurence = nil;
+
+  return newOccurence;
+}
+
+- (BOOL) isFolderish
+{
+  return YES;
+}
+
+- (id) toManyRelationshipKeys
+{
+  return nil;
+}
+
+- (id) toOneRelationshipKeys
+{
+  NSMutableArray *keys;
+  NSArray *occurences;
+  NSCalendarDate *recID;
+  unsigned int count, max, seconds;
+
+  keys = [NSMutableArray array];
+  [keys addObject: @"master"];
+  occurences = [[self calendar: NO secure: NO] allObjects];
+  max = [occurences count];
+  for (count = 1; count < max; count++)
+    {
+      recID = [[occurences objectAtIndex: count] recurrenceId];
+      if (recID)
+	{
+	  seconds = [recID timeIntervalSince1970];
+	  [keys addObject: [NSString stringWithFormat: @"occurence%d",
+				     seconds]];
+	}
+    }
+
+  return keys;
+}
+
+- (id) lookupName: (NSString *) lookupName
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+  iCalRepeatableEntityObject *occurence;
+  NSString *recID;
+  BOOL isNewOccurence;
+
+  obj = [super lookupName: lookupName
+	       inContext: localContext
+	       acquire: acquire];
+  if (!obj)
+    {
+      if ([lookupName isEqualToString: @"master"])
+	obj = [self occurence: [self component: NO secure: NO]];
+      else if ([lookupName hasPrefix: @"occurence"])
+	{
+	  recID = [lookupName substringFromIndex: 9];
+	  occurence = [self lookupOccurence: recID];
+	  if (!occurence)
+	    {
+	      occurence = [self newOccurenceWithID: recID];
+	      isNewOccurence = YES;
+	    }
+	  if (occurence)
+	    {
+	      obj = [self occurence: occurence];
+	      if (isNewOccurence)
+		[obj setIsNew: isNewOccurence];
+	    }
+	}
+    }
+
+  return obj;
+}
+
 - (NSString *) contentAsString
 {
   NSString *secureContent;
@@ -166,34 +332,45 @@ static BOOL sendEMailNotifications = NO;
 - (iCalCalendar *) calendar: (BOOL) create secure: (BOOL) secure
 {
   NSString *componentTag;
-  CardGroup *newComponent;
-  iCalCalendar *calendar;
+  iCalRepeatableEntityObject *newComponent;
+  iCalCalendar **calendar;
   NSString *iCalString;
 
   if (secure)
-    iCalString = [self secureContentAsString];
+    calendar = &safeCalendar;
   else
-    iCalString = content;
+    calendar = &fullCalendar;
 
-  if ([iCalString length] > 0)
-    calendar = [iCalCalendar parseSingleFromSource: iCalString];
-  else
+  if (!*calendar)
     {
-      if (create)
+      if (secure)
+	iCalString = [self secureContentAsString];
+      else
+	iCalString = content;
+
+      if ([iCalString length] > 0)
 	{
-	  calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-	  [calendar setVersion: @"2.0"];
-	  [calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
-	  componentTag = [[self componentTag] uppercaseString];
-	  newComponent = [[calendar classForTag: componentTag]
-			   groupWithTag: componentTag];
-	  [calendar addChild: newComponent];
+	  ASSIGN (*calendar, [iCalCalendar parseSingleFromSource: iCalString]);
+	  if (!secure)
+	    originalCalendar = [*calendar copy];
 	}
       else
-	calendar = nil;
+	{
+	  if (create)
+	    {
+	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
+	      [*calendar setVersion: @"2.0"];
+	      [*calendar setProdID: @"-//Inverse groupe conseil//SOGo 0.9//EN"];
+	      componentTag = [[self componentTag] uppercaseString];
+	      newComponent = [[*calendar classForTag: componentTag]
+			       groupWithTag: componentTag];
+	      [newComponent setUid: [self globallyUniqueObjectId]];
+	      [*calendar addChild: newComponent];
+	    }
+	}
     }
 
-  return calendar;
+  return *calendar;
 }
 
 - (id) component: (BOOL) create secure: (BOOL) secure
@@ -202,10 +379,36 @@ static BOOL sendEMailNotifications = NO;
 	   firstChildWithTag: [self componentTag]];
 }
 
+- (void) _updateRecurrenceIDs
+{
+  iCalRepeatableEntityObject *master, *oldMaster, *currentComponent;
+  int deltaSecs;
+  NSArray *components;
+  unsigned int count, max;
+  NSCalendarDate *recID;
+
+  master = [self component: NO secure: NO];
+  oldMaster = (iCalRepeatableEntityObject *)
+    [originalCalendar firstChildWithTag: [self componentTag]];
+  deltaSecs = [[master startDate]
+		timeIntervalSinceDate: [oldMaster startDate]];
+  components = [fullCalendar allObjects];
+  max = [components count];
+  for (count = 1; count < max; count++)
+    {
+      currentComponent = [components objectAtIndex: count];
+      recID = [[currentComponent recurrenceId] addTimeInterval: deltaSecs];
+      [currentComponent setRecurrenceId: recID];
+    }
+}
+
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
   NSString *newiCalString;
 
+  if (!isNew
+      && [newObject isRecurrent])
+    [self _updateRecurrenceIDs];
   newiCalString = [[newObject parent] versitString];
 
   [self saveContentString: newiCalString];
@@ -631,6 +834,13 @@ static BOOL sendEMailNotifications = NO;
     }
 
   return roles;
+}
+
+/* SOGoComponentOccurence protocol */
+
+- (iCalRepeatableEntityObject *) occurence
+{
+  return [self component: YES secure: NO];
 }
 
 @end

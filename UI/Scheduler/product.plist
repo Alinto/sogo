@@ -2,239 +2,293 @@
   requires = ( MAIN, MainUI, CommonUI, Appointments, Contacts, ContactsUI );
 
   publicResources = (
-     previous_week.gif,
-     next_week.gif,
-     icon_view_overview.gif,
-     icon_view_overview_inactive.gif,
-     icon_view_chart.gif,
-     icon_view_chart_inactive.gif,
-     icon_view_list.gif,
-     icon_view_list_inactive.gif,
-     icon_view_columns.gif,
-     icon_view_columns_inactive.gif,
-     icon_popupcalendar.gif,
-     first.gif,
-     previous.gif,
-     next.gif,
-     last.gif,
-     skycalendar.html,
-     skycalendar.js,
-     green_corner.gif,
-     invisible_space_2.gif,
-     cycles.plist,
-  );
+		     previous_week.gif,
+		     next_week.gif,
+		     icon_view_overview.gif,
+		     icon_view_overview_inactive.gif,
+		     icon_view_chart.gif,
+		     icon_view_chart_inactive.gif,
+		     icon_view_list.gif,
+		     icon_view_list_inactive.gif,
+		     icon_view_columns.gif,
+		     icon_view_columns_inactive.gif,
+		     icon_popupcalendar.gif,
+		     first.gif,
+		     previous.gif,
+		     next.gif,
+		     last.gif,
+		     skycalendar.html,
+		     skycalendar.js,
+		     green_corner.gif,
+		     invisible_space_2.gif,
+		     cycles.plist,
+		     );
 
   factories = {
   };
 
   categories = {
-     SOGoAppointmentFolders = {
-	slots = {
-	   toolbar = {
-	      protectedBy = "View";
-	      value = "SOGoAppointmentFolders.toolbar";
-	   };
+    SOGoAppointmentFolders = {
+      slots = {
+	toolbar = {
+	  protectedBy = "View";
+	  value = "SOGoAppointmentFolders.toolbar";
 	};
-	methods = {
-	   view = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalMainView";
-	   };
-	   saveDragHandleState = {
-      	      protectedBy = "View";
-      	      pageName    = "UIxCalMainView";
-      	      actionName  = "saveDragHandleState";
-      	   };
-	   dateselector = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalDateSelector"; 
-	   };
-	   calendarslist = {
-	      protectedBy = "View";
-	      pageName = "UIxCalendarSelector";
-	      actionName = "calendarsList";
-	   };
-	   eventslist = {
-	      protectedBy = "View";
-	      actionClass = "UIxCalListingActions";
-	      actionName = "eventsList";
-	   };
-	   eventsblocks = {
-	      protectedBy = "View";
-	      actionClass = "UIxCalListingActions";
-	      actionName = "eventsBlocks";
-	   };
-	   taskslist = {
-	      protectedBy = "View";
-	      actionClass = "UIxCalListingActions";
-	      actionName = "tasksList";
-	   };
-	   dayview = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalDayView"; 
-	   };
-	   multicolumndayview = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalMulticolumnDayView"; 
-	   };
-	   weekview = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalWeekView"; 
-	   };
-	   monthview = {
-	      protectedBy = "View";
-	      pageName    = "UIxCalMonthView"; 
-	   };
-	   show = { 
-	      protectedBy = "View";
-	      pageName    = "UIxCalView"; 
-	      actionName  = "redirectForUIDs";
-	   };
-// 	   proposal = { 
-// 	      protectedBy = "View";
-// 	      pageName    = "UIxAppointmentProposal"; 
-// 	   };
-// 	   proposalSearch = { 
-// 	      protectedBy = "View";
-// 	      pageName    = "UIxAppointmentProposal"; 
-// 	      actionName  = "proposalSearch";
-// 	   };
-	   userRights = {
-	      protectedBy = "ReadAcls";
-	      pageName    = "UIxCalUserRightsEditor";
-	   };
-	   saveUserRights = {
-	      protectedBy = "Change Permissions";
-	      pageName    = "UIxCalUserRightsEditor";
-	      actionName  = "saveUserRights";
-	   };
-	   editAttendees = {
-	      protectedBy = "View";
-	      pageName    = "UIxAttendeesEditor";
-	   };
-	   editRecurrence = {
-	      protectedBy = "View";
-	      pageName    = "UIxRecurrenceEditor";
-	   };
-	   colorPicker = {
-	     protectedBy = "View";
-	     pageName = "UIxColorPicker";
-	   };
+      };
+      methods = {
+	view = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalMainView";
 	};
-     };
+	saveDragHandleState = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalMainView";
+	  actionName  = "saveDragHandleState";
+	};
+	dateselector = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalDateSelector"; 
+	};
+	calendarslist = {
+	  protectedBy = "View";
+	  pageName = "UIxCalendarSelector";
+	  actionName = "calendarsList";
+	};
+	eventslist = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "eventsList";
+	};
+	eventsblocks = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "eventsBlocks";
+	};
+	taskslist = {
+	  protectedBy = "View";
+	  actionClass = "UIxCalListingActions";
+	  actionName = "tasksList";
+	};
+	dayview = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalDayView"; 
+	};
+	multicolumndayview = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalMulticolumnDayView"; 
+	};
+	weekview = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalWeekView"; 
+	};
+	monthview = {
+	  protectedBy = "View";
+	  pageName    = "UIxCalMonthView"; 
+	};
+	show = { 
+	  protectedBy = "View";
+	  pageName    = "UIxCalView"; 
+	  actionName  = "redirectForUIDs";
+	};
+	// 	   proposal = { 
+	// 	      protectedBy = "View";
+	// 	      pageName    = "UIxAppointmentProposal"; 
+	// 	   };
+	// 	   proposalSearch = { 
+	// 	      protectedBy = "View";
+	// 	      pageName    = "UIxAppointmentProposal"; 
+	// 	      actionName  = "proposalSearch";
+	// 	   };
+	userRights = {
+	  protectedBy = "ReadAcls";
+	  pageName    = "UIxCalUserRightsEditor";
+	};
+	saveUserRights = {
+	  protectedBy = "Change Permissions";
+	  pageName    = "UIxCalUserRightsEditor";
+	  actionName  = "saveUserRights";
+	};
+	editAttendees = {
+	  protectedBy = "View";
+	  pageName    = "UIxAttendeesEditor";
+	};
+	editRecurrence = {
+	  protectedBy = "View";
+	  pageName    = "UIxRecurrenceEditor";
+	};
+	colorPicker = {
+	  protectedBy = "View";
+	  pageName = "UIxColorPicker";
+	};
+      };
+    };
 
-     SOGoAppointmentFolder = {
-	methods = {
-	   properties = { 
-	      protectedBy = "Access Contents Information";
-	      pageName    = "UIxCalendarProperties"; 
-	   };
-	   saveProperties = { 
-	      protectedBy = "Access Contents Information";
-	      pageName = "UIxCalendarProperties";
-	      actionName = "saveProperties";
-	   };
-	   show = { 
-	      protectedBy = "View";
-	      pageName    = "UIxCalView"; 
-	      actionName  = "redirectForUIDs";
-	   };
-	   userRights = {
-	      protectedBy = "ReadAcls";
-	      pageName    = "UIxCalUserRightsEditor";
-	   };
-	   saveUserRights = {
-	      protectedBy = "Change Permissions";
-	      pageName    = "UIxCalUserRightsEditor";
-	      actionName  = "saveUserRights";
-	   };
-	   newevent = {
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "new";
-	   };
-	   newtask = { 
-	      protectedBy = "Add Documents, Images, and Files";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "new";
-	   };
+    SOGoAppointmentFolder = {
+      methods = {
+	properties = { 
+	  protectedBy = "Access Contents Information";
+	  pageName    = "UIxCalendarProperties"; 
 	};
-     };
+	saveProperties = { 
+	  protectedBy = "Access Contents Information";
+	  pageName = "UIxCalendarProperties";
+	  actionName = "saveProperties";
+	};
+	show = { 
+	  protectedBy = "View";
+	  pageName    = "UIxCalView"; 
+	  actionName  = "redirectForUIDs";
+	};
+	userRights = {
+	  protectedBy = "ReadAcls";
+	  pageName    = "UIxCalUserRightsEditor";
+	};
+	saveUserRights = {
+	  protectedBy = "Change Permissions";
+	  pageName    = "UIxCalUserRightsEditor";
+	  actionName  = "saveUserRights";
+	};
+	newevent = {
+	  protectedBy = "Add Documents, Images, and Files";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "new";
+	};
+	newtask = { 
+	  protectedBy = "Add Documents, Images, and Files";
+	  pageName    = "UIxTaskEditor"; 
+	  actionName  = "new";
+	};
+      };
+    };
 
-     SOGoCalendarComponent = {
-     };
+    SOGoCalendarComponent = {
+    };
 
-     SOGoAppointmentObject = {
-	slots = {
-	   toolbar = {
-	      protectedBy = "View";
-	      value = "SOGoAppointmentObject.toolbar";
-	   };
+    SOGoAppointmentObject = {
+      slots = {
+	toolbar = {
+	  protectedBy = "View";
+	  value = "SOGoAppointmentObject.toolbar";
 	};
-	methods = {
-	   edit = {
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	   };
-	   editAsAppointment = { 
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	   };
-	   save = { 
-	      protectedBy = "ModifyComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "save";
-	   };
-	   saveAsAppointment = {
-	      protectedBy = "ModifyComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "save";
-	   };
-	   accept = { 
-	      protectedBy = "RespondToComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "accept";
-	   };
-	   decline = { 
-	      protectedBy = "RespondToComponent";
-	      pageName    = "UIxAppointmentEditor"; 
-	      actionName  = "decline";
-	   };
+      };
+      methods = {
+	edit = {
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxAppointmentEditor"; 
 	};
-     };
+	editAsAppointment = { 
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	};
+	save = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "save";
+	};
+	saveAsAppointment = {
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "save";
+	};
+	accept = { 
+	  protectedBy = "RespondToComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "accept";
+	};
+	decline = { 
+	  protectedBy = "RespondToComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "decline";
+	};
+      };
+    };
 
-     SOGoTaskObject = {
-	slots = {
-	   toolbar = {
-	      protectedBy = "View";
-	      value = "SOGoAppointmentObject.toolbar";
-	   };
+    SOGoTaskObject = {
+      slots = {
+	toolbar = {
+	  protectedBy = "View";
+	  value = "SOGoAppointmentObject.toolbar";
 	};
-	methods = {
-	   edit = { 
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxTaskEditor"; 
-	   };
-	   editAsTask = { 
-	      protectedBy = "ViewAllComponent";
-	      pageName    = "UIxTaskEditor"; 
-	   };
-	   save = { 
-	      protectedBy = "ModifyComponent";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "save";
-	   };
-	   saveAsTask = { 
-	      protectedBy = "ModifyComponent";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "save";
-	   };
-	   changeStatus = {
-	      protectedBy = "ModifyComponent";
-	      pageName    = "UIxTaskEditor"; 
-	      actionName  = "changeStatus";
-	   };
+      };
+      methods = {
+	edit = { 
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxTaskEditor"; 
 	};
-     };
+	editAsTask = { 
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxTaskEditor"; 
+	};
+	save = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxTaskEditor"; 
+	  actionName  = "save";
+	};
+	saveAsTask = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxTaskEditor"; 
+	  actionName  = "save";
+	};
+	changeStatus = {
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxTaskEditor"; 
+	  actionName  = "changeStatus";
+	};
+      };
+    };
+
+    SOGoComponentOccurence = {
+      methods = {
+	confirmEditing = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxOccurenceDialog";
+	};
+	confirmDeletion = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxOccurenceDialog";
+	  actionName = "confirmDeletion";
+	};
+      };
+    };
+
+    SOGoAppointmentOccurence = {
+      slots = {
+	toolbar = {
+	  protectedBy = "View";
+	  value = "SOGoAppointmentObject.toolbar";
+	};
+      };
+      methods = {
+	edit = {
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	};
+	save = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxAppointmentEditor"; 
+	  actionName  = "save";
+	};
+      };
+    };
+
+    SOGoTaskOccurence = {
+      slots = {
+	toolbar = {
+	  protectedBy = "View";
+	  value = "SOGoTaskObject.toolbar";
+	};
+      };
+      methods = {
+	edit = {
+	  protectedBy = "ViewAllComponent";
+	  pageName    = "UIxTaskEditor"; 
+	};
+	save = { 
+	  protectedBy = "ModifyComponent";
+	  pageName    = "UIxTaskEditor"; 
+	  actionName  = "save";
+	};
+      };
+    };
   };
 }

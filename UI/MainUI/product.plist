@@ -33,7 +33,8 @@
     };
     SOGoContentObject = {
       superclass = "SOGoObject";
-      defaultAccess = "Access Contents Information";
+      defaultAccess = "allow";
+     /* defaultAccess = "Access Contents Information"; */
       protectedBy = "Access Object";
       defaultRoles = {
       	"Access Contents Information" = ( "Owner", "ObjectViewer", "ObjectEditor" );

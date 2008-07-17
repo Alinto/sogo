@@ -1,0 +1,13 @@
+DIV#message, DIV#windowButtons
+{ margin: 10px; }
+
+DIV#windowButtons INPUT
+{ text-align: center; }
+
+DIV#leftButtons
+{ float: left;
+  width: 200px;
+  text-align: left; }
+
+DIV#rightButtons
+{ text-align: right; }

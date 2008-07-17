@@ -470,6 +470,10 @@ vtodo_class2 = "(Tâche confidentielle)";
 
 "Please select an event or a task." = "Veuillez sélectionner un événement ou une tâche.";
 
+"editRepeatingItem" = "L'élément que vous éditez est récurrent. Voulez-vous modifier toutes ses occurrences ou seulement celle-ci ?";
+"button_thisOccurrenceOnly" = "Cette occurence seulement";
+"button_allOccurrences" = "Toutes les occurences";
+
 /* Properties dialog */
 "Name:" = "Nom :";
 "Color:" = "Couleur :";

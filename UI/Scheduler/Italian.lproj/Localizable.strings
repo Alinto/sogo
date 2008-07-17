@@ -471,6 +471,10 @@ vtodo_class2 = "(Attività confidenziale)";
 "From" = "Da";
 "To" = "A";
 
+"editRepeatingItem" = "L'elemento che si sta modificando è un elemento ripetuto. Si vogliono modificare tutte le sue occorrenze o solo questa?";
+"button_thisOccurrenceOnly" = "Solamente questa occorrenza";
+"button_allOccurrences" = "Tutte le occorrenze";
+
 /* Properties dialog */
 "Name:" = "Nome:";
 "Color:" = "Colore:";

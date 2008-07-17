@@ -65,7 +65,8 @@ static NSArray *tasksFields = nil;
 			      @"c_status", @"c_title", @"c_startdate",
 			      @"c_enddate", @"c_location", @"c_isallday",
 			      @"c_classification", @"c_partmails",
-			      @"c_partstates", @"c_owner", @"c_iscycle", nil];
+			      @"c_partstates", @"c_owner", @"c_iscycle",
+			      @"c_recurrence_id", nil];
       [eventsFields retain];
     }
   if (!tasksFields)
@@ -404,7 +405,7 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
 					   end: (unsigned int) end
 					 cname: (NSString *) cName
 					 onDay: (unsigned int) dayStart
-				    recurrence: (BOOL) recurrence
+				recurrenceTime: (unsigned int) recurrenceTime
 				     userState: (iCalPersonPartStat) userState
 {
   NSMutableDictionary *block;
@@ -416,8 +417,9 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
   else
     _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
   [block setObject: cName forKey: @"cname"];
-  if (recurrence)
-    [block setObject: @"1" forKey: @"recurrence"];
+  if (recurrenceTime)
+    [block setObject: [NSNumber numberWithInt: recurrenceTime]
+	   forKey: @"recurrenceTime"];
   if (userState != iCalPersonPartStatOther)
     [block setObject: [NSNumber numberWithInt: userState]
 	   forKey: @"userState"];
@@ -463,11 +465,10 @@ _userStateInEvent (NSArray *event)
 	   withEvent: (NSArray *) event
 {
   unsigned int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
-    eventEnd, offset;
+    eventEnd, offset, recurrenceTime;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   NSString *eventCName;
-  BOOL recurrence;
   iCalPersonPartStat userState;
 
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
@@ -475,7 +476,10 @@ _userStateInEvent (NSArray *event)
   eventStart = [[event objectAtIndex: 4] unsignedIntValue];
   eventEnd = [[event objectAtIndex: 5] unsignedIntValue];
 
-  recurrence = [[event objectAtIndex: 12] boolValue];
+  if ([[event objectAtIndex: 12] boolValue])
+    recurrenceTime = [[event objectAtIndex: 13] unsignedIntValue];
+  else
+    recurrenceTime = 0;
 
   currentStart = eventStart;
   if (currentStart < startSecs)
@@ -500,7 +504,7 @@ _userStateInEvent (NSArray *event)
 			 end: currentDayStart + dayLength - 1
 			 cname: eventCName
 			 onDay: currentDayStart
-			 recurrence: recurrence
+			 recurrenceTime: recurrenceTime
 			 userState: userState];
       [currentDay addObject: eventBlock];
       currentDayStart += dayLength;
@@ -512,7 +516,7 @@ _userStateInEvent (NSArray *event)
 		     end: eventEnd
 		     cname: eventCName
 		     onDay: currentDayStart
-		     recurrence: recurrence
+		     recurrenceTime: recurrenceTime
 		     userState: userState];
   [currentDay addObject: eventBlock];
 }

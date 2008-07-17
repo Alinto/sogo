@@ -1,3 +1,48 @@
+2008-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsBlocksAction]): event blocks now that the "c_recurrence_id"
+	virtual field into account.
+
+	* UI/Common/UIxObjectActions.m ([UIxObjectActions -deleteAction]):
+	new action method, moved from UIxContactView so that it is
+	generalized to all SOGoObjects.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -init]): we now save the calendar to avoid
+	multiple parsing and instantiation of children components.
+	([SOGoCalendarComponent -toOneRelationshipKeys]): declare
+	components as children.
+	([SOGoCalendarComponent
+	-lookupName:lookupNameinContext:localContextacquire:acquire]):
+	handle the search for components and their occurences.
+	([SOGoCalendarComponent -saveComponent:newObject]): added code to
+	update recurrence ids whenever the user saves a new version of the
+	master component.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m ([SOGoAppointmentObject -occurence:occ])
+	([SOGoAppointmentObject -newOccurenceWithID:recID])
+	([SOGoAppointmentObject -prepareDeleteOccurence:occurence]): new
+	methods to handle occurences.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	([SOGoAppointmentFolder -fixupCycleRecord:_recordcycleRange:_r]):
+	declare a new "c_recurrence_id" field, that will be overwritten
+	with further exception occurences.
+
+	* UI/Scheduler/UIxOccurenceDialog.[hm]: new dialog asking whether
+	to edit/delete all occurences of a recurrent event or only the one
+	selected.
+
+	* SoObjects/Appointments/SOGoComponentOccurence.[hm]: super class
+	of new classes belows.
+
+	* SoObjects/Appointments/SOGoAppointmentOccurence.[hm]: new class
+	module that handle occurences within events.
+
+	* SoObjects/Appointments/SOGoTaskOccurence.[hm]: new class
+	module that handle occurences within todos. 
+
 2008-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

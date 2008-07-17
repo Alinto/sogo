@@ -399,6 +399,11 @@ iRANGE(2);
 
 /* accessors */
 
+- (BOOL) isChildOccurence
+{
+  return [[self clientObject] isKindOfClass: [SOGoComponentOccurence class]];
+}
+
 - (void) setItem: (id) _item
 {
   ASSIGN (item, _item);
@@ -418,7 +423,7 @@ iRANGE(2);
 {
   NSString *tag;
 
-  tag = [[self clientObject] componentTag];
+  tag = [[component tag] lowercaseString];
 
   return [self labelForKey: [NSString stringWithFormat: @"%@_%@", item, tag]];
 }
@@ -456,7 +461,7 @@ iRANGE(2);
 - (BOOL) canBeOrganizer
 {
   NSString *owner;
-  SOGoCalendarComponent *co;
+  SOGoObject <SOGoComponentOccurence> *co;
   SOGoUser *currentUser;
   BOOL hasOrganizer;
   SoSecurityManager *sm;
@@ -801,7 +806,7 @@ iRANGE(2);
   SOGoAppointmentFolders *parentFolder;
 
   fDisplayName = [item displayName];
-  folder = [[self clientObject] container];
+  folder = [self componentCalendar];
   parentFolder = [folder container];
   if ([fDisplayName isEqualToString: [parentFolder defaultFolderName]])
     fDisplayName = [self labelForKey: fDisplayName];
@@ -823,7 +828,9 @@ iRANGE(2);
   SOGoAppointmentFolder *calendar;
 
   calendar = [[self clientObject] container];
-  
+  if ([calendar isKindOfClass: [SOGoCalendarComponent class]])
+    calendar = [calendar container];
+
   return calendar;
 }
 
@@ -1125,8 +1132,8 @@ RANGE(2);
 
 - (BOOL) isWriteableClientObject
 {
-  return [[self clientObject] 
-	        respondsToSelector: @selector(saveContentString:)];
+  return [[self clientObject]
+	   respondsToSelector: @selector(saveContentString:)];
 }
 
 /* access */
@@ -1485,54 +1492,56 @@ RANGE(2);
   clientObject = [self clientObject];
   if ([clientObject isNew])
     {
-      [component setUid: [clientObject nameInContainer]];
       [component setCreated: now];
       [component setTimeStampAsDate: now];
     }
   [component setPriority: priority];
   [component setLastModified: now];
 
-  // We remove any repeat rules
-  if (!repeat && [component hasRecurrenceRules])
-    [component removeAllRecurrenceRules];
-  else if ([repeat caseInsensitiveCompare: @"-"] != NSOrderedSame)
+  if (![self isChildOccurence])
     {
-      rule = [iCalRecurrenceRule new];
+      // We remove any repeat rules
+      if (!repeat && [component hasRecurrenceRules])
+	[component removeAllRecurrenceRules];
+      else if ([repeat caseInsensitiveCompare: @"-"] != NSOrderedSame)
+	{
+	  rule = [iCalRecurrenceRule new];
 
-      [rule setInterval: @"1"];
-
-      if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
-	{
-	  [rule setFrequency: iCalRecurrenceFrequenceWeekly];
-	  [rule setInterval: @"2"];
-	}
-      else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
-	{
-	  [rule setByDayMask: (iCalWeekDayMonday
-			       |iCalWeekDayTuesday
-			       |iCalWeekDayWednesday
-			       |iCalWeekDayThursday
-			       |iCalWeekDayFriday)];
-	  [rule setFrequency: iCalRecurrenceFrequenceDaily];
-	}
-      else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame
-	       || [repeat caseInsensitiveCompare: @"DAILY"] == NSOrderedSame
-	       || [repeat caseInsensitiveCompare: @"WEEKLY"] == NSOrderedSame
-	       || [repeat caseInsensitiveCompare: @"YEARLY"] == NSOrderedSame)
-	{
 	  [rule setInterval: @"1"];
-	  [rule setFrequency:
-		  (iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
-	}
-      else
-	{
-	  // We have a CUSTOM recurrence. Let's decode what kind of custome recurrence
-	  // we have and set that.
-	  [self _handleCustomRRule: rule];
-	}
 
-      [component setRecurrenceRules: [NSArray arrayWithObject: rule]];
-      [rule release];
+	  if ([repeat caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
+	    {
+	      [rule setFrequency: iCalRecurrenceFrequenceWeekly];
+	      [rule setInterval: @"2"];
+	    }
+	  else if ([repeat caseInsensitiveCompare: @"EVERY WEEKDAY"] == NSOrderedSame)
+	    {
+	      [rule setByDayMask: (iCalWeekDayMonday
+				   |iCalWeekDayTuesday
+				   |iCalWeekDayWednesday
+				   |iCalWeekDayThursday
+				   |iCalWeekDayFriday)];
+	      [rule setFrequency: iCalRecurrenceFrequenceDaily];
+	    }
+	  else if ([repeat caseInsensitiveCompare: @"MONTHLY"] == NSOrderedSame
+		   || [repeat caseInsensitiveCompare: @"DAILY"] == NSOrderedSame
+		   || [repeat caseInsensitiveCompare: @"WEEKLY"] == NSOrderedSame
+		   || [repeat caseInsensitiveCompare: @"YEARLY"] == NSOrderedSame)
+	    {
+	      [rule setInterval: @"1"];
+	      [rule setFrequency:
+		      (iCalRecurrenceFrequency) [rule valueForFrequency: repeat]];
+	    }
+	  else
+	    {
+	      // We have a CUSTOM recurrence. Let's decode what kind of custome recurrence
+	      // we have and set that.
+	      [self _handleCustomRRule: rule];
+	    }
+
+	  [component setRecurrenceRules: [NSArray arrayWithObject: rule]];
+	  [rule release];
+	}
     }
 }
 

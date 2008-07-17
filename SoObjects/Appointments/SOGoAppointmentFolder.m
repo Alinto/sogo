@@ -618,6 +618,7 @@ static Class sogoAppointmentFolderKlass = Nil;
                                 cycleRange: (NGCalendarDateRange *) _r
 {
   NSMutableDictionary *md;
+  NSNumber *dateSecs;
   id tmp;
   
   md = [[_record mutableCopy] autorelease];
@@ -627,7 +628,9 @@ static Class sogoAppointmentFolderKlass = Nil;
   tmp = [_r startDate];
   [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"startDate"];
-  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_startdate"];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
+  [md setObject: dateSecs forKey: @"c_startdate"];
+  [md setObject: dateSecs forKey: @"c_recurrence_id"];
   tmp = [_r endDate];
   [tmp setTimeZone: timeZone];
   [md setObject:tmp forKey:@"endDate"];
@@ -682,11 +685,11 @@ static Class sogoAppointmentFolderKlass = Nil;
 {
   NSCalendarDate *startDate, *recurrenceId;
   NSMutableDictionary *newRecord;
+  NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
   int recordIndex;
 
   newRecord = nil;
-
   recurrenceId = [component recurrenceId];
   if ([dateRange containsDate: recurrenceId])
     {
@@ -698,6 +701,11 @@ static Class sogoAppointmentFolderKlass = Nil;
 	  if ([dateRange containsDate: startDate])
 	    {
 	      newRecord = [self fixupRecord: [component quickRecord]];
+	      [newRecord setObject: [NSNumber numberWithInt: 1]
+			 forKey: @"c_iscycle"];
+	      oldRecord = [ma objectAtIndex: recordIndex];
+	      [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
+			 forKey: @"c_recurrence_id"];
 	      [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
 	    }
 	  else
@@ -754,12 +762,15 @@ static Class sogoAppointmentFolderKlass = Nil;
                    intoArray: (NSMutableArray *) _ma
 {
   NSMutableDictionary *row, *fixedRow;
+  NSMutableArray *recordArray;
   NSDictionary        *cycleinfo;
   NSCalendarDate      *startDate, *endDate;
   NGCalendarDateRange *fir, *rRange;
   NSArray             *rules, *exRules, *exDates, *ranges;
   unsigned            i, count;
   NSString *content;
+
+  recordArray = [NSMutableArray array];
 
   content = [_row objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
@@ -800,12 +811,14 @@ static Class sogoAppointmentFolderKlass = Nil;
       rRange = [ranges objectAtIndex: i];
       fixedRow = [self fixupCycleRecord: row cycleRange: rRange];
       if (fixedRow)
-	[_ma addObject:fixedRow];
+	[recordArray addObject: fixedRow];
     }
 
   [self _appendCycleExceptionsFromRow: row
 	forRange: _r
-	toArray: _ma];
+	toArray: recordArray];
+
+  [_ma addObjectsFromArray: recordArray];
 }
 
 - (NSArray *) fixupCyclicRecords: (NSArray *) _records

@@ -31,6 +31,8 @@
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
+#import "WODirectAction+SOGo.h"
+
 #import "UIxObjectActions.h"
 
 @implementation UIxObjectActions
@@ -67,6 +69,17 @@
 
   response = [context response];
   [response setStatus: code];
+
+  return response;
+}
+
+- (WOResponse *) deleteAction
+{
+  WOResponse *response;
+
+  response = (WOResponse *) [[self clientObject] delete];
+  if (!response)
+    response = [self responseWithStatus: 204];
 
   return response;
 }

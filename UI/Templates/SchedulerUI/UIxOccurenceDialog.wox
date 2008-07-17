@@ -1,0 +1,32 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:popup="YES"
+  title="name"
+  const:toolbar="none">
+  <script type="text/javascript">
+    var calendarFolder = '<var:string value="calendarFolder"/>';
+    var componentName = '<var:string value="componentName"/>';
+    var recurrenceName = '<var:string value="recurrenceName"/>';
+    var action = '<var:string value="action"/>';
+  </script>
+  <div id="message">
+    <var:string label:value="editRepeatingItem"/>
+  </div>
+  <div id="windowButtons">
+    <div id="leftButtons">
+      <input type="button" id="thisButton" const:class="button" label:value="button_thisOccurrenceOnly"/>
+    </div>
+    <div id="rightButtons">
+      <input type="submit" id="cancelButton" const:class="button" label:value="Cancel"/>
+      <input type="button" id="allButton" const:class="button" label:value="button_allOccurrences"/>
+    </div>
+  </div>
+</var:component>

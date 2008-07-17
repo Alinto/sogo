@@ -35,6 +35,7 @@
 #import "NSArray+Appointments.h"
 #import "SOGoAptMailNotification.h"
 #import "SOGoAppointmentFolder.h"
+#import "SOGoTaskOccurence.h"
 
 #import "SOGoTaskObject.h"
 
@@ -43,6 +44,14 @@
 - (NSString *) componentTag
 {
   return @"vtodo";
+}
+
+- (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) occ
+{
+  return [SOGoTaskOccurence occurenceWithComponent: occ
+			    withMasterComponent: [self component: NO
+						       secure: NO]
+			    inContainer: self];
 }
 
 /* message type */

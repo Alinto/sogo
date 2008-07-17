@@ -38,6 +38,8 @@
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 
+#import <SoObjects/Appointments/SOGoComponentOccurence.h>
+
 #import "UIxComponentEditor.h"
 #import "UIxAppointmentEditor.h"
 
@@ -71,7 +73,7 @@
 {
   if (!event)
     {
-      event = (iCalEvent *) [[self clientObject] component: YES secure: YES];
+      event = (iCalEvent *) [[self clientObject] occurence];
       [event retain];
     }
 
@@ -165,9 +167,12 @@
   NSCalendarDate *startDate, *endDate;
   NSString *duration;
   unsigned int minutes;
+  SOGoObject <SOGoComponentOccurence> *co;
 
   [self event];
-  if ([[self clientObject] isNew])
+  co = [self clientObject];
+  if ([co isNew]
+      && [co isKindOfClass: [SOGoCalendarComponent class]])
     {
       startDate = [self newStartDate];
       duration = [self queryParameterForKey:@"dur"];
@@ -231,7 +236,7 @@
 
   actionName = [[request requestHandlerPath] lastPathComponent];
 
-  return ([[self clientObject] isKindOfClass: [SOGoAppointmentObject class]]
+  return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
 	  && [actionName hasPrefix: @"save"]);
 }
 
