@@ -172,4 +172,9 @@ static NSMutableArray *yearMenuItems = nil;
   return [self responseWithStatus: 204];
 }
 
+- (unsigned int) firstDayOfWeek
+{
+  return [[context activeUser] firstDayOfWeek];
+}
+
 @end

@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
@@ -30,6 +31,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -50,8 +52,10 @@ static NSString *defaultLanguage = nil;
 static NSArray *superUsernames = nil;
 static NSURL *AgenorProfileURL = nil;
 static BOOL acceptAnyUser = NO;
+static int sogoFirstDayOfWeek = -1;
+static int defaultDayStartTime = -1;
+static int defaultDayEndTime = -1;
 
-NSString *SOGoWeekStartHideWeekNumbers = @"HideWeekNumbers";
 NSString *SOGoWeekStartJanuary1 = @"January1";
 NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
 NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
@@ -73,6 +77,19 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 @implementation SOGoUser
 
+static int
+_timeValue (NSString *key)
+{
+  int time;
+
+  if (key && [key length] > 1)
+    time = [[key substringToIndex: 2] intValue];
+  else
+    time = -1;
+
+  return time;
+}
+
 + (void) initialize
 {
   NSString *tzName;
@@ -88,6 +105,23 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       serverTimeZone = [NSTimeZone timeZoneWithName: tzName];
       [serverTimeZone retain];
     }
+  if (sogoFirstDayOfWeek == -1)
+    sogoFirstDayOfWeek = [ud integerForKey: @"SOGoFirstDayOfWeek"];
+  if (defaultDayStartTime == -1)
+    {
+      defaultDayStartTime
+	= _timeValue ([ud stringForKey: @"SOGoDayStartTime"]);
+      if (defaultDayStartTime == -1)
+	defaultDayStartTime = 8;
+    }
+  if (defaultDayEndTime == -1)
+    {
+      defaultDayEndTime
+	= _timeValue ([ud stringForKey: @"SOGoDayEndTime"]);
+      if (defaultDayEndTime == -1)
+	defaultDayEndTime = 18;
+    }
+
   if (!AgenorProfileURL)
     {
       profileURL = [ud stringForKey: @"AgenorProfileURL"];
@@ -105,7 +139,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 	    @" value set to 'localhost'"];
       fallbackIMAP4Server = @"localhost";
     }
-
   if (!defaultLanguage)
     {
       ASSIGN (defaultLanguage, [ud stringForKey: @"SOGoDefaultLanguage"]);
@@ -449,6 +482,124 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSTimeZone *) serverTimeZone
 {
   return serverTimeZone;
+}
+
+- (unsigned int) firstDayOfWeek
+{
+  unsigned int firstDayOfWeek;
+  NSNumber *value;
+
+  value = [[self userDefaults] objectForKey: @"WeekStartDay"];
+  if (value)
+    firstDayOfWeek = [value unsignedIntValue];
+  else
+    firstDayOfWeek = sogoFirstDayOfWeek;
+
+  return firstDayOfWeek;
+}
+
+- (NSCalendarDate *) firstDayOfWeekForDate: (NSCalendarDate *) date
+{
+  int offset;
+  NSCalendarDate *firstDay;
+
+  offset = ([self firstDayOfWeek] - [date dayOfWeek]);
+  if (offset > 0)
+    offset -= 7;
+
+  firstDay = [date addTimeInterval: offset * 86400];
+
+  return firstDay;
+}
+
+- (unsigned int) dayOfWeekForDate: (NSCalendarDate *) date
+{
+  unsigned int offset, baseDayOfWeek, dayOfWeek;
+
+  offset = [self firstDayOfWeek];
+  baseDayOfWeek = [date dayOfWeek];
+  if (offset > baseDayOfWeek)
+    baseDayOfWeek += 7;
+
+  dayOfWeek = baseDayOfWeek - offset;
+
+  return dayOfWeek;
+}
+
+- (unsigned int) dayStartHour
+{
+  int limit;
+
+  limit = _timeValue ([[self userDefaults] stringForKey: @"DayStartTime"]);
+  if (limit == -1)
+    limit = defaultDayStartTime;
+
+  return limit;
+}
+
+- (unsigned int) dayEndHour
+{
+  int limit;
+
+  limit = _timeValue ([[self userDefaults] stringForKey: @"DayEndTime"]);
+  if (limit == -1)
+    limit = defaultDayEndTime;
+
+  return limit;
+}
+
+- (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date
+{
+  NSString *firstWeekRule;
+  NSCalendarDate *januaryFirst, *firstWeek;
+  unsigned int dayOfWeek;
+
+  firstWeekRule = [userDefaults objectForKey: @"FirstWeek"];
+
+  januaryFirst = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
+				 month: 1 day: 1 hour: 0 minute: 0 second: 0
+				 timeZone: [date timeZone]];
+  if ([firstWeekRule isEqualToString: SOGoWeekStartFirst4DayWeek])
+    {
+      dayOfWeek = [self dayOfWeekForDate: januaryFirst];
+      if (dayOfWeek < 4)
+	firstWeek = [self firstDayOfWeekForDate: januaryFirst];
+      else
+	firstWeek = [self firstDayOfWeekForDate: [januaryFirst
+						   dateByAddingYears: 0
+						   months: 0
+						   days: 7]];
+    }
+  else if ([firstWeekRule isEqualToString: SOGoWeekStartFirstFullWeek])
+    {
+      dayOfWeek = [self dayOfWeekForDate: januaryFirst];
+      if (dayOfWeek == 0)
+	firstWeek = [self firstDayOfWeekForDate: januaryFirst];
+      else
+	firstWeek = [self firstDayOfWeekForDate: [januaryFirst
+						   dateByAddingYears: 0
+						   months: 0
+						   days: 7]];
+    }
+  else
+    firstWeek = [self firstDayOfWeekForDate: januaryFirst];
+
+  return firstWeek;
+}
+
+- (unsigned int) weekNumberForDate: (NSCalendarDate *) date
+{
+  NSCalendarDate *firstWeek;
+  unsigned int weekNumber;
+
+  firstWeek = [self firstWeekOfYearForDate: date];
+  if ([firstWeek earlierDate: date] == firstWeek)
+    weekNumber = ([date timeIntervalSinceDate: firstWeek]
+		  / (86400 * 7) + 1);
+  else
+    weekNumber = 0;
+
+  return weekNumber;
 }
 
 /* mail */

@@ -48,7 +48,6 @@
 "Play a sound when a reminder comes due" = "Riproduci un suono quando un promemoria è attivo";
 "Default reminder :" = "Promemoria predefinito:";
 
-"firstWeekOfYear_HideWeekNumbers" = "Non visualizzare i numeri della settimana";
 "firstWeekOfYear_January1" = "Inizia l'1 gennaio";
 "firstWeekOfYear_First4DayWeek" = "Prima settimana di 4 giorni";
 "firstWeekOfYear_FirstFullWeek" = "Prima settimana completa";
@@ -83,7 +82,7 @@
 
 "Default identity:" = "Identità principale:";
 "Manage identities..." = "Gestisci identità...";
-"Signature:" = "Firma:";
+"Signature" = "Firma";
 
 /* password */
 "New password:" = "Nuova password:";

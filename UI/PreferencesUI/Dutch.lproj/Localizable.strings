@@ -47,7 +47,6 @@
 "Play a sound when a reminder comes due" = "Geluidafspelen bij herinnering";
 "Default reminder :" = "Standaard herinnering:";
 
-"firstWeekOfYear_HideWeekNumbers" = "Weeknummers verbergen";
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
@@ -82,6 +81,7 @@
 
 "Default identity:" = "Standaardidentiteit:";
 "Manage identities..." = "Identiteiten beheren...";
+"Signature" = "Signature";
 
 /* password */
 "New password:" = "Nieuw wachtwoord:";

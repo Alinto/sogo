@@ -59,7 +59,6 @@
 = "Señal acústica para los recordatorios";
 "Default reminder :" = "Recordatorio por omisión: ";
 
-"firstWeekOfYear_HideWeekNumbers" = "No mostrar número de semana";
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
 "firstWeekOfYear_First4DayWeek" = "Primera semana de 4 días";
 "firstWeekOfYear_FirstFullWeek" = "Primera semana completa";
@@ -94,11 +93,9 @@
 
 "Default identity:" = "Identidad por defecto:";
 "Manage identities..." = "Gestionar identidades...";
-"Signature:" = "Firma:";
+"Signature" = "Firma";
 
 /* password */
 "New password:" = "Contraseña nueva:";
 "Confirmation:" = "Confirmar contraseña nueva:"; /* ??? */
 "Change" = "Cambiar";
-
-"Signature" = "Firma";

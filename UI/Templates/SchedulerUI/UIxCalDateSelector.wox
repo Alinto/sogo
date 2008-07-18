@@ -19,6 +19,7 @@
     <var:month-overview
       const:id="dateSelectorTable"
       currentDay="currentDay"
+      firstDay="firstDayOfWeek"
       index="dayIndex"
       year="year"
       month="month"

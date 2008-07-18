@@ -47,7 +47,6 @@
 "Play a sound when a reminder comes due" = "Akustisches Signal zur Terminerinnerung";
 "Default reminder :" = "Standard Terminerinnerung:";
 
-"firstWeekOfYear_HideWeekNumbers" = "Keine Wochennummern anzeigen";
 "firstWeekOfYear_January1" = "Beginnt am 1.Januar";
 "firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
 "firstWeekOfYear_FirstFullWeek" = "Erste ganze Woche";
@@ -82,7 +81,7 @@
 
 "Default identity:" = "Standard Identität:";
 "Manage identities..." = "Identitäten verwalten...";
-"Signature:" = "Unterschrift:";
+"Signature" = "Unterschrift";
 
 /* password */
 "New password:" = "Neues Passwort:";

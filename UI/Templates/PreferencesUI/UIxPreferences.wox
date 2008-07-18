@@ -23,7 +23,7 @@
 	  <li target="mailOptionsView"><var:string
 	      label:value="Mail Options"/></li>
 	  <li target="identitiesView"><var:string
-	      label:value="Identities"/></li>
+	      label:value="Signature"/></li>
 	</var:if>
 	<var:if condition="shouldDisplayPasswordChange">
 	  <li target="passwordView"><var:string label:value="Password"/></li>
@@ -67,18 +67,18 @@
 	    <var:popup list="firstWeekList" item="item"
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
-	  <br/>
-	  <label><input class="checkBox"
-	      type="checkbox" var:selection="reminderEnabled"
-	      var:checked="reminderEnabled"/><var:string
-	      label:value="Enable reminders for Calendar items"/></label><br/>
-	  <label><input class="checkBox"
-	      type="checkbox" var:selection="remindWithASound"
-	      var:checked="remindWithASound"/><var:string
-	      label:value="Play a sound when a reminder comes due"/></label><br/>
-	  <label><var:string label:value="Default reminder :"/>
-	    <var:popup list="reminderTimesList" item="item"
-	      string="itemReminderTimeText" selection="userReminderTime"/></label>
+<!-- 	  <br/> -->
+<!-- 	  <label><input class="checkBox" -->
+<!-- 	      type="checkbox" var:selection="reminderEnabled" -->
+<!-- 	      var:checked="reminderEnabled"/><var:string -->
+<!-- 	      label:value="Enable reminders for Calendar items"/></label><br/> -->
+<!-- 	  <label><input class="checkBox" -->
+<!-- 	      type="checkbox" var:selection="remindWithASound" -->
+<!-- 	      var:checked="remindWithASound"/><var:string -->
+<!-- 	      label:value="Play a sound when a reminder comes due"/></label><br/> -->
+<!-- 	  <label><var:string label:value="Default reminder :"/> -->
+<!-- 	    <var:popup list="reminderTimesList" item="item" -->
+<!-- 	      string="itemReminderTimeText" selection="userReminderTime"/></label> -->
 	</div>
       </var:if>
       <var:if condition="userHasMailAccess">
@@ -108,7 +108,6 @@
 	  list="identitiesList" displayString="itemIdentityText">
 	</var:multiselection>
 	  <br/>-->
-	  <var:string label:value="Signature:"/><br/>
 	  <textarea const:id="signature" const:name="signature"
 	    var:value="signature"/>
 	</div>

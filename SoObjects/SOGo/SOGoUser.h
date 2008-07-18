@@ -50,7 +50,6 @@
 @class SOGoDateFormatter;
 @class SOGoUserFolder;
 
-extern NSString *SOGoWeekStartHideWeekNumbers;
 extern NSString *SOGoWeekStartJanuary1;
 extern NSString *SOGoWeekStartFirst4DayWeek;
 extern NSString *SOGoWeekStartFirstFullWeek;
@@ -118,6 +117,16 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) language;
 - (NSTimeZone *) timeZone;
 - (NSTimeZone *) serverTimeZone;
+
+- (unsigned int) firstDayOfWeek;
+- (NSCalendarDate *) firstDayOfWeekForDate: (NSCalendarDate *) date;
+- (unsigned int) dayOfWeekForDate: (NSCalendarDate *) date;
+
+- (unsigned int) dayStartHour;
+- (unsigned int) dayEndHour;
+
+- (NSCalendarDate *) firstWeekOfYearForDate: (NSCalendarDate *) date;
+- (unsigned int) weekNumberForDate: (NSCalendarDate *) date;
 
 - (NSArray *) mailAccounts;
 - (NSDictionary *) accountWithName: (NSString *) accountName;

@@ -347,10 +347,11 @@ static BOOL shouldDisplayPasswordChange = NO;
 
 - (NSArray *) firstWeekList
 {
-  return [NSArray arrayWithObjects: SOGoWeekStartHideWeekNumbers,
-		  SOGoWeekStartJanuary1,
+  return [NSArray arrayWithObjects: 
+		    SOGoWeekStartJanuary1,
 		  SOGoWeekStartFirst4DayWeek,
-		  SOGoWeekStartFirstFullWeek, nil];
+		  SOGoWeekStartFirstFullWeek,
+		  nil];
 }
 
 - (NSString *) itemFirstWeekText

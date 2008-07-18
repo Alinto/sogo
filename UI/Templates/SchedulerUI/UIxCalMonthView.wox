@@ -50,8 +50,8 @@
         ><var:foreach list="weeksToDisplay" item="currentWeek"
           ><var:foreach list="currentWeek" item="currentTableDay"
             ><div var:class="dayCellClasses"
-              var:day="currentTableDay.shortDateString">
-              <div class="dayHeader"><var:string value="dayHeaderNumber"/></div
+              var:day="currentTableDay.shortDateString"
+              ><div class="dayHeader"><var:string value="dayHeaderNumber"/></div
 		></div>
           </var:foreach>
         </var:foreach>

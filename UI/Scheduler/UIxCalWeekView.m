@@ -25,9 +25,11 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSCalendarDate+misc.h>
+
 #import <EOControl/EOQualifier.h>
 
-#import <NGExtensions/NSCalendarDate+misc.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #include "UIxCalWeekView.h"
 
@@ -35,14 +37,18 @@
 
 - (NSCalendarDate *) startDate
 {
-  return [[[super startDate] mondayOfWeek] beginOfDay];
+  NSCalendarDate *date;
+
+  date = [[context activeUser] firstDayOfWeekForDate: [super startDate]];
+
+  return [date beginOfDay];
 }
 
 - (NSCalendarDate *) endDate
 {
   unsigned offset;
     
-  if([self shouldDisplayWeekend])
+  if ([self shouldDisplayWeekend])
     offset = 7;
   else
     offset = 5;
@@ -83,12 +89,17 @@
 {
   NSCalendarDate *date;
   NSString *format;
+  unsigned int weekNbr;
+  SOGoUser *user;
 
-  date = [[self startDate] dateByAddingYears: 0 months: 0 days: (offset * 7)
-                           hours:0 minutes: 0 seconds: 0];
+  user = [context activeUser];
+  date = [[self startDate] dateByAddingYears: 0 months: 0
+			   days: (offset * 7) + 6
+			   hours: 0 minutes: 0 seconds: 0];
+  weekNbr = [user weekNumberForDate: date];
   format = [self labelForKey: @"Week %d"];
 
-  return [NSString stringWithFormat: format, [date weekOfYear]];
+  return [NSString stringWithFormat: format, weekNbr];
 }
 
 - (NSString *) weekBeforeLastWeekName

@@ -137,7 +137,9 @@
 {
   NSCalendarDate *newStartDate, *now;
   NSTimeZone *timeZone;
+  SOGoUser *user;
   int hour;
+  unsigned int uStart, uEnd;
 
   newStartDate = [self selectedDate];
   if (![[self queryParameterForKey: @"hm"] length])
@@ -145,18 +147,22 @@
       now = [NSCalendarDate calendarDate];
       timeZone = [[context activeUser] timeZone];
       [now setTimeZone: timeZone];
+
+      user = [context activeUser];
+      uStart = [user dayStartHour];
       if ([now isDateOnSameDay: newStartDate])
         {
+	  uEnd = [user dayEndHour];
           hour = [now hourOfDay];
-          if (hour < 8)
-            newStartDate = [now hour: 8 minute: 0];
-          else if (hour > 18)
-            newStartDate = [[now tomorrow] hour: 8 minute: 0];
+          if (hour < uStart)
+            newStartDate = [now hour: uStart minute: 0];
+          else if (hour > uEnd)
+            newStartDate = [[now tomorrow] hour: uStart minute: 0];
           else
             newStartDate = now;
         }
       else
-        newStartDate = [newStartDate hour: 8 minute: 0];
+        newStartDate = [newStartDate hour: uStart minute: 0];
     }
 
   return newStartDate;

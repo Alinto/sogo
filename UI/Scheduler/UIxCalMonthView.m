@@ -29,6 +29,7 @@
 
 #import <SOGoUI/SOGoAptFormatter.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "UIxCalMonthView.h"
 
@@ -75,7 +76,8 @@
   NSCalendarDate *currentDate;
 
   headerDaysToDisplay = [NSMutableArray arrayWithCapacity: 7];
-  currentDate = [[self selectedDate] mondayOfWeek];
+  currentDate
+    = [[context activeUser] firstDayOfWeekForDate: [self selectedDate]];
   for (counter = 0; counter < 7; counter++)
     {
       [headerDaysToDisplay addObject: currentDate];
@@ -95,7 +97,9 @@
   if (!weeksToDisplay)
     {
       selectedDate = [self selectedDate];
-      firstOfAllDays = [[selectedDate firstDayOfMonth] mondayOfWeek];
+      firstOfAllDays
+	= [[context activeUser] firstDayOfWeekForDate:
+				  [selectedDate firstDayOfMonth]];
       lastDayOfMonth = [selectedDate lastDayOfMonth];
       firstToLast = ([lastDayOfMonth timeIntervalSinceDate: firstOfAllDays]
 		     / 86400);
@@ -127,10 +131,11 @@
 
 - (NSDictionary *) _dateQueryParametersWithOffset: (int) monthsOffset
 {
-  NSCalendarDate *date;
+  NSCalendarDate *date, *firstDay;
   
-  date = [[self selectedDate] dateByAddingYears: 0 months: monthsOffset
-                              days: 0 hours: 0 minutes: 0 seconds: 0];
+  firstDay = [[self selectedDate] firstDayOfMonth];
+  date = [firstDay dateByAddingYears: 0 months: monthsOffset
+		   days: 0 hours: 0 minutes: 0 seconds: 0];
 
   return [self queryParametersBySettingSelectedDate: date];
 }
@@ -233,8 +238,11 @@
 
 - (NSString *) headerDayCellClasses
 {
-  return [NSString stringWithFormat: @"headerDay day%d",
-                   [currentTableDay dayOfWeek]];
+  unsigned int dayOfWeek;
+
+  dayOfWeek = [[context activeUser] dayOfWeekForDate: currentTableDay];
+
+  return [NSString stringWithFormat: @"headerDay day%d", dayOfWeek];
 }
 
 - (NSString *) dayHeaderNumber
@@ -261,18 +269,19 @@
 {
   NSMutableString *classes;
   NSCalendarDate *selectedDate;
-  int dayOfWeek, numberOfWeeks;
+  unsigned int realDayOfWeek, dayOfWeek, numberOfWeeks;
 
   classes = [NSMutableString string];
 
-  dayOfWeek = [currentTableDay dayOfWeek];
+  dayOfWeek = [[context activeUser] dayOfWeekForDate: currentTableDay];
+  realDayOfWeek = [currentTableDay dayOfWeek];
   numberOfWeeks = [weeksToDisplay count];
 
   [classes appendFormat: @"day weekOf%d week%dof%d day%d",
            numberOfWeeks,
            [weeksToDisplay indexOfObject: currentWeek],
            numberOfWeeks, dayOfWeek];
-  if (dayOfWeek == 0 || dayOfWeek == 6)
+  if (realDayOfWeek == 0 || realDayOfWeek == 6)
     [classes appendString: @" weekEndDay"];
   selectedDate = [self selectedDate];
   if (![[currentTableDay firstDayOfMonth]
@@ -292,16 +301,17 @@
 
   firstDayOfMonth = [[self selectedDate] firstDayOfMonth];
 
-  return [firstDayOfMonth mondayOfWeek];
+  return [[context activeUser] firstDayOfWeekForDate: firstDayOfMonth];
 }
 
 - (NSCalendarDate *) endDate
 {
-  NSCalendarDate *lastDayOfMonth;
+  NSCalendarDate *lastDayOfMonth, *firstDay;
 
   lastDayOfMonth = [[self selectedDate] lastDayOfMonth];
+  firstDay = [[context activeUser] firstDayOfWeekForDate: lastDayOfMonth];
 
-  return [[lastDayOfMonth mondayOfWeek] dateByAddingYears: 0 months: 0 days: 6];
+  return [firstDay dateByAddingYears: 0 months: 0 days: 6];
 }
 
 @end

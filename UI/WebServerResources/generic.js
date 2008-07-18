@@ -33,8 +33,6 @@ var sorting = {};
 
 var lastClickedRow = -1;
 
-var weekStartIsMonday = true;
-
 // logArea = null;
 var allDocumentElements = null;
 

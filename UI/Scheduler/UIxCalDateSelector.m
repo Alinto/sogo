@@ -93,6 +93,11 @@
   return [[self selectedDate] firstDayOfMonth];
 }
 
+- (unsigned int) firstDayOfWeek
+{
+  return [[context activeUser] firstDayOfWeek];
+}
+
 /* labels */
 
 - (NSString *) headerMonthValue

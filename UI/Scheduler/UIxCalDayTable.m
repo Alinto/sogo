@@ -26,6 +26,7 @@
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <EOControl/EOQualifier.h>
@@ -67,21 +68,21 @@
   [super dealloc];
 }
 
-- (void) setNumberOfDays: (NSString *) aNumber
+- (void) setNumberOfDays: (NSNumber *) aNumber
 {
   numberOfDays = [aNumber intValue];
   [daysToDisplay release];
   daysToDisplay = nil;
 }
 
-- (NSString *) numberOfDays
+- (NSNumber *) numberOfDays
 {
-  return [NSString stringWithFormat: @"%d", numberOfDays];
+  return [NSNumber numberWithUnsignedInt: numberOfDays];
 }
 
 - (void) setStartDate: (NSCalendarDate *) aStartDate
 {
-  startDate = aStartDate;
+  startDate = [aStartDate beginOfDay];
   [daysToDisplay release];
   daysToDisplay = nil;
 }
@@ -89,9 +90,9 @@
 - (NSCalendarDate *) startDate
 {
   if (!startDate)
-    startDate = [super startDate];
+    startDate = [[super startDate] beginOfDay];
 
-  return [startDate beginOfDay];
+  return startDate;
 }
 
 - (NSCalendarDate *) endDate
@@ -111,21 +112,23 @@
 
   if (!hoursToDisplay)
     {
+      hoursToDisplay = [NSMutableArray new];
       currentHour = [self dayStartHour];
       lastHour = [self dayEndHour];
-      hoursToDisplay = [NSMutableArray new];
-
       while (currentHour < lastHour)
         {
-          [hoursToDisplay
-            addObject: [NSString stringWithFormat: @"%d", currentHour]];
+          [hoursToDisplay addObject: [NSNumber numberWithInt: currentHour]];
           currentHour++;
         }
-      [hoursToDisplay
-        addObject: [NSString stringWithFormat: @"%d", currentHour]];
+      [hoursToDisplay addObject: [NSNumber numberWithInt: currentHour]];
     }
 
   return hoursToDisplay;
+}
+
+- (NSString *) currentHourLineClass
+{
+  return [NSString stringWithFormat: @"hourLine hourLine%d", [currentTableHour intValue]];
 }
 
 - (NSArray *) daysToDisplay
@@ -138,12 +141,11 @@
       daysToDisplay = [NSMutableArray new];
       currentDate = [[self startDate] hour: [self dayStartHour]
                                       minute: 0];
-      [daysToDisplay addObject: currentDate];
-      for (count = 1; count < numberOfDays; count++)
-        [daysToDisplay addObject: [currentDate dateByAddingYears: 0
-                                               months: 0
-                                               days: count]];
-
+      for (count = 0; count < numberOfDays; count++)
+	{
+	  [daysToDisplay addObject: currentDate];
+	  currentDate = [currentDate tomorrow];
+	}
     }
 
   return daysToDisplay;
@@ -282,15 +284,17 @@
 - (NSString *) dayClasses
 {
   NSMutableString *classes;
-  int dayOfWeek;
+  unsigned int currentDayNbr, realDayOfWeek;
+  
+  currentDayNbr = ([currentTableDay timeIntervalSinceDate: [self startDate]]
+		   / 86400);
+  realDayOfWeek = [currentTableDay dayOfWeek];
 
-  classes = [NSMutableString new];
-  [classes autorelease];
-  [classes appendFormat: @"day day%d", [currentTableDay dayOfWeek]];
+  classes = [NSMutableString string];
+  [classes appendFormat: @"day day%d", currentDayNbr];
   if (numberOfDays > 1)
     {
-      dayOfWeek = [currentTableDay dayOfWeek];
-      if (dayOfWeek == 0 || dayOfWeek == 6)
+      if (realDayOfWeek == 0 || realDayOfWeek == 6)
         [classes appendString: @" weekEndDay"];
       if ([currentTableDay isToday])
         [classes appendString: @" dayOfToday"];
@@ -303,7 +307,19 @@
 
 - (NSString *) clickableHourCellClass
 {
-  return [NSString stringWithFormat: @"clickableHourCell clickableHourCell%@", currentTableHour];
+  NSMutableString *cellClass;
+  int hour;
+  SOGoUser *user;
+
+  cellClass = [NSMutableString string];
+  hour = [currentTableHour intValue];
+  user = [context activeUser];
+  [cellClass appendFormat: @"clickableHourCell clickableHourCell%d", hour];
+  if (hour < [user dayStartHour]
+      || hour > [user dayEndHour])
+    [cellClass appendString: @" outOfDay"];
+
+  return cellClass;
 }
 
 @end

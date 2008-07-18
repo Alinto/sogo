@@ -50,7 +50,6 @@
 = "Play a sound when a reminder comes due";
 "Default reminder :" = "Default reminder :";
 
-"firstWeekOfYear_HideWeekNumbers" = "Do not display week numbers";
 "firstWeekOfYear_January1" = "Starts on january 1";
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "First full week";
@@ -85,7 +84,7 @@
 
 "Default identity:" = "Default identity:";
 "Manage identities..." = "Manage identities...";
-"Signature:" = "Signature:";
+"Signature" = "Signature";
 
 /* password */
 "New password:" = "New password:";

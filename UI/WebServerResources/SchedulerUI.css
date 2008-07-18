@@ -521,14 +521,22 @@ DIV.monthView > DIV.headerDay
 DIV.dayOfToday
 { background-color: #deebf7; }
 
-DIV.weekEndDay
-{ background-color: #fffbe7; }
+DIV.dayOfToday DIV.outOfDay
+{ background-color: #d6dfe9; }
+
+DIV.outOfDay, DIV.weekEndDay,
+DIV.weekEndDay DIV.outOfDay
+{ background-color: #f4f4f4; }
 
 DIV.dayOfAnotherMonth
 { background-color: #e7efef; }
 
 DIV.selectedDay
 { background-color: #ffe79c; }
+
+DIV.selectedDay.weekEndDay,
+DIV.selectedDay DIV.outOfDay
+{ background-color: #f5dd92; }
 
 DIV.monthView DIV.dayHeader
 { margin-left: 1em;
@@ -651,35 +659,35 @@ DIV.monthView DIV.day,
 DIV.daysViewFor7Days DIV.day
 { width: 14.2857%; }
 
+DIV.monthView DIV.day0,
+DIV.daysViewFor7Days DIV.day0
+{ left: 0px; }
+
 DIV.monthView DIV.day1,
 DIV.daysViewFor7Days DIV.day1
-{ left: 0px; }
+{ left: 14.2857%; }
 
 DIV.monthView DIV.day2,
 DIV.daysViewFor7Days DIV.day2
-{ left: 14.2857%; }
+{ left: 28.5714%; }
 
 DIV.monthView DIV.day3,
 DIV.daysViewFor7Days DIV.day3
-{ left: 28.5714%; }
+{ left: 42.8571%; }
 
 DIV.monthView DIV.day4,
 DIV.daysViewFor7Days DIV.day4
-{ left: 42.8571%; }
+{ left: 57.1428%; }
 
 DIV.monthView DIV.day5,
 DIV.daysViewFor7Days DIV.day5
-{ left: 57.1428%; }
-
-DIV.monthView DIV.day6,
-DIV.daysViewFor7Days DIV.day6
 { left: 71.4285%; }
 
-DIV.monthView DIV.day0
+DIV.monthView DIV.day6
 { left: 85.7142%;
   border-right: 2px solid #397d94; }
 
-DIV.daysViewFor7Days DIV.day0
+DIV.daysViewFor7Days DIV.day6
 { left: 85.7142%;
   border-right: 1px solid #397d94; }
 

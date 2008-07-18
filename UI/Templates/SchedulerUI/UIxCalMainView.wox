@@ -8,6 +8,9 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title">
+  <script type="text/javascript">
+    var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
+  </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">
     DIV#verticalDragHandle, DIV#rightPanel

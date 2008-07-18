@@ -1,3 +1,46 @@
+2008-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -startDate]):
+	same as below.
+
+	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView
+	-weeksToDisplay]): use the user's first day of week to chose the
+	day to start the series.
+	([UIxCalMonthView -dayCellClasses]): take the user's first day of
+	week into account.
+	([UIxCalMonthView -endDate]): same as above.
+
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView
+	-firstDayOfWeek]): new template accessor.
+
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
+	-currentHourLineClass]): new template accessor.
+	([UIxCalDayTable -clickableHourCellClass]): add the class
+	'outOfDay' when the current hour is out of the user's day start
+	and end hour ranges.
+
+	* UI/Scheduler/UIxCalDateSelector.m ([UIxCalDateSelector
+	-firstDayOfWeek]): new template accessor.
+
+	* UI/Scheduler/UIxAttendeesEditor.m ([UIxAttendeesEditor -dayStartHour])
+	([UIxAttendeesEditor -dayEndHour]): new template accessors.
+
+	* UI/Scheduler/UIxTaskEditor.m ([UIxTaskEditor -newStartDate]),
+	UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-newStartDate]): take the user-configured day start hour into account.
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences
+	-firstWeekList]): no longer list the option that enables the
+	hiding of week numbers.
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser -firstDayOfWeek])
+	([SOGoUser -firstDayOfWeekForDate:date])
+	([SOGoUser -dayOfWeekForDate:date], [SOGoUser -dayStartHour])
+	([SOGoUser -dayEndHour])
+	([SOGoUser -firstWeekOfYearForDate:date])
+	([SOGoUser -weekNumberForDate:date]): new methods that help take
+	the calendar-related user preferences into account.
+
 2008-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView

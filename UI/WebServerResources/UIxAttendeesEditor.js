@@ -3,9 +3,6 @@ var address;
 var awaitingFreeBusyRequests = new Array();
 var additionalDays = 2;
 
-var dayStartHour = 8;
-var dayEndHour = 18;
-
 var attendeesEditor = {
  delay: 500,
  delayedSearch: false,
@@ -221,20 +218,20 @@ function redisplayFreeBusyZone() {
   var stMinute = parseInt($("startTime_time_minute").value) / 15;
   var etHour = parseInt($("endTime_time_hour").value);
   var etMinute = parseInt($("endTime_time_minute").value) / 15;
-  if (stHour < 8) {
-    stHour = 8;
+  if (stHour < dayStartHour) {
+    stHour = dayStartHour;
     stMinute = 0;
   }
-  if (stHour > 19) {
-    stHour = 19
+  if (stHour > dayEndHour + 1) {
+    stHour = dayEndHour + 1;
     stMinute = 0;
   }
-  if (etHour < 8) {
-    etHour = 8;
+  if (etHour < dayStartHour) {
+    etHour = dayStartHour;
     etMinute = 0;
   }
-  if (etHour > 19) {
-    etHour = 19;
+  if (etHour > dayEndHour + 1) {
+    etHour = dayEndHour;
     etMinute = 0;
   }
   if (stHour > etHour) {
@@ -252,9 +249,9 @@ function redisplayFreeBusyZone() {
     }
   }
 
-  var deltaCells = (etHour - stHour) + (11 * addDays);
+  var deltaCells = (etHour - stHour) + ((dayEndHour - dayStartHour + 1) * addDays);
   var deltaSpans = (deltaCells * 4 ) + (etMinute - stMinute);
-  var currentCellNbr = stHour - 7 - 1;
+  var currentCellNbr = stHour - dayStartHour;
   var currentCell = row.cells[currentCellNbr];
   var currentSpanNbr = stMinute;
   var spans = $(currentCell).childNodesWithTag("span");
@@ -389,8 +386,8 @@ function setSlot(tds, nbr, status) {
     days = Math.floor(tdnbr / 24);
     tdnbr -= (days * 24);
   }
-  if (tdnbr > 7 && tdnbr < 19) {
-    var i = (days * 11 + tdnbr - 7);
+  if (tdnbr > (dayStartHour - 1) && tdnbr < (dayEndHour + 1)) {
+    var i = (days * (dayEndHour - dayStartHour + 1) + tdnbr - (dayStartHour - 1));
     var td = tds[i - 1];
     var spans = $(td).childNodesWithTag("span");
     if (status == '2')

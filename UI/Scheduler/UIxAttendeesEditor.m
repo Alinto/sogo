@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <Common/UIxPageFrame.h>
 
 #import "UIxAttendeesEditor.h"
@@ -74,6 +75,16 @@
 - (NSString *) itemZoomText
 {
   return [self labelForKey: [NSString stringWithFormat: @"zoom_%@", item]];
+}
+
+- (unsigned int) dayStartHour
+{
+  return [[context activeUser] dayStartHour];
+}
+
+- (unsigned int) dayEndHour
+{
+  return [[context activeUser] dayEndHour];
 }
 
 @end
