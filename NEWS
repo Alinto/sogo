@@ -15,6 +15,7 @@ address book in the Address Book module
 - fixed bug where selecting the current day cell would not select the header day cell and vice-versa in the daily and weekly views
 - the events are now computed in the server code again, in order to speedup the drawing of events as well as to fix the bug where events would be shifted back or forth of one day, depending on how their start time would be compared to UTC time
 - implemented the handling of exceptional occurences of recurrent events
+- all the calendar preferences are now taken into account
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
