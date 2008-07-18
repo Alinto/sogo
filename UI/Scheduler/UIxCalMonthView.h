@@ -40,10 +40,9 @@
   SOGoAptFormatter *monthAptFormatter;
   SOGoDateFormatter *dateFormatter;
 
-  NSMutableDictionary *sortedAppointments;
-  NSArray *daysToDisplay;
   NSCalendarDate *currentTableDay;
-  NSArray *currentTableColumn;
+  NSMutableArray *weeksToDisplay;
+  NSArray *currentWeek;
 
   NSArray *dayNames;
   NSArray *monthNames;
@@ -60,10 +59,13 @@
 - (NSString *) monthNameOfNextMonth;
 - (NSString *) monthNameOfTheMonthAfterNextMonth;
 
-- (NSArray *) daysToDisplay;
+- (NSArray *) weeksToDisplay;
 
 - (NSString *) labelForCurrentDayToDisplay;
 - (NSString *) dayCellClasses;
+
+- (void) setCurrentWeek: (NSArray *) newCurrentWeek;
+- (NSArray *) currentWeek;
 
 - (void) setCurrentTableDay: (NSCalendarDate *) newCurrentTableDay;
 - (NSCalendarDate *) currentTableDay;

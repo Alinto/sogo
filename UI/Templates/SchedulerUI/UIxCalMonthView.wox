@@ -47,8 +47,8 @@
           ><var:string value="labelForCurrentDayToDisplay"
             /></div></var:foreach>
       <div class="days" const:id="monthDaysView"
-        ><var:foreach list="daysToDisplay" item="currentTableColumn"
-          ><var:foreach list="currentTableColumn" item="currentTableDay"
+        ><var:foreach list="weeksToDisplay" item="currentWeek"
+          ><var:foreach list="currentWeek" item="currentTableDay"
             ><div var:class="dayCellClasses"
               var:day="currentTableDay.shortDateString">
               <div class="dayHeader"><var:string value="dayHeaderNumber"/></div
