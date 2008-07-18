@@ -1,5 +1,9 @@
 2008-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView
+	-weeksToDisplay]): we now display rows of weeks rather than columns
+	of week days.
+
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
 	-eventsBlocksAction]): event blocks now that the "c_recurrence_id"
 	virtual field into account.
