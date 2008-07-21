@@ -1,3 +1,9 @@
+2008-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
+	-PUTAction:_ctx]): when the object is new, return 201. Otherwise,
+	return 204 as success code.
+
 2008-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalWeekView.m ([UIxCalWeekView -startDate]):

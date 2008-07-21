@@ -315,9 +315,13 @@
 	  response = [_ctx response];
 	  /* setup response */
   
-	  // TODO: this should be automatic in the SoDispatcher if we return nil?
-	  [response setStatus: 201 /* Created */];
-  
+	  // TODO: this should be automatic in the SoDispatcher if we return
+	  // nil?
+	  if (isNew)
+	    [response setStatus: 201 /* Created */];
+	  else
+	    [response setStatus: 204 /* No Content */];
+ 
 	  etag = [self davEntityTag];
 	  if (etag)
 	    {
