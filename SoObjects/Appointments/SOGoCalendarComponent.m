@@ -155,7 +155,7 @@ static BOOL sendEMailNotifications = NO;
   else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
 		onObject: self inContext: context])
     {
-      tmpCalendar = [[self calendar: NO secure: NO] copy];
+      tmpCalendar = [[self calendar: NO secure: NO] mutableCopy];
       tmpComponent = (iCalRepeatableEntityObject *)
 	[tmpCalendar firstChildWithTag: [self componentTag]];
       [self _filterComponent: tmpComponent];
@@ -238,11 +238,6 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
     newOccurence = nil;
 
   return newOccurence;
-}
-
-- (BOOL) isFolderish
-{
-  return YES;
 }
 
 - (id) toManyRelationshipKeys

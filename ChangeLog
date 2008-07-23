@@ -1,3 +1,12 @@
+2008-07-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -secureContentAsString]): use a mutable
+	copy of the calendar in order to be able to modify it, otherwise
+	SOGo crashes.
+	([-isFolderish]): removed method, so that the components won't be
+	listed as DAV collections.
+
 2008-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoContentObject.m ([SOGoContentObject
