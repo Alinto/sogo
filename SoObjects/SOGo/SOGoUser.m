@@ -51,7 +51,7 @@ static BOOL fallbackIsConfigured = NO;
 static NSString *defaultLanguage = nil;
 static NSArray *superUsernames = nil;
 static NSURL *AgenorProfileURL = nil;
-static BOOL acceptAnyUser = NO;
+// static BOOL acceptAnyUser = NO;
 static int sogoFirstDayOfWeek = -1;
 static int defaultDayStartTime = -1;
 static int defaultDayEndTime = -1;
@@ -148,8 +148,8 @@ _timeValue (NSString *key)
   if (!superUsernames)
     ASSIGN (superUsernames, [ud arrayForKey: @"SOGoSuperUsernames"]);
 
-  acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
-		     isEqualToString: @"bypass"]);
+//   acceptAnyUser = ([[ud stringForKey: @"SOGoAuthentificationMethod"]
+// 		     isEqualToString: @"bypass"]);
 }
 
 + (NSString *) language
@@ -218,8 +218,9 @@ _timeValue (NSString *key)
   LDAPUserManager *um;
   NSString *realUID;
 
-  if (acceptAnyUser
-      || [newLogin isEqualToString: @"anonymous"]
+  if (// acceptAnyUser
+//       ||
+      [newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else

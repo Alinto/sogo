@@ -32,6 +32,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGLdap/NGLdapConnection.h>
 
 #import <UI/MainUI/SOGoRootPage.h>
@@ -56,10 +57,21 @@
 
 - (id) init
 {
+  NSUserDefaults *ud;
+
   if ((self = [super init]))
     {
-      authMethod = [[NSUserDefaults standardUserDefaults]
-		     stringForKey: @"SOGoAuthentificationMethod"];
+      ud = [NSUserDefaults standardUserDefaults];
+      authMethod = [ud stringForKey: @"SOGoAuthenticationMethod"];
+      if (!authMethod)
+	authMethod = [ud stringForKey: @"SOGoAuthentificationMethod"];
+      if (!authMethod)
+	{
+	  authMethod = @"LDAP";
+	  [self warnWithFormat:
+		  @"authentication method automatically set to '%@'",
+		authMethod];
+	}
       [authMethod retain];
     }
 
@@ -84,8 +96,10 @@
       accept = [um checkLogin: _login andPassword: _pwd];
     }
   else
-    accept = ([authMethod isEqualToString: @"bypass"]
-	      && [_login length] > 0);
+    accept = NO;
+//   else
+//     accept = ([authMethod isEqualToString: @"bypass"]
+// 	      && [_login length] > 0);
 
   return accept;
 // 	  || ([_login isEqualToString: @"freebusy"]
