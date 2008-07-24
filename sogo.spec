@@ -216,6 +216,13 @@ rm -fr ${RPM_BUILD_ROOT}
 if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo; fi
 /bin/chown sogo /var/run/sogo
 /bin/chown sogo /var/log/sogo
+if [ ! -d /var/spool/sogo ]
+then
+  /bin/mkdir /var/spool/sogo
+  /bin/chown sogo /var/spool/sogo
+  /bin/chmod 700 /var/spool/sogo
+fi
+/sbin/chkconfig --add sogod
 
 %postun
 if test "$1" = "0"
@@ -223,6 +230,9 @@ then
   /usr/sbin/userdel sogo
   /usr/sbin/groupdel sogo
   /bin/rm -rf /var/run/sogo
+  /bin/rm -rf /var/spool/sogo
+  /sbin/chkconfig --del sogod
+  /sbin/service sogod stop > /dev/null 2>&1
 fi
 
 # ********************************* changelog *************************
