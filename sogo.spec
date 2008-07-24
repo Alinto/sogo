@@ -15,8 +15,7 @@ Prefix:       %{sogo_prefix}
 AutoReqProv:  off
 Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd mod_ngobjweb sope%{sope_major_version}%{sope_minor_version}-cards
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-cards-devel
-
+BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
 the SOPE application server.  It focuses on scalability.
@@ -76,10 +75,27 @@ Various tools around the GDLContentStore.
 SOPE is a framework for developing web applications and services. The
 name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
 
+%package -n sope%{sope_major_version}%{sope_minor_version}-cards
+Summary:      SOPE versit parsing library for iCal and VCard formats
+Group:        Development/Libraries/Objective C
+AutoReqProv:  off
+
+%description -n sope%{sope_major_version}%{sope_minor_version}-cards
+SOPE versit parsing library for iCal and VCard formats
+
+%package -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
+Summary:      SOPE versit parsing library for iCal and VCard formats
+Group:        Development/Libraries/Objective C
+Requires:     sope%{sope_major_version}%{sope_minor_version}-cards
+AutoReqProv:  off
+
+%description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
+SOPE versit parsing library for iCal and VCard formats
+
 ########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
-%setup -q -n sogo
+%setup -q -n SOGo
 
 # ****************************** build ********************************
 %build
@@ -89,27 +105,42 @@ rm -fr ${RPM_BUILD_ROOT}
             --disable-debug \
 	    --with-gnustep
 
-make
+case %{_target_platform} in
+ppc64-*) 
+  cc="gcc -m64";
+  ldflags="-m64";; 
+*)
+  cc="gcc";
+  ldflags="";; 
+esac
+
+make CC="$cc" LDFLAGS="$ldflags"
 
 # ****************************** install ******************************
 %install
-make INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
-     GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+
+case %{_target_platform} in
+ppc64-*)
+  cc="gcc -m64";
+  ldflags="-m64";;
+*)
+  cc="gcc";
+  ldflags="";;
+esac
+
+make DESTDIR=${RPM_BUILD_ROOT} \
+     GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+     CC="$cc" LDFLAGS="$ldflags" \
      install
-cp -a UI/WebServerResources UI/Templates ${RPM_BUILD_ROOT}%{prefix}/Library/SOGo-%{sogo_version}
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
 mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
 cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
-cp Scripts/sogo-init.d-rhel4 ${RPM_BUILD_ROOT}/etc/init.d/sogod
-cp Scripts/sogod-redhat ${RPM_BUILD_ROOT}/usr/sbin/sogod
+cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
+cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod
 rm -rf ${RPM_BUILD_ROOT}%{prefix}/Tools/test_quick_extract
-rm -rf ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/NGCards
-rm -rf ${RPM_BUILD_ROOT}%{prefix}/Library/Libraries/libNGCards.*
-rm -rf ${RPM_BUILD_ROOT}%{prefix}/Library/SaxDrivers-%{sope_major_version}.%{sope_minor_version}
-rm -rf ${RPM_BUILD_ROOT}%{prefix}/Library/SaxMappings
 
 # ****************************** clean ********************************
 %clean
@@ -120,30 +151,40 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 
 /etc/init.d/sogod
-/etc/httpd/conf.d/SOGo.conf
 /usr/sbin/sogod
 /var/run/sogo
 /var/log/sogo
-%{prefix}/Tools/sogod-0.9
+%{prefix}/Tools/Admin/sogod-0.9
 %{prefix}/Library/Libraries/libSOGo.so.*
 %{prefix}/Library/Libraries/libSOGoUI.so.*
 %{prefix}/Library/Libraries/libOGoContentStore.so*
-%{prefix}/Library/SOGo-%{sogo_version}/*.SOGo
-%{prefix}/Library/SOGo-%{sogo_version}/Templates
-%{prefix}/Library/SOGo-%{sogo_version}/WebServerResources
+%{prefix}/Library/SOGo-0.9/*.SOGo
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Resources
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/libSOGo.so.*
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/Resources
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/Current
+%{prefix}/Library/SOGo-0.9/Templates
+%{prefix}/Library/SOGo-0.9/WebServerResources
 %{prefix}/Library/OCSTypeModels/appointment.ocs
 %{prefix}/Library/OCSTypeModels/contact.ocs
 %{prefix}/Library/OCSTypeModels/appointment-oracle.ocs
 %{prefix}/Library/OCSTypeModels/contact-oracle.ocs
 %{prefix}/Library/WOxElemBuilders-%{sope_version}/SOGoElements.wox
 
-%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh
+%config %{_sysconfdir}/httpd/conf.d/SOGo.conf
+%doc ChangeLog README NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh
 
 %files -n sogo-devel
 %{prefix}/Library/Headers/SOGo
 %{prefix}/Library/Headers/SOGoUI
 %{prefix}/Library/Libraries/libSOGo.so
 %{prefix}/Library/Libraries/libSOGoUI.so
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Headers
+%{prefix}/Library/SOGo-0.9/SOGo.framework/libSOGo.so
+%{prefix}/Library/SOGo-0.9/SOGo.framework/SOGo
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/Headers
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/libSOGo.so
+%{prefix}/Library/SOGo-0.9/SOGo.framework/Versions/0/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
@@ -161,6 +202,15 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Tools/gcs_mkdir
 %{prefix}/Tools/gcs_recreatequick
 
+%files -n sope%{sope_major_version}%{sope_minor_version}-cards
+%{prefix}/Library/Libraries/libNGCards.so.*
+%{prefix}/Library/SaxDrivers-%{sope_major_version}.%{sope_minor_version}/*.sax
+%{prefix}/Library/SaxMappings
+
+%files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
+%{prefix}/Library/Headers/NGCards
+%{prefix}/Library/Libraries/libNGCards.so
+
 # **************************** pkgscripts *****************************
 %post
 if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo; fi
@@ -177,6 +227,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Wed May 21 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- removed installation of template and resource files, since it is now done by the upstream package
+
 * Tue Oct 4 2007 Francis Lachapelle <flachapelle@inverse.ca>
 - added package sope-gdl1-contentstore
 
