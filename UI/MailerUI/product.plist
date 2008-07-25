@@ -1,11 +1,7 @@
 { /* -*-java-*- */
   requires = ( MAIN, MainUI, CommonUI, Mailer, MailPartViewers ); /* , Sieve */
 
-  publicResources = ("uix.css",
-		     "mailer.css",
-		     "mailer.js",
-		     "generic.js",
-		     "searchfield.js",
+  publicResources = ("generic.js",
 		     "UIxAppointmentEditor.js",
 		     "UIxContactEditor.js",
 		     "UIxMailToSelection.js",
