@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "AgenorUserManager.h"
+#include "LDAPUserManager.h"
 #include "common.h"
 
 static void usage(NSArray *args) {
@@ -27,7 +27,7 @@ static void usage(NSArray *args) {
 	  [[args objectAtIndex:0] cString]);
 }
 
-static void handleUID(NSString *uid, AgenorUserManager *userManager) {
+static void handleUID(NSString *uid, LDAPUserManager *userManager) {
   NSArray  *shares;
   unsigned i, count;
   
@@ -46,7 +46,7 @@ static void handleUID(NSString *uid, AgenorUserManager *userManager) {
 }
 
 static void doIt(NSArray *args) {
-  AgenorUserManager *userManager;
+  LDAPUserManager *userManager;
   NSEnumerator *e;
   NSString     *uid;
   
@@ -55,7 +55,7 @@ static void doIt(NSArray *args) {
     return;
   }
   
-  userManager = [AgenorUserManager sharedUserManager];
+  userManager = [LDAPUserManager sharedUserManager];
   
   e = [args objectEnumerator];
   [e nextObject]; /* consume the command name */

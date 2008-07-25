@@ -28,7 +28,7 @@
   SOGoUser
 
   This adds some additional SOGo properties to the SoUser object. The
-  properties are (currently) looked up using the AgenorUserManager.
+  properties are (currently) looked up using the LDAPUserManager.
 
   You have access to this object from the WOContext:
     context.activeUser

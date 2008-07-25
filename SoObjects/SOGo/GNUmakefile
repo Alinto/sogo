@@ -10,10 +10,10 @@ FRAMEWORK_NAME = SOGo
 SOGo_INSTALL_DIR = $(SOGO_LIBDIR)
 
 TOOL_NAME = \
-# 	agenor_email2uid	\
-# 	agenor_shares4uid	\
-# 	agenor_emails4uid	\
-# 	agenor_defaults
+# 	sogo_email2uid	\
+# 	sogo_shares4uid	\
+# 	sogo_emails4uid	\
+# 	sogo_defaults
 
 SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
@@ -75,7 +75,7 @@ SOGo_OBJC_FILES = \
 	SOGoPermissions.m		\
 	LDAPUserManager.m		\
 	LDAPSource.m			\
-	AgenorUserDefaults.m		\
+	SOGoUserDefaults.m		\
 	iCalEntityObject+Utilities.m	\
 	NSArray+DAV.m			\
 	NSArray+Utilities.m		\
@@ -108,10 +108,10 @@ SOGo_RESOURCE_FILES = \
 
 # tools
 
-agenor_email2uid_OBJC_FILES  += agenor_email2uid.m
-agenor_shares4uid_OBJC_FILES += agenor_shares4uid.m
-agenor_emails4uid_OBJC_FILES += agenor_emails4uid.m
-agenor_defaults_OBJC_FILES   += agenor_defaults.m
+sogo_email2uid_OBJC_FILES  += sogo_email2uid.m
+sogo_shares4uid_OBJC_FILES += sogo_shares4uid.m
+sogo_emails4uid_OBJC_FILES += sogo_emails4uid.m
+sogo_defaults_OBJC_FILES   += sogo_defaults.m
 
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/

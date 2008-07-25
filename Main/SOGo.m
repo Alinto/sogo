@@ -224,7 +224,7 @@ static BOOL debugObjectAllocation = NO;
 - (BOOL) _checkMandatoryTables
 {
   GCSChannelManager *cm;
-  NSString *urlStrings[] = {@"AgenorProfileURL", @"OCSFolderInfoURL", nil};
+  NSString *urlStrings[] = {@"SOGoProfileURL", @"OCSFolderInfoURL", nil};
   NSString **urlString;
   NSString *value;
   NSUserDefaults *ud;
@@ -238,6 +238,15 @@ static BOOL debugObjectAllocation = NO;
   while (ok && *urlString)
     {
       value = [ud stringForKey: *urlString];
+      if (!value & [*urlString isEqualToString: @"SOGoProfileURL"])
+	{
+	  value = [ud stringForKey: @"AgenorProfileURL"];
+	  if (value)
+	    [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
+		  @" was renamed to 'SOGoProfileURL', please update your"
+		  @" configuration accordingly"];
+	}
+
       if (value)
 	{
 	  [self _checkTableWithCM: cm tableURL: value andType: *urlString];

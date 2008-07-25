@@ -39,8 +39,6 @@
 
 #import <SOGoUI/SOGoAptFormatter.h>
 
-#import "UIxComponent+Scheduler.h"
-
 #import "UIxCalView.h"
 
 @interface UIxCalView (PrivateAPI)

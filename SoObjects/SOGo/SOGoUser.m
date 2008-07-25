@@ -35,7 +35,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "AgenorUserDefaults.h"
+#import "SOGoUserDefaults.h"
 #import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
@@ -50,7 +50,7 @@ static NSString *fallbackIMAP4Server = nil;
 static BOOL fallbackIsConfigured = NO;
 static NSString *defaultLanguage = nil;
 static NSArray *superUsernames = nil;
-static NSURL *AgenorProfileURL = nil;
+static NSURL *SOGoProfileURL = nil;
 // static BOOL acceptAnyUser = NO;
 static int sogoFirstDayOfWeek = -1;
 static int defaultDayStartTime = -1;
@@ -122,10 +122,12 @@ _timeValue (NSString *key)
 	defaultDayEndTime = 18;
     }
 
-  if (!AgenorProfileURL)
+  if (!SOGoProfileURL)
     {
-      profileURL = [ud stringForKey: @"AgenorProfileURL"];
-      AgenorProfileURL = [[NSURL alloc] initWithString: profileURL];
+      profileURL = [ud stringForKey: @"SOGoProfileURL"];
+      if (!profileURL)
+	profileURL = [ud stringForKey: @"AgenorProfileURL"];
+      SOGoProfileURL = [[NSURL alloc] initWithString: profileURL];
     }
   if (!fallbackIMAP4Server)
     ASSIGN (fallbackIMAP4Server,
@@ -432,9 +434,9 @@ _timeValue (NSString *key)
 {
   if (!userDefaults)
     userDefaults
-      = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
-				    uid: login
-				    fieldName: @"c_defaults"];
+      = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				  uid: login
+				  fieldName: @"c_defaults"];
 
   return userDefaults;
 }
@@ -443,9 +445,9 @@ _timeValue (NSString *key)
 {
   if (!userSettings)
     userSettings
-      = [[AgenorUserDefaults alloc] initWithTableURL: AgenorProfileURL
-				    uid: login
-				    fieldName: @"c_settings"];
+      = [[SOGoUserDefaults alloc] initWithTableURL: SOGoProfileURL
+				  uid: login
+				  fieldName: @"c_settings"];
 
   return userSettings;
 }

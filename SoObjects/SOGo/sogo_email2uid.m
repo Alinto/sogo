@@ -19,55 +19,41 @@
   02111-1307, USA.
 */
 
-#include "AgenorUserManager.h"
+#include "LDAPUserManager.h"
 #include "common.h"
 
 static void usage(NSArray *args) {
-  fprintf(stderr, "usage: %s <uid1> <uid2> <uid3>\n",
+  fprintf(stderr, "usage: %s <email1> <email2> <email3>\n",
 	  [[args objectAtIndex:0] cString]);
 }
 
-static void handleUID(NSString *uid, AgenorUserManager *userManager) {
-  NSArray  *emails;
-  NSString *primary;
-  unsigned i, count;
-  
-  primary = [userManager getEmailForUID:uid];
-  emails  = [userManager getSharedMailboxEMailsForUID:uid];
-  
-  printf("%s:", [uid cString]);
-  
-  if ([primary length] > 0)
-    printf("  %s\n", [primary cString]);
-  else
-    printf("  <no primary email found>\n");
-  
-  if ((count = [emails count]) == 0) {
-    printf("  <no shares with emitter access>\n");
-    return;
-  }
-  
-  for (i = 0; i < count; i++)
-    printf("  %s\n", [[emails objectAtIndex:i] cString]);
-}
-
 static void doIt(NSArray *args) {
-  AgenorUserManager *userManager;
+  LDAPUserManager *userManager;
   NSEnumerator *e;
-  NSString     *uid;
+  NSString     *email;
   
   if ([args count] < 2) {
     usage(args);
     return;
   }
   
-  userManager = [AgenorUserManager sharedUserManager];
+  userManager = [LDAPUserManager sharedUserManager];
   
   e = [args objectEnumerator];
   [e nextObject]; /* consume the command name */
-  
-  while ((uid = [e nextObject]) != nil)
-    handleUID(uid, userManager);
+
+  while ((email = [e nextObject]) != nil) {
+    NSString *uid;
+    
+    uid = [userManager getUIDForEmail:email];
+    
+    if ([uid isNotNull])
+      printf("%s: %s\n", [email cString], [uid cString]);
+    else {
+      fprintf(stderr, "ERROR: did not find uid for email: '%s'\n", 
+	      [email cString]);
+    }
+  }
 }
 
 int main(int argc, char **argv, char **env) {

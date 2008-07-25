@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "AgenorUserManager.h"
+#include "LDAPUserManager.h"
 #include "common.h"
 
 static void usage(NSArray *args) {
@@ -42,7 +42,7 @@ static void doRead(NSUserDefaults *defaults, NSString *key) {
     
     defNames = [defaults valueForKey:@"primaryDefaultNames"];
     if ((count = [defNames count]) == 0) {
-      fprintf(stderr, "There are no keys in the Agenor profile!\n");
+      fprintf(stderr, "There are no keys in the SOGo profile!\n");
       return;
     }
     
@@ -54,7 +54,7 @@ static void doRead(NSUserDefaults *defaults, NSString *key) {
     }
   }
   else if ((value = [defaults objectForKey:key]) == nil) {
-    fprintf(stderr, "There is no key '%s' in the Agenor profile!\n", 
+    fprintf(stderr, "There is no key '%s' in the SOGo profile!\n", 
 	    [key cString]);
   }
   else
@@ -71,7 +71,7 @@ static void doWrite(NSUserDefaults *defaults, NSString *key, NSString *value) {
 }
 
 static void doIt(NSArray *args) {
-  AgenorUserManager *userManager;
+  LDAPUserManager *userManager;
   NSUserDefaults    *defaults;
   NSString *uid, *op, *key, *value;
 
@@ -100,7 +100,7 @@ static void doIt(NSArray *args) {
   
   /* run */
   
-  userManager = [AgenorUserManager sharedUserManager];
+  userManager = [LDAPUserManager sharedUserManager];
   defaults    = [userManager getUserDefaultsForUID:uid];
   
   if (![defaults isNotNull]) {

@@ -19,13 +19,13 @@
   02111-1307, USA.
 */
 
-#ifndef	__AgenorUserDefaults_H_
-#define	__AgenorUserDefaults_H_
+#ifndef	__SOGoUserDefaults_H_
+#define	__SOGoUserDefaults_H_
 
 #import <Foundation/NSObject.h>
 
 /*
-  AgenorUserDefaults
+  SOGoUserDefaults
   
   An object with the same API like NSUserDefaults which retrieves profile
   information for users in the database.
@@ -34,7 +34,7 @@
 @class NSString, NSURL, NSUserDefaults, NSArray, NSDictionary, NSData;
 @class NSCalendarDate, NSMutableDictionary;
 
-@interface AgenorUserDefaults :  NSObject
+@interface SOGoUserDefaults :  NSObject
 {
   NSUserDefaults *parent;
   NSURL    *url;
@@ -86,4 +86,4 @@
 
 @end
 
-#endif /* __AgenorUserDefaults_H__ */
+#endif /* __SOGoUserDefaults_H__ */

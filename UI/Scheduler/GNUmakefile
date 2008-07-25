@@ -22,7 +22,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalDateSelector.m		\
 	UIxCalUserRightsEditor.m	\
 					\
-	UIxComponent+Scheduler.m	\
 	UIxCalView.m			\
 	UIxCalDayView.m			\
 	UIxCalMulticolumnDayView.m	\

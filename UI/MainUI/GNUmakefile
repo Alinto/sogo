@@ -18,8 +18,8 @@ MainUI_OBJC_FILES += \
 MainUI_RESOURCE_FILES += 	\
 	Version			\
 	product.plist		\
-	AgenorProfile.sql \
-	AgenorProfile-oracle.sql \
+	SOGoProfile.sql \
+	SOGoProfile-oracle.sql \
 	OCSFolderInfo.sql \
 	OCSFolderInfo-oracle.sql \
 

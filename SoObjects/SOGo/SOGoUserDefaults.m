@@ -35,9 +35,9 @@
 
 #import "NSObject+Utilities.h"
 
-#import "AgenorUserDefaults.h"
+#import "SOGoUserDefaults.h"
 
-@implementation AgenorUserDefaults
+@implementation SOGoUserDefaults
 
 static NSString *uidColumnName = @"c_uid";
 
@@ -454,4 +454,4 @@ static NSString *uidColumnName = @"c_uid";
 	forKey: key];
 }
 
-@end /* AgenorUserDefaults */
+@end /* SOGoUserDefaults */

@@ -55,8 +55,6 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
-#import "UIxComponent+Scheduler.h"
-
 #import "UIxComponentEditor.h"
 
 #define iREPEAT(X) \
@@ -1191,11 +1189,11 @@ RANGE(2);
 // - (NSString *) iCalStringFromQueryParameter: (NSString *) _qp
 //                                      format: (NSString *) _format
 // {
-//   AgenorUserManager *um;
+//   LDAPUserManager *um;
 //   NSMutableString *iCalRep;
 //   NSString *s;
 
-//   um = [AgenorUserManager sharedUserManager];
+//   um = [LDAPUserManager sharedUserManager];
 //   iCalRep = (NSMutableString *)[NSMutableString string];
 //   s = [self queryParameterForKey:_qp];
 //   if(s && [s length] > 0) {

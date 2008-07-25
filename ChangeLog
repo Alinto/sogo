@@ -1,3 +1,11 @@
+2008-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/AgenorUserDefaults.[hm]: renamed module class and
+	class moduel to SOGoUserDefaults.
+
+	* Main/SOGo.m ([SOGo -run]): the table referred to as
+	"AgenorProfileURL" is now referred to as "SOGoProfileURL".
+
 2008-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoWebAuthenticator.m ([SOGoWebAuthenticator -checkLogin:_loginpassword:_pwd]),
