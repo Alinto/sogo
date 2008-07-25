@@ -3,3 +3,29 @@ function savePreferences(sender) {
 
    return false;
 }
+
+function _setupEvents(enable) {
+  var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
+		  "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
+		  "firstWeek", "messageCheck" ];
+  for (var i = 0; i < widgets.length; i++) {
+    var widget = $(widgets[i]);
+    if (enable)
+      widget.observe("change", onChoiceChanged);
+    else
+      widget.stopObserving("change", onChoiceChanged);
+  }
+}
+
+function onChoiceChanged(event) {
+  var hasChanged = $("hasChanged");
+  hasChanged.value = "1";
+
+  _setupEvents(false);
+}
+
+function initPreferences() {
+  _setupEvents(true);
+}
+
+FastInit.addOnLoad(initPreferences);

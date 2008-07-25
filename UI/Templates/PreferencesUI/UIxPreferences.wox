@@ -32,19 +32,23 @@
       <div id="generalView" class="tab">
 	<label><var:string label:value="Current Time Zone :"/>
 	  <var:popup list="timeZonesList" item="item"
+	    const:id="timezone"
 	    string="item" selection="userTimeZone" /></label><br/>
 	<br/>
 	<div id="dateTimeFormat">
 	  <label><var:string label:value="Short Date Format :"/>
 	    <var:popup list="shortDateFormatsList" item="item"
+	      const:id="shortDateFormat"
 	      string="itemShortDateFormatText" selection="userShortDateFormat"
 	      /></label><br/>
 	  <label><var:string label:value="Long Date Format :"/>
 	    <var:popup list="longDateFormatsList" item="item"
+	      const:id="longDateFormat"
 	      string="itemLongDateFormatText" selection="userLongDateFormat"
 	      /></label><br/>
 	  <label><var:string label:value="Time Format :"/>
 	    <var:popup list="timeFormatsList" item="item"
+	      const:id="timeFormat"
 	      string="itemTimeFormatText" selection="userTimeFormat"
 	      /></label>
 	</div>
@@ -53,18 +57,22 @@
 	<div id="calendarOptionsView" class="tab">
 	  <label><var:string label:value="Week begins on :"/>
 	    <var:popup list="daysList" item="item"
+	      const:id="weekStartDay"
 	      string="itemWeekStartDay" selection="userWeekStartDay"
 	      /></label><br/>
 	  <label><var:string label:value="Day start time :"/>
 	    <var:popup list="hoursList" item="item"
+	      const:id="dayStartTime"
 	      string="item" selection="userDayStartTime"
 	      /></label>
 	  <label><var:string label:value="Day end time :"/>
 	    <var:popup list="hoursList" item="item"
+	      const:id="dayEndTime"
 	      string="item" selection="userDayEndTime"
 	      /></label><br/>
 	  <label><var:string label:value="First week of year :"/>
 	    <var:popup list="firstWeekList" item="item"
+	      const:id="firstWeek"
 	      string="itemFirstWeekText" selection="userFirstWeek"
 	      /></label><br/>
 <!-- 	  <br/> -->
@@ -85,10 +93,13 @@
 	<div id="mailOptionsView" class="tab">
 	  <label><var:string label:value="Check for new mail:"/>
 	    <var:popup list="messageCheckList" item="item"
+	      const:id="messageCheck"
 	      string="itemMessageCheckText" selection="userMessageCheck"/></label><br/>
 	  <label><var:string label:value="Forward messages:"/>
 	    <var:popup list="messageForwardingList" item="item"
-	      string="itemMessageForwardingText" selection="userMessageForwarding"/></label><br/>
+	      const:id="messageForwarding"
+	      string="itemMessageForwardingText"
+	      selection="userMessageForwarding"/></label><br/>
 	<!--	<label><input
 	const:name="inTheOffice" type="radio" const:value="YES"
 	var:selection="inTheOffice"/>
@@ -112,20 +123,22 @@
 	    var:value="signature"/>
 	</div>
       </var:if>
-      <var:if condition="shouldDisplayPasswordChange">
-	<div id="passwordView" class="tab">
-	  <label><var:string label:value="New password:"
-	      /><input type="text" class="textField"
-	      const:enabled="disabled"
-	      var:value="newPassword"/></label><br/>
-	  <label><var:string label:value="Confirmation:"
-	      /><input type="text" class="textField"
-	      const:enabled="disabled"
-	      var:value="newPasswordConfirmation"/></label><br/>
-	  <input type="button" class="button"
-	    id="changePasswordBtn" label:value="Change"/>
-	</div>
-      </var:if>
+<!--       <var:if condition="shouldDisplayPasswordChange"> -->
+<!-- 	<div id="passwordView" class="tab"> -->
+<!-- 	  <label><var:string label:value="New password:" -->
+<!-- 	      /><input type="text" class="textField" -->
+<!-- 	      const:enabled="disabled" -->
+<!-- 	      var:value="newPassword"/></label><br/> -->
+<!-- 	  <label><var:string label:value="Confirmation:" -->
+<!-- 	      /><input type="text" class="textField" -->
+<!-- 	      const:enabled="disabled" -->
+<!-- 	      var:value="newPasswordConfirmation"/></label><br/> -->
+<!-- 	  <input type="button" class="button" -->
+<!-- 	    id="changePasswordBtn" label:value="Change"/> -->
+<!-- 	</div> -->
+<!--       </var:if> -->
+      <input type="hidden" id="hasChanged" name="hasChanged"
+	var:value="hasChanged"/>
     </div>
   </form>
 </var:component>

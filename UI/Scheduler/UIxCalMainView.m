@@ -177,4 +177,9 @@ static NSMutableArray *yearMenuItems = nil;
   return [[context activeUser] firstDayOfWeek];
 }
 
+- (unsigned int) dayStartHour
+{
+  return [[context activeUser] dayStartHour];
+}
+
 @end

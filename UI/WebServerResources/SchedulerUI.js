@@ -746,8 +746,7 @@ function scrollDayView(scrollEvent) {
   var hours = $(daysView.childNodesWithTag("div")[0])
     .childNodesWithTag("div");
 
-  // Scroll to 8 AM by default
-  offset = hours[8].offsetTop;
+  offset = hours[dayStartHour].offsetTop;
 
   if (scrollEvent && calendarEvents) {
     var event = calendarEvents[scrollEvent];

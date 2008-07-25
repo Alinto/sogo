@@ -316,7 +316,7 @@
   user = [context activeUser];
   [cellClass appendFormat: @"clickableHourCell clickableHourCell%d", hour];
   if (hour < [user dayStartHour]
-      || hour > [user dayEndHour])
+      || hour > [user dayEndHour] - 1)
     [cellClass appendString: @" outOfDay"];
 
   return cellClass;

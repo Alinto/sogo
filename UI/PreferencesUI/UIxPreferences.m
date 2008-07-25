@@ -74,6 +74,7 @@ static BOOL shouldDisplayPasswordChange = NO;
       locale = [context valueForKey: @"locale"];
       ASSIGN (daysOfWeek,
 	      [locale objectForKey: NSWeekDayNameArray]);
+      hasChanged = NO;
     }
 
   return self;
@@ -88,6 +89,16 @@ static BOOL shouldDisplayPasswordChange = NO;
   [hours release];
   [daysOfWeek release];
   [super dealloc];
+}
+
+- (void) setHasChanged: (BOOL) newHasChanged
+{
+  hasChanged = newHasChanged;
+}
+
+- (BOOL) hasChanged
+{
+  return hasChanged;
 }
 
 - (void) setItem: (NSString *) newItem
@@ -503,12 +514,17 @@ static BOOL shouldDisplayPasswordChange = NO;
 {
   id <WOActionResults> results;
   WORequest *request;
+  NSString *method;
 
   request = [context request];
   if ([[request method] isEqualToString: @"POST"])
     {
       [userDefaults synchronize];
-      results = [self jsCloseWithRefreshMethod: nil];
+      if (hasChanged)
+	method = @"window.location.reload()";
+      else
+	method = nil;
+      results = [self jsCloseWithRefreshMethod: method];
     }
   else
     results = self;

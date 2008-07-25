@@ -10,6 +10,7 @@
   title="title">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
+    var dayStartHour = <var:string value="dayStartHour"/>;
   </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">

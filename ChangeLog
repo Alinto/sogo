@@ -1,5 +1,18 @@
 2008-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainView.m ([UIxCalMainView -dayStartHour]):
+	new getter for computing the default scroll point in the day and
+	week views.
+
+	* UI/Scheduler/UIxCalDayTable.m ([UIxCalDayTable
+	-clickableHourCellClass]): the "dayEndHour" is the hour where the
+	outOfDay class starts.
+
+	* UI/PreferencesUI/UIxPreferences.m ([UIxPreferences -hasChanged])
+	([UIxPreferences -setHasChanged:newHasChanged]): new accessors
+	method for a new hidden input field that is set to 1 if the values
+	have changed and require a refresh of the main window.
+
 	* SoObjects/SOGo/AgenorUserDefaults.[hm]: renamed module class and
 	class moduel to SOGoUserDefaults.
 
