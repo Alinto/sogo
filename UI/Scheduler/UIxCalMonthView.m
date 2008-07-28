@@ -102,7 +102,7 @@
 				  [selectedDate firstDayOfMonth]];
       lastDayOfMonth = [selectedDate lastDayOfMonth];
       firstToLast = ([lastDayOfMonth timeIntervalSinceDate: firstOfAllDays]
-		     / 86400);
+		     / 86400) + 1;
       weeks = firstToLast / 7;
       if ((firstToLast % 7))
 	weeks++;

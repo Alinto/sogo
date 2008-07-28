@@ -1,5 +1,9 @@
 2008-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView
+	-weeksToDisplay]): add one day to the computed delta, because
+	there is always at least one week displayed.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-foldersOfType:typematchingUID:uid]): make searches only in user
 	repositories and not in addressbooks.
