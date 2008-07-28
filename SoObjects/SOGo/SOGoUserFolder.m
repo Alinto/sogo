@@ -194,7 +194,7 @@
   results = [NSMutableDictionary dictionary];
 
   contacts
-    = [[LDAPUserManager sharedUserManager] fetchContactsMatching: uid];
+    = [[LDAPUserManager sharedUserManager] fetchUsersMatching: uid];
   enumerator = [contacts objectEnumerator];
   while ((contact = [enumerator nextObject]))
     {

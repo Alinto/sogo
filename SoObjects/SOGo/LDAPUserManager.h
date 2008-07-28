@@ -54,6 +54,7 @@
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid;
 - (NSArray *) fetchContactsMatching: (NSString *) match;
+- (NSArray *) fetchUsersMatching: (NSString *) filter;
 
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;

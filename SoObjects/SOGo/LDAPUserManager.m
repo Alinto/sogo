@@ -164,14 +164,12 @@ static BOOL forceImapLoginWithEmail = NO;
 
   sourceIDs = [NSMutableArray array];
   allIDs = [[sources allKeys] objectEnumerator];
-  currentID = [allIDs nextObject];
-  while (currentID)
+  while ((currentID = [allIDs nextObject])) 
     {
       canAuthenticate = [[sourcesMetadata objectForKey: currentID]
 			  objectForKey: sourceType];
       if ([canAuthenticate boolValue])
 	[sourceIDs addObject: currentID];
-      currentID = [allIDs nextObject];
     }
 
   return sourceIDs;
@@ -512,6 +510,25 @@ static BOOL forceImapLoginWithEmail = NO;
   while ((currentSource = [ldapSources nextObject]))
     [contacts addObjectsFromArray:
 		[currentSource fetchContactsMatching: filter]];
+
+  return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
+}
+
+- (NSArray *) fetchUsersMatching: (NSString *) filter
+{
+  NSMutableArray *contacts;
+  NSEnumerator *ldapSources;
+  NSString *sourceID;
+  LDAPSource *currentSource;
+
+  contacts = [NSMutableArray array];
+  ldapSources = [[self authenticationSourceIDs] objectEnumerator];
+  while ((sourceID = [ldapSources nextObject]))
+    {
+      currentSource = [sources objectForKey: sourceID];
+      [contacts addObjectsFromArray:
+		  [currentSource fetchContactsMatching: filter]];
+    }
 
   return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
 }
