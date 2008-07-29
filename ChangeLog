@@ -1,3 +1,9 @@
+2008-07-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
+	-davUserQuery:queryContext]): make searches only in user
+	repositories and not in addressbooks.
+
 2008-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalMonthView.m ([UIxCalMonthView

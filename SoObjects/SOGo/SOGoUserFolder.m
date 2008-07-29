@@ -28,6 +28,7 @@
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -315,8 +316,9 @@
   NSString *field;
 
   fetch = [NSMutableString string];
+
   um = [LDAPUserManager sharedUserManager];
-  users = [[um fetchContactsMatching: user] objectEnumerator];
+  users = [[um fetchUsersMatching: user] objectEnumerator];
   while ((currentUser = [users nextObject]))
     {
       [fetch appendString: @"<user>"];
