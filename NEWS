@@ -1,5 +1,5 @@
-0.9.0-2008XXXX (1.0)
---------------------
+0.9.0-20080729 (1.0 rc7)
+------------------------
 - work around the situation where Courier IMAP would refuse to rename the current mailbox or move it into the trash
 - fixed tab index in mail composition window
 - fixed default privacy selection for new events
@@ -7,8 +7,7 @@
 - added address completion in the web mail editor
 - implemented support for CalDAV methods which were missing for supporting iCal 3
 - added support to write to multiple contacts from the Address Book module
-- added support to move and copy one or many contacts to another
-address book in the Address Book module
+- added support to move and copy one or many contacts to another address book in the Address Book module
 - added icons to folders in Address Book module
 - fixed various bugs occuring with Safari 3.1
 - fixed various bugs occuring with Firefox 3
@@ -17,6 +16,7 @@ address book in the Address Book module
 - implemented the handling of exceptional occurences of recurrent events
 - all the calendar preferences are now taken into account
 - the user defaults variable "SOGoAuthentificationMethod" has been renamed to "SOGoAuthenticationMethod"
+- fixed a bug where the search of users would be done in addressbook-only LDAP repositories
 
 0.9.0-20080520 (1.0 rc6)
 ------------------------
