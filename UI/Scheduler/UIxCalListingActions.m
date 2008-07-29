@@ -403,7 +403,7 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
 
 - (NSMutableDictionary *) _eventBlockWithStart: (unsigned int) start
 					   end: (unsigned int) end
-					 cname: (NSString *) cName
+					number: (NSNumber *) number
 					 onDay: (unsigned int) dayStart
 				recurrenceTime: (unsigned int) recurrenceTime
 				     userState: (iCalPersonPartStat) userState
@@ -416,7 +416,7 @@ _feedBlockWithMonthBasedData(NSMutableDictionary *block, unsigned int start,
     _feedBlockWithDayBasedData (block, start, end, dayStart);
   else
     _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
-  [block setObject: cName forKey: @"cname"];
+  [block setObject: number forKey: @"nbr"];
   if (recurrenceTime)
     [block setObject: [NSNumber numberWithInt: recurrenceTime]
 	   forKey: @"recurrenceTime"];
@@ -463,12 +463,12 @@ _userStateInEvent (NSArray *event)
 
 - (void) _fillBlocks: (NSArray *) blocks
 	   withEvent: (NSArray *) event
+	  withNumber: (NSNumber *) number
 {
   unsigned int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
     eventEnd, offset, recurrenceTime;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
-  NSString *eventCName;
   iCalPersonPartStat userState;
 
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
@@ -496,13 +496,12 @@ _userStateInEvent (NSArray *event)
   if (eventEnd > endsSecs)
     eventEnd = endsSecs;
 
-  eventCName = [event objectAtIndex: 0];
   userState = _userStateInEvent (event);
   while (currentDayStart + dayLength < eventEnd)
     {
       eventBlock = [self _eventBlockWithStart: currentStart
 			 end: currentDayStart + dayLength - 1
-			 cname: eventCName
+			 number: number
 			 onDay: currentDayStart
 			 recurrenceTime: recurrenceTime
 			 userState: userState];
@@ -514,7 +513,7 @@ _userStateInEvent (NSArray *event)
     }
   eventBlock = [self _eventBlockWithStart: currentStart
 		     end: eventEnd
-		     cname: eventCName
+		     number: number
 		     onDay: currentDayStart
 		     recurrenceTime: recurrenceTime
 		     userState: userState];
@@ -736,6 +735,7 @@ _computeBlocksPosition (NSArray *blocks)
   int count, max;
   NSArray *events, *event, *eventsBlocks;
   NSMutableArray *allDayBlocks, *blocks, *currentDay;
+  NSNumber *eventNbr;
 
   [self _setupContext];
 
@@ -748,10 +748,12 @@ _computeBlocksPosition (NSArray *blocks)
   for (count = 0; count < max; count++)
     {
       event = [events objectAtIndex: count];
+      eventNbr = [NSNumber numberWithUnsignedInt: count];
       if (dayBasedView && [[event objectAtIndex: 7] boolValue])
-	[self _fillBlocks: allDayBlocks withEvent: event];
+	[self _fillBlocks: allDayBlocks
+	      withEvent: event withNumber: eventNbr];
       else
-	[self _fillBlocks: blocks withEvent: event];
+	[self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
     }
 
   max = [blocks count];

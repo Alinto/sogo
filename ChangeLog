@@ -1,5 +1,11 @@
 2008-07-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions
+	-eventsBlocksAction]): return event blocks with the serial number
+	of the event they refer to in the events list (first array) rather
+	than their cname, so that specific occurences can be
+	differenciated.
+
 	* SoObjects/SOGo/SOGoUserFolder.m ([SOGoUserFolder
 	-davUserQuery:queryContext]): make searches only in user
 	repositories and not in addressbooks.

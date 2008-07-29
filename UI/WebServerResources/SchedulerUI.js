@@ -20,7 +20,6 @@ var calendarsOfEventsToDelete = [];
 var usersRightsWindowHeight = 250;
 var usersRightsWindowWidth = 502;
 
-var eventsBlocks;
 var calendarEvents = null;
 
 var userStates = [ "needs-action", "accepted", "declined", "tentative" ];
@@ -259,12 +258,27 @@ function deleteEventCallback(http) {
   }
 }
 
+function getEventById(cname, owner) {
+  var event = null;
+
+  if (calendarEvents) {
+    if (!owner)
+      owner = UserLogin;
+    var userEvents = calendarEvents[owner];
+    if (userEvents)
+      event = userEvents[cname];
+  }
+
+  return event;
+}
+
 function deleteTasksFromViews(tasks) {
 }
 
 function deleteEventsFromViews(events) {
   if (calendarEvents) {
     for (var i = 0; i < events.length; i++) {
+      // FIXME cname + !calendar + siblings
       var cname = events[i];
       var event = calendarEvents[cname];
       if (event) {
@@ -309,52 +323,55 @@ function performEventEdition(folder, event, recurrence) {
 
 function performEventDeletion(folder, event, recurrence) {
   if (calendarEvents) {
-    var eventEntry = calendarEvents[event];
-    if (eventEntry) {
-      var urlstr = ApplicationBaseURL + folder + "/" + event;
-      var nodes;
-      if (recurrence) {
-	urlstr += "/" + recurrence;
-	var occurenceTime = recurrence.substring(9);
-	nodes = [];
-	for (var i = 0; i < eventEntry.siblings.length; i++) {
-	  if (eventEntry.siblings[i].recurrenceTime
-	      && eventEntry.siblings[i].recurrenceTime == occurenceTime)
-	    nodes.push(eventEntry.siblings[i]);
-	}
-      }
-      else
-	nodes = eventEntry.siblings;
-      urlstr += "/delete";
+    var urlstr = ApplicationBaseURL + folder + "/" + event;
+    var occurenceTime;
+    if (recurrence) {
+      urlstr += "/" + recurrence;
+      occurenceTime = recurrence.substring(9);
+    }
+    else
+      occurenceTime = null;
+
+    urlstr += "/delete";
+    var nodes = _eventBlocksMatching(folder, event, occurenceTime);
+    if (nodes)
       document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
 							   performDeleteEventCallback,
 							   { nodes: nodes,
-							     recurrence: recurrence });
-    }
+							     occurence: occurenceTime });
   }
 }
 
 function performDeleteEventCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
+      var occurenceTime = http.callbackData.occurence;
       var nodes = http.callbackData.nodes;
-      var recurrenceTime = 0;
-      if (http.callbackData.recurrence)
-	recurrenceTime = http.callbackData.recurrence.substring(9);
-      var cName = nodes[0].cname;
-      var eventEntry = calendarEvents[cName];
-      var node = nodes.pop();
-      while (node) {
+      var cname = nodes[0].cname;
+      var calendar = nodes[0].calendar;
+      for (var i = 0; i < nodes.length; i++) {
+	var node = nodes[i];
+	log("node: " + node);
 	node.parentNode.removeChild(node);
-	node = nodes.pop();
       }
-      if (recurrenceTime) {
-	var row = $(cName + "-" + recurrenceTime);
+      var basename = calendar + "-" + cname;
+      if (occurenceTime) {
+	var row = $(basename + "-" + occurenceTime);
+	log("rowID: " + basename + "-" + occurenceTime);
 	if (row)
 	  row.parentNode.removeChild(row);
+
+	var occurences = calendarEvents[calendar][cname];
+	var newOccurences = [];
+	for (var i = 0; i < occurences.length; i++) {
+	  var occurence = occurences[i];
+	  if (occurence[13] != recurrenceTime)
+	    newOccurences.push(occurence);
+	}
+	calendarEvents[calendar][cname] = newOccurences;
       }
       else {
-	delete calendarEvents[cName];
+	log("basename: " + basename);
 	var tables = [ "eventsList", "tasksList" ];
 	for (var i = 0; i < 2; i++) {
 	  var table = $(tables[i]);
@@ -365,10 +382,11 @@ function performDeleteEventCallback(http) {
 	  for (var j = rows.length; j > 0; j--) {
 	    var row = $(rows[j - 1]);
 	    var id = row.getAttribute("id");
-	    if (id.indexOf(cName) == 0)
+	    if (id.indexOf(basename) == 0)
 	      row.parentNode.removeChild(row);
 	  }
 	}
+	delete calendarEvents[calendar][cname];
       }
     }
   }
@@ -466,16 +484,16 @@ function eventsListCallback(http) {
     if (http.responseText.length > 0) {
       var data = http.responseText.evalJSON(true);
       for (var i = 0; i < data.length; i++) {
-	var row = document.createElement("tr");
+	var row = $(document.createElement("tr"));
 	table.tBodies[0].appendChild(row);
-	$(row).addClassName("eventRow");
+	row.addClassName("eventRow");
 	var rTime = data[i][13];
-	var id = escape(data[i][0]);
+	var id = escape(data[i][1] + "-" + data[i][0]);
 	if (rTime)
 	  id += "-" + escape(rTime);
 	row.setAttribute("id", id);
 	row.cname = escape(data[i][0]);
-	row.calendar = data[i][1];
+	row.calendar = escape(data[i][1]);
 	if (rTime)
 	  row.recurrenceTime = escape(rTime);
 	var startDate = new Date();
@@ -734,9 +752,11 @@ function scrollDayView(scrollEvent) {
   var divs;
 
   // Select event in calendar view
-  if (scrollEvent)
-    selectCalendarEvent(scrollEvent);
-  
+  if (scrollEvent) {
+    var eventRow = $(scrollEvent);
+    selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
+  }
+
   // Don't scroll if in month view
   if (currentView == "monthview")
     return;
@@ -751,6 +771,7 @@ function scrollDayView(scrollEvent) {
   if (scrollEvent && calendarEvents) {
     var event = calendarEvents[scrollEvent];
     if (event) {
+      // FIXME siblings
       var classes = $w(event.siblings[0].className);
       for (var i = 0; i < classes.length; i++)
 	if (classes[i].startsWith("starts")) {
@@ -821,17 +842,42 @@ function refreshCalendarEvents(scrollEvent) {
 			  "scrollEvent": scrollEvent});
 }
 
+function _parseEvents(list) {
+  var newCalendarEvents = {};
+
+  for (var i = 0; i < list.length; i++) {
+    var event = list[i];
+    var cname = event[0];
+    var calendar = event[1];
+//     log("parsed cname: " + cname + "; calendar: " + calendar);
+    var calendarDict = newCalendarEvents[calendar];
+    if (!calendarDict) {
+      calendarDict = {};
+      newCalendarEvents[calendar] = calendarDict;
+    }
+    var occurences = calendarDict[cname];
+    if (!occurences) {
+      occurences = [];
+      calendarDict[cname] = occurences;
+    }
+    event.blocks = [];
+    occurences.push(event);
+  }
+
+  return newCalendarEvents;
+}
+
 function refreshCalendarEventsCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     if (http.responseText.length > 0) {
       var eventsBlocks = http.responseText.evalJSON(true);
-      calendarEvents = _prepareCalendarEventsCache(eventsBlocks[0]);
+      calendarEvents = _parseEvents(eventsBlocks[0]);
       if (currentView == "monthview")
-	_drawMonthCalendarEvents(eventsBlocks[2]);
+	_drawMonthCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
       else {
-	_drawCalendarAllDaysEvents(eventsBlocks[1]);
-	_drawCalendarEvents(eventsBlocks[2]);
+	_drawCalendarAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
+	_drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
       }
     }
     scrollDayView(http.callbackData["scrollEvent"]);
@@ -840,37 +886,10 @@ function refreshCalendarEventsCallback(http) {
     log("AJAX error when refreshing calendar events");
 }
 
-function _prepareCalendarEventsCache(events) {
-  var cache = {};
-
-  for (var i = 0; i < events.length; i++) {
-    cache[events[i][0]] = events[i];
-  }
-
-  return cache;
-}
-
-function _drawCalendarAllDaysEvents(events) {
-  var daysView = $("calendarHeader");
-  var subdivs = daysView.childNodesWithTag("div");
-  var days = subdivs[1].childNodesWithTag("div");
-  for (var i = 0; i < events.length; i++) {
-    var parentDiv = days[i];
-    for (var j = 0; j < events[i].length; j++) {
-      var eventRep = events[i][j];
-      var eventDiv = newAllDayEventDIV(eventRep);
-      parentDiv.appendChild(eventDiv);
-    }
-  }
-}
-
 function newBaseEventDIV(eventRep, event, eventText) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
   var eventDiv = $(document.createElement("div"));
-  if (!event.siblings)
-    event.siblings = [];
-  eventDiv.event = event;
   eventDiv.cname = event[0];
   eventDiv.calendar = event[1];
   if (eventRep.recurrenceTime)
@@ -907,21 +926,35 @@ function newBaseEventDIV(eventRep, event, eventText) {
   eventDiv.observe("click", onCalendarSelectEvent);
   eventDiv.observe("dblclick", editDoubleClickedEvent);
 
-  event.siblings.push(eventDiv);
+  event.blocks.push(eventDiv);
 
   return eventDiv;
 }
 
-function newAllDayEventDIV(eventRep) {
+function _drawCalendarAllDayEvents(events, eventsData) {
+  var daysView = $("calendarHeader");
+  var subdivs = daysView.childNodesWithTag("div");
+  var days = subdivs[1].childNodesWithTag("div");
+  for (var i = 0; i < events.length; i++) {
+    var parentDiv = days[i];
+    for (var j = 0; j < events[i].length; j++) {
+      var eventRep = events[i][j];
+      var nbr = eventRep.nbr;
+      var eventDiv = newAllDayEventDIV(eventRep, eventsData[nbr]);
+      parentDiv.appendChild(eventDiv);
+    }
+  }
+}
+
+function newAllDayEventDIV(eventRep, event) {
 // cname, calendar, starts, lasts,
 // 		     startHour, endHour, title) {
-  var event = calendarEvents[eventRep.cname];
   var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
 
   return eventDiv;
 }
 			     
-function _drawCalendarEvents(events) {
+function _drawCalendarEvents(events, eventsData) {
   var daysView = $("daysView");
   var subdivs = daysView.childNodesWithTag("div");
   var days = subdivs[1].childNodesWithTag("div");
@@ -929,14 +962,14 @@ function _drawCalendarEvents(events) {
     var parentDiv = days[i].childNodesWithTag("div")[0];
     for (var j = 0; j < events[i].length; j++) {
       var eventRep = events[i][j];
-      var eventDiv = newEventDIV(eventRep);
+      var nbr = eventRep.nbr;
+      var eventDiv = newEventDIV(eventRep, eventsData[nbr]);
       parentDiv.appendChild(eventDiv);
     }
   }
 }
 
-function newEventDIV(eventRep) {
-  var event = calendarEvents[eventRep.cname];
+function newEventDIV(eventRep, event) {
   var eventDiv = newBaseEventDIV(eventRep, event, event[3]);
 
   var pc = 100 / eventRep.siblings;
@@ -949,28 +982,29 @@ function newEventDIV(eventRep) {
   return eventDiv;
 }
 
-function _drawMonthCalendarEvents(events) {
+function _drawMonthCalendarEvents(events, eventsData) {
   var daysView = $("monthDaysView");
   var days = daysView.childNodesWithTag("div");
   for (var i = 0; i < days.length; i++) {
     var parentDiv = days[i];
     for (var j = 0; j < events[i].length; j++) {
       var eventRep = events[i][j];
-      var eventDiv = newMonthEventDIV(eventRep);
+      var nbr = eventRep.nbr;
+      var eventDiv = newMonthEventDIV(eventRep, eventsData[nbr]);
       parentDiv.appendChild(eventDiv);
     }
   }
 }
 
-function newMonthEventDIV(eventRep) {
-  var event = calendarEvents[eventRep.cname];
+function newMonthEventDIV(eventRep, event) {
   var eventText;
   if (event[7])
     eventText = event[3];
   else
     eventText = eventRep.starthour + " - " + event[3];
 
-  var eventDiv = newBaseEventDIV(eventRep, event, eventText);
+  var eventDiv = newBaseEventDIV(eventRep, event,
+				 eventText);
 
   return eventDiv;
 }
@@ -1241,34 +1275,57 @@ function onYearMenuItemClick(event) {
   changeDateSelectorDisplay(year + month + "01", true);
 }
 
-function selectCalendarEvent(cname) {
+function _eventBlocksMatching(calendar, cname, recurrenceTime) {
+  var blocks = null;
+
+  var events = calendarEvents[calendar];
+  if (events) {
+    var occurences = events[cname];
+    if (occurences) {
+      if (recurrenceTime) {
+	for (var i = 0; i < occurences.length; i++) {
+	  var occurence = occurences[i];
+	  if (occurence[13] == recurrenceTime)
+	    blocks = occurence.blocks;
+	}
+      }
+      else {
+	blocks = [];
+	for (var i = 0; i < occurences.length; i++) {
+	  var occurence = occurences[i];
+	  blocks = blocks.concat(occurence.blocks);
+	}
+      }
+    }
+  }
+
+  return blocks;
+}
+
+function selectCalendarEvent(calendar, cname, recurrenceTime) {
   // Select event in calendar view
   if (selectedCalendarCell)
     for (var i = 0; i < selectedCalendarCell.length; i++)
       selectedCalendarCell[i].deselect();
 
-  if (calendarEvents) {
-    var event = calendarEvents[cname];
-//     if (event) {
-//       if (event[12])
-// 	log("recurrence; date=" + event[4]);
-//     }
-    if (event && event.siblings) {
-      for (var i = 0; i < event.siblings.length; i++)
-	event.siblings[i].selectElement();
-      selectedCalendarCell = event.siblings;
-    }
+  var selection = _eventBlocksMatching(calendar, cname, recurrenceTime);
+  if (selection) {
+    for (var i = 0; i < selection.length; i++)
+      selection[i].selectElement();
+    selectedCalendarCell = selection;
   }
 }
 
 function onCalendarSelectEvent() {
-  var list = $("eventsList");
-
-  selectCalendarEvent(this.cname);
+  selectCalendarEvent(this.calendar, this.cname, this.recurrenceTime);
 
   // Select event in events list
+  var list = $("eventsList");
   $(list.tBodies[0]).deselectAll();
-  var row = $(this.cname);
+  var rowID = this.calendar + "-" + this.cname;
+  if (this.recurrenceTime)
+    rowID += "-" + this.recurrenceTime;
+  var row = $(rowID);
   if (row) {
     var div = row.parentNode.parentNode.parentNode;
     div.scrollTop = row.offsetTop - (div.offsetHeight / 2);
@@ -1580,9 +1637,9 @@ function initCalendarSelector() {
   }
 
   var links = $("calendarSelectorButtons").childNodesWithTag("a");
-  links[0].observe("click", onCalendarNew);
-  links[1].observe("click", onCalendarAdd);
-  links[2].observe("click", onCalendarRemove);
+  $(links[0]).observe("click", onCalendarNew);
+  $(links[1]).observe("click", onCalendarAdd);
+  $(links[2]).observe("click", onCalendarRemove);
 }
 
 function onCalendarModify(event) {
