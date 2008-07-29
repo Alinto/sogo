@@ -26,6 +26,7 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
 

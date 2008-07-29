@@ -73,58 +73,58 @@ static NSArray *childRecordFields = nil;
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *webdavAclManager = nil;
+  SOGoWebDAVAclManager *aclManager = nil;
 
-  if (!webdavAclManager)
+  if (!aclManager)
     {
-      webdavAclManager = [SOGoWebDAVAclManager new];
-      [webdavAclManager registerDAVPermission: davElement (@"read", @"DAV:")
-			abstract: YES
-			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"all", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
-			abstract: YES
-			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"read", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"write", @"DAV:")
-			abstract: YES
-			withEquivalent: nil
-			asChildOf: davElement (@"all", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"bind", @"DAV:")
-			abstract: NO
-			withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-			asChildOf: davElement (@"write", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"unbind", @"DAV:")
-			abstract: NO
-			withEquivalent: SoPerm_DeleteObjects
-			asChildOf: davElement (@"write", @"DAV:")];
-      [webdavAclManager
+      aclManager = [SOGoWebDAVAclManager new];
+      [aclManager registerDAVPermission: davElement (@"read", @"DAV:")
+		  abstract: YES
+		  withEquivalent: SoPerm_WebDAVAccess
+		  asChildOf: davElement (@"all", @"DAV:")];
+      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", @"DAV:")
+		  abstract: YES
+		  withEquivalent: SoPerm_WebDAVAccess
+		  asChildOf: davElement (@"read", @"DAV:")];
+      [aclManager registerDAVPermission: davElement (@"write", @"DAV:")
+		  abstract: YES
+		  withEquivalent: nil
+		  asChildOf: davElement (@"all", @"DAV:")];
+      [aclManager registerDAVPermission: davElement (@"bind", @"DAV:")
+		  abstract: NO
+		  withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+		  asChildOf: davElement (@"write", @"DAV:")];
+      [aclManager registerDAVPermission: davElement (@"unbind", @"DAV:")
+		  abstract: NO
+		  withEquivalent: SoPerm_DeleteObjects
+		  asChildOf: davElement (@"write", @"DAV:")];
+      [aclManager
 	registerDAVPermission: davElement (@"write-properties", @"DAV:")
 	abstract: YES
 	withEquivalent: SoPerm_ChangePermissions /* hackish */
 	asChildOf: davElement (@"write", @"DAV:")];
-      [webdavAclManager
+      [aclManager
 	registerDAVPermission: davElement (@"write-content", @"DAV:")
 	abstract: YES
 	withEquivalent: nil
 	asChildOf: davElement (@"write", @"DAV:")];
-      [webdavAclManager registerDAVPermission: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")
-			abstract: YES
-			withEquivalent: nil
-			asChildOf: davElement (@"all", @"DAV:")];
-      [webdavAclManager
+      [aclManager registerDAVPermission: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")
+		  abstract: YES
+		  withEquivalent: nil
+		  asChildOf: davElement (@"all", @"DAV:")];
+      [aclManager
 	registerDAVPermission: davElement (@"read-acl", @"DAV:")
 	abstract: YES
 	withEquivalent: SOGoPerm_ReadAcls
 	asChildOf: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")];
-      [webdavAclManager
+      [aclManager
 	registerDAVPermission: davElement (@"write-acl", @"DAV:")
 	abstract: YES
 	withEquivalent: SoPerm_ChangePermissions
 	asChildOf: davElement (@"admin", @"urn:inverse:params:xml:ns:inverse-dav")];
     }
 
-  return webdavAclManager;
+  return aclManager;
 }
 
 + (void) initialize

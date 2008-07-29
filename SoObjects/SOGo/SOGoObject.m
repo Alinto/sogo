@@ -134,12 +134,12 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *webdavAclManager = nil;
+  SOGoWebDAVAclManager *aclManager = nil;
 
-  if (!webdavAclManager)
-    webdavAclManager = [SOGoWebDAVAclManager new];
+  if (!aclManager)
+    aclManager = [SOGoWebDAVAclManager new];
 
-  return webdavAclManager;
+  return aclManager;
 }
 
 /*

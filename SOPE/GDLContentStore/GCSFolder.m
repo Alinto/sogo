@@ -990,14 +990,17 @@ static NSArray *contentFieldNames = nil;
   }
   if (ofFlags.sameTableForQuick)
     quickChannel = nil;
-  else {
-    if ((quickChannel = [self acquireQuickChannel]) == nil) {
-      [self errorWithFormat:@"could not open quick channel!"];
-      [self releaseChannel:storeChannel];
-      return nil;
+  else
+    {
+      quickChannel = [self acquireQuickChannel];
+      if (!quickChannel)
+	{
+	  [self errorWithFormat:@"could not open quick channel!"];
+	  [self releaseChannel:storeChannel];
+	  return nil;
+	}
     }
-  }
-  
+
   /* delete rows */
   nowDate = [NSCalendarDate calendarDate];
 

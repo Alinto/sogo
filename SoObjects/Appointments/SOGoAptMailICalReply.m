@@ -25,7 +25,7 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/WOActionResults.h>
-#import <NGObjWeb/WOMessage.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 

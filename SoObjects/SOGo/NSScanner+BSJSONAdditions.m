@@ -276,37 +276,37 @@ NSString *jsonNullString = @"null";
 
 - (BOOL)scanJSONKeyValueSeparator
 {
-  return [self scanString:jsonKeyValueSeparatorString intoString:nil];
+  return [self scanString:jsonKeyValueSeparatorString intoString:NULL];
 }
 
 - (BOOL)scanJSONValueSeparator
 {
-  return [self scanString:jsonValueSeparatorString intoString:nil];
+  return [self scanString:jsonValueSeparatorString intoString:NULL];
 }
 
 - (BOOL)scanJSONObjectStartString
 {
-  return [self scanString:jsonObjectStartString intoString:nil];
+  return [self scanString:jsonObjectStartString intoString:NULL];
 }
 
 - (BOOL)scanJSONObjectEndString
 {
-  return [self scanString:jsonObjectEndString intoString:nil];
+  return [self scanString:jsonObjectEndString intoString:NULL];
 }
 
 - (BOOL)scanJSONArrayStartString
 {
-  return [self scanString:jsonArrayStartString intoString:nil];
+  return [self scanString:jsonArrayStartString intoString:NULL];
 }
 
 - (BOOL)scanJSONArrayEndString
 {
-  return [self scanString:jsonArrayEndString intoString:nil];
+  return [self scanString:jsonArrayEndString intoString:NULL];
 }
 
 - (BOOL)scanJSONStringDelimiterString;
 {
-  return [self scanString:jsonStringDelimiterString intoString:nil];
+  return [self scanString:jsonStringDelimiterString intoString:NULL];
 }
 
 @end

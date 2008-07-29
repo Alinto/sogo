@@ -54,50 +54,50 @@ static SoSecurityManager *sm = nil;
 
 + (SOGoWebDAVAclManager *) webdavAclManager
 {
-  SOGoWebDAVAclManager *webdavAclManager = nil;
+  SOGoWebDAVAclManager *aclManager = nil;
 
-  if (!webdavAclManager)
+  if (!aclManager)
     {
-      webdavAclManager = [SOGoWebDAVAclManager new];
-      [webdavAclManager registerDAVPermission: davElement (@"read",
-							   XMLNS_WEBDAV)
-			abstract: YES
-			withEquivalent: nil
-			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [webdavAclManager registerDAVPermission:
-			  davElement (@"read-current-user-privilege-set",
-				      XMLNS_WEBDAV)
-			abstract: NO
-			withEquivalent: SoPerm_WebDAVAccess
-			asChildOf: davElement (@"read", XMLNS_WEBDAV)];
-      [webdavAclManager registerDAVPermission: davElement (@"write",
-							   XMLNS_WEBDAV)
-			abstract: YES
-			withEquivalent: nil
-			asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [webdavAclManager registerDAVPermission: davElement (@"bind",
-							   XMLNS_WEBDAV)
-			abstract: NO
-			withEquivalent: SoPerm_AddFolders
-			asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [webdavAclManager registerDAVPermission: davElement (@"unbind",
-							   XMLNS_WEBDAV)
-			abstract: NO
-			withEquivalent: SoPerm_DeleteObjects
-			asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [webdavAclManager
+      aclManager = [SOGoWebDAVAclManager new];
+      [aclManager registerDAVPermission: davElement (@"read",
+						     XMLNS_WEBDAV)
+		  abstract: YES
+		  withEquivalent: nil
+		  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission:
+		    davElement (@"read-current-user-privilege-set",
+				XMLNS_WEBDAV)
+		  abstract: NO
+		  withEquivalent: SoPerm_WebDAVAccess
+		  asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"write",
+						     XMLNS_WEBDAV)
+		  abstract: YES
+		  withEquivalent: nil
+		  asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"bind",
+						     XMLNS_WEBDAV)
+		  abstract: NO
+		  withEquivalent: SoPerm_AddFolders
+		  asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"unbind",
+						     XMLNS_WEBDAV)
+		  abstract: NO
+		  withEquivalent: SoPerm_DeleteObjects
+		  asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
 	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
 	abstract: YES
 	withEquivalent: nil
 	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [webdavAclManager
+      [aclManager
 	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
 	abstract: YES
 	withEquivalent: nil
 	asChildOf: davElement (@"write", XMLNS_WEBDAV)];
     }
 
-  return webdavAclManager;
+  return aclManager;
 }
 
 - (id) init

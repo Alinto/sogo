@@ -26,7 +26,9 @@
 
 #import <NGObjWeb/SoObject.h>
 
+#import "SOGoObject.h"
 #import "SOGoUser.h"
+
 #import "SOGoCache.h"
 
 static SOGoCache *sharedCache = nil;

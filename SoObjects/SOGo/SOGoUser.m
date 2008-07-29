@@ -35,13 +35,14 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoUserDefaults.h"
 #import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
 #import "SOGoObject.h"
 #import "SOGoPermissions.h"
+#import "SOGoUserDefaults.h"
+#import "SOGoUserFolder.h"
 
 #import "SOGoUser.h"
 
