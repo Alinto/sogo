@@ -272,12 +272,8 @@
       [co flushMailCaches];
       connection = [co imap4Connection];
       subfolders = [[co allFolderURLs] objectEnumerator];
-      currentURL = [subfolders nextObject];
-      while (currentURL)
-	{
-	  [connection deleteMailboxAtURL: currentURL];
-	  currentURL = [subfolders nextObject];
-	}
+      while ((currentURL = [subfolders nextObject]))
+	[connection deleteMailboxAtURL: currentURL];
     }
   if (error)
     {

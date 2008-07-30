@@ -119,7 +119,7 @@
 	expunge = {
 	  protectedBy = "View";
 	  actionClass = "UIxMailFolderActions";
-	  actionName = "emptyTrash";
+	  actionName = "expunge";
 	};
 	createFolder = {
 	  protectedBy = "View";
