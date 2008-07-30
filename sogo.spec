@@ -1,16 +1,13 @@
-%define lfmaj 1
-%define lfmin 1
-
 Summary:      Scalable OpenGroupware.org (Inverse edition)
 Name:         sogo
-Version:      %{sogo_version}.%{sogo_release}
-Release:      gnustep.%{dist_suffix}
+Version:      %{sogo_version}
+Release:      %{dist_suffix}%{?dist}
 Vendor:       http://www.inverse.ca/
 Packager:     Wolfgang Sourdeau <wsourdeau@inverse.ca>
 License:      GPL
 URL:          http://www.inverse.ca/contributions/sogo.html
 Group:        Productivity/Groupware
-Source:       %{sogo_source}
+Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       %{sogo_prefix}
 AutoReqProv:  off
 Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd mod_ngobjweb sope%{sope_major_version}%{sope_minor_version}-cards
@@ -137,6 +134,7 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
 mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
+mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
 cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod
@@ -154,6 +152,7 @@ rm -fr ${RPM_BUILD_ROOT}
 /usr/sbin/sogod
 /var/run/sogo
 /var/log/sogo
+/var/spool/sogo
 %{prefix}/Tools/Admin/sogod-0.9
 %{prefix}/Library/Libraries/libSOGo.so.*
 %{prefix}/Library/Libraries/libSOGoUI.so.*
@@ -213,26 +212,24 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # **************************** pkgscripts *****************************
 %post
-if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo; fi
+if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
 /bin/chown sogo /var/run/sogo
 /bin/chown sogo /var/log/sogo
-if [ ! -d /var/spool/sogo ]
-then
-  /bin/mkdir /var/spool/sogo
-  /bin/chown sogo /var/spool/sogo
-  /bin/chmod 700 /var/spool/sogo
-fi
+/bin/chown sogo /var/spool/sogo
+/bin/chmod 700 /var/spool/sogo
 /sbin/chkconfig --add sogod
+
+%preun
+/sbin/chkconfig --del sogod
+/sbin/service sogod stop > /dev/null 2>&1
 
 %postun
 if test "$1" = "0"
 then
   /usr/sbin/userdel sogo
-  /usr/sbin/groupdel sogo
+  /usr/sbin/groupdel sogo > /dev/null 2>&1
   /bin/rm -rf /var/run/sogo
   /bin/rm -rf /var/spool/sogo
-  /sbin/chkconfig --del sogod
-  /sbin/service sogod stop > /dev/null 2>&1
 fi
 
 # ********************************* changelog *************************
