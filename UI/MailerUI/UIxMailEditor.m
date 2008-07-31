@@ -75,7 +75,6 @@
 @implementation UIxMailEditor
 
 static BOOL showInternetMarker = NO;
-static BOOL useLocationBasedSentFolder = NO;
 static NSDictionary *internetMailHeaders = nil;
 static NSArray *infoKeys = nil;
 
@@ -87,9 +86,6 @@ static NSArray *infoKeys = nil;
 				@"subject", @"to", @"cc", @"bcc", 
 			      @"from", @"replyTo", @"inReplyTo",
 			      nil];
-  
-  useLocationBasedSentFolder =
-    [ud boolForKey:@"SOGoUseLocationBasedSentFolder"];
   
   /* Internet mail settings */
   
