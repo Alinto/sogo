@@ -10,7 +10,7 @@ Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       %{sogo_prefix}
 AutoReqProv:  off
-Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd mod_ngobjweb sope%{sope_major_version}%{sope_minor_version}-cards
+Requires:     gnustep-base sope%{sope_major_version}%{sope_minor_version}-core httpd mod_ngobjweb sope%{sope_major_version}%{sope_minor_version}-core  sope%{sope_major_version}%{sope_minor_version}-appserver sope%{sope_major_version}%{sope_minor_version}-ldap sope%{sope_major_version}%{sope_minor_version}-cards sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
 BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel 
 %description
@@ -234,6 +234,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu Jul 31 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- added dependencies on sopeXY-appserver, -core, -gdl1-contentstore and -ldap
+
 * Wed May 21 2008 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - removed installation of template and resource files, since it is now done by the upstream package
 
@@ -242,4 +245,3 @@ fi
 
 * Wed Jul 18 2007 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - initial build
-
