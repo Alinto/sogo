@@ -113,7 +113,8 @@ function _batchDeleteEvents() {
 		+ "/batchDelete?ids=" + events.join('/'));
   document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                        deleteEventCallback,
-                                                       events);
+						       { calendar: calendar,
+							 events: events });
 }
 
 function deleteEvent() {
@@ -133,12 +134,12 @@ function deleteEvent() {
       else {
 	if (confirm(label)) {
 	  if (document.deleteEventAjaxRequest) {
-          document.deleteEventAjaxRequest.aborted = true;
-          document.deleteEventAjaxRequest.abort();
+	    document.deleteEventAjaxRequest.aborted = true;
+	    document.deleteEventAjaxRequest.abort();
 	  }
 	  var sortedNodes = [];
 	  var calendars = [];
-	  
+
 	  for (var i = 0; i < nodes.length; i++) {
 	    var calendar = nodes[i].calendar;
 	    if (!sortedNodes[calendar]) {
@@ -231,27 +232,59 @@ function modifyEventCallback(http) {
   }
 }
 
+function _deleteCalendarEventBlocks(calendar, cname) {
+  var events = calendarEvents[calendar];
+  if (events) {
+    var occurences = events[cname];
+    if (occurences)
+      for (var i = 0; i < occurences.length; i++) {
+	var nodes = occurences[i].blocks;
+	for (var j = 0; j < nodes.length; j++) {
+	  var node = nodes[j];
+	  node.parentNode.removeChild(node);
+	}
+      }
+  }
+}
+
+function _deleteEventFromTables(basename) {
+  var tables = [ $("eventsList"), $("tasksList") ];
+  for (var i = 0; i < 2; i++) {
+    var table = tables[i];
+    if (table.tBodies)
+      rows = table.tBodies[0].rows;
+    else
+      rows = $(table).childNodesWithTag("li");
+    for (var j = rows.length; j > 0; j--) {
+      var row = $(rows[j - 1]);
+      var id = row.getAttribute("id");
+      if (id.indexOf(basename) == 0)
+	row.parentNode.removeChild(row);
+    }
+  }
+}
+
 function deleteEventCallback(http) {
   if (http.readyState == 4) {
     if (isHttpStatus204(http.status)) {
       var isTask = false;
-      var nodes = http.callbackData;
-      for (var i = 0; i < nodes.length; i++) {
-	var node = $(nodes[i]);
-	if (node) {
-	  isTask = isTask || (node.parentNode.id == 'tasksList');
-	  node.parentNode.removeChild(node);
-	}
+      var calendar = http.callbackData.calendar;
+      var events = http.callbackData.events;
+
+//       log("calendar: " + calendar + "\n");
+//       log("events: " + events.join(", " ) + "\n");
+      for (var i = 0; i < events.length; i++) {
+	var cname = events[i];
+	_deleteCalendarEventBlocks(calendar, cname);
+	_deleteEventFromTables(calendar + "-" + cname);
+	delete calendarEvents[calendar][cname];
       }
+
       if (eventsToDelete.length)
 	_batchDeleteEvents();
       else {
 	document.deleteEventAjaxRequest = null;
       }
-      if (isTask)
-	deleteTasksFromViews(nodes);
-      else
-	deleteEventsFromViews(nodes)
     }
     else
       log ("deleteEventCallback Ajax error");
@@ -270,31 +303,6 @@ function getEventById(cname, owner) {
   }
 
   return event;
-}
-
-function deleteTasksFromViews(tasks) {
-}
-
-function deleteEventsFromViews(events) {
-  if (calendarEvents) {
-    for (var i = 0; i < events.length; i++) {
-      // FIXME cname + !calendar + siblings
-      var cname = events[i];
-      var event = calendarEvents[cname];
-      if (event) {
-	if (event.siblings) {
-	  for (var j = 0; j < event.siblings.length; j++) {
-	    var eventDiv = event.siblings[j];
-	    eventDiv.parentNode.removeChild(eventDiv);
-	  }
-	}
-	delete calendarEvents[cname]
-      }
-      var row = $(cname);
-      if (row)
-	row.parentNode.removeChild(row);
-    }
-  }
 }
 
 function _editRecurrenceDialog(eventDiv, method) {
@@ -351,13 +359,13 @@ function performDeleteEventCallback(http) {
       var calendar = nodes[0].calendar;
       for (var i = 0; i < nodes.length; i++) {
 	var node = nodes[i];
-	log("node: " + node);
+// 	log("node: " + node);
 	node.parentNode.removeChild(node);
       }
       var basename = calendar + "-" + cname;
       if (occurenceTime) {
 	var row = $(basename + "-" + occurenceTime);
-	log("rowID: " + basename + "-" + occurenceTime);
+// 	log("rowID: " + basename + "-" + occurenceTime);
 	if (row)
 	  row.parentNode.removeChild(row);
 
@@ -371,21 +379,8 @@ function performDeleteEventCallback(http) {
 	calendarEvents[calendar][cname] = newOccurences;
       }
       else {
-	log("basename: " + basename);
-	var tables = [ "eventsList", "tasksList" ];
-	for (var i = 0; i < 2; i++) {
-	  var table = $(tables[i]);
-	  if (table.tBodies)
-	    rows = table.tBodies[0].rows;
-	  else
-	    rows = $(table).childNodesWithTag("li");
-	  for (var j = rows.length; j > 0; j--) {
-	    var row = $(rows[j - 1]);
-	    var id = row.getAttribute("id");
-	    if (id.indexOf(basename) == 0)
-	      row.parentNode.removeChild(row);
-	  }
-	}
+// 	log("basename: " + basename);
+	_deleteEventFromTables(basename);
 	delete calendarEvents[calendar][cname];
       }
     }
@@ -566,12 +561,15 @@ function tasksListCallback(http) {
 	listItem.observe("mousedown", listRowMouseDownHandler);
 	listItem.observe("click", onRowClick);
 	listItem.observe("dblclick", editDoubleClickedEvent);
-	listItem.setAttribute("id", data[i][0]);
+
+	var calendar = escape(data[i][1]);
+	var cname = escape(data[i][0]);
+	listItem.setAttribute("id", calendar + "-" + cname);
 	listItem.addClassName(data[i][5]);
 	listItem.addClassName(data[i][6]);
-	listItem.calendar = data[i][1];
-	listItem.addClassName("calendarFolder" + data[i][1]);
-	listItem.cname = escape(data[i][0]);
+	listItem.calendar = calendar;
+	listItem.addClassName("calendarFolder" + calendar);
+	listItem.cname = cname;
 	var input = $(document.createElement("input"));
 	input.setAttribute("type", "checkbox");
 	listItem.appendChild(input);
