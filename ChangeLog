@@ -1,5 +1,10 @@
 2008-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent -calendar:create:secure]): we now return a
+	deep copy of the current calendar element, so that further
+	modifications do not impact the original copy.
+
 	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): same as
 	below.
 

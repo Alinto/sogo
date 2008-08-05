@@ -328,7 +328,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 {
   NSString *componentTag;
   iCalRepeatableEntityObject *newComponent;
-  iCalCalendar **calendar;
+  iCalCalendar **calendar, *returnedCopy;
   NSString *iCalString;
 
   if (secure)
@@ -365,7 +365,10 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 	}
     }
 
-  return *calendar;
+  returnedCopy = [*calendar mutableCopy];
+  [returnedCopy autorelease];
+
+  return returnedCopy;
 }
 
 - (id) component: (BOOL) create secure: (BOOL) secure
