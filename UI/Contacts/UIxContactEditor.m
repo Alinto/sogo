@@ -159,7 +159,12 @@
 
 - (BOOL) isNew
 {
-  return [[self clientObject] isNew];
+  id co;
+
+  co = [self clientObject];
+
+  return ([co isKindOfClass: [SOGoContentObject class]]
+	  && [co isNew]);
 }
 
 - (NSArray *) addressBooksList
