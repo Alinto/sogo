@@ -1,3 +1,11 @@
+2008-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m ([SOGoUser +initialize]): same as
+	below.
+
+	* Main/SOGo.m ([SOGo -run]): rename AgenorProfileURL to
+	SOGoProfileURL automagically.
+
 2008-07-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m ([UIxCalListingActions

@@ -242,9 +242,13 @@ static BOOL debugObjectAllocation = NO;
 	{
 	  value = [ud stringForKey: @"AgenorProfileURL"];
 	  if (value)
-	    [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
-		  @" was renamed to 'SOGoProfileURL', please update your"
-		  @" configuration accordingly"];
+	    {
+	      [ud setObject: value forKey: *urlString];
+	      [ud removeObjectForKey: @"AgenorProfileURL"];
+	      [ud synchronize];
+	      [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
+		    @" was renamed to 'SOGoProfileURL'"];
+	    }
 	}
 
       if (value)

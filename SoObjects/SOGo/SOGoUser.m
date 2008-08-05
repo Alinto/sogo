@@ -127,7 +127,17 @@ _timeValue (NSString *key)
     {
       profileURL = [ud stringForKey: @"SOGoProfileURL"];
       if (!profileURL)
-	profileURL = [ud stringForKey: @"AgenorProfileURL"];
+	{
+	  profileURL = [ud stringForKey: @"AgenorProfileURL"];
+	  if (profileURL)
+	    {
+	      [ud setObject: profileURL forKey: @"SOGoProfileURL"];
+	      [ud removeObjectForKey: @"AgenorProfileURL"];
+	      [ud synchronize];
+	      [self warnWithFormat: @"the user defaults key 'AgenorProfileURL'"
+		    @" was renamed to 'SOGoProfileURL'"];
+	    }
+	}
       SOGoProfileURL = [[NSURL alloc] initWithString: profileURL];
     }
   if (!fallbackIMAP4Server)
