@@ -65,7 +65,6 @@
                    types: (NSArray *) someTypes
              singleValue: (NSString *) aValue;
 
-- (CardGroup *) groupWithClass: (Class) groupClass;
 - (void) setChildrenAsCopy: (NSMutableArray *) someChildren;
 
 - (void) replaceThisElement: (CardElement *) oldElement

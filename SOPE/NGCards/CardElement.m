@@ -464,7 +464,7 @@
   return string;
 }
 
-- (CardElement *) elementWithClass: (Class) elementClass
+- (id) elementWithClass: (Class) elementClass
 {
   CardElement *newElement;
 
@@ -522,6 +522,41 @@
 
 /* NSCopying */
 
+- (NSMutableArray *) deepCopyOfArray: (NSArray *) oldArray
+			    withZone: (NSZone *) aZone
+{
+  NSMutableArray *newArray;
+  unsigned int count, max;
+  id newChild;
+
+  newArray = [NSMutableArray array];
+
+  max = [oldArray count];
+  for (count = 0; count < max; count++)
+    {
+      newChild = [[oldArray objectAtIndex: count] mutableCopyWithZone: aZone];
+      [newArray addObject: newChild];
+    }
+
+  return newArray;
+}
+
+- (NSMutableDictionary *) deepCopyOfDictionary: (NSDictionary *) oldDictionary
+				      withZone: (NSZone *) aZone
+{
+  NSMutableDictionary *newDict;
+  NSArray *newKeys, *newValues;
+
+  newKeys = [self deepCopyOfArray: [oldDictionary allKeys]
+		  withZone: aZone];
+  newValues = [self deepCopyOfArray: [oldDictionary allValues]
+		    withZone: aZone];
+  newDict = [NSMutableDictionary dictionaryWithObjects: newValues
+				 forKeys: newKeys];
+
+  return newDict;
+}
+
 - (id) copyWithZone: (NSZone *) aZone
 {
   CardElement *new;
@@ -529,9 +564,10 @@
   new = [[self class] new];
   [new setTag: [tag copyWithZone: aZone]];
   [new setGroup: [group copyWithZone: aZone]];
-  [new setParent: parent];
-  [new setValuesAsCopy: [values copyWithZone: aZone]];
-  [new setAttributesAsCopy: [attributes copyWithZone: aZone]];
+  [new setParent: nil];
+  [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
+  [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
+				  withZone: aZone]];
 
   return new;
 }
@@ -544,9 +580,10 @@
   new = [[self class] new];
   [new setTag: [tag mutableCopyWithZone: aZone]];
   [new setGroup: [group mutableCopyWithZone: aZone]];
-  [new setParent: parent];
-  [new setValuesAsCopy: [values mutableCopyWithZone: aZone]];
-  [new setAttributesAsCopy: [attributes mutableCopyWithZone: aZone]];
+  [new setParent: nil];
+  [new setValuesAsCopy: [self deepCopyOfArray: values withZone: aZone]];
+  [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
+				  withZone: aZone]];
 
   return new;
 }

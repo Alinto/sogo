@@ -100,9 +100,15 @@
 
 - (CardGroup *) searchParentOfClass: (Class) parentClass;
 
-- (CardElement *) elementWithClass: (Class) elementClass;
+- (id) elementWithClass: (Class) elementClass;
+
 - (void) setValuesAsCopy: (NSMutableArray *) someValues;
 - (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes;
+
+- (NSMutableArray *) deepCopyOfArray: (NSArray *) oldArray
+			    withZone: (NSZone *) aZone;
+- (NSMutableDictionary *) deepCopyOfDictionary: (NSDictionary *) oldDictionary
+				      withZone: (NSZone *) aZone;
 
 @end
 

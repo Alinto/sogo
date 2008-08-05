@@ -1,3 +1,17 @@
+2008-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* CardGroup.m ([CardGroup -elementWithClass:groupClass]): replaces
+	"groupWithClass:".
+
+	* CardElement.m ([CardElement
+	-deepCopyOfArray:oldArraywithZone:aZone]): new self-explaining
+	method.
+	([CardElement -deepCopyOfDictionary:oldDictionarywithZone:aZone]):
+	new self-explaining method.
+	([CardElement -copyWithZone:aZone])
+	([CardElement -mutableCopyWithZone:aZone]): make a deep copy of
+	the children elements.
+
 2008-07-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalRepeatableEntityObject.m ([iCalRepeatableEntityObject

@@ -160,10 +160,7 @@ static NGCardsSaxHandler *sax = nil;
 	    {
 	      NSLog (@"warning: new child to entity '%@': '%@' converted to '%@'",
 		     tag, childTag, NSStringFromClass(mappedClass));
-	      if ([aChild isKindOfClass: [CardGroup class]])
-		newChild = [(CardGroup *) aChild groupWithClass: mappedClass];
-	      else
-		newChild = [aChild elementWithClass: mappedClass];
+	      newChild = [aChild elementWithClass: mappedClass];
 	    }
 	}
       //   else
@@ -235,12 +232,7 @@ static NGCardsSaxHandler *sax = nil;
       child = [existing objectAtIndex: 0];
       mappedClass = [self classForTag: [aTag uppercaseString]];
       if (mappedClass)
-        {
-          if ([child isKindOfClass: [CardGroup class]])
-            mappedChild = [(CardGroup *) child groupWithClass: mappedClass];
-          else
-            mappedChild = [child elementWithClass: mappedClass];
-        }
+	mappedChild = [child elementWithClass: mappedClass];
       else
         mappedChild = child;
     }
@@ -298,8 +290,7 @@ static NGCardsSaxHandler *sax = nil;
   CardGroup *element;
   NSString *value;
 
-  elements = [NSMutableArray new];
-  [elements autorelease];
+  elements = [NSMutableArray array];
 
   allElements = [[self childrenWithTag: aTag] objectEnumerator];
   element = [allElements nextObject];
@@ -317,8 +308,7 @@ static NGCardsSaxHandler *sax = nil;
   return elements;
 }
 
-#warning should be renamed to elementWithClass...
-- (CardGroup *) groupWithClass: (Class) groupClass
+- (id) elementWithClass: (Class) groupClass
 {
   CardGroup *newGroup;
 
@@ -326,7 +316,7 @@ static NGCardsSaxHandler *sax = nil;
     newGroup = self;
   else
     {
-      newGroup = (CardGroup *) [self elementWithClass: groupClass];
+      newGroup = [super elementWithClass: groupClass];
       [newGroup setChildrenAsCopy: children];
     }
 
@@ -335,14 +325,13 @@ static NGCardsSaxHandler *sax = nil;
 
 - (void) setChildrenAsCopy: (NSMutableArray *) someChildren
 {
-  NSEnumerator *list;
-  CardElement *currentChild;
+  unsigned int count, max;
 
   ASSIGN (children, someChildren);
 
-  list = [children objectEnumerator];
-  while ((currentChild = [list nextObject]))
-    [currentChild setParent: self];
+  max = [children count];
+  for (count = 0; count < max; count++)
+    [[children objectAtIndex: count] setParent: self];
 }
 
 - (void) addChildWithTag: (NSString *) aTag
@@ -398,20 +387,10 @@ static NGCardsSaxHandler *sax = nil;
 - (id) copyWithZone: (NSZone *) aZone
 {
   CardGroup *new;
-  CardElement *newChild;
-  NSMutableArray *newChildren;
-  unsigned int count, max;
 
   new = [super copyWithZone: aZone];
-  newChildren = [NSMutableArray new];
-  max = [children count];
-  for (count = 0; count < max; count++)
-    {
-      newChild = [[children objectAtIndex: count] copyWithZone: aZone];
-      [newChildren addObject: newChild];
-    }
-  [new setChildrenAsCopy: newChildren];
-  [newChildren release];
+  [new setChildrenAsCopy: [self deepCopyOfArray: children
+				withZone: aZone]];
 
   return new;
 }
@@ -421,21 +400,10 @@ static NGCardsSaxHandler *sax = nil;
 - (id) mutableCopyWithZone: (NSZone *) aZone
 {
   CardGroup *new;
-  CardElement *newChild;
-  NSMutableArray *newChildren;
-  unsigned int count, max;
 
   new = [super mutableCopyWithZone: aZone];
-  newChildren = [NSMutableArray new];
-  max = [children count];
-  for (count = 0; count < max; count++)
-    {
-      newChild
-	= [[children objectAtIndex: count] mutableCopyWithZone: aZone];
-      [newChildren addObject: newChild];
-    }
-  [new setChildrenAsCopy: newChildren];
-  [newChildren release];
+  [new setChildrenAsCopy: [self deepCopyOfArray: children
+				withZone: aZone]];
 
   return new;
 }
