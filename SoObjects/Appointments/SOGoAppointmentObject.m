@@ -84,7 +84,7 @@
 		  asChildOf: davElement (@"view-whole-component", nsI)];
       [aclManager registerDAVPermission: davElement (@"write", nsD)
 		  abstract: YES
-		  withEquivalent: nil
+		  withEquivalent: SOGoCalendarPerm_ModifyComponent
 		  asChildOf: davElement (@"all", nsD)];
       [aclManager
 	registerDAVPermission: davElement (@"write-properties", nsD)
@@ -94,7 +94,7 @@
       [aclManager
 	registerDAVPermission: davElement (@"write-content", nsD)
 	abstract: YES
-	withEquivalent: SOGoCalendarPerm_ModifyComponent
+	withEquivalent: nil
 	asChildOf: davElement (@"write", nsD)];
       [aclManager
 	registerDAVPermission: davElement (@"respond-to-component", nsI)

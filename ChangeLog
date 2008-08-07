@@ -1,3 +1,9 @@
+2008-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	([SOGoAppointmentObject +webdavAclManager]): declare DAV:write as
+	equivalent of ..._ModifyComponent (instead of DAV:write-content).
+
 2008-08-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactEditor.m ([UIxContactEditor -isNew]):
