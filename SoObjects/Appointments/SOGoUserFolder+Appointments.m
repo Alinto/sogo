@@ -47,15 +47,16 @@
 
 - (NSArray *) davCalendarUserAddressSet
 {
-  NSArray *tag, *allEmails;
+  NSArray *tag;
   NSMutableArray *addresses;
   NSEnumerator *emails;
   NSString *currentEmail;
+  SOGoUser *ownerUser;
 
   addresses = [NSMutableArray array];
 
-  allEmails = [[context activeUser] allEmails];
-  emails = [allEmails objectEnumerator];
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  emails = [[ownerUser allEmails] objectEnumerator];
   while ((currentEmail = [emails nextObject]))
     {
       tag = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
