@@ -179,14 +179,13 @@ static NSNumber *yesObject = nil;
   if (matchSOGoPerms)
     {
       sogoPermission = [permission objectForKey: @"equivalent"];
-      if (sogoPermission
+      if (sogoPermission)
 	  && [soClass userRoles: userRoles havePermission: sogoPermission])
-	{
-	  [davPermissions
-	    addObject: [permission objectForKey: @"permission"]];
-	}
+	[davPermissions
+	  addObject: [permission objectForKey: @"permission"]];
       else
 	appended = NO;
+//       NSLog (@"permission '%@' appended: %d", sogoPermission, appended);
     }
   else
     [davPermissions
