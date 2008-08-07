@@ -499,22 +499,8 @@ static BOOL forceImapLoginWithEmail = NO;
   return newContacts;
 }
 
-- (NSArray *) fetchContactsMatching: (NSString *) filter
-{
-  NSMutableArray *contacts;
-  NSEnumerator *ldapSources;
-  LDAPSource *currentSource;
-
-  contacts = [NSMutableArray array];
-  ldapSources = [sources objectEnumerator];
-  while ((currentSource = [ldapSources nextObject]))
-    [contacts addObjectsFromArray:
-		[currentSource fetchContactsMatching: filter]];
-
-  return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
-}
-
-- (NSArray *) fetchUsersMatching: (NSString *) filter
+- (NSArray *) _fetchEntriesInSources: (NSArray *) sourcesList
+			    matching: (NSString *) filter
 {
   NSMutableArray *contacts;
   NSEnumerator *ldapSources;
@@ -522,7 +508,7 @@ static BOOL forceImapLoginWithEmail = NO;
   LDAPSource *currentSource;
 
   contacts = [NSMutableArray array];
-  ldapSources = [[self authenticationSourceIDs] objectEnumerator];
+  ldapSources = [sourcesList objectEnumerator];
   while ((sourceID = [ldapSources nextObject]))
     {
       currentSource = [sources objectForKey: sourceID];
@@ -531,6 +517,18 @@ static BOOL forceImapLoginWithEmail = NO;
     }
 
   return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
+}
+
+- (NSArray *) fetchContactsMatching: (NSString *) filter
+{
+  return [self _fetchEntriesInSources: [self addressBookSourceIDs]
+	       matching: filter];
+}
+
+- (NSArray *) fetchUsersMatching: (NSString *) filter
+{
+  return [self _fetchEntriesInSources: [self authenticationSourceIDs]
+	       matching: filter];
 }
 
 - (void) cleanupSources
