@@ -85,9 +85,12 @@
     }
 
   if (!eventObject)
-    eventObject = [SOGoAppointmentObject objectWithName: uid
-					 inContainer: personalFolder];
-  
+    {
+      eventObject = [SOGoAppointmentObject objectWithName: uid
+					   inContainer: personalFolder];
+      [eventObject setIsNew: YES];
+    }
+
   return eventObject;
 }
 

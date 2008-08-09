@@ -1,3 +1,10 @@
+2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartICalActions.m ([UIxMailPartICalActions -updateUserStatusAction])
+	([UIxMailPartICalActions -acceptAction])
+	([UIxMailPartICalActions -declineAction]): if the event doesn't
+	exist in the user table, declare it as new.
+
 2008-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
