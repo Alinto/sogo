@@ -576,7 +576,7 @@
   iCalPerson *attendee;
   NSException *ex;
   SOGoUser *ownerUser;
-  
+
   ex = nil;
 
   event = [self component: NO secure: NO];
