@@ -1,5 +1,14 @@
 2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	([SOGoCalendarComponent
+	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]):
+	the sender email is always the one of the owner, even though the
+	action might be done by a delegate. If the case, we setup the
+	"SENT-BY" parameter of the organizer field.
+	([SOGoCalendarComponent -sendResponseToOrganizer]): If needed,
+	setup the "SENT-BY" parameter of the attendee field.
+
 	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
 	-toolbar]): changed algoritm so that a delegate would really see
 	what the owner would, depending on his/her rights.

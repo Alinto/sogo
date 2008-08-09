@@ -451,6 +451,20 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   return [[SOGoUser userWithLogin: uid roles: nil] timeZone];
 }
 
+- (void) _setupSentByIfNeeded: (iCalPerson *) person
+{
+  SOGoUser *currentUser;
+  NSString *currentEmail;
+
+  currentUser = [context activeUser];
+  if (![[currentUser login] isEqualToString: owner])
+    {
+      currentEmail = [[currentUser allEmails] objectAtIndex: 0];
+      [person addAttribute: @"SENT-BY"
+	      value: [NSString stringWithFormat: @"MAILTO:%@", currentEmail]];
+    }
+}
+
 - (void) sendEMailUsingTemplateNamed: (NSString *) _pageName
                         forOldObject: (iCalRepeatableEntityObject *) _oldObject
                         andNewObject: (iCalRepeatableEntityObject *) _newObject
@@ -468,7 +482,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   NGMimeMessage *msg;
   NGMimeBodyPart *bodyPart;
   NGMimeMultipartBody *body;
-  SOGoUser *currentUser;
+  SOGoUser *ownerUser, *currentUser;
 
   if (sendEMailNotifications
       && [_newObject isStillRelevant])
@@ -477,17 +491,17 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
       if (count)
 	{
 	  /* sender */
+	  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
 	  currentUser = [context activeUser];
 	  shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
 	  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
-				  [currentUser cn], shortSenderEmail];
-
-	  NSLog (@"sending '%@' from %@",
-		 [(iCalCalendar *) [_newObject parent] method], senderEmail);
-
+				  [ownerUser cn], shortSenderEmail];
+	  [self _setupSentByIfNeeded: [_newObject organizer]];
+// 	  NSLog (@"sending '%@' from %@",
+// 		 [(iCalCalendar *) [_newObject parent] method], senderEmail);
 	  /* generate iCalString once */
 	  iCalString = [[_newObject parent] versitString];
-  
+
 	  /* get WOApplication instance */
 	  app = [WOApplication application];
 
@@ -502,8 +516,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
 		  recipient = [attendee mailAddress];
 		  email = [attendee rfc822Email];
 
-		  NSLog (@"recipient: %@", recipient);
-		  language = [[context activeUser] language];
+		  language = [ownerUser language];
 #warning this could be optimized in a class hierarchy common with the	\
   SOGoObject acl notification mechanism
 		  /* create page name */
@@ -676,6 +689,7 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
     {
       organizer = [event organizer];
       attendee = [event findParticipant: ownerUser];
+      [self _setupSentByIfNeeded: attendee];
       [event setAttendees: [NSArray arrayWithObject: attendee]];
       [self sendIMIPReplyForEvent: event to: organizer];
     }
