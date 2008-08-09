@@ -416,7 +416,7 @@
       [attendee setPartStat: newStatus];
       newContent = [[event parent] versitString];
       ex = [self saveContentString: newContent];
-      ownerUser = [SOGOUser userWithLogin: owner roles: nil];
+      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
