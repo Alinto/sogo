@@ -405,6 +405,7 @@
 {
   NSString *newContent, *currentStatus, *organizerUID;
   NSException *ex;
+  SOGoUser *ownerUser;
 
   ex = nil;
 
@@ -415,7 +416,8 @@
       [attendee setPartStat: newStatus];
       newContent = [[event parent] versitString];
       ex = [self saveContentString: newContent];
-      if (!(ex || [event userIsOrganizer: [context activeUser]]))
+      ownerUser = [SOGOUser userWithLogin: owner roles: nil];
+      if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
 	      && [event isStillRelevant])
