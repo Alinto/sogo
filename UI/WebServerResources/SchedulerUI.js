@@ -1661,7 +1661,7 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
 }
 
 function onCalendarNew(event) {
-  createFolder(window.prompt(labels["Name of the Calendar"]),
+  createFolder(window.prompt(labels["Name of the Calendar"], ""),
 	       appendCalendar);
   preventDefault(event);
 }
