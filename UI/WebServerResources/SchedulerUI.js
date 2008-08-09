@@ -897,12 +897,6 @@ function newBaseEventDIV(eventRep, event, eventText) {
   if (eventRep.userState && userStates[eventRep.userState])
     eventDiv.addClassName(userStates[eventRep.userState]);
 
-  for (var i = 1; i < 5; i++) {
-    var shadowDiv = $(document.createElement("div"));
-    eventDiv.appendChild(shadowDiv);
-    shadowDiv.addClassName("shadow");
-    shadowDiv.addClassName("shadow" + i);
-  }
   var innerDiv = $(document.createElement("div"));
   eventDiv.appendChild(innerDiv);
   innerDiv.addClassName("eventInside");
