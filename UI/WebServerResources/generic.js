@@ -179,7 +179,7 @@ function sanitizeMailTo(dirtyMailTo) {
 
 function sanitizeWindowName(dirtyWindowName) {
   // IE is picky about the characters used for the window name.
-  return dirtyWindowName.replace(/[\s\/-]/g, "_");
+  return dirtyWindowName.replace(/[\s\.\/-]/g, "_");
 }
 
 function openUserFolderSelector(callback, type) {
@@ -515,7 +515,10 @@ function acceptMultiSelect(node) {
 function onRowClick(event) {
   var node = getTarget(event);
   var rowIndex = null;
-   
+  
+  if (node.tagName != 'TD' && node.tagName != 'LI')
+    node = this;
+
   if (node.tagName == 'TD') {
     node = node.parentNode; // select TR
     rowIndex = node.rowIndex - $(node).up('table').down('thead').getElementsByTagName('tr').length;  

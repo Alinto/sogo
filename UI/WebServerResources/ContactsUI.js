@@ -272,7 +272,7 @@ function actionContactCallback(http) {
       var error = html.select("p").first().firstChild.nodeValue.trim();
       log("actionContactCallback failed: error " + http.status + " (" + error + ")");
       if (parseInt(http.status) == 403)
-	window.alert(labels["You cannot delete the selected contact(s)"]);
+	window.alert(labels["You don't have the required privileges to perform the operation."]);
       else if (error)
 	window.alert(labels[error]);
       refreshCurrentFolder();
@@ -449,6 +449,11 @@ function onContactDeleteEventCallback(http) {
     if (isHttpStatus204(http.status)) {
       var row = $(http.callbackData);
       row.parentNode.removeChild(row);
+    }
+    else if (parseInt(http.status) == 403) {
+      var row = $(http.callbackData);
+      var displayName = row.down("TD.displayName").firstChild.nodeValue.trim();
+      window.alert(labels["You cannot delete the card of \"%{0}\"."].formatted(displayName));
     }
   }
 }
