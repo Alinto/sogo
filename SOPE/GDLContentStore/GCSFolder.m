@@ -723,7 +723,6 @@ static NSArray *contentFieldNames = nil;
   return sql;
 }
 
-
 - (EOEntity *) _entityWithName: (NSString *) _name
 {
   EOAttribute *attribute;
@@ -739,6 +738,26 @@ static NSArray *contentFieldNames = nil;
   [entity addAttribute: attribute];
 
   return entity;
+}
+
+- (EOEntity *) _storeTableEntity
+{
+  EOAttribute *attribute;
+  EOEntity *entity;
+
+  entity = [self _entityWithName: [self storeTableName]];  
+
+  attribute = AUTORELEASE([[EOAttribute alloc] init]);
+  [attribute setName: @"c_version"];
+  [attribute setColumnName: @"c_version"];
+  [entity addAttribute: attribute];
+
+  return entity;
+}
+
+- (EOEntity *) _quickTableEntity
+{
+  return [self _entityWithName: [self quickTableName]];
 }
 
 - (EOSQLQualifier *) _qualifierUsingWhereColumn:(NSString *)_colname
@@ -792,6 +811,7 @@ static NSArray *contentFieldNames = nil;
   BOOL                isNewRecord, hasInsertDelegate, hasUpdateDelegate;
   NSCalendarDate      *nowDate;
   NSNumber            *now;
+  EOEntity *quickTableEntity, *storeTableEntity;
   NSArray *rows;
 
   /* check preconditions */  
@@ -906,31 +926,37 @@ static NSArray *contentFieldNames = nil;
   hasUpdateDelegate = [[storeChannel delegate]
 			respondsToSelector: @selector(adaptorChannel:willUpdateRow:describedByQualifier:)];
 
-  [[storeChannel adaptorContext] beginTransaction];
   [[quickChannel adaptorContext] beginTransaction];
+  [[storeChannel adaptorContext] beginTransaction];
   
+  quickTableEntity = [self _quickTableEntity];
+  storeTableEntity = [self _storeTableEntity];
+
   if (isNewRecord) {
     if (!ofFlags.sameTableForQuick) {
-	error = (hasInsertDelegate ? [quickChannel insertRowX: quickRow
-						   forEntity: [self _entityWithName: [self quickTableName]]]
-		 : [quickChannel evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
-							    tableName: [self quickTableName]]]);
+      error = (hasInsertDelegate
+	       ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
+	       : [quickChannel
+		   evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
+					      tableName: [self quickTableName]]]);
       CHECKERROR();
     }
 
-    error = (hasInsertDelegate ? [storeChannel insertRowX: contentRow
-					       forEntity: [self _entityWithName: [self storeTableName]]]
-	     : [storeChannel evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
-							tableName: [self storeTableName]]]);
-
+    error = (hasInsertDelegate
+	     ? [storeChannel insertRowX: contentRow forEntity: storeTableEntity]
+	     : [storeChannel
+		 evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
+					    tableName: [self storeTableName]]]);
+    
     CHECKERROR();
   }
   else {
     if (!ofFlags.sameTableForQuick) {
-      error = (hasUpdateDelegate ? [quickChannel updateRowX: quickRow
-						 describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
-									     isEqualTo: _name  andColumn: nil  isEqualTo: nil
-									     entity: [self _entityWithName: [self quickTableName]]]]
+      error = (hasUpdateDelegate
+	       ? [quickChannel updateRowX: quickRow
+			       describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
+							   isEqualTo: _name  andColumn: nil  isEqualTo: nil
+							   entity: quickTableEntity]]
 	       : [quickChannel evaluateExpressionX: [self _generateUpdateStatementForRow: quickRow
 							  tableName: [self quickTableName]
 							  whereColumn: @"c_name" isEqualTo: _name
@@ -938,11 +964,12 @@ static NSArray *contentFieldNames = nil;
       CHECKERROR();
     }
     
-    error = (hasUpdateDelegate ? [storeChannel updateRowX: contentRow
-					       describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
-									   andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
-									   isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
-									   entity: [self _entityWithName: [self storeTableName]]]]
+    error = (hasUpdateDelegate
+	     ? [storeChannel updateRowX: contentRow
+			     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
+							 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
+							 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
+							 entity: storeTableEntity]]
 	     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow  tableName:[self storeTableName]
 							whereColumn: @"c_name"  isEqualTo: _name
 							andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)

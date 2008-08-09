@@ -1,3 +1,9 @@
+2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m ([GCSFolder
+	-writeContent:_contenttoName:_namebaseVersion:_baseVersion]): the
+	store table has now a "c_version" field in its description entity.
+
 2008-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolderManager.m ([GCSFolderManager
