@@ -21,8 +21,8 @@ function onOKClick(event) {
   var calendarID = $("calendarID");
 
   window.opener.updateCalendarProperties(calendarID.value,
-					 calendarName.value,
-					 calendarColor.value);
+                                         calendarName.value,
+                                         calendarColor.value);
 }
 
 function onColorClick(event) {
