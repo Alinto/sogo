@@ -1,5 +1,9 @@
 2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoComponentOccurence.m
+	([SOGoComponentOccurence -changeParticipationStatus:newPartStat]):
+	implemented proxy method.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	([SOGoCalendarComponent
 	-sendEMailUsingTemplateNamed:_pageNameforOldObject:_oldObjectandNewObject:_newObjecttoAttendees:_attendees]):

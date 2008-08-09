@@ -51,6 +51,8 @@
 - (void) setMasterComponent: (iCalRepeatableEntityObject *) newMaster;
 - (void) setIsNew: (BOOL) newIsNew;
 
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat;
+
 @end
 
 #endif /* SOGOCOMPONENTOCCURENCE_H */

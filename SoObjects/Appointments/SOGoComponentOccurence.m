@@ -160,4 +160,11 @@
   [container saveComponent: newEvent];
 }
 
+#warning most of SOGoCalendarComponent and SOGoComponentOccurence share the same external interface... \
+  they should be siblings or SOGoComponentOccurence the parent class of SOGoCalendarComponent...
+- (NSException *) changeParticipationStatus: (NSString *) newPartStat
+{
+  return [container changeParticipationStatus: newPartStat];
+}
+
 @end
