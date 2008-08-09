@@ -1,5 +1,9 @@
 2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m ([UIxComponentEditor
+	-toolbar]): changed algoritm so that a delegate would really see
+	what the owner would, depending on his/her rights.
+
 	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
 	-lookupImap4BodyPartKey:inContext:]): find a class based on the
 	mime type of the subpart described by the partInfo.

@@ -1545,7 +1545,8 @@ RANGE(2);
 
 #warning the following methods probably share some code...
 - (NSString *) _toolbarForOwner: (SOGoUser *) ownerUser
-		andClientObject: (SOGoCalendarComponent *) clientObject
+		andClientObject: (SOGoContentObject
+				  <SOGoComponentOccurence> *) clientObject
 {
   NSString *toolbarFilename;
   iCalPersonPartStat participationStatus;
@@ -1576,7 +1577,8 @@ RANGE(2);
 }
 
 - (NSString *) _toolbarForDelegate: (SOGoUser *) ownerUser
-		   andClientObject: (SOGoCalendarComponent *) clientObject
+		   andClientObject: (SOGoContentObject
+				     <SOGoComponentOccurence> *) clientObject
 {
   SoSecurityManager *sm;
   NSString *toolbarFilename, *adminToolbar;
@@ -1590,56 +1592,38 @@ RANGE(2);
 
   currentUser = [context activeUser];
   sm = [SoSecurityManager sharedSecurityManager];
-  if ([[component attendees] count])
+
+  if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
+	   onObject: clientObject
+	   inContext: context])
+    toolbarFilename = [self _toolbarForOwner: ownerUser
+			    andClientObject: clientObject];
+  else if (![sm validatePermission: SOGoCalendarPerm_RespondToComponent
+		onObject: clientObject
+		inContext: context]
+	   && [[component attendees] count]
+	   && [component userIsParticipant: ownerUser]
+	   && ![component userIsOrganizer: ownerUser])
     {
-      if ([component userIsOrganizer: currentUser])
-	toolbarFilename = @"SOGoComponentClose.toolbar";
+      participationStatus
+	= [[component findParticipant: ownerUser] participationStatus];
+      /* Lightning does not manage participation status within tasks */
+      if (participationStatus == iCalPersonPartStatAccepted)
+	toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
+      else if (participationStatus == iCalPersonPartStatDeclined)
+	toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
       else
-	{
-	  if ([component userIsOrganizer: ownerUser]
-	      && ![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-		      onObject: clientObject
-		      inContext: context])
-	    toolbarFilename = adminToolbar;
-	  else if ([component userIsParticipant: ownerUser]
-		   && !([sm validatePermission: SOGoCalendarPerm_RespondToComponent
-			    onObject: clientObject
-			    inContext: context]
-			&& [sm validatePermission: SOGoCalendarPerm_ModifyComponent
-			       onObject: clientObject
-			       inContext: context]))
-	    {
-	      participationStatus
-		= [[component findParticipant: ownerUser] participationStatus];
-	      /* Lightning does not manage participation status within tasks */
-	      if (participationStatus == iCalPersonPartStatAccepted)
-		toolbarFilename = @"SOGoAppointmentObjectDecline.toolbar";
-	      else if (participationStatus == iCalPersonPartStatDeclined)
-		toolbarFilename = @"SOGoAppointmentObjectAccept.toolbar";
-	      else
-		toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
-	    }
-	  else
-	    toolbarFilename = @"SOGoComponentClose.toolbar";
-	}
+	toolbarFilename = @"SOGoAppointmentObjectAcceptOrDecline.toolbar";
     }
   else
-    {
-      if (![sm validatePermission: SOGoCalendarPerm_ModifyComponent
-	       onObject: clientObject
-	       inContext: context]
-	  || [component userIsOrganizer: currentUser])
-	toolbarFilename = adminToolbar;
-      else
-	toolbarFilename = @"SOGoComponentClose.toolbar";
-    }
+    toolbarFilename = @"SOGoComponentClose.toolbar";
 
   return toolbarFilename;
 }
 
 - (NSString *) toolbar
 {
-  SOGoCalendarComponent *clientObject;
+  SOGoContentObject <SOGoComponentOccurence> *clientObject;
   NSString *toolbarFilename;
   SOGoUser *ownerUser;
 
