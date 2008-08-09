@@ -149,15 +149,35 @@ static BOOL debugOn = NO;
 
 /* name lookup */
 
-- (id) lookupImap4BodyPartKey: (NSString *) _key
-		    inContext: (id) _ctx
+- (id) lookupImap4BodyPartKey: (NSString *) key
+		    inContext: (WOContext *) localContext
 {
   // TODO: we might want to check for existence prior controller creation
   Class clazz;
-  
-  clazz = [SOGoMailBodyPart bodyPartClassForKey:_key inContext:_ctx];
+  NSArray *subParts;
+  unsigned int nbr;
+  id obj;
+  NSDictionary *subPart;
 
-  return [clazz objectWithName: _key inContainer: self];
+  nbr = [key intValue];
+  subParts = [[self partInfo] objectForKey: @"parts"];
+  if (nbr > 0 && nbr < ([subParts count] + 1))
+    {
+      subPart = [subParts objectAtIndex: nbr - 1];
+      clazz
+	= [[self class] bodyPartClassForMimeType:
+			  [subPart keysWithFormat: @"%{type}/%{subtype}"]
+			inContext: localContext];
+      obj = [clazz objectWithName: key inContainer: self];
+    }
+  else
+    obj = self;
+
+  return obj;  
+//   clazz = [SOGoMailBodyPart bodyPartClassForKey: _key
+// 			    inContext: _ctx];
+
+//   return [clazz objectWithName: _key inContainer: self];
 }
 
 - (NSString *) filename
@@ -200,14 +220,14 @@ static BOOL debugOn = NO;
 	  acquire: (BOOL) _flag
 {
   id obj;
-  
+ 
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
     {
       /* lookup body part */
-      if ([self isBodyPartKey:_key])
-	obj = [self lookupImap4BodyPartKey:_key inContext:_ctx];
+      if ([self isBodyPartKey: _key])
+	obj = [self lookupImap4BodyPartKey: _key inContext: _ctx];
       else if ([_key isEqualToString: @"asAttachment"])
 	[self setAsAttachment];
       /* should check whether such a filename exist in the attached names */

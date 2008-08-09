@@ -1,5 +1,9 @@
 2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailBodyPart.m ([SOGoMailBodyPart
+	-lookupImap4BodyPartKey:inContext:]): find a class based on the
+	mime type of the subpart described by the partInfo.
+
 	* SoObjects/Appointments/iCalEntityObject+SOGo.m
 	([iCalEntityObject
 	-quickRecordDateAsNumber:_datewithOffset:offsetforAllDay:allDay]):
