@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
@@ -170,7 +171,7 @@ _computeAllDayOffset()
 			    withOffset: (int) offset
 			     forAllDay: (BOOL) allDay
 {
-  unsigned int seconds;
+  NSTimeInterval seconds;
   NSNumber *dateNumber;
 
   if (_date == iCalDistantFuture)
@@ -181,7 +182,7 @@ _computeAllDayOffset()
       if (allDay)
 	seconds += _computeAllDayOffset ();
 
-      dateNumber = [NSNumber numberWithUnsignedInt: seconds];
+      dateNumber = [NSNumber numberWithInt: seconds];
     }
 
   return dateNumber;

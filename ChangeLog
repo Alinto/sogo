@@ -1,5 +1,11 @@
 2008-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEntityObject+SOGo.m
+	([iCalEntityObject
+	-quickRecordDateAsNumber:_datewithOffset:offsetforAllDay:allDay]):
+	changed the type of "seconds" to NSTimeInterval to avoid casting
+	errors on PPC.
+
 	* UI/MailPartViewers/UIxMailPartICalActions.m ([UIxMailPartICalActions -updateUserStatusAction])
 	([UIxMailPartICalActions -acceptAction])
 	([UIxMailPartICalActions -declineAction]): if the event doesn't
