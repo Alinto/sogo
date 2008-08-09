@@ -184,7 +184,7 @@ withSearchOn: (NSString *) contact
 {
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
-  NSString *searchText;
+  NSString *searchText, *mail;
   NSDictionary *contact;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableDictionary *uniqueContacts;
@@ -207,8 +207,9 @@ withSearchOn: (NSString *) contact
 	  for (j = 0; j < [contacts count]; j++)
 	    {
 	      contact = [contacts objectAtIndex: j];
-	      //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], [contact objectForKey: @"mail"]);
-	      if ([uniqueContacts objectForKey: [contact objectForKey: @"mail"]] == nil)
+	      mail = [contact objectForKey: @"mail"];
+	      //NSLog(@"   found %@ (%@)", [contact objectForKey: @"displayName"], mail);
+	      if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
 		[uniqueContacts setObject: contact forKey: [contact objectForKey: @"mail"]];
 	    }
 	}
