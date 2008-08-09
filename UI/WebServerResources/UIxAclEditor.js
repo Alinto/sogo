@@ -26,10 +26,11 @@ function addUserCallback(http) {
 }
 
 function setEventsOnUserNode(node) {
-   node.observe("mousedown", listRowMouseDownHandler);
-   node.observe("selectstart", listRowMouseDownHandler);
-   node.observe("dblclick", onOpenUserRights);
-   node.observe("click", onRowClick);
+  var n = $(node);
+  n.observe("mousedown", listRowMouseDownHandler);
+  n.observe("selectstart", listRowMouseDownHandler);
+  n.observe("dblclick", onOpenUserRights);
+  n.observe("click", onRowClick);
 }
 
 function nodeForUser(userName, userId) {

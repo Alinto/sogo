@@ -177,6 +177,11 @@ function sanitizeMailTo(dirtyMailTo) {
   return mailto;
 }
 
+function sanitizeWindowName(dirtyWindowName) {
+  // IE is picky about the characters used for the window name.
+  return dirtyWindowName.replace(/[\s\/-]/g, "_");
+}
+
 function openUserFolderSelector(callback, type) {
   var urlstr = ApplicationBaseURL;
   if (! urlstr.endsWith('/'))
@@ -194,8 +199,7 @@ function openContactWindow(url, wId) {
   if (typeof wId == "undefined")
     wId = "_blank";
   else {
-    var r = new RegExp("[\.\/-]", "g");
-    wId = wId.replace(r, "_");
+    wId = sanitizeWindowName(wId);
   }
 
   var w = window.open(url, wId,
@@ -211,8 +215,7 @@ function openMailComposeWindow(url, wId) {
   if (typeof wId == "undefined")
     wId = "_blank";
   else {
-    var r = new RegExp("[\.\/-]", "g");
-    wId = wId.replace(r, "_");
+    wId = sanitizeWindowName(wId);
   }
   
   if (document.body.hasClassName("popup"))

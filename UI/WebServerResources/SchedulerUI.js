@@ -1645,7 +1645,7 @@ function onCalendarModify(event) {
   var selected = folders.getSelectedNodes()[0];
   var calendarID = selected.getAttribute("id");
   var url = ApplicationBaseURL + calendarID + "/properties";
-  var windowID = (calendarID + "properties").replace("/", "_", "g");
+  var windowID = sanitizeWindowName(calendarID + " properties");
   var properties = window.open(url, windowID,
 			       "width=300,height=100,resizable=0");
   properties.focus();
@@ -1705,7 +1705,7 @@ function appendCalendar(folderName, folderPath) {
     window.alert(clabels["You have already subscribed to that folder!"]);
   else {
     var calendarList = $("calendarList");
-    var items = calendarList.childNodesWithTag("li");
+    var items = calendarList.select("li");
     var li = document.createElement("li");
     
     // Add the calendar to the proper place
@@ -1715,13 +1715,13 @@ function appendCalendar(folderName, folderPath) {
     else 
       calendarList.appendChild(li);
     
-    li.setAttribute("id", folderPath);
-    li.setAttribute("owner", owner);
+    $(li).writeAttribute("id", folderPath);
+    $(li).writeAttribute("owner", owner);
 
     var checkBox = createElement("input", null, "checkBox", { checked: 1 },
 				 { type: "checkbox" }, li);
     li.appendChild(document.createTextNode(" "));
-
+    
     var colorBox = document.createElement("div");
     li.appendChild(colorBox);
     li.appendChild(document.createTextNode(folderName
