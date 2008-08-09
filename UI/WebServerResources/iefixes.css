@@ -275,6 +275,9 @@ DIV#daysView DIV.event.lasts96  { height:  96em; }
 
 /* UIxAppointmentEditor */
 
+DIV#attendeesMenu LI.separator
+{ padding-left: 0px; }
+
 SPAN.content A
 { line-height: 2.5em; }
 
@@ -282,10 +285,6 @@ SPAN.content > INPUT.textField
 { width: 99%; }
 
 /* UIxAttendeesEditor */
-
-DIV#attendeesMenu
-{ overflow: scroll;
-  overflow-x: hidden; }
 
 DIV#attendeesView
 { left: 0.5em; }

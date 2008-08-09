@@ -166,7 +166,8 @@ function onComposeToUndecidedAttendees()
   var attendees = $$("DIV#attendeesMenu LI.attendee.needs-action");
   var addresses = new Array();
   attendees.each(function(item) {
-      addresses.push(item.readAttribute("email"));
+      var address = item.firstChild.nodeValue.trim() + " <" + item.readAttribute("email") + ">";
+      addresses.push(address);
   });
   if (window.opener)
     window.opener.openMailTo(addresses.join(","));
@@ -383,7 +384,8 @@ function onAttendeesHrefClick(event) {
 
 function onMailTo(event) {
   var target = getTarget(event);
-  openMailTo(target.readAttribute("email"));
+  var address = target.firstChild.nodeValue.trim() + " <" + target.readAttribute("email") + ">";
+  openMailTo(address);
 }
 
 function getMenus() {

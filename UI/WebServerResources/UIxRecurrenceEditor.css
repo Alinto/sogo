@@ -1,10 +1,20 @@
-DIV#windowButtons
+DIV#windowButtonz
 { position: absolute;
   bottom: 0px;
   left: 0px;
   right: 0px;
   height: 2em;
   margin: 1em;
+  text-align: right; }
+
+DIV#windowButtons
+{ position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 15px;
+  height: 3em;
+  line-height: 2em;
+  vertical-align: middle;
   text-align: right; }
 
 DIV#pageContent

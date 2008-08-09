@@ -451,12 +451,11 @@ function onAddressResultClick(event) {
   if (MailEditor.currentField) {
     MailEditor.currentField.uid = this.uid;
     MailEditor.currentField.value = this.firstChild.nodeValue.trim();
-    MailEditor.currentField.confirmedValue = currentField.value;
+    MailEditor.currentField.confirmedValue = MailEditor.currentField.value;
   }
 }
 
 function initTabIndex(addressList, subjectField, msgArea) {
-  
   var i = 1;
   addressList.select("input.textField").each(function (input) {
       if (!input.readAttribute("readonly")) {

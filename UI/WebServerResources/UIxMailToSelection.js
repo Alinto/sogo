@@ -66,7 +66,7 @@ function fancyAddRow(shouldEdit, text, type) {
   currentIndex++;
   proto = lastChild.previous("tr");
   row = proto.cloneNode(true);
-  row.setAttribute("id", 'row_' + currentIndex);
+  row.writeAttribute("id", 'row_' + currentIndex);
 
   // select popup
   var rowNodes = row.childNodesWithTag("td");
@@ -81,7 +81,8 @@ function fancyAddRow(shouldEdit, text, type) {
   addressList.insertBefore(row, lastChild);
 
   if (shouldEdit) {
-    input.setAttribute("autocomplete", "off");
+    input.writeAttribute("autocomplete", "off");
+    input.stopObserving("keydown", onContactKeydown);
     input.observe("keydown", onContactKeydown); // bind listener for address completion
     input.focus();
     input.select();
