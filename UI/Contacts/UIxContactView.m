@@ -289,6 +289,10 @@
   if ([elements count] > 0)
     {
       url = [[elements objectAtIndex: 0] value: 0];
+
+      if (![[url lowercaseString] hasPrefix: @"http://"])
+	  url = [NSString stringWithFormat: @"http://%@", url];
+
       data = [NSString stringWithFormat:
                          @"<a href=\"%@\" target=\"_blank\">%@</a>",
                        url, url];
