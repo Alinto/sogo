@@ -303,8 +303,8 @@ SPAN.monthsHeader
   margin: 0px;
   height: 3em;
   padding: 2px 1.5em;
-/* HERE  border: 0px;
- */  border-bottom: 1px solid #ccc; }
+/* HERE  border: 0px; */
+  border-bottom: 1px solid #ccc; }
 
 SPAN.daysHeader SPAN,
 SPAN.weeksHeader SPAN,
@@ -402,9 +402,9 @@ DIV#daysView
 { top: 11em;
   bottom: 0px;
   margin-left: 1px;
-  border-left: 1px solid #397d94;
-  border-bottom: 1px solid #397d94;
-  border-top: 2px solid #397d94;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   overflow: auto; }
 
 DIV#calendarHeader
@@ -418,8 +418,8 @@ DIV#calendarHeader DIV.days
   margin: 0px;
   padding: 0px;
 /* HERE  border: 0px; */
-  border-right: 1px solid #397d94;
-  border-top: 1px solid #397d94;
+  border-right: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   left: 5em;
   margin-left: 1px;
   margin-right: 16px;
@@ -432,9 +432,8 @@ DIV#calendarHeader DIV.dayLabels
 
 DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
-  font-weight: bold;
-  color: #77a;
-  background-color: #e7efef; }
+  color: #666;
+  background-color: #f0f0f0; }
 
 DIV#calendarHeader SPAN.dayOfWeek
 { font-size: medium; }
@@ -489,7 +488,7 @@ DIV#daysView DIV.days
   right: 2px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
-{ border-right: 1px solid #397d94; }
+{ border-right: 1px solid #ccc; }
 
 DIV.monthView
 { position: absolute;
@@ -513,13 +512,13 @@ DIV.monthView > DIV.headerDay
 { text-align: center;
   cursor: default;
   padding-top: .5em;
-  border-left: 2px solid #397d94 !important;
-  border-top: 2px solid #397d94 !important;
+  border-left: 2px solid #ccc !important;
+  border-top: 2px solid #ccc !important;
   top: 0px;
-  color: #397d94;
+  color: #666;
   height: 1.5em;
   font-weight: bold;
-  background-color: #e7efef; }
+  background-color: #f0f0f0; }
 
 DIV.dayOfToday
 { background-color: #deebf7; }
@@ -534,18 +533,12 @@ DIV.weekEndDay DIV.outOfDay
 DIV.dayOfAnotherMonth
 { background-color: #e7efef; }
 
-DIV.selectedDay
-{ background-color: #ffe79c; }
-
-DIV.selectedDay.weekEndDay,
-DIV.selectedDay DIV.outOfDay
-{ background-color: #f5dd92; }
-
 DIV.monthView DIV.dayHeader
-{ margin-left: 1em;
+{ background-color: #f0f0f0;
+  margin-right: 2px;
+  text-align: right;
   cursor: pointer;
-  color: #397d94;
-  font-weight: bold; }
+  color: #666; }
 
 DIV.monthView DIV.days
 { top: 2em;
@@ -556,10 +549,18 @@ DIV.monthView DIV.days
 
 DIV.monthView DIV.day
 { position: absolute;
-  border-left: 2px solid #397d94;
-  border-top: 2px solid #397d94;
+  border-left: 2px solid #ccc;
+  border-top: 2px solid #ccc;
   min-height: 4em;
   overflow: auto; }
+
+DIV.selectedDay,
+DIV.selectedDay DIV.dayHeader
+{ background-color: #ffe79c; }
+
+DIV.selectedDay.weekEndDay,
+DIV.selectedDay DIV.outOfDay
+{ background-color: #f5dd92; }
 
 DIV.weekOf4
 { height: 25%; }
@@ -583,7 +584,7 @@ DIV.monthView DIV.week2of4
 
 DIV.monthView DIV.week3of4
 { top: 75%;
-  border-bottom: 2px solid #397d94 !important; }
+  border-bottom: 2px solid #ccc !important; }
 
 DIV.monthView DIV.week1of5
 { top: 20%; }
@@ -596,7 +597,7 @@ DIV.monthView DIV.week3of5
 
 DIV.monthView DIV.week4of5
 { top: 80%;
-  border-bottom: 2px solid #397d94 !important; }
+  border-bottom: 2px solid #ccc !important; }
 
 DIV.monthView DIV.week1of6
 { top: 16.666667%; }
@@ -612,7 +613,7 @@ DIV.monthView DIV.week4of6
 
 DIV.monthView DIV.week5of6
 { top: 83.333333%;
-  border-bottom: 2px solid #397d94 !important; }
+  border-bottom: 2px solid #ccc !important; }
 
 DIV.monthView DIV.week3
 { top: 45%; }
@@ -629,7 +630,7 @@ DIV.monthView DIV.week6
 DIV#calendarHeader DIV.day,
 DIV#daysView DIV.day
 { position: absolute;
-  border-left: 1px solid #397d94;
+  border-left: 1px solid #ccc;
   margin: 0px;
   padding: 0px;
   top: 0px; }
@@ -651,7 +652,7 @@ DIV#daysView DIV.day
   color: #397d94; } */
 
 DIV.daysViewFor1Days DIV.day
-{ border-right: 1px solid #397d94;
+{ border-right: 1px solid #ccc;
   width: 100%; }
 
 /* DIV#daysView DIV.day
@@ -689,11 +690,11 @@ DIV.daysViewFor7Days DIV.day5
 
 DIV.monthView DIV.day6
 { left: 85.7142%;
-  border-right: 2px solid #397d94; }
+  border-right: 2px solid #ccc; }
 
 DIV.daysViewFor7Days DIV.day6
 { left: 85.7142%;
-  border-right: 1px solid #397d94; }
+  border-right: 1px solid #ccc; }
 
 DIV#daysView > DIV.hours
 { position: absolute;
@@ -705,8 +706,7 @@ DIV#daysView > DIV.hours
   margin: 0px;
   padding-top: .5em;
   padding-right: .5em;
-  color: #77a;
-  background-color: #e7efef;
+  color: #666;
   text-align: right; }
 
 DIV#daysView > DIV.hours > DIV.hour
@@ -719,7 +719,7 @@ DIV#daysView > DIV.hourLines > DIV.hourLine
   right: 0px;
   padding-left: 1em;
   margin-right: 2px;
-  border-bottom: 1px solid #397d94; }
+  border-bottom: 1px solid #ccc; }
 
 DIV.clickableHourCell
 { cursor: pointer;
@@ -844,7 +844,7 @@ DIV.event > DIV.eventInside
 { position: absolute;
   overflow: hidden;
   top: 2px;
-  bottom: 3px;
+  bottom: 2px;
   left: 1px;
   right: 2px; }
 
@@ -852,41 +852,19 @@ DIV.event._selected > DIV.eventInside
 { -moz-opacity: 0.7;
   opacity: 0.7; }
 
+DIV.monthView DIV.event,
+DIV.monthView DIV.event > DIV.eventInside
+{ bottom: 0px;
+  nopadding: 0px;
+  nomargin: 0px; 
+  top: 0px; }
+
+DIV.monthView DIV.event > DIV.eventInside
+{ bottom: 0px; }
+
 DIV.shadow
 { position: absolute;
   background-color: #000; }
-
-DIV.shadow1
-{ left: 0px;
-  right: 0px;
-  top: 2px;
-  bottom: 3px;
-  -moz-opacity: 0.1;
-  opacity: 0.1; }
-
-DIV.shadow2
-{ left: 1px;
-  right: 1px;
-  top: 1px;
-  bottom: 2px;
-  -moz-opacity: 0.1;
-  opacity: 0.1; }
-
-DIV.shadow3
-{ left: 2px;
-  right: 2px;
-  top: 0px;
-  bottom: 3px;
-  -moz-opacity: 0.1;
-  opacity: 0.1; }
-
-DIV.shadow4
-{ left: 3px;
-  right: 3px;
-  top: 3px;
-  bottom: 4px;
-  -moz-opacity: 0.4;
-  opacity: 0.4; }
 
 DIV.gradient, DIV.text
 { position: absolute;
@@ -910,7 +888,7 @@ DIV.monthView DIV.event
   margin-left: 1px;
   margin-right: 1px;
   padding: 1px;
-  height: 2em; }
+  height: 1.2em; }
 
 DIV.event DIV.text
 { font-size: 92%; }
