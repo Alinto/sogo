@@ -1399,16 +1399,15 @@ function onShowCompletedTasks(event) {
 }
 
 function updateTaskStatus(event) {
-  var taskId = this.parentNode.getAttribute("id");
   var newStatus = (this.checked ? 1 : 0);
   var http = createHTTPClient();
 
   if (isSafari() && !isSafari3()) {
     newStatus = (newStatus ? 0 : 1);
   }
-  
+
   url = (ApplicationBaseURL + this.parentNode.calendar
-	 + "/" + taskId + "/changeStatus?status=" + newStatus);
+	 + "/" + this.parentNode.cname + "/changeStatus?status=" + newStatus);
 
   if (http) {
     // TODO: add parameter to signal that we are only interested in OK
