@@ -159,51 +159,58 @@ static NSString *commaSeparator = nil;
   NSTimeInterval ti;
   BOOL           isTime;
   int            val;
-    
-  if (![self hasPrefix:@"P"]) {
-    NSLog(@"Cannot parse iCal duration value: '%@'", self);
-    return 0.0;
-  }
+  unichar c;
     
   ti  = 0.0;
-  val = 0;
-  for (i = 1, len = [self length], isTime = NO; i < len; i++) {
-    unichar c;
-      
-    c = [self characterAtIndex:i];
-    if (c == 't' || c == 'T') {
-      isTime = YES;
+
+  if ([self hasPrefix:@"P"])
+    {
       val = 0;
-      continue;
+
+      len = [self length];
+      isTime = NO;
+
+      for (i = 1; i < len; i++)
+	{
+	  c = [self characterAtIndex: i];
+	  if (c == 't' || c == 'T')
+	    {
+	      isTime = YES;
+	      val = 0;
+	    }
+	  else if (isdigit (c))
+	    val = (val * 10) + (c - 48);
+	  else
+	    {
+	      switch (c)
+		{
+		case 'W': /* week */
+		  ti += (val * 7 * 24 * 60 * 60);
+		  break;
+		case 'D': /* day  */
+		  ti += (val * 24 * 60 * 60);
+		  break;
+		case 'H': /* hour */
+		  ti += (val * 60 * 60);
+		  break;
+		case 'M': /* min  */
+		  ti += (val * 60);
+		  break;
+		case 'S': /* sec  */
+		  ti += val;
+		  break;
+		default:
+		  [self logWithFormat: @"cannot process duration unit: '%c'", c];
+		  break;
+		}
+
+	      val = 0;
+	    }
+	}
     }
-      
-    if (isdigit(c)) {
-      val = (val * 10) + (c - 48);
-      continue;
-    }
-      
-    switch (c) {
-    case 'W': /* week */
-      ti += (val * 7 * 24 * 60 * 60);
-      break;
-    case 'D': /* day  */
-      ti += (val * 24 * 60 * 60);
-      break;
-    case 'H': /* hour */
-      ti += (val * 60 * 60);
-      break;
-    case 'M': /* min  */
-      ti += (val * 60);
-      break;
-    case 'S': /* sec  */
-      ti += val;
-      break;
-    default:
-      [self logWithFormat: @"cannot process duration unit: '%c'", c];
-      break;
-    }
-    val = 0;
-  }
+  else
+    NSLog(@"Cannot parse iCal duration value: '%@'", self);
+
   return ti;
 }
 
