@@ -354,7 +354,7 @@
 {
   iCalPerson *currentUser;
 
-  currentUser = [[self storedEvent] findParticipant: [context activeUser]];
+  currentUser = [[self authorativeEvent] findParticipant: [context activeUser]];
 
   return currentUser;
 }
