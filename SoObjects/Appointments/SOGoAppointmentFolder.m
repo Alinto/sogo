@@ -75,12 +75,6 @@
 
 #define defaultColor @"#AAAAAA"
 
-#if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
-@interface NSDate(UsedPrivates)
-- (id)initWithTimeIntervalSince1970:(NSTimeInterval)_interval;
-@end
-#endif
-
 @implementation SOGoAppointmentFolder
 
 static NGLogger *logger = nil;
@@ -575,7 +569,7 @@ static Class sogoAppointmentFolderKlass = Nil;
       dateValue = [_record objectForKey: fields[count * 2]];
       if (dateValue)
 	{
-	  date = [NSCalendarDate dateWithTimeIntervalSince1970: (NSTimeInterval) [dateValue unsignedIntValue]];
+	  date = [NSCalendarDate dateWithTimeIntervalSince1970: [dateValue unsignedIntValue]];
 	  if (date)
 	    {
 	      [date setTimeZone: timeZone];
@@ -622,19 +616,21 @@ static Class sogoAppointmentFolderKlass = Nil;
   id tmp;
   
   md = [[_record mutableCopy] autorelease];
-  
+
   /* cycle is in _r. We also have to override the c_startdate/c_enddate with the date values of
      the reccurence since we use those when displaying events in SOGo Web */
   tmp = [_r startDate];
   [tmp setTimeZone: timeZone];
-  [md setObject:tmp forKey:@"startDate"];
+  [md setObject: tmp forKey: @"startDate"];
   dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
   [md setObject: dateSecs forKey: @"c_startdate"];
   [md setObject: dateSecs forKey: @"c_recurrence_id"];
+
   tmp = [_r endDate];
   [tmp setTimeZone: timeZone];
-  [md setObject:tmp forKey:@"endDate"];
-  [md setObject: [NSNumber numberWithInt: [tmp timeIntervalSince1970]] forKey: @"c_enddate"];
+  [md setObject: tmp forKey: @"endDate"];
+  dateSecs = [NSNumber numberWithInt: [tmp timeIntervalSince1970]];
+  [md setObject: dateSecs forKey: @"c_enddate"];
   
   return md;
 }
