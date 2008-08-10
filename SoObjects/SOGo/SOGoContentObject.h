@@ -59,9 +59,13 @@
 - (NSException *) saveContentString: (NSString *) _str
                         baseVersion: (unsigned int) _baseVersion;
 - (NSException *) saveContentString: (NSString *)_str;
+
+/* actions */
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder;
+- (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder;
 - (NSException *) delete;
 
-/* etag support */
+/* DAV support */
 
 - (id) davEntityTag;
 - (NSString *) davCreationDate;

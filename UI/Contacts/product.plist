@@ -96,16 +96,6 @@
 	      pageName    = "UIxContactsUserRightsEditor";
 	      actionName  = "saveUserRights";
 	   };
-	   copy = {
-	       protectedBy = "Access Contents Information";
-	       actionClass = "UIxContactFolderActions";
-	       actionName = "copy";
-	   };
-	   move = {
-	       protectedBy = "Delete Objects";
-	       actionClass = "UIxContactFolderActions";
-	       actionName = "move";
-	   };
         };
      };
      
@@ -137,9 +127,9 @@
               actionName = "canAccessContent";
            };
 	   copy = {
-	       protectedBy = "Access Contents Information";
-	       actionClass = "UIxContactFolderActions";
-	       actionName = "copy";
+	     protectedBy = "Access Contents Information";
+	     actionClass = "UIxFolderActions";
+	     actionName = "copy";
 	   };
         };
      };

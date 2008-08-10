@@ -27,6 +27,7 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
 
+#import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
 
 @implementation SOGoContactLDIFEntry
@@ -198,6 +199,26 @@
 
 - (void) save
 {
+}
+
+/* DAV */
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
+{
+  NGVCard *newCard;
+  NSString *newUID;
+  SOGoContactGCSEntry *newContact;
+
+  // Change the contact UID
+  newUID = [self globallyUniqueObjectId];
+  newCard = [self vCard];
+
+  [newCard setUid: newUID];
+
+  newContact = [SOGoContactGCSEntry objectWithName:
+				      [NSString stringWithFormat: @"%@.vcf", newUID]
+				    inContainer: newFolder];
+
+  return [newContact saveContentString: [newCard versitString]];
 }
 
 /* message type */

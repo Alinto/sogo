@@ -60,6 +60,27 @@
   return card;
 }
 
+/* actions */
+
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
+{
+  NGVCard *newCard;
+  NSString *newUID;
+  SOGoContactGCSEntry *newContact;
+
+  // Change the contact UID
+  newUID = [self globallyUniqueObjectId];
+  newCard = [self vCard];
+
+  [newCard setUid: newUID];
+
+  newContact = [[self class] objectWithName:
+			       [NSString stringWithFormat: @"%@.vcf", newUID]
+			     inContainer: newFolder];
+
+  return [newContact saveContentString: [newCard versitString]];
+}
+
 /* DAV */
 
 - (NSString *) davContentType

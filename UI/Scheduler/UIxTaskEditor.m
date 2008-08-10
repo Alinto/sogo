@@ -21,6 +21,8 @@
  */
 
 #import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/SoPermissions.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -314,9 +316,39 @@
   return result;
 }
 
+#warning this method could be replaced with a method common with UIxAppointmentEditor...
 - (id <WOActionResults>) saveAction
 {
-  [[self clientObject] saveComponent: todo];
+  NSString *newCalendar;
+  SOGoAppointmentFolder *thisFolder, *newFolder;
+  SOGoAppointmentFolders *parentFolder;
+  SOGoTaskObject *co;
+  SoSecurityManager *sm;
+  NSException *ex;
+
+  co = [self clientObject];
+  [co saveComponent: todo];
+
+  newCalendar = [self queryParameterForKey: @"moveToCalendar"];
+  if ([newCalendar length])
+    {
+      sm = [SoSecurityManager sharedSecurityManager];
+
+      thisFolder = [co container];
+      if (![sm validatePermission: SoPerm_DeleteObjects
+	       onObject: thisFolder
+	       inContext: context])
+	{
+	  parentFolder = [[self container] container];
+	  newFolder = [[thisFolder container] lookupName: newCalendar
+					      inContext: context
+					      acquire: NO];
+	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		   onObject: newFolder
+		   inContext: context])
+	    ex = [co moveToFolder: newFolder];
+	}
+    }
 
   return [self jsCloseWithRefreshMethod: @"refreshTasks()"];
 }

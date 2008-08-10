@@ -198,6 +198,30 @@
   return [self saveContentString: newContent baseVersion: 0];
 }
 
+/* actions */
+
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
+{
+  SOGoContentObject *newObject;
+  NSException *ex;
+
+  newObject = [[self class] objectWithName: nameInContainer
+			    inContainer: newFolder];
+  [newObject setIsNew: YES];
+  ex = [newObject saveContentString: content];
+  if (!ex)
+    ex = [self delete];
+
+  return ex;
+}
+
 - (NSException *) delete
 {
   /* Note: "iCal multifolder saves" are implemented in the apt subclass! */

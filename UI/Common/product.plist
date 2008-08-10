@@ -116,6 +116,16 @@
 	  actionClass = "UIxFolderActions";
 	  actionName  = "batchDelete";
 	};
+	copy = {
+	  protectedBy = "Access Contents Information";
+	  actionClass = "UIxFolderActions";
+	  actionName = "copy";
+	};
+	move = {
+	  protectedBy = "Delete Objects";
+	  actionClass = "UIxFolderActions";
+	  actionName = "move";
+	};
       };
     };
   };

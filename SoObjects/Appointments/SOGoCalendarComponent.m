@@ -750,16 +750,37 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
   uids = [NSMutableArray array];
 
   persons = [iCalPersons objectEnumerator];
-  currentPerson = [persons nextObject];
-  while (currentPerson)
+  while ((currentPerson = [persons nextObject]))
     {
       uid = [currentPerson uid];
       if (uid)
 	[uids addObject: uid];
-      currentPerson = [persons nextObject];
     }
 
   return uids;
+}
+
+- (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
+{
+  NSArray *elements;
+  NSString *newUID;
+  unsigned int count, max;
+  iCalCalendar *calendar;
+  SOGoCalendarComponent *newComponent;
+
+  newUID = [self globallyUniqueObjectId];
+  calendar = [self calendar: NO secure: NO];
+
+  elements = [calendar allObjects];
+  max = [elements count];
+  for (count = 0; count < max; count++)
+    [[elements objectAtIndex: count] setUid: newUID];
+
+  newComponent = [[self class] objectWithName:
+				 [NSString stringWithFormat: @"%@.ics", newUID]
+			       inContainer: newFolder];
+
+  return [newComponent saveContentString: [calendar versitString]];
 }
 
 - (NSString *) _roleOfOwner: (iCalRepeatableEntityObject *) component

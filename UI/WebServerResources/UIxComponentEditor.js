@@ -70,10 +70,18 @@ function onMenuSetClassification(event) {
 function onChangeCalendar(event) {
   var calendars = $("calendarFoldersList").value.split(",");
   var form = document.forms["editform"];
-  var urlElems = form.getAttribute("action").split("/");
+  var urlElems = form.getAttribute("action").split("?");
   var choice = calendars[this.value];
-  urlElems[urlElems.length-3] = choice;
-  form.setAttribute("action", urlElems.join("/"));
+  var urlParam = "moveToCalendar=" + choice;
+  if (urlElems.length == 1)
+    urlElems.push(urlParam);
+  else
+    urlElems[2] = urlParam;
+
+  while (urlElems.length > 2)
+    urlElems.pop();
+
+  form.setAttribute("action", urlElems.join("?"));
 }
 
 function initializeDocumentHref() {
@@ -111,9 +119,7 @@ function onComponentEditorLoad(event) {
   initializeDocumentHref();
   initializePrivacyMenu();
   var list = $("calendarList");
-  list.observe("mousedown",
-                onChangeCalendar.bindAsEventListener(list),
-                false);
+  list.observe("change", onChangeCalendar, false);
   list.fire("mousedown");
 
   var menuItems = $("itemPrivacyList").childNodesWithTag("li");

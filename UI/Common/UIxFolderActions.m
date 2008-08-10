@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
@@ -32,10 +33,13 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
+#import <NGObjWeb/NSException+HTTP.h>
 
 #import <SoObjects/SOGo/LDAPUserManager.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
+#import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoGCSFolder.h>
+#import <SoObjects/SOGo/SOGoParentFolder.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 
@@ -217,6 +221,137 @@
     }
   
   return response;
+}
+
+- (NSException*) _moveContacts: (NSArray*) contactsId 
+		      toFolder: (NSString*) destinationFolderId
+		   andKeepCopy: (BOOL) keepCopy
+{
+  NSEnumerator *uids;
+  NSException *ex;
+  NSString *uid;
+  SOGoContentObject *currentChild;
+  SOGoGCSFolder *sourceFolder, *destinationFolder;
+  SOGoParentFolder *folders;
+  SoSecurityManager *sm;
+  WORequest *request;
+  unsigned int errorCount;
+
+  sm = [SoSecurityManager sharedSecurityManager];
+  request = [context request];
+  ex = nil;
+  errorCount = 0;
+
+  // Search the specified destination folder
+  sourceFolder = [self clientObject];
+  folders = [sourceFolder container];
+  destinationFolder = [folders lookupName: destinationFolderId
+			       inContext: nil
+			       acquire: NO];
+  if (destinationFolder)
+    {
+      // Verify write access to the folder
+      ex = [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	       onObject: destinationFolder
+	       inContext: context];
+      if (!ex)
+	{
+	  uids = [contactsId objectEnumerator];
+	  while ((uid = [uids nextObject]))
+	    {
+	      // Search the currentChild ID
+	      currentChild = [sourceFolder lookupName: uid
+					   inContext: [self context]
+					   acquire: NO];
+	      if ([currentChild isKindOfClass: [NSException class]])
+		errorCount++;
+	      else
+		{
+		  if (keepCopy)
+		    ex = [currentChild copyToFolder: destinationFolder];
+		  else
+		    ex = [currentChild moveToFolder: destinationFolder];
+		  if (ex)
+		    errorCount++;
+		}
+	    }
+	}
+    }
+  else
+    ex = [NSException exceptionWithName: @"UnknownDestinationFolder"
+		      reason: @"Unknown Destination Folder"
+		      userInfo: nil];
+
+  if (errorCount > 0)
+    // At least one currentChild was not copied
+    ex = [NSException exceptionWithHTTPStatus: 400
+		      reason: @"Invalid Contact"];
+  else if (ex != nil)
+    // Destination address book doesn't exist or is not writable
+    ex = [NSException exceptionWithHTTPStatus: 403
+		      reason: [ex name]];
+
+  return ex;
+}
+
+- (id <WOActionResults>) copyAction
+{
+  WORequest *request;
+  id <WOActionResults> response;
+  NSString *destinationFolderId;
+  NSArray *contactsId;
+  NSException *ex;
+  
+  request = [context request];
+  ex = nil;
+
+  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
+      (contactsId = [request formValuesForKey: @"uid"]))
+    {
+      ex = [self _moveContacts: contactsId
+		 toFolder: destinationFolderId
+		 andKeepCopy: YES];
+      if (ex != nil)
+	response = (id)ex;
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+			    reason: @"missing 'folder' and/or 'uid' parameter"];
+  
+    if (ex == nil)
+      response = [self responseWith204];
+
+  return response;
+}
+
+- (id <WOActionResults>) moveAction
+{
+  WORequest *request;
+  id <WOActionResults> response;
+  NSString *destinationFolderId;
+  NSArray *contactsId;
+  NSException *ex;
+  
+  request = [context request];
+  ex = nil;
+
+  if ((destinationFolderId = [request formValueForKey: @"folder"]) &&
+      (contactsId = [request formValuesForKey: @"uid"]))
+    {
+      ex = [self _moveContacts: contactsId
+		 toFolder: destinationFolderId
+		 andKeepCopy: NO];
+      if (ex != nil)
+	response = (id)ex;
+    }
+  else
+    response = [NSException exceptionWithHTTPStatus: 400
+			    reason: @"missing 'folder' and/or 'uid' parameter"];
+  
+    if (ex == nil)
+      response = [self responseWith204];
+
+    return response;
 }
 
 @end

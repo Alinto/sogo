@@ -23,6 +23,8 @@
 #include <math.h>
 
 #import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/SoPermissions.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -36,6 +38,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
+#import <SoObjects/Appointments/SOGoAppointmentsFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 
 #import <SoObjects/Appointments/SOGoComponentOccurence.h>
@@ -230,7 +233,36 @@
 
 - (id <WOActionResults>) saveAction
 {
-  [[self clientObject] saveComponent: event];
+  NSString *newCalendar;
+  SOGoAppointmentFolder *thisFolder, *newFolder;
+  SOGoAppointmentFolders *parentFolder;
+  SOGoAppointmentObject *co;
+  SoSecurityManager *sm;
+  NSException *ex;
+
+  co = [self clientObject];
+  [co saveComponent: event];
+
+  newCalendar = [self queryParameterForKey: @"moveToCalendar"];
+  if ([newCalendar length])
+    {
+      sm = [SoSecurityManager sharedSecurityManager];
+
+      thisFolder = [co container];
+      if (![sm validatePermission: SoPerm_DeleteObjects
+	       onObject: thisFolder
+	       inContext: context])
+	{
+	  parentFolder = [[self container] container];
+	  newFolder = [[thisFolder container] lookupName: newCalendar
+					      inContext: context
+					      acquire: NO];
+	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		   onObject: newFolder
+		   inContext: context])
+	    ex = [co moveToFolder: newFolder];
+	}
+    }
 
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
 }
