@@ -152,3 +152,7 @@
 "Forbidden" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
 "Invalid Contact" = "La fiche sélectionnée n'existe plus.";
 "Unknown Destination Folder" = "Le carnet d'adresses choisi n'existe plus.";
+
+"Move To" = "Déplacer vers";
+"Copy To" = "Copier vers";
+"Add to:" = "Ajouter à:";
