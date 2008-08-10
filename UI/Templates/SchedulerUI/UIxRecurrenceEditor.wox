@@ -212,7 +212,7 @@
             /><input type="text" name="rangeAppointmentsFieldName" const:id="rangeAppointmentsField"
                class="textField"
                var:value="title"
-            /><var:string label:value="Appointments(s)"/>
+            /><var:string label:value="appointment(s)"/>
           </td>
         </tr>
         <tr>

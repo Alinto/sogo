@@ -321,7 +321,7 @@
 "cycle_of" = "de";
 "No end date" = "Pas de date de fin";
 "Create" = "Créer";
-"Appointment(s)" = "Rendez-vous";
+"appointment(s)" = "rendez-vous";
 "Repeat until" = "Répéter jusqu'à";
 
 "First" = "premier";

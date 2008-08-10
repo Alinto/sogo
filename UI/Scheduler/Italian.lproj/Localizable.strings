@@ -319,8 +319,7 @@
 "cycle_of" = "di";
 "No end date" = "Nessuna data di fine";
 "Create" = "Crea";
-"Appointment(s)" = "Appuntamento/i";
-"Appointments(s)" = "Appuntamento/i";
+"appointment(s)" = "Appuntamento/i";
 "Repeat until" = "Ripeti fino ";
 
 "First" = "Primo";

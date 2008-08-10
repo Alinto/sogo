@@ -327,7 +327,7 @@
 "cycle_of" = "de";
 "No end date" = "Sin fecha fin";
 "Create" = "Crear";
-"Appointment(s)" = "evento(s)";
+"appointment(s)" = "evento(s)";
 "Repeat until" = "Repetir hasta: ";
 
 "First" = "Primero";
