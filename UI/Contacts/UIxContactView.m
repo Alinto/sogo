@@ -290,7 +290,7 @@
     {
       url = [[elements objectAtIndex: 0] value: 0];
 
-      if (![[url lowercaseString] hasPrefix: @"http://"])
+      if ([[url lowercaseString] rangeOfString: @"://"].length)
 	  url = [NSString stringWithFormat: @"http://%@", url];
 
       data = [NSString stringWithFormat:
