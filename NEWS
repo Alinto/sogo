@@ -2,6 +2,7 @@
 ------------
 - fixed a bug that would prevent deleted event and tasks from being removed from the events and tasks list
 - fixed a bug where the search of contacts would be done in authentication-only LDAP repositories
+- added the ability to transfer an event from one calendar to another
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------
