@@ -140,11 +140,6 @@
               protectedBy = "Access Contents Information";
               pageName    = "UIxContactView";
            };
-           delete = {
-              protectedBy = "Delete Objects";
-              pageName    = "UIxContactView";
-              actionName  = "delete";
-           };
            edit = {
               protectedBy = "Access Contents Information";
               pageName    = "UIxContactEditor";

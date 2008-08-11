@@ -1,6 +1,6 @@
 /* JavaScript for SOGoContacts */
 
-var cachedContacts = new Array();
+var cachedContacts = {};
 var currentAddressBook = null;
 
 var usersRightsWindowHeight = 200;
@@ -425,35 +425,32 @@ function onToolbarWriteToSelectedContacts(event) {
 function onToolbarDeleteSelectedContacts(event) {
   var contactsList = $('contactsList');
   var rows = contactsList.getSelectedRowsId();
-   
-  if (rows.length == 0) {
+
+  if (rows.length) {
+    for (var i = 0; i < rows.length; i++) {
+      delete cachedContacts[currentAddressBook + "/" + rows[i]];
+      var urlstr = (URLForFolderID(currentAddressBook) + "/"
+                    + rows[i] + "/delete");
+      triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rows[i]);
+    }
+
+    var contactView = $('contactView');
+    contactView.update();
+  }
+  else {
     window.alert(labels["Please select a contact."]);
-    return false;
   }
-   
-  var contactView = $('contactView');
-   
-  for (var i = 0; i < rows.length; i++) {
-    var url;
-    url = (URLForFolderID(currentAddressBook) + "/"
-	   + rows[i] + "/delete");
-    new Ajax.Request(url, {
-      method: 'post',
-      onFailure: function(transport) {
-	  window.alert(labels["You cannot delete the selected contact(s)"]);
-	  refreshCurrentFolder();
-	},
-      onSuccess: function(transport) {
-	  var row = $(transport.responseText.trim());
-	  if (row)
-	    row.parentNode.removeChild(row);
-	}
-      });
-  }
-   
-  contactView.update();
-  
+
   return false;
+}
+
+function onContactDeleteEventCallback(http) {
+  if (http.readyState == 4) {
+    if (isHttpStatus204(http.status)) {
+      var row = $(http.callbackData);
+      row.parentNode.removeChild(row);
+    }
+  }
 }
 
 function newEmailTo(sender) {
@@ -561,7 +558,7 @@ function onConfirmContactSelection(event) {
 
 function refreshContacts(contactId) {
   openContactsFolder(currentAddressBook, true, contactId);
-  cachedContacts[currentAddressBook + "/" + contactId] = null;
+  delete cachedContacts[currentAddressBook + "/" + contactId];
   loadContact(contactId);
 
   return false;
