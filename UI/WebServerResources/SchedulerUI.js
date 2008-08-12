@@ -894,7 +894,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     eventDiv.recurrenceTime = eventRep.recurrenceTime;
 
   eventDiv.addClassName("event");
-  if (eventRep.userState && userStates[eventRep.userState])
+  if (eventRep.userState >= 0 && userStates[eventRep.userState])
     eventDiv.addClassName(userStates[eventRep.userState]);
 
   var innerDiv = $(document.createElement("div"));
