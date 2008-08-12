@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalCalendar.h>
@@ -42,7 +43,7 @@
 		  inContainer: (SOGoCalendarComponent *) newContainer
 {
   SOGoComponentOccurence *occurence;
-  unsigned int seconds;
+  NSTimeInterval seconds;
   NSString *newName;
 
   if (newComponent == newMaster)
@@ -50,8 +51,8 @@
   else
     {
       seconds = [[newComponent recurrenceId] timeIntervalSince1970];
-      newName = [NSString stringWithFormat: @"occurence%d", seconds];
-    };
+      newName = [NSString stringWithFormat: @"occurence%d", (int) seconds];
+    }
   occurence = [self objectWithName: newName inContainer: newContainer];
   [occurence setComponent: newComponent];
   [occurence setMasterComponent: newMaster];
@@ -134,7 +135,7 @@
   return component;
 }
 
-- (id) delete
+- (NSException *) delete;
 {
   NSException *error;
   iCalCalendar *parent;
@@ -155,7 +156,7 @@
   return error;
 }
 
-- (void) saveComponent: (id) newEvent
+- (void) saveComponent: (iCalRepeatableEntityObject *) newEvent
 {
   [container saveComponent: newEvent];
 }

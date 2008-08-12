@@ -25,6 +25,8 @@
 
 #import <SOGo/SOGoObject.h>
 
+@class NSException;
+
 @class iCalRepeatableEntityObject;
 @class SOGoCalendarComponent;
 
@@ -32,7 +34,7 @@
 
 - (iCalRepeatableEntityObject *) occurence;
 - (BOOL) isNew;
-- (id) delete;
+- (NSException *) delete;
 
 @end
 

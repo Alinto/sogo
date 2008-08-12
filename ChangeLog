@@ -1,3 +1,11 @@
+2008-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoComponentOccurence.m
+	([SOGoComponentOccurence
+	+occurenceWithComponent:newComponentwithMasterComponent:newMasterinContainer:newContainer]):
+	seconds is now a NSTimeInterval instead of an int, to avoid
+	casting problems on the PowerPC architecture.
+
 2008-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalViewer.m
