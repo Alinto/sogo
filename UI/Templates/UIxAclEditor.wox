@@ -20,7 +20,7 @@
 	<input type="hidden" id="userUIDS" name="userUIDS"
 	  var:value="userUIDS"/>
 	<var:if condition="hasOwner">
-	  <label><var:string label:value="Owner:"/><br/>
+	  <label><var:string label:value="Owner:"/>
 	    <span class="value"><strong><var:string value="ownerName"/></strong></span></label><br/>
 	</var:if>
       </div>

@@ -15,29 +15,23 @@ DIV.acls LABEL
   width: 100%; }
 
 DIV#userSelectorHeader
-{ margin: 1em; }
+{ margin: 1em 0 0.5em 1em; }
 
 DIV#userSelector SPAN
 { display: block; }
 
 INPUT#defaultRolesBtn
-{ margin-left: 1em;
-  margin-top: 1em;
-  left: 1em; }
+{ float: right;
+  margin-right: 1em; }
 
 DIV#userRoles
-{ position: absolute;
-  left: 1em;
-  top: 7.6em;
-  right: 1em;
-  bottom: 0px; }
+{ height: 100%; }
+
+DIV#userRoles SPAN#userSelectorButtons
+{ margin-left: 1em; }
 
 UL#userList
-{ position: absolute;
-  top: 2.5em;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+{ height: 100%;
   width: 100%;
   cursor: default;
   margin: 0px;
