@@ -1,3 +1,9 @@
+2008-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
+	-contactInfosForUserWithUIDorEmail:uid]): only use the
+	authentication sources.
+
 2008-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoComponentOccurence.m

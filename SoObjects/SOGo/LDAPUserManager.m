@@ -323,7 +323,7 @@ static BOOL forceImapLoginWithEmail = NO;
   NSDictionary *userEntry;
   NSEnumerator *ldapSources;
   LDAPSource *currentSource;
-  NSString *cn, *c_uid;
+  NSString *sourceID, *cn, *c_uid;
   NSArray *c_emails;
   BOOL access;
 
@@ -336,9 +336,10 @@ static BOOL forceImapLoginWithEmail = NO;
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"MailAccess"];
 
-  ldapSources = [sources objectEnumerator];
-  while ((currentSource = [ldapSources nextObject]))
+  ldapSources = [[self authenticationSourceIDs] objectEnumerator];
+  while ((sourceID = [ldapSources nextObject]))
     {
+      currentSource = [sources objectForKey: sourceID];
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];
       if (userEntry)
 	{
