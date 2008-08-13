@@ -677,13 +677,13 @@ _occurenceHasID (iCalRepeatableEntityObject *occurence, NSString *recID)
     }
 }
 
-- (void) sendResponseToOrganizer
+- (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
 {
   iCalPerson *organizer, *attendee;
   iCalEvent *event;
   SOGoUser *ownerUser;
 
-  event = [[self component: NO secure: NO] itipEntryWithMethod: @"reply"];
+  event = [newComponent itipEntryWithMethod: @"reply"];
   ownerUser = [SOGoUser userWithLogin: owner roles: nil];
   if (![event userIsOrganizer: ownerUser])
     {

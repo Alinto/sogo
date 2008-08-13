@@ -419,7 +419,7 @@
 	{
 	  if ([[attendee rsvp] isEqualToString: @"true"]
 	      && [event isStillRelevant])
-	    [self sendResponseToOrganizer];
+	    [self sendResponseToOrganizer: event];
 	  organizerUID = [[event organizer] uid];
 	  if (organizerUID)
 	    ex = [self _updateAttendee: attendee
