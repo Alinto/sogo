@@ -1,5 +1,9 @@
 2008-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEventChanges+SOGo.m
+	([iCalEventChanges -sequenceShouldBeIncreased]): added summary and
+	comment.
+
 	* SoObjects/SOGo/LDAPUserManager.m ([LDAPUserManager
 	-contactInfosForUserWithUIDorEmail:uid]): only use the
 	authentication sources.

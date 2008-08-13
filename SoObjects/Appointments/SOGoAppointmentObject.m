@@ -337,11 +337,11 @@
 {
   iCalEvent *oldEvent;
   NSArray *attendees;
-  SOGoUser *currentUser;
+  SOGoUser *ownerUser;
 
   [[newEvent parent] setMethod: @""];
-  currentUser = [context activeUser];
-  if ([newEvent userIsOrganizer: currentUser])
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
+  if ([newEvent userIsOrganizer: ownerUser])
     {
       oldEvent = [self component: NO secure: NO];
       if (oldEvent)
@@ -358,9 +358,7 @@
 		    toAttendees: attendees];
 	    }
 
-	  if (![[newEvent attendees] count]
-	      && [[self ownerInContext: context]
-		   isEqualToString: [currentUser login]])
+	  if (![[newEvent attendees] count])
 	    [[newEvent uniqueChildWithTag: @"organizer"] setValue: 0
 							 to: @""];
 	}
@@ -604,17 +602,18 @@
 - (void) prepareDeleteOccurence: (iCalEvent *) occurence
 {
   iCalEvent *event;
-  SOGoUser *currentUser;
+  SOGoUser *ownerUser, *currentUser;
   NSArray *attendees;
 
   if ([[context request] handledByDefaultHandler])
     {
-      currentUser = [context activeUser];
+      ownerUser = [SOGoUser userWithLogin: owner roles: nil];
       event = [self component: NO secure: NO];
       if (!occurence)
 	occurence = event;
-      if ([event userIsOrganizer: currentUser])
+      if ([event userIsOrganizer: ownerUser])
 	{
+	  currentUser = [context activeUser];
 	  attendees = [occurence attendeesWithoutUser: currentUser];
 	  if (![attendees count] && event != occurence)
 	    attendees = [event attendeesWithoutUser: currentUser];
@@ -627,7 +626,7 @@
 		    toAttendees: attendees];
 	    }
 	}
-      else if ([occurence userIsParticipant: currentUser])
+      else if ([occurence userIsParticipant: ownerUser])
 	[self changeParticipationStatus: @"DECLINED"];
     }
 }

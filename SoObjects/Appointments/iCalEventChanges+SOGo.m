@@ -33,7 +33,8 @@
   NSString *properties[] = {@"organizer", @"startDate", @"endDate", /* vtask:
 								       @"due" */
 			    @"rdate", @"rrule", @"exdate", @"exrule",
-			    @"status", @"location", nil};
+			    @"status", @"summary", @"comment", @"location",
+			    nil};
   NSString **currentProperty;
   BOOL updateRequired;
 
