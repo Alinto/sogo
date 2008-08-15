@@ -94,7 +94,7 @@ function editEvent() {
     }
 
     for (var i = 0; i < nodes.length; i++)
-      _editEventId(nodes[i].getAttribute("id"),
+      _editEventId(nodes[i].cname,
                    nodes[i].calendar);
   } else if (selectedCalendarCell) {
     _editEventId(selectedCalendarCell[0].cname,
