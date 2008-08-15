@@ -46,18 +46,27 @@ LABEL, SPAN.checkBoxList
   position: relative;
   line-height: 1.5em;
   height: 1.5em;
-  margin-left: .5em;
+  margin-left: 0px;
   margin-bottom: .5em;
   width: 100%; }
+
+SELECT
+{ margin-left: 1px; }
 
 LABEL#commentArea
 { height: 15em; }
 
 LABEL#commentArea textarea
-{ padding: 0;
-  margin: 0;
+{ padding-bottom: 0em;
+  top: 0px;
+  left: 8em;
   width: 380px;
-  height: 15em; }
+  height: 15em;
+  vertical-align: bottom;
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  margin-left: 1px; }
 
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
@@ -82,15 +91,6 @@ SPAN.content
 
 SPAN.content A
 { line-height: 2em; }
-
-TEXTAREA
-{ position: absolute;
-  top: 0px;
-  left: 8em;
-  vertical-align: bottom;
-  bottom: 1em;
-  right: 1em;
-  padding-bottom: 0em; }
 
 A#changeUrlButton
 { margin-left: 1em; }
@@ -125,14 +125,12 @@ SPAN#categoriesCB LABEL
 { margin-left: 0px;
   margin-right: 1em; }
 
-SPAN#allDay > INPUT
-{ position: static; }
-
 SPAN.content > INPUT
-{ position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px; }
+{ width: 380px; }
+
+SPAN#allDay > INPUT
+{ position: static;
+  width: auto; }
 
 LABEL#urlArea INPUT
 { position: static; }
