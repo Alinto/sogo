@@ -785,8 +785,7 @@ function scrollDayView(scrollEvent) {
 function onClickableCellsDblClick(event) {
   newEvent(this, 'event');
 
-  event.cancelBubble = true;
-  event.returnValue = false;
+  Event.stop(event);
 }
 
 function refreshCalendarEvents(scrollEvent) {
@@ -1026,6 +1025,8 @@ function calendarDisplayCallback(http) {
       for (var i = 0; i < days.length; i++) {
         days[i].observe("click", onCalendarSelectDay);
         days[i].observe("dblclick", onClickableCellsDblClick);
+	days[i].observe("selectstart", listRowMouseDownHandler);
+	//days[i].down(".dayHeader").observe("selectstart", listRowMouseDownHandler);
       }
     else {
       var headerDivs = $("calendarHeader").childNodesWithTag("div"); 

@@ -160,11 +160,13 @@
   return [self _dateQueryParametersWithOffset: 2];
 }
 
-- (NSString *) _monthNameWithOffsetFromThisMonth: (int) offset
+- (NSString *) _monthNameWithOffsetFromThisMonth: (int) monthsOffset
 {
-  NSCalendarDate *date;
+  NSCalendarDate *date, *firstDay;
 
-  date = [[self selectedDate] dateByAddingYears: 0 months: offset days: 0];
+  firstDay = [[self selectedDate] firstDayOfMonth];
+  date = [firstDay dateByAddingYears: 0 months: monthsOffset
+		   days: 0 hours: 0 minutes: 0 seconds: 0];
 
   return [self localizedNameForMonthOfYear: [date monthOfYear]];
 }

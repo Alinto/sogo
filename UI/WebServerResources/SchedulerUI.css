@@ -552,7 +552,8 @@ DIV.monthView DIV.day
   border-left: 2px solid #ccc;
   border-top: 2px solid #ccc;
   min-height: 4em;
-  overflow: auto; }
+  overflow: auto;
+  overflow-x: hidden; }
 
 DIV.selectedDay,
 DIV.selectedDay DIV.dayHeader
