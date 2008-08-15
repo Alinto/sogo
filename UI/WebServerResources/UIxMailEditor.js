@@ -166,6 +166,9 @@ function clickedEditorSend(sender) {
   if (!document.busyAnim)
     document.busyAnim = startAnimation(toolbar);
   
+  var lastRow = $("lastRow");
+  lastRow.down("select").name = "popup_last";
+  
   window.shouldPreserve = true;
   document.pageform.action = "send";
   document.pageform.submit();
@@ -248,6 +251,9 @@ function clickedEditorSave(sender) {
   var input = currentAttachmentInput();
   if (input)
     input.parentNode.removeChild(input);
+
+  var lastRow = $("lastRow");
+  lastRow.down("select").name = "popup_last";
 
   window.shouldPreserve = true;
   document.pageform.action = "save";
