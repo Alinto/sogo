@@ -22,7 +22,8 @@ var Mailer = {
  currentMessages: {},
  maxCachedMessages: 20,
  cachedMessages: new Array(),
- foldersStateTimer: false
+ foldersStateTimer: false,
+ popups: new Array()
 };
 
 var usersRightsWindowHeight = 320;
@@ -39,11 +40,13 @@ var messageCheckTimer;
 function openMessageWindow(msguid, url) {
   var wId = '';
   if (msguid) {
-    wId += "SOGo_msg_" + msguid;
+    wId += "SOGo_msg" + msguid;
     markMailReadInWindow(window, msguid);
   }
   var msgWin = openMailComposeWindow(url, wId);
+  msgWin.messageUID = msguid;
   msgWin.focus();
+  Mailer.popups.push(msgWin);
 
   return false;
 }
@@ -149,7 +152,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
     var rows = messageList.getSelectedRowsId();
     if (rows.length > 0) {
       for (var i = 0; i < rows.length; i++) {
-	openMessageWindow(rows[i].substr(4),
+	openMessageWindow(Mailer.currentMailbox + "/" + rows[i].substr(4),
 			  ApplicationBaseURL + Mailer.currentMailbox
 			  + "/" + rows[i].substr(4)
 			  + "/" + action);
@@ -823,9 +826,10 @@ function onICalendarButtonClick(event) {
   var link = $("iCalendarAttachment").value;
   if (link) {
     var urlstr = link + "/" + this.action;
-    triggerAjaxRequest(urlstr, ICalendarButtonCallback,
-		       Mailer.currentMailbox + "/"
-		       + Mailer.currentMessages[Mailer.currentMailbox]);
+    var currentMsg;
+    currentMsg = Mailer.currentMailbox + "/"
+      + Mailer.currentMessages[Mailer.currentMailbox];
+    triggerAjaxRequest(urlstr, ICalendarButtonCallback, currentMsg);
   }
   else
     log("no link");
@@ -835,10 +839,15 @@ function ICalendarButtonCallback(http) {
   if (isHttpStatus204(http.status)) {
     var oldMsg = http.callbackData;
     var msg = Mailer.currentMailbox + "/" + Mailer.currentMessages[Mailer.currentMailbox];
+    deleteCachedMessage(oldMsg);
     if (oldMsg == msg) {
-      deleteCachedMessage(oldMsg);
       loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
     }
+    for (var i = 0; i < Mailer.popups.length; i++)
+      if (Mailer.popups[i].messageUID == oldMsg) {
+	Mailer.popups[i].location.reload();
+	break;
+      }
   }
   else
     window.alert("received code: " + http.status);

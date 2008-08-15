@@ -9,8 +9,23 @@ function initPopupMailer(event) {
   resizeMailContent();
 }
 
-function onMenuDeleteMessage(event) {
+function onICalendarButtonClick(event) {
+  var link = $("iCalendarAttachment").value;
+  if (link) {
+    var urlstr = link + "/" + this.action;
+    var currentMsg;
+    if (window.opener && window.opener.open && !window.opener.closed && window.messageUID) {
+      var c = window.opener;
+      window.opener.triggerAjaxRequest(urlstr,
+				       window.opener.ICalendarButtonCallback,
+				       window.messageUID);
+    }
+  }  
+  else
+    log("no link");
+}
 
+function onMenuDeleteMessage(event) {
   if (window.opener && window.opener.open && !window.opener.closed) {
     var rowId = window.name.substr(9);
     var messageId = window.opener.Mailer.currentMailbox + "/" + rowId;
