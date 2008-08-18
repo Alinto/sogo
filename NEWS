@@ -6,6 +6,7 @@
 - fixed a bug where deleting a contact would leave it listed in the contact list until the next refresh
 - fixed a bug where events shared among different attendees would no longer be updated automatically
 - changed the look of the Calendar module to match the look of Lightning 0.9
+- the event details now appear when clicking on it
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------

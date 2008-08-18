@@ -6,6 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
+
   <a href="#"
     class="leftNavigationArrow"
     var:date="prevMonthQueryParameters.day"

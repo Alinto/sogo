@@ -77,7 +77,7 @@ function _editEventId(id, calendar, recurrence) {
     urlstr += "/" + recurrence;
     targetname += recurrence;
   }
-  urlstr += "/edit";
+  urlstr += "/edit"; log (urlstr);
   var win = window.open(urlstr, "_blank",
                         "width=490,height=470,resizable=0");
   if (win)
@@ -315,14 +315,96 @@ function _editRecurrenceDialog(eventDiv, method) {
     win.focus();
 }
 
+function onViewEvent(event) {
+  if (event.detail == 2) return;
+  var url = ApplicationBaseURL + this.calendar + "/" + this.cname + "/view";
+  if (document.viewEventAjaxRequest) {
+    document.viewEventAjaxRequest.aborted = true;
+    document.viewEventAjaxRequest.abort();
+  }
+  document.viewEventAjaxRequest = triggerAjaxRequest(url, onViewEventCallback, this);
+}
+
+function onViewEventCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    if (http.responseText.length > 0) {
+      var data = http.responseText.evalJSON(true);
+//      $H(data).keys().each(function(key) {
+//	  log (key + " = " + data[key]);
+//	});
+      var cell = http.callbackData;
+      var cellPosition = cell.cumulativeOffset();
+      var cellDimensions = cell.getDimensions();      
+      var div = $("eventDialog");
+      var divDimensions = div.getDimensions();
+      var view;
+      var left = cellPosition[0];
+      var top = cellPosition[1];
+      
+      if (currentView != "monthview") {
+	view = $("daysView");
+	var viewPosition = view.cumulativeOffset();
+	
+	if (parseInt(data["isAllDay"]) == 0) {
+	  top -= view.scrollTop;
+	  if (viewPosition[1] > top + 2) {
+	    view.stopObserving("scroll", onBodyClickHandler);
+	    view.scrollTop = cell.offsetTop;
+	    top = viewPosition[1];
+	    Event.observe.delay(0.1, view, "scroll", onBodyClickHandler);
+	  }
+	}
+      }
+      else {
+	view = $("calendarView");
+	top -= cell.up("DIV.day").scrollTop;
+      }
+      
+      if (left > parseInt(window.width()*0.75)) {
+	left = left - divDimensions["width"] + 10;
+	div.removeClassName("left");
+	div.addClassName("right");
+      }
+      else {
+	left = left + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
+	div.removeClassName("right");
+	div.addClassName("left");
+      }
+
+      // Put the event's data in the DIV
+      div.down("h1").update(data["summary"]);
+      if (parseInt(data["isAllDay"]) == 0) {
+	div.down("P", 0).down("SPAN", 1).update(data["startTime"]);
+	div.down("P", 0).show();
+      } else
+	div.down("P", 0).hide();
+      if (data["location"].length) {
+	div.down("P", 1).down("SPAN", 1).update(data["location"]);
+	div.down("P", 1).show();
+      } else
+	div.down("P", 1).hide();
+
+      if (data["description"].length) {
+	div.down("P", 2).update(data["description"]);
+	div.down("P", 2).show();
+      } else
+	div.down("P", 2).hide();
+      
+      div.setStyle({ left: left + "px",
+	    top: top + "px" });
+      div.show();
+    }
+  }
+}
+
 function editDoubleClickedEvent(event) {
   if (this.recurrenceTime)
     _editRecurrenceDialog(this, "confirmEditing");
   else
     _editEventId(this.cname, this.calendar);
 
-  preventDefault(event);
-  event.cancelBubble = true;
+  Event.stop(event);
 }
 
 function performEventEdition(folder, event, recurrence) {
@@ -667,7 +749,7 @@ function changeCalendarDisplay(data, newView) {
     day = currentDay;
 
   if (day) {
-    if (data && newView != "monthview") {
+    if (data) {
       var divs = $$('div.day[day='+day+']');
       if (divs.length) {
 	// Don't reload the view if the event is present in current view
@@ -703,14 +785,10 @@ function changeCalendarDisplay(data, newView) {
     }
     url += "?day=" + day;
   }
-  //   if (newView)
-  //     log ("switching to view: " + newView);
-  //   log ("changeCalendarDisplay: " + url);
 
   selectedCalendarCell = null;
 
   if (document.dayDisplayAjaxRequest) {
-    //     log ("aborting day ajaxrq");
     document.dayDisplayAjaxRequest.aborted = true;
     document.dayDisplayAjaxRequest.abort();
   }
@@ -747,39 +825,30 @@ function onMonthOverview() {
 }
 
 function scrollDayView(scrollEvent) {
-  var divs;
-
-  // Select event in calendar view
   if (scrollEvent) {
+    var contentView;
     var eventRow = $(scrollEvent);
-    selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
+    var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
+    var firstEvent = eventBlocks.first();
+    
+    if (currentView == "monthview")
+      contentView = firstEvent.up("DIV.day");
+    else
+      contentView = $("daysView");
+    
+    var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+
+    // Don't scroll if the event is visible to the user
+    if (top < contentView.cumulativeOffset()[1])
+      contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+    else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
+      contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
   }
-
-  // Don't scroll if in month view
-  if (currentView == "monthview")
-    return;
-
-  var offset = 0;
-  var daysView = $("daysView");
-  var hours = $(daysView.childNodesWithTag("div")[0])
-    .childNodesWithTag("div");
-
-  offset = hours[dayStartHour].offsetTop;
-
-  if (scrollEvent && calendarEvents) {
-    var event = calendarEvents[scrollEvent];
-    if (event) {
-      // FIXME siblings
-      var classes = $w(event.siblings[0].className);
-      for (var i = 0; i < classes.length; i++)
-	if (classes[i].startsWith("starts")) {
-	  var starts = Math.floor(parseInt(classes[i].substr(6)) / 4);
-	  offset = hours[starts].offsetTop;
-	}
-    }
+  else if (currentView != "monthview") {
+    var contentView = $("daysView");
+    var hours = (contentView.childNodesWithTag("div")[0]).childNodesWithTag("div");
+    contentView.scrollTop = hours[dayStartHour].offsetTop;
   }
-
-  daysView.scrollTop = offset - 5;
 }
 
 function onClickableCellsDblClick(event) {
@@ -916,6 +985,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
   eventDiv.observe("mousedown", listRowMouseDownHandler);
   eventDiv.observe("click", onCalendarSelectEvent);
   eventDiv.observe("dblclick", editDoubleClickedEvent);
+  eventDiv.observe("click", onViewEvent);
 
   event.blocks.push(eventDiv);
 
@@ -1015,9 +1085,11 @@ function calendarDisplayCallback(http) {
     var contentView;
     if (currentView == "monthview")
       contentView = $("calendarContent");
-    else
+    else {
       contentView = $("daysView");
-
+      contentView.observe("scroll", onBodyClickHandler);
+    }
+    
     refreshCalendarEvents(http.callbackData.scrollEvent);
     
     var days = document.getElementsByClassName("day", contentView);
@@ -1027,6 +1099,8 @@ function calendarDisplayCallback(http) {
         days[i].observe("dblclick", onClickableCellsDblClick);
 	days[i].observe("selectstart", listRowMouseDownHandler);
 	//days[i].down(".dayHeader").observe("selectstart", listRowMouseDownHandler);
+	if (currentView == "monthview")
+	  days[i].observe("scroll", onBodyClickHandler);
       }
     else {
       var headerDivs = $("calendarHeader").childNodesWithTag("div"); 
@@ -1307,6 +1381,8 @@ function selectCalendarEvent(calendar, cname, recurrenceTime) {
       selection[i].selectElement();
     selectedCalendarCell = selection;
   }
+  
+  return selection;
 }
 
 function onCalendarSelectEvent() {
@@ -1863,6 +1939,10 @@ function initDateSelectorEvents() {
   menuButton.observe("click", popupMonthMenu);
 }
 
+function onBodyClickHandler(event) {
+  $("eventDialog").hide();
+}
+
 function initCalendars() {
   sorting["attribute"] = "start";
   sorting["ascending"] = true;
@@ -1875,6 +1955,7 @@ function initCalendars() {
     var selector = $("calendarSelector");
     if (selector)
       selector.attachMenu("calendarsMenu");
+    $(document.body).observe("click", onBodyClickHandler);
   }
 }
 

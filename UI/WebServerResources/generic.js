@@ -870,13 +870,16 @@ function setSearchCriteria(event) {
   var searchValue = $("searchValue");
   var searchCriteria = $("searchCriteria");
 
+  if (searchValue.ghostPhrase == searchValue.value)
+    searchValue.value = this.innerHTML;
+
   searchValue.ghostPhrase = this.innerHTML;
   searchCriteria.value = this.getAttribute('id');
   
   if (this.parentNode.chosenNode)
     this.parentNode.chosenNode.removeClassName("_chosen");
   this.addClassName("_chosen");
-
+  
   if (this.parentNode.chosenNode != this) {
     searchValue.lastSearch = "";
     this.parentNode.chosenNode = this;
@@ -959,7 +962,7 @@ function onSearchKeyDown(event) {
 function onSearchFormSubmit(event) {
   var searchValue = $("searchValue");
   var searchCriteria = $("searchCriteria");
-   
+
   if (searchValue.value != searchValue.ghostPhrase
       && (searchValue.value != searchValue.lastSearch
 	  || searchValue.value.strip().length > 0)) {

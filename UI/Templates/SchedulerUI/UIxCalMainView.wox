@@ -76,6 +76,15 @@
       <li><var:string label:value="Sharing..." /></li>
     </ul>
   </div>
+  
+  <div id="eventDialog" style="display: none;">
+    <div>
+      <h1><!-- space --></h1>
+      <p id="startTime"><span class="label"><var:string label:value="Start:" /></span> <span><!-- space --></span></p>
+      <p id="location"><span class="label"><var:string label:value="Location:" /></span> <span><!-- space --></span></p>
+      <p id="description"><!-- space --></p>
+    </div>
+  </div>
 
   <div id="leftPanel">
     <div class="tabsContainer" id="schedulerTabs">

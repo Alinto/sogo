@@ -1,4 +1,3 @@
-
 DIV#leftPanel
 { position: absolute;
   top: 5.5em;
@@ -282,6 +281,51 @@ TABLE#eventsList TH
 TABLE#eventsList TH
 { white-space: pre; }
 
+DIV#eventDialog 
+{ position: absolute;
+  top: 100px;
+  left: 75px;
+  width: 200px;
+  z-index: 50; }
+
+DIV#eventDialog DIV
+{ border: 1px solid #444;
+  /*height: 100px;*/
+  background-color: #fff;
+  padding: 5px; }
+
+DIV#eventDialog.left
+{ background-image: url("dialog-left.png");
+  background-repeat: no-repeat;
+  background-position: top left; }
+
+DIV#eventDialog.left DIV
+{ border-left: 0;
+  margin-left: 19px;
+  text-align: left; }
+
+DIV#eventDialog.right
+{ background-image: url("dialog-right.png");
+  background-repeat: no-repeat;
+  background-position: top right; }
+  
+DIV#eventDialog.right DIV
+{ border-right: 0;
+  margin-right: 19px;
+  text-align: right; }
+
+DIV#eventDialog H1,
+DIV#eventDialog P
+{ font-size: 10px;
+  margin: 0;
+  padding: 0; }
+
+DIV#eventDialog SPAN.label
+{ color: #444; }
+
+DIV#eventDialog p#description
+{ margin-top: 1em; }
+
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
 TABLE._unfocused#eventsList TR._selected TD
@@ -354,19 +398,13 @@ SPAN.monthsHeader A:active
   border-right: 1px solid #fff; }
 
 SPAN.week2, SPAN.month2
-{
-  font-size: small;
-}
+{ font-size: small; }
 
 SPAN.day2, SPAN.week1, SPAN.month1
-{
-  font-size: medium;
-}
+{ font-size: medium; }
 
 SPAN.day1, SPAN.week0, SPAN.month0
-{
-  font-size: large;
-}
+{ font-size: large; }
 
 SPAN.day0
 { font-size: x-large; }
@@ -890,6 +928,9 @@ DIV.monthView DIV.event
   margin-right: 1px;
   padding: 1px;
   height: 1.2em; }
+
+DIV#calendarHeader DIV.event
+{ height: 1.5em; }
 
 DIV.event DIV.text
 { font-size: 92%; }

@@ -22,6 +22,8 @@
 
 #include <math.h>
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -36,6 +38,7 @@
 #import <NGCards/iCalRecurrenceRule.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentsFolder.h>
@@ -265,6 +268,34 @@
     }
 
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
+}
+
+- (id <WOActionResults>) viewAction
+{
+  id <WOActionResults> result;
+  NSDictionary *data;
+  SOGoAppointmentFolder *co;
+  SOGoDateFormatter *dateFormatter;
+  SOGoUser *user;
+
+  result = [context response];
+  user = [context activeUser];
+  co = [self clientObject];
+  dateFormatter = [user dateFormatterInContext: context];
+  [self event];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+			 [dateFormatter formattedDate: [event startDate]], @"startDate",
+		       [dateFormatter formattedTime: [event startDate]], @"startTime",
+		       ([event hasRecurrenceRules]?@"1":@"0"), @"isReccurent",
+		       ([event isAllDay]?@"1":@"0"), @"isAllDay",
+		       [event summary], @"summary",
+		       [event location], @"location",
+		       [event comment], @"description",
+		       nil];
+  [(WOResponse*)result appendContentString: [data jsonRepresentation]];
+
+  return result;
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
