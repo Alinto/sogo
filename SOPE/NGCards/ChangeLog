@@ -1,3 +1,8 @@
+2008-08-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* NSString+NGCards.m ([NSString -unescapedFromCard]): added code
+	to correctly escape carriage returns from Outlook clients.
+
 2008-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m ([CardGroup -elementWithClass:groupClass]): replaces
