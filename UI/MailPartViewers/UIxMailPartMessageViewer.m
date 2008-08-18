@@ -141,7 +141,8 @@
   for (count = 0; count < max; count++)
     {
       component = [[components objectAtIndex: count] email];
-      [formattedComponents addObject: component];
+      if (component)
+	[formattedComponents addObject: component];
     }
 
   return [formattedComponents componentsJoinedByString: @", "];
