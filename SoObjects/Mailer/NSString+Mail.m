@@ -349,6 +349,20 @@
   return [handler result];
 }
 
+- (int) indexOf: (unichar) _c
+{
+  int i, len;
+
+  len = [self length];
+
+  for (i = 0; i < len; i++)
+    {
+      if ([self characterAtIndex: i] == _c) return i;
+    }
+
+  return -1;
+}
+
 - (NSString *) decodedSubject
 {
   NSString *decodedSubject;

@@ -1,5 +1,9 @@
 2008-08-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject
+	-mimeHeaderMapWithHeaders:_headers]): properly quote atoms in mail
+	addresses.
+
 	* UI/MailPartViewers/UIxMailPartMessageViewer.m
 	([UIxMailPartMessageViewer -formattedComponents:components]):
 	don't report nil components.

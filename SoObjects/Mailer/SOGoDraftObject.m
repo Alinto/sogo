@@ -60,6 +60,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 
 #import "NSData+Mail.h"
+#import "NSString+Mail.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailObject.h"
@@ -237,7 +238,7 @@ static BOOL        showTextAttachmentsInline  = NO;
 
   if ([self _ensureDraftFolderPath])
     {
-      infos = [NSMutableDictionary new];
+      infos = [NSMutableDictionary new];		
       [infos setObject: headers forKey: @"headers"];
       if (text)
 	[infos setObject: text forKey: @"text"];
@@ -1134,6 +1135,60 @@ static BOOL        showTextAttachmentsInline  = NO;
   return NO;
 }
 
+- (NSArray *) _quoteSpecials: (NSArray *) _array
+{
+  NSMutableArray *a;
+  NSString *s1, *s2;
+  int i, j, len;
+
+  a = [NSMutableArray array];
+
+  // We want to correctly send mails to recipients such as :
+  // foo.bar
+  // foo (bar) <foo@zot.com>
+  // bar, foo <foo@zot.com>
+  for (i = 0; i < [_array count]; i++)
+    {
+      s1 = [_array objectAtIndex: i];
+
+      if ([s1 indexOf: '('] >= 0 || [s1 indexOf: ')'] >= 0
+	  || [s1 indexOf: '<'] >= 0 || [s1 indexOf: '>'] >= 0
+	  || [s1 indexOf: '@'] >= 0 || [s1 indexOf: ','] >= 0
+	  || [s1 indexOf: ';'] >= 0 || [s1 indexOf: ':'] >= 0
+	  || [s1 indexOf: '\\'] >= 0 || [s1 indexOf: '"'] >= 0
+	  || [s1 indexOf: '.'] >= 0
+	  || [s1 indexOf: '['] >= 0 || [s1 indexOf: ']'] >= 0)
+	{
+	  // We search for the first instance of < from the end
+	  // and we quote what was before if we need to
+	  len = [s1 length];
+	  j = -1;
+	  while (len--)
+	    if ([s1 characterAtIndex: len] == '<')
+	      {
+		j = len;
+		break;
+	      }
+
+	  if (j > 0)
+	    {
+	      s2 = [s1 substringToIndex: j-1];
+	      s2 = [NSString stringWithFormat: @"\"%@\" %@", s2, [s1 substringFromIndex: j]];
+	    }
+	  else
+	    {
+	      s2 = [NSString stringWithFormat: @"\"%@\"", s1];
+	    }
+
+	  [a addObject: s2];
+	}
+      else
+	[a addObject: s1];
+    }
+
+  return a;
+}
+
 - (NGMutableHashMap *) mimeHeaderMapWithHeaders: (NSDictionary *) _headers
 {
   NGMutableHashMap *map;
@@ -1144,13 +1199,13 @@ static BOOL        showTextAttachmentsInline  = NO;
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
   /* add recipients */
-  
+
   if ((emails = [headers objectForKey: @"to"]) != nil)
-    [map setObjects: emails forKey: @"to"];
+    [map setObjects: [self _quoteSpecials: emails] forKey: @"to"];
   if ((emails = [headers objectForKey: @"cc"]) != nil)
-    [map setObjects:emails forKey: @"cc"];
+    [map setObjects: [self _quoteSpecials: emails] forKey: @"cc"];
   if ((emails = [headers objectForKey: @"bcc"]) != nil)
-    [map setObjects:emails forKey: @"bcc"];
+    [map setObjects: [self _quoteSpecials: emails] forKey: @"bcc"];
 
   /* add senders */
   
