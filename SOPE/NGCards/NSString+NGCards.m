@@ -1,6 +1,6 @@
 /* NSString+NGCards.m - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse groupe conseil
+ * Copyright (C) 2006-2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -134,7 +134,8 @@ static NSString *commaSeparator = nil;
                    withString: @"\r"];
   string = [string stringByReplacingString: @"\\\\"
                    withString: @"\\"];
-
+  string = [string stringByReplacingString: @"\\N"  // Outlook lameness
+                   withString: @"\n"];
   return string;
 }
 

@@ -1,3 +1,9 @@
+2008-08-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartMessageViewer.m
+	([UIxMailPartMessageViewer -formattedComponents:components]):
+	don't report nil components.
+
 2008-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/iCalEventChanges+SOGo.m

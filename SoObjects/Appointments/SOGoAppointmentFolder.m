@@ -2313,6 +2313,7 @@ static Class sogoAppointmentFolderKlass = Nil;
   
   [self debugWithFormat:@"Note: got folder for uid %@ path %@: %@",
 	  _uid, [path componentsJoinedByString:@"=>"], result];
+
   return result;
 }
 
