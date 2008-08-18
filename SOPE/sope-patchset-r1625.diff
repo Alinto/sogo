@@ -733,15 +733,6 @@ Index: sope-mime/NGMail/NGMailAddressParser.m
    int  length      = 0;  // token text length
    BOOL done        = NO;
  
-@@ -99,7 +99,7 @@
-       switch (c) {
-         case '(' :  case ')': case '<': case '>':
-         case '@' :  case ',': case ';': case ':':
--        case '\\':  case '"': case '.': case '[':
-+        case '\\':  case '"': case '[':
-         case ']' :  case ' ': case 127:
-           isAtom = (length > 0);
-           done   = YES;
 @@ -162,7 +162,7 @@
    int  keepPos     = self->dataPos; // keep reference for backtracking
    id   returnValue = nil;
