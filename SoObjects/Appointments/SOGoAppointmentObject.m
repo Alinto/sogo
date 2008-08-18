@@ -207,10 +207,8 @@
 {
   SOGoAppointmentFolder *folder;
   SOGoAppointmentObject *object;
-  NSString *userLogin;
 
-  userLogin = [[context activeUser] login];
-  if (![uid isEqualToString: userLogin])
+  if (![uid isEqualToString: owner])
     {
       folder = [container lookupCalendarFolderForUID: uid];
       object = [folder lookupName: nameInContainer
