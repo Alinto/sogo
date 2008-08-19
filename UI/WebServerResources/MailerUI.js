@@ -468,7 +468,7 @@ function openMailbox(mailbox, reload, idx) {
     var searchValue = search["value"];
     if (searchValue && searchValue.length > 0)
       url += ("&search=" + search["criteria"]
-	      + "&value=" + escape(searchValue));
+	      + "&value=" + escape(searchValue.utf8encode()));
     var sortAttribute = sorting["attribute"];
     if (sortAttribute && sortAttribute.length > 0)
       url += ("&sort=" + sorting["attribute"]
