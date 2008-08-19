@@ -1,3 +1,9 @@
+2008-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
+	-viewAction]): apply the user's timezone to the startdate before
+	formatting it.
+
 2008-08-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m ([SOGoDraftObject

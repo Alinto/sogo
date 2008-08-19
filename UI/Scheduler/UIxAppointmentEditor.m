@@ -37,11 +37,11 @@
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
+#import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoDateFormatter.h>
 #import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/Appointments/SOGoAppointmentFolder.h>
-#import <SoObjects/Appointments/SOGoAppointmentsFolder.h>
 #import <SoObjects/Appointments/SOGoAppointmentObject.h>
 
 #import <SoObjects/Appointments/SOGoComponentOccurence.h>
@@ -272,28 +272,33 @@
 
 - (id <WOActionResults>) viewAction
 {
-  id <WOActionResults> result;
+  WOResponse *result;
   NSDictionary *data;
   SOGoAppointmentFolder *co;
   SOGoDateFormatter *dateFormatter;
   SOGoUser *user;
+  NSCalendarDate *startDate;
 
   result = [context response];
   user = [context activeUser];
   co = [self clientObject];
   dateFormatter = [user dateFormatterInContext: context];
+
   [self event];
+  startDate = [[event startDate] copy];
+  [startDate setTimeZone: [user timeZone]];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-			 [dateFormatter formattedDate: [event startDate]], @"startDate",
-		       [dateFormatter formattedTime: [event startDate]], @"startTime",
-		       ([event hasRecurrenceRules]?@"1":@"0"), @"isReccurent",
-		       ([event isAllDay]?@"1":@"0"), @"isAllDay",
+			 [dateFormatter formattedDate: startDate], @"startDate",
+		       [dateFormatter formattedTime: startDate], @"startTime",
+		       ([event hasRecurrenceRules]? @"1": @"0"), @"isReccurent",
+		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
 		       [event summary], @"summary",
 		       [event location], @"location",
 		       [event comment], @"description",
 		       nil];
-  [(WOResponse*)result appendContentString: [data jsonRepresentation]];
+  [result appendContentString: [data jsonRepresentation]];
+  [startDate release];
 
   return result;
 }
