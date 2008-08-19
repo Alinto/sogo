@@ -1819,12 +1819,13 @@ function appendStyleElement(folderPath, color) {
     var styleElement = document.createElement("style");
     styleElement.type = "text/css";
     var selectors = [
-		     '.calendarFolder' + folderPath.substr(1),
-		     'div.colorBox.calendarFolder' + folderPath.substr(1)
+		     'DIV.calendarFolder' + folderPath.substr(1),
+		     'LI.calendarFolder' + folderPath.substr(1),
+		     'UL#calendarList DIV.calendarFolder' + folderPath.substr(1)
 		     ];
     var rules = [
-		 ' { background-color: ' + color + ' !important;'
-		 + ' color: ' + fgColor + ' !important; }',
+		 ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }',
+		 ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }',
 		 ' { color: ' + color + ' !important; }'
 		 ];
     for (var i = 0; i < rules.length; i++)

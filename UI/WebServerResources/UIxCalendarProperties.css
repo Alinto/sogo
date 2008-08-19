@@ -1,6 +1,6 @@
 DIV#propertiesView
 { overflow: hidden;
-  padding: 5px; }
+  padding: 5px 5px 0 0; }
 
 DIV
 { clear: both; }
@@ -10,21 +10,22 @@ SPAN.label
   width: 7em;
   text-align: right;
   padding-right: 1em;
-  padding-top: .5em;
+  line-height: 2em;
   float: left;
   display: block; }
 
 SPAN.content
 { display: block;
-  vertical-alignment: middle;
-  float: left; }
+  height: 2em;
+  line-height: 1.5em;
+  vertical-align: middle; }
 
-LABEL#calendarSync
-{ margin-left: 10em; }
+SPAN.content INPUT
+{ margin-top: 0; }
 
 BUTTON#colorButton
 { display: none;
-  margin: 1px;
+  margin: 1px 0 0 1px;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff;
   border-top: 2px solid #222;
@@ -32,7 +33,7 @@ BUTTON#colorButton
   -moz-border-top-colors: #9c9a94 #000 transparent;
   -moz-border-left-colors: #9c9a94 #000 transparent;
   width: 3em;
-  height: 2em; }
+  height: 18px; }
 
 DIV#buttons
 { padding: 10px;
@@ -40,4 +41,4 @@ DIV#buttons
   text-align: right; }
 
 INPUT#calendarSyncTag
-{ width: 5em; }
+{ width: 7em; }

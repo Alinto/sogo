@@ -29,14 +29,14 @@
 	    name="calendarColor"
 	    id="calendarColor"
 	    var:value="calendarColor"
-	    /><var:string
-	    label:value="Tag:"/><input type="text"
+	    /></span></div>
+      <div><span class="label"><var:string
+	    label:value="Tag:"/></span><span class="content"><input type="text"
 	    name="calendarSyncTag"
 	    id="calendarSyncTag"
 	    class="textField"
 	    var:value="calendarSyncTag"
-	    /></span>
-      </div>
+	    /></span></div>
       <div id="buttons">
 	<input type="button"
 	const:class="button"

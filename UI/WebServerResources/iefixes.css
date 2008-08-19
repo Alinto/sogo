@@ -304,3 +304,7 @@ TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 
 TABLE
 { empty-cells: show; }
+
+/* UIxCalendarProperties */
+BUTTON#colorButton
+{ margin-top: 2px; }
