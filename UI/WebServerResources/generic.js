@@ -179,7 +179,7 @@ function sanitizeMailTo(dirtyMailTo) {
 
 function sanitizeWindowName(dirtyWindowName) {
   // IE is picky about the characters used for the window name.
-  return dirtyWindowName.replace(/[\s\.\/-]/g, "_");
+  return dirtyWindowName.replace(/[\s\.\/\-\@]/g, "_");
 }
 
 function openUserFolderSelector(callback, type) {
