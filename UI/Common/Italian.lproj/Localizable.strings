@@ -26,10 +26,6 @@
 "Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
 "Default Roles" = "Permessi predefiniti";
 "Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
-"browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
-"alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";
-"alternativeBrowserSafari" = "Alternativamente, puoi utilizzare Safari.";
-"Download" = "Scarica";
 
 /* generic.js */
 "Unable to subscribe to that folder!"	= "Impossibile sottoscrivere la cartella!";

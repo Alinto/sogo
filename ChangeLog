@@ -1,5 +1,9 @@
 2008-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MainUI/SOGoBrowsersPanel.[hm]: new template class that helps
+	displaying a choice of browsers compatible with SOGo. The code was
+	extracted from UIxPageFrame.
+
 	* UI/Scheduler/UIxAppointmentEditor.m ([UIxAppointmentEditor
 	-viewAction]): apply the user's timezone to the startdate before
 	formatting it.

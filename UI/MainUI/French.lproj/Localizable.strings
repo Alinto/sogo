@@ -8,3 +8,8 @@
 "Connect" = "Connexion";
 
 "Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";
+
+"browserNotCompatible" = "La version de votre navigateur Web n'est présentement pas supportée par ce site. Nous recommandons d'utiliser Firefox. Vous trouverez un lien vers la plus récente version de ce navigateur ci-dessous:";
+"alternativeBrowsers" = "Comme alternative, vous pouvez aussi utiliser les navigateurs suivants:";
+"alternativeBrowserSafari" = "Comme alternative, vous pouvez aussi utiliser Safari.";
+"Download" = "Télécharger";

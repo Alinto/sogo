@@ -16,7 +16,6 @@ CommonUI_OBJC_FILES +=		\
 	UIxObjectActions.m	\
 	UIxFolderActions.m	\
 	UIxParentFolderActions.m \
-	UIxElemBuilder.m	\
 	UIxUserRightsEditor.m	\
 	\
 	UIxToolbar.m		\

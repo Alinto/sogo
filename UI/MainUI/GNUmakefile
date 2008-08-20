@@ -11,7 +11,8 @@ MainUI_LANGUAGES = Dutch English French German Italian Spanish
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\
 	SOGoRootPage.m		\
-	SOGoUserHomePage.m
+	SOGoUserHomePage.m	\
+	SOGoBrowsersPanel.m	\
 # 	SOGoGroupPage.m		\
 # 	SOGoGroupsPage.m	\
 
