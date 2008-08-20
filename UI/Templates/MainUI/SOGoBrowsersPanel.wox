@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+  <div id="loginScreen">
+    <img const:alt="*" id="splash" rsrc:src="lori-login.jpg"/><br/><br/>
+    <p><var:string label:value="browserNotCompatible"/></p>
+    <p class="browser"><a href="http://www.getfirefox.com/"><img const:alt="*" rsrc:src="browser_firefox.gif"/><var:string label:value="Download"/> Firefox</a></p>
+    <var:if condition="isIE7Compatible">
+      <p><var:string label:value="alternativeBrowsers"/></p>
+      <p class="browser"><a href="http://www.microsoft.com/ie/download/"><img const:alt="*" rsrc:src="browser_ie.gif"/><var:string label:value="Download"/> Internet Explorer 7</a></p>
+      <p class="browser"><a href="http://www.apple.com/safari/download/"><img const:alt="*" rsrc:src="browser_safari.gif"/><var:string label:value="Download"/> Safari 3</a></p>
+    </var:if>
+    <var:if condition="isMac">
+      <p><var:string label:value="alternativeBrowserSafari"/></p>
+      <p class="browser"><a href="http://www.apple.com/safari/download/"><img const:alt="*" rsrc:src="browser_safari.gif"/><var:string label:value="Download"/> Safari 3</a></p>
+    </var:if>
+  </div>
+</container>

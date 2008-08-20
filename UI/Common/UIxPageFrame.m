@@ -19,14 +19,13 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import <NGObjWeb/SoComponent.h>
-#import <NGObjWeb/WOComponent.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSString.h>
+
+#import <NGObjWeb/WOResourceManager.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
-
-#import <SOGoUI/UIxComponent.h>
 
 #import <Main/build.h>
 
@@ -396,7 +395,7 @@
   cc = [[context request] clientCapabilities];
 
   //NSLog(@"Browser = %@", [cc description]);
-  NSLog(@"User agent = %@", [cc userAgent]);
+//   NSLog(@"User agent = %@", [cc userAgent]);
   //NSLog(@"Browser major version = %i", [cc majorVersion]);
 
   return (([[cc userAgentType] isEqualToString: @"IE"]
@@ -407,26 +406,6 @@
 	      && [cc majorVersion] >= 4)
 	  //	  ([[cc userAgentType] isEqualToString: @"Konqueror"])
 	   );
-}
-
-- (BOOL) isIE7Compatible
-{
-  WEClientCapabilities *cc;
-
-  cc = [[context request] clientCapabilities];
-  
-  return ([cc isWindowsBrowser] &&
-	  ([[cc userAgent] rangeOfString: @"NT 5.1"].location != NSNotFound ||
-	   [[cc userAgent] rangeOfString: @"NT 6"].location != NSNotFound));
-}
-
-- (BOOL) isMac
-{
-  WEClientCapabilities *cc;
-
-  cc = [[context request] clientCapabilities];
-
-  return [cc isMacBrowser];
 }
 
 @end /* UIxPageFrame */

@@ -11,3 +11,8 @@
 "Connect" = "Conectar";
 
 "Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";
+
+"browserNotCompatible" = "Hemos detectado que este sistema no soporta su versión del navegador. Recomendamos usar Firefox. Haga clic en el siguiente enlace para descargar la versión más reciente de este navegador.";
+"alternativeBrowsers" = "Alternativamente, también puede usar uno se los siguientes navegadores compatibles: ";
+"alternativeBrowserSafari" = "Alternativamente, puede usar Safari.";
+"Download" = "Descarga";

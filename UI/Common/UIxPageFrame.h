@@ -68,8 +68,6 @@
 - (BOOL) isSuperUser;
 
 - (BOOL) isCompatibleBrowser;
-- (BOOL) isIE7Compatible;
-- (BOOL) isMac;
 
 @end
 
