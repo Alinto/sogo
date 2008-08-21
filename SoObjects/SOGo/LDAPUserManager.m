@@ -1,6 +1,6 @@
 /* LDAPUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -130,11 +130,11 @@ static BOOL forceImapLoginWithEmail = NO;
       sourcesMetadata = nil;
       users = [NSMutableDictionary new];
       cleanupInterval
-	= [ud integerForKey: @"SOGOLDAPUserManagerCleanupInterval"];
+	= [ud integerForKey: @"SOGoLDAPUserManagerCleanupInterval"];
       if (cleanupInterval)
-	cleanupTimer = [NSTimer timerWithTimeInterval: cleanupInterval
+	cleanupTimer = [NSTimer scheduledTimerWithTimeInterval: cleanupInterval
 				target: self
-				selector: @selector (cleanupUsers)
+				selector: @selector(cleanupSources)
 				userInfo: nil
 				repeats: YES];
       [self _prepareLDAPSourcesWithDefaults: ud];
