@@ -34,6 +34,8 @@
   CardElement *workAdr;
 }
 
+- (NSString *) fullName;
+
 @end
 
 #endif /* UIXCONTACTVIEW_H */

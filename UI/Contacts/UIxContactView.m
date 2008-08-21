@@ -67,7 +67,7 @@
 {
   return [NSString stringWithFormat:
                      [self labelForKey: @"Card for %@"],
-                   [card fn]];
+		   [self fullName]];
 }
 
 - (NSString *) displayName
@@ -80,6 +80,32 @@
 {
   return [self _cardStringWithLabel: @"Nickname:"
                value: [card nickname]];
+}
+
+- (NSString *) fullName
+{
+  NSArray *n;
+  NSString *fn;
+  unsigned int max;
+  
+  fn = [card fn];
+  if ([fn length] == 0)
+    {
+      n = [card n];
+      if (n)
+	{
+	  max = [n count];
+	  if (max > 0)
+	    {
+	      if (max > 1)
+		fn = [NSString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
+	      else
+		fn = [n objectAtIndex: 0];
+	    }
+	}
+    }
+
+  return fn;
 }
 
 - (NSString *) primaryEmail

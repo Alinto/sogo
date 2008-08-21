@@ -151,7 +151,7 @@
 {
   id <SOGoContactObject> contact;
   NSArray *accounts, *contactsId;
-  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid, *email;
+  NSString *firstAccount, *newLocation, *parameters, *folderId, *uid, *email, *n;
   NSMutableString *fn;
   NSEnumerator *uids;
   NSMutableArray *addresses;
@@ -160,6 +160,7 @@
   SOGoContactFolders *folders;
   SOGoParentFolder *folder;
   WORequest *request;
+  unsigned int max;
 
   parameters = nil;
   co = [self clientObject];
@@ -202,7 +203,24 @@
 		  if (email)
 		    {
 		      email = [NSString stringWithFormat: @"<%@>", email];
+
+		      // We append the contact's name
 		      fn = [NSMutableString stringWithString: [card fn]];
+		      if ([fn length] == 0)
+			{
+			  n = [card n];
+			  if (n)
+			    {
+			      max = [n count];
+			      if (max > 0)
+				{
+				  if (max > 1)
+				    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
+				  else
+				    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
+				}
+			    }
+			}
 		      if (fn)
 			{
 			  [fn appendFormat: @" %@", email];
