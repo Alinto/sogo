@@ -70,10 +70,5 @@
      image = "tb-mail-print-flat-24x24.png";
      label = "Print"; 
      tooltip = "Print this message"; },
-   { link = "#";
-     image = "tb-mail-stop-flat-24x24.png";
-     cssClass = "tbicon_stop";
-     label = "Stop";
-     tooltip = "Stop the current transfer"; },
   ),
 )

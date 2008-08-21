@@ -1333,9 +1333,9 @@ function initMailboxTree() {
   mailboxTree.config.hideRoot = true;
 
   mailboxTree.icon.root = ResourcesURL + "/tbtv_account_17x17.gif";
-  mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.gif";
-  mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.gif";
-  mailboxTree.icon.node = ResourcesURL + "/tbtv_leaf_corner_17x17.gif";
+  mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
+  mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.png";
+  mailboxTree.icon.node = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
   mailboxTree.icon.line = ResourcesURL + "/tbtv_line_17x17.gif";
   mailboxTree.icon.join = ResourcesURL + "/tbtv_junction_17x17.gif";
   mailboxTree.icon.joinBottom	= ResourcesURL + "/tbtv_corner_17x17.gif";
@@ -1381,7 +1381,7 @@ function mailboxMenuNode(type, name) {
   var newNode = document.createElement("li");
   var icon = MailerUIdTreeExtension.folderIcons[type];
   if (!icon)
-    icon = "tbtv_leaf_corner_17x17.gif";
+    icon = "tbtv_leaf_corner_17x17.pngf";
   var image = document.createElement("img");
   image.src = ResourcesURL + "/" + icon;
   newNode.appendChild(image);

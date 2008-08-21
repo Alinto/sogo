@@ -1,3 +1,24 @@
+2008-08-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Updated the icons to use those from Thunderbird 2
+	and from Lightning 0.9. Also added those new files :
+
+	UI/WebServerResources/tbtv_account_17x17.png
+	UI/WebServerResources/tbtv_drafts_17x17.png
+	UI/WebServerResources/tbtv_inbox_17x17.png
+	UI/WebServerResources/tbtv_leaf_corner_17x17.png
+	UI/WebServerResources/tbtv_sent_17x17.png
+	UI/WebServerResources/tbtv_trash_17x17.png
+
+	Dropped :
+
+	UI/WebServerResources/tbtv_account_17x17.gif
+	UI/WebServerResources/tbtv_drafts_17x17.gif
+	UI/WebServerResources/tbtv_inbox_17x17.gif
+	UI/WebServerResources/tbtv_leaf_corner_17x17.gif
+	UI/WebServerResources/tbtv_sent_17x17.gif
+	UI/WebServerResources/tbtv_trash_17x17.gif
+	
 2008-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxAdditionalPreferences.[hm]: new template

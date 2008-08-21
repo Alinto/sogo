@@ -55,9 +55,9 @@ function buildTree(response) {
    d.config.folderLlinks = true;
    d.config.hideRoot = true;
    d.icon.root = ResourcesURL + '/tbtv_account_17x17.gif';
-   d.icon.folder = ResourcesURL + '/tbtv_leaf_corner_17x17.gif';
-   d.icon.folderOpen = ResourcesURL + '/tbtv_leaf_corner_17x17.gif';
-   d.icon.node = ResourcesURL + '/tbtv_leaf_corner_17x17.gif';
+   d.icon.folder = ResourcesURL + '/tbtv_leaf_corner_17x17.png';
+   d.icon.folderOpen = ResourcesURL + '/tbtv_leaf_corner_17x17.png';
+   d.icon.node = ResourcesURL + '/tbtv_leaf_corner_17x17.png';
    d.icon.line = ResourcesURL + '/tbtv_line_17x17.gif';
    d.icon.join = ResourcesURL + '/tbtv_junction_17x17.gif';
    d.icon.joinBottom = ResourcesURL + '/tbtv_corner_17x17.gif';
