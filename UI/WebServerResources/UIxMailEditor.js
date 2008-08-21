@@ -485,9 +485,6 @@ function initMailEditor() {
   if (listContent.length > 0)
     $("attachmentsArea").setStyle({ display: "block" });
 
-  var list = $("addressList");
-  TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
-
   var textarea = $("text");
   var textContent = textarea.getValue();
   var sigLimit = textContent.lastIndexOf("--");
