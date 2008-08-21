@@ -84,6 +84,9 @@
 "Manage identities..." = "Gestisci identità...";
 "Signature" = "Firma";
 
+/* Additional Parameters */
+"Additional Parameters" = "Additional Parameters";
+
 /* password */
 "New password:" = "Nuova password:";
 "Confirmation:" = "Ripeti nuova password:";

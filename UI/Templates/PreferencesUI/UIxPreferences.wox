@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE var:component>
-<var:component xmlns="http://www.w3.org/1999/xhtml"
+<var:component
+  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:uix="OGo:uix"
@@ -25,9 +26,12 @@
 	  <li target="identitiesView"><var:string
 	      label:value="Signature"/></li>
 	</var:if>
-	<var:if condition="shouldDisplayPasswordChange">
-	  <li target="passwordView"><var:string label:value="Password"/></li>
-	</var:if>
+	<var:if condition="shouldDisplayAdditionalPreferences">
+ 	  <li target="additionalView"><var:string label:value="Additional Parameters"/></li>
+ 	</var:if>
+<!--	<var:if condition="shouldDisplayPasswordChange"> -->
+<!-- 	  <li target="passwordView"><var:string label:value="Password"/></li> -->
+<!-- 	</var:if> -->
       </ul>
       <div id="generalView" class="tab">
 	<label><var:string label:value="Current Time Zone :"/>
@@ -123,6 +127,10 @@
 	    var:value="signature"/>
 	</div>
       </var:if>
+      <var:if condition="shouldDisplayAdditionalPreferences"
+	><div id="additionalView" class="tab">
+	  <var:component className="UIxAdditionalPreferences"/>
+	</div></var:if>
 <!--       <var:if condition="shouldDisplayPasswordChange"> -->
 <!-- 	<div id="passwordView" class="tab"> -->
 <!-- 	  <label><var:string label:value="New password:" -->

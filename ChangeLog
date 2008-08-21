@@ -1,3 +1,10 @@
+2008-08-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/PreferencesUI/UIxAdditionalPreferences.[hm]: new template
+	class that enables the user to append links or other infos needed
+	to change preferences not handled by SOGo. The tab will display
+	when setting the ud key "SOGoUIxAdditionalPreferences" to YES.
+
 2008-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoBrowsersPanel.[hm]: new template class that helps

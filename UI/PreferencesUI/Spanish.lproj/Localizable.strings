@@ -95,6 +95,9 @@
 "Manage identities..." = "Gestionar identidades...";
 "Signature" = "Firma";
 
+/* Additional Parameters */
+"Additional Parameters" = "Additional Parameters";
+
 /* password */
 "New password:" = "Contraseña nueva:";
 "Confirmation:" = "Confirmar contraseña nueva:"; /* ??? */

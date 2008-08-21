@@ -44,6 +44,7 @@
 
 static BOOL defaultsRead = NO;
 static BOOL shouldDisplayPasswordChange = NO;
+static BOOL shouldDisplayAdditionalPreferences = NO;
 
 @implementation UIxPreferences
 
@@ -56,6 +57,8 @@ static BOOL shouldDisplayPasswordChange = NO;
       ud = [NSUserDefaults standardUserDefaults];
       shouldDisplayPasswordChange
 	= [ud boolForKey: @"SOGoUIxUserCanChangePassword"];
+      shouldDisplayAdditionalPreferences
+	= [ud boolForKey: @"SOGoUIxAdditionalPreferences"];
       defaultsRead = YES;
     }
 }
@@ -546,6 +549,11 @@ static BOOL shouldDisplayPasswordChange = NO;
 - (BOOL) userHasMailAccess
 {
   return [user canAccessModule: @"Mail"];
+}
+
+- (BOOL) shouldDisplayAdditionalPreferences
+{
+  return shouldDisplayAdditionalPreferences;
 }
 
 - (BOOL) shouldDisplayPasswordChange

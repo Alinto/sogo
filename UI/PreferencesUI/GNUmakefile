@@ -12,7 +12,8 @@ PreferencesUI_OBJC_FILES =		\
 	PreferencesUIProduct.m		\
 	\
 	UIxJSONPreferences.m		\
-	UIxPreferences.m
+	UIxPreferences.m		\
+	UIxAdditionalPreferences.m
 
 PreferencesUI_RESOURCE_FILES += \
 	Version		\

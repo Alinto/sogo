@@ -26,6 +26,8 @@ function onChoiceChanged(event) {
 
 function initPreferences() {
   _setupEvents(true);
+  if (typeof (initAdditionalPreferences) != "undefined")
+    initAdditionalPreferences();
 }
 
 FastInit.addOnLoad(initPreferences);

@@ -83,6 +83,9 @@
 "Manage identities..." = "Identitäten verwalten...";
 "Signature" = "Unterschrift";
 
+/* Additional Parameters */
+"Additional Parameters" = "Additional Parameters";
+
 /* password */
 "New password:" = "Neues Passwort:";
 "Confirmation:" = "Bestätigung:";
