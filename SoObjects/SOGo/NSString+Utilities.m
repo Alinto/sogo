@@ -197,7 +197,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 {
   NSRange httpRange, currentURL, rest;
   NSString *urlText, *newUrlText;
-  unsigned int length, matchLength;
+  unsigned int length, matchLength, offset;
   int startLocation;
 
   if (!urlStartChars)
@@ -211,6 +211,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   httpRange = [selfCopy rangeOfString: match];
   if (httpRange.location != NSNotFound)
     {
+      offset = 0;
       startLocation = httpRange.location;
       while (startLocation > -1
 	     && [urlStartChars characterIsMember:
@@ -220,7 +221,8 @@ static NSMutableCharacterSet *urlStartChars = nil;
     }
   while (httpRange.location != NSNotFound)
     {
-      if ([ranges hasRangeIntersection: httpRange])
+      currentURL = [selfCopy _rangeOfURLInRange: httpRange];
+      if ([ranges hasRangeIntersection: httpRange withOffset: offset])
 	rest.location = NSMaxRange(httpRange);
       else
 	{
@@ -237,6 +239,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
 	      currentURL
 		= NSMakeRange (currentURL.location, [newUrlText length]);
 	      [ranges addRange: currentURL];
+	      offset = offset + 9 + [prefix length];
 	    }
 	  rest.location = NSMaxRange(currentURL);
 	}
@@ -245,6 +248,15 @@ static NSMutableCharacterSet *urlStartChars = nil;
       rest.length = length - rest.location;
       httpRange = [selfCopy rangeOfString: match
 			    options: 0 range: rest];
+      if (httpRange.location != NSNotFound)
+	{
+	  startLocation = httpRange.location;
+	  while (startLocation > -1
+		 && [urlStartChars characterIsMember:
+				     [selfCopy characterAtIndex: startLocation]])
+	    startLocation--;
+	  httpRange.location = startLocation + 1;
+	}
     }
 }
 
