@@ -7,6 +7,7 @@
 - fixed a bug where events shared among different attendees would no longer be updated automatically
 - changed the look of the Calendar module to match the look of Lightning 0.9
 - the event details appear when the user clicks on it
+- enable module constraints to be specified as patterns
 
 0.9.0-20080729 (1.0 rc7)
 ------------------------
