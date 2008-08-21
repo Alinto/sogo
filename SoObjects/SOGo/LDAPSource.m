@@ -29,9 +29,11 @@
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 
-#import "LDAPSource.h"
 #import "LDAPUserManager.h"
 #import "NSArray+Utilities.h"
+#import "NSString+Utilities.h"
+
+#import "LDAPSource.h"
 
 static NSArray *commonSearchFields;
 static int timeLimit;
@@ -459,7 +461,7 @@ static int sizeLimit;
 	  ldapValue = [[ldapEntry attributeWithName: currentMatch]
 			stringValueAtIndex: 0];
 	  currentValue = [constraints objectForKey: currentMatch];
-	  if ([ldapValue isEqualToString: currentValue])
+	  if ([ldapValue caseInsensitiveMatches: currentValue])
 	    currentMatch = [matches nextObject];
 	  else
 	    result = NO;
