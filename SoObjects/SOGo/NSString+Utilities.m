@@ -166,7 +166,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"&;[]\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"&[]\t \r\n"];
     }
 
   start = refRange.location;
