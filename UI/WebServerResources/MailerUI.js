@@ -1381,7 +1381,7 @@ function mailboxMenuNode(type, name) {
   var newNode = document.createElement("li");
   var icon = MailerUIdTreeExtension.folderIcons[type];
   if (!icon)
-    icon = "tbtv_leaf_corner_17x17.pngf";
+    icon = "tbtv_leaf_corner_17x17.png";
   var image = document.createElement("img");
   image.src = ResourcesURL + "/" + icon;
   newNode.appendChild(image);
