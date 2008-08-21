@@ -496,7 +496,7 @@ function initMailEditor() {
 //   textarea.observe("contextmenu", onTextContextMenu);
   textarea.observe("mousedown", onTextMouseDown, true);
 
-  initTabIndex(list, $$("div#subjectRow input").first(), textarea);
+  initTabIndex($("addressList"), $$("div#subjectRow input").first(), textarea);
   onWindowResize(null);
 
   Event.observe(window, "resize", onWindowResize);

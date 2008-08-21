@@ -990,11 +990,12 @@ function initCriteria() {
 	searchValue.setStyle({ color: "#aaa" });
       }
       // Set the checkmark to the first option
-      firstOption.addClassName("_chosen");
       if (searchOptions.chosenNode)
 	searchOptions.chosenNode.removeClassName("_chosen");
+      firstOption.addClassName("_chosen");
       searchOptions.chosenNode = firstOption;
     }
+    searchValue.blur();
   }
 }
 
