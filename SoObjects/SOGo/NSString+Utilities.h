@@ -51,6 +51,8 @@
 
 - (NSRange) _rangeOfURLInRange: (NSRange) refRange;
 
+- (BOOL) caseInsensitiveMatches: (NSString *) match;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif

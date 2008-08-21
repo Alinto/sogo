@@ -24,6 +24,8 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSEnumerator.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 
 #import "NSArray+Utilities.h"
@@ -320,6 +322,19 @@ static NSMutableCharacterSet *urlStartChars = nil;
     subjectString = self;
 
   return subjectString;
+}
+
+- (BOOL) caseInsensitiveMatches: (NSString *) match
+{
+  EOQualifier *sq;
+  NSString *format;
+
+  format = [NSString stringWithFormat:
+		       @"(description isCaseInsensitiveLike: '%@')",
+		     match];
+  sq = [EOQualifier qualifierWithQualifierFormat: format];
+
+  return [sq evaluateWithObject: self];
 }
 
 #if LIB_FOUNDATION_LIBRARY

@@ -1,3 +1,9 @@
+2008-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m ([NSString
+	-caseInsensitiveMatches:match]): new method that helps matching
+	strings against patterns.
+
 2008-08-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Updated the icons to use those from Thunderbird 2
