@@ -1,3 +1,11 @@
+2008-08-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/LDAPUserManager.m
+	Renamed the SOGOLDAPUserManagerCleanupInterval defaults to
+	SOGoLDAPUserManagerCleanupInterval.
+	We correctly add our timer to the runloop and fixed
+	a typo in the selector name.
+
 2008-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m ([NSString
