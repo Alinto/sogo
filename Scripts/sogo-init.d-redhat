@@ -90,7 +90,15 @@ case "$1" in
 	;;
   restart|force-reload)
 	echo $"Restarting $DESC: "
-	$0 stop && sleep 2 && $0 start
+	for ((a=1; a <= PREFORK ; a++))
+	do
+	  pid="`cat ${PIDFILE}${a}`"
+	  kill $pid
+	  rm -f ${PIDFILE}${a}
+	  sleep 1
+	  daemon --user=sogo $DAEMON $a
+	  echo "$DAEMON $a restarted"
+	done
 	;;
   status)
   	status $REAL_DAEMON
