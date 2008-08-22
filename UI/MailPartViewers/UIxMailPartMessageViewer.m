@@ -22,6 +22,8 @@
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
+#import <NGExtensions/NSString+Encoding.h>
+
 #import <SoObjects/Mailer/NSData+Mail.h>
 #import <SoObjects/Mailer/NSString+Mail.h>
 
@@ -154,7 +156,13 @@
   NSString *subject;
 
   baseSubject = [[self envelope] subject];
+
+  // We avoid uber-lamenesses in SOPE - see sope-core/NGExtensions/NGQuotedPrintableCoding.m
+  // -stringByDecodingQuotedPrintable for all details
+  if ([baseSubject isKindOfClass: [NSString class]])
+    baseSubject = [baseSubject dataUsingEncoding: NSASCIIStringEncoding];
   subject = [baseSubject decodedSubject];
+
   if (![subject length])
     subject = [self labelForKey: @"Untitled"];
 

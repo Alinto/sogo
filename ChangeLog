@@ -1,3 +1,9 @@
+2008-08-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Modified SoObjects/Mailer/NSData+Mail.m
+	-decodedSubject so we correctly implement decoding
+	instead of relying on the broken SOPE implementation.
+
 2008-08-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/LDAPUserManager.m

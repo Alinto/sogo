@@ -1,6 +1,6 @@
 /* NSString+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -33,6 +33,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSString+Mail.h"
+#import "NSData+Mail.h"
 
 #if 1
 #define showWhoWeAre() \
@@ -369,7 +370,8 @@
 
   if ([self hasPrefix: @"=?"] && [self hasSuffix: @"?="])
     {
-      decodedSubject = [self stringByDecodingQuotedPrintable];
+      decodedSubject = [[self dataUsingEncoding: NSASCIIStringEncoding]
+			 decodedSubject];
       if (!decodedSubject)
 	decodedSubject = self;
     }

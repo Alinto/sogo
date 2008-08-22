@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006  Inverse groupe conseil
+ * Copyright (C) 2006-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *

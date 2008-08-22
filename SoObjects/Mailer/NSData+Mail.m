@@ -1,8 +1,9 @@
 /* NSData+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007-2008 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +57,7 @@
 {
   const char *cData, *endFlag;
   unsigned int len;
-  NSString *converted, *decodedSubject;
+  NSString *decodedSubject;
 
   cData = [self bytes];
   len = [self length];
@@ -70,14 +71,37 @@
 	  if (*cData == '=' && *(cData + 1) == '?'
 	      && *endFlag == '?' && *(endFlag + 1) == '=')
 	    {
-	      converted
-		= [[NSString alloc] initWithData: self
-				    encoding: NSASCIIStringEncoding];
-	      if (converted)
+	      NSString *enc;
+	      int i;
+
+	      cData += 2;
+	      i = 2;
+
+	      while (*cData != '?' && i < len)
 		{
-		  [converted autorelease];
-		  decodedSubject = [converted stringByDecodingQuotedPrintable];
+		  cData++;
+		  i++;
 		}
+
+	      enc = [[[NSString alloc] initWithData:[self subdataWithRange: NSMakeRange(2, i-2)]
+				       encoding: NSASCIIStringEncoding] autorelease];
+
+	      if (i+3 < len)
+		{
+		  NSData *d;
+		  
+		  d = [self subdataWithRange: NSMakeRange(i+3, len-i-5)];
+		  
+		  // We check if we have a QP or Base64 encoding
+		  if (*(cData+1) == 'q' || *(cData+1) == 'Q')
+		    d = [d dataByDecodingQuotedPrintable];
+		  else
+		    d = [d dataByDecodingBase64];
+		  
+		  decodedSubject = [NSString stringWithData: d  usingEncodingNamed: enc];
+		}
+	      else
+		decodedSubject = nil;
 	    }
 	}
       if (!decodedSubject)
