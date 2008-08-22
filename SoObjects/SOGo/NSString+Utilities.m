@@ -161,12 +161,12 @@ static NSMutableCharacterSet *urlStartChars = nil;
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @"=,.:;\t \r\n"];
+      [urlNonEndingChars addCharactersInString: @"=,.:;&\t \r\n"];
     }
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"&[]\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"[]\t \r\n"];
     }
 
   start = refRange.location;
@@ -199,7 +199,7 @@ static NSMutableCharacterSet *urlStartChars = nil;
   NSMutableArray *newRanges;
   NSRange matchRange, currentUrlRange, rest;
   NSString *urlText, *newUrlText, *range;
-  unsigned int length, matchLength;
+  unsigned int length, matchLength, offset;
   int startLocation;
 
   if (!urlStartChars)
@@ -224,7 +224,6 @@ static NSMutableCharacterSet *urlStartChars = nil;
       matchRange.location = startLocation + 1;
 
       currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
-      
       if ([ranges hasRangeIntersection: currentUrlRange])
 	rest.location = NSMaxRange(currentUrlRange);
       else
@@ -240,18 +239,21 @@ static NSMutableCharacterSet *urlStartChars = nil;
 			     options: 0 range: rest];
     }
 
-  // Make the substitutions, in reverse order
-  enumRanges = [newRanges reverseObjectEnumerator];
+  // Make the substitutions, keep track of the new offset
+  offset = 0;
+  enumRanges = [newRanges objectEnumerator];
   range = [enumRanges nextObject];
   while (range)
     {
-      currentUrlRange = NSRangeFromString(range); 
+      currentUrlRange = NSRangeFromString(range);
+      currentUrlRange.location += offset;
       urlText = [selfCopy substringFromRange: currentUrlRange];
       if ([urlText hasPrefix: prefix]) prefix = @"";
       newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
 			     prefix, urlText, urlText];
       [selfCopy replaceCharactersInRange: currentUrlRange
 		withString: newUrlText];
+      offset += ([newUrlText length] - [urlText length]);
 
       // Add range for further substitutions
       currentUrlRange = NSMakeRange (currentUrlRange.location, [newUrlText length]);
