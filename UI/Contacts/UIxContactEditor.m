@@ -664,7 +664,7 @@
 	[address appendFormat: @"%@ <%@>", cn, email];
       else
 	[address appendString: email];
-	
+      
       url = [NSString stringWithFormat: @"%@/Mail/compose?mailto=%@",
 		      [self userFolderPath], address];
     }
@@ -680,13 +680,25 @@
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
   SOGoContactGCSFolder *co;
+  SoSecurityManager *sm;
 
   co = [self clientObject];
   objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/%@.vcf/editAsContact",
-                         [co soURL], objectId];
+      sm = [SoSecurityManager sharedSecurityManager];
+      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	      onObject: co
+	      inContext: context])
+	{
+	  method = [NSString stringWithFormat: @"%@/%@.vcf/editAsContact",
+			     [co soURL], objectId];
+	}
+      else
+	{
+	  method = [NSString stringWithFormat: @"%@/Contacts/personal/%@.vcf/editAsContact",
+			     [self userFolderPath], objectId];
+	}
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }

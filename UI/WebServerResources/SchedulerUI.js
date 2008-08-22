@@ -34,7 +34,8 @@ function newEvent(sender, type) {
   var roles = folder.readAttribute("roles");
   if (roles) {
     roles = roles.split(",")
-      if ($(roles).indexOf("PublicModifier") < 0)
+      if ($(roles).indexOf("Owner") < 0 &&
+	  $(roles).indexOf("PublicModifier") < 0)
 	folderID = "/personal";
   }
   var urlstr = ApplicationBaseURL + folderID + "/new" + type;
@@ -44,7 +45,7 @@ function newEvent(sender, type) {
   if (hour)
     params.push("hm=" + hour);
   if (params.length > 0)
-    urlstr += "?" + params.join("&");
+    urlstr += "?" + params.join("&"); log("newEvent: " + urlstr);
   window.open(urlstr, "", "width=490,height=470,resizable=0");
    
   return false; /* stop following the link */

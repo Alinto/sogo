@@ -73,7 +73,7 @@
               pageName    = "UIxContactsListView";
            };
            newcontact = {
-              protectedBy = "Add Documents, Images, and Files";
+              protectedBy = "<public>";
               pageName    = "UIxContactEditor";
               actionName  = "new";
            };
@@ -111,7 +111,7 @@
               protectedBy = "<public>";
               pageName    = "UIxContactsListView";
            };
-           new = {
+           newcontact = {
               protectedBy = "<public>";
               pageName    = "UIxContactEditor";
               actionName  = "new";
