@@ -1,3 +1,190 @@
+Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
+===================================================================
+--- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1625)
++++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
+@@ -713,6 +713,39 @@
+   return ms;
+ }
+ 
++/* GCSEOAdaptorChannel protocol */
++static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
++				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
++				    @"  c_content VARCHAR (100000) NOT NULL,\n"
++				    @"  c_creationdate INT4 NOT NULL,\n"
++				    @"  c_lastmodified INT4 NOT NULL,\n"
++				    @"  c_version INT4 NOT NULL,\n"
++				    @"  c_deleted INT4 NULL\n"
++				    @")");
++static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
++				       @"  c_uid VARCHAR (256) NOT NULL,\n"
++				       @"  c_object VARCHAR (256) NOT NULL,\n"
++				       @"  c_role VARCHAR (80) NOT NULL\n"
++				       @")");
++
++- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
++- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
++{
++  NSString *sql;
++
++  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
++
++  return [self evaluateExpressionX: sql];
++}
++
+ @end /* PostgreSQL72Channel */
+ 
+ @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
+Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1625)
++++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
+@@ -30,6 +30,7 @@
+ 
+ #import <NGExtensions/NSObject+Logs.h>
+ 
++static BOOL debugOn = NO;
+ //
+ //
+ //
+@@ -41,10 +42,19 @@
+ 
+ @implementation OracleAdaptorChannel (Private)
+ 
+--  (void) _cleanup
+++ (void) initialize
+ {
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
++- (void) _cleanup
++{
+   column_info *info;
+   int c;
++  sword result;
+ 
+   [_resultSetProperties removeAllObjects];
+ 
+@@ -58,11 +68,29 @@
+       // so we just free the value instead.
+       if (info->value)
+ 	{
+-	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
++	  if (info->type == SQLT_CLOB
++	      || info->type == SQLT_BLOB
++	      || info->type == SQLT_BFILEE
++	      || info->type == SQLT_CFILEE)
++	    {
++	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
++	      if (result != OCI_SUCCESS)
++		{
++		  NSLog (@"value was not a LOB descriptor");
++		  abort();
++		}
++	    }
++	  else
+ 	    free(info->value);
+ 	  info->value = NULL;
+ 	}
+-       free(info);
++      else
++	{
++	  NSLog (@"trying to free an already freed value!");
++	  abort();
++	}
++      free(info);
++
+       [_row_buffer removeObjectAtIndex: c];
+     }
+ 
+@@ -231,6 +259,9 @@
+ 
+   [self _cleanup];
+ 
++  if (debugOn)
++    [self logWithFormat: @"expression: %@", theExpression];
++
+   if (!theExpression || ![theExpression length])
+     {
+       [NSException raise: @"OracleInvalidExpressionException"
+@@ -302,7 +333,9 @@
+       // We read the maximum width of a column
+       info->max_width = 0;
+       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
+-      
++
++      if (debugOn)
++	NSLog(@"name: %s, type: %d", cname, info->type);
+       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
+       [_resultSetProperties addObject: attribute];
+ 
+@@ -609,7 +642,7 @@
+ 
+ /* GCSEOAdaptorChannel protocol */
+ static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
+-				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
++				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
+ 				    @"  c_content CLOB NOT NULL,\n"
+ 				    @"  c_creationdate INTEGER NOT NULL,\n"
+ 				    @"  c_lastmodified INTEGER NOT NULL,\n"
+Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
+===================================================================
+--- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1625)
++++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
+@@ -31,6 +31,8 @@
+ #import <Foundation/Foundation.h>
+ #import <GDLAccess/EOSQLExpression.h>
+ 
++static BOOL debugOn = NO;
++
+ //
+ //
+ //
+@@ -48,6 +50,14 @@
+ //
+ @implementation OracleAdaptorChannelController
+ 
+++ (void) initialize
++{
++  NSUserDefaults *ud;
++
++  ud = [NSUserDefaults standardUserDefaults];
++  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
++}
++
+ - (EODelegateResponse) adaptorChannel: (id) theChannel
+                         willInsertRow: (NSMutableDictionary *) theRow
+                             forEntity: (EOEntity *) theEntity
+@@ -56,7 +66,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
++  if (debugOn)
++    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
+@@ -101,7 +112,8 @@
+   NSArray *keys;
+   int i, c;
+ 
+-  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
++  if (debugOn)
++    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
+ 
+   s = AUTORELEASE([[NSMutableString alloc] init]);
+ 
 Index: sope-mime/NGImap4/NGImap4Client.m
 ===================================================================
 --- sope-mime/NGImap4/NGImap4Client.m	(révision 1625)
@@ -1348,6 +1535,46 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(révision 1625)
 +++ sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m	(copie de travail)
+@@ -93,7 +93,7 @@
+   
+   while ((obj = [enumerator nextObject]) != nil) {
+     NSString   *tmp;
+-    char       *buffer;
++    unichar       *buffer;
+     unsigned   bufLen, cnt;
+     BOOL       doEnc;
+     
+@@ -105,10 +105,10 @@
+     }
+     
+     tmp    = [obj displayName];
+-    bufLen = [tmp cStringLength];
++    bufLen = [tmp length];
+     
+-    buffer = calloc(bufLen + 10, sizeof(char));
+-    [tmp getCString:buffer];
++    buffer = calloc(bufLen, sizeof(unichar));
++    [tmp getCharacters:buffer];
+     
+     cnt   = 0;
+     doEnc = NO;
+@@ -117,11 +117,11 @@
+       /* must encode chars outside ASCII 33..60, 62..126 ranges [RFC 2045, Sect. 6.7]
+        * RFC 2047, Sect. 4.2 also requires chars 63 and 95 to be encoded
+        * For spaces, quotation is fine */
+-      if ((unsigned char)buffer[cnt] < 32 ||
+-	  (unsigned char)buffer[cnt] == 61 ||
+-	  (unsigned char)buffer[cnt] == 63 ||
+-          (unsigned char)buffer[cnt] == 95 ||
+-	  (unsigned char)buffer[cnt] > 126) {
++      if ((unichar)buffer[cnt] < 32 ||
++	  (unichar)buffer[cnt] == 61 ||
++	  (unichar)buffer[cnt] == 63 ||
++          (unichar)buffer[cnt] == 95 ||
++	  (unichar)buffer[cnt] > 126) {
+         doEnc = YES;
+         break;
+       }
 @@ -130,8 +130,13 @@
      
      if (doEnc) {
@@ -1375,6 +1602,27 @@ Index: sope-mime/NGMime/NGMimeAddressHeaderFieldGenerator.m
  #endif
  
          bufLen  = [data length];
+@@ -162,8 +167,9 @@
+                                     des + isoLen, desLen - isoLen);
+       if ((int)desLen != -1) {
+         memcpy(des + isoLen + desLen, isoEnd, isoEndLen);
+-        tmp = [NSString stringWithCString:(char *)des
+-                        length:(isoLen + desLen + isoEndLen)];
++	tmp = [[NSString alloc] initWithData: [NSData dataWithBytes:(char *)des length:(isoLen + desLen + isoEndLen)]
++				encoding: NSASCIIStringEncoding];
++	[tmp autorelease];
+       }
+       else {
+         [self warnWithFormat:
+@@ -193,7 +199,7 @@
+ #if APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+   data = [result dataUsingEncoding:NSISOLatin1StringEncoding];
+ #else
+-  data = [result dataUsingEncoding:NSISOLatin9StringEncoding];
++  data = [result dataUsingEncoding:NSASCIIStringEncoding];
+ #endif
+   [result release];
+   
 Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
 ===================================================================
 --- sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m	(révision 1625)
@@ -1511,193 +1759,6 @@ Index: sope-mime/NGMime/NGMimeContentDispositionHeaderFieldGenerator.m
    }
    return data;
  }
-Index: sope-gdl1/PostgreSQL/PostgreSQL72Channel.m
-===================================================================
---- sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(révision 1625)
-+++ sope-gdl1/PostgreSQL/PostgreSQL72Channel.m	(copie de travail)
-@@ -713,6 +713,39 @@
-   return ms;
- }
- 
-+/* GCSEOAdaptorChannel protocol */
-+static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
-+				    @"  c_name VARCHAR (256) NOT NULL PRIMARY KEY,\n"
-+				    @"  c_content VARCHAR (100000) NOT NULL,\n"
-+				    @"  c_creationdate INT4 NOT NULL,\n"
-+				    @"  c_lastmodified INT4 NOT NULL,\n"
-+				    @"  c_version INT4 NOT NULL,\n"
-+				    @"  c_deleted INT4 NULL\n"
-+				    @")");
-+static NSString *sqlFolderACLFormat = (@"CREATE TABLE %@ (\n"	\
-+				       @"  c_uid VARCHAR (256) NOT NULL,\n"
-+				       @"  c_object VARCHAR (256) NOT NULL,\n"
-+				       @"  c_role VARCHAR (80) NOT NULL\n"
-+				       @")");
-+
-+- (NSException *) createGCSFolderTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
-+- (NSException *) createGCSFolderACLTableWithName: (NSString *) tableName
-+{
-+  NSString *sql;
-+
-+  sql = [NSString stringWithFormat: sqlFolderACLFormat, tableName];
-+
-+  return [self evaluateExpressionX: sql];
-+}
-+
- @end /* PostgreSQL72Channel */
- 
- @implementation PostgreSQL72Channel(PrimaryKeyGeneration)
-Index: sope-gdl1/Oracle8/OracleAdaptorChannel.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannel.m	(révision 1625)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannel.m	(copie de travail)
-@@ -30,6 +30,7 @@
- 
- #import <NGExtensions/NSObject+Logs.h>
- 
-+static BOOL debugOn = NO;
- //
- //
- //
-@@ -41,10 +42,19 @@
- 
- @implementation OracleAdaptorChannel (Private)
- 
---  (void) _cleanup
-++ (void) initialize
- {
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
-+- (void) _cleanup
-+{
-   column_info *info;
-   int c;
-+  sword result;
- 
-   [_resultSetProperties removeAllObjects];
- 
-@@ -58,11 +68,29 @@
-       // so we just free the value instead.
-       if (info->value)
- 	{
--	  if (OCIDescriptorFree((dvoid *)info->value, (ub4)OCI_DTYPE_LOB) != OCI_SUCCESS)
-+	  if (info->type == SQLT_CLOB
-+	      || info->type == SQLT_BLOB
-+	      || info->type == SQLT_BFILEE
-+	      || info->type == SQLT_CFILEE)
-+	    {
-+	      result = OCIDescriptorFree((dvoid *)info->value, (ub4) OCI_DTYPE_LOB);
-+	      if (result != OCI_SUCCESS)
-+		{
-+		  NSLog (@"value was not a LOB descriptor");
-+		  abort();
-+		}
-+	    }
-+	  else
- 	    free(info->value);
- 	  info->value = NULL;
- 	}
--       free(info);
-+      else
-+	{
-+	  NSLog (@"trying to free an already freed value!");
-+	  abort();
-+	}
-+      free(info);
-+
-       [_row_buffer removeObjectAtIndex: c];
-     }
- 
-@@ -231,6 +259,9 @@
- 
-   [self _cleanup];
- 
-+  if (debugOn)
-+    [self logWithFormat: @"expression: %@", theExpression];
-+
-   if (!theExpression || ![theExpression length])
-     {
-       [NSException raise: @"OracleInvalidExpressionException"
-@@ -302,7 +333,9 @@
-       // We read the maximum width of a column
-       info->max_width = 0;
-       status = OCIAttrGet((dvoid*)param, (ub4)OCI_DTYPE_PARAM, (dvoid*)&(info->max_width), (ub4 *)0, (ub4)OCI_ATTR_DATA_SIZE, (OCIError *)_oci_err);
--      
-+
-+      if (debugOn)
-+	NSLog(@"name: %s, type: %d", cname, info->type);
-       attribute = [EOAttribute attributeWithOracleType: info->type  name: cname  length: clen  width: info->max_width];
-       [_resultSetProperties addObject: attribute];
- 
-@@ -609,7 +642,7 @@
- 
- /* GCSEOAdaptorChannel protocol */
- static NSString *sqlFolderFormat = (@"CREATE TABLE %@ (\n"	\
--				    @"  c_name VARCHAR2 (256) NOT NULL,\n"
-+				    @"  c_name VARCHAR2 (256) NOT NULL PRIMARY KEY,\n"
- 				    @"  c_content CLOB NOT NULL,\n"
- 				    @"  c_creationdate INTEGER NOT NULL,\n"
- 				    @"  c_lastmodified INTEGER NOT NULL,\n"
-Index: sope-gdl1/Oracle8/OracleAdaptorChannelController.m
-===================================================================
---- sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(révision 1625)
-+++ sope-gdl1/Oracle8/OracleAdaptorChannelController.m	(copie de travail)
-@@ -31,6 +31,8 @@
- #import <Foundation/Foundation.h>
- #import <GDLAccess/EOSQLExpression.h>
- 
-+static BOOL debugOn = NO;
-+
- //
- //
- //
-@@ -48,6 +50,14 @@
- //
- @implementation OracleAdaptorChannelController
- 
-++ (void) initialize
-+{
-+  NSUserDefaults *ud;
-+
-+  ud = [NSUserDefaults standardUserDefaults];
-+  debugOn = [ud boolForKey: @"OracleAdaptorDebug"];
-+}
-+
- - (EODelegateResponse) adaptorChannel: (id) theChannel
-                         willInsertRow: (NSMutableDictionary *) theRow
-                             forEntity: (EOEntity *) theEntity
-@@ -56,7 +66,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
-+  if (debugOn)
-+    NSLog(@"willInsertRow: %@ %@", [theRow description], [theEntity description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
-@@ -101,7 +112,8 @@
-   NSArray *keys;
-   int i, c;
- 
--  NSLog(@"willUpdatetRow: %@ %@", [theRow description], [theQualifier description]);
-+  if (debugOn)
-+    NSLog(@"willUpdateRow: %@ %@", [theRow description], [theQualifier description]);
- 
-   s = AUTORELEASE([[NSMutableString alloc] init]);
- 
 Index: sope-core/NGExtensions/NGExtensions/NSString+Ext.h
 ===================================================================
 --- sope-core/NGExtensions/NGExtensions/NSString+Ext.h	(révision 1625)
