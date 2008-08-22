@@ -14,7 +14,7 @@
   ),
   (
    { link = "edit";
-     label = "Modify";
+     label = "Properties";
      onclick = "return onToolbarEditSelectedContacts(this);";
      image = "properties.png";
      tooltip = "Edit the selected card"; },
