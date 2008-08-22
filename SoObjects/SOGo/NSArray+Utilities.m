@@ -206,7 +206,7 @@
   [self addObject: NSStringFromRange (newRange)];
 }
 
-- (BOOL) hasRangeIntersection: (NSRange) testRange withOffset: (unsigned int) offset
+- (BOOL) hasRangeIntersection: (NSRange) testRange
 {
   NSEnumerator *ranges;
   NSString *currentRangeString;
@@ -221,7 +221,6 @@
   while (!response && currentRangeString)
     {
       currentRange = NSRangeFromString (currentRangeString);
-      currentRange.location = currentRange.location + offset;
       if (NSLocationInRange (testRange.location, currentRange)
 	  || NSLocationInRange (NSMaxRange (testRange), currentRange))
 	response = YES;

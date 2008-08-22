@@ -55,7 +55,7 @@
 - (void) addObjectUniquely: (id) object;
 
 - (void) addRange: (NSRange) newRange;
-- (BOOL) hasRangeIntersection: (NSRange) testRange withOffset: (unsigned int) offset;
+- (BOOL) hasRangeIntersection: (NSRange) testRange;
 
 @end
 

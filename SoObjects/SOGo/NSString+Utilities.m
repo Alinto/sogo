@@ -195,9 +195,11 @@ static NSMutableCharacterSet *urlStartChars = nil;
 	      prefix: (NSString *) prefix
 	    inRanges: (NSMutableArray *) ranges
 {
-  NSRange httpRange, currentURL, rest;
-  NSString *urlText, *newUrlText;
-  unsigned int length, matchLength, offset;
+  NSEnumerator *enumRanges;
+  NSMutableArray *newRanges;
+  NSRange matchRange, currentUrlRange, rest;
+  NSString *urlText, *newUrlText, *range;
+  unsigned int length, matchLength;
   int startLocation;
 
   if (!urlStartChars)
@@ -207,56 +209,55 @@ static NSMutableCharacterSet *urlStartChars = nil;
 		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		     @"0123456789:@"];
     }
+  newRanges = [NSMutableArray new];
   matchLength = [match length];
-  httpRange = [selfCopy rangeOfString: match];
-  if (httpRange.location != NSNotFound)
+  rest.location = -1;
+ 
+  matchRange = [selfCopy rangeOfString: match];
+  while (matchRange.location != NSNotFound)
     {
-      offset = 0;
-      startLocation = httpRange.location;
-      while (startLocation > -1
+      startLocation = matchRange.location;
+      while (startLocation > rest.location
 	     && [urlStartChars characterIsMember:
 				 [selfCopy characterAtIndex: startLocation]])
 	startLocation--;
-      httpRange.location = startLocation + 1;
-    }
-  while (httpRange.location != NSNotFound)
-    {
-      currentURL = [selfCopy _rangeOfURLInRange: httpRange];
-      if ([ranges hasRangeIntersection: httpRange withOffset: offset])
-	rest.location = NSMaxRange(httpRange);
+      matchRange.location = startLocation + 1;
+
+      currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
+      
+      if ([ranges hasRangeIntersection: currentUrlRange])
+	rest.location = NSMaxRange(currentUrlRange);
       else
 	{
-	  currentURL = [selfCopy _rangeOfURLInRange: httpRange];
-	  urlText = [selfCopy substringFromRange: currentURL];
-	  if ([urlText length] > matchLength)
-	    {
-	      if ([urlText hasPrefix: prefix]) prefix = @"";
-
-	      newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
-				     prefix, urlText, urlText];
-	      [selfCopy replaceCharactersInRange: currentURL
-			withString: newUrlText];
-	      currentURL
-		= NSMakeRange (currentURL.location, [newUrlText length]);
-	      [ranges addRange: currentURL];
-	      offset = offset + 9 + [prefix length];
-	    }
-	  rest.location = NSMaxRange(currentURL);
+	  if (currentUrlRange.length > matchLength)
+	    [newRanges addRange: currentUrlRange];
+	  rest.location = NSMaxRange(currentUrlRange);
 	}
 
       length = [selfCopy length];
       rest.length = length - rest.location;
-      httpRange = [selfCopy rangeOfString: match
-			    options: 0 range: rest];
-      if (httpRange.location != NSNotFound)
-	{
-	  startLocation = httpRange.location;
-	  while (startLocation > -1
-		 && [urlStartChars characterIsMember:
-				     [selfCopy characterAtIndex: startLocation]])
-	    startLocation--;
-	  httpRange.location = startLocation + 1;
-	}
+      matchRange = [selfCopy rangeOfString: match
+			     options: 0 range: rest];
+    }
+
+  // Make the substitutions, in reverse order
+  enumRanges = [newRanges reverseObjectEnumerator];
+  range = [enumRanges nextObject];
+  while (range)
+    {
+      currentUrlRange = NSRangeFromString(range); 
+      urlText = [selfCopy substringFromRange: currentUrlRange];
+      if ([urlText hasPrefix: prefix]) prefix = @"";
+      newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
+			     prefix, urlText, urlText];
+      [selfCopy replaceCharactersInRange: currentUrlRange
+		withString: newUrlText];
+
+      // Add range for further substitutions
+      currentUrlRange = NSMakeRange (currentUrlRange.location, [newUrlText length]);
+      [ranges addRange: currentUrlRange];
+
+      range = [enumRanges nextObject];
     }
 }
 
