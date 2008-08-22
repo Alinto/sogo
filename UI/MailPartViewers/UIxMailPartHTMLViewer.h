@@ -34,4 +34,13 @@
 
 @end
 
+@interface UIxMailPartExternalHTMLViewer : UIxMailPartViewer
+{
+  id handler;
+}
+
+- (NSString *) flatContentAsString;
+
+@end
+
 #endif /* UIXMAILPARTHTMLVIEWER_H */

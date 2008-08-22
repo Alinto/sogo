@@ -878,7 +878,7 @@ SEL SOGoSelectorForPropertySetter (NSString *property)
   NSException *error;
   id value;
 
-  request = [localContext request];  
+  request = [localContext request];
   if ([request isSoWebDAVRequest])
     {
       if ([self respondsToSelector: @selector (contentAsString)])

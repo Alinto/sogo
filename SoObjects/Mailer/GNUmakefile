@@ -23,6 +23,7 @@ Mailer_OBJC_FILES += \
 	SOGoTrashFolder.m		\
 	\
 	SOGoMailBodyPart.m		\
+	SOGoHTMLMailBodyPart.m		\
 	SOGoImageMailBodyPart.m		\
 	SOGoMessageMailBodyPart.m	\
 	SOGoCalendarMailBodyPart.m	\

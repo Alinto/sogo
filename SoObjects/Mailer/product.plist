@@ -58,6 +58,9 @@
     SOGoMailBodyPart = {
       superclass    = "SOGoMailBaseObject";
     };
+    SOGoHTMLMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
     SOGoImageMailBodyPart = {
       superclass    = "SOGoMailBodyPart";
     };

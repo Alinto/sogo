@@ -8,6 +8,14 @@
   };
 
   categories = {
+    SOGoHTMLMailBodyPart = {
+      methods = {
+	view = {
+          protectedBy = "View";
+	  pageName = "UIxMailPartExternalHTMLViewer";
+	};
+      };
+    };
     SOGoCalendarMailBodyPart = {
       methods = {
         accept = {

@@ -1,6 +1,6 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse groupe conseil
+ * Copyright (C) 2007, 2008 Inverse groupe conseil
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -37,6 +37,7 @@
 #include <libxml/encoding.h>
 
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartHTMLViewer.h"
 
@@ -45,6 +46,52 @@
 #else
 #define showWhoWeAre()
 #endif
+
+static xmlCharEncoding
+_xmlCharsetForCharset (NSString *charset)
+{
+  struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
+    { @"us-ascii", XML_CHAR_ENCODING_ASCII},
+    { @"utf-8", XML_CHAR_ENCODING_UTF8},
+    { @"utf-16le", XML_CHAR_ENCODING_UTF16LE},
+    { @"utf-16be",  XML_CHAR_ENCODING_UTF16BE},
+    { @"ucs-4le", XML_CHAR_ENCODING_UCS4LE},
+    { @"ucs-4be", XML_CHAR_ENCODING_UCS4BE},
+    { @"ebcdic", XML_CHAR_ENCODING_EBCDIC},
+//     { @"iso-10646" , XML_CHAR_ENCODING_UCS4_2143},
+//     {  , XML_CHAR_ENCODING_UCS4_3412},
+//     { @"ucs-2", XML_CHAR_ENCODING_UCS2},
+    { @"iso8859_1", XML_CHAR_ENCODING_8859_1},
+    { @"iso-8859-1", XML_CHAR_ENCODING_8859_1},
+    { @"iso-8859-2",  XML_CHAR_ENCODING_8859_2},
+    { @"iso-8859-3", XML_CHAR_ENCODING_8859_3},
+    { @"iso-8859-4", XML_CHAR_ENCODING_8859_4},
+    { @"iso-8859-5", XML_CHAR_ENCODING_8859_5},
+    { @"iso-8859-6", XML_CHAR_ENCODING_8859_6},
+    { @"iso-8859-7", XML_CHAR_ENCODING_8859_7},
+    { @"iso-8859-8", XML_CHAR_ENCODING_8859_8},
+    { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
+    { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
+//     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
+    { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
+  unsigned count;
+  xmlCharEncoding encoding;
+
+  encoding = XML_CHAR_ENCODING_NONE;
+  count = 0;
+
+  while (encoding == XML_CHAR_ENCODING_NONE
+	 && count < (sizeof (xmlEncodings) / sizeof (xmlEncodings[0])))
+    if ([charset isEqualToString: xmlEncodings[count].name])
+      encoding = xmlEncodings[count].encoding;
+    else
+      count++;
+
+  if (encoding == XML_CHAR_ENCODING_NONE)
+    encoding = XML_CHAR_ENCODING_8859_1;
+
+  return encoding;
+}
 
 @interface _UIxHTMLMailContentHandler : NSObject <SaxContentHandler, SaxLexicalHandler>
 {
@@ -227,7 +274,7 @@
     {
       resultPart = [NSMutableString new];
       [resultPart appendFormat: @"<%@", _rawName];
-      
+
       max = [_attributes count];
       for (count = 0; count < max; count++)
         {
@@ -248,6 +295,14 @@
               else
                 skipAttribute = YES;
             }
+          else if ([name caseInsensitiveCompare: @"href"] == NSOrderedSame
+		   || [name caseInsensitiveCompare: @"action"] == NSOrderedSame)
+	    {
+              value = [_attributes valueAtIndex: count];
+	      skipAttribute = ([value rangeOfString: @"://"].location
+			       == NSNotFound
+			       && ![value hasPrefix: @"#"]);
+	    }
           else
             value = [_attributes valueAtIndex: count];
           if (!skipAttribute)
@@ -258,6 +313,7 @@
 
       [resultPart appendString: @">"];
       [result appendString: resultPart];
+      [resultPart release];
     }
 }
 
@@ -437,62 +493,16 @@
   [super dealloc];
 }
 
-- (xmlCharEncoding) _xmlCharsetForCharset: (NSString *) charset
-{
-  struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
-    { @"us-ascii", XML_CHAR_ENCODING_ASCII},
-    { @"utf-8", XML_CHAR_ENCODING_UTF8},
-    { @"utf-16le", XML_CHAR_ENCODING_UTF16LE},
-    { @"utf-16be",  XML_CHAR_ENCODING_UTF16BE},
-    { @"ucs-4le", XML_CHAR_ENCODING_UCS4LE},
-    { @"ucs-4be", XML_CHAR_ENCODING_UCS4BE},
-    { @"ebcdic", XML_CHAR_ENCODING_EBCDIC},
-//     { @"iso-10646" , XML_CHAR_ENCODING_UCS4_2143},
-//     {  , XML_CHAR_ENCODING_UCS4_3412},
-//     { @"ucs-2", XML_CHAR_ENCODING_UCS2},
-    { @"iso8859_1", XML_CHAR_ENCODING_8859_1},
-    { @"iso-8859-1", XML_CHAR_ENCODING_8859_1},
-    { @"iso-8859-2",  XML_CHAR_ENCODING_8859_2},
-    { @"iso-8859-3", XML_CHAR_ENCODING_8859_3},
-    { @"iso-8859-4", XML_CHAR_ENCODING_8859_4},
-    { @"iso-8859-5", XML_CHAR_ENCODING_8859_5},
-    { @"iso-8859-6", XML_CHAR_ENCODING_8859_6},
-    { @"iso-8859-7", XML_CHAR_ENCODING_8859_7},
-    { @"iso-8859-8", XML_CHAR_ENCODING_8859_8},
-    { @"iso-8859-9", XML_CHAR_ENCODING_8859_9},
-    { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
-//     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
-    { @"euc-jp", XML_CHAR_ENCODING_EUC_JP}};
-  unsigned count;
-  xmlCharEncoding encoding;
-
-  encoding = XML_CHAR_ENCODING_NONE;
-  count = 0;
-
-  while (encoding == XML_CHAR_ENCODING_NONE
-	 && count < (sizeof (xmlEncodings) / sizeof (xmlEncodings[0])))
-    if ([charset isEqualToString: xmlEncodings[count].name])
-      encoding = xmlEncodings[count].encoding;
-    else
-      count++;
-
-  if (encoding == XML_CHAR_ENCODING_NONE)
-    encoding = XML_CHAR_ENCODING_8859_1;
-
-  return encoding;
-}
-
 - (xmlCharEncoding) _xmlCharEncoding
 {
-
   NSString *charset;
 
   charset = [[bodyInfo objectForKey:@"parameterList"]
 	      objectForKey: @"charset"];
   if (![charset length])
     charset = @"us-ascii";
-  
-  return [self _xmlCharsetForCharset: [charset lowercaseString]];
+
+  return _xmlCharsetForCharset ([charset lowercaseString]);
 }
 
 - (void) _parseContent
@@ -512,6 +522,94 @@
   [handler setContentEncoding: [self _xmlCharEncoding]];
   [parser setContentHandler: handler];
   [parser parseFromSource: preparsedContent];
+}
+
+- (NSString *) cssContent
+{
+  NSString *cssContent, *css;
+
+  if (!handler)
+    [self _parseContent];
+
+  css = [handler css];
+  if ([css length])
+    cssContent
+      = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
+		  [handler css]];
+  else
+    cssContent = @"";
+
+  return cssContent;
+}
+
+- (NSString *) flatContentAsString
+{
+  if (!handler)
+    [self _parseContent];
+
+  return [handler result];
+}
+
+@end
+
+@implementation UIxMailPartExternalHTMLViewer
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      handler = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [handler release];
+  [super dealloc];
+}
+
+- (xmlCharEncoding) _xmlCharEncoding
+{
+  NSString *charset;
+
+  charset = [[bodyInfo objectForKey:@"parameterList"]
+	      objectForKey: @"charset"];
+  if (![charset length])
+    charset = @"us-ascii";
+
+  return _xmlCharsetForCharset ([charset lowercaseString]);
+}
+
+- (void) _parseContent
+{
+  NSObject <SaxXMLReader> *parser;
+  NSData *preparsedContent;
+  SOGoMailObject *mail;
+  SOGoMailBodyPart *part;
+  NSString *encoding;
+
+  part = [self clientObject];
+  mail = [part mailObject];
+
+  preparsedContent = [part fetchBLOB];
+  parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
+             createXMLReaderForMimeType: @"text/html"];
+  encoding = [[part partInfo] valueForKey: @"encoding"];
+  if (![encoding length])
+    encoding = @"us-ascii";
+
+  handler = [_UIxHTMLMailContentHandler new];
+  [handler setAttachmentIds: [mail fetchAttachmentIds]];
+  [handler setContentEncoding: _xmlCharsetForCharset (encoding)];
+  [parser setContentHandler: handler];
+  [parser parseFromSource: preparsedContent];
+}
+
+- (NSString *) filename
+{
+  return [[self clientObject] filename];
 }
 
 - (NSString *) cssContent

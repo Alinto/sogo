@@ -353,57 +353,58 @@ static BOOL debugOn = NO;
 
 /* actions */
 
-- (id)GETAction:(id)_ctx {
+- (id) GETAction: (WOContext *) localContext
+{
   NSException *error;
-  WOResponse *r;
   NSData     *data;
   NSString   *etag, *mimeType, *fileName;
+  id response;
   
-  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil) {
-    // TODO: currently we fetch the body structure to get here - check this!
-    /* check whether the mail still exists */
-    if (![[self mailObject] doesMailExist]) {
-      return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			  reason:@"mail was deleted"];
+  error = [self matchesRequestConditionInContext: localContext];
+  if (error)
+    {
+      response = error; /* return 304 or 416 */
     }
-    return error; /* return 304 or 416 */
-  }
-
-  [self debugWithFormat:@"should fetch body part: %@", 
-	  [self bodyPartIdentifier]];
-  
-  if ((data = [self fetchBLOB]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* not found */
-			reason:@"did not find body part"];
-  }
-  
-  [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
-	[self partInfo]];
+  else
+    {
+//   [self debugWithFormat: @"should fetch body part: %@", 
+// 	[self bodyPartIdentifier]];
+      data = [self fetchBLOB];
+      if (data)
+	{
+//   [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
+// 	[self partInfo]];
   
   // TODO: wrong, could be encoded
-  r = [(WOContext *)_ctx response];
-  mimeType = [self davContentType];
-  if ([mimeType isEqualToString: @"application/x-xpinstall"])
-    mimeType = @"application/octet-stream";
-
-  [r setHeader: mimeType forKey:@"content-type"];
-  [r setHeader: [NSString stringWithFormat:@"%d", [data length]]
-     forKey: @"content-length"];
+	  response = [localContext response];
+	  mimeType = [self davContentType];
+	  if ([mimeType isEqualToString: @"application/x-xpinstall"])
+	    mimeType = @"application/octet-stream";
+	  
+	  [response setHeader: mimeType forKey: @"content-type"];
+	  [response setHeader: [NSString stringWithFormat:@"%d", [data length]]
+		    forKey: @"content-length"];
   
-  if (asAttachment)
-    {
-      fileName = [self filename];
-      if ([fileName length])
-	[r setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
-	   forKey: @"content-disposition"];
+	  if (asAttachment)
+	    {
+	      fileName = [self filename];
+	      if ([fileName length])
+		[response setHeader: [NSString stringWithFormat: @"attachment; filename=%@", fileName]
+			  forKey: @"content-disposition"];
+	    }
+
+	  etag = [self davEntityTag];
+	  if (etag)
+	    [response setHeader: etag forKey: @"etag"];
+	  
+	  [response setContent: data];
+	}
+      else
+	response = [NSException exceptionWithHTTPStatus: 404 /* not found */
+				reason: @"did not find body part"];
     }
 
-  if ((etag = [self davEntityTag]) != nil)
-    [r setHeader:etag forKey:@"etag"];
-
-  [r setContent:data];
-
-  return r;
+  return response;
 }
 
 /* factory */
@@ -454,6 +455,8 @@ static BOOL debugOn = NO;
   else if ([mimeType isEqualToString: @"text/calendar"]
 	   || [mimeType isEqualToString: @"application/ics"])
     classString = @"SOGoCalendarMailBodyPart";
+  else if ([mimeType isEqualToString: @"text/html"])
+    classString = @"SOGoHTMLMailBodyPart";
   else if ([mimeType isEqualToString: @"text/x-vcard"])
     classString = @"SOGoVCardMailBodyPart";
   else if ([mimeType isEqualToString: @"message/rfc822"])
