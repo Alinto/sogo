@@ -316,7 +316,7 @@
     {
       url = [[elements objectAtIndex: 0] value: 0];
 
-      if ([[url lowercaseString] rangeOfString: @"://"].length)
+      if (![[url lowercaseString] rangeOfString: @"://"].length)
 	  url = [NSString stringWithFormat: @"http://%@", url];
 
       data = [NSString stringWithFormat:

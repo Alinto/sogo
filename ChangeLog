@@ -1,5 +1,9 @@
 2008-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Contacts/UIxContactView.m ([UIxContactView -workUrl])
+	([UIxContactView -homeUrl]): the test for the presence of a
+	protocol was inverted, causing the output of wrong urls anyway...
+
 	* SoObjects/Contacts/SOGoContactLDIFEntry.m ([SOGoContactLDIFEntry
 	-vCard]): replaced query for field "notes" with "description".
 	Added support for Mozilla custom fields 1 to 4.
