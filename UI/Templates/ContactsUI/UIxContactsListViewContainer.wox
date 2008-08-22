@@ -29,7 +29,7 @@
 
     <div class="menu" id="contactFoldersMenu">
       <ul>
-	<li><var:string label:value="Modify" /></li>
+	<li><var:string label:value="Properties" /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="New Card" /></li>
 	<li><var:string label:value="New List" /></li>
@@ -42,7 +42,7 @@
 
     <div class="menu" id="contactMenu">
       <ul>
-	<li><var:string label:value="Modify" /></li>
+	<li><var:string label:value="Properties" /></li>
 	<li><!-- separator --></li>
 	<li><var:string label:value="Write" /></li>
 	<li><var:string label:value="Instant Message" /></li>
