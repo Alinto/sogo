@@ -1929,6 +1929,24 @@ Index: sope-core/NGExtensions/FdExt.subproj/NSString+Encoding.m
  }
  
  static char *iconv_wrapper(id self, char *_src, unsigned _srcLen,
+Index: sope-core/NGExtensions/NGQuotedPrintableCoding.m
+===================================================================
+--- sope-core/NGExtensions/NGQuotedPrintableCoding.m	(révision 1625)
++++ sope-core/NGExtensions/NGQuotedPrintableCoding.m	(copie de travail)
+@@ -278,7 +278,12 @@
+   
+   for (cnt = 0; (cnt < _srcLen) && (destCnt < _destLen); cnt++) {
+     char c = _src[cnt];
+-    if ((c == 9)  ||
++    if (c == 95) {  // we encode the _, otherwise we'll always decode it as a space!
++      _dest[destCnt++] = '=';
++      _dest[destCnt++] = '5';
++      _dest[destCnt++] = 'F';
++    }
++    else if ((c == 9)  ||
+         (c == 10) ||
+         (c == 13) ||
+         ((c > 31) && (c < 61)) ||
 Index: sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m
 ===================================================================
 --- sope-core/NGExtensions/EOExt.subproj/EOGlobalID+Ext.m	(révision 1625)
