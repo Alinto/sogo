@@ -115,12 +115,13 @@
 {
   NSString *info, *surname, *streetAddress, *location;
   CardElement *element;
+  unsigned int count;
 
   if (!vcard)
     {
       vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
       [vcard setVClass: @"PUBLIC"];
-      [vcard setProdID: @"-//OpenGroupware.org//SOGo"];
+      [vcard setProdID: @"-//Inverse inc.//SOGo"];
       [vcard setProfile: @"vCard"];
       info = [ldifEntry objectForKey: @"displayName"];
       if (!(info && [info length] > 0))
@@ -140,10 +141,7 @@
       info = [ldifEntry objectForKey: @"mozillaNickname"];
       if (info)
         [vcard setNickname: info];
-      info = [ldifEntry objectForKey: @"xmozillaNickname"];
-      if (info)
-        [vcard setNickname: info];
-      info = [ldifEntry objectForKey: @"notes"];
+      info = [ldifEntry objectForKey: @"description"];
       if (info)
         [vcard setNote: info];
       info = [ldifEntry objectForKey: @"mail"];
@@ -167,6 +165,17 @@
         [vcard addChildWithTag: @"FBURL"
                types: nil
                singleValue: info];
+      for (count = 1; count < 5; count++)
+	{
+	  info = [ldifEntry objectForKey:
+			      [NSString stringWithFormat: @"mozillaCustom%d",
+					count]];
+	  if (info)
+	    [vcard addChildWithTag: [NSString stringWithFormat: @"CUSTOM%d",
+					      count]
+		   types: nil
+		   singleValue: info];
+	}
     }
 
   return vcard;
