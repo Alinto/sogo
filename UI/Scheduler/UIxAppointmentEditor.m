@@ -138,6 +138,16 @@
   return item;
 }
 
+- (SOGoAppointmentFolder *) componentCalendar
+{
+  return componentCalendar;
+}
+
+- (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
+{
+  ASSIGN (componentCalendar, _componentCalendar);
+}
+
 /* actions */
 - (NSCalendarDate *) newStartDate
 {
@@ -236,7 +246,6 @@
 
 - (id <WOActionResults>) saveAction
 {
-  NSString *newCalendar;
   SOGoAppointmentFolder *thisFolder, *newFolder;
   SOGoAppointmentFolders *parentFolder;
   SOGoAppointmentObject *co;
@@ -246,25 +255,21 @@
   co = [self clientObject];
   [co saveComponent: event];
 
-  newCalendar = [self queryParameterForKey: @"moveToCalendar"];
-  if ([newCalendar length])
+  if (componentCalendar)
     {
       sm = [SoSecurityManager sharedSecurityManager];
 
       thisFolder = [co container];
-      if (![sm validatePermission: SoPerm_DeleteObjects
-	       onObject: thisFolder
-	       inContext: context])
-	{
-	  parentFolder = [[self container] container];
-	  newFolder = [[thisFolder container] lookupName: newCalendar
-					      inContext: context
-					      acquire: NO];
-	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-		   onObject: newFolder
-		   inContext: context])
-	    ex = [co moveToFolder: newFolder];
-	}
+      if (componentCalendar != thisFolder)
+	if (![sm validatePermission: SoPerm_DeleteObjects
+		 onObject: thisFolder
+		 inContext: context])
+	  {
+	    if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		     onObject: componentCalendar
+		     inContext: context])
+	      ex = [co moveToFolder: componentCalendar];
+	  }
     }
 
   return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];

@@ -8,6 +8,7 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label"
   className="UIxComponentEditor"
+  componentCalendar="componentCalendar"
   var:component="event"
   var:saveURL="saveURL">
 

@@ -48,6 +48,7 @@
   NSCalendarDate *cycleUntilDate;
   NSString *title;
   NSString *location;
+  SOGoAppointmentFolder *componentCalendar;
   NSString *comment;
   NSString *url;
   NSString *priority;
@@ -92,6 +93,13 @@
 - (id) item;
 
 - (SOGoAppointmentFolder *) componentCalendar;
+
+- (NSArray *) calendarList;
+- (NSString *) calendarsFoldersList;
+- (NSString *) calendarDisplayName;
+
+- (SOGoAppointmentFolder *) componentCalendar;
+- (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar;
 
 - (NSArray *) categoryList;
 - (void) setCategories: (NSArray *) _categories;

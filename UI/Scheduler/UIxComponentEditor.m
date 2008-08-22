@@ -375,6 +375,10 @@ iRANGE(2);
 	  [self _loadCategories];
 	  [self _loadAttendees];
 	  [self _loadRRules];
+
+	  componentCalendar = [co container];
+	  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
+	    componentCalendar = [componentCalendar container];
 	}
     }
 //   /* cycles */
@@ -821,15 +825,15 @@ iRANGE(2);
   return [calendars componentsJoinedByString: @","];
 }
 
+
 - (SOGoAppointmentFolder *) componentCalendar
 {
-  SOGoAppointmentFolder *calendar;
+  return componentCalendar;
+}
 
-  calendar = [[self clientObject] container];
-  if ([calendar isKindOfClass: [SOGoCalendarComponent class]])
-    calendar = [calendar container];
-
-  return calendar;
+- (void) setComponentCalendar: (SOGoAppointmentFolder *) _componentCalendar
+{
+  ASSIGN (componentCalendar, _componentCalendar);
 }
 
 /* priorities */

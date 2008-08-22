@@ -31,6 +31,7 @@
 @interface UIxAppointmentEditor : UIxComponent
 {
   iCalEvent *event;
+  SOGoAppointmentFolder *componentCalendar;
   BOOL isAllDay;
   NSCalendarDate *aptStartDate;
   NSCalendarDate *aptEndDate;

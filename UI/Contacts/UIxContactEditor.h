@@ -38,6 +38,7 @@
   NSString *item;
   NGVCard *card;
   NSMutableDictionary *snapshot; /* contains the values for editing */
+  SOGoContactFolder *componentAddressBook;
 }
 
 - (void) setAddressBookItem: (id) _item;

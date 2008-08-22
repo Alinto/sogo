@@ -198,6 +198,7 @@ TABLE#contactsList TD,
 TABLE#contactsList TH
 { overflow: hidden;
   line-height: 16px;
+  height: 18px;
   white-space: nowrap; } /* pre, normal, nowrap */
 
 TABLE#contactsList TH

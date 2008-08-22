@@ -2,7 +2,7 @@ DIV#addressBookSelector
 { margin: .5em; }
 
 DIV#addressBookSelector SELECT
-{ width: auto; }
+{ width: 32em; }
 
 DIV#editorTabs
 { position: absolute;

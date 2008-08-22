@@ -204,6 +204,12 @@
   return folder;
 }
 
+- (void) setComponentAddressBook: (SOGoContactFolder *) _componentAddressBook
+{
+  ASSIGN (componentAddressBook, _componentAddressBook);
+}
+
+
 - (NSString *) addressBookDisplayName
 {
   NSString *fDisplayName;
@@ -595,6 +601,8 @@
   SOGoContactGCSEntry *contact;
   id result;
   NSString *jsRefreshMethod;
+  SoSecurityManager *sm;
+  NSException *ex;
 
   contact = [self clientObject];
   card = [contact vCard];
@@ -604,6 +612,20 @@
       [self _saveSnapshot];
       [contact save];
 
+      if (componentAddressBook && componentAddressBook != [self componentAddressBook])
+	{
+	  sm = [SoSecurityManager sharedSecurityManager];
+	  if (![sm validatePermission: SoPerm_DeleteObjects
+		   onObject: componentAddressBook
+		   inContext: context])
+	    {
+	      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+		       onObject: componentAddressBook
+		       inContext: context])
+		ex = [contact moveToFolder: componentAddressBook];
+	    }
+	}
+      
       if ([[[[self context] request] formValueForKey: @"nojs"] intValue])
         result = [self redirectToLocation: [self applicationPath]];
       else
