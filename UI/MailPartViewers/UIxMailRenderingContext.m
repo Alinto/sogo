@@ -40,10 +40,15 @@
 - (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info
 {
   NSString *s;
+  BOOL shouldDisplay;
 
   s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
-	
-  return (s && [s caseInsensitiveCompare: @"ATTACHMENT"] == NSOrderedSame);
+
+  shouldDisplay = ((s && ([s caseInsensitiveCompare: @"ATTACHMENT"]
+			  == NSOrderedSame))
+		   || [[info objectForKey: @"bodyId"] length]);
+
+  return shouldDisplay;
 }
 
 @end

@@ -1,5 +1,9 @@
 2008-08-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	([UIxMailRenderingContext -viewerForBodyInfo:_info]): display
+	parts with a bodyId as an attachment.
+
 	* UI/Contacts/UIxContactView.m ([UIxContactView -workUrl])
 	([UIxContactView -homeUrl]): the test for the presence of a
 	protocol was inverted, causing the output of wrong urls anyway...
