@@ -14,12 +14,13 @@ function initLogin() {
 }
 
 function onLoginClick(event) {
-  startAnimation($("loginButton"), $("submit"));
-
-  var userName = $("userName").value;
+  var userNameField = $("userName");
+  var userName = userNameField.value;
   var password = $("password").value;
 
   if (userName.length > 0) {
+    startAnimation($("loginButton"), $("submit"));
+
     if (typeof(loginSuffix) != "undefined"
 	&& loginSuffix.length > 0
 	&& !userName.endsWith(loginSuffix))
@@ -32,6 +33,8 @@ function onLoginClick(event) {
 			 "Content-length": parameters.length,
 			 "Connection": "close" });
   }
+  else
+    userNameField.focus();
 
   preventDefault(event);
 }
@@ -41,17 +44,17 @@ function onLoginCallback(http) {
     if (isHttpStatus204(http.status)) {
       var userName = $("userName").value;
       if (typeof(loginSuffix) != "undefined"
-	  && loginSuffix.length > 0
-	  && !userName.endsWith(loginSuffix))
-	userName += loginSuffix;
+          && loginSuffix.length > 0
+          && !userName.endsWith(loginSuffix))
+        userName += loginSuffix;
       var address = "" + window.location.href;
       var baseAddress = ApplicationBaseURL + encodeURI(userName);
       var altBaseAddress;
       if (baseAddress[0] == "/") {
-	var parts = address.split("/");
-	var hostpart = parts[2];
-	var protocol = parts[0];
-	baseAddress = protocol + "//" + hostpart + baseAddress;
+        var parts = address.split("/");
+        var hostpart = parts[2];
+        var protocol = parts[0];
+        baseAddress = protocol + "//" + hostpart + baseAddress;
       }
       var altBaseAddress;
       var parts = baseAddress.split("/");
@@ -60,11 +63,11 @@ function onLoginCallback(http) {
 
       var newAddress;
       if ((address.startsWith(baseAddress)
-	   || address.startsWith(altBaseAddress))
-	  && !address.endsWith("/logoff"))
-	newAddress = address;
+           || address.startsWith(altBaseAddress))
+          && !address.endsWith("/logoff"))
+        newAddress = address;
       else
-	newAddress = baseAddress;
+        newAddress = baseAddress;
       window.location.href = newAddress;
     }
   }
