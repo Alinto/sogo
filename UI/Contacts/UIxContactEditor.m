@@ -175,7 +175,7 @@
   SOGoContactFolders *folderContainer;
   SOGoContactFolder *folder, *currentFolder;
 
-  addressBooksList = [NSMutableArray new];
+  addressBooksList = [NSMutableArray array];
   sm = [SoSecurityManager sharedSecurityManager];
   folderContainer = [[[self clientObject] container] container];
   folders = [[folderContainer subFolders] objectEnumerator];
