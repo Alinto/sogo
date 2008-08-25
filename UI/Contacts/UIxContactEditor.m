@@ -134,25 +134,26 @@
 
 /* helper */
 
-- (NSString *)_completeURIForMethod:(NSString *)_method {
+- (NSString *) _completeURIForMethod: (NSString *) _method
+{
   // TODO: this is a DUP of UIxAppointmentEditor
   NSString *uri;
   NSRange r;
-    
+
   uri = [[[self context] request] uri];
-    
+
   /* first: identify query parameters */
   r = [uri rangeOfString: @"?" options:NSBackwardsSearch];
   if (r.length > 0)
     uri = [uri substringToIndex:r.location];
-    
+
   /* next: append trailing slash */
   if (![uri hasSuffix: @"/"])
     uri = [uri stringByAppendingString: @"/"];
-  
+
   /* next: append method */
   uri = [uri stringByAppendingString:_method];
-    
+
   /* next: append query parameters */
   return [self completeHrefForMethod:uri];
 }
