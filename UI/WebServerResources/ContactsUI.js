@@ -582,7 +582,7 @@ function refreshContacts(contactId) {
 }
 
 function onAddressBookNew(event) {
-  createFolder(window.prompt(labels["Name of the Address Book"]),
+  createFolder(window.prompt(labels["Name of the Address Book"], ""),
 	       appendAddressBook);
   preventDefault(event);
 }
@@ -607,6 +607,7 @@ function appendAddressBook(name, folder) {
     var contactFolders = $("contactFolders");
     var items = contactFolders.childNodesWithTag("li");
     var li = document.createElement("li");
+    li = Element.extend(li);
 
     // Add the calendar to the proper place
     var i = getListIndexForFolder(items, owner, name);
@@ -626,16 +627,6 @@ function appendAddressBook(name, folder) {
   }
 
   return result;
-}
-
-function newFolderCallback(http) {
-  if (http.readyState == 4
-      && http.status == 201) {
-    var name = http.callbackData;
-    appendAddressBook(name, "/" + name);
-  }
-  else
-    log ("ajax problem 4:" + http.status);
 }
 
 function newUserFolderCallback(folderData) {

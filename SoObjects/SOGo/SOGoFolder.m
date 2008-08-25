@@ -197,7 +197,7 @@
       if ([otherName isEqualToString: @"personal"])
 	comparison = NSOrderedDescending;
       else
-	comparison = [selfName compare: otherName];
+	comparison = NSOrderedSame;
     }
 
   return comparison;
