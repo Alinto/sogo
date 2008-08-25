@@ -87,6 +87,7 @@
       <label><var:string label:value="Reminder:" />
       <span class="content"><var:popup list="reminderList" item="item"
          const:disabledValue="-"
+	 const:disabled="YES"
          label:noSelectionString="reminder_NONE"
          string="itemReminderText" selection="reminder"
          /></span></label>
