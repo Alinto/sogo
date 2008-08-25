@@ -435,11 +435,15 @@ function onToolbarDeleteSelectedContacts(event) {
   var rows = contactsList.getSelectedRowsId();
 
   if (rows.length) {
-    for (var i = 0; i < rows.length; i++) {
-      delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
-      var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
-                    + rows[i] + "/delete");
-      triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rows[i]);
+    var label = labels["Are you sure you want to delete the selected contacts?"];
+    if (window.confirm(label)) {
+      for (var i = 0; i < rows.length; i++) {
+        delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
+        var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
+                      + rows[i] + "/delete");
+        triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
+                           rows[i]);
+      }
     }
   }
   else {

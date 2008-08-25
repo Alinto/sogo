@@ -118,6 +118,8 @@
 "Name of the Address Book" = "Nom du carnet d'adresses";
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
+"Are you sure you want to delete the selected contacts?"
+= "Voulez-vous vraiment supprimer les contacts sélectionnés ?";
 "You don't have the required privileges to perform the operation."
 = "Vous n'avez pas les privilèges requis pour compléter l'opération.";
 "You cannot delete the card of \"%{0}\"."

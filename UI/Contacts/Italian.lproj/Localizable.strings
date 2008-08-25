@@ -129,6 +129,10 @@
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
+"Are you sure you want to delete the selected contacts?"
+= "Sei sicuro di voler eliminare i contatti selezionati?";
+
+= "Are you sure you want to delete the selected contacts?";
 
 "Address Book Name" = "Nome della Rubrica";
 
