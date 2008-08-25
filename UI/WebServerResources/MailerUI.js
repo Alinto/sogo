@@ -1328,6 +1328,9 @@ function onMessageCheckCallback(event) {
 }
 
 function initMailboxTree() {
+  var node = $("mailboxTree");
+  if (node)
+    node.parentNode.removeChild(node);
   mailboxTree = new dTree("mailboxTree");
   mailboxTree.config.folderLinks = true;
   mailboxTree.config.hideRoot = true;
@@ -1396,7 +1399,11 @@ function mailboxMenuNode(type, name) {
 function generateMenuForMailbox(mailbox, prefix, callback) {
   var menuDIV = document.createElement("div");
   $(menuDIV).addClassName("menu");
-  menuDIV.setAttribute("id", prefix + "Submenu");
+  var menuID = prefix + "Submenu";
+  var previousMenuDIV = $(menuID);
+  if (previousMenuDIV)
+    previousMenuDIV.parentNode.removeChild(previousMenuDIV);
+  menuDIV.setAttribute("id", menuID);
   var menu = document.createElement("ul");
   menuDIV.appendChild(menu);
   pageContent.appendChild(menuDIV);
