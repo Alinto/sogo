@@ -299,13 +299,25 @@
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
   SOGoAppointmentFolder *co;
+  SoSecurityManager *sm;
 
   co = [self clientObject];
   objectId = [co globallyUniqueObjectId];
   if ([objectId length] > 0)
     {
-      method = [NSString stringWithFormat:@"%@/%@.ics/editAsTask",
-                         [co soURL], objectId];
+      sm = [SoSecurityManager sharedSecurityManager];
+      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	      onObject: co
+	      inContext: context])
+	{
+	  method = [NSString stringWithFormat:@"%@/%@.ics/editAsTask",
+			     [co soURL], objectId];
+	}
+      else
+	{
+	  method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsTask",
+			     [self userFolderPath], objectId];
+	}
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }

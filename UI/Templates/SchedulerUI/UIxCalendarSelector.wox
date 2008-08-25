@@ -32,7 +32,7 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
     <ul id="calendarList">
       <var:foreach list="calendars" item="currentCalendar"
 	><li class="denied" var:id="currentCalendar.id"
-	  var:owner="currentCalendar.owner" var:roles="currentCalendar.roles" >
+	  var:owner="currentCalendar.owner" >
 	  <input type="checkbox" class="checkBox"
 	    const:disabled="disabled"
 	    var:checked="currentCalendar.active" />

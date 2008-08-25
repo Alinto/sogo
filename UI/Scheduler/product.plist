@@ -149,12 +149,12 @@
 	  actionName  = "saveUserRights";
 	};
 	newevent = {
-	  protectedBy = "Add Documents, Images, and Files";
+	  protectedBy = "<public>";
 	  pageName    = "UIxAppointmentEditor"; 
 	  actionName  = "new";
 	};
 	newtask = { 
-	  protectedBy = "Add Documents, Images, and Files";
+	  protectedBy = "<public>";
 	  pageName    = "UIxTaskEditor"; 
 	  actionName  = "new";
 	};

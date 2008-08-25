@@ -227,13 +227,25 @@
   NSString *objectId, *method, *uri;
   id <WOActionResults> result;
   SOGoAppointmentFolder *co;
+  SoSecurityManager *sm;
 
   co = [self clientObject];
   objectId = [co globallyUniqueObjectId];
   if ([objectId length])
     {
-      method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
-                         [co soURL], objectId];
+      sm = [SoSecurityManager sharedSecurityManager];
+      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+	      onObject: co
+	      inContext: context])
+	{
+	  method = [NSString stringWithFormat:@"%@/%@.ics/editAsAppointment",
+			     [co soURL], objectId];
+	}
+      else
+	{
+	  method = [NSString stringWithFormat: @"%@/Calendar/personal/%@.vcf/editAsAppointment",
+			     [self userFolderPath], objectId];
+	}
       uri = [self completeHrefForMethod: method];
       result = [self redirectToLocation: uri];
     }
@@ -246,8 +258,7 @@
 
 - (id <WOActionResults>) saveAction
 {
-  SOGoAppointmentFolder *thisFolder, *newFolder;
-  SOGoAppointmentFolders *parentFolder;
+  SOGoAppointmentFolder *thisFolder;
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   NSException *ex;
@@ -268,7 +279,7 @@
 	    if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
 		     onObject: componentCalendar
 		     inContext: context])
-	      ex = [co moveToFolder: componentCalendar];
+	      ex = [co moveToFolder: componentCalendar]; // TODO: handle exception
 	  }
     }
 

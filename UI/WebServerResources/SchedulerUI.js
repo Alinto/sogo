@@ -31,13 +31,6 @@ function newEvent(sender, type) {
   var hour = sender.readAttribute("hour");
   var folder = getSelectedFolder();
   var folderID = folder.readAttribute("id");
-  var roles = folder.readAttribute("roles");
-  if (roles) {
-    roles = roles.split(",")
-      if ($(roles).indexOf("Owner") < 0 &&
-	  $(roles).indexOf("PublicModifier") < 0)
-	folderID = "/personal";
-  }
   var urlstr = ApplicationBaseURL + folderID + "/new" + type;
   var params = [];
   if (day)
@@ -45,7 +38,7 @@ function newEvent(sender, type) {
   if (hour)
     params.push("hm=" + hour);
   if (params.length > 0)
-    urlstr += "?" + params.join("&"); log("newEvent: " + urlstr);
+    urlstr += "?" + params.join("&");
   window.open(urlstr, "", "width=490,height=470,resizable=0");
    
   return false; /* stop following the link */
