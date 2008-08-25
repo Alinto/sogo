@@ -896,8 +896,13 @@ function onAddressBooksMenuPrepareVisibility() {
 
   if (selected.length > 0) {
     var folderOwner = selected[0].getAttribute("owner");
-    var modifyOption = $(this).down("ul").childElements().first();
-    var sharingOption = $(this).down("ul").childElements().last();
+
+    var menu = $("contactFoldersMenu").down("ul");;
+    var listElements = menu.childNodesWithTag("li");
+    var modifyOption = $(listElements[0]);
+    var removeOption = $(listElements[5]);
+    var sharingOption = $(listElements[listElements.length - 1]);
+
     // Disable the "Sharing" and "Modify" options when address book
     // is not owned by user
     if (folderOwner == UserLogin || IsSuperUser) {
@@ -908,6 +913,13 @@ function onAddressBooksMenuPrepareVisibility() {
       modifyOption.addClassName("disabled");
       sharingOption.addClassName("disabled");
     }
+
+    // disable the "remove" option when address book is public, otherwise
+    // enable it
+    if (folderOwner == "nobody")
+      removeOption.addClassName("disabled");
+    else
+      removeOption.removeClassName("disabled");
   }
 }
 
@@ -922,7 +934,7 @@ function onContactMenuPrepareVisibility() {
   var aimOption = elements[3];
   var deleteOption = elements[5];
   var moveOption = elements[7];
-  
+
   $A(contactRows).each(function(contactRow) {
       var emailCell = contactRow.down('td', 1);
       options.write |= (emailCell.firstChild != null);
@@ -952,8 +964,8 @@ function onContactMenuPrepareVisibility() {
 
 function getMenus() {
   var menus = {};
-  menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", null,
-					  null, "-", null, "-",
+  menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
+					  null, "-", onAddressBookRemove, "-",
 					  onMenuSharing);
   menus["contactMenu"] = new Array(onMenuEditContact, "-",
 				   onMenuWriteToContact, onMenuAIMContact,

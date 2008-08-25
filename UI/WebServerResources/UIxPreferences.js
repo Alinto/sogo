@@ -10,10 +10,12 @@ function _setupEvents(enable) {
 		  "firstWeek", "messageCheck" ];
   for (var i = 0; i < widgets.length; i++) {
     var widget = $(widgets[i]);
-    if (enable)
-      widget.observe("change", onChoiceChanged);
-    else
-      widget.stopObserving("change", onChoiceChanged);
+    if (widget) {
+      if (enable)
+        widget.observe("change", onChoiceChanged);
+      else
+        widget.stopObserving("change", onChoiceChanged);
+    }
   }
 }
 
