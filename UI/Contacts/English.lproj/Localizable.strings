@@ -117,10 +117,6 @@
 = "You don't have the required privileges to perform the operation.";
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
-"Your personal address book cannot be deleted."
-= "Your personal address book cannot be deleted.";
-"Global address books cannot be deleted."
-= "Global address books cannot be deleted.";
 
 "Address Book Name" = "Address Book Name";
 
