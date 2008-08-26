@@ -41,65 +41,58 @@
 
       <body var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
-	  >
-	  <var:if condition="shortUserNameForDisplay" const:value="anonymous"
-	    const:negate="YES"
-	    ><var:if condition="shortUserNameForDisplay"
-	      const:value="wrongusernamepassword"
-	      const:negate="YES"
-	      ><var:if condition="isPopup" const:negate="YES"
-		><var:if condition="context.isUIxDebugEnabled"
-		  ><div id="logConsole"><!-- space --></div></var:if>
-		<div id="linkBanner" class="linkbanner">
-		  <a id="logoff" var:href="logoffPath"
-		    ><var:string label:value="Disconnect" /></a>
-		  <var:if condition="userHasCalendarAccess">
-		    <var:if condition="isCalendar">
-		      <span class="active"><var:string label:value="Calendar"
-			  /></span>
-		    </var:if>
-		    <var:if condition="isCalendar" const:negate="YES">
-		      <a id="calendarBannerLink"
-			var:href="relativeCalendarPath"
-			><var:string label:value="Calendar" /></a>
-		    </var:if>
-		    |
+	  ><var:if condition="isPopup" const:negate="YES"
+	    ><var:if condition="context.isUIxDebugEnabled"
+	      ><div id="logConsole"><!-- space --></div></var:if>
+	    <div id="linkBanner" class="linkbanner">
+	      <a id="logoff" var:href="logoffPath"
+		><var:string label:value="Disconnect" /></a>
+	      <var:if condition="userHasCalendarAccess">
+		<var:if condition="isCalendar">
+		  <span class="active"><var:string label:value="Calendar"
+		      /></span>
 		  </var:if>
-		  <var:if condition="isContacts">
-		    <span class="active"><var:string label:value="Address Book"
-			/></span>
-		  </var:if>
-		  <var:if condition="isContacts" const:negate="YES">
-		    <a id="contactsBannerLink"
-		      var:href="relativeContactsPath"
-		      ><var:string label:value="Address Book" /></a>
-		  </var:if>
-		  |
-		  <var:if condition="userHasMailAccess">
-		    <var:if condition="isMail">
-		      <span class="active"><var:string label:value="Mail"
-			  /></span>
-		    </var:if>
-		    <var:if condition="isMail" const:negate="YES">
-		      <a id="mailBannerLink" var:href="relativeMailPath"
-			><var:string label:value="Mail" /></a>
-		    </var:if>
-		      |
-		  </var:if>
-		  <a id="preferencesBannerLink"
-		    var:href="relativePreferencesPath"
-		    ><var:string label:value="Preferences" /></a>
-		  <var:if condition="context.isUIxDebugEnabled"
-		    >| <a id="consoleBannerLink"
-		      href="#"><var:string
-			label:value="Log Console (dev.)" /></a
-		      ></var:if>
-		</div>
-	      </var:if
-		><var:component className="UIxToolbar" var:toolbar="toolbar"
-		/>
-	    </var:if></var:if>
-	  
+		<var:if condition="isCalendar" const:negate="YES">
+		  <a id="calendarBannerLink"
+		    var:href="relativeCalendarPath"
+		    ><var:string label:value="Calendar" /></a>
+		</var:if>
+		|
+	      </var:if>
+	      <var:if condition="isContacts">
+		<span class="active"><var:string label:value="Address Book"
+		    /></span>
+	      </var:if>
+	      <var:if condition="isContacts" const:negate="YES">
+		<a id="contactsBannerLink"
+		  var:href="relativeContactsPath"
+		  ><var:string label:value="Address Book" /></a>
+	      </var:if>
+	      |
+	      <var:if condition="userHasMailAccess">
+		<var:if condition="isMail">
+		    <span class="active"><var:string label:value="Mail"
+		      /></span>
+		</var:if>
+		<var:if condition="isMail" const:negate="YES">
+		  <a id="mailBannerLink" var:href="relativeMailPath"
+		    ><var:string label:value="Mail" /></a>
+		</var:if>
+		|
+	      </var:if>
+	      <a id="preferencesBannerLink"
+		var:href="relativePreferencesPath"
+		><var:string label:value="Preferences" /></a>
+	      <var:if condition="context.isUIxDebugEnabled"
+		>| <a id="consoleBannerLink"
+		  href="#"><var:string
+		    label:value="Log Console (dev.)" /></a
+		  ></var:if>
+	    </div>
+	  </var:if
+	    ><var:component className="UIxToolbar" var:toolbar="toolbar"
+	    />
+
 	  <div id="pageContent"><var:component-content/></div>
 
 	  <div id="javascriptSafetyNet"><!-- space --></div>

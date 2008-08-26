@@ -26,9 +26,6 @@
 #import <UI/SOGoUI/UIxComponent.h>
 
 @interface SOGoRootPage : UIxComponent
-{
-  NSString *userName;
-}
 
 @end
 

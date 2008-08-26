@@ -46,23 +46,7 @@
 
 @implementation SOGoRootPage
 
-- (void) dealloc
-{
-  [userName release];
-  [super dealloc];
-}
-
 /* accessors */
-
-- (void) setUserName: (NSString *) _value
-{
-  ASSIGNCOPY (userName, _value);
-}
-
-- (NSString *) userName
-{
-  return userName;
-}
 
 - (NSString *) connectURL
 {
@@ -77,20 +61,27 @@
   WOCookie *authCookie;
   SOGoWebAuthenticator *auth;
   NSString *cookieValue, *cookieString;
+  NSString *userName, *password;
 
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
   request = [context request];
-  response = [self responseWith204];
-  cookieString = [NSString stringWithFormat: @"%@:%@",
-			   [request formValueForKey: @"userName"],
-			   [request formValueForKey: @"password"]];
-  cookieValue = [NSString stringWithFormat: @"basic %@",
-			  [cookieString stringByEncodingBase64]];
-  authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
-			 value: cookieValue];
-  [authCookie setPath: @"/"];
-  [response addCookie: authCookie];
+  userName = [request formValueForKey: @"userName"];
+  password = [request formValueForKey: @"password"];
+  if ([auth checkLogin: userName password: password])
+    {
+      response = [self responseWith204];
+      cookieString = [NSString stringWithFormat: @"%@:%@",
+			       userName, password];
+      cookieValue = [NSString stringWithFormat: @"basic %@",
+			      [cookieString stringByEncodingBase64]];
+      authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
+			     value: cookieValue];
+      [authCookie setPath: @"/"];
+      [response addCookie: authCookie];
+    }
+  else
+    response = [self responseWithStatus: 403];
 
   return response;
 }

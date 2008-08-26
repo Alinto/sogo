@@ -48,8 +48,9 @@ DIV#loginButton IMG#progressIndicator
   margin-top: 5px;
   margin-left: 5px; }
 
-P.error
-{ color: #f00;
+#loginErrorMessage
+{ display: none;
+  color: #f00;
   text-align: center; }
 
 P.browser
