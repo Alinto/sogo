@@ -1,3 +1,42 @@
+2008-08-26  Francis Lachapelle  <flachapelle@inverse.ca>
+	
+	* UI/MailerUI/UIxMailMainFrame.m ([composeAction]): build the
+	contact's fullname from its card's attribute "n" if "fn" is
+	not defined.
+
+	* UI/Contacts/UIxContactView.m ([fullName]): idem.
+
+	* UI/Contacts/UIxContactEditor.m ([addressBooksList]): new
+	method to retrieve the address books to which the user can write.
+	([saveAction]): if the user change the destination address
+	book, the contact is now correctly moved to it.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([viewAction]): new
+	method that returns a JSON representation of an event.
+
+	* UI/Scheduler/UIxAppointmentEditor.m ([newAction]): removed
+	the rights validation from the product.plist to this method so
+	the user redirect to the proper folder if rights are insufficient.
+
+	* UI/Scheduler/UIxTaskEditor.m ([newAction]): idem.
+
+	* UI/Contacts/UIxContactEditor.m ([newAction]): idem.
+
+	* UI/Scheduler/UIxCalendarSelector.m ([calendars]): removed
+	the roles as they are no longer verified through JavaScript.
+
+	* SoObjects/SOGo/SOGoFolder.m
+	([_compareByNameInContainer:otherFolder]): fixed an order
+	problem with the personal folders.
+
+	* SoObjects/SOGo/NSString+Utilities.m
+	([_rangeOfURLInRange:refRange]): added some ending characters.
+	([_handleURLs:selfCopy textToMatch:match prefix:prefix
+	inRanges:ranges]): fixed the parsing so URLs are properly identified.
+
+	* UI/MailerUI/UIxMailAccountActions.m ([-composeAction]):
+	added support to define the subject through the URL.
+
 2008-08-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MainUI/SOGoRootPage.m ([SOGoRootPage -setUserName:_value])
