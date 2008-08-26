@@ -40,3 +40,6 @@
      	= "U bent al op deze map geabonneerd!";
 "The user rights cannot be edited for this object!"
         = "De machtigingen kunnen niet worden aangepast voor dit object!";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "You are not allowed to access this module or this system. Please contact your system administrator.";

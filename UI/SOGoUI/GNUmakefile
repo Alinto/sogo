@@ -23,6 +23,7 @@ libSOGoUI_OBJC_FILES +=		\
 	\
 	UIxJSClose.m		\
 	UIxComponent.m		\
+	UIxModuleAccessDenied.m	\
 	SOGoAptFormatter.m	\
 	WOContext+UIx.m		\
 	SOGoACLAdvisory.m \
