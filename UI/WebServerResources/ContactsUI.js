@@ -653,19 +653,28 @@ function onAddressBookRemove(event) {
   var selector = $("contactFolders");
   var nodes = selector.getSelectedNodes();
   if (nodes.length > 0) {
-    nodes[0].deselect();
-    var owner = nodes[0].getAttribute("owner");
-    if (owner == UserLogin) {
-      var folderIdElements = nodes[0].getAttribute("id").split(":");
-      var abId = folderIdElements[0].substr(1);
-      deletePersonalAddressBook(abId);
-      var personal = $("/personal");
-      personal.selectElement();
-      onFolderSelectionChange();
+    var node = $(nodes[0]);
+    if (node.readAttribute("id") == "/personal") {
+      window.alert(labels["Your personal address book cannot be deleted."]);
+    }
+    else if (node.hasClassName("remote")) {
+      window.alert(labels["Global address books cannot be deleted."]);
     }
     else {
-      var folderId = nodes[0].getAttribute("id");
-      unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
+      node.deselect();
+      var owner = node.getAttribute("owner");
+      if (owner == UserLogin) {
+	var folderIdElements = node.getAttribute("id").split(":");
+	var abId = folderIdElements[0].substr(1);
+	deletePersonalAddressBook(abId);
+	var personal = $("/personal");
+	personal.selectElement();
+	onFolderSelectionChange();
+      }
+      else {
+	var folderId = node.getAttribute("id");
+	unsubscribeFromFolder(folderId, owner, onFolderUnsubscribeCB, folderId);
+      }
     }
   }
 

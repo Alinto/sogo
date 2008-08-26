@@ -124,13 +124,17 @@
 = "Vous n'avez pas les privilèges requis pour compléter l'opération.";
 "You cannot delete the card of \"%{0}\"."
 = "Vous ne pouvez pas supprimer la fiche de \"%{0}\".";
+"Your personal address book cannot be deleted."
+= "Votre carnet personnel ne peut être effacé.";
+"Global address books cannot be deleted."
+= "Les carnets communs ne peuvent être effacés.";
 
 "Address Book Name" = "Nom du carnet d'adresses";
 
 "You cannot subscribe to a folder that you own!"
-= "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient!";
+= "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient.";
 "Unable to subscribe to that folder!"
-= "Impossible de vous inscrire à ce dossier!";
+= "Impossible de vous inscrire à ce dossier.";
 
 "Default Roles" = "Rôles par défaut";
 "User rights for:" = "Autorisations pour :";
