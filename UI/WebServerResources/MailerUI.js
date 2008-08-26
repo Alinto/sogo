@@ -251,23 +251,22 @@ function deleteSelectedMessagesCallback(http) {
     if (Mailer.currentMailbox == data["mailbox"]) {
       var div = $('messageContent');
       if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"]) {
-	div.update();
-	Mailer.currentMessages[Mailer.currentMailbox] = null;	
+        div.update();
+        Mailer.currentMessages[Mailer.currentMailbox] = null;	
       }
 
       var row = $("row_" + data["id"]);
       var nextRow = row.next("tr");
       if (!nextRow)
 	nextRow = row.previous("tr");
-      row.parentNode.removeChild(row);
       //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
       
       if (deleteMessageRequestCount == 0) {
-	if (nextRow) {
-	  Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
-	  nextRow.selectElement();
-	  loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
-	}
+        if (nextRow) {
+          Mailer.currentMessages[Mailer.currentMailbox] = nextRow.getAttribute("id").substr(4);
+          loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
+        }
+        refreshCurrentFolder();
       }
     }
   }
