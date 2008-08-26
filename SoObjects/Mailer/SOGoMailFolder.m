@@ -51,6 +51,12 @@ static BOOL aclUsernamesAreQuoted = NO;
 /* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
 static BOOL aclConformsToIMAPExt = NO;
 
+@interface NGImap4Connection (PrivateMethods)
+
+- (NSString *) imap4FolderNameForURL: (NSURL *) url;
+
+@end
+
 @implementation SOGoMailFolder
 
 + (void) initialize
@@ -281,6 +287,7 @@ static BOOL aclConformsToIMAPExt = NO;
 {
   NSUserDefaults *ud;
   NSMutableDictionary *mailSettings;
+  NSString *urlString;
 
   ud = [[context activeUser] userSettings];
   mailSettings = [ud objectForKey: @"Mail"];
@@ -290,8 +297,14 @@ static BOOL aclConformsToIMAPExt = NO;
       [ud setObject: mailSettings forKey: @"Mail"];
     }
 
-  [mailSettings setObject: [self imap4URLString] forKey: @"folderForExpunge"];
-  [ud synchronize];
+  urlString = [self imap4URLString];
+  if (![[mailSettings objectForKey: @"folderForExpunge"]
+	 isEqualToString: urlString])
+    {
+      [mailSettings setObject: [self imap4URLString]
+		    forKey: @"folderForExpunge"];
+      [ud synchronize];
+    }
 }
 
 - (void) expungeLastMarkedFolder
